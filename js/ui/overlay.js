@@ -11,6 +11,7 @@ const Tweener = imports.tweener.tweener;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
+const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Workspaces = imports.ui.workspaces;
@@ -18,11 +19,12 @@ const Workspaces = imports.ui.workspaces;
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
 OVERLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
 
+const LABEL_HEIGHT = 16;
 const SIDESHOW_PAD = 6;
 const SIDESHOW_PAD_BOTTOM = 40;
 const SIDESHOW_MIN_WIDTH = 250;
-const SIDESHOW_SECTION_PAD = 10;
-const SIDESHOW_SECTION_LABEL_PAD_BOTTOM = 6;
+const SIDESHOW_SECTION_MARGIN = 10;
+const SIDESHOW_SECTION_LABEL_MARGIN_BOTTOM = 6;
 const SIDESHOW_SEARCH_BG_COLOR = new Clutter.Color();
 SIDESHOW_SEARCH_BG_COLOR.from_pixel(0xffffffff);
 const SIDESHOW_TEXT_COLOR = new Clutter.Color();
@@ -34,6 +36,10 @@ const ANIMATION_TIME = 0.5;
 // How much of the screen the workspace grid takes up
 const WORKSPACE_GRID_SCALE = 0.75;
 
+// How much of the screen the workspace grid takes up when it is moved aside to provide space 
+// for an expanded 'More' view
+const WORKSPACE_GRID_ASIDE_SCALE = 0.1;
+
 // Padding around workspace grid / Spacing between Sideshow and Workspaces
 const WORKSPACE_GRID_PADDING = 10;
 
@@ -44,6 +50,10 @@ function Sideshow(parent, width) {
 Sideshow.prototype = {
     _init : function(parent, width) {
         let me = this;
+
+        this._moreMode = false;
+
+        this._width = width;
 
         let global = Shell.Global.get();
         this.actor = new Clutter.Group();
@@ -131,39 +141,56 @@ Sideshow.prototype = {
             return false;
         });
 
-        let appsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
+        this._appsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
                                            font_name: "Sans Bold 14px",
                                            text: "Applications",
                                            x: SIDESHOW_PAD,
-                                           y: this._searchEntry.y + this._searchEntry.height + SIDESHOW_SECTION_PAD,
-                                           height: 16});
-        this.actor.add_actor(appsText);
+                                           y: this._searchEntry.y + this._searchEntry.height + SIDESHOW_SECTION_MARGIN,
+                                           height: LABEL_HEIGHT});
+        this.actor.add_actor(this._appsText);
 
-        let sectionLabelHeight = appsText.height + SIDESHOW_SECTION_LABEL_PAD_BOTTOM
-        let menuY = appsText.y + sectionLabelHeight;
+        let sectionLabelHeight = LABEL_HEIGHT + SIDESHOW_SECTION_LABEL_MARGIN_BOTTOM;
+        let menuY = this._appsText.y + sectionLabelHeight;
 
-        let itemDisplayHeight = global.screen_height - menuY - SIDESHOW_SECTION_PAD - sectionLabelHeight - SIDESHOW_PAD_BOTTOM;
-        this._appDisplay = new AppDisplay.AppDisplay(width, itemDisplayHeight / 2);
+        // extra LABEL_HEIGHT is for the More link
+        this._itemDisplayHeight = global.screen_height - menuY - SIDESHOW_SECTION_MARGIN - sectionLabelHeight - SIDESHOW_PAD_BOTTOM - LABEL_HEIGHT;
+        this._appDisplay = new AppDisplay.AppDisplay(width, this._itemDisplayHeight / 2);
         this._appDisplay.actor.x = SIDESHOW_PAD;
         this._appDisplay.actor.y = menuY;
         this.actor.add_actor(this._appDisplay.actor);
 
-        let docsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
+        this._moreAppsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
+                                               font_name: "Sans Bold 14px",
+                                               text: "More...",
+                                               y: this._appDisplay.actor.y + this._appDisplay.actor.height,
+                                               height: LABEL_HEIGHT,
+                                               reactive: true});
+
+        // This sets right-alignment manually.
+        this._moreAppsText.x = width - this._moreAppsText.width + SIDESHOW_PAD;
+        this.actor.add_actor(this._moreAppsText);
+
+        this._docsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
                                            font_name: "Sans Bold 14px",
                                            text: "Recent Documents",
                                            x: SIDESHOW_PAD,
-                                           y: menuY + (itemDisplayHeight / 2) + SIDESHOW_SECTION_PAD,
-                                           height: 16});
-        this.actor.add_actor(docsText);
+                                           y: this._moreAppsText.y + this._moreAppsText.height + SIDESHOW_SECTION_MARGIN,
+                                           height: LABEL_HEIGHT});
+        this.actor.add_actor(this._docsText);
 
-        this._docDisplay = new DocDisplay.DocDisplay(width, itemDisplayHeight / 2);
+        this._docDisplay = new DocDisplay.DocDisplay(width, this._itemDisplayHeight - this._appDisplay.actor.height);
         this._docDisplay.actor.x = SIDESHOW_PAD;
-        this._docDisplay.actor.y = docsText.y + docsText.height + 6;
+        this._docDisplay.actor.y = this._docsText.y + sectionLabelHeight;
         this.actor.add_actor(this._docDisplay.actor);
+
+        // When we are sliding out documents for the applcations 'More' mode, we need to know what fraction of the 
+        // animation time we'll spend sliding out the "Recent Documents" section header, so that we can fully clip
+        // the document items in the remaining fraction of time. We do the animation in a linear fashion to make the
+        // two stage tweening process look right.
+        this._docsTextAnimationTimeRatio = me._docsText.height /  me._docDisplay.actor.height;
 
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
-            me._searchEntry.text = '';
             // we allow clicking on an item to launch it, and this unsets the selection
             // so that we can move it to the item that was clicked on
             me._appDisplay.unsetSelected(); 
@@ -172,7 +199,6 @@ Sideshow.prototype = {
             me.emit('activated');
         });
         this._docDisplay.connect('activated', function(docDisplay) {
-            me._searchEntry.text = '';
             // we allow clicking on an item to launch it, and this unsets the selection
             // so that we can move it to the item that was clicked on
             me._appDisplay.unsetSelected(); 
@@ -191,19 +217,150 @@ Sideshow.prototype = {
             if (!me._docDisplay.hasSelected() && !me._appDisplay.hasSelected())
                 me._appDisplay.selectFirstItem();
         });
+
+        this._moreAppsText.connect('button-press-event',
+            function(o, event) {
+                if (me._moreMode) {
+                    me._unsetMoreMode();
+                }  else {
+                    me._setMoreMode();
+                }
+                return true;
+            });
     },
 
     show: function() {
+        this._appDisplay.show(); 
+        this._docDisplay.show();
         this._appDisplay.selectFirstItem();   
         if (!this._appDisplay.hasSelected())
             this._docDisplay.selectFirstItem();
         else
             this._docDisplay.unsetSelected();
-        this._appDisplay.show(); 
-        this._docDisplay.show();
     },
 
     hide: function() {
+        this._appDisplay.hide(); 
+        this._docDisplay.hide();
+        this._searchEntry.text = '';
+        this._unsetMoreMode();
+    },
+
+    // Sets the 'More' mode for browsing applications. Slides down the documents section. Gives more space to 
+    // the applications section once sliding of the documents section is completed. 
+    _setMoreMode: function() {
+        if (this._moreMode)
+            return;
+
+        this._moreMode = true;
+
+        if (!this._docDisplay.actor.has_clip)
+            this._docDisplay.actor.set_clip(0, 0, this._docDisplay.actor.width, this._docDisplay.actor.height);
+
+        // Move the selection to the applications section if it was in the docs section.
+        this._docDisplay.unsetSelected();
+        if (!this._appDisplay.hasSelected())
+            this._appDisplay.selectFirstItem();
+
+        this._moreAppsText.hide(); 
+
+        Tweener.addTween(this._docDisplay.actor,
+                         { y: this._docDisplay.actor.y + this._docDisplay.actor.height,
+                           clipHeight: 0,
+                           time: ANIMATION_TIME * (1 - this._docsTextAnimationTimeRatio),
+                           transition: "linear"
+                         });
+        Tweener.addTween(this._docsText,
+                         { y: this._docsText.y + this._docDisplay.actor.height,
+                           time: ANIMATION_TIME * (1 - this._docsTextAnimationTimeRatio),
+                           transition: "linear",
+                           onComplete: this._removeDocsSection,
+                           onCompleteScope: this
+                         });
+                   
+        this.emit('more-activated'); 
+    },
+
+    // Unsets the 'More' mode for browsing applications. Updates applications section to have
+    // smaller dimensions. Slides in the documents section. 
+    _unsetMoreMode: function() {
+        if (!this._moreMode)
+            return;
+
+        this._moreMode = false;
+
+        this._moreAppsText.hide();  
+        this._updateAppsSection();
+
+        this._docDisplay.show();
+        Tweener.addTween(this._docsText,
+                         { y: this._docsText.y - this._docsText.height,
+                           clipHeight: this._docsText.height,
+                           time: ANIMATION_TIME * this._docsTextAnimationTimeRatio,
+                           transition: "linear",
+                           onComplete: this._restoreDocsSection,
+                           onCompleteScope: this
+                         });   
+        this.emit('less-activated');
+    },
+
+    // Completes sliding out the documents section and hides it so that it doesn't
+    // get updated on new searchs. Once that's completed, updates the dimensions of
+    // the applications section.
+    _removeDocsSection: function() {
+        this._docDisplay.hide();
+
+        Tweener.addTween(this._docsText,
+                         { y: this._docsText.y + this._docsText.height,
+                           clipHeight: 0,
+                           time: ANIMATION_TIME * this._docsTextAnimationTimeRatio,
+                           transition: "linear",
+                           onComplete: this._updateAppsSection,
+                           onCompleteScope: this
+                         });        
+    },
+
+    // Completes restoring the documents section.
+    _restoreDocsSection: function() {                    
+        Tweener.addTween(this._docsText,
+                         { y: this._docsText.y - this._docDisplay.actor.height,
+                           time: ANIMATION_TIME * (1 - this._docsTextAnimationTimeRatio),
+                           transition: "linear"
+                         }); 
+        Tweener.addTween(this._docDisplay.actor,
+                         { y: this._docDisplay.actor.y - this._docDisplay.actor.height,
+                           clipHeight: this._docDisplay.actor.height,
+                           time: ANIMATION_TIME * (1 - this._docsTextAnimationTimeRatio),
+                           transition: "linear",
+                           onComplete: this._onDocsSectionRestored,
+                           onCompleteScope: this
+                         });   
+    },
+
+    // Selects the first item in the documents section if applications section has no items.
+    _onDocsSectionRestored: function() { 
+        if (!this._appDisplay.hasItems())
+            this._docDisplay.selectFirstItem();
+    },
+
+    // Updates the applications section display and the 'More...' or 'Less...' control associated with it
+    // depending on the current mode. This function must only be called once after the 'More' mode has been
+    // changed, which is ensured by _setMoreMode() and _unsetMoreMode() functions. 
+    _updateAppsSection: function() {
+        let additionalWidth = this._width + GenericDisplay.COLUMN_GAP;
+        if (this._moreMode) {
+            this._appDisplay.updateDimensions(this._width + additionalWidth, 
+                                              this._itemDisplayHeight + LABEL_HEIGHT * 2 + SIDESHOW_SECTION_LABEL_MARGIN_BOTTOM);
+            this._moreAppsText.x = this._moreAppsText.x + additionalWidth;
+            this._moreAppsText.y = this._appDisplay.actor.y + this._appDisplay.actor.height;
+            this._moreAppsText.text = "Less...";
+        } else {
+            this._appDisplay.updateDimensions(this._width, this._itemDisplayHeight / 2);
+            this._moreAppsText.x = this._moreAppsText.x - additionalWidth;
+            this._moreAppsText.y = this._appDisplay.actor.y + this._appDisplay.actor.height;
+            this._moreAppsText.text = "More...";
+        }
+        this._moreAppsText.show(); 
     }
 };
 Signals.addSignalMethods(Sideshow.prototype);
@@ -237,11 +394,20 @@ Overlay.prototype = {
         let sideshowWidth = screenWidth - (screenWidth * WORKSPACE_GRID_SCALE) -
             2 * WORKSPACE_GRID_PADDING;
         this._sideshow = new Sideshow(this._group, sideshowWidth);
+        this._workspaces = null;
         this._sideshow.connect('activated', function(sideshow) {
             // TODO - have some sort of animation/effect while
             // transitioning to the new app.  We definitely need
             // startup-notification integration at least.
             me._deactivate();
+        });
+        this._sideshow.connect('more-activated', function(sideshow) {
+            if (me._workspaces != null)
+                me._workspaces.moveAside();
+        });
+        this._sideshow.connect('less-activated', function(sideshow) {
+            if (me._workspaces != null)
+                me._workspaces.moveToCenter();
         });
     },
 
@@ -289,13 +455,26 @@ Overlay.prototype = {
 
         this.visible = false;
         global.window_group.show();
-        this._group.hide();
 
         this._workspaces.destroy();
         this._workspaces = null;
+
+        this._sideshow.hide();
+        this._group.hide();
     },
 
     _deactivate : function() {
         Main.hide_overlay();
     }
 };
+
+Tweener.registerSpecialProperty("clipHeight", _clipHeightGet, _clipHeightSet);
+
+function _clipHeightGet(actor) {
+    let [xOffset, yOffset, clipHeight, clipWidth] = actor.get_clip();
+    return clipHeight;
+}
+
+function _clipHeightSet(actor, clipHeight) {
+    actor.set_clip(0, 0, actor.width, clipHeight);
+}

@@ -220,7 +220,7 @@ AppDisplay.prototype = {
 
     // Creates an AppDisplayItem based on itemInfo, which is expected be a GAppInfo object.
     _createDisplayItem: function(itemInfo) {
-        return new AppDisplayItem(itemInfo, this._width);
+        return new AppDisplayItem(itemInfo, this._columnWidth);
     } 
 };
 

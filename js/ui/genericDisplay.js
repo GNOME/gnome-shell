@@ -19,9 +19,10 @@ const ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR = new Clutter.Color();
 ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR.from_pixel(0x00ff0055);
 
 const ITEM_DISPLAY_HEIGHT = 50;
+const MIN_ITEM_DISPLAY_WIDTH = 230;
 const ITEM_DISPLAY_ICON_SIZE = 48;
 const ITEM_DISPLAY_PADDING = 1;
-const ITEM_DISPLAY_MARGIN = 4;
+const COLUMN_GAP = 6;
 
 /* This is a virtual class that represents a single display item containing
  * a name, a description, and an icon. It allows selecting an item and represents 
@@ -144,9 +145,15 @@ function GenericDisplay(width, height) {
 GenericDisplay.prototype = {
     _init : function(width, height) {
         this._search = '';
-        this._width = width;
-        this._height = height;
-        this._grid = new Tidy.Grid({width: width, height: height});
+        this._width = null;
+        this._height = null;
+        this._columnWidth = null;
+        this._maxColumns = null;
+        this._maxItems = null;
+        this._setDimensionsAndMaxItems(width, height);
+        this._grid = new Tidy.Grid({width: this._width, height: this._height});
+        this._grid.column_major = true;
+        this._grid.column_gap = COLUMN_GAP;
         // map<itemId, Object> where Object represents the item info
         this._allItems = {};
         // map<itemId, GenericDisplayItem>
@@ -156,8 +163,6 @@ GenericDisplay.prototype = {
         this._activatedItem = null;
         this._selectedIndex = -1;
         this._keepDisplayCurrent = false;
-        // TODO: this should be Math.floor, but right now we get too few items if we apply it
-        this._maxItems = this._height / (ITEM_DISPLAY_HEIGHT + ITEM_DISPLAY_MARGIN);
         this.actor = this._grid;
     },
 
@@ -249,6 +254,14 @@ GenericDisplay.prototype = {
         } 
     },
 
+    // Readjusts display layout and the items displayed based on the new dimensions.
+    updateDimensions: function(width, height) {
+        this._setDimensionsAndMaxItems(width, height);
+        this._grid.width = this._width;
+        this._grid.height = this._height;
+        this._redisplay();
+    },
+
     // Updates the displayed items and makes the display actor visible.
     show: function() {
         this._keepDisplayCurrent = true;
@@ -259,6 +272,7 @@ GenericDisplay.prototype = {
     // Hides the display actor.
     hide: function() {
         this._grid.hide();
+        this._removeAllDisplayItems();
         this._keepDisplayCurrent = false;
     },
 
@@ -289,9 +303,17 @@ GenericDisplay.prototype = {
     // Removes an item identifed by the itemId from the displayed items.
     _removeDisplayItem: function(itemId) {
         let displayItem = this._displayedItems[itemId];
+        let displayItemIndex = this._getIndexOfDisplayedActor(displayItem.actor);
+
+        if (this.hasSelected() && this._displayedItemsCount == 1) {
+            this.unsetSelected();
+        } else if (this.hasSelected() && displayItemIndex < this._selectedIndex) {
+            this.selectUp();
+        } 
+
         displayItem.actor.destroy();
         delete this._displayedItems[itemId];
-        this._displayedItemsCount--;
+        this._displayedItemsCount--;        
     },
 
     // Removes all displayed items.
@@ -305,13 +327,18 @@ GenericDisplay.prototype = {
         if (!this._keepDisplayCurrent)
             return;
 
+        // When generating a new list to display, we first remove all the old
+        // displayed items which will unset the selection. So we need 
+        // to keep a flag which indicates if this display had the selection.
+        let hadSelected = this.hasSelected();
+
         this._refreshCache();
         if (!this._search)
             this._setDefaultList();
         else
             this._doSearchFilter();
 
-        if (this.hasSelected()) {
+        if (hadSelected) {
             this._selectedIndex = -1;
             this.selectFirstItem();
         }
@@ -350,6 +377,20 @@ GenericDisplay.prototype = {
     },
 
     //// Private methods ////
+
+    // Sets this._width, this._height, this._maxColumns, this._columnWidth, and
+    // this._maxItems based on the space available for the display and the number
+    // of items it can fit.
+    _setDimensionsAndMaxItems: function(width, height) {
+        this._width = width; 
+        let maxItemsInColumn = Math.floor(height / ITEM_DISPLAY_HEIGHT);
+        // we always want to try to display at lease one column, even if its 
+        // width is less then MIN_ITEM_DISPLAY_WIDTH
+        this._maxColumns = Math.max(Math.floor(width / (MIN_ITEM_DISPLAY_WIDTH + COLUMN_GAP)), 1);
+        this._columnWidth = (width - COLUMN_GAP * (this._maxColumns - 1)) / this._maxColumns;
+        this._maxItems =  maxItemsInColumn * this._maxColumns;
+        this._height = maxItemsInColumn * ITEM_DISPLAY_HEIGHT;
+    },
 
     // Applies the search string to the list of items to find matches,
     // and displays up to this._maxItems that matched.

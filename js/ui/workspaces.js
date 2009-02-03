@@ -399,6 +399,8 @@ Workspace.prototype = {
         this._visible = false;
 
         this._frame = null;
+
+        this.leavingOverlay = false;
     },
 
     // Checks if the workspace is empty (ie, contains only a desktop window)
@@ -529,7 +531,7 @@ Workspace.prototype = {
                 transition: "easeOutQuad"
             };
 
-            // workspace_relative assumes that the workspace is zooming in our out
+            // workspace_relative assumes that the workspace is zooming in or out
             if (workspaceZooming)
                 tweenProperties['workspace_relative'] = this;
 
@@ -576,6 +578,14 @@ Workspace.prototype = {
     zoomToOverlay : function() {
         // Move the workspace into size/position
         this.actor.set_position(this.fullSizeX, this.fullSizeY);
+        
+        this.updateInOverlay();
+
+        this._visible = true;
+    },
+
+    // Animates the display of a workspace and its windows to have the current dimensions and position.
+    updateInOverlay : function() {
         Tweener.addTween(this.actor,
                          { x: this.gridX,
                            y: this.gridY,
@@ -587,12 +597,12 @@ Workspace.prototype = {
 
         // Likewise for each of the windows in the workspace.
         this._positionWindows(true);
-
-        this._visible = true;
     },
 
     // Animates the return from overlay mode
     zoomFromOverlay : function() {
+        this.leavingOverlay = true; 
+ 
         Tweener.addTween(this.actor,
                          { x: this.fullSizeX,
                            y: this.fullSizeY,
@@ -615,7 +625,9 @@ Workspace.prototype = {
                            });
         }
 
+        this.leavingOverlay = false;
         this._visible = false;
+        
     },
 
     // Animates grid shrinking/expanding when a row or column
@@ -777,14 +789,17 @@ Workspaces.prototype = {
 
         this.actor = new Clutter.Group();
 
-        let screenWidth = global.screen_width;
         let screenHeight = global.screen_height;
 
-        this._width = screenWidth * Overlay.WORKSPACE_GRID_SCALE -
-            2 * Overlay.WORKSPACE_GRID_PADDING;
-        this._height = screenHeight * Overlay.WORKSPACE_GRID_SCALE;
-        this._x = screenWidth - this._width - Overlay.WORKSPACE_GRID_PADDING;
-        this._y = Panel.PANEL_HEIGHT + (screenHeight - this._height - Panel.PANEL_HEIGHT) / 2;
+        this._width = null;
+        this._height = null;
+        this._x = null;
+        this._y = null;
+        this._bottomHeight = null;
+
+        this._setDimensions(true);
+ 
+        this._bottomHeight = screenHeight - this._height - this._y;
 
         this._workspaces = [];
         
@@ -823,13 +838,12 @@ Workspaces.prototype = {
                          });
 
         // Create (+) and (-) buttons
-        let bottomHeight = screenHeight - this._height - this._y;
-        this._buttonSize = Math.floor(bottomHeight * 3/5);
-        let plusX = this._x + this._width - this._buttonSize;
-        let plusY = screenHeight - Math.floor(bottomHeight * 4/5);
+        this._buttonSize = Math.floor(this._bottomHeight * 3/5);
+        this._plusX = this._x + this._width - this._buttonSize;
+        this._plusY = screenHeight - Math.floor(this._bottomHeight * 4/5);
 
-        let plus = new Clutter.Texture({ x: plusX,
-                                         y: plusY,
+        let plus = new Clutter.Texture({ x: this._plusX,
+                                         y: this._plusY,
                                          width: this._buttonSize,
                                          height: this._buttonSize,
                                          reactive: true
@@ -854,6 +868,18 @@ Workspaces.prototype = {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
+    },
+
+    // Moves the workspaces display to the side.
+    moveAside : function() {
+        this._setDimensions(false);
+        this._updateInOverlay();
+    },
+
+    // Moves the workspaces display to the center.
+    moveToCenter : function() {
+        this._setDimensions(true);
+        this._updateInOverlay();
     },
 
     hide : function() {
@@ -890,6 +916,46 @@ Workspaces.prototype = {
 
         global.screen.disconnect(this._nWorkspacesNotifyId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+    },
+
+    // Sets dimensions and position of the workspaces display depending on the mode
+    // in which it will be presented (in the center of the overlay mode or on the side).
+    //
+    // centerMode - a boolean flag indicating if the workspaces will be displayed in the center of the overlay
+    //
+    _setDimensions : function(centerMode) {
+        let global = Shell.Global.get();
+        let screenWidth = global.screen_width;
+        let screenHeight = global.screen_height;
+
+        let scalingFactor = centerMode ? Overlay.WORKSPACE_GRID_SCALE : Overlay.WORKSPACE_GRID_ASIDE_SCALE;   
+
+        this._width = screenWidth * scalingFactor - 2 * Overlay.WORKSPACE_GRID_PADDING;
+        this._height = screenHeight * scalingFactor;
+        this._x = screenWidth - this._width - Overlay.WORKSPACE_GRID_PADDING;
+        if (centerMode)
+            this._y = Panel.PANEL_HEIGHT + (screenHeight - this._height - Panel.PANEL_HEIGHT) / 2;
+        else 
+            this._y = screenHeight - this._height - this._bottomHeight;
+    },
+
+    // Updates the workspaces display based on the current dimensions and position.
+    _updateInOverlay : function() {
+        let global = Shell.Global.get();  
+  
+        this._positionWorkspaces(global);
+        Tweener.addTween(this._backdrop,
+                         { x: this._x,
+                           y: this._y,
+                           width: this._width,
+                           height: this._height,
+                           time: Overlay.ANIMATION_TIME,
+                           transition: "easeOutQuad"
+                         });
+
+        // Position/scale the desktop windows and their children
+        for (let w = 0; w < this._workspaces.length; w++)
+            this._workspaces[w].updateInOverlay();
     },
 
     // Assign grid positions to workspaces. We can't just do a simple
@@ -1091,12 +1157,12 @@ Tweener.registerSpecialPropertyModifier("workspace_relative", _workspace_relativ
 function _workspace_relative_modifier(workspace) {
     let endX, endY;
 
-    if (workspace.actor.x == workspace.fullSizeX) {
+    if (workspace.leavingOverlay) {
+        endX = workspace.fullSizeX;
+        endY = workspace.fullSizeY;        
+    } else {
         endX = workspace.gridX;
         endY = workspace.gridY;
-    } else {
-        endX = workspace.fullSizeX;
-        endY = workspace.fullSizeY;
     }
 
     return [ { name: "x",

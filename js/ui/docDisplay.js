@@ -205,7 +205,7 @@ DocDisplay.prototype = {
 
     // Creates a DocDisplayItem based on itemInfo, which is expected be a GtkRecentInfo object. 
     _createDisplayItem: function(itemInfo) {
-        return new DocDisplayItem(itemInfo, this._width);
+        return new DocDisplayItem(itemInfo, this._columnWidth);
     } 
 };
 
