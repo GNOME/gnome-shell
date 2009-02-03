@@ -36,6 +36,7 @@ typedef struct
 {
   const char *name;
   MetaKeyHandlerFunc func;
+  MetaKeyHandlerFunc default_func;
   gint data, flags;
   gpointer user_data;
   MetaKeyHandlerDataFreeFunc user_data_free_func;
