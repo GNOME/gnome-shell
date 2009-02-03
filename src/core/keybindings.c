@@ -1246,7 +1246,7 @@ meta_display_process_key_event (MetaDisplay *display,
                 event->xkey.time);
   if (all_bindings_disabled)
     return;
-  
+
   /* if key event was on root window, we have a shortcut */
   screen = meta_display_screen_for_root (display, event->xkey.window);
   
@@ -1989,8 +1989,101 @@ process_tab_grab (MetaDisplay *display,
   Window      prev_xwindow;
   MetaWindow *prev_window;
 
-  if (screen != display->grab_screen || !screen->tab_popup)
+  if (screen != display->grab_screen)
     return FALSE;
+
+  action = display_get_keybinding_action (display,
+                                          keysym,
+                                          event->xkey.keycode,
+                                          display->grab_mask);
+
+  /*
+   * If there is no tab_pop up object, i.e., there is some custom handler
+   * implementing Alt+Tab & Co., we call this custom handler; we do not
+   * mess about with the grab, as that is up to the handler to deal with.
+   */
+  if (!screen->tab_popup)
+    {
+      MetaKeyBinding *binding = NULL;
+      MetaKeyHandler *handler = NULL;
+      const gchar    *handler_name = NULL;
+      gint            i;
+
+      switch (action)
+        {
+        case META_KEYBINDING_ACTION_CYCLE_PANELS:
+          handler_name = "cycle_group";
+          break;
+        case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
+          handler_name = "cycle_windows";
+          break;
+        case META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD:
+          handler_name = "cycle_panels_backward";
+          break;
+        case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
+          handler_name = "cycle_windows_backward";
+          break;
+        case META_KEYBINDING_ACTION_SWITCH_PANELS:
+          handler_name = "switch_panels";
+          break;
+        case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+          handler_name = "switch_windows";
+          break;
+        case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
+          handler_name = "switch_panels_backward";
+          break;
+        case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
+          handler_name = "switch_windows_backward";
+          break;
+        case META_KEYBINDING_ACTION_CYCLE_GROUP:
+          handler_name = "cycle_group";
+          break;
+        case META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD:
+          handler_name = "cycle_group_backward";
+          break;
+        case META_KEYBINDING_ACTION_SWITCH_GROUP:
+          handler_name = "switch_group";
+          break;
+        case META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD:
+          handler_name = "switch_group_backward";
+          break;
+        default:
+          /*
+           * This is the case when the Alt key is released; we preserve
+           * the grab, as it is up to the custom implementaiton to free it
+           * (a plugin can catch this in their xevent_filter function).
+           */
+          return TRUE;
+        }
+
+      handler = find_handler (key_handlers, handler_name);
+
+      i = display->n_key_bindings - 1;
+      while (i >= 0)
+        {
+          if (display->key_bindings[i].keysym == keysym &&
+              display->key_bindings[i].keycode == event->xkey.keycode &&
+              display->key_bindings[i].mask == display->grab_mask)
+            {
+              binding = &display->key_bindings[i];
+              break;
+            }
+
+          --i;
+        }
+
+      /*
+       * If we have no custom handler for this operation, we do nothing.
+       */
+      if (!binding || !handler ||
+          !handler->func || handler->func == handler->default_func)
+        return FALSE;
+
+      (*handler->func) (display, screen, NULL, event, binding,
+                        handler->user_data);
+
+      return TRUE;
+    }
 
   if (event->type == KeyRelease &&
       end_keyboard_grab (display, event->xkey.keycode))
@@ -2040,10 +2133,6 @@ process_tab_grab (MetaDisplay *display,
 
   prev_xwindow = (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
   prev_window  = meta_display_lookup_x_window (display, prev_xwindow);
-  action = display_get_keybinding_action (display,
-                                          keysym,
-                                          event->xkey.keycode,
-                                          display->grab_mask);
 
   /* Cancel when alt-Escape is pressed during using alt-Tab, and vice
    * versa.
