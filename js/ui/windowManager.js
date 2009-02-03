@@ -79,9 +79,16 @@ WindowManager.prototype = {
             });
     },
 
+    _shouldAnimate : function(actor) {
+        if (Main.overlayActive)
+            return false;
+        if (actor && (actor.get_window_type() != Meta.CompWindowType.NORMAL))
+            return false;
+        return true;
+    },
 
     _minimizeWindow : function(actor) {
-        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+        if (!this._shouldAnimate(actor)) {
             this._shellwm.completed_minimize(actor);
             return;
         }
@@ -117,7 +124,7 @@ WindowManager.prototype = {
     },
     
     _maximizeWindow : function(actor, target_x, target_y, target_width, target_height) {
-        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+        if (!this._shouldAnimate(actor)) {
             this._shellwm.completed_maximize(actor);
             return;
         }
@@ -164,9 +171,8 @@ WindowManager.prototype = {
     _unmaximizeWindowDone : function(actor) {
     },
 
-
     _mapWindow : function(actor) {
-        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+        if (!this._shouldAnimate(actor)) {
             this._shellwm.completed_map(actor);
             return;
         }
@@ -201,7 +207,7 @@ WindowManager.prototype = {
     },
 
     _destroyWindow : function(actor) {
-        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+        if (!this._shouldAnimate(actor)) {
             this._shellwm.completed_destroy(actor);
             return;
         }
@@ -232,10 +238,8 @@ WindowManager.prototype = {
         }
     },
 
-
     _switchWorkspace : function(windows, from, to, direction) {
-        // If the overlay is active, it will do the transition itself
-        if (Main.overlayActive) {
+        if (!this._shouldAnimate()) {
             this._shellwm.completed_switch_workspace();
             return;
         }
