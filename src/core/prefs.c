@@ -571,7 +571,13 @@ handle_preference_init_string (void)
       value = gconf_client_get_string (default_client,
                                        cursor->key,
                                        &error);
-      cleanup_error (&error);
+
+      if (error || !value)
+        {
+          cleanup_error (&error);
+          ++cursor;
+          continue;
+        }
 
       if (cursor->handler)
         {
