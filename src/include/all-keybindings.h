@@ -188,7 +188,7 @@ keybind (cycle_panels_backward,    handle_cycle,         META_TAB_LIST_DOCKS,
 /***********************************/
      
 keybind (show_desktop, handle_show_desktop, 0, 0, "<Control><Alt>d",
-      _("Hide all normal windows and set focus to the desktop background"))
+      _("Hide all normal windows and set focus to the desktop"))
 keybind (panel_main_menu, handle_panel,
        META_KEYBINDING_ACTION_PANEL_MAIN_MENU, 0, "<Alt>F1",
       _("Show the panel's main menu"))

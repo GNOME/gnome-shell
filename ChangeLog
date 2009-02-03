@@ -1,3 +1,8 @@
+2009-02-03  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/include/all-keybindings.h: Fix description, focus the
+	desktop, not desktop backgroung (Closes bug #569649)
+
 2009-02-02  Matt Kraai  <kraai@ftfbs.org>
 
 	* src/core/schema-bindings.c: Wrap g_error calls in braces.
