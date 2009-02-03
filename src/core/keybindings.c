@@ -105,10 +105,10 @@ static void regrab_key_bindings         (MetaDisplay *display);
 
 
 #define keybind(name, handler, param, flags, stroke, description) \
-  { #name, handler, param, flags, NULL, NULL },
+  { #name, handler, handler, param, flags, NULL, NULL },
 static MetaKeyHandler key_handlers[] = {
 #include "all-keybindings.h"
-  { NULL, NULL, 0, 0, NULL, NULL }
+  { NULL, NULL, NULL, 0, 0, NULL, NULL }
 };
 #undef keybind
 
@@ -1196,11 +1196,21 @@ process_event (MetaKeyBinding       *bindings,
        */
       display->allow_terminal_deactivation = TRUE;
 
-      (* handler->func) (display, screen,
-                         bindings[i].handler->flags & BINDING_PER_WINDOW? window: NULL,
-                         event,
-                         &bindings[i],
-                         handler->user_data);
+      if (handler->func)
+        (* handler->func) (display, screen,
+                           bindings[i].handler->flags & BINDING_PER_WINDOW ?
+                           window: NULL,
+                           event,
+                           &bindings[i],
+                           handler->user_data);
+      else
+        (* handler->default_func) (display, screen,
+                           bindings[i].handler->flags & BINDING_PER_WINDOW ?
+                           window: NULL,
+                           event,
+                           &bindings[i],
+                           NULL);
+
       return TRUE;
     }
 
