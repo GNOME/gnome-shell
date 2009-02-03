@@ -6,14 +6,14 @@
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>,2002,2003.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
-# Jorge González <jorgegonz@svn.gnome.org>, 2007, 200, 2009.
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&component=general\n"
-"POT-Creation-Date: 2009-01-27 21:05+0000\n"
-"PO-Revision-Date: 2009-01-31 20:10+0100\n"
+"POT-Creation-Date: 2009-02-03 08:39+0000\n"
+"PO-Revision-Date: 2009-02-03 20:36+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -244,7 +244,7 @@ msgstr ""
 "No se ha podido interpretar la descripción de la tipografía «%s» de la clave "
 "GConf %s\n"
 
-#: ../src/core/prefs.c:1362
+#: ../src/core/prefs.c:1364
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -253,18 +253,18 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para el modificador del botón del ratón\n"
 
-#: ../src/core/prefs.c:1780
+#: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "Ocurrió un error configurando la número de espacios de trabajo para %d: %s\n"
 
-#: ../src/core/prefs.c:1969 ../src/core/prefs.c:2472
+#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/core/prefs.c:1999 ../src/core/prefs.c:2177
+#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -273,14 +273,14 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para la combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:2553
+#: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "Ocurrió un error al establecer el nombre del área de trabajo %d como «%s»: %"
 "s \n"
 
-#: ../src/core/prefs.c:2751
+#: ../src/core/prefs.c:2753
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Error al establecer el estado del compositor: %s\n"
@@ -321,7 +321,7 @@ msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
 #. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
 #. * "disabled" must also stay as it is.
 #.
-#: ../src/core/schema-bindings.c:165
+#: ../src/core/schema-bindings.c:169
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -337,7 +337,7 @@ msgstr ""
 "configura esta opción con la cadena especial «disabled» entonces no habrá "
 "combinación de teclas para esta acción."
 
-#: ../src/core/schema-bindings.c:173
+#: ../src/core/schema-bindings.c:177
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -494,17 +494,17 @@ msgstr ""
 "redimensionable, pero configuró el tamaño mínimo a %d x %d y el tamaño "
 "máximo a %d x %d ; esto no tiene mucho sentido.\n"
 
-#: ../src/core/window-props.c:276
+#: ../src/core/window-props.c:260
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "La aplicación establecio un _NET_WM_PID %lu erróneo\n"
 
-#: ../src/core/window-props.c:411
+#: ../src/core/window-props.c:377
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (on %s)"
 
-#: ../src/core/window-props.c:1523
+#: ../src/core/window-props.c:1358
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -653,8 +653,9 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Retroceder entre los paneles y el escritorio inmediatamente"
 
 #: ../src/include/all-keybindings.h:191
-msgid "Hide all normal windows and set focus to the desktop background"
-msgstr "Ocultar todas las ventanas normales y dar foco al fondo del escritorio"
+#| msgid "Hide all normal windows and set focus to the desktop background"
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Ocultar todas las ventanas normales y dar foco al escritorio"
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
@@ -907,11 +908,6 @@ msgid "Automatically raises the focused window"
 msgstr "Elevar automáticamente la ventana que tiene el foco"
 
 #: ../src/metacity.schemas.in.in.h:9
-#| msgid ""
-#| "Clicking a window while holding down this modifier key will move the "
-#| "window (left click), resize the window (middle click), or show the window "
-#| "menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;"
-#| "Super&gt;\" for example."
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
@@ -1347,47 +1343,47 @@ msgstr "Tipografía del título de la ventana"
 msgid "Usage: %s\n"
 msgstr "Uso: %s\n"
 
-#: ../src/ui/frames.c:1077
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "Cerrar la ventana"
 
-#: ../src/ui/frames.c:1080
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Menú de la ventana"
 
-#: ../src/ui/frames.c:1083
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "Minimizar la ventana"
 
-#: ../src/ui/frames.c:1086
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "Maximizar la ventana"
 
-#: ../src/ui/frames.c:1089
+#: ../src/ui/frames.c:1130
 msgid "Restore Window"
 msgstr "Restablecer la ventana"
 
-#: ../src/ui/frames.c:1092
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "Enrollar ventana"
 
-#: ../src/ui/frames.c:1095
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "Desenrollar ventana"
 
-#: ../src/ui/frames.c:1098
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Mantener la ventana encima"
 
-#: ../src/ui/frames.c:1101
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Quitar ventana de encima"
 
-#: ../src/ui/frames.c:1104
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "Siempre en el área de trabajo visible"
 
-#: ../src/ui/frames.c:1107
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Poner la ventana sólo en un área de trabajo"
 
@@ -1866,7 +1862,7 @@ msgstr "La expresión de coordenadas no parece tener ni operadores ni operandos"
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "El tema contenía una expresión que ha resultado en un error: %s\n"
 
-#: ../src/ui/theme.c:4155
+#: ../src/ui/theme.c:4187
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1875,25 +1871,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
 "especificado para este estilo de marco"
 
-#: ../src/ui/theme.c:4635 ../src/ui/theme.c:4660
+#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:4704
+#: ../src/ui/theme.c:4764
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Ocurrió un error al cargar el tema «%s»: %s\n"
 
-#: ../src/ui/theme.c:4834 ../src/ui/theme.c:4841 ../src/ui/theme.c:4848
-#: ../src/ui/theme.c:4855 ../src/ui/theme.c:4862
+#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
+#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No se configuró <%s> para el tema «%s»"
 
-#: ../src/ui/theme.c:4870
+#: ../src/ui/theme.c:4930
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1902,7 +1898,7 @@ msgstr ""
 "No hay un estilo de marco para el tipo de ventana «%s» en el tema «%s», añada "
 "un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5295 ../src/ui/theme.c:5357 ../src/ui/theme.c:5420
+#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1910,7 +1906,7 @@ msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
 "mayúscula; «%s» no lo hace"
 
-#: ../src/ui/theme.c:5303 ../src/ui/theme.c:5365 ../src/ui/theme.c:5428
+#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La constante «%s» ya ha sido definida"
