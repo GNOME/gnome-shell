@@ -56,16 +56,6 @@ ClutterFrameTicker.prototype = {
     },
 
     _onNewFrame : function(frame) {
-        // Unfortunately the interface to to send a new frame to tweener
-        // is a simple "next frame" and there is no provision for signaling
-        // that frames have been skipped or just telling it the new time.
-        // But what it actually does internally is just:
-        //
-        //  _currentTime += 1000/_ticker.FRAME_RATE;
-        //
-        // So by dynamically adjusting the value of FRAME_RATE we can trick
-        // it into dealing with dropped frames.
-
         // If there is a lot of setup to start the animation, then
         // first frame number we get from clutter might be a long ways
         // into the animation (or the animation might even be done).
