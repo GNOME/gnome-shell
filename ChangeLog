@@ -1,3 +1,7 @@
+2009-02-02  Matt Kraai  <kraai@ftfbs.org>
+
+	* src/core/schema-bindings.c: Wrap g_error calls in braces.
+
 2009-02-01  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.25.233.
