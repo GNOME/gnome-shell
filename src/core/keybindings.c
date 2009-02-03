@@ -2004,10 +2004,8 @@ process_tab_grab (MetaDisplay *display,
    */
   if (!screen->tab_popup)
     {
-      MetaKeyBinding *binding = NULL;
       MetaKeyHandler *handler = NULL;
       const gchar    *handler_name = NULL;
-      gint            i;
 
       switch (action)
         {
@@ -2056,31 +2054,15 @@ process_tab_grab (MetaDisplay *display,
           return TRUE;
         }
 
+      /*
+       * We do not want to actually call the handler, we just want to ensure
+       * that if a custom handler is installed, we do not release the grab here.
+       * The handler will get called as normal in the process_event() function.
+       */
       handler = find_handler (key_handlers, handler_name);
 
-      i = display->n_key_bindings - 1;
-      while (i >= 0)
-        {
-          if (display->key_bindings[i].keysym == keysym &&
-              display->key_bindings[i].keycode == event->xkey.keycode &&
-              display->key_bindings[i].mask == display->grab_mask)
-            {
-              binding = &display->key_bindings[i];
-              break;
-            }
-
-          --i;
-        }
-
-      /*
-       * If we have no custom handler for this operation, we do nothing.
-       */
-      if (!binding || !handler ||
-          !handler->func || handler->func == handler->default_func)
+      if (!handler || !handler->func || handler->func == handler->default_func)
         return FALSE;
-
-      (*handler->func) (display, screen, NULL, event, binding,
-                        handler->user_data);
 
       return TRUE;
     }
