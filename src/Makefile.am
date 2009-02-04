@@ -7,6 +7,7 @@ noinst_LTLIBRARIES =
 
 include Makefile-tidy.am
 include Makefile-big.am
+include Makefile-gdmuser.am
 include Makefile-tray.am
 include Makefile-taskpanel.am
 
@@ -42,6 +43,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-process.h				\
 	shell-global.c				\
 	shell-global.h				\
+	shell-status-menu.c				\
+	shell-status-menu.h				\
 	shell-tray-manager.c			\
 	shell-tray-manager.h			\
 	shell-wm.c				\
@@ -77,6 +80,7 @@ libgnome_shell_la_LIBADD =	\
 	$(MUTTER_PLUGIN_LIBS)	\
         $(LIBGNOMEUI_LIBS)      \
 	libbig-1.0.la		\
+	libgdmuser-1.0.la	\
 	libtidy-1.0.la		\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
@@ -84,13 +88,15 @@ libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 typelibdir = $(pkglibdir)
 typelib_DATA = Shell-0.1.typelib Tidy-1.0.typelib Big-1.0.typelib
 
-Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la Makefile
+Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefile
 	$(G_IR_SCANNER)		\
 		--namespace=Shell			\
 		--nsversion=0.1				\
 		--add-include-path=$(libdir)/metacity/ \
 		--include=Clutter-0.8			\
 		--include=Meta-2.25			\
+		--add-include-path=$(builddir)     \
+		--include=Big-1.0     \
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(libgnome_shell_la_gir_sources)	\
@@ -101,7 +107,7 @@ CLEANFILES += Shell-1.0.gir
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
 Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler --includedir=$(libdir)/metacity/ Shell-0.1.gir -o $@
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler --includedir=$(builddir) --includedir=$(libdir)/metacity/ Shell-0.1.gir -o $@
 CLEANFILES += Shell-1.0.typelib
 
 Tidy-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makefile

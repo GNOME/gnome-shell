@@ -13,6 +13,8 @@ const PANEL_HEIGHT = 32;
 const TRAY_HEIGHT = 24;
 const PANEL_BACKGROUND_COLOR = new Clutter.Color();
 PANEL_BACKGROUND_COLOR.from_pixel(0xeeddccff);
+const PANEL_BUTTON_COLOR = new Clutter.Color();
+PANEL_BUTTON_COLOR.from_pixel(0xccbbaa66);
 const PANEL_BORDER_COLOR = new Clutter.Color();
 PANEL_BORDER_COLOR.from_pixel(0x000000ff);
 const PRESSED_BUTTON_BACKGROUND_COLOR = new Clutter.Color();
@@ -37,9 +39,24 @@ Panel.prototype = {
                                   border_bottom: 1,
                                   border_color: PANEL_BORDER_COLOR });
 
-        this.button = new Button.Button("Activities", PANEL_BACKGROUND_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, true, null, PANEL_HEIGHT);
+        this.button = new Button.Button("Activities", PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, true, null, PANEL_HEIGHT);
 
         this._box.append(this.button.button, Big.BoxPackFlags.NONE);
+
+        let statusbox = new Big.Box();
+        this._statusmenu = new Shell.StatusMenu();
+        statusbox.append(this._statusmenu, Big.BoxPackFlags.NONE);
+        let statusbutton = new Button.Button(statusbox, PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
+                                             true, null, PANEL_HEIGHT);
+        statusbutton.button.connect('button-press-event', function (b, e) {
+            me._statusmenu.toggle(e);
+            return false;
+        });
+        this._box.append(statusbutton.button, Big.BoxPackFlags.END);
+        // We get a deactivated event when the popup disappears
+        this._statusmenu.connect('deactivated', function (sm) {
+            statusbutton.release();
+        });
 
         this._clock = new Clutter.Label({ font_name: "Sans Bold 16px",
                                           text: "" });
