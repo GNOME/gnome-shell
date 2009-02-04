@@ -5,6 +5,7 @@ const Clutter = imports.gi.Clutter;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
@@ -58,6 +59,7 @@ WindowClone.prototype = {
                                                 x: realWindow.x,
                                                 y: realWindow.y });
         this.realWindow = realWindow;
+        this.metaWindow = realWindow.meta_window;
         this.origX = realWindow.x;
         this.origY = realWindow.y;
 
@@ -250,7 +252,7 @@ WindowClone.prototype = {
                                 spacing: 4,
                                 orientation: Big.BoxOrientation.HORIZONTAL });
         
-        let icon = window.meta_window.mini_icon;
+        let icon = this.metaWindow.mini_icon;
         let iconTexture = new Clutter.Texture({ x: this.actor.x,
                                                 y: this.actor.y + this.actor.height - 16,
                                                 width: 16,
@@ -261,7 +263,7 @@ WindowClone.prototype = {
         
         let title = new Clutter.Label({ color: WINDOWCLONE_TITLE_COLOR,
                                         font_name: "Sans 12",
-                                        text: window.meta_window.title,
+                                        text: this.metaWindow.title,
                                         ellipsize: Pango.EllipsizeMode.END
                                       });
         box.append(title, Big.BoxPackFlags.EXPAND);
@@ -362,6 +364,8 @@ Workspace.prototype = {
         let global = Shell.Global.get();
 
         this.workspaceNum = workspaceNum;
+        this._metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
+
         this.actor = new Clutter.Group();
         this.scale = 1.0;
 
@@ -378,12 +382,12 @@ Workspace.prototype = {
         if (!this._desktop)
             this._desktop = new DesktopClone();
 
-        let metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
         this._desktop.connect('selected',
-                              function(clone, time) {
-                                  metaWorkspace.activate(time);
-                                  Main.hide_overlay();
-                              });
+                              Lang.bind(this,
+                                        function(clone, time) {
+                                            this._metaWorkspace.activate(time);
+                                            Main.hide_overlay();
+                                        }));
         this.actor.add_actor(this._desktop.actor);
 
         // Create clones for remaining windows that should be
@@ -395,6 +399,12 @@ Workspace.prototype = {
             }
         }
 
+        // Track window changes
+        this._windowAddedId = this._metaWorkspace.connect('window-added',
+                                                          Lang.bind(this, this._windowAdded));
+        this._windowRemovedId = this._metaWorkspace.connect('window-removed',
+                                                            Lang.bind(this, this._windowRemoved));
+
         this._removeButton = null;
         this._visible = false;
 
@@ -403,21 +413,18 @@ Workspace.prototype = {
         this.leavingOverlay = false;
     },
 
-    // Checks if the workspace is empty (ie, contains only a desktop window)
-    isEmpty : function() {
-        return this._windows.length == 1;
-    },
 
-    // Change Workspace's removability.
-    setRemovable : function(removable, buttonSize) {
+    updateRemovable : function() {
         let global = Shell.Global.get();
+        let removable = (this._windows.length == 1 /* just desktop */ &&
+                         this.workspaceNum == global.screen.n_workspaces - 1);
 
         if (removable) {
             if (this._removeButton)
                 return;
 
-            this._removeButton = new Clutter.Texture({ width: buttonSize,
-                                                       height: buttonSize,
+            this._removeButton = new Clutter.Texture({ width: Workspaces.buttonSize,
+                                                       height: Workspaces.buttonSize,
                                                        reactive: true
                                                      });
             this._removeButton.set_from_file(global.imagedir + "remove-workspace.svg");
@@ -539,39 +546,74 @@ Workspace.prototype = {
         }
     },
 
-    // Remove a window from the workspace - this is called to fix up the visual
-    // display for changes to the window state that have already been made
-    removeWindow : function(win) {
+    _windowRemoved : function(metaWorkspace, metaWin) {
+        let global = Shell.Global.get();
+        let win = metaWin.get_compositor_private();
+
         // find the position of the window in our list
-        let index = - 1;
+        let index = - 1, clone;
         for (let i = 0; i < this._windows.length; i++) {
-            if (this._windows[i].realWindow == win) {
+            if (this._windows[i].metaWindow == metaWin) {
                 index = i;
+                clone = this._windows[index];
                 break;
             }
         }
 
         if (index == -1)
             return;
-
-        let clone = this._windows[index];
         this._windows.splice(index, 1);
+
+        // If metaWin.get_compositor_private() returned non-NULL, that
+        // means the window still exists (and is just being moved to
+        // another workspace or something), so set its overlayHint
+        // accordingly. (If it returned NULL, then the window is being
+        // destroyed; we'd like to animate this, but it's too late at
+        // this point.)
+        if (win) {
+            let [stageX, stageY] = clone.actor.get_transformed_position();
+            let [stageWidth, stageHeight] = clone.actor.get_transformed_size();
+            win._overlayHint = {
+                x: stageX,
+                y: stageY,
+                scale: stageWidth / clone.actor.width
+            };
+        }
         clone.destroy();
 
         this._positionWindows();
+        this.updateRemovable();
     },
 
-    // Add a window from the workspace - this is called to fix up the visual
-    // display for changes to the window state that have already been made.
-    // x/y/scale are used to give an initial position for the window (if the
-    // window was dropped on the workspace, say) - the window will then be
-    // animated to the final location.
-    addWindow : function(win, x, y, scale) {
+    _windowAdded : function(metaWorkspace, metaWin) {
+        let win = metaWin.get_compositor_private();
+
+        if (!win) {
+            // Newly-created windows are added to a workspace before
+            // the compositor finds out about them...
+            Mainloop.idle_add(Lang.bind(this,
+                                        function () {
+                                            if (metaWin.get_compositor_private())
+                                                this._windowAdded(metaWorkspace, metaWin);
+                                            return false;
+                                        }));
+            return;
+        }
+
         let clone = this._addWindowClone(win);
-        clone.actor.set_position (x, y);
-        clone.actor.set_scale (scale, scale);
-        
+
+        if (win._overlayHint) {
+            let x = (win._overlayHint.x - this.actor.x) / this.scale;
+            let y = (win._overlayHint.y - this.actor.y) / this.scale;
+            let scale = win._overlayHint.scale / this.scale;
+            delete win._overlayHint;
+
+            clone.actor.set_position (x, y);
+            clone.actor.set_scale (scale, scale);
+        }
+
         this._positionWindows();
+        this.updateRemovable();
     },
 
     // Animate the full-screen to overlay transition.
@@ -693,8 +735,13 @@ Workspace.prototype = {
     },
     
     destroy : function() {
+        let global = Shell.Global.get();
+
         this.actor.destroy();
         this.actor = null;
+
+        this._metaWorkspace.disconnect(this._windowAddedId);
+        this._metaWorkspace.disconnect(this._windowRemovedId);
     },
 
     // Tests if @win belongs to this workspaces
@@ -756,14 +803,13 @@ Workspace.prototype = {
     _onCloneSelected : function (clone, time) {
         let global = Shell.Global.get();
         let activeWorkspace = global.screen.get_active_workspace_index();
-        let w = clone.realWindow;
-        let windowWorkspace = w.get_workspace();
+        let windowWorkspace = clone.realWindow.get_workspace();
 
         if (windowWorkspace != activeWorkspace) {
             let workspace = global.screen.get_workspace_by_index(windowWorkspace);
-            workspace.activate_with_focus(w.get_meta_window(), time);
+            workspace.activate_with_focus(clone.metaWindow, time);
         } else
-            w.get_meta_window().activate(time);
+            clone.metaWindow.activate(time);
         Main.hide_overlay();
     },
 
@@ -838,14 +884,16 @@ Workspaces.prototype = {
                          });
 
         // Create (+) and (-) buttons
-        this._buttonSize = Math.floor(this._bottomHeight * 3/5);
-        this._plusX = this._x + this._width - this._buttonSize;
+        // FIXME: figure out a better way to communicate buttonSize
+        // to the Workspace
+        Workspaces.buttonSize = Math.floor(this._bottomHeight * 3/5);
+        this._plusX = this._x + this._width - Workspaces.buttonSize;
         this._plusY = screenHeight - Math.floor(this._bottomHeight * 4/5);
 
         let plus = new Clutter.Texture({ x: this._plusX,
                                          y: this._plusY,
-                                         width: this._buttonSize,
-                                         height: this._buttonSize,
+                                         width: Workspaces.buttonSize,
+                                         height: Workspaces.buttonSize,
                                          reactive: true
                                        });
         plus.set_from_file(global.imagedir + "add-workspace.svg");
@@ -854,8 +902,7 @@ Workspaces.prototype = {
         plus.lower_bottom();
 
         let lastWorkspace = this._workspaces[this._workspaces.length - 1];
-        if (lastWorkspace.isEmpty())
-            lastWorkspace.setRemovable(true, this._buttonSize);
+        lastWorkspace.updateRemovable(true);
 
         // Position/scale the desktop windows and their children
         for (let w = 0; w < this._workspaces.length; w++)
@@ -1039,7 +1086,7 @@ Workspaces.prototype = {
         let lostWorkspaces = [];
 
         // The old last workspace is no longer removable.
-        this._workspaces[oldNumWorkspaces - 1].setRemovable(false);
+        this._workspaces[oldNumWorkspaces - 1].updateRemovable();
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             // Create new workspace groups
@@ -1056,8 +1103,7 @@ Workspaces.prototype = {
 
         // The new last workspace may be removable
         let newLastWorkspace = this._workspaces[this._workspaces.length - 1];
-        if (newLastWorkspace.isEmpty())
-            newLastWorkspace.setRemovable(true, this._buttonSize);
+        newLastWorkspace.updateRemovable();
 
         // Figure out the new layout
         this._positionWorkspaces(global);
@@ -1080,6 +1126,7 @@ Workspaces.prototype = {
             // Slide old workspaces out
             for (let w = 0; w < lostWorkspaces.length; w++) {
                 let workspace = lostWorkspaces[w];
+                workspace.actor.raise(this._backdrop);
                 workspace.slideOut(function () { workspace.destroy(); });
             }
 
@@ -1135,17 +1182,17 @@ Workspaces.prototype = {
         if (targetWorkspace == null || targetWorkspace == sourceWorkspace)
             return;
 
-        // Window position and scale relative to the new workspace
-        targetX = (windowX - myX - targetWorkspace.gridX) / targetWorkspace.scale;
-        targetY = (windowY - myY - targetWorkspace.gridY) / targetWorkspace.scale;
-        targetScale = clone.actor.scale_x / targetWorkspace.scale;
+        // Set a hint on the Mutter.Window so its initial position in the
+        // overlay will be correct
+        clone.realWindow._overlayHint = {
+            x: clone.actor.x,
+            y: clone.actor.y,
+            scale: clone.actor.scale_x
+        };
 
-        let metaWindow = clone.realWindow.get_meta_window();
-        metaWindow.change_workspace_by_index(targetWorkspace.workspaceNum,
-                                             false, // don't create workspace
-                                             time);
-        sourceWorkspace.removeWindow(clone.realWindow);
-        targetWorkspace.addWindow(clone.realWindow, targetX, targetY, targetScale);
+        clone.metaWindow.change_workspace_by_index(targetWorkspace.workspaceNum,
+                                                   false, // don't create workspace
+                                                   time);
     }
 };
 
