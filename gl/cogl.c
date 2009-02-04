@@ -1173,10 +1173,10 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 }
 
 void
-cogl_fog_set (const CoglColor *fog_color,
-              float        density,
-              float        z_near,
-              float        z_far)
+cogl_set_fog (const CoglColor *fog_color,
+              float            density,
+              float            z_near,
+              float            z_far)
 {
   GLfloat fogColor[4];
 
