@@ -39,10 +39,10 @@ GenericDisplayItem.prototype = {
         this._availableWidth = availableWidth;
         let me = this;
 
-        this._group = new Clutter.Group({reactive: true,
+        this.actor = new Clutter.Group({ reactive: true,
                                          width: availableWidth,
-                                         height: ITEM_DISPLAY_HEIGHT});
-        this._group.connect('button-press-event', function(group, e) {
+                                         height: ITEM_DISPLAY_HEIGHT });
+        this.actor.connect('button-press-event', function(group, e) {
             me.emit('activate');
             return true;
         });
@@ -51,13 +51,11 @@ GenericDisplayItem.prototype = {
                                  corner_radius: 4,
                                  x: 0, y: 0,
                                  width: availableWidth, height: ITEM_DISPLAY_HEIGHT });
-        this._group.add_actor(this._bg);
+        this.actor.add_actor(this._bg);
         
         this._name = null;
         this._description = null;
         this._icon = null;
-
-        this.actor = this._group;
     },
 
     //// Public methods ////
@@ -92,7 +90,7 @@ GenericDisplayItem.prototype = {
     _setItemInfo: function(nameText, descriptionText, iconActor) {
         if (this._name != null) {
             // this also removes this._name from the parent container,
-            // so we don't need to call this._group.remove_actor(this._name) directly
+            // so we don't need to call this.actor.remove_actor(this._name) directly
             this._name.destroy();
             this._name = null;
         } 
@@ -108,25 +106,25 @@ GenericDisplayItem.prototype = {
         } 
 
         this._icon = iconActor;
-        this._group.add_actor(this._icon);
+        this.actor.add_actor(this._icon);
 
         let text_width = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4);
         this._name = new Clutter.Label({ color: ITEM_DISPLAY_NAME_COLOR,
-                                     font_name: "Sans 14px",
-                                     width: text_width,
-                                     ellipsize: Pango.EllipsizeMode.END,
-                                     text: nameText,
-                                     x: ITEM_DISPLAY_ICON_SIZE + 4,
-                                     y: ITEM_DISPLAY_PADDING});
-        this._group.add_actor(this._name);
+                                         font_name: "Sans 14px",
+                                         width: text_width,
+                                         ellipsize: Pango.EllipsizeMode.END,
+                                         text: nameText,
+                                         x: ITEM_DISPLAY_ICON_SIZE + 4,
+                                         y: ITEM_DISPLAY_PADDING });
+        this.actor.add_actor(this._name);
         this._description = new Clutter.Label({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
-                                             font_name: "Sans 12px",
-                                             width: text_width,
-                                             ellipsize: Pango.EllipsizeMode.END,
-                                             text: descriptionText,
-                                             x: this._name.x,
-                                             y: this._name.height + 4})
-        this._group.add_actor(this._description);
+                                                font_name: "Sans 12px",
+                                                width: text_width,
+                                                ellipsize: Pango.EllipsizeMode.END,
+                                                text: descriptionText,
+                                                x: this._name.x,
+                                                y: this._name.height + 4 });
+        this.actor.add_actor(this._description);
     }
 };
 
