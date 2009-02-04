@@ -1171,6 +1171,8 @@ clutter_init_real (GError **error)
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
+  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
+
   clutter_actor_realize (stage);
 
   if (!CLUTTER_ACTOR_IS_REALIZED (stage))
@@ -1226,8 +1228,6 @@ clutter_init_real (GError **error)
 
   /* finally features - will call to backend and cogl */
   _clutter_feature_init ();
-
-  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
 
   clutter_is_initialized = TRUE;
   ctx->is_initialized = TRUE;
