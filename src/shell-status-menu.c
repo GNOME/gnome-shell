@@ -154,12 +154,6 @@ setup_current_user (ShellStatusMenu *status)
     {
       name = _("Unknown");
     }
-/*
-  priv->menuitem = gtk_image_menu_item_new_with_label (name);
-        label = GTK_BIN (adata->menuitem)->child;
-        gtk_menu_shell_append (GTK_MENU_SHELL (adata->menubar), adata->menuitem);
-        gtk_widget_show (adata->menuitem);
-*/
 
   update_label (status);
 
@@ -479,8 +473,7 @@ create_sub_menu (ShellStatusMenu *status)
       G_CALLBACK (on_account_activate), status);
   gtk_widget_show (priv->account_item);
 
-  priv->control_panel_item = gtk_image_menu_item_new_with_label (_(
-      "System Preferences..."));
+  priv->control_panel_item = gtk_image_menu_item_new_with_label (_("System Preferences..."));
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (priv->control_panel_item),
       gtk_image_new ());
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), priv->control_panel_item);
