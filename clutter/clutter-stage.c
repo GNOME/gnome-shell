@@ -226,7 +226,7 @@ clutter_stage_paint (ClutterActor *self)
 
   if (priv->use_fog)
     {
-      cogl_fog_set (&stage_color,
+      cogl_set_fog (&stage_color,
                     priv->fog.density,
                     priv->fog.z_near,
                     priv->fog.z_far);
