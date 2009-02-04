@@ -118,7 +118,6 @@ clutter_clone_paint (ClutterActor *self)
 {
   ClutterClone *clone = CLUTTER_CLONE (self);
   ClutterClonePrivate *priv = clone->priv;
-  ClutterActor *parent;
   ClutterGeometry geom, clone_geom;
   gfloat x_scale, y_scale;
 
@@ -145,14 +144,13 @@ clutter_clone_paint (ClutterActor *self)
   cogl_scale (x_scale, y_scale, 1.0);
 
   /* The final bits of magic:
-   * - We need to make sure that when the clone-source actor's paint method
-   *   calls clutter_actor_get_paint_opacity, it traverses our parent not it's
-   *   real parent.
+   * - We need to make sure that when the clone-source actor's paint
+   *   method calls clutter_actor_get_paint_opacity, it traverses to
+   *   us and our parent not it's real parent.
    * - We need to stop clutter_actor_paint applying the model view matrix of
    *   the clone source actor.
    */
-  parent = clutter_actor_get_parent (self);
-  _clutter_actor_set_opacity_parent (priv->clone_source, parent);
+  _clutter_actor_set_opacity_parent (priv->clone_source, self);
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, FALSE);
 
   clutter_actor_paint (priv->clone_source);
