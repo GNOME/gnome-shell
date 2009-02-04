@@ -593,7 +593,7 @@ Workspace.prototype = {
             // the compositor finds out about them...
             Mainloop.idle_add(Lang.bind(this,
                                         function () {
-                                            if (metaWin.get_compositor_private())
+                                            if (this.actor && metaWin.get_compositor_private())
                                                 this._windowAdded(metaWorkspace, metaWin);
                                             return false;
                                         }));
