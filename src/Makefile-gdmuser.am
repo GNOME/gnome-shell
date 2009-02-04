@@ -1,0 +1,34 @@
+gdmuser_cflags =					\
+	-I$(top_srcdir)/src			\
+	-DPREFIX=\""$(prefix)"\"		\
+	-DLIBDIR=\""$(libdir)"\"		\
+	-DDATADIR=\""$(datadir)"\"		\
+	-DG_DISABLE_DEPRECATED			\
+	-DG_LOG_DOMAIN=\"GdmUser\"			\
+	$(GDMUSER_CFLAGS)			\
+	$(NULL)
+
+# please, keep this sorted alphabetically
+gdmuser_source_h =					\
+	gdmuser/gdm-user.h				\
+	gdmuser/gdm-user-private.h	\
+	gdmuser/gdm-user-manager.h	\
+	$(NULL)
+
+# please, keep this sorted alphabetically
+gdmuser_source_c =					\
+	gdmuser/gdm-user.c			\
+	gdmuser/gdm-user-manager.c			\
+	$(NULL)
+
+noinst_LTLIBRARIES += libgdmuser-1.0.la
+
+libgdmuser_1_0_la_LIBADD = $(GDMUSER_LIBS)
+libgdmuser_1_0_la_SOURCES = \
+	$(gdmuser_source_c) \
+	$(gdmuser_source_h) \
+	$(NULL)
+libgdmuser_1_0_la_CPPFLAGS = $(gdmuser_cflags)
+libgdmuser_1_0_la_LDFLAGS = $(LDADD)
+
+

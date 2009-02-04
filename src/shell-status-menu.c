@@ -448,8 +448,8 @@ menuitem_style_set_cb (GtkWidget     *menuitem,
 static void
 on_deactivate (GtkMenuShell *menushell, gpointer user_data)
 {
-  ShellStatusMenu *shell = SHELL_STATUS_MENU (user_data);
-  g_signal_emit (G_OBJECT (shell), shell_status_menu_signals[DEACTIVATED], 0);
+  ShellStatusMenu *status = SHELL_STATUS_MENU (user_data);
+  g_signal_emit (G_OBJECT (status), shell_status_menu_signals[DEACTIVATED], 0);
 }
 
 static void
