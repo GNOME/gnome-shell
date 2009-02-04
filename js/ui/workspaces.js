@@ -599,6 +599,9 @@ Workspace.prototype = {
                                         }));
             return;
         }
+        
+        if (!this._isOverlayWindow(win))
+            return;        
 
         let clone = this._addWindowClone(win);
 
