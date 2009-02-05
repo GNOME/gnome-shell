@@ -124,11 +124,13 @@ log_handler (const gchar   *log_domain,
 static void
 version (void)
 {
+  const int latest_year = 2010;
+
   g_print (_("mutter %s\n"
-             "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+             "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
              "This is free software; see the source for copying conditions.\n"
              "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
-           VERSION);
+           VERSION, latest_year);
   exit (0);
 }
 
