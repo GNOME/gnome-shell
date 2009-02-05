@@ -683,16 +683,25 @@ clutter_texture_dispose (GObject *object)
       g_free (priv->local_data);
       priv->local_data = NULL;
     }
-  
+
   clutter_texture_async_load_cancel (texture);
+
+  G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
+}
+
+static void
+clutter_texture_finalize (GObject *object)
+{
+  ClutterTexture *texture = CLUTTER_TEXTURE (object);
+  ClutterTexturePrivate *priv;
 
   if (priv->material != COGL_INVALID_HANDLE)
     {
       cogl_material_unref (priv->material);
       priv->material = COGL_INVALID_HANDLE;
     }
-  
-  G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
+
+  G_OBJECT_CLASS (clutter_texture_parent_class)->finalize (object);
 }
 
 static void
@@ -847,6 +856,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   actor_class->allocate             = clutter_texture_allocate;
 
   gobject_class->dispose      = clutter_texture_dispose;
+  gobject_class->finalize     = clutter_texture_finalize;
   gobject_class->set_property = clutter_texture_set_property;
   gobject_class->get_property = clutter_texture_get_property;
 
