@@ -1299,6 +1299,10 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   cogl_material_set_layer (priv->material, 0, cogl_tex);
 
+  /* The material now holds a reference to the texture so we can
+     safely release the reference we claimed above */
+  cogl_texture_unref (cogl_tex);
+
   size_change      = width != priv->width || height != priv->height;
   priv->width      = width;
   priv->height     = height;
