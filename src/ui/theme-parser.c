@@ -3713,7 +3713,8 @@ text_handler (GMarkupParseContext *context,
         {
           set_error (error, context, G_MARKUP_ERROR,
                      G_MARKUP_ERROR_PARSE,
-                     _("<name> specified twice for this theme"));
+                     _("<%s> specified twice for this theme"),
+                     "name");
           return;
         }
 
@@ -3724,7 +3725,8 @@ text_handler (GMarkupParseContext *context,
         {
           set_error (error, context, G_MARKUP_ERROR,
                      G_MARKUP_ERROR_PARSE,
-                     _("<author> specified twice for this theme"));
+                     _("<%s> specified twice for this theme"),
+                     "author");
           return;
         }
 
@@ -3735,7 +3737,8 @@ text_handler (GMarkupParseContext *context,
         {
           set_error (error, context, G_MARKUP_ERROR,
                      G_MARKUP_ERROR_PARSE,
-                     _("<copyright> specified twice for this theme"));
+                     _("<%s> specified twice for this theme"),
+                     "copyright");
           return;
         }
 
@@ -3746,7 +3749,8 @@ text_handler (GMarkupParseContext *context,
         {
           set_error (error, context, G_MARKUP_ERROR,
                      G_MARKUP_ERROR_PARSE,
-                     _("<date> specified twice for this theme"));
+                     _("<%s> specified twice for this theme"),
+                     "date");
           return;
         }
 
@@ -3757,7 +3761,8 @@ text_handler (GMarkupParseContext *context,
         {
           set_error (error, context, G_MARKUP_ERROR,
                      G_MARKUP_ERROR_PARSE,
-                     _("<description> specified twice for this theme"));
+                     _("<%s> specified twice for this theme"),
+                     "description");
           return;
         }
 
