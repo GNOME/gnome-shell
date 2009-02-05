@@ -685,6 +685,12 @@ clutter_texture_dispose (GObject *object)
     }
   
   clutter_texture_async_load_cancel (texture);
+
+  if (priv->material != COGL_INVALID_HANDLE)
+    {
+      cogl_material_unref (priv->material);
+      priv->material = COGL_INVALID_HANDLE;
+    }
   
   G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
 }
