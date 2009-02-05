@@ -59,7 +59,7 @@ class Launcher:
         else:
             self.debug_command = ["gdb", "--args"]
 
-        if self.options.wide:
+        if accept_geometry and self.options.wide:
             self.options.geometry = "1280x800"
 
     def start_shell(self):
