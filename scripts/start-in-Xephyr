@@ -11,10 +11,8 @@ import time
 
 from launcher import Launcher
 
-launcher = Launcher()
-
 # GL_EXT_texture_from_pixmap doesn't work in Xepyhr
-launcher.set_use_tfp(False)
+launcher = Launcher(use_tfp=False, accept_geometry=True)
 
 # Temporary directory to hold our X credentials
 tmpdir = tempfile.mkdtemp("", "gnome-shell.")
@@ -38,7 +36,7 @@ try:
     # Launch Xephyr
     xephyr = subprocess.Popen(["Xephyr", display,
                                "-auth", xauth_file,
-                               "-screen", "1024x748",
+                               "-screen", launcher.get_geometry(),
                                "-host-cursor"])
     os.environ['DISPLAY'] = display
     os.environ['XAUTHORITY'] = xauth_file

@@ -24,8 +24,8 @@ def _get_glx_extensions():
     return (server_glx_extensions, client_glx_extensions, glx_extensions)
 
 class Launcher:
-    def __init__(self):
-        self.use_tfp = True
+    def __init__(self, use_tfp=True, accept_geometry=False):
+        self.use_tfp = use_tfp
         
         # Figure out the path to the plugin when uninstalled
         scripts_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -40,6 +40,12 @@ class Launcher:
         parser.add_option("", "--debug-command", metavar="COMMAND",
                           help="Command to use for debugging (defaults to 'gdb --args')")
         parser.add_option("-v", "--verbose", action="store_true")
+        if accept_geometry:
+            parser.add_option("", "--geometry", metavar="GEOMETRY",
+                              help="Specify screen geometry",
+                              default="1024x768");
+            parser.add_option("-w", "--wide", action="store_true",
+                              help="Use widescreen (1280x800)")
 
         self.options, args = parser.parse_args()
 
@@ -53,10 +59,8 @@ class Launcher:
         else:
             self.debug_command = ["gdb", "--args"]
 
-    def set_use_tfp(self, use_tfp):
-        """Sets whether we try to use GLX_EXT_texture_for_pixmap"""
-        
-        self.use_tfp = use_tfp
+        if self.options.wide:
+            self.options.geometry = "1280x800"
 
     def start_shell(self):
         """Starts gnome-shell. Returns a subprocess.Popen object"""
@@ -120,9 +124,10 @@ class Launcher:
         args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
         return subprocess.Popen(args, env=env)
     
-    def is_verbose (self):
+    def is_verbose(self):
         """Returns whether the Launcher was started in verbose mode"""
         return self.options.verbose        
-        
 
-        
+    def get_geometry(self):
+        """Returns the command-line specified geometry"""
+        return self.options.geometry
