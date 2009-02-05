@@ -6098,7 +6098,15 @@ clutter_actor_set_parent (ClutterActor *self,
       priv->needs_height_request ||
       priv->needs_allocation)
     {
-      clutter_actor_queue_relayout (self);
+      /* we work around the short-circuiting we do
+       * in clutter_actor_queue_relayout() since we
+       * want to force a relayout
+       */
+      priv->needs_width_request = TRUE;
+      priv->needs_height_request = TRUE;
+      priv->needs_allocation = TRUE;
+
+      clutter_actor_queue_relayout (priv->parent_actor);
     }
 }
 
