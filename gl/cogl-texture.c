@@ -2145,9 +2145,9 @@ _cogl_journal_flush (void)
       CoglJournalEntry *current_entry = prev_entry + 1;
       gsize             stride;
 
-      /* Progress the vertex pointer */
+      /* Progress the vertex pointer to the next quad */
       stride = 2 + current_entry->n_layers * 2;
-      current_vertex_pointer += stride;
+      current_vertex_pointer += stride * 4;
 
       /* batch rectangles using the same textures */
       if (current_entry->material == prev_entry->material &&
