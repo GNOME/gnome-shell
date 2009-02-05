@@ -1539,7 +1539,7 @@ clutter_texture_async_load_complete (ClutterTexture *self,
 
   if (error == NULL)
     {
-      if (priv->no_slice)
+      if (!priv->no_slice)
         waste = priv->max_tile_waste;
 
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
@@ -1744,7 +1744,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
       return clutter_texture_async_load (texture, error);
     }
 
-  if (priv->no_slice)
+  if (!priv->no_slice)
     max_waste = priv->max_tile_waste;
 
   if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
