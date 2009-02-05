@@ -18,7 +18,7 @@
 # Only rebuild modules that have changed
 build_policy = 'updated'
 
-moduleset = 'http://svn.gnome.org/svn/gnome-shell/trunk/tools/build/gnome-shell.modules'
+moduleset = 'http://git.gnome.org/cgit/gnome-shell/plain/tools/build/gnome-shell.modules'
 
 modules = [ 'gnome-shell' ]
 

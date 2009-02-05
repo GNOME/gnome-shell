@@ -10,7 +10,7 @@
 # Copyright (C) 2006, 2007, 2008 Imendio AB
 #
 SOURCE=$HOME/Source
-BASEURL=http://svn.gnome.org/svn/gnome-shell/trunk/tools/build
+BASEURL=http://git.gnome.org/cgit/gnome-shell/plain/tools/build
 
 if ! which curl > /dev/null 2>&1; then
 	cat <<EOF

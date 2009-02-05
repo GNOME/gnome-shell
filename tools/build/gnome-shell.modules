@@ -12,6 +12,8 @@
       href="git://git.fishsoup.net/"/>
   <repository type="git" name="git.clutter-project.org"
       href="git://git.clutter-project.org/"/>
+  <repository type="git" name="git.gnome.org"
+      href="git://git.gnome.org/"/>
 
   <autotools id="gobject-introspection">
     <branch/>
@@ -53,7 +55,7 @@
   </autotools>
 
   <autotools id="gnome-shell">
-    <branch/>
+    <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
         <dep package="gobject-introspection"/>
         <dep package="gir-repository"/>
