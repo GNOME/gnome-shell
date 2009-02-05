@@ -693,7 +693,7 @@ static void
 clutter_texture_finalize (GObject *object)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (object);
-  ClutterTexturePrivate *priv;
+  ClutterTexturePrivate *priv = texture->priv;
 
   if (priv->material != COGL_INVALID_HANDLE)
     {
