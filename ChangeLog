@@ -1,3 +1,7 @@
+2009-02-04  Neil Jagdish Patel  <njpatel@gmail.com>
+
+	* src/core/frame.c: queue resize on window undecorate
+
 2009-02-03  Luca Ferretti  <elle.uca@libero.it>
 
 	* src/include/all-keybindings.h: Fix description, focus the
