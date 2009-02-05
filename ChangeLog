@@ -1,5 +1,10 @@
 2009-02-05  Thomas Thurman  <tthurman@gnome.org>
 
+	* src/core/main.c: incredibly baroque system to make sure
+        the translators don't have to update the year number every year.
+
+2009-02-05  Thomas Thurman  <tthurman@gnome.org>
+
         * src/ui/theme-parser.c: collapse several strings into one
         for the translators' benefit.
 

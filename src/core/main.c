@@ -54,6 +54,7 @@
 #include "prefs.h"
 
 #include <glib-object.h>
+#include <glib/gprintf.h>
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -113,11 +114,23 @@ log_handler (const gchar   *log_domain,
 static void
 version (void)
 {
+  const int latest_year = 2009;
+  char yearbuffer[256];
+  GDate date;
+
+  /* this is all so the string to translate stays constant.
+   * see how much we love the translators.
+   */
+  g_date_set_dmy (&date, 1, G_DATE_JANUARY, latest_year);
+  if (g_date_strftime (yearbuffer, sizeof (yearbuffer), "%Y", &date)==0)
+    /* didn't work?  fall back to decimal representation */
+    g_sprintf (yearbuffer, "%d", latest_year);
+
   g_print (_("metacity %s\n"
-             "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+             "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
              "This is free software; see the source for copying conditions.\n"
              "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
-           VERSION);
+           VERSION, yearbuffer);
   exit (0);
 }
 
