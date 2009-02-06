@@ -25,15 +25,12 @@
 
 #include <config.h>
 
-#include <clutter/clutter-texture.h>
-#include <clutter/x11/clutter-x11.h>
-#ifdef HAVE_GLX_TEXTURE_PIXMAP
-#include <clutter/glx/clutter-glx.h>
-#endif /* HAVE_GLX_TEXTURE_PIXMAP */
+#include "mutter-shaped-texture.h"
+
+#include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
 
-#include "mutter-shaped-texture.h"
 
 static void mutter_shaped_texture_dispose (GObject *object);
 static void mutter_shaped_texture_finalize (GObject *object);
@@ -56,29 +53,15 @@ G_DEFINE_TYPE (MutterShapedTexture, mutter_shaped_texture,
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MUTTER_TYPE_SHAPED_TEXTURE, \
                                 MutterShapedTexturePrivate))
 
-enum TstMultiTexSupport
-  {
-    TST_MULTI_TEX_SUPPORT_UNKNOWN = 0,
-    TST_MULTI_TEX_SUPPORT_YES,
-    TST_MULTI_TEX_SUPPORT_NO
-  };
-
-static enum TstMultiTexSupport
-tst_multi_tex_support = TST_MULTI_TEX_SUPPORT_UNKNOWN;
-
-typedef void (* TstActiveTextureFunc) (GLenum texture);
-typedef void (* TstClientActiveTextureFunc) (GLenum texture);
-
-static TstActiveTextureFunc tst_active_texture;
-static TstClientActiveTextureFunc tst_client_active_texture;
-
 struct _MutterShapedTexturePrivate
 {
   CoglHandle mask_texture;
+  CoglHandle material;
+#if 1 /* see workaround comment in mutter_shaped_texture_paint */
+  CoglHandle material_workaround;
+#endif
 
   guint mask_width, mask_height;
-  guint mask_gl_width, mask_gl_height;
-  GLfloat mask_tex_coords[8];
 
   GArray *rectangles;
 };
@@ -114,8 +97,22 @@ static void
 mutter_shaped_texture_dispose (GObject *object)
 {
   MutterShapedTexture *self = (MutterShapedTexture *) object;
+  MutterShapedTexturePrivate *priv = self->priv;
 
   mutter_shaped_texture_dirty_mask (self);
+
+  if (priv->material != COGL_INVALID_HANDLE)
+    {
+      cogl_material_unref (priv->material);
+      priv->material = COGL_INVALID_HANDLE;
+    }
+#if 1 /* see comment in mutter_shaped_texture_paint */
+  if (priv->material_workaround != COGL_INVALID_HANDLE)
+    {
+      cogl_material_unref (priv->material_workaround);
+      priv->material_workaround = COGL_INVALID_HANDLE;
+    }
+#endif
 
   G_OBJECT_CLASS (mutter_shaped_texture_parent_class)->dispose (object);
 }
@@ -152,97 +149,12 @@ mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex)
     }
 }
 
-static gboolean
-mutter_shaped_texture_is_multi_tex_supported (void)
-{
-  const gchar *extensions;
-  GLint max_tex_units = 0;
-
-  if (tst_multi_tex_support != TST_MULTI_TEX_SUPPORT_UNKNOWN)
-    return tst_multi_tex_support == TST_MULTI_TEX_SUPPORT_YES;
-
-  extensions = (const gchar *) glGetString (GL_EXTENSIONS);
-
-  tst_active_texture = (TstActiveTextureFunc)
-    cogl_get_proc_address ("glActiveTextureARB");
-  tst_client_active_texture = (TstClientActiveTextureFunc)
-    cogl_get_proc_address ("glClientActiveTextureARB");
-
-  glGetIntegerv (GL_MAX_TEXTURE_UNITS, &max_tex_units);
-
-  if (extensions
-      && cogl_check_extension ("GL_ARB_multitexture", extensions)
-      && tst_active_texture
-      && tst_client_active_texture
-      && max_tex_units > 1)
-    {
-      tst_multi_tex_support = TST_MULTI_TEX_SUPPORT_YES;
-      return TRUE;
-    }
-  else
-    {
-      g_warning ("multi texturing not supported");
-      tst_multi_tex_support = TST_MULTI_TEX_SUPPORT_NO;
-      return FALSE;
-    }
-}
-
-static void
-mutter_shaped_texture_set_coord_array (GLfloat x1, GLfloat y1,
-				       GLfloat x2, GLfloat y2,
-				       GLfloat *coords)
-{
-  coords[0] = x1;
-  coords[1] = y2;
-  coords[2] = x2;
-  coords[3] = y2;
-  coords[4] = x1;
-  coords[5] = y1;
-  coords[6] = x2;
-  coords[7] = y1;
-}
-
-static void
-mutter_shaped_texture_get_gl_size (CoglHandle tex,
-				   guint *width,
-				   guint *height)
-{
-  /* glGetTexLevelParameteriv isn't supported on GL ES so we need to
-     calculate the size that Cogl has used */
-
-  /* If NPOTs textures are supported then assume the GL texture is
-     exactly the right size */
-  if ((cogl_get_features () & COGL_FEATURE_TEXTURE_NPOT))
-    {
-      *width = cogl_texture_get_width (tex);
-      *height = cogl_texture_get_height (tex);
-    }
-  /* Otherwise assume that Cogl has used the next power of two */
-  else
-    {
-      guint tex_width = cogl_texture_get_width (tex);
-      guint tex_height = cogl_texture_get_height (tex);
-      guint real_width = 1;
-      guint real_height = 1;
-
-      while (real_width < tex_width)
-        real_width <<= 1;
-      while (real_height < tex_height)
-        real_height <<= 1;
-
-      *width = real_width;
-      *height = real_height;
-    }
-}
-
 static void
 mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
 {
   MutterShapedTexturePrivate *priv = stex->priv;
   CoglHandle paint_tex;
   guint tex_width, tex_height;
-  GLuint mask_gl_tex;
-  GLenum mask_target;
 
   paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
 
@@ -325,27 +237,6 @@ mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
 
       priv->mask_width = tex_width;
       priv->mask_height = tex_height;
-
-      cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, &mask_target);
-
-      mutter_shaped_texture_get_gl_size (priv->mask_texture,
-					 &priv->mask_gl_width,
-					 &priv->mask_gl_height);
-
-      if (mask_target == GL_TEXTURE_RECTANGLE_ARB)
-	mutter_shaped_texture_set_coord_array (0.0f, 0.0f, tex_width, tex_height,
-					       priv->mask_tex_coords);
-      else if ((guint) priv->mask_gl_width == tex_width
-	       && (guint) priv->mask_gl_height == tex_height)
-        mutter_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
-					       priv->mask_tex_coords);
-      else
-        mutter_shaped_texture_set_coord_array (0.0f, 0.0f,
-					       tex_width
-					       / (GLfloat) priv->mask_gl_width,
-					       tex_height
-					       / (GLfloat) priv->mask_gl_height,
-					       priv->mask_tex_coords);
     }
 }
 
@@ -356,23 +247,10 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   MutterShapedTexturePrivate *priv = stex->priv;
   CoglHandle paint_tex;
   guint tex_width, tex_height;
-  GLboolean texture_was_enabled, blend_was_enabled;
-  GLboolean vertex_array_was_enabled, tex_coord_array_was_enabled;
-  GLboolean color_array_was_enabled;
-  GLuint paint_gl_tex, mask_gl_tex;
-  GLenum paint_target, mask_target;
-  guint paint_gl_width, paint_gl_height;
-  GLfloat vertex_coords[8], paint_tex_coords[8];
   ClutterActorBox alloc;
-  static const ClutterColor white = { 0xff, 0xff, 0xff, 0xff };
+  CoglHandle material;
 #if 1 /* please see comment below about workaround */
   guint depth;
-  GLint orig_gl_tex_env_mode;
-  GLint orig_gl_combine_alpha;
-  GLint orig_gl_src0_alpha;
-  GLfloat orig_gl_tex_env_color[4];
-  gboolean need_to_restore_tex_env = FALSE;
-  const GLfloat const_alpha[4] = { 0.0, 0.0, 0.0, 1.0 };
 #endif
 
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
@@ -386,10 +264,9 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   if (tex_width == 0 || tex_width == 0) /* no contents yet */
     return;
 
-  /* If there are no rectangles or multi-texturing isn't supported,
-     fallback to the regular paint method */
-  if (priv->rectangles->len < 1
-      || !mutter_shaped_texture_is_multi_tex_supported ())
+  /* If there are no rectangles fallback to the regular paint
+     method */
+  if (priv->rectangles->len < 1)
     {
       CLUTTER_ACTOR_CLASS (mutter_shaped_texture_parent_class)
         ->paint (actor);
@@ -399,174 +276,101 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   if (paint_tex == COGL_INVALID_HANDLE)
     return;
 
-  /* If the texture is sliced then the multitexturing won't work */
-  if (cogl_texture_is_sliced (paint_tex))
-    {
-      CLUTTER_ACTOR_CLASS (mutter_shaped_texture_parent_class)
-        ->paint (actor);
-      return;
-    }
-
   mutter_shaped_texture_ensure_mask (stex);
 
-  cogl_texture_get_gl_texture (paint_tex, &paint_gl_tex, &paint_target);
-  cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, &mask_target);
+  if (priv->material == COGL_INVALID_HANDLE)
+    {
+      priv->material = cogl_material_new ();
 
-  /* We need to keep track of the some of the old state so that we
-     don't confuse Cogl */
-  texture_was_enabled = glIsEnabled (paint_target);
-  blend_was_enabled = glIsEnabled (GL_BLEND);
-  vertex_array_was_enabled = glIsEnabled (GL_VERTEX_ARRAY);
-  tex_coord_array_was_enabled = glIsEnabled (GL_TEXTURE_COORD_ARRAY);
-  color_array_was_enabled = glIsEnabled (GL_COLOR_ARRAY);
+      /* Replace the RGB from layer 1 with the RGB from layer 0 */
+      cogl_material_set_layer_combine_function
+        (priv->material, 1,
+         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
+         COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE);
+      cogl_material_set_layer_combine_arg_src
+        (priv->material, 1, 0,
+         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
+         COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
 
-  glEnable (paint_target);
-  glEnable (GL_BLEND);
-  glEnableClientState (GL_VERTEX_ARRAY);
-  glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-  glDisableClientState (GL_COLOR_ARRAY);
-  glVertexPointer (2, GL_FLOAT, 0, vertex_coords);
-  glTexCoordPointer (2, GL_FLOAT, 0, paint_tex_coords);
-  cogl_color (&white);
-
-  /* Put the main painting texture in the first texture unit */
-  glBindTexture (paint_target, paint_gl_tex);
-
-  /* We need the actual size of the texture so that we can calculate
-     the right texture coordinates if NPOTs textures are not supported
-     and Cogl has oversized the texture */
-  mutter_shaped_texture_get_gl_size (paint_tex,
-                                   &paint_gl_width,
-                                   &paint_gl_height);
+      /* Modulate the alpha in layer 1 with the alpha from the
+         previous layer */
+      cogl_material_set_layer_combine_function
+        (priv->material, 1,
+         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
+         COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE);
+      cogl_material_set_layer_combine_arg_src
+        (priv->material, 1, 0,
+         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
+         COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
+      cogl_material_set_layer_combine_arg_src
+        (priv->material, 1, 1,
+         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
+         COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE);
+    }
+  material = priv->material;
 
 #if 1
-  /* This was added as a workaround. It seems that with the intel drivers when
-   * multi-texturing using an RGB TFP texture, the texture is actually
-   * setup internally as an RGBA texture, where the alpha channel is mostly
-   * 0.0 so you only see a shimmer of the window. This workaround forcibly
-   * defines the alpha channel as 1.0. Maybe there is some clutter/cogl state
-   * that is interacting with this that is being overlooked, but for now this
-   * seems to work. */
-  g_object_get (G_OBJECT (stex), "pixmap-depth", &depth, NULL);
+  /* This was added as a workaround. It seems that with the intel
+   * drivers when multi-texturing using an RGB TFP texture, the
+   * texture is actually setup internally as an RGBA texture, where
+   * the alpha channel is mostly 0.0 so you only see a shimmer of the
+   * window. This workaround forcibly defines the alpha channel as
+   * 1.0. Maybe there is some clutter/cogl state that is interacting
+   * with this that is being overlooked, but for now this seems to
+   * work. */
+  g_object_get (stex, "pixmap-depth", &depth, NULL);
   if (depth == 24)
     {
-      glGetTexEnviv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,
-                     &orig_gl_tex_env_mode);
-      glGetTexEnviv (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, &orig_gl_combine_alpha);
-      glGetTexEnviv (GL_TEXTURE_ENV, GL_SRC0_ALPHA, &orig_gl_src0_alpha);
-      glGetTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
-                     orig_gl_tex_env_color);
-      need_to_restore_tex_env = TRUE;
+      if (priv->material_workaround == COGL_INVALID_HANDLE)
+        {
+          material = priv->material_workaround = cogl_material_new ();
 
-      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
-      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_CONSTANT);
-      glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, const_alpha);
+          /* Replace the RGB from layer 1 with the RGB from layer 0 */
+          cogl_material_set_layer_combine_function
+            (material, 1,
+             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
+             COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE);
+          cogl_material_set_layer_combine_arg_src
+            (material, 1, 0,
+             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
+             COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
 
-      /* Replace the RGB in the second texture with that of the first
-         texture */
-      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
-      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB, GL_PREVIOUS);
+          /* Use the alpha from layer 1 modulated with the alpha from
+             the primary color */
+          cogl_material_set_layer_combine_function
+            (material, 1,
+             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
+             COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE);
+          cogl_material_set_layer_combine_arg_src
+            (material, 1, 0,
+             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
+             COGL_MATERIAL_LAYER_COMBINE_SRC_PRIMARY_COLOR);
+          cogl_material_set_layer_combine_arg_src
+            (material, 1, 1,
+             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
+             COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE);
+        }
+
+      material = priv->material_workaround;
     }
 #endif
 
-  /* Put the mask texture in the second texture unit */
-  tst_active_texture (GL_TEXTURE1);
-  tst_client_active_texture (GL_TEXTURE1);
-  glBindTexture (mask_target, mask_gl_tex);
+  cogl_material_set_layer (material, 0, paint_tex);
+  cogl_material_set_layer (material, 1, priv->mask_texture);
 
-  glEnable (mask_target);
+  {
+    CoglColor color;
+    cogl_color_set_from_4ub (&color, 255, 255, 255,
+                             clutter_actor_get_paint_opacity (actor));
+    cogl_material_set_color (material, &color);
+  }
 
-  glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-  glTexCoordPointer (2, GL_FLOAT, 0, priv->mask_tex_coords);
-
-  glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
-
-#if 1 /* see workaround notes above */
-  if (depth == 24)
-    {
-      /* NOTE: This should be redundant, since we already explicitly forced an
-       * an alhpa value of 1.0 for texture unit 0, but this workaround only
-       * seems to help if we explicitly force the alpha values for both texture
-       * units. */
-      /* XXX - we should also save/restore the values for this texture unit too
-       */
-      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
-      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_TEXTURE);
-      glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA, GL_CONSTANT);
-      glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, const_alpha);
-    }
-  else
-    {
-#endif
-
-  /* Multiply the alpha by the alpha in the second texture */
-  glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
-  glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_TEXTURE);
-  glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA, GL_PREVIOUS);
-
-#if 1 /* see workaround notes above */
-    }
-#endif
-
-  /* Replace the RGB in the second texture with that of the first
-     texture */
-  glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
-  glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB, GL_PREVIOUS);
+  cogl_set_source (material);
 
   clutter_actor_get_allocation_box (actor, &alloc);
-
-  mutter_shaped_texture_set_coord_array (0, 0,
-					 CLUTTER_UNITS_TO_FLOAT (alloc.x2
-								 - alloc.x1),
-					 CLUTTER_UNITS_TO_FLOAT (alloc.y2
-					                         - alloc.y1),
-					 vertex_coords);
-
-  if (paint_target == GL_TEXTURE_RECTANGLE_ARB)
-    mutter_shaped_texture_set_coord_array (0.0f, 0.0f, tex_width, tex_height,
-					   paint_tex_coords);
-  else if ((guint) paint_gl_width == tex_width
-	&& (guint) paint_gl_height == tex_height)
-    mutter_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
-                                         paint_tex_coords);
-  else
-    mutter_shaped_texture_set_coord_array (0.0f, 0.0f,
-					   tex_width
-					   / (GLfloat) paint_gl_width,
-					   tex_height
-					   / (GLfloat) paint_gl_height,
-					   paint_tex_coords);
-
-  glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
-
-  /* Disable the second texture unit and coord array */
-  glDisable (mask_target);
-  glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-
-  /* Go back to operating on the first texture unit */
-  tst_active_texture (GL_TEXTURE0);
-  tst_client_active_texture (GL_TEXTURE0);
-
-  /* Restore the old state */
-  if (!texture_was_enabled)
-    glDisable (paint_target);
-  if (!blend_was_enabled)
-    glDisable (GL_BLEND);
-  if (!vertex_array_was_enabled)
-    glDisableClientState (GL_VERTEX_ARRAY);
-  if (!tex_coord_array_was_enabled)
-    glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-  if (color_array_was_enabled)
-    glEnableClientState (GL_COLOR_ARRAY);
-#if 1 /* see note about workaround above */
-  if (need_to_restore_tex_env)
-    {
-      glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, orig_gl_tex_env_mode);
-      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, orig_gl_combine_alpha);
-      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, orig_gl_src0_alpha);
-      glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, orig_gl_tex_env_color);
-    }
-#endif
+  cogl_rectangle (0, 0,
+                  CLUTTER_UNITS_TO_FLOAT (alloc.x2 - alloc.x1),
+                  CLUTTER_UNITS_TO_FLOAT (alloc.y2 - alloc.y1));
 }
 
 static void
@@ -577,8 +381,7 @@ mutter_shaped_texture_pick (ClutterActor *actor,
   MutterShapedTexturePrivate *priv = stex->priv;
 
   /* If there are no rectangles then use the regular pick */
-  if (priv->rectangles->len < 1
-      || !mutter_shaped_texture_is_multi_tex_supported ())
+  if (priv->rectangles->len < 1)
     CLUTTER_ACTOR_CLASS (mutter_shaped_texture_parent_class)
       ->pick (actor, color);
   else if (clutter_actor_should_pick_paint (actor))
@@ -600,16 +403,17 @@ mutter_shaped_texture_pick (ClutterActor *actor,
 
       mutter_shaped_texture_ensure_mask (stex);
 
-      cogl_color (color);
+      cogl_set_source_color4ub (color->red, color->green, color->blue,
+                                 color->alpha);
 
       clutter_actor_get_allocation_box (actor, &alloc);
 
       /* Paint the mask rectangle in the given color */
-      cogl_texture_rectangle (priv->mask_texture,
-                              0, 0,
-                              CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
-                              CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1),
-                              0, 0, CFX_ONE, CFX_ONE);
+      cogl_set_source_texture (priv->mask_texture);
+      cogl_rectangle_with_texture_coords (0, 0,
+                                          CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
+                                          CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1),
+                                          0, 0, CFX_ONE, CFX_ONE);
     }
 }
 

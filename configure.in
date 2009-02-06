@@ -302,7 +302,7 @@ if test x$have_xrender = xyes; then
   AC_DEFINE(HAVE_RENDER, , [Building with Render extension support])
 fi
 
-CLUTTER_PACKAGE=clutter-0.8
+CLUTTER_PACKAGE=clutter-0.9
 AC_SUBST(CLUTTER_PACKAGE)
 if test x$have_clutter = xyes; then
   METACITY_PC_MODULES="$METACITY_PC_MODULES $CLUTTER_PACKAGE "
