@@ -14,9 +14,25 @@
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 
+static void grab_notify (GtkWidget *widget, gboolean is_grab, gpointer user_data);
+
 struct _ShellGlobal {
   GObject parent;
-
+  
+  /* We use this window to get a notification from GTK+ when
+   * a widget in our process does a GTK+ grab.  See
+   * http://bugzilla.gnome.org/show_bug.cgi?id=570641
+   * 
+   * This window is never mapped or shown.
+   */
+  GtkWindow *grab_notifier;
+  gboolean grab_active;
+  /* See shell_global_set_stage_input_area */
+  int input_x;
+  int input_y;
+  int input_width;
+  int input_height;
+  
   MutterPlugin *plugin;
   ShellWM *wm;
   gboolean keyboard_grabbed;
@@ -133,6 +149,10 @@ shell_global_init (ShellGlobal *global)
       g_free (imagedir);
       global->imagedir = g_strdup_printf ("%s/", datadir);
     }
+  
+  global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+  g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
+  global->grab_active = FALSE;
 }
 
 static void
@@ -438,7 +458,14 @@ shell_global_set_stage_input_area (ShellGlobal *global,
 {
   g_return_if_fail (SHELL_IS_GLOBAL (global));
 
-  mutter_plugin_set_stage_input_area (global->plugin, x, y, width, height);
+  /* Cache these so we can save/restore across grabs */ 
+  global->input_x = x;
+  global->input_y = y;
+  global->input_width = width;
+  global->input_height = height;
+  /* If we have a grab active, we'll set the input area when we ungrab. */
+  if (!global->grab_active)
+    mutter_plugin_set_stage_input_area (global->plugin, x, y, width, height);
 }
 
 /**
@@ -608,5 +635,21 @@ shell_global_start_task_panel (ShellGlobal *global)
     {
       g_critical ("failed to execute %s: %s", panel_args[0], error->message);
       g_clear_error (&error);
+    }
+}
+
+static void 
+grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (user_data);
+  
+  if (!was_grabbed)
+    {
+      mutter_plugin_set_stage_input_area (global->plugin, 0, 0, 0, 0);
+    }
+  else
+    {
+      mutter_plugin_set_stage_input_area (global->plugin, global->input_x, global->input_y,
+                                          global->input_width, global->input_height);      
     }
 }
