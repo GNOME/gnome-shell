@@ -2645,6 +2645,7 @@ parse_size_unchecked (MetaDrawSpec        *spec,
 void
 meta_draw_spec_free (MetaDrawSpec *spec)
 {
+  if (!spec) return;
   free_tokens (spec->tokens, spec->n_tokens);
   g_slice_free (MetaDrawSpec, spec);
 }
@@ -3489,10 +3490,25 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
         x1 = parse_x_position_unchecked (op->data.line.x1, env);
         y1 = parse_y_position_unchecked (op->data.line.y1, env); 
-        x2 = parse_x_position_unchecked (op->data.line.x2, env);
-        y2 = parse_y_position_unchecked (op->data.line.y2, env);
 
-        gdk_draw_line (drawable, gc, x1, y1, x2, y2);
+        if (!op->data.line.x2 &&
+            !op->data.line.y2 &&
+            op->data.line.width==0)
+          gdk_draw_point (drawable, gc, x1, y1);
+        else
+          {
+            if (op->data.line.x2)
+              x2 = parse_x_position_unchecked (op->data.line.x2, env);
+            else
+              x2 = x1;
+
+            if (op->data.line.y2)
+              y2 = parse_y_position_unchecked (op->data.line.y2, env);
+            else
+              y2 = y1;
+
+            gdk_draw_line (drawable, gc, x1, y1, x2, y2);
+          }
 
         g_object_unref (G_OBJECT (gc));
       }
