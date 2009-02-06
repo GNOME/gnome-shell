@@ -68,7 +68,7 @@ void cogl_material_unref (CoglHandle handle);
 void cogl_material_set_color (CoglHandle material, const CoglColor *color);
 
 /**
- * cogl_material_set_color:
+ * cogl_material_set_color4ub:
  * @material: A CoglMaterial object
  * @red: The red component
  * @green: The green component
@@ -81,11 +81,31 @@ void cogl_material_set_color (CoglHandle material, const CoglColor *color);
  *
  * Since 1.0
  */
-void cogl_material_set_color4ub (CoglHandle handle,
-			         guint8 red,
-                                 guint8 green,
-                                 guint8 blue,
-                                 guint8 alpha);
+void cogl_material_set_color4ub (CoglHandle material,
+			         guint8     red,
+                                 guint8     green,
+                                 guint8     blue,
+                                 guint8     alpha);
+
+/**
+ * cogl_material_set_color4f:
+ * @material: A CoglMaterial object
+ * @red: The red component
+ * @green: The green component
+ * @blue: The blue component
+ * @alpha: The alpha component
+ *
+ * This is the basic color of the material, used when no lighting is enabled.
+ *
+ * The default value is (1.0, 1.0, 1.0, 1.0)
+ *
+ * Since 1.0
+ */
+void cogl_material_set_color4f (CoglHandle material,
+			        float      red,
+                                float      green,
+                                float      blue,
+                                float      alpha);
 
 /**
  * cogl_material_get_color:
@@ -96,7 +116,7 @@ void cogl_material_set_color4ub (CoglHandle handle,
  *
  * Since 1.0
  */
-void cogl_material_get_color (CoglHandle  handle, CoglColor  *color);
+void cogl_material_get_color (CoglHandle  material, CoglColor  *color);
 
 /**
  * cogl_material_set_ambient:
@@ -125,7 +145,7 @@ void cogl_material_set_ambient (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_ambient (CoglHandle  handle, CoglColor  *ambient);
+void cogl_material_get_ambient (CoglHandle  material, CoglColor  *ambient);
 
 /**
  * cogl_material_set_diffuse:
@@ -153,7 +173,7 @@ void cogl_material_set_diffuse (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_diffuse (CoglHandle  handle, CoglColor  *diffuse);
+void cogl_material_get_diffuse (CoglHandle  material, CoglColor  *diffuse);
 
 /**
  * cogl_material_set_ambient_and_diffuse:
@@ -197,7 +217,7 @@ void cogl_material_set_specular (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_specular (CoglHandle  handle, CoglColor  *specular);
+void cogl_material_get_specular (CoglHandle  material, CoglColor  *specular);
 
 /**
  * cogl_material_set_shininess:
@@ -224,7 +244,7 @@ void cogl_material_set_shininess (CoglHandle material,
  *
  * Since 1.0
  */
-float cogl_material_get_shininess (CoglHandle handle);
+float cogl_material_get_shininess (CoglHandle material);
 
 /**
  * cogl_material_set_emission:
@@ -251,7 +271,7 @@ void cogl_material_set_emission (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_emission (CoglHandle handle, CoglColor *emission);
+void cogl_material_get_emission (CoglHandle material, CoglColor *emission);
 
 /**
  * CoglMaterialAlphaFunc:
@@ -660,18 +680,30 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
 				     gint        layer_index,
 				     CoglMatrix *matrix);
 
+
+/**
+ * SECTION:cogl-material-internals
+ * @short_description: Functions for creating custom primitives that make use
+ *                     of Cogl materials for filling.
+ *
+ * Normally you shouldn't need to use this API directly, but if you need to
+ * developing a custom/specialised primitive - probably using raw OpenGL - then
+ * this API aims to expose enough of the material internals to support being
+ * able to fill your geometry according to a given Cogl material.
+ */
+
+
 /**
  * cogl_material_get_cogl_enable_flags:
  * @material: A CoglMaterial object
  *
- * This determines what flags need to be passed to cogl_enable before
- * this material can be used. Normally you shouldn't need to use this
- * function directly since Cogl will do this internally, but if you are
- * developing custom primitives directly with OpenGL you may want to use
- * this.
+ * This determines what flags need to be passed to cogl_enable before this
+ * material can be used. Normally you shouldn't need to use this function
+ * directly since Cogl will do this internally, but if you are developing
+ * custom primitives directly with OpenGL you may want to use this.
  *
- * Note: This API is hopfully just a stop-gap solution. Ideally
- * cogl_enable will be replaced.
+ * Note: This API is hopfully just a stop-gap solution. Ideally cogl_enable
+ * will be replaced.
  */
 /* TODO: find a nicer solution! */
 gulong
@@ -710,7 +742,7 @@ typedef enum _CoglMaterialLayerType
 
 /**
  * cogl_material_layer_get_type:
- * @material: A CoglMaterial object
+ * @layer_handle: A CoglMaterialLayer handle
  *
  * Currently there is only one type of layer defined:
  * COGL_MATERIAL_LAYER_TYPE_TEXTURE, but considering we may add purely GLSL
@@ -726,7 +758,7 @@ CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
 
 /**
  * cogl_material_layer_get_texture:
- * @layer_handle: A CoglMaterial layer object
+ * @layer_handle: A CoglMaterialLayer handle
  *
  * This lets you extract a CoglTexture handle for a specific layer. Normally
  * you shouldn't need to use this function directly since Cogl will do this
@@ -754,7 +786,7 @@ typedef enum _CoglMaterialLayerFlags
 
 /**
  * cogl_material_layer_get_flags:
- * @layer_handle: A CoglMaterial layer object
+ * @layer_handle: A CoglMaterialLayer layer handle
  *
  * This lets you get a number of flag attributes about the layer.  Normally
  * you shouldn't need to use this function directly since Cogl will do this
@@ -793,43 +825,10 @@ typedef enum _CoglMaterialFlushOption
  * This function commits the state of the specified CoglMaterial - including
  * the texture state for all the layers - to the OpenGL[ES] driver.
  *
- * Normally you shouldn't need to use this function directly, but if you
- * are developing a custom primitive using raw OpenGL that works with
- * CoglMaterials, then you may want to use this function.
- *
  * Since 1.0
  */
 void cogl_material_flush_gl_state (CoglHandle material,
                                    ...) G_GNUC_NULL_TERMINATED;
-
-/**
- * cogl_set_source:
- * @material: A CoglMaterial object
- *
- * This function sets the source material that will be used to fill
- * subsequent geometry emitted via the cogl API.
- *
- * Note: in the future we may add the ability to set a front facing
- * material, and a back facing material, in which case this function
- * will set both to the same.
- *
- * Since 1.0
- */
-/* XXX: This doesn't really belong to the cogl-material API, it should
- * move to cogl.h */
-void cogl_set_source (CoglHandle material);
-
-/**
- * cogl_set_source_texture:
- * @texture_handle: The Cogl texture you want as your source
- *
- * This is a convenience function for creating a material with the first
- * layer set to #texture_handle and setting that material as the source with
- * cogl_set_source.
- *
- * Since 1.0
- */
-void cogl_set_source_texture (CoglHandle texture_handle);
 
 G_END_DECLS
 

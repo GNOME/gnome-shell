@@ -435,6 +435,100 @@ void            cogl_set_fog                  (const CoglColor *fog_color,
  */
 void            cogl_paint_init               (const CoglColor *color);
 
+/**
+ * cogl_set_source:
+ * @material: A CoglMaterial object
+ *
+ * This function sets the source material that will be used to fill subsequent
+ * geometry emitted via the cogl API.
+ *
+ * Note: in the future we may add the ability to set a front facing material,
+ * and a back facing material, in which case this function will set both to the
+ * same.
+ *
+ * Since 1.0
+ */
+void            cogl_set_source               (CoglHandle material);
+
+/**
+ * cogl_set_source_color:
+ * @color: a #CoglColor
+ *
+ * Sets the source color using normalized values for each component.
+ * This color will be used for any subsequent drawing operation.
+ *
+ * See also cogl_set_source_color4ub() and cogl_set_source_color4f()
+ * if you already have the color components.
+ *
+ * Since: 1.0
+ */
+void            cogl_set_source_color         (const CoglColor *color);
+
+/**
+ * cogl_set_source_color4ub:
+ * @red: value of the red channel, between 0 and 255
+ * @green: value of the green channel, between 0 and 255
+ * @blue: value of the blue channel, between 0 and 255
+ * @alpha: value of the alpha channel, between 0 and 255
+ *
+ * This is a convenience function for creating a solid fill source material
+ * from the given color using unsigned bytes for each component. This
+ * color will be used for any subsequent drawing operation.
+ *
+ * The value for each component is an unsigned byte in the range
+ * between 0 and 255.
+ *
+ * Since: 1.0
+ */
+void            cogl_set_source_color4ub      (guint8 red,
+                                               guint8 green,
+                                               guint8 blue,
+                                               guint8 alpha);
+
+/**
+ * cogl_set_source_color4f:
+ * @red: value of the red channel, between 0 and %1.0
+ * @green: value of the green channel, between 0 and %1.0
+ * @blue: value of the blue channel, between 0 and %1.0
+ * @alpha: value of the alpha channel, between 0 and %1.0
+ *
+ * This is a convenience function for creating a solid fill source material
+ * from the given color using normalized values for each component. This color
+ * will be used for any subsequent drawing operation.
+ *
+ * The value for each component is a fixed point number in the range
+ * between 0 and %1.0. If the values passed in are outside that
+ * range, they will be clamped.
+ *
+ * Since: 1.0
+ */
+void            cogl_set_source_color4f       (float red,
+                                               float green,
+                                               float blue,
+                                               float alpha);
+
+/**
+ * cogl_set_source_texture:
+ * @texture_handle: The Cogl texture you want as your source
+ *
+ * This is a convenience function for creating a material with the first
+ * layer set to #texture_handle and setting that material as the source with
+ * cogl_set_source.
+ *
+ * Note: There is no interaction between calls to cogl_set_source_color
+ * and cogl_set_source_texture. If you need to blend a texture with a color then
+ * you can create a simple material like this:
+ * <programlisting>
+ * material = cogl_material_new ();
+ * cogl_material_set_color4ub (material, 0xff, 0x00, 0x00, 0x80);
+ * cogl_material_set_layer (material, 0, tex_handle);
+ * cogl_set_source (material);
+ * </programlisting>
+ *
+ * Since 1.0
+ */
+void            cogl_set_source_texture       (CoglHandle texture_handle);
+
 G_END_DECLS
 
 #undef __COGL_H_INSIDE__

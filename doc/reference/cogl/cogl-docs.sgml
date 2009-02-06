@@ -53,17 +53,15 @@
     </section>
 
     <xi:include href="xml/cogl.xml"/>
-    <xi:include href="xml/cogl-primitives.xml"/>
-    <xi:include href="xml/cogl-util.xml"/>
-    <xi:include href="xml/cogl-matrix.xml"/>
+    <xi:include href="xml/cogl-color.xml"/>
     <xi:include href="xml/cogl-texture.xml"/>
     <xi:include href="xml/cogl-material.xml"/>
+    <xi:include href="xml/cogl-primitives.xml"/>
+    <xi:include href="xml/cogl-vertex-buffer.xml"/>
+    <xi:include href="xml/cogl-matrix.xml"/>
     <xi:include href="xml/cogl-shaders.xml"/>
     <xi:include href="xml/cogl-offscreen.xml"/>
     <xi:include href="xml/cogl-fixed.xml"/>
-    <xi:include href="xml/cogl-color.xml"/>
-    <xi:include href="xml/cogl-vertex-buffer.xml"/>
-    <xi:include href="xml/cogl-material.xml"/>
 
   </chapter>
 
