@@ -1,6 +1,9 @@
 <SECTION>
 <FILE>cogl</FILE>
 <TITLE>General API</TITLE>
+COGL_INVALID_HANDLE
+CoglHandle
+CoglFuncPtr
 COGL_PIXEL_FORMAT_24
 COGL_PIXEL_FORMAT_32
 COGL_A_BIT
@@ -11,6 +14,15 @@ COGL_UNORDERED_MASK
 COGL_UNPREMULT_MASK
 CoglPixelFormat
 CoglBufferTarget
+<SUBSECTION>
+cogl_create_context
+cogl_destroy_context
+<SUBSECTION>
+CoglFeatureFlags
+cogl_get_features
+cogl_features_available
+cogl_check_extension
+cogl_get_proc_address
 <SUBSECTION>
 cogl_perspective
 cogl_frustum
@@ -26,6 +38,9 @@ cogl_scale
 cogl_translate
 cogl_rotate
 <SUBSECTION>
+cogl_get_bitmasks
+cogl_paint_init
+<SUBSECTION>
 CoglClipStackState
 cogl_clip_set
 cogl_clip_set_from_path
@@ -38,32 +53,27 @@ cogl_clip_ensure
 cogl_enable_depth_test
 cogl_enable_backface_culling
 cogl_fog_set
-</SECTION>
-
-<SECTION>
-<FILE>cogl-util</FILE>
-<TITLE>Utility API</TITLE>
-cogl_create_context
-cogl_destroy_context
-COGL_INVALID_HANDLE
-CoglHandle
-CoglFuncPtr
 <SUBSECTION>
-CoglFeatureFlags
-cogl_get_features
-cogl_features_available
-<SUBSECTION>
-cogl_get_proc_address
-cogl_check_extension
-cogl_get_bitmasks
-cogl_paint_init
-<SUBSECTION>
+cogl_set_source
+cogl_set_source_color
+cogl_set_source_color4ub
+cogl_set_source_color4f
+cogl_set_source_texture
+<SUBSECTION Private>
 cogl_util_next_p2
 </SECTION>
 
 <SECTION>
 <FILE>cogl-primitives</FILE>
 <TITLE>Primitives</TITLE>
+<SUBSECTION>
+cogl_rectangle
+cogl_rectangle_with_texture_coords
+cogl_rectangles_with_texture_coords
+cogl_rectangle_with_multitexture_coords
+cogl_polygon
+
+<SUBSECTION>
 cogl_path_new
 cogl_path_move_to
 cogl_path_close
@@ -85,18 +95,7 @@ cogl_path_fill
 cogl_path_fill_preserve
 cogl_path_stroke
 cogl_path_stroke_preserve
-cogl_set_source_color
-cogl_set_source_color4ub
-cogl_set_source_color4f
-cogl_set_source_texture
 cogl_color
-
-<SUBSECTION>
-cogl_rectangle
-cogl_polygon
-cogl_rectangle_with_multitexture_coords
-cogl_rectangle_with_texture_coords
-cogl_rectangles_with_texture_coords
 </SECTION>
 
 <SECTION>
@@ -132,7 +131,6 @@ CoglBitmap
 cogl_bitmap_new_from_file
 cogl_bitmap_free
 cogl_bitmap_get_size_from_file
-
 </SECTION>
 
 <SECTION>
@@ -166,13 +164,14 @@ cogl_program_uniform_matrix
 <FILE>cogl-offscreen</FILE>
 <TITLE>Offscreen Buffers</TITLE>
 cogl_offscreen_new_to_texture
-cogl_offscreen_new_multisample
 cogl_offscreen_ref
 cogl_offscreen_unref
 cogl_is_offscreen
 cogl_offscreen_blit
 cogl_offscreen_blit_region
 cogl_draw_buffer
+<SUBSECTION Private>
+cogl_offscreen_new_multisample
 </SECTION>
 
 <SECTION>
@@ -269,7 +268,6 @@ cogl_color_new
 cogl_color_copy
 cogl_color_free
 cogl_color_set_from_4ub
-cogl_color_set_from_4d
 cogl_color_set_from_4f
 
 <SUBSECTION>
@@ -294,19 +292,20 @@ cogl_color_get_alpha_float
 <SECTION>
 <FILE>cogl-vertex-buffer</FILE>
 <TITLE>Vertex Buffers</TITLE>
-CoglVertexBufferAttribFlags
-COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK
-COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK
 cogl_vertex_buffer_new
 cogl_vertex_buffer_ref
 cogl_vertex_buffer_unref
 cogl_vertex_buffer_add
 cogl_vertex_buffer_delete
-cogl_vertex_buffer_enable
-cogl_vertex_buffer_disable
 cogl_vertex_buffer_submit
+cogl_vertex_buffer_disable
+cogl_vertex_buffer_enable
 cogl_vertex_buffer_draw
 cogl_vertex_buffer_draw_range_elements
+<SUBSECTION Private>
+CoglVertexBufferAttribFlags
+COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK
+COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK
 </SECTION>
 
 <SECTION>
@@ -323,31 +322,29 @@ cogl_matrix_scale
 <SECTION>
 <FILE>cogl-material</FILE>
 <TITLE>Materials</TITLE>
-CoglMaterial
-CoglMaterialFlags
 cogl_material_new
 cogl_material_ref
 cogl_material_unref
-cogl_material_set_ambient
-cogl_material_get_ambient
-cogl_material_set_ambient_and_diffuse
 cogl_material_set_color
 cogl_material_set_color4ub
+cogl_material_set_color4f
 cogl_material_get_color
+cogl_material_set_ambient
+cogl_material_get_ambient
 cogl_material_set_diffuse
 cogl_material_get_diffuse
+cogl_material_set_ambient_and_diffuse
 cogl_material_set_emission
 cogl_material_get_emission
 cogl_material_set_specular
 cogl_material_get_specular
 cogl_material_set_shininess
 cogl_material_get_shininess
-cogl_set_source
+<SUBSECTION Advanced Blending>
 CoglMaterialAlphaFunc
 cogl_material_set_alpha_test_function
 CoglMaterialBlendFactor
 cogl_material_set_blend_factors
-CoglMaterialLayer
 cogl_material_set_layer
 cogl_material_remove_layer
 CoglMaterialLayerCombineFunc
@@ -358,14 +355,21 @@ cogl_material_set_layer_combine_arg_src
 CoglMaterialLayerCombineOp
 cogl_material_set_layer_combine_arg_op
 cogl_material_set_layer_matrix
+<SUBSECTION Private>
+CoglMaterial
+CoglMaterialFlags
+CoglMaterialLayerPrivFlags
 cogl_material_set_layer_alpha_combine
 cogl_material_set_layer_rgb_combine
+</SECTION>
+
+<SECTION>
+<FILE>cogl-material-internals</FILE>
+<TITLE>Material Internals</TITLE>
 cogl_material_get_cogl_enable_flags
 CoglMaterialFlushOption
-cogl_material_flush_gl_material_state
-cogl_material_flush_gl_alpha_func
-cogl_material_flush_gl_blend_func
 cogl_material_flush_gl_state
+CoglMaterialLayer
 cogl_material_get_layers
 CoglMaterialLayerType
 cogl_material_layer_get_type
@@ -373,8 +377,4 @@ CoglMaterialLayerFlags
 cogl_material_layer_get_flags
 cogl_material_layer_get_texture
 cogl_material_layer_flush_gl_sampler_state
-
-<SUBSECTION Private>
-CoglMaterialLayerPrivFlags
 </SECTION>
-

@@ -10,9 +10,9 @@ G_BEGIN_DECLS
  * @short_description: Fuctions for initializing and manipulating 4x4
  *                     matrices.
  *
- * Matrices are used in Cogl to describe affine model-view transforms and
- * texture transforms, and projective transforms. This exposes a utility API
- * that can be used for direct manipulation of these matrices.
+ * Matrices are used in Cogl to describe affine model-view transforms, texture
+ * transforms, and projective transforms. This exposes a utility API that can
+ * be used for direct manipulation of these matrices.
  */
 
 
@@ -22,7 +22,7 @@ G_BEGIN_DECLS
  * A CoglMatrix holds a 4x4 transform matrix. This is a single precision,
  * column-major matrix which means it is compatible with what OpenGL expects.
  *
- * A CoglMatix can represent transforms such as, rotations, scaling,
+ * A CoglMatrix can represent transforms such as, rotations, scaling,
  * translation, sheering, and linear projections. You can combine these
  * transforms by multiplying multiple matrices in the order you want them
  * applied.
