@@ -305,11 +305,17 @@ mutter_window_constructed (GObject *object)
 {
   MutterWindow        *self     = MUTTER_WINDOW (object);
   MutterWindowPrivate *priv     = self->priv;
-  MetaScreen            *screen   = priv->screen;
-  MetaDisplay           *display  = meta_screen_get_display (screen);
-  Window                 xwindow  = priv->xwindow;
-  Display               *xdisplay = meta_display_get_xdisplay (display);
-  XRenderPictFormat     *format;
+  MetaScreen          *screen   = priv->screen;
+  MetaDisplay         *display  = meta_screen_get_display (screen);
+  Window               xwindow  = priv->xwindow;
+  Display             *xdisplay = meta_display_get_xdisplay (display);
+  XRenderPictFormat   *format;
+  gulong               value;
+  Mutter              *compositor;
+  Window               xwin_child;
+
+  compositor = (Mutter*) meta_display_get_compositor (display);
+  xwin_child = meta_window_get_xwindow (priv->window);
 
   mutter_window_query_window_type (self);
 
@@ -331,11 +337,21 @@ mutter_window_constructed (GObject *object)
   if (format && format->type == PictTypeDirect && format->direct.alphaMask)
     priv->argb32 = TRUE;
 
+  if (meta_prop_get_cardinal (display, xwin_child,
+                              compositor->atom_net_wm_window_opacity,
+                              &value))
+    {
+      guint8 opacity;
+
+      opacity = (guint8)((gfloat)value * 255.0 / ((gfloat)0xffffffff));
+
+      printf ("setting opacity to %d\n", opacity);
+      priv->opacity = opacity;
+      clutter_actor_set_opacity (CLUTTER_ACTOR (self), opacity);
+    }
+
   if (mutter_window_has_shadow (self))
     {
-      Mutter *compositor =
-	(Mutter*)meta_display_get_compositor (display);
-
       priv->shadow =
 	tidy_texture_frame_new (CLUTTER_TEXTURE (compositor->shadow_src),
 				MAX_TILE_SZ,
@@ -356,9 +372,7 @@ mutter_window_constructed (GObject *object)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
 
-  update_shape ((Mutter *)
-                 meta_display_get_compositor (display),
-                 self);
+  update_shape (compositor, self);
 }
 
 static void
@@ -1509,12 +1523,13 @@ process_property_notify (Mutter		*compositor,
 
       if (meta_prop_get_cardinal (display, event->window,
                                   compositor->atom_net_wm_window_opacity,
-                                  &value) == FALSE)
+                                  &value))
 	{
 	  guint8 opacity;
 
 	  opacity = (guint8)((gfloat)value * 255.0 / ((gfloat)0xffffffff));
 
+          printf ("setting opacity to %d\n", opacity);
 	  cw->priv->opacity = opacity;
 	  clutter_actor_set_opacity (CLUTTER_ACTOR (cw), opacity);
 	}
