@@ -30,7 +30,7 @@
 
 /*
  * TODO: We need to do a better job of minimizing when we call glVertexPointer
- * and pals in enable_state_for_drawing_attributes_buffer
+ * and pals in enable_state_for_drawing_buffer
  *
  * We should have an internal 2-tuple cache of (VBO, offset) for each of them
  * so we can avoid some GL calls. We could have cogl wrappers for the
@@ -394,7 +394,7 @@ get_gl_type_size (CoglVertexBufferAttribFlags flags)
       return sizeof (GLdouble);
 #endif
     default:
-      g_warning ("Mesh API: Unrecognised OpenGL type enum 0x%08x\n", gl_type);
+      g_warning ("Vertex Buffer API: Unrecognised OpenGL type enum 0x%08x\n", gl_type);
       return 0;
     }
 }
@@ -1408,7 +1408,7 @@ get_gl_type_from_attribute_flags (CoglVertexBufferAttribFlags flags)
 }
 
 static void
-enable_state_for_drawing_attributes_buffer (CoglVertexBuffer *buffer)
+enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 {
   GList       *tmp;
   GLenum       gl_type;
@@ -1442,8 +1442,8 @@ enable_state_for_drawing_attributes_buffer (CoglVertexBuffer *buffer)
 	  switch (type)
 	    {
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
-	      /* FIXME: go through cogl cache to enable color array */
-	      GE (glEnableClientState (GL_COLOR_ARRAY));
+	      enable_flags |= COGL_ENABLE_COLOR_ARRAY | COGL_ENABLE_BLEND;
+	      /* GE (glEnableClientState (GL_COLOR_ARRAY)); */
 	      GE (glColorPointer (attribute->n_components,
 				  gl_type,
 				  attribute->stride,
@@ -1532,8 +1532,6 @@ enable_state_for_drawing_attributes_buffer (CoglVertexBuffer *buffer)
            */
           fallback_mask |= (1 << i);
         }
-      else if (!(disable_mask & (1 << i)))
-        fallback_mask |= (1 << i);
     }
 
   cogl_material_flush_gl_state (ctx->source_material,
@@ -1581,8 +1579,7 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	  switch (type)
 	    {
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
-	      /* FIXME: go through cogl cache to enable color array */
-	      GE (glDisableClientState (GL_COLOR_ARRAY));
+	      /* GE (glDisableClientState (GL_COLOR_ARRAY)); */
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
 	      /* FIXME: go through cogl cache to enable normal array */
@@ -1622,7 +1619,7 @@ cogl_vertex_buffer_draw (CoglHandle handle,
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  enable_state_for_drawing_attributes_buffer (buffer);
+  enable_state_for_drawing_buffer (buffer);
 
   /* FIXME: flush cogl cache */
   GE (glDrawArrays (mode, first, count));
@@ -1648,7 +1645,7 @@ cogl_vertex_buffer_draw_elements (CoglHandle handle,
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  enable_state_for_drawing_attributes_buffer (buffer);
+  enable_state_for_drawing_buffer (buffer);
 
   /* FIXME: flush cogl cache */
   GE (glDrawRangeElements (mode, min_index, max_index,

@@ -18,6 +18,8 @@
 typedef struct _TestState
 {
   CoglHandle buffer;
+  CoglHandle texture;
+  CoglHandle material;
   ClutterGeometry stage_geom;
   guint frame;
 } TestState;
@@ -74,9 +76,9 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_vertex_buffer_enable (state->buffer, "gl_Color::blue");
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw (state->buffer,
-			       GL_TRIANGLE_STRIP, /* mode */
-			       0, /* first */
-			       3); /* count */
+			   GL_TRIANGLE_STRIP, /* mode */
+			   0, /* first */
+			   3); /* count */
 
   /* Draw a red triangle */
   /* Here we are testing that the disable attribute works; if it doesn't
@@ -99,6 +101,15 @@ on_paint (ClutterActor *actor, TestState *state)
 			   GL_TRIANGLE_STRIP, /* mode */
 			   0, /* first */
 			   3); /* count */
+
+  /* Draw a textured triangle */
+  cogl_translate (100, 0, 0);
+  cogl_vertex_buffer_disable (state->buffer, "gl_Color::blue");
+  cogl_set_source (state->material);
+  cogl_vertex_buffer_draw (state->buffer,
+                           GL_TRIANGLE_STRIP, /* mode */
+                           0, /* first */
+                           3); /* count */
 
   /* XXX: Experiments have shown that for some buggy drivers, when using
    * glReadPixels there is some kind of race, so we delay our test for a
@@ -150,6 +161,15 @@ test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
 
+  state.texture = cogl_texture_new_from_file ("redhand.png", 64,
+                                              COGL_TEXTURE_NONE,
+                                              COGL_PIXEL_FORMAT_ANY,
+                                              NULL);
+
+  state.material = cogl_material_new ();
+  cogl_material_set_color4ub (state.material, 0x00, 0xff, 0x00, 0xff);
+  cogl_material_set_layer (state.material, 0, state.texture);
+
   {
     GLfloat triangle_verts[3][2] =
       {
@@ -162,6 +182,12 @@ test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
 	{0x00, 0x00, 0xff, 0xff}, /* blue */
 	{0x00, 0x00, 0xff, 0x00}, /* transparent blue */
 	{0x00, 0x00, 0xff, 0x00}  /* transparent blue */
+      };
+    GLfloat triangle_tex_coords[3][2] =
+      {
+        {0.0, 0.0},
+        {1.0, 1.0},
+        {0.0, 1.0}
       };
     state.buffer = cogl_vertex_buffer_new (3 /* n vertices */);
     cogl_vertex_buffer_add (state.buffer,
@@ -178,6 +204,14 @@ test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
 			    FALSE, /* normalized */
 			    0, /* stride */
 			    triangle_colors);
+    cogl_vertex_buffer_add (state.buffer,
+			    "gl_MultiTexCoord0",
+			    2, /* n components */
+			    GL_FLOAT,
+			    FALSE, /* normalized */
+			    0, /* stride */
+			    triangle_tex_coords);
+
     cogl_vertex_buffer_submit (state.buffer);
   }
 
@@ -186,6 +220,8 @@ test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
   clutter_main ();
 
   cogl_vertex_buffer_unref (state.buffer);
+  cogl_material_unref (state.material);
+  cogl_texture_unref (state.texture);
 
   g_source_remove (idle_source);
 
