@@ -1,5 +1,14 @@
 2009-02-05  Thomas Thurman  <tthurman@gnome.org>
 
+        Lines where x1==x2 or y1==y2 may have the second element
+        null.  Lines where both are null, and the width is zero,
+        are points.  This speeds things up surprisingly much.
+
+	* src/ui/theme-parser.c:
+	* src/ui/theme.c:
+
+2009-02-05  Thomas Thurman  <tthurman@gnome.org>
+
 	* src/core/main.c: incredibly baroque system to make sure
         the translators don't have to update the year number every year.
 

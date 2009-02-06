@@ -1658,8 +1658,16 @@ parse_draw_op_element (GMarkupParseContext  *context,
 
       op->data.line.x1 = meta_draw_spec_new (info->theme, x1, NULL);
       op->data.line.y1 = meta_draw_spec_new (info->theme, y1, NULL);
-      op->data.line.x2 = meta_draw_spec_new (info->theme, x2, NULL);
-      op->data.line.y2 = meta_draw_spec_new (info->theme, y2, NULL);
+
+      if (strcmp(x1, x2)==0)
+        op->data.line.x2 = NULL;
+      else
+        op->data.line.x2 = meta_draw_spec_new (info->theme, x2, NULL);
+
+      if (strcmp(y1, y2)==0)
+        op->data.line.y2 = NULL;
+      else
+        op->data.line.y2 = meta_draw_spec_new (info->theme, y2, NULL);
 
       op->data.line.width = width_val;
       op->data.line.dash_on_length = dash_on_val;
