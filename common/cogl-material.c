@@ -30,6 +30,8 @@ COGL_HANDLE_DEFINE (MaterialLayer,
 		    material_layer,
 		    material_layer_handles);
 
+/* #define DISABLE_MATERIAL_CACHE 1 */
+
 CoglHandle
 cogl_material_new (void)
 {
@@ -748,9 +750,11 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
   int n_rgb_func_args;
   int n_alpha_func_args;
 
+#ifndef DISABLE_MATERIAL_CACHE
   if (!(gl_layer_info &&
         gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE &&
         layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+#endif
     {
       GE (glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE));
 
@@ -813,9 +817,11 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
         }
     }
 
+#ifndef DISABLE_MATERIAL_CACHE
   if (gl_layer_info &&
       (gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX ||
        layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX))
+#endif
     {
       GE (glMatrixMode (GL_TEXTURE));
       GE (glLoadMatrixf ((GLfloat *)&layer->matrix));
@@ -879,6 +885,15 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* TODO
+  if (ctx->current_material == material &&
+      !(material->flags & COGL_MATERIAL_FLAG_LAYERS_DIRTY) &&
+      ctx->current_material_fallback_mask == fallback_mask &&
+      ctx->current_material_disable_mask == disable_mask &&
+      ctx->current_material_layer0_override = layer0_override_texture)
+    return;
+  */
+
   for (tmp = material->layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
       CoglHandle         layer_handle = (CoglHandle)tmp->data;
@@ -899,21 +914,24 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
         (fallback_mask & (1<<i)) ? TRUE : FALSE;
       new_gl_layer_info.disabled =
         (disable_mask & (1<<i)) ? TRUE : FALSE;
-
       if (i < ctx->current_layers->len)
         {
           gl_layer_info =
             &g_array_index (ctx->current_layers, CoglLayerInfo, i);
 
+#ifndef DISABLE_MATERIAL_CACHE
           if (gl_layer_info->handle == layer_handle &&
               !(layer->flags & COGL_MATERIAL_LAYER_FLAG_DIRTY) &&
-              (gl_layer_info->layer0_overridden
-               == new_gl_layer_info.layer0_overridden) &&
+              !(gl_layer_info->layer0_overridden ||
+                new_gl_layer_info.layer0_overridden) &&
               (gl_layer_info->fallback
                == new_gl_layer_info.fallback) &&
               (gl_layer_info->disabled
                == new_gl_layer_info.disabled))
-            continue;
+            {
+              continue;
+            }
+#endif
         }
 
       tex_handle = layer->texture;
@@ -966,25 +984,40 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 #endif
 
       /* Disable the previous target if it was different */
+#ifndef DISABLE_MATERIAL_CACHE
       if (gl_layer_info &&
           gl_layer_info->gl_target != gl_target &&
           !gl_layer_info->disabled)
+        {
+          GE (glDisable (gl_layer_info->gl_target));
+        }
+#else
+      if (gl_layer_info)
         GE (glDisable (gl_layer_info->gl_target));
+#endif
 
       /* Enable/Disable the new target */
       if (!new_gl_layer_info.disabled)
         {
+#ifndef DISABLE_MATERIAL_CACHE
           if (!(gl_layer_info &&
                 gl_layer_info->gl_target == gl_target &&
                 !gl_layer_info->disabled))
-            GE (glEnable (gl_target));
+#endif
+            {
+              GE (glEnable (gl_target));
+            }
         }
       else
         {
+#ifndef DISABLE_MATERIAL_CACHE
           if (!(gl_layer_info &&
                 gl_layer_info->gl_target == gl_target &&
                 gl_layer_info->disabled))
-            GE (glDisable (gl_target));
+#endif
+            {
+              GE (glDisable (gl_target));
+            }
         }
 
       _cogl_material_layer_flush_gl_sampler_state (layer, gl_layer_info);
@@ -1011,7 +1044,9 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
       CoglLayerInfo *gl_layer_info =
         &g_array_index (ctx->current_layers, CoglLayerInfo, i);
 
+#ifndef DISABLE_MATERIAL_CACHE
       if (!gl_layer_info->disabled)
+#endif
         {
           GE (glActiveTexture (GL_TEXTURE0 + i));
           GE (glDisable (gl_layer_info->gl_target));
@@ -1019,13 +1054,19 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
         }
     }
 
-  material->flags &= ~COGL_MATERIAL_FLAG_DIRTY;
+  material->flags &= ~COGL_MATERIAL_FLAG_LAYERS_DIRTY;
 }
 
 static void
 _cogl_material_flush_base_gl_state (CoglMaterial *material)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+#ifndef DISABLE_MATERIAL_CACHE
+  if (ctx->current_material == material &&
+      !(material->flags & COGL_MATERIAL_FLAG_DIRTY))
+    return;
+#endif
 
   if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR
         && material->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
@@ -1076,35 +1117,24 @@ cogl_material_flush_gl_state (CoglHandle handle, ...)
 
   material = _cogl_material_pointer_from_handle (handle);
 
-  if (ctx->current_material == material &&
-      !(material->flags & COGL_MATERIAL_FLAG_DIRTY) &&
-      !(material->flags & COGL_MATERIAL_FLAG_LAYERS_DIRTY))
-    return;
+  _cogl_material_flush_base_gl_state (material);
 
-  if (ctx->current_material != material ||
-      material->flags & COGL_MATERIAL_FLAG_DIRTY)
-    _cogl_material_flush_base_gl_state (material);
-
-  if (ctx->current_material != material ||
-      material->flags & COGL_MATERIAL_FLAG_LAYERS_DIRTY)
+  va_start (ap, handle);
+  while ((option = va_arg (ap, CoglMaterialFlushOption)))
     {
-      va_start (ap, handle);
-      while ((option = va_arg (ap, CoglMaterialFlushOption)))
-        {
-          if (option == COGL_MATERIAL_FLUSH_FALLBACK_MASK)
-            fallback_layers = va_arg (ap, guint32);
-          else if (option == COGL_MATERIAL_FLUSH_DISABLE_MASK)
-            disable_layers = va_arg (ap, guint32);
-          else if (option == COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE)
-            layer0_override_texture = va_arg (ap, GLuint);
-        }
-      va_end (ap);
-
-      _cogl_material_flush_layers_gl_state (material,
-                                            fallback_layers,
-                                            disable_layers,
-                                            layer0_override_texture);
+      if (option == COGL_MATERIAL_FLUSH_FALLBACK_MASK)
+        fallback_layers = va_arg (ap, guint32);
+      else if (option == COGL_MATERIAL_FLUSH_DISABLE_MASK)
+        disable_layers = va_arg (ap, guint32);
+      else if (option == COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE)
+        layer0_override_texture = va_arg (ap, GLuint);
     }
+  va_end (ap);
+
+  _cogl_material_flush_layers_gl_state (material,
+                                        fallback_layers,
+                                        disable_layers,
+                                        layer0_override_texture);
 
   /* NB: we have to take a reference so that next time
    * cogl_material_flush_gl_state is called, we can compare the incomming
@@ -1116,8 +1146,6 @@ cogl_material_flush_gl_state (CoglHandle handle, ...)
   ctx->current_material = handle;
   ctx->current_material_flags = material->flags;
 }
-
-
 
 /* TODO: Should go in cogl.c, but that implies duplication which is also
  * not ideal. */
