@@ -152,41 +152,42 @@ clutter_texture_error_quark (void)
   return g_quark_from_static_string ("clutter-texture-error-quark");
 }
 
-static COGLenum
-clutter_texture_quality_to_cogl_min_filter (ClutterTextureQuality buf_filter)
+static inline void
+clutter_texture_quality_to_filters (ClutterTextureQuality  quality,
+                                    gint                  *min_filter_p,
+                                    gint                  *mag_filter_p)
 {
-  switch (buf_filter)
-    {
-      case CLUTTER_TEXTURE_QUALITY_LOW:
-        return CGL_NEAREST;
-      case CLUTTER_TEXTURE_QUALITY_MEDIUM:
-        return CGL_LINEAR;
-      case CLUTTER_TEXTURE_QUALITY_HIGH:
-        return CGL_LINEAR_MIPMAP_LINEAR;
-    }
-  return 0;
-}
+  gint min_filter, mag_filter;
 
-static COGLenum
-clutter_texture_quality_to_cogl_mag_filter (ClutterTextureQuality buf_filter)
-{
-  switch (buf_filter)
+  switch (quality)
     {
-      case CLUTTER_TEXTURE_QUALITY_LOW:
-        return CGL_NEAREST;
-      case CLUTTER_TEXTURE_QUALITY_MEDIUM:
-      case CLUTTER_TEXTURE_QUALITY_HIGH:
-        return CGL_LINEAR;
+    case CLUTTER_TEXTURE_QUALITY_LOW:
+      min_filter = CGL_NEAREST;
+      mag_filter = CGL_NEAREST;
+      break;
+
+    case CLUTTER_TEXTURE_QUALITY_MEDIUM:
+      min_filter = CGL_LINEAR;
+      mag_filter = CGL_LINEAR;
+      break;
+
+    case CLUTTER_TEXTURE_QUALITY_HIGH:
+      min_filter = CGL_LINEAR_MIPMAP_LINEAR;
+      mag_filter = CGL_LINEAR;
+      break;
     }
-  return 0;
+
+  if (min_filter_p)
+    *min_filter_p = min_filter;
+
+  if (mag_filter_p)
+    *mag_filter_p = mag_filter;
 }
 
 static void
 texture_free_gl_resources (ClutterTexture *texture)
 {
-  ClutterTexturePrivate *priv;
-
-  priv = texture->priv;
+  ClutterTexturePrivate *priv = texture->priv;
 
   CLUTTER_MARK();
 
@@ -259,6 +260,7 @@ clutter_texture_realize (ClutterActor *actor)
   if (priv->fbo_source)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
+      gint min_filter, mag_filter;
       gint max_waste = -1;
 
       /* Handle FBO's */
@@ -278,9 +280,11 @@ clutter_texture_realize (ClutterActor *actor)
                                     max_waste, flags,
                                     COGL_PIXEL_FORMAT_RGBA_8888);
 
-      cogl_texture_set_filters (priv->fbo_texture,
-            clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
-            clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+      clutter_texture_quality_to_filters (priv->filter_quality,
+                                          &min_filter,
+                                          &mag_filter);
+
+      cogl_texture_set_filters (priv->fbo_texture, min_filter, mag_filter);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (priv->fbo_texture);
 
@@ -1309,6 +1313,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   /* Remove FBO if exisiting */
   if (priv->fbo_source)
     texture_fbo_free_resources (texture);
+
   /* Remove old texture */
   texture_free_gl_resources (texture);
   /* Use the new texture */
@@ -1362,6 +1367,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   ClutterTexturePrivate *priv = texture->priv;
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
+  gint min_filter, mag_filter;
   gint max_waste = -1;
 
   if (!priv->no_slice)
@@ -1386,9 +1392,11 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
       return FALSE;
     }
 
-  cogl_texture_set_filters (new_texture,
-          clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
-          clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+  clutter_texture_quality_to_filters (priv->filter_quality,
+                                      &min_filter,
+                                      &mag_filter);
+
+  cogl_texture_set_filters (new_texture, min_filter, mag_filter);
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1739,6 +1747,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   GError *internal_error = NULL;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
+  gint min_filter, mag_filter;
   gint max_waste = -1;
 
   priv = texture->priv;
@@ -1781,9 +1790,11 @@ clutter_texture_set_from_file (ClutterTexture *texture,
       return FALSE;
     }
 
-  cogl_texture_set_filters (new_texture,
-             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
-             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+  clutter_texture_quality_to_filters (priv->filter_quality,
+                                      &min_filter,
+                                      &mag_filter);
+
+  cogl_texture_set_filters (new_texture, min_filter, mag_filter);
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1826,13 +1837,17 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
   if (filter_quality != old_quality)
     {
       CoglHandle cogl_texture = clutter_texture_get_cogl_texture (texture);
+      gint min_filter, mag_filter;
+
       priv->filter_quality = filter_quality;
+
+      clutter_texture_quality_to_filters (priv->filter_quality,
+                                          &min_filter,
+                                          &mag_filter);
 
       /* Is this actually needed - causes problems with TFP mipmaps */
       if (cogl_texture != COGL_INVALID_HANDLE)
-	cogl_texture_set_filters (cogl_texture,
-             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
-             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+	cogl_texture_set_filters (cogl_texture, min_filter, mag_filter);
 
       if ((old_quality == CLUTTER_TEXTURE_QUALITY_HIGH ||
            filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
@@ -2132,6 +2147,7 @@ on_fbo_source_size_change (GObject          *object,
   if (w != priv->width || h != priv->height)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
+      gint min_filter, mag_filter;
 
       /* tear down the FBO */
       cogl_offscreen_unref (priv->fbo_handle);
@@ -2151,9 +2167,11 @@ on_fbo_source_size_change (GObject          *object,
                                     flags,
 				    COGL_PIXEL_FORMAT_RGBA_8888);
 
-      cogl_texture_set_filters (priv->fbo_texture,
-            clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
-            clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+      clutter_texture_quality_to_filters (priv->filter_quality,
+                                          &min_filter,
+                                          &mag_filter);
+
+      cogl_texture_set_filters (priv->fbo_texture, min_filter, mag_filter);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (priv->fbo_texture);
 
