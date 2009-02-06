@@ -87,6 +87,15 @@ WindowManager.prototype = {
         return true;
     },
 
+    _removeEffect : function(list, actor) {
+        let idx = list.indexOf(actor);
+        if (idx != -1) {
+            list.splice(idx, 1);
+            return true;
+        }
+        return false;
+    },
+
     _minimizeWindow : function(actor) {
         if (!this._shouldAnimate(actor)) {
             this._shellwm.completed_minimize(actor);
@@ -107,22 +116,29 @@ WindowManager.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._minimizeWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [actor]
+                           onCompleteParams: [actor],
+                           onOverwrite: this._minimizeWindowOverwritten,
+                           onOverwriteScope: this,
+                           onOverwriteParams: [actor]
                          });
     },
 
     _minimizeWindowDone : function(actor) {
-        let idx = this._minimizing.indexOf(actor);
-        if (idx != -1) {
+        if (this._removeEffect(this._minimizing, actor)) {
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
             actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
-            this._shellwm.completed_minimize(actor);
 
-            this._minimizing.splice(idx, 1);
+            this._shellwm.completed_minimize(actor);
         }
     },
-    
+
+    _minimizeWindowOverwritten : function(actor) {
+        if (this._removeEffect(this._minimizing, actor)) {
+            this._shellwm.completed_minimize(actor);
+        }
+    },
+
     _maximizeWindow : function(actor, target_x, target_y, target_width, target_height) {
         if (!this._shouldAnimate(actor)) {
             this._shellwm.completed_maximize(actor);
@@ -148,19 +164,25 @@ WindowManager.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._maximizeWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [actor]
+                           onCompleteParams: [actor],
+                           onOverwrite: this._maximizeWindowOverwrite,
+                           onOverwriteScope: this,
+                           onOverwriteParams: [actor]
                          });
     },
 
     _maximizeWindowDone : function(actor) {
-        let idx = this._maximizing.indexOf(actor);
-        if (idx != -1) {
+        if (this._removeEffect(this._maximizing, actor)) {
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
             actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
             this._shellwm.completed_maximize(actor);
-            
-            this._maximizing.splice(idx, 1);
+        }
+    },
+
+    _maximizeWindowOverwrite : function(actor) {
+        if (this._removeEffect(this._maximizing, actor)) {
+            this._shellwm.completed_maximize(actor);
         }
     },
 
@@ -190,19 +212,25 @@ WindowManager.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._mapWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [actor]
+                           onCompleteParams: [actor],
+                           onOverwrite: this._mapWindowOverwrite,
+                           onOverwriteScope: this,
+                           onOverwriteParams: [actor]
                          });
     },
 
     _mapWindowDone : function(actor) {
-        let idx = this._mapping.indexOf(actor);
-        if (idx != -1) {
+        if (this._removeEffect(this._mapping, actor)) {
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
             actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
             this._shellwm.completed_map(actor);
-            
-            this._mapping.splice(idx, 1);
+        }
+    },
+
+    _mapWindowOverwrite : function(actor) {
+        if (this._removeEffect(this._mapping, actor)) {
+            this._shellwm.completed_map(actor);
         }
     },
 
@@ -223,18 +251,24 @@ WindowManager.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._destroyWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [actor]
+                           onCompleteParams: [actor],
+                           onOverwrite: this._destroyWindowOverwrite,
+                           onOverwriteScope: this,
+                           onOverwriteParams: [actor]
                          });
     },
     
     _destroyWindowDone : function(actor) {
-        let idx = this._destroying.indexOf(actor);
-        if (idx != -1) {
+        if (this._removeEffect(this._destroying, actor)) {
             this._shellwm.completed_destroy(actor);
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
-            
-            this._mapping.splice(idx, 1);
+        }
+    },
+
+    _destroyWindowOverwrite : function(actor) {
+        if (this._removeEffect(this._destroying, actor)) {
+            this._shellwm.completed_destroy(actor);
         }
     },
 
