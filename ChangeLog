@@ -1,3 +1,7 @@
+2009-02-07  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/ui/theme.c: some commenting
+
 2009-02-07  Matt Kraai  <kraai@ftfbs.org>
 
 	* src/core/display.c: Only skip the first window in
