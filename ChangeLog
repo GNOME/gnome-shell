@@ -1,3 +1,10 @@
+2009-02-07  Matt Kraai  <kraai@ftfbs.org>
+
+	* src/core/display.c: Only skip the first window in
+        the alt-tab chain if it's actually the current window
+        (urgent windows on other workspaces may precede it).
+        Fixes #535887.
+
 2009-02-05  Thomas Thurman  <tthurman@gnome.org>
 
         Lines where x1==x2 or y1==y2 may have the second element

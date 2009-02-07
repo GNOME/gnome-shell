@@ -4484,7 +4484,7 @@ meta_display_get_tab_next (MetaDisplay   *display,
   else
     {
       skip = display->focus_window != NULL && 
-             IN_TAB_CHAIN (display->focus_window, type);
+             tab_list->data == display->focus_window;
       if (backward)
         ret = find_tab_backward (display, type, screen, workspace,
                                  tab_list, skip);
