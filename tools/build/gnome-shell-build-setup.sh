@@ -20,6 +20,10 @@ For Debian-based systems run:
 
 For Red Hat-based systems run:
 	yum install curl
+
+For SuSE-based systems run:
+	zypper install curl
+
 EOF
 	exit 1
 fi
@@ -63,6 +67,8 @@ if which lsb_release > /dev/null 2>&1; then
   system=`lsb_release -is`
 elif [ -f /etc/fedora-release ] ; then
   system=Fedora
+elif [ -f /etc/SuSE-release ] ; then
+  system=SuSE
 fi
 
 if test x$system = xUbuntu -o x$system = xDebian ; then
@@ -92,6 +98,21 @@ if test x$system = xFedora ; then
   done
   if test ! "x$reqd" = x; then
     gpk-install-package-name $reqd
+  fi
+fi
+
+if test x$system = xSuSE ; then
+  reqd=""
+  for pkg in libffi-devel xorg-x11-devel gnome-doc-utils-devel \
+    mozilla-xulrunner190-devel libgnomeui-devel xterm xorg-x11 xorg-x11-server-extra \
+    libwnck-devel gconf2-devel readline-devel flex bison; do
+      if ! rpm -q $pkg > /dev/null 2>&1; then
+        reqd="$pkg $reqd"
+      fi
+  done
+  if test ! "x$reqd" = x; then
+    echo "Please run 'su --command=\"zypper install $reqd\"' before building gnome-shell."
+    echo
   fi
 fi
 
