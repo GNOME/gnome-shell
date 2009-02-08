@@ -1,5 +1,16 @@
 2009-02-07  Thomas Thurman  <tthurman@gnome.org>
 
+        Windows demanding attention should never appear in the
+        alt-tab list unless they're of a type which might have appeared
+        there anyway.  This solves a problem under AWN where docks which were
+        marked as demanding attention appeared in all alt-tab lists;
+        they were irrelevant and it was impossible to remove them from the
+        lists.
+
+	* src/core/display.c:
+
+2009-02-07  Thomas Thurman  <tthurman@gnome.org>
+
 	* src/ui/theme.c: some commenting
 
 2009-02-07  Matt Kraai  <kraai@ftfbs.org>
