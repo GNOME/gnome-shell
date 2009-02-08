@@ -4564,7 +4564,8 @@ meta_display_get_tab_list (MetaDisplay   *display,
 
         /* Check to see if it demands attention */
         if (l_window->wm_state_demands_attention && 
-            l_window->workspace!=workspace) 
+            l_window->workspace!=workspace &&
+            IN_TAB_CHAIN (l_window, type)) 
           {
             /* if it does, add it to the popup */
             tab_list = g_list_prepend (tab_list, l_window);
