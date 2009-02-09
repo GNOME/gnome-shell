@@ -26,6 +26,7 @@ test_conformance_SOURCES = 		\
         test-clutter-text.c             \
         test-text-cache.c               \
 	test-anchors.c                  \
+	test-npot-texture.c             \
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
