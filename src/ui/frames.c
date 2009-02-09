@@ -2482,7 +2482,7 @@ meta_frames_set_window_background (MetaFrames   *frames,
 {
   MetaFrameFlags flags;
   MetaFrameType type;
-  MetaFrameStyle *style;
+  MetaFrameStyle *style = NULL;
   gboolean frame_exists;
 
   meta_core_get (gdk_display, frame->xwindow,
