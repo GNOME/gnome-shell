@@ -972,7 +972,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 
     if (priv->needs_destroy && effect_in_progress (cw, TRUE) == FALSE)
       {
-	clutter_actor_destroy (CLUTTER_ACTOR (cw));
+	clutter_actor_unparent (CLUTTER_ACTOR (cw));
 	return;
       }
 
@@ -1040,7 +1040,7 @@ destroy_win (MutterWindow *cw)
       /*
        * No effects, just kill it.
        */
-      clutter_actor_destroy (CLUTTER_ACTOR (cw));
+      clutter_actor_unparent (CLUTTER_ACTOR (cw));
       return;
     }
 
@@ -1062,7 +1062,7 @@ destroy_win (MutterWindow *cw)
 	  priv->needs_destroy = TRUE;
 	}
       else
-	clutter_actor_destroy (CLUTTER_ACTOR (cw));
+	clutter_actor_unparent (CLUTTER_ACTOR (cw));
     }
 }
 
