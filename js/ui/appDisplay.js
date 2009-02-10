@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const Gdk = imports.gi.Gdk;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -89,7 +90,15 @@ AppDisplayItem.prototype = {
 
     // Opens an application represented by this display item.
     launch : function() {
-        this._appInfo.launch([], null);
+        let global = Shell.Global.get();
+        let screen = global.screen;
+        let display = screen.get_display();
+        let timestamp = display.get_current_time();
+        let context = new Gdk.AppLaunchContext();
+        let icon = this._appInfo.get_icon();
+        context.set_icon(icon);
+        context.set_timestamp(timestamp);
+        this._appInfo.launch([], context);
     }
 
 };
