@@ -20,11 +20,14 @@ const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
 OVERLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
 
 const LABEL_HEIGHT = 16;
+// We use SIDESHOW_PAD for the padding on the left side of the sideshow and as a gap
+// between sideshow columns.
 const SIDESHOW_PAD = 6;
-const SIDESHOW_PAD_BOTTOM = 40;
 const SIDESHOW_MIN_WIDTH = 250;
 const SIDESHOW_SECTION_MARGIN = 10;
 const SIDESHOW_SECTION_LABEL_MARGIN_BOTTOM = 6;
+const SIDESHOW_COLUMNS = 1;
+const EXPANDED_SIDESHOW_COLUMNS = 2;
 const SIDESHOW_SEARCH_BG_COLOR = new Clutter.Color();
 SIDESHOW_SEARCH_BG_COLOR.from_pixel(0xffffffff);
 const SIDESHOW_TEXT_COLOR = new Clutter.Color();
@@ -33,15 +36,40 @@ SIDESHOW_TEXT_COLOR.from_pixel(0xffffffff);
 // Time for initial animation going into overlay mode
 const ANIMATION_TIME = 0.5;
 
-// How much of the screen the workspace grid takes up
-const WORKSPACE_GRID_SCALE = 0.75;
+// We divide the screen into a grid of rows and columns, which we use
+// to help us position the overlay components, such as the side panel
+// that lists applications and documents, the workspaces display, and 
+// the button for adding additional workspaces.
+// In the regular mode, the side panel takes up one column on the left,
+// and the workspaces display takes up the remaining columns.
+// In the expanded side panel display mode, the side panel takes up two
+// columns, and the workspaces display slides all the way to the right,
+// being visible only in the last quarter of the right-most column.
+// In the future, this mode will have more components, such as a display 
+// of documents which were recently opened with a given application, which 
+// will take up the remaining sections of the display.
 
-// How much of the screen the workspace grid takes up when it is moved aside to provide space 
-// for an expanded 'More' view
-const WORKSPACE_GRID_ASIDE_SCALE = 0.1;
+const WIDE_SCREEN_CUT_OFF_RATIO = 1.4;
+
+const COLUMNS_REGULAR_SCREEN = 4;
+const ROWS_REGULAR_SCREEN = 8;
+const COLUMNS_WIDE_SCREEN = 5;
+const ROWS_WIDE_SCREEN = 10;
 
 // Padding around workspace grid / Spacing between Sideshow and Workspaces
-const WORKSPACE_GRID_PADDING = 10;
+const WORKSPACE_GRID_PADDING = 12;
+
+const COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN = 3;
+const ROWS_FOR_WORKSPACES_REGULAR_SCREEN = 6;
+const WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN = 4 - 0.25;
+
+const COLUMNS_FOR_WORKSPACES_WIDE_SCREEN = 4;
+const ROWS_FOR_WORKSPACES_WIDE_SCREEN = 8;
+const WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN = 5 - 0.25;
+
+let wideScreen = false;
+let displayGridColumnWidth = null;
+let displayGridRowHeight = null;
 
 function Sideshow(parent, width) {
     this._init(parent, width);
@@ -53,7 +81,7 @@ Sideshow.prototype = {
 
         this._moreMode = false;
 
-        this._width = width;
+        this._width = width - SIDESHOW_PAD;
 
         let global = Shell.Global.get();
         this.actor = new Clutter.Group();
@@ -63,7 +91,7 @@ Sideshow.prototype = {
                                  corner_radius: 4,
                                  x: SIDESHOW_PAD,
                                  y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
-                                 width: width,
+                                 width: this._width,
                                  height: 24});
         this.actor.add_actor(rect);
 
@@ -152,9 +180,11 @@ Sideshow.prototype = {
         let sectionLabelHeight = LABEL_HEIGHT + SIDESHOW_SECTION_LABEL_MARGIN_BOTTOM;
         let menuY = this._appsText.y + sectionLabelHeight;
 
+        let bottomHeight = displayGridRowHeight / 2;
+
         // extra LABEL_HEIGHT is for the More link
-        this._itemDisplayHeight = global.screen_height - menuY - SIDESHOW_SECTION_MARGIN - sectionLabelHeight - SIDESHOW_PAD_BOTTOM - LABEL_HEIGHT;
-        this._appDisplay = new AppDisplay.AppDisplay(width, this._itemDisplayHeight / 2);
+        this._itemDisplayHeight = global.screen_height - menuY - SIDESHOW_SECTION_MARGIN - sectionLabelHeight - bottomHeight - LABEL_HEIGHT;
+        this._appDisplay = new AppDisplay.AppDisplay(this._width, this._itemDisplayHeight / 2, SIDESHOW_COLUMNS, SIDESHOW_PAD);
         this._appDisplay.actor.x = SIDESHOW_PAD;
         this._appDisplay.actor.y = menuY;
         this.actor.add_actor(this._appDisplay.actor);
@@ -167,7 +197,7 @@ Sideshow.prototype = {
                                                reactive: true});
 
         // This sets right-alignment manually.
-        this._moreAppsText.x = width - this._moreAppsText.width + SIDESHOW_PAD;
+        this._moreAppsText.x = this._width - this._moreAppsText.width + SIDESHOW_PAD;
         this.actor.add_actor(this._moreAppsText);
 
         this._docsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
@@ -178,7 +208,7 @@ Sideshow.prototype = {
                                            height: LABEL_HEIGHT});
         this.actor.add_actor(this._docsText);
 
-        this._docDisplay = new DocDisplay.DocDisplay(width, this._itemDisplayHeight - this._appDisplay.actor.height);
+        this._docDisplay = new DocDisplay.DocDisplay(this._width, this._itemDisplayHeight - this._appDisplay.actor.height, SIDESHOW_COLUMNS, SIDESHOW_PAD);
         this._docDisplay.actor.x = SIDESHOW_PAD;
         this._docDisplay.actor.y = this._docsText.y + sectionLabelHeight;
         this.actor.add_actor(this._docDisplay.actor);
@@ -347,15 +377,17 @@ Sideshow.prototype = {
     // depending on the current mode. This function must only be called once after the 'More' mode has been
     // changed, which is ensured by _setMoreMode() and _unsetMoreMode() functions. 
     _updateAppsSection: function() {
-        let additionalWidth = this._width + GenericDisplay.COLUMN_GAP;
+        let additionalWidth = ((this._width + SIDESHOW_PAD) / SIDESHOW_COLUMNS) * 
+                              (EXPANDED_SIDESHOW_COLUMNS - SIDESHOW_COLUMNS);
         if (this._moreMode) {
             this._appDisplay.updateDimensions(this._width + additionalWidth, 
-                                              this._itemDisplayHeight + LABEL_HEIGHT * 2 + SIDESHOW_SECTION_LABEL_MARGIN_BOTTOM);
+                                              this._itemDisplayHeight + LABEL_HEIGHT * 2 + SIDESHOW_SECTION_LABEL_MARGIN_BOTTOM,
+                                              EXPANDED_SIDESHOW_COLUMNS);
             this._moreAppsText.x = this._moreAppsText.x + additionalWidth;
             this._moreAppsText.y = this._appDisplay.actor.y + this._appDisplay.actor.height;
             this._moreAppsText.text = "Less...";
         } else {
-            this._appDisplay.updateDimensions(this._width, this._itemDisplayHeight / 2);
+            this._appDisplay.updateDimensions(this._width, this._itemDisplayHeight / 2, SIDESHOW_COLUMNS);
             this._moreAppsText.x = this._moreAppsText.x - additionalWidth;
             this._moreAppsText.y = this._appDisplay.actor.y + this._appDisplay.actor.height;
             this._moreAppsText.text = "More...";
@@ -375,6 +407,18 @@ Overlay.prototype = {
 
         let global = Shell.Global.get();
 
+        wideScreen = (global.screen_width/global.screen_height > WIDE_SCREEN_CUT_OFF_RATIO);
+
+        // We divide the screen into an imaginary grid which helps us determine the layout of
+        // different visual components.  
+        if (wideScreen) {
+            displayGridColumnWidth = global.screen_width / COLUMNS_WIDE_SCREEN;
+            displayGridRowHeight = global.screen_height / ROWS_WIDE_SCREEN;
+        } else {
+            displayGridColumnWidth = global.screen_width / COLUMNS_REGULAR_SCREEN;
+            displayGridRowHeight = global.screen_height / ROWS_REGULAR_SCREEN;
+        }
+
         this._group = new Clutter.Group();
         this.visible = false;
 
@@ -390,9 +434,8 @@ Overlay.prototype = {
         global.overlay_group.add_actor(this._group);
 
         // TODO - recalculate everything when desktop size changes
-        let screenWidth = global.screen_width;
-        let sideshowWidth = screenWidth - (screenWidth * WORKSPACE_GRID_SCALE) -
-            2 * WORKSPACE_GRID_PADDING;
+        let sideshowWidth = displayGridColumnWidth;  
+         
         this._sideshow = new Sideshow(this._group, sideshowWidth);
         this._workspaces = null;
         this._sideshow.connect('activated', function(sideshow) {
@@ -402,12 +445,20 @@ Overlay.prototype = {
             me._deactivate();
         });
         this._sideshow.connect('more-activated', function(sideshow) {
-            if (me._workspaces != null)
-                me._workspaces.moveAside();
+            if (me._workspaces != null) {
+                let asideXFactor = wideScreen ? WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN : WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN;  
+        
+                let workspacesX = displayGridColumnWidth * asideXFactor + WORKSPACE_GRID_PADDING;
+                me._workspaces.addButton.hide();
+                me._workspaces.updatePosition(workspacesX, null);
+            }    
         });
         this._sideshow.connect('less-activated', function(sideshow) {
-            if (me._workspaces != null)
-                me._workspaces.moveToCenter();
+            if (me._workspaces != null) {
+                let workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
+                me._workspaces.addButton.show();
+                me._workspaces.updatePosition(workspacesX, null);
+            }
         });
     },
 
@@ -418,10 +469,28 @@ Overlay.prototype = {
         this.visible = true;
 
         let global = Shell.Global.get();
+        let screenWidth = global.screen_width;
+        let screenHeight = global.screen_height; 
 
         this._sideshow.show();
+      
+        let columnsUsed = wideScreen ? COLUMNS_FOR_WORKSPACES_WIDE_SCREEN : COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN;
+        let rowsUsed = wideScreen ? ROWS_FOR_WORKSPACES_WIDE_SCREEN : ROWS_FOR_WORKSPACES_REGULAR_SCREEN;  
+         
+        let workspacesWidth = displayGridColumnWidth * columnsUsed - WORKSPACE_GRID_PADDING * 2;
+        // We scale the vertical padding by (screenHeight / screenWidth) so that the workspace preserves its aspect ratio.
+        let workspacesHeight = displayGridRowHeight * rowsUsed - WORKSPACE_GRID_PADDING * (screenHeight / screenWidth) * 2;
 
-        this._workspaces = new Workspaces.Workspaces();
+        let workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
+        let workspacesY = displayGridRowHeight + WORKSPACE_GRID_PADDING * (screenHeight / screenWidth);
+
+        // place the 'Add Workspace' button in the bottom row of the grid
+        let addButtonSize = Math.floor(displayGridRowHeight * 3/5);
+        let addButtonX = workspacesX + workspacesWidth - addButtonSize;
+        let addButtonY = screenHeight - Math.floor(displayGridRowHeight * 4/5);
+
+        this._workspaces = new Workspaces.Workspaces(workspacesWidth, workspacesHeight, workspacesX, workspacesY, 
+                                                     addButtonSize, addButtonX, addButtonY);
         this._group.add_actor(this._workspaces.actor);
         this._workspaces.actor.raise_top();
 

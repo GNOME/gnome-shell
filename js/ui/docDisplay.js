@@ -91,15 +91,15 @@ DocDisplayItem.prototype = {
  * width - width available for the display
  * height - height available for the display
  */
-function DocDisplay(width, height) {
-    this._init(width, height);
+function DocDisplay(width, height, numberOfColumns, columnGap) {
+    this._init(width, height, numberOfColumns, columnGap);
 } 
 
 DocDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function(width, height) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, width, height);  
+    _init : function(width, height, numberOfColumns, columnGap) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, width, height, numberOfColumns, columnGap);  
         let me = this;
         this._recentManager = Gtk.RecentManager.get_default();
         this._docsStale = true;

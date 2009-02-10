@@ -49,6 +49,8 @@ const POSITIONS = {
 const GRID_SPACING = 15;
 const FRAME_SIZE = GRID_SPACING / 3;
 
+let buttonSize = false;
+
 function WindowClone(realWindow) {
     this._init(realWindow);
 }
@@ -326,8 +328,8 @@ Workspace.prototype = {
             if (this._removeButton)
                 return;
 
-            this._removeButton = new Clutter.Texture({ width: Workspaces.buttonSize,
-                                                       height: Workspaces.buttonSize,
+            this._removeButton = new Clutter.Texture({ width: buttonSize,
+                                                       height: buttonSize,
                                                        reactive: true
                                                      });
             this._removeButton.set_from_file(global.imagedir + "remove-workspace.svg");
@@ -760,27 +762,22 @@ Workspace.prototype = {
 
 Signals.addSignalMethods(Workspace.prototype);
 
-function Workspaces() {
-    this._init();
+function Workspaces(width, height, x, y, addButtonSize, addButtonX, addButtonY) {
+    this._init(width, height, x, y, addButtonSize, addButtonX, addButtonY);
 }
 
 Workspaces.prototype = {
-    _init : function() {
+    _init : function(width, height, x, y, addButtonSize, addButtonX, addButtonY) {
         let global = Shell.Global.get();
 
         this.actor = new Clutter.Group();
 
         let screenHeight = global.screen_height;
-
-        this._width = null;
-        this._height = null;
-        this._x = null;
-        this._y = null;
-        this._bottomHeight = null;
-
-        this._setDimensions(true);
- 
-        this._bottomHeight = screenHeight - this._height - this._y;
+          
+        this._width = width;
+        this._height = height;
+        this._x = x;
+        this._y = y;
 
         this._workspaces = [];
         
@@ -818,23 +815,18 @@ Workspaces.prototype = {
                            transition: "easeOutQuad"
                          });
 
-        // Create (+) and (-) buttons
-        // FIXME: figure out a better way to communicate buttonSize
-        // to the Workspace
-        Workspaces.buttonSize = Math.floor(this._bottomHeight * 3/5);
-        this._plusX = this._x + this._width - Workspaces.buttonSize;
-        this._plusY = screenHeight - Math.floor(this._bottomHeight * 4/5);
-
-        let plus = new Clutter.Texture({ x: this._plusX,
-                                         y: this._plusY,
-                                         width: Workspaces.buttonSize,
-                                         height: Workspaces.buttonSize,
-                                         reactive: true
-                                       });
-        plus.set_from_file(global.imagedir + "add-workspace.svg");
-        plus.connect('button-release-event', this._appendNewWorkspace);
-        this.actor.add_actor(plus);
-        plus.lower_bottom();
+        // Create (+) button
+        buttonSize = addButtonSize;
+        this.addButton = new Clutter.Texture({ x: addButtonX,
+                                                y: addButtonY,
+                                                width: buttonSize,
+                                                height: buttonSize,
+                                                reactive: true
+                                              });
+        this.addButton.set_from_file(global.imagedir + "add-workspace.svg");
+        this.addButton.connect('button-release-event', this._appendNewWorkspace);
+        this.actor.add_actor(this.addButton);
+        this.addButton.lower_bottom();
 
         let lastWorkspace = this._workspaces[this._workspaces.length - 1];
         lastWorkspace.updateRemovable(true);
@@ -852,15 +844,14 @@ Workspaces.prototype = {
                                           Lang.bind(this, this._activeWorkspaceChanged));
     },
 
-    // Moves the workspaces display to the side.
-    moveAside : function() {
-        this._setDimensions(false);
-        this._updateInOverlay();
-    },
+    // Updates position of the workspaces display based on the new coordinates.
+    // Preserves the old value for the coordinate, if the passed value is null.
+    updatePosition : function(x, y) {
+        if (x != null)
+            this._x = x;
+        if (y != null)
+            this._y = y;
 
-    // Moves the workspaces display to the center.
-    moveToCenter : function() {
-        this._setDimensions(true);
         this._updateInOverlay();
     },
 
@@ -898,27 +889,6 @@ Workspaces.prototype = {
 
         global.screen.disconnect(this._nWorkspacesNotifyId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-    },
-
-    // Sets dimensions and position of the workspaces display depending on the mode
-    // in which it will be presented (in the center of the overlay mode or on the side).
-    //
-    // centerMode - a boolean flag indicating if the workspaces will be displayed in the center of the overlay
-    //
-    _setDimensions : function(centerMode) {
-        let global = Shell.Global.get();
-        let screenWidth = global.screen_width;
-        let screenHeight = global.screen_height;
-
-        let scalingFactor = centerMode ? Overlay.WORKSPACE_GRID_SCALE : Overlay.WORKSPACE_GRID_ASIDE_SCALE;   
-
-        this._width = screenWidth * scalingFactor - 2 * Overlay.WORKSPACE_GRID_PADDING;
-        this._height = screenHeight * scalingFactor;
-        this._x = screenWidth - this._width - Overlay.WORKSPACE_GRID_PADDING;
-        if (centerMode)
-            this._y = Panel.PANEL_HEIGHT + (screenHeight - this._height - Panel.PANEL_HEIGHT) / 2;
-        else 
-            this._y = screenHeight - this._height - this._bottomHeight;
     },
 
     // Updates the workspaces display based on the current dimensions and position.
