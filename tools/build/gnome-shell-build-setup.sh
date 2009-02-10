@@ -103,7 +103,7 @@ fi
 
 if test x$system = xSuSE ; then
   reqd=""
-  for pkg in libffi-devel xorg-x11-devel gnome-doc-utils-devel \
+  for pkg in libffi-devel xorg-x11-devel gnome-doc-utils-devel librsvg-devel \
     mozilla-xulrunner190-devel libgnomeui-devel xterm xorg-x11 xorg-x11-server-extra \
     libwnck-devel gconf2-devel readline-devel flex bison; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
