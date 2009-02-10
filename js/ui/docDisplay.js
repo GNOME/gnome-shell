@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -153,7 +154,7 @@ DocDisplay.prototype = {
         for (docId in this._allItems) {
             docIds.push(docId);
         }
-        this._sortItems(docIds);
+        docIds.sort(Lang.bind(this, function (a,b) { return this._compareItems(a,b); }));
 
         let added = 0;
         for (let i = 0; i < docIds.length && added < this._maxItems; i++) {
@@ -166,23 +167,21 @@ DocDisplay.prototype = {
         }
     },
 
-    // Sorts the list of item ids in-place based on how recently the items associated with
-    // the ids were last visited.
-   _sortItems : function(itemIds) {
-        let me = this;
-        itemIds.sort(function (a,b) {
-            let docA = me._allItems[a];
-            let docB = me._allItems[b];
-            // We actually used get_modified() instead of get_visited() here, as GtkRecentInfo
-            // doesn't updated get_visited() correctly.
-            // See http://bugzilla.gnome.org/show_bug.cgi?id=567094
-            if (docA.get_modified() > docB.get_modified())
-                return -1;
-            else if (docA.get_modified() < docB.get_modified())
-                return 1;
-            else 
-                return 0;
-        });
+    // Compares items associated with the item ids based on how recently the items
+    // were last visited.
+    // Returns an integer value indicating the result of the comparison.
+   _compareItems : function(itemIdA, itemIdB) {
+        let docA = this._allItems[itemIdA];
+        let docB = this._allItems[itemIdB];
+        // We actually used get_modified() instead of get_visited() here, as GtkRecentInfo
+        // doesn't updated get_visited() correctly.
+        // See http://bugzilla.gnome.org/show_bug.cgi?id=567094
+        if (docA.get_modified() > docB.get_modified())
+            return -1;
+        else if (docA.get_modified() < docB.get_modified())
+            return 1;
+        else
+            return 0;
     },
 
     // Checks if the item info can be a match for the search string by checking

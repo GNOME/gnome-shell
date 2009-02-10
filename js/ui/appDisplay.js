@@ -178,15 +178,13 @@ AppDisplay.prototype = {
         }
     },
 
-    // Sorts the list of item ids in-place based on the alphabetical order of the names of 
-    // the items associated with the ids.
-    _sortItems : function(itemIds) {
-        let me = this;
-        itemIds.sort(function (a,b) {
-            let appA = me._allItems[a];
-            let appB = me._allItems[b];
-            return appA.get_name().localeCompare(appB.get_name());
-        });
+    // Compares items associated with the item ids based on the alphabetical order
+    // of the item names.
+    // Returns an integer value indicating the result of the comparison.
+    _compareItems : function(itemIdA, itemIdB) {
+        let appA = this._allItems[itemIdA];
+        let appB = this._allItems[itemIdB];
+        return appA.get_name().localeCompare(appB.get_name());
     },
 
     // Checks if the item info can be a match for the search string by checking

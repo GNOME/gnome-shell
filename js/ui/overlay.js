@@ -119,7 +119,8 @@ Sideshow.prototype = {
             if (me._searchQueued)
                 return;
             Mainloop.timeout_add(250, function() {
-                let text = me._searchEntry.text.replace(/\s/g, "");
+                // Strip leading and trailing whitespace
+                let text = me._searchEntry.text.replace(/^\s+/g, "").replace(/\s+$/g, "");
                 me._searchQueued = false;
                 me._searchActive = text != '';
                 me._appDisplay.setSearch(text);

@@ -6,8 +6,8 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Shell = imports.gi.Shell;
 const Tidy = imports.gi.Tidy;
 
 const DND = imports.ui.dnd;
@@ -391,9 +391,11 @@ GenericDisplay.prototype = {
         throw new Error("Not implemented");
     },
 
-    // Sorts the list of item ids in-place based on the order in which the items 
-    // associated with the ids should be displayed.
-    _sortItems: function(itemIds) {
+	// Compares items associated with the item ids based on the order in which the
+	// items should be displayed.
+	// Intended to be used as a compareFunction for array.sort().
+	// Returns an integer value indicating the result of the comparison.
+    _compareItems: function(itemIdA, itemIdB) {
         throw new Error("Not implemented");
     },
 
@@ -424,15 +426,43 @@ GenericDisplay.prototype = {
     // and displays up to this._maxItems that matched.
     _doSearchFilter: function() {
         this._removeAllDisplayItems();
-        let matchedItems = [];
-        for (itemId in this._allItems) {
-            let item = this._allItems[itemId];
-            if (this._isInfoMatching(item, this._search))
-                matchedItems.push(itemId);
+        let matchedItems = {};
+
+        // Break the search up into terms, and search for each
+        // individual term.  Keep track of the number of terms
+        // each item matched.
+        let terms = this._search.split(/\s+/);
+        for (let i = 0; i < terms.length; i++) {
+            let term = terms[i];
+            for (itemId in this._allItems) {
+                let item = this._allItems[itemId];
+                if (this._isInfoMatching(item, term)) {
+                    let count = matchedItems[itemId];
+                    if (!count)
+                        count = 0;
+                    count += 1;
+                    matchedItems[itemId] = count;
+                }
+            }
         }
-        this._sortItems(matchedItems);
-        for (let i = 0; i < matchedItems.length && i < this._maxItems; i++) {
-            this._addDisplayItem(matchedItems[i]);
+
+        let matchedList = [];
+        for (itemId in matchedItems) {
+            matchedList.push(itemId);
+        }
+        matchedList.sort(Lang.bind(this, function (a, b) {
+            let countA = matchedItems[a];
+            let countB = matchedItems[b];
+            if (countA > countB)
+                return -1;
+            else if (countA < countB)
+                return 1;
+            else
+                return this._compareItems(a, b);
+        }));
+
+        for (var i = 0; i < matchedList.length && i < this._maxItems; i++) {
+            this._addDisplayItem(matchedList[i]);
         }
     },
 
