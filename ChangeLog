@@ -1,3 +1,16 @@
+2009-02-10  Thomas Thurman  <tthurman@gnome.org>
+
+        Further movement of code out of metacity-dialog into Zenity;
+        this time it's the "kill or wait?" dialogue.  Much code saved.
+
+	* src/core/delete.c:
+	* src/core/keybindings.c:
+	* src/core/main.c:
+	* src/core/util.c:
+	* src/core/window-private.h:
+	* src/core/window.c:
+	* src/include/util.h:
+
 2009-02-07  Thomas Thurman  <tthurman@gnome.org>
 
         Windows demanding attention should never appear in the

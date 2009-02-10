@@ -379,7 +379,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->constructing = TRUE;
   
   window->dialog_pid = -1;
-  window->dialog_pipe = -1;
   
   window->xwindow = xwindow;
   
