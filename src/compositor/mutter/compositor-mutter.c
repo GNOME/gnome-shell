@@ -186,7 +186,6 @@ struct _MutterWindowPrivate
   gint              map_in_progress;
   gint              destroy_in_progress;
 
-  guint		    needs_shadow           : 1;
   guint		    shaped                 : 1;
   guint		    destroy_pending        : 1;
   guint		    argb32                 : 1;
@@ -200,6 +199,8 @@ struct _MutterWindowPrivate
   guint		    needs_repair           : 1;
 
   guint		    needs_destroy	   : 1;
+
+  guint             no_shadow              : 1;
 };
 
 enum
@@ -207,7 +208,8 @@ enum
   PROP_MCW_META_WINDOW = 1,
   PROP_MCW_META_SCREEN,
   PROP_MCW_X_WINDOW,
-  PROP_MCW_X_WINDOW_ATTRIBUTES
+  PROP_MCW_X_WINDOW_ATTRIBUTES,
+  PROP_MCW_NO_SHADOW,
 };
 
 static void mutter_window_class_init (MutterWindowClass *klass);
@@ -281,6 +283,16 @@ mutter_window_class_init (MutterWindowClass *klass)
 
   g_object_class_install_property (object_class,
                                    PROP_MCW_X_WINDOW_ATTRIBUTES,
+                                   pspec);
+
+  pspec = g_param_spec_boolean ("no-shadow",
+                                "No shadow",
+                                "Do not add shaddow to this window",
+                                FALSE,
+                                G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+
+  g_object_class_install_property (object_class,
+                                   PROP_MCW_NO_SHADOW,
                                    pspec);
 }
 
@@ -428,11 +440,12 @@ mutter_window_finalize (GObject *object)
 
 static void
 mutter_window_set_property (GObject      *object,
-			       guint         prop_id,
-			       const GValue *value,
-			       GParamSpec   *pspec)
+                            guint         prop_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
 {
-  MutterWindowPrivate *priv = MUTTER_WINDOW (object)->priv;
+  MutterWindow        *mw   = MUTTER_WINDOW (object);
+  MutterWindowPrivate *priv = mw->priv;
 
   switch (prop_id)
     {
@@ -447,6 +460,48 @@ mutter_window_set_property (GObject      *object,
       break;
     case PROP_MCW_X_WINDOW_ATTRIBUTES:
       priv->attrs = *((XWindowAttributes*)g_value_get_boxed (value));
+      break;
+    case PROP_MCW_NO_SHADOW:
+      {
+        gboolean oldv = priv->no_shadow ? TRUE : FALSE;
+        gboolean newv = g_value_get_boolean (value);
+
+        if (oldv == newv)
+          return;
+
+        priv->no_shadow = newv;
+
+        if (newv && priv->shadow)
+          {
+            clutter_container_remove_actor (CLUTTER_CONTAINER (object),
+                                            priv->shadow);
+            priv->shadow = NULL;
+          }
+        else if (!newv && !priv->shadow && mutter_window_has_shadow (mw))
+          {
+            guint        w, h;
+            MetaDisplay *display = meta_screen_get_display (priv->screen);
+            Mutter      *compositor;
+
+            compositor = (Mutter*) meta_display_get_compositor (display);
+
+            clutter_actor_get_size (CLUTTER_ACTOR (mw), &w, &h);
+
+            priv->shadow =
+              tidy_texture_frame_new (CLUTTER_TEXTURE (compositor->shadow_src),
+                                      MAX_TILE_SZ,
+                                      MAX_TILE_SZ,
+                                      MAX_TILE_SZ,
+                                      MAX_TILE_SZ);
+
+            clutter_actor_set_position (priv->shadow,
+                                        SHADOW_OFFSET_X , SHADOW_OFFSET_Y);
+
+            clutter_actor_set_size (priv->shadow, w, h);
+
+            clutter_container_add_actor (CLUTTER_CONTAINER (mw), priv->shadow);
+          }
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -475,6 +530,9 @@ mutter_window_get_property (GObject      *object,
       break;
     case PROP_MCW_X_WINDOW_ATTRIBUTES:
       g_value_set_boxed (value, &priv->attrs);
+      break;
+    case PROP_MCW_NO_SHADOW:
+      g_value_set_boolean (value, priv->no_shadow);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -564,6 +622,9 @@ static gboolean
 mutter_window_has_shadow (MutterWindow *self)
 {
   MutterWindowPrivate * priv = self->priv;
+
+  if (priv->no_shadow)
+    return FALSE;
 
   /*
    * Always put a shadow around windows with a frame - This should override
