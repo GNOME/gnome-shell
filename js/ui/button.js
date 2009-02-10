@@ -1,8 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Clutter = imports.gi.Clutter;
 const Big = imports.gi.Big;
-const Tweener = imports.tweener.tweener;
+const Clutter = imports.gi.Clutter;
 
 const DEFAULT_BUTTON_COLOR = new Clutter.Color();
 DEFAULT_BUTTON_COLOR.from_pixel(0xeeddcc66);

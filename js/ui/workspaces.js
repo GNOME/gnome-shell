@@ -10,11 +10,11 @@ const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const Tweener = imports.tweener.tweener;
 
 const Main = imports.ui.main;
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
+const Tweener = imports.ui.tweener;
 
 // Windows are slightly translucent in the overlay mode
 const WINDOW_OPACITY = 0.9 * 255;
@@ -58,6 +58,7 @@ WindowClone.prototype = {
                                                 reactive: true,
                                                 x: realWindow.x,
                                                 y: realWindow.y });
+        this.actor._delegate = this;
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
         this.origX = realWindow.x;
@@ -77,12 +78,6 @@ WindowClone.prototype = {
         this._havePointer = false;
         this._inDrag = false;
         this._buttonDown = false;
-
-        // We track the number of animations we are doing for the clone so we can
-        // hide the floating title while animating. It seems like it should be
-        // possible to use Tweener.getTweenCount(clone), but that annoyingly only
-        // updates after onComplete is called.
-        this._animationCount = 0;
     },
 
     destroy: function () {
@@ -91,27 +86,6 @@ WindowClone.prototype = {
             this._title.destroy();
     },
     
-    addTween: function (params) {
-        this._animationCount++;
-        this._updateTitle();
-
-        if (params.onComplete) {
-            let oldOnComplete = params.onComplete;
-            let oldOnCompleteScope = params.onCompleteScope;
-            let oldOnCompleteParams = params.onCompleteParams;
-            let eventScope = oldOnCompleteScope ? oldOnCompleteScope : this.actor;
-
-            params.onComplete = function () {
-                oldOnComplete.apply(eventScope, oldOnCompleteParams);
-                this._onAnimationComplete();
-            };
-        } else
-            params.onComplete = this._onAnimationComplete;
-        params.onCompleteScope = this;
-
-        Tweener.addTween(this.actor, params);
-    },
-
     _onEnter: function (actor, event) {
         // If the user drags faster than we can follow, he'll end up
         // leaving the window temporarily and then re-entering it
@@ -132,7 +106,7 @@ WindowClone.prototype = {
 
         this._havePointer = false;
 
-        if (this._animationCount)
+        if (Tweener.isTweening(this.actor))
             return;
 
     	actor.raise(this.stackAbove);
@@ -140,7 +114,7 @@ WindowClone.prototype = {
     },
 
     _onButtonPress : function (actor, event) {
-        if (this._animationCount)
+        if (Tweener.isTweening(this.actor))
             return;
 
         actor.raise_top();
@@ -209,13 +183,14 @@ WindowClone.prototype = {
             this.emit('dragged', stageX, stageY, event.get_time());
             if (this.realWindow.get_workspace() == origWorkspace) {
                 // Didn't get moved elsewhere, restore position
-                this.addTween({ x: this._dragStartX + this._dragOffsetX,
-                                y: this._dragStartY + this._dragOffsetY,
-                                time: SNAP_BACK_ANIMATION_TIME,
-                                transition: "easeOutQuad",
-                                onComplete: this._onSnapBackComplete,
-                                onCompleteScope: this
-                              });
+                Tweener.addTween(this.actor,
+                                 { x: this._dragStartX + this._dragOffsetX,
+                                   y: this._dragStartY + this._dragOffsetY,
+                                   time: SNAP_BACK_ANIMATION_TIME,
+                                   transition: "easeOutQuad",
+                                   onComplete: this._onSnapBackComplete,
+                                   onCompleteScope: this
+                                 });
                 // Most likely, the clone is going to move away from the
                 // pointer now. But that won't cause a leave-event, so
                 // do this by hand. Of course, if the window only snaps
@@ -234,12 +209,15 @@ WindowClone.prototype = {
         this.actor.set_position(this._dragOrigX, this._dragOrigY);
     },
 
-    _onAnimationComplete : function () {
-        this._animationCount--;
-        if (this._animationCount == 0) {
-            this._updateTitle();
-    	    this.actor.raise(this.stackAbove);
-        }
+    // Called by Tweener
+    onAnimationStart : function () {
+        this._updateTitle();
+    },
+
+    // Called by Tweener
+    onAnimationComplete : function () {
+        this._updateTitle();
+        this.actor.raise(this.stackAbove);
     },
 
     _createTitle : function () {
@@ -313,7 +291,7 @@ WindowClone.prototype = {
     _updateTitle : function () {
         let shouldShow = (this._havePointer &&
                           !this._buttonDown &&
-                          this._animationCount == 0);
+                          !Tweener.isTweening(this.actor));
 
         if (shouldShow)
             this._showTitle();
@@ -528,21 +506,16 @@ Workspace.prototype = {
             let desiredSize = global.screen_width * fraction;
             let scale = Math.min(desiredSize / size, 1.0);
 
-            let tweenProperties = {
-                x: xCenter - 0.5 * scale * clone.actor.width,
-                y: yCenter - 0.5 * scale * clone.actor.height,
-                scale_x: scale,
-                scale_y: scale,
-                time: Overlay.ANIMATION_TIME,
-                opacity: WINDOW_OPACITY,
-                transition: "easeOutQuad"
-            };
-
-            // workspace_relative assumes that the workspace is zooming in or out
-            if (workspaceZooming)
-                tweenProperties['workspace_relative'] = this;
-
-            clone.addTween(tweenProperties);
+            Tweener.addTween(clone.actor, 
+                             { x: xCenter - 0.5 * scale * clone.actor.width,
+                               y: yCenter - 0.5 * scale * clone.actor.height,
+                               scale_x: scale,
+                               scale_y: scale,
+                               workspace_relative: workspaceZooming ? this : null,
+                               time: Overlay.ANIMATION_TIME,
+                               opacity: WINDOW_OPACITY,
+                               transition: "easeOutQuad"
+                             });
         }
     },
 
@@ -659,15 +632,16 @@ Workspace.prototype = {
 
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            clone.addTween({ x: clone.origX,
-                             y: clone.origY,
-                             scale_x: 1.0,
-                             scale_y: 1.0,
-                             workspace_relative: this,
-                             time: Overlay.ANIMATION_TIME,
-                             opacity: 255,
-                             transition: "easeOutQuad"
-                           });
+            Tweener.addTween(clone.actor,
+                             { x: clone.origX,
+                               y: clone.origY,
+                               scale_x: 1.0,
+                               scale_y: 1.0,
+                               workspace_relative: this,
+                               time: Overlay.ANIMATION_TIME,
+                               opacity: 255,
+                               transition: "easeOutQuad"
+                             });
         }
 
         this.leavingOverlay = false;
@@ -1206,6 +1180,9 @@ Tweener.registerSpecialPropertyModifier("workspace_relative", _workspace_relativ
 
 function _workspace_relative_modifier(workspace) {
     let endX, endY;
+
+    if (!workspace)
+        return [];
 
     if (workspace.leavingOverlay) {
         endX = workspace.fullSizeX;

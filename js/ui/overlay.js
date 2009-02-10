@@ -7,13 +7,13 @@ const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const Tweener = imports.tweener.tweener;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
+const Tweener = imports.ui.tweener;
 const Workspaces = imports.ui.workspaces;
 
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();

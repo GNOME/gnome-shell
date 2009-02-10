@@ -4,9 +4,9 @@ const Clutter = imports.gi.Clutter;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
-const Tweener = imports.tweener.tweener;
 
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 
 const WINDOW_ANIMATION_TIME = 0.25;
 const SWITCH_ANIMATION_TIME = 0.5;

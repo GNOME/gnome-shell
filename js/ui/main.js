@@ -5,11 +5,11 @@ const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const Tweener = imports.tweener.tweener;
 
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
+const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
@@ -21,78 +21,6 @@ let overlayActive = false;
 let runDialog = null;
 let wm = null;
 
-// The "FrameTicker" object is an object used to feed new frames to Tweener
-// so it can update values and redraw. The default frame ticker for
-// Tweener just uses a simple timeout at a fixed frame rate and has no idea
-// of "catching up" by dropping frames.
-//
-// We substitute it with custom frame ticker here that connects Tweener to
-// a Clutter.TimeLine. Now, Clutter.Timeline itself isn't a whole lot more
-// sophisticated than a simple timeout at a fixed frame rate, but at least
-// it knows how to drop frames. (See HippoAnimationManager for a more
-// sophisticated view of continous time updates; even better is to pay
-// attention to the vertical vblank and sync to that when possible.)
-//
-function ClutterFrameTicker() {
-    this._init();
-}
-
-ClutterFrameTicker.prototype = {
-    FRAME_RATE : 60,
-
-    _init : function() {
-        // We don't have a finite duration; tweener will tell us to stop
-        // when we need to stop, so use 1000 seconds as "infinity"
-        this._timeline = new Clutter.Timeline({ fps: this.FRAME_RATE,
-                                                duration: 1000*1000 });
-        this._currentTime = 0;
-        this._frame = 0;
-
-        let me = this;
-        this._timeline.connect('new-frame',
-            function(timeline, frame) {
-                me._onNewFrame(frame);
-            });
-    },
-
-    _onNewFrame : function(frame) {
-        // If there is a lot of setup to start the animation, then
-        // first frame number we get from clutter might be a long ways
-        // into the animation (or the animation might even be done).
-        // That looks bad, so we always start one frame into the
-        // animation then only do frame dropping from there.
-        let delta;
-        if (this._frame == 0)
-            delta = 1;
-        else
-            delta = frame - this._frame;
-
-        if (delta == 0) // protect against divide-by-0 if we get a frame twice
-            delta = 1;
-
-        // currentTime is in milliseconds
-        this._currentTime += (1000 * delta) / this.FRAME_RATE;
-        this._frame = frame;
-        this.emit('prepare-frame');
-    },
-
-    getTime : function() {
-        return this._currentTime;
-    },
-
-    start : function() {
-        this._timeline.start();
-    },
-
-    stop : function() {
-        this._timeline.stop();
-        this._frame = 0;
-        this._currentTime = 0;
-    }
-};
-
-Signals.addSignalMethods(ClutterFrameTicker.prototype);
-
 function start() {
     let global = Shell.Global.get();
 
@@ -101,7 +29,7 @@ function start() {
     global.grab_dbus_service();
     global.start_task_panel();
 
-    Tweener.setFrameTicker(new ClutterFrameTicker());
+    Tweener.init();
 
     // The background color really only matters if there is no desktop
     // window (say, nautilus) running. We set it mostly so things look good
