@@ -531,6 +531,10 @@ notify_cb (GObject          *object,
 
   CLUTTER_NOTE (BEHAVIOUR, "notify::alpha");
 
+  /* no actors, we can stop right here */
+  if (behave->priv->actors == NULL)
+    return;
+
   if (klass->alpha_notify)
     {
       gdouble alpha_value = clutter_alpha_get_alpha (behave->priv->alpha);
