@@ -156,8 +156,6 @@ MetaNexus *meta_nexus_new ();
 /**
  * An object which exists purely to attach signals to; this is to receive
  * signals when a child process exits.  The signal is "sigchld" with no detail.
- *
- * \bug Eventually we should have a specialised type for objects like these.
  */
 extern MetaNexus *sigchld_nexus;
 

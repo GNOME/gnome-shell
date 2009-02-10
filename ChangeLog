@@ -1,5 +1,11 @@
 2009-02-10  Thomas Thurman  <tthurman@gnome.org>
 
+        rm incorrect comment
+
+	* src/include/util.h:
+
+2009-02-10  Thomas Thurman  <tthurman@gnome.org>
+
         Further movement of code out of metacity-dialog into Zenity;
         this time it's the "kill or wait?" dialogue.  Much code saved.
 
