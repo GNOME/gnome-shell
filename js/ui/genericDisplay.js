@@ -4,10 +4,13 @@ const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Tidy = imports.gi.Tidy;
+
+const DND = imports.ui.dnd;
 
 const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
 ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);
@@ -37,16 +40,18 @@ function GenericDisplayItem(availableWidth) {
 GenericDisplayItem.prototype = {
     _init: function(availableWidth) {
         this._availableWidth = availableWidth;
-        let me = this;
 
         this.actor = new Clutter.Group({ reactive: true,
                                          width: availableWidth,
                                          height: ITEM_DISPLAY_HEIGHT });
-        this.actor.connect('button-press-event', function(group, e) {
-            me.emit('activate');
-            return true;
-        });
+        this.actor._delegate = this;
+        this.actor.connect('button-release-event',
+                           Lang.bind(this,
+                                     function(draggable, e) {
+                                         this.activate();
+                                     }));
 
+        DND.makeDraggable(this.actor);
         this._bg = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
                                  corner_radius: 4,
                                  x: 0, y: 0,
@@ -58,6 +63,25 @@ GenericDisplayItem.prototype = {
         this._icon = null;
     },
 
+    //// Draggable interface ////
+    getDragActor: function(stageX, stageY) {
+        // FIXME: assumes this._icon is a Clutter.Texture
+        let icon = new Clutter.CloneTexture({ parent_texture: this._icon });
+        [icon.width, icon.height] = this._icon.get_transformed_size();
+
+        // If the user dragged from the icon itself, then position
+        // the dragActor over the original icon. Otherwise center it
+        // around the pointer
+        let [iconX, iconY] = this._icon.get_transformed_position();
+        let [iconWidth, iconHeight] = this._icon.get_transformed_size();
+        if (stageX > iconX && stageX <= iconX + iconWidth &&
+            stageY > iconY && stageY <= iconY + iconHeight)
+            icon.set_position(iconX, iconY);
+        else
+            icon.set_position(stageX - icon.width / 2, stageY - icon.height / 2);
+        return icon;
+    },
+    
     //// Public methods ////
 
     // Highlights the item by setting a different background color than the default 
@@ -71,6 +95,11 @@ GenericDisplayItem.prototype = {
        this._bg.background_color = color;
     },
 
+    // Activates the item, as though it was clicked
+    activate: function() {
+        this.emit('activate');
+    },
+    
     //// Pure virtual public methods ////
   
     // Performes an action associated with launching this item, such as opening a file or an application.

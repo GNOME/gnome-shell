@@ -11,6 +11,8 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
+const DND = imports.ui.dnd;
+const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
@@ -19,7 +21,6 @@ const Tweener = imports.ui.tweener;
 // Windows are slightly translucent in the overlay mode
 const WINDOW_OPACITY = 0.9 * 255;
 const FOCUS_ANIMATION_TIME = 0.15;
-const SNAP_BACK_ANIMATION_TIME = 0.25;
 
 const WINDOWCLONE_BG_COLOR = new Clutter.Color();
 WINDOWCLONE_BG_COLOR.from_pixel(0x000000f0);
@@ -64,20 +65,19 @@ WindowClone.prototype = {
         this.origX = realWindow.x;
         this.origY = realWindow.y;
 
-        this.actor.connect('button-press-event',
-                           Lang.bind(this, this._onButtonPress));
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
+
         this.actor.connect('enter-event',
                            Lang.bind(this, this._onEnter));
         this.actor.connect('leave-event',
                            Lang.bind(this, this._onLeave));
-        this.actor.connect('motion-event',
-                           Lang.bind(this, this._onMotion));
-
         this._havePointer = false;
+
+        this._draggable = DND.makeDraggable(this.actor);
+        this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+        this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this._inDrag = false;
-        this._buttonDown = false;
     },
 
     destroy: function () {
@@ -85,7 +85,7 @@ WindowClone.prototype = {
         if (this._title)
             this._title.destroy();
     },
-    
+
     _onEnter: function (actor, event) {
         // If the user drags faster than we can follow, he'll end up
         // leaving the window temporarily and then re-entering it
@@ -113,100 +113,25 @@ WindowClone.prototype = {
         this._updateTitle();
     },
 
-    _onButtonPress : function (actor, event) {
-        if (Tweener.isTweening(this.actor))
-            return;
+    _onButtonRelease : function (actor, event) {
+        this.emit('selected', event.get_time());
+    },
 
-        actor.raise_top();
-
-        let [stageX, stageY] = event.get_coords();
-
-        this._buttonDown = true;
-        this._dragStartX = stageX;
-        this._dragStartY = stageY;
-
-        Clutter.grab_pointer(actor);
-
+    _onDragBegin : function (draggable, time) {
+        this._inDrag = true;
         this._updateTitle();
     },
 
-    _onMotion : function (actor, event) {
-        if (!this._buttonDown)
-            return;
-
-        let [stageX, stageY] = event.get_coords();
-
-        // If we haven't begun a drag, see if the user has moved the mouse enough
-        // to trigger a drag
-        let dragThreshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
-        if (!this._inDrag &&
-            (Math.abs(stageX - this._dragStartX) > dragThreshold ||
-             Math.abs(stageY - this._dragStartY) > dragThreshold)) {
-            this._inDrag = true;
-            
-            this._dragOrigParent = actor.get_parent();
-            this._dragOrigX = actor.x;
-            this._dragOrigY = actor.y;
-            this._dragOrigScale = actor.scale_x;
-
-            let [cloneStageX, cloneStageY] = actor.get_transformed_position();
-            this._dragOffsetX = cloneStageX - this._dragStartX;
-            this._dragOffsetY = cloneStageY - this._dragStartY;
-
-            // Reparent the clone onto the stage, but keeping the same scale.
-            // (the set_position call below will take care of position.)
-            let [scaledWidth, scaledHeight] = actor.get_transformed_size();
-            actor.reparent(actor.get_stage());
-            actor.raise_top();
-            actor.set_scale(scaledWidth / actor.width,
-                            scaledHeight / actor.height);
-        }
-
-        // If we are dragging, update the position
-        if (this._inDrag) {
-            actor.set_position(stageX + this._dragOffsetX,
-                               stageY + this._dragOffsetY);
-        }
-    },
-
-    _onButtonRelease : function (actor, event) {
-        Clutter.ungrab_pointer();
-
-        let inDrag = this._inDrag;
-        this._buttonDown = false;
+    _onDragEnd : function (draggable, time) {
         this._inDrag = false;
 
-        if (inDrag) {
-            let [stageX, stageY] = event.get_coords();
-
-            let origWorkspace = this.realWindow.get_workspace();
-            this.emit('dragged', stageX, stageY, event.get_time());
-            if (this.realWindow.get_workspace() == origWorkspace) {
-                // Didn't get moved elsewhere, restore position
-                Tweener.addTween(this.actor,
-                                 { x: this._dragStartX + this._dragOffsetX,
-                                   y: this._dragStartY + this._dragOffsetY,
-                                   time: SNAP_BACK_ANIMATION_TIME,
-                                   transition: "easeOutQuad",
-                                   onComplete: this._onSnapBackComplete,
-                                   onCompleteScope: this
-                                 });
-                // Most likely, the clone is going to move away from the
-                // pointer now. But that won't cause a leave-event, so
-                // do this by hand. Of course, if the window only snaps
-                // back a short distance, this might be wrong, but it's
-                // better to have the label mysteriously missing than
-                // mysteriously present
-                this._havePointer = false;
-            }
-        } else
-            this.emit('selected', event.get_time());
-    },
-
-    _onSnapBackComplete : function () {
-        this.actor.reparent(this._dragOrigParent);
-        this.actor.set_scale(this._dragOrigScale, this._dragOrigScale);
-        this.actor.set_position(this._dragOrigX, this._dragOrigY);
+        // Most likely, the clone is going to move away from the
+        // pointer now. But that won't cause a leave-event, so
+        // do this by hand. Of course, if the window only snaps
+        // back a short distance, this might be wrong, but it's
+        // better to have the label mysteriously missing than
+        // mysteriously present
+        this._havePointer = false;
     },
 
     // Called by Tweener
@@ -290,7 +215,7 @@ WindowClone.prototype = {
 
     _updateTitle : function () {
         let shouldShow = (this._havePointer &&
-                          !this._buttonDown &&
+                          !this._inDrag &&
                           !Tweener.isTweening(this.actor));
 
         if (shouldShow)
@@ -345,6 +270,7 @@ Workspace.prototype = {
         this._metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
 
         this.actor = new Clutter.Group();
+        this.actor._delegate = this;
         this.scale = 1.0;
 
         let windows = global.get_windows().filter(this._isMyWindow, this);
@@ -390,7 +316,6 @@ Workspace.prototype = {
 
         this.leavingOverlay = false;
     },
-
 
     updateRemovable : function() {
         let global = Shell.Global.get();
@@ -535,6 +460,7 @@ Workspace.prototype = {
 
         if (index == -1)
             return;
+
         this._windows.splice(index, 1);
 
         // If metaWin.get_compositor_private() returned non-NULL, that
@@ -714,6 +640,7 @@ Workspace.prototype = {
     destroy : function() {
         let global = Shell.Global.get();
 
+        Tweener.removeTweens(this.actor);
         this.actor.destroy();
         this.actor = null;
 
@@ -797,6 +724,37 @@ Workspace.prototype = {
 
         screen.remove_workspace(workspace, event.get_time());
         return true;
+    },
+
+    // Draggable target interface
+    acceptDrop : function(source, actor, x, y, time) {
+        let global = Shell.Global.get();
+
+        if (source instanceof WindowClone) {
+            let win = source.realWindow;
+            if (this._isMyWindow(win))
+                return false;
+
+            // Set a hint on the Mutter.Window so its initial position
+            // in the new workspace will be correct
+            win._overlayHint = {
+                x: actor.x,
+                y: actor.y,
+                scale: actor.scale_x
+            };
+
+            let metaWindow = win.get_meta_window();
+            metaWindow.change_workspace_by_index(this.workspaceNum,
+                                                 false, // don't create workspace
+                                                 time);
+            return true;
+        } else if (source instanceof GenericDisplay.GenericDisplayItem) {
+            this._metaWorkspace.activate(time);
+            source.activate();
+            return true;
+        }
+
+        return false;
     }
 };
 
@@ -1119,8 +1077,6 @@ Workspaces.prototype = {
     _addWorkspaceActor : function(workspaceNum) {
         let workspace  = new Workspace(workspaceNum);
         this._workspaces[workspaceNum] = workspace;
-        workspace.connect('window-dragged',
-                          Lang.bind(this, this._onWindowDragged));
         this.actor.add_actor(workspace.actor);
     },
 
@@ -1128,48 +1084,6 @@ Workspaces.prototype = {
         let global = Shell.Global.get();
 
         global.screen.append_new_workspace(false, event.get_time());
-    },
-
-    _onWindowDragged : function(sourceWorkspace, clone, stageX, stageY, time) {
-        let global = Shell.Global.get();
-
-        // Positions in stage coordinates
-        let [myX, myY] = this.actor.get_transformed_position();
-        let [windowX, windowY] = clone.actor.get_transformed_position();
-
-        let targetWorkspace = null;
-        let targetX, targetY, targetScale;
-
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-
-            // Drag point relative to the new workspace
-            let relX = stageX - myX - workspace.gridX;
-            let relY = stageY - myY - workspace.gridY;
-
-            if (relX > 0 && relY > 0 &&
-                relX < global.screen_width * workspace.scale &&
-                relY < global.screen_height * workspace.scale)
-            {
-                targetWorkspace = workspace;
-                break;
-            }
-        }
-
-        if (targetWorkspace == null || targetWorkspace == sourceWorkspace)
-            return;
-
-        // Set a hint on the Mutter.Window so its initial position in the
-        // overlay will be correct
-        clone.realWindow._overlayHint = {
-            x: clone.actor.x,
-            y: clone.actor.y,
-            scale: clone.actor.scale_x
-        };
-
-        clone.metaWindow.change_workspace_by_index(targetWorkspace.workspaceNum,
-                                                   false, // don't create workspace
-                                                   time);
     }
 };
 
