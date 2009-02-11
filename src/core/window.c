@@ -140,6 +140,7 @@ enum {
   PROP_TITLE,
   PROP_ICON,
   PROP_MINI_ICON,
+  PROP_DECORATED,
 };
 
 enum
@@ -196,6 +197,9 @@ meta_window_get_property(GObject         *object,
     case PROP_MINI_ICON:
       g_value_set_object (value, win->mini_icon);
       break;
+    case PROP_DECORATED:
+      g_value_set_boolean (value, win->decorated);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -248,6 +252,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                                         "16 pixel sized icon",
                                                         GDK_TYPE_PIXBUF,
                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_DECORATED,
+                                   g_param_spec_boolean ("decorated",
+                                                         "Decorated",
+                                                         "Whether windos is decorated",
+                                                         TRUE,
+                                                         G_PARAM_READABLE));
 
   window_signals[WORKSPACE_CHANGED] =
     g_signal_new ("workspace-changed",
@@ -6564,6 +6576,8 @@ recalc_window_type (MetaWindow *window)
 
   if (old_type != window->type)
     {
+      gboolean old_decorated = window->decorated;
+
       recalc_window_features (window);
 
       if (!window->override_redirect)
@@ -6579,6 +6593,9 @@ recalc_window_type (MetaWindow *window)
       meta_window_update_layer (window);
 
       meta_window_grab_keys (window);
+
+      if (old_decorated != window->decorated)
+        g_object_notify (G_OBJECT (window), "decorated");
     }
 }
 
