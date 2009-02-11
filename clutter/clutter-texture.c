@@ -191,7 +191,8 @@ texture_free_gl_resources (ClutterTexture *texture)
 
   CLUTTER_MARK();
 
-  cogl_material_remove_layer (priv->material, 0);
+  if (priv->material != COGL_INVALID_HANDLE)
+    cogl_material_remove_layer (priv->material, 0);
 }
 
 static void
