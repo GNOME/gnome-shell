@@ -1,5 +1,13 @@
 2009-02-10  Matt Kraai  <kraai@ftfbs.org>
 
+        Don't define meta_spew_event unless verbose mode is on.
+	Closes #571126.
+
+	* src/core/display.c:
+	* src/core/window.c:
+
+2009-02-10  Matt Kraai  <kraai@ftfbs.org>
+
 	* README: switch is "--disable-verbose-mode", not "--disable-verbose".
           Closes #571210.
 

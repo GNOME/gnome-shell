@@ -135,8 +135,10 @@ typedef struct
  */
 static MetaDisplay *the_display = NULL;
 
+#ifdef WITH_VERBOSE_MODE
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
+#endif
 
 static gboolean event_callback          (XEvent         *event,
                                          gpointer        data);

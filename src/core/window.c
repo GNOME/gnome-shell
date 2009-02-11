@@ -1692,8 +1692,10 @@ idle_calc_showing (gpointer data)
   return FALSE;
 }
 
+#ifdef WITH_VERBOSE_MODE
 static const gchar* meta_window_queue_names[NUMBER_OF_QUEUES] =
   {"calc_showing", "move_resize", "update_icon"};
+#endif
 
 static void
 meta_window_unqueue (MetaWindow *window, guint queuebits)
