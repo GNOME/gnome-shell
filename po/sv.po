@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-31 02:25+0100\n"
-"PO-Revision-Date: 2009-01-31 02:29+0100\n"
+"POT-Creation-Date: 2009-02-11 22:29+0100\n"
+"PO-Revision-Date: 2009-02-11 22:29+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -291,7 +291,7 @@ msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
 #. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
 #. * "disabled" must also stay as it is.
 #.
-#: ../src/core/schema-bindings.c:165
+#: ../src/core/schema-bindings.c:169
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -301,7 +301,7 @@ msgstr ""
 "\n"
 "Tolken är ganska tillåtande och tillåter gemener och versaler och även förkortningar som \"<Ctl>\" och \"<Ctrl>\". Om du ställer in alternativet till specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
 
-#: ../src/core/schema-bindings.c:173
+#: ../src/core/schema-bindings.c:177
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -593,8 +593,8 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Flytta baklänges mellan paneler och skrivbordet omedelbart"
 
 #: ../src/include/all-keybindings.h:191
-msgid "Hide all normal windows and set focus to the desktop background"
-msgstr "Dölj alla normala fönster och fokusera skrivbordsbakgrunden"
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Dölj alla normala fönster och fokusera skrivbordet"
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
