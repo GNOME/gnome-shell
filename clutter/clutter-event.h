@@ -239,6 +239,7 @@ struct _ClutterAnyEvent
  * @keyval: raw key value
  * @hardware_keycode: raw hardware key value
  * @unicode_value: Unicode representation
+ * @device: reserved for future use
  *
  * Key event
  *
@@ -255,6 +256,7 @@ struct _ClutterKeyEvent
   guint keyval;
   guint16 hardware_keycode;
   gunichar unicode_value;
+  ClutterInputDevice *device;
 };
 
 /**
