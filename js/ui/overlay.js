@@ -112,7 +112,6 @@ Sideshow.prototype = {
                                              height: searchIconTexture.height, 
                                              text: ""});
         this.actor.add_actor(this._searchEntry);
-        global.stage.set_key_focus(this._searchEntry); 
         this._searchQueued = false;
         this._searchActive = false;
         this._searchEntry.connect('notify::text', function (se, prop) {
@@ -261,6 +260,8 @@ Sideshow.prototype = {
     },
 
     show: function() {
+        let global = Shell.Global.get();
+
         this._appDisplay.show(); 
         this._docDisplay.show();
         this._appDisplay.selectFirstItem();   
@@ -268,6 +269,7 @@ Sideshow.prototype = {
             this._docDisplay.selectFirstItem();
         else
             this._docDisplay.unsetSelected();
+        global.stage.set_key_focus(this._searchEntry);
     },
 
     hide: function() {
