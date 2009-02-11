@@ -192,6 +192,7 @@ struct _MutterWindowPrivate
   guint		    disposed               : 1;
   guint		    is_minimized           : 1;
   guint		    hide_after_effect      : 1;
+  guint             redecorating           : 1;
 
   /* Desktop switching flags */
   guint		    needs_map              : 1;
@@ -331,6 +332,7 @@ mutter_meta_window_decorated_notify (MetaWindow *mw,
    * Basically, we have to reconstruct the the internals of this object
    * from scratch, as everything has changed.
    */
+  priv->redecorating = TRUE;
 
   if (frame)
     new_xwindow = meta_frame_get_xwindow (frame);
@@ -1311,7 +1313,8 @@ map_win (MutterWindow *cw)
    * If a plugin manager is present, try to run an effect; if no effect of this
    * type is present, destroy the actor.
    */
-  if (info->switch_workspace_in_progress || !info->plugin_mgr ||
+  if (priv->redecorating ||
+      info->switch_workspace_in_progress || !info->plugin_mgr ||
       !mutter_plugin_manager_event_simple (info->plugin_mgr,
 				cw,
                                 MUTTER_PLUGIN_MAP))
@@ -1319,6 +1322,7 @@ map_win (MutterWindow *cw)
       clutter_actor_show_all (CLUTTER_ACTOR (cw));
       priv->map_in_progress--;
       priv->is_minimized = FALSE;
+      priv->redecorating = FALSE;
     }
 }
 
