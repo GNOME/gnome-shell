@@ -329,7 +329,7 @@ MetaScreen*   meta_display_screen_for_xwindow  (MetaDisplay *display,
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 
-void          meta_display_unmanage_screen     (MetaDisplay *display,
+void          meta_display_unmanage_screen     (MetaDisplay **display,
                                                 MetaScreen  *screen,
                                                 guint32      timestamp);
 

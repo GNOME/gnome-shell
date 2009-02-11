@@ -4762,9 +4762,12 @@ process_selection_clear (MetaDisplay   *display,
       meta_verbose ("Got selection clear for screen %d on display %s\n",
                     screen->number, display->name);
       
-      meta_display_unmanage_screen (display, 
+      meta_display_unmanage_screen (&display, 
                                     screen,
                                     event->xselectionclear.time);
+
+      if (!display)
+        the_display = NULL;
 
       /* display and screen may both be invalid memory... */
       
@@ -4787,10 +4790,12 @@ process_selection_clear (MetaDisplay   *display,
 }
 
 void
-meta_display_unmanage_screen (MetaDisplay *display,
+meta_display_unmanage_screen (MetaDisplay **displayp,
                               MetaScreen  *screen,
                               guint32      timestamp)
 {
+  MetaDisplay *display = *displayp;
+
   meta_verbose ("Unmanaging screen %d on display %s\n",
                 screen->number, display->name);
   
@@ -4800,7 +4805,10 @@ meta_display_unmanage_screen (MetaDisplay *display,
   display->screens = g_slist_remove (display->screens, screen);
 
   if (display->screens == NULL)
-    meta_display_close (display, timestamp);
+    {
+      meta_display_close (display, timestamp);
+      *displayp = NULL;
+    }
 }
 
 void

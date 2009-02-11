@@ -376,6 +376,14 @@ meta_session_shutdown (void)
   SmProp *props[1];
   char hint = SmRestartIfRunning;
 
+  if (!meta_get_display ())
+    {
+      meta_verbose ("Cannot close session because there is no display");
+      return;
+    }
+
+  warn_about_lame_clients_and_finish_interact (FALSE);
+
   if (session_connection == NULL)
     return;
   

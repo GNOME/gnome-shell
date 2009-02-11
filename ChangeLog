@@ -1,3 +1,14 @@
+2009-02-11  Thomas Thurman  <tthurman@gnome.org>
+
+        Session must be saved before display close, and display
+        shouldn't close during shutdown if it's already closed.
+        Can't believe we don't have a bug about this already...
+
+	* src/core/display-private.h:
+	* src/core/display.c:
+	* src/core/main.c:
+	* src/core/session.c:
+
 2009-02-10  Matt Kraai  <kraai@ftfbs.org>
 
         Don't define meta_spew_event unless verbose mode is on.
