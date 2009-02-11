@@ -313,6 +313,101 @@ static void update_shape (Mutter *compositor,
                           MutterWindow *cw);
 
 static void
+mutter_meta_window_decorated_notify (MetaWindow *mw,
+                                     GParamSpec *arg1,
+                                     gpointer    data)
+{
+  MutterWindow        *mcw      = MUTTER_WINDOW (data);
+  MutterWindowPrivate *priv     = mcw->priv;
+  MetaFrame           *frame    = meta_window_get_frame (mw);
+  MetaScreen          *screen   = priv->screen;
+  MetaDisplay         *display  = meta_screen_get_display (screen);
+  Display             *xdisplay = meta_display_get_xdisplay (display);
+  Window               new_xwindow;
+  MetaCompScreen      *info;
+  XWindowAttributes    attrs;
+
+  /*
+   * Basically, we have to reconstruct the the internals of this object
+   * from scratch, as everything has changed.
+   */
+
+  if (frame)
+    new_xwindow = meta_frame_get_xwindow (frame);
+  else
+    new_xwindow = meta_window_get_xwindow (mw);
+
+  mutter_window_detach (mcw);
+
+  info = meta_screen_get_compositor_data (screen);
+
+  /*
+   * First of all, clean up any resources we are currently using and will
+   * be replacing.
+   */
+  if (priv->damage != None)
+    {
+      meta_error_trap_push (display);
+      XDamageDestroy (xdisplay, priv->damage);
+      meta_error_trap_pop (display, FALSE);
+      priv->damage = None;
+    }
+
+  g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
+  g_hash_table_insert (info->windows_by_xid, (gpointer) new_xwindow, mcw);
+
+  g_free (priv->desc);
+  priv->desc = NULL;
+
+  priv->xwindow = new_xwindow;
+
+  if (!XGetWindowAttributes (xdisplay, new_xwindow, &attrs))
+    {
+      g_warning ("Could not obtain attributes for window 0x%x after "
+                 "decoration change",
+                 (guint) new_xwindow);
+      return;
+    }
+
+  g_object_set (mcw, "x-window-attributes", &attrs, NULL);
+
+  if (priv->shadow)
+    {
+      ClutterActor *p = clutter_actor_get_parent (priv->shadow);
+
+      if (CLUTTER_IS_CONTAINER (p))
+        clutter_container_remove_actor (CLUTTER_CONTAINER (p), priv->shadow);
+      else
+        clutter_actor_unparent (priv->shadow);
+
+      priv->shadow = NULL;
+    }
+
+  if (priv->actor)
+    {
+      ClutterActor *p = clutter_actor_get_parent (priv->actor);
+
+      if (CLUTTER_IS_CONTAINER (p))
+        clutter_container_remove_actor (CLUTTER_CONTAINER (p), priv->actor);
+      else
+        clutter_actor_unparent (priv->actor);
+
+      priv->actor = NULL;
+    }
+
+  /*
+   * Recreate the contents.
+   */
+  mutter_window_constructed (G_OBJECT (mcw));
+
+  /*
+   * And adjust position.
+   */
+  clutter_actor_set_position (CLUTTER_ACTOR (mcw),
+			      priv->attrs.x, priv->attrs.y);
+}
+
+static void
 mutter_window_constructed (GObject *object)
 {
   MutterWindow        *self     = MUTTER_WINDOW (object);
@@ -383,6 +478,9 @@ mutter_window_constructed (GObject *object)
       g_warning ("NOTE: Not using GLX TFP!\n");
 
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
+
+  g_signal_connect (priv->window, "notify::decorated",
+                    G_CALLBACK (mutter_meta_window_decorated_notify), self);
 
   update_shape (compositor, self);
 }
@@ -1058,10 +1156,6 @@ clutter_cmp_destroy (MetaCompositor *compositor)
 #endif
 }
 
-/*
- * If force is TRUE, free the back pixmap; if FALSE, only free it if the
- * backing pixmap has actually changed.
- */
 static void
 mutter_window_detach (MutterWindow *self)
 {
