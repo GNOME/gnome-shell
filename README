@@ -50,7 +50,7 @@ options such as:
 
  --disable-gconf
  --disable-sm
- --disable-verbose 
+ --disable-verbose-mode
  --disable-startup-notification
 
 However the result is no good for desktop use, all prefs have to be
