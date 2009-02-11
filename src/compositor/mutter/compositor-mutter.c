@@ -385,28 +385,10 @@ mutter_meta_window_decorated_notify (MetaWindow *mw,
       priv->shadow = NULL;
     }
 
-  if (priv->actor)
-    {
-      ClutterActor *p = clutter_actor_get_parent (priv->actor);
-
-      if (CLUTTER_IS_CONTAINER (p))
-        clutter_container_remove_actor (CLUTTER_CONTAINER (p), priv->actor);
-      else
-        clutter_actor_unparent (priv->actor);
-
-      priv->actor = NULL;
-    }
-
   /*
    * Recreate the contents.
    */
   mutter_window_constructed (G_OBJECT (mcw));
-
-  /*
-   * And adjust position.
-   */
-  clutter_actor_set_position (CLUTTER_ACTOR (mcw),
-			      priv->attrs.x, priv->attrs.y);
 }
 
 static void
@@ -473,16 +455,28 @@ mutter_window_constructed (GObject *object)
       clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->shadow);
     }
 
-  priv->actor = mutter_shaped_texture_new ();
+  if (!priv->actor)
+    {
+      priv->actor = mutter_shaped_texture_new ();
 
-  if (!clutter_glx_texture_pixmap_using_extension (
-	    CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
-      g_warning ("NOTE: Not using GLX TFP!\n");
+      if (!clutter_glx_texture_pixmap_using_extension (
+                                  CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
+        g_warning ("NOTE: Not using GLX TFP!\n");
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
+      clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
 
-  g_signal_connect (priv->window, "notify::decorated",
-                    G_CALLBACK (mutter_meta_window_decorated_notify), self);
+      g_signal_connect (priv->window, "notify::decorated",
+                        G_CALLBACK (mutter_meta_window_decorated_notify), self);
+    }
+  else
+    {
+      /*
+       * This is the case where existing window is gaining/loosing frame.
+       * Just ensure the actor is top most (i.e., above shadow).
+       */
+      clutter_actor_raise_top (priv->actor);
+    }
+
 
   update_shape (compositor, self);
 }
