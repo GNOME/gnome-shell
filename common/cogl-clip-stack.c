@@ -99,10 +99,10 @@ struct _CoglClipStackEntryPath
 };
 
 void
-cogl_clip_set (float x_offset,
-	       float y_offset,
-	       float width,
-	       float height)
+cogl_clip_push (float x_offset,
+	        float y_offset,
+	        float width,
+	        float height)
 {
   CoglClipStackEntryRect *entry;
   CoglClipStack *stack;
@@ -129,7 +129,7 @@ cogl_clip_set (float x_offset,
 }
 
 void
-cogl_clip_set_from_path_preserve (void)
+cogl_clip_push_from_path_preserve (void)
 {
   CoglClipStackEntryPath *entry;
   CoglClipStack *stack;
@@ -157,15 +157,15 @@ cogl_clip_set_from_path_preserve (void)
 }
 
 void
-cogl_clip_set_from_path (void)
+cogl_clip_push_from_path (void)
 {
-  cogl_clip_set_from_path_preserve ();
+  cogl_clip_push_from_path_preserve ();
 
   cogl_path_new ();
 }
 
 void
-cogl_clip_unset (void)
+cogl_clip_pop (void)
 {
   gpointer entry;
   CoglClipStack *stack;
@@ -208,7 +208,7 @@ _cogl_clip_stack_rebuild (void)
 
   _cogl_disable_clip_planes ();
   _cogl_disable_stencil_buffer ();
-  
+
   /* If the stack is empty then there's nothing else to do */
   if (stack->stack_top == NULL)
     return;
@@ -319,7 +319,7 @@ cogl_clip_stack_restore (void)
 
   /* Empty the current stack */
   while (stack->stack_top)
-    cogl_clip_unset ();
+    cogl_clip_pop ();
 
   /* Revert to an old stack */
   g_slice_free (CoglClipStack, stack);
@@ -336,7 +336,7 @@ _cogl_clip_stack_state_init (void)
 
   ctx->clip.stacks = NULL;
   ctx->clip.stack_dirty = TRUE;
-  
+
   /* Add an intial stack */
   cogl_clip_stack_save ();
 }

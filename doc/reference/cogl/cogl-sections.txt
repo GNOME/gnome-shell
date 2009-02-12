@@ -42,10 +42,10 @@ cogl_get_bitmasks
 cogl_paint_init
 <SUBSECTION>
 CoglClipStackState
-cogl_clip_set
-cogl_clip_set_from_path
-cogl_clip_set_from_path_preserve
-cogl_clip_unset
+cogl_clip_push
+cogl_clip_push_from_path
+cogl_clip_push_from_path_preserve
+cogl_clip_pop
 cogl_clip_stack_save
 cogl_clip_stack_restore
 cogl_clip_ensure
