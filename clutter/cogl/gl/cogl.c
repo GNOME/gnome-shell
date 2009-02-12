@@ -173,7 +173,7 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 }
 
 void
-cogl_paint_init (const CoglColor *color)
+cogl_clear (const CoglColor *color)
 {
 #if COGL_DEBUG
   fprintf(stderr, "\n ============== Paint Start ================ \n");
@@ -185,8 +185,6 @@ cogl_paint_init (const CoglColor *color)
                     0.0) );
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable (GL_LIGHTING);
-  glDisable (GL_FOG);
 
   /*
    *  Disable the depth test for now as has some strange side effects,
@@ -1180,11 +1178,13 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 
 void
 cogl_set_fog (const CoglColor *fog_color,
+              CoglFogMode      mode,
               float            density,
               float            z_near,
               float            z_far)
 {
   GLfloat fogColor[4];
+  GLenum gl_mode;
 
   fogColor[0] = cogl_color_get_red_float (fog_color);
   fogColor[1] = cogl_color_get_green_float (fog_color);
@@ -1195,12 +1195,31 @@ cogl_set_fog (const CoglColor *fog_color,
 
   glFogfv (GL_FOG_COLOR, fogColor);
 
+  switch (mode)
+    {
+    case COGL_FOG_MODE_LINEAR:
+      gl_mode = GL_LINEAR;
+      break;
+    case COGL_FOG_MODE_EXPONENTIAL:
+      gl_mode = GL_EXP;
+      break;
+    case COGL_FOG_MODE_EXPONENTIAL_SQUARED:
+      gl_mode = GL_EXP2;
+      break;
+    }
+
   /* NB: GLES doesn't have glFogi */
-  glFogf (GL_FOG_MODE, GL_LINEAR);
+  glFogf (GL_FOG_MODE, gl_mode);
   glHint (GL_FOG_HINT, GL_NICEST);
 
   glFogf (GL_FOG_DENSITY, (GLfloat) density);
   glFogf (GL_FOG_START, (GLfloat) z_near);
   glFogf (GL_FOG_END, (GLfloat) z_far);
+}
+
+void
+cogl_disable_fog (void)
+{
+  glDisable (GL_FOG);
 }
 

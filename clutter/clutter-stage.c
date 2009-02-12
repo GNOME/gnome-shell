@@ -222,15 +222,18 @@ clutter_stage_paint (ClutterActor *self)
                            priv->color.green,
                            priv->color.blue,
                            priv->color.alpha);
-  cogl_paint_init (&stage_color);
+  cogl_clear (&stage_color);
 
   if (priv->use_fog)
     {
       cogl_set_fog (&stage_color,
+                    COGL_FOG_MODE_LINEAR,
                     priv->fog.density,
                     priv->fog.z_near,
                     priv->fog.z_far);
     }
+  else
+    cogl_disable_fog ();
 
   CLUTTER_NOTE (PAINT, "Proxying the paint to the stage implementation");
   clutter_actor_paint (priv->impl);

@@ -367,7 +367,8 @@ _clutter_do_pick (ClutterStage   *stage,
   _clutter_stage_maybe_setup_viewport (stage);
 
   cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
-  cogl_paint_init (&white);
+  cogl_disable_fog ();
+  cogl_clear (&white);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
   dither_was_on = glIsEnabled (GL_DITHER);

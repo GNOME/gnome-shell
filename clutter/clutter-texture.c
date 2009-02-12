@@ -556,9 +556,10 @@ clutter_texture_paint (ClutterActor *self)
 								NULL);
 	}
 
-      /* cogl_paint_init is called to clear the buffers */
+      /* cogl_clear is called to clear the buffers */
       cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
-      cogl_paint_init (&transparent_col);
+      cogl_clear (&transparent_col);
+      cogl_disable_fog ();
 
       /* Clear the clipping stack so that if the FBO actor is being
 	 clipped then it won't affect drawing the source */
