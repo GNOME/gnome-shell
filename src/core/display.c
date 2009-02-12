@@ -1682,7 +1682,7 @@ event_callback (XEvent   *event,
               if (!unmodified)
                 begin_move = TRUE;
             }
-          else if (!unmodified && event->xbutton.button == 2)
+          else if (!unmodified && event->xbutton.button == meta_prefs_get_mouse_button_resize())
             {
               if (window->has_resize_func)
                 {
@@ -1731,7 +1731,7 @@ event_callback (XEvent   *event,
                                                 event->xbutton.y_root);
                 }
             }
-          else if (event->xbutton.button == 3)
+          else if (event->xbutton.button == meta_prefs_get_mouse_button_menu())
             {
               if (meta_prefs_get_raise_on_click ())
                 meta_window_raise (window);

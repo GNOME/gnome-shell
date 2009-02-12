@@ -15,8 +15,27 @@
            Clicking a window while holding down this modifier key 
            will move the window (left click), resize the window 
            (middle click), or show the window menu (right click).
+           The left and right operations may be swapped
+           using the "mouse_button_resize" key.
            Modifier is expressed as "&lt;Alt&gt;" or "&lt;Super&gt;"
            for example.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/general/resize_with_right_button</key>
+      <applyto>/apps/metacity/general/resize_with_right_button</applyto>
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+         <short>Whether to resize with the right button</short>
+         <long>
+           Set this to true to resize with the right button and show a menu
+           with the middle button while holding down the key given in
+           "mouse_button_modifier"; set it to false to make it work the
+           opposite way around.
          </long>
       </locale>
     </schema>
@@ -510,6 +529,38 @@
          keys define keybindings that correspond to these commands.
          Pressing the keybinding for run_command_N will 
          execute command_N.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/keybinding_commands/command_screenshot</key>
+      <applyto>/apps/metacity/keybinding_commands/command_screenshot</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>gnome-screenshot</default>
+      <locale name="C">
+         <short>The screenshot command</short>
+         <long>
+         The /apps/metacity/global_keybindings/run_command_screenshot
+         key defines a keybinding which causes the command specified
+         by this setting to be invoked.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/keybinding_commands/command_window_screenshot</key>
+      <applyto>/apps/metacity/keybinding_commands/command_window_screenshot</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>gnome-screenshot --window</default>
+      <locale name="C">
+         <short>The window screenshot command</short>
+         <long>
+         The /apps/metacity/global_keybindings/run_command_window_screenshot
+         key defines a keybinding which causes the command specified
+         by this setting to be invoked.
          </long>
       </locale>
     </schema>

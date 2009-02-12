@@ -59,6 +59,7 @@ typedef enum
   META_PREF_CURSOR_THEME,
   META_PREF_CURSOR_SIZE,
   META_PREF_COMPOSITING_MANAGER,
+  META_PREF_RESIZE_WITH_RIGHT_BUTTON,
 #ifdef WITH_CLUTTER
   META_PREF_CLUTTER_DISABLED,
   META_PREF_CLUTTER_PLUGINS,
@@ -79,6 +80,8 @@ void meta_prefs_init (void);
 const char* meta_preference_to_string (MetaPreference pref);
 
 MetaVirtualModifier         meta_prefs_get_mouse_button_mods  (void);
+guint                       meta_prefs_get_mouse_button_resize (void);
+guint                       meta_prefs_get_mouse_button_menu  (void);
 MetaFocusMode               meta_prefs_get_focus_mode         (void);
 MetaFocusNewWindows         meta_prefs_get_focus_new_windows  (void);
 gboolean                    meta_prefs_get_raise_on_click     (void);

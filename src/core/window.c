@@ -61,8 +61,6 @@ static int destroying_windows_disallowed = 0;
 
 
 static void     update_sm_hints           (MetaWindow     *window);
-static void     update_role               (MetaWindow     *window);
-static void     update_net_wm_type        (MetaWindow     *window);
 static void     update_net_frame_extents  (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
@@ -795,12 +793,14 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   initial_props[i++] = display->atom__NET_WM_FULLSCREEN_MONITORS;
   g_assert (N_INITIAL_PROPS == i);
 
-  meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
+  meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS, TRUE);
 
   if (!window->override_redirect)
     update_sm_hints (window); /* must come after transient_for */
-  update_role (window);
-  update_net_wm_type (window);
+
+  meta_window_update_role (window);
+  meta_window_update_net_wm_type (window);
+
   if (!window->override_redirect)
     meta_window_update_icon_now (window);
 
@@ -3269,8 +3269,23 @@ window_activate (MetaWindow     *window,
   /* Get window on current or given workspace */
   if (workspace == NULL)
     workspace = window->screen->active_workspace;
-  if (!meta_window_located_on_workspace (window, workspace))
+
+  /* For non-transient windows, we just set up a pulsing indicator, 
+     rather than move windows or workspaces.
+     See http://bugzilla.gnome.org/show_bug.cgi?id=482354 */
+  if (window->xtransient_for == None && 
+      !meta_window_located_on_workspace (window, workspace))
+    {
+      meta_window_set_demands_attention (window);
+      /* We've marked it as demanding, don't need to do anything else. */
+      return;
+    }
+  else if (window->xtransient_for != None)
+    {
+      /* Move transients to current workspace - preference dialogs should appear over 
+         the source window.  */
     meta_window_change_workspace (window, workspace);
+    }
 
   if (window->shaded)
     meta_window_unshade (window, timestamp);
@@ -5135,6 +5150,7 @@ meta_window_change_workspace_by_index (MetaWindow *window,
 #define _NET_WM_MOVERESIZE_MOVE              8
 #define _NET_WM_MOVERESIZE_SIZE_KEYBOARD     9
 #define _NET_WM_MOVERESIZE_MOVE_KEYBOARD    10
+#define _NET_WM_MOVERESIZE_CANCEL           11
 
 gboolean
 meta_window_client_message (MetaWindow *window,
@@ -5467,11 +5483,18 @@ meta_window_client_message (MetaWindow *window,
         case _NET_WM_MOVERESIZE_MOVE_KEYBOARD:
           op = META_GRAB_OP_KEYBOARD_MOVING;
           break;
+        case _NET_WM_MOVERESIZE_CANCEL:
+          /* handled below */
+          break;
         default:
           break;
         }
 
-      if (op != META_GRAB_OP_NONE &&
+      if (action == _NET_WM_MOVERESIZE_CANCEL)
+        {
+          meta_display_end_grab_op (window->display, timestamp);
+        }
+      else if (op != META_GRAB_OP_NONE &&
           ((window->has_move_func && op == META_GRAB_OP_KEYBOARD_MOVING) ||
            (window->has_resize_func && op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)))
         {
@@ -5799,21 +5822,7 @@ static gboolean
 process_property_notify (MetaWindow     *window,
                          XPropertyEvent *event)
 {
-  /* First, property notifies to ignore because we shouldn't honor
-   * new values
-   */
-  if (event->atom == window->display->atom__NET_WM_STATE)
-    {
-      meta_verbose ("Property notify on %s for _NET_WM_STATE, ignoring (we should be the one who set the property in the first place)\n",
-                    window->desc);
-      return TRUE;
-    }
-
-  /* Second, property notifies we want to use.
-   * FIXME once we move entirely to the window-props.h framework, we
-   * can just call reload on the property in the event and get rid of
-   * this if-else chain.
-   */
+  Window xid = window->xwindow;
 
   if (meta_is_verbose ()) /* avoid looking up the name if we don't have to */
     {
@@ -5825,122 +5834,13 @@ process_property_notify (MetaWindow     *window,
       XFree (property_name);
     }
 
-  if (event->atom == XA_WM_NAME)
+  if (event->atom == window->display->atom__NET_WM_USER_TIME &&
+      window->user_time_window)
     {
-      /* don't bother reloading WM_NAME if using _NET_WM_NAME already */
-      if (!window->using_net_wm_name)
-        meta_window_reload_property (window, XA_WM_NAME);
-    }
-  else if (event->atom == window->display->atom__NET_WM_NAME)
-    {
-      meta_window_reload_property (window, window->display->atom__NET_WM_NAME);
-
-      /* if _NET_WM_NAME was unset, reload WM_NAME */
-      if (!window->using_net_wm_name)
-        meta_window_reload_property (window, XA_WM_NAME);
-    }
-  else if (event->atom == XA_WM_ICON_NAME)
-    {
-      /* don't bother reloading WM_ICON_NAME if using _NET_WM_ICON_NAME already */
-      if (!window->using_net_wm_icon_name)
-        meta_window_reload_property (window, XA_WM_ICON_NAME);
-    }
-  else if (event->atom == window->display->atom__NET_WM_ICON_NAME)
-    {
-      meta_window_reload_property (window, window->display->atom__NET_WM_ICON_NAME);
-
-      /* if _NET_WM_ICON_NAME was unset, reload WM_ICON_NAME */
-      if (!window->using_net_wm_icon_name)
-        meta_window_reload_property (window, XA_WM_ICON_NAME);
-    }
-  else if (event->atom == XA_WM_NORMAL_HINTS)
-    {
-      meta_window_reload_property (window, XA_WM_NORMAL_HINTS);
-
-      /* See if we need to constrain current size */
-      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
-    }
-  else if (event->atom == window->display->atom_WM_PROTOCOLS)
-    {
-      meta_window_reload_property (window, window->display->atom_WM_PROTOCOLS);
-    }
-  else if (event->atom == XA_WM_HINTS)
-    {
-      meta_window_reload_property (window, XA_WM_HINTS);
-    }
-  else if (event->atom == window->display->atom__MOTIF_WM_HINTS)
-    {
-      meta_window_reload_property (window,
-                                   window->display->atom__MOTIF_WM_HINTS);
-    }
-  else if (event->atom == XA_WM_CLASS)
-    {
-      meta_window_reload_property (window, XA_WM_CLASS);
-    }
-  else if (event->atom == XA_WM_TRANSIENT_FOR)
-    {
-      meta_window_reload_property (window, XA_WM_TRANSIENT_FOR);
-    }
-  else if (event->atom ==
-           window->display->atom_WM_WINDOW_ROLE)
-    {
-      update_role (window);
-    }
-  else if (event->atom ==
-           window->display->atom_WM_CLIENT_LEADER ||
-           event->atom ==
-           window->display->atom_SM_CLIENT_ID)
-    {
-      meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n", window->desc);
-    }
-  else if (event->atom ==
-           window->display->atom__NET_WM_WINDOW_TYPE)
-    {
-      update_net_wm_type (window);
-    }
-  else if (event->atom == window->display->atom__NET_WM_ICON)
-    {
-      meta_icon_cache_property_changed (&window->icon_cache,
-                                        window->display,
-                                        event->atom);
-      meta_window_queue(window, META_QUEUE_UPDATE_ICON);
-    }
-  else if (event->atom == window->display->atom__KWM_WIN_ICON)
-    {
-      meta_icon_cache_property_changed (&window->icon_cache,
-                                        window->display,
-                                        event->atom);
-      meta_window_queue(window, META_QUEUE_UPDATE_ICON);
-    }
-  else if ((event->atom == window->display->atom__NET_WM_STRUT) ||
-	   (event->atom == window->display->atom__NET_WM_STRUT_PARTIAL))
-    {
-      meta_window_update_struts (window);
-    }
-  else if (event->atom == window->display->atom__NET_STARTUP_ID)
-    {
-      meta_window_reload_property (window,
-                                   window->display->atom__NET_STARTUP_ID);
-    }
-  else if (event->atom == window->display->atom__NET_WM_SYNC_REQUEST_COUNTER)
-    {
-      meta_window_reload_property (window,
-                                   window->display->atom__NET_WM_SYNC_REQUEST_COUNTER);
-    }
-  else if (event->atom == window->display->atom__NET_WM_USER_TIME)
-    {
-      Window xid;
-      Atom atom__NET_WM_USER_TIME;
-
-      atom__NET_WM_USER_TIME = window->display->atom__NET_WM_USER_TIME;
-      if (window->user_time_window)
         xid = window->user_time_window;
-      else
-        xid = window->xwindow;
-      meta_window_reload_property_from_xwindow (window,
-                                                xid,
-                                                atom__NET_WM_USER_TIME);
     }
+
+  meta_window_reload_property (window, event->atom, FALSE);
 
   return TRUE;
 }
@@ -6130,8 +6030,8 @@ update_sm_hints (MetaWindow *window)
                 window->sm_client_id ? window->sm_client_id : "none");
 }
 
-static void
-update_role (MetaWindow *window)
+void
+meta_window_update_role (MetaWindow *window)
 {
   char *str;
 
@@ -6151,8 +6051,8 @@ update_role (MetaWindow *window)
                 window->desc, window->role ? window->role : "null");
 }
 
-static void
-update_net_wm_type (MetaWindow *window)
+void
+meta_window_update_net_wm_type (MetaWindow *window)
 {
   int n_atoms;
   Atom *atoms;
@@ -6217,7 +6117,7 @@ update_net_wm_type (MetaWindow *window)
         meta_XFree (str);
     }
 
-  recalc_window_type (window);
+  meta_window_recalc_window_type (window);
 }
 
 static void

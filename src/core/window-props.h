@@ -43,7 +43,8 @@
  * \param property   A single X atom.
  */
 void meta_window_reload_property   (MetaWindow *window,
-                                    Atom        property);
+                                    Atom        property,
+                                    gboolean    initial);
 
 
 /**
@@ -57,7 +58,8 @@ void meta_window_reload_property   (MetaWindow *window,
  */
 void meta_window_reload_properties (MetaWindow *window,
                                     const Atom *properties,
-                                    int         n_properties);
+                                    int         n_properties,
+                                    gboolean    initial);
 
 /**
  * Requests the current values of a single property for a given
@@ -72,7 +74,8 @@ void meta_window_reload_properties (MetaWindow *window,
 void meta_window_reload_property_from_xwindow
                                    (MetaWindow *window,
                                     Window      xwindow,
-                                    Atom        property);
+                                    Atom        property,
+                                    gboolean    initial);
 
 /**
  * Requests the current values of a set of properties for a given
@@ -89,7 +92,8 @@ void meta_window_reload_properties_from_xwindow
                                    (MetaWindow *window,
                                     Window      xwindow,
                                     const Atom *properties,
-                                    int         n_properties);
+                                    int         n_properties,
+                                    gboolean    initial);
 
 /**
  * Initialises the hooks used for the reload_propert* functions

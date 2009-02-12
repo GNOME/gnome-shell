@@ -50,7 +50,6 @@
 typedef struct _MetaStack      MetaStack;
 typedef struct _MetaUISlave    MetaUISlave;
 
-typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
 typedef struct _MetaGroupPropHooks  MetaGroupPropHooks;
 
 typedef struct MetaEdgeResistanceData MetaEdgeResistanceData;
@@ -233,7 +232,8 @@ struct _MetaDisplay
   MetaWindow *window_with_menu;
 
   /* Managed by window-props.c */
-  MetaWindowPropHooks *prop_hooks;
+  gpointer *prop_hooks_table;
+  GHashTable *prop_hooks;
 
   /* Managed by group-props.c */
   MetaGroupPropHooks *group_prop_hooks;

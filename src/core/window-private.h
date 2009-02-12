@@ -623,4 +623,7 @@ void meta_window_unset_demands_attention (MetaWindow *window);
 
 void meta_window_update_icon_now (MetaWindow *window);
 
+void meta_window_update_role (MetaWindow *window);
+void meta_window_update_net_wm_type (MetaWindow *window);
+
 #endif

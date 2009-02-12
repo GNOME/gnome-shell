@@ -1,0 +1,3493 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=metacity&component=general\n"
+"POT-Creation-Date: 2009-01-17 08:21+0000\n"
+"PO-Revision-Date: 2006-08-09 13:26+0100\n"
+"Last-Translator: Fajuyitan, Sunday Ayo <ayo@wazobialinux.com>\n"
+"Language-Team: Yoruba\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10\n"
+
+#: ../src/50-metacity-desktop-key.xml.in.h:1
+#, fuzzy
+msgid "Desktop"
+msgstr "òkè"
+
+#: ../src/50-metacity-key.xml.in.h:1
+#, fuzzy
+msgid "Window Management"
+msgstr "Alábòójútó fèrèsé: "
+
+#: ../src/core/core.c:206
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr ""
+
+#: ../src/core/delete.c:70 ../src/core/delete.c:97
+#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Kò lè ṣètò \"%s\" gẹ́gẹ́ bíi ítíjà"
+
+#: ../src/core/delete.c:77 ../src/core/delete.c:104
+#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
+#: ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Àwọn àmì-ìkọ tírélìn kò yé \"%s\" nínú fọ́nrán \"%s\""
+
+#: ../src/core/delete.c:135
+#, c-format
+msgid "Failed to parse message \"%s\" from dialog process\n"
+msgstr "Ó kùnà láti ṣètò iṣẹ́ rírán \"%s\" láti inú ìlànà onísọ̀rọ̀gbèsi\n"
+
+#: ../src/core/delete.c:253
+#, c-format
+msgid "Error reading from dialog display process: %s\n"
+msgstr "Àṣìṣe kíkà láti ìlànà ìṣàfihàn onísọ̀rọ̀gbèsì: %s\n"
+
+#: ../src/core/delete.c:336
+#, c-format
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr ""
+"Àṣìṣe ìfilọ́lẹ̀ metacity-onísọ̀rọ̀gbèsì á bèrè nípa pípa ìṣàmúlò-ètò kan: %s\n"
+
+#: ../src/core/delete.c:445
+#, c-format
+msgid "Failed to get hostname: %s\n"
+msgstr "Ó kùnà láti rí orúkọ-agbàlejò: %s\n"
+
+#: ../src/core/display.c:256
+#, c-format
+msgid "Missing %s extension required for compositing"
+msgstr ""
+
+#: ../src/core/display.c:334
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Ó kùnà láti ṣí ìṣàfihàn Ètò Fèrèsé X '%s'\n"
+
+#: ../src/core/errors.c:272
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"Ó sọ ìdarapọ̀ nù fún ìsàfihàn '%s';\n"
+"Ó ṣeé ṣe kí a pa sáfà X tàbí o pa/ba alábòójútó fèrèsé náà jẹ́.\n"
+
+#: ../src/core/errors.c:279
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "Àṣìṣe IO ńlá %d (%s) lórí ìṣàfihàn '%s'.\n"
+
+#: ../src/core/keybindings.c:680
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr ""
+"Ọ̀pọ̀lọpọ̀ àtòjọ-ètò mìíràn ló ń ti ń lo bọ́tìnì %s tẹ́lẹ̀ pẹ́lú àwọn aṣàtúntò %x "
+"gẹ́gẹ́ bíi aṣẹ̀dá-ìtọ́ka\n"
+
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2294
+#, fuzzy, c-format
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
+msgstr ""
+"Àṣìṣe kan ń rọ́ọ̀nù \"%s\":\n"
+"%s."
+
+#: ../src/core/keybindings.c:2381
+#, c-format
+msgid "No command %d has been defined.\n"
+msgstr "A kò tíì soríkì àṣe %d kankan.\n"
+
+#: ../src/core/keybindings.c:3335
+#, c-format
+msgid "No terminal command has been defined.\n"
+msgstr "A kò tíì soríkì àṣẹ támínà kankan.\n"
+
+#: ../src/core/main.c:116
+#, fuzzy, c-format
+msgid ""
+"metacity %s\n"
+"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"metacity %s\n"
+"Àṣẹ lórí-àrà (C) 2001-2002 Havoc Pennington, Red Hat, Inc., àti àwọn mìíràn\n"
+"Ọ̀fẹ́ ni ẹ̀yà-ara kọ̀ǹpútà àìfojúrí yìí; wo orísun fún àwọn ìwọfún ìṣẹ̀dà.\n"
+"Kò sí wáráǹtì; kó dà kò sí fún ITAJA tàbí ÌWÚLÒ FÚN ÌLÒ PÀTÀKÌ KAN.\n"
+
+#: ../src/core/main.c:253
+msgid "Disable connection to session manager"
+msgstr ""
+
+#: ../src/core/main.c:259
+msgid "Replace the running window manager with Metacity"
+msgstr ""
+
+#: ../src/core/main.c:265
+msgid "Specify session management ID"
+msgstr ""
+
+#: ../src/core/main.c:270
+msgid "X Display to use"
+msgstr ""
+
+#: ../src/core/main.c:276
+msgid "Initialize session from savefile"
+msgstr ""
+
+#: ../src/core/main.c:282
+msgid "Print version"
+msgstr ""
+
+#: ../src/core/main.c:288
+msgid "Make X calls synchronous"
+msgstr ""
+
+#: ../src/core/main.c:294
+msgid "Turn compositing on"
+msgstr ""
+
+#: ../src/core/main.c:300
+msgid "Turn compositing off"
+msgstr ""
+
+#: ../src/core/main.c:478
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "Ó kùnà láti síkáànì atọ́nà àwọn kókó: %s\n"
+
+#: ../src/core/main.c:494
+#, fuzzy, c-format
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr "Kò lè rí kókó! Rí dájú pé %s wà ó sì ní àwọn kókó tó yẹ kó ní."
+
+#: ../src/core/main.c:550
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "Ó kùnà láti tún bẹ̀rẹ̀: %s\n"
+
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
+#.
+#.
+#: ../src/core/prefs.c:499 ../src/core/prefs.c:654
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "A gbé bọ́tìnì GConf '%s' kalẹ̀ sí irúfẹ́ tí kò fẹsẹ̀múlẹ̀\n"
+
+#: ../src/core/prefs.c:580 ../src/core/prefs.c:823
+#, fuzzy, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr "%d tí a fi pamọ́ sínú bọ́tìnì GConf %s kò sí ní sàkánì 0 sí %d\n"
+
+#: ../src/core/prefs.c:624 ../src/core/prefs.c:701 ../src/core/prefs.c:749
+#: ../src/core/prefs.c:813 ../src/core/prefs.c:1106 ../src/core/prefs.c:1122
+#: ../src/core/prefs.c:1139 ../src/core/prefs.c:1155
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "A gbé bọ́tìnì GConf \"%s\" kalẹ̀ sí irúfẹ́ tí kò fẹsẹ̀múlẹ̀\n"
+
+#: ../src/core/prefs.c:1225
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"Àwọn workaround fún àwọn ìṣàmúlò-ètò tó dàrú kò ṣiṣẹ́. Ọ̀pọ̀lọpọ̀ àwọn ìṣàmúlò-"
+"ètò kò hùwà dáadáa.\n"
+
+#: ../src/core/prefs.c:1296
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Kò lè páàsì àpèjúwe ìrísí-lẹ́tà \"%s\" láti inú bọ́tìnì GConf %s\n"
+
+#: ../src/core/prefs.c:1356
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"\"%s\" tí a rí nínú èròjà ìwádìí àtòpọ̀ kìí ṣe fálù tó fẹsẹ̀múlẹ̀ fún aṣàtúntò "
+"bọ́tìnì ohun-èlò aṣèkúté\n"
+
+#: ../src/core/prefs.c:1771
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "Àṣìṣe ìgbékalẹ̀ oye àwon ààyè-iṣẹ́ sí %d: %s\n"
+
+#: ../src/core/prefs.c:1960 ../src/core/prefs.c:2463
+#, c-format
+msgid "Workspace %d"
+msgstr "Ààyè-iṣẹ́ %d"
+
+#: ../src/core/prefs.c:1990 ../src/core/prefs.c:2168
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"\"%s\" tí a rí nínú èròjà ìwádìí àtòpọ̀ kìí ṣe fálu tó fẹsẹ̀múlẹ̀ fún aṣẹ̀dá-"
+"ìtọ́ka \"%s\"\n"
+
+#: ../src/core/prefs.c:2544
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Àṣìṣe ìgbékalẹ̀ orúkọ fún ààyè-iṣẹ́ %d sí \"%s\": %s\n"
+
+#: ../src/core/prefs.c:2730
+#, fuzzy, c-format
+msgid "Error setting compositor status: %s\n"
+msgstr "Àṣìṣe ìgbékalẹ̀ orúkọ fún ààyè-iṣẹ́ %d sí \"%s\": %s\n"
+
+#: ../src/core/screen.c:350
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "Ojú kọ̀ǹpútà %d tí a ̀ṣàfihàn '%s' kò fẹsẹ̀múlẹ̀\n"
+
+#: ../src/core/screen.c:366
+#, c-format
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+"Ojú kọ̀ǹpútà %d tí a ṣàfihàn \"%s\" ti ní alábòójútó fèrèsé tẹ́lẹ̀; gbìyànjú "
+"lílo --ẹ̀yàn ìpààrọ̀ láti pà́àrọ̀ alábòójútó lọ́wọ́lọ́wọ́.\n"
+
+#: ../src/core/screen.c:393
+#, c-format
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "Kò lè gba ẹ̀yàn alábòójútó fèrèsé lórí ojú kọ̀ǹpútà %d ìṣàfihàn \"%s\"\n"
+
+#: ../src/core/screen.c:451
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "Ojú kọ̀ǹpútà %d tí a ̀ṣàfihàn \"%s\" ti ní alábòójútó fèrèsé tẹ́lẹ̀\n"
+
+#: ../src/core/screen.c:661
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "Kò lè fi ojú kọ̀ǹpútà %d tí a ṣàfihàn sílẹ̀\"%s\"\n"
+
+#. Translators: Please don't translate "Control", "Shift", etc, since these
+#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+#. * "disabled" must also stay as it is.
+#.
+#: ../src/core/schema-bindings.c:165
+#, fuzzy
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń ti àtòjọ-ẹ̀yàn fèrèsé́ . Ìgúnrégé náà jọ \"&lt;"
+"Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń "
+"fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti "
+"\"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára "
+"mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#: ../src/core/schema-bindings.c:173
+#, fuzzy
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
+"\n"
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
+msgstr ""
+"Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń ti àtòjọ-ẹ̀yàn fèrèsé́ . Ìgúnrégé náà jọ \"&lt;"
+"Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń "
+"fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti "
+"\"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára "
+"mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#: ../src/core/session.c:837 ../src/core/session.c:844
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Kò lè ṣẹ̀dá atọ́nà '%s': %s\n"
+
+#: ../src/core/session.c:854
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "Kò lè ṣí fáìlì sáà '%s' fún kíkọ: %s\n"
+
+#: ../src/core/session.c:995
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Àṣìṣe kíkọ fáìlì sáà '%s': %s\n"
+
+#: ../src/core/session.c:1000
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "Aṣìse títi fáìlì sáà '%s': %s\n"
+
+#. oh, just give up
+#: ../src/core/session.c:1093
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "Ó kùnà láti ka fáìlì sáà tí a fi pamọ́ %s: %s\n"
+
+#: ../src/core/session.c:1132
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "Ó kùnà láti páàsì fáìlì sáà tí a fi pamọ́: %s\n"
+
+#: ../src/core/session.c:1181
+#, c-format
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr "àbùdá <sáà_metacity> tí a rí ṣùgbọ́n tí a ti ní sáà ID náà tẹ́lẹ̀"
+
+#: ../src/core/session.c:1194 ../src/core/session.c:1269
+#: ../src/core/session.c:1301 ../src/core/session.c:1373
+#: ../src/core/session.c:1433
+#, fuzzy, c-format
+msgid "Unknown attribute %s on <%s> element"
+msgstr "Àbùd́ àìmọ̀ %s lorí fọ́nrán <fèrèsé>"
+
+#: ../src/core/session.c:1211
+#, c-format
+msgid "nested <window> tag"
+msgstr "nested <window> tag"
+
+#: ../src/core/session.c:1453
+#, c-format
+msgid "Unknown element %s"
+msgstr "Fọ́nrán àìmọ̀ %s"
+
+#: ../src/core/session.c:1879
+#, c-format
+msgid ""
+"Error launching metacity-dialog to warn about apps that don't support "
+"session management: %s\n"
+msgstr ""
+"Àṣìṣe ìfi onísọ̀rọ̀gbèsì-metacity lọ́lẹ̀ láti kìlọ̀ nípa apps tí kò ṣàtìlẹ́yìn "
+"alábòójútó sáà: %s\n"
+
+#: ../src/core/util.c:101
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "Ó kùnà láti ṣí ìpamọ́ ìwáṣìṣe bárakú: %s\n"
+
+#: ../src/core/util.c:111
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "Ó kùnà láti fdṣí () fáìlì ìpamọ́ %s: %s\n"
+
+#: ../src/core/util.c:117
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "Fáìlì ìpamọ́ tí a ṣí %s\n"
+
+#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#, c-format
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "A ṣàmúpọ̀ metacity láì sí àtìlẹ́yìn fún móòdù verbose\n"
+
+#: ../src/core/util.c:236
+msgid "Window manager: "
+msgstr "Alábòójútó fèrèsé: "
+
+#: ../src/core/util.c:388
+msgid "Bug in window manager: "
+msgstr "Àsìṣe bárakú nínú alábòójútó fèrèsé: "
+
+#: ../src/core/util.c:421
+msgid "Window manager warning: "
+msgstr "Ìkìlọ̀ alábòójútó fèrèsé: "
+
+#: ../src/core/util.c:449
+msgid "Window manager error: "
+msgstr "Àṣìṣe alábòójútó fèrèsé: "
+
+#. Translators: This is the title used on dialog boxes
+#. eof all-keybindings.h
+#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
+
+#. first time through
+#: ../src/core/window.c:5743
+#, c-format
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"Fèrèsé %s ń ṣàgbékalẹ̀ SM_CLIENT_ID lórí ara rẹ̀ dípò lórí fèrèsé "
+"WM_CLIENT_LEADER gẹ́gẹ́ bí a ṣe sọ ní pàtó nínú ICCCM.\n"
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#: ../src/core/window.c:6308
+#, c-format
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"Fèrèsé %s ń ṣàgbékalẹ̀ òfófó MWM, ó sì ń tọ́ka si pè kò ṣeé tún wọ̀n, ṣùgbọ́n ó "
+"gbé ìwọ̀n %d x %d kalẹ̀ fún min, ó sì gbé %d x %d kalẹ̀ fún ìwọ̀n max; èyí kò fi "
+"bẹ́ẹ̀ ní ọpọlọ.\n"
+
+#: ../src/core/window-props.c:206
+#, fuzzy, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Ìṣàmúlò-ètò gbé  bogus _NET_WM_PID %ld kalẹ̀\n"
+
+#: ../src/core/window-props.c:338
+#, c-format
+msgid "%s (on %s)"
+msgstr ""
+
+#: ../src/core/window-props.c:1422
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr ""
+
+#: ../src/core/xprops.c:155
+#, c-format
+msgid ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+msgstr ""
+"Fèrèsé 0x%lx ní àbùdá %s\n"
+"tí a rò pé á ní irúfẹ́ %s ìgúnrégé %d\n"
+"tó sì wá ní irúfẹ́ %s ìgúnrégé %d n_àwọn wúnrẹ̀n %d.\n"
+"Àṣìṣe bárakú ìṣàmúlò-ètò ni yóò jẹ́ kìí ṣe àṣìṣe bárakú alábòójútó fèrèsé.\n"
+"Fèrèsé náà ní àkọ́lé=\"%s\" kíláàsì=\"%s\" orúkọ=\"%s\"\n"
+
+#: ../src/core/xprops.c:401
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "Àbùdá %s lórí fèrèsé 0x%lx ní UTF-8 tí kò fẹsẹ̀múlẹ̀ nínú̀\n"
+
+#: ../src/core/xprops.c:484
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Àbùdá %s lórí fèrèsé 0x%lx ní UTF-8 tí kò fẹsẹ̀múlẹ̀ fún wúnrẹ̀n %d nínú àtòjọ "
+"náà\n"
+
+#: ../src/include/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Sún sí ààyè-iṣẹ́ kìíní"
+
+#: ../src/include/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Sún sí ààyè-iṣẹ́ kejì"
+
+#: ../src/include/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Sún sí ààyè-iṣẹ́ kẹta"
+
+#: ../src/include/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Sún sí ààyè-iṣẹ́ kẹrin"
+
+#: ../src/include/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Sún sí ààyè-iṣẹ́ karùn ún"
+
+#: ../src/include/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Sún sí ààyè-iṣẹ́ kẹfà"
+
+#: ../src/include/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Sún sí ààyè-iṣẹ́ keje"
+
+#: ../src/include/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Sún sí ààyè-iṣẹ́ kẹjọ"
+
+#: ../src/include/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Sún sí ààyè-iṣẹ́ kẹsàn án"
+
+#: ../src/include/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Sún sí ààyè-iṣẹ́ kẹwàá"
+
+#: ../src/include/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Sún sí ààyè-iṣẹ́ kọkànlá"
+
+#: ../src/include/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Sún sí ààyè-iṣẹ́ kejìlá"
+
+#: ../src/include/all-keybindings.h:122
+#, fuzzy
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Sún sí ààyè-iṣẹ́ tó wà lápá òsì"
+
+#: ../src/include/all-keybindings.h:126
+#, fuzzy
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Sún sí ààyè-iṣẹ́ tó wà lápá ọ̀tún"
+
+#: ../src/include/all-keybindings.h:130
+#, fuzzy
+msgid "Switch to workspace above the current workspace"
+msgstr "Sún sí ààyè-iṣẹ́ tó wà lókè eléyìí"
+
+#: ../src/include/all-keybindings.h:134
+#, fuzzy
+msgid "Switch to workspace below the current workspace"
+msgstr "Sún sí ààyè-iṣẹ́ tó wà nísàlẹ̀ eléyìí"
+
+#: ../src/include/all-keybindings.h:150
+#, fuzzy
+msgid "Move between windows of an application, using a popup window"
+msgstr "Lọ láàrin àwọn fèrèsé pẹ̀lú ìtasókè"
+
+#: ../src/include/all-keybindings.h:153
+#, fuzzy
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "Gbé ìwòye padà sẹ́yìn láàrin àwọn fèrèsé nípa lílo ìṣàfihàn ìtasókè"
+
+#: ../src/include/all-keybindings.h:157
+#, fuzzy
+msgid "Move between windows, using a popup window"
+msgstr "Lọ láàrin àwọn fèrèsé pẹ̀lú ìtasókè"
+
+#: ../src/include/all-keybindings.h:160
+#, fuzzy
+msgid "Move backward between windows, using a popup window"
+msgstr "Gbé ìwòye padà sẹ́yìn láàrin àwọn fèrèsé nípa lílo ìṣàfihàn ìtasókè"
+
+#: ../src/include/all-keybindings.h:163
+#, fuzzy
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Lọ láàrin àwọn pánẹ́èlì àti ojú-iṣẹ́ pẹ̀lú ìtasókè"
+
+#: ../src/include/all-keybindings.h:166
+#, fuzzy
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr "Lọ sẹ́yìn láàrin àwọn pánẹ́ẹ̀lì àti ojú-iṣẹ́ pẹ̀lú ìta sókè"
+
+#: ../src/include/all-keybindings.h:171
+#, fuzzy
+msgid "Move between windows of an application immediately"
+msgstr "Lọ láàrin àwọn fèrèsé lẹ́sẹ̀kẹsẹ̀"
+
+#: ../src/include/all-keybindings.h:174
+#, fuzzy
+msgid "Move backward between windows of an application immediately"
+msgstr "Lọ sẹ́yìn láàrin àwọn fèrèsé lẹ́sẹ̀kẹsẹ̀"
+
+#: ../src/include/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Lọ láàrin àwọn fèrèsé lẹ́sẹ̀kẹsẹ̀"
+
+#: ../src/include/all-keybindings.h:180
+#, fuzzy
+msgid "Move backward between windows immediately"
+msgstr "Lọ sẹ́yìn láàrin àwọn fèrèsé lẹ́sẹ̀kẹsẹ̀"
+
+#: ../src/include/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Lọ láàrin àwọn pánẹ́èlì àti ojú-iṣẹ́ lẹ́sẹ̀kẹsẹ̀"
+
+#: ../src/include/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Lọ sẹ́yìn láàrin àwọn pánẹ́ẹ̀lì àti ojú-iṣẹ́ lẹ́sẹ̀kẹsẹ̀"
+
+#: ../src/include/all-keybindings.h:191
+#, fuzzy
+msgid "Hide all normal windows and set focus to the desktop background"
+msgstr "Fi gbogbo àwọn fèrèsé pamọ́ kí o sì wòye ojú-iṣẹ́"
+
+#: ../src/include/all-keybindings.h:194
+#, fuzzy
+msgid "Show the panel's main menu"
+msgstr "Fi àtòjọ-ẹ̀yàn pánẹ́ẹ̀lì hàn"
+
+#: ../src/include/all-keybindings.h:197
+#, fuzzy
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Fi onísọ̀rọ̀gbèsì ìṣàmúlò-ètò rọ́ọ̀nù pánẹ́ẹ̀lì hàn"
+
+#: ../src/include/all-keybindings.h:238
+msgid "Take a screenshot"
+msgstr "Ya ìmáwòrán"
+
+#: ../src/include/all-keybindings.h:240
+msgid "Take a screenshot of a window"
+msgstr "Ya ìmáwòrán fèrèsé kan"
+
+#: ../src/include/all-keybindings.h:242
+msgid "Run a terminal"
+msgstr "Rọ́ọ̀nù támínà"
+
+#: ../src/include/all-keybindings.h:257
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Mu àtòjọ-ẹ̀yàn fèrèsé"
+
+#: ../src/include/all-keybindings.h:260
+msgid "Toggle fullscreen mode"
+msgstr "Tọ́gù móòdù ojú kọ̀ǹpútà kíkún"
+
+#: ../src/include/all-keybindings.h:262
+msgid "Toggle maximization state"
+msgstr "Tọ́gù ipò ìfẹ̀lójú"
+
+#: ../src/include/all-keybindings.h:264
+#, fuzzy
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "Fèrèsé ìsàlẹ̀ lábẹ́ àwọn fèrèsé mìíràn"
+
+#: ../src/include/all-keybindings.h:266
+msgid "Maximize window"
+msgstr "Fẹ fèrèsé"
+
+#: ../src/include/all-keybindings.h:268
+#, fuzzy
+msgid "Restore window"
+msgstr "Ìṣòdíwọ̀n fèrèsé"
+
+#: ../src/include/all-keybindings.h:270
+msgid "Toggle shaded state"
+msgstr "Tọ́gù ipò tí a kùn"
+
+#: ../src/include/all-keybindings.h:272
+msgid "Minimize window"
+msgstr "Pa fèrèsé dé"
+
+#: ../src/include/all-keybindings.h:274
+msgid "Close window"
+msgstr "Ti Fèrèsé"
+
+#: ../src/include/all-keybindings.h:276
+msgid "Move window"
+msgstr "Gbé fèrèsé"
+
+#: ../src/include/all-keybindings.h:278
+msgid "Resize window"
+msgstr "Ìṣòdíwọ̀n fèrèsé"
+
+#: ../src/include/all-keybindings.h:281
+#, fuzzy
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "Fèrèsé tọ́gù lórí gbogbo àwọn ààyè-iṣẹ́"
+
+#: ../src/include/all-keybindings.h:285
+msgid "Move window to workspace 1"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kìíní"
+
+#: ../src/include/all-keybindings.h:288
+msgid "Move window to workspace 2"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kejì"
+
+#: ../src/include/all-keybindings.h:291
+msgid "Move window to workspace 3"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹta"
+
+#: ../src/include/all-keybindings.h:294
+msgid "Move window to workspace 4"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹrin"
+
+#: ../src/include/all-keybindings.h:297
+msgid "Move window to workspace 5"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ karùn ún"
+
+#: ../src/include/all-keybindings.h:300
+msgid "Move window to workspace 6"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹfà"
+
+#: ../src/include/all-keybindings.h:303
+msgid "Move window to workspace 7"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ keje"
+
+#: ../src/include/all-keybindings.h:306
+msgid "Move window to workspace 8"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹjọ"
+
+#: ../src/include/all-keybindings.h:309
+msgid "Move window to workspace 9"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹsàn án"
+
+#: ../src/include/all-keybindings.h:312
+msgid "Move window to workspace 10"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹwàá"
+
+#: ../src/include/all-keybindings.h:315
+msgid "Move window to workspace 11"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kọkànlá"
+
+#: ../src/include/all-keybindings.h:318
+msgid "Move window to workspace 12"
+msgstr "Gbé fèrèsé lọ sí ààyè-iṣẹ́ kejìlá"
+
+#: ../src/include/all-keybindings.h:330
+msgid "Move window one workspace to the left"
+msgstr "Gbé ààyè-iṣẹ́ fèrèsé kan sí òsì"
+
+#: ../src/include/all-keybindings.h:333
+msgid "Move window one workspace to the right"
+msgstr "Gbé ààyè-iṣẹ́ fèrèsé kan sí ọ̀tún"
+
+#: ../src/include/all-keybindings.h:336
+msgid "Move window one workspace up"
+msgstr "Gbé ààyè-iṣẹ́ fèrèsé kan sókè"
+
+#: ../src/include/all-keybindings.h:339
+msgid "Move window one workspace down"
+msgstr "Gbé ààyè-iṣẹ́ fèrèsé kan wálẹ̀"
+
+#: ../src/include/all-keybindings.h:342
+#, fuzzy
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "Gbé fèrèsé dídí sókè, bí bẹ́ẹ̀ kọ́, gbé wálẹ̀"
+
+#: ../src/include/all-keybindings.h:344
+msgid "Raise window above other windows"
+msgstr "Gbeŕ fèrèsé ga ju àwọn fèrèsé mìíràn lọ"
+
+#: ../src/include/all-keybindings.h:346
+msgid "Lower window below other windows"
+msgstr "Fèrèsé ìsàlẹ̀ lábẹ́ àwọn fèrèsé mìíràn"
+
+#: ../src/include/all-keybindings.h:350
+msgid "Maximize window vertically"
+msgstr "Fẹ fèrèsé lólóròó"
+
+#: ../src/include/all-keybindings.h:354
+msgid "Maximize window horizontally"
+msgstr "Fẹ fèrèsé lóníbùú"
+
+#: ../src/include/all-keybindings.h:358
+#, fuzzy
+msgid "Move window to north-west (top left) corner"
+msgstr "Gbé ààyè-iṣẹ́ fèrèsé kan sí òsì"
+
+#: ../src/include/all-keybindings.h:361
+#, fuzzy
+msgid "Move window to north-east (top right) corner"
+msgstr "Gbé ààyè-iṣẹ́ fèrèsé kan sí ọ̀tún"
+
+#: ../src/include/all-keybindings.h:364
+msgid "Move window to south-west (bottom left) corner"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:367
+msgid "Move window to south-east (bottom right) corner"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:371
+msgid "Move window to north (top) side of screen"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:374
+msgid "Move window to south (bottom) side of screen"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:377
+msgid "Move window to east (right) side of screen"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:380
+msgid "Move window to west (left) side of screen"
+msgstr ""
+
+#: ../src/include/all-keybindings.h:383
+#, fuzzy
+msgid "Move window to center of screen"
+msgstr "Gbé ààyè-iṣẹ́ fèrèsé kan wálẹ̀"
+
+#: ../src/metacity.schemas.in.in.h:1
+msgid "(Not implemented) Navigation works in terms of applications not windows"
+msgstr ""
+"(A kò pilẹ̀ rẹ̀) Wíwúlò àwọn ìṣàmúlò-ètò ní ìtọpa ń bá ṣiṣẹ́ kìí ṣe ti àwọn "
+"fèrèsé"
+
+#: ../src/metacity.schemas.in.in.h:2
+#, fuzzy
+msgid ""
+"A font description string describing a font for window titlebars. The size "
+"from the description will only be used if the titlebar_font_size option is "
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
+msgstr ""
+"Fọ́nrán à̀pèjúwe ìrísí-lẹ́tàtó ń ṣàpèjúwe ìrísí-lẹ́tà fún àwọn àká-àkọ́lé fèrèsé. "
+"Ìgbà tí a bá gbé ẹ̀yàn ìwọ̀n_ìrísí-lẹ́tà_ojú-iṣẹ́_àwọn_ìlo_àká-àkọ́lé sí 0 ní a "
+"tó máà lo ìwọ̀n inú àpèjúwe náà. Àmọ́, ṣá ẹ̀yàn yìí kò ní ṣiṣẹ́ mọ́ tí ẹ̀yàn ìrísí-"
+"lẹ́tà_ojú-iṣẹ́_àwọn_ìlò_àká-irinṣẹ́ bá jẹ́ òótọ́. Nípa ìpéwọ̀n a kò gbé ìrísí-lẹ́tà "
+"kalẹ̀, èyí sì ń mú kí Metacity padà sí ìrísí-lẹ́tà ojú-iṣẹ́ kódà tí àká-"
+"àkọ́lé_bá_lo_ìrísí-lẹ́tà_ojú-iṣẹ́ bá jẹ́ irọ́."
+
+#: ../src/metacity.schemas.in.in.h:3
+msgid "Action on title bar double-click"
+msgstr "Iṣẹ́ lórí àká ákọ́lé, tẹ̀ẹ́-lẹ́ẹ̀mejì"
+
+#: ../src/metacity.schemas.in.in.h:4
+#, fuzzy
+msgid "Action on title bar middle-click"
+msgstr "Iṣẹ́ lórí àká ákọ́lé, tẹ̀ẹ́-lẹ́ẹ̀mejì"
+
+#: ../src/metacity.schemas.in.in.h:5
+#, fuzzy
+msgid "Action on title bar right-click"
+msgstr "Iṣẹ́ lórí àká ákọ́lé, tẹ̀ẹ́-lẹ́ẹ̀mejì"
+
+#: ../src/metacity.schemas.in.in.h:6
+msgid "Arrangement of buttons on the titlebar"
+msgstr "Ètò àwọn bọ́tìnì lórí àká-àkọ́lé"
+
+#: ../src/metacity.schemas.in.in.h:7
+#, fuzzy
+msgid ""
+"Arrangement of buttons on the titlebar. The value should be a string, such "
+"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
+"corner of the window from the right corner, and the button names are comma-"
+"separated. Duplicate buttons are not allowed. Unknown button names are "
+"silently ignored so that buttons can be added in future metacity versions "
+"without breaking older versions. A special spacer tag can be used to insert "
+"some space between two adjacent buttons."
+msgstr ""
+"Ètò àwọn bọ́tìnì lórí àká-àkọ́lé. Fálù náà yẹ kó jẹ́ fọ́nrán bíi \"àtòjọ-ẹ̀yàn:"
+"pajúdé,fẹ̀ẹ́lójú̀,tìí\"; kọ́lọ́mù náà ń pín igun apá òsì àti ọ̀tún fèrèsé níyà. A "
+"fi kọmá pín à̀wọn orúkọ bọ́tìnì náà n. Kò sáyè fún àwọn bọ́tìnì aṣẹ̀dà. A kàn "
+"rọra pa àwọn orúkọ bọ́tìnì àìmọ̀ tì ni kó má bàa da àwọn ẹ̀yà metacity àtijọ́ rú "
+"nígbà tí a bá fẹ́ ṣàfikún àọn bọ́tìnì lọ́jọ́ iwájú."
+
+#: ../src/metacity.schemas.in.in.h:8
+msgid "Automatically raises the focused window"
+msgstr "Ń gbé fèrèsé tí a wòye sókè fún ra rẹ̀"
+
+#: ../src/metacity.schemas.in.in.h:9
+msgid ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
+"for example."
+msgstr ""
+"Títẹ fèrèsé kan, nígbà tí o bá ń tẹ bọ́tìnì aṣàtúntò yìí yóò gbé fèrèsé náà "
+"(ìtẹ̀ òsì) ìṣòdíwọ̀n fèrèsé náà (ìtẹ̀ àárín), tàbí kí o fi àtòjọ-ẹ̀yàn fèrèsé "
+"náà hàn (ìtẹ̀ ọ̀tún). A máa ń ṣàfihàn aṣàtúntò gẹ́gẹ́ bíi \"&lt;Alt&gt;\" tàbí "
+"\"&lt;Super&gt;\" bíi àpẹẹrẹ."
+
+#: ../src/metacity.schemas.in.in.h:10
+msgid "Commands to run in response to keybindings"
+msgstr "Àwọn àṣẹ tí a fẹ́ rọ́ọ̀nù ní ìfèsì àwọn aṣẹ̀dá-ìtọ́ka bọ́tìnì"
+
+#: ../src/metacity.schemas.in.in.h:11
+msgid "Compositing Manager"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:12
+msgid "Control how new windows get focus"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:13
+msgid "Current theme"
+msgstr "Kókó lọ́wọ́lọ́wọ́"
+
+#: ../src/metacity.schemas.in.in.h:14
+msgid "Delay in milliseconds for the auto raise option"
+msgstr "Ìdádúró ìdá-ọ̀kẹ́ ìṣísẹ̀ fún ẹ̀yàn ìgbésókè aládàáṣe"
+
+#: ../src/metacity.schemas.in.in.h:15
+msgid "Determines whether Metacity is a compositing manager."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:16
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr ""
+"Ń máa ń sọ bóyá àwọn ìṣàmúlò-ètò tàbí ètò kọ̀ǹpútà lè da àwọn 'ìfùnpè' tó dún "
+"rọ. KÁ sì lè lòó pẹ̀lú 'aago afojúrí' láti lè fàyè gba àwọn 'ìfùnpè' ìdákẹ́jẹ́."
+
+#: ../src/metacity.schemas.in.in.h:17
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr ""
+"Má mùú àwọn àbùd́á ségesège tí àwọn ìṣàmúlò-ètò àtijọ́ tàbí tí ó bàjẹ́ ń fẹ́ ṣiṣẹ́"
+
+#: ../src/metacity.schemas.in.in.h:18
+msgid "Enable Visual Bell"
+msgstr "Mú Agogo Afojúrí Ṣiṣẹ́"
+
+#: ../src/metacity.schemas.in.in.h:19
+#, fuzzy
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
+msgstr ""
+"Tí ó bá jẹ́ òótọ́, tí móòdù òye sì jẹ́ \"dàgẹ̀rẹ̀\" tàbí \"ohun-èlò aṣèkúté\" a "
+"jẹ́ pé a óò gbé fèrèsé tí a wòye rẹ̀ sókè lẹ́yìn ìdádúró díè (bọ́tìnì "
+"ìdádúró_ìgbésókè_aládàáṣe ló ń sọ ìdádúró náà ní pàtó)."
+
+#: ../src/metacity.schemas.in.in.h:20
+msgid ""
+"If true, ignore the titlebar_font option, and use the standard application "
+"font for window titles."
+msgstr ""
+"Tó bá jẹ́ òótọ́, pa ẹ̀yàn ìrísí-lẹ́tà àká-àkọ́lé náà ti, kí o sì lo ìrísí-lẹ́tà "
+"ìṣàmúlò-ètò òpéwọ̀n fún àwọn àkọ́lé fèrèsé."
+
+#: ../src/metacity.schemas.in.in.h:21
+#, fuzzy
+msgid ""
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
+msgstr ""
+"Tó bá jẹ́ òótọ́, èsì tí metacity máa fún òǹlò máa kéré kò sì ní ní \"àyínìke "
+"tààrà\", nípa lílo àwọn férémù-wáyà, kí àwọn ìsàfarawé kọ̀ǹpútà má wáyé, tàbí "
+"àwọn ọ̀nà mìíràn. Ìdínkù tó jọjú ni èyí fún ìlò àwọn òǹlò. Àmọ́, ó lè fàyè gba "
+"àwọn ìṣàmúlò-ètò ogún àti àwọn sáfà támínà láti ṣiṣẹ́ kódà nígbà tí kò bá "
+"ṣiṣẹ́. Àmọ́ ṣá, àbùdá férémù-wáyà kò ní ṣiṣẹ́ tí ìràyé bá dẹ́kun ìbàjẹ́ ojú-iṣẹ́ "
+"tó lè dẹ́rù ba ni."
+
+#: ../src/metacity.schemas.in.in.h:22
+#, fuzzy
+msgid ""
+"If true, then Metacity works in terms of applications rather than windows. "
+"The concept is a bit abstract, but in general an application-based setup is "
+"more like the Mac and less like Windows. When you focus a window in "
+"application-based mode, all the windows in the application will be raised. "
+"Also, in application-based mode, focus clicks are not passed through to "
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
+msgstr ""
+"Tó bá jẹ́ òótọ́, a jẹ́ pé metacity ń ṣiṣẹ́ gẹ́gẹ́ bíi àwọn ìṣàmúlò-ètò dípò bíi "
+"àwọn fèrèsé. Èrò náà kò ṣeé fojú rí dáyè kan,ṣùgbọ́n ṣá àgbékalẹ̀-ètò tó dálé "
+"ìṣàmúlò-ètò sún mọ́ Mac ju Àwọn Fèrèsé lọ. Nígbà tí o bá wòye fèrèsé nínú "
+"móòdù tó dálé ìṣàmúlò-ètò, gbogbo àwọn fèrèsé inú ìṣàmúlò-ètò ni a óò gbé "
+"sókè. Bákan náà, nínú móòdù ajẹmọ́ ìṣàmúlò-ètò a kò ní fi àwọn ìtẹ̀ òye ránṣẹ́ "
+"sí àwọn fèrèsé nínú àwọn ìṣàmúlò-ètò mìíràn. wíwà àwọn ààtò yìí gan rí "
+"bákan. Ṣùgbọ́n ó dára ká ní àwọn ààtò fún gbogbo àwọn àlàyé ajẹ̀mọ́ ìṣàmúlò-ètò "
+"òun ajẹmọ́ fèrèsé. B.a Bóyá ká kọjá nípasẹ̀ àwọn ìtẹ̀. Bákan náà ni a kò tíì "
+"pilẹ̀, móòdù ajẹmọ́ ìṣàmúlò-ètò lọ́wọ́lọ́wọ́ báyìí."
+
+#: ../src/metacity.schemas.in.in.h:23
+msgid "If true, trade off usability for less resource usage"
+msgstr "Tó bá jẹ́ òótọ́, pààrọ̀ agbára ìlò fún ìlò ìròyìn díẹ̀"
+
+#: ../src/metacity.schemas.in.in.h:24
+msgid "Modifier to use for modified window click actions"
+msgstr "Aṣàtúntò tí a fẹ́ lò fún àwọn iṣẹ́ ìtẹ fèrèsé tí a túntò"
+
+#: ../src/metacity.schemas.in.in.h:25
+msgid "Name of workspace"
+msgstr "Orúkọ ààyè-iṣẹ́"
+
+#: ../src/metacity.schemas.in.in.h:26
+msgid "Number of workspaces"
+msgstr "Iye àwọn ààyè-iṣẹ́"
+
+#: ../src/metacity.schemas.in.in.h:27
+#, fuzzy
+msgid ""
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
+msgstr ""
+"Iye àwọn ààyè-iṣẹ́. Ó gbọ́dọ̀ ju òdo lọ kí ó sì ní oye tó gajù (láti dẹ́kun "
+"ìjàǹbá bíba kọ̀ǹpútà rẹ jẹ́ nípa bí bèrè fún àwọn ààyè-iṣẹ́ 34 miliọ̀nù)."
+
+#: ../src/metacity.schemas.in.in.h:28
+msgid "Run a defined command"
+msgstr "Rọ́ọ̀nù àṣẹ tí a kì"
+
+#: ../src/metacity.schemas.in.in.h:29
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:30
+msgid ""
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:31
+msgid "System Bell is Audible"
+msgstr "Agogo Ètò Kọ̀ǹpútà Dún dáadáa"
+
+#: ../src/metacity.schemas.in.in.h:32
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr ""
+"Ń sọ fún Metacity bí wọ́n ṣe ń pilẹ̀ ìtọ́ka tí a lè fojúrí pé aago ètò kọ̀ǹpútà "
+"tàbí atọ́ka 'aago' ìṣàmúlò-ètò mìíràn ti dún. Lọ́wọ́lọ́wọ́ báyìí àwọn fálù tó "
+"fesẹ̀múlẹ̀ méjì ló wà, \"ojú -kọ̀ǹpútà kíkún\" tí ó máa ń fa fíláàṣì funfun-"
+"dúdú ojú kọ̀ǹpútà kíkún àti \"fíláàṣì_férémù\" tó máa ń fa kí àká-àkọ́lé "
+"ìṣàmúlò-ètò tó ń fi àmì aago ránṣẹ́ sí fíláàṣì. Tí ìṣàmúlò-ètò tó fi aago náà "
+"ránṣẹ́ bá jẹ́ àìmọ̀ (bó ṣe máa ń rí fún ìpéwọ̀n \"ìfùnpè ètò kọ̀ǹpútà\") á "
+"fíláàṣì àká-àkọ́lé fèrèsé tí a wòye lọ́wọ́lọ́wọ́."
+
+#: ../src/metacity.schemas.in.in.h:33
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
+msgstr ""
+"Àwọn bọ́tìnì /apps/metacity/àwọn aṣẹ̀dá-ìtọ́ka bọ́tìnì_kárí ayé/rọ́ọ̀nù_àṣẹ_N máa "
+"ń soríkì àwọn aṣẹ̀dá-ìtọ́ka bọ́tìnì tó bá àwọn àṣẹ yìí mu. Títẹ aṣẹ̀dá-ìtọ́ka "
+"bọ́tìnì náà láti rọ́ọ̀nù_àṣẹ_N á mú àṣẹ_N ṣe."
+
+#: ../src/metacity.schemas.in.in.h:34
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+"Bọ́tìnì /apps/metacity/àwọn aṣẹ̀dá-ìtọ́ka bọ́tìni_kárí ayé/rọ́ọ̀nù_àṣẹ_ìmáwòrán ló "
+"máa ń sọ oríkì aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń fa ìgbàpadà àṣẹ tí ààtò yìí sọ ní "
+"pàtó."
+
+#: ../src/metacity.schemas.in.in.h:35
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+"Bọ́tìnì /apps/metacity/àwọn aṣẹ̀dá-ìtọ́ka bọ́tìni_kárí ayé/"
+"rọ́ọ̀nù_àṣẹ_ìmáwòrán_fèrèsé ló máa ń sọ oríkì aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń fa "
+"ìgbàpadà àṣẹ tí ààtò yìí sọ ní pàtó."
+
+#: ../src/metacity.schemas.in.in.h:36
+msgid ""
+"The keybinding that runs the correspondingly-numbered command in /apps/"
+"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"Aṣẹ̀dá-ìtọ́ka bọ́tìnì tí́ ó ń rọ́ọ̀nù àwọn àṣẹ tí a nọ́ńbà tó jọra nínú /apps/"
+"metacity/àwọn àṣẹ_aṣẹ̀dá-ìtọ́ka bọ́tìnì. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" "
+"tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà "
+"kékeré àti gòdògbò àti àwọn ìgékúrú bíi \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;"
+"\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé "
+"kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#: ../src/metacity.schemas.in.in.h:37
+msgid "The name of a workspace."
+msgstr "Orúkọ ààyè-iṣẹ́ kan."
+
+#: ../src/metacity.schemas.in.in.h:38
+msgid "The screenshot command"
+msgstr "Àṣẹ ìmáwòrán"
+
+#: ../src/metacity.schemas.in.in.h:39
+msgid ""
+"The theme determines the appearance of window borders, titlebar, and so "
+"forth."
+msgstr ""
+"́Kókó náà ni yóò sọ bí ìrísí àwọn ìpàlà fèrèsé, àká-àkọ́lé, àti bẹ́ẹ̀ bẹ́ẹ̀ lọ ṣe "
+"rí."
+
+#: ../src/metacity.schemas.in.in.h:40
+msgid ""
+"The time delay before raising a window if auto_raise is set to true. The "
+"delay is given in thousandths of a second."
+msgstr ""
+"Ìdádúró wà ní àkókò kí a tó gbé fèrèsé sókè tí a bá gbé ìgbéga_aládàáṣe kalẹ̀ "
+"sí òótọ́. Ìdádúró náà a máa wà ní ìdá ẹgbẹ̀rún ìṣísẹ̀."
+
+#: ../src/metacity.schemas.in.in.h:41
+msgid ""
+"The window focus mode indicates how windows are activated. It has three "
+"possible values; \"click\" means windows must be clicked in order to focus "
+"them, \"sloppy\" means windows are focused when the mouse enters the window, "
+"and \"mouse\" means windows are focused when the mouse enters the window and "
+"unfocused when the mouse leaves the window."
+msgstr ""
+"Móòdù ìwòye fèrèsé náà máa ń fi bí a ṣe ń mú àwọn fèrèsé ṣiṣẹ́. Àwọn fálù "
+"mẹ́ta ló lè jẹ́; \"tẹ\" ó túmọ sí pé a gbọ́dọ̀ tẹ àwọn fèrèsé láti lè wòye wọn "
+"\"àìbìkíta\" ó túmọ̀ sí pé a gbọ́dọ̀ wòye àwọn fèrèsé nígbà tí fèrèsé náà bá wọ "
+"fèrèsé náà, àti\"ohun-èlò aṣèkúté\" ó túmọ sí pé a gbọ́dọ̀ wòye àwọn fèrèsé "
+"nígbà tí ohun-èlò aṣèkúté bá wọ fèrèsé náà kò sí ní wòye nígbà tí ó fi "
+"fèrèsé náà sílẹ̀."
+
+#: ../src/metacity.schemas.in.in.h:42
+msgid "The window screenshot command"
+msgstr "Àṣẹ ìmáwòràn fèrèsé"
+
+#: ../src/metacity.schemas.in.in.h:43
+msgid ""
+"This option determines the effects of double-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:44
+msgid ""
+"This option determines the effects of middle-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:45
+msgid ""
+"This option determines the effects of right-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:46
+msgid ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:47
+#, fuzzy
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments."
+msgstr ""
+"Ń máa ń tan atọ́ka tí a lè rí nígbà tí ìṣàmúlò-ètò kan tàbí ètò kọ̀ǹpútà náà "
+"lu 'aago' tàbí 'fùnpè'; ó wùlò fún àwọn tí àti gbọ́rọ̀ ṣòro fún àti fún àwọn "
+"àyíká aláriwo. A sì tún lè lòó nígbà tí 'aago dídún' bá kú."
+
+#: ../src/metacity.schemas.in.in.h:48
+msgid "Use standard system font in window titles"
+msgstr "Lo ìrísí-lẹ́tà ètò òpéwọ̀n nínú àwọn àkọ́lé fèrèsé"
+
+#: ../src/metacity.schemas.in.in.h:49
+msgid "Visual Bell Type"
+msgstr "Irúfẹ́ Aago Tí a lè rí"
+
+#: ../src/metacity.schemas.in.in.h:50
+msgid "Whether raising should be a side-effect of other user interactions"
+msgstr ""
+
+#: ../src/metacity.schemas.in.in.h:51
+msgid "Window focus mode"
+msgstr "Móòdù ìwòye fèrèsé"
+
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Window title font"
+msgstr "Ìrísí-lẹ́tà àkọ́lé fèrèsé"
+
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Ìlò: %s\n"
+
+#: ../src/ui/frames.c:1077
+msgid "Close Window"
+msgstr "Ti Fèrèsé"
+
+#: ../src/ui/frames.c:1080
+msgid "Window Menu"
+msgstr "Àtròjọ-ẹ̀yàn Fèrèsé"
+
+#: ../src/ui/frames.c:1083
+msgid "Minimize Window"
+msgstr "Pa Fèrèsé Dé"
+
+#: ../src/ui/frames.c:1086
+msgid "Maximize Window"
+msgstr "Fẹ Fèrèsé"
+
+#: ../src/ui/frames.c:1089
+#, fuzzy
+msgid "Restore Window"
+msgstr "Ìṣòdíwọ̀n fèrèsé"
+
+#: ../src/ui/frames.c:1092
+#, fuzzy
+msgid "Roll Up Window"
+msgstr "Ka _Sókè"
+
+#: ../src/ui/frames.c:1095
+#, fuzzy
+msgid "Unroll Window"
+msgstr "Ti Fèrèsé"
+
+#: ../src/ui/frames.c:1098
+msgid "Keep Window On Top"
+msgstr ""
+
+#: ../src/ui/frames.c:1101
+msgid "Remove Window From Top"
+msgstr ""
+
+#: ../src/ui/frames.c:1104
+#, fuzzy
+msgid "Always On Visible Workspace"
+msgstr "_Ó máa ń wà lórí Ààyè-iṣẹ́ tí a le Rí"
+
+#: ../src/ui/frames.c:1107
+#, fuzzy
+msgid "Put Window On Only One Workspace"
+msgstr "Fèrèsé tọ́gù lórí gbogbo àwọn ààyè-iṣẹ́"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:70
+msgid "Mi_nimize"
+msgstr "Ìp_ajúdé"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:72
+msgid "Ma_ximize"
+msgstr "Fẹ̀_ẹ́lójú"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:74
+msgid "Unma_ximize"
+msgstr "Ma fẹ̀_ẹ́lójú"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:76
+msgid "Roll _Up"
+msgstr "Ka _Sókè"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:78
+msgid "_Unroll"
+msgstr "_Máka"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:80
+msgid "_Move"
+msgstr "_Gbe"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:82
+msgid "_Resize"
+msgstr "_Ìṣòdíwọ̀n"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:84
+msgid "Move Titlebar On_screen"
+msgstr ""
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+msgid "Always on _Top"
+msgstr ""
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:91
+msgid "_Always on Visible Workspace"
+msgstr "_Ó máa ń wà lórí Ààyè-iṣẹ́ tí a le Rí"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:93
+msgid "_Only on This Workspace"
+msgstr "_Lórí Ààyè-iṣẹ́ Yìí Nìkan"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:95
+msgid "Move to Workspace _Left"
+msgstr "Gbe lọ sí Ààyè-iṣẹ́ _Òsì"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:97
+msgid "Move to Workspace R_ight"
+msgstr "Gbe lọ sí Ààyè-iṣẹ́ Ọ̀_tún"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:99
+msgid "Move to Workspace _Up"
+msgstr "Gbe lọ sí Ààyè-iṣẹ́ _Òkè"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:101
+msgid "Move to Workspace _Down"
+msgstr "Gbe lọ sí ààyè-iṣẹ́ _Ìsàlẹ̀"
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:105
+msgid "_Close"
+msgstr "_Ti"
+
+#: ../src/ui/menu.c:203
+#, fuzzy, c-format
+msgid "Workspace %d%n"
+msgstr "Ààyè-iṣẹ́ %d"
+
+#: ../src/ui/menu.c:213
+#, c-format
+msgid "Workspace 1_0"
+msgstr "Ààyè-iṣẹ́ 1_0"
+
+#: ../src/ui/menu.c:215
+#, c-format
+msgid "Workspace %s%d"
+msgstr "Ààyè-iṣẹ́ %s%d"
+
+#: ../src/ui/menu.c:395
+msgid "Move to Another _Workspace"
+msgstr "Gbé sí Ààyè-iṣẹ́_Mìíràn"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the shift key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:104
+msgid "Shift"
+msgstr "Shift"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:110
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:116
+msgid "Alt"
+msgstr "Alt"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the meta key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:122
+msgid "Meta"
+msgstr "Meta"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the super key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:128
+msgid "Super"
+msgstr "Super"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the hyper key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:134
+msgid "Hyper"
+msgstr "Hyper"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod2 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:140
+msgid "Mod2"
+msgstr "Mod2"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod3 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:146
+msgid "Mod3"
+msgstr "Mod3"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod4 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:152
+msgid "Mod4"
+msgstr "Mod4"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod5 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:158
+msgid "Mod5"
+msgstr "Mod5"
+
+#: ../src/ui/metacity-dialog.c:90
+#, fuzzy, c-format
+msgid "\"%s\" is not responding."
+msgstr "Fèrèsé náà \"%s\" kò fèsì."
+
+#: ../src/ui/metacity-dialog.c:97
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+
+#: ../src/ui/metacity-dialog.c:107
+msgid "_Wait"
+msgstr ""
+
+#: ../src/ui/metacity-dialog.c:109
+msgid "_Force Quit"
+msgstr "_Ìjáde Ipá"
+
+#: ../src/ui/metacity-dialog.c:206
+msgid "Title"
+msgstr "Àkọ́lé"
+
+#: ../src/ui/metacity-dialog.c:218
+msgid "Class"
+msgstr "kíláàsì"
+
+#: ../src/ui/metacity-dialog.c:244
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr ""
+"Àwọn Fèrèsé yìí kò ṣàtìlẹ́yìn \"fi àgbékalẹ̀-ètò lọ́wọ́lọ́wọ́ pamọ́\", a máa ní "
+"láti tun bẹ̀rẹ̀ pẹ̀lú ọwọ́ nígbà mìíràn tí a bá bẹ̀rẹ̀ iṣẹ́."
+
+#: ../src/ui/metacity-dialog.c:310
+#, c-format
+msgid ""
+"There was an error running \"%s\":\n"
+"%s."
+msgstr ""
+"Àṣìṣe kan ń rọ́ọ̀nù \"%s\":\n"
+"%s."
+
+#. Translators: This represents the size of a window.  The first number is
+#. * the width of the window and the second is the height.
+#.
+#: ../src/ui/resizepopup.c:113
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: ../src/ui/theme.c:254
+msgid "top"
+msgstr "òkè"
+
+#: ../src/ui/theme.c:256
+msgid "bottom"
+msgstr "ìsàlẹ̀"
+
+#: ../src/ui/theme.c:258
+msgid "left"
+msgstr "òsì"
+
+#: ../src/ui/theme.c:260
+msgid "right"
+msgstr "ọ̀tún"
+
+#: ../src/ui/theme.c:287
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "Férémù jiọmítírì kò sọ ní pàtó ojúùwọ̀n \"%s\""
+
+#: ../src/ui/theme.c:306
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "Férémù jiọmítírì kò sọ ní pàtó ojúùwọ̀n \"%s\" fún ìpàlà \"%s\""
+
+#: ../src/ui/theme.c:343
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "Bọ́tìnì réṣíò aspect %g kò ní ọ̀pọ̀lọ"
+
+#: ../src/ui/theme.c:355
+#, c-format
+msgid "Frame geometry does not specify size of buttons"
+msgstr "Férémù jiọmítírì kò sọ ní pàtó ìwọ̀n àwọn bọ́tìnì"
+
+#: ../src/ui/theme.c:1020
+#, c-format
+msgid "Gradients should have at least two colors"
+msgstr "Àwọn ìdàgẹ̀rẹ̀ yẹ kó ní ó kéré tán àwọn àwọ̀ méjì"
+
+#: ../src/ui/theme.c:1146
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"Ojú-ìwọ̀n àwọ̀ GTK gbọ́dọ̀ ní ipò náà nínú àwọn àmì àkámọ́, b.a. gtk:fg[DÉÉDÉÉ] "
+"níbi tí DÉÉDÉÉ bá jẹ́ ipò;kò ní lè páàsì \"%s\""
+
+#: ../src/ui/theme.c:1160
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"Ojú-ìwọ̀n àwọ̀ GTK gbọ́dọ̀ ní àmì àkámọ́ títí lẹ́yìn ipò náà, b.a. gtk:fg[DÉÉDÉÉ] "
+"níbi tí DÉÉDÉÉ ti jẹ́ ipò kò ní lè páàsì \"%s\""
+
+#: ../src/ui/theme.c:1171
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "Ipò \"%s\" kò ye nínú ojú-ìwọ̀n àwọ̀"
+
+#: ../src/ui/theme.c:1184
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "Ọmọ-inú àwọ̀ \"%s\" kò ye nínú ojú-ìwọ̀n àwọ̀"
+
+#: ../src/ui/theme.c:1214
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Ìgúnrégé tí a pòpọ̀ ni \"blend/bg_color/fg_color/alpha\", \"%s\" kò bá "
+"ìgúnrégé náà mu"
+
+#: ../src/ui/theme.c:1225
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "Kò lè páàsì fálù áfà \"%s\" nínú àwọ tí a pòpọ̀"
+
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "Fálù áfà \"%s\" nínú àwọ̀ tí a papọ̀ kò sí láàrin 0.0 àti 1.0"
+
+#: ../src/ui/theme.c:1282
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Ìgúnrégé kíkùn jẹ́ \"shade/base_color/factor\", \"%s\" kò bá ìgúnrégé náà mu"
+
+#: ../src/ui/theme.c:1293
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "Kò lè páàsì ọ̀fà kíkùn \"%s\" nínú àwọ̀ tí a kùn"
+
+#: ../src/ui/theme.c:1303
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "Ọ̀fà kíkùn \"%s\" nínú àwọ̀ tí a kùn jẹ́ ìyọkúrò"
+
+#: ../src/ui/theme.c:1332
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "Kò lè páàsì àwọ̀ \"%s\""
+
+#: ../src/ui/theme.c:1582
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "Ìsọ ìfètò sí nǹkan ní àmì-ìkọ '%s' nínú tí a kò fàyè gbà"
+
+#: ../src/ui/theme.c:1609
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "Ìsọ ìfètò sí nǹkan ní nọ́ńbà floating point nínú '%s' tí a kò lè páàsì"
+
+#: ../src/ui/theme.c:1623
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "Ìsọ ìfètò sí nǹkan ní ítíjà '%s' nínú tí a kò lè páàsì"
+
+#: ../src/ui/theme.c:1745
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr "Ìsọ ìfètò sí nǹkan ní ọpirétọ̀ àìmọ̀ nínú ní ìbẹ̀rẹ̀ àyọkà yìí: \"%s\""
+
+#: ../src/ui/theme.c:1802
+#, c-format
+msgid "Coordinate expression was empty or not understood"
+msgstr "Òfìfo ni ìsọ ìfètò sí nǹkan wà tàbí kó má yé ni"
+
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#, c-format
+msgid "Coordinate expression results in division by zero"
+msgstr "Èsì ìpín ìsọ ìfètò sí nǹkan pẹ̀lú òdo"
+
+#: ../src/ui/theme.c:1965
+#, c-format
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Ìsọ ìfètò sí nǹkan ń gbìyànjú láti lo ọpirétọ̀ mod lórí nọ́ńbà floating point"
+
+#: ../src/ui/theme.c:2021
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Ìsọ ìfètò sí nǹkan ní ọpirétọ̀ \"%s\" kan níbi tí a ti ń retí operand"
+
+#: ../src/ui/theme.c:2030
+#, c-format
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "Ìsọ ìfèto sí nǹkan ní operand níbi tí a ti ń retí ọpirétọ̀"
+
+#: ../src/ui/theme.c:2038
+#, c-format
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "Ọpirétọ̀ ló kẹ́yìn ìsọ ìfètò sí nǹkàn dípò operand"
+
+#: ../src/ui/theme.c:2048
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Ìsọ ìfètò sí nǹkan ní ọpirétọ̀ \"%c\" tó tẹ̀lé ọpirétọ̀ \"%c\" láì sí operand "
+"láàrin rẹ̀"
+
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "Ìsọ ìfètò sí nǹkan ní férébù tàbí kọ́nsítáǹtì \"%s\" àìmọ̀"
+
+#: ../src/ui/theme.c:2290
+#, fuzzy, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "Òfìfo ni ìsọ ìfètò sí nǹkan wà tàbí kó má yé ni"
+
+#: ../src/ui/theme.c:2319
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "Ìsọ ìfètò sí nǹkan ní àkámọ́ títì, kò ní àkámọ́ ṣíṣí"
+
+#: ../src/ui/theme.c:2383
+#, c-format
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "Ìsọ ìfètò sí nǹkan ní àkámọ́ ṣíṣí láì sí àkámọ́ títì"
+
+#: ../src/ui/theme.c:2394
+#, c-format
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "Ó jọ pé ìsọ ìfètò sí nǹkan kò ní àwọn ọpirétọ̀ tàbí àwọn operand"
+
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#, fuzzy, c-format
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "Kókó ní ìsọ kan \"%s\" tó jásí àṣìṣe: %s\n"
+
+#: ../src/ui/theme.c:4155
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"<ojúṣe bọ́tìnì=\"%s\" ipò=\"%s\" ya_ops=\"ohunkóhun\"/> a gbọ́dọ̀ sọ ní pàtó "
+"fún sítáì férémù"
+
+#: ../src/ui/theme.c:4635 ../src/ui/theme.c:4660
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"A kò ri <ipò férémù=\"%s\" ìṣòdíwọ̀n=\"%s\" òye=\"%s\" sítáì=\"ohunkóhun\"/>"
+
+#: ../src/ui/theme.c:4704
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Ó kùnà láti ki kókó \"%s\": %s\n"
+
+#: ../src/ui/theme.c:4834 ../src/ui/theme.c:4841 ../src/ui/theme.c:4848
+#: ../src/ui/theme.c:4855 ../src/ui/theme.c:4862
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "Kòsí <%s> àgbékalẹ̀ fún kókó \"%s\""
+
+#: ../src/ui/theme.c:4870
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"Kò sí sítàì férémù kankan tí a gbékalẹ̀ fún irúfẹ́ fèrèsé \"%s\" nínú kókó \"%s"
+"\", ṣàfikún <irúfẹ́ fèrèsé=\"%s\" àgbékalẹ̀_sítáì=\"ohunkóhun\"/> fọ́nrán"
+
+#: ../src/ui/theme.c:5295 ../src/ui/theme.c:5357 ../src/ui/theme.c:5420
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Àwọn kọ́nsítáǹtì òǹlò gbọ́dọ̀ bẹ̀rẹ̀ pẹ̀lú lẹ́tà ńlá; \"%s\" kò ní"
+
+#: ../src/ui/theme.c:5303 ../src/ui/theme.c:5365 ../src/ui/theme.c:5428
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "A ti soríkì kọ́nsítáǹtì \"%s\" tẹ́lẹ̀"
+
+#. Translators: This means that an attribute which should have been found
+#. * on an XML element was not in fact found.
+#.
+#: ../src/ui/theme-parser.c:202
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Kò sí àbùdá \"%s\" lórí fọ́nrán <%s>"
+
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "Ilà %d àmì-ìkọ %d: %s"
+
+#: ../src/ui/theme-parser.c:413
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "Àbùdá \"%s\" tí a tún ṣe lẹ́ẹ̀mejì lórí fọ́nrán <%s. kan náà"
+
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "Àbùdá \"%s\" kò fẹsẹ̀múlẹ̀ lórí fọ́nrán <%s> ní ọ̀gangan ipò yìí"
+
+#: ../src/ui/theme-parser.c:541
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "Ítíjà %ld gbọ́dọ̀ jẹ́ àròpọ̀"
+
+#: ../src/ui/theme-parser.c:549
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "Ítíjà %ld ti tóbi jù, max lọ́wọ́lọ́wọ́ jẹ́ %d"
+
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "Kò lé páàsì \"%s\" gẹ́gẹ́ bíi nọ́ńbà floating point"
+
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "Àwọn fálù Boolean gbọ́dọ̀ jẹ́ \"òótọ́\" tàbí \"irọ́ kìí ṣe \"%s\""
+
+#: ../src/ui/theme-parser.c:663
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "Áńgù gbọ́dọ̀ wà láàrin 0.0 àti 360.0, ó jẹ́ %g\n"
+
+#: ../src/ui/theme-parser.c:726
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr "Áfà gbọ́dọ̀ wà láàrin 0.0 (àìfojúrí) àti 1.0 (dídí pátápátá), ó jẹ́ %g\n"
+
+#: ../src/ui/theme-parser.c:791
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"Òṣùwọ̀n àkọ́lé tí kò fẹsẹ̀múlẹ̀ \"%s\" (ó gbọ́dọ̀ jẹ́ ọ̀kan lára kékeré gan,kékeré "
+"díẹ̀,àárín,ńlá,ńlá díẹ̀, ńlá púpọ̀)\n"
+
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "<%s> orúkọ \"%s\" tí a lò lẹ́ẹ̀kejì"
+
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:1148
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "<%s> a kò tíi soríkì òbí \"%s\""
+
+#: ../src/ui/theme-parser.c:1058
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "<%s> a kò tíì soríkì \"%s\" jiọmítírì"
+
+#: ../src/ui/theme-parser.c:1071
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr "<%s> gbọ́dọ̀ sọ ní pàtó bóyá jiọmítírì tàbí òbí tó ní jiọmítírì"
+
+#: ../src/ui/theme-parser.c:1113
+msgid "You must specify a background for an alpha value to be meaningful"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:1180
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "Irúfẹ́ àìmọ̀ \"%s\" lórí <%s> fọ́nrán"
+
+#: ../src/ui/theme-parser.c:1191
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "Sẹ́ẹ̀tì_sítàì àìmọ̀ \"%s\" lórí <%s> fọ́nrán"
+
+#: ../src/ui/theme-parser.c:1199
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "Irúfẹ́ fèrèsé \"%s\" ti ní sẹ́ètì sítàì ná"
+
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
+#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
+#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
+#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "A kò fàyè gba <%s> fọ́nrán nísàlẹ̀ <%s>"
+
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1402
+#, fuzzy
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
+msgstr ""
+"Kò lè sọ ní pàtó ìfẹ̀sí_bọ́tìnì/ìgasí_bọ́tìni àti réṣíò aspect fún àwọn bọ́tìnì"
+
+#: ../src/ui/theme-parser.c:1366
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "A kò mọ ìjìnsí \"%s\""
+
+#: ../src/ui/theme-parser.c:1411
+#, c-format
+msgid "Aspect ratio \"%s\" is unknown"
+msgstr "A kò mọ réṣíò aspect \"%s\""
+
+#: ../src/ui/theme-parser.c:1473
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "Àìmọ̀ ni ìpàlà \"%s\""
+
+#: ../src/ui/theme-parser.c:1776
+#, fuzzy, c-format
+msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+msgstr "Kò sí àbùdá \"bẹ̀rẹ̀_igun\" lórí fọ́nrán <%s>"
+
+#: ../src/ui/theme-parser.c:1783
+#, fuzzy, c-format
+msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+msgstr "Kò sí àbùdá \"extent_angle\"  lórí fọ́nrán <%s>"
+
+#: ../src/ui/theme-parser.c:2023
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "Fálù \"%s\" fún irúfẹ́ ìdàgẹ̀rẹ̀ kò ye"
+
+#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#, c-format
+msgid "Did not understand fill type \"%s\" for <%s> element"
+msgstr "Irúfẹ́ \"%s\" fún fọ́nrán <%s> kò ye"
+
+#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
+#: ../src/ui/theme-parser.c:2414
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "Ipò \"%s\" fún fọ́nrán <%s> kò ye"
+
+#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "Òjìji \"%s\" fún  fọ́nrán <%s> kò ye"
+
+#: ../src/ui/theme-parser.c:2288
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "Atọ́ka árò \"%s\" fún fọ́nrán <%s> kò ye"
+
+#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "Kò sí <draw_ops> tí a pè ní \"%s\" tí a ti kì"
+
+#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr "Ṣíṣàfikún draw_ops \"%s\" níbí á ṣẹ̀dá ìtọ́kasí òbìrìkìtí"
+
+#: ../src/ui/theme-parser.c:2811
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "Ipò àìmọ̀ \"%s\" fún férémù"
+
+#: ../src/ui/theme-parser.c:2819
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "Sítàì férémù ti ní ẹyọ ipò %s tẹ́lẹ̀"
+
+#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "Kò sí <draw_ops> pẹ̀lú orúkọ \"%s\" tí a ti kì"
+
+#: ../src/ui/theme-parser.c:2865
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "Ojúṣe àìmọ̀ \"%s\" fún bọ́tìnì"
+
+#: ../src/ui/theme-parser.c:2874
+#, c-format
+msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+msgstr ""
+
+#: ../src/ui/theme-parser.c:2886
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "Ipò àìmọ̀\"%s\" fún bọ́tìnì"
+
+#: ../src/ui/theme-parser.c:2894
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "Sítàì férémù ti ni bọ́tìnì fún ojúṣe %s ipò %s tẹ́lẹ̀"
+
+#: ../src/ui/theme-parser.c:2965
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "\"%s\" kìí ṣe fálù tó fesẹ̀múlẹ̀ fún àbùdá òye"
+
+#: ../src/ui/theme-parser.c:2974
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "\"%s\" kìí ṣe fálù tó fẹsẹ̀múlẹ̀ fún àbùdá ipò"
+
+#: ../src/ui/theme-parser.c:2984
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "A kò tíì soríkì sítàì tí a pè ní \"%s\""
+
+#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "\"%s\" kìí ṣe fálù tó fesẹ̀múlẹ̀ fún àbùdá ìṣòdíwọ̀n"
+
+#: ../src/ui/theme-parser.c:3039
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+"Kó má ní àbùdá \"ìṣòdíwọ̀n\" lórí fọ́nrán <%s> fún àwọn ipò tí a fẹ̀lójú/kùn"
+
+#: ../src/ui/theme-parser.c:3053
+#, fuzzy, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgstr ""
+"Kó má ní àbùdá \"ìṣòdíwọ̀n\" lórí fọ́nrán <%s> fún àwọn ipò tí a fẹ̀lójú/kùn"
+
+#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr "A ti sọ sítàì kan ní pàtó fún ipò %s ìṣòdíwọ̀n %s òye %s"
+
+#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "A ti sọ sítàì kan ní pàtó fún ipò %s òye %s"
+
+#: ../src/ui/theme-parser.c:3139
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Kò lè ní draw_ops fún fónrán <ẹyọ> (kókó sọ ní pàtó àbùdá draw_ops àti "
+"fọ́nrán <draw_ops> pẹ̀lú tàbí àwọn fọ́nrán méjì ní pàtó)"
+
+#: ../src/ui/theme-parser.c:3177
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Kò lè ní draw_ops fún fónrán <bọ́tìnì> (kókó sọ ní pàtó àbùdá draw_ops àti "
+"fọ́nrán <draw_ops> pẹ̀lú, tàbí àwọn fọ́nrán méjì ní pàtó)"
+
+#: ../src/ui/theme-parser.c:3215
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Kò lè ní draw_ops fún fónrán <áíkànnù_àtòjọ-ẹ̀yàn (kókó sọ ní pàtó àbùdá "
+"draw_ops àti fọ́nrán <draw_ops> pẹ̀lú tàbí àwọn fọ́nrán méjì ní pàtó)"
+
+#: ../src/ui/theme-parser.c:3263
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "Fọ́nrán tó jìn jù nínú kókó gbọ́dọ̀ jẹ́ <kókó_metacity> kìí ṣe <%s>"
+
+#: ../src/ui/theme-parser.c:3283
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "Kò sáyè fún fọ́nrán <%s> nínú fọ́nrán orúkọ/olùdásílẹ̀/déètì/àpèjúwe"
+
+#: ../src/ui/theme-parser.c:3288
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "Kò sáyè fún fọ́nrán <%s> nínú fọ́nrán <kọ́nsítáǹtì."
+
+#: ../src/ui/theme-parser.c:3300
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "Kò sáyè fún fọ́nrán <%s> nínú fọ́nrán ìjìnsí/ìpàlà/aspect_ratio"
+
+#: ../src/ui/theme-parser.c:3322
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "Kò sáyè fún fọ́nrán <%s> nínú fọ́nrán iṣẹ́"
+
+#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
+#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "Fọ́nrán <%s> kò fàyè gba nínú fọ́nrán <%s>"
+
+#: ../src/ui/theme-parser.c:3594
+msgid "No draw_ops provided for frame piece"
+msgstr "A kò pèsè draw_ops fún ẹyọ férémù"
+
+#: ../src/ui/theme-parser.c:3609
+msgid "No draw_ops provided for button"
+msgstr "A kò pèsè draw_ops fún bọ́tìnì"
+
+#: ../src/ui/theme-parser.c:3661
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "A kò fàyè gba àyọkà nínú fọ́nrán <%s>"
+
+#: ../src/ui/theme-parser.c:3716
+msgid "<name> specified twice for this theme"
+msgstr "<orúkọ> tí a sọ ní pàtó lẹ́ẹ̀mejì fún kókó̀ yìí"
+
+#: ../src/ui/theme-parser.c:3727
+msgid "<author> specified twice for this theme"
+msgstr "<olùdásílẹ̀> tí a sọ lẹ́ẹ̀mejì fún kókó yìí"
+
+#: ../src/ui/theme-parser.c:3738
+msgid "<copyright> specified twice for this theme"
+msgstr "<àṣẹ-lórí-àrà> tí a sọ ní pàtó lẹ́ẹ̀mejì fún kókó yìí"
+
+#: ../src/ui/theme-parser.c:3749
+msgid "<date> specified twice for this theme"
+msgstr "<déètì> tí a sọ ní pàtó lẹ́ẹ̀mejì fún kókó yìí"
+
+#: ../src/ui/theme-parser.c:3760
+msgid "<description> specified twice for this theme"
+msgstr "<àpèjúwe> tí a sọ ní pàtó lẹ́ẹ̀mejì fún kókó yìí"
+
+#: ../src/ui/theme-parser.c:4027
+#, fuzzy, c-format
+msgid "Failed to find a valid file for theme %s\n"
+msgstr "Ó kùnà láti fdṣí () fáìlì ìpamọ́ %s: %s\n"
+
+#: ../src/ui/theme-parser.c:4083
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "Fáìlì kókó %s kò ní ìpìlẹ̀ fọ́nrán <kókó_metacity> nínú"
+
+#: ../src/ui/theme-viewer.c:75
+msgid "/_Windows"
+msgstr "/_Àwọn Fèrèsé"
+
+#: ../src/ui/theme-viewer.c:76
+msgid "/Windows/tearoff"
+msgstr "/Àwọn fèrèsé/tearoff"
+
+#: ../src/ui/theme-viewer.c:77
+msgid "/Windows/_Dialog"
+msgstr "/Àwọn Fèrèsé/_Onísọ̀rọ̀gbèsì"
+
+#: ../src/ui/theme-viewer.c:78
+msgid "/Windows/_Modal dialog"
+msgstr "/Àwọn Fèrèsé/_Onísọ̀rọ̀gbèsì aṣèrànwọ́"
+
+#: ../src/ui/theme-viewer.c:79
+msgid "/Windows/_Utility"
+msgstr "/Àwọn Fèrèsé/_Àwọn Ohun-èlò"
+
+#: ../src/ui/theme-viewer.c:80
+msgid "/Windows/_Splashscreen"
+msgstr "/Àwọn Fèrèsé/_Ojú-Kọ̀ǹpútà-Píláàṣì"
+
+#: ../src/ui/theme-viewer.c:81
+msgid "/Windows/_Top dock"
+msgstr "/Àwọn Fèrèsé/_Dọ́ọ̀kì òkè"
+
+#: ../src/ui/theme-viewer.c:82
+msgid "/Windows/_Bottom dock"
+msgstr "/Àwọn Fèrèsé/_Dọ́ọ̀kì ìsàlẹ̀"
+
+#: ../src/ui/theme-viewer.c:83
+msgid "/Windows/_Left dock"
+msgstr "/Àwọn Fèrèsé/_Dọ́ọ̀kì òsì"
+
+#: ../src/ui/theme-viewer.c:84
+msgid "/Windows/_Right dock"
+msgstr "/Àwọn Fèrèsé/_Dọ́ọ̀kì ọ̀tún"
+
+#: ../src/ui/theme-viewer.c:85
+msgid "/Windows/_All docks"
+msgstr "/Àwọn Fèrèsé/_Gbogbo àwọn dọ́ọ̀kì"
+
+#: ../src/ui/theme-viewer.c:86
+msgid "/Windows/Des_ktop"
+msgstr "/Àwọn Fèrèsé/Ojú-iṣẹ́"
+
+#: ../src/ui/theme-viewer.c:135
+msgid "Open another one of these windows"
+msgstr "Ṣí òmíràn nínú awọn fèrèsé yìí"
+
+#: ../src/ui/theme-viewer.c:142
+msgid "This is a demo button with an 'open' icon"
+msgstr "Bọ́tìnì dẹ́mò lèyí pẹ̀lú áíkànnù 'ṣíṣí'"
+
+#: ../src/ui/theme-viewer.c:149
+msgid "This is a demo button with a 'quit' icon"
+msgstr "Bọ́tìnì dẹ́mò lèyí pẹ̀lú áíkànnù 'jáde'"
+
+#: ../src/ui/theme-viewer.c:242
+msgid "This is a sample message in a sample dialog"
+msgstr "Èyí ni àpẹẹrẹ iṣẹ́ rírán nínú onísọ̀rọ̀gbèsì àpẹẹrẹ"
+
+#: ../src/ui/theme-viewer.c:325
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "Wúnrẹ̀n àtòjọ-ẹ̀yàn ayédèrú %d\n"
+
+#: ../src/ui/theme-viewer.c:359
+msgid "Border-only window"
+msgstr "Fèrèsé Ìpàlà nìkan"
+
+#: ../src/ui/theme-viewer.c:361
+msgid "Bar"
+msgstr "Àká"
+
+#: ../src/ui/theme-viewer.c:378
+msgid "Normal Application Window"
+msgstr "Fèrèsé Ìṣàmúlò-ètò Déédéé"
+
+#: ../src/ui/theme-viewer.c:382
+msgid "Dialog Box"
+msgstr "Àpótí Onísọ̀rọ̀gbèsì"
+
+#: ../src/ui/theme-viewer.c:386
+msgid "Modal Dialog Box"
+msgstr "Àpótí Onísọ̀rọ̀gbèsì Aṣèrànwọ́"
+
+#: ../src/ui/theme-viewer.c:390
+msgid "Utility Palette"
+msgstr "Pálẹ́ẹ̀tì Ohun-èlò"
+
+#: ../src/ui/theme-viewer.c:394
+msgid "Torn-off Menu"
+msgstr "Pa Àtòjọ-ẹ̀yàn"
+
+#: ../src/ui/theme-viewer.c:398
+msgid "Border"
+msgstr "Ìpàlà"
+
+#: ../src/ui/theme-viewer.c:726
+#, c-format
+msgid "Button layout test %d"
+msgstr "Àyẹ̀wò ìlàálẹ̀ bọ́tìnì %d"
+
+#: ../src/ui/theme-viewer.c:755
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "%g ọ̀kẹ́-ìṣísẹ̀ láti ya férémù fèrèsé kan"
+
+#: ../src/ui/theme-viewer.c:798
+#, c-format
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "Ìlò: awòye-kókó-metacity [ORÚKỌ-KÓKÓ]\n"
+
+#: ../src/ui/theme-viewer.c:805
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "Àṣìṣe kíki kókó: %s\n"
+
+#: ../src/ui/theme-viewer.c:811
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "Kókó tí a ti kì\"%s\" ní %g ìṣísẹ̀\n"
+
+#: ../src/ui/theme-viewer.c:852
+msgid "Normal Title Font"
+msgstr "Ìrísí-lẹ́tà Àkọ́lé déédéé"
+
+#: ../src/ui/theme-viewer.c:858
+msgid "Small Title Font"
+msgstr "Ìrísí-lẹ́tà Àkọ́lé Kékeré"
+
+#: ../src/ui/theme-viewer.c:864
+msgid "Large Title Font"
+msgstr "Ìrísí-lẹ́tà Àkọ́lé Ńlá"
+
+#: ../src/ui/theme-viewer.c:869
+msgid "Button Layouts"
+msgstr "Àwọn Ìlàálẹ̀ Bọ́tìnì"
+
+#: ../src/ui/theme-viewer.c:874
+msgid "Benchmark"
+msgstr "Ìdíwọ̀n"
+
+#: ../src/ui/theme-viewer.c:921
+msgid "Window Title Goes Here"
+msgstr "Ibí ni Àkọ́lé Fèrèsé Máa Lọ"
+
+#: ../src/ui/theme-viewer.c:1025
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+"Ó ya àwọn férémù %d ní ìṣísẹ̀ abẹ̀wẹ̀ %g (ọ̀kẹ́-ìṣísẹ̀ %g fún férémù kọ̀ọ̀kan) àti %"
+"g ìṣísẹ̀ aago ara ògiri pẹ̀lú àwọn ìròyìn sáfà X (%g ọ̀kẹ́-ìṣísẹ̀ fún férémù "
+"kọ̀ọ̀kan)\n"
+
+#: ../src/ui/theme-viewer.c:1244
+msgid "position expression test returned TRUE but set error"
+msgstr "Ipò àyẹ̀wò ìsọ padà pẹ̀lú ÒÓTỌ́ ṣùgbọ́n ó gbé àsìṣe kalẹ̀"
+
+#: ../src/ui/theme-viewer.c:1246
+msgid "position expression test returned FALSE but didn't set error"
+msgstr "Ipò àyẹ̀wò ìsọ padà pẹ̀lú IRỌ́ ṣùgbọ́n ó gbé àsìṣe kalẹ̀"
+
+#: ../src/ui/theme-viewer.c:1250
+msgid "Error was expected but none given"
+msgstr "A ń retí àṣìṣe ṣùgbọ́n kò wá"
+
+#: ../src/ui/theme-viewer.c:1252
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "À ń réti àṣìṣe %d ṣùgbọ́n %d ló wá"
+
+#: ../src/ui/theme-viewer.c:1258
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "A kò retí àṣìṣe ṣùgbọ́n a dá eyọkan padà: %s"
+
+#: ../src/ui/theme-viewer.c:1262
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "à ń retí fálù x %d, %d"
+
+#: ../src/ui/theme-viewer.c:1265
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "à ń retí fálù y %d, %d"
+
+#: ../src/ui/theme-viewer.c:1330
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr ""
+"%d àwọn ìsọ ìfètò sí nǹkan tí a páàsì nínú àwọn ìṣísẹ̀ %g (%g àròpín àwọn "
+"ìṣísẹ̀)\n"
+
+#~ msgid ""
+#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
+#~ "current maximum is %d\n"
+#~ msgstr ""
+#~ "%d tí a fi pamọ́ sínú bọ́tìnì GConf %s kìí ṣe oye àwọn ààyè-iṣẹ́ tó mọ́gbọ́n "
+#~ "dání. Èyí tó ga jù lọ́wọ́lọ́wọ́ ni %d\n"
+
+#~ msgid ""
+#~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+#~ "specified for this theme"
+#~ msgstr ""
+#~ "<ojúṣe áíkànnù_àtòjọ-ẹ̀yàn=\"%s\" ipò=\"%s\" ya_ops=\"ohunkóhun\"/> a "
+#~ "gbọ́dọ̀ sọ ní pàtó fún kókó yìí"
+
+#~ msgid ""
+#~ "Coordinate expression parser overflowed its buffer, this is really a "
+#~ "Metacity bug, but are you sure you need a huge expression like that?"
+#~ msgstr ""
+#~ "Pásà ìsọ ìfètò sí nǹkan kún kọjá bọ́fà rẹ̀, àṣìṣe bárakú Metacity ni èyí. "
+#~ "Ṣùgbọ́n ṣé ó dá ẹ lójú pé ó nílò ìsọ ńlá bíi ìyẹn?"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to print an error about a command: %s\n"
+#~ msgstr "Àṣìṣe ìfilọ́lẹ̀ metacity-onísọ̀rọ̀gbèsì á píríǹtì àṣìṣe nípa àṣẹ: %s\n"
+
+#~ msgid "Failed to read theme from file %s: %s\n"
+#~ msgstr "Ó kùnà láti ka kókó náà láti inú fáìlì %s: %s\n"
+
+#~ msgid ""
+#~ "Forcing this application to quit will cause you to lose any unsaved "
+#~ "changes."
+#~ msgstr ""
+#~ "Mímú ìṣàmúlò-ètò yìí jáde pẹ̀lú ipá,yóò jẹ́ kí o sọ àwọn ìyípadà tí o kò fi "
+#~ "pamọ́ nù."
+
+#~ msgid "No \"%s\" attribute on <%s> element"
+#~ msgstr "Kò sí àbùdá \"%s\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"alpha\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"áfà\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"arrow\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"atọ́ka árò\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"bottom\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"ìsàlẹ̀\" lórí <%s>"
+
+#~ msgid "No \"color\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"àwọ̀\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"filename\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"orúkọ-fáaìlì\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"focus\" attribute on <%s> element"
+#~ msgstr "Kò sí àbùdá \"òye\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"function\" attribute on <%s> element"
+#~ msgstr "Kò sí àbùdá \"ojúṣe\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"height\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"ìgasí\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"left\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"òsì\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"name\" attribute on element <%s>"
+#~ msgstr "Kò̀ sí àbùdá \"orúko\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"position\" attribute on <%s> element"
+#~ msgstr "Kò sí àbùdá \"ipò\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"resize\" attribute on <%s> element"
+#~ msgstr "Kò sí àbùdá \"ìṣòdíwọ̀n\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"right\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"ọ̀tún\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"shadow\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"òjìji\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"state\" attribute on <%s> element"
+#~ msgstr "Kò sí àbùdá \"ipò\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"state\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"ipò\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"style\" attribute on <%s> element"
+#~ msgstr "Kò sí àbùdá \"sítàì\" lorí fọ́nrán <%s>"
+
+#~ msgid "No \"top\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"òkè\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"type\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"irúfẹ́\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"value\" attribute on <%s> element"
+#~ msgstr "kò sí àbùdá \"fálù\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"value\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùdá \"fálù\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"width\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"ìfẹ̀sí\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"x\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"x\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"x1\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"x1\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"x2\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"x2\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"y\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"y\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"y1\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"y1\" lórí fọ́nrán <%s>"
+
+#~ msgid "No \"y2\" attribute on element <%s>"
+#~ msgstr "Kò sí àbùd́á \"y2\" lórí fọ́nrán <%s>"
+
+#~ msgid "No draw_ops provided for menu icon"
+#~ msgstr "A kò pèsè draw_ops fún áíkànnù àtòjọ-ẹ̀yàn"
+
+#~ msgid "On _Top"
+#~ msgstr "Lórí _Òkè"
+
+#~ msgid ""
+#~ "Some applications break specifications in ways that result in window "
+#~ "manager misfeatures. For example, ideally Metacity would place all "
+#~ "dialogs in a consistent position with respect to their parent window. "
+#~ "This requires ignoring application-specified positions for dialogs. But "
+#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
+#~ "Metacity has to disable dialog positioning to allow menus to work in "
+#~ "broken Java applications. There are several other examples like this. "
+#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
+#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
+#~ "workarounds must be enabled by default; the real world is an ugly place. "
+#~ "Some of the workarounds are workarounds for limitations in the "
+#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
+#~ "won't be fixable without amending a spec."
+#~ msgstr ""
+#~ "Ọ̀pọ̀lọpọ̀ àwọn ìṣàmúlò-ètò ló máa ń rú àwọn ojúùwọ̀n ní àwọn ọ̀nà tó jẹ́ pé "
+#~ "èsì inú alábòójútó fèrèsé máa ń dàrú. Bí àpẹẹrẹ, bó ṣe yẹ̀ kórí ni pe "
+#~ "Metacity á gbé gbogbo àwọn onísọ̀rọ̀gbèsì sí ipò pẹ̀lú ìbáṣe sí àwọn fèrèsé "
+#~ "òbí wọn. Èyí á nílò pípa àwọn ipò ìṣàmúlò-ètò tí a sọ ní pàtó tì fún àwọn "
+#~ "onísọ̀rọ̀gbèsì. Ṣùgbọ́n ọ̀pọ̀lọpọ̀ àwọn ẹ̀yà Java/Swing máàkì àwọn àtòjọ-ẹ̀yàn "
+#~ "wọn gẹ́gẹ́ bíi àwọn onísọ̀rọ̀gbèsì, fún ìdí èyí Metacity ní láti gba agbára "
+#~ "lọ́wọ́ ipò onísọ̀rọ̀gbèsì láti fàyè gba àwọn àtòjọ-ẹ̀yàn láti siṣẹ́ nínú àwọn "
+#~ "ìṣàmúlò-ètò Java tó dàrú. a tún sì ní oríṣiríṣi àwọn àpẹẹrẹ mìíràn bíi "
+#~ "èyí. Ẹ̀yàn yìí á fún Metacity ní móòdù tó tọ̀nà dáadáa èyí yóò sì fún un ní "
+#~ "UI  tó wà níọ́̀ ntúnmòsìtí o kò bá nílò láti rọ́ọ̀nù apps tó ti dàrú. Ohun tó "
+#~ "burú ni pé a gbọ́dọ̀ mú workarounds ṣiṣẹ́ nípa ìpéwọ̀n nítorí ibi tó burẹ́wà "
+#~ "ní ayé gangan. Ọ̀pọ̀lọpọ̀ àwọn workaroundnló jẹ́ workaround fún àwọn ìdíwọ́ "
+#~ "nínú àwọn ojú-ìwọ̀n fún ra wọn; fún ìdí èyí àsìṣe bárakú nínú móòdù tí kìí "
+#~ "ṣe workaround kò ní ṣeé fisi tí a kò bá tún spec ṣe."
+
+#~ msgid ""
+#~ "The keybinding that switches to the workspace above the current "
+#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+#~ "\". If you set the option to the special string \"disabled\", then there "
+#~ "will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ lókè ààyè-iṣẹ́ lọ́wọ́lọ́wọ́. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bíi "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to the workspace below the current "
+#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+#~ "\". If you set the option to the special string \"disabled\", then there "
+#~ "will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ nísàlẹ̀ ààyè-iṣẹ́ lọ́wọ́lọ́wọ́. "
+#~ "Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to the workspace on the left of the current "
+#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+#~ "\". If you set the option to the special string \"disabled\", then there "
+#~ "will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ lápá òsì ààyè-iṣẹ́ lọ́wọ́lọ́wọ́. "
+#~ "Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bíi \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to the workspace on the right of the current "
+#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+#~ "\". If you set the option to the special string \"disabled\", then there "
+#~ "will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ lápá ọ̀tún ààyè-iṣẹ́ lọ́wọ́lọ́wọ́. "
+#~ "Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bíi \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kìíní. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kẹwa. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kọkànlá. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bíi \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kejìlá. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kejì. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kẹta. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kẹrin. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ karùn ún. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kẹfà. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ keje. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kẹjọ. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń sún sí ààyè-iṣẹ́ kẹsàn án. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to activate the window menu. The format looks like "
+#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
+#~ "fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń mú àtòjọ-ẹ̀yàn fèrèsé ṣiṣẹ́́ ṣẹ́ 9. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to enter \"move mode\" and begin moving a window "
+#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
+#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
+#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+#~ "then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń tẹ \"móòdù fún gbígbé\" wọlé á sì bẹ̀rẹ̀ síí "
+#~ "gbé fèrèsé nípa lílo kííbọọ̀dù ṣiṣẹ́́ . Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" "
+#~ "tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba "
+#~ "lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bíi \"&lt;Ctl&gt;\" àti \"&lt;"
+#~ "Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́"
+#~ "\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
+#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
+#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
+#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+#~ "then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń tẹ \"móòdù ìṣòdíwọ̀n\" wọlé á sì bẹ̀rẹ̀ "
+#~ "siṣòdíwọ̀n fèrèsé ̀rèsé nípa lílo kíiọọ̀dù ṣiṣẹ́́ . Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to hide all normal windows and set the focus to the "
+#~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
+#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
+#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+#~ "then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì ná̀à máa ń fi gbogbo à́wọn fèrèsé pamọ́ á sì ṣàgbékalẹ̀ "
+#~ "òye sí ẹ̀yìn ojú-iṣẹ́ náà. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré "
+#~ "àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". "
+#~ "Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé "
+#~ "kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to maximize a window. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń fẹ fèrèsé lójú. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to minimize a window. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń pa fèrèsé dé. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;"
+#~ "a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè "
+#~ "gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti "
+#~ "\"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window one workspace down. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé ààyè-iṣẹ́ kìíní fèrèsé wálẹ̀. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window one workspace to the left. The "
+#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
+#~ "keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé ààyè-iṣẹ́ kìíní fèrèsé sápá òsì. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window one workspace to the right. The "
+#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
+#~ "keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé ààyè-iṣẹ́ kìíní fèrèsé sápá ọ̀tún. "
+#~ "Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window one workspace up. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé ààyè-iṣẹ́ kìíní fèrèsé sókè. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 1. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kìíní. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 10. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹwàá. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 11. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kọkànlá. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 12. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kejìlá. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 2. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kejì. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 3. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹta. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 4. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹrin. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 5. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ karùn ún. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 6. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹfà. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 7. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ keje. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 8. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹjọ. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move a window to workspace 9. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé fèrèsé lọ sí ààyè-iṣẹ́ kẹsàn án. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus backwards between panels and the "
+#~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+#~ "\"disabled\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé òye padà sẹ́yìn láàrin àwọn pánẹ́ẹ̀lì àti "
+#~ "ojú-iṣẹ́, nípa lílo fèrèsé ìtasókè. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" "
+#~ "tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba "
+#~ "lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;"
+#~ "Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́"
+#~ "\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus backwards between panels and the "
+#~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
+#~ "\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+#~ "\"disabled\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé òye padà sẹ́yìn láàrin àwọn pánẹ́ẹ̀lì àti "
+#~ "ojú-iṣẹ́, láì sí fèrèsé ìtasókè. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà "
+#~ "kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;"
+#~ "Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́"
+#~ "\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus backwards between windows without a "
+#~ "popup window. Holding \"shift\" together with this binding makes the "
+#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
+#~ "\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé òye padà sẹ́yìn láàrin àwọn fèrèsé láì sí "
+#~ "fèrèsé ìtasókè. Títẹ \"ṣíífìtì\" pẹ̀lú aṣẹ̀dá-atọ́ka yìí á mú ìtọ́nà tẹ̀síwájú "
+#~ "si. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus backwards between windows, using a "
+#~ "popup window. Holding \"shift\" together with this binding makes the "
+#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
+#~ "\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé òye padà sẹ́yìn láàrin àwọn fèrèsé nípa "
+#~ "lílo fèrèsé ìtasókè. Títẹ \"ṣíífìtì\" pẹ̀lú aṣẹ̀dá-atọ́ka yìí á mú ìtọ́nà "
+#~ "tẹ̀síwájú si. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò "
+#~ "àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé "
+#~ "ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí "
+#~ "aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus between panels and the desktop, using a "
+#~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
+#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
+#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+#~ "then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé òye láàrin àwọn pánẹ́ẹ̀lì àti ojú-iṣẹ́, "
+#~ "nípa lílo fèrèsé ìtasókè. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré "
+#~ "àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". "
+#~ "Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé "
+#~ "kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus between panels and the desktop, without "
+#~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
+#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
+#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+#~ "then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé òye láàrin àwọn pánẹ́ẹ̀lì àti ojú-iṣẹ́, láì "
+#~ "sí fèrèsé ìtasókè. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti "
+#~ "gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o "
+#~ "bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní "
+#~ "sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus between windows without a popup window. "
+#~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
+#~ "this binding reverses the direction of movement. The format looks like "
+#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
+#~ "fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń gbé òye láàrin àwọn fèrèsé, láì sí fèrèsé "
+#~ "ìtasókè. (Ìgbàgbogbo &lt;Alt&gt;Máa ń sálà) Dídi bọ́tìnì \"ṣíífìtì\"mú "
+#~ "nígbà́ aṣẹ̀dá-atọ́ka yìí mú ìtọ́nà tẹ̀síwájú si. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to move focus between windows, using a popup window. "
+#~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
+#~ "binding reverses the direction of movement. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "A máa ń lo aṣẹ̀dá-ìtọ́ka bọ́tìnì náà láti gbé òye láàrin àwọn fèrèsé nípa "
+#~ "lílo fèrèsé ìtasókè. (Ní ọ̀pọ̀ ìgbà &lt;Alt&gt;Tab) Dídi bọ́tìnì \"ṣíífìtì\" "
+#~ "mú nígbà tí à ń lo aṣẹ̀dá-ìtọ́ka yìí ń dá ọ̀nà ìpapòdà náà padà. Ìgúnrégé "
+#~ "náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to toggle always on top. A window that is always on "
+#~ "top will always be visible over other overlapping windows. The format "
+#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+#~ "parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
+#~ "keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náa máa tọ́gù nígbà gbogbo. Fèrèsé tó bá wà lókè á ṣeé "
+#~ "rí ju àwọn fèrèsé tó ṣí léra. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà "
+#~ "kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;"
+#~ "Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́"
+#~ "\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to toggle fullscreen mode. The format looks like "
+#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
+#~ "fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń tọ́gù móòdù ojú kọ̀ǹpútà kíkún. Ìgúnrégé náà "
+#~ "jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Àṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń tọ́gù ìfẹ̀lójú. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;"
+#~ "a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè "
+#~ "gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti "
+#~ "\"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to toggle shaded/unshaded state. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Àṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń tọ́gù ipò tí kùn/tí a kò kùn. Ìgúnrégé náà jọ "
+#~ "\"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to toggle whether the window is on all workspaces or "
+#~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
+#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
+#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
+#~ "\". If you set the option to the special string \"disabled\", then there "
+#~ "will be no keybinding for this action."
+#~ msgstr ""
+#~ "Àṣẹ̀dá-ìtọ́ka bọ́tìnì náà máa ń tọ́gù bóyá fèrèsé náà wà lórí gbogbo àwọn "
+#~ "ààyè-iṣẹ́ tàbí ẹyọ kan.Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré "
+#~ "àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". "
+#~ "Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé "
+#~ "kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì náà kìí máa ń fẹ fèrèsé. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding which display's the panel's \"Run Application\" dialog "
+#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
+#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
+#~ "you set the option to the special string \"disabled\", then there will be "
+#~ "no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tí o ṣàfihàn àpótí onísọ̀rọ̀gbèsì \"Rọ́ọ̀nù Ìṣàmúlò-ètò\" "
+#~ "pánẹ́ẹ̀lì. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò "
+#~ "àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé "
+#~ "ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí "
+#~ "aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń bẹ̀rẹ̀ támínà. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" "
+#~ "tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba "
+#~ "lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;"
+#~ "Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́"
+#~ "\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding which invokes the panel's screenshot utility to take a "
+#~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
+#~ "\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì tó ń bẹ̀rẹ̀ ohun-èlò ìmáwòrán pánẹ́ẹ̀lì láti ya ìmáwòrán "
+#~ "fèrèsé. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding which invokes the panel's screenshot utility. The format "
+#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+#~ "parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
+#~ "keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka tí ó ń bẹ̀rẹ̀ ohun-èlò ìmáwòrán pánẹ́ẹ̀lì. Ìgúnrégé náà jọ \"&lt;"
+#~ "Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì "
+#~ "ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" "
+#~ "àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní "
+#~ "agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "The keybinding which shows the panel's main menu. The format looks like "
+#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
+#~ "fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀ɗá-ìtọ́ka bọ́tìnì tí ó fi àtòjọ-ẹ̀yàn pánẹ́ẹ̀lì gangan hàn. Ìgúnrégé náà jọ "
+#~ "\"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà "
+#~ "fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn ìgékúrú bí i "
+#~ "\"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán "
+#~ "àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ "
+#~ "yìí nìyẹn."
+
+#~ msgid "Theme already has a menu icon for function %s state %s"
+#~ msgstr "Kókó ti ní áíkànnù àtòjọ-ẹ̀yàn fún ojúṣe %s ipò %s"
+
+#~ msgid ""
+#~ "This keybinding changes whether a window is above or below other windows. "
+#~ "If the window is covered by another window, it raises the window above "
+#~ "other windows. If the window is already fully visible, it lowers the "
+#~ "window below other windows. The format looks like \"&lt;Control&gt;a\" or "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
+#~ "\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka yìí máa ń yípadà yálà fèrèsé wà lókè tàbí ìsàlẹ̀ fèrèsé náà. "
+#~ "Tí fèrèsé mìíràn bá bo fèrèsé náà mọ́lẹ̀, ó máa ń gbé fèrèsé náà sókè borí "
+#~ "àwọn fèrèsé mìíràn. Tí a bá ti lè rí fèrèsé náà dáadáa, ó máa mú àwọn "
+#~ "fèrèsé mìíràn tó wà nísàlẹ̀ wálẹ̀. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà "
+#~ "kékeré àti gòdògbò àti àwọn ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;"
+#~ "Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́"
+#~ "\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "This keybinding lowers a window below other windows. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka yìí ń mú fèrèsé tó wà nísàlẹ̀ àwọn fèrèsé mìíràn wálẹ̀. "
+#~ "Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "This keybinding raises the window above other windows. The format looks "
+#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
+#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
+#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì yìí máa ń gbé fèrèsé tó wà lókè àwọn fèrèsé mìíràn "
+#~ "sókè. Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1"
+#~ "\". Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "This keybinding resizes a window to fill available horizontal space. The "
+#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
+#~ "keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì yìí máa ń ṣòdíwọ̀n fèrèsé láti kún ààyè ìbú tó wà nílẹ̀. "
+#~ "Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò̀ àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "This keybinding resizes a window to fill available vertical space. The "
+#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
+#~ "the option to the special string \"disabled\", then there will be no "
+#~ "keybinding for this action."
+#~ msgstr ""
+#~ "Aṣẹ̀dá-ìtọ́ka bọ́tìnì yìí máa ń ṣòdíwọ̀n fèrèsé láti kún ààyè oòró tó wà nílẹ̀."
+#~ "Ìgúnrégé náà jọ \"&lt;Ìdarí&gt;a\" tàbí \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+#~ "Pásà náà fanimọ́ra, ó sì ń fàyè gba lẹ́tà kékeré àti gòdògbò àti àwọn "
+#~ "ìgékúrú bí i \"&lt;Ctl&gt;\" àti \"&lt;Ctrl&gt;\". Tí o bá gbé ẹ̀yàn náà "
+#~ "kalẹ̀ sí fọ́nrán àkànṣe \"kò ní agbára mọ́\", a jẹ́ pé kò ní sí aṣẹ̀dá-ìtọ́ka "
+#~ "bọ́tìnì fún iṣẹ́ yìí nìyẹn."
+
+#~ msgid ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, and 'toggle_maximize' which will maximize/unmaximize the window."
+#~ msgstr ""
+#~ "Ẹ̀yàn yìí ló máa sọ àwọn ipa tí ìtẹ̀ ẹ̀ẹ̀mejì máa ń ní lórí àká àkọ́lé. Àwọn "
+#~ "ẹ̀yàn tó fẹsẹ̀múlẹ̀ lọ́wọ́lọ́wọ́ jẹ́ 'tọ́gù_kíkùn' tí yóò kun/má kun fèrèsé náà  "
+#~ "àti 'tọ́gù fífẹ̀' tí yóò fẹ/má fẹ fèrèsé náà."
+
+#~ msgid "Toggle always on top state"
+#~ msgstr "Ipò òkè ni tọ́gù máa ń wà ṣá"
+
+#~ msgid "Unknown attribute %s on <geometry> element"
+#~ msgstr "Àbùdá àìmọ̀ %s lórí fọ́nrán <jiọmítírì>"
+
+#~ msgid "Unknown attribute %s on <maximized> element"
+#~ msgstr "Àbùdá àìmọ̀ %s lórí fọ́nrán <tí a fẹ̀>"
+
+#~ msgid "Unknown attribute %s on <metacity_session> element"
+#~ msgstr "Àbùdá àìmọ̀ %s lórí fọ́nrán <sáà_metacity>"
+
+#~ msgid "Unknown function \"%s\" for menu icon"
+#~ msgstr "Ojúṣe àìmọ̀ \"%s\" fún áíkànnù àtòjọ-ẹ̀yàn"
+
+#~ msgid "Unknown state \"%s\" for menu icon"
+#~ msgstr "Ipò àìmọ̀ \"%s\" fún áíkànnù àtòjọ-ẹ̀yàn"
+
+#~ msgid "Unmaximize Window"
+#~ msgstr "Má Fẹ Fèrèsé"
+
+#~ msgid "Unmaximize window"
+#~ msgstr "Má fẹ fèrèsé"
+
+#~ msgid ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+#~ msgstr ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"

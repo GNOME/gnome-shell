@@ -9,13 +9,15 @@
  * Note that all the meta_window_reload_propert* functions require a
  * round trip to the server.
  *
- * \bug Not all the properties have moved over from their original
- * handler in window.c yet.
+ * The guts of this system are in meta_display_init_window_prop_hooks().
+ * Reading this function will give you insight into how this all fits
+ * together.
  */
 
 /* 
  * Copyright (C) 2001, 2002, 2003 Red Hat, Inc.
  * Copyright (C) 2004, 2005 Elijah Newren
+ * Copyright (C) 2009 Thomas Thurman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -50,59 +52,64 @@
 #define HOST_NAME_MAX 255
 #endif
 
-typedef void (* InitValueFunc)   (MetaDisplay   *display,
-                                  Atom           property,
-                                  MetaPropValue *value);
 typedef void (* ReloadValueFunc) (MetaWindow    *window,
-                                  MetaPropValue *value);
+                                  MetaPropValue *value,
+                                  gboolean       initial);
 
-struct _MetaWindowPropHooks
+typedef struct MetaWindowPropHooks
 {
   Atom property;
-  InitValueFunc   init_func;
+  MetaPropValueType type;
   ReloadValueFunc reload_func;
-};
+} MetaWindowPropHooks;
 
 static void init_prop_value            (MetaDisplay   *display,
                                         Atom           property,
                                         MetaPropValue *value);
 static void reload_prop_value          (MetaWindow    *window,
-                                        MetaPropValue *value);
+                                        MetaPropValue *value,
+                                        gboolean       initial);
 static MetaWindowPropHooks* find_hooks (MetaDisplay *display,
                                         Atom         property);
 
 
 void
 meta_window_reload_property (MetaWindow *window,
-                             Atom        property)
+                             Atom        property,
+                             gboolean    initial)
 {
-  meta_window_reload_properties (window, &property, 1);
+  meta_window_reload_properties (window, &property, 1, initial);
 }
 
 void
 meta_window_reload_properties (MetaWindow *window,
                                const Atom *properties,
-                               int         n_properties)
+                               int         n_properties,
+                               gboolean    initial)
 {
   meta_window_reload_properties_from_xwindow (window,
                                               window->xwindow,
                                               properties,
-                                              n_properties);
+                                              n_properties,
+                                              initial);
 }
 
 void
 meta_window_reload_property_from_xwindow (MetaWindow *window,
                                           Window      xwindow,
-                                          Atom        property)
+                                          Atom        property,
+                                          gboolean    initial)
 {
-  meta_window_reload_properties_from_xwindow (window, xwindow, &property, 1);
+  meta_window_reload_properties_from_xwindow (window, xwindow, &property, 1,
+                                              initial);
 }
 
 void
 meta_window_reload_properties_from_xwindow (MetaWindow *window,
                                             Window      xwindow,
                                             const Atom *properties,
-                                            int         n_properties)
+                                            int         n_properties,
+                                            gboolean    initial)
 {
   int i;
   MetaPropValue *values;
@@ -125,7 +132,7 @@ meta_window_reload_properties_from_xwindow (MetaWindow *window,
   i = 0;
   while (i < n_properties)
     {
-      reload_prop_value (window, &values[i]);
+      reload_prop_value (window, &values[i], initial);
       
       ++i;
     }
@@ -141,39 +148,35 @@ init_prop_value (MetaDisplay   *display,
                  Atom           property,
                  MetaPropValue *value)
 {
-  MetaWindowPropHooks *hooks;  
+  MetaWindowPropHooks *hooks = find_hooks (display, property);
 
+  if (!hooks || hooks->type == META_PROP_VALUE_INVALID)
+    {
   value->type = META_PROP_VALUE_INVALID;
   value->atom = None;
-  
-  hooks = find_hooks (display, property);
-  if (hooks && hooks->init_func != NULL)
-    (* hooks->init_func) (display, property, value);
+    }
+  else
+    {
+      value->type = hooks->type;
+      value->atom = property;
+    }
 }
 
 static void
 reload_prop_value (MetaWindow    *window,
-                   MetaPropValue *value)
+                   MetaPropValue *value,
+                   gboolean       initial)
 {
-  MetaWindowPropHooks *hooks;  
+  MetaWindowPropHooks *hooks = find_hooks (window->display, value->atom);
   
-  hooks = find_hooks (window->display, value->atom);
   if (hooks && hooks->reload_func != NULL)
-    (* hooks->reload_func) (window, value);
-}
-
-static void
-init_wm_client_machine (MetaDisplay   *display,
-                        Atom           property,
-                        MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_STRING;
-  value->atom = display->atom_WM_CLIENT_MACHINE;
+    (* hooks->reload_func) (window, value, initial);
 }
 
 static void
 reload_wm_client_machine (MetaWindow    *window,
-                          MetaPropValue *value)
+                          MetaPropValue *value,
+                          gboolean       initial)
 {
   g_free (window->wm_client_machine);
   window->wm_client_machine = NULL;
@@ -186,17 +189,68 @@ reload_wm_client_machine (MetaWindow    *window,
 }
 
 static void
-init_net_wm_pid (MetaDisplay   *display,
-                 Atom           property,
-                 MetaPropValue *value)
+complain_about_broken_client (MetaWindow    *window,
+                              MetaPropValue *value,
+                              gboolean       initial)
 {
-  value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom__NET_WM_PID;
+  meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n",
+                window->desc);
+}
+
+static void
+reload_net_wm_window_type (MetaWindow    *window,
+                           MetaPropValue *value,
+                           gboolean       initial)
+{
+  meta_window_update_net_wm_type (window);
+}
+
+static void
+reload_icon (MetaWindow    *window,
+             Atom           atom)
+{
+  meta_icon_cache_property_changed (&window->icon_cache,
+                                    window->display,
+                                    atom);
+  meta_window_queue(window, META_QUEUE_UPDATE_ICON);
+}
+
+static void
+reload_net_wm_icon (MetaWindow    *window,
+                    MetaPropValue *value,
+                    gboolean       initial)
+{
+  reload_icon (window, window->display->atom__NET_WM_ICON);
+}
+
+static void
+reload_kwm_win_icon (MetaWindow    *window,
+                     MetaPropValue *value,
+                     gboolean       initial)
+{
+  reload_icon (window, window->display->atom__KWM_WIN_ICON);
+}
+
+static void
+reload_struts (MetaWindow    *window,
+               MetaPropValue *value,
+               gboolean       initial)
+{
+  meta_window_update_struts (window);
+}
+
+static void
+reload_wm_window_role (MetaWindow    *window,
+                       MetaPropValue *value,
+                       gboolean       initial)
+{
+  meta_window_update_role (window);
 }
 
 static void
 reload_net_wm_pid (MetaWindow    *window,
-                   MetaPropValue *value)
+                   MetaPropValue *value,
+                   gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -215,17 +269,9 @@ reload_net_wm_pid (MetaWindow    *window,
 }
 
 static void
-init_net_wm_user_time (MetaDisplay   *display,
-                       Atom           property,
-                       MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom__NET_WM_USER_TIME;
-}
-
-static void
 reload_net_wm_user_time (MetaWindow    *window,
-                         MetaPropValue *value)
+                         MetaPropValue *value,
+                         gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -235,17 +281,9 @@ reload_net_wm_user_time (MetaWindow    *window,
 }
 
 static void
-init_net_wm_user_time_window (MetaDisplay   *display,
-                              Atom           property,
-                              MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_WINDOW;
-  value->atom = display->atom__NET_WM_USER_TIME_WINDOW;
-}
-
-static void
 reload_net_wm_user_time_window (MetaWindow    *window,
-                                MetaPropValue *value)
+                                MetaPropValue *value,
+                                gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -293,7 +331,8 @@ reload_net_wm_user_time_window (MetaWindow    *window,
           meta_window_reload_property_from_xwindow (
             window,
             window->user_time_window,
-            window->display->atom__NET_WM_USER_TIME);
+            window->display->atom__NET_WM_USER_TIME,
+            initial);
         }
     }
 }
@@ -389,17 +428,9 @@ set_window_title (MetaWindow *window,
 }
 
 static void
-init_net_wm_name (MetaDisplay   *display,
-                  Atom           property,
-                  MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_UTF8;
-  value->atom = display->atom__NET_WM_NAME;
-}
-
-static void
 reload_net_wm_name (MetaWindow    *window,
-                    MetaPropValue *value)
+                    MetaPropValue *value,
+                    gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -413,22 +444,15 @@ reload_net_wm_name (MetaWindow    *window,
     {
       set_window_title (window, NULL);
       window->using_net_wm_name = FALSE;
+      if (!initial)
+        meta_window_reload_property (window, XA_WM_NAME, FALSE);
     }
-}
-
-
-static void
-init_wm_name (MetaDisplay   *display,
-              Atom           property,
-              MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_TEXT_PROPERTY;
-  value->atom = XA_WM_NAME;
 }
 
 static void
 reload_wm_name (MetaWindow    *window,
-                MetaPropValue *value)
+                MetaPropValue *value,
+                gboolean       initial)
 {
   if (window->using_net_wm_name)
     {
@@ -464,17 +488,9 @@ set_icon_title (MetaWindow *window,
 }
 
 static void
-init_net_wm_icon_name (MetaDisplay   *display,
-                  Atom           property,
-                  MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_UTF8;
-  value->atom = display->atom__NET_WM_ICON_NAME;
-}
-
-static void
 reload_net_wm_icon_name (MetaWindow    *window,
-                    MetaPropValue *value)
+                         MetaPropValue *value,
+                         gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -488,22 +504,15 @@ reload_net_wm_icon_name (MetaWindow    *window,
     {
       set_icon_title (window, NULL);
       window->using_net_wm_icon_name = FALSE;
+      if (!initial)
+        meta_window_reload_property (window, XA_WM_ICON_NAME, FALSE);
     }
-}
-
-
-static void
-init_wm_icon_name (MetaDisplay   *display,
-                  Atom           property,
-                  MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_TEXT_PROPERTY;
-  value->atom = XA_WM_ICON_NAME;
 }
 
 static void
 reload_wm_icon_name (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   if (window->using_net_wm_icon_name)
     {
@@ -526,23 +535,22 @@ reload_wm_icon_name (MetaWindow    *window,
 }
 
 static void
-init_net_wm_state (MetaDisplay    *display,
-                   Atom            property,
-                   MetaPropValue  *value)
-{
-  value->type = META_PROP_VALUE_ATOM_LIST;
-  value->atom = display->atom__NET_WM_STATE;
-}
-
-static void
 reload_net_wm_state (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   int i;
 
   /* We know this is only an initial window creation,
    * clients don't change the property.
    */
+
+  if (!initial) {
+    /* no, they DON'T change the property */
+    meta_verbose ("Ignoring _NET_WM_STATE: we should be the one who set "
+                  "the property in the first place\n");
+    return;
+  }
 
   window->shaded = FALSE;
   window->maximized_horizontally = FALSE;
@@ -595,17 +603,9 @@ reload_net_wm_state (MetaWindow    *window,
 }
 
 static void
-init_mwm_hints (MetaDisplay    *display,
-                Atom            property,
-                MetaPropValue  *value)
-{
-  value->type = META_PROP_VALUE_MOTIF_HINTS;
-  value->atom = display->atom__MOTIF_WM_HINTS;
-}
-
-static void
 reload_mwm_hints (MetaWindow    *window,
-                  MetaPropValue *value)
+                  MetaPropValue *value,
+                  gboolean       initial)
 {
   MotifWmHints *hints;
   gboolean old_decorated = window->decorated;
@@ -732,17 +732,9 @@ reload_mwm_hints (MetaWindow    *window,
 }
 
 static void
-init_wm_class (MetaDisplay    *display,
-               Atom            property,
-               MetaPropValue  *value)
-{
-  value->type = META_PROP_VALUE_CLASS_HINT;
-  value->atom = XA_WM_CLASS;
-}
-
-static void
 reload_wm_class (MetaWindow    *window,
-                 MetaPropValue *value)
+                 MetaPropValue *value,
+                 gboolean       initial)
 {
   if (window->res_class)
     g_free (window->res_class);
@@ -768,17 +760,9 @@ reload_wm_class (MetaWindow    *window,
 }
 
 static void
-init_net_wm_desktop (MetaDisplay   *display,
-                     Atom           property,
-                     MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom__NET_WM_DESKTOP;
-}
-
-static void
 reload_net_wm_desktop (MetaWindow    *window,
-                       MetaPropValue *value)
+                       MetaPropValue *value,
+                       gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -791,17 +775,9 @@ reload_net_wm_desktop (MetaWindow    *window,
 }
 
 static void
-init_net_startup_id (MetaDisplay   *display,
-                     Atom           property,
-                     MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_UTF8;
-  value->atom = display->atom__NET_STARTUP_ID;
-}
-
-static void
 reload_net_startup_id (MetaWindow    *window,
-                       MetaPropValue *value)
+                       MetaPropValue *value,
+                       gboolean       initial)
 {
   guint32 timestamp = window->net_wm_user_time;
   MetaWorkspace *workspace = NULL;
@@ -837,17 +813,9 @@ reload_net_startup_id (MetaWindow    *window,
 }
 
 static void
-init_update_counter (MetaDisplay   *display,
-                     Atom           property,
-                     MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_SYNC_COUNTER;
-  value->atom = display->atom__NET_WM_SYNC_REQUEST_COUNTER;
-}
-
-static void
 reload_update_counter (MetaWindow    *window,
-                       MetaPropValue *value)
+                       MetaPropValue *value,
+                       gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -860,17 +828,6 @@ reload_update_counter (MetaWindow    *window,
 #endif
     }
 }
-
-
-static void
-init_normal_hints (MetaDisplay   *display,
-                   Atom           property,
-                   MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_SIZE_HINTS;
-  value->atom = XA_WM_NORMAL_HINTS;
-}
-
 
 #define FLAG_TOGGLED_ON(old,new,flag) \
  (((old)->flags & (flag)) == 0 &&     \
@@ -1276,7 +1233,8 @@ meta_set_normal_hints (MetaWindow *window,
 
 static void
 reload_normal_hints (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -1291,22 +1249,16 @@ reload_normal_hints (MetaWindow    *window,
       spew_size_hints_differences (&old_hints, &window->size_hints);
       
       meta_window_recalc_features (window);
+
+      if (!initial)
+        meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
-}
-
-
-static void
-init_wm_protocols (MetaDisplay   *display,
-                   Atom           property,
-                   MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_ATOM_LIST;
-  value->atom = display->atom_WM_PROTOCOLS;
 }
 
 static void
 reload_wm_protocols (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   int i;
   
@@ -1338,17 +1290,9 @@ reload_wm_protocols (MetaWindow    *window,
 }
 
 static void
-init_wm_hints (MetaDisplay   *display,
-               Atom           property,
-               MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_WM_HINTS;
-  value->atom = XA_WM_HINTS;
-}
-
-static void
 reload_wm_hints (MetaWindow    *window,
-                 MetaPropValue *value)
+                 MetaPropValue *value,
+                 gboolean       initial)
 {
   Window old_group_leader;
   
@@ -1403,17 +1347,9 @@ reload_wm_hints (MetaWindow    *window,
 }
 
 static void
-init_transient_for (MetaDisplay   *display,
-                    Atom           property,
-                    MetaPropValue *value)
-{
-  value->type = META_PROP_VALUE_WINDOW;
-  value->atom = XA_WM_TRANSIENT_FOR;
-}
-
-static void
 reload_transient_for (MetaWindow    *window,
-                      MetaPropValue *value)
+                      MetaPropValue *value,
+                      gboolean       initial)
 {
   window->xtransient_for = None;
   
@@ -1459,184 +1395,90 @@ reload_transient_for (MetaWindow    *window,
     meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 }
 
-#define N_HOOKS 26
-
+/**
+ * Initialises the property hooks system.  Each row in the table named "hooks"
+ * represents an action to take when a property is found on a newly-created
+ * window, or when a property changes its value.
+ *
+ * The first column shows which atom the row concerns.
+ * The second gives the type of the property data.  The property will be
+ * queried for its new value, unless the type is given as
+ * META_PROP_VALUE_INVALID, in which case nothing will be queried.
+ * The third column gives the name of a callback which gets called with the
+ * new value.  (If the new value was not retrieved because the second column
+ * was META_PROP_VALUE_INVALID, the callback still gets called anyway.)
+ * This value may be NULL, in which case no callback will be called.
+ */
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
 {
-  int i;
-  MetaWindowPropHooks *hooks;
+  MetaWindowPropHooks hooks[] = {
+    { display->atom_WM_STATE,          META_PROP_VALUE_INVALID,  NULL },
+    { display->atom_WM_CLIENT_MACHINE, META_PROP_VALUE_STRING,   reload_wm_client_machine },
+    { display->atom__NET_WM_PID,       META_PROP_VALUE_CARDINAL, reload_net_wm_pid },
+    { display->atom__NET_WM_USER_TIME, META_PROP_VALUE_CARDINAL, reload_net_wm_user_time },
+    { display->atom__NET_WM_NAME,      META_PROP_VALUE_UTF8,     reload_net_wm_name },
+    { XA_WM_NAME,                      META_PROP_VALUE_TEXT_PROPERTY, reload_wm_name },
+    { display->atom__NET_WM_ICON,      META_PROP_VALUE_INVALID,  reload_net_wm_icon },
+    { display->atom__KWM_WIN_ICON,     META_PROP_VALUE_INVALID,  reload_kwm_win_icon },
+    { display->atom__NET_WM_ICON_NAME, META_PROP_VALUE_UTF8,     reload_net_wm_icon_name },
+    { XA_WM_ICON_NAME,                 META_PROP_VALUE_TEXT_PROPERTY, reload_wm_icon_name },
+    { display->atom__NET_WM_STATE,     META_PROP_VALUE_ATOM_LIST, reload_net_wm_state },
+    { display->atom__MOTIF_WM_HINTS,   META_PROP_VALUE_MOTIF_HINTS, reload_mwm_hints },
+    { display->atom__NET_WM_ICON_GEOMETRY, META_PROP_VALUE_INVALID, NULL },
+    { XA_WM_CLASS,                     META_PROP_VALUE_CLASS_HINT, reload_wm_class },
+    { display->atom_WM_CLIENT_LEADER,  META_PROP_VALUE_INVALID, complain_about_broken_client },
+    { display->atom_SM_CLIENT_ID,      META_PROP_VALUE_INVALID, complain_about_broken_client },
+    { display->atom_WM_WINDOW_ROLE,    META_PROP_VALUE_INVALID, reload_wm_window_role },
+    { display->atom__NET_WM_WINDOW_TYPE, META_PROP_VALUE_INVALID, reload_net_wm_window_type },
+    { display->atom__NET_WM_DESKTOP,   META_PROP_VALUE_CARDINAL, reload_net_wm_desktop },
+    { display->atom__NET_WM_STRUT,         META_PROP_VALUE_INVALID, reload_struts },
+    { display->atom__NET_WM_STRUT_PARTIAL, META_PROP_VALUE_INVALID, reload_struts },
+    { display->atom__NET_STARTUP_ID,  META_PROP_VALUE_UTF8,     reload_net_startup_id },
+    { display->atom__NET_WM_SYNC_REQUEST_COUNTER, META_PROP_VALUE_SYNC_COUNTER, reload_update_counter },
+    { XA_WM_NORMAL_HINTS,              META_PROP_VALUE_SIZE_HINTS, reload_normal_hints },
+    { display->atom_WM_PROTOCOLS,      META_PROP_VALUE_ATOM_LIST, reload_wm_protocols },
+    { XA_WM_HINTS,                     META_PROP_VALUE_WM_HINTS,  reload_wm_hints },
+    { XA_WM_TRANSIENT_FOR,             META_PROP_VALUE_WINDOW,    reload_transient_for },
+    { display->atom__NET_WM_USER_TIME_WINDOW, META_PROP_VALUE_WINDOW, reload_net_wm_user_time_window },
+    { 0 },
+  };
+
+  MetaWindowPropHooks *table = g_memdup (hooks, sizeof (hooks)),
+    *cursor = table;
   
   g_assert (display->prop_hooks == NULL);
 
-  display->prop_hooks = g_new0 (MetaWindowPropHooks, N_HOOKS); 
-  hooks = display->prop_hooks;
-  
-  i = 0;
+  display->prop_hooks_table = (gpointer) table;
+  display->prop_hooks = g_hash_table_new (NULL, NULL);
 
-  hooks[i].property = display->atom_WM_STATE;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom_WM_CLIENT_MACHINE;
-  hooks[i].init_func = init_wm_client_machine;
-  hooks[i].reload_func = reload_wm_client_machine;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_PID;
-  hooks[i].init_func = init_net_wm_pid;
-  hooks[i].reload_func = reload_net_wm_pid;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_USER_TIME;
-  hooks[i].init_func = init_net_wm_user_time;
-  hooks[i].reload_func = reload_net_wm_user_time;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_NAME;
-  hooks[i].init_func = init_net_wm_name;
-  hooks[i].reload_func = reload_net_wm_name;
-  ++i;
-
-  hooks[i].property = XA_WM_NAME;
-  hooks[i].init_func = init_wm_name;
-  hooks[i].reload_func = reload_wm_name;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_ICON_NAME;
-  hooks[i].init_func = init_net_wm_icon_name;
-  hooks[i].reload_func = reload_net_wm_icon_name;
-  ++i;
-
-  hooks[i].property = XA_WM_ICON_NAME;
-  hooks[i].init_func = init_wm_icon_name;
-  hooks[i].reload_func = reload_wm_icon_name;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_STATE;
-  hooks[i].init_func = init_net_wm_state;
-  hooks[i].reload_func = reload_net_wm_state;
-  ++i;
-  
-  hooks[i].property = display->atom__MOTIF_WM_HINTS;
-  hooks[i].init_func = init_mwm_hints;
-  hooks[i].reload_func = reload_mwm_hints;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_ICON_GEOMETRY;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = XA_WM_CLASS;
-  hooks[i].init_func = init_wm_class;
-  hooks[i].reload_func = reload_wm_class;
-  ++i;
-
-  hooks[i].property = display->atom_WM_CLIENT_LEADER;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom_SM_CLIENT_ID;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom_WM_WINDOW_ROLE;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_WINDOW_TYPE;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_DESKTOP;
-  hooks[i].init_func = init_net_wm_desktop;
-  hooks[i].reload_func = reload_net_wm_desktop;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_STRUT;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_STRUT_PARTIAL;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
-  ++i;
-
-  hooks[i].property = display->atom__NET_STARTUP_ID;
-  hooks[i].init_func = init_net_startup_id;
-  hooks[i].reload_func = reload_net_startup_id;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_SYNC_REQUEST_COUNTER;
-  hooks[i].init_func = init_update_counter;
-  hooks[i].reload_func = reload_update_counter;
-  ++i;
-
-  hooks[i].property = XA_WM_NORMAL_HINTS;
-  hooks[i].init_func = init_normal_hints;
-  hooks[i].reload_func = reload_normal_hints;
-  ++i;
-
-  hooks[i].property = display->atom_WM_PROTOCOLS;
-  hooks[i].init_func = init_wm_protocols;
-  hooks[i].reload_func = reload_wm_protocols;
-  ++i;
-
-  hooks[i].property = XA_WM_HINTS;
-  hooks[i].init_func = init_wm_hints;
-  hooks[i].reload_func = reload_wm_hints;
-  ++i;
-  
-  hooks[i].property = XA_WM_TRANSIENT_FOR;
-  hooks[i].init_func = init_transient_for;
-  hooks[i].reload_func = reload_transient_for;
-  ++i;
-
-  hooks[i].property = display->atom__NET_WM_USER_TIME_WINDOW;
-  hooks[i].init_func = init_net_wm_user_time_window;
-  hooks[i].reload_func = reload_net_wm_user_time_window;
-  ++i;
-
-  if (i != N_HOOKS)
+  while (cursor->property)
     {
-      g_error ("Initialized %d hooks should have been %d\n", i, N_HOOKS);
+      /* Atoms are safe to use with GINT_TO_POINTER because it's safe with
+       * anything 32 bits or less, and atoms are 32 bits with the top three
+       * bits clear.  (Scheifler & Gettys, 2e, p372)
+       */
+      g_hash_table_insert (display->prop_hooks,
+                           GINT_TO_POINTER (cursor->property),
+                           cursor);
+      cursor++;
     }
 }
 
 void
 meta_display_free_window_prop_hooks (MetaDisplay *display)
 {
-  g_assert (display->prop_hooks != NULL);
-  
-  g_free (display->prop_hooks);
+  g_hash_table_unref (display->prop_hooks);
   display->prop_hooks = NULL;
+
+  g_free (display->prop_hooks_table);
+  display->prop_hooks_table = NULL;
 }
 
 static MetaWindowPropHooks*
 find_hooks (MetaDisplay *display,
             Atom         property)
 {
-  int i;
-
-  /* FIXME we could sort the array and do binary search or
-   * something
-   */
-  
-  i = 0;
-  while (i < N_HOOKS)
-    {
-      if (display->prop_hooks[i].property == property)
-        return &display->prop_hooks[i];
-      
-      ++i;
-    }
-
-  return NULL;
+  return g_hash_table_lookup (display->prop_hooks,
+                              GINT_TO_POINTER (property));
 }

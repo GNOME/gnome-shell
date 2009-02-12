@@ -479,6 +479,9 @@ main (int argc, char **argv)
   guint i;
   GOptionContext *ctx;
   
+  if (!g_thread_supported ())
+    g_thread_init (NULL);
+  
   if (setlocale (LC_ALL, "") == NULL)
     meta_warning ("Locale not understood by C library, internationalization will not work\n");
   

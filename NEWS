@@ -1,3 +1,41 @@
+2.25.144
+========
+
+Thanks to Matthias Claesen, Matt Kraai, Elijah Newren, Owen Taylor, and Thomas
+Thurman for improvements in this version.
+
+  - Optimise window property lookup (Thomas) (#549886)
+  - Fix slip in the above (Matt)
+  - Several memory leaks fixed (Matthias) (#552303, #552973, #552307)
+  - Fix longstanding crasher about colourmaps (Owen) (#568365)
+  - Alt+middle/right buttons can be switched (Thomas) (#437910)
+  - Support _NET_WM_MOVERESIZE_CANCEL (Elijah)
+  - minor fix paving the way for a theme editor (Thomas)
+
+Translations
+  David Planella (ca), Jorge González (es), Mattias Põldaru (et), saudat
+  mohammed (ha), Yuval Tanny\n (he), Gabor Kelemen (hu), Onye, Sylvester (ig),
+  Changwoo Ryu (ko), Raivis Dejus (lv), Kjartan Maraas (nb), Daniel Nylander (sv),
+  Fajuyitan, Sunday Ayo (yo), 甘露 (Gan Lu) (zh_CN)
+
+2.25.89
+=======
+
+Thanks to Yanko Kaneti, Frederic Peters, Thomas Thurman, and Colin Walters for
+improvements in this version.
+
+  - The maximisation key is a toggle. (Thomas) (#343824)
+  - "Unmaximise" is now called "restore". (Thomas) (#343824)
+  - New thread handling call for gconf (Frederic) (#565517)
+  - Add screenshot commands back which had been removed (Yanko) (#565343)
+  - move_to_corner_se keybinding fixed (Thomas)
+  - Windows on other workspaces which attempt to present themselves
+    are marked as needing attention (Colin) (#482354)
+  - End the grab op when the user clicks the titlebar (Thomas) (#401028)
+
+Translations
+  Jorge González (es)
+
 2.25.55
 =======
 
