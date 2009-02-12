@@ -296,94 +296,6 @@ void            cogl_get_projection_matrix    (float        m[16]);
 void            cogl_get_viewport             (float        v[4]);
 
 /**
- * cogl_clip_push:
- * @x_offset: left edge of the clip rectangle
- * @y_offset: top edge of the clip rectangle
- * @width: width of the clip rectangle
- * @height: height of the clip rectangle
- *
- * Specifies a rectangular clipping area for all subsequent drawing
- * operations. Any drawing commands that extend outside the rectangle
- * will be clipped so that only the portion inside the rectangle will
- * be displayed. The rectangle dimensions are transformed by the
- * current model-view matrix.
- *
- * The rectangle is intersected with the current clip region. To undo
- * the effect of this function, call cogl_clip_pop().
- */
-void            cogl_clip_push                (float        x_offset,
-                                               float        y_offset,
-                                               float        width,
-                                               float        height);
-
-/**
- * cogl_clip_push_from_path:
- *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
- *
- * Since: 1.0
- */
-void            cogl_clip_push_from_path       (void);
-
-/**
- * cogl_clip_push_from_path_preserve:
- *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
- *
- * Since: 1.0
- */
-void            cogl_clip_push_from_path_preserve (void);
-
-/**
- * cogl_clip_pop:
- *
- * Reverts the clipping region to the state before the last call to
- * cogl_clip_push().
- */
-void            cogl_clip_pop               (void);
-
-/**
- * cogl_clip_ensure:
- *
- * Ensures that the current clipping region has been set in GL. This
- * will automatically be called before any Cogl primitives but it
- * maybe be neccessary to call if you are using raw GL calls with
- * clipping.
- *
- * Since: 1.0
- */
-void            cogl_clip_ensure              (void);
-
-/**
- * cogl_clip_stack_save:
- *
- * Save the entire state of the clipping stack and then clear all
- * clipping. The previous state can be returned to with
- * cogl_clip_stack_restore(). Each call to cogl_clip_push() after this
- * must be matched by a call to cogl_clip_pop() before calling
- * cogl_clip_stack_restore().
- *
- * Since: 0.8.2
- */
-void            cogl_clip_stack_save          (void);
-
-/**
- * cogl_clip_stack_restore:
- *
- * Restore the state of the clipping stack that was previously saved
- * by cogl_clip_stack_save().
- *
- * Since: 0.8.2
- */
-void            cogl_clip_stack_restore       (void);
-
-/**
  * cogl_enable_depth_test:
  * @setting: %TRUE to enable depth testing or %FALSE to disable.
  *
@@ -408,32 +320,76 @@ void            cogl_enable_depth_test        (gboolean            setting);
 void            cogl_enable_backface_culling  (gboolean            setting);
 
 /**
+ * CoglFogMode:
+ * @COGL_FOG_MODE_LINEAR: Calculates the fog blend factor as:
+ * <programlisting>
+ * f = end - eye_distance / end - start
+ * </programlisting>
+ * @COGL_FOG_MODE_EXPONENTIAL: Calculates the fog blend factor as:
+ * <programlisting>
+ * f = e ^ -(density * eye_distance)
+ * </programlisting>
+ * @COGL_FOG_MODE_EXPONENTIAL_SQUARED: Calculates the fog blend factor as:
+ * <programlisting>
+ * f = e ^ -(density * eye_distance)^2
+ * </programlisting>
+ *
+ * The fog mode determines the equation used to calculate the fogging blend
+ * factor while fogging is enabled. The simplest COGL_FOG_MODE_LINEAR mode
+ * determines f as:
+ * <programlisting>
+ * f = end - eye_distance / end - start
+ * </programlisting>
+ * Where eye_distance is the distance of the current fragment in eye
+ * coordinates from the origin.
+ */
+typedef enum _CoglFogMode
+{
+  COGL_FOG_MODE_LINEAR,
+  COGL_FOG_MODE_EXPONENTIAL,
+  COGL_FOG_MODE_EXPONENTIAL_SQUARED,
+} CoglFogMode;
+
+/**
  * cogl_set_fog:
  * @fog_color: The color of the fog
- * @density: Ignored
+ * @mode: A CoglFogMode that determines the equation used to calculate the
+ *        fogging blend factor.
+ * @density: Used by the EXPONENTIAL and EXPONENTIAL_SQUARED CoglFogMode
+ *           equations.
  * @z_near: Position along z-axis where no fogging should be applied
  * @z_far: Position along z-axes where full fogging should be applied
  *
  * Enables fogging. Fogging causes vertices that are further away from
- * the eye to be rendered with a different color. The color is
+ * the eye to be rendered with a different color. The color is determined
+ * according to the chosen fog mode; at it's simplest the color is
  * linearly interpolated so that vertices at @z_near are drawn fully
  * with their original color and vertices at @z_far are drawn fully
- * with @fog_color. Fogging will remain enabled until the next call to
- * cogl_paint_init().
+ * with @fog_color. Fogging will remain enabled until you call
+ * cogl_disable_fog().
  */
 void            cogl_set_fog                  (const CoglColor *fog_color,
+                                               CoglFogMode      mode,
                                                float            density,
                                                float            z_near,
                                                float            z_far);
 
 /**
- * cogl_paint_init:
+ * cogl_disable_fog:
+ *
+ * This function disables fogging, so primitives drawn afterwards will not be
+ * blended with any previously set fog color.
+ */
+void            cogl_disable_fog              (void);
+
+/**
+ * cogl_clear:
  * @color: Background color to clear to
  *
  * Clears the color buffer to @color. The depth buffer and stencil
- * buffers are also cleared and fogging and lighting are disabled.
+ * buffers are also cleared.
  */
-void            cogl_paint_init               (const CoglColor *color);
+void            cogl_clear                    (const CoglColor *color);
 
 /**
  * cogl_set_source:
@@ -528,6 +484,105 @@ void            cogl_set_source_color4f       (float red,
  * Since 1.0
  */
 void            cogl_set_source_texture       (CoglHandle texture_handle);
+
+/**
+ * SECTION:cogl-clipping
+ * @short_description: Fuctions for manipulating a stack of clipping regions
+ *
+ * To support clipping your geometry to rectangles or paths Cogl exposes a
+ * stack based API whereby each clip region you push onto the stack is
+ * intersected with the previous region.
+ */
+
+/**
+ * cogl_clip_push:
+ * @x_offset: left edge of the clip rectangle
+ * @y_offset: top edge of the clip rectangle
+ * @width: width of the clip rectangle
+ * @height: height of the clip rectangle
+ *
+ * Specifies a rectangular clipping area for all subsequent drawing
+ * operations. Any drawing commands that extend outside the rectangle
+ * will be clipped so that only the portion inside the rectangle will
+ * be displayed. The rectangle dimensions are transformed by the
+ * current model-view matrix.
+ *
+ * The rectangle is intersected with the current clip region. To undo
+ * the effect of this function, call cogl_clip_pop().
+ */
+void            cogl_clip_push                (float        x_offset,
+                                               float        y_offset,
+                                               float        width,
+                                               float        height);
+
+/**
+ * cogl_clip_push_from_path:
+ *
+ * Sets a new clipping area using the current path. The current path
+ * is then cleared. The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_clip_pop().
+ *
+ * Since: 1.0
+ */
+void            cogl_clip_push_from_path       (void);
+
+/**
+ * cogl_clip_push_from_path_preserve:
+ *
+ * Sets a new clipping area using the current path. The current path
+ * is then cleared. The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_clip_pop().
+ *
+ * Since: 1.0
+ */
+void            cogl_clip_push_from_path_preserve (void);
+
+/**
+ * cogl_clip_pop:
+ *
+ * Reverts the clipping region to the state before the last call to
+ * cogl_clip_push().
+ */
+void            cogl_clip_pop               (void);
+
+/**
+ * cogl_clip_ensure:
+ *
+ * Ensures that the current clipping region has been set in GL. This
+ * will automatically be called before any Cogl primitives but it
+ * maybe be neccessary to call if you are using raw GL calls with
+ * clipping.
+ *
+ * Since: 1.0
+ */
+void            cogl_clip_ensure              (void);
+
+/**
+ * cogl_clip_stack_save:
+ *
+ * Save the entire state of the clipping stack and then clear all
+ * clipping. The previous state can be returned to with
+ * cogl_clip_stack_restore(). Each call to cogl_clip_push() after this
+ * must be matched by a call to cogl_clip_pop() before calling
+ * cogl_clip_stack_restore().
+ *
+ * Since: 0.8.2
+ */
+void            cogl_clip_stack_save          (void);
+
+/**
+ * cogl_clip_stack_restore:
+ *
+ * Restore the state of the clipping stack that was previously saved
+ * by cogl_clip_stack_save().
+ *
+ * Since: 0.8.2
+ */
+void            cogl_clip_stack_restore       (void);
+
+
 
 G_END_DECLS
 

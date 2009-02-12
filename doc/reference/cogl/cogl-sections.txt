@@ -38,21 +38,14 @@ cogl_scale
 cogl_translate
 cogl_rotate
 <SUBSECTION>
+cogl_clear
 cogl_get_bitmasks
-cogl_paint_init
-<SUBSECTION>
-CoglClipStackState
-cogl_clip_push
-cogl_clip_push_from_path
-cogl_clip_push_from_path_preserve
-cogl_clip_pop
-cogl_clip_stack_save
-cogl_clip_stack_restore
-cogl_clip_ensure
-<SUBSECTION>
 cogl_enable_depth_test
 cogl_enable_backface_culling
-cogl_fog_set
+<SUBSECTION>
+CoglFogMode
+cogl_set_fog
+cogl_disable_fog
 <SUBSECTION>
 cogl_set_source
 cogl_set_source_color
@@ -62,6 +55,18 @@ cogl_set_source_texture
 <SUBSECTION Private>
 cogl_util_next_p2
 </SECTION>
+
+<SECTION>
+<FILE>cogl-clipping</FILE>
+CoglClipStackState
+cogl_clip_push
+cogl_clip_push_from_path
+cogl_clip_push_from_path_preserve
+cogl_clip_pop
+cogl_clip_stack_save
+cogl_clip_stack_restore
+cogl_clip_ensure
+<SECTION>
 
 <SECTION>
 <FILE>cogl-primitives</FILE>
