@@ -3,21 +3,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
 # Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008, 2009.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-23 16:01+0200\n"
-"PO-Revision-Date: 2008-08-23 16:09+0200\n"
+"POT-Creation-Date: 2009-02-12 21:09+0100\n"
+"PO-Revision-Date: 2009-02-12 21:27+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
@@ -33,47 +33,38 @@ msgstr "Leiho-kudeatzailea"
 msgid "Unknown window information request: %d"
 msgstr "Leihoaren informazio eskaera ezezaguna: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
+#: ../src/core/delete.c:104
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Ezin da \"%s\" analizatu osoko gisa"
-
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
-#: ../src/ui/theme-parser.c:545
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Ez dira ulertzen amaierako \"%s\" karaktereak \"%s\" katean"
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Huts egin du elkarrizketa-koadroaren prozesutik \"%s\" mezua analizatzean\n"
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Errorea elkarrizketa-koadroa bistaratzeko prozesutik irakurtzean: %s\n"
-
-#: ../src/core/delete.c:336
-#, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"<big><b><tt>%s</tt> is not responding.</b></big>\n"
+"\n"
+"<i>You may choose to wait a short while for it to continue or force the "
+"application to quit entirely.</i>"
 msgstr ""
-"Errorea aplikazioa hil behar den galdetzeko metacity-ren elkarrizketa-"
-"koadroa abiaraztean: %s\n"
+"<big><b><tt>%s</tt>(eÇ)k ez du erantzuten.</b></big>\n"
+"\n"
+"<i>Aukeratu piskatean zai egotea aplikazioak jarraitzeko edo derrigortu "
+"aplikazioa erabat ixtea.</i>"
 
-#: ../src/core/delete.c:445
+#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:107
+msgid "_Wait"
+msgstr "_Itxaron"
+
+#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:109
+msgid "_Force Quit"
+msgstr "_Behartu ixtera"
+
+#: ../src/core/delete.c:216
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Huts egin du ostalari-izena hartzean: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:258
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Konposaketa lantzeko beharrezkoa den %s hedapena falta da"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:336
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Huts egin du X Window sistemaren '%s' pantaila irekitzean\n"
@@ -94,7 +85,7 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "S/Iko %d (%s) errore konponezina '%s' pantailan.\n"
 
-#: ../src/core/keybindings.c:1090
+#: ../src/core/keybindings.c:680
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -103,79 +94,94 @@ msgstr ""
 "Beste programaren batek erabiltzen du %s gakoa %x aldatzaileekin lotura "
 "gisa\n"
 
-#: ../src/core/keybindings.c:2729
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2294
 #, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
 msgstr ""
-"Errorea komando bati buruzko errorea inprimatzeko metacity-ren elkarrizketa-"
-"koadroa abiaraztean: %s\n"
+"Errorea gertatu da <tt>%s</tt> exekutatzean:\n"
+"\n"
+"%s"
 
-#: ../src/core/keybindings.c:2834
+#: ../src/core/keybindings.c:2383
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d komandoa ez dago definituta.\n"
 
-#: ../src/core/keybindings.c:3862
+#: ../src/core/keybindings.c:3337
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Ez da terminalaren komandoa definitu.\n"
 
-#: ../src/core/main.c:116
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., eta beste batzuk\n"
+"Copyright-a (C) 2001-%s Havoc Pennington, Red Hat, Inc., eta beste batzuk\n"
 "Hau software librea da; ikus kopiatzeko baldintzak iturburu-kodean.\n"
 "EZ du bermerik; ezta MERKATURATZEKO edo XEDE JAKIN BATERAKO EGOKITASUNAREN "
 "BERMERIK ERE.\n"
 
-#: ../src/core/main.c:243
+#: ../src/core/main.c:267
 msgid "Disable connection to session manager"
 msgstr "Desgaitu saio-kudeatzailearen konexioa"
 
-#: ../src/core/main.c:249
+#: ../src/core/main.c:273
 msgid "Replace the running window manager with Metacity"
 msgstr "Ordeztu exekutatzen dagoen leiho-kudeatzailea Metacity-rekin"
 
-#: ../src/core/main.c:255
+#: ../src/core/main.c:279
 msgid "Specify session management ID"
 msgstr "Zehaztu saio-kudeatzailearen IDa"
 
-#: ../src/core/main.c:260
+#: ../src/core/main.c:284
 msgid "X Display to use"
 msgstr "X pantaila erabiltzeko"
 
-#: ../src/core/main.c:266
+#: ../src/core/main.c:290
 msgid "Initialize session from savefile"
 msgstr "Hasieratu saioa babes-fitxategitik"
 
-#: ../src/core/main.c:272
+#: ../src/core/main.c:296
 msgid "Print version"
 msgstr "Erakutsi bertsioa"
 
-#: ../src/core/main.c:278
+#: ../src/core/main.c:302
 msgid "Make X calls synchronous"
 msgstr "Egin X deiak sinkronoak izatea"
 
-#: ../src/core/main.c:429
+#: ../src/core/main.c:308
+msgid "Turn compositing on"
+msgstr "Aktibatu konposaketa"
+
+#: ../src/core/main.c:314
+msgid "Turn compositing off"
+msgstr "Desaktibatu konposaketa"
+
+#: ../src/core/main.c:536
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Huts egin du gaien direktorioa aztertzean: %s\n"
 
-#: ../src/core/main.c:445
+#: ../src/core/main.c:552
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Gai bat ezin izan da aurkitu. Ziurtatu %s badagoela eta ohiko gaiak "
 "dituela.\n"
 
-#: ../src/core/main.c:501
+#: ../src/core/main.c:608
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ezin izan da berrabiarazi: %s\n"
@@ -187,26 +193,28 @@ msgstr "Ezin izan da berrabiarazi: %s\n"
 #. * we might consider reverting invalid keys to their original values.
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
 #.
-#: ../src/core/prefs.c:502 ../src/core/prefs.c:654
+#.
+#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "\"%s\" GConf gakoa balio baliogabean ezarrita dago\n"
 
-#: ../src/core/prefs.c:583 ../src/core/prefs.c:823
+#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%2$s GConf gakoko %1$d balioa %3$d - %4$d barrutitik kanpo dago\n"
 
-#: ../src/core/prefs.c:627 ../src/core/prefs.c:701 ../src/core/prefs.c:749
-#: ../src/core/prefs.c:813 ../src/core/prefs.c:1108 ../src/core/prefs.c:1124
-#: ../src/core/prefs.c:1143 ../src/core/prefs.c:1159 ../src/core/prefs.c:1176
-#: ../src/core/prefs.c:1192
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
+#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
+#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "\"%s\" GConf gakoa mota baliogabean ezarrita dago\n"
 
-#: ../src/core/prefs.c:1262
+#: ../src/core/prefs.c:1231
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -214,12 +222,12 @@ msgstr ""
 "Aplikazio hautsien konponbidea desgaituta. Aplikazio batzuk ez dira behar "
 "den bezala ibiliko.\n"
 
-#: ../src/core/prefs.c:1332
+#: ../src/core/prefs.c:1302
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ezin izan da analizatu \"%s\" letra-tipoaren deskribapena %s GConf gakoan\n"
 
-#: ../src/core/prefs.c:1392
+#: ../src/core/prefs.c:1364
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -228,17 +236,17 @@ msgstr ""
 "Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa sagu-"
 "botoiaren aldatzailearentzat\n"
 
-#: ../src/core/prefs.c:1809
+#: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Errorea laneko %d area ezartzean: %s\n"
 
-#: ../src/core/prefs.c:2174 ../src/core/prefs.c:2686
+#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. laneko area"
 
-#: ../src/core/prefs.c:2204 ../src/core/prefs.c:2377
+#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -247,10 +255,15 @@ msgstr ""
 "Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa \"%s"
 "\" laster-teklarentzat.\n"
 
-#: ../src/core/prefs.c:2767
+#: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Errorea %d. laneko areari \"%s\" izena ezartzean: %s\n"
+
+#: ../src/core/prefs.c:2753
+#, c-format
+msgid "Error setting compositor status: %s\n"
+msgstr "Errorea konposaketaren egoera ezartzean: %s\n"
 
 #: ../src/core/screen.c:350
 #, c-format
@@ -283,73 +296,102 @@ msgstr "\"%2$s\" bistaratzeko %1$d pantailak badu leiho-kudeatzailea\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Ezin izan da askatu \"%2$s\" bistaratzeko %1$d pantaila\n"
 
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#. Translators: Please don't translate "Control", "Shift", etc, since these
+#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+#. * "disabled" must also stay as it is.
+#.
+#: ../src/core/schema-bindings.c:169
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Formatua \"<Control>\" edo \"<Shift><Alt>F1\" itxurakoa izango da.\n"
+"\n"
+"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
+"eta baita \"<Ctl>\" eta \"<Ctrl>\" moduko laburdurak ere. Aukeran \"disabled"
+"\" kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza "
+"honentzat."
+
+#: ../src/core/schema-bindings.c:177
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
+"\n"
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
+msgstr ""
+"Formatua \"<Control>\" edo \"<Shift><Alt>F1\" itxurakoa izango da.\n"
+"\n"
+"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
+"eta baita \"<Ctl>\" eta \"<Ctrl>\" moduko laburdurak ere. Aukeran \"disabled"
+"\" kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza "
+"honentzat.\n"
+"\n"
+"Laster-tekla hau alderantzikatu daiteke \"Maius\" tekla sakatuta edukiz; "
+"horrela \"Maius\" ez da izango erabiltzen duen tekletariko bat."
+
+#: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Ezin izan da '%s' direktorioa sortu: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:862
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Ezin izan da '%s' saio-fitxategia idazteko ireki: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1003
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Errorea '%s' saio-fitxategia idaztean: %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1008
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Errorea '%s' saio-fitxategia ixtean: %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1093
+#: ../src/core/session.c:1101
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Huts egin du gordetako %s saio-fitxategia irakurtzean: %s\n"
 
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1140
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Huts egin du gordetako saio-fitxategia analizatzean: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1189
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> atributua ikusi da baina dagoeneko badugu saio-IDa"
 
-#: ../src/core/session.c:1194
+#: ../src/core/session.c:1202 ../src/core/session.c:1277
+#: ../src/core/session.c:1309 ../src/core/session.c:1381
+#: ../src/core/session.c:1441
 #, c-format
-msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "%s atributu ezezaguna <metacity_session> elementuan"
+msgid "Unknown attribute %s on <%s> element"
+msgstr "%s atributu ezezaguna <%s> elementuan"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1219
 #, c-format
 msgid "nested <window> tag"
 msgstr "<window> etiketa habiaratua"
 
-#: ../src/core/session.c:1269 ../src/core/session.c:1301
-#, c-format
-msgid "Unknown attribute %s on <window> element"
-msgstr "%s atributu ezezaguna <window> elementuan"
-
-#: ../src/core/session.c:1373
-#, c-format
-msgid "Unknown attribute %s on <maximized> element"
-msgstr "%s atributu ezezaguna <maximized> elementuan"
-
-#: ../src/core/session.c:1433
-#, c-format
-msgid "Unknown attribute %s on <geometry> element"
-msgstr "%s atributu ezezaguna <geometry> elementuan"
-
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1461
 #, c-format
 msgid "Unknown element %s"
 msgstr "%s elementu ezezaguna"
 
-#: ../src/core/session.c:1879
+#: ../src/core/session.c:1887
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -358,59 +400,51 @@ msgstr ""
 "Errorea saio-kudeatzea onartzen ez duten aplikazioei buruzko metacity-ren "
 "elkarrizketa-koadroa abiaraztean: %s\n"
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:103
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Huts egin du arazketako egunkaria irekitzean: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:113
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Huts egin du %s egunkari-fitxategian fdopen() egitean: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:119
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "%s egunkari-fitxategia irekita\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity modu xehatuaren euskarririk gabe konpilatu da\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:238
 msgid "Window manager: "
 msgstr "Leiho-kudeatzailea: "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:390
 msgid "Bug in window manager: "
 msgstr "Akatsa leiho-kudeatzailean: "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:423
 msgid "Window manager warning: "
 msgstr "Leiho-kudeatzailearen abisua: "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:451
 msgid "Window manager error: "
 msgstr "Leiho-kudeatzailearen errorea: "
 
-#: ../src/core/window-props.c:206
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Aplikazioak _NET_WM_PID %lu faltsua ezarri du\n"
-
-#: ../src/core/window-props.c:338
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (%s)"
-
-#: ../src/core/window-props.c:1420
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "%2$s(e)n baliogabeko WM_TRANSIENT_FOR 0x%1$lx leihoa zehaztu da.\n"
+#. Translators: This is the title used on dialog boxes
+#. eof all-keybindings.h
+#: ../src/core/util.c:581 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5664
+#: ../src/core/window.c:5627
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -426,7 +460,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6229
+#: ../src/core/window.c:6192
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -435,6 +469,21 @@ msgstr ""
 "%s leihoak MWM aholkua ezartzen du, tamainarik ezin zaiola aldatu "
 "adierazteko, baina aldi berean gutxieneko tamaina (%d x %d) eta gehienezkoa "
 "(%d x %d) ezartzen ditu, eta horrek ez du zentzu handirik.\n"
+
+#: ../src/core/window-props.c:260
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Aplikazioak _NET_WM_PID %lu faltsua ezarri du\n"
+
+#: ../src/core/window-props.c:377
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (%s)"
+
+#: ../src/core/window-props.c:1358
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "%2$s(e)n baliogabeko WM_TRANSIENT_FOR 0x%1$lx leihoa zehaztu da.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -463,15 +512,315 @@ msgstr ""
 "0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du zerrendako %3$d. "
 "elementuan\n"
 
-#: ../src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/include/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Aldatu 1. laneko areara"
 
-#: ../src/metacity.schemas.in.h:1
+#: ../src/include/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Aldatu 2. laneko areara"
+
+#: ../src/include/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Aldatu 3. laneko areara"
+
+#: ../src/include/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Aldatu 4. laneko areara"
+
+#: ../src/include/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Aldatu 5. laneko areara"
+
+#: ../src/include/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Aldatu 6. laneko areara"
+
+#: ../src/include/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Aldatu 7. laneko areara"
+
+#: ../src/include/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Aldatu 8. laneko areara"
+
+#: ../src/include/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Aldatu 9. laneko areara"
+
+#: ../src/include/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Aldatu 10. laneko areara"
+
+#: ../src/include/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Aldatu 11. laneko areara"
+
+#: ../src/include/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Aldatu 12. laneko areara"
+
+#: ../src/include/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Aldatu uneko laneko arearen ezkerreko laneko areara"
+
+#: ../src/include/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Aldatu uneko laneko arearen eskuineko laneko areara"
+
+#: ../src/include/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Aldatu uneko laneko arearen gaineko laneko areara"
+
+#: ../src/include/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Aldatu uneko laneko arearen azpiko laneko areara"
+
+#: ../src/include/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Mugitu aplikazioaren leihoen artean, laster-leiho bat erabiliz"
+
+#: ../src/include/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "Atzerantz joan aplikazioaren leihoen artean, laster-leiho bat erabiliz"
+
+#: ../src/include/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Mugitu leihoen artean, laster-leiho bat erabiliz"
+
+#: ../src/include/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr "Atzerantz joan leihoen artean, laster-leiho bat erabiliz"
+
+#: ../src/include/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Mugitu panelen eta mahaigainaren artean laster-leihoarekin"
+
+#: ../src/include/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr "Atzerantz joan panelen eta mahaigainaren artean, laster-leiho bat erabiliz"
+
+#: ../src/include/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Mugitu aplikazio baten leihoen artean berehala"
+
+#: ../src/include/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Atzerantz joan aplikazio baten leihoen artean berehala"
+
+#: ../src/include/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Mugitu leihoen artean berehala"
+
+#: ../src/include/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Atzerantz joan leihoen artean berehala"
+
+#: ../src/include/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Mugitu panelen eta mahaigainaren artean berehala"
+
+#: ../src/include/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Atzerantz joan panelen eta mahaigainaren artean berehala"
+
+#: ../src/include/all-keybindings.h:191
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Ezkutatu leiho normal guztiak eta eman fokua mahaigainari"
+
+#: ../src/include/all-keybindings.h:194
+msgid "Show the panel's main menu"
+msgstr "Erakutsi paneleko menu nagusia"
+
+#: ../src/include/all-keybindings.h:197
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Erakutsi panelaren \"Exekutatu aplikazioa\" elkarrizketa-koadroa"
+
+#: ../src/include/all-keybindings.h:238
+msgid "Take a screenshot"
+msgstr "Egin pantaila-argazki bat"
+
+#: ../src/include/all-keybindings.h:240
+msgid "Take a screenshot of a window"
+msgstr "Egin leiho baten pantaila-argazkia"
+
+#: ../src/include/all-keybindings.h:242
+msgid "Run a terminal"
+msgstr "Exekutatu terminala"
+
+#: ../src/include/all-keybindings.h:257
+msgid "Activate the window menu"
+msgstr "Aktibatu leiho-menua"
+
+#: ../src/include/all-keybindings.h:260
+msgid "Toggle fullscreen mode"
+msgstr "Txandakatu pantaila osoaren modua"
+
+#: ../src/include/all-keybindings.h:262
+msgid "Toggle maximization state"
+msgstr "Txandakatu maximizatze-egoera"
+
+#: ../src/include/all-keybindings.h:264
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "Txandakatu leiho bat beste leiho guztien gainean ikusgai egongo den edo ez"
+
+#: ../src/include/all-keybindings.h:266
+msgid "Maximize window"
+msgstr "Maximizatu leihoa"
+
+#: ../src/include/all-keybindings.h:268
+msgid "Restore window"
+msgstr "Leheneratu leihoa"
+
+#: ../src/include/all-keybindings.h:270
+msgid "Toggle shaded state"
+msgstr "Txandakatu bildutako egoera"
+
+#: ../src/include/all-keybindings.h:272
+msgid "Minimize window"
+msgstr "Ikonotu leihoa"
+
+#: ../src/include/all-keybindings.h:274
+msgid "Close window"
+msgstr "Itxi leihoa"
+
+#: ../src/include/all-keybindings.h:276
+msgid "Move window"
+msgstr "Lekuz aldatu leihoa"
+
+#: ../src/include/all-keybindings.h:278
+msgid "Resize window"
+msgstr "Aldatu leihoaren tamaina"
+
+#: ../src/include/all-keybindings.h:281
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "Txandakatu leihoa laneko area guztietan edo bakar batean egotea"
+
+#: ../src/include/all-keybindings.h:285
+msgid "Move window to workspace 1"
+msgstr "Eraman leihoa 1. laneko areara"
+
+#: ../src/include/all-keybindings.h:288
+msgid "Move window to workspace 2"
+msgstr "Eraman leihoa 2. laneko areara"
+
+#: ../src/include/all-keybindings.h:291
+msgid "Move window to workspace 3"
+msgstr "Eraman leihoa 3. laneko areara"
+
+#: ../src/include/all-keybindings.h:294
+msgid "Move window to workspace 4"
+msgstr "Eraman leihoa 4. laneko areara"
+
+#: ../src/include/all-keybindings.h:297
+msgid "Move window to workspace 5"
+msgstr "Eraman leihoa 5. laneko areara"
+
+#: ../src/include/all-keybindings.h:300
+msgid "Move window to workspace 6"
+msgstr "Eraman leihoa 6. laneko areara"
+
+#: ../src/include/all-keybindings.h:303
+msgid "Move window to workspace 7"
+msgstr "Eraman leihoa 7. laneko areara"
+
+#: ../src/include/all-keybindings.h:306
+msgid "Move window to workspace 8"
+msgstr "Eraman leihoa 8. laneko areara"
+
+#: ../src/include/all-keybindings.h:309
+msgid "Move window to workspace 9"
+msgstr "Eraman leihoa 9. laneko areara"
+
+#: ../src/include/all-keybindings.h:312
+msgid "Move window to workspace 10"
+msgstr "Eraman leihoa 10. laneko areara"
+
+#: ../src/include/all-keybindings.h:315
+msgid "Move window to workspace 11"
+msgstr "Eraman leihoa 11. laneko areara"
+
+#: ../src/include/all-keybindings.h:318
+msgid "Move window to workspace 12"
+msgstr "Eraman leihoa 12. laneko areara"
+
+#: ../src/include/all-keybindings.h:330
+msgid "Move window one workspace to the left"
+msgstr "Eraman leihoa laneko area bat ezkerrera"
+
+#: ../src/include/all-keybindings.h:333
+msgid "Move window one workspace to the right"
+msgstr "Eraman leihoa laneko area bat eskuinera"
+
+#: ../src/include/all-keybindings.h:336
+msgid "Move window one workspace up"
+msgstr "Eraman leihoa laneko area bat gora"
+
+#: ../src/include/all-keybindings.h:339
+msgid "Move window one workspace down"
+msgstr "Eraman leihoa laneko area bat behera"
+
+#: ../src/include/all-keybindings.h:342
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "Goratu leihoa beste leiho batek estaltzen badu, bestela beheratu"
+
+#: ../src/include/all-keybindings.h:344
+msgid "Raise window above other windows"
+msgstr "Goratu leihoa beste leihoen gainera"
+
+#: ../src/include/all-keybindings.h:346
+msgid "Lower window below other windows"
+msgstr "Beheratu leihoa beste leihoen azpira"
+
+#: ../src/include/all-keybindings.h:350
+msgid "Maximize window vertically"
+msgstr "Maximizatu leihoa bertikalki"
+
+#: ../src/include/all-keybindings.h:354
+msgid "Maximize window horizontally"
+msgstr "Maximizatu leihoa horizontalki"
+
+#: ../src/include/all-keybindings.h:358
+msgid "Move window to north-west (top left) corner"
+msgstr "Eraman leihoa ipar-mendebaldeko (goi-ezkerreko) ertzera"
+
+#: ../src/include/all-keybindings.h:361
+msgid "Move window to north-east (top right) corner"
+msgstr "Eraman leihoa ipar-ekialdeko (goi-eskuineko) ertzera"
+
+#: ../src/include/all-keybindings.h:364
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Eraman leihoa hego-mendebaldeko (ezker-beheko) ertzera"
+
+#: ../src/include/all-keybindings.h:367
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Eraman leihoa hego-ekialdeko (eskuin-beheko) ertzera"
+
+#: ../src/include/all-keybindings.h:371
+msgid "Move window to north (top) side of screen"
+msgstr "Eraman leihoa pantailaren iparraldeko (goiko) aldera"
+
+#: ../src/include/all-keybindings.h:374
+msgid "Move window to south (bottom) side of screen"
+msgstr "Eraman leihoa pantailaren hegoaldeko (beheko) aldera"
+
+#: ../src/include/all-keybindings.h:377
+msgid "Move window to east (right) side of screen"
+msgstr "Eraman leihoa pantailaren ekialdeko (eskuineko) aldera"
+
+#: ../src/include/all-keybindings.h:380
+msgid "Move window to west (left) side of screen"
+msgstr "Eraman leihoa pantailaren mendebaldeko (ezkerreko) aldera"
+
+#: ../src/include/all-keybindings.h:383
+msgid "Move window to center of screen"
+msgstr "Eraman leihoa pantailaren zentruko aldera"
+
+#: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr "(Ez dago inplementatuta) Nabigazioa aplikazioetan egiten da, ez leihoetan"
 
-#: ../src/metacity.schemas.in.h:2
+#: ../src/metacity.schemas.in.in.h:2
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -483,27 +832,23 @@ msgstr ""
 "bakarrik erabiliko da. Gainera, aukera hau desgaitu egingo da "
 "titlebar_uses_desktop_font aukeraren balioa egiazkoa bada."
 
-#: ../src/metacity.schemas.in.h:3
+#: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
 msgstr "Titulu-barran klik bikoitza egitearen eragina"
 
-#: ../src/metacity.schemas.in.h:4
+#: ../src/metacity.schemas.in.in.h:4
 msgid "Action on title bar middle-click"
 msgstr "Ekintza titulu-barran erdiko botoiarekin klik egitean"
 
-#: ../src/metacity.schemas.in.h:5
+#: ../src/metacity.schemas.in.in.h:5
 msgid "Action on title bar right-click"
 msgstr "Ekintza titulu-barran eskuineko botoiarekin klik egitean"
 
-#: ../src/metacity.schemas.in.h:6
-msgid "Activate window menu"
-msgstr "Aktibatu leiho-menua"
-
-#: ../src/metacity.schemas.in.h:7
+#: ../src/metacity.schemas.in.in.h:6
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Titulu-barrako botoien antolamendua"
 
-#: ../src/metacity.schemas.in.h:8
+#: ../src/metacity.schemas.in.in.h:7
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
@@ -513,61 +858,59 @@ msgid ""
 "without breaking older versions. A special spacer tag can be used to insert "
 "some space between two adjacent buttons."
 msgstr ""
-"Titulu-barrako botoien antolamendua. Balioak katea izan behar du, "
-" \"menu:minimize,maximize,spacer,close\" erakoa; bi puntuek leihoaren ezkerreko izkina "
-"eskuineko izkinatik bereizten dute, eta botoi-izenak komaz bereizita jartzen "
-"dira. Ez da onartzen bikoiztutako botoirik. Botoi-izen ezezagunei ez ikusi "
-"egiten zaie zuzenean, eta horrela botoiak gehitu ahal izango dira metacity-"
-"ren etorkizuneko bertsioetan bertsio zaharragoak hautsi gabe. "
-"Etiketa tartekatzaile berezia erabil daiteke jarraian dauden "
-"bi botoiren artean tartea sartzeko."
+"Titulu-barrako botoien antolamendua. Balioak katea izan behar du,  \"menu:"
+"minimize,maximize,spacer,close\" erakoa; bi puntuek leihoaren ezkerreko "
+"izkina eskuineko izkinatik bereizten dute, eta botoi-izenak komaz bereizita "
+"jartzen dira. Ez da onartzen bikoiztutako botoirik. Botoi-izen ezezagunei ez "
+"ikusi egiten zaie zuzenean, eta horrela botoiak gehitu ahal izango dira "
+"metacity-ren etorkizuneko bertsioetan bertsio zaharragoak hautsi gabe. "
+"Etiketa tartekatzaile berezia erabil daiteke jarraian dauden bi botoiren "
+"artean tartea sartzeko."
 
-#: ../src/metacity.schemas.in.h:9
+#: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
 msgstr "Automatikoki goratzen du fokua duen leihoa"
 
-#: ../src/metacity.schemas.in.h:10
+#: ../src/metacity.schemas.in.in.h:9
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
-"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
-"for example."
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
 msgstr ""
 "Tekla aldatzaile hau sakatuta dagoela leihoan klik egiten bada, leihoa lekuz "
 "aldatuko da (klik egin saguaren ezkerreko botoiarekin), leihoaren tamaina "
 "aldatuko da (klik egin saguaren erdiko botoiarekin), edo leihoaren menua "
-"erakutsiko da (klik egin saguaren eskuineko botoiarekin). Aldatzailea \"&lt;"
+"erakutsiko da (klik egin saguaren eskuineko botoiarekin). Ezker eta eskuineko "
+"eragiketak truka daitezke \"mouse_button_resize\" erabiliz. Aldatzailea \"&lt;"
 "Alt&gt;\" edo \"&lt;Super&gt;\" izango da, adibidez."
 
-#: ../src/metacity.schemas.in.h:11
-msgid "Close window"
-msgstr "Itxi leihoa"
-
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
 msgstr "Komandoak laster-teklei erantzunez exekutatzeko"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.in.h:11
 msgid "Compositing Manager"
 msgstr "Konposatze-kudeatzailea"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.in.h:12
 msgid "Control how new windows get focus"
 msgstr "Kontrolatu leiho berriek fokua nola lortzea"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.in.h:13
 msgid "Current theme"
 msgstr "Uneko gaia"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Atzerapena automatikoki goratu aurretik (milisegundoak)"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Metacity konposatzeko kudeatzaile bat al den zehazten du."
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -576,21 +919,17 @@ msgstr ""
 "erabakitzen du; 'soinu bisualekin' konbina daiteke, isileko soinuak "
 "onartzeko."
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
 "Desgaitu aplikazio zaharrek edo hautsitakoek eskatzen dituzten eginbide "
 "galduak"
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.in.h:18
 msgid "Enable Visual Bell"
 msgstr "Gaitu soinu bisuala"
 
-#: ../src/metacity.schemas.in.h:21
-msgid "Hide all windows and focus desktop"
-msgstr "Ezkutatu leiho guztiak eta eman fokua mahaigainari"
-
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.in.h:19
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focused window will be automatically raised after a delay specified by "
@@ -603,7 +942,7 @@ msgstr ""
 "egitearekin goratzeko, ezta leiho batean sartzearekin arrastatu eta "
 "jaregitean."
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.in.h:20
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -611,7 +950,7 @@ msgstr ""
 "Egiazkoa bada, ez ikusi egin titlebar_font aukerari eta erabili "
 "aplikazioaren letra-tipo estandarra leihoen tituluan."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.in.h:21
 msgid ""
 "If true, metacity will give the user less feedback by using wireframes, "
 "avoiding animations, or other means. This is a significant reduction in "
@@ -627,7 +966,7 @@ msgstr ""
 "erabilgarritasuna aktibo dagoenean wireframe funtzionalitatea desgaitu "
 "egiten da."
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.in.h:22
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -646,205 +985,23 @@ msgstr ""
 "batzuetako leihoetara. Horretaz gain, aplikazioa oinarritutako modua ez dago "
 "ia batere inplementatuta oraingoz."
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
 msgstr "Egia bada, gutxiagotu erabilgarritasuna errekurtso gutxiago erabiltzeko"
 
-#: ../src/metacity.schemas.in.h:27
-msgid "Lower window below other windows"
-msgstr "Beheratu leihoa beste leihoen azpira"
-
-#: ../src/metacity.schemas.in.h:28
-msgid ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Setting this option to "
-"false, which is strongly discouraged, will decouple raising from other user "
-"actions, and ignore raise requests generated by applications. See http://"
-"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr ""
-"Ekintza askok (adib: bezeroaren arean klik egitea, leihoa lekuz edo tamainaz "
-"aldatzea) leihoa goratzen dute bigarren ondorio gisa. Ezarpen hau FALSE "
-"balioarekin jartzean, ez da batere gomendagarria, erabiltzailearen beste "
-"aplikazio batzuen goratzeko ekintza desgaituko da. Ikusi oharra: http://"
-"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-
-#: ../src/metacity.schemas.in.h:29
-msgid "Maximize window"
-msgstr "Maximizatu leihoa"
-
-#: ../src/metacity.schemas.in.h:30
-msgid "Maximize window horizontally"
-msgstr "Maximizatu leihoa horizontalki"
-
-#: ../src/metacity.schemas.in.h:31
-msgid "Maximize window vertically"
-msgstr "Maximizatu leihoa bertikalki"
-
-#: ../src/metacity.schemas.in.h:32
-msgid "Minimize window"
-msgstr "Ikonotu leihoa"
-
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.in.h:24
 msgid "Modifier to use for modified window click actions"
 msgstr "Aldatzailea leihoen klik-ekintza aldatuetan erabiltzeko"
 
-#: ../src/metacity.schemas.in.h:34
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Atzerantz joan panelen eta mahaigainaren artean berehala"
-
-#: ../src/metacity.schemas.in.h:35
-msgid "Move backwards between panels and the desktop with popup"
-msgstr "Atzerantz joan panelen eta mahaigainaren artean laster-leihoarekin"
-
-#: ../src/metacity.schemas.in.h:36
-msgid "Move backwards between windows immediately"
-msgstr "Atzerantz joan leihoen artean berehala"
-
-#: ../src/metacity.schemas.in.h:37
-msgid "Move backwards between windows of an application immediately"
-msgstr "Atzerantz joan aplikazio baten leihoen artean berehala"
-
-#: ../src/metacity.schemas.in.h:38
-msgid "Move backwards between windows of an application with popup"
-msgstr "Atzerantz joan laster-leihoak dituen aplikazioaren leihoen artean"
-
-#: ../src/metacity.schemas.in.h:39
-msgid "Move between panels and the desktop immediately"
-msgstr "Mugitu panelen eta mahaigainaren artean berehala"
-
-#: ../src/metacity.schemas.in.h:40
-msgid "Move between panels and the desktop with popup"
-msgstr "Mugitu panelen eta mahaigainaren artean laster-leihoarekin"
-
-#: ../src/metacity.schemas.in.h:41
-msgid "Move between windows immediately"
-msgstr "Mugitu leihoen artean berehala"
-
-#: ../src/metacity.schemas.in.h:42
-msgid "Move between windows of an application immediately"
-msgstr "Mugitu aplikazio baten leihoen artean berehala"
-
-#: ../src/metacity.schemas.in.h:43
-msgid "Move between windows of an application with popup"
-msgstr "Mugitu laster-leihoak dituen aplikazioaren leihoen artean"
-
-#: ../src/metacity.schemas.in.h:44
-msgid "Move between windows with popup"
-msgstr "Mugitu leihoen artean laster-leihoarekin"
-
-#: ../src/metacity.schemas.in.h:45
-msgid "Move focus backwards between windows using popup display"
-msgstr "Eraman fokua atzerantz laster-leihoak dituzten leihoen artean"
-
-#: ../src/metacity.schemas.in.h:46
-msgid "Move window"
-msgstr "Lekuz aldatu leihoa"
-
-#: ../src/metacity.schemas.in.h:47
-msgid "Move window one workspace down"
-msgstr "Eraman leihoa laneko area bat behera"
-
-#: ../src/metacity.schemas.in.h:48
-msgid "Move window one workspace to the left"
-msgstr "Eraman leihoa laneko area bat ezkerrera"
-
-#: ../src/metacity.schemas.in.h:49
-msgid "Move window one workspace to the right"
-msgstr "Eraman leihoa laneko area bat eskuinera"
-
-#: ../src/metacity.schemas.in.h:50
-msgid "Move window one workspace up"
-msgstr "Eraman leihoa laneko area bat gora"
-
-#: ../src/metacity.schemas.in.h:51
-msgid "Move window to east side of screen"
-msgstr "Eraman leihoa pantailaren eskuineko aldera"
-
-#: ../src/metacity.schemas.in.h:52
-msgid "Move window to north side of screen"
-msgstr "Eraman leihoa pantailaren goiko aldera"
-
-#: ../src/metacity.schemas.in.h:53
-msgid "Move window to north-east corner"
-msgstr "Eraman leihoa goi-eskuineko ertzera"
-
-#: ../src/metacity.schemas.in.h:54
-msgid "Move window to north-west corner"
-msgstr "Eraman leihoa goi-ezkerreko ertzera"
-
-#: ../src/metacity.schemas.in.h:55
-msgid "Move window to south side of screen"
-msgstr "Eraman leihoa pantailaren beheko aldera"
-
-#: ../src/metacity.schemas.in.h:56
-msgid "Move window to south-east corner"
-msgstr "Eraman leihoa eskuin-beheko ertzera"
-
-#: ../src/metacity.schemas.in.h:57
-msgid "Move window to south-west corner"
-msgstr "Eraman leihoa ezker-beheko ertzera"
-
-#: ../src/metacity.schemas.in.h:58
-msgid "Move window to west side of screen"
-msgstr "Eraman leihoa pantailaren ezkerreko aldera"
-
-#: ../src/metacity.schemas.in.h:59
-msgid "Move window to workspace 1"
-msgstr "Eraman leihoa 1. laneko areara"
-
-#: ../src/metacity.schemas.in.h:60
-msgid "Move window to workspace 10"
-msgstr "Eraman leihoa 10. laneko areara"
-
-#: ../src/metacity.schemas.in.h:61
-msgid "Move window to workspace 11"
-msgstr "Eraman leihoa 11. laneko areara"
-
-#: ../src/metacity.schemas.in.h:62
-msgid "Move window to workspace 12"
-msgstr "Eraman leihoa 12. laneko areara"
-
-#: ../src/metacity.schemas.in.h:63
-msgid "Move window to workspace 2"
-msgstr "Eraman leihoa 2. laneko areara"
-
-#: ../src/metacity.schemas.in.h:64
-msgid "Move window to workspace 3"
-msgstr "Eraman leihoa 3. laneko areara"
-
-#: ../src/metacity.schemas.in.h:65
-msgid "Move window to workspace 4"
-msgstr "Eraman leihoa 4. laneko areara"
-
-#: ../src/metacity.schemas.in.h:66
-msgid "Move window to workspace 5"
-msgstr "Eraman leihoa 5. laneko areara"
-
-#: ../src/metacity.schemas.in.h:67
-msgid "Move window to workspace 6"
-msgstr "Eraman leihoa 6. laneko areara"
-
-#: ../src/metacity.schemas.in.h:68
-msgid "Move window to workspace 7"
-msgstr "Eraman leihoa 7. laneko areara"
-
-#: ../src/metacity.schemas.in.h:69
-msgid "Move window to workspace 8"
-msgstr "Eraman leihoa 8. laneko areara"
-
-#: ../src/metacity.schemas.in.h:70
-msgid "Move window to workspace 9"
-msgstr "Eraman leihoa 9. laneko areara"
-
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.in.h:25
 msgid "Name of workspace"
 msgstr "Laneko arearen izena"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.in.h:26
 msgid "Number of workspaces"
 msgstr "Laneko areen kopurua"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.in.h:27
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -854,35 +1011,66 @@ msgstr ""
 "kopuru finko bat izan behar du (laneko area gehiago eskatu eta nahi gabe "
 "mahaigaina ez hondatzeko)."
 
-#: ../src/metacity.schemas.in.h:74
-msgid "Raise obscured window, otherwise lower"
-msgstr "Goratu ilundutako leihoa, bestela beheratu"
-
-#: ../src/metacity.schemas.in.h:75
-msgid "Raise window above other windows"
-msgstr "Goratu leihoa beste leihoen gainera"
-
-#: ../src/metacity.schemas.in.h:76
-msgid "Resize window"
-msgstr "Aldatu leihoaren tamaina"
-
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.in.h:28
 msgid "Run a defined command"
 msgstr "Exekutatu definitutako komandoa"
 
-#: ../src/metacity.schemas.in.h:78
-msgid "Run a terminal"
-msgstr "Exekutatu terminala"
+#: ../src/metacity.schemas.in.in.h:29
+msgid ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
+msgstr ""
+"Ezarri TRUE (egia) gisa saguaren eskuineko botoiarekin tamaina aldatzeko eta "
+"erdiko botoiarekin menua erakusteko \"mouse_button_modifier\"-en emandako "
+"tekla sakatuta mantentzen den bitartean. Ezarri FALSE (faltsua) gisa beste erara funtzionatzeko."
 
-#: ../src/metacity.schemas.in.h:79
-msgid "Show the panel menu"
-msgstr "Erakutsi panel-menua"
+#: ../src/metacity.schemas.in.in.h:30
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+"Aukera hau faltsua gisa ezartzen bada protaera akastun batera eraman "
+"lezakenez, erabiltzaileei ez zaie gomendatzen balio lehenetsia (egia) "
+"aldatzea. Ekintza askok (adib. bezeroaren arean klik egitea, leihoa lekuz "
+"edo tamainaz aldatzea) normalean leihoa goratzen du bigarren mailako eragin "
+"gisa. Ezarpen hau faltsua gisa ezartzen bada, ez egitea biziki gomendatzen "
+"da, goratzearen elkartea kendu egingo du erabiltzailearen beste "
+"ekintzetatik, eta aplikazioek eskatutako goratzeari ez ikusi egingo dio. "
+"Ikusi http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Nahiz eta aukera "
+"hau faltsua izan, leihoak goratu daitezke leihoko edozein lekutan Alt tekla "
+"sakatuta dagoela saguaren ezkerreko botoiarekin klik eginez gero, edo "
+"leihoaren dekorazioetan klik arrunta eginez, edo aplikazioen mezu bereziak ."
+"Nahiz eta aukera hau faltsua izan, leihoak orainrik goratu daitezke leihoko "
+"beste edozein lekutan Alt+Ezkerrarekin klik egitean, klik normala leihoko "
+"dekorazioetan edo ataza-zerrenden appletaren bezalako eskakizunen "
+"mezu bereziengatik. Aukera hau desgaituta dago click-to-focus moduan."
+"Jakin ezazu leihoa goratzeko moduen zerrenda raise_on_click faltsua denean "
+"ez du programazioko eskaerarik aplikazioetatik leihoak goratzeko, eta horrelako "
+"eskaerei ezikusi egingo zaie eskaeraren arrazoiari jaramonik egin gabe."
+"Aplikazio garatzailea bazara, eta eta erabiltzaile batzuk kexan badabiltzate "
+"zure aplikazioak ez duela funtzionatzen ezarpen hau desgaituta dagoela, "
+"esaiezu beraiei _beraien_ ankasartzea dela leiho-kudeatzailea hausteagatik eta "
+"aukera hau TRUE gisa ezarri behar dutela edo bizi daitezela \"akatsarekin\" "
+"betirako."
 
-#: ../src/metacity.schemas.in.h:80
-msgid "Show the panel run application dialog"
-msgstr "Erakutsi panela exekutatzeko elkarrizketa-koadroa"
-
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.in.h:31
 msgid ""
 "Some applications disregard specifications in ways that result in window "
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
@@ -895,83 +1083,11 @@ msgstr ""
 "gehiago emanez, eskainitakoak ez dauka gaizki portatzen diren aplikazioak "
 "exekutatu beharrik."
 
-#: ../src/metacity.schemas.in.h:82
-msgid "Switch to workspace 1"
-msgstr "Aldatu 1. laneko areara"
-
-#: ../src/metacity.schemas.in.h:83
-msgid "Switch to workspace 10"
-msgstr "Aldatu 10. laneko areara"
-
-#: ../src/metacity.schemas.in.h:84
-msgid "Switch to workspace 11"
-msgstr "Aldatu 11. laneko areara"
-
-#: ../src/metacity.schemas.in.h:85
-msgid "Switch to workspace 12"
-msgstr "Aldatu 12. laneko areara"
-
-#: ../src/metacity.schemas.in.h:86
-msgid "Switch to workspace 2"
-msgstr "Aldatu 2. laneko areara"
-
-#: ../src/metacity.schemas.in.h:87
-msgid "Switch to workspace 3"
-msgstr "Aldatu 3. laneko areara"
-
-#: ../src/metacity.schemas.in.h:88
-msgid "Switch to workspace 4"
-msgstr "Aldatu 4. laneko areara"
-
-#: ../src/metacity.schemas.in.h:89
-msgid "Switch to workspace 5"
-msgstr "Aldatu 5. laneko areara"
-
-#: ../src/metacity.schemas.in.h:90
-msgid "Switch to workspace 6"
-msgstr "Aldatu 6. laneko areara"
-
-#: ../src/metacity.schemas.in.h:91
-msgid "Switch to workspace 7"
-msgstr "Aldatu 7. laneko areara"
-
-#: ../src/metacity.schemas.in.h:92
-msgid "Switch to workspace 8"
-msgstr "Aldatu 8. laneko areara"
-
-#: ../src/metacity.schemas.in.h:93
-msgid "Switch to workspace 9"
-msgstr "Aldatu 9. laneko areara"
-
-#: ../src/metacity.schemas.in.h:94
-msgid "Switch to workspace above this one"
-msgstr "Aldatu honen gaineko laneko areara"
-
-#: ../src/metacity.schemas.in.h:95
-msgid "Switch to workspace below this one"
-msgstr "Aldatu honen azpiko laneko areara"
-
-#: ../src/metacity.schemas.in.h:96
-msgid "Switch to workspace on the left"
-msgstr "Aldatu ezkerreko laneko areara"
-
-#: ../src/metacity.schemas.in.h:97
-msgid "Switch to workspace on the right"
-msgstr "Aldatu eskuineko laneko areara"
-
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
 msgstr "Sistema-soinua entzungarri"
 
-#: ../src/metacity.schemas.in.h:99
-msgid "Take a screenshot"
-msgstr "Egin pantaila-argazki bat"
-
-#: ../src/metacity.schemas.in.h:100
-msgid "Take a screenshot of a window"
-msgstr "Egin leiho baten pantaila-argazkia"
-
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.in.h:33
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -989,7 +1105,7 @@ msgstr ""
 "(hori gertatzen da normalean \"sistema-soinu\" lehenetsia denean), unean "
 "fokua duen leihoaren titulu-barra agertzen da keinuka."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.in.h:34
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -999,25 +1115,26 @@ msgstr ""
 "komando horiei dagozkien laster-teklak. run_command_N komandoarentzat "
 "zehaztutako laster-teklak sakatzean N komandoa exekutatuko da."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.in.h:35
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"/apps/metacity/global_keybindings/run_command_screenshot gakoan definitutako "
-"laster-teklak sakatzean, ezarpen honek zehaztutako komandoari deituko zaio."
+"/apps/metacity/global_keybindings/run_command_screenshot gakoak "
+"laster-tekla bat definitzen du, ezarpen honetan zehaztutako komandoa "
+"exekutatuko duelarik."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.in.h:36
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"/apps/metacity/global_keybindings/run_command_window_screenshot gakoan "
-"definitutako laster-teklak sakatzean, ezarpen honek zehaztutako komandoari "
-"deituko dio."
+"/apps/metacity/global_keybindings/run_command_window_screenshot gakoak "
+"laster-tekla bat definitzen du, ezarpen honetan zehaztutako komandoa "
+"exekutatuko duelarik."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.in.h:37
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -1033,966 +1150,21 @@ msgstr ""
 "Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
 "baduzu, ez da laster-teklarik izango ekintza honentzat."
 
-#: ../src/metacity.schemas.in.h:106
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Uneko laneko arearen gaineko laneko areara aldatzeko laster-teklak. Formatua "
-"\"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:107
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Uneko laneko arearen azpiko laneko areara aldatzeko laster-teklak. Formatua "
-"\"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:108
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Uneko laneko arearen ezkerreko laneko areara aldatzeko laster-teklak. "
-"Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
-"onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko "
-"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
-"laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:109
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Uneko laneko arearen eskuineko laneko areara aldatzeko laster-teklak. "
-"Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
-"onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko "
-"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
-"laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:110
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"1. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:111
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"10. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:112
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"11. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:113
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"12. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:114
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"2. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:115
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"3. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:116
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"4. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:117
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"5. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:118
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"6. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:119
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"7. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:120
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"8. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:121
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"9. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:122
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leiho-menua aktibatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:123
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa ixteko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
-"maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;"
-"Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
-"baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:124
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"\"move mode\" modura aldatu eta teklatuaren bidez leihoa lekuz aldatzen "
-"hasteko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
-"eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:125
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"\"resize mode\" modura aldatu eta teklatuaren bidez leihoari tamaina "
-"aldatzen hasteko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
-"maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;"
-"Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
-"baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:126
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Leiho normal guztiak itxi eta fokua mahaigainaren atzeko planoari emateko "
-"laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:127
-msgid ""
-"The keybinding used to maximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa maximizatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
-"maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;"
-"Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
-"baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:128
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa ikonotzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
-"maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;"
-"Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
-"baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:129
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Leihoa laneko area bat beherago eramateko laster-teklak. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:130
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Leihoa laneko area bat ezkerrera eramateko laster-teklak. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:131
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Leihoa laneko area bat eskuinera eramateko laster-teklak. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:132
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa laneko area bat gora eramateko laster-teklak. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:133
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 1. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:134
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 10. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:135
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 11. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:136
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 12. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:137
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 2. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:138
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 3. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:139
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 4. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:140
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 5. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:141
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 6. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:142
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 7. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:143
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 8. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:144
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa 9. laneko areara eramateko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:145
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Fokua panelen eta atzeko planoaren artean laster-leihoaren bidez atzerantz "
-"eramateko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
-"eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:146
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Fokua panelen eta atzeko planoaren artean laster-leihorik gabe atzerantz "
-"eramateko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
-"eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:147
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application without a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihorik gabe atzerantz eramateko laster-teklak. "
-"Laster-tekla hauekin batera \"Maius\" sakatuta, aurrerantz eramango du fokua "
-"berriz ere. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:148
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application, using a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihoaren bidez atzerantz eramateko laster-"
-"teklak. Laster-tekla hauekin batera \"Maius\" sakatuta, aurrerantz eramango "
-"du fokua berriz ere. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
-"eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:149
-msgid ""
-"The keybinding used to move focus backwards between windows without a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihorik gabe atzerantz eramateko laster-teklak. "
-"Laster-tekla hauekin batera \"Maius\" sakatuta, aurrerantz eramango du fokua "
-"berriz ere. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:150
-msgid ""
-"The keybinding used to move focus backwards between windows, using a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihoaren bidez atzerantz eramateko laster-"
-"teklak. Laster-tekla hauekin batera \"Maius\" sakatuta, aurrerantz eramango "
-"du fokua berriz ere. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
-"eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:151
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Fokua panelen eta atzeko planoaren artean laster-leihoaren bidez aldatzeko "
-"laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:152
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Fokua panelen eta atzeko planoaren artean laster-leihorik gabe aldatzeko "
-"laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:153
-msgid ""
-"The keybinding used to move focus between windows of an application without "
-"a popup window. Holding the \"shift\" key while using this binding reverses "
-"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihorik gabe aldatzeko laster-teklak. Laster-"
-"tekla hauekin batera \"Maius\" sakatuta, mugimenduaren norabidea aldatu "
-"egiten da. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:154
-msgid ""
-"The keybinding used to move focus between windows of an application, using a "
-"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
-"using this binding reverses the direction of movement. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihoarekin aldatzeko laster-teklak. "
-"(Tradizionalki &lt;Alt&gt;F6). Laster-tekla hauekin batera \"Maius\" "
-"sakatuta, mugimenduaren norabidea aldatu egiten da. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:155
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihorik gabe aldatzeko laster-teklak. "
-"(Tradizionalki &lt;Alt&gt;Ihes). Laster-tekla hauekin batera \"Maius\" "
-"sakatuta, mugimenduaren norabidea aldatu egiten da. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:156
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Fokua leihoen artean laster-leihoarekin aldatzeko laster-teklak. "
-"(Tradizionalki &lt;Alt&gt;Tab). Laster-tekla hauekin batera \"Maius\" "
-"sakatuta, mugimenduaren norabidea aldatu egiten da. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:157
-msgid ""
-"The keybinding used to toggle always on top. A window that is always on top "
-"will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"\"Beti gainean\" aukera jarri eta kentzeko laster-teklak. Beti gainean "
-"egoteko ezarritako leihoa beti bistan azalduko da, gainerako leiho guztien "
-"gainean. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:158
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pantaila osoko modua jarri eta kentzeko laster-teklak. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:159
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Maximizatzea jarri eta kentzeko laster-teklak. Formatua \"&lt;Control&gt;\" "
-"edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:160
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Bilduta/zabalduta egoera txandakatzeko laster-teklak. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:161
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Leihoa laneko area guztietan ala bakarrean egongo den (txandaka) zehazteko "
-"laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:162
-msgid ""
-"The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Leihoa desmaximizatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:163
-msgid ""
-"The keybinding which display's the panel's \"Run Application\" dialog box. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Paneleko \"Exekutatu programa\" elkarrizketa-koadroa bistaratzeko laster-"
-"teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 "
-"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:164
-msgid ""
-"The keybinding which invokes a terminal. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Terminal bat exekutatzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
-"da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" "
-"eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
-"berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:165
-msgid ""
-"The keybinding which invokes the panel's screenshot utility to take a "
-"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Leiho baten pantaila-argazkia ateratzeko paneleko pantaila-argazkien "
-"utilitateari deitzeko laster-teklak. Formatua \"&lt;Control&gt;\" edo \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
-"maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;"
-"Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
-"baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:166
-msgid ""
-"The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Paneleko pantaila-argazkien utilitateari deitzeko laster-teklak. Formatua "
-"\"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:167
-msgid ""
-"The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Panelaren menu nagusia erakusteko laster-teklak. Formatua \"&lt;Control&gt;"
-"\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
-"irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
-"Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
-"kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
 msgstr "Laneko area baten izena."
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.in.h:39
 msgid "The screenshot command"
 msgstr "Pantaila-argazkiaren komandoa"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.in.h:40
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Gaiak erabakiko du leihoen ertzen, titulu-barren eta horrelakoen itxura."
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.in.h:41
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -2000,7 +1172,7 @@ msgstr ""
 "auto_raise ezarrita badago, zenbat denbora itxaron behar den leihoa goratu "
 "aurretik. Milisegundotan ematen da."
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.in.h:42
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -2014,221 +1186,11 @@ msgstr ""
 "\"mouse\" (sagua leihoan sartzen denean leihoak fokua hartuko du, eta saguak "
 "leihotik alde egiten duenean, fokua galduko du)."
 
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
 msgstr "Leihoaren pantaila-argazkiaren komandoa"
 
-#: ../src/metacity.schemas.in.h:174
-msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another one, it raises the window above all others, "
-"and if the window is already fully visible, it lowers it below all others. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Laster-tekla honek leihoa beste batzuen gainean edo azpian egotea aldatzen "
-"du. Leihoa beste batzuen azpian badago, guztien gainera ekarriko du. Leihoa "
-"osorik ikusten bada, beste batzuen azpira eramango du. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:175
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Laster-tekla honek leihoa beste batzuen azpira eramaten du. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:176
-msgid ""
-"This keybinding moves a window against the north (top) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren goiko aldera eramaten du. Formatua "
-"\"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:177
-msgid ""
-"This keybinding moves a window into the east (right) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren eskuineko aldera eramaten du. Formatua "
-"\"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:178
-msgid ""
-"This keybinding moves a window into the north-east (top right) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren goiko eta eskuineko ertzera eramaten "
-"du. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
-"onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko "
-"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
-"laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:179
-msgid ""
-"This keybinding moves a window into the north-west (top left) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren goiko eta ezkerreko ertzera eramaten "
-"du. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
-"onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko "
-"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
-"laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:180
-msgid ""
-"This keybinding moves a window into the south (bottom) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren beheko aldera eramaten du. Formatua "
-"\"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:181
-msgid ""
-"This keybinding moves a window into the south-east (bottom right) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren beheko eta eskuineko ertzera eramaten "
-"du. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
-"onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko "
-"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
-"laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:182
-msgid ""
-"This keybinding moves a window into the south-west (bottom left) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren beheko eta ezkerreko ertzera eramaten "
-"du. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
-"onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko "
-"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
-"laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:183
-msgid ""
-"This keybinding moves a window into the west (left) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Laster-tekla honek leihoa pantailaren ezkerreko aldera eramaten du. Formatua "
-"\"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:184
-msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Laster-tekla honek leihoa beste batzuen gainera eramaten du. Formatua \"&lt;"
-"Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:185
-msgid ""
-"This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Laster-tekla honek leihoari tamaina aldatzen dio horizontalki libre dagoen "
-"lekua betetzeko. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:186
-msgid ""
-"This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Laster-tekla honek leihoari tamaina aldatzen dio bertikalki libre dagoen "
-"lekua betetzeko. Formatua \"&lt;Control&gt;\" edo \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
-"minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;Ctrl&gt;\" "
-"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
-"da laster-teklarik izango ekintza honentzat."
-
-#: ../src/metacity.schemas.in.h:187
+#: ../src/metacity.schemas.in.in.h:44
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2242,13 +1204,13 @@ msgstr ""
 "Aukera honek erabakitzen du titulu-barran klik bikoitza egindakoan zer "
 "gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', leihoa bildu edo "
 "zabaltzeko; 'toggle_maximize' leihoa maximizatu edo desmaximizatzeko; "
-"'toggle_maximize_horizontally' eta 'toggle_maximize_vertically' leihoa horizontalki edo "
-"bertikalki maximizatzeko edo desmaximizatzeko; 'minimize' leihoa "
-"minimizatzeko; 'shade' leihoa biltzeko; 'menu' leihoaren menua "
-"bistaratzeko; 'lower' leihoa beste leiho guztien atzean jartzeko;"
-"eta 'none' ezer ez egiteko."
+"'toggle_maximize_horizontally' eta 'toggle_maximize_vertically' leihoa "
+"horizontalki edo bertikalki maximizatzeko edo desmaximizatzeko; 'minimize' "
+"leihoa minimizatzeko; 'shade' leihoa biltzeko; 'menu' leihoaren menua "
+"bistaratzeko; 'lower' leihoa beste leiho guztien atzean jartzeko;eta 'none' "
+"ezer ez egiteko."
 
-#: ../src/metacity.schemas.in.h:188
+#: ../src/metacity.schemas.in.in.h:45
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2262,13 +1224,13 @@ msgstr ""
 "Aukera honek erabakitzen du titulu-barran erdiko botoiarekin klik egindakoan "
 "zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', leihoari itzala "
 "jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu edo "
-"leheneratzeko; 'toggle_maximize_horizontally' eta 'toggle_maximize_vertically' leihoa horizontalki "
-"edo bertikalki maximizatzeko edo desmaximizatzeko; 'minimize' leihoa "
-"minimizatzeko; 'shade' leihoa biltzeko; 'menu' leihoaren menua "
-"bistaratzeko; 'lower' leihoa beste leiho guztien atzean jartzeko;"
-"eta 'none' ezer ez egiteko."
+"leheneratzeko; 'toggle_maximize_horizontally' eta "
+"'toggle_maximize_vertically' leihoa horizontalki edo bertikalki "
+"maximizatzeko edo desmaximizatzeko; 'minimize' leihoa minimizatzeko; 'shade' "
+"leihoa biltzeko; 'menu' leihoaren menua bistaratzeko; 'lower' leihoa beste "
+"leiho guztien atzean jartzeko;eta 'none' ezer ez egiteko."
 
-#: ../src/metacity.schemas.in.h:189
+#: ../src/metacity.schemas.in.in.h:46
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2283,13 +1245,13 @@ msgstr ""
 "egindakoan zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', "
 "leihoari itzala jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu "
 "edo leheneratzeko; 'minimize' leihoa minimizatzeko; eta 'none' ezer ez "
-"egiteko. 'toggle_maximize_horizontally' eta 'toggle_maximize_vertically' leihoa horizontalki edo "
-"bertikalki maximizatzeko edo desmaximizatzeko; 'minimize' leihoa "
-"minimizatzeko; 'shade' leihoa biltzeko; 'menu' leihoaren menua "
-"bistaratzeko; 'lower' leihoa beste leiho guztien atzean jartzeko;"
-"eta 'none' ezer ez egiteko."
+"egiteko. 'toggle_maximize_horizontally' eta 'toggle_maximize_vertically' "
+"leihoa horizontalki edo bertikalki maximizatzeko edo desmaximizatzeko; "
+"'minimize' leihoa minimizatzeko; 'shade' leihoa biltzeko; 'menu' leihoaren "
+"menua bistaratzeko; 'lower' leihoa beste leiho guztien atzean jartzeko;eta "
+"'none' ezer ez egiteko."
 
-#: ../src/metacity.schemas.in.h:190
+#: ../src/metacity.schemas.in.in.h:47
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -2301,27 +1263,7 @@ msgstr ""
 "foku-modu normala aplikatzen du, eta \"sctrict\" leihoa terminal batetik "
 "abiaratzen denean eta fokua lortzen ez duenekoa."
 
-#: ../src/metacity.schemas.in.h:191
-msgid "Toggle always on top state"
-msgstr "Txandakatu \"Beti gainean\" egoera"
-
-#: ../src/metacity.schemas.in.h:192
-msgid "Toggle fullscreen mode"
-msgstr "Txandakatu pantaila osoaren modua"
-
-#: ../src/metacity.schemas.in.h:193
-msgid "Toggle maximization state"
-msgstr "Txandakatu maximizatze-egoera"
-
-#: ../src/metacity.schemas.in.h:194
-msgid "Toggle shaded state"
-msgstr "Txandakatu bildutako egoera"
-
-#: ../src/metacity.schemas.in.h:195
-msgid "Toggle window on all workspaces"
-msgstr "Txandakatu leihoa laneko area guztietan egotea"
-
-#: ../src/metacity.schemas.in.h:196
+#: ../src/metacity.schemas.in.in.h:48
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2331,71 +1273,76 @@ msgstr ""
 "bidaltzen duenean; erosoa da entzumen-arazoak dituztenentzat edo inguruan "
 "zarata handia dagoen egoeretako."
 
-#: ../src/metacity.schemas.in.h:197
-msgid "Unmaximize window"
-msgstr "Desmaximizatu leihoa"
-
-#: ../src/metacity.schemas.in.h:198
+#: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
 msgstr "Erabili sistemaren letra-tipo estandarra leiho-tituluetan"
 
-#: ../src/metacity.schemas.in.h:199
+#: ../src/metacity.schemas.in.in.h:50
 msgid "Visual Bell Type"
 msgstr "Soinu bisual mota"
 
-#: ../src/metacity.schemas.in.h:200
+#: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "Goratzean albo-ondoriorik izango duen aplikazioengain edo ez."
 
-#: ../src/metacity.schemas.in.h:201
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Whether to resize with the right button"
+msgstr "Saguaren eskuineko botoiarekin tamaina aldatu ala ez"
+
+#: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
 msgstr "Leiho-fokuaren modua"
 
-#: ../src/metacity.schemas.in.h:202
+#: ../src/metacity.schemas.in.in.h:54
 msgid "Window title font"
 msgstr "Leihoaren tituluaren letra-tipoa"
 
-#: ../src/ui/frames.c:1077
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Erabilera: %s\n"
+
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "Itxi leihoa"
 
-#: ../src/ui/frames.c:1080
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Leiho-menua"
 
-#: ../src/ui/frames.c:1083
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "Ikonotu leihoa"
 
-#: ../src/ui/frames.c:1086
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "Maximizatu leihoa"
 
-#: ../src/ui/frames.c:1089
-msgid "Unmaximize Window"
-msgstr "Desmaximizatu leihoa"
+#: ../src/ui/frames.c:1130
+msgid "Restore Window"
+msgstr "Leheneratu leihoa"
 
-#: ../src/ui/frames.c:1092
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "Bildu leihoa"
 
-#: ../src/ui/frames.c:1095
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "Zabaldu leihoa"
 
-#: ../src/ui/frames.c:1098
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Mantendu leihoa gainean"
 
-#: ../src/ui/frames.c:1101
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Kendu leihoa gainetik"
 
-#: ../src/ui/frames.c:1104
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "Beti laneko area ikusgaian"
 
-#: ../src/ui/frames.c:1107
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Jarri leihoa laneko area bakar batean"
 
@@ -2505,7 +1452,7 @@ msgstr "Eraman beste laneko areara"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:105
+#: ../src/ui/metaaccellabel.c:104
 msgid "Shift"
 msgstr "Maius"
 
@@ -2514,7 +1461,7 @@ msgstr "Maius"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:111
+#: ../src/ui/metaaccellabel.c:110
 msgid "Ctrl"
 msgstr "Ktrl"
 
@@ -2523,7 +1470,7 @@ msgstr "Ktrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:117
+#: ../src/ui/metaaccellabel.c:116
 msgid "Alt"
 msgstr "Alt"
 
@@ -2532,7 +1479,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:123
+#: ../src/ui/metaaccellabel.c:122
 msgid "Meta"
 msgstr "Meta"
 
@@ -2541,7 +1488,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:129
+#: ../src/ui/metaaccellabel.c:128
 msgid "Super"
 msgstr "Super"
 
@@ -2550,7 +1497,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:135
+#: ../src/ui/metaaccellabel.c:134
 msgid "Hyper"
 msgstr "Hiper"
 
@@ -2559,7 +1506,7 @@ msgstr "Hiper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:141
+#: ../src/ui/metaaccellabel.c:140
 msgid "Mod2"
 msgstr "Ald2"
 
@@ -2568,7 +1515,7 @@ msgstr "Ald2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:147
+#: ../src/ui/metaaccellabel.c:146
 msgid "Mod3"
 msgstr "Ald3"
 
@@ -2577,7 +1524,7 @@ msgstr "Ald3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:153
+#: ../src/ui/metaaccellabel.c:152
 msgid "Mod4"
 msgstr "Ald4"
 
@@ -2586,9 +1533,20 @@ msgstr "Ald4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:159
+#: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
 msgstr "Ald5"
+
+#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Ezin da \"%s\" analizatu osoko gisa"
+
+#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
+#: ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Ez dira ulertzen amaierako \"%s\" karaktereak \"%s\" katean"
 
 #: ../src/ui/metacity-dialog.c:90
 #, c-format
@@ -2602,14 +1560,6 @@ msgid ""
 msgstr ""
 "Aukeratu piskatean zai egotea aplikazioak jarraitzeko edo derrigortu "
 "aplikazioa erabat ixtea."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Itxaron"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Behartu ixtera"
 
 #: ../src/ui/metacity-dialog.c:206
 msgid "Title"
@@ -2636,57 +1586,325 @@ msgstr ""
 "Errorea \"%s\" exekutatzean:\n"
 "%s."
 
+#. Translators: This represents the size of a window.  The first number is
+#. * the width of the window and the second is the height.
+#.
 #: ../src/ui/resizepopup.c:113
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme-parser.c:227 ../src/ui/theme-parser.c:245
+#: ../src/ui/theme.c:254
+msgid "top"
+msgstr "goian"
+
+#: ../src/ui/theme.c:256
+msgid "bottom"
+msgstr "behean"
+
+#: ../src/ui/theme.c:258
+msgid "left"
+msgstr "ezkerrean"
+
+#: ../src/ui/theme.c:260
+msgid "right"
+msgstr "eskuinean"
+
+#: ../src/ui/theme.c:287
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "marko-geometriak ez du zehazten \"%s\" neurririk"
+
+#: ../src/ui/theme.c:306
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "marko-geometriak ez du zehazten \"%s\" neurririk \"%s\" ertzerako"
+
+#: ../src/ui/theme.c:343
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "Botoiaren %g aspektu-erlazioa ez da arrazoizkoa"
+
+#: ../src/ui/theme.c:355
+#, c-format
+msgid "Frame geometry does not specify size of buttons"
+msgstr "Marko-geometriak ez du zehazten botoien tamainarik"
+
+#: ../src/ui/theme.c:1020
+#, c-format
+msgid "Gradients should have at least two colors"
+msgstr "Gradienteek bi kolore izan behar dituzte gutxienez"
+
+#: ../src/ui/theme.c:1146
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK kolore-zehaztapenak egoera kortxete artean izan behar du, adib. gtk:fg"
+"[NORMAL], NORMAL egoera izanik; \"%s\" ezin da analizatu"
+
+#: ../src/ui/theme.c:1160
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK kolore-zehaztapenak ixteko kortxetea izan behar egoeraren ondoren, adib. "
+"gtk:fg[NORMAL], NORMAL egoera izanik; \"%s\" ezin da analizatu"
+
+#: ../src/ui/theme.c:1171
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "Ez da ulertu \"%s\" egoera kolore-zehaztapenean"
+
+#: ../src/ui/theme.c:1184
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "Ez da ulertu \"%s\" kolore-osagaia kolore-zehaztapenean"
+
+#: ../src/ui/theme.c:1214
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Nahaste-formatua \"blend/bg_color/fg_color/alpha\" da, \"%s\" ez dator bat "
+"formatuarekin"
+
+#: ../src/ui/theme.c:1225
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "Ezin da analizatu \"%s\" alfa balioa kolore nahastuan"
+
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "Kolore nahastuko \"%s\" alfa balioa ez dago 0,0 eta 1,0 artean"
+
+#: ../src/ui/theme.c:1282
+#, c-format
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Itzal-faktorea \"shade/base_color/factor\" da, \"%s\" ez dator bat "
+"formatuarekin"
+
+#: ../src/ui/theme.c:1293
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "Ezin da analizatu \"%s\" itzal-faktorea itzaldun kolorean"
+
+#: ../src/ui/theme.c:1303
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "Itzaldun koloreko \"%s\" itzal-faktorea negatiboa da"
+
+#: ../src/ui/theme.c:1332
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "Ezin izan da \"%s\" kolorea analizatu"
+
+#: ../src/ui/theme.c:1582
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "Koordenatuen adierazpenak '%s' karakterea dauka, eta hori ez da onartzen"
+
+#: ../src/ui/theme.c:1609
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+"Koordenatuen adierazpenak '%s' koma mugikorreko zenbakia dauka, eta ezin da "
+"analizatu"
+
+#: ../src/ui/theme.c:1623
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "Koordenatuen adierazpenak '%s' osoko zenbakia dauka, eta ezin da analizatu"
+
+#: ../src/ui/theme.c:1745
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"Koordenatuen adierazpenak eragile ezezaguna dauka testu honen hasieran: \"%s"
+"\""
+
+#: ../src/ui/theme.c:1802
+#, c-format
+msgid "Coordinate expression was empty or not understood"
+msgstr "Koordenatuen adierazpena hutsik dago edo ez da ulertu"
+
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#, c-format
+msgid "Coordinate expression results in division by zero"
+msgstr "Koordenatuen adierazpenak zero zatitzaileko zatiketa ematen du"
+
+#: ../src/ui/theme.c:1965
+#, c-format
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Koordenatuen adierazpena mod eragilea erabiltzen saiatzen da koma "
+"mugikorreko zenbaki batean"
+
+#: ../src/ui/theme.c:2021
+#, c-format
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Koordenatuen adierazpenak \"%s\" eragilea du eragigai bat espero zen lekuan"
+
+#: ../src/ui/theme.c:2030
+#, c-format
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "Koordenatuen adierazpenak eragigai bat du eragile bat espero zen lekuan"
+
+#: ../src/ui/theme.c:2038
+#, c-format
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr ""
+"Koordenatuen adierazpena eragile batez amaitzen da, eragigai batez amaitu "
+"beharrean"
+
+#: ../src/ui/theme.c:2048
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Koordenatuen adierazpenak \"%c\" eragilea du \"%c\" eragilearen ondoren, "
+"tartean eragigairik gabe"
+
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "Koordenatuen adierazpenak \"%s\" aldagai edo konstante ezezaguna du"
+
+#: ../src/ui/theme.c:2290
+#, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "Koordenatuen adierazpenaren analizatzaileak bere bufferra gainezkatu du"
+
+#: ../src/ui/theme.c:2319
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "Koordenatuen adierazpenak ixteko parentesi bat du, baina irekitzekoa falta da"
+
+#: ../src/ui/theme.c:2383
+#, c-format
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "Koordenatuen adierazpenak irekitzeko parentesi bat du, baina ixtekoa falta da"
+
+#: ../src/ui/theme.c:2394
+#, c-format
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "Koordenatuen adierazpenak ez dirudi eragilerik edo eragigairik duenik"
+
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#, c-format
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "Gaiak errorea ematen duen adierazpen bat dauka: %s\n"
+
+#: ../src/ui/theme.c:4203
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> zehaztu behar "
+"da marko-estilo honetan"
+
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
+#, c-format
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
+
+#: ../src/ui/theme.c:4780
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Huts egin du \"%s\" gaia kargatzean: %s\n"
+
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "<%s> ez da ezarri \"%s\" gaian"
+
+#: ../src/ui/theme.c:4946
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"Ez da marko-estilorik ezarri set \"%s\" leiho-motarentzat \"%s\" gaian, "
+"gehitu <window type=\"%s\" style_set=\"whatever\"/> elementu bat"
+
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
+#, c-format
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Erabiltzaileak definitutako konstanteak maiuskulaz hasi behar du; \"%s\" ez "
+"da maiuskulaz hasten"
+
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "\"%s\" konstantea lehendik definituta dago"
+
+#. Translators: This means that an attribute which should have been found
+#. * on an XML element was not in fact found.
+#.
+#: ../src/ui/theme-parser.c:202
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Ez dago \"%s\" atributurik <%s> elementuan"
+
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "%d. lerroa %d. karakterea: %s"
 
-#: ../src/ui/theme-parser.c:396
+#: ../src/ui/theme-parser.c:413
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "\"%s\" atributua birritan errepikatuta <%s> elementu berean"
 
-#: ../src/ui/theme-parser.c:414 ../src/ui/theme-parser.c:439
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "\"%s\" atributua ez da baliozkoa <%s> elementuaren testuinguru honetan"
 
-#: ../src/ui/theme-parser.c:500
+#: ../src/ui/theme-parser.c:541
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "%ld osokoak positiboa izan behar du"
 
-#: ../src/ui/theme-parser.c:508
+#: ../src/ui/theme-parser.c:549
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "%ld osokoa handiegia da, uneko gehienezkoa %d da"
 
-#: ../src/ui/theme-parser.c:536 ../src/ui/theme-parser.c:652
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "\"%s\" ezin da analizatu koma mugikorreko zenbaki gisa"
 
-#: ../src/ui/theme-parser.c:567 ../src/ui/theme-parser.c:595
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Balio boolearrak \"egiazkoak\" edo \"faltsuak\" izan daitezke, ez \"%s\""
 
-#: ../src/ui/theme-parser.c:622
+#: ../src/ui/theme-parser.c:663
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Angeluak 0.0 eta 360.0 bitartekoa behar du, %g\n"
 
-#: ../src/ui/theme-parser.c:685
+#: ../src/ui/theme-parser.c:726
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr "Alfak 0.0 (ikusezina) eta 1.0 (erabat opakoa) artekoa izan behar du, %g\n"
 
-#: ../src/ui/theme-parser.c:750
+#: ../src/ui/theme-parser.c:791
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -2695,369 +1913,182 @@ msgstr ""
 "\"%s\" titulu-eskala baliogabea (xx-small,x-small,small,medium,large,x-large,"
 "xx-large izan behar du)\n"
 
-#: ../src/ui/theme-parser.c:795 ../src/ui/theme-parser.c:803
-#: ../src/ui/theme-parser.c:885 ../src/ui/theme-parser.c:982
-#: ../src/ui/theme-parser.c:1024 ../src/ui/theme-parser.c:1135
-#: ../src/ui/theme-parser.c:1185 ../src/ui/theme-parser.c:1193
-#: ../src/ui/theme-parser.c:3093 ../src/ui/theme-parser.c:3184
-#: ../src/ui/theme-parser.c:3191 ../src/ui/theme-parser.c:3198
-#, c-format
-msgid "No \"%s\" attribute on <%s> element"
-msgstr "Ez dago \"%s\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:919 ../src/ui/theme-parser.c:990
-#: ../src/ui/theme-parser.c:1032 ../src/ui/theme-parser.c:1143
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> \"%s\" izena bigarren aldiz erabili da"
 
-#: ../src/ui/theme-parser.c:931 ../src/ui/theme-parser.c:1044
-#: ../src/ui/theme-parser.c:1155
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s> \"%s\" gurasoa ez da definitu"
 
-#: ../src/ui/theme-parser.c:1057
+#: ../src/ui/theme-parser.c:1058
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s> \"%s\" geometria ez da definitu"
 
-#: ../src/ui/theme-parser.c:1070
+#: ../src/ui/theme-parser.c:1071
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s>(e)k geometria bat edo geometria duen guraso bat zehaztu behar du"
 
-#: ../src/ui/theme-parser.c:1112
+#: ../src/ui/theme-parser.c:1113
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Atzeko planoa zehaztu alfa balioarekin esanguratsua izateko"
 
-#: ../src/ui/theme-parser.c:1203
+#: ../src/ui/theme-parser.c:1180
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "\"%s\" mota ezezaguna <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:1214
+#: ../src/ui/theme-parser.c:1191
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "\"%s\" style_set ezezaguna <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:1222
+#: ../src/ui/theme-parser.c:1199
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "\"%s\" leiho-motak dagoeneko esleituta du estilo-multzoa"
 
-#: ../src/ui/theme-parser.c:1258
-msgid "Theme already has a fallback icon"
-msgstr "Gaiak badu jadanik babeseko ikonoa"
-
-#: ../src/ui/theme-parser.c:1270
-msgid "Theme already has a fallback mini_icon"
-msgstr "Gaiak badu jadanik babeseko ikono_txoa"
-
-#: ../src/ui/theme-parser.c:1283 ../src/ui/theme-parser.c:1347
-#: ../src/ui/theme-parser.c:1636 ../src/ui/theme-parser.c:3285
-#: ../src/ui/theme-parser.c:3339 ../src/ui/theme-parser.c:3511
-#: ../src/ui/theme-parser.c:3727 ../src/ui/theme-parser.c:3765
-#: ../src/ui/theme-parser.c:3803 ../src/ui/theme-parser.c:3841
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Ez da onartzen <%s> elementua <%s>(r)en azpian jartzea"
 
-#: ../src/ui/theme-parser.c:1373 ../src/ui/theme-parser.c:1460
-#: ../src/ui/theme-parser.c:1530
-#, c-format
-msgid "No \"name\" attribute on element <%s>"
-msgstr "Ez dago \"name\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1380 ../src/ui/theme-parser.c:1467
-#, c-format
-msgid "No \"value\" attribute on element <%s>"
-msgstr "Ez dago \"value\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1411 ../src/ui/theme-parser.c:1425
-#: ../src/ui/theme-parser.c:1484
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1402
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
 msgstr ""
-"button_width/button_height eta aspektu-erlazioa ezin dira batera zehaztu "
-"botoietan"
+"\"button_width\"/\"button_height\" (botoi-zabalera/botoi-altuera) eta "
+"\"aspect_ratio\" (aspektu-erlazioa) ezin dira batera zehaztu botoietan"
 
-#: ../src/ui/theme-parser.c:1434
+#: ../src/ui/theme-parser.c:1366
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "\"%s\" distantzia ezezaguna da"
 
-#: ../src/ui/theme-parser.c:1493
+#: ../src/ui/theme-parser.c:1411
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "\"%s\" aspektu-erlazioa ezezaguna da"
 
-#: ../src/ui/theme-parser.c:1537
-#, c-format
-msgid "No \"top\" attribute on element <%s>"
-msgstr "Ez dago \"top\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1544
-#, c-format
-msgid "No \"bottom\" attribute on element <%s>"
-msgstr "Ez dago \"bottom\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1551
-#, c-format
-msgid "No \"left\" attribute on element <%s>"
-msgstr "Ez dago \"left\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1558
-#, c-format
-msgid "No \"right\" attribute on element <%s>"
-msgstr "Ez dago \"right\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1590
+#: ../src/ui/theme-parser.c:1473
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "\"%s\" ertza ezezaguna da"
 
-#: ../src/ui/theme-parser.c:1736 ../src/ui/theme-parser.c:1850
-#: ../src/ui/theme-parser.c:1961 ../src/ui/theme-parser.c:2192
-#: ../src/ui/theme-parser.c:3023
-#, c-format
-msgid "No \"color\" attribute on element <%s>"
-msgstr "Ez dago \"color\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1743
-#, c-format
-msgid "No \"x1\" attribute on element <%s>"
-msgstr "Ez dago \"x1\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1750 ../src/ui/theme-parser.c:2864
-#, c-format
-msgid "No \"y1\" attribute on element <%s>"
-msgstr "Ez dago \"y1\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1757
-#, c-format
-msgid "No \"x2\" attribute on element <%s>"
-msgstr "Ez dago \"x2\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1764 ../src/ui/theme-parser.c:2871
-#, c-format
-msgid "No \"y2\" attribute on element <%s>"
-msgstr "Ez dago \"y2\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1857 ../src/ui/theme-parser.c:1968
-#: ../src/ui/theme-parser.c:2117 ../src/ui/theme-parser.c:2199
-#: ../src/ui/theme-parser.c:2306 ../src/ui/theme-parser.c:2408
-#: ../src/ui/theme-parser.c:2630 ../src/ui/theme-parser.c:2758
-#: ../src/ui/theme-parser.c:2857 ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3030
-#, c-format
-msgid "No \"x\" attribute on element <%s>"
-msgstr "Ez dago \"x\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1864 ../src/ui/theme-parser.c:1975
-#: ../src/ui/theme-parser.c:2124 ../src/ui/theme-parser.c:2206
-#: ../src/ui/theme-parser.c:2313 ../src/ui/theme-parser.c:2415
-#: ../src/ui/theme-parser.c:2637 ../src/ui/theme-parser.c:2765
-#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3037
-#, c-format
-msgid "No \"y\" attribute on element <%s>"
-msgstr "Ez dago \"y\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1871 ../src/ui/theme-parser.c:1982
-#: ../src/ui/theme-parser.c:2131 ../src/ui/theme-parser.c:2213
-#: ../src/ui/theme-parser.c:2320 ../src/ui/theme-parser.c:2422
-#: ../src/ui/theme-parser.c:2644 ../src/ui/theme-parser.c:2772
-#: ../src/ui/theme-parser.c:2948
-#, c-format
-msgid "No \"width\" attribute on element <%s>"
-msgstr "Ez dago \"width\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1878 ../src/ui/theme-parser.c:1989
-#: ../src/ui/theme-parser.c:2138 ../src/ui/theme-parser.c:2220
-#: ../src/ui/theme-parser.c:2327 ../src/ui/theme-parser.c:2429
-#: ../src/ui/theme-parser.c:2651 ../src/ui/theme-parser.c:2779
-#: ../src/ui/theme-parser.c:2955
-#, c-format
-msgid "No \"height\" attribute on element <%s>"
-msgstr "Ez dago \"height\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:1998
+#: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Ez dago \"start_angle\" edo \"from\" atributurik <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2005
+#: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Ez dago \"extent_angle\" edo \"to\" atributurik <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2014
-#, c-format
-msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "Ez dago \"start_angle\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2021
-#, c-format
-msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Ez dago \"extent_angle\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2227
-#, c-format
-msgid "No \"alpha\" attribute on element <%s>"
-msgstr "Ez dago \"alpha\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2299
-#, c-format
-msgid "No \"type\" attribute on element <%s>"
-msgstr "Ez dago \"type\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2349
+#: ../src/ui/theme-parser.c:2031
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Gradiente-motan ez da ulertu \"%s\" balioa"
 
-#: ../src/ui/theme-parser.c:2436
-#, c-format
-msgid "No \"filename\" attribute on element <%s>"
-msgstr "Ez dago \"filename\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2461 ../src/ui/theme-parser.c:2980
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" betetze-mota <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2609 ../src/ui/theme-parser.c:2744
-#: ../src/ui/theme-parser.c:2850
-#, c-format
-msgid "No \"state\" attribute on element <%s>"
-msgstr "Ez dago \"state\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2616 ../src/ui/theme-parser.c:2751
-#, c-format
-msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Ez dago \"shadow\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2623
-#, c-format
-msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Ez dago \"arrow\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:2676 ../src/ui/theme-parser.c:2800
-#: ../src/ui/theme-parser.c:2891
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" egoera <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2686 ../src/ui/theme-parser.c:2810
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" itzala <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2296
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Ez da ulertu \"%s\" gezia <%s> elementuan"
 
-#: ../src/ui/theme-parser.c:3120 ../src/ui/theme-parser.c:3237
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
 
-#: ../src/ui/theme-parser.c:3132 ../src/ui/theme-parser.c:3249
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Hemen \"%s\" draw_ops sartzen bada, erreferentzia zirkularra sortuko da"
 
-#: ../src/ui/theme-parser.c:3314
-#, c-format
-msgid "No \"value\" attribute on <%s> element"
-msgstr "Ez dago \"value\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:3371
-#, c-format
-msgid "No \"position\" attribute on <%s> element"
-msgstr "Ez dago \"position\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:3380
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "\"%s\" kokaleku ezezaguna markoarentzat"
 
-#: ../src/ui/theme-parser.c:3388
+#: ../src/ui/theme-parser.c:2827
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Marko-estiloak badu zati bat %s posizioan"
 
-#: ../src/ui/theme-parser.c:3405 ../src/ui/theme-parser.c:3496
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
 
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "No \"function\" attribute on <%s> element"
-msgstr "Ez dago \"function\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:3441 ../src/ui/theme-parser.c:3557
-#, c-format
-msgid "No \"state\" attribute on <%s> element"
-msgstr "Ez dago \"state\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:3450
+#: ../src/ui/theme-parser.c:2873
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "\"%s\" funtzioa ezezaguna botoiarentzat"
 
-#: ../src/ui/theme-parser.c:3459
+#: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "\"%s\" botoi-funtzioa ez da existitzen bertsio honetan (%d, %d behar du)"
 
-#: ../src/ui/theme-parser.c:3471
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "\"%s\" egoera ezezaguna botoiarentzat"
 
-#: ../src/ui/theme-parser.c:3479
+#: ../src/ui/theme-parser.c:2902
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Marko-estiloak badu botoi bat %s funtzioan %s egoeran"
 
-#: ../src/ui/theme-parser.c:3549
-#, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr "Ez dago \"focus\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:3565
-#, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr "Ez dago \"style\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:3574
+#: ../src/ui/theme-parser.c:2973
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" ez da baliozko balioa foku-atributuarentzat"
 
-#: ../src/ui/theme-parser.c:3583
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" ez da baliozko balioa egoera-atributuarentzat"
 
-#: ../src/ui/theme-parser.c:3593
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "\"%s\" izeneko estiloa ez da definitu"
 
-#: ../src/ui/theme-parser.c:3604
-#, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr "Ez dago \"resize\" atributurik <%s> elementuan"
-
-#: ../src/ui/theme-parser.c:3614 ../src/ui/theme-parser.c:3637
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ez da baliozko balioa tamainaz aldatzeko atributuarentzat"
 
-#: ../src/ui/theme-parser.c:3648
+#: ../src/ui/theme-parser.c:3047
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -3066,24 +2097,24 @@ msgstr ""
 "Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako/"
 "bildutako egoerentzat"
 
-#: ../src/ui/theme-parser.c:3662
+#: ../src/ui/theme-parser.c:3061
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako "
 "egoerentzat"
 
-#: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Estiloa dagoeneko zehaztu da %s egoeran %s tamaina-aldatzean %s fokuan"
 
-#: ../src/ui/theme-parser.c:3687 ../src/ui/theme-parser.c:3709
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Estiloa dagoeneko zehaztu da %s egoeran %s fokuan"
 
-#: ../src/ui/theme-parser.c:3748
+#: ../src/ui/theme-parser.c:3147
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3091,7 +2122,7 @@ msgstr ""
 "Ezin dira bi draw_ops izan <piece> elementu batean (gaiak draw_ops atributu "
 "bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu zehaztu ditu)"
 
-#: ../src/ui/theme-parser.c:3786
+#: ../src/ui/theme-parser.c:3185
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3099,7 +2130,7 @@ msgstr ""
 "Ezin dira bi draw_ops izan <button> elementu batean (gaiak draw_ops atributu "
 "bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu zehaztu ditu)"
 
-#: ../src/ui/theme-parser.c:3824
+#: ../src/ui/theme-parser.c:3223
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -3108,76 +2139,63 @@ msgstr ""
 "atributu bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu "
 "zehaztu ditu)"
 
-#: ../src/ui/theme-parser.c:3872
+#: ../src/ui/theme-parser.c:3271
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Gaian kanporen dagoen elementuak <metacity_theme> izan behar du, ez <%s>"
 
-#: ../src/ui/theme-parser.c:3892
+#: ../src/ui/theme-parser.c:3291
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "<%s> elementua ez da onartzen name/author/date/description elementuan"
 
-#: ../src/ui/theme-parser.c:3897
+#: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<%s> elementua ez da onartzen <constant> elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:3909
+#: ../src/ui/theme-parser.c:3308
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "<%s> elementua ez da onartzen distance/border/aspect_ratio elementuan"
 
-#: ../src/ui/theme-parser.c:3931
+#: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "<%s> elementua ez da onartzen marrazteko eragiketaren elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:3941 ../src/ui/theme-parser.c:3971
-#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3981
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "<%s> elementua ez da onartzen <%s> elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:4203
+#: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "Ez da draw_ops-ik eman marko-zatiarentzat"
 
-#: ../src/ui/theme-parser.c:4218
+#: ../src/ui/theme-parser.c:3617
 msgid "No draw_ops provided for button"
 msgstr "Ez da draw_ops-ik eman botoiarentzat"
 
-#: ../src/ui/theme-parser.c:4270
+#: ../src/ui/theme-parser.c:3669
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Ez da testurik onartzen <%s> elementuaren barnean"
 
-#: ../src/ui/theme-parser.c:4325
-msgid "<name> specified twice for this theme"
-msgstr "<name> birritan zehaztu da gai honetan"
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> birritan zehaztu da gai honetan"
 
-#: ../src/ui/theme-parser.c:4336
-msgid "<author> specified twice for this theme"
-msgstr "<author> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:4347
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:4358
-msgid "<date> specified twice for this theme"
-msgstr "<date> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:4369
-msgid "<description> specified twice for this theme"
-msgstr "<description> birritan zehaztu da gai honetan"
-
-#: ../src/ui/theme-parser.c:4636
+#: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Huts egin du %s gaiaren fitxategi egokia bilatzean\n"
 
-#: ../src/ui/theme-parser.c:4692
+#: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "%s gai-fitxategiak ez du erroko <metacity_theme> elementurik"
@@ -3379,266 +2397,4 @@ msgstr "y balioa %d zen, %d espero zenean"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordenada adierazpen analizatua %g segundotan (%g segundo batazbesteko)\n"
-
-#: ../src/ui/theme.c:256
-msgid "top"
-msgstr "goian"
-
-#: ../src/ui/theme.c:258
-msgid "bottom"
-msgstr "behean"
-
-#: ../src/ui/theme.c:260
-msgid "left"
-msgstr "ezkerrean"
-
-#: ../src/ui/theme.c:262
-msgid "right"
-msgstr "eskuinean"
-
-#: ../src/ui/theme.c:289
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "marko-geometriak ez du zehazten \"%s\" neurririk"
-
-#: ../src/ui/theme.c:308
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "marko-geometriak ez du zehazten \"%s\" neurririk \"%s\" ertzerako"
-
-#: ../src/ui/theme.c:345
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "Botoiaren %g aspektu-erlazioa ez da arrazoizkoa"
-
-#: ../src/ui/theme.c:357
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr "Marko-geometriak ez du zehazten botoien tamainarik"
-
-#: ../src/ui/theme.c:1022
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr "Gradienteek bi kolore izan behar dituzte gutxienez"
-
-#: ../src/ui/theme.c:1148
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK kolore-zehaztapenak egoera kortxete artean izan behar du, adib. gtk:fg"
-"[NORMAL], NORMAL egoera izanik; \"%s\" ezin da analizatu"
-
-#: ../src/ui/theme.c:1162
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK kolore-zehaztapenak ixteko kortxetea izan behar egoeraren ondoren, adib. "
-"gtk:fg[NORMAL], NORMAL egoera izanik; \"%s\" ezin da analizatu"
-
-#: ../src/ui/theme.c:1173
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "Ez da ulertu \"%s\" egoera kolore-zehaztapenean"
-
-#: ../src/ui/theme.c:1186
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Ez da ulertu \"%s\" kolore-osagaia kolore-zehaztapenean"
-
-#: ../src/ui/theme.c:1216
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"Nahaste-formatua \"blend/bg_color/fg_color/alpha\" da, \"%s\" ez dator bat "
-"formatuarekin"
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Ezin da analizatu \"%s\" alfa balioa kolore nahastuan"
-
-#: ../src/ui/theme.c:1237
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Kolore nahastuko \"%s\" alfa balioa ez dago 0,0 eta 1,0 artean"
-
-#: ../src/ui/theme.c:1284
-#, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Itzal-faktorea \"shade/base_color/factor\" da, \"%s\" ez dator bat "
-"formatuarekin"
-
-#: ../src/ui/theme.c:1295
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Ezin da analizatu \"%s\" itzal-faktorea itzaldun kolorean"
-
-#: ../src/ui/theme.c:1305
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Itzaldun koloreko \"%s\" itzal-faktorea negatiboa da"
-
-#: ../src/ui/theme.c:1334
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "Ezin izan da \"%s\" kolorea analizatu"
-
-#: ../src/ui/theme.c:1584
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordenatuen adierazpenak '%s' karakterea dauka, eta hori ez da onartzen"
-
-#: ../src/ui/theme.c:1611
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
-"Koordenatuen adierazpenak '%s' koma mugikorreko zenbakia dauka, eta ezin da "
-"analizatu"
-
-#: ../src/ui/theme.c:1625
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordenatuen adierazpenak '%s' osoko zenbakia dauka, eta ezin da analizatu"
-
-#: ../src/ui/theme.c:1747
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-"Koordenatuen adierazpenak eragile ezezaguna dauka testu honen hasieran: \"%s"
-"\""
-
-#: ../src/ui/theme.c:1804
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr "Koordenatuen adierazpena hutsik dago edo ez da ulertu"
-
-#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr "Koordenatuen adierazpenak zero zatitzaileko zatiketa ematen du"
-
-#: ../src/ui/theme.c:1967
-#, c-format
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"Koordenatuen adierazpena mod eragilea erabiltzen saiatzen da koma "
-"mugikorreko zenbaki batean"
-
-#: ../src/ui/theme.c:2023
-#, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Koordenatuen adierazpenak \"%s\" eragilea du eragigai bat espero zen lekuan"
-
-#: ../src/ui/theme.c:2032
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Koordenatuen adierazpenak eragigai bat du eragile bat espero zen lekuan"
-
-#: ../src/ui/theme.c:2040
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-"Koordenatuen adierazpena eragile batez amaitzen da, eragigai batez amaitu "
-"beharrean"
-
-#: ../src/ui/theme.c:2050
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"Koordenatuen adierazpenak \"%c\" eragilea du \"%c\" eragilearen ondoren, "
-"tartean eragigairik gabe"
-
-#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordenatuen adierazpenak \"%s\" aldagai edo konstante ezezaguna du"
-
-#: ../src/ui/theme.c:2292
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Koordenatuen adierazpenaren analizatzaileak bere bufferra gainezkatu du"
-
-#: ../src/ui/theme.c:2321
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Koordenatuen adierazpenak ixteko parentesi bat du, baina irekitzekoa falta da"
-
-#: ../src/ui/theme.c:2385
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Koordenatuen adierazpenak irekitzeko parentesi bat du, baina ixtekoa falta da"
-
-#: ../src/ui/theme.c:2396
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Koordenatuen adierazpenak ez dirudi eragilerik edo eragigairik duenik"
-
-#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "Gaiak errorea ematen duen adierazpen bat dauka: %s\n"
-
-#: ../src/ui/theme.c:4157
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> zehaztu behar "
-"da marko-estilo honetan"
-
-#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
-#, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
-
-#: ../src/ui/theme.c:4702
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Huts egin du \"%s\" gaia kargatzean: %s\n"
-
-#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
-#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "<%s> ez da ezarri \"%s\" gaian"
-
-#: ../src/ui/theme.c:4864
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"Ez da marko-estilorik ezarri set \"%s\" leiho-motarentzat \"%s\" gaian, "
-"gehitu <window type=\"%s\" style_set=\"whatever\"/> elementu bat"
-
-#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
-#, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Erabiltzaileak definitutako konstanteak maiuskulaz hasi behar du; \"%s\" ez "
-"da maiuskulaz hasten"
-
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "\"%s\" konstantea lehendik definituta dago"
-
-#: ../src/tools/metacity-message.c:150
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Erabilera: %s\n"
 
