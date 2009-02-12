@@ -33,6 +33,7 @@
 
 #include <X11/Xatom.h>
 #include <string.h>
+#include <canberra-gtk.h>
 
 enum {
   PROP_0,
@@ -439,6 +440,66 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
     }
 }
 
+static void
+workspace_switch_sound(MetaWorkspace *from,
+                       MetaWorkspace *to)
+{
+  MetaWorkspaceLayout layout;
+  int i, nw, x, y, fi, ti;
+  const char *e;
+
+  nw = meta_screen_get_n_workspaces(from->screen);
+  fi = meta_workspace_index(from);
+  ti = meta_workspace_index(to);
+
+  meta_screen_calc_workspace_layout(from->screen,
+                                    nw,
+                                    fi,
+                                    &layout);
+
+  for (i = 0; i < nw; i++)
+    if (layout.grid[i] == ti)
+      break;
+
+  if (i >= nw)
+    {
+      meta_bug("Failed to find destination workspace in layout\n");
+      goto finish;
+    }
+
+  y = i / layout.cols;
+  x = i % layout.cols;
+
+  /* We priorize horizontal over vertical movements here. The
+     rationale for this is that horizontal movements are probably more
+     interesting for sound effects because speakers are usually
+     positioned on a horizontal and not a vertical axis. i.e. your
+     spatial "Woosh!" effects will easily be able to encode horizontal
+     movement but not such much vertical movement. */
+
+  if (x < layout.current_col)
+    e = "desktop-switch-left";
+  else if (x > layout.current_col)
+    e = "desktop-switch-right";
+  else if (y < layout.current_row)
+    e = "desktop-switch-up";
+  else if (y > layout.current_row)
+    e = "desktop-switch-down";
+  else
+    {
+      meta_bug("Uh, origin and destination workspace at same logic position!\n");
+      goto finish;
+    }
+
+  ca_context_play(ca_gtk_context_get(), 1,
+                  CA_PROP_EVENT_ID, e,
+                  CA_PROP_EVENT_DESCRIPTION, "Desktop switched",
+                  NULL);
+
+ finish:
+  meta_screen_free_workspace_layout (&layout);
+}
+
 /**
  * meta_workspace_activate_with_focus:
  * @workspace: a #MetaWorkspace
@@ -481,6 +542,9 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   /* Free any cached pointers to the workspaces's edges from
    * a current resize or move operation */
   meta_display_cleanup_edges (workspace->screen->display);
+
+  if (workspace->screen->active_workspace)
+    workspace_switch_sound (workspace->screen->active_workspace, workspace);
 
   /* Note that old can be NULL; e.g. when starting up */
   old = workspace->screen->active_workspace;

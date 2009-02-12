@@ -124,7 +124,7 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-MUTTER_PC_MODULES='gtk+-2.0 >= 2.10.0 pango >= 1.2.0'
+MUTTER_PC_MODULES='gtk+-2.0 >= 2.10.0 pango >= 1.2.0 libcanberra-gtk'
 
 AC_ARG_ENABLE(gconf,
   AC_HELP_STRING([--disable-gconf],
