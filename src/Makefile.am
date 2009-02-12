@@ -11,7 +11,6 @@ INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMETACIT
 metacity_SOURCES= 				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
-	core/atomnames.h                        \
 	core/bell.c				\
 	core/bell.h				\
 	core/boxes.c				\
@@ -75,7 +74,7 @@ metacity_SOURCES= 				\
 	core/window-private.h			\
 	include/window.h			\
 	core/workspace.c			\
-	core/workspace.h			\
+	core/workspace-private.h		\
 	core/xprops.c				\
 	include/xprops.h			\
 	include/common.h			\
@@ -106,7 +105,6 @@ metacity_SOURCES= 				\
 if WITH_CLUTTER
 metacity_SOURCES += 					\
 	compositor/mutter/compositor-mutter.c		\
-	compositor/mutter/compositor-mutter.h		\
 	compositor/mutter/mutter-shaped-texture.c	\
 	compositor/mutter/mutter-shaped-texture.h	\
 	compositor/mutter/mutter-plugin-manager.c	\
@@ -116,7 +114,8 @@ metacity_SOURCES += 					\
 	compositor/mutter/mutter-module.c		\
 	compositor/mutter/mutter-module.h		\
 	compositor/mutter/mutter-plugin.c		\
-	include/mutter-plugin.h
+	include/mutter-plugin.h				\
+	include/compositor-mutter.h
 endif
 
 # by setting libmetacity_private_la_CFLAGS, the files shared with
