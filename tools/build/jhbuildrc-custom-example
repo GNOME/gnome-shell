@@ -2,7 +2,6 @@
 
 # The username for repositories can be overridden.
 #
-#repos["svn.gnome.org"] = "svn+ssh://myusername@svn.gnome.org/svn/"
 #repos["git.gnome.org"] = "ssh://myusername@git.gnome.org/git/"
 
 # Directory where to check sources out

@@ -16,11 +16,11 @@
       href="git://git.gnome.org/"/>
 
   <autotools id="gobject-introspection">
-    <branch/>
+    <branch repo="git.gnome.org" module="gobject-introspection"/>
   </autotools>
 
   <autotools id="gir-repository">
-    <branch/>
+    <branch repo="git.gnome.org" module="gir-repository"/>
     <dependencies>
         <dep package="gobject-introspection"/>
         <dep package="clutter"/>
@@ -29,7 +29,7 @@
   </autotools>
 
   <autotools id="gjs">
-    <branch/>
+    <branch repo="git.gnome.org" module="gjs"/>
     <dependencies>
         <dep package="gobject-introspection"/>
     </dependencies>
