@@ -228,12 +228,8 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   GdkScreen *screen;
   int screen_width;
   
-  popup = g_new0 (MetaTabPopup, 1);
+  popup = g_new (MetaTabPopup, 1);
 
-  popup->outline = outline;
-
-  if (outline)
-    {
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
 
   screen = gdk_display_get_screen (gdk_display_get_default (),
@@ -257,6 +253,10 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   /* enable resizing, to get never-shrink behavior */
   gtk_window_set_resizable (GTK_WINDOW (popup->window),
                             TRUE);
+  popup->current = NULL;
+  popup->entries = NULL;
+  popup->current_selected_entry = NULL;
+  popup->outline = outline;
 
   screen_width = gdk_screen_get_width (screen);
   for (i = 0; i < entry_count; ++i)
@@ -388,16 +388,6 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   gtk_window_set_default_size (GTK_WINDOW (popup->window),
                                max_label_width,
                                -1);
-    }
-  else
-    {
-      for (i = 0; i < entry_count; ++i)
-        {
-          TabEntry* new_entry =
-            tab_entry_new (&entries[i], 0, outline);
-          popup->entries = g_list_prepend (popup->entries, new_entry);
-        }
-    }
   
   return popup;
 }
@@ -429,15 +419,12 @@ meta_ui_tab_popup_free (MetaTabPopup *popup)
       return;
     }
   
-  if (popup->outline)
-    {
   gtk_widget_destroy (popup->outline_window);
   gtk_widget_destroy (popup->window);
   
   g_list_foreach (popup->entries, free_tab_entry, NULL);
 
   g_list_free (popup->entries);
-    }
   
   g_free (popup);
 }
