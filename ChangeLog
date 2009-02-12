@@ -1,3 +1,17 @@
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 557921 – [PATCH] Sound event support to metacity
+
+	Patch by Lennart Poettering
+
+	* configure.in: Require libcanberra-gtk
+
+	* src/core/bell.c (meta_bell_notify): Play the alert sound from
+	the sound theme instead of the dreaded system bell.
+
+	* src/core/workspace.c (meta_workspace_activate_with_focus): Play
+	a sound on workspace switch.
+
 2009-02-11  Thomas Thurman  <tthurman@gnome.org>
 
         Session must be saved before display close, and display

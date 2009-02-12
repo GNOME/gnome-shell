@@ -52,6 +52,7 @@
 #include "bell.h"
 #include "screen-private.h"
 #include "prefs.h"
+#include <canberra-gtk.h>
 
 /**
  * Flashes one entire screen.  This is done by making a window the size of the
@@ -223,7 +224,7 @@ bell_flash_window_frame (MetaWindow *window)
  */
 static void
 bell_flash_frame (MetaDisplay *display, 
-		       XkbAnyEvent *xkb_ev)
+		  XkbAnyEvent *xkb_ev)
 {
   XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent *) xkb_ev;
   MetaWindow *window;
@@ -280,6 +281,46 @@ meta_bell_notify (MetaDisplay *display,
   /* flash something */
   if (meta_prefs_get_visual_bell ()) 
     bell_visual_notify (display, xkb_ev);
+
+  if (meta_prefs_bell_is_audible ()) 
+    {
+      ca_proplist *p;
+      XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent*) xkb_ev;
+      MetaWindow *window;
+      int res;
+
+      ca_proplist_create (&p);
+      ca_proplist_sets (p, CA_PROP_EVENT_ID, "bell-window-system");
+      ca_proplist_sets (p, CA_PROP_EVENT_DESCRIPTION, _("Bell event"));
+      ca_proplist_sets (p, CA_PROP_CANBERRA_ENABLE, "1");
+
+      window = meta_display_lookup_x_window (display, xkb_bell_event->window);
+      if (!window && (display->focus_window) && (display->focus_window->frame))
+        window = display->focus_window;
+
+      if (window)
+        { 
+          ca_proplist_sets (p, CA_PROP_WINDOW_NAME, window->title);
+          ca_proplist_setf (p, CA_PROP_WINDOW_X11_XID, "%lu", (unsigned long)window->xwindow);
+          ca_proplist_sets (p, CA_PROP_APPLICATION_NAME, window->res_name);
+          ca_proplist_setf (p, CA_PROP_APPLICATION_PROCESS_ID, "%d", window->net_wm_pid);
+        }
+
+      /* First, we try to play a real sound ... */
+      res = ca_context_play_full (ca_gtk_context_get (), 1, p, NULL, NULL);
+
+      ca_proplist_destroy (p);
+
+      if (res != CA_SUCCESS && res != CA_ERROR_DISABLED)
+        {      
+          /* ...and in case that failed we use the classic X11 bell. */
+          XkbForceDeviceBell (display->xdisplay, 
+                              xkb_bell_event->device, 
+                              xkb_bell_event->bell_class, 
+                              xkb_bell_event->bell_id, 
+                              xkb_bell_event->percent);
+        }
+    }
 }
 #endif /* HAVE_XKB */
 
@@ -321,8 +362,7 @@ meta_bell_init (MetaDisplay *display)
       XkbChangeEnabledControls (display->xdisplay,
 				XkbUseCoreKbd,
 				XkbAudibleBellMask,
-				meta_prefs_bell_is_audible () 
-				? XkbAudibleBellMask : 0);
+                                0);
       if (visual_bell_auto_reset) {
 	XkbSetAutoResetControls (display->xdisplay,
 				 XkbAudibleBellMask,
