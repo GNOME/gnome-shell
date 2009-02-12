@@ -1548,10 +1548,10 @@ clutter_actor_paint (ClutterActor *self)
 
   if (priv->has_clip)
     {
-      cogl_clip_set (CLUTTER_UNITS_TO_FIXED (priv->clip[0]),
-		     CLUTTER_UNITS_TO_FIXED (priv->clip[1]),
-		     CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
-		     CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
+      cogl_clip_push (CLUTTER_UNITS_TO_FIXED (priv->clip[0]),
+		      CLUTTER_UNITS_TO_FIXED (priv->clip[1]),
+		      CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
+		      CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
       clip_set = TRUE;
     }
 
@@ -1578,7 +1578,7 @@ clutter_actor_paint (ClutterActor *self)
     }
 
   if (clip_set)
-    cogl_clip_unset();
+    cogl_clip_pop();
 
   cogl_pop_matrix();
 

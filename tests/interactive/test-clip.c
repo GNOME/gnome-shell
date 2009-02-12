@@ -136,14 +136,14 @@ on_paint (ClutterActor *actor, CallbackData *data)
       Clip *clip = (Clip *) node->data;
 
       if (clip->type == CLIP_RECTANGLE)
-        cogl_clip_set (CLUTTER_INT_TO_FIXED (clip->x1),
-                       CLUTTER_INT_TO_FIXED (clip->y1),
-                       CLUTTER_INT_TO_FIXED (clip->x2 - clip->x1),
-                       CLUTTER_INT_TO_FIXED (clip->y2 - clip->y1));
+        cogl_clip_push (CLUTTER_INT_TO_FIXED (clip->x1),
+                        CLUTTER_INT_TO_FIXED (clip->y1),
+                        CLUTTER_INT_TO_FIXED (clip->x2 - clip->x1),
+                        CLUTTER_INT_TO_FIXED (clip->y2 - clip->y1));
       else
         {
           make_clip_path (clip);
-          cogl_clip_set_from_path ();
+          cogl_clip_push_from_path ();
         }
     }
 
@@ -178,7 +178,7 @@ on_paint (ClutterActor *actor, CallbackData *data)
   draw_shapes (stage_size.width - 310, stage_size.height - 110);
 
   /* Remove all of the clipping */
-  g_slist_foreach (data->clips, (GFunc) cogl_clip_unset, NULL);
+  g_slist_foreach (data->clips, (GFunc) cogl_clip_pop, NULL);
 
   /* Draw the bounding box for each of the clips */
   for (node = data->clips; node; node = node->next)

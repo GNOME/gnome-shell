@@ -276,6 +276,9 @@ Release Notes for Clutter 1.0
 
 * cogl_scale now supports scaling on the z axis
 
+* cogl_clip_set* and cogl_clip_unset have been renamed to cogl_clip_push and
+  cogl_clip_pop respectively so they self document their stacking semantics.
+
 
 Release Notes for Clutter 0.8
 -------------------------------

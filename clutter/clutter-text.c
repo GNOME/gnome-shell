@@ -1066,9 +1066,9 @@ clutter_text_paint (ClutterActor *self)
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
-      cogl_clip_set (0, 0,
-                     CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
-                     CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1));
+      cogl_clip_push (0, 0,
+                      CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
+                      CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1));
       clip_set = TRUE;
 
       actor_width = (CLUTTER_UNITS_TO_DEVICE (alloc.x2 - alloc.x1))
@@ -1126,7 +1126,7 @@ clutter_text_paint (ClutterActor *self)
   cogl_pango_render_layout (layout, text_x, 0, &color, 0);
 
   if (clip_set)
-    cogl_clip_unset ();
+    cogl_clip_pop ();
 
   priv->text_x = text_x;
 }
