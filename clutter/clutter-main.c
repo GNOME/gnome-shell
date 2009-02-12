@@ -1853,6 +1853,37 @@ clutter_event_get_device (ClutterEvent *event)
   return NULL;
 }
 
+static void
+set_motion_last_actor (ClutterActor       *motion_current_actor,
+                       ClutterInputDevice *device)
+{
+  ClutterMainContext *context              = ClutterCntx;
+  ClutterActor       *last_actor           = context->motion_last_actor;
+
+  if (device != NULL)
+    last_actor = device->motion_last_actor;
+
+  if (last_actor && last_actor != motion_current_actor)
+    {
+      g_signal_handlers_disconnect_by_func
+                       (last_actor,
+                        G_CALLBACK (unset_motion_last_actor),
+                        device);
+    }
+
+  if (motion_current_actor && last_actor != motion_current_actor)
+    {
+      g_signal_connect (motion_current_actor, "destroy",
+                        G_CALLBACK (unset_motion_last_actor),
+                        device);
+    }
+
+  if (device != NULL)
+    device->motion_last_actor = motion_current_actor;
+  else
+    context->motion_last_actor = motion_current_actor;
+}
+
 static inline void
 generate_enter_leave_events (ClutterEvent *event)
 {
@@ -1905,25 +1936,7 @@ generate_enter_leave_events (ClutterEvent *event)
         }
     }
 
-  if (last_actor && last_actor != motion_current_actor)
-    {
-      g_signal_handlers_disconnect_by_func
-                       (last_actor,
-                        G_CALLBACK (unset_motion_last_actor),
-                        device);
-    }
-
-  if (motion_current_actor && last_actor != motion_current_actor)
-    {
-      g_signal_connect (motion_current_actor, "destroy",
-                        G_CALLBACK (unset_motion_last_actor),
-                        device);
-    }
-
-  if (device != NULL)
-    device->motion_last_actor = motion_current_actor;
-  else
-    context->motion_last_actor = motion_current_actor;
+  set_motion_last_actor (motion_current_actor, event->motion.device);
 }
 
 /**
@@ -1965,8 +1978,23 @@ clutter_do_event (ClutterEvent *event)
         event->any.source = stage;
         break;
 
-      case CLUTTER_ENTER:
       case CLUTTER_LEAVE:
+        /* The source is set for generated events, not for events
+         * resulting from the cursor leaving the stage
+         */
+        if (event->any.source == NULL)
+          {
+            ClutterActor *last_actor = context->motion_last_actor;
+
+            if (event->crossing.device != NULL)
+              last_actor = event->crossing.device->motion_last_actor;
+
+            event->any.source = last_actor;
+
+            set_motion_last_actor (NULL, event->crossing.device);
+          }
+        /* flow through */
+      case CLUTTER_ENTER:
         emit_pointer_event (event, event->crossing.device);
         break;
 

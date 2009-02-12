@@ -666,6 +666,24 @@ event_translate (ClutterBackend *backend,
               event->motion.y = xevent->xmotion.y;
               event->motion.modifier_state = xevent->xmotion.state;
               break;
+
+            case EnterNotify:
+              /* Convert enter notifies to motion events because X
+                 doesn't emit the corresponding motion notify */
+              event->motion.type = event->type = CLUTTER_MOTION;
+              event->motion.time = xevent->xcrossing.time;
+              event->motion.x = xevent->xcrossing.x;
+              event->motion.y = xevent->xcrossing.y;
+              event->motion.modifier_state = xevent->xcrossing.state;
+              break;
+
+            case LeaveNotify:
+              event->crossing.type = event->type = CLUTTER_LEAVE;
+              event->crossing.time = xevent->xcrossing.time;
+              event->crossing.x = xevent->xcrossing.x;
+              event->crossing.y = xevent->xcrossing.y;
+              break;
+
             default:
               /* ignore every other event */
               res = FALSE;

@@ -185,6 +185,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
                             StructureNotifyMask |
                             FocusChangeMask |
                             ExposureMask |
+                            EnterWindowMask | LeaveWindowMask |
                             PropertyChangeMask);
 #ifdef USE_XINPUT          
               _clutter_x11_select_events (stage_x11->xwin);
@@ -198,6 +199,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
                           PointerMotionMask |
                           KeyPressMask | KeyReleaseMask |
                           ButtonPressMask | ButtonReleaseMask |
+                          EnterWindowMask | LeaveWindowMask |
                           PropertyChangeMask);
         }
 
