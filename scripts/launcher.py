@@ -40,6 +40,7 @@ class Launcher:
         parser.add_option("", "--debug-command", metavar="COMMAND",
                           help="Command to use for debugging (defaults to 'gdb --args')")
         parser.add_option("-v", "--verbose", action="store_true")
+        parser.add_option("" "--sync", action="store_true")
         if accept_geometry:
             parser.add_option("", "--geometry", metavar="GEOMETRY",
                               help="Specify screen geometry",
@@ -122,6 +123,8 @@ class Launcher:
                 
         plugin = os.path.join(self.plugin_dir, "libgnome-shell.la")
         args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
+        if self.options.sync:
+            args.append('--sync')
         return subprocess.Popen(args, env=env)
     
     def is_verbose(self):
