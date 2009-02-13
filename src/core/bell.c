@@ -332,12 +332,6 @@ meta_bell_notify (MetaDisplay *display,
 void
 meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 {
-#ifdef HAVE_XKB
-  XkbChangeEnabledControls (display->xdisplay,
-			    XkbUseCoreKbd,
-			    XkbAudibleBellMask,
-			    audible ? XkbAudibleBellMask : 0);
-#endif  
 }
 
 gboolean
