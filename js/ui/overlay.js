@@ -113,15 +113,14 @@ Sideshow.prototype = {
                                              text: ""});
         this.actor.add_actor(this._searchEntry);
         this._searchQueued = false;
-        this._searchActive = false;
         this._searchEntry.connect('notify::text', function (se, prop) {
             if (me._searchQueued)
                 return;
+            me._searchQueued = true; 
             Mainloop.timeout_add(250, function() {
                 // Strip leading and trailing whitespace
                 let text = me._searchEntry.text.replace(/^\s+/g, "").replace(/\s+$/g, "");
                 me._searchQueued = false;
-                me._searchActive = text != '';
                 me._appDisplay.setSearch(text);
                 me._docDisplay.setSearch(text);
                 return false;
