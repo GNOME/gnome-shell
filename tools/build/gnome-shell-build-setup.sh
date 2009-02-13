@@ -123,7 +123,7 @@ fi
 
 if test x$system = xMandrivaLinux ; then
   reqd=""
-  for pkg in ffi5-devel libxdamage-devel gnome-doc-utils libxulrunner-devel \
+  for pkg in ffi5-devel libxdamage-devel gtk-doc gnome-common gnome-doc-utils libxulrunner-devel \
     librsvg2-devel libgnomeui2-devel xterm x11-apps x11-server-xephyr \
     libwnck-1-devel libGConf2-devel readline-devel; do
       if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
@@ -131,7 +131,7 @@ if test x$system = xMandrivaLinux ; then
       fi
   done
   if test ! "x$reqd" = x; then
-	echo    gurpmi --auto $reqd
+	gurpmi --auto $reqd
   fi
 fi
 
