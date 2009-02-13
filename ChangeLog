@@ -1,3 +1,9 @@
+2009-02-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* src/core/bell.c (meta_bell_set_audible): Now that we are
+	using libcanberra, don't tell the X server to play the system
+	bell internally.
+
 2009-02-11  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 557921 – [PATCH] Sound event support to metacity
