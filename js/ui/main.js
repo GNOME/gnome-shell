@@ -64,14 +64,16 @@ function start() {
     wm = new WindowManager.WindowManager();
     
     let display = global.screen.get_display();
-    display.connect('overlay-key', function(display) {
+    let toggleOverlay = function(display) {
         if (overlay.visible) {
             hide_overlay();
         } else {
             show_overlay();
         }
     });
-
+    display.connect('overlay-key', toggleOverlay);
+    global.connect('panel-main-menu', toggleOverlay);
+    
     Mainloop.idle_add(_removeUnusedWorkspaces);
 }
 
