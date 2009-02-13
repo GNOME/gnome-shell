@@ -24,6 +24,9 @@ For Red Hat-based systems run:
 For SuSE-based systems run:
 	zypper install curl
 
+For Mandriva-based systems run:
+	urpmi curl
+
 EOF
 	exit 1
 fi
@@ -69,6 +72,8 @@ elif [ -f /etc/fedora-release ] ; then
   system=Fedora
 elif [ -f /etc/SuSE-release ] ; then
   system=SuSE
+elif [ -f /etc/mandriva-release ]; then
+  system=MandrivaLinux
 fi
 
 if test x$system = xUbuntu -o x$system = xDebian ; then
@@ -113,6 +118,20 @@ if test x$system = xSuSE ; then
   if test ! "x$reqd" = x; then
     echo "Please run 'su --command=\"zypper install $reqd\"' before building gnome-shell."
     echo
+  fi
+fi
+
+if test x$system = xMandrivaLinux ; then
+  reqd=""
+  for pkg in ffi5-devel libxdamage-devel gnome-doc-utils libxulrunner-devel \
+    librsvg2-devel libgnomeui2-devel xterm x11-apps x11-server-xephyr \
+    libwnck-1-devel libGConf2-devel readline-devel; do
+      if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
+        reqd="$pkg $reqd"
+      fi
+  done
+  if test ! "x$reqd" = x; then
+	echo    gurpmi --auto $reqd
   fi
 fi
 
