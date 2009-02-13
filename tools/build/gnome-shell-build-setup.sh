@@ -126,7 +126,7 @@ if test x$system = xMandrivaLinux ; then
   for pkg in ffi5-devel libxdamage-devel gtk-doc gnome-common gnome-doc-utils libxulrunner-devel \
     librsvg2-devel libgnomeui2-devel xterm x11-apps x11-server-xephyr \
     libwnck-1-devel libGConf2-devel readline-devel flex bison GL-devel \
-    zenity intltool ; do
+    zenity intltool mesa-demos ; do
       if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
       fi
