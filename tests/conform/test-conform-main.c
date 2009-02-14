@@ -7,6 +7,12 @@
 
 #include "test-conform-common.h"
 
+static void
+test_conform_skip_test (TestConformSimpleFixture *fixture,
+                        gconstpointer             data)
+{
+  /* void */
+}
 
 /* This is a bit of sugar for adding new conformance tests:
  *
@@ -18,15 +24,29 @@
  *   that gets passed to the fixture setup and test functions. (See the
  *   definition in test-conform-common.h)
  */
-#define TEST_CONFORM_SIMPLE(NAMESPACE, FUNC) \
+#define TEST_CONFORM_SIMPLE(NAMESPACE, FUNC)            G_STMT_START {  \
   extern void FUNC (TestConformSimpleFixture *fixture, gconstpointer data); \
   g_test_add ("/conform" NAMESPACE "/" #FUNC, \
 	      TestConformSimpleFixture, \
 	      shared_state, /* data argument for test */ \
 	      test_conform_simple_fixture_setup, \
 	      FUNC, \
-	      test_conform_simple_fixture_teardown);
+	      test_conform_simple_fixture_teardown);    } G_STMT_END
 
+/* this is a macro that conditionally executes a test if CONDITION
+ * evaluates to TRUE; otherwise, it will put the test under the
+ * "/skip" namespace and execute a dummy function that will always
+ * pass.
+ */
+#define TEST_CONFORM_SKIP(CONDITION, NAMESPACE, FUNC)   G_STMT_START {  \
+  if (CONDITION) {                                                      \
+    g_test_add ("/skipped" NAMESPACE "/" #FUNC,                         \
+                TestConformSimpleFixture,                               \
+                shared_state, /* data argument for test */              \
+                test_conform_simple_fixture_setup,                      \
+                test_conform_skip_test,                                 \
+                test_conform_simple_fixture_teardown);                  \
+  } else { TEST_CONFORM_SIMPLE (NAMESPACE, FUNC); }     } G_STMT_END
 
 int
 main (int argc, char **argv)
@@ -58,13 +78,11 @@ main (int argc, char **argv)
   shared_state->argv_addr = &argv;
 
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
-  if (g_test_slow ())
-    {
-      TEST_CONFORM_SIMPLE ("/timeline", test_timeline_dup_frames);
-      TEST_CONFORM_SIMPLE ("/timeline", test_timeline_interpolate);
-      TEST_CONFORM_SIMPLE ("/timeline", test_timeline_rewind);
-      TEST_CONFORM_SIMPLE ("/timeline", test_timeline_smoothness);
-    }
+  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_dup_frames);
+  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_dup_frames);
+  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
+  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_rewind);
+  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_smoothness);
 
   TEST_CONFORM_SIMPLE ("/picking", test_pick);
 
