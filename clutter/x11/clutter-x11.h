@@ -118,8 +118,6 @@ void         clutter_x11_remove_filter (ClutterX11FilterFunc func,
 
 ClutterX11FilterReturn clutter_x11_handle_event (XEvent *xevent);
 
-void     clutter_x11_set_display (Display *xdpy);
-
 void     clutter_x11_disable_event_retrieval (void);
 gboolean clutter_x11_has_event_retrieval (void);
 
