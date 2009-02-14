@@ -36,11 +36,44 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_LIST_MODEL         (clutter_list_model_get_type ())
-#define CLUTTER_LIST_MODEL(obj)         (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_LIST_MODEL, ClutterListModel))
-#define CLUTTER_IS_LIST_MODEL(obj)      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_LIST_MODEL))
+#define CLUTTER_TYPE_LIST_MODEL                 (clutter_list_model_get_type ())
+#define CLUTTER_LIST_MODEL(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_LIST_MODEL, ClutterListModel))
+#define CLUTTER_IS_LIST_MODEL(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_LIST_MODEL))
+#define CLUTTER_LIST_MODEL_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_LIST_MODEL, ClutterListModeClass))
+#define CLUTTER_IS_LIST_MODEL_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_LIST_MODEL))
+#define CLUTTER_LIST_MODEL_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_LIST_MODEL, ClutterListModeClass))
 
-typedef struct _ClutterListModel        ClutterListModel;
+typedef struct _ClutterListModel                ClutterListModel;
+typedef struct _ClutterListModelPrivate         ClutterListModelPrivate;
+typedef struct _ClutterListModelClass           ClutterListModelClass;
+
+/**
+ * ClutterListModel:
+ *
+ * The #ClutterListModel struct contains only private data.
+ *
+ * Since: 0.6
+ */
+struct _ClutterListModel
+{
+  /*< private >*/
+  ClutterModel parent_instance;
+
+  ClutterListModelPrivate *priv;
+};
+
+/**
+ * ClutterListModelClass:
+ *
+ * The #ClutterListModelClass struct contains only private data.
+ *
+ * Since: 0.6
+ */
+struct _ClutterListModelClass
+{
+  /*< private >*/
+  ClutterModelClass parent_class;
+};
 
 GType         clutter_list_model_get_type (void) G_GNUC_CONST;
 

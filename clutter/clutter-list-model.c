@@ -34,9 +34,6 @@
  * values for each row, so it's optimized for insertion and look up
  * in sorted lists.
  *
- * #ClutterListModel is a terminal class: it cannot be subclassed,
- * only instantiated. 
- *
  * #ClutterListModel is available since Clutter 0.6
  */
 
@@ -76,27 +73,13 @@
          CLUTTER_TYPE_LIST_MODEL_ITER,               \
          ClutterListModelIterClass))
 
-#define CLUTTER_LIST_MODEL_CLASS(klass)              \
-        (G_TYPE_CHECK_CLASS_CAST ((klass),           \
-         CLUTTER_TYPE_LIST_MODEL,                    \
-         ClutterListModelClass))
-#define CLUTTER_IS_LIST_MODEL_CLASS(klass)           \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass),           \
-         CLUTTER_TYPE_LIST_MODEL))
-#define CLUTTER_LIST_MODEL_GET_CLASS(obj)            \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj),           \
-         CLUTTER_TYPE_LIST_MODEL,                    \
-         ClutterListModelClass))
-
 typedef struct _ClutterListModelIter    ClutterListModelIter;
 typedef struct _ClutterModelIterClass   ClutterListModelIterClass;
 
-typedef struct _ClutterModelClass       ClutterListModelClass;
+#define CLUTTER_LIST_MODEL_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_LIST_MODEL, ClutterListModelPrivate))
 
-struct _ClutterListModel
+struct _ClutterListModelPrivate
 {
-  ClutterModel parent_instance;
-
   GSequence *sequence;
 };
 
@@ -229,6 +212,7 @@ clutter_list_model_iter_is_first (ClutterModelIter *iter)
   ClutterListModelIter *iter_default;
   ClutterModel *model;
   ClutterModelIter *temp_iter;
+  GSequence *sequence;
   GSequenceIter *begin, *end;
   guint row;
 
@@ -238,7 +222,9 @@ clutter_list_model_iter_is_first (ClutterModelIter *iter)
   model = clutter_model_iter_get_model (iter);
   row   = clutter_model_iter_get_row (iter);
 
-  begin = g_sequence_get_begin_iter (CLUTTER_LIST_MODEL (model)->sequence);
+  sequence = CLUTTER_LIST_MODEL (model)->priv->sequence;
+
+  begin = g_sequence_get_begin_iter (sequence);
   end   = iter_default->seq_iter;
 
   temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
@@ -276,6 +262,7 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
   ClutterListModelIter *iter_default;
   ClutterModelIter *temp_iter;
   ClutterModel *model;
+  GSequence *sequence;
   GSequenceIter *begin, *end;
   guint row;
 
@@ -288,7 +275,9 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
   model = clutter_model_iter_get_model (iter);
   row   = clutter_model_iter_get_row (iter);
 
-  begin = g_sequence_get_end_iter (CLUTTER_LIST_MODEL (model)->sequence);
+  sequence = CLUTTER_LIST_MODEL (model)->priv->sequence;
+
+  begin = g_sequence_get_end_iter (sequence);
   begin = g_sequence_iter_prev (begin);
   end   = iter_default->seq_iter;
 
@@ -476,16 +465,17 @@ clutter_list_model_get_iter_at_row (ClutterModel *model,
                                     guint         row)
 {
   ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
+  GSequence *sequence = model_default->priv->sequence;
   ClutterListModelIter *retval;
 
-  if (row >= g_sequence_get_length (model_default->sequence))
+  if (row >= g_sequence_get_length (sequence))
     return NULL;
 
   retval = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                          "model", model,
                          "row", row,
                          NULL);
-  retval->seq_iter = g_sequence_get_iter_at_pos (model_default->sequence, row);
+  retval->seq_iter = g_sequence_get_iter_at_pos (sequence, row);
 
   return CLUTTER_MODEL_ITER (retval);
 }
@@ -495,6 +485,7 @@ clutter_list_model_insert_row (ClutterModel *model,
                                gint          index_)
 {
   ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
+  GSequence *sequence = model_default->priv->sequence;
   ClutterListModelIter *retval;
   guint n_columns, i, pos;
   GValueArray *array;
@@ -515,17 +506,17 @@ clutter_list_model_insert_row (ClutterModel *model,
 
   if (index_ < 0)
     {
-      seq_iter = g_sequence_append (model_default->sequence, array);
-      pos = g_sequence_get_length (model_default->sequence);
+      seq_iter = g_sequence_append (sequence, array);
+      pos = g_sequence_get_length (sequence);
     }
   else if (index_ == 0)
     {
-      seq_iter = g_sequence_prepend (model_default->sequence, array);
+      seq_iter = g_sequence_prepend (sequence, array);
       pos = 0;
     }
   else
     {
-      seq_iter = g_sequence_get_iter_at_pos (model_default->sequence, index_);
+      seq_iter = g_sequence_get_iter_at_pos (sequence, index_);
       seq_iter = g_sequence_insert_before (seq_iter, array);
       pos = index_;
     }
@@ -544,10 +535,11 @@ clutter_list_model_remove_row (ClutterModel *model,
                                guint         row)
 {
   ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
+  GSequence *sequence = model_default->priv->sequence;
   GSequenceIter *seq_iter;
   guint pos = 0;
 
-  seq_iter = g_sequence_get_begin_iter (model_default->sequence);
+  seq_iter = g_sequence_get_begin_iter (sequence);
   while (!g_sequence_iter_is_end (seq_iter))
     {
       if (clutter_model_filter_row (model, pos))
@@ -587,7 +579,7 @@ clutter_list_model_get_n_rows (ClutterModel *model)
 {
   ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
 
-  return g_sequence_get_length (model_default->sequence);
+  return g_sequence_get_length (model_default->priv->sequence);
 }
 
 typedef struct
@@ -625,7 +617,7 @@ clutter_list_model_resort (ClutterModel         *model,
   sort_closure.func   = func;
   sort_closure.data   = data;
 
-  g_sequence_sort (CLUTTER_LIST_MODEL (model)->sequence,
+  g_sequence_sort (CLUTTER_LIST_MODEL (model)->priv->sequence,
                    sort_model_default,
                    &sort_closure);
 }
@@ -650,9 +642,10 @@ static void
 clutter_list_model_finalize (GObject *gobject)
 {
   ClutterListModel *model = CLUTTER_LIST_MODEL (gobject);
+  GSequence *sequence = model->priv->sequence;
   GSequenceIter *iter;
 
-  iter = g_sequence_get_begin_iter (model->sequence);
+  iter = g_sequence_get_begin_iter (sequence);
   while (!g_sequence_iter_is_end (iter))
     {
       GValueArray *value_array = g_sequence_get (iter);
@@ -660,7 +653,7 @@ clutter_list_model_finalize (GObject *gobject)
       g_value_array_free (value_array);
       iter = g_sequence_iter_next (iter);
     }
-  g_sequence_free (model->sequence);
+  g_sequence_free (sequence);
 
   G_OBJECT_CLASS (clutter_list_model_parent_class)->finalize (gobject);
 }
@@ -670,6 +663,8 @@ clutter_list_model_class_init (ClutterListModelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterModelClass *model_class = CLUTTER_MODEL_CLASS (klass);
+
+  g_type_class_add_private (klass, sizeof (ClutterListModelPrivate));
 
   gobject_class->finalize = clutter_list_model_finalize;
 
@@ -685,7 +680,9 @@ clutter_list_model_class_init (ClutterListModelClass *klass)
 static void
 clutter_list_model_init (ClutterListModel *model)
 {
-  model->sequence = g_sequence_new (NULL);
+  model->priv = CLUTTER_LIST_MODEL_GET_PRIVATE (model);
+
+  model->priv->sequence = g_sequence_new (NULL);
 }
 
 /**
