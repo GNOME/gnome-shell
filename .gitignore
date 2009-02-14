@@ -178,6 +178,9 @@ stamp-h1
 /tests/conform/test-vertex-buffer-contiguous
 /tests/conform/test-vertex-buffer-interleved
 /tests/conform/test-vertex-buffer-mutability
+/tests/conform/test-list-model-iterate
+/tests/conform/test-list-model-populate
+/tests/conform/test-npot-texture
 /tests/micro-bench/test-glyph-perf
 /tests/micro-bench/test-text
 /tests/tools/disable-npots.sh
