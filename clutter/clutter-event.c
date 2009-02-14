@@ -529,3 +529,25 @@ clutter_events_pending (void)
   return g_queue_is_empty (context->events_queue) == FALSE;
 }
 
+/**
+ * clutter_get_current_event_time:
+ *
+ * Retrieves the timestamp of the last event, if there is an
+ * event or if the event has a timestamp.
+ *
+ * Return value: the event timestamp, or %CLUTTER_CURRENT_TIME
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_get_current_event_time (void)
+{
+  ClutterMainContext *context = clutter_context_get_default ();
+
+  g_return_val_if_fail (context != NULL, FALSE);
+
+  if (context->last_event_time != 0)
+    return context->last_event_time;
+
+  return CLUTTER_CURRENT_TIME;
+}

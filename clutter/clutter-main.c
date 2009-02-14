@@ -1957,6 +1957,8 @@ clutter_do_event (ClutterEvent *event)
 
   CLUTTER_TIMESTAMP (EVENT, "Event received");
 
+  context->last_event_time = clutter_event_get_time (event);
+
   switch (event->type)
     {
       case CLUTTER_NOTHING:

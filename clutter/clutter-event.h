@@ -466,6 +466,8 @@ guint32             clutter_keysym_to_unicode   (guint               keyval);
 
 ClutterStage*       clutter_event_get_stage     (ClutterEvent       *event);
 
+guint32             clutter_get_current_event_time (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVENT_H__ */

@@ -131,6 +131,8 @@ struct _ClutterMainContext
 
   GSList              *input_devices;   /* For extra input devices, i.e
                                            MultiTouch */
+
+  guint32 last_event_time;
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
