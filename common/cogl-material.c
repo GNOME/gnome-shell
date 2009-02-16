@@ -22,6 +22,11 @@
 #include "../gles/cogl-gles2-wrapper.h"
 #endif
 
+#ifdef HAVE_COGL_GL
+#define glActiveTexture ctx->pf_glActiveTexture
+#define glClientActiveTexture ctx->pf_glClientActiveTexture
+#endif
+
 static void _cogl_material_free (CoglMaterial *tex);
 static void _cogl_material_layer_free (CoglMaterialLayer *layer);
 

@@ -162,6 +162,9 @@ typedef struct
   COGL_PFNGLUNIFORMMATRIX4FVARBPROC                pf_glUniformMatrix4fvARB;
 
   COGL_PFNGLDRAWRANGEELEMENTSPROC                  pf_glDrawRangeElements;
+
+  COGL_PFNGLACTIVETEXTUREPROC                      pf_glActiveTexture;
+  COGL_PFNGLCLIENTACTIVETEXTUREPROC                pf_glClientActiveTexture;
 } CoglContext;
 
 CoglContext *

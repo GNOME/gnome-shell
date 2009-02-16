@@ -1083,12 +1083,18 @@ _cogl_features_init ()
       flags |= COGL_FEATURE_VBOS;
     }
 
-  /* This should always be available because it is defined in GL 1.2,
-     but we can't call it directly because under Windows functions >
-     1.1 aren't exported */
+  /* These should always be available because they are defined in GL
+     1.2, but we can't call it directly because under Windows
+     functions > 1.1 aren't exported */
   ctx->pf_glDrawRangeElements =
         (COGL_PFNGLDRAWRANGEELEMENTSPROC)
         cogl_get_proc_address ("glDrawRangeElements");
+  ctx->pf_glActiveTexture =
+        (COGL_PFNGLACTIVETEXTUREPROC)
+        cogl_get_proc_address ("glActiveTexture");
+  ctx->pf_glClientActiveTexture =
+        (COGL_PFNGLCLIENTACTIVETEXTUREPROC)
+        cogl_get_proc_address ("glClientActiveTexture");
 
   /* Cache features */
   ctx->feature_flags = flags;
