@@ -502,6 +502,31 @@ message_translate (ClutterBackend *backend,
       event->motion.x = GET_X_LPARAM (msg->lParam);
       event->motion.y = GET_Y_LPARAM (msg->lParam);
       event->motion.modifier_state = get_modifier_state (msg->wParam);
+      /* We need to start tracking when the mouse leaves the stage if
+         we're not already */
+      if (!stage_win32->tracking_mouse)
+        {
+          TRACKMOUSEEVENT tmevent;
+
+          tmevent.cbSize = sizeof (tmevent);
+          tmevent.dwFlags = TME_LEAVE;
+          tmevent.hwndTrack = stage_win32->hwnd;
+          TrackMouseEvent (&tmevent);
+
+          stage_win32->tracking_mouse = TRUE;
+        }
+      break;
+
+    case WM_MOUSELEAVE:
+      event->crossing.type = CLUTTER_LEAVE;
+      event->crossing.time = msg->time;
+      event->crossing.x = msg->pt.x;
+      event->crossing.y = msg->pt.y;
+
+      /* When we get a leave message the mouse tracking is
+         automatically cancelled so we'll need to start it again when
+         the mouse next enters the window */
+      stage_win32->tracking_mouse = FALSE;
       break;
 
     case WM_KEYDOWN:
