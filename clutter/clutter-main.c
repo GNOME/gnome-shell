@@ -1936,7 +1936,7 @@ generate_enter_leave_events (ClutterEvent *event)
         }
     }
 
-  set_motion_last_actor (motion_current_actor, event->motion.device);
+  set_motion_last_actor (motion_current_actor, device);
 }
 
 /**
