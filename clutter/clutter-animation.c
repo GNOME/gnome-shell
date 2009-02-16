@@ -1180,6 +1180,14 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
           break;
         }
 
+      if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+        {
+          g_warning ("Cannot bind property `%s': the property is "
+                     "construct-only",
+                     property_name);
+          break;
+        }
+
       if (!(pspec->flags & G_PARAM_WRITABLE))
         {
           g_warning ("Cannot bind property `%s': the property is "
