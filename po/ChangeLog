@@ -1,3 +1,7 @@
+2009-02-16  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* nl.po: Updated Dutch translation by Wouter Bolsterlee.
+
 2009-02-15 Kenneth Nielsen <k.nielsen81@gmail.com>
 
 	* da.po: Updated Danish translation by Ask H. Larsen
@@ -31,7 +35,7 @@
 
 	* ast.po: Updated Asturian translation on behalf of Mikel González.
 
-2009-02-07   Clytie Siddall <clytie@riverland.net.au>
+2009-02-07  Clytie Siddall <clytie@riverland.net.au>
 
 	* vi.po: Updated Vietnamese translation.
 
@@ -84,7 +88,7 @@
 
 2009-01-03  甘露(Gan Lu) <rhythm.gan@gmail.com>
 
-        * zh_CN.po: Updated Chinese Simplified translation
+	* zh_CN.po: Updated Chinese Simplified translation
 
 2009-01-03  Priit Laes  <plaes at svn dot gnome dot org>
 
@@ -240,7 +244,7 @@
 
 2008-09-12  Goran Rakić  <grakic@devbase.net>
 
-        * sr.po, sr@latin.po: Updated Serbian translation (by Miloš Popović).
+	* sr.po, sr@latin.po: Updated Serbian translation (by Miloš Popović).
 
 2008-09-09  Robert Sedak  <robert.sedak@sk.t-com.hr>
 
@@ -376,7 +380,7 @@
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2008-06-01   Clytie Siddall <clytie@riverland.net.au>
+2008-06-01  Clytie Siddall <clytie@riverland.net.au>
 
 	* vi.po: Updated Vietnamese translation.
 
@@ -462,7 +466,7 @@
 
 2008-03-07 Maxim Dziumanenko <dziumanenko@gmail.com>
 
-        * uk.po: Updated Ukrainian translation.
+	* uk.po: Updated Ukrainian translation.
 
 2008-03-03  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
