@@ -153,6 +153,8 @@
 #define glDeleteBuffers ctx->pf_glDeleteBuffersARB
 #define glMapBuffer ctx->pf_glMapBufferARB
 #define glUnmapBuffer ctx->pf_glUnmapBufferARB
+#define glActiveTexture ctx->pf_glActiveTexture
+#define glClientActiveTexture ctx->pf_glClientActiveTexture
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
 #endif

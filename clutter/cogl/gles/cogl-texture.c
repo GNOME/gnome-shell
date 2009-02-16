@@ -56,6 +56,8 @@
 #ifdef HAVE_COGL_GL
 
 #define glDrawRangeElements ctx->pf_glDrawRangeElements
+#define glActiveTexture ctx->pf_glActiveTexture
+#define glClientActiveTexture ctx->pf_glClientActiveTexture
 
 #else
 

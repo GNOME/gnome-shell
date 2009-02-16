@@ -1026,6 +1026,14 @@ typedef void
    GLenum                type,
    const GLvoid         *indices);
 
+typedef void
+  (APIENTRYP             COGL_PFNGLACTIVETEXTUREPROC)
+  (GLenum                texture);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLCLIENTACTIVETEXTUREPROC)
+  (GLenum                texture);
+
 G_END_DECLS
 
 #endif
