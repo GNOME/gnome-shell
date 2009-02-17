@@ -8,6 +8,7 @@ clutter-*.pc
 clutter.pc
 .deps
 .libs
+*.o
 *.lo
 *.la
 ChangeLog*
