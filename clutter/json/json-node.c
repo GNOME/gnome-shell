@@ -158,7 +158,7 @@ json_node_take_object (JsonNode   *node,
  *
  * Retrieves the #JsonObject stored inside a #JsonNode
  *
- * Return value: the #JsonObject
+ * Return value: (transfer none): the #JsonObject
  */
 JsonObject *
 json_node_get_object (JsonNode *node)
@@ -243,7 +243,7 @@ json_node_take_array (JsonNode  *node,
  *
  * Retrieves the #JsonArray stored inside a #JsonNode
  *
- * Return value: the #JsonArray
+ * Return value: (transfer none): the #JsonArray
  */
 JsonArray *
 json_node_get_array (JsonNode *node)
@@ -391,7 +391,7 @@ json_node_type_name (JsonNode *node)
  *
  * Retrieves the parent #JsonNode of @node.
  *
- * Return value: the parent node, or %NULL if @node is the root node
+ * Return value: (transfer none): the parent node, or %NULL if @node is the root node
  */
 JsonNode *
 json_node_get_parent (JsonNode *node)

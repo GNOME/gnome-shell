@@ -197,10 +197,11 @@ g_hash_table_get_keys (GHashTable *hash_table)
  * Retrieves all the names of the members of a #JsonObject. You can
  * obtain the value for each member using json_object_get_member().
  *
- * Return value: a #GList of member names. The content of the list
- *   is owned by the #JsonObject and should never be modified or
- *   freed. When you have finished using the returned list, use
- *   g_list_free() to free the resources it has allocated.
+ * Return value: (transfer container) (element-type utf8): a #GList of
+ *   member names. The content of the list is owned by the #JsonObject
+ *   and should never be modified or freed. When you have finished using
+ *   the returned list, use g_list_free() to free the resources it has
+ *   allocated.
  */
 GList *
 json_object_get_members (JsonObject *object)
@@ -218,7 +219,7 @@ json_object_get_members (JsonObject *object)
  * Retrieves the #JsonNode containing the value of @member_name inside
  * a #JsonObject.
  *
- * Return value: a pointer to the node for the requested object
+ * Return value: (transfer none): a pointer to the node for the requested object
  *   member, or %NULL
  */
 JsonNode *

@@ -847,7 +847,7 @@ clutter_stage_init (ClutterStage *self)
  *
  * Clutter guarantess the existence of the default stage.
  *
- * Return value: the main #ClutterStage.  You should never
+ * Return value: (transfer none): the main #ClutterStage.  You should never
  *   destroy or unref the returned actor.
  */
 ClutterActor *
@@ -1333,7 +1333,7 @@ clutter_stage_read_pixels (ClutterStage *stage,
  * Checks the scene at the coordinates @x and @y and returns a pointer
  * to the #ClutterActor at those coordinates.
  *
- * Return value: the actor at the specified coordinates, if any
+ * Return value: (transfer none): the actor at the specified coordinates, if any
  */
 ClutterActor *
 clutter_stage_get_actor_at_pos (ClutterStage *stage,
@@ -1537,7 +1537,7 @@ clutter_stage_set_key_focus (ClutterStage *stage,
  *
  * Retrieves the actor that is currently under key focus.
  *
- * Return value: the actor with key focus, or the stage
+ * Return value: (transfer none): the actor with key focus, or the stage
  *
  * Since: 0.6
  */

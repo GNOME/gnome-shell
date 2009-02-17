@@ -936,7 +936,7 @@ clutter_path_get_node (ClutterPath     *path,
  * list to become invalid so you should copy them if you want to keep
  * the list.
  *
- * Return value: a list of nodes in the path.
+ * Return value: (transfer container) (element-type ClutterPathNode): a list of nodes in the path.
  *
  * Since: 1.0
  */

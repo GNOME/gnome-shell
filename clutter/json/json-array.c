@@ -160,9 +160,9 @@ json_array_unref (JsonArray *array)
  *
  * Gets the elements of a #JsonArray as a list of #JsonNode<!-- -->s.
  *
- * Return value: a #GList containing the elements of the array. The
- *   contents of the list are owned by the array and should never be
- *   modified or freed. Use g_list_free() on the returned list when
+ * Return value: (transfer container) (element-type JsonNode): a #GList containing
+ *   the elements of the array. The contents of the list are owned by the array and
+ *   should never be  modified or freed. Use g_list_free() on the returned list when
  *   done using it
  */
 GList *
@@ -189,7 +189,7 @@ json_array_get_elements (JsonArray *array)
  * Retrieves the #JsonNode containing the value of the element at @index_
  * inside a #JsonArray.
  *
- * Return value: a pointer to the #JsonNode at the requested index
+ * Return value: (transfer none): a pointer to the #JsonNode at the requested index
  */
 JsonNode *
 json_array_get_element (JsonArray *array,

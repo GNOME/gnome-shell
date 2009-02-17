@@ -533,16 +533,16 @@ clutter_value_get_shader_int (const GValue *value,
 /**
  * clutter_value_get_shader_matrix:
  * @value: a #GValue
- * @length: return location for the number of returned floating
+ * @length: (out): return location for the number of returned floating
  *   point values, or %NULL
  *
  * Retrieves a matrix of floating point values stored inside
  * the passed #GValue. @value must have been initialized with
  * %CLUTTER_TYPE_SHADER_MATRIX.
  *
- * Return value: the pointer to a matrix of floating point values.
- *   The returned value is owned by the #GValue and should never
- *   be modified or freed.
+ * Return value: (array length=length) (transfer none): the pointer to a matrix
+ *   of floating point values. The returned value is owned by the #GValue and
+ *   should never be modified or freed.
  *
  * Since: 0.8
  */

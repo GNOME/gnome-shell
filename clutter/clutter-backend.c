@@ -364,14 +364,14 @@ _clutter_backend_get_units_per_em (ClutterBackend *backend)
 }
 
 /**
- * clutter_get_default_backend:
+ * clutter_get_default_backend1:
  *
  * Retrieves the default #ClutterBackend used by Clutter. The
  * #ClutterBackend holds backend-specific configuration options.
  *
- * Return value: the default backend. You should not ref or
- *   unref the returned object. Applications should rarely need
- *   to use this.
+ * Return value: (transfer none): the default backend. You should
+ *   not ref or unref the returned object. Applications should rarely
+ *   need to use this.
  *
  * Since: 0.4
  */
@@ -561,7 +561,7 @@ clutter_backend_set_font_options (ClutterBackend       *backend,
  *
  * Retrieves the font options for @backend.
  *
- * Return value: the font options of the #ClutterBackend
+ * Return value: (transfer none): the font options of the #ClutterBackend
  *
  * Since: 0.8
  */

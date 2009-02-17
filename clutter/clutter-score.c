@@ -1078,8 +1078,9 @@ clutter_score_remove_all (ClutterScore *score)
  *
  * Retrieves the #ClutterTimeline for @id inside @score.
  *
- * Return value: the requested timeline, or %NULL. This function does
- *   not increase the reference count on the returned #ClutterTimeline
+ * Return value: (transfer none): the requested timeline, or %NULL. This
+ *   function does not increase the reference count on the returned
+ *   #ClutterTimeline
  *
  * Since: 0.6
  */
@@ -1108,10 +1109,10 @@ clutter_score_get_timeline (ClutterScore *score,
  *
  * Retrieves a list of all the #ClutterTimelines managed by @score.
  *
- * Return value: a #GSList containing all the timelines in the score.
- *   This function does not increase the reference count of the
- *   returned timelines. Use g_slist_free() on the returned list to
- *   deallocate its resources.
+ * Return value: (transfer container) (element-type ClutterTimeline): a #GSList
+ *   containing all the timelines in the score. This function does not increase
+ *   the reference count of the returned timelines. Use g_slist_free() on the
+ *   returned list to deallocate its resources.
  *
  * Since: 0.6
  */

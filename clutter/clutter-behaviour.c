@@ -457,7 +457,7 @@ clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
  *
  * Gets an actor the behaviour was applied to referenced by index num.
  *
- * Return value: A Clutter actor or NULL if @index_ is invalid.
+ * Return value: (transfer none): A Clutter actor or NULL if @index_ is invalid.
  *
  * Since: 0.2
  */
@@ -507,7 +507,7 @@ clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
  *
  * Retrieves the #ClutterAlpha object bound to @behave.
  *
- * Return value: a #ClutterAlpha object, or %NULL if no alpha
+ * Return value: (transfer none): a #ClutterAlpha object, or %NULL if no alpha
  *   object has been bound to this behaviour.
  * 
  * Since: 0.2
@@ -613,8 +613,8 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
  * for derived classes to use this in there alpha notify method but use 
  * #clutter_behaviour_actors_foreach as it avoids alot of needless allocations.
  *
- * Return value: a list of actors. You should free the returned list
- *   with g_slist_free() when finished using it.
+ * Return value: (transfer container) (element-type ClutterActor): a list of actors.
+ *   You should free the returned list with g_slist_free() when finished using it.
  * 
  * Since: 0.2
  */

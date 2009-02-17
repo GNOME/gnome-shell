@@ -2947,7 +2947,7 @@ clutter_text_set_markup (ClutterText *self,
  *
  * Retrieves the current #PangoLayout used by a #ClutterText actor.
  *
- * Return value: a #PangoLayout. The returned object is owned by
+ * Return value: (transfer none): a #PangoLayout. The returned object is owned by
  *   the #ClutterText actor and should not be modified or freed
  *
  * Since: 1.0
@@ -3236,9 +3236,8 @@ clutter_text_set_attributes (ClutterText   *self,
  * Gets the attribute list that was set on the #ClutterText actor
  * clutter_text_set_attributes(), if any.
  *
- * Return value: the attribute list, or %NULL if none was set. The
- *  returned value is owned by the #ClutterText and should not be
- *  unreferenced.
+ * Return value: (transfer none): the attribute list, or %NULL if none was set. The
+ *  returned value is owned by the #ClutterText and should not be unreferenced.
  *
  * Since: 1.0
  */

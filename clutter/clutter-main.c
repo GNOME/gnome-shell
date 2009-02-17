@@ -1377,7 +1377,7 @@ post_parse_hook (GOptionContext  *context,
  * Clutter #GOptionGroup has returned %TRUE, Clutter is guaranteed to be
  * initialized.
  *
- * Return value: a #GOptionGroup for the commandline arguments
+ * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
  * Since: 0.2
@@ -1420,7 +1420,7 @@ clutter_get_option_group (void)
  * function when needing to set foreign display connection with
  * clutter_x11_set_display(), or with gtk_clutter_init().
  *
- * Return value: a #GOptionGroup for the commandline arguments
+ * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
  * Since: 0.8.2
@@ -1441,10 +1441,15 @@ clutter_get_option_group_without_init (void)
   return group;
 }
 
+/* Note that the gobject-introspection annotations for the argc/argv
+ * parameters do not produce the right result; however, they do
+ * allow the common case of argc=NULL, argv=NULL to work.
+ */
+
 /**
  * clutter_init_with_args:
- * @argc: a pointer to the number of command line arguments
- * @argv: a pointer to the array of command line arguments
+ * @argc: (inout): a pointer to the number of command line arguments
+ * @argv: (array length=argc) (inout): a pointer to the array of command line arguments
  * @parameter_string: a string which is displayed in the
  *   first line of <option>--help</option> output, after
  *   <literal><replaceable>programname</replaceable> [OPTION...]</literal>
@@ -1564,8 +1569,8 @@ clutter_parse_args (int    *argc,
 
 /**
  * clutter_init:
- * @argc: The number of arguments in @argv
- * @argv: A pointer to an array of arguments.
+ * @argc: (inout): The number of arguments in @argv
+ * @argv: (array length=argc) (inout): A pointer to an array of arguments.
  *
  * It will initialise everything needed to operate with Clutter and
  * parses some standard command line options. @argc and @argv are
@@ -2220,8 +2225,8 @@ clutter_do_event (ClutterEvent *event)
  *
  * Retrieves the #ClutterActor with @id.
  *
- * Return value: the actor with the passed id or %NULL. The returned
- *   actor does not have its reference count increased.
+ * Return value: (transfer none): the actor with the passed id or %NULL.
+ *   The returned actor does not have its reference count increased.
  *
  * Since: 0.6
  */
@@ -2454,7 +2459,7 @@ clutter_ungrab_pointer_for_device (gint id)
  *
  * Queries the current pointer grab of clutter.
  *
- * Return value: the actor currently holding the pointer grab, or NULL if there is no grab.
+ * Return value: (transfer none): the actor currently holding the pointer grab, or NULL if there is no grab.
  *
  * Since: 0.6
  */
@@ -2539,7 +2544,7 @@ clutter_ungrab_keyboard (void)
  *
  * Queries the current keyboard grab of clutter.
  *
- * Return value: the actor currently holding the keyboard grab, or NULL if there is no grab.
+ * Return value: (transfer none): the actor currently holding the keyboard grab, or NULL if there is no grab.
  *
  * Since: 0.6
  */
@@ -2715,7 +2720,7 @@ clutter_get_font_flags (void)
  *
  * Retrieves the #ClutterInputDevice from its id.
  *
- * Return value: a #ClutterInputDevice, or %NULL
+ * Return value: (transfer none): a #ClutterInputDevice, or %NULL
  *
  * Since: 0.8
  */
@@ -2748,9 +2753,8 @@ clutter_get_input_device_for_id (gint id)
  * You can use the global font map object with the COGL
  * Pango API.
  *
- * Return value: the #PangoFontMap instance. The returned
- *   value is owned by Clutter and it should never be
- *   unreferenced.
+ * Return value: (transfer none): the #PangoFontMap instance. The returned
+ *   value is owned by Clutter and it should never be unreferenced.
  *
  * Since: 1.0
  */

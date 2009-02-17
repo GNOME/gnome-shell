@@ -161,8 +161,8 @@ clutter_stage_manager_init (ClutterStageManager *stage_manager)
  *
  * Returns the default #ClutterStageManager.
  *
- * Return value: the default stage manager instance. The returned object
- *   is owned by Clutter and you should not reference or unreference it.
+ * Return value: (transfer none): the default stage manager instance. The returned
+ *   object is owned by Clutter and you should not reference or unreference it.
  *
  * Since: 0.8
  */
@@ -207,8 +207,8 @@ clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
  *
  * Returns the default #ClutterStage.
  *
- * Return value: the default stage. The returned object is owned by
- *   Clutter and you should never reference or unreference it
+ * Return value: (transfer none): the default stage. The returned object
+ *   is owned by Clutter and you should never reference or unreference it
  *
  * Since: 0.8
  */
@@ -224,8 +224,8 @@ clutter_stage_manager_get_default_stage (ClutterStageManager *stage_manager)
  *
  * Lists all currently used stages.
  *
- * Return value: a newly allocated list of #ClutterStage objects. Use
- *   g_slist_free() to deallocate it when done.
+ * Return value: (transfer container) (element-type ClutterStage): a newly allocated list
+ *   of #ClutterStage objects. Use g_slist_free() to deallocate it when done.
  *
  * Since: 0.8
  */

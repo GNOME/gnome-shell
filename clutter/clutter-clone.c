@@ -342,7 +342,7 @@ clutter_clone_set_source (ClutterClone *clone,
  *
  * Retrieves the source #ClutterActor being cloned by @clone
  *
- * Return value: the actor source for the clone
+ * Return value: (transfer none): the actor source for the clone
  *
  * Since: 1.0
  */

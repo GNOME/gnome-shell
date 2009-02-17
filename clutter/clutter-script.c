@@ -1888,8 +1888,8 @@ clutter_script_load_from_data (ClutterScript  *script,
  * Retrieves the object bound to @name. This function does not increment
  * the reference count of the returned object.
  *
- * Return value: the named object, or %NULL if no object with the
- *   given name was available
+ * Return value: : (transfer none): the named object, or %NULL if no object
+ *   with the given name was available
  *
  * Since: 0.6
  */
@@ -2438,8 +2438,8 @@ clutter_script_lookup_filename (ClutterScript *script,
  * Note: this function does not increment the reference count of the
  * objects it returns.
  *
- * Return value: a list of #GObject<!-- -->s, or %NULL. The objects are
- *   owned by the #ClutterScript instance. Use g_list_free() on the
+ * Return value: (transfer container) (element-type GObject): a list of #GObject<!-- -->s,
+ *   or %NULL. The objects are owned by the #ClutterScript instance. Use g_list_free() on the
  *   returned value when done.
  *
  * Since: 0.8.2

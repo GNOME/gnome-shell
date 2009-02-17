@@ -169,7 +169,7 @@ clutter_event_get_coords (ClutterEvent *event,
  * Retrieves the source #ClutterActor the event originated from, or
  * NULL if the event has no source.
  *
- * Return value: a #ClutterActor
+ * Return value: (transfer none): a #ClutterActor
  *
  * Since: 0.6
  */
@@ -188,7 +188,7 @@ clutter_event_get_source (ClutterEvent *event)
  * Retrieves the source #ClutterStage the event originated for, or
  * NULL if the event has no stage.
  *
- * Return value: a #ClutterStage
+ * Return value: (transfer none): a #ClutterStage
  *
  * Since: 0.8
  */
@@ -460,7 +460,7 @@ clutter_event_get (void)
  * Returns a pointer to the first event from the event queue but 
  * does not remove it. 
  *
- * Return value: A #ClutterEvent or NULL if queue empty.
+ * Return value: (transfer none): A #ClutterEvent or NULL if queue empty.
  *
  * Since: 0.4
  */

@@ -424,8 +424,9 @@ get_children_cb (ClutterActor *child,
  *
  * Retrieves all the children of @container.
  *
- * Return value: a list of #ClutterActor<!-- -->s. Use g_list_free()
- *   on the returned list when done.
+ * Return value: (element-type Actor) (transfer container): a list
+ *   of #ClutterActor<!-- -->s. Use g_list_free() on the returned
+ *   list when done.
  *
  * Since: 0.4
  */
@@ -609,8 +610,8 @@ clutter_container_sort_depth_order (ClutterContainer *container)
  * Finds a child actor of a container by its name. Search recurses
  * into any child container.
  *
- * Return value: The child actor with the requested name, or %NULL if no
- *   actor with that name was found.
+ * Return value: (transfer none): The child actor with the requested name,
+ *   or %NULL if no actor with that name was found.
  *
  * Since: 0.6
  */
@@ -753,9 +754,9 @@ destroy_child_meta (ClutterContainer *container,
  * Retrieves the #ClutterChildMeta which contains the data about the
  * @container specific state for @actor.
  *
- * Return value: the #ClutterChildMeta for the @actor child of @container
- *   or %NULL if the specifiec actor does not exist or the container is not
- *   configured to provide #ClutterChildMeta<!-- -->s
+ * Return value: (transfer none): the #ClutterChildMeta for the @actor child
+ *   of @container or %NULL if the specifiec actor does not exist or the
+ *   container is not configured to provide #ClutterChildMeta<!-- -->s
  *
  * Since: 0.8
  */
@@ -826,8 +827,8 @@ clutter_container_destroy_child_meta (ClutterContainer *container,
  *
  * Looks up the #GParamSpec for a child property of @klass.
  *
- * Return value: The #GParamSpec for the property or %NULL if no such
- *   property exist.
+ * Return value: (transfer none): The #GParamSpec for the property or %NULL
+ *   if no such property exist.
  *
  * Since: 0.8
  */
@@ -865,8 +866,8 @@ clutter_container_class_find_child_property (GObjectClass *klass,
  *
  * Returns an array of #GParamSpec for all child properties.
  *
- * Return value: an array of #GParamSpec<!-- -->s which should be freed
- *   after use.
+ * Return value: (array length=n_properties) (transfer container): an array
+ *   of #GParamSpec<!-- -->s which should be freed after use.
  *
  * Since: 0.8
  */

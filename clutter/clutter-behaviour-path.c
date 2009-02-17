@@ -426,7 +426,7 @@ clutter_behaviour_path_set_path (ClutterBehaviourPath *pathb,
  *
  * Get the current path of the behaviour
  *
- * Return value: the path
+ * Return value: (transfer none): the path
  *
  * Since: 1.0
  */

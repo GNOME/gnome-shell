@@ -465,7 +465,7 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
  *
  * Gets the #ClutterTimeline bound to @alpha.
  *
- * Return value: a #ClutterTimeline instance
+ * Return value: (transfer none): a #ClutterTimeline instance
  *
  * Since: 0.2
  */

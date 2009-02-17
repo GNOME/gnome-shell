@@ -627,9 +627,9 @@ clutter_animation_update_property (ClutterAnimation *animation,
  * Retrieves the #ClutterInterval associated to @property_name
  * inside @animation.
  *
- * Return value: a #ClutterInterval or %NULL if no property with
- *   the same name was found. The returned interval is owned by
- *   the #ClutterAnimation and should not be unreferenced
+ * Return value: (transfer none): a #ClutterInterval or %NULL if no
+ *   property with the same name was found. The returned interval is
+ *   owned by the #ClutterAnimation and should not be unreferenced
  *
  * Since: 1.0
  */
@@ -794,7 +794,7 @@ clutter_animation_set_object (ClutterAnimation *animation,
  *
  * Retrieves the #GObject attached to @animation.
  *
- * Return value: a #GObject
+ * Return value: (transfer none): a #GObject
  *
  * Since: 1.0
  */
@@ -1044,7 +1044,7 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
  *
  * Retrieves the #ClutterTimeline used by @animation
  *
- * Return value: the timeline used by the animation
+ * Return value: (transfer none): the timeline used by the animation
  *
  * Since: 1.0
  */
@@ -1117,7 +1117,7 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
  *
  * Retrieves the #ClutterAlpha used by @animation.
  *
- * Return value: the alpha object used by the animation
+ * Return value: (transfer none): the alpha object used by the animation
  *
  * Since: 1.0
  */
@@ -1261,7 +1261,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
  * This function is useful if you want to use an existing #ClutterAlpha
  * to animate @actor.
  *
- * Return value: a #ClutterAnimation object. The object is owned by the
+ * Return value: (transfer none): a #ClutterAnimation object. The object is owned by the
  *   #ClutterActor and should not be unreferenced with g_object_unref()
  *
  * Since: 1.0
@@ -1326,8 +1326,9 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  * This function is useful if you want to use an existing timeline
  * to animate @actor.
  *
- * Return value: a #ClutterAnimation object. The object is owned by the
- *   #ClutterActor and should not be unreferenced with g_object_unref()
+ * Return value: (transfer none): a #ClutterAnimation object. The object is
+ *    owned by the #ClutterActor and should not be unreferenced with
+ *    g_object_unref()
  *
  * Since: 1.0
  */
@@ -1423,8 +1424,9 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * as it is complete. To avoid this, you should keep a reference on the
  * returned value using g_object_ref().</note>
  *
- * Return value: a #ClutterAnimation object. The object is owned by the
- *   #ClutterActor and should not be unreferenced with g_object_unref()
+ * Return value: (transfer none): a #ClutterAnimation object. The object is
+ *   owned by the #ClutterActor and should not be unreferenced with
+ *   g_object_unref()
  *
  * Since: 1.0
  */

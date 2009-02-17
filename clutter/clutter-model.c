@@ -593,7 +593,7 @@ clutter_model_set_column_name (ClutterModel *model,
  * clutter_model_set_types:
  * @model: a #ClutterModel
  * @n_columns: number of columns for the model
- * @types: an array of #GType types
+ * @types: (array length=n_columns): an array of #GType types
  *
  * Sets the types of the columns inside a #ClutterModel.
  *
@@ -637,7 +637,7 @@ clutter_model_set_types (ClutterModel *model,
  * clutter_model_set_names:
  * @model: a #ClutterModel
  * @n_columns: the number of column names
- * @names: an array of strings
+ * @names: (array length=n_columns): an array of strings
  *
  * Assigns a name to the columns of a #ClutterModel.
  *
@@ -691,8 +691,8 @@ clutter_model_get_n_columns (ClutterModel *model)
  * clutter_model_appendv:
  * @model: a #ClutterModel
  * @n_columns: the number of columns and values
- * @columns: a vector with the columns to set
- * @values: a vector with the values
+ * @columns: (array length=n_columns): a vector with the columns to set
+ * @values: (array length=n_columns): a vector with the values
  *
  * Creates and appends a new row to the #ClutterModel, setting the row
  * values for the given @columns upon creation.
@@ -787,8 +787,8 @@ clutter_model_append (ClutterModel *model,
  * clutter_model_prependv:
  * @model: a #ClutterModel
  * @n_columns: the number of columns and values to set
- * @columns: a vector containing the columns to set
- * @values: a vector containing the values for the cells
+ * @columns: (array length=n_columns): a vector containing the columns to set
+ * @values: (array length=n_columns): a vector containing the values for the cells
  *
  * Creates and prepends a new row to the #ClutterModel, setting the row
  * values for the given @columns upon creation.
@@ -924,8 +924,8 @@ clutter_model_insert (ClutterModel *model,
  * @model: a #ClutterModel
  * @row: row index
  * @n_columns: the number of columns and values to set
- * @columns: a vector containing the columns to set
- * @values: a vector containing the values for the cells
+ * @columns: (array length=n_columns): a vector containing the columns to set
+ * @values: (array length=n_columns): a vector containing the values for the cells
  *
  * Inserts data at @row into the #ClutterModel, setting the row
  * values for the given @columns upon creation.
@@ -1117,9 +1117,9 @@ clutter_model_get_column_type (ClutterModel *model,
  *
  * Retrieves a #ClutterModelIter representing the row at the given index.
  *
- * Return value: A new #ClutterModelIter, or %NULL if @row was out of bounds.
- *   When done using the iterator object, call g_object_unref() to deallocate
- *   its resources
+ * Return value: (transfer full): A new #ClutterModelIter, or %NULL if @row was
+ *   out of bounds. When done using the iterator object, call g_object_unref()
+ *   to deallocate its resources
  *
  * Since: 0.6
  */
@@ -1145,7 +1145,7 @@ clutter_model_get_iter_at_row (ClutterModel *model,
  *
  * Retrieves a #ClutterModelIter representing the first row in @model.
  *
- * Return value: A new #ClutterModelIter. Call g_object_unref() when
+ * Return value: (transfer full): A new #ClutterModelIter. Call g_object_unref() when
  *   done using it
  *
  * Since: 0.6
@@ -1164,7 +1164,7 @@ clutter_model_get_first_iter (ClutterModel *model)
  *
  * Retrieves a #ClutterModelIter representing the last row in @model.
  *
- * Return value: A new #ClutterModelIter. Call g_object_unref() when
+ * Return value: (transfer full): A new #ClutterModelIter. Call g_object_unref() when
  *   done using it
  *
  * Since: 0.6
@@ -1928,7 +1928,7 @@ clutter_model_iter_is_last (ClutterModelIter *iter)
  * The model implementation should take into account the presence of
  * a filter function.
  *
- * Return value: The passed iterator, updated to point at the next
+ * Return value: (transfer none): The passed iterator, updated to point at the next
  *   row in the model.
  *
  * Since: 0.6
@@ -1955,7 +1955,7 @@ clutter_model_iter_next (ClutterModelIter *iter)
  * The model implementation should take into account the presence of
  * a filter function.
  *
- * Return value: The passed iterator, updated to point at the previous
+ * Return value: (transfer none): The passed iterator, updated to point at the previous
  *   row in the model.
  *
  * Since: 0.6
@@ -1980,7 +1980,7 @@ clutter_model_iter_prev (ClutterModelIter *iter)
  * 
  * Retrieves a pointer to the #ClutterModel that this iter is part of.
  *
- * Return value: a pointer to a #ClutterModel.
+ * Return value: (transfer none): a pointer to a #ClutterModel.
  *
  * Since: 0.6
  */

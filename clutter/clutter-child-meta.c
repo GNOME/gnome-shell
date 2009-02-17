@@ -156,7 +156,7 @@ clutter_child_meta_init (ClutterChildMeta *self)
  *
  * Retrieves the container using @data
  *
- * Return value: a #ClutterContainer
+ * Return value: (transfer none): a #ClutterContainer
  *
  * Since: 0.8
  */
@@ -174,7 +174,7 @@ clutter_child_meta_get_container (ClutterChildMeta *data)
  *
  * Retrieves the actor wrapped by @data
  *
- * Return value: a #ClutterActor
+ * Return value: (transfer none): a #ClutterActor
  *
  * Since: 0.8
  */

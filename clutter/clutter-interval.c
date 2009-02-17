@@ -693,8 +693,8 @@ clutter_interval_get_initial_value (ClutterInterval *interval,
  *
  * Gets the pointer to the initial value of @interval
  *
- * Return value: the initial value of the interval. The value
- *   is owned by the #ClutterInterval and it should not be
+ * Return value: (transfer none): the initial value of the interval.
+ *   The value is owned by the #ClutterInterval and it should not be
  *   modified or freed
  *
  * Since: 1.0
@@ -766,8 +766,8 @@ clutter_interval_get_final_value (ClutterInterval *interval,
  *
  * Gets the pointer to the final value of @interval
  *
- * Return value: the final value of the interval. The value
- *   is owned by the #ClutterInterval and it should not be
+ * Return value: (transfer none): the final value of the interval.
+ *   The value is owned by the #ClutterInterval and it should not be
  *   modified or freed
  *
  * Since: 1.0

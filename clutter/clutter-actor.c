@@ -3358,10 +3358,10 @@ clutter_actor_queue_relayout (ClutterActor *self)
 /**
  * clutter_actor_get_preferred_size:
  * @self: a #ClutterActor
- * @min_width_p: return location for the minimum width, or %NULL
- * @min_height_p: return location for the minimum height, or %NULL
- * @natural_width_p: return location for the natural width, or %NULL
- * @natural_height_p: return location for the natural height, or %NULL
+ * @min_width_p: (out) (allow-none): return location for the minimum width, or %NULL
+ * @min_height_p: (out) (allow-none): return location for the minimum height, or %NULL
+ * @natural_width_p: (out) (allow-none): return location for the natural width, or %NULL
+ * @natural_height_p: (out) (allow-none): return location for the natural height, or %NULL
  *
  * Computes the preferred minimum and natural size of an actor, taking into
  * account the actor's geometry management (either height-for-width
@@ -6121,7 +6121,7 @@ clutter_actor_set_parent (ClutterActor *self,
  *
  * Retrieves the parent of @self.
  *
- * Return Value: The #ClutterActor parent, or %NULL if no parent is set
+ * Return Value: (transfer none): The #ClutterActor parent, or %NULL if no parent is set
  */
 ClutterActor *
 clutter_actor_get_parent (ClutterActor *self)
@@ -6297,7 +6297,7 @@ clutter_actor_reparent (ClutterActor *self,
 /**
  * clutter_actor_raise:
  * @self: A #ClutterActor
- * @below: A #ClutterActor to raise above.
+ * @below: (allow-none): A #ClutterActor to raise above.
  *
  * Puts @self above @below.
  *
@@ -6339,7 +6339,7 @@ clutter_actor_raise (ClutterActor *self,
 /**
  * clutter_actor_lower:
  * @self: A #ClutterActor
- * @above: A #ClutterActor to lower below
+ * @above: (allow-none): A #ClutterActor to lower below
  *
  * Puts @self below @above.
  *
@@ -7253,11 +7253,11 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 /**
  * clutter_actor_transform_stage_point
  * @self: A #ClutterActor
- * @x: x screen coordinate of the point to unproject, in #ClutterUnit<!-- -->s
- * @y: y screen coordinate of the point to unproject, in #ClutterUnit<!-- -->s
- * @x_out: return location for the unprojected x coordinance, in
+ * @x: (in): x screen coordinate of the point to unproject, in #ClutterUnit<!-- -->s
+ * @y: (in): y screen coordinate of the point to unproject, in #ClutterUnit<!-- -->s
+ * @x_out: (out): return location for the unprojected x coordinance, in
  *   #ClutterUnit<!-- -->s
- * @y_out: return location for the unprojected y coordinance, in
+ * @y_out: (out): return location for the unprojected y coordinance, in
  *   #ClutterUnit<!-- -->s
  *
  * This function translates screen coordinates (@x, @y) to
@@ -7601,7 +7601,7 @@ destroy_shader_data (ClutterActor *self)
  *
  * Queries the currently set #ClutterShader on @self.
  *
- * Return value: The currently set #ClutterShader or %NULL if no
+ * Return value: (transfer none): The currently set #ClutterShader or %NULL if no
  *   shader is set.
  *
  * Since: 0.6
@@ -7952,7 +7952,7 @@ clutter_actor_get_box_from_vertices (ClutterVertex    vtx[4],
  *
  * Retrieves the #ClutterStage where @actor is contained.
  *
- * Return value: the stage containing the actor, or %NULL
+ * Return value: (transfer none): the stage containing the actor, or %NULL
  *
  * Since: 0.8
  */
@@ -8055,9 +8055,9 @@ clutter_actor_grab_key_focus (ClutterActor *self)
  * and render text using cogl_pango_render_layout() to reuse the
  * glyphs cache also used by Clutter.
  *
- * Return value: the #PangoContext for a #ClutterActor. The returned
- *   #PangoContext is owned by the actor and should not be unreferenced
- *   by the application code
+ * Return value: (transfer none): the #PangoContext for a #ClutterActor.
+ *   The returned #PangoContext is owned by the actor and should not be
+ *   unreferenced by the application code
  *
  * Since: 1.0
  */

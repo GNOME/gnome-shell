@@ -46,7 +46,7 @@
  * clutter_color_add:
  * @src1: a #ClutterColor
  * @src2: a #ClutterColor
- * @dest: return location for the result
+ * @dest: (out): return location for the result
  *
  * Adds @src2 to @src1 and saves the resulting color
  * inside @dest.
@@ -74,7 +74,7 @@ clutter_color_add (const ClutterColor *src1,
  * clutter_color_subtract:
  * @src1: a #ClutterColor
  * @src2: a #ClutterColor
- * @dest: return location for the result
+ * @dest: (out): return location for the result
  *
  * Subtracts @src2 from @src1 and saves the resulting
  * color inside @dest. This function assumes that the components
@@ -103,7 +103,7 @@ clutter_color_subtract (const ClutterColor *src1,
 /**
  * clutter_color_lighten:
  * @src: a #ClutterColor
- * @dest: return location for the lighter color
+ * @dest: (out): return location for the lighter color
  *
  * Lightens @src by a fixed amount, and saves the changed
  * color in @dest.
@@ -118,7 +118,7 @@ clutter_color_lighten (const ClutterColor *src,
 /**
  * clutter_color_darken:
  * @src: a #ClutterColor
- * @dest: return location for the darker color
+ * @dest: (out): return location for the darker color
  *
  * Darkens @src by a fixed amount, and saves the changed color
  * in @dest.
@@ -226,7 +226,7 @@ clutter_color_to_hlsx (const ClutterColor *src,
 
 /**
  * clutter_color_from_hlsx:
- * @dest: return location for a #ClutterColor
+ * @dest: (out): return location for a #ClutterColor
  * @hue: hue value (0 .. 360)
  * @luminance: luminance value (0 .. 1)
  * @saturation: saturation value (0 .. 1)
@@ -380,7 +380,7 @@ clutter_color_to_hls (const ClutterColor *src,
 
 /**
  * clutter_color_from_hls:
- * @dest: return location for a #ClutterColor
+ * @dest: (out): return location for a #ClutterColor
  * @hue: hue value (0 .. 255)
  * @luminance: luminance value (0 .. 255)
  * @saturation: saturation value (0 .. 255)
@@ -407,7 +407,7 @@ clutter_color_from_hls (ClutterColor *dest,
 /**
  * clutter_color_shade:
  * @src: a #ClutterColor
- * @dest: return location for the shaded color
+ * @dest: (out): return location for the shaded color
  * @shade: the shade factor to apply
  * 
  * Shades @src by the factor of @shade and saves the modified
@@ -424,7 +424,7 @@ clutter_color_shade (const ClutterColor *src,
 /**
  * clutter_color_shadex:
  * @src: a #ClutterColor
- * @dest: return location for the shaded color
+ * @dest: (out): return location for the shaded color
  * @shade: #ClutterFixed the shade factor to apply
  * 
  * Fixed point version of clutter_color_shade().
@@ -481,7 +481,7 @@ clutter_color_to_pixel (const ClutterColor *src)
 
 /**
  * clutter_color_from_pixel:
- * @dest: return location for a #ClutterColor
+ * @dest: (out): return location for a #ClutterColor
  * @pixel: a 32 bit packed integer containing a color
  *
  * Converts @pixel from the packed representation of a four 8 bit channel
@@ -502,7 +502,7 @@ clutter_color_from_pixel (ClutterColor *dest,
 /**
  * clutter_color_parse:
  * @color: a string specifiying a color (named color or #RRGGBBAA)
- * @dest: return location for a #ClutterColor
+ * @dest: (out): return location for a #ClutterColor
  *
  * Parses a string definition of a color, filling the
  * <structfield>red</structfield>, <structfield>green</structfield>, 

@@ -794,7 +794,7 @@ clutter_group_get_n_children (ClutterGroup *self)
  *
  * Gets a groups child held at @index_ in stack.
  *
- * Return value: A Clutter actor or NULL if @index_ is invalid.
+ * Return value: (transfer none): A Clutter actor or NULL if @index_ is invalid.
  *
  * Since: 0.2
  **/

@@ -383,9 +383,9 @@ clutter_binding_pool_new (const gchar *name)
  *   pool = clutter_binding_pool_find (G_OBJECT_TYPE_NAME (instance));
  * ]|
  *
- * Return value: the binding pool for the given class. The returned
- *   #ClutterBindingPool is owned by Clutter and should not be freed
- *   directly
+ * Return value: (transfer none): the binding pool for the given class.
+ *   The returned #ClutterBindingPool is owned by Clutter and should not
+ *   be freed directly
  *
  * Since: 1.0
  */
@@ -417,7 +417,7 @@ clutter_binding_pool_get_for_class (gpointer klass)
  *
  * Finds the #ClutterBindingPool with @name.
  *
- * Return value: a pointer to the #ClutterBindingPool, or %NULL
+ * Return value: (transfer none): a pointer to the #ClutterBindingPool, or %NULL
  *
  * Since: 1.0
  */

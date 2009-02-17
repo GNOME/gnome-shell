@@ -1009,8 +1009,8 @@ json_parser_load_from_data (JsonParser   *parser,
  *
  * Retrieves the top level node from the parsed JSON stream.
  *
- * Return value: the root #JsonNode . The returned node is owned by
- *   the #JsonParser and should never be modified or freed.
+ * Return value: (transfer none): the root #JsonNode . The returned node
+ *   is owned by the #JsonParser and should never be modified or freed.
  */
 JsonNode *
 json_parser_get_root (JsonParser *parser)

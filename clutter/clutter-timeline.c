@@ -1617,9 +1617,9 @@ clutter_timeline_add_marker_at_time (ClutterTimeline *timeline,
  * negative integer, all the markers attached to @timeline will be
  * returned.
  *
- * Return value: a newly allocated, %NULL terminated string array
- *   containing the names of the markers. Use g_strfreev() when
- *   done.
+ * Return value: (array zero-terminated=1 length=n_markers): a newly
+ *   allocated, %NULL terminated string array containing the names of
+ *   the markers. Use g_strfreev() when done.
  *
  * Since: 0.8
  */
