@@ -22,6 +22,7 @@ AC_PREREQ(2.53)
 AC_INIT([clutter],
         [clutter_version],
         [http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter])
+AC_CONFIG_MACRO_DIR([build/autotools])
 AC_CONFIG_SRCDIR([clutter/clutter.h])
 AM_CONFIG_HEADER([config.h])
 
@@ -650,8 +651,14 @@ ALL_LINGUAS=""
 AM_GLIB_GNU_GETTEXT
 GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 
+SHAVE_INIT([build/autotools])
+
 AC_CONFIG_FILES([
         Makefile
+        build/Makefile
+        build/autotools/Makefile
+        build/autotools/shave
+        build/autotools/shave-libtool
         clutter/Makefile
         clutter/clutter-version.h
         clutter/clutter-json.h

@@ -1,4 +1,7 @@
-NULL =
+NULL      =
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
 SUBDIRS = cogl pango $(backendextra) $(clutterbackend)
 
@@ -98,7 +101,7 @@ source_h =					\
 clutter-marshal.h: stamp-clutter-marshal.h
 	@true
 stamp-clutter-marshal.h: clutter-marshal.list
-	$(GLIB_GENMARSHAL) \
+	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
 		--prefix=clutter_marshal \
 		--header \
 	  $(srcdir)/clutter-marshal.list > xgen-cmh \
@@ -107,7 +110,7 @@ stamp-clutter-marshal.h: clutter-marshal.list
 	&& echo timestamp > $(@F)
 
 clutter-marshal.c: clutter-marshal.h Makefile
-	( echo "#include \"clutter-marshal.h\"" ; \
+	$(QUIET_GEN)( echo "#include \"clutter-marshal.h\"" ; \
 	  $(GLIB_GENMARSHAL) \
 	  	--prefix=clutter_marshal \
 		--body \
@@ -118,7 +121,7 @@ clutter-marshal.c: clutter-marshal.h Makefile
 clutter-enum-types.h: stamp-clutter-enum-types.h
 	@true
 stamp-clutter-enum-types.h: $(source_h) Makefile
-	( $(GLIB_MKENUMS) \
+	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/clutter-enum-types.h.in \
 	  $(source_h) ) >> xgen-ceth && \
 	(cmp xgen-ceth clutter-enum-types.h || cp xgen-ceth clutter-enum-types.h) && \
@@ -126,7 +129,7 @@ stamp-clutter-enum-types.h: $(source_h) Makefile
 	echo timestamp > $(@F)
 
 clutter-enum-types.c: clutter-enum-types.h
-	( $(GLIB_MKENUMS) \
+	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/clutter-enum-types.c.in \
 	  $(source_h) ) >> xgen-cetc && \
 	cp xgen-cetc clutter-enum-types.c && \

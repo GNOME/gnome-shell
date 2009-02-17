@@ -8,6 +8,8 @@ endif
 
 DIST_SUBDIRS = clutter tests doc po
 
+ACLOCAL_AMFLAGS = -I build/autotools
+
 pcfiles = \
 	clutter-$(CLUTTER_API_VERSION).pc \
 	clutter-$(CLUTTER_FLAVOUR)-$(CLUTTER_API_VERSION).pc \
