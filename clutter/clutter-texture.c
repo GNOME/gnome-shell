@@ -104,6 +104,7 @@ struct _ClutterTexturePrivate
   gchar                       *load_filename;
   CoglBitmap                  *load_bitmap;
   GError                      *load_error;
+  gboolean                     abort;
 };
 
 enum
@@ -639,6 +640,7 @@ clutter_texture_async_load_cancel (ClutterTexture *texture)
 
   if (priv->load_thread)
     {
+      priv->abort = TRUE;
       g_thread_join (priv->load_thread);
       priv->load_thread = NULL;
     }
@@ -1609,12 +1611,25 @@ clutter_texture_thread_cb (gpointer data)
 static gpointer
 clutter_texture_thread_func (gpointer data)
 {
-  ClutterTexture *self = data;
+  static GStaticMutex    thread_load_mutex = G_STATIC_MUTEX_INIT;
+  ClutterTexture        *self = data;
   ClutterTexturePrivate *priv = self->priv;
 
+  /* we aquire the shared lock, only one thread is allowed to
+   * be loading at a time
+   */
+  g_static_mutex_lock (&thread_load_mutex);
+  if (priv->abort)
+    {
+      g_static_mutex_unlock (&thread_load_mutex);
+      g_free (priv->load_filename);
+      priv->load_filename = NULL;
+      return NULL;
+    }
   /* Try loading with imaging backend */
   priv->load_bitmap = cogl_bitmap_new_from_file (priv->load_filename,
                                                  &priv->load_error);
+  g_static_mutex_unlock (&thread_load_mutex);
   g_free (priv->load_filename);
   priv->load_filename = NULL;
 
@@ -1648,6 +1663,7 @@ clutter_texture_idle_func (gpointer data)
 
   return FALSE;
 }
+
 
 /*
  * clutter_texture_async_load:

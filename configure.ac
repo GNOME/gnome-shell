@@ -590,7 +590,7 @@ AC_ARG_ENABLE([maintainer-flags],
               enable_maintainer_flags=maintainer_flags_default)
 
 if test "x$enable_maintainer_flags" = "xyes"; then
-  MAINTAINER_CFLAGS="-Werror -Wall -Wshadow -Wcast-align -Wno-uninitialized -Wempty-body -Wformat-security -Winit-self"
+  MAINTAINER_CFLAGS="-Werror -Wall -Wshadow -Wcast-align -Wno-strict-aliasing -Wno-uninitialized -Wempty-body -Wformat-security -Winit-self"
 fi
 AC_SUBST(MAINTAINER_CFLAGS)
 
