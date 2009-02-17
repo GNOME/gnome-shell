@@ -70,7 +70,7 @@ function start() {
         } else {
             show_overlay();
         }
-    });
+    };
     display.connect('overlay-key', toggleOverlay);
     global.connect('panel-main-menu', toggleOverlay);
     
