@@ -42,27 +42,6 @@ function start() {
     for (let i = 0; i < children.length; i++)
         children[i].destroy();
 
-    // metacity-clutter currently uses the same prefs as plain metacity,
-    // which probably means we'll be starting out with multiple workspaces;
-    // remove any unused ones
-    let windows = global.get_windows();
-    let maxWorkspace = 0;
-    for (let i = 0; i < windows.length; i++) {
-        let win = windows[i];
-
-        if (!win.get_meta_window().is_on_all_workspaces() &&
-            win.get_workspace() > maxWorkspace) {
-            maxWorkspace = win.get_workspace();
-        }
-    }
-    let screen = global.screen;
-    if (screen.n_workspaces > maxWorkspace) {
-        for (let w = screen.n_workspaces - 1; w > maxWorkspace; w--) {
-            let workspace = screen.get_workspace_by_index(w);
-            screen.remove_workspace(workspace, 0);
-        }
-    }
-
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.
         if (!runDialog) {
@@ -92,6 +71,38 @@ function start() {
             show_overlay();
         }
     });
+
+    Mainloop.idle_add(_removeUnusedWorkspaces);
+}
+
+// metacity-clutter currently uses the same prefs as plain metacity,
+// which probably means we'll be starting out with multiple workspaces;
+// remove any unused ones. (We do this from an idle handler, because
+// global.get_windows() still returns NULL at the point when start()
+// is called.)
+function _removeUnusedWorkspaces() {
+
+    let global = Shell.Global.get();
+
+    let windows = global.get_windows();
+    let maxWorkspace = 0;
+    for (let i = 0; i < windows.length; i++) {
+        let win = windows[i];
+
+        if (!win.get_meta_window().is_on_all_workspaces() &&
+            win.get_workspace() > maxWorkspace) {
+            maxWorkspace = win.get_workspace();
+        }
+    }
+    let screen = global.screen;
+    if (screen.n_workspaces > maxWorkspace) {
+        for (let w = screen.n_workspaces - 1; w > maxWorkspace; w--) {
+            let workspace = screen.get_workspace_by_index(w);
+            screen.remove_workspace(workspace, 0);
+        }
+    }
+
+    return false;
 }
 
 // Used to go into a mode where all keyboard and mouse input goes to
