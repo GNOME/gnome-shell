@@ -244,6 +244,8 @@ struct _ClutterActorPrivate
   /* cached allocation is invalid (request has changed, probably) */
   guint needs_allocation     : 1;
 
+  guint queued_redraw        : 1;
+
   guint show_on_set_parent   : 1;
   guint has_clip             : 1;
   guint clip_to_allocation   : 1;
@@ -379,7 +381,7 @@ enum
   PICK,
   REALIZE,
   UNREALIZE,
-
+  QUEUE_REDRAW,
   EVENT,
   CAPTURED_EVENT,
   BUTTON_PRESS_EVENT,
@@ -879,6 +881,49 @@ clutter_actor_real_allocate (ClutterActor          *self,
   clutter_actor_notify_if_geometry_changed (self, &old);
 
   g_object_thaw_notify (G_OBJECT (self));
+}
+
+static void
+clutter_actor_queue_redraw_with_origin (ClutterActor *self,
+                                        ClutterActor *origin)
+{
+  /* short-circuit the trivial case */
+  if (!CLUTTER_ACTOR_IS_VISIBLE(self))
+    return;
+
+  /* already queued since last paint() */
+  if (self->priv->queued_redraw)
+    return;
+
+  /* calls klass->queue_redraw in default handler */
+  g_signal_emit (self, actor_signals[QUEUE_REDRAW], 0, origin);
+}
+
+static void
+clutter_actor_real_queue_redraw (ClutterActor *self,
+                                 ClutterActor *origin)
+{
+  ClutterActor *parent;
+
+  /* short-circuit the trivial case */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return;
+
+  /* already queued since last paint() */
+  if (self->priv->queued_redraw)
+    return;
+
+  self->priv->queued_redraw = TRUE;
+
+  /* notify parents, if they are all visible eventually we'll
+   * queue redraw on the stage, which queues the redraw idle.
+   */
+  parent = clutter_actor_get_parent (self);
+  if (parent != NULL)
+    {
+      /* this will go up recursively */
+      clutter_actor_queue_redraw_with_origin (parent, origin);
+    }
 }
 
 /* like ClutterVertex, but with a w component */
@@ -1571,6 +1616,7 @@ clutter_actor_paint (ClutterActor *self)
     {
       clutter_actor_shader_pre_paint (self, FALSE);
 
+      self->priv->queued_redraw = FALSE;
       g_signal_emit (self, actor_signals[PAINT], 0);
 
       clutter_actor_shader_post_paint (self);
@@ -2891,6 +2937,66 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   CLUTTER_TYPE_ACTOR);
 
   /**
+   * ClutterActor::queue-redraw:
+   * @actor: the actor we're bubbling the redraw request through
+   * @origin: the actor which initiated the redraw request
+   *
+   * The ::queue_redraw signal is emitted when clutter_actor_queue_redraw()
+   * is called on @origin.
+   *
+   * The default implementation for #ClutterActor chains up to the
+   * parent actor and queues a redraw on the parent, thus "bubbling"
+   * the redraw queue up through the actor graph. The default
+   * implementation for #ClutterStage queues a clutter_redraw() in a
+   * main loop idle handler.
+   *
+   * Note that the @origin actor may be the stage, or a container; it
+   * does not have to be a leaf node in the actor graph.
+   *
+   * Toolkits embedding a #ClutterStage which require a redraw and
+   * relayout cycle can stop the emission of this signal using the
+   * GSignal API, redraw the UI and then call clutter_redraw()
+   * themselves, like:
+   *
+   * |[
+   *   static void
+   *   on_redraw_complete (void)
+   *   {
+   *     /&ast; execute the Clutter drawing pipeline &ast;/
+   *     clutter_redraw ();
+   *   }
+   *
+   *   static void
+   *   on_stage_queue_redraw (ClutterStage *stage)
+   *   {
+   *     /&ast; this prevents the default handler to run &ast;/
+   *     g_signal_stop_emission_by_name (stage, "queue-redraw");
+   *
+   *     /&ast; queue a redraw with the host toolkit and call
+   *      &ast; a function when the redraw has been completed
+   *      &ast;/
+   *     queue_a_redraw (G_CALLBACK (on_redraw_complete));
+   *   }
+   * ]|
+   *
+   * <note><para>This signal is emitted before the Clutter paint
+   * pipeline is executed. If you want to know when the pipeline has
+   * been completed you should connect to the ::paint signal on the
+   * Stage with g_signal_connect_after().</para></note>
+   *
+   * Since: 1.0
+   */
+  actor_signals[QUEUE_REDRAW] =
+    g_signal_new (I_("queue-redraw"),
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, queue_redraw),
+		  NULL, NULL,
+		  clutter_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_ACTOR);
+
+  /**
    * ClutterActor::event:
    * @actor: the actor which received the event
    * @event: a #ClutterEvent
@@ -3247,6 +3353,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->get_preferred_width = clutter_actor_real_get_preferred_width;
   klass->get_preferred_height = clutter_actor_real_get_preferred_height;
   klass->allocate = clutter_actor_real_allocate;
+  klass->queue_redraw = clutter_actor_real_queue_redraw;
 }
 
 static void
@@ -3329,22 +3436,9 @@ clutter_actor_destroy (ClutterActor *self)
 void
 clutter_actor_queue_redraw (ClutterActor *self)
 {
-  ClutterActor *stage;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  /* short-circuit the trivial case */
-  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
-    return;
-
-  /* check if any part of the scenegraph we're in
-   * is not visible
-   */
-  if (!clutter_actor_get_paint_visibility (self))
-    return;
-
-  if ((stage = clutter_actor_get_stage (self)) != NULL)
-    clutter_stage_queue_redraw (CLUTTER_STAGE (stage));
+  clutter_actor_queue_redraw_with_origin (self, self);
 }
 
 /**

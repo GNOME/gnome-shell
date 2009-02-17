@@ -116,7 +116,6 @@ enum
   UNFULLSCREEN,
   ACTIVATE,
   DEACTIVATE,
-  QUEUE_REDRAW,
 
   LAST_SIGNAL
 };
@@ -376,8 +375,10 @@ redraw_update_idle (gpointer user_data)
 }
 
 static void
-clutter_stage_real_queue_redraw (ClutterStage *stage)
+clutter_stage_real_queue_redraw (ClutterActor *actor,
+                                 ClutterActor *leaf)
 {
+  ClutterStage *stage = CLUTTER_STAGE (actor);
   ClutterStagePrivate *priv = stage->priv;
 
   if (priv->update_idle == 0)
@@ -585,6 +586,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   actor_class->unrealize = clutter_stage_unrealize;
   actor_class->show = clutter_stage_show;
   actor_class->hide = clutter_stage_hide;
+  actor_class->queue_redraw = clutter_stage_real_queue_redraw;
 
   /**
    * ClutterStage:fullscreen:
@@ -777,58 +779,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-  /**
-   * ClutterStage::queue-redraw:
-   * @stage: the stage which was queued for redraw
-   *
-   * The ::queue-redraw signal is emitted each time a #ClutterStage
-   * has been queued for a redraw. You can use this signal to know
-   * when clutter_stage_queue_redraw() has been called.
-   *
-   * Toolkits embedding a #ClutterStage which require a redraw and
-   * relayout cycle can stop the emission of this signal using the
-   * GSignal API, redraw the UI and then call clutter_redraw()
-   * themselves, like:
-   *
-   * |[
-   *   static void
-   *   on_redraw_complete (void)
-   *   {
-   *     /&ast; execute the Clutter drawing pipeline &ast;/
-   *     clutter_redraw ();
-   *   }
-   *
-   *   static void
-   *   on_stage_queue_redraw (ClutterStage *stage)
-   *   {
-   *     /&ast; this prevents the default handler to run &ast;/
-   *     g_signal_stop_emission_by_name (stage, "queue-redraw");
-   *
-   *     /&ast; queue a redraw with the host toolkit and call
-   *      &ast; a function when the redraw has been completed
-   *      &ast;/
-   *     queue_a_redraw (G_CALLBACK (on_redraw_complete));
-   *   }
-   * ]|
-   *
-   * <note><para>This signal is emitted before the Clutter paint
-   * pipeline is run. If you want to know when the pipeline has been
-   * completed you should connect to the ::paint signal on the Stage
-   * with g_signal_connect_after().</para></note>
-   *
-   * Since: 1.0
-   */
-  stage_signals[QUEUE_REDRAW] =
-    g_signal_new (I_("queue-redraw"),
-		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterStageClass, queue_redraw),
-		  NULL, NULL,
-		  clutter_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
 
   klass->fullscreen = clutter_stage_real_fullscreen;
-  klass->queue_redraw = clutter_stage_real_queue_redraw;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
@@ -1793,7 +1745,7 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
 
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 
-  clutter_stage_queue_redraw (stage);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
 /**
@@ -1805,6 +1757,9 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
  * <note>Applications should call clutter_actor_queue_redraw() and not
  * this function.</note>
  *
+ * <note>This function is just a wrapper for clutter_actor_queue_redraw()
+ * and should probably go away.</note>
+ *
  * Since: 0.8
  */
 void
@@ -1812,7 +1767,7 @@ clutter_stage_queue_redraw (ClutterStage *stage)
 {
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  g_signal_emit (stage, stage_signals[QUEUE_REDRAW], 0);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
 /**
