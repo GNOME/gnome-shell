@@ -51,6 +51,8 @@ doc/reference/cogl/cogl.interfaces
 doc/reference/cogl/cogl.prerequisites
 doc/reference/cogl/cogl.signals
 doc/reference/cogl/*.stamp
+doltcompile
+doltlibtool
 gtk-doc.make
 install-sh
 libtool

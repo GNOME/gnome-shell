@@ -62,6 +62,7 @@ AM_PROG_CC_C_O
 #AC_PROG_OBJC            
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
+DOLT
 
 # Make libtool respect the make -s switch (kudos to jacob berman)
 changequote(,)dnl
