@@ -268,21 +268,19 @@ void            cogl_rotate                   (float                angle,
 
 /**
  * cogl_get_modelview_matrix:
- * @m: pointer to a 4x4 array of #float<!-- -->s to receive the matrix
+ * @matrix: pointer to a CoglMatrix to recieve the matrix
  *
- * Stores the current model-view matrix in @m. The matrix is in
- * column-major order.
+ * Stores the current model-view matrix in @matrix.
  */
-void            cogl_get_modelview_matrix     (float        m[16]);
+void            cogl_get_modelview_matrix     (CoglMatrix *matrix);
 
 /**
  * cogl_get_projection_matrix:
- * @m: pointer to a 4x4 array of #float<!-- -->s to receive the matrix
+ * @matrix: pointer to a CoglMatrix to recieve the matrix
  *
- * Stores the current projection matrix in @m. The matrix is in
- * column-major order.
+ * Stores the current projection matrix in @matrix.
  */
-void            cogl_get_projection_matrix    (float        m[16]);
+void            cogl_get_projection_matrix    (CoglMatrix *matrix);
 
 /**
  * cogl_get_viewport:

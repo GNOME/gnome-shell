@@ -52,7 +52,7 @@ void _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
 void _cogl_enable_clip_planes (void);
 void _cogl_disable_clip_planes (void);
 void _cogl_disable_stencil_buffer (void);
-void _cogl_set_matrix (const float *matrix);
+void _cogl_set_matrix (const CoglMatrix *matrix);
 
 typedef struct _CoglClipStack CoglClipStack;
 
@@ -81,7 +81,7 @@ struct _CoglClipStackEntryRect
   float                  height;
 
   /* The matrix that was current when the clip was set */
-  float                  matrix[16];
+  CoglMatrix             matrix;
 };
 
 struct _CoglClipStackEntryPath
@@ -89,7 +89,7 @@ struct _CoglClipStackEntryPath
   CoglClipStackEntryType     type;
 
   /* The matrix that was current when the clip was set */
-  float                  matrix[16];
+  CoglMatrix                 matrix;
 
   floatVec2              path_nodes_min;
   floatVec2              path_nodes_max;
@@ -120,7 +120,7 @@ cogl_clip_push (float x_offset,
   entry->width = width;
   entry->height = height;
 
-  cogl_get_modelview_matrix (entry->matrix);
+  cogl_get_modelview_matrix (&entry->matrix);
 
   /* Store it in the stack */
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
@@ -148,7 +148,7 @@ cogl_clip_push_from_path_preserve (void)
   memcpy (entry->path, ctx->path_nodes->data,
           sizeof (CoglPathNode) * ctx->path_nodes->len);
 
-  cogl_get_modelview_matrix (entry->matrix);
+  cogl_get_modelview_matrix (&entry->matrix);
 
   /* Store it in the stack */
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
@@ -226,7 +226,7 @@ _cogl_clip_stack_rebuild (void)
           CoglClipStackEntryPath *path = (CoglClipStackEntryPath *) entry;
 
           cogl_push_matrix ();
-          _cogl_set_matrix (path->matrix);
+          _cogl_set_matrix (&path->matrix);
 
           _cogl_add_path_to_stencil_buffer (path->path_nodes_min,
                                             path->path_nodes_max,
@@ -246,7 +246,7 @@ _cogl_clip_stack_rebuild (void)
           CoglClipStackEntryRect *rect = (CoglClipStackEntryRect *) entry;
 
           cogl_push_matrix ();
-          _cogl_set_matrix (rect->matrix);
+          _cogl_set_matrix (&rect->matrix);
 
           /* If this is the first entry and we support clip planes then use
              that instead */

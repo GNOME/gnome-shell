@@ -287,6 +287,9 @@ Release Notes for Clutter 1.0
   density argument isn't just ignored. A cogl_disable_fog function was
   also added.
 
+* cogl_get_*_matrix were changed to use the CoglMatrix type instead of
+  GLfloat m[16] arrays.
+
 Release Notes for Clutter 0.8
 -------------------------------
 
