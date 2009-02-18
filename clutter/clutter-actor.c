@@ -5394,9 +5394,9 @@ clutter_actor_get_paint_opacity (ClutterActor *self)
   priv = self->priv;
 
   if (priv->opacity_parent)
-    parent = priv->opacity_parent;
-  else
-    parent = priv->parent_actor;
+    return clutter_actor_get_paint_opacity (priv->opacity_parent);
+
+  parent = priv->parent_actor;
 
   /* Factor in the actual actors opacity with parents */
   if (G_LIKELY (parent))
