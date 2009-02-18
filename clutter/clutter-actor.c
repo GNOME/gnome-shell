@@ -2617,7 +2617,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 			g_param_spec_double ("rotation-angle-x",
 					     "Rotation Angle X",
 					     "The rotation angle on the X axis",
-                                             0.0,
+                                             -G_MAXDOUBLE,
 					     G_MAXDOUBLE,
 					     0.0,
 					     CLUTTER_PARAM_READWRITE));
@@ -2634,7 +2634,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 			g_param_spec_double ("rotation-angle-y",
 					     "Rotation Angle Y",
 					     "The rotation angle on the Y axis",
-					     0.0,
+					     -G_MAXDOUBLE,
 					     G_MAXDOUBLE,
 					     0.0,
 					     CLUTTER_PARAM_READWRITE));
@@ -2651,7 +2651,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 			g_param_spec_double ("rotation-angle-z",
 					     "Rotation Angle Z",
 					     "The rotation angle on the Z axis",
-					     0.0,
+					     -G_MAXDOUBLE,
 					     G_MAXDOUBLE,
 					     0.0,
 					     CLUTTER_PARAM_READWRITE));
