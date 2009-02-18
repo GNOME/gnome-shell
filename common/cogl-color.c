@@ -2,6 +2,7 @@
 #include "config.h"
 #endif
 
+#include "cogl.h"
 #include "cogl-color.h"
 #include "cogl-fixed.h"
 
