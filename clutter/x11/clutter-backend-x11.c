@@ -355,6 +355,8 @@ clutter_backend_x11_init (ClutterBackendX11 *backend_x11)
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
   clutter_backend_set_resolution (backend, 96.0);
+
+  backend_x11->last_event_time = CurrentTime;
 }
 
 static int

@@ -84,6 +84,7 @@ struct _ClutterBackendX11
   gboolean    have_xinput;
 #endif
 
+  Time last_event_time;
 };
 
 struct _ClutterBackendX11Class

@@ -132,6 +132,8 @@ gboolean clutter_x11_has_xinput (void);
 
 gboolean clutter_x11_has_composite_extension (void);
 
+Time clutter_x11_get_current_event_time (void);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_X11_H__ */

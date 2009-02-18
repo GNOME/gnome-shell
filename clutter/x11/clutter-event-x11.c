@@ -205,6 +205,50 @@ _clutter_backend_x11_events_uninit (ClutterBackend *backend)
 }
 
 static void
+update_last_event_time (ClutterBackendX11 *backend_x11,
+                        XEvent            *xevent)
+{
+  Time current_time = CurrentTime;
+  Time last_time = backend_x11->last_event_time;
+
+  switch (xevent->type)
+    {
+    case KeyPress:
+    case KeyRelease:
+      current_time = xevent->xkey.time;
+      break;
+
+    case ButtonPress:
+    case ButtonRelease:
+      current_time = xevent->xbutton.time;
+      break;
+
+    case MotionNotify:
+      current_time = xevent->xmotion.time;
+      break;
+
+    case EnterNotify:
+    case LeaveNotify:
+      current_time = xevent->xcrossing.time;
+      break;
+
+    case PropertyNotify:
+      current_time = xevent->xproperty.time;
+      break;
+
+    default:
+      break;
+    }
+
+  /* only change the current event time if it's after the previous event
+   * time, or if it is at least 30 seconds earlier - in case the system
+   * clock was changed
+   */
+  if (current_time > last_time || (last_time - current_time > (30 * 1000)))
+    backend_x11->last_event_time = current_time;
+}
+
+static void
 set_user_time (ClutterBackendX11 *backend_x11,
                Window            *xwindow,
                long               timestamp)
@@ -419,8 +463,9 @@ event_translate (ClutterBackend *backend,
 
   event->any.stage = stage;
 
-
   res = TRUE;
+
+  update_last_event_time (backend_x11, xevent);
 
   switch (xevent->type)
     {
@@ -1001,4 +1046,24 @@ clutter_event_dispatch (GSource     *source,
   clutter_threads_leave ();
 
   return TRUE;
+}
+
+/**
+ * clutter_x11_get_current_event_time:
+ *
+ * Retrieves the timestamp of the last X11 event processed by
+ * Clutter. This might be different from the timestamp returned
+ * by clutter_get_current_event_time(), as Clutter may synthesize
+ * or throttle events.
+ *
+ * Return value: a timestamp, in milliseconds
+ *
+ * Since: 1.0
+ */
+Time
+clutter_x11_get_current_event_time (void)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+
+  return CLUTTER_BACKEND_X11 (backend)->last_event_time;
 }
