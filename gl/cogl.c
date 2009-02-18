@@ -1184,7 +1184,7 @@ cogl_set_fog (const CoglColor *fog_color,
               float            z_far)
 {
   GLfloat fogColor[4];
-  GLenum gl_mode;
+  GLenum gl_mode = GL_LINEAR;
 
   fogColor[0] = cogl_color_get_red_float (fog_color);
   fogColor[1] = cogl_color_get_green_float (fog_color);
