@@ -244,7 +244,8 @@ update_last_event_time (ClutterBackendX11 *backend_x11,
    * time, or if it is at least 30 seconds earlier - in case the system
    * clock was changed
    */
-  if (current_time > last_time || (last_time - current_time > (30 * 1000)))
+  if ((current_time != CurrentTime) &&
+      (current_time > last_time || (last_time - current_time > (30 * 1000))))
     backend_x11->last_event_time = current_time;
 }
 
