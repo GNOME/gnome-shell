@@ -83,12 +83,16 @@ enum
   PROP_CENTER_Z
 };
 
+typedef struct {
+  ClutterFixed angle;
+} RotateFrameClosure;
+
 static void
 alpha_notify_foreach (ClutterBehaviour *behaviour,
 		      ClutterActor     *actor,
 		      gpointer          data)
 {
-  ClutterFixed angle = GPOINTER_TO_UINT (data);
+  RotateFrameClosure *closure = data;
   ClutterBehaviourRotate *rotate_behaviour;
   ClutterBehaviourRotatePrivate *priv;
 
@@ -96,7 +100,7 @@ alpha_notify_foreach (ClutterBehaviour *behaviour,
   priv = rotate_behaviour->priv;
 
   clutter_actor_set_rotation (actor, priv->axis,
-                              CLUTTER_FIXED_TO_DOUBLE (angle),
+                              CLUTTER_FIXED_TO_DOUBLE (closure->angle),
                               priv->center_x,
                               priv->center_y,
                               priv->center_z);
@@ -119,17 +123,18 @@ static void
 clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
                                        gdouble           alpha_value)
 {
-  ClutterFixed factor, angle, start, end;
+  ClutterFixed factor, start, end;
   ClutterBehaviourRotate *rotate_behaviour;
   ClutterBehaviourRotatePrivate *priv;
+  RotateFrameClosure closure;
 
   rotate_behaviour = CLUTTER_BEHAVIOUR_ROTATE (behaviour);
   priv = rotate_behaviour->priv;
 
-  factor = CLUTTER_FLOAT_TO_FIXED (alpha_value);
-  angle  = 0;
-  start  = priv->angle_start;
-  end    = priv->angle_end;
+  factor        = CLUTTER_FLOAT_TO_FIXED (alpha_value);
+  closure.angle = 0;
+  start         = priv->angle_start;
+  end           = priv->angle_end;
 
   if (priv->direction == CLUTTER_ROTATE_CW && start >= end)
     {
@@ -140,12 +145,11 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
       end -= 360.0;
     }
 
-  angle = CLUTTER_FIXED_MUL ((end - start), alpha_value)
-        + start;
+  closure.angle = CLUTTER_FIXED_MUL (end - start, alpha_value) + start;
 
   clutter_behaviour_actors_foreach (behaviour,
 				    alpha_notify_foreach,
-				    GUINT_TO_POINTER ((guint)angle));
+				    &closure);
 }
 
 static void
