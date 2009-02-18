@@ -202,6 +202,8 @@ struct _MutterWindowPrivate
   guint		    needs_destroy	   : 1;
 
   guint             no_shadow              : 1;
+
+  guint             no_more_x_calls        : 1;
 };
 
 enum
@@ -1027,7 +1029,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 	priv->map_in_progress = 0;
       }
 
-    if (!priv->map_in_progress && priv->window)
+    if (!priv->map_in_progress && priv->window && !priv->no_more_x_calls)
       {
 	MetaRectangle rect;
 	meta_window_get_outer_rect (priv->window, &rect);
@@ -1061,7 +1063,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 	priv->unmaximize_in_progress = 0;
       }
 
-    if (!priv->unmaximize_in_progress && priv->window)
+    if (!priv->unmaximize_in_progress && priv->window && !priv->no_more_x_calls)
       {
 	MetaRectangle rect;
 	meta_window_get_outer_rect (priv->window, &rect);
@@ -1079,7 +1081,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 	priv->maximize_in_progress = 0;
       }
 
-    if (!priv->maximize_in_progress && priv->window)
+    if (!priv->maximize_in_progress && priv->window && !priv->no_more_x_calls)
       {
 	MetaRectangle rect;
 	meta_window_get_outer_rect (priv->window, &rect);
@@ -1214,6 +1216,14 @@ destroy_win (MutterWindow *cw)
    * type is present, destroy the actor.
    */
   priv->destroy_in_progress++;
+
+  /*
+   * Once the window destruction is initiated we can no longer perform any
+   * furter X-based operations. For example, if we have a Map effect running,
+   * we cannot query the window geometry once the effect completes. So, flag
+   * this.
+   */
+  priv->no_more_x_calls = TRUE;
 
   if (!info->plugin_mgr ||
       !mutter_plugin_manager_event_simple (info->plugin_mgr,
