@@ -2,6 +2,7 @@
 
 #include <glib.h>
 #include <math.h>
+#include <string.h>
 
 void
 cogl_matrix_init_identity (CoglMatrix *matrix)
@@ -42,7 +43,7 @@ cogl_matrix_multiply (CoglMatrix *result,
   r.wy = a->wx * b->xy + a->wy * b->yy + a->wz * b->zy + a->ww * b->wy;
   r.wz = a->wx * b->xz + a->wy * b->yz + a->wz * b->zz + a->ww * b->wz;
   r.ww = a->wx * b->xw + a->wy * b->yw + a->wz * b->zw + a->ww * b->ww;
-  
+
   /* The idea was that having this unrolled; it might be easier for the
    * compiler to vectorize, but that's probably not true. Mesa does it
    * using a single for (i=0; i<4; i++) approach, may that's better...
@@ -51,19 +52,6 @@ cogl_matrix_multiply (CoglMatrix *result,
   *result = r;
 }
 
-/**
- * cogl_3dmatrix_rotate:
- * @matrix: A 3D Affine transformation matrix
- * @angle: The angle in degrees you want to rotate by
- * @x: The X component of your rotation vector
- * @y: The Y component of your rotation vector
- * @z: The Z component of your rotation vector
- *
- * The matrix is multiplied with a rotation matrix representing a rotation
- * of angle degress around the vector (x,y,z)
- *
- * Since: 1.0
- */
 void
 cogl_matrix_rotate (CoglMatrix *matrix,
 		    float angle,
@@ -76,7 +64,7 @@ cogl_matrix_rotate (CoglMatrix *matrix,
   angle *= G_PI / 180.0f;
   float c = cosf (angle);
   float s = sinf (angle);
-  
+
   rotation.xx = x * x * (1.0f - c) + c;
   rotation.yx = y * x * (1.0f - c) + z * s;
   rotation.zx = x * z * (1.0f - c) - y * s;
@@ -96,7 +84,7 @@ cogl_matrix_rotate (CoglMatrix *matrix,
   rotation.yw = 0.0f;
   rotation.zw = 0.0f;
   rotation.ww = 1.0f;
-  
+
   cogl_matrix_multiply (&result, matrix, &rotation);
   *matrix = result;
 }
@@ -137,4 +125,30 @@ cogl_matrix_invert (CoglMatrix *matrix)
 }
 #endif
 
+void
+cogl_matrix_transform_point (const CoglMatrix *matrix,
+                             float *x,
+                             float *y,
+                             float *z,
+                             float *w)
+{
+  float _x = *x, _y = *y, _z = *z, _w = *w;
+
+  *x = matrix->xx * _x + matrix->xy * _y + matrix->xz * _z + matrix->xw * _w;
+  *y = matrix->yx * _x + matrix->yy * _y + matrix->yz * _z + matrix->yw * _w;
+  *z = matrix->zx * _x + matrix->zy * _y + matrix->zz * _z + matrix->zw * _w;
+  *w = matrix->wx * _x + matrix->wy * _y + matrix->wz * _z + matrix->ww * _w;
+}
+
+void
+cogl_matrix_init_from_gl_matrix (CoglMatrix *matrix, const float *gl_matrix)
+{
+  memcpy (matrix, gl_matrix, sizeof (float) * 16);
+}
+
+const float *
+cogl_matrix_get_gl_matrix (const CoglMatrix *matrix)
+{
+  return (float *)matrix;
+}
 

@@ -530,10 +530,11 @@ _cogl_add_stencil_clip (float x_offset,
 }
 
 void
-_cogl_set_matrix (const float *matrix)
+_cogl_set_matrix (const CoglMatrix *matrix)
 {
-  GE( glLoadIdentity () );
-  GE( glMultMatrixf (matrix) );
+  const GLfloat *gl_matrix = cogl_matrix_get_gl_matrix (matrix);
+
+  GE (glLoadMatrixf (gl_matrix));
 }
 
 void
@@ -678,7 +679,7 @@ cogl_setup_viewport (guint width,
 		     float z_far)
 {
   float z_camera;
-  float projection_matrix[16];
+  CoglMatrix projection_matrix;
 
   GE( glViewport (0, 0, width, height) );
 
@@ -727,8 +728,8 @@ cogl_setup_viewport (guint width,
    * doesn't make sense.
    */
 
-  cogl_get_projection_matrix (projection_matrix);
-  z_camera = 0.5 * projection_matrix[0];
+  cogl_get_projection_matrix (&projection_matrix);
+  z_camera = 0.5 * projection_matrix.xx;
 
   GE( glLoadIdentity () );
 
@@ -1122,15 +1123,25 @@ cogl_features_available (CoglFeatureFlags features)
 }
 
 void
-cogl_get_modelview_matrix (float m[16])
+cogl_get_modelview_matrix (CoglMatrix *matrix)
 {
+  float m[16];
   glGetFloatv (GL_MODELVIEW_MATRIX, m);
+  /* Since it's internal to Cogl and CoglMatrix doesn't currently have
+   * any flag members, we could avoid this extra copy if it really
+   * bothers anyone */
+  cogl_matrix_init_from_gl_matrix (matrix, m);
 }
 
 void
-cogl_get_projection_matrix (float m[16])
+cogl_get_projection_matrix (CoglMatrix *matrix)
 {
+  float m[16];
   glGetFloatv (GL_PROJECTION_MATRIX, m);
+  /* Since it's internal to Cogl and CoglMatrix doesn't currently have
+   * any flag members, we could avoid this extra copy if it really
+   * bothers anyone */
+  cogl_matrix_init_from_gl_matrix (matrix, m);
 }
 
 void

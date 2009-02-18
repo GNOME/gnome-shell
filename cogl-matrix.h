@@ -140,6 +140,42 @@ void cogl_matrix_scale (CoglMatrix *matrix,
 			float sy,
 			float sz);
 
+/**
+ * cogl_matrix_transform_point:
+ * @matrix: A 4x4 transformation matrix
+ * @x: The X component of your points position [in:out]
+ * @y: The Y component of your points position [in:out]
+ * @z: The Z component of your points position [in:out]
+ * @w: The W component of your points position [in:out]
+ *
+ * This transforms a point whos position is given and returned
+ * as four float components.
+ */
+void
+cogl_matrix_transform_point (const CoglMatrix *matrix,
+                             float *x,
+                             float *y,
+                             float *z,
+                             float *w);
+
+/**
+ * cogl_matrix_init_from_gl_matrix:
+ * @matrix: A 4x4 transformation matrix
+ * @gl_matrix: A linear array of 16 Glfloats (column-major)
+ *
+ * This initialises @matrix with the contents of @gl_matrix
+ */
+void cogl_matrix_init_from_gl_matrix (CoglMatrix *matrix, const float *gl_matrix);
+
+/**
+ * cogl_matrix_get_gl_matrix:
+ * @matrix: A 4x4 transformation matrix
+ *
+ * This casts a CoglMatrix to a GLfloat array which can be directly passed to
+ * OpenGL.
+ */
+const float *cogl_matrix_get_gl_matrix (const CoglMatrix *matrix);
+
 G_END_DECLS
 
 #endif /* __COGL_MATRIX_H */
