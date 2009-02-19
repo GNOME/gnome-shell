@@ -118,9 +118,7 @@ enum
   PROP_REPEAT_X,
   PROP_FILTER_QUALITY,
   PROP_COGL_TEXTURE,
-#if EXPOSE_COGL_MATERIAL_PROP
   PROP_COGL_MATERIAL,
-#endif
   PROP_FILENAME,
   PROP_KEEP_ASPECT_RATIO,
   PROP_LOAD_ASYNC
@@ -824,11 +822,9 @@ clutter_texture_get_property (GObject    *object,
     case PROP_COGL_TEXTURE:
       g_value_set_boxed (value, clutter_texture_get_cogl_texture (texture));
       break;
-#if EXPOSE_COGL_MATERIAL_PROP
     case PROP_COGL_MATERIAL:
       g_value_set_boxed (value, clutter_texture_get_cogl_material (texture));
       break;
-#endif
     case PROP_NO_SLICE:
       g_value_set_boolean (value, priv->no_slice);
       break;
@@ -944,19 +940,17 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			 "COGL Texture",
 			 "The underlying COGL texture handle used to draw "
 			 "this actor",
-			 CLUTTER_TYPE_TEXTURE_HANDLE,
+			 COGL_TYPE_HANDLE,
 			 G_PARAM_READWRITE));
 
-#if EXPOSE_COGL_MATERIAL_PROP
   g_object_class_install_property
     (gobject_class, PROP_COGL_MATERIAL,
      g_param_spec_boxed ("cogl-material",
 			 "COGL Material",
 			 "The underlying COGL material handle used to draw "
 			 "this actor",
-			 CLUTTER_TYPE_MATERIAL_HANDLE,
+			 COGL_TYPE_HANDLE,
 			 G_PARAM_READWRITE));
-#endif
 
   g_object_class_install_property
     (gobject_class, PROP_FILENAME,
@@ -1203,7 +1197,6 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
   priv->local_data = NULL;
 }
 
-#if EXPOSE_COGL_MATERIAL_PROP
 /**
  * clutter_texture_get_cogl_material:
  * @texture: A #ClutterTexture
@@ -1219,6 +1212,8 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
 CoglHandle
 clutter_texture_get_cogl_material (ClutterTexture *texture)
 {
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_INVALID_HANDLE);
+
   return texture->priv->material;
 }
 
@@ -1240,6 +1235,8 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
 {
   CoglHandle cogl_texture;
 
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
   /* This */
   if (texture->priv->material)
     cogl_material_unref (texture->priv->material);
@@ -1253,7 +1250,6 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
   /* XXX: If we add support for more material layers, this will need
    * extending */
 }
-#endif
 
 /**
  * clutter_texture_get_cogl_texture
@@ -2419,38 +2415,3 @@ texture_fbo_free_resources (ClutterTexture *texture)
       priv->fbo_handle = COGL_INVALID_HANDLE;
     }
 }
-
-GType
-clutter_texture_handle_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (!our_type))
-    {
-      our_type =
-	g_boxed_type_register_static (I_("ClutterTextureHandle"),
-				      (GBoxedCopyFunc) cogl_texture_ref,
-				      (GBoxedFreeFunc) cogl_texture_unref);
-    }
-
-  return our_type;
-}
-
-#if EXPOSE_COGL_MATERIAL_PROP
-GType
-clutter_material_handle_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (!our_type))
-    {
-      our_type =
-	g_boxed_type_register_static (I_("ClutterMaterialHandle"),
-				      (GBoxedCopyFunc) cogl_material_ref,
-				      (GBoxedFreeFunc) cogl_material_unref);
-    }
-
-  return our_type;
-}
-#endif
-

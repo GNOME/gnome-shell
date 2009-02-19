@@ -40,9 +40,6 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_TEXTURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TEXTURE))
 #define CLUTTER_TEXTURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TEXTURE, ClutterTextureClass))
 
-#define CLUTTER_TYPE_TEXTURE_HANDLE     (clutter_texture_handle_get_type ())
-#define CLUTTER_TYPE_MATERIAL_HANDLE    (clutter_material_handle_get_type ())
-
 /**
  * ClutterTextureError:
  * @CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY: OOM condition
