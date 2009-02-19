@@ -126,7 +126,7 @@ redhand.png:
 
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests
-BUILT_SOURCES = redhand.png
+BUILT_SOURCES += redhand.png
 
 EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh
 
