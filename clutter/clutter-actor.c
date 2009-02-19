@@ -6684,6 +6684,8 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
  * the anchor point was specified using pixels or units this will
  * return %CLUTTER_GRAVITY_NONE.
  *
+ * Return value: the #ClutterGravity used by the anchor point
+ *
  * Since: 1.0
  */
 ClutterGravity
