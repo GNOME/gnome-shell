@@ -24,7 +24,7 @@
 #ifndef __COGL_TYPES_H__
 #define __COGL_TYPES_H__
 
-#include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
@@ -50,6 +50,12 @@ typedef gpointer CoglHandle;
  * error conditions.
  */
 #define COGL_INVALID_HANDLE NULL
+
+#define COGL_TYPE_HANDLE        (cogl_handle_get_type ())
+GType cogl_handle_get_type (void) G_GNUC_CONST;
+
+CoglHandle cogl_handle_ref   (CoglHandle handle);
+void       cogl_handle_unref (CoglHandle Handle);
 
 /**
  * CoglFuncPtr:
@@ -180,6 +186,9 @@ typedef enum
   
 } CoglPixelFormat;
 
+#define COGL_TYPE_PIXEL_FORMAT          (cogl_pixel_format_get_type ())
+GType cogl_pixel_format_get_type (void) G_GNUC_CONST;
+
 /**
  * CoglFeatureFlags:
  * @COGL_FEATURE_TEXTURE_RECTANGLE: ARB_texture_rectangle support
@@ -213,6 +222,9 @@ typedef enum
   COGL_FEATURE_VBOS		      = (1 << 11)
 } CoglFeatureFlags;
 
+#define COGL_TYPE_FEATURE_FLAGS         (cogl_feature_flags_get_type ())
+GType cogl_feature_flags_get_type (void) G_GNUC_CONST;
+
 /**
  * CoglBufferTarget:
  * @COGL_WINDOW_BUFFER: FIXME
@@ -228,8 +240,10 @@ typedef enum
   COGL_WINDOW_BUFFER      = (1 << 1),
   COGL_MASK_BUFFER        = (1 << 2),
   COGL_OFFSCREEN_BUFFER   = (1 << 3)
-  
 } CoglBufferTarget;
+
+#define COGL_TYPE_BUFFER_TARGET         (cogl_buffer_target_get_type ())
+GType cogl_buffer_target_get_type (void) G_GNUC_CONST;
 
 /**
  * CoglColor:
@@ -289,6 +303,9 @@ typedef enum {
   COGL_TEXTURE_NONE        = 0,
   COGL_TEXTURE_AUTO_MIPMAP = 1 << 0
 } CoglTextureFlags;
+
+#define COGL_TYPE_TEXTURE_FLAGS         (cogl_texture_flags_get_type ())
+GType cogl_texture_flags_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
