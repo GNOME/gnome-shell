@@ -133,8 +133,6 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
 } ClutterTextureQuality;
 
 GType clutter_texture_get_type (void) G_GNUC_CONST;
-GType clutter_texture_handle_get_type (void) G_GNUC_CONST;
-GType clutter_material_handle_get_type (void) G_GNUC_CONST;
 
 ClutterActor *       clutter_texture_new                    (void);
 ClutterActor *       clutter_texture_new_from_file          (const gchar            *filename,
