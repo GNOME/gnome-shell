@@ -11,8 +11,8 @@ INCLUDES = \
 LDADD = $(CLUTTER_LIBS)
 
 source_h = \
-	clutter-x11-texture-pixmap.h \
-	clutter-x11.h
+	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
+	$(top_srcdir)/clutter/x11/clutter-x11.h
 
 BUILT_SOURCES = clutter-x11-enum-types.h clutter-x11-enum-types.c
 
