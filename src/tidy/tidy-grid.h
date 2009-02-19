@@ -26,7 +26,7 @@
 #ifndef __TIDY_GRID_H__
 #define __TIDY_GRID_H__
 
-#include <clutter/clutter-actor.h>
+#include <clutter/clutter.h>
 
 G_BEGIN_DECLS
 

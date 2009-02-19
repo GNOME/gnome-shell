@@ -28,8 +28,6 @@
  * - Allow more layout directions than just row major / column major.
  */
 
-#include <clutter/clutter-actor.h>
-#include <clutter/clutter-container.h>
 #include <string.h>
 
 #include "tidy-grid.h"
