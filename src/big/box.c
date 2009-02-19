@@ -22,9 +22,7 @@
 
 #include <glib.h>
 
-#include <clutter/clutter-units.h>
-#include <clutter/clutter-actor.h>
-#include <clutter/clutter-container.h>
+#include <clutter/clutter.h>
 #include <cogl/cogl.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -2196,7 +2194,6 @@ big_box_paint (ClutterActor *actor)
   ClutterColor color;
   guint8 actor_opacity;
   ClutterGeometry allocation;
-  ClutterGeometry bg_rect;
   int border_top, border_bottom, border_left, border_right;
   int padding_top, padding_bottom, padding_left, padding_right;
 
@@ -2217,19 +2214,12 @@ big_box_paint (ClutterActor *actor)
    */
   clutter_actor_get_allocation_geometry (actor, &allocation);
 
-  cogl_enable(0); /* defeat cogl GL cache in case GL used directly */
-
   cogl_push_matrix ();
 
   /* Background */
 
   color = self->priv->background_color;
   color.alpha = (color.alpha * actor_opacity) / 0xff;
-
-  bg_rect.x = border_left;
-  bg_rect.y = border_top;
-  bg_rect.width = allocation.width - border_left - border_right;
-  bg_rect.height = allocation.height - border_top - border_bottom;
 
   /* Border */
 
@@ -2245,8 +2235,11 @@ big_box_paint (ClutterActor *actor)
     {
       if (color.alpha != 0)
         {
-          cogl_color (&color);
-          cogl_rectangle (bg_rect.x, bg_rect.y, bg_rect.width, bg_rect.height);
+          cogl_set_source_color4ub (color.red, color.green, color.blue, color.alpha);
+
+          cogl_rectangle (border_left, border_top,
+                          allocation.width - border_left,
+                          allocation.height - border_bottom);
         }
 
       color = self->priv->border_color;
@@ -2254,7 +2247,7 @@ big_box_paint (ClutterActor *actor)
 
       if (color.alpha != 0)
         {
-          cogl_color (&color);
+          cogl_set_source_color4ub (color.red, color.green, color.blue, color.alpha);
 
           /* top */
           cogl_rectangle (0, 0,
@@ -2264,27 +2257,24 @@ big_box_paint (ClutterActor *actor)
           /* left */
           cogl_rectangle (0, border_top,
                           border_left,
-                          allocation.height - border_top - border_bottom);
+                          allocation.height - border_top);
 
           /* right */
           cogl_rectangle (allocation.width - border_right,
                           border_top,
-                          border_right,
-                          allocation.height - border_top - border_bottom);
+                          allocation.width,
+                          allocation.height - border_top);
 
           /* bottom */
           cogl_rectangle (0, allocation.height - border_bottom,
                           allocation.width,
-                          border_bottom);
+                          allocation.height);
         }
     }
-
-  cogl_enable(0); /* defeat cogl GL cache in case GL used directly */
 
   if (self->priv->background_texture &&
       CLUTTER_ACTOR_IS_VISIBLE(self->priv->background_texture)) {
     clutter_actor_paint (CLUTTER_ACTOR (self->priv->background_texture));
-    cogl_enable(0); /* defeat cogl GL cache in case GL used directly */
   }
 
   /* Children */
@@ -2299,7 +2289,6 @@ big_box_paint (ClutterActor *actor)
 
       if (BOX_CHILD_IS_VISIBLE (child)) {
         clutter_actor_paint (child->actor);
-        cogl_enable(0); /* defeat cogl GL cache in case GL used directly */
       }
     }
 

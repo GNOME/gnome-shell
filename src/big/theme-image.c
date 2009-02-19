@@ -22,9 +22,7 @@
 
 #include <glib.h>
 
-#include <clutter/clutter-units.h>
-#include <clutter/clutter-actor.h>
-#include <clutter-cairo.h>
+#include <clutter/clutter.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -41,7 +39,7 @@ typedef enum {
 } BigThemeImageType;
 
 struct BigThemeImage {
-    ClutterCairo parent_instance;
+    ClutterCairoTexture parent_instance;
 
     guint border_top;
     guint border_bottom;
@@ -60,10 +58,10 @@ struct BigThemeImage {
 };
 
 struct BigThemeImageClass {
-    ClutterCairoClass parent_class;
+    ClutterCairoTextureClass parent_class;
 };
 
-G_DEFINE_TYPE(BigThemeImage, big_theme_image, CLUTTER_TYPE_CAIRO)
+G_DEFINE_TYPE(BigThemeImage, big_theme_image, CLUTTER_TYPE_CAIRO_TEXTURE)
 
 enum
 {
@@ -144,7 +142,7 @@ big_theme_image_render(BigThemeImage *image)
     dest_width = geometry.width;
     dest_height = geometry.height;
 
-    cr = clutter_cairo_create(CLUTTER_CAIRO(image));
+    cr = clutter_cairo_texture_create(CLUTTER_CAIRO_TEXTURE(image));
 
     for (j = 0; j < 3; j++) {
         switch (j) {
@@ -301,7 +299,7 @@ big_theme_image_allocate(ClutterActor          *actor,
 
     if (width != old_width || height != old_height) {
 
-        clutter_cairo_surface_resize(CLUTTER_CAIRO(actor), width, height);
+        clutter_cairo_texture_set_surface_size(CLUTTER_CAIRO_TEXTURE(actor), width, height);
 
         big_theme_image_queue_render(image);
     }

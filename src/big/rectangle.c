@@ -45,6 +45,9 @@ struct BigRectangle {
     ClutterRectangle parent_instance;
     ClutterUnit      radius;
     Corner          *corner;
+    CoglHandle       corner_material;
+    CoglHandle       border_material;
+    CoglHandle       background_material;
     gboolean         corners_dirty;
 };
 
@@ -299,6 +302,14 @@ big_rectangle_update_corners(BigRectangle *rectangle)
 
     rectangle->corner = corner;
 
+    if (corner) {
+        if (!rectangle->corner_material)
+            rectangle->corner_material = cogl_material_new();
+
+        cogl_material_set_layer (rectangle->corner_material, 0,
+                                 rectangle->corner->texture);
+    }
+
     rectangle->corners_dirty = FALSE;
 }
 
@@ -308,14 +319,14 @@ big_rectangle_paint(ClutterActor *actor)
     BigRectangle *rectangle;
     ClutterColor *color;
     ClutterColor *border_color;
+    guint8 actor_opacity;
+    CoglColor tmp_color;
     guint border_width;
     ClutterActorBox box;
-    ClutterFixed radiusx;
-    ClutterFixed widthx;
-    ClutterFixed heightx;
-    ClutterFixed border_widthx;
-    ClutterFixed max;
-    ClutterColor tmp_col;
+    float radius;
+    float width;
+    float height;
+    float max;
 
     rectangle = BIG_RECTANGLE(actor);
 
@@ -335,97 +346,113 @@ big_rectangle_paint(ClutterActor *actor)
                  "color", &color,
                  NULL);
 
+    actor_opacity = clutter_actor_get_paint_opacity (actor);
+
     clutter_actor_get_allocation_box(actor, &box);
 
     /* translation was already done */
     box.x2 -= box.x1;
     box.y2 -= box.y1;
 
-    widthx = CLUTTER_UNITS_TO_FIXED(box.x2);
-    heightx = CLUTTER_UNITS_TO_FIXED(box.y2);
+    width = box.x2;
+    height = box.y2;
 
-    radiusx = CLUTTER_UNITS_TO_FIXED(rectangle->radius);
+    radius = rectangle->radius;
 
-    border_widthx = CLUTTER_INT_TO_FIXED(border_width);
-    max = MAX(border_widthx, radiusx);
+    max = MAX(border_width, radius);
 
-    if (radiusx != 0) {
-        tmp_col.red = 0xFF;
-        tmp_col.blue = 0xFF;
-        tmp_col.green = 0xFF;
-        tmp_col.alpha = clutter_actor_get_paint_opacity(actor);
-
-        cogl_color(&tmp_col);
+    if (radius != 0) {
+        cogl_color_set_from_4ub(&tmp_color,
+                                0xff, 0xff, 0xff, actor_opacity);
+        cogl_material_set_color(rectangle->corner_material, &tmp_color);
+        cogl_set_source(rectangle->corner_material);
 
         /* NW */
-        cogl_texture_rectangle(rectangle->corner->texture,
-                               0, 0,
-                               max, max,
-                               0, 0,
-                               CFX_HALF, CFX_HALF);
+        cogl_rectangle_with_texture_coords(0, 0,
+                                           max, max,
+                                           0, 0,
+                                           0.5, 0.5);
 
         /* NE */
-        cogl_texture_rectangle(rectangle->corner->texture,
-                               widthx - max, 0,
-                               widthx, max,
-                               CFX_HALF, 0,
-                               CFX_ONE, CFX_HALF);
+        cogl_rectangle_with_texture_coords(width - max, 0,
+                                           width, max,
+                                           0.5, 0,
+                                           1.0, 0.5);
 
         /* SW */
-        cogl_texture_rectangle(rectangle->corner->texture,
-                               0, heightx - max,
-                               max, heightx,
-                               0, CFX_HALF,
-                               CFX_HALF, CFX_ONE);
+        cogl_rectangle_with_texture_coords(0, height - max,
+                                           max, height,
+                                           0, 0.5,
+                                           0.5, 1.0);
 
         /* SE */
-        cogl_texture_rectangle(rectangle->corner->texture,
-                               widthx - max, heightx - max,
-                               widthx, heightx,
-                               CFX_HALF, CFX_HALF,
-                               CFX_ONE, CFX_ONE);
+        cogl_rectangle_with_texture_coords(width - max, height - max,
+                                           width, height,
+                                           0.5, 0.5,
+                                           1.0, 1.0);
 
     }
 
     if (border_width != 0) {
-        tmp_col = *border_color;
+        if (!rectangle->border_material)
+            rectangle->border_material = cogl_material_new ();
 
-        tmp_col.alpha = clutter_actor_get_paint_opacity(actor) * tmp_col.alpha / 255;
-
-        cogl_color(&tmp_col);
+        cogl_color_set_from_4ub(&tmp_color,
+                                border_color->red,
+                                border_color->green,
+                                border_color->blue,
+                                actor_opacity * border_color->alpha / 255);
+        cogl_material_set_color(rectangle->border_material, &tmp_color);
+        cogl_set_source(rectangle->border_material);
 
         /* NORTH */
-        cogl_rectanglex(max, 0,
-                        widthx - 2 * max, border_widthx);
+        cogl_rectangle(max, 0,
+                       width - max, border_width);
 
         /* EAST */
-        cogl_rectanglex(widthx - border_widthx, max,
-                        border_widthx, heightx - 2 * max);
+        cogl_rectangle(width - border_width, max,
+                       width, height - max);
 
         /* SOUTH */
-        cogl_rectanglex(max, heightx - border_widthx,
-                        widthx - 2 * max, border_widthx);
+        cogl_rectangle(max, height - border_width,
+                       width - max, height);
 
         /* WEST */
-        cogl_rectanglex(0, max,
-                        border_widthx, heightx - 2 * max);
-
+        cogl_rectangle(0, max,
+                       border_width, height - max);
     }
 
-    tmp_col = *color;
-    tmp_col.alpha = clutter_actor_get_paint_opacity(actor) * tmp_col.alpha / 255;
+    if (!rectangle->background_material)
+        rectangle->background_material = cogl_material_new ();
 
-    cogl_color(&tmp_col);
+    cogl_color_set_from_4ub(&tmp_color,
+                            color->red,
+                            color->green,
+                            color->blue,
+                            actor_opacity * color->alpha / 255);
+    cogl_material_set_color(rectangle->background_material, &tmp_color);
+    cogl_set_source(rectangle->background_material);
 
-    if (radiusx > border_widthx) {
-        cogl_rectanglex(radiusx, border_widthx,
-                        widthx - radiusx - radiusx, radiusx - border_widthx);
-        cogl_rectanglex(radiusx, heightx - radiusx,
-                        widthx - 2 * radiusx, radiusx - border_widthx);
+    if (radius > border_width) {
+        /* Once we've drawn the borders and corners, if the corners are bigger
+         * the the border width, the remaining area is shaped like
+         *
+         *  ########
+         * ##########
+         * ##########
+         *  ########
+         *
+         * We draw it in 3 pieces - first the top and bottom, then the main
+         * rectangle
+         */
+        cogl_rectangle(radius, border_width,
+                       width - radius, radius);
+        cogl_rectangle(radius, height - radius,
+                       width - radius, height - border_width);
     }
 
-    cogl_rectanglex(border_widthx, MAX(radiusx, border_widthx),
-                    widthx - 2 * border_widthx, heightx - 2 * MAX(radiusx, border_widthx));
+    cogl_rectangle(border_width, max,
+                   width - border_width, height - max);
 
     clutter_color_free(border_color);
     clutter_color_free(color);
@@ -497,12 +524,28 @@ big_rectangle_dispose(GObject *object)
 
     rectangle = BIG_RECTANGLE(object);
 
-    rectangle->radius = 0;
-    big_rectangle_update_corners(rectangle);
+    if (rectangle->corner) {
+        corner_unref(rectangle->corner);
+        rectangle->corner = NULL;
+    }
+
+    if (rectangle->corner_material) {
+        cogl_material_unref (rectangle->corner_material);
+        rectangle->corner_material = NULL;
+    }
+
+    if (rectangle->background_material) {
+        cogl_material_unref (rectangle->background_material);
+        rectangle->background_material = NULL;
+    }
+
+    if (rectangle->border_material) {
+        cogl_material_unref (rectangle->border_material);
+        rectangle->border_material = NULL;
+    }
 
     if (G_OBJECT_CLASS(big_rectangle_parent_class)->dispose)
         G_OBJECT_CLASS(big_rectangle_parent_class)->dispose(object);
-
 }
 
 
