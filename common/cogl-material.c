@@ -88,6 +88,26 @@ _cogl_material_free (CoglMaterial *material)
   g_free (material);
 }
 
+static void
+handle_automatic_blend_enable (CoglMaterial *material)
+{
+  GList *tmp;
+
+  /* XXX: If we expose manual control over ENABLE_BLEND, we'll add
+   * a flag to know when it's user configured, so we don't trash it */
+
+  material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
+  for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
+    {
+      CoglMaterialLayer *layer = tmp->data;
+      if (cogl_texture_get_format (layer->texture) & COGL_A_BIT)
+	material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+    }
+
+  if (material->unlit[3] != 1.0)
+    material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+}
+
 void
 cogl_material_get_color (CoglHandle  handle,
                          CoglColor  *color)
@@ -125,17 +145,14 @@ cogl_material_set_color (CoglHandle       handle,
 
   memcpy (material->unlit, unlit, sizeof (unlit));
 
+  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_COLOR;
   if (unlit[0] == 1.0 &&
       unlit[1] == 1.0 &&
       unlit[2] == 1.0 &&
       unlit[3] == 1.0)
     material->flags |= COGL_MATERIAL_FLAG_DEFAULT_COLOR;
 
-  if (unlit[3] != 1.0)
-    material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
-
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
-  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_COLOR;
+  handle_automatic_blend_enable (material);
 }
 
 void
@@ -184,7 +201,6 @@ cogl_material_set_ambient (CoglHandle handle,
   ambient[2] = cogl_color_get_blue_float (ambient_color);
   ambient[3] = cogl_color_get_alpha_float (ambient_color);
 
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
 }
 
@@ -222,7 +238,6 @@ cogl_material_set_diffuse (CoglHandle handle,
   diffuse[2] = cogl_color_get_blue_float (diffuse_color);
   diffuse[3] = cogl_color_get_alpha_float (diffuse_color);
 
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
 }
 
@@ -268,7 +283,6 @@ cogl_material_set_specular (CoglHandle handle,
   specular[2] = cogl_color_get_blue_float (specular_color);
   specular[3] = cogl_color_get_alpha_float (specular_color);
 
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
 }
 
@@ -300,7 +314,6 @@ cogl_material_set_shininess (CoglHandle handle,
 
   material->shininess = (GLfloat)shininess * 128.0;
 
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
 }
 
@@ -338,7 +351,6 @@ cogl_material_set_emission (CoglHandle handle,
   emission[2] = cogl_color_get_blue_float (emission_color);
   emission[3] = cogl_color_get_alpha_float (emission_color);
 
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
 }
 
@@ -355,7 +367,6 @@ cogl_material_set_alpha_test_function (CoglHandle handle,
   material->alpha_func = alpha_func;
   material->alpha_func_reference = (GLfloat)alpha_reference;
 
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC;
 }
 
@@ -372,7 +383,6 @@ cogl_material_set_blend_factors (CoglHandle handle,
   material->blend_src_factor = src_factor;
   material->blend_dst_factor = dst_factor;
 
-  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
 }
 
@@ -456,11 +466,6 @@ cogl_material_set_layer (CoglHandle material_handle,
   material = _cogl_material_pointer_from_handle (material_handle);
   layer = _cogl_material_get_layer (material_handle, layer_index, TRUE);
 
-  /* XXX: If we expose manual control over ENABLE_BLEND, we'll add
-   * a flag to know when it's user configured, so we don't trash it */
-  if (cogl_texture_get_format (texture_handle) & COGL_A_BIT)
-    material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
-
   n_layers = g_list_length (material->layers);
   if (n_layers >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
     {
@@ -483,8 +488,9 @@ cogl_material_set_layer (CoglHandle material_handle,
     cogl_texture_unref (layer->texture);
 
   layer->texture = texture_handle;
+
+  handle_automatic_blend_enable (material);
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  material->flags |= COGL_MATERIAL_FLAG_LAYERS_DIRTY;
 }
 
 void
@@ -516,7 +522,6 @@ cogl_material_set_layer_combine_function (
   if (set_alpha_func)
     layer->texture_combine_alpha_func = func;
 
-  material->flags |= COGL_MATERIAL_FLAG_LAYERS_DIRTY;
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
   layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
 }
@@ -552,7 +557,6 @@ cogl_material_set_layer_combine_arg_src (
   if (set_arg_alpha_src)
     layer->texture_combine_alpha_src[argument] = src;
 
-  material->flags |= COGL_MATERIAL_FLAG_LAYERS_DIRTY;
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
   layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
 }
@@ -588,7 +592,6 @@ cogl_material_set_layer_combine_arg_op (
   if (set_arg_alpha_op)
     layer->texture_combine_alpha_op[argument] = op;
 
-  material->flags |= COGL_MATERIAL_FLAG_LAYERS_DIRTY;
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
   layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
 }
@@ -608,7 +611,6 @@ cogl_material_set_layer_matrix (CoglHandle material_handle,
 
   layer->matrix = *matrix;
 
-  material->flags |= COGL_MATERIAL_FLAG_LAYERS_DIRTY;
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX;
   layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
@@ -632,7 +634,6 @@ cogl_material_remove_layer (CoglHandle material_handle,
   g_return_if_fail (cogl_is_material (material_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
-  material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
   for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
     {
       layer = tmp->data;
@@ -641,18 +642,11 @@ cogl_material_remove_layer (CoglHandle material_handle,
 	  CoglHandle handle = (CoglHandle) layer;
 	  cogl_material_layer_unref (handle);
 	  material->layers = g_list_remove (material->layers, layer);
-	  continue;
+	  break;
 	}
-
-      /* XXX: If we expose manual control over ENABLE_BLEND, we'll add
-       * a flag to know when it's user configured, so we don't trash it */
-      if (cogl_texture_get_format (layer->texture) & COGL_A_BIT)
-	material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
     }
 
-  if (material->unlit[3] != 1.0)
-    material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
-  material->flags |= COGL_MATERIAL_FLAG_LAYERS_DIRTY;
+  handle_automatic_blend_enable (material);
 }
 
 /* XXX: This API is hopfully just a stop-gap solution. Ideally cogl_enable
@@ -671,8 +665,7 @@ cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
 
   /* Enable blending if the geometry has an associated alpha color,
    * or the material wants blending enabled. */
-  if (material->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND
-      || ctx->color_alpha < 255)
+  if (material->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND)
     enable_flags |= COGL_ENABLE_BLEND;
 
   return enable_flags;
@@ -890,15 +883,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* TODO
-  if (ctx->current_material == material &&
-      !(material->flags & COGL_MATERIAL_FLAG_LAYERS_DIRTY) &&
-      ctx->current_material_fallback_mask == fallback_mask &&
-      ctx->current_material_disable_mask == disable_mask &&
-      ctx->current_material_layer0_override = layer0_override_texture)
-    return;
-  */
-
   for (tmp = material->layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
       CoglHandle         layer_handle = (CoglHandle)tmp->data;
@@ -1058,20 +1042,12 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
           gl_layer_info->disabled = TRUE;
         }
     }
-
-  material->flags &= ~COGL_MATERIAL_FLAG_LAYERS_DIRTY;
 }
 
 static void
 _cogl_material_flush_base_gl_state (CoglMaterial *material)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-#ifndef DISABLE_MATERIAL_CACHE
-  if (ctx->current_material == material &&
-      !(material->flags & COGL_MATERIAL_FLAG_DIRTY))
-    return;
-#endif
 
   if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR
         && material->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
