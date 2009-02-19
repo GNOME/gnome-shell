@@ -52,7 +52,16 @@ CoglHandle cogl_material_ref (CoglHandle handle);
  */
 void cogl_material_unref (CoglHandle handle);
 
-
+/**
+ * cogl_is_material:
+ * @handle: A CoglHandle
+ *
+ * Gets whether the given handle references an existing material object.
+ *
+ * Returns: %TRUE if the handle references a #CoglMaterial,
+ *   %FALSE otherwise
+ */
+gboolean cogl_is_material (CoglHandle handle);
 
 /**
  * cogl_material_set_color:
