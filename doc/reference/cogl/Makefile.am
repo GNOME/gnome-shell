@@ -21,11 +21,11 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
 DOC_SOURCE_DIR=../../../clutter/cogl
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
-SCANGOBJ_OPTIONS=
+SCANGOBJ_OPTIONS=--type-init-func="g_type_init()"
 
 # Extra options to supply to gtkdoc-scan.
 # e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED" 
-SCAN_OPTIONS=--deprecated-guards="CLUTTER_DISABLE_DEPRECATED"
+SCAN_OPTIONS=--deprecated-guards="COGL_DISABLE_DEPRECATED"
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
