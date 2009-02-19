@@ -330,6 +330,7 @@ cogl_matrix_scale
 cogl_material_new
 cogl_material_ref
 cogl_material_unref
+cogl_is_material
 cogl_material_set_color
 cogl_material_set_color4ub
 cogl_material_set_color4f
