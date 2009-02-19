@@ -1,12 +1,9 @@
-null=
+NULL =
 
-EXTRA_DIST= gtk-doc.m4       \
-            libtool.m4       \
-            ltoptions.m4     \
-            ltsugar.m4       \
-            ltversion.m4     \
-            lt~obsolete.m4   \
-            shave.m4         \
-            shave.in         \
-            shave-libtool.in \
-            $(null)
+EXTRA_DIST = \
+	dolt.m4			\
+	gtk-doc.m4		\
+	shave.in		\
+	shave-libtool.in	\
+	shave.m4		\
+	$(NULL)
