@@ -1,12 +1,12 @@
 NULL =
 
-SUBDIRS = clutter tests po
+SUBDIRS = build clutter tests po
 
 if BUILD_GTK_DOC
 SUBDIRS += doc
 endif
 
-DIST_SUBDIRS = clutter tests doc po
+DIST_SUBDIRS = build clutter tests doc po
 
 ACLOCAL_AMFLAGS = -I build/autotools
 
