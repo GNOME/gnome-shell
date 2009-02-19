@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-13 09:17+0300\n"
+"POT-Creation-Date: 2009-02-19 11:03+0300\n"
 "PO-Revision-Date: 2008-08-13 09:15+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -32,35 +32,35 @@ msgid "Unknown window information request: %d"
 msgstr "Tuntematon ikkunatietojen pyyntö: %d"
 
 #: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
+#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" ei jäsentynyt kokonaisluvuksi"
 
 #: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
-#: ../src/ui/theme-parser.c:545
+#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
+#: ../src/ui/theme-parser.c:586
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Perässä olevat merkit \"%s\" merkkijonossa \"%s\" eivät ole järkeviä"
 
 #: ../src/core/delete.c:135
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Valintaikkunaprosessilta tullut viesti \"%s\" ei jäsenny\n"
+msgstr "Tallennetun istuntotiedoston jäsennys epäonnistui: %s\n"
 
 #: ../src/core/delete.c:253
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Virhe valintaikkunan näyttämisprosessilta lukemisessa: %s\n"
+msgstr ""
 
 #: ../src/core/delete.c:336
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Virhe metacity-dialogin käynnistämisessä sovelluksen tappamisesta kysymistä "
-"varten: %s\n"
+"Virhe metacity-dialogin käynnistämisessä istunnon ulkopuolisista ohjelmista "
+"varoittamista varten: %s\n"
 
 #: ../src/core/delete.c:445
 #, c-format
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Vakava IO-virhe %d (%s) näytöllä \"%s\".\n"
 
-#: ../src/core/keybindings.c:1090
+#: ../src/core/keybindings.c:680
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -101,25 +101,31 @@ msgid ""
 msgstr ""
 "Jokin muu ohjelma käyttää jo näppäintä %s muunnoksin %x pikanäppäimenään\n"
 
-#: ../src/core/keybindings.c:2729
-#, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2294
+#, fuzzy, c-format
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
 msgstr ""
-"Virhe metacity-dialogin käynnistämisessä komennon virheen tulostamista "
-"varten: %s\n"
+"Komentoa \"%s\" suorittaessa tapahtui virhe:\n"
+"%s."
 
-#: ../src/core/keybindings.c:2834
+#: ../src/core/keybindings.c:2381
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Mitään komentoa %d ei ole määritelty.\n"
 
-#: ../src/core/keybindings.c:3862
+#: ../src/core/keybindings.c:3335
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Mitään päätteen komentoa ei ole määritelty.\n"
 
-#: ../src/core/main.c:115
-#, c-format
+#: ../src/core/main.c:116
+#, fuzzy, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -133,40 +139,48 @@ msgstr ""
 "Ei MINKÄÄNLAISTA takuuta: ei edes takuuta MYYNTIKELPOISUUDESTA tai\n"
 "SOPIVUUDESTA JOHONKIN KÄYTTÖÖN.\n"
 
-#: ../src/core/main.c:242
+#: ../src/core/main.c:253
 msgid "Disable connection to session manager"
 msgstr "Estä yhteys sessionhallintaan"
 
-#: ../src/core/main.c:248
+#: ../src/core/main.c:259
 msgid "Replace the running window manager with Metacity"
 msgstr "Vaihda käytössä oleva ikkunamanageri metacityyn"
 
-#: ../src/core/main.c:254
+#: ../src/core/main.c:265
 msgid "Specify session management ID"
 msgstr "Anna sessionhallinnan ID"
 
-#: ../src/core/main.c:259
+#: ../src/core/main.c:270
 msgid "X Display to use"
 msgstr "Käytettävä X-näyttö"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:276
 msgid "Initialize session from savefile"
 msgstr "Alusta sessio tiedostosta"
 
-#: ../src/core/main.c:271
+#: ../src/core/main.c:282
 msgid "Print version"
 msgstr "Näytä versio"
 
-#: ../src/core/main.c:277
+#: ../src/core/main.c:288
 msgid "Make X calls synchronous"
 msgstr "Käytä synkronisia X-kutsuja"
 
-#: ../src/core/main.c:428
+#: ../src/core/main.c:294
+msgid "Turn compositing on"
+msgstr "Käytä kerrostusta"
+
+#: ../src/core/main.c:300
+msgid "Turn compositing off"
+msgstr "Älä käytä kerrostusta"
+
+#: ../src/core/main.c:478
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Teemakansion lukeminen epäonnistui: %s\n"
 
-#: ../src/core/main.c:444
+#: ../src/core/main.c:494
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -174,7 +188,7 @@ msgstr ""
 "Teemaa ei löydy! Varmista, että %s on olemassa, ja sisältää tavalliset "
 "teemat.\n"
 
-#: ../src/core/main.c:500
+#: ../src/core/main.c:550
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Uudelleenkäynnistys epäonnistui: %s\n"
@@ -186,26 +200,28 @@ msgstr "Uudelleenkäynnistys epäonnistui: %s\n"
 #. * we might consider reverting invalid keys to their original values.
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
 #.
-#: ../src/core/prefs.c:502 ../src/core/prefs.c:654
+#.
+#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-avain \"%s\" on asetettu arvoltaan vääräksi\n"
 
-#: ../src/core/prefs.c:583 ../src/core/prefs.c:823
+#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "arvo %d GConf-avaimessa %s ei ole väliltä %d - %d\n"
 
-#: ../src/core/prefs.c:627 ../src/core/prefs.c:701 ../src/core/prefs.c:749
-#: ../src/core/prefs.c:813 ../src/core/prefs.c:1108 ../src/core/prefs.c:1124
-#: ../src/core/prefs.c:1143 ../src/core/prefs.c:1159 ../src/core/prefs.c:1176
-#: ../src/core/prefs.c:1192
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
+#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
+#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-avain \"%s\" on asetettu väärän tyyppiseksi\n"
 
-#: ../src/core/prefs.c:1262
+#: ../src/core/prefs.c:1231
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -213,12 +229,12 @@ msgstr ""
 "Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
 "eivät välttämättä käyttäydy kunnolla.\n"
 
-#: ../src/core/prefs.c:1332
+#: ../src/core/prefs.c:1302
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf-avaimesta %2$s saatu kirjasinkuvaus \"%1$s\" ei jäsenny\n"
 
-#: ../src/core/prefs.c:1392
+#: ../src/core/prefs.c:1364
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -226,17 +242,17 @@ msgid ""
 msgstr ""
 "Asetustietokannassa oleva \"%s\" ei ole kelvollinen hiiren muunnosnäppäin\n"
 
-#: ../src/core/prefs.c:1809
+#: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: ../src/core/prefs.c:2174 ../src/core/prefs.c:2686
+#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
 
-#: ../src/core/prefs.c:2204 ../src/core/prefs.c:2377
+#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -245,9 +261,14 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: ../src/core/prefs.c:2767
+#: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
+
+#: ../src/core/prefs.c:2753
+#, fuzzy, c-format
+msgid "Error setting compositor status: %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
 
 #: ../src/core/screen.c:350
@@ -281,6 +302,45 @@ msgstr "Näytön \"%2$s\" ruudulla %1$d on jo ikkunointiohjelma\n"
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Näytön \"%2$s\" ruudun %1$d vapauttaminen ei onnistunut\n"
+
+#. Translators: Please don't translate "Control", "Shift", etc, since these
+#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+#. * "disabled" must also stay as it is.
+#.
+#: ../src/core/schema-bindings.c:169
+#, fuzzy
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Pikanäppäin, joka sulkee ikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
+"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
+"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
+"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
+"niin tähän toimintoon ei liity pikanäppäintä."
+
+#: ../src/core/schema-bindings.c:177
+#, fuzzy
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
+"\n"
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
+msgstr ""
+"Pikanäppäin, joka sulkee ikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
+"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
+"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
+"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
+"niin tähän toimintoon ei liity pikanäppäintä."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
@@ -319,30 +379,17 @@ msgstr "Tallennetun istuntotiedoston jäsennys epäonnistui: %s\n"
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-määre havaittu, mutta istunnon ID on jo selvinnyt"
 
-#: ../src/core/session.c:1194
-#, c-format
-msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "<metacity_session>-elementin määre %s on tuntematon"
+#: ../src/core/session.c:1194 ../src/core/session.c:1269
+#: ../src/core/session.c:1301 ../src/core/session.c:1373
+#: ../src/core/session.c:1433
+#, fuzzy, c-format
+msgid "Unknown attribute %s on <%s> element"
+msgstr "Tuntematon <window>-elementin määre %s"
 
 #: ../src/core/session.c:1211
 #, c-format
 msgid "nested <window> tag"
 msgstr "sisäkkäiset <window>-laput"
-
-#: ../src/core/session.c:1269 ../src/core/session.c:1301
-#, c-format
-msgid "Unknown attribute %s on <window> element"
-msgstr "Tuntematon <window>-elementin määre %s"
-
-#: ../src/core/session.c:1373
-#, c-format
-msgid "Unknown attribute %s on <maximized> element"
-msgstr "Tuntematon <maximized>-elementin määre %s"
-
-#: ../src/core/session.c:1433
-#, c-format
-msgid "Unknown attribute %s on <geometry> element"
-msgstr "Tuntematon <geometry>-elementin määre %s"
 
 #: ../src/core/session.c:1453
 #, c-format
@@ -394,23 +441,15 @@ msgstr "Ikkunointiohjelman varoitus:"
 msgid "Window manager error: "
 msgstr "Ikkunointiohjelmavirhe:"
 
-#: ../src/core/window-props.c:206
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Sovellus asetti ylimääräisen _NET_WM_PIDin %lu\n"
-
-#: ../src/core/window-props.c:338
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s @ %s"
-
-#: ../src/core/window-props.c:1420
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "Virheellinen WM_TRANSIENT_FOR ikkuna 0x%lx kohteelle %s.\n"
+#. Translators: This is the title used on dialog boxes
+#. eof all-keybindings.h
+#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5648
+#: ../src/core/window.c:5626
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -426,7 +465,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6213
+#: ../src/core/window.c:6191
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -435,6 +474,21 @@ msgstr ""
 "Ikkuna %s asetti MWM-vihjeen ilmoittaakseen, ettei sen kokoa voi muuttaa, "
 "mutta asetti myös minimikoon %d × %d ja maksimikoon %d × %d, mikä ei ole "
 "järkevää.\n"
+
+#: ../src/core/window-props.c:260
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Sovellus asetti ylimääräisen _NET_WM_PIDin %lu\n"
+
+#: ../src/core/window-props.c:377
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s @ %s"
+
+#: ../src/core/window-props.c:1358
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "Virheellinen WM_TRANSIENT_FOR ikkuna 0x%lx kohteelle %s.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -464,15 +518,331 @@ msgstr ""
 "Ikkunan 0x%2$lx ominaisuus %1$s sisälsi virheellistä UTF-8:aa luettelon "
 "kohdassa %3$d\n"
 
-#: ../src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/include/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Siirry työtilaan 1"
 
-#: ../src/metacity.schemas.in.h:1
+#: ../src/include/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Siirry työtilaan 2"
+
+#: ../src/include/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Siirry työtilaan 3"
+
+#: ../src/include/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Siirry työtilaan 4"
+
+#: ../src/include/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Siirry työtilaan 5"
+
+#: ../src/include/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Siirry työtilaan 6"
+
+#: ../src/include/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Siirry työtilaan 7"
+
+#: ../src/include/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Siirry työtilaan 8"
+
+#: ../src/include/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Siirry työtilaan 9"
+
+#: ../src/include/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Siirry työtilaan 10"
+
+#: ../src/include/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Siirry työtilaan 11"
+
+#: ../src/include/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Siirry työtilaan 12"
+
+#: ../src/include/all-keybindings.h:122
+#, fuzzy
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Siirry vasemmalla olevaan työtilaan"
+
+#: ../src/include/all-keybindings.h:126
+#, fuzzy
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Siirry oikealla olevaan työtilaan"
+
+#: ../src/include/all-keybindings.h:130
+#, fuzzy
+msgid "Switch to workspace above the current workspace"
+msgstr "Siirry yllä olevaan työtilaan"
+
+#: ../src/include/all-keybindings.h:134
+#, fuzzy
+msgid "Switch to workspace below the current workspace"
+msgstr "Siirry alla olevaan työtilaan"
+
+#: ../src/include/all-keybindings.h:150
+#, fuzzy
+msgid "Move between windows of an application, using a popup window"
+msgstr "Siirry sovelluksen ikkunoiden välillä ponnahdusikkunalla"
+
+#: ../src/include/all-keybindings.h:153
+#, fuzzy
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "Siirry taaksepäin sovelluksen ikkunoiden välillä ponnahdusikkunalla"
+
+#: ../src/include/all-keybindings.h:157
+#, fuzzy
+msgid "Move between windows, using a popup window"
+msgstr "Siirry ikkunoiden välillä (selausikkuna)"
+
+#: ../src/include/all-keybindings.h:160
+#, fuzzy
+msgid "Move backward between windows, using a popup window"
+msgstr "Siirry taaksepäin ikkunoiden välillä (selausikkuna)"
+
+#: ../src/include/all-keybindings.h:163
+#, fuzzy
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Siirry paneeleiden ja työpöydän välillä (selausikkuna)"
+
+#: ../src/include/all-keybindings.h:166
+#, fuzzy
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr "Siirry taaksepäin paneeleiden ja työtilan välillä (selausikkuna)"
+
+#: ../src/include/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Siirry heti sovelluksen ikkunoiden välillä"
+
+#: ../src/include/all-keybindings.h:174
+#, fuzzy
+msgid "Move backward between windows of an application immediately"
+msgstr "Siirry heti taaksepäin sovelluksen ikkunoiden välillä"
+
+#: ../src/include/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Siirry heti ikkunoiden välillä"
+
+#: ../src/include/all-keybindings.h:180
+#, fuzzy
+msgid "Move backward between windows immediately"
+msgstr "Siirry heti taaksepäin ikkunoiden välillä"
+
+#: ../src/include/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Siirry heti paneeleiden ja työtilan välillä"
+
+#: ../src/include/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Siirry heti taaksepäin paneelien ja työpöydän välillä"
+
+#: ../src/include/all-keybindings.h:191
+#, fuzzy
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Piilota kaikki ikkunat ja kohdista työpöytä"
+
+#: ../src/include/all-keybindings.h:194
+msgid "Show the panel's main menu"
+msgstr "Näytä paneelin päävalikko"
+
+#: ../src/include/all-keybindings.h:197
+#, fuzzy
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Näytä paneelin suoritusikkuna"
+
+#: ../src/include/all-keybindings.h:238
+msgid "Take a screenshot"
+msgstr "Ota kuvakaappaus"
+
+#: ../src/include/all-keybindings.h:240
+msgid "Take a screenshot of a window"
+msgstr "Ota kuvakaappaus ikkunasta"
+
+#: ../src/include/all-keybindings.h:242
+msgid "Run a terminal"
+msgstr "Käynnistä pääte"
+
+#: ../src/include/all-keybindings.h:257
+msgid "Activate the window menu"
+msgstr "Aktivoi ikkunavalikko"
+
+#: ../src/include/all-keybindings.h:260
+msgid "Toggle fullscreen mode"
+msgstr "Vaihda kokoruututilaa"
+
+#: ../src/include/all-keybindings.h:262
+msgid "Toggle maximization state"
+msgstr "Vaihda suurennustilaa"
+
+#: ../src/include/all-keybindings.h:264
+#, fuzzy
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "Laske ikkuna muiden alle"
+
+#: ../src/include/all-keybindings.h:266
+msgid "Maximize window"
+msgstr "Suurenna ikkuna"
+
+#: ../src/include/all-keybindings.h:268
+msgid "Restore window"
+msgstr "Palauta ikkuna"
+
+#: ../src/include/all-keybindings.h:270
+msgid "Toggle shaded state"
+msgstr "Vaihda rullaustilaa"
+
+#: ../src/include/all-keybindings.h:272
+msgid "Minimize window"
+msgstr "Pienennä ikkuna"
+
+#: ../src/include/all-keybindings.h:274
+msgid "Close window"
+msgstr "Sulje ikkuna"
+
+#: ../src/include/all-keybindings.h:276
+msgid "Move window"
+msgstr "Siirrä ikkunaa"
+
+#: ../src/include/all-keybindings.h:278
+msgid "Resize window"
+msgstr "Muuta ikkunan kokoa"
+
+#: ../src/include/all-keybindings.h:281
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "Valitse onko näyttö yhdessä vai kaikissa työtiloissa"
+
+#: ../src/include/all-keybindings.h:285
+msgid "Move window to workspace 1"
+msgstr "Siirrä ikkuna työtilaan 1"
+
+#: ../src/include/all-keybindings.h:288
+msgid "Move window to workspace 2"
+msgstr "Siirrä ikkuna työtilaan 2"
+
+#: ../src/include/all-keybindings.h:291
+msgid "Move window to workspace 3"
+msgstr "Siirrä ikkuna työtilaan 3"
+
+#: ../src/include/all-keybindings.h:294
+msgid "Move window to workspace 4"
+msgstr "Siirrä ikkuna työtilaan 4"
+
+#: ../src/include/all-keybindings.h:297
+msgid "Move window to workspace 5"
+msgstr "Siirrä ikkuna työtilaan 5"
+
+#: ../src/include/all-keybindings.h:300
+msgid "Move window to workspace 6"
+msgstr "Siirrä ikkuna työtilaan 6"
+
+#: ../src/include/all-keybindings.h:303
+msgid "Move window to workspace 7"
+msgstr "Siirrä ikkuna työtilaan 7"
+
+#: ../src/include/all-keybindings.h:306
+msgid "Move window to workspace 8"
+msgstr "Siirrä ikkuna työtilaan 8"
+
+#: ../src/include/all-keybindings.h:309
+msgid "Move window to workspace 9"
+msgstr "Siirrä ikkuna työtilaan 9"
+
+#: ../src/include/all-keybindings.h:312
+msgid "Move window to workspace 10"
+msgstr "Siirrä ikkuna työtilaan 10"
+
+#: ../src/include/all-keybindings.h:315
+msgid "Move window to workspace 11"
+msgstr "Siirrä ikkuna työtilaan 11"
+
+#: ../src/include/all-keybindings.h:318
+msgid "Move window to workspace 12"
+msgstr "Siirrä ikkuna työtilaan 12"
+
+#: ../src/include/all-keybindings.h:330
+msgid "Move window one workspace to the left"
+msgstr "Siirrä ikkunaa yksi työtila vasemmalle"
+
+#: ../src/include/all-keybindings.h:333
+msgid "Move window one workspace to the right"
+msgstr "Siirrä ikkunaa yksi työtila oikealle"
+
+#: ../src/include/all-keybindings.h:336
+msgid "Move window one workspace up"
+msgstr "Siirrä ikkunaa yksi työtila ylös"
+
+#: ../src/include/all-keybindings.h:339
+msgid "Move window one workspace down"
+msgstr "Siirrä ikkunaa yksi työtila alas"
+
+#: ../src/include/all-keybindings.h:342
+#, fuzzy
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "Nosta, jos ikkuna peittynyt, muuten laske"
+
+#: ../src/include/all-keybindings.h:344
+msgid "Raise window above other windows"
+msgstr "Nosta ikkuna muiden päälle"
+
+#: ../src/include/all-keybindings.h:346
+msgid "Lower window below other windows"
+msgstr "Laske ikkuna muiden alle"
+
+#: ../src/include/all-keybindings.h:350
+msgid "Maximize window vertically"
+msgstr "Suurenna ikkuna pystysuunnassa"
+
+#: ../src/include/all-keybindings.h:354
+msgid "Maximize window horizontally"
+msgstr "Suurenna ikkuna vaakasuunnassa"
+
+#: ../src/include/all-keybindings.h:358
+msgid "Move window to north-west (top left) corner"
+msgstr "Siirrä ikkuna näytön vasempaan yläkulmaan"
+
+#: ../src/include/all-keybindings.h:361
+msgid "Move window to north-east (top right) corner"
+msgstr "Siirrä ikkuna näytön oikeaan yläkulmaan"
+
+#: ../src/include/all-keybindings.h:364
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Siirrä ikkuna näytön vasempaan alakulmaan"
+
+#: ../src/include/all-keybindings.h:367
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Siirrä ikkuna näytön oikeaan alakulmaan"
+
+#: ../src/include/all-keybindings.h:371
+msgid "Move window to north (top) side of screen"
+msgstr "Siirrä ikkuna näytön ylälaitaan"
+
+#: ../src/include/all-keybindings.h:374
+msgid "Move window to south (bottom) side of screen"
+msgstr "Siirrä ikkuna näytön alalaitaan"
+
+#: ../src/include/all-keybindings.h:377
+msgid "Move window to east (right) side of screen"
+msgstr "Siirrä ikkuna näytön oikeaan reunaan"
+
+#: ../src/include/all-keybindings.h:380
+msgid "Move window to west (left) side of screen"
+msgstr "Siirrä ikkuna näytön vasempaan reunaan"
+
+#: ../src/include/all-keybindings.h:383
+msgid "Move window to center of screen"
+msgstr "Siirrä ikkuna näytön keskelle"
+
+#: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr "(Ei toteutettu) Navigointi toimii sovelluksittain, ei ikkunoittain."
 
-#: ../src/metacity.schemas.in.h:2
+#: ../src/metacity.schemas.in.in.h:2
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -484,27 +854,23 @@ msgstr ""
 "arvo on 0. Lisäksi tämä asetus ei ole käytössä, jos asetus "
 "titlebar_uses_desktop_font on tosi."
 
-#: ../src/metacity.schemas.in.h:3
+#: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
 msgstr "Toiminto otsikkopalkin kaksoisnapsautukselle"
 
-#: ../src/metacity.schemas.in.h:4
+#: ../src/metacity.schemas.in.in.h:4
 msgid "Action on title bar middle-click"
 msgstr "Toiminto otsikkopalkin napsautukselle keskinapilla"
 
-#: ../src/metacity.schemas.in.h:5
+#: ../src/metacity.schemas.in.in.h:5
 msgid "Action on title bar right-click"
 msgstr "Toiminto otsikkopalkin napsautukselle oikealla napilla"
 
-#: ../src/metacity.schemas.in.h:6
-msgid "Activate window menu"
-msgstr "Aktivoi ikkunavalikko"
-
-#: ../src/metacity.schemas.in.h:7
+#: ../src/metacity.schemas.in.in.h:6
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Otsikkopalkin painikkeiden järjestys"
 
-#: ../src/metacity.schemas.in.h:8
+#: ../src/metacity.schemas.in.in.h:7
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
@@ -515,57 +881,55 @@ msgid ""
 "some space between two adjacent buttons."
 msgstr ""
 "Otsikkopalkin painikkeiden järjestys. Arvon täytyy olla merkkijono, kuten "
-"\"menu:minimize,maximize,spacer,close\", jossa kaksoispiste erottaa vasemman nurkan "
-"oikeasta nurkasta ja painikkeiden nimet on pilkuin eroteltu. Kukin painike "
-"voi esiintyä vain kerran. Tuntemattomat painikkeiden nimet jäävät kokonaan "
-"huomiotta, joten uusia painikkeita voi lisätä tuleviin metacityn versioihin "
-"rikkomatta yhteensopivuutta vanhojen kanssa."
+"\"menu:minimize,maximize,spacer,close\", jossa kaksoispiste erottaa vasemman "
+"nurkan oikeasta nurkasta ja painikkeiden nimet on pilkuin eroteltu. Kukin "
+"painike voi esiintyä vain kerran. Tuntemattomat painikkeiden nimet jäävät "
+"kokonaan huomiotta, joten uusia painikkeita voi lisätä tuleviin metacityn "
+"versioihin rikkomatta yhteensopivuutta vanhojen kanssa."
 
-#: ../src/metacity.schemas.in.h:9
+#: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
 msgstr "Nosta kohdistettu ikkuna itsestään"
 
-#: ../src/metacity.schemas.in.h:10
+#: ../src/metacity.schemas.in.in.h:9
+#, fuzzy
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
-"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
-"for example."
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
 msgstr ""
 "Kun tämä muunnospainike on pohjassa, hiirellä voi siirtää ikkunaa (vasen "
 "painike), muuttaa ikkunan kokoa (keskipainike) ja näyttää ikkunavalikon "
 "(oikea painike). Muunnosnäppäintä merkitään esimerkiksi \"&lt;Alt&gt;\" tai "
 "\"&lt;Super&gr;\"."
 
-#: ../src/metacity.schemas.in.h:11
-msgid "Close window"
-msgstr "Sulje ikkuna"
-
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
 msgstr "Komennot, jotka käynnistyvät pikanäppäimin"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.in.h:11
 msgid "Compositing Manager"
 msgstr "Kerrostuksen hallintaohjelma"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.in.h:12
 msgid "Control how new windows get focus"
 msgstr "Määrittele kuinka uudet ikkunat kohdistetaan"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.in.h:13
 msgid "Current theme"
 msgstr "Nykyinen teema"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Viive (millisekunteina) automaattista nostoa varten"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Määrittää, tulisiko metacityn toimia kerrostuksen hallintaohjelmana."
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -574,21 +938,17 @@ msgstr ""
 "\"piippauksia\". Tätä voi käyttää yhdessä \"näkyvien piippausten\" kanssa ja "
 "sallia \"hiljaiset piippaukset\"."
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
 "Poista käytöstä \"ominaisuuksia\", joita vanhat tai rikkinäiset sovellukset "
 "vaativat toimiakseen"
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.in.h:18
 msgid "Enable Visual Bell"
 msgstr "Käytä näkyviä piippauksia"
 
-#: ../src/metacity.schemas.in.h:21
-msgid "Hide all windows and focus desktop"
-msgstr "Piilota kaikki ikkunat ja kohdista työpöytä"
-
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.in.h:19
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focused window will be automatically raised after a delay specified by "
@@ -600,7 +960,7 @@ msgstr ""
 "määritellyn viiveen jälkeen. Tämä ei liity ikkunan napsauttamiseen sen "
 "nostamiseksi eikä ikkunan kohdistamiseen raahaustoiminnon aikana."
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.in.h:20
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -608,7 +968,7 @@ msgstr ""
 "Jos tosi, jätä titlebar_font-asetus huomiotta, ja käytä sovellusten "
 "tavallista kirjasinta ikkunoiden otsikoissa."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.in.h:21
 msgid ""
 "If true, metacity will give the user less feedback by using wireframes, "
 "avoiding animations, or other means. This is a significant reduction in "
@@ -623,7 +983,7 @@ msgstr ""
 "päätepalvelimien käytön. Kehyksiä ei kuitenkaan piirretä viivoina, jos "
 "esteettömyysominaisuudet ovat käytössä."
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.in.h:22
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -640,206 +1000,23 @@ msgstr ""
 "kohdistusnapsautukset eivät välity muiden sovellusten ikkunoille. "
 "Sovellustilaa ei ole suurimmaksi osaksi vielä toteutettu kunnolla."
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
 msgstr "Jos tosi, käytä vähemmän resursseja käytettävyyden kustannuksella"
 
-#: ../src/metacity.schemas.in.h:27
-msgid "Lower window below other windows"
-msgstr "Laske ikkuna muiden alle"
-
-#: ../src/metacity.schemas.in.h:28
-msgid ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Setting this option to "
-"false, which is strongly discouraged, will decouple raising from other user "
-"actions, and ignore raise requests generated by applications. See http://"
-"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr ""
-"Monet toiminnot, kuten ikkunan alueelle napsautus, ikkunan siirtäminen tai "
-"koon muuttaminen, nostavat oletuksena ikkunan päällimmäiseksi. Aseta tämä "
-"valinta arvoon \"false\", jos haluat erottaa ikkunan nostamisen muista "
-"toiminnoista. Tätä ei ole suositeltavaa tehdä. Tämä jättää huomioimatta "
-"muiden ikkunoiden tekemät nostopyynnöt, lue lisää osoitteesta bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6."
-
-#: ../src/metacity.schemas.in.h:29
-msgid "Maximize window"
-msgstr "Suurenna ikkuna"
-
-#: ../src/metacity.schemas.in.h:30
-msgid "Maximize window horizontally"
-msgstr "Suurenna ikkuna vaakasuunnassa"
-
-#: ../src/metacity.schemas.in.h:31
-msgid "Maximize window vertically"
-msgstr "Suurenna ikkuna pystysuunnassa"
-
-#: ../src/metacity.schemas.in.h:32
-msgid "Minimize window"
-msgstr "Pienennä ikkuna"
-
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.in.h:24
 msgid "Modifier to use for modified window click actions"
 msgstr "Muunnosnäppäin ikkunoiden muunnettuja napsautustoimintoja varten"
 
-#: ../src/metacity.schemas.in.h:34
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Siirry heti taaksepäin paneelien ja työpöydän välillä"
-
-#: ../src/metacity.schemas.in.h:35
-msgid "Move backwards between panels and the desktop with popup"
-msgstr "Siirry taaksepäin paneeleiden ja työtilan välillä (selausikkuna)"
-
-#: ../src/metacity.schemas.in.h:36
-msgid "Move backwards between windows immediately"
-msgstr "Siirry heti taaksepäin ikkunoiden välillä"
-
-#: ../src/metacity.schemas.in.h:37
-msgid "Move backwards between windows of an application immediately"
-msgstr "Siirry heti taaksepäin sovelluksen ikkunoiden välillä"
-
-#: ../src/metacity.schemas.in.h:38
-msgid "Move backwards between windows of an application with popup"
-msgstr "Siirry taaksepäin sovelluksen ikkunoiden välillä ponnahdusikkunalla"
-
-#: ../src/metacity.schemas.in.h:39
-msgid "Move between panels and the desktop immediately"
-msgstr "Siirry heti paneeleiden ja työtilan välillä"
-
-#: ../src/metacity.schemas.in.h:40
-msgid "Move between panels and the desktop with popup"
-msgstr "Siirry paneeleiden ja työpöydän välillä (selausikkuna)"
-
-#: ../src/metacity.schemas.in.h:41
-msgid "Move between windows immediately"
-msgstr "Siirry heti ikkunoiden välillä"
-
-#: ../src/metacity.schemas.in.h:42
-msgid "Move between windows of an application immediately"
-msgstr "Siirry heti sovelluksen ikkunoiden välillä"
-
-#: ../src/metacity.schemas.in.h:43
-msgid "Move between windows of an application with popup"
-msgstr "Siirry sovelluksen ikkunoiden välillä ponnahdusikkunalla"
-
-#: ../src/metacity.schemas.in.h:44
-msgid "Move between windows with popup"
-msgstr "Siirry ikkunoiden välillä (selausikkuna)"
-
-#: ../src/metacity.schemas.in.h:45
-msgid "Move focus backwards between windows using popup display"
-msgstr "Siirry taaksepäin ikkunoiden välillä (selausikkuna)"
-
-#: ../src/metacity.schemas.in.h:46
-msgid "Move window"
-msgstr "Siirrä ikkunaa"
-
-#: ../src/metacity.schemas.in.h:47
-msgid "Move window one workspace down"
-msgstr "Siirrä ikkunaa yksi työtila alas"
-
-#: ../src/metacity.schemas.in.h:48
-msgid "Move window one workspace to the left"
-msgstr "Siirrä ikkunaa yksi työtila vasemmalle"
-
-#: ../src/metacity.schemas.in.h:49
-msgid "Move window one workspace to the right"
-msgstr "Siirrä ikkunaa yksi työtila oikealle"
-
-#: ../src/metacity.schemas.in.h:50
-msgid "Move window one workspace up"
-msgstr "Siirrä ikkunaa yksi työtila ylös"
-
-#: ../src/metacity.schemas.in.h:51
-msgid "Move window to east side of screen"
-msgstr "Siirrä ikkuna vasempaan laitaan"
-
-#: ../src/metacity.schemas.in.h:52
-msgid "Move window to north side of screen"
-msgstr "Siirrä ikkuna ylälaitaan"
-
-#: ../src/metacity.schemas.in.h:53
-msgid "Move window to north-east corner"
-msgstr "Siirrä ikkuna oikeaan yläkulmaan"
-
-#: ../src/metacity.schemas.in.h:54
-msgid "Move window to north-west corner"
-msgstr "Siirrä ikkuna vasempaan yläkulmaan"
-
-#: ../src/metacity.schemas.in.h:55
-msgid "Move window to south side of screen"
-msgstr "Siirrä ikkuna alalaitaan"
-
-#: ../src/metacity.schemas.in.h:56
-msgid "Move window to south-east corner"
-msgstr "Siirrä ikkuna vasempaan alakulmaan"
-
-#: ../src/metacity.schemas.in.h:57
-msgid "Move window to south-west corner"
-msgstr "Siirrä ikkuna oikeaan alakulmaan"
-
-#: ../src/metacity.schemas.in.h:58
-msgid "Move window to west side of screen"
-msgstr "Siirrä ikkuna oikeaan reunaan"
-
-#: ../src/metacity.schemas.in.h:59
-msgid "Move window to workspace 1"
-msgstr "Siirrä ikkuna työtilaan 1"
-
-#: ../src/metacity.schemas.in.h:60
-msgid "Move window to workspace 10"
-msgstr "Siirrä ikkuna työtilaan 10"
-
-#: ../src/metacity.schemas.in.h:61
-msgid "Move window to workspace 11"
-msgstr "Siirrä ikkuna työtilaan 11"
-
-#: ../src/metacity.schemas.in.h:62
-msgid "Move window to workspace 12"
-msgstr "Siirrä ikkuna työtilaan 12"
-
-#: ../src/metacity.schemas.in.h:63
-msgid "Move window to workspace 2"
-msgstr "Siirrä ikkuna työtilaan 2"
-
-#: ../src/metacity.schemas.in.h:64
-msgid "Move window to workspace 3"
-msgstr "Siirrä ikkuna työtilaan 3"
-
-#: ../src/metacity.schemas.in.h:65
-msgid "Move window to workspace 4"
-msgstr "Siirrä ikkuna työtilaan 4"
-
-#: ../src/metacity.schemas.in.h:66
-msgid "Move window to workspace 5"
-msgstr "Siirrä ikkuna työtilaan 5"
-
-#: ../src/metacity.schemas.in.h:67
-msgid "Move window to workspace 6"
-msgstr "Siirrä ikkuna työtilaan 6"
-
-#: ../src/metacity.schemas.in.h:68
-msgid "Move window to workspace 7"
-msgstr "Siirrä ikkuna työtilaan 7"
-
-#: ../src/metacity.schemas.in.h:69
-msgid "Move window to workspace 8"
-msgstr "Siirrä ikkuna työtilaan 8"
-
-#: ../src/metacity.schemas.in.h:70
-msgid "Move window to workspace 9"
-msgstr "Siirrä ikkuna työtilaan 9"
-
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.in.h:25
 msgid "Name of workspace"
 msgstr "Työtilan nimi"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.in.h:26
 msgid "Number of workspaces"
 msgstr "Työtilojen määrä"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.in.h:27
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -849,35 +1026,58 @@ msgstr ""
 "yläraja, jotta työpöytää ei vahingossa voi tehdä käyttökelvottomaksi "
 "pyytämällä liian monia työtiloja."
 
-#: ../src/metacity.schemas.in.h:74
-msgid "Raise obscured window, otherwise lower"
-msgstr "Nosta, jos ikkuna peittynyt, muuten laske"
-
-#: ../src/metacity.schemas.in.h:75
-msgid "Raise window above other windows"
-msgstr "Nosta ikkuna muiden päälle"
-
-#: ../src/metacity.schemas.in.h:76
-msgid "Resize window"
-msgstr "Muuta ikkunan kokoa"
-
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.in.h:28
 msgid "Run a defined command"
 msgstr "Suorita annettu komento"
 
-#: ../src/metacity.schemas.in.h:78
-msgid "Run a terminal"
-msgstr "Käynnistä pääte"
+#: ../src/metacity.schemas.in.in.h:29
+msgid ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
+msgstr ""
 
-#: ../src/metacity.schemas.in.h:79
-msgid "Show the panel menu"
-msgstr "Näytä paneelivalikko"
+#: ../src/metacity.schemas.in.in.h:30
+#, fuzzy
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+"Tämän valitsimen asettaminen epätodeksi voi johtaa epävakaaseen toimintaan, "
+"joten on erittäin suositeltavaa olla muuttamatta oletusarvo tosi. Monet "
+"toiminnotu, kuten napsautus ikkunan asiakasosaan sekä ikkunan siirto ja koon "
+"muuttaminen, nostavat samalla ikkunan näkyviin. Asettamalla tämän epätodeksi "
+"voit estää tämän nostamisen. Arvosta riippumatta ikkuna voidaan nostaa "
+"edelleen aina päällimmäiseksi napsauttamalla ikkunaa Alt-vasen "
+"nappiyhdistelmällä, napsauttamalla ikkunan reunoja tavallisesti tai "
+"erityisillä sivuttajien viesteillä, kuten tehtävälistasovelman "
+"aktivointipyynnöllä. Tämä valitsin ei ole lainkaan käytössä click-to-focus -"
+"tilassa. Huomaa, että tavat nostaa ikkuna valitsimen raise_on_click ollessa "
+"epätosi eivät sisllä ohjelmallisia pyyntöjä sovelluksilta ikkunan nostoon: "
+"tällaiset pyynnöt jätetään huomioimatta riippumatta pyynnön syystä. Jos olet "
+"kehittäjä, joiden käyttäjät valittavat ettei sovellus toimi tämän asetuksen "
+"ollessa epätosi, voit kertoa että tämä on käyttäjien oma vika ja heidän "
+"tulee joko asettaa tämä uudestaan todeksi tai sietää vikaa, jota itse ovat "
+"pyytäneet asettamalla arvon epätodeksi. Lue lisää osoitteesta http://"
+"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
-#: ../src/metacity.schemas.in.h:80
-msgid "Show the panel run application dialog"
-msgstr "Näytä paneelin suoritusikkuna"
-
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.in.h:31
 msgid ""
 "Some applications disregard specifications in ways that result in window "
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
@@ -889,83 +1089,11 @@ msgstr ""
 "toimivaan tilaan, joka takaa yhtenäisen käyttöliittymän jos voidaan olla "
 "varmoja ettei tällaisia väärin toimivia ohjelmia käytetä."
 
-#: ../src/metacity.schemas.in.h:82
-msgid "Switch to workspace 1"
-msgstr "Siirry työtilaan 1"
-
-#: ../src/metacity.schemas.in.h:83
-msgid "Switch to workspace 10"
-msgstr "Siirry työtilaan 10"
-
-#: ../src/metacity.schemas.in.h:84
-msgid "Switch to workspace 11"
-msgstr "Siirry työtilaan 11"
-
-#: ../src/metacity.schemas.in.h:85
-msgid "Switch to workspace 12"
-msgstr "Siirry työtilaan 12"
-
-#: ../src/metacity.schemas.in.h:86
-msgid "Switch to workspace 2"
-msgstr "Siirry työtilaan 2"
-
-#: ../src/metacity.schemas.in.h:87
-msgid "Switch to workspace 3"
-msgstr "Siirry työtilaan 3"
-
-#: ../src/metacity.schemas.in.h:88
-msgid "Switch to workspace 4"
-msgstr "Siirry työtilaan 4"
-
-#: ../src/metacity.schemas.in.h:89
-msgid "Switch to workspace 5"
-msgstr "Siirry työtilaan 5"
-
-#: ../src/metacity.schemas.in.h:90
-msgid "Switch to workspace 6"
-msgstr "Siirry työtilaan 6"
-
-#: ../src/metacity.schemas.in.h:91
-msgid "Switch to workspace 7"
-msgstr "Siirry työtilaan 7"
-
-#: ../src/metacity.schemas.in.h:92
-msgid "Switch to workspace 8"
-msgstr "Siirry työtilaan 8"
-
-#: ../src/metacity.schemas.in.h:93
-msgid "Switch to workspace 9"
-msgstr "Siirry työtilaan 9"
-
-#: ../src/metacity.schemas.in.h:94
-msgid "Switch to workspace above this one"
-msgstr "Siirry yllä olevaan työtilaan"
-
-#: ../src/metacity.schemas.in.h:95
-msgid "Switch to workspace below this one"
-msgstr "Siirry alla olevaan työtilaan"
-
-#: ../src/metacity.schemas.in.h:96
-msgid "Switch to workspace on the left"
-msgstr "Siirry vasemmalla olevaan työtilaan"
-
-#: ../src/metacity.schemas.in.h:97
-msgid "Switch to workspace on the right"
-msgstr "Siirry oikealla olevaan työtilaan"
-
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
 msgstr "Järjestelmän piippaus on kuultavissa"
 
-#: ../src/metacity.schemas.in.h:99
-msgid "Take a screenshot"
-msgstr "Ota kuvakaappaus"
-
-#: ../src/metacity.schemas.in.h:100
-msgid "Take a screenshot of a window"
-msgstr "Ota kuvakaappaus ikkunasta"
-
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.in.h:33
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -983,7 +1111,7 @@ msgstr ""
 "yleensä kun \"järjestelmä piippaa\"), nykyisen ikkunan otsikkopalkki "
 "välkähtää."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.in.h:34
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -993,7 +1121,7 @@ msgstr ""
 "pikanäppäimet, jotka liittyvät näihin komentoihin. Avaimen run_command_N "
 "pikanäppäimen painaminen suorittaa komennon command_N."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.in.h:35
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -1001,7 +1129,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_screenshot-avain määrittelee "
 "pikanäppäimen, joka käynnistää tämän asetuksen määrittelemän ohjelman."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.in.h:36
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -1011,7 +1139,7 @@ msgstr ""
 "määrittelee pikanäppäimen, joka käynnistää tämän asetuksen määrittelemän "
 "ohjelman."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.in.h:37
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -1027,947 +1155,21 @@ msgstr ""
 "\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
 "merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
 
-#: ../src/metacity.schemas.in.h:106
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa yläpuoliseen työtilaan. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:107
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa alapuoliseen työtilaan. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:108
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa vasemmanpuoliseen työtilaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:109
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa oikeanpuoliseen työtilaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:110
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 1. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:111
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 10. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:112
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 11. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:113
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 12. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:114
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 2. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:115
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 3. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:116
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 4. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:117
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 5. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:118
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 6. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:119
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 7. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:120
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 8. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:121
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 9. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:122
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka avaa ikkunavalikon. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:123
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka sulkee ikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
-"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:124
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka käynnistää ikkunoidenliikutustilan, jossa ikkunoita voi "
-"liikuttaa näppäimistöltä. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä "
-"kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;"
-"Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", niin "
-"tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:125
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka käynnistää ikkunoiden koonmuutostilan, jossa ikkunoiden "
-"kokoa voi muuttaa näppäimistöltä. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
-"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:126
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka piilottaa tavalliset ikkunat, ja kohdistaa työpöydän "
-"taustan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta "
-"ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos "
-"vaihdat arvoksi erityisen merkkijonon \"disabled\", niin tähän toimintoon ei "
-"liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:127
-msgid ""
-"The keybinding used to maximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka suurentaa ikkunan. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:128
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka pienentää ikkunan. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:129
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan alapuoliseen työtilaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:130
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan vasemmanpuoliseen työtilaan. Pikanäppäimet "
-"ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös "
-"lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi "
-"erityisen merkkijonon \"disabled\", niin tähän toimintoon ei liity "
-"pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:131
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan oikeanpuoliseen työtilaan. Pikanäppäimet "
-"ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös "
-"lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi "
-"erityisen merkkijonon \"disabled\", niin tähän toimintoon ei liity "
-"pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:132
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan yläpuoliseen työtilaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:133
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 1. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:134
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 10. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:135
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 11. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:136
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 12. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:137
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 2. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:138
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 3. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:139
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 4. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:140
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 5. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:141
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 6. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:142
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 7. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:143
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 8. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:144
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka siirtää ikkunan työtilaan 9. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:145
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen takaperin paneelien ja työpöydän "
-"välillä ja näyttää samalla selausikkunan. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:146
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen takaperin paneelien ja työpöydän "
-"välillä näyttämättä selausikkunaa. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:147
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application without a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen takaperin sovelluksen ikkunoiden "
-"välillä näyttämättä selausikkunaa. Pitämällä tämän pikanäppäimen kanssa "
-"samalla alhalla \"shift\"-painiketta siirrytään eteenpäin. Pikanäppäimet "
-"ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös "
-"lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi "
-"erityisen merkkijonon \"disabled\", ei tähän toimintoon liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:148
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application, using a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen takaperin sovelluksen ikkunoiden "
-"välillä näyttäen selausikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a"
-"\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", ei "
-"tähän toimintoon liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:149
-msgid ""
-"The keybinding used to move focus backwards between windows without a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen takaperin ikkunoiden välillä "
-"näyttämättä selausikkunaa. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" "
-"tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:150
-msgid ""
-"The keybinding used to move focus backwards between windows, using a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen takaperin ikkunoiden välillä näyttäen "
-"selausikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä "
-"kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;"
-"Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", niin "
-"tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:151
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen paneelien ja työpöydän välillä ja "
-"näyttää samalla selausikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a"
-"\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:152
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen paneelien ja työpöydän välillä "
-"näyttämättä selausikkunaa. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" "
-"tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:153
-msgid ""
-"The keybinding used to move focus between windows of an application without "
-"a popup window. Holding the \"shift\" key while using this binding reverses "
-"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen sovelluksen ikkunoiden välillä heti "
-"näyttämättä selausikkunaa. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" "
-"tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", ei "
-"tähän toimintoon liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:154
-msgid ""
-"The keybinding used to move focus between windows of an application, using a "
-"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
-"using this binding reverses the direction of movement. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen sovelluksen ikkunoiden välillä ja "
-"näyttää samalla selausikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a"
-"\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", ei "
-"tähän toimintoon liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:155
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen ikkunoiden välillä ja näyttämättä "
-"selausikkunaa. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä "
-"kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;"
-"Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", niin "
-"tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:156
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen ikkunoiden välillä ja näyttää samalla "
-"selausikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä "
-"kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;"
-"Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", niin "
-"tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:157
-msgid ""
-"The keybinding used to toggle always on top. A window that is always on top "
-"will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka joko säätää ikkunan näkymään aina päällimmäisenä tai "
-"tavallisesti. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä "
-"kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;"
-"Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", niin "
-"tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:158
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa ikkunan kokoruututilaa. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:159
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa ikkunan suurennustilaa. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:160
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka vaihtaa ikkunan rullaustilaa. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:161
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka joko näyttää ikkunan kaikissa työtiloissa tai vain "
-"yhdessä. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta "
-"ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos "
-"vaihdat arvoksi erityisen merkkijonon \"disabled\", niin tähän toimintoon ei "
-"liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:162
-msgid ""
-"The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka palauttaa ikkunan suurennuksesta. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:163
-msgid ""
-"The keybinding which display's the panel's \"Run Application\" dialog box. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Pikanäppäin, joka näyttää paneelin \"Suorita ohjelma\"-ikkunan. "
-"Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1\". Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää "
-"myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat "
-"arvoksi erityisen merkkijonon \"disabled\", niin tähän toimintoon ei liity "
-"pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:164
-msgid ""
-"The keybinding which invokes a terminal. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka avaa päätteen. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a"
-"\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:165
-msgid ""
-"The keybinding which invokes the panel's screenshot utility to take a "
-"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka käynnistää paneelin kuvakaappaustyökalun ottamaan kuvan "
-"ikkunasta. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta "
-"ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos "
-"vaihdat arvoksi erityisen merkkijonon \"disabled\", niin tähän toimintoon ei "
-"liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:166
-msgid ""
-"The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Pikanäppäin, joka käynnistää paneelin kuvakaappaustyökalun. Pikanäppäimet "
-"ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös "
-"lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi "
-"erityisen merkkijonon \"disabled\", niin tähän toimintoon ei liity "
-"pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:167
-msgid ""
-"The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Pikanäppäin, joka avaa paneelin päävalikon. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
 msgstr "Työtilan nimi."
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.in.h:39
 msgid "The screenshot command"
 msgstr "Kuvakaappauksen ottokomento"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.in.h:40
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Teema määrittää ikkunoiden reunojen, valikkopalkkien yms. ulkonäön"
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.in.h:41
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1975,7 +1177,7 @@ msgstr ""
 "Viive ennen ikkunan nousemista, jos auto_raise on tosi. Viive on "
 "millisekunteina."
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.in.h:42
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1989,210 +1191,11 @@ msgstr ""
 "niiden päälle; \"mouse\", eli ikkunat kohdistuvat, kun hiiri liikkuu niiden "
 "päälle, ja menettävät kohdistuksen, kun hiiri liikkuu pois."
 
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
 msgstr "Ikkunan kuvakaappauksen ottokomento"
 
-#: ../src/metacity.schemas.in.h:174
-msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another one, it raises the window above all others, "
-"and if the window is already fully visible, it lowers it below all others. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Tämä pikanäppäin muuttaa ikkunan syvyystasoa, eli onko ikkuna muiden päällä "
-"vai alla. Jos ikkunaa peittää toinen ikkuna, tämä nostaa ikkunan muiden "
-"päälle. Jos ikkuna on jo täysin näkyvissä, tämä laskee ikkunan muiden alle. "
-"Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1\". Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää "
-"myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat "
-"arvoksi erityisen merkkijonon \"disabled\", ei tähän toimintoon liity "
-"pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:175
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tämä pikanäppäin laskee ikkunan muiden alle. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:176
-msgid ""
-"This keybinding moves a window against the north (top) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan ruudun yläreunaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:177
-msgid ""
-"This keybinding moves a window into the east (right) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan oikeaan laitaan. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:178
-msgid ""
-"This keybinding moves a window into the north-east (top right) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan oikeaan yläkulmaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:179
-msgid ""
-"This keybinding moves a window into the north-west (top left) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan vasempaan yläkulmaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:180
-msgid ""
-"This keybinding moves a window into the south (bottom) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan ruudun alalaitaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:181
-msgid ""
-"This keybinding moves a window into the south-east (bottom right) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan oikeaan alakulmaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:182
-msgid ""
-"This keybinding moves a window into the south-west (bottom left) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan vasempaan alakulmaan. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:183
-msgid ""
-"This keybinding moves a window into the west (left) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Tämä pikanäppäin siirtää ikkunan ruudun vasempaan reunaan. Pikanäppäimet "
-"ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös "
-"lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi "
-"erityisen merkkijonon \"disabled\", niin tähän toimintoon ei liity "
-"pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:184
-msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Tämä pikanäppäin nostaa ikkunan muiden päälle. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:185
-msgid ""
-"This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Tämä pikanäppäin suurentaa ikkunan vaakasuunnassa. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:186
-msgid ""
-"This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Tämä pikanäppäin suurentaa ikkunan pystysuunnassa. Pikanäppäimet ovat muotoa "
-"\"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
-
-#: ../src/metacity.schemas.in.h:187
+#: ../src/metacity.schemas.in.in.h:44
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2203,16 +1206,16 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Tämä valinta määrittelee mitä tapahtuu kaksoisnapsautettaessa otsikkopalkkia. "
-"Tällä hetkellä mahdolliset toiminnot ovat \"toggle_shade\", joka rullaa ikkunan "
-"ylös tai avaa rullauksen, \"toggle_maximize\", joka suurentaa tai palauttaa "
-"ikkunan, \"toggle_maximize_horizontally\" ja  \"toggle_maximize_vertically\", "
-"jotka suurentavat ja palauttavat ikkunan vain pysty- tai vaakasuunnassa, "
-"\"minimize\", joka pienentää ikkunan, \"shade\" joka rullaa ikkunan ylös, "
-"\"menu\", joka näyttää ikkunan valikon, \"lower\" joka alentaa ikkunan, "
-"tai \"none\" joka ei tee mitään."
+"Tämä valinta määrittelee mitä tapahtuu kaksoisnapsautettaessa "
+"otsikkopalkkia. Tällä hetkellä mahdolliset toiminnot ovat \"toggle_shade\", "
+"joka rullaa ikkunan ylös tai avaa rullauksen, \"toggle_maximize\", joka "
+"suurentaa tai palauttaa ikkunan, \"toggle_maximize_horizontally\" ja  "
+"\"toggle_maximize_vertically\", jotka suurentavat ja palauttavat ikkunan "
+"vain pysty- tai vaakasuunnassa, \"minimize\", joka pienentää ikkunan, \"shade"
+"\" joka rullaa ikkunan ylös, \"menu\", joka näyttää ikkunan valikon, \"lower"
+"\" joka alentaa ikkunan, tai \"none\" joka ei tee mitään."
 
-#: ../src/metacity.schemas.in.h:188
+#: ../src/metacity.schemas.in.in.h:45
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2223,16 +1226,16 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Tämä valinta määrittelee mitä tapahtuu otsikkopalkkia keskinapilla napsautettaessa. "
-"Tällä hetkellä mahdolliset toiminnot ovat \"toggle_shade\", joka rullaa ikkunan "
-"ylös tai avaa rullauksen, \"toggle_maximize\", joka suurentaa tai palauttaa "
-"ikkunan, \"toggle_maximize_horizontally\" ja  \"toggle_maximize_vertically\", "
-"jotka suurentavat ja palauttavat ikkunan vain pysty- tai vaakasuunnassa, "
-"\"minimize\", joka pienentää ikkunan, \"shade\" joka rullaa ikkunan ylös, "
-"\"menu\", joka näyttää ikkunan valikon, \"lower\" joka alentaa ikkunan, "
-"tai \"none\" joka ei tee mitään."
+"Tämä valinta määrittelee mitä tapahtuu otsikkopalkkia keskinapilla "
+"napsautettaessa. Tällä hetkellä mahdolliset toiminnot ovat \"toggle_shade\", "
+"joka rullaa ikkunan ylös tai avaa rullauksen, \"toggle_maximize\", joka "
+"suurentaa tai palauttaa ikkunan, \"toggle_maximize_horizontally\" ja  "
+"\"toggle_maximize_vertically\", jotka suurentavat ja palauttavat ikkunan "
+"vain pysty- tai vaakasuunnassa, \"minimize\", joka pienentää ikkunan, \"shade"
+"\" joka rullaa ikkunan ylös, \"menu\", joka näyttää ikkunan valikon, \"lower"
+"\" joka alentaa ikkunan, tai \"none\" joka ei tee mitään."
 
-#: ../src/metacity.schemas.in.h:189
+#: ../src/metacity.schemas.in.in.h:46
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2243,16 +1246,16 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Tämä valinta määrittelee mitä tapahtuu otsikkopalkkia oikealla napilla napsautettaessa. "
-"Tällä hetkellä mahdolliset toiminnot ovat \"toggle_shade\", joka rullaa ikkunan "
-"ylös tai avaa rullauksen, \"toggle_maximize\", joka suurentaa tai palauttaa "
-"ikkunan, \"toggle_maximize_horizontally\" ja  \"toggle_maximize_vertically\", "
-"jotka suurentavat ja palauttavat ikkunan vain pysty- tai vaakasuunnassa, "
-"\"minimize\", joka pienentää ikkunan, \"shade\" joka rullaa ikkunan ylös, "
-"\"menu\", joka näyttää ikkunan valikon, \"lower\" joka alentaa ikkunan, "
-"tai \"none\" joka ei tee mitään."
+"Tämä valinta määrittelee mitä tapahtuu otsikkopalkkia oikealla napilla "
+"napsautettaessa. Tällä hetkellä mahdolliset toiminnot ovat \"toggle_shade\", "
+"joka rullaa ikkunan ylös tai avaa rullauksen, \"toggle_maximize\", joka "
+"suurentaa tai palauttaa ikkunan, \"toggle_maximize_horizontally\" ja  "
+"\"toggle_maximize_vertically\", jotka suurentavat ja palauttavat ikkunan "
+"vain pysty- tai vaakasuunnassa, \"minimize\", joka pienentää ikkunan, \"shade"
+"\" joka rullaa ikkunan ylös, \"menu\", joka näyttää ikkunan valikon, \"lower"
+"\" joka alentaa ikkunan, tai \"none\" joka ei tee mitään."
 
-#: ../src/metacity.schemas.in.h:190
+#: ../src/metacity.schemas.in.in.h:47
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -2264,27 +1267,7 @@ msgstr ""
 "valitsemaa kohdistustilaa ja \"strict\" estää pääteikkunasta käynnistettyjen "
 "ikkunoiden kohdistamisen."
 
-#: ../src/metacity.schemas.in.h:191
-msgid "Toggle always on top state"
-msgstr "Vaihda aina päällimmäisenä -tilaa"
-
-#: ../src/metacity.schemas.in.h:192
-msgid "Toggle fullscreen mode"
-msgstr "Vaihda kokoruututilaa"
-
-#: ../src/metacity.schemas.in.h:193
-msgid "Toggle maximization state"
-msgstr "Vaihda suurennustilaa"
-
-#: ../src/metacity.schemas.in.h:194
-msgid "Toggle shaded state"
-msgstr "Vaihda rullaustilaa"
-
-#: ../src/metacity.schemas.in.h:195
-msgid "Toggle window on all workspaces"
-msgstr "Näytä tai älä näytä ikkunaa joka työtilassa"
-
-#: ../src/metacity.schemas.in.h:196
+#: ../src/metacity.schemas.in.in.h:48
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2293,71 +1276,76 @@ msgstr ""
 "Ottaa käyttöön näkyvän ilmaisimen järjestelmän 'piippauksille'. Tämä on "
 "hyödyllistä, jos kuulo on heikko tai ympäristö on meluinen."
 
-#: ../src/metacity.schemas.in.h:197
-msgid "Unmaximize window"
-msgstr "Palauta ikkuna"
-
-#: ../src/metacity.schemas.in.h:198
+#: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
 msgstr "Järjestelmän oletuskirjasin ikkunoiden otsikoissa"
 
-#: ../src/metacity.schemas.in.h:199
+#: ../src/metacity.schemas.in.in.h:50
 msgid "Visual Bell Type"
 msgstr "Näkyvän piippauksen tyyppi"
 
-#: ../src/metacity.schemas.in.h:200
+#: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "Tulisiko nostamisen olla muiden toimenpiteiden sivuvaikutus"
 
-#: ../src/metacity.schemas.in.h:201
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Whether to resize with the right button"
+msgstr "Muutetaanko oikealla napilla kokoa"
+
+#: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
 msgstr "Windows-tyylinen kohdistus"
 
-#: ../src/metacity.schemas.in.h:202
+#: ../src/metacity.schemas.in.in.h:54
 msgid "Window title font"
 msgstr "Ikkunan otsikon kirjasin"
 
-#: ../src/ui/frames.c:1077
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Käyttö: %s\n"
+
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "Sulje ikkuna"
 
-#: ../src/ui/frames.c:1080
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Ikkunavalikko"
 
-#: ../src/ui/frames.c:1083
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "Pienennä ikkuna"
 
-#: ../src/ui/frames.c:1086
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "Suurenna ikkuna"
 
-#: ../src/ui/frames.c:1089
-msgid "Unmaximize Window"
+#: ../src/ui/frames.c:1130
+msgid "Restore Window"
 msgstr "Palauta ikkuna"
 
-#: ../src/ui/frames.c:1092
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "_Rullaa ikkuna ylös"
 
-#: ../src/ui/frames.c:1095
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "Avaa rullattu ikkuna"
 
-#: ../src/ui/frames.c:1098
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Pidä ikkuna päällimmäisenä"
 
-#: ../src/ui/frames.c:1101
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Poista ikkuna päältä"
 
-#: ../src/ui/frames.c:1104
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "Näytä aina näkyvässä työtilassa"
 
-#: ../src/ui/frames.c:1107
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Näytä ikkuna vain yhdessä työtilassa"
 
@@ -2467,7 +1455,7 @@ msgstr "Siirrä toiseen t_yötilaan"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:105
+#: ../src/ui/metaaccellabel.c:104
 msgid "Shift"
 msgstr "Vaihto"
 
@@ -2476,7 +1464,7 @@ msgstr "Vaihto"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:111
+#: ../src/ui/metaaccellabel.c:110
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -2485,7 +1473,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:117
+#: ../src/ui/metaaccellabel.c:116
 msgid "Alt"
 msgstr "Alt"
 
@@ -2494,7 +1482,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:123
+#: ../src/ui/metaaccellabel.c:122
 msgid "Meta"
 msgstr "Meta"
 
@@ -2503,7 +1491,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:129
+#: ../src/ui/metaaccellabel.c:128
 msgid "Super"
 msgstr "Super"
 
@@ -2512,7 +1500,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:135
+#: ../src/ui/metaaccellabel.c:134
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -2521,7 +1509,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:141
+#: ../src/ui/metaaccellabel.c:140
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -2530,7 +1518,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:147
+#: ../src/ui/metaaccellabel.c:146
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -2539,7 +1527,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:153
+#: ../src/ui/metaaccellabel.c:152
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -2548,7 +1536,7 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:159
+#: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
 msgstr "Mod5"
 
@@ -2598,59 +1586,332 @@ msgstr ""
 "Komentoa \"%s\" suorittaessa tapahtui virhe:\n"
 "%s."
 
+#. Translators: This represents the size of a window.  The first number is
+#. * the width of the window and the second is the height.
+#.
 #: ../src/ui/resizepopup.c:113
 #, c-format
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/ui/theme-parser.c:227 ../src/ui/theme-parser.c:245
+#: ../src/ui/theme.c:254
+msgid "top"
+msgstr "ylä"
+
+#: ../src/ui/theme.c:256
+msgid "bottom"
+msgstr "ala"
+
+#: ../src/ui/theme.c:258
+msgid "left"
+msgstr "vasen"
+
+#: ../src/ui/theme.c:260
+msgid "right"
+msgstr "oikea"
+
+#: ../src/ui/theme.c:287
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "kehyksen mitat eivät määrittele \"%s\"-kokoa"
+
+#: ../src/ui/theme.c:306
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "kehyksen mitat eivät määrittele \"%2$s\"-reunan \"%1$s\"-kokoa"
+
+#: ../src/ui/theme.c:343
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "Painikkeen sivusuhde %g ei ole järkevä"
+
+#: ../src/ui/theme.c:355
+#, c-format
+msgid "Frame geometry does not specify size of buttons"
+msgstr "Kehyksen mitat eivät määrittele painikkeiden kokoa"
+
+#: ../src/ui/theme.c:1020
+#, c-format
+msgid "Gradients should have at least two colors"
+msgstr "Väriliu'uissa täytyy olla vähintään kaksi väriä"
+
+#: ../src/ui/theme.c:1146
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK-värimääritteessä täytyy olla tila hakasuluissa. Esimerkiksi gtk:fg"
+"[NORMAL], jossa NORMAL on tila. \"%s\" ei jäsentynyt."
+
+#: ../src/ui/theme.c:1160
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK-värimääritteessä täytyy olla loppuhakasulku tilan jälkeen. Esimerkiksi "
+"gtk:fg[NORMAL], jossa NORMAL on tila. \"%s\" ei jäsenny."
+
+#: ../src/ui/theme.c:1171
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "Tila \"%s\" ei ole värimääritteessä järkevä"
+
+#: ../src/ui/theme.c:1184
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "Värikomponentti \"%s\" ei ole värimääritteessä järkevä"
+
+#: ../src/ui/theme.c:1214
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Sekoitusmuoto on \"blend/taustaväri/edustaväri/alfa\". \"%s\" ei ole tätä "
+"muotoa."
+
+#: ../src/ui/theme.c:1225
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "Alfa-arvo \"%s\" sekoitusvärissä ei jäsenny"
+
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "Alfa-arvo \"%s\" sekoitusvärissä ei ole välillä 0.0 - 1.0"
+
+#: ../src/ui/theme.c:1282
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Varjostusmuoto on \"shade/perusväri/kerroin\". \"%s\" ei ole tämän muotoinen."
+
+#: ../src/ui/theme.c:1293
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "Varjostuskerroin \"%s\" varjostetussa värissä ei jäsenny"
+
+#: ../src/ui/theme.c:1303
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "Varjostuskerroin \"%s\" varjostetussa värissä on negatiivinen"
+
+#: ../src/ui/theme.c:1332
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "Värin \"%s\" jäsentäminen ei onnistunut"
+
+#: ../src/ui/theme.c:1582
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "Koordinaattilauseke sisältää merkin \"%s\", joka ei ole sallittu"
+
+#: ../src/ui/theme.c:1609
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "Koordinaattilauseke sisältää liukuluvun \"%s\", joka ei jäsentynyt"
+
+#: ../src/ui/theme.c:1623
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "Koordinaattilauseke sisältää kokonaisluvun \"%s\", joka ei jäsentynyt"
+
+#: ../src/ui/theme.c:1745
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"Koordinaattilauseke sisälsi tuntemattoman operaattorin seuraavan tekstin "
+"alussa: \"%s\""
+
+#: ../src/ui/theme.c:1802
+#, c-format
+msgid "Coordinate expression was empty or not understood"
+msgstr "Koordinaattilauseke oli tyhjä tai ei järkevä"
+
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#, c-format
+msgid "Coordinate expression results in division by zero"
+msgstr "Koordinaattilauseke johtaa nollalla jakamiseen"
+
+#: ../src/ui/theme.c:1965
+#, c-format
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Koordinaattilauseke yrittää soveltaa mod-operaattoria liukulukuun"
+
+#: ../src/ui/theme.c:2021
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"Koordinaattilausekkeessa on operaattori \"%s\", jonka paikalla pitäisi olla "
+"operandi"
+
+#: ../src/ui/theme.c:2030
+#, c-format
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr ""
+"Koordinaattilauseke sisälsi operandin kohdassa, johon kuuluisi operaattori"
+
+#: ../src/ui/theme.c:2038
+#, c-format
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "Koordinaattilauseke päättyi operaattoriin, ei operandiin"
+
+#: ../src/ui/theme.c:2048
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Koordinaattilausekkeessa on operaattori \"%c\" operaattorin \"%c\" perässä "
+"ilman operandia välissä"
+
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "Koordinaattilausekkeessa oli tuntematon muuttuja tai vakio \"%s\""
+
+#: ../src/ui/theme.c:2290
+#, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "Koordinaattilausekkeen tulkitsijan puskuri ylitettiin."
+
+#: ../src/ui/theme.c:2319
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+"Koordinaattilausekkeessa oli lopetussulje ilman vastaavaa aloitussuljetta"
+
+#: ../src/ui/theme.c:2383
+#, c-format
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "Koordinaattilauseke oli aloitussulje ilman vastaavaa lopetussuljetta"
+
+#: ../src/ui/theme.c:2394
+#, c-format
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr ""
+"Koordinaattilausekkeessa ei vaikuta olevan operaattoreita eikä operandeja"
+
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#, c-format
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "Teema sisälsi lausekkeen, josta seurasi virhe: %s\n"
+
+#: ../src/ui/theme.c:4187
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"mikä lienee\"/> täytyy olla "
+"määritelty tätä kehystyyliä varten"
+
+#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"mikä lienee\"/> "
+"puuttuu"
+
+#: ../src/ui/theme.c:4764
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Teeman \"%s\" lataaminen epäonnistui: %s\n"
+
+#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
+#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "<%s> ei ole asetettu teemaa \"%s\" varten"
+
+#: ../src/ui/theme.c:4930
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"Ikkunatyypille \"%s\" ei ole asetettu kehystyyliä teemassa \"%s\". Lisää "
+"<window type=\"%s\" style_set=\"mikä lienee\"/>-elementti."
+
+#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Käyttäjän määrittelemien vakioiden täytyy alkaa isolla kirjaimella; \"%s\" "
+"ei ala"
+
+#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "Vakio \"%s\" on jo määritelty"
+
+#. Translators: This means that an attribute which should have been found
+#. * on an XML element was not in fact found.
+#.
+#: ../src/ui/theme-parser.c:202
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Attribuuttia \"%s\" ei löydy elementistä <%s>"
+
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Rivi %d, merkki %d: %s"
 
-#: ../src/ui/theme-parser.c:396
+#: ../src/ui/theme-parser.c:413
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Määre \"%s\" on toistettu kahdesti samassa <%s>-elementissä"
 
-#: ../src/ui/theme-parser.c:414 ../src/ui/theme-parser.c:439
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Määre \"%s\" ei ole kelvollinen <%s>-elementissä tässä yhteydessä"
 
-#: ../src/ui/theme-parser.c:500
+#: ../src/ui/theme-parser.c:541
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Kokonaisluvun %ld täytyy olla positiivinen"
 
-#: ../src/ui/theme-parser.c:508
+#: ../src/ui/theme-parser.c:549
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Kokonaisluku %ld on liian suuri, nykyinen maksimi on %d"
 
-#: ../src/ui/theme-parser.c:536 ../src/ui/theme-parser.c:652
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "\"%s\" ei jäsentynyt liukuluvuksi"
 
-#: ../src/ui/theme-parser.c:567 ../src/ui/theme-parser.c:595
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Totuusarvojen täytyy olla \"true\" tai \"false\", ei \"%s\""
 
-#: ../src/ui/theme-parser.c:622
+#: ../src/ui/theme-parser.c:663
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Kulman pitäisi olla välillä 0.0 - 360.0, mutta se oli %g\n"
 
-#: ../src/ui/theme-parser.c:685
+#: ../src/ui/theme-parser.c:726
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Alfan täytyy olla välillä 0.0 (näkymätön) - 1.0 (täysin peittävä). Se oli %"
 "g\n"
 
-#: ../src/ui/theme-parser.c:750
+#: ../src/ui/theme-parser.c:791
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -2659,370 +1920,182 @@ msgstr ""
 "Epäkelpo otsikon skaala \"%s\" (täytyy olla joko xx-small,x-small,small,"
 "medium,large,x-large tai xx-large)\n"
 
-#: ../src/ui/theme-parser.c:795 ../src/ui/theme-parser.c:803
-#: ../src/ui/theme-parser.c:885 ../src/ui/theme-parser.c:982
-#: ../src/ui/theme-parser.c:1024 ../src/ui/theme-parser.c:1135
-#: ../src/ui/theme-parser.c:1185 ../src/ui/theme-parser.c:1193
-#: ../src/ui/theme-parser.c:3093 ../src/ui/theme-parser.c:3184
-#: ../src/ui/theme-parser.c:3191 ../src/ui/theme-parser.c:3198
-#, c-format
-msgid "No \"%s\" attribute on <%s> element"
-msgstr "<%2$s>-elementissä ei ole \"%1$s\"-määrettä"
-
-#: ../src/ui/theme-parser.c:919 ../src/ui/theme-parser.c:990
-#: ../src/ui/theme-parser.c:1032 ../src/ui/theme-parser.c:1143
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s>-elementin nimeä \"%s\" käytetty toisenkin kerran"
 
-#: ../src/ui/theme-parser.c:931 ../src/ui/theme-parser.c:1044
-#: ../src/ui/theme-parser.c:1155
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s>-elementin emo \"%s\" ei ole määritelty"
 
-#: ../src/ui/theme-parser.c:1057
+#: ../src/ui/theme-parser.c:1058
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s>-elementin mitat \"%s\" eivät ole määriteltyjä"
 
-#: ../src/ui/theme-parser.c:1070
+#: ../src/ui/theme-parser.c:1071
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s>:n täytyy joko määritellä mitat, tai emo, jolla on jo mitat"
 
-#: ../src/ui/theme-parser.c:1112
+#: ../src/ui/theme-parser.c:1113
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Tausta täytyy määritellä, jotta alfa-arvo olisi mielekäs"
 
-#: ../src/ui/theme-parser.c:1203
+#: ../src/ui/theme-parser.c:1180
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Tuntematon tyyppi \"%s\" elementissä <%s>"
 
-#: ../src/ui/theme-parser.c:1214
+#: ../src/ui/theme-parser.c:1191
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Tuntematon style_set \"%s\" elementissä <%s>"
 
-#: ../src/ui/theme-parser.c:1222
+#: ../src/ui/theme-parser.c:1199
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Ikkunatyyppiin \"%s\" on jo liitetty tyylijoukko"
 
-#: ../src/ui/theme-parser.c:1258
-msgid "Theme already has a fallback icon"
-msgstr "Teemalla on jo vaihtoehtoinen kuvake"
-
-#: ../src/ui/theme-parser.c:1270
-msgid "Theme already has a fallback mini_icon"
-msgstr "Teemalla on jo vaihtoehtoinen pikkukuvake"
-
-#: ../src/ui/theme-parser.c:1283 ../src/ui/theme-parser.c:1347
-#: ../src/ui/theme-parser.c:1636 ../src/ui/theme-parser.c:3285
-#: ../src/ui/theme-parser.c:3339 ../src/ui/theme-parser.c:3511
-#: ../src/ui/theme-parser.c:3727 ../src/ui/theme-parser.c:3765
-#: ../src/ui/theme-parser.c:3803 ../src/ui/theme-parser.c:3841
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
+#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
+#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
+#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Elementti <%s> ei ole mahdollinen elementin <%s> alla"
 
-#: ../src/ui/theme-parser.c:1373 ../src/ui/theme-parser.c:1460
-#: ../src/ui/theme-parser.c:1530
-#, c-format
-msgid "No \"name\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"name\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1380 ../src/ui/theme-parser.c:1467
-#, c-format
-msgid "No \"value\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"value\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1411 ../src/ui/theme-parser.c:1425
-#: ../src/ui/theme-parser.c:1484
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1402
 msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
 msgstr ""
-"Sekä button_width/button_height-paria ja sivusuhdetta ei voi määritellä "
-"painikkeille"
+"Arvoja button_width/button_height ja \"aspect_ratio\" ei voi määritellä "
+"samalle painikkeille"
 
-#: ../src/ui/theme-parser.c:1434
+#: ../src/ui/theme-parser.c:1366
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Etäisyys \"%s\" on tuntematon"
 
-#: ../src/ui/theme-parser.c:1493
+#: ../src/ui/theme-parser.c:1411
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Sivusuhde \"%s\" on tuntematon"
 
-#: ../src/ui/theme-parser.c:1537
-#, c-format
-msgid "No \"top\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"top\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1544
-#, c-format
-msgid "No \"bottom\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"bottom\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1551
-#, c-format
-msgid "No \"left\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"left\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1558
-#, c-format
-msgid "No \"right\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"right\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1590
+#: ../src/ui/theme-parser.c:1473
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Reuna \"%s\" on tuntematon"
 
-#: ../src/ui/theme-parser.c:1736 ../src/ui/theme-parser.c:1850
-#: ../src/ui/theme-parser.c:1961 ../src/ui/theme-parser.c:2192
-#: ../src/ui/theme-parser.c:3023
-#, c-format
-msgid "No \"color\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"color\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1743
-#, c-format
-msgid "No \"x1\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"x1\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1750 ../src/ui/theme-parser.c:2864
-#, c-format
-msgid "No \"y1\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"y1\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1757
-#, c-format
-msgid "No \"x2\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"x2\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1764 ../src/ui/theme-parser.c:2871
-#, c-format
-msgid "No \"y2\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"y2\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1857 ../src/ui/theme-parser.c:1968
-#: ../src/ui/theme-parser.c:2117 ../src/ui/theme-parser.c:2199
-#: ../src/ui/theme-parser.c:2306 ../src/ui/theme-parser.c:2408
-#: ../src/ui/theme-parser.c:2630 ../src/ui/theme-parser.c:2758
-#: ../src/ui/theme-parser.c:2857 ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3030
-#, c-format
-msgid "No \"x\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"x\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1864 ../src/ui/theme-parser.c:1975
-#: ../src/ui/theme-parser.c:2124 ../src/ui/theme-parser.c:2206
-#: ../src/ui/theme-parser.c:2313 ../src/ui/theme-parser.c:2415
-#: ../src/ui/theme-parser.c:2637 ../src/ui/theme-parser.c:2765
-#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3037
-#, c-format
-msgid "No \"y\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"y\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1871 ../src/ui/theme-parser.c:1982
-#: ../src/ui/theme-parser.c:2131 ../src/ui/theme-parser.c:2213
-#: ../src/ui/theme-parser.c:2320 ../src/ui/theme-parser.c:2422
-#: ../src/ui/theme-parser.c:2644 ../src/ui/theme-parser.c:2772
-#: ../src/ui/theme-parser.c:2948
-#, c-format
-msgid "No \"width\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"width\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1878 ../src/ui/theme-parser.c:1989
-#: ../src/ui/theme-parser.c:2138 ../src/ui/theme-parser.c:2220
-#: ../src/ui/theme-parser.c:2327 ../src/ui/theme-parser.c:2429
-#: ../src/ui/theme-parser.c:2651 ../src/ui/theme-parser.c:2779
-#: ../src/ui/theme-parser.c:2955
-#, c-format
-msgid "No \"height\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"height\"-määrettä"
-
-#: ../src/ui/theme-parser.c:1998
+#: ../src/ui/theme-parser.c:1776
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Elementissä <%s> ei ole \"start_angle\"- tai \"from\" -määrettä"
 
-#: ../src/ui/theme-parser.c:2005
+#: ../src/ui/theme-parser.c:1783
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Elementissä <%s> ei ole \"extent_angle\"- tai \"to\" -määrettä"
 
-#: ../src/ui/theme-parser.c:2014
-#, c-format
-msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"start_angle\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2021
-#, c-format
-msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"extent_angle\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2227
-#, c-format
-msgid "No \"alpha\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"alpha\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2299
-#, c-format
-msgid "No \"type\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"type\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2349
+#: ../src/ui/theme-parser.c:2023
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Väriliu'un arvo \"%s\" ei ole järkevä"
 
-#: ../src/ui/theme-parser.c:2436
-#, c-format
-msgid "No \"filename\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"filename\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2461 ../src/ui/theme-parser.c:2980
+#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Täyttötyyppi \"%s\" ei ole järkevä elementissä <%s>"
 
-#: ../src/ui/theme-parser.c:2609 ../src/ui/theme-parser.c:2744
-#: ../src/ui/theme-parser.c:2850
-#, c-format
-msgid "No \"state\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"state\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2616 ../src/ui/theme-parser.c:2751
-#, c-format
-msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"shadow\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2623
-#, c-format
-msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"arrow\"-määrettä"
-
-#: ../src/ui/theme-parser.c:2676 ../src/ui/theme-parser.c:2800
-#: ../src/ui/theme-parser.c:2891
+#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
+#: ../src/ui/theme-parser.c:2414
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Tila \"%s\" ei ole järkevä elementissä <%s>"
 
-#: ../src/ui/theme-parser.c:2686 ../src/ui/theme-parser.c:2810
+#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Varjo \"%s\" ei ole järkevä elementissä <%s>"
 
-#: ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2288
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Nuoli \"%s\" ei ole järkevä elementissä <%s>"
 
-#: ../src/ui/theme-parser.c:3120 ../src/ui/theme-parser.c:3237
+#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "<draw_ops> \"%s\" ei ole määritelty"
 
-#: ../src/ui/theme-parser.c:3132 ../src/ui/theme-parser.c:3249
+#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Draw_opsin \"%s\" sisällyttäminen tähän aiheuttaisi kehäviitteen"
 
-#: ../src/ui/theme-parser.c:3314
-#, c-format
-msgid "No \"value\" attribute on <%s> element"
-msgstr "Elementissä <%s> ei ole \"value\"-määrettä"
-
-#: ../src/ui/theme-parser.c:3371
-#, c-format
-msgid "No \"position\" attribute on <%s> element"
-msgstr "Elementissä <%s> ei ole \"position\"-määrettä"
-
-#: ../src/ui/theme-parser.c:3380
+#: ../src/ui/theme-parser.c:2811
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Tuntematon kehyksen palan sijainti \"%s\""
 
-#: ../src/ui/theme-parser.c:3388
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Kehystyylissä on jo pala sijainnissa %s"
 
-#: ../src/ui/theme-parser.c:3405 ../src/ui/theme-parser.c:3496
+#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "\"%s\"-nimistä <draw_ops>:ia ei ole määritelty"
 
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "No \"function\" attribute on <%s> element"
-msgstr "Elementissä <%s> ei ole \"function\"-määrettä"
-
-#: ../src/ui/theme-parser.c:3441 ../src/ui/theme-parser.c:3557
-#, c-format
-msgid "No \"state\" attribute on <%s> element"
-msgstr "Elementissä <%s> ei ole \"state\"-määrettä"
-
-#: ../src/ui/theme-parser.c:3450
+#: ../src/ui/theme-parser.c:2865
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Tuntematon painikkeen toiminto \"%s\""
 
-#: ../src/ui/theme-parser.c:3459
+#: ../src/ui/theme-parser.c:2874
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Nappifunktiota \"%s\" ei ole tässä versiossa (%d, tarvitaan %d)"
 
-#: ../src/ui/theme-parser.c:3471
+#: ../src/ui/theme-parser.c:2886
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Tuntematon painikkeen tila \"%s\""
 
-#: ../src/ui/theme-parser.c:3479
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Kehystyylillä on jo painike funktiota %s, tilaa %s varten"
 
-#: ../src/ui/theme-parser.c:3549
-#, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr "Elementissä <%s> ei ole \"focus\"-määrettä"
-
-#: ../src/ui/theme-parser.c:3565
-#, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr "Elementissä <%s> ei ole \"style\"-määrettä"
-
-#: ../src/ui/theme-parser.c:3574
+#: ../src/ui/theme-parser.c:2965
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" ei ole kelvollinen kohdistusmääreen arvo"
 
-#: ../src/ui/theme-parser.c:3583
+#: ../src/ui/theme-parser.c:2974
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" ei ole kelvollinen tilamääreen arvo"
 
-#: ../src/ui/theme-parser.c:3593
+#: ../src/ui/theme-parser.c:2984
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "\"%s\"-nimistä tyyliä ei ole määritelty"
 
-#: ../src/ui/theme-parser.c:3604
-#, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr "Elementissä <%s> ei ole \"resize\"-määrettä"
-
-#: ../src/ui/theme-parser.c:3614 ../src/ui/theme-parser.c:3637
+#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ei ole kelvollinen koonmuutosmääreen arvo"
 
-#: ../src/ui/theme-parser.c:3648
+#: ../src/ui/theme-parser.c:3039
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -3031,25 +2104,25 @@ msgstr ""
 "Elementissä <%s> pitäisi olla \"resize\"-määre suurennettua ja rullattua "
 "tilaa varten"
 
-#: ../src/ui/theme-parser.c:3662
+#: ../src/ui/theme-parser.c:3053
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Elementissä <%s> ei pitäisi olla \"resize\"-määrettä suurennetuilla tiloilla"
 
-#: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
+#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
 "Tyyli on jo määritelty tilaa %s, koonmuutosta %s, kohdistusta %s varten"
 
-#: ../src/ui/theme-parser.c:3687 ../src/ui/theme-parser.c:3709
+#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Tyyli on jo määritelty tilaa %s, kohdistusta %s varten"
 
-#: ../src/ui/theme-parser.c:3748
+#: ../src/ui/theme-parser.c:3139
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3057,7 +2130,7 @@ msgstr ""
 "<piece>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
 "draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
 
-#: ../src/ui/theme-parser.c:3786
+#: ../src/ui/theme-parser.c:3177
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3065,7 +2138,7 @@ msgstr ""
 "<button>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
 "draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
 
-#: ../src/ui/theme-parser.c:3824
+#: ../src/ui/theme-parser.c:3215
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -3073,12 +2146,12 @@ msgstr ""
 "<menu_icon>-elementissä ei voi olla kahta draw_opsia (teema määritteli joko "
 "draw_ops-määreen sekä <draw_ops>-elementin tai kaksi elementtiä)"
 
-#: ../src/ui/theme-parser.c:3872
+#: ../src/ui/theme-parser.c:3263
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Uloin elementti täytyy olla <metacity_theme>, ei <%s>"
 
-#: ../src/ui/theme-parser.c:3892
+#: ../src/ui/theme-parser.c:3283
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
@@ -3086,68 +2159,73 @@ msgstr ""
 "Elementti <%s> ei voi olla nimi-, tekijä-, päiväys- tai kuvauselementin "
 "sisällä"
 
-#: ../src/ui/theme-parser.c:3897
+#: ../src/ui/theme-parser.c:3288
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Elementti <%s> ei voi olla <constant>-elementin sisällä"
 
-#: ../src/ui/theme-parser.c:3909
+#: ../src/ui/theme-parser.c:3300
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Elementti <%s> ei voi olla etäisyys-, reuna- tai sivusuhde-elementin sisällä"
 
-#: ../src/ui/theme-parser.c:3931
+#: ../src/ui/theme-parser.c:3322
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Elementti <%s> ei voi olla piirto-operaatioelementin sisällä"
 
-#: ../src/ui/theme-parser.c:3941 ../src/ui/theme-parser.c:3971
-#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3981
+#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
+#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Elementti <%s> ei voi olla elementin <%s> sisällä"
 
-#: ../src/ui/theme-parser.c:4203
+#: ../src/ui/theme-parser.c:3594
 msgid "No draw_ops provided for frame piece"
 msgstr "Kehyksen palaa varten ei ole draw_opsia"
 
-#: ../src/ui/theme-parser.c:4218
+#: ../src/ui/theme-parser.c:3609
 msgid "No draw_ops provided for button"
 msgstr "Painiketta varten ei ole draw_opsia"
 
-#: ../src/ui/theme-parser.c:4270
+#: ../src/ui/theme-parser.c:3661
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Elementin <%s> sisällä ei voi olla tekstiä"
 
-#: ../src/ui/theme-parser.c:4325
+#: ../src/ui/theme-parser.c:3716
+#, fuzzy
 msgid "<name> specified twice for this theme"
-msgstr "<name> määritelty kahdesti tässä teemassa"
+msgstr "<%s> määritelty kahdesti tälle teemalle"
 
-#: ../src/ui/theme-parser.c:4336
+#: ../src/ui/theme-parser.c:3727
+#, fuzzy
 msgid "<author> specified twice for this theme"
-msgstr "<author> määritelty kahdesti tässä teemassa"
+msgstr "<%s> määritelty kahdesti tälle teemalle"
 
-#: ../src/ui/theme-parser.c:4347
+#: ../src/ui/theme-parser.c:3738
+#, fuzzy
 msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> määritelty kahdesti tässä teemassa"
+msgstr "<%s> määritelty kahdesti tälle teemalle"
 
-#: ../src/ui/theme-parser.c:4358
+#: ../src/ui/theme-parser.c:3749
+#, fuzzy
 msgid "<date> specified twice for this theme"
-msgstr "<date> määritelty kahdesti tässä teemassa"
+msgstr "<%s> määritelty kahdesti tälle teemalle"
 
-#: ../src/ui/theme-parser.c:4369
+#: ../src/ui/theme-parser.c:3760
+#, fuzzy
 msgid "<description> specified twice for this theme"
-msgstr "<description> määritelty kahdesti tässä teemassa"
+msgstr "<%s> määritelty kahdesti tälle teemalle"
 
-#: ../src/ui/theme-parser.c:4636
+#: ../src/ui/theme-parser.c:4027
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Teemalle %s ei löytynyt kelvollista tiedostoa\n"
 
-#: ../src/ui/theme-parser.c:4692
+#: ../src/ui/theme-parser.c:4083
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Teematiedosto %s ei sisältänyt <metacity_theme>-juurielementtiä"
@@ -3351,416 +2429,12 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d-sijaintilauseketta jäsentyi %g sekunnissa (%g sekuntia keksimäärin)\n"
 
-#: ../src/ui/theme.c:256
-msgid "top"
-msgstr "ylä"
-
-#: ../src/ui/theme.c:258
-msgid "bottom"
-msgstr "ala"
-
-#: ../src/ui/theme.c:260
-msgid "left"
-msgstr "vasen"
-
-#: ../src/ui/theme.c:262
-msgid "right"
-msgstr "oikea"
-
-#: ../src/ui/theme.c:289
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "kehyksen mitat eivät määrittele \"%s\"-kokoa"
-
-#: ../src/ui/theme.c:308
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "kehyksen mitat eivät määrittele \"%2$s\"-reunan \"%1$s\"-kokoa"
-
-#: ../src/ui/theme.c:345
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "Painikkeen sivusuhde %g ei ole järkevä"
-
-#: ../src/ui/theme.c:357
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr "Kehyksen mitat eivät määrittele painikkeiden kokoa"
-
-#: ../src/ui/theme.c:1022
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr "Väriliu'uissa täytyy olla vähintään kaksi väriä"
-
-#: ../src/ui/theme.c:1148
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK-värimääritteessä täytyy olla tila hakasuluissa. Esimerkiksi gtk:fg"
-"[NORMAL], jossa NORMAL on tila. \"%s\" ei jäsentynyt."
-
-#: ../src/ui/theme.c:1162
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK-värimääritteessä täytyy olla loppuhakasulku tilan jälkeen. Esimerkiksi "
-"gtk:fg[NORMAL], jossa NORMAL on tila. \"%s\" ei jäsenny."
-
-#: ../src/ui/theme.c:1173
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "Tila \"%s\" ei ole värimääritteessä järkevä"
-
-#: ../src/ui/theme.c:1186
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Värikomponentti \"%s\" ei ole värimääritteessä järkevä"
-
-#: ../src/ui/theme.c:1216
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"Sekoitusmuoto on \"blend/taustaväri/edustaväri/alfa\". \"%s\" ei ole tätä "
-"muotoa."
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Alfa-arvo \"%s\" sekoitusvärissä ei jäsenny"
-
-#: ../src/ui/theme.c:1237
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Alfa-arvo \"%s\" sekoitusvärissä ei ole välillä 0.0 - 1.0"
-
-#: ../src/ui/theme.c:1284
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Varjostusmuoto on \"shade/perusväri/kerroin\". \"%s\" ei ole tämän muotoinen."
-
-#: ../src/ui/theme.c:1295
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Varjostuskerroin \"%s\" varjostetussa värissä ei jäsenny"
-
-#: ../src/ui/theme.c:1305
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Varjostuskerroin \"%s\" varjostetussa värissä on negatiivinen"
-
-#: ../src/ui/theme.c:1334
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "Värin \"%s\" jäsentäminen ei onnistunut"
-
-#: ../src/ui/theme.c:1584
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordinaattilauseke sisältää merkin \"%s\", joka ei ole sallittu"
-
-#: ../src/ui/theme.c:1611
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr "Koordinaattilauseke sisältää liukuluvun \"%s\", joka ei jäsentynyt"
-
-#: ../src/ui/theme.c:1625
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordinaattilauseke sisältää kokonaisluvun \"%s\", joka ei jäsentynyt"
-
-#: ../src/ui/theme.c:1747
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-"Koordinaattilauseke sisälsi tuntemattoman operaattorin seuraavan tekstin "
-"alussa: \"%s\""
-
-#: ../src/ui/theme.c:1804
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr "Koordinaattilauseke oli tyhjä tai ei järkevä"
-
-#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr "Koordinaattilauseke johtaa nollalla jakamiseen"
-
-#: ../src/ui/theme.c:1967
-#, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Koordinaattilauseke yrittää soveltaa mod-operaattoria liukulukuun"
-
-#: ../src/ui/theme.c:2023
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"Koordinaattilausekkeessa on operaattori \"%s\", jonka paikalla pitäisi olla "
-"operandi"
-
-#: ../src/ui/theme.c:2032
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"Koordinaattilauseke sisälsi operandin kohdassa, johon kuuluisi operaattori"
-
-#: ../src/ui/theme.c:2040
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Koordinaattilauseke päättyi operaattoriin, ei operandiin"
-
-#: ../src/ui/theme.c:2050
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"Koordinaattilausekkeessa on operaattori \"%c\" operaattorin \"%c\" perässä "
-"ilman operandia välissä"
-
-#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordinaattilausekkeessa oli tuntematon muuttuja tai vakio \"%s\""
-
-#: ../src/ui/theme.c:2292
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Koordinaattilausekkeen tulkitsijan puskuri ylitettiin."
-
-#: ../src/ui/theme.c:2321
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"Koordinaattilausekkeessa oli lopetussulje ilman vastaavaa aloitussuljetta"
-
-#: ../src/ui/theme.c:2385
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Koordinaattilauseke oli aloitussulje ilman vastaavaa lopetussuljetta"
-
-#: ../src/ui/theme.c:2396
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-"Koordinaattilausekkeessa ei vaikuta olevan operaattoreita eikä operandeja"
-
-#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "Teema sisälsi lausekkeen, josta seurasi virhe: %s\n"
-
-#: ../src/ui/theme.c:4157
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"mikä lienee\"/> täytyy olla "
-"määritelty tätä kehystyyliä varten"
-
-#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"mikä lienee\"/> "
-"puuttuu"
-
-#: ../src/ui/theme.c:4702
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Teeman \"%s\" lataaminen epäonnistui: %s\n"
-
-#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
-#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "<%s> ei ole asetettu teemaa \"%s\" varten"
-
-#: ../src/ui/theme.c:4864
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"Ikkunatyypille \"%s\" ei ole asetettu kehystyyliä teemassa \"%s\". Lisää "
-"<window type=\"%s\" style_set=\"mikä lienee\"/>-elementti."
-
-#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Käyttäjän määrittelemien vakioiden täytyy alkaa isolla kirjaimella; \"%s\" "
-"ei ala"
-
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "Vakio \"%s\" on jo määritelty"
-
-#: ../src/tools/metacity-message.c:150
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Käyttö: %s\n"
-
-#~ msgid "Type of %s was not integer"
-#~ msgstr "Muuttujan %s tyyppi ei ollut kokonaisluku"
-
+#, fuzzy
 #~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-#~ "range 1..128\n"
+#~ "<big><b><tt>%s</tt> is not responding.</b></big>\n"
+#~ "\n"
+#~ "<i>You may choose to wait a short while for it to continue or force the "
+#~ "application to quit entirely.</i>"
 #~ msgstr ""
-#~ "GConf-avaimeen %2$s tallennettu arvo %1$d ei ole järkevä kohdistimen "
-#~ "koko. Sallitut arvot ovat välillä 1-128\n"
-
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
-#~ "current maximum is %d\n"
-#~ msgstr ""
-#~ "GConf-avaimeen %2$s tallennettu %1$d ei ole järkevä työtilojen määrä. "
-#~ "Nykyinen raja on %3$d\n"
-
-#~ msgid ""
-#~ "Setting this option to false can lead to buggy behavior, so users are "
-#~ "strongly discouraged from changing it from the default of true. Many "
-#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
-#~ "normally raise the window as a side-effect. Set this option to false to "
-#~ "decouple raising from other user actions. Even when this option is false, "
-#~ "windows can still be raised by an alt-left-click anywhere on the window, "
-#~ "a normal click on the window decorations, or by special messages from "
-#~ "pagers, such as activation requests from tasklist applets. This option is "
-#~ "currently disabled in click-to-focus mode. Note that the list of ways to "
-#~ "raise windows when raise_on_click is false does not include programmatic "
-#~ "requests from applications to raise windows; such requests will be "
-#~ "ignored regardless of the reason for the request. If you are an "
-#~ "application developer and have a user complaining that your application "
-#~ "does not work with this setting disabled, tell them it is _their_ fault "
-#~ "for breaking their window manager and that they need to change this "
-#~ "option back to true or live with the bug they requested. See also http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-#~ msgstr ""
-#~ "Tämän valitsimen asettaminen epätodeksi voi johtaa epävakaaseen "
-#~ "toimintaan, joten on erittäin suositeltavaa olla muuttamatta oletusarvo "
-#~ "tosi. Monet toiminnotu, kuten napsautus ikkunan asiakasosaan sekä ikkunan "
-#~ "siirto ja koon muuttaminen, nostavat samalla ikkunan näkyviin. "
-#~ "Asettamalla tämän epätodeksi voit estää tämän nostamisen. Arvosta "
-#~ "riippumatta ikkuna voidaan nostaa edelleen aina päällimmäiseksi "
-#~ "napsauttamalla ikkunaa Alt-vasen nappiyhdistelmällä, napsauttamalla "
-#~ "ikkunan reunoja tavallisesti tai erityisillä sivuttajien viesteillä, "
-#~ "kuten tehtävälistasovelman aktivointipyynnöllä. Tämä valitsin ei ole "
-#~ "lainkaan käytössä click-to-focus -tilassa. Huomaa, että tavat nostaa "
-#~ "ikkuna valitsimen raise_on_click ollessa epätosi eivät sisllä "
-#~ "ohjelmallisia pyyntöjä sovelluksilta ikkunan nostoon: tällaiset pyynnöt "
-#~ "jätetään huomioimatta riippumatta pyynnön syystä. Jos olet kehittäjä, "
-#~ "joiden käyttäjät valittavat ettei sovellus toimi tämän asetuksen ollessa "
-#~ "epätosi, voit kertoa että tämä on käyttäjien oma vika ja heidän tulee "
-#~ "joko asettaa tämä uudestaan todeksi tai sietää vikaa, jota itse ovat "
-#~ "pyytäneet asettamalla arvon epätodeksi. Lue lisää osoitteesta http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-
-#~ msgid "On _Top"
-#~ msgstr "_Päällimmäiseksi"
-
-#~ msgid ""
-#~ "Forcing this application to quit will cause you to lose any unsaved "
-#~ "changes."
-#~ msgstr ""
-#~ "Tämän sovelluksen sulkeminen väkisin saa tallentamattomat muutokset "
-#~ "katoamaan."
-
-#~ msgid "Unknown function \"%s\" for menu icon"
-#~ msgstr "Tuntematon valikkokuvakkeen funktio \"%s\""
-
-#~ msgid "Unknown state \"%s\" for menu icon"
-#~ msgstr "Tuntematon valikkokuvakkeen tila \"%s\""
-
-#~ msgid "Theme already has a menu icon for function %s state %s"
-#~ msgstr "Teemalla on jo valikkokuvake funktiota %s, tilaa %s varten"
-
-#~ msgid "No draw_ops provided for menu icon"
-#~ msgstr "Valikon kuvaketta varten ei ole draw_opsia"
-
-#~ msgid "Failed to read theme from file %s: %s\n"
-#~ msgstr "Lukeminen teematiedostosta %s epäonnistui: %s\n"
-
-#~ msgid ""
-#~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-#~ "specified for this theme"
-#~ msgstr ""
-#~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"mikä lienee\"/> täytyy "
-#~ "olla määritelty tätä teemaa varten"
-
-#~ msgid ""
-#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-#~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key). This preference is poorly named, "
-#~ "but kept for backwards compatibility. To try to be more clear (at least "
-#~ "to the technically inclined), its meaning is \"automatically raise the "
-#~ "window following a timeout which is triggered by non-grabbed mouse entry "
-#~ "in sloppy or mouse focus modes\". It is unrelated to clicking behavior (i."
-#~ "e. this is not related to raise-on-click/orthogonal-raise). It is "
-#~ "unrelated to entering a window during drag and drop (because that results "
-#~ "in the application grabbing the mouse)"
-#~ msgstr ""
-#~ "Jos arvo on \"true\" ja kohdistustapa on joko \"sloppy\" tai \"mouse\", "
-#~ "nostetaan kohdistettu ikkuna päällimmäiseksi viiveen jälkeen "
-#~ "automaattisesti. Viive määritellään avaimessa \"auto_raise_delay\". Tämä "
-#~ "asetus on huonosti nimetty, mutta nimi pidetään yhteensopivuuden takia "
-#~ "samana. Täsmällisemmin selitettynä tämän selitys on \"nosta ikkuna "
-#~ "automaattisesti päällimmäiseksi aikaviiveellä, joka lasketaan hetkestä "
-#~ "kun hiiri siirtyy ikkunan päälle tilan ollessa \"sloppy\" tai \"mouse\"."
-#~ "Tämä asetus ei liity ikkunan napsautuksen toimintatapaan, eikä se liity "
-#~ "ikkunaan siirtymiseen siirron ja raahauksen aikana, koska se aiheuttaa "
-#~ "kohdeikkunan tarttuvan hiireen joka tapauksessa."
-
-#~ msgid ""
-#~ "Some applications break specifications in ways that result in window "
-#~ "manager misfeatures. For example, ideally Metacity would place all "
-#~ "dialogs in a consistent position with respect to their parent window. "
-#~ "This requires ignoring application-specified positions for dialogs. But "
-#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
-#~ "Metacity has to disable dialog positioning to allow menus to work in "
-#~ "broken Java applications. There are several other examples like this. "
-#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
-#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
-#~ "workarounds must be enabled by default; the real world is an ugly place. "
-#~ "Some of the workarounds are workarounds for limitations in the "
-#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
-#~ "won't be fixable without amending a spec."
-#~ msgstr ""
-#~ "Jotkin sovellukset rikkovat teknisiä standardeja siten, että ne "
-#~ "vaikeuttavat ikkunointiohjelman toimintaa. Ihannetilanteessa Metacity "
-#~ "esimerkiksi sijoittaisi kaikki valintaikkunat täsmällisesti pääikkunan "
-#~ "mukaisesti, mikä vaatii sovellusten antamien sijaintien huomiotta "
-#~ "jättämistä. Kuitenkin jotkin Java/Swingin versiot merkitsevät "
-#~ "ponnahdusvalikkonsa valintaikkunoiksi, joten Metacity ei voi sijoitella "
-#~ "näiden rikkinäisten Java-sovellusten valintaikkunoita, jos valikkojen "
-#~ "halutaan toimivan. Useita muitakin vastaavia esimerkkejä on. Tämä valinta "
-#~ "saa Metacityn toimimaan aina Oikein, mikä ehkä saa käyttöliittymät "
-#~ "toimimaan jouhevammin, jos rikkinäisiä sovelluksia ei tarvitse käyttää. "
-#~ "Ikävä kyllä kaikenlaisia kiertoteitä täytyy olla oletusarvoisesti "
-#~ "toiminnassa; maailma on siitä ikävä paikka. Jotkin kiertoteistä kiertävät "
-#~ "rajoituksia standardeissa itsessään, joten joskus vikaa ei voi korjata "
-#~ "kiertoteittä standardia muuttamatta."
-
-#~ msgid ""
-#~ "Coordinate expression parser overflowed its buffer, this is really a "
-#~ "Metacity bug, but are you sure you need a huge expression like that?"
-#~ msgstr ""
-#~ "Koordinaattilausekkeen jäsentimen puskuri vuoti yli. Tämä on vika "
-#~ "Metacityssä, mutta tarvitsetko todella noin suurta lauseketta?"
+#~ "Voit odottaa sovellusta vielä hetken valitsemalla \"Odota\", tai sulkea "
+#~ "sovelluksen väkisin heti."
