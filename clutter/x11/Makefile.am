@@ -19,15 +19,15 @@ BUILT_SOURCES = clutter-x11-enum-types.h clutter-x11-enum-types.c
 clutter-x11-enum-types.h: stamp-clutter-x11-enum-types.h
 	@true
 stamp-clutter-x11-enum-types.h: $(source_h) Makefile
-	( $(GLIB_MKENUMS) \
+	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 		--template $(srcdir)/clutter-x11-enum-types.h.in \
 	  $(source_h) ) >> xgen-ceth && \
-	(cmp xgen-ceth clutter-x11-enum-types.h || cp xgen-ceth clutter-x11-enum-types.h ) && \
+	(cmp -s xgen-ceth clutter-x11-enum-types.h || cp xgen-ceth clutter-x11-enum-types.h ) && \
 	rm -f xgen-ceth && \
 	echo timestamp > $(@F)
 
 clutter-x11-enum-types.c: clutter-x11-enum-types.h
-	( $(GLIB_MKENUMS) \
+	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 		--template $(srcdir)/clutter-x11-enum-types.c.in \
 	  $(source_h) ) >> xgen-cetc && \
 	cp xgen-cetc clutter-x11-enum-types.c && \

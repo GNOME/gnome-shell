@@ -124,7 +124,7 @@ stamp-clutter-enum-types.h: $(source_h) Makefile
 	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/clutter-enum-types.h.in \
 	  $(source_h) ) >> xgen-ceth && \
-	(cmp xgen-ceth clutter-enum-types.h || cp xgen-ceth clutter-enum-types.h) && \
+	(cmp -s xgen-ceth clutter-enum-types.h || cp xgen-ceth clutter-enum-types.h) && \
 	rm -f xgen-ceth && \
 	echo timestamp > $(@F)
 
