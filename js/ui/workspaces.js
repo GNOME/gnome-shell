@@ -709,10 +709,9 @@ Workspace.prototype = {
     _onCloneSelected : function (clone, time) {
         let global = Shell.Global.get();
         let activeWorkspace = global.screen.get_active_workspace_index();
-        let windowWorkspace = clone.realWindow.get_workspace();
 
-        if (windowWorkspace != activeWorkspace) {
-            let workspace = global.screen.get_workspace_by_index(windowWorkspace);
+        if (this.workspaceNum != activeWorkspace) {
+            let workspace = global.screen.get_workspace_by_index(this.workspaceNum);
             workspace.activate_with_focus(clone.metaWindow, time);
         } else
             clone.metaWindow.activate(time);
