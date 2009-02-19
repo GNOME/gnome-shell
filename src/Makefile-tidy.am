@@ -19,14 +19,7 @@ TIDY_STAMP_FILES = stamp-tidy-marshal.h stamp-tidy-enum-types.h
 
 # please, keep this sorted alphabetically
 tidy_source_h =					\
-	tidy/tidy-actor.h			\
-	tidy/tidy-button.h			\
-	tidy/tidy-frame.h			\
 	tidy/tidy-grid.h			\
-	tidy/tidy-stylable.h			\
-	tidy/tidy-style.h			\
-	tidy/tidy-types.h			\
-	tidy/tidy-util.h			\
 	$(NULL)
 
 tidy_source_h_private = \
@@ -35,13 +28,7 @@ tidy_source_h_private = \
 
 # please, keep this sorted alphabetically
 tidy_source_c =					\
-	tidy/tidy-actor.c			\
-	tidy/tidy-button.c			\
-	tidy/tidy-frame.c			\
 	tidy/tidy-grid.c			\
-	tidy/tidy-stylable.c			\
-	tidy/tidy-style.c			\
-	tidy/tidy-util.c			\
 	$(NULL)
 
 tidy-marshal.h: stamp-tidy-marshal.h
