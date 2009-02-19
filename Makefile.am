@@ -17,11 +17,11 @@ pcfiles = \
 
 # clutter-<major>.<minor>.pc - for generic dependencies
 clutter-$(CLUTTER_API_VERSION).pc: clutter.pc
-	@cp $< $@
+	$(QUIET_GEN)cp $< $@
 
 # clutter-<flavour>-<major>.<minor>.pc - for backend-specific dependencies
 clutter-$(CLUTTER_FLAVOUR)-$(CLUTTER_API_VERSION).pc: clutter.pc
-	@cp $< $@
+	$(QUIET_GEN)cp $< $@
 
 .PHONY: test-report full-report
 test-report full-report:
