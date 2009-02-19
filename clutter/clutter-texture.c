@@ -1203,7 +1203,7 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
  *
  * Returns a handle to the underlying COGL material used for drawing
  * the actor. No extra reference is taken so if you need to keep the
- * handle then you should call cogl_material_ref on it.
+ * handle then you should call cogl_material_ref() on it.
  *
  * Since: 1.0
  *
@@ -1255,14 +1255,19 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
  * clutter_texture_get_cogl_texture
  * @texture: A #ClutterTexture
  *
- * Returns a handle to the underlying COGL texture used for drawing
+ * Retrieves the handle to the underlying COGL texture used for drawing
  * the actor. No extra reference is taken so if you need to keep the
- * handle then you should call cogl_texture_ref on it.
+ * handle then you should call cogl_texture_ref() on it.
+ *
+ * The texture handle returned is the first layer of the material
+ * handle used by the #ClutterTexture. If you need to access the other
+ * layers you should use clutter_texture_get_cogl_material() instead
+ * and use the #CoglMaterial API.
  *
  * Since: 0.8
  *
  * Return value: COGL texture handle
- **/
+ */
 CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)
 {
