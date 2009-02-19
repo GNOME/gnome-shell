@@ -903,25 +903,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
         (fallback_mask & (1<<i)) ? TRUE : FALSE;
       new_gl_layer_info.disabled =
         (disable_mask & (1<<i)) ? TRUE : FALSE;
-      if (i < ctx->current_layers->len)
-        {
-          gl_layer_info =
-            &g_array_index (ctx->current_layers, CoglLayerInfo, i);
-
-#ifndef DISABLE_MATERIAL_CACHE
-          if (gl_layer_info->handle == layer_handle &&
-              !(layer->flags & COGL_MATERIAL_LAYER_FLAG_DIRTY) &&
-              !(gl_layer_info->layer0_overridden ||
-                new_gl_layer_info.layer0_overridden) &&
-              (gl_layer_info->fallback
-               == new_gl_layer_info.fallback) &&
-              (gl_layer_info->disabled
-               == new_gl_layer_info.disabled))
-            {
-              continue;
-            }
-#endif
-        }
 
       tex_handle = layer->texture;
       cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
@@ -971,6 +952,29 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 #else
       GE (glBindTexture (gl_target, gl_texture));
 #endif
+
+      /* XXX: Once we add caching for glBindTexture state, these
+       * checks should be moved back up to the top of the loop!
+       */
+      if (i < ctx->current_layers->len)
+        {
+          gl_layer_info =
+            &g_array_index (ctx->current_layers, CoglLayerInfo, i);
+
+#ifndef DISABLE_MATERIAL_CACHE
+          if (gl_layer_info->handle == layer_handle &&
+              !(layer->flags & COGL_MATERIAL_LAYER_FLAG_DIRTY) &&
+              !(gl_layer_info->layer0_overridden ||
+                new_gl_layer_info.layer0_overridden) &&
+              (gl_layer_info->fallback
+               == new_gl_layer_info.fallback) &&
+              (gl_layer_info->disabled
+               == new_gl_layer_info.disabled))
+            {
+              continue;
+            }
+#endif
+        }
 
       /* Disable the previous target if it was different */
 #ifndef DISABLE_MATERIAL_CACHE
