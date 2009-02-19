@@ -20,6 +20,8 @@
    Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include <math.h>
+
 #include <glib.h>
 
 #include <clutter/clutter.h>
@@ -491,7 +493,7 @@ big_box_get_bg_texture_allocation (ClutterActor          *self,
       break;
 
     case BIG_BOX_ALIGNMENT_CENTER:
-      bg_box->x1 = MAX (min_x1, priv->border_left + (allocated_width - bg_width) / 2);
+      bg_box->x1 = MAX (min_x1, priv->border_left + roundf ((allocated_width - bg_width) / 2));
       bg_box->x2 = MIN (bg_box->x1 + bg_width, max_x2);
       break;
     }
@@ -520,7 +522,7 @@ big_box_get_bg_texture_allocation (ClutterActor          *self,
       break;
 
     case BIG_BOX_ALIGNMENT_CENTER:
-      bg_box->y1 = MAX (min_y1, priv->border_top + (allocated_height - bg_height) / 2);
+      bg_box->y1 = MAX (min_y1, priv->border_top + roundf ((allocated_height - bg_height) / 2));
       bg_box->y2 = MIN (bg_box->y1 + bg_height, max_y2);
       break;
     }
@@ -1240,7 +1242,7 @@ big_box_get_content_area_horizontal (ClutterActor  *self,
       break;
     case BIG_BOX_ALIGNMENT_CENTER:
       if (x_p)
-        *x_p = left + (unpadded_box_width - content_width) / 2;
+        *x_p = left + roundf ((unpadded_box_width - content_width) / 2);
       if (width_p)
         *width_p = content_width;
       break;
@@ -1300,7 +1302,7 @@ big_box_get_content_area_vertical (ClutterActor   *self,
       break;
     case BIG_BOX_ALIGNMENT_CENTER:
       if (y_p)
-        *y_p = top + (unpadded_box_height - content_height) / 2;
+        *y_p = top + roundf ((unpadded_box_height - content_height) / 2);
       if (height_p)
         *height_p = content_height;
       break;
@@ -2134,7 +2136,7 @@ big_box_allocate (ClutterActor          *self,
               child_box.x1 = child_box.x2 - width;
               break;
             case BIG_BOX_ALIGNMENT_CENTER:
-              child_box.x1 = content_x + (allocated_content_width - width) / 2;
+              child_box.x1 = content_x + roundf ((allocated_content_width - width) / 2);
               child_box.x2 = child_box.x1 + width;
               break;
             case BIG_BOX_ALIGNMENT_FILL:
@@ -2159,7 +2161,7 @@ big_box_allocate (ClutterActor          *self,
               child_box.y1 = child_box.y2 - height;
               break;
             case BIG_BOX_ALIGNMENT_CENTER:
-              child_box.y1 = content_y + (allocated_content_height - height) / 2;
+              child_box.y1 = content_y + roundf ((allocated_content_height - height) / 2);
               child_box.y2 = child_box.y1 + height;
               break;
             case BIG_BOX_ALIGNMENT_FILL:
