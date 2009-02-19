@@ -150,35 +150,6 @@ clutter_clone_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-cairo-texture</FILE>
-<TITLE>ClutterCairoTexture</TITLE>
-ClutterCairoTexture
-ClutterCairoTextureClass
-clutter_cairo_texture_new
-clutter_cairo_texture_set_surface_size
-clutter_cairo_texture_get_surface_size
-
-<SUBSECTION>
-clutter_cairo_texture_create
-clutter_cairo_texture_create_region
-
-<SUBSECTION>
-clutter_cairo_set_source_color
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_CAIRO_TEXTURE
-CLUTTER_CAIRO_TEXTURE
-CLUTTER_IS_CAIRO_TEXTURE
-CLUTTER_CAIRO_TEXTURE_CLASS
-CLUTTER_IS_CAIRO_TEXTURE_CLASS
-CLUTTER_CAIRO_TEXTURE_GET_CLASS
-
-<SUBSECTION Private>
-ClutterCairoTexturePrivate
-clutter_cairo_texture_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-group</FILE>
 <TITLE>ClutterGroup</TITLE>
 ClutterGroup
@@ -504,15 +475,11 @@ CLUTTER_TYPE_TEXTURE
 CLUTTER_TEXTURE_CLASS
 CLUTTER_IS_TEXTURE_CLASS
 CLUTTER_TEXTURE_GET_CLASS
-CLUTTER_TYPE_TEXTURE_HANDLE
-CLUTTER_TYPE_MATERIAL_HANDLE
 
 <SUBSECTION Private>
 ClutterTexturePrivate
 clutter_texture_error_quark
 clutter_texture_get_type
-clutter_texture_handle_get_type
-clutter_material_handle_get_type
 </SECTION>
 
 <SECTION>
@@ -1060,6 +1027,9 @@ clutter_keysym_to_unicode
 clutter_event_get_device_id
 clutter_get_input_device_for_id
 
+<SUBSECTION>
+clutter_get_current_event_time
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_EVENT
 <SUBSECTION Private>
@@ -1152,6 +1122,7 @@ clutter_x11_set_stage_foreign
 clutter_x11_trap_x_errors
 clutter_x11_untrap_x_errors
 clutter_x11_has_composite_extension
+clutter_x11_get_current_event_time
 
 <SUBSECTION>
 ClutterX11FilterFunc
@@ -1367,13 +1338,18 @@ clutter_model_iter_get_type
 <FILE>clutter-list-model</FILE>
 <TITLE>ClutterListModel</TITLE>
 ClutterListModel
+ClutterListModelClass
 clutter_list_model_new
 clutter_list_model_newv
 <SUBSECTION Standard>
 CLUTTER_TYPE_LIST_MODEL
 CLUTTER_LIST_MODEL
 CLUTTER_IS_LIST_MODEL
+CLUTTER_IS_LIST_MODEL_CLASS
+CLUTTER_LIST_MODEL_CLASS
+CLUTTER_LIST_MODEL_GET_CLASS
 <SUBSECTION Private>
+ClutterListModelPrivate
 clutter_list_model_get_type
 </SECTION>
 
