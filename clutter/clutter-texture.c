@@ -503,6 +503,15 @@ clutter_texture_paint (ClutterActor *self)
   gint            x_1, y_1, x_2, y_2;
   CoglColor       transparent_col;
   ClutterFixed    t_w, t_h;
+  guint8          paint_opacity = clutter_actor_get_paint_opacity (self);
+
+  if (clutter_actor_get_paint_opacity (self) == 0)
+    {
+      /* Bail early if painting the actor would be a no-op, custom actors that
+       * might cause a lot of work/state changes should all do this.
+       */
+      return;
+    }
 
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
     clutter_actor_realize (CLUTTER_ACTOR(texture));
@@ -595,8 +604,7 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
-  cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff,
-                              clutter_actor_get_paint_opacity (self));
+  cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff, paint_opacity);
 
   clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 
