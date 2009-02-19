@@ -48,6 +48,14 @@ test_conform_skip_test (TestConformSimpleFixture *fixture,
                 test_conform_simple_fixture_teardown);                  \
   } else { TEST_CONFORM_SIMPLE (NAMESPACE, FUNC); }     } G_STMT_END
 
+#define TEST_CONFORM_TODO(NAMESPACE, FUNC)              G_STMT_START {  \
+  g_test_add ("/todo" NAMESPACE "/" #FUNC,                              \
+              TestConformSimpleFixture,                                 \
+              shared_state,                                             \
+              test_conform_simple_fixture_setup,                        \
+              test_conform_skip_test,                                   \
+              test_conform_simple_fixture_teardown);    } G_STMT_END
+
 int
 main (int argc, char **argv)
 {
