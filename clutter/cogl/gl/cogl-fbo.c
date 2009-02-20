@@ -242,8 +242,12 @@ void
 cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 {
   CoglFbo *fbo = NULL;
+  CoglDrawBufferState *draw_buffer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_assert (ctx->draw_buffer_stack != NULL);
+  draw_buffer = ctx->draw_buffer_stack->data;
 
   if (target == COGL_OFFSCREEN_BUFFER)
     {
@@ -254,7 +258,7 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
       fbo = _cogl_offscreen_pointer_from_handle (offscreen);
 
       /* Check current draw buffer target */
-      if (ctx->draw_buffer != COGL_OFFSCREEN_BUFFER)
+      if (draw_buffer->target != COGL_OFFSCREEN_BUFFER)
 	{
 	  /* Push the viewport and matrix setup if redirecting
              from a non-screen buffer */
@@ -303,7 +307,7 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	   (target & COGL_MASK_BUFFER))
     {
       /* Check current draw buffer target */
-      if (ctx->draw_buffer == COGL_OFFSCREEN_BUFFER)
+      if (draw_buffer->target == COGL_OFFSCREEN_BUFFER)
 	{
 	  /* Pop viewport and matrices if redirecting back
              from an offscreen buffer */
@@ -338,5 +342,70 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
     }
 
   /* Store new target */
-  ctx->draw_buffer = target;
+  draw_buffer->target = target;
+  if (draw_buffer->offscreen != offscreen)
+    {
+      if (draw_buffer->offscreen != COGL_INVALID_HANDLE)
+        cogl_handle_unref (draw_buffer->offscreen);
+      if (offscreen != COGL_INVALID_HANDLE)
+        cogl_handle_ref (offscreen);
+      draw_buffer->offscreen = offscreen;
+    }
+}
+
+void
+cogl_push_draw_buffer(void)
+{
+  CoglDrawBufferState *old;
+  CoglDrawBufferState *draw_buffer;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_assert (ctx->draw_buffer_stack != NULL);
+  old = ctx->draw_buffer_stack->data;
+
+  draw_buffer = g_slice_new0 (CoglDrawBufferState);
+  *draw_buffer = *old;
+
+  ctx->draw_buffer_stack =
+    g_slist_prepend (ctx->draw_buffer_stack, draw_buffer);
+}
+
+void
+cogl_pop_draw_buffer(void)
+{
+  CoglDrawBufferState *to_pop;
+  CoglDrawBufferState *to_restore;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_assert (ctx->draw_buffer_stack != NULL);
+  if (ctx->draw_buffer_stack->next == NULL)
+    {
+      g_warning ("1 more cogl_pop_draw_buffer() than cogl_push_draw_buffer()");
+      return;
+    }
+
+  to_pop = ctx->draw_buffer_stack->data;
+  to_restore = ctx->draw_buffer_stack->next->data;
+
+  /* the logic in cogl_draw_buffer() only works if
+   * to_pop is still on top of the stack, because
+   * cogl_draw_buffer() needs to know the previous
+   * state.
+   */
+  cogl_draw_buffer (to_restore->target, to_restore->offscreen);
+
+  /* cogl_draw_buffer() should have set top of stack
+   * to to_restore
+   */
+  g_assert (to_restore->target == to_pop->target);
+  g_assert (to_restore->offscreen == to_pop->offscreen);
+
+  g_assert (ctx->draw_buffer_stack->data == to_pop);
+  ctx->draw_buffer_stack =
+    g_slist_remove_link (ctx->draw_buffer_stack,
+                         ctx->draw_buffer_stack);
+
+  g_slice_free (CoglDrawBufferState, to_pop);
 }
