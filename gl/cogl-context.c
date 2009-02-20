@@ -42,6 +42,7 @@ cogl_create_context ()
 {
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
   gulong  enable_flags = 0;
+  CoglDrawBufferState *draw_buffer;
 
   if (_context != NULL)
     return FALSE;
@@ -78,7 +79,11 @@ cogl_create_context ()
                                           sizeof (CoglLayerInfo));
   _context->n_texcoord_arrays_enabled = 0;
 
-  _context->draw_buffer = COGL_WINDOW_BUFFER;
+  draw_buffer = g_slice_new0 (CoglDrawBufferState);
+  draw_buffer->target = COGL_WINDOW_BUFFER;
+  draw_buffer->offscreen = COGL_INVALID_HANDLE;
+  _context->draw_buffer_stack =
+    g_slist_prepend (NULL, draw_buffer);
 
   _context->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   _context->last_path = 0;

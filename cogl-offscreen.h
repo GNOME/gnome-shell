@@ -128,6 +128,20 @@ void            cogl_offscreen_blit_region    (CoglHandle          src_buffer,
 void            cogl_draw_buffer              (CoglBufferTarget    target,
                                                CoglHandle          offscreen);
 
+/**
+ * cogl_push_draw_buffer:
+ *
+ * Save cogl_draw_buffer() state.
+ */
+void            cogl_push_draw_buffer         (void);
+
+/**
+ * cogl_pop_draw_buffer:
+ *
+ * Restore cogl_draw_buffer() state.
+ */
+void            cogl_pop_draw_buffer          (void);
+
 G_END_DECLS
 
 #endif /* __COGL_OFFSCREEN_H__ */

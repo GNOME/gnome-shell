@@ -40,6 +40,12 @@ typedef struct
 
 typedef struct
 {
+  CoglBufferTarget target;
+  CoglHandle offscreen;
+} CoglDrawBufferState;
+
+typedef struct
+{
   /* Features cache */
   CoglFeatureFlags  feature_flags;
   gboolean          features_cached;
@@ -84,7 +90,7 @@ typedef struct
   guint             n_texcoord_arrays_enabled;
 
   /* Framebuffer objects */
-  CoglBufferTarget  draw_buffer;
+  GSList           *draw_buffer_stack;
 
   /* Clip stack */
   CoglClipStackState clip;
