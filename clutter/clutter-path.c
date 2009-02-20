@@ -568,8 +568,11 @@ static gboolean
 clutter_path_parse_description (const gchar  *p,
                                 GSList      **ret)
 {
-  GSList *nodes = NULL;
   ClutterPathNodeFull *node;
+  GSList *nodes = NULL;
+
+  if (p == NULL || *p == '\0')
+    return FALSE;
 
   while (TRUE)
     {
@@ -720,6 +723,7 @@ clutter_path_add_string (ClutterPath *path,
   GSList *nodes;
 
   g_return_val_if_fail (CLUTTER_IS_PATH (path), FALSE);
+  g_return_val_if_fail (str != NULL, FALSE);
 
   if (clutter_path_parse_description (str, &nodes))
     {
@@ -1099,11 +1103,13 @@ clutter_path_replace_node (ClutterPath           *path,
  * Since: 1.0
  */
 gboolean
-clutter_path_set_description (ClutterPath *path, const gchar *str)
+clutter_path_set_description (ClutterPath *path,
+                              const gchar *str)
 {
   GSList *nodes;
 
   g_return_val_if_fail (CLUTTER_IS_PATH (path), FALSE);
+  g_return_val_if_fail (str != NULL, FALSE);
 
   if (clutter_path_parse_description (str, &nodes))
     {
