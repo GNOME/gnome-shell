@@ -1639,6 +1639,9 @@ clutter_timeline_list_markers (ClutterTimeline *timeline,
   if (G_UNLIKELY (priv->markers_by_name == NULL ||
                   priv->markers_by_frame == NULL))
     {
+      if (n_markers)
+        *n_markers = 0;
+
       return NULL;
     }
 
