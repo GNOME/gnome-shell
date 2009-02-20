@@ -32,11 +32,12 @@ INCLUDES = \
 	-DCLUTTER_COMPILATION=1				\
 	-DG_DISABLE_DEPRECATED 				\
 	-DG_LOG_DOMAIN=\"Clutter\" 			\
-	$(GCC_FLAGS) 					\
 	$(CLUTTER_CFLAGS) 				\
 	$(CLUTTER_DEBUG_CFLAGS)				\
 	$(MAINTAINER_CFLAGS)				\
 	$(NULL)
+
+AM_CFLAGS=$(GCC_FLAGS)
 
 LDADD = \
 	$(CLUTTER_LT_LDFLAGS) \
@@ -235,6 +236,64 @@ clutter_HEADERS = \
 	clutter-enum-types.h \
 	clutter-version.h \
 	clutter.h
+
+if HAVE_INTROSPECTION
+BUILT_GIRSOURCES =
+
+if LOCAL_JSON_GLIB
+json_gir_include_path=--add-include-path=json
+endif
+
+# We can't reference the list of COGL header files, since they are in a
+# subdir Makefile.am, so just extract them from cogl.h instead. The doc comments
+# for COGL are in the headers, so we don't need the source files.
+Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
+	cogl_headers=`sed -n "s/#include <cogl\/\([^>]*\)>/cogl\/\1/p" < cogl/cogl.h` ; \
+	$(INTROSPECTION_SCANNER) -v --namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
+	     $(INCLUDES) \
+	     $(json_gir_include_path) \
+             --include=GL-1.0 \
+             --include=GObject-2.0 \
+             --include=Pango-1.0 \
+             --include=PangoCairo-1.0 \
+             --include=ClutterJson-@CLUTTER_API_VERSION@ \
+	     --library=clutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@ \
+	     --libtool="$(top_builddir)/doltlibtool" \
+             --pkg gobject-2.0 \
+             --pkg pango \
+             --pkg pangocairo \
+             --output $@ \
+	     $(clutter_HEADERS) \
+	     $$cogl_headers \
+	     $(source_c)
+
+BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir
+
+if LOCAL_JSON_GLIB
+# We build ClutterJson.gir in the json/ subdir, but it needs to reference the shared library
+# that it's built into, so we delay compiling the gir into typelib until after we've built
+# the shared library. To create the final ClutterJson.gir that we compiler and install, we
+# transfer the shared-library="" line from Clutter.gir to ClutterJson.gir
+ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
+	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
+	sed "s/shared-library=\"clutter-json\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
+
+BUILT_GIRSOURCES += ClutterJson-@CLUTTER_API_VERSION@.gir
+endif
+
+# INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to install
+# thing - we need to install inside our prefix.
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(BUILT_GIRSOURCES)
+
+typelibsdir = $(libdir)/girepository-1.0/
+typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
+
+%.typelib: %.gir $(INTROSPECTION_COMPILER)
+	$(DEBUG) $(INTROSPECTION_COMPILER) --includedir=$(srcdir) --includedir=. $(INTROSPECTION_COMPILER_OPTS) $< -o $(builddir)/$(@F)
+
+CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
+endif
 
 DISTCLEANFILES = \
 	$(ENUMFILES) \

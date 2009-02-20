@@ -596,6 +596,9 @@ if test "x$enable_maintainer_flags" = "xyes"; then
 fi
 AC_SUBST(MAINTAINER_CFLAGS)
 
+dnl = GObject-Introspection check ==========================================
+
+GOBJECT_INTROSPECTION_CHECK([0.6.3])
 
 dnl = GTK Doc check ========================================================
 
@@ -721,6 +724,7 @@ echo "                 Debug level:   ${enable_debug}"
 echo "              Compiler flags:   ${CPPFLAGS} ${MAINTAINER_CFLAGS}"
 echo "     Build API Documentation:   ${enable_gtk_doc}"
 echo "  Build Manual Documentation:   ${enable_manual}"
+echo "    Build Introspection data:   ${enable_introspection}"
 echo ""
 
 
