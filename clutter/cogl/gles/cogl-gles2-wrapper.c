@@ -1325,6 +1325,8 @@ cogl_wrap_glActiveTexture (GLenum texture)
   int texture_unit_index = texture - GL_TEXTURE0;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
+  glActiveTexture (texture);
+
   if (texture_unit_index < COGL_GLES2_MAX_TEXTURE_UNITS)
     w->active_texture_unit = texture_unit_index;
 }
