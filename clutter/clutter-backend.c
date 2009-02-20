@@ -310,6 +310,17 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
        * potential issue of GL calls with no context)
        */
       current_context_stage = stage;
+
+      /* if the new stage has a different size than the previous one
+       * we need to update the viewport; we do it by simply setting the
+       * SYNC_MATRICES flag and letting the next redraw cycle take care
+       * of calling glViewport()
+       */
+      if (current_context_stage)
+        {
+          CLUTTER_SET_PRIVATE_FLAGS (current_context_stage,
+                                     CLUTTER_ACTOR_SYNC_MATRICES);
+        }
     }
   else
     CLUTTER_NOTE (MULTISTAGE, "Stage is the same");
