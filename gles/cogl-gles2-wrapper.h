@@ -52,6 +52,20 @@ typedef struct _CoglGles2WrapperShader	  CoglGles2WrapperShader;
 #define COGL_GLES2_PROJECTION_STACK_SIZE  2
 #define COGL_GLES2_TEXTURE_STACK_SIZE     2
 
+/* Accessors for the texture unit bit mask */
+#define COGL_GLES2_TEXTURE_UNIT_IS_ENABLED(mask, unit)  \
+  (((mask) & (1 << ((unit) * 2))) ? TRUE : FALSE)
+#define COGL_GLES2_TEXTURE_UNIT_IS_ALPHA_ONLY(mask, unit)       \
+  (((mask) & (1 << ((unit) * 2 + 1))) ? TRUE : FALSE)
+#define COGL_GLES2_SET_BIT(mask, bit, val)                              \
+  ((val) ? ((mask) |= (1 << (bit))) : ((mask) &= ~(1 << (bit))))
+#define COGL_GLES2_TEXTURE_UNIT_SET_ENABLED(mask, unit, val)    \
+  COGL_GLES2_SET_BIT ((mask), (unit) * 2, (val))
+#define COGL_GLES2_TEXTURE_UNIT_SET_ALPHA_ONLY(mask, unit, val) \
+  COGL_GLES2_SET_BIT ((mask), (unit) * 2 + 1, (val))
+
+#define COGL_GLES2_MAX_TEXTURE_UNITS (sizeof (guint32) * 8 / 2)
+
 /* Dirty flags for shader uniforms */
 enum
   {
@@ -82,16 +96,15 @@ enum
 
 struct _CoglGles2WrapperAttributes
 {
-  GArray    *multi_texture_coords;
+  GLint      multi_texture_coords[COGL_GLES2_MAX_TEXTURE_UNITS];
 };
 
 struct _CoglGles2WrapperUniforms
 {
   GLint      mvp_matrix_uniform;
   GLint      modelview_matrix_uniform;
-  GArray    *texture_matrix_uniforms;
-
-  GArray    *texture_sampler_uniforms;
+  GLint      texture_matrix_uniforms[COGL_GLES2_MAX_TEXTURE_UNITS];
+  GLint      texture_sampler_uniforms[COGL_GLES2_MAX_TEXTURE_UNITS];
 
   GLint      fog_density_uniform;
   GLint      fog_start_uniform;
@@ -100,14 +113,7 @@ struct _CoglGles2WrapperUniforms
 
   GLint      alpha_test_ref_uniform;
 
-  GLint     texture_unit_uniform;
-};
-
-struct _CoglGles2WrapperTextureUnitSettings
-{
-  guint	enabled:1;
-  guint alpha_only:1;
-  /* TODO: blending state */
+  GLint      texture_unit_uniform;
 };
 
 /* NB: We get a copy of this for each fragment/vertex
@@ -115,8 +121,7 @@ struct _CoglGles2WrapperTextureUnitSettings
  * fairly lean */
 struct _CoglGles2WrapperSettings
 {
-  CoglGles2WrapperTextureUnitSettings *texture_units;
-  guint	   n_texture_units;
+  guint32  texture_units;
 
   GLint    alpha_test_func;
   GLint    fog_mode;
@@ -149,9 +154,10 @@ struct _CoglGles2Wrapper
   GLuint     modelview_stack_pos;
   GLfloat    projection_stack[COGL_GLES2_PROJECTION_STACK_SIZE * 16];
   GLuint     projection_stack_pos;
-  GArray    *texture_units;
   guint	     active_texture_unit;
   guint	     active_client_texture_unit;
+
+  CoglGles2WrapperTextureUnit texture_units[COGL_GLES2_MAX_TEXTURE_UNITS];
 
   /* The combined modelview and projection matrix is only updated at
      the last minute in glDrawArrays to avoid recalculating it for

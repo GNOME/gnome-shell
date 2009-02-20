@@ -107,6 +107,40 @@ cogl_gles2_wrapper_create_shader (GLenum type, const char *source)
   return shader;
 }
 
+static void
+initialize_texture_units (CoglGles2Wrapper *w)
+{
+  /* We save the active texture unit since we may need to temporarily
+   * change this to initialise each new texture unit and we want to
+   * restore the active unit afterwards */
+  int initial_active_unit = w->active_texture_unit;
+  GLint prev_mode;
+  int i;
+
+  /* We will need to set the matrix mode to GL_TEXTURE to
+   * initialise any new texture units, so we save the current
+   * mode for restoring afterwards */
+  GE( cogl_wrap_glGetIntegerv (CGL_MATRIX_MODE, &prev_mode));
+
+  for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+    {
+      CoglGles2WrapperTextureUnit *new_unit;
+
+      new_unit = w->texture_units + i;
+      memset (new_unit, 0, sizeof (CoglGles2WrapperTextureUnit));
+
+      w->active_texture_unit = i;
+      GE( cogl_wrap_glMatrixMode (GL_TEXTURE));
+      GE( cogl_wrap_glLoadIdentity ());
+    }
+
+  GE( cogl_wrap_glMatrixMode ((GLenum) prev_mode));
+
+  w->settings.texture_units = 0;
+
+  w->active_texture_unit = initial_active_unit;
+}
+
 void
 cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
 {
@@ -119,9 +153,6 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   cogl_wrap_glLoadIdentity ();
   cogl_wrap_glMatrixMode (GL_MODELVIEW);
   cogl_wrap_glLoadIdentity ();
-
-  wrapper->texture_units =
-    g_array_new (FALSE, FALSE, sizeof (CoglGles2WrapperTextureUnit *));
 
   /* The gl*ActiveTexture wrappers will initialise the texture
    * stack for the texture unit when it's first activated */
@@ -139,6 +170,8 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   /* Initialize alpha testing */
   cogl_wrap_glDisable (GL_ALPHA_TEST);
   cogl_wrap_glAlphaFunc (GL_ALWAYS, 0.0f);
+
+  initialize_texture_units (wrapper);
 }
 
 static gboolean
@@ -147,17 +180,11 @@ cogl_gles2_settings_equal (const CoglGles2WrapperSettings *a,
 			   gboolean vertex_tests,
 			   gboolean fragment_tests)
 {
+  if (a->texture_units != b->texture_units)
+    return FALSE;
+
   if (fragment_tests)
     {
-      int i;
-      for (i = 0; i < a->n_texture_units; i++)
-	{
-	  if (a->texture_units[i].enabled != b->texture_units[i].enabled)
-	    return FALSE;
-	  if (a->texture_units[i].alpha_only != b->texture_units[i].alpha_only)
-	    return FALSE;
-	}
-
       if (a->alpha_test_enabled != b->alpha_test_enabled)
 	return FALSE;
       if (a->alpha_test_enabled && a->alpha_test_func != b->alpha_test_func)
@@ -181,6 +208,7 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
   CoglGles2WrapperShader *shader;
   GSList *node;
   int i;
+  int n_texture_units = 0;
 
   _COGL_GET_GLES2_WRAPPER (w, NULL);
 
@@ -195,43 +223,47 @@ cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
   /* Otherwise create a new shader */
   shader_source = g_string_new (cogl_fixed_vertex_shader_per_vertex_attribs);
 
-  for (i = 0; i < settings->n_texture_units; i++)
-    {
-      if (!settings->texture_units[i].enabled)
-	continue;
+  for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
       g_string_append_printf (shader_source,
 			      "attribute vec4 multi_tex_coord_attrib%d;\n",
 			      i);
-    }
+
+  /* Find the biggest enabled texture unit index */
+  for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
+      n_texture_units = i + 1;
 
   g_string_append (shader_source, cogl_fixed_vertex_shader_transform_matrices);
-  g_string_append_printf (shader_source,
-			  "uniform mat4	      texture_matrix[%d];\n",
-			  settings->n_texture_units);
-
   g_string_append (shader_source, cogl_fixed_vertex_shader_output_variables);
-  g_string_append_printf (shader_source,
-			  "varying vec2       tex_coord[%d];",
-			  settings->n_texture_units);
+
+  if (n_texture_units > 0)
+    {
+      g_string_append_printf (shader_source,
+                              "uniform mat4	      texture_matrix[%d];\n",
+                              n_texture_units);
+
+      g_string_append_printf (shader_source,
+                              "varying vec2       tex_coord[%d];",
+                              n_texture_units);
+    }
 
   g_string_append (shader_source, cogl_fixed_vertex_shader_fogging_options);
   g_string_append (shader_source, cogl_fixed_vertex_shader_main_start);
 
-  for (i = 0; i < settings->n_texture_units; i++)
-    {
-      if (!settings->texture_units[i].enabled)
-	continue;
-
-      g_string_append_printf (shader_source,
-			      "transformed_tex_coord = "
-			      "texture_matrix[%d] "
-			      " * multi_tex_coord_attrib%d;\n",
-			      i, i);
-      g_string_append_printf (shader_source,
-			      "tex_coord[%d] = transformed_tex_coord.st "
-			      " / transformed_tex_coord.q;\n",
-			      i);
-    }
+  for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
+      {
+        g_string_append_printf (shader_source,
+                                "transformed_tex_coord = "
+                                "texture_matrix[%d] "
+                                " * multi_tex_coord_attrib%d;\n",
+                                i, i);
+        g_string_append_printf (shader_source,
+                                "tex_coord[%d] = transformed_tex_coord.st "
+                                " / transformed_tex_coord.q;\n",
+                                i);
+      }
 
   g_string_append (shader_source, cogl_fixed_vertex_shader_frag_color_start);
 
@@ -285,6 +317,7 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
   CoglGles2WrapperShader *shader;
   GSList *node;
   int i;
+  int n_texture_units = 0;
 
   _COGL_GET_GLES2_WRAPPER (w, NULL);
 
@@ -299,15 +332,24 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
   /* Otherwise create a new shader */
   shader_source = g_string_new (cogl_fixed_fragment_shader_variables_start);
 
-  g_string_append (shader_source, cogl_fixed_fragment_shader_inputs);
-  g_string_append_printf (shader_source,
-			  "varying vec2       tex_coord[%d];\n",
-			  settings->n_texture_units);
+  /* Find the biggest enabled texture unit index */
+  for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
+      n_texture_units = i + 1;
 
-  g_string_append (shader_source, cogl_fixed_fragment_shader_texturing_options);
-  g_string_append_printf (shader_source,
-			  "uniform sampler2D  texture_unit[%d];\n",
-			  settings->n_texture_units);
+  g_string_append (shader_source, cogl_fixed_fragment_shader_inputs);
+
+  if (n_texture_units > 0)
+    {
+      g_string_append_printf (shader_source,
+                              "varying vec2       tex_coord[%d];\n",
+                              n_texture_units);
+
+      g_string_append (shader_source, cogl_fixed_fragment_shader_texturing_options);
+      g_string_append_printf (shader_source,
+                              "uniform sampler2D  texture_unit[%d];\n",
+                              n_texture_units);
+    }
 
   g_string_append (shader_source, cogl_fixed_fragment_shader_fogging_options);
 
@@ -318,37 +360,30 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
   /* This pointless extra variable is needed to work around an
      apparent bug in the PowerVR drivers. Without it the alpha
      blending seems to stop working */
-  /* g_string_append (shader_source, "gl_FragColor = frag_color;\n");
-   */
   g_string_append (shader_source,
 		   "vec4 frag_color_copy = frag_color;\n");
   g_string_append (shader_source, "gl_FragColor = frag_color;\n");
 
-  for (i = 0; i < settings->n_texture_units; i++)
-    {
-      if (settings->texture_units[i].alpha_only)
-	{
-	  /* If the texture only has an alpha channel (eg, with the textures
-	     from the pango renderer) then the RGB components will be
-	     black. We want to use the RGB from the current color in that
-	     case */
-	  g_string_append_printf (
-	      shader_source,
-	      "gl_FragColor.a *= "
-		  "texture2D (texture_unit[%d], tex_coord[%d]).a;\n",
-		  i, i);
-	}
-      else
-	{
-	  g_string_append_printf (
-	      shader_source,
-	      "gl_FragColor *= "
-		  "texture2D (texture_unit[%d], tex_coord[%d]);\n",
-		  i, i);
-	}
-    }
-  if (i == 0)
-    g_string_append (shader_source, "gl_FragColor = frag_color;\n");
+  for (i = 0; i < n_texture_units; i++)
+    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
+      {
+        if (COGL_GLES2_TEXTURE_UNIT_IS_ALPHA_ONLY (settings->texture_units, i))
+          /* If the texture only has an alpha channel (eg, with the textures
+             from the pango renderer) then the RGB components will be
+             black. We want to use the RGB from the current color in that
+             case */
+          g_string_append_printf (shader_source,
+                                  "gl_FragColor.a *= "
+                                  "texture2D (texture_unit[%d], "
+                                  "tex_coord[%d]).a;\n",
+                                  i, i);
+        else
+          g_string_append_printf (shader_source,
+                                  "gl_FragColor *= "
+                                  "texture2D (texture_unit[%d], "
+                                  "tex_coord[%d]);\n",
+                                  i, i);
+      }
 
   if (settings->fog_enabled)
     g_string_append (shader_source, cogl_fixed_fragment_shader_fog);
@@ -418,31 +453,31 @@ cogl_gles2_wrapper_get_locations (GLuint program,
   uniforms->modelview_matrix_uniform
     = glGetUniformLocation (program, "modelview_matrix");
 
-  uniforms->texture_matrix_uniforms =
-    g_array_new (FALSE, FALSE, sizeof (GLint));
-  uniforms->texture_sampler_uniforms =
-    g_array_new (FALSE, FALSE, sizeof (GLint));
-  attribs->multi_texture_coords =
-    g_array_new (FALSE, FALSE, sizeof (GLint));
-  for (i = 0; i < settings->n_texture_units; i++)
-    {
-      char *matrix_var_name = g_strdup_printf ("texture_matrix[%d]", i);
-      char *sampler_var_name = g_strdup_printf ("texture_unit[%d]", i);
-      char *tex_coord_var_name =
-	g_strdup_printf ("multi_tex_coord_attrib%d", i);
-      GLint location;
+  for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+    if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (settings->texture_units, i))
+      {
+        char *matrix_var_name = g_strdup_printf ("texture_matrix[%d]", i);
+        char *sampler_var_name = g_strdup_printf ("texture_unit[%d]", i);
+        char *tex_coord_var_name =
+          g_strdup_printf ("multi_tex_coord_attrib%d", i);
 
-      location = glGetUniformLocation (program, matrix_var_name);
-      g_array_append_val (uniforms->texture_matrix_uniforms, location);
-      location = glGetUniformLocation (program, sampler_var_name);
-      g_array_append_val (uniforms->texture_sampler_uniforms, location);
-      location = glGetAttribLocation (program, tex_coord_var_name);
-      g_array_append_val (attribs->multi_texture_coords, location);
+        uniforms->texture_matrix_uniforms[i]
+          = glGetUniformLocation (program, matrix_var_name);
+        uniforms->texture_sampler_uniforms[i]
+          = glGetUniformLocation (program, sampler_var_name);
+        attribs->multi_texture_coords[i]
+          = glGetAttribLocation (program, tex_coord_var_name);
 
-      g_free (tex_coord_var_name);
-      g_free (sampler_var_name);
-      g_free (matrix_var_name);
-    }
+        g_free (tex_coord_var_name);
+        g_free (sampler_var_name);
+        g_free (matrix_var_name);
+      }
+    else
+      {
+        uniforms->texture_matrix_uniforms[i] = -1;
+        uniforms->texture_sampler_uniforms[i] = -1;
+        attribs->multi_texture_coords[i] = -1;
+      }
 
   uniforms->fog_density_uniform
     = glGetUniformLocation (program, "fog_density");
@@ -633,9 +668,7 @@ cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
 
     case GL_TEXTURE:
       wrapper->dirty_uniforms |= COGL_GLES2_DIRTY_TEXTURE_MATRICES;
-      texture_unit = g_array_index (wrapper->texture_units,
-				    CoglGles2WrapperTextureUnit *,
-				    wrapper->active_texture_unit);
+      texture_unit = wrapper->texture_units + wrapper->active_texture_unit;
       texture_unit->dirty_matrix = 1;
       break;
     }
@@ -671,9 +704,7 @@ cogl_wrap_glPushMatrix ()
     case GL_TEXTURE:
       {
 	CoglGles2WrapperTextureUnit *texture_unit;
-	texture_unit = g_array_index (w->texture_units,
-				      CoglGles2WrapperTextureUnit *,
-				      w->active_texture_unit);
+	texture_unit = w->texture_units + w->active_texture_unit;
 	src = texture_unit->texture_stack
 	      + texture_unit->texture_stack_pos * 16;
 	texture_unit->texture_stack_pos = (texture_unit->texture_stack_pos + 1)
@@ -709,9 +740,7 @@ cogl_wrap_glPopMatrix ()
       break;
 
     case GL_TEXTURE:
-      texture_unit = g_array_index (w->texture_units,
-				    CoglGles2WrapperTextureUnit *,
-				    w->active_texture_unit);
+      texture_unit = w->texture_units + w->active_texture_unit;
       texture_unit->texture_stack_pos = (texture_unit->texture_stack_pos - 1)
 	& (COGL_GLES2_TEXTURE_STACK_SIZE - 1);
       break;
@@ -744,10 +773,7 @@ cogl_gles2_get_matrix_stack_top (CoglGles2Wrapper *wrapper)
       return wrapper->projection_stack + wrapper->projection_stack_pos * 16;
 
     case GL_TEXTURE:
-
-      texture_unit = g_array_index (wrapper->texture_units,
-				    CoglGles2WrapperTextureUnit *,
-				    wrapper->active_texture_unit);
+      texture_unit = wrapper->texture_units + wrapper->active_texture_unit;
       return texture_unit->texture_stack
 	+ texture_unit->texture_stack_pos * 16;
     }
@@ -951,9 +977,7 @@ cogl_wrap_glTexCoordPointer (GLint size, GLenum type, GLsizei stride,
 
   active_unit = w->active_client_texture_unit;
 
-  texture_unit = g_array_index (w->texture_units,
-				CoglGles2WrapperTextureUnit *,
-				active_unit);
+  texture_unit = w->texture_units + active_unit;
   texture_unit->texture_coords_size = size;
   texture_unit->texture_coords_type = type;
   texture_unit->texture_coords_stride = stride;
@@ -1109,16 +1133,12 @@ cogl_wrap_prepare_for_draw (void)
 
 	  /* TODO - we should probably have a per unit dirty flag too */
 
-	  for (i = 0; i < program->uniforms.texture_matrix_uniforms->len; i++)
+	  for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
 	    {
 	      CoglGles2WrapperTextureUnit *texture_unit;
-	      GLint uniform =
-		g_array_index (program->uniforms.texture_matrix_uniforms,
-			       GLint, i);
+	      GLint uniform = program->uniforms.texture_matrix_uniforms[i];
 
-	      texture_unit = g_array_index (w->texture_units,
-					    CoglGles2WrapperTextureUnit *,
-					    i);
+              texture_unit = w->texture_units + i;
 	      if (uniform != -1)
 		glUniformMatrix4fv (uniform, 1, GL_FALSE,
 				    texture_unit->texture_stack
@@ -1147,11 +1167,9 @@ cogl_wrap_prepare_for_draw (void)
 
           /* TODO - we should probably have a per unit dirty flag too */
 
-          for (i = 0; i < program->uniforms.texture_sampler_uniforms->len; i++)
+          for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
             {
-              GLint uniform =
-                g_array_index (program->uniforms.texture_sampler_uniforms,
-                               GLint, i);
+              GLint uniform = program->uniforms.texture_sampler_uniforms[i];
 
               if (uniform != -1)
                 glUniform1i (uniform, i);
@@ -1194,33 +1212,27 @@ cogl_wrap_prepare_for_draw (void)
       int i;
 
       /* TODO - coverage test */
-      for (i = 0; i < w->settings.n_texture_units; i++)
-	{
-	  GLint tex_coord_var_index;
-	  CoglGles2WrapperTextureUnit *texture_unit;
+      for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
+        if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (w->settings.texture_units, i))
+          {
+            GLint tex_coord_var_index;
+            CoglGles2WrapperTextureUnit *texture_unit;
 
-	  if (!w->settings.texture_units[i].enabled)
-	    continue;
+            texture_unit = w->texture_units + w->active_texture_unit;
+            if (!texture_unit->texture_coords_enabled)
+              continue;
 
-	  texture_unit = g_array_index (w->texture_units,
-					CoglGles2WrapperTextureUnit *,
-					w->active_texture_unit);
-	  if (!texture_unit->texture_coords_enabled)
-	    continue;
+            /* TODO - we should probably have a per unit dirty flag too */
 
-	  /* TODO - we should probably have a per unit dirty flag too */
-
-	  /* TODO - coverage test */
-	  tex_coord_var_index =
-	    g_array_index (program->attributes.multi_texture_coords,
-			   GLint, i);
-	  glVertexAttribPointer (tex_coord_var_index,
-				 texture_unit->texture_coords_size,
-				 texture_unit->texture_coords_type,
-				 GL_FALSE,
-				 texture_unit->texture_coords_stride,
-				 texture_unit->texture_coords_pointer);
-	}
+            /* TODO - coverage test */
+            tex_coord_var_index = program->attributes.multi_texture_coords[i];
+            glVertexAttribPointer (tex_coord_var_index,
+                                   texture_unit->texture_coords_size,
+                                   texture_unit->texture_coords_type,
+                                   GL_FALSE,
+                                   texture_unit->texture_coords_stride,
+                                   texture_unit->texture_coords_pointer);
+          }
     }
 
   if (w->dirty_vertex_attrib_enables)
@@ -1231,22 +1243,22 @@ cogl_wrap_prepare_for_draw (void)
 
       /* TODO - we should probably have a per unit dirty flag too */
 
-      for (i = 0; i < w->texture_units->len; i++)
+      for (i = 0; i < COGL_GLES2_MAX_TEXTURE_UNITS; i++)
 	{
-	  CoglGles2WrapperTextureUnit *texture_unit =
-	      g_array_index (w->texture_units,
-			     CoglGles2WrapperTextureUnit *,
-			     w->active_texture_unit);
-	  if (texture_unit->texture_coords_enabled)
-	    glEnableVertexAttribArray (
-	      g_array_index (program->attributes.multi_texture_coords,
-			     GLint, i));
-	  else
-	    glDisableVertexAttribArray (
-	      g_array_index (program->attributes.multi_texture_coords,
-			     GLint, i));
-	  w->dirty_vertex_attrib_enables = 0;
+	  CoglGles2WrapperTextureUnit *texture_unit
+            = w->texture_units + w->active_texture_unit;
+          GLint attrib = program->attributes.multi_texture_coords[i];
+
+          if (attrib != -1)
+            {
+              if (texture_unit->texture_coords_enabled)
+                glEnableVertexAttribArray (attrib);
+              else
+                glDisableVertexAttribArray (attrib);
+            }
 	}
+
+      w->dirty_vertex_attrib_enables = 0;
     }
 }
 
@@ -1278,10 +1290,15 @@ cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
   /* We need to keep track of whether the texture is alpha-only
      because the emulation of GL_MODULATE needs to work differently in
      that case */
-  _COGL_GLES2_CHANGE_SETTING (
-      w, texture_units[w->active_texture_unit].alpha_only,
-      internal_format == GL_ALPHA);
-
+  if (COGL_GLES2_TEXTURE_UNIT_IS_ALPHA_ONLY (w->settings.texture_units,
+                                             w->active_texture_unit)
+      != (internal_format == GL_ALPHA))
+    {
+      COGL_GLES2_TEXTURE_UNIT_SET_ALPHA_ONLY (w->settings.texture_units,
+                                              w->active_texture_unit,
+                                              internal_format == GL_ALPHA);
+      w->settings_dirty = TRUE;
+    }
 }
 
 void
@@ -1292,66 +1309,14 @@ cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLfloat param)
      nothing needs to be done here. */
 }
 
-static void
-realize_texture_units (CoglGles2Wrapper *w, int texture_unit_index)
-{
-  /* We save the active texture unit since we may need to temporarily
-   * change this to initialise each new texture unit and we want to
-   * restore the active unit afterwards */
-  int initial_active_unit = w->active_texture_unit;
-
-  if (texture_unit_index >= w->settings.n_texture_units)
-    {
-      int n_new_texture_units =
-	texture_unit_index + 1 - w->settings.n_texture_units;
-      GLint prev_mode;
-      int i;
-
-      w->settings.texture_units =
-	g_realloc (w->settings.texture_units,
-		   texture_unit_index + 1
-		    * sizeof (CoglGles2WrapperTextureUnitSettings));
-
-      /* We will need to set the matrix mode to GL_TEXTURE to
-       * initialise any new texture units, so we save the current
-       * mode for restoring afterwards */
-      GE( cogl_wrap_glGetIntegerv (CGL_MATRIX_MODE, &prev_mode));
-
-      for (i = 0; i < n_new_texture_units; i++)
-	{
-	  CoglGles2WrapperTextureUnit *new_unit;
-	  CoglGles2WrapperTextureUnitSettings *new_unit_settings;
-
-	  new_unit = g_new0 (CoglGles2WrapperTextureUnit, 1);
-	  g_array_append_val (w->texture_units, new_unit);
-
-	  w->active_texture_unit = i;
-	  GE( cogl_wrap_glMatrixMode (GL_TEXTURE));
-	  GE( cogl_wrap_glLoadIdentity ());
-
-	  new_unit_settings =
-	    &w->settings.texture_units[w->settings.n_texture_units + i];
-	  new_unit_settings->enabled = FALSE;
-	  new_unit_settings->alpha_only = FALSE;
-	}
-
-      GE( cogl_wrap_glMatrixMode ((GLenum)prev_mode));
-
-      w->settings.n_texture_units = w->texture_units->len;
-    }
-
-  w->active_texture_unit = initial_active_unit;
-}
-
 void
 cogl_wrap_glClientActiveTexture (GLenum texture)
 {
   int texture_unit_index = texture - GL_TEXTURE0;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
-  w->active_client_texture_unit = texture_unit_index;
-
-  realize_texture_units (w, texture_unit_index);
+  if (texture_unit_index < COGL_GLES2_MAX_TEXTURE_UNITS)
+    w->active_client_texture_unit = texture_unit_index;
 }
 
 void
@@ -1360,9 +1325,8 @@ cogl_wrap_glActiveTexture (GLenum texture)
   int texture_unit_index = texture - GL_TEXTURE0;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
-  w->active_texture_unit = texture_unit_index;
-
-  realize_texture_units (w, texture_unit_index);
+  if (texture_unit_index < COGL_GLES2_MAX_TEXTURE_UNITS)
+    w->active_texture_unit = texture_unit_index;
 }
 
 void
@@ -1373,8 +1337,14 @@ cogl_wrap_glEnable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
-      _COGL_GLES2_CHANGE_SETTING (
-	  w, texture_units[w->active_texture_unit].enabled, TRUE);
+      if (!COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (w->settings.texture_units,
+                                               w->active_texture_unit))
+        {
+          COGL_GLES2_TEXTURE_UNIT_SET_ENABLED (w->settings.texture_units,
+                                               w->active_texture_unit,
+                                               TRUE);
+          w->settings_dirty = TRUE;
+        }
       break;
 
     case GL_FOG:
@@ -1398,8 +1368,14 @@ cogl_wrap_glDisable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
-      _COGL_GLES2_CHANGE_SETTING (
-	  w, texture_units[w->active_texture_unit].enabled, FALSE);
+      if (COGL_GLES2_TEXTURE_UNIT_IS_ENABLED (w->settings.texture_units,
+                                              w->active_texture_unit))
+        {
+          COGL_GLES2_TEXTURE_UNIT_SET_ENABLED (w->settings.texture_units,
+                                               w->active_texture_unit,
+                                               FALSE);
+          w->settings_dirty = TRUE;
+        }
       break;
 
     case GL_FOG:
@@ -1429,9 +1405,7 @@ cogl_wrap_glEnableClientState (GLenum array)
     case GL_TEXTURE_COORD_ARRAY:
       /* TODO - review if this should be in w->settings? */
 
-      texture_unit = g_array_index (w->texture_units,
-				    CoglGles2WrapperTextureUnit *,
-				    w->active_texture_unit);
+      texture_unit = w->texture_units + w->active_texture_unit;
       if (texture_unit->texture_coords_enabled != 1)
 	{
 	  texture_unit->texture_coords_enabled = 1;
@@ -1461,9 +1435,7 @@ cogl_wrap_glDisableClientState (GLenum array)
       break;
     case GL_TEXTURE_COORD_ARRAY:
 
-      texture_unit = g_array_index (w->texture_units,
-				    CoglGles2WrapperTextureUnit *,
-				    w->active_texture_unit);
+      texture_unit = w->texture_units + w->active_texture_unit;
       /* TODO - review if this should be in w->settings? */
       if (texture_unit->texture_coords_enabled != 0)
 	{
