@@ -548,29 +548,18 @@ meta_show_dialog (const char *type,
                   const char *ok_text,
                   const char *cancel_text,
                   const int transient_for,
-                  const char **columns,
-                  const char **entries)
+                  GSList *columns,
+                  GSList *entries)
 {
   GError *error = NULL;
   char *screen_number_text = g_strdup_printf("%d", screen_number);
-
-  /*
-  We want:
-  
-zenity --display X --screen S --title Metacity --error --text "There was an error running <tt>terminal</tt>:\n\nYour computer is on fire."
-  ** with no pipes
-  
-zenity --display X --screen S --title Metacity --question --text "<big><b><tt>%s</tt> is not responding.</b></big>\n\n<i>You may choose to wait a short while for it to continue or force the application to quit entirely.</i>"
-
-zenity --display X --screen S --title Metacity --list --timeout 240 --text "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in." --column "Window" --column "Class" "Firefox" "foo" "Duke Nukem Forever" "bar"
-  */
-
-  const char **argvl;
-  char **envl;
+  GSList *tmp;
   int i=0;
   GPid child_pid;
-
-  argvl = g_malloc(sizeof (char*) * 15);
+  const char **argvl = g_malloc(sizeof (char*) *
+                                (15 +
+                                 g_slist_length (columns)*2 +
+                                 g_slist_length (entries)));
 
   argvl[i++] = "zenity";
   argvl[i++] = type;
@@ -594,22 +583,35 @@ zenity --display X --screen S --title Metacity --list --timeout 240 --text "Thes
       argvl[i++] = ok_text;
      }
 
-   if (cancel_text)
+  if (cancel_text)
     {
       argvl[i++] = "--cancel-label";
       argvl[i++] = cancel_text;
-     }
+    }
+  
+  tmp = columns;
+  while (tmp)
+    {
+      argvl[i++] = "--column";
+      argvl[i++] = tmp->data;
+      tmp = tmp->next;
+    }
 
+  tmp = entries;
+  while (tmp)
+    {
+      argvl[i++] = tmp->data;
+      tmp = tmp->next;
+    }
+    
   argvl[i] = NULL;
 
   if (transient_for)
     {
-        gchar *env = g_strdup_printf("%d", transient_for);
-        setenv ("WINDOWID", env, 1);
-        g_free (env);
+      gchar *env = g_strdup_printf("%d", transient_for);
+      setenv ("WINDOWID", env, 1);
+      g_free (env);
     }
-  else
-    envl = NULL;
 
   g_spawn_async (
                  "/",
@@ -620,6 +622,9 @@ zenity --display X --screen S --title Metacity --list --timeout 240 --text "Thes
                  &child_pid,
                  &error
                  );
+
+  if (transient_for)
+    unsetenv ("WINDOWID");
 
   g_free (argvl);
   g_free (screen_number_text);

@@ -105,8 +105,8 @@ GPid meta_show_dialog (const char *type,
                        const char *ok_text,
                        const char *cancel_text,
                        const int transient_for,
-                       const char **columns,
-                       const char **entries);
+                       GSList *columns,
+                       GSList *entries);
 
 /* To disable verbose mode, we make these functions into no-ops */
 #ifdef WITH_VERBOSE_MODE

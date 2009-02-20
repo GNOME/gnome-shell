@@ -1,3 +1,15 @@
+2009-02-11  Thomas Thurman  <tthurman@gnome.org>
+
+	Use zenity for the session management dialogue that warns about
+	clueless clients, not metacity-dialog.  This is the last change
+	away from metacity-dialog and therefore closes #521914.
+
+	* src/Makefile.am:
+	* src/core/session.c:
+	* src/core/util.c:
+	* src/include/util.h:
+	* src/ui/metacity-dialog.c (deleted):
+
 2009-02-12  Matthias Clasen  <mclasen@redhat.com>
 
 	* src/core/bell.c (meta_bell_set_audible): Now that we are
