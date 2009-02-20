@@ -599,7 +599,7 @@ AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl = GTK Doc check ========================================================
 
-GTK_DOC_CHECK([1.8])
+GTK_DOC_CHECK([1.11])
 
 # we don't want to build the documentation from a SVN checkout unless we
 # explicitly tell configure to do so; this allows avoiding to recurse into
