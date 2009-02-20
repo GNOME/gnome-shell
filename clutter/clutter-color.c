@@ -112,8 +112,7 @@ void
 clutter_color_lighten (const ClutterColor *src,
 		       ClutterColor       *dest)
 {
-  /* 0x14ccd is ClutterFixed for 1.3 */
-  clutter_color_shadex (src, dest, 0x14ccd);
+  clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (1.3));
 }
 
 /**
@@ -128,8 +127,7 @@ void
 clutter_color_darken (const ClutterColor *src,
 		      ClutterColor       *dest)
 {
-  /* 0xb333 is ClutterFixed for 0.7 */
-  clutter_color_shadex (src, dest, 0xb333);
+  clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (0.7));
 }
 
 /**
