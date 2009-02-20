@@ -88,7 +88,7 @@ G_CONST_RETURN gfloat * clutter_value_get_shader_float  (const GValue *value,
                                                          gsize        *length);
 G_CONST_RETURN COGLint *clutter_value_get_shader_int    (const GValue *value,
                                                          gsize        *length);
-G_CONST_RETURN GLfloat *clutter_value_get_shader_matrix (const GValue *value,
+G_CONST_RETURN gfloat * clutter_value_get_shader_matrix (const GValue *value,
                                                          gsize        *length);
 
 G_END_DECLS
