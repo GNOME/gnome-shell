@@ -1,3 +1,9 @@
+2009-02-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* src/core/bell.c: Don't force CA_PROP_CANBERRA_ENABLE to 1.
+	That was a misunderstanding on my part, and makes it impossible
+	to get rid of the bell.
+
 2009-02-11  Thomas Thurman  <tthurman@gnome.org>
 
 	Use zenity for the session management dialogue that warns about
