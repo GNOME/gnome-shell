@@ -1105,8 +1105,6 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
   if (!found_target_vbo)
     {
       GE (glGenBuffers (1, &new_cogl_vbo->vbo_name));
-      /* FIXME: debug */
-      g_assert (glGetError() == GL_NO_ERROR);
 
       upload_gl_vbo (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
