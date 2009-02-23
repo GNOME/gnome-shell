@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-19 11:03+0300\n"
+"POT-Creation-Date: 2009-02-23 16:28+0300\n"
 "PO-Revision-Date: 2008-08-13 09:15+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -45,22 +45,21 @@ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Perässä olevat merkit \"%s\" merkkijonossa \"%s\" eivät ole järkeviä"
 
 #: ../src/core/delete.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Tallennetun istuntotiedoston jäsennys epäonnistui: %s\n"
+msgstr "Viestiä  \"%s\" valintaikkunaprosessilta ei voitu tulkita\n"
 
 #: ../src/core/delete.c:253
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr ""
+msgstr "Virhe luettaessa ikkunan näyttävästä prosessista: %s\n"
 
 #: ../src/core/delete.c:336
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Virhe metacity-dialogin käynnistämisessä istunnon ulkopuolisista ohjelmista "
-"varoittamista varten: %s\n"
+"Virhe käynnistettäessä metacity-ikkunaa sovelluksen lopettamisesta kysymiseksi: %s\n"
 
 #: ../src/core/delete.c:445
 #, c-format
@@ -105,14 +104,15 @@ msgstr ""
 #. * supposed to launch a program fails.
 #.
 #: ../src/core/keybindings.c:2294
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
 "\n"
 "%s"
 msgstr ""
-"Komentoa \"%s\" suorittaessa tapahtui virhe:\n"
-"%s."
+"Virhe suoritettaessa komentoa <tt>%s</tt>:\n"
+"\n"
+"%s"
 
 #: ../src/core/keybindings.c:2381
 #, c-format
@@ -125,7 +125,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "Mitään päätteen komentoa ei ole määritelty.\n"
 
 #: ../src/core/main.c:116
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -134,7 +134,7 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Tekijänoikeudet © 2001-2008 Havoc Pennington, Red Hat, Inc., ja muut\n"
+"Tekijänoikeudet © 2001-2008 Havoc Pennington, Red Hat, Inc., ja muut.\n"
 "Tämä on vapaata ohjelmistoa: katso kopiointiehdot lähdekoodista.\n"
 "Ei MINKÄÄNLAISTA takuuta: ei edes takuuta MYYNTIKELPOISUUDESTA tai\n"
 "SOPIVUUDESTA JOHONKIN KÄYTTÖÖN.\n"
@@ -245,7 +245,7 @@ msgstr ""
 #: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
+msgstr "Virhe asetettaessa työtilojen lukumäärää arvoon %d: %s\n"
 
 #: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
 #, c-format
@@ -264,12 +264,12 @@ msgstr ""
 #: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
+msgstr "Virhe työtilan %d nimeämisessä nimelle \"%s\": %s\n"
 
 #: ../src/core/prefs.c:2753
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting compositor status: %s\n"
-msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
+msgstr "Virhe asetettaessa koostimen tilaa: %s\n"
 
 #: ../src/core/screen.c:350
 #, c-format
@@ -308,7 +308,6 @@ msgstr "Näytön \"%2$s\" ruudun %1$d vapauttaminen ei onnistunut\n"
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
-#, fuzzy
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -317,14 +316,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Pikanäppäin, joka sulkee ikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
-"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
+"Muotoilu on jotain tyyliin \"<Control>a\" tai <Shift><Alt>F1\".\n"
+"\n"
+"Tulkki on aika vapaamielinen, sallii pienet ja suuret kirjaimet sekä "
+"lyhenteitä kuten \"<Ctl>\" ja \"<Ctrl>\". Jos asetat arvoksi "
+"erikoisarvon \"disabled\", poistetaan näppäinsidokset tästä toiminnosta."
 
 #: ../src/core/schema-bindings.c:177
-#, fuzzy
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -336,11 +334,13 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"Pikanäppäin, joka sulkee ikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
-"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
+"Muotoilu on jotain tyyliin \"<Control>a\" tai <Shift><Alt>F1\".\n"
+"\n"
+"Tulkki on aika vapaamielinen, sallii pienet ja suuret kirjaimet sekä "
+"lyhenteitä kuten \"<Ctl>\" ja \"<Ctrl>\". Jos asetat arvoksi "
+"erikoisarvon \"disabled\", poistetaan näppäinsidokset tästä toiminnosta."
+"Tämä näppäinsidos voidaan kääntää vastakkaiseksi \"shift\"-näppäimen "
+"avulla. Tämän takia \"shift\" ei voi olla osa sidosta."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
@@ -382,9 +382,9 @@ msgstr "<metacity_session>-määre havaittu, mutta istunnon ID on jo selvinnyt"
 #: ../src/core/session.c:1194 ../src/core/session.c:1269
 #: ../src/core/session.c:1301 ../src/core/session.c:1373
 #: ../src/core/session.c:1433
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown attribute %s on <%s> element"
-msgstr "Tuntematon <window>-elementin määre %s"
+msgstr "Tuntematon määre %s elementissä <%s>"
 
 #: ../src/core/session.c:1211
 #, c-format
@@ -567,52 +567,42 @@ msgid "Switch to workspace 12"
 msgstr "Siirry työtilaan 12"
 
 #: ../src/include/all-keybindings.h:122
-#, fuzzy
 msgid "Switch to workspace on the left of the current workspace"
 msgstr "Siirry vasemmalla olevaan työtilaan"
 
 #: ../src/include/all-keybindings.h:126
-#, fuzzy
 msgid "Switch to workspace on the right of the current workspace"
 msgstr "Siirry oikealla olevaan työtilaan"
 
 #: ../src/include/all-keybindings.h:130
-#, fuzzy
 msgid "Switch to workspace above the current workspace"
 msgstr "Siirry yllä olevaan työtilaan"
 
 #: ../src/include/all-keybindings.h:134
-#, fuzzy
 msgid "Switch to workspace below the current workspace"
 msgstr "Siirry alla olevaan työtilaan"
 
 #: ../src/include/all-keybindings.h:150
-#, fuzzy
 msgid "Move between windows of an application, using a popup window"
 msgstr "Siirry sovelluksen ikkunoiden välillä ponnahdusikkunalla"
 
 #: ../src/include/all-keybindings.h:153
-#, fuzzy
 msgid "Move backward between windows of an application, using a popup window"
 msgstr "Siirry taaksepäin sovelluksen ikkunoiden välillä ponnahdusikkunalla"
 
 #: ../src/include/all-keybindings.h:157
-#, fuzzy
 msgid "Move between windows, using a popup window"
 msgstr "Siirry ikkunoiden välillä (selausikkuna)"
 
 #: ../src/include/all-keybindings.h:160
-#, fuzzy
 msgid "Move backward between windows, using a popup window"
 msgstr "Siirry taaksepäin ikkunoiden välillä (selausikkuna)"
 
 #: ../src/include/all-keybindings.h:163
-#, fuzzy
 msgid "Move between panels and the desktop, using a popup window"
 msgstr "Siirry paneeleiden ja työpöydän välillä (selausikkuna)"
 
 #: ../src/include/all-keybindings.h:166
-#, fuzzy
 msgid "Move backward between panels and the desktop, using a popup window"
 msgstr "Siirry taaksepäin paneeleiden ja työtilan välillä (selausikkuna)"
 
@@ -621,7 +611,6 @@ msgid "Move between windows of an application immediately"
 msgstr "Siirry heti sovelluksen ikkunoiden välillä"
 
 #: ../src/include/all-keybindings.h:174
-#, fuzzy
 msgid "Move backward between windows of an application immediately"
 msgstr "Siirry heti taaksepäin sovelluksen ikkunoiden välillä"
 
@@ -630,7 +619,6 @@ msgid "Move between windows immediately"
 msgstr "Siirry heti ikkunoiden välillä"
 
 #: ../src/include/all-keybindings.h:180
-#, fuzzy
 msgid "Move backward between windows immediately"
 msgstr "Siirry heti taaksepäin ikkunoiden välillä"
 
@@ -643,18 +631,16 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Siirry heti taaksepäin paneelien ja työpöydän välillä"
 
 #: ../src/include/all-keybindings.h:191
-#, fuzzy
 msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Piilota kaikki ikkunat ja kohdista työpöytä"
+msgstr "Piilota kaikki tavalliset ikkunat ja kohdista työpöytä"
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
 msgstr "Näytä paneelin päävalikko"
 
 #: ../src/include/all-keybindings.h:197
-#, fuzzy
 msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Näytä paneelin suoritusikkuna"
+msgstr "Näytä paneelin \"Suorita sovellus\"-ikkuna"
 
 #: ../src/include/all-keybindings.h:238
 msgid "Take a screenshot"
@@ -681,9 +667,8 @@ msgid "Toggle maximization state"
 msgstr "Vaihda suurennustilaa"
 
 #: ../src/include/all-keybindings.h:264
-#, fuzzy
 msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Laske ikkuna muiden alle"
+msgstr "Valitse näytetäänkö ikkuna aina muiden ikkunoiden päällä"
 
 #: ../src/include/all-keybindings.h:266
 msgid "Maximize window"
@@ -782,9 +767,8 @@ msgid "Move window one workspace down"
 msgstr "Siirrä ikkunaa yksi työtila alas"
 
 #: ../src/include/all-keybindings.h:342
-#, fuzzy
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Nosta, jos ikkuna peittynyt, muuten laske"
+msgstr "Nosta ikkuna, jos se on muiden ikkunoiden peittämä, muuten laske"
 
 #: ../src/include/all-keybindings.h:344
 msgid "Raise window above other windows"
@@ -892,7 +876,6 @@ msgid "Automatically raises the focused window"
 msgstr "Nosta kohdistettu ikkuna itsestään"
 
 #: ../src/metacity.schemas.in.in.h:9
-#, fuzzy
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
@@ -900,10 +883,11 @@ msgid ""
 "\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
 "\"&lt;Super&gt;\" for example."
 msgstr ""
-"Kun tämä muunnospainike on pohjassa, hiirellä voi siirtää ikkunaa (vasen "
+"Kun tämä muunnospainike on pohjassa, voit hiirellä siirtää ikkunaa (vasen "
 "painike), muuttaa ikkunan kokoa (keskipainike) ja näyttää ikkunavalikon "
-"(oikea painike). Muunnosnäppäintä merkitään esimerkiksi \"&lt;Alt&gt;\" tai "
-"\"&lt;Super&gr;\"."
+"(oikea painike). Voit kääntää vasemman ja oikean toiminnon keskenään "
+"avaimen \"mouse_button_resize\"  avulla. Muunnosnäppäin esitetään "
+"\"&lt;Alt&gt;\" tai " "\"&lt;Super&gr;\" -kaltaisessa muodossa."
 
 #: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -2196,29 +2180,24 @@ msgid "No text is allowed inside element <%s>"
 msgstr "Elementin <%s> sisällä ei voi olla tekstiä"
 
 #: ../src/ui/theme-parser.c:3716
-#, fuzzy
 msgid "<name> specified twice for this theme"
-msgstr "<%s> määritelty kahdesti tälle teemalle"
+msgstr "<name> määritelty kahdesti tälle teemalle"
 
 #: ../src/ui/theme-parser.c:3727
-#, fuzzy
 msgid "<author> specified twice for this theme"
-msgstr "<%s> määritelty kahdesti tälle teemalle"
+msgstr "<author> määritelty kahdesti tälle teemalle"
 
 #: ../src/ui/theme-parser.c:3738
-#, fuzzy
 msgid "<copyright> specified twice for this theme"
-msgstr "<%s> määritelty kahdesti tälle teemalle"
+msgstr "<copyright> määritelty kahdesti tälle teemalle"
 
 #: ../src/ui/theme-parser.c:3749
-#, fuzzy
 msgid "<date> specified twice for this theme"
-msgstr "<%s> määritelty kahdesti tälle teemalle"
+msgstr "<date> määritelty kahdesti tälle teemalle"
 
 #: ../src/ui/theme-parser.c:3760
-#, fuzzy
 msgid "<description> specified twice for this theme"
-msgstr "<%s> määritelty kahdesti tälle teemalle"
+msgstr "<description> määritelty kahdesti tälle teemalle"
 
 #: ../src/ui/theme-parser.c:4027
 #, c-format
@@ -2429,12 +2408,3 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d-sijaintilauseketta jäsentyi %g sekunnissa (%g sekuntia keksimäärin)\n"
 
-#, fuzzy
-#~ msgid ""
-#~ "<big><b><tt>%s</tt> is not responding.</b></big>\n"
-#~ "\n"
-#~ "<i>You may choose to wait a short while for it to continue or force the "
-#~ "application to quit entirely.</i>"
-#~ msgstr ""
-#~ "Voit odottaa sovellusta vielä hetken valitsemalla \"Odota\", tai sulkea "
-#~ "sovelluksen väkisin heti."
