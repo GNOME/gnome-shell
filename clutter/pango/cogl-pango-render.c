@@ -81,8 +81,8 @@ cogl_pango_renderer_glyphs_end (CoglPangoRenderer *priv)
 static void
 cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
                                 CoglPangoGlyphCacheValue *cache_value,
-                                float                 x1,
-                                float                 y1)
+                                float                     x1,
+                                float                     y1)
 {
   float x2, y2;
   float *p;
@@ -93,8 +93,8 @@ cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
 
   priv->glyph_texture = cache_value->texture;
 
-  x2 = x1 + CLUTTER_INT_TO_FIXED (cache_value->draw_width);
-  y2 = y1 + CLUTTER_INT_TO_FIXED (cache_value->draw_height);
+  x2 = x1 + (float) cache_value->draw_width;
+  y2 = y1 + (float) cache_value->draw_height;
 
   g_array_set_size (priv->glyph_rectangles, priv->glyph_rectangles->len + 8);
   p = &g_array_index (priv->glyph_rectangles, float,
