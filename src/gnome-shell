@@ -1,0 +1,256 @@
+#!/usr/bin/python
+
+import atexit
+import optparse
+import os
+import random
+import re
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+
+def find_cmd (cmd_list):
+    """
+    Takes a list of command candidates and returns the first one that exists.
+    Raises a system exit if none of the commands exist.
+    """
+    for cmd in cmd_list:
+        if os.path.exists(cmd):
+            return cmd
+    
+    raise SystemExit("None of the commands %s exist" % cmd_list)
+    
+def pidof(command):
+    pidof_cmd = find_cmd(["/sbin/pidof", "/bin/pidof", "/usr/bin/pidof"])
+    pidof = subprocess.Popen([pidof_cmd, command], stdout=subprocess.PIPE)
+    pids = pidof.communicate()[0].split()
+    pidof.wait()
+
+    # pidof doesn't have a "current user only" option, so we may have
+    # gotten the pids of other users' processes. Fix that.
+    for pid in pids:
+        try:
+            os.kill(int(pid), 0)
+            return pid
+        except Exception, e:
+            pass
+    return None
+
+def kill_gnome_panel(pid):
+    if options.verbose:
+        print "Terminating panel process %s" % pid
+    devnull = open("/dev/null", "w")
+    subprocess.call(["gdb", "-batch-silent",
+                     "-ex", "call panel_session_do_not_restart()",
+                     "-ex", "call exit(0)",
+                     "-p", pid], stdout=devnull, stderr=devnull)
+    devnull.close()
+
+def start_xephyr():
+    tmpdir = tempfile.mkdtemp("", "gnome-shell.")
+    atexit.register(shutil.rmtree, tmpdir)
+
+    display = ":" + str(random.randint(10, 99))
+    xauth_file = os.path.join(tmpdir, "database")
+
+    # Create a random 128-bit key and format it as hex
+    f = open("/dev/urandom", "r")
+    key = f.read(16)
+    f.close()
+    hexkey = "".join(("%02x" % ord(byte) for byte in key))
+
+    # Store that in an xauthority file as the key for connecting to our Xephyr
+    retcode = subprocess.call(["xauth",
+                               "-f", xauth_file,
+                               "add", display,  "MIT-MAGIC-COOKIE-1", hexkey])
+    if retcode != 0:
+        raise RuntimeError("xauth failed")
+
+    # Launch Xephyr
+    xephyr = subprocess.Popen(["Xephyr", display,
+                               "-auth", xauth_file,
+                               "-screen", options.geometry,
+                               "-host-cursor"])
+    os.environ['DISPLAY'] = display
+    os.environ['XAUTHORITY'] = xauth_file
+
+    # Wait for server to get going: LAME
+    time.sleep(1)
+
+    # Start some windows in our session.
+    subprocess.Popen(["xterm", "-geometry", "+30+30"])
+    subprocess.Popen(["xlogo", "-geometry", "-0-0"])
+    subprocess.Popen(["xeyes", "-geometry", "-0+30"])
+
+    return xephyr;
+
+GLXINFO_RE = re.compile(r"^(\S.*):\s*\n((?:^\s+.*\n)*)", re.MULTILINE)
+
+def _get_glx_extensions():
+    """Return a tuple of server, client, and effective GLX extensions"""
+
+    glxinfo = subprocess.Popen(["glxinfo"], stdout=subprocess.PIPE)
+    glxinfo_output = glxinfo.communicate()[0]
+    glxinfo.wait()
+
+    glxinfo_map = {}
+    for m in GLXINFO_RE.finditer(glxinfo_output):
+        glxinfo_map[m.group(1)] = m.group(2)
+
+    server_glx_extensions = set(re.split("\s*,\s*", glxinfo_map['server glx extensions'].strip()))
+    client_glx_extensions = set(re.split("\s*,\s*", glxinfo_map['client glx extensions'].strip()))
+    glx_extensions = set(re.split("\s*,\s*", glxinfo_map['GLX extensions'].strip()))
+
+    return (server_glx_extensions, client_glx_extensions, glx_extensions)
+
+def start_shell():
+    # Figure out the path to the plugin when uninstalled
+    src_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    top_dir = os.path.dirname(src_dir)
+    plugin_dir = os.path.join(top_dir, "src")
+    js_dir = os.path.join(top_dir, "js")
+    data_dir = os.path.join(top_dir, "data")
+
+    force_indirect = False
+    if use_tfp:
+        # Decide if we need to set LIBGL_ALWAYS_INDIRECT=1 to get the
+        # texture_from_pixmap extension; we take having the extension
+        # be supported on both the client and server but not in the
+        # list of effective extensions as a signal of needing to force
+        # indirect rendering.
+        #
+        # Note that this check would give the wrong answer for Xephyr,
+        # but since we force !use_tfp there anyway, it doesn't matter.
+        (server_glx_extensions, client_glx_extensions, glx_extensions) = _get_glx_extensions()
+
+        if ("GLX_EXT_texture_from_pixmap" in server_glx_extensions and
+            "GLX_EXT_texture_from_pixmap" in client_glx_extensions and
+            (not "GLX_EXT_texture_from_pixmap" in glx_extensions)):
+            if options.verbose:
+                print "Forcing indirect GL"
+            force_indirect = True
+
+    # Now launch metacity-clutter with our plugin
+    env = dict(os.environ)
+    env.update({'GNOME_SHELL_JS'      : js_dir,
+                'GNOME_SHELL_DATADIR' : data_dir,
+                'GI_TYPELIB_PATH'     : plugin_dir,
+                'PATH'                : os.environ.get('PATH', '') + ':' + plugin_dir,
+                'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir,
+                'GNOME_DISABLE_CRASH_DIALOG' : '1'})
+
+    if force_indirect:
+        if options.verbose:
+            # This is Mesa specific; the NVIDIA proprietary drivers
+            # drivers use __GL_FORCE_INDIRECT=1 instead. But we don't
+            # need to force indirect rendering for NVIDIA.
+            env['LIBGL_ALWAYS_INDIRECT'] = '1'
+
+    if not options.verbose:
+        # Unless verbose() is specified, only let gjs show errors and
+        # things that are explicitly logged via log() from javascript
+        env['GJS_DEBUG_TOPICS'] = 'JS ERROR;JS LOG'
+
+    if options.debug:
+        debug_command = options.debug_command.split()
+        args = list(debug_command)
+    else:
+        args = []
+        
+    plugin = os.path.join(plugin_dir, "libgnome-shell.la")
+    args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
+    if options.sync:
+        args.append('--sync')
+    return subprocess.Popen(args, env=env)
+
+
+# Main program
+
+parser = optparse.OptionParser()
+parser.add_option("-r", "--replace", action="store_true",
+                  help="Replace the running metacity/gnome-panel")
+parser.add_option("-g", "--debug", action="store_true",
+                  help="Run under a debugger")
+parser.add_option("", "--debug-command", metavar="COMMAND",
+                  help="Command to use for debugging (defaults to 'gdb --args')")
+parser.add_option("-v", "--verbose", action="store_true")
+parser.add_option("", "--sync", action="store_true")
+parser.add_option("", "--geometry", metavar="GEOMETRY",
+                  help="Specify Xephyr screen geometry",
+                  default="1024x768");
+parser.add_option("-w", "--wide", action="store_true",
+                  help="Use widescreen (1280x800) with Xephyr")
+
+options, args = parser.parse_args()
+
+if args:
+    parser.print_usage()
+    sys.exit(1)
+
+if options.debug_command:
+    options.debug = True
+elif options.debug:
+    options.debug_command = "gdb --args"
+
+if options.wide:
+    options.geometry = "1280x800"
+
+metacity_pid = pidof("metacity")
+gnome_panel_pid = pidof("gnome-panel")
+
+# Run in Xephyr if gnome-panel is already running and the user didn't
+# specify --replace. Otherwise, run fullscreen
+if options.replace:
+    run_in_xephyr = False
+else:
+    run_in_xephyr = (metacity_pid != None or gnome_panel_pid != None)
+
+# Figure out whether or not to use GL_EXT_texture_from_pixmap. By default
+# we use it iff we aren't running Xephyr, but we allow the user to
+# explicitly disable it.
+# FIXME: Move this to ClutterGlxPixmap like
+# CLUTTER_PIXMAP_TEXTURE_RECTANGLE=disable.
+if 'GNOME_SHELL_DISABLE_TFP' in os.environ and \
+       os.environ['GNOME_SHELL_DISABLE_TFP'] != '':
+    use_tfp = False
+else:
+    # tfp does not work correctly in Xephyr
+    use_tfp = not run_in_xephyr
+
+if options.verbose:
+    print "Starting shell"
+
+try:
+    if run_in_xephyr:
+        shell = start_xephyr()
+        start_shell()
+    else:
+        kill_gnome_panel(gnome_panel_pid)
+        shell = start_shell()
+
+    # Wait for shell to exit
+    if options.verbose:
+        print "Waiting for shell to exit"
+    shell.wait()
+    if options.verbose:
+        print "Shell is dead"
+
+except KeyboardInterrupt, e:
+    os.kill(shell.pid, signal.SIGKILL)
+    shell.wait()
+    if options.verbose:
+        print "Shell killed"
+
+finally:
+    if metacity_pid or gnome_panel_pid:
+        # Restart gnome-panel and window manager
+        if options.verbose:
+            print "Restarting Metacity and Gnome Panel"
+        
+        if metacity_pid:
+            subprocess.Popen(["/usr/bin/metacity"])
+        if gnome_panel_pid:
+            subprocess.Popen(["/usr/bin/gnome-panel"])
