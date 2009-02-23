@@ -1202,7 +1202,8 @@ clutter_init_real (GError **error)
 
   resolution = clutter_backend_get_resolution (ctx->backend);
   cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
-  cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
+  if (g_getenv ("CLUTTER_DISABLE_MIPMAPPED_TEXT") == NULL)
+    cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   clutter_text_direction = clutter_get_text_direction ();
 
