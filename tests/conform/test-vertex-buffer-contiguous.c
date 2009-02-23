@@ -59,6 +59,19 @@ validate_result (TestState *state)
     g_print ("pixel 2 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
 
+  /* Should see a green pixel, at bottom of 4th triangle */
+  glReadPixels (310, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
+  if (g_test_verbose ())
+    g_print ("pixel 3 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
+  g_assert (pixel[GREEN] > pixel[RED] && pixel[GREEN] > pixel[BLUE]);
+
+  /* Should see a red pixel, at top of 4th triangle */
+  glReadPixels (310, y_off + 70 , 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
+  if (g_test_verbose ())
+    g_print ("pixel 4 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
+  g_assert (pixel[RED] > pixel[GREEN] && pixel[RED] > pixel[BLUE]);
+
+
 #undef RED
 #undef GREEN
 #undef BLUE
@@ -106,6 +119,7 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_translate (100, 0, 0);
   cogl_vertex_buffer_disable (state->buffer, "gl_Color::blue");
   cogl_set_source (state->material);
+  cogl_material_set_color4ub (state->material, 0xff, 0xff, 0xff, 0xff);
   cogl_vertex_buffer_draw (state->buffer,
                            GL_TRIANGLE_STRIP, /* mode */
                            0, /* first */
@@ -131,6 +145,8 @@ queue_redraw (gpointer stage)
   return TRUE;
 }
 
+
+
 void
 test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
 		               gconstpointer data)
@@ -140,6 +156,12 @@ test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
   ClutterColor stage_clr = {0x0, 0x0, 0x0, 0xff};
   ClutterActor *group;
   guint idle_source;
+  guchar tex_data[] = {
+    0xff, 0x00, 0x00, 0xff,
+    0xff, 0x00, 0x00, 0xff,
+    0x00, 0xff, 0x00, 0xff,
+    0x00, 0xff, 0x00, 0xff
+  };
 
   state.frame = 0;
 
@@ -161,10 +183,13 @@ test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
 
-  state.texture = cogl_texture_new_from_file ("redhand.png", 64,
+  state.texture = cogl_texture_new_from_data (2, 2,
+                                              0, /* max waste */
                                               COGL_TEXTURE_NONE,
+                                              COGL_PIXEL_FORMAT_RGBA_8888,
                                               COGL_PIXEL_FORMAT_ANY,
-                                              NULL);
+                                              0, /* auto calc row stride */
+                                              tex_data);
 
   state.material = cogl_material_new ();
   cogl_material_set_color4ub (state.material, 0x00, 0xff, 0x00, 0xff);

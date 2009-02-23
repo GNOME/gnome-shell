@@ -121,13 +121,6 @@ full-report: full-report-generate
 		gnome-open "$$x"; \
 	done
 
-redhand.png:
-	ln -sf $(top_srcdir)/tests/data/redhand.png
-
-# NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
-# a phony rule that will generate symlink scripts for running individual tests
-BUILT_SOURCES += redhand.png
-
 EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh
 
 # we override the clean-generic target to clean up the wrappers so
