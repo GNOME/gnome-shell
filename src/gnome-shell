@@ -114,7 +114,6 @@ def start_shell():
     js_dir = os.path.join(top_dir, "js")
     data_dir = os.path.join(top_dir, "data")
 
-    force_indirect = False
     if use_tfp:
         # Decide if we need to set LIBGL_ALWAYS_INDIRECT=1 to get the
         # texture_from_pixmap extension; we take having the extension
@@ -131,7 +130,10 @@ def start_shell():
             (not "GLX_EXT_texture_from_pixmap" in glx_extensions)):
             if options.verbose:
                 print "Forcing indirect GL"
-            force_indirect = True
+            # This is Mesa specific; the NVIDIA proprietary drivers
+            # drivers use __GL_FORCE_INDIRECT=1 instead. But we don't
+            # need to force indirect rendering for NVIDIA.
+            env['LIBGL_ALWAYS_INDIRECT'] = '1'
 
     # Now launch metacity-clutter with our plugin
     env = dict(os.environ)
@@ -141,13 +143,6 @@ def start_shell():
                 'PATH'                : os.environ.get('PATH', '') + ':' + plugin_dir,
                 'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir,
                 'GNOME_DISABLE_CRASH_DIALOG' : '1'})
-
-    if force_indirect:
-        if options.verbose:
-            # This is Mesa specific; the NVIDIA proprietary drivers
-            # drivers use __GL_FORCE_INDIRECT=1 instead. But we don't
-            # need to force indirect rendering for NVIDIA.
-            env['LIBGL_ALWAYS_INDIRECT'] = '1'
 
     if not options.verbose:
         # Unless verbose() is specified, only let gjs show errors and
