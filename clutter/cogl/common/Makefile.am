@@ -35,4 +35,5 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-vertex-buffer.c		\
 	cogl-matrix.c			\
 	cogl-material.c			\
-	cogl-material-private.h
+	cogl-material-private.h		\
+	cogl-debug.c

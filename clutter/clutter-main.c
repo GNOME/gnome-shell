@@ -1500,9 +1500,12 @@ clutter_init_with_args (int            *argc,
       if (argc && *argc > 0 && *argv)
 	g_set_prgname ((*argv)[0]);
 
-      group   = clutter_get_option_group ();
       context = g_option_context_new (parameter_string);
 
+      group = clutter_get_option_group ();
+      g_option_context_add_group (context, group);
+
+      group = cogl_get_option_group ();
       g_option_context_add_group (context, group);
 
       if (entries)
@@ -1536,7 +1539,7 @@ clutter_parse_args (int    *argc,
                     char ***argv)
 {
   GOptionContext *option_context;
-  GOptionGroup   *clutter_group;
+  GOptionGroup   *clutter_group, *cogl_group;
   GError         *error = NULL;
   gboolean        ret = TRUE;
 
@@ -1551,6 +1554,9 @@ clutter_parse_args (int    *argc,
 
   clutter_group = clutter_get_option_group ();
   g_option_context_set_main_group (option_context, clutter_group);
+
+  cogl_group = cogl_get_option_group ();
+  g_option_context_add_group (option_context, cogl_group);
 
   if (!g_option_context_parse (option_context, argc, argv, &error))
     {
