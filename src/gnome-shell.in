@@ -116,10 +116,10 @@ def start_shell():
 
     # Set up environment
     env = dict(os.environ)
-    env.update({'GNOME_SHELL_JS'      : js_dir,
+    env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
                 'GNOME_SHELL_DATADIR' : data_dir,
                 'GI_TYPELIB_PATH'     : plugin_dir,
-                'PATH'                : os.environ.get('PATH', '') + ':' + plugin_dir,
+                'PATH'                : '@META_BIN_DIR@:' + os.environ.get('PATH', '') + ':' + plugin_dir,
                 'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir,
                 'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 

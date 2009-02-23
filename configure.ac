@@ -29,6 +29,17 @@ PKG_CHECK_MODULES(TASKPANEL, libwnck-1.0 dbus-glib-1)
 # it becomes stable.
 PKG_CHECK_MODULES(LIBGNOMEUI, libgnomeui-2.0)
 
+META_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix metacity-plugins`/bin
+# FIXME: metacity-plugins.pc should point directly to its .gir file
+META_LIB_DIR=`$PKG_CONFIG --variable=libdir metacity-plugins`
+AC_SUBST(META_BIN_DIR)
+AC_SUBST(META_LIB_DIR)
+
+GJS_JS_DIR=`$PKG_CONFIG --variable=jsdir gjs-1.0`
+GJS_JS_NATIVE_DIR=`$PKG_CONFIG --variable=jsnativedir gjs-1.0`
+AC_SUBST(GJS_JS_DIR)
+AC_SUBST(GJS_JS_NATIVE_DIR)
+
 # Sets GLIB_GENMARSHAL and GLIB_MKENUMS
 AM_PATH_GLIB_2_0()
 G_IR_SCANNER=`$PKG_CONFIG --variable=g_ir_scanner gobject-introspection-1.0`
@@ -63,4 +74,5 @@ AC_OUTPUT([
   Makefile
   data/Makefile
   src/Makefile
+  src/gnome-shell
 ])

@@ -92,7 +92,7 @@ Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefil
 	$(G_IR_SCANNER)		\
 		--namespace=Shell			\
 		--nsversion=0.1				\
-		--add-include-path=$(libdir)/metacity/  \
+		--add-include-path=$(META_LIB_DIR)/metacity/ \
 		--include=Clutter-0.9			\
 		--include=Meta-2.25			\
 		--add-include-path=$(builddir)     \
@@ -146,3 +146,6 @@ CLEANFILES += Big-1.0.gir
 Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Big-1.0.gir -o $@
 CLEANFILES += Big-1.0.typelib
+
+all-local:
+	chmod a+x gnome-shell
