@@ -19,8 +19,8 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
 
 PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 dbus-glib-1 metacity-plugins gjs-gi-1.0)
-PKG_CHECK_MODULES(TIDY, clutter-0.8)
-PKG_CHECK_MODULES(BIG, clutter-cairo-0.8 gtk+-2.0 librsvg-2.0)
+PKG_CHECK_MODULES(TIDY, clutter-0.9)
+PKG_CHECK_MODULES(BIG, clutter-0.9 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
 PKG_CHECK_MODULES(TRAY, gtk+-2.0)
 PKG_CHECK_MODULES(TASKPANEL, libwnck-1.0 dbus-glib-1)

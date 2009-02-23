@@ -38,6 +38,8 @@ GdkPixbuf *shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info);
 
 GSList *shell_get_categories_for_desktop_file(const char *desktop_file_name);
 
+guint16 shell_get_event_key_symbol(ClutterEvent *event);
+
 ShellGlobal *shell_global_get (void);
 
 void shell_global_grab_dbus_service (ShellGlobal *global);

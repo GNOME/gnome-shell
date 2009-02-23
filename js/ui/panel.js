@@ -58,8 +58,8 @@ Panel.prototype = {
             statusbutton.release();
         });
 
-        this._clock = new Clutter.Label({ font_name: "Sans Bold 16px",
-                                          text: "" });
+        this._clock = new Clutter.Text({ font_name: "Sans Bold 16px",
+                                         text: "" });
         let pad = (PANEL_HEIGHT - this._clock.height) / 2;
         let clockbox = new Big.Box({ padding_top: pad,
                                      padding_bottom: pad,

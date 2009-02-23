@@ -57,10 +57,10 @@ function WindowClone(realWindow) {
 
 WindowClone.prototype = {
     _init : function(realWindow) {
-        this.actor = new Clutter.CloneTexture({ parent_texture: realWindow.get_texture(),
-                                                reactive: true,
-                                                x: realWindow.x,
-                                                y: realWindow.y });
+        this.actor = new Clutter.Clone({ source: realWindow.get_texture(),
+                                         reactive: true,
+                                         x: realWindow.x,
+                                         y: realWindow.y });
         this.actor._delegate = this;
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
@@ -166,11 +166,11 @@ WindowClone.prototype = {
         Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
         box.append(iconTexture, Big.BoxPackFlags.NONE);
         
-        let title = new Clutter.Label({ color: WINDOWCLONE_TITLE_COLOR,
-                                        font_name: "Sans 12",
-                                        text: this.metaWindow.title,
-                                        ellipsize: Pango.EllipsizeMode.END
-                                      });
+        let title = new Clutter.Text({ color: WINDOWCLONE_TITLE_COLOR,
+                                       font_name: "Sans 12",
+                                       text: this.metaWindow.title,
+                                       ellipsize: Pango.EllipsizeMode.END
+                                     });
         box.append(title, Big.BoxPackFlags.EXPAND);
         // Get and cache the expected width (just the icon), with spacing, plus title
         box.fullWidth = box.width;
@@ -237,8 +237,8 @@ function DesktopClone(window) {
 DesktopClone.prototype = {
     _init : function(window) {
         if (window) {
-            this.actor = new Clutter.CloneTexture({ parent_texture: window.get_texture(),
-                                                    reactive: true });
+            this.actor = new Clutter.Clone({ source: window.get_texture(),
+                                             reactive: true });
         } else {
             let global = Shell.Global.get();
             this.actor = new Clutter.Rectangle({ color: global.stage.color,

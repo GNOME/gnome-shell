@@ -421,6 +421,15 @@ shell_get_categories_for_desktop_file(const char *desktop_file_name)
     return categories_list;
 }
 
+guint16
+shell_get_event_key_symbol(ClutterEvent *event)
+{
+  g_return_val_if_fail(event->type == CLUTTER_KEY_PRESS ||
+                       event->type == CLUTTER_KEY_RELEASE, 0);
+
+  return event->key.keyval;
+}
+
 /**
  * shell_global_get:
  *

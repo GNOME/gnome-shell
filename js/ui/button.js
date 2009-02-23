@@ -46,8 +46,8 @@ Button.prototype = {
                                     y_align: Big.BoxAlignment.CENTER
                                   });
         if (typeof widgetOrText == 'string') {
-            this._widget = new Clutter.Label({ font_name: "Sans Bold 16px",
-                                               text: widgetOrText });
+            this._widget = new Clutter.Text({ font_name: "Sans Bold 16px",
+                                              text: widgetOrText });
         } else {
             this._widget = widgetOrText;
         }

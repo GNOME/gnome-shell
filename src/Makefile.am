@@ -92,8 +92,8 @@ Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefil
 	$(G_IR_SCANNER)		\
 		--namespace=Shell			\
 		--nsversion=0.1				\
-		--add-include-path=$(libdir)/metacity/ \
-		--include=Clutter-0.8			\
+		--add-include-path=$(libdir)/metacity/  \
+		--include=Clutter-0.9			\
 		--include=Meta-2.25			\
 		--add-include-path=$(builddir)     \
 		--include=Big-1.0     \
@@ -106,7 +106,7 @@ CLEANFILES += Shell-1.0.gir
 
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
-Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
+Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler --includedir=$(builddir) --includedir=$(libdir)/metacity/ Shell-0.1.gir -o $@
 CLEANFILES += Shell-1.0.typelib
 
@@ -114,7 +114,7 @@ Tidy-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makef
 	$(G_IR_SCANNER)					\
 		--namespace=Tidy			\
 		--nsversion=1.0				\
-		--include=Clutter-0.8			\
+		--include=Clutter-0.9			\
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(tidy_source_h)			\
@@ -132,7 +132,8 @@ Big-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefil
 	$(G_IR_SCANNER)					\
 		--namespace=Big			\
 		--nsversion=1.0				\
-		--include=ClutterCairo-0.8			\
+		--include=Clutter-0.9			\
+		--include=GdkPixbuf-2.0			\
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(big_source_h)			\

@@ -110,14 +110,16 @@ Sideshow.prototype = {
 
         // We need to initialize the text for the entry to have the cursor displayed 
         // in it. See http://bugzilla.openedhand.com/show_bug.cgi?id=1365
-        this._searchEntry = new Clutter.Entry({
-                                             font_name: "Sans 14px",
-                                             x: searchIconTexture.x
-                                                 + searchIconTexture.width + 4,
-                                             y: searchIconTexture.y,
-                                             width: this._searchBox.width - (searchIconTexture.x),
-                                             height: searchIconTexture.height, 
-                                             text: ""});
+        this._searchEntry = new Clutter.Text({ font_name: "Sans 14px",
+                                               x: searchIconTexture.x
+                                                   + searchIconTexture.width + 4,
+                                               y: searchIconTexture.y,
+                                               width: this._searchBox.width - (searchIconTexture.x),
+                                               height: searchIconTexture.height,
+                                               editable: true,
+                                               activatable: true,
+                                               singleLineMode: true,
+                                               text: ""});
         this.actor.add_actor(this._searchEntry);
         this._searchQueued = false;
         this._searchEntry.connect('notify::text', function (se, prop) {
@@ -141,15 +143,15 @@ Sideshow.prototype = {
             return true;
         });
         this._searchEntry.connect('key-press-event', function (se, e) {
-            let code = e.get_code();
-            if (code == 9) {
+            let symbol = Shell.get_event_key_symbol(e);
+            if (symbol == Clutter.Escape) {
                 // A single escape clears the entry, two of them hides the overlay
                 if (me._searchEntry.text == '')
                     me.emit('activated');
                 else
                     me._searchEntry.text = '';
                 return true;
-            } else if (code == 111) {
+            } else if (symbol == Clutter.Up) {
                 // selectUp and selectDown wrap around in their respective displays
                 // too, but there doesn't seem to be any flickering if we first select 
                 // something in one display, but then unset the selection, and move
@@ -162,7 +164,7 @@ Sideshow.prototype = {
                     me._appDisplay.selectLastItem();
                 }
                 return true;
-            } else if (code == 116) {
+            } else if (symbol == Clutter.Down) {
                 if (me._appDisplay.hasSelected() && !me._appDisplay.selectDown() && me._docDisplay.hasItems()) {
                     me._appDisplay.unsetSelected();
                     me._docDisplay.selectFirstItem();
@@ -180,10 +182,10 @@ Sideshow.prototype = {
                                           padding_top: SIDESHOW_SECTION_PADDING_TOP,
                                           spacing: SIDESHOW_SECTION_SPACING});
 
-        this._appsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
-                                           font_name: "Sans Bold 14px",
-                                           text: "Applications",
-                                           height: LABEL_HEIGHT});
+        this._appsText = new Clutter.Text({ color: SIDESHOW_TEXT_COLOR,
+                                            font_name: "Sans Bold 14px",
+                                            text: "Applications",
+                                            height: LABEL_HEIGHT});
         this._appsSection.append(this._appsText, Big.BoxPackFlags.EXPAND);
 
 
@@ -195,11 +197,11 @@ Sideshow.prototype = {
         this._appsSection.append(this._appDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreAppsBox = new Big.Box({x_align: Big.BoxAlignment.END});
-        this._moreAppsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
-                                                 font_name: "Sans Bold 14px",
-                                                 text: "More...",
-                                                 height: LABEL_HEIGHT,
-                                                 reactive: true});
+        this._moreAppsText = new Clutter.Text({ color: SIDESHOW_TEXT_COLOR,
+                                                font_name: "Sans Bold 14px",
+                                                text: "More...",
+                                                height: LABEL_HEIGHT,
+                                                reactive: true});
         moreAppsBox.append(this._moreAppsText, Big.BoxPackFlags.EXPAND);
         this._appsSection.append(moreAppsBox, Big.BoxPackFlags.EXPAND);
 
@@ -212,21 +214,21 @@ Sideshow.prototype = {
                                           padding_top: SIDESHOW_SECTION_PADDING_TOP,
                                           spacing: SIDESHOW_SECTION_SPACING});
 
-        this._docsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
-                                           font_name: "Sans Bold 14px",
-                                           text: "Recent Documents",
-                                           height: LABEL_HEIGHT});
+        this._docsText = new Clutter.Text({ color: SIDESHOW_TEXT_COLOR,
+                                            font_name: "Sans Bold 14px",
+                                            text: "Recent Documents",
+                                            height: LABEL_HEIGHT});
         this._docsSection.append(this._docsText, Big.BoxPackFlags.EXPAND);
 
         this._docDisplay = new DocDisplay.DocDisplay(this._width, this._itemDisplayHeight - this._appDisplay.actor.height, SIDESHOW_COLUMNS, SIDESHOW_PAD);
         this._docsSection.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreDocsBox = new Big.Box({x_align: Big.BoxAlignment.END});
-        this._moreDocsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
-                                                 font_name: "Sans Bold 14px",
-                                                 text: "More...",
-                                                 height: LABEL_HEIGHT,
-                                                 reactive: true});
+        this._moreDocsText = new Clutter.Text({ color: SIDESHOW_TEXT_COLOR,
+                                                font_name: "Sans Bold 14px",
+                                                text: "More...",
+                                                height: LABEL_HEIGHT,
+                                                reactive: true});
         moreDocsBox.append(this._moreDocsText, Big.BoxPackFlags.EXPAND);
         this._docsSection.append(moreDocsBox, Big.BoxPackFlags.EXPAND);
 

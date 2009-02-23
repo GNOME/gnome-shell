@@ -65,7 +65,7 @@ GenericDisplayItem.prototype = {
     //// Draggable interface ////
     getDragActor: function(stageX, stageY) {
         // FIXME: assumes this._icon is a Clutter.Texture
-        let icon = new Clutter.CloneTexture({ parent_texture: this._icon });
+        let icon = new Clutter.Clone({ source: this._icon });
         [icon.width, icon.height] = this._icon.get_transformed_size();
 
         // If the user dragged from the icon itself, then position
@@ -137,21 +137,21 @@ GenericDisplayItem.prototype = {
         this.actor.add_actor(this._icon);
 
         let text_width = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4);
-        this._name = new Clutter.Label({ color: ITEM_DISPLAY_NAME_COLOR,
-                                         font_name: "Sans 14px",
-                                         width: text_width,
-                                         ellipsize: Pango.EllipsizeMode.END,
-                                         text: nameText,
-                                         x: ITEM_DISPLAY_ICON_SIZE + 4,
-                                         y: ITEM_DISPLAY_PADDING });
+        this._name = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
+                                        font_name: "Sans 14px",
+                                        width: text_width,
+                                        ellipsize: Pango.EllipsizeMode.END,
+                                        text: nameText,
+                                        x: ITEM_DISPLAY_ICON_SIZE + 4,
+                                        y: ITEM_DISPLAY_PADDING });
         this.actor.add_actor(this._name);
-        this._description = new Clutter.Label({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
-                                                font_name: "Sans 12px",
-                                                width: text_width,
-                                                ellipsize: Pango.EllipsizeMode.END,
-                                                text: descriptionText,
-                                                x: this._name.x,
-                                                y: this._name.height + 4 });
+        this._description = new Clutter.Text({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
+                                               font_name: "Sans 12px",
+                                               width: text_width,
+                                               ellipsize: Pango.EllipsizeMode.END,
+                                               text: descriptionText,
+                                               x: this._name.x,
+                                               y: this._name.height + 4 });
         this.actor.add_actor(this._description);
     }
 };

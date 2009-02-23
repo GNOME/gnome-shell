@@ -50,7 +50,7 @@ struct _ShellStatusMenuPrivate {
 
   ClutterTexture *user_icon;
   BigBox         *name_box;
-  ClutterLabel   *name;
+  ClutterText    *name;
 
   GtkWidget      *menu;
   GtkWidget      *account_item;
@@ -110,15 +110,14 @@ reset_icon (ShellStatusMenu *status)
 }
 
 static void
-update_label (ShellStatusMenu *status)
+update_name_text (ShellStatusMenu *status)
 {
   ShellStatusMenuPrivate *priv = status->priv;
   char      *markup;
 
-  markup = g_strdup_printf ("<b>%s</b>",
-                            gdm_user_get_real_name (GDM_USER (priv->user)));
-  clutter_label_set_use_markup (priv->name, TRUE);
-  clutter_label_set_text (priv->name, markup);
+  markup = g_markup_printf_escaped("<b>%s</b>",
+                                   gdm_user_get_real_name (GDM_USER (priv->user)));
+  clutter_text_set_markup (priv->name, markup);
   g_free (markup);
 }
 
@@ -135,7 +134,7 @@ user_notify_display_name_cb (GObject       *object,
                              GParamSpec    *pspec,
                              ShellStatusMenu *status)
 {
-  update_label (status);
+  update_name_text (status);
 }
 
 static void
@@ -155,7 +154,7 @@ setup_current_user (ShellStatusMenu *status)
       name = _("Unknown");
     }
 
-  update_label (status);
+  update_name_text (status);
 
   if (priv->user != NULL)
     {
@@ -541,7 +540,7 @@ shell_status_menu_init (ShellStatusMenu *status)
   priv->name_box = BIG_BOX (big_box_new (BIG_BOX_ORIENTATION_VERTICAL));
   g_object_set (G_OBJECT (priv->name_box), "y-align", BIG_BOX_ALIGNMENT_CENTER, NULL);
   big_box_append (BIG_BOX (status), CLUTTER_ACTOR (priv->name_box), BIG_BOX_PACK_EXPAND);
-  priv->name = CLUTTER_LABEL (clutter_label_new ());
+  priv->name = CLUTTER_TEXT (clutter_text_new ());
   big_box_append (BIG_BOX (priv->name_box), CLUTTER_ACTOR (priv->name), BIG_BOX_PACK_EXPAND);
 
   priv->manager = gdm_user_manager_ref_default ();

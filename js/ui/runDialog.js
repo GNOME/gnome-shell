@@ -50,19 +50,20 @@ RunDialog.prototype = {
                                           border_width: 0 });
         boxGroup.add_actor(box);
 
-        let label = new Clutter.Label({ color: BOX_TEXT_COLOR,
-                                        font_name: '18px Sans',
-                                        text: 'Please enter a command:' });
+        let label = new Clutter.Text({ color: BOX_TEXT_COLOR,
+                                       font_name: '18px Sans',
+                                       text: 'Please enter a command:' });
         label.set_position(6, 6);
         boxGroup.add_actor(label);
 
-        this._entry = new Clutter.Entry({ color: BOX_TEXT_COLOR,
-                                          font_name: '20px Sans Bold',
-                                          reactive: true,
-                                          text: '',
-                                          entry_padding: 0,
-                                          width: BOX_WIDTH - 12,
-                                          height: BOX_HEIGHT - 12 });
+        this._entry = new Clutter.Text({ color: BOX_TEXT_COLOR,
+                                         font_name: '20px Sans Bold',
+                                         editable: true,
+                                         activatable: true,
+                                         singleLineMode: true,
+                                         text: '',
+                                         width: BOX_WIDTH - 12,
+                                         height: BOX_HEIGHT - 12 });
         // TODO: Implement relative positioning using Tidy.
         this._entry.set_position(6, 30);
         boxGroup.add_actor(this._entry);
@@ -106,7 +107,7 @@ RunDialog.prototype = {
         this._group.show_all();
 
         this._entry.connect('key-press-event', function(o, e) {
-            if (e.get_code() == 9) {
+            if (Shell.get_event_key_symbol(e) == Clutter.Escape) {
                 me.hide();
                 me.emit('cancel');
                 return true;
