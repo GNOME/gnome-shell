@@ -26,9 +26,9 @@
 #ifndef __COGL_H__
 #define __COGL_H__
 
-#define __COGL_H_INSIDE__
-
 #include <glib.h>
+
+#define __COGL_H_INSIDE__
 
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
 
@@ -43,6 +43,7 @@
 #include <cogl/cogl-shader.h>
 #include <cogl/cogl-texture.h>
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-debug.h>
 #include <cogl/cogl-deprecated.h>
 
 G_BEGIN_DECLS
@@ -69,6 +70,19 @@ gboolean        cogl_create_context           (void);
  * FIXME
  */
 void            cogl_destroy_context          (void);
+
+/**
+ * cogl_get_option_group:
+ *
+ * Retrieves the #GOptionGroup used by COGL to parse the command
+ * line options. Clutter uses this to handle the COGL command line
+ * options during its initialization process.
+ *
+ * Return value: a #GOptionGroup
+ *
+ * Since: 1.0
+ */
+GOptionGroup *  cogl_get_option_group         (void);
 
 /* Misc */
 /**

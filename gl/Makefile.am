@@ -12,7 +12,8 @@ libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl-types.h \
         $(top_builddir)/clutter/cogl/cogl-vertex-buffer.h \
         $(top_builddir)/clutter/cogl/cogl-material.h \
-        $(top_builddir)/clutter/cogl/cogl-matrix.h
+        $(top_builddir)/clutter/cogl/cogl-matrix.h \
+	$(top_builddir)/clutter/cogl/cogl-debug.h
 
 INCLUDES = \
 	-I$(top_srcdir) \
@@ -44,6 +45,7 @@ libclutter_cogl_la_SOURCES = \
         $(top_builddir)/clutter/cogl/cogl-shader.h \
         $(top_builddir)/clutter/cogl/cogl-texture.h \
         $(top_builddir)/clutter/cogl/cogl-types.h \
+        $(top_builddir)/clutter/cogl/cogl-debug.h \
 	cogl-internal.h \
 	cogl-texture-private.h \
 	cogl-fbo.h \
