@@ -65,6 +65,7 @@ static gboolean clutter_is_initialized       = FALSE;
 static gboolean clutter_show_fps             = FALSE;
 static gboolean clutter_fatal_warnings       = FALSE;
 static gboolean clutter_disable_mipmap_text  = FALSE;
+static gboolean clutter_use_fuzzy_picking    = FALSE;
 
 static guint clutter_default_fps             = 60;
 
@@ -1205,7 +1206,7 @@ clutter_init_real (GError **error)
   resolution = clutter_backend_get_resolution (ctx->backend);
   cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
 
-  if (!clutter_disable_mipmap_text)
+  if (G_LIKELY (!clutter_disable_mipmap_text))
     cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   clutter_text_direction = clutter_get_text_direction ();
@@ -1218,10 +1219,8 @@ clutter_init_real (GError **error)
   ctx->fb_g_mask_used = ctx->fb_g_mask;
   ctx->fb_b_mask_used = ctx->fb_b_mask;
 
-#ifndef HAVE_CLUTTER_FRUITY
-  /* We always do fuzzy picking for the fruity backend */
-  if (g_getenv ("CLUTTER_FUZZY_PICK") != NULL)
-#endif
+  /* XXX - describe what "fuzzy picking" is */
+  if (clutter_use_fuzzy_picking)
     {
       ctx->fb_r_mask_used--;
       ctx->fb_g_mask_used--;
@@ -1253,6 +1252,9 @@ static GOptionEntry clutter_args[] = {
   { "clutter-disable-mipmapped-text", 0, 0, G_OPTION_ARG_NONE,
     &clutter_disable_mipmap_text,
     N_("Disable mipmapping on text"), NULL },
+  { "clutter-use-fuzzy-picking", 0, 0, G_OPTION_ARG_NONE,
+    &clutter_use_fuzzy_picking,
+    N_("Use 'fuzzy' picking"), NULL },
 #ifdef CLUTTER_ENABLE_DEBUG
   { "clutter-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_debug_cb,
     N_("Clutter debugging flags to set"), "FLAGS" },
@@ -1317,6 +1319,15 @@ pre_parse_hook (GOptionContext  *context,
   env_string = g_getenv ("CLUTTER_DISABLE_MIPMAPPED_TEXT");
   if (env_string)
     clutter_disable_mipmap_text = TRUE;
+
+#ifdef HAVE_CLUTTER_FRUITY
+  /* we always enable fuzzy picking in the "fruity" backend */
+  clutter_use_fuzzy_picking = TRUE;
+#else
+  env_string = g_getenv ("CLUTTER_FUZZY_PICK");
+  if (env_string)
+    clutter_use_fuzzy_picking = TRUE;
+#endif /* HAVE_CLUTTER_FRUITY */
 
   return _clutter_backend_pre_parse (backend, error);
 }
