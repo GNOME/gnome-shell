@@ -1,0 +1,172 @@
+<part id="running-clutter">
+  <partinfo>
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+      <affiliation>
+        <address>
+          <email>ebassi@linux.intel.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </partinfo>
+
+  <title>Running Clutter</title>
+
+  <partintro>
+
+    <section id="environment-variables">
+      <title>Environment Variables</title>
+
+      <para>
+        Clutter automatically checks environment variables during
+        its initialization. These environment variables are meant
+        as debug tools, overrides for default behaviours or to
+        address known hardware issues:
+      </para>
+
+      <variablelist>
+        <varlistentry>
+          <term>CLUTTER_TEXT_DIRECTION</term>
+          <listitem>
+            <para>Forces the text direction of every Pango layout
+            inside Clutter. Valid values are: ltr or rtl</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_SHOW_FPS</term>
+          <listitem>
+            <para>Prints out the frames per second achieved by Clutter.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_DEFAULT_FPS</term>
+          <listitem>
+            <para>Sets the default framerate.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_DISABLE_MIPMAPPED_TEXT</term>
+          <listitem>
+            <para>Disables mipmapping when rendering text.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_FUZZY_PICK</term>
+          <listitem>
+            <para>Enables "fuzzy picking".</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>CLUTTER_DEBUG</term>
+          <listitem>
+            <para>Enables debugging modes for Clutter.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>COGL_DEBUG</term>
+          <listitem>
+            <para>Enables debugging modes for COGL.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>On the GLX backend there is also:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term>CLUTTER_VBLANK</term>
+          <listitem>
+            <para>Selects the sync-to-vblank mode to be used.
+            Valid values are: none, dri or glx</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+    </section>
+
+    <section id="command-line">
+      <title>Command Line Arguments</title>
+
+      <para>Similarly to the environment variables, Clutter also installs
+      command line switches that are parsed during initialization:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term>--clutter-show-fps</term>
+          <listitem><para>Equivalent of CLUTTER_SHOW_FPS. Prints the
+          current rendering speed in frames per second.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--clutter-default-fps=FPS</term>
+          <listitem><para>Equivalent of CLUTTER_DEFAULT_FPS. Sets the
+          default framerate.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--clutter-text-direction=DIRECTION</term>
+          <listitem><para>Equivalent of CLUTTER_TEXT_DIRECTION. Sets the
+          direction for the text.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--clutter-disable-mipmapped-text</term>
+          <listitem><para>Equivalent of CLUTTER_DISABLE_MIPMAPPED_TEXT.
+          Disables mipmapping when rendering text.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--clutter-use-fuzzy-picking</term>
+          <listitem><para>Equivalent of CLUTTER_FUZZY_PICK. Enables
+          "fuzzy" picking.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--clutter-debug=FLAGS</term>
+          <listitem><para>Equivalent of CLUTTER_DEBUG. Sets FLAGS as the
+          Clutter debugging flags.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--clutter-no-debug=FLAGS</term>
+          <listitem><para>Unsets FLAGS from the Clutter debugging
+          flags.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--cogl-debug=FLAGS</term>
+          <listitem><para>Equivalent of COGL_DEBUG. Sets FLAGS as the
+          COGL debugging flags.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--cogl-no-debug=FLAGS</term>
+          <listitem><para>Unsets FLAGS from the COGL debugging
+          flags.</para></listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>The X11 backends also have the following command line
+      options:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term>--display=DISPLAY</term>
+          <listitem><para>Sets the X11 display to use.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--screen=SCREEN</term>
+          <listitem><para>Sets the X11 screen number to use.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--synch</term>
+          <listitem><para>Make X11 calls synchronous.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+
+    <para>The GLX backend also has the following command line option:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>--vblank=METHOD</term>
+        <listitem><para>Equivalent of CLUTTER_VBLANK. Sets the sync-to-vblank
+        method to be used.</para></listitem>
+      </varlistentry>
+    </variablelist>
+
+  </partintro>
+</part>

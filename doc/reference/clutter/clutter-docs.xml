@@ -43,8 +43,8 @@
   </bookinfo>
 
   <xi:include href="xml/clutter-overview.xml"/>
-
   <xi:include href="xml/building-clutter.xml"/>
+  <xi:include href="xml/running-clutter.xml"/>
 
   <part id="clutterbase">
     <title>Clutter Core Reference</title>
