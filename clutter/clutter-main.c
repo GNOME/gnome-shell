@@ -60,16 +60,18 @@ static GMutex *clutter_threads_mutex         = NULL;
 static GCallback clutter_threads_lock        = NULL;
 static GCallback clutter_threads_unlock      = NULL;
 
+/* command line options */
 static gboolean clutter_is_initialized       = FALSE;
 static gboolean clutter_show_fps             = FALSE;
 static gboolean clutter_fatal_warnings       = FALSE;
+static gboolean clutter_disable_mipmap_text  = FALSE;
 
 static guint clutter_default_fps             = 60;
 
+static PangoDirection clutter_text_direction = PANGO_DIRECTION_LTR;
+
 static guint clutter_main_loop_level         = 0;
 static GSList *main_loops                    = NULL;
-
-static PangoDirection clutter_text_direction = PANGO_DIRECTION_LTR;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
 
@@ -1202,7 +1204,8 @@ clutter_init_real (GError **error)
 
   resolution = clutter_backend_get_resolution (ctx->backend);
   cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
-  if (g_getenv ("CLUTTER_DISABLE_MIPMAPPED_TEXT") == NULL)
+
+  if (!clutter_disable_mipmap_text)
     cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   clutter_text_direction = clutter_get_text_direction ();
@@ -1247,6 +1250,9 @@ static GOptionEntry clutter_args[] = {
   { "clutter-text-direction", 0, 0, G_OPTION_ARG_CALLBACK,
     clutter_arg_direction_cb,
     N_("Direction for the text"), "DIRECTION" },
+  { "clutter-disable-mipmapped-text", 0, 0, G_OPTION_ARG_NONE,
+    &clutter_disable_mipmap_text,
+    N_("Disable mipmapping on text"), NULL },
 #ifdef CLUTTER_ENABLE_DEBUG
   { "clutter-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_debug_cb,
     N_("Clutter debugging flags to set"), "FLAGS" },
@@ -1307,6 +1313,10 @@ pre_parse_hook (GOptionContext  *context,
 
       clutter_default_fps = CLAMP (default_fps, 1, 1000);
     }
+
+  env_string = g_getenv ("CLUTTER_DISABLE_MIPMAPPED_TEXT");
+  if (env_string)
+    clutter_disable_mipmap_text = TRUE;
 
   return _clutter_backend_pre_parse (backend, error);
 }
