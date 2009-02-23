@@ -149,6 +149,31 @@ gnome_shell_plugin_constructed (GObject *object)
   int status;
   const char *shell_js;
   char **search_path;
+  ClutterBackend *backend;
+  cairo_font_options_t *font_options;
+
+  /* Disable text mipmapping; it causes problems on pre-GEM Intel
+   * drivers and we should just be rendering text at the right
+   * size rather than scaling it. If we do effects where we dynamically
+   * zoom labels, then we might want to reconsider.
+   */
+  clutter_set_font_flags (clutter_get_font_flags () & ~CLUTTER_FONT_MIPMAPPING);
+
+  /* Clutter (as of 0.9) passes comprehensively wrong font options
+   * override whatever set_font_flags() did above.
+   *
+   * http://bugzilla.openedhand.com/show_bug.cgi?id=1456
+   */
+  backend = clutter_get_default_backend ();
+  font_options = cairo_font_options_create ();
+  /* Default options for everything is reasonable; except that
+   * we want to turn off subpixel anti-aliasing; since Clutter
+   * doesn't currently have the code to support ARGB masks,
+   * generating them then squashing them back to A8 is pointless.
+   */
+  cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
+  clutter_backend_set_font_options (backend, font_options);
+  cairo_font_options_destroy (font_options);
 
   screen = mutter_plugin_get_screen (plugin);
   display = meta_screen_get_display (screen);
