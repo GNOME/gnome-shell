@@ -1734,17 +1734,15 @@ static inline void
 emit_event (ClutterEvent *event,
             gboolean      is_key_event)
 {
-#define MAX_EVENT_DEPTH 512
+  static gboolean      lock = FALSE;
 
-  static ClutterActor **event_tree = NULL;
-  static gboolean       lock = FALSE;
-
-  ClutterActor         *actor;
-  gint                  i = 0, n_tree_events = 0;
+  GPtrArray *event_tree = NULL;
+  ClutterActor *actor;
+  gint i = 0;
 
   if (!event->any.source)
     {
-      g_warning ("No event source set, discarding event");
+      CLUTTER_NOTE (EVENT, "No source set, discarding event");
       return;
     }
 
@@ -1754,14 +1752,12 @@ emit_event (ClutterEvent *event,
 
   lock = TRUE;
 
-  /* Sorry Mr Bassi. */
-  if (G_UNLIKELY (event_tree == NULL))
-    event_tree = g_new0 (ClutterActor *, MAX_EVENT_DEPTH);
+  event_tree = g_ptr_array_sized_new (64);
 
   actor = event->any.source;
 
   /* Build 'tree' of emitters for the event */
-  while (actor && n_tree_events < MAX_EVENT_DEPTH)
+  while (actor)
     {
       ClutterActor *parent;
 
@@ -1771,30 +1767,29 @@ emit_event (ClutterEvent *event,
           parent == NULL ||         /* stage gets all events */
           is_key_event)             /* keyboard events are always emitted */
         {
-          event_tree[n_tree_events++] = g_object_ref (actor);
+          g_ptr_array_add (event_tree, g_object_ref (actor));
         }
 
       actor = parent;
     }
 
   /* Capture */
-  for (i = n_tree_events-1; i >= 0; i--)
-    if (clutter_actor_event (event_tree[i], event, TRUE))
+  for (i = event_tree->len - 1; i >= 0; i--)
+    if (clutter_actor_event (g_ptr_array_index (event_tree, i), event, TRUE))
       goto done;
 
   /* Bubble */
-  for (i = 0; i < n_tree_events; i++)
-    if (clutter_actor_event (event_tree[i], event, FALSE))
+  for (i = 0; i < event_tree->len; i++)
+    if (clutter_actor_event (g_ptr_array_index (event_tree, i), event, FALSE))
       goto done;
 
 done:
+  for (i = 0; i < event_tree->len; i++)
+    g_object_unref (g_ptr_array_index (event_tree, i));
 
-  for (i = 0; i < n_tree_events; i++)
-    g_object_unref (event_tree[i]);
+  g_ptr_array_free (event_tree, TRUE);
 
   lock = FALSE;
-
-#undef MAX_EVENT_DEPTH
 }
 
 /*
