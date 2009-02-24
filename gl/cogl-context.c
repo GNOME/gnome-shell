@@ -37,6 +37,7 @@
 #include <string.h>
 
 static CoglContext *_context = NULL;
+static gboolean gl_is_indirect = FALSE;
 
 gboolean
 cogl_create_context ()
@@ -58,6 +59,8 @@ cogl_create_context ()
   _context->color_alpha = 0;
 
   _context->enable_backface_culling = FALSE;
+
+  _context->indirect = gl_is_indirect;
 
   _context->material_handles = NULL;
   _context->material_layer_handles = NULL;
@@ -143,6 +146,9 @@ cogl_create_context ()
   /* Initialise the clip stack */
   _cogl_clip_stack_state_init ();
 
+  /* Initialise matrix stack */
+  _cogl_current_matrix_state_init ();
+
   /* Create default textures used for fall backs */
   _context->default_gl_texture_2d_tex =
     cogl_texture_new_from_data (1, /* width */
@@ -181,6 +187,8 @@ cogl_destroy_context ()
     return;
 
   _cogl_clip_stack_state_destroy ();
+
+  _cogl_current_matrix_state_destroy ();
 
   if (_context->path_nodes)
     g_array_free (_context->path_nodes, TRUE);
@@ -225,4 +233,33 @@ _cogl_context_get_default ()
     cogl_create_context ();
 
   return _context;
+}
+
+/**
+ * _cogl_set_indirect_context:
+ * @indirect: TRUE if GL context is indirect
+ *
+ * Advises COGL that the GL context is indirect (commands are sent
+ * over a socket). COGL uses this information to try to avoid
+ * round-trips in its use of GL, for example.
+ *
+ * This function cannot be called "on the fly," only before COGL
+ * initializes.
+ */
+void
+_cogl_set_indirect_context (gboolean indirect)
+{
+  /* we get called multiple times if someone creates
+   * more than the default stage
+   */
+  if (_context != NULL)
+    {
+      if (indirect != _context->indirect)
+        g_warning ("Right now all stages will be treated as "
+                   "either direct or indirect, ignoring attempt "
+                   "to change to indirect=%d", indirect);
+      return;
+    }
+
+  gl_is_indirect = indirect;
 }

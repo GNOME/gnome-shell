@@ -2056,7 +2056,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
   cogl_enable (enable_flags);
 
   GE (glVertexPointer (2, GL_FLOAT, stride, vertex_pointer));
-
+  _cogl_current_matrix_state_flush ();
   GE (glDrawRangeElements (GL_TRIANGLES,
                            0, ctx->static_indices->len - 1,
                            6 * batch_len,
@@ -2085,6 +2085,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
                                       color == 2 ? 0xff : 0x00,
                                       0xff);
           cogl_material_flush_gl_state (outline, NULL);
+          _cogl_current_matrix_state_flush ();
           GE( glDrawArrays (GL_LINE_LOOP, 4 * i, 4) );
         }
     }
@@ -2896,6 +2897,7 @@ _cogl_texture_sliced_polygon (CoglTextureVertex *vertices,
                                         COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
                                         gl_handle,
                                         NULL);
+          _cogl_current_matrix_state_flush ();
 
 	  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
 	}
@@ -2986,6 +2988,7 @@ _cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
                                 COGL_MATERIAL_FLUSH_FALLBACK_MASK,
                                 fallback_mask,
                                 NULL);
+  _cogl_current_matrix_state_flush ();
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
 }

@@ -87,6 +87,7 @@ _cogl_path_stroke_nodes ()
                                 COGL_MATERIAL_FLUSH_DISABLE_MASK,
                                 (guint32)~0, /* disable all texture layers */
                                 NULL);
+  _cogl_current_matrix_state_flush ();
 
   while (path_start < ctx->path_nodes->len)
     {
@@ -167,6 +168,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
   GE( glDepthMask (FALSE) );
 
+  _cogl_current_matrix_state_flush ();
   while (path_start < path_size)
     {
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
@@ -202,16 +204,18 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
       /* Decrement all of the bits twice so that only pixels where the
          value is 3 will remain */
-      GE( glPushMatrix () );
-      GE( glLoadIdentity () );
-      GE( glMatrixMode (GL_PROJECTION) );
-      GE( glPushMatrix () );
-      GE( glLoadIdentity () );
+      _cogl_current_matrix_push ();
+      _cogl_current_matrix_identity ();
+
+      _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+      _cogl_current_matrix_push ();
+      _cogl_current_matrix_identity ();
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
-      GE( glPopMatrix () );
-      GE( glMatrixMode (GL_MODELVIEW) );
-      GE( glPopMatrix () );
+      _cogl_current_matrix_pop ();
+
+      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+      _cogl_current_matrix_pop ();
     }
 
   GE( glStencilMask (~(GLuint) 0) );

@@ -24,6 +24,8 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-bitmap.h 			\
 	cogl-bitmap.c 			\
 	cogl-bitmap-fallback.c 		\
+	cogl-current-matrix.c		\
+	cogl-current-matrix.h		\
 	cogl-primitives.h 		\
 	cogl-primitives.c 		\
 	cogl-bitmap-pixbuf.c 		\
@@ -34,6 +36,8 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-vertex-buffer-private.h 	\
 	cogl-vertex-buffer.c		\
 	cogl-matrix.c			\
+	cogl-matrix-stack.c		\
+	cogl-matrix-stack.h		\
 	cogl-material.c			\
 	cogl-material-private.h		\
 	cogl-debug.c
