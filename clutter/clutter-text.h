@@ -108,7 +108,6 @@ void                  clutter_text_set_text             (ClutterText        *sel
                                                          const gchar        *text);
 void                  clutter_text_set_markup           (ClutterText        *self,
                                                          const gchar        *markup);
-PangoLayout *         clutter_text_get_layout           (ClutterText        *self);
 void                  clutter_text_set_color            (ClutterText        *self,
                                                          const ClutterColor *color);
 void                  clutter_text_get_color            (ClutterText        *self,
