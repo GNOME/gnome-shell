@@ -141,6 +141,48 @@ cogl_matrix_transform_point (const CoglMatrix *matrix,
 }
 
 void
+cogl_matrix_frustum (CoglMatrix *matrix,
+                     float       left,
+                     float       right,
+                     float       bottom,
+                     float       top,
+                     float       z_near,
+                     float       z_far)
+{
+  float x, y, a, b, c, d;
+  CoglMatrix frustum;
+
+  x = (2.0f * z_near) / (right - left);
+  y = (2.0f * z_near) / (top - bottom);
+  a = (right + left) / (right - left);
+  b = (top + bottom) / (top - bottom);
+  c = -(z_far + z_near) / ( z_far - z_near);
+  d = -(2.0f * z_far* z_near) / (z_far - z_near);
+
+  frustum.xx = x;
+  frustum.yx = 0.0f;
+  frustum.zx = 0.0f;
+  frustum.wx = 0.0f;
+
+  frustum.xy = 0.0f;
+  frustum.yy = y;
+  frustum.zy = 0.0f;
+  frustum.wy = 0.0f;
+
+  frustum.xz = a;
+  frustum.yz = b;
+  frustum.zz = c;
+  frustum.wz = -1.0f;
+
+  frustum.xw = 0.0f;
+  frustum.yw = 0.0f;
+  frustum.zw = d;
+  frustum.ww = 0.0f;
+
+  cogl_matrix_multiply (matrix, matrix, &frustum);
+}
+
+void
 cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 {
   memcpy (matrix, array, sizeof (float) * 16);

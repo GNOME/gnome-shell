@@ -821,9 +821,9 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
        layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX))
 #endif
     {
-      GE (glMatrixMode (GL_TEXTURE));
-      GE (glLoadMatrixf ((GLfloat *)&layer->matrix));
-      GE (glMatrixMode (GL_MODELVIEW));
+      _cogl_set_current_matrix (COGL_MATRIX_TEXTURE);
+      _cogl_current_matrix_load (&layer->matrix);
+      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
     }
 }
 

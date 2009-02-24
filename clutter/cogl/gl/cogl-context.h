@@ -28,6 +28,8 @@
 
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"
+#include "cogl-matrix-stack.h"
+#include "cogl-current-matrix.h"
 
 typedef struct
 {
@@ -47,6 +49,12 @@ typedef struct
   guint8            color_alpha;
 
   gboolean          enable_backface_culling;
+
+  gboolean          indirect;
+
+  /* Client-side matrix stack or NULL if none */
+  CoglMatrixMode    matrix_mode;
+  CoglMatrixStack  *modelview_stack;
 
   /* Cache of inverse projection matrix */
   float            inverse_projection[16];
