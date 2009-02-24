@@ -37,7 +37,7 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_MEDIA                      (clutter_media_get_type ())
 #define CLUTTER_MEDIA(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MEDIA, ClutterMedia))
 #define CLUTTER_IS_MEDIA(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MEDIA))
-#define CLUTTER_MEDIA_GET_INTERFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_MEDIA, ClutterMediaInterface))
+#define CLUTTER_MEDIA_GET_INTERFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_MEDIA, ClutterMediaIface))
 
 typedef struct _ClutterMedia            ClutterMedia; /* dummy typedef */
 typedef struct _ClutterMediaIface       ClutterMediaIface;
