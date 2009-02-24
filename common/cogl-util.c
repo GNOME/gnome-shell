@@ -122,7 +122,7 @@ cogl_pixel_format_get_type (void)
 
   if (G_UNLIKELY (gtype == 0))
     {
-      const GEnumValue values[] = {
+      static const GEnumValue values[] = {
         { COGL_PIXEL_FORMAT_ANY, "COGL_PIXEL_FORMAT_ANY", "any" },
         { COGL_PIXEL_FORMAT_A_8, "COGL_PIXEL_FORMAT_A_8", "a-8" },
         { COGL_PIXEL_FORMAT_RGB_565, "COGL_PIXEL_FORMAT_RGB_565", "rgb-565" },
