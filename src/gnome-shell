@@ -114,6 +114,20 @@ def start_shell():
     js_dir = os.path.join(top_dir, "js")
     data_dir = os.path.join(top_dir, "data")
 
+    # Set up environment
+    env = dict(os.environ)
+    env.update({'GNOME_SHELL_JS'      : js_dir,
+                'GNOME_SHELL_DATADIR' : data_dir,
+                'GI_TYPELIB_PATH'     : plugin_dir,
+                'PATH'                : os.environ.get('PATH', '') + ':' + plugin_dir,
+                'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir,
+                'GNOME_DISABLE_CRASH_DIALOG' : '1'})
+
+    if not options.verbose:
+        # Unless verbose() is specified, only let gjs show errors and
+        # things that are explicitly logged via log() from javascript
+        env['GJS_DEBUG_TOPICS'] = 'JS ERROR;JS LOG'
+
     if use_tfp:
         # Decide if we need to set LIBGL_ALWAYS_INDIRECT=1 to get the
         # texture_from_pixmap extension; we take having the extension
@@ -134,20 +148,6 @@ def start_shell():
             # drivers use __GL_FORCE_INDIRECT=1 instead. But we don't
             # need to force indirect rendering for NVIDIA.
             env['LIBGL_ALWAYS_INDIRECT'] = '1'
-
-    # Now launch metacity-clutter with our plugin
-    env = dict(os.environ)
-    env.update({'GNOME_SHELL_JS'      : js_dir,
-                'GNOME_SHELL_DATADIR' : data_dir,
-                'GI_TYPELIB_PATH'     : plugin_dir,
-                'PATH'                : os.environ.get('PATH', '') + ':' + plugin_dir,
-                'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir,
-                'GNOME_DISABLE_CRASH_DIALOG' : '1'})
-
-    if not options.verbose:
-        # Unless verbose() is specified, only let gjs show errors and
-        # things that are explicitly logged via log() from javascript
-        env['GJS_DEBUG_TOPICS'] = 'JS ERROR;JS LOG'
 
     if options.debug:
         debug_command = options.debug_command.split()
