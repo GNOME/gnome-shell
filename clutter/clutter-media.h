@@ -72,7 +72,7 @@ void     clutter_media_set_audio_volume (ClutterMedia *media,
 gdouble  clutter_media_get_audio_volume (ClutterMedia *media);
 gboolean clutter_media_get_can_seek     (ClutterMedia *media);
 gdouble  clutter_media_get_buffer_fill  (ClutterMedia *media);
-guint    clutter_media_get_duration     (ClutterMedia *media);
+gdouble  clutter_media_get_duration     (ClutterMedia *media);
 
 G_END_DECLS
 

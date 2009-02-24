@@ -160,11 +160,11 @@ clutter_media_base_init (gpointer g_iface)
        *
        * Since: 0.2
        */
-      pspec = g_param_spec_uint ("duration",
-                                 "Duration",
-                                 "The duration of the stream, in seconds",
-                                 0, G_MAXUINT, 0,
-                                 CLUTTER_PARAM_READABLE);
+      pspec = g_param_spec_double ("duration",
+                                   "Duration",
+                                   "The duration of the stream, in seconds",
+                                   0, G_MAXDOUBLE, 0,
+                                   CLUTTER_PARAM_READABLE);
       g_object_interface_install_property (g_iface, pspec);
 
       /**
@@ -442,10 +442,10 @@ clutter_media_get_buffer_fill (ClutterMedia *media)
  *
  * Since: 0.2
  */
-guint
+gdouble
 clutter_media_get_duration (ClutterMedia *media)
 {
-  guint retval = 0;
+  gdouble retval = 0;
 
   g_return_val_if_fail (CLUTTER_IS_MEDIA(media), 0);
 
