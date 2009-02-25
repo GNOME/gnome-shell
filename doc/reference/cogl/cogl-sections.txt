@@ -322,6 +322,8 @@ cogl_matrix_multiply
 cogl_matrix_rotate
 cogl_matrix_translate
 cogl_matrix_scale
+cogl_matrix_init_from_array
+cogl_matrix_get_array
 </SECTION>
 
 <SECTION>

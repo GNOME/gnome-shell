@@ -455,7 +455,7 @@ _cogl_add_stencil_clip (float x_offset,
 void
 _cogl_set_matrix (const CoglMatrix *matrix)
 {
-  const GLfloat *gl_matrix = cogl_matrix_get_gl_matrix (matrix);
+  const GLfloat *gl_matrix = cogl_matrix_get_array (matrix);
 
   GE (glLoadMatrixf (gl_matrix));
 }
@@ -687,7 +687,7 @@ cogl_get_modelview_matrix (CoglMatrix *matrix)
   /* Since it's internal to Cogl and CoglMatrix doesn't currently have
    * any flag members, we could avoid this extra copy if it really
    * bothers anyone */
-  cogl_matrix_init_from_gl_matrix (matrix, m);
+  cogl_matrix_init_from_array (matrix, m);
 }
 
 void
@@ -698,7 +698,7 @@ cogl_get_projection_matrix (CoglMatrix *matrix)
   /* Since it's internal to Cogl and CoglMatrix doesn't currently have
    * any flag members, we could avoid this extra copy if it really
    * bothers anyone */
-  cogl_matrix_init_from_gl_matrix (matrix, m);
+  cogl_matrix_init_from_array (matrix, m);
 }
 
 void
