@@ -223,7 +223,8 @@ try:
         shell = start_xephyr()
         start_shell()
     else:
-        kill_gnome_panel(gnome_panel_pid)
+        if gnome_panel_pid is not None:
+            kill_gnome_panel(gnome_panel_pid)
         shell = start_shell()
 
     # Wait for shell to exit
