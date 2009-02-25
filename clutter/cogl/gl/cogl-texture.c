@@ -2567,8 +2567,8 @@ _cogl_multitexture_unsliced_quad (float        x_1,
       if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
         {
           out_tex_coords[0] *= x_span->size;
-          out_tex_coords[1] *= x_span->size;
-          out_tex_coords[2] *= y_span->size;
+          out_tex_coords[1] *= y_span->size;
+          out_tex_coords[2] *= x_span->size;
           out_tex_coords[3] *= y_span->size;
         }
     }
