@@ -685,6 +685,9 @@ Overlay.prototype = {
         this._workspaces.destroy();
         this._workspaces = null;
 
+        this._workspacesBackground.destroy();
+        this._workspacesBackground = null;
+
         this._sideshow.hide();
         this._group.hide();
     },
