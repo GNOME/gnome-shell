@@ -73,6 +73,8 @@ G_DEFINE_TYPE_WITH_CODE (ClutterTexture,
 
 #define CLUTTER_TEXTURE_GET_PRIVATE(obj)        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXTURE, ClutterTexturePrivate))
 
+typedef struct _ClutterTextureAsyncData ClutterTextureAsyncData;
+
 struct _ClutterTexturePrivate
 {
   gint                         width;
@@ -98,13 +100,33 @@ struct _ClutterTexturePrivate
   guint                        in_dispose : 1;
   guint                        keep_aspect_ratio : 1;
   guint                        load_async : 1;
-  
-  GThread                     *load_thread;
-  guint                        load_idle;
-  gchar                       *load_filename;
-  CoglBitmap                  *load_bitmap;
-  GError                      *load_error;
-  gboolean                     abort;
+
+  ClutterTextureAsyncData     *async_data;
+};
+
+struct _ClutterTextureAsyncData
+{
+  /* Mutex used to synchronize setting the abort flag */
+  GMutex         *mutex;
+
+  /* If set to true, the loaded data will be discarded */
+  gboolean        abort;
+
+  /* The texture for which the data is being loaded */
+  ClutterTexture *texture;
+
+  /* Source ID of the idle handler for loading. If this is zero then
+     the data is being loaded in a thread from the thread pool. Once
+     the thread is finished it will be converted to idle load handler
+     and load_idle will be nonzero. If load_idle is nonzero then the
+     rest of the load can safely be aborted by just removing the
+     source, otherwise the abort flag needs to be set and the data
+     should be disowned */
+  guint           load_idle;
+
+  gchar          *load_filename;
+  CoglBitmap     *load_bitmap;
+  GError         *load_error;
 };
 
 enum
@@ -135,6 +157,8 @@ enum
 };
 
 static int texture_signals[LAST_SIGNAL] = { 0 };
+
+static GThreadPool *async_thread_pool = NULL;
 
 static void
 texture_fbo_free_resources (ClutterTexture *texture);
@@ -633,6 +657,29 @@ clutter_texture_paint (ClutterActor *self)
 			              0, 0, t_w, t_h);
 }
 
+static void
+clutter_texture_async_data_free (ClutterTextureAsyncData *data)
+{
+  /* This function should only be called either from the main thread
+     once it is known that the load thread has completed or from the
+     load thread itself if the abort flag is true (in which case the
+     main thread has disowned the data) */
+
+  if (data->load_filename)
+    g_free (data->load_filename);
+
+  if (data->load_bitmap)
+    cogl_bitmap_free (data->load_bitmap);
+
+  if (data->load_error)
+    g_error_free (data->load_error);
+
+  if (data->mutex)
+    g_mutex_free (data->mutex);
+
+  g_slice_free (ClutterTextureAsyncData, data);
+}
+
 /*
  * clutter_texture_async_load_cancel:
  * @texture: a #ClutterTexture
@@ -645,32 +692,40 @@ clutter_texture_async_load_cancel (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv = texture->priv;
 
-  if (priv->load_thread)
+  if (priv->async_data)
     {
-      priv->abort = TRUE;
-      g_thread_join (priv->load_thread);
-      priv->load_thread = NULL;
-    }
+      GMutex *mutex = priv->async_data->mutex;
 
-  if (priv->load_idle)
-    {
-      g_source_remove (priv->load_idle);
-      priv->load_idle = 0;
-    }
+      /* The mutex will only be NULL if the no thread was used for
+         this load, in which case there's no need for any
+         synchronization */
+      if (mutex)
+        g_mutex_lock (mutex);
 
-  if (priv->load_error)
-    {
-      g_error_free (priv->load_error);
-      priv->load_error = NULL;
-    }
+      /* If there is no thread behind this load then we can just abort
+         the idle handler and destroy the load data immediately */
+      if (priv->async_data->load_idle)
+        {
+          g_source_remove (priv->async_data->load_idle);
+          priv->async_data->load_idle = 0;
 
-  if (priv->load_bitmap)
-    {
-      cogl_bitmap_free (priv->load_bitmap);
-      priv->load_bitmap = NULL;
-    }
+          if (mutex)
+            g_mutex_unlock (mutex);
 
-  g_free (priv->load_filename);
+          clutter_texture_async_data_free (priv->async_data);
+        }
+      else
+        {
+          /* Otherwise we need to tell the thread to abort and disown
+             the data */
+          priv->async_data->abort = TRUE;
+
+          if (mutex)
+            g_mutex_unlock (mutex);
+        }
+
+      priv->async_data = NULL;
+    }
 }
 
 static void
@@ -1553,20 +1608,24 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
 /*
  * clutter_texture_async_load_complete:
  * @self: a #ClutterTexture
+ * @bitmap: a #CoglBitmap
  * @error: load error
  *
- * If @error is %NULL, loads the #CoglBitmap into a #CoglTexture.
+ * If @error is %NULL, loads @bitmap into a #CoglTexture.
  *
  * This function emits the ::load-finished signal on @self.
  */
 static void
 clutter_texture_async_load_complete (ClutterTexture *self,
+                                     CoglBitmap     *bitmap,
                                      const GError   *error)
 {
   ClutterTexturePrivate *priv = self->priv;
   CoglHandle handle;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
   gint waste = -1;
+
+  priv->async_data = NULL;
 
   if (error == NULL)
     {
@@ -1576,14 +1635,11 @@ clutter_texture_async_load_complete (ClutterTexture *self,
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
-      handle = cogl_texture_new_from_bitmap (priv->load_bitmap,
+      handle = cogl_texture_new_from_bitmap (bitmap,
                                              waste, flags,
                                              COGL_PIXEL_FORMAT_ANY);
       clutter_texture_set_cogl_texture (self, handle);
       cogl_texture_unref (handle);
-      
-      cogl_bitmap_free (priv->load_bitmap);
-      priv->load_bitmap = NULL;
     }
 
   g_signal_emit (self, texture_signals[LOAD_FINISHED], 0, error);
@@ -1592,96 +1648,100 @@ clutter_texture_async_load_complete (ClutterTexture *self,
 }
 
 static gboolean
-clutter_texture_thread_cb (gpointer data)
+clutter_texture_thread_idle_func (gpointer user_data)
 {
-  ClutterTexture *self = data;
-  ClutterTexturePrivate *priv = self->priv;
+  ClutterTextureAsyncData *data = user_data;
 
-  priv->load_idle = 0;
+  /* Grab the mutex so we can be sure the thread has unlocked it
+     before we destroy it */
+  g_mutex_lock (data->mutex);
+  g_mutex_unlock (data->mutex);
 
-  if (priv->load_thread)
-    {
-      g_thread_join (priv->load_thread);
-      priv->load_thread = NULL;
-    }
-  else
-    return FALSE;
+  clutter_texture_async_load_complete (data->texture, data->load_bitmap,
+                                       data->load_error);
 
-  clutter_texture_async_load_complete (self, priv->load_error);
+  clutter_texture_async_data_free (data);
 
-  if (priv->load_error)
-    {
-      g_error_free (priv->load_error);
-      priv->load_error = NULL;
-    }
-  
   return FALSE;
 }
 
-static gpointer
-clutter_texture_thread_func (gpointer data)
+static void
+clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
 {
-  static GStaticMutex    thread_load_mutex = G_STATIC_MUTEX_INIT;
-  ClutterTexture        *self = data;
-  ClutterTexturePrivate *priv = self->priv;
+  ClutterTextureAsyncData *data = user_data;
+  gboolean should_abort;
 
-  /* we aquire the shared lock, only one thread is allowed to
-   * be loading at a time
-   */
-  g_static_mutex_lock (&thread_load_mutex);
-  if (priv->abort)
+  /* Make sure we haven't been told to abort before the thread had a
+     chance to run */
+  g_mutex_lock (data->mutex);
+  should_abort = data->abort;
+  g_mutex_unlock (data->mutex);
+
+  if (should_abort)
     {
-      g_static_mutex_unlock (&thread_load_mutex);
-      g_free (priv->load_filename);
-      priv->load_filename = NULL;
-      return NULL;
+      /* If we've been told to abort then main thread has disowned the
+         async data and we need to free it */
+      clutter_texture_async_data_free (data);
+      return;
     }
-  /* Try loading with imaging backend */
-  priv->load_bitmap = cogl_bitmap_new_from_file (priv->load_filename,
-                                                 &priv->load_error);
-  g_static_mutex_unlock (&thread_load_mutex);
-  g_free (priv->load_filename);
-  priv->load_filename = NULL;
 
-  /* make sure we load the image in the main thread, where we
-   * hold the main Clutter lock
-   */
-  priv->load_idle =
-    clutter_threads_add_idle (clutter_texture_thread_cb, self);
+  data->load_bitmap = cogl_bitmap_new_from_file (data->load_filename,
+                                                 &data->load_error);
 
-  return NULL;
+  /* Check again if we've been told to abort */
+  g_mutex_lock (data->mutex);
+
+  if (data->abort)
+    {
+      g_mutex_unlock (data->mutex);
+
+      clutter_texture_async_data_free (data);
+    }
+  else
+    {
+      /* Make sure we give the image to GL in the main thread, where we
+       * hold the main Clutter lock. Once load_idle is non-NULL then the
+       * main thread is guaranteed not to set the abort flag. It can't
+       * set it while we're holding the mutex so we can safely start the
+       * idle handler now without the possibility of calling the
+       * callback after it is aborted */
+      data->load_idle =
+        clutter_threads_add_idle (clutter_texture_thread_idle_func, data);
+
+      g_mutex_unlock (data->mutex);
+    }
+
+  return;
 }
 
 static gboolean
-clutter_texture_idle_func (gpointer data)
+clutter_texture_idle_func (gpointer user_data)
 {
-  ClutterTexture *self = data;
-  ClutterTexturePrivate *priv = self->priv;
-  GError *internal_error;
+  ClutterTextureAsyncData *data = user_data;
+  GError *internal_error = NULL;
 
-  internal_error = NULL;
-  priv->load_bitmap = cogl_bitmap_new_from_file (priv->load_filename,
+  data->load_bitmap = cogl_bitmap_new_from_file (data->load_filename,
                                                  &internal_error);
 
-  clutter_texture_async_load_complete (self, internal_error);
-
-  g_free (priv->load_filename);
-  priv->load_filename = NULL;
+  clutter_texture_async_load_complete (data->texture, data->load_bitmap,
+                                       internal_error);
 
   if (internal_error)
     g_error_free (internal_error);
 
+  clutter_texture_async_data_free (data);
+
   return FALSE;
 }
 
-
 /*
  * clutter_texture_async_load:
- * @self: a #ClutterTexture
+ * @self: a #ClutterTExture
+ * @filename: name of the file to load
  * @error: return location for a #GError
  *
  * Starts an asynchronous load of the file name stored inside
- * the load_filename private member.
+ * the load_filename member of @data.
  *
  * If threading is enabled we use a GThread to perform the actual
  * I/O; if threading is not enabled, we use an idle GSource.
@@ -1699,20 +1759,20 @@ clutter_texture_idle_func (gpointer data)
  *   initiated, %FALSE otherwise
  */
 static gboolean
-clutter_texture_async_load (ClutterTexture  *self,
-                            GError         **error)
+clutter_texture_async_load (ClutterTexture *self,
+                            const gchar *filename,
+                            GError **error)
 {
   ClutterTexturePrivate *priv = self->priv;
+  ClutterTextureAsyncData *data;
   gint width, height;
   gboolean res;
-
-  g_assert (priv->load_filename != NULL);
 
   /* ask the file for a size; if we cannot get the size then
    * there's no point in even continuing the asynchronous
    * loading, so we just stop there
    */
-  res = cogl_bitmap_get_size_from_file (priv->load_filename,
+  res = cogl_bitmap_get_size_from_file (filename,
                                         &width,
                                         &height);
   if (!res)
@@ -1720,6 +1780,7 @@ clutter_texture_async_load (ClutterTexture  *self,
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
 		   "Failed to create COGL texture");
+      clutter_texture_async_data_free (data);
       return FALSE;
     }
   else
@@ -1728,22 +1789,40 @@ clutter_texture_async_load (ClutterTexture  *self,
       priv->height = height;
     }
 
+  clutter_texture_async_load_cancel (self);
+
+  data = g_slice_new (ClutterTextureAsyncData);
+
+  data->abort = FALSE;
+  data->texture = self;
+  data->load_idle = 0;
+  data->load_filename = g_strdup (filename);
+  data->load_bitmap = NULL;
+  data->load_error = NULL;
+
+  priv->async_data = data;
+
   if (g_thread_supported ())
     {
-      priv->load_thread =
-        g_thread_create ((GThreadFunc) clutter_texture_thread_func,
-                         self, TRUE,
-                         error);
+      data->mutex = g_mutex_new ();
 
-      return priv->load_thread != NULL? TRUE : FALSE;
+      if (async_thread_pool == NULL)
+        /* This apparently can't fail if exclusive == FALSE */
+        async_thread_pool
+          = g_thread_pool_new (clutter_texture_thread_func,
+                               NULL, 3, FALSE, NULL);
+
+      g_thread_pool_push (async_thread_pool, data, NULL);
     }
   else
     {
-      priv->load_idle =
-        clutter_threads_add_idle (clutter_texture_idle_func, self);
+      data->mutex = NULL;
 
-      return TRUE;
+      data->load_idle
+        = clutter_threads_add_idle (clutter_texture_idle_func, data);
     }
+
+  return TRUE;
 }
 
 /**
@@ -1782,13 +1861,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (priv->load_async)
-    {
-      clutter_texture_async_load_cancel (texture);
-
-      priv->load_filename = g_strdup (filename);
-
-      return clutter_texture_async_load (texture, error);
-    }
+    return clutter_texture_async_load (texture, filename, error);
 
   if (!priv->no_slice)
     max_waste = priv->max_tile_waste;
