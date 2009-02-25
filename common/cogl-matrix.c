@@ -141,13 +141,13 @@ cogl_matrix_transform_point (const CoglMatrix *matrix,
 }
 
 void
-cogl_matrix_init_from_gl_matrix (CoglMatrix *matrix, const float *gl_matrix)
+cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 {
-  memcpy (matrix, gl_matrix, sizeof (float) * 16);
+  memcpy (matrix, array, sizeof (float) * 16);
 }
 
 const float *
-cogl_matrix_get_gl_matrix (const CoglMatrix *matrix)
+cogl_matrix_get_array (const CoglMatrix *matrix)
 {
   return (float *)matrix;
 }

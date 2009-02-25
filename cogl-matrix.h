@@ -35,8 +35,15 @@ G_BEGIN_DECLS
  * w_new = wx * x + wy * y + wz * z + ww * w
  * </programlisting>
  * Where w is normally 1
+ *
+ * Note: You must consider the members of the CoglMatrix structure read only,
+ * and all matrix modifications must be done via the cogl_matrix API. This
+ * allows Cogl to annotate the matrices internally. Violation of this will give
+ * undefined results. If you need to initialize a matrix with a constant other
+ * than the identity matrix you can use cogl_matrix_init_from_array().
  */
 typedef struct _CoglMatrix {
+
     /* column 0 */
     float xx;
     float yx;
@@ -92,7 +99,7 @@ void cogl_matrix_init_identity (CoglMatrix *matrix);
  * @b: A 4x4 transformation matrix
  *
  * This function multiples the two supplied matricies together and stores
- * the result in #result
+ * the result in @result
  */
 void cogl_matrix_multiply (CoglMatrix *result,
 			   const CoglMatrix *a,
@@ -163,22 +170,22 @@ cogl_matrix_transform_point (const CoglMatrix *matrix,
                              float *w);
 
 /**
- * cogl_matrix_init_from_gl_matrix:
+ * cogl_matrix_init_from_array:
  * @matrix: A 4x4 transformation matrix
- * @gl_matrix: A linear array of 16 Glfloats (column-major)
+ * @array: A linear array of 16 floats (column-major order)
  *
- * This initialises @matrix with the contents of @gl_matrix
+ * This initialises @matrix with the contents of @array
  */
-void cogl_matrix_init_from_gl_matrix (CoglMatrix *matrix, const float *gl_matrix);
+void cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array);
 
 /**
- * cogl_matrix_get_gl_matrix:
+ * cogl_matrix_get_array:
  * @matrix: A 4x4 transformation matrix
  *
- * This casts a CoglMatrix to a GLfloat array which can be directly passed to
+ * This casts a CoglMatrix to a float array which can be directly passed to
  * OpenGL.
  */
-const float *cogl_matrix_get_gl_matrix (const CoglMatrix *matrix);
+const float *cogl_matrix_get_array (const CoglMatrix *matrix);
 
 G_END_DECLS
 
