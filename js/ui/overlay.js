@@ -122,7 +122,7 @@ Sideshow.prototype = {
                                                text: ""});
         this.actor.add_actor(this._searchEntry);
         this._searchQueued = false;
-        this._searchEntry.connect('notify::text', function (se, prop) {
+        this._searchEntry.connect('text-changed', function (se, prop) {
             if (me._searchQueued)
                 return;
             me._searchQueued = true;
