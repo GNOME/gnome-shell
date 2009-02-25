@@ -177,7 +177,8 @@ Sideshow.prototype = {
             return false;
         });
 
-        this._appsSection = new Big.Box({ x: SIDESHOW_PAD,
+        this._appsSection = new Big.Box({ background_color: OVERLAY_BACKGROUND_COLOR,
+                                          x: SIDESHOW_PAD,
                                           y: this._searchBox.y + this._searchBox.height,
                                           padding_top: SIDESHOW_SECTION_PADDING_TOP,
                                           spacing: SIDESHOW_SECTION_SPACING});
@@ -209,7 +210,8 @@ Sideshow.prototype = {
   
         this._appsSectionDefaultHeight = this._appsSection.height;
     
-        this._docsSection = new Big.Box({ x: SIDESHOW_PAD,
+        this._docsSection = new Big.Box({ background_color: OVERLAY_BACKGROUND_COLOR,
+                                          x: SIDESHOW_PAD,
                                           y: this._appsSection.y + this._appsSection.height,
                                           padding_top: SIDESHOW_SECTION_PADDING_TOP,
                                           spacing: SIDESHOW_SECTION_SPACING});
@@ -233,6 +235,8 @@ Sideshow.prototype = {
         this._docsSection.append(moreDocsBox, Big.BoxPackFlags.EXPAND);
 
         this.actor.add_actor(this._docsSection);
+
+        this._docsSectionDefaultHeight = this._docsSection.height;
 
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
@@ -305,38 +309,47 @@ Sideshow.prototype = {
         this._unsetMoreDocsMode();
     },
 
-    // Sets the 'More' mode for browsing applications. Slides down the documents section. Gives more space to 
-    // the applications section once sliding of the documents section is completed. 
+    // Sets the 'More' mode for browsing applications. Updates the applications section to have more items.
+    // Slides down the documents section to reveal the additional applications.
     _setMoreAppsMode: function() {
         if (this._moreAppsMode)
             return;
-
+        
         this._moreAppsMode = true;
 
-        if (!this._docsSection.has_clip)
-            this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
+        this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
+
+        this._moreAppsText.hide(); 
+        this._appsSection.set_clip(0, 0, this._appsSection.width, this._appsSection.height);
 
         // Move the selection to the applications section if it was in the docs section.
         this._docDisplay.unsetSelected();
         if (!this._appDisplay.hasSelected())
             this._appDisplay.selectFirstItem();
-
-        this._moreAppsText.hide(); 
-
+        
+        this._updateAppsSection();
+ 
         Tweener.addTween(this._docsSection,
                          { y: this._docsSection.y + this._docsSection.height,
                            clipHeightBottom: 0,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this._onDocsSectionRemoved,
-                           onCompleteScope: this
+                           transition: "easeOutQuad"
                          });
+
+        // We need to be expandig the clip on the applications section so that the first additional
+        // application to be displayed does not appear abruptly. 
+        Tweener.addTween(this._appsSection,
+                         { clipHeightBottom: this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT * 2 - LABEL_HEIGHT - SIDESHOW_SECTION_SPACING,
+                           time: ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._onAppsSectionExpanded,
+                           onCompleteScope: this
+                         }); 
                    
         this.emit('more-activated'); 
     },
 
-    // Unsets the 'More' mode for browsing applications. Updates applications section to have
-    // smaller dimensions. Slides in the documents section. 
+    // Unsets the 'More' mode for browsing applications. Slides in the documents section. 
     _unsetMoreAppsMode: function() {
         if (!this._moreAppsMode)
             return;
@@ -344,34 +357,48 @@ Sideshow.prototype = {
         this._moreAppsMode = false;
 
         this._moreAppsText.hide();  
-        this._updateAppsSection();
+
+        this._appsSection.set_clip(0, 0, this._appsSection.width, this._appsSection.height);
 
         this._docDisplay.show();
+
+        // We need to be reducing the clip on the applications section so that the last application to
+        // be removed does not disappear abruptly.
+        Tweener.addTween(this._appsSection,
+                         { clipHeightBottom: this._appsSectionDefaultHeight - LABEL_HEIGHT - SIDESHOW_SECTION_SPACING,
+                           time: ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._onAppsSectionReduced,
+                           onCompleteScope: this
+                         }); 
 
         Tweener.addTween(this._docsSection,
                          { y: this._docsSection.y - this._docsSection.height,
                            clipHeightBottom: this._docsSection.height,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this._onDocsSectionRestored,
-                           onCompleteScope: this
+                           transition: "easeOutQuad"
                          });  
+ 
         this.emit('less-activated');
     },
 
+    // Removes the clip from the applications section to reveal the 'Less...' text.
     // Hides the documents section so that it doesn't get updated on new searches.
-    // Updates the dimensions of the applications section.
-    _onDocsSectionRemoved: function() {
+    _onAppsSectionExpanded: function() {
+        this._appsSection.remove_clip(); 
         this._docDisplay.hide();
-        this._updateAppsSection();
     },
 
-    // Selects the first item in the documents section if applications section has no items.  
-    // Removes the clip from the apps section, so that the clip does not limit the size of the 
-    // section if it is expanded later.
-    _onDocsSectionRestored: function() { 
+    // Updates the applications section to contain fewer items. Selects the first item in the 
+    // documents section if applications section has no items.
+    // Removes the clip from the applications section to reveal the 'More...' text. 
+    // Removes the clip from the documents section, so that the clip does not limit the size of 
+    // the section if it is expanded later.
+    _onAppsSectionReduced: function() { 
+        this._updateAppsSection(); 
         if (!this._appDisplay.hasItems())
             this._docDisplay.selectFirstItem();
+        this._appsSection.remove_clip();
         this._docsSection.remove_clip(); 
     },
 
@@ -385,14 +412,15 @@ Sideshow.prototype = {
                                               EXPANDED_SIDESHOW_COLUMNS);
             this._moreAppsText.text = "Less...";
         } else {
-            this._appDisplay.updateDimensions(this._width, this._itemDisplayHeight / 2, SIDESHOW_COLUMNS);
+            this._appDisplay.updateDimensions(this._width, this._appsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
             this._moreAppsText.text = "More...";
         }
         this._moreAppsText.show(); 
     },
 
-    // Sets the 'More' mode for browsing documents. Slides up the applications section. Gives more space to 
-    // the documents section once sliding of the applications section is completed. 
+    // Sets the 'More' mode for browsing documents. Updates the documents section to have more items.
+    // Slides up the applications section and the documents section at the same time to reveal the additional
+    // documents.
     _setMoreDocsMode: function() {
         if (this._moreDocsMode)
             return;
@@ -402,27 +430,39 @@ Sideshow.prototype = {
         if (!this._appsSection.has_clip)
             this._appsSection.set_clip(0, 0, this._appsSection.width, this._appsSection.height);
 
+        this._moreDocsText.hide(); 
+        this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
+
         // Move the selection to the docs section if it was in the apps section.
         this._appDisplay.unsetSelected();
         if (!this._docDisplay.hasSelected())
             this._docDisplay.selectFirstItem();
 
-        this._moreDocsText.hide(); 
+        
+        this._updateDocsSection();
         
         Tweener.addTween(this._appsSection,
                          { y: this._appsSection.y - this._appsSection.height,
                            clipHeightTop: 0,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this._onAppsSectionRemoved,
-                           onCompleteScope: this
+                           transition: "easeOutQuad"
                          });
-                   
+        // We do not slide in the 'Less...' text along with the documents so that the documents appear from the same
+        // edge where the last document was displayed, and not have that edge gradually move over to where the 'Less'
+        // text is displayed.
+        Tweener.addTween(this._docsSection,
+                         { y: this._searchBox.y + this._searchBox.height,
+                           clipHeightBottom: this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT * 2 - LABEL_HEIGHT - SIDESHOW_SECTION_SPACING,
+                           time: ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._onDocsSectionExpanded,
+                           onCompleteScope: this
+                         });                   
         this.emit('more-activated'); 
     },
 
-    // Unsets the 'More' mode for browsing documents. Updates documents section to have
-    // smaller dimensions. Slides in the applications section. 
+    // Unsets the 'More' mode for browsing documents. Slides in the applications section
+    // and slides down the documents section. 
     _unsetMoreDocsMode: function() {
         if (!this._moreDocsMode)
             return;
@@ -430,36 +470,45 @@ Sideshow.prototype = {
         this._moreDocsMode = false;
 
         this._moreDocsText.hide();  
-
-        this._docsSection.y = this._docsSection.y + this._appsSectionDefaultHeight;
-        this._updateDocsSection();
+         
+        this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
 
         this._appDisplay.show();
 
+        Tweener.addTween(this._docsSection,
+                         { y: this._docsSection.y + this._appsSectionDefaultHeight,
+                           clipHeightBottom: this._docsSectionDefaultHeight - LABEL_HEIGHT - SIDESHOW_SECTION_SPACING,
+                           time: ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._onDocsSectionReduced,
+                           onCompleteScope: this
+                         });   
         Tweener.addTween(this._appsSection,
                          { y: this._appsSection.y + this._appsSection.height,
                            clipHeightTop: this._appsSection.height,
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this._onAppsSectionRestored,
-                           onCompleteScope: this
+                           transition: "easeOutQuad"
                          });  
         this.emit('less-activated');
     },
 
+    // Removes the clip from the documents section to reveal the 'Less...' text.
     // Hides the applications section so that it doesn't get updated on new searches.
-    // Updates the dimensions of the documents section.
-    _onAppsSectionRemoved: function() {
+    _onDocsSectionExpanded: function() {
+        this._docsSection.remove_clip(); 
         this._appDisplay.hide();
-        this._docsSection.y = this._searchBox.y + this._searchBox.height;
-        this._updateDocsSection();
     },
 
-    // Selects the first item in the apps section if docs section has no items. Removes the clip from the apps section, 
-    // so that the clip does not limit the size of the section if it is expanded later.
-    _onAppsSectionRestored: function() { 
+    // Updates the documents section to contain fewer items. Selects the first item in the 
+    // applications section if applications section has no items.
+    // Removes the clip from the documents section to reveal the 'More...' text. 
+    // Removes the clip from the applications section, so that the clip does not limit the size of 
+    // the section if it is expanded later.
+    _onDocsSectionReduced: function() {
+        this._updateDocsSection();  
         if (!this._docDisplay.hasItems())
             this._appDisplay.selectFirstItem();
+        this._docsSection.remove_clip(); 
         this._appsSection.remove_clip(); 
     },
 
@@ -473,7 +522,7 @@ Sideshow.prototype = {
                                               EXPANDED_SIDESHOW_COLUMNS);
             this._moreDocsText.text = "Less...";
         } else {
-            this._docDisplay.updateDimensions(this._width, this._itemDisplayHeight - (this._appsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT), SIDESHOW_COLUMNS);
+            this._docDisplay.updateDimensions(this._width, this._docsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
             this._moreDocsText.text = "More...";
         }
         this._moreDocsText.show(); 
@@ -523,6 +572,7 @@ Overlay.prototype = {
          
         this._sideshow = new Sideshow(this._group, sideshowWidth);
         this._workspaces = null;
+        this._workspacesBackground = null;
         this._sideshow.connect('activated', function(sideshow) {
             // TODO - have some sort of animation/effect while
             // transitioning to the new app.  We definitely need
@@ -536,6 +586,11 @@ Overlay.prototype = {
                 let workspacesX = displayGridColumnWidth * asideXFactor + WORKSPACE_GRID_PADDING;
                 me._workspaces.addButton.hide();
                 me._workspaces.updatePosition(workspacesX, null);
+                Tweener.addTween(me._workspacesBackground,
+                                 { x: displayGridColumnWidth * asideXFactor,
+                                   time: ANIMATION_TIME,
+                                   transition: "easeOutQuad"
+                                 });               
             }    
         });
         this._sideshow.connect('less-activated', function(sideshow) {
@@ -543,6 +598,11 @@ Overlay.prototype = {
                 let workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
                 me._workspaces.addButton.show();
                 me._workspaces.updatePosition(workspacesX, null);
+                Tweener.addTween(me._workspacesBackground,
+                                 { x: displayGridColumnWidth,
+                                   time: ANIMATION_TIME,
+                                   transition: "easeOutQuad"
+                                 });  
             }
         });
     },
@@ -573,6 +633,18 @@ Overlay.prototype = {
         let addButtonSize = Math.floor(displayGridRowHeight * 3/5);
         let addButtonX = workspacesX + workspacesWidth - addButtonSize;
         let addButtonY = screenHeight - Math.floor(displayGridRowHeight * 4/5);
+
+        // We use the workspaces background to have it fill the full height of the overlay when we are sliding
+        // the workspaces out to uncover the expanded items display and also when we are sliding the
+        // workspaces back in to gradually cover the expanded items display. If we don't have such background,
+        // we get a few items above or below the workspaces display that disappear or appear abruptly.  
+        this._workspacesBackground = new Clutter.Rectangle({ color: OVERLAY_BACKGROUND_COLOR,
+                                                             reactive: false,
+                                                             x: displayGridColumnWidth,
+                                                             y: Panel.PANEL_HEIGHT,
+                                                             width: displayGridColumnWidth * columnsUsed,
+                                                             height: global.screen_width - Panel.PANEL_HEIGHT });
+        this._group.add_actor(this._workspacesBackground);
 
         this._workspaces = new Workspaces.Workspaces(workspacesWidth, workspacesHeight, workspacesX, workspacesY, 
                                                      addButtonSize, addButtonX, addButtonY);
