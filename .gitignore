@@ -25,4 +25,5 @@ src/*-marshal.[ch]
 src/Makefile
 src/Makefile.in
 src/gnomeshell-taskpanel
+src/gnome-shell
 stamp-h1

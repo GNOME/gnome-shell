@@ -235,13 +235,16 @@ try:
         print "Shell is dead"
 
 except KeyboardInterrupt, e:
-    os.kill(shell.pid, signal.SIGKILL)
+    try:
+        os.kill(shell.pid, signal.SIGKILL)
+    except:
+        pass
     shell.wait()
     if options.verbose:
         print "Shell killed"
 
 finally:
-    if metacity_pid or gnome_panel_pid:
+    if not run_in_xephyr and (metacity_pid or gnome_panel_pid):
         # Restart gnome-panel and window manager
         if options.verbose:
             print "Restarting Metacity and Gnome Panel"
