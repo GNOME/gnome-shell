@@ -1418,7 +1418,31 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * completed.
  *
  * Calling this function on an actor that is already being animated
- * will cause the current animation to change with the new final value.
+ * will cause the current animation to change with the new final values,
+ * the new easing mode and the new duration - that is, this code:
+ *
+ * |[
+ *   clutter_actor_animate (actor, 250, CLUTTER_LINEAR,
+ *                          "width", 100,
+ *                          "height", 100,
+ *                          NULL);
+ *   clutter_actor_animate (actor, 500, CLUTTER_EASE_IN_CUBIC,
+ *                          "x", 100,
+ *                          "y", 100,
+ *                          "width", 200,
+ *                          NULL);
+ * ]|
+ *
+ * is the equivalent of:
+ *
+ * |[
+ *   clutter_actor_animate (actor, 500, CLUTTER_EASE_IN_CUBIC,
+ *                          "x", 100,
+ *                          "y", 100,
+ *                          "width", 200,
+ *                          "height", 100,
+ *                          NULL);
+ * ]|
  *
  * <note>Unless the animation is looping, it will become invalid as soon
  * as it is complete. To avoid this, you should keep a reference on the
