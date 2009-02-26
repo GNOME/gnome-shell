@@ -447,7 +447,7 @@ update_pango_context (ClutterBackend *backend,
                       PangoContext   *context)
 {
   PangoFontDescription *font_desc;
-  cairo_font_options_t *font_options;
+  const cairo_font_options_t *font_options;
   const gchar *font_name;
   gdouble resolution;
 
@@ -2671,7 +2671,11 @@ void
 clutter_set_font_flags (ClutterFontFlags flags)
 {
   ClutterFontFlags old_flags, changed_flags;
-  cairo_font_options_t *font_options;
+  const cairo_font_options_t *font_options;
+  cairo_font_options_t *new_font_options;
+  ClutterBackend *backend;
+
+  backend = clutter_get_default_backend ();
 
   if (CLUTTER_CONTEXT ()->font_map)
     cogl_pango_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
@@ -2680,26 +2684,25 @@ clutter_set_font_flags (ClutterFontFlags flags)
 
   old_flags = clutter_get_font_flags ();
 
-  font_options = clutter_backend_get_font_options (CLUTTER_CONTEXT ()->backend);
-  font_options = cairo_font_options_copy (font_options);
+  font_options = clutter_backend_get_font_options (backend);
+  new_font_options = cairo_font_options_copy (font_options);
 
   /* Only set the font options that have actually changed so we don't
      override a detailed setting from the backend */
   changed_flags = old_flags ^ flags;
 
   if ((changed_flags & CLUTTER_FONT_HINTING))
-    cairo_font_options_set_hint_style (font_options,
+    cairo_font_options_set_hint_style (new_font_options,
                                        (flags & CLUTTER_FONT_HINTING)
                                        ? CAIRO_HINT_STYLE_FULL
                                        : CAIRO_HINT_STYLE_NONE);
 
-  clutter_backend_set_font_options (CLUTTER_CONTEXT ()->backend, font_options);
+  clutter_backend_set_font_options (backend, new_font_options);
 
-  cairo_font_options_destroy (font_options);
+  cairo_font_options_destroy (new_font_options);
 
   if (CLUTTER_CONTEXT ()->pango_context)
-    update_pango_context (CLUTTER_CONTEXT ()->backend,
-                          CLUTTER_CONTEXT ()->pango_context);
+    update_pango_context (backend, CLUTTER_CONTEXT ()->pango_context);
 }
 
 /**
@@ -2717,7 +2720,7 @@ clutter_get_font_flags (void)
 {
   ClutterMainContext *ctxt = CLUTTER_CONTEXT ();
   CoglPangoFontMap *font_map = NULL;
-  cairo_font_options_t *font_options;
+  const cairo_font_options_t *font_options;
   ClutterFontFlags flags = 0;
 
   font_map = CLUTTER_CONTEXT ()->font_map;

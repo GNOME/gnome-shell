@@ -89,21 +89,21 @@ GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
 
-void                  clutter_backend_set_resolution            (ClutterBackend       *backend,
-                                                                 gdouble               dpi);
-gdouble               clutter_backend_get_resolution            (ClutterBackend       *backend);
-void                  clutter_backend_set_double_click_time     (ClutterBackend       *backend,
-                                                                 guint                 msec);
-guint                 clutter_backend_get_double_click_time     (ClutterBackend       *backend);
-void                  clutter_backend_set_double_click_distance (ClutterBackend       *backend,
-                                                                 guint                 distance);
-guint                 clutter_backend_get_double_click_distance (ClutterBackend       *backend);
-void                  clutter_backend_set_font_options          (ClutterBackend       *backend,
-                                                                 cairo_font_options_t *options);
-cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend       *backend);
-void                  clutter_backend_set_font_name             (ClutterBackend       *backend,
-                                                                 const gchar          *font_name);
-G_CONST_RETURN gchar *clutter_backend_get_font_name             (ClutterBackend       *backend);
+void                        clutter_backend_set_resolution            (ClutterBackend             *backend,
+                                                                       gdouble                     dpi);
+gdouble                     clutter_backend_get_resolution            (ClutterBackend             *backend);
+void                        clutter_backend_set_double_click_time     (ClutterBackend             *backend,
+                                                                       guint                       msec);
+guint                       clutter_backend_get_double_click_time     (ClutterBackend             *backend);
+void                        clutter_backend_set_double_click_distance (ClutterBackend             *backend,
+                                                                       guint                       distance);
+guint                       clutter_backend_get_double_click_distance (ClutterBackend             *backend);
+void                        clutter_backend_set_font_options          (ClutterBackend             *backend,
+                                                                       const cairo_font_options_t *options);
+const cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend             *backend);
+void                        clutter_backend_set_font_name             (ClutterBackend             *backend,
+                                                                       const gchar                *font_name);
+G_CONST_RETURN gchar *      clutter_backend_get_font_name             (ClutterBackend             *backend);
 
 G_END_DECLS
 
