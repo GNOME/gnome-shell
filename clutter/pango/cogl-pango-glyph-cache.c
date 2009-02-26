@@ -129,7 +129,7 @@ cogl_pango_glyph_cache_hash_func (gconstpointer key)
      number. We can safely directly compare the pointers because the
      key holds a reference to the font so it is not possible that a
      different font will have the same memory address */
-  return (guint) cache_key->font ^ cache_key->glyph;
+  return GPOINTER_TO_UINT (cache_key->font) ^ cache_key->glyph;
 }
 
 static gboolean
