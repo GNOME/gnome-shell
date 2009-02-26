@@ -11,6 +11,7 @@ const Signals = imports.signals;
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
+const Link = imports.ui.link;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Tweener = imports.ui.tweener;
@@ -198,12 +199,11 @@ Sideshow.prototype = {
         this._appsSection.append(this._appDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreAppsBox = new Big.Box({x_align: Big.BoxAlignment.END});
-        this._moreAppsText = new Clutter.Text({ color: SIDESHOW_TEXT_COLOR,
-                                                font_name: "Sans Bold 14px",
-                                                text: "More...",
-                                                height: LABEL_HEIGHT,
-                                                reactive: true});
-        moreAppsBox.append(this._moreAppsText, Big.BoxPackFlags.EXPAND);
+        this._moreAppsLink = new Link.Link({ color: SIDESHOW_TEXT_COLOR,
+                                             font_name: "Sans Bold 14px",
+                                             text: "More...",
+                                             height: LABEL_HEIGHT });
+        moreAppsBox.append(this._moreAppsLink.actor, Big.BoxPackFlags.EXPAND);
         this._appsSection.append(moreAppsBox, Big.BoxPackFlags.EXPAND);
 
         this.actor.add_actor(this._appsSection);
@@ -226,12 +226,11 @@ Sideshow.prototype = {
         this._docsSection.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreDocsBox = new Big.Box({x_align: Big.BoxAlignment.END});
-        this._moreDocsText = new Clutter.Text({ color: SIDESHOW_TEXT_COLOR,
-                                                font_name: "Sans Bold 14px",
-                                                text: "More...",
-                                                height: LABEL_HEIGHT,
-                                                reactive: true});
-        moreDocsBox.append(this._moreDocsText, Big.BoxPackFlags.EXPAND);
+        this._moreDocsLink = new Link.Link({ color: SIDESHOW_TEXT_COLOR,
+                                             font_name: "Sans Bold 14px",
+                                             text: "More...",
+                                             height: LABEL_HEIGHT });
+        moreDocsBox.append(this._moreDocsLink.actor, Big.BoxPackFlags.EXPAND);
         this._docsSection.append(moreDocsBox, Big.BoxPackFlags.EXPAND);
 
         this.actor.add_actor(this._docsSection);
@@ -267,24 +266,22 @@ Sideshow.prototype = {
                 me._appDisplay.selectFirstItem();
         });
 
-        this._moreAppsText.connect('button-press-event',
+        this._moreAppsLink.connect('clicked',
             function(o, event) {
                 if (me._moreAppsMode) {
                     me._unsetMoreAppsMode();
                 }  else {
                     me._setMoreAppsMode();
                 }
-                return true;
             });
 
-        this._moreDocsText.connect('button-press-event',
+        this._moreDocsLink.connect('clicked',
             function(o, event) {
                 if (me._moreDocsMode) {
                     me._unsetMoreDocsMode();
                 }  else {
                     me._setMoreDocsMode();
                 }
-                return true;
             });
     },
 
@@ -319,7 +316,7 @@ Sideshow.prototype = {
 
         this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
 
-        this._moreAppsText.hide(); 
+        this._moreAppsLink.actor.hide();
         this._appsSection.set_clip(0, 0, this._appsSection.width, this._appsSection.height);
 
         // Move the selection to the applications section if it was in the docs section.
@@ -356,7 +353,7 @@ Sideshow.prototype = {
 
         this._moreAppsMode = false;
 
-        this._moreAppsText.hide();  
+        this._moreAppsLink.actor.hide();
 
         this._appsSection.set_clip(0, 0, this._appsSection.width, this._appsSection.height);
 
@@ -410,12 +407,12 @@ Sideshow.prototype = {
             this._appDisplay.updateDimensions(this._width + this._additionalWidth, 
                                               this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
                                               EXPANDED_SIDESHOW_COLUMNS);
-            this._moreAppsText.text = "Less...";
+            this._moreAppsLink.setText("Less...");
         } else {
             this._appDisplay.updateDimensions(this._width, this._appsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
-            this._moreAppsText.text = "More...";
+            this._moreAppsLink.setText("More...");
         }
-        this._moreAppsText.show(); 
+        this._moreAppsLink.actor.show();
     },
 
     // Sets the 'More' mode for browsing documents. Updates the documents section to have more items.
@@ -430,7 +427,7 @@ Sideshow.prototype = {
         if (!this._appsSection.has_clip)
             this._appsSection.set_clip(0, 0, this._appsSection.width, this._appsSection.height);
 
-        this._moreDocsText.hide(); 
+        this._moreDocsLink.actor.hide();
         this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
 
         // Move the selection to the docs section if it was in the apps section.
@@ -469,7 +466,7 @@ Sideshow.prototype = {
 
         this._moreDocsMode = false;
 
-        this._moreDocsText.hide();  
+        this._moreDocsLink.actor.hide();
          
         this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
 
@@ -520,12 +517,12 @@ Sideshow.prototype = {
             this._docDisplay.updateDimensions(this._width + this._additionalWidth, 
                                               this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
                                               EXPANDED_SIDESHOW_COLUMNS);
-            this._moreDocsText.text = "Less...";
+            this._moreDocsLink.setText("Less...");
         } else {
             this._docDisplay.updateDimensions(this._width, this._docsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
-            this._moreDocsText.text = "More...";
+            this._moreDocsLink.setText("More...");
         }
-        this._moreDocsText.show(); 
+        this._moreDocsLink.actor.show();
     }
 
 };
