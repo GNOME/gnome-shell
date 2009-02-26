@@ -153,6 +153,7 @@ then
 fi
 
 BACKEND_PC_FILES=""
+X11_PC_FILES=""
 
 # Check for X though could be redundant if backend does not need it.
 AC_MSG_CHECKING([for X11])
@@ -179,7 +180,7 @@ if test "x$have_x11" = "xno"; then
     AC_MSG_RESULT([found])
   fi
 else
-  BACKEND_PC_FILES="$BACKEND_PC_FILES x11"
+  X11_PC_FILES="x11"
   AC_MSG_RESULT([found])
 fi
 
@@ -188,7 +189,7 @@ PKG_CHECK_EXISTS([xfixes >= 3], [have_xfixes=yes], [have_xfixes=no])
 if test "x$have_xfixes" = "xyes"; then
   AC_DEFINE(HAVE_XFIXES, 1, [Define to 1 if we have the XFIXES X extension])
   X11_LIBS="$X11_LIBS -lXfixes"
-  BACKEND_PC_FILES="$BACKEND_PC_FILES xfixes"
+  X11_PC_FILES="$X11_PC_FILES xfixes"
   AC_MSG_RESULT([found])
 else
   AC_MSG_RESULT([not found])
@@ -199,7 +200,7 @@ PKG_CHECK_EXISTS([xdamage], [have_xdamage=yes], [have_xdamage=no])
 if test "x$have_xdamage" = "xyes"; then
   AC_DEFINE(HAVE_XDAMAGE, 1, [Define to 1 if we have the XDAMAGE X extension])
   X11_LIBS="$X11_LIBS -lXdamage"
-  BACKEND_PC_FILES="$BACKEND_PC_FILES xdamage"
+  X11_PC_FILES="$X11_PC_FILES xdamage"
   AC_MSG_RESULT([found])
 else
   AC_MSG_RESULT([not found])
@@ -210,7 +211,7 @@ PKG_CHECK_EXISTS([xcomposite >= 0.4], [have_xcomposite=yes], [have_xcomposite=no
 if test "x$have_xcomposite" = "xyes"; then
   AC_DEFINE(HAVE_XCOMPOSITE, 1, [Define to 1 if we have the XCOMPOSITE X extension])
   X11_LIBS="$X11_LIBS -lXcomposite"
-  BACKEND_PC_FILES="$BACKEND_PC_FILES xcomposite"
+  X11_PC_FILES="$X11_PC_FILES xcomposite"
   AC_MSG_RESULT([found])
 else
   AC_MSG_RESULT([not found])
@@ -246,7 +247,7 @@ AC_ARG_ENABLE(xinput,
 if test "x$xinput" = "xyes"; then
       AC_DEFINE(USE_XINPUT, 1, Use the XINPUT X extension)
       X11_LIBS="$X11_LIBS -lXi"
-      BACKEND_PC_FILES="$BACKEND_PC_FILES xi"
+      BACKEND_PC_FILES="$X11_PC_FILES xi"
 fi
 
 dnl This is only used to decide whether to build
@@ -402,6 +403,8 @@ case $clutterbackend in
     if test "x$have_gl_pc" = "xyes"; then
       BACKEND_PC_FILES="$BACKEND_PC_FILES gl"
     fi
+
+    BACKEND_PC_FILES="$BACKEND_PC_FILES $X11_PC_FILES"
     ;;
 
   eglx)
@@ -429,6 +432,8 @@ case $clutterbackend in
 
     EGL_LIBS="$GLES_LIBS $TSLIB_LIBS"
     EGL_CFLAGS="$TSLIB_CFLAGS"
+
+    BACKEND_PC_FILES="$BACKEND_PC_FILES $X11_PC_FILES"
     ;;
 
   fruity)
