@@ -149,7 +149,7 @@ GenericDisplayItem.prototype = {
                                                font_name: "Sans 12px",
                                                width: text_width,
                                                ellipsize: Pango.EllipsizeMode.END,
-                                               text: descriptionText,
+                                               text: descriptionText ? descriptionText : "",
                                                x: this._name.x,
                                                y: this._name.height + 4 });
         this.actor.add_actor(this._description);
