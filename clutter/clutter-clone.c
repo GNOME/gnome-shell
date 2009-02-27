@@ -65,6 +65,8 @@ struct _ClutterClonePrivate
   ClutterActor *clone_source;
 };
 
+static void clutter_clone_set_source_internal (ClutterClone *clone,
+					       ClutterActor *source);
 static void
 clutter_clone_get_preferred_width (ClutterActor *self,
                                    ClutterUnit   for_height,
@@ -231,13 +233,7 @@ clutter_clone_get_property (GObject    *gobject,
 static void
 clutter_clone_dispose (GObject *gobject)
 {
-  ClutterClonePrivate *priv = CLUTTER_CLONE (gobject)->priv;
-
-  if (priv->clone_source)
-    {
-      g_object_unref (priv->clone_source);
-      priv->clone_source = NULL;
-    }
+  clutter_clone_set_source_internal (CLUTTER_CLONE (gobject), NULL);
 
   G_OBJECT_CLASS (clutter_clone_parent_class)->dispose (gobject);
 }
@@ -302,6 +298,46 @@ clutter_clone_new (ClutterActor *source)
   return g_object_new (CLUTTER_TYPE_CLONE, "source", source,  NULL);
 }
 
+static void
+clone_source_queue_redraw_cb (ClutterActor *source,
+			      ClutterActor *origin,
+			      ClutterClone *clone)
+{
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (clone));
+}
+
+static void
+clutter_clone_set_source_internal (ClutterClone *clone,
+				   ClutterActor *source)
+{
+  ClutterClonePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_CLONE (clone));
+  g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
+
+  priv = clone->priv;
+
+  if (priv->clone_source)
+    {
+      g_signal_handlers_disconnect_by_func (priv->clone_source,
+					    (void *) clone_source_queue_redraw_cb,
+					    clone);
+      g_object_unref (priv->clone_source);
+      priv->clone_source = NULL;
+    }
+
+  if (source)
+    {
+      priv->clone_source = g_object_ref (source);
+      g_signal_connect (priv->clone_source, "queue-redraw",
+			G_CALLBACK (clone_source_queue_redraw_cb), clone);
+    }
+
+  g_object_notify (G_OBJECT (clone), "source");
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
+}
+
 /**
  * clutter_clone_set_source:
  * @clone: a #ClutterClone
@@ -315,24 +351,10 @@ void
 clutter_clone_set_source (ClutterClone *clone,
                           ClutterActor *source)
 {
-  ClutterClonePrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_CLONE (clone));
   g_return_if_fail (source == NULL || CLUTTER_IS_ACTOR (source));
 
-  priv = clone->priv;
-
-  if (priv->clone_source)
-    {
-      g_object_unref (priv->clone_source);
-      priv->clone_source = NULL;
-    }
-
-  if (source)
-    priv->clone_source = g_object_ref (source);
-
-  g_object_notify (G_OBJECT (clone), "source");
-
+  clutter_clone_set_source_internal (clone, source);
   clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
 }
 
