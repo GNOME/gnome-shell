@@ -2887,11 +2887,9 @@ clutter_text_set_markup_internal (ClutterText *self,
 /**
  * clutter_text_set_text:
  * @self: a #ClutterText
- * @text: the text to set
+ * @text: the text to set. Passing %NULL is the same as passing "" (the empty string)
  *
- * Sets the contents of a #ClutterText actor. The @text string
- * must not be %NULL; to unset the current contents of the
- * #ClutterText actor simply pass "" (an empty string).
+ * Sets the contents of a #ClutterText actor.
  *
  * Since: 1.0
  */
@@ -2900,10 +2898,9 @@ clutter_text_set_text (ClutterText *self,
                        const gchar *text)
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
-  g_return_if_fail (text != NULL);
 
   clutter_text_set_use_markup_internal (self, FALSE);
-  clutter_text_set_text_internal (self, text);
+  clutter_text_set_text_internal (self, text ? text : "");
 
   clutter_text_dirty_cache (self);
 
@@ -2913,7 +2910,7 @@ clutter_text_set_text (ClutterText *self,
 /**
  * clutter_text_set_markup:
  * @self: a #ClutterText
- * @markup: a string containing Pango markup
+ * @markup: a string containing Pango markup. Passing %NULL is the same as passing "" (the empty string)
  *
  * Sets @markup as the contents of a #ClutterText.
  *
@@ -2932,10 +2929,9 @@ clutter_text_set_markup (ClutterText *self,
                          const gchar *markup)
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
-  g_return_if_fail (markup != NULL);
 
   clutter_text_set_use_markup_internal (self, TRUE);
-  clutter_text_set_markup_internal (self, markup);
+  clutter_text_set_markup_internal (self, markup ? markup : "");
 
   clutter_text_dirty_cache (self);
 
