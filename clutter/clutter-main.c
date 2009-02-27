@@ -1748,7 +1748,10 @@ emit_event (ClutterEvent *event,
 
   /* reentrancy check */
   if (lock != FALSE)
-    return;
+    {
+      g_warning ("Tried emitting event during event delivery, bailing out.n");
+      return;
+    }
 
   lock = TRUE;
 
