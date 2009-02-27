@@ -114,13 +114,25 @@ def start_shell():
     js_dir = os.path.join(top_dir, "js")
     data_dir = os.path.join(top_dir, "data")
 
+    # Work around Ubuntu xulrunner bug,
+    # http://bugzilla.gnome.org/show_bug.cgi?id=573413
+    mozjs_ld_library_path = ''
+    pkgconfig = subprocess.Popen(['pkg-config', '--variable=sdkdir', 'mozilla-js'],
+                                 stdout=subprocess.PIPE)
+    mozjs_sdkdir = pkgconfig.communicate()[0].strip()
+    pkgconfig.wait()
+    if pkgconfig.returncode == 0:
+        mozjs_libdir = re.sub('-(sdk|devel)', '', mozjs_sdkdir)
+        if os.path.exists(mozjs_libdir + '/libmozjs.so'):
+            mozjs_ld_library_path = ':' + mozjs_libdir
+
     # Set up environment
     env = dict(os.environ)
     env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
                 'GNOME_SHELL_DATADIR' : data_dir,
                 'GI_TYPELIB_PATH'     : plugin_dir,
                 'PATH'                : '@META_BIN_DIR@:' + os.environ.get('PATH', '') + ':' + plugin_dir,
-                'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir,
+                'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir + mozjs_ld_library_path,
                 'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
     if not options.verbose:
