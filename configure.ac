@@ -686,6 +686,7 @@ AC_CONFIG_FILES([
         clutter/cogl/cogl.h
         clutter/cogl/cogl-defines-gl.h:clutter/cogl/gl/cogl-defines.h.in
         clutter/cogl/cogl-defines-gles.h:clutter/cogl/gles/cogl-defines.h.in
+        clutter/cogl/cogl.pc
         clutter/cogl/gl/Makefile
         clutter/cogl/gles/Makefile
         clutter/json/Makefile

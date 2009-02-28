@@ -20,6 +20,7 @@ clutter/stamp-*
 /clutter/cogl/cogl-defines-gl.h
 /clutter/cogl/cogl-defines-gles.h
 /clutter/cogl/cogl.h
+/clutter/cogl/*.pc
 /clutter/cogl/gles/cogl-fixed-vertex-shader.[ch]
 /clutter/cogl/gles/cogl-fixed-fragment-shader.[ch]
 /clutter/*.gir
