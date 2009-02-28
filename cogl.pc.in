@@ -1,0 +1,15 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+apiversion=@CLUTTER_API_VERSION@
+requires=@CLUTTER_REQUIRES@
+backend=@clutterbackend@
+cogl=@CLUTTER_COGL@
+
+Name: COGL
+Description: Clutter GL abstraction library (${cogl} backend)
+Version: @VERSION@
+Libs: -L${libdir} -lclutter-${backend}-${apiversion}
+Cflags: -I${includedir}/clutter-${apiversion}
+Requires: ${requires}
