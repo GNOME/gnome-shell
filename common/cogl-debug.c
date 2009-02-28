@@ -13,7 +13,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "material", COGL_DEBUG_MATERIAL },
   { "shader", COGL_DEBUG_SHADER },
   { "offscreen", COGL_DEBUG_OFFSCREEN },
-  { "draw", COGL_DEBUG_DRAW }
+  { "draw", COGL_DEBUG_DRAW },
+  { "pango", COGL_DEBUG_PANGO }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);
