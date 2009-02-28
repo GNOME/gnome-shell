@@ -1111,10 +1111,9 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
     }
 }
 
-void
-cogl_vertex_buffer_submit (CoglHandle handle)
+static void
+cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
 {
-  CoglVertexBuffer *buffer;
   GList *tmp;
   CoglVertexBufferVBO *new_multipack_vbo;
   GList *new_multipack_vbo_link;
@@ -1122,10 +1121,8 @@ cogl_vertex_buffer_submit (CoglHandle handle)
   GList *reuse_vbos = NULL;
   GList *final_vbos = NULL;
 
-  if (!cogl_is_vertex_buffer (handle))
+  if (!buffer->new_attributes)
     return;
-
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
   /* The objective now is to copy the attribute data supplied by the client
    * into buffer objects, but it's important to minimize the number of
@@ -1374,6 +1371,19 @@ cogl_vertex_buffer_submit (CoglHandle handle)
   buffer->submitted_vbos = final_vbos;
 }
 
+void
+cogl_vertex_buffer_submit (CoglHandle handle)
+{
+  CoglVertexBuffer *buffer;
+
+  if (!cogl_is_vertex_buffer (handle))
+    return;
+
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+
+  cogl_vertex_buffer_submit_real (buffer);
+}
+
 static GLenum
 get_gl_type_from_attribute_flags (CoglVertexBufferAttribFlags flags)
 {
@@ -1421,6 +1431,9 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   int          i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (buffer->new_attributes)
+    cogl_vertex_buffer_submit_real (buffer);
 
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
