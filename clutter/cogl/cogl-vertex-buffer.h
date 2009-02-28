@@ -58,9 +58,10 @@ G_BEGIN_DECLS
  * developers to be able to submit geometry to Cogl in a format that can be
  * directly consumed by an OpenGL driver and mapped into your GPU for fast
  * re-use. It is designed to avoid repeated validation of the attributes by the
- * driver; to minimize transport costs (considering indirect GLX use-cases)
- * and to potentially avoid repeated format conversions when attributes are
- * supplied in a format that is not natively supported by the GPU.
+ * driver; to minimize transport costs (e.g. considering indirect GLX
+ * use-cases) and to potentially avoid repeated format conversions when
+ * attributes are supplied in a format that is not natively supported by the
+ * GPU.
  *
  * Although this API does allow you to modify attributes after they have been
  * submitted to the GPU you should be aware that modification is not that
@@ -113,7 +114,8 @@ cogl_vertex_buffer_new (guint n_vertices);
  *	    stride for both attributes is 6. The special value 0 means the
  *	    values are stored sequentially in memory.
  * @pointer: This addresses the first attribute in the vertex array. (This
- *	     must remain valid until you call cogl_vertex_buffer_submit())
+ *	     must remain valid until you either call
+ *	     cogl_vertex_buffer_submit() or issue a draw call.)
  *
  * This function lets you add an attribute to a buffer. You either use one
  * of the built-in names such as "gl_Vertex", or "glMultiTexCoord0" to add
@@ -124,15 +126,16 @@ cogl_vertex_buffer_new (guint n_vertices);
  * determines how many attribute values will be read from the supplied pointer.
  *
  * The data for your attribute isn't copied anywhere until you call
- * cogl_vertex_buffer_submit(), so the supplied pointer must remain valid
- * until then. If you are updating an attribute by re-adding it then you will
- * also need to re-call cogl_vertex_buffer_submit() to commit the changes to
- * the GPU. (Be carefull to minimize the number of calls to
- * cogl_vertex_buffer_submit though.)
+ * cogl_vertex_buffer_submit(), (or issue a draw call which automatically
+ * submits pending attribute changes) so the supplied pointer must remain
+ * valid until then. If you are updating an existing attribute (done by
+ * re-adding it) then you still need to re-call cogl_vertex_buffer_submit() to
+ * commit the changes to the GPU. (Be carefull to minimize the number of calls
+ * to cogl_vertex_buffer_submit though.)
  *
- * Note: If you are interleving attributes it is assumed that that each
- * interleaved attribute starts no farther than +- stride bytes from the other
- * attributes it is interleved with. I.e. this is ok:
+ * Note: If you are interleving attributes it is assumed that each interleaved
+ * attribute starts no farther than +- stride bytes from the other attributes
+ * it is interleved with. I.e. this is ok:
  * <programlisting>
  * |-0-0-0-0-0-0-0-0-0-0|
  * </programlisting>
@@ -157,7 +160,8 @@ cogl_vertex_buffer_add (CoglHandle  handle,
  * @attribute_name: The name of a previously added attribute
  *
  * This function deletes an attribute from a buffer. You will need to
- * call cogl_vertex_buffer_submit() to commit this change to the GPU.
+ * call cogl_vertex_buffer_submit() or issue a draw call to commit this
+ * change to the GPU.
  */
 void
 cogl_vertex_buffer_delete (CoglHandle   handle,
@@ -232,6 +236,9 @@ cogl_vertex_buffer_enable (CoglHandle  handle,
  *
  * This function lets you draw geometry using all or a subset of the
  * vertices in a vertex buffer.
+ *
+ * Any un-submitted attribute changes are automatically submitted before
+ * drawing.
  */
 void
 cogl_vertex_buffer_draw (CoglHandle handle,
@@ -268,6 +275,9 @@ cogl_vertex_buffer_draw (CoglHandle handle,
  *
  * This function lets you use an array of indices to specify the vertices
  * within your vertex buffer that you want to draw.
+ *
+ * Any un-submitted attribute changes are automatically submitted before
+ * drawing.
  */
 void
 cogl_vertex_buffer_draw_range_elements (CoglHandle     handle,
