@@ -3,9 +3,11 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
+ * Authored By: Matthew Allum  <mallum@openedhand.com>
+ *              Emmanuele Bassi <ebassi@linux.intel.com>
  *
- * Copyright (C) 2006 OpenedHand
+ * Copyright (C) 2006, 2007, 2008 OpenedHand
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,6 +50,7 @@ typedef struct _ClutterColor ClutterColor;
  */
 struct _ClutterColor
 {
+  /*< public >*/
   guint8 red;
   guint8 green;
   guint8 blue;
@@ -55,59 +58,49 @@ struct _ClutterColor
   guint8 alpha;
 };
 
-ClutterColor *clutter_color_new        (guint8              red,
-                                        guint8              green,
-                                        guint8              blue,
-                                        guint8              alpha);
-ClutterColor *clutter_color_copy       (const ClutterColor *color);
-void          clutter_color_free       (ClutterColor       *color);
-gboolean      clutter_color_parse      (const gchar        *color,
-                                        ClutterColor       *dest);
-gboolean      clutter_color_equal      (const ClutterColor *a,
-                                        const ClutterColor *b);
-gchar *       clutter_color_to_string  (const ClutterColor *color);
-
 GType         clutter_color_get_type   (void) G_GNUC_CONST;
 
+ClutterColor *clutter_color_new         (guint8              red,
+                                         guint8              green,
+                                         guint8              blue,
+                                         guint8              alpha);
+ClutterColor *clutter_color_copy        (const ClutterColor *color);
+void          clutter_color_free        (ClutterColor       *color);
 
-void          clutter_color_add        (const ClutterColor *src1,
-                                        const ClutterColor *src2,
-                                        ClutterColor       *dest);
-void          clutter_color_subtract   (const ClutterColor *src1,
-                                        const ClutterColor *src2,
-                                        ClutterColor       *dest);
-void          clutter_color_lighten    (const ClutterColor *src,
-                                        ClutterColor       *dest);
-void          clutter_color_darken     (const ClutterColor *src,
-                                        ClutterColor       *dest);
-void          clutter_color_shade      (const ClutterColor *src,
-                                        ClutterColor       *dest,
-                                        gdouble             shade);
-void          clutter_color_shadex     (const ClutterColor *src,
-                                        ClutterColor       *dest,
-                                        ClutterFixed        shade);
+void          clutter_color_add         (const ClutterColor *a,
+                                         const ClutterColor *b,
+                                         ClutterColor       *result);
+void          clutter_color_subtract    (const ClutterColor *a,
+                                         const ClutterColor *b,
+                                         ClutterColor       *result);
+void          clutter_color_lighten     (const ClutterColor *color,
+                                         ClutterColor       *result);
+void          clutter_color_darken      (const ClutterColor *color,
+                                         ClutterColor       *result);
+void          clutter_color_shade       (const ClutterColor *color,
+                                         gdouble             factor,
+                                         ClutterColor       *result);
 
-void          clutter_color_to_hlsx     (const ClutterColor *src,
-					 ClutterFixed       *hue,
-					 ClutterFixed       *luminance,
-					 ClutterFixed       *saturation);
-void          clutter_color_from_hlsx   (ClutterColor       *dest,
-					 ClutterFixed        hue,
-					 ClutterFixed        luminance,
-					 ClutterFixed        saturation);
+gchar *       clutter_color_to_string   (const ClutterColor *color);
+gboolean      clutter_color_from_string (ClutterColor       *color,
+                                         const gchar        *str);
 
-void          clutter_color_to_hls     (const ClutterColor *src,
-                                        guint8             *hue,
-                                        guint8             *luminance,
-                                        guint8             *saturation);
-void          clutter_color_from_hls   (ClutterColor       *dest,
-                                        guint8              hue,
-                                        guint8              luminance,
-                                        guint8              saturation);
+void          clutter_color_to_hls      (const ClutterColor *color,
+                                         gfloat             *hue,
+					 gfloat             *luminance,
+					 gfloat             *saturation);
+void          clutter_color_from_hls    (ClutterColor       *color,
+                                         gfloat              hue,
+                                         gfloat              luminance,
+                                         gfloat              saturation);
 
-guint32       clutter_color_to_pixel   (const ClutterColor *src);
-void          clutter_color_from_pixel (ClutterColor       *dest,
-                                        guint32             pixel);
+guint32       clutter_color_to_pixel    (const ClutterColor *color);
+void          clutter_color_from_pixel  (ClutterColor       *color,
+                                         guint32             pixel);
+
+guint         clutter_color_hash        (gconstpointer       v);
+gboolean      clutter_color_equal       (gconstpointer       v1,
+                                         gconstpointer       v2);
 
 #define CLUTTER_TYPE_PARAM_COLOR           (clutter_param_color_get_type ())
 #define CLUTTER_PARAM_SPEC_COLOR(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_COLOR, ClutterParamSpecColor))

@@ -156,7 +156,7 @@ test_behave_main (int argc, char *argv[])
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect),
                                &rect_bg_color);
   clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (rect), 10);
-  clutter_color_parse ("DarkSlateGray", &rect_border_color);
+  clutter_color_from_string (&rect_border_color, "DarkSlateGray");
   clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (rect),
                                       &rect_border_color);
   clutter_actor_show (rect);

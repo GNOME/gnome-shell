@@ -27,7 +27,10 @@
  * SECTION:clutter-color
  * @short_description: Color management and manipulation.
  *
- * #ClutterColor is a simple type for representing colors.
+ * #ClutterColor is a simple type for representing colors in Clutter.
+ *
+ * A #ClutterColor is expressed as a 4-tuple of values ranging from
+ * zero to 255, one for each color channel plus one for the alpha.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -44,117 +47,120 @@
 
 /**
  * clutter_color_add:
- * @src1: a #ClutterColor
- * @src2: a #ClutterColor
- * @dest: (out): return location for the result
+ * @a: a #ClutterColor
+ * @b: a #ClutterColor
+ * @result: (out): return location for the result
  *
- * Adds @src2 to @src1 and saves the resulting color
- * inside @dest.
+ * Adds @a to @b and saves the resulting color inside @result.
  *
- * The alpha channel of @dest is as the maximum value
- * between the alpha channels of @src1 and @src2.
+ * The alpha channel of @result is set as as the maximum value
+ * between the alpha channels of @a and @b.
  */
 void
-clutter_color_add (const ClutterColor *src1,
-		   const ClutterColor *src2,
-		   ClutterColor       *dest)
+clutter_color_add (const ClutterColor *a,
+		   const ClutterColor *b,
+		   ClutterColor       *result)
 {
-  g_return_if_fail (src1 != NULL);
-  g_return_if_fail (src2 != NULL);
-  g_return_if_fail (dest != NULL);
+  g_return_if_fail (a != NULL);
+  g_return_if_fail (b != NULL);
+  g_return_if_fail (result != NULL);
 
-  dest->red   = CLAMP (src1->red   + src2->red,   0, 255);
-  dest->green = CLAMP (src1->green + src2->green, 0, 255);
-  dest->blue  = CLAMP (src1->blue  + src2->blue,  0, 255);
+  result->red   = CLAMP (a->red   + b->red,   0, 255);
+  result->green = CLAMP (a->green + b->green, 0, 255);
+  result->blue  = CLAMP (a->blue  + b->blue,  0, 255);
 
-  dest->alpha = MAX (src1->alpha, src2->alpha);
+  result->alpha = MAX (a->alpha, b->alpha);
 }
 
 /**
  * clutter_color_subtract:
- * @src1: a #ClutterColor
- * @src2: a #ClutterColor
- * @dest: (out): return location for the result
+ * @a: a #ClutterColor
+ * @b: a #ClutterColor
+ * @result: (out): return location for the result
  *
- * Subtracts @src2 from @src1 and saves the resulting
- * color inside @dest. This function assumes that the components
- * of @src1 are greater than the components of @src2; the result is,
- * otherwise, undefined.
+ * Subtracts @b from @a and saves the resulting color inside @result.
  *
- * The alpha channel of @dest is set as the minimum value
- * between the alpha channels of @src1 and @src2.
+ * This function assumes that the components of @a are greater than the
+ * components of @b; the result is, otherwise, undefined.
+ *
+ * The alpha channel of @result is set as the minimum value
+ * between the alpha channels of @a and @b.
  */
 void
-clutter_color_subtract (const ClutterColor *src1,
-			const ClutterColor *src2,
-			ClutterColor       *dest)
+clutter_color_subtract (const ClutterColor *a,
+			const ClutterColor *b,
+			ClutterColor       *result)
 {
-  g_return_if_fail (src1 != NULL);
-  g_return_if_fail (src2 != NULL);
-  g_return_if_fail (dest != NULL);
+  g_return_if_fail (a != NULL);
+  g_return_if_fail (b != NULL);
+  g_return_if_fail (result != NULL);
 
-  dest->red   = CLAMP (src1->red   - src2->red,   0, 255);
-  dest->green = CLAMP (src1->green - src2->green, 0, 255);
-  dest->blue  = CLAMP (src1->blue  - src2->blue,  0, 255);
+  result->red   = CLAMP (a->red   - b->red,   0, 255);
+  result->green = CLAMP (a->green - b->green, 0, 255);
+  result->blue  = CLAMP (a->blue  - b->blue,  0, 255);
 
-  dest->alpha = MIN (src1->alpha, src2->alpha);
+  result->alpha = MIN (a->alpha, b->alpha);
 }
 
 /**
  * clutter_color_lighten:
- * @src: a #ClutterColor
- * @dest: (out): return location for the lighter color
+ * @color: a #ClutterColor
+ * @result: (out): return location for the lighter color
  *
- * Lightens @src by a fixed amount, and saves the changed
- * color in @dest.
+ * Lightens @color by a fixed amount, and saves the changed color
+ * in @result.
  */
 void
-clutter_color_lighten (const ClutterColor *src,
-		       ClutterColor       *dest)
+clutter_color_lighten (const ClutterColor *color,
+		       ClutterColor       *result)
 {
-  clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (1.3));
+  clutter_color_shade (color, 1.3, result);
 }
 
 /**
  * clutter_color_darken:
- * @src: a #ClutterColor
- * @dest: (out): return location for the darker color
+ * @color: a #ClutterColor
+ * @result: (out): return location for the darker color
  *
- * Darkens @src by a fixed amount, and saves the changed color
- * in @dest.
+ * Darkens @color by a fixed amount, and saves the changed color
+ * in @result.
  */
 void
-clutter_color_darken (const ClutterColor *src,
-		      ClutterColor       *dest)
+clutter_color_darken (const ClutterColor *color,
+		      ClutterColor       *result)
 {
-  clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (0.7));
+  clutter_color_shade (color, 0.7, result);
 }
 
-/**
+/*
  * clutter_color_to_hlsx:
- * @src: a #ClutterColor
+ * @color: a #ClutterColor
  * @hue: return location for the hue value or %NULL
  * @luminance: return location for the luminance value or %NULL
  * @saturation: return location for the saturation value or %NULL
  *
- * Converts @src to the HLS format. Returned hue is in degrees (0 .. 360),
+ * Converts @color to the HLS format. Returned hue is in degrees (0 .. 360),
  * luminance and saturation from interval <0 .. 1>.
+ *
+ * The implementation is in fixed point because we don't particularly
+ * care about precision. It can be moved to floating point at any later
+ * date.
  */
-void
-clutter_color_to_hlsx (const ClutterColor *src,
-		       ClutterFixed       *hue,
-		       ClutterFixed       *luminance,
-		       ClutterFixed       *saturation)
+static void
+clutter_color_to_hlsx (const ClutterColor *color,
+		       CoglFixed          *hue,
+		       CoglFixed          *luminance,
+		       CoglFixed          *saturation)
 {
-  ClutterFixed red, green, blue;
-  ClutterFixed min, max, delta;
-  ClutterFixed h, l, s;
+  CoglFixed red, green, blue;
+  CoglFixed min, max, delta;
+  CoglFixed h, l, s;
   
-  g_return_if_fail (src != NULL);
+  g_return_if_fail (color != NULL);
 
-  red   = (float)(src->red)   / 255;
-  green = (float)(src->green) / 255;
-  blue  = (float)(src->blue)  / 255;
+  red   = COGL_FIXED_FAST_DIV (color->red,   COGL_FIXED_255);
+  green = COGL_FIXED_FAST_DIV (color->green, COGL_FIXED_255);
+  blue  = COGL_FIXED_FAST_DIV (color->blue,  COGL_FIXED_255);
 
   if (red > green)
     {
@@ -187,31 +193,25 @@ clutter_color_to_hlsx (const ClutterColor *src,
 
   if (max != min)
     {
-      if (l <= 0.5)
-	s = CLUTTER_FIXED_DIV ((max - min), (max + min));
+      if (l <= COGL_FIXED_0_5)
+	s = COGL_FIXED_DIV ((max - min), (max + min));
       else
-	s = CLUTTER_FIXED_DIV ((max - min),
-                                 ((float)(2) - max - min));
+	s = COGL_FIXED_DIV ((max - min),
+                            (COGL_FIXED_FROM_INT (2) - max - min));
 
       delta = max - min;
 
       if (red == max)
-	h = CLUTTER_FIXED_DIV ((green - blue), delta);
+	h = COGL_FIXED_DIV ((green - blue), delta);
       else if (green == max)
-        {
-	  h = (float)(2)
-            + CLUTTER_FIXED_DIV ((blue - red), delta);
-        }
+	h = COGL_FIXED_FROM_INT (2) + COGL_FIXED_DIV ((blue - red), delta);
       else if (blue == max)
-        {
-	  h = (float)(4)
-            + CLUTTER_FIXED_DIV ((red - green), delta);
-        }
+	h = COGL_FIXED_FROM_INT (4) + COGL_FIXED_DIV ((red - green), delta);
 
       h *= 60;
 
       if (h < 0)
-	h += 360.0;
+	h += COGL_FIXED_360;
     }
 
   if (hue)
@@ -224,7 +224,7 @@ clutter_color_to_hlsx (const ClutterColor *src,
     *saturation = s;
 }
 
-/**
+/*
  * clutter_color_from_hlsx:
  * @dest: (out): return location for a #ClutterColor
  * @hue: hue value (0 .. 360)
@@ -234,336 +234,355 @@ clutter_color_to_hlsx (const ClutterColor *src,
  * Converts a color expressed in HLS (hue, luminance and saturation)
  * values into a #ClutterColor.
  */
-
 void
-clutter_color_from_hlsx (ClutterColor *dest,
-			 ClutterFixed   hue,
-			 ClutterFixed   luminance,
-			 ClutterFixed   saturation)
+clutter_color_from_hlsx (ClutterColor *color,
+			 CoglFixed     hue,
+			 CoglFixed     luminance,
+			 CoglFixed     saturation)
 {
-  ClutterFixed h, l, s;
-  ClutterFixed m1, m2;
+  CoglFixed h, l, s;
+  CoglFixed m1, m2;
   
-  g_return_if_fail (dest != NULL);
+  g_return_if_fail (color != NULL);
 
   l = luminance;
   s = saturation;
 
-  if (l <= 0.5)
-    m2 = CLUTTER_FIXED_MUL (l, (1.0 + s));
+  if (l <= COGL_FIXED_0_5)
+    m2 = COGL_FIXED_MUL (l, (COGL_FIXED_1 + s));
   else
-    m2 = l + s - CLUTTER_FIXED_MUL (l, s);
+    m2 = l + s - COGL_FIXED_MUL (l, s);
 
   m1 = 2 * l - m2;
 
   if (s == 0)
     {
-      dest->red   = (guint8)  (l * 255);
-      dest->green = (guint8)  (l * 255);
-      dest->blue  = (guint8)  (l * 255);
+      color->red   = (guint8) (COGL_FIXED_TO_INT (l) * 255);
+      color->green = (guint8) (COGL_FIXED_TO_INT (l) * 255);
+      color->blue  = (guint8) (COGL_FIXED_TO_INT (l) * 255);
     }
   else
     {
-      h = hue + 120.0;
+      h = hue + COGL_FIXED_120;
 
-      while (h > 360.0)
-	h -= 360.0;
+      while (h > COGL_FIXED_360)
+	h -= COGL_FIXED_360;
 
       while (h < 0)
-	h += 360.0;
+	h += COGL_FIXED_360;
 
-      if (h < 60.0)
+      if (h < COGL_FIXED_60)
         {
-          float tmp;
+          CoglFixed tmp;
 
-          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), h) / 60);
-          dest->red = (guint8)  (tmp * 255);
+          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
+          color->red = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
         }
-      else if (h < 180.0)
-	dest->red = (guint8)  (m2 * 255);
-      else if (h < 240.0)
+      else if (h < COGL_FIXED_180)
+	color->red = (guint8) (COGL_FIXED_TO_INT (m2) * 255);
+      else if (h < COGL_FIXED_240)
         {
-          float tmp;
+          CoglFixed tmp;
 
-          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), (240.0 - h)))
-              / 60;
-          dest->red = (guint8)  (tmp * 255);
+          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
+                                          (COGL_FIXED_240 - h),
+                                          COGL_FIXED_60));
+          color->red = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
         }
       else
-	dest->red = (guint8)  (m1 * 255);
+	color->red = (guint8) (COGL_FIXED_TO_INT (m1) * 255);
 
       h = hue;
-      while (h > 360.0)
-	h -= 360.0;
+      while (h > COGL_FIXED_360)
+	h -= COGL_FIXED_360;
       while (h < 0)
-	h += 360.0;
+	h += COGL_FIXED_360;
 
-      if (h < 60.0)
+      if (h < COGL_FIXED_60)
         {
-          float tmp;
+          CoglFixed tmp;
 
-          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), h) / 60);
-          dest->green = (guint8)  (tmp * 255);
+          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
+          color->green = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
         }
-      else if (h < 180.0)
-        dest->green = (guint8)  (m2 * 255);
-      else if (h < 240.0)
+      else if (h < COGL_FIXED_180)
+        color->green = (guint8) (COGL_FIXED_TO_INT (m2) * 255);
+      else if (h < COGL_FIXED_240)
         {
-          float tmp;
+          CoglFixed tmp;
 
-          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1) , (240.0 - h)))
-              / 60;
-          dest->green = (guint8)  (tmp * 255);
+          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
+                                          (COGL_FIXED_240 - h),
+                                          COGL_FIXED_60));
+          color->green = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
         }
       else
-	dest->green = (guint8)  (m1 * 255);
+	color->green = (guint8) (COGL_FIXED_TO_INT (m1) * 255);
 
-      h = hue - 120.0;
+      h = hue - COGL_FIXED_120;
 
-      while (h > 360.0)
-	h -= 360.0;
+      while (h > COGL_FIXED_360)
+	h -= COGL_FIXED_360;
 
       while (h < 0)
-	h += 360.0;
+	h += COGL_FIXED_360;
 
-      if (h < 60.0)
+      if (h < COGL_FIXED_60)
         {
-          float tmp;
+          CoglFixed tmp;
 
-          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), h) / 60);
-          dest->blue = (guint8)  (tmp * 255);
+          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
+          color->blue = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
         }
-      else if (h < 180.0)
-	dest->blue = (guint8)  (m2 * 255);
-      else if (h < 240.0)
+      else if (h < COGL_FIXED_180)
+	color->blue = (guint8) (COGL_FIXED_TO_INT (m2) * 255);
+      else if (h < COGL_FIXED_240)
         {
-          float tmp;
+          CoglFixed tmp;
 
-          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), (240.0 - h)))
-              / 60;
-          dest->blue = (guint8)  (tmp * 255);
+          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
+                                          (COGL_FIXED_240 - h),
+                                          COGL_FIXED_60));
+          color->blue = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
         }
       else
-	dest->blue = (guint8)  (m1 * 255);
+	color->blue = (guint8) (COGL_FIXED_TO_INT (m1) * 255);
     }
 }
 
 /**
  * clutter_color_to_hls:
- * @src: a #ClutterColor
+ * @color: a #ClutterColor
  * @hue: return location for the hue value or %NULL
  * @luminance: return location for the luminance value or %NULL
  * @saturation: return location for the saturation value or %NULL
  *
- * Converts @src to the HLS format. Returned HLS values are from interval
- * 0 .. 255.
+ * Converts @color to the HLS format.
+ *
+ * The @hue value is in the 0 .. 360 range. The @luminance and
+ * @saturation values are in the 0 .. 1 range.
  */
 void
-clutter_color_to_hls (const ClutterColor *src,
-		      guint8             *hue,
-		      guint8             *luminance,
-		      guint8             *saturation)
+clutter_color_to_hls (const ClutterColor *color,
+		      gfloat             *hue,
+		      gfloat             *luminance,
+		      gfloat             *saturation)
 {
-  ClutterFixed h, l, s;
+  CoglFixed h, l, s;
   
-  clutter_color_to_hlsx (src, &h, &l, &s);
+  clutter_color_to_hlsx (color, &h, &l, &s);
   
   if (hue)
-    *hue = (guint8)  (h * 255) / 360;
+    *hue = COGL_FIXED_TO_FLOAT (h);
 
   if (luminance)
-    *luminance = (guint8)  (l * 255);
+    *luminance = COGL_FIXED_TO_FLOAT (l);
 
   if (saturation)
-    *saturation = (guint8)  (s * 255);
+    *saturation = COGL_FIXED_TO_FLOAT (s);
 }
 
 /**
  * clutter_color_from_hls:
- * @dest: (out): return location for a #ClutterColor
- * @hue: hue value (0 .. 255)
- * @luminance: luminance value (0 .. 255)
- * @saturation: saturation value (0 .. 255)
+ * @color: (out): return location for a #ClutterColor
+ * @hue: hue value, in the 0 .. 360 range
+ * @luminance: luminance value, in the 0 .. 1 range
+ * @saturation: saturation value, in the 0 .. 1 range
  *
  * Converts a color expressed in HLS (hue, luminance and saturation)
  * values into a #ClutterColor.
  */
-
 void
-clutter_color_from_hls (ClutterColor *dest,
-			guint8        hue,
-			guint8        luminance,
-			guint8        saturation)
+clutter_color_from_hls (ClutterColor *color,
+			gfloat        hue,
+			gfloat        luminance,
+			gfloat        saturation)
 {
-  ClutterFixed h, l, s;
+  CoglFixed h, l, s;
 
-  h = (float)(hue * 360)  / 255;
-  l = (float)(luminance)  / 255;
-  s = (float)(saturation) / 255;
+  h = COGL_FIXED_FROM_FLOAT (hue);
+  l = COGL_FIXED_FROM_FLOAT (luminance);
+  s = COGL_FIXED_FROM_FLOAT (saturation);
 
-  clutter_color_from_hlsx (dest, h, l, s);
+  clutter_color_from_hlsx (color, h, l, s);
+}
+
+/*
+ * clutter_color_shadex:
+ * @color: a #ClutterColor
+ * @factor: the shade factor to apply, as a fixed point value
+ * @result: (out): return location for the shaded color
+ * 
+ * Shades @color by @factor and saves the modified color into @result.
+ */
+static void
+clutter_color_shadex (const ClutterColor *color,
+                      CoglFixed           factor,
+                      ClutterColor       *result)
+{
+  CoglFixed h, l, s;
+
+  g_return_if_fail (color != NULL);
+  g_return_if_fail (result != NULL);
+  
+  clutter_color_to_hlsx (color, &h, &l, &s);
+
+  l = COGL_FIXED_MUL (l, factor);
+  if (l > COGL_FIXED_1)
+    l = COGL_FIXED_1;
+  else if (l < 0)
+    l = 0;
+
+  s = COGL_FIXED_MUL (s, factor);
+  if (s > COGL_FIXED_1)
+    s = COGL_FIXED_1;
+  else if (s < 0)
+    s = 0;
+  
+  clutter_color_from_hlsx (result, h, l, s);
+
+  result->alpha = color->alpha;
 }
 
 /**
  * clutter_color_shade:
- * @src: a #ClutterColor
- * @dest: (out): return location for the shaded color
- * @shade: the shade factor to apply
- * 
- * Shades @src by the factor of @shade and saves the modified
- * color into @dest.
+ * @color: a #ClutterColor
+ * @factor: the shade factor to apply
+ * @result: (out): return location for the shaded color
+ *
+ * Shades @color by @factor and saves the modified color into @result.
  */
 void
-clutter_color_shade (const ClutterColor *src,
-		     ClutterColor       *dest,
-		     gdouble             shade)
+clutter_color_shade (const ClutterColor *color,
+                     gdouble             factor,
+		     ClutterColor       *result)
 {
-  clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (shade));
-}
-
-/**
- * clutter_color_shadex:
- * @src: a #ClutterColor
- * @dest: (out): return location for the shaded color
- * @shade: #ClutterFixed the shade factor to apply
- * 
- * Fixed point version of clutter_color_shade().
- *
- * Shades @src by the factor of @shade and saves the modified
- * color into @dest.
- *
- * Since: 0.2
- */
-void
-clutter_color_shadex (const ClutterColor *src,
-		      ClutterColor       *dest,
-		      ClutterFixed        shade)
-{
-  ClutterFixed h, l, s;
-
-  g_return_if_fail (src != NULL);
-  g_return_if_fail (dest != NULL);
-  
-  clutter_color_to_hlsx (src, &h, &l, &s);
-
-  l = CLUTTER_FIXED_MUL (l, shade);
-  if (l > 1.0)
-    l = 1.0;
-  else if (l < 0)
-    l = 0;
-
-  s = CLUTTER_FIXED_MUL (s, shade);
-  if (s > 1.0)
-    s = 1.0;
-  else if (s < 0)
-    s = 0;
-  
-  clutter_color_from_hlsx (dest, h, l, s);
-  dest->alpha = src->alpha;
+  clutter_color_shadex (color,
+                        COGL_FIXED_FROM_FLOAT (factor),
+                        result);
 }
 
 /**
  * clutter_color_to_pixel:
- * @src: a #ClutterColor
+ * @color: a #ClutterColor
  *
- * Converts @src into a packed 32 bit integer, containing
+ * Converts @color into a packed 32 bit integer, containing
  * all the four 8 bit channels used by #ClutterColor.
  *
  * Return value: a packed color
  */
 guint32
-clutter_color_to_pixel (const ClutterColor *src)
+clutter_color_to_pixel (const ClutterColor *color)
 {
-  g_return_val_if_fail (src != NULL, 0);
+  g_return_val_if_fail (color != NULL, 0);
   
-  return (src->alpha | src->blue << 8 | src->green << 16  | src->red << 24);
+  return (color->alpha       |
+          color->blue  << 8  |
+          color->green << 16 |
+          color->red   << 24);
 }
 
 /**
  * clutter_color_from_pixel:
- * @dest: (out): return location for a #ClutterColor
+ * @color: (out): return location for a #ClutterColor
  * @pixel: a 32 bit packed integer containing a color
  *
  * Converts @pixel from the packed representation of a four 8 bit channel
  * color to a #ClutterColor.
  */
 void
-clutter_color_from_pixel (ClutterColor *dest,
+clutter_color_from_pixel (ClutterColor *color,
 			  guint32       pixel)
 {
-  g_return_if_fail (dest != NULL);
+  g_return_if_fail (color != NULL);
 
-  dest->red   =  pixel >> 24;
-  dest->green = (pixel >> 16) & 0xff;
-  dest->blue  = (pixel >> 8)  & 0xff;
-  dest->alpha =  pixel        & 0xff;
+  color->red   =  pixel >> 24;
+  color->green = (pixel >> 16) & 0xff;
+  color->blue  = (pixel >> 8)  & 0xff;
+  color->alpha =  pixel        & 0xff;
 }
 
 /**
- * clutter_color_parse:
- * @color: a string specifiying a color (named color or #RRGGBBAA)
- * @dest: (out): return location for a #ClutterColor
+ * clutter_color_from_string:
+ * @color: (out): return location for a #ClutterColor
+ * @str: a string specifiying a color (named color or #RRGGBBAA)
  *
  * Parses a string definition of a color, filling the
  * <structfield>red</structfield>, <structfield>green</structfield>, 
  * <structfield>blue</structfield> and <structfield>alpha</structfield> 
- * channels of @dest. If alpha is not specified it will be set full opaque.
- * The color in @dest is not allocated.
+ * channels of @color. If alpha is not specified it will be set full opaque.
+ *
+ * The @color is not allocated.
  *
  * The color may be defined by any of the formats understood by
- * <function>pango_color_parse</function>; these include literal color
- * names, like <literal>Red</literal> or <literal>DarkSlateGray</literal>,
- * or hexadecimal specifications like <literal>&num;3050b2</literal> or
+ * pango_color_from_string(); these include literal color names, like
+ * <literal>Red</literal> or <literal>DarkSlateGray</literal>, or
+ * hexadecimal specifications like <literal>&num;3050b2</literal> or
  * <literal>&num;333</literal>.
  *
  * Return value: %TRUE if parsing succeeded.
  *
- * Since: 0.2
+ * Since: 1.0
  */
 gboolean
-clutter_color_parse (const gchar  *color,
-                     ClutterColor *dest)
+clutter_color_from_string (ClutterColor *color,
+                           const gchar  *str)
 {
-  PangoColor pango_color;
+  PangoColor pango_color = { 0, };
 
   g_return_val_if_fail (color != NULL, FALSE);
-  g_return_val_if_fail (dest != NULL, FALSE);
+  g_return_val_if_fail (str != NULL, FALSE);
 
-  /* parse ourselves to get alpha */
-  if (color[0] == '#')
+  /* if the string contains a color encoded using the hexadecimal
+   * notations (#rrggbbaa or #rrggbb) we attempt a rough pass at
+   * parsing the color ourselves, as we need the alpha channel that
+   * Pango can't retrieve.
+   */
+  if (str[0] == '#')
     {
       gint32 result;
 
-      if (sscanf (color + 1, "%x", &result))
+      if (sscanf (str + 1, "%x", &result))
 	{
-	  if (strlen (color) == 9)
+	  if (strlen (str) == 9)
 	    {
-	      dest->red   = (result >> 24) & 0xff;
-	      dest->green = (result >> 16) & 0xff;
-	      dest->blue  = (result >>  8) & 0xff;
-	      dest->alpha = result & 0xff;
+              /* #rrggbbaa */
+	      color->red   = (result >> 24) & 0xff;
+	      color->green = (result >> 16) & 0xff;
+	      color->blue  = (result >>  8) & 0xff;
+
+	      color->alpha = result & 0xff;
 
 	      return TRUE;
 	    }
-	  else if (strlen (color) == 7)
+	  else if (strlen (str) == 7)
 	    {
-	      dest->red   = (result >> 16) & 0xff;
-	      dest->green = (result >>  8) & 0xff;
-	      dest->blue  = result & 0xff;
-	      dest->alpha = 0xff;
+              /* #rrggbb */
+	      color->red   = (result >> 16) & 0xff;
+	      color->green = (result >>  8) & 0xff;
+	      color->blue  = result & 0xff;
+
+	      color->alpha = 0xff;
 
 	      return TRUE;
 	    }
 	}
+
+      /* XXX - should we return FALSE here? it's not like
+       * Pango is endowed with mystical parsing powers and
+       * will be able to do better than the code above.
+       * still, it doesn't hurt
+       */
     }
   
-  /* Fall back to pango for named colors - note pango does not handle alpha */
-  if (pango_color_parse (&pango_color, color))
+  /* Fall back to pango for named colors */
+  if (pango_color_parse (&pango_color, str))
     {
-      dest->red   = pango_color.red;
-      dest->green = pango_color.green;
-      dest->blue  = pango_color.blue;
-      dest->alpha = 0xff;
+      color->red   = pango_color.red;
+      color->green = pango_color.green;
+      color->blue  = pango_color.blue;
+
+      color->alpha = 0xff;
 
       return TRUE;
     }
@@ -599,29 +618,56 @@ clutter_color_to_string (const ClutterColor *color)
 
 /**
  * clutter_color_equal:
- * @a: a #ClutterColor
- * @b: a #ClutterColor
+ * @v1: a #ClutterColor
+ * @v2: a #ClutterColor
  *
  * Compares two #ClutterColor<!-- -->s and checks if they are the same.
+ *
+ * This function can be passed to g_hash_table_new() as the @key_equal_func
+ * parameter, when using #ClutterColor<!-- -->s as keys in a #GHashTable.
  *
  * Return value: %TRUE if the two colors are the same.
  *
  * Since: 0.2
  */
 gboolean
-clutter_color_equal (const ClutterColor *a,
-                     const ClutterColor *b)
+clutter_color_equal (gconstpointer v1,
+                     gconstpointer v2)
 {
-  g_return_val_if_fail (a != NULL, FALSE);
-  g_return_val_if_fail (b != NULL, FALSE);
+  const ClutterColor *a, *b;
 
-  if (a == b)
+  g_return_val_if_fail (v1 != NULL, FALSE);
+  g_return_val_if_fail (v2 != NULL, FALSE);
+
+  if (v1 == v2)
     return TRUE;
 
-  return (a->red == b->red &&
+  a = v1;
+  b = v2;
+
+  return (a->red   == b->red   &&
           a->green == b->green &&
-          a->blue == b->blue &&
+          a->blue  == b->blue  &&
           a->alpha == b->alpha);
+}
+
+/**
+ * clutter_color_hash:
+ * @v: a #ClutterColor
+ *
+ * Converts a #ClutterColor to a hash value.
+ *
+ * This function can be passed to g_hash_table_new() as the @hash_func
+ * parameter, when using #ClutterColor<!-- -->s as keys in a #GHashTable.
+ *
+ * Return value: a hash value corresponding to the color
+ *
+ * Since: 1.0
+ */
+guint
+clutter_color_hash (gconstpointer v)
+{
+  return clutter_color_to_pixel ((const ClutterColor *) v);
 }
 
 /**
@@ -638,14 +684,10 @@ clutter_color_equal (const ClutterColor *a,
 ClutterColor *
 clutter_color_copy (const ClutterColor *color)
 {
-  ClutterColor *result;
-  
-  g_return_val_if_fail (color != NULL, NULL);
+  if (G_LIKELY (color != NULL))
+    return g_slice_dup (ClutterColor, color);
 
-  result = g_slice_new (ClutterColor);
-  *result = *color;
-
-  return result;
+  return NULL;
 }
 
 /**
@@ -659,7 +701,7 @@ clutter_color_copy (const ClutterColor *color)
 void
 clutter_color_free (ClutterColor *color)
 {
-  if (G_LIKELY (color))
+  if (G_LIKELY (color != NULL))
     g_slice_free (ClutterColor, color);
 }
 
@@ -710,7 +752,7 @@ clutter_value_transform_string_color (const GValue *src,
 {
   ClutterColor color = { 0, };
 
-  clutter_color_parse (g_value_get_string (src), &color);
+  clutter_color_from_string (&color, g_value_get_string (src));
 
   clutter_value_set_color (dest, &color);
 }

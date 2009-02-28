@@ -1052,7 +1052,7 @@ clutter_script_parse_node (ClutterScript *script,
                   ClutterColor color = { 0, };
 
                   if (str && str[0] != '\0')
-                    clutter_color_parse (str, &color);
+                    clutter_color_from_string (&color, str);
 
                   g_value_set_boxed (value, &color);
                   retval = TRUE;

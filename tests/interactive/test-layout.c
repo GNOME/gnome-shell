@@ -756,7 +756,7 @@ test_layout_main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);
 
-  clutter_color_parse ("Red", &bg_color);
+  clutter_color_from_string (&bg_color, "Red");
 
   main_timeline = clutter_timeline_new_for_duration (2000);
   clutter_timeline_set_loop (main_timeline, TRUE);

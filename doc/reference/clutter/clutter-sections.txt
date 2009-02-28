@@ -938,27 +938,23 @@ ClutterColor
 clutter_color_new
 clutter_color_copy
 clutter_color_free
+clutter_color_equal
+clutter_color_hash
 
 <SUBSECTION>
-clutter_color_parse
+clutter_color_from_string
+clutter_color_to_string
 clutter_color_from_hls
-clutter_color_from_hlsx
+clutter_color_to_hls
 clutter_color_from_pixel
+clutter_color_to_pixel
 
 <SUBSECTION>
 clutter_color_add
 clutter_color_subtract
-clutter_color_equal
 clutter_color_lighten
 clutter_color_darken
 clutter_color_shade
-clutter_color_shadex
-
-<SUBSECTION>
-clutter_color_to_hls
-clutter_color_to_hlsx
-clutter_color_to_pixel
-clutter_color_to_string
 
 <SUBSECTION>
 ClutterParamSpecColor

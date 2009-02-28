@@ -57,4 +57,6 @@
 #define clutter_set_use_mipmapped_text               clutter_actor_set_use_mipmapped_text_REPLACED_BY_clutter_set_font_flags
 #define clutter_get_use_mipmapped_text               clutter_actor_get_use_mipmapped_text_REPLACED_BY_clutter_get_font_flags
 
+#define clutter_color_parse     clutter_color_parse_REPLACED_BY_clutter_color_from_string
+
 #endif /* CLUTTER_DEPRECATED_H */
