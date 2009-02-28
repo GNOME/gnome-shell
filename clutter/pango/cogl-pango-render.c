@@ -36,7 +36,6 @@
 
 #include "cogl-pango-private.h"
 #include "cogl-pango-glyph-cache.h"
-#include "../clutter-debug.h"
 
 struct _CoglPangoRenderer
 {
@@ -375,10 +374,10 @@ cogl_pango_renderer_get_cached_glyph (PangoRenderer *renderer,
 
       cairo_surface_destroy (surface);
 
-      CLUTTER_NOTE (PANGO, "cache fail    %i", glyph);
+      COGL_NOTE (PANGO, "cache fail    %i", glyph);
     }
   else
-    CLUTTER_NOTE (PANGO, "cache success %i", glyph);
+    COGL_NOTE (PANGO, "cache success %i", glyph);
 
   return value;
 }
