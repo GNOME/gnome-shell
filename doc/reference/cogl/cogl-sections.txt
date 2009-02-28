@@ -298,6 +298,7 @@ cogl_color_get_alpha_float
 <FILE>cogl-vertex-buffer</FILE>
 <TITLE>Vertex Buffers</TITLE>
 cogl_vertex_buffer_new
+cogl_vertex_buffer_get_n_vertices
 cogl_vertex_buffer_ref
 cogl_vertex_buffer_unref
 cogl_vertex_buffer_add
