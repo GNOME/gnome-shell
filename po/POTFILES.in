@@ -1,3 +1,4 @@
+# keep sorted alphabetically!
 clutter/clutter-actor.c
 clutter/clutter-behaviour.c
 clutter/clutter-color.c
@@ -6,6 +7,7 @@ clutter/clutter-event.c
 clutter/clutter-fixed.c
 clutter/clutter-fixed.h
 clutter/clutter-main.c
+clutter/clutter-shader.c
 clutter/clutter-stage-window.c
 clutter/clutter-stage.c
 clutter/clutter-texture.c

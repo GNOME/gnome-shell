@@ -3,10 +3,12 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *             Øyvind Kolås   <pippin@o-hand.com>
+ * Authored By: Matthew Allum   <mallum@openedhand.com>
+ *              Øyvind Kolås    <pippin@o-hand.com>
+ *              Emmanuele Bassi <ebassi@linux.intel.com>
  *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007, 2008 OpenedHand
+ * Copyright (C) 2009 Intel Corp
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,6 +50,7 @@
 #endif
 
 #include <glib.h>
+#include <glib/gi18n-lib.h>
 
 #include "cogl/cogl.h"
 
@@ -55,11 +58,10 @@
 #include "clutter-private.h"
 #include "clutter-shader.h"
 
+/* global list of shaders */
 static GList *clutter_shaders_list = NULL;
 
-#define CLUTTER_SHADER_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj),  \
-   CLUTTER_TYPE_SHADER, ClutterShaderPrivate))
+#define CLUTTER_SHADER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SHADER, ClutterShaderPrivate))
 
 typedef enum {
   CLUTTER_VERTEX_SHADER,
@@ -193,6 +195,7 @@ static void
 clutter_shader_class_init (ClutterShaderClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec = NULL;
 
   object_class->finalize      = clutter_shader_finalize;
   object_class->set_property  = clutter_shader_set_property;
@@ -204,18 +207,18 @@ clutter_shader_class_init (ClutterShaderClass *klass)
   /**
    * ClutterShader:vertex-source:
    *
-   * GLSL source code for the vertex shader part of the shader program, if any.
+   * GLSL source code for the vertex shader part of the shader
+   * program, if any
    *
    * Since: 0.6
    */
-  g_object_class_install_property 
-    (object_class,
-     PROP_VERTEX_SOURCE,
-     g_param_spec_string ("vertex-source",
-			  "Vertex Source",
-			  "Source of vertex shader",
-			  NULL,
-			  CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_string ("vertex-source",
+                               "Vertex Source",
+                               "Source of vertex shader",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_VERTEX_SOURCE, pspec);
+
   /**
    * ClutterShader:fragment-source:
    *
@@ -223,14 +226,13 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property 
-    (object_class,
-     PROP_FRAGMENT_SOURCE,
-     g_param_spec_string ("fragment-source",
-			  "Fragment Source",
-			  "Source of fragment shader",
-			  NULL,
-			  CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_string ("fragment-source",
+                               "Fragment Source",
+                               "Source of fragment shader",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_FRAGMENT_SOURCE, pspec);
+
   /**
    * ClutterShader:compiled:
    *
@@ -239,14 +241,13 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * Since: 0.8
    */
-  g_object_class_install_property 
-    (object_class,
-     PROP_COMPILED,
-     g_param_spec_boolean ("compiled",
-			   "Compiled",
-			   "Whether the shader is compiled and linked",
-			   FALSE,
-			   CLUTTER_PARAM_READABLE));
+  pspec = g_param_spec_boolean ("compiled",
+                                "Compiled",
+                                "Whether the shader is compiled and linked",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_COMPILED, pspec);
+
   /**
    * ClutterShader:enabled:
    *
@@ -254,14 +255,12 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property 
-    (object_class,
-     PROP_ENABLED,
-     g_param_spec_boolean ("enabled",
-			   "Enabled",
-			   "Whether the shader is enabled",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("enabled",
+                                "Enabled",
+                                "Whether the shader is enabled",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_ENABLED, pspec);
 }
 
 static void
@@ -296,6 +295,55 @@ clutter_shader_new (void)
   return g_object_new (CLUTTER_TYPE_SHADER, NULL);
 }
 
+static inline void
+clutter_shader_set_source (ClutterShader     *shader,
+                           ClutterShaderType  shader_type,
+                           const gchar       *data,
+                           gssize             length)
+{
+  ClutterShaderPrivate *priv = shader->priv;
+  gboolean is_glsl = FALSE;
+
+  if (length < 0)
+    length = strlen (data);
+
+  g_object_freeze_notify (G_OBJECT (shader));
+
+  /* release shader if bound when changing the source, the shader will
+   * automatically be rebound on the next use.
+   */
+  if (clutter_shader_is_compiled (shader))
+    clutter_shader_release (shader);
+
+  is_glsl = !g_str_has_prefix (data, "!!ARBfp");
+
+  CLUTTER_NOTE (SHADER,
+                "setting %s shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
+                shader_type == CLUTTER_VERTEX_SHADER ? "vertex" : "fragment",
+                is_glsl ? "yes" : "no",
+                length);
+
+  switch (shader_type)
+    {
+    case CLUTTER_FRAGMENT_SHADER:
+      g_free (priv->fragment_source);
+
+      priv->fragment_source = g_strndup (data, length);
+      priv->fragment_is_glsl = is_glsl;
+      g_object_notify (G_OBJECT (shader), "fragment-source");
+      break;
+
+    case CLUTTER_VERTEX_SHADER:
+      g_free (priv->vertex_source);
+
+      priv->vertex_source = g_strndup (data, length);
+      priv->vertex_is_glsl = is_glsl;
+      g_object_notify (G_OBJECT (shader), "vertex-source");
+      break;
+    }
+
+  g_object_thaw_notify (G_OBJECT (shader));
+}
 
 /**
  * clutter_shader_set_fragment_source:
@@ -313,36 +361,10 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
                                     const gchar        *data,
                                     gssize              length)
 {
-  ClutterShaderPrivate *priv;
-  gboolean is_glsl;
-
-  /* FIXME: do not ignore length, since we are exposing it in the API */
-
-  if (shader == NULL)
-    g_error ("quack!");
-
   g_return_if_fail (CLUTTER_IS_SHADER (shader));
   g_return_if_fail (data != NULL);
 
-  priv = shader->priv;
-
-  /* release shader if bound when changing the source, the shader will
-   * automatically be rebound on the next use.
-   */
-  if (clutter_shader_is_compiled (shader))
-    clutter_shader_release (shader);
-
-  is_glsl = !g_str_has_prefix (data, "!!ARBfp");
-
-  g_free (priv->fragment_source);
-
-  CLUTTER_NOTE (SHADER,
-                "setting fragment shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
-                is_glsl ? "yes" : "no",
-                length);
-
-  priv->fragment_source = g_strdup (data);
-  priv->fragment_is_glsl = is_glsl;
+  clutter_shader_set_source (shader, CLUTTER_FRAGMENT_SHADER, data, length);
 }
 
 /**
@@ -361,101 +383,132 @@ clutter_shader_set_vertex_source (ClutterShader      *shader,
                                   const gchar        *data,
                                   gssize              length)
 {
-  ClutterShaderPrivate *priv;
-  gboolean is_glsl;
-
-  if (shader == NULL)
-    g_error ("quack!");
-
   g_return_if_fail (CLUTTER_IS_SHADER (shader));
   g_return_if_fail (data != NULL);
 
-  priv = shader->priv;
+  clutter_shader_set_source (shader, CLUTTER_VERTEX_SHADER, data, length);
+}
 
-  /* release shader if bound when changing the source, the shader will
-   * automatically be rebound on the next use.
-   */
-  if (clutter_shader_is_compiled (shader))
-    clutter_shader_release (shader);
+static const gchar *
+clutter_shader_get_source (ClutterShader     *shader,
+                           ClutterShaderType  shader_type)
+{
+  switch (shader_type)
+    {
+    case CLUTTER_FRAGMENT_SHADER:
+      return shader->priv->fragment_source;
 
-  is_glsl = !g_str_has_prefix (data, "!!ARBvp");
+    case CLUTTER_VERTEX_SHADER:
+      return shader->priv->vertex_source;
+    }
 
-  g_free (priv->vertex_source);
+  return NULL;
+}
 
-  CLUTTER_NOTE (SHADER,
-                "setting vertex shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
-                is_glsl ? "yes" : "no",
-                length);
+static CoglHandle
+clutter_shader_get_cogl_shader (ClutterShader     *shader,
+                                ClutterShaderType  shader_type)
+{
+  switch (shader_type)
+    {
+    case CLUTTER_FRAGMENT_SHADER:
+      return shader->priv->fragment_shader;
 
-  priv->vertex_source = g_strdup (data);
-  priv->vertex_is_glsl = is_glsl;
+    case CLUTTER_VERTEX_SHADER:
+      return shader->priv->vertex_shader;
+    }
+
+  return COGL_INVALID_HANDLE;
+}
+
+static gboolean
+clutter_shader_glsl_bind (ClutterShader      *self,
+                          ClutterShaderType   shader_type,
+                          GError            **error)
+{
+  ClutterShaderPrivate *priv = self->priv;
+  GLint is_compiled = CGL_FALSE;
+  CoglHandle shader = COGL_INVALID_HANDLE;
+
+  switch (shader_type)
+    {
+    case CLUTTER_VERTEX_SHADER:
+      shader = cogl_create_shader (CGL_VERTEX_SHADER);
+      cogl_shader_source (shader, priv->vertex_source);
+
+      priv->vertex_shader = shader;
+      break;
+
+    case CLUTTER_FRAGMENT_SHADER:
+      shader = cogl_create_shader (CGL_FRAGMENT_SHADER);
+      cogl_shader_source (shader, priv->fragment_source);
+
+      priv->fragment_shader = shader;
+      break;
+    }
+
+  g_assert (shader != COGL_INVALID_HANDLE);
+
+  cogl_shader_compile (shader);
+  cogl_shader_get_parameteriv (shader,
+                               CGL_OBJECT_COMPILE_STATUS,
+                               &is_compiled);
+
+  if (is_compiled != CGL_TRUE)
+    {
+      gchar error_buf[512];
+
+      cogl_shader_get_info_log (shader, 512, error_buf);
+
+      g_set_error (error, CLUTTER_SHADER_ERROR,
+                   CLUTTER_SHADER_ERROR_COMPILE,
+                   _("%s compilation failed: %s"),
+                   shader_type == CLUTTER_VERTEX_SHADER ? _("Vertex shader")
+                                                        : _("Fragment shader"),
+                   error_buf);
+
+      return FALSE;
+    }
+
+  cogl_program_attach_shader (priv->program, shader);
+
+  return TRUE;
 }
 
 static gboolean
 bind_glsl_shader (ClutterShader  *self,
                   GError        **error)
 {
-  ClutterShaderPrivate *priv;
-  priv = self->priv;
+  ClutterShaderPrivate *priv = self->priv;
+  GError *bind_error = NULL;
+  gboolean res;
 
   priv->program = cogl_create_program ();
 
   if (priv->vertex_is_glsl && priv->vertex_source != COGL_INVALID_HANDLE)
     {
-      GLint compiled = CGL_FALSE;
+      res = clutter_shader_glsl_bind (self,
+                                      CLUTTER_VERTEX_SHADER,
+                                      &bind_error);
 
-      priv->vertex_shader = cogl_create_shader (CGL_VERTEX_SHADER);
-
-      cogl_shader_source (priv->vertex_shader, priv->vertex_source);
-      cogl_shader_compile (priv->vertex_shader);
-
-      cogl_shader_get_parameteriv (priv->vertex_shader,
-                                   CGL_OBJECT_COMPILE_STATUS,
-                                   &compiled);
-      if (compiled != CGL_TRUE)
+      if (!res)
         {
-          gchar error_buf[512];
-
-          cogl_shader_get_info_log (priv->vertex_shader, 512, error_buf);
-
-          g_set_error (error, CLUTTER_SHADER_ERROR,
-                       CLUTTER_SHADER_ERROR_COMPILE,
-                       "Vertex shader compilation failed: %s",
-                       error_buf);
-
+          g_propagate_error (error, bind_error);
           return FALSE;
         }
-      else
-        cogl_program_attach_shader (priv->program, priv->vertex_shader);
     }
 
   if (priv->fragment_is_glsl && priv->fragment_source != COGL_INVALID_HANDLE)
     {
-      GLint compiled = CGL_FALSE;
+      res = clutter_shader_glsl_bind (self,
+                                      CLUTTER_FRAGMENT_SHADER,
+                                      &bind_error);
 
-      priv->fragment_shader = cogl_create_shader (CGL_FRAGMENT_SHADER);
-
-      cogl_shader_source (priv->fragment_shader, priv->fragment_source);
-      cogl_shader_compile (priv->fragment_shader);
-
-      cogl_shader_get_parameteriv (priv->fragment_shader,
-                                   CGL_OBJECT_COMPILE_STATUS,
-                                   &compiled);
-      if (compiled != CGL_TRUE)
+      if (!res)
         {
-          gchar error_buf[512];
-
-          cogl_shader_get_info_log (priv->fragment_shader, 512, error_buf);
-
-          g_set_error (error, CLUTTER_SHADER_ERROR,
-                       CLUTTER_SHADER_ERROR_COMPILE,
-                       "Fragment shader compilation failed: %s",
-                       error_buf);
-
+          g_propagate_error (error, bind_error);
           return FALSE;
         }
-      else
-        cogl_program_attach_shader (priv->program, priv->fragment_shader);
     }
 
   cogl_program_link (priv->program);
@@ -652,23 +705,19 @@ clutter_shader_get_is_enabled (ClutterShader *shader)
  * to a #ClutterShader.
  *
  * Since: 0.6
+ *
+ * Deprecated: 1.0: Use clutter_shader_set_uniform() instead
  */
 void
 clutter_shader_set_uniform_1f (ClutterShader *shader,
                                const gchar   *name,
                                gfloat         value)
 {
-  ClutterShaderPrivate *priv;
-  GLint                 location = 0;
-  GLfloat               foo      = value;
+  GValue real_value = { 0, };
 
-  g_return_if_fail (CLUTTER_IS_SHADER (shader));
-  g_return_if_fail (name != NULL);
-
-  priv = shader->priv;
-
-  location = cogl_program_get_uniform_location (priv->program, name);
-  cogl_program_uniform_1f (location, foo);
+  g_value_init (&real_value, G_TYPE_FLOAT);
+  clutter_shader_set_uniform (shader, name, &real_value);
+  g_value_unset (&real_value);
 }
 
 /**
@@ -757,7 +806,6 @@ _clutter_shader_release_all (void)
                   NULL);
 }
 
-
 /**
  * clutter_shader_get_fragment_source:
  * @shader: a #ClutterShader
@@ -774,7 +822,8 @@ G_CONST_RETURN gchar *
 clutter_shader_get_fragment_source (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
-  return shader->priv->fragment_source;
+
+  return clutter_shader_get_source (shader, CLUTTER_FRAGMENT_SHADER);
 }
 
 /**
@@ -793,7 +842,8 @@ G_CONST_RETURN gchar *
 clutter_shader_get_vertex_source (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
-  return shader->priv->vertex_source;
+
+  return clutter_shader_get_source (shader, CLUTTER_VERTEX_SHADER);
 }
 
 /**
@@ -810,6 +860,7 @@ CoglHandle
 clutter_shader_get_cogl_program (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
+
   return shader->priv->program;
 }
 
@@ -827,7 +878,8 @@ CoglHandle
 clutter_shader_get_cogl_fragment_shader (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
-  return shader->priv->fragment_shader;
+
+  return clutter_shader_get_cogl_shader (shader, CLUTTER_FRAGMENT_SHADER);
 }
 
 /**
@@ -844,7 +896,8 @@ CoglHandle
 clutter_shader_get_cogl_vertex_shader (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
-  return shader->priv->vertex_shader;
+
+  return clutter_shader_get_cogl_shader (shader, CLUTTER_VERTEX_SHADER);
 }
 
 GQuark
