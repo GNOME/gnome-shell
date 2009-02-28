@@ -22,6 +22,7 @@ STAMPFILES = stamp-clutter-marshal.h stamp-clutter-enum-types.h
 
 INCLUDES = \
 	-I$(top_srcdir) 				\
+	-I$(top_srcdir)/clutter/cogl			\
 	-I$(top_srcdir)/clutter/pango			\
 	-I$(top_srcdir)/clutter	                        \
 	$(clutter_json_include)				\
@@ -138,66 +139,66 @@ CLEANFILES = $(STAMPFILES)
 
 # please, keep this sorted alphabetically
 source_c = \
-        clutter-actor.c			\
-	clutter-alpha.c 		\
-	clutter-animatable.c            \
-	clutter-animation.c             \
-	clutter-backend.c		\
-        clutter-behaviour.c 		\
-	clutter-behaviour-depth.c	\
-	clutter-behaviour-ellipse.c	\
-	clutter-behaviour-opacity.c	\
-	clutter-behaviour-path.c	\
-	clutter-behaviour-rotate.c	\
-	clutter-behaviour-scale.c	\
-	clutter-bezier.c		\
-	clutter-binding-pool.c	        \
-	clutter-cairo-texture.c         \
-	clutter-child-meta.c		\
-        clutter-clone.c			\
-	clutter-color.c 		\
-	clutter-container.c		\
-	clutter-enum-types.c		\
-        clutter-event.c 		\
-	clutter-feature.c 		\
-	clutter-fixed.c			\
-	clutter-frame-source.c		\
-	clutter-group.c 		\
-	clutter-id-pool.c 		\
-        clutter-interval.c              \
-	clutter-list-model.c		\
-	clutter-main.c 			\
-	clutter-marshal.c		\
-	clutter-media.c 		\
-	clutter-model.c			\
-	clutter-path.c			\
-	clutter-rectangle.c 		\
-	clutter-score.c 		\
-	clutter-script.c		\
-	clutter-script-parser.c		\
-	clutter-scriptable.c		\
-	clutter-shader.c		\
-	clutter-shader-types.c		\
-	clutter-stage.c			\
-	clutter-stage-manager.c		\
-	clutter-stage-window.c		\
-	clutter-texture.c 		\
-        clutter-text.c                  \
-	clutter-timeline.c 		\
-	clutter-timeout-pool.c		\
-	clutter-units.c			\
-	clutter-util.c 			\
+	$(srcdir)/clutter-actor.c		\
+	$(srcdir)/clutter-alpha.c 		\
+	$(srcdir)/clutter-animatable.c		\
+	$(srcdir)/clutter-animation.c		\
+	$(srcdir)/clutter-backend.c		\
+	$(srcdir)/clutter-behaviour.c 		\
+	$(srcdir)/clutter-behaviour-depth.c	\
+	$(srcdir)/clutter-behaviour-ellipse.c	\
+	$(srcdir)/clutter-behaviour-opacity.c	\
+	$(srcdir)/clutter-behaviour-path.c	\
+	$(srcdir)/clutter-behaviour-rotate.c	\
+	$(srcdir)/clutter-behaviour-scale.c	\
+	$(srcdir)/clutter-bezier.c		\
+	$(srcdir)/clutter-binding-pool.c	\
+	$(srcdir)/clutter-cairo-texture.c       \
+	$(srcdir)/clutter-child-meta.c		\
+	$(srcdir)/clutter-clone.c		\
+	$(srcdir)/clutter-color.c 		\
+	$(srcdir)/clutter-container.c		\
+	$(srcdir)/clutter-enum-types.c		\
+	$(srcdir)/clutter-event.c 		\
+	$(srcdir)/clutter-feature.c 		\
+	$(srcdir)/clutter-fixed.c		\
+	$(srcdir)/clutter-frame-source.c	\
+	$(srcdir)/clutter-group.c 		\
+	$(srcdir)/clutter-id-pool.c 		\
+	$(srcdir)/clutter-interval.c            \
+	$(srcdir)/clutter-list-model.c		\
+	$(srcdir)/clutter-main.c 		\
+	$(srcdir)/clutter-marshal.c		\
+	$(srcdir)/clutter-media.c 		\
+	$(srcdir)/clutter-model.c		\
+	$(srcdir)/clutter-path.c		\
+	$(srcdir)/clutter-rectangle.c 		\
+	$(srcdir)/clutter-score.c 		\
+	$(srcdir)/clutter-script.c		\
+	$(srcdir)/clutter-script-parser.c	\
+	$(srcdir)/clutter-scriptable.c		\
+	$(srcdir)/clutter-shader.c		\
+	$(srcdir)/clutter-shader-types.c	\
+	$(srcdir)/clutter-stage.c		\
+	$(srcdir)/clutter-stage-manager.c	\
+	$(srcdir)/clutter-stage-window.c	\
+	$(srcdir)/clutter-texture.c 		\
+	$(srcdir)/clutter-text.c                \
+	$(srcdir)/clutter-timeline.c 		\
+	$(srcdir)/clutter-timeout-pool.c	\
+	$(srcdir)/clutter-units.c		\
+	$(srcdir)/clutter-util.c 		\
 	$(NULL)
 
 source_h_priv = \
-	clutter-bezier.h		\
-	clutter-debug.h 		\
-	clutter-keysyms-table.h		\
-	clutter-model-private.h		\
-	clutter-private.h 		\
-	clutter-id-pool.h 		\
-	clutter-script-private.h	\
-	clutter-stage-window.h		\
+	$(srcdir)/clutter-bezier.h		\
+	$(srcdir)/clutter-debug.h 		\
+	$(srcdir)/clutter-keysyms-table.h	\
+	$(srcdir)/clutter-model-private.h	\
+	$(srcdir)/clutter-private.h 		\
+	$(srcdir)/clutter-id-pool.h 		\
+	$(srcdir)/clutter-script-private.h	\
+	$(srcdir)/clutter-stage-window.h	\
 	$(NULL)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
@@ -209,9 +210,9 @@ libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   $(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
-  pango/libcoglpango.la \
-  $(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
-  cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
+  $(top_builddir)/clutter/pango/libcoglpango.la \
+  $(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+  $(top_builddir)/clutter/cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
   $(clutter_json_dep) \
   $(backendextralib)
 
@@ -227,13 +228,12 @@ lib_LTLIBRARIES = $(clutterbackendlib)
 EXTRA_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 
 clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
-
 clutter_HEADERS = \
 	$(source_h) \
-	clutter-json.h \
-	clutter-enum-types.h \
-	clutter-version.h \
-	clutter.h
+	$(top_srcdir)/clutter/clutter-json.h 		\
+	$(top_srcdir)/clutter/clutter-enum-types.h 	\
+	$(top_srcdir)/clutter/clutter-version.h 	\
+	$(top_srcdir)/clutter/clutter.h
 
 if HAVE_INTROSPECTION
 BUILT_GIRSOURCES =
@@ -246,7 +246,11 @@ endif
 # subdir Makefile.am, so just extract them from cogl.h instead. The doc comments
 # for COGL are in the headers, so we don't need the source files.
 Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
-	cogl_headers=`sed -n "s/#include <cogl\/\([^>]*\)>/cogl\/\1/p" < cogl/cogl.h` ; \
+	headers=`sed -n "s/#include <cogl\/\([^>]*\)>/\1/p" < $(top_srcdir)/clutter/cogl/cogl.h` ; \
+	cogl_headers="" ; \
+	for header in $$headers; do \
+		cogl_headers="$$cogl_headers $(top_srcdir)/clutter/cogl/$$header " ; \
+	done ; \
 	$(INTROSPECTION_SCANNER) -v --namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 	     $(INCLUDES) \
 	     $(json_gir_include_path) \
@@ -263,6 +267,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
              --output $@ \
 	     $(clutter_HEADERS) \
 	     $$cogl_headers \
+	     $(top_builddir)/clutter/cogl/cogl-defines-$(CLUTTER_COGL).h \
 	     $(source_c)
 
 BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir

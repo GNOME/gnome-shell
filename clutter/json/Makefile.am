@@ -1,17 +1,17 @@
 source_c = \
-	json-array.c \
-	json-generator.c \
-	json-marshal.c \
-	json-node.c \
-	json-object.c \
-	json-parser.c
+	$(srcdir)/json-array.c 	\
+	$(srcdir)/json-generator.c \
+	$(srcdir)/json-marshal.c 	\
+	$(srcdir)/json-node.c 	\
+	$(srcdir)/json-object.c 	\
+	$(srcdir)/json-parser.c
 
 source_h = \
-	json-generator.h \
-	json-glib.h \
-	json-marshal.h \
-	json-parser.h \
-	json-types.h
+	$(top_srcdir)/clutter/json/json-generator.h 	\
+	$(top_srcdir)/clutter/json/json-glib.h 		\
+	$(top_srcdir)/clutter/json/json-marshal.h 	\
+	$(top_srcdir)/clutter/json/json-parser.h 	\
+	$(top_srcdir)/clutter/json/json-types.h
 
 noinst_LTLIBRARIES = libclutter-json.la
 
