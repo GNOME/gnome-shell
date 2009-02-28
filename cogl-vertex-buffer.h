@@ -85,6 +85,15 @@ CoglHandle
 cogl_vertex_buffer_new (guint n_vertices);
 
 /**
+ * cogl_vertex_buffer_get_n_vertices:
+ * @handle: A vertex buffer handle
+ *
+ * This returns the number of vertices that @handle represents
+ */
+guint
+cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
+
+/**
  * cogl_vertex_buffer_add:
  * @handle: A vertex buffer handle
  * @attribute_name: The name of your attribute. It should be a valid GLSL

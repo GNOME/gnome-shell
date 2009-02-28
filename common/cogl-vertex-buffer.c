@@ -221,6 +221,19 @@ cogl_vertex_buffer_new (guint n_vertices)
   return _cogl_vertex_buffer_handle_new (buffer);
 }
 
+guint
+cogl_vertex_buffer_get_n_vertices (CoglHandle handle)
+{
+  CoglVertexBuffer *buffer;
+
+  if (!cogl_is_vertex_buffer (handle))
+    return 0;
+
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+
+  return buffer->n_vertices;
+}
+
 /* There are a number of standard OpenGL attributes that we deal with
  * specially. These attributes are all namespaced with a "gl_" prefix
  * so we should catch any typos instead of silently adding a custom
