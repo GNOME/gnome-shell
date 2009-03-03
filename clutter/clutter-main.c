@@ -2361,8 +2361,14 @@ on_pointer_grab_weak_notify (gpointer data,
  *
  * Grabs pointer events, after the grab is done all pointer related events
  * (press, motion, release, enter, leave and scroll) are delivered to this
- * actor directly. The source set in the event will be the actor that would
- * have received the event if the pointer grab was not in effect.
+ * actor directly without passing through both capture and bubble phases of
+ * the event delivery chain. The source set in the event will be the actor
+ * that would have received the event if the pointer grab was not in effect.
+ *
+ * <note><para>Grabs completely override the entire event delivery chain
+ * done by Clutter. Pointer grabs should only be used as a last resource;
+ * using the #ClutterActor::captured-event signal should always be the
+ * preferred way to intercept event delivery to reactive actors.</para></note>
  *
  * If you wish to grab all the pointer events for a specific input device,
  * you should use clutter_grab_pointer_for_device().
@@ -2515,10 +2521,17 @@ on_keyboard_grab_weak_notify (gpointer data,
  * clutter_grab_keyboard:
  * @actor: a #ClutterActor
  *
- * Grabs keyboard events, after the grab is done keyboard events ("key-press-event"
- * and "key-release-event") are delivered to this actor directly. The source
- * set in the event will be the actor that would have received the event if the
- * keyboard grab was not in effect.
+ * Grabs keyboard events, after the grab is done keyboard
+ * events (#ClutterActor::key-press-event and #ClutterActor::key-release-event)
+ * are delivered to this actor directly. The source set in the event will be
+ * the actor that would have received the event if the keyboard grab was not
+ * in effect.
+ *
+ * Like pointer grabs, keyboard grabs should only be used as a last
+ * resource.
+ *
+ * See also clutter_stage_set_key_focus() and clutter_actor_grab_key_focus()
+ * to perform a "soft" key grab and assign key focus to a specific actor.
  *
  * Since: 0.6
  */
