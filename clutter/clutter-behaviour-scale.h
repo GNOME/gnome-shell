@@ -30,49 +30,47 @@
 #ifndef __CLUTTER_BEHAVIOUR_SCALE_H__
 #define __CLUTTER_BEHAVIOUR_SCALE_H__
 
-#include <clutter/clutter-actor.h>
-#include <clutter/clutter-alpha.h>
 #include <clutter/clutter-behaviour.h>
-#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_BEHAVIOUR_SCALE (clutter_behaviour_scale_get_type ())
+#define CLUTTER_TYPE_BEHAVIOUR_SCALE            (clutter_behaviour_scale_get_type ())
+#define CLUTTER_BEHAVIOUR_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScale))
+#define CLUTTER_BEHAVIOUR_SCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
+#define CLUTTER_IS_BEHAVIOUR_SCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BEHAVIOUR_SCALE))
+#define CLUTTER_IS_BEHAVIOUR_SCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BEHAVIOUR_SCALE))
+#define CLUTTER_BEHAVIOUR_SCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
 
-#define CLUTTER_BEHAVIOUR_SCALE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScale))
+typedef struct _ClutterBehaviourScale           ClutterBehaviourScale;
+typedef struct _ClutterBehaviourScalePrivate    ClutterBehaviourScalePrivate;
+typedef struct _ClutterBehaviourScaleClass      ClutterBehaviourScaleClass;
 
-#define CLUTTER_BEHAVIOUR_SCALE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
-
-#define CLUTTER_IS_BEHAVIOUR_SCALE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_BEHAVIOUR_SCALE))
-
-#define CLUTTER_IS_BEHAVIOUR_SCALE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_BEHAVIOUR_SCALE))
-
-#define CLUTTER_BEHAVIOUR_SCALE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
-
-typedef struct _ClutterBehaviourScale        ClutterBehaviourScale;
-typedef struct _ClutterBehaviourScalePrivate ClutterBehaviourScalePrivate;
-typedef struct _ClutterBehaviourScaleClass   ClutterBehaviourScaleClass;
-
+/**
+ * ClutterBehaviourScale:
+ *
+ * The #ClutterBehaviourScale struct contains only private data and
+ * should be accessed using the provided API
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourScale
 {
+  /*< private >*/
   ClutterBehaviour parent_instance;
 
-  /*< private >*/
   ClutterBehaviourScalePrivate *priv;
 };
 
+/**
+ * ClutterBehaviourScaleClass:
+ *
+ * The #ClutterBehaviourScaleClass struct contains only private data
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourScaleClass
 {
+  /*< private >*/
   ClutterBehaviourClass parent_class;
 };
 
@@ -84,31 +82,32 @@ ClutterBehaviour *clutter_behaviour_scale_new  (ClutterAlpha   *alpha,
                                                 gdouble         x_scale_end,
                                                 gdouble         y_scale_end);
 ClutterBehaviour *clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
-                                                ClutterFixed    x_scale_start,
-                                                ClutterFixed    y_scale_start,
-                                                ClutterFixed    x_scale_end,
-                                                ClutterFixed    y_scale_end);
+                                                CoglFixed       x_scale_start,
+                                                CoglFixed       y_scale_start,
+                                                CoglFixed       x_scale_end,
+                                                CoglFixed       y_scale_end);
 
 void clutter_behaviour_scale_set_bounds  (ClutterBehaviourScale *scale,
                                           gdouble                x_scale_start,
                                           gdouble                y_scale_start,
                                           gdouble                x_scale_end,
                                           gdouble                y_scale_end);
-void clutter_behaviour_scale_set_boundsx (ClutterBehaviourScale *scale,
-                                          ClutterFixed           x_scale_start,
-                                          ClutterFixed           y_scale_start,
-                                          ClutterFixed           x_scale_end,
-                                          ClutterFixed           y_scale_end);
 void clutter_behaviour_scale_get_bounds  (ClutterBehaviourScale *scale,
                                           gdouble               *x_scale_start,
                                           gdouble               *y_scale_start,
                                           gdouble               *x_scale_end,
                                           gdouble               *y_scale_end);
+
+void clutter_behaviour_scale_set_boundsx (ClutterBehaviourScale *scale,
+                                          CoglFixed              x_scale_start,
+                                          CoglFixed              y_scale_start,
+                                          CoglFixed              x_scale_end,
+                                          CoglFixed              y_scale_end);
 void clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
-                                          ClutterFixed          *x_scale_start,
-                                          ClutterFixed          *y_scale_start,
-                                          ClutterFixed          *x_scale_end,
-                                          ClutterFixed          *y_scale_end);
+                                          CoglFixed             *x_scale_start,
+                                          CoglFixed             *y_scale_start,
+                                          CoglFixed             *x_scale_end,
+                                          CoglFixed             *y_scale_end);
 
 G_END_DECLS
 
