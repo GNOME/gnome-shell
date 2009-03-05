@@ -275,7 +275,7 @@ G_BEGIN_DECLS
  *
  * Since: 1.0
  */
-#define COGL_FIXED_FROM_FLOAT(x)        (cogl_double_to_fixed (x))
+#define COGL_FIXED_FROM_FLOAT(x)        ((float) cogl_double_to_fixed (x))
 
 /**
  * COGL_FIXED_TO_FLOAT:
@@ -289,10 +289,21 @@ G_BEGIN_DECLS
 #define COGL_FIXED_TO_FLOAT(x)          ((float) ((int)(x) / 65536.0))
 
 /**
+ * COGL_FIXED_FROM_DOUBLE:
+ * @x: a floating point number
+ *
+ * Converts @x from a double precision, floating point to a fixed
+ * point notation.
+ *
+ * Since: 1.0
+ */
+#define COGL_FIXED_FROM_DOUBLE(x)       (cogl_double_to_fixed (x))
+
+/**
  * COGL_FIXED_TO_FLOAT:
  * @x: a #CoglFixed number
  *
- * Converts @x from a fixed point to a floatint point notation, in
+ * Converts @x from a fixed point to a floating point notation, in
  * double precision.
  *
  * Since: 1.0
