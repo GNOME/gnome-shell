@@ -284,6 +284,20 @@ if test x$have_xcursor = xyes; then
   AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support]) 
 fi
 
+AC_MSG_CHECKING([libgtop])
+if $PKG_CONFIG libgtop-2.0; then
+     have_gtop=yes
+  else
+     have_gtop=no
+  fi
+  AC_MSG_RESULT($have_gtop)
+
+if test x$have_gtop = xyes; then
+  echo "Building with libgtop"
+  METACITY_PC_MODULES="$METACITY_PC_MODULES libgtop-2.0"
+  AC_DEFINE(HAVE_GTOP, , [Building with libgtop]) 
+fi
+
 PKG_CHECK_MODULES(METACITY, $METACITY_PC_MODULES)
 
 AC_PATH_XTRA

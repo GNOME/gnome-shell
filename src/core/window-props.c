@@ -47,6 +47,16 @@
 #include <X11/Xatom.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <pwd.h>
+
+#ifdef HAVE_GTOP
+#include <glibtop/procuid.h>
+#include <errno.h>
+#include <pwd.h>
+#endif /* HAVE_GTOP */
+
 #ifndef HOST_NAME_MAX
 /* Solaris headers apparently don't define this so do so manually; #326745 */
 #define HOST_NAME_MAX 255
@@ -337,6 +347,32 @@ reload_net_wm_user_time_window (MetaWindow    *window,
     }
 }
 
+/**
+ * Finds who owns a particular process, if we can.
+ *
+ * \param process  The process's ID.
+ * \result         Set to the ID of the user, if we returned true.
+ *
+ * \result  True if we could tell.
+ */
+static gboolean
+owner_of_process (pid_t process, uid_t *result)
+{
+#ifdef HAVE_GTOP
+  glibtop_proc_uid process_details;
+      
+  glibtop_get_proc_uid (&process_details, process);
+
+  *result = process_details.uid;
+  return TRUE;
+#else
+  /* I don't know, maybe we could do something hairy like see whether
+   * /proc/$PID exists and who owns it, in case they have procfs.
+   */
+  return FALSE;
+#endif /* HAVE_GTOP */
+}
+
 #define MAX_TITLE_LENGTH 512
 
 /**
@@ -369,14 +405,75 @@ set_title_text (MetaWindow  *window,
       modified = TRUE;
     }
   /* if WM_CLIENT_MACHINE indicates this machine is on a remote host
-   * lets place that hostname in the title */
+   * let's place that hostname in the title */
   else if (window->wm_client_machine &&
            !gethostname (hostname, HOST_NAME_MAX + 1) &&
            strcmp (hostname, window->wm_client_machine))
     {
+      /* Translators: the title of a window from another machine */
       *target = g_strdup_printf (_("%s (on %s)"),
                       title, window->wm_client_machine);
       modified = TRUE;
+    }
+  else if (window->net_wm_pid != -1)
+    {
+      /* We know the process which owns this window; perhaps we can
+       * find out the name of its owner (if it's not us).
+       */
+
+      char *found_name = NULL;
+
+      uid_t window_owner = 0;
+      gboolean window_owner_known =
+              owner_of_process (window->net_wm_pid, &window_owner);
+
+      /* Assume a window with unknown ownership is ours (call it usufruct!) */
+      gboolean window_owner_is_us =
+              !window_owner_known || window_owner==getuid ();
+      
+      if (window_owner_is_us)
+        {
+          /* we own it, so fall back to the simple case */
+          *target = g_strdup (title);
+        }
+      else
+        {
+          /* it belongs to window_owner.  So what's their name? */
+
+          if (window_owner==0)
+            {
+              /* Simple case-- don't bother to look it up.  It's root. */
+              *target = g_strdup_printf (_("%s (as superuser)"),
+                                         title);
+            }
+          else
+            {
+              /* Okay, let's look up the name. */
+              struct passwd *pwd;
+
+              errno = 0;
+              pwd = getpwuid (window_owner);
+              if (errno==0 || pwd==NULL)
+                {
+                  found_name = pwd->pw_name;
+                }
+            
+              if (found_name)
+                /* Translators: the title of a window owned by another user
+                 * on this machine */
+                *target = g_strdup_printf (_("%s (as %s)"),
+                                           title,
+                                           found_name);
+              else
+                /* Translators: the title of a window owned by another user
+                 * on this machine, whose name we don't know */
+                *target = g_strdup_printf (_("%s (as another user)"),
+                                           title);
+            }
+          /* either way we changed it */
+          modified = TRUE;
+              
+        }
     }
   else
     *target = g_strdup (title);

@@ -1,3 +1,13 @@
+2009-03-06  Thomas Thurman  <tthurman@gnome.org>
+
+	* configure.in: add optional dependency on gtop.
+	* src/core/window-props.c: Include "(as username)"
+          in the titlebar if a window is running as another user.
+	* src/core/window.c: check for PID before name, since
+          the rendering of the name can now depend on the PID.
+
+        Closes #549389.
+
 2009-02-21  Matthias Clasen  <mclasen@redhat.com>
 
 	* src/core/bell.c: Don't force CA_PROP_CANBERRA_ENABLE to 1.

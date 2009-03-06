@@ -572,9 +572,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    */
   i = 0;
   initial_props[i++] = display->atom_WM_CLIENT_MACHINE;
+  initial_props[i++] = display->atom__NET_WM_PID;
   initial_props[i++] = display->atom__NET_WM_NAME;
   initial_props[i++] = XA_WM_CLASS;
-  initial_props[i++] = display->atom__NET_WM_PID;
   initial_props[i++] = XA_WM_NAME;
   initial_props[i++] = display->atom__NET_WM_ICON_NAME;
   initial_props[i++] = XA_WM_ICON_NAME;
