@@ -426,33 +426,14 @@ clutter_animation_update_property_internal (ClutterAnimation *animation,
                         g_object_ref_sink (interval));
 }
 
-/**
- * clutter_animation_bind_property:
- * @animation: a #ClutterAnimation
- * @property_name: the property to control
- * @interval: a #ClutterInterval
- *
- * Binds @interval to the @property_name of the #GObject
- * attached to @animation. The #ClutterAnimation will take
- * ownership of the passed #ClutterInterval.
- *
- * If you need to update the interval instance use
- * clutter_animation_update_property() instead.
- *
- * Since: 1.0
- */
-void
-clutter_animation_bind_property (ClutterAnimation *animation,
-                                 const gchar      *property_name,
-                                 ClutterInterval  *interval)
+static GParamSpec *
+clutter_animation_validate_bind (ClutterAnimation *animation,
+                                 const char       *property_name,
+                                 GType             argtype)
 {
   ClutterAnimationPrivate *priv;
   GObjectClass *klass;
   GParamSpec *pspec;
-
-  g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
-  g_return_if_fail (property_name != NULL);
-  g_return_if_fail (CLUTTER_IS_INTERVAL (interval));
 
   priv = animation->priv;
 
@@ -462,7 +443,7 @@ clutter_animation_bind_property (ClutterAnimation *animation,
                  "object set. You need to call clutter_animation_set_object() "
                  "first to be able to bind a property",
                  property_name);
-      return;
+      return NULL;
     }
 
   if (G_UNLIKELY (clutter_animation_has_property (animation, property_name)))
@@ -470,7 +451,7 @@ clutter_animation_bind_property (ClutterAnimation *animation,
       g_warning ("Cannot bind property `%s': the animation already has "
                  "a bound property with the same name",
                  property_name);
-      return;
+      return NULL;
     }
 
   klass = G_OBJECT_GET_CLASS (priv->object);
@@ -481,30 +462,118 @@ clutter_animation_bind_property (ClutterAnimation *animation,
                  "no such property",
                  property_name,
                  g_type_name (G_OBJECT_TYPE (priv->object)));
-      return;
+      return NULL;
     }
 
   if (!(pspec->flags & G_PARAM_WRITABLE))
     {
       g_warning ("Cannot bind property `%s': the property is not writable",
                  property_name);
-      return;
+      return NULL;
     }
 
   if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec),
-                                clutter_interval_get_value_type (interval)))
+                                argtype))
     {
       g_warning ("Cannot bind property `%s': the interval value of "
                  "type `%s' is not compatible with the property value "
                  "of type `%s'",
                  property_name,
-                 g_type_name (clutter_interval_get_value_type (interval)),
+                 g_type_name (argtype),
                  g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
-      return;
+      return NULL;
     }
+  return pspec;
+}
+
+/**
+ * clutter_animation_bind_interval:
+ * @animation: a #ClutterAnimation
+ * @property_name: the property to control
+ * @interval: (transfer full): a #ClutterInterval
+ *
+ * Binds @interval to the @property_name of the #GObject
+ * attached to @animation. The #ClutterAnimation will take
+ * ownership of the passed #ClutterInterval.  For more information
+ * about animations, see clutter_actor_animate().
+ *
+ * If you need to update the interval instance use
+ * clutter_animation_update_property() instead.
+ *
+ * Return value: (transfer none): The animation itself.
+ * Since: 1.0
+ */
+ClutterAnimation *
+clutter_animation_bind_interval (ClutterAnimation *animation,
+                                 const gchar      *property_name,
+                                 ClutterInterval  *interval)
+{
+  GParamSpec *pspec;
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+  g_return_val_if_fail (CLUTTER_IS_INTERVAL (interval), NULL);
+
+  pspec = clutter_animation_validate_bind (animation, property_name,
+                                           clutter_interval_get_value_type (interval));
+  if (pspec == NULL)
+    return NULL;
 
   clutter_animation_bind_property_internal (animation, pspec, interval);
+
+  return animation;
 }
+
+
+/**
+ * clutter_animation_bind:
+ * @animation: a #ClutterAnimation
+ * @property_name: the property to control
+ * @final: The final value of the property
+ *
+ * Adds a single property with name @property_name to the
+ * animation @animation.  For more information about animations,
+ * see clutter_actor_animate().
+ *
+ * This method returns the animation primarily to make chained
+ * calls convenient in language bindings.
+ *
+ * Return value: (transfer none): The animation itself.
+ * Since: 1.0
+ */
+ClutterAnimation *
+clutter_animation_bind (ClutterAnimation *animation,
+                        const gchar      *property_name,
+                        const GValue     *final)
+{
+  ClutterAnimationPrivate *priv;
+  GParamSpec *pspec;
+  ClutterInterval *interval;
+  GType type;
+  GValue initial = { 0, };
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+
+  priv = animation->priv;
+
+  type = G_VALUE_TYPE (final);
+  pspec = clutter_animation_validate_bind (animation, property_name,
+                                           type);
+  if (pspec == NULL)
+    return NULL;
+
+  g_value_init (&initial, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  g_object_get_property (priv->object, property_name, &initial);
+
+  interval = clutter_interval_new_with_values (type, &initial, final);
+  g_value_unset (&initial);
+
+  clutter_animation_bind_property_internal (animation, pspec, interval);
+
+  return animation;
+}
+
 
 /**
  * clutter_animation_unbind_property:

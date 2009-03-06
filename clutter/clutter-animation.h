@@ -116,7 +116,10 @@ void                 clutter_animation_set_alpha       (ClutterAnimation     *an
                                                         ClutterAlpha         *alpha);
 ClutterAlpha *       clutter_animation_get_alpha       (ClutterAnimation     *animation);
 
-void                 clutter_animation_bind_property   (ClutterAnimation     *animation,
+ClutterAnimation *   clutter_animation_bind            (ClutterAnimation     *animation,
+                                                        const gchar          *property_name,
+                                                        const GValue         *final);
+ClutterAnimation *   clutter_animation_bind_interval   (ClutterAnimation     *animation,
                                                         const gchar          *property_name,
                                                         ClutterInterval      *interval);
 gboolean             clutter_animation_has_property    (ClutterAnimation     *animation,
@@ -124,7 +127,7 @@ gboolean             clutter_animation_has_property    (ClutterAnimation     *an
 void                 clutter_animation_update_property (ClutterAnimation     *animation,
                                                         const gchar          *property_name,
                                                         ClutterInterval      *interval);
-void                 clutter_animation_unbind_property (ClutterAnimation     *animation,
+void                 clutter_animation_unbind          (ClutterAnimation     *animation,
                                                         const gchar          *property_name);
 ClutterInterval     *clutter_animation_get_interval    (ClutterAnimation     *animation,
                                                         const gchar          *property_name);
