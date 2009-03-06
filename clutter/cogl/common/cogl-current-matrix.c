@@ -307,30 +307,35 @@ _cogl_current_matrix_state_flush (void)
 void
 cogl_push_matrix (void)
 {
+  _cogl_set_current_matrix (GL_MODELVIEW);
   _cogl_current_matrix_push ();
 }
 
 void
 cogl_pop_matrix (void)
 {
+  _cogl_set_current_matrix (GL_MODELVIEW);
   _cogl_current_matrix_pop ();
 }
 
 void
 cogl_scale (float x, float y, float z)
 {
+  _cogl_set_current_matrix (GL_MODELVIEW);
   _cogl_current_matrix_scale (x, y, z);
 }
 
 void
 cogl_translate (float x, float y, float z)
 {
+  _cogl_set_current_matrix (GL_MODELVIEW);
   _cogl_current_matrix_translate (x, y, z);
 }
 
 void
 cogl_rotate (float angle, float x, float y, float z)
 {
+  _cogl_set_current_matrix (GL_MODELVIEW);
   _cogl_current_matrix_rotate (angle, x, y, z);
 }
 
