@@ -215,7 +215,8 @@ _cogl_current_matrix_ortho (float             left,
     GE (glOrtho (left, right, bottom, top, near_val, far_val));
 #else
   /* Nobody is using glOrtho right now anyway, so not bothering */
-  g_warning ("%s not implemented, need to code cogl_matrix_ortho() if you need this function",
+  g_warning ("%s not implemented, need to code cogl_matrix_ortho() if you need"
+             " this function",
              G_STRFUNC);
 #endif
 }
