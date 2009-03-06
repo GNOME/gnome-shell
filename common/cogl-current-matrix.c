@@ -235,6 +235,7 @@ _cogl_get_matrix (CoglMatrixMode mode,
   else
     {
       GLenum gl_mode;
+      GLfloat gl_matrix[16];
 
       gl_mode = 0; /* silence compiler warning */
       switch (mode)
@@ -250,10 +251,14 @@ _cogl_get_matrix (CoglMatrixMode mode,
           break;
         }
 
-      /* hack alert: CoglMatrix is not really expecting us to
-       * get *mutable* floats array from it
+      /* Note: we have a redundant copy happening here. If that turns out to be
+       * a problem then, since this is internal to Cogl, we could pass the
+       * CoglMatrix pointer directly to glGetFloatv; the only problem with that
+       * is that if we later add internal flags to CoglMatrix they will need to
+       * be initialized seperatly.
        */
-      GE (glGetFloatv (gl_mode, (GLfloat*) matrix));
+      GE (glGetFloatv (gl_mode, gl_matrix));
+      cogl_matrix_init_from_array (matrix, gl_matrix);
     }
 }
 
