@@ -146,11 +146,18 @@ Sideshow.prototype = {
         this._searchEntry.connect('key-press-event', function (se, e) {
             let symbol = Shell.get_event_key_symbol(e);
             if (symbol == Clutter.Escape) {
-                // A single escape clears the entry, two of them hides the overlay
-                if (me._searchEntry.text == '')
-                    me.emit('activated');
-                else
+                // Escape will keep clearing things back to the desktop.  First, if
+                // we have active text, we remove it.
+                if (me._searchEntry.text != '')
                     me._searchEntry.text = '';
+                // Next, if we're in one of the "more" modes, close it
+                else if (me._moreAppsMode)
+                    me._unsetMoreAppsMode();
+                else if (me._moreDocsMode)
+                    me._unsetMoreDocsMode();
+                else
+                // Finally, just close the overlay entirely
+                    me.emit('activated');
                 return true;
             } else if (symbol == Clutter.Up) {
                 // selectUp and selectDown wrap around in their respective displays
