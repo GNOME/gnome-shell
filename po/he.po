@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
 "POT-Creation-Date: 2009-02-05 16:08+0000\n"
-"PO-Revision-Date: 2009-03-07 14:32+0200\n"
+"PO-Revision-Date: 2009-03-07 14:38+0200\n"
 "Last-Translator: Mark Krapivner <mark125@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1093,7 +1093,7 @@ msgstr "_שנה גודל"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:84
 msgid "Move Titlebar On_screen"
-msgstr "העבר את שורת הכותרת אל ה_מסך"
+msgstr "הזז את שורת הכותרת אל ה_מסך"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
