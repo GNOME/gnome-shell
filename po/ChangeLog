@@ -1,3 +1,8 @@
+2009-03-08  Petr Kovar  <pknbe@volny.cz>
+
+	* cs.po: Updated Czech translation.
+	* POTFILES.in: Removed "src/ui/metacity-dialog.c".
+
 2009-03-02  Claude Paroz  <claude@2xlibre.net>
 
 	* fr.po: Updated French translation (synced with gnome-2-26).
