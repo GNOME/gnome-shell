@@ -98,7 +98,7 @@ clutter_interval_real_validate (ClutterInterval *interval,
   if (pspec_gtype == CLUTTER_TYPE_UNIT)
     {
       ClutterParamSpecUnit *pspec_unit = CLUTTER_PARAM_SPEC_UNIT (pspec);
-      ClutterFixed a, b;
+      ClutterUnit a, b;
 
       a = b = 0;
       clutter_interval_get_interval (interval, &a, &b);
@@ -108,10 +108,10 @@ clutter_interval_real_validate (ClutterInterval *interval,
       else
         return FALSE;
     }
-  else if (pspec_gtype == CLUTTER_TYPE_FIXED)
+  else if (pspec_gtype == COGL_TYPE_FIXED)
     {
       ClutterParamSpecFixed *pspec_fixed = CLUTTER_PARAM_SPEC_FIXED (pspec);
-      ClutterFixed a, b;
+      CoglFixed a, b;
 
       a = b = 0;
       clutter_interval_get_interval (interval, &a, &b);
@@ -280,7 +280,7 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
       break;
 
     case G_TYPE_BOOLEAN:
-      if (CLUTTER_FLOAT_TO_FIXED (factor) > 0.5)
+      if (factor > 0.5)
         g_value_set_boolean (value, TRUE);
       else
         g_value_set_boolean (value, FALSE);
