@@ -7,12 +7,12 @@ void
 test_fixed_constants (TestConformSimpleFixture *fixture,
 		      gconstpointer data)
 {
-  g_assert_cmpint (CFX_ONE, ==, CLUTTER_FLOAT_TO_FIXED (1.0));
-  g_assert_cmpint (CFX_ONE, ==, CLUTTER_INT_TO_FIXED (1));
+  g_assert_cmpint (COGL_FIXED_1, ==, COGL_FIXED_FROM_FLOAT (1.0));
+  g_assert_cmpint (COGL_FIXED_1, ==, COGL_FIXED_FROM_INT (1));
 
-  g_assert_cmpint (CFX_HALF, ==, CLUTTER_FLOAT_TO_FIXED (0.5));
+  g_assert_cmpint (COGL_FIXED_0_5, ==, COGL_FIXED_FROM_FLOAT (0.5));
 
-  g_assert_cmpfloat (CLUTTER_FIXED_TO_FLOAT (CFX_ONE), ==, 1.0);
-  g_assert_cmpfloat (CLUTTER_FIXED_TO_FLOAT (CFX_HALF), ==, 0.5);
+  g_assert_cmpfloat (COGL_FIXED_TO_FLOAT (COGL_FIXED_1), ==, 1.0);
+  g_assert_cmpfloat (COGL_FIXED_TO_FLOAT (COGL_FIXED_0_5), ==, 0.5);
 }
 
