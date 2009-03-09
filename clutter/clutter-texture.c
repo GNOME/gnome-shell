@@ -438,12 +438,12 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
 {
   ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
   ClutterVertex verts[4];
-  ClutterFixed viewport[4];
+  gfloat viewport[4];
   ClutterUnit x_min, x_max, y_min, y_max;
-  ClutterFixed tx_min, tx_max, ty_min, ty_max;
+  gfloat tx_min, tx_max, ty_min, ty_max;
+  gfloat tan_angle, near_size;
   ClutterPerspective perspective;
   ClutterStage *stage;
-  ClutterFixed tan_angle, near_size;
   int i;
 
   /* Get the bounding rectangle of the source as drawn in screen
@@ -469,30 +469,31 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
     }
 
   stage = CLUTTER_STAGE (clutter_actor_get_stage (self));
-  clutter_stage_get_perspectivex (stage, &perspective);
+  clutter_stage_get_perspective (stage, &perspective);
 
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
 
-  tx_min = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_min), viewport[2])
+  tx_min = (CLUTTER_UNITS_TO_FLOAT (x_min) / viewport[2])
          * 2 - 1.0;
-  tx_max = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_max), viewport[2])
+  tx_max = (CLUTTER_UNITS_TO_FLOAT (x_max) / viewport[2])
          * 2 - 1.0;
-  ty_min = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_min), viewport[3])
+  ty_min = (CLUTTER_UNITS_TO_FLOAT (y_min) / viewport[3])
          * 2 - 1.0;
-  ty_max = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_max), viewport[3])
+  ty_max = (CLUTTER_UNITS_TO_FLOAT (y_max) / viewport[3])
          * 2 - 1.0;
 
   /* Set up a projection matrix so that the actor will be projected as
      if it was drawn at its original location */
-  tan_angle = tanf ((perspective.fovy / 2) * (G_PI/180.0));
-  near_size = CLUTTER_FIXED_MUL (perspective.z_near, tan_angle);
+  tan_angle = tanf ((perspective.fovy / 2) * (G_PI / 180.0));
+  near_size = perspective.z_near * tan_angle;
 
-  cogl_frustum (CLUTTER_FIXED_MUL (tx_min, near_size),
-                CLUTTER_FIXED_MUL (tx_max, near_size),
-                CLUTTER_FIXED_MUL (-ty_min, near_size),
-                CLUTTER_FIXED_MUL (-ty_max, near_size),
-                perspective.z_near, perspective.z_far);
+  cogl_frustum ((tx_min * near_size),
+                (tx_max * near_size),
+                (-ty_min * near_size),
+                (-ty_max * near_size),
+                perspective.z_near,
+                perspective.z_far);
 }
 
 static void
@@ -502,10 +503,10 @@ clutter_texture_paint (ClutterActor *self)
   ClutterTexturePrivate *priv = texture->priv;
   gint            x_1, y_1, x_2, y_2;
   CoglColor       transparent_col;
-  ClutterFixed    t_w, t_h;
+  gfloat          t_w, t_h;
   guint8          paint_opacity = clutter_actor_get_paint_opacity (self);
 
-  if (clutter_actor_get_paint_opacity (self) == 0)
+  if (paint_opacity == 0)
     {
       /* Bail early if painting the actor would be a no-op, custom actors that
        * might cause a lot of work/state changes should all do this.
@@ -542,7 +543,7 @@ clutter_texture_paint (ClutterActor *self)
 	  guint               stage_width, stage_height;
 	  ClutterActor       *source_parent;
 
-	  clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
+	  clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
 	  clutter_actor_get_size (stage, &stage_width, &stage_height);
 
 	  /* Use below to set the modelview matrix as if the viewport
@@ -614,14 +615,12 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_opacity (self));
 
   if (priv->repeat_x && priv->width > 0)
-    t_w = CLUTTER_FIXED_DIV ((float)(x_2 - x_1),
-		          (float)(priv->width));
+    t_w = (float) (x_2 - x_1) / (float) (priv->width);
   else
     t_w = 1.0;
 
   if (priv->repeat_y && priv->height > 0)
-    t_h = CLUTTER_FIXED_DIV ((float)(y_2 - y_1),
-                          (float)(priv->height));
+    t_h = (float) (y_2 - y_1) / (float) (priv->height);
   else
     t_h = 1.0;
 

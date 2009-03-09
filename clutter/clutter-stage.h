@@ -132,30 +132,27 @@ struct _ClutterStageClass
  */
 struct _ClutterPerspective
 {
-  ClutterFixed fovy;
-  ClutterFixed aspect;
-  ClutterFixed z_near;
-  ClutterFixed z_far;
+  gfloat fovy;
+  gfloat aspect;
+  gfloat z_near;
+  gfloat z_far;
 };
 
 /**
  * ClutterFog:
- * @density: density of the fog
  * @z_near: starting distance from the viewer to the near clipping
  *   plane (always positive)
  * @z_far: final distance from the viewer to the far clipping
  *   plane (always positive)
  *
- * Fog settings used to create the depth cueing effect. #ClutterFog is
- * useful only when using the fixed point API.
+ * Fog settings used to create the depth cueing effect.
  *
  * Since: 0.6
  */
 struct _ClutterFog
 {
-  ClutterFixed density;
-  ClutterFixed z_near;
-  ClutterFixed z_far;
+  gfloat z_near;
+  gfloat z_far;
 };
 
 GType         clutter_perspective_get_type    (void) G_GNUC_CONST;
@@ -169,20 +166,10 @@ void          clutter_stage_set_color         (ClutterStage       *stage,
                                                const ClutterColor *color);
 void          clutter_stage_get_color         (ClutterStage       *stage,
                                                ClutterColor       *color);
-void          clutter_stage_set_perspectivex  (ClutterStage       *stage,
-			                       ClutterPerspective *perspective);
-void          clutter_stage_get_perspectivex  (ClutterStage       *stage,
-			                       ClutterPerspective *perspective);
 void          clutter_stage_set_perspective   (ClutterStage       *stage,
-					       gfloat              fovy,
-					       gfloat              aspect,
-					       gfloat              z_near,
-					       gfloat              z_far);
+			                       ClutterPerspective *perspective);
 void          clutter_stage_get_perspective   (ClutterStage       *stage,
-					       gfloat             *fovy,
-					       gfloat             *aspect,
-					       gfloat             *z_near,
-					       gfloat             *z_far);
+			                       ClutterPerspective *perspective);
 void          clutter_stage_fullscreen        (ClutterStage       *stage);
 void          clutter_stage_unfullscreen      (ClutterStage       *stage);
 void          clutter_stage_show_cursor       (ClutterStage       *stage);
@@ -191,7 +178,7 @@ void          clutter_stage_hide_cursor       (ClutterStage       *stage);
 ClutterActor *clutter_stage_get_actor_at_pos  (ClutterStage       *stage,
                                                gint                x,
                                                gint                y);
-guchar       *clutter_stage_read_pixels       (ClutterStage       *stage,
+guchar *      clutter_stage_read_pixels       (ClutterStage       *stage,
                                                gint                x,
                                                gint                y,
                                                gint                width,
@@ -209,16 +196,8 @@ void                  clutter_stage_set_use_fog        (ClutterStage *stage,
                                                         gboolean      fog);
 gboolean              clutter_stage_get_use_fog        (ClutterStage *stage);
 void                  clutter_stage_set_fog            (ClutterStage *stage,
-                                                        gdouble       density,
-                                                        gdouble       z_near,
-                                                        gdouble       z_far);
-void                  clutter_stage_get_fog            (ClutterStage *stage,
-                                                        gdouble      *density,
-                                                        gdouble      *z_near,
-                                                        gdouble      *z_far);
-void                  clutter_stage_set_fogx           (ClutterStage *stage,
                                                         ClutterFog   *fog);
-void                  clutter_stage_get_fogx           (ClutterStage *stage,
+void                  clutter_stage_get_fog            (ClutterStage *stage,
                                                         ClutterFog   *fog);
 
 void                  clutter_stage_set_key_focus      (ClutterStage *stage,

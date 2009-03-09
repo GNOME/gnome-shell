@@ -156,7 +156,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
       guint width, height;
 
       clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
-      clutter_stage_get_perspectivex (stage, &perspective);
+      clutter_stage_get_perspective (stage, &perspective);
 
       CLUTTER_NOTE (PAINT, "Setting up the viewport");
 
