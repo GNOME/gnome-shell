@@ -3692,16 +3692,25 @@ clutter_text_insert_text (ClutterText *self,
 {
   ClutterTextPrivate *priv;
   GString *new = NULL;
+  gint pos_bytes;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
   g_return_if_fail (text != NULL);
 
   priv = self->priv;
 
+  pos_bytes = offset_to_bytes (priv->text, position);
+
   new = g_string_new (priv->text);
-  new = g_string_insert (new, position, text);
+  new = g_string_insert (new, pos_bytes, text);
 
   clutter_text_set_text (self, new->str);
+
+  if (position >= 0 && priv->position >= position)
+    {
+      clutter_text_set_cursor_position (self, priv->position + g_utf8_strlen (text, -1));
+      clutter_text_set_selection_bound (self, priv->position);
+    }
 
   g_string_free (new, TRUE);
 }
