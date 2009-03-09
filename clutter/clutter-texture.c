@@ -352,15 +352,14 @@ clutter_texture_get_preferred_width (ClutterActor *self,
           else
             {
               /* Set the natural width so as to preserve the aspect ratio */
-              ClutterFixed ratio, height;
+              gfloat ratio, height;
 
-              ratio = CLUTTER_FIXED_DIV ((float)(priv->width),
-                                      (float)(priv->height));
+              ratio = (float)(priv->width) / (float)(priv->height);
 
-              height = CLUTTER_UNITS_TO_FIXED (for_height);
+              height = CLUTTER_UNITS_TO_FLOAT (for_height);
 
               *natural_width_p =
-                CLUTTER_UNITS_FROM_FIXED (CLUTTER_FIXED_MUL (ratio, height));
+                CLUTTER_UNITS_FROM_FLOAT (ratio * height);
             }
         }
     }
@@ -397,15 +396,14 @@ clutter_texture_get_preferred_height (ClutterActor *self,
           else
             {
               /* Set the natural height so as to preserve the aspect ratio */
-              ClutterFixed ratio, width;
+              gfloat ratio, width;
 
-              ratio = CLUTTER_FIXED_DIV ((float)(priv->height),
-                                      (float)(priv->width));
+              ratio = (float)(priv->height) / (float)(priv->width);
 
-              width = CLUTTER_UNITS_TO_FIXED (for_width);
+              width = CLUTTER_UNITS_TO_FLOAT (for_width);
 
               *natural_height_p =
-                CLUTTER_UNITS_FROM_FIXED (CLUTTER_FIXED_MUL (ratio, width));
+                CLUTTER_UNITS_FROM_FLOAT (ratio * width);
             }
         }
     }
