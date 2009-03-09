@@ -3,7 +3,7 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
+ * Authored By Neil Roberts  <neil@linux.intel.com>
  *
  * Copyright (C) 2008 OpenedHand
  *
@@ -28,6 +28,7 @@
 #endif
 
 #include "clutter-frame-source.h"
+#include "clutter-timeout-interval.h"
 
 typedef struct _ClutterFrameSource ClutterFrameSource;
 
@@ -35,8 +36,7 @@ struct _ClutterFrameSource
 {
   GSource source;
 
-  GTimeVal start_time;
-  guint last_time, frame_time;
+  ClutterTimeoutInterval timeout;
 };
 
 static gboolean clutter_frame_source_prepare  (GSource *source, gint *timeout);
@@ -45,7 +45,7 @@ static gboolean clutter_frame_source_dispatch (GSource    *source,
 					       GSourceFunc callback,
 					       gpointer    user_data);
 
-static GSourceFuncs clutter_frame_source_funcs = 
+static GSourceFuncs clutter_frame_source_funcs =
   {
     clutter_frame_source_prepare,
     clutter_frame_source_check,
@@ -57,7 +57,7 @@ static GSourceFuncs clutter_frame_source_funcs =
  * clutter_frame_source_add_full:
  * @priority: the priority of the frame source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
- * @interval: the time between calls to the function, in milliseconds
+ * @fps: the number of times per second to call the function
  * @func: function to call
  * @data: data to pass to the function
  * @notify: function to call when the timeout source is removed
@@ -74,7 +74,7 @@ static GSourceFuncs clutter_frame_source_funcs =
  * the interval time to execute then the function will be called again
  * half the interval time after it finished. In contrast
  * g_timeout_add_full() would not fire until a full interval after the
- * function completes so the delay between calls would be @interval *
+ * function completes so the delay between calls would be 1.0 / @fps *
  * 1.5. This function does not however try to invoke the function
  * multiple times to catch up missing frames if @func takes more than
  * @interval ms to execute.
@@ -85,7 +85,7 @@ static GSourceFuncs clutter_frame_source_funcs =
  */
 guint
 clutter_frame_source_add_full (gint           priority,
-			       guint          interval,
+			       guint          fps,
 			       GSourceFunc    func,
 			       gpointer       data,
 			       GDestroyNotify notify)
@@ -95,9 +95,7 @@ clutter_frame_source_add_full (gint           priority,
 				  sizeof (ClutterFrameSource));
   ClutterFrameSource *frame_source = (ClutterFrameSource *) source;
 
-  frame_source->last_time = 0;
-  frame_source->frame_time = interval;
-  g_get_current_time (&frame_source->start_time);
+  _clutter_timeout_interval_init (&frame_source->timeout, fps);
 
   if (priority != G_PRIORITY_DEFAULT)
     g_source_set_priority (source, priority);
@@ -113,7 +111,7 @@ clutter_frame_source_add_full (gint           priority,
 
 /**
  * clutter_frame_source_add:
- * @interval: the time between calls to the function, in milliseconds
+ * @fps: the number of times per second to call the function
  * @func: function to call
  * @data: data to pass to the function
  *
@@ -124,55 +122,25 @@ clutter_frame_source_add_full (gint           priority,
  * Since: 0.8
  */
 guint
-clutter_frame_source_add (guint          interval,
+clutter_frame_source_add (guint          fps,
 			  GSourceFunc    func,
 			  gpointer       data)
 {
   return clutter_frame_source_add_full (G_PRIORITY_DEFAULT,
-					interval, func, data, NULL);
-}
-
-static guint
-clutter_frame_source_get_ticks (ClutterFrameSource *frame_source)
-{
-  GTimeVal time_now;
-
-  g_source_get_current_time ((GSource *) frame_source, &time_now);
-  
-  return (time_now.tv_sec - frame_source->start_time.tv_sec) * 1000
-         + (time_now.tv_usec - frame_source->start_time.tv_usec) / 1000;
+					fps, func, data, NULL);
 }
 
 static gboolean
-clutter_frame_source_prepare (GSource *source, gint *timeout)
+clutter_frame_source_prepare (GSource *source, gint *delay)
 {
   ClutterFrameSource *frame_source = (ClutterFrameSource *) source;
+  GTimeVal current_time;
 
-  guint now = clutter_frame_source_get_ticks (frame_source);
+  g_source_get_current_time (source, &current_time);
 
-  /* If time has gone backwards or the time since the last frame is
-     greater than the two frames worth then reset the time and do a
-     frame now */
-  if (frame_source->last_time > now ||
-      (now - frame_source->last_time) > frame_source->frame_time * 2)
-    {
-      frame_source->last_time = now - frame_source->frame_time;
-      if (timeout)
-	*timeout = 0;
-      return TRUE;
-    }
-  else if (now - frame_source->last_time >= frame_source->frame_time)
-    {
-      if (timeout)
-	*timeout = 0;
-      return TRUE;
-    }
-  else
-    {
-      if (timeout)
-	*timeout = frame_source->frame_time + frame_source->last_time - now;
-      return FALSE;
-    }
+  return _clutter_timeout_interval_prepare (&current_time,
+                                            &frame_source->timeout,
+                                            delay);
 }
 
 static gboolean
@@ -183,16 +151,11 @@ clutter_frame_source_check (GSource *source)
 
 static gboolean
 clutter_frame_source_dispatch (GSource     *source,
-			       GSourceFunc callback,
-			       gpointer    user_data)
+			       GSourceFunc  callback,
+			       gpointer     user_data)
 {
   ClutterFrameSource *frame_source = (ClutterFrameSource *) source;
 
-  if ((* callback) (user_data))
-    {
-      frame_source->last_time += frame_source->frame_time;
-      return TRUE;
-    }
-  else
-    return FALSE;
+  return _clutter_timeout_interval_dispatch (&frame_source->timeout,
+                                             callback, user_data);
 }

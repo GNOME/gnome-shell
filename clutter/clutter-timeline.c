@@ -93,8 +93,6 @@
 
 G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
-#define FPS_TO_INTERVAL(f) (1000 / (f))
-
 struct _ClutterTimelinePrivate
 {
   ClutterTimelineDirection direction;
@@ -174,7 +172,7 @@ timeline_pool_init (void)
 }
 
 static guint
-timeout_add (guint          interval,
+timeout_add (guint          fps,
              GSourceFunc    func,
              gpointer       data,
              GDestroyNotify notify)
@@ -185,13 +183,13 @@ timeout_add (guint          interval,
     {
       g_assert (timeline_pool != NULL);
       res = clutter_timeout_pool_add (timeline_pool,
-                                      interval,
+                                      fps,
                                       func, data, notify);
     }
   else
     {
       res = clutter_threads_add_frame_source_full (CLUTTER_PRIORITY_TIMELINE,
-						   interval,
+						   fps,
 						   func, data, notify);
     }
 
@@ -814,7 +812,7 @@ timeline_timeout_func (gpointer data)
 
 static guint
 timeline_timeout_add (ClutterTimeline *timeline,
-                      guint            interval,
+                      guint            fps,
                       GSourceFunc      func,
                       gpointer         data,
                       GDestroyNotify   notify)
@@ -833,7 +831,7 @@ timeline_timeout_add (ClutterTimeline *timeline,
   priv->skipped_frames   = 0;
   priv->msecs_delta      = 0;
 
-  return timeout_add (interval, func, data, notify);
+  return timeout_add (fps, func, data, notify);
 }
 
 static gboolean
@@ -845,7 +843,7 @@ delay_timeout_func (gpointer data)
   priv->delay_id = 0;
 
   priv->timeout_id = timeline_timeout_add (timeline,
-                                           FPS_TO_INTERVAL (priv->fps),
+                                           priv->fps,
                                            timeline_timeout_func,
                                            timeline, NULL);
 
@@ -884,7 +882,7 @@ clutter_timeline_start (ClutterTimeline *timeline)
   else
     {
       priv->timeout_id = timeline_timeout_add (timeline,
-                                               FPS_TO_INTERVAL (priv->fps),
+                                               priv->fps,
                                                timeline_timeout_func,
                                                timeline, NULL);
 
@@ -1150,7 +1148,7 @@ clutter_timeline_set_speed (ClutterTimeline *timeline,
           timeout_remove (priv->timeout_id);
 
           priv->timeout_id = timeline_timeout_add (timeline,
-                                                   FPS_TO_INTERVAL (priv->fps),
+                                                   priv->fps,
                                                    timeline_timeout_func,
                                                    timeline, NULL);
         }

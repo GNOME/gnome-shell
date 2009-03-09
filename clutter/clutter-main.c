@@ -919,7 +919,7 @@ clutter_threads_add_timeout (guint       interval,
  * clutter_threads_add_frame_source_full:
  * @priority: the priority of the frame source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
- * @interval: the time between calls to the function, in milliseconds
+ * @fps: the number of times per second to call the function
  * @func: function to call
  * @data: data to pass to the function
  * @notify: function to call when the timeout source is removed
@@ -948,7 +948,7 @@ clutter_threads_add_timeout (guint       interval,
  */
 guint
 clutter_threads_add_frame_source_full (gint           priority,
-				       guint          interval,
+				       guint          fps,
 				       GSourceFunc    func,
 				       gpointer       data,
 				       GDestroyNotify notify)
@@ -963,14 +963,14 @@ clutter_threads_add_frame_source_full (gint           priority,
   dispatch->notify = notify;
 
   return clutter_frame_source_add_full (priority,
-					interval,
+					fps,
 					clutter_threads_dispatch, dispatch,
 					clutter_threads_dispatch_free);
 }
 
 /**
  * clutter_threads_add_frame_source:
- * @interval: the time between calls to the function, in milliseconds
+ * @fps: the number of times per second to call the function
  * @func: function to call
  * @data: data to pass to the function
  *
@@ -981,14 +981,14 @@ clutter_threads_add_frame_source_full (gint           priority,
  * Since: 0.8
  */
 guint
-clutter_threads_add_frame_source (guint       interval,
+clutter_threads_add_frame_source (guint       fps,
 				  GSourceFunc func,
 				  gpointer    data)
 {
   g_return_val_if_fail (func != NULL, 0);
 
   return clutter_threads_add_frame_source_full (G_PRIORITY_DEFAULT,
-						interval,
+						fps,
 						func, data,
 						NULL);
 }

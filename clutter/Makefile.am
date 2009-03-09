@@ -185,6 +185,7 @@ source_c = \
 	$(srcdir)/clutter-texture.c 		\
 	$(srcdir)/clutter-text.c                \
 	$(srcdir)/clutter-timeline.c 		\
+	$(srcdir)/clutter-timeout-interval.c    \
 	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
@@ -199,6 +200,7 @@ source_h_priv = \
 	$(srcdir)/clutter-id-pool.h 		\
 	$(srcdir)/clutter-script-private.h	\
 	$(srcdir)/clutter-stage-window.h	\
+	$(srcdir)/clutter-timeout-interval.h    \
 	$(NULL)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \

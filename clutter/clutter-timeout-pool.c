@@ -36,6 +36,7 @@
 
 #include "clutter-debug.h"
 #include "clutter-timeout-pool.h"
+#include "clutter-timeout-interval.h"
 
 typedef struct _ClutterTimeout  ClutterTimeout;
 typedef enum {
@@ -49,8 +50,7 @@ struct _ClutterTimeout
   ClutterTimeoutFlags flags;
   gint refcount;
 
-  guint interval;
-  guint last_time;
+  ClutterTimeoutInterval interval;
 
   GSourceFunc func;
   gpointer data;
@@ -94,7 +94,6 @@ clutter_timeout_sort (gconstpointer a,
 {
   const ClutterTimeout *t_a = a;
   const ClutterTimeout *t_b = b;
-  gint comparison;
 
   /* Keep 'ready' timeouts at the front */
   if (TIMEOUT_READY (t_a))
@@ -103,16 +102,8 @@ clutter_timeout_sort (gconstpointer a,
   if (TIMEOUT_READY (t_b))
     return 1;
 
-  /* Otherwise sort by expiration time */
-  comparison = (t_a->last_time + t_a->interval)
-    - (t_b->last_time + t_b->interval);
-  if (comparison < 0)
-    return -1;
-
-  if (comparison > 0)
-    return 1;
-
-  return 0;
+  return _clutter_timeout_interval_compare_expiration (&t_a->interval,
+                                                       &t_b->interval);
 }
 
 static gint
@@ -124,15 +115,17 @@ clutter_timeout_find_by_id (gconstpointer a,
   return t_a->id == GPOINTER_TO_UINT (b) ? 0 : 1;
 }
 
-static guint
-clutter_timeout_pool_get_ticks (ClutterTimeoutPool *pool)
+static ClutterTimeout *
+clutter_timeout_new (guint fps)
 {
-  GTimeVal time_now;
+  ClutterTimeout *timeout;
 
-  g_source_get_current_time ((GSource *) pool, &time_now);
-  
-  return (time_now.tv_sec - pool->start_time.tv_sec) * 1000
-    + (time_now.tv_usec - pool->start_time.tv_usec) / 1000;
+  timeout = g_slice_new0 (ClutterTimeout);
+  _clutter_timeout_interval_init (&timeout->interval, fps);
+  timeout->flags = CLUTTER_TIMEOUT_NONE;
+  timeout->refcount = 1;
+
+  return timeout;
 }
 
 static gboolean
@@ -140,66 +133,12 @@ clutter_timeout_prepare (ClutterTimeoutPool *pool,
                          ClutterTimeout     *timeout,
                          gint               *next_timeout)
 {
-  guint now = clutter_timeout_pool_get_ticks (pool);
+  GTimeVal now;
 
-  /* If time has gone backwards or the time since the last frame is
-     greater than the two frames worth then reset the time and do a
-     frame now */
-  if (timeout->last_time > now || now - timeout->last_time
-      > timeout->interval * 2)
-    {
-      timeout->last_time = now - timeout->interval;
-      if (next_timeout)
-	*next_timeout = 0;
-      return TRUE;
-    }
-  else if (now - timeout->last_time >= timeout->interval)
-    {
-      if (next_timeout)
-	*next_timeout = 0;
-      return TRUE;
-    }
-  else
-    {
-      if (next_timeout)
-	*next_timeout = timeout->interval + timeout->last_time - now;
-      return FALSE;
-    }
-}
+  g_source_get_current_time (&pool->source, &now);
 
-static gboolean
-clutter_timeout_dispatch (GSource        *source,
-                          ClutterTimeout *timeout)
-{
-  gboolean retval = FALSE;
-
-  if (G_UNLIKELY (!timeout->func))
-    {
-      g_warning ("Timeout dispatched without a callback.");
-      return FALSE;
-    }
-
-  if (timeout->func (timeout->data))
-    {
-      timeout->last_time += timeout->interval;
-
-      retval = TRUE;
-    }
-
-  return retval;
-}
-
-static ClutterTimeout *
-clutter_timeout_new (guint interval)
-{
-  ClutterTimeout *timeout;
-
-  timeout = g_slice_new0 (ClutterTimeout);
-  timeout->interval = interval;
-  timeout->flags = CLUTTER_TIMEOUT_NONE;
-  timeout->refcount = 1;
-
-  return timeout;
+  return _clutter_timeout_interval_prepare (&now, &timeout->interval,
+                                            next_timeout);
 }
 
 /* ref and unref are always called under the main Clutter lock, so there
@@ -350,7 +289,8 @@ clutter_timeout_pool_dispatch (GSource     *source,
       l->next = pool->dispatched_timeouts;
       pool->dispatched_timeouts = l;
 
-      if (!clutter_timeout_dispatch (source, timeout))
+      if (!_clutter_timeout_interval_dispatch (&timeout->interval,
+                                               timeout->func, timeout->data))
 	{
 	  /* The timeout may have already been removed, but nothing
            * can be added to the dispatched_timeout list except in this
@@ -500,7 +440,6 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
 
   retval = timeout->id = pool->next_id++;
 
-  timeout->last_time = clutter_timeout_pool_get_ticks (pool);
   timeout->func = func;
   timeout->data = data;
   timeout->notify = notify;

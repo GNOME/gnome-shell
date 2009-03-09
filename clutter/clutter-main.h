@@ -128,12 +128,12 @@ guint            clutter_threads_add_timeout_full   (gint           priority,
                                                      GSourceFunc    func,
                                                      gpointer       data,
                                                      GDestroyNotify notify);
-guint            clutter_threads_add_frame_source   (guint          interval,
+guint            clutter_threads_add_frame_source   (guint          fps,
 						     GSourceFunc    func,
 						     gpointer       data);
 guint            clutter_threads_add_frame_source_full
                                                     (gint           priority,
-						     guint          interval,
+						     guint          fps,
 						     GSourceFunc    func,
 						     gpointer       data,
 						     GDestroyNotify notify);

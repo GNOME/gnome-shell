@@ -43,7 +43,7 @@ typedef struct _ClutterTimeoutPool    ClutterTimeoutPool;
 
 ClutterTimeoutPool *clutter_timeout_pool_new    (gint                priority);
 guint               clutter_timeout_pool_add    (ClutterTimeoutPool *pool,
-                                                 guint               interval,
+                                                 guint               fps,
                                                  GSourceFunc         func,
                                                  gpointer            data,
                                                  GDestroyNotify      notify);
