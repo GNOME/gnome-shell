@@ -144,6 +144,24 @@ ClutterAnimation *   clutter_actor_animate_with_alpha    (ClutterActor         *
                                                           const gchar          *first_property_name,
                                                           ...) G_GNUC_NULL_TERMINATED;
 
+ClutterAnimation *   clutter_actor_animatev               (ClutterActor         *actor,
+                                                           gulong                mode,
+                                                           guint                 duration,
+                                                           gint                  n_properties,
+                                                           const gchar * const   properties[],
+                                                           const GValue         *values);
+ClutterAnimation *   clutter_actor_animate_with_timelinev (ClutterActor         *actor,
+                                                           gulong                mode,
+                                                           ClutterTimeline      *timeline,
+                                                           gint                  n_properties,
+                                                           const gchar * const   properties[],
+                                                           const GValue         *values);
+ClutterAnimation *   clutter_actor_animate_with_alphav    (ClutterActor         *actor,
+                                                           ClutterAlpha         *alpha,
+                                                           gint                  n_properties,
+                                                           const gchar * const   properties[],
+                                                           const GValue         *values);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ANIMATION_H__ */

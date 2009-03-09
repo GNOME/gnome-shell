@@ -1135,7 +1135,7 @@ clutter_animation_get_alpha (ClutterAnimation *animation)
 static void
 clutter_animation_start (ClutterAnimation *animation)
 {
-  if (animation->priv->timeline)
+  if (G_LIKELY (animation->priv->timeline))
     clutter_timeline_start (animation->priv->timeline);
   else
     {
@@ -1144,7 +1144,146 @@ clutter_animation_start (ClutterAnimation *animation)
     }
 }
 
-static inline void
+static void
+clutter_animation_setup_property (ClutterAnimation *animation,
+                                  const gchar      *property_name,
+                                  const GValue     *value,
+                                  GParamSpec       *pspec)
+{
+  ClutterAnimationPrivate *priv = animation->priv;
+  gboolean is_fixed = FALSE;
+  GValue real_value = { 0, };
+
+  /* fixed properties will not be animated */
+  if (g_str_has_prefix (property_name, "fixed::"))
+    {
+      is_fixed = TRUE;
+      property_name += 7; /* strlen("fixed::") */
+    }
+
+  if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+    {
+      g_warning ("Cannot bind property `%s': the property is "
+                 "construct-only",
+                 property_name);
+      return;
+    }
+
+  if (!(pspec->flags & G_PARAM_WRITABLE))
+    {
+      g_warning ("Cannot bind property `%s': the property is "
+                 "not writable",
+                 property_name);
+      return;
+    }
+
+  /* initialize the real value that will be used to store the
+   * final state of the animation
+   */
+  g_value_init (&real_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+
+  /* if it's not the same type of the GParamSpec value, try to
+   * convert it using the GValue transformation API, otherwise
+   * just copy it
+   */
+  if (!g_type_is_a (G_VALUE_TYPE (value), G_VALUE_TYPE (&real_value)))
+    {
+      if (!g_value_type_compatible (G_VALUE_TYPE (value),
+                                    G_VALUE_TYPE (&real_value)) &&
+          !g_value_type_compatible (G_VALUE_TYPE (&real_value),
+                                    G_VALUE_TYPE (value)))
+        {
+          g_warning ("%s: Unable to convert from %s to %s for "
+                     "the property `%s' of object %s",
+                     G_STRLOC,
+                     g_type_name (G_VALUE_TYPE (value)),
+                     g_type_name (G_VALUE_TYPE (&real_value)),
+                     property_name,
+                     G_OBJECT_TYPE_NAME (priv->object));
+          g_value_unset (&real_value);
+          return;
+        }
+
+      if (!g_value_transform (value, &real_value))
+        {
+          g_warning ("%s: Unable to transform from %s to %s",
+                     G_STRLOC,
+                     g_type_name (G_VALUE_TYPE (value)),
+                     g_type_name (G_VALUE_TYPE (&real_value)));
+          g_value_unset (&real_value);
+          return;
+        }
+    }
+  else
+    g_value_copy (value, &real_value);
+
+  /* create an interval and bind it to the property, in case
+   * it's not a fixed property, otherwise just set it
+   */
+  if (G_LIKELY (!is_fixed))
+    {
+      ClutterInterval *interval;
+      GValue cur_value = { 0, };
+
+      g_value_init (&cur_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      g_object_get_property (priv->object, property_name, &cur_value);
+
+      interval =
+        clutter_interval_new_with_values (G_PARAM_SPEC_VALUE_TYPE (pspec),
+                                          &cur_value,
+                                          &real_value);
+
+      if (!clutter_animation_has_property (animation, pspec->name))
+        clutter_animation_bind_property_internal (animation,
+                                                  pspec,
+                                                  interval);
+      else
+        clutter_animation_update_property_internal (animation,
+                                                    pspec,
+                                                    interval);
+
+      g_value_unset (&cur_value);
+    }
+  else
+    g_object_set_property (priv->object, property_name, &real_value);
+
+  g_value_unset (&real_value);
+}
+
+static void
+clutter_animation_setupv (ClutterAnimation    *animation,
+                          gint                 n_properties,
+                          const gchar * const  properties[],
+                          const GValue        *values)
+{
+  ClutterAnimationPrivate *priv = animation->priv;
+  GObjectClass *klass;
+  gint i;
+
+  klass = G_OBJECT_GET_CLASS (priv->object);
+
+  for (i = 0; i < n_properties; i++)
+    {
+      const gchar *property_name = properties[i];
+      GParamSpec *pspec;
+
+      pspec = g_object_class_find_property (klass, property_name);
+      if (!pspec)
+        {
+          g_warning ("Cannot bind property `%s': objects of type `%s' do "
+                     "not have this property",
+                     property_name,
+                     g_type_name (G_OBJECT_TYPE (priv->object)));
+          break;
+        }
+
+      clutter_animation_setup_property (animation, property_name,
+                                        &values[i],
+                                        pspec);
+    }
+}
+
+static void
 clutter_animation_setup_valist (ClutterAnimation *animation,
                                 const gchar      *first_property_name,
                                 va_list           var_args)
@@ -1158,17 +1297,9 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
   property_name = first_property_name;
   while (property_name != NULL)
     {
+      GParamSpec *pspec;
       GValue final = { 0, };
-      GParamSpec *pspec = NULL;
-      gboolean is_fixed = FALSE;
       gchar *error = NULL;
-
-      /* fixed properties will not be animated */
-      if (g_str_has_prefix (property_name, "fixed::"))
-        {
-          is_fixed = TRUE;
-          property_name += 7;
-        }
 
       pspec = g_object_class_find_property (klass, property_name);
       if (!pspec)
@@ -1177,22 +1308,6 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
                      "not have this property",
                      property_name,
                      g_type_name (G_OBJECT_TYPE (priv->object)));
-          break;
-        }
-
-      if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
-        {
-          g_warning ("Cannot bind property `%s': the property is "
-                     "construct-only",
-                     property_name);
-          break;
-        }
-
-      if (!(pspec->flags & G_PARAM_WRITABLE))
-        {
-          g_warning ("Cannot bind property `%s': the property is "
-                     "not writable",
-                     property_name);
           break;
         }
 
@@ -1205,43 +1320,12 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
           break;
         }
 
-      /* create an interval and bind it to the property, in case
-       * it's not a fixed property, otherwise just set it
-       */
-      if (G_LIKELY (!is_fixed))
-        {
-          ClutterInterval *interval;
-          GValue initial = { 0, };
-
-          g_value_init (&initial, G_PARAM_SPEC_VALUE_TYPE (pspec));
-          g_object_get_property (priv->object, property_name, &initial);
-
-          interval =
-            clutter_interval_new_with_values (G_PARAM_SPEC_VALUE_TYPE (pspec),
-                                              &initial,
-                                              &final);
-
-          if (!clutter_animation_has_property (animation, pspec->name))
-            clutter_animation_bind_property_internal (animation,
-                                                      pspec,
-                                                      interval);
-          else
-            clutter_animation_update_property_internal (animation,
-                                                        pspec,
-                                                        interval);
-
-          g_value_unset (&initial);
-        }
-      else
-        g_object_set_property (priv->object, property_name, &final);
-
-      g_value_unset (&final);
+      clutter_animation_setup_property (animation, property_name,
+                                        &final,
+                                        pspec);
 
       property_name = va_arg (var_args, gchar*);
     }
-
-  /* start the animation by default */
-  clutter_animation_start (animation);
 }
 
 /**
@@ -1305,6 +1389,8 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
   clutter_animation_setup_valist (animation, first_property_name, args);
   va_end (args);
 
+  clutter_animation_start (animation);
+
   return animation;
 }
 
@@ -1364,6 +1450,8 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
   clutter_animation_setup_valist (animation, first_property_name, args);
   va_end (args);
 
+  clutter_animation_start (animation);
+
   return animation;
 }
 
@@ -1403,14 +1491,13 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * |[
  *   clutter_actor_animate (actor, CLUTTER_EASE_IN, 100,
  *                          "rotation-angle-z", 360,
- *                          "fixed::rotation-center-x", 100,
- *                          "fixed::rotation-center-y", 100,
+ *                          "fixed::rotation-center-z", &amp;center,
  *                          NULL);
  * ]|
  *
  * Will animate the "rotation-angle-z" property between the current value
- * and 360 degrees, and set the "rotation-center-x" and "rotation-center-y"
- * to the fixed value of 100 pixels.
+ * and 360 degrees, and set the "rotation-center-z" property to the fixed
+ * value of the #ClutterVertex "center".
  *
  * This function will implicitly create a #ClutterAnimation object which
  * will be assigned to the @actor and will be returned to the developer
@@ -1495,6 +1582,207 @@ clutter_actor_animate (ClutterActor *actor,
   va_start (args, first_property_name);
   clutter_animation_setup_valist (animation, first_property_name, args);
   va_end (args);
+
+  clutter_animation_start (animation);
+
+  return animation;
+}
+
+/**
+ * clutter_actor_animatev:
+ * @actor: a #ClutterActor
+ * @mode: an animation mode logical id
+ * @duration: duration of the animation, in milliseconds
+ * @n_properties: number of property names and values
+ * @properties: (array length=n_properties): a vector containing the
+ *    property names to set
+ * @values: (array length=n_properies): a vector containing the
+ *    property values to set
+ *
+ * Animates the given list of properties of @actor between the current
+ * value for each property and a new final value. The animation has a
+ * definite duration and a speed given by the @mode.
+ *
+ * This is the vector-based variant of clutter_actor_animate(), useful
+ * for language bindings.
+ *
+ * Return value: (transfer none): a #ClutterAnimation object. The object is
+ *   owned by the #ClutterActor and should not be unreferenced with
+ *   g_object_unref()
+ *
+ * Since: 1.0
+ */
+ClutterAnimation *
+clutter_actor_animatev (ClutterActor        *actor,
+                        gulong               mode,
+                        guint                duration,
+                        gint                 n_properties,
+                        const gchar * const  properties[],
+                        const GValue        *values)
+{
+  ClutterAnimation *animation;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+  g_return_val_if_fail (mode != CLUTTER_CUSTOM_MODE, NULL);
+  g_return_val_if_fail (duration > 0, NULL);
+  g_return_val_if_fail (properties != NULL, NULL);
+  g_return_val_if_fail (values != NULL, NULL);
+
+  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
+  if (G_LIKELY (!animation))
+    {
+      /* if there is no animation already attached to the actor,
+       * create one and set up the timeline and alpha using the
+       * current values for duration, mode and loop
+       */
+      animation = clutter_animation_new ();
+      clutter_animation_set_timeline (animation, NULL);
+      clutter_animation_set_alpha (animation, NULL);
+      clutter_animation_set_object (animation, G_OBJECT (actor));
+
+      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
+    }
+  else
+    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
+
+  /* force the update of duration and mode using the new
+   * values coming from the parameters of this function
+   */
+  clutter_animation_set_duration (animation, duration);
+  clutter_animation_set_mode (animation, mode);
+  clutter_animation_setupv (animation, n_properties, properties, values);
+  clutter_animation_start (animation);
+
+  return animation;
+}
+
+/**
+ * clutter_actor_animate_with_timelinev:
+ * @actor: a #ClutterActor
+ * @mode: an animation mode logical id
+ * @timeline: a #ClutterTimeline
+ * @n_properties: number of property names and values
+ * @properties: (array length=n_properties): a vector containing the
+ *    property names to set
+ * @values: (array length=n_properies): a vector containing the
+ *    property values to set
+ *
+ * Animates the given list of properties of @actor between the current
+ * value for each property and a new final value. The animation has a
+ * definite duration given by @timeline and a speed given by the @mode.
+ *
+ * See clutter_actor_animate() for further details.
+ *
+ * This function is useful if you want to use an existing timeline
+ * to animate @actor.
+ *
+ * This is the vector-based variant of clutter_actor_animate_with_timeline(),
+ * useful for language bindings.
+ *
+ * Return value: (transfer none): a #ClutterAnimation object. The object is
+ *    owned by the #ClutterActor and should not be unreferenced with
+ *    g_object_unref()
+ *
+ * Since: 1.0
+ */
+ClutterAnimation *
+clutter_actor_animate_with_timelinev (ClutterActor        *actor,
+                                      gulong               mode,
+                                      ClutterTimeline     *timeline,
+                                      gint                 n_properties,
+                                      const gchar * const  properties[],
+                                      const GValue        *values)
+{
+  ClutterAnimation *animation;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
+  g_return_val_if_fail (properties != NULL, NULL);
+  g_return_val_if_fail (values != NULL, NULL);
+
+  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
+  if (G_LIKELY (!animation))
+    {
+      animation = clutter_animation_new ();
+      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
+    }
+  else
+    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
+
+  clutter_animation_set_timeline (animation, timeline);
+  clutter_animation_set_alpha (animation, NULL);
+  clutter_animation_set_mode (animation, mode);
+  clutter_animation_set_object (animation, G_OBJECT (actor));
+  clutter_animation_setupv (animation, n_properties, properties, values);
+  clutter_animation_start (animation);
+
+  return animation;
+}
+
+/**
+ * clutter_actor_animate_with_alphav:
+ * @actor: a #ClutterActor
+ * @alpha: a #ClutterAlpha
+ * @n_properties: number of property names and values
+ * @properties: (array length=n_properties): a vector containing the
+ *    property names to set
+ * @values: (array length=n_properies): a vector containing the
+ *    property values to set
+ *
+ * Animates the given list of properties of @actor between the current
+ * value for each property and a new final value. The animation has a
+ * definite behaviour given by the passed @alpha.
+ *
+ * See clutter_actor_animate() for further details.
+ *
+ * This function is useful if you want to use an existing #ClutterAlpha
+ * to animate @actor.
+ *
+ * This is the vector-based variant of clutter_actor_animate_with_alpha(),
+ * useful for language bindings.
+ *
+ * Return value: (transfer none): a #ClutterAnimation object. The object is owned by the
+ *   #ClutterActor and should not be unreferenced with g_object_unref()
+ *
+ * Since: 1.0
+ */
+ClutterAnimation *
+clutter_actor_animate_with_alphav (ClutterActor        *actor,
+                                   ClutterAlpha        *alpha,
+                                   gint                 n_properties,
+                                   const gchar * const  properties[],
+                                   const GValue        *values)
+{
+  ClutterAnimation *animation;
+  ClutterTimeline *timeline;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+  g_return_val_if_fail (CLUTTER_IS_ALPHA (alpha), NULL);
+  g_return_val_if_fail (properties != NULL, NULL);
+  g_return_val_if_fail (values != NULL, NULL);
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  if (G_UNLIKELY (!timeline))
+    {
+      g_warning ("The passed ClutterAlpha does not have an "
+                 "associated ClutterTimeline.");
+      return NULL;
+    }
+
+  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
+  if (G_LIKELY (!animation))
+    {
+      animation = clutter_animation_new ();
+      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
+    }
+  else
+    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
+
+  clutter_animation_set_timeline (animation, timeline);
+  clutter_animation_set_alpha (animation, alpha);
+  clutter_animation_set_object (animation, G_OBJECT (actor));
+  clutter_animation_setupv (animation, n_properties, properties, values);
+  clutter_animation_start (animation);
 
   return animation;
 }

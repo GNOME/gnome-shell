@@ -1424,6 +1424,9 @@ clutter_animation_get_interval
 clutter_actor_animate
 clutter_actor_animate_with_timeline
 clutter_actor_animate_with_alpha
+clutter_actor_animatev
+clutter_actor_animate_with_timelinev
+clutter_actor_animate_with_alphav
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_ANIMATION
