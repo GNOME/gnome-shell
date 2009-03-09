@@ -36,22 +36,20 @@ instructions[] =
 static void
 path_shapes (gint x, gint y, gint width, gint height)
 {
-  cogl_path_move_to (CLUTTER_INT_TO_FIXED (x), CLUTTER_INT_TO_FIXED (y));
-  cogl_path_line_to (CLUTTER_INT_TO_FIXED (x),
-                     CLUTTER_INT_TO_FIXED (y + height * 4 / 5));
-  cogl_path_line_to (CLUTTER_INT_TO_FIXED (x + width * 4 / 15),
-                     CLUTTER_INT_TO_FIXED (y + height * 4 / 5));
+  cogl_path_move_to (x, y);
+  cogl_path_line_to (x, (y + height * 4 / 5));
+  cogl_path_line_to ((x + width * 4 / 15), (y + height * 4 / 5));
   cogl_path_close ();
 
-  cogl_path_rectangle (CLUTTER_INT_TO_FIXED (x + width / 3),
-                       CLUTTER_INT_TO_FIXED (y),
-                       CLUTTER_INT_TO_FIXED (width * 4 / 15),
-                       CLUTTER_INT_TO_FIXED (height * 4 / 5));
+  cogl_path_rectangle ((x + width / 3),
+                       y,
+                       (width * 4 / 15),
+                       (height * 4 / 5));
 
-  cogl_path_ellipse (CLUTTER_INT_TO_FIXED (x + width * 4 / 5),
-                     CLUTTER_INT_TO_FIXED (y + height * 2 / 5),
-                     CLUTTER_INT_TO_FIXED (width * 2 / 15),
-                     CLUTTER_INT_TO_FIXED (height * 2 / 5));
+  cogl_path_ellipse ((x + width * 4 / 5),
+                     (y + height * 2 / 5),
+                     (width * 2 / 15),
+                     (height * 2 / 5));
 }
 
 static void
@@ -73,17 +71,17 @@ make_clip_path (Clip *clip)
       break;
 
     case CLIP_RECTANGLE:
-      cogl_path_rectangle (CLUTTER_INT_TO_FIXED (clip->x1),
-                           CLUTTER_INT_TO_FIXED (clip->y1),
-                           CLUTTER_INT_TO_FIXED (clip->x2 - clip->x1),
-                           CLUTTER_INT_TO_FIXED (clip->y2 - clip->y1));
+      cogl_path_rectangle (clip->x1,
+                           clip->y1,
+                           (clip->x2 - clip->x1),
+                           (clip->y2 - clip->y1));
       break;
 
     case CLIP_ELLIPSE:
-      cogl_path_ellipse (CLUTTER_INT_TO_FIXED (clip->x1 + clip->x2) / 2,
-                         CLUTTER_INT_TO_FIXED (clip->y1 + clip->y2) / 2,
-                         CLUTTER_INT_TO_FIXED (clip->x2 - clip->x1) / 2,
-                         CLUTTER_INT_TO_FIXED (clip->y2 - clip->y1) / 2);
+      cogl_path_ellipse ((clip->x1 + clip->x2) / 2,
+                         (clip->y1 + clip->y2) / 2,
+                         (clip->x2 - clip->x1) / 2,
+                         (clip->y2 - clip->y1) / 2);
       break;
 
     case CLIP_SHAPES:
@@ -136,10 +134,10 @@ on_paint (ClutterActor *actor, CallbackData *data)
       Clip *clip = (Clip *) node->data;
 
       if (clip->type == CLIP_RECTANGLE)
-        cogl_clip_push (CLUTTER_INT_TO_FIXED (clip->x1),
-                        CLUTTER_INT_TO_FIXED (clip->y1),
-                        CLUTTER_INT_TO_FIXED (clip->x2 - clip->x1),
-                        CLUTTER_INT_TO_FIXED (clip->y2 - clip->y1));
+        cogl_clip_push (clip->x1,
+                        clip->y1,
+                        clip->x2 - clip->x1,
+                        clip->y2 - clip->y1);
       else
         {
           make_clip_path (clip);
@@ -166,11 +164,11 @@ on_paint (ClutterActor *actor, CallbackData *data)
       cogl_set_source_color4ub (0xff, 0xff, 0xff, 0xff);
 
       cogl_set_source_texture (data->hand);
-      cogl_rectangle_with_texture_coords (CLUTTER_INT_TO_FIXED (-hand_width / 2),
-                                          CLUTTER_INT_TO_FIXED (-hand_height / 2),
-                                          CLUTTER_INT_TO_FIXED (hand_width / 2),
-                                          CLUTTER_INT_TO_FIXED (hand_height / 2),
-                                          0, 0, CFX_ONE, CFX_ONE);
+      cogl_rectangle_with_texture_coords ((-hand_width / 2),
+                                          (-hand_height / 2),
+                                          (hand_width / 2),
+                                          (hand_height / 2),
+                                          0, 0, 1, 1);
 
       cogl_pop_matrix ();
     }

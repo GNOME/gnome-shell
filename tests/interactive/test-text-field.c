@@ -17,9 +17,9 @@ on_entry_paint (ClutterActor *actor,
 
   cogl_set_source_color4ub (255, 255, 255, 255);
   cogl_path_round_rectangle (0, 0,
-                             CLUTTER_UNITS_TO_FIXED (width),
-                             CLUTTER_UNITS_TO_FIXED (height),
-                             (float)(4),
+                             CLUTTER_UNITS_TO_FLOAT (width),
+                             CLUTTER_UNITS_TO_FLOAT (height),
+                             4.0,
                              COGL_ANGLE_FROM_DEG (1.0));
   cogl_path_stroke ();
 }

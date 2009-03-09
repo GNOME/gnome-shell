@@ -81,12 +81,7 @@ static void
 test_coglbox_paint(ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
-  ClutterFixed texcoords[4] = {
-    CLUTTER_FLOAT_TO_FIXED (0.0f),
-    CLUTTER_FLOAT_TO_FIXED (0.0f),
-    CLUTTER_FLOAT_TO_FIXED (1.0f),
-    CLUTTER_FLOAT_TO_FIXED (1.0f)
-    };
+  gfloat texcoords[4] = { 0, 0, 1, 1 };
   CoglHandle material;
 
   priv = TEST_COGLBOX_GET_PRIVATE (self);
@@ -96,11 +91,9 @@ test_coglbox_paint(ClutterActor *self)
 
   cogl_set_source_texture (priv->texhand_id);
   cogl_rectangle_with_texture_coords (0, 0,
-                                      CLUTTER_INT_TO_FIXED (400),
-                                      CLUTTER_INT_TO_FIXED (400),
+                                      400, 400,
                                       0, 0,
-                                      CLUTTER_INT_TO_FIXED (6),
-                                      CLUTTER_INT_TO_FIXED (6));
+                                      6, 6);
 
   cogl_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->offscreen_id);
 
@@ -116,10 +109,8 @@ test_coglbox_paint(ClutterActor *self)
   cogl_material_set_color4ub (material, 0xff, 0xff, 0xff, 0x88);
   cogl_material_set_layer (material, 0, priv->texture_id);
   cogl_set_source (material);
-  cogl_rectangle_with_texture_coords (CLUTTER_INT_TO_FIXED (100),
-                                      CLUTTER_INT_TO_FIXED (100),
-                                      CLUTTER_INT_TO_FIXED (300),
-                                      CLUTTER_INT_TO_FIXED (300),
+  cogl_rectangle_with_texture_coords (100, 100,
+                                      300, 300,
                                       texcoords[0],
                                       texcoords[1],
                                       texcoords[2],

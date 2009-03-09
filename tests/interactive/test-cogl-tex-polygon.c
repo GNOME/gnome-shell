@@ -80,14 +80,14 @@ struct _TestCoglboxPrivate
 
 static void
 test_coglbox_fade_texture (CoglHandle tex_id,
-			   ClutterFixed x1,
-			   ClutterFixed y1,
-			   ClutterFixed x2,
-			   ClutterFixed y2,
-			   ClutterFixed tx1,
-			   ClutterFixed ty1,
-			   ClutterFixed tx2,
-			   ClutterFixed ty2)
+			   gfloat     x1,
+			   gfloat     y1,
+			   gfloat     x2,
+			   gfloat     y2,
+			   gfloat     tx1,
+			   gfloat     ty1,
+			   gfloat     tx2,
+			   gfloat     ty2)
 {
   CoglTextureVertex vertices[4];
   int i;
@@ -130,14 +130,14 @@ test_coglbox_fade_texture (CoglHandle tex_id,
 
 static void
 test_coglbox_triangle_texture (CoglHandle tex_id,
-			       ClutterFixed x,
-			       ClutterFixed y,
-			       ClutterFixed tx1,
-			       ClutterFixed ty1,
-			       ClutterFixed tx2,
-			       ClutterFixed ty2,
-			       ClutterFixed tx3,
-			       ClutterFixed ty3)
+			       gfloat     x,
+			       gfloat     y,
+			       gfloat     tx1,
+			       gfloat     ty1,
+			       gfloat     tx2,
+			       gfloat     ty2,
+			       gfloat     tx3,
+			       gfloat     ty3)
 {
   CoglTextureVertex vertices[3];
   int tex_width = cogl_texture_get_width (tex_id);
@@ -187,16 +187,13 @@ test_coglbox_paint (ClutterActor *self)
 
   /* Draw a hand and refect it */
   cogl_set_source_texture (tex_handle);
-  cogl_rectangle_with_texture_coords (0, 0,
-                                      CLUTTER_INT_TO_FIXED (tex_width),
-                                      CLUTTER_INT_TO_FIXED (tex_height),
-                                      0, 0, CFX_ONE, CFX_ONE);
+  cogl_rectangle_with_texture_coords (0, 0, tex_width, tex_height,
+                                      0, 0, 1, 1);
   test_coglbox_fade_texture (tex_handle,
-			     0, CLUTTER_INT_TO_FIXED (tex_height),
-			     CLUTTER_INT_TO_FIXED (tex_width),
-			     CLUTTER_INT_TO_FIXED (tex_height * 3 / 2),
-			     0, CFX_ONE,
-			     CFX_ONE, CFX_ONE / 2);
+			     0, tex_height,
+			     tex_width, (tex_height * 3 / 2),
+			     0.0, 1.0,
+			     1.0, 0.5);
 
   cogl_pop_matrix ();
 
@@ -209,13 +206,13 @@ test_coglbox_paint (ClutterActor *self)
   test_coglbox_triangle_texture (tex_handle,
 				 0, 0,
 				 0, 0,
-				 0, CFX_ONE,
-				 CFX_ONE, CFX_ONE);
+				 0, 1,
+				 1, 1);
   test_coglbox_triangle_texture (tex_handle,
-				 CLUTTER_INT_TO_FIXED (20), 0,
+				 20, 0,
 				 0, 0,
-				 CFX_ONE, 0,
-				 CFX_ONE, CFX_ONE);
+				 1, 0,
+				 1, 1);
 
   cogl_pop_matrix ();
 }

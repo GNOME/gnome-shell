@@ -18,7 +18,7 @@ typedef struct _TestMultiLayerMaterialState
   CoglHandle	 alpha_tex;
   CoglHandle	 redhand_tex;
   CoglHandle	 light_tex0;
-  ClutterFixed	*tex_coords;
+  gfloat        *tex_coords;
 
   CoglMatrix	 tex_matrix;
   CoglMatrix	 rot_matrix;
@@ -45,13 +45,11 @@ material_rectangle_paint (ClutterActor *actor, gpointer data)
   TestMultiLayerMaterialState *state = data;
 
   cogl_set_source (state->material);
-  cogl_rectangle_with_multitexture_coords (
-                                     CLUTTER_INT_TO_FIXED(0),
-                                     CLUTTER_INT_TO_FIXED(0),
-                                     CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
-                                     CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
-                                     state->tex_coords,
-                                     12);
+  cogl_rectangle_with_multitexture_coords (0, 0,
+                                           TIMELINE_FRAME_COUNT,
+                                           TIMELINE_FRAME_COUNT,
+                                           state->tex_coords,
+                                           12);
 }
 
 G_MODULE_EXPORT int
@@ -63,12 +61,12 @@ test_cogl_multitexture_main (int argc, char *argv[])
   ClutterColor       stage_color = { 0x61, 0x56, 0x56, 0xff };
   TestMultiLayerMaterialState *state = g_new0 (TestMultiLayerMaterialState, 1);
   ClutterGeometry    geom;
-  ClutterFixed	     tex_coords[] =
+  gfloat             tex_coords[] =
     {
-      /* tx1 ty1  tx2			  ty2 */
-      0,  0,	CLUTTER_INT_TO_FIXED (1), CLUTTER_INT_TO_FIXED (1),
-      0,  0,	CLUTTER_INT_TO_FIXED (1), CLUTTER_INT_TO_FIXED (1),
-      0,  0,	CLUTTER_INT_TO_FIXED (1), CLUTTER_INT_TO_FIXED (1)
+    /* tx1  ty1  tx2  ty2 */
+         0,   0,   1,   1,
+         0,   0,   1,   1,
+         0,   0,   1,   1
     };
 
   clutter_init (&argc, &argv);
@@ -76,8 +74,7 @@ test_cogl_multitexture_main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
   clutter_actor_get_geometry (stage, &geom);
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage),
-			   &stage_color);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
   /* We create a non-descript actor that we know doesn't have a
    * default paint handler, so that we can easily control

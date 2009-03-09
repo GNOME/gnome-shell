@@ -78,25 +78,20 @@ struct _TestCoglboxPrivate
  *--------------------------------------------------*/
 
 static void
-test_coglbox_paint(ClutterActor *self)
+test_coglbox_paint (ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
-  ClutterFixed texcoords[4] = {
-    CLUTTER_FLOAT_TO_FIXED (0.0f),
-    CLUTTER_FLOAT_TO_FIXED (0.0f),
-    CLUTTER_FLOAT_TO_FIXED (1.0f),
-    CLUTTER_FLOAT_TO_FIXED (1.0f)
-  };
-  gint         pingpong_frame;
-  ClutterFixed sin_frame, cos_frame;
-  ClutterFixed frac_frame;
+  gfloat texcoords[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
+  gfloat sin_frame, cos_frame;
+  gfloat frac_frame;
+  gint pingpong_frame;
   gint t;
-  sin_frame = clutter_sinx (priv->frame);
-  cos_frame = clutter_cosx (priv->frame);
+
+  sin_frame = sinf ((float) priv->frame);
+  cos_frame = cosf ((float) priv->frame);
   
   pingpong_frame = (priv->frame <= 180 ? priv->frame : 360 - priv->frame);
-  frac_frame = (CLUTTER_INT_TO_FIXED (pingpong_frame) /
-                CLUTTER_INT_TO_FIXED (180));
+  frac_frame = (float) pingpong_frame / 180.0;
   frac_frame += 0.5;
   frac_frame *= 2;
   
@@ -118,9 +113,7 @@ test_coglbox_paint(ClutterActor *self)
   
   cogl_translate (100, 100, 0);
   cogl_set_source_texture (priv->cogl_tex_id);
-  cogl_rectangle_with_texture_coords (0, 0,
-                                      CLUTTER_INT_TO_FIXED (200),
-                                      CLUTTER_INT_TO_FIXED (213),
+  cogl_rectangle_with_texture_coords (0, 0, 200, 213,
                                       texcoords[0], texcoords[1],
                                       texcoords[2], texcoords[3]);
   

@@ -10,44 +10,29 @@ typedef void (*PaintFunc) (void);
 static void
 test_paint_line ()
 {
-  cogl_path_line (CLUTTER_INT_TO_FIXED (-50),
-                  CLUTTER_INT_TO_FIXED (-25),
-                  CLUTTER_INT_TO_FIXED (50),
-                  CLUTTER_INT_TO_FIXED (25));
+  cogl_path_line (-50, -25, 50, 25);
 }
 
 static void
 test_paint_rect ()
 {
-  cogl_path_rectangle (CLUTTER_INT_TO_FIXED (-50),
-                       CLUTTER_INT_TO_FIXED (-25),
-                       CLUTTER_INT_TO_FIXED (100),
-                       CLUTTER_INT_TO_FIXED (50));
+  cogl_path_rectangle (-50, -25, 100, 50);
 }
 
 static void
 test_paint_rndrect()
 {
-  cogl_path_round_rectangle (CLUTTER_INT_TO_FIXED (-50),
-                             CLUTTER_INT_TO_FIXED (-25),
-                             CLUTTER_INT_TO_FIXED (100),
-                             CLUTTER_INT_TO_FIXED (50),
-                             CLUTTER_INT_TO_FIXED (10),
-                             5);
+  cogl_path_round_rectangle (-50, -25, 100, 50, 10, 5);
 }
 
 static void
 test_paint_polyl ()
 {
-  ClutterFixed poly_coords[] = {
-    CLUTTER_INT_TO_FIXED (-50),
-    CLUTTER_INT_TO_FIXED (-50),
-    CLUTTER_INT_TO_FIXED (+50),
-    CLUTTER_INT_TO_FIXED (-30),
-    CLUTTER_INT_TO_FIXED (+30),
-    CLUTTER_INT_TO_FIXED (+30),
-    CLUTTER_INT_TO_FIXED (-30),
-    CLUTTER_INT_TO_FIXED (+40)
+  gfloat poly_coords[] = {
+    -50, -50,
+    +50, -30,
+    +30, +30,
+    -30, +40
   };
 
   cogl_path_polyline (poly_coords, 4);
@@ -57,14 +42,10 @@ static void
 test_paint_polyg ()
 {
   gfloat poly_coords[] = {
-    CLUTTER_INT_TO_FIXED (-50),
-    CLUTTER_INT_TO_FIXED (-50),
-    CLUTTER_INT_TO_FIXED (+50),
-    CLUTTER_INT_TO_FIXED (-30),
-    CLUTTER_INT_TO_FIXED (+30),
-    CLUTTER_INT_TO_FIXED (+30),
-    CLUTTER_INT_TO_FIXED (-30),
-    CLUTTER_INT_TO_FIXED (+40)
+    -50, -50,
+    +50, -30,
+    +30, +30,
+    -30, +40
   };
 
   cogl_path_polygon (poly_coords, 4);
@@ -73,23 +54,17 @@ test_paint_polyg ()
 static void
 test_paint_elp ()
 {
-  cogl_path_ellipse (0, 0,
-                     CLUTTER_INT_TO_FIXED (60),
-                     CLUTTER_INT_TO_FIXED (40));
+  cogl_path_ellipse (0, 0, 60, 40);
 }
 
 static void
 test_paint_curve ()
 {
-  cogl_path_move_to (CLUTTER_INT_TO_FIXED (-50),
-                     CLUTTER_INT_TO_FIXED (+50));
+  cogl_path_move_to (-50, +50);
 
-  cogl_path_curve_to (CLUTTER_INT_TO_FIXED (+100),
-                      CLUTTER_INT_TO_FIXED (-50),
-                      CLUTTER_INT_TO_FIXED (-100),
-                      CLUTTER_INT_TO_FIXED (-50),
-                      CLUTTER_INT_TO_FIXED (+50),
-                      CLUTTER_INT_TO_FIXED (+50));
+  cogl_path_curve_to (+100, -50,
+                      -100, -50,
+                      +50,  +50);
 }
 
 static PaintFunc paint_func []=
