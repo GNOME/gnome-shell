@@ -1,5 +1,5 @@
 prefix=@prefix@
-exec_prefix=@exec_prefix2
+exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 backend=@clutterbackend@
