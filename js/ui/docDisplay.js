@@ -134,8 +134,6 @@ DocDisplay.prototype = {
 
     // Sets the list of the displayed items based on how recently they were last visited.
     _setDefaultList : function() {
-        this._removeAllDisplayItems();
-
         // It seems to be an implementation detail of the Mozilla JavaScript that object
         // properties are returned during the iteration in the same order in which they were
         // defined, but it is not a guarantee according to this 
@@ -150,21 +148,23 @@ DocDisplay.prototype = {
         // them once when they are returned by this._recentManager.get_items() to avoid having to do 
         // this sorting each time, but the sorting seems to be very fast anyway, so there is no need
         // to introduce an additional class variable.
-        let docIds = [];
+        this._matchedItems = [];
+        let docIdsToRemove = [];
         for (docId in this._allItems) {
-            docIds.push(docId);
+            // this._allItems[docId].exists() checks if the resource still exists
+            if (this._allItems[docId].exists()) 
+                this._matchedItems.push(docId);
+            else 
+                docIdsToRemove.push(docId);
         }
-        docIds.sort(Lang.bind(this, function (a,b) { return this._compareItems(a,b); }));
 
-        let added = 0;
-        for (let i = 0; i < docIds.length && added < this._maxItems; i++) {
-            let docInfo = this._allItems[docIds[i]];
-            // docInfo.exists() checks if the resource still exists
-            if (docInfo.exists()) { 
-                this._addDisplayItem(docIds[i]);
-                added += 1;
-            }
+        for (docId in docIdsToRemove) {
+            delete this._allItems[docId];
         }
+
+        this._matchedItems.sort(Lang.bind(this, function (a,b) { return this._compareItems(a,b); }));
+
+        this._displayMatchedItems(true);
     },
 
     // Compares items associated with the item ids based on how recently the items

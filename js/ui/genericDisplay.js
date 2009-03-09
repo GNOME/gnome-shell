@@ -11,6 +11,7 @@ const Shell = imports.gi.Shell;
 const Tidy = imports.gi.Tidy;
 
 const DND = imports.ui.dnd;
+const Link = imports.ui.link;
 
 const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
 ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);
@@ -20,11 +21,14 @@ const ITEM_DISPLAY_BACKGROUND_COLOR = new Clutter.Color();
 ITEM_DISPLAY_BACKGROUND_COLOR.from_pixel(0x00000000);
 const ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR = new Clutter.Color();
 ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR.from_pixel(0x00ff0055);
+const DISPLAY_CONTROL_SELECTED_COLOR = new Clutter.Color();
+DISPLAY_CONTROL_SELECTED_COLOR.from_pixel(0x112288ff);
 
 const ITEM_DISPLAY_HEIGHT = 50;
 const ITEM_DISPLAY_ICON_SIZE = 48;
 const ITEM_DISPLAY_PADDING = 1;
 const DEFAULT_COLUMN_GAP = 6;
+const LABEL_HEIGHT = 16;
 
 /* This is a virtual class that represents a single display item containing
  * a name, a description, and an icon. It allows selecting an item and represents 
@@ -180,21 +184,30 @@ GenericDisplay.prototype = {
         if (this._columnGap == null)
             this._columnGap = DEFAULT_COLUMN_GAP;
 
-        this._maxItems = null;
+        this._maxItemsPerPage = null;
         this._setDimensionsAndMaxItems(width, height);
         this._grid = new Tidy.Grid({width: this._width, height: this._height});
         this._grid.column_major = true;
         this._grid.column_gap = this._columnGap;
         // map<itemId, Object> where Object represents the item info
-        this._allItems = {};
+        this._allItems = {}; 
+        // an array of itemIds of items that match the current request 
+        // in the order in which the items should be displayed
+        this._matchedItems = [];
         // map<itemId, GenericDisplayItem>
         this._displayedItems = {};  
         this._displayedItemsCount = 0;
+        this._pageDisplayed = 0;
         // GenericDisplayItem
         this._activatedItem = null;
         this._selectedIndex = -1;
         this._keepDisplayCurrent = false;
         this.actor = this._grid;
+        this.displayControl = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
+                                            corner_radius: 4,
+                                            height: 24,
+                                            spacing: 12,
+                                            orientation: Big.BoxOrientation.HORIZONTAL});
     },
 
     //// Public methods ////
@@ -291,7 +304,7 @@ GenericDisplay.prototype = {
         this._setDimensionsAndMaxItems(width, height);
         this._grid.width = this._width;
         this._grid.height = this._height;
-        this._redisplay();
+        this._displayMatchedItems(true);
     },
 
     // Updates the displayed items and makes the display actor visible.
@@ -309,6 +322,38 @@ GenericDisplay.prototype = {
     },
 
     //// Protected methods ////
+
+    /*
+     * Displays items that match the current request and should show up on the current page.
+     * Updates the display control to reflect the matched items set and the page selected.
+     *
+     * matchedItemsChanged - indicates if the set of the matched items changed prior to the
+     *                       request. If it did, the current page is reset to 0 and the display 
+     *                       control is updated.
+     */
+    _displayMatchedItems: function(matchedItemsChanged) {
+        // When generating a new list to display, we first remove all the old
+        // displayed items which will unset the selection. So we need 
+        // to keep a flag which indicates if this display had the selection.
+        let hadSelected = this.hasSelected();
+
+        if (matchedItemsChanged)
+            this._pageDisplayed = 0;
+
+        this._removeAllDisplayItems();
+
+        for (let i = this._maxItemsPerPage * this._pageDisplayed; i < this._matchedItems.length && i < this._maxItemsPerPage * (this._pageDisplayed + 1); i++) {
+            
+            this._addDisplayItem(this._matchedItems[i]);
+        }
+
+        if (hadSelected) {
+            this._selectedIndex = -1;
+            this.selectFirstItem();
+        }
+
+        this._updateDisplayControl(matchedItemsChanged);
+    },
 
     // Creates a display item based on the information associated with itemId 
     // and adds it to the displayed items.
@@ -359,21 +404,11 @@ GenericDisplay.prototype = {
         if (!this._keepDisplayCurrent)
             return;
 
-        // When generating a new list to display, we first remove all the old
-        // displayed items which will unset the selection. So we need 
-        // to keep a flag which indicates if this display had the selection.
-        let hadSelected = this.hasSelected();
-
         this._refreshCache();
         if (!this._search)
             this._setDefaultList();
         else
             this._doSearchFilter();
-
-        if (hadSelected) {
-            this._selectedIndex = -1;
-            this.selectFirstItem();
-        }
 
         this.emit('redisplayed');
     },
@@ -412,21 +447,20 @@ GenericDisplay.prototype = {
 
     //// Private methods ////
 
-    // Sets this._width, this._height, this._columnWidth, and this._maxItems based on the 
+    // Sets this._width, this._height, this._columnWidth, and this._maxItemsPerPage based on the 
     // space available for the display, number of columns, and the number of items it can fit.
     _setDimensionsAndMaxItems: function(width, height) {
         this._width = width; 
         this._columnWidth = (this._width - this._columnGap * (this._numberOfColumns - 1)) / this._numberOfColumns; 
         let maxItemsInColumn = Math.floor(height / ITEM_DISPLAY_HEIGHT);
-        this._maxItems =  maxItemsInColumn * this._numberOfColumns;
+        this._maxItemsPerPage =  maxItemsInColumn * this._numberOfColumns;
         this._height = maxItemsInColumn * ITEM_DISPLAY_HEIGHT;
     },
 
     // Applies the search string to the list of items to find matches,
-    // and displays up to this._maxItems that matched.
+    // and displays the matching items.
     _doSearchFilter: function() {
-        this._removeAllDisplayItems();
-        let matchedItems = {};
+        let matchedItemsForSearch = {};
 
         // Break the search up into terms, and search for each
         // individual term.  Keep track of the number of terms
@@ -437,22 +471,22 @@ GenericDisplay.prototype = {
             for (itemId in this._allItems) {
                 let item = this._allItems[itemId];
                 if (this._isInfoMatching(item, term)) {
-                    let count = matchedItems[itemId];
+                    let count = matchedItemsForSearch[itemId];
                     if (!count)
                         count = 0;
                     count += 1;
-                    matchedItems[itemId] = count;
+                    matchedItemsForSearch[itemId] = count;
                 }
             }
         }
 
-        let matchedList = [];
-        for (itemId in matchedItems) {
-            matchedList.push(itemId);
+        this._matchedItems = [];
+        for (itemId in matchedItemsForSearch) {
+            this._matchedItems.push(itemId);
         }
-        matchedList.sort(Lang.bind(this, function (a, b) {
-            let countA = matchedItems[a];
-            let countB = matchedItems[b];
+        this._matchedItems.sort(Lang.bind(this, function (a, b) {
+            let countA = matchedItemsForSearch[a];
+            let countB = matchedItemsForSearch[b];
             if (countA > countB)
                 return -1;
             else if (countA < countB)
@@ -461,8 +495,56 @@ GenericDisplay.prototype = {
                 return this._compareItems(a, b);
         }));
 
-        for (var i = 0; i < matchedList.length && i < this._maxItems; i++) {
-            this._addDisplayItem(matchedList[i]);
+        this._displayMatchedItems(true);        
+    },
+
+    // Displays the page specified by the pageNumber argument. The pageNumber is 0-based.
+    _displayPage: function(pageNumber) {
+        this._pageDisplayed = pageNumber;
+        this._displayMatchedItems(false);
+    },
+
+    /*
+     * Updates the display control to reflect the matched items set and the page selected.
+     *
+     * matchedItemsChanged - indicates if the set of the matched items changed prior to the
+     *                       request. If it did, the display control is updated to reflect the
+     *                       new set of pages. Otherwise, the page links are updated for the
+     *                       current set of pages.
+     */
+    _updateDisplayControl: function(matchedItemsChanged) {
+        if (matchedItemsChanged) {
+            this.displayControl.remove_all();
+            let pageNumber = 0;
+            for (let i = 0; i < this._matchedItems.length; i = i + this._maxItemsPerPage) {
+                let pageControl = new Link.Link({ color: (pageNumber == this._pageDisplayed) ? DISPLAY_CONTROL_SELECTED_COLOR : ITEM_DISPLAY_DESCRIPTION_COLOR,
+                                                  font_name: "Sans Bold 16px",
+                                                  text: (pageNumber + 1) + "",
+                                                  height: LABEL_HEIGHT,
+                                                  reactive: (pageNumber == this._pageDisplayed) ? false : true});
+                this.displayControl.append(pageControl.actor, Big.BoxPackFlags.NONE);
+
+                // we use pageNumberLocalScope to get the page number right in the callback function
+                let pageNumberLocalScope = pageNumber;         
+                pageControl.connect('clicked',
+                                    Lang.bind(this,
+                                              function(o, event) {
+                                                  this._displayPage(pageNumberLocalScope);
+                                              }));
+                pageNumber ++; 
+            }
+        } else {
+            let pageControlActors = this.displayControl.get_children();
+            for (let i = 0; i < pageControlActors.length; i++) { 
+                let pageControlActor = pageControlActors[i];
+                if (i == this._pageDisplayed) {
+                    pageControlActor.color =  DISPLAY_CONTROL_SELECTED_COLOR;
+                    pageControlActor.reactive = false;
+                } else {
+                    pageControlActor.color =  ITEM_DISPLAY_DESCRIPTION_COLOR;
+                    pageControlActor.reactive = true;
+                }
+            } 
         }
     },
 

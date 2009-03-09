@@ -217,6 +217,9 @@ Sideshow.prototype = {
   
         this._appsSectionDefaultHeight = this._appsSection.height;
     
+        this._appsDisplayControlBox = new Big.Box({x_align: Big.BoxAlignment.CENTER});
+        this._appsDisplayControlBox.append(this._appDisplay.displayControl, Big.BoxPackFlags.NONE);
+
         this._docsSection = new Big.Box({ background_color: OVERLAY_BACKGROUND_COLOR,
                                           x: SIDESHOW_PAD,
                                           y: this._appsSection.y + this._appsSection.height,
@@ -243,6 +246,9 @@ Sideshow.prototype = {
         this.actor.add_actor(this._docsSection);
 
         this._docsSectionDefaultHeight = this._docsSection.height;
+
+        this._docsDisplayControlBox = new Big.Box({x_align: Big.BoxAlignment.CENTER});
+        this._docsDisplayControlBox.append(this._docDisplay.displayControl, Big.BoxPackFlags.NONE);
 
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
@@ -415,9 +421,11 @@ Sideshow.prototype = {
                                               this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
                                               EXPANDED_SIDESHOW_COLUMNS);
             this._moreAppsLink.setText("Less...");
+            this._appsSection.insert_after(this._appsDisplayControlBox, this._appDisplay.actor, Big.BoxPackFlags.NONE); 
         } else {
             this._appDisplay.updateDimensions(this._width, this._appsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
             this._moreAppsLink.setText("More...");
+            this._appsSection.remove_actor(this._appsDisplayControlBox);
         }
         this._moreAppsLink.actor.show();
     },
@@ -525,9 +533,11 @@ Sideshow.prototype = {
                                               this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
                                               EXPANDED_SIDESHOW_COLUMNS);
             this._moreDocsLink.setText("Less...");
+            this._docsSection.insert_after(this._docsDisplayControlBox, this._docDisplay.actor, Big.BoxPackFlags.NONE); 
         } else {
             this._docDisplay.updateDimensions(this._width, this._docsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
             this._moreDocsLink.setText("More...");
+            this._docsSection.remove_actor(this._docsDisplayControlBox); 
         }
         this._moreDocsLink.actor.show();
     }

@@ -166,16 +166,15 @@ AppDisplay.prototype = {
 
     // Sets the list of the displayed items based on the list of DEFAULT_APPLICATIONS.
     _setDefaultList : function() {
-        this._removeAllDisplayItems();
-        let added = 0;
-        for (let i = 0; i < DEFAULT_APPLICATIONS.length && added < this._maxItems; i++) {
+        this._matchedItems = [];     
+        for (let i = 0; i < DEFAULT_APPLICATIONS.length; i++) {  
             let appId = DEFAULT_APPLICATIONS[i];
             let appInfo = this._allItems[appId];
             if (appInfo) {
-                this._addDisplayItem(appId);
-                added += 1;
+                this._matchedItems.push(appId);
             }
         }
+        this._displayMatchedItems(true);
     },
 
     // Compares items associated with the item ids based on the alphabetical order
