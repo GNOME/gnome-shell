@@ -160,7 +160,7 @@ clutter_units_pt (gdouble pt)
  * @em: em to convert
  *
  * Converts a value in em to #ClutterUnit<!-- -->s at the
- * current DPI.
+ * current DPI
  *
  * Return value: the value in units
  *
@@ -175,6 +175,42 @@ clutter_units_em (gdouble em)
 
   return em * _clutter_backend_get_units_per_em (backend);
 }
+
+/**
+ * clutter_units_pixels:
+ * @px: pixels to convert
+ *
+ * Converts a value in pixels to #ClutterUnit<!-- -->s
+ *
+ * Return value: the value in units
+ *
+ * Since: 1.0
+ */
+ClutterUnit
+clutter_units_pixels (gint px)
+{
+  return CLUTTER_UNITS_FROM_INT (px);
+}
+
+/**
+ * clutter_units_to_pixels:
+ * @units: units to convert
+ *
+ * Converts a value in #ClutterUnit<!-- -->s to pixels
+ *
+ * Return value: the value in pixels
+ *
+ * Since: 1.0
+ */
+gint
+clutter_units_to_pixels (ClutterUnit units)
+{
+  return CLUTTER_UNITS_TO_INT (units);
+}
+
+/*
+ * GValue and GParamSpec integration
+ */
 
 static GTypeInfo _info = {
  0,
@@ -246,6 +282,36 @@ clutter_value_transform_int_unit (const GValue *src,
   dest->data[0].v_float = CLUTTER_UNITS_FROM_INT (src->data[0].v_int);
 }
 
+static void
+clutter_value_transform_unit_float (const GValue *src,
+                                    GValue       *dest)
+{
+  dest->data[0].v_float = CLUTTER_UNITS_TO_FLOAT (src->data[0].v_float);
+}
+
+static void
+clutter_value_transform_float_unit (const GValue *src,
+                                    GValue       *dest)
+{
+  dest->data[0].v_float = CLUTTER_UNITS_FROM_FLOAT (src->data[0].v_float);
+}
+
+#if 0
+static void
+clutter_value_transform_unit_fixed (const GValue *src,
+                                    GValue       *dest)
+{
+  dest->data[0].v_int = CLUTTER_UNITS_TO_FIXED (src->data[0].v_float);
+}
+
+static void
+clutter_value_transform_fixed_unit (const GValue *src,
+                                    GValue       *dest)
+{
+  dest->data[0].v_float = CLUTTER_UNITS_FROM_FIXED (src->data[0].v_int);
+}
+#endif
+
 static const GTypeValueTable _clutter_unit_value_table = {
   clutter_value_init_unit,
   NULL,
@@ -274,6 +340,11 @@ clutter_unit_get_type (void)
                                        clutter_value_transform_unit_int);
       g_value_register_transform_func (G_TYPE_INT, _clutter_unit_type,
                                        clutter_value_transform_int_unit);
+
+      g_value_register_transform_func (_clutter_unit_type, G_TYPE_FLOAT,
+                                       clutter_value_transform_unit_float);
+      g_value_register_transform_func (G_TYPE_FLOAT, _clutter_unit_type,
+                                       clutter_value_transform_float_unit);
     }
 
   return _clutter_unit_type;

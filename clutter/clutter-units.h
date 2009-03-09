@@ -39,8 +39,8 @@ G_BEGIN_DECLS
 /**
  * ClutterUnit:
  *
- * Device independent unit used by Clutter. The value held can be transformed
- * into other units, likes pixels.
+ * Device independent unit used by Clutter. The value held can be
+ * transformed into other units, likes pixels.
  *
  * Since: 0.4
  */
@@ -52,8 +52,8 @@ typedef float ClutterUnit;
 #define CLUTTER_UNITS_FROM_FLOAT(x)      (x)
 #define CLUTTER_UNITS_TO_FLOAT(x)        (x)
 
-#define CLUTTER_UNITS_FROM_FIXED(x)      (x)
-#define CLUTTER_UNITS_TO_FIXED(x)        (x)
+#define CLUTTER_UNITS_FROM_FIXED(x)      (COGL_FIXED_TO_FLOAT (x))
+#define CLUTTER_UNITS_TO_FIXED(x)        (COGL_FIXED_FROM_FLOAT (x))
 
 /**
  * CLUTTER_UNITS_FORMAT:
@@ -79,7 +79,7 @@ typedef float ClutterUnit;
  *
  * Since: 0.6
  */
-#define CLUTTER_UNITS_FROM_DEVICE(x)     CLUTTER_UNITS_FROM_INT ((x))
+#define CLUTTER_UNITS_FROM_DEVICE(x)    (clutter_units_pixels ((x)))
 
 /**
  * CLUTTER_UNITS_TO_DEVICE:
@@ -89,7 +89,7 @@ typedef float ClutterUnit;
  *
  * Since: 0.6
  */
-#define CLUTTER_UNITS_TO_DEVICE(x)       CLUTTER_UNITS_TO_INT ((x))
+#define CLUTTER_UNITS_TO_DEVICE(x)      (clutter_units_to_pixels ((x)))
 
 /**
  * CLUTTER_UNITS_FROM_PANGO_UNIT:
@@ -99,7 +99,7 @@ typedef float ClutterUnit;
  *
  * Since: 0.6
  */
-#define CLUTTER_UNITS_FROM_PANGO_UNIT(x) ((float)((x) / 1024))
+#define CLUTTER_UNITS_FROM_PANGO_UNIT(x) ((float)((x) / 1024.0))
 
 /**
  * CLUTTER_UNITS_TO_PANGO_UNIT:
@@ -141,9 +141,12 @@ typedef float ClutterUnit;
  */
 #define CLUTTER_UNITS_FROM_EM(x)        (clutter_units_em (x))
 
-ClutterUnit clutter_units_mm (gdouble mm);
-ClutterUnit clutter_units_pt (gdouble pt);
-ClutterUnit clutter_units_em (gdouble em);
+ClutterUnit clutter_units_mm        (gdouble     mm);
+ClutterUnit clutter_units_pt        (gdouble     pt);
+ClutterUnit clutter_units_em        (gdouble     em);
+ClutterUnit clutter_units_pixels    (gint        px);
+
+gint        clutter_units_to_pixels (ClutterUnit units);
 
 #define CLUTTER_TYPE_UNIT                 (clutter_unit_get_type ())
 #define CLUTTER_TYPE_PARAM_UNIT           (clutter_param_unit_get_type ())
