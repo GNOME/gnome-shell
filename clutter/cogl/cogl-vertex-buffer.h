@@ -289,13 +289,13 @@ cogl_vertex_buffer_draw (CoglHandle handle,
  * drawing.
  */
 void
-cogl_vertex_buffer_draw_range_elements (CoglHandle     handle,
-			                GLenum         mode,
-			                GLuint         min_index,
-			                GLuint         max_index,
-			                GLsizei        count,
-			                GLenum         indices_type,
-			                const GLvoid  *indices);
+cogl_vertex_buffer_draw_elements (CoglHandle     handle,
+			          GLenum         mode,
+			          GLuint         min_index,
+			          GLuint         max_index,
+			          GLsizei        count,
+			          GLenum         indices_type,
+			          const GLvoid  *indices);
 
 /**
  * cogl_vertex_buffer_ref:
