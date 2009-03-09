@@ -33,8 +33,6 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_ANGLE_MAX_DEG 1509949439.6
-
 #define CLUTTER_TYPE_GEOMETRY   (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT       (clutter_knot_get_type ())
 #define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())

@@ -47,6 +47,8 @@ CLUTTER_UNITS_FROM_EM
 clutter_units_mm
 clutter_units_pt
 clutter_units_em
+clutter_units_pixels
+clutter_units_to_pixels
 
 <SUBSECTION>
 CLUTTER_MAXUNIT
@@ -512,9 +514,7 @@ clutter_stage_read_pixels
 <SUBSECTION>
 ClutterPerspective
 clutter_stage_set_perspective
-clutter_stage_set_perspectivex
 clutter_stage_get_perspective
-clutter_stage_get_perspectivex
 
 <SUBSECTION>
 clutter_stage_set_title
@@ -528,8 +528,6 @@ clutter_stage_set_use_fog
 clutter_stage_get_use_fog
 clutter_stage_set_fog
 clutter_stage_get_fog
-clutter_stage_set_fogx
-clutter_stage_get_fogx
 
 <SUBSECTION Standard>
 CLUTTER_STAGE
