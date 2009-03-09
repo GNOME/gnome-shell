@@ -3,14 +3,16 @@
  *
  * A basic GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
+ * Authored By: Matthew Allum  <mallum@openedhand.com>
+ *              Emmanuele Bassi <ebassi@linux.intel.com>
  *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007, 2008 OpenedHand
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,17 +20,19 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
+#include <glib-object.h>
+#include <gobject/gvaluecollector.h>
+
 #include "cogl.h"
 
+#include "cogl-fixed.h"
 #include "cogl-internal.h"
 #include "cogl-material.h"
 #include "cogl-offscreen.h"
@@ -224,3 +228,173 @@ cogl_texture_flags_get_type (void)
 
   return gtype;
 }
+
+GType
+cogl_fog_mode_get_type (void)
+{
+  static GType gtype = 0;
+
+  if (G_UNLIKELY (gtype == 0))
+    {
+      static const GEnumValue values[] = {
+        { COGL_FOG_MODE_LINEAR, "COGL_FOG_MODE_LINEAR", "linear" },
+        { COGL_FOG_MODE_EXPONENTIAL, "COGL_FOG_MODE_EXPONENTIAL", "exponential" },
+        { COGL_FOG_MODE_EXPONENTIAL_SQUARED, "COGL_FOG_MODE_EXPONENTIAL_SQUARED", "exponential-squared" },
+        { 0, NULL, NULL }
+      };
+
+      gtype =
+        g_enum_register_static (g_intern_static_string ("CoglFogMode"),
+                                values);
+    }
+
+  return gtype;
+}
+
+/*
+ * CoglFixed
+ */
+
+static GTypeInfo _info = {
+  0,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  0,
+  0,
+  NULL,
+  NULL,
+};
+
+static GTypeFundamentalInfo _finfo = { 0, };
+
+static void
+cogl_value_init_fixed (GValue *value)
+{
+  value->data[0].v_int = 0;
+}
+
+static void
+cogl_value_copy_fixed (const GValue *src,
+                          GValue       *dest)
+{
+  dest->data[0].v_int = src->data[0].v_int;
+}
+
+static gchar *
+cogl_value_collect_fixed (GValue      *value,
+                             guint        n_collect_values,
+                             GTypeCValue *collect_values,
+                             guint        collect_flags)
+{
+  value->data[0].v_int = collect_values[0].v_int;
+
+  return NULL;
+}
+
+static gchar *
+cogl_value_lcopy_fixed (const GValue *value,
+                           guint         n_collect_values,
+                           GTypeCValue  *collect_values,
+                           guint         collect_flags)
+{
+  gint32 *fixed_p = collect_values[0].v_pointer;
+
+  if (!fixed_p)
+    return g_strdup_printf ("value location for `%s' passed as NULL",
+                            G_VALUE_TYPE_NAME (value));
+
+  *fixed_p = value->data[0].v_int;
+
+  return NULL;
+}
+
+static void
+cogl_value_transform_fixed_int (const GValue *src,
+                                GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_TO_INT (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_fixed_double (const GValue *src,
+                                      GValue       *dest)
+{
+  dest->data[0].v_double = COGL_FIXED_TO_DOUBLE (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_fixed_float (const GValue *src,
+                                     GValue       *dest)
+{
+  dest->data[0].v_float = COGL_FIXED_TO_FLOAT (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_int_fixed (const GValue *src,
+                                   GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_FROM_INT (src->data[0].v_int);
+}
+
+static void
+cogl_value_transform_double_fixed (const GValue *src,
+                                      GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_FROM_DOUBLE (src->data[0].v_double);
+}
+
+static void
+cogl_value_transform_float_fixed (const GValue *src,
+                                     GValue       *dest)
+{
+  dest->data[0].v_int = COGL_FIXED_FROM_FLOAT (src->data[0].v_float);
+}
+
+
+static const GTypeValueTable _cogl_fixed_value_table = {
+  cogl_value_init_fixed,
+  NULL,
+  cogl_value_copy_fixed,
+  NULL,
+  "i",
+  cogl_value_collect_fixed,
+  "p",
+  cogl_value_lcopy_fixed
+};
+
+GType
+cogl_fixed_get_type (void)
+{
+  static GType _cogl_fixed_type = 0;
+
+  if (G_UNLIKELY (_cogl_fixed_type == 0))
+    {
+      _info.value_table = & _cogl_fixed_value_table;
+      _cogl_fixed_type =
+        g_type_register_fundamental (g_type_fundamental_next (),
+                                     g_intern_static_string ("CoglFixed"),
+                                     &_info, &_finfo, 0);
+
+      g_value_register_transform_func (_cogl_fixed_type, G_TYPE_INT,
+                                       cogl_value_transform_fixed_int);
+      g_value_register_transform_func (G_TYPE_INT, _cogl_fixed_type,
+                                       cogl_value_transform_int_fixed);
+
+      g_value_register_transform_func (_cogl_fixed_type, G_TYPE_FLOAT,
+                                       cogl_value_transform_fixed_float);
+      g_value_register_transform_func (G_TYPE_FLOAT, _cogl_fixed_type,
+
+                                       cogl_value_transform_float_fixed);
+      g_value_register_transform_func (_cogl_fixed_type, G_TYPE_DOUBLE,
+                                       cogl_value_transform_fixed_double);
+      g_value_register_transform_func (G_TYPE_DOUBLE, _cogl_fixed_type,
+                                       cogl_value_transform_double_fixed);
+    }
+
+  return _cogl_fixed_type;
+}
+
+

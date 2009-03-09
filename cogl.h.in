@@ -332,37 +332,6 @@ void            cogl_enable_depth_test        (gboolean            setting);
 void            cogl_enable_backface_culling  (gboolean            setting);
 
 /**
- * CoglFogMode:
- * @COGL_FOG_MODE_LINEAR: Calculates the fog blend factor as:
- * <programlisting>
- * f = end - eye_distance / end - start
- * </programlisting>
- * @COGL_FOG_MODE_EXPONENTIAL: Calculates the fog blend factor as:
- * <programlisting>
- * f = e ^ -(density * eye_distance)
- * </programlisting>
- * @COGL_FOG_MODE_EXPONENTIAL_SQUARED: Calculates the fog blend factor as:
- * <programlisting>
- * f = e ^ -(density * eye_distance)^2
- * </programlisting>
- *
- * The fog mode determines the equation used to calculate the fogging blend
- * factor while fogging is enabled. The simplest COGL_FOG_MODE_LINEAR mode
- * determines f as:
- * <programlisting>
- * f = end - eye_distance / end - start
- * </programlisting>
- * Where eye_distance is the distance of the current fragment in eye
- * coordinates from the origin.
- */
-typedef enum _CoglFogMode
-{
-  COGL_FOG_MODE_LINEAR,
-  COGL_FOG_MODE_EXPONENTIAL,
-  COGL_FOG_MODE_EXPONENTIAL_SQUARED,
-} CoglFogMode;
-
-/**
  * cogl_set_fog:
  * @fog_color: The color of the fog
  * @mode: A CoglFogMode that determines the equation used to calculate the
@@ -593,8 +562,6 @@ void            cogl_clip_stack_save          (void);
  * Since: 0.8.2
  */
 void            cogl_clip_stack_restore       (void);
-
-
 
 G_END_DECLS
 

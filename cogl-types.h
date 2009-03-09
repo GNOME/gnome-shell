@@ -1,4 +1,5 @@
 /* cogl-types.h: Shared COGL types
+ *
  * This file is part of Clutter
  *
  * Copyright (C) 2008  Intel Corporation.
@@ -6,7 +7,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -72,6 +73,9 @@ typedef void (* CoglFuncPtr) (void);
  * Fixed point number using a (16.16) notation.
  */
 typedef gint32 CoglFixed;
+
+#define COGL_TYPE_FIXED         (cogl_fixed_get_type ())
+GType cogl_fixed_get_type (void) G_GNUC_CONST;
 
 /**
  * CoglAngle:
@@ -306,6 +310,44 @@ typedef enum {
 
 #define COGL_TYPE_TEXTURE_FLAGS         (cogl_texture_flags_get_type ())
 GType cogl_texture_flags_get_type (void) G_GNUC_CONST;
+
+/**
+ * CoglFogMode:
+ * @COGL_FOG_MODE_LINEAR: Calculates the fog blend factor as:
+ * |[
+ *   f = end - eye_distance / end - start
+ * ]|
+ * @COGL_FOG_MODE_EXPONENTIAL: Calculates the fog blend factor as:
+ * |[
+ *   f = e ^ -(density * eye_distance)
+ * ]|
+ * @COGL_FOG_MODE_EXPONENTIAL_SQUARED: Calculates the fog blend factor as:
+ * |[
+ *   f = e ^ -(density * eye_distance)^2
+ * ]|
+ *
+ * The fog mode determines the equation used to calculate the fogging blend
+ * factor while fogging is enabled. The simplest %COGL_FOG_MODE_LINEAR mode
+ * determines f as:
+ *
+ * |[
+ *   f = end - eye_distance / end - start
+ * ]|
+ *
+ * Where eye_distance is the distance of the current fragment in eye
+ * coordinates from the origin.
+ *
+ * Since: 1.0
+ */
+typedef enum _CoglFogMode
+{
+  COGL_FOG_MODE_LINEAR,
+  COGL_FOG_MODE_EXPONENTIAL,
+  COGL_FOG_MODE_EXPONENTIAL_SQUARED
+} CoglFogMode;
+
+#define COGL_TYPE_FOG_MODE              (cogl_fog_mode_get_type ())
+GType cogl_fog_mode_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
