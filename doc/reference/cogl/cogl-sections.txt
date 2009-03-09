@@ -307,7 +307,7 @@ cogl_vertex_buffer_submit
 cogl_vertex_buffer_disable
 cogl_vertex_buffer_enable
 cogl_vertex_buffer_draw
-cogl_vertex_buffer_draw_range_elements
+cogl_vertex_buffer_draw_elements
 <SUBSECTION Private>
 CoglVertexBufferAttribFlags
 COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK
