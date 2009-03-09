@@ -29,8 +29,9 @@
 #include "config.h"
 #endif
 
+#include <cogl/cogl.h>
+
 #include <glib-object.h>
-#include <gobject/gvaluecollector.h>
 
 #include "clutter-fixed.h"
 #include "clutter-private.h"
@@ -70,149 +71,9 @@
  * </itemizedlist>
  */
 
-static GTypeInfo _info = {
-  0,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  0,
-  0,
-  NULL,
-  NULL,
-};
-
-static GTypeFundamentalInfo _finfo = { 0, };
-
-static void
-clutter_value_init_fixed (GValue *value)
-{
-  value->data[0].v_int = 0;
-}
-
-static void
-clutter_value_copy_fixed (const GValue *src,
-                          GValue       *dest)
-{
-  dest->data[0].v_int = src->data[0].v_int;
-}
-
-static gchar *
-clutter_value_collect_fixed (GValue      *value,
-                             guint        n_collect_values,
-                             GTypeCValue *collect_values,
-                             guint        collect_flags)
-{
-  value->data[0].v_int = collect_values[0].v_int;
-
-  return NULL;
-}
-
-static gchar *
-clutter_value_lcopy_fixed (const GValue *value,
-                           guint         n_collect_values,
-                           GTypeCValue  *collect_values,
-                           guint         collect_flags)
-{
-  gint32 *fixed_p = collect_values[0].v_pointer;
-
-  if (!fixed_p)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
-                            G_VALUE_TYPE_NAME (value));
-
-  *fixed_p = value->data[0].v_int;
-
-  return NULL;
-}
-
-static void
-clutter_value_transform_fixed_int (const GValue *src,
-                                   GValue       *dest)
-{
-  dest->data[0].v_int =  (src->data[0].v_int);
-}
-
-static void
-clutter_value_transform_fixed_double (const GValue *src,
-                                      GValue       *dest)
-{
-  dest->data[0].v_double = CLUTTER_FIXED_TO_DOUBLE (src->data[0].v_int);
-}
-
-static void
-clutter_value_transform_fixed_float (const GValue *src,
-                                     GValue       *dest)
-{
-  dest->data[0].v_float = CLUTTER_FIXED_TO_FLOAT (src->data[0].v_int);
-}
-
-static void
-clutter_value_transform_int_fixed (const GValue *src,
-                                   GValue       *dest)
-{
-  dest->data[0].v_int = (float)(src->data[0].v_int);
-}
-
-static void
-clutter_value_transform_double_fixed (const GValue *src,
-                                      GValue       *dest)
-{
-  dest->data[0].v_int = CLUTTER_FLOAT_TO_FIXED (src->data[0].v_double);
-}
-
-static void
-clutter_value_transform_float_fixed (const GValue *src,
-                                     GValue       *dest)
-{
-  dest->data[0].v_int = CLUTTER_FLOAT_TO_FIXED (src->data[0].v_float);
-}
-
-
-static const GTypeValueTable _clutter_fixed_value_table = {
-  clutter_value_init_fixed,
-  NULL,
-  clutter_value_copy_fixed,
-  NULL,
-  "i",
-  clutter_value_collect_fixed,
-  "p",
-  clutter_value_lcopy_fixed
-};
-
-GType
-clutter_fixed_get_type (void)
-{
-  static GType _clutter_fixed_type = 0;
-
-  if (G_UNLIKELY (_clutter_fixed_type == 0))
-    {
-      _info.value_table = & _clutter_fixed_value_table;
-      _clutter_fixed_type =
-        g_type_register_fundamental (g_type_fundamental_next (),
-                                     I_("ClutterFixed"),
-                                     &_info, &_finfo, 0);
-
-      g_value_register_transform_func (_clutter_fixed_type, G_TYPE_INT,
-                                       clutter_value_transform_fixed_int);
-      g_value_register_transform_func (G_TYPE_INT, _clutter_fixed_type,
-                                       clutter_value_transform_int_fixed);
-      g_value_register_transform_func (_clutter_fixed_type, G_TYPE_FLOAT,
-                                       clutter_value_transform_fixed_float);
-      g_value_register_transform_func (G_TYPE_FLOAT, _clutter_fixed_type,
-                                       clutter_value_transform_float_fixed);
-      g_value_register_transform_func (_clutter_fixed_type, G_TYPE_DOUBLE,
-                                       clutter_value_transform_fixed_double);
-      g_value_register_transform_func (G_TYPE_DOUBLE, _clutter_fixed_type,
-                                       clutter_value_transform_double_fixed);
-    }
-
-  return _clutter_fixed_type;
-}
-
 /**
  * clutter_value_set_fixed:
- * @value: a #GValue initialized to #CLUTTER_TYPE_FIXED
+ * @value: a #GValue initialized to %COGL_TYPE_FIXED
  * @fixed_: the fixed point value to set
  *
  * Sets @value to @fixed_.
@@ -220,8 +81,8 @@ clutter_fixed_get_type (void)
  * Since: 0.8
  */
 void
-clutter_value_set_fixed (GValue       *value,
-                         ClutterFixed  fixed_)
+clutter_value_set_fixed (GValue    *value,
+                         CoglFixed  fixed_)
 {
   g_return_if_fail (CLUTTER_VALUE_HOLDS_FIXED (value));
 
@@ -230,7 +91,7 @@ clutter_value_set_fixed (GValue       *value,
 
 /**
  * clutter_value_get_fixed:
- * @value: a #GValue initialized to #CLUTTER_TYPE_FIXED
+ * @value: a #GValue initialized to %COGL_TYPE_FIXED
  *
  * Gets the fixed point value stored inside @value.
  *
@@ -238,7 +99,7 @@ clutter_value_set_fixed (GValue       *value,
  *
  * Since: 0.8
  */
-ClutterFixed
+CoglFixed
 clutter_value_get_fixed (const GValue *value)
 {
   g_return_val_if_fail (CLUTTER_VALUE_HOLDS_FIXED (value), 0);
@@ -251,8 +112,8 @@ param_fixed_init (GParamSpec *pspec)
 {
   ClutterParamSpecFixed *fspec = CLUTTER_PARAM_SPEC_FIXED (pspec);
 
-  fspec->minimum = CLUTTER_MAXFIXED;
-  fspec->maximum = CLUTTER_MINFIXED;
+  fspec->minimum = COGL_FIXED_MIN;
+  fspec->maximum = COGL_FIXED_MAX;
   fspec->default_value = 0;
 }
 
@@ -268,7 +129,7 @@ param_fixed_validate (GParamSpec *pspec,
                       GValue     *value)
 {
   ClutterParamSpecFixed *fspec = CLUTTER_PARAM_SPEC_FIXED (pspec);
-  gint oval =  (value->data[0].v_int);
+  gint oval = value->data[0].v_int;
   gint min, max, val;
 
   g_assert (CLUTTER_IS_PARAM_SPEC_FIXED (pspec));
@@ -276,7 +137,6 @@ param_fixed_validate (GParamSpec *pspec,
   /* we compare the integer part of the value because the minimum
    * and maximum values cover just that part of the representation
    */
-
   min = fspec->minimum;
   max = fspec->maximum;
   val =  (value->data[0].v_int);
@@ -313,7 +173,7 @@ clutter_param_fixed_get_type (void)
         sizeof (ClutterParamSpecFixed),
         16,
         param_fixed_init,
-        CLUTTER_TYPE_FIXED,
+        COGL_TYPE_FIXED,
         NULL,
         param_fixed_set_default,
         param_fixed_validate,
@@ -344,12 +204,12 @@ clutter_param_fixed_get_type (void)
  * Since: 0.8
  */
 GParamSpec *
-clutter_param_spec_fixed (const gchar  *name,
-                          const gchar  *nick,
-                          const gchar  *blurb,
-                          ClutterFixed  minimum,
-                          ClutterFixed  maximum,
-                          ClutterFixed  default_value,
+clutter_param_spec_fixed (const gchar *name,
+                          const gchar *nick,
+                          const gchar *blurb,
+                          CoglFixed    minimum,
+                          CoglFixed    maximum,
+                          CoglFixed    default_value,
                           GParamFlags  flags)
 {
   ClutterParamSpecFixed *fspec;
