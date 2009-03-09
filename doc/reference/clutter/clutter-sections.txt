@@ -856,8 +856,21 @@ clutter_timeout_pool_remove
 clutter_frame_source_add
 clutter_frame_source_add_full
 
+<SUBSECTION>
+ClutterParamSpecFixed
+clutter_param_spec_fixed
+CLUTTER_VALUE_HOLDS_FIXED
+clutter_value_set_fixed
+clutter_value_get_fixed
+
 <SUBSECTION Standard>
 ClutterTimeoutPool
+
+<SUBSECTION Private>
+CLUTTER_TYPE_PARAM_FIXED
+CLUTTER_PARAM_SPEC_FIXED
+CLUTTER_IS_PARAM_SPEC_FIXED
+clutter_param_fixed_get_type
 </SECTION>
 
 <SECTION>
@@ -866,69 +879,6 @@ ClutterTimeoutPool
 ClutterFeatureFlags
 clutter_feature_available
 clutter_feature_get_all
-</SECTION>
-
-<SECTION>
-<FILE>clutter-fixed</FILE>
-<TITLE>Fixed Point Support</TITLE>
-ClutterFixed
-CFX_ONE
-CFX_HALF
-CFX_MAX
-CFX_MIN
-CFX_PI
-CFX_2PI
-CFX_PI_2
-CFX_PI_4
-CFX_120
-CFX_180
-CFX_240
-CFX_360
-CFX_60
-CFX_255
-CLUTTER_FIXED_TO_INT
-CLUTTER_FIXED_TO_FLOAT
-CLUTTER_FIXED_TO_DOUBLE
-CLUTTER_FLOAT_TO_FIXED
-CLUTTER_FLOAT_TO_INT
-CLUTTER_FLOAT_TO_UINT
-CLUTTER_INT_TO_FIXED
-CLUTTER_FIXED_FRACTION
-CLUTTER_FIXED_FLOOR
-CLUTTER_FIXED_CEIL
-CLUTTER_FIXED_MUL
-CLUTTER_FIXED_DIV
-ClutterAngle
-CLUTTER_ANGLE_FROM_DEG
-CLUTTER_ANGLE_FROM_DEGX
-CLUTTER_ANGLE_TO_DEG
-CLUTTER_ANGLE_TO_DEGX
-CLUTTER_ANGLE_MAX_DEG
-CFX_RADIANS_TO_DEGREES
-clutter_cosx
-clutter_sinx
-clutter_tanx
-clutter_atanx
-clutter_atan2x
-clutter_qmulx
-clutter_qdivx
-
-<SUBSECTION>
-CLUTTER_MAXFIXED
-CLUTTER_MINFIXED
-ClutterParamSpecFixed
-clutter_param_spec_fixed
-CLUTTER_VALUE_HOLDS_FIXED
-clutter_value_set_fixed
-clutter_value_get_fixed
-
-<SUBSECTION Private>
-CLUTTER_TYPE_FIXED
-CLUTTER_TYPE_PARAM_FIXED
-CLUTTER_PARAM_SPEC_FIXED
-CLUTTER_IS_PARAM_SPEC_FIXED
-clutter_fixed_get_type
-clutter_param_fixed_get_type
 </SECTION>
 
 <SECTION>

@@ -594,8 +594,8 @@ clutter_behaviour_ellipse_new (ClutterAlpha           *alpha,
  * @width: width of the ellipse
  * @height: height of the ellipse
  * @direction: #ClutterRotateDirection of rotation
- * @start: #ClutterFixed angle in degrees at which movement starts
- * @end: #ClutterFixed angle in degrees at which movement ends
+ * @start: #CoglFixed angle in degrees at which movement starts
+ * @end: #CoglFixed angle in degrees at which movement ends
  *
  * Creates a behaviour that drives actors along an elliptical path. This
  * is the fixed point variant of clutter_behaviour_ellipse_new().
@@ -819,7 +819,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_set_angle_startx
  * @self: a #ClutterBehaviourEllipse
- * @angle_start: An angle, as #ClutterFixed, at which movement starts, in
+ * @angle_start: An angle, as #CoglFixed, at which movement starts, in
  * degrees, between 0 and 360.
  *
  * Sets the angle at which movement starts; angles >= 360 degress get clamped
@@ -906,7 +906,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_set_angle_endx
  * @self: a #ClutterBehaviourEllipse
- * @angle_end: angle, as #ClutterFixed, at which movement ends, in degrees,
+ * @angle_end: angle, as #CoglFixed, at which movement ends, in degrees,
  * between 0 and 360.
  *
  * Sets the angle at which movement ends; angles >= 360 degress get clamped
@@ -1149,9 +1149,12 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_set_tiltx
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: tilt of the elipse in degrees, as #ClutterFixed, around the center in X axis
- * @angle_tilt_y: tilt of the elipse in degrees, as #ClutterFixed, around the center in Y axis
- * @angle_tilt_z: tilt of the elipse in degrees, as #ClutterFixed, around the center in Z axis
+ * @angle_tilt_x: tilt of the elipse in degrees, as #CoglFixed, around
+ *   the center in X axis
+ * @angle_tilt_y: tilt of the elipse in degrees, as #CoglFixed, around
+ *   the center in Y axis
+ * @angle_tilt_z: tilt of the elipse in degrees, as #CoglFixed, around
+ *   the center in Z axis
  *
  * Sets the angle at which the ellipse should be tilted around it's center.
  *
@@ -1205,12 +1208,12 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_get_tiltx
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: location for tilt of the elipse, as #ClutterFixed, around the
- * center in X axis in degrees, or NULL.
- * @angle_tilt_y: location for tilt of the elipse, as #ClutterFixed, around the
- * center in Y axis in degress, or NULL.
- * @angle_tilt_z: location for tilt of the elipse, as #ClutterFixed, around the
- * center in Z axis in degrees, or NULL.
+ * @angle_tilt_x: location for tilt of the elipse, as #CoglFixed, around
+ *   the center in X axis in degrees, or %NULL.
+ * @angle_tilt_y: location for tilt of the elipse, as #CoglFixed, around
+ *   the center in Y axis in degress, or %NULL.
+ * @angle_tilt_z: location for tilt of the elipse, as #CoglFixed, around
+ *   the center in Z axis in degrees, or %NULL.
  *
  * Gets the tilt of the ellipse around the center in Y axis.
  *

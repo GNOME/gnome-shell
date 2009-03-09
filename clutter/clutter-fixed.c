@@ -37,41 +37,6 @@
 #include "clutter-private.h"
 
 /**
- * SECTION:clutter-fixed
- * @short_description: Fixed Point API
- *
- * Clutter has a fixed point API targeted at platforms without a
- * floating point unit, such as embedded devices. On such platforms
- * this API should be preferred to the floating point one as it does
- * not trigger the slow path of software emulation, relying on integer
- * math for fixed-to-floating and floating-to-fixed conversion.
- *
- * It is no recommened for use on platforms with a floating point unit
- * (eg desktop systems) nor for use in bindings.
- *
- * Basic rules of Fixed Point arithmethic:
- *
- * <itemizedlist>
- *   <listitem>
- *     <para>Two fixed point numbers can be directly added,
- *     subtracted and have their modulus taken.</para>
- *   </listitem>
- *   <listitem>
- *     <para>To add other numerical type to a fixed point number it has to
- *     be first converted to fixed point.</para>
- *   </listitem>
- *   <listitem>
- *     <para>A fixed point number can be directly multiplied or divided by
- *     an integer.</para>
- *   </listitem>
- *   <listitem>
- *     <para>Two fixed point numbers can only be multiplied and divided by the
- *     provided %CLUTTER_FIXED_MUL and %CLUTTER_FIXED_DIV macros.</para>
- *   </listitem>
- * </itemizedlist>
- */
-
-/**
  * clutter_value_set_fixed:
  * @value: a #GValue initialized to %COGL_TYPE_FIXED
  * @fixed_: the fixed point value to set
@@ -197,7 +162,7 @@ clutter_param_fixed_get_type (void)
  * @default_value: default value
  * @flags: flags for the param spec
  *
- * Creates a #GParamSpec for properties using #ClutterFixed values
+ * Creates a #GParamSpec for properties using #CoglFixed values
  *
  * Return value: the newly created #GParamSpec
  *
