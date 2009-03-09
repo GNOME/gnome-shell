@@ -30,12 +30,16 @@ static void
 clutter_stage_egl_show (ClutterActor *actor)
 {
   CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_STAGE_EGL (actor)->wrapper,
+                           CLUTTER_ACTOR_MAPPED);
 }
 
 static void
 clutter_stage_egl_hide (ClutterActor *actor)
 {
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_UNSET_FLAGS (CLUTTER_STAGE_EGL (actor)->wrapper,
+                             CLUTTER_ACTOR_MAPPED);
 }
 
 static void

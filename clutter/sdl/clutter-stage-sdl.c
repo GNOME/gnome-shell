@@ -30,6 +30,8 @@ static void
 clutter_stage_sdl_show (ClutterActor *actor)
 {
   CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_STAGE_SDL (actor)->wrapper,
+                           CLUTTER_ACTOR_MAPPED);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->show (actor);
 }
@@ -39,6 +41,8 @@ clutter_stage_sdl_hide (ClutterActor *actor)
 {
   /* No way to easily unmap SDL window ? */
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_UNSET_FLAGS (CLUTTER_STAGE_SDL (actor)->wrapper,
+                             CLUTTER_ACTOR_MAPPED);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->hide (actor);
 }
