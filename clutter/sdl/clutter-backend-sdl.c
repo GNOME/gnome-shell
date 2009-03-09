@@ -47,7 +47,7 @@ clutter_backend_sdl_post_parse (ClutterBackend  *backend,
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
 		   CLUTTER_INIT_ERROR_BACKEND,
-		   SDL_GetError ());
+		   "%s", SDL_GetError ());
       return FALSE;
     }
 
