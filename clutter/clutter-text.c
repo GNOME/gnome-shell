@@ -1067,8 +1067,8 @@ clutter_text_paint (ClutterActor *self)
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
       cogl_clip_push (0, 0,
-                      CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
-                      CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1));
+                      CLUTTER_UNITS_TO_FLOAT (alloc.x2 - alloc.x1),
+                      CLUTTER_UNITS_TO_FLOAT (alloc.y2 - alloc.y1));
       clip_set = TRUE;
 
       actor_width = (CLUTTER_UNITS_TO_DEVICE (alloc.x2 - alloc.x1))
