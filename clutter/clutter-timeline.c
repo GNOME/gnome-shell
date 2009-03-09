@@ -1380,9 +1380,13 @@ clutter_timeline_set_duration (ClutterTimeline *timeline,
 gdouble
 clutter_timeline_get_progress (ClutterTimeline *timeline)
 {
-  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0.);
+  ClutterTimelinePrivate *priv;
 
-  return CLUTTER_FIXED_TO_DOUBLE (clutter_timeline_get_progressx (timeline));
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0.0);
+
+  priv = timeline->priv;
+
+  return (gdouble) priv->current_frame_num / (gdouble) priv->n_frames;
 }
 
 /**
@@ -1395,20 +1399,10 @@ clutter_timeline_get_progress (ClutterTimeline *timeline)
  *
  * Since: 0.6
  */
-ClutterFixed
+CoglFixed
 clutter_timeline_get_progressx (ClutterTimeline *timeline)
 {
-  ClutterTimelinePrivate *priv;
-  ClutterFixed progress;
-
-  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
-
-  priv = timeline->priv;
-
-  progress = CLUTTER_FIXED_DIV ((float)(priv->current_frame_num),
-			     (float)(priv->n_frames));
-
-  return progress;
+  return COGL_FIXED_FROM_DOUBLE (clutter_timeline_get_progress (timeline));
 }
 
 /**
@@ -1425,7 +1419,8 @@ clutter_timeline_get_progressx (ClutterTimeline *timeline)
 ClutterTimelineDirection
 clutter_timeline_get_direction (ClutterTimeline *timeline)
 {
-  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), CLUTTER_TIMELINE_FORWARD);
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline),
+                        CLUTTER_TIMELINE_FORWARD);
 
   return timeline->priv->direction;
 }
