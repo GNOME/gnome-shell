@@ -158,7 +158,7 @@ source_c = \
 	$(srcdir)/clutter-clone.c		\
 	$(srcdir)/clutter-color.c 		\
 	$(srcdir)/clutter-container.c		\
-	$(srcdir)/clutter-enum-types.c		\
+	$(builddir)/clutter-enum-types.c	\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
 	$(srcdir)/clutter-fixed.c		\
@@ -168,7 +168,7 @@ source_c = \
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
-	$(srcdir)/clutter-marshal.c		\
+	$(builddir)/clutter-marshal.c		\
 	$(srcdir)/clutter-media.c 		\
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-path.c		\
@@ -230,9 +230,9 @@ EXTRA_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
 clutter_HEADERS = \
 	$(source_h) \
-	$(top_srcdir)/clutter/clutter-json.h 		\
-	$(top_srcdir)/clutter/clutter-enum-types.h 	\
-	$(top_srcdir)/clutter/clutter-version.h 	\
+	$(top_builddir)/clutter/clutter-json.h 		\
+	$(top_builddir)/clutter/clutter-enum-types.h 	\
+	$(top_builddir)/clutter/clutter-version.h 	\
 	$(top_srcdir)/clutter/clutter.h
 
 if HAVE_INTROSPECTION
