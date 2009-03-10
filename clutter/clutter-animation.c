@@ -1267,6 +1267,9 @@ clutter_animation_setupv (ClutterAnimation    *animation,
       const gchar *property_name = properties[i];
       GParamSpec *pspec;
 
+      if (g_str_has_prefix (property_name, "fixed::"))
+        property_name += 7; /* strlen("fixed::") */
+
       pspec = g_object_class_find_property (klass, property_name);
       if (!pspec)
         {
@@ -1300,6 +1303,9 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       GParamSpec *pspec;
       GValue final = { 0, };
       gchar *error = NULL;
+
+      if (g_str_has_prefix (property_name, "fixed::"))
+        property_name += 7; /* strlen("fixed::") */
 
       pspec = g_object_class_find_property (klass, property_name);
       if (!pspec)
