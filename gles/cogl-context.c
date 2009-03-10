@@ -58,6 +58,8 @@ cogl_create_context ()
 
   _context->enable_flags = 0;
 
+  _context->enable_backface_culling = FALSE;
+
   _context->material_handles = NULL;
   _context->material_layer_handles = NULL;
   _context->default_material = cogl_material_new ();
