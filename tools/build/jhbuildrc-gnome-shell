@@ -29,7 +29,11 @@ checkoutroot = os.path.expanduser('~/gnome-shell/source')
 prefix = os.path.expanduser('~/gnome-shell/install')
 
 # Use system libraries for the builds
-addpath('PKG_CONFIG_PATH', os.path.join(os.sep, 'usr', 'lib', 'pkgconfig'))
+if use_lib64:
+    libdir = 'lib64'
+else:
+    libdir = 'lib'
+addpath('PKG_CONFIG_PATH', os.path.join(os.sep, 'usr', libdir, 'pkgconfig'))
 addpath('PKG_CONFIG_PATH', os.path.join(os.sep, 'usr', 'share', 'pkgconfig'))
 
 # Look in /usr/share for icons, D-BUS service files, etc
