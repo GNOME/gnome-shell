@@ -22,8 +22,7 @@ tidy_source_h =					\
 	tidy/tidy-grid.h			\
 	$(NULL)
 
-tidy_source_h_private = \
-	tidy/tidy-debug.h \
+tidy_source_h_priv =				\
 	$(NULL)
 
 # please, keep this sorted alphabetically
@@ -87,5 +86,4 @@ CLEANFILES += $(TIDY_STAMP_FILES) $(BUILT_SOURCES)
 EXTRA_DIST +=					\
 	tidy/tidy-enum-types.h.in		\
 	tidy/tidy-enum-types.c.in		\
-	tidy/tidy-private.h			\
 	tidy/tidy-marshal.list
