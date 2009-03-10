@@ -1,4 +1,5 @@
 imagedir = $(pkgdatadir)/images
 
-image_DATA = \
-	add-workspace.svg
+dist_image_DATA =		\
+	add-workspace.svg	\
+	remove-workspace.svg

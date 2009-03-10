@@ -14,7 +14,7 @@ include Makefile-taskpanel.am
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
         $(LIBGNOMEUI_CFLAGS)                    \
-	-Itray					\
+	-I$(srcdir)/tray			\
 	-DGETTEXT_PACKAGE=gnome-shell		\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
@@ -28,6 +28,7 @@ shell_built_sources = \
 	shell-marshal.c
 
 BUILT_SOURCES += $(shell_built_sources)
+EXTRA_DIST += shell-marshal.list
 
 SHELL_STAMP_FILES = stamp-shell-marshal.h
 CLEANFILES += $(SHELL_STAMP_FILES)
@@ -99,7 +100,7 @@ Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefil
 		--include=Big-1.0     \
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
-		$(libgnome_shell_la_gir_sources)	\
+		$(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources)) \
 		$(libgnome_shell_la_CPPFLAGS)		\
 		-o $@
 CLEANFILES += Shell-0.1.gir
@@ -117,9 +118,9 @@ Tidy-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makef
 		--include=Clutter-0.9			\
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
-		$(tidy_source_h)			\
-		$(tidy_source_c)			\
-		tidy-enum-types.h			\
+		$(addprefix $(srcdir)/,$(tidy_source_h)) \
+		$(addprefix $(srcdir)/,$(tidy_source_c)) \
+		$(srcdir)/tidy-enum-types.h		\
 		$(tidy_cflags)				\
 		-o $@
 CLEANFILES += Tidy-1.0.gir
@@ -136,9 +137,9 @@ Big-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefil
 		--include=GdkPixbuf-2.0			\
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
-		$(big_source_h)			\
-		$(big_source_c)			\
-		big-enum-types.h		\
+		$(addprefix $(srcdir)/,$(big_source_h))	\
+		$(addprefix $(srcdir)/,$(big_source_c))	\
+		$(srcdir)/big-enum-types.h		\
 		$(big_cflags)				\
 		-o $@
 CLEANFILES += Big-1.0.gir

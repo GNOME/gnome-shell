@@ -73,6 +73,8 @@ AC_SUBST(metacity)
 AC_OUTPUT([
   Makefile
   data/Makefile
+  js/Makefile
+  js/ui/Makefile
   src/Makefile
   src/gnome-shell
 ])

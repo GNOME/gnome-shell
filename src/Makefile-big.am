@@ -62,6 +62,7 @@ libbig_1_0_la_LDFLAGS = $(LDADD)
 
 CLEANFILES += $(BIG_STAMP_FILES) $(BUILT_SOURCES)
 
-EXTRA_DIST +=					\
+EXTRA_DIST +=				\
+	big/README			\
 	big/big-enum-types.h.in		\
 	big/big-enum-types.c.in
