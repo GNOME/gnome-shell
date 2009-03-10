@@ -1810,7 +1810,7 @@ clutter_texture_async_load (ClutterTexture *self,
         /* This apparently can't fail if exclusive == FALSE */
         async_thread_pool
           = g_thread_pool_new (clutter_texture_thread_func,
-                               NULL, 3, FALSE, NULL);
+                               NULL, 1, FALSE, NULL);
 
       g_thread_pool_push (async_thread_pool, data, NULL);
     }
