@@ -55,6 +55,7 @@ cogl_create_context ()
   _context->features_cached = FALSE;
 
   _context->enable_flags = 0;
+  _context->color_alpha = 0;
 
   _context->enable_backface_culling = FALSE;
 
