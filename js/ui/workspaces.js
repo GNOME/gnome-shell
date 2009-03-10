@@ -751,7 +751,7 @@ Workspace.prototype = {
             return true;
         } else if (source instanceof GenericDisplay.GenericDisplayItem) {
             this._metaWorkspace.activate(time);
-            source.activate();
+            source.launch();
             return true;
         }
 
