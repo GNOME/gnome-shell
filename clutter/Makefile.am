@@ -158,7 +158,7 @@ source_c = \
 	$(srcdir)/clutter-clone.c		\
 	$(srcdir)/clutter-color.c 		\
 	$(srcdir)/clutter-container.c		\
-	$(builddir)/clutter-enum-types.c	\
+	clutter-enum-types.c			\
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
 	$(srcdir)/clutter-fixed.c		\
@@ -168,7 +168,7 @@ source_c = \
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
-	$(builddir)/clutter-marshal.c		\
+	clutter-marshal.c			\
 	$(srcdir)/clutter-media.c 		\
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-path.c		\
@@ -293,7 +293,7 @@ typelibsdir = $(libdir)/girepository-1.0/
 typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 %.typelib: %.gir $(INTROSPECTION_COMPILER)
-	$(QUIET_GEN)$(DEBUG) $(INTROSPECTION_COMPILER) --includedir=$(srcdir) --includedir=. $(INTROSPECTION_COMPILER_OPTS) $< -o $(builddir)/$(@F)
+	$(QUIET_GEN)$(DEBUG) $(INTROSPECTION_COMPILER) --includedir=$(srcdir) --includedir=. $(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif
