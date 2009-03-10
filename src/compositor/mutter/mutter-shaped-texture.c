@@ -411,9 +411,9 @@ mutter_shaped_texture_pick (ClutterActor *actor,
       /* Paint the mask rectangle in the given color */
       cogl_set_source_texture (priv->mask_texture);
       cogl_rectangle_with_texture_coords (0, 0,
-                                          CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
-                                          CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1),
-                                          0, 0, CFX_ONE, CFX_ONE);
+                                          CLUTTER_UNITS_TO_FLOAT (alloc.x2 - alloc.x1),
+                                          CLUTTER_UNITS_TO_FLOAT (alloc.y2 - alloc.y1),
+                                          0, 0, 1, 1);
     }
 }
 
