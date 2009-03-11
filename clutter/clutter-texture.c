@@ -100,6 +100,8 @@ struct _ClutterTexturePrivate
   guint                        in_dispose : 1;
   guint                        keep_aspect_ratio : 1;
   guint                        load_async : 1;
+  guint                        load_size_async : 1;
+  guint                        load_data_async : 1;
 
   ClutterTextureAsyncData     *async_data;
 };
@@ -143,7 +145,9 @@ enum
   PROP_COGL_MATERIAL,
   PROP_FILENAME,
   PROP_KEEP_ASPECT_RATIO,
-  PROP_LOAD_ASYNC
+  PROP_LOAD_ASYNC,
+  PROP_LOAD_DATA_ASYNC,
+  PROP_LOAD_SIZE_ASYNC
 };
 
 enum
@@ -152,7 +156,6 @@ enum
   PIXBUF_CHANGE,
   LOAD_SUCCESS,
   LOAD_FINISHED,
-  
   LAST_SIGNAL
 };
 
@@ -839,6 +842,12 @@ clutter_texture_set_property (GObject      *object,
     case PROP_LOAD_ASYNC:
       priv->load_async = g_value_get_boolean (value);
       break;
+    case PROP_LOAD_DATA_ASYNC:
+      priv->load_data_async = g_value_get_boolean (value);
+      break;
+    case PROP_LOAD_SIZE_ASYNC:
+      priv->load_size_async = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -896,6 +905,12 @@ clutter_texture_get_property (GObject    *object,
       break;
     case PROP_LOAD_ASYNC:
       g_value_set_boolean (value, priv->load_async);
+      break;
+    case PROP_LOAD_DATA_ASYNC:
+      g_value_set_boolean (value, priv->load_data_async);
+      break;
+    case PROP_LOAD_SIZE_ASYNC:
+      g_value_set_boolean (value, priv->load_size_async);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1033,6 +1048,24 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   CLUTTER_PARAM_READWRITE));
 
   /**
+   * ClutterTexture:load-size-sync:
+   *
+   * When set to TRUE clutter will not block loading the size initially,
+   * when used in this manner the size of the actor will change (and the
+   * load-size-complete signal will be fired when the size is available).
+   *
+   * Since: 1.0
+   */
+  g_object_class_install_property
+    (gobject_class, PROP_LOAD_SIZE_ASYNC,
+     g_param_spec_boolean ("load-size-async",
+			   "Load size asynchronously",
+			   "If set to TRUE clutter will not block until it has "
+                           "loaded the size of the file.",
+			   FALSE,
+			   CLUTTER_PARAM_READWRITE));
+
+  /**
    * ClutterTexture:load-async:
    *
    * Tries to load a texture from a filename by using a local thread
@@ -1048,12 +1081,30 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    */
   g_object_class_install_property
     (gobject_class, PROP_LOAD_ASYNC,
+     g_param_spec_boolean ("load-data-async",
+			   "Load data asynchronously",
+			   "Load files inside a thread to avoid blocking when "
+                           "loading images.",
+			   FALSE,
+			   CLUTTER_PARAM_READWRITE));
+
+
+  /**
+   * ClutterTexture:load-async:
+   *
+   * Load texture fully asynchronosuly, loading both the size and data
+   * in a separate thread.
+   *
+   * Since: 1.0
+   */
+  g_object_class_install_property
+    (gobject_class, PROP_LOAD_ASYNC,
      g_param_spec_boolean ("load-async",
 			   "Load asynchronously",
 			   "Load files inside a thread to avoid blocking when "
                            "loading images.",
 			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
+			   CLUTTER_PARAM_WRITABLE));
 
   /**
    * ClutterTexture::size-change:
@@ -1639,6 +1690,8 @@ clutter_texture_async_load_complete (ClutterTexture *self,
                                              waste, flags,
                                              COGL_PIXEL_FORMAT_ANY);
       clutter_texture_set_cogl_texture (self, handle);
+      /*clutter_actor_set_size (self, cogl_texture_get_width (handle),
+                                    cogl_texture_get_height (handle));*/
       cogl_texture_unref (handle);
     }
 
@@ -1687,6 +1740,7 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
 
   data->load_bitmap = cogl_bitmap_new_from_file (data->load_filename,
                                                  &data->load_error);
+  g_print (".");
 
   /* Check again if we've been told to abort */
   g_mutex_lock (data->mutex);
@@ -1772,15 +1826,21 @@ clutter_texture_async_load (ClutterTexture *self,
    * there's no point in even continuing the asynchronous
    * loading, so we just stop there
    */
-  res = cogl_bitmap_get_size_from_file (filename,
-                                        &width,
-                                        &height);
+
+  if (priv->load_size_async)
+    {
+      res = TRUE;
+    }
+  else
+    {
+      res = cogl_bitmap_get_size_from_file (filename, &width, &height);
+    }
+
   if (!res)
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
 		   "Failed to create COGL texture");
-      clutter_texture_async_data_free (data);
       return FALSE;
     }
   else
