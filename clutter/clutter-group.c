@@ -86,7 +86,9 @@ clutter_group_paint (ClutterActor *actor)
   ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
   GList               *child_item;
 
-  CLUTTER_NOTE (PAINT, "ClutterGroup paint enter");
+  CLUTTER_NOTE (PAINT, "ClutterGroup paint enter '%s'",
+                clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
+                                               : "unknown");
 
   for (child_item = priv->children;
        child_item != NULL;
@@ -100,7 +102,9 @@ clutter_group_paint (ClutterActor *actor)
 	clutter_actor_paint (child);
     }
 
-  CLUTTER_NOTE (PAINT, "ClutterGroup paint leave");
+  CLUTTER_NOTE (PAINT, "ClutterGroup paint leave '%s'",
+                clutter_actor_get_name (actor) ? clutter_actor_get_name (actor)
+                                               : "unknown");
 }
 
 static void
