@@ -5,11 +5,10 @@ SED=@SED@
 if test -z "$SED" ; then
 SED=sed
 fi
-Xsed="$SED -e s/^X//"
 
 lt_unmangle ()
 {
-   last_result=`echo -n X$1 | $Xsed -e 's#.libs/##' -e 's#[^0-9a-zA-Z_]\+_la##'`
+   last_result=`echo $1 | $SED -e 's#.libs/##' -e 's#[0-9a-zA-Z_\-\.]*_la-##'`
 }
 
 # the real libtool to use
@@ -27,7 +26,7 @@ while test "$#" -gt 0; do
 
     case $opt in
     --mode=*)
-        mode=`echo "X$opt" | $Xsed -e 's/[-_a-zA-Z0-9]*=//'`
+        mode=`echo $opt | $SED -e 's/[-_a-zA-Z0-9]*=//'`
         preserved_args="$preserved_args $opt"
         ;;
     -o)

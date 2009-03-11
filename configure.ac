@@ -660,7 +660,7 @@ ALL_LINGUAS=""
 AM_GLIB_GNU_GETTEXT
 GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 
-SHAVE_INIT([build/autotools])
+SHAVE_INIT([build/autotools], [enable])
 
 AC_CONFIG_FILES([
         Makefile
