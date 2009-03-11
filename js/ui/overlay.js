@@ -568,6 +568,8 @@ Overlay.prototype = {
         }
 
         this._group = new Clutter.Group();
+        this._group._delegate = this;
+
         this.visible = false;
 
         let background = new Clutter.Rectangle({ color: OVERLAY_BACKGROUND_COLOR,
@@ -604,7 +606,7 @@ Overlay.prototype = {
                                  { x: displayGridColumnWidth * asideXFactor,
                                    time: ANIMATION_TIME,
                                    transition: "easeOutQuad"
-                                 });               
+                                 });
             }    
         });
         this._sideshow.connect('less-activated', function(sideshow) {
@@ -620,6 +622,24 @@ Overlay.prototype = {
             }
         });
     },
+
+    //// Draggable target interface ////
+
+    // Unsets the expanded display mode if a GenericDisplayItem is being 
+    // dragged over the overlay, i.e. as soon as it starts being dragged.
+    // This slides the workspaces back in and allows the user to place
+    // the item on any workspace.
+    handleDragOver : function(source, actor, x, y, time) {
+        if (source instanceof GenericDisplay.GenericDisplayItem) {
+            this._sideshow._unsetMoreAppsMode();
+            this._sideshow._unsetMoreDocsMode();
+            return true;
+        }
+  
+        return false;
+    },
+
+    //// Public methods ////
 
     show : function() {
         if (this.visible)
@@ -689,6 +709,8 @@ Overlay.prototype = {
                            onCompleteScope: this
                          });
     },
+
+    //// Private methods ////
 
     _hideDone: function() {
         let global = Shell.Global.get();

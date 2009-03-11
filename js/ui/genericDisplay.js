@@ -64,13 +64,17 @@ GenericDisplayItem.prototype = {
         this._name = null;
         this._description = null;
         this._icon = null;
+
+        this.dragActor = null;
     },
 
-    //// Draggable interface ////
+    //// Draggable object interface ////
+
+    // Returns a cloned texture of the item's icon to represent the item as it 
+    // is being dragged. 
     getDragActor: function(stageX, stageY) {
-        // FIXME: assumes this._icon is a Clutter.Texture
-        let icon = new Clutter.Clone({ source: this._icon });
-        [icon.width, icon.height] = this._icon.get_transformed_size();
+        this.dragActor = new Clutter.Clone({ source: this._icon });
+        [this.dragActor.width, this.dragActor.height] = this._icon.get_transformed_size();
 
         // If the user dragged from the icon itself, then position
         // the dragActor over the original icon. Otherwise center it
@@ -79,12 +83,18 @@ GenericDisplayItem.prototype = {
         let [iconWidth, iconHeight] = this._icon.get_transformed_size();
         if (stageX > iconX && stageX <= iconX + iconWidth &&
             stageY > iconY && stageY <= iconY + iconHeight)
-            icon.set_position(iconX, iconY);
+            this.dragActor.set_position(iconX, iconY);
         else
-            icon.set_position(stageX - icon.width / 2, stageY - icon.height / 2);
-        return icon;
+            this.dragActor.set_position(stageX - this.dragActor.width / 2, stageY - this.dragActor.height / 2);
+        return this.dragActor;
     },
     
+    // Returns the original icon that is being used as a source for the cloned texture
+    // that represents the item as it is being dragged.
+    getDragActorSource: function() {
+        return this._icon;
+    },
+
     //// Public methods ////
 
     // Highlights the item by setting a different background color than the default 
@@ -388,7 +398,32 @@ GenericDisplay.prototype = {
             this.selectUp();
         } 
 
-        displayItem.actor.destroy();
+        if (displayItem.dragActor) {
+            // The user might be handling a dragActor when the list of items 
+            // changes (for example, if the dragging caused us to transition
+            // from an expanded overlay view to the regular view). So we need
+            // to keep the item around so that the drag and drop action initiated
+            // by the user can be completed. However, we remove the item from the list.
+            // 
+            // For some reason, just removing the displayItem.actor
+            // is not enough to get displayItem._icon.visible
+            // to return false, so we hide the display item and
+            // all its children first. (We check displayItem._icon.visible
+            // when deciding if a dragActor has a place to snap back to
+            // in case the drop was not accepted by any actor.)
+            displayItem.actor.hide_all();
+            this._grid.remove_actor(displayItem.actor);
+            // We should not destroy the actor up-front, because that would also
+            // destroy the icon that was used to clone the image for the drag actor.
+            // We destroy it once the dragActor is destroyed instead.             
+            displayItem.dragActor.connect('destroy',
+                                          function(item) {
+                                              displayItem.actor.destroy();
+                                          });
+           
+        } else {
+            displayItem.actor.destroy();
+        }
         delete this._displayedItems[itemId];
         this._displayedItemsCount--;        
     },

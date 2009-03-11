@@ -1,10 +1,9 @@
 /* -*- mode: js2; js2-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- */
 
-const Lang = imports.lang;
-const Signals = imports.signals;
-
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
+const Lang = imports.lang;
+const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
 
 const SNAP_BACK_ANIMATION_TIME = 0.25;
@@ -80,6 +79,13 @@ _Draggable.prototype = {
 
             if (this.actor._delegate && this.actor._delegate.getDragActor) {
                 this._dragActor = this.actor._delegate.getDragActor(this._dragStartX, this._dragStartY);
+                // Drag actor does not always have to be the same as actor. For example drag actor
+                // can be an image that's part of the actor. So to perform "snap back" correctly we need
+                // to know what was the drag actor source.
+                if (this.actor._delegate.getDragActorSource)
+                    this._dragActorSource = this.actor._delegate.getDragActorSource();
+                else  
+                    this._dragActorSource = this.actor;
                 this._dragOrigParent = undefined;
                 this._ungrabActor(actor);
                 this._grabActor(this._dragActor);
@@ -88,6 +94,7 @@ _Draggable.prototype = {
                 this._dragOffsetY = this._dragActor.y - this._dragStartY;
             } else {
                 this._dragActor = actor;
+                this._dragActorSource = undefined;
                 this._dragOrigParent = actor.get_parent();
                 this._dragOrigX = this._dragActor.x;
                 this._dragOrigY = this._dragActor.y;
@@ -112,6 +119,24 @@ _Draggable.prototype = {
         if (this._dragActor) {
             this._dragActor.set_position(stageX + this._dragOffsetX,
                                          stageY + this._dragOffsetY);
+            // Because we want to find out what other actor is located at the current position of this._dragActor,
+            // we have to temporarily hide this._dragActor.
+            this._dragActor.hide(); 
+            let target = actor.get_stage().get_actor_at_pos(stageX + this._dragOffsetX, stageY + this._dragOffsetY);
+            this._dragActor.show();
+            while (target) {
+                if (target._delegate && target._delegate.handleDragOver) {
+                    let [targX, targY] = target.get_transformed_position();
+                    // We currently loop through all parents on drag-over even if one of the children has handled it.
+                    // We can check the return value of the function and break the loop if it's true if we don't want
+                    // to continue checking the parents.
+                    target._delegate.handleDragOver(this.actor._delegate, actor,
+                                                    (stageX + this._dragOffsetX + this._xOffset - targX) / target.scale_x,
+                                                    (stageY + this._dragOffsetY + this._yOffset - targY) / target.scale_y,
+                                                    event.get_time());
+                }
+                target = target.get_parent();
+            }  
         }
 
         return true;
@@ -151,10 +176,19 @@ _Draggable.prototype = {
             target = target.get_parent();
         }
 
+        // Snap back to the actor source if the source is still around, snap back 
+        // to the original location if the actor itself was being dragged or the
+        // source is no longer around.
+        let snapBackX = this._dragStartX + this._dragOffsetX;
+        let snapBackY = this._dragStartY + this._dragOffsetY;
+        if (this._dragActorSource && this._dragActorSource.visible) {
+            [snapBackX, snapBackY] = this._dragActorSource.get_transformed_position();
+        }
+
         // No target, so snap back
         Tweener.addTween(actor,
-                         { x: this._dragStartX + this._dragOffsetX,
-                           y: this._dragStartY + this._dragOffsetY,
+                         { x: snapBackX,
+                           y: snapBackY,
                            time: SNAP_BACK_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: this._onSnapBackComplete,
