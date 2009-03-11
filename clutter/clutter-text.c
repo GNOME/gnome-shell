@@ -2810,7 +2810,8 @@ clutter_text_set_text_internal (ClutterText *self,
         }
       else
         {
-          gchar *n = g_malloc0 (priv->max_length + 1);
+          gchar *p = g_utf8_offset_to_pointer (text, priv->max_length);
+          gchar *n = g_malloc0 ((p - text) + 1);
 
           g_free (priv->text);
 
