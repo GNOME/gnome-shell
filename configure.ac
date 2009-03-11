@@ -76,5 +76,4 @@ AC_OUTPUT([
   js/Makefile
   js/ui/Makefile
   src/Makefile
-  src/gnome-shell
 ])

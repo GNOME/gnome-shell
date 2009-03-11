@@ -11,7 +11,7 @@ gnomeshell_taskpanel_SOURCES =			\
 	shell-panel-window.c	\
 	shell-panel-window.h	\
 	$(NULL)
-	
+
 gnomeshell_taskpanel_LDADD = $(TASKPANEL_LIBS)
 
-bin_PROGRAMS += gnomeshell-taskpanel
+libexec_PROGRAMS += gnomeshell-taskpanel

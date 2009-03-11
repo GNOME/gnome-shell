@@ -107,16 +107,33 @@ def _get_glx_extensions():
     return (server_glx_extensions, client_glx_extensions, glx_extensions)
 
 def start_shell():
-    # Figure out the path to the plugin when uninstalled
-    src_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-    top_dir = os.path.dirname(src_dir)
-    plugin_dir = os.path.join(top_dir, "src")
-    js_dir = os.path.join(top_dir, "js")
-    data_dir = os.path.join(top_dir, "data")
+    bin_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
+        running_from_source_tree = True
+        top_dir = os.path.dirname(bin_dir)
+        plugin_dir = os.path.join(top_dir, "src")
+        typelib_dir = os.path.join(top_dir, "src")
+        taskpanel_dir = os.path.join(top_dir, "src")
+        js_dir = os.path.join(top_dir, "js")
+        data_dir = os.path.join(top_dir, "data")
+    else:
+        running_from_source_tree = False
+        js_dir = os.path.join('@pkgdatadir@', 'js')
+        plugin_dir = '@libdir@/metacity/plugins/clutter'
+        taskpanel_dir = '@libexecdir@'
+
+    # Set up environment
+    env = dict(os.environ)
+    env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
+                'PATH'                : '@META_BIN_DIR@:' + os.environ.get('PATH', '') + ':' + taskpanel_dir,
+                'GNOME_DISABLE_CRASH_DIALOG' : '1'})
+
+    if running_from_source_tree:
+        env.update({'GNOME_SHELL_DATADIR' : data_dir,
+                    'GI_TYPELIB_PATH'     : typelib_dir})
 
     # Work around Ubuntu xulrunner bug,
     # http://bugzilla.gnome.org/show_bug.cgi?id=573413
-    mozjs_ld_library_path = ''
     pkgconfig = subprocess.Popen(['pkg-config', '--variable=sdkdir', 'mozilla-js'],
                                  stdout=subprocess.PIPE)
     mozjs_sdkdir = pkgconfig.communicate()[0].strip()
@@ -124,16 +141,7 @@ def start_shell():
     if pkgconfig.returncode == 0:
         mozjs_libdir = re.sub('-(sdk|devel)', '', mozjs_sdkdir)
         if os.path.exists(mozjs_libdir + '/libmozjs.so'):
-            mozjs_ld_library_path = ':' + mozjs_libdir
-
-    # Set up environment
-    env = dict(os.environ)
-    env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
-                'GNOME_SHELL_DATADIR' : data_dir,
-                'GI_TYPELIB_PATH'     : plugin_dir,
-                'PATH'                : '@META_BIN_DIR@:' + os.environ.get('PATH', '') + ':' + plugin_dir,
-                'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir + mozjs_ld_library_path,
-                'GNOME_DISABLE_CRASH_DIALOG' : '1'})
+            env['LD_LIBRARY_PATH'] = os.environ.get('LD_LIBRARY_PATH', '') + ':' + mozjs_libdir
 
     if not options.verbose:
         # Unless verbose() is specified, only let gjs show errors and

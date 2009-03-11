@@ -2,8 +2,21 @@ NULL =
 BUILT_SOURCES =
 CLEANFILES =
 EXTRA_DIST = 
-bin_PROGRAMS =
+libexec_PROGRAMS =
 noinst_LTLIBRARIES = 
+
+bin_SCRIPTS = gnome-shell
+
+gnome-shell: gnome-shell.in
+	sed -e "s|@META_BIN_DIR[@]|$(META_BIN_DIR)|" \
+	    -e "s|@GJS_JS_DIR[@]|$(GJS_JS_DIR)|" \
+	    -e "s|@GJS_JS_NATIVE_DIR[@]|$(GJS_JS_NATIVE_DIR)|" \
+	    -e "s|@libexecdir[@]|$(libexecdir)|" \
+	    -e "s|@libdir[@]|$(libdir)|" \
+	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
+	    $< > $@ && chmod a+x $@
+CLEANFILES += gnome-shell
+EXTRA_DIST += gnome-shell.in
 
 include Makefile-tidy.am
 include Makefile-big.am
@@ -147,6 +160,3 @@ CLEANFILES += Big-1.0.gir
 Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Big-1.0.gir -o $@
 CLEANFILES += Big-1.0.typelib
-
-all-local:
-	chmod a+x gnome-shell
