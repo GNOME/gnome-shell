@@ -58,6 +58,21 @@ General notes and rules on clutter core hacking;
    tests/conform and, eventually, a user-interactive tes under
    tests/interactive.
 
+ - When committing, use the standard git commit message format:
+
+     short description          - MUST be less than 74 characters
+     <newline>                  - MANDATORY empty line
+     long description           - Each line must be less than 80 characters
+
+   Do NOT put the commit message on the short description line.
+   One line commit messages should be avoided, unless they can be
+   *fully* explained in less than 70 characters (e.g. "Fix typo in
+   clutter_actor_create_pango_context() docs"). Think of the commit
+   message as an email sent to the maintainers explaining "what" you
+   did and, more importantly, "why" you did it. The "how" is not
+   important, since "git show" will show the patch inlined with the
+   commit message.
+
 RELEASES
 ========
 
