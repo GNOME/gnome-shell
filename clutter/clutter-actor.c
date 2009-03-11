@@ -8018,7 +8018,7 @@ clutter_actor_get_pango_context (ClutterActor *self)
  *
  * See also clutter_actor_get_pango_context().
  *
- * Return value: the newly created #PangoContext. Use g_object_ref()
+ * Return value: the newly created #PangoContext. Use g_object_unref()
  *   on the returned value to deallocate its resources
  *
  * Since: 1.0
