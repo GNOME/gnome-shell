@@ -257,9 +257,9 @@ clutter_color_from_hlsx (ClutterColor *color,
 
   if (s == 0)
     {
-      color->red   = (guint8) (COGL_FIXED_TO_INT (l) * 255);
-      color->green = (guint8) (COGL_FIXED_TO_INT (l) * 255);
-      color->blue  = (guint8) (COGL_FIXED_TO_INT (l) * 255);
+      color->red   = (guint8) (COGL_FIXED_TO_FLOAT (l) * 255);
+      color->green = (guint8) (COGL_FIXED_TO_FLOAT (l) * 255);
+      color->blue  = (guint8) (COGL_FIXED_TO_FLOAT (l) * 255);
     }
   else
     {
@@ -276,10 +276,10 @@ clutter_color_from_hlsx (ClutterColor *color,
           CoglFixed tmp;
 
           tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
-          color->red = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
+          color->red = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
         }
       else if (h < COGL_FIXED_180)
-	color->red = (guint8) (COGL_FIXED_TO_INT (m2) * 255);
+	color->red = (guint8) (COGL_FIXED_TO_FLOAT (m2) * 255);
       else if (h < COGL_FIXED_240)
         {
           CoglFixed tmp;
@@ -287,10 +287,10 @@ clutter_color_from_hlsx (ClutterColor *color,
           tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
                                           (COGL_FIXED_240 - h),
                                           COGL_FIXED_60));
-          color->red = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
+          color->red = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
         }
       else
-	color->red = (guint8) (COGL_FIXED_TO_INT (m1) * 255);
+	color->red = (guint8) (COGL_FIXED_TO_FLOAT (m1) * 255);
 
       h = hue;
       while (h > COGL_FIXED_360)
@@ -303,10 +303,10 @@ clutter_color_from_hlsx (ClutterColor *color,
           CoglFixed tmp;
 
           tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
-          color->green = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
+          color->green = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
         }
       else if (h < COGL_FIXED_180)
-        color->green = (guint8) (COGL_FIXED_TO_INT (m2) * 255);
+        color->green = (guint8) (COGL_FIXED_TO_FLOAT (m2) * 255);
       else if (h < COGL_FIXED_240)
         {
           CoglFixed tmp;
@@ -314,10 +314,10 @@ clutter_color_from_hlsx (ClutterColor *color,
           tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
                                           (COGL_FIXED_240 - h),
                                           COGL_FIXED_60));
-          color->green = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
+          color->green = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
         }
       else
-	color->green = (guint8) (COGL_FIXED_TO_INT (m1) * 255);
+	color->green = (guint8) (COGL_FIXED_TO_FLOAT (m1) * 255);
 
       h = hue - COGL_FIXED_120;
 
@@ -332,10 +332,10 @@ clutter_color_from_hlsx (ClutterColor *color,
           CoglFixed tmp;
 
           tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
-          color->blue = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
+          color->blue = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
         }
       else if (h < COGL_FIXED_180)
-	color->blue = (guint8) (COGL_FIXED_TO_INT (m2) * 255);
+	color->blue = (guint8) (COGL_FIXED_TO_FLOAT (m2) * 255);
       else if (h < COGL_FIXED_240)
         {
           CoglFixed tmp;
@@ -343,10 +343,10 @@ clutter_color_from_hlsx (ClutterColor *color,
           tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
                                           (COGL_FIXED_240 - h),
                                           COGL_FIXED_60));
-          color->blue = (guint8) (COGL_FIXED_TO_INT (tmp) * 255);
+          color->blue = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
         }
       else
-	color->blue = (guint8) (COGL_FIXED_TO_INT (m1) * 255);
+	color->blue = (guint8) (COGL_FIXED_TO_FLOAT (m1) * 255);
     }
 }
 
