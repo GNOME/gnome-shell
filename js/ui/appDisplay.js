@@ -131,7 +131,7 @@ AppDisplay.prototype = {
             // We still need to determine what events other than search can trigger
             // a change in the set of applications that are being shown while the
             // user in in the overlay mode, however let's redisplay just in case.
-            me._redisplay(); 
+            me._redisplay(false); 
         });
 
         // Load the GAppInfos now so it doesn't slow down the first
@@ -174,7 +174,6 @@ AppDisplay.prototype = {
                 this._matchedItems.push(appId);
             }
         }
-        this._displayMatchedItems(true);
     },
 
     // Compares items associated with the item ids based on the alphabetical order

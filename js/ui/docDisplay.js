@@ -110,7 +110,7 @@ DocDisplay.prototype = {
             // but redisplaying right away is cool when we use Zephyr.
             // Also, we might be displaying remote documents, like Google Docs, in the future
             // which might be edited by someone else.
-            me._redisplay(); 
+            me._redisplay(false); 
         });
     },
 
@@ -163,8 +163,6 @@ DocDisplay.prototype = {
         }
 
         this._matchedItems.sort(Lang.bind(this, function (a,b) { return this._compareItems(a,b); }));
-
-        this._displayMatchedItems(true);
     },
 
     // Compares items associated with the item ids based on how recently the items

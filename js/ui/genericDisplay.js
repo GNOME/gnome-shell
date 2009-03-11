@@ -225,7 +225,7 @@ GenericDisplay.prototype = {
     // Sets the search string and displays the matching items.
     setSearch: function(text) {
         this._search = text.toLowerCase();
-        this._redisplay();
+        this._redisplay(true);
     },
 
     // Sets this._activatedItem to the item that is selected and emits 'activated' signal.
@@ -314,13 +314,14 @@ GenericDisplay.prototype = {
         this._setDimensionsAndMaxItems(width, height);
         this._grid.width = this._width;
         this._grid.height = this._height;
+        this._pageDisplayed = 0;
         this._displayMatchedItems(true);
     },
 
     // Updates the displayed items and makes the display actor visible.
     show: function() {
         this._keepDisplayCurrent = true;
-        this._redisplay();
+        this._redisplay(true);
         this._grid.show();
     },
 
@@ -337,18 +338,16 @@ GenericDisplay.prototype = {
      * Displays items that match the current request and should show up on the current page.
      * Updates the display control to reflect the matched items set and the page selected.
      *
-     * matchedItemsChanged - indicates if the set of the matched items changed prior to the
-     *                       request. If it did, the current page is reset to 0 and the display 
-     *                       control is updated.
+     * resetDisplayControl - indicates if the display control should be re-created because 
+     *                       the results or the space allocated for them changed. If it's false,
+     *                       the existing display control is used and only the page links are
+     *                       updated to reflect the current page selection.
      */
-    _displayMatchedItems: function(matchedItemsChanged) {
+    _displayMatchedItems: function(resetDisplayControl) {
         // When generating a new list to display, we first remove all the old
         // displayed items which will unset the selection. So we need 
         // to keep a flag which indicates if this display had the selection.
         let hadSelected = this.hasSelected();
-
-        if (matchedItemsChanged)
-            this._pageDisplayed = 0;
 
         this._removeAllDisplayItems();
 
@@ -362,7 +361,7 @@ GenericDisplay.prototype = {
             this.selectFirstItem();
         }
 
-        this._updateDisplayControl(matchedItemsChanged);
+        this._updateDisplayControl(resetDisplayControl);
     },
 
     // Creates a display item based on the information associated with itemId 
@@ -434,8 +433,16 @@ GenericDisplay.prototype = {
             this._removeDisplayItem(itemId);
      },
 
-    // Updates the displayed items, applying the search string if one exists.
-    _redisplay: function() {
+    /*
+     * Updates the displayed items, applying the search string if one exists.
+     *
+     * resetPage - indicates if the page selection should be reset when displaying the matching results.
+     *             We reset the page selection when the change in results was initiated by the user by  
+     *             entering a different search criteria or by viewing the results list in a different
+     *             size mode, but we keep the page selection the same if the results got updated on 
+     *             their own while the user was browsing through the result pages.
+     */
+    _redisplay: function(resetPage) {
         if (!this._keepDisplayCurrent)
             return;
 
@@ -444,6 +451,11 @@ GenericDisplay.prototype = {
             this._setDefaultList();
         else
             this._doSearchFilter();
+
+        if (resetPage)
+            this._pageDisplayed = 0;
+
+        this._displayMatchedItems(true);
 
         this.emit('redisplayed');
     },
@@ -492,8 +504,7 @@ GenericDisplay.prototype = {
         this._height = maxItemsInColumn * ITEM_DISPLAY_HEIGHT;
     },
 
-    // Applies the search string to the list of items to find matches,
-    // and displays the matching items.
+    // Applies the search string to the list of items to find matches, and displays the matching items.
     _doSearchFilter: function() {
         let matchedItemsForSearch = {};
 
@@ -528,9 +539,7 @@ GenericDisplay.prototype = {
                 return 1;
             else
                 return this._compareItems(a, b);
-        }));
-
-        this._displayMatchedItems(true);        
+        }));        
     },
 
     // Displays the page specified by the pageNumber argument. The pageNumber is 0-based.
@@ -542,13 +551,13 @@ GenericDisplay.prototype = {
     /*
      * Updates the display control to reflect the matched items set and the page selected.
      *
-     * matchedItemsChanged - indicates if the set of the matched items changed prior to the
-     *                       request. If it did, the display control is updated to reflect the
-     *                       new set of pages. Otherwise, the page links are updated for the
-     *                       current set of pages.
+     * resetDisplayControl - indicates if the display control should be re-created because 
+     *                       the results or the space allocated for them changed. If it's false,
+     *                       the existing display control is used and only the page links are
+     *                       updated to reflect the current page selection.
      */
-    _updateDisplayControl: function(matchedItemsChanged) {
-        if (matchedItemsChanged) {
+    _updateDisplayControl: function(resetDisplayControl) {
+        if (resetDisplayControl) {
             this.displayControl.remove_all();
             let pageNumber = 0;
             for (let i = 0; i < this._matchedItems.length; i = i + this._maxItemsPerPage) {
