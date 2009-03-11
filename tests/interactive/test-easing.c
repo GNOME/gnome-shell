@@ -83,13 +83,20 @@ on_button_press (ClutterActor       *actor,
     {
       ClutterAnimation *animation;
       ClutterAnimationMode cur_mode;
+      ClutterColor color = { 0, 0, 0, 255 };
 
       cur_mode = easing_modes[current_mode].mode;
+
+      clutter_color_from_hls (&color,
+                              g_random_double_range (0.0, 360.0),
+                              g_random_double_range (0.0, 1.0),
+                              g_random_double_range (0.0, 1.0));
 
       animation =
         clutter_actor_animate (rectangle, cur_mode, 2000,
                                "x", event->x,
                                "y", event->y,
+                               "color", &color,
                                NULL);
     }
 
