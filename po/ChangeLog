@@ -1,3 +1,8 @@
+2009-03-11  Krishnababu K  <kkrothap@redhat.com>
+
+	* te.po: Updated Telugu Translation.
+	* LINGUAS: Added Telugu [te] language.
+
 2009-03-10  Runa Bhattacharjee  <runab@redhat.com>
 
 	* bn_IN.po: Updated partial Bengali India Translation 
