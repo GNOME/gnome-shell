@@ -33,6 +33,19 @@
 #include "cogl-current-matrix.h"
 #include "cogl-matrix-stack.h"
 
+#ifdef HAVE_COGL_GLES2
+#include "cogl-gles2-wrapper.h"
+
+#define glFrustum(L,R,B,T,N,F) \
+            cogl_wrap_glFrustumf((GLfloat)L, (GLfloat)R, (GLfloat)B, \
+                                 (GLfloat)T, (GLfloat)N, (GLfloat)F)
+#elif defined (HAVE_COGL_GLES)
+
+#define glFrustum(L,R,B,T,N,F) \
+            glFrustumf((GLfloat)L, (GLfloat)R, (GLfloat)B, \
+                       (GLfloat)T, (GLfloat)N, (GLfloat)F)
+#endif
+
 #include <string.h>
 #include <math.h>
 
