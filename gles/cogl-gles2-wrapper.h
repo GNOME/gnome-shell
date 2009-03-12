@@ -255,6 +255,7 @@ struct _CoglGles2WrapperShader
 
 #define GL_MODELVIEW_MATRIX    0x0BA6
 #define GL_PROJECTION_MATRIX   0x0BA7
+#define GL_TEXTURE_MATRIX      0x0BA8
 
 #define GL_GENERATE_MIPMAP     0x8191
 

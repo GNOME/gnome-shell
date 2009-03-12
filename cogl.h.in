@@ -563,6 +563,24 @@ void            cogl_clip_stack_save          (void);
  */
 void            cogl_clip_stack_restore       (void);
 
+/**
+ * cogl_flush_gl_state:
+ * @flags: flags controlling what is flushed; currently unused, pass in 0
+ *
+ * As an optimization, COGL functions may not immediately modify GL's
+ * state, instead batching up changes and applying them "just in
+ * time."  Unapplied state could include glEnable() flags and the
+ * current transformation matrix among other examples. If you want to
+ * use GL directly, you need to flush any state COGL may have kept
+ * around. cogl_flush_gl_state() syncs all of COGL's state to GL.
+ *
+ * Since: 1.0
+ */
+void            cogl_flush_gl_state         (int      flags);
+
+/* private */
+void            _cogl_set_indirect_context  (gboolean indirect);
+
 G_END_DECLS
 
 #undef __COGL_H_INSIDE__

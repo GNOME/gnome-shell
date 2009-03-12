@@ -504,18 +504,18 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
      (0,0 in bottom-left corner to draw the texture
      upside-down so we match the way glReadPixels works) */
 
-  GE( glMatrixMode (GL_PROJECTION) );
-  GE( glPushMatrix () );
-  GE( glLoadIdentity () );
+  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+  _cogl_current_matrix_push ();
+  _cogl_current_matrix_identity ();
 
-  GE( glOrthof (0, (float)(viewport[2]),
-			  0, (float)(viewport[3]),
-			  (float)(0),
-			  (float)(100)) );
+  _cogl_current_matrix_ortho (0, (float)(viewport[2]),
+                              0, (float)(viewport[3]),
+                              (float)(0),
+                              (float)(100));
 
-  GE( glMatrixMode (GL_MODELVIEW) );
-  GE( glPushMatrix () );
-  GE( glLoadIdentity () );
+  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+  _cogl_current_matrix_push ();
+  _cogl_current_matrix_identity ();
 
   /* Draw to all channels */
   cogl_draw_buffer (COGL_WINDOW_BUFFER | COGL_MASK_BUFFER, 0);
@@ -611,10 +611,10 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
     }
 
   /* Restore old state */
-  glMatrixMode (GL_PROJECTION);
-  glPopMatrix ();
-  glMatrixMode (GL_MODELVIEW);
-  glPopMatrix ();
+  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+  _cogl_current_matrix_pop ();
+  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+  _cogl_current_matrix_pop ();
 
   cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
 
@@ -2169,7 +2169,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
   cogl_enable (enable_flags);
 
   GE (glVertexPointer (2, GL_FLOAT, stride, vertex_pointer));
-
+  _cogl_current_matrix_state_flush ();
   GE (glDrawRangeElements (GL_TRIANGLES,
                            0, ctx->static_indices->len - 1,
                            6 * batch_len,
@@ -2198,6 +2198,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
                                       color == 2 ? 0xff : 0x00,
                                       0xff);
           cogl_material_flush_gl_state (outline, NULL);
+          _cogl_current_matrix_state_flush ();
           GE( glDrawArrays (GL_LINE_LOOP, 4 * i, 4) );
         }
     }
@@ -2986,6 +2987,7 @@ _cogl_texture_sliced_polygon (CoglTextureVertex *vertices,
                                         COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
                                         gl_handle,
                                         NULL);
+          _cogl_current_matrix_state_flush ();
 
 	  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
 	}
@@ -3069,6 +3071,7 @@ _cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
                                 COGL_MATERIAL_FLUSH_FALLBACK_MASK,
                                 fallback_mask,
                                 NULL);
+  _cogl_current_matrix_state_flush ();
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
 }

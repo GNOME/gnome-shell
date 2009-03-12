@@ -35,6 +35,7 @@
 #include "cogl-fixed.h"
 #include "cogl-internal.h"
 #include "cogl-material.h"
+#include "cogl-current-matrix.h"
 #include "cogl-offscreen.h"
 #include "cogl-shader.h"
 #include "cogl-texture.h"
@@ -203,6 +204,28 @@ cogl_buffer_target_get_type (void)
       gtype =
         g_flags_register_static (g_intern_static_string ("CoglBufferTarget"),
                                  values);
+    }
+
+  return gtype;
+}
+
+GType
+cogl_matrix_mode_get_type (void)
+{
+  static GType gtype = 0;
+
+  if (G_UNLIKELY (gtype == 0))
+    {
+      static const GEnumValue values[] = {
+        { COGL_MATRIX_MODELVIEW, "COGL_MATRIX_MODELVIEW", "modelview" },
+        { COGL_MATRIX_PROJECTION, "COGL_MATRIX_PROJECTION", "projection" },
+        { COGL_MATRIX_TEXTURE, "COGL_MATRIX_TEXTURE", "texture" },
+        { 0, NULL, NULL }
+      };
+
+      gtype =
+        g_enum_register_static (g_intern_static_string ("CoglMatrixMode"),
+                                values);
     }
 
   return gtype;

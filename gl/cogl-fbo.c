@@ -264,30 +264,30 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	  /* Push the viewport and matrix setup if redirecting
              from a non-screen buffer */
 	  GE( glPushAttrib (GL_VIEWPORT_BIT) );
-	  
-	  GE( glMatrixMode (GL_PROJECTION) );
-	  GE( glPushMatrix () );
-	  GE( glLoadIdentity () );
-	  
-	  GE( glMatrixMode (GL_MODELVIEW) );
-	  GE( glPushMatrix () );
-	  GE( glLoadIdentity () );
+
+          _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+          _cogl_current_matrix_push ();
+          _cogl_current_matrix_identity ();
+
+          _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+          _cogl_current_matrix_push ();
+          _cogl_current_matrix_identity ();
 	}
       else
 	{
 	  /* Override viewport and matrix setup if redirecting
              from another offscreen buffer */
-	  GE( glMatrixMode (GL_PROJECTION) );
-	  GE( glLoadIdentity () );
-	  
-	  GE( glMatrixMode (GL_MODELVIEW) );
-	  GE( glLoadIdentity () );
+          _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+          _cogl_current_matrix_identity ();
+
+          _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+          _cogl_current_matrix_identity ();
 	}
       
       /* Setup new viewport and matrices */
       GE( glViewport (0, 0, fbo->width, fbo->height) );
-      GE( glTranslatef (-1.0f, -1.0f, 0.0f) );
-      GE( glScalef (2.0f / fbo->width, 2.0f / fbo->height, 1.0f) );
+      _cogl_current_matrix_translate (-1.0f, -1.0f, 0.0f);
+      _cogl_current_matrix_scale (2.0f / fbo->width, 2.0f / fbo->height, 1.0f);
       
       /* Bind offscreen framebuffer object */
       GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, fbo->gl_handle) );
@@ -313,12 +313,12 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	  /* Pop viewport and matrices if redirecting back
              from an offscreen buffer */
 	  GE( glPopAttrib () );
-	  
-	  GE( glMatrixMode (GL_PROJECTION) );
-	  GE( glPopMatrix () );
-	  
-	  GE( glMatrixMode (GL_MODELVIEW) );
-	  GE( glPopMatrix () );
+
+          _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+          _cogl_current_matrix_pop ();
+
+          _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+          _cogl_current_matrix_pop ();
 	}
       
       /* Bind window framebuffer object */
