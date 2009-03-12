@@ -1047,9 +1047,9 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    *
    * Tries to load a texture from a filename by using a local thread to perform
    * the read operations. The initially created texture has dimensions 0x0 when
-   * the true size becomes available the ClutterTexture::size-change signal is
+   * the true size becomes available the #ClutterTexture::size-change signal is
    * emitted and when the image has completed loading the
-   * ClutterTexture::load-finished signal is emitted.
+   * #ClutterTexture::load-finished signal is emitted.
    *
    * Threading is only enabled if g_thread_init() has been called prior to
    * clutter_init(), otherwise #ClutterTexture will use the main loop to load
@@ -1074,7 +1074,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   /**
    * ClutterTexture:load-data-async:
    *
-   * Like ClutterTexture:load-async but loads the width and height
+   * Like #ClutterTexture:load-async but loads the width and height
    * synchronously causing some blocking.
    *
    * Since: 1.0
@@ -1087,6 +1087,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                            "blocking when loading images.",
 			   FALSE,
 			   CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT));
+
 
 
   /**
@@ -1884,9 +1885,10 @@ clutter_texture_async_load (ClutterTexture *self,
  *
  * If #ClutterTexture:load-async is set to %TRUE, this function
  * will return as soon as possible, and the actual image loading
- * from disk will be performed asynchronously. #ClutterTexture::load-finished
- * will be emitted when the image has been loaded or if an error
- * occurred.
+ * from disk will be performed asynchronously. #ClutterTexture::size-change
+ * will be emitten when the size of the texture is available and 
+ * #ClutterTexture::load-finished will be emitted when the image has been
+ * loaded or if an error occurred.
  *
  * Return value: %TRUE if the image was successfully loaded and set
  *

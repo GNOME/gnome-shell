@@ -54,7 +54,8 @@ static gboolean task (gpointer foo)
     {
       clutter_actor_set_position (image[i], 50+i*100, 0+i*50);
       clone[i]=clutter_clone_new (image[i]);
-      g_signal_connect (image[i], "size-change", size_change_cb, clone[i]);
+      g_signal_connect (image[i], "size-change",
+                        G_CALLBACK (size_change_cb), clone[i]);
       clutter_container_add (CLUTTER_CONTAINER (stage), clone[i], NULL);
       clutter_actor_set_position (clone[i], 50+i*100, 150+i*50+100);
     }
@@ -80,6 +81,7 @@ test_texture_async_main (int argc, char *argv[])
 
   clutter_init (&argc, &argv);
 
+  g_thread_init (NULL);
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
