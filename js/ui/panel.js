@@ -103,11 +103,26 @@ Panel.prototype = {
             });
 
         global.stage.add_actor(this._box);
+        global.screen.connect('restacked',
+            function() {
+                me._restacked();
+            });
+        this._restacked();
 
         // Start the clock
         this._updateClock();
     },
 
+    set_stage_input_area: function() {
+        let global = Shell.Global.get();
+
+        if (this._box.visible) {
+            global.set_stage_input_area(this._box.x, this._box.y,
+                                        this._box.width, this._box.height);
+        } else
+            global.set_stage_input_area(0, 0, 0, 0);
+    },
+    
     // Struts determine the area along each side of the screen that is reserved
     // and not available to applications
     _setStruts: function() {
@@ -130,6 +145,42 @@ Panel.prototype = {
             let workspace = screen.get_workspace_by_index(i);
             workspace.set_builtin_struts(struts);
         }
+    },
+
+    _restacked: function() {
+        let global = Shell.Global.get();
+        let windows = global.get_windows();
+        let i;
+
+        // We want to be visible unless there is a window with layer
+        // FULLSCREEN, or a window with layer OVERRIDE_REDIRECT that
+        // completely covers us. (We can't set a non-rectangular
+        // stage_input_area, so we don't let windows overlap us
+        // partially.). "override_redirect" is not actually a layer
+        // above all other windows, but this seems to be how mutter
+        // treats it currently...
+        //
+        // @windows is sorted bottom to top.
+        this._box.show();
+        for (i = windows.length - 1; i > -1; i--) {
+            let layer = windows[i].get_meta_window().get_layer();
+
+            if (layer == Meta.StackLayer.OVERRIDE_REDIRECT) {
+                if (windows[i].x <= this._box.x &&
+                    windows[i].x + windows[i].width >= this._box.x + this._box.width &&
+                    windows[i].y <= this._box.y &&
+                    windows[i].y + windows[i].height >= this._box.y + this._box.height) {
+                    this._box.hide();
+                    break;
+                }
+            } else if (layer == Meta.StackLayer.FULLSCREEN) {
+                this._box.hide();
+                break;
+            } else
+                break;
+        }
+
+        this.set_stage_input_area();
     },
 
     _updateClock: function() {

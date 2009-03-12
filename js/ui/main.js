@@ -59,7 +59,6 @@ function start() {
     });
 
     panel = new Panel.Panel();
-    global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
 
     overlay = new Overlay.Overlay();
     wm = new WindowManager.WindowManager();
@@ -144,7 +143,7 @@ function endModal() {
     let global = Shell.Global.get();
 
     global.ungrab_keyboard();
-    global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
+    panel.set_stage_input_area();
 }
 
 function show_overlay() {
