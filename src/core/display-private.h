@@ -376,20 +376,6 @@ void     meta_display_set_grab_op_cursor (MetaDisplay *display,
                                           Window       grab_xwindow,
                                           guint32      timestamp);
 
-gboolean meta_display_begin_grab_op (MetaDisplay *display,
-                                     MetaScreen  *screen,
-                                     MetaWindow  *window,
-                                     MetaGrabOp   op,
-                                     gboolean     pointer_already_grabbed,
-                                     gboolean     frame_action,
-                                     int          button,
-                                     gulong       modmask,
-                                     guint32      timestamp,
-                                     int          root_x,
-                                     int          root_y);
-void     meta_display_end_grab_op   (MetaDisplay *display,
-                                     guint32      timestamp);
-
 void    meta_display_check_threshold_reached (MetaDisplay *display,
                                               int          x,
                                               int          y);
@@ -443,28 +429,6 @@ void meta_display_devirtualize_modifiers (MetaDisplay        *display,
 void meta_display_increment_focus_sentinel (MetaDisplay *display);
 void meta_display_decrement_focus_sentinel (MetaDisplay *display);
 gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
-
-/* meta_display_set_input_focus_window is like XSetInputFocus, except
- * that (a) it can't detect timestamps later than the current time,
- * since Metacity isn't part of the XServer, and thus gives erroneous
- * behavior in this circumstance (so don't do it), (b) it uses
- * display->last_focus_time since we don't have access to the true
- * Xserver one, (c) it makes use of display->user_time since checking
- * whether a window should be allowed to be focused should depend
- * on user_time events (see bug 167358, comment 15 in particular)
- */
-void meta_display_set_input_focus_window   (MetaDisplay *display, 
-                                            MetaWindow  *window,
-                                            gboolean     focus_frame,
-                                            guint32      timestamp);
-
-/* meta_display_focus_the_no_focus_window is called when the
- * designated no_focus_window should be focused, but is otherwise the
- * same as meta_display_set_input_focus_window
- */
-void meta_display_focus_the_no_focus_window (MetaDisplay *display, 
-                                             MetaScreen  *screen,
-                                             guint32      timestamp);
 
 void meta_display_queue_autoraise_callback  (MetaDisplay *display,
                                              MetaWindow  *window);
