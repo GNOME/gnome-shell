@@ -1,3 +1,30 @@
+2.27.0
+======
+
+Thanks to Thomas Andersen, Ori Avtalion, Matthias Clasen, Luca Ferretti, Matt
+Kraai, Neil Jagdish Patel, and Thomas Thurman for improvements in this version.
+
+  - Remove deprecated GTK symbols (Thomas A, Matt) (#572332)
+  - fix window properties bug which showed up as ignoring struts (Ori) (#572573)
+  - include "as <username>" in window title (Thomas T) (#549389)
+  - Use zenity for dialogues (Thomas T) (#521914)
+  - Use libcanberra for sound effects (Matthias) (#557921)
+  - Don't define meta_spew_event unless verbose mode is on (Matt) (#571126)
+  - Fix README to give correct switch names (Matt) (#571210)
+  - Windows which couldn't appear in alt-tab don't get there by being urgent (Thomas T)
+  - Skip the first window in alt-tab only if it's actually current (Matt) (#535887)
+  - Optimise line coordinate storage (Thomas)
+  - Queue resize on window undecorate (Neil)
+  - Fix description of "show desktop" (Luca) (#569649)
+  - Wrap g_error calls in braces (Matt)
+
+Translations
+  Mikel González (ast), Ihar Hrachyshka (be@latin), David Planella (ca), Petr
+  Kovar (cs), Ask Hjorth Larsen (da), Jorge González (es), Mattias Põldaru (et),
+  Iñaki Larrañaga Murgoitio (eu), Ilkka Tuohela (fi), Claude Paroz (fr), Gabor
+  Kelemen (hu), Kjartan Maraas (nb), Wouter Bolsterlee (nl), Leonardo Ferreira
+  Fontenelle (pt_BR), Daniel Nylander (sv), Theppitak Karoonboonyanan (th),
+  Chao-Hsiung Liao (zh_HK), Chao-Hsiung Liao (zh_TW)
 2.25.144
 ========
 
