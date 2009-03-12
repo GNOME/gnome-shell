@@ -1287,6 +1287,8 @@ stack_sync_to_server (MetaStack *stack)
     g_array_free (stack->last_root_children_stacked, TRUE);
   stack->last_root_children_stacked = root_children_stacked;
   
+  meta_screen_restacked (stack->screen);
+
   /* That was scary... */
 }
 

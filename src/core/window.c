@@ -8673,3 +8673,8 @@ meta_window_get_role (MetaWindow *window)
   return window->role;
 }
 
+MetaStackLayer
+meta_window_get_layer (MetaWindow *window)
+{
+  return window->layer;
+}

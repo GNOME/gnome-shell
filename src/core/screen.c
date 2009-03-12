@@ -74,6 +74,15 @@ enum
   PROP_N_WORKSPACES = 1
 };
 
+enum
+{
+  RESTACKED,
+
+  LAST_SIGNAL
+};
+
+static guint screen_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (MetaScreen, meta_screen, G_TYPE_OBJECT);
 
 static void
@@ -128,6 +137,15 @@ meta_screen_class_init (MetaScreenClass *klass)
   object_class->get_property = meta_screen_get_property;
   object_class->set_property = meta_screen_set_property;
   object_class->finalize = meta_screen_finalize;
+
+  screen_signals[RESTACKED] =
+    g_signal_new ("restacked",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MetaScreenClass, restacked),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   pspec = g_param_spec_int ("n-workspaces",
                             "N Workspaces",
@@ -2996,4 +3014,10 @@ MetaWorkspace *
 meta_screen_get_active_workspace (MetaScreen *screen)
 {
   return screen->active_workspace;
+}
+
+void
+meta_screen_restacked (MetaScreen *screen)
+{
+  g_signal_emit (screen, screen_signals[RESTACKED], 0);
 }

@@ -144,6 +144,8 @@ struct _MetaScreen
 struct _MetaScreenClass
 {
   GObjectClass parent_class;
+
+  void (*restacked) (MetaScreen *);
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
@@ -228,5 +230,7 @@ void     meta_screen_update_showing_desktop_hint          (MetaScreen *screen);
 gboolean meta_screen_apply_startup_properties (MetaScreen *screen,
                                                MetaWindow *window);
 void	 meta_screen_composite_all_windows (MetaScreen *screen);
+
+void     meta_screen_restacked (MetaScreen *screen);
 
 #endif
