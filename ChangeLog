@@ -1,3 +1,23 @@
+2009-03-11  Thomas Andersen  <phomes@gmail.com>
+
+	Remove deprecated GTK symbols.  Refs #572332.
+
+	* src/include/util.h:
+	* src/tools/metacity-window-demo.c:
+	* src/ui/fixedtip.c:
+	* src/ui/frames.c:
+	* src/ui/frames.h:
+	* src/ui/menu.c:
+	* src/ui/metaaccellabel.c:
+	* src/ui/metaaccellabel.h:
+	* src/ui/preview-widget.c:
+	* src/ui/preview-widget.h:
+	* src/ui/tabpopup.c:
+	* src/ui/theme-viewer.c:
+	* src/ui/themewidget.c:
+	* src/ui/themewidget.h:
+	* test/tokentest/tokentest.c:
+
 2009-03-11  Matt Kraai  <kraai@ftfbs.org>
 
 	* src/tools/metacity-mag.c: use g_signal_handlers_disconnect_by_func

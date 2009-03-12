@@ -35,10 +35,10 @@ static void meta_area_finalize     (GObject        *object);
 
 static GtkMiscClass *parent_class;
 
-GtkType
+GType
 meta_area_get_type (void)
 {
-  static GtkType area_type = 0;
+  static GType area_type = 0;
 
   if (!area_type)
     {

@@ -87,7 +87,7 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
       }
       
       gtk_widget_set_app_paintable (tip, TRUE);
-      gtk_window_set_policy (GTK_WINDOW (tip), FALSE, FALSE, TRUE);
+      gtk_window_set_resizable (GTK_WINDOW (tip), FALSE);
       gtk_widget_set_name (tip, "gtk-tooltips");
       gtk_container_set_border_width (GTK_CONTAINER (tip), 4);
 

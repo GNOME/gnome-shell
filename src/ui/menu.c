@@ -445,7 +445,7 @@ meta_window_menu_new   (MetaFrames         *frames,
 
                       gtk_signal_connect_full (GTK_OBJECT (submi),
                           "activate",
-                          GTK_SIGNAL_FUNC (activate_cb),
+                          G_CALLBACK (activate_cb),
                           NULL,
                           md,
                           g_free, FALSE, FALSE);

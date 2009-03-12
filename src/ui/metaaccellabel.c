@@ -53,10 +53,10 @@ static int   meta_accel_label_get_accel_width (MetaAccelLabel *accel_label);
 static GtkLabelClass *parent_class = NULL;
 
 
-GtkType
+GType
 meta_accel_label_get_type (void)
 {
-  static GtkType accel_label_type = 0;
+  static GType accel_label_type = 0;
 
   if (!accel_label_type)
     {

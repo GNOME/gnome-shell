@@ -108,10 +108,10 @@ static void invalidate_whole_window (MetaFrames *frames,
 
 static GtkWidgetClass *parent_class = NULL;
 
-GtkType
+GType
 meta_frames_get_type (void)
 {
-  static GtkType frames_type = 0;
+  static GType frames_type = 0;
 
   if (!frames_type)
     {
@@ -593,7 +593,7 @@ meta_frames_attach_style (MetaFrames  *frames,
     gtk_style_detach (frame->style);
 
   /* Weirdly, gtk_style_attach() steals a reference count from the style passed in */
-  gtk_style_ref (GTK_WIDGET (frames)->style);
+  g_object_ref (GTK_WIDGET (frames)->style);
   frame->style = gtk_style_attach (GTK_WIDGET (frames)->style, frame->window);
 }
 
