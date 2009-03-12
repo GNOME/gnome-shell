@@ -2,6 +2,10 @@
 
         * NEWS: 2.27.0 release.
 
+2009-03-11  Thomas Thurman  <tthurman@gnome.org>
+
+	* po/POTFILES.in: add bell.c.
+
 2009-03-11  Thomas Andersen  <phomes@gmail.com>
 
 	Remove deprecated GTK symbols.  Refs #572332.
