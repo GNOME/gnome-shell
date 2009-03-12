@@ -364,7 +364,7 @@ def main():
   check_we_are_up_to_date()
   version = version_numbers()
   check_file_does_not_exist(version)
-  edit_news_entry(version)
+  #edit_news_entry(version)
   build_it_all(version)
   tag_the_release(version)
   increment_version(version)

@@ -1,5 +1,9 @@
 2009-03-12  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: Post-release bump to 2.27.1.
+
+2009-03-12  Thomas Thurman  <tthurman@gnome.org>
+
         * NEWS: 2.27.0 release.
 
 2009-03-11  Thomas Thurman  <tthurman@gnome.org>
