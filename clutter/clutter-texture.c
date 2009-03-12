@@ -148,7 +148,6 @@ enum
   PROP_KEEP_ASPECT_RATIO,
   PROP_LOAD_ASYNC,
   PROP_LOAD_DATA_ASYNC,
-  PROP_LOAD_SIZE_ASYNC
 };
 
 enum
@@ -840,14 +839,6 @@ clutter_texture_set_property (GObject      *object,
     case PROP_KEEP_ASPECT_RATIO:
       priv->keep_aspect_ratio = g_value_get_boolean (value);
       break;
-    case PROP_LOAD_ASYNC:
-      if (g_value_get_boolean (value))
-        {
-          priv->load_data_async = TRUE;
-          priv->load_async_set = TRUE;
-          priv->load_size_async = TRUE;
-        }
-      break;
     case PROP_LOAD_DATA_ASYNC:
       if (g_value_get_boolean (value))
         {
@@ -855,9 +846,10 @@ clutter_texture_set_property (GObject      *object,
           priv->load_data_async = TRUE;
         }
       break;
-    case PROP_LOAD_SIZE_ASYNC:
+    case PROP_LOAD_ASYNC:
       if (g_value_get_boolean (value))
         {
+          priv->load_data_async = TRUE;
           priv->load_async_set = TRUE;
           priv->load_size_async = TRUE;
         }
@@ -916,12 +908,6 @@ clutter_texture_get_property (GObject    *object,
       break;
     case PROP_KEEP_ASPECT_RATIO:
       g_value_set_boolean (value, priv->keep_aspect_ratio);
-      break;
-    case PROP_LOAD_DATA_ASYNC:
-      g_value_set_boolean (value, priv->load_data_async);
-      break;
-    case PROP_LOAD_SIZE_ASYNC:
-      g_value_set_boolean (value, priv->load_size_async);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1081,33 +1067,17 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Load files inside a thread to avoid blocking when "
                            "loading images.",
 			   FALSE,
-			   CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+			   CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT));
 
-
-  /**
-   * ClutterTexture:load-size-sync:
-   *
-   * When set to TRUE clutter will not block loading the size initially,
-   * when used in this manner the size of the texture will initially be
-   * 0x0 when the size is available a "size-change" signal will be emitted.
-   *
-   * Since: 1.0
-   */
-  g_object_class_install_property
-    (gobject_class, PROP_LOAD_SIZE_ASYNC,
-     g_param_spec_boolean ("load-size-async",
-			   "Load size asynchronously",
-			   "If set to TRUE clutter will not block until it has "
-                           "loaded the size of the file.",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /**
    * ClutterTexture:load-async:
    *
-   * Load texture fully asynchronosuly, loading both the size and data
-   * in a separate thread. Setting this to TRUE is equivalent of setting
-   * both load-data-async and load-size-async.
+   * When set to TRUE load the texture asynchronously, loading both the data
+   * async as when load-data-async is set, but also deferring the loading of
+   * the size to the thread. The size of the texture will initially be 0x0
+   * a "size-change" signal is emitted when the dimensions of the texture
+   * has been loaded from disk.
    *
    * Since: 1.0
    */
@@ -1706,8 +1676,9 @@ clutter_texture_async_load_complete (ClutterTexture *self,
       clutter_texture_set_cogl_texture (self, handle);
       if (priv->load_size_async)
         {
-          g_signal_emit (self, texture_signals[SIZE_CHANGE], 0, cogl_texture_get_width(handle), cogl_texture_get_height (handle));
-          clutter_actor_queue_redraw (self);
+          g_signal_emit (self, texture_signals[SIZE_CHANGE], 0,
+                         cogl_texture_get_width(handle),
+                         cogl_texture_get_height (handle));
         }
     }
 

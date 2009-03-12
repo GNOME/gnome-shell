@@ -38,26 +38,19 @@ static gboolean task (gpointer foo)
                              NULL);
   image[1] = g_object_new (CLUTTER_TYPE_TEXTURE,
                            "filename", path,
-                           "load-async", TRUE,
+                           "load-data-async", TRUE,
                            NULL);
   image[2] = g_object_new (CLUTTER_TYPE_TEXTURE,
                            "filename", path,
-                           "load-data-async", TRUE,
+                           "load-async", TRUE,
                            NULL);
 
-  /* this is a synonym of image[1], is image[1] really needed? (or is this needed? */
-
-  image[3] = g_object_new (CLUTTER_TYPE_TEXTURE,
-                           "filename", path,
-                           "load-data-async", TRUE,
-                           "load-size-async", TRUE,
-                           NULL);
 #endif
-  for (i=0;i<4;i++)
+  for (i=0;i<3;i++)
     {
       clutter_container_add (CLUTTER_CONTAINER (stage), image[i], NULL);
     }
-  for (i=0;i<4;i++)
+  for (i=0;i<3;i++)
     {
       clutter_actor_set_position (image[i], 50+i*100, 0+i*50);
       clone[i]=clutter_clone_new (image[i]);
@@ -66,9 +59,7 @@ static gboolean task (gpointer foo)
       clutter_actor_set_position (clone[i], 50+i*100, 150+i*50+100);
     }
 
-  /* center the image */
-
-  for (i=0; i<4; i++)
+  for (i=0; i<3; i++)
     {
       timeline = clutter_timeline_new (60*5, 60);
       alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
@@ -98,10 +89,6 @@ test_texture_async_main (int argc, char *argv[])
                     NULL);
 
   error = NULL;
-
-  if (!argv[1])
-    g_print ("Hint: the redhand.png isn't a good test image for this test.\n"
-             "This test can take any clutter loadable image as an argument\n");
 
   path = argv[1]?argv[1]:"redhand.png";
 
