@@ -1,3 +1,8 @@
+2009-03-11  Matt Kraai  <kraai@ftfbs.org>
+
+	* src/tools/metacity-mag.c: use g_signal_handlers_disconnect_by_func
+	instead of an old deprecated function.
+
 2009-03-11  Ori Avtalion  <ori@avtalion.name>
 
 	* src/core/window-props.c: fix problem where the previous

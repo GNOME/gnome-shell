@@ -171,10 +171,8 @@ mouse_release (GtkWidget      *invisible,
 
   shutdown_grab ();
   
-  gtk_signal_disconnect_by_func (GTK_OBJECT (invisible),
-                                 GTK_SIGNAL_FUNC (mouse_motion), NULL);
-  gtk_signal_disconnect_by_func (GTK_OBJECT (invisible),
-                                 GTK_SIGNAL_FUNC (mouse_release), NULL);
+  g_signal_handlers_disconnect_by_func (invisible, mouse_motion, NULL);
+  g_signal_handlers_disconnect_by_func (invisible, mouse_release, NULL);
 
   return TRUE;
 }
@@ -194,12 +192,8 @@ key_press (GtkWidget   *invisible,
     {
       shutdown_grab ();
 
-      gtk_signal_disconnect_by_func (GTK_OBJECT (invisible),
-                                     GTK_SIGNAL_FUNC (mouse_press),
-                                     NULL);
-      gtk_signal_disconnect_by_func (GTK_OBJECT (invisible),
-                                     GTK_SIGNAL_FUNC (key_press),
-                                     NULL);
+      g_signal_handlers_disconnect_by_func (invisible, mouse_press, NULL);
+      g_signal_handlers_disconnect_by_func (invisible, key_press, NULL);
       
       return TRUE;
     }
@@ -219,12 +213,8 @@ mouse_press (GtkWidget      *invisible,
                         G_CALLBACK (mouse_motion), NULL);
       g_signal_connect (invisible, "button_release_event",
                         G_CALLBACK (mouse_release), NULL);
-      gtk_signal_disconnect_by_func (GTK_OBJECT (invisible),
-                                     GTK_SIGNAL_FUNC (mouse_press),
-                                     NULL);
-      gtk_signal_disconnect_by_func (GTK_OBJECT (invisible),
-                                     GTK_SIGNAL_FUNC (key_press),
-                                     NULL);
+      g_signal_handlers_disconnect_by_func (invisible, mouse_press, NULL);
+      g_signal_handlers_disconnect_by_func (invisible, key_press, NULL);
       return TRUE;
     }
 
