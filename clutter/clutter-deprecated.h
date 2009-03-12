@@ -137,4 +137,13 @@
 
 #define CLUTTER_TYPE_TEXTURE_HANDLE     CLUTTER_TYPE_TEXTURE_HANDLE_REPLACED_BY_COGL_TYPE_HANDLE
 
+#define ClutterEffectTemplate   ClutterEffectTemplate_DEPRECATED_BY_ClutterAnimation
+#define clutter_effect_template_new     clutter_effect_template_new_DEPRECATED_BY_clutter_animation_new
+#define clutter_effect_template_new_for_duration        clutter_effect_template_new_for_duration_DEPRECATED_BY_clutter_animation_new
+#define clutter_effect_move     clutter_effect_move_DEPRECATED_BY_clutter_actor_animate
+#define clutter_effect_path     clutter_effect_path_DEPRECATED_BY_clutter_actor_animate
+#define clutter_effect_depth    clutter_effect_depth_DEPRECATED_BY_clutter_actor_animate
+#define clutter_effect_scale    clutter_effect_scale_DEPRECATED_BY_clutter_actor_animate
+#define clutter_effect_rotate   clutter_effect_rotate_DEPRECATED_BY_clutter_actor_animate
+
 #endif /* CLUTTER_DEPRECATED_H */
