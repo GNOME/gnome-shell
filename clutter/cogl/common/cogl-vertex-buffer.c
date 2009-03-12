@@ -1621,6 +1621,8 @@ cogl_vertex_buffer_draw (CoglHandle handle,
 
   enable_state_for_drawing_buffer (buffer);
 
+  _cogl_current_matrix_state_flush ();
+
   /* FIXME: flush cogl cache */
   GE (glDrawArrays (mode, first, count));
 
@@ -1646,6 +1648,8 @@ cogl_vertex_buffer_draw_elements (CoglHandle handle,
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
   enable_state_for_drawing_buffer (buffer);
+
+  _cogl_current_matrix_state_flush ();
 
   /* FIXME: flush cogl cache */
   GE (glDrawRangeElements (mode, min_index, max_index,

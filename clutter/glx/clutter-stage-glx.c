@@ -224,6 +224,9 @@ clutter_stage_glx_realize (ClutterActor *actor)
               g_critical ("Unable to create suitable GL context.");
               goto fail;
             }
+
+          _cogl_set_indirect_context (!glXIsDirect (stage_x11->xdpy,
+                                                    backend_glx->gl_context));
         }
 
       CLUTTER_NOTE (BACKEND, "Marking stage as realized");

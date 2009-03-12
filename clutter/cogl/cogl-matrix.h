@@ -152,6 +152,27 @@ void cogl_matrix_scale (CoglMatrix *matrix,
 			float sz);
 
 /**
+ * cogl_matrix_frustum:
+ * @matrix: A 4x4 transformation matrix
+ * @left: coord of left vertical clipping plane
+ * @right: coord of right vertical clipping plane
+ * @bottom: coord of bottom horizontal clipping plane
+ * @top: coord of top horizontal clipping plane
+ * @near: positive distance to near depth clipping plane
+ * @far: positive distance to far depth clipping plane
+ *
+ * Multiplies the matrix by the given frustum perspective matrix.
+ *
+ */
+void cogl_matrix_frustum (CoglMatrix *matrix,
+                          float       left,
+                          float       right,
+                          float       bottom,
+                          float       top,
+                          float       z_near,
+                          float       z_far);
+
+/**
  * cogl_matrix_transform_point:
  * @matrix: A 4x4 transformation matrix
  * @x: The X component of your points position [in:out]

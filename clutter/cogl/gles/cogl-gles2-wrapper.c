@@ -1505,6 +1505,8 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
 void
 cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
 {
+  CoglGles2WrapperTextureUnit *texture_unit;
+
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
   switch (pname)
@@ -1516,6 +1518,14 @@ cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
 
     case GL_PROJECTION_MATRIX:
       memcpy (params, w->projection_stack + w->projection_stack_pos * 16,
+              sizeof (GLfloat) * 16);
+      break;
+
+    case GL_TEXTURE_MATRIX:
+      texture_unit = w->texture_units + w->active_texture_unit;
+      memcpy (params,
+              texture_unit->texture_stack
+               + texture_unit->texture_stack_pos * 16,
               sizeof (GLfloat) * 16);
       break;
 
