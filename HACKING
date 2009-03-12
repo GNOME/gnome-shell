@@ -5,6 +5,8 @@ General notes and rules on clutter core hacking;
 
  - Follow the CODING_STYLE document.
 
+ - Really, follow the CODING_STYLE document.
+
  - All non static public API funcs should be documented in the source files
    via gtk-doc. Structures, enumerations and macros should be documented in
    the header files.
@@ -13,14 +15,14 @@ General notes and rules on clutter core hacking;
    the eventual lifetime handling of the arguments/return values or locking
    of mutexes.
 
- - All public functions with float parameters should also provide a fixed
-   point version, with the 'x' postfix to the function name, e.g.:
+ - All public functions with floating point arguments should also provide a
+   fixed point version, with the 'x' postfix to the function name, e.g.:
    
      clutter_actor_set_foo      - floating point
      clutter_actor_set_foox     - fixed point
 
-   Fixed point should be always be used internally, except when precision
-   is paramount.
+   Fixed point might also be used internally if the 16.16 precision and
+   range allow it.
 
  - All public functions dealing with pixels should also provide a
    ClutterUnit version, with the 'u' postfix to the function name, e.g:
@@ -31,13 +33,16 @@ General notes and rules on clutter core hacking;
    ClutterUnit should always be used internally.
 
  - Properties should always be in floating point (never fixed point).
-   The preferred precision is double.
+   The preferred precision is double for angles, and single precision
+   for size and position -- especially if they have to be passed down
+   to COGL.
 
  - Properties should use pixels whenever is possible. If sub-pixel
    precision is fundamental, use ClutterParamSpecUnit and
    clutter_param_spec_unit() to install ClutterUnit properties, and
    clutter_value_set_unit()/clutter_value_get_unit() to handle GValues in
-   a safe way. Never install a ClutterUnit property using a GParamSpecInt.
+   a safe way. Never install a ClutterUnit property using a GParamSpecInt,
+   GParamSpecFloat or GParamSpecDouble.
 
  - Public entry points must always check their arguments with
    g_return_if_fail() or g_return_val_if_fail().
@@ -46,16 +51,22 @@ General notes and rules on clutter core hacking;
    do not use g_return_if_fail()/g_return_val_if_fail() as they might
    be compiled out.
 
- - Really try to avoid if possible additions to clutter-private.h. Use
-   accessor functions instead.
+ - If you need to share some state variable across source files use
+   ClutterContext and a private accessor.
 
- - Don't add direct GL calls but wrap with cogl (also adding GLES
-   version if possible, or at least a stub).
+ - Private, non-static functions must begin with an underscore and
+   be declared inside clutter-private.h.
 
- - Use CLUTTER_NOTE() macro for debug statements.
+ - Don't add direct GL calls but add API to COGL (both GL and GL|ES
+   versions if possible).
+
+ - Use the CLUTTER_NOTE() macro for debug statements in Clutter, and
+   the COGL_NOTE() macro for debug statements in COGL. If necessary,
+   add a value inside ClutterDebugFlags or CoglDebugFlags to specify
+   the debug section.
 
  - New features should also include an exhaustive test unit under
-   tests/conform and, eventually, a user-interactive tes under
+   tests/conform and, eventually, a user-interactive test under
    tests/interactive.
 
  - When committing, use the standard git commit message format:
