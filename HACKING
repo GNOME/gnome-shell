@@ -84,6 +84,24 @@ General notes and rules on clutter core hacking;
    important, since "git show" will show the patch inlined with the
    commit message.
 
+LANGUAGE BINDINGS
+=================
+
+ - Language bindings should not wrap the fixed-point entry points of the
+   API; the functions that usually accept fixed-point values are convenience
+   functions for C developers.
+
+ - Similarly, ClutterUnit is a convenience type for the C library. It can
+   be safely wrapped as a floating point value, but it should be converted
+   to and from a floating point value using the provided macros.
+
+ - To reduce the amount of entry points, methods with the -u suffix can be
+   wrapped either by overloading (if your language allows it) or by making
+   every Unit-based function the only entry point, e.g. wrapping
+   clutter_actor_get_position() as accepting floating point values as
+   parameters and calling clutter_actor_get_positionu() internally after
+   having converted the argument types.
+
 RELEASES
 ========
 
