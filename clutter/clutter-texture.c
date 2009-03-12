@@ -1042,39 +1042,22 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   CLUTTER_PARAM_READWRITE));
 
 
-
-  /**
-   * ClutterTexture:load-data-async:
-   *
-   * Tries to load a texture from a filename by using a local thread
-   * to perform the read operations. Threading is only enabled if
-   * g_thread_init() has been called prior to clutter_init(), otherwise
-   * #ClutterTexture will use the main loop to load the image.
-   *
-   * The upload of the texture data on the GL pipeline is not
-   * asynchronous, as it must be performed from within the same
-   * thread that called clutter_main().
-   *
-   * Since: 1.0
-   */
-  g_object_class_install_property
-    (gobject_class, PROP_LOAD_DATA_ASYNC,
-     g_param_spec_boolean ("load-data-async",
-			   "Load data asynchronously",
-			   "Load files inside a thread to avoid blocking when "
-                           "loading images.",
-			   FALSE,
-			   CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT));
-
-
   /**
    * ClutterTexture:load-async:
    *
-   * When set to TRUE load the texture asynchronously, loading both the data
-   * async as when load-data-async is set, but also deferring the loading of
-   * the size to the thread. The size of the texture will initially be 0x0
-   * a "size-change" signal is emitted when the dimensions of the texture
-   * has been loaded from disk.
+   * Tries to load a texture from a filename by using a local thread to perform
+   * the read operations. The initially created texture has dimensions 0x0 when
+   * the true size becomes available the ClutterTexture::size-change signal is
+   * emitted and when the image has completed loading the
+   * ClutterTexture::load-finished signal is emitted.
+   *
+   * Threading is only enabled if g_thread_init() has been called prior to
+   * clutter_init(), otherwise #ClutterTexture will use the main loop to load
+   * the image.
+   *
+   * The upload of the texture data on the GL pipeline is not asynchronous, as
+   * it must be performed from within the same thread that called
+   * clutter_main().
    *
    * Since: 1.0
    */
@@ -1086,6 +1069,25 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                            "loading images.",
 			   FALSE,
 			   CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT));
+
+
+  /**
+   * ClutterTexture:load-data-async:
+   *
+   * Like ClutterTexture:load-async but loads the width and height
+   * synchronously causing some blocking.
+   *
+   * Since: 1.0
+   */
+  g_object_class_install_property
+    (gobject_class, PROP_LOAD_DATA_ASYNC,
+     g_param_spec_boolean ("load-data-async",
+			   "Load data asynchronously",
+			   "Decode image data files inside a thread to reduce "
+                           "blocking when loading images.",
+			   FALSE,
+			   CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT));
+
 
   /**
    * ClutterTexture::size-change:
@@ -1677,6 +1679,7 @@ clutter_texture_async_load_complete (ClutterTexture *self,
                          cogl_texture_get_width(handle),
                          cogl_texture_get_height (handle));
         }
+      cogl_texture_unref (handle);
     }
 
   g_signal_emit (self, texture_signals[LOAD_FINISHED], 0, error);
@@ -1724,7 +1727,6 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
 
   data->load_bitmap = cogl_bitmap_new_from_file (data->load_filename,
                                                  &data->load_error);
-  g_print (".");
 
   /* Check again if we've been told to abort */
   g_mutex_lock (data->mutex);
