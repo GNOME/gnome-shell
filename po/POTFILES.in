@@ -2,6 +2,7 @@
 # Please keep this file sorted alphabetically.
 src/50-metacity-desktop-key.xml.in
 src/50-metacity-key.xml.in
+src/core/bell.c
 src/core/core.c
 src/core/delete.c
 src/core/display.c
