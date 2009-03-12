@@ -1,3 +1,9 @@
+2009-03-11  Ori Avtalion  <ori@avtalion.name>
+
+	* src/core/window-props.c: fix problem where the previous
+        code ignored callbacks for properties whose values weren't
+        looked up.  Closes #572573.
+
 2009-03-06  Thomas Thurman  <tthurman@gnome.org>
 
 	* configure.in: add optional dependency on gtop.
