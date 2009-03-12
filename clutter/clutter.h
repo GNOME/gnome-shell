@@ -28,6 +28,8 @@
 
 #define __CLUTTER_H_INSIDE__
 
+#include "clutter-deprecated.h"
+
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
 #include "clutter-animatable.h"
@@ -46,7 +48,6 @@
 #include "clutter-clone.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
-#include "clutter-deprecated.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-frame-source.h"
