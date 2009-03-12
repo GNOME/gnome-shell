@@ -421,15 +421,27 @@ _cogl_add_stencil_clip (float x_offset,
 	 only pixels where both the original stencil buffer and the
 	 rectangle are set will be valid */
       GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
-      _cogl_current_matrix_push ();
-      _cogl_current_matrix_identity ();
+
       _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
       _cogl_current_matrix_push ();
       _cogl_current_matrix_identity ();
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
-      _cogl_current_matrix_pop ();
+
+      /* Cogl generally assumes the modelview matrix is current, so since
+       * cogl_rectangle will be flushing GL state and emitting geometry
+       * to OpenGL it will be confused if we leave the projection matrix
+       * active... */
       _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+      _cogl_current_matrix_push ();
+      _cogl_current_matrix_identity ();
+
+      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
+
       _cogl_current_matrix_pop ();
+
+      _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+      _cogl_current_matrix_pop ();
+
+      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
     }
 
   /* Restore the stencil mode */
