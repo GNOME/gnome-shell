@@ -1,6 +1,7 @@
 
 UNIT_TESTS = \
 	test-textures.c \
+	test-texture-async.c \
 	test-events.c \
 	test-offscreen.c \
 	test-scale.c \
