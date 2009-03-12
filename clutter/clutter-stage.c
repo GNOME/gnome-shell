@@ -356,6 +356,13 @@ redraw_update_idle (gpointer user_data)
   ClutterStage *stage = user_data;
   ClutterStagePrivate *priv = stage->priv;
 
+  /* clutter_redraw() will also call maybe_relayout(), but since a relayout can
+   * queue a redraw, we want to do the relayout before we clear the update_idle
+   * to avoid painting the stage twice. Calling maybe_relayout() twice in a row
+   * is cheap because of caching of requested and allocated size.
+   */
+  _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
+
   if (priv->update_idle)
     {
       g_source_remove (priv->update_idle);
