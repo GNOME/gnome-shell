@@ -797,25 +797,55 @@ static inline void
 clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
                                           const ClutterActorBox *old)
 {
-  ClutterUnit xu, yu;
-  ClutterUnit widthu, heightu;
-
-  clutter_actor_get_positionu (self, &xu, &yu);
-  clutter_actor_get_sizeu (self, &widthu, &heightu);
+  ClutterActorPrivate *priv = self->priv;
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (xu != old->x1)
-    g_object_notify (G_OBJECT (self), "x");
+  /* to avoid excessive requisition or allocation cycles we
+   * use the cached values.
+   *
+   * - if we don't have an allocation we assume that we need
+   *   to notify anyway
+   * - if we don't have a width or a height request we notify
+   *   width and height
+   * - if we have a valid allocation then we check the old
+   *   bounding box with the current allocation and we notify
+   *   the changes
+   */
+  if (priv->needs_allocation)
+    {
+      g_object_notify (G_OBJECT (self), "x");
+      g_object_notify (G_OBJECT (self), "y");
+      g_object_notify (G_OBJECT (self), "width");
+      g_object_notify (G_OBJECT (self), "height");
+    }
+  else if (priv->needs_width_request || priv->needs_height_request)
+    {
+      g_object_notify (G_OBJECT (self), "width");
+      g_object_notify (G_OBJECT (self), "height");
+    }
+  else
+    {
+      ClutterUnit xu, yu;
+      ClutterUnit widthu, heightu;
 
-  if (yu != old->y1)
-    g_object_notify (G_OBJECT (self), "y");
+      xu = priv->allocation.x1;
+      yu = priv->allocation.y1;
+      widthu = priv->allocation.x2 - priv->allocation.x1;
+      heightu = priv->allocation.y2 - priv->allocation.y1;
 
-  if (widthu != (old->x2 - old->x1))
-    g_object_notify (G_OBJECT (self), "width");
+      if (xu != old->x1)
+        g_object_notify (G_OBJECT (self), "x");
 
-  if (heightu != (old->y2 - old->y1))
-    g_object_notify (G_OBJECT (self), "height");
+      if (yu != old->y1)
+        g_object_notify (G_OBJECT (self), "y");
+
+      if (widthu != (old->x2 - old->x1))
+        g_object_notify (G_OBJECT (self), "width");
+
+      if (heightu != (old->y2 - old->y1))
+        g_object_notify (G_OBJECT (self), "height");
+    }
 
   g_object_thaw_notify (G_OBJECT (self));
 }
