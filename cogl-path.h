@@ -52,17 +52,17 @@ G_BEGIN_DECLS
 
 /**
  * cogl_rectangle:
- * @x1: X coordinate of the top-left corner
- * @y1: Y coordinate of the top-left corner
- * @x2: X coordinate of the bottom-right corner
- * @y2: Y coordinate of the bottom-right corner
+ * @x_1: X coordinate of the top-left corner
+ * @y_1: Y coordinate of the top-left corner
+ * @x_2: X coordinate of the bottom-right corner
+ * @y_2: Y coordinate of the bottom-right corner
  *
  * Fills a rectangle at the given coordinates with the current source material
  **/
-void            cogl_rectangle                (float               x1,
-                                               float               y1,
-                                               float               x2,
-                                               float               y2);
+void            cogl_rectangle                (float               x_1,
+                                               float               y_1,
+                                               float               x_2,
+                                               float               y_2);
 
 /**
  * cogl_path_fill:
@@ -185,10 +185,10 @@ void            cogl_path_arc                 (float        center_x,
 
 /**
  * cogl_path_curve_to:
- * @x1: X coordinate of the second bezier control point
- * @y1: Y coordinate of the second bezier control point
- * @x2: X coordinate of the third bezier control point
- * @y2: Y coordinate of the third bezier control point
+ * @x_1: X coordinate of the second bezier control point
+ * @y_1: Y coordinate of the second bezier control point
+ * @x_2: X coordinate of the third bezier control point
+ * @y_2: Y coordinate of the third bezier control point
  * @x3: X coordinate of the fourth bezier control point
  * @y3: Y coordinate of the fourth bezier control point
  *
@@ -196,19 +196,19 @@ void            cogl_path_arc                 (float        center_x,
  * second, third and fourth control points and using current pen location
  * as the first control point.
  **/
-void            cogl_path_curve_to            (float        x1,
-                                               float        y1,
-                                               float        x2,
-                                               float        y2,
-                                               float        x3,
-                                               float        y3);
+void            cogl_path_curve_to            (float        x_1,
+                                               float        y_1,
+                                               float        x_2,
+                                               float        y_2,
+                                               float        x_3,
+                                               float        y_3);
 
 /**
  * cogl_path_rel_curve_to:
- * @x1: X coordinate of the second bezier control point
- * @y1: Y coordinate of the second bezier control point
- * @x2: X coordinate of the third bezier control point
- * @y2: Y coordinate of the third bezier control point
+ * @x_1: X coordinate of the second bezier control point
+ * @y_1: Y coordinate of the second bezier control point
+ * @x_2: X coordinate of the third bezier control point
+ * @y_2: Y coordinate of the third bezier control point
  * @x3: X coordinate of the fourth bezier control point
  * @y3: Y coordinate of the fourth bezier control point
  *
@@ -217,12 +217,12 @@ void            cogl_path_curve_to            (float        x1,
  * as the first control point. The given coordinates are relative to the
  * current pen location.
  */
-void            cogl_path_rel_curve_to        (float        x1,
-                                               float        y1,
-                                               float        x2,
-                                               float        y2,
-                                               float        x3,
-                                               float        y3);
+void            cogl_path_rel_curve_to        (float        x_1,
+                                               float        y_1,
+                                               float        x_2,
+                                               float        y_2,
+                                               float        x_3,
+                                               float        y_3);
 
 /**
  * cogl_path_close:
@@ -234,19 +234,19 @@ void            cogl_path_close               (void);
 
 /**
  * cogl_path_line:
- * @x1: X coordinate of the start line vertex
- * @y1: Y coordinate of the start line vertex
- * @x2: X coordinate of the end line vertex
- * @y2: Y coordinate of the end line vertex
+ * @x_1: X coordinate of the start line vertex
+ * @y_1: Y coordinate of the start line vertex
+ * @x_2: X coordinate of the end line vertex
+ * @y_2: Y coordinate of the end line vertex
  *
  * Constructs a straight line shape starting and ending at the given
  * coordinates. If there is an existing path this will start a new
  * disjoint sub-path.
  **/
-void            cogl_path_line                (float        x1,
-                                               float        y1,
-                                               float        x2,
-                                               float        y2);
+void            cogl_path_line                (float        x_1,
+                                               float        y_1,
+                                               float        x_2,
+                                               float        y_2);
 
 /**
  * cogl_path_polyline:
@@ -267,7 +267,7 @@ void            cogl_path_line                (float        x1,
  * be constructed.
  **/
 void            cogl_path_polyline            (float       *coords,
-                                               gint             num_points);
+                                               gint         num_points);
 
 
 /**
@@ -285,23 +285,23 @@ void            cogl_path_polyline            (float       *coords,
  * fashion for the rest of the vertices.
  **/
 void            cogl_path_polygon             (float       *coords,
-                                               gint             num_points);
+                                               gint         num_points);
 
 
 /**
  * cogl_path_rectangle:
- * @x1: X coordinate of the top-left corner.
- * @y1: Y coordinate of the top-left corner.
- * @x2: X coordinate of the bottom-right corner.
- * @y2: Y coordinate of the bottom-right corner.
+ * @x_1: X coordinate of the top-left corner.
+ * @y_1: Y coordinate of the top-left corner.
+ * @x_2: X coordinate of the bottom-right corner.
+ * @y_2: Y coordinate of the bottom-right corner.
  *
  * Constructs a rectangular shape at the given coordinates. If there
  * is an existing path this will start a new disjoint sub-path.
  **/
-void            cogl_path_rectangle           (float        x1,
-                                               float        y1,
-                                               float        x2,
-                                               float        y2);
+void            cogl_path_rectangle           (float        x_1,
+                                               float        y_1,
+                                               float        x_2,
+                                               float        y_2);
 
 /**
  * cogl_path_ellipse:
@@ -320,10 +320,10 @@ void            cogl_path_ellipse             (float        center_x,
 
 /**
  * cogl_path_round_rectangle:
- * @x1: X coordinate of the top-left corner.
- * @y1: Y coordinate of the top-left corner.
- * @x2: X coordinate of the bottom-right corner.
- * @y2: Y coordinate of the bottom-right corner.
+ * @x_1: X coordinate of the top-left corner.
+ * @y_1: Y coordinate of the top-left corner.
+ * @x_2: X coordinate of the bottom-right corner.
+ * @y_2: Y coordinate of the bottom-right corner.
  * @radius: Radius of the corner arcs.
  * @arc_step: Angle increment resolution for subdivision of
  * the corner arcs.
@@ -331,10 +331,10 @@ void            cogl_path_ellipse             (float        center_x,
  * Constructs a rectangular shape with rounded corners. If there is an
  * existing path this will start a new disjoint sub-path.
  **/
-void            cogl_path_round_rectangle     (float        x1,
-                                               float        y1,
-                                               float        x2,
-                                               float        y2,
+void            cogl_path_round_rectangle     (float        x_1,
+                                               float        y_1,
+                                               float        x_2,
+                                               float        y_2,
                                                float        radius,
                                                float        arc_step);
 
