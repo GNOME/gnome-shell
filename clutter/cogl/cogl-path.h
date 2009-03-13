@@ -189,8 +189,8 @@ void            cogl_path_arc                 (float        center_x,
  * @y_1: Y coordinate of the second bezier control point
  * @x_2: X coordinate of the third bezier control point
  * @y_2: Y coordinate of the third bezier control point
- * @x3: X coordinate of the fourth bezier control point
- * @y3: Y coordinate of the fourth bezier control point
+ * @x_3: X coordinate of the fourth bezier control point
+ * @y_3: Y coordinate of the fourth bezier control point
  *
  * Adds a cubic bezier curve segment to the current path with the given
  * second, third and fourth control points and using current pen location
@@ -209,8 +209,8 @@ void            cogl_path_curve_to            (float        x_1,
  * @y_1: Y coordinate of the second bezier control point
  * @x_2: X coordinate of the third bezier control point
  * @y_2: Y coordinate of the third bezier control point
- * @x3: X coordinate of the fourth bezier control point
- * @y3: Y coordinate of the fourth bezier control point
+ * @x_3: X coordinate of the fourth bezier control point
+ * @y_3: Y coordinate of the fourth bezier control point
  *
  * Adds a cubic bezier curve segment to the current path with the given
  * second, third and fourth control points and using current pen location
