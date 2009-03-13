@@ -290,18 +290,18 @@ void            cogl_path_polygon             (float       *coords,
 
 /**
  * cogl_path_rectangle:
- * @x: X coordinate of the top-left corner.
- * @y: Y coordinate of the top-left corner.
- * @width: Rectangle width.
- * @height: Rectangle height.
+ * @x1: X coordinate of the top-left corner.
+ * @y1: Y coordinate of the top-left corner.
+ * @x2: X coordinate of the bottom-right corner.
+ * @y2: Y coordinate of the bottom-right corner.
  *
  * Constructs a rectangular shape at the given coordinates. If there
  * is an existing path this will start a new disjoint sub-path.
  **/
-void            cogl_path_rectangle           (float        x,
-                                               float        y,
-                                               float        width,
-                                               float        height);
+void            cogl_path_rectangle           (float        x1,
+                                               float        y1,
+                                               float        x2,
+                                               float        y2);
 
 /**
  * cogl_path_ellipse:
@@ -320,21 +320,21 @@ void            cogl_path_ellipse             (float        center_x,
 
 /**
  * cogl_path_round_rectangle:
- * @x: X coordinate of the top-left corner
- * @y: Y coordinate of the top-left corner
- * @width: Width of the rectangle
- * @height: Height of the rectangle
+ * @x1: X coordinate of the top-left corner.
+ * @y1: Y coordinate of the top-left corner.
+ * @x2: X coordinate of the bottom-right corner.
+ * @y2: Y coordinate of the bottom-right corner.
  * @radius: Radius of the corner arcs.
  * @arc_step: Angle increment resolution for subdivision of
  * the corner arcs.
  *
  * Constructs a rectangular shape with rounded corners. If there is an
  * existing path this will start a new disjoint sub-path.
-  **/
-void            cogl_path_round_rectangle     (float        x,
-                                               float        y,
-                                               float        width,
-                                               float        height,
+ **/
+void            cogl_path_round_rectangle     (float        x1,
+                                               float        y1,
+                                               float        x2,
+                                               float        y2,
                                                float        radius,
                                                float        arc_step);
 

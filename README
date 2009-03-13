@@ -260,8 +260,9 @@ Release Notes for Clutter 1.0
     cogl_set_source_texture (tex_handle);
     cogl_polygon (verts, 3, TRUE);
 
-* The arguments to cogl_rectangle have been changed - for consistency - from
-  x1, y2, width, height, to x1, y1, x2, y2.
+* The arguments to cogl_rectangle, cogl_path_rectangle and
+  cogl_path_round_rectangle have been changed - for consistency - from
+  x, y, width, height, to x1, y1, x2, y2.
 
 * A CoglMatrix type and utility API has been added; this is currently used to
   support describing texture matrices.

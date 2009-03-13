@@ -461,10 +461,10 @@ cogl_pango_renderer_draw_box (PangoRenderer *renderer,
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
 
   cogl_set_source (priv->solid_material);
-  cogl_path_rectangle ((float)(x),
-		       (float)(y - height),
-		       (float)(width),
-		       (float)(height));
+  cogl_path_rectangle (x,
+		       y - height,
+		       x + width,
+		       y);
   cogl_path_stroke ();
 }
 

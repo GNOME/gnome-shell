@@ -41,10 +41,10 @@ path_shapes (gint x, gint y, gint width, gint height)
   cogl_path_line_to ((x + width * 4 / 15), (y + height * 4 / 5));
   cogl_path_close ();
 
-  cogl_path_rectangle ((x + width / 3),
+  cogl_path_rectangle (x + width / 3,
                        y,
-                       (width * 4 / 15),
-                       (height * 4 / 5));
+                       x + width * 9 / 15,
+                       y + height * 4 / 5);
 
   cogl_path_ellipse ((x + width * 4 / 5),
                      (y + height * 2 / 5),
@@ -73,8 +73,8 @@ make_clip_path (Clip *clip)
     case CLIP_RECTANGLE:
       cogl_path_rectangle (clip->x1,
                            clip->y1,
-                           (clip->x2 - clip->x1),
-                           (clip->y2 - clip->y1));
+                           clip->x2,
+                           clip->y2);
       break;
 
     case CLIP_ELLIPSE:

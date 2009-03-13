@@ -16,13 +16,13 @@ test_paint_line ()
 static void
 test_paint_rect ()
 {
-  cogl_path_rectangle (-50, -25, 100, 50);
+  cogl_path_rectangle (-50, -25, 50, 25);
 }
 
 static void
 test_paint_rndrect()
 {
-  cogl_path_round_rectangle (-50, -25, 100, 50, 10, 5);
+  cogl_path_round_rectangle (-50, -25, 50, 25, 10, 5);
 }
 
 static void

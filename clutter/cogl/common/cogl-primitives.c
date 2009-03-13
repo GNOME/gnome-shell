@@ -193,15 +193,15 @@ cogl_path_polygon (float *coords,
 }
 
 void
-cogl_path_rectangle (float x,
-                     float y,
-                     float width,
-                     float height)
+cogl_path_rectangle (float x1,
+                     float y1,
+                     float x2,
+                     float y2)
 {
-  cogl_path_move_to (x,         y);
-  cogl_path_line_to (x + width, y);
-  cogl_path_line_to (x + width, y + height);
-  cogl_path_line_to (x,         y + height);
+  cogl_path_move_to (x1, y1);
+  cogl_path_line_to (x2, y1);
+  cogl_path_line_to (x2, y2);
+  cogl_path_line_to (x1, y2);
   cogl_path_close   ();
 }
 
@@ -327,19 +327,19 @@ cogl_path_ellipse (float center_x,
 }
 
 void
-cogl_path_round_rectangle (float x,
-                           float y,
-                           float width,
-                           float height,
+cogl_path_round_rectangle (float x1,
+                           float y1,
+                           float x2,
+                           float y2,
                            float radius,
                            float arc_step)
 {
-  float inner_width = width  - (radius * 2);
-  float inner_height = height - (radius * 2);
+  float inner_width = x2 - x1 - radius * 2;
+  float inner_height = y2 - y1 - radius * 2;
   
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_path_move_to (x, y + radius);
+  cogl_path_move_to (x1, y1 + radius);
   cogl_path_arc_rel (radius, 0,
 		     radius, radius,
 		     180,
