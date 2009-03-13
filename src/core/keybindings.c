@@ -2854,6 +2854,17 @@ handle_panel (MetaDisplay    *display,
 }
 
 static void
+handle_toggle_recording (MetaDisplay    *display,
+                         MetaScreen     *screen,
+                         MetaWindow     *window,
+                         XEvent         *event,
+                         MetaKeyBinding *binding,
+                         gpointer        dummy)
+{
+  g_signal_emit_by_name (screen, "toggle-recording");
+}
+
+static void
 handle_activate_window_menu (MetaDisplay    *display,
                       MetaScreen     *screen,
                       MetaWindow     *event_window,

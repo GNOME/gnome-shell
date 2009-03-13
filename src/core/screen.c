@@ -77,6 +77,7 @@ enum
 enum
 {
   RESTACKED,
+  TOGGLE_RECORDING,
 
   LAST_SIGNAL
 };
@@ -152,6 +153,15 @@ meta_screen_class_init (MetaScreenClass *klass)
                             "Number of workspaces",
                             1, G_MAXINT, 1,
                             G_PARAM_READABLE);
+
+  screen_signals[TOGGLE_RECORDING] =
+    g_signal_new ("toggle-recording",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
                                    PROP_N_WORKSPACES,

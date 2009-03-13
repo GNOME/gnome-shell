@@ -195,6 +195,8 @@ keybind (panel_main_menu, handle_panel,
 keybind (panel_run_dialog, handle_panel,
        META_KEYBINDING_ACTION_PANEL_RUN_DIALOG, 0, "<Alt>F2",
       _("Show the panel's \"Run Application\" dialog box"))
+keybind (toggle_recording, handle_toggle_recording, 0, 0, "<Control><Shift><Alt>r",
+         _("Start or stop recording the session"))
 
 /* Yes, the param is offset by one.  Historical reasons.  (Maybe worth fixing
  * at some point.)  The description is NULL here because the stanza is
