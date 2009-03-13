@@ -249,7 +249,7 @@ Release Notes for Clutter 1.0
     cogl_set_source_material (material);
 
   Code that uses the texture coordinates, 0, 0, 1, 1 don't need to use
-  cogl_rectangle_with_texure_coords since these are the coordinates that
+  cogl_rectangle_with_texture_coords since these are the coordinates that
   cogl_rectangle will use.
 
   For cogl_texture_polygon; as well as dropping the texture handle, the
