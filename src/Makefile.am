@@ -66,6 +66,32 @@ libgnome_shell_la_SOURCES =			\
 
 # ClutterGLXTexturePixmap is currently not wrapped
 non_gir_sources = shell-gtkwindow-actor.h
+
+shell_recorder_sources =        \
+	shell-recorder.c	\
+	shell-recorder.h	\
+	shell-recorder-src.c	\
+	shell-recorder-src.h
+
+# Custom element is an internal detail
+shell_recorder_non_gir_sources =  \
+	shell-recorder-src.c	  \
+	shell-recorder-src.h
+
+if BUILD_RECORDER
+libgnome_shell_la_SOURCES += $(shell_recorder_sources)
+non_gir_sources += $(shell_recorder_non_gir_sources)
+
+noinst_PROGRAMS = test-recorder
+
+test_recorder_CPPFLAGS = $(TEST_SHELL_RECORDER_CFLAGS)
+test_recorder_LDADD = $(TEST_SHELL_RECORDER_LIBS)
+
+test_recorder_SOURCES =     \
+	$(shell_recorder_sources) \
+	test-recorder.c
+endif BUILD_RECORDER
+
 libgnome_shell_la_gir_sources = \
 	$(filter-out $(non_gir_sources), $(libgnome_shell_la_SOURCES))
 

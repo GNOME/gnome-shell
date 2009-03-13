@@ -18,7 +18,27 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 dbus-glib-1 metacity-plugins gjs-gi-1.0)
+PKG_PROG_PKG_CONFIG(0.16)
+
+# We need at least this, since gst_plugin_register_static() was added
+# in 0.10.16, but nothing older than 0.10.21 has been tested.
+GSTREAMER_MIN_VERSION=0.10.16
+
+recorder_modules=
+build_recorder=false
+AC_MSG_CHECKING([for GStreamer (needed for recording functionality)])
+if $PKG_CONFIG --exists gstreamer-0.10 '>=' $GSTREAMER_MIN_VERSION ; then
+   AC_MSG_RESULT(yes)
+   build_recorder=true
+   recorder_modules="gstreamer-0.10 gstreamer-base-0.10 xfixes"
+   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-0.9)
+else
+   AC_MSG_RESULT(no)
+fi
+
+AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
+
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 dbus-glib-1 metacity-plugins gjs-gi-1.0 $recorder_modules)
 PKG_CHECK_MODULES(TIDY, clutter-0.9)
 PKG_CHECK_MODULES(BIG, clutter-0.9 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)

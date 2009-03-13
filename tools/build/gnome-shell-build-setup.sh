@@ -71,6 +71,7 @@ if test x$system = xFedora ; then
     librsvg2-devel libwnck-devel mesa-libGL-devel python-devel readline-devel \
     xulrunner-devel libXdamage-devel \
     gdb glx-utils xorg-x11-apps xorg-x11-server-Xephyr xterm zenity \
+    gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"

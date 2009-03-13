@@ -20,6 +20,7 @@ let overlay = null;
 let overlayActive = false;
 let runDialog = null;
 let wm = null;
+let recorder = null;
 
 function start() {
     let global = Shell.Global.get();
@@ -71,6 +72,24 @@ function start() {
             show_overlay();
         }
     };
+
+    global.screen.connect('toggle-recording', function() {
+        if (recorder == null) {
+            // We have to initialize GStreamer first. This isn't done
+            // inside ShellRecorder to make it usable inside projects
+            // with other usage of GStreamer.
+            let Gst = imports.gi.Gst;
+            Gst.init(null, null);
+            recorder = new Shell.Recorder({ stage: global.stage });
+        }
+
+        if (recorder.is_recording()) {
+            recorder.pause();
+        } else {
+            recorder.record();
+        }
+    });
+
     display.connect('overlay-key', toggleOverlay);
     global.connect('panel-main-menu', toggleOverlay);
     
