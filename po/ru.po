@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-09 02:00+0300\n"
-"PO-Revision-Date: 2008-03-08 17:56+0300\n"
-"Last-Translator: Vasiliy Faronov <qvvx@yandex.ru>\n"
+"POT-Creation-Date: 2009-03-14 22:09+0300\n"
+"PO-Revision-Date: 2009-03-14 14:36+0300\n"
+"Last-Translator: Yuriy Penkin <yuriy.penkin@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,58 +28,51 @@ msgstr "Рабочий стол"
 msgid "Window Management"
 msgstr "Управление окнами"
 
+#: ../src/core/bell.c:294
+msgid "Bell event"
+msgstr "Событие звонка"
+
 #: ../src/core/core.c:206
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Неизвестный запрос сведений об окне: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Не удалось разобрать «%s» как целое число"
-
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
-#: ../src/ui/theme-parser.c:545
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Не удалось распознать замыкающие символы «%s» в строке «%s»"
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Не удалось разобрать сообщение «%s» из диалогового процесса\n"
-
-#: ../src/core/delete.c:270
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Произошла ошибка при чтении из процесса отображения диалога: %s\n"
-
-#: ../src/core/delete.c:353
+#: ../src/core/delete.c:104
 #, c-format
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+"<big><b><tt>%s</tt> is not responding.</b></big>\n"
+"\n"
+"<i>You may choose to wait a short while for it to continue or force the "
+"application to quit entirely.</i>"
 msgstr ""
-"Произошла ошибка при запуске metacity-dialog для запроса на уничтожение "
-"приложения: %s\n"
+"<big><b><tt>%s</tt> не отвечает.</b></big>\n"
+"\n"
+"<i>Можно немного подождать или заставить приложение завершить работу.</i>"
 
-#: ../src/core/delete.c:462
+#: ../src/core/delete.c:115
+msgid "_Wait"
+msgstr "_Подождать"
+
+#: ../src/core/delete.c:115
+msgid "_Force Quit"
+msgstr "Завер_шить"
+
+#: ../src/core/delete.c:216
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Не удалось получить имя узла: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:258
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Отсутствует расширение %s, требуемое для композиции"
 
-#: ../src/core/display.c:438
+#: ../src/core/display.c:336
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не удалось открыть дисплей «%s» системы X Window\n"
 
-#: ../src/core/errors.c:271
+#: ../src/core/errors.c:272
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -90,85 +83,101 @@ msgstr ""
 "скорее всего, X-сервер был выключен, или был уничтожен\n"
 "менеджер окон.\n"
 
-#: ../src/core/errors.c:278
+#: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Произошла неустранимая ошибка ввода-вывода %d (%s) на дисплее «%s».\n"
 
-#: ../src/core/keybindings.c:1090
+#: ../src/core/keybindings.c:680
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Клавишу «%s» с модификаторами «%x» уже использует другая программа\n"
 
-#: ../src/core/keybindings.c:2736
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2294
 #, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
 msgstr ""
-"Произошла ошибка при запуске metacity-dialog для вывода сообщения об ошибке "
-"команды: %s\n"
+"Произошла ошибка при запуске программы <tt>%s</tt>:\n"
+"\n"
+"%s"
 
-#: ../src/core/keybindings.c:2841
+#: ../src/core/keybindings.c:2383
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команда %d не была определена.\n"
 
-#: ../src/core/keybindings.c:3869
+#: ../src/core/keybindings.c:3337
+#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Команда терминала не была определена.\n"
 
-#: ../src/core/main.c:115
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Авторские права © 2001—2008 Havoc Pennington, Red Hat, Inc. и другие\n"
+"Авторские права © 2001—%s Havoc Pennington, Red Hat, Inc. и другие\n"
 "Это свободное программное обеспечение; условия копирования указаны в "
 "исходном тексте.\n"
 "Распространяется без каких-либо гарантий, в том числе и БЕЗ гарантий "
 "потребительской стоимости и пригодности для выполнения каких бы то ни было "
 "определённых задач.\n"
 
-#: ../src/core/main.c:242
+#: ../src/core/main.c:267
 msgid "Disable connection to session manager"
 msgstr "Запретить подключение к менеджеру сеансов"
 
-#: ../src/core/main.c:248
+#: ../src/core/main.c:273
 msgid "Replace the running window manager with Metacity"
 msgstr "Заменить запущенный менеджер окон на Metacity"
 
-#: ../src/core/main.c:254
+#: ../src/core/main.c:279
 msgid "Specify session management ID"
 msgstr "Указать идентификатор управления сеансом"
 
-#: ../src/core/main.c:259
+#: ../src/core/main.c:284
 msgid "X Display to use"
 msgstr "Используемый дисплей X"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:290
 msgid "Initialize session from savefile"
 msgstr "Инициализировать сеанс из сохранённого файла"
 
-#: ../src/core/main.c:271
+#: ../src/core/main.c:296
 msgid "Print version"
 msgstr "Вывести версию"
 
-#: ../src/core/main.c:277
+#: ../src/core/main.c:302
 msgid "Make X calls synchronous"
 msgstr "Сделать X-вызовы синхронными"
 
-#: ../src/core/main.c:428
+#: ../src/core/main.c:308
+msgid "Turn compositing on"
+msgstr "Включить менеджер композиции"
+
+#: ../src/core/main.c:314
+msgid "Turn compositing off"
+msgstr "Выключить менеджер композиции"
+
+#: ../src/core/main.c:536
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Не удалось прочитать каталог тем: %s\n"
 
-#: ../src/core/main.c:444
+#: ../src/core/main.c:552
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -176,7 +185,7 @@ msgstr ""
 "Не удалось найти тему! Убедитесь, что «%s» существует и содержит обычные "
 "темы.\n"
 
-#: ../src/core/main.c:516
+#: ../src/core/main.c:608
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Не удалось перезапустить: %s\n"
@@ -188,26 +197,29 @@ msgstr "Не удалось перезапустить: %s\n"
 #. * we might consider reverting invalid keys to their original values.
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
 #.
-#: ../src/core/prefs.c:450 ../src/core/prefs.c:564
+#.
+#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Для ключа GConf «%s» установлено недопустимое значение\n"
 
-#: ../src/core/prefs.c:537 ../src/core/prefs.c:607 ../src/core/prefs.c:655
-#: ../src/core/prefs.c:961 ../src/core/prefs.c:979 ../src/core/prefs.c:995
-#: ../src/core/prefs.c:1014 ../src/core/prefs.c:1030 ../src/core/prefs.c:1047
-#: ../src/core/prefs.c:1064 ../src/core/prefs.c:1080 ../src/core/prefs.c:1096
+#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr ""
+"Значение %d ключа GConf «%s» не входит в диапазон значений от %d до %d\n"
+
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
+#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
+#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Для ключа GConf «%s» выбран недопустимый тип\n"
 
-#: ../src/core/prefs.c:856
-#, c-format
-msgid "Type of %s was not integer"
-msgstr "Тип %s — не целочисленный"
-
-#: ../src/core/prefs.c:1165
+#: ../src/core/prefs.c:1231
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -215,21 +227,12 @@ msgstr ""
 "Устранение недоделок для сломанных приложений отключено. Некоторые "
 "приложения могут работать неправильно.\n"
 
-#: ../src/core/prefs.c:1220
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"Значение %d из ключа GConf %s является недопустимым значением для "
-"cursor_size; должно быть в пределах диапазона 1..128\n"
-
-#: ../src/core/prefs.c:1246
+#: ../src/core/prefs.c:1302
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Не удалось разобрать описание шрифта «%s» из ключа GConf %s\n"
 
-#: ../src/core/prefs.c:1306
+#: ../src/core/prefs.c:1364
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -238,32 +241,17 @@ msgstr ""
 "Значение «%s» из базы данных настроек является недопустимым значением для "
 "модификатора кнопки мыши\n"
 
-#: ../src/core/prefs.c:1585
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"Значение %d из ключа GConf %s является недопустимым количеством рабочих "
-"мест, текущим максимумом является значение %d\n"
-
-#: ../src/core/prefs.c:1629
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
-"Значение %d из ключа GConf «%s» не входит в диапазон значений от 0 до %d\n"
-
-#: ../src/core/prefs.c:1760
+#: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Произошла ошибка при установке количества рабочих мест равным %d: %s\n"
 
-#: ../src/core/prefs.c:2125 ../src/core/prefs.c:2637 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
 #, c-format
 msgid "Workspace %d"
 msgstr "Рабочее место %d"
 
-#: ../src/core/prefs.c:2155 ../src/core/prefs.c:2328
+#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -272,17 +260,22 @@ msgstr ""
 "Значение «%s» из базы данных настроек является недопустимым значением для "
 "комбинации клавиш «%s»\n"
 
-#: ../src/core/prefs.c:2718
+#: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Произошла ошибка при установке имени рабочего места %d в «%s»: %s\n"
 
-#: ../src/core/screen.c:410
+#: ../src/core/prefs.c:2753
+#, c-format
+msgid "Error setting compositor status: %s\n"
+msgstr "Произошла ошибка при установке состояния менеджера композиции: %s\n"
+
+#: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Недопустимый экран %d дисплея «%s»\n"
 
-#: ../src/core/screen.c:426
+#: ../src/core/screen.c:366
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -291,147 +284,170 @@ msgstr ""
 "У экрана %d дисплея «%s» уже есть менеджер окон. Попробуйте использовать "
 "параметр --replace, чтобы заместить текущий менеджер окон.\n"
 
-#: ../src/core/screen.c:453
+#: ../src/core/screen.c:393
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не удалось выбрать менеджер окон на экране %d дисплея «%s»\n"
 
-#: ../src/core/screen.c:511
+#: ../src/core/screen.c:451
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "У экрана %d дисплея «%s» уже есть менеджер окон\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не удалось освободить экран %d дисплея «%s»\n"
 
-#: ../src/core/session.c:826 ../src/core/session.c:833
+#. Translators: Please don't translate "Control", "Shift", etc, since these
+#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+#. * "disabled" must also stay as it is.
+#.
+#: ../src/core/schema-bindings.c:169
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Используется формат «<Control>a» или «<Shift><Alt>F1».\n"
+"\n"
+"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
+"и сокращения, например «<Ctl>» и «<Ctrl>». Если параметру установить значение "
+"«disabled», для этого действия не будет использоваться никакая комбинация "
+"клавиш."
+
+#: ../src/core/schema-bindings.c:177
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
+"\n"
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
+msgstr ""
+"Используется формат «<Control>a» или «<Shift><Alt>F1».\n"
+"\n"
+"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
+"и сокращения, например «<Ctl>» и «<Ctrl>». Если параметру установить значение "
+"«disabled», для этого действия не будет использоваться никакая комбинация "
+"клавиш.\n"
+"\n"
+"Действие этой комбинации клавиш может быть изменено путем удержания клавиши "
+"«shift», поэтому «shift» не может быть одной из клавиш этой комбинации."
+
+#: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не удалось создать каталог «%s»: %s\n"
 
-#: ../src/core/session.c:843
+#: ../src/core/session.c:862
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не удалось открыть для записи файл сеанса «%s»: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1003
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Произошла ошибка при записи файла сеанса «%s»: %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1008
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Произошла ошибка при закрытии файла сеанса «%s»: %s\n"
 
-#: ../src/core/session.c:1075
+#. oh, just give up
+#: ../src/core/session.c:1101
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Не удалось прочитать сохранённый файл сеанса «%s»: %s\n"
 
-#: ../src/core/session.c:1110
+#: ../src/core/session.c:1140
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Не удалось разобрать сохранённый файл сеанса: %s\n"
 
-#: ../src/core/session.c:1159
+#: ../src/core/session.c:1189
+#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Указан атрибут <metacity_session>, но ID сеанса уже есть"
 
-#: ../src/core/session.c:1172
+#: ../src/core/session.c:1202 ../src/core/session.c:1277
+#: ../src/core/session.c:1309 ../src/core/session.c:1381
+#: ../src/core/session.c:1441
 #, c-format
-msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Неизвестный атрибут %s элемента <metacity_session>"
+msgid "Unknown attribute %s on <%s> element"
+msgstr "Атрибут %s элемента <%s> неизвестен"
 
-#: ../src/core/session.c:1189
+#: ../src/core/session.c:1219
+#, c-format
 msgid "nested <window> tag"
 msgstr "вложенный тег <window>"
 
-#: ../src/core/session.c:1247 ../src/core/session.c:1279
-#, c-format
-msgid "Unknown attribute %s on <window> element"
-msgstr "Атрибут %s элемента <window> неизвестен"
-
-#: ../src/core/session.c:1351
-#, c-format
-msgid "Unknown attribute %s on <maximized> element"
-msgstr "Атрибут %s элемента <maximized> неизвестен"
-
-#: ../src/core/session.c:1411
-#, c-format
-msgid "Unknown attribute %s on <geometry> element"
-msgstr "Атрибут %s элемента <geometry> неизвестен"
-
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1461
 #, c-format
 msgid "Unknown element %s"
 msgstr "Элемент %s неизвестен"
 
-#: ../src/core/session.c:1868
-#, c-format
+#: ../src/core/session.c:1812
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Произошла ошибка при запуске metacity-dialog для предупреждения о "
-"приложениях, которые не поддерживают управление сеансом: %s\n"
+"Эти окна не поддерживают команду «Сохранить текущие настройки». При следующем "
+"входе в систему их придётся перезапустить вручную."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:103
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Не удалось открыть журнал отладочной информации: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:113
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Не удалось применить fdopen() к журналу отладочной информации %s: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:119
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Открыт журнал отладочной информации %s\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
+#, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity был собран без поддержки режима подробных сообщений\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:238
 msgid "Window manager: "
 msgstr "Менеджер окон: "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:390
 msgid "Bug in window manager: "
 msgstr "Ошибка в менеджере окон: "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:423
 msgid "Window manager warning: "
 msgstr "Предупреждение менеджера окон: "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:451
 msgid "Window manager error: "
 msgstr "Ошибка менеджера окон: "
 
-#: ../src/core/window-props.c:195
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr ""
-"Приложение установило неправильное значение параметра _NET_WM_PID %lu\n"
-
-#: ../src/core/window-props.c:327
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (на %s)"
-
-#: ../src/core/window-props.c:1409
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "Неверный параметр WM_TRANSIENT_FOR окна 0x%lx указан для %s.\n"
+#. Translators: This is the title used on dialog boxes
+#. eof all-keybindings.h
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5653
+#: ../src/core/window.c:5627
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -447,7 +463,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6218
+#: ../src/core/window.c:6192
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -456,6 +472,43 @@ msgstr ""
 "Окно %s установило подсказку MWM, определяющую, что его размер не меняется, "
 "но установило минимальный размер %d × %d и максимальный размер %d × %d, что "
 "не имеет смысла.\n"
+
+#: ../src/core/window-props.c:244
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr ""
+"Приложение установило неправильное значение параметра _NET_WM_PID %lu\n"
+
+#. Translators: the title of a window from another machine
+#: ../src/core/window-props.c:388
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (на %s)"
+
+#. Simple case-- don't bother to look it up.  It's root.
+#: ../src/core/window-props.c:420
+#, c-format
+msgid "%s (as superuser)"
+msgstr "%s (от администратора)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine
+#: ../src/core/window-props.c:438
+#, c-format
+msgid "%s (as %s)"
+msgstr "%s (от %s)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine, whose name we don't know
+#: ../src/core/window-props.c:444
+#, c-format
+msgid "%s (as another user)"
+msgstr "%s (от другого пользователя)"
+
+#: ../src/core/window-props.c:1429
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "Неверный параметр WM_TRANSIENT_FOR окна 0x%lx указан для %s.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -485,15 +538,323 @@ msgstr ""
 "Свойство %s для окна 0x%lx содержало недопустимые данные UTF-8 для элемента %"
 "d в списке\n"
 
-#: ../src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/include/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Переключиться на рабочее место 1"
 
-#: ../src/metacity.schemas.in.h:1
+#: ../src/include/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Переключиться на рабочее место 2"
+
+#: ../src/include/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Переключиться на рабочее место 3"
+
+#: ../src/include/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Переключиться на рабочее место 4"
+
+#: ../src/include/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Переключиться на рабочее место 5"
+
+#: ../src/include/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Переключиться на рабочее место 6"
+
+#: ../src/include/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Переключиться на рабочее место 7"
+
+#: ../src/include/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Переключиться на рабочее место 8"
+
+#: ../src/include/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Переключиться на рабочее место 9"
+
+#: ../src/include/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Переключиться на рабочее место 10"
+
+#: ../src/include/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Переключиться на рабочее место 11"
+
+#: ../src/include/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Переключиться на рабочее место 12"
+
+#: ../src/include/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Переключиться на рабочее место слева от текущего"
+
+#: ../src/include/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Переключиться на рабочее место справа от текущего"
+
+#: ../src/include/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Переключиться на рабочее место над текущим"
+
+#: ../src/include/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Переключиться на рабочее место под текущим"
+
+#: ../src/include/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Переключиться между окнами приложения через всплывающее окно"
+
+#: ../src/include/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr ""
+"Переключиться в обратном порядке между окнами приложения через всплывающее "
+"окно"
+
+#: ../src/include/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Переключиться между окнами через всплывающее окно"
+
+#: ../src/include/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr ""
+"Переключиться в обратном порядке между окнами с использованием всплывающего "
+"окна"
+
+#: ../src/include/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Переключиться между панелями и рабочим столом через всплывающее окно"
+
+#: ../src/include/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr ""
+"Переключиться в обратном порядке между панелями и рабочим столом через "
+"всплывающее окно"
+
+#: ../src/include/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Переключиться между окнами приложения немедленно"
+
+#: ../src/include/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Переключиться в обратном порядке между окнами приложения немедленно"
+
+#: ../src/include/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Переключиться между окнами немедленно"
+
+#: ../src/include/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Переключиться в обратном порядке между окнами немедленно"
+
+#: ../src/include/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Переключиться между панелями и рабочим столом немедленно"
+
+#: ../src/include/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr ""
+"Переключиться в обратном порядке между панелями и рабочим столом немедленно"
+
+#: ../src/include/all-keybindings.h:191
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Скрыть все обычные окна и активировать рабочий стол"
+
+#: ../src/include/all-keybindings.h:194
+msgid "Show the panel's main menu"
+msgstr "Вызвать главное меню панели"
+
+#: ../src/include/all-keybindings.h:197
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Показать диалоговое окно панели «Выполнить программу»"
+
+#: ../src/include/all-keybindings.h:238
+msgid "Take a screenshot"
+msgstr "Получить снимок экрана"
+
+#: ../src/include/all-keybindings.h:240
+msgid "Take a screenshot of a window"
+msgstr "Получить снимок окна"
+
+#: ../src/include/all-keybindings.h:242
+msgid "Run a terminal"
+msgstr "Открыть терминал"
+
+#: ../src/include/all-keybindings.h:257
+msgid "Activate the window menu"
+msgstr "Активировать меню окна"
+
+#: ../src/include/all-keybindings.h:260
+msgid "Toggle fullscreen mode"
+msgstr "Переключить полноэкранный режим"
+
+#: ../src/include/all-keybindings.h:262
+msgid "Toggle maximization state"
+msgstr "Переключить состояние развёрнутости на весь экран"
+
+#: ../src/include/all-keybindings.h:264
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "Будет ли окно всегда расположено надо другими окнами"
+
+#: ../src/include/all-keybindings.h:266
+msgid "Maximize window"
+msgstr "Развернуть окно на весь экран"
+
+#: ../src/include/all-keybindings.h:268
+msgid "Restore window"
+msgstr "Восстановить окно"
+
+#: ../src/include/all-keybindings.h:270
+msgid "Toggle shaded state"
+msgstr "Переключить состояние скрученности в полоску"
+
+#: ../src/include/all-keybindings.h:272
+msgid "Minimize window"
+msgstr "Свернуть окно"
+
+#: ../src/include/all-keybindings.h:274
+msgid "Close window"
+msgstr "Закрыть окно"
+
+#: ../src/include/all-keybindings.h:276
+msgid "Move window"
+msgstr "Переместить окно"
+
+#: ../src/include/all-keybindings.h:278
+msgid "Resize window"
+msgstr "Изменить размер окна"
+
+#: ../src/include/all-keybindings.h:281
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "Будет ли окно помещено на всех рабочих местах или только на одном"
+
+#: ../src/include/all-keybindings.h:285
+msgid "Move window to workspace 1"
+msgstr "Переместить окно на рабочее место 1"
+
+#: ../src/include/all-keybindings.h:288
+msgid "Move window to workspace 2"
+msgstr "Переместить окно на рабочее место 2"
+
+#: ../src/include/all-keybindings.h:291
+msgid "Move window to workspace 3"
+msgstr "Переместить окно на рабочее место 3"
+
+#: ../src/include/all-keybindings.h:294
+msgid "Move window to workspace 4"
+msgstr "Переместить окно на рабочее место 4"
+
+#: ../src/include/all-keybindings.h:297
+msgid "Move window to workspace 5"
+msgstr "Переместить окно на рабочее место 5"
+
+#: ../src/include/all-keybindings.h:300
+msgid "Move window to workspace 6"
+msgstr "Переместить окно на рабочее место 6"
+
+#: ../src/include/all-keybindings.h:303
+msgid "Move window to workspace 7"
+msgstr "Переместить окно на рабочее место 7"
+
+#: ../src/include/all-keybindings.h:306
+msgid "Move window to workspace 8"
+msgstr "Переместить окно на рабочее место 8"
+
+#: ../src/include/all-keybindings.h:309
+msgid "Move window to workspace 9"
+msgstr "Переместить окно на рабочее место 9"
+
+#: ../src/include/all-keybindings.h:312
+msgid "Move window to workspace 10"
+msgstr "Переместить окно на рабочее место 10"
+
+#: ../src/include/all-keybindings.h:315
+msgid "Move window to workspace 11"
+msgstr "Переместить окно на рабочее место 11"
+
+#: ../src/include/all-keybindings.h:318
+msgid "Move window to workspace 12"
+msgstr "Переместить окно на рабочее место 12"
+
+#: ../src/include/all-keybindings.h:330
+msgid "Move window one workspace to the left"
+msgstr "Переместить окно на одно рабочее место влево"
+
+#: ../src/include/all-keybindings.h:333
+msgid "Move window one workspace to the right"
+msgstr "Переместить окно на одно рабочее место вправо"
+
+#: ../src/include/all-keybindings.h:336
+msgid "Move window one workspace up"
+msgstr "Переместить окно на одно рабочее место вверх"
+
+#: ../src/include/all-keybindings.h:339
+msgid "Move window one workspace down"
+msgstr "Переместить окно на одно рабочее место вниз"
+
+#: ../src/include/all-keybindings.h:342
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr ""
+"Поднять окно на передний план, если оно заслонено другими, иначе опустить его"
+
+#: ../src/include/all-keybindings.h:344
+msgid "Raise window above other windows"
+msgstr "Поднять окно на передний план"
+
+#: ../src/include/all-keybindings.h:346
+msgid "Lower window below other windows"
+msgstr "Поместить окно под другими окнами"
+
+#: ../src/include/all-keybindings.h:350
+msgid "Maximize window vertically"
+msgstr "Развернуть окно на весь экран вертикально"
+
+#: ../src/include/all-keybindings.h:354
+msgid "Maximize window horizontally"
+msgstr "Развернуть окно на весь экран горизонтально"
+
+#: ../src/include/all-keybindings.h:358
+msgid "Move window to north-west (top left) corner"
+msgstr "Переместить окно в северо-западный (верхний левый) угол"
+
+#: ../src/include/all-keybindings.h:361
+msgid "Move window to north-east (top right) corner"
+msgstr "Переместить окно в северо-восточный (верхний правый) угол"
+
+#: ../src/include/all-keybindings.h:364
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Переместить окно в юго-западный (нижний левый) угол"
+
+#: ../src/include/all-keybindings.h:367
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Переместить окно в юго-восточный (нижний правый) угол"
+
+#: ../src/include/all-keybindings.h:371
+msgid "Move window to north (top) side of screen"
+msgstr "Переместить окно к северной (верхней) стороне экрана"
+
+#: ../src/include/all-keybindings.h:374
+msgid "Move window to south (bottom) side of screen"
+msgstr "Переместить окно к южной (нижней) стороне экрана"
+
+#: ../src/include/all-keybindings.h:377
+msgid "Move window to east (right) side of screen"
+msgstr "Переместить окно к западной (правой) стороне экрана"
+
+#: ../src/include/all-keybindings.h:380
+msgid "Move window to west (left) side of screen"
+msgstr "Переместить окно к восточной (левой) стороне экрана"
+
+#: ../src/include/all-keybindings.h:383
+msgid "Move window to center of screen"
+msgstr "Переместить окно в центр экрана"
+
+#: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr "(Не реализовано) Навигация ведётся по приложениям, а не по окнам"
 
-#: ../src/metacity.schemas.in.h:2
+#: ../src/metacity.schemas.in.in.h:2
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -505,27 +866,23 @@ msgstr ""
 "значение 0. Этот параметр также отключён, если для параметра "
 "titlebar_uses_desktop_font выбрано значение «истина»."
 
-#: ../src/metacity.schemas.in.h:3
+#: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
 msgstr "Действие при двойном щелчке по заголовку окна"
 
-#: ../src/metacity.schemas.in.h:4
+#: ../src/metacity.schemas.in.in.h:4
 msgid "Action on title bar middle-click"
 msgstr "Действие при щелчке по заголовку окна средней кнопкой мыши"
 
-#: ../src/metacity.schemas.in.h:5
+#: ../src/metacity.schemas.in.in.h:5
 msgid "Action on title bar right-click"
 msgstr "Действие при щелчке по заголовку окна правой кнопкой мыши"
 
-#: ../src/metacity.schemas.in.h:6
-msgid "Activate window menu"
-msgstr "Активировать меню окна"
-
-#: ../src/metacity.schemas.in.h:7
+#: ../src/metacity.schemas.in.in.h:6
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Расположение кнопок в заголовке окна"
 
-#: ../src/metacity.schemas.in.h:8
+#: ../src/metacity.schemas.in.in.h:7
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
@@ -536,58 +893,56 @@ msgid ""
 "some space between two adjacent buttons."
 msgstr ""
 "Расположение кнопок в заголовке окна. Значение должно быть строкой, "
-"например, «menu:minimize,maximize,spacer,close». Двоеточие разделяет левый и правый "
-"углы окна, имена кнопок разделяются запятыми. Дублирование кнопок не "
+"например, «menu:minimize,maximize,spacer,close». Двоеточие разделяет левый и "
+"правый углы окна, имена кнопок разделяются запятыми. Дублирование кнопок не "
 "допускается. Неизвестные имена кнопок всегда игнорируются без уведомления, "
-"так что кнопки могут быть добавлены в будущих версиях, не нарушая предыдущих. "
-"Специальный элемент spacer может использоваться для вставки пробела между "
-"двумя кнопками."
+"так что кнопки могут быть добавлены в будущих версиях, не нарушая "
+"предыдущих. Специальный элемент spacer может использоваться для вставки "
+"пробела между двумя кнопками."
 
-#: ../src/metacity.schemas.in.h:9
+#: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
 msgstr "Автоматически поднимать активное окно"
 
-#: ../src/metacity.schemas.in.h:10
+#: ../src/metacity.schemas.in.in.h:9
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
-"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
-"for example."
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
 msgstr ""
 "Щёлкнув по окну при нажатии этой клавиши-модификатора, вы сможете "
 "переместить окно (левая кнопка), изменить его размер (средняя кнопка), или "
-"показать меню окна (правая кнопка). Модификатор определяется, например, как "
-"«&lt;Alt&gt;» или «&lt;Super&gt;»."
+"показать меню окна (правая кнопка). Функции левой и средней кнопки меняются, "
+"если удерживается клавиша \"mouse_button_resize\". Модификатор определяется, "
+"например, как \"&lt;Alt&gt;\" или \"&lt;Super&gt;\"."
 
-#: ../src/metacity.schemas.in.h:11
-msgid "Close window"
-msgstr "Закрыть окно"
-
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
 msgstr "Команды для запуска по комбинациям клавиш"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.in.h:11
 msgid "Compositing Manager"
 msgstr "Менеджер композиции"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.in.h:12
 msgid "Control how new windows get focus"
 msgstr "Определяет, как новое окно получает фокус"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.in.h:13
 msgid "Current theme"
 msgstr "Текущая тема"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Задержка в миллисекундах для параметра автоматического поднятия окна"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Определяет, является ли Metacity менеджером композиции."
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -596,20 +951,16 @@ msgstr ""
 "сигналы. Может быть использован совместно с ключом «видимый сигнал», чтобы "
 "подавать бесшумные «гудки»."
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
 "Отключить неправильные свойства, нужные старым или сломанным приложениям"
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.in.h:18
 msgid "Enable Visual Bell"
 msgstr "Включить видимый сигнал"
 
-#: ../src/metacity.schemas.in.h:21
-msgid "Hide all windows and focus desktop"
-msgstr "Скрыть все окна и активировать рабочий стол"
-
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.in.h:19
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focused window will be automatically raised after a delay specified by "
@@ -621,7 +972,7 @@ msgstr ""
 "задержки, указанной в ключе auto_raise_delay. Это не касается ни щелчка по "
 "окну для его поднятия, ни перехода в окно путём перетаскивания в него."
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.in.h:20
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -629,7 +980,7 @@ msgstr ""
 "Если этот ключ установлен, то параметр titlebar_font игнорируется, и для "
 "заголовков окон используется стандартный шрифт приложения."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.in.h:21
 msgid ""
 "If true, metacity will give the user less feedback by using wireframes, "
 "avoiding animations, or other means. This is a significant reduction in "
@@ -645,7 +996,7 @@ msgstr ""
 "отображение контурной рамки отключается при включении специальных "
 "возможностей."
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.in.h:22
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -663,215 +1014,25 @@ msgstr ""
 "режима, основанного на приложениях, в настоящий момент ещё весьма далека от "
 "завершения."
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
 msgstr ""
 "Если этот ключ установлен, то Metacity использует меньше системных ресурсов "
 "за счёт пониженного удобства в использовании."
 
-#: ../src/metacity.schemas.in.h:27
-msgid "Lower window below other windows"
-msgstr "Поместить окно под другими окнами"
-
-#: ../src/metacity.schemas.in.h:28
-msgid ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Setting this option to "
-"false, which is strongly discouraged, will decouple raising from other user "
-"actions, and ignore raise requests generated by applications. See http://"
-"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr ""
-"Многие действия (например, щелчок в клиентской области, перемещение или "
-"изменение размеров окна) обычно имеют побочный эффект поднятия окна на "
-"передний план. Если установить этот ключ в значение «ложь» — что "
-"настоятельно не рекомендуется делать — то  подъём окна будет отделён от "
-"других действий, а запросы на поднятие окна от приложений будут "
-"игнорироваться. Смотрите http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6"
-
-#: ../src/metacity.schemas.in.h:29
-msgid "Maximize window"
-msgstr "Развернуть окно на весь экран"
-
-#: ../src/metacity.schemas.in.h:30
-msgid "Maximize window horizontally"
-msgstr "Развернуть окно на весь экран горизонтально"
-
-#: ../src/metacity.schemas.in.h:31
-msgid "Maximize window vertically"
-msgstr "Развернуть окно на весь экран вертикально"
-
-#: ../src/metacity.schemas.in.h:32
-msgid "Minimize window"
-msgstr "Свернуть окно"
-
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.in.h:24
 msgid "Modifier to use for modified window click actions"
 msgstr "Модификатор для действий по щелчку мыши"
 
-#: ../src/metacity.schemas.in.h:34
-msgid "Move backward between panels and the desktop immediately"
-msgstr ""
-"Переключиться в обратном порядке между панелями и рабочим столом немедленно"
-
-#: ../src/metacity.schemas.in.h:35
-msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
-"Переключиться в обратном порядке между панелями и рабочим столом через "
-"всплывающее окно"
-
-#: ../src/metacity.schemas.in.h:36
-msgid "Move backwards between windows immediately"
-msgstr "Переключиться в обратном порядке между окнами немедленно"
-
-#: ../src/metacity.schemas.in.h:37
-msgid "Move backwards between windows of an application immediately"
-msgstr "Переключиться в обратном порядке между окнами приложения немедленно"
-
-#: ../src/metacity.schemas.in.h:38
-msgid "Move backwards between windows of an application with popup"
-msgstr ""
-"Переключиться в обратном порядке между окнами приложения через всплывающее "
-"окно"
-
-#: ../src/metacity.schemas.in.h:39
-msgid "Move between panels and the desktop immediately"
-msgstr "Переключиться между панелями и рабочим столом немедленно"
-
-#: ../src/metacity.schemas.in.h:40
-msgid "Move between panels and the desktop with popup"
-msgstr "Переключиться между панелями и рабочим столом через всплывающее окно"
-
-#: ../src/metacity.schemas.in.h:41
-msgid "Move between windows immediately"
-msgstr "Переключиться между окнами немедленно"
-
-#: ../src/metacity.schemas.in.h:42
-msgid "Move between windows of an application immediately"
-msgstr "Переключиться между окнами приложения немедленно"
-
-#: ../src/metacity.schemas.in.h:43
-msgid "Move between windows of an application with popup"
-msgstr "Переключиться между окнами приложения через всплывающее окно"
-
-#: ../src/metacity.schemas.in.h:44
-msgid "Move between windows with popup"
-msgstr "Переключиться между окнами через всплывающее окно"
-
-#: ../src/metacity.schemas.in.h:45
-msgid "Move focus backwards between windows using popup display"
-msgstr ""
-"Переключиться в обратном порядке между окнами с использованием всплывающего "
-"окна"
-
-#: ../src/metacity.schemas.in.h:46
-msgid "Move window"
-msgstr "Переместить окно"
-
-#: ../src/metacity.schemas.in.h:47
-msgid "Move window one workspace down"
-msgstr "Переместить окно на одно рабочее место вниз"
-
-#: ../src/metacity.schemas.in.h:48
-msgid "Move window one workspace to the left"
-msgstr "Переместить окно на одно рабочее место влево"
-
-#: ../src/metacity.schemas.in.h:49
-msgid "Move window one workspace to the right"
-msgstr "Переместить окно на одно рабочее место вправо"
-
-#: ../src/metacity.schemas.in.h:50
-msgid "Move window one workspace up"
-msgstr "Переместить окно на одно рабочее место вверх"
-
-#: ../src/metacity.schemas.in.h:51
-msgid "Move window to east side of screen"
-msgstr "Переместить окно к правой стороне экрана"
-
-#: ../src/metacity.schemas.in.h:52
-msgid "Move window to north side of screen"
-msgstr "Переместить окно к верхней стороне экрана"
-
-#: ../src/metacity.schemas.in.h:53
-msgid "Move window to north-east corner"
-msgstr "Переместить окно в верхний правый угол"
-
-#: ../src/metacity.schemas.in.h:54
-msgid "Move window to north-west corner"
-msgstr "Переместить окно в верхний левый угол"
-
-#: ../src/metacity.schemas.in.h:55
-msgid "Move window to south side of screen"
-msgstr "Переместить окно к нижней стороне экрана"
-
-#: ../src/metacity.schemas.in.h:56
-msgid "Move window to south-east corner"
-msgstr "Переместить окно в правый нижний угол"
-
-#: ../src/metacity.schemas.in.h:57
-msgid "Move window to south-west corner"
-msgstr "Переместить окно в левый нижний угол"
-
-#: ../src/metacity.schemas.in.h:58
-msgid "Move window to west side of screen"
-msgstr "Переместить окно к левой стороне экрана"
-
-#: ../src/metacity.schemas.in.h:59
-msgid "Move window to workspace 1"
-msgstr "Переместить окно на рабочее место 1"
-
-#: ../src/metacity.schemas.in.h:60
-msgid "Move window to workspace 10"
-msgstr "Переместить окно на рабочее место 10"
-
-#: ../src/metacity.schemas.in.h:61
-msgid "Move window to workspace 11"
-msgstr "Переместить окно на рабочее место 11"
-
-#: ../src/metacity.schemas.in.h:62
-msgid "Move window to workspace 12"
-msgstr "Переместить окно на рабочее место 12"
-
-#: ../src/metacity.schemas.in.h:63
-msgid "Move window to workspace 2"
-msgstr "Переместить окно на рабочее место 2"
-
-#: ../src/metacity.schemas.in.h:64
-msgid "Move window to workspace 3"
-msgstr "Переместить окно на рабочее место 3"
-
-#: ../src/metacity.schemas.in.h:65
-msgid "Move window to workspace 4"
-msgstr "Переместить окно на рабочее место 4"
-
-#: ../src/metacity.schemas.in.h:66
-msgid "Move window to workspace 5"
-msgstr "Переместить окно на рабочее место 5"
-
-#: ../src/metacity.schemas.in.h:67
-msgid "Move window to workspace 6"
-msgstr "Переместить окно на рабочее место 6"
-
-#: ../src/metacity.schemas.in.h:68
-msgid "Move window to workspace 7"
-msgstr "Переместить окно на рабочее место 7"
-
-#: ../src/metacity.schemas.in.h:69
-msgid "Move window to workspace 8"
-msgstr "Переместить окно на рабочее место 8"
-
-#: ../src/metacity.schemas.in.h:70
-msgid "Move window to workspace 9"
-msgstr "Переместить окно на рабочее место 9"
-
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.in.h:25
 msgid "Name of workspace"
 msgstr "Название рабочего места"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.in.h:26
 msgid "Number of workspaces"
 msgstr "Число рабочих мест"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.in.h:27
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -880,37 +1041,64 @@ msgstr ""
 "Число рабочих мест. Должно быть больше нуля. Имеет фиксированный максимум, "
 "чтобы нельзя было разрушить среду, запросив слишком много рабочих мест."
 
-#: ../src/metacity.schemas.in.h:74
-msgid "Raise obscured window, otherwise lower"
-msgstr ""
-"Поднять окно на передний план, если оно заслонено другими, иначе опустить на "
-"задний"
-
-#: ../src/metacity.schemas.in.h:75
-msgid "Raise window above other windows"
-msgstr "Поднять окно на передний план"
-
-#: ../src/metacity.schemas.in.h:76
-msgid "Resize window"
-msgstr "Изменить размер окна"
-
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.in.h:28
 msgid "Run a defined command"
 msgstr "Запустить определённую команду"
 
-#: ../src/metacity.schemas.in.h:78
-msgid "Run a terminal"
-msgstr "Открыть терминал"
+#: ../src/metacity.schemas.in.in.h:29
+msgid ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
+msgstr ""
+"Если ключ установлен, размер окна изменяется правой кнопкой мыши, а меню "
+"показывается средней, если удерживается клавиша, заданная в "
+"\"mouse_button_modifier\". Если ключ не установлен, функции кнопок мыши "
+"меняются местами."
 
-#: ../src/metacity.schemas.in.h:79
-msgid "Show the panel menu"
-msgstr "Вызвать главное меню (меню панели)"
+#: ../src/metacity.schemas.in.in.h:30
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+"Если этот параметр не установлен, возможно ошибочное поведение, поэтому мы "
+"настоятельно рекомендуем воздержаться от изменений значения по умолчанию. "
+"Многие действия (например, щелчок по окну, перемещение окна или изменение "
+"его размера) обычно поднимают окно на передний план. Если этот параметр не "
+"установлен, что настоятельно не рекомендуется, поднятие на передний план "
+"будет отделено от других действий и запросы на поднятие окна на передний "
+"план, поступающие от приложений, будут игнорироваться. Смотрите http://"
+"bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Даже если этот параметр не "
+"установлен, окна могут быть подняты на передний план с помощью "
+"одновременного нажатия на клавишу Alt и щелчка левой кнопкой мыши по любой "
+"области окна, щелчка по заголовку окна или специальных сообщений, таких как "
+"запросы на поднятие окна. Это поведение в данный момент выключено в режиме "
+"щелчка для передачи фокуса. Заметьте, что обозначенный выше список не "
+"включает в себя программные запросы от приложений о поднятии окон на "
+"передний план, такие запросы будут проигнорированы независимо от причины. "
+"Если вы разработчик приложения и вам приходится слушать замечания "
+"пользователей, что ваше приложение работает некорректно, укажите им, что "
+"_они_ допустили ошибку, выключив этот параметр и сломав менеджер окон, и что "
+"они должны вернуть этому параметру значение по умолчанию или прекратить "
+"посылать замечания."
 
-#: ../src/metacity.schemas.in.h:80
-msgid "Show the panel run application dialog"
-msgstr "Показать диалог запуска программы"
-
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.in.h:31
 msgid ""
 "Some applications disregard specifications in ways that result in window "
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
@@ -923,83 +1111,11 @@ msgstr ""
 "всем окнам более последовательный внешний вид, но при этом приложения с "
 "ошибками могут работать неправильно."
 
-#: ../src/metacity.schemas.in.h:82
-msgid "Switch to workspace 1"
-msgstr "Переключиться на рабочее место 1"
-
-#: ../src/metacity.schemas.in.h:83
-msgid "Switch to workspace 10"
-msgstr "Переключиться на рабочее место 10"
-
-#: ../src/metacity.schemas.in.h:84
-msgid "Switch to workspace 11"
-msgstr "Переключиться на рабочее место 11"
-
-#: ../src/metacity.schemas.in.h:85
-msgid "Switch to workspace 12"
-msgstr "Переключиться на рабочее место 12"
-
-#: ../src/metacity.schemas.in.h:86
-msgid "Switch to workspace 2"
-msgstr "Переключиться на рабочее место 2"
-
-#: ../src/metacity.schemas.in.h:87
-msgid "Switch to workspace 3"
-msgstr "Переключиться на рабочее место 3"
-
-#: ../src/metacity.schemas.in.h:88
-msgid "Switch to workspace 4"
-msgstr "Переключиться на рабочее место 4"
-
-#: ../src/metacity.schemas.in.h:89
-msgid "Switch to workspace 5"
-msgstr "Переключиться на рабочее место 5"
-
-#: ../src/metacity.schemas.in.h:90
-msgid "Switch to workspace 6"
-msgstr "Переключиться на рабочее место 6"
-
-#: ../src/metacity.schemas.in.h:91
-msgid "Switch to workspace 7"
-msgstr "Переключиться на рабочее место 7"
-
-#: ../src/metacity.schemas.in.h:92
-msgid "Switch to workspace 8"
-msgstr "Переключиться на рабочее место 8"
-
-#: ../src/metacity.schemas.in.h:93
-msgid "Switch to workspace 9"
-msgstr "Переключиться на рабочее место 9"
-
-#: ../src/metacity.schemas.in.h:94
-msgid "Switch to workspace above this one"
-msgstr "Переключиться на рабочее место сверху"
-
-#: ../src/metacity.schemas.in.h:95
-msgid "Switch to workspace below this one"
-msgstr "Переключиться на рабочее место снизу"
-
-#: ../src/metacity.schemas.in.h:96
-msgid "Switch to workspace on the left"
-msgstr "Переключиться на рабочее место слева"
-
-#: ../src/metacity.schemas.in.h:97
-msgid "Switch to workspace on the right"
-msgstr "Переключиться на рабочее место справа"
-
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
 msgstr "Системный сигнал — слышимый"
 
-#: ../src/metacity.schemas.in.h:99
-msgid "Take a screenshot"
-msgstr "Получить снимок экрана"
-
-#: ../src/metacity.schemas.in.h:100
-msgid "Take a screenshot of a window"
-msgstr "Получить снимок окна"
-
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.in.h:33
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -1015,7 +1131,7 @@ msgstr ""
 "приложение в котором подало звуковой сигнал. Если неизвестно, какое "
 "приложение подало сигнал, мерцать будет заголовок активного окна."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.in.h:34
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -1025,7 +1141,7 @@ msgstr ""
 "клавиш, которые соответствуют этим командам. Нажатие комбинации "
 "run_command_N запустит на выполнение command_N."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.in.h:35
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -1034,7 +1150,7 @@ msgstr ""
 "комбинацию клавиш, которая вызывает запуск команды, определённой в данном "
 "ключе."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.in.h:36
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -1044,7 +1160,7 @@ msgstr ""
 "определяет комбинацию клавиш, которая вызывает запуск команды, определённой "
 "в данном ключе."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.in.h:37
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -1058,1014 +1174,23 @@ msgstr ""
 "или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно "
 "использовать верхний и нижний регистр и сокращения, например \"&lt;Ctrl&gt;"
 "\" и \"&lt;Ctrl&gt;\". Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
+"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не будет."
 
-#: ../src/metacity.schemas.in.h:106
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область над текущей рабочей "
-"областью. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;"
-"Alt&gt;F1». Формат выражения не очень строг, можно использовать верхний и "
-"нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если "
-"для этого параметра выбрать значение «disabled» («отключён»), комбинация "
-"клавиш для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:107
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область под текущей рабочей "
-"областью. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;"
-"Alt&gt;F1». Формат выражения не очень строг, можно использовать верхний и "
-"нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если "
-"для этого параметра выбрать значение «disabled» («отключён»), комбинация "
-"клавиш для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:108
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область слева от текущей "
-"рабочей области. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;"
-"&lt;Alt&gt;F1». Формат выражения не очень строг, можно использовать верхний "
-"и нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если "
-"для этого параметра выбрать значение «disabled» («отключён»), комбинация "
-"клавиш для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:109
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область справа от текущей "
-"рабочей области. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;"
-"&lt;Alt&gt;F1». Формат выражения не очень строг, можно использовать верхний "
-"и нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если "
-"для этого параметра выбрать значение «disabled» («отключён»), комбинация "
-"клавиш для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:110
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 1. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:111
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 10. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:112
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 11. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:113
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 12. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:114
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 2. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:115
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 3. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:116
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 4. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:117
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 5. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:118
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 6. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:119
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 7. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:120
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 8. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:121
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения на рабочую область 9. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:122
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для активации меню окна. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:123
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для закрытия окна. Используется формат «&lt;Control&gt;a» "
-"или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно "
-"использовать верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и "
-"«&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:124
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для входа в \"режим перемещения\" и для начала перемещения "
-"окна с помощью клавиатуры. Используется формат «&lt;Control&gt;a» или «&lt;"
-"Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно использовать "
-"верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;"
-"Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:125
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для входа в \"режим изменения размера\" и для начала "
-"изменения размера окна с помощью клавиатуры. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:126
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для того, чтобы скрыть все обычные окна и сделать активным "
-"рабочий стол. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;"
-"Alt&gt;F1». Формат выражения не очень строг, можно использовать верхний и "
-"нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если "
-"для этого параметра выбрать значение «disabled» («отключён»), комбинация "
-"клавиш для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:127
-msgid ""
-"The keybinding used to maximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для разворачивания окна на весь экран. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:128
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для сворачивания окна. Используется формат «&lt;Control&gt;"
-"a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно "
-"использовать верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и "
-"«&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:129
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на одно рабочее место вниз. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:130
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на одно рабочее место влево. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:131
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на одно рабочее место вправо. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:132
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на одно рабочее место вверх. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:133
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 1. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:134
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 10. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:135
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 11. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:136
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 12. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:137
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 2. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:138
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 3. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:139
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 4. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:140
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 5. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:141
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 6. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:142
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 7. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:143
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 8. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:144
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения окна на рабочее место 9. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:145
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для обратного перемещения фокуса между панелями и рабочим "
-"столом с использованием всплывающего окна. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:146
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для обратного перемещения фокуса между панелями и рабочим "
-"столом без использования всплывающего окна. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:147
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application without a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для обратного перемещения фокуса между окнами без "
-"использования всплывающего окна. Нажатие клавиши «shift» при использовании "
-"этой комбинации меняет направление на прямое. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:148
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application, using a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для обратного перемещения фокуса между окнами с "
-"использованием всплывающего окна. Нажатие клавиши «shift» при использовании "
-"этой комбинации меняет направление на прямое. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:149
-msgid ""
-"The keybinding used to move focus backwards between windows without a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для обратного перемещения фокуса между окнами без "
-"использования всплывающего окна. Нажатие клавиши «shift» при использовании "
-"этой комбинации меняет направление на прямое. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:150
-msgid ""
-"The keybinding used to move focus backwards between windows, using a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для обратного перемещения фокуса между окнами с "
-"использованием всплывающего окна. Нажатие клавиши «shift» при использовании "
-"этой комбинации меняет направление на прямое. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:151
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения фокуса между панелями и рабочим столом с "
-"использованием всплывающего окна. Используется формат «&lt;Control&gt;a» или "
-"«&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно "
-"использовать верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и "
-"«&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:152
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения фокуса между панелями и рабочим столом без "
-"использования всплывающего окна. Используется формат «&lt;Control&gt;a» или "
-"«&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно "
-"использовать верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и "
-"«&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:153
-msgid ""
-"The keybinding used to move focus between windows of an application without "
-"a popup window. Holding the \"shift\" key while using this binding reverses "
-"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения фокуса между окнами без использования "
-"всплывающего окна. Нажатие клавиши «shift» при использовании этой комбинации "
-"меняет направление перемещения. Используется формат «&lt;Control&gt;a» или "
-"«&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно "
-"использовать верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и "
-"«&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:154
-msgid ""
-"The keybinding used to move focus between windows of an application, using a "
-"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
-"using this binding reverses the direction of movement. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения фокуса между окнами с использованием "
-"всплывающего окна (традиционно &lt;Alt&gt;F6). Нажатие клавиши «shift» при "
-"использовании этой комбинации меняет направление перемещения. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:155
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения фокуса между окнами без использования "
-"всплывающего окна (традиционно &lt;Alt&gt;Escape). Нажатие клавиши «shift» "
-"при использовании этой комбинации меняет направление перемещения. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:156
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для перемещения фокуса между окнами с использованием "
-"всплывающего окна (традиционно &lt;Alt&gt;Tab). Нажатие клавиши «shift» при "
-"использовании этой комбинации меняет направление перемещения. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:157
-msgid ""
-"The keybinding used to toggle always on top. A window that is always on top "
-"will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для переключения состояния окна «всегда наверху». "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:158
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для вызова полноэкранного режима. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:159
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для развёртывания окна на весь экран и свёртывания "
-"обратно. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;"
-"F1». Формат выражения не очень строг, можно использовать верхний и нижний "
-"регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для "
-"этого параметра выбрать значение «disabled» («отключён»), комбинация клавиш "
-"для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:160
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для свёртывания окна в полоску и развёртывания обратно. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:161
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбинация клавиш для выбора того, будет ли окно видно на всех рабочих "
-"столах, или только на одном. Используется формат «&lt;Control&gt;a» или «&lt;"
-"Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно использовать "
-"верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;"
-"Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:162
-msgid ""
-"The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для восстановления размера окна. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:163
-msgid ""
-"The keybinding which display's the panel's \"Run Application\" dialog box. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для вызова диалога «Запустить программу». Сам диалог и его "
-"настройки принадлежат панели, Metacity только передает панели запрос на "
-"вызов этого диалога.  Используется формат «&lt;Control&gt;a» или «&lt;"
-"Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень строг, можно использовать "
-"верхний и нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;"
-"Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:164
-msgid ""
-"The keybinding which invokes a terminal. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш, которая вызывает терминал. Используется формат «&lt;"
-"Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не очень "
-"строг, можно использовать верхний и нижний регистр и сокращения, например "
-"«&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать значение "
-"«disabled» («отключён»), комбинация клавиш для этого действия выбрана не "
-"будет."
-
-#: ../src/metacity.schemas.in.h:165
-msgid ""
-"The keybinding which invokes the panel's screenshot utility to take a "
-"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для вызова средства создания снимка отдельного окна.  "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;».  Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:166
-msgid ""
-"The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для вызова средства создания снимка экрана. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;».  Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:167
-msgid ""
-"The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для активации главного меню панели. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
 msgstr "Имя рабочего места:"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.in.h:39
 msgid "The screenshot command"
 msgstr "Команда для получения снимка экрана"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.in.h:40
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Тема определяет внешний вид границ окна, заголовка окна и так далее"
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.in.h:41
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -2073,7 +1198,7 @@ msgstr ""
 "Время задержки всплывания окна, если установлен ключ auto_raise. Задержка "
 "измеряется в миллисекундах."
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.in.h:42
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -2084,224 +1209,15 @@ msgstr ""
 "Режим передачи фокуса в окно определяет, как активируются окна. У этого "
 "режима три возможных значения; «click» — означает, что для активации окна на "
 "нём надо щелкнуть; «sloppy» — означает, что окно активируется, когда на него "
-"перемещается указатель мыши; «mouse» — означает, что окно активируется, "
-"когда в него перемещается указатель мыши, и перестает быть активным, когда "
+"перемещается указатель мыши; «mouse» — означает, что окно активируется, когда "
+"в него перемещается указатель мыши, и перестает быть активным, когда "
 "указатель мыши выходит из него."
 
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
 msgstr "Команда для получения снимка окна"
 
-#: ../src/metacity.schemas.in.h:174
-msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another one, it raises the window above all others, "
-"and if the window is already fully visible, it lowers it below all others. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш, которая определяет, будет ли окно расположено поверх "
-"остальных окон или за ними. Если окно закрыто другим окном, оно появится "
-"поверх других окон. Если окно уже полностью видно, оно скроется за другими "
-"окнами. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;"
-"F1». Формат выражения не очень строг, можно использовать верхний и нижний "
-"регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для "
-"этого параметра выбрать значение «disabled» («отключён»), комбинация клавиш "
-"для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:175
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна под всеми окнами. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:176
-msgid ""
-"This keybinding moves a window against the north (top) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна к верхней стороне экрана. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:177
-msgid ""
-"This keybinding moves a window into the east (right) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна к правой стороне экрана. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:178
-msgid ""
-"This keybinding moves a window into the north-east (top right) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбинация клавиш для помещения в верхний правый угол экрана. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:179
-msgid ""
-"This keybinding moves a window into the north-west (top left) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна в верхний левый угол экрана. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:180
-msgid ""
-"This keybinding moves a window into the south (bottom) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна к нижней стороне экрана. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:181
-msgid ""
-"This keybinding moves a window into the south-east (bottom right) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна в нижний правый угол экрана. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:182
-msgid ""
-"This keybinding moves a window into the south-west (bottom left) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна в нижний левый угол экрана. "
-"Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». "
-"Формат выражения не очень строг, можно использовать верхний и нижний регистр "
-"и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого "
-"параметра выбрать значение «disabled» («отключён»), комбинация клавиш для "
-"этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:183
-msgid ""
-"This keybinding moves a window into the west (left) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна к левой стороне экрана. Используется "
-"формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения "
-"не очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «disabled» («отключён»), комбинация клавиш для этого действия "
-"выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:184
-msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбинация клавиш для помещения окна над всеми окнами. Используется формат "
-"«&lt;Control&gt;a» или «&lt;Shift&gt;&lt;Alt&gt;F1». Формат выражения не "
-"очень строг, можно использовать верхний и нижний регистр и сокращения, "
-"например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если для этого параметра выбрать "
-"значение «отключён», комбинация клавиш для этого действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:185
-msgid ""
-"This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для заполнения окном всего доступного горизонтального "
-"пространства. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;"
-"Alt&gt;F1». Формат выражения не очень строг, можно использовать верхний и "
-"нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если "
-"для этого параметра выбрать значение «отключён», комбинация клавиш для этого "
-"действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:186
-msgid ""
-"This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбинация клавиш для заполнения окном всего доступного вертикального "
-"пространства. Используется формат «&lt;Control&gt;a» или «&lt;Shift&gt;&lt;"
-"Alt&gt;F1». Формат выражения не очень строг, можно использовать верхний и "
-"нижний регистр и сокращения, например «&lt;Ctl&gt;» и «&lt;Ctrl&gt;». Если "
-"для этого параметра выбрать значение «отключён», комбинация клавиш для этого "
-"действия выбрана не будет."
-
-#: ../src/metacity.schemas.in.h:187
+#: ../src/metacity.schemas.in.in.h:44
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2316,12 +1232,12 @@ msgstr ""
 "время допустимыми значениями являются «toggle_shade» (скручивает окно в "
 "полоску или раскатывает обратно), «toggle_maximize» (разворачивает окно или "
 "восстанавливает обычный размер),  «toggle_maximize_vertically» и "
-"«toggle_maximize_horizontally» (разворачивает окно только в одном направлении или "
-"восстанавливает обычный размер), «minimize» (сворачивает окно), «shade» (скрутит "
-"окно вверх), «menu» (показывает меню окна), «lower» (помещает окно под другими) "
-"и, наконец, «none» (не делает ничего)."
+"«toggle_maximize_horizontally» (разворачивает окно только в одном направлении "
+"или восстанавливает обычный размер), «minimize» (сворачивает окно), "
+"«shade» (скрутит окно вверх), «menu» (показывает меню окна), «lower» (помещает "
+"окно под другими) и, наконец, «none» (не делает ничего)."
 
-#: ../src/metacity.schemas.in.h:188
+#: ../src/metacity.schemas.in.in.h:45
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2333,16 +1249,15 @@ msgid ""
 "the others, and 'none' which will not do anything."
 msgstr ""
 "Этот ключ определяет действие щелчка средней кнопкой мыши по заголовку окна. "
-"В настоящее время допустимыми значениями являются «toggle_shade» (скручивает окно в "
-"полоску или раскатывает обратно), «toggle_maximize» (разворачивает окно или "
-"восстанавливает обычный размер),  «toggle_maximize_vertically» и "
-"«toggle_maximize_horizontally» (разворачивает окно только в одном направлении или "
-"восстанавливает обычный размер), «minimize» (сворачивает окно), «shade» (скрутит "
-"окно вверх), «menu» (показывает меню окна), «lower» (помещает окно под другими) "
-"и, наконец, «none» (не делает ничего)."
+"В настоящее время допустимыми значениями являются «toggle_shade» (скручивает "
+"окно в полоску или раскатывает обратно), «toggle_maximize» (разворачивает "
+"окно или восстанавливает обычный размер),  «toggle_maximize_vertically» и "
+"«toggle_maximize_horizontally» (разворачивает окно только в одном направлении "
+"или восстанавливает обычный размер), «minimize» (сворачивает окно), "
+"«shade» (скрутит окно вверх), «menu» (показывает меню окна), «lower» (помещает "
+"окно под другими) и, наконец, «none» (не делает ничего)."
 
-
-#: ../src/metacity.schemas.in.h:189
+#: ../src/metacity.schemas.in.in.h:46
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2354,16 +1269,15 @@ msgid ""
 "the others, and 'none' which will not do anything."
 msgstr ""
 "Этот ключ определяет действия щелчка средней кнопкой мыши по заголовку окна. "
-"В настоящее время допустимыми значениями являются «toggle_shade» (скручивает окно в "
-"полоску или раскатывает обратно), «toggle_maximize» (разворачивает окно или "
-"восстанавливает обычный размер),  «toggle_maximize_vertically» и "
-"«toggle_maximize_horizontally» (разворачивает окно только в одном направлении или "
-"восстанавливает обычный размер), «minimize» (сворачивает окно), «shade» (скрутит "
-"окно вверх), «menu» (показывает меню окна), «lower» (помещает окно под другими) "
-"и, наконец, «none» (не делает ничего)."
+"В настоящее время допустимыми значениями являются «toggle_shade» (скручивает "
+"окно в полоску или раскатывает обратно), «toggle_maximize» (разворачивает "
+"окно или восстанавливает обычный размер),  «toggle_maximize_vertically» и "
+"«toggle_maximize_horizontally» (разворачивает окно только в одном направлении "
+"или восстанавливает обычный размер), «minimize» (сворачивает окно), "
+"«shade» (скрутит окно вверх), «menu» (показывает меню окна), «lower» (помещает "
+"окно под другими) и, наконец, «none» (не делает ничего)."
 
-
-#: ../src/metacity.schemas.in.h:190
+#: ../src/metacity.schemas.in.in.h:47
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -2375,27 +1289,7 @@ msgstr ""
 "обычный режим фокуса пользователя, а «strict» приводит к тому, что окна, "
 "запущенные из терминала, не получают фокус."
 
-#: ../src/metacity.schemas.in.h:191
-msgid "Toggle always on top state"
-msgstr "Переключить состояние «всегда наверху»"
-
-#: ../src/metacity.schemas.in.h:192
-msgid "Toggle fullscreen mode"
-msgstr "Переключить полноэкранный режим"
-
-#: ../src/metacity.schemas.in.h:193
-msgid "Toggle maximization state"
-msgstr "Переключить состояние развёрнутости на весь экран"
-
-#: ../src/metacity.schemas.in.h:194
-msgid "Toggle shaded state"
-msgstr "Переключить состояние скрученности в полоску"
-
-#: ../src/metacity.schemas.in.h:195
-msgid "Toggle window on all workspaces"
-msgstr "Переключить расположение на всех рабочих местах"
-
-#: ../src/metacity.schemas.in.h:196
+#: ../src/metacity.schemas.in.in.h:48
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2404,72 +1298,77 @@ msgstr ""
 "Включает визуальную индикацию системного звукового сигнала. Это полезно для "
 "слабослышащих и при работе в шумном окружении."
 
-#: ../src/metacity.schemas.in.h:197
-msgid "Unmaximize window"
-msgstr "Восстановить прежний размер окна"
-
-#: ../src/metacity.schemas.in.h:198
+#: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
 msgstr "Использовать стандартный системный шрифт в заголовках окон"
 
-#: ../src/metacity.schemas.in.h:199
+#: ../src/metacity.schemas.in.in.h:50
 msgid "Visual Bell Type"
 msgstr "Тип видимого сигнала"
 
-#: ../src/metacity.schemas.in.h:200
+#: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr ""
 "Должно ли поднятие окна быть побочным эффектом других действий пользователя"
 
-#: ../src/metacity.schemas.in.h:201
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Whether to resize with the right button"
+msgstr "Изменение размера с использование правой кнопки мыши"
+
+#: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
 msgstr "Режим активации окна"
 
-#: ../src/metacity.schemas.in.h:202
+#: ../src/metacity.schemas.in.in.h:54
 msgid "Window title font"
 msgstr "Шрифт заголовка окна"
 
-#: ../src/ui/frames.c:1077
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Применение: %s\n"
+
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "Закрыть окно"
 
-#: ../src/ui/frames.c:1080
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Меню окна"
 
-#: ../src/ui/frames.c:1083
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "Свернуть окно"
 
-#: ../src/ui/frames.c:1086
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "Развернуть окно на весь экран"
 
-#: ../src/ui/frames.c:1089
-msgid "Unmaximize Window"
-msgstr "Восстановить прежний размер окна"
+#: ../src/ui/frames.c:1130
+msgid "Restore Window"
+msgstr "Восстановить окно"
 
-#: ../src/ui/frames.c:1092
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "Скрутить окно в полоску"
 
-#: ../src/ui/frames.c:1095
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "Раскатать окно"
 
-#: ../src/ui/frames.c:1098
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Сохранять окно на переднем плане"
 
-#: ../src/ui/frames.c:1101
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Убрать с переднего плана"
 
-#: ../src/ui/frames.c:1104
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "Всегда на видимом рабочем месте"
 
-#: ../src/ui/frames.c:1107
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Помещать только на одно рабочее место"
 
@@ -2555,16 +1454,22 @@ msgstr "Переместить на рабочее место в_низ"
 msgid "_Close"
 msgstr "_Закрыть"
 
-#: ../src/ui/menu.c:208
+#: ../src/ui/menu.c:203
+#, c-format
+msgid "Workspace %d%n"
+msgstr "Рабочее место %d%n"
+
+#: ../src/ui/menu.c:213
+#, c-format
 msgid "Workspace 1_0"
 msgstr "Рабочее место 1_0"
 
-#: ../src/ui/menu.c:210
+#: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Рабочее место %s%d"
 
-#: ../src/ui/menu.c:390
+#: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
 msgstr "Переместить на другое _рабочее место"
 
@@ -2573,7 +1478,7 @@ msgstr "Переместить на другое _рабочее место"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:105
+#: ../src/ui/metaaccellabel.c:104
 msgid "Shift"
 msgstr "Shift"
 
@@ -2582,7 +1487,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:111
+#: ../src/ui/metaaccellabel.c:110
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -2591,7 +1496,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:117
+#: ../src/ui/metaaccellabel.c:116
 msgid "Alt"
 msgstr "Alt"
 
@@ -2600,7 +1505,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:123
+#: ../src/ui/metaaccellabel.c:122
 msgid "Meta"
 msgstr "Meta"
 
@@ -2609,7 +1514,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:129
+#: ../src/ui/metaaccellabel.c:128
 msgid "Super"
 msgstr "Super"
 
@@ -2618,7 +1523,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:135
+#: ../src/ui/metaaccellabel.c:134
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -2627,7 +1532,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:141
+#: ../src/ui/metaaccellabel.c:140
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -2636,7 +1541,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:147
+#: ../src/ui/metaaccellabel.c:146
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -2645,7 +1550,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:153
+#: ../src/ui/metaaccellabel.c:152
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -2654,482 +1559,541 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:159
+#: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "«%s» не отвечает."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "Можно немного подождать или заставить приложение завершить работу."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Подождать"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "Завер_шить"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Заголовок"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Класс"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Эти окна не поддерживают команду «Сохранить текущие настройки». При "
-"следующем входе в систему их придётся перезапустить вручную."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Произошла ошибка при запуске программы «%s»:\n"
-"%s."
-
+#. Translators: This represents the size of a window.  The first number is
+#. * the width of the window and the second is the height.
+#.
 #: ../src/ui/resizepopup.c:113
 #, c-format
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/ui/theme-parser.c:227 ../src/ui/theme-parser.c:245
+#: ../src/ui/theme.c:254
+msgid "top"
+msgstr "top"
+
+#: ../src/ui/theme.c:256
+msgid "bottom"
+msgstr "bottom"
+
+#: ../src/ui/theme.c:258
+msgid "left"
+msgstr "left"
+
+#: ../src/ui/theme.c:260
+msgid "right"
+msgstr "right"
+
+#: ../src/ui/theme.c:287
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "геометрия рамки не указывает размер «%s»"
+
+#: ../src/ui/theme.c:306
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "геометрия рамки не указывает размер «%s» для границы «%s»"
+
+#: ../src/ui/theme.c:343
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "Соотношение сторон кнопки %g недопустимо"
+
+#: ../src/ui/theme.c:355
+#, c-format
+msgid "Frame geometry does not specify size of buttons"
+msgstr "Геометрия рамки не указывает размер кнопок"
+
+#: ../src/ui/theme.c:1020
+#, c-format
+msgid "Gradients should have at least two colors"
+msgstr "У градиентов должно быть не меньше двух цветов"
+
+#: ../src/ui/theme.c:1146
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"У спецификации цвета GTK+ в скобках должен быть указан режим, например, gtk:"
+"fg[NORMAL], где NORMAL — это режим; не удалось разобрать «%s»"
+
+#: ../src/ui/theme.c:1160
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"У спецификации цвета GTK+ после указания режима должна быть закрывающая "
+"скобка, например, gtk:fg[NORMAL], где NORMAL — это режим; не удалось "
+"разобрать «%s»"
+
+#: ../src/ui/theme.c:1171
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "Не удалось распознать режим «%s» в спецификации цвета"
+
+#: ../src/ui/theme.c:1184
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "Не удалось распознать составную часть цвета «%s» в спецификации цвета"
+
+#: ../src/ui/theme.c:1214
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Формат определения смешанного цвета — «blend/bg_color/fg_color/alpha»; «%s» не "
+"соответствует формату"
+
+#: ../src/ui/theme.c:1225
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "Не удалось разобрать значение альфа-канала «%s» в смешанном цвете"
+
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr ""
+"Значение альфа-канала «%s» в смешанном цвете не входит в диапазон между 0.0 и "
+"1.0"
+
+#: ../src/ui/theme.c:1282
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Формат тени — «shade/base_color/factor»; «%s» не соответствует формату"
+
+#: ../src/ui/theme.c:1293
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "Не удалось разобрать составную часть тени «%s» в затенённом цвете"
+
+#: ../src/ui/theme.c:1303
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "Составная часть тени «%s» в затенённом цвете отрицательна"
+
+#: ../src/ui/theme.c:1332
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "Не удалось разобрать цвет «%s»"
+
+#: ../src/ui/theme.c:1582
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "Выражение координаты содержит символ «%s», который нельзя использовать"
+
+#: ../src/ui/theme.c:1609
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+"Выражение координаты содержит число с плавающей запятой «%s», которое не "
+"удалось разобрать"
+
+#: ../src/ui/theme.c:1623
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr ""
+"Выражение координаты содержит целое число «%s», которое не удалось разобрать"
+
+#: ../src/ui/theme.c:1745
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"Выражение координаты содержит неизвестный оператор в начале следующего "
+"текста: «%s»"
+
+#: ../src/ui/theme.c:1802
+#, c-format
+msgid "Coordinate expression was empty or not understood"
+msgstr "Выражение координаты пустое, или его не удалось распознать"
+
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#, c-format
+msgid "Coordinate expression results in division by zero"
+msgstr "Вычисление выражения координаты привело к делению на ноль"
+
+#: ../src/ui/theme.c:1965
+#, c-format
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Выражение координаты пытается использовать оператор взятия остатка от "
+"деления для числа с плавающей запятой"
+
+#: ../src/ui/theme.c:2021
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"В выражении координаты используется оператор «%s» там, где должен быть операнд"
+
+#: ../src/ui/theme.c:2030
+#, c-format
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr ""
+"В выражении координаты используется операнд там, где должен быть оператор"
+
+#: ../src/ui/theme.c:2038
+#, c-format
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "Выражение координаты заканчивается оператором, а не операндом"
+
+#: ../src/ui/theme.c:2048
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"В выражении координаты за оператором «%c» следует оператор «%c», между ними "
+"нет операнда"
+
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "В выражении координаты неизвестная переменная или константа «%s»"
+
+#: ../src/ui/theme.c:2290
+#, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "Произошло переполнение буфера обработчика координат."
+
+#: ../src/ui/theme.c:2319
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+"В выражении координаты использованы закрывающие скобки, но нет "
+"соответствующих открывающих скобок"
+
+#: ../src/ui/theme.c:2383
+#, c-format
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+"В выражении координаты использованы открывающие скобки, но нет "
+"соответствующих закрывающих скобок"
+
+#: ../src/ui/theme.c:2394
+#, c-format
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "В выражении координаты нет операторов и операндов"
+
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#, c-format
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "В теме было выражение, которое вызвало ошибку: %s\n"
+
+#: ../src/ui/theme.c:4203
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"для этого стиля рамки необходимо указать <button function=\"%s\" state=\"%s"
+"\" draw_ops=\"что-нибудь\"/>"
+
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Отсутствует <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"что-нибудь"
+"\"/>"
+
+#: ../src/ui/theme.c:4780
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Не удалось загрузить тему «%s»: %s\n"
+
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "Отсутствует элемент <%s> для темы «%s»"
+
+#: ../src/ui/theme.c:4946
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"Нет стиля рамки для типа окна «%s» в теме «%s», добавьте элемент <window type="
+"\"%s\" style_set=\"что-нибудь\"/>"
+
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Константы, заданные пользователем, должны начинаться с заглавной буквы; «%s» "
+"не начинается с заглавной буквы"
+
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "Константа «%s» уже задана"
+
+#. Translators: This means that an attribute which should have been found
+#. * on an XML element was not in fact found.
+#.
+#: ../src/ui/theme-parser.c:202
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Отсутствует атрибут «%s» для элемента <%s>"
+
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Строка %d, символ %d: %s"
 
-#: ../src/ui/theme-parser.c:396
+#: ../src/ui/theme-parser.c:413
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Атрибут «%s» дважды повторяется в одном и том же элементе <%s>"
 
-#: ../src/ui/theme-parser.c:414 ../src/ui/theme-parser.c:439
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Атрибут «%s» не может применяться в элементе <%s> в этом контексте"
 
-#: ../src/ui/theme-parser.c:500
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Не удалось разобрать «%s» как целое число"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Не удалось распознать замыкающие символы «%s» в строке «%s»"
+
+#: ../src/ui/theme-parser.c:541
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Целое число %ld должно быть положительным"
 
-#: ../src/ui/theme-parser.c:508
+#: ../src/ui/theme-parser.c:549
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Целое число %ld слишком большое, текущий максимум равен %d"
 
-#: ../src/ui/theme-parser.c:536 ../src/ui/theme-parser.c:652
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Не удалось разобрать «%s» как число с плавающей запятой"
 
-#: ../src/ui/theme-parser.c:567 ../src/ui/theme-parser.c:595
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Логические значения должны быть «true» или «false», а не «%s»"
 
-#: ../src/ui/theme-parser.c:622
+#: ../src/ui/theme-parser.c:663
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Угол должен быть от 0,0 до 360,0, а был %g\n"
 
-#: ../src/ui/theme-parser.c:685
+#: ../src/ui/theme-parser.c:726
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Альфа-канал должен быть от 0,0 (невидимость) до 1,0 (полная непрозрачность), "
 "а был %g\n"
 
-#: ../src/ui/theme-parser.c:750
+#: ../src/ui/theme-parser.c:791
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Масштаб заголовка «%s» (возможные значения: xx-small, x-small, small, "
-"medium, large, x-large, xx-large) недопустим\n"
+"Масштаб заголовка «%s» (возможные значения: xx-small, x-small, small, medium, "
+"large, x-large, xx-large) недопустим\n"
 
-#: ../src/ui/theme-parser.c:795 ../src/ui/theme-parser.c:803
-#: ../src/ui/theme-parser.c:885 ../src/ui/theme-parser.c:982
-#: ../src/ui/theme-parser.c:1024 ../src/ui/theme-parser.c:1135
-#: ../src/ui/theme-parser.c:1185 ../src/ui/theme-parser.c:1193
-#: ../src/ui/theme-parser.c:3093 ../src/ui/theme-parser.c:3184
-#: ../src/ui/theme-parser.c:3191 ../src/ui/theme-parser.c:3198
-#, c-format
-msgid "No \"%s\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «%s» для элемента <%s> "
-
-#: ../src/ui/theme-parser.c:919 ../src/ui/theme-parser.c:990
-#: ../src/ui/theme-parser.c:1032 ../src/ui/theme-parser.c:1143
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "Имя «%s» элемента <%s> использовалось второй раз"
 
-#: ../src/ui/theme-parser.c:931 ../src/ui/theme-parser.c:1044
-#: ../src/ui/theme-parser.c:1155
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "Родительский объект «%s» элемента <%s> не определён"
 
-#: ../src/ui/theme-parser.c:1057
+#: ../src/ui/theme-parser.c:1058
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "Геометрия «%s» объекта <%s> не определена"
 
-#: ../src/ui/theme-parser.c:1070
+#: ../src/ui/theme-parser.c:1071
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
 "В элементе <%s> должны быть определены либо геометрия, либо родительский "
 "объект, имеющий геометрию"
 
-#: ../src/ui/theme-parser.c:1112
+#: ../src/ui/theme-parser.c:1113
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Необходимо задать фон, чтобы значение альфа-канала имело смысл"
 
-#: ../src/ui/theme-parser.c:1203
+#: ../src/ui/theme-parser.c:1180
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Тип «%s» для элемента <%s> неизвестен"
 
-#: ../src/ui/theme-parser.c:1214
+#: ../src/ui/theme-parser.c:1191
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Параметр style_set «%s» для элемента <%s> неизвестен"
 
-#: ../src/ui/theme-parser.c:1222
+#: ../src/ui/theme-parser.c:1199
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Типу окна «%s» уже был приписан набор стилей"
 
-#: ../src/ui/theme-parser.c:1258
-msgid "Theme already has a fallback icon"
-msgstr "У темы уже есть значок по умолчанию"
-
-#: ../src/ui/theme-parser.c:1270
-msgid "Theme already has a fallback mini_icon"
-msgstr "У темы уже есть маленький значок по умолчанию"
-
-#: ../src/ui/theme-parser.c:1283 ../src/ui/theme-parser.c:1347
-#: ../src/ui/theme-parser.c:1636 ../src/ui/theme-parser.c:3285
-#: ../src/ui/theme-parser.c:3339 ../src/ui/theme-parser.c:3511
-#: ../src/ui/theme-parser.c:3727 ../src/ui/theme-parser.c:3765
-#: ../src/ui/theme-parser.c:3803 ../src/ui/theme-parser.c:3841
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Использование элемента <%s> под <%s> недопустимо"
 
-#: ../src/ui/theme-parser.c:1373 ../src/ui/theme-parser.c:1460
-#: ../src/ui/theme-parser.c:1530
-#, c-format
-msgid "No \"name\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «name» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1380 ../src/ui/theme-parser.c:1467
-#, c-format
-msgid "No \"value\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «value» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1411 ../src/ui/theme-parser.c:1425
-#: ../src/ui/theme-parser.c:1484
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1402
 msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
 msgstr ""
-"Невозможно одновременно задать параметры button_width/button_height и "
-"соотношение сторон для кнопок"
+"Невозможно одновременно задать параметры \"button_width\"/\"button_height\" "
+"и \"aspect_ratio\" для кнопок"
 
-#: ../src/ui/theme-parser.c:1434
+#: ../src/ui/theme-parser.c:1366
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Расстояние «%s» неизвестно"
 
-#: ../src/ui/theme-parser.c:1493
+#: ../src/ui/theme-parser.c:1411
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Соотношение сторон «%s» неизвестно"
 
-#: ../src/ui/theme-parser.c:1537
-#, c-format
-msgid "No \"top\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «top» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1544
-#, c-format
-msgid "No \"bottom\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «bottom» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1551
-#, c-format
-msgid "No \"left\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «left» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1558
-#, c-format
-msgid "No \"right\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «right» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1590
+#: ../src/ui/theme-parser.c:1473
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Рамка «%s» неизвестна"
 
-#: ../src/ui/theme-parser.c:1736 ../src/ui/theme-parser.c:1850
-#: ../src/ui/theme-parser.c:1961 ../src/ui/theme-parser.c:2192
-#: ../src/ui/theme-parser.c:3023
-#, c-format
-msgid "No \"color\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «color» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1743
-#, c-format
-msgid "No \"x1\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «x1» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1750 ../src/ui/theme-parser.c:2864
-#, c-format
-msgid "No \"y1\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «y1» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1757
-#, c-format
-msgid "No \"x2\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «x2» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1764 ../src/ui/theme-parser.c:2871
-#, c-format
-msgid "No \"y2\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «y2» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1857 ../src/ui/theme-parser.c:1968
-#: ../src/ui/theme-parser.c:2117 ../src/ui/theme-parser.c:2199
-#: ../src/ui/theme-parser.c:2306 ../src/ui/theme-parser.c:2408
-#: ../src/ui/theme-parser.c:2630 ../src/ui/theme-parser.c:2758
-#: ../src/ui/theme-parser.c:2857 ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3030
-#, c-format
-msgid "No \"x\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «x» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1864 ../src/ui/theme-parser.c:1975
-#: ../src/ui/theme-parser.c:2124 ../src/ui/theme-parser.c:2206
-#: ../src/ui/theme-parser.c:2313 ../src/ui/theme-parser.c:2415
-#: ../src/ui/theme-parser.c:2637 ../src/ui/theme-parser.c:2765
-#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3037
-#, c-format
-msgid "No \"y\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «y» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1871 ../src/ui/theme-parser.c:1982
-#: ../src/ui/theme-parser.c:2131 ../src/ui/theme-parser.c:2213
-#: ../src/ui/theme-parser.c:2320 ../src/ui/theme-parser.c:2422
-#: ../src/ui/theme-parser.c:2644 ../src/ui/theme-parser.c:2772
-#: ../src/ui/theme-parser.c:2948
-#, c-format
-msgid "No \"width\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «width» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1878 ../src/ui/theme-parser.c:1989
-#: ../src/ui/theme-parser.c:2138 ../src/ui/theme-parser.c:2220
-#: ../src/ui/theme-parser.c:2327 ../src/ui/theme-parser.c:2429
-#: ../src/ui/theme-parser.c:2651 ../src/ui/theme-parser.c:2779
-#: ../src/ui/theme-parser.c:2955
-#, c-format
-msgid "No \"height\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «height» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:1998
+#: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Нет ни атрибута «start_angle», ни атрибута «from» для элемента <%s>"
 
-#: ../src/ui/theme-parser.c:2005
+#: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Нет ни атрибута «extent_angle», ни атрибута «to» для элемента <%s>"
 
-#: ../src/ui/theme-parser.c:2014
-#, c-format
-msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «start_angle» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2021
-#, c-format
-msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «extent_angle» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2227
-#, c-format
-msgid "No \"alpha\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «alpha» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2299
-#, c-format
-msgid "No \"type\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «type» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2349
+#: ../src/ui/theme-parser.c:2031
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Не удалось распознать значение «%s» для типа градиента"
 
-#: ../src/ui/theme-parser.c:2436
-#, c-format
-msgid "No \"filename\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «filename» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2461 ../src/ui/theme-parser.c:2980
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Не удалось распознать тип заливки «%s» для элемента <%s> "
 
-#: ../src/ui/theme-parser.c:2609 ../src/ui/theme-parser.c:2744
-#: ../src/ui/theme-parser.c:2850
-#, c-format
-msgid "No \"state\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «state» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2616 ../src/ui/theme-parser.c:2751
-#, c-format
-msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «shadow» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2623
-#, c-format
-msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Отсутствует атрибут «arrow» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:2676 ../src/ui/theme-parser.c:2800
-#: ../src/ui/theme-parser.c:2891
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Не удалось распознать состояние «%s» для элемента <%s> "
 
-#: ../src/ui/theme-parser.c:2686 ../src/ui/theme-parser.c:2810
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Не удалось распознать тень «%s» для элемента <%s>"
 
-#: ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2296
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Не удалось распознать стрелку «%s» для элемента <%s>"
 
-#: ../src/ui/theme-parser.c:3120 ../src/ui/theme-parser.c:3237
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Параметр <draw_ops> с именем «%s» не задан"
 
-#: ../src/ui/theme-parser.c:3132 ../src/ui/theme-parser.c:3249
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Вставка сюда параметра draw_ops «%s» создаст циклическую ссылку"
 
-#: ../src/ui/theme-parser.c:3314
-#, c-format
-msgid "No \"value\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «value» для элемента <%s> "
-
-#: ../src/ui/theme-parser.c:3371
-#, c-format
-msgid "No \"position\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «position» для элемента <%s> "
-
-#: ../src/ui/theme-parser.c:3380
+#: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Неизвестная позиция «%s» для участка рамки"
 
-#: ../src/ui/theme-parser.c:3388
+#: ../src/ui/theme-parser.c:2827
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "У стиля рамки уже есть участок в позиции %s"
 
-#: ../src/ui/theme-parser.c:3405 ../src/ui/theme-parser.c:3496
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Не задан ни один параметр <draw_ops> с именем «%s»"
 
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "No \"function\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «function» для элемента <%s> "
-
-#: ../src/ui/theme-parser.c:3441 ../src/ui/theme-parser.c:3557
-#, c-format
-msgid "No \"state\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «state» для элемента <%s> "
-
-#: ../src/ui/theme-parser.c:3450
+#: ../src/ui/theme-parser.c:2873
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Неизвестная функция «%s» для кнопки"
 
-#: ../src/ui/theme-parser.c:3459
+#: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr ""
 "Функция кнопки «%s» не существует в этой версии (%d, необходима версия %d)"
 
-#: ../src/ui/theme-parser.c:3471
+#: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Неизвестное состояние «%s» для кнопки"
 
-#: ../src/ui/theme-parser.c:3479
+#: ../src/ui/theme-parser.c:2902
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "У стиля рамки уже есть кнопка для режима %s функции %s"
 
-#: ../src/ui/theme-parser.c:3549
-#, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «focus» для элемента <%s> "
-
-#: ../src/ui/theme-parser.c:3565
-#, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «style» для элемента <%s> "
-
-#: ../src/ui/theme-parser.c:3574
+#: ../src/ui/theme-parser.c:2973
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "«%s» — недопустимое значение для атрибута «focus»"
 
-#: ../src/ui/theme-parser.c:3583
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "«%s» — недопустимое значение для атрибута «state»"
 
-#: ../src/ui/theme-parser.c:3593
+#: ../src/ui/theme-parser.c:2992
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Стиль с именем «%s» не задан"
 
-#: ../src/ui/theme-parser.c:3604
-#, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr "Отсутствует атрибут «resize» для элемента <%s>"
-
-#: ../src/ui/theme-parser.c:3614 ../src/ui/theme-parser.c:3637
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "«%s» — недопустимое значение для атрибута «resize»"
 
-#: ../src/ui/theme-parser.c:3648
+#: ../src/ui/theme-parser.c:3047
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -3138,7 +2102,7 @@ msgstr ""
 "Не следует использовать атрибут «resize» в элементе <%s> для развернутого и "
 "скрученного состояний"
 
-#: ../src/ui/theme-parser.c:3662
+#: ../src/ui/theme-parser.c:3061
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
@@ -3146,17 +2110,17 @@ msgstr ""
 "Не следует использовать атрибут «resize» в элементе <%s> для развёрнутых "
 "состояний"
 
-#: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Для атрибутов state %s resize %s focus %s стиль уже задан"
 
-#: ../src/ui/theme-parser.c:3687 ../src/ui/theme-parser.c:3709
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Для атрибутов state %s focus %s стиль уже задан"
 
-#: ../src/ui/theme-parser.c:3748
+#: ../src/ui/theme-parser.c:3147
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3164,7 +2128,7 @@ msgstr ""
 "Невозможно использовать два параметра draw_ops для элемента <piece> (в теме "
 "указан атрибут draw_ops и элемент <draw_ops> или указаны два элемента)"
 
-#: ../src/ui/theme-parser.c:3786
+#: ../src/ui/theme-parser.c:3185
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3172,7 +2136,7 @@ msgstr ""
 "Невозможно использовать два параметра draw_ops для элемента <button> (в теме "
 "указан атрибут draw_ops и элемент <draw_ops> или указаны два элемента)"
 
-#: ../src/ui/theme-parser.c:3824
+#: ../src/ui/theme-parser.c:3223
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -3180,12 +2144,12 @@ msgstr ""
 "Невозможно использовать два параметра draw_ops для элемента <menu_icon> (в "
 "теме указан атрибут draw_ops и элемент <draw_ops> или указаны два элемента)"
 
-#: ../src/ui/theme-parser.c:3872
+#: ../src/ui/theme-parser.c:3271
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Элемент верхнего уровня в теме должен быть <metacity_theme>, а не <%s>"
 
-#: ../src/ui/theme-parser.c:3892
+#: ../src/ui/theme-parser.c:3291
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
@@ -3193,12 +2157,12 @@ msgstr ""
 "Использование элемента <%s> внутри элементов name/author/date/description "
 "недопустимо"
 
-#: ../src/ui/theme-parser.c:3897
+#: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Использование элемента <%s> внутри элемента <constant> недопустимо"
 
-#: ../src/ui/theme-parser.c:3909
+#: ../src/ui/theme-parser.c:3308
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
@@ -3206,210 +2170,198 @@ msgstr ""
 "Использование элемента <%s> внутри элементов distance/border/aspect_ratio "
 "недопустимо"
 
-#: ../src/ui/theme-parser.c:3931
+#: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Использование элемента <%s> внутри элемента draw operation недопустимо"
 
-#: ../src/ui/theme-parser.c:3941 ../src/ui/theme-parser.c:3971
-#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3981
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Использование элемента <%s> внутри элемента <%s> недопустимо"
 
-#: ../src/ui/theme-parser.c:4203
+#: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "Не задан параметр draw_ops для участка рамки"
 
-#: ../src/ui/theme-parser.c:4218
+#: ../src/ui/theme-parser.c:3617
 msgid "No draw_ops provided for button"
 msgstr "Не задан параметр draw_ops для кнопки"
 
-#: ../src/ui/theme-parser.c:4270
+#: ../src/ui/theme-parser.c:3669
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Использование текста внутри элемента <%s> недопустимо"
 
-#: ../src/ui/theme-parser.c:4325
-msgid "<name> specified twice for this theme"
-msgstr "Параметр <name> указан для этой темы дважды"
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> указан для этой темы дважды"
 
-#: ../src/ui/theme-parser.c:4336
-msgid "<author> specified twice for this theme"
-msgstr "Параметр <author> указан для этой темы дважды"
-
-#: ../src/ui/theme-parser.c:4347
-msgid "<copyright> specified twice for this theme"
-msgstr "Параметр <copyright> указан для этой темы дважды"
-
-#: ../src/ui/theme-parser.c:4358
-msgid "<date> specified twice for this theme"
-msgstr "Параметр <date> указан для этой темы дважды"
-
-#: ../src/ui/theme-parser.c:4369
-msgid "<description> specified twice for this theme"
-msgstr "Параметр <description> указан для этой темы дважды"
-
-#: ../src/ui/theme-parser.c:4636
+#: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Не удалось найти допустимый файл для темы %s\n"
 
-#: ../src/ui/theme-parser.c:4692
+#: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "В файле темы %s нет корневого элемента <metacity_theme>"
 
-#: ../src/ui/theme-viewer.c:74
+#: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
 msgstr "/_Окна"
 
-#: ../src/ui/theme-viewer.c:75
+#: ../src/ui/theme-viewer.c:76
 msgid "/Windows/tearoff"
 msgstr "/Окна/разделитель"
 
-#: ../src/ui/theme-viewer.c:76
+#: ../src/ui/theme-viewer.c:77
 msgid "/Windows/_Dialog"
 msgstr "/Окна/_Диалог"
 
-#: ../src/ui/theme-viewer.c:77
+#: ../src/ui/theme-viewer.c:78
 msgid "/Windows/_Modal dialog"
 msgstr "/Окна/_Модальный диалог"
 
-#: ../src/ui/theme-viewer.c:78
+#: ../src/ui/theme-viewer.c:79
 msgid "/Windows/_Utility"
 msgstr "/Окна/_Утилита"
 
-#: ../src/ui/theme-viewer.c:79
+#: ../src/ui/theme-viewer.c:80
 msgid "/Windows/_Splashscreen"
 msgstr "/Окна/_Экран-заставка"
 
-#: ../src/ui/theme-viewer.c:80
+#: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Top dock"
 msgstr "/Окна/_Верхний док"
 
-#: ../src/ui/theme-viewer.c:81
+#: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Bottom dock"
 msgstr "/Окна/_Нижний док"
 
-#: ../src/ui/theme-viewer.c:82
+#: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Left dock"
 msgstr "/Окна/_Левый док"
 
-#: ../src/ui/theme-viewer.c:83
+#: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_Right dock"
 msgstr "/Окна/_Правый док"
 
-#: ../src/ui/theme-viewer.c:84
+#: ../src/ui/theme-viewer.c:85
 msgid "/Windows/_All docks"
 msgstr "/Окна/_Все доки"
 
-#: ../src/ui/theme-viewer.c:85
+#: ../src/ui/theme-viewer.c:86
 msgid "/Windows/Des_ktop"
 msgstr "/Окна/_Рабочий стол"
 
-#: ../src/ui/theme-viewer.c:134
+#: ../src/ui/theme-viewer.c:136
 msgid "Open another one of these windows"
 msgstr "Открыть другое окно"
 
-#: ../src/ui/theme-viewer.c:141
+#: ../src/ui/theme-viewer.c:143
 msgid "This is a demo button with an 'open' icon"
 msgstr "Это демонстрационая кнопка со значком «открыть»"
 
-#: ../src/ui/theme-viewer.c:148
+#: ../src/ui/theme-viewer.c:150
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Это демонстрационная кнопка со значком «выйти»"
 
-#: ../src/ui/theme-viewer.c:241
+#: ../src/ui/theme-viewer.c:243
 msgid "This is a sample message in a sample dialog"
 msgstr "Это образец сообщения в образце диалога"
 
-#: ../src/ui/theme-viewer.c:324
+#: ../src/ui/theme-viewer.c:326
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Фальшивый элемент меню %d\n"
 
-#: ../src/ui/theme-viewer.c:358
+#: ../src/ui/theme-viewer.c:360
 msgid "Border-only window"
 msgstr "Окно только с рамкой"
 
-#: ../src/ui/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:362
 msgid "Bar"
 msgstr "Панель"
 
-#: ../src/ui/theme-viewer.c:377
+#: ../src/ui/theme-viewer.c:379
 msgid "Normal Application Window"
 msgstr "Обычное окно приложения"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:383
 msgid "Dialog Box"
 msgstr "Диалог"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:387
 msgid "Modal Dialog Box"
 msgstr "Модальный диалог"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:391
 msgid "Utility Palette"
 msgstr "Вспомогательная палитра"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:395
 msgid "Torn-off Menu"
 msgstr "Отделённое меню"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:399
 msgid "Border"
 msgstr "Рамка"
 
-#: ../src/ui/theme-viewer.c:725
+#: ../src/ui/theme-viewer.c:727
 #, c-format
 msgid "Button layout test %d"
 msgstr "Проверка размещения кнопок %d"
 
-#: ../src/ui/theme-viewer.c:754
+#: ../src/ui/theme-viewer.c:756
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g мс для рисования одной рамки окна"
 
-#: ../src/ui/theme-viewer.c:797
+#: ../src/ui/theme-viewer.c:799
+#, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Применение: metacity-theme-viewer [ИМЯТЕМЫ]\n"
 
-#: ../src/ui/theme-viewer.c:804
+#: ../src/ui/theme-viewer.c:806
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Ошибка загрузки темы: %s\n"
 
-#: ../src/ui/theme-viewer.c:810
+#: ../src/ui/theme-viewer.c:812
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Тема «%s» загружена за %g секунд\n"
 
-#: ../src/ui/theme-viewer.c:833
+#: ../src/ui/theme-viewer.c:853
 msgid "Normal Title Font"
 msgstr "Обычный текст заголовка"
 
-#: ../src/ui/theme-viewer.c:839
+#: ../src/ui/theme-viewer.c:859
 msgid "Small Title Font"
 msgstr "Маленький шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:845
+#: ../src/ui/theme-viewer.c:865
 msgid "Large Title Font"
 msgstr "Большой шрифт заголовка"
 
-#: ../src/ui/theme-viewer.c:850
+#: ../src/ui/theme-viewer.c:870
 msgid "Button Layouts"
 msgstr "Расположение кнопок"
 
-#: ../src/ui/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:875
 msgid "Benchmark"
 msgstr "Рейтинг производительности"
 
-#: ../src/ui/theme-viewer.c:902
+#: ../src/ui/theme-viewer.c:922
 msgid "Window Title Goes Here"
 msgstr "Тут будет заголовок окна"
 
-#: ../src/ui/theme-viewer.c:1006
+#: ../src/ui/theme-viewer.c:1026
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -3420,343 +2372,39 @@ msgstr ""
 "кадр) и %g секунд календарного времени, включая ресурсы X-сервера (%g "
 "миллисекунд на кадр)\n"
 
-#: ../src/ui/theme-viewer.c:1225
+#: ../src/ui/theme-viewer.c:1245
 msgid "position expression test returned TRUE but set error"
 msgstr "проверка выражения позиции вернула TRUE, но установила ошибку"
 
-#: ../src/ui/theme-viewer.c:1227
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "проверка выражения позиции вернула FALSE, но не установила ошибку"
 
-#: ../src/ui/theme-viewer.c:1231
+#: ../src/ui/theme-viewer.c:1251
 msgid "Error was expected but none given"
 msgstr "Ожидалась ошибка, но ни одна не произошла"
 
-#: ../src/ui/theme-viewer.c:1233
+#: ../src/ui/theme-viewer.c:1253
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Ожидалась ошибка %d, но произошла ошибка %d"
 
-#: ../src/ui/theme-viewer.c:1239
+#: ../src/ui/theme-viewer.c:1259
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Ошибка не ожидалась, но произошла: %s"
 
-#: ../src/ui/theme-viewer.c:1243
+#: ../src/ui/theme-viewer.c:1263
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "значение x было %d, а ожидалось %d"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "значение y было %d, а ожидалось %d"
 
-#: ../src/ui/theme-viewer.c:1311
+#: ../src/ui/theme-viewer.c:1331
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d координатных выражений разобрано за %g секунд (в среднем %g c)\n"
-
-#: ../src/ui/theme.c:256
-msgid "top"
-msgstr "top"
-
-#: ../src/ui/theme.c:258
-msgid "bottom"
-msgstr "bottom"
-
-#: ../src/ui/theme.c:260
-msgid "left"
-msgstr "left"
-
-#: ../src/ui/theme.c:262
-msgid "right"
-msgstr "right"
-
-#: ../src/ui/theme.c:289
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "геометрия рамки не указывает размер «%s»"
-
-#: ../src/ui/theme.c:308
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "геометрия рамки не указывает размер «%s» для границы «%s»"
-
-#: ../src/ui/theme.c:345
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "Соотношение сторон кнопки %g недопустимо"
-
-#: ../src/ui/theme.c:357
-msgid "Frame geometry does not specify size of buttons"
-msgstr "Геометрия рамки не указывает размер кнопок"
-
-#: ../src/ui/theme.c:1022
-msgid "Gradients should have at least two colors"
-msgstr "У градиентов должно быть не меньше двух цветов"
-
-#: ../src/ui/theme.c:1148
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"У спецификации цвета GTK+ в скобках должен быть указан режим, например, gtk:"
-"fg[NORMAL], где NORMAL — это режим; не удалось разобрать «%s»"
-
-#: ../src/ui/theme.c:1162
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"У спецификации цвета GTK+ после указания режима должна быть закрывающая "
-"скобка, например, gtk:fg[NORMAL], где NORMAL — это режим; не удалось "
-"разобрать «%s»"
-
-#: ../src/ui/theme.c:1173
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "Не удалось распознать режим «%s» в спецификации цвета"
-
-#: ../src/ui/theme.c:1186
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Не удалось распознать составную часть цвета «%s» в спецификации цвета"
-
-#: ../src/ui/theme.c:1216
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"Формат определения смешанного цвета — «blend/bg_color/fg_color/alpha»; «%s» "
-"не соответствует формату"
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Не удалось разобрать значение альфа-канала «%s» в смешанном цвете"
-
-#: ../src/ui/theme.c:1237
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
-"Значение альфа-канала «%s» в смешанном цвете не входит в диапазон между 0.0 "
-"и 1.0"
-
-#: ../src/ui/theme.c:1285
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Формат тени — «shade/base_color/factor»; «%s» не соответствует формату"
-
-#: ../src/ui/theme.c:1296
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Не удалось разобрать составную часть тени «%s» в затенённом цвете"
-
-#: ../src/ui/theme.c:1306
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Составная часть тени «%s» в затенённом цвете отрицательна"
-
-#: ../src/ui/theme.c:1336
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "Не удалось разобрать цвет «%s»"
-
-#: ../src/ui/theme.c:1594
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Выражение координаты содержит символ «%s», который нельзя использовать"
-
-#: ../src/ui/theme.c:1621
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
-"Выражение координаты содержит число с плавающей запятой «%s», которое не "
-"удалось разобрать"
-
-#: ../src/ui/theme.c:1635
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"Выражение координаты содержит целое число «%s», которое не удалось разобрать"
-
-#: ../src/ui/theme.c:1757
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-"Выражение координаты содержит неизвестный оператор в начале следующего "
-"текста: «%s»"
-
-#: ../src/ui/theme.c:1814
-msgid "Coordinate expression was empty or not understood"
-msgstr "Выражение координаты пустое, или его не удалось распознать"
-
-#: ../src/ui/theme.c:1925 ../src/ui/theme.c:1935 ../src/ui/theme.c:1969
-msgid "Coordinate expression results in division by zero"
-msgstr "Вычисление выражения координаты привело к делению на ноль"
-
-#: ../src/ui/theme.c:1977
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"Выражение координаты пытается использовать оператор взятия остатка от "
-"деления для числа с плавающей запятой"
-
-#: ../src/ui/theme.c:2033
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"В выражении координаты используется оператор «%s» там, где должен быть "
-"операнд"
-
-#: ../src/ui/theme.c:2042
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"В выражении координаты используется операнд там, где должен быть оператор"
-
-#: ../src/ui/theme.c:2050
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Выражение координаты заканчивается оператором, а не операндом"
-
-#: ../src/ui/theme.c:2060
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"В выражении координаты за оператором «%c» следует оператор «%c», между ними "
-"нет операнда"
-
-#: ../src/ui/theme.c:2207 ../src/ui/theme.c:2248
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "В выражении координаты неизвестная переменная или константа «%s»"
-
-#: ../src/ui/theme.c:2302
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Произошло переполнение буфера обработчика координат."
-
-#: ../src/ui/theme.c:2331
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"В выражении координаты использованы закрывающие скобки, но нет "
-"соответствующих открывающих скобок"
-
-#: ../src/ui/theme.c:2395
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
-"В выражении координаты использованы открывающие скобки, но нет "
-"соответствующих закрывающих скобок"
-
-#: ../src/ui/theme.c:2406
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "В выражении координаты нет операторов и операндов"
-
-#: ../src/ui/theme.c:2608 ../src/ui/theme.c:2628 ../src/ui/theme.c:2648
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "В теме было выражение, которое вызвало ошибку: %s\n"
-
-#: ../src/ui/theme.c:4167
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"для этого стиля рамки необходимо указать <button function=\"%s\" state=\"%s"
-"\" draw_ops=\"что-нибудь\"/>"
-
-#: ../src/ui/theme.c:4643 ../src/ui/theme.c:4668
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Отсутствует <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"что-нибудь"
-"\"/>"
-
-#: ../src/ui/theme.c:4712
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Не удалось загрузить тему «%s»: %s\n"
-
-#: ../src/ui/theme.c:4838 ../src/ui/theme.c:4845 ../src/ui/theme.c:4852
-#: ../src/ui/theme.c:4859 ../src/ui/theme.c:4866
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "Отсутствует элемент <%s> для темы «%s»"
-
-#: ../src/ui/theme.c:4874
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"Нет стиля рамки для типа окна «%s» в теме «%s», добавьте элемент <window "
-"type=\"%s\" style_set=\"что-нибудь\"/>"
-
-#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5303 ../src/ui/theme.c:5366
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Константы, заданные пользователем, должны начинаться с заглавной буквы; «%s» "
-"не начинается с заглавной буквы"
-
-#: ../src/ui/theme.c:5249 ../src/ui/theme.c:5311 ../src/ui/theme.c:5374
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "Константа «%s» уже задана"
-
-#: ../src/tools/metacity-message.c:150
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Применение: %s\n"
-
-#~ msgid ""
-#~ "Setting this option to false can lead to buggy behavior, so users are "
-#~ "strongly discouraged from changing it from the default of true. Many "
-#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
-#~ "normally raise the window as a side-effect. Set this option to false to "
-#~ "decouple raising from other user actions. Even when this option is false, "
-#~ "windows can still be raised by an alt-left-click anywhere on the window, "
-#~ "a normal click on the window decorations, or by special messages from "
-#~ "pagers, such as activation requests from tasklist applets. This option is "
-#~ "currently disabled in click-to-focus mode. Note that the list of ways to "
-#~ "raise windows when raise_on_click is false does not include programmatic "
-#~ "requests from applications to raise windows; such requests will be "
-#~ "ignored regardless of the reason for the request. If you are an "
-#~ "application developer and have a user complaining that your application "
-#~ "does not work with this setting disabled, tell them it is _their_ fault "
-#~ "for breaking their window manager and that they need to change this "
-#~ "option back to true or live with the bug they requested. See also http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-#~ msgstr ""
-#~ "Если эта настройка не установлена, это может привести к несколько "
-#~ "ошибочному поведению, поэтому мы настоятельно рекомендуем воздержаться от "
-#~ "изменений значения по умолчанию. Многие действия, например, щелчок по "
-#~ "окну, перемещение окна или изменение его размера обычно поднимают окно на "
-#~ "передний план. Если этот параметр не установлен, поднятие на передний "
-#~ "план будет отделено от других действий. Окна по прежнему могут быть "
-#~ "перемещены на передний план с помощью одновременного нажатия на левую "
-#~ "клавишу Alt и щелчка по окну, с помощью обычного щелчка по рамке окна или "
-#~ "с помощью специальных действий апплетов, таких как запрос об активации от "
-#~ "апплета списка окон. Это поведение в данный момент выключено в режиме "
-#~ "щелчка для принятия фокуса. Заметьте, что вышеобозначенный список не "
-#~ "включает в себя программные запросы от приложений о поднятии окон на "
-#~ "передний план, такие запросы будут проигнорированы независимо от причины. "
-#~ "Если вы разработчик приложения и вам приходится слушать замечания "
-#~ "пользователей, что ваше приложение работает некорректно, укажите им, что "
-#~ "_они_ допустили ошибку выключив этот параметр и сломав менеджер окон, и "
-#~ "что они должны изменить эту настройку назад на значение по умолчанию или "
-#~ "прекратить посылать замечания. Смотрите также http://bugzilla.gnome.org/"
-#~ "show_bug.cgi?id=445447#c6."
