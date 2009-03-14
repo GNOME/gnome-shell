@@ -58,9 +58,6 @@ if _pkgconfig.returncode == 0:
     if os.path.exists(_libdir + '/libmozjs.so'):
         addpath('LD_LIBRARY_PATH', _libdir)
 
-# Rebuild faster
-os.environ['INSTALL'] = os.path.expanduser('~/bin/install-check')
-
 # Import optional user RC for further customization. You can override
 # the prefix or default build setup for example, or CFLAGS or
 # module_autogenargs, etc.

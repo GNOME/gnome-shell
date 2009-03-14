@@ -11,3 +11,8 @@
 # Directory where to install
 #
 #prefix = '/opt/gnome-shell/install'
+
+# Work around http://bugzilla.gnome.org/show_bug.cgi?id=571240 if
+# your 'install' program is somewhere other than /usr/bin/install
+# (affects: Arch Linux)
+#installprog = 'bin/install'
