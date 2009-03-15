@@ -1,3 +1,8 @@
+2009-03-15  Rajesh Ranjan  <rajeshkajha@yahoo.com>
+
+	* mai.po: added Maithili translation.
+	* LINGUAS: Added Maithili (mai) to the list of Languages.
+
 2009-03-15  Ankitkumar Patel  <ankit@redhat.com>
 
 	* gu.po: Updated Gujarati Translations.
