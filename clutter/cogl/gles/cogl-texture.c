@@ -2594,24 +2594,30 @@ _cogl_multitexture_unsliced_quad (float        x_1,
             {
               if (n_layers > 1)
                 {
-                  g_warning ("Skipping layers 1..n of your material since the "
-                             "first layer has waste and you supplied texture "
-                             "coordinates outside the range [0,1]. We don't "
-                             "currently support any multi-texturing using "
-                             "textures with waste when repeating is "
-                             "necissary so we are falling back to sliced "
-                             "textures assuming layer 0 is the most "
-                             "important one keep");
+                  static gboolean warning_seen = FALSE;
+                  if (!warning_seen)
+                    g_warning ("Skipping layers 1..n of your material since "
+                               "the first layer has waste and you supplied "
+                               "texture coordinates outside the range [0,1]. "
+                               "We don't currently support any "
+                               "multi-texturing using textures with waste "
+                               "when repeating is necissary so we are "
+                               "falling back to sliced textures assuming "
+                               "layer 0 is the most important one keep");
+                  warning_seen = TRUE;
                 }
               return FALSE;
             }
           else
             {
-              g_warning ("Skipping layer %d of your material "
-                         "consisting of a texture with waste since "
-                         "you have supplied texture coords outside "
-                         "the range [0,1] (unsupported when "
-                         "multi-texturing)", i);
+              static gboolean warning_seen = FALSE;
+              if (!warning_seen)
+                g_warning ("Skipping layer %d of your material "
+                           "consisting of a texture with waste since "
+                           "you have supplied texture coords outside "
+                           "the range [0,1] (unsupported when "
+                           "multi-texturing)", i);
+              warning_seen = TRUE;
 
               /* NB: marking for fallback will replace the layer with
                * a default transparent texture */
@@ -2747,19 +2753,25 @@ _cogl_rectangles_with_multitexture_coords (
 	      all_use_sliced_quad_fallback = TRUE;
               if (tmp->next)
                 {
-                  g_warning ("Skipping layers 1..n of your material since the "
-                             "first layer is sliced. We don't currently "
-                             "support any multi-texturing with sliced "
-                             "textures but assume layer 0 is the most "
-                             "important to keep");
+                  static gboolean warning_seen = FALSE;
+                  if (!warning_seen)
+                    g_warning ("Skipping layers 1..n of your material since "
+                               "the first layer is sliced. We don't currently "
+                               "support any multi-texturing with sliced "
+                               "textures but assume layer 0 is the most "
+                               "important to keep");
+                  warning_seen = TRUE;
                 }
 	      break;
 	    }
           else
             {
-              g_warning ("Skipping layer %d of your material consisting of a "
-                         "sliced texture (unsuported for multi texturing)",
-                         i);
+              static gboolean warning_seen = FALSE;
+              if (!warning_seen)
+                g_warning ("Skipping layer %d of your material consisting of "
+                           "a sliced texture (unsuported for multi texturing)",
+                           i);
+              warning_seen = TRUE;
 
               /* NB: marking for fallback will replace the layer with
                * a default transparent texture */
@@ -2775,13 +2787,14 @@ _cogl_rectangles_with_multitexture_coords (
       if (flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX
           && _cogl_texture_span_has_waste (texture, 0, 0))
         {
-          static gboolean shown_warning = FALSE;
-          if (!shown_warning)
+          static gboolean warning_seen = FALSE;
+          if (!warning_seen)
             g_warning ("Skipping layer %d of your material consisting of a "
                        "texture with waste since you have supplied a custom "
                        "texture matrix and the result may try to sample from "
                        "the waste area of your texture.", i);
-          shown_warning = TRUE;
+          warning_seen = TRUE;
+
           /* NB: marking for fallback will replace the layer with
            * a default transparent texture */
           fallback_mask |= (1 << i);
@@ -3112,23 +3125,23 @@ cogl_polygon (CoglTextureVertex *vertices,
         {
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
           {
-            static gboolean shown_gles_slicing_warning = FALSE;
-            if (!shown_gles_slicing_warning)
+            static gboolean warning_seen = FALSE;
+            if (!warning_seen)
               g_warning ("cogl_polygon does not work for sliced textures "
                          "on GL ES");
-            shown_gles_slicing_warning = TRUE;
+            warning_seen = TRUE;
             return;
           }
 #endif
           if (n_layers > 1)
             {
-              static gboolean shown_slicing_warning = FALSE;
-              if (!shown_slicing_warning)
+              static gboolean warning_seen = FALSE;
+              if (!warning_seen)
                 {
                   g_warning ("Disabling layers 1..n since multi-texturing with "
                              "cogl_polygon isn't supported when using sliced "
                              "textures\n");
-                  shown_slicing_warning = TRUE;
+                  warning_seen = TRUE;
                 }
             }
           use_sliced_polygon_fallback = TRUE;
@@ -3136,13 +3149,13 @@ cogl_polygon (CoglTextureVertex *vertices,
 
           if (tex->min_filter != GL_NEAREST || tex->mag_filter != GL_NEAREST)
             {
-              static gboolean shown_filter_warning = FALSE;
-              if (!shown_filter_warning)
+              static gboolean warning_seen = FALSE;
+              if (!warning_seen)
                 {
                   g_warning ("cogl_texture_polygon does not work for sliced textures "
                              "when the minification and magnification filters are not "
                              "CGL_NEAREST");
-                  shown_filter_warning = TRUE;
+                  warning_seen = TRUE;
                 }
               return;
             }
@@ -3159,10 +3172,13 @@ cogl_polygon (CoglTextureVertex *vertices,
 
       if (cogl_texture_is_sliced (tex_handle))
         {
-          g_warning ("Disabling layer %d of the current source material, "
-                     "because texturing with the vertex buffer API is not "
-                     "currently supported using sliced textures, or textures "
-                     "with waste\n", i);
+          static gboolean warning_seen = FALSE;
+          if (!warning_seen)
+            g_warning ("Disabling layer %d of the current source material, "
+                       "because texturing with the vertex buffer API is not "
+                       "currently supported using sliced textures, or "
+                       "textures with waste\n", i);
+          warning_seen = TRUE;
 
           fallback_mask |= (1 << i);
           continue;
