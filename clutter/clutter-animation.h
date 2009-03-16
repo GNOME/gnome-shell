@@ -163,6 +163,8 @@ ClutterAnimation *   clutter_actor_animate_with_alphav    (ClutterActor         
                                                            const gchar * const   properties[],
                                                            const GValue         *values);
 
+ClutterAnimation *   clutter_actor_get_animation          (ClutterActor         *actor);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ANIMATION_H__ */

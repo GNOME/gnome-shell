@@ -1816,3 +1816,22 @@ clutter_actor_animate_with_alphav (ClutterActor        *actor,
 
   return animation;
 }
+
+/**
+ * clutter_actor_get_animation:
+ * @actor: a #ClutterActor
+ *
+ * Retrieves the #ClutterAnimation used by @actor, if clutter_actor_animate()
+ * has been called on @actor.
+ *
+ * Return value: (transfer none): a #ClutterAnimation, or %NULL
+ *
+ * Since: 1.0
+ */
+ClutterAnimation *
+clutter_actor_get_animation (ClutterActor *actor)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+
+  return g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
+}
