@@ -246,6 +246,7 @@ struct _ClutterActorPrivate
 
   guint show_on_set_parent   : 1;
   guint has_clip             : 1;
+  guint clip_to_allocation   : 1;
 
   ClutterUnit     clip[4];
 
@@ -336,6 +337,7 @@ enum
 
   PROP_CLIP,
   PROP_HAS_CLIP,
+  PROP_CLIP_TO_ALLOCATION,
 
   PROP_OPACITY,
   PROP_VISIBLE,
@@ -1539,6 +1541,18 @@ clutter_actor_paint (ClutterActor *self)
 		      CLUTTER_UNITS_TO_FLOAT (priv->clip[3]));
       clip_set = TRUE;
     }
+  else if (priv->clip_to_allocation)
+    {
+      ClutterUnit width, height;
+
+      width  = priv->allocation.x2 - priv->allocation.x1;
+      height = priv->allocation.y2 - priv->allocation.y1;
+
+      cogl_clip_push (0, 0,
+                      CLUTTER_UNITS_TO_FLOAT (width),
+                      CLUTTER_UNITS_TO_FLOAT (height));
+      clip_set = TRUE;
+    }
 
   context = clutter_context_get_default ();
   if (G_UNLIKELY (context->pick_mode != CLUTTER_PICK_NONE))
@@ -1740,6 +1754,13 @@ clutter_actor_set_property (GObject      *object,
 				geom->width, geom->height);
       }
       break;
+    case PROP_CLIP_TO_ALLOCATION:
+      if (priv->clip_to_allocation != g_value_get_boolean (value))
+        {
+          priv->clip_to_allocation = g_value_get_boolean (value);
+          clutter_actor_queue_redraw (actor);
+        }
+      break;
     case PROP_REACTIVE:
       clutter_actor_set_reactive (actor, g_value_get_boolean (value));
       break;
@@ -1930,6 +1951,9 @@ clutter_actor_get_property (GObject    *object,
 
         g_value_set_boxed (value, &clip);
       }
+      break;
+    case PROP_CLIP_TO_ALLOCATION:
+      g_value_set_boolean (value, priv->clip_to_allocation);
       break;
     case PROP_SCALE_X:
       g_value_set_double (value, priv->scale_x);
@@ -2774,6 +2798,26 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                               TRUE,
                                               CLUTTER_PARAM_READWRITE));
 
+  /**
+   * ClutterActor:clip-to-allocation:
+   *
+   * Whether the clip region should track the allocated area
+   * of the actor.
+   *
+   * This property is ignored if a clip area has been explicitly
+   * set using clutter_actor_set_clip().
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("clip-to-allocation",
+                                "Clip to Allocation",
+                                "Sets the clip region to track the "
+                                "actor's allocation",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_CLIP_TO_ALLOCATION,
+                                   pspec);
 
   /**
    * ClutterActor::destroy:
