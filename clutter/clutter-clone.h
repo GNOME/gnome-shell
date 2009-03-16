@@ -43,6 +43,14 @@ typedef struct _ClutterClone            ClutterClone;
 typedef struct _ClutterCloneClass       ClutterCloneClass;
 typedef struct _ClutterClonePrivate     ClutterClonePrivate;
 
+/**
+ * ClutterClone:
+ *
+ * The #ClutterClone structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 1.0
+ */
 struct _ClutterClone
 {
   /*< private >*/
@@ -51,6 +59,13 @@ struct _ClutterClone
   ClutterClonePrivate *priv;
 };
 
+/**
+ * ClutterCloneClass:
+ *
+ * The #ClutterCloneClass structure contains only private data
+ *
+ * Since: 1.0
+ */
 struct _ClutterCloneClass
 {
   /*< private >*/

@@ -1359,15 +1359,12 @@ clutter_shader_get_cogl_vertex_shader
 clutter_shader_set_uniform_1f
 
 <SUBSECTION>
-ClutterShaderFloat
 CLUTTER_VALUE_HOLDS_SHADER_FLOAT
 clutter_value_set_shader_float
 clutter_value_get_shader_float
-ClutterShaderInt
 CLUTTER_VALUE_HOLDS_SHADER_INT
 clutter_value_set_shader_int
 clutter_value_get_shader_int
-ClutterShaderMatrix
 CLUTTER_VALUE_HOLDS_SHADER_MATRIX
 clutter_value_set_shader_matrix
 clutter_value_get_shader_matrix
@@ -1387,8 +1384,11 @@ CLUTTER_TYPE_SHADER_MATRIX
 <SUBSECTION Private>
 ClutterShaderPrivate
 clutter_shader_get_type
+ClutterShaderFloat
 clutter_shader_float_get_type
+ClutterShaderInt
 clutter_shader_int_get_type
+ClutterShaderMatrix
 clutter_shader_matrix_get_type
 clutter_shader_error_quark
 </SECTION>

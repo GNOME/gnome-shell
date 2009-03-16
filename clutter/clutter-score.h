@@ -44,6 +44,14 @@ typedef struct _ClutterScore        ClutterScore;
 typedef struct _ClutterScorePrivate ClutterScorePrivate;
 typedef struct _ClutterScoreClass   ClutterScoreClass; 
 
+/**
+ * ClutterScore:
+ *
+ * The #ClutterScore structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.6
+ */
 struct _ClutterScore
 {
   /*< private >*/
@@ -51,6 +59,19 @@ struct _ClutterScore
   ClutterScorePrivate    *priv;
 };
 
+/**
+ * ClutterScoreClass:
+ * @timeline_started: handler for the #ClutterScore::timeline-started signal
+ * @timeline_completed: handler for the #ClutterScore::timeline-completed
+ *   signal
+ * @started: handler for the #ClutterScore::started signal
+ * @completed: handler for the #ClutterScore::completed signal
+ * @paused: handler for the #ClutterScore::paused signal
+ *
+ * The #ClutterScoreClass structure contains only private data
+ *
+ * Since: 0.6
+ */
 struct _ClutterScoreClass
 {
   /*< private >*/

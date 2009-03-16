@@ -40,19 +40,70 @@ G_BEGIN_DECLS
  * ClutterUnit:
  *
  * Device independent unit used by Clutter. The value held can be
- * transformed into other units, likes pixels.
+ * transformed into other units, likes pixels
  *
  * Since: 0.4
  */
 typedef float ClutterUnit;
 
+/**
+ * CLUTTER_UNITS_FROM_INT:
+ * @x: integer value
+ *
+ * Converts @x from an integer value to #ClutterUnit<!-- -->s
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_FROM_INT(x)        ((float)(x))
+
+/**
+ * CLUTTER_UNITS_TO_INT:
+ * @x: value in #ClutterUnit<!-- -->s
+ *
+ * Converts @x from a #ClutterUnit value into an integer
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_TO_INT(x)          ((int)(x))
 
+/**
+ * CLUTTER_UNITS_FROM_FLOAT:
+ * @x: float value
+ *
+ * Converts @x from a floating point value to #ClutterUnit<!-- -->s
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_FROM_FLOAT(x)      (x)
+
+/**
+ * CLUTTER_UNITS_TO_FLOAT:
+ * @x: value in #ClutterUnit<!-- -->s
+ *
+ * Converts @x from a #ClutterUnit value into a float
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_TO_FLOAT(x)        (x)
 
+/**
+ * CLUTTER_UNITS_FROM_FIXED:
+ * @x: #CoglFixed value
+ *
+ * Converts @x from a fixed point value to #ClutterUnit<!-- -->s
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_FROM_FIXED(x)      (COGL_FIXED_TO_FLOAT (x))
+
+/**
+ * CLUTTER_UNITS_TO_FIXED:
+ * @x: value in #ClutterUnit<!-- -->s
+ *
+ * Converts @x from a #ClutterUnit value into a #CoglFixed
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_TO_FIXED(x)        (COGL_FIXED_FROM_FLOAT (x))
 
 /**

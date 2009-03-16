@@ -46,6 +46,14 @@ typedef struct _ClutterBehaviourDepth           ClutterBehaviourDepth;
 typedef struct _ClutterBehaviourDepthPrivate    ClutterBehaviourDepthPrivate;
 typedef struct _ClutterBehaviourDepthClass      ClutterBehaviourDepthClass;
 
+/**
+ * ClutterBehaviourDepth:
+ *
+ * The #ClutterBehaviourDepth structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourDepth
 {
   /*< private >*/
@@ -54,8 +62,16 @@ struct _ClutterBehaviourDepth
   ClutterBehaviourDepthPrivate *priv;
 };
 
+/**
+ * ClutterBehaviourDepthClass:
+ *
+ * The #ClutterBehaviourDepthClass structure contains only private data
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourDepthClass
 {
+  /*< private >*/
   ClutterBehaviourClass parent_class;
 };
 

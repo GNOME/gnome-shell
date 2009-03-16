@@ -42,6 +42,15 @@ G_BEGIN_DECLS
 typedef struct _ClutterMedia            ClutterMedia; /* dummy typedef */
 typedef struct _ClutterMediaIface       ClutterMediaIface;
 
+/**
+ * ClutterMediaIface:
+ * @eos: handler for the #ClutterMedia::eos signal
+ * @error: handler for the #ClutterMedia::error signal
+ *
+ * Interface vtable for #ClutterMedia implementations
+ *
+ * Since: 0.2
+ */
 struct _ClutterMediaIface
 {
   /*< private >*/

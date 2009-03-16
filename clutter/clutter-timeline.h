@@ -58,6 +58,14 @@ typedef struct _ClutterTimeline        ClutterTimeline;
 typedef struct _ClutterTimelineClass   ClutterTimelineClass; 
 typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
 
+/**
+ * ClutterTimeline:
+ *
+ * The #ClutterTimeline structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.2
+ */
 struct _ClutterTimeline
 {
   /*< private >*/
@@ -65,6 +73,18 @@ struct _ClutterTimeline
   ClutterTimelinePrivate *priv;
 };
 
+/**
+ * ClutterTimelineClass:
+ * @started: handler for the #ClutterTimeline::started signal
+ * @completed: handler for the #ClutterTimeline::completed signal
+ * @paused: handler for the #ClutterTimeline::paused signal
+ * @new_frame: handler for the #ClutterTimeline::new-frame signal
+ * @marker_reached: handler for the #ClutterTimeline::marker-reached signal
+ *
+ * The #ClutterTimelineClass structure contains only private data
+ *
+ * Since: 0.2
+ */
 struct _ClutterTimelineClass
 {
   /*< private >*/

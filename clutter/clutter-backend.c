@@ -375,7 +375,7 @@ _clutter_backend_get_units_per_em (ClutterBackend *backend)
 }
 
 /**
- * clutter_get_default_backend1:
+ * clutter_get_default_backend:
  *
  * Retrieves the default #ClutterBackend used by Clutter. The
  * #ClutterBackend holds backend-specific configuration options.

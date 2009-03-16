@@ -45,6 +45,14 @@ typedef struct _ClutterRectangle        ClutterRectangle;
 typedef struct _ClutterRectangleClass   ClutterRectangleClass;
 typedef struct _ClutterRectanglePrivate ClutterRectanglePrivate;
 
+/**
+ * ClutterRectangle:
+ *
+ * The #ClutterRectangle structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.1
+ */
 struct _ClutterRectangle
 {
   /*< private >*/
@@ -53,6 +61,13 @@ struct _ClutterRectangle
   ClutterRectanglePrivate *priv;
 }; 
 
+/**
+ * ClutterRectangleClass:
+ *
+ * The #ClutterRectangleClass structure contains only private data
+ *
+ * Since: 0.1
+ */
 struct _ClutterRectangleClass 
 {
   /*< private >*/

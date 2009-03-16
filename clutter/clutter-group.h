@@ -59,15 +59,30 @@ G_BEGIN_DECLS
 typedef struct _ClutterGroup        ClutterGroup;
 typedef struct _ClutterGroupClass   ClutterGroupClass;
 typedef struct _ClutterGroupPrivate ClutterGroupPrivate;
- 
+
+/**
+ * ClutterGroup:
+ *
+ * The #ClutterGroup structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.1
+ */
 struct _ClutterGroup
 {
+  /*< private >*/
   ClutterActor parent_instance;
 
-  /*< private >*/
   ClutterGroupPrivate *priv;
 };
 
+/**
+ * ClutterGroupClass:
+ *
+ * The #ClutterGroupClass structure contains only private data
+ *
+ * Since: 0.1
+ */
 struct _ClutterGroupClass
 {
   /*< private >*/

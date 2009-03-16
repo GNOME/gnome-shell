@@ -82,10 +82,17 @@ G_BEGIN_DECLS
 typedef struct _ClutterPerspective  ClutterPerspective;
 typedef struct _ClutterFog          ClutterFog;
 
-
 typedef struct _ClutterStageClass   ClutterStageClass;
 typedef struct _ClutterStagePrivate ClutterStagePrivate;
 
+/**
+ * ClutterStage:
+ *
+ * The #ClutterStage structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.1
+ */
 struct _ClutterStage
 {
   /*< private >*/
@@ -93,6 +100,17 @@ struct _ClutterStage
 
   ClutterStagePrivate *priv;
 };
+/**
+ * ClutterStageClass:
+ * @fullscreen: handler for the #ClutterStage::fullscreen signal
+ * @unfullscreen: handler for the #ClutterStage::unfullscreen signal
+ * @activate: handler for the #ClutterStage::activate signal
+ * @deactivate: handler for the #ClutterStage::deactive signal
+ *
+ * The #ClutterStageClass structure contains only private data
+ *
+ * Since: 0.1
+ */
 
 struct _ClutterStageClass
 {

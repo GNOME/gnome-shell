@@ -22,7 +22,7 @@
  */
 
 /**
- * SECTION:clutterclone
+ * SECTION:clutter-clone
  * @short_description: An actor that displays a clone of a source actor
  *
  * #ClutterClone is a #ClutterActor which draws with the paint

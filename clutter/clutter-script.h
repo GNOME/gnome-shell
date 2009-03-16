@@ -85,9 +85,24 @@ typedef enum {
   CLUTTER_SCRIPT_ERROR_INVALID_VALUE
 } ClutterScriptError;
 
+/**
+ * CLUTTER_SCRIPT_ERROR:
+ *
+ * Error domain for the #ClutterScript errors
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_SCRIPT_ERROR    (clutter_script_error_quark ())
 GQuark clutter_script_error_quark (void);
 
+/**
+ * ClutterScript:
+ *
+ * The #ClutterScript structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.6
+ */
 struct _ClutterScript
 {
   /*< private >*/
@@ -96,6 +111,17 @@ struct _ClutterScript
   ClutterScriptPrivate *priv;
 };
 
+/**
+ * ClutterScriptClass:
+ * @get_type_from_name: virtual function used to map a type name
+ *   to a #GType. This function should only be overridden by
+ *   language bindings in order to map native types to #GType.
+ *   The default implementation is equivalent to g_type_from_name()
+ *
+ * The #ClutterScriptClass structure contains only private data
+ *
+ * Since: 0.6
+ */
 struct _ClutterScriptClass
 {
   /*< private >*/

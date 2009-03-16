@@ -59,6 +59,13 @@ typedef enum {
   CLUTTER_TEXTURE_ERROR_BAD_FORMAT
 } ClutterTextureError;
 
+/**
+ * CLUTTER_TEXTURE_ERROR:
+ *
+ * Error domain for #ClutterTexture errors
+ *
+ * Since: 0.4
+ */
 #define CLUTTER_TEXTURE_ERROR   (clutter_texture_error_quark ())
 GQuark clutter_texture_error_quark (void);
 
@@ -66,6 +73,14 @@ typedef struct _ClutterTexture        ClutterTexture;
 typedef struct _ClutterTextureClass   ClutterTextureClass;
 typedef struct _ClutterTexturePrivate ClutterTexturePrivate;
 
+/**
+ * ClutterTexture:
+ *
+ * The #ClutterTexture structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.1
+ */
 struct _ClutterTexture
 {
   /*< private >*/
@@ -74,10 +89,22 @@ struct _ClutterTexture
   ClutterTexturePrivate *priv;
 };
 
+/**
+ * ClutterTextureClass:
+ * @size_change: handler for the #ClutterTexture::size-change signal
+ * @pixbuf_change: handler for the #ClutterTexture::pixbuf-change signal
+ * @load_finished: handler for the #ClutterTexture::load-finished signal
+ *
+ * The #ClutterTextureClass structure contains only private data
+ *
+ * Since: 0.1
+ */
 struct _ClutterTextureClass
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 
+  /*< public >*/
   void (*size_change)   (ClutterTexture *texture,
 		         gint            width,
 		         gint            height);

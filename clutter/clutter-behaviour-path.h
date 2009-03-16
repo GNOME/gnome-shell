@@ -61,7 +61,15 @@ G_BEGIN_DECLS
 typedef struct _ClutterBehaviourPath        ClutterBehaviourPath;
 typedef struct _ClutterBehaviourPathPrivate ClutterBehaviourPathPrivate;
 typedef struct _ClutterBehaviourPathClass   ClutterBehaviourPathClass;
- 
+
+/**
+ * ClutterBehaviourPath:
+ *
+ * The #ClutterBehaviourPath structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourPath
 {
   /*< private >*/
@@ -73,6 +81,8 @@ struct _ClutterBehaviourPath
  * ClutterBehaviourPathClass
  * @knot_reached: signal class handler for the
  *   ClutterBehaviourPath::knot_reached signal
+ *
+ * The #ClutterBehaviourPathClass struct contains only private data
  *
  * Since 0.2
  */

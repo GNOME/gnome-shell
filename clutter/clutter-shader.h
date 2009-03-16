@@ -40,6 +40,13 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_SHADER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), CLUTTER_TYPE_SHADER))
 #define CLUTTER_SHADER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), CLUTTER_TYPE_SHADER, ClutterShaderClass))
 
+/**
+ * CLUTTER_SHADER_ERROR:
+ *
+ * Error domain for #ClutterShader errors
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_SHADER_ERROR        (clutter_shader_error_quark ())
 
 /**
@@ -62,6 +69,14 @@ typedef struct _ClutterShader        ClutterShader;
 typedef struct _ClutterShaderPrivate ClutterShaderPrivate;
 typedef struct _ClutterShaderClass   ClutterShaderClass;
 
+/**
+ * ClutterShader:
+ *
+ * The #ClutterShader structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 0.6
+ */
 struct _ClutterShader
 {
   /*< private >*/
@@ -69,6 +84,13 @@ struct _ClutterShader
   ClutterShaderPrivate *priv;
 };
 
+/**
+ * ClutterShaderClass:
+ *
+ * The #ClutterShaderClass structure contains only private data
+ *
+ * Since: 0.6
+ */
 struct _ClutterShaderClass
 {
   /*< private >*/

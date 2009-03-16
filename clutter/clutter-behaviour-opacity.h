@@ -60,7 +60,15 @@ G_BEGIN_DECLS
 typedef struct _ClutterBehaviourOpacity        ClutterBehaviourOpacity;
 typedef struct _ClutterBehaviourOpacityPrivate ClutterBehaviourOpacityPrivate;
 typedef struct _ClutterBehaviourOpacityClass   ClutterBehaviourOpacityClass;
- 
+
+/**
+ * ClutterBehaviourOpacity:
+ *
+ * The #ClutterBehaviourOpacity structure contains only private data and
+ * should be accessed using the provided API
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourOpacity
 {
   /*< private >*/
@@ -68,8 +76,16 @@ struct _ClutterBehaviourOpacity
   ClutterBehaviourOpacityPrivate *priv;
 };
 
+/**
+ * ClutterBehaviourOpacityClass:
+ *
+ * The #ClutterBehaviourOpacityClas structure contains only private data
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourOpacityClass
 {
+  /*< private >*/
   ClutterBehaviourClass   parent_class;
 };
 

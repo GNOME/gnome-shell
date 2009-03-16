@@ -96,6 +96,13 @@ struct _ClutterChildMeta
   ClutterActor *actor;
 };
 
+/**
+ * ClutterChildMetaClass:
+ *
+ * The #ClutterChildMetaClass contains only private data
+ *
+ * Since: 0.8
+ */
 struct _ClutterChildMetaClass
 {
   /*< private >*/
