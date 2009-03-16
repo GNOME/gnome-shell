@@ -401,7 +401,7 @@ clutter_timeout_pool_new (gint priority)
 /**
  * clutter_timeout_pool_add:
  * @pool: a #ClutterTimeoutPool
- * @interval: the time between calls to the function, in milliseconds
+ * @fps: the time between calls to the function, in frames per second
  * @func: function to call
  * @data: data to pass to the function, or %NULL
  * @notify: function to call when the timeout is removed, or %NULL
@@ -428,7 +428,7 @@ clutter_timeout_pool_new (gint priority)
  */
 guint
 clutter_timeout_pool_add (ClutterTimeoutPool *pool,
-                          guint               interval,
+                          guint               fps,
                           GSourceFunc         func,
                           gpointer            data,
                           GDestroyNotify      notify)
@@ -436,7 +436,7 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
   ClutterTimeout *timeout;
   guint retval = 0;
 
-  timeout = clutter_timeout_new (interval);
+  timeout = clutter_timeout_new (fps);
 
   retval = timeout->id = pool->next_id++;
 
