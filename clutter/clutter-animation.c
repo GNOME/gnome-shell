@@ -362,6 +362,9 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
    * The ::completed signal is emitted once the animation has
    * been completed.
    *
+   * The @animation instance is guaranteed to be valid for the entire
+   * duration of the signal emission chain.
+   *
    * Since: 1.0
    */
   animation_signals[COMPLETED] =
@@ -1656,6 +1659,46 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * returned value using g_object_ref(). If you want to keep the animation
  * alive across multiple cycles, you also have to add a reference each
  * time the #ClutterAnimation::completed signal is emitted.</note>
+ *
+ * Since the created #ClutterAnimation instance attached to @actor
+ * is guaranteed to be valid throughout the #ClutterAnimation::completed
+ * signal emission chain, you will not be able to create a new animation
+ * using clutter_actor_animate() on the same @actor from within the
+ * #ClutterAnimation::completed signal handler. Instead, you should use
+ * clutter_threads_add_idle() to install an idle handler and call
+ * clutter_actor_animate() in the handler, for instance:
+ *
+ * |[
+ *   static gboolean
+ *   queue_animation (gpointer data)
+ *   {
+ *     ClutterActor *actor = data;
+ *
+ *     clutter_actor_animate (actor, 250, CLUTTER_EASE_IN_CUBIC,
+ *                            "width", 200,
+ *                            "height", 200,
+ *                            NULL);
+ *
+ *     return FALSE;
+ *   }
+ *
+ *   static void
+ *   on_animation_completed (ClutterAnimation *animation)
+ *   {
+ *     clutter_threads_add_idle (queue_animation,
+ *                               clutter_animation_get_object (animation));
+ *   }
+ *
+ *     ...
+ *     animation = clutter_actor_animate (actor, 250, CLUTTER_EASE_IN_CUBIC,
+ *                                        "x", 100,
+ *                                        "y", 100,
+ *                                        NULL);
+ *     g_signal_connect (animation, "completed",
+ *                       G_CALLBACK (on_animation_completed),
+ *                       NULL);
+ *     ...
+ * ]|
  *
  * Return value: (transfer none): a #ClutterAnimation object. The object is
  *   owned by the #ClutterActor and should not be unreferenced with
