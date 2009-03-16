@@ -379,6 +379,8 @@ set_clip_plane (GLint plane_num,
   _cogl_current_matrix_rotate (angle, 0.0f, 0.0f, 1.0f);
   _cogl_current_matrix_translate (-vertex_a[0], -vertex_a[1], -vertex_a[2]);
 
+  _cogl_current_matrix_state_flush ();
+
   plane[0] = 0;
   plane[1] = -1.0;
   plane[2] = 0;
