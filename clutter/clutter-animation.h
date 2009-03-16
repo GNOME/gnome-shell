@@ -128,6 +128,7 @@ void                 clutter_animation_unbind_property (ClutterAnimation     *an
                                                         const gchar          *property_name);
 ClutterInterval     *clutter_animation_get_interval    (ClutterAnimation     *animation,
                                                         const gchar          *property_name);
+void                 clutter_animation_completed       (ClutterAnimation     *animation);
 
 ClutterAnimation *   clutter_actor_animate               (ClutterActor         *actor,
                                                           gulong                mode,

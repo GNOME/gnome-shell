@@ -1133,6 +1133,24 @@ clutter_animation_get_alpha (ClutterAnimation *animation)
   return animation->priv->alpha;
 }
 
+/**
+ * clutter_animation_completed:
+ * @animation: a #ClutterAnimation
+ *
+ * Emits the ::completed signal on @animation. After this function
+ * terminates @animation will be unreferenced and it will not be
+ * valid anymore, unless g_object_ref() was called before
+ *
+ * Since: 1.0
+ */
+void
+clutter_animation_completed (ClutterAnimation *animation)
+{
+  g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
+
+  g_signal_emit (animation, animation_signals[COMPLETED], 0);
+}
+
 /*
  * starts the timeline
  */
