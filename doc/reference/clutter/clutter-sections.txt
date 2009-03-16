@@ -1412,12 +1412,14 @@ clutter_animation_set_timeline
 clutter_animation_get_timeline
 clutter_animation_set_alpha
 clutter_animation_get_alpha
+clutter_animation_completed
 
 <SUBSECTION>
-clutter_animation_bind_property
+clutter_animation_bind
+clutter_animation_bind_interval
 clutter_animation_update_property
 clutter_animation_has_property
-clutter_animation_unbind_property
+clutter_animation_unbind
 clutter_animation_get_interval
 
 <SUBSECTION>
@@ -1427,6 +1429,7 @@ clutter_actor_animate_with_alpha
 clutter_actor_animatev
 clutter_actor_animate_with_timelinev
 clutter_actor_animate_with_alphav
+clutter_actor_get_animation
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_ANIMATION
