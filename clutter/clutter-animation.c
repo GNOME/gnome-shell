@@ -633,7 +633,7 @@ clutter_animation_has_property (ClutterAnimation *animation,
 }
 
 /**
- * clutter_animation_update_property:
+ * clutter_animation_update_interval:
  * @animation: a #ClutterAnimation
  * @property_name: name of the property
  * @interval: a #ClutterInterval
@@ -644,7 +644,7 @@ clutter_animation_has_property (ClutterAnimation *animation,
  * Since: 1.0
  */
 void
-clutter_animation_update_property (ClutterAnimation *animation,
+clutter_animation_update_interval (ClutterAnimation *animation,
                                    const gchar      *property_name,
                                    ClutterInterval  *interval)
 {
@@ -812,6 +812,29 @@ on_animation_weak_notify (gpointer  data,
   g_object_set_qdata (actor, quark_object_animation, NULL);
 }
 
+/**
+ * clutter_animation_new:
+ *
+ * Creates a new #ClutterAnimation instance. You should set the
+ * #GObject to be animated using clutter_animation_set_object(),
+ * set the duration with clutter_animation_set_duration() and the
+ * easing mode using clutter_animation_set_mode().
+ *
+ * Use clutter_animation_bind() or clutter_animation_bind_interval()
+ * to define the properties to be animated. The interval and the
+ * animated properties can be updated at runtime.
+ *
+ * The clutter_actor_animate() and relative family of functions provide
+ * an easy way to animate a #ClutterActor and automatically manage the
+ * lifetime of a #ClutterAnimation instance, so you should consider using
+ * those functions instead of manually creating an animation.
+ *
+ * Return value: the newly created #ClutterAnimation. Use g_object_ref_sink()
+ *   to take ownership of the Animation instance, and g_object_unref() to
+ *   release the associated resources
+ *
+ * Since: 1.0
+ */
 ClutterAnimation *
 clutter_animation_new (void)
 {

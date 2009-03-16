@@ -124,10 +124,10 @@ ClutterAnimation *   clutter_animation_bind_interval   (ClutterAnimation     *an
                                                         ClutterInterval      *interval);
 gboolean             clutter_animation_has_property    (ClutterAnimation     *animation,
                                                         const gchar          *property_name);
-void                 clutter_animation_update_property (ClutterAnimation     *animation,
+void                 clutter_animation_update_interval (ClutterAnimation     *animation,
                                                         const gchar          *property_name,
                                                         ClutterInterval      *interval);
-void                 clutter_animation_unbind          (ClutterAnimation     *animation,
+void                 clutter_animation_unbind_property (ClutterAnimation     *animation,
                                                         const gchar          *property_name);
 ClutterInterval     *clutter_animation_get_interval    (ClutterAnimation     *animation,
                                                         const gchar          *property_name);
