@@ -1,3 +1,262 @@
+Clutter 0.9.2 (16/03/2009)
+===============================================================================
+
+Bastian Winkler (2):
+      [media] Fix the interface cast macro
+      Remove redundant declaration in clutter-text.h
+
+Chris Lord (1):
+      [actor] Force a relayout on set_parent()
+
+Christian Persch (1):
+      Bug 1429 - Redundant declaration in clutter-x11.h
+
+Colin Walters (3):
+      Bug 1491 - Fix hardcoded lib path in .pc files
+      Typo in clutter-win32.pc.in introduced by commit 24ce19383
+      [animation] Enhance the bind API
+
+Damien Lespiau (6):
+      [gitignore] update gitignore files for tests/
+      [build] Beautify autotools' output
+      [build] Add dolt
+      [build] Fix interaction between shave, gtk-doc and libtool 1.x
+      [build] Fix dist for the newly introduced m4 macro directory
+      Update shave
+
+Emmanuele Bassi (111):
+      Post-release bump to 0.9.1
+      [text] Merge the attributes with markup enabled
+      [tests] Update the text-field interactive test
+      Add Actor::create_pango_layout()
+      [docs] Add clutter_text_set_markup()
+      [clone] Allow cloning unparented actors
+      [text] Use create_pango_layout()
+      [text] Rename :alignment to :line-alignment
+      [texture] Consolidate the quality to filter conversions
+      [texture] Check if the material is valid
+      [event] Extend KeyEvent for multi-input support
+      [actor] Check out parameters before setting them
+      [list-model] Make ClutterListModel subclassable
+      Bug 1440 - Add clutter_get_current_event_time()
+      [tests] Add TEST_CONFORM_SKIP() macro
+      [tests] Add conformance tests for ClutterModel
+      [ignore] Add the newly created conformance units
+      [actor] Revert part of commit 402e022c
+      [animation] Do not bind construct-only properties
+      [x11] Add backend-specific get_current_event_time()
+      Initialize a variable to avoid warnings
+      [cogl] Add cogl_is_material to cogl-material.h
+      [cogl] Provide GTypes for COGL types
+      [texture] Use COGL_TYPE_HANDLE for the handle properties
+      [docs] Clarify the set_cogl_texture() documentation
+      Merge branch 'build-enhancements'
+      [docs] Add a missing "return" annotation
+      [build] Pass the -s switch to cmp
+      Remove type functions for removed types
+      [docs] Update the sections file
+      [tests] Add TEST_CONFORM_TODO macro
+      [build] Show pkg-config file being generated
+      [build] Reference the headers with their full path
+      [docs] Update build for COGL API reference
+      [build] Update the EXTRA_DIST list
+      [build] Fix the ChangeLog generation rule
+      [build] Do not overwrite BUILT_SOURCES
+      [behaviour] Do not notify empty behaviours
+      [path] Do not accept NULL descriptions
+      [timeline] Set the n_markers out paramater
+      Do not use GL types in Clutter headers
+      [docs] Require gtk-doc 1.11
+      [docs] Use the --name-space option
+      [docs] Add the 1.0 symbols index
+      [docs] Rename cogl-docs from sgml to xml
+      Add build machinery for gobject-introspection data
+      [backend] Update the viewport when updating the GL context
+      [build] Move all the compiler flags to AM_CFLAGS
+      [ignore] Update with the introspection files
+      Add runtime debug messages for COGL
+      [actor] Remove usage of ClutterFixed
+      Make disable text mipmapping a command line switch
+      Make fuzzy picking a command line switch
+      [docs] Document envvars and command line switches
+      Remove stray fixed point macro usage
+      Use a dynamic array for the actors when delivering events
+      [media] Add sub-second resolution for the duration
+      [build] Put the X11 pc dependencies in another variable
+      [build] Do not shave typelib generation
+      Intern the ClutterScriptable type name
+      [backend] Constify font options
+      [cogl] Add a PANGO debug flag for CoglPango use
+      Clean up of the ClutterColor API
+      [shader] Unify code paths
+      Add pkg-config file for COGL
+      [build] Various fixes for distcheck
+      [docs] Clarify clutter_actor_animate() behaviour
+      [docs] Note that grabs are evil
+      [cogl-fixed] Add a double-to-fixed conversion macro
+      Move BehaviourScale to CoglFixed
+      Move ClutterBehaviourEllipse to CoglFixed
+      Move ClutterBehaviourRotate to CoglFixed
+      Move ClutterTimeline to CoglFixed
+      [cogl-fixed] Implement the CoglFixed fundamental GType
+      [tests] Test CoglFixed, not ClutterFixed
+      [interval] Update fixed-point handling
+      [stage] Coalesce fog and perspective API
+      [texture] Fix ClutterFixed usage
+      [text] Convert units to the right type
+      [tests] Use floats, not ClutterFixed
+      [units] Add more conversion functions
+      [fixed] Remove ClutterFixed API
+      [cogl] Fix hardcoded paths in the pc file
+      [docs] Remove ClutterFixed from the documentation
+      [docs] Update API reference
+      [animation] Add vector variants for ::animate()
+      [cogl] Initialize boolean flag in CoglContext
+      [cogl] Initialize all members of CoglContext
+      [color] Fixed HLS to RGB conversion
+      [docs] Calling g_object_ref() will not dispose an object
+      [docs] Document the commit message format
+      [tests] Animate the color during easing
+      [docs] Reword some of the coding practices
+      [docs] Add a bindings coding practices
+      Add more deprecation notices
+      [deprecated] Add Effect deprecation
+      Do not cause more size requisitions than necessary
+      [cogl] Avoid shadowing math.h symbols
+      [docs] Clarify Animation memory management
+      [animation] Add an emitter for ::completed
+      [animation] Add Animation getter
+      [tests] Remove unused variables
+      [docs] Add description of queue_redraw
+      [docs] Update after Animation API changes
+      [animation] Enhance consistency of the Animation API
+      [docs] Bring down the undocumented symbols to 2%
+      Fix release date of 0.9.0
+      Update release notes
+      [docs] Fix naming of the interval parameter
+      [docs] Ignore the TimeoutInterval internal API
+      Update release notes
+
+Geoff Gustafson (1):
+      [animation] Broken fixed:: properties
+
+Gordon Williams (1):
+      [group] Output the group name when debugging paint
+
+Havoc Pennington (4):
+      Virtualize GL matrix operations and use a client-side matrix when GL is indirect
+      [actor] Add :clip-to-allocation property
+      [actor] Add ::queue-redraw signal
+      [cogl] Flush matrix before clip planes
+
+Jonathan Matthew (1):
+      Declare the EnumValues for PixelFormat static
+
+Neil Roberts (36):
+      [cogl-material] Always bind the new texture handle
+      Fix building GLES 2 after the material branch merge
+      [cogl-texture] Fix the count for the number of enabled arrays
+      [cogl-gles2-wrapper] Remove the FIXME to adjust the fragment color
+      [clutter-clone] Override the parent opacity to self not self->parent
+      [clutter-texture] Release the temporary ref taken when setting a texture
+      [clutter-texture] Unref the Cogl material on dispose
+      [clutter-texture] Fix the no_slice property
+      [cogl-texture] Fix offset to next quad when flushing the log
+      [cogl-texture] Move the destruction of the material to _finalize
+      [cogl-texture] Fix uninitialised priv var in texture_finalize
+      Added a test for non-power-of-two sized textures
+      Emit CLUTTER_LEAVE events when the pointer leaves the stage
+      Call glActiveTexture and glClientActiveTexture through cogl_get_proc_address
+      [win32] Track mouse leave messages
+      [clutter-main] Fix the input device passed to set_motion_last_actor
+      Override the opacity when painting a clone instead of combining
+      Allow rotation angle properties to be negative
+      [ClutterBehaviourRotate] Fix up some breakage from the cogl-float branch merge
+      [tests/conform] Copy in redhand.png
+      Replaced ClutterFixed constants in color_{darken,lighten} with float
+      [cogl-gles2-wrapper] Convert texture unit settings to be a static sized array
+      [cogl-gles2-wrapper] Actually call glActiveTexture
+      Add an environment variable to disable mipmapped text
+      [tests/tools] Don't install libdisable-npots.so
+      [clutter-texture] Use a GThreadPool for loading async textures
+      [cogl-pango-glyph-cache] Fix compiler warning on 64-bit
+      Fix warning in clutter-backend-sdl
+      [eglnative] Add -I flags for the clutter dir in the src and build dirs
+      Set the mapped flag on the stage in the SDL and eglnative backends
+      Fix out of tree builds
+      Remove use of $(builddir)
+      [README] Small typo fix
+      Change cogl_path_rectangle and cogl_path_round_rectangle to take x1,y1,x2,y2
+      [cogl-path] Minor fix to gtk-doc
+      Count timeline frames using the FPS instead of an integer interval
+
+Owen W. Taylor (7):
+      Honor ACLOCAL_FLAGS in autogen.sh
+      Add gobject-introspection annotations
+      Fix x/y confusion for GL_TEXTURE_RECTANGLE_ARB
+      Use COGL to establish GL state for ClutterGLXTexturePixmap
+      Add (out) annotations for ClutterActor
+      Allow NULL for clutter_text_set_text()
+      Avoid drawing twice if relayout queues a draw
+
+Raymond Liu (2):
+      [text] Crash when multi-byte utf8 text exceeds max_length
+      [text] Insertion of multi-byte characters broken
+
+Robert Bragg (28):
+      [Cogl] Renames cogl_fog_set to cogl_set_fog for consistency
+      [cogl-material] Fixes some dirty flag checks
+      [cogl-vertex-buffer] Some fixes for texturing and color arrays
+      [docs] Various gtk-doc updates for Cogl
+      [tests] Some improvements for test-pixmap
+      [Cogl] cogl_clip_{set*,unset} renamed to cogl_clip_{push*,pop}
+      [Cogl] Renames cogl_paint_init to cogl_clear and adds a cogl_disable_fog function
+      [cogl-color.c] #include fix for the cogl_set_source_color prototype
+      [Cogl] the cogl_get_*_matrix functions now work with CoglMatrix types
+      [Cogl] Fixes automatic handling of the GL blend enable state.
+      [cogl-material] Always glBindTexture when flushing material state
+      [Cogl] Remove a debugging assert that was triggering on false positives
+      [test-vertex-buffer-contiguous] Improves the texturing test
+      [cogl-matrix] Adds padding to CoglMatrix
+      [cogl-matrix] Documents that CoglMatrix members should be considered read only
+      Removes need for casting (const float *) to (GLfloat *) in _cogl_set_clip_planes
+      80 char fix
+      Avoid casting CoglMatrix to a GLfloat * when calling glGetFloatv
+      Explicitly make the modelview-matrix current in cogl_{rotate,transform,etc}
+      Use Cogl enum when making modelview-matrix current in cogl_{rotate,transform,etc}
+      Finish GLES{1,2} support for client side matrix stacks
+      Maintain the Cogl assumption that the modelview matrix is normally current
+      Merge branch 'cogl-client-matrix-stacks'
+      [cogl-vertex-buffer] Add a flush of attribute changes in the *_draw() functions
+      [cogl-vertex-buffer] Allow querying back the number of vertices a buffer represents
+      [cogl-vertex-buffer] fix cogl_vertex_buffer_draw_elements prototype
+      [tests] Adds an interactive cogl vertex buffer unit test
+      [cogl] Don't endlessly print the same warning regarding layer fallbacks
+
+Robert Staudinger (1):
+      [build] Add cogl.h to the built sources list
+
+Shane Bryan (1):
+      Bug 1434 - _NET_WM_NAME not set before realize
+
+Tomas Frydrych (3):
+      Fixed handling of enter and leave events in clutter_x11_handle_event()
+      Fix clutter_x11_texture_pixmap_get/set_property() following change of PROP_WINDOW type
+      [x11] Only update cached last event time if we have a real timestamp.
+
+Øyvind Kolås (11):
+      Added a mutex for clutter asynchronous textures threads.
+      Bail early in clutter_texture_paint if opacity == 0
+      Add a warning for recursive emit_event
+      Change the default size of thread pool from 3 to 1
+      [tests] Added test-texture-async
+      [clutter-texture] add option to not block on size for loaded images
+      [clutter-texture] remove load-size-async property
+      Merge commit 'origin/async-texture-thread-pool' into async-size
+      [clutter-texture] updated documentation.
+      [clutter-texture] fixed gtk-doc formatting, and init threads in test.
+      Merge branch 'async-texture-thread-pool'
+
 Clutter 0.9.0 (30/01/2009)
 ===============================================================================
 
