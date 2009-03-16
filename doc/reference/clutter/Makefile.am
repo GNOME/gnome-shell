@@ -69,6 +69,7 @@ IGNORE_HFILES=\
 	clutter-script-private.h \
 	clutter-stage-manager.h \
 	clutter-stage-window.h \
+	clutter-timeout-interval.h \
 	stamp-clutter-enum-types.h \
 	stamp-clutter-marshal.h \
 	cogl \
