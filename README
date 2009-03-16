@@ -194,10 +194,7 @@ Release Notes for Clutter 1.0
   changed to drop the usage of ClutterColor in favour of CoglColor.
 
 * The fixed point API implementation Clutter uses internally has been
-  moved from the Clutter namespace to the COGL one. The ClutterFixed
-  type and relative API is just a wrapper around CoglFixed and its
-  API. The change removed the private (yet publicly exported) and
-  the already deprecated ClutterFixed API.
+  moved from the Clutter namespace to the COGL one.
 
 * ClutterLabel and ClutterEntry have been removed from the API, as
   both have been superceded by the ClutterText actor.
@@ -213,6 +210,24 @@ Release Notes for Clutter 1.0
 * The ClutterBehaviourBspline has been superceded by the usage of
   ClutterPath inside ClutterBehaviourPath, and thus removed from the
   public API.
+
+* ClutterColor API has received a much needed review to increase its
+  consistency. This has led to the following changes:
+
+    - clutter_color_parse() has been renamed to clutter_color_from_string()
+      and the order of the arguments has been changed
+
+    - the factor argument of clutter_color_shade() has been swapped with
+      the return location for the new color
+
+    - the fixed point entry points have been removed
+
+    - clutter_color_from_hls() and clutter_color_to_hls() do not
+      normalize the values in the [ 0, 255 ] interval but use the
+      correct HLS intervals
+
+* The ClutterFixed symbols have been completely removed: fixed-point
+  public entry points now take a CoglFixed.
 
   Cogl API changes for Clutter 1.0
   --------------------------------
