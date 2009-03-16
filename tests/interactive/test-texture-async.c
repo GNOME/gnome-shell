@@ -8,7 +8,6 @@ static void size_change_cb (ClutterTexture *texture,
                             gint            height,
                             gpointer        user_data)
 {
-  guint w,h;
   clutter_actor_set_size (user_data, width, height);
 }
 
