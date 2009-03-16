@@ -243,6 +243,10 @@ clutter_animation_real_completed (ClutterAnimation *animation)
   CLUTTER_NOTE (ANIMATION, "Animation [%p] complete: unreffing",
                 animation);
 
+  /* the signal emission takes a reference on the animation, which
+   * means that even if we unref it here, it'll be valid for the
+   * whole duration of the emission chain
+   */
   g_object_unref (animation);
 }
 
@@ -1539,7 +1543,9 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * <note>Unless the animation is looping, it will become invalid as soon
  * as it is complete. To avoid this, you should keep a reference on the
- * returned value using g_object_ref().</note>
+ * returned value using g_object_ref(). If you want to keep the animation
+ * alive across multiple cycles, you also have to add a reference each
+ * time the #ClutterAnimation::completed signal is emitted.</note>
  *
  * Return value: (transfer none): a #ClutterAnimation object. The object is
  *   owned by the #ClutterActor and should not be unreferenced with
