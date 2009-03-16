@@ -42,7 +42,8 @@ UNIT_TESTS = \
         test-binding-pool.c \
         test-text.c \
         test-text-field.c \
-	test-clutter-cairo-flowers.c
+	test-clutter-cairo-flowers.c \
+	test-cogl-vertex-buffer.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
