@@ -302,9 +302,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
    */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 
-  g_object_ref (workspace);
   g_object_notify (G_OBJECT (workspace), "n-windows");
-  g_object_unref (workspace);
 }
 
 void
@@ -352,9 +350,7 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
    */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 
-  g_object_ref (workspace);
   g_object_notify (G_OBJECT (workspace), "n-windows");
-  g_object_unref (workspace);
 }
 
 void
