@@ -231,13 +231,20 @@ typedef enum
   /* A few more definitions using aliases */
   META_DIRECTION_HORIZONTAL = META_DIRECTION_LEFT | META_DIRECTION_RIGHT,
   META_DIRECTION_VERTICAL   = META_DIRECTION_UP   | META_DIRECTION_DOWN,
+} MetaDirection;
 
-  /* And a few more aliases */
+/* Sometimes we want to talk about sides instead of directions; note
+ * that the values must be as follows or meta_window_update_struts()
+ * won't work. Using these values also is a safety blanket since
+ * MetaDirection used to be used as a side.
+ */
+typedef enum
+{
   META_SIDE_LEFT            = META_DIRECTION_LEFT,
   META_SIDE_RIGHT           = META_DIRECTION_RIGHT,
   META_SIDE_TOP             = META_DIRECTION_TOP,
   META_SIDE_BOTTOM          = META_DIRECTION_BOTTOM
-} MetaDirection;
+} MetaSide;
 
 /* Function a window button can have.  Note, you can't add stuff here
  * without extending the theme format to draw a new function and

@@ -294,15 +294,15 @@ find_nearest_position (const GArray        *edges,
 }
 
 static gboolean
-movement_towards_edge (MetaDirection side, int increment)
+movement_towards_edge (MetaSide side, int increment)
 {
   switch (side)
     {
-    case META_DIRECTION_LEFT:
-    case META_DIRECTION_TOP:
+    case META_SIDE_LEFT:
+    case META_SIDE_TOP:
       return increment < 0;
-    case META_DIRECTION_RIGHT:
-    case META_DIRECTION_BOTTOM:
+    case META_SIDE_RIGHT:
+    case META_SIDE_BOTTOM:
       return increment > 0;
     default:
       g_assert_not_reached ();
@@ -679,24 +679,24 @@ meta_display_cleanup_edges (MetaDisplay *display)
   for (i = 0; i < 4; i++)
     {
       GArray *tmp = NULL;
-      MetaDirection dir;
+      MetaSide side;
       switch (i)
         {
         case 0:
           tmp = edge_data->left_edges;
-          dir = META_DIRECTION_LEFT;
+          side = META_SIDE_LEFT;
           break;
         case 1:
           tmp = edge_data->right_edges;
-          dir = META_DIRECTION_RIGHT;
+          side = META_SIDE_RIGHT;
           break;
         case 2:
           tmp = edge_data->top_edges;
-          dir = META_DIRECTION_TOP;
+          side = META_SIDE_TOP;
           break;
         case 3:
           tmp = edge_data->bottom_edges;
-          dir = META_DIRECTION_BOTTOM;
+          side = META_SIDE_BOTTOM;
           break;
         default:
           g_assert_not_reached ();
@@ -706,7 +706,7 @@ meta_display_cleanup_edges (MetaDisplay *display)
         {
           MetaEdge *edge = g_array_index (tmp, MetaEdge*, j);
           if (edge->edge_type == META_EDGE_WINDOW &&
-              edge->side_type == dir)
+              edge->side_type == side)
             {
               /* The same edge will appear in two arrays, and we can't free
                * it yet we still need to compare edge->side_type for the other
@@ -821,16 +821,16 @@ cache_edges (MetaDisplay *display,
           MetaEdge *edge = tmp->data;
           switch (edge->side_type)
             {
-            case META_DIRECTION_LEFT:
+            case META_SIDE_LEFT:
               num_left++;
               break;
-            case META_DIRECTION_RIGHT:
+            case META_SIDE_RIGHT:
               num_right++;
               break;
-            case META_DIRECTION_TOP:
+            case META_SIDE_TOP:
               num_top++;
               break;
-            case META_DIRECTION_BOTTOM:
+            case META_SIDE_BOTTOM:
               num_bottom++;
               break;
             default:
@@ -889,13 +889,13 @@ cache_edges (MetaDisplay *display,
           MetaEdge *edge = tmp->data;
           switch (edge->side_type)
             {
-            case META_DIRECTION_LEFT:
-            case META_DIRECTION_RIGHT:
+            case META_SIDE_LEFT:
+            case META_SIDE_RIGHT:
               g_array_append_val (edge_data->left_edges, edge);
               g_array_append_val (edge_data->right_edges, edge);
               break;
-            case META_DIRECTION_TOP:
-            case META_DIRECTION_BOTTOM:
+            case META_SIDE_TOP:
+            case META_SIDE_BOTTOM:
               g_array_append_val (edge_data->top_edges, edge);
               g_array_append_val (edge_data->bottom_edges, edge);
               break;
@@ -1029,7 +1029,7 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
           new_edge = g_new (MetaEdge, 1);
           new_edge->rect = reduced;
           new_edge->rect.width = 0;
-          new_edge->side_type = META_DIRECTION_RIGHT;
+          new_edge->side_type = META_SIDE_RIGHT;
           new_edge->edge_type = META_EDGE_WINDOW;
           new_edges = g_list_prepend (new_edges, new_edge);
 
@@ -1040,7 +1040,7 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
           new_edge->rect = reduced;
           new_edge->rect.x += new_edge->rect.width;
           new_edge->rect.width = 0;
-          new_edge->side_type = META_DIRECTION_LEFT;
+          new_edge->side_type = META_SIDE_LEFT;
           new_edge->edge_type = META_EDGE_WINDOW;
           new_edges = g_list_prepend (new_edges, new_edge);
           
@@ -1050,7 +1050,7 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
           new_edge = g_new (MetaEdge, 1);
           new_edge->rect = reduced;
           new_edge->rect.height = 0;
-          new_edge->side_type = META_DIRECTION_BOTTOM;
+          new_edge->side_type = META_SIDE_BOTTOM;
           new_edge->edge_type = META_EDGE_WINDOW;
           new_edges = g_list_prepend (new_edges, new_edge);
 
@@ -1061,7 +1061,7 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
           new_edge->rect = reduced;
           new_edge->rect.y += new_edge->rect.height;
           new_edge->rect.height = 0;
-          new_edge->side_type = META_DIRECTION_TOP;
+          new_edge->side_type = META_SIDE_TOP;
           new_edge->edge_type = META_EDGE_WINDOW;
           new_edges = g_list_prepend (new_edges, new_edge);
 

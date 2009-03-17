@@ -40,7 +40,7 @@ typedef struct _MetaStrut MetaStrut;
 struct _MetaStrut
 {
   MetaRectangle rect;
-  MetaDirection side;
+  MetaSide side;
 };
 
 #define BOX_LEFT(box)    ((box).x)                /* Leftmost pixel of rect */
@@ -66,7 +66,7 @@ typedef struct _MetaEdge MetaEdge;
 struct _MetaEdge
 {
   MetaRectangle rect;      /* width or height should be 1 */
-  MetaDirection side_type; /* should only have 1 of the 4 directions set */
+  MetaSide side_type;
   MetaEdgeType  edge_type;
 };
 

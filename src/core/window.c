@@ -6290,7 +6290,7 @@ meta_window_update_struts (MetaWindow *window)
               strut_end   = struts[4+(i*2)+1];
 
               temp = g_new (MetaStrut, 1);
-              temp->side = 1 << i; /* See MetaDirection def.  Matches nicely, eh? */
+              temp->side = 1 << i; /* See MetaSide def.  Matches nicely, eh? */
               temp->rect = window->screen->rect;
               switch (temp->side)
                 {
