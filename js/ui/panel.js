@@ -121,7 +121,7 @@ Panel.prototype = {
                     width: global.screen_width,
                     height: PANEL_HEIGHT
                 },
-                side: Meta.Direction.TOP
+                side: Meta.Side.TOP
             })
         ];
 
