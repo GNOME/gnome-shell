@@ -22,6 +22,10 @@ If you are building the Introspection data you will also need:
 
   • GObject-Introspection >= 0.6.4
 
+If you want built in support for profiling Clutter you will also need:
+
+  • UProf 0.2 available from git://git.moblin.org/uprof.git
+
 The official website is:
    http://www.clutter-project.org
 

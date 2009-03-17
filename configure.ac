@@ -638,19 +638,6 @@ AS_CASE([$with_json],
 AC_SUBST(JSON_PREFIX)
 AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
 
-dnl === Dependencies, compiler flags and linker libraries =====================
-CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 gobject-2.0 >= 2.16 gthread-2.0 gmodule-no-export-2.0 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
-
-PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
-
-AC_SUBST(CLUTTER_REQUIRES)
-
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS"
-CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS"
-
-AC_SUBST(CLUTTER_CFLAGS)
-AC_SUBST(CLUTTER_LIBS)
-
 dnl === Enable debug level ====================================================
 
 m4_define([debug_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [minimum])])
@@ -702,6 +689,37 @@ AS_CASE([$enable_cogl_debug],
 
 AC_SUBST(COGL_DEBUG_CFLAGS)
 
+m4_define([profile_default], [no])
+AC_ARG_ENABLE(profile,
+              AC_HELP_STRING([--enable-profile=@<:@no/yes@:>@],
+                             [Turn on profiling support. yes; All profiling probe points are compiled in and may be runtime enabled. no; No profiling support will built into clutter.  @<:@default=no@:>@]),
+	      [],
+              [enable_profile=profile_default])
+
+AS_CASE([$enable_profile],
+
+	[yes], [
+            if test "x$GCC" = "xyes"; then
+              PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.2])
+              CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
+              CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
+              if test "x$enable_debug" = "xyes"; then
+                  CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"
+              fi
+            else
+              AC_MSG_ERROR([--enable-profile is currently only supported if using GCC])
+            fi
+	],
+	[no], [
+	    CLUTTER_PROFILE_CFLAGS=""
+	    CLUTTER_PROFILE_LDFLAGS=""
+	],
+	[*],   [AC_MSG_ERROR([Invalid value for --enable-profile])]
+)
+AM_CONDITIONAL(PROFILE, test "x$enable_profile" != "xno")
+AC_SUBST(CLUTTER_PROFILE_CFLAGS)
+AC_SUBST(CLUTTER_PROFILE_LDFLAGS)
+
 dnl === Enable strict compiler flags ==========================================
 
 # use strict compiler flags only on development releases
@@ -722,6 +740,19 @@ AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
 )
 
 AC_SUBST(MAINTAINER_CFLAGS)
+
+dnl === Dependencies, compiler flags and linker libraries =====================
+CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 gobject-2.0 >= 2.16 gthread-2.0 gmodule-no-export-2.0 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
+
+PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
+
+AC_SUBST(CLUTTER_REQUIRES)
+
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_PROFILE_CFLAGS"
+CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_PROFILE_LDFLAGS"
+
+AC_SUBST(CLUTTER_CFLAGS)
+AC_SUBST(CLUTTER_LIBS)
 
 dnl === GObject-Introspection check ===========================================
 
@@ -876,6 +907,7 @@ echo " • Compiler options:"
 echo "        Clutter debug level: ${enable_debug}"
 echo "        COGL debug level: ${enable_cogl_debug}"
 echo "        Compiler flags: ${MAINTAINER_CFLAGS}"
+echo "        Profiling enabled: ${enable_profile}"
 
 # Documentation
 echo ""
