@@ -36,6 +36,12 @@
 #include <X11/Xatom.h>
 #include <string.h>
 
+enum {
+  PROP_0,
+
+  PROP_N_WINDOWS,
+};
+
 void meta_workspace_queue_calc_showing   (MetaWorkspace *workspace);
 static void set_active_space_hint        (MetaScreen *screen);
 static void focus_ancestor_or_mru_window (MetaWorkspace *workspace,
@@ -54,11 +60,62 @@ meta_workspace_finalize (GObject *object)
 }
 
 static void
+meta_workspace_set_property (GObject      *object,
+                             guint         prop_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
+{
+  switch (prop_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_workspace_get_property (GObject      *object,
+                             guint         prop_id,
+                             GValue       *value,
+                             GParamSpec   *pspec)
+{
+  MetaWorkspace *ws = META_WORKSPACE (object);
+
+  switch (prop_id)
+    {
+    case PROP_N_WINDOWS:
+      /*
+       * This is reliable, but not very efficient; should we store
+       * the list lenth ?
+       */
+      g_value_set_uint (value, g_list_length (ws->windows));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 meta_workspace_class_init (MetaWorkspaceClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec   *pspec;
 
-  object_class->finalize = meta_workspace_finalize;
+
+  object_class->finalize     = meta_workspace_finalize;
+  object_class->get_property = meta_workspace_get_property;
+  object_class->set_property = meta_workspace_set_property;
+
+  pspec = g_param_spec_uint ("n-windows",
+                             "N Windows",
+                             "Number of windows",
+                             0, G_MAXUINT, 0,
+                             G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_N_WINDOWS,
+                                   pspec);
 }
 
 static void
@@ -227,6 +284,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
     }
 
   workspace->windows = g_list_prepend (workspace->windows, window);
+
   window->workspace = workspace;
 
   meta_window_set_current_workspace_hint (window);
@@ -243,6 +301,10 @@ meta_workspace_add_window (MetaWorkspace *workspace,
    * the relevant struts
    */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
+
+  g_object_ref (workspace);
+  g_object_notify (G_OBJECT (workspace), "n-windows");
+  g_object_unref (workspace);
 }
 
 void
@@ -289,6 +351,10 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
    * the relevant struts
    */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
+
+  g_object_ref (workspace);
+  g_object_notify (G_OBJECT (workspace), "n-windows");
+  g_object_unref (workspace);
 }
 
 void
