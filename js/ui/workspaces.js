@@ -482,11 +482,14 @@ Workspace.prototype = {
         }
         clone.destroy();
 
-        this._positionWindows();
+        this._positionWindows(false);
         this.updateRemovable();
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
+        if (this.leavingOverlay) 
+            return;
+
         let win = metaWin.get_compositor_private();
 
         if (!win) {
@@ -516,7 +519,7 @@ Workspace.prototype = {
             clone.actor.set_scale (scale, scale);
         }
 
-        this._positionWindows();
+        this._positionWindows(false);
         this.updateRemovable();
     },
 
@@ -555,7 +558,9 @@ Workspace.prototype = {
                            scale_x: 1.0,
                            scale_y: 1.0,
                            time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
+                           transition: "easeOutQuad",
+                           onComplete: this._doneLeavingOverlay,
+                           onCompleteScope: this
                          });
 
         for (let i = 1; i < this._windows.length; i++) {
@@ -572,9 +577,7 @@ Workspace.prototype = {
                              });
         }
 
-        this.leavingOverlay = false;
-        this._visible = false;
-        
+        this._visible = false;        
     },
 
     // Animates grid shrinking/expanding when a row or column
@@ -648,6 +651,11 @@ Workspace.prototype = {
 
         this._metaWorkspace.disconnect(this._windowAddedId);
         this._metaWorkspace.disconnect(this._windowRemovedId);
+    },
+
+    // Sets this.leavingOverlay flag to false.
+    _doneLeavingOverlay : function() {
+        this.leavingOverlay = false;
     },
 
     // Tests if @win belongs to this workspaces
