@@ -139,6 +139,7 @@ enum {
   PROP_ICON,
   PROP_MINI_ICON,
   PROP_DECORATED,
+  PROP_FULLSCREEN,
 };
 
 enum
@@ -197,6 +198,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_DECORATED:
       g_value_set_boolean (value, win->decorated);
+      break;
+    case PROP_FULLSCREEN:
+      g_value_set_boolean (value, win->fullscreen);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -257,6 +261,14 @@ meta_window_class_init (MetaWindowClass *klass)
                                                          "Decorated",
                                                          "Whether windos is decorated",
                                                          TRUE,
+                                                         G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_FULLSCREEN,
+                                   g_param_spec_boolean ("fullscreen",
+                                                         "Fullscreen",
+                                                         "Whether windos is fullscreened",
+                                                         FALSE,
                                                          G_PARAM_READABLE));
 
   window_signals[WORKSPACE_CHANGED] =
@@ -3086,6 +3098,8 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
 
       recalc_window_features (window);
       set_net_wm_state (window);
+
+      g_object_notify (G_OBJECT (window), "fullscreen");
     }
 }
 
@@ -3130,6 +3144,8 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 
       recalc_window_features (window);
       set_net_wm_state (window);
+
+      g_object_notify (G_OBJECT (window), "fullscreen");
     }
 }
 
@@ -3270,10 +3286,10 @@ window_activate (MetaWindow     *window,
   if (workspace == NULL)
     workspace = window->screen->active_workspace;
 
-  /* For non-transient windows, we just set up a pulsing indicator, 
+  /* For non-transient windows, we just set up a pulsing indicator,
      rather than move windows or workspaces.
      See http://bugzilla.gnome.org/show_bug.cgi?id=482354 */
-  if (window->xtransient_for == None && 
+  if (window->xtransient_for == None &&
       !meta_window_located_on_workspace (window, workspace))
     {
       meta_window_set_demands_attention (window);
@@ -3282,7 +3298,7 @@ window_activate (MetaWindow     *window,
     }
   else if (window->xtransient_for != None)
     {
-      /* Move transients to current workspace - preference dialogs should appear over 
+      /* Move transients to current workspace - preference dialogs should appear over
          the source window.  */
     meta_window_change_workspace (window, workspace);
     }
