@@ -71,6 +71,7 @@ MetaFrame *meta_window_get_frame (MetaWindow *window);
 gboolean meta_window_has_focus (MetaWindow *window);
 gboolean meta_window_is_shaded (MetaWindow *window);
 MetaRectangle *meta_window_get_rect (MetaWindow *window);
+void meta_window_get_outer_rect (const MetaWindow *window, MetaRectangle *rect);
 MetaScreen *meta_window_get_screen (MetaWindow *window);
 MetaDisplay *meta_window_get_display (MetaWindow *window);
 Window meta_window_get_xwindow (MetaWindow *window);
