@@ -41,8 +41,6 @@
 #define HSL_OFFSET    0.5 /* the hue that we map an amplitude of 0 too */
 #define HSL_SCALE     0.25
 
-#define USE_CLUTTER_COLOR 1
-
 typedef struct _TestState
 {
   ClutterActor    *dummy;
@@ -53,62 +51,6 @@ typedef struct _TestState
   guint            n_static_indices;
   ClutterTimeline *timeline;
 } TestState;
-
-#ifndef USE_CLUTTER_COLOR
-/* This algorithm is adapted from the book:
- * Fundamentals of Interactive Computer Graphics by Foley and van Dam
- */
-static void
-hsl_to_rgb (float h, float s, float l,
-            GLubyte *r, GLubyte *g, GLubyte *b)
-
-{
-  float tmp1, tmp2;
-  float tmp3[3];
-  float clr[3];
-  int   i;
-
-  if (l == 0)
-    {
-      *r = *g = *b = 0;
-      return;
-    }
-
-  if (s == 0)
-    {
-      *r = *g = *b = l;
-      return;
-    }
-
-   tmp2 = ((l <= 0.5) ? l * (1.0 + s) : l + s - (l * s));
-   tmp1 = 2.0 * l - tmp2;
-
-   tmp3[0] = h + 1.0 / 3.0;
-   tmp3[1] = h;
-   tmp3[2] = h - 1.0 / 3.0;
-
-   for (i = 0; i < 3; i++)
-     {
-       if (tmp3[i] < 0)
-         tmp3[i] += 1.0;
-       if (tmp3[i] > 1)
-         tmp3[i] -= 1.0;
-
-       if (6.0 * tmp3[i] < 1.0)
-         clr[i] = tmp1 + (tmp2 - tmp1) * tmp3[i] * 6.0;
-       else if (2.0 * tmp3[i] < 1.0)
-         clr[i] = tmp2;
-       else if (3.0 * tmp3[i] < 2.0)
-         clr[i] = (tmp1 + (tmp2 - tmp1) * ((2.0 / 3.0) - tmp3[i]) * 6.0);
-       else
-         clr[i] = tmp1;
-      }
-
-   *r = clr[0] * 255.0;
-   *g = clr[1] * 255.0;
-   *b = clr[2] * 255.0;
-}
-#endif
 
 static void
 frame_cb (ClutterTimeline *timeline,
@@ -156,11 +98,9 @@ frame_cb (ClutterTimeline *timeline,
         s = 0.5;
         l = 0.25 + (period_progress_sin + 1.0) / 4.0;
         color = &state->quad_mesh_colors[4 * vert_index];
-#ifdef USE_CLUTTER_COLOR
+        /* A bit of a sneaky cast, but it seems safe to assume the ClutterColor
+         * typedef is set in stone... */
         clutter_color_from_hls ((ClutterColor *)color, h * 360.0, l, s);
-#else
-        hsl_to_rgb (h, s, l, &color[0], &color[1], &color[2]);
-#endif
       }
 
   cogl_vertex_buffer_add (state->buffer,
