@@ -1149,12 +1149,12 @@ meta_rectangle_edge_aligns (const MetaRectangle *rect, const MetaEdge *edge)
    */
   switch (edge->side_type)
     {
-    case META_DIRECTION_LEFT:
-    case META_DIRECTION_RIGHT:
+    case META_SIDE_LEFT:
+    case META_SIDE_RIGHT:
       return BOX_TOP (*rect)      <= BOX_BOTTOM (edge->rect) &&
              BOX_TOP (edge->rect) <= BOX_BOTTOM (*rect);
-    case META_DIRECTION_TOP:
-    case META_DIRECTION_BOTTOM:
+    case META_SIDE_TOP:
+    case META_SIDE_BOTTOM:
       return BOX_LEFT (*rect)      <= BOX_RIGHT (edge->rect) &&
              BOX_LEFT (edge->rect) <= BOX_RIGHT (*rect);
     default:
@@ -1339,8 +1339,8 @@ meta_rectangle_edge_cmp_ignore_type (gconstpointer a, gconstpointer b)
 
   a_compare = b_compare = 0;  /* gcc-3.4.2 sucks at figuring initialized'ness */
 
-  if (a_edge_rect->side_type == META_DIRECTION_LEFT ||
-      a_edge_rect->side_type == META_DIRECTION_RIGHT)
+  if (a_edge_rect->side_type == META_SIDE_LEFT ||
+      a_edge_rect->side_type == META_SIDE_RIGHT)
     {
       a_compare = a_edge_rect->rect.x;
       b_compare = b_edge_rect->rect.x;
@@ -1350,8 +1350,8 @@ meta_rectangle_edge_cmp_ignore_type (gconstpointer a, gconstpointer b)
           b_compare = b_edge_rect->rect.y;
         }
     }
-  else if (a_edge_rect->side_type == META_DIRECTION_TOP ||
-           a_edge_rect->side_type == META_DIRECTION_BOTTOM)
+  else if (a_edge_rect->side_type == META_SIDE_TOP ||
+           a_edge_rect->side_type == META_SIDE_BOTTOM)
     {
       a_compare = a_edge_rect->rect.y;
       b_compare = b_edge_rect->rect.y;
@@ -1447,7 +1447,7 @@ rectangle_and_edge_intersection (const MetaRectangle *rect,
        */
       switch (edge->side_type)
         {
-        case META_DIRECTION_LEFT:
+        case META_SIDE_LEFT:
           if (result->x == rect->x)
             *handle_type = 1;
           else if (result->x == BOX_RIGHT (*rect))
@@ -1455,7 +1455,7 @@ rectangle_and_edge_intersection (const MetaRectangle *rect,
           else
             *handle_type = 0;
           break;
-        case META_DIRECTION_RIGHT:
+        case META_SIDE_RIGHT:
           if (result->x == rect->x)
             *handle_type = -1;
           else if (result->x == BOX_RIGHT (*rect))
@@ -1463,7 +1463,7 @@ rectangle_and_edge_intersection (const MetaRectangle *rect,
           else
             *handle_type = 0;
           break;
-        case META_DIRECTION_TOP:
+        case META_SIDE_TOP:
           if (result->y == rect->y)
             *handle_type = 1;
           else if (result->y == BOX_BOTTOM (*rect))
@@ -1471,7 +1471,7 @@ rectangle_and_edge_intersection (const MetaRectangle *rect,
           else
             *handle_type = 0;
           break;
-        case META_DIRECTION_BOTTOM:
+        case META_SIDE_BOTTOM:
           if (result->y == rect->y)
             *handle_type = -1;
           else if (result->y == BOX_BOTTOM (*rect))
@@ -1506,23 +1506,23 @@ add_edges (GList               *cur_edges,
         {
         case 0:
           temp_edge->side_type = 
-            rect_is_internal ? META_DIRECTION_LEFT : META_DIRECTION_RIGHT;
+            rect_is_internal ? META_SIDE_LEFT : META_SIDE_RIGHT;
           temp_edge->rect.width = 0;
           break;
         case 1:
           temp_edge->side_type = 
-            rect_is_internal ? META_DIRECTION_RIGHT : META_DIRECTION_LEFT;
+            rect_is_internal ? META_SIDE_RIGHT : META_SIDE_LEFT;
           temp_edge->rect.x     += temp_edge->rect.width;
           temp_edge->rect.width  = 0;
           break;
         case 2:
           temp_edge->side_type = 
-            rect_is_internal ? META_DIRECTION_TOP : META_DIRECTION_BOTTOM;
+            rect_is_internal ? META_SIDE_TOP : META_SIDE_BOTTOM;
           temp_edge->rect.height = 0;
           break;
         case 3:
           temp_edge->side_type = 
-            rect_is_internal ? META_DIRECTION_BOTTOM : META_DIRECTION_TOP;
+            rect_is_internal ? META_SIDE_BOTTOM : META_SIDE_TOP;
           temp_edge->rect.y      += temp_edge->rect.height;
           temp_edge->rect.height  = 0;
           break;
@@ -1545,8 +1545,8 @@ split_edge (GList *cur_list,
   MetaEdge *temp_edge;
   switch (old_edge->side_type)
     {
-    case META_DIRECTION_LEFT:
-    case META_DIRECTION_RIGHT:
+    case META_SIDE_LEFT:
+    case META_SIDE_RIGHT:
       g_assert (meta_rectangle_vert_overlap (&old_edge->rect, &remove->rect));
       if (BOX_TOP (old_edge->rect)  < BOX_TOP (remove->rect))
         {
@@ -1566,8 +1566,8 @@ split_edge (GList *cur_list,
           cur_list = g_list_prepend (cur_list, temp_edge);
         }
       break;
-    case META_DIRECTION_TOP:
-    case META_DIRECTION_BOTTOM:
+    case META_SIDE_TOP:
+    case META_SIDE_BOTTOM:
       g_assert (meta_rectangle_horiz_overlap (&old_edge->rect, &remove->rect));
       if (BOX_LEFT (old_edge->rect)  < BOX_LEFT (remove->rect))
         {
@@ -1823,7 +1823,7 @@ meta_rectangle_find_nonintersected_xinerama_edges (
           /* Check if cur might be horizontally adjacent to compare */
           if (meta_rectangle_vert_overlap(cur_rect, compare_rect))
             {
-              MetaDirection side_type;
+              MetaSide side_type;
               int y      = MAX (cur_rect->y, compare_rect->y);
               int height = MIN (BOX_BOTTOM (*cur_rect) - y,
                                 BOX_BOTTOM (*compare_rect) - y);
@@ -1834,13 +1834,13 @@ meta_rectangle_find_nonintersected_xinerama_edges (
                 {
                   /* compare_rect is to the left of cur_rect */
                   x = BOX_LEFT (*cur_rect);
-                  side_type = META_DIRECTION_LEFT;
+                  side_type = META_SIDE_LEFT;
                 }
               else if (BOX_RIGHT (*cur_rect) == BOX_LEFT (*compare_rect))
                 {
                   /* compare_rect is to the right of cur_rect */
                   x = BOX_RIGHT (*cur_rect);
-                  side_type = META_DIRECTION_RIGHT;
+                  side_type = META_SIDE_RIGHT;
                 }
               else
                 /* These rectangles aren't adjacent after all */
@@ -1866,7 +1866,7 @@ meta_rectangle_find_nonintersected_xinerama_edges (
           /* Check if cur might be vertically adjacent to compare */
           if (meta_rectangle_horiz_overlap(cur_rect, compare_rect))
             {
-              MetaDirection side_type;
+              MetaSide side_type;
               int x      = MAX (cur_rect->x, compare_rect->x);
               int width  = MIN (BOX_RIGHT (*cur_rect) - x,
                                 BOX_RIGHT (*compare_rect) - x);
@@ -1877,13 +1877,13 @@ meta_rectangle_find_nonintersected_xinerama_edges (
                 {
                   /* compare_rect is to the top of cur_rect */
                   y = BOX_TOP (*cur_rect);
-                  side_type = META_DIRECTION_TOP;
+                  side_type = META_SIDE_TOP;
                 }
               else if (BOX_BOTTOM (*cur_rect) == BOX_TOP (*compare_rect))
                 {
                   /* compare_rect is to the bottom of cur_rect */
                   y = BOX_BOTTOM (*cur_rect);
-                  side_type = META_DIRECTION_BOTTOM;
+                  side_type = META_SIDE_BOTTOM;
                 }
               else
                 /* These rectangles aren't adjacent after all */
