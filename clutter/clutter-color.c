@@ -132,35 +132,33 @@ clutter_color_darken (const ClutterColor *color,
   clutter_color_shade (color, 0.7, result);
 }
 
-/*
- * clutter_color_to_hlsx:
+/**
+ * clutter_color_to_hls:
  * @color: a #ClutterColor
  * @hue: return location for the hue value or %NULL
  * @luminance: return location for the luminance value or %NULL
  * @saturation: return location for the saturation value or %NULL
  *
- * Converts @color to the HLS format. Returned hue is in degrees (0 .. 360),
- * luminance and saturation from interval <0 .. 1>.
+ * Converts @color to the HLS format.
  *
- * The implementation is in fixed point because we don't particularly
- * care about precision. It can be moved to floating point at any later
- * date.
+ * The @hue value is in the 0 .. 360 range. The @luminance and
+ * @saturation values are in the 0 .. 1 range.
  */
-static void
-clutter_color_to_hlsx (const ClutterColor *color,
-		       CoglFixed          *hue,
-		       CoglFixed          *luminance,
-		       CoglFixed          *saturation)
+void
+clutter_color_to_hls (const ClutterColor *color,
+		      float              *hue,
+		      float              *luminance,
+		      float              *saturation)
 {
-  CoglFixed red, green, blue;
-  CoglFixed min, max, delta;
-  CoglFixed h, l, s;
+  float red, green, blue;
+  float min, max, delta;
+  float h, l, s;
   
   g_return_if_fail (color != NULL);
 
-  red   = COGL_FIXED_FAST_DIV (color->red,   COGL_FIXED_255);
-  green = COGL_FIXED_FAST_DIV (color->green, COGL_FIXED_255);
-  blue  = COGL_FIXED_FAST_DIV (color->blue,  COGL_FIXED_255);
+  red   = color->red / 255.0;
+  green = color->green / 255.0;
+  blue  = color->blue / 255.0;
 
   if (red > green)
     {
@@ -193,25 +191,24 @@ clutter_color_to_hlsx (const ClutterColor *color,
 
   if (max != min)
     {
-      if (l <= COGL_FIXED_0_5)
-	s = COGL_FIXED_DIV ((max - min), (max + min));
+      if (l <= 0.5)
+	s = (max - min) / (max + min);
       else
-	s = COGL_FIXED_DIV ((max - min),
-                            (COGL_FIXED_FROM_INT (2) - max - min));
+	s = (max - min) / (2.0 - max - min);
 
       delta = max - min;
 
       if (red == max)
-	h = COGL_FIXED_DIV ((green - blue), delta);
+	h = (green - blue) / delta;
       else if (green == max)
-	h = COGL_FIXED_FROM_INT (2) + COGL_FIXED_DIV ((blue - red), delta);
+	h = 2.0 + (blue - red) / delta;
       else if (blue == max)
-	h = COGL_FIXED_FROM_INT (4) + COGL_FIXED_DIV ((red - green), delta);
+	h = 4.0 + (red - green) / delta;
 
       h *= 60;
 
       if (h < 0)
-	h += COGL_FIXED_360;
+	h += 360.0;
     }
 
   if (hue)
@@ -222,164 +219,6 @@ clutter_color_to_hlsx (const ClutterColor *color,
 
   if (saturation)
     *saturation = s;
-}
-
-/*
- * clutter_color_from_hlsx:
- * @dest: (out): return location for a #ClutterColor
- * @hue: hue value (0 .. 360)
- * @luminance: luminance value (0 .. 1)
- * @saturation: saturation value (0 .. 1)
- *
- * Converts a color expressed in HLS (hue, luminance and saturation)
- * values into a #ClutterColor.
- */
-void
-clutter_color_from_hlsx (ClutterColor *color,
-			 CoglFixed     hue,
-			 CoglFixed     luminance,
-			 CoglFixed     saturation)
-{
-  CoglFixed h, l, s;
-  CoglFixed m1, m2;
-  
-  g_return_if_fail (color != NULL);
-
-  l = luminance;
-  s = saturation;
-
-  if (l <= COGL_FIXED_0_5)
-    m2 = COGL_FIXED_MUL (l, (COGL_FIXED_1 + s));
-  else
-    m2 = l + s - COGL_FIXED_MUL (l, s);
-
-  m1 = 2 * l - m2;
-
-  if (s == 0)
-    {
-      color->red   = (guint8) (COGL_FIXED_TO_FLOAT (l) * 255);
-      color->green = (guint8) (COGL_FIXED_TO_FLOAT (l) * 255);
-      color->blue  = (guint8) (COGL_FIXED_TO_FLOAT (l) * 255);
-    }
-  else
-    {
-      h = hue + COGL_FIXED_120;
-
-      while (h > COGL_FIXED_360)
-	h -= COGL_FIXED_360;
-
-      while (h < 0)
-	h += COGL_FIXED_360;
-
-      if (h < COGL_FIXED_60)
-        {
-          CoglFixed tmp;
-
-          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
-          color->red = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
-        }
-      else if (h < COGL_FIXED_180)
-	color->red = (guint8) (COGL_FIXED_TO_FLOAT (m2) * 255);
-      else if (h < COGL_FIXED_240)
-        {
-          CoglFixed tmp;
-
-          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
-                                          (COGL_FIXED_240 - h),
-                                          COGL_FIXED_60));
-          color->red = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
-        }
-      else
-	color->red = (guint8) (COGL_FIXED_TO_FLOAT (m1) * 255);
-
-      h = hue;
-      while (h > COGL_FIXED_360)
-	h -= COGL_FIXED_360;
-      while (h < 0)
-	h += COGL_FIXED_360;
-
-      if (h < COGL_FIXED_60)
-        {
-          CoglFixed tmp;
-
-          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
-          color->green = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
-        }
-      else if (h < COGL_FIXED_180)
-        color->green = (guint8) (COGL_FIXED_TO_FLOAT (m2) * 255);
-      else if (h < COGL_FIXED_240)
-        {
-          CoglFixed tmp;
-
-          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
-                                          (COGL_FIXED_240 - h),
-                                          COGL_FIXED_60));
-          color->green = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
-        }
-      else
-	color->green = (guint8) (COGL_FIXED_TO_FLOAT (m1) * 255);
-
-      h = hue - COGL_FIXED_120;
-
-      while (h > COGL_FIXED_360)
-	h -= COGL_FIXED_360;
-
-      while (h < 0)
-	h += COGL_FIXED_360;
-
-      if (h < COGL_FIXED_60)
-        {
-          CoglFixed tmp;
-
-          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1), h, COGL_FIXED_60));
-          color->blue = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
-        }
-      else if (h < COGL_FIXED_180)
-	color->blue = (guint8) (COGL_FIXED_TO_FLOAT (m2) * 255);
-      else if (h < COGL_FIXED_240)
-        {
-          CoglFixed tmp;
-
-          tmp = (m1 + COGL_FIXED_MUL_DIV ((m2 - m1),
-                                          (COGL_FIXED_240 - h),
-                                          COGL_FIXED_60));
-          color->blue = (guint8) (COGL_FIXED_TO_FLOAT (tmp) * 255);
-        }
-      else
-	color->blue = (guint8) (COGL_FIXED_TO_FLOAT (m1) * 255);
-    }
-}
-
-/**
- * clutter_color_to_hls:
- * @color: a #ClutterColor
- * @hue: return location for the hue value or %NULL
- * @luminance: return location for the luminance value or %NULL
- * @saturation: return location for the saturation value or %NULL
- *
- * Converts @color to the HLS format.
- *
- * The @hue value is in the 0 .. 360 range. The @luminance and
- * @saturation values are in the 0 .. 1 range.
- */
-void
-clutter_color_to_hls (const ClutterColor *color,
-		      gfloat             *hue,
-		      gfloat             *luminance,
-		      gfloat             *saturation)
-{
-  CoglFixed h, l, s;
-  
-  clutter_color_to_hlsx (color, &h, &l, &s);
-  
-  if (hue)
-    *hue = COGL_FIXED_TO_FLOAT (h);
-
-  if (luminance)
-    *luminance = COGL_FIXED_TO_FLOAT (l);
-
-  if (saturation)
-    *saturation = COGL_FIXED_TO_FLOAT (s);
 }
 
 /**
@@ -394,54 +233,60 @@ clutter_color_to_hls (const ClutterColor *color,
  */
 void
 clutter_color_from_hls (ClutterColor *color,
-			gfloat        hue,
-			gfloat        luminance,
-			gfloat        saturation)
+			float         hue,
+			float         luminance,
+			float         saturation)
 {
-  CoglFixed h, l, s;
+  float tmp1, tmp2;
+  float tmp3[3];
+  float clr[3];
+  int   i;
 
-  h = COGL_FIXED_FROM_FLOAT (hue);
-  l = COGL_FIXED_FROM_FLOAT (luminance);
-  s = COGL_FIXED_FROM_FLOAT (saturation);
+  hue /= 360.0;
 
-  clutter_color_from_hlsx (color, h, l, s);
-}
+  if (luminance == 0)
+    {
+      color->red = color->green = color->blue = 0;
+      return;
+    }
 
-/*
- * clutter_color_shadex:
- * @color: a #ClutterColor
- * @factor: the shade factor to apply, as a fixed point value
- * @result: (out): return location for the shaded color
- * 
- * Shades @color by @factor and saves the modified color into @result.
- */
-static void
-clutter_color_shadex (const ClutterColor *color,
-                      CoglFixed           factor,
-                      ClutterColor       *result)
-{
-  CoglFixed h, l, s;
+  if (saturation == 0)
+    {
+      color->red = color->green = color->blue = luminance;
+      return;
+    }
 
-  g_return_if_fail (color != NULL);
-  g_return_if_fail (result != NULL);
-  
-  clutter_color_to_hlsx (color, &h, &l, &s);
+  if (luminance <= 0.5)
+    tmp2 = luminance * (1.0 + saturation);
+  else
+    tmp2 = luminance + saturation - (luminance * saturation);
 
-  l = COGL_FIXED_MUL (l, factor);
-  if (l > COGL_FIXED_1)
-    l = COGL_FIXED_1;
-  else if (l < 0)
-    l = 0;
+  tmp1 = 2.0 * luminance - tmp2;
 
-  s = COGL_FIXED_MUL (s, factor);
-  if (s > COGL_FIXED_1)
-    s = COGL_FIXED_1;
-  else if (s < 0)
-    s = 0;
-  
-  clutter_color_from_hlsx (result, h, l, s);
+  tmp3[0] = hue + 1.0 / 3.0;
+  tmp3[1] = hue;
+  tmp3[2] = hue - 1.0 / 3.0;
 
-  result->alpha = color->alpha;
+  for (i = 0; i < 3; i++)
+    {
+      if (tmp3[i] < 0)
+        tmp3[i] += 1.0;
+      if (tmp3[i] > 1)
+        tmp3[i] -= 1.0;
+
+      if (6.0 * tmp3[i] < 1.0)
+        clr[i] = tmp1 + (tmp2 - tmp1) * tmp3[i] * 6.0;
+      else if (2.0 * tmp3[i] < 1.0)
+        clr[i] = tmp2;
+      else if (3.0 * tmp3[i] < 2.0)
+        clr[i] = (tmp1 + (tmp2 - tmp1) * ((2.0 / 3.0) - tmp3[i]) * 6.0);
+      else
+        clr[i] = tmp1;
+    }
+
+  color->red = clr[0] * 255.0;
+  color->green = clr[1] * 255.0;
+  color->blue = clr[2] * 255.0;
 }
 
 /**
@@ -455,11 +300,30 @@ clutter_color_shadex (const ClutterColor *color,
 void
 clutter_color_shade (const ClutterColor *color,
                      gdouble             factor,
-		     ClutterColor       *result)
+                     ClutterColor       *result)
 {
-  clutter_color_shadex (color,
-                        COGL_FIXED_FROM_FLOAT (factor),
-                        result);
+  float h, l, s;
+
+  g_return_if_fail (color != NULL);
+  g_return_if_fail (result != NULL);
+  
+  clutter_color_to_hls (color, &h, &l, &s);
+
+  l *= factor;
+  if (l > 1.0)
+    l = 1.0;
+  else if (l < 0)
+    l = 0;
+
+  s *= factor;
+  if (s > 1.0)
+    s = 1.0;
+  else if (s < 0)
+    s = 0;
+  
+  clutter_color_from_hls (result, h, l, s);
+
+  result->alpha = color->alpha;
 }
 
 /**

@@ -41,6 +41,8 @@
 #define HSL_OFFSET    0.5 /* the hue that we map an amplitude of 0 too */
 #define HSL_SCALE     0.25
 
+#define USE_CLUTTER_COLOR 1
+
 typedef struct _TestState
 {
   ClutterActor    *dummy;
@@ -52,6 +54,7 @@ typedef struct _TestState
   ClutterTimeline *timeline;
 } TestState;
 
+#ifndef USE_CLUTTER_COLOR
 /* This algorithm is adapted from the book:
  * Fundamentals of Interactive Computer Graphics by Foley and van Dam
  */
@@ -105,6 +108,7 @@ hsl_to_rgb (float h, float s, float l,
    *g = clr[1] * 255.0;
    *b = clr[2] * 255.0;
 }
+#endif
 
 static void
 frame_cb (ClutterTimeline *timeline,
@@ -152,7 +156,11 @@ frame_cb (ClutterTimeline *timeline,
         s = 0.5;
         l = 0.25 + (period_progress_sin + 1.0) / 4.0;
         color = &state->quad_mesh_colors[4 * vert_index];
+#ifdef USE_CLUTTER_COLOR
+        clutter_color_from_hls ((ClutterColor *)color, h * 360.0, l, s);
+#else
         hsl_to_rgb (h, s, l, &color[0], &color[1], &color[2]);
+#endif
       }
 
   cogl_vertex_buffer_add (state->buffer,
