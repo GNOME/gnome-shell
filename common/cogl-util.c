@@ -326,7 +326,7 @@ cogl_value_lcopy_fixed (const GValue *value,
   gint32 *fixed_p = collect_values[0].v_pointer;
 
   if (!fixed_p)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   *fixed_p = value->data[0].v_int;
