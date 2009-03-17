@@ -614,7 +614,7 @@ emit_frame_signal (ClutterTimeline *timeline)
         {
           TimelineMarker *marker = l->data;
 
-          CLUTTER_NOTE (SCHEDULER, "Marker `%s' reached", marker->name);
+          CLUTTER_NOTE (SCHEDULER, "Marker '%s' reached", marker->name);
 
           g_signal_emit (timeline, timeline_signals[MARKER_REACHED],
                          marker->quark,
@@ -1517,7 +1517,7 @@ clutter_timeline_add_marker_internal (ClutterTimeline *timeline,
   marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
   if (G_UNLIKELY (marker))
     {
-      g_warning ("A marker named `%s' already exists on frame %d",
+      g_warning ("A marker named '%s' already exists on frame %d",
                  marker->name,
                  marker->frame_num);
       return;
@@ -1697,14 +1697,14 @@ clutter_timeline_advance_to_marker (ClutterTimeline *timeline,
   if (G_UNLIKELY (priv->markers_by_name == NULL ||
                   priv->markers_by_frame == NULL))
     {
-      g_warning ("No marker named `%s' found.", marker_name);
+      g_warning ("No marker named '%s' found.", marker_name);
       return;
     }
 
   marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
   if (!marker)
     {
-      g_warning ("No marker named `%s' found.", marker_name);
+      g_warning ("No marker named '%s' found.", marker_name);
       return;
     }
 
@@ -1736,14 +1736,14 @@ clutter_timeline_remove_marker (ClutterTimeline *timeline,
   if (G_UNLIKELY (priv->markers_by_name == NULL ||
                   priv->markers_by_frame == NULL))
     {
-      g_warning ("No marker named `%s' found.", marker_name);
+      g_warning ("No marker named '%s' found.", marker_name);
       return;
     }
 
   marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
   if (!marker)
     {
-      g_warning ("No marker named `%s' found.", marker_name);
+      g_warning ("No marker named '%s' found.", marker_name);
       return;
     }
 

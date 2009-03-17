@@ -135,7 +135,7 @@ clutter_value_collect_shader_float (GValue      *value,
   const float *floats = collect_values[1].v_pointer;
 
   if (!floats)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   clutter_value_init_shader_float (value);
@@ -155,7 +155,7 @@ clutter_value_lcopy_shader_float (const GValue *value,
   ClutterShaderFloat *shader_float = value->data[0].v_pointer;
 
   if (!float_count || !floats)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   *float_count = shader_float->size;
@@ -226,7 +226,7 @@ clutter_value_collect_shader_int (GValue      *value,
   const COGLint *ints = collect_values[1].v_pointer;
 
   if (!ints)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   clutter_value_init_shader_int (value);
@@ -246,7 +246,7 @@ clutter_value_lcopy_shader_int (const GValue *value,
   ClutterShaderInt *shader_int = value->data[0].v_pointer;
 
   if (!int_count || !ints)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   *int_count = shader_int->size;
@@ -317,7 +317,7 @@ clutter_value_collect_shader_matrix (GValue      *value,
   const float *floats = collect_values[1].v_pointer;
 
   if (!floats)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   clutter_value_init_shader_matrix (value);
@@ -337,7 +337,7 @@ clutter_value_lcopy_shader_matrix (const GValue *value,
   ClutterShaderFloat *shader_float = value->data[0].v_pointer;
 
   if (!float_count || !floats)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   *float_count = shader_float->size;

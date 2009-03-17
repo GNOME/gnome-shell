@@ -227,7 +227,7 @@ warn_missing_attribute (ClutterScript *script,
 
   if (G_LIKELY (id))
     {
-      g_warning ("%s:%d: object `%s' has no `%s' attribute",
+      g_warning ("%s:%d: object '%s' has no '%s' attribute",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  id,
@@ -235,7 +235,7 @@ warn_missing_attribute (ClutterScript *script,
     }
   else
     {
-      g_warning ("%s:%d: object has no `%s' attribute",
+      g_warning ("%s:%d: object has no '%s' attribute",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  attribute);
@@ -252,8 +252,8 @@ warn_invalid_value (ClutterScript *script,
 
   if (G_LIKELY (node))
     {
-      g_warning ("%s:%d: invalid value of type `%s' for attribute `%s':"
-                 "a value of type `%s' is expected",
+      g_warning ("%s:%d: invalid value of type '%s' for attribute '%s':"
+                 "a value of type '%s' is expected",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  json_node_type_name (node),
@@ -262,8 +262,8 @@ warn_invalid_value (ClutterScript *script,
     }
   else
     {
-      g_warning ("%s:%d: invalid value for attribute `%s':"
-                 "a value of type `%s' is expected",
+      g_warning ("%s:%d: invalid value for attribute '%s':"
+                 "a value of type '%s' is expected",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  attribute,
@@ -432,7 +432,7 @@ parse_signals (ClutterScript *script,
         }
 
       CLUTTER_NOTE (SCRIPT, 
-                    "Parsing signal `%s' (handler:%s, object:%s, flags:%d)",
+                    "Parsing signal '%s' (handler:%s, object:%s, flags:%d)",
                     name,
                     handler, connect, flags);
 
@@ -587,14 +587,14 @@ resolve_alpha_func (const gchar *name)
   static GModule *module = NULL;
   ClutterAlphaFunc func;
 
-  CLUTTER_NOTE (SCRIPT, "Looking up `%s' alpha function", name);
+  CLUTTER_NOTE (SCRIPT, "Looking up '%s' alpha function", name);
 
   if (G_UNLIKELY (!module))
     module = g_module_open (NULL, G_MODULE_BIND_LAZY);
 
   if (g_module_symbol (module, name, (gpointer) &func))
     {
-      CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function in the symbols table",
+      CLUTTER_NOTE (SCRIPT, "Found '%s' alpha function in the symbols table",
                     name);
       return func;
     }
@@ -649,7 +649,7 @@ clutter_script_parse_alpha (ClutterScript *script,
           alpha_func = resolve_alpha_func (json_node_get_string (val));
           if (!alpha_func)
             {
-              g_warning ("Unable to find the function `%s' in the "
+              g_warning ("Unable to find the function '%s' in the "
                          "Clutter alpha functions or the symbols table",
                          json_node_get_string (val));
             }
@@ -801,7 +801,7 @@ json_object_end (JsonParser *parser,
   g_list_free (members);
 
   CLUTTER_NOTE (SCRIPT,
-                "Added object `%s' (type:%s, id:%d, props:%d, signals:%d)",
+                "Added object '%s' (type:%s, id:%d, props:%d, signals:%d)",
                 oinfo->id,
                 oinfo->class_name,
                 oinfo->merge_id,
@@ -1090,7 +1090,7 @@ clutter_script_parse_node (ClutterScript *script,
                   pixbuf = gdk_pixbuf_new_from_file (path, &error);
                   if (error)
                     {
-                      g_warning ("Unable to open image at path `%s': %s",
+                      g_warning ("Unable to open image at path '%s': %s",
                                  path,
                                  error->message);
                       g_error_free (error);
@@ -1292,7 +1292,7 @@ apply_behaviours (ClutterScript *script,
           continue;
         }
 
-      CLUTTER_NOTE (SCRIPT, "Applying behaviour `%s' to actor of type `%s'",
+      CLUTTER_NOTE (SCRIPT, "Applying behaviour '%s' to actor of type '%s'",
                     name,
                     g_type_name (G_OBJECT_TYPE (actor)));
 
@@ -1334,7 +1334,7 @@ add_children (ClutterScript    *script,
           continue;
         }
 
-      CLUTTER_NOTE (SCRIPT, "Adding children `%s' to actor of type `%s'",
+      CLUTTER_NOTE (SCRIPT, "Adding children '%s' to actor of type '%s'",
                     name,
                     g_type_name (G_OBJECT_TYPE (container)));
 
@@ -1476,7 +1476,7 @@ clutter_script_construct_object (ClutterScript *script,
       GParameter *param = &g_array_index (params, GParameter, i);
 
       CLUTTER_NOTE (SCRIPT,
-                    "Setting %s property `%s' (type:%s) to object `%s' (id:%s)",
+                    "Setting %s property '%s' (type:%s) to object '%s' (id:%s)",
                     set_custom_property ? "custom" : "regular",
                     param->name,
                     g_type_name (G_VALUE_TYPE (&param->value)),

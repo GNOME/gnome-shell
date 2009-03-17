@@ -470,7 +470,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   ClutterStageX11   *stage_x11;
   ClutterActor      *stage;
 
-  CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
+  CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
                 g_type_name (CLUTTER_STAGE_TYPE));
 
   stage = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);

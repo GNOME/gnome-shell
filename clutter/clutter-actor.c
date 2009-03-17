@@ -2103,7 +2103,7 @@ clutter_actor_dispose (GObject *object)
   ClutterActor *self = CLUTTER_ACTOR (object);
   ClutterActorPrivate *priv = self->priv;
 
-  CLUTTER_NOTE (MISC, "Disposing of object (id=%d) of type `%s' (ref_count:%d)",
+  CLUTTER_NOTE (MISC, "Disposing of object (id=%d) of type '%s' (ref_count:%d)",
 		self->priv->id,
 		g_type_name (G_OBJECT_TYPE (self)),
                 object->ref_count);
@@ -2139,7 +2139,7 @@ clutter_actor_finalize (GObject *object)
 {
   ClutterActor *actor = CLUTTER_ACTOR (object);
 
-  CLUTTER_NOTE (MISC, "Finalize object (id=%d) of type `%s'",
+  CLUTTER_NOTE (MISC, "Finalize object (id=%d) of type '%s'",
 		actor->priv->id,
 		g_type_name (G_OBJECT_TYPE (actor)));
 
@@ -7033,7 +7033,7 @@ parse_units (ClutterActor   *self,
           if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
             {
               g_warning ("Unable to set percentage of %s on a top-level "
-                         "actor of type `%s'",
+                         "actor of type '%s'",
                          (dimension == PARSE_X ||
                           dimension == PARSE_WIDTH ||
                           dimension == PARSE_ANCHOR_X) ? "width" : "height",
@@ -7060,9 +7060,9 @@ parse_units (ClutterActor   *self,
           goto out;
         }
 
-      g_warning ("Invalid value `%s': integers, strings or floating point "
+      g_warning ("Invalid value '%s': integers, strings or floating point "
                  "values can be used for the x, y, width and height "
-                 "properties. Valid modifiers for strings are `px', 'mm' "
+                 "properties. Valid modifiers for strings are 'px', 'mm' "
                  "and '%%'.",
                  g_value_get_string (&value));
 
@@ -7080,7 +7080,7 @@ parse_units (ClutterActor   *self,
       if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
         {
           g_warning ("Unable to set percentage of %s on a top-level "
-                     "actor of type `%s'",
+                     "actor of type '%s'",
                      (dimension == PARSE_X || dimension == PARSE_WIDTH) ? "width"
                                                                         : "height",
                      g_type_name (G_OBJECT_TYPE (self)));
@@ -7103,7 +7103,7 @@ parse_units (ClutterActor   *self,
     }
   else
     {
-      g_warning ("Invalid value of type `%s': integers, strings of floating "
+      g_warning ("Invalid value of type '%s': integers, strings of floating "
                  "point values can be used for the x, y, width, height "
                  "anchor-x and anchor-y properties.",
                  g_type_name (G_VALUE_TYPE (&value)));
@@ -7190,7 +7190,7 @@ parse_rotation (ClutterActor *actor,
 
   if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
     {
-      g_warning ("Invalid node of type `%s' found, expecting an array",
+      g_warning ("Invalid node of type '%s' found, expecting an array",
                  json_node_type_name (node));
       return FALSE;
     }
@@ -7206,7 +7206,7 @@ parse_rotation (ClutterActor *actor,
 
       if (JSON_NODE_TYPE (element) != JSON_NODE_OBJECT)
         {
-          g_warning ("Invalid node of type `%s' found, expecting an object",
+          g_warning ("Invalid node of type '%s' found, expecting an object",
                      json_node_type_name (element));
           return FALSE;
         }

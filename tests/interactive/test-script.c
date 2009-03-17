@@ -74,7 +74,7 @@ blue_button_press (ClutterActor       *actor,
                    ClutterButtonEvent *event,
                    gpointer            data)
 {
-  g_print ("[*] Pressed `%s'\n", clutter_get_script_id (G_OBJECT (actor)));
+  g_print ("[*] Pressed '%s'\n", clutter_get_script_id (G_OBJECT (actor)));
   g_print ("[*] Unmerging objects with merge id: %d\n", merge_id);
 
   clutter_script_unmerge_objects (script, merge_id);
@@ -89,7 +89,7 @@ red_button_press (ClutterActor *actor,
 {
   GObject *timeline;
 
-  g_print ("[*] Pressed `%s'\n", clutter_get_script_id (G_OBJECT (actor)));
+  g_print ("[*] Pressed '%s'\n", clutter_get_script_id (G_OBJECT (actor)));
 
   timeline = clutter_script_get_object (script, "main-timeline");
   g_assert (CLUTTER_IS_TIMELINE (timeline));

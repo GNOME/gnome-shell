@@ -27,7 +27,7 @@ on_timeline_started (ClutterScore    *score,
   for (i = 0; i < level; i++)
     g_print (" ");
 
-  g_print ("Started timeline: `%s'\n",
+  g_print ("Started timeline: '%s'\n",
            (gchar *) g_object_get_data (G_OBJECT (timeline), "timeline-name"));
 
   level += 1;
@@ -44,7 +44,7 @@ on_timeline_completed (ClutterScore    *score,
   for (i = 0; i < level; i++)
     g_print (" ");
 
-  g_print ("Completed timeline: `%s'\n",
+  g_print ("Completed timeline: '%s'\n",
            (gchar *) g_object_get_data (G_OBJECT (timeline), "timeline-name"));
 }
 

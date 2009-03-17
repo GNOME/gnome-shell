@@ -45,7 +45,7 @@
 
 #define CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED(container,vfunc) \
         G_STMT_START { \
-          g_warning ("Container of type `%s' does not implement " \
+          g_warning ("Container of type '%s' does not implement " \
                      "the required ClutterContainer::%s virtual " \
                      "function.",                                 \
                      G_OBJECT_TYPE_NAME ((container)),            \
@@ -54,7 +54,7 @@
 
 #define CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED(container,vfunc) \
         G_STMT_START { \
-          CLUTTER_NOTE (ACTOR, "Container of type `%s' does not "    \
+          CLUTTER_NOTE (ACTOR, "Container of type '%s' does not "    \
                                "implement the ClutterContainer::%s " \
                                "virtual function.",                  \
                         G_OBJECT_TYPE_NAME ((container)),            \
@@ -265,9 +265,9 @@ clutter_container_add_actor (ClutterContainer *container,
   parent = clutter_actor_get_parent (actor);
   if (parent)
     {
-      g_warning ("Attempting to add actor of type `%s' to a "
-		 "container of type `%s', but the actor has "
-                 "already a parent of type `%s'.",
+      g_warning ("Attempting to add actor of type '%s' to a "
+		 "container of type '%s', but the actor has "
+                 "already a parent of type '%s'.",
 		 g_type_name (G_OBJECT_TYPE (actor)),
 		 g_type_name (G_OBJECT_TYPE (container)),
 		 g_type_name (G_OBJECT_TYPE (parent)));
@@ -368,8 +368,8 @@ clutter_container_remove_actor (ClutterContainer *container,
   parent = clutter_actor_get_parent (actor);
   if (parent != CLUTTER_ACTOR (container))
     {
-      g_warning ("Attempting to remove actor of type `%s' from "
-		 "group of class `%s', but the container is not "
+      g_warning ("Attempting to remove actor of type '%s' from "
+		 "group of class '%s', but the container is not "
                  "the actor's parent.",
 		 g_type_name (G_OBJECT_TYPE (actor)),
 		 g_type_name (G_OBJECT_TYPE (container)));
@@ -506,8 +506,8 @@ clutter_container_raise_child (ClutterContainer *container,
 
   if (clutter_actor_get_parent (actor) != CLUTTER_ACTOR (container))
     {
-      g_warning ("Actor of type `%s' is not a child of the container "
-                 "of type `%s'",
+      g_warning ("Actor of type '%s' is not a child of the container "
+                 "of type '%s'",
                  g_type_name (G_OBJECT_TYPE (actor)),
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
@@ -516,8 +516,8 @@ clutter_container_raise_child (ClutterContainer *container,
   if (sibling &&
       clutter_actor_get_parent (sibling) != CLUTTER_ACTOR (container))
     {
-      g_warning ("Actor of type `%s' is not a child of the container "
-                 "of type `%s'",
+      g_warning ("Actor of type '%s' is not a child of the container "
+                 "of type '%s'",
                  g_type_name (G_OBJECT_TYPE (sibling)),
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
@@ -559,8 +559,8 @@ clutter_container_lower_child (ClutterContainer *container,
 
   if (clutter_actor_get_parent (actor) != CLUTTER_ACTOR (container))
     {
-      g_warning ("Actor of type `%s' is not a child of the container "
-                 "of type `%s'",
+      g_warning ("Actor of type '%s' is not a child of the container "
+                 "of type '%s'",
                  g_type_name (G_OBJECT_TYPE (actor)),
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
@@ -569,8 +569,8 @@ clutter_container_lower_child (ClutterContainer *container,
   if (sibling &&
       clutter_actor_get_parent (sibling) != CLUTTER_ACTOR (container))
     {
-      g_warning ("Actor of type `%s' is not a child of the container "
-                 "of type `%s'",
+      g_warning ("Actor of type '%s' is not a child of the container "
+                 "of type '%s'",
                  g_type_name (G_OBJECT_TYPE (sibling)),
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
@@ -696,7 +696,7 @@ create_child_meta (ClutterContainer *container,
 
   if (!g_type_is_a (iface->child_meta_type, CLUTTER_TYPE_CHILD_META))
     {
-      g_warning ("%s: Child data of type `%s' is not a ClutterChildMeta",
+      g_warning ("%s: Child data of type '%s' is not a ClutterChildMeta",
                  G_STRLOC, g_type_name (iface->child_meta_type));
       return;
     }
@@ -944,15 +944,15 @@ clutter_container_child_set_property (ClutterContainer *container,
   pspec = clutter_container_class_find_child_property (klass, property);
   if (!pspec)
     {
-      g_warning ("%s: Containers of type `%s' have no child "
-                 "property named `%s'",
+      g_warning ("%s: Containers of type '%s' have no child "
+                 "property named '%s'",
                  G_STRLOC, G_OBJECT_TYPE_NAME (container), property);
       return;
     }
 
   if (!(pspec->flags & G_PARAM_WRITABLE))
     {
-      g_warning ("%s: Child property `%s' of the container `%s' "
+      g_warning ("%s: Child property '%s' of the container '%s' "
                  "is not writable",
                  G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
       return;
@@ -1000,15 +1000,15 @@ clutter_container_child_set (ClutterContainer *container,
       pspec = clutter_container_class_find_child_property (klass, name);
       if (!pspec)
         {
-          g_warning ("%s: Containers of type `%s' have no child "
-                     "property named `%s'",
+          g_warning ("%s: Containers of type '%s' have no child "
+                     "property named '%s'",
                      G_STRLOC, G_OBJECT_TYPE_NAME (container), name);
           break;
         }
 
       if (!(pspec->flags & G_PARAM_WRITABLE))
         {
-          g_warning ("%s: Child property `%s' of the container `%s' "
+          g_warning ("%s: Child property '%s' of the container '%s' "
                      "is not writable",
                      G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
           break;
@@ -1085,15 +1085,15 @@ clutter_container_child_get_property (ClutterContainer *container,
   pspec = clutter_container_class_find_child_property (klass, property);
   if (!pspec)
     {
-      g_warning ("%s: Containers of type `%s' have no child "
-                 "property named `%s'",
+      g_warning ("%s: Containers of type '%s' have no child "
+                 "property named '%s'",
                  G_STRLOC, G_OBJECT_TYPE_NAME (container), property);
       return;
     }
 
   if (!(pspec->flags & G_PARAM_READABLE))
     {
-      g_warning ("%s: Child property `%s' of the container `%s' "
+      g_warning ("%s: Child property '%s' of the container '%s' "
                  "is not writable",
                  G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
       return;
@@ -1146,14 +1146,14 @@ clutter_container_child_get (ClutterContainer *container,
       pspec = clutter_container_class_find_child_property (klass, name);
       if (!pspec)
         {
-          g_warning ("%s: container `%s' has no child property named `%s'",
+          g_warning ("%s: container '%s' has no child property named '%s'",
                      G_STRLOC, G_OBJECT_TYPE_NAME (container), name);
           break;
         }
 
       if (!(pspec->flags & G_PARAM_READABLE))
         {
-          g_warning ("%s: child property `%s' of container `%s' is not readable",
+          g_warning ("%s: child property '%s' of container '%s' is not readable",
                      G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
           break;
         }

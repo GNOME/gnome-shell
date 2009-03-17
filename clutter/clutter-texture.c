@@ -1172,7 +1172,7 @@ clutter_texture_set_custom_property (ClutterScriptable *scriptable,
       clutter_texture_set_from_file (texture, path, &error);
       if (error)
         {
-          g_warning ("Unable to open image path at `%s': %s",
+          g_warning ("Unable to open image path at '%s': %s",
                      path,
                      error->message);
           g_error_free (error);

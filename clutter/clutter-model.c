@@ -1423,7 +1423,7 @@ clutter_model_iter_get_value_unimplemented (ClutterModelIter *iter,
                                             guint             column,
                                             GValue           *value)
 {
-  g_warning ("%s: Iterator of type `%s' does not implement the "
+  g_warning ("%s: Iterator of type '%s' does not implement the "
              "ClutterModelIter::get_value() virtual function",
              G_STRLOC,
              g_type_name (G_OBJECT_TYPE (iter)));
@@ -1434,7 +1434,7 @@ clutter_model_iter_set_value_unimplemented (ClutterModelIter *iter,
                                             guint             column,
                                             const GValue     *value)
 {
-  g_warning ("%s: Iterator of type `%s' does not implement the "
+  g_warning ("%s: Iterator of type '%s' does not implement the "
              "ClutterModelIter::set_value() virtual function",
              G_STRLOC,
              g_type_name (G_OBJECT_TYPE (iter)));
@@ -1443,7 +1443,7 @@ clutter_model_iter_set_value_unimplemented (ClutterModelIter *iter,
 static gboolean
 clutter_model_iter_is_first_unimplemented (ClutterModelIter *iter)
 {
-  g_warning ("%s: Iterator of type `%s' does not implement the "
+  g_warning ("%s: Iterator of type '%s' does not implement the "
              "ClutterModelIter::is_first() virtual function",
              G_STRLOC,
              g_type_name (G_OBJECT_TYPE (iter)));
@@ -1453,7 +1453,7 @@ clutter_model_iter_is_first_unimplemented (ClutterModelIter *iter)
 static gboolean
 clutter_model_iter_is_last_unimplemented (ClutterModelIter *iter)
 {
-  g_warning ("%s: Iterator of type `%s' does not implement the "
+  g_warning ("%s: Iterator of type '%s' does not implement the "
              "ClutterModelIter::is_last() virtual function",
              G_STRLOC,
              g_type_name (G_OBJECT_TYPE (iter)));
@@ -1463,7 +1463,7 @@ clutter_model_iter_is_last_unimplemented (ClutterModelIter *iter)
 static ClutterModelIter *
 clutter_model_iter_next_unimplemented (ClutterModelIter *iter)
 {
-  g_warning ("%s: Iterator of type `%s' does not implement the "
+  g_warning ("%s: Iterator of type '%s' does not implement the "
              "ClutterModelIter::next() virtual function",
              G_STRLOC,
              g_type_name (G_OBJECT_TYPE (iter)));
@@ -1473,7 +1473,7 @@ clutter_model_iter_next_unimplemented (ClutterModelIter *iter)
 static ClutterModelIter *
 clutter_model_iter_prev_unimplemented (ClutterModelIter *iter)
 {
-  g_warning ("%s: Iterator of type `%s' does not implement the "
+  g_warning ("%s: Iterator of type '%s' does not implement the "
              "ClutterModelIter::prev() virtual function",
              G_STRLOC,
              g_type_name (G_OBJECT_TYPE (iter)));
@@ -1483,7 +1483,7 @@ clutter_model_iter_prev_unimplemented (ClutterModelIter *iter)
 static ClutterModelIter *
 clutter_model_iter_copy_unimplemented (ClutterModelIter *iter)
 {
-  g_warning ("%s: Iterator of type `%s' does not implement the "
+  g_warning ("%s: Iterator of type '%s' does not implement the "
              "ClutterModelIter::copy() virtual function",
              G_STRLOC,
              g_type_name (G_OBJECT_TYPE (iter)));

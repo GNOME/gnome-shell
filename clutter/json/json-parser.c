@@ -949,7 +949,7 @@ json_parser_load_from_data (JsonParser   *parser,
                           symbol_name = symbol_names + symbols[i].name_offset;
 
                       if (msg)
-                        msg = g_strconcat ("e.g. `", symbol_name, "'", NULL);
+                        msg = g_strconcat ("e.g. '", symbol_name, "'", NULL);
                     }
 
                   if (scanner->token > JSON_TOKEN_INVALID &&
@@ -976,16 +976,7 @@ json_parser_load_from_data (JsonParser   *parser,
                   g_propagate_error (error, parser->priv->last_error);
                   parser->priv->last_error = NULL;
                 }
-#if 0
-              /* we set a generic error here; the message from
-               * GScanner is relayed in the ::error signal
-               */
-              g_set_error (error, JSON_PARSER_ERROR,
-                           JSON_PARSER_ERROR_PARSE,
-                           "Invalid token `%s' found: expecting %s",
-                           symbol_name ? symbol_name : "???",
-                           msg ? msg : "unknown");
-#endif
+
               retval = FALSE;
 
               g_free (msg);

@@ -247,7 +247,7 @@ static void
 clutter_stage_egl_set_fullscreen (ClutterStageWindow *stage_window,
                                   gboolean            fullscreen)
 {
-  g_warning ("Stage of type `%s' do not support ClutterStage::set_fullscreen",
+  g_warning ("Stage of type '%s' do not support ClutterStage::set_fullscreen",
              G_OBJECT_TYPE_NAME (stage_window));
 }
 

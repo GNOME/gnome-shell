@@ -155,7 +155,7 @@ json_object_add_member (JsonObject  *object,
 
   if (json_object_has_member (object, member_name))
     {
-      g_warning ("JsonObject already has a `%s' member of type `%s'",
+      g_warning ("JsonObject already has a '%s' member of type '%s'",
                  member_name,
                  json_node_type_name (node));
       return;

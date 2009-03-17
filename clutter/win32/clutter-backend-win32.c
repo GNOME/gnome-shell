@@ -313,7 +313,7 @@ clutter_backend_win32_create_stage (ClutterBackend  *backend,
   ClutterStageWin32 *stage_win32;
   ClutterActor *stage;
 
-  CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
+  CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
 		g_type_name (CLUTTER_STAGE_TYPE));
 
   stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);

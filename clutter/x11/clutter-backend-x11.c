@@ -137,14 +137,14 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
     {
       if (clutter_display_name)
 	{
-	  CLUTTER_NOTE (BACKEND, "XOpenDisplay on `%s'",
+	  CLUTTER_NOTE (BACKEND, "XOpenDisplay on '%s'",
 			clutter_display_name);
 	  backend_x11->xdpy = XOpenDisplay (clutter_display_name);
           if (backend_x11->xdpy == None)
             {
               g_set_error (error, CLUTTER_INIT_ERROR,
                            CLUTTER_INIT_ERROR_BACKEND,
-                           "Unable to open display `%s'",
+                           "Unable to open display '%s'",
                            clutter_display_name);
               return FALSE;
             }
@@ -211,7 +211,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
   g_free (clutter_display_name);
 
   CLUTTER_NOTE (BACKEND,
-                "X Display `%s'[%p] opened (screen:%d, root:%u, dpi:%f)",
+                "X Display '%s'[%p] opened (screen:%d, root:%u, dpi:%f)",
                 backend_x11->display_name,
                 backend_x11->xdpy,
                 backend_x11->xscreen_num,

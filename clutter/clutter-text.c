@@ -1116,7 +1116,7 @@ clutter_text_paint (ClutterActor *self)
                * priv->text_color.alpha
                / 255;
 
-  CLUTTER_NOTE (PAINT, "painting text (text:`%s')", priv->text);
+  CLUTTER_NOTE (PAINT, "painting text (text: '%s')", priv->text);
 
   cogl_color_set_from_4ub (&color,
                            priv->text_color.red,
@@ -2725,7 +2725,7 @@ clutter_text_set_font_name (ClutterText *self,
   if (!desc)
     {
       g_warning ("Attempting to create a PangoFontDescription for "
-		 "font name `%s', but failed.",
+		 "font name '%s', but failed.",
 		 font_name);
       return;
     }
@@ -2855,13 +2855,13 @@ clutter_text_set_markup_internal (ClutterText *self,
     {
       if (G_LIKELY (error))
         {
-          g_warning ("Failed to set the markup of the actor of class `%s': %s",
+          g_warning ("Failed to set the markup of the actor of class '%s': %s",
                      G_OBJECT_TYPE_NAME (self),
                      error->message);
           g_error_free (error);
         }
       else
-        g_warning ("Failed to set the markup of the actor of class `%s'",
+        g_warning ("Failed to set the markup of the actor of class '%s'",
                    G_OBJECT_TYPE_NAME (self));
 
       return;

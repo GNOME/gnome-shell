@@ -242,7 +242,7 @@ static void
 clutter_behaviour_alpha_notify_unimplemented (ClutterBehaviour *behaviour,
                                               gdouble           alpha_value)
 {
-  g_warning ("ClutterBehaviourClass::alpha_notify not implemented for `%s'",
+  g_warning ("ClutterBehaviourClass::alpha_notify not implemented for '%s'",
              g_type_name (G_TYPE_FROM_INSTANCE (behaviour)));
 }
 

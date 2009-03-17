@@ -971,7 +971,7 @@ clutter_score_append_at_marker (ClutterScore    *score,
 
   if (!clutter_timeline_has_marker (parent, marker_name))
     {
-      g_warning ("The parent timeline has no marker `%s'", marker_name);
+      g_warning ("The parent timeline has no marker '%s'", marker_name);
       return 0;
     }
 

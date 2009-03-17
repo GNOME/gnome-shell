@@ -70,7 +70,7 @@ timeline_marker_reached_cb (ClutterTimeline *timeline,
                             TimelineData    *data)
 {
   if (g_test_verbose ())
-    g_print ("%i: Marker `%s' (%d) reached, delta = %i\n",
+    g_print ("%i: Marker '%s' (%d) reached, delta = %i\n",
              data->timeline_num, marker_name, frame_num,
              clutter_timeline_get_delta (timeline, NULL));
   data->markers_hit = g_slist_prepend (data->markers_hit,

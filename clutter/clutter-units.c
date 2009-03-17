@@ -260,7 +260,7 @@ clutter_value_lcopy_unit (const GValue *value,
   gfloat *units_p = collect_values[0].v_pointer;
 
   if (!units_p)
-    return g_strdup_printf ("value location for `%s' passed as NULL",
+    return g_strdup_printf ("value location for '%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
   *units_p = value->data[0].v_float;

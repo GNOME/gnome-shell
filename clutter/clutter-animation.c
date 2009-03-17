@@ -398,7 +398,7 @@ clutter_animation_bind_property_internal (ClutterAnimation *animation,
 
   if (!clutter_interval_validate (interval, pspec))
     {
-      g_warning ("Cannot bind property `%s': the interval is out "
+      g_warning ("Cannot bind property '%s': the interval is out "
                  "of bounds",
                  pspec->name);
       return;
@@ -418,7 +418,7 @@ clutter_animation_update_property_internal (ClutterAnimation *animation,
 
   if (!clutter_interval_validate (interval, pspec))
     {
-      g_warning ("Cannot bind property `%s': the interval is out "
+      g_warning ("Cannot bind property '%s': the interval is out "
                  "of bounds",
                  pspec->name);
       return;
@@ -442,7 +442,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
 
   if (G_UNLIKELY (!priv->object))
     {
-      g_warning ("Cannot bind property `%s': the animation has no "
+      g_warning ("Cannot bind property '%s': the animation has no "
                  "object set. You need to call clutter_animation_set_object() "
                  "first to be able to bind a property",
                  property_name);
@@ -451,7 +451,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
 
   if (G_UNLIKELY (clutter_animation_has_property (animation, property_name)))
     {
-      g_warning ("Cannot bind property `%s': the animation already has "
+      g_warning ("Cannot bind property '%s': the animation already has "
                  "a bound property with the same name",
                  property_name);
       return NULL;
@@ -461,7 +461,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
   pspec = g_object_class_find_property (klass, property_name);
   if (!pspec)
     {
-      g_warning ("Cannot bind property `%s': objects of type `%s' have "
+      g_warning ("Cannot bind property '%s': objects of type '%s' have "
                  "no such property",
                  property_name,
                  g_type_name (G_OBJECT_TYPE (priv->object)));
@@ -470,7 +470,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
 
   if (!(pspec->flags & G_PARAM_WRITABLE))
     {
-      g_warning ("Cannot bind property `%s': the property is not writable",
+      g_warning ("Cannot bind property '%s': the property is not writable",
                  property_name);
       return NULL;
     }
@@ -478,9 +478,9 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
   if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec),
                                 argtype))
     {
-      g_warning ("Cannot bind property `%s': the interval value of "
-                 "type `%s' is not compatible with the property value "
-                 "of type `%s'",
+      g_warning ("Cannot bind property '%s': the interval value of "
+                 "type '%s' is not compatible with the property value "
+                 "of type '%s'",
                  property_name,
                  g_type_name (argtype),
                  g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
@@ -600,7 +600,7 @@ clutter_animation_unbind_property (ClutterAnimation *animation,
 
   if (!clutter_animation_has_property (animation, property_name))
     {
-      g_warning ("Cannot unbind property `%s': the animation has "
+      g_warning ("Cannot unbind property '%s': the animation has "
                  "no bound property with that name",
                  property_name);
       return;
@@ -663,7 +663,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
 
   if (!clutter_animation_has_property (animation, property_name))
     {
-      g_warning ("Cannot unbind property `%s': the animation has "
+      g_warning ("Cannot unbind property '%s': the animation has "
                  "no bound property with that name",
                  property_name);
       return;
@@ -673,7 +673,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
   pspec = g_object_class_find_property (klass, property_name);
   if (!pspec)
     {
-      g_warning ("Cannot bind property `%s': objects of type `%s' have "
+      g_warning ("Cannot bind property '%s': objects of type '%s' have "
                  "no such property",
                  property_name,
                  g_type_name (G_OBJECT_TYPE (priv->object)));
@@ -683,9 +683,9 @@ clutter_animation_update_interval (ClutterAnimation *animation,
   if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec),
                                 clutter_interval_get_value_type (interval)))
     {
-      g_warning ("Cannot bind property `%s': the interval value of "
-                 "type `%s' is not compatible with the property value "
-                 "of type `%s'",
+      g_warning ("Cannot bind property '%s': the interval value of "
+                 "type '%s' is not compatible with the property value "
+                 "of type '%s'",
                  property_name,
                  g_type_name (clutter_interval_get_value_type (interval)),
                  g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
@@ -773,7 +773,7 @@ on_alpha_notify (GObject          *gobject,
           initial = clutter_interval_peek_initial_value (interval);
           final   = clutter_interval_peek_final_value (interval);
 
-          CLUTTER_NOTE (ANIMATION, "Animatable property `%s'", p_name);
+          CLUTTER_NOTE (ANIMATION, "Animatable property '%s'", p_name);
           clutter_animatable_animate_property (animatable, animation,
                                                p_name,
                                                initial, final,
@@ -784,7 +784,7 @@ on_alpha_notify (GObject          *gobject,
         }
       else
         {
-          CLUTTER_NOTE (ANIMATION, "Standard property `%s'", p_name);
+          CLUTTER_NOTE (ANIMATION, "Standard property '%s'", p_name);
 
           if (clutter_interval_compute_value (interval, alpha_value, &value))
             g_object_set_property (priv->object, p_name, &value);
@@ -1280,7 +1280,7 @@ clutter_animation_setup_property (ClutterAnimation *animation,
 
   if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
     {
-      g_warning ("Cannot bind property `%s': the property is "
+      g_warning ("Cannot bind property '%s': the property is "
                  "construct-only",
                  property_name);
       return;
@@ -1288,7 +1288,7 @@ clutter_animation_setup_property (ClutterAnimation *animation,
 
   if (!(pspec->flags & G_PARAM_WRITABLE))
     {
-      g_warning ("Cannot bind property `%s': the property is "
+      g_warning ("Cannot bind property '%s': the property is "
                  "not writable",
                  property_name);
       return;
@@ -1311,7 +1311,7 @@ clutter_animation_setup_property (ClutterAnimation *animation,
                                     G_VALUE_TYPE (value)))
         {
           g_warning ("%s: Unable to convert from %s to %s for "
-                     "the property `%s' of object %s",
+                     "the property '%s' of object %s",
                      G_STRLOC,
                      g_type_name (G_VALUE_TYPE (value)),
                      g_type_name (G_VALUE_TYPE (&real_value)),
@@ -1390,7 +1390,7 @@ clutter_animation_setupv (ClutterAnimation    *animation,
       pspec = g_object_class_find_property (klass, property_name);
       if (!pspec)
         {
-          g_warning ("Cannot bind property `%s': objects of type `%s' do "
+          g_warning ("Cannot bind property '%s': objects of type '%s' do "
                      "not have this property",
                      property_name,
                      g_type_name (G_OBJECT_TYPE (priv->object)));
@@ -1427,7 +1427,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       pspec = g_object_class_find_property (klass, property_name);
       if (!pspec)
         {
-          g_warning ("Cannot bind property `%s': objects of type `%s' do "
+          g_warning ("Cannot bind property '%s': objects of type '%s' do "
                      "not have this property",
                      property_name,
                      g_type_name (G_OBJECT_TYPE (priv->object)));
