@@ -1014,6 +1014,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       set_net_wm_state (window);
     }
 
+  if (screen->display->compositor)
+    meta_compositor_add_window (screen->display->compositor, window);
+
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
 
@@ -1044,9 +1047,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_display_ungrab (display);
 
   window->constructing = FALSE;
-
-  if (screen->display->compositor)
-    meta_compositor_add_window (screen->display->compositor, window);
 
   return window;
 }
