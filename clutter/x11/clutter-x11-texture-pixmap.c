@@ -921,9 +921,6 @@ clutter_x11_texture_pixmap_new (void)
 /**
  * clutter_x11_texture_pixmap_new_with_pixmap:
  * @pixmap: the X Pixmap to which this texture should be bound
- * @width: the width of the X pixmap
- * @height: the height of the X pixmap
- * @depth: the depth of the X pixmap
  *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X Pixmap
  *
@@ -944,9 +941,6 @@ clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 /**
  * clutter_x11_texture_pixmap_new_with_window:
  * @window: the X window to which this texture should be bound
- * @width: the width of the X pixmap
- * @height: the height of the X pixmap
- * @depth: the depth of the X pixmap
  *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X window.
  *
