@@ -1082,6 +1082,30 @@ clutter_x11_get_input_device_type
 clutter_x11_get_input_devices
 clutter_x11_has_xinput
 clutter_x11_enable_xinput
+
+<SUBSECTION>
+ClutterX11TexturePixmap
+ClutterX11TexturePixmapClass
+clutter_x11_texture_pixmap_new
+clutter_x11_texture_pixmap_new_with_pixmap
+clutter_x11_texture_pixmap_new_with_window
+clutter_x11_texture_pixmap_set_pixmap
+clutter_x11_texture_pixmap_set_window
+clutter_x11_texture_pixmap_sync_window
+clutter_x11_texture_pixmap_update_area
+clutter_x11_texture_pixmap_set_automatic
+
+<SUBSECTION Standard>
+CLUTTER_X11_TYPE_TEXTURE_PIXMAP
+CLUTTER_X11_TEXTURE_PIXMAP
+CLUTTER_X11_IS_TEXTURE_PIXMAP
+CLUTTER_X11_TEXTURE_PIXMAP_CLASS
+CLUTTER_X11_IS_TEXTURE_PIXMAP_CLASS
+CLUTTER_X11_TEXTURE_PIXMAP_GET_CLASS
+clutter_x11_texture_pixmap_get_type
+
+<SUBSECTION Private>
+ClutterX11TexturePixmapPrivate
 </SECTION>
 
 <SECTION>
@@ -1640,4 +1664,39 @@ CLUTTER_TYPE_BINDING_POOL
 
 <SUBSECTION Private>
 clutter_binding_pool_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>GLX Specific Support</TITLE>
+<FILE>clutter-glx</FILE>
+ClutterGLXTexturePixmap
+ClutterGLXTexturePixmapClass
+clutter_glx_texture_pixmap_new
+clutter_glx_texture_pixmap_new_with_pixmap
+clutter_glx_texture_pixmap_new_with_window
+clutter_glx_texture_pixmap_using_extension
+
+<SUBSECTION Standard>
+CLUTTER_GLX_IS_TEXTURE_PIXMAP
+CLUTTER_GLX_IS_TEXTURE_PIXMAP_CLASS
+CLUTTER_GLX_TEXTURE_PIXMAP
+CLUTTER_GLX_TEXTURE_PIXMAP_CLASS
+CLUTTER_GLX_TEXTURE_PIXMAP_GET_CLASS
+CLUTTER_GLX_TYPE_TEXTURE_PIXMAP
+clutter_glx_texture_pixmap_get_type
+
+<SUBSECTION Private>
+ClutterGLXTexturePixmapPrivate
+</SECTION>
+
+<SECTION>
+<TITLE>EGL Specific Support</TITLE>
+<FILE>clutter-eglnative</FILE>
+clutter_egl_display
+</SECTION>
+
+<SECTION>
+<TITLE>EGLX Specific Support</TITLE>
+<FILE>clutter-eglx</FILE>
+clutter_eglx_display
 </SECTION>

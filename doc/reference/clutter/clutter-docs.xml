@@ -158,7 +158,10 @@
 
     <xi:include href="xml/clutter-backend.xml"/>
     <xi:include href="xml/clutter-x11.xml"/>
+    <xi:include href="xml/clutter-glx.xml"/>
     <xi:include href="xml/clutter-win32.xml"/>
+    <xi:include href="xml/clutter-eglnative.xml"/>
+    <xi:include href="xml/clutter-eglx.xml"/>
   </part>
 
   <part>

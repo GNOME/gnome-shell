@@ -48,8 +48,17 @@ FIXXREF_OPTIONS=\
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB=$(top_srcdir)/clutter/*.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h \
+	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
+	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \
+	$(top_srcdir)/clutter/eglnative/clutter-egl.h \
+	$(top_srcdir)/clutter/eglx/clutter-eglx.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h
-CFILE_GLOB=$(top_srcdir)/clutter/*.c
+CFILE_GLOB=$(top_srcdir)/clutter/*.c \
+	$(top_srcdir)/clutter/x11/*.c \
+	$(top_srcdir)/clutter/glx/*.c \
+	$(top_srcdir)/clutter/win32/*.c \
+	$(top_srcdir)/clutter/eglnative/*.c \
+	$(top_srcdir)/clutter/eglx/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
@@ -86,6 +95,10 @@ IGNORE_HFILES=\
 
 EXTRA_HFILES=\
         ../../../clutter/x11/clutter-x11.h \
+	../../../clutter/x11/clutter-x11-texture-pixmap.h \
+	../../../clutter/glx/clutter-glx-texture-pixmap.h \
+	../../../clutter/eglnative/clutter-egl.h \
+	../../../clutter/eglx/clutter-eglx.h \
 	../../../clutter/win32/clutter-win32.h
 
 # Images to copy into HTML directory.
