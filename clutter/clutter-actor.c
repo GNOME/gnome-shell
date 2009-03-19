@@ -3552,6 +3552,8 @@ clutter_actor_get_preferred_size (ClutterActor *self,
     *natural_height_p = natural_height;
 }
 
+#define FLOAT_EPSILON   (1e-4)   /* 1/1000 pixel is the precision used */
+
 /**
  * clutter_actor_get_preferred_width:
  * @self: A #ClutterActor
@@ -3597,7 +3599,7 @@ clutter_actor_get_preferred_width (ClutterActor *self,
                                   &min_width,
                                   &natural_width);
 
-      if (natural_width < min_width)
+      if (natural_width < min_width - FLOAT_EPSILON)
         {
           g_warning ("Actor of type %s reported a natural width "
                      "of %" CLUTTER_UNITS_FORMAT " (%d px) lower "
@@ -3668,7 +3670,7 @@ clutter_actor_get_preferred_height (ClutterActor *self,
                                    &min_height,
                                    &natural_height);
 
-      if (natural_height < min_height)
+      if (natural_height < min_height - FLOAT_EPSILON)
         {
           g_warning ("Actor of type %s reported a natural height "
                      "of %" CLUTTER_UNITS_FORMAT " (%d px) lower than "
