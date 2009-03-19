@@ -134,8 +134,6 @@ texture_bind (ClutterGLXTexturePixmap *tex)
   if (!cogl_texture_get_gl_texture (cogl_tex, &handle, &target))
       return FALSE;
 
-  glEnable(target);
-
   /* FIXME: fire off an error here? */
   glBindTexture (target, handle);
 
