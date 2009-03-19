@@ -588,8 +588,6 @@ gboolean meta_window_is_ancestor_of_transient (MetaWindow            *window,
 void     meta_window_foreach_ancestor         (MetaWindow            *window,
                                                MetaWindowForeachFunc  func,
                                                void                  *data);
-MetaWindow* meta_window_find_root_ancestor    (MetaWindow *window);
-
 
 void meta_window_begin_grab_op (MetaWindow *window,
                                 MetaGrabOp  op,
