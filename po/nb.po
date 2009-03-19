@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.25.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-29 16:56+0100\n"
-"PO-Revision-Date: 2009-01-29 17:03+0100\n"
+"POT-Creation-Date: 2009-03-19 10:25+0100\n"
+"PO-Revision-Date: 2009-03-19 10:31+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -122,7 +122,7 @@ msgstr "Ingen kommando %d er definert\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
 
-#: ../src/core/main.c:119
+#: ../src/core/main.c:118
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -136,48 +136,48 @@ msgstr ""
 "Dette er fri programvare; se i kildekoden for kopibetingelser.\n"
 "Det gis INGEN garanti.\n"
 
-#: ../src/core/main.c:256
+#: ../src/core/main.c:255
 msgid "Disable connection to session manager"
 msgstr "Deaktiver tilkobling til sesjonshåndtereren"
 
-#: ../src/core/main.c:262
+#: ../src/core/main.c:261
 msgid "Replace the running window manager with Metacity"
 msgstr "Erstatt kjørende vindushåndterer med Metacity"
 
-#: ../src/core/main.c:268
+#: ../src/core/main.c:267
 msgid "Specify session management ID"
 msgstr "Oppgi sesjonshåndterings-ID"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:272
 msgid "X Display to use"
 msgstr "X-skjerm som skal brukes"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:278
 msgid "Initialize session from savefile"
 msgstr "Initier sesjonen fra en lagret fil"
 
-#: ../src/core/main.c:285
+#: ../src/core/main.c:284
 msgid "Print version"
 msgstr "Skriv versjonsnummer"
 
-#: ../src/core/main.c:291
+#: ../src/core/main.c:290
 msgid "Make X calls synchronous"
 msgstr "Gjør X-kall synkrone"
 
-#: ../src/core/main.c:297
+#: ../src/core/main.c:296
 msgid "Turn compositing on"
 msgstr "Slå på «compositing»"
 
-#: ../src/core/main.c:303
+#: ../src/core/main.c:302
 msgid "Turn compositing off"
 msgstr "Slå av «compositing»"
 
-#: ../src/core/main.c:481
+#: ../src/core/main.c:480
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Feil under søk i temakatalog: %s\n"
 
-#: ../src/core/main.c:497
+#: ../src/core/main.c:496
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -185,7 +185,7 @@ msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene.\n"
 
-#: ../src/core/main.c:553
+#: ../src/core/main.c:552
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -303,7 +303,7 @@ msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 #. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
 #. * "disabled" must also stay as it is.
 #.
-#: ../src/core/schema-bindings.c:165
+#: ../src/core/schema-bindings.c:169
 #, fuzzy
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
@@ -319,7 +319,7 @@ msgstr ""
 "Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle "
 "strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
-#: ../src/core/schema-bindings.c:173
+#: ../src/core/schema-bindings.c:177
 #, fuzzy
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
@@ -590,26 +590,22 @@ msgid "Move between windows, using a popup window"
 msgstr "Bytt mellom vinduer med en dialog"
 
 #: ../src/include/all-keybindings.h:160
-#, fuzzy
 msgid "Move backward between windows, using a popup window"
-msgstr "Bytt fokus baklengs mellom vinduer med dialog"
+msgstr "Bla gjennom vinduer baklengs med dialog"
 
 #: ../src/include/all-keybindings.h:163
-#, fuzzy
 msgid "Move between panels and the desktop, using a popup window"
-msgstr "Bla gjennom paneler og skrivebordet med oppsprettvindu"
+msgstr "Bytt mellom paneler og skrivebordet med oppsprettvindu"
 
 #: ../src/include/all-keybindings.h:166
-#, fuzzy
 msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "Bla bakover gjennom paneler og skrivebordet med bruk av dialog"
+msgstr "Bytt mellom paneler og skrivebordet baklengs med bruk av dialog"
 
 #: ../src/include/all-keybindings.h:171
 msgid "Move between windows of an application immediately"
 msgstr "Bla gjennom et programs vinduer med en gang"
 
 #: ../src/include/all-keybindings.h:174
-#, fuzzy
 msgid "Move backward between windows of an application immediately"
 msgstr "Bla bakover gjennom et programs vinduer med en gang"
 
@@ -618,7 +614,6 @@ msgid "Move between windows immediately"
 msgstr "Flytt fokus mellom vinduer med en gang"
 
 #: ../src/include/all-keybindings.h:180
-#, fuzzy
 msgid "Move backward between windows immediately"
 msgstr "Bla bakover gjennom vinduer med en gang"
 
@@ -631,9 +626,8 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Bla bakover gjennom paneler og skrivebordet med en gang"
 
 #: ../src/include/all-keybindings.h:191
-#, fuzzy
-msgid "Hide all normal windows and set focus to the desktop background"
-msgstr "Skjul alle vinduer og fokuser skrivebordet"
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Skjul alle normale vinduer og sett fokus til skrivebordet"
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
@@ -668,9 +662,8 @@ msgid "Toggle maximization state"
 msgstr "Endre tilstand for maksimering"
 
 #: ../src/include/all-keybindings.h:264
-#, fuzzy
 msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Senk vinduet under andre vinduer"
+msgstr "Bestem om vinduet alltid skal vises over andre vinduer"
 
 #: ../src/include/all-keybindings.h:266
 msgid "Maximize window"
@@ -701,9 +694,8 @@ msgid "Resize window"
 msgstr "Endre størrelse på vindu"
 
 #: ../src/include/all-keybindings.h:281
-#, fuzzy
 msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Bytt mellom vising av vindu på alle arbeidsområder"
+msgstr "Bestem om vinduet skal vises på alle skrivebord eller bare ett"
 
 #: ../src/include/all-keybindings.h:285
 msgid "Move window to workspace 1"
@@ -770,9 +762,8 @@ msgid "Move window one workspace down"
 msgstr "Flytt vindu ett arbeidsområde ned"
 
 #: ../src/include/all-keybindings.h:342
-#, fuzzy
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Hev vindu hvis skjult, senk det ellers"
+msgstr "Hev vinduet hvis det er dekket av et annet vindu. Hvis ikke senk det"
 
 #: ../src/include/all-keybindings.h:344
 msgid "Raise window above other windows"
@@ -791,49 +782,40 @@ msgid "Maximize window horizontally"
 msgstr "Maksimer vinduet horisontalt"
 
 #: ../src/include/all-keybindings.h:358
-#, fuzzy
 msgid "Move window to north-west (top left) corner"
-msgstr "Flytt vindu til nord-vestlig hjørne"
+msgstr "Flytt vindu til nord-vestlig hjørne (øverst til venstre)"
 
 #: ../src/include/all-keybindings.h:361
-#, fuzzy
 msgid "Move window to north-east (top right) corner"
-msgstr "Flytt vindu til nord-østlig hjørne"
+msgstr "Flytt vindu til nord-østlig hjørne (øverst til høyre)"
 
 #: ../src/include/all-keybindings.h:364
-#, fuzzy
 msgid "Move window to south-west (bottom left) corner"
-msgstr "Flytt vindu til syd-østlig hjørne"
+msgstr "Flytt vindu til syd-vestlig hjørne (nederst til venstre)"
 
 #: ../src/include/all-keybindings.h:367
-#, fuzzy
 msgid "Move window to south-east (bottom right) corner"
-msgstr "Flytt vindu til syd-østlig hjørne"
+msgstr "Flytt vindu til syd-østlig hjørne (nederst til høyre)"
 
 #: ../src/include/all-keybindings.h:371
-#, fuzzy
 msgid "Move window to north (top) side of screen"
-msgstr "Flytt vindu til nordsiden av skjermen"
+msgstr "Flytt vindu til nordsiden av skjermen (øverst)"
 
 #: ../src/include/all-keybindings.h:374
-#, fuzzy
 msgid "Move window to south (bottom) side of screen"
-msgstr "Flytt vindu til sydsiden av skjermen"
+msgstr "Flytt vindu til sydsiden av skjermen (nederst)"
 
 #: ../src/include/all-keybindings.h:377
-#, fuzzy
 msgid "Move window to east (right) side of screen"
-msgstr "Flytt vindu til østsiden av skjermen"
+msgstr "Flytt vindu til østsiden av skjermen (høyre)"
 
 #: ../src/include/all-keybindings.h:380
-#, fuzzy
 msgid "Move window to west (left) side of screen"
-msgstr "Flytt vindu til vestsiden av skjermen"
+msgstr "Flytt vindu til vestsiden av skjermen (venstre)"
 
 #: ../src/include/all-keybindings.h:383
-#, fuzzy
 msgid "Move window to center of screen"
-msgstr "Flytt vindu til østsiden av skjermen"
+msgstr "Flytt vindu til midten av skjermen"
 
 #: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -1270,7 +1252,7 @@ msgstr "Om heving skal være en sideeffekt av andre handlinger brukeren utfører
 
 #: ../src/metacity.schemas.in.in.h:52
 msgid "Whether to resize with the right button"
-msgstr ""
+msgstr "Om høyre knapp skal brukes for å endre størrelse"
 
 #: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
@@ -1942,13 +1924,10 @@ msgstr "Element <%s> er ikke tillatt under <%s>"
 
 #: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
-#, fuzzy
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
-msgstr ""
-"Kan ikke spesifisere både button_width/button_height og aspektrate for "
-"knapper"
+msgstr "Kan ikke spesifisere både «button_width»/«button_height» og «aspect_ratio» for knapper"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
