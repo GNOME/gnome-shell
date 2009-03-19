@@ -126,18 +126,26 @@ G_DEFINE_TYPE (ClutterGLXTexturePixmap,    \
 static gboolean
 texture_bind (ClutterGLXTexturePixmap *tex)
 {
-  CoglHandle cogl_material;
+  GLuint     handle = 0;
+  GLenum     target = 0;
   CoglHandle cogl_tex;
-
-  /* It might be better to track if we've succesfully set a texture yet
-   * explicitly, rather than doing it indirectly like this.
-   */
   cogl_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE(tex));
-  if (cogl_tex == COGL_INVALID_HANDLE)
-    return FALSE;
 
-  cogl_material = clutter_texture_get_cogl_material (CLUTTER_TEXTURE(tex));
-  cogl_material_flush_gl_state (cogl_material, NULL);
+  if (!cogl_texture_get_gl_texture (cogl_tex, &handle, &target))
+      return FALSE;
+
+  glEnable(target);
+
+  /* FIXME: fire off an error here? */
+  glBindTexture (target, handle);
+
+  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (tex)) 
+         == CLUTTER_TEXTURE_QUALITY_HIGH && tex->priv->can_mipmap)
+    {
+      cogl_texture_set_filters (cogl_tex, 
+                                CGL_LINEAR_MIPMAP_LINEAR,
+                                CGL_LINEAR);
+    }
 
   return TRUE;
 }
