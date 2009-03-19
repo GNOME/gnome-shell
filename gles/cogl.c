@@ -249,29 +249,20 @@ cogl_set_source_color (const CoglColor *color)
 }
 
 static void
-apply_matrix (const float *matrix, float *vertex)
-{
-  int x, y;
-  float vertex_out[4] = { 0 };
-
-  for (y = 0; y < 4; y++)
-    for (x = 0; x < 4; x++)
-      vertex_out[y] += vertex[x] * matrix[y + x * 4];
-
-  memcpy (vertex, vertex_out, sizeof (vertex_out));
-}
-
-static void
-project_vertex (float *modelview,
-		float *project,
+project_vertex (const CoglMatrix *modelview_matrix,
+		const CoglMatrix *projection_matrix,
 		float *vertex)
 {
   int i;
 
   /* Apply the modelview matrix */
-  apply_matrix (modelview, vertex);
+  cogl_matrix_transform_point (modelview_matrix,
+                               &vertex[0], &vertex[1],
+                               &vertex[2], &vertex[3]);
   /* Apply the projection matrix */
-  apply_matrix (project, vertex);
+  cogl_matrix_transform_point (projection_matrix,
+                               &vertex[0], &vertex[1],
+                               &vertex[2], &vertex[3]);
   /* Convert from homogenized coordinates */
   for (i = 0; i < 4; i++)
     vertex[i] /= vertex[3];
@@ -334,8 +325,6 @@ _cogl_set_clip_planes (float x_offset,
 {
   CoglMatrix modelview_matrix;
   CoglMatrix projection_matrix;
-  GLfloat *modelview;
-  GLfloat *projection;
 
   float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
   float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
@@ -343,23 +332,15 @@ _cogl_set_clip_planes (float x_offset,
   float vertex_br[4] = { x_offset + width, y_offset + height,
                         0, 1.0 };
 
-  /* hack alert: there's no way to get *and modify*
-   * CoglMatrix as a float array. So we just
-   * use a cast instead of cogl_matrix_get_array(),
-   * and know that we will not call any more CoglMatrix
-   * methods after we write to it directly.
-   */
   _cogl_get_matrix (COGL_MATRIX_PROJECTION,
                     &projection_matrix);
-  projection = (GLfloat*) &projection_matrix;
   _cogl_get_matrix (COGL_MATRIX_MODELVIEW,
                     &modelview_matrix);
-  modelview = (GLfloat*) &modelview_matrix;
 
-  project_vertex (modelview, projection, vertex_tl);
-  project_vertex (modelview, projection, vertex_tr);
-  project_vertex (modelview, projection, vertex_bl);
-  project_vertex (modelview, projection, vertex_br);
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_tl);
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_tr);
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_bl);
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_br);
 
   /* If the order of the top and bottom lines is different from the
      order of the left and right lines then the clip rect must have
