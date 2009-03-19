@@ -730,7 +730,9 @@ clutter_actor_pick (ClutterActor       *self,
  * clutter_actor_should_pick_paint:
  * @self: A #ClutterActor
  *
- * Utility call for subclasses overiding the pick method.
+ * Should be called inside the implementation of the
+ * #ClutterActor::pick virtual function in order to check whether
+ * the actor should paint itself in pick mode or not.
  *
  * This function should never be called directly by applications.
  *
