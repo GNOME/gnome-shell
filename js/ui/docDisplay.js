@@ -33,24 +33,24 @@ DocDisplayItem.prototype = {
         let description = ""; 
 
         let icon = new Clutter.Texture();
-        let pixbuf = Shell.get_thumbnail_for_recent_info(docInfo);
-        if (pixbuf) {
+        this._iconPixbuf = Shell.get_thumbnail_for_recent_info(docInfo);
+        if (this._iconPixbuf) {
             // We calculate the width and height of the texture so as to preserve the aspect ratio of the thumbnail.
             // Because the images generated based on thumbnails don't have an internal padding like system icons do,
             // we create a slightly smaller texture and then use extra margin when positioning it. 
-            let scalingFactor = (GenericDisplay.ITEM_DISPLAY_ICON_SIZE - ITEM_DISPLAY_ICON_MARGIN * 2) / Math.max(pixbuf.get_width(), pixbuf.get_height());
-            icon.set_width(Math.ceil(pixbuf.get_width() * scalingFactor));
-            icon.set_height(Math.ceil(pixbuf.get_height() * scalingFactor));
-            Shell.clutter_texture_set_from_pixbuf(icon, pixbuf);
+            let scalingFactor = (GenericDisplay.ITEM_DISPLAY_ICON_SIZE - ITEM_DISPLAY_ICON_MARGIN * 2) / Math.max(this._iconPixbuf.get_width(), this._iconPixbuf.get_height());
+            icon.set_width(Math.ceil(this._iconPixbuf.get_width() * scalingFactor));
+            icon.set_height(Math.ceil(this._iconPixbuf.get_height() * scalingFactor));
+            Shell.clutter_texture_set_from_pixbuf(icon, this._iconPixbuf);
             icon.x = GenericDisplay.ITEM_DISPLAY_PADDING + ITEM_DISPLAY_ICON_MARGIN;
-            icon.y = GenericDisplay.ITEM_DISPLAY_PADDING + ITEM_DISPLAY_ICON_MARGIN;
+            icon.y = GenericDisplay.ITEM_DISPLAY_PADDING + ITEM_DISPLAY_ICON_MARGIN;       
         } else {
             Shell.clutter_texture_set_from_pixbuf(icon, docInfo.get_icon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE));
             icon.x = GenericDisplay.ITEM_DISPLAY_PADDING;
             icon.y = GenericDisplay.ITEM_DISPLAY_PADDING;
         } 
-  
-        this._setItemInfo(name, description, icon); 
+
+        this._setItemInfo(name, description, icon);
     },
 
     //// Public methods ////
@@ -82,8 +82,25 @@ DocDisplayItem.prototype = {
         } else {
             log("Failed to get application info for " + this._docInfo.get_uri());
         }
-    }
+    },
 
+    //// Protected method overrides ////
+
+    // Ensures the preview icon is created.
+    _ensurePreviewIconCreated : function() {
+        if (!this._hasPreview || this._previewIcon)
+            return; 
+
+        this._previewIcon = new Clutter.Texture();
+        if (this._iconPixbuf) {
+            let scalingFactor = (GenericDisplay.PREVIEW_ICON_SIZE / Math.max(this._iconPixbuf.get_width(), this._iconPixbuf.get_height()));
+            this._previewIcon.set_width(Math.ceil(this._iconPixbuf.get_width() * scalingFactor));
+            this._previewIcon.set_height(Math.ceil(this._iconPixbuf.get_height() * scalingFactor));
+            Shell.clutter_texture_set_from_pixbuf(this._previewIcon, this._iconPixbuf);           
+        } else {
+            Shell.clutter_texture_set_from_pixbuf(this._previewIcon, this._docInfo.get_icon(GenericDisplay.PREVIEW_ICON_SIZE));
+        }
+    }
 };
 
 /* This class represents a display containing a collection of document items.

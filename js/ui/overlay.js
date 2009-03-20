@@ -256,6 +256,8 @@ Sideshow.prototype = {
             // so that we can move it to the item that was clicked on
             me._appDisplay.unsetSelected(); 
             me._docDisplay.unsetSelected();
+            me._appDisplay.hidePreview(); 
+            me._docDisplay.hidePreview();
             me._appDisplay.doActivate();
             me.emit('activated');
         });
@@ -264,6 +266,8 @@ Sideshow.prototype = {
             // so that we can move it to the item that was clicked on
             me._appDisplay.unsetSelected(); 
             me._docDisplay.unsetSelected();
+            me._appDisplay.hidePreview(); 
+            me._docDisplay.hidePreview();
             me._docDisplay.doActivate();
             me.emit('activated');
         });
@@ -571,6 +575,7 @@ Overlay.prototype = {
         this._group._delegate = this;
 
         this.visible = false;
+        this._hideInProgress = false;
 
         let background = new Clutter.Rectangle({ color: OVERLAY_BACKGROUND_COLOR,
                                                  reactive: true,
@@ -602,10 +607,16 @@ Overlay.prototype = {
                 let workspacesX = displayGridColumnWidth * asideXFactor + WORKSPACE_GRID_PADDING;
                 me._workspaces.addButton.hide();
                 me._workspaces.updatePosition(workspacesX, null);
+                // lower the sideshow below the workspaces background, so that the workspaces
+                // background covers the parts of the sideshow that are gradually being 
+                // revealed from underneath it
+                me._sideshow.actor.lower(me._workspacesBackground);
                 Tweener.addTween(me._workspacesBackground,
                                  { x: displayGridColumnWidth * asideXFactor,
                                    time: ANIMATION_TIME,
-                                   transition: "easeOutQuad"
+                                   transition: "easeOutQuad",
+                                   onComplete: me._animationDone,
+                                   onCompleteScope: me
                                  });
             }    
         });
@@ -614,10 +625,15 @@ Overlay.prototype = {
                 let workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
                 me._workspaces.addButton.show();
                 me._workspaces.updatePosition(workspacesX, null);
+                // lower the sideshow below the workspaces background, so that the workspaces
+                // background covers the parts of the sideshow as it slides in over them
+                me._sideshow.actor.lower(me._workspacesBackground);
                 Tweener.addTween(me._workspacesBackground,
                                  { x: displayGridColumnWidth,
                                    time: ANIMATION_TIME,
-                                   transition: "easeOutQuad"
+                                   transition: "easeOutQuad",
+                                   onComplete: me._animationDone,
+                                   onCompleteScope: me
                                  });  
             }
         });
@@ -683,7 +699,6 @@ Overlay.prototype = {
         this._workspaces = new Workspaces.Workspaces(workspacesWidth, workspacesHeight, workspacesX, workspacesY, 
                                                      addButtonSize, addButtonX, addButtonY);
         this._group.add_actor(this._workspaces.actor);
-        this._workspaces.actor.raise_top();
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the overlay is displayed greatly
@@ -694,12 +709,22 @@ Overlay.prototype = {
         // clones of them, this would obviously no longer be necessary.
         global.window_group.hide();
         this._group.show();
+
+        // Dummy tween, just waiting for the workspace animation
+        Tweener.addTween(this,
+                         { time: ANIMATION_TIME,
+                           onComplete: this._animationDone,
+                           onCompleteScope: this
+                         });
     },
 
     hide : function() {
-        if (!this.visible)
+        if (!this.visible || this._hideInProgress)
             return;
 
+        this._hideInProgress = true;
+        // lower the sideshow, so that workspaces display is on top and covers the sideshow while it is sliding out
+        this._sideshow.actor.lower(this._workspacesBackground);
         this._workspaces.hide();
 
         // Dummy tween, just waiting for the workspace animation
@@ -712,10 +737,26 @@ Overlay.prototype = {
 
     //// Private methods ////
 
+    // Raises the sideshow to the top, so that we can tell if the pointer is above one of its items.
+    // We need to do this every time animation of the workspaces is done bacause the workspaces actor
+    // currently covers the whole screen, regardless of where the workspaces are actually displayed. 
+    // On the other hand, we need the workspaces to be on top when they are sliding in, out,
+    // and to the side because we want them to cover the sideshow as they do that.
+    //
+    // Once we rework the workspaces actor to only cover the area it actually needs, we can
+    // remove this workaround. Also http://bugzilla.openedhand.com/show_bug.cgi?id=1513 requests being
+    // able to pick only a reactive actor at a certain position, rather than any actor. Being able
+    // to do that would allow us to not have to raise the sideshow.  
+    _animationDone: function() {
+        if (this._hideInProgress)
+            return;
+
+       this._sideshow.actor.raise_top();
+    }, 
+
     _hideDone: function() {
         let global = Shell.Global.get();
 
-        this.visible = false;
         global.window_group.show();
 
         this._workspaces.destroy();
@@ -726,6 +767,9 @@ Overlay.prototype = {
 
         this._sideshow.hide();
         this._group.hide();
+
+        this.visible = false; 
+        this._hideInProgress = false;
     },
 
     _deactivate : function() {

@@ -55,20 +55,20 @@ AppDisplayItem.prototype = {
 
         let description = appInfo.get_description();
 
-        let iconTheme = Gtk.IconTheme.get_default();
-
         let icon = new Clutter.Texture({ width: GenericDisplay.ITEM_DISPLAY_ICON_SIZE, height: GenericDisplay.ITEM_DISPLAY_ICON_SIZE});
-        let gicon = appInfo.get_icon();
-        let path = null;
-        if (gicon != null) {
-            let iconinfo = iconTheme.lookup_by_gicon(gicon, GenericDisplay.ITEM_DISPLAY_ICON_SIZE, Gtk.IconLookupFlags.NO_SVG);
-            if (iconinfo)
-                path = iconinfo.get_filename();
+
+        this._gicon = appInfo.get_icon();
+        let iconPath = null;
+        if (this._gicon != null) {
+            let iconTheme = Gtk.IconTheme.get_default();
+            let iconInfo = iconTheme.lookup_by_gicon(this._gicon, GenericDisplay.ITEM_DISPLAY_ICON_SIZE, Gtk.IconLookupFlags.NO_SVG);
+            if (iconInfo)
+                iconPath = iconInfo.get_filename();
         }
 
-        if (path) {
+        if (iconPath) {
             try {
-                icon.set_from_file(path);
+                icon.set_from_file(iconPath);
                 icon.x = GenericDisplay.ITEM_DISPLAY_PADDING;
                 icon.y = GenericDisplay.ITEM_DISPLAY_PADDING;
             } catch (e) {
@@ -76,6 +76,7 @@ AppDisplayItem.prototype = {
                 log('Error loading AppDisplayItem icon ' + e);
             }
         }
+
         this._setItemInfo(name, description, icon); 
     },
 
@@ -99,8 +100,34 @@ AppDisplayItem.prototype = {
         context.set_icon(icon);
         context.set_timestamp(timestamp);
         this._appInfo.launch([], context);
-    }
+    },
 
+    //// Protected method overrides ////
+
+    // Ensures the preview icon is created.
+    _ensurePreviewIconCreated : function() {
+        if (!this._hasPreview || this._previewIcon)
+            return; 
+
+        let previewIconPath = null;
+
+        if (this._gicon != null) {
+            let iconTheme = Gtk.IconTheme.get_default();
+            let previewIconInfo = iconTheme.lookup_by_gicon(this._gicon, GenericDisplay.PREVIEW_ICON_SIZE, Gtk.IconLookupFlags.NO_SVG);
+            if (previewIconInfo)
+                previewIconPath = previewIconInfo.get_filename();
+        }
+
+        if (previewIconPath) {
+            try {
+                this._previewIcon = new Clutter.Texture({ width: GenericDisplay.PREVIEW_ICON_SIZE, height: GenericDisplay.PREVIEW_ICON_SIZE});               
+                this._previewIcon.set_from_file(previewIconPath);
+            } catch (e) {
+                // we can get an error here if the file path doesn't exist on the system
+                log('Error loading AppDisplayItem preview icon ' + e);
+            }
+        }
+    }
 };
 
 /* This class represents a display containing a collection of application items.

@@ -3,6 +3,7 @@
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
@@ -23,12 +24,22 @@ const ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR = new Clutter.Color();
 ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR.from_pixel(0x00ff0055);
 const DISPLAY_CONTROL_SELECTED_COLOR = new Clutter.Color();
 DISPLAY_CONTROL_SELECTED_COLOR.from_pixel(0x112288ff);
+const PREVIEW_BOX_BACKGROUND_COLOR = new Clutter.Color();
+PREVIEW_BOX_BACKGROUND_COLOR.from_pixel(0xADADADf0);
 
 const ITEM_DISPLAY_HEIGHT = 50;
 const ITEM_DISPLAY_ICON_SIZE = 48;
 const ITEM_DISPLAY_PADDING = 1;
 const DEFAULT_COLUMN_GAP = 6;
 const LABEL_HEIGHT = 16;
+
+const PREVIEW_ICON_SIZE = 96;
+const PREVIEW_BOX_PADDING = 6;
+const PREVIEW_BOX_SPACING = 4;
+const PREVIEW_BOX_CORNER_RADIUS = 10; 
+// how far relative to the full item width the preview box should be placed
+const PREVIEW_PLACING = 3/4;
+const PREVIEW_DETAILS_MIN_WIDTH = PREVIEW_ICON_SIZE * 2;
 
 /* This is a virtual class that represents a single display item containing
  * a name, a description, and an icon. It allows selecting an item and represents 
@@ -37,12 +48,13 @@ const LABEL_HEIGHT = 16;
  * availableWidth - total width available for the item
  */
 function GenericDisplayItem(availableWidth) {
-    this._init(name, description, icon, availableWidth);
+    this._init(availableWidth);
 }
 
 GenericDisplayItem.prototype = {
     _init: function(availableWidth) {
         this._availableWidth = availableWidth;
+        this._hasPreview = false;
 
         this.actor = new Clutter.Group({ reactive: true,
                                          width: availableWidth,
@@ -54,7 +66,9 @@ GenericDisplayItem.prototype = {
                                          this.activate();
                                      }));
 
-        DND.makeDraggable(this.actor);
+        let draggable = DND.makeDraggable(this.actor);
+        draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+
         this._bg = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
                                  corner_radius: 4,
                                  x: 0, y: 0,
@@ -64,8 +78,13 @@ GenericDisplayItem.prototype = {
         this._name = null;
         this._description = null;
         this._icon = null;
+        this._preview = null;
+        this._previewIcon = null;
 
         this.dragActor = null;
+
+        this.actor.connect('enter-event', Lang.bind(this, this._onEnter));
+        this.actor.connect('leave-event', Lang.bind(this, this._onLeave));
     },
 
     //// Draggable object interface ////
@@ -97,6 +116,40 @@ GenericDisplayItem.prototype = {
 
     //// Public methods ////
 
+    // Sets a boolean value that indicates whether the item should display a pop-up preview on mouse over.
+    setHasPreview: function(hasPreview) {
+        this._hasPreview = hasPreview;
+    },
+
+    // Returns a boolean value that indicates whether the item displays a pop-up preview on mouse over.
+    getHasPreview: function() {
+        return this._hasPreview;
+    },
+
+    // Displays the preview for the item.
+    showPreview: function() {
+        if(!this._hasPreview)
+            return;
+
+        this._ensurePreviewCreated();
+
+        let [x, y] = this.actor.get_transformed_position();
+        let global = Shell.Global.get();
+        let previewX = Math.min(x + this._availableWidth * PREVIEW_PLACING, global.screen_width - this._preview.width);
+        let previewY = Math.min(y, global.screen_height - this._preview.height);
+        this._preview.set_position(previewX, previewY);
+
+        this._preview.show();
+    },
+
+    // Hides the preview for the item.
+    hidePreview: function() {
+        if(!this._hasPreview)
+            return;
+
+        this._preview.hide();
+    },
+
     // Highlights the item by setting a different background color than the default 
     // if isSelected is true, removes the highlighting otherwise.
     markSelected: function(isSelected) {
@@ -110,7 +163,15 @@ GenericDisplayItem.prototype = {
 
     // Activates the item, as though it was clicked
     activate: function() {
+        this.hidePreview();
         this.emit('activate');
+    },
+
+    // Destoys the item, as well as a preview for the item if it exists.
+    destroy: function() {
+      this.actor.destroy();
+      if (this._preview != null)
+          this._preview.destroy();
     },
     
     //// Pure virtual public methods ////
@@ -127,7 +188,7 @@ GenericDisplayItem.prototype = {
      *
      * nameText - name of the item
      * descriptionText - short description of the item
-     * iconActor - ClutterTexture containing the icon image which should be 48x48 pixels
+     * iconActor - ClutterTexture containing the icon image which should be ITEM_DISPLAY_ICON_SIZE size
      */
     _setItemInfo: function(nameText, descriptionText, iconActor) {
         if (this._name != null) {
@@ -146,14 +207,23 @@ GenericDisplayItem.prototype = {
             this._icon.destroy();
             this._icon = null;
         } 
+        // This ensures we'll create a new preview and previewIcon next time we need a preview
+        if (this._preview != null) {
+            this._preview.destroy();
+            this._preview = null;
+        }
+        if (this._previewIcon != null) {
+            this._previewIcon.destroy();
+            this._previewIcon = null;
+        }
 
         this._icon = iconActor;
         this.actor.add_actor(this._icon);
 
-        let text_width = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4);
+        let textWidth = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4);
         this._name = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
                                         font_name: "Sans 14px",
-                                        width: text_width,
+                                        width: textWidth,
                                         ellipsize: Pango.EllipsizeMode.END,
                                         text: nameText,
                                         x: ITEM_DISPLAY_ICON_SIZE + 4,
@@ -161,12 +231,84 @@ GenericDisplayItem.prototype = {
         this.actor.add_actor(this._name);
         this._description = new Clutter.Text({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
                                                font_name: "Sans 12px",
-                                               width: text_width,
+                                               width: textWidth,
                                                ellipsize: Pango.EllipsizeMode.END,
                                                text: descriptionText ? descriptionText : "",
                                                x: this._name.x,
                                                y: this._name.height + 4 });
         this.actor.add_actor(this._description);
+    },
+
+    //// Pure virtual protected methods ////
+
+    // Ensures the preview icon is created.
+    _ensurePreviewIconCreated: function() {
+        throw new Error("Not implemented");
+    },
+
+    //// Private methods ////
+
+    // Ensures the preview actor is created.
+    _ensurePreviewCreated: function() {
+        if (!this._hasPreview || this._preview)
+            return;
+
+        this._preview = new Big.Box({ background_color: PREVIEW_BOX_BACKGROUND_COLOR,
+                                      orientation: Big.BoxOrientation.HORIZONTAL,
+                                      corner_radius: PREVIEW_BOX_CORNER_RADIUS,
+                                      padding: PREVIEW_BOX_PADDING,
+                                      spacing: PREVIEW_BOX_SPACING });
+
+        let previewDetailsWidth = this._availableWidth - PREVIEW_BOX_PADDING * 2;
+
+        this._ensurePreviewIconCreated();
+
+        if (this._previewIcon != null) {
+            this._preview.append(this._previewIcon, Big.BoxPackFlags.EXPAND);
+            previewDetailsWidth = this._availableWidth - this._previewIcon.width - PREVIEW_BOX_PADDING * 2 - PREVIEW_BOX_SPACING;
+        }
+
+	// Inner box with name and description
+        let previewDetails = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                           spacing: PREVIEW_BOX_SPACING });
+        let previewName = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
+                                             font_name: "Sans bold 14px",
+                                             text: this._name.text});
+
+        previewDetails.width = Math.max(PREVIEW_DETAILS_MIN_WIDTH, previewDetailsWidth, previewName.width);
+
+        previewDetails.append(previewName, Big.BoxPackFlags.NONE);
+
+        let previewDescription = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
+                                                    font_name: "Sans 14px",
+                                                    line_wrap: true,
+                                                    text: this._description.text });
+        previewDetails.append(previewDescription, Big.BoxPackFlags.NONE);
+
+        this._preview.append(previewDetails, Big.BoxPackFlags.EXPAND);
+
+        // Add the preview to global stage to allow for top-level layering
+        let global = Shell.Global.get();
+        global.stage.add_actor(this._preview);
+        this._preview.hide();
+    },
+
+    // Performs actions on mouse enter event for the item. Currently, shows the preview for the item.
+    _onEnter: function(actor, event) {
+        this.showPreview();
+    },
+
+    // Performs actions on mouse leave event for the item. Currently, hides the preview for the item.
+    _onLeave: function(actor, event) {
+        this.hidePreview();
+    },
+
+    // Hides the preview once the item starts being dragged.
+    _onDragBegin : function (draggable, time) {
+        // For some reason, we are not getting leave-event signal when we are dragging an item,
+        // so the preview box stays behind if we didn't have the call here. It makes sense to hide  
+        // the preview as soon as the item starts being dragged anyway. 
+        this.hidePreview();
     }
 };
 
@@ -293,6 +435,14 @@ GenericDisplay.prototype = {
         this._selectIndex(-1);
     },
 
+    // Hides the preview if any item has one being displayed.
+    hidePreview: function() {
+        for (itemId in this._displayedItems) {
+            let item = this._displayedItems[itemId];
+            item.hidePreview();
+        }
+    },
+
     // Returns true if the display has any displayed items.
     hasItems: function() {
         return this._displayedItemsCount > 0;
@@ -376,6 +526,7 @@ GenericDisplay.prototype = {
 
         let itemInfo = this._allItems[itemId];
         let displayItem = this._createDisplayItem(itemInfo);
+        displayItem.setHasPreview(true);
 
         displayItem.connect('activate', function() {
             me._activatedItem = displayItem;
@@ -412,16 +563,16 @@ GenericDisplay.prototype = {
             // in case the drop was not accepted by any actor.)
             displayItem.actor.hide_all();
             this._grid.remove_actor(displayItem.actor);
-            // We should not destroy the actor up-front, because that would also
+            // We should not destroy the item up-front, because that would also
             // destroy the icon that was used to clone the image for the drag actor.
             // We destroy it once the dragActor is destroyed instead.             
             displayItem.dragActor.connect('destroy',
                                           function(item) {
-                                              displayItem.actor.destroy();
+                                              displayItem.destroy();
                                           });
            
         } else {
-            displayItem.actor.destroy();
+            displayItem.destroy();
         }
         delete this._displayedItems[itemId];
         this._displayedItemsCount--;        
@@ -456,6 +607,17 @@ GenericDisplay.prototype = {
             this._pageDisplayed = 0;
 
         this._displayMatchedItems(true);
+
+        // Check if the pointer is over one of the items and display the preview pop-up if it is.
+        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let global = Shell.Global.get();
+        let actor = global.stage.get_actor_at_pos(x, y);
+        if (actor != null) {
+            let item = this._findDisplayedByActor(actor.get_parent());
+            if (item != null) {
+                item.showPreview();
+            }
+        }
 
         this.emit('redisplayed');
     },
