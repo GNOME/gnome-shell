@@ -222,6 +222,7 @@ typedef struct
 typedef struct
 {
   const char   *name;
+  const char   *default_keybinding;
   /**
    * A list of MetaKeyCombos. Each of them is bound to
    * this keypref. If one has keysym==modifiers==0, it is

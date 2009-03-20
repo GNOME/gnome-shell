@@ -1871,47 +1871,14 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 }
 
 #define keybind(name, handler, param, flags, stroke, description) \
-  { #name, NULL, !!(flags & BINDING_REVERSES), !!(flags & BINDING_PER_WINDOW) },
+  { #name, stroke, NULL, !!(flags & BINDING_REVERSES), !!(flags & BINDING_PER_WINDOW) },
 static MetaKeyPref key_bindings[] = {
 #include "all-keybindings.h"
-  { NULL, NULL, FALSE }
+  { NULL, NULL, NULL, FALSE }
 };
 #undef keybind
 
 static MetaKeyCombo overlay_key_combo = { 0, 0, 0 };
-
-#ifndef HAVE_GCONF
-
-/**
- * A type to map names of keybindings (such as "switch_windows")
- * to the binding strings themselves (such as "<Alt>Tab").
- * It exists only when GConf is turned off in ./configure and
- * functions as a sort of ersatz GConf.
- */
-typedef struct
-{
-  const char *name;
-  const char *keybinding;
-} MetaSimpleKeyMapping;
-
-/* FIXME: This would be neater if the array only contained entries whose
- * default keystroke was non-null.  You COULD do this by defining
- * ONLY_BOUND_BY_DEFAULT around various blocks at the cost of making
- * the bindings file way more complicated.  However, we could stop this being
- * data and move it into code.  Then the compiler would optimise away
- * the problem lines.
- */
-
-#define keybind(name, handler, param, flags, stroke, description) \
-  { #name, stroke },
-
-static MetaSimpleKeyMapping key_string_bindings[] = {
-#include "all-keybindings.h"
-  { NULL, NULL }
-};
-#undef keybind
-
-#endif /* NOT HAVE_GCONF */
 
 /* These bindings are for modifiers alone, so they need special handling */
 static void
@@ -2000,22 +1967,13 @@ init_bindings (void)
 
 #else /* HAVE_GCONF */
   int i = 0;
-  int which = 0;
-  
-  while (key_string_bindings[i].name)
+  while (key_bindings[i].name)
     {
-      if (key_string_bindings[i].keybinding == NULL) {
-        ++i;
-        continue;
-      }
-    
-      while (strcmp(key_bindings[which].name, 
-                    key_string_bindings[i].name) != 0)
-        which++;
-
-      /* Set the binding */
-      update_binding (&key_bindings[which], 
-                      key_string_bindings[i].keybinding);
+      if (key_bindings[i].default_keybinding)
+        {
+          /* Set the binding */
+          update_binding (&key_bindings[i], NULL);
+        }
 
       ++i;
     }
@@ -2104,6 +2062,9 @@ update_binding (MetaKeyPref *binding,
   MetaVirtualModifier mods;
   MetaKeyCombo *combo;
   gboolean changed;
+
+  if (value == NULL)
+    value = binding->default_keybinding;
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Binding \"%s\" has new gconf value \"%s\"\n",
