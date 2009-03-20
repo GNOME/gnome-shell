@@ -2750,6 +2750,26 @@ _cogl_rectangles_with_multitexture_coords (
 }
 
 void
+cogl_rectangles (const float *verts,
+                 guint        n_rects)
+{
+  struct _CoglMutiTexturedRect rects[n_rects];
+  int i;
+
+  for (i = 0; i < n_rects; i++)
+    {
+      rects[i].x_1 = verts[i * 4];
+      rects[i].y_1 = verts[i * 4 + 1];
+      rects[i].x_2 = verts[i * 4 + 2];
+      rects[i].y_2 = verts[i * 4 + 3];
+      rects[i].tex_coords = NULL;
+      rects[i].tex_coords_len = 0;
+    }
+
+  _cogl_rectangles_with_multitexture_coords (rects, n_rects);
+}
+
+void
 cogl_rectangles_with_texture_coords (const float *verts,
                                      guint        n_rects)
 {
