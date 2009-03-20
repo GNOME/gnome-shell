@@ -478,6 +478,27 @@ void  cogl_rectangles_with_texture_coords (const float *verts,
                                            guint        n_rects);
 
 /**
+ * cogl_rectangles:
+ * @verts: an array of vertices
+ * @n_rects: number of rectangles to draw
+ *
+ * Draws a series of rectangles in the same way that
+ * cogl_rectangle() does. In some situations it can give a
+ * significant performance boost to use this function rather than
+ * calling cogl_rectangle() separately for each rectangle.
+ *
+ * @verts should point to an array of #float<!-- -->s with
+ * @n_rects * 8 elements. Each group of 4 values corresponds to the
+ * parameters x1, y1, x2, and y2, and have the same
+ * meaning as in cogl_rectangle().
+ *
+ * Since: 1.0
+ */
+void cogl_rectangles (const float *verts,
+                      guint        n_rects);
+
+
+/**
  * cogl_polygon:
  * @vertices: An array of #CoglTextureVertex structs
  * @n_vertices: The length of the vertices array
