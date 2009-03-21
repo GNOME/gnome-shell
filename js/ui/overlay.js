@@ -146,6 +146,11 @@ Sideshow.prototype = {
         this._searchEntry.connect('key-press-event', function (se, e) {
             let symbol = Shell.get_event_key_symbol(e);
             if (symbol == Clutter.Escape) {
+                // We always want to hide the previews when the user hits Escape.
+                // If something that should have a preview gets displayed under 
+                // the mouse pointer afterwards the preview will get redisplayed.
+                me._appDisplay.hidePreview(); 
+                me._docDisplay.hidePreview(); 
                 // Escape will keep clearing things back to the desktop.  First, if
                 // we have active text, we remove it.
                 if (me._searchEntry.text != '')

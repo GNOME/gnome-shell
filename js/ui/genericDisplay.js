@@ -6,6 +6,7 @@ const Gio = imports.gi.Gio;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -54,7 +55,9 @@ function GenericDisplayItem(availableWidth) {
 GenericDisplayItem.prototype = {
     _init: function(availableWidth) {
         this._availableWidth = availableWidth;
-        this._hasPreview = false;
+        this._showPreview = false;
+        this._havePointer = false; 
+        this._previewEventSourceId = null;
 
         this.actor = new Clutter.Group({ reactive: true,
                                          width: availableWidth,
@@ -117,18 +120,18 @@ GenericDisplayItem.prototype = {
     //// Public methods ////
 
     // Sets a boolean value that indicates whether the item should display a pop-up preview on mouse over.
-    setHasPreview: function(hasPreview) {
-        this._hasPreview = hasPreview;
+    setShowPreview: function(showPreview) {
+        this._showPreview = showPreview;
     },
 
     // Returns a boolean value that indicates whether the item displays a pop-up preview on mouse over.
-    getHasPreview: function() {
-        return this._hasPreview;
+    getShowPreview: function() {
+        return this._showPreview;
     },
 
     // Displays the preview for the item.
     showPreview: function() {
-        if(!this._hasPreview)
+        if(!this._showPreview)
             return;
 
         this._ensurePreviewCreated();
@@ -142,12 +145,24 @@ GenericDisplayItem.prototype = {
         this._preview.show();
     },
 
-    // Hides the preview for the item.
+    // Hides the preview for the item and removes the preview event source so that 
+    // there is no preview scheduled to show up.
     hidePreview: function() {
-        if(!this._hasPreview)
-            return;
+        if (this._previewEventSourceId) {
+            Mainloop.source_remove(this._previewEventSourceId);
+            this._previewEventSourceId = null;
+        }
 
-        this._preview.hide();
+        if (this._preview)
+            this._preview.hide();
+    },
+
+    // Shows a preview when the item was drawn under the mouse pointer.
+    onDrawnUnderPointer: function() {
+        this._havePointer = true;
+        // This code is usually triggered when we just had a different preview showing on the same spot
+        // and having a delay before showing a new preview looks bad. So we just show it right away.
+        this.showPreview();  
     },
 
     // Highlights the item by setting a different background color than the default 
@@ -250,7 +265,7 @@ GenericDisplayItem.prototype = {
 
     // Ensures the preview actor is created.
     _ensurePreviewCreated: function() {
-        if (!this._hasPreview || this._preview)
+        if (!this._showPreview || this._preview)
             return;
 
         this._preview = new Big.Box({ background_color: PREVIEW_BOX_BACKGROUND_COLOR,
@@ -295,11 +310,22 @@ GenericDisplayItem.prototype = {
 
     // Performs actions on mouse enter event for the item. Currently, shows the preview for the item.
     _onEnter: function(actor, event) {
-        this.showPreview();
+        this._havePointer = true;
+        let tooltipTimeout = Gtk.Settings.get_default().gtk_tooltip_timeout;
+        this._previewEventSourceId = Mainloop.timeout_add(tooltipTimeout, 
+                                                          Lang.bind(this,
+                                                                    function() {
+                                                                        if (this._havePointer) {
+                                                                            this.showPreview();
+                                                                        }
+                                                                        this._previewEventSourceId = null;
+                                                                        return false;
+                                                                    }));
     },
 
     // Performs actions on mouse leave event for the item. Currently, hides the preview for the item.
     _onLeave: function(actor, event) {
+        this._havePointer = false;
         this.hidePreview();
     },
 
@@ -307,9 +333,10 @@ GenericDisplayItem.prototype = {
     _onDragBegin : function (draggable, time) {
         // For some reason, we are not getting leave-event signal when we are dragging an item,
         // so the preview box stays behind if we didn't have the call here. It makes sense to hide  
-        // the preview as soon as the item starts being dragged anyway. 
+        // the preview as soon as the item starts being dragged anyway.
+        this._havePointer = false;  
         this.hidePreview();
-    }
+    } 
 };
 
 Signals.addSignalMethods(GenericDisplayItem.prototype);
@@ -512,6 +539,24 @@ GenericDisplay.prototype = {
         }
 
         this._updateDisplayControl(resetDisplayControl);
+
+        // We currently redisplay matching items and raise the sideshow as part of two different callbacks.
+        // Checking what is under the pointer after a timeout allows us to not merge these callbacks into one, at least for now.  
+        Mainloop.timeout_add(5, 
+                             Lang.bind(this,
+                                       function() {
+                                           // Check if the pointer is over one of the items and display the preview pop-up if it is.
+                                           let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+                                           let global = Shell.Global.get();
+                                           let actor = global.stage.get_actor_at_pos(x, y);
+                                           if (actor != null) {
+                                               let item = this._findDisplayedByActor(actor.get_parent());
+                                               if (item != null) {
+                                                   item.onDrawnUnderPointer();
+                                               }
+                                           }
+                                           return false;
+                                       }));
     },
 
     // Creates a display item based on the information associated with itemId 
@@ -526,7 +571,7 @@ GenericDisplay.prototype = {
 
         let itemInfo = this._allItems[itemId];
         let displayItem = this._createDisplayItem(itemInfo);
-        displayItem.setHasPreview(true);
+        displayItem.setShowPreview(true);
 
         displayItem.connect('activate', function() {
             me._activatedItem = displayItem;
@@ -607,17 +652,6 @@ GenericDisplay.prototype = {
             this._pageDisplayed = 0;
 
         this._displayMatchedItems(true);
-
-        // Check if the pointer is over one of the items and display the preview pop-up if it is.
-        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
-        let global = Shell.Global.get();
-        let actor = global.stage.get_actor_at_pos(x, y);
-        if (actor != null) {
-            let item = this._findDisplayedByActor(actor.get_parent());
-            if (item != null) {
-                item.showPreview();
-            }
-        }
 
         this.emit('redisplayed');
     },

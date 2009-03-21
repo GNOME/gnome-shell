@@ -88,7 +88,7 @@ DocDisplayItem.prototype = {
 
     // Ensures the preview icon is created.
     _ensurePreviewIconCreated : function() {
-        if (!this._hasPreview || this._previewIcon)
+        if (!this._showPreview || this._previewIcon)
             return; 
 
         this._previewIcon = new Clutter.Texture();
