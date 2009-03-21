@@ -169,6 +169,7 @@ source_c = \
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
 	clutter-marshal.c			\
+	$(srcdir)/clutter-master-clock.c	\
 	$(srcdir)/clutter-media.c 		\
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-path.c		\
@@ -195,6 +196,7 @@ source_h_priv = \
 	$(srcdir)/clutter-bezier.h		\
 	$(srcdir)/clutter-debug.h 		\
 	$(srcdir)/clutter-keysyms-table.h	\
+	$(srcdir)/clutter-master-clock.h	\
 	$(srcdir)/clutter-model-private.h	\
 	$(srcdir)/clutter-private.h 		\
 	$(srcdir)/clutter-id-pool.h 		\

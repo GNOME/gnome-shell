@@ -83,13 +83,13 @@
 #include "config.h"
 #endif
 
-#include "clutter-timeout-pool.h"
-#include "clutter-timeline.h"
-#include "clutter-main.h"
-#include "clutter-marshal.h"
-#include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-main.h"
+#include "clutter-marshal.h"
+#include "clutter-master-clock.h"
+#include "clutter-private.h"
+#include "clutter-timeline.h"
 
 G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
@@ -97,7 +97,6 @@ struct _ClutterTimelinePrivate
 {
   ClutterTimelineDirection direction;
 
-  guint timeout_id;
   guint delay_id;
 
   gint current_frame_num;
@@ -108,13 +107,14 @@ struct _ClutterTimelinePrivate
 
   gint skipped_frames;
 
-  GTimeVal prev_frame_timeval;
   guint msecs_delta;
+  guint frame_interval;
 
   GHashTable *markers_by_frame;
   GHashTable *markers_by_name;
 
-  guint loop : 1;
+  guint loop       : 1;
+  guint is_playing : 1;
 };
 
 typedef struct {
@@ -146,67 +146,7 @@ enum
   LAST_SIGNAL
 };
 
-static guint               timeline_signals[LAST_SIGNAL] = { 0, };
-static gint                timeline_use_pool             = -1;
-static ClutterTimeoutPool *timeline_pool                 = NULL;
-
-static inline void
-timeline_pool_init (void)
-{
-  if (timeline_use_pool == -1)
-    {
-      const gchar *timeline_env;
-
-      timeline_env = g_getenv ("CLUTTER_TIMELINE");
-      if (timeline_env && timeline_env[0] != '\0' &&
-          strcmp (timeline_env, "no-pool") == 0)
-        {
-          timeline_use_pool = FALSE;
-        }
-      else
-        {
-          timeline_pool = clutter_timeout_pool_new (CLUTTER_PRIORITY_TIMELINE);
-          timeline_use_pool = TRUE;
-        }
-    }
-}
-
-static guint
-timeout_add (guint          fps,
-             GSourceFunc    func,
-             gpointer       data,
-             GDestroyNotify notify)
-{
-  guint res;
-
-  if (G_LIKELY (timeline_use_pool))
-    {
-      g_assert (timeline_pool != NULL);
-      res = clutter_timeout_pool_add (timeline_pool,
-                                      fps,
-                                      func, data, notify);
-    }
-  else
-    {
-      res = clutter_threads_add_frame_source_full (CLUTTER_PRIORITY_TIMELINE,
-						   fps,
-						   func, data, notify);
-    }
-
-  return res;
-}
-
-static void
-timeout_remove (guint tag)
-{
-  if (G_LIKELY (timeline_use_pool))
-    {
-      g_assert (timeline_pool != NULL);
-      clutter_timeout_pool_remove (timeline_pool, tag);
-    }
-  else
-    g_source_remove (tag);
-}
+static guint timeline_signals[LAST_SIGNAL] = { 0, };
 
 static TimelineMarker *
 timeline_marker_new (const gchar *name,
@@ -326,13 +266,18 @@ clutter_timeline_get_property (GObject    *object,
 static void
 clutter_timeline_finalize (GObject *object)
 {
-  ClutterTimelinePrivate *priv = CLUTTER_TIMELINE (object)->priv;
+  ClutterTimeline *self = CLUTTER_TIMELINE (object);
+  ClutterTimelinePrivate *priv = self->priv;
+  ClutterMasterClock *master_clock;
 
   if (priv->markers_by_frame)
     g_hash_table_destroy (priv->markers_by_frame);
 
   if (priv->markers_by_name)
     g_hash_table_destroy (priv->markers_by_name);
+
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_remove_timeline (master_clock, self);
 
   G_OBJECT_CLASS (clutter_timeline_parent_class)->finalize (object);
 }
@@ -351,12 +296,6 @@ clutter_timeline_dispose (GObject *object)
       priv->delay_id = 0;
     }
 
-  if (priv->timeout_id)
-    {
-      timeout_remove (priv->timeout_id);
-      priv->timeout_id = 0;
-    }
-
   G_OBJECT_CLASS (clutter_timeline_parent_class)->dispose (object);
 }
 
@@ -365,8 +304,6 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
-
-  timeline_pool_init ();
 
   object_class->set_property = clutter_timeline_set_property;
   object_class->get_property = clutter_timeline_get_property;
@@ -577,14 +514,19 @@ static void
 clutter_timeline_init (ClutterTimeline *self)
 {
   ClutterTimelinePrivate *priv;
+  ClutterMasterClock *master_clock;
 
   self->priv = priv =
     G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_TIMELINE,
                                  ClutterTimelinePrivate);
 
   priv->fps = clutter_get_default_frame_rate ();
+  priv->frame_interval = 1000 / priv->fps;
   priv->n_frames = 0;
   priv->msecs_delta = 0;
+
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_add_timeline (master_clock, self);
 }
 
 static void
@@ -636,43 +578,23 @@ is_complete (ClutterTimeline *timeline)
 }
 
 static gboolean
-timeline_timeout_func (gpointer data)
+clutter_timeline_advance_internal (ClutterTimeline *timeline)
 {
-  ClutterTimeline        *timeline = data;
   ClutterTimelinePrivate *priv;
-  GTimeVal                timeval;
-  guint                   n_frames, speed;
-  gulong                  msecs;
+  guint n_frames, speed;
 
   priv = timeline->priv;
 
   g_object_ref (timeline);
 
-  /* Figure out potential frame skips */
-  g_get_current_time (&timeval);
-
   CLUTTER_TIMESTAMP (SCHEDULER, "Timeline [%p] activated (cur: %d)\n",
                      timeline,
                      priv->current_frame_num);
 
-  if (!priv->prev_frame_timeval.tv_sec)
-    {
-      CLUTTER_NOTE (SCHEDULER,
-                    "Timeline [%p] recieved timeout before being initialised!",
-                    timeline);
-      priv->prev_frame_timeval = timeval;
-    }
-
-  /* Interpolate the current frame based on the timeval of the
-   * previous frame */
-  msecs = (timeval.tv_sec - priv->prev_frame_timeval.tv_sec) * 1000;
-  msecs += (timeval.tv_usec - priv->prev_frame_timeval.tv_usec) / 1000;
-  priv->msecs_delta = msecs;
-
   /* we need to avoid fps > 1000 */
   speed = MAX (1000 / priv->fps, 1);
 
-  n_frames = msecs / speed;
+  n_frames = priv->msecs_delta / speed;
   if (n_frames == 0)
     n_frames = 1;
 
@@ -683,8 +605,6 @@ timeline_timeout_func (gpointer data)
                        "Timeline [%p], skipping %d frames\n",
                        timeline,
                        priv->skipped_frames);
-
-  priv->prev_frame_timeval = timeval;
 
   /* Advance frames */
   if (priv->direction == CLUTTER_TIMELINE_FORWARD)
@@ -699,7 +619,7 @@ timeline_timeout_func (gpointer data)
       emit_frame_signal (timeline);
 
       /* Signal pauses timeline ? */
-      if (!priv->timeout_id)
+      if (!priv->is_playing)
         {
           g_object_unref (timeline);
           return FALSE;
@@ -751,7 +671,7 @@ timeline_timeout_func (gpointer data)
                     priv->n_frames,
                     n_frames - 1);
 
-      if (!priv->loop && priv->timeout_id)
+      if (!priv->loop && priv->is_playing)
         {
           /* We remove the timeout now, so that the completed signal handler
            * may choose to re-start the timeline
@@ -759,8 +679,7 @@ timeline_timeout_func (gpointer data)
            * XXX Perhaps we should remove this earlier, and regardless
            * of priv->loop. Are we limiting the things that could be done in
            * the above new-frame signal handler */
-          timeout_remove (priv->timeout_id);
-          priv->timeout_id = 0;
+          priv->is_playing = FALSE;
         }
 
       g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
@@ -769,7 +688,7 @@ timeline_timeout_func (gpointer data)
        * current_frame_num, before we finally stop or loop the timeline */
 
       if (priv->current_frame_num != end_frame &&
-          !(/* Except allow moving from frame 0 -> n_frame (or vica-versa)
+          !(/* Except allow moving from frame 0 -> n_frame (or vice-versa)
                since these are considered equivalent */
             (priv->current_frame_num == 0 && end_frame == priv->n_frames) ||
             (priv->current_frame_num == priv->n_frames && end_frame == 0)
@@ -791,7 +710,7 @@ timeline_timeout_func (gpointer data)
           if (priv->direction != saved_direction)
             {
               priv->current_frame_num = priv->n_frames
-                                        - priv->current_frame_num;
+                                      - priv->current_frame_num;
             }
 
           g_object_unref (timeline);
@@ -801,37 +720,10 @@ timeline_timeout_func (gpointer data)
         {
           clutter_timeline_rewind (timeline);
 
-          priv->prev_frame_timeval.tv_sec = 0;
-          priv->prev_frame_timeval.tv_usec = 0;
-
           g_object_unref (timeline);
           return FALSE;
         }
     }
-}
-
-static guint
-timeline_timeout_add (ClutterTimeline *timeline,
-                      guint            fps,
-                      GSourceFunc      func,
-                      gpointer         data,
-                      GDestroyNotify   notify)
-{
-  ClutterTimelinePrivate *priv;
-  GTimeVal timeval;
-
-  priv = timeline->priv;
-
-  if (priv->prev_frame_timeval.tv_sec == 0)
-    {
-      g_get_current_time (&timeval);
-      priv->prev_frame_timeval = timeval;
-    }
-
-  priv->skipped_frames   = 0;
-  priv->msecs_delta      = 0;
-
-  return timeout_add (fps, func, data, notify);
 }
 
 static gboolean
@@ -841,11 +733,8 @@ delay_timeout_func (gpointer data)
   ClutterTimelinePrivate *priv = timeline->priv;
 
   priv->delay_id = 0;
-
-  priv->timeout_id = timeline_timeout_add (timeline,
-                                           priv->fps,
-                                           timeline_timeout_func,
-                                           timeline, NULL);
+  priv->msecs_delta = 0;
+  priv->is_playing = TRUE;
 
   g_signal_emit (timeline, timeline_signals[STARTED], 0);
 
@@ -867,24 +756,20 @@ clutter_timeline_start (ClutterTimeline *timeline)
 
   priv = timeline->priv;
 
-  if (priv->delay_id || priv->timeout_id)
+  if (priv->delay_id || priv->is_playing)
     return;
 
   if (priv->n_frames == 0)
     return;
 
   if (priv->delay)
-    {
-      priv->delay_id = g_timeout_add (priv->delay,
-                                      (GSourceFunc)delay_timeout_func,
-                                      timeline);
-    }
+    priv->delay_id = clutter_threads_add_timeout (priv->delay,
+                                                  delay_timeout_func,
+                                                  timeline);
   else
     {
-      priv->timeout_id = timeline_timeout_add (timeline,
-                                               priv->fps,
-                                               timeline_timeout_func,
-                                               timeline, NULL);
+      priv->msecs_delta = 0;
+      priv->is_playing = TRUE;
 
       g_signal_emit (timeline, timeline_signals[STARTED], 0);
     }
@@ -905,20 +790,17 @@ clutter_timeline_pause (ClutterTimeline *timeline)
 
   priv = timeline->priv;
 
+  if (priv->delay_id == 0 || !priv->is_playing)
+    return;
+
   if (priv->delay_id)
     {
       g_source_remove (priv->delay_id);
       priv->delay_id = 0;
     }
 
-  if (priv->timeout_id)
-    {
-      timeout_remove (priv->timeout_id);
-      priv->timeout_id = 0;
-    }
-
-  priv->prev_frame_timeval.tv_sec = 0;
-  priv->prev_frame_timeval.tv_usec = 0;
+  priv->msecs_delta = 0;
+  priv->is_playing = FALSE;
 
   g_signal_emit (timeline, timeline_signals[PAUSED], 0);
 }
@@ -1027,6 +909,8 @@ clutter_timeline_skip (ClutterTimeline *timeline,
       if (priv->current_frame_num < 1)
         priv->current_frame_num = priv->n_frames - 1;
     }
+
+  priv->msecs_delta = 0;
 }
 
 /**
@@ -1141,17 +1025,9 @@ clutter_timeline_set_speed (ClutterTimeline *timeline,
       g_object_ref (timeline);
 
       priv->fps = fps;
+      priv->frame_interval = 1000 / priv->fps;
 
-      /* if the timeline is playing restart */
-      if (priv->timeout_id)
-        {
-          timeout_remove (priv->timeout_id);
-
-          priv->timeout_id = timeline_timeout_add (timeline,
-                                                   priv->fps,
-                                                   timeline_timeout_func,
-                                                   timeline, NULL);
-        }
+      /* FIXME if the timeline is playing restart */
 
       g_object_freeze_notify (G_OBJECT (timeline));
 
@@ -1193,7 +1069,7 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
 
-  return (timeline->priv->timeout_id != 0);
+  return timeline->priv->is_playing;
 }
 
 /**
@@ -1493,6 +1369,39 @@ clutter_timeline_get_delta (ClutterTimeline *timeline,
     *msecs = timeline->priv->msecs_delta;
 
   return priv->skipped_frames + 1;
+}
+
+/*
+ * clutter_timeline_set_delta:
+ * @timeline: a #ClutterTimeline
+ * @msecs: advance in milliseconds
+ *
+ * Advances @timeline by @msecs. This function is called by the master
+ * clock and it is used to advance a timeline by the amount of milliseconds
+ * elapsed since the last redraw operation. The @timeline will use this
+ * interval to emit the #ClutterTimeline::new-frame signal and eventually
+ * skip frames.
+ */
+void
+_clutter_timeline_set_delta (ClutterTimeline *timeline,
+                             guint            msecs)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+
+  priv = timeline->priv;
+
+  priv->msecs_delta += msecs;
+
+  if (priv->msecs_delta < priv->frame_interval)
+    return;
+  else
+    {
+      clutter_timeline_advance_internal (timeline);
+
+      priv->msecs_delta = 0;
+    }
 }
 
 static inline void

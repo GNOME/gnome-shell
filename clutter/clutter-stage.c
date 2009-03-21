@@ -59,6 +59,7 @@
 #include "clutter-color.h"
 #include "clutter-util.h"
 #include "clutter-marshal.h"
+#include "clutter-master-clock.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
@@ -86,7 +87,7 @@ struct _ClutterStagePrivate
   gchar              *title;
   ClutterActor       *key_focused_actor;
 
-  guint               update_idle;	       /* repaint idler id */
+  guint               update_idle;      /* repaint idler id */
 
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
@@ -346,24 +347,42 @@ redraw_update_idle (gpointer user_data)
 {
   ClutterStage *stage = user_data;
   ClutterStagePrivate *priv = stage->priv;
+  ClutterMasterClock *master_clock;
+  gboolean retval = FALSE;
 
-  /* clutter_redraw() will also call maybe_relayout(), but since a relayout can
-   * queue a redraw, we want to do the relayout before we clear the update_idle
-   * to avoid painting the stage twice. Calling maybe_relayout() twice in a row
-   * is cheap because of caching of requested and allocated size.
+  /* before we redraw we advance the master clock of one tick; this means
+   * that all the timelines that need advancing will be advanced by one
+   * frame. this will cause multiple redraw requests, so we do this before
+   * we ask for a relayout and before we do the actual redraw. this ensures
+   * that we paint the most updated scenegraph state and that all animations
+   * are in sync with the paint process.
+   */
+  CLUTTER_NOTE (PAINT, "Avdancing master clock");
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_advance (master_clock);
+
+  /* clutter_redraw() will also call maybe_relayout(), but since a relayout
+   * can queue a redraw, we want to do the relayout before we clear the
+   * update_idle to avoid painting the stage twice. Calling maybe_relayout()
+   * twice in a row is cheap because of caching of requested and allocated
+   * size.
    */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
 
-  if (priv->update_idle)
-    {
-      g_source_remove (priv->update_idle);
-      priv->update_idle = 0;
-    }
-
-  CLUTTER_NOTE (MULTISTAGE, "redrawing via idle for stage:%p", stage);
+  CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
   clutter_redraw (stage);
 
-  return FALSE;
+  if (CLUTTER_CONTEXT ()->redraw_count > 0)
+    {
+      CLUTTER_NOTE (PAINT, "Queued %lu redraws during the last cycle",
+                    CLUTTER_CONTEXT ()->redraw_count);
+
+      CLUTTER_CONTEXT ()->redraw_count = 0;
+    }
+
+  priv->update_idle = 0;
+
+  return retval;
 }
 
 static void
@@ -373,17 +392,21 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   ClutterStage *stage = CLUTTER_STAGE (actor);
   ClutterStagePrivate *priv = stage->priv;
 
+  CLUTTER_NOTE (PAINT, "Redraw request number %lu",
+                CLUTTER_CONTEXT ()->redraw_count + 1);
+
   if (priv->update_idle == 0)
     {
-      CLUTTER_TIMESTAMP (SCHEDULER, "Adding idle source for stage: %p", stage);
+      CLUTTER_NOTE (PAINT, "Adding idle source for stage: %p", stage);
 
-      /* FIXME: weak_ref self in case we dissapear before paint? */
       priv->update_idle =
         clutter_threads_add_idle_full (CLUTTER_PRIORITY_REDRAW,
                                        redraw_update_idle,
                                        stage,
                                        NULL);
     }
+  else
+    CLUTTER_CONTEXT ()->redraw_count += 1;
 }
 
 static void

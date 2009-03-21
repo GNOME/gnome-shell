@@ -47,6 +47,7 @@
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
+#include "clutter-timeline.h"
 
 G_BEGIN_DECLS
 
@@ -127,6 +128,8 @@ struct _ClutterMainContext
                                            MultiTouch */
 
   guint32 last_event_time;
+
+  gulong redraw_count;
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
@@ -204,6 +207,8 @@ guint         _clutter_pixel_to_id (guchar pixel[4]);
 
 void          _clutter_id_to_color (guint id, ClutterColor *col);
 
+void          _clutter_timeline_set_delta (ClutterTimeline *timeline,
+                                           guint            msecs);
 
 /* use this function as the accumulator if you have a signal with
  * a G_TYPE_BOOLEAN return value; this will stop the emission as

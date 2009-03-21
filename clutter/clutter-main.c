@@ -41,6 +41,7 @@
 #include "clutter-event.h"
 #include "clutter-backend.h"
 #include "clutter-main.h"
+#include "clutter-master-clock.h"
 #include "clutter-feature.h"
 #include "clutter-actor.h"
 #include "clutter-stage.h"
@@ -181,14 +182,12 @@ void
 clutter_redraw (ClutterStage *stage)
 {
   ClutterMainContext *ctx;
-  static GTimer      *timer = NULL;
-  static guint        timer_n_frames = 0;
+  static GTimer *timer = NULL;
+  static guint timer_n_frames = 0;
 
   ctx  = clutter_context_get_default ();
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw start for stage:%p", stage);
   CLUTTER_NOTE (PAINT, " Redraw enter for stage:%p", stage);
-  CLUTTER_NOTE (MULTISTAGE, "Redraw called for stage:%p", stage);
 
   /* Before we can paint, we have to be sure we have the latest layout */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
