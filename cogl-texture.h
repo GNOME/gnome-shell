@@ -488,7 +488,7 @@ void  cogl_rectangles_with_texture_coords (const float *verts,
  * calling cogl_rectangle() separately for each rectangle.
  *
  * @verts should point to an array of #float<!-- -->s with
- * @n_rects * 8 elements. Each group of 4 values corresponds to the
+ * @n_rects * 4 elements. Each group of 4 values corresponds to the
  * parameters x1, y1, x2, and y2, and have the same
  * meaning as in cogl_rectangle().
  *
