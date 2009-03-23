@@ -449,7 +449,10 @@ clutter_container_get_children (ClutterContainer *container)
  * @callback: a function to be called for each child
  * @user_data: data to be passed to the function, or %NULL
  *
- * Calls @callback for each child of @container.
+ * Calls @callback for each child of @container that was added
+ * by the application (with clutter_container_add_actor()). Does
+ * not iterate over "internal" children that are part of the
+ * container's own implementation, if any.
  *
  * Since: 0.4
  */
@@ -471,6 +474,41 @@ clutter_container_foreach (ClutterContainer *container,
     }
 
   iface->foreach (container, callback, user_data);
+}
+
+/**
+ * clutter_container_foreach_with_internals:
+ * @container: a #ClutterContainer
+ * @callback: a function to be called for each child
+ * @user_data: data to be passed to the function, or %NULL
+ *
+ * Calls @callback for each child of @container, including "internal"
+ * children built in to the container itself that were never added
+ * by the application.
+ *
+ * Since: 1.0
+ */
+void
+clutter_container_foreach_with_internals (ClutterContainer *container,
+                                          ClutterCallback   callback,
+                                          gpointer          user_data)
+{
+  ClutterContainerIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (callback != NULL);
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (!iface->foreach)
+    {
+      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "foreach");
+      return;
+    }
+
+  if (iface->foreach_with_internals != NULL)
+    iface->foreach_with_internals (container, callback, user_data);
+  else
+    iface->foreach (container, callback, user_data);
 }
 
 /**

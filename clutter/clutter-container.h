@@ -90,6 +90,10 @@ struct _ClutterContainerIface
                              ClutterCallback   callback,
                              gpointer          user_data);
 
+  void (* foreach_with_internals) (ClutterContainer *container,
+                                   ClutterCallback   callback,
+                                   gpointer          user_data);
+
   /* child stacking */
   void (* raise)            (ClutterContainer *container,
                              ClutterActor     *actor,
@@ -137,20 +141,22 @@ void          clutter_container_remove_actor     (ClutterContainer *container,
 void          clutter_container_remove_valist    (ClutterContainer *container,
                                                   ClutterActor     *first_actor,
                                                   va_list           var_args);
-GList *       clutter_container_get_children     (ClutterContainer *container);
-void          clutter_container_foreach          (ClutterContainer *container,
-                                                  ClutterCallback   callback,
-                                                  gpointer          user_data);
-ClutterActor *clutter_container_find_child_by_name (ClutterContainer *container,
-                                                    const gchar      *child_name);
-void          clutter_container_raise_child        (ClutterContainer *container,
-                                                    ClutterActor     *actor,
-                                                    ClutterActor     *sibling);
-void          clutter_container_lower_child        (ClutterContainer *container,
-                                                    ClutterActor     *actor,
-                                                    ClutterActor     *sibling);
-void          clutter_container_sort_depth_order   (ClutterContainer *container);
-
+GList *       clutter_container_get_children           (ClutterContainer *container);
+void          clutter_container_foreach                (ClutterContainer *container,
+                                                        ClutterCallback   callback,
+                                                        gpointer          user_data);
+void          clutter_container_foreach_with_internals (ClutterContainer *container,
+                                                        ClutterCallback   callback,
+                                                        gpointer          user_data);
+ClutterActor *clutter_container_find_child_by_name     (ClutterContainer *container,
+                                                        const gchar      *child_name);
+void          clutter_container_raise_child            (ClutterContainer *container,
+                                                        ClutterActor     *actor,
+                                                        ClutterActor     *sibling);
+void          clutter_container_lower_child            (ClutterContainer *container,
+                                                        ClutterActor     *actor,
+                                                        ClutterActor     *sibling);
+void          clutter_container_sort_depth_order       (ClutterContainer *container);
 
 
 GParamSpec *      clutter_container_class_find_child_property   (GObjectClass     *klass,
