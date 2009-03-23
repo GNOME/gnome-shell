@@ -39,6 +39,23 @@ struct _CoglTexSliceSpan
   gint   waste;
 };
 
+struct _CoglSpanIter
+{
+  gint              index;
+  GArray           *array;
+  CoglTexSliceSpan *span;
+  float             pos;
+  float             next_pos;
+  float             origin;
+  float             cover_start;
+  float             cover_end;
+  float             intersect_start;
+  float             intersect_end;
+  float             intersect_start_local;
+  float             intersect_end_local;
+  gboolean          intersects;
+};
+
 struct _CoglTexture
 {
   guint              ref_count;
@@ -73,9 +90,26 @@ typedef struct _CoglJournalEntry
 CoglTexture*
 _cogl_texture_pointer_from_handle (CoglHandle handle);
 
+void
+_cogl_texture_set_wrap_mode_parameter (CoglTexture *tex,
+                                       GLenum wrap_mode);
+
 gboolean
 _cogl_texture_span_has_waste (CoglTexture *tex,
                               gint x_span_index,
                               gint y_span_index);
+
+void
+_cogl_span_iter_begin (CoglSpanIter  *iter,
+		       GArray        *array,
+		       float          origin,
+		       float          cover_start,
+		       float          cover_end);
+
+gboolean
+_cogl_span_iter_end (CoglSpanIter *iter);
+
+void
+_cogl_span_iter_next (CoglSpanIter *iter);
 
 #endif /* __COGL_TEXTURE_H */
