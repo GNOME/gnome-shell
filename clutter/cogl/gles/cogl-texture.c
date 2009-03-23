@@ -2843,6 +2843,7 @@ _cogl_rectangles_with_multitexture_coords (
 
   _cogl_journal_flush ();
 }
+
 void
 cogl_rectangles (const float *verts,
                  guint        n_rects)
