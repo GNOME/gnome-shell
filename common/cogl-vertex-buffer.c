@@ -1435,7 +1435,9 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 {
   GList       *tmp;
   GLenum       gl_type;
+#ifdef MAY_HAVE_PROGRAMABLE_GL
   GLuint       generic_index = 0;
+#endif
   gulong       enable_flags = 0;
   guint        max_texcoord_attrib_unit = 0;
   const GList *layers;
@@ -1577,7 +1579,9 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 {
   GList *tmp;
   GLenum gl_type;
+#ifdef MAY_HAVE_PROGRAMABLE_GL
   GLuint generic_index = 0;
+#endif
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1586,7 +1590,6 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
    */
   GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
 
-  generic_index = 0;
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
       CoglVertexBufferVBO *cogl_vbo = tmp->data;
