@@ -662,3 +662,50 @@ grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
                                           global->input_width, global->input_height);      
     }
 }
+
+/**
+ * shell_global_create_vertical_gradient:
+ * @top: the color at the top
+ * @bottom: the color at the bottom
+ *
+ * Creates a vertical gradient actor.
+ *
+ * Return value: (transfer none): a #ClutterCairoTexture actor with the
+ *               gradient. The texture actor is floating, hence (transfer none).
+ */
+ClutterCairoTexture *
+shell_global_create_vertical_gradient (ClutterColor *top,
+                                       ClutterColor *bottom)
+{
+  ClutterCairoTexture *texture;
+  cairo_t *cr;
+  cairo_pattern_t *pattern;
+
+  /* Draw the gradient on an 8x8 pixel texture. Because the gradient is drawn
+   * from the uppermost to the lowermost row, after stretching 1/16 of the
+   * texture height has the top color and 1/16 has the bottom color. The 8
+   * pixel width is chosen for reasons related to graphics hardware internals.
+   */
+  texture = CLUTTER_CAIRO_TEXTURE (clutter_cairo_texture_new (8, 8));
+  cr = clutter_cairo_texture_create (texture);
+
+  pattern = cairo_pattern_create_linear (0, 0, 0, 8);
+  cairo_pattern_add_color_stop_rgba (pattern, 0,
+                                     top->red / 255.,
+                                     top->green / 255.,
+                                     top->blue / 255.,
+                                     top->alpha / 255.);
+  cairo_pattern_add_color_stop_rgba (pattern, 1,
+                                     bottom->red / 255.,
+                                     bottom->green / 255.,
+                                     bottom->blue / 255.,
+                                     bottom->alpha / 255.);
+
+  cairo_set_source (cr, pattern);
+  cairo_paint (cr);
+
+  cairo_pattern_destroy (pattern);
+  cairo_destroy (cr);
+
+  return texture;
+}

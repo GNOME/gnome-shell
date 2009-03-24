@@ -585,9 +585,9 @@ Overlay.prototype = {
         let background = new Clutter.Rectangle({ color: OVERLAY_BACKGROUND_COLOR,
                                                  reactive: true,
                                                  x: 0,
-                                                 y: Panel.PANEL_HEIGHT,
+                                                 y: 0,
                                                  width: global.screen_width,
-                                                 height: global.screen_width - Panel.PANEL_HEIGHT });
+                                                 height: global.screen_width });
         this._group.add_actor(background);
 
         this._group.hide();
