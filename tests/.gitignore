@@ -8,6 +8,7 @@ test-cogl-tex-foreign
 test-cogl-tex-getset
 test-cogl-tex-polygon
 test-cogl-tex-tile
+test-cogl-vertex-buffer
 test-depth
 test-devices
 test-effects
@@ -37,6 +38,7 @@ test-script
 test-shader
 test-stage-read-pixels
 test-text
+test-texture-async
 test-texture-quality
 test-textures
 test-threads
