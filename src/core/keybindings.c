@@ -3452,7 +3452,7 @@ gboolean
 meta_keybindings_set_custom_handler (const gchar        *name,
                                      MetaKeyHandlerFunc  handler,
                                      gpointer            user_data,
-                                     MetaKeyHandlerDataFreeFunc free_data)
+                                     GDestroyNotify      free_data)
 {
   MetaKeyHandler *key_handler = find_handler (key_handlers, name);
 

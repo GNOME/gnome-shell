@@ -23,8 +23,6 @@
 #include "display.h"
 #include "common.h"
 
-typedef void (* MetaKeyHandlerDataFreeFunc) (gpointer user_data);
-
 typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
                                      MetaScreen     *screen,
                                      MetaWindow     *window,
@@ -39,7 +37,7 @@ typedef struct
   MetaKeyHandlerFunc default_func;
   gint data, flags;
   gpointer user_data;
-  MetaKeyHandlerDataFreeFunc user_data_free_func;
+  GDestroyNotify user_data_free_func;
 } MetaKeyHandler;
 
 struct _MetaKeyBinding
@@ -56,7 +54,7 @@ struct _MetaKeyBinding
 gboolean meta_keybindings_set_custom_handler (const gchar        *name,
 					      MetaKeyHandlerFunc  handler,
 					      gpointer            user_data,
-					      MetaKeyHandlerDataFreeFunc free_data);
+					      GDestroyNotify      free_data);
 
 void meta_keybindings_switch_window (MetaDisplay    *display,
 				     MetaScreen     *screen,
