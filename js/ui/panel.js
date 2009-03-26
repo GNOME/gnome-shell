@@ -51,7 +51,7 @@ Panel.prototype = {
         let global = Shell.Global.get();
 
         // Put the background under the panel within a group.
-        this._group = new Clutter.Group();
+        this.actor = new Clutter.Group();
 
         // Create backBox, which contains two boxes, backUpper and backLower,
         // for the background gradients and one for the shadow. The shadow at
@@ -73,7 +73,7 @@ Panel.prototype = {
         backBox.append(backUpper, Big.BoxPackFlags.EXPAND);
         backBox.append(backLower, Big.BoxPackFlags.EXPAND);
         backBox.append(shadow, Big.BoxPackFlags.NONE);
-        this._group.add_actor(backBox);
+        this.actor.add_actor(backBox);
 
         let box = new Big.Box({ x: 0,
                                 y: 0,
@@ -165,9 +165,9 @@ Panel.prototype = {
                 me._setStruts();
             });
 
-        this._group.add_actor(box);
+        this.actor.add_actor(box);
 
-        global.stage.add_actor(this._group);
+        global.stage.add_actor(this.actor);
 
         global.screen.connect('restacked',
             function() {
@@ -179,16 +179,6 @@ Panel.prototype = {
         this._updateClock();
     },
 
-    set_stage_input_area: function() {
-        let global = Shell.Global.get();
-
-        if (this._group.visible) {
-            global.set_stage_input_area(this._group.x, this._group.y,
-                                        this._group.width, PANEL_HEIGHT);
-        } else
-            global.set_stage_input_area(0, 0, 0, 0);
-    },
-    
     // Struts determine the area along each side of the screen that is reserved
     // and not available to applications
     _setStruts: function() {
@@ -227,26 +217,24 @@ Panel.prototype = {
         // treats it currently...
         //
         // @windows is sorted bottom to top.
-        this._group.show();
+        this.actor.show();
         for (i = windows.length - 1; i > -1; i--) {
             let layer = windows[i].get_meta_window().get_layer();
 
             if (layer == Meta.StackLayer.OVERRIDE_REDIRECT) {
-                if (windows[i].x <= this._group.x &&
-                    windows[i].x + windows[i].width >= this._group.x + this._group.width &&
-                    windows[i].y <= this._group.y &&
-                    windows[i].y + windows[i].height >= this._group.y + PANEL_HEIGHT) {
-                    this._group.hide();
+                if (windows[i].x <= this.actor.x &&
+                    windows[i].x + windows[i].width >= this.actor.x + this.actor.width &&
+                    windows[i].y <= this.actor.y &&
+                    windows[i].y + windows[i].height >= this.actor.y + PANEL_HEIGHT) {
+                    this.actor.hide();
                     break;
                 }
             } else if (layer == Meta.StackLayer.FULLSCREEN) {
-                this._group.hide();
+                this.actor.hide();
                 break;
             } else
                 break;
         }
-
-        this.set_stage_input_area();
     },
 
     _updateClock: function() {

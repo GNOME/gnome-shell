@@ -21,6 +21,7 @@ let overlayActive = false;
 let runDialog = null;
 let wm = null;
 let recorder = null;
+let inModal = false;
 
 function start() {
     let global = Shell.Global.get();
@@ -59,6 +60,8 @@ function start() {
     });
 
     panel = new Panel.Panel();
+    panel.actor.connect('notify::visible', _panelVisibilityChanged);
+    _panelVisibilityChanged();
 
     overlay = new Overlay.Overlay();
     wm = new WindowManager.WindowManager();
@@ -125,6 +128,18 @@ function _removeUnusedWorkspaces() {
     return false;
 }
 
+function _panelVisibilityChanged() {
+    if (!inModal) {
+        let global = Shell.Global.get();
+
+        if (panel.actor.visible) {
+            global.set_stage_input_area(0, 0,
+                                        global.screen_width, Panel.PANEL_HEIGHT);
+        } else
+            global.set_stage_input_area(0, 0, 0, 0);
+    }
+}
+
 // Used to go into a mode where all keyboard and mouse input goes to
 // the stage. Returns true if we successfully grabbed the keyboard and
 // went modal, false otherwise
@@ -134,6 +149,7 @@ function startModal() {
     if (!global.grab_keyboard())
         return false;
 
+    inModal = true;
     global.set_stage_input_area(0, 0, global.screen_width, global.screen_height);
 
     return true;
@@ -143,7 +159,8 @@ function endModal() {
     let global = Shell.Global.get();
 
     global.ungrab_keyboard();
-    panel.set_stage_input_area();
+    inModal = false;
+    _panelVisibilityChanged();
 }
 
 function show_overlay() {
