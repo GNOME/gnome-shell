@@ -347,7 +347,7 @@ clutter_timeline_dispose (GObject *object)
 
   if (priv->delay_id)
     {
-      timeout_remove (priv->delay_id);
+      g_source_remove (priv->delay_id);
       priv->delay_id = 0;
     }
 
@@ -875,9 +875,9 @@ clutter_timeline_start (ClutterTimeline *timeline)
 
   if (priv->delay)
     {
-      priv->delay_id = timeout_add (priv->delay,
-                                    delay_timeout_func,
-                                    timeline, NULL);
+      priv->delay_id = g_timeout_add (priv->delay,
+                                      (GSourceFunc)delay_timeout_func,
+                                      timeline);
     }
   else
     {
@@ -907,7 +907,7 @@ clutter_timeline_pause (ClutterTimeline *timeline)
 
   if (priv->delay_id)
     {
-      timeout_remove (priv->delay_id);
+      g_source_remove (priv->delay_id);
       priv->delay_id = 0;
     }
 
