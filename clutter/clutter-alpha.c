@@ -42,7 +42,7 @@
  *
  * You should provide a #ClutterTimeline and bind it to the #ClutterAlpha
  * instance using clutter_alpha_set_timeline(). You should also set an
- * "animation mode", either by using the #ClutterAnimatioMode values that
+ * "animation mode", either by using the #ClutterAnimationMode values that
  * Clutter itself provides or by registering custom functions using
  * clutter_alpha_register_func().
  *
@@ -565,7 +565,7 @@ clutter_alpha_new_with_func (ClutterTimeline  *timeline,
  * clutter_alpha_get_mode:
  * @alpha: a #ClutterAlpha
  *
- * Retrieves the #ClutterAnimatioMode used by @alpha.
+ * Retrieves the #ClutterAnimationMode used by @alpha.
  *
  * Return value: the animation mode
  *
