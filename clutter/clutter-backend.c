@@ -46,6 +46,7 @@
 #include "clutter-fixed.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-profile.h"
 
 #include <cogl/cogl.h>
 
@@ -302,10 +303,24 @@ _clutter_backend_redraw (ClutterBackend *backend,
                          ClutterStage   *stage)
 {
   ClutterBackendClass *klass;
+  CLUTTER_STATIC_COUNTER (redraw_counter,
+                          "_clutter_backend_redraw counter",
+                          "Increments for each _clutter_backend_redraw call",
+                          0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (redraw_timer,
+                        "Mainloop", /* parent */
+                        "Redrawing",
+                        "The time spent redrawing everything",
+                        0 /* no application private data */);
+
+  CLUTTER_COUNTER_INC (_clutter_uprof_context, redraw_counter);
+  CLUTTER_TIMER_START (_clutter_uprof_context, redraw_timer);
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (G_LIKELY (klass->redraw))
     klass->redraw (backend, stage);
+
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, redraw_timer);
 }
 
 gboolean

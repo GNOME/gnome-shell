@@ -109,6 +109,7 @@
 #include "clutter-debug.h"
 #include "clutter-version.h" 	/* For flavour define */
 #include "clutter-frame-source.h"
+#include "clutter-profile.h"
 
 #include "cogl/cogl.h"
 #include "pango/cogl-pango.h"
@@ -187,10 +188,16 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
 {
   gfloat natural_width, natural_height;
   ClutterActorBox box = { 0, };
+  CLUTTER_STATIC_TIMER (relayout_timer,
+                        "Mainloop", /* no parent */
+                        "Layouting",
+                        "The time spent reallocating the stage",
+                        0 /* no application private data */);
 
   /* avoid reentrancy */
   if (!(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_RELAYOUT))
     {
+      CLUTTER_TIMER_START (_clutter_uprof_context, relayout_timer);
       CLUTTER_NOTE (ACTOR, "Recomputing layout");
 
       CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
@@ -212,6 +219,7 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
       clutter_actor_allocate (stage, &box, CLUTTER_ALLOCATION_NONE);
 
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, relayout_timer);
     }
 }
 
@@ -529,9 +537,38 @@ _clutter_do_pick (ClutterStage   *stage,
   CoglColor           stage_pick_id;
   guint32             id;
   GLboolean           dither_was_on;
+  ClutterActor       *actor;
+  CLUTTER_STATIC_COUNTER (do_pick_counter,
+                          "_clutter_do_pick counter",
+                          "Increments for each full pick run",
+                          0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_timer,
+                        "Mainloop", /* parent */
+                        "Picking",
+                        "The time spent picking",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_clear,
+                        "Picking", /* parent */
+                        "Stage clear (pick)",
+                        "The time spent clearing stage for picking",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_paint,
+                        "Picking", /* parent */
+                        "Painting actors (pick mode)",
+                        "The time spent painting actors in pick mode",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (pick_read,
+                        "Picking", /* parent */
+                        "Read Pixels",
+                        "The time spent issuing a read pixels",
+                        0 /* no application private data */);
+
 
   if (clutter_debug_flags & CLUTTER_DEBUG_NOP_PICKING)
     return CLUTTER_ACTOR (stage);
+
+  CLUTTER_COUNTER_INC (_clutter_uprof_context, do_pick_counter);
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_timer);
 
   context = _clutter_context_get_default ();
 
@@ -545,9 +582,11 @@ _clutter_do_pick (ClutterStage   *stage,
 
   cogl_disable_fog ();
   cogl_color_set_from_4ub (&stage_pick_id, 255, 255, 255, 255);
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_clear);
   cogl_clear (&stage_pick_id,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_clear);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
   dither_was_on = glIsEnabled (GL_DITHER);
@@ -557,9 +596,11 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Render the entire scence in pick mode - just single colored silhouette's
    * are drawn offscreen (as we never swap buffers)
   */
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_paint);
   context->pick_mode = mode;
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   context->pick_mode = CLUTTER_PICK_NONE;
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 
   if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     cogl_clip_pop ();
@@ -568,10 +609,12 @@ _clutter_do_pick (ClutterStage   *stage,
   cogl_flush ();
 
   /* Read the color of the screen co-ords pixel */
+  CLUTTER_TIMER_START (_clutter_uprof_context, pick_read);
   cogl_read_pixels (x, y, 1, 1,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     COGL_PIXEL_FORMAT_RGBA_8888,
                     pixel);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_read);
 
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
@@ -585,11 +628,17 @@ _clutter_do_pick (ClutterStage   *stage,
     glEnable (GL_DITHER);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-    return CLUTTER_ACTOR (stage);
+    {
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
+      return CLUTTER_ACTOR (stage);
+    }
 
   id = _clutter_pixel_to_id (pixel);
+  actor = clutter_get_actor_by_gid (id);
 
-  return clutter_get_actor_by_gid (id);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
+
+  return actor;
 }
 
 static ClutterTextDirection
@@ -723,6 +772,28 @@ clutter_main_level (void)
   return clutter_main_loop_level;
 }
 
+#ifdef CLUTTER_ENABLE_PROFILE
+static gint (*prev_poll) (GPollFD *ufds, guint nfsd, gint timeout_) = NULL;
+
+static gint
+timed_poll (GPollFD *ufds,
+            guint nfsd,
+            gint timeout_)
+{
+  gint ret;
+  CLUTTER_STATIC_TIMER (poll_timer,
+                        "Mainloop", /* parent */
+                        "poll (idle)",
+                        "The time spent idle in poll()",
+                        0 /* no application private data */);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, poll_timer);
+  ret = prev_poll (ufds, nfsd, timeout_);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, poll_timer);
+  return ret;
+}
+#endif
+
 /**
  * clutter_main:
  *
@@ -732,6 +803,14 @@ void
 clutter_main (void)
 {
   GMainLoop *loop;
+  CLUTTER_STATIC_TIMER (mainloop_timer,
+                        NULL, /* no parent */
+                        "Mainloop",
+                        "The time spent in the clutter mainloop",
+                        0 /* no application private data */);
+
+  if (clutter_main_loop_level == 0)
+    CLUTTER_TIMER_START (_clutter_uprof_context, mainloop_timer);
 
   /* Make sure there is a context */
   CLUTTER_CONTEXT ();
@@ -746,6 +825,14 @@ clutter_main (void)
   CLUTTER_MARK ();
 
   clutter_main_loop_level++;
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (!prev_poll)
+    {
+      prev_poll = g_main_context_get_poll_func (NULL);
+      g_main_context_set_poll_func (NULL, timed_poll);
+    }
+#endif
 
   loop = g_main_loop_new (NULL, TRUE);
   main_loops = g_slist_prepend (main_loops, loop);
@@ -771,6 +858,9 @@ clutter_main (void)
   clutter_main_loop_level--;
 
   CLUTTER_MARK ();
+
+  if (clutter_main_loop_level == 0)
+    CLUTTER_TIMER_STOP (_clutter_uprof_context, mainloop_timer);
 }
 
 static void

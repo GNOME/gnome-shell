@@ -204,6 +204,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-units.h"
+#include "clutter-profile.h"
 #include "cogl/cogl.h"
 
 typedef struct _ShaderData ShaderData;
@@ -2367,6 +2368,15 @@ clutter_actor_paint (ClutterActor *self)
   ClutterActorPrivate *priv;
   ClutterMainContext *context;
   gboolean clip_set = FALSE;
+  CLUTTER_STATIC_COUNTER (actor_paint_counter,
+                          "Actor real-paint counter",
+                          "Increments each time any actor is painted",
+                          0 /* no application private data */);
+  CLUTTER_STATIC_COUNTER (actor_pick_counter,
+                          "Actor pick-paint counter",
+                          "Increments each time any actor is painted "
+                          "for picking",
+                          0 /* no application private data */);
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -2422,6 +2432,8 @@ clutter_actor_paint (ClutterActor *self)
     {
       ClutterColor col = { 0, };
 
+      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_pick_counter);
+
       _clutter_id_to_color (clutter_actor_get_gid (self), &col);
 
       /* Actor will then paint silhouette of itself in supplied
@@ -2432,6 +2444,8 @@ clutter_actor_paint (ClutterActor *self)
     }
   else
     {
+      CLUTTER_COUNTER_INC (_clutter_uprof_context, actor_paint_counter);
+
       clutter_actor_shader_pre_paint (self, FALSE);
 
       self->priv->queued_redraw = FALSE;

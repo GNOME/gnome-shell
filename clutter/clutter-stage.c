@@ -68,6 +68,7 @@
 #include "clutter-version.h" 	/* For flavour */
 #include "clutter-id-pool.h"
 #include "clutter-container.h"
+#include "clutter-profile.h"
 
 #include "cogl/cogl.h"
 
@@ -246,6 +247,11 @@ clutter_stage_paint (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   CoglColor stage_color;
   guint8 real_alpha;
+  CLUTTER_STATIC_TIMER (stage_clear_timer,
+                        "Painting actors", /* parent */
+                        "Stage clear",
+                        "The time spent clearing the stage",
+                        0 /* no application private data */);
 
   CLUTTER_NOTE (PAINT, "Initializing stage paint");
 
@@ -264,9 +270,12 @@ clutter_stage_paint (ClutterActor *self)
                            priv->use_alpha ? real_alpha
                                            : 255);
   cogl_color_premultiply (&stage_color);
+
+  CLUTTER_TIMER_START (_clutter_uprof_context, stage_clear_timer);
   cogl_clear (&stage_color,
 	      COGL_BUFFER_BIT_COLOR |
 	      COGL_BUFFER_BIT_DEPTH);
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, stage_clear_timer);
 
   if (priv->use_fog)
     {

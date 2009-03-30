@@ -42,6 +42,7 @@
 #include "clutter-backend-glx.h"
 #include "clutter-stage-glx.h"
 #include "clutter-glx.h"
+#include "clutter-profile.h"
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
@@ -50,6 +51,7 @@
 #include "../clutter-version.h"
 
 #include "cogl/cogl.h"
+
 
 G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11);
 
@@ -654,6 +656,16 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   ClutterStageGLX *stage_glx;
   ClutterStageX11 *stage_x11;
   ClutterStageWindow *impl;
+  CLUTTER_STATIC_TIMER (painting_timer,
+                        "Redrawing", /* parent */
+                        "Painting actors",
+                        "The time spent painting actors",
+                        0 /* no application private data */);
+  CLUTTER_STATIC_TIMER (swapbuffers_timer,
+                        "Redrawing", /* parent */
+                        "glXSwapBuffers",
+                        "The time spent blocked by glXSwapBuffers",
+                        0 /* no application private data */);
 
   impl = _clutter_stage_get_window (stage);
   if (G_UNLIKELY (impl == NULL))
@@ -668,9 +680,11 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   stage_x11 = CLUTTER_STAGE_X11 (impl);
   stage_glx = CLUTTER_STAGE_GLX (impl);
 
+  CLUTTER_TIMER_START (_clutter_uprof_context, painting_timer);
   /* this will cause the stage implementation to be painted */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   cogl_flush ();
+  CLUTTER_TIMER_STOP (_clutter_uprof_context, painting_timer);
 
   if (stage_x11->xwin != None)
     {
@@ -682,7 +696,10 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
       CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
                     backend_x11->xdpy,
                     (unsigned long) stage_x11->xwin);
+
+      CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       glXSwapBuffers (backend_x11->xdpy, stage_x11->xwin);
+      CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
     }
 }
 

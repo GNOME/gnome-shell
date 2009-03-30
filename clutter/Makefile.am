@@ -106,6 +106,7 @@ source_h =					\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
+	$(srcdir)/clutter-profile.h 		\
 	$(top_builddir)/clutter/clutter-version.h \
 	$(NULL)
 
@@ -180,6 +181,7 @@ source_c = \
 	$(srcdir)/clutter-timeout-pool.c	\
 	$(srcdir)/clutter-units.c		\
 	$(srcdir)/clutter-util.c 		\
+	$(srcdir)/clutter-profile.c 		\
 	$(NULL)
 
 source_h_priv = \
