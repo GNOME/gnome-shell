@@ -893,27 +893,44 @@ clutter_text_button_press (ClutterActor       *actor,
 {
   ClutterText *self = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = self->priv;
+  gboolean res = FALSE;
   ClutterUnit x, y;
   gint index_;
+
+  /* we'll steal keyfocus if we do not have it */
+  clutter_actor_grab_key_focus (actor);
+
+  /* if the actor is empty we just reset everything and not
+   * set up the dragging of the selection since there's nothing
+   * to select
+   */
+  if (priv->text == NULL || priv->text[0] == '\0')
+    {
+      clutter_text_set_cursor_position (self, -1);
+      clutter_text_set_selection_bound (self, -1);
+
+      return TRUE;
+    }
 
   x = CLUTTER_UNITS_FROM_INT (event->x);
   y = CLUTTER_UNITS_FROM_INT (event->y);
 
-  clutter_actor_transform_stage_point (actor, x, y, &x, &y);
+  res = clutter_actor_transform_stage_point (actor, x, y, &x, &y);
+  if (res)
+    {
+      index_ = clutter_text_coords_to_position (self,
+                                                CLUTTER_UNITS_TO_INT (x),
+                                                CLUTTER_UNITS_TO_INT (y));
 
-  index_ = clutter_text_coords_to_position (self,
-                                            CLUTTER_UNITS_TO_INT (x),
-                                            CLUTTER_UNITS_TO_INT (y));
-
-  clutter_text_set_cursor_position (self, bytes_to_offset (priv->text, index_));
-  clutter_text_set_selection_bound (self, bytes_to_offset (priv->text, index_));
+      clutter_text_set_cursor_position (self,
+                                        bytes_to_offset (priv->text, index_));
+      clutter_text_set_selection_bound (self,
+                                        bytes_to_offset (priv->text, index_));
+    }
 
   /* grab the pointer */
   priv->in_select_drag = TRUE;
   clutter_grab_pointer (actor);
-
-  /* we'll steal keyfocus if we do not have it */
-  clutter_actor_grab_key_focus (actor);
 
   return TRUE;
 }
@@ -2636,7 +2653,12 @@ clutter_text_set_selection_bound (ClutterText *self,
 
   if (priv->selection_bound != selection_bound)
     {
-      priv->selection_bound = selection_bound;
+      gint len = priv->n_chars;
+
+      if (selection_bound < 0 || selection_bound >= len)
+        priv->selection_bound = -1;
+      else
+        priv->selection_bound = selection_bound;
 
       if (CLUTTER_ACTOR_IS_VISIBLE (self))
         clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
