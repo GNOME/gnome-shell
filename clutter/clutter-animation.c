@@ -1662,11 +1662,11 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * the new easing mode and the new duration - that is, this code:
  *
  * |[
- *   clutter_actor_animate (actor, 250, CLUTTER_LINEAR,
+ *   clutter_actor_animate (actor, CLUTTER_LINEAR, 250,
  *                          "width", 100,
  *                          "height", 100,
  *                          NULL);
- *   clutter_actor_animate (actor, 500, CLUTTER_EASE_IN_CUBIC,
+ *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 500,
  *                          "x", 100,
  *                          "y", 100,
  *                          "width", 200,
@@ -1676,7 +1676,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * is the equivalent of:
  *
  * |[
- *   clutter_actor_animate (actor, 500, CLUTTER_EASE_IN_CUBIC,
+ *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 500,
  *                          "x", 100,
  *                          "y", 100,
  *                          "width", 200,
@@ -1704,7 +1704,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *   {
  *     ClutterActor *actor = data;
  *
- *     clutter_actor_animate (actor, 250, CLUTTER_EASE_IN_CUBIC,
+ *     clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 250,
  *                            "width", 200,
  *                            "height", 200,
  *                            NULL);
@@ -1720,7 +1720,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *   }
  *
  *     ...
- *     animation = clutter_actor_animate (actor, 250, CLUTTER_EASE_IN_CUBIC,
+ *     animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 250,
  *                                        "x", 100,
  *                                        "y", 100,
  *                                        NULL);
