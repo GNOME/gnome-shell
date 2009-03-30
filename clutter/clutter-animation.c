@@ -1421,31 +1421,41 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       GValue final = { 0, };
       gchar *error = NULL;
 
-      if (g_str_has_prefix (property_name, "fixed::"))
-        property_name += 7; /* strlen("fixed::") */
-
-      pspec = g_object_class_find_property (klass, property_name);
-      if (!pspec)
+      if (G_UNLIKELY (g_str_equal (property_name, "signal::completed")))
         {
-          g_warning ("Cannot bind property '%s': objects of type '%s' do "
-                     "not have this property",
-                     property_name,
-                     g_type_name (G_OBJECT_TYPE (priv->object)));
-          break;
-        }
+          GCallback callback = va_arg (var_args, GCallback);
+          gpointer  userdata = va_arg (var_args, gpointer);
 
-      g_value_init (&final, G_PARAM_SPEC_VALUE_TYPE (pspec));
-      G_VALUE_COLLECT (&final, var_args, 0, &error);
-      if (error)
+          g_signal_connect (animation, "completed", callback, userdata);
+        }
+      else
         {
-          g_warning ("%s: %s", G_STRLOC, error);
-          g_free (error);
-          break;
-        }
+          if (g_str_has_prefix (property_name, "fixed::"))
+            property_name += 7; /* strlen("fixed::") */
 
-      clutter_animation_setup_property (animation, property_name,
-                                        &final,
-                                        pspec);
+          pspec = g_object_class_find_property (klass, property_name);
+          if (!pspec)
+            {
+              g_warning ("Cannot bind property '%s': objects of type '%s' do "
+                         "not have this property",
+                         property_name,
+                         g_type_name (G_OBJECT_TYPE (priv->object)));
+              break;
+            }
+
+          g_value_init (&final, G_PARAM_SPEC_VALUE_TYPE (pspec));
+          G_VALUE_COLLECT (&final, var_args, 0, &error);
+          if (error)
+            {
+              g_warning ("%s: %s", G_STRLOC, error);
+              g_free (error);
+              break;
+            }
+
+          clutter_animation_setup_property (animation, property_name,
+                                            &final,
+                                            pspec);
+        }
 
       property_name = va_arg (var_args, gchar*);
     }
@@ -1626,6 +1636,26 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * will be assigned to the @actor and will be returned to the developer
  * to control the animation or to know when the animation has been
  * completed.
+ *
+ * If a name argument starts with "signal::" the two following arguments are
+ * used as callback function and userdata for a signal handler installed on the
+ * #ClutterAnimation object, for instance:
+ *
+ * |[
+ *
+ *   static void
+ *   on_animation_completed (ClutterAnimation *animation,
+ *                           ClutterActor     *actor)
+ *   {
+ *     clutter_actor_hide (actor);
+ *   }
+ *
+ *   clutter_actor_animate (actor, CLUTTER_EASE_IN, 100,
+ *                          "opacity", 0,
+ *                          "signal::completed", on_animation_completed, actor,
+ *                          NULL);
+ * ]|
+ *
  *
  * Calling this function on an actor that is already being animated
  * will cause the current animation to change with the new final values,
