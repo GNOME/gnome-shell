@@ -1863,14 +1863,11 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   meta_screen_set_compositor_data (screen, info);
 
-  info->output = get_output_window (screen);
-
+  info->output = None;
   info->windows = NULL;
   info->windows_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   info->focus_window = meta_display_get_focus_window (display);
-
-  XClearArea (xdisplay, info->output, 0, 0, 0, 0, TRUE);
 
   meta_screen_set_cm_selection (screen);
 
@@ -1880,8 +1877,6 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   clutter_actor_set_size (info->stage, width, height);
 
   xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
-
-  XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
   event_mask = FocusChangeMask |
                ExposureMask |
@@ -1910,17 +1905,23 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   clutter_actor_hide (info->hidden_group);
 
-  /*
-   * Must do this *before* creating the plugin manager, in case any of the
-   * plugins need to adjust the screen shape regions.
-   */
-  show_overlay_window (xdisplay, xwin, info->output);
-
   info->plugin_mgr =
     mutter_plugin_manager_new (screen);
 
-  clutter_actor_show (info->stage);
+  /*
+   * Delay the creation of the overlay window as long as we can, to avoid
+   * blanking out the screen. This means that during the plugin loading, the
+   * overlay window is not accessible, and so the plugins cannot do stuff
+   * like changing input shape; if that is required, the plugin should hook into
+   * "show" signal on stage, and do its stuff there.
+   */
+  info->output = get_output_window (screen);
+  XReparentWindow (xdisplay, xwin, info->output, 0, 0);
+
+  show_overlay_window (xdisplay, xwin, info->output);
+
   clutter_actor_show (info->overlay_group);
+  clutter_actor_show (info->stage);
 #endif
 }
 
