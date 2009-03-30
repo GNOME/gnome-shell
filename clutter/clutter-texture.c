@@ -835,6 +835,7 @@ clutter_texture_set_property (GObject      *object,
       break;
     case PROP_KEEP_ASPECT_RATIO:
       priv->keep_aspect_ratio = g_value_get_boolean (value);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (object));
       break;
     case PROP_LOAD_DATA_ASYNC:
       if (g_value_get_boolean (value))
