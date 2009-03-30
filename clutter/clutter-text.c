@@ -887,6 +887,157 @@ cursor_paint (ClutterText *self)
     }
 }
 
+static gint
+clutter_text_move_word_backward (ClutterText *self,
+                                 gint         start)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint retval = start;
+
+  if (priv->text && start > 0)
+    {
+      PangoLayout *layout = clutter_text_get_layout (self);
+      PangoLogAttr *log_attrs = NULL;
+      gint n_attrs = 0;
+
+      pango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
+
+      retval = start - 1;
+      while (retval > 0 && !log_attrs[retval].is_word_start)
+        retval -= 1;
+
+      g_free (log_attrs);
+    }
+
+  return retval;
+}
+
+static gint
+clutter_text_move_word_forward (ClutterText *self,
+                                gint         start)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint retval = start;
+
+  if (priv->text && start > 0)
+    {
+      PangoLayout *layout = clutter_text_get_layout (self);
+      PangoLogAttr *log_attrs = NULL;
+      gint n_attrs = 0;
+
+      pango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
+
+      retval = start - 1;
+      while (retval > 0 && !log_attrs[retval].is_word_end)
+        retval += 1;
+
+      g_free (log_attrs);
+    }
+
+  return retval;
+}
+
+static gint
+clutter_text_move_line_start (ClutterText *self,
+                              gint         start)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoLayoutLine *layout_line;
+  PangoLayout *layout;
+  gint line_no;
+  gint index_;
+  gint position;
+
+  layout = clutter_text_get_layout (self);
+
+  if (start == 0)
+    index_ = 0;
+  else
+    index_ = offset_to_bytes (priv->text, start);
+
+  pango_layout_index_to_line_x (layout, index_,
+                                0,
+                                &line_no, NULL);
+
+  layout_line = pango_layout_get_line_readonly (layout, line_no);
+  if (!layout_line)
+    return FALSE;
+
+  pango_layout_line_x_to_index (layout_line, 0, &index_, NULL);
+
+  position = bytes_to_offset (priv->text, index_);
+
+  return position;
+}
+
+static gint
+clutter_text_move_line_end (ClutterText *self,
+                            gint         start)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoLayoutLine *layout_line;
+  PangoLayout *layout;
+  gint line_no;
+  gint index_;
+  gint trailing;
+  gint position;
+
+  layout = clutter_text_get_layout (self);
+
+  if (start == 0)
+    index_ = 0;
+  else
+    index_ = offset_to_bytes (priv->text, priv->position);
+
+  pango_layout_index_to_line_x (layout, index_,
+                                0,
+                                &line_no, NULL);
+
+  layout_line = pango_layout_get_line_readonly (layout, line_no);
+  if (!layout_line)
+    return FALSE;
+
+  pango_layout_line_x_to_index (layout_line, G_MAXINT, &index_, &trailing);
+  index_ += trailing;
+
+  position = bytes_to_offset (priv->text, index_);
+
+  return position;
+}
+
+static void
+clutter_text_select_word (ClutterText *self)
+{
+  gint cursor_pos = self->priv->position;
+  gint start_pos, end_pos;
+
+  start_pos = clutter_text_move_word_backward (self, cursor_pos);
+  end_pos   = clutter_text_move_word_forward (self, cursor_pos);
+
+  clutter_text_set_selection (self, start_pos, end_pos);
+}
+
+static void
+clutter_text_select_line (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint cursor_pos = priv->position;
+  gint start_pos, end_pos;
+
+  if (priv->single_line_mode)
+    {
+      start_pos = 0;
+      end_pos   = -1;
+    }
+  else
+    {
+      start_pos = clutter_text_move_line_start (self, cursor_pos);
+      end_pos   = clutter_text_move_line_end (self, cursor_pos);
+    }
+
+  clutter_text_set_selection (self, start_pos, end_pos);
+}
+
 static gboolean
 clutter_text_button_press (ClutterActor       *actor,
                            ClutterButtonEvent *event)
@@ -918,14 +1069,34 @@ clutter_text_button_press (ClutterActor       *actor,
   res = clutter_actor_transform_stage_point (actor, x, y, &x, &y);
   if (res)
     {
+      gint offset;
+
       index_ = clutter_text_coords_to_position (self,
                                                 CLUTTER_UNITS_TO_INT (x),
                                                 CLUTTER_UNITS_TO_INT (y));
 
-      clutter_text_set_cursor_position (self,
-                                        bytes_to_offset (priv->text, index_));
-      clutter_text_set_selection_bound (self,
-                                        bytes_to_offset (priv->text, index_));
+      offset = bytes_to_offset (priv->text, index_);
+
+      /* what we select depends on the number of button clicks we
+       * receive:
+       *
+       *   1: just position the cursor and the selection
+       *   2: select the current word
+       *   3: select the contents of the whole actor
+       */
+      if (event->click_count == 1)
+        {
+          clutter_text_set_cursor_position (self, offset);
+          clutter_text_set_selection_bound (self, offset);
+        }
+      else if (event->click_count == 2)
+        {
+          clutter_text_select_word (self);
+        }
+      else if (event->click_count == 3)
+        {
+          clutter_text_select_line (self);
+        }
     }
 
   /* grab the pointer */
@@ -1259,7 +1430,7 @@ clutter_text_real_move_left (ClutterText         *self,
 
   len = priv->n_chars;
 
-  if (pos != 0 && len !=0)
+  if (pos != 0 && len != 0)
     {
       if (pos == -1)
         clutter_text_set_cursor_position (self, len - 1);
@@ -1406,30 +1577,9 @@ clutter_text_real_line_start (ClutterText         *self,
                               ClutterModifierType  modifiers)
 {
   ClutterTextPrivate *priv = self->priv;
-  PangoLayoutLine *layout_line;
-  PangoLayout *layout;
-  gint line_no;
-  gint index_;
   gint position;
 
-  layout = clutter_text_get_layout (self);
-
-  if (priv->position == 0)
-    index_ = 0;
-  else
-    index_ = offset_to_bytes (priv->text, priv->position);
-
-  pango_layout_index_to_line_x (layout, index_,
-                                0,
-                                &line_no, NULL);
-
-  layout_line = pango_layout_get_line_readonly (layout, line_no);
-  if (!layout_line)
-    return FALSE;
-
-  pango_layout_line_x_to_index (layout_line, 0, &index_, NULL);
-
-  position = bytes_to_offset (priv->text, index_);
+  position = clutter_text_move_line_start (self, priv->position);
   clutter_text_set_cursor_position (self, position);
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
@@ -1445,33 +1595,9 @@ clutter_text_real_line_end (ClutterText         *self,
                             ClutterModifierType  modifiers)
 {
   ClutterTextPrivate *priv = self->priv;
-  PangoLayoutLine *layout_line;
-  PangoLayout *layout;
-  gint line_no;
-  gint index_;
-  gint trailing;
   gint position;
 
-  layout = clutter_text_get_layout (self);
-
-  if (priv->position == 0)
-    index_ = 0;
-  else
-    index_ = offset_to_bytes (priv->text, priv->position);
-
-  pango_layout_index_to_line_x (layout, index_,
-                                0,
-                                &line_no, NULL);
-
-  layout_line = pango_layout_get_line_readonly (layout, line_no);
-  if (!layout_line)
-    return FALSE;
-
-  pango_layout_line_x_to_index (layout_line, G_MAXINT, &index_, &trailing);
-  index_ += trailing;
-
-  position = bytes_to_offset (priv->text, index_);
-
+  position = clutter_text_move_line_end (self, priv->position);
   clutter_text_set_cursor_position (self, position);
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
