@@ -1174,7 +1174,11 @@ clutter_text_key_press (ClutterActor    *actor,
 
   keyval = clutter_key_event_symbol (event);
 
-  pool = clutter_binding_pool_find (G_OBJECT_TYPE_NAME (actor));
+  /* we need to use the ClutterText type name to find our own
+   * key bindings; subclasses will override or chain up this
+   * event handler, so they can do whatever they want there
+   */
+  pool = clutter_binding_pool_find (g_type_name (CLUTTER_TYPE_TEXT));
   g_assert (pool != NULL);
 
   /* we allow passing synthetic events that only contain
