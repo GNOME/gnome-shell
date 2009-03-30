@@ -89,8 +89,4 @@ cogl_enable (gulong flags);
 gulong
 cogl_get_enable ();
 
-void
-cogl_blend_func (COGLenum src_factor,
-                 COGLenum dst_factor);
-
 #endif /* __COGL_INTERNAL_H */
