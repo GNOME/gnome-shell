@@ -19,6 +19,7 @@ EXTRA_DIST = stb_image.c
 
 libclutter_cogl_common_la_SOURCES = 	\
 	cogl-handle.h 			\
+	cogl.c				\
 	cogl-util.h 			\
 	cogl-util.c 			\
 	cogl-bitmap.h 			\

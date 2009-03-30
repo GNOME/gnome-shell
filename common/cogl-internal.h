@@ -1,11 +1,10 @@
 /*
- * Clutter COGL
+ * Cogl
  *
  * A basic GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007, 2008 OpenedHand
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,6 +25,7 @@
 #ifndef __COGL_INTERNAL_H
 #define __COGL_INTERNAL_H
 
+#ifdef HAVE_COGL_GLES2
 typedef enum {
   COGL_BOXED_NONE,
   COGL_BOXED_INT,
@@ -48,7 +48,7 @@ typedef struct _CoglBoxedValue
     gpointer array;
   } v;
 } CoglBoxedValue;
-
+#endif
 
 #define COGL_DEBUG 0
 
