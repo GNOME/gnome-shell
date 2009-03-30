@@ -2816,3 +2816,162 @@ clutter_get_font_map (void)
 
   return NULL;
 }
+
+typedef struct _ClutterRepaintFunction
+{
+  guint id;
+  GSourceFunc func;
+  gpointer data;
+  GDestroyNotify notify;
+} ClutterRepaintFunction;
+
+/**
+ * clutter_threads_remove_repaint_func:
+ * @handle_id: an unsigned integer greater than zero
+ *
+ * Removes the repaint function with @handle_id as its id
+ *
+ * Since: 1.0
+ */
+void
+clutter_threads_remove_repaint_func (guint handle_id)
+{
+  ClutterRepaintFunction *repaint_func;
+  ClutterMainContext *context;
+  GList *l;
+
+  g_return_if_fail (handle_id > 0);
+
+  context = CLUTTER_CONTEXT ();
+  l = context->repaint_funcs;
+  while (l != NULL)
+    {
+      repaint_func = l->data;
+
+      if (repaint_func->id == handle_id)
+        {
+          context->repaint_funcs =
+            g_list_remove_link (context->repaint_funcs, l);
+
+          g_list_free (l);
+
+          if (repaint_func->notify)
+            repaint_func->notify (repaint_func->data);
+
+          g_slice_free (ClutterRepaintFunction, repaint_func);
+
+          return;
+        }
+
+      l = l->next;
+    }
+}
+
+/**
+ * clutter_threads_add_repaint_func:
+ * @func: the function to be called within the paint cycle
+ * @data: data to be passed to the function, or %NULL
+ * @notify: function to be called when removing the repaint
+ *    function, or %NULL
+ *
+ * Adds a function to be called whenever Clutter is repainting a Stage.
+ * If the function returns %FALSE it is automatically removed from the
+ * list of repaint functions and will not be called again.
+ *
+ * This function is guaranteed to be called from within the same thread
+ * that called clutter_main(), and while the Clutter lock is being held.
+ *
+ * A repaint function is useful to ensure that an update of the scenegraph
+ * is performed before the scenegraph is repainted; for instance, uploading
+ * a frame from a video into a #ClutterTexture.
+ *
+ * When the repaint function is removed (either because it returned %FALSE
+ * or because clutter_threads_remove_repaint_func() has been called) the
+ * @notify function will be called, if any is set.
+ *
+ * Return value: the ID (greater than 0) of the repaint function. You
+ *   can use the returned integer to remove the repaint function by
+ *   calling clutter_threads_remove_repaint_func().
+ *
+ * Since: 1.0
+ */
+guint
+clutter_threads_add_repaint_func (GSourceFunc    func,
+                                  gpointer       data,
+                                  GDestroyNotify notify)
+{
+  static guint repaint_id = 1;
+  ClutterMainContext *context;
+  ClutterRepaintFunction *repaint_func;
+
+  g_return_val_if_fail (func != NULL, 0);
+
+  context = CLUTTER_CONTEXT ();
+
+  /* XXX lock the context */
+
+  repaint_func = g_slice_new (ClutterRepaintFunction);
+
+  repaint_func->id = repaint_id++;
+  repaint_func->func = func;
+  repaint_func->data = data;
+  repaint_func->notify = notify;
+
+  context->repaint_funcs = g_list_prepend (context->repaint_funcs,
+                                           repaint_func);
+
+  /* XXX unlock the context */
+
+  return repaint_func->id;
+}
+
+/*
+ * _clutter_run_repaint_functions:
+ *
+ * Executes the repaint functions added using the
+ * clutter_threads_add_repaint_func() function.
+ *
+ * Must be called before calling clutter_redraw() and
+ * with the Clutter thread lock held.
+ */
+void
+_clutter_run_repaint_functions (void)
+{
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+  ClutterRepaintFunction *repaint_func;
+  GList *reinvoke_list, *l;
+
+  if (context->repaint_funcs == NULL)
+    return;
+
+  reinvoke_list = NULL;
+
+  /* consume the whole list while we execute the functions */
+  while (context->repaint_funcs)
+    {
+      gboolean res = FALSE;
+
+      repaint_func = context->repaint_funcs->data;
+
+      l = context->repaint_funcs;
+      context->repaint_funcs =
+        g_list_remove_link (context->repaint_funcs, context->repaint_funcs);
+
+      g_list_free (l);
+
+      res = repaint_func->func (repaint_func->data);
+
+      if (res)
+        reinvoke_list = g_list_prepend (reinvoke_list, repaint_func);
+      else
+        {
+          if (repaint_func->notify)
+            repaint_func->notify (repaint_func->data);
+
+          g_slice_free (ClutterRepaintFunction, repaint_func);
+        }
+    }
+
+  if (reinvoke_list)
+    context->repaint_funcs = reinvoke_list;
+}

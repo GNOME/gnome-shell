@@ -403,6 +403,12 @@ redraw_update_idle (gpointer user_data)
   master_clock = _clutter_master_clock_get_default ();
   _clutter_master_clock_advance (master_clock);
 
+  /* run the (eventual) repaint functions; since those might end up queuing
+   * a relayout or a redraw we need to execute them before maybe_relayout()
+   */
+  CLUTTER_NOTE (PAINT, "Repaint functions");
+  _clutter_run_repaint_functions ();
+
   /* clutter_redraw() will also call maybe_relayout(), but since a relayout
    * can queue a redraw, we want to do the relayout before we clear the
    * update_idle to avoid painting the stage twice. Calling maybe_relayout()
@@ -457,8 +463,7 @@ static void
 set_offscreen_while_unrealized (ClutterActor *actor,
                                 void         *data)
 {
-  CLUTTER_STAGE (actor)->priv->is_offscreen =
-    GPOINTER_TO_INT (data);
+  CLUTTER_STAGE (actor)->priv->is_offscreen = GPOINTER_TO_INT (data);
 }
 
 static void

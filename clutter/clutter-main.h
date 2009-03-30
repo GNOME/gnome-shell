@@ -109,34 +109,38 @@ gboolean         clutter_get_show_fps               (void);
 gulong           clutter_get_timestamp              (void);
 
 /* Threading functions */
-void             clutter_threads_init               (void);
-void             clutter_threads_enter              (void);
-void             clutter_threads_leave              (void);
-void             clutter_threads_set_lock_functions (GCallback enter_fn,
-                                                     GCallback leave_fn);
-guint            clutter_threads_add_idle           (GSourceFunc    func,
-                                                     gpointer       data);
-guint            clutter_threads_add_idle_full      (gint           priority,
-                                                     GSourceFunc    func,
-                                                     gpointer       data,
-                                                     GDestroyNotify notify);
-guint            clutter_threads_add_timeout        (guint          interval,
-                                                     GSourceFunc    func,
-                                                     gpointer       data);
-guint            clutter_threads_add_timeout_full   (gint           priority,
-                                                     guint          interval,
-                                                     GSourceFunc    func,
-                                                     gpointer       data,
-                                                     GDestroyNotify notify);
-guint            clutter_threads_add_frame_source   (guint          fps,
-						     GSourceFunc    func,
-						     gpointer       data);
-guint            clutter_threads_add_frame_source_full
-                                                    (gint           priority,
-						     guint          fps,
-						     GSourceFunc    func,
-						     gpointer       data,
-						     GDestroyNotify notify);
+void             clutter_threads_init                  (void);
+void             clutter_threads_enter                 (void);
+void             clutter_threads_leave                 (void);
+void             clutter_threads_set_lock_functions    (GCallback enter_fn,
+                                                        GCallback leave_fn);
+guint            clutter_threads_add_idle              (GSourceFunc    func,
+                                                        gpointer       data);
+guint            clutter_threads_add_idle_full         (gint           priority,
+                                                        GSourceFunc    func,
+                                                        gpointer       data,
+                                                        GDestroyNotify notify);
+guint            clutter_threads_add_timeout           (guint          interval,
+                                                        GSourceFunc    func,
+                                                        gpointer       data);
+guint            clutter_threads_add_timeout_full      (gint           priority,
+                                                        guint          interval,
+                                                        GSourceFunc    func,
+                                                        gpointer       data,
+                                                        GDestroyNotify notify);
+guint            clutter_threads_add_frame_source      (guint          fps,
+						        GSourceFunc    func,
+						        gpointer       data);
+guint            clutter_threads_add_frame_source_full (gint           priority,
+						        guint          fps,
+						        GSourceFunc    func,
+						        gpointer       data,
+						        GDestroyNotify notify);
+
+guint            clutter_threads_add_repaint_func      (GSourceFunc    func,
+                                                        gpointer       data,
+                                                        GDestroyNotify notify);
+void             clutter_threads_remove_repaint_func   (guint          handler_id);
 
 void             clutter_set_motion_events_enabled   (gboolean enable);
 gboolean         clutter_get_motion_events_enabled   (void);
@@ -158,7 +162,7 @@ void             clutter_clear_glyph_cache           (void);
 void             clutter_set_font_flags              (ClutterFontFlags flags);
 ClutterFontFlags clutter_get_font_flags              (void);
 
-ClutterInputDevice*  clutter_get_input_device_for_id (gint id);
+ClutterInputDevice *clutter_get_input_device_for_id  (gint id);
 
 void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
                                                       gint           id);
