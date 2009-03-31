@@ -421,6 +421,12 @@ shell_get_categories_for_desktop_file(const char *desktop_file_name)
     return categories_list;
 }
 
+/**
+ * shell_get_event_key_symbol:
+ *
+ * Return value: Clutter key value for the key press and release events, 
+ *               as specified in clutter-keysyms.h  
+ */
 guint16
 shell_get_event_key_symbol(ClutterEvent *event)
 {
@@ -428,6 +434,19 @@ shell_get_event_key_symbol(ClutterEvent *event)
                        event->type == CLUTTER_KEY_RELEASE, 0);
 
   return event->key.keyval;
+}
+
+/**
+ * shell_get_button_event_click_count:
+ *
+ * Return value: click count for button press and release events
+ */
+guint16
+shell_get_button_event_click_count(ClutterEvent *event)
+{
+  g_return_val_if_fail(event->type == CLUTTER_BUTTON_PRESS ||
+                       event->type == CLUTTER_BUTTON_RELEASE, 0);
+  return event->button.click_count;
 }
 
 /**

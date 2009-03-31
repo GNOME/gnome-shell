@@ -63,10 +63,14 @@ GenericDisplayItem.prototype = {
                                          width: availableWidth,
                                          height: ITEM_DISPLAY_HEIGHT });
         this.actor._delegate = this;
-        this.actor.connect('button-release-event',
+        this.actor.connect('button-press-event',
                            Lang.bind(this,
-                                     function(draggable, e) {
-                                         this.activate();
+                                     function(actor, e) {
+                                         let clickCount = Shell.get_button_event_click_count(e);
+                                         if (clickCount == 1)
+                                             this.select();
+                                         else if (clickCount == 2)
+                                             this.activate();
                                      }));
 
         let draggable = DND.makeDraggable(this.actor);
@@ -176,10 +180,67 @@ GenericDisplayItem.prototype = {
        this._bg.background_color = color;
     },
 
-    // Activates the item, as though it was clicked
+    // Activates the item, as though it was launched
     activate: function() {
         this.hidePreview();
         this.emit('activate');
+    },
+
+    // Selects the item, as though it was clicked
+    select: function() {
+        this.emit('select');
+    },
+
+    /*
+     * Returns an actor containing item details. In the future details can have more information than what 
+     * the preview pop-up has and be item-type specific.
+     *
+     * availableWidth - width available for displaying details
+     */ 
+    createDetailsActor: function(availableWidth) {
+        let details = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                    spacing: PREVIEW_BOX_SPACING,
+                                    width: availableWidth });
+
+        this._ensurePreviewIconCreated();
+
+        if (this._previewIcon != null) {
+            let previewIconClone = new Clutter.Clone({ source: this._previewIcon });
+            details.append(previewIconClone, Big.BoxPackFlags.NONE);
+        }
+
+	// Inner box with name and description
+        let textDetails = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                        spacing: PREVIEW_BOX_SPACING });
+        let detailsName = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
+                                             font_name: "Sans bold 14px",
+                                             line_wrap: true,
+                                             text: this._name.text});
+        textDetails.append(detailsName, Big.BoxPackFlags.NONE);
+
+        let detailsDescription = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
+                                                    font_name: "Sans 14px",
+                                                    line_wrap: true,
+                                                    text: this._description.text });
+        textDetails.append(detailsDescription, Big.BoxPackFlags.NONE);
+
+        details.append(textDetails, Big.BoxPackFlags.EXPAND);
+   
+        // We hide the preview pop-up if the details are shown elsewhere. 
+        details.connect("show", 
+                        Lang.bind(this, 
+                                  function() {
+                                          // Right now "show" signal is emitted when an actor is added to a parent that
+                                          // has not been added to anything and "visible" property is also set to true 
+                                          // at this point, so checking if the parent that the actor has been added to  
+                                          // has a parent of its own is a temporary workaround. That other actor is 
+                                          // presumed to be displayed, which is a limitation of this workaround, but is
+                                          // the case with our usage of the details actor now.         
+                                          // http://bugzilla.openedhand.com/show_bug.cgi?id=1138
+                                          if (details.get_parent() != null && details.get_parent().get_parent() != null)
+                                              this.hidePreview();
+                                  }));
+        return details;
     },
 
     // Destoys the item, as well as a preview for the item if it exists.
@@ -274,33 +335,33 @@ GenericDisplayItem.prototype = {
                                       padding: PREVIEW_BOX_PADDING,
                                       spacing: PREVIEW_BOX_SPACING });
 
-        let previewDetailsWidth = this._availableWidth - PREVIEW_BOX_PADDING * 2;
+        let textDetailsWidth = this._availableWidth - PREVIEW_BOX_PADDING * 2;
 
         this._ensurePreviewIconCreated();
 
         if (this._previewIcon != null) {
             this._preview.append(this._previewIcon, Big.BoxPackFlags.EXPAND);
-            previewDetailsWidth = this._availableWidth - this._previewIcon.width - PREVIEW_BOX_PADDING * 2 - PREVIEW_BOX_SPACING;
+            textDetailsWidth = this._availableWidth - this._previewIcon.width - PREVIEW_BOX_PADDING * 2 - PREVIEW_BOX_SPACING;
         }
 
 	// Inner box with name and description
-        let previewDetails = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                           spacing: PREVIEW_BOX_SPACING });
-        let previewName = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
+        let textDetails = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                        spacing: PREVIEW_BOX_SPACING });
+        let detailsName = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
                                              font_name: "Sans bold 14px",
                                              text: this._name.text});
 
-        previewDetails.width = Math.max(PREVIEW_DETAILS_MIN_WIDTH, previewDetailsWidth, previewName.width);
+        textDetails.width = Math.max(PREVIEW_DETAILS_MIN_WIDTH, textDetailsWidth, detailsName.width);
 
-        previewDetails.append(previewName, Big.BoxPackFlags.NONE);
+        textDetails.append(detailsName, Big.BoxPackFlags.NONE);
 
-        let previewDescription = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
+        let detailsDescription = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
                                                     font_name: "Sans 14px",
                                                     line_wrap: true,
                                                     text: this._description.text });
-        previewDetails.append(previewDescription, Big.BoxPackFlags.NONE);
+        textDetails.append(detailsDescription, Big.BoxPackFlags.NONE);
 
-        this._preview.append(previewDetails, Big.BoxPackFlags.EXPAND);
+        this._preview.append(textDetails, Big.BoxPackFlags.EXPAND);
 
         // Add the preview to global stage to allow for top-level layering
         let global = Shell.Global.get();
@@ -377,8 +438,6 @@ GenericDisplay.prototype = {
         this._displayedItems = {};  
         this._displayedItemsCount = 0;
         this._pageDisplayed = 0;
-        // GenericDisplayItem
-        this._activatedItem = null;
         this._selectedIndex = -1;
         this._keepDisplayCurrent = false;
         this.actor = this._grid;
@@ -387,9 +446,20 @@ GenericDisplay.prototype = {
                                             height: 24,
                                             spacing: 12,
                                             orientation: Big.BoxOrientation.HORIZONTAL});
+
+        this._availableWidthForItemDetails = this._columnWidth;
+        this.selectedItemDetails = new Big.Box({});     
     },
 
     //// Public methods ////
+
+    setAvailableWidthForItemDetails: function(availableWidth) {
+        this._availableWidthForItemDetails = availableWidth;
+    },
+
+    getAvailableWidthForItemDetails: function() {
+        return this._availableWidthForItemDetails;
+    },
 
     // Sets the search string and displays the matching items.
     setSearch: function(text) {
@@ -397,17 +467,11 @@ GenericDisplay.prototype = {
         this._redisplay(true);
     },
 
-    // Sets this._activatedItem to the item that is selected and emits 'activated' signal.
-    // The reason we don't call launch() on the activated item right away is because we want
-    // the class that contains the display to do all other necessary actions and then call
-    // doActivate(). Currently, when a selected item is activated we only clear the search 
-    // entry, but when an item that was not selected is clicked, we want to move the selection
-    // to the clicked item first. This needs to happen in the class that contains the display
-    // because the selection might be moved from some other display that class contains.
+    // Launches the item that is currently selected and emits 'activated' signal.
     activateSelected: function() {
         if (this._selectedIndex != -1) {
             let selected = this._findDisplayedByIndex(this._selectedIndex);
-            this._activatedItem = selected;
+            selected.launch()
             this.emit('activated');
         }
     },
@@ -473,16 +537,6 @@ GenericDisplay.prototype = {
     // Returns true if the display has any displayed items.
     hasItems: function() {
         return this._displayedItemsCount > 0;
-    },
-
-    // Highlights the activated item and launches it.
-    doActivate: function() {
-        if (this._activatedItem != null) {
-            // We update the selection, so that in case an item was selected by clicking on it and 
-            // it is different from an item that was previously selected, we can highlight the new selection.
-            this._selectIndex(this._getIndexOfDisplayedActor(this._activatedItem.actor));
-            this._activatedItem.launch();    
-        } 
     },
 
     // Readjusts display layout and the items displayed based on the new dimensions.
@@ -567,16 +621,24 @@ GenericDisplay.prototype = {
             return;
         }
 
-        let me = this;
-
         let itemInfo = this._allItems[itemId];
         let displayItem = this._createDisplayItem(itemInfo);
         displayItem.setShowPreview(true);
 
-        displayItem.connect('activate', function() {
-            me._activatedItem = displayItem;
-            me.emit('activated');
-        });
+        displayItem.connect('activate', 
+                            Lang.bind(this,
+                                      function() {
+                                          // update the selection
+                                          this._selectIndex(this._getIndexOfDisplayedActor(displayItem.actor));
+                                          this.activateSelected();
+                                      }));
+
+        displayItem.connect('select', 
+                            Lang.bind(this,
+                                      function() {
+                                          // update the selection
+                                          this._selectIndex(this._getIndexOfDisplayedActor(displayItem.actor));
+                                      }));
         this._grid.add_actor(displayItem.actor);
         this._displayedItems[itemId] = displayItem;
         this._displayedItemsCount++;
@@ -819,16 +881,20 @@ GenericDisplay.prototype = {
         return -1;
     },
 
-    // Selects (e.g. highlights) a display item at the provided index.
+    // Selects (e.g. highlights) a display item at the provided index,
+    // updates this.selectedItemDetails actor, and emits 'selected' signal.
     _selectIndex: function(index) {
         if (this._selectedIndex != -1) {
             let prev = this._findDisplayedByIndex(this._selectedIndex);
             prev.markSelected(false);
+            this.selectedItemDetails.remove_all();
         }
         this._selectedIndex = index;
         if (index != -1 && index < this._displayedItemsCount) {
             let item = this._findDisplayedByIndex(index);
             item.markSelected(true);
+            this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails), Big.BoxPackFlags.NONE);  
+            this.emit('selected'); 
         }
     }
 };

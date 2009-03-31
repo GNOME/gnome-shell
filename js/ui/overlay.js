@@ -28,13 +28,17 @@ const SIDESHOW_MIN_WIDTH = 250;
 const SIDESHOW_SECTION_PADDING_TOP = 6;
 const SIDESHOW_SECTION_SPACING = 6;
 const SIDESHOW_COLUMNS = 1;
-const EXPANDED_SIDESHOW_COLUMNS = 2;
+const DETAILS_CORNER_RADIUS = 5;
+const DETAILS_BORDER_WIDTH = 1;
+const DETAILS_PADDING = 6;
 // This is the height of section components other than the item display.
 const SIDESHOW_SECTION_MISC_HEIGHT = (LABEL_HEIGHT + SIDESHOW_SECTION_SPACING) * 2 + SIDESHOW_SECTION_PADDING_TOP;
 const SIDESHOW_SEARCH_BG_COLOR = new Clutter.Color();
 SIDESHOW_SEARCH_BG_COLOR.from_pixel(0xffffffff);
 const SIDESHOW_TEXT_COLOR = new Clutter.Color();
 SIDESHOW_TEXT_COLOR.from_pixel(0xffffffff);
+const DETAILS_BORDER_COLOR = new Clutter.Color();
+DETAILS_BORDER_COLOR.from_pixel(0xffffffff);
 
 // Time for initial animation going into overlay mode
 const ANIMATION_TIME = 0.5;
@@ -65,35 +69,43 @@ const WORKSPACE_GRID_PADDING = 12;
 const COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN = 3;
 const ROWS_FOR_WORKSPACES_REGULAR_SCREEN = 6;
 const WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN = 4 - 0.25;
+const EXPANDED_SIDESHOW_COLUMNS_REGULAR_SCREEN = 2;
 
 const COLUMNS_FOR_WORKSPACES_WIDE_SCREEN = 4;
 const ROWS_FOR_WORKSPACES_WIDE_SCREEN = 8;
 const WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN = 5 - 0.25;
+const EXPANDED_SIDESHOW_COLUMNS_WIDE_SCREEN = 3;
 
 let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
 
-function Sideshow(parent, width) {
-    this._init(parent, width);
+function Sideshow() {
+    this._init();
 }
 
 Sideshow.prototype = {
-    _init : function(parent, width) {
+    _init : function() {
         let me = this;
 
         this._moreAppsMode = false;
         this._moreDocsMode = false;
 
-        this._width = width - SIDESHOW_PAD;
+        let asideXFactor = wideScreen ? WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN : WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN; 
+        this._expandedSideshowColumns = wideScreen ? EXPANDED_SIDESHOW_COLUMNS_WIDE_SCREEN : EXPANDED_SIDESHOW_COLUMNS_REGULAR_SCREEN;       
 
-        // this figures out the additional width we can give to the display in the 'More' mode
+        this._width = displayGridColumnWidth - SIDESHOW_PAD;
+
+        // this figures out the additional width we can give to the display in the 'More' mode,
+        // assuming that we want to keep the columns the same width in both modes
         this._additionalWidth = ((this._width + SIDESHOW_PAD) / SIDESHOW_COLUMNS) * 
-                                (EXPANDED_SIDESHOW_COLUMNS - SIDESHOW_COLUMNS);
+                                (this._expandedSideshowColumns - SIDESHOW_COLUMNS);
+
+        let previewWidth = displayGridColumnWidth * asideXFactor - this._width - 
+                           this._additionalWidth - SIDESHOW_SECTION_SPACING * 2; 
 
         let global = Shell.Global.get();
         this.actor = new Clutter.Group();
-        parent.add_actor(this.actor);
         let icontheme = Gtk.IconTheme.get_default();
         this._searchBox = new Big.Box({ background_color: SIDESHOW_SEARCH_BG_COLOR,
                                         corner_radius: 4,
@@ -255,37 +267,43 @@ Sideshow.prototype = {
         this._docsDisplayControlBox = new Big.Box({x_align: Big.BoxAlignment.CENTER});
         this._docsDisplayControlBox.append(this._docDisplay.displayControl, Big.BoxPackFlags.NONE);
 
+        this._details = new Big.Box({ x: SIDESHOW_PAD + this._width + this._additionalWidth + SIDESHOW_SECTION_SPACING,
+                                      y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
+                                      width: previewWidth,
+                                      height: global.screen_height - Panel.PANEL_HEIGHT - SIDESHOW_PAD - bottomHeight,
+                                      corner_radius: DETAILS_CORNER_RADIUS,
+                                      border: DETAILS_BORDER_WIDTH,
+                                      border_color: DETAILS_BORDER_COLOR,
+                                      padding: DETAILS_PADDING});
+        this._appDisplay.setAvailableWidthForItemDetails(previewWidth);
+        this._docDisplay.setAvailableWidthForItemDetails(previewWidth);
+
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
-            // we allow clicking on an item to launch it, and this unsets the selection
-            // so that we can move it to the item that was clicked on
-            me._appDisplay.unsetSelected(); 
-            me._docDisplay.unsetSelected();
-            me._appDisplay.hidePreview(); 
-            me._docDisplay.hidePreview();
-            me._appDisplay.doActivate();
             me.emit('activated');
         });
         this._docDisplay.connect('activated', function(docDisplay) {
-            // we allow clicking on an item to launch it, and this unsets the selection
-            // so that we can move it to the item that was clicked on
-            me._appDisplay.unsetSelected(); 
-            me._docDisplay.unsetSelected();
-            me._appDisplay.hidePreview(); 
-            me._docDisplay.hidePreview();
-            me._docDisplay.doActivate();
             me.emit('activated');
         });
+        this._appDisplay.connect('selected', function(appDisplay) {
+            // We allow clicking on any item to select it, so if an 
+            // item in the app display is selected, we need to make sure that
+            // no item in the doc display has the selection.
+            me._docDisplay.unsetSelected();
+            me._docDisplay.hidePreview();
+        });
+        this._docDisplay.connect('selected', function(docDisplay) {
+            // We allow clicking on any item to select it, so if an 
+            // item in the doc display is selected, we need to make sure that
+            // no item in the app display has the selection.
+            me._appDisplay.unsetSelected(); 
+            me._appDisplay.hidePreview(); 
+        });
         this._appDisplay.connect('redisplayed', function(appDisplay) {
-            // This can be applicable if app display previously had the selection,
-            // but it got updated and now has no items, so we can try to move
-            // the selection to the doc display. 
-            if (!me._appDisplay.hasSelected() && !me._docDisplay.hasSelected())
-                me._docDisplay.selectFirstItem();    
+            me._ensureItemSelected();
         });
         this._docDisplay.connect('redisplayed', function(docDisplay) {
-            if (!me._docDisplay.hasSelected() && !me._appDisplay.hasSelected())
-                me._appDisplay.selectFirstItem();
+            me._ensureItemSelected();
         });
 
         this._moreAppsLink.connect('clicked',
@@ -328,6 +346,22 @@ Sideshow.prototype = {
         this._unsetMoreDocsMode();
     },
 
+    // Ensures that one of the displays has the selection if neither owns it after the
+    // latest redisplay. This can be applicable if the display that earlier had the
+    // selection no longer has any items, or if their is a single section being shown 
+    // in the expanded view and it went from having no matching items to having some.
+    // We first try to place the selection in the applications section, because it is
+    // displayed above the documents section.
+    _ensureItemSelected: function() { 
+        if (!this._appDisplay.hasSelected() && !this._docDisplay.hasSelected()) {
+            if (this._appDisplay.hasItems()) { 
+                this._appDisplay.selectFirstItem();
+            } else if (this._docDisplay.hasItems()) {
+                this._docDisplay.selectFirstItem();
+            }
+        }
+    },
+ 
     // Sets the 'More' mode for browsing applications. Updates the applications section to have more items.
     // Slides down the documents section to reveal the additional applications.
     _setMoreAppsMode: function() {
@@ -428,13 +462,17 @@ Sideshow.prototype = {
         if (this._moreAppsMode) {
             this._appDisplay.updateDimensions(this._width + this._additionalWidth, 
                                               this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
-                                              EXPANDED_SIDESHOW_COLUMNS);
+                                              this._expandedSideshowColumns);
             this._moreAppsLink.setText("Less...");
             this._appsSection.insert_after(this._appsDisplayControlBox, this._appDisplay.actor, Big.BoxPackFlags.NONE); 
+            this.actor.add_actor(this._details);
+            this._details.append(this._appDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
         } else {
             this._appDisplay.updateDimensions(this._width, this._appsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
             this._moreAppsLink.setText("More...");
             this._appsSection.remove_actor(this._appsDisplayControlBox);
+            this.actor.remove_actor(this._details);
+            this._details.remove_all();
         }
         this._moreAppsLink.actor.show();
     },
@@ -540,13 +578,17 @@ Sideshow.prototype = {
         if (this._moreDocsMode) {
             this._docDisplay.updateDimensions(this._width + this._additionalWidth, 
                                               this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
-                                              EXPANDED_SIDESHOW_COLUMNS);
+                                              this._expandedSideshowColumns);
             this._moreDocsLink.setText("Less...");
             this._docsSection.insert_after(this._docsDisplayControlBox, this._docDisplay.actor, Big.BoxPackFlags.NONE); 
+            this.actor.add_actor(this._details);
+            this._details.append(this._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
         } else {
             this._docDisplay.updateDimensions(this._width, this._docsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
             this._moreDocsLink.setText("More...");
             this._docsSection.remove_actor(this._docsDisplayControlBox); 
+            this.actor.remove_actor(this._details); 
+            this._details.remove_all();
         }
         this._moreDocsLink.actor.show();
     }
@@ -594,9 +636,8 @@ Overlay.prototype = {
         global.overlay_group.add_actor(this._group);
 
         // TODO - recalculate everything when desktop size changes
-        let sideshowWidth = displayGridColumnWidth;  
-         
-        this._sideshow = new Sideshow(this._group, sideshowWidth);
+        this._sideshow = new Sideshow();
+        this._group.add_actor(this._sideshow.actor); 
         this._workspaces = null;
         this._workspacesBackground = null;
         this._sideshow.connect('activated', function(sideshow) {
@@ -698,7 +739,7 @@ Overlay.prototype = {
                                                              x: displayGridColumnWidth,
                                                              y: Panel.PANEL_HEIGHT,
                                                              width: displayGridColumnWidth * columnsUsed,
-                                                             height: global.screen_width - Panel.PANEL_HEIGHT });
+                                                             height: global.screen_height - Panel.PANEL_HEIGHT });
         this._group.add_actor(this._workspacesBackground);
 
         this._workspaces = new Workspaces.Workspaces(workspacesWidth, workspacesHeight, workspacesX, workspacesY, 

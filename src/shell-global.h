@@ -40,6 +40,8 @@ GSList *shell_get_categories_for_desktop_file(const char *desktop_file_name);
 
 guint16 shell_get_event_key_symbol(ClutterEvent *event);
 
+guint16 shell_get_button_event_click_count(ClutterEvent *event);
+
 ShellGlobal *shell_global_get (void);
 
 void shell_global_grab_dbus_service (ShellGlobal *global);
