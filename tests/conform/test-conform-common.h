@@ -16,6 +16,7 @@ typedef struct _TestConformSharedState
 typedef struct _TestConformSimpleFixture
 {
   /**/
+  int dummy;
 } TestConformSimpleFixture;
 
 void test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
