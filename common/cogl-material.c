@@ -1914,8 +1914,9 @@ cogl_set_source (CoglHandle material_handle)
 void
 cogl_set_source_texture (CoglHandle texture_handle)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   CoglColor white;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   g_return_if_fail (texture_handle != COGL_INVALID_HANDLE);
 
