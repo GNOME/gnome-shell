@@ -245,9 +245,10 @@ gaussian (float x, float y)
   /* Center offset */
   float b = 0.0;
 
+  float dist;
   x = x - RIPPLE_CENTER_X;
   y = y - RIPPLE_CENTER_Y;
-  float dist = sqrtf (x*x + y*y);
+  dist = sqrtf (x*x + y*y);
 
   return a * exp ((- ((dist - b) * (dist - b))) / (2.0 * c * c));
 }
