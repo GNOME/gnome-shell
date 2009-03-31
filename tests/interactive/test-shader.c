@@ -1,7 +1,6 @@
 /*#define TEST_GROUP */
 
 #include <clutter/clutter.h>
-#include "../config.h"
 
 #include <errno.h>
 #include <stdlib.h>

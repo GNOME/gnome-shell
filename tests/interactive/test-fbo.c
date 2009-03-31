@@ -1,4 +1,3 @@
-#include "../config.h"
 
 /*#define TEST_GROUP */
 
