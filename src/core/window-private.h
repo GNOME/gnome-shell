@@ -600,9 +600,6 @@ void meta_window_update_keyboard_move   (MetaWindow *window);
 
 void meta_window_update_layer (MetaWindow *window);
 
-gboolean meta_window_get_icon_geometry (MetaWindow    *window,
-                                        MetaRectangle *rect);
-
 void meta_window_recalc_features    (MetaWindow *window);
 
 void meta_window_recalc_window_type (MetaWindow *window);
