@@ -88,9 +88,11 @@ cogl_matrix_rotate (CoglMatrix *matrix,
 {
   CoglMatrix rotation;
   CoglMatrix result;
+  float c, s;
+
   angle *= G_PI / 180.0f;
-  float c = cosf (angle);
-  float s = sinf (angle);
+  c = cosf (angle);
+  s = sinf (angle);
 
   rotation.xx = x * x * (1.0f - c) + c;
   rotation.yx = y * x * (1.0f - c) + z * s;
