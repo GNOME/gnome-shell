@@ -51,6 +51,7 @@ test_scale_main (int argc, char *argv[])
   ClutterActor    *stage, *rect;
   ClutterColor     stage_color = { 0x0, 0x0, 0x0, 0xff };
   ClutterColor     rect_color = { 0xff, 0xff, 0xff, 0x99 };
+  ClutterColor     white_color = { 0xff, 0xff, 0xff, 0xFF };
   ClutterTimeline *timeline;
   ClutterAlpha    *alpha;
   ClutterBehaviour *behave;
@@ -70,7 +71,7 @@ test_scale_main (int argc, char *argv[])
 
   label = clutter_text_new_with_text ("Sans 20px", "");
   clutter_text_set_color (CLUTTER_TEXT (label),
-                           &(ClutterColor) { 0xff, 0xff, 0xff, 0xff });
+                           &white_color);
   clutter_actor_set_position (label,
                               clutter_actor_get_x (rect),
                               clutter_actor_get_y (rect)
