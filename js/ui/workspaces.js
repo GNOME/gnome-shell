@@ -696,16 +696,14 @@ Workspace.prototype = {
             return POSITIONS[numberOfWindows][windowIndex];
 
         // If we don't have a predefined scheme for this window count,
-        // overlap the windows along the diagonal of the workspace
-        // (improve this!)
-        let fraction = Math.sqrt(1/numberOfWindows);
+        // arrange the windows in a grid pattern.
+        let gridWidth = Math.ceil(Math.sqrt(numberOfWindows));
+        let gridHeight = Math.ceil(numberOfWindows / gridWidth);
 
-        // The top window goes at the lower right - this is different from the
-        // fixed position schemes where the windows are in "reading order"
-        // and the top window goes at the upper left.
-        let pos = (numberOfWindows - windowIndex - 1) / (numberOfWindows - 1);
-        let xCenter = (fraction / 2) + (1 - fraction) * pos;
-        let yCenter = xCenter;
+        let fraction = Math.sqrt(.5/(gridWidth * gridHeight));
+
+        let xCenter = (.5 / gridWidth) + ((windowIndex) % gridWidth) / gridWidth;
+        let yCenter = (.5 / gridHeight) + Math.floor((windowIndex / gridWidth)) / gridHeight;
 
         return [xCenter, yCenter, fraction];
     },
