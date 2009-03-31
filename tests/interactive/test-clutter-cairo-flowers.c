@@ -4,9 +4,14 @@
 
 #include <clutter/clutter.h>
 
+#ifndef _MSC_VER
 #include <unistd.h> 		/* for sleep(), used for screenshots */
+#endif
 #include <stdlib.h>
-#include "math.h"
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#endif
+#include <math.h>
 
 #define PETAL_MIN 20
 #define PETAL_VAR 40
