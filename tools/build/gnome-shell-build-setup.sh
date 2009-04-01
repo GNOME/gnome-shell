@@ -41,6 +41,20 @@ fi
 # when running in Xephyr mode, and we should probably change it to use
 # less lame things.
 
+# Can this be simplified? Obvious ways don't handle handle packages
+# that have been installed then removed. ('purged' status, e.g.)
+dpkg_is_installed() {
+    status=`dpkg-query --show --showformat='${Status}' $1 2>/dev/null`
+    if [ $? = 0 ] ; then
+	set $status
+        if [ "$3" = installed ] ; then
+             return 0
+        fi
+    fi
+
+    return 1
+}
+
 if test x$system = xUbuntu -o x$system = xDebian ; then
   reqd=""
   for pkg in \
@@ -50,7 +64,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
     libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
     mesa-common-dev python2.5-dev libreadline5-dev xulrunner-1.9-dev \
     ; do
-      if ! dpkg --status $pkg > /dev/null 2>&1; then
+      if ! dpkg_is_installed $pkg; then
         reqd="$pkg $reqd"
       fi
   done
