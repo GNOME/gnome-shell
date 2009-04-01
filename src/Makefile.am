@@ -51,6 +51,8 @@ libgnome_shell_la_SOURCES =			\
 	gnome-shell-plugin.c			\
 	shell-app-monitor.c			\
 	shell-app-monitor.h			\
+	shell-arrow.c			\
+	shell-arrow.h			\
 	shell-gtkwindow-actor.c			\
 	shell-gtkwindow-actor.h			\
 	shell-process.c				\

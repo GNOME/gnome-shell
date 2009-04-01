@@ -31,4 +31,18 @@ struct _ShellAppMonitorClass
 GType shell_app_monitor_get_type (void) G_GNUC_CONST;
 ShellAppMonitor* shell_app_monitor_new(void);
 
+GList *shell_app_monitor_get_applications_for_menu (ShellAppMonitor *monitor, const char *menu);
+
+typedef struct _ShellAppMenuEntry ShellAppMenuEntry;
+
+struct _ShellAppMenuEntry {
+  char *name;
+  char *id;
+  char *icon;
+};
+
+GType shell_app_menu_entry_get_type (void);
+
+GList *shell_app_monitor_get_menus (ShellAppMonitor *monitor);
+
 #endif /* __SHELL_APP_MONITOR_H__ */

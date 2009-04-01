@@ -76,6 +76,11 @@ const ROWS_FOR_WORKSPACES_WIDE_SCREEN = 8;
 const WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN = 5 - 0.25;
 const EXPANDED_SIDESHOW_COLUMNS_WIDE_SCREEN = 3;
 
+// A multi-state; PENDING is used during animations
+const STATE_ACTIVE = true;
+const STATE_PENDING_INACTIVE = false;
+const STATE_INACTIVE = false;
+
 let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
@@ -88,8 +93,8 @@ Sideshow.prototype = {
     _init : function() {
         let me = this;
 
-        this._moreAppsMode = false;
-        this._moreDocsMode = false;
+        this._moreAppsMode = STATE_INACTIVE;
+        this._moreDocsMode = STATE_INACTIVE;
 
         let asideXFactor = wideScreen ? WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN : WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN; 
         this._expandedSideshowColumns = wideScreen ? EXPANDED_SIDESHOW_COLUMNS_WIDE_SCREEN : EXPANDED_SIDESHOW_COLUMNS_REGULAR_SCREEN;       
@@ -181,7 +186,11 @@ Sideshow.prototype = {
                 // too, but there doesn't seem to be any flickering if we first select 
                 // something in one display, but then unset the selection, and move
                 // it to the other display, so it's ok to do that.
-                if (me._appDisplay.hasSelected() && !me._appDisplay.selectUp() && me._docDisplay.hasItems()) {
+                if (me._moreAppsMode)
+                    me._appDisplay.selectUp();
+                else if (me._moreDocsMode)
+                    me._docDisplay.selectUp();
+                else if (me._appDisplay.hasSelected() && !me._appDisplay.selectUp() && me._docDisplay.hasItems()) {
                     me._appDisplay.unsetSelected();
                     me._docDisplay.selectLastItem();
                 } else if (me._docDisplay.hasSelected() && !me._docDisplay.selectUp() && me._appDisplay.hasItems()) {
@@ -190,7 +199,11 @@ Sideshow.prototype = {
                 }
                 return true;
             } else if (symbol == Clutter.Down) {
-                if (me._appDisplay.hasSelected() && !me._appDisplay.selectDown() && me._docDisplay.hasItems()) {
+                if (me._moreAppsMode)
+                    me._appDisplay.selectDown();
+                else if (me._moreDocsMode)
+                    me._docDisplay.selectDown();
+                else if (me._appDisplay.hasSelected() && !me._appDisplay.selectDown() && me._docDisplay.hasItems()) {
                     me._appDisplay.unsetSelected();
                     me._docDisplay.selectFirstItem();
                 } else if (me._docDisplay.hasSelected() && !me._docDisplay.selectDown() && me._appDisplay.hasItems()) {
@@ -198,6 +211,20 @@ Sideshow.prototype = {
                     me._appDisplay.selectFirstItem();
                 }
                 return true;
+            } else if (me._moreAppsMode && me._searchEntry.text == '') {
+                if (symbol == Clutter.Right) {
+                    me._appDisplay.moveRight();
+                    return true;
+                } else if (symbol == Clutter.Left) {
+                    me._appDisplay.moveLeft();
+                    return true;
+                }
+                return false;
+            } else if (symbol == Clutter.Right && me._searchEntry.text == '') {
+                if (me._appDisplay.hasSelected())
+                    me._setMoreAppsMode();
+                else
+                    me._setMoreDocsMode();
             }
             return false;
         });
@@ -219,8 +246,13 @@ Sideshow.prototype = {
 
         this._itemDisplayHeight = global.screen_height - this._appsSection.y - SIDESHOW_SECTION_MISC_HEIGHT * 2 - bottomHeight;
         
+        this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
+        this._appsSection.append(this._appsContent, Big.BoxPackFlags.EXPAND);
         this._appDisplay = new AppDisplay.AppDisplay(this._width, this._itemDisplayHeight / 2, SIDESHOW_COLUMNS, SIDESHOW_PAD);
-        this._appsSection.append(this._appDisplay.actor, Big.BoxPackFlags.EXPAND);
+        let sideArea = this._appDisplay.getSideArea();
+        sideArea.hide();
+        this._appsContent.append(sideArea, Big.BoxPackFlags.NONE);
+        this._appsContent.append(this._appDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreAppsBox = new Big.Box({x_align: Big.BoxAlignment.END});
         this._moreAppsLink = new Link.Link({ color: SIDESHOW_TEXT_COLOR,
@@ -249,7 +281,7 @@ Sideshow.prototype = {
                                             height: LABEL_HEIGHT});
         this._docsSection.append(this._docsText, Big.BoxPackFlags.EXPAND);
 
-        this._docDisplay = new DocDisplay.DocDisplay(this._width, this._itemDisplayHeight - this._appDisplay.actor.height, SIDESHOW_COLUMNS, SIDESHOW_PAD);
+        this._docDisplay = new DocDisplay.DocDisplay(this._width, this._itemDisplayHeight - this._appsContent.height, SIDESHOW_COLUMNS, SIDESHOW_PAD);
         this._docsSection.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreDocsBox = new Big.Box({x_align: Big.BoxAlignment.END});
@@ -328,7 +360,8 @@ Sideshow.prototype = {
     show: function() {
         let global = Shell.Global.get();
 
-        this._appDisplay.show(); 
+        this._appDisplay.show();
+        this._appsContent.show();
         this._docDisplay.show();
         this._appDisplay.selectFirstItem();   
         if (!this._appDisplay.hasSelected())
@@ -339,7 +372,7 @@ Sideshow.prototype = {
     },
 
     hide: function() {
-        this._appDisplay.hide(); 
+        this._appsContent.hide();
         this._docDisplay.hide();
         this._searchEntry.text = '';
         this._unsetMoreAppsMode();
@@ -368,7 +401,9 @@ Sideshow.prototype = {
         if (this._moreAppsMode)
             return;
         
-        this._moreAppsMode = true;
+        // No corresponding STATE_PENDING_ACTIVE, because we call updateAppsSection
+        // immediately below.
+        this._moreAppsMode = STATE_ACTIVE;
 
         this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
 
@@ -377,9 +412,9 @@ Sideshow.prototype = {
 
         // Move the selection to the applications section if it was in the docs section.
         this._docDisplay.unsetSelected();
-        if (!this._appDisplay.hasSelected())
-            this._appDisplay.selectFirstItem();
-        
+        // Because we have menus in applications, we want to reset the selection for applications
+        // as well.  The default is no menu.
+        this._appDisplay.unsetSelected();
         this._updateAppsSection();
  
         Tweener.addTween(this._docsSection,
@@ -389,7 +424,7 @@ Sideshow.prototype = {
                            transition: "easeOutQuad"
                          });
 
-        // We need to be expandig the clip on the applications section so that the first additional
+        // We need to expand the clip on the applications section so that the first additional
         // application to be displayed does not appear abruptly. 
         Tweener.addTween(this._appsSection,
                          { clipHeightBottom: this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT * 2 - LABEL_HEIGHT - SIDESHOW_SECTION_SPACING,
@@ -407,7 +442,7 @@ Sideshow.prototype = {
         if (!this._moreAppsMode)
             return;
 
-        this._moreAppsMode = false;
+        this._moreAppsMode = STATE_PENDING_INACTIVE;
 
         this._moreAppsLink.actor.hide();
 
@@ -447,8 +482,11 @@ Sideshow.prototype = {
     // Removes the clip from the applications section to reveal the 'More...' text. 
     // Removes the clip from the documents section, so that the clip does not limit the size of 
     // the section if it is expanded later.
-    _onAppsSectionReduced: function() { 
-        this._updateAppsSection(); 
+    _onAppsSectionReduced: function() {
+        if (this._moreAppsMode != STATE_PENDING_INACTIVE)
+            return;
+        this._moreAppsMode = STATE_INACTIVE;
+        this._updateAppsSection();
         if (!this._appDisplay.hasItems())
             this._docDisplay.selectFirstItem();
         this._appsSection.remove_clip();
@@ -460,15 +498,18 @@ Sideshow.prototype = {
     // changed, which is ensured by _setMoreAppsMode() and _unsetMoreAppsMode() functions. 
     _updateAppsSection: function() {
         if (this._moreAppsMode) {
-            this._appDisplay.updateDimensions(this._width + this._additionalWidth, 
-                                              this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
-                                              this._expandedSideshowColumns);
+            // Subtract one from columns since we are displaying menus
+            this._appDisplay.setExpanded(true, this._width, this._additionalWidth,
+                                         this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
+                                         this._expandedSideshowColumns - 1);
             this._moreAppsLink.setText("Less...");
-            this._appsSection.insert_after(this._appsDisplayControlBox, this._appDisplay.actor, Big.BoxPackFlags.NONE); 
+            this._appsSection.insert_after(this._appsDisplayControlBox, this._appsContent, Big.BoxPackFlags.NONE);
             this.actor.add_actor(this._details);
             this._details.append(this._appDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
         } else {
-            this._appDisplay.updateDimensions(this._width, this._appsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
+            this._appDisplay.setExpanded(false, this._width, 0,
+                                         this._appsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT,
+                                         SIDESHOW_COLUMNS);
             this._moreAppsLink.setText("More...");
             this._appsSection.remove_actor(this._appsDisplayControlBox);
             this.actor.remove_actor(this._details);
@@ -532,7 +573,7 @@ Sideshow.prototype = {
          
         this._docsSection.set_clip(0, 0, this._docsSection.width, this._docsSection.height);
 
-        this._appDisplay.show();
+        this._appsContent.show();
 
         Tweener.addTween(this._docsSection,
                          { y: this._docsSection.y + this._appsSectionDefaultHeight,
@@ -555,7 +596,7 @@ Sideshow.prototype = {
     // Hides the applications section so that it doesn't get updated on new searches.
     _onDocsSectionExpanded: function() {
         this._docsSection.remove_clip(); 
-        this._appDisplay.hide();
+        this._appsContent.hide();
     },
 
     // Updates the documents section to contain fewer items. Selects the first item in the 
@@ -576,15 +617,17 @@ Sideshow.prototype = {
     // changed, which is ensured by _setMoreDocsMode() and _unsetMoreDocsMode() functions. 
     _updateDocsSection: function() {
         if (this._moreDocsMode) {
-            this._docDisplay.updateDimensions(this._width + this._additionalWidth, 
-                                              this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
-                                              this._expandedSideshowColumns);
+            this._docDisplay.setExpanded(true, this._width + this._additionalWidth,
+                                         this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
+                                         this._expandedSideshowColumns);
             this._moreDocsLink.setText("Less...");
             this._docsSection.insert_after(this._docsDisplayControlBox, this._docDisplay.actor, Big.BoxPackFlags.NONE); 
             this.actor.add_actor(this._details);
             this._details.append(this._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
         } else {
-            this._docDisplay.updateDimensions(this._width, this._docsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT, SIDESHOW_COLUMNS);
+            this._docDisplay.setExpanded(false, this._width,
+                                         this._docsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT,
+                                         SIDESHOW_COLUMNS);
             this._moreDocsLink.setText("More...");
             this._docsSection.remove_actor(this._docsDisplayControlBox); 
             this.actor.remove_actor(this._details); 

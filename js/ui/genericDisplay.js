@@ -415,6 +415,7 @@ function GenericDisplay(width, height, numberOfColumns, columnGap) {
 GenericDisplay.prototype = {
     _init : function(width, height, numberOfColumns, columnGap) {
         this._search = '';
+        this._expanded = false;
         this._width = null;
         this._height = null;
         this._columnWidth = null;
@@ -425,8 +426,10 @@ GenericDisplay.prototype = {
             this._columnGap = DEFAULT_COLUMN_GAP;
 
         this._maxItemsPerPage = null;
-        this._setDimensionsAndMaxItems(width, height);
         this._grid = new Tidy.Grid({width: this._width, height: this._height});
+
+        this._setDimensionsAndMaxItems(width, 0, height);
+
         this._grid.column_major = true;
         this._grid.column_gap = this._columnGap;
         // map<itemId, Object> where Object represents the item info
@@ -440,6 +443,9 @@ GenericDisplay.prototype = {
         this._pageDisplayed = 0;
         this._selectedIndex = -1;
         this._keepDisplayCurrent = false;
+        // These two are public - .actor is the normal "actor subclass" property,
+        // but we also expose a .displayControl actor which is separate.
+        // See also getSideArea.
         this.actor = this._grid;
         this.displayControl = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
                                             corner_radius: 4,
@@ -540,13 +546,23 @@ GenericDisplay.prototype = {
     },
 
     // Readjusts display layout and the items displayed based on the new dimensions.
-    updateDimensions: function(width, height, numberOfColumns) {
+    setExpanded: function(expanded, baseWidth, expandWidth, height, numberOfColumns) {
+        this._expanded = expanded;
         this._numberOfColumns = numberOfColumns;
-        this._setDimensionsAndMaxItems(width, height);
+        this._setDimensionsAndMaxItems(baseWidth, expandWidth, height);
         this._grid.width = this._width;
         this._grid.height = this._height;
         this._pageDisplayed = 0;
         this._displayMatchedItems(true);
+        let gridWidth = this._width;
+        let sideArea = this.getSideArea();
+        if (sideArea) {
+            if (expanded)
+                sideArea.show();
+            else
+                sideArea.hide();
+        }
+        this.emit('expanded');
     },
 
     // Updates the displayed items and makes the display actor visible.
@@ -559,8 +575,15 @@ GenericDisplay.prototype = {
     // Hides the display actor.
     hide: function() {
         this._grid.hide();
+        this._filterReset();
         this._removeAllDisplayItems();
         this._keepDisplayCurrent = false;
+    },
+
+    // Returns an actor which acts as a sidebar; this is used for
+    // the applications category view
+    getSideArea: function () {
+        return null;
     },
 
     //// Protected methods ////
@@ -691,13 +714,24 @@ GenericDisplay.prototype = {
             this._removeDisplayItem(itemId);
      },
 
+    // Return true if there's an active search or other constraint
+    // on the list
+    _filterActive: function() {
+        return this._search != "";
+    },
+
+    // Called when we are resetting state
+    _filterReset: function() {
+        this.unsetSelected();
+    },
+
     /*
      * Updates the displayed items, applying the search string if one exists.
      *
      * resetPage - indicates if the page selection should be reset when displaying the matching results.
      *             We reset the page selection when the change in results was initiated by the user by  
      *             entering a different search criteria or by viewing the results list in a different
-     *             size mode, but we keep the page selection the same if the results got updated on 
+     *             size mode, but we keep the page selection the same if the results got updated on
      *             their own while the user was browsing through the result pages.
      */
     _redisplay: function(resetPage) {
@@ -705,7 +739,7 @@ GenericDisplay.prototype = {
             return;
 
         this._refreshCache();
-        if (!this._search)
+        if (!this._filterActive())
             this._setDefaultList();
         else
             this._doSearchFilter();
@@ -754,18 +788,27 @@ GenericDisplay.prototype = {
 
     // Sets this._width, this._height, this._columnWidth, and this._maxItemsPerPage based on the 
     // space available for the display, number of columns, and the number of items it can fit.
-    _setDimensionsAndMaxItems: function(width, height) {
-        this._width = width; 
-        this._columnWidth = (this._width - this._columnGap * (this._numberOfColumns - 1)) / this._numberOfColumns; 
+    _setDimensionsAndMaxItems: function(baseWidth, expandWidth, height) {
+        this._width = baseWidth + expandWidth;
+        let gridWidth;
+        let sideArea = this.getSideArea();
+        if (this._expanded && sideArea) {
+            gridWidth = expandWidth;
+            sideArea.width = baseWidth;
+            sideArea.height = this._height;
+        } else {
+            gridWidth = this._width;
+        }
+        this._columnWidth = (gridWidth - this._columnGap * (this._numberOfColumns - 1)) / this._numberOfColumns;
         let maxItemsInColumn = Math.floor(height / ITEM_DISPLAY_HEIGHT);
         this._maxItemsPerPage =  maxItemsInColumn * this._numberOfColumns;
         this._height = maxItemsInColumn * ITEM_DISPLAY_HEIGHT;
+        this._grid.width = gridWidth;
+        this._grid.height = this._height;
     },
 
-    // Applies the search string to the list of items to find matches, and displays the matching items.
-    _doSearchFilter: function() {
+    _getSearchMatchedItems: function() {
         let matchedItemsForSearch = {};
-
         // Break the search up into terms, and search for each
         // individual term.  Keep track of the number of terms
         // each item matched.
@@ -781,6 +824,22 @@ GenericDisplay.prototype = {
                     count += 1;
                     matchedItemsForSearch[itemId] = count;
                 }
+            }
+        }
+        return matchedItemsForSearch;
+    },
+
+    // Applies the search string to the list of items to find matches,
+    // and displays the matching items.
+    _doSearchFilter: function() {
+        let matchedItemsForSearch;
+
+        if (this._filterActive()) {
+            matchedItemsForSearch = this._getSearchMatchedItems();
+        } else {
+            matchedItemsForSearch = {};
+            for (let itemId in this._allItems) {
+                matchedItemsForSearch[itemId] = 1;
             }
         }
 
