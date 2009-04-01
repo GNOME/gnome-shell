@@ -202,7 +202,7 @@ test_npot_texture (TestConformSimpleFixture *fixture,
 
   g_source_remove (idle_source);
 
-  cogl_texture_unref (state.texture);
+  cogl_handle_unref (state.texture);
 
   if (g_test_verbose ())
     g_print ("OK\n");

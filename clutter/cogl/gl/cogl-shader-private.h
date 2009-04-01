@@ -26,11 +26,13 @@
 #ifndef __COGL_SHADER_H
 #define __COGL_SHADER_H
 
+#include "cogl-handle.h"
+
 typedef struct _CoglShader CoglShader;
 
 struct _CoglShader
 {
-  guint              ref_count;
+  CoglHandleObject   _parent;
   GLhandleARB        gl_handle;
 };
 

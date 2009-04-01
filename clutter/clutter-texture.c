@@ -246,7 +246,7 @@ clutter_texture_unrealize (ClutterActor *actor)
   if (priv->fbo_source != COGL_INVALID_HANDLE)
     {
       /* Free up our fbo handle and texture resources, realize will recreate */
-      cogl_offscreen_unref (priv->fbo_handle);
+      cogl_handle_unref (priv->fbo_handle);
       priv->fbo_handle = COGL_INVALID_HANDLE;
       texture_free_gl_resources (texture);
       return;
@@ -293,7 +293,7 @@ clutter_texture_realize (ClutterActor *actor)
       /* Handle FBO's */
 
       if (priv->fbo_texture != COGL_INVALID_HANDLE)
-	cogl_texture_unref (priv->fbo_texture);
+	cogl_handle_unref (priv->fbo_texture);
 
       if (!priv->no_slice)
         max_waste = priv->max_tile_waste;
@@ -766,7 +766,7 @@ clutter_texture_finalize (GObject *object)
 
   if (priv->material != COGL_INVALID_HANDLE)
     {
-      cogl_material_unref (priv->material);
+      cogl_handle_unref (priv->material);
       priv->material = COGL_INVALID_HANDLE;
     }
 
@@ -1302,7 +1302,7 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
  *
  * Returns a handle to the underlying COGL material used for drawing
  * the actor. No extra reference is taken so if you need to keep the
- * handle then you should call cogl_material_ref() on it.
+ * handle then you should call cogl_handle_ref() on it.
  *
  * Since: 1.0
  *
@@ -1323,7 +1323,7 @@ clutter_texture_get_cogl_material (ClutterTexture *texture)
  *
  * Replaces the underlying COGL texture drawn by this actor with
  * @cogl_tex. A reference to the texture is taken so if the handle is
- * no longer needed it should be deref'd with cogl_texture_unref.
+ * no longer needed it should be deref'd with cogl_handle_unref.
  *
  * Since: 0.8
  *
@@ -1338,7 +1338,7 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
 
   /* This */
   if (texture->priv->material)
-    cogl_material_unref (texture->priv->material);
+    cogl_handle_unref (texture->priv->material);
 
   texture->priv->material = cogl_material;
 
@@ -1356,7 +1356,7 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
  *
  * Retrieves the handle to the underlying COGL texture used for drawing
  * the actor. No extra reference is taken so if you need to keep the
- * handle then you should call cogl_texture_ref() on it.
+ * handle then you should call cogl_handle_ref() on it.
  *
  * The texture handle returned is the first layer of the material
  * handle used by the #ClutterTexture. If you need to access the other
@@ -1390,7 +1390,7 @@ clutter_texture_get_cogl_texture (ClutterTexture *texture)
  *
  * Replaces the underlying COGL texture drawn by this actor with
  * @cogl_tex. A reference to the texture is taken so if the handle is
- * no longer needed it should be deref'd with cogl_texture_unref.
+ * no longer needed it should be deref'd with cogl_handle_unref.
  *
  * Since: 0.8
  */
@@ -1412,7 +1412,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   /* Reference the new texture now in case it is the same one we are
      already using */
-  cogl_texture_ref (cogl_tex);
+  cogl_handle_ref (cogl_tex);
 
   /* Remove FBO if exisiting */
   if (priv->fbo_source)
@@ -1426,7 +1426,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   /* The material now holds a reference to the texture so we can
      safely release the reference we claimed above */
-  cogl_texture_unref (cogl_tex);
+  cogl_handle_unref (cogl_tex);
 
   size_change      = width != priv->width || height != priv->height;
   priv->width      = width;
@@ -1504,7 +1504,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
-  cogl_texture_unref (new_texture);
+  cogl_handle_unref (new_texture);
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
 
@@ -1681,7 +1681,7 @@ clutter_texture_async_load_complete (ClutterTexture *self,
                          cogl_texture_get_width(handle),
                          cogl_texture_get_height (handle));
         }
-      cogl_texture_unref (handle);
+      cogl_handle_unref (handle);
     }
 
   g_signal_emit (self, texture_signals[LOAD_FINISHED], 0, error);
@@ -1949,7 +1949,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
-  cogl_texture_unref (new_texture);
+  cogl_handle_unref (new_texture);
 
   g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
 
@@ -2301,7 +2301,7 @@ on_fbo_source_size_change (GObject          *object,
       gint min_filter, mag_filter;
 
       /* tear down the FBO */
-      cogl_offscreen_unref (priv->fbo_handle);
+      cogl_handle_unref (priv->fbo_handle);
 
       texture_free_gl_resources (texture);
 
@@ -2548,7 +2548,7 @@ texture_fbo_free_resources (ClutterTexture *texture)
 
   if (priv->fbo_handle != COGL_INVALID_HANDLE)
     {
-      cogl_offscreen_unref (priv->fbo_handle);
+      cogl_handle_unref (priv->fbo_handle);
       priv->fbo_handle = COGL_INVALID_HANDLE;
     }
 }

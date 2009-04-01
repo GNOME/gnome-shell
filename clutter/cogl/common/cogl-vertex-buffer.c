@@ -200,17 +200,12 @@
 
 static void _cogl_vertex_buffer_free (CoglVertexBuffer *buffer);
 
-COGL_HANDLE_DEFINE (VertexBuffer,
-                    vertex_buffer,
-                    vertex_buffer_handles);
+COGL_HANDLE_DEFINE (VertexBuffer, vertex_buffer);
 
 CoglHandle
 cogl_vertex_buffer_new (guint n_vertices)
 {
   CoglVertexBuffer *buffer = g_slice_alloc (sizeof (CoglVertexBuffer));
-
-  buffer->ref_count = 1;
-  COGL_HANDLE_DEBUG_NEW (CoglVertexBuffer, buffer);
 
   buffer->n_vertices = n_vertices;
 

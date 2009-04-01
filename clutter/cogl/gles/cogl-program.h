@@ -27,12 +27,13 @@
 #define __COGL_PROGRAM_H
 
 #include "cogl-gles2-wrapper.h"
+#include "cogl-handle.h"
 
 typedef struct _CoglProgram CoglProgram;
 
 struct _CoglProgram
 {
-  guint              ref_count;
+  CoglHandleObject   _parent;
 
   GSList            *attached_shaders;
 

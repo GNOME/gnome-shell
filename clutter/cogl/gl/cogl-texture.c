@@ -70,7 +70,7 @@ extern void _cogl_journal_flush (void);
 
 static void _cogl_texture_free (CoglTexture *tex);
 
-COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
+COGL_HANDLE_DEFINE (Texture, texture);
 
 static void
 _cogl_texture_bitmap_free (CoglTexture *tex)
@@ -1228,9 +1228,6 @@ cogl_texture_new_with_size (guint             width,
   /* Init texture with empty bitmap */
   tex = (CoglTexture*) g_malloc (sizeof (CoglTexture));
 
-  tex->ref_count = 1;
-  COGL_HANDLE_DEBUG_NEW (texture, tex);
-
   tex->is_foreign = FALSE;
   tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
 
@@ -1292,9 +1289,6 @@ cogl_texture_new_from_data (guint             width,
   /* Create new texture and fill with given data */
   tex = (CoglTexture*) g_malloc (sizeof (CoglTexture));
 
-  tex->ref_count = 1;
-  COGL_HANDLE_DEBUG_NEW (texture, tex);
-
   tex->is_foreign = FALSE;
   tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
 
@@ -1352,9 +1346,6 @@ cogl_texture_new_from_bitmap (CoglBitmap       *bmp,
   /* Create new texture and fill with loaded data */
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
 
-  tex->ref_count = 1;
-  COGL_HANDLE_DEBUG_NEW (texture, tex);
-
   tex->is_foreign = FALSE;
   tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
 
@@ -1376,7 +1367,7 @@ cogl_texture_new_from_bitmap (CoglBitmap       *bmp,
    * this one instead (reloading from file is not needed
    * in that case). As a rule then, everytime a valid
    * CoglHandle is returned, it should also be destroyed
-   * with cogl_texture_unref at some point! */
+   * with cogl_handle_unref at some point! */
 
   if (!_cogl_texture_bitmap_prepare (tex, internal_format))
     {
@@ -1530,9 +1521,6 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 
   /* Create new texture */
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
-
-  tex->ref_count = 1;
-  COGL_HANDLE_DEBUG_NEW (texture, tex);
 
   /* Setup bitmap info */
   tex->is_foreign = TRUE;

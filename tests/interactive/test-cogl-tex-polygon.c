@@ -229,8 +229,8 @@ test_coglbox_dispose (GObject *object)
   TestCoglboxPrivate *priv;
   
   priv = TEST_COGLBOX_GET_PRIVATE (object);
-  cogl_texture_unref (priv->not_sliced_tex);
-  cogl_texture_unref (priv->sliced_tex);
+  cogl_handle_unref (priv->not_sliced_tex);
+  cogl_handle_unref (priv->sliced_tex);
   
   G_OBJECT_CLASS (test_coglbox_parent_class)->dispose (object);
 }

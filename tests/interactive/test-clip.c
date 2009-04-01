@@ -328,7 +328,7 @@ test_clip_main (int argc, char **argv)
 
   clutter_main ();
 
-  cogl_texture_unref (data.hand);
+  cogl_handle_unref (data.hand);
 
   free_clips (&data);
 

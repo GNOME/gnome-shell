@@ -108,7 +108,7 @@ struct _CoglPangoGlyphCacheBand
 static void
 cogl_pango_glyph_cache_value_free (CoglPangoGlyphCacheValue *value)
 {
-  cogl_texture_unref (value->texture);
+  cogl_handle_unref (value->texture);
   g_slice_free (CoglPangoGlyphCacheValue, value);
 }
 
@@ -156,7 +156,7 @@ cogl_pango_glyph_cache_free_textures (CoglPangoGlyphCacheTexture *node)
   while (node)
     {
       next = node->next;
-      cogl_texture_unref (node->texture);
+      cogl_handle_unref (node->texture);
       g_slice_free (CoglPangoGlyphCacheTexture, node);
       node = next;
     }
@@ -170,7 +170,7 @@ cogl_pango_glyph_cache_free_bands (CoglPangoGlyphCacheBand *node)
   while (node)
     {
       next = node->next;
-      cogl_texture_unref (node->texture);
+      cogl_handle_unref (node->texture);
       g_slice_free (CoglPangoGlyphCacheBand, node);
       node = next;
     }
@@ -323,7 +323,7 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
       band->top = texture->texture_size - texture->space_remaining;
       band->height = band_height;
       band->space_remaining = texture->texture_size;
-      band->texture = cogl_texture_ref (texture->texture);
+      band->texture = cogl_handle_ref (texture->texture);
       band->texture_size = texture->texture_size;
       band->next = cache->bands;
       cache->bands = band;
@@ -350,7 +350,7 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
   key->glyph = glyph;
 
   value = g_slice_new (CoglPangoGlyphCacheValue);
-  value->texture = cogl_texture_ref (band->texture);
+  value->texture = cogl_handle_ref (band->texture);
   value->tx1 = (float)(band->space_remaining)
              / band->texture_size;
   value->tx2 = (float)(band->space_remaining + width)

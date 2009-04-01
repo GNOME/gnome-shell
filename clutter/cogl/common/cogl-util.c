@@ -40,6 +40,7 @@
 #include "cogl-shader.h"
 #include "cogl-texture.h"
 #include "cogl-types.h"
+#include "cogl-handle.h"
 #include "cogl-util.h"
 
 /**
@@ -55,7 +56,7 @@ cogl_util_next_p2 (int a)
 {
   int rval=1;
 
-  while(rval < a) 
+  while(rval < a)
     rval <<= 1;
 
   return rval;
@@ -66,45 +67,29 @@ cogl_util_next_p2 (int a)
 CoglHandle
 cogl_handle_ref (CoglHandle handle)
 {
+  CoglHandleObject *obj = (CoglHandleObject *)handle;
+
   g_return_val_if_fail (handle != COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
 
-  if (cogl_is_texture (handle))
-    return cogl_texture_ref (handle);
-
-  if (cogl_is_offscreen (handle))
-    return cogl_offscreen_ref (handle);
-
-  if (cogl_is_material (handle))
-    return cogl_material_ref (handle);
-
-  if (cogl_is_program (handle))
-    return cogl_program_ref (handle);
-
-  if (cogl_is_shader (handle))
-    return cogl_shader_ref (handle);
-
-  return COGL_INVALID_HANDLE;
+  obj->ref_count++;
+  return handle;
 }
 
 void
 cogl_handle_unref (CoglHandle handle)
 {
+  CoglHandleObject *obj = (CoglHandleObject *)handle;
+
   g_return_if_fail (handle != COGL_INVALID_HANDLE);
 
-  if (cogl_is_texture (handle))
-    cogl_texture_unref (handle);
+  if (--obj->ref_count < 1)
+    {
+      void (*free_func)(void *obj);
 
-  if (cogl_is_offscreen (handle))
-    cogl_offscreen_unref (handle);
-
-  if (cogl_is_material (handle))
-    cogl_material_unref (handle);
-
-  if (cogl_is_program (handle))
-    cogl_program_unref (handle);
-
-  if (cogl_is_shader (handle))
-    cogl_shader_unref (handle);
+      COGL_HANDLE_DEBUG_FREE (obj);
+      free_func = obj->klass->virt_free;
+      free_func (obj);
+    }
 }
 
 GType

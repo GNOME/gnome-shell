@@ -62,13 +62,10 @@ typedef struct
   float            inverse_projection[16];
 
   /* Materials */
-  GArray           *material_handles;
-  GArray           *material_layer_handles;
   CoglHandle        default_material;
   CoglHandle	    source_material;
 
   /* Textures */
-  GArray	   *texture_handles;
   CoglHandle        default_gl_texture_2d_tex;
   CoglHandle        default_gl_texture_rect_tex;
   CoglHandle        texture_download_material;
@@ -89,20 +86,10 @@ typedef struct
   guint             n_texcoord_arrays_enabled;
 
   /* Framebuffer objects */
-  GArray           *fbo_handles;
   CoglBufferTarget  draw_buffer;
-
-  /* Shaders */
-  GArray           *shader_handles;
-
-  /* Programs */
-  GArray           *program_handles;
 
   /* Clip stack */
   CoglClipStackState clip;
-
-  /* Vertex buffers */
-  GArray           *vertex_buffer_handles;
 
   /* Primitives */
   floatVec2         path_start;

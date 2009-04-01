@@ -30,10 +30,8 @@
 static void _cogl_material_free (CoglMaterial *tex);
 static void _cogl_material_layer_free (CoglMaterialLayer *layer);
 
-COGL_HANDLE_DEFINE (Material, material, material_handles);
-COGL_HANDLE_DEFINE (MaterialLayer,
-		    material_layer,
-		    material_layer_handles);
+COGL_HANDLE_DEFINE (Material, material);
+COGL_HANDLE_DEFINE (MaterialLayer, material_layer);
 
 /* #define DISABLE_MATERIAL_CACHE 1 */
 
@@ -47,9 +45,6 @@ cogl_material_new (void)
   GLfloat *diffuse = material->diffuse;
   GLfloat *specular = material->specular;
   GLfloat *emission = material->emission;
-
-  material->ref_count = 1;
-  COGL_HANDLE_DEBUG_NEW (material, material);
 
   /* Use the same defaults as the GL spec... */
   unlit[0] = 1.0; unlit[1] = 1.0; unlit[2] = 1.0; unlit[3] = 1.0;
@@ -84,7 +79,7 @@ _cogl_material_free (CoglMaterial *material)
      released! Do that separately before this! */
 
   g_list_foreach (material->layers,
-		  (GFunc)cogl_material_layer_unref, NULL);
+		  (GFunc)cogl_handle_unref, NULL);
   g_free (material);
 }
 
@@ -424,7 +419,7 @@ _cogl_material_get_layer (CoglMaterial *material,
 
   layer = g_new0 (CoglMaterialLayer, 1);
 
-  layer->ref_count = 1;
+  layer_handle = _cogl_material_layer_handle_new (layer);
   layer->index = index_;
   layer->flags = COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
   layer->texture = COGL_INVALID_HANDLE;
@@ -449,7 +444,6 @@ _cogl_material_get_layer (CoglMaterial *material,
 
   cogl_matrix_init_identity (&layer->matrix);
 
-  layer_handle = _cogl_material_layer_handle_new (layer);
   /* Note: see comment after for() loop above */
   material->layers =
     g_list_insert_before (material->layers, tmp, layer_handle);
@@ -488,10 +482,10 @@ cogl_material_set_layer (CoglHandle material_handle,
        * MAX_COMBINED_TEXTURE_IMAGE_UNITS layers. */
     }
 
-  cogl_texture_ref (texture_handle);
+  cogl_handle_ref (texture_handle);
 
   if (layer->texture)
-    cogl_texture_unref (layer->texture);
+    cogl_handle_unref (layer->texture);
 
   layer->texture = texture_handle;
 
@@ -625,7 +619,7 @@ cogl_material_set_layer_matrix (CoglHandle material_handle,
 static void
 _cogl_material_layer_free (CoglMaterialLayer *layer)
 {
-  cogl_texture_unref (layer->texture);
+  cogl_handle_unref (layer->texture);
   g_free (layer);
 }
 
@@ -646,7 +640,7 @@ cogl_material_remove_layer (CoglHandle material_handle,
       if (layer->index == layer_index)
 	{
 	  CoglHandle handle = (CoglHandle) layer;
-	  cogl_material_layer_unref (handle);
+	  cogl_handle_unref (handle);
 	  material->layers = g_list_remove (material->layers, layer);
 	  break;
 	}
@@ -1131,8 +1125,9 @@ cogl_material_flush_gl_state (CoglHandle handle, ...)
    * cogl_material_flush_gl_state is called, we can compare the incomming
    * material pointer with ctx->current_material
    */
-  cogl_material_ref (handle);
-  cogl_material_unref (ctx->current_material);
+  cogl_handle_ref (handle);
+  if (ctx->current_material)
+    cogl_handle_unref (ctx->current_material);
 
   ctx->current_material = handle;
   ctx->current_material_flags = material->flags;
@@ -1150,10 +1145,10 @@ cogl_set_source (CoglHandle material_handle)
   if (ctx->source_material == material_handle)
     return;
 
-  cogl_material_ref (material_handle);
+  cogl_handle_ref (material_handle);
 
   if (ctx->source_material)
-    cogl_material_unref (ctx->source_material);
+    cogl_handle_unref (ctx->source_material);
 
   ctx->source_material = material_handle;
 }

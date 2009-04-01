@@ -367,7 +367,7 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
 
   clutter_main ();
 
-  cogl_vertex_buffer_unref (state.buffer);
+  cogl_handle_unref (state.buffer);
 
   g_source_remove (idle_source);
 

@@ -27,6 +27,7 @@
 #define __COGL_TEXTURE_H
 
 #include "cogl-bitmap.h"
+#include "cogl-handle.h"
 
 typedef struct _CoglTexture       CoglTexture;
 typedef struct _CoglTexSliceSpan  CoglTexSliceSpan;
@@ -58,7 +59,7 @@ struct _CoglSpanIter
 
 struct _CoglTexture
 {
-  guint              ref_count;
+  CoglHandleObject   _parent;
   CoglBitmap         bitmap;
   gboolean           bitmap_owner;
   GLenum             gl_target;

@@ -111,7 +111,7 @@ test_coglbox_dispose (GObject *object)
   
   priv = TEST_COGLBOX_GET_PRIVATE (object);
   
-  cogl_texture_unref (priv->cogl_handle);
+  cogl_handle_unref (priv->cogl_handle);
   glDeleteTextures (1, &priv->gl_handle);
   
   G_OBJECT_CLASS (test_coglbox_parent_class)->dispose (object);

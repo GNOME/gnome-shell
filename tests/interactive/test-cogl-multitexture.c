@@ -144,10 +144,10 @@ test_cogl_multitexture_main (int argc, char *argv[])
 
   clutter_main();
 
-  cogl_material_unref (state->material);
-  cogl_texture_unref (state->alpha_tex);
-  cogl_texture_unref (state->redhand_tex);
-  cogl_texture_unref (state->light_tex0);
+  cogl_handle_unref (state->material);
+  cogl_handle_unref (state->alpha_tex);
+  cogl_handle_unref (state->redhand_tex);
+  cogl_handle_unref (state->light_tex0);
   g_free (state);
 
   g_object_unref (r_behave);
