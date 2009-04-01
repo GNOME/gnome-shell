@@ -88,11 +88,6 @@ struct _ClutterGroupClass
   /*< private >*/
   ClutterActorClass parent_class;
 
-  void (*add)    (ClutterGroup *group,
-		  ClutterActor *child);
-  void (*remove) (ClutterGroup *group,
-		  ClutterActor *child);
-
   /* padding for future expansion */
   void (*_clutter_reserved1) (void);
   void (*_clutter_reserved2) (void);
@@ -117,24 +112,6 @@ void          clutter_group_remove_all       (ClutterGroup    *group);
       ClutterActor *_actor = (ClutterActor *) (actor);                  \
       clutter_container_add_actor (_container, _actor);                 \
     }                                                   } G_STMT_END
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
-void          clutter_group_add_many         (ClutterGroup    *group,
-                                              ClutterActor    *first_actor,
-                                              ...) G_GNUC_NULL_TERMINATED;
-void          clutter_group_add_many_valist  (ClutterGroup    *group,
-                                              ClutterActor    *first_actor,
-                                              va_list          var_args);
-void          clutter_group_remove           (ClutterGroup    *group,
-                                              ClutterActor    *actor);
-void          clutter_group_raise            (ClutterGroup    *self,
-					      ClutterActor    *actor, 
-					      ClutterActor    *sibling);
-void          clutter_group_lower            (ClutterGroup    *self,
-					      ClutterActor    *actor, 
-					      ClutterActor    *sibling);
-void          clutter_group_sort_depth_order (ClutterGroup    *self);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

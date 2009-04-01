@@ -157,15 +157,9 @@ clutter_clone_get_type
 ClutterGroup
 ClutterGroupClass
 clutter_group_new
-clutter_group_add_many
-clutter_group_add_many_valist
-clutter_group_remove
 clutter_group_remove_all
 clutter_group_get_n_children
 clutter_group_get_nth_child
-clutter_group_raise
-clutter_group_lower
-clutter_group_sort_depth_order
 <SUBSECTION Standard>
 CLUTTER_GROUP
 CLUTTER_IS_GROUP

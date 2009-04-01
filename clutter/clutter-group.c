@@ -393,13 +393,6 @@ clutter_group_real_add (ClutterContainer *container,
 
   g_object_ref (actor);
 
-  /* the old ClutterGroup::add signal was emitted before the
-   * actor was added to the group, so that the class handler
-   * would actually add it. we need to emit the ::add signal
-   * here so that handlers expecting it will not freak out.
-   */
-  g_signal_emit (group, group_signals[ADD], 0, actor);
-
   priv->children = g_list_append (priv->children, actor);
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (group));
 
@@ -423,13 +416,6 @@ clutter_group_real_remove (ClutterContainer *container,
   ClutterGroupPrivate *priv = group->priv;
 
   g_object_ref (actor);
-
-  /* the old ClutterGroup::remove signal was emitted before the
-   * actor was removed from the group. see the comment in
-   * clutter_group_real_add() above for why we need to emit ::remove
-   * here and not later
-   */
-  g_signal_emit (group, group_signals[REMOVE], 0, actor);
 
   priv->children = g_list_remove (priv->children, actor);
   clutter_actor_unparent (actor);
@@ -595,6 +581,8 @@ clutter_group_class_init (ClutterGroupClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
+  g_type_class_add_private (object_class, sizeof (ClutterGroupPrivate));
+
   object_class->dispose = clutter_group_dispose;
 
   actor_class->paint           = clutter_group_paint;
@@ -607,49 +595,6 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->get_preferred_width  = clutter_group_get_preferred_width;
   actor_class->get_preferred_height = clutter_group_get_preferred_height;
   actor_class->allocate             = clutter_group_allocate;
-
-  /**
-   * ClutterGroup::add:
-   * @group: the #ClutterGroup that received the signal
-   * @actor: the actor added to the group
-   *
-   * The ::add signal is emitted each time an actor has been added
-   * to the group.
-   *
-   * @Deprecated: 0.4: This signal is deprecated, you should connect
-   *   to the ClutterContainer::actor-added signal instead.
-   */
-  group_signals[ADD] =
-    g_signal_new ("add",
-		  G_OBJECT_CLASS_TYPE (object_class),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ClutterGroupClass, add),
-		  NULL, NULL,
-		  clutter_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_ACTOR);
-  /**
-   * ClutterGroup::remove:
-   * @group: the #ClutterGroup that received the signal
-   * @actor: the actor added to the group
-   *
-   * The ::remove signal is emitted each time an actor has been removed
-   * from the group
-   *
-   * @Deprecated: 0.4: This signal is deprecated, you should connect
-   *   to the ClutterContainer::actor-removed signal instead
-   */
-  group_signals[REMOVE] =
-    g_signal_new ("remove",
-		  G_OBJECT_CLASS_TYPE (object_class),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ClutterGroupClass, remove),
-		  NULL, NULL,
-		  clutter_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_ACTOR);
-
-  g_type_class_add_private (object_class, sizeof (ClutterGroupPrivate));
 }
 
 static void
@@ -669,67 +614,6 @@ ClutterActor *
 clutter_group_new (void)
 {
   return g_object_new (CLUTTER_TYPE_GROUP, NULL);
-}
-
-/**
- * clutter_group_add_many_valist:
- * @group: a #ClutterGroup
- * @first_actor: the #ClutterActor actor to add to the group
- * @var_args: the actors to be added
- *
- * Similar to clutter_group_add_many() but using a va_list.  Use this
- * function inside bindings.
- *
- * @Deprecated: 0.4: This function is obsolete, use
- *   clutter_container_add_valist() instead.
- */
-void
-clutter_group_add_many_valist (ClutterGroup *group,
-			       ClutterActor *first_actor,
-			       va_list       var_args)
-{
-  clutter_container_add_valist (CLUTTER_CONTAINER (group), first_actor, var_args);
-}
-
-/**
- * clutter_group_add_many:
- * @group: A #ClutterGroup
- * @first_actor: the #ClutterActor actor to add to the group
- * @Varargs: additional actors to add to the group
- *
- * Adds a %NULL-terminated list of actors to a group.  This function is
- * equivalent to calling clutter_group_add() for each member of the list.
- *
- * @Deprecated: 0.4: This function is obsolete, use clutter_container_add()
- *   instead.
- */
-void
-clutter_group_add_many (ClutterGroup *group,
-		        ClutterActor *first_actor,
-			...)
-{
-  va_list args;
-
-  va_start (args, first_actor);
-  clutter_container_add_valist (CLUTTER_CONTAINER (group), first_actor, args);
-  va_end (args);
-}
-
-/**
- * clutter_group_remove
- * @group: A #ClutterGroup
- * @actor: A #ClutterActor
- *
- * Removes a child #ClutterActor from the parent #ClutterGroup.
- *
- * @Deprecated: 0.4: This function is obsolete, use
- *   clutter_container_remove_actor() instead.
- */
-void
-clutter_group_remove (ClutterGroup *group,
-		      ClutterActor *actor)
-{
-  clutter_container_remove_actor (CLUTTER_CONTAINER (group), actor);
 }
 
 /**
@@ -756,24 +640,6 @@ clutter_group_remove_all (ClutterGroup *group)
 }
 
 /**
- * clutter_group_get_children:
- * @self: A #ClutterGroup
- *
- * Get a list containing all actors contained in the group.
- *
- * Return value: A list of #ClutterActors. You  should free the returned
- *   list using g_list_free() when finished using it.
- *
- * @Deprecated: 0.4: This function is obsolete, use
- *   clutter_container_get_children() instead.
- */
-GList*
-clutter_group_get_children (ClutterGroup *self)
-{
-  return clutter_container_get_children (CLUTTER_CONTAINER (self));
-}
-
-/**
  * clutter_group_get_n_children:
  * @self: A #ClutterGroup
  *
@@ -782,7 +648,7 @@ clutter_group_get_children (ClutterGroup *self)
  * Return value: The number of child actors held in the group.
  *
  * Since: 0.2
- **/
+ */
 gint
 clutter_group_get_n_children (ClutterGroup *self)
 {
@@ -798,10 +664,11 @@ clutter_group_get_n_children (ClutterGroup *self)
  *
  * Gets a groups child held at @index_ in stack.
  *
- * Return value: (transfer none): A Clutter actor or NULL if @index_ is invalid.
+ * Return value: (transfer none): A Clutter actor, or %NULL if
+ *   @index_ is invalid.
  *
  * Since: 0.2
- **/
+ */
 ClutterActor *
 clutter_group_get_nth_child (ClutterGroup *self,
 			     gint          index_)
@@ -809,71 +676,4 @@ clutter_group_get_nth_child (ClutterGroup *self,
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
   return g_list_nth_data (self->priv->children, index_);
-}
-
-/**
- * clutter_group_raise:
- * @self: a #ClutterGroup
- * @actor: a #ClutterActor
- * @sibling: a #ClutterActor
- *
- * Raises @actor to @sibling level in the depth ordering.
- *
- * Deprecated: 0.6: Use clutter_container_raise_child() instead.
- */
-void
-clutter_group_raise (ClutterGroup *self,
-		     ClutterActor *actor,
-		     ClutterActor *sibling)
-{
-  g_return_if_fail (CLUTTER_IS_GROUP (self));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
-
-  if (actor == sibling)
-    return;
-
-  clutter_container_raise_child (CLUTTER_CONTAINER (self), actor, sibling);
-}
-
-/**
- * clutter_group_lower:
- * @self: a #ClutterGroup
- * @actor: a #ClutterActor
- * @sibling: a #ClutterActor
- *
- * Lowers @actor to @sibling level in the depth ordering.
- *
- * Deprecated: 0.6: Use clutter_container_lower_child() instead
- */
-void
-clutter_group_lower (ClutterGroup *self,
-		     ClutterActor *actor,
-		     ClutterActor *sibling)
-{
-  g_return_if_fail (CLUTTER_IS_GROUP (self));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
-
-  if (actor == sibling)
-    return;
-
-  clutter_container_lower_child (CLUTTER_CONTAINER (self), actor, sibling);
-}
-
-/**
- * clutter_group_sort_depth_order:
- * @self: A #ClutterGroup
- *
- * Sorts a #ClutterGroup's children by their depth value.
- * This function should not be used by applications.
- *
- * Deprecated: 0.6: Use clutter_container_sort_depth_order() instead.
- */
-void
-clutter_group_sort_depth_order (ClutterGroup *self)
-{
-  g_return_if_fail (CLUTTER_IS_GROUP (self));
-
-  clutter_container_sort_depth_order (CLUTTER_CONTAINER (self));
 }
