@@ -129,12 +129,6 @@ CoglHandle            clutter_shader_get_cogl_program         (ClutterShader    
 CoglHandle            clutter_shader_get_cogl_fragment_shader (ClutterShader      *shader);
 CoglHandle            clutter_shader_get_cogl_vertex_shader   (ClutterShader      *shader);
 
-#ifndef CLUTTER_DISABLE_DEPRECATED
-void                  clutter_shader_set_uniform_1f           (ClutterShader      *shader,
-                                                               const gchar        *name,
-                                                               gfloat              value);
-#endif
-
 /* private */
 void                  _clutter_shader_release_all        (void);
 

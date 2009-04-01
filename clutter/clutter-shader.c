@@ -696,31 +696,6 @@ clutter_shader_get_is_enabled (ClutterShader *shader)
 }
 
 /**
- * clutter_shader_set_uniform_1f:
- * @shader: a #ClutterShader
- * @name: name of uniform in vertex or fragment program to set.
- * @value: the new value of the uniform.
- *
- * Sets a user configurable variable in the shader programs attached
- * to a #ClutterShader.
- *
- * Since: 0.6
- *
- * Deprecated: 1.0: Use clutter_shader_set_uniform() instead
- */
-void
-clutter_shader_set_uniform_1f (ClutterShader *shader,
-                               const gchar   *name,
-                               gfloat         value)
-{
-  GValue real_value = { 0, };
-
-  g_value_init (&real_value, G_TYPE_FLOAT);
-  clutter_shader_set_uniform (shader, name, &real_value);
-  g_value_unset (&real_value);
-}
-
-/**
  * clutter_shader_set_uniform:
  * @shader: a #ClutterShader.
  * @name: name of uniform in GLSL shader program to set.

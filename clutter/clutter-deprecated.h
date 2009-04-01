@@ -146,4 +146,6 @@
 #define clutter_effect_scale    clutter_effect_scale_DEPRECATED_BY_clutter_actor_animate
 #define clutter_effect_rotate   clutter_effect_rotate_DEPRECATED_BY_clutter_actor_animate
 
+#define clutter_shader_set_uniform_1f   clutter_shader_set_uniform_1f_REPLACED_BY_clutter_shader_set_uniform
+
 #endif /* CLUTTER_DEPRECATED_H */

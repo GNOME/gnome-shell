@@ -1380,7 +1380,6 @@ clutter_shader_set_uniform
 clutter_shader_get_cogl_program
 clutter_shader_get_cogl_fragment_shader
 clutter_shader_get_cogl_vertex_shader
-clutter_shader_set_uniform_1f
 
 <SUBSECTION>
 CLUTTER_VALUE_HOLDS_SHADER_FLOAT
