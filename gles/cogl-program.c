@@ -42,7 +42,7 @@
 
 static void _cogl_program_free (CoglProgram *program);
 
-COGL_HANDLE_DEFINE (Program, program, program_handles);
+COGL_HANDLE_DEFINE (Program, program);
 
 static void
 _cogl_program_free (CoglProgram *program)
@@ -52,7 +52,7 @@ _cogl_program_free (CoglProgram *program)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Unref all of the attached shaders */
-  g_slist_foreach (program->attached_shaders, (GFunc) cogl_shader_unref, NULL);
+  g_slist_foreach (program->attached_shaders, (GFunc) cogl_handle_unref, NULL);
   /* Destroy the list */
   g_slist_free (program->attached_shaders);
 
@@ -75,12 +75,9 @@ cogl_create_program (void)
   CoglProgram *program;
 
   program = g_slice_new (CoglProgram);
-  program->ref_count = 1;
   program->attached_shaders = NULL;
   memset (program->custom_uniform_names, 0,
 	  COGL_GLES2_NUM_CUSTOM_UNIFORMS * sizeof (char *));
-
-  COGL_HANDLE_DEBUG_NEW (program, program);
 
   return _cogl_program_handle_new (program);
 }
@@ -99,7 +96,7 @@ cogl_program_attach_shader (CoglHandle program_handle,
   program = _cogl_program_pointer_from_handle (program_handle);
   program->attached_shaders
     = g_slist_prepend (program->attached_shaders,
-		       cogl_shader_ref (shader_handle));
+		       cogl_handle_ref (shader_handle));
 
   /* Whenever the shader changes we will need to relink the program
      with the fixed functionality shaders so we should forget the

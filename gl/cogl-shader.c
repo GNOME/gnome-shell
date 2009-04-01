@@ -45,7 +45,7 @@
 
 static void _cogl_shader_free (CoglShader *shader);
 
-COGL_HANDLE_DEFINE (Shader, shader, shader_handles);
+COGL_HANDLE_DEFINE (Shader, shader);
 
 static void
 _cogl_shader_free (CoglShader *shader)
@@ -64,10 +64,7 @@ cogl_create_shader (COGLenum shaderType)
   _COGL_GET_CONTEXT (ctx, 0);
 
   shader = g_slice_new (CoglShader);
-  shader->ref_count = 1;
   shader->gl_handle = glCreateShaderObjectARB (shaderType);
-
-  COGL_HANDLE_DEBUG_NEW (shader, shader);
 
   return _cogl_shader_handle_new (shader);
 }

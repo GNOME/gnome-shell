@@ -65,7 +65,7 @@
 
 static void _cogl_program_free (CoglProgram *program);
 
-COGL_HANDLE_DEFINE (Program, program, program_handles);
+COGL_HANDLE_DEFINE (Program, program);
 
 static void
 _cogl_program_free (CoglProgram *program)
@@ -83,10 +83,7 @@ cogl_create_program (void)
   _COGL_GET_CONTEXT (ctx, 0);
 
   program = g_slice_new (CoglProgram);
-  program->ref_count = 1;
   program->gl_handle = glCreateProgramObjectARB ();
-
-  COGL_HANDLE_DEBUG_NEW (program, program);
 
   return _cogl_program_handle_new (program);
 }

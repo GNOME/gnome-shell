@@ -26,14 +26,16 @@
 #ifndef __COGL_FBO_H
 #define __COGL_FBO_H
 
+#include "cogl-handle.h"
+
 typedef struct
 {
-  guint  ref_count;
+  CoglHandleObject _parent;
   int    width;
   int    height;
   GLuint gl_handle;
   GLuint gl_stencil_handle;
-  
+
 } CoglFbo;
 
 #endif /* __COGL_FBO_H */

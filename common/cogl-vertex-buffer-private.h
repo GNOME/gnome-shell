@@ -24,6 +24,10 @@
 #ifndef __COGL_VERTEX_BUFFER_H
 #define __COGL_VERTEX_BUFFER_H
 
+#include "cogl-handle.h"
+
+#include <glib.h>
+
 /* Note we put quite a bit into the flags here to help keep
  * the down size of the CoglVertexBufferAttrib struct below. */
 typedef enum _CoglVertexBufferAttribFlags
@@ -129,7 +133,8 @@ typedef struct _CoglVertexBufferVBO
 
 typedef struct _CoglVertexBuffer
 {
-  guint  ref_count;
+  CoglHandleObject _parent;
+
   guint  n_vertices; /*!< The number of vertices in the buffer */
   GList *submitted_vbos; /* The VBOs currently submitted to the GPU */
 

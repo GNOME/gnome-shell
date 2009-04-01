@@ -62,12 +62,9 @@ cogl_create_context ()
 
   _context->indirect = gl_is_indirect;
 
-  _context->material_handles = NULL;
-  _context->material_layer_handles = NULL;
   _context->default_material = cogl_material_new ();
   _context->source_material = NULL;
 
-  _context->texture_handles = NULL;
   _context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
   _context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
 
@@ -83,14 +80,7 @@ cogl_create_context ()
                                           sizeof (CoglLayerInfo));
   _context->n_texcoord_arrays_enabled = 0;
 
-  _context->fbo_handles = NULL;
   _context->draw_buffer = COGL_WINDOW_BUFFER;
-
-  _context->shader_handles = NULL;
-
-  _context->program_handles = NULL;
-
-  _context->vertex_buffer_handles = NULL;
 
   _context->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   _context->last_path = 0;
@@ -193,22 +183,13 @@ cogl_destroy_context ()
   if (_context->path_nodes)
     g_array_free (_context->path_nodes, TRUE);
 
-  if (_context->texture_handles)
-    g_array_free (_context->texture_handles, TRUE);
-  if (_context->fbo_handles)
-    g_array_free (_context->fbo_handles, TRUE);
-  if (_context->shader_handles)
-    g_array_free (_context->shader_handles, TRUE);
-  if (_context->program_handles)
-    g_array_free (_context->program_handles, TRUE);
-
   if (_context->default_gl_texture_2d_tex)
-    cogl_texture_unref (_context->default_gl_texture_2d_tex);
+    cogl_handle_unref (_context->default_gl_texture_2d_tex);
   if (_context->default_gl_texture_rect_tex)
-    cogl_texture_unref (_context->default_gl_texture_rect_tex);
+    cogl_handle_unref (_context->default_gl_texture_rect_tex);
 
   if (_context->default_material)
-    cogl_material_unref (_context->default_material);
+    cogl_handle_unref (_context->default_material);
 
   if (_context->journal)
     g_array_free (_context->journal, TRUE);

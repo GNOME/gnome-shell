@@ -3,6 +3,7 @@
 
 #include "cogl-material.h"
 #include "cogl-matrix.h"
+#include "cogl-handle.h"
 
 #include <glib.h>
 
@@ -34,7 +35,7 @@ typedef struct _CoglLayerInfo
 
 struct _CoglMaterialLayer
 {
-  guint	       ref_count;
+  CoglHandleObject _parent;
   guint	       index;	/*!< lowest index is blended first then others
 			     on top */
   gulong       flags;
@@ -68,7 +69,7 @@ typedef enum _CoglMaterialFlags
 
 struct _CoglMaterial
 {
-  guint     ref_count;
+  CoglHandleObject _parent;
 
   gulong    flags;
 

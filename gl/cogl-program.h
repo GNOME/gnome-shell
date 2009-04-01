@@ -26,11 +26,13 @@
 #ifndef __COGL_PROGRAM_H
 #define __COGL_PROGRAM_H
 
+#include "cogl-handle.h"
+
 typedef struct _CoglProgram CoglProgram;
 
 struct _CoglProgram
 {
-  guint              ref_count;
+  CoglHandleObject   _parent;
   GLhandleARB        gl_handle;
 };
 

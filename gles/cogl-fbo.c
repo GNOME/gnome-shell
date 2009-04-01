@@ -40,7 +40,7 @@
 
 static void _cogl_offscreen_free (CoglFbo *fbo);
 
-COGL_HANDLE_DEFINE (Fbo, offscreen, fbo_handles);
+COGL_HANDLE_DEFINE (Fbo, offscreen);
 
 CoglHandle
 cogl_offscreen_new_to_texture (CoglHandle texhandle)
@@ -124,13 +124,10 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   /* Allocate and init a CoglFbo object (store non-wasted size
      for subsequent blits and viewport setup) */
   fbo = (CoglFbo*) g_malloc (sizeof (CoglFbo));
-  fbo->ref_count         = 1;
   fbo->width             = x_span->size - x_span->waste;
   fbo->height            = y_span->size - y_span->waste;
   fbo->gl_handle         = fbo_gl_handle;
   fbo->gl_stencil_handle = gl_stencil_handle;
-
-  COGL_HANDLE_DEBUG_NEW (offscreen, fbo);
 
   return _cogl_offscreen_handle_new (fbo);
 }
