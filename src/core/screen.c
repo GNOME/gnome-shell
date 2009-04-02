@@ -626,8 +626,7 @@ meta_screen_new (MetaDisplay *display,
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
   screen->compositor_data = NULL;
- 
-  screen->guard_window = create_guard_window (xdisplay, screen);
+  screen->guard_window = None;
 
   {
     XFontStruct *font_info;
@@ -884,7 +883,11 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   GList *list;
 
   meta_display_grab (screen->display);
-  
+
+  if (screen->guard_window == None)
+    screen->guard_window = create_guard_window (screen->display->xdisplay,
+                                                screen);
+
   windows = list_windows (screen);
 
   meta_stack_freeze (screen->stack);
