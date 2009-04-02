@@ -116,7 +116,10 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/fixed", test_fixed_constants);
 
   TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
+  TEST_CONFORM_SIMPLE ("/invariants", test_shown_not_parented);
   TEST_CONFORM_SIMPLE ("/invariants", test_realized);
+  TEST_CONFORM_SIMPLE ("/invariants", test_realize_not_recursive);
+  TEST_CONFORM_SIMPLE ("/invariants", test_map_recursive);
   TEST_CONFORM_SIMPLE ("/invariants", test_mapped);
   TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
 

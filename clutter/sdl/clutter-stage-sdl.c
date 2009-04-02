@@ -199,8 +199,6 @@ clutter_stage_sdl_dispose (GObject *gobject)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (gobject);
 
-  clutter_actor_unrealize (CLUTTER_ACTOR (stage_sdl));
-
   G_OBJECT_CLASS (clutter_stage_sdl_parent_class)->dispose (gobject);
 }
 

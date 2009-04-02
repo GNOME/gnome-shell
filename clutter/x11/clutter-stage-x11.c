@@ -297,8 +297,7 @@ clutter_stage_x11_allocate (ClutterActor          *self,
       if (stage_x11->xpixmap != None)
         {
           /* Need to recreate to resize */
-          clutter_actor_unrealize (self);
-          clutter_actor_realize (self);
+          _clutter_actor_rerealize (self, NULL, NULL);
         }
     }
 
@@ -529,11 +528,6 @@ clutter_stage_x11_finalize (GObject *gobject)
 static void
 clutter_stage_x11_dispose (GObject *gobject)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
-
-  if (stage_x11->xwin)
-    clutter_actor_unrealize (CLUTTER_ACTOR (stage_x11));
-
   G_OBJECT_CLASS (clutter_stage_x11_parent_class)->dispose (gobject);
 }
 
@@ -671,6 +665,29 @@ clutter_x11_get_stage_visual (ClutterStage *stage)
   return CLUTTER_STAGE_X11 (impl)->xvisinfo;
 }
 
+typedef struct {
+  ClutterStageX11 *stage_x11;
+  ClutterGeometry geom;
+  Window xwindow;
+} ForeignWindowData;
+
+static void
+set_foreign_window_callback (ClutterActor *actor,
+                             void         *data)
+{
+  ForeignWindowData *fwd = data;
+
+  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) fwd->xwindow);
+
+  fwd->stage_x11->xwin = fwd->xwindow;
+  fwd->stage_x11->is_foreign_xwin = TRUE;
+
+  fwd->stage_x11->xwin_width = fwd->geom.width;
+  fwd->stage_x11->xwin_height = fwd->geom.height;
+
+  clutter_actor_set_geometry (actor, &fwd->geom);
+}
+
 /**
  * clutter_x11_set_stage_foreign:
  * @stage: a #ClutterStage
@@ -693,7 +710,7 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   guint width, height, border, depth;
   Window root_return;
   Status status;
-  ClutterGeometry geom;
+  ForeignWindowData fwd;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (xwindow != None, FALSE);
@@ -721,20 +738,16 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
       return FALSE;
     }
 
-  clutter_actor_unrealize (actor);
+  fwd.stage_x11 = stage_x11;
+  fwd.xwindow = xwindow;
+  fwd.geom.x = x;
+  fwd.geom.y = y;
+  fwd.geom.width = width;
+  fwd.geom.height = height;
 
-  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) xwindow);
-
-  stage_x11->xwin = xwindow;
-  stage_x11->is_foreign_xwin = TRUE;
-
-  geom.x = x;
-  geom.y = y;
-  geom.width = stage_x11->xwin_width = width;
-  geom.height = stage_x11->xwin_height = height;
-
-  clutter_actor_set_geometry (actor, &geom);
-  clutter_actor_realize (actor);
+  _clutter_actor_rerealize (actor,
+                            set_foreign_window_callback,
+                            &fwd);
 
   CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
 
@@ -744,11 +757,11 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 void
 clutter_stage_x11_map (ClutterStageX11 *stage_x11)
 {
-  /* set the mapped flag on the implementation */
-  CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
+  /* set the mapped state on the wrapper */
+  clutter_actor_map (CLUTTER_ACTOR (stage_x11->wrapper));
 
-  /* and on the wrapper itself */
-  CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
+  /* and on the implementation second */
+  clutter_actor_map (CLUTTER_ACTOR (stage_x11));
 
   if (stage_x11->fullscreen_on_map)
     clutter_stage_fullscreen (CLUTTER_STAGE (stage_x11->wrapper));
@@ -762,8 +775,8 @@ void
 clutter_stage_x11_unmap (ClutterStageX11 *stage_x11)
 {
   /* like above, unset the MAPPED stage on both the implementation and
-   * the wrapper
+   * the wrapper, but unmap in reverse order from map
    */
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
+  clutter_actor_unmap (CLUTTER_ACTOR (stage_x11));
+  clutter_actor_unmap (CLUTTER_ACTOR (stage_x11->wrapper));
 }

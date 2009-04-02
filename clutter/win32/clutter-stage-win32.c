@@ -574,10 +574,8 @@ clutter_stage_win32_unrealize (ClutterActor *actor)
 
   CLUTTER_NOTE (BACKEND, "Unrealizing stage");
 
-  /* Chain up so all children get unrealized, needed to move texture
-   * data across contexts
-   */
-  CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize != NULL)
+    CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize (actor);
 
   if (stage_win32->client_dc)
     {
@@ -601,9 +599,6 @@ static void
 clutter_stage_win32_dispose (GObject *gobject)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (gobject);
-
-  if (stage_win32->hwnd)
-    clutter_actor_unrealize (CLUTTER_ACTOR (gobject));
 
   G_OBJECT_CLASS (clutter_stage_win32_parent_class)->dispose (gobject);
 }
@@ -748,6 +743,12 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
 
   impl = _clutter_stage_get_window (stage);
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
+
+  /* FIXME this needs updating to use _clutter_actor_rerealize(),
+   * see the analogous code in x11 backend. Probably best if
+   * win32 maintainer does it so they can be sure it compiles
+   * and works.
+   */
 
   clutter_actor_unrealize (actor);
 

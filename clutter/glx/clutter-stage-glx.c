@@ -67,10 +67,8 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
 
   g_object_get (stage_x11->wrapper, "offscreen", &was_offscreen, NULL);
 
-  /* Chain up so all children get unrealized, needed to move texture data
-   * across contexts
-  */
-  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize != NULL)
+    CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize (actor);
 
   clutter_x11_trap_x_errors ();
 
@@ -310,12 +308,6 @@ fail:
 static void
 clutter_stage_glx_dispose (GObject *gobject)
 {
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (gobject);
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
-
-  if (stage_x11->xwin)
-    clutter_actor_unrealize (CLUTTER_ACTOR (stage_glx));
-
   G_OBJECT_CLASS (clutter_stage_glx_parent_class)->dispose (gobject);
 }
 

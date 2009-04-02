@@ -393,6 +393,10 @@ typedef struct {
   stage_fruity = CLUTTER_STAGE_EGL(backend_fruity->stage);
 
   alive = FALSE;
+  /* FIXME why is this unrealize here? is the intent to destroy the stage?
+   * or hide it? Trying to clean up all manual unrealization so
+   * clutter_actor_unrealize() can be made private to clutter-actor.c
+   */
   clutter_actor_unrealize (CLUTTER_ACTOR (stage_fruity));
   clutter_main_quit ();
 }

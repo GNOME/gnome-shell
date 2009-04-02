@@ -38,7 +38,8 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   g_object_get (stage_x11->wrapper, "offscreen", &was_offscreen, NULL);
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize != NULL)
+    CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize (actor);
 
   clutter_x11_trap_x_errors ();
 
@@ -274,9 +275,6 @@ clutter_stage_egl_dispose (GObject *gobject)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (gobject);
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
-
-  if (stage_x11->xwin)
-    clutter_actor_unrealize (CLUTTER_ACTOR (stage_egl));
 
   G_OBJECT_CLASS (clutter_stage_egl_parent_class)->dispose (gobject);
 }

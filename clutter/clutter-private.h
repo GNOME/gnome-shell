@@ -217,6 +217,10 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
 						       ClutterActor *ancestor);
 
+void _clutter_actor_rerealize           (ClutterActor    *self,
+                                         ClutterCallback  callback,
+                                         void            *data);
+
 void _clutter_actor_set_opacity_parent (ClutterActor *self,
                                         ClutterActor *parent);
 

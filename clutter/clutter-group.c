@@ -106,22 +106,6 @@ clutter_group_paint (ClutterActor *actor)
 }
 
 static void
-clutter_group_realize (ClutterActor *actor)
-{
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_realize),
-                             NULL);
-}
-
-static void
-clutter_group_unrealize (ClutterActor *actor)
-{
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_unrealize),
-                             NULL);
-}
-
-static void
 clutter_group_pick (ClutterActor       *actor,
 		    const ClutterColor *color)
 {
@@ -587,8 +571,6 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->pick            = clutter_group_pick;
   actor_class->show_all        = clutter_group_real_show_all;
   actor_class->hide_all        = clutter_group_real_hide_all;
-  actor_class->realize         = clutter_group_realize;
-  actor_class->unrealize       = clutter_group_unrealize;
 
   actor_class->get_preferred_width  = clutter_group_get_preferred_width;
   actor_class->get_preferred_height = clutter_group_get_preferred_height;

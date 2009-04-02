@@ -28,20 +28,56 @@ ClutterActor.
  a. Public ClutterActor Flags
 
 CLUTTER_ACTOR_REALIZED
-        Set by clutter_actor_realize(), unset by clutter_actor_unrealize().
-        Means: the actor has GPU resources associated to its paint cycle.
-        Once realized an actor needs to be explicitly unrealized unless
-        being destroyed. Hide, reparent etc will not unrealize.
+        Means: the actor has GPU resources associated to its paint
+        cycle.
+
+        Set by clutter_actor_realize(), unset by
+        clutter_actor_unrealize(). Generally set implicitly when the
+        actor becomes MAPPED (see below).
+
+        May only be set if one of the actor's ancestors is a toplevel.
+        May only be set if all of the actor's ancestors are realized.
+
+        Once realized an actor remains realized until removed from the
+        toplevel. Hide, reparent will not unrealize; but unparent or
+        destroy will unrealize since they remove the actor from the
+        toplevel.
 
 CLUTTER_ACTOR_MAPPED
-        Set by clutter_actor_show(), unset by clutter_actor_hide()
-        May only be set if CLUTTER_ACTOR_IS_REALIZED (actor).
-        Means: the actor has been set as visible
+        Means: the actor will be painted if the stage is mapped.
+
+        On non-toplevels, will be set if all of the following are
+        true, and unset otherwise:
+        * the actor's VISIBLE flag is set
+        * all of the actor's non-toplevel ancestors have the MAPPED
+          flag set
+        * the actor has a toplevel ancestor
+        * the toplevel ancestor's VISIBLE flag is set
+        * the toplevel ancestor's REALIZED flag is set
+
+        On toplevels, MAPPED is set asynchronously when the window
+        system notifies Clutter that the toplevel has been made
+        visible on the screen.
+
+        The MAPPED flag requires that an actor is REALIZED. When
+        Clutter sets the MAPPED flag, it forces realization; this is
+        the "normal" way for realization to occur, though explicit
+        realization with clutter_actor_realize() is permitted.
 
 CLUTTER_ACTOR_VISIBLE
-        Implies: CLUTTER_ACTOR_IS_REALIZED (actor)
-                 &&
-                 CLUTTER_ACTOR_IS_MAPPED (actor)
+        Means: the actor's "visible" property was set to true by
+        the application programmer.
+
+        Set by clutter_actor_show(), unset by clutter_actor_hide().
+
+        This is an application-controlled property, while MAPPED and
+        REALIZED are usually managed by Clutter (with the exception
+        that applications can "realize early" with
+        clutter_actor_realize()).
+
+        If VISIBLE is unset, the actor (and any children) must
+        be immediately unmapped, to maintain the invariants for
+        the MAPPED flag.
 
 CLUTTER_ACTOR_REACTIVE
         Set and unset by clutter_actor_set_reactive()
@@ -51,7 +87,7 @@ CLUTTER_ACTOR_REACTIVE
             parent implementation. In the case of ClutterGroup it
             being marked unreactive does not mark all children unreactive.
           * Clutter stage is always reactive.
-                  
+
 
  b. Private ClutterActor flags
 
@@ -63,7 +99,18 @@ CLUTTER_ACTOR_IS_TOPLEVEL
         Set internally by the initialization of ClutterStage
 
 CLUTTER_ACTOR_IN_REPARENT
-        Set internally by clutter_actor_reparent()
+        Set internally by clutter_actor_reparent(). This flag
+        optimizes the reparent process by avoiding the need
+        to pass through an unrealized state when the actor is
+        removed from the old parent.
+
+CLUTTER_ACTOR_ABOUT_TO_UNPARENT
+        Set internally during part of clutter_actor_unparent().
+        Causes the actor to pretend it has no parent, then
+        update invariants; which effectively forces the actor
+        to unrealize. The purpose of this is to unrealize _before_ the
+        actor is removed from the stage, so unrealize implementations
+        can use clutter_actor_get_stage().
 
 CLUTTER_ACTOR_SYNC_MATRICES
         Set internally by ClutterStage implementations
@@ -101,68 +148,118 @@ In the following
 1) CLUTTER_ACTOR_IN_DESTRUCTION => !CLUTTER_ACTOR_IS_MAPPED (actor) &&
                                    !CLUTTER_ACTOR_IS_REALIZED (actor)
 
-        clutter_actor_destroy() will cause an actor to be hidden
-        and unrealized.
+        clutter_actor_destroy() will cause an actor to be unparented,
+        which means the actor must be unmapped and unrealized as
+        well.
 
 2) CLUTTER_ACTOR_IS_MAPPED (actor) => CLUTTER_ACTOR_IS_REALIZED (actor)
 
-        calling clutter_actor_show() on an unrealized actor will cause
-        a realization to happen.
+        when an actor is mapped, it must first be realized.
+
+        This is the most common way an actor becomes realized.
 
 3) if clutter_actor_set_parent (actor, parent):
-     CLUTTER_ACTOR_IS_REALIZED (parent) => CLUTTER_ACTOR_IS_REALIZED (actor)
+     ((parent_is_not_toplevel && CLUTTER_ACTOR_IS_MAPPED (parent)) ||
+      (parent_is_toplevel && CLUTTER_ACTOR_IS_VISIBLE(parent))) &&
+     CLUTTER_ACTOR_IS_VISIBLE (actor)
+                                  => CLUTTER_ACTOR_IS_MAPPED (actor)
 
-        calling clutter_actor_set_parent() on an actor and a realized
-        parent will cause a realization on the actor.
+        calling clutter_actor_set_parent() on an actor and a mapped
+        parent will map the actor if it has been shown.
 
 4) if clutter_actor_unparent (actor):
      CLUTTER_ACTOR_IS_MAPPED (actor) <=> CLUTTER_ACTOR_IN_REPARENT
 
-        calling clutter_actor_unparent() on an actor will hide the actor;
-        calling clutter_actor_reparent() on an actor will leave the actor
-        in the same state.
+        calling clutter_actor_unparent() on an actor will unmap and
+        unrealize the actor since it no longer has a toplevel.
 
-        Neither will unrealize.
+        calling clutter_actor_reparent() on an actor will leave the
+        actor mapped and realized (if it was before) until it has a
+        new parent, at which point the invariants implied by the new
+        parent's state are applied.
+
+5) CLUTTER_ACTOR_IS_REALIZED(actor) => CLUTTER_ACTOR_IS_REALIZED(parent)
+
+        Actors may only be realized if their parent is realized.
+        However, they may be unrealized even though their parent
+        is realized.
+
+        This implies that an actor may not be realized unless
+        it has a parent, or is a toplevel.
+
+        Since only toplevels can realize without a parent, no actor
+        can be realized unless it either is a toplevel or has a
+        toplevel ancestor.
+
+        As long as they are unmapped, actors may be unrealized. This
+        will force all children of the actor to be unrealized, since
+        children may not be realized while parents are unrealized.
+
+6) CLUTTER_ACTOR_IS_MAPPED(actor) <=>
+      (  (  (CLUTTER_ACTOR_IS_VISIBLE(toplevel_parent) &&
+             CLUTTER_ACTOR_IS_REALIZED(toplevel_parent)) ||
+             CLUTTER_ACTOR_IS_MAPPED(non_toplevel_parent)  )  ) &&
+       CLUTTER_ACTOR_IS_VISIBLE(actor)
+
+       Actors _must_ be mapped if and only if they are visible and
+       their parent is mapped, or they are visible and their
+       parent is a toplevel that's realized and visible.
+
+       This invariant enables us to track whether an actor will
+       be painted (whether it's MAPPED) without ever traversing
+       the actor graph.
 
  iii. State changes
 -------------------------------------------------------------------------------
 
 clutter_actor_show:
-        1. if !CLUTTER_ACTOR_REALIZED calls clutter_actor_realize
-        2. sets CLUTTER_ACTOR_MAPPED
+        1. sets VISIBLE
+        2. sets MAPPED if invariants are met; mapping in turn sets
+           REALIZED
 
 clutter_actor_hide:
-        1. sets !CLUTTER_ACTOR_MAPPED
+        1. sets !VISIBLE
+        2. unsets MAPPED if actor was mapped previously
+        3. does not affect REALIZED
 
 clutter_actor_destroy:
         1. sets CLUTTER_ACTOR_IN_DESTRUCTION
+        2. unparents the actor, which in turn implies unmap and unrealize
 
 clutter_actor_realize:
-        sets CLUTTER_ACTOR_REALIZED
+        1. attempts to set REALIZED on all parents, failing if
+           invariants are not met, e.g. not in a toplevel yet
+        2. sets REALIZED on actor if parent was successfully realized
 
-clutter_actor_unrealized:
-        1. if CLUTTER_ACTOR_MAPPED calls clutter_actor_hide
-        2. sets !CLUTTER_ACTOR_REALIZED
+clutter_actor_unrealize:
+        1. sets !VISIBLE which forces !MAPPED
+        2. sets !REALIZED
+        3. !MAPPED and !REALIZED forces unmap and unrealize of all
+           children
 
 clutter_actor_set_parent:
         1. sets actor->parent
-        2. if parent is CLUTTER_ACTOR_REALIZED calls clutter_actor_realize
-        3. if actor->show_on_set_parent is TRUE calls clutter_actor_show
+        2. if actor->show_on_set_parent is TRUE calls clutter_actor_show
+        3. sets MAPPED if all prerequisites are now met for map
         4. if !CLUTTER_ACTOR_IN_REPARENT emits ::parent-set with
            old_parent set to NULL
 
-clutter_actor_unset_parent:
+clutter_actor_unparent:
         1. unsets actor->parent
-        2. if !CLUTTER_ACTOR_IN_REPARENT calls clutter_actor_hide
+        2. if !CLUTTER_ACTOR_IN_REPARENT, sets !MAPPED and !REALIZED
+           since the invariants for those flags are no longer met
         3. if !CLUTTER_ACTOR_IN_REPARENT emits ::parent-set with
            old_parent set to the previous parent
 
 clutter_actor_reparent:
         1. sets CLUTTER_ACTOR_IN_REPARENT
         2. emits ::parent-set with old_parent set to the previous parent
-        equivalent to:
+           equivalent to:
                 clutter_actor_unparent
                 clutter_actor_set_parent
+        3. updates state of the actor to match invariants
+           (may change MAPPED or REALIZED in either direction,
+           depending on state of the new parent)
 
 
  iv. Responsibilities of a ClutterActor
@@ -173,24 +270,27 @@ clutter_actor_reparent:
 When adding an actor to a container, the container must:
 
  1. call clutter_actor_set_parent (actor, container)
- 2. call clutter_actor_queue_relayout (container)
+ 2. call clutter_actor_queue_relayout (container) if
+    adding the actor changes the container's preferred
+    size
 
  b. Removing from a container
 
 When removing an actor from a container, the container must:
 
  1. call clutter_actor_unparent (actor)
- 2. call clutter_actor_queue_relayout (container)
+ 2. call clutter_actor_queue_relayout (container) if removing
+    the actor changes the container's preferred size
 
 Notes:
 
 * here a container actor is any actor that contains children actors; it
   does not imply the implementation of the ClutterContainer interface.
 
-* clutter_actor_unparent() will hide the actor except in the special case
-  when CLUTTER_ACTOR_IN_REPARENT is set.
+* clutter_actor_unparent() will unmap and unrealize the actor except
+  in the special case when CLUTTER_ACTOR_IN_REPARENT is set.
 
-* 'Composite' Clutter actors need to pass down any allocations to children. 
+* 'Composite' Clutter actors need to pass down any allocations to children.
 
  c. Initial state
 

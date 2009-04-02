@@ -76,7 +76,7 @@ G_BEGIN_DECLS
 
 #define CLUTTER_ACTOR_IS_MAPPED(e)      ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_MAPPED) != FALSE)
 #define CLUTTER_ACTOR_IS_REALIZED(e)    ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REALIZED) != FALSE)
-#define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && CLUTTER_ACTOR_IS_REALIZED (e))
+#define CLUTTER_ACTOR_IS_VISIBLE(e)     ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_VISIBLE) != FALSE)
 #define CLUTTER_ACTOR_IS_REACTIVE(e)    ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REACTIVE) != FALSE)
 
 typedef struct _ClutterActorClass    ClutterActorClass;
@@ -102,11 +102,12 @@ typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 
 /**
  * ClutterActorFlags:
- * @CLUTTER_ACTOR_MAPPED: the actor has been painted
+ * @CLUTTER_ACTOR_MAPPED: the actor will be painted (is visible, and inside a toplevel, and all parents visible)
  * @CLUTTER_ACTOR_REALIZED: the resources associated to the actor have been
  *   allocated
  * @CLUTTER_ACTOR_REACTIVE: the actor 'reacts' to mouse events emmitting event
  *   signals
+ * @CLUTTER_ACTOR_VISIBLE: the actor has been shown by the application program
  *
  * Flags used to signal the state of an actor.
  */
@@ -114,7 +115,8 @@ typedef enum
 {
   CLUTTER_ACTOR_MAPPED   = 1 << 1,
   CLUTTER_ACTOR_REALIZED = 1 << 2,
-  CLUTTER_ACTOR_REACTIVE = 1 << 3
+  CLUTTER_ACTOR_REACTIVE = 1 << 3,
+  CLUTTER_ACTOR_VISIBLE  = 1 << 4
 } ClutterActorFlags;
 
 /**
@@ -220,6 +222,8 @@ struct _ClutterActorClass
   void (* hide_all)             (ClutterActor          *actor);
   void (* realize)              (ClutterActor          *actor);
   void (* unrealize)            (ClutterActor          *actor);
+  void (* map)                  (ClutterActor          *actor);
+  void (* unmap)                (ClutterActor          *actor);
   void (* paint)                (ClutterActor          *actor);
   void (* parent_set)           (ClutterActor          *actor,
                                  ClutterActor          *old_parent);
@@ -280,6 +284,8 @@ void                  clutter_actor_hide                      (ClutterActor     
 void                  clutter_actor_hide_all                  (ClutterActor          *self);
 void                  clutter_actor_realize                   (ClutterActor          *self);
 void                  clutter_actor_unrealize                 (ClutterActor          *self);
+void                  clutter_actor_map                       (ClutterActor          *self);
+void                  clutter_actor_unmap                     (ClutterActor          *self);
 void                  clutter_actor_paint                     (ClutterActor          *self);
 void                  clutter_actor_pick                      (ClutterActor          *self,
                                                                const ClutterColor    *color);

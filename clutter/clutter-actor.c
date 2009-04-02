@@ -136,6 +136,14 @@
  *
  * Evaluates to %TRUE if the %CLUTTER_ACTOR_MAPPED flag is set.
  *
+ * Means "the actor will be painted if the stage is mapped."
+ *
+ * %TRUE if the actor is visible; and all parents with possible exception
+ * of the stage are visible; and an ancestor of the actor is a toplevel.
+ *
+ * Clutter auto-maintains the mapped flag whenever actors are
+ * reparented or shown/hidden.
+ *
  * Since: 0.2
  */
 
@@ -145,6 +153,15 @@
  *
  * Evaluates to %TRUE if the %CLUTTER_ACTOR_REALIZED flag is set.
  *
+ * Whether GL resources such as textures are allocated;
+ * if an actor is mapped it must also be realized, but an actor
+ * can be realized and unmapped (this is so hiding an actor temporarily
+ * doesn't do an expensive unrealize/realize).
+ *
+ * To be realized an actor must be inside a stage, and all its parents
+ * must be realized. The stage is required so the actor knows the
+ * correct GL context and window system resources to use.
+ *
  * Since: 0.2
  */
 
@@ -152,7 +169,12 @@
  * CLUTTER_ACTOR_IS_VISIBLE:
  * @e: a #ClutterActor
  *
- * Evaluates to %TRUE if the actor is both realized and mapped.
+ * Evaluates to %TRUE if the actor has been shown, %FALSE if it's hidden.
+ * Equivalent to the ClutterActor::visible object property.
+ *
+ * Note that an actor is only painted onscreen if it's mapped, which
+ * means it's visible, and all its parents are visible, and one of the
+ * parents is a toplevel stage.
  *
  * Since: 0.2
  */
@@ -209,6 +231,23 @@ struct _AnchorCoord
     ClutterVertex units;
   } v;
 };
+
+/* Internal enum used to control mapped state update.  This is a hint
+ * which indicates when to do something other than just enforce
+ * invariants.
+ */
+typedef enum {
+  MAP_STATE_CHECK,           /* just enforce invariants. */
+  MAP_STATE_MAKE_UNREALIZED, /* force unrealize, ignoring invariants,
+                              * used when about to unparent.
+                              */
+  MAP_STATE_MAKE_MAPPED,     /* set mapped, error if invariants not met;
+                              * used to set mapped on toplevels.
+                              */
+  MAP_STATE_MAKE_UNMAPPED    /* set unmapped, even if parent is mapped,
+                              * used just before unmapping parent.
+                              */
+} MapStateChange;
 
 struct _ClutterActorPrivate
 {
@@ -343,6 +382,7 @@ enum
 
   PROP_OPACITY,
   PROP_VISIBLE,
+  PROP_MAPPED,
   PROP_REACTIVE,
 
   PROP_SCALE_X,
@@ -430,6 +470,9 @@ static void clutter_actor_set_natural_height_set (ClutterActor *self,
                                                   gboolean  use_natural_height);
 static void clutter_actor_set_request_mode       (ClutterActor *self,
                                                   ClutterRequestMode mode);
+static void clutter_actor_update_map_state       (ClutterActor  *self,
+                                                  MapStateChange change);
+static void clutter_actor_unrealize_not_hiding   (ClutterActor *self);
 
 /* Helper routines for managing anchor coords */
 static void clutter_anchor_coord_get_units (ClutterActor *self,
@@ -471,22 +514,404 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                                          clutter_scriptable_iface_init));
 
 
+/* FIXME this is for debugging only, remove once working (or leave in
+ * only in some debug mode). Should leave it for a little while
+ * until we're confident in the new map/realize/visible handling.
+ */
+static void
+clutter_actor_verify_map_state (ClutterActor *self)
+{
+  if (CLUTTER_ACTOR_IS_REALIZED (self))
+    {
+      /* all bets are off during reparent when we're potentially realized,
+       * but should not be according to invariants
+       */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+        {
+          if (self->priv->parent_actor == NULL)
+            {
+              if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+                {
+                }
+              else
+                {
+                  g_warning ("Realized non-toplevel actor should have a parent");
+                }
+            }
+          else if (!CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
+            {
+              g_warning ("Realized actor %s %p has an unrealized parent %s %p",
+                         G_OBJECT_TYPE_NAME (self), self,
+                         G_OBJECT_TYPE_NAME (self->priv->parent_actor),
+                         self->priv->parent_actor);
+            }
+        }
+    }
+
+  if (CLUTTER_ACTOR_IS_MAPPED (self))
+    {
+      if (!CLUTTER_ACTOR_IS_REALIZED (self))
+        g_warning ("Actor is mapped but not realized");
+
+      /* remaining bets are off during reparent when we're potentially
+       * mapped, but should not be according to invariants
+       */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+        {
+          if (self->priv->parent_actor == NULL)
+            {
+              if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+                {
+                  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+                    g_warning ("Toplevel actor is mapped but not visible");
+                }
+              else
+                {
+                  g_warning ("Mapped actor %s %p should have a parent",
+                             G_OBJECT_TYPE_NAME (self), self);
+                }
+            }
+          else
+            {
+              if (!CLUTTER_ACTOR_IS_VISIBLE (self->priv->parent_actor))
+                {
+                  g_warning ("Actor should not be mapped if parent is not visible");
+                }
+
+              if (!CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
+                {
+                  g_warning ("Actor should not be mapped if parent is not realized");
+                }
+
+              if (!(CLUTTER_PRIVATE_FLAGS (self->priv->parent_actor) &
+                    CLUTTER_ACTOR_IS_TOPLEVEL))
+                {
+                  if (!CLUTTER_ACTOR_IS_MAPPED (self->priv->parent_actor))
+                    g_warning ("Actor is mapped but its non-toplevel parent is not mapped");
+                }
+            }
+        }
+    }
+}
+
+static void
+clutter_actor_set_mapped (ClutterActor *self,
+                          gboolean      mapped)
+{
+  if (CLUTTER_ACTOR_IS_MAPPED (self) == mapped)
+    return;
+
+  if (mapped)
+    {
+      CLUTTER_ACTOR_GET_CLASS (self)->map (self);
+      g_assert (CLUTTER_ACTOR_IS_MAPPED (self));
+    }
+  else
+    {
+      CLUTTER_ACTOR_GET_CLASS (self)->unmap (self);
+      g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
+    }
+}
+
+/* this function updates the mapped and realized states according to
+ * invariants, in the appropriate order.
+ */
+static void
+clutter_actor_update_map_state (ClutterActor  *self,
+                                MapStateChange change)
+{
+  gboolean was_mapped;
+  gboolean was_realized;
+
+  was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
+  was_realized = CLUTTER_ACTOR_IS_REALIZED (self);
+
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      /* the mapped flag on top-level actors must be set by the
+       * per-backend implementation because it might be asynchronous.
+       *
+       * That is, the MAPPED flag on toplevels currently tracks the X
+       * server mapped-ness of the window, while the expected behavior
+       * (if used to GTK) may be to track WM_STATE!=WithdrawnState.
+       * This creates some weird complexity by breaking the invariant
+       * that if we're visible and all ancestors shown then we are
+       * also mapped - instead, we are mapped if all ancestors
+       * _possibly excepting_ the stage are mapped. The stage
+       * will map/unmap for example when it is minimized or
+       * moved to another workspace.
+       *
+       * So, the only invariant on the stage is that if visible it
+       * should be realized, and that it has to be visible to be
+       * mapped.
+       */
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+        clutter_actor_realize (self);
+
+      switch (change)
+        {
+        case MAP_STATE_CHECK:
+          break;
+        case MAP_STATE_MAKE_MAPPED:
+          g_assert (!was_mapped);
+          clutter_actor_set_mapped (self, TRUE);
+          break;
+        case MAP_STATE_MAKE_UNMAPPED:
+          g_assert (was_mapped);
+          clutter_actor_set_mapped (self, FALSE);
+          break;
+        case MAP_STATE_MAKE_UNREALIZED:
+          /* we only use MAKE_UNREALIZED in unparent,
+           * and unparenting a stage isn't possible.
+           * If someone wants to just unrealize a stage
+           * then clutter_actor_unrealize() doesn't
+           * go through this codepath.
+           */
+          g_warning ("Trying to force unrealize stage is not allowed");
+          break;
+        }
+
+      if (CLUTTER_ACTOR_IS_MAPPED (self) &&
+          !CLUTTER_ACTOR_IS_VISIBLE (self))
+        g_warning ("Clutter toplevel is not visible, but is somehow still mapped");
+    }
+  else
+    {
+      ClutterActorPrivate *priv;
+      gboolean should_be_mapped;
+      gboolean may_be_realized;
+      gboolean must_be_realized;
+      ClutterActor *parent;
+
+      priv = self->priv;
+
+      should_be_mapped = FALSE;
+      may_be_realized = TRUE;
+      must_be_realized = FALSE;
+
+      parent = priv->parent_actor;
+
+      if (parent == NULL ||
+          change == MAP_STATE_MAKE_UNREALIZED)
+        {
+          may_be_realized = FALSE;
+        }
+      else
+        {
+          /* Maintain invariant that if parent is mapped, and we are
+           * visible, then we are mapped ...  unless parent is a
+           * stage, in which case we map regardless of parent's map
+           * state but do require stage to be visible and realized.
+           *
+           * If parent is realized, that does not force us to be
+           * realized; but if parent is unrealized, that does force
+           * us to be unrealized.
+           *
+           * The reason we don't force children to realize with
+           * parents is _clutter_actor_rerealize(); if we require that
+           * a realized parent means children are realized, then to
+           * unrealize an actor we would have to unrealize its
+           * parents, which would end up meaning unrealizing and
+           * hiding the entire stage. So we allow unrealizing a
+           * child (as long as that child is not mapped) while that
+           * child still has a realized parent.
+           *
+           * Also, if we unrealize from leaf nodes to root, and
+           * realize from root to leaf, the invariants are never
+           * violated if we allow children to be unrealized
+           * while parents are realized.
+           *
+           * When unmapping, MAP_STATE_MAKE_UNMAPPED is specified
+           * to force us to unmap, even though parent is still
+           * mapped. This is because we're unmapping from leaf nodes
+           * up to root nodes.
+           */
+          if (CLUTTER_ACTOR_IS_VISIBLE (self) &&
+              change != MAP_STATE_MAKE_UNMAPPED)
+            {
+              gboolean parent_is_visible_realized_toplevel;
+
+              parent_is_visible_realized_toplevel =
+                (((CLUTTER_PRIVATE_FLAGS (parent) &
+                   CLUTTER_ACTOR_IS_TOPLEVEL) != 0) &&
+                 CLUTTER_ACTOR_IS_VISIBLE (parent) &&
+                 CLUTTER_ACTOR_IS_REALIZED (parent));
+
+              if (CLUTTER_ACTOR_IS_MAPPED (parent) ||
+                  parent_is_visible_realized_toplevel)
+                {
+                  must_be_realized = TRUE;
+                  should_be_mapped = TRUE;
+                }
+            }
+
+          if (!CLUTTER_ACTOR_IS_REALIZED (parent))
+            may_be_realized = FALSE;
+        }
+
+      if (change == MAP_STATE_MAKE_MAPPED && !should_be_mapped)
+        {
+          g_warning ("Attempting to map a child that does not meet the necessary invariants");
+        }
+
+      /* If in reparent, we temporarily suspend unmap and unrealize.
+       *
+       * We want to go in the order "realize, map" and "unmap, unrealize"
+       */
+
+      /* Unmap */
+      if (!should_be_mapped &&
+          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+        {
+          clutter_actor_set_mapped (self, FALSE);
+        }
+
+      /* Realize */
+      if (must_be_realized)
+        clutter_actor_realize (self);
+
+      /* if we must be realized then we may be, presumably */
+      g_assert (!(must_be_realized && !may_be_realized));
+
+      /* Unrealize */
+      if (!may_be_realized &&
+          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+        clutter_actor_unrealize_not_hiding (self);
+
+      /* Map */
+      if (should_be_mapped)
+        {
+          if (!must_be_realized)
+            g_warning ("Somehow we think an actor should be mapped but not realized, which isn't allowed");
+
+          /* realization is allowed to fail (though I don't know what
+           * an app is supposed to do about that - shouldn't it just
+           * be a g_error? anyway, we have to avoid mapping if this
+           * happens)
+           */
+          if (CLUTTER_ACTOR_IS_REALIZED (self))
+            {
+              clutter_actor_set_mapped (self, TRUE);
+            }
+        }
+    }
+
+  /* check all invariants were kept */
+  clutter_actor_verify_map_state (self);
+}
+
+static void
+clutter_actor_real_map (ClutterActor *self)
+{
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
+
+  CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+  /* notify on parent mapped before potentially mapping
+   * children, so apps see a top-down notification.
+   */
+  g_object_notify (G_OBJECT (self), "mapped");
+
+  clutter_actor_queue_redraw (self);
+
+  if (CLUTTER_IS_CONTAINER (self))
+    clutter_container_foreach (CLUTTER_CONTAINER (self),
+                               CLUTTER_CALLBACK (clutter_actor_map),
+                               NULL);
+}
+
+/**
+ * clutter_actor_map:
+ * @self: A #ClutterActor
+ *
+ * Sets the #CLUTTER_ACTOR_MAPPED flag on the actor
+ * and possibly maps and realizes its children
+ * if they are visible. Does nothing if the
+ * actor is not visible.
+ *
+ * Calling this is allowed in only one case:
+ * you are implementing the "map" virtual function
+ * in an actor and you need to map the children of
+ * that actor. It is not necessary to call this
+ * if you implement #ClutterContainer because the
+ * default implementation will automatically map
+ * children of containers.
+ *
+ * When overriding map, it is mandatory to chain up to the parent
+ * implementation.
+ **/
+void
+clutter_actor_map (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (CLUTTER_ACTOR_IS_MAPPED (self))
+    return;
+
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return;
+
+  clutter_actor_update_map_state (self, MAP_STATE_MAKE_MAPPED);
+}
+
+static void
+clutter_actor_real_unmap (ClutterActor *self)
+{
+  g_assert (CLUTTER_ACTOR_IS_MAPPED (self));
+
+  if (CLUTTER_IS_CONTAINER (self))
+    clutter_container_foreach (CLUTTER_CONTAINER (self),
+                               CLUTTER_CALLBACK (clutter_actor_unmap),
+                               NULL);
+
+  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+  /* notify on parent mapped after potentially unmapping
+   * children, so apps see a bottom-up notification.
+   */
+  g_object_notify (G_OBJECT (self), "mapped");
+
+  clutter_actor_queue_redraw (self);
+}
+
+/**
+ * clutter_actor_unmap:
+ * @self: A #ClutterActor
+ *
+ * Unsets the #CLUTTER_ACTOR_MAPPED flag on the actor and possibly
+ * unmaps its children if they were mapped.
+ *
+ * Calling this is allowed in only one case:
+ * you are implementing the "unmap" virtual function
+ * in an actor and you need to unmap the children of
+ * that actor. It is not necessary to call this
+ * if you implement #ClutterContainer because the
+ * default implementation will automatically unmap
+ * children of containers.
+ *
+ * When overriding unmap, it is mandatory to chain up to the parent
+ * implementation.
+ **/
+void
+clutter_actor_unmap (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (!CLUTTER_ACTOR_IS_MAPPED (self))
+    return;
+
+  clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNMAPPED);
+}
+
 static void
 clutter_actor_real_show (ClutterActor *self)
 {
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     {
-      if (!CLUTTER_ACTOR_IS_REALIZED (self))
-        clutter_actor_realize (self);
-
-      /* the mapped flag on the top-level actors must be set by the
-       * per-backend implementation because it might be asynchronous
+      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
+      /* we notify on the "visible" flag in the clutter_actor_show()
+       * wrapper so the entire show signal emission completes first
+       * (?)
        */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
-        CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (self);
+      clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
       clutter_actor_queue_relayout (self);
     }
@@ -511,6 +936,8 @@ clutter_actor_show (ClutterActor *self)
   ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
 
   priv = self->priv;
 
@@ -556,11 +983,12 @@ clutter_actor_real_hide (ClutterActor *self)
 {
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
-      /* see comment in clutter_actor_real_show() on why we don't set
-       * the mapped flag on the top-level actors
+      CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
+      /* we notify on the "visible" flag in the clutter_actor_hide()
+       * wrapper so the entire hide signal emission completes first
+       * (?)
        */
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
-        CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+      clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
       clutter_actor_queue_relayout (self);
     }
@@ -586,6 +1014,8 @@ clutter_actor_hide (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+
   priv = self->priv;
 
   g_object_freeze_notify (G_OBJECT (self));
@@ -596,7 +1026,7 @@ clutter_actor_hide (ClutterActor *self)
       g_object_notify (G_OBJECT (self), "show-on-set-parent");
     }
 
-  if (CLUTTER_ACTOR_IS_MAPPED (self))
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
       g_signal_emit (self, actor_signals[HIDE], 0);
       g_object_notify (G_OBJECT (self), "visible");
@@ -631,44 +1061,225 @@ clutter_actor_hide_all (ClutterActor *self)
  *
  * Creates any underlying graphics resources needed by the actor to be
  * displayed.
+ *
+ * Realization means the actor is now tied to a specific rendering context
+ * (that is, a specific toplevel stage).
+ *
+ * This function does nothing if the actor is already realized.
+ *
+ * Because a realized actor must have realized parent actors, calling
+ * clutter_actor_realize() will also realize all parents of the actor.
+ *
+ * This function does not realize child actors, except in the special
+ * case that realizing the stage, when the stage is visible, will
+ * suddenly map (and thus realize) the children of the stage.
  **/
 void
 clutter_actor_realize (ClutterActor *self)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+
   if (CLUTTER_ACTOR_IS_REALIZED (self))
     return;
+
+  /* To be realized, our parent actors must be realized first.
+   * This will only succeed if we're inside a toplevel.
+   */
+  if (self->priv->parent_actor)
+    clutter_actor_realize (self->priv->parent_actor);
+
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      /* toplevels can be realized at any time */
+    }
+  else
+    {
+      /* "Fail" the realization if parent is missing or unrealized;
+       * this should really be a g_warning() not some kind of runtime
+       * failure; how can an app possibly recover? Instead it's a bug
+       * in the app and the app should get an explanatory warning so
+       * someone can fix it. But for now it's too hard to fix this
+       * because e.g. ClutterTexture needs reworking.
+       */
+      if (self->priv->parent_actor == NULL ||
+          !CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
+        return;
+    }
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
   g_signal_emit (self, actor_signals[REALIZE], 0);
+
+  /* Stage actor is allowed to unset the realized flag again in its
+   * default signal handler, though that is a pathological situation.
+   */
+
+  /* If realization "failed" we'll have to update child state. */
+  clutter_actor_update_map_state (self, MAP_STATE_CHECK);
+}
+
+void
+clutter_actor_real_unrealize (ClutterActor *self)
+{
+  /* we must be unmapped (implying our children are also unmapped) */
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
+
+  if (CLUTTER_IS_CONTAINER (self))
+    clutter_container_foreach (CLUTTER_CONTAINER (self),
+                               CLUTTER_CALLBACK (clutter_actor_unrealize_not_hiding),
+                               NULL);
 }
 
 /**
  * clutter_actor_unrealize:
  * @self: A #ClutterActor
  *
- * Frees up any underlying graphics resources needed by the actor to be
- * displayed.
- **/
+ * Frees up any underlying graphics resources needed by the actor to
+ * be displayed.
+ *
+ * Unrealization means the actor is now independent of any specific
+ * rendering context (is not attached to a specific toplevel stage).
+ *
+ * Because mapped actors must be realized, actors may not be
+ * unrealized if they are mapped. This function hides the actor to be
+ * sure it isn't mapped, an application-visible side effect that you
+ * may not be expecting.
+ *
+ * This function should not really be in the public API, because
+ * there isn't a good reason to call it. ClutterActor will already
+ * unrealize things for you when it's important to do so.
+ *
+ * If you were using clutter_actor_unrealize() in a dispose
+ * implementation, then don't, just chain up to ClutterActor's
+ * dispose.
+ *
+ * If you were using clutter_actor_unrealize() to implement
+ * unrealizing children of your container, then don't, ClutterActor
+ * will already take care of that.
+ *
+ * If you were using clutter_actor_unrealize() to re-realize to
+ * create your resources in a different way, then use
+ * _clutter_actor_rerealize() (inside Clutter) or just call your
+ * code that recreates your resources directly (outside Clutter).
+ */
 void
 clutter_actor_unrealize (ClutterActor *self)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (!CLUTTER_ACTOR_IS_MAPPED (self));
+
+  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+
+  clutter_actor_hide (self);
+
+  clutter_actor_unrealize_not_hiding (self);
+}
+
+/**
+ * clutter_actor_unrealize_not_hiding:
+ * @self: A #ClutterActor
+ *
+ * Frees up any underlying graphics resources needed by the actor to
+ * be displayed.
+ *
+ * Unrealization means the actor is now independent of any specific
+ * rendering context (is not attached to a specific toplevel stage).
+ *
+ * Because mapped actors must be realized, actors may not be
+ * unrealized if they are mapped. You must hide the actor or one of
+ * its parents before attempting to unrealize.
+ *
+ * This function is separate from clutter_actor_unrealize() because it
+ * does not automatically hide the actor.
+ * Actors need not be hidden to be unrealized, they just need to
+ * be unmapped. In fact we don't want to mess up the application's
+ * setting of the "visible" flag, so hiding is very undesirable.
+ *
+ * clutter_actor_unrealize() does a clutter_actor_hide() just for
+ * backward compatibility.
+ */
+static void
+clutter_actor_unrealize_not_hiding (ClutterActor *self)
+{
+  /* All callers of clutter_actor_unrealize_not_hiding() should have
+   * taken care of unmapping the actor first. This means
+   * all our children should also be unmapped.
+   */
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
     return;
 
-  /* unrealizing also means hiding a visible actor, exactly
-   * like showing implies realization if called on an unrealized
-   * actor. this keeps the flags in sync.
+  /* The default handler for the signal should recursively unrealize
+   * child actors. We want to unset the realized flag only _after_
+   * child actors are unrealized, to maintain invariants.
    */
-  clutter_actor_hide (self);
-
-  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
   g_signal_emit (self, actor_signals[UNREALIZE], 0);
+
+  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+}
+
+/**
+ * _clutter_actor_rerealize:
+ * @self: A #ClutterActor
+ * @callback: Function to call while unrealized
+ * @data: data for callback
+ *
+ * If an actor is already unrealized, this just calls the callback.
+ *
+ * If it is realized, it unrealizes temporarily, calls the callback,
+ * and then re-realizes the actor.
+ *
+ * As a side effect, leaves all children of the actor unrealized if
+ * the actor was realized but not showing.  This is because when we
+ * unrealize the actor temporarily we must unrealize its children
+ * (e.g. children of a stage can't be realized if stage window is
+ * gone). And we aren't clever enough to save the realization state of
+ * all children. In most cases this should not matter, because
+ * the children will automatically realize when they next become mapped.
+ */
+void
+_clutter_actor_rerealize (ClutterActor    *self,
+                          ClutterCallback  callback,
+                          void            *data)
+{
+  gboolean was_mapped;
+  gboolean was_showing;
+  gboolean was_realized;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+
+  was_realized = CLUTTER_ACTOR_IS_REALIZED (self);
+  was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
+  was_showing = CLUTTER_ACTOR_IS_VISIBLE (self);
+
+  /* Must be unmapped to unrealize. Note we only have to hide this
+   * actor if it was mapped (if all parents were showing).  If actor
+   * is merely visible (but not mapped), then that's fine, we can
+   * leave it visible.
+   */
+  if (was_mapped)
+    clutter_actor_hide (self);
+
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
+
+  /* unrealize self and all children */
+  clutter_actor_unrealize_not_hiding (self);
+
+  if (callback != NULL)
+    {
+      (* callback) (self, data);
+    }
+
+  if (was_showing)
+    clutter_actor_show (self); /* will realize only if mapping implies it */
+  else if (was_realized)
+    clutter_actor_realize (self); /* realize self and all parents */
 }
 
 static void
@@ -892,7 +1503,7 @@ clutter_actor_queue_redraw_with_origin (ClutterActor *self,
                                         ClutterActor *origin)
 {
   /* short-circuit the trivial case */
-  if (!CLUTTER_ACTOR_IS_VISIBLE(self))
+  if (!CLUTTER_ACTOR_IS_MAPPED(self))
     return;
 
   /* already queued since last paint() */
@@ -910,7 +1521,7 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   ClutterActor *parent;
 
   /* short-circuit the trivial case */
-  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+  if (!CLUTTER_ACTOR_IS_MAPPED (self))
     return;
 
   /* already queued since last paint() */
@@ -1562,17 +2173,11 @@ clutter_actor_paint (ClutterActor *self)
 
   priv = self->priv;
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (self))
-    {
-      CLUTTER_NOTE (PAINT, "Attempting realize via paint()");
-      clutter_actor_realize(self);
-
-      if (!CLUTTER_ACTOR_IS_REALIZED (self))
-	{
-	  CLUTTER_NOTE (PAINT, "Attempt failed, aborting paint");
-	  return;
-	}
-    }
+  /* if we aren't paintable (not in a toplevel with all
+   * parents paintable) then do nothing.
+   */
+  if (!CLUTTER_ACTOR_IS_MAPPED (self))
+    return;
 
   /* mark that we are in the paint process */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
@@ -1985,7 +2590,11 @@ clutter_actor_get_property (GObject    *object,
       break;
     case PROP_VISIBLE:
       g_value_set_boolean (value,
-		           (CLUTTER_ACTOR_IS_VISIBLE (actor) != FALSE));
+		           CLUTTER_ACTOR_IS_VISIBLE (actor));
+      break;
+    case PROP_MAPPED:
+      g_value_set_boolean (value,
+		           CLUTTER_ACTOR_IS_MAPPED (actor));
       break;
     case PROP_HAS_CLIP:
       g_value_set_boolean (value, priv->has_clip);
@@ -2123,7 +2732,11 @@ clutter_actor_dispose (GObject *object)
         priv->parent_actor = NULL;
     }
 
-  clutter_actor_unrealize (self);
+  /* parent should be gone */
+  g_assert (priv->parent_actor == NULL);
+  /* can't be mapped or realized with no parent */
+  g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
+  g_assert (!CLUTTER_ACTOR_IS_REALIZED (self));
 
   destroy_shader_data (self);
 
@@ -2527,6 +3140,19 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                          "Whether the actor is visible or not",
                                                          FALSE,
                                                          CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor:mapped:
+   *
+   * Whether the actor is mapped (will be painted when stage is mapped).
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_MAPPED,
+                                   g_param_spec_boolean ("mapped",
+                                                         "Mapped",
+                                                         "Whether the actor will be painted",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
   /**
    * ClutterActor:reactive:
    *
@@ -3322,6 +3948,30 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   G_TYPE_NONE, 0);
 
   /**
+   * ClutterActor::map:
+   * @actor: the #ClutterActor to map
+   *
+   * The ::map virtual functon must be overridden in order to call
+   * clutter_actor_map() on any child actors if the actor is not a
+   * #ClutterContainer.  When overriding, it is mandatory to chain up
+   * to the parent implementation.
+   *
+   * Since: 1.0
+   */
+
+  /**
+   * ClutterActor::unmap:
+   * @actor: the #ClutterActor to unmap
+   *
+   * The ::unmap virtual functon must be overridden in order to call
+   * clutter_actor_unmap() on any child actors if the actor is not a
+   * #ClutterContainer.  When overriding, it is mandatory to chain up
+   * to the parent implementation.
+   *
+   * Since: 1.0
+   */
+
+  /**
    * ClutterActor::pick:
    * @actor: the #ClutterActor that received the signal
    * @color: the #ClutterColor to be used when picking
@@ -3353,6 +4003,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->show_all = clutter_actor_show;
   klass->hide = clutter_actor_real_hide;
   klass->hide_all = clutter_actor_hide;
+  klass->map = clutter_actor_real_map;
+  klass->unmap = clutter_actor_real_unmap;
+  klass->unrealize = clutter_actor_real_unrealize;
   klass->pick = clutter_actor_real_pick;
   klass->get_preferred_width = clutter_actor_real_get_preferred_width;
   klass->get_preferred_height = clutter_actor_real_get_preferred_height;
@@ -3473,9 +4126,8 @@ clutter_actor_queue_relayout (ClutterActor *self)
   priv->needs_height_request = TRUE;
   priv->needs_allocation     = TRUE;
 
-  /* always repaint also */
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+  /* always repaint also (no-op if not mapped) */
+  clutter_actor_queue_redraw (self);
 
   /* We need to go all the way up the hierarchy */
   if (priv->parent_actor)
@@ -6225,19 +6877,15 @@ clutter_actor_set_parent (ClutterActor *self,
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
     g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
 
-  /* the invariant is: if the parent is realized, the we must be
-   * realized after set_parent(). the call to clutter_actor_show()
-   * will cause this anyway, but we need to maintain the invariant
-   * even for actors that have :show-on-set-parent set to FALSE
+  /* If parent is mapped or realized, we need to also be mapped or
+   * realized once we're inside the parent.
    */
-  if (CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
-    clutter_actor_realize (self);
+  clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
   if (priv->show_on_set_parent)
     clutter_actor_show (self);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (priv->parent_actor) &&
-      CLUTTER_ACTOR_IS_VISIBLE (self))
+  if (CLUTTER_ACTOR_IS_MAPPED (self))
     {
       clutter_actor_queue_redraw (self);
     }
@@ -6284,6 +6932,8 @@ clutter_actor_get_parent (ClutterActor *self)
  * Retrieves the 'paint' visibility of an actor recursively checking for non
  * visible parents.
  *
+ * This is by definition the same as CLUTTER_ACTOR_IS_MAPPED().
+ *
  * Return Value: TRUE if the actor is visibile and will be painted.
  *
  * Since: 0.8.4
@@ -6293,17 +6943,7 @@ clutter_actor_get_paint_visibility (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
 
-  do
-    {
-      if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
-        return FALSE;
-
-      if (CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL)
-        return TRUE;
-    }
-  while ((actor = clutter_actor_get_parent (actor)) != NULL);
-
-  return FALSE;
+  return CLUTTER_ACTOR_IS_MAPPED (actor);
 }
 
 /**
@@ -6323,8 +6963,7 @@ clutter_actor_unparent (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
   ClutterActor *old_parent;
-
-  gboolean show_on_set_parent_enabled = TRUE;
+  gboolean was_mapped;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -6333,46 +6972,28 @@ clutter_actor_unparent (ClutterActor *self)
   if (priv->parent_actor == NULL)
     return;
 
-  show_on_set_parent_enabled = priv->show_on_set_parent;
+  was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
+
+  /* we need to unrealize *before* we set parent_actor to NULL,
+   * because in an unrealize method actors are dissociating from the
+   * stage, which means they need to be able to
+   * clutter_actor_get_stage(). This should unmap and unrealize,
+   * unless we're reparenting.
+   */
+  clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
 
   old_parent = priv->parent_actor;
   priv->parent_actor = NULL;
-
-  /* if we are uparenting we hide ourselves; if we are just reparenting
-   * there's no need to do that, as the paint is fast enough.
-   */
-  if (CLUTTER_ACTOR_IS_REALIZED (self))
-    {
-      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
-        clutter_actor_hide (self);
-    }
-
-  /* clutter_actor_hide() will set the :show-on-set-parent property
-   * to FALSE because the actor doesn't have a parent anymore; but
-   * we need to return the actor to its initial state, so we force
-   * the state of the :show-on-set-parent property to its value
-   * previous the unparenting
-   */
-  priv->show_on_set_parent = show_on_set_parent_enabled;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
 
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
     g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
-  /* Queue a redraw on old_parent */
-  if (CLUTTER_ACTOR_IS_VISIBLE (old_parent))
+  /* Queue a redraw on old_parent only if we were painted in the first
+   * place. Will be no-op if old parent is not shown.
+   */
+  if (was_mapped && !CLUTTER_ACTOR_IS_MAPPED (self))
     clutter_actor_queue_redraw (old_parent);
-
-  /* Could also need to relayout */
-  if (old_parent->priv->needs_width_request ||
-      old_parent->priv->needs_height_request ||
-      old_parent->priv->needs_allocation)
-    {
-      clutter_actor_queue_relayout (old_parent);
-    }
 
   /* remove the reference we acquired in clutter_actor_set_parent() */
   g_object_unref (self);
@@ -6385,7 +7006,10 @@ clutter_actor_unparent (ClutterActor *self)
  *
  * This function resets the parent actor of @self.  It is
  * logically equivalent to calling clutter_actor_unparent()
- * and clutter_actor_set_parent().
+ * and clutter_actor_set_parent(), but more efficiently
+ * implemented, ensures the child is not finalized
+ * when unparented, and emits the parent-set signal only
+ * one time.
  *
  * Since: 0.2
  */
@@ -6438,6 +7062,9 @@ clutter_actor_reparent (ClutterActor *self,
       g_object_unref (self);
 
       CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
+
+      /* the IN_REPARENT flag suspends state updates */
+      clutter_actor_update_map_state (self, MAP_STATE_CHECK);
    }
 }
 /**

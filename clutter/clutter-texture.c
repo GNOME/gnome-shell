@@ -335,19 +335,15 @@ clutter_texture_realize (ClutterActor *actor)
     }
   else
     {
-      if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
-	{
-	  /* Dont allow realization with no data - note set_data
-	   * will set realize flags.
-	   */
-	  CLUTTER_NOTE (TEXTURE,
-			"Texture has no image data cannot realize");
-
-	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
-	  return;
-	}
+      /* If we have no data, then realization is a no-op but
+       * we still want to be in REALIZED state to maintain
+       * invariants. We may have already created the texture
+       * if someone set some data earlier, or we may create it
+       * later if someone sets some data later. The fact that
+       * we may have created it earlier is really a bug, since
+       * it means ClutterTexture can have GL resources without
+       * being realized.
+       */
     }
 
   CLUTTER_NOTE (TEXTURE, "Texture realized");
@@ -538,9 +534,6 @@ clutter_texture_paint (ClutterActor *self)
        */
       return;
     }
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
-    clutter_actor_realize (CLUTTER_ACTOR(texture));
 
   if (priv->fbo_handle != COGL_INVALID_HANDLE)
     {
@@ -1392,6 +1385,12 @@ clutter_texture_get_cogl_texture (ClutterTexture *texture)
  * @cogl_tex. A reference to the texture is taken so if the handle is
  * no longer needed it should be deref'd with cogl_handle_unref.
  *
+ * This should not be called on an unrealizable texture (one that
+ * isn't inside a stage). (Currently the ClutterTexture
+ * implementation relies on being able to have a GL texture while
+ * unrealized, which means you can get away with it, but it's
+ * not correct and may change in the future.)
+ *
  * Since: 0.8
  */
 void
@@ -1404,6 +1403,12 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
   g_return_if_fail (cogl_is_texture (cogl_tex));
+
+  /* FIXME this implementation should realize the actor if it's in a
+   * stage, and warn and return if not in a stage yet. However, right
+   * now everything would break if we did that, so we just fudge it
+   * and we're broken: we can have a texture without being realized.
+   */
 
   priv = texture->priv;
 
@@ -1420,6 +1425,14 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   /* Remove old texture */
   texture_free_gl_resources (texture);
+
+  /* Free any saved data so realization doesn't resend it to GL */
+  if (priv->local_data)
+    {
+      g_free (priv->local_data);
+      priv->local_data = NULL;
+    }
+
   /* Use the new texture */
 
   cogl_material_set_layer (priv->material, 0, cogl_tex);
@@ -1435,8 +1448,6 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   CLUTTER_NOTE (TEXTURE, "set size %ix%i\n",
 		priv->width,
 		priv->height);
-
-  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
 
   if (size_change)
     {
@@ -1479,6 +1490,10 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
   if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
     flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+  /* FIXME if we are not realized, we should store the data
+   * for future use, instead of creating the texture.
+   */
 
   new_texture = cogl_texture_new_from_data (width, height,
                                             max_waste, flags,
@@ -2004,15 +2019,8 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
            filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
            CLUTTER_ACTOR_IS_REALIZED (texture))
         {
-          gboolean was_visible;
-
-          was_visible = CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (texture));
-
-          clutter_actor_unrealize (CLUTTER_ACTOR (texture));
-          clutter_actor_realize (CLUTTER_ACTOR (texture));
-
-          if (was_visible)
-            clutter_actor_show (CLUTTER_ACTOR (texture));
+          _clutter_actor_rerealize (CLUTTER_ACTOR (texture),
+                                    NULL, NULL);
         }
 
       g_object_notify (G_OBJECT (texture), "filter-quality");
@@ -2172,9 +2180,13 @@ clutter_texture_get_base_size (ClutterTexture *texture,
 
   /* Attempt to realize, mainly for subclasses ( such as labels )
    * which may not create pixbuf data and thus base size until
-   * realization happens.
+   * realization happens. If we aren't in a stage we can't realize
+   * though. Doing this here is probably just broken; instead
+   * we could virtualize get_base_size, or have the subclasses
+   * create the pixbufs sooner, or something better.
    */
-  if (!CLUTTER_ACTOR_IS_REALIZED (texture))
+  if (!CLUTTER_ACTOR_IS_REALIZED (texture) &&
+      clutter_actor_get_stage (CLUTTER_ACTOR (texture)) != NULL)
     clutter_actor_realize (CLUTTER_ACTOR (texture));
 
   if (width)
@@ -2251,8 +2263,15 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
     source_format |= COGL_PREMULT_BIT;
 
-  clutter_actor_realize (CLUTTER_ACTOR (texture));
+  /* attempt to realize ... */
+  if (!CLUTTER_ACTOR_IS_REALIZED (texture) &&
+      clutter_actor_get_stage (CLUTTER_ACTOR (texture)) != NULL)
+    clutter_actor_realize (CLUTTER_ACTOR (texture));
 
+  /* due to the fudging of clutter_texture_set_cogl_texture()
+   * which allows setting a texture pre-realize, we may end
+   * up having a texture even if we couldn't realize yet.
+   */
   cogl_texture = clutter_texture_get_cogl_texture (texture);
   if (cogl_texture == COGL_INVALID_HANDLE)
     {
@@ -2329,8 +2348,6 @@ on_fbo_source_size_change (GObject          *object,
       if (priv->fbo_handle == COGL_INVALID_HANDLE)
         {
           g_warning ("%s: Offscreen texture creation failed", G_STRLOC);
-	  CLUTTER_ACTOR_UNSET_FLAGS (CLUTTER_ACTOR (texture),
-				     CLUTTER_ACTOR_REALIZED);
           return;
         }
 

@@ -263,15 +263,13 @@ clutter_stage_realize (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
-  CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-
   /* Make sure the viewport and projection matrix are valid for the
      first paint (which will likely occur before the ConfigureNotify
      is received) */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
 
   g_assert (priv->impl != NULL);
-  CLUTTER_ACTOR_GET_CLASS (priv->impl)->realize (priv->impl);
+  clutter_actor_realize (priv->impl);
 
   /* ensure that the stage is using the context if the
    * realization sequence was successful
@@ -287,12 +285,9 @@ clutter_stage_unrealize (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
-  /* unset the flag */
-  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-
   /* and then unrealize the implementation */
   g_assert (priv->impl != NULL);
-  CLUTTER_ACTOR_GET_CLASS (priv->impl)->unrealize (priv->impl);
+  clutter_actor_unrealize (priv->impl);
 
   clutter_stage_ensure_current (CLUTTER_STAGE (self));
 }
@@ -303,9 +298,6 @@ clutter_stage_show (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   g_assert (priv->impl != NULL);
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (priv->impl))
-    clutter_actor_realize (priv->impl);
 
   clutter_actor_show (priv->impl);
 
@@ -395,6 +387,14 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
 }
 
 static void
+set_offscreen_while_unrealized (ClutterActor *actor,
+                                void         *data)
+{
+  CLUTTER_STAGE (actor)->priv->is_offscreen =
+    GPOINTER_TO_INT (data);
+}
+
+static void
 clutter_stage_set_property (GObject      *object,
 			    guint         prop_id,
 			    const GValue *value,
@@ -415,24 +415,26 @@ clutter_stage_set_property (GObject      *object,
       break;
 
     case PROP_OFFSCREEN:
-      if (priv->is_offscreen == g_value_get_boolean (value))
-	return;
+      {
+        gboolean was_showing;
 
-      if (CLUTTER_ACTOR_IS_REALIZED (actor))
-        {
-          /* Backend needs to check this prop and handle accordingly
-           * in realise.
-           * FIXME: More 'obvious' implementation needed?
-          */
-          clutter_actor_unrealize (actor);
-          priv->is_offscreen = g_value_get_boolean (value);
-          clutter_actor_realize (actor);
+        if (priv->is_offscreen == g_value_get_boolean (value))
+          return;
 
-	  if (!CLUTTER_ACTOR_IS_REALIZED (actor))
-	    priv->is_offscreen = ~g_value_get_boolean (value);
-        }
-      else
-        priv->is_offscreen = g_value_get_boolean (value);
+        was_showing = CLUTTER_ACTOR_IS_VISIBLE (actor);
+
+        /* Backend needs to check this prop and handle accordingly
+         * in realise.
+         * FIXME: More 'obvious' implementation needed?
+         */
+        _clutter_actor_rerealize (actor,
+                                  set_offscreen_while_unrealized,
+                                  GINT_TO_POINTER (g_value_get_boolean (value)));
+
+        if (was_showing &&
+            !CLUTTER_ACTOR_IS_REALIZED (actor))
+          priv->is_offscreen = ~g_value_get_boolean (value);
+      }
       break;
 
     case PROP_FULLSCREEN:
@@ -534,7 +536,7 @@ clutter_stage_dispose (GObject *object)
   ClutterStagePrivate *priv = stage->priv;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
 
-  clutter_actor_unrealize (CLUTTER_ACTOR (object));
+  clutter_actor_hide (CLUTTER_ACTOR (object));
 
   if (priv->update_idle)
     {

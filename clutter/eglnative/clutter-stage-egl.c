@@ -49,7 +49,8 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   CLUTTER_MARK();
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize != NULL)
+    CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize (actor);
 
   if (stage_egl->egl_surface)
     {
@@ -252,8 +253,6 @@ static void
 clutter_stage_egl_dispose (GObject *gobject)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (gobject);
-
-  clutter_actor_unrealize (CLUTTER_ACTOR (stage_egl));
 
   G_OBJECT_CLASS (clutter_stage_egl_parent_class)->dispose (gobject);
 }
