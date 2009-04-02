@@ -100,6 +100,12 @@ handle_automatic_blend_enable (CoglMaterial *material)
   for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
     {
       CoglMaterialLayer *layer = tmp->data;
+
+      /* NB: A layer may have a combine mode set on it but not yet have an
+       * associated texture. */
+      if (!layer->texture)
+        continue;
+
       if (cogl_texture_get_format (layer->texture) & COGL_A_BIT)
 	material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
     }
