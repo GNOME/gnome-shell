@@ -1453,6 +1453,28 @@ on_passwd_monitor_changed (GFileMonitor     *monitor,
 }
 
 static void
+ignore_log_handler (const char     *log_domain,
+                    GLogLevelFlags  log_level,
+                    const char     *message,
+                    gpointer        user_data)
+{
+        return;
+}
+
+static void
+check_gdm_debug (void)
+{
+        GDebugKey gdmkeys[] = { { "gdm", 1 } };
+        const char *gnome_shell_debug = g_getenv ("GNOME_SHELL_DEBUG");
+
+        if (!gnome_shell_debug ||
+            !g_parse_debug_string (gnome_shell_debug, gdmkeys, 1)) {
+                g_log_set_handler (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
+                                   ignore_log_handler, NULL);
+        }
+}
+
+static void
 gdm_user_manager_class_init (GdmUserManagerClass *klass)
 {
         GObjectClass   *object_class = G_OBJECT_CLASS (klass);
@@ -1509,6 +1531,7 @@ gdm_user_manager_class_init (GdmUserManagerClass *klass)
                               G_TYPE_NONE, 1, GDM_TYPE_USER);
 
         g_type_class_add_private (klass, sizeof (GdmUserManagerPrivate));
+        check_gdm_debug ();
 }
 
 static void
