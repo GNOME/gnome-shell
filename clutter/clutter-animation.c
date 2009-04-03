@@ -71,6 +71,7 @@ enum
 
 enum
 {
+  STARTED,
   COMPLETED,
 
   LAST_SIGNAL
@@ -88,7 +89,9 @@ struct _ClutterAnimationPrivate
 
   guint loop : 1;
   guint duration;
+
   ClutterTimeline *timeline;
+  guint timeline_started_id;
   guint timeline_completed_id;
 
   ClutterAlpha *alpha;
@@ -132,6 +135,13 @@ clutter_animation_dispose (GObject *gobject)
 
   if (priv->timeline)
     {
+      if (priv->timeline_started_id)
+        {
+          g_signal_handler_disconnect (priv->timeline,
+                                       priv->timeline_started_id);
+          priv->timeline_started_id = 0;
+        }
+
       if (priv->timeline_completed_id)
         {
           g_signal_handler_disconnect (priv->timeline,
@@ -340,6 +350,24 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                                CLUTTER_TYPE_ALPHA,
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ALPHA, pspec);
+
+  /**
+   * ClutterAnimation::started:
+   * @animation: the animation that emitted the signal
+   *
+   * The ::started signal is emitted once the animation has been
+   * started
+   *
+   * Since: 1.0
+   */
+  animation_signals[STARTED] =
+    g_signal_new (I_("started"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterAnimationClass, started),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   /**
    * ClutterAniamtion::completed:
@@ -707,6 +735,13 @@ clutter_animation_get_interval (ClutterAnimation *animation,
   priv = animation->priv;
 
   return g_hash_table_lookup (priv->properties, property_name);
+}
+
+static void
+on_timeline_started (ClutterTimeline  *timeline,
+                     ClutterAnimation *animation)
+{
+  g_signal_emit (animation, animation_signals[STARTED], 0);
 }
 
 static void
@@ -1089,11 +1124,16 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
 
   if (priv->timeline)
     {
+      if (priv->timeline_started_id)
+        g_signal_handler_disconnect (priv->timeline,
+                                     priv->timeline_started_id);
+
       if (priv->timeline_completed_id)
         g_signal_handler_disconnect (priv->timeline,
                                      priv->timeline_completed_id);
 
       g_object_unref (priv->timeline);
+      priv->timeline_started_id = 0;
       priv->timeline_completed_id = 0;
       priv->timeline = 0;
     }
@@ -1115,6 +1155,10 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
   priv->timeline = g_object_ref (timeline);
   g_object_notify (G_OBJECT (animation), "timeline");
 
+  priv->timeline_started_id =
+    g_signal_connect (timeline, "started",
+                      G_CALLBACK (on_timeline_started),
+                      animation);
   priv->timeline_completed_id =
     g_signal_connect (timeline, "completed",
                       G_CALLBACK (on_timeline_completed),
@@ -1425,12 +1469,13 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       GValue final = { 0, };
       gchar *error = NULL;
 
-      if (G_UNLIKELY (g_str_equal (property_name, "signal::completed")))
+      if (g_str_has_prefix (property_name, "signal::"))
         {
+          const gchar *signal_name = property_name + 8;
           GCallback callback = va_arg (var_args, GCallback);
           gpointer  userdata = va_arg (var_args, gpointer);
 
-          g_signal_connect (animation, "completed", callback, userdata);
+          g_signal_connect (animation, signal_name, callback, userdata);
         }
       else
         {
@@ -1647,7 +1692,8 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * If a name argument starts with "signal::" the two following arguments
  * are used as callback function and userdata for a signal handler installed
- * on the #ClutterAnimation object, for instance:
+ * on the #ClutterAnimation object for the specified signal name, for
+ * instance:
  *
  * |[
  *
@@ -1808,6 +1854,9 @@ clutter_actor_animate (ClutterActor *actor,
  * This is the vector-based variant of clutter_actor_animate(), useful
  * for language bindings.
  *
+ * <warning>Unlike clutter_actor_animate(), this function will not
+ * allow you to specify "signal::" names and callbacks.</warning>
+ *
  * Return value: (transfer none): a #ClutterAnimation object. The object is
  *   owned by the #ClutterActor and should not be unreferenced with
  *   g_object_unref()
@@ -1881,6 +1930,9 @@ clutter_actor_animatev (ClutterActor        *actor,
  * This is the vector-based variant of clutter_actor_animate_with_timeline(),
  * useful for language bindings.
  *
+ * <warning>Unlike clutter_actor_animate_with_timeline(), this function
+ * will not allow you to specify "signal::" names and callbacks.</warning>
+ *
  * Return value: (transfer none): a #ClutterAnimation object. The object is
  *    owned by the #ClutterActor and should not be unreferenced with
  *    g_object_unref()
@@ -1942,6 +1994,9 @@ clutter_actor_animate_with_timelinev (ClutterActor        *actor,
  *
  * This is the vector-based variant of clutter_actor_animate_with_alpha(),
  * useful for language bindings.
+ *
+ * <warning>Unlike clutter_actor_animate_with_alpha(), this function will
+ * not allow you to specify "signal::" names and callbacks.</warning>
  *
  * Return value: (transfer none): a #ClutterAnimation object. The object is owned by the
  *   #ClutterActor and should not be unreferenced with g_object_unref()

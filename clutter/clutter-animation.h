@@ -66,6 +66,7 @@ struct _ClutterAnimation
 
 /**
  * ClutterAnimationClass:
+ * @started: class handler for the #ClutterAnimation::started signal
  * @completed: class handler for the #ClutterAnimation::completed signal
  *
  * The #ClutterAnimationClass structure contains only private data and
@@ -79,6 +80,7 @@ struct _ClutterAnimationClass
   GInitiallyUnownedClass parent_class;
 
   /*< public >*/
+  void (* started)   (ClutterAnimation *animation);
   void (* completed) (ClutterAnimation *animation);
 
   /*< private >*/
