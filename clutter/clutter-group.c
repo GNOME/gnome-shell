@@ -61,8 +61,6 @@ enum
   LAST_SIGNAL
 };
 
-static guint group_signals[LAST_SIGNAL] = { 0 };
-
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterGroup,
@@ -403,7 +401,7 @@ clutter_group_real_add (ClutterContainer *container,
 
   g_signal_emit_by_name (container, "actor-added", actor);
 
-  clutter_group_sort_depth_order (group);
+  clutter_container_sort_depth_order (container);
 
   g_object_unref (actor);
 }
