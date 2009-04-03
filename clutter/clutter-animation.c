@@ -109,6 +109,7 @@ clutter_animation_finalize (GObject *gobject)
 {
   ClutterAnimationPrivate *priv = CLUTTER_ANIMATION (gobject)->priv;
 
+  CLUTTER_NOTE (ANIMATION, "Destroying properties hash table");
   g_hash_table_destroy (priv->properties);
 
   G_OBJECT_CLASS (clutter_animation_parent_class)->finalize (gobject);
@@ -238,19 +239,6 @@ clutter_animation_get_property (GObject    *gobject,
 }
 
 static void
-clutter_animation_real_completed (ClutterAnimation *animation)
-{
-  CLUTTER_NOTE (ANIMATION, "Animation [%p] complete: unreffing",
-                animation);
-
-  /* the signal emission takes a reference on the animation, which
-   * means that even if we unref it here, it'll be valid for the
-   * whole duration of the emission chain
-   */
-  g_object_unref (animation);
-}
-
-static void
 clutter_animation_class_init (ClutterAnimationClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -260,8 +248,6 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
     g_quark_from_static_string ("clutter-actor-animation");
 
   g_type_class_add_private (klass, sizeof (ClutterAnimationPrivate));
-
-  klass->completed = clutter_animation_real_completed;
 
   gobject_class->set_property = clutter_animation_set_property;
   gobject_class->get_property = clutter_animation_get_property;
@@ -1232,9 +1218,14 @@ clutter_animation_get_alpha (ClutterAnimation *animation)
  * clutter_animation_completed:
  * @animation: a #ClutterAnimation
  *
- * Emits the ::completed signal on @animation. After this function
- * terminates @animation will be unreferenced and it will not be
- * valid anymore, unless g_object_ref() was called before
+ * Emits the ::completed signal on @animation
+ *
+ * When using this function with a #ClutterAnimation created
+ * by the clutter_actor_animate() family of functions, @animation
+ * will be unreferenced and it will not be valid anymore,
+ * unless g_object_ref() was called before calling this function
+ * or unless a reference was taken inside a handler for the
+ * #ClutterAnimation::completed signal
  *
  * Since: 1.0
  */
@@ -1244,6 +1235,15 @@ clutter_animation_completed (ClutterAnimation *animation)
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
 
   g_signal_emit (animation, animation_signals[COMPLETED], 0);
+}
+
+static void
+on_animation_completed (ClutterAnimation *animation)
+{
+  CLUTTER_NOTE (ANIMATION, "Animation[%p] completed, unreferencing",
+                animation);
+
+  g_object_unref (animation);
 }
 
 /*
@@ -1401,6 +1401,10 @@ clutter_animation_setupv (ClutterAnimation    *animation,
                                         &values[i],
                                         pspec);
     }
+
+  g_signal_connect (animation, "completed",
+                    G_CALLBACK (on_animation_completed),
+                    NULL);
 }
 
 static void
@@ -1459,6 +1463,10 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
 
       property_name = va_arg (var_args, gchar*);
     }
+
+  g_signal_connect (animation, "completed",
+                    G_CALLBACK (on_animation_completed),
+                    NULL);
 }
 
 /**
@@ -1637,9 +1645,9 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * to control the animation or to know when the animation has been
  * completed.
  *
- * If a name argument starts with "signal::" the two following arguments are
- * used as callback function and userdata for a signal handler installed on the
- * #ClutterAnimation object, for instance:
+ * If a name argument starts with "signal::" the two following arguments
+ * are used as callback function and userdata for a signal handler installed
+ * on the #ClutterAnimation object, for instance:
  *
  * |[
  *
@@ -1655,7 +1663,6 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *                          "signal::completed", on_animation_completed, actor,
  *                          NULL);
  * ]|
- *
  *
  * Calling this function on an actor that is already being animated
  * will cause the current animation to change with the new final values,
