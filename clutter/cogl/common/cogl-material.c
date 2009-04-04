@@ -679,6 +679,9 @@ cogl_material_set_layer (CoglHandle material_handle,
   material = _cogl_material_pointer_from_handle (material_handle);
   layer = _cogl_material_get_layer (material_handle, layer_index, TRUE);
 
+  if (texture_handle == layer->texture)
+    return;
+
   n_layers = g_list_length (material->layers);
   if (n_layers >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
     {
