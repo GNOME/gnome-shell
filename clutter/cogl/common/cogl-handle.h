@@ -125,6 +125,9 @@ typedef struct _CoglHandleObject
   {                                                             \
     CoglHandleObject *obj = (CoglHandleObject *)handle;         \
                                                                 \
+    if (handle == COGL_INVALID_HANDLE)                          \
+      return FALSE;                                             \
+                                                                \
     return (obj->klass->type ==                                 \
             _cogl_##type_name##_get_type ());                   \
   }								\
