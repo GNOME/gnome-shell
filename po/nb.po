@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.25.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-19 10:25+0100\n"
-"PO-Revision-Date: 2009-03-19 10:31+0100\n"
+"POT-Creation-Date: 2009-04-05 13:20+0200\n"
+"PO-Revision-Date: 2009-04-05 14:13+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -304,7 +304,6 @@ msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
-#, fuzzy
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -313,11 +312,9 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Tastebindingen som brukes til å lukke et vindu. Formatet ser slik ut: «&lt;"
-"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkeren er ganske liberal "
-"og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;"
-"Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle "
-"strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+"Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1».\n"
+"\n"
+"Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: ../src/core/schema-bindings.c:177
 #, fuzzy
@@ -331,12 +328,7 @@ msgid ""
 "\n"
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"Tastebindingen som brukes til å lukke et vindu. Formatet ser slik ut: «&lt;"
-"Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkeren er ganske liberal "
-"og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;"
-"Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle "
-"strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
+msgstr "Tastebindingen som brukes til å lukke et vindu. Formatet ser slik ut: «&lt;Control&gt;a» eller «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkeren er ganske liberal og tillater små og store bokstaver, i tillegg til forkortelser som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Hvis du setter alternativet til den spesielle strengen «disabled», vil det ikke være en tastebinding for denne handlingen."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
@@ -1927,7 +1919,9 @@ msgstr "Element <%s> er ikke tillatt under <%s>"
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
-msgstr "Kan ikke spesifisere både «button_width»/«button_height» og «aspect_ratio» for knapper"
+msgstr ""
+"Kan ikke spesifisere både «button_width»/«button_height» og «aspect_ratio» for "
+"knapper"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
