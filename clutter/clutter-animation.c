@@ -1445,10 +1445,6 @@ clutter_animation_setupv (ClutterAnimation    *animation,
                                         &values[i],
                                         pspec);
     }
-
-  g_signal_connect (animation, "completed",
-                    G_CALLBACK (on_animation_completed),
-                    NULL);
 }
 
 static void
@@ -1508,10 +1504,6 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
 
       property_name = va_arg (var_args, gchar*);
     }
-
-  g_signal_connect (animation, "completed",
-                    G_CALLBACK (on_animation_completed),
-                    NULL);
 }
 
 /**
@@ -1562,6 +1554,11 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
   if (G_LIKELY (!animation))
     {
       animation = clutter_animation_new ();
+
+      g_signal_connect (animation, "completed",
+                        G_CALLBACK (on_animation_completed),
+                        NULL);
+
       CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
     }
   else
@@ -1622,6 +1619,11 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
   if (G_LIKELY (!animation))
     {
       animation = clutter_animation_new ();
+
+      g_signal_connect (animation, "completed",
+                        G_CALLBACK (on_animation_completed),
+                        NULL);
+
       CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
     }
   else
@@ -1816,6 +1818,10 @@ clutter_actor_animate (ClutterActor *actor,
       clutter_animation_set_alpha (animation, NULL);
       clutter_animation_set_object (animation, G_OBJECT (actor));
 
+      g_signal_connect (animation, "completed",
+                        G_CALLBACK (on_animation_completed),
+                        NULL);
+
       CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
     }
   else
@@ -1891,6 +1897,10 @@ clutter_actor_animatev (ClutterActor        *actor,
       clutter_animation_set_alpha (animation, NULL);
       clutter_animation_set_object (animation, G_OBJECT (actor));
 
+      g_signal_connect (animation, "completed",
+                        G_CALLBACK (on_animation_completed),
+                        NULL);
+
       CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
     }
   else
@@ -1958,6 +1968,11 @@ clutter_actor_animate_with_timelinev (ClutterActor        *actor,
   if (G_LIKELY (!animation))
     {
       animation = clutter_animation_new ();
+
+      g_signal_connect (animation, "completed",
+                        G_CALLBACK (on_animation_completed),
+                        NULL);
+
       CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
     }
   else
@@ -2030,6 +2045,11 @@ clutter_actor_animate_with_alphav (ClutterActor        *actor,
   if (G_LIKELY (!animation))
     {
       animation = clutter_animation_new ();
+
+      g_signal_connect (animation, "completed",
+                        G_CALLBACK (on_animation_completed),
+                        NULL);
+
       CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
     }
   else
