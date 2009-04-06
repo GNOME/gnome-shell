@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import errno
 
 def find_cmd (cmd_list):
     """
@@ -70,10 +71,17 @@ def start_xephyr():
         raise RuntimeError("xauth failed")
 
     # Launch Xephyr
-    xephyr = subprocess.Popen(["Xephyr", display,
-                               "-auth", xauth_file,
-                               "-screen", options.geometry,
-                               "-host-cursor"])
+    try:
+        xephyr = subprocess.Popen(["Xephyr", display,
+                                   "-auth", xauth_file,
+                                   "-screen", options.geometry,
+                                   "-host-cursor"])
+    except OSError, e:
+        if e.errno == errno.ENOENT:
+            print "Could not find Xephyr."
+            sys.exit(1)
+        else:
+            raise
     os.environ['DISPLAY'] = display
     os.environ['XAUTHORITY'] = xauth_file
 
