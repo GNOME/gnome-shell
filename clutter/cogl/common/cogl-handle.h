@@ -59,7 +59,7 @@ typedef struct _CoglHandleObject
     CoglHandleObject *obj = (CoglHandleObject *)handle;         \
     printf ("COGL %s REF %p %i\n",	                        \
 	    g_quark_to_string ((obj)->klass->type),             \
-            (obj), (obj)->ref_count)                            \
+            (obj), (obj)->ref_count);                           \
   } while (0)
 
 #define _COGL_HANDLE_DEBUG_UNREF(type_name, handle)		\
@@ -67,7 +67,7 @@ typedef struct _CoglHandleObject
     CoglHandleObject *obj = (CoglHandleObject *)handle;         \
     printf ("COGL %s UNREF %p %i\n",	                        \
 	    g_quark_to_string ((obj)->klass->type),             \
-	    (obj), (obj)->ref_count - 1)
+	    (obj), (obj)->ref_count - 1);                       \
   } while (0)
 
 #define COGL_HANDLE_DEBUG_FREE(obj)			        \
