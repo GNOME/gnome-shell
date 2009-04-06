@@ -222,6 +222,7 @@ if options.wide:
     options.geometry = "1280x800"
 
 metacity_pid = pidof("metacity")
+compiz_pid = pidof("compiz.real") or pidof("compiz")
 gnome_panel_pid = pidof("gnome-panel")
 
 # Run in Xephyr if gnome-panel is already running and the user didn't
@@ -229,7 +230,8 @@ gnome_panel_pid = pidof("gnome-panel")
 if options.replace:
     run_in_xephyr = False
 else:
-    run_in_xephyr = (metacity_pid != None or gnome_panel_pid != None)
+    run_in_xephyr = (metacity_pid != None or compiz_pid != None or
+        gnome_panel_pid != None)
 
 # Figure out whether or not to use GL_EXT_texture_from_pixmap. By default
 # we use it iff we aren't running Xephyr, but we allow the user to
@@ -272,12 +274,17 @@ except KeyboardInterrupt, e:
         print "Shell killed"
 
 finally:
-    if not run_in_xephyr and (metacity_pid or gnome_panel_pid):
+    if not run_in_xephyr:
         # Restart gnome-panel and window manager
-        if options.verbose:
-            print "Restarting Metacity and Gnome Panel"
-        
         if metacity_pid:
+            if options.verbose:
+                print "Restarting Metacity"
             subprocess.Popen(["/usr/bin/metacity"])
+        elif compiz_pid:
+            if options.verbose:
+                print "Restarting Compiz"
+            subprocess.Popen(["/usr/bin/compiz"])
         if gnome_panel_pid:
+            if options.verbose:
+                print "Restarting gnome-panel"
             subprocess.Popen(["/usr/bin/gnome-panel"])
