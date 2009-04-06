@@ -41,6 +41,8 @@ struct _CoglPangoRenderer
 {
   PangoRenderer parent_instance;
 
+  /* The color to draw the glyphs with */
+  CoglColor color;
   /* The material used to texture from the glyph cache with */
   CoglHandle glyph_material;
   /* The material used for solid fills. (boxes, rectangles + trapezoids) */
@@ -238,8 +240,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
   if (G_UNLIKELY (!priv))
     return;
 
-  cogl_material_set_color (priv->glyph_material, color);
-  cogl_material_set_color (priv->solid_material, color);
+  priv->color = *color;
 
   pango_renderer_draw_layout (PANGO_RENDERER (priv), layout, x, y);
 }
@@ -295,8 +296,7 @@ cogl_pango_render_layout_line (PangoLayoutLine *line,
   if (G_UNLIKELY (!priv))
     return;
 
-  cogl_material_set_color (priv->glyph_material, color);
-  cogl_material_set_color (priv->solid_material, color);
+  priv->color = *color;
 
   pango_renderer_draw_layout_line (PANGO_RENDERER (priv), line, x, y);
 }
@@ -432,23 +432,20 @@ cogl_pango_renderer_set_color_for_part (PangoRenderer   *renderer,
 {
   PangoColor *pango_color = pango_renderer_get_color (renderer, part);
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
+  CoglColor color;
 
   if (pango_color)
     {
-      CoglColor color;
-      guint8 red = pango_color->red >> 8;
-      guint8 green = pango_color->green >> 8;
-      guint8 blue = pango_color->blue >> 8;
-      guint8 alpha;
-
-      cogl_material_get_color (priv->solid_material, &color);
-      alpha = cogl_color_get_alpha_byte (&color);
-
-      cogl_material_set_color4ub (priv->solid_material,
-                                  red, green, blue, alpha);
-      cogl_material_set_color4ub (priv->glyph_material,
-                                  red, green, blue, alpha);
+      color.red = pango_color->red >> 8;
+      color.green = pango_color->green >> 8;
+      color.blue = pango_color->blue >> 8;
+      color.alpha = priv->color.alpha;
     }
+  else
+    color = priv->color;
+
+  cogl_material_set_color (priv->solid_material, &color);
+  cogl_material_set_color (priv->glyph_material, &color);
 }
 
 static void
