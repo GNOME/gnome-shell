@@ -72,8 +72,9 @@
 
 typedef struct _LayoutCache     LayoutCache;
 
-static const ClutterColor default_cursor_color = {   0,   0,   0, 255 };
-static const ClutterColor default_text_color   = {   0,   0,   0, 255 };
+static const ClutterColor default_cursor_color    = {   0,   0,   0, 255 };
+static const ClutterColor default_selection_color = {   0,   0,   0, 255 };
+static const ClutterColor default_text_color      = {   0,   0,   0, 255 };
 
 G_DEFINE_TYPE (ClutterText, clutter_text, CLUTTER_TYPE_ACTOR);
 
@@ -109,20 +110,21 @@ struct _ClutterTextPrivate
   PangoAttrList *attrs;
   PangoAttrList *effective_attrs;
 
-  guint alignment        : 2;
-  guint wrap             : 1;
-  guint use_underline    : 1;
-  guint use_markup       : 1;
-  guint ellipsize        : 3;
-  guint single_line_mode : 1;
-  guint wrap_mode        : 3;
-  guint justify          : 1;
-  guint editable         : 1;
-  guint cursor_visible   : 1;
-  guint activatable      : 1;
-  guint selectable       : 1;
-  guint in_select_drag   : 1;
-  guint cursor_color_set : 1;
+  guint alignment           : 2;
+  guint wrap                : 1;
+  guint use_underline       : 1;
+  guint use_markup          : 1;
+  guint ellipsize           : 3;
+  guint single_line_mode    : 1;
+  guint wrap_mode           : 3;
+  guint justify             : 1;
+  guint editable            : 1;
+  guint cursor_visible      : 1;
+  guint activatable         : 1;
+  guint selectable          : 1;
+  guint selection_color_set : 1;
+  guint in_select_drag      : 1;
+  guint cursor_color_set    : 1;
 
   /* current cursor position */
   gint position;
@@ -152,6 +154,8 @@ struct _ClutterTextPrivate
   ClutterColor cursor_color;
   guint cursor_size;
 
+  ClutterColor selection_color;
+
   gint max_length;
 
   gunichar password_char;
@@ -176,6 +180,8 @@ enum
   PROP_ELLIPSIZE,
   PROP_POSITION,
   PROP_SELECTION_BOUND,
+  PROP_SELECTION_COLOR,
+  PROP_SELECTION_COLOR_SET,
   PROP_CURSOR_VISIBLE,
   PROP_CURSOR_COLOR,
   PROP_CURSOR_COLOR_SET,
@@ -596,6 +602,10 @@ clutter_text_set_property (GObject      *gobject,
       clutter_text_set_selection_bound (self, g_value_get_int (value));
       break;
 
+    case PROP_SELECTION_COLOR:
+      clutter_text_set_selection_color (self, g_value_get_boxed (value));
+      break;
+
     case PROP_CURSOR_VISIBLE:
       clutter_text_set_cursor_visible (self, g_value_get_boolean (value));
       break;
@@ -691,6 +701,14 @@ clutter_text_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->selectable);
       break;
 
+    case PROP_SELECTION_COLOR:
+      clutter_value_set_color (value, &priv->selection_color);
+      break;
+
+    case PROP_SELECTION_COLOR_SET:
+      g_value_set_boolean (value, priv->selection_color_set);
+      break;
+
     case PROP_ACTIVATABLE:
       g_value_set_boolean (value, priv->activatable);
       break;
@@ -775,42 +793,34 @@ cursor_paint (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
   ClutterActor *actor = CLUTTER_ACTOR (self);
-  guint8 real_opacity;
 
   if (priv->editable && priv->cursor_visible)
     {
-      if (priv->cursor_color_set)
-        {
-          real_opacity = clutter_actor_get_paint_opacity (actor)
-                       * priv->cursor_color.alpha
-                       / 255;
-
-          cogl_set_source_color4ub (priv->cursor_color.red,
-                                    priv->cursor_color.green,
-                                    priv->cursor_color.blue,
-                                    real_opacity);
-        }
-      else
-        {
-          real_opacity = clutter_actor_get_paint_opacity (actor)
-                       * priv->text_color.alpha
-                       / 255;
-
-          cogl_set_source_color4ub (priv->text_color.red,
-                                    priv->text_color.green,
-                                    priv->text_color.blue,
-                                    real_opacity);
-        }
+      guint8 paint_opacity = clutter_actor_get_paint_opacity (actor);
+      const ClutterColor *color;
 
       if (priv->position == 0)
         priv->cursor_pos.x -= priv->cursor_size;
 
       if (priv->position == priv->selection_bound)
         {
+          if (priv->cursor_color_set)
+            color = &priv->cursor_color;
+          else
+            color = &priv->text_color;
+
+          cogl_set_source_color4ub (color->red,
+                                    color->green,
+                                    color->blue,
+                                    paint_opacity
+                                    * color->alpha
+                                    / 255);
+
           cogl_rectangle (priv->cursor_pos.x,
                           priv->cursor_pos.y,
                           priv->cursor_pos.x + priv->cursor_pos.width,
                           priv->cursor_pos.y + priv->cursor_pos.height);
+
         }
       else
         {
@@ -820,6 +830,20 @@ cursor_paint (ClutterText *self)
           gint start_index;
           gint end_index;
           gint line_no;
+
+          if (priv->selection_color_set)
+            color = &priv->selection_color;
+          else if (priv->cursor_color_set)
+            color = &priv->cursor_color;
+          else
+            color = &priv->text_color;
+
+          cogl_set_source_color4ub (color->red,
+                                    color->green,
+                                    color->blue,
+                                    paint_opacity
+                                    * color->alpha
+                                    / 255);
 
           if (priv->position == 0)
             start_index = 0;
@@ -1908,6 +1932,34 @@ clutter_text_class_init (ClutterTextClass *klass)
   g_object_class_install_property (gobject_class, PROP_SELECTION_BOUND, pspec);
 
   /**
+   * ClutterText:selection-color:
+   *
+   * The color of the selection.
+   *
+   * Since: 1.0
+   */
+  pspec = clutter_param_spec_color ("selection-color",
+                                    "Selection Color",
+                                    "Selection Color",
+                                    &default_selection_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_SELECTION_COLOR, pspec);
+
+  /**
+   * ClutterText:selection-color-set:
+   *
+   * Will be set to %TRUE if #ClutterText:selection-color has been set.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("selection-color-set",
+                                "Selection Color Set",
+                                "Whether the selection color has been set",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_SELECTION_COLOR_SET, pspec);
+
+  /**
    * ClutterText:attributes:
    *
    * A list of #PangoStyleAttribute<!-- -->s to be applied to the
@@ -2230,6 +2282,7 @@ clutter_text_init (ClutterText *self)
 
   priv->text_color = default_text_color;
   priv->cursor_color = default_cursor_color;
+  priv->selection_color = default_selection_color;
 
   /* get the default font name from the context */
   font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
@@ -2244,6 +2297,7 @@ clutter_text_init (ClutterText *self)
   priv->editable = FALSE;
   priv->selectable = TRUE;
 
+  priv->selection_color_set = FALSE;
   priv->cursor_color_set = FALSE;
 
   priv->password_char = 0;
@@ -2814,6 +2868,67 @@ clutter_text_get_selection_bound (ClutterText *self)
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), -1);
 
   return self->priv->selection_bound;
+}
+
+/**
+ * clutter_text_set_selection_color:
+ * @self: a #ClutterText
+ * @color: the color of the selection, or %NULL to unset it
+ *
+ * Sets the color of the selection of a #ClutterText actor.
+ *
+ * If @color is %NULL, the selection color will be the same as the
+ * cursor color, or if no cursor color is set either then it will be
+ * the same as the text color.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_selection_color (ClutterText        *self,
+                                  const ClutterColor *color)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (color)
+    {
+      priv->selection_color = *color;
+      priv->selection_color_set = TRUE;
+    }
+  else
+    priv->selection_color_set = FALSE;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
+  g_object_notify (G_OBJECT (self), "selection-color");
+  g_object_notify (G_OBJECT (self), "selection-color-set");
+}
+
+/**
+ * clutter_text_get_selection_color:
+ * @self: a #ClutterText
+ * @color: return location for a #ClutterColor
+ *
+ * Retrieves the color of the selection of a #ClutterText actor.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_get_selection_color (ClutterText  *self,
+                                  ClutterColor *color)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (color != NULL);
+
+  priv = self->priv;
+
+  *color = priv->selection_color;
 }
 
 /**

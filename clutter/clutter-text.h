@@ -182,6 +182,10 @@ void                  clutter_text_set_selection        (ClutterText        *sel
                                                          gssize              start_pos,
                                                          gssize              end_pos);
 gchar *               clutter_text_get_selection        (ClutterText        *self);
+void                  clutter_text_set_selection_color  (ClutterText        *self,
+                                                         const ClutterColor *color);
+void                  clutter_text_get_selection_color  (ClutterText        *self,
+                                                         ClutterColor       *color);
 void                  clutter_text_set_password_char    (ClutterText        *self,
                                                          gunichar            wc);
 gunichar              clutter_text_get_password_char    (ClutterText        *self);
