@@ -105,15 +105,22 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
                                           min_width,
                                           &min_height, NULL);
 
-      size_hints->min_width = CLUTTER_UNITS_TO_DEVICE (min_width);
-      size_hints->min_height = CLUTTER_UNITS_TO_DEVICE (min_height);
-      size_hints->flags = PMinSize;
+      size_hints->flags = 0;
 
-      if (!resize)
+      /* If we are going fullscreen then we don't want any
+         restrictions on the window size */
+      if (!stage_x11->fullscreen_on_map)
         {
-          size_hints->max_width = size_hints->min_width;
-          size_hints->max_height = size_hints->min_height;
-          size_hints->flags |= PMaxSize;
+          size_hints->min_width = CLUTTER_UNITS_TO_DEVICE (min_width);
+          size_hints->min_height = CLUTTER_UNITS_TO_DEVICE (min_height);
+          size_hints->flags = PMinSize;
+
+          if (!resize)
+            {
+              size_hints->max_width = size_hints->min_width;
+              size_hints->max_height = size_hints->min_height;
+              size_hints->flags |= PMaxSize;
+            }
         }
 
       XSetWMNormalHints (stage_x11->xdpy, stage_x11->xwin, size_hints);
@@ -384,7 +391,6 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
   ClutterStage *stage = stage_x11->wrapper;
-  static gboolean was_resizeable = FALSE;
 
   if (!stage)
     return;
@@ -395,6 +401,11 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
     {
       int width, height;
 
+      /* FIXME: this will do the wrong thing for dual-headed
+         displays. This will return the size of the combined display
+         but Metacity (at least) will fullscreen to only one of the
+         displays. This will cause the actor to report the wrong size
+         until the ConfigureNotify for the correct size is received */
       width  = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
       height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
 
@@ -409,10 +420,10 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
 
       clutter_actor_set_size (CLUTTER_ACTOR (stage), width, height);
 
+      stage_x11->fullscreen_on_map = TRUE;
+
       if (stage_x11->xwin != None)
         {
-          stage_x11->fullscreen_on_map = TRUE;
-
           /* if the actor is not mapped we resize the stage window to match
            * the size of the screen; this is useful for e.g. EGLX to avoid
            * a resize when calling clutter_stage_fullscreen() before showing
@@ -429,13 +440,11 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
             }
           else
             {
-              /* We need to set window user resize-able for metacity at 
-               * at least to allow the window to fullscreen *sigh*  
-              */
-              if (clutter_stage_get_user_resizable (stage) == TRUE)
-                was_resizeable = TRUE;
-              else
-                 clutter_stage_set_user_resizable (stage, TRUE);
+              /* We need to fix the window size so that it will remove
+                 the maximum and minimum window hints. Otherwise
+                 metacity will honour the restrictions and not
+                 fullscreen correctly. */
+              clutter_stage_x11_fix_window_size (stage_x11);
 
               send_wmspec_change_state (backend_x11, stage_x11->xwin,
                                         backend_x11->atom_NET_WM_STATE_FULLSCREEN,
@@ -445,6 +454,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
     }
   else
     {
+      stage_x11->fullscreen_on_map = FALSE;
+
       if (stage_x11->xwin != None)
         {
           if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
@@ -456,21 +467,15 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
             }
           else
             {
-              clutter_stage_set_user_resizable (stage, TRUE);
-
               send_wmspec_change_state (backend_x11,
                                         stage_x11->xwin,
                                         backend_x11->atom_NET_WM_STATE_FULLSCREEN,
                                         FALSE);
 
-              /* reset the windows state - this isn't fun - see above */
-              if (!was_resizeable)
-                clutter_stage_set_user_resizable (stage, FALSE);
-
-              was_resizeable = FALSE;
+              /* Fix the window size to restore the minimum/maximum
+                 restriction */
+              clutter_stage_x11_fix_window_size (stage_x11);
             }
-
-          stage_x11->fullscreen_on_map = FALSE;
         }
     }
 }
