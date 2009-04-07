@@ -1662,8 +1662,22 @@ finish_minimize (gpointer data)
   meta_window_hide (window);
   if (window->has_focus)
     {
+      MetaWindow *not_this_one = NULL;
+      MetaWorkspace *my_workspace = meta_window_get_workspace (window);
+
+      /*
+       * If this window is modal, passing the not_this_one window to
+       * _focus_default_window() makes the focus to be given to this window's
+       * ancestor. This can only be the case if the window is on the currently
+       * active workspace; when it is not, we need to pass in NULL, so as to
+       * focus the default window for the active workspace (this scenario
+       * arises when we are switching workspaces).
+       */
+      if (my_workspace == window->screen->active_workspace)
+        not_this_one = window;
+
       meta_workspace_focus_default_window (window->screen->active_workspace,
-                                           window,
+                                           not_this_one,
                                            timestamp);
     }
 }
