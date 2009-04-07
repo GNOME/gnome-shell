@@ -57,7 +57,7 @@ mutter_module_load (GTypeModule *gmodule)
   g_assert (priv->path);
 
   if (!priv->lib &&
-      !(priv->lib = g_module_open (priv->path, G_MODULE_BIND_LOCAL)))
+      !(priv->lib = g_module_open (priv->path, 0)))
     {
       g_warning ("Could not load library [%s (%s)]",
                  priv->path, g_module_error ());
