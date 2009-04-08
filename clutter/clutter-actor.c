@@ -869,6 +869,20 @@ clutter_actor_real_unmap (ClutterActor *self)
    */
   g_object_notify (G_OBJECT (self), "mapped");
 
+  /* relinquish keyboard focus if we were unmapped while owning it */
+  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+    {
+      ClutterActor *stage;
+
+      stage = clutter_actor_get_stage (self);
+
+      if (stage &&
+          clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self)
+        {
+          clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
+        }
+    }
+
   clutter_actor_queue_redraw (self);
 }
 
