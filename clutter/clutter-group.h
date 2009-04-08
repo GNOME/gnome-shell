@@ -106,10 +106,10 @@ void          clutter_group_remove_all       (ClutterGroup    *group);
 
 /* for Mr. Mallum */
 #define clutter_group_add(group,actor)                  G_STMT_START {  \
-  if (CLUTTER_IS_GROUP ((group)) && CLUTTER_IS_ACTOR ((actor)))         \
+  ClutterActor *_actor = (ClutterActor *) (actor);                      \
+  if (CLUTTER_IS_GROUP ((group)) && CLUTTER_IS_ACTOR ((_actor)))        \
     {                                                                   \
       ClutterContainer *_container = (ClutterContainer *) (group);      \
-      ClutterActor *_actor = (ClutterActor *) (actor);                  \
       clutter_container_add_actor (_container, _actor);                 \
     }                                                   } G_STMT_END
 
