@@ -225,6 +225,7 @@ Sideshow.prototype = {
                     me._setMoreAppsMode();
                 else
                     me._setMoreDocsMode();
+                return true;
             }
             return false;
         });
