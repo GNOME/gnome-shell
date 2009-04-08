@@ -224,6 +224,7 @@ meta_window_destroy_frame (MetaWindow *window)
   
   /* Put our state back where it should be */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING);
+  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 }
 
 

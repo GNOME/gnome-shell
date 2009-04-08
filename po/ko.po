@@ -2,12 +2,15 @@
 # Young-Ho, Cha <ganadist@chollian.net>, 2002, 2006.
 # Changwoo Ryu <cwryu@debian.org>, 2003, 2004, 2005, 2006, 2007, 2008, 2009.
 #
+# 주의:
+# - 이 프로그램의 이름인 Metacity는 "메타시티"로 음역.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-29 16:40+0900\n"
-"PO-Revision-Date: 2009-01-29 19:01+0900\n"
+"POT-Creation-Date: 2009-02-18 09:15+0900\n"
+"PO-Revision-Date: 2009-02-18 09:16+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -306,7 +309,7 @@ msgstr "디스플레이 \"%2$s\"의 화면 %1$d을(를) 떼어 놓을수 없습�
 #. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
 #. * "disabled" must also stay as it is.
 #.
-#: ../src/core/schema-bindings.c:165
+#: ../src/core/schema-bindings.c:169
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -317,9 +320,11 @@ msgid ""
 msgstr ""
 "\"<Control>\" 혹은 \"<Shift><Alt>F1\"과 같이 씁니다.\n"
 "\n"
-"파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"<Ctl>\"나 \"<Ctrl>\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 동작에 대한 키바인딩은 없습니다."
+"파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"<Ctl>\"나 \"<Ctrl>\"처"
+"럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 동작"
+"에 대한 키바인딩은 없습니다."
 
-#: ../src/core/schema-bindings.c:173
+#: ../src/core/schema-bindings.c:177
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -333,9 +338,12 @@ msgid ""
 msgstr ""
 "\"<Control>\" 혹은 \"<Shift><Alt>F1\"과 같이 씁니다.\n"
 "\n"
-"파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"<Ctl>\"나 \"<Ctrl>\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 동작에 대한 키바인딩은 없습니다.\n"
+"파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"<Ctl>\"나 \"<Ctrl>\"처"
+"럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 동작"
+"에 대한 키바인딩은 없습니다.\n"
 "\n"
-"\"Shift\" 키를 누른 상태에서 이 키바인딩을 누르면 반대 동작을 실행합니다. 그러므로 이 키바인딩 안에서는 \"Shift\"를 사용할 수 없습니다."
+"\"Shift\" 키를 누른 상태에서 이 키바인딩을 누르면 반대 동작을 실행합니다. 그"
+"러므로 이 키바인딩 안에서는 \"Shift\"를 사용할 수 없습니다."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
@@ -468,18 +476,18 @@ msgstr ""
 "%s 창에서 크기 변경이 불가능하다는 MWM 힌트를 설정했지만, 최소 크기 %d x %d "
 "및 최대 크기 %d x %d(으)로 설정했습니다; 앞뒤가 맞지 않습니다.\n"
 
-#: ../src/core/window-props.c:276
+#: ../src/core/window-props.c:260
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %lu을(를) 설정하였습니다\n"
 
 # <창제목> (on <기계>)
-#: ../src/core/window-props.c:411
+#: ../src/core/window-props.c:377
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s에서)"
 
-#: ../src/core/window-props.c:1523
+#: ../src/core/window-props.c:1358
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "%2$s에 대해 WM_TRANSIENT_FOR 0x%1$lx 창이 잘못되었습니다.\n"
@@ -625,7 +633,7 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "패널과 바탕 화면 사이에서 반대 방향으로 바로 전환"
 
 #: ../src/include/all-keybindings.h:191
-msgid "Hide all normal windows and set focus to the desktop background"
+msgid "Hide all normal windows and set focus to the desktop"
 msgstr "모든 창을 숨기고 바탕 화면에 포커스"
 
 #: ../src/include/all-keybindings.h:194
@@ -875,7 +883,12 @@ msgid ""
 "(right click). The left and right operations may be swapped using the "
 "\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
 "\"&lt;Super&gt;\" for example."
-msgstr "이 변경 키를 누른 채로 창을 누르면 창을 옮기거나 (왼쪽 단추 누르기), 창의 크기를 바꾸거나 (가운데 단추 누르기), 혹은 창 메뉴를 보여줍니다 (오른쪽 단추 누르기). 왼쪽 단추와 오른쪽 단추의 동작은 \"mouse_button_resize\" 키를 사용해 뒤바꿀 수 있습니다. 변경 키는 \"&lt;Alt&gt;\" 혹은 \"&lt;Super&gt;\"와 같이 씁니다."
+msgstr ""
+"이 변경 키를 누른 채로 창을 누르면 창을 옮기거나 (왼쪽 단추 누르기), 창의 크"
+"기를 바꾸거나 (가운데 단추 누르기), 혹은 창 메뉴를 보여줍니다 (오른쪽 단추 누"
+"르기). 왼쪽 단추와 오른쪽 단추의 동작은 \"mouse_button_resize\" 키를 사용해 "
+"뒤바꿀 수 있습니다. 변경 키는 \"&lt;Alt&gt;\" 혹은 \"&lt;Super&gt;\"와 같이 "
+"씁니다."
 
 #: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -1002,7 +1015,10 @@ msgid ""
 "Set this to true to resize with the right button and show a menu with the "
 "middle button while holding down the key given in \"mouse_button_modifier\"; "
 "set it to false to make it work the opposite way around."
-msgstr "이 값이 참이면 마우스 오른쪽 단추로 크기를 조절하고, \"mouse_button_modifier\"에서 지정한 키를 누른 상태에서 마우스 가운데 단추를 누르면 메뉴를 표시합니다. 이 값을 거짓으로 하면 반대로 동작합니다."
+msgstr ""
+"이 값이 참이면 마우스 오른쪽 단추로 크기를 조절하고, \"mouse_button_modifier"
+"\"에서 지정한 키를 누른 상태에서 마우스 가운데 단추를 누르면 메뉴를 표시합니"
+"다. 이 값을 거짓으로 하면 반대로 동작합니다."
 
 #: ../src/metacity.schemas.in.in.h:30
 msgid ""
@@ -1024,7 +1040,22 @@ msgid ""
 "disabled, tell them it is _their_ fault for breaking their window manager "
 "and that they need to change this option back to true or live with the \"bug"
 "\" they requested."
-msgstr "이 옵션을 거짓으로 설정하면 동작 방식이 문제가 있으므로, 기본값인 참을 바꾸지 않기를 권합니다. 여러가지 동작은 (클라이언트 영역에 마우스 단추 누르기, 창 옮기기, 창 크기 조절 등) 부가적으로 창을 위로 올리게 됩니다. 이 옵션을 거짓으로 하면 창을 위로 올리는 동작을 다른 동작과 연관시키지 않게 되어, 애플리케이션에서 보낸 창을 위로 올리는 요청을 무시하게 됩니다. http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6 페이지를 참고하십시오. 이 옵션이 거짓인 경우에도 창에 Alt와 마우스 왼쪽 단추를 누르거나, 창의 꾸밈 부분을 누르거나, 작업 목록 애플릿에서 요청하는 것처럼 특별한 메시지를 받은 경우에는 창을 올릴 수 있습니다. 이 옵션은 누르면 포커스를 옮기는 모드에서는 사용하지 않습니다. raise_on_click이 거짓인 경우에 창을 올리는 여러가지 방법 중에 프로그램에서 창을 올리라고 요청하는 프로그래밍 방법은 여기에 들어 있지 않습니다. 그러한 요청은 이유를 막론하고 모두 무시합니다. 프로그램 개발자이고 이 설정을 거짓으로 한 상태로 프로그램의 이상 동작에 대해 문제가 있다고 말하는 사용자가 있다면, 그것은 그 사용자의 설정 문제이고 이 옵션을 참으로 되돌리거나 아니면 그 \"버그\"를 안고 살아가야 한다고 말하십시오."
+msgstr ""
+"이 옵션을 거짓으로 설정하면 동작 방식이 문제가 있으므로, 기본값인 참을 바꾸"
+"지 않기를 권합니다. 여러가지 동작은 (클라이언트 영역에 마우스 단추 누르기, "
+"창 옮기기, 창 크기 조절 등) 부가적으로 창을 위로 올리게 됩니다. 이 옵션을 거"
+"짓으로 하면 창을 위로 올리는 동작을 다른 동작과 연관시키지 않게 되어, 애플리"
+"케이션에서 보낸 창을 위로 올리는 요청을 무시하게 됩니다. http://bugzilla."
+"gnome.org/show_bug.cgi?id=445447#c6 페이지를 참고하십시오. 이 옵션이 거짓인 "
+"경우에도 창에 Alt와 마우스 왼쪽 단추를 누르거나, 창의 꾸밈 부분을 누르거나, "
+"작업 목록 애플릿에서 요청하는 것처럼 특별한 메시지를 받은 경우에는 창을 올릴 "
+"수 있습니다. 이 옵션은 누르면 포커스를 옮기는 모드에서는 사용하지 않습니다. "
+"raise_on_click이 거짓인 경우에 창을 올리는 여러가지 방법 중에 프로그램에서 창"
+"을 올리라고 요청하는 프로그래밍 방법은 여기에 들어 있지 않습니다. 그러한 요청"
+"은 이유를 막론하고 모두 무시합니다. 프로그램 개발자이고 이 설정을 거짓으로 "
+"한 상태로 프로그램의 이상 동작에 대해 문제가 있다고 말하는 사용자가 있다면, "
+"그것은 그 사용자의 설정 문제이고 이 옵션을 참으로 되돌리거나 아니면 그 \"버그"
+"\"를 안고 살아가야 한다고 말하십시오."
 
 #: ../src/metacity.schemas.in.in.h:31
 msgid ""
@@ -1775,7 +1806,9 @@ msgstr "테마 \"%2$s\"의 <%1$s>(이)가 설정되지 않았습니다"
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
-msgstr "테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window type=\"%3$s\" style_set=\"whatever\"/> 요소를 추가하십시오"
+msgstr ""
+"테마 \"%2$s\"의 창 형식 \"%1$s\"에 대한 프레임 스타일이 없습니다,<window "
+"type=\"%3$s\" style_set=\"whatever\"/> 요소를 추가하십시오"
 
 #: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
 #, c-format
@@ -1908,7 +1941,9 @@ msgstr "요소 <%s>이(가) <%s>아래에 허용되지 않습니다"
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
-msgstr "단추의 button_width/button_height 와 \"aspect_ratio\"를 한꺼번에 지정할 수 없습니다"
+msgstr ""
+"단추의 button_width/button_height 와 \"aspect_ratio\"를 한꺼번에 지정할 수 없"
+"습니다"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format

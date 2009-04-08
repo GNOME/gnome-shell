@@ -1,3 +1,26 @@
+2.26.0
+======
+
+Thanks to Luca Ferretti, Matt Kraai, and Neil Jagdish Patel for
+improvements in this version.
+
+  - queue frame resize on window undecorate (Neil)
+  - fix description of desktop background (Luca) (#569649)
+  - wrap g_error calls in braces (Matt)
+
+Translations
+  Amitakhya Phukan (as), Mikel González (ast), Ihar Hrachyshka (be@latin), Runa
+  Bhattacharjee (bn_IN), David Planella (ca), Petr Kovar (cs), Ask Hjorth
+  Larsen (da), Christian Kirbach (de), Jennie Petoumenou (el), David Lodge (en_GB),
+  Jorge González (es), Mattias Põldaru (et), Iñaki Larrañaga Murgoitio (eu),
+  Ilkka Tuohela (fi), Claude Paroz (fr), Ankit Patel (gu), Mark Krapivner (he),
+  Rajesh Ranjan (hi), Gabor Kelemen (hu), Luca Ferretti (it), Takeshi AIHANA (ja),
+  Changwoo Ryu (ko), Gintautas Miliauskas (lt), Sangeeta Kumari (mai), Sandeep
+  Shedmake (mr), Wouter Bolsterlee (nl), Manoj Kumar Giri (or), Duarte Loreto (pt),
+  Leonardo Ferreira Fontenelle (pt_BR), Adi Roiban (ro), Yuriy Penkin (ru), Daniel
+  Nylander (sv), I. Felix (ta), Krishna Babu K (te), Theppitak Karoonboonyanan (th),
+  Clytie Siddall (vi), Chao-Hsiung Liao (zh_HK), Chao-Hsiung Liao (zh_TW)
+
 2.25.144
 ========
 

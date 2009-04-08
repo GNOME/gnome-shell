@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-01 21:15+0100\n"
-"PO-Revision-Date: 2009-02-01 21:15+0100\n"
+"POT-Creation-Date: 2009-02-23 15:37+0100\n"
+"PO-Revision-Date: 2009-02-22 15:30+0100\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -233,8 +233,8 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Les solucions temporals per a aplicacions amb errors estan inhabilitades. Pot "
-"ser que certes aplicacions no funcionin correctament.\n"
+"Les solucions temporals per a aplicacions amb errors estan inhabilitades. "
+"Pot ser que certes aplicacions no funcionin correctament.\n"
 
 #: ../src/core/prefs.c:1302
 #, c-format
@@ -320,7 +320,7 @@ msgstr "No s'ha pogut alliberar la pantalla %d en la visualització «%s»\n"
 #. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
 #. * "disabled" must also stay as it is.
 #.
-#: ../src/core/schema-bindings.c:165
+#: ../src/core/schema-bindings.c:169
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -335,7 +335,7 @@ msgstr ""
 "abreviacions com «<Ctl>» i «<Ctrl>». Si establiu l'opció a la cadena especial "
 "«disabled» (inhabilitat), no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/core/schema-bindings.c:173
+#: ../src/core/schema-bindings.c:177
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -650,9 +650,8 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Mou cap enrere entre quadres i l'escriptori immediatament"
 
 #: ../src/include/all-keybindings.h:191
-msgid "Hide all normal windows and set focus to the desktop background"
-msgstr ""
-"Oculta totes les finestres normals i dóna el focus al fons de l'escriptori"
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Oculta totes les finestres normals i dóna el focus a l'escriptori"
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"

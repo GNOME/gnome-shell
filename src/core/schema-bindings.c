@@ -142,7 +142,7 @@ produce_bindings ()
       g_error ("Cannot close %s: %s\n",
         source_filename, strerror (errno));
     }
-  
+
   if (fclose (target_file)!=0)
     {
       g_error ("Cannot close %s: %s\n",

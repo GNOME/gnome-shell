@@ -1,3 +1,24 @@
+2009-03-16  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.26.0 release.
+
+2009-02-04  Neil Jagdish Patel  <njpatel@gmail.com>
+
+	* src/core/frame.c: queue resize on window undecorate
+
+2009-02-03  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/include/all-keybindings.h: Fix description, focus the
+	desktop, not desktop backgroung (Closes bug #569649)
+
+2009-02-02  Matt Kraai  <kraai@ftfbs.org>
+
+	* src/core/schema-bindings.c: Wrap g_error calls in braces.
+
+2009-02-01  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.25.233.
+
 2009-02-01  Thomas Thurman  <tthurman@gnome.org>
 
         * NEWS: 2.25.144 release.

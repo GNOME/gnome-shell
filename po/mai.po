@@ -1,80 +1,77 @@
-# translation of eu.po to Basque
+# translation of metacity.gnome-2-26.po to Maithili
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
-# Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008, 2009.
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2007.
+# Sangeeta Kumari <sangeeta09@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: eu\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-12 22:59+0100\n"
-"PO-Revision-Date: 2009-02-12 23:02+0100\n"
-"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
-"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
+"Project-Id-Version: metacity.gnome-2-26\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
+"POT-Creation-Date: 2009-03-14 21:05+0000\n"
+"PO-Revision-Date: 2009-03-15 16:17+0530\n"
+"Last-Translator: Sangeeta Kumari <sangeeta09@gmail.com>\n"
+"Language-Team: Maithili <maithili.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
-msgstr "Mahaigaina"
+msgstr "डेस्कटाप"
 
 #: ../src/50-metacity-key.xml.in.h:1
 msgid "Window Management"
-msgstr "Leiho-kudeatzailea"
+msgstr "विंडो प्रबंधन"
 
 #: ../src/core/core.c:206
 #, c-format
 msgid "Unknown window information request: %d"
-msgstr "Leihoaren informazio eskaera ezezaguna: %d"
+msgstr ""
 
 #: ../src/core/delete.c:70 ../src/core/delete.c:97
 #: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Ezin da \"%s\" analizatu osoko gisa"
+msgstr "\"%s\" केँ पूर्णांक क' तरहेँ व्याख्या नहि कए सकल"
 
 #: ../src/core/delete.c:77 ../src/core/delete.c:104
 #: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
 #: ../src/ui/theme-parser.c:586
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Ez dira ulertzen amaierako \"%s\" karaktereak \"%s\" katean"
+msgstr "पुछल्ला अक्षर \"%s\" केँ स्ट्रिँग \"%s\" मे समझ नहि सकल"
 
 #: ../src/core/delete.c:135
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Huts egin du \"%s\" mezua analizatzean elkarrizketa-prozesutik\n"
+msgstr "संदेश \"%s\" क' व्याख्या समाद प्रक्रिया सँ नहि कए सकल\n"
 
 #: ../src/core/delete.c:253
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Errorea elkarrizketa-koadroa bistaratzeko prozesutik irakurtzean: %s\n"
+msgstr "संवाद प्रदर्शक प्रक्रिया: %s सँ पढ़बमे त्रुटि\n"
 
 #: ../src/core/delete.c:336
 #, c-format
 msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Errorea metacity-ren elkarrizketa-koadroa abiaraztean aplikazio bat hiltzeari buruz galdetzeko: %s\n"
+msgstr "कोनो अनुप्रयोगकेँ खत्म करब क' लेल पूछए लेल मेटासिटी-संवाद प्रारंभ करबमे त्रुटि: %s\n"
 
 #: ../src/core/delete.c:445
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Huts egin du ostalari-izena hartzean: %s\n"
+msgstr "होस्टनाम पाबैमे विफल: %s\n"
 
 #: ../src/core/display.c:256
 #, c-format
 msgid "Missing %s extension required for compositing"
-msgstr "Konposaketa lantzeko beharrezkoa den %s hedapena falta da"
+msgstr ""
 
 #: ../src/core/display.c:334
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Huts egin du X Window sistemaren '%s' pantaila irekitzean\n"
+msgstr "X विंडो तंत्र प्रदर्शक '%s' खोलबमे विफल\n"
 
 #: ../src/core/errors.c:272
 #, c-format
@@ -83,23 +80,21 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"'%s' pantailaren konexioa galdu da;\n"
-"seguru asko X zerbitzaria itzalita egongo da edo leiho-kudeatzailea \n"
-"hilko/hondatuko zenuen.\n"
+"प्रदर्शक '%s' सँ कनेक्शन छूटि गेल ;\n"
+"बहुत संभावना अछि जे अथवा तँ एक्स सर्वर बन्न कए देल गेल अथवा अहाँ विंडो प्रबंधककेँ \n"
+"खत्म/समाप्त कए देने छी.\n"
 
 #: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "S/Iko %d (%s) errore konponezina '%s' pantailan.\n"
+msgstr "गंभीर आईओ त्रुटि %d (%s), प्रदर्शक '%s' मे.\n"
 
 #: ../src/core/keybindings.c:680
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"Beste programaren batek erabiltzen du %s gakoa %x aldatzaileekin lotura "
-"gisa\n"
+msgstr "कोनो आन प्रोग्राम पहिले सँ कुँजी %s उपयोगमे लए रहल अछि परिवर्धक %x बाइंडिंग क' रूपमे \n"
 
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
@@ -111,19 +106,16 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Errorea gertatu da <tt>%s</tt> exekutatzean:\n"
-"\n"
-"%s"
 
 #: ../src/core/keybindings.c:2381
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr "%d komandoa ez dago definituta.\n"
+msgstr "कोनो कमांड %d पारिभाषित नहि अछि.\n"
 
 #: ../src/core/keybindings.c:3335
 #, c-format
 msgid "No terminal command has been defined.\n"
-msgstr "Ez da terminalaren komandoa definitu.\n"
+msgstr "कोनो टर्मिनल कमांड पारिभाषित नहि अछि.\n"
 
 #: ../src/core/main.c:116
 #, c-format
@@ -134,64 +126,57 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
-"Copyright-a (C) 2001-2008 Havoc Pennington, Red Hat, Inc., eta beste batzuk\n"
-"Hau software librea da; ikus kopiatzeko baldintzak iturburu-kodean.\n"
-"EZ du bermerik; ezta MERKATURATZEKO edo XEDE JAKIN BATERAKO EGOKITASUNAREN "
-"BERMERIK ERE.\n"
 
 #: ../src/core/main.c:253
 msgid "Disable connection to session manager"
-msgstr "Desgaitu saio-kudeatzailearen konexioa"
+msgstr "सत्र प्रबंधकसँ संपर्क रद करू"
 
 #: ../src/core/main.c:259
 msgid "Replace the running window manager with Metacity"
-msgstr "Ordeztu exekutatzen dagoen leiho-kudeatzailea Metacity-rekin"
+msgstr "मेटासिटी क' सात कार्यशील विंडो प्रबंधक बदलू"
 
 #: ../src/core/main.c:265
 msgid "Specify session management ID"
-msgstr "Zehaztu saio-kudeatzailearen IDa"
+msgstr "सत्र प्रबंधन आईडी निर्दिष्ट करू"
 
 #: ../src/core/main.c:270
 msgid "X Display to use"
-msgstr "X pantaila erabiltzeko"
+msgstr "प्रयोग क'लेल X प्रदर्शन"
 
 #: ../src/core/main.c:276
 msgid "Initialize session from savefile"
-msgstr "Hasieratu saioa babes-fitxategitik"
+msgstr "सहेजलफाइल क'लेल सत्र आरंभीकृत करू"
 
 #: ../src/core/main.c:282
 msgid "Print version"
-msgstr "Erakutsi bertsioa"
+msgstr "मुद्रण संस्करण"
 
 #: ../src/core/main.c:288
 msgid "Make X calls synchronous"
-msgstr "Egin X deiak sinkronoak izatea"
+msgstr "X कालकेँ समतुल्यकालिक बनाबू"
 
 #: ../src/core/main.c:294
 msgid "Turn compositing on"
-msgstr "Aktibatu konposaketa"
+msgstr ""
 
 #: ../src/core/main.c:300
 msgid "Turn compositing off"
-msgstr "Desaktibatu konposaketa"
+msgstr ""
 
 #: ../src/core/main.c:478
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Huts egin du gaien direktorioa aztertzean: %s\n"
+msgstr "प्रसंग डिरेक्ट्री स्कैन करबमे विफल: %s\n"
 
 #: ../src/core/main.c:494
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"Gai bat ezin izan da aurkitu. Ziurtatu %s badagoela eta ohiko gaiak "
-"dituela.\n"
+msgstr "प्रसंग नहि खोजि सकल! सुनिश्चित करू जे %s मोजुद अछि आओर एहिमे सामान्य प्रसंग अछि.\n"
 
 #: ../src/core/main.c:550
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Ezin izan da berrabiarazi: %s\n"
+msgstr "पुनः प्रारंभ करबमे विफल: %s\n"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -207,75 +192,71 @@ msgstr "Ezin izan da berrabiarazi: %s\n"
 #: ../src/core/prefs.c:505 ../src/core/prefs.c:660
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "\"%s\" GConf gakoa balio baliogabean ezarrita dago\n"
+msgstr "जी-कॉन्फ़ कुँजी '%s'  एकटा अवैध प्रकार मे नियत अछि\n"
 
 #: ../src/core/prefs.c:586 ../src/core/prefs.c:829
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr "%2$s GConf gakoko %1$d balioa %3$d - %4$d barrutitik kanpo dago\n"
+msgstr ""
 
 #: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
 #: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
 #: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "\"%s\" GConf gakoa mota baliogabean ezarrita dago\n"
+msgstr "जी-कॉन्फ़ कुँजी \"%s\" एकटा अवैध प्रकारमे नियत अछि\n"
 
 #: ../src/core/prefs.c:1231
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Aplikazio hautsien konponbidea desgaituta. Aplikazio batzuk ez dira behar "
-"den bezala ibiliko.\n"
+"टूटल अनुप्रयोगक लेल वर्कअराउन्ड अक्षम कएल भेलहुँ अछि .भ' सकैत अछि किछु अनुप्रयोग उचित प्रकार "
+"व्यवहार नहि करै.\n"
 
 #: ../src/core/prefs.c:1302
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Ezin izan da analizatu \"%s\" letra-tipoaren deskribapena %s GConf gakoan\n"
+msgstr "फ़ॉन्ट विवरण \"%s\" क' व्याख्या जी-कॉन्फ़ कुँजी %s सँ नहि कए सकल\n"
 
 #: ../src/core/prefs.c:1364
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa sagu-"
-"botoiaren aldatzailearentzat\n"
+msgstr "कॉन्फ़िगरेशन डाटाबेसमे प्राप्त \"%s\" माउस बटन मॉडीफ़ायर वैध मूल्य नहि अछि\n"
 
 #: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Errorea laneko %d area ezartzean: %s\n"
+msgstr "कार्यस्थान सँख्या %d पर तय करब मे त्रुटि: %s भेल.\n"
 
 #: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
 #, c-format
 msgid "Workspace %d"
-msgstr "%d. laneko area"
+msgstr "कार्यस्थान %d"
 
 #: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr ""
-"Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa \"%s"
-"\" laster-teklarentzat.\n"
+msgstr "कॉन्फ़िगरेशन डेटाबेसमे प्राप्त \"%s\" कीबाइंडिंग \"%s\" लेल वैध मूल्य नहि अछि\n"
 
 #: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Errorea %d. laneko areari \"%s\" izena ezartzean: %s\n"
+msgstr "कार्यस्थान नाम %d केँ \"%s\" सँ मे बदलबमे त्रुटि: %s भेल\n"
 
 #: ../src/core/prefs.c:2753
 #, c-format
 msgid "Error setting compositor status: %s\n"
-msgstr "Errorea konposaketaren egoera ezartzean: %s\n"
+msgstr ""
 
 #: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "'%2$s' bistaratzeko %1$d pantaila ez da baliozkoa\n"
+msgstr "स्क्रीन %d जे प्रदर्शक '%s' पर अछि ओ अवैध अछि\n"
 
 #: ../src/core/screen.c:366
 #, c-format
@@ -283,25 +264,23 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"\"%2$s\" bistaratzeko %1$d pantailak badu leiho-kudeatzailea; leiho-"
-"kudeatzaile hori ordeztu nahi baduzu, saiatu --replace aukerarekin.\n"
+"स्क्रीन %d जे प्रदर्शक \"%s\" पर अछि ओतए पहिलेसँ विंडो प्रबंधक अछि --replace विकल्प क' "
+"प्रयोग कए वर्तमान विंडो प्रबंधककेँ बदलबाक कोशिश करू.\n"
 
 #: ../src/core/screen.c:393
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Ezin izan da eskuratu leiho-kudeatzailearen hautapena \"%2$s\" bistaratzeko %"
-"1$d pantailan\n"
+msgstr "स्क्रीन %d प्रदर्शक \"%s\" पर विंडो प्रबंधक चयन प्राप्त नहि कए सकल\n"
 
 #: ../src/core/screen.c:451
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "\"%2$s\" bistaratzeko %1$d pantailak badu leiho-kudeatzailea\n"
+msgstr "स्क्रीन %d जे प्रदर्शक \"%s\" पर अछि ओतए पहिलेसँ विंडो प्रबंधक अछि\n"
 
 #: ../src/core/screen.c:661
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Ezin izan da askatu \"%2$s\" bistaratzeko %1$d pantaila\n"
+msgstr "स्क्रीन %d जे प्रदर्शक \"%s\" पर अछि केँ मुक्त नहि कए सकल\n"
 
 #. Translators: Please don't translate "Control", "Shift", etc, since these
 #. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
@@ -316,12 +295,6 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Formatua \"<Control>\" edo \"<Shift><Alt>F1\" itxurakoa izango da.\n"
-"\n"
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"<Ctl>\" eta \"<Ctrl>\" moduko laburdurak ere. Aukeran \"disabled"
-"\" kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza "
-"honentzat."
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
@@ -335,68 +308,59 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"Formatua \"<Control>\" edo \"<Shift><Alt>F1\" itxurakoa izango da.\n"
-"\n"
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"<Ctl>\" eta \"<Ctrl>\" moduko laburdurak ere. Aukeran \"disabled"
-"\" kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza "
-"honentzat.\n"
-"\n"
-"Laster-tekla hau alderantzikatu daiteke \"Maius\" tekla sakatuta edukiz; "
-"horrela \"Maius\" ez da izango erabiltzen duen tekletariko bat."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "Ezin izan da '%s' direktorioa sortu: %s\n"
+msgstr "डायरेक्ट्री '%s' बनाए नहि सकल: %s\n"
 
 #: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Ezin izan da '%s' saio-fitxategia idazteko ireki: %s\n"
+msgstr "सत्र फ़ाइल '%s' लिखब लेल नहि खोलि सकल: %s\n"
 
 #: ../src/core/session.c:995
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Errorea '%s' saio-fitxategia idaztean: %s\n"
+msgstr "स्त्र फ़ाइल लिखबमे त्रुटि '%s': %s\n"
 
 #: ../src/core/session.c:1000
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Errorea '%s' saio-fitxategia ixtean: %s\n"
+msgstr "सत्र फ़ाइल बन्न करबमे त्रुटि '%s': %s\n"
 
 #. oh, just give up
 #: ../src/core/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Huts egin du gordetako %s saio-fitxategia irakurtzean: %s\n"
+msgstr "सहेजल गेल सत्र फ़ाइल %s पढ़बमे विफल: %s\n"
 
 #: ../src/core/session.c:1132
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Huts egin du gordetako saio-fitxategia analizatzean: %s\n"
+msgstr "सहेजल गेल सत्र फ़ाइल: %s क' व्याख्या करबमे विफल\n"
 
 #: ../src/core/session.c:1181
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session> atributua ikusi da baina dagoeneko badugu saio-IDa"
+msgstr "<मेटासिटी_सत्र> गुण देखलहुँ मुदा हमरा सँग पहिलेसँ सत्र आईडी अछि"
 
 #: ../src/core/session.c:1194 ../src/core/session.c:1269
 #: ../src/core/session.c:1301 ../src/core/session.c:1373
 #: ../src/core/session.c:1433
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
-msgstr "%s atributu ezezaguna <%s> elementuan"
+msgstr ""
 
 #: ../src/core/session.c:1211
 #, c-format
 msgid "nested <window> tag"
-msgstr "<window> etiketa habiaratua"
+msgstr "नेस्टेड <विंडो> टैग"
 
 #: ../src/core/session.c:1453
 #, c-format
 msgid "Unknown element %s"
-msgstr "%s elementu ezezaguna"
+msgstr "अज्ञात तत्व %s"
 
 #: ../src/core/session.c:1879
 #, c-format
@@ -404,51 +368,51 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Errorea saio-kudeatzea onartzen ez duten aplikazioei buruzko metacity-ren "
-"elkarrizketa-koadroa abiaraztean: %s\n"
+"अनुप्रयोग जे सत्र प्रबंधन समर्थन: %s  नहि राखैत छी हुनकर चेतावनी बताबै लेल मेटासिटी समाद "
+"प्रारंभ करबमे त्रुटि\n"
 
 #: ../src/core/util.c:101
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Huts egin du arazketako egunkaria irekitzean: %s\n"
+msgstr "डिबग लॉग: %s खोलबमे विफल\n"
 
 #: ../src/core/util.c:111
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Huts egin du %s egunkari-fitxategian fdopen() egitean: %s\n"
+msgstr "लॉग फ़ाइल %s:  fdopen() मे विफल %s\n"
 
 #: ../src/core/util.c:117
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "%s egunkari-fitxategia irekita\n"
+msgstr "लॉग फ़ाइल %s  खोललक \n"
 
 #: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity modu xehatuaren euskarririk gabe konpilatu da\n"
+msgstr "मेटासिटीकेँ वर्बोज विधि क' बगैर कम्पाइल कएल गेल अछि\n"
 
 #: ../src/core/util.c:236
 msgid "Window manager: "
-msgstr "Leiho-kudeatzailea: "
+msgstr "विंडो प्रबंधक:"
 
 #: ../src/core/util.c:388
 msgid "Bug in window manager: "
-msgstr "Akatsa leiho-kudeatzailean: "
+msgstr "विंडो प्रबंधकमे बग:"
 
 #: ../src/core/util.c:421
 msgid "Window manager warning: "
-msgstr "Leiho-kudeatzailearen abisua: "
+msgstr "विंडो प्रबंधक चेतावनी"
 
 #: ../src/core/util.c:449
 msgid "Window manager error: "
-msgstr "Leiho-kudeatzailearen errorea: "
+msgstr "विंडो प्रबंधक त्रुटिः"
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
 #: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
 #: ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
-msgstr "Metacity"
+msgstr "मेटासिटी"
 
 #. first time through
 #: ../src/core/window.c:5626
@@ -456,9 +420,7 @@ msgstr "Metacity"
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
-msgstr ""
-"%s leihoak bere buruari ezartzen dio SM_CLIENT_ID, WM_CLIENT_LEADER leihoari "
-"ezarri beharren, ICCCMan zehaztuta dagoen moduan.\n"
+msgstr "विंडो %s नियत करैत अछि SM_CLIENT_ID अपनासँ, बजाए WM_CLIENT_LEADER विंडो क'  जहिना जे ICCCM मे उल्लेखित कएल गेल अछि.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -473,24 +435,24 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"%s leihoak MWM aholkua ezartzen du, tamainarik ezin zaiola aldatu "
-"adierazteko, baina aldi berean gutxieneko tamaina (%d x %d) eta gehienezkoa "
-"(%d x %d) ezartzen ditu, eta horrek ez du zentzu handirik.\n"
+"विंडो %s ने एकटा एमडबल्यूएम संकेत नियत कएलक ई देखबैत हुए जे ई आकार बदलब लायक नहि अछि "
+"परंतु न्यूनतम आकार नियत कएल %d x %d आओर अधिकतम आकार  %d x %d; एकर कोनो खास अर्थ "
+"नहि निकलत.\n"
 
 #: ../src/core/window-props.c:260
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Aplikazioak _NET_WM_PID %lu faltsua ezarri du\n"
+msgstr "अनुप्रयोग ने नियत कएलक एकटा bogus _NET_WM_PID %lu\n"
 
 #: ../src/core/window-props.c:377
 #, c-format
 msgid "%s (on %s)"
-msgstr "%s (%s)"
+msgstr "%s (%s पर)"
 
 #: ../src/core/window-props.c:1358
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "%2$s(e)n baliogabeko WM_TRANSIENT_FOR 0x%1$lx leihoa zehaztu da.\n"
+msgstr "अवैध WM_TRANSIENT_FOR window 0x%lx %s क'लेल निर्दिष्ट.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -501,331 +463,329 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"0x%lx leihoak %s propietatea du\n"
-"horrek %s mota %d formatua izatea espero zen\n"
-"baina %s mota %d formatua %d n_items du.\n"
-"Gehiago ematen du aplikazioaren akatsa leiho-kudeatzailearena baino.\n"
-"Leihoak title=\"%s\" class=\"%s\" name=\"%s\" du\n"
+"विंडो 0x%lx मे गुण %s अछि \n"
+"जकरामे वांछित अछि प्रकार %s फ़ॉर्मेट %d \n"
+"आओर वास्तवमे अछि प्रकार %s फ़ॉर्मेट %d  एन_वस्तुसभ %d.\n"
+"एहि बात क' बेसी संभावना अछि जे ई एकटा अनुप्रयोग बग अछि विंडो प्रबंधक बग नहि.\n"
+"विंडो क' शीर्षक अछि=\"%s\" क्लास=\"%s\" नाम=\"%s\"\n"
 
 #: ../src/core/xprops.c:401
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du\n"
+msgstr "गुण %s विंडो 0x%lx मे अवैध यूटीएफ़-8 अछि \n"
 
 #: ../src/core/xprops.c:484
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du zerrendako %3$d. "
-"elementuan\n"
+msgstr "गुण %s विंडो 0x%lx पर %d वस्तुसभ लेल सूचीमे अवैध यूटीएफ़-8 अछि\n"
 
 #: ../src/include/all-keybindings.h:88
 msgid "Switch to workspace 1"
-msgstr "Aldatu 1. laneko areara"
+msgstr "कार्यस्थान 1 पर जाउ"
 
 #: ../src/include/all-keybindings.h:90
 msgid "Switch to workspace 2"
-msgstr "Aldatu 2. laneko areara"
+msgstr "कार्यस्थान 2 पर जाउ"
 
 #: ../src/include/all-keybindings.h:92
 msgid "Switch to workspace 3"
-msgstr "Aldatu 3. laneko areara"
+msgstr "कार्यस्थान 3 पर जाउ"
 
 #: ../src/include/all-keybindings.h:94
 msgid "Switch to workspace 4"
-msgstr "Aldatu 4. laneko areara"
+msgstr "कार्यस्थान 4 पर जाउ"
 
 #: ../src/include/all-keybindings.h:96
 msgid "Switch to workspace 5"
-msgstr "Aldatu 5. laneko areara"
+msgstr "कार्यस्थान 5 पर जाउ"
 
 #: ../src/include/all-keybindings.h:98
 msgid "Switch to workspace 6"
-msgstr "Aldatu 6. laneko areara"
+msgstr "कार्यस्थान 6 पर जाउ"
 
 #: ../src/include/all-keybindings.h:100
 msgid "Switch to workspace 7"
-msgstr "Aldatu 7. laneko areara"
+msgstr "कार्यस्थान 7  पर जाउ"
 
 #: ../src/include/all-keybindings.h:102
 msgid "Switch to workspace 8"
-msgstr "Aldatu 8. laneko areara"
+msgstr "कार्यस्थान 8 पर जाउ"
 
 #: ../src/include/all-keybindings.h:104
 msgid "Switch to workspace 9"
-msgstr "Aldatu 9. laneko areara"
+msgstr "कार्यस्थान 9 पर जाउ"
 
 #: ../src/include/all-keybindings.h:106
 msgid "Switch to workspace 10"
-msgstr "Aldatu 10. laneko areara"
+msgstr "कार्यस्थान 10  पर जाउ"
 
 #: ../src/include/all-keybindings.h:108
 msgid "Switch to workspace 11"
-msgstr "Aldatu 11. laneko areara"
+msgstr "कार्यस्थान 11  पर जाउ"
 
 #: ../src/include/all-keybindings.h:110
 msgid "Switch to workspace 12"
-msgstr "Aldatu 12. laneko areara"
+msgstr "कार्यस्थान 12  पर जाउ"
 
 #: ../src/include/all-keybindings.h:122
 msgid "Switch to workspace on the left of the current workspace"
-msgstr "Aldatu uneko laneko arearen ezkerreko laneko areara"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:126
 msgid "Switch to workspace on the right of the current workspace"
-msgstr "Aldatu uneko laneko arearen eskuineko laneko areara"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:130
 msgid "Switch to workspace above the current workspace"
-msgstr "Aldatu uneko laneko arearen gaineko laneko areara"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:134
 msgid "Switch to workspace below the current workspace"
-msgstr "Aldatu uneko laneko arearen azpiko laneko areara"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:150
 msgid "Move between windows of an application, using a popup window"
-msgstr "Mugitu aplikazioaren leihoen artean, laster-leiho bat erabiliz"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:153
 msgid "Move backward between windows of an application, using a popup window"
-msgstr "Atzerantz joan aplikazioaren leihoen artean, laster-leiho bat erabiliz"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:157
 msgid "Move between windows, using a popup window"
-msgstr "Mugitu leihoen artean, laster-leiho bat erabiliz"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:160
 msgid "Move backward between windows, using a popup window"
-msgstr "Atzerantz joan leihoen artean, laster-leiho bat erabiliz"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:163
 msgid "Move between panels and the desktop, using a popup window"
-msgstr "Mugitu panelen eta mahaigainaren artean laster-leihoarekin"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:166
 msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "Atzerantz joan panelen eta mahaigainaren artean, laster-leiho bat erabiliz"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:171
 msgid "Move between windows of an application immediately"
-msgstr "Mugitu aplikazio baten leihoen artean berehala"
+msgstr "तुरंत अनुप्रयोग क' विंडो क' बीच जाउ"
 
 #: ../src/include/all-keybindings.h:174
 msgid "Move backward between windows of an application immediately"
-msgstr "Atzerantz joan aplikazio baten leihoen artean berehala"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:177
 msgid "Move between windows immediately"
-msgstr "Mugitu leihoen artean berehala"
+msgstr "विंडोज़ क' बीच तुरंत घसकाबू"
 
 #: ../src/include/all-keybindings.h:180
 msgid "Move backward between windows immediately"
-msgstr "Atzerantz joan leihoen artean berehala"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:183
 msgid "Move between panels and the desktop immediately"
-msgstr "Mugitu panelen eta mahaigainaren artean berehala"
+msgstr "पटल आओर डेस्कटाप क' बीच तुरंत घसकाबू"
 
 #: ../src/include/all-keybindings.h:186
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Atzerantz joan panelen eta mahaigainaren artean berehala"
+msgstr "पटल आओर डेस्कटाप क' बीच तुरंत पाछाँ जाउ"
 
 #: ../src/include/all-keybindings.h:191
 msgid "Hide all normal windows and set focus to the desktop"
-msgstr "Ezkutatu leiho normal guztiak eta eman fokua mahaigainari"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
-msgstr "Erakutsi paneleko menu nagusia"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:197
 msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "Erakutsi panelaren \"Exekutatu aplikazioa\" elkarrizketa-koadroa"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:238
 msgid "Take a screenshot"
-msgstr "Egin pantaila-argazki bat"
+msgstr "स्क्रीन क' चित्र लिअ'"
 
 #: ../src/include/all-keybindings.h:240
 msgid "Take a screenshot of a window"
-msgstr "Egin leiho baten pantaila-argazkia"
+msgstr "विंडो क' स्क्रीनशॉट लिअ'"
 
 #: ../src/include/all-keybindings.h:242
 msgid "Run a terminal"
-msgstr "Exekutatu terminala"
+msgstr "एकटा टर्मिनल चलाबू"
 
 #: ../src/include/all-keybindings.h:257
 msgid "Activate the window menu"
-msgstr "Aktibatu leiho-menua"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:260
 msgid "Toggle fullscreen mode"
-msgstr "Txandakatu pantaila osoaren modua"
+msgstr "सौंसे स्क्रीन मोड टॉगल करू"
 
 #: ../src/include/all-keybindings.h:262
 msgid "Toggle maximization state"
-msgstr "Txandakatu maximizatze-egoera"
+msgstr "अधिकतम स्थिति टॉगल करू"
 
 #: ../src/include/all-keybindings.h:264
 msgid "Toggle whether a window will always be visible over other windows"
-msgstr "Txandakatu leiho bat beste leiho guztien gainean ikusgai egongo den edo ez"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:266
 msgid "Maximize window"
-msgstr "Maximizatu leihoa"
+msgstr "विंडो अधिकतम करू"
 
 #: ../src/include/all-keybindings.h:268
 msgid "Restore window"
-msgstr "Leheneratu leihoa"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:270
 msgid "Toggle shaded state"
-msgstr "Txandakatu bildutako egoera"
+msgstr "आभायुक्त स्थिति टॉगल करू"
 
 #: ../src/include/all-keybindings.h:272
 msgid "Minimize window"
-msgstr "Ikonotu leihoa"
+msgstr "विंडोकेँ न्यूनतम करू"
 
 #: ../src/include/all-keybindings.h:274
 msgid "Close window"
-msgstr "Itxi leihoa"
+msgstr "विंडो बन्न करू"
 
 #: ../src/include/all-keybindings.h:276
 msgid "Move window"
-msgstr "Lekuz aldatu leihoa"
+msgstr "विंडो घसकाबू"
 
 #: ../src/include/all-keybindings.h:278
 msgid "Resize window"
-msgstr "Aldatu leihoaren tamaina"
+msgstr "विंडो क' आकार बदलू"
 
 #: ../src/include/all-keybindings.h:281
 msgid "Toggle whether window is on all workspaces or just one"
-msgstr "Txandakatu leihoa laneko area guztietan edo bakar batean egotea"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:285
 msgid "Move window to workspace 1"
-msgstr "Eraman leihoa 1. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 1 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:288
 msgid "Move window to workspace 2"
-msgstr "Eraman leihoa 2. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 2 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:291
 msgid "Move window to workspace 3"
-msgstr "Eraman leihoa 3. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 3 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:294
 msgid "Move window to workspace 4"
-msgstr "Eraman leihoa 4. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 4 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:297
 msgid "Move window to workspace 5"
-msgstr "Eraman leihoa 5. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 5 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:300
 msgid "Move window to workspace 6"
-msgstr "Eraman leihoa 6. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 6 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:303
 msgid "Move window to workspace 7"
-msgstr "Eraman leihoa 7. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 7 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:306
 msgid "Move window to workspace 8"
-msgstr "Eraman leihoa 8. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 8 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:309
 msgid "Move window to workspace 9"
-msgstr "Eraman leihoa 9. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 9 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:312
 msgid "Move window to workspace 10"
-msgstr "Eraman leihoa 10. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 10  पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:315
 msgid "Move window to workspace 11"
-msgstr "Eraman leihoa 11. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 11 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:318
 msgid "Move window to workspace 12"
-msgstr "Eraman leihoa 12. laneko areara"
+msgstr "विंडोकेँ कार्यस्थान 12 पर लए जाउ"
 
 #: ../src/include/all-keybindings.h:330
 msgid "Move window one workspace to the left"
-msgstr "Eraman leihoa laneko area bat ezkerrera"
+msgstr "विंडो केँ एकटा कार्यस्थान बामाँ लाउ"
 
 #: ../src/include/all-keybindings.h:333
 msgid "Move window one workspace to the right"
-msgstr "Eraman leihoa laneko area bat eskuinera"
+msgstr "विंडो केँ एकटा कार्यस्थान दायाँ लाउ"
 
 #: ../src/include/all-keybindings.h:336
 msgid "Move window one workspace up"
-msgstr "Eraman leihoa laneko area bat gora"
+msgstr "विंडो केँ एकटा कार्यस्थान उप्पर लाउ"
 
 #: ../src/include/all-keybindings.h:339
 msgid "Move window one workspace down"
-msgstr "Eraman leihoa laneko area bat behera"
+msgstr "विंडो केँ एकटा कार्यस्थान नीच्चाँ लाउ"
 
 #: ../src/include/all-keybindings.h:342
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "Goratu leihoa beste leiho batek estaltzen badu, bestela beheratu"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:344
 msgid "Raise window above other windows"
-msgstr "Goratu leihoa beste leihoen gainera"
+msgstr "दोसर विंडो पर विंडो बढ़ाबू"
 
 #: ../src/include/all-keybindings.h:346
 msgid "Lower window below other windows"
-msgstr "Beheratu leihoa beste leihoen azpira"
+msgstr "विंडोकेँ आन विंडो क' नीच्चाँ राखू"
 
 #: ../src/include/all-keybindings.h:350
 msgid "Maximize window vertically"
-msgstr "Maximizatu leihoa bertikalki"
+msgstr "विंडो खड़ा अधिकतम करू"
 
 #: ../src/include/all-keybindings.h:354
 msgid "Maximize window horizontally"
-msgstr "Maximizatu leihoa horizontalki"
+msgstr "विंडो आड़ा अधिकतम करू"
 
 #: ../src/include/all-keybindings.h:358
 msgid "Move window to north-west (top left) corner"
-msgstr "Eraman leihoa ipar-mendebaldeko (goi-ezkerreko) ertzera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:361
 msgid "Move window to north-east (top right) corner"
-msgstr "Eraman leihoa ipar-ekialdeko (goi-eskuineko) ertzera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:364
 msgid "Move window to south-west (bottom left) corner"
-msgstr "Eraman leihoa hego-mendebaldeko (ezker-beheko) ertzera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:367
 msgid "Move window to south-east (bottom right) corner"
-msgstr "Eraman leihoa hego-ekialdeko (eskuin-beheko) ertzera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:371
 msgid "Move window to north (top) side of screen"
-msgstr "Eraman leihoa pantailaren iparraldeko (goiko) aldera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:374
 msgid "Move window to south (bottom) side of screen"
-msgstr "Eraman leihoa pantailaren hegoaldeko (beheko) aldera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:377
 msgid "Move window to east (right) side of screen"
-msgstr "Eraman leihoa pantailaren ekialdeko (eskuineko) aldera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:380
 msgid "Move window to west (left) side of screen"
-msgstr "Eraman leihoa pantailaren mendebaldeko (ezkerreko) aldera"
+msgstr ""
 
 #: ../src/include/all-keybindings.h:383
 msgid "Move window to center of screen"
-msgstr "Eraman leihoa pantailaren zentruko aldera"
+msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Ez dago inplementatuta) Nabigazioa aplikazioetan egiten da, ez leihoetan"
+msgstr "(कार्यान्वित नहि) सँ चलन अनुप्रयोग क' अनुसार चलैत अछि विंडोज़ सँ नहि"
 
 #: ../src/metacity.schemas.in.in.h:2
 msgid ""
@@ -834,26 +794,26 @@ msgid ""
 "set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
 "option is set to true."
 msgstr ""
-"Leihoen titulu-barrako letra-tipoa deskribatzeko katea. Hala ere, "
-"deskribapen honetako tamaina titlebar_font_size aukera 0an ezarrita badago "
-"bakarrik erabiliko da. Gainera, aukera hau desgaitu egingo da "
-"titlebar_uses_desktop_font aukeraren balioa egiazkoa bada."
+"एकटा फंट विवरण स्ट्रिंग विंडो शीर्षक पट्टी क'लेल फंट क' बेरमे बताएब रहल अछि विवरण सँ आकार "
+"प्रयुक्त हएताह जँ titlebar_font_size विकल्प 0 मे सेट कएल जाएत अछि, सँगे , ई विकल्प "
+"निष्क्रिय कएल जाएत अछि जँ titlebar_uses_desktop_font विकल्पकेँ सही पर सेट कएल "
+"जाएत अछि."
 
 #: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
-msgstr "Titulu-barran klik bikoitza egitearen eragina"
+msgstr "शीर्षक पट्टीमे दोहरा-क्लिक करब पर क्रिया"
 
 #: ../src/metacity.schemas.in.in.h:4
 msgid "Action on title bar middle-click"
-msgstr "Ekintza titulu-barran erdiko botoiarekin klik egitean"
+msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:5
 msgid "Action on title bar right-click"
-msgstr "Ekintza titulu-barran eskuineko botoiarekin klik egitean"
+msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:6
 msgid "Arrangement of buttons on the titlebar"
-msgstr "Titulu-barrako botoien antolamendua"
+msgstr "शीर्षक-पट्टीमे बटन क' बिन्यास"
 
 #: ../src/metacity.schemas.in.in.h:7
 msgid ""
@@ -865,18 +825,10 @@ msgid ""
 "without breaking older versions. A special spacer tag can be used to insert "
 "some space between two adjacent buttons."
 msgstr ""
-"Titulu-barrako botoien antolamendua. Balioak katea izan behar du,  \"menu:"
-"minimize,maximize,spacer,close\" erakoa; bi puntuek leihoaren ezkerreko "
-"izkina eskuineko izkinatik bereizten dute, eta botoi-izenak komaz bereizita "
-"jartzen dira. Ez da onartzen bikoiztutako botoirik. Botoi-izen ezezagunei ez "
-"ikusi egiten zaie zuzenean, eta horrela botoiak gehitu ahal izango dira "
-"metacity-ren etorkizuneko bertsioetan bertsio zaharragoak hautsi gabe. "
-"Etiketa tartekatzaile berezia erabil daiteke jarraian dauden bi botoiren "
-"artean tartea sartzeko."
 
 #: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
-msgstr "Automatikoki goratzen du fokua duen leihoa"
+msgstr "फ़ोकस कएल विंडोकेँ स्वचालित उठाबू"
 
 #: ../src/metacity.schemas.in.in.h:9
 msgid ""
@@ -886,55 +838,46 @@ msgid ""
 "\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
 "\"&lt;Super&gt;\" for example."
 msgstr ""
-"Tekla aldatzaile hau sakatuta dagoela leihoan klik egiten bada, leihoa lekuz "
-"aldatuko da (klik egin saguaren ezkerreko botoiarekin), leihoaren tamaina "
-"aldatuko da (klik egin saguaren erdiko botoiarekin), edo leihoaren menua "
-"erakutsiko da (klik egin saguaren eskuineko botoiarekin). Ezker eta "
-"eskuineko eragiketak truka daitezke \"mouse_button_resize\" erabiliz. "
-"Aldatzailea \"&lt;Alt&gt;\" edo \"&lt;Super&gt;\" izango da, adibidez."
 
 #: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr "Komandoak laster-teklei erantzunez exekutatzeko"
+msgstr "कीबाइंडिंग क' प्रत्युत्तर मे चलाओल जाय बला कमांड"
 
 #: ../src/metacity.schemas.in.in.h:11
 msgid "Compositing Manager"
-msgstr "Konposatze-kudeatzailea"
+msgstr "कंपोजिटिंग प्रबंधक"
 
 #: ../src/metacity.schemas.in.in.h:12
 msgid "Control how new windows get focus"
-msgstr "Kontrolatu leiho berriek fokua nola lortzea"
+msgstr "नियंत्रित करू जे कहिना नवीन विंडो फोकस पाबैत अछि"
 
 #: ../src/metacity.schemas.in.in.h:13
 msgid "Current theme"
-msgstr "Uneko gaia"
+msgstr "वर्तमान प्रसंग"
 
 #: ../src/metacity.schemas.in.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "Atzerapena automatikoki goratu aurretik (milisegundoak)"
+msgstr "आटो रेस विकल्प लेल मिलीसेकण्ड्समे देरी"
 
 #: ../src/metacity.schemas.in.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
-msgstr "Metacity konposatzeko kudeatzaile bat al den zehazten du."
+msgstr "निर्धारित करू जे Metacity एकटा कंपोजिटिंग प्रबंधक अछि."
 
 #: ../src/metacity.schemas.in.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
-"Aplikazioak edo sistemak entzuteko moduko soinu-seinalerik egin behar duen "
-"erabakitzen du; 'soinu bisualekin' konbina daiteke, isileko soinuak "
-"onartzeko."
+"निर्धारित करैत अछि जे की अनुप्रयोग अथवा तंत्र सुनब योग्य बीप पैदा कए सकैत अछि साइत "
+"दृष्टिगोच़र घँटी क' सँग उपयोग कएल जाय कए शांतिमय बीप स्वीकारू."
 
 #: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Desgaitu aplikazio zaharrek edo hautsitakoek eskatzen dituzten eginbide "
-"galduak"
+msgstr "मिसफीचर्स असमर्थ करू जे पुरान अथवा टूटल अनुप्रयोग द्वारा वांछित होत अछि"
 
 #: ../src/metacity.schemas.in.in.h:18
 msgid "Enable Visual Bell"
-msgstr "Gaitu soinu bisuala"
+msgstr "दृष्टिगोच़र घंटी सक्षम करू"
 
 #: ../src/metacity.schemas.in.in.h:19
 msgid ""
@@ -943,19 +886,17 @@ msgid ""
 "the auto_raise_delay key. This is not related to clicking on a window to "
 "raise it, nor to entering a window during drag-and-drop."
 msgstr ""
-"Egia bada, eta fokuaren modua \"sloppy\" edo \"mouse\" bada, fokua duen "
-"leihoa automatikoki goratuko da 'auto_raise_key' gakoan zehaztutako "
-"atzerapena igarotakoan. Honek ez dauka zerikusirik leiho baten klik "
-"egitearekin goratzeko, ezta leiho batean sartzearekin arrastatu eta "
-"jaregitean."
+"जँ सही पर सेट कएल जाएत अछि, आओर फोकस मोड अथवा तँ \"स्लोपी\" अथवा \"माउस\" हुए तब "
+"फोकस कएल विंडो तब auto_raise_delay कुँजी सँ निर्दिष्ट विलंब सँ फोकस कएल विंडो उठाओल "
+"जएताह. ई विंडो पर क्लिक कएल जाय सँ संबंधित नहि अछि नहि तँ घीँचू आ छोड़ू पर दाखिल भ' कए."
 
 #: ../src/metacity.schemas.in.in.h:20
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Egiazkoa bada, ez ikusi egin titlebar_font aukerari eta erabili "
-"aplikazioaren letra-tipo estandarra leihoen tituluan."
+"जँ सही अछि शीर्षक पट्टी फ़ॉन्ट विकल्प क' अनदेखा करू आओर विंडो शीर्षक लेल मानक अनुप्रयोग "
+"फ़ॉन्ट क' प्रयोग करू"
 
 #: ../src/metacity.schemas.in.in.h:21
 msgid ""
@@ -965,13 +906,11 @@ msgid ""
 "working, and may also be a useful tradeoff for terminal servers. However, "
 "the wireframe feature is disabled when accessibility is on."
 msgstr ""
-"Egia bada, metacity-k erabiltzaileari informazio eta \"zuzeneko kudeaketa\" "
-"zentzu gutxiago eskainiko dio, wireframe-ak erabiliz, animazioak sahiestuz, "
-"e.a. Erabiltzaile askorentzako honek erabilgarritasuna gutxiagotzen du, "
-"baina heredatutako aplikazioak eta terminal-zerbitzariak funtzionatzea "
-"baimendu dezake, beste kasuetan ezinezkoa izango zatekeena. Hala ere, "
-"erabilgarritasuna aktibo dagoenean wireframe funtzionalitatea desgaitu "
-"egiten da."
+"जँ सही अछि मेटासिटि प्रयोक्ताकेँ कम फीडबेक आओर सीधा हस्तक्षेप क' कम सेंस देताह, "
+"वायरफ्रेम, एनीमेशन अनदेखा करैत , अथवा आन साधन. ई महत्वपूर्ण कमी अछि कइ प्रयोक्ता क' "
+"प्रयोगमे, मुदा कइ पुरातन अनुप्रयोग आ टर्मिनल सर्वर क' अनुमति देत अछि जे ओ कखन ऑन छल रूप "
+"सँ अप्रायोगिक हाएत. हालांकि, वायरफ्रेम फीचरकेँ निष्क्रिय कएल जाएत अछि जखन पहुँच वीयर्ड "
+"डेस्कटॉप खंडनकेँ अनदेखा करब क'लेल हुए."
 
 #: ../src/metacity.schemas.in.in.h:22
 msgid ""
@@ -983,30 +922,27 @@ msgid ""
 "windows in other applications. Application-based mode is, however, largely "
 "unimplemented at the moment."
 msgstr ""
-"Egiazkoa bada, Metacity-k aplikazioekin funtzionatzen du, leihoekin baino "
-"gehiago. Kontzeptua abstraktu samarra da, baina, oro har, aplikazioan "
-"oinarritutako konfigurazioak Mac-en itxura handiagoa du Windows-ena baino. "
-"Aplikazioan oinarritutako moduan leiho bati fokua ematen diozunean, "
-"aplikazio horretako leiho guztiak goratuko dira. Gainera, aplikazioan "
-"oinarritutako moduan, foku-klikak ez dira pasatzen beste aplikazio "
-"batzuetako leihoetara. Horretaz gain, aplikazioa oinarritutako modua ez dago "
-"ia batere inplementatuta oraingoz."
+"जँ सही अछि तँ मेटासिटी विंडो क' बजाए अनुप्रयोग जहिना कार्य करताह. परिकल्पना कनी संक्षिप्त "
+"अछि परंतु आमतौर पर अनुप्रयोग आधारित सेटअप मैक जहिना बेसी हएताह विंडोज़ क' तरहेँ कम. जँ अहाँ "
+"कोनो विंडोकेँ अनुप्रयोग आधारित मोड पर फ़ोकस करब तँ अनुप्रयोगमे क' सबहि विंडो उप्पर भ'"
+"जएताह. ई जे अनुप्रयोग आधारित मोडमे फ़ोकस क्लिक आन अनुप्रयोग क' विंडोसँ भ'कए नहि "
+"जाएत. अनुप्रयोग आधारित मोड विस्तृत रूपसँ एहि समय कार्यान्वित नहि अछि."
 
 #: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
-msgstr "Egia bada, gutxiagotu erabilgarritasuna errekurtso gutxiago erabiltzeko"
+msgstr "जँ सही अछि उपयोगिताकेँ कम साधन उपयोग क' सँग बदलू"
 
 #: ../src/metacity.schemas.in.in.h:24
 msgid "Modifier to use for modified window click actions"
-msgstr "Aldatzailea leihoen klik-ekintza aldatuetan erabiltzeko"
+msgstr "विंडो क्लिक क्रिया परिवर्तन लेल उपयोगमे परिवर्धक"
 
 #: ../src/metacity.schemas.in.in.h:25
 msgid "Name of workspace"
-msgstr "Laneko arearen izena"
+msgstr "कार्यस्थान क' नाम"
 
 #: ../src/metacity.schemas.in.in.h:26
 msgid "Number of workspaces"
-msgstr "Laneko areen kopurua"
+msgstr "कार्यस्थानक सँख्या "
 
 #: ../src/metacity.schemas.in.in.h:27
 msgid ""
@@ -1014,13 +950,12 @@ msgid ""
 "prevent making the desktop unusable by accidentally asking for too many "
 "workspaces."
 msgstr ""
-"Laneko areen kopurua. Zero baino handiagoa izan behar du, eta gehienezko "
-"kopuru finko bat izan behar du (laneko area gehiago eskatu eta nahi gabe "
-"mahaigaina ez hondatzeko)."
+"कार्यस्थानक सँख्या . ई शून्य सँ बेसी होनाइ चाही आओर एकरा एकटा अधिकतम पर निर्धारित कएनाइ "
+"चाही बेसी कार्यस्थान क' माँग करब पर अहाँक डेस्कटापकेँ दुर्धटनावश नष्ट हए सँ बचाबै क' लेल."
 
 #: ../src/metacity.schemas.in.in.h:28
 msgid "Run a defined command"
-msgstr "Exekutatu definitutako komandoa"
+msgstr "पारिभाषित कमांड चलाबू"
 
 #: ../src/metacity.schemas.in.in.h:29
 msgid ""
@@ -1028,10 +963,6 @@ msgid ""
 "middle button while holding down the key given in \"mouse_button_modifier\"; "
 "set it to false to make it work the opposite way around."
 msgstr ""
-"Ezarri TRUE (egia) gisa saguaren eskuineko botoiarekin tamaina aldatzeko eta "
-"erdiko botoiarekin menua erakusteko \"mouse_button_modifier\"-en emandako "
-"tekla sakatuta mantentzen den bitartean. Ezarri FALSE (faltsua) gisa beste "
-"erara funtzionatzeko."
 
 #: ../src/metacity.schemas.in.in.h:30
 msgid ""
@@ -1054,29 +985,6 @@ msgid ""
 "and that they need to change this option back to true or live with the \"bug"
 "\" they requested."
 msgstr ""
-"Aukera hau faltsua gisa ezartzen bada protaera akastun batera eraman "
-"lezakenez, erabiltzaileei ez zaie gomendatzen balio lehenetsia (egia) "
-"aldatzea. Ekintza askok (adib. bezeroaren arean klik egitea, leihoa lekuz "
-"edo tamainaz aldatzea) normalean leihoa goratzen du bigarren mailako eragin "
-"gisa. Ezarpen hau faltsua gisa ezartzen bada, ez egitea biziki gomendatzen "
-"da, goratzearen elkartea kendu egingo du erabiltzailearen beste "
-"ekintzetatik, eta aplikazioek eskatutako goratzeari ez ikusi egingo dio. "
-"Ikusi http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Nahiz eta aukera "
-"hau faltsua izan, leihoak goratu daitezke leihoko edozein lekutan Alt tekla "
-"sakatuta dagoela saguaren ezkerreko botoiarekin klik eginez gero, edo "
-"leihoaren dekorazioetan klik arrunta eginez, edo aplikazioen mezu bereziak ."
-"Nahiz eta aukera hau faltsua izan, leihoak orainrik goratu daitezke leihoko "
-"beste edozein lekutan Alt+Ezkerrarekin klik egitean, klik normala leihoko "
-"dekorazioetan edo ataza-zerrenden appletaren bezalako eskakizunen mezu "
-"bereziengatik. Aukera hau desgaituta dago click-to-focus moduan.Jakin ezazu "
-"leihoa goratzeko moduen zerrenda raise_on_click faltsua denean ez du "
-"programazioko eskaerarik aplikazioetatik leihoak goratzeko, eta horrelako "
-"eskaerei ezikusi egingo zaie eskaeraren arrazoiari jaramonik egin gabe."
-"Aplikazio garatzailea bazara, eta eta erabiltzaile batzuk kexan badabiltzate "
-"zure aplikazioak ez duela funtzionatzen ezarpen hau desgaituta dagoela, "
-"esaiezu beraiei _beraien_ ankasartzea dela leiho-kudeatzailea hausteagatik "
-"eta aukera hau TRUE gisa ezarri behar dutela edo bizi daitezela \"akatsarekin"
-"\" betirako."
 
 #: ../src/metacity.schemas.in.in.h:31
 msgid ""
@@ -1085,15 +993,13 @@ msgid ""
 "which gives a more consistent user interface, provided one does not need to "
 "run any misbehaving applications."
 msgstr ""
-"Aplikazio batzuk espezifikazioei jaramonik ez diete egiten, leiho-"
-"kudeatzailearen funtzionalitatea gutxituz. Aukera honek Metacity era "
-"zorrotzeko zuzeneko moduan du, erabiltzailearen interfazeari sendotasun "
-"gehiago emanez, eskainitakoak ez dauka gaizki portatzen diren aplikazioak "
-"exekutatu beharrik."
+"किछु अनुप्रयोग विशेषताकेँ महत्व नहि देत अछि जे विंडो प्रबंधक मिसफीचरमे परिणाम आनैत अछि"
+"ई विकल्प Metacity केँ काफी सही मोडमे राखैत अछि जे बेसी संगत प्रयोक्ता अंतरफलक "
+"देत अछि जँ कोनो गलत अनुप्रयोग नहि चलाए रहल अछि."
 
 #: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
-msgstr "Sistema-soinua entzungarri"
+msgstr "सिस्टम घंटी सुनब योग्य अछि"
 
 #: ../src/metacity.schemas.in.in.h:33
 msgid ""
@@ -1105,13 +1011,12 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"Sistemaren soinua edo beste aplikazio baten 'soinua' jotzean, bisualki nola "
-"adierazi behar duen esaten dio Metacity-ri. Oraingoz bi balio daude aukeran, "
-"\"fullscreen\", pantaila osoko zuri-beltzeko flash-a egiten duena; eta "
-"\"frame_flash\", soinua jotzeko agindua eman duen aplikazioaren titulu-barra "
-"keinuka erakusten duena. Soinua zein aplikaziok jo duen jakiterik ez badago "
-"(hori gertatzen da normalean \"sistema-soinu\" lehenetsia denean), unean "
-"fokua duen leihoaren titulu-barra agertzen da keinuka."
+"मेटासिटीकेँ बतबैत अछि जे कहिना दृश्य संकेत काममे लेल जाय जे तंत्र घंटी अथवा आन अनुप्रयोग "
+"घंटी बजओनाइ अछि वर्तमानमे दुइ मान्य मूल्य अछि, \"सौंसे स्क्रीन\", जे फुलस्क्रीन करिया-उज्जर फ्लेश "
+"करैत अछि आओर \"फ्रेम-फ्लैश\" जे संबंधित अनुप्रयोग क' टाइटलबारकेँ फ्लेश करब लेल संकेत करैत "
+"अछि, जकरा घंटी संकेत भेजैत अछि जँ अनुप्रयोग जकरा घंटी संकेत भेजने अछि अज्ञात अछि तँ (जहिना जे "
+"आमतौर पर डिफ़ॉल्ट \"तंत्र बीप\" मे हाएत अछि), वर्तमान फ़ोकस विंडो क' शीर्षक पट्टी फ्लैश "
+"करताह. "
 
 #: ../src/metacity.schemas.in.in.h:34
 msgid ""
@@ -1119,17 +1024,17 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
-"/apps/metacity/global_keybindings/run_command_N gakoek definitzen dituzte "
-"komando horiei dagozkien laster-teklak. run_command_N komandoarentzat "
-"zehaztutako laster-teklak sakatzean N komandoa exekutatuko da."
+"कुंजिसभ  /apps/metacity/global_keybindings/run_command_N इन कमांड क' तदनुरूप "
+"कीबाइंडिंग पारिभाषित करैत अछि. run_command_N  क' कीबाइंडिंग दाबै पर ई command_N "
+"केँ चलाएत. "
 
 #: ../src/metacity.schemas.in.in.h:35
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"/apps/metacity/global_keybindings/run_command_screenshot gakoak laster-tekla "
-"bat definitzen du, ezarpen honetan zehaztutako komandoa exekutatuko duelarik."
+"कुँजी /apps/metacity/global_keybindings/run_command_screenshot ओ कीबाइंडिंग "
+"पारिभाषित करैत अछि जे एहि बिन्यास सँ उल्लेखित कमांडकेँ प्रारंभ करैत अछि."
 
 #: ../src/metacity.schemas.in.in.h:36
 msgid ""
@@ -1137,9 +1042,8 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"/apps/metacity/global_keybindings/run_command_window_screenshot gakoak "
-"laster-tekla bat definitzen du, ezarpen honetan zehaztutako komandoa "
-"exekutatuko duelarik."
+"कुँजी /apps/metacity/global_keybindings/run_command_window_screenshot ओ "
+"कीबाइंडिंग पारिभाषित करैत अछि जे एहि बिन्यास सँ उल्लेखित कमांडकेँ प्रारंभ करैत अछि."
 
 #: ../src/metacity.schemas.in.in.h:37
 msgid ""
@@ -1150,34 +1054,34 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
-"/apps/metacity/keybinding_commands-en dagokion zenbakitutako komandoa "
-"exekutatzen duen laster-tekla. Formatua \"&lt;Control&gt;\" edo \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
-"maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ctl&gt;\" eta \"&lt;"
-"Ctrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
-"baduzu, ez da laster-teklarik izango ekintza honentzat."
+"कीबाइंडिंग जे /apps/metacity/keybinding_commands क' तदनुरूप नम्बर बला कमांडकेँ "
+"चलबैत अछि. फ़ॉर्मेट एहि तरहेँ देखाइ पड़त \"&lt;Control&gt;a\" अथवा \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. ई पारसर पूरी तरहेँ लिबरल अछि आओर पैघ अथवा छोट अक्षर दुनू स्वीकार करैत अछि, "
+"आओर संक्षिप्ताक्षरो जहिना-  \"&lt;Ctl&gt;\" आओर \"&lt;Ctrl&gt;\".  जँ अहाँ विकल्प "
+"विशेष स्ट्रिंगमे तय केने छी \"disabled\", तब ओतए एहि क्रिया लेल कोनो कीबाइंडिंग नहि "
+"हाएत."
 
 #: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
-msgstr "Laneko area baten izena."
+msgstr "कार्यस्थान क' नाम"
 
 #: ../src/metacity.schemas.in.in.h:39
 msgid "The screenshot command"
-msgstr "Pantaila-argazkiaren komandoa"
+msgstr "स्क्रीन-शाट कमांड "
 
 #: ../src/metacity.schemas.in.in.h:40
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "Gaiak erabakiko du leihoen ertzen, titulu-barren eta horrelakoen itxura."
+msgstr "प्रसंग, विंडो किनार, शीर्षक पट्टी आदि क' रँग-रूपकेँ निर्धारित करैत अछि."
 
 #: ../src/metacity.schemas.in.in.h:41
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
-"auto_raise ezarrita badago, zenbat denbora itxaron behar den leihoa goratu "
-"aurretik. Milisegundotan ematen da."
+"जँ auto_raise सही पर नियत अछि तँ विंडो उप्पर उठाबै सँ पहिले विलम्ब समय. ई विलम्ब "
+"सकेण्ड क' हजारवाँ हिस्सामे देल जाएत अछि."
 
 #: ../src/metacity.schemas.in.in.h:42
 msgid ""
@@ -1187,15 +1091,14 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
-"Leihoei fokua emateko moduak adierazten du leihoak nola aktibatuko diren. "
-"Hiru aukera daude: \"click\" (leihoari fokua emateko, bertan klik egin behar "
-"da), \"sloppy\" (sagua leihoan sartzen denean leihoak fokua hartuko du), eta "
-"\"mouse\" (sagua leihoan sartzen denean leihoak fokua hartuko du, eta saguak "
-"leihotik alde egiten duenean, fokua galduko du)."
+"विंडो फ़ोकस मोड जे संकेत करैत अछि जे विंडोज़ कहिना सक्रिय हुए. एकरा तीन संभावित मूल्य अछि, क्लिक "
+"\"क्लिक\" मतलब विंडो केँ फ़ोकस करब लेल ओकरा क्लिक कएनाइ हाएत, \"स्लॉपी\" मतलब विंडो तब "
+"फ़ोकस हाएत जखन माउस विंडोमे प्रवेश करताह, आओर \"माउस\" मतलब विंडो तब फ़ोकस हाएत जखन "
+"माउस विंडोमे प्रवेश करताह आओर फ़ोकस सँ बाहर हाएत जखन माउस विंडो सँ बाहर हाएत."
 
 #: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
-msgstr "Leihoaren pantaila-argazkiaren komandoa"
+msgstr "विंडो स्क्रीन-शॉट कमांड "
 
 #: ../src/metacity.schemas.in.in.h:44
 msgid ""
@@ -1208,14 +1111,6 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Aukera honek erabakitzen du titulu-barran klik bikoitza egindakoan zer "
-"gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', leihoa bildu edo "
-"zabaltzeko; 'toggle_maximize' leihoa maximizatu edo desmaximizatzeko; "
-"'toggle_maximize_horizontally' eta 'toggle_maximize_vertically' leihoa "
-"horizontalki edo bertikalki maximizatzeko edo desmaximizatzeko; 'minimize' "
-"leihoa minimizatzeko; 'shade' leihoa biltzeko; 'menu' leihoaren menua "
-"bistaratzeko; 'lower' leihoa beste leiho guztien atzean jartzeko;eta 'none' "
-"ezer ez egiteko."
 
 #: ../src/metacity.schemas.in.in.h:45
 msgid ""
@@ -1228,14 +1123,6 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Aukera honek erabakitzen du titulu-barran erdiko botoiarekin klik egindakoan "
-"zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', leihoari itzala "
-"jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu edo "
-"leheneratzeko; 'toggle_maximize_horizontally' eta "
-"'toggle_maximize_vertically' leihoa horizontalki edo bertikalki "
-"maximizatzeko edo desmaximizatzeko; 'minimize' leihoa minimizatzeko; 'shade' "
-"leihoa biltzeko; 'menu' leihoaren menua bistaratzeko; 'lower' leihoa beste "
-"leiho guztien atzean jartzeko;eta 'none' ezer ez egiteko."
 
 #: ../src/metacity.schemas.in.in.h:46
 msgid ""
@@ -1248,15 +1135,6 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Aukera honek erabakitzen du titulu-barran eskuineko botoiarekin klik "
-"egindakoan zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', "
-"leihoari itzala jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu "
-"edo leheneratzeko; 'minimize' leihoa minimizatzeko; eta 'none' ezer ez "
-"egiteko. 'toggle_maximize_horizontally' eta 'toggle_maximize_vertically' "
-"leihoa horizontalki edo bertikalki maximizatzeko edo desmaximizatzeko; "
-"'minimize' leihoa minimizatzeko; 'shade' leihoa biltzeko; 'menu' leihoaren "
-"menua bistaratzeko; 'lower' leihoa beste leiho guztien atzean jartzeko;eta "
-"'none' ezer ez egiteko."
 
 #: ../src/metacity.schemas.in.in.h:47
 msgid ""
@@ -1265,10 +1143,9 @@ msgid ""
 "mode, and \"strict\" results in windows started from a terminal not being "
 "given focus."
 msgstr ""
-"Aukera honek leihoak sortu berriek nola lortzen duten fokuaren gaineko "
-"kontrol gehiago ematen du. Bi balio izan ditzake: \"smart\" erabiltzailearen "
-"foku-modu normala aplikatzen du, eta \"sctrict\" leihoa terminal batetik "
-"abiaratzen denean eta fokua lortzen ez duenekoa."
+"ई विकल्प अतिरिक्त नियंत्रण देत अछि जे कहिना नवीन बनाओल विंडो फोकस पाबैत अछि एकर दुइ "
+"संभावित मान अछि; \"smart\" प्रयोक्ता क' सामान्य फोकस मोड पर लागू हाएत अछि आओर \"strict"
+"\" एहन विंडो क' रूपमे आबैत अछि जे टर्मिनल सँ फोकस नहि कएल गेल रूपमे आबैत अछि."
 
 #: ../src/metacity.schemas.in.in.h:48
 msgid ""
@@ -1276,183 +1153,182 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments."
 msgstr ""
-"Adierazpen bisuala aktibatzen du aplikazio batek edo sistemak soinua "
-"bidaltzen duenean; erosoa da entzumen-arazoak dituztenentzat edo inguruan "
-"zarata handia dagoen egoeretako."
+"दृश्य संकेत चालू कएनाइ जखन कोनो अनुप्रयोग अथवा तंत्र घंटी अथवा बीप जारी करैत छी तँ, शोरयुक्त "
+"वातावरण- जतए सुनबमे कठिनाइ हुए अथवा उंच सुनब बला क'लेल उपयोगी हाएत अछि."
 
 #: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
-msgstr "Erabili sistemaren letra-tipo estandarra leiho-tituluetan"
+msgstr "विंडो शीर्षकसभमे मानक तंत्र फ़ॉन्ट प्रयोग करू"
 
 #: ../src/metacity.schemas.in.in.h:50
 msgid "Visual Bell Type"
-msgstr "Soinu bisual mota"
+msgstr "दृष्टिगोच़र घंटी प्रकार"
 
 #: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Goratzean albo-ondoriorik izango duen aplikazioengain edo ez."
+msgstr "आन प्रयोक्ता अंतःक्रिया क' प्रभावकेँ की उठाओल जएनाइ चाही"
 
 #: ../src/metacity.schemas.in.in.h:52
 msgid "Whether to resize with the right button"
-msgstr "Saguaren eskuineko botoiarekin tamaina aldatu ala ez"
+msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
-msgstr "Leiho-fokuaren modua"
+msgstr "विंडो फ़ोकस मोड"
 
 #: ../src/metacity.schemas.in.in.h:54
 msgid "Window title font"
-msgstr "Leihoaren tituluaren letra-tipoa"
+msgstr "विंडो शीर्षक फ़ॉन्ट"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
-msgstr "Erabilera: %s\n"
+msgstr "उपयोग: %s\n"
 
 #: ../src/ui/frames.c:1118
 msgid "Close Window"
-msgstr "Itxi leihoa"
+msgstr "विंडो बन्न करू"
 
 #: ../src/ui/frames.c:1121
 msgid "Window Menu"
-msgstr "Leiho-menua"
+msgstr "विंडो मेनू"
 
 #: ../src/ui/frames.c:1124
 msgid "Minimize Window"
-msgstr "Ikonotu leihoa"
+msgstr "विंडो न्यूनतम करू"
 
 #: ../src/ui/frames.c:1127
 msgid "Maximize Window"
-msgstr "Maximizatu leihoa"
+msgstr "विंडो अधिकतम करू"
 
 #: ../src/ui/frames.c:1130
 msgid "Restore Window"
-msgstr "Leheneratu leihoa"
+msgstr "रिस्टोर विन्डो"
 
 #: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
-msgstr "Bildu leihoa"
+msgstr "विंडो रॉल अप करू"
 
 #: ../src/ui/frames.c:1136
 msgid "Unroll Window"
-msgstr "Zabaldu leihoa"
+msgstr "विंडो खोलू"
 
 #: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
-msgstr "Mantendu leihoa gainean"
+msgstr "विंडोकेँ सबसँ उप्पर राखू"
 
 #: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
-msgstr "Kendu leihoa gainetik"
+msgstr "उप्पर सँ विंडो हटाबू"
 
 #: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
-msgstr "Beti laneko area ikusgaian"
+msgstr "हरदम दृश्य कार्यस्थान पर"
 
 #: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
-msgstr "Jarri leihoa laneko area bakar batean"
+msgstr "सिर्फ एकटा कार्यस्थान पर विंडो राखू"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:70
 msgid "Mi_nimize"
-msgstr "_Ikonotu"
+msgstr "न्यूनतम (_M)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:72
 msgid "Ma_ximize"
-msgstr "_Maximizatu"
+msgstr "पैघ करू (_x)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:74
 msgid "Unma_ximize"
-msgstr "Desma_ximizatu"
+msgstr "पैघ सँ छोट करू (_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:76
 msgid "Roll _Up"
-msgstr "_Bildu"
+msgstr "उप्पर समेटू (_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:78
 msgid "_Unroll"
-msgstr "_Zabaldu"
+msgstr "फिनु खोलू (_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:80
 msgid "_Move"
-msgstr "Aldatu _lekuz"
+msgstr "घसकाबू (_M)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:82
 msgid "_Resize"
-msgstr "Aldatu _tamaina"
+msgstr "आकार बदलू (_R)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:84
 msgid "Move Titlebar On_screen"
-msgstr "Eraman titulu-barra p_antailara"
+msgstr "ऑनस्क्रीन शीर्षकबार घसकाबू (_s)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:87 ../src/ui/menu.c:89
 msgid "Always on _Top"
-msgstr "Beti _goian"
+msgstr "हरदम शीर्ष पर (_T)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:91
 msgid "_Always on Visible Workspace"
-msgstr "Laneko area ikusgaian _beti"
+msgstr "हरदम दृश्य कार्यस्थान पर (_A)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:93
 msgid "_Only on This Workspace"
-msgstr "Laneko area _honetan bakarrik"
+msgstr "केवल एहि कार्यस्थान पर (_O)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:95
 msgid "Move to Workspace _Left"
-msgstr "Eraman e_zkerreko laneko areara"
+msgstr "बामाँ कार्यस्थानमे लए जाउ (_L)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:97
 msgid "Move to Workspace R_ight"
-msgstr "Eraman e_skuineko laneko areara"
+msgstr "दहिन्ना कार्यस्थानमे लए जाउ (_R)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:99
 msgid "Move to Workspace _Up"
-msgstr "Eraman _gaineko laneko areara"
+msgstr "उप्परी कार्यस्थानमे लए जाउ (_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:101
 msgid "Move to Workspace _Down"
-msgstr "Eraman _azpiko laneko areara"
+msgstr "नीच्चा कार्यस्थानमे लए जाउ (_D)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:105
 msgid "_Close"
-msgstr "It_xi"
+msgstr "बन्न करू (_C)"
 
 #: ../src/ui/menu.c:203
 #, c-format
 msgid "Workspace %d%n"
-msgstr "%d.%n laneko area"
+msgstr ""
 
 #: ../src/ui/menu.c:213
 #, c-format
 msgid "Workspace 1_0"
-msgstr "1_0 laneko area"
+msgstr "कार्यस्थान 1_0"
 
 #: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
-msgstr "%s%d laneko area"
+msgstr "कार्यस्थान %s%d"
 
 #: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
-msgstr "Eraman beste laneko areara"
+msgstr "दोसर कार्यस्थानमे लए जाउ (_W)"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -1461,7 +1337,7 @@ msgstr "Eraman beste laneko areara"
 #.
 #: ../src/ui/metaaccellabel.c:104
 msgid "Shift"
-msgstr "Maius"
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -1470,7 +1346,7 @@ msgstr "Maius"
 #.
 #: ../src/ui/metaaccellabel.c:110
 msgid "Ctrl"
-msgstr "Ktrl"
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -1488,7 +1364,7 @@ msgstr "Alt"
 #.
 #: ../src/ui/metaaccellabel.c:122
 msgid "Meta"
-msgstr "Meta"
+msgstr "मेटा"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -1497,7 +1373,7 @@ msgstr "Meta"
 #.
 #: ../src/ui/metaaccellabel.c:128
 msgid "Super"
-msgstr "Super"
+msgstr "सुपर"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -1506,7 +1382,7 @@ msgstr "Super"
 #.
 #: ../src/ui/metaaccellabel.c:134
 msgid "Hyper"
-msgstr "Hiper"
+msgstr "हाइपर"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -1515,7 +1391,7 @@ msgstr "Hiper"
 #.
 #: ../src/ui/metaaccellabel.c:140
 msgid "Mod2"
-msgstr "Ald2"
+msgstr "परि.2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -1524,7 +1400,7 @@ msgstr "Ald2"
 #.
 #: ../src/ui/metaaccellabel.c:146
 msgid "Mod3"
-msgstr "Ald3"
+msgstr "परि.3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -1533,7 +1409,7 @@ msgstr "Ald3"
 #.
 #: ../src/ui/metaaccellabel.c:152
 msgid "Mod4"
-msgstr "Ald4"
+msgstr "परि.4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -1542,44 +1418,42 @@ msgstr "Ald4"
 #.
 #: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
-msgstr "Ald5"
+msgstr "परि.5"
 
 #: ../src/ui/metacity-dialog.c:90
 #, c-format
 msgid "\"%s\" is not responding."
-msgstr "\"%s\"(e)k ez du erantzuten."
+msgstr "\"%s\" प्रतिक्रिया नहि दए रहल अछि."
 
 #: ../src/ui/metacity-dialog.c:97
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Aukeratu piskatean zai egotea aplikazioak jarraitzeko edo derrigortu "
-"aplikazioa erabat ixtea."
+msgstr "अहाँ कनिक देर क' लेल एकर प्रतीक्षा क' लेल चयन कए सकैत छी पूरा तरहेँ सँ अनुप्रयोग क' जारी राखब आ छोड़ब क' लेल दबाव दए सकैत छी."
 
 #: ../src/ui/metacity-dialog.c:107
 msgid "_Wait"
-msgstr "_Itxaron"
+msgstr "प्रतीक्षा करू (_W)"
 
 #: ../src/ui/metacity-dialog.c:109
 msgid "_Force Quit"
-msgstr "_Behartu ixtera"
+msgstr "जबर्दस्ती बाहर (_F)"
 
 #: ../src/ui/metacity-dialog.c:206
 msgid "Title"
-msgstr "Titulua"
+msgstr "शीर्षक"
 
 #: ../src/ui/metacity-dialog.c:218
 msgid "Class"
-msgstr "Klasea"
+msgstr "वर्ग"
 
 #: ../src/ui/metacity-dialog.c:244
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Leiho hauek ez dute onartzen \"gorde uneko konfigurazioa\" eta eskuz "
-"berrabiarazi beharko dituzu hurrengo saioa hasten duzunean."
+"ई विंडो \"वर्तमान सेटअप सहेजू\" समर्थन नहि करत अतः एकरा अगिला बेर जखन अहाँ लॉगइन करब तब "
+"पुनः प्रारंभ  कएनाइ हाएत."
 
 #: ../src/ui/metacity-dialog.c:310
 #, c-format
@@ -1587,7 +1461,7 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
-"Errorea \"%s\" exekutatzean:\n"
+"\"%s\" केँ चलाबैमे त्रुटि छल:\n"
 "%s."
 
 #. Translators: This represents the size of a window.  The first number is
@@ -1600,44 +1474,44 @@ msgstr "%d x %d"
 
 #: ../src/ui/theme.c:254
 msgid "top"
-msgstr "goian"
+msgstr "उप्पर"
 
 #: ../src/ui/theme.c:256
 msgid "bottom"
-msgstr "behean"
+msgstr "नीच्चाँ"
 
 #: ../src/ui/theme.c:258
 msgid "left"
-msgstr "ezkerrean"
+msgstr "बायाँ"
 
 #: ../src/ui/theme.c:260
 msgid "right"
-msgstr "eskuinean"
+msgstr "दहिन्ना"
 
 #: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "marko-geometriak ez du zehazten \"%s\" neurririk"
+msgstr "फ्रेम ज्यामिती \"%s\" आयाम केँ उल्लेखित नहि करत"
 
 #: ../src/ui/theme.c:306
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "marko-geometriak ez du zehazten \"%s\" neurririk \"%s\" ertzerako"
+msgstr "फ्रेम ज्यामिती आयाम \"%s\" केँ किनार \"%s\" लेल उल्लेखित नहि करत"
 
 #: ../src/ui/theme.c:343
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "Botoiaren %g aspektu-erlazioa ez da arrazoizkoa"
+msgstr "बटन आस्पेक्ट रेशो %g यथोचित नहि अछि"
 
 #: ../src/ui/theme.c:355
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
-msgstr "Marko-geometriak ez du zehazten botoien tamainarik"
+msgstr "फ्रेम ज्यामिती बटनसभ क' आकारकेँ उल्लेखित नहि करत"
 
 #: ../src/ui/theme.c:1020
 #, c-format
 msgid "Gradients should have at least two colors"
-msgstr "Gradienteek bi kolore izan behar dituzte gutxienez"
+msgstr "अनुपातमे कम सँ कम दुइ रँग हए चाही"
 
 #: ../src/ui/theme.c:1146
 #, c-format
@@ -1645,8 +1519,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK kolore-zehaztapenak egoera kortxete artean izan behar du, adib. gtk:fg"
-"[NORMAL], NORMAL egoera izanik; \"%s\" ezin da analizatu"
+"जीटीके रँग लक्षण कोष्ठकमे स्थिति (स्टेट) हए चाही जहिना-  gtk:fg[NORMAL] एतय NORMAL "
+"स्थिति अछि  \"%s\" क' व्याख्या नहि कए सकल"
 
 #: ../src/ui/theme.c:1160
 #, c-format
@@ -1654,18 +1528,18 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK kolore-zehaztapenak ixteko kortxetea izan behar egoeraren ondoren, adib. "
-"gtk:fg[NORMAL], NORMAL egoera izanik; \"%s\" ezin da analizatu"
+"जीटीके रँग लक्षण स्थिति क' बाद बन्न कोष्ठकमे हए चाही. जहिना-  gtk:fg[NORMAL] एतय "
+"NORMAL स्थिति अछि  \"%s\" क' व्याख्या नहि कए सकल"
 
 #: ../src/ui/theme.c:1171
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "Ez da ulertu \"%s\" egoera kolore-zehaztapenean"
+msgstr "स्थिति \"%s\" रँग लक्षणमे समझ नहि सकल"
 
 #: ../src/ui/theme.c:1184
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Ez da ulertu \"%s\" kolore-osagaia kolore-zehaztapenean"
+msgstr "रंग अवयव \"%s\" रँग लक्षणमे समझ नहि सकल"
 
 #: ../src/ui/theme.c:1214
 #, c-format
@@ -1673,141 +1547,129 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"Nahaste-formatua \"blend/bg_color/fg_color/alpha\" da, \"%s\" ez dator bat "
-"formatuarekin"
+"ब्लेंड फ़ॉर्मेट अछि \"blend/bg_color/fg_color/alpha\", \"%s\" जे फ़ॉर्मेट क' अनुरूप नहि "
+"हाएत"
 
 #: ../src/ui/theme.c:1225
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Ezin da analizatu \"%s\" alfa balioa kolore nahastuan"
+msgstr "अल्फा मूल्य \"%s\" क' ब्लेंडेड रँगमे व्याख्या नहि कए सकल"
 
 #: ../src/ui/theme.c:1235
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Kolore nahastuko \"%s\" alfa balioa ez dago 0,0 eta 1,0 artean"
+msgstr "अल्फा मूल्य \"%s\" ब्लेंडेड रँगमे 0.0 आओर 1.0 क' बीच नहि अछि"
 
 #: ../src/ui/theme.c:1282
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Itzal-faktorea \"shade/base_color/factor\" da, \"%s\" ez dator bat "
-"formatuarekin"
+msgstr "शेड फॉर्मेट अछि \"shade/base_color/factor\", \"%s\" जे फॉर्मेट क' अनुरूप नहि हाएत"
 
 #: ../src/ui/theme.c:1293
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Ezin da analizatu \"%s\" itzal-faktorea itzaldun kolorean"
+msgstr "शेड फैक्टर \"%s\" क' आभायुक्त रँगमे व्याख्या नहि कए सकल"
 
 #: ../src/ui/theme.c:1303
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Itzaldun koloreko \"%s\" itzal-faktorea negatiboa da"
+msgstr "शेड फैक्टर \"%s\" आभायुक्त रँगमे ऋणात्मक अछि"
 
 #: ../src/ui/theme.c:1332
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Ezin izan da \"%s\" kolorea analizatu"
+msgstr "\"%s\" रँगक व्याख्या नहि कए सकल"
 
 #: ../src/ui/theme.c:1582
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordenatuen adierazpenak '%s' karakterea dauka, eta hori ez da onartzen"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे अक्षर '%s' अछि जे स्वीकार्य नहि अछि"
 
 #: ../src/ui/theme.c:1609
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
-"Koordenatuen adierazpenak '%s' koma mugikorreko zenbakia dauka, eta ezin da "
-"analizatu"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे फ्लोटिंग प्वाइंट नम्बर '%s' अछि जकर व्याख्या नहि कएल जाय सकल"
 
 #: ../src/ui/theme.c:1623
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordenatuen adierazpenak '%s' osoko zenbakia dauka, eta ezin da analizatu"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे पूर्णांक '%s' अछि जकर व्याख्या नहि कएल जाय सकल"
 
 #: ../src/ui/theme.c:1745
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr ""
-"Koordenatuen adierazpenak eragile ezezaguna dauka testu honen hasieran: \"%s"
-"\""
+msgstr "कोआर्डिनेट एक्सप्रेशनमे एहि पाठ: \"%s\" क' आरंभमे अज्ञात आपरेटर अछि"
 
 #: ../src/ui/theme.c:1802
 #, c-format
 msgid "Coordinate expression was empty or not understood"
-msgstr "Koordenatuen adierazpena hutsik dago edo ez da ulertu"
+msgstr "कोआर्डिनेट एक्सप्रेशन अथवा खाली अछि अथवा समझल नहि जाय सकल"
 
 #: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
 #, c-format
 msgid "Coordinate expression results in division by zero"
-msgstr "Koordenatuen adierazpenak zero zatitzaileko zatiketa ematen du"
+msgstr "कोआर्डिनेट एक्सप्रेशन परिणाम शून्य सँ भाजक क' रूपेँ भेटल"
 
 #: ../src/ui/theme.c:1965
 #, c-format
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"Koordenatuen adierazpena mod eragilea erabiltzen saiatzen da koma "
-"mugikorreko zenbaki batean"
+msgstr "कोआर्डिनेट एक्सप्रेशन, फ्लोटिंग पाइंट नम्बर पर माड आपरेटर क' उपयोगक कोशिशमे"
 
 #: ../src/ui/theme.c:2021
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Koordenatuen adierazpenak \"%s\" eragilea du eragigai bat espero zen lekuan"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे एकटा आपरेटर \"%s\" अछि जखनकि आपरेंड वांछित अछि"
 
 #: ../src/ui/theme.c:2030
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Koordenatuen adierazpenak eragigai bat du eragile bat espero zen lekuan"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे एकटा आपरेंड अछि जखनकि आपरेटर वांछित अछि"
 
 #: ../src/ui/theme.c:2038
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-"Koordenatuen adierazpena eragile batez amaitzen da, eragigai batez amaitu "
-"beharrean"
+msgstr "कोआर्डिनेट एक्सप्रेशन एकटा आपरेटर सँ अंत भ' रहल अछि एकटा आपरेंड क' बदलामे"
 
 #: ../src/ui/theme.c:2048
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr ""
-"Koordenatuen adierazpenak \"%c\" eragilea du \"%c\" eragilearen ondoren, "
-"tartean eragigairik gabe"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे आपरेटर \"%c\" क' बाद आपरेटर \"%c\" अछि बीचमे कोनो आपरेण्ड नहि अछि"
 
 #: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordenatuen adierazpenak \"%s\" aldagai edo konstante ezezaguna du"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे अज्ञात चर अथवा अचर \"%s\" अछि"
 
 #: ../src/ui/theme.c:2290
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Koordenatuen adierazpenaren analizatzaileak bere bufferra gainezkatu du"
+msgstr "कोआर्डिनेट एक्सप्रेशन विश्लेषक एकर बफरकेँ ओवरफ्लो कए गेल अछि."
 
 #: ../src/ui/theme.c:2319
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Koordenatuen adierazpenak ixteko parentesi bat du, baina irekitzekoa falta da"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे बन्न लघुकोष्ठक अछि जकरामे कोनो खुलल कोष्ठक नहि अछि"
 
 #: ../src/ui/theme.c:2383
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Koordenatuen adierazpenak irekitzeko parentesi bat du, baina ixtekoa falta da"
+msgstr "कोआर्डिनेट एक्सप्रेशनमे खुलल लघुकोष्ठक अछि जकरामे कोनो बन्न कोष्ठक नहि अछि"
 
 #: ../src/ui/theme.c:2394
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Koordenatuen adierazpenak ez dirudi eragilerik edo eragigairik duenik"
+msgstr "प्रतीत हाएत अछि जे कोआर्डिनेट एक्सप्रेशनमे कोनो आपरेटर अथवा आपरेंड नहि अछि"
 
 #: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "Gaiak errorea ematen duen adierazpen bat dauka: %s\n"
+msgstr ""
 
 #: ../src/ui/theme.c:4187
 #, c-format
@@ -1815,24 +1677,24 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> zehaztu behar "
-"da marko-estilo honetan"
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> एहि फ्रेम शैली लेल "
+"निर्दिष्ट कएल जएनाइ अनिवार्य अछि"
 
 #: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
+msgstr "नहि अछि <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: ../src/ui/theme.c:4764
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Huts egin du \"%s\" gaia kargatzean: %s\n"
+msgstr "प्रसंग \"%s\" लोड करबमे विफल: %s\n"
 
 #: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
 #: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "<%s> ez da ezarri \"%s\" gaian"
+msgstr "कोनो <%s> सेट प्रसंग \"%s\" लेल नहि अछि"
 
 #: ../src/ui/theme.c:4930
 #, c-format
@@ -1840,20 +1702,20 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Ez da marko-estilorik ezarri set \"%s\" leiho-motarentzat \"%s\" gaian, "
-"gehitu <window type=\"%s\" style_set=\"whatever\"/> elementu bat"
+"विंडो प्रकार \"%s\" मे प्रसंग \"%s\" मे कोनो फ्रेम स्टाइल नियत नहि अछि जोड़ू <window "
+"type=\"%s\" style_set=\"whatever\"/> तत्व "
 
 #: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"Erabiltzaileak definitutako konstanteak maiuskulaz hasi behar du; \"%s\" ez "
-"da maiuskulaz hasten"
+"प्रयोक्ता द्वारा पारिभाषित स्थिरांक पैघ अक्षर सँ शुरू हए चाही, जे \"%s\" नहि भ' "
+"रहल अछि"
 
 #: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "\"%s\" konstantea lehendik definituta dago"
+msgstr "स्थिरांक \"%s\" पहिलेसँ पारिभाषित अछि"
 
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
@@ -1861,52 +1723,52 @@ msgstr "\"%s\" konstantea lehendik definituta dago"
 #: ../src/ui/theme-parser.c:202
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Ez dago \"%s\" atributurik <%s> elementuan"
+msgstr "कोनो \"%s\" गुण तत्व पर नहि अछि <%s>"
 
 #: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr "%d. lerroa %d. karakterea: %s"
+msgstr "पंक्ति %d अक्षर %d: %s"
 
 #: ../src/ui/theme-parser.c:413
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "\"%s\" atributua birritan errepikatuta <%s> elementu berean"
+msgstr "गुण \"%s\" दुइ बेर इएह <%s> तत्व पर दोहराएल गेल"
 
 #: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "\"%s\" atributua ez da baliozkoa <%s> elementuaren testuinguru honetan"
+msgstr "गुण \"%s\", <%s> तत्व ई संदर्भमे अवैध अछि "
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr "%ld osokoak positiboa izan behar du"
+msgstr "पूर्णांक %ld धनात्मक होनाइ चाही"
 
 #: ../src/ui/theme-parser.c:549
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr "%ld osokoa handiegia da, uneko gehienezkoa %d da"
+msgstr "पूर्णांक %ld बहुत पैघ अछि वर्तमान अधिकतम अछि %d"
 
 #: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "\"%s\" ezin da analizatu koma mugikorreko zenbaki gisa"
+msgstr "\"%s\" क' फ्लोटिंग पाइंट सँख्याक तरहेँ व्याख्या नहि कए सकल"
 
 #: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Balio boolearrak \"egiazkoak\" edo \"faltsuak\" izan daitezke, ez \"%s\""
+msgstr "बूलियन मूल्य हए चाही - \"सही\" अथवा \"गलत\" नहि जे \"%s\""
 
 #: ../src/ui/theme-parser.c:663
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "Angeluak 0.0 eta 360.0 bitartekoa behar du, %g\n"
+msgstr "कोण 0.0 आओर  360.0, क' बीच  होनाइ चाही, जे छला %g\n"
 
 #: ../src/ui/theme-parser.c:726
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alfak 0.0 (ikusezina) eta 1.0 (erabat opakoa) artekoa izan behar du, %g\n"
+msgstr "अल्फा 0.0 (अदृश्य) आओर 1.0 (पूर्ण अपारदर्शी), क' बीच होनाइ चाही, जे छला %g\n"
 
 #: ../src/ui/theme-parser.c:791
 #, c-format
@@ -1914,49 +1776,49 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"\"%s\" titulu-eskala baliogabea (xx-small,x-small,small,medium,large,x-large,"
-"xx-large izan behar du)\n"
+"अवैध शीर्षक स्केल \"%s\" (एकरामे सँ एकटा होनाइ चाहीः xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
 #: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> \"%s\" izena bigarren aldiz erabili da"
+msgstr "<%s> नाम \"%s\" दोसर बार उपयोगमे"
 
 #: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
 #: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s> \"%s\" gurasoa ez da definitu"
+msgstr "<%s> मूल \"%s\" परिभाषित नहि अछि."
 
 #: ../src/ui/theme-parser.c:1058
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> \"%s\" geometria ez da definitu"
+msgstr "<%s>ज्यामिती \"%s\" परिभाषित नहि अछि."
 
 #: ../src/ui/theme-parser.c:1071
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s>(e)k geometria bat edo geometria duen guraso bat zehaztu behar du"
+msgstr "<%s> केँ अथवा तँ ज्यामिती अथवा मूल जकरामे ज्यामिती हुए, केँ निर्दिष्ट करै हाएत"
 
 #: ../src/ui/theme-parser.c:1113
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "Atzeko planoa zehaztu alfa balioarekin esanguratsua izateko"
+msgstr "अहाँ अल्फा मान क' लेल अर्थपूर्ण हए क' लेल जरूर पृष्ठभूमि निर्दिष्ट करू"
 
 #: ../src/ui/theme-parser.c:1180
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "\"%s\" mota ezezaguna <%s> elementuan"
+msgstr "अज्ञात प्रकार \"%s\" तत्व <%s> पर नहि "
 
 #: ../src/ui/theme-parser.c:1191
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "\"%s\" style_set ezezaguna <%s> elementuan"
+msgstr "अज्ञात स्टाइल-सेट \"%s\" तत्व <%s> पर नहि "
 
 #: ../src/ui/theme-parser.c:1199
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "\"%s\" leiho-motak dagoeneko esleituta du estilo-multzoa"
+msgstr "विंडो प्रकार \"%s\" केँ पहिले एकटा स्टाइल सेट आबंटित अछि"
 
 #: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
 #: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
@@ -1965,7 +1827,7 @@ msgstr "\"%s\" leiho-motak dagoeneko esleituta du estilo-multzoa"
 #: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "Ez da onartzen <%s> elementua <%s>(r)en azpian jartzea"
+msgstr "तत्व <%s>,  <%s>सँ नीच्चाँ स्वीकार्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
@@ -1973,399 +1835,393 @@ msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
-"\"button_width\"/\"button_height\" (botoi-zabalera/botoi-altuera) eta "
-"\"aspect_ratio\" (aspektu-erlazioa) ezin dira batera zehaztu botoietan"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr "\"%s\" distantzia ezezaguna da"
+msgstr "दूरी \"%s\" अज्ञात अछि"
 
 #: ../src/ui/theme-parser.c:1411
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "\"%s\" aspektu-erlazioa ezezaguna da"
+msgstr "आकृति अनुपात \"%s\" अज्ञात अछि"
 
 #: ../src/ui/theme-parser.c:1473
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "\"%s\" ertza ezezaguna da"
+msgstr "किनार \"%s\" अज्ञात अछि"
 
 #: ../src/ui/theme-parser.c:1776
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Ez dago \"start_angle\" edo \"from\" atributurik <%s> elementuan"
+msgstr "कोनो \"start_angle\" अथवा \"from\" गुण तत्व <%s> पर नहि "
 
 #: ../src/ui/theme-parser.c:1783
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Ez dago \"extent_angle\" edo \"to\" atributurik <%s> elementuan"
+msgstr "कोनो \"extent_angle\" अथवा \"to\" गुण तत्व <%s> पर नहि "
 
 #: ../src/ui/theme-parser.c:2023
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Gradiente-motan ez da ulertu \"%s\" balioa"
+msgstr "ग्रेडिएंट प्रकार लेल मान \"%s\" समझ नहि पाया"
 
 #: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Ez da ulertu \"%s\" betetze-mota <%s> elementuan"
+msgstr "तत्व <%s> लेल भराव प्रकार \"%s\" समझ नहि पाया"
 
 #: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
 #: ../src/ui/theme-parser.c:2414
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Ez da ulertu \"%s\" egoera <%s> elementuan"
+msgstr "तत्व <%s> लेल स्थिति \"%s\" समझि नहि सकल"
 
 #: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Ez da ulertu \"%s\" itzala <%s> elementuan"
+msgstr "तत्व <%s> लेल छाया \"%s\" समझि नहि सकल"
 
 #: ../src/ui/theme-parser.c:2288
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Ez da ulertu \"%s\" gezia <%s> elementuan"
+msgstr "तत्व <%s> लेल एरो \"%s\" समझ नहि पाया"
 
 #: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
+msgstr "कोनो <draw_ops> \"%s\" नाम सँ परिभाषित नहि अछि"
 
 #: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Hemen \"%s\" draw_ops sartzen bada, erreferentzia zirkularra sortuko da"
+msgstr "draw_ops एतय: \"%s\" जोड़बसँ सर्कुलर रेफरेंस बनि जएताह"
 
 #: ../src/ui/theme-parser.c:2811
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr "\"%s\" kokaleku ezezaguna markoarentzat"
+msgstr "अज्ञात स्थिति \"%s\" फ्रेम पीस लेल"
 
 #: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr "Marko-estiloak badu zati bat %s posizioan"
+msgstr "स्थिति %s पर फ्रेम शैली क' सँग पहिले एकटा पीस अछि"
 
 #: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
+msgstr "कोनो  <draw_ops> नाम \"%s\"  क' सँग परिभाषित नहि अछि"
 
 #: ../src/ui/theme-parser.c:2865
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "\"%s\" funtzioa ezezaguna botoiarentzat"
+msgstr "अज्ञात फंक्शन बटन \"%s\" लेल"
 
 #: ../src/ui/theme-parser.c:2874
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "\"%s\" botoi-funtzioa ez da existitzen bertsio honetan (%d, %d behar du)"
+msgstr "बटन फंक्शन \"%s\" एहि संस्करण (%d, need %d) मे मोजुद नहि अछि"
 
 #: ../src/ui/theme-parser.c:2886
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "\"%s\" egoera ezezaguna botoiarentzat"
+msgstr "अज्ञात स्थिति बटन \"%s\" लेल"
 
 #: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "Marko-estiloak badu botoi bat %s funtzioan %s egoeran"
+msgstr "फंक्शन %s स्थिति %s लेल फ्रेम शैलीमे पहिले एकटा बटन अछि"
 
 #: ../src/ui/theme-parser.c:2965
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" ez da baliozko balioa foku-atributuarentzat"
+msgstr "\"%s\" फ़ोकस गुण लेल वैध मूल्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:2974
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" ez da baliozko balioa egoera-atributuarentzat"
+msgstr "\"%s\" स्थिति गुण लेल वैध मूल्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:2984
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "\"%s\" izeneko estiloa ez da definitu"
+msgstr "शैली \"%s\" परिभाषित नहि अछि"
 
 #: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" ez da baliozko balioa tamainaz aldatzeko atributuarentzat"
+msgstr "\"%s\" नवीन आकार गुण लेल वैध मूल्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:3039
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
-msgstr ""
-"Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako/"
-"bildutako egoerentzat"
+msgstr "\"नवीन-आकार\" गुण <%s> तत्व पर अधिकतम/आभायुक्त स्थिति लेल नहि अछि"
 
 #: ../src/ui/theme-parser.c:3053
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr ""
-"Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako "
-"egoerentzat"
+msgstr "\"resize\" गुणकेँ अधिकतम स्थिति क' लेल <%s> तत्व पर नहि राखनाइ चाही"
 
 #: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Estiloa dagoeneko zehaztu da %s egoeran %s tamaina-aldatzean %s fokuan"
+msgstr "शैली पहिलेसँ स्थिति %s नवीन-आकार %s फ़ोकस %s लेल निर्दिष्ट अछि"
 
 #: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "Estiloa dagoeneko zehaztu da %s egoeran %s fokuan"
+msgstr "शैली पहिलेसँ स्थिति %s फ़ोकस %s लेल निर्दिष्ट अछि"
 
 #: ../src/ui/theme-parser.c:3139
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Ezin dira bi draw_ops izan <piece> elementu batean (gaiak draw_ops atributu "
-"bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu zehaztu ditu)"
+"दुइ draw_ops नहि भ' सकत. एकटा <पीस> तत्व लेल (प्रसंग बटन कएल एकटा draw_ops एट्रिब्यूट "
+"आओर एकटा आओर <draw_ops> तत्व, अथवा बटन कएल दुइ तत्व )"
 
 #: ../src/ui/theme-parser.c:3177
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Ezin dira bi draw_ops izan <button> elementu batean (gaiak draw_ops atributu "
-"bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu zehaztu ditu)"
+"दुइ draw_ops नहि भ' सकत एकटा <बटन> तत्व लेल (प्रसंग निर्दिष्ट कएल एकटा draw_ops "
+"एट्रिब्यूट आओर एकटा आओर <draw_ops> तत्व, अथवा निर्दिष्ट कएल दुइ तत्व)"
 
 #: ../src/ui/theme-parser.c:3215
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Ezin dira bi draw_ops izan <menu_icon> elementu batean (gaiak draw_ops "
-"atributu bat eta <draw_ops> elementu bat zehaztu ditu, edo bi elementu "
-"zehaztu ditu)"
+"दुइ draw_ops नहि भ' सकत एकटा < मेनू -चिह्न> तत्व लेल (प्रसंग "
+"निर्दिष्ट कएल एकटा draw_ops "
+"एट्रिब्यूट आओर एकटा आओर <draw_ops> तत्व, अथवा निर्दिष्ट कएल दुइ तत्व)"
 
 #: ../src/ui/theme-parser.c:3263
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Gaian kanporen dagoen elementuak <metacity_theme> izan behar du, ez <%s>"
+msgstr "प्रसंग क' सबसँ बाहरी तत्व <मेटासिटी-प्रसंग> होनाइ चाही नहि जे <%s>"
 
 #: ../src/ui/theme-parser.c:3283
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "<%s> elementua ez da onartzen name/author/date/description elementuan"
+msgstr "तत्व <%s>, एकटा name/author/date/description  तत्व क' भीतर स्वीकार्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:3288
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "<%s> elementua ez da onartzen <constant> elementuaren barnean"
+msgstr "तत्व <%s> <स्थिरांक> तत्व क' भीतर स्वीकार्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:3300
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "<%s> elementua ez da onartzen distance/border/aspect_ratio elementuan"
+msgstr "तत्व <%s>, distance/border/aspect_ratio  तत्व क' भीतर स्वीकार्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:3322
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "<%s> elementua ez da onartzen marrazteko eragiketaren elementuaren barnean"
+msgstr "तत्व <%s>, ड्रा ऑपरेशन तत्व क' भीतर स्वीकार्य नहि अछि"
 
 #: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
 #: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "<%s> elementua ez da onartzen <%s> elementuaren barnean"
+msgstr "तत्व <%s>, एकटा <%s> तत्व क' अंदर स्वीकार नहि अछि"
 
 #: ../src/ui/theme-parser.c:3594
 msgid "No draw_ops provided for frame piece"
-msgstr "Ez da draw_ops-ik eman marko-zatiarentzat"
+msgstr "फ्रेम पीस लेल कोनो draw_ops नहि देल गेल अछि"
 
 #: ../src/ui/theme-parser.c:3609
 msgid "No draw_ops provided for button"
-msgstr "Ez da draw_ops-ik eman botoiarentzat"
+msgstr "बटन लेल कोनो draw_ops नहि देल गेल अछि"
 
 #: ../src/ui/theme-parser.c:3661
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr "Ez da testurik onartzen <%s> elementuaren barnean"
+msgstr "कोनो पाठ तत्व <%s> क' अंदर स्वीकार नहि अछि"
 
 #: ../src/ui/theme-parser.c:3716
 msgid "<name> specified twice for this theme"
-msgstr "<izena> birritan zehaztu da gai honetan"
+msgstr "<नाम> एहि प्रसंग लेल दुइबेर उल्लेखित कएल गेल अछि"
 
 #: ../src/ui/theme-parser.c:3727
 msgid "<author> specified twice for this theme"
-msgstr "<egilea> birritan zehaztu da gai honetan"
+msgstr "<लेखक> एहि प्रसंग लेल दुइबार उल्लेखित कएल गेल अछि"
 
 #: ../src/ui/theme-parser.c:3738
 msgid "<copyright> specified twice for this theme"
-msgstr "<copyright-a> birritan zehaztu da gai honetan"
+msgstr "<सर्वाधिकार सुरक्षित> एहि प्रसंग लेल दुइबेर उल्लेखित कएल गेल अछि"
 
 #: ../src/ui/theme-parser.c:3749
 msgid "<date> specified twice for this theme"
-msgstr "<data> birritan zehaztu da gai honetan"
+msgstr "<तिथि> एहि प्रसंग लेल दुइबेर उल्लेखित कएल गेल अछि"
 
 #: ../src/ui/theme-parser.c:3760
 msgid "<description> specified twice for this theme"
-msgstr "<azalpena> birritan zehaztu da gai honetan"
+msgstr "<विवरण> एहि प्रसंग लेल दुइबेर उल्लेखित कएल गेल अछि"
 
 #: ../src/ui/theme-parser.c:4027
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Huts egin du %s gaiaren fitxategi egokia bilatzean\n"
+msgstr "%s थीम क' लेल वैध फाइल पाबैमे विफल\n"
 
 #: ../src/ui/theme-parser.c:4083
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "%s gai-fitxategiak ez du erroko <metacity_theme> elementurik"
+msgstr "प्रसंग फ़ाइल %s मे रूट <मेटासिटी-प्रसंग> तत्व सम्मिलित नहि अछि"
 
 #: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
-msgstr "/_Leihoak"
+msgstr "/विंडोज़ (_W)"
 
 #: ../src/ui/theme-viewer.c:76
 msgid "/Windows/tearoff"
-msgstr "/Leihoak/askagarria"
+msgstr "/विंडोज़/टीयरऑफ़"
 
 #: ../src/ui/theme-viewer.c:77
 msgid "/Windows/_Dialog"
-msgstr "/Leihoak/_Elkarrizketa-koadroa"
+msgstr "/विंडोज़/संवाद (_D)"
 
 #: ../src/ui/theme-viewer.c:78
 msgid "/Windows/_Modal dialog"
-msgstr "/Leihoak/Elkarrizketa-koadro _modala"
+msgstr "/विंडोज़/मॉडल समाद (_M)"
 
 #: ../src/ui/theme-viewer.c:79
 msgid "/Windows/_Utility"
-msgstr "/Leihoak/_Utilitatea"
+msgstr "/विंडोज़/यूटिलिटी (_U)"
 
 #: ../src/ui/theme-viewer.c:80
 msgid "/Windows/_Splashscreen"
-msgstr "/Leihoak/_Harrerako pantaila"
+msgstr "/विंडोज़/स्प्लैशस्क्रीन (_S)"
 
 #: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Top dock"
-msgstr "/Leihoak/_Goiko atrakea"
+msgstr "/विंडोज़/शीर्ष डॉक (_T)"
 
 #: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Bottom dock"
-msgstr "/Leihoak/_Azpiko atrakea"
+msgstr "/विंडोज़/निचलका डॉक (_B)"
 
 #: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Left dock"
-msgstr "/Leihoak/E_zkerreko atrakea"
+msgstr "/विंडोज़/बायाँ डॉक (_L)"
 
 #: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_Right dock"
-msgstr "/Leihoak/E_skuineko atrakea"
+msgstr "/विंडोज़/दायाँ डॉक (_R)"
 
 #: ../src/ui/theme-viewer.c:85
 msgid "/Windows/_All docks"
-msgstr "/Leihoak/Atrake _denak"
+msgstr "/विंडोज़/सबहि डॉक्स (_A)"
 
 #: ../src/ui/theme-viewer.c:86
 msgid "/Windows/Des_ktop"
-msgstr "/Leihoak/_Mahaigaina"
+msgstr "/विंडोज़/डेस्कटॉप (_k)"
 
 #: ../src/ui/theme-viewer.c:135
 msgid "Open another one of these windows"
-msgstr "Ireki beste leiho hauetariko bat"
+msgstr "एकरामेसँ एकटा आन विंडो खोलू"
 
 #: ../src/ui/theme-viewer.c:142
 msgid "This is a demo button with an 'open' icon"
-msgstr "Hau probako botoia da, 'ireki' ikonoarekin"
+msgstr "ई 'खोलू' चिह्न युक्त एकटा डेमो बटन अछि"
 
 #: ../src/ui/theme-viewer.c:149
 msgid "This is a demo button with a 'quit' icon"
-msgstr "Hau probako botoia da, 'itxi' ikonoarekin"
+msgstr "ई एकटा डेमो बटन अछि 'बाहर' चिह्न क' सँग"
 
 #: ../src/ui/theme-viewer.c:242
 msgid "This is a sample message in a sample dialog"
-msgstr "Hau mezu adibide bat da, adibidezko elkarizketa-koadro batekin"
+msgstr "ई नमूना समाद मे नमूना संदेश छल"
 
 #: ../src/ui/theme-viewer.c:325
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr "Menuko %d elementu faltsua\n"
+msgstr "नकली मेनू वस्तु %d\n"
 
 #: ../src/ui/theme-viewer.c:359
 msgid "Border-only window"
-msgstr "Ertz-soileko leihoa"
+msgstr "सिर्फ-किनार विंडो"
 
 #: ../src/ui/theme-viewer.c:361
 msgid "Bar"
-msgstr "Barra"
+msgstr "पट्टी"
 
 #: ../src/ui/theme-viewer.c:378
 msgid "Normal Application Window"
-msgstr "Aplikazio normalaren leihoa"
+msgstr "सामान्य अनुप्रयोग विंडो"
 
 #: ../src/ui/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr "Elkarrizketa-koadroko kutxa"
+msgstr "संवाद बक्सा"
 
 #: ../src/ui/theme-viewer.c:386
 msgid "Modal Dialog Box"
-msgstr "Elkarrizketa-koadroko kutxa modala"
+msgstr "मॉडल समाद बक्सा"
 
 #: ../src/ui/theme-viewer.c:390
 msgid "Utility Palette"
-msgstr "Paleta utilitatea"
+msgstr "यूटिलिटी पट्टिका"
 
 #: ../src/ui/theme-viewer.c:394
 msgid "Torn-off Menu"
-msgstr "Menua itzalita"
+msgstr "टॉर्न-ऑफ मेनू"
 
 #: ../src/ui/theme-viewer.c:398
 msgid "Border"
-msgstr "Ertza"
+msgstr "किनार"
 
 #: ../src/ui/theme-viewer.c:726
 #, c-format
 msgid "Button layout test %d"
-msgstr "Botoi diseinuen %d. proba"
+msgstr "बटन लेऑउट जाँच %d"
 
 #: ../src/ui/theme-viewer.c:755
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr "%g milisegundo leiho-markoa marrazteko"
+msgstr "%g मिलीसेकण्ड एकटा विंडो फ्रेम ड्रॉ करबमे"
 
 #: ../src/ui/theme-viewer.c:798
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Erabilera: metacity-theme-viewer [GAIA]\n"
+msgstr "उपयोग: metacity-theme-viewer [THEMENAME]\n"
 
 #: ../src/ui/theme-viewer.c:805
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Errorea gaia kargatzean: %s\n"
+msgstr "प्रसंग लोड करबमे त्रुटि: %s\n"
 
 #: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "\"%s\" gaia %g segundotan kargatua\n"
+msgstr "प्रसंग \"%s\" लोड कएल %g सेकण्ड्समे\n"
 
 #: ../src/ui/theme-viewer.c:852
 msgid "Normal Title Font"
-msgstr "Tituluko letra-tipo normala"
+msgstr "सामान्य शीर्षक फ़ॉन्ट"
 
 #: ../src/ui/theme-viewer.c:858
 msgid "Small Title Font"
-msgstr "Tituluko letra-tipo txikia"
+msgstr "छोट शीर्षक फ़ॉन्ट"
 
 #: ../src/ui/theme-viewer.c:864
 msgid "Large Title Font"
-msgstr "Tituluko letra-tipo handia"
+msgstr "पैघ शीर्षक फ़ॉन्ट"
 
 #: ../src/ui/theme-viewer.c:869
 msgid "Button Layouts"
-msgstr "Botoien diseinua"
+msgstr "बटन लेऑउट"
 
 #: ../src/ui/theme-viewer.c:874
 msgid "Benchmark"
-msgstr "Proba-lekua"
+msgstr "बेंचमार्क"
 
 #: ../src/ui/theme-viewer.c:921
 msgid "Window Title Goes Here"
-msgstr "Leihoaren titulua hemen doa"
+msgstr "विंडो शीर्षक एतय जएताह"
 
 #: ../src/ui/theme-viewer.c:1025
 #, c-format
@@ -2374,44 +2230,43 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"%d marko %g bezero-aldeko segundotan (%g milisegundo/markoko) marraztua eta "
-"denbora estandarreko %g segundo X zerbitzariko errekurtsoak barne (%g "
-"milisegundo/markoko)\n"
+"%d frames केँ %g क्लाइंट पक्ष सेकेंडमे घीँचलक (%g milliseconds per frame) आओर %g X "
+"सर्वर संसाधनकेँ समाहित करैत सेकेंड देबार घड़ी (%g विविध प्रति फ्रेम)\n"
 
 #: ../src/ui/theme-viewer.c:1244
 msgid "position expression test returned TRUE but set error"
-msgstr "adierazpenaren posizioko probak TRUE itzuli du, baina errore bat ezarri du"
+msgstr "स्थिति एक्सप्रेशन जाँच ने सही लौटाबलक परंतु त्रुटि नियत नहि कएल"
 
 #: ../src/ui/theme-viewer.c:1246
 msgid "position expression test returned FALSE but didn't set error"
-msgstr "adierazpenaren posizioko probak FALSE itzuli du, baina ez du errorerik ezarri"
+msgstr "स्थिति एक्सप्रेशन जाँच ने ग़लत लौटाबलक परंतु त्रुटि नियत नहि कएल"
 
 #: ../src/ui/theme-viewer.c:1250
 msgid "Error was expected but none given"
-msgstr "Errorea espero zen, baina ez da gertatu"
+msgstr "त्रुटि प्रत्याशित छल. परन्तु देल नहि गेल"
 
 #: ../src/ui/theme-viewer.c:1252
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr "%d errorea espero zen, baina %d gertatu da"
+msgstr "त्रुटि %d वांछित छल परन्तु %d देल गेल "
 
 #: ../src/ui/theme-viewer.c:1258
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr "Errorerik ez zen espero, baina bat itzuli du: %s"
+msgstr "त्रुटि क' प्रत्याशा नहि छल परन्तु एकटा लौटाबल गेल : %s"
 
 #: ../src/ui/theme-viewer.c:1262
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr "x balioa %d zen, %d espero zenean"
+msgstr "एक्स मूल्य छल %d, %d वांछित छल"
 
 #: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr "y balioa %d zen, %d espero zenean"
+msgstr "वाई मूल्य छल %d, %d वांछित छल"
 
 #: ../src/ui/theme-viewer.c:1330
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordenada adierazpen analizatua %g segundotan (%g segundo batazbesteko)\n"
+msgstr "%d निर्देशांक एक्सप्रेशन्स पार्स कएल %g सेकण्ड्समे (औसतन %g सेकण्ड्स)\n"
 

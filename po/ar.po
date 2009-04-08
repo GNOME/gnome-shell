@@ -1,4 +1,4 @@
-# translation of metacity.HEAD.ar.po to Arabic
+# translation of metacity.HEAD.po to Arabic
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2003 THE PACKAGE'S COPYRIGHT HOLDER
 #
@@ -6,21 +6,21 @@
 # Arafat Medini <lumina@silverpen.de>, 2003.
 # Abdulaziz Al-Arfaj <alarfaj0@yahoo.com>, 2004.
 # Djihed Afifi <djihed@gmail.com>, 2006.
-# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007, 2008.
+# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007, 2008, 2009.
+# Anas Afif Emad <anas.e87@gmail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD.ar\n"
+"Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-14 11:10+0100\n"
-"PO-Revision-Date: 2008-01-13 01:49+0200\n"
+"POT-Creation-Date: 2008-09-21 12:56+0100\n"
+"PO-Revision-Date: 2009-01-01 14:35+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 && "
-"n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -29,6 +29,10 @@ msgstr "سطح المكتب"
 #: ../src/50-metacity-key.xml.in.h:1
 msgid "Window Management"
 msgstr "إدارة النوافذ"
+
+#: ../src/metacity-wm.desktop.in.h:1 ../src/metacity.desktop.in.h:1
+msgid "Metacity"
+msgstr "مِتسِتي"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -60,8 +64,7 @@ msgstr "خطأ أثناء القراءة من عملية عرض الحوار: %s
 
 #: ../src/core/delete.c:336
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "خطأ في إطلاق حوار مِتسِتي للسؤال حول قتل تطبيق: %s\n"
 
 #: ../src/core/delete.c:445
@@ -72,12 +75,12 @@ msgstr "فشل تلقي اسم المضيف: %s\n"
 #: ../src/core/display.c:256
 #, c-format
 msgid "Missing %s extension required for compositing"
-msgstr "الامتداد %s مفقود، لكنه مطلوب للتمازج"
+msgstr "الامتداد %s مفقود، لكنه مطلوب للتركيب"
 
 #: ../src/core/display.c:334
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "فشل فتح عرض نظام نوافذ X '%s'\n"
+msgstr "فشل فتح عرض نظام نوافذ إكس '%s'\n"
 
 #: ../src/core/errors.c:272
 #, c-format
@@ -87,38 +90,38 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "فقدت الاتصال بالعرض '%s';\n"
-"من المحتمل ان خادوم X اغلق أو انك\n"
+"من المحتمل أن خادوم إكس أُغلق أو انك\n"
 "قتلت/دمرت مدير النوافذ.\n"
 
 #: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "خطأ IO فادح %d (%s) على الشاشة '%s'.\n"
+msgstr "خطأ دخل/خرج فادح %d (%s) على الشاشة '%s'.\n"
 
-#: ../src/core/keybindings.c:924
+#: ../src/core/keybindings.c:1090
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "يستعمل برنامج آخر المفتاح %s بالفعل مع المغيرين %x كرابط\n"
 
-#: ../src/core/keybindings.c:2563
+#: ../src/core/keybindings.c:2729
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "خطأ في إطلاق حوار مِتسِتي لطبع خطأ حول الأمر: %s\n"
 
-#: ../src/core/keybindings.c:2668
+#: ../src/core/keybindings.c:2834
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "لم يُعرّف أمر %d.\n"
 
-#: ../src/core/keybindings.c:3705
+#: ../src/core/keybindings.c:3862
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "لم يُعرّف أمر طرفيّة.\n"
 
-#: ../src/core/main.c:116
-#, fuzzy, c-format
+#: ../src/core/main.c:115
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -127,62 +130,52 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "مِتسِتي %s\n"
-"حقوق النسخ  (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
-"هذا برنامج حر، راجع المصدر لشروط النسخ. لا يوجد أي ضمان، و لا ضمان بيع و لا "
-"مناسبة لأي هدف.\n"
+"حقوق النشر  (C) 2001-2008 هاڤوك بِنَِنجتون، شركة ردهات، وآخرون\n"
+"هذا برنامج حر، راجع المصدر لشروط النسخ.\n"
+"لا يوجد أي ضمان: و لا حتى ضمان قابلية التسويق أو المناسبة لأي هدف.\n"
 
-#: ../src/core/main.c:253
+#: ../src/core/main.c:242
 msgid "Disable connection to session manager"
 msgstr "عطّل الاتصال بمدير الجلسة"
 
-#: ../src/core/main.c:259
+#: ../src/core/main.c:248
 msgid "Replace the running window manager with Metacity"
 msgstr "استبدل مدير النوافذ الذي يعمل بمِتسِتي"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:254
 msgid "Specify session management ID"
 msgstr "حدّد رقم هويّة إدارة الجلسة"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:259
 msgid "X Display to use"
 msgstr "معراض س الذي سيستعمل"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:265
 msgid "Initialize session from savefile"
 msgstr "ابدأ الجلسة من ملف محفوظ"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:271
 msgid "Print version"
 msgstr "اطبع الإصدارة"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:277
 msgid "Make X calls synchronous"
 msgstr "اجعل نداءات س متزامنة"
 
-#: ../src/core/main.c:294
-#, fuzzy
-msgid "Turn compositing on"
-msgstr "مدير التركيب"
-
-#: ../src/core/main.c:300
-msgid "Turn compositing off"
-msgstr ""
-
-#: ../src/core/main.c:451
+#: ../src/core/main.c:428
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "فشلت قراءة دليل السِمات : %s\n"
 
-#: ../src/core/main.c:467
+#: ../src/core/main.c:444
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "تعذّر ايجاد سِمة! تأكد من وجود %s و احتواءه على السِمات معتادة.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr "تعذّر أيجاد سِمة! تأكد من وجود %s و احتواءه على السِمات معتادة.\n"
 
-#: ../src/core/main.c:526
+#: ../src/core/main.c:500
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "فشلت اعادة التشغيل: %s\n"
+msgstr "فشلت إعادة التشغيل: %s\n"
 
 #.
 #. * We found it, but it was invalid.  Complain.
@@ -192,25 +185,25 @@ msgstr "فشلت اعادة التشغيل: %s\n"
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
 #.
-#: ../src/core/prefs.c:503 ../src/core/prefs.c:655
+#: ../src/core/prefs.c:502 ../src/core/prefs.c:654
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "مفتاح GConf '%s' مضبوط لقيمة غير صحيحة\n"
 
-#: ../src/core/prefs.c:584 ../src/core/prefs.c:824
-#, fuzzy, c-format
+#: ../src/core/prefs.c:583 ../src/core/prefs.c:823
+#, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr "%d المحفوظ في مفتاح GConf %s خارج المدى من 0 إلى %d\n"
+msgstr "%d المحفوظ في مفتاح GConf %s خارج المدى من %d إلى %d\n"
 
-#: ../src/core/prefs.c:628 ../src/core/prefs.c:702 ../src/core/prefs.c:750
-#: ../src/core/prefs.c:814 ../src/core/prefs.c:1109 ../src/core/prefs.c:1125
-#: ../src/core/prefs.c:1144 ../src/core/prefs.c:1160 ../src/core/prefs.c:1177
-#: ../src/core/prefs.c:1193
+#: ../src/core/prefs.c:627 ../src/core/prefs.c:701 ../src/core/prefs.c:749
+#: ../src/core/prefs.c:813 ../src/core/prefs.c:1108 ../src/core/prefs.c:1124
+#: ../src/core/prefs.c:1143 ../src/core/prefs.c:1159 ../src/core/prefs.c:1176
+#: ../src/core/prefs.c:1192
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "مفتاح GConf \"%s\" مضبوط لنوع غير صحيح\n"
 
-#: ../src/core/prefs.c:1263
+#: ../src/core/prefs.c:1262
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -218,30 +211,29 @@ msgstr ""
 "عطّلت الحلول الجزئيّة للتطبيقات المعطوبة . ربما لن تتصرف بعض التطبيقات "
 "بسلامة.\n"
 
-#: ../src/core/prefs.c:1333
+#: ../src/core/prefs.c:1332
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "لا يمكن تحليل وصف الخط \"%s\" من مفتاح GConf %s\n"
 
-#: ../src/core/prefs.c:1393
+#: ../src/core/prefs.c:1392
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"\"%s\" الموجود في قاعدة بايانات الإعدادات ليس قيمة سليمة لمغير أزرار الفأرة\n"
+msgstr "\"%s\" الموجود في قاعدة بيانات الإعدادات ليس قيمة سليمة لمغير أزرار الفأرة\n"
 
-#: ../src/core/prefs.c:1810
+#: ../src/core/prefs.c:1809
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "خطأ عند تعيين عدد مساحات العمل لـ %d: %s\n"
 
-#: ../src/core/prefs.c:2131 ../src/core/prefs.c:2643
+#: ../src/core/prefs.c:2174 ../src/core/prefs.c:2686
 #, c-format
 msgid "Workspace %d"
 msgstr "مساحة العمل %d"
 
-#: ../src/core/prefs.c:2161 ../src/core/prefs.c:2334
+#: ../src/core/prefs.c:2204 ../src/core/prefs.c:2377
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -250,14 +242,9 @@ msgstr ""
 "\"%s\" الموجود في قاعدة بيانات الإعدادات ليس قيمة سليمة لارتباط المفتاح \"%s"
 "\"\n"
 
-#: ../src/core/prefs.c:2724
+#: ../src/core/prefs.c:2767
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "خطأ عند تعيين اسم مساحة العمل %d لـ \"%s\": %s\n"
-
-#: ../src/core/prefs.c:2917
-#, fuzzy, c-format
-msgid "Error setting compositor status: %s\n"
 msgstr "خطأ عند تعيين اسم مساحة العمل %d لـ \"%s\": %s\n"
 
 #: ../src/core/screen.c:350
@@ -276,8 +263,7 @@ msgstr ""
 
 #: ../src/core/screen.c:393
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d العرض \"%s\"\n"
 
 #: ../src/core/screen.c:451
@@ -293,7 +279,7 @@ msgstr "لا يمكن ترك الشاشة %d على العرض \"%s\"\n"
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "لا يمكن انشاء الدليل '%s': %s\n"
+msgstr "لا يمكن إنشاء الدليل '%s': %s\n"
 
 #: ../src/core/session.c:854
 #, c-format
@@ -361,8 +347,7 @@ msgstr "عنصر مجهول %s"
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
-msgstr ""
-"خطأ عند إطلاق حوار مِتسِتي للتحذير من تطبيقات التي لا تدعم إدارة الجلسة: %s\n"
+msgstr "خطأ عند إطلاق حوار مِتسِتي للتحذير من تطبيقات التي لا تدعم إدارة الجلسة: %s\n"
 
 #: ../src/core/util.c:101
 #, c-format
@@ -416,7 +401,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "نافذة WM_TRANSIENT_FOR  0x%lx غير صحيحة ل %s.\n"
 
 #. first time through
-#: ../src/core/window.c:5643
+#: ../src/core/window.c:5664
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -432,7 +417,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6208
+#: ../src/core/window.c:6229
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -463,14 +448,8 @@ msgstr "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير ص
 
 #: ../src/core/xprops.c:484
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
-
-#: ../src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "مِتسِتي"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
 
 #: ../src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -508,7 +487,6 @@ msgid "Arrangement of buttons on the titlebar"
 msgstr "تنظيم الأزرار على شريط العنوان"
 
 #: ../src/metacity.schemas.in.h:8
-#, fuzzy
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
@@ -518,10 +496,12 @@ msgid ""
 "without breaking older versions. A special spacer tag can be used to insert "
 "some space between two adjacent buttons."
 msgstr ""
-"تنظيم الأزرار على شريط العنوان. يجب أن تكون القيمة سلسلة،مثل\"menu:minimize,"
-"maximize,close\" ،الفاصل يفصل الجانب الأيسر للنافذة عن الجانب الأيمن، كما "
-"تفصل أسماء الأزرار بفواصل. نسخ الأزرار ممنوع. يقع تجاهل الأزرار غير المعروفة "
-"حتى يمكن اضافتها لاصدارات ميتاستي القادمة دون كسر الاصدارات القديمة."
+"تنظيم الأزرار على شريط العنوان. يجب أن تكون القيمة سلسلة نصيّة،مثل\"menu:"
+"minimize,maximize,spacer,close\"; تفصل النقطتان فوق بعضهما الجانب الأيسر "
+"للنافذة عن الجانب الأيمن، كما تُفصل أسماء الأزرار بفواصل. لا يسمح بالنسخ "
+"المطابقة للأزرار. يتم تجاهل الأزرار غير المعروفة حتى يمكن إضافة الأزرار إلى "
+"الإصدارادت المستقبلية من ميتاسيتي دون كسر الإصدارات القديمة. يمكن استخدام "
+"وسم فاصل خاص لإقحام فراغ بين زرين متجاورين."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
@@ -744,99 +724,94 @@ msgid "Move window one workspace up"
 msgstr "انقل النافذة مساحة عمل واحدة إلى الأعلى"
 
 #: ../src/metacity.schemas.in.h:51
-#, fuzzy
-msgid "Move window to center of screen"
-msgstr "انقل النافذة للجانب الشرقي من الشاشة"
-
-#: ../src/metacity.schemas.in.h:52
 msgid "Move window to east side of screen"
 msgstr "انقل النافذة للجانب الشرقي من الشاشة"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to north side of screen"
 msgstr "انقل النافذة للجانب الشمالي من الشاشة"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to north-east corner"
 msgstr "انقل النافذة للزاوية شمال-شرقي الشاشة"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to north-west corner"
 msgstr "انقل النافذة للزاوية شمال-غربي الشاشة"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to south side of screen"
 msgstr "انقل النافذة للجانب الجنوبي من الشاشة"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to south-east corner"
 msgstr "انقل النافذة للزاوية جنوب-شرق الشاشة"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to south-west corner"
 msgstr "انقل النافذة للزاوية جنوب-غرب الشاشة"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to west side of screen"
 msgstr "انقل النافذة للجانب ألغربي من الشاشة"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 1"
 msgstr "انقل النافذة إلى مساحة العمل 1"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 10"
 msgstr "انقل النافذة إلى مساحة العمل 10"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:61
 msgid "Move window to workspace 11"
 msgstr "انقل النافذة إلى مساحة العمل 11"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:62
 msgid "Move window to workspace 12"
 msgstr "انقل النافذة إلى مساحة العمل 12"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:63
 msgid "Move window to workspace 2"
 msgstr "انقل النافذة إلى مساحة العمل 2"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:64
 msgid "Move window to workspace 3"
 msgstr "انقل النافذة إلى مساحة العمل 3"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:65
 msgid "Move window to workspace 4"
 msgstr "انقل النافذة إلى مساحة العمل 4"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:66
 msgid "Move window to workspace 5"
 msgstr "انقل النافذة إلى مساحة العمل 5"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:67
 msgid "Move window to workspace 6"
 msgstr "انقل النافذة إلى مساحة العمل 6"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:68
 msgid "Move window to workspace 7"
 msgstr "انقل النافذة إلى مساحة العمل 7"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:69
 msgid "Move window to workspace 8"
 msgstr "انقل النافذة إلى مساحة العمل 8"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:70
 msgid "Move window to workspace 9"
 msgstr "انقل النافذة إلى مساحة العمل 9"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:71
 msgid "Name of workspace"
 msgstr "اسم مساحة العمل"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:72
 msgid "Number of workspaces"
 msgstr "عدد مساحات العمل"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:73
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -845,35 +820,35 @@ msgstr ""
 "عدد مساحات العمل. يجب أن يكون مغايرا لصفر، و بحد أقصى مثبت للوقاية من تدمير "
 "سطح مكتبك عفويا بطلب عدد كبير جدا من أسطح عمل."
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:74
 msgid "Raise obscured window, otherwise lower"
 msgstr "ارفع النافذة المظلمة، أو اخفظها في ما عدا ذلك"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:75
 msgid "Raise window above other windows"
 msgstr "ارفع النافذة فوق النوافذ الأخرى"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:76
 msgid "Resize window"
 msgstr "حجّم النّافذة"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:77
 msgid "Run a defined command"
 msgstr "شغّل أمر معرّف"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:78
 msgid "Run a terminal"
 msgstr "شغّل طرفية"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
 msgstr "اعرض قائمة الشريط"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:80
 msgid "Show the panel run application dialog"
 msgstr "اظهر حوار الشّريط لتشغيل التّطبيقات"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:81
 msgid ""
 "Some applications disregard specifications in ways that result in window "
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
@@ -883,83 +858,83 @@ msgstr ""
 "بعض التطبيقات تهمل المُوَاصفَات مما يؤدي لعطل بعض مزايا مِتسِتي. هذا الخيار يجعل "
 "مِتسِتي يعمل بطريقة عاتية، بشرط عدم تشغيل تطبيقات من ذلك الصنف."
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 1"
 msgstr "تحول إلى مساحة العمل 1"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 10"
 msgstr "تحول إلى مساحة العمل 10"
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace 11"
 msgstr "تحول إلى مساحة العمل 11"
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace 12"
 msgstr "تحول إلى مساحة العمل 12"
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace 2"
 msgstr "تحول إلى مساحة العمل 2"
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace 3"
 msgstr "تحول إلى مساحة العمل 3"
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:88
 msgid "Switch to workspace 4"
 msgstr "تحول إلى مساحة العمل 4"
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:89
 msgid "Switch to workspace 5"
 msgstr "تحول إلى مساحة العمل 5"
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:90
 msgid "Switch to workspace 6"
 msgstr "تحول إلى مساحة العمل 6"
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:91
 msgid "Switch to workspace 7"
 msgstr "تحول إلى مساحة العمل 7"
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:92
 msgid "Switch to workspace 8"
 msgstr "تحول إلى مساحة العمل 8"
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:93
 msgid "Switch to workspace 9"
 msgstr "تحول إلى مساحة العمل 9"
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:94
 msgid "Switch to workspace above this one"
 msgstr "تحول إلى مساحة العمل فوق هذه"
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:95
 msgid "Switch to workspace below this one"
 msgstr "تحول إلى مساحة العمل تحت هذه"
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace on the left"
 msgstr "تحول إلى مساحة العمل على اليسار"
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the right"
 msgstr "تحول إلى مساحة العمل على اليمين"
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:98
 msgid "System Bell is Audible"
 msgstr "ناقوس النظام مسموع"
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:99
 msgid "Take a screenshot"
 msgstr "خذ لقطة شاشة"
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:100
 msgid "Take a screenshot of a window"
 msgstr "خذ لقطة لنافذة"
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -975,7 +950,7 @@ msgstr ""
 "الذي أرسل إشارة الناقوس. إذا كان التطبيق الذي أرسل الجرس مجهولا (الذي هو "
 "الحال لـ \"بيب النظام\" الإفتراضي) فسيومض شريط عنوان التطبيق المركزّ حاليا."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -984,7 +959,7 @@ msgstr ""
 "مفاتيح /apps/metacity/global_keybindings/run_command_N تعرف روابط مفاتيح "
 "تماثل هذه الأوامر. نقر ارتباط المفتاح لـ run_command_N سيشغل command_N."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -992,7 +967,7 @@ msgstr ""
 "مفتاح /apps/metacity/global_keybindings/run_command_screenshot يحدد مفتاح "
 "رابط ينفّذ الأمر المحدد من قبل هذا التعيين."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -1001,7 +976,7 @@ msgstr ""
 "مفتاح  /apps/metacity/global_keybindings/run_command_window_screenshot يعرف "
 "مفتاحا رابطا ينفذ الأمر المحدد من قبل هذا التعيين."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -1016,7 +991,7 @@ msgstr ""
 "الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة "
 "الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1031,7 +1006,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1046,7 +1021,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1061,7 +1036,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1076,7 +1051,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1089,7 +1064,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1102,7 +1077,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1115,7 +1090,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1128,7 +1103,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1141,7 +1116,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1154,7 +1129,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1167,7 +1142,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1180,7 +1155,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1193,7 +1168,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1206,7 +1181,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1219,7 +1194,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1232,7 +1207,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1245,7 +1220,7 @@ msgstr ""
 "أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1258,7 +1233,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1273,7 +1248,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled"
 "\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1288,7 +1263,7 @@ msgstr ""
 "الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة "
 "الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1303,7 +1278,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled"
 "\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1317,7 +1292,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1330,7 +1305,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1345,7 +1320,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك "
 "رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1360,7 +1335,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك "
 "رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1375,7 +1350,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك "
 "رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1389,7 +1364,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك "
 "رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1403,7 +1378,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1417,7 +1392,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1431,7 +1406,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1445,7 +1420,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1459,7 +1434,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1473,7 +1448,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1487,7 +1462,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1501,7 +1476,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1515,7 +1490,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1529,7 +1504,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1543,7 +1518,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1557,7 +1532,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1572,7 +1547,7 @@ msgstr ""
 "الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة "
 "الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1587,7 +1562,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled"
 "\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application without a popup window. Holding \"shift\" together with this "
@@ -1604,7 +1579,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application, using a popup window. Holding \"shift\" together with this "
@@ -1621,7 +1596,7 @@ msgstr ""
 "Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، "
 "فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1638,7 +1613,7 @@ msgstr ""
 "Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، "
 "فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1655,7 +1630,7 @@ msgstr ""
 "الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة "
 "الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1670,7 +1645,7 @@ msgstr ""
 "Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، "
 "فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1685,7 +1660,7 @@ msgstr ""
 "Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، "
 "فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The keybinding used to move focus between windows of an application without "
 "a popup window. Holding the \"shift\" key while using this binding reverses "
@@ -1702,7 +1677,7 @@ msgstr ""
 "الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة "
 "الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "The keybinding used to move focus between windows of an application, using a "
 "popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
@@ -1719,7 +1694,7 @@ msgstr ""
 "الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة "
 "الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1736,7 +1711,7 @@ msgstr ""
 "كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار "
 "للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1753,7 +1728,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1769,7 +1744,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled"
 "\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:158
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1783,7 +1758,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:159
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1797,7 +1772,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1811,7 +1786,7 @@ msgstr ""
 "Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط "
 "مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:161
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1826,7 +1801,7 @@ msgstr ""
 "الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة "
 "الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:162
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1840,7 +1815,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:163
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1855,7 +1830,7 @@ msgstr ""
 "Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط "
 "مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:164
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1868,7 +1843,7 @@ msgstr ""
 "صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:165
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1883,7 +1858,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1898,7 +1873,7 @@ msgstr ""
 "Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط "
 "مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:167
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1912,21 +1887,21 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:168
 msgid "The name of a workspace."
 msgstr "اسم مساحة العمل."
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:169
 msgid "The screenshot command"
 msgstr "أمر لقطة الشاشة"
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.h:170
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "تحدّد السِمة مظهر حدود النافذة و شريط العناوين، الخ."
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.h:171
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1934,7 +1909,7 @@ msgstr ""
 "التأخير الوقتي قبل رفع نافذة اذا ضبط auto_raise لـ صحيح. التأخير معطى بآلاف "
 "الأجزاء من الثانية."
 
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.h:172
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1947,11 +1922,11 @@ msgstr ""
 "مؤشر الفأرة النافذة و \"mouse\" يعني ان النوافذ تركز عند دخول مؤشر الفأرة "
 "النافذة ثم يلغى التركيز عند خروج المؤشر من النافذة."
 
-#: ../src/metacity.schemas.in.h:174
+#: ../src/metacity.schemas.in.h:173
 msgid "The window screenshot command"
 msgstr "أمر لقطة النافذة"
 
-#: ../src/metacity.schemas.in.h:175
+#: ../src/metacity.schemas.in.h:174
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another one, it raises the window above all others, "
@@ -1970,7 +1945,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:176
+#: ../src/metacity.schemas.in.h:175
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1983,7 +1958,7 @@ msgstr ""
 "أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:177
+#: ../src/metacity.schemas.in.h:176
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1998,23 +1973,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:178
-#, fuzzy
-msgid ""
-"This keybinding moves a window into the center of the screen. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"ارتباط المفتاح هذا ينقل نافذة باتجاه غرب (يسار) الشاشة.. النّسق شبيهٌ بـ \"&lt;"
-"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1\". المحلّل مرنٌ نوعًا ما و يسمح "
-"بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;"
-"\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
-"لهذا الإجراء."
-
-#: ../src/metacity.schemas.in.h:179
+#: ../src/metacity.schemas.in.h:177
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2029,7 +1988,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:180
+#: ../src/metacity.schemas.in.h:178
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2044,7 +2003,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:181
+#: ../src/metacity.schemas.in.h:179
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2059,7 +2018,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:182
+#: ../src/metacity.schemas.in.h:180
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2074,7 +2033,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:183
+#: ../src/metacity.schemas.in.h:181
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2089,7 +2048,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:184
+#: ../src/metacity.schemas.in.h:182
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2104,7 +2063,7 @@ msgstr ""
 "\" و \"&lt;Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
 "هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:185
+#: ../src/metacity.schemas.in.h:183
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2119,7 +2078,7 @@ msgstr ""
 "\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ "
 "لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:186
+#: ../src/metacity.schemas.in.h:184
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2132,7 +2091,7 @@ msgstr ""
 "أو صغيرة، و كذلك الاختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". إذا ضبطت "
 "الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:187
+#: ../src/metacity.schemas.in.h:185
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2147,7 +2106,7 @@ msgstr ""
 "Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط "
 "مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:188
+#: ../src/metacity.schemas.in.h:186
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2162,8 +2121,7 @@ msgstr ""
 "Ctrl&gt;\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك رابط "
 "مفتاحٍ لهذا الإجراء."
 
-#: ../src/metacity.schemas.in.h:189
-#, fuzzy
+#: ../src/metacity.schemas.in.h:187
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2174,13 +2132,15 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"هذا الخيار يحدد نتائج النقر المزدوج على شريط العنواين. الخيارات الممكنة "
-"حاليا هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' "
-"مما سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و  'none' لعدم فعل "
-"أي شيء."
+"هذا الخيار يحدد نتائج النقر المزدوج على شريط العنوان. الخيارات الممكنة حاليا "
+"هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' مما "
+"سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و "
+"'toggle_maximize_horizontally' و 'toggle_maximize_vertically' اللذان سيقومان "
+"بتكبير/إلغاء تكبير النافذة بالاتجاه المحدد فقط، 'minimize' سيقوم بتصغير "
+"النافذة،  'shade' سيلف النافذة إلى الأعلى، 'menu' سيعرض قائمة النافذة، "
+"'lower' سيضع النافذة خلف بقية النوافذ، و 'none' لن يفعل أي شيء."
 
-#: ../src/metacity.schemas.in.h:190
-#, fuzzy
+#: ../src/metacity.schemas.in.h:188
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2191,13 +2151,15 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"هذا الخيار يحدد نتائج النقر الأوسط على شريط العنواين. الخيارات المقبولة "
-"حاليا هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' "
-"مما سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و  'none' لعدم فعل "
-"أي شيء."
+"هذا الخيار يحدد نتائج النقر الأوسط على شريط العنوان. الخيارات الممكنة حاليا "
+"هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' مما "
+"سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و "
+"'toggle_maximize_horizontally' و 'toggle_maximize_vertically' اللذان سيقومان "
+"بتكبير/إلغاء تكبير النافذة بالاتجاه المحدد فقط، 'minimize' سيقوم بتصغير "
+"النافذة،  'shade' سيلف النافذة إلى الأعلى، 'menu' سيعرض قائمة النافذة، "
+"'lower' سيضع النافذة خلف بقية النوافذ، و 'none' لن يفعل أي شيء."
 
-#: ../src/metacity.schemas.in.h:191
-#, fuzzy
+#: ../src/metacity.schemas.in.h:189
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2208,12 +2170,15 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"هذا الخيار يحدد نتائج النقر الأيمن على شريط العنواين. الخيارات الممكنة حاليا "
+"هذا الخيار يحدد نتائج النقر الأيمن على شريط العنوان. الخيارات الممكنة حاليا "
 "هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' مما "
-"سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و  'none' لعدم فعل أي "
-"شيء."
+"سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و "
+"'toggle_maximize_horizontally' و 'toggle_maximize_vertically' اللذان سيقومان "
+"بتكبير/إلغاء تكبير النافذة بالاتجاه المحدد فقط، 'minimize' سيقوم بتصغير "
+"النافذة،  'shade' سيلف النافذة إلى الأعلى، 'menu' سيعرض قائمة النافذة، "
+"'lower' سيضع النافذة خلف بقية النوافذ، و 'none' لن يفعل أي شيء."
 
-#: ../src/metacity.schemas.in.h:192
+#: ../src/metacity.schemas.in.h:190
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -2224,27 +2189,27 @@ msgstr ""
 "خياران: \"smart\" لإعطاء التركيز، و  \"strict\" لعدم إعطاء التركيز للنوافذ "
 "البادئة من شاشة طرفية."
 
-#: ../src/metacity.schemas.in.h:193
+#: ../src/metacity.schemas.in.h:191
 msgid "Toggle always on top state"
 msgstr "بدّل حالة دائمًا على القمّة"
 
-#: ../src/metacity.schemas.in.h:194
+#: ../src/metacity.schemas.in.h:192
 msgid "Toggle fullscreen mode"
 msgstr "بدّل نمط ملء الشاشة"
 
-#: ../src/metacity.schemas.in.h:195
+#: ../src/metacity.schemas.in.h:193
 msgid "Toggle maximization state"
 msgstr "بدّل حالة التكبير"
 
-#: ../src/metacity.schemas.in.h:196
+#: ../src/metacity.schemas.in.h:194
 msgid "Toggle shaded state"
 msgstr "بدّل حالة الإخفاء"
 
-#: ../src/metacity.schemas.in.h:197
+#: ../src/metacity.schemas.in.h:195
 msgid "Toggle window on all workspaces"
 msgstr "بدّل النافذة على جميع مساحات العمل"
 
-#: ../src/metacity.schemas.in.h:198
+#: ../src/metacity.schemas.in.h:196
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2253,27 +2218,27 @@ msgstr ""
 "يفعّل إشارة بصرية عند إرسال التطبيق أو النظام لـ 'ناقوس' أو 'صفير'، هذا مفيد "
 "للذين يسمعون يصعوبة أو للإستعمال في بيئات مفعمة بالضجيج."
 
-#: ../src/metacity.schemas.in.h:199
+#: ../src/metacity.schemas.in.h:197
 msgid "Unmaximize window"
 msgstr "ألغي تكبير النّافذة"
 
-#: ../src/metacity.schemas.in.h:200
+#: ../src/metacity.schemas.in.h:198
 msgid "Use standard system font in window titles"
 msgstr "استخدم خط النظام القياسي في عناوين النوافذ"
 
-#: ../src/metacity.schemas.in.h:201
+#: ../src/metacity.schemas.in.h:199
 msgid "Visual Bell Type"
 msgstr "نوع الناقوس المرئي"
 
-#: ../src/metacity.schemas.in.h:202
+#: ../src/metacity.schemas.in.h:200
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "إذا كان التصعيد أثرا جانبيا لتفاعلات المستخدم الأخرى"
 
-#: ../src/metacity.schemas.in.h:203
+#: ../src/metacity.schemas.in.h:201
 msgid "Window focus mode"
 msgstr "نمط تركيز النافذة"
 
-#: ../src/metacity.schemas.in.h:204
+#: ../src/metacity.schemas.in.h:202
 msgid "Window title font"
 msgstr "خط عنوان النافذة"
 
@@ -2404,9 +2369,9 @@ msgid "_Close"
 msgstr "ا_غلق"
 
 #: ../src/ui/menu.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Workspace %d%n"
-msgstr "مساحة العمل %d"
+msgstr "مساحة العمل %d%n"
 
 #: ../src/ui/menu.c:213
 #, c-format
@@ -2696,8 +2661,7 @@ msgstr "لا صفة \"قيمة\" على العنصر <%s>"
 
 #: ../src/ui/theme-parser.c:1411 ../src/ui/theme-parser.c:1425
 #: ../src/ui/theme-parser.c:1484
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
 
 #: ../src/ui/theme-parser.c:1434
@@ -2985,8 +2949,7 @@ msgstr "لا يجب أن تكون صفة \"التحجيم\" على عنصر <%s>
 
 #: ../src/ui/theme-parser.c:3662
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "لا يجب أن تكون صفة \"التحجيم\" على عنصر <%s> لحالات التكبير"
 
 #: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
@@ -3030,8 +2993,7 @@ msgstr "يجب أن يكون أخرج عنصر في السِمة <metacity_theme
 
 #: ../src/ui/theme-parser.c:3892
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "العنصر <%s> غير مسموح به داخل عنصر اسم/كاتب/تاريخ/وصف"
 
 #: ../src/ui/theme-parser.c:3897
@@ -3041,8 +3003,7 @@ msgstr "العنصر <%s> غير مسموح به داخل عنصر <constant>"
 
 #: ../src/ui/theme-parser.c:3909
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "العنصر <%s> غير مسموح به داخل عنصر مسافة/حد/aspect_ratio"
 
 #: ../src/ui/theme-parser.c:3931
@@ -3384,10 +3345,8 @@ msgstr "قيمة الشفافية \"%s\" في اللون المخلوط ليست
 
 #: ../src/ui/theme.c:1284
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"تهيئة التظليل هي \"تظليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "تهيئة التظليل هي \"تظليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
 
 #: ../src/ui/theme.c:1295
 #, c-format
@@ -3440,14 +3399,12 @@ msgstr "تعبير الإحداثيّات ينتُج عند القسمة على 
 
 #: ../src/ui/theme.c:1967
 #, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "تعبير الإحداثيّاتيّات يحاول استعمال مقسوم mod على عدد فاصلة متحرّكة"
 
 #: ../src/ui/theme.c:2023
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "تعبير الإحداثيّات له مقسوم \"%s\" بالرغم من ترقبه قاسم"
 
 #: ../src/ui/theme.c:2032
@@ -3508,10 +3465,8 @@ msgstr ""
 
 #: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> مفقود"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> مفقود"
 
 #: ../src/ui/theme.c:4702
 #, c-format
@@ -3535,10 +3490,8 @@ msgstr ""
 
 #: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"الثوابت المعرفة من طرف المستخدم يجب أن تبدأ بحروف كبيرة، \"%s\" لا يبدأ بذلك"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "الثوابت المعرفة من طرف المستخدم يجب أن تبدأ بحروف كبيرة، \"%s\" لا يبدأ بذلك"
 
 #: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
 #, c-format
@@ -3550,19 +3503,3 @@ msgstr "عُرِّف الثابت \"%s\" بالفعل"
 msgid "Usage: %s\n"
 msgstr "الاستخدام: %s\n"
 
-#~ msgid "Type of %s was not integer"
-#~ msgstr "نوع %s لم يكن عددا صحيحا"
-
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-#~ "range 1..128\n"
-#~ msgstr ""
-#~ "%d المحفوظ في مفتاح GConf %s ليس عددا معقولا لمساحات العمل، يجب أن يكون "
-#~ "بين 1 و 128\n"
-
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
-#~ "current maximum is %d\n"
-#~ msgstr ""
-#~ "%d المحفوظ في مفتاح GConf %s ليس عدد معقول لمساحات العمل، الحدالأقصى "
-#~ "الحالي هو %d\n"
