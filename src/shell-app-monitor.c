@@ -111,16 +111,27 @@ reread_menus (ShellAppMonitor *self)
 
   for (iter = entries; iter; iter = iter->next)
     {
-      GMenuTreeEntry *entry = iter->data;
-      ShellAppMenuEntry *shell_entry = g_new0 (ShellAppMenuEntry, 1);
+      GMenuTreeItem *item = iter->data;
 
-      shell_entry->name = g_strdup (gmenu_tree_entry_get_name (entry));
-      shell_entry->id = g_strdup (gmenu_tree_entry_get_desktop_file_id (entry));
-      shell_entry->icon = g_strdup (gmenu_tree_entry_get_icon (entry));
+      switch (gmenu_tree_item_get_type (item))
+        {
+          case GMENU_TREE_ITEM_DIRECTORY:
+            {
+              GMenuTreeDirectory *dir = iter->data;
+              ShellAppMenuEntry *shell_entry = g_new0 (ShellAppMenuEntry, 1);
 
-      priv->cached_menus = g_list_prepend (priv->cached_menus, shell_entry);
+              shell_entry->name = g_strdup (gmenu_tree_directory_get_name (dir));
+              shell_entry->id = g_strdup (gmenu_tree_directory_get_menu_id (dir));
+              shell_entry->icon = g_strdup (gmenu_tree_directory_get_icon (dir));
 
-      gmenu_tree_item_unref (entry);
+              priv->cached_menus = g_list_prepend (priv->cached_menus, shell_entry);
+
+              gmenu_tree_item_unref (dir);
+            }
+            break;
+          default:
+            break;
+        }
     }
   priv->cached_menus = g_list_reverse (priv->cached_menus);
 
