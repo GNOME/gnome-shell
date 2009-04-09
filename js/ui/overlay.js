@@ -618,7 +618,7 @@ Sideshow.prototype = {
     // changed, which is ensured by _setMoreDocsMode() and _unsetMoreDocsMode() functions. 
     _updateDocsSection: function() {
         if (this._moreDocsMode) {
-            this._docDisplay.setExpanded(true, this._width + this._additionalWidth,
+            this._docDisplay.setExpanded(true, this._width, this._additionalWidth,
                                          this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT,
                                          this._expandedSideshowColumns);
             this._moreDocsLink.setText("Less...");
