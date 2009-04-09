@@ -626,7 +626,7 @@ Sideshow.prototype = {
             this.actor.add_actor(this._details);
             this._details.append(this._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
         } else {
-            this._docDisplay.setExpanded(false, this._width,
+            this._docDisplay.setExpanded(false, this._width, 0,
                                          this._docsSectionDefaultHeight - SIDESHOW_SECTION_MISC_HEIGHT,
                                          SIDESHOW_COLUMNS);
             this._moreDocsLink.setText("More...");
