@@ -61,7 +61,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
     build-essential curl subversion \
     automake bison flex git-core gnome-common gtk-doc-tools \
     libdbus-glib-1-dev libgconf2-dev libgtk2.0-dev libffi-dev \
-    libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
+    libgnome-menu-dev libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
     mesa-common-dev python2.5-dev libreadline5-dev xulrunner-1.9-dev \
     ; do
       if ! dpkg_is_installed $pkg; then
