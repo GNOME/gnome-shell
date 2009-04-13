@@ -10,6 +10,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import termios
 import time
 import errno
 
@@ -248,6 +249,11 @@ else:
 if options.verbose:
     print "Starting shell"
 
+if options.debug:
+    # Record initial terminal state so we can reset it to that
+    # later, in case we kill gdb at a bad time
+    termattrs = termios.tcgetattr(0);
+
 try:
     if run_in_xephyr:
         shell = start_xephyr()
@@ -274,6 +280,9 @@ except KeyboardInterrupt, e:
         print "Shell killed"
 
 finally:
+    if options.debug:
+        termios.tcsetattr(0, termios.TCSANOW, termattrs);
+
     if not run_in_xephyr:
         # Restart gnome-panel and window manager
         if metacity_pid:
