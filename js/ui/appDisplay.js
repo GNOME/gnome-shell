@@ -314,10 +314,7 @@ AppDisplay.prototype = {
     _selectMenuIndex: function(index) {
         if (index < 0 || index >= this._menus.length)
             return;
-        if (this._activeMenu != null)
-            this._activeMenu.setState(MENU_UNSELECTED);
-        this._activeMenu = this._menuDisplays[index];
-        this._activeMenu.setState(MENU_SELECTED);
+        this._menuDisplays[index].setState(MENU_SELECTED);
     },
 
     _redisplayMenus: function() {
@@ -333,8 +330,8 @@ AppDisplay.prototype = {
                     this._activeMenuIndex = -1;
                     this._activeMenu = null;
                 } else if (activated) {
-                    if (this._activeMenu != null)
-                        this._activeMenu.setState(MENU_SELECTED);
+                    if (display != this._activeMenu && this._activeMenu != null)
+                        this._activeMenu.setState(MENU_UNSELECTED);
                     this._activeMenuIndex = menuIndex;
                     this._activeMenu = display;
                     this._activeMenuApps = this._appMonitor.get_applications_for_menu(menu.id);
