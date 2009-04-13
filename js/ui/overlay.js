@@ -7,6 +7,7 @@ const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Lang = imports.lang;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
@@ -85,6 +86,44 @@ let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
 
+function SearchEntry(width) {
+    this._init(width);
+}
+
+SearchEntry.prototype = {
+    _init : function(width) {
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                   y_align: Big.BoxAlignment.CENTER,
+                                   background_color: SIDESHOW_SEARCH_BG_COLOR,
+                                   corner_radius: 4,
+                                   spacing: 4,
+                                   padding_left: 4,
+                                   padding_right: 4,
+                                   width: width,
+                                   height: 24
+                                 });
+
+        let icontheme = Gtk.IconTheme.get_default();
+        let searchIconTexture = new Clutter.Texture({});
+        let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
+        searchIconTexture.set_from_file(searchIconPath);
+        this.actor.append(searchIconTexture, 0);
+
+        // We need to initialize the text for the entry to have the cursor displayed
+        // in it. See http://bugzilla.openedhand.com/show_bug.cgi?id=1365
+        this.entry = new Clutter.Text({ font_name: "Sans 14px",
+                                        editable: true,
+                                        activatable: true,
+                                        singleLineMode: true,
+                                        text: ""
+                                      });
+        this.entry.connect('text-changed', Lang.bind(this, function (e) {
+            let text = this.entry.text;
+        }));
+        this.actor.append(this.entry, Big.BoxPackFlags.EXPAND);
+    }
+};
+
 function Sideshow() {
     this._init();
 }
@@ -111,56 +150,33 @@ Sideshow.prototype = {
 
         let global = Shell.Global.get();
         this.actor = new Clutter.Group();
-        let icontheme = Gtk.IconTheme.get_default();
-        this._searchBox = new Big.Box({ background_color: SIDESHOW_SEARCH_BG_COLOR,
-                                        corner_radius: 4,
-                                        x: SIDESHOW_PAD,
-                                        y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
-                                        width: this._width,
-                                        height: 24});
-        this.actor.add_actor(this._searchBox);
+        this._searchEntry = new SearchEntry(this._width);
+        this.actor.add_actor(this._searchEntry.actor);
 
-        let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
-                                                      y: this._searchBox.y + 2 });
-        let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
-        searchIconTexture.set_from_file(searchIconPath);
-        this.actor.add_actor(searchIconTexture);
+        this._searchEntry.actor.set_position(SIDESHOW_PAD, Panel.PANEL_HEIGHT + SIDESHOW_PAD);
 
-        // We need to initialize the text for the entry to have the cursor displayed 
-        // in it. See http://bugzilla.openedhand.com/show_bug.cgi?id=1365
-        this._searchEntry = new Clutter.Text({ font_name: "Sans 14px",
-                                               x: searchIconTexture.x
-                                                   + searchIconTexture.width + 4,
-                                               y: searchIconTexture.y,
-                                               width: this._searchBox.width - (searchIconTexture.x),
-                                               height: searchIconTexture.height,
-                                               editable: true,
-                                               activatable: true,
-                                               singleLineMode: true,
-                                               text: ""});
-        this.actor.add_actor(this._searchEntry);
         this._searchQueued = false;
-        this._searchEntry.connect('text-changed', function (se, prop) {
+        this._searchEntry.entry.connect('text-changed', function (se, prop) {
             if (me._searchQueued)
                 return;
             me._searchQueued = true;
             Mainloop.timeout_add(250, function() {
                 // Strip leading and trailing whitespace
-                let text = me._searchEntry.text.replace(/^\s+/g, "").replace(/\s+$/g, "");
+                let text = me._searchEntry.entry.text.replace(/^\s+/g, "").replace(/\s+$/g, "");
                 me._searchQueued = false;
                 me._appDisplay.setSearch(text);
                 me._docDisplay.setSearch(text);
                 return false;
             });
         });
-        this._searchEntry.connect('activate', function (se) {
+        this._searchEntry.entry.connect('activate', function (se) {
             // only one of the displays will have an item selected, so it's ok to
             // call activateSelected() on both of them
             me._appDisplay.activateSelected();
             me._docDisplay.activateSelected();
             return true;
         });
-        this._searchEntry.connect('key-press-event', function (se, e) {
+        this._searchEntry.entry.connect('key-press-event', function (se, e) {
             let symbol = Shell.get_event_key_symbol(e);
             if (symbol == Clutter.Escape) {
                 // We always want to hide the previews when the user hits Escape.
@@ -232,7 +248,7 @@ Sideshow.prototype = {
 
         this._appsSection = new Big.Box({ background_color: OVERLAY_BACKGROUND_COLOR,
                                           x: SIDESHOW_PAD,
-                                          y: this._searchBox.y + this._searchBox.height,
+                                          y: this._searchEntry.actor.y + this._searchEntry.actor.height,
                                           padding_top: SIDESHOW_SECTION_PADDING_TOP,
                                           spacing: SIDESHOW_SECTION_SPACING});
 
@@ -369,13 +385,13 @@ Sideshow.prototype = {
             this._docDisplay.selectFirstItem();
         else
             this._docDisplay.unsetSelected();
-        global.stage.set_key_focus(this._searchEntry);
+        global.stage.set_key_focus(this._searchEntry.entry);
     },
 
     hide: function() {
         this._appsContent.hide();
         this._docDisplay.hide();
-        this._searchEntry.text = '';
+        this._searchEntry.entry.text = '';
         this._unsetMoreAppsMode();
         this._unsetMoreDocsMode();
     },
@@ -552,7 +568,7 @@ Sideshow.prototype = {
         // edge where the last document was displayed, and not have that edge gradually move over to where the 'Less'
         // text is displayed.
         Tweener.addTween(this._docsSection,
-                         { y: this._searchBox.y + this._searchBox.height,
+                         { y: this._searchEntry.actor.y + this._searchEntry.actor.height,
                            clipHeightBottom: this._itemDisplayHeight + SIDESHOW_SECTION_MISC_HEIGHT * 2 - LABEL_HEIGHT - SIDESHOW_SECTION_SPACING,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad",
