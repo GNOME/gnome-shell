@@ -333,7 +333,7 @@ clutter_text_create_layout_no_cache (ClutterText *text,
       gint width;
 
       width = allocation_width > 0
-        ? CLUTTER_UNITS_FROM_PANGO_UNIT (allocation_width)
+        ? CLUTTER_UNITS_TO_PANGO_UNIT (allocation_width)
         : -1;
 
       pango_layout_set_width (layout, width);
@@ -360,8 +360,6 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 
       pango_layout_set_height (layout, height);
     }
-  else
-    pango_layout_set_height (layout, G_MAXINT);
 
   return layout;
 }
