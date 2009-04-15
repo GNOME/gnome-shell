@@ -378,6 +378,7 @@ json_parse_array (JsonParser *parser,
             {
               json_node_free (node);
               json_array_unref (array);
+
               return token;
             }
 
@@ -411,6 +412,7 @@ json_parse_array (JsonParser *parser,
             {
               json_node_free (node);
               json_array_unref (array);
+
               return token;
             }
 
@@ -440,6 +442,8 @@ json_parse_array (JsonParser *parser,
             }
           else
             {
+              json_array_unref (array);
+
               return G_TOKEN_INT;
             }
         }
@@ -475,6 +479,7 @@ json_parse_array (JsonParser *parser,
           break;
 
         default:
+          json_array_unref (array);
           return G_TOKEN_RIGHT_BRACE;
         }
 
@@ -542,6 +547,7 @@ json_parse_object (JsonParser *parser,
             {
               g_free (name);
               json_object_unref (object);
+
               return ':';
             }
           else
@@ -554,6 +560,7 @@ json_parse_object (JsonParser *parser,
       if (!name)
         {
           json_object_unref (object);
+
           return G_TOKEN_STRING;
         }
 
@@ -576,6 +583,7 @@ json_parse_object (JsonParser *parser,
                 json_node_free (node);
 
               json_object_unref (object);
+
               return token;
             }
 
@@ -611,6 +619,7 @@ json_parse_object (JsonParser *parser,
               g_free (name);
               json_node_free (node);
               json_object_unref (object);
+
               return token;
             }
 
@@ -641,6 +650,8 @@ json_parse_object (JsonParser *parser,
             }
           else
             {
+              json_object_unref (object);
+
               return G_TOKEN_INT;
             }
         }
@@ -676,6 +687,7 @@ json_parse_object (JsonParser *parser,
           break;
 
         default:
+          json_object_unref (object);
           return G_TOKEN_SYMBOL;
         }
 
@@ -948,7 +960,7 @@ json_parser_load_from_data (JsonParser   *parser,
                         if (symbols[i].token == expected_token)
                           symbol_name = symbol_names + symbols[i].name_offset;
 
-                      if (msg)
+                      if (!msg)
                         msg = g_strconcat ("e.g. '", symbol_name, "'", NULL);
                     }
 
