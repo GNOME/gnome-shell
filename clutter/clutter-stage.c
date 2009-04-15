@@ -924,6 +924,7 @@ clutter_stage_set_perspective (ClutterStage       *stage,
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
   g_return_if_fail (perspective != NULL);
+  g_return_if_fail (perspective->z_far - perspective->z_near != 0);
 
   priv = stage->priv;
 
