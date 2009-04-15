@@ -766,6 +766,7 @@ clutter_actor_real_get_preferred_width (ClutterActor *self,
    * using this default is relying on someone to set the
    * request manually
    */
+  CLUTTER_NOTE (LAYOUT, "Default preferred width: 0, 0");
 
   if (min_width_p)
     *min_width_p = 0;
@@ -784,6 +785,7 @@ clutter_actor_real_get_preferred_height (ClutterActor *self,
    * using this default is relying on someone to set the
    * request manually
    */
+  CLUTTER_NOTE (LAYOUT, "Default preferred height: 0, 0");
 
   if (min_height_p)
     *min_height_p = 0;
@@ -3524,6 +3526,7 @@ clutter_actor_get_preferred_size (ClutterActor *self,
 
   if (priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
     {
+      CLUTTER_NOTE (LAYOUT, "Preferred size (height-for-width)");
       clutter_actor_get_preferred_width (self, -1,
                                          &min_width,
                                          &natural_width);
@@ -3533,6 +3536,7 @@ clutter_actor_get_preferred_size (ClutterActor *self,
     }
   else
     {
+      CLUTTER_NOTE (LAYOUT, "Preferred size (width-for-height)");
       clutter_actor_get_preferred_height (self, -1,
                                           &min_height,
                                           &natural_height);
@@ -3596,6 +3600,11 @@ clutter_actor_get_preferred_width (ClutterActor *self,
       ClutterUnit min_width, natural_width;
 
       min_width = natural_width = 0;
+
+      CLUTTER_NOTE (LAYOUT,
+                    "Width request for %" CLUTTER_UNITS_FORMAT " (%d px)",
+                    for_height,
+                    CLUTTER_UNITS_TO_DEVICE (for_height));
 
       klass->get_preferred_width (self, for_height,
                                   &min_width,
@@ -3667,6 +3676,11 @@ clutter_actor_get_preferred_height (ClutterActor *self,
       ClutterUnit min_height, natural_height;
 
       min_height = natural_height = 0;
+
+      CLUTTER_NOTE (LAYOUT,
+                    "Width request for %" CLUTTER_UNITS_FORMAT " (%d px)",
+                    for_width,
+                    CLUTTER_UNITS_TO_DEVICE (for_width));
 
       klass->get_preferred_height (self, for_width,
                                    &min_height,
@@ -3768,12 +3782,12 @@ clutter_actor_get_allocation_box (ClutterActor    *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  /* FIXME - if needs_allocation=TRUE, we can either 1)
-   * g_return_if_fail, which limits calling get_allocation to inside
-   * paint() basically; or we can 2) force a layout, which could be
-   * expensive if someone calls get_allocation somewhere silly; or we
-   * can 3) just return the latest value, allowing it to be
-   * out-of-date, and assume people know what they are doing.
+  /* XXX - if needs_allocation=TRUE, we can either 1) g_return_if_fail,
+   * which limits calling get_allocation to inside paint() basically; or
+   * we can 2) force a layout, which could be expensive if someone calls
+   * get_allocation somewhere silly; or we can 3) just return the latest
+   * value, allowing it to be out-of-date, and assume people know what
+   * they are doing.
    *
    * The least-surprises approach that keeps existing code working is
    * likely to be 2). People can end up doing some inefficient things,
@@ -3816,11 +3830,12 @@ void
 clutter_actor_get_allocation_geometry (ClutterActor    *self,
                                        ClutterGeometry *geom)
 {
-  int x2, y2;
+  gint x2, y2;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_get_allocation_coords (self, &geom->x, &geom->y, &x2, &y2);
+
   geom->width = x2 - geom->x;
   geom->height = y2 - geom->y;
 }
@@ -3880,7 +3895,7 @@ clutter_actor_allocate (ClutterActor          *self,
       box->x2 == priv->allocation.x2 &&
       box->y2 == priv->allocation.y2)
     {
-      CLUTTER_NOTE (ACTOR, "No allocation needed");
+      CLUTTER_NOTE (LAYOUT, "No allocation needed");
       return;
     }
 
@@ -3908,8 +3923,10 @@ clutter_actor_set_geometry (ClutterActor          *self,
 			    const ClutterGeometry *geometry)
 {
   g_object_freeze_notify (G_OBJECT (self));
+
   clutter_actor_set_position (self, geometry->x, geometry->y);
   clutter_actor_set_size (self, geometry->width, geometry->height);
+
   g_object_thaw_notify (G_OBJECT (self));
 }
 
@@ -3953,8 +3970,10 @@ clutter_actor_set_position (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   g_object_freeze_notify (G_OBJECT (self));
+
   clutter_actor_set_x (self, x);
   clutter_actor_set_y (self, y);
+
   g_object_thaw_notify (G_OBJECT (self));
 }
 
@@ -3980,8 +3999,10 @@ clutter_actor_set_positionu (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   g_object_freeze_notify (G_OBJECT (self));
+
   clutter_actor_set_xu (self, x);
   clutter_actor_set_yu (self, y);
+
   g_object_thaw_notify (G_OBJECT (self));
 }
 
@@ -4074,6 +4095,7 @@ clutter_actor_move_byu (ClutterActor *self,
                         ClutterUnit   dy)
 {
   ClutterUnit x, y;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   x = self->priv->fixed_x;

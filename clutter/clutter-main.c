@@ -92,7 +92,8 @@ static const GDebugKey clutter_debug_keys[] = {
   { "script", CLUTTER_DEBUG_SCRIPT },
   { "shader", CLUTTER_DEBUG_SHADER },
   { "multistage", CLUTTER_DEBUG_MULTISTAGE },
-  { "animation", CLUTTER_DEBUG_ANIMATION }
+  { "animation", CLUTTER_DEBUG_ANIMATION },
+  { "layout", CLUTTER_DEBUG_LAYOUT }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
