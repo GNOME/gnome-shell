@@ -65,6 +65,8 @@ _cogl_features_init (void)
   flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;
 #endif
 
+  flags |= COGL_FEATURE_VBOS;
+
   /* Cache features */
   ctx->feature_flags = flags;
   ctx->features_cached = TRUE;

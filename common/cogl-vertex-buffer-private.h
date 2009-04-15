@@ -125,7 +125,10 @@ typedef enum _CoglVertexBufferVBOFlags
 typedef struct _CoglVertexBufferVBO
 {
   CoglVertexBufferVBOFlags flags;
-  GLuint vbo_name; /*!< The name of the corresponding buffer object */
+
+  /* Note: this is a pointer to handle fallbacks, and normally holds
+   * a GLuint value */
+  gpointer vbo_name; /*!< The name of the corresponding buffer object */
   gsize	 vbo_bytes; /*!< The lengh of the allocated buffer object in bytes */
   GList *attributes;
 } CoglVertexBufferVBO;

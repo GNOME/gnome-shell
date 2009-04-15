@@ -5,7 +5,7 @@
  *
  * Vertex Buffer API: Handle extensible arrays of vertex attributes
  *
- * Copyright (C) 2008  Intel Corporation.
+ * Copyright (C) 2008, 2009  Intel Corporation.
  *
  * Authored by: Robert Bragg <robert@linux.intel.com>
  *
@@ -893,7 +893,12 @@ cogl_vertex_buffer_vbo_free (CoglVertexBufferVBO *cogl_vbo,
 
   if (delete_gl_vbo && cogl_vbo->flags &
       COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED)
-    GE (glDeleteBuffers (1, &cogl_vbo->vbo_name));
+    {
+      if (cogl_get_features () & COGL_FEATURE_VBOS)
+	GE (glDeleteBuffers (1, (GLuint *)&cogl_vbo->vbo_name));
+      else
+	g_free (cogl_vbo->vbo_name);
+    }
 
   g_slice_free (CoglVertexBufferVBO, cogl_vbo);
 }
@@ -937,11 +942,19 @@ upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
   GList *tmp;
   guint offset = 0;
   char *buf;
+  gboolean fallback =
+    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  buf = glMapBuffer (GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-  glGetError();
+  if (!fallback)
+    {
+      buf = glMapBuffer (GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+      glGetError();
+    }
+  else
+    buf = cogl_vbo->vbo_name;
+
   if (!buf)
     return FALSE;
 
@@ -959,7 +972,9 @@ upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
       attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
       offset += attribute_size;
     }
-  glUnmapBuffer (GL_ARRAY_BUFFER);
+
+  if (!fallback)
+    glUnmapBuffer (GL_ARRAY_BUFFER);
 
   return TRUE;
 #else
@@ -972,6 +987,8 @@ upload_multipack_vbo_via_buffer_sub_data (CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
   guint offset = 0;
+  gboolean fallback =
+    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -983,10 +1000,19 @@ upload_multipack_vbo_via_buffer_sub_data (CoglVertexBufferVBO *cogl_vbo)
 
       PAD_FOR_ALIGNMENT (offset, gl_type_size);
 
-      GE (glBufferSubData (GL_ARRAY_BUFFER,
-			   offset,
-			   attribute_size,
-			   attribute->u.pointer));
+      if (!fallback)
+	{
+	  GE (glBufferSubData (GL_ARRAY_BUFFER,
+			       offset,
+			       attribute_size,
+			       attribute->u.pointer));
+	}
+      else
+	{
+	  char *dest = (char *)cogl_vbo->vbo_name + offset;
+	  memcpy (dest, attribute->u.pointer, attribute_size);
+	}
+
       attribute->u.vbo_offset = offset;
       attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
       offset += attribute_size;
@@ -997,36 +1023,58 @@ static void
 upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
 {
   GLenum usage;
+  gboolean fallback =
+    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  g_return_if_fail (cogl_vbo->vbo_name != 0);
 
   if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT)
     usage = GL_DYNAMIC_DRAW;
   else
     usage = GL_STATIC_DRAW;
 
-  GE (glBindBuffer (GL_ARRAY_BUFFER, cogl_vbo->vbo_name));
+  if (!fallback)
+    {
+      g_return_if_fail (cogl_vbo->vbo_name != 0);
+
+      GE (glBindBuffer (GL_ARRAY_BUFFER,
+			GPOINTER_TO_UINT (cogl_vbo->vbo_name)));
+    }
+  else if (cogl_vbo->vbo_name == NULL)
+    {
+      /* If the driver doesn't support VBOs then we simply allocate
+       * a client side fake vbo buffer. Unlike VBOs we can't allocate
+       * without specifying a size which is why we defer allocation
+       * until here. */
+      cogl_vbo->vbo_name = g_malloc (cogl_vbo->vbo_bytes);
+    }
 
   if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED)
     {
       const void *pointer =
 	prep_strided_vbo_for_upload (cogl_vbo);
-      GE (glBufferData (GL_ARRAY_BUFFER,
-			cogl_vbo->vbo_bytes,
-			pointer,
-			usage));
+      if (!fallback)
+	{
+	  GE (glBufferData (GL_ARRAY_BUFFER,
+			    cogl_vbo->vbo_bytes,
+			    pointer,
+			    usage));
+	}
+      else
+	memcpy (cogl_vbo->vbo_name, pointer, cogl_vbo->vbo_bytes);
     }
   else if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK)
     {
       /* First we make it obvious to the driver that we want to update the
        * whole buffer (without this, the driver is more likley to block
        * if the GPU is busy using the buffer) */
-      GE (glBufferData (GL_ARRAY_BUFFER,
-			cogl_vbo->vbo_bytes,
-			NULL,
-			usage));
+      if (!fallback)
+	{
+	  GE (glBufferData (GL_ARRAY_BUFFER,
+			    cogl_vbo->vbo_bytes,
+			    NULL,
+			    usage));
+	}
 
       /* I think it might depend on the specific driver/HW whether its better
        * to use glMapBuffer here or glBufferSubData here. There is even a good
@@ -1041,10 +1089,16 @@ upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
   else
     {
       CoglVertexBufferAttrib *attribute = cogl_vbo->attributes->data;
-      GE (glBufferData (GL_ARRAY_BUFFER,
-			cogl_vbo->vbo_bytes,
-			attribute->u.pointer,
-			usage));
+      if (!fallback)
+	{
+	  GE (glBufferData (GL_ARRAY_BUFFER,
+			    cogl_vbo->vbo_bytes,
+			    attribute->u.pointer,
+			    usage));
+	}
+      else
+	memcpy (cogl_vbo->vbo_name, attribute->u.pointer, cogl_vbo->vbo_bytes);
+
       /* We forget this pointer now since the client will be free
        * to re-use this memory */
       attribute->u.pointer = NULL;
@@ -1053,7 +1107,8 @@ upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
 
   cogl_vbo->flags |= COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED;
 
-  GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
+  if (!fallback)
+    GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
 }
 
 /* Note: although there ends up being quite a few inner loops involved with
@@ -1112,7 +1167,11 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 
   if (!found_target_vbo)
     {
-      GE (glGenBuffers (1, &new_cogl_vbo->vbo_name));
+      if (cogl_get_features () & COGL_FEATURE_VBOS)
+	GE (glGenBuffers (1, (GLuint *)&new_cogl_vbo->vbo_name));
+      else
+	new_cogl_vbo->vbo_name = NULL;
+        /* this will be allocated at upload time */
 
       upload_gl_vbo (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
@@ -1449,8 +1508,25 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
     {
       CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
+      char *base;
+      const GLvoid *pointer;
 
-      GE (glBindBuffer (GL_ARRAY_BUFFER, cogl_vbo->vbo_name));
+      if (cogl_get_features () & COGL_FEATURE_VBOS)
+	{
+	  GE (glBindBuffer (GL_ARRAY_BUFFER,
+			    GPOINTER_TO_UINT (cogl_vbo->vbo_name)));
+	  base = 0;
+	}
+      else
+	base = cogl_vbo->vbo_name;
+
+      /* When GL VBOs are bing used then the "pointer" we pass to
+       * glColorPointer glVertexAttribPointer etc is actually an offset into
+       * the currently bound VBO.
+       *
+       * If we don't have VBO support though, then we must point into
+       * our fake client side VBO.
+       */
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
@@ -1467,26 +1543,29 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
 	      enable_flags |= COGL_ENABLE_COLOR_ARRAY | COGL_ENABLE_BLEND;
 	      /* GE (glEnableClientState (GL_COLOR_ARRAY)); */
+	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
 	      GE (glColorPointer (attribute->n_components,
 				  gl_type,
 				  attribute->stride,
-				  (const GLvoid *)attribute->u.vbo_offset));
+				  pointer));
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
 	      /* FIXME: go through cogl cache to enable normal array */
 	      GE (glEnableClientState (GL_NORMAL_ARRAY));
+	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
 	      GE (glNormalPointer (gl_type,
 				   attribute->stride,
-				   (const GLvoid *)attribute->u.vbo_offset));
+				   pointer));
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
               GE (glClientActiveTexture (GL_TEXTURE0 +
                                          attribute->texture_unit));
               GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
+	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
 	      GE (glTexCoordPointer (attribute->n_components,
 				     gl_type,
 				     attribute->stride,
-				     (const GLvoid *)attribute->u.vbo_offset));
+				     pointer));
               if (attribute->texture_unit > max_texcoord_attrib_unit)
                 max_texcoord_attrib_unit = attribute->texture_unit;
               disable_mask &= ~(1 << attribute->texture_unit);
@@ -1494,10 +1573,11 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
 	      /* GE (glEnableClientState (GL_VERTEX_ARRAY)); */
+	      pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
 	      GE (glVertexPointer (attribute->n_components,
 				   gl_type,
 				   attribute->stride,
-				   (const GLvoid *)attribute->u.vbo_offset));
+				   pointer));
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_CUSTOM_ARRAY:
 	      {
@@ -1508,13 +1588,13 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 		  normalized = GL_TRUE;
 		/* FIXME: go through cogl cache to enable generic array */
 		GE (glEnableVertexAttribArray (generic_index++));
+		pointer = (const GLvoid *)(base + attribute->u.vbo_offset);
 		GE (glVertexAttribPointer (generic_index,
 					   attribute->n_components,
 					   gl_type,
 					   normalized,
 					   attribute->stride,
-					   (const GLvoid *)
-					    attribute->u.vbo_offset));
+					   pointer));
 #endif
 	      }
 	      break;
@@ -1583,7 +1663,8 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   /* Disable all the client state that cogl doesn't currently know
    * about:
    */
-  GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
+  if (cogl_get_features () & COGL_FEATURE_VBOS)
+    GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
 
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
