@@ -288,14 +288,14 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 
       pango_layout_get_size (layout, &layout_width, &layout_height);
 
-      /* No need to set ellipsize or wrap if we already have enough
+      /* no need to set ellipsize or wrap if we already have enough
        * space, since we don't want to make the layout wider than it
        * would be otherwise.
        */
 
       if (CLUTTER_UNITS_FROM_PANGO_UNIT (layout_width) > allocation_width)
         {
-          if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
+          if (!priv->editable && priv->ellipsize != PANGO_ELLIPSIZE_NONE)
             {
               gint width;
 
