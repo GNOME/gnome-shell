@@ -1415,7 +1415,7 @@ clutter_text_get_preferred_width (ClutterActor *self,
 
   if (min_width_p)
     {
-      if (priv->wrap || priv->ellipsize)
+      if (priv->wrap || priv->ellipsize || priv->editable)
         *min_width_p = 1;
       else
         *min_width_p = layout_width;
