@@ -1421,10 +1421,15 @@ clutter_path_get_position (ClutterPath *path,
       break;
 
     case CLUTTER_PATH_CURVE_TO:
-      _clutter_bezier_advance (node->bezier,
-                               point_distance * CLUTTER_BEZIER_MAX_LENGTH
-                               / node->length,
-                               position);
+      if (node->length == 0)
+        *position = node->k.points[2];
+      else
+        {
+          _clutter_bezier_advance (node->bezier,
+                                   point_distance * CLUTTER_BEZIER_MAX_LENGTH
+                                   / node->length,
+                                   position);
+        }
       break;
     }
 
