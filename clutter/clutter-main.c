@@ -168,6 +168,7 @@ static const GDebugKey clutter_debug_keys[] = {
 
 #ifdef CLUTTER_ENABLE_PROFILE
 static const GDebugKey clutter_profile_keys[] = {
+      {"picking-only", CLUTTER_PROFILE_PICKING_ONLY },
       {"disable-report", CLUTTER_PROFILE_DISABLE_REPORT }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
@@ -574,6 +575,11 @@ _clutter_do_pick (ClutterStage   *stage,
   if (clutter_debug_flags & CLUTTER_DEBUG_NOP_PICKING)
     return CLUTTER_ACTOR (stage);
 
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_resume ();
+#endif /* CLUTTER_ENABLE_PROFILE */
+
   CLUTTER_COUNTER_INC (_clutter_uprof_context, do_pick_counter);
   CLUTTER_TIMER_START (_clutter_uprof_context, pick_timer);
 
@@ -636,14 +642,21 @@ _clutter_do_pick (ClutterStage   *stage,
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     {
-      CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
-      return CLUTTER_ACTOR (stage);
+      actor = CLUTTER_ACTOR (stage);
+      goto result;
     }
 
   id = _clutter_pixel_to_id (pixel);
   actor = clutter_get_actor_by_gid (id);
 
+result:
+
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_timer);
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_suspend ();
+#endif
 
   return actor;
 }
@@ -1527,6 +1540,11 @@ clutter_init_real (GError **error)
   */
   /* - will call to backend and cogl */
   _clutter_feature_init ();
+
+#ifdef CLUTTER_ENABLE_PROFILE
+  if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
+    _clutter_profile_suspend ();
+#endif
 
   /*
    * Resolution requires display to be open, so can only be queried after

@@ -31,6 +31,7 @@
 G_BEGIN_DECLS
 
 typedef enum {
+  CLUTTER_PROFILE_PICKING_ONLY    = 1 << 0,
   CLUTTER_PROFILE_DISABLE_REPORT  = 1 << 1
 } ClutterProfileFlag;
 
@@ -47,6 +48,11 @@ extern UProfContext *_clutter_uprof_context;
 #define CLUTTER_TIMER_START     UPROF_TIMER_START
 #define CLUTTER_TIMER_STOP      UPROF_TIMER_STOP
 
+void
+_clutter_profile_suspend (void);
+void
+_clutter_profile_resume (void);
+
 #else /* CLUTTER_ENABLE_PROFILE */
 
 #define CLUTTER_STATIC_TIMER(A,B,C,D,E) extern void _clutter_dummy_decl (void)
@@ -55,6 +61,9 @@ extern UProfContext *_clutter_uprof_context;
 #define CLUTTER_COUNTER_DEC(A,B) G_STMT_START{ (void)0; }G_STMT_END
 #define CLUTTER_TIMER_START(A,B) G_STMT_START{ (void)0; }G_STMT_END
 #define CLUTTER_TIMER_STOP(A,B) G_STMT_START{ (void)0; }G_STMT_END
+
+#define _clutter_profile_suspend() G_STMT_START {} G_STMT_END
+#define _clutter_profile_resume() G_STMT_START {} G_STMT_END
 
 #endif /* CLUTTER_ENABLE_PROFILE */
 

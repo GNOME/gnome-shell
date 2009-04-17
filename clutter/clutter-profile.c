@@ -8,6 +8,9 @@
 UProfContext *_clutter_uprof_context;
 #define REPORT_COLUMN0_WIDTH 40
 
+static gboolean searched_for_gl_uprof_context = FALSE;
+static UProfContext *gl_uprof_context = NULL;
+
 typedef struct _ClutterUProfReportState
 {
   gulong n_frames;
@@ -164,6 +167,32 @@ clutter_uprof_destructor (void)
       uprof_report_unref (report);
     }
   uprof_context_unref (_clutter_uprof_context);
+}
+
+void
+_clutter_profile_suspend (void)
+{
+  if (G_UNLIKELY (!searched_for_gl_uprof_context))
+    {
+      gl_uprof_context = uprof_find_context ("OpenGL");
+      searched_for_gl_uprof_context = TRUE;
+    }
+
+  if (gl_uprof_context)
+    uprof_context_suspend (gl_uprof_context);
+
+  /* NB: The Cogl context is linked to this so it will also be suspended... */
+  uprof_context_suspend (_clutter_uprof_context);
+}
+
+void
+_clutter_profile_resume (void)
+{
+  if (gl_uprof_context)
+    uprof_context_resume (gl_uprof_context);
+
+  /* NB: The Cogl context is linked to this so it will also be resumed... */
+  uprof_context_resume (_clutter_uprof_context);
 }
 
 #endif
