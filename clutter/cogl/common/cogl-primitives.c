@@ -160,11 +160,11 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
 
 
   /* DEBUGGING CODE XXX:
-   * Uncommenting this will cause all rectangles to be drawn with a red, green
+   * This path will cause all rectangles to be drawn with a red, green
    * or blue outline with no blending. This may e.g. help with debugging
    * texture slicing issues or blending issues, plus it looks quite cool.
    */
-#if 0
+  if (cogl_debug_flags & COGL_DEBUG_RECTANGLES)
     {
       static CoglHandle outline = COGL_INVALID_HANDLE;
       static int color = 0;
@@ -172,7 +172,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
         outline = cogl_material_new ();
 
       cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
-      for (i = 0; i < batch_len; i++, color = (++color) % 3)
+      for (i = 0; i < batch_len; i++, color = (color + 1) % 3)
         {
           cogl_material_set_color4ub (outline,
                                       color == 0 ? 0xff : 0x00,
@@ -184,7 +184,6 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
           GE( glDrawArrays (GL_LINE_LOOP, 4 * i, 4) );
         }
     }
-#endif
 }
 
 void
