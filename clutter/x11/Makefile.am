@@ -6,6 +6,7 @@ INCLUDES = \
 	-I$(top_builddir)/clutter 	        \
 	$(CLUTTER_CFLAGS)                       \
 	$(CLUTTER_DEBUG_CFLAGS)                 \
+	$(MAINTAINER_CFLAGS)			\
 	$(GCC_FLAGS)
 
 LDADD = $(CLUTTER_LIBS)
