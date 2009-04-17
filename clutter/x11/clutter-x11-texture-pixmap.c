@@ -1196,32 +1196,40 @@ clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
     {
       XWindowAttributes attr;
       Display *dpy = clutter_x11_get_default_display ();
-      gboolean mapped, notify_x, notify_y, notify_override_redirect;
+      gboolean mapped = FALSE;
+      gboolean notify_x = FALSE;
+      gboolean notify_y = FALSE;
+      gboolean notify_override_redirect = FALSE;
+      Status status;
 
-      /*
-       * Make sure the window is mapped when getting the pixmap -- it's what
-       * compiz does.
+      /* NB: It's only valid to name a pixmap if the window is viewable.
+       *
+       * We don't explicitly check this though since there would be a race
+       * between checking and naming unless we use a server grab which is
+       * undesireable.
+       *
+       * Instead we gracefully handle any error with naming the pixmap.
        */
-
       clutter_x11_trap_x_errors ();
-      XGrabServer (dpy);
 
-      XGetWindowAttributes (dpy, priv->window, &attr);
-      mapped = attr.map_state == IsViewable;
-      if (mapped)
-        pixmap = XCompositeNameWindowPixmap (dpy, priv->window);
-      else
-        pixmap = None;
+      pixmap = XCompositeNameWindowPixmap (dpy, priv->window);
 
-      XUngrabServer (dpy);
-      clutter_x11_untrap_x_errors ();
+      status = XGetWindowAttributes (dpy, priv->window, &attr);
+      if (status != 0)
+	{
+	  notify_x = attr.x != priv->window_x;
+	  notify_y = attr.y != priv->window_y;
+	  notify_override_redirect = attr.override_redirect != priv->override_redirect;
+	  priv->window_x = attr.x;
+	  priv->window_y = attr.y;
+	  priv->override_redirect = attr.override_redirect;
+	}
 
-      notify_x = attr.x != priv->window_x;
-      notify_y = attr.y != priv->window_y;
-      notify_override_redirect = attr.override_redirect != priv->override_redirect;
-      priv->window_x = attr.x;
-      priv->window_y = attr.y;
-      priv->override_redirect = attr.override_redirect;
+      /* We rely on XGetWindowAttributes() implicitly syncing with the server
+       * so if there was an error naming the pixmap that will have been
+       * caught by now. */
+      if (clutter_x11_untrap_x_errors ())
+	pixmap = None;
 
       g_object_ref (texture); /* guard against unparent */
       if (pixmap)
