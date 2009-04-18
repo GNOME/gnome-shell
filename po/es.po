@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&component=general\n"
-"POT-Creation-Date: 2009-02-10 05:13+0000\n"
-"PO-Revision-Date: 2009-02-28 13:28+0100\n"
+"POT-Creation-Date: 2009-04-17 21:02+0000\n"
+"PO-Revision-Date: 2009-04-18 20:36+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,10 @@ msgstr "Escritorio"
 msgid "Window Management"
 msgstr "Administrador de ventanas"
 
+#: ../src/core/bell.c:294
+msgid "Bell event"
+msgstr ""
+
 #: ../src/core/core.c:206
 #, c-format
 msgid "Unknown window information request: %d"
@@ -37,9 +41,6 @@ msgstr "Petición de información de ventana desconocida: %d"
 
 #: ../src/core/delete.c:104
 #, c-format
-#| msgid ""
-#| "You may choose to wait a short while for it to continue or force the "
-#| "application to quit entirely."
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
@@ -51,11 +52,11 @@ msgstr ""
 "<i>Puede elegir esperar un momento para que continúe o forzar a la "
 "aplicación a que termine.</i>"
 
-#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:107
+#: ../src/core/delete.c:115
 msgid "_Wait"
 msgstr "_Esperar"
 
-#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:109
+#: ../src/core/delete.c:115
 msgid "_Force Quit"
 msgstr "_Forzar la salida"
 
@@ -64,12 +65,12 @@ msgstr "_Forzar la salida"
 msgid "Failed to get hostname: %s\n"
 msgstr "Ocurrió un error al obtener el nombre del host: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:258
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Falta la extensión %s requerida para la composición"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:336
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ocurrió un error al abrir la pantalla de X Window System «%s»\n"
@@ -125,12 +126,6 @@ msgstr "No ha sido definido ningún comando de terminal.\n"
 
 #: ../src/core/main.c:130
 #, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -180,12 +175,12 @@ msgstr "Activar la composición"
 msgid "Turn compositing off"
 msgstr "Desactivar la composición"
 
-#: ../src/core/main.c:533
+#: ../src/core/main.c:536
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 
-#: ../src/core/main.c:549
+#: ../src/core/main.c:552
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -193,7 +188,7 @@ msgstr ""
 "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los "
 "temas usuales.\n"
 
-#: ../src/core/main.c:605
+#: ../src/core/main.c:608
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "No se pudo reiniciar: %s\n"
@@ -357,69 +352,71 @@ msgstr ""
 "Esta combinación de teclas puede invertirse manteniendo pulsada la tecla "
 "«Mayús»; por ello «Mayús» no puede ser una de las teclas de la combinación."
 
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "No se ha podido crear el directorio «%s»: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:862
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "No se ha podido abrir para escritura el archivo de sesión «%s»: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1003
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Ocurrió un error al escribir en el archivo de sesión «%s»: %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1008
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Ocurrió un error al cerrar el archivo de sesión «%s»: %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1093
+#: ../src/core/session.c:1101
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Ocurrió un error al leer el archivo de sesión guardado %s: %s\n"
 
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1140
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Ocurrió un error al interpretar el archivo de sesión guardado: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1189
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "El atributo <metacity_session> ha sido visto pero ya tenemos el ID de la "
 "sesión"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1202 ../src/core/session.c:1277
+#: ../src/core/session.c:1309 ../src/core/session.c:1381
+#: ../src/core/session.c:1441
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Atributo desconocido %s en el elemento <%s>"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1219
 #, c-format
 msgid "nested <window> tag"
 msgstr "etiqueta <window> anidada"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1461
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento desconocido %s"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1812
+#| msgid ""
+#| "These windows do not support \"save current setup\" and will have to be "
+#| "restarted manually next time you log in."
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Ocurrió un error al lanzar metacity-dialog para advertir acerca de las "
-"aplicaciones que no soportan gestión de sesión: %s\n"
+"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
+"reiniciarse manualmente la próxima vez que inicie una sesión."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -460,13 +457,13 @@ msgstr "Error del gestor de ventanas: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:581 ../src/metacity.desktop.in.h:1
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
 #: ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5625
+#: ../src/core/window.c:5627
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -482,7 +479,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6190
+#: ../src/core/window.c:6192
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -492,17 +489,39 @@ msgstr ""
 "redimensionable, pero configuró el tamaño mínimo a %d x %d y el tamaño "
 "máximo a %d x %d ; esto no tiene mucho sentido.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:244
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "La aplicación establecio un _NET_WM_PID %lu erróneo\n"
 
-#: ../src/core/window-props.c:377
+#. Translators: the title of a window from another machine
+#: ../src/core/window-props.c:388
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (on %s)"
 
-#: ../src/core/window-props.c:1358
+#. Simple case-- don't bother to look it up.  It's root.
+#: ../src/core/window-props.c:420
+#, c-format
+msgid "%s (as superuser)"
+msgstr "%s (como súper usuario)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine
+#: ../src/core/window-props.c:438
+#, c-format
+#| msgid "%s (on %s)"
+msgid "%s (as %s)"
+msgstr "%s (como %s)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine, whose name we don't know
+#: ../src/core/window-props.c:444
+#, c-format
+msgid "%s (as another user)"
+msgstr "%s (como otro usuario)"
+
+#: ../src/core/window-props.c:1429
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -1575,55 +1594,6 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "No se ha podido interpretar «%s» como un entero"
-
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "No se comprenden los caracteres sobrantes «%s» en la cadena «%s»"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "«%s» no está respondiendo."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Puede elegir esperar un momento para que continúe o forzar a la aplicación a "
-"terminar."
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Título"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Clase"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
-"reiniciarse manualmente la próxima vez que inicie una sesión."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Ha ocurrido un error ejecutando «%s»:\n"
-"%s."
-
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
@@ -1933,6 +1903,16 @@ msgstr "El atributo «%s» se ha repetido dos veces en el mismo elemento <%s>"
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "El atributo «%s» es inválido en el elemento <%s> en este contexto"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "No se ha podido interpretar «%s» como un entero"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "No se comprenden los caracteres sobrantes «%s» en la cadena «%s»"
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -2262,7 +2242,6 @@ msgstr "No se permite texto dentro del elemento <%s>"
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
 #, c-format
-#| msgid "<name> specified twice for this theme"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> especificado dos veces para este tema"
 
@@ -2324,109 +2303,109 @@ msgstr "/Ventanas/_Todos los empotrables"
 msgid "/Windows/Des_ktop"
 msgstr "/Ventanas/_Escritorio"
 
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:136
 msgid "Open another one of these windows"
 msgstr "Abrir otra de estas ventanas"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:143
 msgid "This is a demo button with an 'open' icon"
 msgstr "Esto es un botón de demostración con un icono de apertura"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:150
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Esto es un botón de demostración con un icono de salida"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:243
 msgid "This is a sample message in a sample dialog"
 msgstr "Esto es un mensaje de ejemplo en un diálogo de ejemplo"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:326
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Elemento de menú de pega %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:360
 msgid "Border-only window"
 msgstr "Ventana con sólo borde"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:362
 msgid "Bar"
 msgstr "Barra"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:379
 msgid "Normal Application Window"
 msgstr "Ventana de aplicación normal"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:383
 msgid "Dialog Box"
 msgstr "Caja de diálogo"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:387
 msgid "Modal Dialog Box"
 msgstr "Caja de diálogo modal"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:391
 msgid "Utility Palette"
 msgstr "Paleta de utilidades"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:395
 msgid "Torn-off Menu"
 msgstr "Menú apagado"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:399
 msgid "Border"
 msgstr "Borde"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:727
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test de distribución de botones %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:756
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisegundos para dibujar un marco de ventana"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:799
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Uso: metacity-theme-viewer [NOMBRETEMA]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:806
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Ocurrió un error al cargar el tema:«%s»\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:812
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Se cargó el tema «%s» en %g segundos\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:853
 msgid "Normal Title Font"
 msgstr "Tipografía de título normal"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:859
 msgid "Small Title Font"
 msgstr "Tipografía de título pequeña"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:865
 msgid "Large Title Font"
 msgstr "Tipografía de título grande"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:870
 msgid "Button Layouts"
 msgstr "Distribución de botones"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:875
 msgid "Benchmark"
 msgstr "Banco de pruebas"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:922
 msgid "Window Title Goes Here"
 msgstr "El título de la ventana va aquí"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1026
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2437,46 +2416,76 @@ msgstr ""
 "marco) y %g segundos de tiempo estándar incluyendo recursos del servidor X (%"
 "g milisegundos por marco)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1245
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "prueba de expresión de la posición devolvió TRUE pero estableció un error"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "prueba de expresión de la posición devolvió FASE pero no estableció un error"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1251
 msgid "Error was expected but none given"
 msgstr "Se esperaba un error, pero no se dio ninguno"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1253
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Se esperaba el error %d pero se dio el %d"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1259
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "No se esperaba un error pero se devolvió uno: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1263
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "el valor x era %d, se esperaba %d"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "el valor y era %d, se esperaba %d"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1331
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expresiones de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to warn about apps that don't support "
+#~ "session management: %s\n"
+#~ msgstr ""
+#~ "Ocurrió un error al lanzar metacity-dialog para advertir acerca de las "
+#~ "aplicaciones que no soportan gestión de sesión: %s\n"
+
+#~ msgid "\"%s\" is not responding."
+#~ msgstr "«%s» no está respondiendo."
+
+#~ msgid ""
+#~ "You may choose to wait a short while for it to continue or force the "
+#~ "application to quit entirely."
+#~ msgstr ""
+#~ "Puede elegir esperar un momento para que continúe o forzar a la "
+#~ "aplicación a terminar."
+
+#~ msgid "Title"
+#~ msgstr "Título"
+
+#~ msgid "Class"
+#~ msgstr "Clase"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Ha ocurrido un error ejecutando «%s»:\n"
+#~ "%s."
 
 #~ msgid "Failed to parse message \"%s\" from dialog process\n"
 #~ msgstr ""
