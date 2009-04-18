@@ -214,8 +214,11 @@ create_bg_pixmap (GdkColormap  *colormap,
   GdkPixmap *pixmap = gdk_pixmap_new (gdk_screen_get_root_window (screen),
                                       1, 1,
                                       visual->depth);
+  cairo_t *cr;
 
-  cairo_t *cr = gdk_cairo_create (pixmap);
+  gdk_drawable_set_colormap (pixmap, colormap);
+
+  cr = gdk_cairo_create (pixmap);
   cairo_set_source_rgb (cr,
                         color->red / 255.,
                         color->green / 255.,
