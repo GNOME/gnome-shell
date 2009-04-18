@@ -254,7 +254,8 @@ na_tray_manager_plug_removed (GtkSocket       *socket,
 {
   NaTrayChild *child = NA_TRAY_CHILD (socket);
 
-  g_hash_table_remove (manager->socket_table, GINT_TO_POINTER (child->icon_window));
+  g_hash_table_remove (manager->socket_table,
+                       GINT_TO_POINTER (child->icon_window));
   g_signal_emit (manager, manager_signals[TRAY_ICON_REMOVED], 0, child);
 
   /* This destroys the socket. */
@@ -268,7 +269,8 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
   Window icon_window = xevent->data.l[2];
   GtkWidget *child;
 
-  if (g_hash_table_lookup (manager->socket_table, GINT_TO_POINTER (icon_window)))
+  if (g_hash_table_lookup (manager->socket_table,
+                           GINT_TO_POINTER (icon_window)))
     {
       /* We already got this notification earlier, ignore this one */
       return;
@@ -302,7 +304,8 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
       return;
     }
 
-  g_hash_table_insert (manager->socket_table, GINT_TO_POINTER (icon_window), child);
+  g_hash_table_insert (manager->socket_table,
+                       GINT_TO_POINTER (icon_window), child);
   gtk_widget_show (child);
 }
 
@@ -631,20 +634,22 @@ na_tray_manager_set_visual_property (NaTrayManager *manager)
     {
       /* We actually want the visual of the tray where the icons will
        * be embedded. In almost all cases, this will be the same as the visual
-       * of the screen
+       * of the screen.
        */
-      GdkColormap *colormap = gdk_screen_get_default_colormap (manager->screen);
+      GdkColormap *colormap;
+
+      colormap = gdk_screen_get_default_colormap (manager->screen);
       xvisual = GDK_VISUAL_XVISUAL (gdk_colormap_get_visual (colormap));
     }
 
   data[0] = XVisualIDFromVisual (xvisual);
 
   XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
-		   GDK_WINDOW_XWINDOW (manager->invisible->window),
+                   GDK_WINDOW_XWINDOW (manager->invisible->window),
                    visual_atom,
-		   XA_VISUALID, 32,
-		   PropModeReplace,
-		   (guchar *) &data, 1);
+                   XA_VISUALID, 32,
+                   PropModeReplace,
+                   (guchar *) &data, 1);
 #endif
 }
 

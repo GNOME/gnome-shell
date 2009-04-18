@@ -46,17 +46,18 @@ na_tray_child_realize (GtkWidget *widget)
 
   GTK_WIDGET_CLASS (na_tray_child_parent_class)->realize (widget);
 
-  /* We have alpha if the visual has something other than red, green, and blue */
+  /* We have alpha if the visual has something other than red, green,
+   * and blue */
   visual_has_alpha = visual->red_prec + visual->blue_prec + visual->green_prec < visual->depth;
 
   if (visual_has_alpha && gdk_display_supports_composite (gtk_widget_get_display (widget)))
     {
-      /* We have real transparency with an ARGB visual and the Composite extension.
-       */
+      /* We have real transparency with an ARGB visual and the Composite
+       * extension. */
 
       /* Set a transparent background */
       GdkColor transparent = { 0, 0, 0, 0 }; /* only pixel=0 matters */
-      gdk_window_set_background(widget->window, &transparent);
+      gdk_window_set_background (widget->window, &transparent);
       gdk_window_set_composited (widget->window, TRUE);
 
       child->is_composited = TRUE;
@@ -64,9 +65,8 @@ na_tray_child_realize (GtkWidget *widget)
     }
   else if (visual == gdk_drawable_get_visual (GDK_DRAWABLE (gdk_window_get_parent (widget->window))))
     {
-      /* Otherwise, if the visual matches the visual of the parent window, we can
-       * use a parent-relative background and fake transparency.
-       */
+      /* Otherwise, if the visual matches the visual of the parent window, we
+       * can use a parent-relative background and fake transparency. */
       gdk_window_set_back_pixmap (widget->window, NULL, TRUE);
 
       child->is_composited = FALSE;
@@ -75,41 +75,42 @@ na_tray_child_realize (GtkWidget *widget)
   else
     {
       /* Nothing to do; the icon will sit on top of an ugly gray box */
-
       child->is_composited = FALSE;
       child->parent_relative_bg = FALSE;
     }
 
   gtk_widget_set_app_paintable (GTK_WIDGET (child),
-				child->parent_relative_bg || child->is_composited);
+                                child->parent_relative_bg || child->is_composited);
 
   /* Double-buffering will interfere with the parent-relative-background fake
    * transparency, since the double-buffer code doesn't know how to fill in the
    * background of the double-buffer correctly.
    */
-  gtk_widget_set_double_buffered (GTK_WIDGET (child), child->parent_relative_bg);
+  gtk_widget_set_double_buffered (GTK_WIDGET (child),
+                                  child->parent_relative_bg);
 }
 
 static void
 na_tray_child_style_set (GtkWidget *widget,
-			 GtkStyle  *previous_style)
+                         GtkStyle  *previous_style)
 {
-  /* The default handler resets the background according to the new
-   * style.  We either use a transparent background or a parent-relative background
+  /* The default handler resets the background according to the new style.
+   * We either use a transparent background or a parent-relative background
    * and ignore the style background. So, just don't chain up.
    */
 }
 
 #if 0
-/* This is adapted from code that was commented out in na-tray-manager.c; the code
- * in na-tray-manager.c wouldn't have worked reliably, this will. So maybe it can
- * be reenabled. On other hand, things seem to be working fine without it.
+/* This is adapted from code that was commented out in na-tray-manager.c; the
+ * code in na-tray-manager.c wouldn't have worked reliably, this will. So maybe
+ * it can be reenabled. On other hand, things seem to be working fine without
+ * it.
  *
  * If reenabling, you need to hook it up in na_tray_child_class_init().
  */
 static void
 na_tray_child_size_request (GtkWidget      *widget,
-			    GtkRequisition *request)
+                            GtkRequisition *request)
 {
   GTK_WIDGET_CLASS (na_tray_child_parent_class)->size_request (widget, request);
 
@@ -121,7 +122,7 @@ na_tray_child_size_request (GtkWidget      *widget,
       gint nw = MAX (24, request->width);
       gint nh = MAX (24, request->height);
       g_warning ("Tray icon has requested a size of (%ix%i), resizing to (%ix%i)", 
-		 req.width, req.height, nw, nh);
+                 req.width, req.height, nw, nh);
       request->width = nw;
       request->height = nh;
     }
@@ -130,39 +131,42 @@ na_tray_child_size_request (GtkWidget      *widget,
 
 static void
 na_tray_child_size_allocate (GtkWidget      *widget,
-			     GtkAllocation  *allocation)
+                             GtkAllocation  *allocation)
 {
   NaTrayChild *child = NA_TRAY_CHILD (widget);
 
-  gboolean moved = allocation->x != widget->allocation.x || allocation->y != widget->allocation.y;
-  gboolean resized = allocation->width != widget->allocation.width || allocation->height != widget->allocation.height;
+  gboolean moved = allocation->x != widget->allocation.x ||
+                   allocation->y != widget->allocation.y;
+  gboolean resized = allocation->width != widget->allocation.width ||
+                     allocation->height != widget->allocation.height;
 
-  /* When we are allocating the widget while mapped we need special handling for
-   * both real and fake transparency.
+  /* When we are allocating the widget while mapped we need special handling
+   * for both real and fake transparency.
    *
-   *  Real transparency: we need to invalidate and trigger a redraw of the old
+   * Real transparency: we need to invalidate and trigger a redraw of the old
    *   and new areas. (GDK really should handle this for us, but doesn't as of
    *   GTK+-2.14)
    *
-   * Fake transparency: if the widget moved, we need to force the contents to be
-   *   redrawn with the new offset for the parent-relative background.
+   * Fake transparency: if the widget moved, we need to force the contents to
+   *   be redrawn with the new offset for the parent-relative background.
    */
   if ((moved || resized) && GTK_WIDGET_MAPPED (widget))
     {
       if (na_tray_child_is_composited (child))
-	gdk_window_invalidate_rect (gdk_window_get_parent (widget->window),
-				    &widget->allocation, FALSE);
+        gdk_window_invalidate_rect (gdk_window_get_parent (widget->window),
+                                    &widget->allocation, FALSE);
     }
 
-  GTK_WIDGET_CLASS (na_tray_child_parent_class)->size_allocate (widget, allocation);
+  GTK_WIDGET_CLASS (na_tray_child_parent_class)->size_allocate (widget,
+                                                                allocation);
 
   if ((moved || resized) && GTK_WIDGET_MAPPED (widget))
     {
       if (na_tray_child_is_composited (NA_TRAY_CHILD (widget)))
-	gdk_window_invalidate_rect (gdk_window_get_parent (widget->window),
-				    &widget->allocation, FALSE);
+        gdk_window_invalidate_rect (gdk_window_get_parent (widget->window),
+                                    &widget->allocation, FALSE);
       else if (moved && child->parent_relative_bg)
-	na_tray_child_force_redraw (child);
+        na_tray_child_force_redraw (child);
     }
 }
 
@@ -172,7 +176,7 @@ na_tray_child_size_allocate (GtkWidget      *widget,
  */
 static gboolean
 na_tray_child_expose_event (GtkWidget      *widget,
-			    GdkEventExpose *event)
+                            GdkEventExpose *event)
 {
   NaTrayChild *child = NA_TRAY_CHILD (widget);
 
@@ -190,8 +194,8 @@ na_tray_child_expose_event (GtkWidget      *widget,
     {
       /* Clear to parent-relative pixmap */
       gdk_window_clear_area (widget->window,
-			     event->area.x, event->area.y,
-			     event->area.width, event->area.height);
+                             event->area.x, event->area.y,
+                             event->area.width, event->area.height);
     }
 
   return FALSE;
@@ -220,7 +224,7 @@ na_tray_child_class_init (NaTrayChildClass *klass)
 
 GtkWidget *
 na_tray_child_new (GdkScreen *screen,
-		   Window     icon_window)
+                   Window     icon_window)
 {
   XWindowAttributes window_attributes;
   Display *xdisplay;
@@ -241,14 +245,14 @@ na_tray_child_new (GdkScreen *screen,
 
   gdk_error_trap_push ();
   result = XGetWindowAttributes (xdisplay, icon_window,
-				 &window_attributes);
+                                 &window_attributes);
   gdk_error_trap_pop ();
 
   if (!result) /* Window already gone */
     return NULL;
 
   visual = gdk_x11_screen_lookup_visual (screen,
-					 window_attributes.visual->visualid);
+                                         window_attributes.visual->visualid);
   if (!visual) /* Icon window is on another screen? */
     return NULL;
 
@@ -299,12 +303,12 @@ na_tray_child_get_title (NaTrayChild *child)
   gdk_error_trap_push ();
 
   result = XGetWindowProperty (GDK_DISPLAY_XDISPLAY (display),
-			       child->icon_window,
-			       atom,
-			       0, G_MAXLONG,
-			       False, utf8_string,
-			       &type, &format, &nitems,
-			       &bytes_after, (guchar **)&val);
+                               child->icon_window,
+                               atom,
+                               0, G_MAXLONG,
+                               False, utf8_string,
+                               &type, &format, &nitems,
+                               &bytes_after, (guchar **)&val);
   
   if (gdk_error_trap_pop () || result != Success)
     return NULL;
@@ -314,7 +318,7 @@ na_tray_child_get_title (NaTrayChild *child)
       nitems == 0)
     {
       if (val)
-	XFree (val);
+        XFree (val);
       return NULL;
     }
 
@@ -341,7 +345,7 @@ na_tray_child_is_composited (NaTrayChild *child)
 
 /* If we are faking transparency with a window-relative background, force a
  * redraw of the icon. This should be called if the background changes or if
- * the child is shifed with respect to the background.
+ * the child is shifted with respect to the background.
  */
 void
 na_tray_child_force_redraw (NaTrayChild *child)
@@ -368,9 +372,9 @@ na_tray_child_force_redraw (NaTrayChild *child)
 
       gdk_error_trap_push ();
       XSendEvent (GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (widget)),
-		  xev.xexpose.window,
-		  False, ExposureMask,
-		  &xev);
+                  xev.xexpose.window,
+                  False, ExposureMask,
+                  &xev);
       /* We have to sync to reliably catch errors from the XSendEvent(),
        * since that is asynchronous.
        */

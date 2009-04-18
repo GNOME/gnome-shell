@@ -28,14 +28,14 @@
 
 G_BEGIN_DECLS
 
-#define NA_TYPE_TRAY_CHILD			(na_tray_child_get_type ())
-#define NA_TRAY_CHILD(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), NA_TYPE_TRAY_CHILD, NaTrayChild))
-#define NA_TRAY_CHILD_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), NA_TYPE_TRAY_CHILD, NaTrayChildClass))
-#define NA_IS_TRAY_CHILD(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), NA_TYPE_TRAY_CHILD))
-#define NA_IS_TRAY_CHILD_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), NA_TYPE_TRAY_CHILD))
-#define NA_TRAY_CHILD_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), NA_TYPE_TRAY_CHILD, NaTrayChildClass))
+#define NA_TYPE_TRAY_CHILD		(na_tray_child_get_type ())
+#define NA_TRAY_CHILD(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), NA_TYPE_TRAY_CHILD, NaTrayChild))
+#define NA_TRAY_CHILD_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), NA_TYPE_TRAY_CHILD, NaTrayChildClass))
+#define NA_IS_TRAY_CHILD(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), NA_TYPE_TRAY_CHILD))
+#define NA_IS_TRAY_CHILD_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), NA_TYPE_TRAY_CHILD))
+#define NA_TRAY_CHILD_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), NA_TYPE_TRAY_CHILD, NaTrayChildClass))
 
-typedef struct _NaTrayChild	    NaTrayChild;
+typedef struct _NaTrayChild	  NaTrayChild;
 typedef struct _NaTrayChildClass  NaTrayChildClass;
 typedef struct _NaTrayChildChild  NaTrayChildChild;
 
