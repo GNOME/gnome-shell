@@ -42,15 +42,10 @@ na_tray_child_realize (GtkWidget *widget)
 {
   NaTrayChild *child = NA_TRAY_CHILD (widget);
   GdkVisual *visual = gtk_widget_get_visual (widget);
-  gboolean visual_has_alpha;
 
   GTK_WIDGET_CLASS (na_tray_child_parent_class)->realize (widget);
 
-  /* We have alpha if the visual has something other than red, green,
-   * and blue */
-  visual_has_alpha = visual->red_prec + visual->blue_prec + visual->green_prec < visual->depth;
-
-  if (visual_has_alpha && gdk_display_supports_composite (gtk_widget_get_display (widget)))
+  if (child->has_alpha)
     {
       /* We have real transparency with an ARGB visual and the Composite
        * extension. */
@@ -60,7 +55,6 @@ na_tray_child_realize (GtkWidget *widget)
       gdk_window_set_background (widget->window, &transparent);
       gdk_window_set_composited (widget->window, TRUE);
 
-      child->is_composited = TRUE;
       child->parent_relative_bg = FALSE;
     }
   else if (visual == gdk_drawable_get_visual (GDK_DRAWABLE (gdk_window_get_parent (widget->window))))
@@ -69,18 +63,18 @@ na_tray_child_realize (GtkWidget *widget)
        * can use a parent-relative background and fake transparency. */
       gdk_window_set_back_pixmap (widget->window, NULL, TRUE);
 
-      child->is_composited = FALSE;
       child->parent_relative_bg = TRUE;
     }
   else
     {
       /* Nothing to do; the icon will sit on top of an ugly gray box */
-      child->is_composited = FALSE;
       child->parent_relative_bg = FALSE;
     }
 
+  gdk_window_set_composited (widget->window, child->composited);
+
   gtk_widget_set_app_paintable (GTK_WIDGET (child),
-                                child->parent_relative_bg || child->is_composited);
+                                child->parent_relative_bg || child->has_alpha);
 
   /* Double-buffering will interfere with the parent-relative-background fake
    * transparency, since the double-buffer code doesn't know how to fill in the
@@ -152,7 +146,7 @@ na_tray_child_size_allocate (GtkWidget      *widget,
    */
   if ((moved || resized) && GTK_WIDGET_MAPPED (widget))
     {
-      if (na_tray_child_is_composited (child))
+      if (na_tray_child_has_alpha (child))
         gdk_window_invalidate_rect (gdk_window_get_parent (widget->window),
                                     &widget->allocation, FALSE);
     }
@@ -162,7 +156,7 @@ na_tray_child_size_allocate (GtkWidget      *widget,
 
   if ((moved || resized) && GTK_WIDGET_MAPPED (widget))
     {
-      if (na_tray_child_is_composited (NA_TRAY_CHILD (widget)))
+      if (na_tray_child_has_alpha (NA_TRAY_CHILD (widget)))
         gdk_window_invalidate_rect (gdk_window_get_parent (widget->window),
                                     &widget->allocation, FALSE);
       else if (moved && child->parent_relative_bg)
@@ -180,7 +174,7 @@ na_tray_child_expose_event (GtkWidget      *widget,
 {
   NaTrayChild *child = NA_TRAY_CHILD (widget);
 
-  if (na_tray_child_is_composited (child))
+  if (na_tray_child_has_alpha (child))
     {
       /* Clear to transparent */
       cairo_t *cr = gdk_cairo_create (widget->window);
@@ -230,6 +224,7 @@ na_tray_child_new (GdkScreen *screen,
   Display *xdisplay;
   NaTrayChild *child;
   GdkVisual *visual;
+  gboolean visual_has_alpha;
   GdkColormap *colormap;
   gboolean new_colormap;
   int result;
@@ -274,6 +269,14 @@ na_tray_child_new (GdkScreen *screen,
   child->icon_window = icon_window;
 
   gtk_widget_set_colormap (GTK_WIDGET (child), colormap);
+
+  /* We have alpha if the visual has something other than red, green,
+   * and blue */
+  visual_has_alpha = visual->red_prec + visual->blue_prec + visual->green_prec < visual->depth;
+  child->has_alpha = (visual_has_alpha &&
+		      gdk_display_supports_composite (gdk_screen_get_display (screen)));
+
+  child->composited = child->has_alpha;
 
   if (new_colormap)
     g_object_unref (colormap);
@@ -335,12 +338,45 @@ na_tray_child_get_title (NaTrayChild *child)
   return retval;
 }
 
+/**
+ * na_tray_child_has_alpha;
+ * @child: a #NaTrayChild
+ *
+ * Checks if the child has an ARGB visual and real alpha transparence.
+ * (as opposed to faked alpha transparency with an parent-relative
+ * background)
+ *
+ * Return value: %TRUE if the child has an alpha transparency
+ */
 gboolean
-na_tray_child_is_composited (NaTrayChild *child)
+na_tray_child_has_alpha (NaTrayChild *child)
 {
   g_return_val_if_fail (NA_IS_TRAY_CHILD (child), FALSE);
 
-  return child->is_composited;
+  return child->has_alpha;
+}
+
+/**
+ * na_tray_child_set_composited;
+ * @child: a #NaTrayChild
+ * @composited: %TRUE if the child's window should be redirected
+ *
+ * Sets whether the #GdkWindow of the child should be set redirected
+ * using gdk_window_set_composited(). By default this is based off of
+ * na_tray_child_has_alpha(), but it may be useful to override it in
+ * certain circumstances; for example, if the #NaTrayChild is added
+ * to a parent window and that parent window is composited against the
+ * background.
+ */
+void
+na_tray_child_set_composited (NaTrayChild *child,
+			      gboolean     composited)
+{
+  g_return_if_fail (NA_IS_TRAY_CHILD (child));
+
+  child->composited = composited;
+  if (GTK_WIDGET_REALIZED (child))
+    gdk_window_set_composited (GTK_WIDGET (child)->window, composited);
 }
 
 /* If we are faking transparency with a window-relative background, force a

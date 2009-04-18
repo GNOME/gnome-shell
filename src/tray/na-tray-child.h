@@ -43,7 +43,8 @@ struct _NaTrayChild
 {
   GtkSocket parent_instance;
   Window icon_window;
-  guint is_composited : 1;
+  guint has_alpha : 1;
+  guint composited : 1;
   guint parent_relative_bg : 1;
 };
 
@@ -54,11 +55,13 @@ struct _NaTrayChildClass
 
 GType           na_tray_child_get_type        (void);
 
-GtkWidget      *na_tray_child_new           (GdkScreen   *screen,
-					     Window       icon_window);
-char           *na_tray_child_get_title     (NaTrayChild *child);
-gboolean        na_tray_child_is_composited (NaTrayChild *child);
-void            na_tray_child_force_redraw  (NaTrayChild *child);
+GtkWidget      *na_tray_child_new            (GdkScreen   *screen,
+					      Window       icon_window);
+char           *na_tray_child_get_title      (NaTrayChild *child);
+gboolean        na_tray_child_has_alpha      (NaTrayChild *child);
+void            na_tray_child_set_composited (NaTrayChild *child,
+	                                      gboolean     composited);
+void            na_tray_child_force_redraw   (NaTrayChild *child);
 
 G_END_DECLS
 
