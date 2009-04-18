@@ -119,7 +119,7 @@ na_tray_child_size_request (GtkWidget      *widget,
     {
       gint nw = MAX (24, request->width);
       gint nh = MAX (24, request->height);
-      g_warning (_("tray icon has requested a size of (%i x %i), resizing to (%i x %i)"), 
+      g_warning ("Tray icon has requested a size of (%ix%i), resizing to (%ix%i)", 
 		 req.width, req.height, nw, nh);
       request->width = nw;
       request->height = nh;
