@@ -34,9 +34,7 @@
 #elif defined (GDK_WINDOWING_WIN32)
 #include <gdk/gdkwin32.h>
 #endif
-#include <gtk/gtkinvisible.h>
-#include <gtk/gtksocket.h>
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 
 #include "na-marshal.h"
 
