@@ -25,6 +25,7 @@
 #include "na-tray-child.h"
 
 #include <glib/gi18n.h>
+#include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 
@@ -61,7 +62,7 @@ na_tray_child_realize (GtkWidget *widget)
       child->is_composited = TRUE;
       child->parent_relative_bg = FALSE;
     }
-  else if (visual == gdk_window_get_visual (gdk_window_get_parent (widget->window)))
+  else if (visual == gdk_drawable_get_visual (GDK_DRAWABLE (gdk_window_get_parent (widget->window))))
     {
       /* Otherwise, if the visual matches the visual of the parent window, we can
        * use a parent-relative background and fake transparency.
