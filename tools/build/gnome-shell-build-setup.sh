@@ -23,7 +23,7 @@ fi
 # Required software:
 #
 # For this script:
-# binutils, curl, gcc, make, subversion
+# binutils, curl, gcc, make, git
 #
 # General build stuff:
 # automake, bison, flex, git, gnome-common, gtk-doc, intltool,
@@ -58,7 +58,7 @@ dpkg_is_installed() {
 if test x$system = xUbuntu -o x$system = xDebian ; then
   reqd=""
   for pkg in \
-    build-essential curl subversion \
+    build-essential curl \
     automake bison flex git-core gnome-common gtk-doc-tools \
     libdbus-glib-1-dev libgconf2-dev libgtk2.0-dev libffi-dev \
     libgnome-menu-dev libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
@@ -78,7 +78,7 @@ fi
 if test x$system = xFedora ; then
   reqd=""
   for pkg in \
-    binutils curl gcc make subversion \
+    binutils curl gcc make \
     automake bison flex git gnome-common gnome-doc-utils intltool \
     libtool pkgconfig \
     dbus-glib-devel GConf2-devel gnome-menus-devel gtk2-devel libffi-devel libgnomeui-devel \
@@ -143,10 +143,22 @@ if [ -d $SOURCE ] ; then : ; else
     echo "Created $SOURCE"
 fi
 
-echo -n "Checking out jhbuild into $SOURCE/jhbuild ... "
-cd $SOURCE
-svn co http://svn.gnome.org/svn/jhbuild/trunk jhbuild > /dev/null
-echo "done"
+if [ -d $SOURCE/jhbuild ] ; then
+    if [ -d $SOURCE/jhbuild/.git ] ; then
+        echo -n "Updating jhbuild ... "
+        ( cd $SOURCE/jhbuild && git pull --rebase > /dev/null ) || exit 1
+        echo "done"
+    else
+        echo "$SOURCE/jhbuild is not a git repository"
+        echo "You should remove it and rerun this script"
+	exit 1
+    fi
+else
+    echo -n "Checking out jhbuild into $SOURCE/jhbuild ... "
+    cd $SOURCE
+    git clone git://git.gnome.org/jhbuild > /dev/null || exit 1
+    echo "done"
+fi
 
 echo "Installing jhbuild..."
 (cd $SOURCE/jhbuild && make -f Makefile.plain DISABLE_GETTEXT=1 install >/dev/null)
