@@ -26,6 +26,7 @@
 #endif
 
 #include <string.h>
+#include <gmodule.h>
 
 #include "cogl.h"
 

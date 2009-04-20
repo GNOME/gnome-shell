@@ -29,7 +29,6 @@
 #include "cogl.h"
 
 #include <string.h>
-#include <gmodule.h>
 #include <math.h>
 #include <stdlib.h>
 
