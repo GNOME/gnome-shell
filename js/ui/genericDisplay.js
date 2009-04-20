@@ -710,6 +710,7 @@ GenericDisplay.prototype = {
 
     // Removes all displayed items.
     _removeAllDisplayItems: function() {
+        this.unsetSelected();
         for (itemId in this._displayedItems)
             this._removeDisplayItem(itemId);
      },
