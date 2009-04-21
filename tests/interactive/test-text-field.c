@@ -37,11 +37,15 @@ create_label (const ClutterColor *color,
 {
   ClutterActor *retval = clutter_text_new ();
 
+  clutter_actor_set_width (retval, 200);
+
   clutter_text_set_font_name (CLUTTER_TEXT (retval), FONT);
   clutter_text_set_color (CLUTTER_TEXT (retval), color);
   clutter_text_set_markup (CLUTTER_TEXT (retval), text);
   clutter_text_set_editable (CLUTTER_TEXT (retval), FALSE);
   clutter_text_set_selectable (CLUTTER_TEXT (retval), FALSE);
+  clutter_text_set_single_line_mode (CLUTTER_TEXT (retval), TRUE);
+  clutter_text_set_ellipsize (CLUTTER_TEXT (retval), PANGO_ELLIPSIZE_END);
 
   return retval;
 }
@@ -87,7 +91,7 @@ test_text_field_main (gint    argc,
   ClutterColor  entry_color       = {0x33, 0xff, 0x33, 0xff};
   ClutterColor  label_color       = {0xff, 0xff, 0xff, 0xff};
   ClutterColor  background_color  = {0x00, 0x00, 0x00, 0xff};
-  gint          height;
+  guint         width, height;
 
   clutter_init (&argc, &argv);
 
@@ -98,18 +102,19 @@ test_text_field_main (gint    argc,
   clutter_actor_set_position (text, 10, 10);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
+  width = clutter_actor_get_width (text);
   height = clutter_actor_get_height (text);
 
   text = create_entry (&entry_color, "<i>some</i> text", 0, 0);
-  clutter_actor_set_position (text, 200, 10);
+  clutter_actor_set_position (text, width + 10 + 12, 10);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
-  text = create_label (&label_color, "<i>Password field</i>: ");
+  text = create_label (&label_color, "<i>A very long password field</i>: ");
   clutter_actor_set_position (text, 10, height + 12);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
   text = create_entry (&entry_color, "password", '*', 8);
-  clutter_actor_set_position (text, 200, height + 12);
+  clutter_actor_set_position (text, width + 10 + 12, height + 12);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
   clutter_actor_show (stage);
