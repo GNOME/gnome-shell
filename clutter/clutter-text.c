@@ -309,11 +309,11 @@ clutter_text_create_layout_no_cache (ClutterText *text,
         }
     }
 
-  /* we only limit the layout when in multi-line mode since the
-   * single line mode will take care of scrolling to accomodate
-   * the allocation width
+  /* we do not limit the layout width on editable, single-line
+   * text actors, since those can scroll the layout
    */
-  if (allocation_width > 0 && !priv->single_line_mode)
+  if (allocation_width > 0 &&
+      !(priv->editable && priv->single_line_mode))
     {
       gint width;
 
