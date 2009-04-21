@@ -202,7 +202,6 @@ do_tests (CallbackData *data)
   pango_layout_set_wrap (data->test_layout, PANGO_WRAP_WORD);
   g_assert (check_result (data, "Enable line wrap", TRUE) == FALSE);
 
-#if 0
   /* TEST 11: change wrap mode
    * FIXME - broken
    */
@@ -210,7 +209,6 @@ do_tests (CallbackData *data)
 				    PANGO_WRAP_CHAR);
   pango_layout_set_wrap (data->test_layout, PANGO_WRAP_CHAR);
   g_assert (check_result (data, "Change wrap mode", TRUE) == FALSE);
-#endif
 
   /* TEST 12: enable justify */
   clutter_text_set_justify (CLUTTER_TEXT (data->label), TRUE);

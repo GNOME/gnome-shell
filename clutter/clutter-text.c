@@ -284,6 +284,7 @@ clutter_text_create_layout_no_cache (ClutterText *text,
   pango_layout_set_alignment (layout, priv->alignment);
   pango_layout_set_single_paragraph_mode (layout, priv->single_line_mode);
   pango_layout_set_justify (layout, priv->justify);
+  pango_layout_set_wrap (layout, priv->wrap_mode);
 
   /* Cases, assuming ellipsize != NONE on actor:
    *
@@ -309,11 +310,14 @@ clutter_text_create_layout_no_cache (ClutterText *text,
         }
     }
 
-  /* we do not limit the layout width on editable, single-line
-   * text actors, since those can scroll the layout
+  /* We do not limit the layout width on editable, single-line text
+   * actors, since those can scroll the layout. For non-editable
+   * actors we only want to set the width if wrapping or ellipsizing
+   * is enabled.
    */
   if (allocation_width > 0 &&
-      !(priv->editable && priv->single_line_mode))
+      (priv->editable ? !priv->single_line_mode
+       : (priv->ellipsize != PANGO_ELLIPSIZE_NONE || priv->wrap)))
     {
       gint width;
 
