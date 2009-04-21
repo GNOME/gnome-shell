@@ -536,18 +536,31 @@ clutter_text_ensure_cursor_position (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
   ClutterUnit x, y, cursor_height;
+  ClutterGeometry cursor_pos = { 0, };
+  gboolean x_changed, y_changed;
+  gboolean width_changed, height_changed;
 
   x = y = cursor_height = 0;
   clutter_text_position_to_coords (self, priv->position,
                                    &x, &y,
                                    &cursor_height);
 
-  priv->cursor_pos.x      = CLUTTER_UNITS_TO_DEVICE (x);
-  priv->cursor_pos.y      = CLUTTER_UNITS_TO_DEVICE (y);
-  priv->cursor_pos.width  = priv->cursor_size;
-  priv->cursor_pos.height = CLUTTER_UNITS_TO_DEVICE (cursor_height) - 2;
+  cursor_pos.x      = CLUTTER_UNITS_TO_DEVICE (x);
+  cursor_pos.y      = CLUTTER_UNITS_TO_DEVICE (y);
+  cursor_pos.width  = priv->cursor_size;
+  cursor_pos.height = CLUTTER_UNITS_TO_DEVICE (cursor_height) - 2;
 
-  g_signal_emit (self, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
+  x_changed      = priv->cursor_pos.x != cursor_pos.x;
+  y_changed      = priv->cursor_pos.y != cursor_pos.y;
+  width_changed  = priv->cursor_pos.width != cursor_pos.width;
+  height_changed = priv->cursor_pos.height != cursor_pos.height;
+
+  if (x_changed || y_changed || width_changed || height_changed)
+    {
+      priv->cursor_pos = cursor_pos;
+
+      g_signal_emit (self, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
+    }
 }
 
 static gboolean
