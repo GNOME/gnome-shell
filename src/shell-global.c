@@ -7,10 +7,12 @@
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
-#include <unistd.h>
+#include <dirent.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <dbus/dbus-glib.h>
 #include <libgnomeui/gnome-thumbnail.h>
 
@@ -592,6 +594,95 @@ shell_global_ungrab_keyboard (ShellGlobal *global)
   global->keyboard_grabbed = FALSE;
 }
 
+/* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
+ *
+ * Authors: Padraig O'Briain, Matthias Clasen, Lennart Poettering
+ *
+ * http://bugzilla.gnome.org/show_bug.cgi?id=469231
+ * http://bugzilla.gnome.org/show_bug.cgi?id=357585
+ */
+
+static int
+set_cloexec (void *data, gint fd)
+{
+  if (fd >= GPOINTER_TO_INT (data))
+    fcntl (fd, F_SETFD, FD_CLOEXEC);
+
+  return 0;
+}
+
+#ifndef HAVE_FDWALK
+static int
+fdwalk (int (*cb)(void *data, int fd), void *data)
+{
+  gint open_max;
+  gint fd;
+  gint res = 0;
+
+#ifdef HAVE_SYS_RESOURCE_H
+  struct rlimit rl;
+#endif
+
+#ifdef __linux__
+  DIR *d;
+
+  if ((d = opendir("/proc/self/fd"))) {
+      struct dirent *de;
+
+      while ((de = readdir(d))) {
+          glong l;
+          gchar *e = NULL;
+
+          if (de->d_name[0] == '.')
+              continue;
+
+          errno = 0;
+          l = strtol(de->d_name, &e, 10);
+          if (errno != 0 || !e || *e)
+              continue;
+
+          fd = (gint) l;
+
+          if ((glong) fd != l)
+              continue;
+
+          if (fd == dirfd(d))
+              continue;
+
+          if ((res = cb (data, fd)) != 0)
+              break;
+        }
+
+      closedir(d);
+      return res;
+  }
+
+  /* If /proc is not mounted or not accessible we fall back to the old
+   * rlimit trick */
+
+#endif
+
+#ifdef HAVE_SYS_RESOURCE_H
+  if (getrlimit(RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
+      open_max = rl.rlim_max;
+  else
+#endif
+      open_max = sysconf (_SC_OPEN_MAX);
+
+  for (fd = 0; fd < open_max; fd++)
+      if ((res = cb (data, fd)) != 0)
+          break;
+
+  return res;
+}
+#endif
+
+static void
+pre_exec_close_fds(void)
+{
+  fdwalk (set_cloexec, GINT_TO_POINTER(3));
+}
+
 /**
  * shell_global_reexec_self:
  * @global: A #ShellGlobal
@@ -621,7 +712,15 @@ shell_global_reexec_self (ShellGlobal *global)
   for (buf_p = buf; buf_p < buf_end; buf_p = buf_p + strlen (buf_p) + 1)
     g_ptr_array_add (arr, buf_p);
   
-  g_ptr_array_add (arr, NULL); 
+  g_ptr_array_add (arr, NULL);
+
+  /* Close all file descriptors other than stdin/stdout/stderr, otherwise
+   * they will leak and stay open after the exec. In particular, this is
+   * important for file descriptors that represent mapped graphics buffer
+   * objects.
+   */
+  pre_exec_close_fds ();
+
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
   g_ptr_array_free (arr, TRUE);

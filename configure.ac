@@ -60,6 +60,9 @@ GJS_JS_NATIVE_DIR=`$PKG_CONFIG --variable=jsnativedir gjs-1.0`
 AC_SUBST(GJS_JS_DIR)
 AC_SUBST(GJS_JS_NATIVE_DIR)
 
+AC_CHECK_FUNCS(fdwalk)
+AC_CHECK_HEADERS([sys/resource.h])
+
 # Sets GLIB_GENMARSHAL and GLIB_MKENUMS
 AM_PATH_GLIB_2_0()
 G_IR_SCANNER=`$PKG_CONFIG --variable=g_ir_scanner gobject-introspection-1.0`
