@@ -1463,7 +1463,7 @@ clutter_text_get_preferred_height (ClutterActor *self,
       if (min_height_p)
         {
           if (text->priv->ellipsize)
-            *min_height_p = -1;
+            *min_height_p = 1;
           else
             *min_height_p = layout_height;
         }
