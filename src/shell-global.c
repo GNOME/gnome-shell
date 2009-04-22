@@ -4,7 +4,9 @@
 #include "shell-wm.h"
 
 #include "display.h"
+#include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
+#include <gdk/gdkx.h>
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -37,6 +39,9 @@ struct _ShellGlobal {
   ShellWM *wm;
   gboolean keyboard_grabbed;
   const char *imagedir;
+
+  /* Displays the root window; see shell_global_create_root_pixmap_actor() */
+  ClutterGLXTexturePixmap *root_pixmap;
 };
 
 enum {
@@ -153,6 +158,8 @@ shell_global_init (ShellGlobal *global)
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
   global->grab_active = FALSE;
+
+  global->root_pixmap = NULL;
 }
 
 static void
@@ -727,4 +734,130 @@ shell_global_create_vertical_gradient (ClutterColor *top,
   cairo_destroy (cr);
 
   return texture;
+}
+
+/*
+ * Updates the global->root_pixmap actor with the root window's pixmap or fails
+ * with a warning.
+ */
+static void
+update_root_window_pixmap (ShellGlobal *global)
+{
+  Atom type;
+  int format;
+  gulong nitems;
+  gulong bytes_after;
+  guchar *data;
+
+  if (!XGetWindowProperty (gdk_x11_get_default_xdisplay (),
+                           gdk_x11_get_default_root_xwindow (),
+                           gdk_x11_get_xatom_by_name ("_XROOTPMAP_ID"),
+                           0, LONG_MAX,
+                           False,
+                           AnyPropertyType,
+                           &type, &format, &nitems, &bytes_after, &data) &&
+      type != None)
+  {
+     /* Got a property. */
+     if (type == XA_PIXMAP && format == 32 && nitems == 1)
+       {
+         /* Was what we expected. */
+         clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (global->root_pixmap),
+                                                *(Pixmap *)data);
+       }
+     else
+       {
+         g_warning ("Could not get the root window pixmap");
+       }
+
+     XFree(data);
+  }
+}
+
+/*
+ * Called when the X server emits a root window change event. If the event is
+ * about a new pixmap, update the global->root_pixmap actor.
+ */
+static GdkFilterReturn
+root_window_filter (GdkXEvent *native, GdkEvent *event, gpointer data)
+{
+  XEvent *xevent = (XEvent *)native;
+
+  if ((xevent->type == PropertyNotify) &&
+      (xevent->xproperty.window == gdk_x11_get_default_root_xwindow ()) &&
+      (xevent->xproperty.atom == gdk_x11_get_xatom_by_name ("_XROOTPMAP_ID")))
+    update_root_window_pixmap (SHELL_GLOBAL (data));
+
+  return GDK_FILTER_CONTINUE;
+}
+
+/*
+ * Called when the root window pixmap actor is destroyed.
+ */
+static void
+root_pixmap_destroy (GObject *sender, gpointer data)
+{
+  ShellGlobal *global = SHELL_GLOBAL (data);
+
+  gdk_window_remove_filter (gdk_get_default_root_window (),
+                            root_window_filter, global);
+  global->root_pixmap = NULL;
+}
+
+/**
+ * shell_global_create_root_pixmap_actor:
+ * @global: a #ShellGlobal
+ *
+ * Creates an actor showing the root window pixmap.
+ *
+ * Return value: (transfer none): a #ClutterActor with the root window pixmap.
+ *               The actor is floating, hence (transfer none).
+ */
+ClutterActor *
+shell_global_create_root_pixmap_actor (ShellGlobal *global)
+{
+  GdkWindow *window;
+  GdkEventMask events;
+  gboolean created_new_pixmap = FALSE;
+  ClutterActor *clone;
+
+  /* The actor created is actually a ClutterClone of global->root_pixmap. */
+
+  if (global->root_pixmap == NULL)
+    {
+      global->root_pixmap = CLUTTER_GLX_TEXTURE_PIXMAP (clutter_glx_texture_pixmap_new ());
+
+      /* The low and medium quality filters give nearest-neighbor resizing. */
+      clutter_texture_set_filter_quality (CLUTTER_TEXTURE (global->root_pixmap),
+                                          CLUTTER_TEXTURE_QUALITY_HIGH);
+
+      /* The pixmap actor is only referenced by its clones. */
+      g_object_ref_sink (global->root_pixmap);
+
+      g_signal_connect (G_OBJECT (global->root_pixmap), "destroy",
+                        G_CALLBACK (root_pixmap_destroy), global);
+
+      /* Watch the root window for changes. */
+      window = gdk_get_default_root_window ();
+      events = gdk_window_get_events (window);
+      events |= GDK_PROPERTY_CHANGE_MASK;
+      gdk_window_set_events (window, events);
+      /* Metacity handles some root window property updates in its global
+       * event filter, though not this one. For all root window property
+       * updates, the global filter returns GDK_FILTER_CONTINUE, so our
+       * window specific filter will be called.
+       */
+      gdk_window_add_filter (window, root_window_filter, global);
+
+      update_root_window_pixmap (global);
+
+      created_new_pixmap = TRUE;
+    }
+
+  clone = clutter_clone_new (CLUTTER_ACTOR (global->root_pixmap));
+
+  if (created_new_pixmap)
+    g_object_unref(global->root_pixmap);
+
+  return clone;
 }

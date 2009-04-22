@@ -800,26 +800,6 @@ Workspaces.prototype = {
         activeWorkspace.actor.raise_top();
         this._positionWorkspaces(global, activeWorkspace);
 
-        // Create a backdrop rectangle, so that you don't see the
-        // other parts of the overlay (eg, sidebar) through the gaps
-        // between the workspaces when they're zooming in/out
-        this._backdrop = new Clutter.Rectangle({ color: Overlay.OVERLAY_BACKGROUND_COLOR,
-                                                 x: this._backdropX,
-                                                 y: this._backdropY,
-                                                 width: this._backdropWidth,
-                                                 height: this._backdropHeight
-                                               });
-        this.actor.add_actor(this._backdrop);
-        this._backdrop.lower_bottom();
-        Tweener.addTween(this._backdrop,
-                         { x: this._x,
-                           y: this._y,
-                           width: this._width,
-                           height: this._height,
-                           time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
-
         // Create (+) button
         buttonSize = addButtonSize;
         this.addButton = new Clutter.Texture({ x: addButtonX,
@@ -870,15 +850,6 @@ Workspaces.prototype = {
 
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomFromOverlay();
-
-        Tweener.addTween(this._backdrop,
-                         { x: this._backdropX,
-                           y: this._backdropY,
-                           width: this._backdropWidth,
-                           height: this._backdropHeight,
-                           time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
     },
 
     destroy : function() {
@@ -890,10 +861,29 @@ Workspaces.prototype = {
 
         this.actor.destroy();
         this.actor = null;
-        this._backdrop = null;
 
         global.screen.disconnect(this._nWorkspacesNotifyId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+    },
+
+    getFullSizeX : function() {
+        return this._workspaces[0].fullSizeX;
+    },
+
+    // If j-th workspace in the i-th row is active, returns the full width
+    // of j workspaces including empty space if i = 1, or the width of one
+    // workspace.
+    // Used in overlay.js to determine when it is ok to remove the sideshow
+    // during animations for entering and leaving the overlay.
+    getWidthToTopActiveWorkspace : function() {
+        let global = Shell.Global.get();
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let activeWorkspace = this._workspaces[activeWorkspaceIndex];
+
+        if (activeWorkspace.gridRow == 0)
+            return (activeWorkspace.gridCol + 1) * global.screen_width + activeWorkspace.gridCol * GRID_SPACING;
+        else
+            return global.screen_width;
     },
 
     // Updates the workspaces display based on the current dimensions and position.
@@ -901,14 +891,6 @@ Workspaces.prototype = {
         let global = Shell.Global.get();  
   
         this._positionWorkspaces(global);
-        Tweener.addTween(this._backdrop,
-                         { x: this._x,
-                           y: this._y,
-                           width: this._width,
-                           height: this._height,
-                           time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
 
         // Position/scale the desktop windows and their children
         for (let w = 0; w < this._workspaces.length; w++)
@@ -973,12 +955,6 @@ Workspaces.prototype = {
             workspace.fullSizeX = (workspace.gridCol - activeWorkspace.gridCol) * (global.screen_width + GRID_SPACING);
             workspace.fullSizeY = (workspace.gridRow - activeWorkspace.gridRow) * (global.screen_height + GRID_SPACING);
         }
-
-        // And the backdrop
-        this._backdropX = this._workspaces[0].fullSizeX;
-        this._backdropY = this._workspaces[0].fullSizeY;
-        this._backdropWidth = gridWidth * (global.screen_width + GRID_SPACING) - GRID_SPACING;
-        this._backdropHeight = gridHeight * (global.screen_height + GRID_SPACING) - GRID_SPACING;
     },
 
     _workspacesChanged : function() {
@@ -1036,7 +1012,6 @@ Workspaces.prototype = {
             // Slide old workspaces out
             for (let w = 0; w < lostWorkspaces.length; w++) {
                 let workspace = lostWorkspaces[w];
-                workspace.actor.raise(this._backdrop);
                 workspace.slideOut(function () { workspace.destroy(); });
             }
 

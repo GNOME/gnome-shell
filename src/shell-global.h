@@ -69,6 +69,8 @@ void shell_global_reexec_self (ShellGlobal *global);
 ClutterCairoTexture *shell_global_create_vertical_gradient (ClutterColor *top,
 							    ClutterColor *bottom);
 
+ClutterActor *shell_global_create_root_pixmap_actor (ShellGlobal *global);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */
