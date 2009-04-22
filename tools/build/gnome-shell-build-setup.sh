@@ -63,6 +63,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
     libdbus-glib-1-dev libgconf2-dev libgtk2.0-dev libffi-dev \
     libgnome-menu-dev libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
     mesa-common-dev python-dev libreadline5-dev xulrunner-dev \
+    xserver-xephyr \
     ; do
       if ! dpkg_is_installed $pkg; then
         reqd="$pkg $reqd"
