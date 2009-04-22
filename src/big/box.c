@@ -2,7 +2,7 @@
 /* big-box.c: Box container.
 
    Copyright (C) 2006-2008 Red Hat, Inc.
-   Copyright (C) 2008 litl, LLC.
+   Copyright (C) 2008-2009 litl, LLC.
 
    The libbigwidgets-lgpl is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public License as
@@ -19,8 +19,6 @@
    If not, write to the Free Software Foundation, Inc., 59 Temple Place -
    Suite 330, Boston, MA 02111-1307, USA.
 */
-
-#include <math.h>
 
 #include <glib.h>
 
@@ -93,16 +91,16 @@ struct _BigBoxPrivate
   BigBoxOrientation        orientation;
   BigBoxAlignment          x_align;
   BigBoxAlignment          y_align;
-  ClutterUnit              spacing;
-  ClutterUnit              padding_top;
-  ClutterUnit              padding_bottom;
-  ClutterUnit              padding_left;
-  ClutterUnit              padding_right;
-  ClutterUnit              border_top;
-  ClutterUnit              border_bottom;
-  ClutterUnit              border_left;
-  ClutterUnit              border_right;
-  ClutterUnit              corner_radius;
+  int                      spacing;
+  int                      padding_top;
+  int                      padding_bottom;
+  int                      padding_left;
+  int                      padding_right;
+  int                      border_top;
+  int                      border_bottom;
+  int                      border_left;
+  int                      border_right;
+  int                      corner_radius;
   ClutterColor             border_color;
   guint                    background_border_top;
   guint                    background_border_bottom;
@@ -136,9 +134,9 @@ typedef struct
 
 typedef struct
 {
-  ClutterUnit  minimum;
-  ClutterUnit  natural;
-  ClutterUnit  adjustment;
+  int          minimum;
+  int          natural;
+  int          adjustment;
   guint        does_not_fit : 1;
 } BigBoxAdjustInfo;
 
@@ -448,13 +446,13 @@ clutter_container_iface_init (ClutterContainerIface *iface)
 
 static void
 big_box_get_bg_texture_allocation (ClutterActor          *self,
-                                   ClutterUnit            allocated_width,
-                                   ClutterUnit            allocated_height,
+                                   int                    allocated_width,
+                                   int                    allocated_height,
                                    ClutterActorBox       *bg_box)
 {
   BigBoxPrivate *priv;
-  ClutterUnit bg_width, bg_height;
-  ClutterUnit min_x1, min_y1, max_x2, max_y2;
+  float bg_width, bg_height;
+  int min_x1, min_y1, max_x2, max_y2;
 
   g_return_if_fail (BIG_IS_BOX (self));
 
@@ -493,7 +491,7 @@ big_box_get_bg_texture_allocation (ClutterActor          *self,
       break;
 
     case BIG_BOX_ALIGNMENT_CENTER:
-      bg_box->x1 = MAX (min_x1, priv->border_left + roundf ((allocated_width - bg_width) / 2));
+      bg_box->x1 = MAX (min_x1, priv->border_left + (allocated_width - bg_width) / 2);
       bg_box->x2 = MIN (bg_box->x1 + bg_width, max_x2);
       break;
     }
@@ -522,7 +520,7 @@ big_box_get_bg_texture_allocation (ClutterActor          *self,
       break;
 
     case BIG_BOX_ALIGNMENT_CENTER:
-      bg_box->y1 = MAX (min_y1, priv->border_top + roundf ((allocated_height - bg_height) / 2));
+      bg_box->y1 = MAX (min_y1, priv->border_top + (allocated_height - bg_height) / 2);
       bg_box->y2 = MIN (bg_box->y1 + bg_height, max_y2);
       break;
     }
@@ -604,8 +602,8 @@ big_box_update_draw_rounded_corner (BigBox *box)
       g_object_set (priv->background_rectangle,
                     "color", &priv->background_color,
                     "border-color", &priv->border_color,
-                    "border-width", CLUTTER_UNITS_TO_DEVICE (priv->border_top),
-                    "corner-radius", CLUTTER_UNITS_TO_DEVICE (priv->corner_radius),
+                    "border-width", priv->border_top,
+                    "corner-radius", priv->corner_radius,
                     NULL);
     }
 }
@@ -736,7 +734,7 @@ big_box_set_property (GObject      *gobject,
       break;
 
     case PROP_SPACING:
-      priv->spacing = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
+      priv->spacing = g_value_get_int (value);
       break;
 
     case PROP_X_ALIGN:
@@ -753,19 +751,19 @@ big_box_set_property (GObject      *gobject,
       break;
 
     case PROP_PADDING_TOP:
-      priv->padding_top = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
+      priv->padding_top = g_value_get_int (value);
       break;
 
     case PROP_PADDING_BOTTOM:
-      priv->padding_bottom = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
+      priv->padding_bottom = g_value_get_int (value);
       break;
 
     case PROP_PADDING_LEFT:
-      priv->padding_left = CLUTTER_UNITS_FROM_DEVICE(g_value_get_int (value));
+      priv->padding_left = g_value_get_int (value);
       break;
 
     case PROP_PADDING_RIGHT:
-      priv->padding_right = CLUTTER_UNITS_FROM_DEVICE(g_value_get_int (value));
+      priv->padding_right = g_value_get_int (value);
       break;
 
     case PROP_BORDER:
@@ -774,27 +772,27 @@ big_box_set_property (GObject      *gobject,
       break;
 
     case PROP_BORDER_TOP:
-      priv->border_top = CLUTTER_UNITS_FROM_DEVICE(g_value_get_int (value));
+      priv->border_top = g_value_get_int (value);
       big_box_update_draw_rounded_corner (BIG_BOX (gobject));
       break;
 
     case PROP_BORDER_BOTTOM:
-      priv->border_bottom = CLUTTER_UNITS_FROM_DEVICE(g_value_get_int (value));
+      priv->border_bottom = g_value_get_int (value);
       big_box_update_draw_rounded_corner (BIG_BOX (gobject));
       break;
 
     case PROP_BORDER_LEFT:
-      priv->border_left = CLUTTER_UNITS_FROM_DEVICE(g_value_get_int (value));
+      priv->border_left = g_value_get_int (value);
       big_box_update_draw_rounded_corner (BIG_BOX (gobject));
       break;
 
     case PROP_BORDER_RIGHT:
-      priv->border_right = CLUTTER_UNITS_FROM_DEVICE(g_value_get_int (value));
+      priv->border_right = g_value_get_int (value);
       big_box_update_draw_rounded_corner (BIG_BOX (gobject));
       break;
 
     case PROP_CORNER_RADIUS:
-      priv->corner_radius = CLUTTER_UNITS_FROM_DEVICE(g_value_get_uint (value));
+      priv->corner_radius = g_value_get_uint (value);
       big_box_update_draw_rounded_corner (BIG_BOX (gobject));
       break;
 
@@ -933,7 +931,7 @@ big_box_get_property (GObject    *gobject,
       break;
 
     case PROP_SPACING:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->spacing));
+      g_value_set_int (value, priv->spacing);
       break;
 
     case PROP_X_ALIGN:
@@ -945,39 +943,39 @@ big_box_get_property (GObject    *gobject,
       break;
 
     case PROP_PADDING_TOP:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->padding_top));
+      g_value_set_int (value, priv->padding_top);
       break;
 
     case PROP_PADDING_BOTTOM:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->padding_bottom));
+      g_value_set_int (value, priv->padding_bottom);
       break;
 
     case PROP_PADDING_LEFT:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->padding_left));
+      g_value_set_int (value, priv->padding_left);
       break;
 
     case PROP_PADDING_RIGHT:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->padding_right));
+      g_value_set_int (value, priv->padding_right);
       break;
 
     case PROP_BORDER_TOP:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->border_top));
+      g_value_set_int (value, priv->border_top);
       break;
 
     case PROP_BORDER_BOTTOM:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->border_bottom));
+      g_value_set_int (value, priv->border_bottom);
       break;
 
     case PROP_BORDER_LEFT:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE(priv->border_left));
+      g_value_set_int (value, priv->border_left);
       break;
 
     case PROP_BORDER_RIGHT:
-      g_value_set_int (value,CLUTTER_UNITS_TO_DEVICE(priv->border_right));
+      g_value_set_int (value, priv->border_right);
       break;
 
     case PROP_CORNER_RADIUS:
-      g_value_set_uint (value,CLUTTER_UNITS_TO_DEVICE (priv->corner_radius));
+      g_value_set_uint (value, priv->corner_radius);
       break;
 
     case PROP_BACKGROUND_TEXTURE:
@@ -1068,14 +1066,14 @@ big_box_dispose (GObject *gobject)
 
 static void
 big_box_get_content_width_request (ClutterActor  *self,
-                                   ClutterUnit   *min_width_p,
-                                   ClutterUnit   *natural_width_p)
+                                   int           *min_width_p,
+                                   int           *natural_width_p)
 {
   BigBoxPrivate *priv;
-  ClutterUnit total_min;
-  ClutterUnit total_natural;
-  gint n_children_in_min;
-  gint n_children_in_natural;
+  int total_min;
+  int total_natural;
+  int n_children_in_min;
+  int n_children_in_natural;
   GList *c;
 
   priv = BIG_BOX (self)->priv;
@@ -1105,10 +1103,10 @@ big_box_get_content_width_request (ClutterActor  *self,
                                          &natural_width);
 
       if (priv->debug)
-        g_debug ("Child %p min width %d natural %d",
+        g_debug ("Child %p min width %g natural %g",
                  child->actor,
-                 CLUTTER_UNITS_TO_DEVICE (min_width),
-                 CLUTTER_UNITS_TO_DEVICE (natural_width));
+                 min_width,
+                 natural_width);
 
       n_children_in_natural += 1;
 
@@ -1157,14 +1155,14 @@ big_box_get_content_width_request (ClutterActor  *self,
 
 static void
 big_box_get_preferred_width (ClutterActor  *self,
-                             ClutterUnit    for_height,
-                             ClutterUnit   *min_width_p,
-                             ClutterUnit   *natural_width_p)
+                             float          for_height,
+                             float         *min_width_p,
+                             float         *natural_width_p)
 {
   BigBoxPrivate *priv;
-  ClutterUnit content_min_width;
-  ClutterUnit content_natural_width;
-  ClutterUnit outside;
+  int content_min_width;
+  int content_natural_width;
+  int outside;
 
   priv = BIG_BOX (self)->priv;
 
@@ -1183,25 +1181,25 @@ big_box_get_preferred_width (ClutterActor  *self,
   if (priv->debug)
     {
       if (min_width_p)
-        g_debug ("Computed minimum width as %d", CLUTTER_UNITS_TO_DEVICE (*min_width_p));
+        g_debug ("Computed minimum width as %g", *min_width_p);
       if (natural_width_p)
-        g_debug ("Computed natural width as %d", CLUTTER_UNITS_TO_DEVICE (*natural_width_p));
+        g_debug ("Computed natural width as %g", *natural_width_p);
     }
 }
 
 static void
 big_box_get_content_area_horizontal (ClutterActor  *self,
-                                     ClutterUnit    requested_content_width,
-                                     ClutterUnit    natural_content_width,
-                                     ClutterUnit    allocated_box_width,
-                                     ClutterUnit   *x_p,
-                                     ClutterUnit   *width_p)
+                                     int            requested_content_width,
+                                     int            natural_content_width,
+                                     int            allocated_box_width,
+                                     int           *x_p,
+                                     int           *width_p)
 {
   BigBoxPrivate *priv;
-  ClutterUnit left;
-  ClutterUnit right;
-  ClutterUnit unpadded_box_width;
-  ClutterUnit content_width;
+  int left;
+  int right;
+  int unpadded_box_width;
+  int content_width;
 
   priv = BIG_BOX (self)->priv;
 
@@ -1242,7 +1240,7 @@ big_box_get_content_area_horizontal (ClutterActor  *self,
       break;
     case BIG_BOX_ALIGNMENT_CENTER:
       if (x_p)
-        *x_p = left + roundf ((unpadded_box_width - content_width) / 2);
+        *x_p = left + (unpadded_box_width - content_width) / 2;
       if (width_p)
         *width_p = content_width;
       break;
@@ -1251,17 +1249,17 @@ big_box_get_content_area_horizontal (ClutterActor  *self,
 
 static void
 big_box_get_content_area_vertical (ClutterActor   *self,
-                                   ClutterUnit     requested_content_height,
-                                   ClutterUnit     natural_content_height,
-                                   ClutterUnit     allocated_box_height,
-                                   ClutterUnit    *y_p,
-                                   ClutterUnit    *height_p)
+                                   int             requested_content_height,
+                                   int             natural_content_height,
+                                   int             allocated_box_height,
+                                   int            *y_p,
+                                   int            *height_p)
 {
   BigBoxPrivate *priv;
-  ClutterUnit top;
-  ClutterUnit bottom;
-  ClutterUnit unpadded_box_height;
-  ClutterUnit content_height;
+  int top;
+  int bottom;
+  int unpadded_box_height;
+  int content_height;
 
   priv = BIG_BOX (self)->priv;
 
@@ -1302,7 +1300,7 @@ big_box_get_content_area_vertical (ClutterActor   *self,
       break;
     case BIG_BOX_ALIGNMENT_CENTER:
       if (y_p)
-        *y_p = top + roundf ((unpadded_box_height - content_height) / 2);
+        *y_p = top + (unpadded_box_height - content_height) / 2;
       if (height_p)
         *height_p = content_height;
       break;
@@ -1327,13 +1325,22 @@ big_box_adjust_infos_new (BigBox      *box,
         }
       else if (priv->orientation == BIG_BOX_ORIENTATION_VERTICAL)
         {
+          float minimum, natural;
+
           clutter_actor_get_preferred_height (child->actor, for_content_width,
-                                              &adjusts[i].minimum, &adjusts[i].natural);
+                                              &minimum, &natural);
+          adjusts[i].minimum = minimum;
+          adjusts[i].natural = natural;
         }
       else
         {
-          clutter_actor_get_preferred_width (child->actor, -1, &adjusts[i].minimum,
-                                             &adjusts[i].natural);
+          float minimum, natural;
+
+          clutter_actor_get_preferred_width (child->actor, -1,
+                                             &minimum, &natural);
+
+          adjusts[i].minimum = minimum;
+          adjusts[i].natural = natural;
         }
 
       i++;
@@ -1367,12 +1374,12 @@ big_box_adjust_if_fits_as_not_fitting (GList            *children,
 
 static gboolean
 big_box_adjust_up_to_natural_size (GList            *children,
-                                   ClutterUnit      *remaining_extra_space_p,
+                                   int              *remaining_extra_space_p,
                                    BigBoxAdjustInfo *adjusts,
                                    gboolean          if_fits)
 {
-  ClutterUnit smallest_increase;
-  ClutterUnit space_to_distribute;
+  int smallest_increase;
+  int space_to_distribute;
   GList *c;
   gint n_needing_increase;
   gint i;
@@ -1382,7 +1389,7 @@ big_box_adjust_up_to_natural_size (GList            *children,
   if (*remaining_extra_space_p == 0)
     return FALSE;
 
-  smallest_increase = CLUTTER_MAXUNIT;
+  smallest_increase = G_MAXINT;
   n_needing_increase = 0;
 
   i = 0;
@@ -1473,12 +1480,12 @@ big_box_adjust_up_to_natural_size (GList            *children,
 
 static gboolean
 big_box_adjust_one_if_fits (GList             *children,
-                            ClutterUnit        spacing,
-                            ClutterUnit       *remaining_extra_space_p,
+                            int                spacing,
+                            int               *remaining_extra_space_p,
                             BigBoxAdjustInfo  *adjusts)
 {
   GList *c;
-  ClutterUnit spacing_delta;
+  int spacing_delta;
   gint i;
   gboolean visible_children = FALSE;
 
@@ -1572,11 +1579,11 @@ big_box_count_expandable_children (GList           *children,
 
 static void
 big_box_adjust_for_expandable (GList            *children,
-                               ClutterUnit      *remaining_extra_space_p,
+                               int              *remaining_extra_space_p,
                                BigBoxAdjustInfo *adjusts)
 {
   GList *c;
-  ClutterUnit expand_space;
+  int expand_space;
   gint expand_count;
   gint i;
 
@@ -1619,10 +1626,10 @@ big_box_adjust_for_expandable (GList            *children,
 static void
 big_box_compute_adjusts (GList             *children,
                          BigBoxAdjustInfo  *adjusts,
-                         ClutterUnit        spacing,
-                         ClutterUnit        alloc_request_delta)
+                         int                spacing,
+                         int                alloc_request_delta)
 {
-  ClutterUnit remaining_extra_space;
+  int remaining_extra_space;
 
   if (children == NULL)
     return;
@@ -1664,7 +1671,7 @@ big_box_compute_adjusts (GList             *children,
   /* remaining_extra_space need not be 0, if we had no expandable children */
 }
 
-static ClutterUnit
+static int
 big_box_get_adjusted_size (BigBoxAdjustInfo  *adjust)
 {
   return adjust->minimum + adjust->adjustment;
@@ -1672,16 +1679,16 @@ big_box_get_adjusted_size (BigBoxAdjustInfo  *adjust)
 
 static void
 big_box_get_hbox_height_request (ClutterActor  *self,
-                                 ClutterUnit    for_width,
-                                 ClutterUnit   *min_height_p,
-                                 ClutterUnit   *natural_height_p)
+                                 int            for_width,
+                                 int           *min_height_p,
+                                 int           *natural_height_p)
 {
   BigBoxPrivate *priv;
-  ClutterUnit total_min;
-  ClutterUnit total_natural;
-  ClutterUnit requested_content_width;
-  ClutterUnit natural_content_width;
-  ClutterUnit allocated_content_width;
+  int total_min;
+  int total_natural;
+  int requested_content_width;
+  int natural_content_width;
+  int allocated_content_width;
   BigBoxAdjustInfo *width_adjusts;
   GList *c;
   gint i;
@@ -1713,7 +1720,7 @@ big_box_get_hbox_height_request (ClutterActor  *self,
     {
       BigBoxChild *child = c->data;
       ClutterUnit min_height, natural_height;
-      ClutterUnit req = 0;
+      int req = 0;
 
       if (!BOX_CHILD_IN_LAYOUT (child))
         {
@@ -1748,15 +1755,15 @@ big_box_get_hbox_height_request (ClutterActor  *self,
 
 static void
 big_box_get_vbox_height_request (ClutterActor  *self,
-                                 ClutterUnit    for_width,
-                                 ClutterUnit   *min_height_p,
-                                 ClutterUnit   *natural_height_p)
+                                 int            for_width,
+                                 int           *min_height_p,
+                                 int           *natural_height_p)
 {
   BigBoxPrivate *priv;
-  ClutterUnit total_min;
-  ClutterUnit total_natural;
-  gint n_children_in_min;
-  gint n_children_in_natural;
+  int total_min;
+  int total_natural;
+  int n_children_in_min;
+  int n_children_in_natural;
   GList *c;
 
   priv = BIG_BOX (self)->priv;
@@ -1769,8 +1776,8 @@ big_box_get_vbox_height_request (ClutterActor  *self,
   for (c = priv->children; c != NULL; c = c->next)
     {
       BigBoxChild *child = (BigBoxChild *) c->data;
-      ClutterUnit min_height;
-      ClutterUnit natural_height;
+      float min_height;
+      float natural_height;
 
       if (!BOX_CHILD_IN_LAYOUT (child))
         continue;
@@ -1807,9 +1814,9 @@ big_box_get_vbox_height_request (ClutterActor  *self,
 
 static void
 big_box_get_content_height_request (ClutterActor  *self,
-                                    ClutterUnit    for_width,
-                                    ClutterUnit   *min_height_p,
-                                    ClutterUnit   *natural_height_p)
+                                    int            for_width,
+                                    int           *min_height_p,
+                                    int           *natural_height_p)
 {
   BigBoxPrivate *priv;
 
@@ -1825,14 +1832,14 @@ big_box_get_content_height_request (ClutterActor  *self,
 
 static void
 big_box_get_preferred_height (ClutterActor  *self,
-                              ClutterUnit    for_width,
-                              ClutterUnit   *min_height_p,
-                              ClutterUnit   *natural_height_p)
+                              float          for_width,
+                              float         *min_height_p,
+                              float         *natural_height_p)
 {
   BigBoxPrivate *priv;
-  ClutterUnit content_min_height, content_natural_height;
-  ClutterUnit content_for_width;
-  ClutterUnit outside;
+  int content_min_height, content_natural_height;
+  int content_for_width;
+  int outside;
 
   priv = BIG_BOX (self)->priv;
 
@@ -1935,15 +1942,15 @@ big_box_layout (ClutterActor    *self,
           child_box.y2 = child_box.y1 + req;
 
           if (priv->debug)
-            g_debug ("V - Child %p %s being allocated: %d, %d, %d, %d w: %d h: %d",
+            g_debug ("V - Child %p %s being allocated: %g, %g, %g, %g w: %g h: %g",
                      child->actor,
                      g_type_name_from_instance((GTypeInstance*) child->actor),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x2),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y2),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x2 - child_box.x1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y2 - child_box.y1));
+                     child_box.x1,
+                     child_box.y1,
+                     child_box.x2,
+                     child_box.y2,
+                     child_box.x2 - child_box.x1,
+                     child_box.y2 - child_box.y1);
 
           clutter_actor_allocate (child->actor, &child_box,
                                   absolute_origin_changed);
@@ -1958,15 +1965,15 @@ big_box_layout (ClutterActor    *self,
           child_box.y2 = child_box.y1 + allocated_content_height;
 
           if (priv->debug)
-            g_debug ("H - Child %p %s being allocated: %d, %d, %d, %d  w: %d h: %d",
+            g_debug ("H - Child %p %s being allocated: %g, %g, %g, %g  w: %g h: %g",
                      child->actor,
                      g_type_name_from_instance((GTypeInstance*) child->actor),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x2),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y2),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x2 - child_box.x1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y2 - child_box.y1));
+                     child_box.x1,
+                     child_box.y1,
+                     child_box.x2,
+                     child_box.y2,
+                     child_box.x2 - child_box.x1,
+                     child_box.y2 - child_box.y1);
 
           clutter_actor_allocate (child->actor, &child_box,
                                   absolute_origin_changed);
@@ -2011,24 +2018,24 @@ big_box_allocate (ClutterActor          *self,
                   gboolean               absolute_origin_changed)
 {
   BigBoxPrivate *priv;
-  ClutterUnit requested_content_width;
-  ClutterUnit requested_content_height;
-  ClutterUnit natural_content_width;
-  ClutterUnit natural_content_height;
-  ClutterUnit allocated_content_width;
-  ClutterUnit allocated_content_height = 0;
-  ClutterUnit content_x, content_y = 0;
+  int requested_content_width;
+  int requested_content_height;
+  int natural_content_width;
+  int natural_content_height;
+  int allocated_content_width;
+  int allocated_content_height = 0;
+  int content_x, content_y = 0;
   GList *c;
 
   priv = BIG_BOX (self)->priv;
 
   if (priv->debug)
-    g_debug ("Entire box %p being allocated: %d, %d, %d, %d",
+    g_debug ("Entire box %p being allocated: %g, %g, %g, %g",
              self,
-             CLUTTER_UNITS_TO_DEVICE (box->x1),
-             CLUTTER_UNITS_TO_DEVICE (box->y1),
-             CLUTTER_UNITS_TO_DEVICE (box->x2),
-             CLUTTER_UNITS_TO_DEVICE (box->y2));
+             box->x1,
+             box->y1,
+             box->x2,
+             box->y2);
 
   CLUTTER_ACTOR_CLASS (big_box_parent_class)->allocate (self, box, absolute_origin_changed);
 
@@ -2054,13 +2061,13 @@ big_box_allocate (ClutterActor          *self,
       if (allocated_content_height < requested_content_height)
         g_debug ("Box %p allocated height %d but requested %d",
                  self,
-                 CLUTTER_UNITS_TO_DEVICE (allocated_content_height),
-                 CLUTTER_UNITS_TO_DEVICE (requested_content_height));
+                 allocated_content_height,
+                 requested_content_height);
       if (allocated_content_width < requested_content_width)
         g_debug ("Box %p allocated width %d but requested %d",
                  self,
-                 CLUTTER_UNITS_TO_DEVICE (allocated_content_width),
-                 CLUTTER_UNITS_TO_DEVICE (requested_content_width));
+                 allocated_content_width,
+                 requested_content_width);
     }
 
   if (priv->background_texture)
@@ -2074,10 +2081,10 @@ big_box_allocate (ClutterActor          *self,
 
       if (priv->debug)
         {
-          g_debug ("Box %p texture allocated width %d and height %d",
+          g_debug ("Box %p texture allocated width %g and height %g",
                    self,
-                   CLUTTER_UNITS_TO_DEVICE (bg_box.x2 - bg_box.x1),
-                   CLUTTER_UNITS_TO_DEVICE (bg_box.y2 - bg_box.y1));
+                   bg_box.x2 - bg_box.x1,
+                   bg_box.y2 - bg_box.y1);
         }
 
       clutter_actor_allocate (priv->background_texture, &bg_box,
@@ -2114,7 +2121,7 @@ big_box_allocate (ClutterActor          *self,
         }
       else if (child->fixed)
         {
-          ClutterUnit x, y, width, height;
+          float x, y, width, height;
 
           clutter_actor_get_positionu (child->actor, &x, &y);
           clutter_actor_get_preferred_width(child->actor, -1, NULL, &width);
@@ -2136,7 +2143,7 @@ big_box_allocate (ClutterActor          *self,
               child_box.x1 = child_box.x2 - width;
               break;
             case BIG_BOX_ALIGNMENT_CENTER:
-              child_box.x1 = content_x + roundf ((allocated_content_width - width) / 2);
+              child_box.x1 = content_x + (allocated_content_width - width) / 2;
               child_box.x2 = child_box.x1 + width;
               break;
             case BIG_BOX_ALIGNMENT_FILL:
@@ -2161,7 +2168,7 @@ big_box_allocate (ClutterActor          *self,
               child_box.y1 = child_box.y2 - height;
               break;
             case BIG_BOX_ALIGNMENT_CENTER:
-              child_box.y1 = content_y + roundf ((allocated_content_height - height) / 2);
+              child_box.y1 = content_y + (allocated_content_height - height) / 2;
               child_box.y2 = child_box.y1 + height;
               break;
             case BIG_BOX_ALIGNMENT_FILL:
@@ -2171,11 +2178,11 @@ big_box_allocate (ClutterActor          *self,
             }
 
           if (priv->debug)
-            g_debug ("Fixed Child being allocated: %d, %d, %d, %d",
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y1),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.x2),
-                     CLUTTER_UNITS_TO_DEVICE (child_box.y2));
+            g_debug ("Fixed Child being allocated: %g, %g, %g, %g",
+                     child_box.x1,
+                     child_box.y1,
+                     child_box.x2,
+                     child_box.y2);
 
           clutter_actor_allocate(child->actor, &child_box,
                                  absolute_origin_changed);
@@ -2199,15 +2206,17 @@ big_box_paint (ClutterActor *actor)
   int border_top, border_bottom, border_left, border_right;
   int padding_top, padding_bottom, padding_left, padding_right;
 
-  /* First, convert everything to pixels */
-  border_top = CLUTTER_UNITS_TO_DEVICE (self->priv->border_top);
-  border_bottom = CLUTTER_UNITS_TO_DEVICE (self->priv->border_bottom);
-  border_left = CLUTTER_UNITS_TO_DEVICE (self->priv->border_left);
-  border_right = CLUTTER_UNITS_TO_DEVICE (self->priv->border_right);
-  padding_top = CLUTTER_UNITS_TO_DEVICE (self->priv->padding_top);
-  padding_bottom = CLUTTER_UNITS_TO_DEVICE (self->priv->padding_bottom);
-  padding_left = CLUTTER_UNITS_TO_DEVICE (self->priv->padding_left);
-  padding_right = CLUTTER_UNITS_TO_DEVICE (self->priv->padding_right);
+  /* shorter variable names (and cast to int while we're at it
+   * though I think this is only for historical reasons)
+   */
+  border_top = self->priv->border_top;
+  border_bottom = self->priv->border_bottom;
+  border_left = self->priv->border_left;
+  border_right = self->priv->border_right;
+  padding_top = self->priv->padding_top;
+  padding_bottom = self->priv->padding_bottom;
+  padding_left = self->priv->padding_left;
+  padding_right = self->priv->padding_right;
 
   actor_opacity = clutter_actor_get_paint_opacity (actor);
 
@@ -2949,10 +2958,10 @@ big_box_set_child_align(BigBox              *box,
 }
 
 void
-big_box_set_padding (BigBox *box, int padding)
+big_box_set_padding (BigBox *box,
+                     int     padding)
 {
   BigBoxPrivate *priv;
-  ClutterUnit padding_in_units;
   gboolean padding_changed;
 
   g_return_if_fail (BIG_IS_BOX (box));
@@ -2960,32 +2969,30 @@ big_box_set_padding (BigBox *box, int padding)
 
   priv = box->priv;
 
-  padding_in_units = CLUTTER_UNITS_FROM_DEVICE (padding);
-
-  padding_changed = (priv->padding_top    != padding_in_units ||
-                     priv->padding_bottom != padding_in_units ||
-                     priv->padding_left   != padding_in_units ||
-                     priv->padding_right  != padding_in_units);
+  padding_changed = (priv->padding_top    != padding ||
+                     priv->padding_bottom != padding ||
+                     priv->padding_left   != padding ||
+                     priv->padding_right  != padding);
 
   if (padding_changed)
     {
       g_object_freeze_notify (G_OBJECT (box));
 
-      if (box->priv->padding_top != padding_in_units)
+      if (box->priv->padding_top != padding)
         g_object_notify (G_OBJECT (box), "padding-top");
-      box->priv->padding_top = padding_in_units;
+      box->priv->padding_top = padding;
 
-      if (box->priv->padding_bottom != padding_in_units)
+      if (box->priv->padding_bottom != padding)
         g_object_notify (G_OBJECT (box), "padding-bottom");
-      box->priv->padding_bottom = padding_in_units;
+      box->priv->padding_bottom = padding;
 
-      if (box->priv->padding_left != padding_in_units)
+      if (box->priv->padding_left != padding)
         g_object_notify (G_OBJECT (box), "padding-left");
-      box->priv->padding_left = padding_in_units;
+      box->priv->padding_left = padding;
 
-      if (box->priv->padding_right != padding_in_units)
+      if (box->priv->padding_right != padding)
         g_object_notify (G_OBJECT (box), "padding-right");
-      box->priv->padding_right = padding_in_units;
+      box->priv->padding_right = padding;
 
       g_object_thaw_notify (G_OBJECT (box));
 
@@ -2994,10 +3001,10 @@ big_box_set_padding (BigBox *box, int padding)
 }
 
 void
-big_box_set_border_width (BigBox *box, int border_width)
+big_box_set_border_width (BigBox *box,
+                          int     border_width)
 {
   BigBoxPrivate *priv;
-  ClutterUnit border_in_units;
   gboolean border_changed;
 
   g_return_if_fail (BIG_IS_BOX (box));
@@ -3005,32 +3012,30 @@ big_box_set_border_width (BigBox *box, int border_width)
 
   priv = box->priv;
 
-  border_in_units = CLUTTER_UNITS_FROM_DEVICE (border_width);
-
-  border_changed = (priv->border_top    != border_in_units ||
-                    priv->border_bottom != border_in_units ||
-                    priv->border_left   != border_in_units ||
-                    priv->border_right  != border_in_units);
+  border_changed = (priv->border_top    != border_width ||
+                    priv->border_bottom != border_width ||
+                    priv->border_left   != border_width ||
+                    priv->border_right  != border_width);
 
   if (border_changed)
     {
       g_object_freeze_notify (G_OBJECT (box));
 
-      if (box->priv->border_top != border_in_units)
+      if (box->priv->border_top != border_width)
         g_object_notify (G_OBJECT (box), "border-top");
-      box->priv->border_top = border_in_units;
+      box->priv->border_top = border_width;
 
-      if (box->priv->border_bottom != border_in_units)
+      if (box->priv->border_bottom != border_width)
         g_object_notify (G_OBJECT (box), "border-bottom");
-      box->priv->border_bottom = border_in_units;
+      box->priv->border_bottom = border_width;
 
-      if (box->priv->border_left != border_in_units)
+      if (box->priv->border_left != border_width)
         g_object_notify (G_OBJECT (box), "border-left");
-      box->priv->border_left = border_in_units;
+      box->priv->border_left = border_width;
 
-      if (box->priv->border_right != border_in_units)
+      if (box->priv->border_right != border_width)
         g_object_notify (G_OBJECT (box), "border-right");
-      box->priv->border_right = border_in_units;
+      box->priv->border_right = border_width;
 
       g_object_thaw_notify (G_OBJECT (box));
 
