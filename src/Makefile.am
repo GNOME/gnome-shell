@@ -49,8 +49,8 @@ CLEANFILES += $(SHELL_STAMP_FILES)
 libgnome_shell_la_SOURCES =			\
 	$(shell_built_sources)			\
 	gnome-shell-plugin.c			\
-	shell-app-monitor.c			\
-	shell-app-monitor.h			\
+	shell-app-system.c			\
+	shell-app-system.h			\
 	shell-arrow.c			\
 	shell-arrow.h			\
 	shell-gtkwindow-actor.c			\

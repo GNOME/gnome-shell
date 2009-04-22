@@ -226,9 +226,9 @@ AppDisplay.prototype = {
         this._appCategories = {};
   
         let me = this;
-        this._appMonitor = new Shell.AppMonitor();
+        this._appSystem = new Shell.AppSystem();
         this._appsStale = true;
-        this._appMonitor.connect('changed', function(mon) {
+        this._appSystem.connect('changed', function(mon) {
             me._appsStale = true;
             // We still need to determine what events other than search can trigger
             // a change in the set of applications that are being shown while the
@@ -334,7 +334,7 @@ AppDisplay.prototype = {
                         this._activeMenu.setState(MENU_UNSELECTED);
                     this._activeMenuIndex = menuIndex;
                     this._activeMenu = display;
-                    this._activeMenuApps = this._appMonitor.get_applications_for_menu(menu.id);
+                    this._activeMenuApps = this._appSystem.get_applications_for_menu(menu.id);
                 }
                 this._redisplay();
             }));
@@ -352,7 +352,7 @@ AppDisplay.prototype = {
         this._allItems = {};
         this._appCategories = {};
 
-        this._menus = this._appMonitor.get_menus();
+        this._menus = this._appSystem.get_menus();
 
         let apps = Gio.app_info_get_all();
         for (let i = 0; i < apps.length; i++) {

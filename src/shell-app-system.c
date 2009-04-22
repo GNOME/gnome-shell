@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#include "shell-app-monitor.h"
+#include "shell-app-system.h"
 
 #include <gio/gio.h>
 
@@ -19,18 +19,18 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-struct _ShellAppMonitorPrivate {
+struct _ShellAppSystemPrivate {
   GMenuTree *tree;
   GMenuTreeDirectory *trunk;
 
   GList *cached_menus;
 };
 
-static void shell_app_monitor_finalize (GObject *object);
+static void shell_app_system_finalize (GObject *object);
 static void on_tree_changed (GMenuTree *tree, gpointer user_data);
-static void reread_menus (ShellAppMonitor *self);
+static void reread_menus (ShellAppSystem *self);
 
-G_DEFINE_TYPE(ShellAppMonitor, shell_app_monitor, G_TYPE_OBJECT);
+G_DEFINE_TYPE(ShellAppSystem, shell_app_system, G_TYPE_OBJECT);
 
 static gpointer
 shell_app_menu_entry_copy (gpointer entryp)
@@ -55,31 +55,31 @@ shell_app_menu_entry_free (gpointer entryp)
   g_free (entry);
 }
 
-static void shell_app_monitor_class_init(ShellAppMonitorClass *klass)
+static void shell_app_system_class_init(ShellAppSystemClass *klass)
 {
   GObjectClass *gobject_class = (GObjectClass *)klass;
 
-  gobject_class->finalize = shell_app_monitor_finalize;
+  gobject_class->finalize = shell_app_system_finalize;
 
   signals[CHANGED] =
     g_signal_new ("changed",
-		  SHELL_TYPE_APP_MONITOR,
+		  SHELL_TYPE_APP_SYSTEM,
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellAppMonitorClass, changed),
+		  G_STRUCT_OFFSET (ShellAppSystemClass, changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
-  g_type_class_add_private (gobject_class, sizeof (ShellAppMonitorPrivate));
+  g_type_class_add_private (gobject_class, sizeof (ShellAppSystemPrivate));
 }
 
 static void
-shell_app_monitor_init (ShellAppMonitor *self)
+shell_app_system_init (ShellAppSystem *self)
 {
-  ShellAppMonitorPrivate *priv;
+  ShellAppSystemPrivate *priv;
   self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                                   SHELL_TYPE_APP_MONITOR,
-                                                   ShellAppMonitorPrivate);
+                                                   SHELL_TYPE_APP_SYSTEM,
+                                                   ShellAppSystemPrivate);
 
   priv->tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
 
@@ -91,19 +91,24 @@ shell_app_monitor_init (ShellAppMonitor *self)
 }
 
 static void
-shell_app_monitor_finalize (GObject *object)
+shell_app_system_finalize (GObject *object)
 {
-  ShellAppMonitor *self = SHELL_APP_MONITOR (object);
+  ShellAppSystem *self = SHELL_APP_SYSTEM (object);
+  ShellAppSystemPrivate *priv = self->priv;
 
-  G_OBJECT_CLASS (shell_app_monitor_parent_class)->finalize(object);
+  gmenu_tree_remove_monitor (priv->tree, on_tree_changed, self);
+
+  gmenu_tree_unref (priv->tree);
+
+  G_OBJECT_CLASS (shell_app_system_parent_class)->finalize(object);
 }
 
 static void
-reread_menus (ShellAppMonitor *self)
+reread_menus (ShellAppSystem *self)
 {
   GSList *entries = gmenu_tree_directory_get_contents (self->priv->trunk);
   GSList *iter;
-  ShellAppMonitorPrivate *priv = self->priv;
+  ShellAppSystemPrivate *priv = self->priv;
 
   g_list_foreach (self->priv->cached_menus, (GFunc)shell_app_menu_entry_free, NULL);
   g_list_free (self->priv->cached_menus);
@@ -141,7 +146,7 @@ reread_menus (ShellAppMonitor *self)
 static void
 on_tree_changed (GMenuTree *monitor, gpointer user_data)
 {
-  ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
+  ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
 
   g_signal_emit (self, signals[CHANGED], 0);
 
@@ -162,12 +167,12 @@ shell_app_menu_entry_get_type (void)
 }
 
 /**
- * shell_app_monitor_get_applications_for_menu:
+ * shell_app_system_get_applications_for_menu:
  *
  * Return value: (transfer full) (element-type utf8): List of desktop file ids
  */
 GList *
-shell_app_monitor_get_applications_for_menu (ShellAppMonitor *monitor,
+shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
                                              const char *menu)
 {
   GList *ret = NULL;
@@ -206,12 +211,12 @@ shell_app_monitor_get_applications_for_menu (ShellAppMonitor *monitor,
 }
 
 /**
- * shell_app_monitor_get_menus:
+ * shell_app_system_get_menus:
  *
  * Return value: (transfer none) (element-type AppMenuEntry): List of toplevel menus
  */
 GList *
-shell_app_monitor_get_menus (ShellAppMonitor *monitor)
+shell_app_system_get_menus (ShellAppSystem *monitor)
 {
   return monitor->priv->cached_menus;
 }
