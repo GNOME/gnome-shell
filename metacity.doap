@@ -27,8 +27,7 @@ has characterised it as a &quot;boring window manager for the adult in you.
 Many window managers are like Marshmallow Froot Loops; Metacity is like Cheerios.&quot;
  </description>
 
- <!-- I haven't found anything appropriate; I made this up. -->
- <category>window-manager</category>
+ <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
 
  <wiki rdf:resource="http://live.gnome.org/Metacity" />
  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=metacity" />
