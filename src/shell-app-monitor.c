@@ -8,6 +8,9 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
+
 
 #include "shell-app-monitor.h"
 #include "shell-global.h"
@@ -19,6 +22,8 @@
  * Written by Owen Taylor, originally licensed under LGPL 2.1.
  * Copyright Red Hat, Inc. 2006-2008
  */
+
+#define APP_MONITOR_GCONF_DIR SHELL_GCONF_DIR"/app_monitor"
 
 /* Data is saved to file SHELL_CONFIG_DIR/DATA_FILENAME */
 #define DATA_FILENAME "applications_usage"
@@ -81,7 +86,9 @@ struct _ShellAppMonitor
   gulong last_idle;
   guint poll_id;
   guint save_apps_id;
+  guint gconf_notify;
   gboolean currently_idle;
+  gboolean enable_monitoring;
 
   GHashTable *apps_by_wm_class; /* Seen apps by wm_class */
   GHashTable *popularities; /* One AppPopularity struct list per activity */
@@ -133,6 +140,11 @@ static void save_to_file (ShellAppMonitor *monitor);
 
 static void restore_from_file (ShellAppMonitor *monitor);
 
+static void on_conf_changed (GConfClient *client,
+                             guint        cnxn_id,
+                             GConfEntry  *entry,
+                             gpointer     monitor);
+
 static glong
 get_time (void)
 {
@@ -182,8 +194,19 @@ shell_app_monitor_init (ShellAppMonitor *self)
   Display *xdisplay;
   char *path;
   char *shell_config_dir;
+  GConfClient *gconf_client;
   
   /* Apps usage tracking */
+
+  /* Check conf to see whether to track app usage or not */
+  gconf_client = gconf_client_get_default ();
+  gconf_client_add_dir (gconf_client, APP_MONITOR_GCONF_DIR,
+                        GCONF_CLIENT_PRELOAD_NONE, NULL);
+  self->gconf_notify =
+    gconf_client_notify_add (gconf_client, APP_MONITOR_GCONF_DIR"/enable_monitoring",
+                             on_conf_changed, self, NULL, NULL);
+  self->enable_monitoring =
+    gconf_client_get_bool (gconf_client, APP_MONITOR_GCONF_DIR"/enable_monitoring", NULL);
 
   /* FIXME: should we create as many monitors as there are GdkScreens? */
   display = gdk_display_get_default();
@@ -218,10 +241,14 @@ shell_app_monitor_init (ShellAppMonitor *self)
   else
     self->upload_apps_burst_count = SAVE_APPS_BURST_LENGTH / SAVE_APPS_BURST_TIMEOUT;
 
-
-  self->poll_id = g_timeout_add_seconds (5, poll_for_idleness, self);
-  self->save_apps_id =
-    g_timeout_add_seconds (SAVE_APPS_BURST_TIMEOUT, on_save_apps_timeout, self);
+  /* If monitoring is disabled, we still report apps usage based on (possibly)
+   * saved data, but don't set timers */
+  if (self->enable_monitoring)
+    {
+      self->poll_id = g_timeout_add_seconds (5, poll_for_idleness, self);
+      self->save_apps_id =
+        g_timeout_add_seconds (SAVE_APPS_BURST_TIMEOUT, on_save_apps_timeout, self);
+    }
 }
 
 static void
@@ -233,6 +260,7 @@ shell_app_monitor_finalize (GObject *object)
   XFree (self->info);
   g_source_remove (self->poll_id);
   g_source_remove (self->save_apps_id);
+  gconf_client_notify_remove (gconf_client_get_default (), self->gconf_notify);
   g_object_unref (self->display);
   g_hash_table_destroy (self->apps_by_wm_class);
   g_hash_table_foreach (self->popularities, destroy_popularity, NULL);
@@ -963,4 +991,38 @@ out:
         g_warning ("Could not load applications usage data: %s", error->message);
         g_error_free (error);
       }
+}
+
+static void
+on_conf_changed (GConfClient *client,
+                 guint        cnxn_id,
+                 GConfEntry  *entry,
+                 gpointer     monitor)
+{
+  ShellAppMonitor *self = monitor;
+  GConfValue *value;
+  const char *key;
+  char *key_name;
+
+  key = gconf_entry_get_key (entry);
+  key_name = g_path_get_basename (key);
+  if (strcmp (key_name, "enable_monitoring") != 0)
+    {
+      g_free (key_name);
+      return;
+    }
+  value = gconf_entry_get_value (entry);
+  self->enable_monitoring = gconf_value_get_bool (value);
+
+  if (self->enable_monitoring)
+    {
+      self->poll_id = g_timeout_add_seconds (5, poll_for_idleness, self);
+      self->save_apps_id =
+        g_timeout_add_seconds (SAVE_APPS_BURST_TIMEOUT, on_save_apps_timeout, self);
+    }
+  else
+    {
+      g_source_remove (self->poll_id);
+      g_source_remove (self->save_apps_id);
+    }
 }

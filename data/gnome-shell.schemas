@@ -1,0 +1,20 @@
+<gconfschemafile>
+    <schemalist>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/app_monitor/enable_monitoring</key>
+	<applyto>/desktop/gnome/shell/app_monitor/enable_monitoring</applyto>
+	<owner>gnome-shell</owner>
+	<type>bool</type>
+	<default>true</default>
+	<locale name="C">
+	  <short>Whether to collect stats about applications usage</short>
+	  <long>
+	    The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data.
+	  </long>
+	</locale>
+      </schema>
+
+  </schemalist>
+
+</gconfschemafile>

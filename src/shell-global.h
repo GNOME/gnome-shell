@@ -19,6 +19,8 @@ typedef struct _ShellGlobalClass ShellGlobalClass;
 #define SHELL_IS_GLOBAL_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_GLOBAL))
 #define SHELL_GLOBAL_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_GLOBAL, ShellGlobalClass))
 
+#define SHELL_GCONF_DIR "/desktop/gnome/shell"
+
 struct _ShellGlobalClass
 {
   GObjectClass parent_class;

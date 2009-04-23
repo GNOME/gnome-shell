@@ -20,6 +20,8 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
 
 PKG_PROG_PKG_CONFIG(0.16)
 
+AM_GCONF_SOURCE_2
+
 # We need at least this, since gst_plugin_register_static() was added
 # in 0.10.16, but nothing older than 0.10.21 has been tested.
 GSTREAMER_MIN_VERSION=0.10.16
@@ -38,7 +40,7 @@ fi
 
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 dbus-glib-1 metacity-plugins gjs-gi-1.0 xscrnsaver libgnome-menu $recorder_modules gdk-x11-2.0 clutter-x11-0.9 clutter-glx-0.9)
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 dbus-glib-1 metacity-plugins gjs-gi-1.0 xscrnsaver libgnome-menu $recorder_modules gconf-2.0 gdk-x11-2.0 clutter-x11-0.9 clutter-glx-0.9)
 PKG_CHECK_MODULES(TIDY, clutter-0.9)
 PKG_CHECK_MODULES(BIG, clutter-0.9 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
