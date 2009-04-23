@@ -5,7 +5,7 @@ General notes and rules on clutter core hacking;
 
  - Follow the CODING_STYLE document.
 
- - Really, follow the CODING_STYLE document.
+ - *Really* follow the CODING_STYLE document.
 
  - All non static public API funcs should be documented in the source files
    via gtk-doc. Structures, enumerations and macros should be documented in
@@ -71,18 +71,42 @@ General notes and rules on clutter core hacking;
 
  - When committing, use the standard git commit message format:
 
-     short description          - MUST be less than 74 characters
-     <newline>                  - MANDATORY empty line
-     long description           - Each line must be less than 80 characters
+=== begin example commit ===
+Short explanation of the commit
 
-   Do NOT put the commit message on the short description line.
-   One line commit messages should be avoided, unless they can be
-   *fully* explained in less than 70 characters (e.g. "Fix typo in
-   clutter_actor_create_pango_context() docs"). Think of the commit
-   message as an email sent to the maintainers explaining "what" you
-   did and, more importantly, "why" you did it. The "how" is not
-   important, since "git show" will show the patch inlined with the
-   commit message.
+Longer explanation explaining exactly what's changed, whether any
+external or private interfaces changed, what bugs were fixed (with bug
+tracker reference if applicable) and so forth. Be concise but not too
+brief.
+=== end example commit ===
+
+   Always add a brief description of the commit to the _first_ line of
+   the commit and terminate by two newlines (it will work without the
+   second newline, but that is not nice for the interfaces).
+
+     short description          - MUST be less than 72 characters
+     <newline>                  - MANDATORY empty line
+     long description           - Each line MUST be less than 76 characters
+
+   Do NOT put the commit message on the short description line. One line
+   commit messages should be avoided, unless they can be *fully* explained
+   in less than 72 characters (e.g. "Fix typo in
+   clutter_actor_create_pango_context() docs").
+
+   The brief description might optionally have a "tag", enclosed in
+   square brackets, detailing what part of the repository the commit
+   affected, e.g.:
+
+      [alpha] Add :mode property
+      [text] Emit ::cursor-event only on changes
+
+   The tag counts as part of overall character count, so try using
+   a short word.
+
+   Think of the commit message as an email sent to the maintainers explaining
+   "what" you did and, more importantly, "why" you did it. The "how" is not
+   important, since "git show" will show the patch inlined with the commit
+   message.
 
 LANGUAGE BINDINGS
 =================
