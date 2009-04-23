@@ -148,6 +148,9 @@ typedef struct _MetaCompScreen
   Window                 output;
   GSList                *dock_windows;
 
+  /* Before we create the output window */
+  XserverRegion     pending_input_region;
+
   gint                   switch_workspace_in_progress;
 
   MutterPluginManager *plugin_mgr;
@@ -1827,6 +1830,45 @@ mutter_get_windows (MetaScreen *screen)
   return info->windows;
 }
 
+void
+mutter_set_stage_input_region (MetaScreen *screen,
+                               XserverRegion region)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+  MetaDisplay  *display = meta_screen_get_display (screen);
+  Display      *xdpy    = meta_display_get_xdisplay (display);
+
+  if (info->stage && info->output)
+    {
+      Window xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+
+      XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
+      XFixesSetWindowShapeRegion (xdpy, info->output, ShapeInput, 0, 0, region);
+    }
+  else if (region != None)
+    {
+      info->pending_input_region = XFixesCreateRegion (xdpy, NULL, 0);
+      XFixesCopyRegion (xdpy, info->pending_input_region, region);
+    }
+}
+
+void
+mutter_empty_stage_input_region (MetaScreen *screen)
+{
+  /* Using a static region here is a bit hacky, but Metacity never opens more than
+   * one XDisplay, so it works fine. */
+  static XserverRegion region = None;
+
+  if (region == None)
+    {
+      MetaDisplay  *display = meta_screen_get_display (screen);
+      Display      *xdpy    = meta_display_get_xdisplay (display);
+      region = XFixesCreateRegion (xdpy, NULL, 0);
+    }
+
+  mutter_set_stage_input_region (screen, region);
+}
+
 static void
 clutter_cmp_manage_screen (MetaCompositor *compositor,
                            MetaScreen     *screen)
@@ -1914,14 +1956,21 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   /*
    * Delay the creation of the overlay window as long as we can, to avoid
    * blanking out the screen. This means that during the plugin loading, the
-   * overlay window is not accessible, and so the plugins cannot do stuff
-   * like changing input shape; if that is required, the plugin should hook into
-   * "show" signal on stage, and do its stuff there.
+   * overlay window is not accessible; if the plugin needs to access it
+   * directly, it should hook into the "show" signal on stage, and do
+   * its stuff there.
    */
   info->output = get_output_window (screen);
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
   show_overlay_window (xdisplay, xwin, info->output);
+
+  if (info->pending_input_region != None)
+    {
+      mutter_set_stage_input_region (screen, info->pending_input_region);
+      XFixesDestroyRegion (xdisplay, info->pending_input_region);
+      info->pending_input_region = None;
+    }
 
   clutter_actor_show (info->overlay_group);
   clutter_actor_show (info->stage);

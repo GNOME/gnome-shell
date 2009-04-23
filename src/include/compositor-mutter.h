@@ -26,6 +26,7 @@
 #define MUTTER_H_
 
 #include <clutter/clutter.h>
+#include <X11/extensions/Xfixes.h>
 #include <X11/Xlib.h>
 
 #include "types.h"
@@ -79,5 +80,9 @@ ClutterActor * mutter_get_overlay_group_for_screen (MetaScreen *screen);
 Window         mutter_get_overlay_window (MetaScreen *screen);
 GList        * mutter_get_windows (MetaScreen *screen);
 ClutterActor * mutter_get_window_group_for_screen (MetaScreen *screen);
+
+void mutter_set_stage_input_region   (MetaScreen   *screen,
+                                      XserverRegion region);
+void mutter_empty_stage_input_region (MetaScreen   *screen);
 
 #endif
