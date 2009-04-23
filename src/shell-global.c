@@ -42,6 +42,7 @@ struct _ShellGlobal {
   ShellWM *wm;
   gboolean keyboard_grabbed;
   const char *imagedir;
+  const char *configdir;
 
   /* Displays the root window; see shell_global_create_root_pixmap_actor() */
   ClutterGLXTexturePixmap *root_pixmap;
@@ -57,7 +58,8 @@ enum {
   PROP_STAGE,
   PROP_WINDOW_GROUP,
   PROP_WINDOW_MANAGER,
-  PROP_IMAGEDIR
+  PROP_IMAGEDIR,
+  PROP_CONFIGDIR,
 };
 
 /* Signals */
@@ -130,6 +132,9 @@ shell_global_get_property(GObject         *object,
     case PROP_IMAGEDIR:
       g_value_set_string (value, global->imagedir);
       break;
+    case PROP_CONFIGDIR:
+      g_value_set_string (value, global->configdir);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -141,6 +146,7 @@ shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
   char *imagedir;
+  GFile *conf_dir;
 
   if (!datadir)
     datadir = GNOME_SHELL_DATADIR;
@@ -157,6 +163,12 @@ shell_global_init (ShellGlobal *global)
       g_free (imagedir);
       global->imagedir = g_strdup_printf ("%s/", datadir);
     }
+
+  /* Ensure config dir exists for later use */
+  global->configdir = g_build_filename (g_get_home_dir (), ".gnome2", "shell", NULL);
+  conf_dir = g_file_new_for_path (global->configdir);
+  g_file_make_directory (conf_dir, NULL, NULL);
+  g_object_unref (conf_dir);
   
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
@@ -246,6 +258,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                    g_param_spec_string ("imagedir",
                                                         "Image directory",
                                                         "Directory containing gnome-shell image files",
+                                                        NULL,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_CONFIGDIR,
+                                   g_param_spec_string ("configdir",
+                                                        "Configuration directory",
+                                                        "Directory containing gnome-shell configuration files",
                                                         NULL,
                                                         G_PARAM_READABLE));
 }
