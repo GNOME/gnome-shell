@@ -32,7 +32,7 @@ fi
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, gconf, GL, gnome-menus, gtk, libffi, libgnomeui, librsvg, libwnck,
 # python, readline, spidermonkey ({mozilla,firefox,xulrunner}-js),
-# xdamage
+# xdamage, xscrnsaver
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # gdb, glxinfo, python, Xephyr, xeyes*, xlogo*, xterm*, zenity
@@ -63,7 +63,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
     libdbus-glib-1-dev libgconf2-dev libgtk2.0-dev libffi-dev \
     libgnome-menu-dev libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
     mesa-common-dev python-dev libreadline5-dev xulrunner-dev \
-    xserver-xephyr \
+    xserver-xephyr libxss-dev \
     ; do
       if ! dpkg_is_installed $pkg; then
         reqd="$pkg $reqd"
@@ -84,7 +84,7 @@ if test x$system = xFedora ; then
     libtool pkgconfig \
     dbus-glib-devel GConf2-devel gnome-menus-devel gtk2-devel libffi-devel libgnomeui-devel \
     librsvg2-devel libwnck-devel mesa-libGL-devel python-devel readline-devel \
-    xulrunner-devel libXdamage-devel \
+    xulrunner-devel libXdamage-devel libXScrnSaver-devel \
     gdb glx-utils xorg-x11-apps xorg-x11-server-Xephyr xterm zenity \
     gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
     ; do
@@ -103,8 +103,8 @@ if test x$system = xSUSE ; then
     curl \
     bison flex gnome-doc-utils-devel \
     gconf2-devel libffi-devel libgnomeui-devel librsvg-devel libwnck-devel \
-    readline-devel mozilla-xulrunner190-devel xorg-x11-devel \
-    xterm xorg-x11 xorg-x11-server-extra \
+    libXScrnSaver-devel readline-devel mozilla-xulrunner190-devel \
+    xorg-x11-devel xterm xorg-x11 xorg-x11-server-extra \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
@@ -124,7 +124,7 @@ if test x$system = xMandrivaLinux ; then
     bison flex gnome-common gnome-doc-utils gtk-doc intltool \
     libGConf2-devel ffi5-devel libgnomeui2-devel librsvg2-devel \
     libwnck-1-devel GL-devel readline-devel libxulrunner-devel \
-    libxdamage-devel \
+    libxdamage-devel libxscrnsaver-devel \
     mesa-demos x11-server-xephyr x11-apps xterm zenity \
     ; do
       if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
