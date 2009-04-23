@@ -45,6 +45,8 @@ const DEFAULT_APPLICATIONS = [
     'vncviewer.desktop'
 ];
 
+const MAX_ITEMS = 30;
+
 /* This class represents a single display item containing information about an application.
  *
  * appInfo - GAppInfo object containing information about the application
@@ -224,18 +226,21 @@ AppDisplay.prototype = {
 
         // map<itemId, array of category names>
         this._appCategories = {};
-  
-        let me = this;
+
+        this._appMonitor = new Shell.AppMonitor();
         this._appSystem = new Shell.AppSystem();
         this._appsStale = true;
-        this._appSystem.connect('changed', function(mon) {
-            me._appsStale = true;
+        this._appSystem.connect('changed', Lang.bind(this, function(appSys) {
+            this._appsStale = true;
             // We still need to determine what events other than search can trigger
             // a change in the set of applications that are being shown while the
             // user in in the overlay mode, however let's redisplay just in case.
-            me._redisplay(false);
-            me._redisplayMenus();
-        });
+            this._redisplay(false);
+            this._redisplayMenus();
+        }));
+        this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
+            this._redisplay(false)
+        }));
 
         // Load the GAppInfos now so it doesn't slow down the first
         // transition into the overlay
@@ -370,14 +375,31 @@ AppDisplay.prototype = {
         this._appsStale = false;
     },
 
-    // Sets the list of the displayed items based on the list of DEFAULT_APPLICATIONS.
+    // Sets the list of the displayed items based on the most used apps.
     _setDefaultList : function() {
-        this._matchedItems = [];     
-        for (let i = 0; i < DEFAULT_APPLICATIONS.length; i++) {  
-            let appId = DEFAULT_APPLICATIONS[i];
+        // Ask or more app than we need, since the list of recently used apps
+        // might contain an app we don't have a desktop file for
+        var apps = this._appMonitor.get_apps (0, Math.round(MAX_ITEMS * 1.5));
+        this._matchedItems = [];
+        for (let i = 0; i < apps.length; i++) {
+            if (this._matchedItems.length > MAX_ITEMS)
+                break;
+            let appId = apps[i] + ".desktop";
             let appInfo = this._allItems[appId];
             if (appInfo) {
                 this._matchedItems.push(appId);
+            }
+        }
+        
+        // Fill the list with default applications it's not full yet
+        for (let i = 0; i < DEFAULT_APPLICATIONS.length; i++) {
+              if (this._matchedItems.length > MAX_ITEMS)
+                  break;
+              let appId = DEFAULT_APPLICATIONS[i];
+              let appInfo = this._allItems[appId];
+              // Don't add if not available or already present in the list
+              if (appInfo && (this._matchedItems.indexOf(appId) == -1)) {
+                  this._matchedItems.push(appId);
             }
         }
     },
