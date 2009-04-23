@@ -605,8 +605,9 @@ clutter_ease_out_quad (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d;
 
-  return -1.0 * (t /= d) * (t - 2);
+  return -1.0 * p * (p - 2);
 }
 
 static gdouble
@@ -616,11 +617,14 @@ clutter_ease_in_out_quad (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / (d / 2);
 
-  if ((t /= d / 2) < 1)
-    return 0.5 * t * t;
+  if (p < 1)
+    return 0.5 * p * p;
 
-  return -0.5 * ((--t) * (t - 2) - 1);
+  p -= 1;
+
+  return -0.5 * (p * (p - 2) - 1);
 }
 
 static gdouble
@@ -630,8 +634,9 @@ clutter_ease_in_cubic (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d;
 
-  return (t /= d) * t * t;
+  return p * p * p;
 }
 
 static gdouble
@@ -641,8 +646,9 @@ clutter_ease_out_cubic (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d - 1;
 
-  return (t = t / d - 1) * t * t + 1;
+  return p * p * p + 1;
 }
 
 static gdouble
@@ -652,11 +658,14 @@ clutter_ease_in_out_cubic (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / (d / 2);
 
-  if ((t /= d / 2) < 1)
-    return 0.5 * t * t * t;
+  if (p < 1)
+    return 0.5 * p * p * p;
 
-  return 0.5 * ((t -= 2) * t * t + 2);
+  p -= 2;
+
+  return 0.5 * (p * p * p + 2);
 }
 
 static gdouble
@@ -666,8 +675,9 @@ clutter_ease_in_quart (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d;
 
-  return (t /= d) * t * t * t;
+  return p * p * p * p;
 }
 
 static gdouble
@@ -677,8 +687,9 @@ clutter_ease_out_quart (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d - 1;
 
-  return -0.5 * ((t = t / d - 1) * t * t * t - 1);
+  return -1.0 * (p * p * p * p - 1);
 }
 
 static gdouble
@@ -688,11 +699,14 @@ clutter_ease_in_out_quart (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / (d / 2);
 
-  if ((t /= d / 2) < 1)
-    return 0.5 * t * t * t * t;
+  if (p < 1)
+    return 0.5 * p * p * p * p;
 
-  return -0.5 * ((t -= 2) * t * t * t - 2);
+  p -= 2;
+
+  return -0.5 * (p * p * p * p - 2);
 }
 
 static gdouble
@@ -702,8 +716,9 @@ clutter_ease_in_quint (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d;
 
-  return (t /= d) * t * t * t * t;
+  return p * p * p * p * p;
 }
 
 static gdouble
@@ -713,8 +728,9 @@ clutter_ease_out_quint (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d - 1;
 
-  return (t = t / d - 1) * t * t * t * t + 1;
+  return p * p * p * p * p + 1;
 }
 
 static gdouble
@@ -724,11 +740,14 @@ clutter_ease_in_out_quint (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / (d / 2);
 
-  if ((t /= d / 2) < 1)
-    return 0.5 * t * t * t * t * t;
+  if (p < 1)
+    return 0.5 * p * p * p * p * p;
 
-  return 0.5 * ((t -= 2) * t * t * t * t + 2);
+  p -= 2;
+
+  return 0.5 * (p * p * p * p * p + 2);
 }
 
 static gdouble
@@ -793,6 +812,7 @@ clutter_ease_in_out_expo (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p;
 
   if (t == 0)
     return 0.0;
@@ -800,10 +820,14 @@ clutter_ease_in_out_expo (ClutterAlpha *alpha,
   if (t == d)
     return 1.0;
 
-  if ((t /= d / 2) < 1)
-    return 0.5 * pow (2, 10 * (t - 1));
+  p = t / (d / 2);
 
-  return 0.5 * (-pow (2, -10 * --t) + 2);
+  if (p < 1)
+    return 0.5 * pow (2, 10 * (p - 1));
+
+  p -= 1;
+
+  return 0.5 * (-pow (2, -10 * p) + 2);
 }
 
 static gdouble
@@ -813,8 +837,9 @@ clutter_ease_in_circ (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d;
 
-  return -1.0 * (sqrt (1 - (t /= d) * t) - 1);
+  return -1.0 * (sqrt (1 - p * p) - 1);
 }
 
 static gdouble
@@ -824,8 +849,9 @@ clutter_ease_out_circ (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d - 1;
 
-  return sqrt (1 - (t = t / d - 1) * t);
+  return sqrt (1 - p * p);
 }
 
 static gdouble
@@ -835,11 +861,14 @@ clutter_ease_in_out_circ (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / (d / 2);
 
-  if ((t /= d / 2) < 1)
-    return -0.5 * (sqrt (1 - t * t) - 1);
+  if (p < 1)
+    return -0.5 * (sqrt (1 - p * p) - 1);
 
-  return 0.5 * (sqrt (1 - (t -= 2) * t) + 1);
+  p -= 2;
+
+  return 0.5 * (sqrt (1 - p * p) + 1);
 }
 
 static gdouble
@@ -851,11 +880,14 @@ clutter_ease_in_elastic (ClutterAlpha *alpha,
   gdouble d = clutter_timeline_get_n_frames (timeline);
   gdouble p = d * .3;
   gdouble s = p / 4;
+  gdouble q = t / d;
 
-  if ((t /= d) == 1)
+  if (q == 1)
     return 1.0;
 
-  return -(pow (2, 10 * (t -= 1)) * sin ((t * d - s) * (2 * G_PI) / p));
+  q -= 1;
+
+  return -(pow (2, 10 * q) * sin ((q * d - s) * (2 * G_PI) / p));
 }
 
 static gdouble
@@ -867,11 +899,12 @@ clutter_ease_out_elastic (ClutterAlpha *alpha,
   gdouble d = clutter_timeline_get_n_frames (timeline);
   gdouble p = d * .3;
   gdouble s = p / 4;
+  gdouble q = t / d;
 
-  if ((t /= d) == 1)
+  if (q == 1)
     return 1.0;
 
-  return pow (2, -10 * t) * sin ((t * d - s) * (2 * G_PI) / p) + 1.0;
+  return pow (2, -10 * q) * sin ((q * d - s) * (2 * G_PI) / p) + 1.0;
 }
 
 static gdouble
@@ -883,16 +916,23 @@ clutter_ease_in_out_elastic (ClutterAlpha *alpha,
   gdouble d = clutter_timeline_get_n_frames (timeline);
   gdouble p = d * (.3 * 1.5);
   gdouble s = p / 4;
+  gdouble q = t / (d / 2);
 
-  if ((t /= d / 2) == 2)
+  if (q == 2)
     return 1.0;
 
-  if (t < 1)
-    return -.5 * (pow (2, 10 * (t -= 1)) * sin ((t * d - s) * (2 * G_PI) / p));
+  if (q < 1)
+    {
+      q -= 1;
+
+      return -.5 * (pow (2, 10 * q) * sin ((q * d - s) * (2 * G_PI) / p));
+    }
   else
     {
-      return pow (2, -10 * (t -= 1))
-           * sin ((t * d - s) * (2 * G_PI) / p)
+      q -= 1;
+
+      return pow (2, -10 * q)
+           * sin ((q * d - s) * (2 * G_PI) / p)
            * .5 + 1.0;
     }
 }
@@ -904,8 +944,9 @@ clutter_ease_in_back (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d;
 
-  return (t /= d) * t * ((1.70158 + 1) * t - 1.70158);
+  return p * p * ((1.70158 + 1) * p - 1.70158);
 }
 
 static gdouble
@@ -915,8 +956,9 @@ clutter_ease_out_back (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
+  gdouble p = t / d - 1;
 
-  return (t = t / d - 1) * t * ((1.70158 + 1) * t + 1.70158) + 1;
+  return p * p * ((1.70158 + 1) * p + 1.70158) + 1;
 }
 
 static gdouble
@@ -926,26 +968,43 @@ clutter_ease_in_out_back (ClutterAlpha *alpha,
   ClutterTimeline *timeline = alpha->priv->timeline;
   gdouble t = clutter_timeline_get_current_frame (timeline);
   gdouble d = clutter_timeline_get_n_frames (timeline);
-  gdouble s = 1.70158;
+  gdouble p = t / (d / 2);
+  gdouble s = 1.70158 * 1.525;
 
-  if ((t /= d / 2) < 1)
-    return 0.5 * (t * t * (((s *= (1.525)) + 1) * t - s));
+  if (p < 1)
+    return 0.5 * (p * p * ((s + 1) * p - s));
 
-  return 0.5 * ((t -= 2) * t * (((s *= (1.525)) + 1) * t + s) + 2);
+  p -= 2;
+
+  return 0.5 * (p * p * ((s + 1) * p + s) + 2);
 }
 
 static gdouble
 ease_out_bounce_internal (gdouble t,
                           gdouble d)
 {
-  if ((t /= d) < (1 / 2.75))
-    return 7.5625 * t * t;
-  else if (t < (2 / 2.75))
-    return 7.5625 * (t -= (1.5 / 2.75)) * t + .75;
-  else if (t < (2.5 / 2.75))
-    return 7.5625 * (t -= (2.25 / 2.75)) * t + .9375;
+  gdouble p = t / d;
+
+  if (p < (1 / 2.75))
+    return 7.5625 * p * p;
+  else if (p < (2 / 2.75))
+    {
+      p -= (1.5 / 2.75);
+
+      return 7.5625 * p * p + .75;
+    }
+  else if (p < (2.5 / 2.75))
+    {
+      p -= (2.25 / 2.75);
+
+      return 7.5625 * p * p + .9375;
+    }
   else
-    return 7.5625 * (t -= (2.625 / 2.75)) * t + .984375;
+    {
+      p -= (2.625 / 2.75);
+
+      return 7.5625 * p * p + .984375;
+    }
 }
 
 static gdouble
