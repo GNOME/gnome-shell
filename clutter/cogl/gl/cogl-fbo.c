@@ -321,13 +321,7 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
       /* Bind window framebuffer object */
       GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, 0) );
       
-      
-      if (target == COGL_WINDOW_BUFFER)
-	{
-	  /* Draw to RGB channels */
-	  GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE) );
-	}
-      else if (target == COGL_MASK_BUFFER)
+      if (target == COGL_MASK_BUFFER)
 	{
 	  /* Draw only to ALPHA channel */
 	  GE( glColorMask (GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE) );
