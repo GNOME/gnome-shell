@@ -162,7 +162,7 @@ else
 fi
 
 echo "Installing jhbuild..."
-(cd $SOURCE/jhbuild && make -f Makefile.plain DISABLE_GETTEXT=1 install >/dev/null)
+(cd $SOURCE/jhbuild && make -f Makefile.plain DISABLE_GETTEXT=1 bindir=$HOME/bin install >/dev/null)
 
 if [ -e $HOME/.jhbuildrc ] ; then
     if grep JHBUILDRC_GNOME_SHELL $HOME/.jhbuildrc > /dev/null ; then : ; else
