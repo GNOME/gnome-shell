@@ -82,32 +82,36 @@ _cogl_error_string(GLenum errorCode)
 #endif
 
 void
-cogl_clear (const CoglColor *color)
+cogl_clear (const CoglColor *color, gulong buffers)
 {
+  GLbitfield gl_buffers = 0;
+
 #if COGL_DEBUG
   fprintf(stderr, "\n ============== Paint Start ================ \n");
 #endif
 
-  GE( glClearColor (cogl_color_get_red_float (color),
-                    cogl_color_get_green_float (color),
-                    cogl_color_get_blue_float (color),
-                    0.0) );
+  if (buffers & COGL_BUFFER_BIT_COLOR)
+    {
+      GE( glClearColor (cogl_color_get_red_float (color),
+			cogl_color_get_green_float (color),
+			cogl_color_get_blue_float (color),
+			0.0) );
+      gl_buffers |= GL_COLOR_BUFFER_BIT;
+    }
+  if (buffers & COGL_BUFFER_BIT_DEPTH)
+    gl_buffers |= GL_DEPTH_BUFFER_BIT;
+  if (buffers & COGL_BUFFER_BIT_STENCIL)
+    gl_buffers |= GL_STENCIL_BUFFER_BIT;
 
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  if (!gl_buffers)
+    {
+      static gboolean shown = FALSE;
+      if (!shown)
+	g_warning ("You should specify at least one auxiliary buffer when calling cogl_clear");
+      return;
+    }
 
-  /*
-   *  Disable the depth test for now as has some strange side effects,
-   *  mainly on x/y axis rotation with multiple layers at same depth
-   *  (eg rotating text on a bg has very strange effect). Seems no clean
-   *  100% effective way to fix without other odd issues.. So for now
-   *  move to application to handle and add cogl_enable_depth_test()
-   *  as for custom actors (i.e groups) to enable if need be.
-   *
-   * glEnable (GL_DEPTH_TEST);
-   * glEnable (GL_ALPHA_TEST)
-   * glDepthFunc (GL_LEQUAL);
-   * glAlphaFunc (GL_GREATER, 0.1);
-   */
+  glClear (gl_buffers);
 }
 
 static inline gboolean
