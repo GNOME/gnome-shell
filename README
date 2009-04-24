@@ -295,8 +295,9 @@ Release Notes for Clutter 1.0
 * cogl_clip_set* and cogl_clip_unset have been renamed to cogl_clip_push and
   cogl_clip_pop respectively so they self document their stacking semantics.
 
-* cogl_paint_init was renamed to cogl_clear and no longer disables lighting
-  and fogging.
+* cogl_paint_init was renamed to cogl_clear and no longer disables lighting and
+  fogging. cogl_clear also now takes a mask of the auxiliary buffers you want
+  to clear so you can avoid redundant clears of buffers you aren't using.
 
 * cogl_fog_set was renamed to cogl_set_fog and it now takes a mode argument
   giving control over the fogging blend factor equation, so that the

@@ -364,13 +364,28 @@ void            cogl_set_fog                  (const CoglColor *fog_color,
 void            cogl_disable_fog              (void);
 
 /**
+ * CoglBufferBit:
+ * @COGL_BUFFER_BIT_COLOR: Selects the primary color buffer
+ * @COGL_BUFFER_BIT_DEPTH: Selects the depth buffer
+ * @COGL_BUFFER_BIT_STENCIL: Selects the stencil buffer
+ */
+typedef enum _CoglBufferBit
+{
+  COGL_BUFFER_BIT_COLOR   = 1L<<0,
+  COGL_BUFFER_BIT_DEPTH   = 1L<<1,
+  COGL_BUFFER_BIT_STENCIL = 1L<<2
+} CoglBufferBit;
+
+/**
  * cogl_clear:
  * @color: Background color to clear to
+ * @buffers: A mask of @CoglBufferBit<!-- -->'s identifying which auxiliary
+ *           buffers to clear
  *
- * Clears the color buffer to @color. The depth buffer and stencil
- * buffers are also cleared.
+ * Clears all the auxiliary buffers identified in the @buffers mask, and if
+ * that includes the color buffer then the specified @color is used.
  */
-void            cogl_clear                    (const CoglColor *color);
+void            cogl_clear                    (const CoglColor *color, gulong buffers);
 
 /**
  * cogl_set_source:

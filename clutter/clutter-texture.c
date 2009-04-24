@@ -593,7 +593,10 @@ clutter_texture_paint (ClutterActor *self)
 
       /* cogl_clear is called to clear the buffers */
       cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
-      cogl_clear (&transparent_col);
+      cogl_clear (&transparent_col,
+		  COGL_BUFFER_BIT_COLOR |
+		  COGL_BUFFER_BIT_DEPTH |
+		  COGL_BUFFER_BIT_STENCIL);
       cogl_disable_fog ();
 
       /* Clear the clipping stack so that if the FBO actor is being
@@ -1453,6 +1456,9 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
   g_object_notify (G_OBJECT (texture), "cogl-texture");
+
+  /* Re-assert the filter quality on the new cogl texture */
+  clutter_texture_set_filter_quality (texture, CLUTTER_TEXTURE_QUALITY_MEDIUM);
 
   /* If resized actor may need resizing but paint() will do this */
   if (CLUTTER_ACTOR_IS_VISIBLE (texture))
