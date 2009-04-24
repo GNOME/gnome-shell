@@ -1520,15 +1520,31 @@ clutter_stage_set_key_focus (ClutterStage *stage,
 
   if (priv->key_focused_actor)
     {
+      ClutterActor *old_focused_actor;
+
+      old_focused_actor = priv->key_focused_actor;
+
+      /* set key_focused_actor to NULL before emitting the signal or someone
+       * might hide the previously focused actor in the signal handler and we'd
+       * get re-entrant call and get glib critical from g_object_weak_unref
+       */
+
       g_object_weak_unref (G_OBJECT (priv->key_focused_actor),
 			   on_key_focused_weak_notify,
 			   stage);
-      g_signal_emit_by_name (priv->key_focused_actor, "key-focus-out");
 
       priv->key_focused_actor = NULL;
+
+      g_signal_emit_by_name (old_focused_actor, "key-focus-out");
     }
   else
     g_signal_emit_by_name (stage, "key-focus-out");
+
+  /* Note, if someone changes key focus in focus-out signal handler we'd be
+   * overriding the latter call below moving the focus where it was originally
+   * intended. The order of events would be:
+   *   1st focus-out, 2nd focus-out (on stage), 2nd focus-in, 1st focus-in
+   */
 
   if (actor)
     {
