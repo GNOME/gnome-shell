@@ -154,7 +154,7 @@ clutter_stage_x11_hide (ClutterActor *actor)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
 
   if (stage_x11->xwin)
-    XUnmapWindow (stage_x11->xdpy, stage_x11->xwin);
+    XWithdrawWindow (stage_x11->xdpy, stage_x11->xwin, stage_x11->xscreen);
 }
 
 void
