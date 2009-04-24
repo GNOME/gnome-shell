@@ -14,6 +14,9 @@ dist_jsui_DATA =		\
 	overlay.js		\
 	panel.js		\
 	runDialog.js		\
+	sidebar.js		\
 	tweener.js		\
+	widget.js		\
+	widgetBox.js		\
 	windowManager.js	\
 	workspaces.js

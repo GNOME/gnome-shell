@@ -668,6 +668,19 @@ shell_get_button_event_click_count(ClutterEvent *event)
 }
 
 /**
+ * shell_get_event_related:
+ *
+ * Return value: (transfer none): related actor
+ */
+ClutterActor *
+shell_get_event_related (ClutterEvent *event)
+{
+  g_return_val_if_fail (event->type == CLUTTER_ENTER ||
+                        event->type == CLUTTER_LEAVE, NULL);
+  return event->crossing.related;
+}
+
+/**
  * shell_global_get:
  *
  * Gets the singleton global object that represents the desktop.
@@ -1215,4 +1228,51 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
     g_object_unref(global->root_pixmap);
 
   return clone;
+}
+
+void
+shell_global_clutter_cairo_texture_draw_clock (ClutterCairoTexture *texture,
+                                               int                  hour,
+                                               int                  minute)
+{
+  cairo_t *cr;
+  guint width, height;
+  double xc, yc, radius, hour_radius, minute_radius;
+  double angle;
+
+  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+  xc = (double)width / 2;
+  yc = (double)height / 2;
+  radius = (double)(MIN(width, height)) / 2 - 2;
+  minute_radius = radius - 3;
+  hour_radius = radius / 2;
+
+  clutter_cairo_texture_clear (texture);
+  cr = clutter_cairo_texture_create (texture);
+  cairo_set_line_width (cr, 1.0);
+
+  /* Outline */
+  cairo_arc (cr, xc, yc, radius, 0.0, 2.0 * M_PI);
+  cairo_stroke (cr);
+
+  /* Hour hand. (We add a fraction to @hour for the minutes, then
+   * convert to radians, and then subtract pi/2 because cairo's origin
+   * is at 3:00, not 12:00.)
+   */
+  angle = ((hour + minute / 60.0) / 12.0) * 2.0 * M_PI - M_PI / 2.0;
+  cairo_move_to (cr, xc, yc);
+  cairo_line_to (cr,
+                 xc + hour_radius * cos (angle),
+                 yc + hour_radius * sin (angle));
+  cairo_stroke (cr);
+
+  /* Minute hand */
+  angle = (minute / 60.0) * 2.0 * M_PI - M_PI / 2.0;
+  cairo_move_to (cr, xc, yc);
+  cairo_line_to (cr,
+                 xc + minute_radius * cos (angle),
+                 yc + minute_radius * sin (angle));
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
 }

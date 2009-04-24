@@ -48,6 +48,8 @@ guint16 shell_get_event_key_symbol(ClutterEvent *event);
 
 guint16 shell_get_button_event_click_count(ClutterEvent *event);
 
+ClutterActor *shell_get_event_related(ClutterEvent *event);
+
 ShellGlobal *shell_global_get (void);
 
 void shell_global_grab_dbus_service (ShellGlobal *global);
@@ -81,6 +83,10 @@ ClutterCairoTexture *shell_global_create_vertical_gradient (ClutterColor *top,
 							    ClutterColor *bottom);
 
 ClutterActor *shell_global_create_root_pixmap_actor (ShellGlobal *global);
+
+void shell_global_clutter_cairo_texture_draw_clock (ClutterCairoTexture *texture,
+						    int                  hour,
+						    int                  minute);
 
 G_END_DECLS
 

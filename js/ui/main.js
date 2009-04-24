@@ -13,6 +13,7 @@ const Chrome = imports.ui.chrome;
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
+const Sidebar = imports.ui.sidebar;
 const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
 
@@ -21,6 +22,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let chrome = null;
 let panel = null;
+let sidebar = null;
 let overlay = null;
 let runDialog = null;
 let wm = null;
@@ -66,6 +68,7 @@ function start() {
     overlay = new Overlay.Overlay();
     chrome = new Chrome.Chrome();
     panel = new Panel.Panel();
+    sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
     
     global.screen.connect('toggle-recording', function() {
