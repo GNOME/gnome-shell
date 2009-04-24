@@ -29,7 +29,9 @@ on_event (ClutterStage *stage,
 
         clutter_event_get_coords (event, &x, &y);
 
-	actor = clutter_stage_get_actor_at_pos (stage, x, y);
+	actor = clutter_stage_get_actor_at_pos (stage,
+                                                CLUTTER_PICK_ALL,
+                                                x, y);
 
 	if (clutter_actor_transform_stage_point (actor,
                                                  CLUTTER_UNITS_FROM_DEVICE (x),

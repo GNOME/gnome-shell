@@ -65,12 +65,6 @@ typedef enum {
   CLUTTER_TEXTURE_IN_CLONE_PAINT = 1 << 6  /* Used for safety in clones */
 } ClutterPrivateFlags;
 
-typedef enum {
-  CLUTTER_PICK_NONE = 0,
-  CLUTTER_PICK_REACTIVE,
-  CLUTTER_PICK_ALL
-} ClutterPickMode;
-
 struct _ClutterInputDevice
 {
   gint          id;

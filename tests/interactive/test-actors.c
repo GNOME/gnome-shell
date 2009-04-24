@@ -57,7 +57,9 @@ input_cb (ClutterActor *stage,
 	       button_event->button,
                x, y);
 
-      e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage), x, y);
+      e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage),
+                                          CLUTTER_PICK_ALL,
+                                          x, y);
 
       /* only allow hiding the clones */
       if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))

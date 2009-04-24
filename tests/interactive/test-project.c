@@ -108,7 +108,9 @@ on_event (ClutterStage *stage,
 
         clutter_event_get_coords (event, &x, &y);
 
-	actor = clutter_stage_get_actor_at_pos (stage, x, y);
+	actor = clutter_stage_get_actor_at_pos (stage,
+                                                CLUTTER_PICK_ALL,
+                                                x, y);
 	
         if (actor != CLUTTER_ACTOR (stage))
 	  {

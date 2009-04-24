@@ -1242,20 +1242,26 @@ clutter_stage_read_pixels (ClutterStage *stage,
 /**
  * clutter_stage_get_actor_at_pos:
  * @stage: a #ClutterStage
+ * @pick_mode: how the scene graph should be painted
  * @x: X coordinate to check
  * @y: Y coordinate to check
  *
  * Checks the scene at the coordinates @x and @y and returns a pointer
  * to the #ClutterActor at those coordinates.
  *
- * Return value: (transfer none): the actor at the specified coordinates, if any
+ * By using @pick_mode it is possible to control which actors will be
+ * painted and thus available.
+ *
+ * Return value: (transfer none): the actor at the specified coordinates,
+ *   if any
  */
 ClutterActor *
-clutter_stage_get_actor_at_pos (ClutterStage *stage,
-                                gint          x,
-                                gint          y)
+clutter_stage_get_actor_at_pos (ClutterStage    *stage,
+                                ClutterPickMode  pick_mode,
+                                gint             x,
+                                gint             y)
 {
-  return _clutter_do_pick (stage, x, y, CLUTTER_PICK_ALL);
+  return _clutter_do_pick (stage, x, y, pick_mode);
 }
 
 /**

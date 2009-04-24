@@ -59,7 +59,7 @@ input_cb (ClutterStage *stage,
       g_print ("*** button press event (button:%d) ***\n",
 	       button_event->button);
 
-      e = clutter_stage_get_actor_at_pos (stage, x, y);
+      e = clutter_stage_get_actor_at_pos (stage, CLUTTER_PICK_ALL, x, y);
 
       if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
         {

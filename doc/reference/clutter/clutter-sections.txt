@@ -496,6 +496,7 @@ clutter_stage_fullscreen
 clutter_stage_unfullscreen
 clutter_stage_show_cursor
 clutter_stage_hide_cursor
+ClutterPickMode
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
 clutter_stage_ensure_viewport
