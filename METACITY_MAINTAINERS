@@ -1,0 +1,43 @@
+Currently active maintainers
+--------------------------------
+
+Elijah Newren
+Email: newren gmail com
+Userid: newren
+
+  - Usually won't touch the theme bugs (isn't interested) or the
+    compositor (until open source nvidia drivers are up to snuff).
+    Tends to be most interested in libwnck/gtk interactions, focus
+    issues, constraints problems, and raising/stacking, but works on
+    just about anything other than themes and the compositor.
+
+Thomas Thurman
+Email: thomas thurman org uk
+Userid: tthurman
+
+  - Responsible for all theme bugs and the compositor (thank goodness
+    Thomas got involved, eh?).  I'm sure he'll replace this sentence
+    with his interests when he reads it.  ;-)
+
+
+Semi-active maintainers
+--------------------------------
+
+Havoc Pennington
+Email: hp  redhat com
+Userid: hp
+  - Original author.  Doesn't patch metacity anymore, but is active in
+    answering questions, responding to bugs, providing very helpful
+    suggestions and insight, and even assisting with debugging.
+
+
+Important historical figureheads
+--------------------------------
+
+Rob Adams (readams  readams net)
+  - Was the main maintainer of metacity for a while; particular areas
+    of focus included xinerama, placement, and an older version of the
+    constraints code.  Still responds to bugs every once in a while.
+
+Søren Sandmann (sandmann  redhat com)
+  - Wrote most of the current compositing manager code + libcm
