@@ -136,7 +136,7 @@ Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefil
 		--nsversion=0.1				\
 		--add-include-path=$(META_LIB_DIR)/metacity/ \
 		--include=Clutter-0.9			\
-		--include=Meta-2.25			\
+		--include=Meta-2.27			\
 		--add-include-path=$(builddir)     \
 		--include=Big-1.0     \
 		--program=metacity			\
