@@ -403,13 +403,9 @@ void        meta_window_queue              (MetaWindow  *window,
                                             guint queuebits);
 void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
-void        meta_window_maximize           (MetaWindow        *window,
-                                            MetaMaximizeFlags  directions);
 void        meta_window_maximize_internal  (MetaWindow        *window,
                                             MetaMaximizeFlags  directions,
                                             MetaRectangle     *saved_rect);
-void        meta_window_unmaximize         (MetaWindow        *window,
-                                            MetaMaximizeFlags  directions);
 void        meta_window_make_above         (MetaWindow  *window);
 void        meta_window_unmake_above       (MetaWindow  *window);
 void        meta_window_shade              (MetaWindow  *window,
