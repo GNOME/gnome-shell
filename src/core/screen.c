@@ -1534,6 +1534,16 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
 }
 
 void
+meta_screen_destroy_tab_popup (MetaScreen *screen)
+{
+  if (screen->tab_popup)
+    {
+      meta_ui_tab_popup_free (screen->tab_popup);
+      screen->tab_popup = NULL;
+    }
+}
+
+void
 meta_screen_ensure_workspace_popup (MetaScreen *screen)
 {
   MetaTabEntry *entries;
@@ -1599,6 +1609,16 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
   meta_screen_free_workspace_layout (&layout);
 
   /* don't show tab popup, since proper space isn't selected yet */
+}
+
+void
+meta_screen_destroy_workspace_popup (MetaScreen *screen)
+{
+  if (screen->tab_popup)
+    {
+      meta_ui_tab_popup_free (screen->tab_popup);
+      screen->tab_popup = NULL;
+    }
 }
 
 MetaWindow*

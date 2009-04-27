@@ -3074,6 +3074,10 @@ do_choose_window (MetaDisplay    *display,
       return;
     }
 
+  meta_screen_ensure_tab_popup (screen, type,
+                                show_popup ? META_TAB_SHOW_ICON :
+                                META_TAB_SHOW_INSTANTLY);
+
   meta_ui_tab_popup_select (screen->tab_popup,
                             (MetaTabEntryKey) initial_selection->xwindow);
 
@@ -3455,6 +3459,7 @@ handle_workspace_switch  (MetaDisplay    *display,
 
   if (grabbed_before_release && !meta_prefs_get_no_tab_popup ())
     {
+      meta_screen_ensure_workspace_popup (screen);
       meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
 
       /* only after selecting proper space */
