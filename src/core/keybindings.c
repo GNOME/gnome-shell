@@ -2730,7 +2730,7 @@ process_workspace_switch_grab (MetaDisplay *display,
 {
   MetaWorkspace *workspace;
 
-  if (screen != display->grab_screen || !screen->tab_popup)
+  if (screen != display->grab_screen || !screen->ws_popup)
     return FALSE;
 
   if (event->type == KeyRelease &&
@@ -2740,7 +2740,7 @@ process_workspace_switch_grab (MetaDisplay *display,
       MetaWorkspace *target_workspace;
 
       target_workspace =
-        (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->tab_popup);
+        (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->ws_popup);
 
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Ending workspace tab operation, primary modifier released\n");
@@ -2777,7 +2777,7 @@ process_workspace_switch_grab (MetaDisplay *display,
 
   /* select the next workspace in the tabpopup */
   workspace =
-    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->tab_popup);
+    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->ws_popup);
   
   if (workspace)
     {
@@ -2818,7 +2818,7 @@ process_workspace_switch_grab (MetaDisplay *display,
 
       if (target_workspace)
         {
-          meta_ui_tab_popup_select (screen->tab_popup,
+          meta_ui_tab_popup_select (screen->ws_popup,
                                     (MetaTabEntryKey) target_workspace);
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Tab key pressed, moving tab focus in popup\n");
@@ -2836,7 +2836,7 @@ process_workspace_switch_grab (MetaDisplay *display,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Ending workspace tabbing & focusing default window; uninteresting key pressed\n");
   workspace =
-    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->tab_popup);
+    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->ws_popup);
   meta_workspace_focus_default_window (workspace, NULL, event->xkey.time);
   return FALSE;
 }
@@ -3460,10 +3460,10 @@ handle_workspace_switch  (MetaDisplay    *display,
   if (grabbed_before_release && !meta_prefs_get_no_tab_popup ())
     {
       meta_screen_ensure_workspace_popup (screen);
-      meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
+      meta_ui_tab_popup_select (screen->ws_popup, (MetaTabEntryKey) next);
 
       /* only after selecting proper space */
-      meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
+      meta_ui_tab_popup_set_showing (screen->ws_popup, TRUE);
     }
 }
 

@@ -80,7 +80,7 @@ struct _MetaScreen
   Visual *default_xvisual;
   MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaUI *ui;
-  MetaTabPopup *tab_popup;
+  MetaTabPopup *tab_popup, *ws_popup;
   
   MetaWorkspace *active_workspace;
 

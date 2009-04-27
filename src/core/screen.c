@@ -712,6 +712,7 @@ meta_screen_new (MetaDisplay *display,
                             screen->xscreen);
 
   screen->tab_popup = NULL;
+  screen->ws_popup = NULL;
   
   screen->stack = meta_stack_new (screen);
 
@@ -1553,7 +1554,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
   int n_workspaces;
   int current_workspace;
   
-  if (screen->tab_popup || meta_prefs_get_no_tab_popup ())
+  if (screen->ws_popup || meta_prefs_get_no_tab_popup ())
     return;
 
   current_workspace = meta_workspace_index (screen->active_workspace);
@@ -1599,11 +1600,11 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
       ++i;
     }
 
-  screen->tab_popup = meta_ui_tab_popup_new (entries, 
-                                             screen->number,
-                                             len,
-                                             layout.cols,
-                                             FALSE);      
+  screen->ws_popup = meta_ui_tab_popup_new (entries,
+                                            screen->number,
+                                            len,
+                                            layout.cols,
+                                            FALSE);
 
   g_free (entries);
   meta_screen_free_workspace_layout (&layout);
@@ -1614,10 +1615,10 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
 void
 meta_screen_destroy_workspace_popup (MetaScreen *screen)
 {
-  if (screen->tab_popup)
+  if (screen->ws_popup)
     {
-      meta_ui_tab_popup_free (screen->tab_popup);
-      screen->tab_popup = NULL;
+      meta_ui_tab_popup_free (screen->ws_popup);
+      screen->ws_popup = NULL;
     }
 }
 
