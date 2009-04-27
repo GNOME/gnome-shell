@@ -2045,7 +2045,6 @@ process_tab_grab (MetaDisplay *display,
   gboolean popup_not_showing;
   gboolean backward;
   gboolean key_used;
-  Window      prev_xwindow;
   MetaWindow *prev_window;
 
   if (screen != display->grab_screen)
@@ -2130,13 +2129,9 @@ process_tab_grab (MetaDisplay *display,
       end_keyboard_grab (display, event->xkey.keycode))
     {
       /* We're done, move to the new window. */
-      Window target_xwindow;
       MetaWindow *target_window;
 
-      target_xwindow =
-        (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
-      target_window =
-        meta_display_lookup_x_window (display, target_xwindow);
+      target_window = meta_screen_tab_popup_get_selected (screen);
 
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Ending tab operation, primary modifier released\n");
@@ -2172,8 +2167,7 @@ process_tab_grab (MetaDisplay *display,
   if (is_modifier (display, event->xkey.keycode))
     return TRUE;
 
-  prev_xwindow = (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
-  prev_window  = meta_display_lookup_x_window (display, prev_xwindow);
+  prev_window = meta_screen_tab_popup_get_selected (screen);
 
   /* Cancel when alt-Escape is pressed during using alt-Tab, and vice
    * versa.
@@ -2293,25 +2287,21 @@ process_tab_grab (MetaDisplay *display,
         backward = !backward;
 
       if (backward)
-        meta_ui_tab_popup_backward (screen->tab_popup);
+        meta_screen_tab_popup_backward (screen);
       else
-        meta_ui_tab_popup_forward (screen->tab_popup);
+        meta_screen_tab_popup_forward (screen);
       
       if (popup_not_showing)
         {
           /* We can't actually change window focus, due to the grab.
            * but raise the window.
            */
-          Window target_xwindow;
           MetaWindow *target_window;
 
           meta_stack_set_positions (screen->stack,
                                     display->grab_old_window_stacking);
 
-          target_xwindow =
-            (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
-          target_window =
-            meta_display_lookup_x_window (display, target_xwindow);
+          target_window = meta_screen_tab_popup_get_selected (screen);
           
           if (prev_window && prev_window->tab_unminimized)
             {
@@ -2739,8 +2729,7 @@ process_workspace_switch_grab (MetaDisplay *display,
       /* We're done, move to the new workspace. */
       MetaWorkspace *target_workspace;
 
-      target_workspace =
-        (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->ws_popup);
+      target_workspace = meta_screen_workspace_popup_get_selected (screen);
 
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Ending workspace tab operation, primary modifier released\n");
@@ -2775,9 +2764,8 @@ process_workspace_switch_grab (MetaDisplay *display,
   if (is_modifier (display, event->xkey.keycode))
     return TRUE;
 
-  /* select the next workspace in the tabpopup */
-  workspace =
-    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->ws_popup);
+  /* select the next workspace in the popup */
+  workspace = meta_screen_workspace_popup_get_selected (screen);
   
   if (workspace)
     {
@@ -2818,8 +2806,7 @@ process_workspace_switch_grab (MetaDisplay *display,
 
       if (target_workspace)
         {
-          meta_ui_tab_popup_select (screen->ws_popup,
-                                    (MetaTabEntryKey) target_workspace);
+          meta_screen_workspace_popup_select (screen, target_workspace);
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Tab key pressed, moving tab focus in popup\n");
 
@@ -2835,8 +2822,7 @@ process_workspace_switch_grab (MetaDisplay *display,
   /* end grab */
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Ending workspace tabbing & focusing default window; uninteresting key pressed\n");
-  workspace =
-    (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->ws_popup);
+  workspace = meta_screen_workspace_popup_get_selected (screen);
   meta_workspace_focus_default_window (workspace, NULL, event->xkey.time);
   return FALSE;
 }
@@ -3076,14 +3062,10 @@ do_choose_window (MetaDisplay    *display,
 
   meta_screen_ensure_tab_popup (screen, type,
                                 show_popup ? META_TAB_SHOW_ICON :
-                                META_TAB_SHOW_INSTANTLY);
+                                META_TAB_SHOW_INSTANTLY,
+                                initial_selection);
 
-  meta_ui_tab_popup_select (screen->tab_popup,
-                            (MetaTabEntryKey) initial_selection->xwindow);
-
-  if (show_popup)
-    meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
-  else
+  if (!show_popup)
     {
       meta_window_raise (initial_selection);
       initial_selection->tab_unminimized =
@@ -3458,13 +3440,7 @@ handle_workspace_switch  (MetaDisplay    *display,
   meta_workspace_activate (next, event->xkey.time);
 
   if (grabbed_before_release && !meta_prefs_get_no_tab_popup ())
-    {
-      meta_screen_ensure_workspace_popup (screen);
-      meta_ui_tab_popup_select (screen->ws_popup, (MetaTabEntryKey) next);
-
-      /* only after selecting proper space */
-      meta_ui_tab_popup_set_showing (screen->ws_popup, TRUE);
-    }
+    meta_screen_ensure_workspace_popup (screen, next);
 }
 
 static void

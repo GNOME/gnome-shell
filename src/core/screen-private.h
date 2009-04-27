@@ -164,12 +164,21 @@ void          meta_screen_set_cursor          (MetaScreen                 *scree
                                                MetaCursor                  cursor);
 void          meta_screen_update_cursor       (MetaScreen                 *screen);
 
-void          meta_screen_ensure_tab_popup    (MetaScreen                 *screen,
-                                               MetaTabList                 list_type,
-                                               MetaTabShowType             show_type);
-void          meta_screen_destroy_tab_popup   (MetaScreen                 *screen);
-void          meta_screen_ensure_workspace_popup  (MetaScreen *screen);
-void          meta_screen_destroy_workspace_popup (MetaScreen *screen);
+void          meta_screen_ensure_tab_popup       (MetaScreen              *screen,
+                                                  MetaTabList              list_type,
+                                                  MetaTabShowType          show_type,
+                                                  MetaWindow              *initial_window);
+void          meta_screen_tab_popup_forward      (MetaScreen              *screen);
+void          meta_screen_tab_popup_backward     (MetaScreen              *screen);
+MetaWindow*   meta_screen_tab_popup_get_selected (MetaScreen              *screen);
+void          meta_screen_tab_popup_destroy      (MetaScreen              *screen);
+
+void          meta_screen_ensure_workspace_popup       (MetaScreen    *screen,
+                                                        MetaWorkspace *initial_selection);
+void          meta_screen_workspace_popup_select       (MetaScreen    *screen,
+                                                        MetaWorkspace *workspace);
+MetaWorkspace*meta_screen_workspace_popup_get_selected (MetaScreen    *screen);
+void          meta_screen_workspace_popup_destroy      (MetaScreen    *screen);
 
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);

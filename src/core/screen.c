@@ -1426,7 +1426,8 @@ meta_screen_update_cursor (MetaScreen *screen)
 void
 meta_screen_ensure_tab_popup (MetaScreen      *screen,
                               MetaTabList      list_type,
-                              MetaTabShowType  show_type)
+                              MetaTabShowType  show_type,
+                              MetaWindow      *initial_selection)
 {
   MetaTabEntry *entries;
   GList *tab_list;
@@ -1460,7 +1461,7 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
 
       window = tmp->data;
       
-      entries[i].key = (MetaTabEntryKey) window->xwindow;
+      entries[i].key = (MetaTabEntryKey) window;
       entries[i].title = window->title;
       entries[i].icon = g_object_ref (window->icon);
       entries[i].blank = FALSE;
@@ -1531,11 +1532,39 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
 
   g_list_free (tab_list);
   
-  /* don't show tab popup, since proper window isn't selected yet */
+  meta_ui_tab_popup_select (screen->tab_popup,
+                            (MetaTabEntryKey) initial_selection);
+
+  if (show_type != META_TAB_SHOW_INSTANTLY)
+    meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
 }
 
 void
-meta_screen_destroy_tab_popup (MetaScreen *screen)
+meta_screen_tab_popup_forward (MetaScreen *screen)
+{
+  g_return_if_fail (screen->tab_popup != NULL);
+
+  meta_ui_tab_popup_forward (screen->tab_popup);
+}
+
+void
+meta_screen_tab_popup_backward (MetaScreen *screen)
+{
+  g_return_if_fail (screen->tab_popup != NULL);
+
+  meta_ui_tab_popup_backward (screen->tab_popup);
+}
+
+MetaWindow *
+meta_screen_tab_popup_get_selected (MetaScreen *screen)
+{
+  g_return_val_if_fail (screen->tab_popup != NULL, NULL);
+
+  return (MetaWindow *) meta_ui_tab_popup_get_selected (screen->tab_popup);
+}
+
+void
+meta_screen_tab_popup_destroy (MetaScreen *screen)
 {
   if (screen->tab_popup)
     {
@@ -1545,7 +1574,8 @@ meta_screen_destroy_tab_popup (MetaScreen *screen)
 }
 
 void
-meta_screen_ensure_workspace_popup (MetaScreen *screen)
+meta_screen_ensure_workspace_popup (MetaScreen    *screen,
+                                    MetaWorkspace *initial_selection)
 {
   MetaTabEntry *entries;
   int len;
@@ -1609,11 +1639,31 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
   g_free (entries);
   meta_screen_free_workspace_layout (&layout);
 
-  /* don't show tab popup, since proper space isn't selected yet */
+  meta_ui_tab_popup_select (screen->ws_popup,
+                            (MetaTabEntryKey) initial_selection);
+  meta_ui_tab_popup_set_showing (screen->ws_popup, TRUE);
 }
 
 void
-meta_screen_destroy_workspace_popup (MetaScreen *screen)
+meta_screen_workspace_popup_select (MetaScreen    *screen,
+                                    MetaWorkspace *workspace)
+{
+  g_return_if_fail (screen->ws_popup != NULL);
+
+  meta_ui_tab_popup_select (screen->ws_popup,
+                            (MetaTabEntryKey) workspace);
+}
+
+MetaWorkspace *
+meta_screen_workspace_popup_get_selected (MetaScreen *screen)
+{
+  g_return_val_if_fail (screen->ws_popup != NULL, NULL);
+
+  return (MetaWorkspace *) meta_ui_tab_popup_get_selected (screen->ws_popup);
+}
+
+void
+meta_screen_workspace_popup_destroy (MetaScreen *screen)
 {
   if (screen->ws_popup)
     {
