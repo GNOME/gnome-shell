@@ -1130,14 +1130,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 
     if (priv->needs_destroy && effect_in_progress (cw, TRUE) == FALSE)
       {
-        ClutterActor *cwa = CLUTTER_ACTOR (cw);
-        ClutterActor *parent = clutter_actor_get_parent (cwa);
-
-        if (CLUTTER_IS_CONTAINER (parent))
-          clutter_container_remove_actor (CLUTTER_CONTAINER (parent), cwa);
-        else
-          clutter_actor_unparent (cwa);
-
+	clutter_actor_destroy (CLUTTER_ACTOR (cw));
 	return;
       }
 
@@ -1201,14 +1194,7 @@ destroy_win (MutterWindow *cw)
       /*
        * No effects, just kill it.
        */
-      ClutterActor *cwa = CLUTTER_ACTOR (cw);
-      ClutterActor *parent = clutter_actor_get_parent (cwa);
-
-      if (CLUTTER_IS_CONTAINER (parent))
-        clutter_container_remove_actor (CLUTTER_CONTAINER (parent), cwa);
-      else
-        clutter_actor_unparent (cwa);
-
+      clutter_actor_destroy (CLUTTER_ACTOR (cw));
       return;
     }
 
@@ -1238,15 +1224,7 @@ destroy_win (MutterWindow *cw)
 	  priv->needs_destroy = TRUE;
 	}
       else
-        {
-          ClutterActor *cwa = CLUTTER_ACTOR (cw);
-          ClutterActor *parent = clutter_actor_get_parent (cwa);
-
-          if (CLUTTER_IS_CONTAINER (parent))
-            clutter_container_remove_actor (CLUTTER_CONTAINER (parent), cwa);
-          else
-            clutter_actor_unparent (cwa);
-        }
+	clutter_actor_destroy (CLUTTER_ACTOR (cw));
     }
 }
 
