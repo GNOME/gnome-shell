@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2008 OpenedHand
+ * Copyright (C) 2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -356,7 +354,7 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
   g_string_append (shader_source, cogl_fixed_fragment_shader_main_declare);
 
   g_string_append (shader_source, cogl_fixed_fragment_shader_main_start);
-  
+
   /* This pointless extra variable is needed to work around an
      apparent bug in the PowerVR drivers. Without it the alpha
      blending seems to stop working */
