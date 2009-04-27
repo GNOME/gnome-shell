@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -222,7 +220,7 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
   guchar           *out_data;
   guchar           *out;
   gint              r;
-  
+
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (bmp == NULL)
@@ -232,7 +230,7 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
   pixbuf = gdk_pixbuf_new_from_file (filename, error);
   if (pixbuf == NULL)
     return FALSE;
-  
+
   /* Get pixbuf properties */
   has_alpha       = gdk_pixbuf_get_has_alpha (pixbuf);
   color_space     = gdk_pixbuf_get_colorspace (pixbuf);
@@ -241,10 +239,10 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
   rowstride       = gdk_pixbuf_get_rowstride (pixbuf);
   bits_per_sample = gdk_pixbuf_get_bits_per_sample (pixbuf);
   n_channels      = gdk_pixbuf_get_n_channels (pixbuf);
-  
+
   /* The docs say this is the right way */
   last_row_size = width * ((n_channels * bits_per_sample + 7) / 8);
-  
+
   /* According to current docs this should be true and so
    * the translation to cogl pixel format below valid */
   g_assert (bits_per_sample == 8);
@@ -253,7 +251,7 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
     g_assert (n_channels == 4);
   else
     g_assert (n_channels == 3);
-  
+
   /* Translate to cogl pixel format */
   switch (color_space)
     {
@@ -263,19 +261,19 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
 	COGL_PIXEL_FORMAT_RGBA_8888 :
 	COGL_PIXEL_FORMAT_RGB_888;
       break;
-      
+
     default:
       /* Ouch, spec changed! */
       g_object_unref (pixbuf);
       return FALSE;
     }
-  
+
   /* FIXME: Any way to destroy pixbuf but retain pixel data? */
-  
+
   pixels   = gdk_pixbuf_get_pixels (pixbuf);
   out_data = (guchar*) g_malloc (height * rowstride);
   out      = out_data;
-  
+
   /* Copy up to last row */
   for (r = 0; r < height-1; ++r)
     {
@@ -283,13 +281,13 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
       pixels += rowstride;
       out += rowstride;
     }
-  
+
   /* Copy last row */
   memcpy (out, pixels, last_row_size);
-  
+
   /* Destroy GdkPixbuf object */
   g_object_unref (pixbuf);
-  
+
   /* Store bitmap info */
   bmp->data = out_data; /* The stored data the same alignment constraints as a
                          * gdkpixbuf but stores a full rowstride in the last
@@ -299,7 +297,7 @@ _cogl_bitmap_from_file (CoglBitmap   *bmp,
   bmp->width = width;
   bmp->height = height;
   bmp->rowstride = rowstride;
-  
+
   return TRUE;
 }
 
@@ -335,14 +333,14 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
 
   if (bmp == NULL)
     return FALSE;
-  
+
   /* Load from file using stb */
   pixels = stbi_load (filename,
                       &width, &height, &stb_pixel_format,
                       STBI_rgb_alpha);
   if (pixels == NULL)
     return FALSE;
- 
+
   /* Store bitmap info */
   bmp->data = g_memdup (pixels, height * width * 4);
   bmp->format = COGL_PIXEL_FORMAT_RGBA_8888;

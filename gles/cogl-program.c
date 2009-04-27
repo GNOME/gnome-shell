@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2008 OpenedHand
+ * Copyright (C) 2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -89,7 +87,7 @@ cogl_program_attach_shader (CoglHandle program_handle,
   CoglProgram *program;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   if (!cogl_is_program (program_handle) || !cogl_is_shader (shader_handle))
     return;
 
@@ -116,7 +114,7 @@ void
 cogl_program_use (CoglHandle handle)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   if (handle != COGL_INVALID_HANDLE && !cogl_is_program (handle))
     return;
 

@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,7 +45,7 @@ _cogl_get_format_bpp (CoglPixelFormat format)
     2, /* YUV      */
     1  /* G_8      */
   };
-  
+
   return bpp_lut [format & COGL_UNORDERED_MASK];
 }
 
@@ -59,7 +57,7 @@ _cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
   CoglBitmap  tmp_bmp = *bmp;
   CoglBitmap  new_bmp = *bmp;
   gboolean    new_bmp_owner = FALSE;
-  
+
   /* Is base format different (not considering premult status)? */
   if ((bmp->format & COGL_UNPREMULT_MASK) !=
       (dst_format & COGL_UNPREMULT_MASK))
@@ -71,12 +69,12 @@ _cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
 	  if (!_cogl_bitmap_fallback_convert (&new_bmp, &tmp_bmp, dst_format))
 	    return FALSE;
 	}
-  
+
       /* Update bitmap with new data */
       new_bmp = tmp_bmp;
       new_bmp_owner = TRUE;
     }
-  
+
   /* Do we need to unpremultiply */
   if ((bmp->format & COGL_PREMULT_BIT) == 0 &&
       (dst_format & COGL_PREMULT_BIT) > 0)
@@ -89,19 +87,19 @@ _cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
 	    {
 	      if (new_bmp_owner)
 		g_free (new_bmp.data);
-	      
+
 	      return FALSE;
 	    }
 	}
-      
+
       /* Update bitmap with new data */
       if (new_bmp_owner)
 	g_free (new_bmp.data);
-      
+
       new_bmp = tmp_bmp;
       new_bmp_owner = TRUE;
     }
-  
+
   /* Do we need to premultiply */
   if ((bmp->format & COGL_PREMULT_BIT) > 0 &&
       (dst_format & COGL_PREMULT_BIT) == 0)
@@ -109,13 +107,13 @@ _cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
       /* FIXME: implement premultiplication */
       if (new_bmp_owner)
 	g_free (new_bmp.data);
-      
+
       return FALSE;
     }
-  
+
   /* Output new bitmap info */
   *dst_bmp = new_bmp;
-  
+
   return TRUE;
 }
 
@@ -133,14 +131,14 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
   guchar *dstdata;
   gint    bpp;
   gint    line;
-  
+
   /* Intended only for fast copies when format is equal! */
   g_assert (src->format == dst->format);
   bpp = _cogl_get_format_bpp (src->format);
-  
+
   srcdata = src->data + src_y * src->rowstride + src_x * bpp;
   dstdata = dst->data + dst_y * dst->rowstride + dst_x * bpp;
-  
+
   for (line=0; line<height; ++line)
     {
       memcpy (dstdata, srcdata, width * bpp);
@@ -162,7 +160,7 @@ cogl_bitmap_new_from_file (const gchar    *filename,
                            GError        **error)
 {
   CoglBitmap   bmp;
-  
+
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
   /* Try loading with imaging backend */
@@ -177,7 +175,7 @@ cogl_bitmap_new_from_file (const gchar    *filename,
 	  *error = NULL;
 	}
     }
-  
+
   return (CoglBitmap *) g_memdup (&bmp, sizeof (CoglBitmap));
 }
 
