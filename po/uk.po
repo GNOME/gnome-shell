@@ -1,13 +1,13 @@
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Yuriy Syrota <rasta@renome.rovno.ua>, 2001, 2002.
-# Maxim Dziumanenko <dziumanenko@gmail.com>, 2004-2008
+# Maxim Dziumanenko <dziumanenko@gmail.com>, 2004-2009
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 16:13+0200\n"
-"PO-Revision-Date: 2008-03-07 03:08--500\n"
+"POT-Creation-Date: 2009-04-28 13:10+0300\n"
+"PO-Revision-Date: 2009-04-28 03:08--500\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,56 +22,51 @@ msgstr "Робочий стіл"
 msgid "Window Management"
 msgstr "Керування вікнами"
 
+#: ../src/core/bell.c:294
+msgid "Bell event"
+msgstr "Подія дзвінка"
+
 #: ../src/core/core.c:206
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Запит інформації невідомого вікна: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Не вдається проаналізувати як ціле \"%s\""
-
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
-#: ../src/ui/theme-parser.c:545
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Не вдається розпізнати останні символи \"%s\" у рядку \"%s\""
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Помилка при аналізі повідомлення \"%s\" від діалогового процесу\n"
-
-#: ../src/core/delete.c:270
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Помилка при зчитуванні з діалогового процесу: %s\n"
-
-#: ../src/core/delete.c:353
+#: ../src/core/delete.c:104
 #, c-format
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Помилка при відкриванні діалогу закриття програми: %s\n"
+"<big><b><tt>%s</tt> is not responding.</b></big>\n"
+"\n"
+"<i>You may choose to wait a short while for it to continue or force the "
+"application to quit entirely.</i>"
+msgstr ""
+"<big><b><tt>%s</tt> не відповідає.</b></big>\n"
+"\n"
+"<i>Можете трошки зачекати відновлення активності або примусово закрити програму.</i>"
 
-#: ../src/core/delete.c:462
+#: ../src/core/delete.c:115
+msgid "_Wait"
+msgstr "_Чекати"
+
+#: ../src/core/delete.c:115
+msgid "_Force Quit"
+msgstr "_Завершити"
+
+#: ../src/core/delete.c:216
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Помилка при отриманні назви комп'ютера: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:258
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Відсутнє розширення %s, яке необхідне для функції композиції"
 
-#: ../src/core/display.c:438
+#: ../src/core/display.c:336
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не вдається відкрити дисплей X Window System \"%s\"\n"
 
-#: ../src/core/errors.c:271
+#: ../src/core/errors.c:272
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -82,12 +77,12 @@ msgstr ""
 "очевидно було зупинено X-сервер, або в віконний менеджер\n"
 "був знищений.\n"
 
-#: ../src/core/errors.c:278
+#: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатальна помилка вводу-виводу %d (%s) на дисплеї \"%s\".\n"
 
-#: ../src/core/keybindings.c:1090
+#: ../src/core/keybindings.c:680
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -95,73 +90,88 @@ msgid ""
 msgstr ""
 "Клавішу \"%s\" з модифікаторами \"%x\" вже використовує інша програма\n"
 
-#: ../src/core/keybindings.c:2736
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2294
 #, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
 msgstr ""
-"Помилка при відкриванні діалогу виводу повідомлення про помилку у команді: %"
-"s\n"
+"Виникла помила під час запуску <tt>%s</tt>:\n"
+"\n"
+"%s"
 
-#: ../src/core/keybindings.c:2841
+#: ../src/core/keybindings.c:2383
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команду %d не визначено.\n"
 
-#: ../src/core/keybindings.c:3869
+#: ../src/core/keybindings.c:3337
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Команду терміналу не визначено.\n"
 
-#: ../src/core/main.c:115
+#: ../src/core/main.c:130
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "Це - вільне програмне забезпечення; умови копіювання дивіться у текстах "
 "програми.\n"
 "Не надається НІЯКИХ гарантій; навіть ПРИДАТНОСТІ ДЛЯ ПРОДАЖУ чи "
 "ВІДПОВІДНОСТІ ПЕВНІЙ МЕТІ.\n"
 
-#: ../src/core/main.c:242
+#: ../src/core/main.c:267
 msgid "Disable connection to session manager"
 msgstr "Вимкнути з'єднання з менеджером сеансу"
 
-#: ../src/core/main.c:248
+#: ../src/core/main.c:273
 msgid "Replace the running window manager with Metacity"
 msgstr "Замінити запущений менеджер вікон на Metacity"
 
-#: ../src/core/main.c:254
+#: ../src/core/main.c:279
 msgid "Specify session management ID"
 msgstr "Вказати ідентифікатор сеансу"
 
-#: ../src/core/main.c:259
+#: ../src/core/main.c:284
 msgid "X Display to use"
 msgstr "X дисплей"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:290
 msgid "Initialize session from savefile"
 msgstr "Ініціалізувати сеанс з збереженого файлу"
 
-#: ../src/core/main.c:271
+#: ../src/core/main.c:296
 msgid "Print version"
 msgstr "Вивести версію"
 
-#: ../src/core/main.c:277
+#: ../src/core/main.c:302
 msgid "Make X calls synchronous"
 msgstr "Зробити виклики X синхронними"
 
-#: ../src/core/main.c:428
+#: ../src/core/main.c:308
+msgid "Turn compositing on"
+msgstr "Увімкнути менеджер композиції"
+
+#: ../src/core/main.c:314
+msgid "Turn compositing off"
+msgstr "Вимкнути менеджер композиції"
+
+#: ../src/core/main.c:536
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Помилка зчитування каталогу тем: %s\n"
 
-#: ../src/core/main.c:444
+#: ../src/core/main.c:552
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -169,7 +179,7 @@ msgstr ""
 "Не вдається знайти тему! Перевірте чи існує %s та чи містить він звичайну "
 "тему.\n"
 
-#: ../src/core/main.c:516
+#: ../src/core/main.c:608
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Збій перезапуску: %s\n"
@@ -181,26 +191,28 @@ msgstr "Збій перезапуску: %s\n"
 #. * we might consider reverting invalid keys to their original values.
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
 #.
-#: ../src/core/prefs.c:450 ../src/core/prefs.c:564
+#.
+#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ключ GConf \"%s\" встановлено у неправильний тип\n"
 
-#: ../src/core/prefs.c:537 ../src/core/prefs.c:607 ../src/core/prefs.c:655
-#: ../src/core/prefs.c:961 ../src/core/prefs.c:979 ../src/core/prefs.c:995
-#: ../src/core/prefs.c:1014 ../src/core/prefs.c:1030 ../src/core/prefs.c:1047
-#: ../src/core/prefs.c:1064 ../src/core/prefs.c:1080 ../src/core/prefs.c:1096
+#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr "Значення %d встановлене у ключі GConf %s не лежить у межах від %d до %d\n"
+
+#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
+#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
+#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ключ GConf \"%s\" встановлено у неправильний тип\n"
 
-#: ../src/core/prefs.c:856
-#, c-format
-msgid "Type of %s was not integer"
-msgstr "Значення %s має відмінний тип від цілого числа"
-
-#: ../src/core/prefs.c:1165
+#: ../src/core/prefs.c:1231
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -208,21 +220,12 @@ msgstr ""
 "Трюк для роботи із зіпсованими програмами вимкнено. Деякі додатки можуть "
 "поводитись неправильно.\n"
 
-#: ../src/core/prefs.c:1220
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"Значення %d встановлено у ключі GCong %s є неприпустимим для cursor_size; "
-"має бути у межах 1..128\n"
-
-#: ../src/core/prefs.c:1246
+#: ../src/core/prefs.c:1302
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Неможливо проаналізувати опис шрифту \"%s\" у ключі GConf %s\n"
 
-#: ../src/core/prefs.c:1306
+#: ../src/core/prefs.c:1364
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -231,31 +234,17 @@ msgstr ""
 "У базі даних конфігурації знайдено \"%s\" - що не є правильним значенням "
 "модифікатора клавіші миші.\n"
 
-#: ../src/core/prefs.c:1585
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"Значення %d встановлено у ключі GCong %s ― що не є припустимим значенням "
-"кількості робочих областей, поточний максимум рівний %d\n"
-
-#: ../src/core/prefs.c:1629
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "Значення %d встановлене у ключі GConf %s виходить за межі 0 ― %d\n"
-
-#: ../src/core/prefs.c:1760
+#: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Помилка встановлення кількості робочих областей у %d: %s\n"
 
-#: ../src/core/prefs.c:2125 ../src/core/prefs.c:2637 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
 #, c-format
 msgid "Workspace %d"
 msgstr "Робоча область %d"
 
-#: ../src/core/prefs.c:2155 ../src/core/prefs.c:2328
+#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -264,17 +253,22 @@ msgstr ""
 "Знайдене у конфігураційній базі даних значення \"%s\" не є правильним "
 "записом комбінації клавіш \"%s\"\n"
 
-#: ../src/core/prefs.c:2718
+#: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Помилка встановлення назви робочої області %d у \"%s\": %s\n"
 
-#: ../src/core/screen.c:410
+#: ../src/core/prefs.c:2753
+#, c-format
+msgid "Error setting compositor status: %s\n"
+msgstr "Помилка встановлення стану менеджера композиції: %s\n"
+
+#: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї \"%s\" не правильний\n"
 
-#: ../src/core/screen.c:426
+#: ../src/core/screen.c:366
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -283,7 +277,7 @@ msgstr ""
 "Екран %d на дисплеї \"%s\" вже контролюється менеджером вікон; спробуйте "
 "вказати параметр --replace, щоб замінити поточний менеджер вікон.\n"
 
-#: ../src/core/screen.c:453
+#: ../src/core/screen.c:393
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -291,146 +285,166 @@ msgstr ""
 "Не вдається одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "\"%s\"\n"
 
-#: ../src/core/screen.c:511
+#: ../src/core/screen.c:451
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплеї \"%s\" вже контролюється менеджером вікон\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не вдається повернути екран %d на дисплеї \"%s\"\n"
 
-#: ../src/core/session.c:826 ../src/core/session.c:833
+#. Translators: Please don't translate "Control", "Shift", etc, since these
+#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+#. * "disabled" must also stay as it is.
+#.
+#: ../src/core/schema-bindings.c:169
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Використовується формат \"<Control>a\" або <Shift><Alt>F1\".\n"
+"\n"
+"Аналізатор досить гнучкий та "
+"дозволяє використання верхнього та нижнього регістру та скорочень, наприклад "
+"\"<Ctl>\" та \"<Ctrl>\". Якщо цей параметр встановити у "
+"спеціальне значення \"disabled\", то для цієї дії не буде призначено "
+"комбінації клавіш."
+
+#: ../src/core/schema-bindings.c:177
+msgid ""
+"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
+"\n"
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
+msgstr ""
+"Використовується формат \"<Control>a\" або <Shift><Alt>F1\".\n"
+"\n"
+"Аналізатор досить гнучкий та "
+"дозволяє використання верхнього та нижнього регістру та скорочень, наприклад "
+"\"<Ctl>\" та \"<Ctrl>\". Якщо цей параметр встановити у "
+"спеціальне значення \"disabled\", то для цієї дії не буде призначено "
+"комбінації клавіш."
+
+#: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не вдається створити каталог \"%s\": %s\n"
 
-#: ../src/core/session.c:843
+#: ../src/core/session.c:862
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не вдається відкрити для запису файл сеансу \"%s\": %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1003
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Помилка запису файлу сеансу \"%s\": %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1008
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Помилка закриття файлу сеансу \"%s\": %s\n"
 
-#: ../src/core/session.c:1075
+#. oh, just give up
+#: ../src/core/session.c:1101
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Збій під час зчитування збереженого файлу сеансу \"%s\": %s\n"
 
-#: ../src/core/session.c:1110
+#: ../src/core/session.c:1140
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Збій аналізування збереженого файлу сеансу: %s\n"
 
-#: ../src/core/session.c:1159
+#: ../src/core/session.c:1189
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "було прочитано атрибут <metacity_session>, але ідентифікатор сеансу вже було "
 "встановлено"
 
-#: ../src/core/session.c:1172
+#: ../src/core/session.c:1202 ../src/core/session.c:1277
+#: ../src/core/session.c:1309 ../src/core/session.c:1381
+#: ../src/core/session.c:1441
 #, c-format
-msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Невідома ознака %s у елементі <metacity_session>"
+msgid "Unknown attribute %s on <%s> element"
+msgstr "Невідома ознака %s у елементі <%s>"
 
-#: ../src/core/session.c:1189
+#: ../src/core/session.c:1219
 #, c-format
 msgid "nested <window> tag"
 msgstr "вкладений елемент <window>"
 
-#: ../src/core/session.c:1247 ../src/core/session.c:1279
-#, c-format
-msgid "Unknown attribute %s on <window> element"
-msgstr "Невідома ознака %s у елементі <window>"
-
-#: ../src/core/session.c:1351
-#, c-format
-msgid "Unknown attribute %s on <maximized> element"
-msgstr "Невідома ознака %s у елементі <maximized>"
-
-#: ../src/core/session.c:1411
-#, c-format
-msgid "Unknown attribute %s on <geometry> element"
-msgstr "Невідома ознака %s у елементі <geometry>"
-
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1461
 #, c-format
 msgid "Unknown element %s"
 msgstr "Невідомий елемент %s"
 
-#: ../src/core/session.c:1868
-#, c-format
+#: ../src/core/session.c:1812
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Помилка запуску діалогового вікна Метасіті із застереженням про те, що "
-"додаток не має підтримки сеансів: %s\n"
+"Ці вікна не підтримують \"збереження поточних параметрів\", при наступному "
+"входженні їх треба запустити власноруч."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:103
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Збій відкриття налагоджувального журналу: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:113
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Збій виконання fdopen() для журналу %s: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:119
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Відкрито журнал %s\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 "\"Метасіті\" скомпільовано без підтримки режиму докладних повідомлень\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:238
 msgid "Window manager: "
 msgstr "Віконний менеджер:"
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:390
 msgid "Bug in window manager: "
 msgstr "Вада у віконному менеджері:"
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:423
 msgid "Window manager warning: "
 msgstr "Попередження віконного менеджера:"
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:451
 msgid "Window manager error: "
 msgstr "Помилка віконного менеджера:"
 
-#: ../src/core/window-props.c:195
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Програма встановив неправильне значення параметра _NET_WM_PID %lu\n"
-
-#: ../src/core/window-props.c:327
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (на %s)"
-
-#: ../src/core/window-props.c:1409
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "Неправильний параметр WM_TRANSIENT_FOR вікна 0x%lx вказано для %s.\n"
+#. Translators: This is the title used on dialog boxes
+#. eof all-keybindings.h
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "Метасіті"
 
 #. first time through
-#: ../src/core/window.c:5653
+#: ../src/core/window.c:5627
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -446,7 +460,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6218
+#: ../src/core/window.c:6192
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -455,6 +469,42 @@ msgstr ""
 "Вікно %s встановило натяк MWM, який вказує що його розмір не може "
 "змінюватись, але встановило мінімальний розмір %d x %d та максимальний %d x %"
 "d; що не має сенсу.\n"
+
+#: ../src/core/window-props.c:244
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Програма встановив неправильне значення параметра _NET_WM_PID %lu\n"
+
+#. Translators: the title of a window from another machine
+#: ../src/core/window-props.c:388
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (на %s)"
+
+#. Simple case-- don't bother to look it up.  It's root.
+#: ../src/core/window-props.c:420
+#, c-format
+msgid "%s (as superuser)"
+msgstr "%s (від адміністратора)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine
+#: ../src/core/window-props.c:438
+#, c-format
+msgid "%s (as %s)"
+msgstr "%s (від %s)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine, whose name we don't know
+#: ../src/core/window-props.c:444
+#, c-format
+msgid "%s (as another user)"
+msgstr "%s (від іншого користувача)"
+
+#: ../src/core/window-props.c:1429
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "Неправильний параметр WM_TRANSIENT_FOR вікна 0x%lx вказано для %s.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -483,15 +533,318 @@ msgid ""
 msgstr ""
 "Властивість %s вікна 0x%lx містить неправильний UTF-8 у пункті %d списку\n"
 
-#: ../src/metacity.desktop.in.h:1
-msgid "Metacity"
-msgstr "Метасіті"
+#: ../src/include/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "Перейти в робочу область 1"
 
-#: ../src/metacity.schemas.in.h:1
+#: ../src/include/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "Перейти в робочу область 2"
+
+#: ../src/include/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "Перейти в робочу область 3"
+
+#: ../src/include/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "Перейти в робочу область 4"
+
+#: ../src/include/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "Перейти в робочу область 5"
+
+#: ../src/include/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "Перейти в робочу область 6"
+
+#: ../src/include/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "Перейти в робочу область 7"
+
+#: ../src/include/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "Перейти в робочу область 8"
+
+#: ../src/include/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "Перейти в робочу область 9"
+
+#: ../src/include/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "Перейти в робочу область 10"
+
+#: ../src/include/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "Перейти в робочу область 11"
+
+#: ../src/include/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "Перейти в робочу область 12"
+
+#: ../src/include/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "Перейти на робочу область ліворуч від поточної"
+
+#: ../src/include/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "Перейти на робочу область праворуч від поточної"
+
+#: ../src/include/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "Перейти на робочу область вище над поточною"
+
+#: ../src/include/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "Перейти на робочу область нижче поточної"
+
+#: ../src/include/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "Перемикати фокус вводу між вікнами програми через контекстне вікно"
+
+#: ../src/include/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "Перемикати фокус у зворотному порядку між вікнами програми через контекстне вікно"
+
+#: ../src/include/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "Перехід між вікнами через контекстне вікно"
+
+#: ../src/include/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr ""
+"Перемикнутися у зворотному порядку між вікнами з використанням контекстного вікна"
+
+#: ../src/include/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "Перехід між панелями та робочим столом через контекстне вікно"
+
+#: ../src/include/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr ""
+"Перехід у зворотному напрямку між панелями та робочим столом через контекстне вікно"
+
+#: ../src/include/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "Негайний перехід між вікнами"
+
+#: ../src/include/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "Перемикнутися у зворотному порядку між вікнами програми негайно"
+
+#: ../src/include/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "Негайний перехід між вікнами"
+
+#: ../src/include/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "Негайний перехід у зворотному напрямку між вікнами"
+
+#: ../src/include/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "Негайний перехід між панелями та робочим столом"
+
+#: ../src/include/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "Негайний перехід у зворотному напрямку між панелями та робочим столом"
+
+#: ../src/include/all-keybindings.h:191
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "Приховувати всі звичайні вікна та активувати робочий стіл"
+
+#: ../src/include/all-keybindings.h:194
+msgid "Show the panel's main menu"
+msgstr "Показати головне меню панелі"
+
+#: ../src/include/all-keybindings.h:197
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "Показати діалогове вікно панелі «Виконати програму»"
+
+#: ../src/include/all-keybindings.h:238
+msgid "Take a screenshot"
+msgstr "Зробити знімок екрану"
+
+#: ../src/include/all-keybindings.h:240
+msgid "Take a screenshot of a window"
+msgstr "Зробити знімок вікна"
+
+#: ../src/include/all-keybindings.h:242
+msgid "Run a terminal"
+msgstr "Запустити термінал"
+
+#: ../src/include/all-keybindings.h:257
+msgid "Activate the window menu"
+msgstr "Активувати меню вікна"
+
+#: ../src/include/all-keybindings.h:260
+msgid "Toggle fullscreen mode"
+msgstr "Перемикання повноекранного режиму"
+
+#: ../src/include/all-keybindings.h:262
+msgid "Toggle maximization state"
+msgstr "Перемикання стану розгортання вікна на весь екран"
+
+#: ../src/include/all-keybindings.h:264
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "Перемістити вікна нижче усіх вікон"
+
+#: ../src/include/all-keybindings.h:266
+msgid "Maximize window"
+msgstr "Розгорнути вікно на весь екран"
+
+#: ../src/include/all-keybindings.h:268
+msgid "Restore window"
+msgstr "Відновити вікно"
+
+#: ../src/include/all-keybindings.h:270
+msgid "Toggle shaded state"
+msgstr "Перемикання стану згорнутості"
+
+#: ../src/include/all-keybindings.h:272
+msgid "Minimize window"
+msgstr "Згорнути вікно"
+
+#: ../src/include/all-keybindings.h:274
+msgid "Close window"
+msgstr "Закрити вікно"
+
+#: ../src/include/all-keybindings.h:276
+msgid "Move window"
+msgstr "Перемістити вікно"
+
+#: ../src/include/all-keybindings.h:278
+msgid "Resize window"
+msgstr "Змінити розміри вікна"
+
+#: ../src/include/all-keybindings.h:281
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "Чи буде вікно розташоване на усіх робочих областях або ж лишена одній"
+
+#: ../src/include/all-keybindings.h:285
+msgid "Move window to workspace 1"
+msgstr "Перемістити вікно на робочу область 1"
+
+#: ../src/include/all-keybindings.h:288
+msgid "Move window to workspace 2"
+msgstr "Перемістити вікно на робочу область 2"
+
+#: ../src/include/all-keybindings.h:291
+msgid "Move window to workspace 3"
+msgstr "Перемістити вікно на робочу область 3"
+
+#: ../src/include/all-keybindings.h:294
+msgid "Move window to workspace 4"
+msgstr "Перемістити вікно на робочу область 4"
+
+#: ../src/include/all-keybindings.h:297
+msgid "Move window to workspace 5"
+msgstr "Перемістити вікно на робочу область 5"
+
+#: ../src/include/all-keybindings.h:300
+msgid "Move window to workspace 6"
+msgstr "Перемістити вікно на робочу область 6"
+
+#: ../src/include/all-keybindings.h:303
+msgid "Move window to workspace 7"
+msgstr "Перемістити вікно на робочу область 7"
+
+#: ../src/include/all-keybindings.h:306
+msgid "Move window to workspace 8"
+msgstr "Перемістити вікно на робочу область 8"
+
+#: ../src/include/all-keybindings.h:309
+msgid "Move window to workspace 9"
+msgstr "Перемістити вікно на робочу область 9"
+
+#: ../src/include/all-keybindings.h:312
+msgid "Move window to workspace 10"
+msgstr "Перемістити вікно на робочу область 10"
+
+#: ../src/include/all-keybindings.h:315
+msgid "Move window to workspace 11"
+msgstr "Перемістити вікно на робочу область 11"
+
+#: ../src/include/all-keybindings.h:318
+msgid "Move window to workspace 12"
+msgstr "Перемістити вікно на робочу область 12"
+
+#: ../src/include/all-keybindings.h:330
+msgid "Move window one workspace to the left"
+msgstr "Перемістити вікно у робочу область ліворуч"
+
+#: ../src/include/all-keybindings.h:333
+msgid "Move window one workspace to the right"
+msgstr "Перемістити вікно у робочу область праворуч"
+
+#: ../src/include/all-keybindings.h:336
+msgid "Move window one workspace up"
+msgstr "Перемістити вікно на робочу область вище"
+
+#: ../src/include/all-keybindings.h:339
+msgid "Move window one workspace down"
+msgstr "Перемістити вікно на робочу область нижче"
+
+#: ../src/include/all-keybindings.h:342
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr ""
+"Підняти вікно вікно на передній план, якщо воно затінене іншим, інакше опустити його"
+
+#: ../src/include/all-keybindings.h:344
+msgid "Raise window above other windows"
+msgstr "Підняти вікно над іншими"
+
+#: ../src/include/all-keybindings.h:346
+msgid "Lower window below other windows"
+msgstr "Перемістити вікна нижче усіх вікон"
+
+#: ../src/include/all-keybindings.h:350
+msgid "Maximize window vertically"
+msgstr "Розгорнути вікно на весь екран вертикально"
+
+#: ../src/include/all-keybindings.h:354
+msgid "Maximize window horizontally"
+msgstr "Розгорнути вікно на весь екран горизонтально"
+
+#: ../src/include/all-keybindings.h:358
+msgid "Move window to north-west (top left) corner"
+msgstr "Перемістити вікно на північно-західний (верхній лівий) кут"
+
+#: ../src/include/all-keybindings.h:361
+msgid "Move window to north-east (top right) corner"
+msgstr "Перемістити вікно на північно-східний (верхній правий) кут"
+
+#: ../src/include/all-keybindings.h:364
+msgid "Move window to south-west (bottom left) corner"
+msgstr "Перемістити вікно на південно-західний (нижній кут) кут"
+
+#: ../src/include/all-keybindings.h:367
+msgid "Move window to south-east (bottom right) corner"
+msgstr "Перемістити вікно на південно-східний (нижній правий) кут"
+
+#: ../src/include/all-keybindings.h:371
+msgid "Move window to north (top) side of screen"
+msgstr "Перемістити вікно на північну (верхню) область екрану"
+
+#: ../src/include/all-keybindings.h:374
+msgid "Move window to south (bottom) side of screen"
+msgstr "Перемістити вікно на південну (нижню) область екрану"
+
+#: ../src/include/all-keybindings.h:377
+msgid "Move window to east (right) side of screen"
+msgstr "Перемістити вікно на східну (праву) область екрану"
+
+#: ../src/include/all-keybindings.h:380
+msgid "Move window to west (left) side of screen"
+msgstr "Перемістити вікно на західну (ліву) область екрану"
+
+#: ../src/include/all-keybindings.h:383
+msgid "Move window to center of screen"
+msgstr "Перемістити вікно у центр екрану"
+
+#: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr "(Не реалізовано) Навігація працює лише по програмам, а не по вікнам"
 
-#: ../src/metacity.schemas.in.h:2
+#: ../src/metacity.schemas.in.in.h:2
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -503,27 +856,23 @@ msgstr ""
 "вимкнений, якщо параметр \"titlebar_uses_desktop_font\" має значення Істина"
 "(true)."
 
-#: ../src/metacity.schemas.in.h:3
+#: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
 msgstr "Дія при подвійному клацанні на заголовку вікна"
 
-#: ../src/metacity.schemas.in.h:4
+#: ../src/metacity.schemas.in.in.h:4
 msgid "Action on title bar middle-click"
 msgstr "Дія при клацанні середньою кнопкою на заголовку вікна"
 
-#: ../src/metacity.schemas.in.h:5
+#: ../src/metacity.schemas.in.in.h:5
 msgid "Action on title bar right-click"
 msgstr "Дія при клацанні правою кнопкою на заголовку вікна"
 
-#: ../src/metacity.schemas.in.h:6
-msgid "Activate window menu"
-msgstr "Активувати меню вікна"
-
-#: ../src/metacity.schemas.in.h:7
+#: ../src/metacity.schemas.in.in.h:6
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Вирівнювання кнопок у заголовку вікна."
 
-#: ../src/metacity.schemas.in.h:8
+#: ../src/metacity.schemas.in.in.h:7
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
@@ -534,56 +883,54 @@ msgid ""
 "some space between two adjacent buttons."
 msgstr ""
 "Вирівнювання кнопок у заголовку вікна. Значення має бути рядком, наприклад "
-"\"menu:minimize,maximize,spacer,close\"; де двокрапка відокремлює лівий кут вікна "
-"від правого, а назви кнопок розділяються комами. Дублікати кнопок не "
+"\"menu:minimize,maximize,spacer,close\"; де двокрапка відокремлює лівий кут "
+"вікна від правого, а назви кнопок розділяються комами. Дублікати кнопок не "
 "дозволяються. Невідомі назви кнопок просто ігноруються, таким чином можна "
 "додавати кнопки з майбутніх версій Метасіті без впливу на старі версії."
 
-#: ../src/metacity.schemas.in.h:9
+#: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
 msgstr "Автоматично піднімати вікно з фокусом вводу"
 
-#: ../src/metacity.schemas.in.h:10
+#: ../src/metacity.schemas.in.in.h:9
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
-"(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
-"for example."
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
 msgstr ""
 "Клацання кнопкою миші по вікну з утриманням натиснутою клавіші-модифікатора "
-"призведе до пересування вікна(лівою кнопкою), зміни розмірів (середньою "
-"кнопкою), або показу меню вікна (правою кнопкою). Модифікатор записується "
+"призведе до пересування вікна (лівою кнопкою), зміни розмірів (середньою "
+"кнопкою), або показу меню вікна (правою кнопкою). Функції лівої та середньої кнопок міняються, "
+"якщо утримується клавіша \"mouse_button_resize\". Модифікатор записується "
 "наприклад так  \"&lt;Alt&gt;\" або \"&lt;Super&gt;\""
 
-#: ../src/metacity.schemas.in.h:11
-msgid "Close window"
-msgstr "Закрити вікно"
-
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
 msgstr "Команди призначені комбінаціям клавіш"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.in.h:11
 msgid "Compositing Manager"
 msgstr "Менеджер композиції"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.in.h:12
 msgid "Control how new windows get focus"
 msgstr "Визначає, як нове вікно отримує фокус"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.in.h:13
 msgid "Current theme"
 msgstr "Поточна тема"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Затримка у мілісекундах для параметру автоматичного піднімання вікна"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Визначає, чи є Metacity менеджером композиції."
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -592,20 +939,16 @@ msgstr ""
 "гудок. Може використовуватись із \"візуальним системним гудком\", щоб "
 "увімкнути тихі системні гудки."
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
 "Вимкнути неправильні функції, що потрібні лише старим поламаним програмам"
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.in.h:18
 msgid "Enable Visual Bell"
 msgstr "Увімкнути візуальний системний гудок"
 
-#: ../src/metacity.schemas.in.h:21
-msgid "Hide all windows and focus desktop"
-msgstr "Приховувати всі вікна та активувати робочий стіл"
-
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.in.h:19
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focused window will be automatically raised after a delay specified by "
@@ -618,7 +961,7 @@ msgstr ""
 "клацанням на вікні для його підняття, ані з входом у вікно при перетягуванні "
 "(drag-and-drop)."
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.in.h:20
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -626,7 +969,7 @@ msgstr ""
 "Якщо встановлено, параметр titlebar_font ігнорується, та використовується "
 "стандартний шрифт для заголовків вікон."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.in.h:21
 msgid ""
 "If true, metacity will give the user less feedback by using wireframes, "
 "avoiding animations, or other means. This is a significant reduction in "
@@ -642,7 +985,7 @@ msgstr ""
 "зауважити, що функція відображення контурної рамки вимикається при "
 "увімкненні спеціальних можливостей."
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.in.h:22
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -659,209 +1002,25 @@ msgstr ""
 "додатками, клацання мишею не передається вікнам інших програм. Реалізація "
 "режиму роботи з додатками, здебільшого, ще не завершена."
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
 msgstr ""
 "Якщо встановлено, зменшує зручність використання для зменшення використання "
 "ресурсів"
 
-#: ../src/metacity.schemas.in.h:27
-msgid "Lower window below other windows"
-msgstr "Перемістити вікна нижче усіх вікон"
-
-#: ../src/metacity.schemas.in.h:28
-msgid ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Setting this option to "
-"false, which is strongly discouraged, will decouple raising from other user "
-"actions, and ignore raise requests generated by applications. See http://"
-"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr ""
-"Багато дій (наприклад, клацання на області клієнту, переміщення або зміна "
-"розмірів вікна) зазвичай мають побічній ефект піднімання вікна на передній "
-"план. Встановлення значення цього параметра у \"false\", що дуже не рекомендується, "
-"призводить до відділення підйом від усіх інших операцій, та ігнорування  "
-"запитів на підйом від програм. Докладнішу інформацію дивіться за посиланням  http://"
-"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-
-#: ../src/metacity.schemas.in.h:29
-msgid "Maximize window"
-msgstr "Розгорнути вікно на весь екран"
-
-#: ../src/metacity.schemas.in.h:30
-msgid "Maximize window horizontally"
-msgstr "Розгорнути вікно на весь екран горизонтально"
-
-#: ../src/metacity.schemas.in.h:31
-msgid "Maximize window vertically"
-msgstr "Розгорнути вікно на весь екран вертикально"
-
-#: ../src/metacity.schemas.in.h:32
-msgid "Minimize window"
-msgstr "Згорнути вікно"
-
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.in.h:24
 msgid "Modifier to use for modified window click actions"
 msgstr "Модифікатор, що використовується для дій при клацанні з модифікатором"
 
-#: ../src/metacity.schemas.in.h:34
-msgid "Move backward between panels and the desktop immediately"
-msgstr "Негайний перехід у зворотному напрямку між панелями та робочим столом"
-
-#: ../src/metacity.schemas.in.h:35
-msgid "Move backwards between panels and the desktop with popup"
-msgstr ""
-"Перехід у зворотному напрямку між панелями та робочим стілом з появою меню"
-
-#: ../src/metacity.schemas.in.h:36
-msgid "Move backwards between windows immediately"
-msgstr "Негайний перехід у зворотному напрямку між вікнами"
-
-#: ../src/metacity.schemas.in.h:37
-msgid "Move backwards between windows of an application immediately"
-msgstr "Перемикати фокус назад між вікнами негайно."
-
-#: ../src/metacity.schemas.in.h:38
-msgid "Move backwards between windows of an application with popup"
-msgstr "Перемикати фокус назад між вікнами програми через контекстне вікно"
-
-#: ../src/metacity.schemas.in.h:39
-msgid "Move between panels and the desktop immediately"
-msgstr "Негайний перехід між панелями та робочим столом"
-
-#: ../src/metacity.schemas.in.h:40
-msgid "Move between panels and the desktop with popup"
-msgstr "Перехід між панелями та робочим столом з появою меню"
-
-#: ../src/metacity.schemas.in.h:41
-msgid "Move between windows immediately"
-msgstr "Негайний перехід між вікнами"
-
-#: ../src/metacity.schemas.in.h:42
-msgid "Move between windows of an application immediately"
-msgstr "Негайний перехід між вікнами"
-
-#: ../src/metacity.schemas.in.h:43
-msgid "Move between windows of an application with popup"
-msgstr "Перемикати фокус вводу між вікнами програми негайно"
-
-#: ../src/metacity.schemas.in.h:44
-msgid "Move between windows with popup"
-msgstr "Перехід між панелями та робочим столом з появою меню"
-
-#: ../src/metacity.schemas.in.h:45
-msgid "Move focus backwards between windows using popup display"
-msgstr "Передача фокусу у зворотному напрямку між вікнами з появою меню"
-
-#: ../src/metacity.schemas.in.h:46
-msgid "Move window"
-msgstr "Перемістити вікно"
-
-#: ../src/metacity.schemas.in.h:47
-msgid "Move window one workspace down"
-msgstr "Перемістити вікно на робочу область нижче"
-
-#: ../src/metacity.schemas.in.h:48
-msgid "Move window one workspace to the left"
-msgstr "Перемістити вікно у робочу область ліворуч"
-
-#: ../src/metacity.schemas.in.h:49
-msgid "Move window one workspace to the right"
-msgstr "Перемістити вікно у робочу область праворуч"
-
-#: ../src/metacity.schemas.in.h:50
-msgid "Move window one workspace up"
-msgstr "Перемістити вікно на робочу область вище"
-
-#: ../src/metacity.schemas.in.h:51
-msgid "Move window to east side of screen"
-msgstr "Перемістити вікно на східну область екрану"
-
-#: ../src/metacity.schemas.in.h:52
-msgid "Move window to north side of screen"
-msgstr "Перемістити вікно на північну область екрану"
-
-#: ../src/metacity.schemas.in.h:53
-msgid "Move window to north-east corner"
-msgstr "Перемістити вікно на північно-східний кут"
-
-#: ../src/metacity.schemas.in.h:54
-msgid "Move window to north-west corner"
-msgstr "Перемістити вікно на північно-західний кут"
-
-#: ../src/metacity.schemas.in.h:55
-msgid "Move window to south side of screen"
-msgstr "Перемістити вікно на південну область екрану"
-
-#: ../src/metacity.schemas.in.h:56
-msgid "Move window to south-east corner"
-msgstr "Перемістити вікно на південно-східну кут"
-
-#: ../src/metacity.schemas.in.h:57
-msgid "Move window to south-west corner"
-msgstr "Перемістити вікно на південно-західну кут"
-
-#: ../src/metacity.schemas.in.h:58
-msgid "Move window to west side of screen"
-msgstr "Перемістити вікно на західну область екрану"
-
-#: ../src/metacity.schemas.in.h:59
-msgid "Move window to workspace 1"
-msgstr "Перемістити вікно на робочу область 1"
-
-#: ../src/metacity.schemas.in.h:60
-msgid "Move window to workspace 10"
-msgstr "Перемістити вікно на робочу область 10"
-
-#: ../src/metacity.schemas.in.h:61
-msgid "Move window to workspace 11"
-msgstr "Перемістити вікно на робочу область 11"
-
-#: ../src/metacity.schemas.in.h:62
-msgid "Move window to workspace 12"
-msgstr "Перемістити вікно на робочу область 12"
-
-#: ../src/metacity.schemas.in.h:63
-msgid "Move window to workspace 2"
-msgstr "Перемістити вікно на робочу область 2"
-
-#: ../src/metacity.schemas.in.h:64
-msgid "Move window to workspace 3"
-msgstr "Перемістити вікно на робочу область 3"
-
-#: ../src/metacity.schemas.in.h:65
-msgid "Move window to workspace 4"
-msgstr "Перемістити вікно на робочу область 4"
-
-#: ../src/metacity.schemas.in.h:66
-msgid "Move window to workspace 5"
-msgstr "Перемістити вікно на робочу область 5"
-
-#: ../src/metacity.schemas.in.h:67
-msgid "Move window to workspace 6"
-msgstr "Перемістити вікно на робочу область 6"
-
-#: ../src/metacity.schemas.in.h:68
-msgid "Move window to workspace 7"
-msgstr "Перемістити вікно на робочу область 7"
-
-#: ../src/metacity.schemas.in.h:69
-msgid "Move window to workspace 8"
-msgstr "Перемістити вікно на робочу область 8"
-
-#: ../src/metacity.schemas.in.h:70
-msgid "Move window to workspace 9"
-msgstr "Перемістити вікно на робочу область 9"
-
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.in.h:25
 msgid "Name of workspace"
 msgstr "Назва робочої області"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.in.h:26
 msgid "Number of workspaces"
 msgstr "Кількість робочих областей"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.in.h:27
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -871,35 +1030,63 @@ msgstr ""
 "максимум для упередження руйнування робочого столу кількістю робочих "
 "областей."
 
-#: ../src/metacity.schemas.in.h:74
-msgid "Raise obscured window, otherwise lower"
-msgstr "Підняти затулене вікно, або опустити його"
-
-#: ../src/metacity.schemas.in.h:75
-msgid "Raise window above other windows"
-msgstr "Підняти вікно над іншими"
-
-#: ../src/metacity.schemas.in.h:76
-msgid "Resize window"
-msgstr "Змінити розміри вікна"
-
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.in.h:28
 msgid "Run a defined command"
 msgstr "Запустити зазначену команду"
 
-#: ../src/metacity.schemas.in.h:78
-msgid "Run a terminal"
-msgstr "Запустити термінал"
+#: ../src/metacity.schemas.in.in.h:29
+msgid ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
+msgstr ""
+"Якщо ключ встановлено, розмір вікна змінюється правою кнопкою миші, а меню "
+"показується середньою, якщо утримується клавіша, вказану у "
+"\"mouse_button_modifier\". Якщо ключ не встановлено, функції кнопок миші "
+"міняються місцями."
 
-#: ../src/metacity.schemas.in.h:79
-msgid "Show the panel menu"
-msgstr "Показати меню панелі"
+#: ../src/metacity.schemas.in.in.h:30
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+"Якщо цей параметр не встановлено, можлива помилкова поведінка, тому ми "
+"наполегливо радимо утримуватися від мін типового значення. "
+"Багато дій (наприклад, клацання у вікні, переміщення вікна чи зміна "
+"його розміру) звичайно піднімає вікно на передній план. Якщо цей параметр не "
+"встановлено, що наполегливо не рекомендується, підняття на передній план "
+"буде відділено від інший дій та запити на підняття вікна на передній "
+"план, що поступають від програм, будуть ігноруватися. Дивіться http://"
+"bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Навіть якщо цей параметр не "
+"встановлено, вікна можуть бути підняті на передній план за допомогою "
+"одночасного натискання на клавішу Alt та клацання лівою кнопкою миші на будь-якій "
+"області вікна, клацання по заголовку вікна чи спеціальних повідомлень, таких як "
+"запити на підняття вікна. Ця поведінка наразі вимкнена у режимі "
+"клацання для передачі фокусу. Зауважте, що означений вище список не "
+"включає до себе програмні запити від програм про підняття вікон на "
+"передній план, такі запити будуть проігноровані незалежно від причини. "
+"Якщо ви розробник програми і вам доводиться вислуховувати зауваження "
+"користувачів, що ваша програма працює некоректно, вкажіть їм, що "
+"вони припустилися помилки, вимкнувши цей параметр та зруйнувавши менеджер вікон, та що "
+"вони повинні вернути цьому параметру типове значення та перестати надсилати зауваження."
 
-#: ../src/metacity.schemas.in.h:80
-msgid "Show the panel run application dialog"
-msgstr "Показати діалог запуску панелі"
-
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.in.h:31
 msgid ""
 "Some applications disregard specifications in ways that result in window "
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
@@ -912,83 +1099,11 @@ msgstr ""
 "стандартний зовнішній вигляд. При цьому звичайна робота програм, що не "
 "відповідають специфікаціям, не гарантується."
 
-#: ../src/metacity.schemas.in.h:82
-msgid "Switch to workspace 1"
-msgstr "Перейти в робочу область 1"
-
-#: ../src/metacity.schemas.in.h:83
-msgid "Switch to workspace 10"
-msgstr "Перейти в робочу область 10"
-
-#: ../src/metacity.schemas.in.h:84
-msgid "Switch to workspace 11"
-msgstr "Перейти в робочу область 11"
-
-#: ../src/metacity.schemas.in.h:85
-msgid "Switch to workspace 12"
-msgstr "Перейти в робочу область 12"
-
-#: ../src/metacity.schemas.in.h:86
-msgid "Switch to workspace 2"
-msgstr "Перейти в робочу область 2"
-
-#: ../src/metacity.schemas.in.h:87
-msgid "Switch to workspace 3"
-msgstr "Перейти в робочу область 3"
-
-#: ../src/metacity.schemas.in.h:88
-msgid "Switch to workspace 4"
-msgstr "Перейти в робочу область 4"
-
-#: ../src/metacity.schemas.in.h:89
-msgid "Switch to workspace 5"
-msgstr "Перейти в робочу область 5"
-
-#: ../src/metacity.schemas.in.h:90
-msgid "Switch to workspace 6"
-msgstr "Перейти в робочу область 6"
-
-#: ../src/metacity.schemas.in.h:91
-msgid "Switch to workspace 7"
-msgstr "Перейти в робочу область 7"
-
-#: ../src/metacity.schemas.in.h:92
-msgid "Switch to workspace 8"
-msgstr "Перейти в робочу область 8"
-
-#: ../src/metacity.schemas.in.h:93
-msgid "Switch to workspace 9"
-msgstr "Перейти в робочу область 9"
-
-#: ../src/metacity.schemas.in.h:94
-msgid "Switch to workspace above this one"
-msgstr "Перейти в робочу область вище"
-
-#: ../src/metacity.schemas.in.h:95
-msgid "Switch to workspace below this one"
-msgstr "Перейти в робочу область нижче"
-
-#: ../src/metacity.schemas.in.h:96
-msgid "Switch to workspace on the left"
-msgstr "Перейти в робочу область ліворуч"
-
-#: ../src/metacity.schemas.in.h:97
-msgid "Switch to workspace on the right"
-msgstr "Перейти в робочу область праворуч"
-
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
 msgstr "Системний гудок озвучується"
 
-#: ../src/metacity.schemas.in.h:99
-msgid "Take a screenshot"
-msgstr "Зробити знімок екрану"
-
-#: ../src/metacity.schemas.in.h:100
-msgid "Take a screenshot of a window"
-msgstr "Зробити знімок вікна"
-
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.in.h:33
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -1005,7 +1120,7 @@ msgstr ""
 "яка програма викликала гудок, що часто буває для типових системних гудків, "
 "відбувається блимання заголовка сфокусованого вікна."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.in.h:34
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -1015,7 +1130,7 @@ msgstr ""
 "клавіш, що відповідають цим командам. Натискання комбінації клавіш "
 "run_command_N призводить до виконання command_N"
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.in.h:35
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -1023,7 +1138,7 @@ msgstr ""
 "Ключ /apps/metacity/global_keybindings/run_command_screenshot визначає "
 "комбінацію клавіш, що викликає команду вказану в цьому параметрі."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.in.h:36
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -1032,7 +1147,7 @@ msgstr ""
 "Ключ /apps/metacity/global_keybindings/run_command_window_screenshot "
 "визначає комбінацію клавіш, що викликає команду вказану в цьому параметрі. "
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.in.h:37
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -1048,1000 +1163,21 @@ msgstr ""
 "Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
 "значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
 
-#: ../src/metacity.schemas.in.h:106
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область розташовану вище поточної. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:107
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область розташовану нижче "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:108
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область розташовану ліворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:109
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область розташовану праворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:110
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 1. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:111
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 10. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:112
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 11. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:113
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 12. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:114
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 2. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:115
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 3. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:116
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 4. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:117
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 5. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:118
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 6. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:119
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 7. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:120
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 8. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:121
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що перемикає на робочу область з номером 9. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:122
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш активації меню вікна. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
-"гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:123
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш закривання вікна. Використовується формат \"&lt;Control&gt;"
-"a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та "
-"дозволяє використання верхнього та нижнього регістру та скорочень, наприклад "
-"\"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у "
-"спеціальне значення \"disabled\", то для цієї дії не буде призначено "
-"комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:124
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переходу у режим \"переміщення\", у цьому режимі вікно "
-"переміщується клавішами клавіатури. Використовується формат \"&lt;Control&gt;"
-"a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та "
-"дозволяє використання верхнього та нижнього регістру та скорочень, наприклад "
-"\"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у "
-"спеціальне значення \"disabled\", то для цієї дії не буде призначено "
-"комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:125
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переходу у режим \"зміни розмірів\", у цьому режимі "
-"клавішами клавіатури змінюється розмір вікна. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
-"гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:126
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш приховування всіх звичайних вікон та передачі фокусу вводу "
-"робочого столу. Використовується формат \"&lt;Control&gt;a\" або \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:127
-msgid ""
-"The keybinding used to maximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш розгортання вікна. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо "
-"гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:128
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш згортання вікна. Використовується формат \"&lt;Control&gt;a"
-"\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор достатньо гнучкий та "
-"дозволяє використання верхнього та нижнього регістру та скорочень, наприклад "
-"\"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у "
-"спеціальне значення \"disabled\", то для цієї дії не буде призначено "
-"комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:129
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області розташованої під "
-"поточною. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:130
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області розташованої ліворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:131
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області розташованої праворуч "
-"поточної. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:132
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області розташованої над "
-"поточною. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:133
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 1. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:134
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 10. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:135
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 11. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:136
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 12. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:137
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 2. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:138
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 3. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:139
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 4. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:140
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 5. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:141
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 6. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:142
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 7. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:143
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 8. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:144
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш переміщення вікна до робочої області з номером 9. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:145
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у зворотному напрямку між панелями "
-"та робочим столом з появою меню. Використовується формат \"&lt;Control&gt;a"
-"\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:146
-msgid ""
-"The keybinding used to move focus backwards between panels and the desktop, "
-"without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у зворотному напрямку між панелями "
-"та робочим столом без появи меню. Використовується формат \"&lt;Control&gt;a"
-"\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:147
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application without a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у зворотному напрямку між вікнами "
-"без появи меню. При утримуванні \"Shift\" разом з цією комбінацією напрямок "
-"перемикається на прямий.Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:148
-msgid ""
-"The keybinding used to move focus backwards between windows of an "
-"application, using a popup window. Holding \"shift\" together with this "
-"binding makes the direction go forward again. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у зворотному напрямку між вікнами з "
-"появою меню. При утримуванні \"Shift\" разом з цією комбінацією напрямок "
-"перемикається на прямий.Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:149
-msgid ""
-"The keybinding used to move focus backwards between windows without a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у зворотному напрямку між вікнами "
-"без появи меню. При утримуванні \"Shift\" разом з цією комбінацією напрямок "
-"перемикається на прямий.Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:150
-msgid ""
-"The keybinding used to move focus backwards between windows, using a popup "
-"window. Holding \"shift\" together with this binding makes the direction go "
-"forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у зворотному напрямку між вікнами з "
-"появою меню. При утримуванні \"Shift\" разом з цією комбінацією напрямок "
-"перемикається на прямий.Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:151
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у прямому напрямку між панелями та "
-"робочим столом з появою меню. Використовується формат \"&lt;Control&gt;a\" "
-"або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:152
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у прямому напрямку між панелями та "
-"робочим столом без появи меню. Використовується формат \"&lt;Control&gt;a\" "
-"або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:153
-msgid ""
-"The keybinding used to move focus between windows of an application without "
-"a popup window. Holding the \"shift\" key while using this binding reverses "
-"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у прямому напрямку між вікнами без "
-"появи меню. (Зазвичай це &lt;Alt&gt;Escape) При утримуванні \"Shift\" разом "
-"з цією комбінацією напрямок перемикається на зворотний.Використовується "
-"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
-"досить гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:154
-msgid ""
-"The keybinding used to move focus between windows of an application, using a "
-"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
-"using this binding reverses the direction of movement. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у прямому напрямку між вікнами з "
-"появою меню. (Зазвичай це &lt;Alt&gt;Tab) При утримуванні \"Shift\" разом з "
-"цією комбінацією напрямок перемикається на зворотний.Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить "
-"гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:155
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у прямому напрямку між вікнами без "
-"появи меню. (Зазвичай це &lt;Alt&gt;Escape) При утримуванні \"Shift\" разом "
-"з цією комбінацією напрямок перемикається на зворотний.Використовується "
-"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
-"досить гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:156
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-"binding reverses the direction of movement. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш передачі фокусу вводу у прямому напрямку між вікнами з "
-"появою меню. (Зазвичай це &lt;Alt&gt;Tab) При утримуванні \"Shift\" разом з "
-"цією комбінацією напрямок перемикається на зворотний.Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить "
-"гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:157
-msgid ""
-"The keybinding used to toggle always on top. A window that is always on top "
-"will always be visible over other overlapping windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш перемикання стану чи показувати вікно завжди на верху. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:158
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш перемикання у повноекранний режим. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить "
-"гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:159
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш перемикання розгортання вікна. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
-"достатньо гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:160
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш перемикання стану згорнутості. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить "
-"гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:161
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбінація клавіш перемикання стану чи показувати вікно на усіх робочих "
-"областях, чи лише на одній. Використовується формат \"&lt;Control&gt;a\" або "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє "
-"використання верхнього та нижнього регістру та скорочень, наприклад \"&lt;"
-"Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне "
-"значення \"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:162
-msgid ""
-"The keybinding used to unmaximize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш перемикання розгортання вікна на весь екран. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:163
-msgid ""
-"The keybinding which display's the panel's \"Run Application\" dialog box. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що викликає діалог панелі для запуску програм. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:164
-msgid ""
-"The keybinding which invokes a terminal. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що запускає термінал. Використовується формат \"&lt;"
-"Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить гнучкий "
-"та дозволяє використання верхнього і нижнього регістру та скорочень, "
-"наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити "
-"у спеціальне значення \"disabled\", то для цієї дії не буде призначено "
-"комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:165
-msgid ""
-"The keybinding which invokes the panel's screenshot utility to take a "
-"screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що викликає утиліту панелі для створення знімку вікна. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад  \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:166
-msgid ""
-"The keybinding which invokes the panel's screenshot utility. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-"parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що викликає утиліту панелі для створення знімку екрана. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:167
-msgid ""
-"The keybinding which shows the panel's main menu. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що показує головне меню панелі. Використовується формат "
-"\"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор досить "
-"гнучкий та дозволяє використання верхнього і нижнього регістру та скорочень, "
-"наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр встановити "
-"у спеціальне значення \"disabled\", то для цієї дії не буде призначено "
-"комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
 msgstr "Назва робочої області"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.in.h:39
 msgid "The screenshot command"
 msgstr "Команда створення знімку екрану"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.in.h:40
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Тема визначає вигляд рамки вікна, заголовку та таке інше."
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.in.h:41
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -2049,7 +1185,7 @@ msgstr ""
 "Затримка перед підніманням вікна, якщо встановлено параметр auto_raise. "
 "Затримка вказується у тисячних долях секунди."
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.in.h:42
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -2064,221 +1200,11 @@ msgstr ""
 "коли вказівник миші входить у межі вікна і втрачає фокус, коли виходить з "
 "вікна;"
 
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
 msgstr "Команда створення знімку вікна"
 
-#: ../src/metacity.schemas.in.h:174
-msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another one, it raises the window above all others, "
-"and if the window is already fully visible, it lowers it below all others. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш що визначає, чи вікно розташовується над чи під іншими "
-"вікнами. Якщо вікно перекрите іншим вікном, вона піднімає вікно над іншими "
-"вікнами. Якщо вікно не перекрите ніякими вікнами - опускає нижче інших "
-"вікон. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання верхнього та "
-"нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
-"\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
-"цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:175
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що опускає вікно нижче інших вікон. Використовується "
-"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
-"досить гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:176
-msgid ""
-"This keybinding moves a window against the north (top) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно до північного (верхнього) боку екрану. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:177
-msgid ""
-"This keybinding moves a window into the east (right) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно до східного (правого) боку екрану. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:178
-msgid ""
-"This keybinding moves a window into the north-east (top right) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно у північно-східний (верхній правий) "
-"кут екрану. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:179
-msgid ""
-"This keybinding moves a window into the north-west (top left) corner of the "
-"screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно у північно-західний (верхній лівий) "
-"кут екрану. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання "
-"верхнього та нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та "
-"\"&lt;Ctrl&gt;\". Якщо цей параметр встановити у спеціальне значення "
-"\"disabled\", то для цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:180
-msgid ""
-"This keybinding moves a window into the south (bottom) side of the screen. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно до південного (нижнього) боку екрану. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:181
-msgid ""
-"This keybinding moves a window into the south-east (bottom right) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно у південно-східний (нижній правий) кут "
-"екрану. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання верхнього та "
-"нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
-"\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
-"цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:182
-msgid ""
-"This keybinding moves a window into the south-west (bottom left) corner of "
-"the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно у південно-західний (нижній лівий) кут "
-"екрану. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання верхнього та "
-"нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
-"\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
-"цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:183
-msgid ""
-"This keybinding moves a window into the west (left) side of the screen. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що переміщує вікно на східну (ліву) сторону екрану. "
-"Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1"
-"\". Аналізатор досить гнучкий та дозволяє використання верхнього та нижнього "
-"регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо "
-"цей параметр встановити у спеціальне значення \"disabled\", то для цієї дії "
-"не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:184
-msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"Комбінація клавіш, що піднімає вікно над іншими вікнами. Використовується "
-"формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;Alt&gt;F1\". Аналізатор "
-"досить гнучкий та дозволяє використання верхнього та нижнього регістру та "
-"скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;\". Якщо цей параметр "
-"встановити у спеціальне значення \"disabled\", то для цієї дії не буде "
-"призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:185
-msgid ""
-"This keybinding resizes a window to fill available horizontal space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що змінює розмір вікна, щоб заповнити весь горизонтальний "
-"простір. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання верхнього та "
-"нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
-"\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
-"цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:186
-msgid ""
-"This keybinding resizes a window to fill available vertical space. The "
-"format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
-"Комбінація клавіш, що змінює розмір вікна, щоб заповнити весь вертикальний "
-"простір. Використовується формат \"&lt;Control&gt;a\" або \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". Аналізатор досить гнучкий та дозволяє використання верхнього та "
-"нижнього регістру та скорочень, наприклад \"&lt;Ctl&gt;\" та \"&lt;Ctrl&gt;"
-"\". Якщо цей параметр встановити у спеціальне значення \"disabled\", то для "
-"цієї дії не буде призначено комбінації клавіш."
-
-#: ../src/metacity.schemas.in.h:187
+#: ../src/metacity.schemas.in.in.h:44
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2293,11 +1219,12 @@ msgstr ""
 "Поточними можливими значеннями є 'toggle_shade' - перемикає тіньовий стан "
 "вікна, 'toggle_maximize' - розгортає та відновлює вікно, "
 "'toggle_maximize_horizontally' та 'toggle_maximize_vertically' -  "
-"розгортання/згортання вікна лише у цьому напрямку, 'minimize' - згортання вікна, "
-"'shade'- згортання вікна вгору, 'menu' - відображення меню вікна, 'lower' - "
-"переміщенні вікна на самий нижній рівень, під усі вікна, та 'none' - немає дії."
+"розгортання/згортання вікна лише у цьому напрямку, 'minimize' - згортання "
+"вікна, 'shade'- згортання вікна вгору, 'menu' - відображення меню вікна, "
+"'lower' - переміщенні вікна на самий нижній рівень, під усі вікна, та 'none' "
+"- немає дії."
 
-#: ../src/metacity.schemas.in.h:188
+#: ../src/metacity.schemas.in.in.h:45
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2309,15 +1236,15 @@ msgid ""
 "the others, and 'none' which will not do anything."
 msgstr ""
 "Цей параметр визначає ефект від клацання середньою кнопкою по заголовку "
-"вікна. "
-"Поточними можливими значеннями є 'toggle_shade' - перемикає тіньовий стан "
-"вікна, 'toggle_maximize' - розгортає та відновлює вікно, "
+"вікна. Поточними можливими значеннями є 'toggle_shade' - перемикає тіньовий "
+"стан вікна, 'toggle_maximize' - розгортає та відновлює вікно, "
 "'toggle_maximize_horizontally' та 'toggle_maximize_vertically' -  "
-"розгортання/згортання вікна лише у цьому напрямку, 'minimize' - згортання вікна, "
-"'shade'- згортання вікна вгору, 'menu' - відображення меню вікна, 'lower' - "
-"переміщенні вікна на самий нижній рівень, під усі вікна, та 'none' - немає дії."
+"розгортання/згортання вікна лише у цьому напрямку, 'minimize' - згортання "
+"вікна, 'shade'- згортання вікна вгору, 'menu' - відображення меню вікна, "
+"'lower' - переміщенні вікна на самий нижній рівень, під усі вікна, та 'none' "
+"- немає дії."
 
-#: ../src/metacity.schemas.in.h:189
+#: ../src/metacity.schemas.in.in.h:46
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2332,11 +1259,12 @@ msgstr ""
 "Поточними можливими значеннями є 'toggle_shade' - перемикає тіньовий стан "
 "вікна, 'toggle_maximize' - розгортає та відновлює вікно, "
 "'toggle_maximize_horizontally' та 'toggle_maximize_vertically' -  "
-"розгортання/згортання вікна лише у цьому напрямку, 'minimize' - згортання вікна, "
-"'shade'- згортання вікна вгору, 'menu' - відображення меню вікна, 'lower' - "
-"переміщенні вікна на самий нижній рівень, під усі вікна, та 'none' - немає дії."
+"розгортання/згортання вікна лише у цьому напрямку, 'minimize' - згортання "
+"вікна, 'shade'- згортання вікна вгору, 'menu' - відображення меню вікна, "
+"'lower' - переміщенні вікна на самий нижній рівень, під усі вікна, та 'none' "
+"- немає дії."
 
-#: ../src/metacity.schemas.in.h:190
+#: ../src/metacity.schemas.in.in.h:47
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -2348,27 +1276,7 @@ msgstr ""
 "фокусу користувача, а \"strict\" призводить до того, що запущені з терміналу "
 "вікна, не отримують фокус."
 
-#: ../src/metacity.schemas.in.h:191
-msgid "Toggle always on top state"
-msgstr "Перемикання стану завжди на верху"
-
-#: ../src/metacity.schemas.in.h:192
-msgid "Toggle fullscreen mode"
-msgstr "Перемикання повноекранного режиму"
-
-#: ../src/metacity.schemas.in.h:193
-msgid "Toggle maximization state"
-msgstr "Перемикання стану розгортання вікна на весь екран"
-
-#: ../src/metacity.schemas.in.h:194
-msgid "Toggle shaded state"
-msgstr "Перемикання стану згорнутості"
-
-#: ../src/metacity.schemas.in.h:195
-msgid "Toggle window on all workspaces"
-msgstr "Перемикання стану показу на всіх робочих областях"
-
-#: ../src/metacity.schemas.in.h:196
+#: ../src/metacity.schemas.in.in.h:48
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2377,71 +1285,76 @@ msgstr ""
 "Увімкнути візуальну індикацію системного гудка, корисно для людей з вадами "
 "слуху, чи у шумному середовищі."
 
-#: ../src/metacity.schemas.in.h:197
-msgid "Unmaximize window"
-msgstr "Відновити попередній розмір вікна вікна"
-
-#: ../src/metacity.schemas.in.h:198
+#: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
 msgstr "Використання стандартного шрифту у заголовках вікон"
 
-#: ../src/metacity.schemas.in.h:199
+#: ../src/metacity.schemas.in.in.h:50
 msgid "Visual Bell Type"
 msgstr "Тип візуального гудка"
 
-#: ../src/metacity.schemas.in.h:200
+#: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "Чи піднімання вікна має бути побічним ефектом інших дій користувача"
 
-#: ../src/metacity.schemas.in.h:201
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Whether to resize with the right button"
+msgstr "Зміна розміру з використанням правої кнопки миші"
+
+#: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
 msgstr "Режим отримання фокусу вікном"
 
-#: ../src/metacity.schemas.in.h:202
+#: ../src/metacity.schemas.in.in.h:54
 msgid "Window title font"
 msgstr "Шрифт заголовка вікна"
 
-#: ../src/ui/frames.c:1077
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Використання: %s\n"
+
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "Закрити вікно"
 
-#: ../src/ui/frames.c:1080
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Меню вікна"
 
-#: ../src/ui/frames.c:1083
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "Згорнути вікно"
 
-#: ../src/ui/frames.c:1086
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "Розгорнути вікно"
 
-#: ../src/ui/frames.c:1089
-msgid "Unmaximize Window"
-msgstr "Відновити попередній розмір"
+#: ../src/ui/frames.c:1130
+msgid "Restore Window"
+msgstr "Відновити вікно"
 
-#: ../src/ui/frames.c:1092
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "Скотити вікно"
 
-#: ../src/ui/frames.c:1095
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "Розкотити вікно"
 
-#: ../src/ui/frames.c:1098
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Тримати вікно нагорі"
 
-#: ../src/ui/frames.c:1101
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Прибрати вікно з гори"
 
-#: ../src/ui/frames.c:1104
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "Завжди на видимій робочій області"
 
-#: ../src/ui/frames.c:1107
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Розміщувати вікно лише на одній робочій області"
 
@@ -2527,17 +1440,22 @@ msgstr "Перемістити у робочу область в_низу"
 msgid "_Close"
 msgstr "_Закрити"
 
-#: ../src/ui/menu.c:208
+#: ../src/ui/menu.c:203
+#, c-format
+msgid "Workspace %d%n"
+msgstr "Робоча область %d%n"
+
+#: ../src/ui/menu.c:213
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Робоча область 1_0"
 
-#: ../src/ui/menu.c:210
+#: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Робоча область %s%d"
 
-#: ../src/ui/menu.c:390
+#: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
 msgstr "Перемістити у ін_шу робочу область"
 
@@ -2546,7 +1464,7 @@ msgstr "Перемістити у ін_шу робочу область"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:105
+#: ../src/ui/metaaccellabel.c:104
 msgid "Shift"
 msgstr "Shift"
 
@@ -2555,7 +1473,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:111
+#: ../src/ui/metaaccellabel.c:110
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -2564,7 +1482,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:117
+#: ../src/ui/metaaccellabel.c:116
 msgid "Alt"
 msgstr "Alt"
 
@@ -2573,7 +1491,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:123
+#: ../src/ui/metaaccellabel.c:122
 msgid "Meta"
 msgstr "Meta"
 
@@ -2582,7 +1500,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:129
+#: ../src/ui/metaaccellabel.c:128
 msgid "Super"
 msgstr "Super"
 
@@ -2591,7 +1509,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:135
+#: ../src/ui/metaaccellabel.c:134
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -2600,7 +1518,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:141
+#: ../src/ui/metaaccellabel.c:140
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -2609,7 +1527,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:147
+#: ../src/ui/metaaccellabel.c:146
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -2618,7 +1536,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:153
+#: ../src/ui/metaaccellabel.c:152
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -2627,858 +1545,60 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:159
+#: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" не відповідає на запити."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Можете трошки зачекати відновлення активності або примусово закрити програму."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Чекати"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Завершити"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Заголовок"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Клас"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Ці вікна не підтримують \"збереження поточних параметрів\", при наступному "
-"входженні їх треба запустити власноруч."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Виникла помила під час запуску \"%s\":\n"
-"%s."
-
+#. Translators: This represents the size of a window.  The first number is
+#. * the width of the window and the second is the height.
+#.
 #: ../src/ui/resizepopup.c:113
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme-parser.c:227 ../src/ui/theme-parser.c:245
-#, c-format
-msgid "Line %d character %d: %s"
-msgstr "Рядок %d, символ %d: %s"
-
-#: ../src/ui/theme-parser.c:396
-#, c-format
-msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "Ознака \"%s\" двічі повторюється у тому самому елементі <%s>"
-
-#: ../src/ui/theme-parser.c:414 ../src/ui/theme-parser.c:439
-#, c-format
-msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Неправильна ознака \"%s\" у елементі <%s> у цьому контексті"
-
-#: ../src/ui/theme-parser.c:500
-#, c-format
-msgid "Integer %ld must be positive"
-msgstr "Значення цілого %ld має бути додатнім"
-
-#: ../src/ui/theme-parser.c:508
-#, c-format
-msgid "Integer %ld is too large, current max is %d"
-msgstr "Значення цілого %ld надто велике, максимумом є %d"
-
-#: ../src/ui/theme-parser.c:536 ../src/ui/theme-parser.c:652
-#, c-format
-msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Неможливо проаналізувати \"%s\" як число з плаваючою комою"
-
-#: ../src/ui/theme-parser.c:567 ../src/ui/theme-parser.c:595
-#, c-format
-msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Логічні значення повинні бути \"true\" або \"false\", а не \"%s\""
-
-#: ../src/ui/theme-parser.c:622
-#, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "Кут повинен бути між 0.0 та 360.0, вказано %g\n"
-
-#: ../src/ui/theme-parser.c:685
-#, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Альфа-канал повинен бути у межах 0.0 (невидимість) та 1.0 (повна "
-"непрозорість), було %g\n"
-
-#: ../src/ui/theme-parser.c:750
-#, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
-"Неприпустимий масштаб заголовку \"%s\" (можливі значення: xx-small,x-small,"
-"small,medium,large,x-large,xx-large)\n"
-
-#: ../src/ui/theme-parser.c:795 ../src/ui/theme-parser.c:803
-#: ../src/ui/theme-parser.c:885 ../src/ui/theme-parser.c:982
-#: ../src/ui/theme-parser.c:1024 ../src/ui/theme-parser.c:1135
-#: ../src/ui/theme-parser.c:1185 ../src/ui/theme-parser.c:1193
-#: ../src/ui/theme-parser.c:3093 ../src/ui/theme-parser.c:3184
-#: ../src/ui/theme-parser.c:3191 ../src/ui/theme-parser.c:3198
-#, c-format
-msgid "No \"%s\" attribute on <%s> element"
-msgstr "Немає ознаки \"%s\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:919 ../src/ui/theme-parser.c:990
-#: ../src/ui/theme-parser.c:1032 ../src/ui/theme-parser.c:1143
-#, c-format
-msgid "<%s> name \"%s\" used a second time"
-msgstr "у елементі <%s> назва \"%s\" зустрілась другий раз"
-
-#: ../src/ui/theme-parser.c:931 ../src/ui/theme-parser.c:1044
-#: ../src/ui/theme-parser.c:1155
-#, c-format
-msgid "<%s> parent \"%s\" has not been defined"
-msgstr "у елементі <%s> не було визначено батьківський елемент \"%s\""
-
-#: ../src/ui/theme-parser.c:1057
-#, c-format
-msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "у елементі <%s> не було визначено геометрію \"%s\""
-
-#: ../src/ui/theme-parser.c:1070
-#, c-format
-msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> повинен або визначати геометрію, або вказувати на батьківський елемент, "
-"який містить геометрію"
-
-#: ../src/ui/theme-parser.c:1112
-msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "Слід вказати тло для значення альфа-каналу"
-
-#: ../src/ui/theme-parser.c:1203
-#, c-format
-msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Невідомий тип \"%s\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1214
-#, c-format
-msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Невідомий параметр style_set \"%s\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1222
-#, c-format
-msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Типу вікна \"%s\" вже було визначено набір стилів"
-
-#: ../src/ui/theme-parser.c:1258
-msgid "Theme already has a fallback icon"
-msgstr "Тема вже містить запасний значок"
-
-#: ../src/ui/theme-parser.c:1270
-msgid "Theme already has a fallback mini_icon"
-msgstr "Тема вже містить аварійний міні_значок"
-
-#: ../src/ui/theme-parser.c:1283 ../src/ui/theme-parser.c:1347
-#: ../src/ui/theme-parser.c:1636 ../src/ui/theme-parser.c:3285
-#: ../src/ui/theme-parser.c:3339 ../src/ui/theme-parser.c:3511
-#: ../src/ui/theme-parser.c:3727 ../src/ui/theme-parser.c:3765
-#: ../src/ui/theme-parser.c:3803 ../src/ui/theme-parser.c:3841
-#, c-format
-msgid "Element <%s> is not allowed below <%s>"
-msgstr "Не допускається використання елементу <%s> нижче <%s>"
-
-#: ../src/ui/theme-parser.c:1373 ../src/ui/theme-parser.c:1460
-#: ../src/ui/theme-parser.c:1530
-#, c-format
-msgid "No \"name\" attribute on element <%s>"
-msgstr "Немає ознаки \"name\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1380 ../src/ui/theme-parser.c:1467
-#, c-format
-msgid "No \"value\" attribute on element <%s>"
-msgstr "Немає ознаки \"value\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1411 ../src/ui/theme-parser.c:1425
-#: ../src/ui/theme-parser.c:1484
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
-"Параметри button_width/button_height та коефіцієнт пропорційності кнопок "
-"вказувати одночасно не можна"
-
-#: ../src/ui/theme-parser.c:1434
-#, c-format
-msgid "Distance \"%s\" is unknown"
-msgstr "Невідома відстань \"%s\""
-
-#: ../src/ui/theme-parser.c:1493
-#, c-format
-msgid "Aspect ratio \"%s\" is unknown"
-msgstr "Невідомий коефіцієнт пропорційності \"%s\""
-
-#: ../src/ui/theme-parser.c:1537
-#, c-format
-msgid "No \"top\" attribute on element <%s>"
-msgstr "Немає ознаки \"top\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1544
-#, c-format
-msgid "No \"bottom\" attribute on element <%s>"
-msgstr "Немає ознаки \"bottom\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1551
-#, c-format
-msgid "No \"left\" attribute on element <%s>"
-msgstr "Немає ознаки \"left\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1558
-#, c-format
-msgid "No \"right\" attribute on element <%s>"
-msgstr "Немає ознаки \"right\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1590
-#, c-format
-msgid "Border \"%s\" is unknown"
-msgstr "Межа \"%s\" невідома"
-
-#: ../src/ui/theme-parser.c:1736 ../src/ui/theme-parser.c:1850
-#: ../src/ui/theme-parser.c:1961 ../src/ui/theme-parser.c:2192
-#: ../src/ui/theme-parser.c:3023
-#, c-format
-msgid "No \"color\" attribute on element <%s>"
-msgstr "Немає ознаки \"color\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1743
-#, c-format
-msgid "No \"x1\" attribute on element <%s>"
-msgstr "Немає ознаки \"x1\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1750 ../src/ui/theme-parser.c:2864
-#, c-format
-msgid "No \"y1\" attribute on element <%s>"
-msgstr "Немає ознаки \"y1\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1757
-#, c-format
-msgid "No \"x2\" attribute on element <%s>"
-msgstr "Немає ознаки \"x2\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1764 ../src/ui/theme-parser.c:2871
-#, c-format
-msgid "No \"y2\" attribute on element <%s>"
-msgstr "Немає ознаки \"y2\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1857 ../src/ui/theme-parser.c:1968
-#: ../src/ui/theme-parser.c:2117 ../src/ui/theme-parser.c:2199
-#: ../src/ui/theme-parser.c:2306 ../src/ui/theme-parser.c:2408
-#: ../src/ui/theme-parser.c:2630 ../src/ui/theme-parser.c:2758
-#: ../src/ui/theme-parser.c:2857 ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3030
-#, c-format
-msgid "No \"x\" attribute on element <%s>"
-msgstr "Немає ознаки \"x\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1864 ../src/ui/theme-parser.c:1975
-#: ../src/ui/theme-parser.c:2124 ../src/ui/theme-parser.c:2206
-#: ../src/ui/theme-parser.c:2313 ../src/ui/theme-parser.c:2415
-#: ../src/ui/theme-parser.c:2637 ../src/ui/theme-parser.c:2765
-#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3037
-#, c-format
-msgid "No \"y\" attribute on element <%s>"
-msgstr "Немає ознаки \"y\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1871 ../src/ui/theme-parser.c:1982
-#: ../src/ui/theme-parser.c:2131 ../src/ui/theme-parser.c:2213
-#: ../src/ui/theme-parser.c:2320 ../src/ui/theme-parser.c:2422
-#: ../src/ui/theme-parser.c:2644 ../src/ui/theme-parser.c:2772
-#: ../src/ui/theme-parser.c:2948
-#, c-format
-msgid "No \"width\" attribute on element <%s>"
-msgstr "Немає ознаки \"width\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1878 ../src/ui/theme-parser.c:1989
-#: ../src/ui/theme-parser.c:2138 ../src/ui/theme-parser.c:2220
-#: ../src/ui/theme-parser.c:2327 ../src/ui/theme-parser.c:2429
-#: ../src/ui/theme-parser.c:2651 ../src/ui/theme-parser.c:2779
-#: ../src/ui/theme-parser.c:2955
-#, c-format
-msgid "No \"height\" attribute on element <%s>"
-msgstr "Немає ознаки \"height\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:1998
-#, c-format
-msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Немає ознаки \"start_angle\" або \"from\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2005
-#, c-format
-msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Немає ознаки \"extent_angle\" або \"to\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2014
-#, c-format
-msgid "No \"start_angle\" attribute on element <%s>"
-msgstr "Немає ознаки \"start_angle\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2021
-#, c-format
-msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Немає ознаки \"extent_angle\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2227
-#, c-format
-msgid "No \"alpha\" attribute on element <%s>"
-msgstr "Немає ознаки \"alpha\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2299
-#, c-format
-msgid "No \"type\" attribute on element <%s>"
-msgstr "Немає ознаки \"type\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2349
-#, c-format
-msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Не вдається розпізнати значення \"%s\" типу градієнту"
-
-#: ../src/ui/theme-parser.c:2436
-#, c-format
-msgid "No \"filename\" attribute on element <%s>"
-msgstr "Немає ознаки \"filename\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2461 ../src/ui/theme-parser.c:2980
-#, c-format
-msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Не вдається розпізнати тип заповнення \"%s\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2609 ../src/ui/theme-parser.c:2744
-#: ../src/ui/theme-parser.c:2850
-#, c-format
-msgid "No \"state\" attribute on element <%s>"
-msgstr "Немає ознаки \"state\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2616 ../src/ui/theme-parser.c:2751
-#, c-format
-msgid "No \"shadow\" attribute on element <%s>"
-msgstr "Немає ознаки \"shadow\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2623
-#, c-format
-msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Немає ознаки \"arrow\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2676 ../src/ui/theme-parser.c:2800
-#: ../src/ui/theme-parser.c:2891
-#, c-format
-msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Не вдається розпізнати режим \"%s\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2686 ../src/ui/theme-parser.c:2810
-#, c-format
-msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Не вдається розпізнати тінь \"%s\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:2696
-#, c-format
-msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Не вдається розпізнати стрілку \"%s\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3120 ../src/ui/theme-parser.c:3237
-#, c-format
-msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Параметр <draw_ops> з назвою \"%s\" не було визначено"
-
-#: ../src/ui/theme-parser.c:3132 ../src/ui/theme-parser.c:3249
-#, c-format
-msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
-"Вставлення сюди draw_ops \"%s\" призведе до створення циклічного посилання"
-
-#: ../src/ui/theme-parser.c:3314
-#, c-format
-msgid "No \"value\" attribute on <%s> element"
-msgstr "Немає ознаки \"value\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3371
-#, c-format
-msgid "No \"position\" attribute on <%s> element"
-msgstr "Немає ознаки \"position\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3380
-#, c-format
-msgid "Unknown position \"%s\" for frame piece"
-msgstr "Невідома позиція \"%s\" дільниці рамки"
-
-#: ../src/ui/theme-parser.c:3388
-#, c-format
-msgid "Frame style already has a piece at position %s"
-msgstr "У стилю рамки вже є дільниці рамки у позиції %s"
-
-#: ../src/ui/theme-parser.c:3405 ../src/ui/theme-parser.c:3496
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Не було визначено параметру <draw_ops> з назвою \"%s\""
-
-#: ../src/ui/theme-parser.c:3433
-#, c-format
-msgid "No \"function\" attribute on <%s> element"
-msgstr "Немає ознаки \"function\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3441 ../src/ui/theme-parser.c:3557
-#, c-format
-msgid "No \"state\" attribute on <%s> element"
-msgstr "Немає ознаки \"state\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3450
-#, c-format
-msgid "Unknown function \"%s\" for button"
-msgstr "Невідома функція кнопки - \"%s\""
-
-#: ../src/ui/theme-parser.c:3459
-#, c-format
-msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "Функція кнопки \"%s\" не існує для цієї версії (%d, потрібно %d)"
-
-#: ../src/ui/theme-parser.c:3471
-#, c-format
-msgid "Unknown state \"%s\" for button"
-msgstr "Невідомий стан кнопки - \"%s\""
-
-#: ../src/ui/theme-parser.c:3479
-#, c-format
-msgid "Frame style already has a button for function %s state %s"
-msgstr "Стиль рамки вже містить кнопку для функції %s зі станом %s"
-
-#: ../src/ui/theme-parser.c:3549
-#, c-format
-msgid "No \"focus\" attribute on <%s> element"
-msgstr "Немає ознаки \"focus\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3565
-#, c-format
-msgid "No \"style\" attribute on <%s> element"
-msgstr "Немає ознаки \"style\" елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3574
-#, c-format
-msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" не є правильною назвою ознаки \"focus\""
-
-#: ../src/ui/theme-parser.c:3583
-#, c-format
-msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" не є правильним станом ознаки \"state\""
-
-#: ../src/ui/theme-parser.c:3593
-#, c-format
-msgid "A style called \"%s\" has not been defined"
-msgstr "Стиль \"%s\" не визначено"
-
-#: ../src/ui/theme-parser.c:3604
-#, c-format
-msgid "No \"resize\" attribute on <%s> element"
-msgstr "Немає ознаки \"resize\" у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:3614 ../src/ui/theme-parser.c:3637
-#, c-format
-msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" не є правильним значенням ознаки \"resize\""
-
-#: ../src/ui/theme-parser.c:3648
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
-"Не слід використовувати ознаку \"resize\" у елементі <%s> для розгорнутого "
-"та згорнутого стану"
-
-#: ../src/ui/theme-parser.c:3662
-#, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr ""
-"Не слід використовувати ознаку \"resize\" у елементі <%s> для розгорнутого "
-"стану"
-
-#: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
-#, c-format
-msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Стиль вже було визначено для ознак state %s resize %s focus %s"
-
-#: ../src/ui/theme-parser.c:3687 ../src/ui/theme-parser.c:3709
-#, c-format
-msgid "Style has already been specified for state %s focus %s"
-msgstr "Стиль вже було визначено для ознак state %s focus %s"
-
-#: ../src/ui/theme-parser.c:3748
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Неможливо використовувати два параметра draw_ops у одному елементі <piece> "
-"(у темі вказано ознаку draw_ops та елемент <draw_ops>, або вказано два "
-"елементи)"
-
-#: ../src/ui/theme-parser.c:3786
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Неможливо використовувати два параметра draw_ops у одному елементі <button> "
-"(у темі вказано ознаку draw_ops та елемент <draw_ops>, або вказано два "
-"елементи)"
-
-#: ../src/ui/theme-parser.c:3824
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Неможливо використовувати два параметра draw_ops у одному елементі "
-"<menu_icon> (у темі вказано ознаку draw_ops та елемент <draw_ops>, або "
-"вказано два елементи)"
-
-#: ../src/ui/theme-parser.c:3872
-#, c-format
-msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Найвищим елементом в темі має бути  <metacity_theme>, не <%s>"
-
-#: ../src/ui/theme-parser.c:3892
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"Елемент <%s> не дозволяється у елементах <name>, <author>, <date> і "
-"<description>"
-
-#: ../src/ui/theme-parser.c:3897
-#, c-format
-msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "Елемент <%s> не дозволяється у елементі <constant>"
-
-#: ../src/ui/theme-parser.c:3909
-#, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"Елемент <%s> не дозволяється у елементах <distance>, <border>, <aspect_ratio>"
-
-#: ../src/ui/theme-parser.c:3931
-#, c-format
-msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "Елемент <%s> не дозволяється у елементі операції малювання"
-
-#: ../src/ui/theme-parser.c:3941 ../src/ui/theme-parser.c:3971
-#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3981
-#, c-format
-msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "Елемент <%s> не дозволяється у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:4203
-msgid "No draw_ops provided for frame piece"
-msgstr "Для частини рамки не визначено параметр draw_ops"
-
-#: ../src/ui/theme-parser.c:4218
-msgid "No draw_ops provided for button"
-msgstr "Для кнопки не визначено параметр draw_ops"
-
-#: ../src/ui/theme-parser.c:4270
-#, c-format
-msgid "No text is allowed inside element <%s>"
-msgstr "Текст не дозволяється у елементі <%s>"
-
-#: ../src/ui/theme-parser.c:4325
-msgid "<name> specified twice for this theme"
-msgstr "<name> в цій темі вказано двічі"
-
-#: ../src/ui/theme-parser.c:4336
-msgid "<author> specified twice for this theme"
-msgstr "<author> в цій темі вказано двічі"
-
-#: ../src/ui/theme-parser.c:4347
-msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> в цій темі вказано двічі"
-
-#: ../src/ui/theme-parser.c:4358
-msgid "<date> specified twice for this theme"
-msgstr "<date> в цій темі вказано двічі"
-
-#: ../src/ui/theme-parser.c:4369
-msgid "<description> specified twice for this theme"
-msgstr "<description> в цій темі вказано двічі"
-
-#: ../src/ui/theme-parser.c:4636
-#, c-format
-msgid "Failed to find a valid file for theme %s\n"
-msgstr "Не вдається знайти коректний файл для теми %s\n"
-
-#: ../src/ui/theme-parser.c:4692
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Файл теми %s не містить елемента <metacity_theme>"
-
-#: ../src/ui/theme-viewer.c:74
-msgid "/_Windows"
-msgstr "/_Вікна"
-
-#: ../src/ui/theme-viewer.c:75
-msgid "/Windows/tearoff"
-msgstr "/Вікна/відрив"
-
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/_Dialog"
-msgstr "/Вікна/_Діалог"
-
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Modal dialog"
-msgstr "/Вікна/_Модальний діалог"
-
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Utility"
-msgstr "/Вікна/_Утиліта"
-
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Splashscreen"
-msgstr "/Вікна/_Заставка"
-
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Top dock"
-msgstr "/Вікна/_Верхній док"
-
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Bottom dock"
-msgstr "/Вікна/_Нижній док"
-
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Left dock"
-msgstr "/Вікна/_Лівий док"
-
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Right dock"
-msgstr "/Вікна/_Правий док"
-
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_All docks"
-msgstr "б/Вікна/Всі _доки"
-
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/Des_ktop"
-msgstr "/Вікна/_Робочий стіл"
-
-#: ../src/ui/theme-viewer.c:134
-msgid "Open another one of these windows"
-msgstr "Відкрити інше вікно"
-
-#: ../src/ui/theme-viewer.c:141
-msgid "This is a demo button with an 'open' icon"
-msgstr "Це демонстраційна кнопка із значком відкривання"
-
-#: ../src/ui/theme-viewer.c:148
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Це демонстраційна кнопка із значком виходу"
-
-#: ../src/ui/theme-viewer.c:241
-msgid "This is a sample message in a sample dialog"
-msgstr "Це зразок повідомлення у зразковому діалозі"
-
-#: ../src/ui/theme-viewer.c:324
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Фальшивий елемент меню %d\n"
-
-#: ../src/ui/theme-viewer.c:358
-msgid "Border-only window"
-msgstr "Вікно лише з рамкою"
-
-#: ../src/ui/theme-viewer.c:360
-msgid "Bar"
-msgstr "Прямокутник"
-
-#: ../src/ui/theme-viewer.c:377
-msgid "Normal Application Window"
-msgstr "Звичайне вікно програми"
-
-#: ../src/ui/theme-viewer.c:381
-msgid "Dialog Box"
-msgstr "Діалог"
-
-#: ../src/ui/theme-viewer.c:385
-msgid "Modal Dialog Box"
-msgstr "Модальний діалог"
-
-#: ../src/ui/theme-viewer.c:389
-msgid "Utility Palette"
-msgstr "Допоміжна палітра"
-
-#: ../src/ui/theme-viewer.c:393
-msgid "Torn-off Menu"
-msgstr "Відірване меню"
-
-#: ../src/ui/theme-viewer.c:397
-msgid "Border"
-msgstr "Рамка"
-
-#: ../src/ui/theme-viewer.c:725
-#, c-format
-msgid "Button layout test %d"
-msgstr "Перевірка розташування кнопок %d"
-
-#: ../src/ui/theme-viewer.c:754
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g мс для малювання однієї рамки вікна"
-
-#: ../src/ui/theme-viewer.c:797
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Використання: metacity-theme-viewer [НАЗВА_ТЕМИ]\n"
-
-#: ../src/ui/theme-viewer.c:804
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Помилка завантаження теми: %s\n"
-
-#: ../src/ui/theme-viewer.c:810
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Завантажено тему \"%s\" за %g с\n"
-
-#: ../src/ui/theme-viewer.c:833
-msgid "Normal Title Font"
-msgstr "Звичайний шрифт заголовка"
-
-#: ../src/ui/theme-viewer.c:839
-msgid "Small Title Font"
-msgstr "Малий шрифт заголовка"
-
-#: ../src/ui/theme-viewer.c:845
-msgid "Large Title Font"
-msgstr "Великий шрифт заголовка"
-
-#: ../src/ui/theme-viewer.c:850
-msgid "Button Layouts"
-msgstr "Розташування кнопок"
-
-#: ../src/ui/theme-viewer.c:855
-msgid "Benchmark"
-msgstr "Продуктивність"
-
-#: ../src/ui/theme-viewer.c:902
-msgid "Window Title Goes Here"
-msgstr "Тут буде заголовок вікна"
-
-#: ../src/ui/theme-viewer.c:1006
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"Намальовано %d рамок за %g с клієнтського часу (%g мс на рамку) і %g с "
-"календарного часу, включаючи ресурси сервера X Window (%g мс на кадр)\n"
-
-#: ../src/ui/theme-viewer.c:1225
-msgid "position expression test returned TRUE but set error"
-msgstr ""
-"перевірка виразу позиції повернула значення ІСТИНА, але встановила помилку"
-
-#: ../src/ui/theme-viewer.c:1227
-msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-"перевірка виразу позиції повернула значення ХИБНІСТЬ, але не встановила "
-"помилки"
-
-#: ../src/ui/theme-viewer.c:1231
-msgid "Error was expected but none given"
-msgstr "Очікувалась помилка, але її не трапилось"
-
-#: ../src/ui/theme-viewer.c:1233
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Очікувалась помилка %d, але трапилась помилка %d"
-
-#: ../src/ui/theme-viewer.c:1239
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Помилка не очікувалась, але її повернуто: %s"
-
-#: ../src/ui/theme-viewer.c:1243
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "Значення X було %d, а очікувалось ― %d"
-
-#: ../src/ui/theme-viewer.c:1246
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "Значення Y було %d, а очікувалось ― %d"
-
-#: ../src/ui/theme-viewer.c:1311
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d координатних виразів проаналізовано за %g с (середнє значення: %g c)\n"
-
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:254
 msgid "top"
 msgstr "top"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:256
 msgid "bottom"
 msgstr "bottom"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:258
 msgid "left"
 msgstr "left"
 
-#: ../src/ui/theme.c:262
+#: ../src/ui/theme.c:260
 msgid "right"
 msgstr "right"
 
-#: ../src/ui/theme.c:289
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "геометрія рамки не визначає розмір \"%s\""
 
-#: ../src/ui/theme.c:308
+#: ../src/ui/theme.c:306
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "геометрія рамки не визначає розмір \"%s\" рамки \"%s\""
 
-#: ../src/ui/theme.c:345
+#: ../src/ui/theme.c:343
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Неприпустимий коефіцієнт пропорційності %g"
 
-#: ../src/ui/theme.c:357
+#: ../src/ui/theme.c:355
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Геометрія рамки не визначає розміри кнопок"
 
-#: ../src/ui/theme.c:1022
+#: ../src/ui/theme.c:1020
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Градієнти повинні мати принаймні два кольори"
 
-#: ../src/ui/theme.c:1148
+#: ../src/ui/theme.c:1146
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3487,7 +1607,7 @@ msgstr ""
 "При визначенні кольору GTK потрібно вказувати режим у прямокутних дужках, "
 "наприклад gtk:fg[NORMAL], де NORMAL - режим; неможливо розібрати \"%s\""
 
-#: ../src/ui/theme.c:1162
+#: ../src/ui/theme.c:1160
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3497,17 +1617,17 @@ msgstr ""
 "прямокутна дужка, наприклад gtk:fg[NORMAL], де NORMAL - режим; неможливо "
 "розібрати \"%s\""
 
-#: ../src/ui/theme.c:1173
+#: ../src/ui/theme.c:1171
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Неможливо розпізнати режим \"%s\" у визначенні кольору"
 
-#: ../src/ui/theme.c:1186
+#: ../src/ui/theme.c:1184
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Неможливо розпізнати компонент кольору \"%s\" у визначенні кольору"
 
-#: ../src/ui/theme.c:1216
+#: ../src/ui/theme.c:1214
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3516,44 +1636,44 @@ msgstr ""
 "Формат визначення змішаного кольору такий - \"blend/bg_color/fg_color/alpha"
 "\", \"%s\" не відповідає формату"
 
-#: ../src/ui/theme.c:1227
+#: ../src/ui/theme.c:1225
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Неможливо розібрати значення альфа-каналу \"%s\" у змішаному кольорі"
 
-#: ../src/ui/theme.c:1237
+#: ../src/ui/theme.c:1235
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Значення альфа-каналу \"%s\" у змішаному кольорі поза межами 0.0 - 1.0"
 
-#: ../src/ui/theme.c:1285
+#: ../src/ui/theme.c:1282
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Формат тіні такий - \"shade/base_color/factor\", \"%s\" не відповідає формату"
 
-#: ../src/ui/theme.c:1296
+#: ../src/ui/theme.c:1293
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Не вдається проаналізувати компонент тіні \"%s\" у затіненому кольорі"
 
-#: ../src/ui/theme.c:1306
+#: ../src/ui/theme.c:1303
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Компонент тіні \"%s\" у затіненому кольорі від'ємний"
 
-#: ../src/ui/theme.c:1336
+#: ../src/ui/theme.c:1332
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Не вдається проаналізувати колір \"%s\""
 
-#: ../src/ui/theme.c:1594
+#: ../src/ui/theme.c:1582
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Вираз координати містить заборонений символ '%s'"
 
-#: ../src/ui/theme.c:1621
+#: ../src/ui/theme.c:1609
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3562,29 +1682,29 @@ msgstr ""
 "Вираз координати містить число з плаваючою комою \"%s\" яке не вдалось "
 "розібрати"
 
-#: ../src/ui/theme.c:1635
+#: ../src/ui/theme.c:1623
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Вираз координати містить ціле число \"%s\" яке не вдалось розібрати"
 
-#: ../src/ui/theme.c:1757
+#: ../src/ui/theme.c:1745
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "Вираз координати містить невідомий оператор на початку тексту\"%s\""
 
-#: ../src/ui/theme.c:1814
+#: ../src/ui/theme.c:1802
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Вираз координати був пустий або його неможливо розпізнати"
 
-#: ../src/ui/theme.c:1925 ../src/ui/theme.c:1935 ../src/ui/theme.c:1969
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Вираз координати призвів до ділення на нуль"
 
-#: ../src/ui/theme.c:1977
+#: ../src/ui/theme.c:1965
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -3592,23 +1712,23 @@ msgstr ""
 "Вираз координати намагається використати оператор знаходження залишку від "
 "ділення для числа з плаваючою комою"
 
-#: ../src/ui/theme.c:2033
+#: ../src/ui/theme.c:2021
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Вираз координати містить оператор \"%s\", там де очікувався операнд"
 
-#: ../src/ui/theme.c:2042
+#: ../src/ui/theme.c:2030
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Вираз координати містить оператор, там де очікувався оператор"
 
-#: ../src/ui/theme.c:2050
+#: ../src/ui/theme.c:2038
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Вираз координати закінчується оператором замість операнда"
 
-#: ../src/ui/theme.c:2060
+#: ../src/ui/theme.c:2048
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3617,38 +1737,38 @@ msgstr ""
 "Вираз координати містить оператор \"%c\", за яким йде оператор \"%c\" без "
 "операнду між ними"
 
-#: ../src/ui/theme.c:2207 ../src/ui/theme.c:2248
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Вираз координати містить невідому змінну або константу \"%s\""
 
-#: ../src/ui/theme.c:2302
+#: ../src/ui/theme.c:2290
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Переповнення буферу обробника координат."
 
-#: ../src/ui/theme.c:2331
+#: ../src/ui/theme.c:2319
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Вираз координати містить завершальну дужку без відповідної відкриваючої"
 
-#: ../src/ui/theme.c:2395
+#: ../src/ui/theme.c:2383
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Вираз координати містить завершальну дужку без відповідної закриваючої"
 
-#: ../src/ui/theme.c:2406
+#: ../src/ui/theme.c:2394
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Здається вираз координати не містить жодного оператору чи операнду"
 
-#: ../src/ui/theme.c:2608 ../src/ui/theme.c:2628 ../src/ui/theme.c:2648
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Тема містить вираз, що призводить до помилки: %s\n"
 
-#: ../src/ui/theme.c:4167
+#: ../src/ui/theme.c:4203
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3657,25 +1777,25 @@ msgstr ""
 "для цього стилю рамки треба вказати <button function=\"%s\" state=\"%s\" "
 "draw_ops=\"будь-що\"/>"
 
-#: ../src/ui/theme.c:4643 ../src/ui/theme.c:4668
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Відсутнє <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"будь-що\"/>"
 
-#: ../src/ui/theme.c:4712
+#: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Збій завантаження схеми \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4838 ../src/ui/theme.c:4845 ../src/ui/theme.c:4852
-#: ../src/ui/theme.c:4859 ../src/ui/theme.c:4866
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Не встановлено <%s> для теми \"%s\""
 
-#: ../src/ui/theme.c:4874
+#: ../src/ui/theme.c:4946
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3684,7 +1804,7 @@ msgstr ""
 "Немає стилю рамки для вікна типу \"%s\" у темі \"%s\", додайте елемент  "
 "<window type=\"%s\" style_set=\"будь-що\"/> "
 
-#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5303 ../src/ui/theme.c:5366
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3692,14 +1812,582 @@ msgstr ""
 "Визначені користувачем константи повинні починатись з великої літери; \"%s\" "
 "не починається з великої літери"
 
-#: ../src/ui/theme.c:5249 ../src/ui/theme.c:5311 ../src/ui/theme.c:5374
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константа \"%s\" вже визначена"
 
-#: ../src/tools/metacity-message.c:150
+#. Translators: This means that an attribute which should have been found
+#. * on an XML element was not in fact found.
+#.
+#: ../src/ui/theme-parser.c:202
 #, c-format
-msgid "Usage: %s\n"
-msgstr "Використання: %s\n"
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "Немає ознаки «%s»  у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "Рядок %d, символ %d: %s"
+
+#: ../src/ui/theme-parser.c:413
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "Ознака \"%s\" двічі повторюється у тому самому елементі <%s>"
+
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "Неправильна ознака \"%s\" у елементі <%s> у цьому контексті"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Не вдається проаналізувати як ціле \"%s\""
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Не вдається розпізнати останні символи \"%s\" у рядку \"%s\""
+
+#: ../src/ui/theme-parser.c:541
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "Значення цілого %ld має бути додатнім"
+
+#: ../src/ui/theme-parser.c:549
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "Значення цілого %ld надто велике, максимумом є %d"
+
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "Неможливо проаналізувати \"%s\" як число з плаваючою комою"
+
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "Логічні значення повинні бути \"true\" або \"false\", а не \"%s\""
+
+#: ../src/ui/theme-parser.c:663
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "Кут повинен бути між 0.0 та 360.0, вказано %g\n"
+
+#: ../src/ui/theme-parser.c:726
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr ""
+"Альфа-канал повинен бути у межах 0.0 (невидимість) та 1.0 (повна "
+"непрозорість), було %g\n"
+
+#: ../src/ui/theme-parser.c:791
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"Неприпустимий масштаб заголовку \"%s\" (можливі значення: xx-small,x-small,"
+"small,medium,large,x-large,xx-large)\n"
+
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "у елементі <%s> назва \"%s\" зустрілась другий раз"
+
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:1148
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "у елементі <%s> не було визначено батьківський елемент \"%s\""
+
+#: ../src/ui/theme-parser.c:1058
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "у елементі <%s> не було визначено геометрію \"%s\""
+
+#: ../src/ui/theme-parser.c:1071
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr ""
+"<%s> повинен або визначати геометрію, або вказувати на батьківський елемент, "
+"який містить геометрію"
+
+#: ../src/ui/theme-parser.c:1113
+msgid "You must specify a background for an alpha value to be meaningful"
+msgstr "Слід вказати тло для значення альфа-каналу"
+
+#: ../src/ui/theme-parser.c:1180
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "Невідомий тип \"%s\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:1191
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "Невідомий параметр style_set \"%s\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:1199
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "Типу вікна \"%s\" вже було визначено набір стилів"
+
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "Не допускається використання елементу <%s> нижче <%s>"
+
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1402
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
+msgstr ""
+"Неможливо одночасно задати для кнопок параметри \"button_width\"/\"button_height\" "
+"та \"aspect_ratio\""
+
+#: ../src/ui/theme-parser.c:1366
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "Невідома відстань \"%s\""
+
+#: ../src/ui/theme-parser.c:1411
+#, c-format
+msgid "Aspect ratio \"%s\" is unknown"
+msgstr "Невідомий коефіцієнт пропорційності \"%s\""
+
+#: ../src/ui/theme-parser.c:1473
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "Межа \"%s\" невідома"
+
+#: ../src/ui/theme-parser.c:1784
+#, c-format
+msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+msgstr "Немає ознаки \"start_angle\" або \"from\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:1791
+#, c-format
+msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+msgstr "Немає ознаки \"extent_angle\" або \"to\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:2031
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "Не вдається розпізнати значення \"%s\" типу градієнту"
+
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
+#, c-format
+msgid "Did not understand fill type \"%s\" for <%s> element"
+msgstr "Не вдається розпізнати тип заповнення \"%s\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "Не вдається розпізнати режим \"%s\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "Не вдається розпізнати тінь \"%s\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:2296
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "Не вдається розпізнати стрілку \"%s\" у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "Параметр <draw_ops> з назвою \"%s\" не було визначено"
+
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr ""
+"Вставлення сюди draw_ops \"%s\" призведе до створення циклічного посилання"
+
+#: ../src/ui/theme-parser.c:2819
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "Невідома позиція \"%s\" дільниці рамки"
+
+#: ../src/ui/theme-parser.c:2827
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "У стилю рамки вже є дільниці рамки у позиції %s"
+
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "Не було визначено параметру <draw_ops> з назвою \"%s\""
+
+#: ../src/ui/theme-parser.c:2873
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "Невідома функція кнопки - \"%s\""
+
+#: ../src/ui/theme-parser.c:2882
+#, c-format
+msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+msgstr "Функція кнопки \"%s\" не існує для цієї версії (%d, потрібно %d)"
+
+#: ../src/ui/theme-parser.c:2894
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "Невідомий стан кнопки - \"%s\""
+
+#: ../src/ui/theme-parser.c:2902
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "Стиль рамки вже містить кнопку для функції %s зі станом %s"
+
+#: ../src/ui/theme-parser.c:2973
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "\"%s\" не є правильною назвою ознаки \"focus\""
+
+#: ../src/ui/theme-parser.c:2982
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "\"%s\" не є правильним станом ознаки \"state\""
+
+#: ../src/ui/theme-parser.c:2992
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "Стиль \"%s\" не визначено"
+
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "\"%s\" не є правильним значенням ознаки \"resize\""
+
+#: ../src/ui/theme-parser.c:3047
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+"Не слід використовувати ознаку \"resize\" у елементі <%s> для розгорнутого "
+"та згорнутого стану"
+
+#: ../src/ui/theme-parser.c:3061
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgstr ""
+"Не слід використовувати ознаку \"resize\" у елементі <%s> для розгорнутого "
+"стану"
+
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr "Стиль вже було визначено для ознак state %s resize %s focus %s"
+
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "Стиль вже було визначено для ознак state %s focus %s"
+
+#: ../src/ui/theme-parser.c:3147
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Неможливо використовувати два параметра draw_ops у одному елементі <piece> "
+"(у темі вказано ознаку draw_ops та елемент <draw_ops>, або вказано два "
+"елементи)"
+
+#: ../src/ui/theme-parser.c:3185
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Неможливо використовувати два параметра draw_ops у одному елементі <button> "
+"(у темі вказано ознаку draw_ops та елемент <draw_ops>, або вказано два "
+"елементи)"
+
+#: ../src/ui/theme-parser.c:3223
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Неможливо використовувати два параметра draw_ops у одному елементі "
+"<menu_icon> (у темі вказано ознаку draw_ops та елемент <draw_ops>, або "
+"вказано два елементи)"
+
+#: ../src/ui/theme-parser.c:3271
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "Найвищим елементом в темі має бути  <metacity_theme>, не <%s>"
+
+#: ../src/ui/theme-parser.c:3291
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"Елемент <%s> не дозволяється у елементах <name>, <author>, <date> і "
+"<description>"
+
+#: ../src/ui/theme-parser.c:3296
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "Елемент <%s> не дозволяється у елементі <constant>"
+
+#: ../src/ui/theme-parser.c:3308
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"Елемент <%s> не дозволяється у елементах <distance>, <border>, <aspect_ratio>"
+
+#: ../src/ui/theme-parser.c:3330
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "Елемент <%s> не дозволяється у елементі операції малювання"
+
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "Елемент <%s> не дозволяється у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:3602
+msgid "No draw_ops provided for frame piece"
+msgstr "Для частини рамки не визначено параметр draw_ops"
+
+#: ../src/ui/theme-parser.c:3617
+msgid "No draw_ops provided for button"
+msgstr "Для кнопки не визначено параметр draw_ops"
+
+#: ../src/ui/theme-parser.c:3669
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "Текст не дозволяється у елементі <%s>"
+
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> вказано для цієї теми двічі"
+
+#: ../src/ui/theme-parser.c:4040
+#, c-format
+msgid "Failed to find a valid file for theme %s\n"
+msgstr "Не вдається знайти коректний файл для теми %s\n"
+
+#: ../src/ui/theme-parser.c:4096
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "Файл теми %s не містить елемента <metacity_theme>"
+
+#: ../src/ui/theme-viewer.c:75
+msgid "/_Windows"
+msgstr "/_Вікна"
+
+#: ../src/ui/theme-viewer.c:76
+msgid "/Windows/tearoff"
+msgstr "/Вікна/відрив"
+
+#: ../src/ui/theme-viewer.c:77
+msgid "/Windows/_Dialog"
+msgstr "/Вікна/_Діалог"
+
+#: ../src/ui/theme-viewer.c:78
+msgid "/Windows/_Modal dialog"
+msgstr "/Вікна/_Модальний діалог"
+
+#: ../src/ui/theme-viewer.c:79
+msgid "/Windows/_Utility"
+msgstr "/Вікна/_Утиліта"
+
+#: ../src/ui/theme-viewer.c:80
+msgid "/Windows/_Splashscreen"
+msgstr "/Вікна/_Заставка"
+
+#: ../src/ui/theme-viewer.c:81
+msgid "/Windows/_Top dock"
+msgstr "/Вікна/_Верхній док"
+
+#: ../src/ui/theme-viewer.c:82
+msgid "/Windows/_Bottom dock"
+msgstr "/Вікна/_Нижній док"
+
+#: ../src/ui/theme-viewer.c:83
+msgid "/Windows/_Left dock"
+msgstr "/Вікна/_Лівий док"
+
+#: ../src/ui/theme-viewer.c:84
+msgid "/Windows/_Right dock"
+msgstr "/Вікна/_Правий док"
+
+#: ../src/ui/theme-viewer.c:85
+msgid "/Windows/_All docks"
+msgstr "б/Вікна/Всі _доки"
+
+#: ../src/ui/theme-viewer.c:86
+msgid "/Windows/Des_ktop"
+msgstr "/Вікна/_Робочий стіл"
+
+#: ../src/ui/theme-viewer.c:136
+msgid "Open another one of these windows"
+msgstr "Відкрити інше вікно"
+
+#: ../src/ui/theme-viewer.c:143
+msgid "This is a demo button with an 'open' icon"
+msgstr "Це демонстраційна кнопка із значком відкривання"
+
+#: ../src/ui/theme-viewer.c:150
+msgid "This is a demo button with a 'quit' icon"
+msgstr "Це демонстраційна кнопка із значком виходу"
+
+#: ../src/ui/theme-viewer.c:243
+msgid "This is a sample message in a sample dialog"
+msgstr "Це зразок повідомлення у зразковому діалозі"
+
+#: ../src/ui/theme-viewer.c:326
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "Фальшивий елемент меню %d\n"
+
+#: ../src/ui/theme-viewer.c:360
+msgid "Border-only window"
+msgstr "Вікно лише з рамкою"
+
+#: ../src/ui/theme-viewer.c:362
+msgid "Bar"
+msgstr "Прямокутник"
+
+#: ../src/ui/theme-viewer.c:379
+msgid "Normal Application Window"
+msgstr "Звичайне вікно програми"
+
+#: ../src/ui/theme-viewer.c:383
+msgid "Dialog Box"
+msgstr "Діалог"
+
+#: ../src/ui/theme-viewer.c:387
+msgid "Modal Dialog Box"
+msgstr "Модальний діалог"
+
+#: ../src/ui/theme-viewer.c:391
+msgid "Utility Palette"
+msgstr "Допоміжна палітра"
+
+#: ../src/ui/theme-viewer.c:395
+msgid "Torn-off Menu"
+msgstr "Відірване меню"
+
+#: ../src/ui/theme-viewer.c:399
+msgid "Border"
+msgstr "Рамка"
+
+#: ../src/ui/theme-viewer.c:727
+#, c-format
+msgid "Button layout test %d"
+msgstr "Перевірка розташування кнопок %d"
+
+#: ../src/ui/theme-viewer.c:756
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "%g мс для малювання однієї рамки вікна"
+
+#: ../src/ui/theme-viewer.c:799
+#, c-format
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "Використання: metacity-theme-viewer [НАЗВА_ТЕМИ]\n"
+
+#: ../src/ui/theme-viewer.c:806
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "Помилка завантаження теми: %s\n"
+
+#: ../src/ui/theme-viewer.c:812
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "Завантажено тему \"%s\" за %g с\n"
+
+#: ../src/ui/theme-viewer.c:853
+msgid "Normal Title Font"
+msgstr "Звичайний шрифт заголовка"
+
+#: ../src/ui/theme-viewer.c:859
+msgid "Small Title Font"
+msgstr "Малий шрифт заголовка"
+
+#: ../src/ui/theme-viewer.c:865
+msgid "Large Title Font"
+msgstr "Великий шрифт заголовка"
+
+#: ../src/ui/theme-viewer.c:870
+msgid "Button Layouts"
+msgstr "Розташування кнопок"
+
+#: ../src/ui/theme-viewer.c:875
+msgid "Benchmark"
+msgstr "Продуктивність"
+
+#: ../src/ui/theme-viewer.c:922
+msgid "Window Title Goes Here"
+msgstr "Тут буде заголовок вікна"
+
+#: ../src/ui/theme-viewer.c:1026
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+"Намальовано %d рамок за %g с клієнтського часу (%g мс на рамку) і %g с "
+"календарного часу, включаючи ресурси сервера X Window (%g мс на кадр)\n"
+
+#: ../src/ui/theme-viewer.c:1245
+msgid "position expression test returned TRUE but set error"
+msgstr ""
+"перевірка виразу позиції повернула значення ІСТИНА, але встановила помилку"
+
+#: ../src/ui/theme-viewer.c:1247
+msgid "position expression test returned FALSE but didn't set error"
+msgstr ""
+"перевірка виразу позиції повернула значення ХИБНІСТЬ, але не встановила "
+"помилки"
+
+#: ../src/ui/theme-viewer.c:1251
+msgid "Error was expected but none given"
+msgstr "Очікувалась помилка, але її не трапилось"
+
+#: ../src/ui/theme-viewer.c:1253
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "Очікувалась помилка %d, але трапилась помилка %d"
+
+#: ../src/ui/theme-viewer.c:1259
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "Помилка не очікувалась, але її повернуто: %s"
+
+#: ../src/ui/theme-viewer.c:1263
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "Значення X було %d, а очікувалось ― %d"
+
+#: ../src/ui/theme-viewer.c:1266
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "Значення Y було %d, а очікувалось ― %d"
+
+#: ../src/ui/theme-viewer.c:1331
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr ""
+"%d координатних виразів проаналізовано за %g с (середнє значення: %g c)\n"
 
 
