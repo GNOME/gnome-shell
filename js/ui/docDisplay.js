@@ -88,7 +88,7 @@ DocDisplayItem.prototype = {
 
     // Ensures the preview icon is created.
     _ensurePreviewIconCreated : function() {
-        if (!this._showPreview || this._previewIcon)
+        if (this._previewIcon)
             return; 
 
         this._previewIcon = new Clutter.Texture();
@@ -100,6 +100,24 @@ DocDisplayItem.prototype = {
         } else {
             Shell.clutter_texture_set_from_pixbuf(this._previewIcon, this._docInfo.get_icon(GenericDisplay.PREVIEW_ICON_SIZE));
         }
+    },
+
+    // Creates and returns a large preview icon, but only if this._docInfo is an image file
+    // and we were able to generate a pixbuf from it successfully.
+    _createLargePreviewIcon : function(availableWidth, availableHeight) {
+        if (this._docInfo.get_mime_type() == null || this._docInfo.get_mime_type().indexOf("image/") != 0)
+            return null;
+
+        let largePreviewPixbuf = Shell.create_pixbuf_from_image_file(this._docInfo.get_uri(), availableWidth, availableHeight);
+        
+        if (largePreviewPixbuf == null)
+            return null;
+
+        let largePreviewIcon = new Clutter.Texture();
+
+        Shell.clutter_texture_set_from_pixbuf(largePreviewIcon, largePreviewPixbuf); 
+
+        return largePreviewIcon;
     }
 };
 

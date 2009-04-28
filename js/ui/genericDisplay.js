@@ -86,7 +86,7 @@ GenericDisplayItem.prototype = {
         this._description = null;
         this._icon = null;
         this._preview = null;
-        this._previewIcon = null;
+        this._previewIcon = null; 
 
         this.dragActor = null;
 
@@ -196,20 +196,19 @@ GenericDisplayItem.prototype = {
      * the preview pop-up has and be item-type specific.
      *
      * availableWidth - width available for displaying details
+     * availableHeight - height available for displaying details
      */ 
-    createDetailsActor: function(availableWidth) {
-        let details = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+    createDetailsActor: function(availableWidth, availableHeight) {
+
+        let details = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     spacing: PREVIEW_BOX_SPACING,
                                     width: availableWidth });
 
-        this._ensurePreviewIconCreated();
+        let mainDetails = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                        spacing: PREVIEW_BOX_SPACING,
+                                        width: availableWidth });
 
-        if (this._previewIcon != null) {
-            let previewIconClone = new Clutter.Clone({ source: this._previewIcon });
-            details.append(previewIconClone, Big.BoxPackFlags.NONE);
-        }
-
-	// Inner box with name and description
+        // Inner box with name and description
         let textDetails = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                         spacing: PREVIEW_BOX_SPACING });
         let detailsName = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
@@ -224,7 +223,23 @@ GenericDisplayItem.prototype = {
                                                     text: this._description.text });
         textDetails.append(detailsDescription, Big.BoxPackFlags.NONE);
 
-        details.append(textDetails, Big.BoxPackFlags.EXPAND);
+        mainDetails.append(textDetails, Big.BoxPackFlags.EXPAND);
+
+        this._ensurePreviewIconCreated();
+        let largePreviewIcon = this._createLargePreviewIcon(availableWidth, Math.max(0, availableHeight - mainDetails.height - PREVIEW_BOX_SPACING));
+
+        if (this._previewIcon != null && largePreviewIcon == null) {
+            let previewIconClone = new Clutter.Clone({ source: this._previewIcon });
+            mainDetails.prepend(previewIconClone, Big.BoxPackFlags.NONE);
+        }
+
+        details.append(mainDetails, Big.BoxPackFlags.NONE);
+
+        if (largePreviewIcon != null) {
+            let largePreview = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
+            largePreview.append(largePreviewIcon, Big.BoxPackFlags.NONE);
+            details.append(largePreview, Big.BoxPackFlags.NONE);
+        }
    
         // We hide the preview pop-up if the details are shown elsewhere. 
         details.connect("show", 
@@ -313,6 +328,13 @@ GenericDisplayItem.prototype = {
                                                x: this._name.x,
                                                y: this._name.height + 4 });
         this.actor.add_actor(this._description);
+    },
+
+    //// Virtual protected methods ////
+
+    // Creates and returns a large preview icon, but only if we have a detailed image.
+    _createLargePreviewIcon : function(availableWidth, availableHeight) {
+        return null;
     },
 
     //// Pure virtual protected methods ////
@@ -442,7 +464,6 @@ GenericDisplay.prototype = {
         this._displayedItemsCount = 0;
         this._pageDisplayed = 0;
         this._selectedIndex = -1;
-        this._keepDisplayCurrent = false;
         // These two are public - .actor is the normal "actor subclass" property,
         // but we also expose a .displayControl actor which is separate.
         // See also getSideArea.
@@ -454,17 +475,21 @@ GenericDisplay.prototype = {
                                             orientation: Big.BoxOrientation.HORIZONTAL});
 
         this._availableWidthForItemDetails = this._columnWidth;
+        this._availableHeightForItemDetails = this._height;
         this.selectedItemDetails = new Big.Box({});     
     },
 
     //// Public methods ////
 
-    setAvailableWidthForItemDetails: function(availableWidth) {
+    // Sets dimensions available for the item details display.
+    setAvailableDimensionsForItemDetails: function(availableWidth, availableHeight) {
         this._availableWidthForItemDetails = availableWidth;
+        this._availableHeightForItemDetails = availableHeight;
     },
 
-    getAvailableWidthForItemDetails: function() {
-        return this._availableWidthForItemDetails;
+    // Returns dimensions available for the item details display.
+    getAvailableDimensionsForItemDetails: function() {
+        return [this._availableWidthForItemDetails, this._availableHeightForItemDetails];
     },
 
     // Sets the search string and displays the matching items.
@@ -567,9 +592,8 @@ GenericDisplay.prototype = {
 
     // Updates the displayed items and makes the display actor visible.
     show: function() {
-        this._keepDisplayCurrent = true;
-        this._redisplay(true);
         this._grid.show();
+        this._redisplay(true);
     },
 
     // Hides the display actor.
@@ -577,7 +601,6 @@ GenericDisplay.prototype = {
         this._grid.hide();
         this._filterReset();
         this._removeAllDisplayItems();
-        this._keepDisplayCurrent = false;
     },
 
     // Returns an actor which acts as a sidebar; this is used for
@@ -672,7 +695,7 @@ GenericDisplay.prototype = {
         let displayItem = this._displayedItems[itemId];
         let displayItemIndex = this._getIndexOfDisplayedActor(displayItem.actor);
 
-        if (this.hasSelected() && this._displayedItemsCount == 1) {
+        if (this.hasSelected() && (this._displayedItemsCount == 1 || !this._grid.visible)) { 
             this.unsetSelected();
         } else if (this.hasSelected() && displayItemIndex < this._selectedIndex) {
             this.selectUp();
@@ -736,9 +759,9 @@ GenericDisplay.prototype = {
      *             their own while the user was browsing through the result pages.
      */
     _redisplay: function(resetPage) {
-        if (!this._keepDisplayCurrent)
+        if (!this._grid.visible)
             return;
-
+        
         this._refreshCache();
         if (!this._filterActive())
             this._setDefaultList();
@@ -947,13 +970,20 @@ GenericDisplay.prototype = {
         if (this._selectedIndex != -1) {
             let prev = this._findDisplayedByIndex(this._selectedIndex);
             prev.markSelected(false);
+            // Calling destroy() gets large image previews released as quickly as
+            // possible, if we just removed them, they might hang around for a while
+            // until the actor was garbage collected.
+            let children = this.selectedItemDetails.get_children();
+            for (let i = 0; i < children.length; i++)
+                children[i].destroy();
+    
             this.selectedItemDetails.remove_all();
         }
         this._selectedIndex = index;
         if (index != -1 && index < this._displayedItemsCount) {
             let item = this._findDisplayedByIndex(index);
             item.markSelected(true);
-            this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails), Big.BoxPackFlags.NONE);  
+            this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails, this._availableHeightForItemDetails), Big.BoxPackFlags.NONE);  
             this.emit('selected'); 
         }
     }

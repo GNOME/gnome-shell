@@ -152,10 +152,15 @@ Sideshow.prototype = {
         this._additionalWidth = (this._width / SIDESHOW_COLUMNS) *
                                 (this._expandedSideshowColumns - SIDESHOW_COLUMNS);
 
+        let bottomHeight = displayGridRowHeight / 2;
+
+        let global = Shell.Global.get();
+
         let previewWidth = this._expandedWidth - this._width -
                            this._additionalWidth - SIDESHOW_SECTION_SPACING;
 
-        let global = Shell.Global.get();
+        let previewHeight = global.screen_height - Panel.PANEL_HEIGHT - SIDESHOW_PAD - bottomHeight;
+
         this.actor = new Clutter.Group();
         this.actor.height = global.screen_height;
         this._searchEntry = new SearchEntry(this._displayWidth);
@@ -265,9 +270,6 @@ Sideshow.prototype = {
                                             height: LABEL_HEIGHT});
         this._appsSection.append(this._appsText, Big.BoxPackFlags.EXPAND);
 
-
-        let bottomHeight = displayGridRowHeight / 2;
-
         this._itemDisplayHeight = global.screen_height - this._appsSection.y - SIDESHOW_SECTION_MISC_HEIGHT * 2 - bottomHeight;
         
         this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
@@ -325,14 +327,16 @@ Sideshow.prototype = {
         this._details = new Big.Box({ x: this._width + this._additionalWidth + SIDESHOW_SECTION_SPACING,
                                       y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
                                       width: previewWidth,
-                                      height: global.screen_height - Panel.PANEL_HEIGHT - SIDESHOW_PAD - bottomHeight,
+                                      height: previewHeight,
                                       corner_radius: DETAILS_CORNER_RADIUS,
                                       border: DETAILS_BORDER_WIDTH,
                                       border_color: DETAILS_BORDER_COLOR,
                                       padding: DETAILS_PADDING});
-        this._appDisplay.setAvailableWidthForItemDetails(previewWidth);
-        this._docDisplay.setAvailableWidthForItemDetails(previewWidth);
-
+        this._appDisplay.setAvailableDimensionsForItemDetails(previewWidth - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2,
+                                                              previewHeight - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2);
+        this._docDisplay.setAvailableDimensionsForItemDetails(previewWidth - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2,
+                                                              previewHeight - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2);
+ 
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
             me.emit('activated');

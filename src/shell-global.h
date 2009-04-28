@@ -36,6 +36,10 @@ gboolean shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
 
 GdkPixbuf *shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info);
 
+GdkPixbuf *shell_create_pixbuf_from_image_file(const char *uri, 
+                                               int available_width, 
+                                               int available_height);
+
 GSList *shell_get_categories_for_desktop_file(const char *desktop_file_name);
 
 guint16 shell_get_event_key_symbol(ClutterEvent *event);
