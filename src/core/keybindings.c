@@ -2060,7 +2060,7 @@ process_tab_grab (MetaDisplay *display,
    * implementing Alt+Tab & Co., we call this custom handler; we do not
    * mess about with the grab, as that is up to the handler to deal with.
    */
-  if (!screen->tab_popup)
+  if (!screen->tab_handler)
     {
       MetaKeyHandler *handler = NULL;
       const gchar    *handler_name = NULL;
@@ -3060,7 +3060,7 @@ do_choose_window (MetaDisplay    *display,
       return;
     }
 
-  meta_screen_ensure_tab_popup (screen, type,
+  meta_screen_tab_popup_create (screen, type,
                                 show_popup ? META_TAB_SHOW_ICON :
                                 META_TAB_SHOW_INSTANTLY,
                                 initial_selection);
@@ -3440,7 +3440,7 @@ handle_workspace_switch  (MetaDisplay    *display,
   meta_workspace_activate (next, event->xkey.time);
 
   if (grabbed_before_release && !meta_prefs_get_no_tab_popup ())
-    meta_screen_ensure_workspace_popup (screen, next);
+    meta_screen_workspace_popup_create (screen, next);
 }
 
 static void

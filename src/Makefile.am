@@ -11,6 +11,10 @@ INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMETACIT
 metacity_SOURCES= 			\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
+	core/alttabhandler.c			\
+	include/alttabhandler.h			\
+	core/alttabhandlerdefault.c		\
+	include/alttabhandlerdefault.h		\
 	core/bell.c				\
 	core/bell.h				\
 	core/boxes.c				\
@@ -142,6 +146,7 @@ libmetacity_private_la_LIBADD  = @METACITY_LIBS@
 libmetacityincludedir = $(includedir)/metacity-1/metacity-private
 
 libmetacityinclude_base_headers =		\
+	include/alttabhandler.h			\
 	include/boxes.h				\
 	ui/gradient.h				\
 	include/util.h				\

@@ -36,6 +36,7 @@
 #include "display-private.h"
 #include "screen.h"
 #include <X11/Xutil.h>
+#include "alttabhandler.h"
 #include "ui.h"
 
 typedef struct _MetaXineramaScreenInfo MetaXineramaScreenInfo;
@@ -80,7 +81,8 @@ struct _MetaScreen
   Visual *default_xvisual;
   MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaUI *ui;
-  MetaTabPopup *tab_popup, *ws_popup;
+  MetaAltTabHandler *tab_handler;
+  MetaTabPopup *ws_popup;
   
   MetaWorkspace *active_workspace;
 
@@ -164,7 +166,7 @@ void          meta_screen_set_cursor          (MetaScreen                 *scree
                                                MetaCursor                  cursor);
 void          meta_screen_update_cursor       (MetaScreen                 *screen);
 
-void          meta_screen_ensure_tab_popup       (MetaScreen              *screen,
+void          meta_screen_tab_popup_create       (MetaScreen              *screen,
                                                   MetaTabList              list_type,
                                                   MetaTabShowType          show_type,
                                                   MetaWindow              *initial_window);
@@ -173,7 +175,7 @@ void          meta_screen_tab_popup_backward     (MetaScreen              *scree
 MetaWindow*   meta_screen_tab_popup_get_selected (MetaScreen              *screen);
 void          meta_screen_tab_popup_destroy      (MetaScreen              *screen);
 
-void          meta_screen_ensure_workspace_popup       (MetaScreen    *screen,
+void          meta_screen_workspace_popup_create       (MetaScreen    *screen,
                                                         MetaWorkspace *initial_selection);
 void          meta_screen_workspace_popup_select       (MetaScreen    *screen,
                                                         MetaWorkspace *workspace);
