@@ -441,7 +441,6 @@ mutter_window_constructed (GObject *object)
 
       opacity = (guint8)((gfloat)value * 255.0 / ((gfloat)0xffffffff));
 
-      printf ("setting opacity to %d\n", opacity);
       priv->opacity = opacity;
       clutter_actor_set_opacity (CLUTTER_ACTOR (self), opacity);
     }
@@ -1716,7 +1715,6 @@ process_property_notify (Mutter		*compositor,
 
 	  opacity = (guint8)((gfloat)value * 255.0 / ((gfloat)0xffffffff));
 
-          printf ("setting opacity to %d\n", opacity);
 	  cw->priv->opacity = opacity;
 	  clutter_actor_set_opacity (CLUTTER_ACTOR (cw), opacity);
 	}
