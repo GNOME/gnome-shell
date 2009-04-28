@@ -246,7 +246,7 @@ Panel.prototype = {
             display_date.setMinutes(display_date.getMinutes() + 1);
             msec_remaining += 60000;
         }
-        this._clock.set_text(display_date.toLocaleFormat("%H:%M"));
+        this._clock.set_text(display_date.toLocaleFormat("%a %b %e, %l:%M %p"));
         Mainloop.timeout_add(msec_remaining, function() {
             me._updateClock();
             return false;
