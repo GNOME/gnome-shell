@@ -1238,6 +1238,7 @@ clutter_model_set_sort
 clutter_model_resort
 ClutterModelFilterFunc
 clutter_model_set_filter
+clutter_model_get_filter_set
 clutter_model_filter_iter
 clutter_model_filter_row
 
