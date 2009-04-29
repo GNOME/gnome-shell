@@ -644,7 +644,8 @@ cogl_material_set_layer_matrix (CoglHandle material_handle,
 static void
 _cogl_material_layer_free (CoglMaterialLayer *layer)
 {
-  cogl_handle_unref (layer->texture);
+  if (layer->texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (layer->texture);
   g_free (layer);
 }
 
