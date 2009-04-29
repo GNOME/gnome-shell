@@ -69,7 +69,7 @@ Panel.prototype = {
                                                         PANEL_BOTTOM_COLOR);
         let shadow = global.create_vertical_gradient(SHADOW_COLOR,
                                                      TRANSPARENT_COLOR);
-        shadow.set_height(SHADOW_HEIGHT);
+        shadow.set_height(SHADOW_HEIGHT + 1);
         backBox.append(backUpper, Big.BoxPackFlags.EXPAND);
         backBox.append(backLower, Big.BoxPackFlags.EXPAND);
         backBox.append(shadow, Big.BoxPackFlags.NONE);
@@ -159,15 +159,11 @@ Panel.prototype = {
                 return true;
             });
 
-        this._setStruts();
-        global.screen.connect('notify::n-workspaces',
-            function() {
-                me._setStruts();
-            });
-
         this.actor.add_actor(box);
 
         global.stage.add_actor(this.actor);
+        // Declare just "box" (ie, not the drop shadow) as a shell actor
+        Main.addShellActor(box);
 
         global.screen.connect('restacked',
             function() {
@@ -177,30 +173,6 @@ Panel.prototype = {
 
         // Start the clock
         this._updateClock();
-    },
-
-    // Struts determine the area along each side of the screen that is reserved
-    // and not available to applications
-    _setStruts: function() {
-        let global = Shell.Global.get();
-
-        let struts = [
-            new Meta.Strut({
-                rect: {
-                    x: 0,
-                    y: 0,
-                    width: global.screen_width,
-                    height: PANEL_HEIGHT
-                },
-                side: Meta.Side.TOP
-            })
-        ];
-
-        let screen = global.screen;
-        for (let i = 0; i < screen.n_workspaces; i++) {
-            let workspace = screen.get_workspace_by_index(i);
-            workspace.set_builtin_struts(struts);
-        }
     },
 
     _restacked: function() {

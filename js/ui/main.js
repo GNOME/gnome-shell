@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -60,8 +61,6 @@ function start() {
     });
 
     panel = new Panel.Panel();
-    panel.actor.connect('notify::visible', _panelVisibilityChanged);
-    _panelVisibilityChanged();
 
     overlay = new Overlay.Overlay();
     wm = new WindowManager.WindowManager();
@@ -95,6 +94,9 @@ function start() {
     display.connect('overlay-key', toggleOverlay);
     global.connect('panel-main-menu', toggleOverlay);
     
+    // Need to update struts on new workspaces when they are added
+    global.screen.connect('notify::n-workspaces', _setStageArea);
+
     Mainloop.idle_add(_removeUnusedWorkspaces);
 }
 
@@ -128,18 +130,6 @@ function _removeUnusedWorkspaces() {
     return false;
 }
 
-function _panelVisibilityChanged() {
-    if (!inModal) {
-        let global = Shell.Global.get();
-
-        if (panel.actor.visible) {
-            global.set_stage_input_area(0, 0,
-                                        global.screen_width, Panel.PANEL_HEIGHT);
-        } else
-            global.set_stage_input_area(0, 0, 0, 0);
-    }
-}
-
 // Used to go into a mode where all keyboard and mouse input goes to
 // the stage. Returns true if we successfully grabbed the keyboard and
 // went modal, false otherwise
@@ -148,9 +138,9 @@ function startModal() {
 
     if (!global.grab_keyboard())
         return false;
+    global.set_stage_input_mode(Shell.StageInputMode.FULLSCREEN);
 
     inModal = true;
-    global.set_stage_input_area(0, 0, global.screen_width, global.screen_height);
 
     return true;
 }
@@ -159,8 +149,8 @@ function endModal() {
     let global = Shell.Global.get();
 
     global.ungrab_keyboard();
+    global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
     inModal = false;
-    _panelVisibilityChanged();
 }
 
 function show_overlay() {
@@ -174,4 +164,88 @@ function hide_overlay() {
     overlay.hide();
     overlayActive = false;
     endModal();
+}
+
+let _shellActors = [];
+
+// For adding an actor that is part of the shell in the normal desktop view
+function addShellActor(actor) {
+    let global = Shell.Global.get();
+
+    _shellActors.push(actor);
+
+    actor.connect('notify::visible', _setStageArea);
+    actor.connect('destroy', function(actor) {
+                      let i = _shellActors.indexOf(actor);
+                      if (i != -1)
+                          _shellActors.splice(i, 1);
+                      _setStageArea();
+                  });
+
+    while (actor != global.stage) {
+        actor.connect('notify::allocation', _setStageArea);
+        actor = actor.get_parent();
+    }
+
+    _setStageArea();
+}
+
+function _setStageArea() {
+    let global = Shell.Global.get();
+    let rects = [], struts = [];
+
+    for (let i = 0; i < _shellActors.length; i++) {
+        if (!_shellActors[i].visible)
+            continue;
+
+        let [x, y] = _shellActors[i].get_transformed_position();
+        let [w, h] = _shellActors[i].get_transformed_size();
+
+        let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h});
+        rects.push(rect);
+
+        // Metacity wants to know what side of the screen the strut is
+        // considered to be attached to. If the actor is only touching
+        // one edge, or is touching the entire width/height of one
+        // edge, then it's obvious which side to call it. If it's in a
+        // corner, we pick a side arbitrarily. If it doesn't touch any
+        // edges, or it spans the width/height across the middle of
+        // the screen, then we don't create a strut for it at all.
+        let side;
+        if (w >= global.screen_width) {
+            if (y <= 0)
+                side = Meta.Side.TOP;
+            else if (y + h >= global.screen_height)
+                side = Meta.Side.BOTTOM;
+            else
+                continue;
+        } else if (h >= global.screen_height) {
+            if (x <= 0)
+                side = Meta.Side.LEFT;
+            else if (x + w >= global.screen_width)
+                side = Meta.Side.RIGHT;
+            else
+                continue;
+        } else if (x <= 0)
+            side = Meta.Side.LEFT;
+        else if (y <= 0)
+            side = Meta.Side.TOP;
+        else if (x + w >= global.screen_width)
+            side = Meta.Side.RIGHT;
+        else if (y + h >= global.screen_height)
+            side = Meta.Side.BOTTOM;
+        else
+            continue;
+
+        let strut = new Meta.Strut({ rect: rect, side: side });
+        struts.push(strut);
+    }
+
+    let screen = global.screen;
+    for (let w = 0; w < screen.n_workspaces; w++) {
+        let workspace = screen.get_workspace_by_index(w);
+        workspace.set_builtin_struts(struts);
+    }
+
+    global.set_stage_input_region(rects);
 }

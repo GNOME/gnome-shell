@@ -16,6 +16,7 @@
 #include <dbus/dbus-glib.h>
 #include <libgnomeui/gnome-thumbnail.h>
 #include <math.h>
+#include <X11/extensions/Xfixes.h>
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 
@@ -31,12 +32,10 @@ struct _ShellGlobal {
    * This window is never mapped or shown.
    */
   GtkWindow *grab_notifier;
-  gboolean grab_active;
-  /* See shell_global_set_stage_input_area */
-  int input_x;
-  int input_y;
-  int input_width;
-  int input_height;
+  gboolean gtk_grab_active;
+
+  ShellStageInputMode input_mode;
+  XserverRegion input_region;
   
   MutterPlugin *plugin;
   ShellWM *wm;
@@ -172,9 +171,11 @@ shell_global_init (ShellGlobal *global)
   
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
-  global->grab_active = FALSE;
+  global->gtk_grab_active = FALSE;
 
   global->root_pixmap = NULL;
+
+  global->input_mode = SHELL_STAGE_INPUT_MODE_NORMAL;
 }
 
 static void
@@ -682,32 +683,85 @@ shell_global_get (void)
 }
 
 /**
- * shell_global_set_stage_input_area:
- * x: X coordinate of rectangle
- * y: Y coordinate of rectangle
- * width: width of rectangle
- * height: height of rectangle
+ * shell_global_set_stage_input_mode:
+ * @global: the #ShellGlobal
+ * @mode: the stage input mode
  *
- * Sets the area of the stage that is responsive to mouse clicks as
- * a rectangle.
+ * Sets the input mode of the stage; when @mode is
+ * %SHELL_STAGE_INPUT_MODE_NONREACTIVE, then the stage does not absorb
+ * any clicks, but just passes them through to underlying windows.
+ * When it is %SHELL_STAGE_INPUT_MODE_NORMAL, then the stage accepts
+ * clicks in the region defined by
+ * shell_global_set_stage_input_region() but passes through clicks
+ * outside that region. When it is %SHELL_STAGE_INPUT_MODE_FULLSCREEN,
+ * the stage absorbs all input.
+ *
+ * Note that whenever a mutter-internal Gtk widget has a pointer grab,
+ * the shell behaves as though it was in
+ * %SHELL_STAGE_INPUT_MODE_NONREACTIVE, to ensure that the widget gets
+ * any clicks it is expecting.
  */
 void
-shell_global_set_stage_input_area (ShellGlobal *global,
-                                   int          x,
-                                   int          y,
-                                   int          width,
-                                   int          height)
+shell_global_set_stage_input_mode (ShellGlobal         *global,
+                                   ShellStageInputMode  mode)
 {
   g_return_if_fail (SHELL_IS_GLOBAL (global));
 
-  /* Cache these so we can save/restore across grabs */ 
-  global->input_x = x;
-  global->input_y = y;
-  global->input_width = width;
-  global->input_height = height;
-  /* If we have a grab active, we'll set the input area when we ungrab. */
-  if (!global->grab_active)
-    mutter_plugin_set_stage_input_area (global->plugin, x, y, width, height);
+  if (mode == SHELL_STAGE_INPUT_MODE_NONREACTIVE || global->gtk_grab_active)
+    mutter_plugin_set_stage_reactive (global->plugin, FALSE);
+  else if (mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region)
+    mutter_plugin_set_stage_reactive (global->plugin, TRUE);
+  else
+    mutter_plugin_set_stage_input_region (global->plugin, global->input_region);
+
+  global->input_mode = mode;
+}
+
+/**
+ * shell_global_set_stage_input_region:
+ * @global: the #ShellGlobal
+ * @rectangles: (element-type Meta.Rectangle): a list of #MetaRectangle
+ * describing the input region.
+ *
+ * Sets the area of the stage that is responsive to mouse clicks when
+ * the stage mode is %SHELL_STAGE_INPUT_MODE_NORMAL (but does not change the
+ * current stage mode).
+ */
+void
+shell_global_set_stage_input_region (ShellGlobal *global,
+                                     GSList      *rectangles)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (global->plugin);
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdpy = meta_display_get_xdisplay (display);
+  MetaRectangle *rect;
+  XRectangle *rects;
+  int nrects, i;
+  GSList *r;
+
+  g_return_if_fail (SHELL_IS_GLOBAL (global));
+
+  nrects = g_slist_length (rectangles);
+  rects = g_new (XRectangle, nrects);
+  for (r = rectangles, i = 0; r; r = r->next, i++)
+    {
+      rect = (MetaRectangle *)r->data;
+      rects[i].x = rect->x;
+      rects[i].y = rect->y;
+      rects[i].width = rect->width;
+      rects[i].height = rect->height;
+    }
+
+  if (global->input_region)
+    XFixesDestroyRegion (xdpy, global->input_region);
+
+  global->input_region = XFixesCreateRegion (xdpy, rects, nrects);
+  g_free (rects);
+
+  /* set_stage_input_mode() will figure out whether or not we
+   * should actually change the input region right now.
+   */
+  shell_global_set_stage_input_mode (global, global->input_mode);
 }
 
 /**
@@ -982,15 +1036,10 @@ grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
 {
   ShellGlobal *global = SHELL_GLOBAL (user_data);
   
-  if (!was_grabbed)
-    {
-      mutter_plugin_set_stage_input_area (global->plugin, 0, 0, 0, 0);
-    }
-  else
-    {
-      mutter_plugin_set_stage_input_area (global->plugin, global->input_x, global->input_y,
-                                          global->input_width, global->input_height);      
-    }
+  global->gtk_grab_active = !was_grabbed;
+
+  /* Update for the new setting of gtk_grab_active */
+  shell_global_set_stage_input_mode (global, global->input_mode);
 }
 
 /**

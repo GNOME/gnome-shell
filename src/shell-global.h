@@ -54,11 +54,16 @@ void shell_global_grab_dbus_service (ShellGlobal *global);
 
 void shell_global_start_task_panel (ShellGlobal *global);
 
-void shell_global_set_stage_input_area (ShellGlobal *global,
-					int          x,
-					int          y,
-					int          width,
-					int          height);
+typedef enum {
+  SHELL_STAGE_INPUT_MODE_NONREACTIVE,
+  SHELL_STAGE_INPUT_MODE_NORMAL,
+  SHELL_STAGE_INPUT_MODE_FULLSCREEN
+} ShellStageInputMode;
+
+void shell_global_set_stage_input_mode   (ShellGlobal         *global,
+					  ShellStageInputMode  mode);
+void shell_global_set_stage_input_region (ShellGlobal         *global,
+					  GSList              *rectangles);
 
 GList *shell_global_get_windows (ShellGlobal *global);
 
