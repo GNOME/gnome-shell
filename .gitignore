@@ -187,6 +187,7 @@ stamp-h1
 /tests/conform/test-vertex-buffer-mutability
 /tests/conform/test-list-model-iterate
 /tests/conform/test-list-model-populate
+/tests/conform/test-list-model-filter
 /tests/conform/test-npot-texture
 /tests/conform/redhand.png
 /tests/micro-bench/test-glyph-perf
