@@ -248,6 +248,7 @@ void                  clutter_model_set_filter         (ClutterModel     *model,
                                                         ClutterModelFilterFunc func, 
                                                         gpointer          user_data,
                                                         GDestroyNotify    notify);
+gboolean              clutter_model_get_filter_set     (ClutterModel     *model);
 
 void                  clutter_model_resort             (ClutterModel     *model);
 gboolean              clutter_model_filter_row         (ClutterModel     *model,

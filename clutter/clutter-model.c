@@ -133,8 +133,14 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-
 G_DEFINE_ABSTRACT_TYPE (ClutterModel, clutter_model, G_TYPE_OBJECT);
+
+enum
+{
+  PROP_0,
+
+  PROP_FILTER_SET
+};
 
 enum
 {
@@ -250,10 +256,32 @@ clutter_model_finalize (GObject *object)
 }
 
 static void
+clutter_model_get_property (GObject    *gobject,
+                            guint       prop_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
+{
+  ClutterModelPrivate *priv = CLUTTER_MODEL (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_FILTER_SET:
+      g_value_set_boolean (value, priv->filter_func != NULL);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_model_class_init (ClutterModelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
+  gobject_class->get_property = clutter_model_get_property;
   gobject_class->finalize = clutter_model_finalize;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterModelPrivate));
@@ -262,6 +290,23 @@ clutter_model_class_init (ClutterModelClass *klass)
   klass->get_column_type  = clutter_model_real_get_column_type;
   klass->get_n_columns    = clutter_model_real_get_n_columns;
   klass->get_n_rows       = clutter_model_real_get_n_rows;
+
+  /**
+   * ClutterModel:filter-set:
+   *
+   * Whether the #ClutterModel has a filter set
+   *
+   * This property is set to %TRUE if a filter function has been
+   * set using clutter_model_set_filter()
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("filter-set",
+                                "Filter Set",
+                                "Whether the model has a filter",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_FILTER_SET, pspec);
 
    /**
    * ClutterModel::row-added:
@@ -1356,6 +1401,26 @@ clutter_model_set_filter (ClutterModel           *model,
   priv->filter_notify = notify;
 
   g_signal_emit (model, model_signals[FILTER_CHANGED], 0);
+  g_object_notify (G_OBJECT (model), "filter-set");
+}
+
+/**
+ * clutter_model_get_filter_set:
+ * @model: a #ClutterModel
+ *
+ * Returns whether the @model has a filter in place, set
+ * using clutter_model_set_filter()
+ *
+ * Return value: %TRUE if a filter is set
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_model_get_filter_set (ClutterModel *model)
+{
+  g_return_val_if_fail (CLUTTER_IS_MODEL (model), FALSE);
+
+  return model->priv->filter_func != NULL;
 }
 
 /*
