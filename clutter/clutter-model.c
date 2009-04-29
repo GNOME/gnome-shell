@@ -208,28 +208,6 @@ clutter_model_real_get_n_columns (ClutterModel *model)
   return model->priv->n_columns;
 }
 
-static guint
-clutter_model_real_get_n_rows (ClutterModel *model)
-{
-  ClutterModelIter *iter;
-  guint n_rows = 0;
-
-  iter = clutter_model_get_first_iter (model);
-  if (!iter)
-    return 0;
-
-  while (!clutter_model_iter_is_last (iter))
-    {
-      n_rows += 1;
-
-      clutter_model_iter_next (iter);
-    }
-
-  g_object_unref (iter);
-
-  return n_rows;
-}
-
 static void 
 clutter_model_finalize (GObject *object)
 {
@@ -289,7 +267,6 @@ clutter_model_class_init (ClutterModelClass *klass)
   klass->get_column_name  = clutter_model_real_get_column_name;
   klass->get_column_type  = clutter_model_real_get_column_type;
   klass->get_n_columns    = clutter_model_real_get_n_columns;
-  klass->get_n_rows       = clutter_model_real_get_n_rows;
 
   /**
    * ClutterModel:filter-set:
@@ -519,7 +496,7 @@ clutter_model_filter_row (ClutterModel *model,
     return TRUE;
 
   iter = clutter_model_get_iter_at_row (model, row);
-  if (!iter)
+  if (iter == NULL)
     return FALSE;
 
   res = priv->filter_func (model, iter, priv->filter_data);
@@ -1162,6 +1139,10 @@ clutter_model_get_column_type (ClutterModel *model,
  *
  * Retrieves a #ClutterModelIter representing the row at the given index.
  *
+ * If a filter function has been set using clutter_model_set_filter()
+ * then the @model implementation will return the first non filtered
+ * row.
+ *
  * Return value: (transfer full): A new #ClutterModelIter, or %NULL if @row was
  *   out of bounds. When done using the iterator object, call g_object_unref()
  *   to deallocate its resources
@@ -1188,49 +1169,65 @@ clutter_model_get_iter_at_row (ClutterModel *model,
  * clutter_model_get_first_iter:
  * @model: a #ClutterModel
  *
- * Retrieves a #ClutterModelIter representing the first row in @model.
+ * Retrieves a #ClutterModelIter representing the first non-filtered
+ * row in @model.
  *
- * Return value: (transfer full): A new #ClutterModelIter. Call g_object_unref() when
- *   done using it
+ * Return value: (transfer full): A new #ClutterModelIter.
+ *   Call g_object_unref() when done using it
  *
  * Since: 0.6
  */
 ClutterModelIter *
 clutter_model_get_first_iter (ClutterModel *model)
 {
+  ClutterModelIter *retval;
+
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), NULL);
 
-  return clutter_model_get_iter_at_row (model, 0);
+  retval = clutter_model_get_iter_at_row (model, 0);
+  if (retval != NULL)
+    {
+      g_assert (clutter_model_filter_iter (model, retval) != FALSE);
+      g_assert (clutter_model_iter_get_row (retval) == 0);
+    }
+
+  return retval;
 }
 
 /**
  * clutter_model_get_last_iter:
  * @model: a #ClutterModel
  *
- * Retrieves a #ClutterModelIter representing the last row in @model.
+ * Retrieves a #ClutterModelIter representing the last non-filtered
+ * row in @model.
  *
- * Return value: (transfer full): A new #ClutterModelIter. Call g_object_unref() when
- *   done using it
+ * Return value: (transfer full): A new #ClutterModelIter.
+ *   Call g_object_unref() when done using it
  *
  * Since: 0.6
  */
 ClutterModelIter *
 clutter_model_get_last_iter (ClutterModel *model)
 {
+  ClutterModelIter *retval;
   guint length;
 
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), NULL);
 
   length = clutter_model_get_n_rows (model);
+  retval = clutter_model_get_iter_at_row (model, length - 1);
+  if (retval != NULL)
+    g_assert (clutter_model_filter_iter (model, retval) != FALSE);
 
-  return clutter_model_get_iter_at_row (model, length - 1);
+  return retval;
 }
 
 /**
  * clutter_model_get_n_rows:
  * @model: a #ClutterModel
  *
- * Retrieves the number of rows inside @model.
+ * Retrieves the number of rows inside @model, eventually taking
+ * into account any filtering function set using clutter_model_set_filter().
  *
  * Return value: The length of the @model. If there is a filter set, then
  *   the length of the filtered @model is returned.
@@ -1240,9 +1237,35 @@ clutter_model_get_last_iter (ClutterModel *model)
 guint
 clutter_model_get_n_rows (ClutterModel *model)
 {
+  ClutterModelClass *klass;
+  guint row_count;
+
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), 0);
 
-  return CLUTTER_MODEL_GET_CLASS (model)->get_n_rows (model);
+  klass = CLUTTER_MODEL_GET_CLASS (model);
+  if (klass->get_n_rows)
+    row_count = klass->get_n_rows (model);
+  else
+    {
+      ClutterModelIter *iter;
+
+      iter = clutter_model_get_first_iter (model);
+      if (iter == NULL)
+        return 0;
+
+      row_count = 0;
+      while (!clutter_model_iter_is_last (iter))
+        {
+          if (clutter_model_filter_iter (model, iter))
+            row_count += 1;
+
+          iter = clutter_model_iter_next (iter);
+        }
+
+      g_object_unref (iter);
+    }
+
+  return row_count;
 }
 
 
@@ -1358,6 +1381,9 @@ clutter_model_set_sort (ClutterModel         *model,
   ClutterModelPrivate *priv;
     
   g_return_if_fail (CLUTTER_IS_MODEL (model));
+  g_return_if_fail ((func != NULL && column >= 0) ||
+                    (func == NULL && column == -1));
+
   priv = model->priv;
 
   if (priv->sort_notify)
@@ -1604,7 +1630,8 @@ clutter_model_iter_set_property (GObject      *object,
 static void
 clutter_model_iter_class_init (ClutterModelIterClass *klass)
 {
-  GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   gobject_class->get_property = clutter_model_iter_get_property;
   gobject_class->set_property = clutter_model_iter_set_property;
@@ -1628,28 +1655,26 @@ clutter_model_iter_class_init (ClutterModelIterClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (gobject_class,
-                                   ITER_PROP_MODEL,
-                                   g_param_spec_object ("model",
-                                                        "Model",
-                                                        "The model to which the iterator belongs to",
-                                                        CLUTTER_TYPE_MODEL,
-                                                        CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_object ("model",
+                               "Model",
+                               "The model to which the iterator belongs to",
+                               CLUTTER_TYPE_MODEL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ITER_PROP_MODEL, pspec);
 
-   /**
+  /**
    * ClutterModelIter:row:
    *
    * The row number to which this iter points to.
    *
    * Since: 0.6
    */
-  g_object_class_install_property (gobject_class,
-                                   ITER_PROP_ROW,
-                                   g_param_spec_uint ("row",
-                                                      "Row",
-                                                      "The row to which the iterator points to",
-                                                      0, G_MAXUINT, 0,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_uint ("row",
+                             "Row",
+                             "The row to which the iterator points to",
+                             0, G_MAXUINT, 0,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ITER_PROP_ROW, pspec);
   
   g_type_class_add_private (gobject_class, sizeof (ClutterModelIterPrivate));
 }

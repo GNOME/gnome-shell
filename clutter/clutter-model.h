@@ -129,7 +129,7 @@ struct _ClutterModel
  * @get_iter_at_row: virtual function for returning an iterator for the
  *   given row
  * @get_n_rows: virtual function for returning the number of rows
- *   of the model, not considering any filter function if present
+ *   of the model
  * @get_n_columns: virtual function for retuning the number of columns
  *   of the model
  * @resort: virtual function for sorting the model using the passed
