@@ -648,7 +648,7 @@ meta_ui_window_should_not_cause_focus (Display *xdisplay,
   /* we shouldn't cause focus if we're an override redirect
    * toplevel which is not foreign
    */
-  if (window && gdk_window_get_type (window) == GDK_WINDOW_TEMP)
+  if (window && gdk_window_get_window_type (window) == GDK_WINDOW_TEMP)
     return TRUE;
   else
     return FALSE;
