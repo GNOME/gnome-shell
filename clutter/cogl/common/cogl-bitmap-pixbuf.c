@@ -27,7 +27,7 @@
 
 #include "cogl.h"
 #include "cogl-internal.h"
-#include "cogl-bitmap.h"
+#include "cogl-bitmap-private.h"
 
 #include <string.h>
 

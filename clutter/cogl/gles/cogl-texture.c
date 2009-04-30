@@ -28,7 +28,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
-#include "cogl-bitmap.h"
+#include "cogl-bitmap-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material.h"
 #include "cogl-context.h"
@@ -1433,12 +1433,13 @@ cogl_texture_new_from_data (guint             width,
 }
 
 CoglHandle
-cogl_texture_new_from_bitmap (CoglBitmap       *bmp,
+cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
                               gint              max_waste,
                               CoglTextureFlags  flags,
                               CoglPixelFormat   internal_format)
 {
   CoglTexture *tex;
+  CoglBitmap *bmp = (CoglBitmap *)bmp_handle;
 
   /* Create new texture and fill with loaded data */
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
@@ -1496,19 +1497,20 @@ cogl_texture_new_from_file (const gchar       *filename,
                             CoglPixelFormat    internal_format,
                             GError           **error)
 {
-  CoglBitmap  *bmp;
+  CoglHandle   bmp;
   CoglHandle   handle;
 
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
-  if (!(bmp = cogl_bitmap_new_from_file (filename, error)))
+  bmp = cogl_bitmap_new_from_file (filename, error);
+  if (bmp == COGL_INVALID_HANDLE)
     return COGL_INVALID_HANDLE;
 
   handle = cogl_texture_new_from_bitmap (bmp,
                                          max_waste,
                                          flags,
                                          internal_format);
-  cogl_bitmap_free (bmp);
+  cogl_handle_unref (bmp);
 
   return handle;
 }

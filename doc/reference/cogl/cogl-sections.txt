@@ -104,6 +104,13 @@ cogl_color
 </SECTION>
 
 <SECTION>
+<FILE>cogl-bitmap</FILE>
+<TITLE>Bitmaps</TITLE>
+cogl_bitmap_new_from_file
+cogl_bitmap_get_size_from_file
+</SECTION>
+
+<SECTION>
 <FILE>cogl-texture</FILE>
 <TITLE>Textures</TITLE>
 CoglTextureVertex
@@ -130,12 +137,6 @@ cogl_texture_get_gl_texture
 cogl_texture_get_data
 cogl_texture_set_filters
 cogl_texture_set_region
-
-<SUBSECTION>
-CoglBitmap
-cogl_bitmap_new_from_file
-cogl_bitmap_free
-cogl_bitmap_get_size_from_file
 </SECTION>
 
 <SECTION>

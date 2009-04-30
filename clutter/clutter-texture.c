@@ -127,7 +127,7 @@ struct _ClutterTextureAsyncData
   guint           load_idle;
 
   gchar          *load_filename;
-  CoglBitmap     *load_bitmap;
+  CoglHandle      load_bitmap;
   GError         *load_error;
 };
 
@@ -674,7 +674,7 @@ clutter_texture_async_data_free (ClutterTextureAsyncData *data)
     g_free (data->load_filename);
 
   if (data->load_bitmap)
-    cogl_bitmap_free (data->load_bitmap);
+    cogl_handle_unref (data->load_bitmap);
 
   if (data->load_error)
     g_error_free (data->load_error);
@@ -1651,7 +1651,7 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
 /*
  * clutter_texture_async_load_complete:
  * @self: a #ClutterTexture
- * @bitmap: a #CoglBitmap
+ * @bitmap: a handle to a CoglBitmap
  * @error: load error
  *
  * If @error is %NULL, loads @bitmap into a #CoglTexture.
@@ -1660,7 +1660,7 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
  */
 static void
 clutter_texture_async_load_complete (ClutterTexture *self,
-                                     CoglBitmap     *bitmap,
+                                     CoglHandle      bitmap,
                                      const GError   *error)
 {
   ClutterTexturePrivate *priv = self->priv;

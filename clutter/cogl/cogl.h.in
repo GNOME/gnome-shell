@@ -40,6 +40,7 @@
 #include <cogl/cogl-material.h>
 #include <cogl/cogl-path.h>
 #include <cogl/cogl-shader.h>
+#include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-texture.h>
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-debug.h>

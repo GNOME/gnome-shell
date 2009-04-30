@@ -146,21 +146,21 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
 
 /**
  * cogl_texture_new_from_bitmap:
- * @bitmap: a #CoglBitmap
+ * @bmp_handle: A CoglBitmap handle
  * @max_waste: maximum extra horizontal and|or vertical margin pixels
  *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  * texture
  *
- * Creates a COGL texture from a #CoglBitmap.
+ * Creates a COGL texture from a CoglBitmap.
  *
  * Return value: a #CoglHandle to the newly created texture or
  *   %COGL_INVALID_HANDLE on failure
  *
  * Since: 1.0
  */
-CoglHandle      cogl_texture_new_from_bitmap (CoglBitmap       *bitmap,
+CoglHandle      cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
                                               gint              max_waste,
                                               CoglTextureFlags  flags,
                                               CoglPixelFormat   internal_format);
@@ -362,45 +362,6 @@ CoglHandle      cogl_texture_ref              (CoglHandle          handle);
  * Deccrement the reference count for a cogl texture.
  */
 void            cogl_texture_unref            (CoglHandle          handle);
-
-/**
- * cogl_bitmap_new_from_file:
- * @filename: the file to load.
- * @error: a #GError or %NULL.
- *
- * Load an image file from disk. This function can be safely called from
- * within a thread.
- *
- * Returns: A #CoglBitmap to the new loaded image data, or %NULL if loading
- * the image failed.
- *
- * Since: 1.0
- */
-CoglBitmap *    cogl_bitmap_new_from_file     (const gchar    *filename,
-                                               GError        **error);
-
-/**
- * cogl_bitmap_get_size_from_file:
- * @filename: the file to check
- * @width: return location for the bitmap width
- * @height: return location for the bitmap height
- *
- * Parses an image file enough to extract the width and height
- * of the bitmap.
- *
- * Since: 1.0
- */
-gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
-                                                gint          *width,
-                                                gint          *height);
-
-/**
- * cogl_bitmap_free:
- * @bmp: a #CoglBitmap.
- *
- * Frees a #CoglBitmap.
- */
-void            cogl_bitmap_free              (CoglBitmap     *bmp);
 
 /**
  * cogl_rectangle_with_texture_coords:

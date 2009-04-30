@@ -22,7 +22,7 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl.c				\
 	cogl-util.h 			\
 	cogl-util.c 			\
-	cogl-bitmap.h 			\
+	cogl-bitmap-private.h 		\
 	cogl-bitmap.c 			\
 	cogl-bitmap-fallback.c 		\
 	cogl-current-matrix.c		\
