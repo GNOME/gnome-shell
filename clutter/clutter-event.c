@@ -95,6 +95,7 @@ clutter_event_get_state (ClutterEvent *event)
     case CLUTTER_KEY_RELEASE:
       return event->key.modifier_state;
     case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
       return event->button.modifier_state;
     case CLUTTER_MOTION:
       return event->motion.modifier_state;
