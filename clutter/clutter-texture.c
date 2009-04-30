@@ -2303,7 +2303,8 @@ on_fbo_source_size_change (GObject          *object,
       CoglHandle tex;
 
       /* tear down the FBO */
-      cogl_handle_unref (priv->fbo_handle);
+      if (priv->fbo_handle != COGL_INVALID_HANDLE)
+        cogl_handle_unref (priv->fbo_handle);
 
       texture_free_gl_resources (texture);
 
