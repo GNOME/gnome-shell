@@ -1398,7 +1398,9 @@ clutter_timeline_advance_delta (ClutterTimeline *timeline,
     {
       clutter_timeline_advance_internal (timeline);
 
-      priv->msecs_delta = 0;
+      /* Keep the remainder of the frame time so that it will be
+         counted towards the next time if the delta is short */
+      priv->msecs_delta %= priv->frame_interval;
     }
 }
 
