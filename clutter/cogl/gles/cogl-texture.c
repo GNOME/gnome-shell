@@ -483,9 +483,6 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   _cogl_current_matrix_push ();
   _cogl_current_matrix_identity ();
 
-  /* Draw to all channels */
-  cogl_draw_buffer (COGL_WINDOW_BUFFER | COGL_MASK_BUFFER, 0);
-
   /* Direct copy operation */
 
   if (ctx->texture_download_material == COGL_INVALID_HANDLE)
@@ -581,8 +578,6 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   _cogl_current_matrix_pop ();
   _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
   _cogl_current_matrix_pop ();
-
-  cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
 
   return TRUE;
 }

@@ -2,7 +2,7 @@ Clutter 1.0 README
 ==================
 
 Clutter is an open source software library for creating fast, visually
-rich and animated graphical user interfaces. 
+rich and animated graphical user interfaces.
 
 Clutter currently requires:
 
@@ -11,15 +11,15 @@ Clutter currently requires:
   * OpenGL >= 1.4, OpenGL ES 1.1 or OpenGL ES 2.0
   * GLX, SDL, WGL or an EGL Implementation
 
-The official website is:                
+The official website is:
    http://www.clutter-project.org
 The Clutter blog is at
    http://www.clutter-project.org/blog
-To subscribe to the Clutter mailing list, send mail to: 
-   clutter+subscribe@o-hand.com 
-The official mailing list archive is:   
+To subscribe to the Clutter mailing list, send mail to:
+   clutter+subscribe@o-hand.com
+The official mailing list archive is:
    http://lists.o-hand.com/clutter/
-New bug page on Bugzilla:               
+New bug page on Bugzilla:
    http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
 Clutter is licensed under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@ See the INSTALL file. Info on specific Clutter options;
 
  --enable-debug=[no/minimum/yes]
 	Turn on debugging (default=yes):
-	  yes: All glib asserts, checks and runtime clutter verbose messages. 
+	  yes: All glib asserts, checks and runtime clutter verbose messages.
           minimum: Just glib cast checks and runtime clutter verbose messagaes.
           no: No glib asserts or checks and no runtime clutter verbose messages
 	      (Only really of use in extreme performance cases)
@@ -40,15 +40,15 @@ See the INSTALL file. Info on specific Clutter options;
  --enable-maintainer-flags=[no/yes]
         Use strict compiler flags (default=no)
 
- --enable-gtk-doc        
-	use gtk-doc to build API documentation (default=no). Requires gtk-doc 
+ --enable-gtk-doc
+	use gtk-doc to build API documentation (default=no). Requires gtk-doc
 	present on system
 
  --enable-manual=[no/yes]
         Build application developers manual. Requires jw and xmlto binaries.
 	Presently incomplete.
 
-  --without-fpu           
+  --without-fpu
 	Assume target hardware has no floating point unit. Useful only
 	for embedded targets such as ARM.
 
@@ -307,6 +307,16 @@ Release Notes for Clutter 1.0
 * cogl_get_*_matrix were changed to use the CoglMatrix type instead of
   GLfloat m[16] arrays.
 
+* cogl_offscreen_blit_region, cogl_offscreen_blit were removed since they were
+  only implemnted for GL, not GLES, and it was assumed no one was using them.
+
+* cogl_offscreen_new_multisample was removed since it only ever returned
+  COGL_INVALID_HANDLE so it wasn't usefull.
+
+* The COGL_MASK_BUFFER type was removed, since there should be nicer ways of
+  exposing color mask if anyone wants it later. It was assumed that no one was
+  using this currently.
+
 Release Notes for Clutter 0.8
 -------------------------------
 
@@ -318,7 +328,7 @@ Release Notes for Clutter 0.8
   support. It is now also fully documented.
 
 * GL Texture Rectangle ext is no longer used, the regular 2D NPOTS
-  extension is preffered instead but not required. 
+  extension is preffered instead but not required.
 
 * Clutter now has basic suppport for multiple input devices assuming
   the backend supports it (currently X11 based via XInput and Fruity
@@ -327,7 +337,7 @@ Release Notes for Clutter 0.8
   clutter_grab_pointer_for_device & clutter_ungrab_pointer_for_device.
 
   XInput support needs to be explicitly enabled at runtime by calling
-  clutter_x11_enable_xinput () before clutter_init. clutter_x11_has_xinput () 
+  clutter_x11_enable_xinput () before clutter_init. clutter_x11_has_xinput ()
   can then be called after to check if XInput extension present and use-able.
 
 * The functions that return the transformed position of an actor have
@@ -423,16 +433,16 @@ Release Notes for Clutter 0.8
 * Clutter now features support for multiple stages assuming supported
   by the backend. See test-multistage.c for example of usage. This
   does not change the automatic creation of the default stage.
-  A single GL context is used across all stages meaning GL resources 
-  are shared. 
+  A single GL context is used across all stages meaning GL resources
+  are shared.
 
 * There is now an experimental native iPod Touch/iPhone UIKit backend
   named 'fruity'.
 
 * There is now an experimental native Win32 WGL backend.
 
-* COGL (and therefor Clutter) now optionally features initial support for 
-  OpenGL ES 2.0. It features support for shaders. 
+* COGL (and therefor Clutter) now optionally features initial support for
+  OpenGL ES 2.0. It features support for shaders.
 
 * Some more focused timeline unit tests have been added and some tweaks to
   timeline semantics were made; E.g. For a 10 frame timeline here are some
@@ -469,7 +479,7 @@ Release Notes for Clutter 0.8
   X Drawables (such as windows as pixmaps) via the 'texture_from_pixmap' GLX
   extension if available and fallback to slower XGetImage copies if not.
 
-* ClutterContainer can have per child custom properties via ClutterChildMeta. 
+* ClutterContainer can have per child custom properties via ClutterChildMeta.
 
 Release Notes for Clutter 0.6
 -------------------------------
@@ -582,11 +592,11 @@ Release Notes for Clutter 0.4.0
 Release Notes for Clutter 0.3.1
 -------------------------------
 
-* clutter_actor_apply_transform_to_point() parameters changed to use 
+* clutter_actor_apply_transform_to_point() parameters changed to use
   ClutterVertices.
 
-* New 'Native API' backend expects EGL implementation to provide a 
-  CreateNativeWindow() API call. 
+* New 'Native API' backend expects EGL implementation to provide a
+  CreateNativeWindow() API call.
 
 * Exisiting X11 based egl backend public API calls now prefixed eglx.
 
@@ -600,7 +610,7 @@ Release Notes for Clutter 0.3
     clutter_texture_set_from_yuv_data().
 
 * The GLX specific API has been moved to the GLX backend code and
-  it's now under the ClutterGlx namespace. 
+  it's now under the ClutterGlx namespace.
 
 * The priority of the various users of the GLib main loop has been
   reviewed and changed were necessary. Every paint is queued with a
@@ -635,7 +645,7 @@ Release Notes for Clutter 0.3
 * clutter_color_parse() now handles color definitions with alpha. Alpha
   will default to fully Opaque rather than fully transparent if not specified.
 
-* The Clutter examples/ directory has been removed and replaced with a 
+* The Clutter examples/ directory has been removed and replaced with a
   tests/ directory.
 
 * The ClutterEvent API has been changed, and specific functions have been

@@ -228,7 +228,6 @@ GType cogl_feature_flags_get_type (void) G_GNUC_CONST;
 /**
  * CoglBufferTarget:
  * @COGL_WINDOW_BUFFER: FIXME
- * @COGL_MASK_BUFFER: FIXME
  * @COGL_OFFSCREEN_BUFFER: FIXME
  *
  * Target flags for FBOs.
@@ -238,8 +237,7 @@ GType cogl_feature_flags_get_type (void) G_GNUC_CONST;
 typedef enum
 {
   COGL_WINDOW_BUFFER      = (1 << 1),
-  COGL_MASK_BUFFER        = (1 << 2),
-  COGL_OFFSCREEN_BUFFER   = (1 << 3)
+  COGL_OFFSCREEN_BUFFER   = (1 << 2)
 } CoglBufferTarget;
 
 #define COGL_TYPE_BUFFER_TARGET         (cogl_buffer_target_get_type ())
