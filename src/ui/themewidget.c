@@ -69,7 +69,7 @@ meta_area_class_init (MetaAreaClass *class)
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  parent_class = gtk_type_class (gtk_misc_get_type ());
+  parent_class = g_type_class_peek (gtk_misc_get_type ());
 
   gobject_class->finalize = meta_area_finalize;
 

@@ -72,7 +72,7 @@ meta_preview_class_init (MetaPreviewClass *class)
   GtkWidgetClass *widget_class;
 
   widget_class = (GtkWidgetClass*) class;
-  parent_class = gtk_type_class (GTK_TYPE_BIN);
+  parent_class = g_type_class_peek (GTK_TYPE_BIN);
 
   gobject_class->finalize = meta_preview_finalize;
 
