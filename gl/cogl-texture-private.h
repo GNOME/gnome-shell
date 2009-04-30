@@ -24,7 +24,7 @@
 #ifndef __COGL_TEXTURE_H
 #define __COGL_TEXTURE_H
 
-#include "cogl-bitmap.h"
+#include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
 
 typedef struct _CoglTexture       CoglTexture;

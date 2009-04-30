@@ -27,9 +27,20 @@
 
 #include "cogl.h"
 #include "cogl-internal.h"
-#include "cogl-bitmap.h"
+#include "cogl-bitmap-private.h"
 
 #include <string.h>
+
+static void _cogl_bitmap_free (CoglBitmap *bmp);
+
+COGL_HANDLE_DEFINE (Bitmap, bitmap);
+
+static void
+_cogl_bitmap_free (CoglBitmap *bmp)
+{
+  g_free (bmp->data);
+  g_free (bmp);
+}
 
 gint
 _cogl_get_format_bpp (CoglPixelFormat format)
@@ -155,11 +166,12 @@ cogl_bitmap_get_size_from_file (const gchar *filename,
   return _cogl_bitmap_get_size_from_file (filename, width, height);
 }
 
-CoglBitmap *
+CoglHandle
 cogl_bitmap_new_from_file (const gchar    *filename,
                            GError        **error)
 {
   CoglBitmap   bmp;
+  CoglBitmap  *ret;
 
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
@@ -176,12 +188,7 @@ cogl_bitmap_new_from_file (const gchar    *filename,
 	}
     }
 
-  return (CoglBitmap *) g_memdup (&bmp, sizeof (CoglBitmap));
+  ret = g_memdup (&bmp, sizeof (CoglBitmap));
+  return _cogl_bitmap_handle_new (ret);
 }
 
-void
-cogl_bitmap_free (CoglBitmap *bmp)
-{
-  g_free (bmp->data);
-  g_free (bmp);
-}

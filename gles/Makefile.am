@@ -8,6 +8,7 @@ libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl-offscreen.h \
         $(top_builddir)/clutter/cogl/cogl-path.h \
         $(top_builddir)/clutter/cogl/cogl-shader.h \
+        $(top_builddir)/clutter/cogl/cogl-bitmap.h \
         $(top_builddir)/clutter/cogl/cogl-texture.h \
         $(top_builddir)/clutter/cogl/cogl-types.h \
         $(top_builddir)/clutter/cogl/cogl-vertex-buffer.h \
@@ -43,6 +44,7 @@ libclutter_cogl_la_SOURCES = \
         $(top_builddir)/clutter/cogl/cogl-offscreen.h \
         $(top_builddir)/clutter/cogl/cogl-path.h \
         $(top_builddir)/clutter/cogl/cogl-shader.h \
+        $(top_builddir)/clutter/cogl/cogl-bitmap.h \
         $(top_builddir)/clutter/cogl/cogl-texture.h \
         $(top_builddir)/clutter/cogl/cogl-types.h \
         $(top_builddir)/clutter/cogl/cogl-debug.h \
