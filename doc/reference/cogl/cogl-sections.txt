@@ -173,9 +173,7 @@ cogl_offscreen_new_to_texture
 cogl_offscreen_ref
 cogl_offscreen_unref
 cogl_is_offscreen
-cogl_offscreen_blit
-cogl_offscreen_blit_region
-cogl_draw_buffer
+cogl_set_draw_buffer
 <SUBSECTION Private>
 cogl_offscreen_new_multisample
 </SECTION>

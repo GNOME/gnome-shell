@@ -179,7 +179,6 @@ cogl_buffer_target_get_type (void)
     {
       static const GFlagsValue values[] = {
         { COGL_WINDOW_BUFFER, "COGL_WINDOW_BUFFER", "window-buffer" },
-        { COGL_MASK_BUFFER, "COGL_MASK_BUFFER", "mask-buffer" },
         { COGL_OFFSCREEN_BUFFER, "COGL_OFFSCREEN_BUFFER", "offscreen-buffer" },
         { 0, NULL, NULL }
       };

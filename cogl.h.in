@@ -579,6 +579,35 @@ void            cogl_clip_stack_save          (void);
 void            cogl_clip_stack_restore       (void);
 
 /**
+ * cogl_set_draw_buffer:
+ * @target: A #CoglBufferTarget that specifies what kind of draw buffer you
+ *          are setting as the render target.
+ * @offscreen: If you are setting a draw buffer of type COGL_OFFSCREEN_BUFFER
+ *             then this is a CoglHandle for the offscreen buffer.
+ *
+ * This redirects all subsequent drawing to the specified draw buffer. This
+ * can either be an offscreen buffer created with
+ * cogl_offscreen_new_to_texture () or you can revert to your original
+ * on screen window buffer.
+ */
+void            cogl_set_draw_buffer          (CoglBufferTarget    target,
+                                               CoglHandle          offscreen);
+
+/**
+ * cogl_push_draw_buffer:
+ *
+ * Save cogl_set_draw_buffer() state.
+ */
+void            cogl_push_draw_buffer         (void);
+
+/**
+ * cogl_pop_draw_buffer:
+ *
+ * Restore cogl_set_draw_buffer() state.
+ */
+void            cogl_pop_draw_buffer          (void);
+
+/**
  * cogl_flush_gl_state:
  * @flags: flags controlling what is flushed; currently unused, pass in 0
  *
