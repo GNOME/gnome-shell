@@ -82,7 +82,6 @@ struct _ClutterTexturePrivate
   gint                         max_tile_waste;
   ClutterTextureQuality        filter_quality;
   CoglHandle                   material;
-  CoglHandle                   fbo_texture;
   gboolean                     no_slice;
 
   ClutterActor                *fbo_source;
@@ -289,11 +288,9 @@ clutter_texture_realize (ClutterActor *actor)
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
       gint min_filter, mag_filter;
       gint max_waste = -1;
+      CoglHandle tex;
 
       /* Handle FBO's */
-
-      if (priv->fbo_texture != COGL_INVALID_HANDLE)
-	cogl_handle_unref (priv->fbo_texture);
 
       if (!priv->no_slice)
         max_waste = priv->max_tile_waste;
@@ -301,19 +298,24 @@ clutter_texture_realize (ClutterActor *actor)
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
-      priv->fbo_texture =
-        cogl_texture_new_with_size (priv->width,
-                                    priv->height,
-                                    max_waste, flags,
-                                    COGL_PIXEL_FORMAT_RGBA_8888);
+      tex = cogl_texture_new_with_size (priv->width,
+                                        priv->height,
+                                        max_waste, flags,
+                                        COGL_PIXEL_FORMAT_RGBA_8888);
+
+      cogl_material_set_layer (priv->material, 0, tex);
 
       clutter_texture_quality_to_filters (priv->filter_quality,
                                           &min_filter,
                                           &mag_filter);
 
-      cogl_texture_set_filters (priv->fbo_texture, min_filter, mag_filter);
+      cogl_texture_set_filters (tex, min_filter, mag_filter);
 
-      priv->fbo_handle = cogl_offscreen_new_to_texture (priv->fbo_texture);
+      priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
+
+      /* The material now has a reference to the texture so it will
+         stick around */
+      cogl_handle_unref (tex);
 
       if (priv->fbo_handle == COGL_INVALID_HANDLE)
         {
@@ -1216,7 +1218,6 @@ clutter_texture_init (ClutterTexture *self)
   priv->repeat_y          = FALSE;
   priv->sync_actor_size   = TRUE;
   priv->material          = cogl_material_new ();
-  priv->fbo_texture       = COGL_INVALID_HANDLE;
   priv->fbo_handle        = COGL_INVALID_HANDLE;
   priv->local_data        = NULL;
   priv->keep_aspect_ratio = FALSE;
@@ -2299,6 +2300,7 @@ on_fbo_source_size_change (GObject          *object,
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
       gint min_filter, mag_filter;
+      CoglHandle tex;
 
       /* tear down the FBO */
       cogl_handle_unref (priv->fbo_handle);
@@ -2311,20 +2313,25 @@ on_fbo_source_size_change (GObject          *object,
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
-      priv->fbo_texture =
-        cogl_texture_new_with_size (MAX (priv->width, 1),
-				    MAX (priv->height, 1),
-				    -1,
-                                    flags,
-				    COGL_PIXEL_FORMAT_RGBA_8888);
+      tex = cogl_texture_new_with_size (MAX (priv->width, 1),
+                                        MAX (priv->height, 1),
+                                        -1,
+                                        flags,
+                                        COGL_PIXEL_FORMAT_RGBA_8888);
+
+      cogl_material_set_layer (priv->material, 0, tex);
 
       clutter_texture_quality_to_filters (priv->filter_quality,
                                           &min_filter,
                                           &mag_filter);
 
-      cogl_texture_set_filters (priv->fbo_texture, min_filter, mag_filter);
+      cogl_texture_set_filters (tex, min_filter, mag_filter);
 
-      priv->fbo_handle = cogl_offscreen_new_to_texture (priv->fbo_texture);
+      priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
+
+      /* The material now has a reference to the texture so it will
+         stick around */
+      cogl_handle_unref (tex);
 
       if (priv->fbo_handle == COGL_INVALID_HANDLE)
         {
