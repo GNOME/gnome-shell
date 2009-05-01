@@ -215,6 +215,11 @@ test_actor_clone_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (tmp), real_hand);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), tmp);
 
+  /* now hide the group so that we can verify that hidden source actors
+   * still get painted by the Clone
+   */
+  clutter_actor_hide (real_hand);
+
   /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();
 
