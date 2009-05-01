@@ -814,31 +814,30 @@ clutter_actor_real_map (ClutterActor *self)
   clutter_actor_queue_redraw (self);
 
   if (CLUTTER_IS_CONTAINER (self))
-    clutter_container_foreach (CLUTTER_CONTAINER (self),
-                               CLUTTER_CALLBACK (clutter_actor_map),
-                               NULL);
+    clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
+                                              CLUTTER_CALLBACK (clutter_actor_map),
+                                              NULL);
 }
 
 /**
  * clutter_actor_map:
  * @self: A #ClutterActor
  *
- * Sets the #CLUTTER_ACTOR_MAPPED flag on the actor
- * and possibly maps and realizes its children
- * if they are visible. Does nothing if the
+ * Sets the #CLUTTER_ACTOR_MAPPED flag on the actor and possibly maps
+ * and realizes its children if they are visible. Does nothing if the
  * actor is not visible.
  *
- * Calling this is allowed in only one case:
- * you are implementing the "map" virtual function
- * in an actor and you need to map the children of
- * that actor. It is not necessary to call this
- * if you implement #ClutterContainer because the
- * default implementation will automatically map
- * children of containers.
+ * Calling this is allowed in only one case: you are implementing the
+ * #ClutterActor::map virtual function in an actor and you need to map
+ * the children of that actor. It is not necessary to call this
+ * if you implement #ClutterContainer because the default implementation
+ * will automatically map children of containers.
  *
  * When overriding map, it is mandatory to chain up to the parent
  * implementation.
- **/
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_map (ClutterActor *self)
 {
@@ -859,9 +858,9 @@ clutter_actor_real_unmap (ClutterActor *self)
   g_assert (CLUTTER_ACTOR_IS_MAPPED (self));
 
   if (CLUTTER_IS_CONTAINER (self))
-    clutter_container_foreach (CLUTTER_CONTAINER (self),
-                               CLUTTER_CALLBACK (clutter_actor_unmap),
-                               NULL);
+    clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
+                                              CLUTTER_CALLBACK (clutter_actor_unmap),
+                                              NULL);
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
   /* notify on parent mapped after potentially unmapping
@@ -893,17 +892,17 @@ clutter_actor_real_unmap (ClutterActor *self)
  * Unsets the #CLUTTER_ACTOR_MAPPED flag on the actor and possibly
  * unmaps its children if they were mapped.
  *
- * Calling this is allowed in only one case:
- * you are implementing the "unmap" virtual function
- * in an actor and you need to unmap the children of
- * that actor. It is not necessary to call this
- * if you implement #ClutterContainer because the
- * default implementation will automatically unmap
- * children of containers.
+ * Calling this is allowed in only one case: you are implementing the
+ * #ClutterActor::unmap virtual function in an actor and you need to
+ * unmap the children of that actor. It is not necessary to call this
+ * if you implement #ClutterContainer because the default implementation
+ * will automatically unmap children of containers.
  *
  * When overriding unmap, it is mandatory to chain up to the parent
  * implementation.
- **/
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_unmap (ClutterActor *self)
 {
@@ -1141,9 +1140,9 @@ clutter_actor_real_unrealize (ClutterActor *self)
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
   if (CLUTTER_IS_CONTAINER (self))
-    clutter_container_foreach (CLUTTER_CONTAINER (self),
-                               CLUTTER_CALLBACK (clutter_actor_unrealize_not_hiding),
-                               NULL);
+    clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
+                                              CLUTTER_CALLBACK (clutter_actor_unrealize_not_hiding),
+                                              NULL);
 }
 
 /**
