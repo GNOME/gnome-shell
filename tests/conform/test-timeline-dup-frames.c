@@ -10,13 +10,16 @@
 #define TEST_TIMELINE_FPS 10
 #define TEST_TIMELINE_FRAME_COUNT 20
 
-typedef struct _TestState {
+typedef struct _TestState
+{
   ClutterTimeline *timeline;
   gint prev_frame;
   gint completion_count;
   gint passed;
-}TestState;
-
+  guint source_id;
+  GTimeVal prev_tick;
+  gulong msecs_delta;
+} TestState;
 
 static void
 new_frame_cb (ClutterTimeline *timeline,
@@ -68,6 +71,30 @@ completed_cb (ClutterTimeline *timeline,
     }
 }
 
+static gboolean
+frame_tick (gpointer data)
+{
+  TestState *state = data;
+  GTimeVal cur_tick = { 0, };
+  GSList *l;
+  gulong msecs;
+
+  g_get_current_time (&cur_tick);
+
+  if (state->prev_tick.tv_sec == 0)
+    state->prev_tick = cur_tick;
+
+  msecs = (cur_tick.tv_sec - state->prev_tick.tv_sec) * 1000
+        + (cur_tick.tv_usec - state->prev_tick.tv_usec) / 1000;
+
+  if (clutter_timeline_is_playing (state->timeline))
+   clutter_timeline_advance_delta (state->timeline, msecs);
+
+  state->msecs_delta = msecs;
+  state->prev_tick = cur_tick;
+
+  return TRUE;
+}
 
 void
 test_timeline_dup_frames (TestConformSimpleFixture *fixture,
@@ -91,11 +118,18 @@ test_timeline_dup_frames (TestConformSimpleFixture *fixture,
   state.prev_frame = -1;
   state.completion_count = 0;
   state.passed = TRUE;
+  state.prev_tick.tv_sec = 0;
+  state.prev_tick.tv_usec = 0;
+  state.msecs_delta = 0;
+
+  state.source_id =
+    clutter_threads_add_frame_source (60, frame_tick, &state);
 
   clutter_timeline_start (state.timeline);
 
   clutter_main();
 
+  g_source_remove (state.source_id);
   g_object_unref (state.timeline);
 }
 
