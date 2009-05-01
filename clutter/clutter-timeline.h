@@ -166,6 +166,10 @@ gboolean         clutter_timeline_has_marker            (ClutterTimeline *timeli
 void             clutter_timeline_advance_to_marker     (ClutterTimeline *timeline,
                                                          const gchar     *marker_name);
 
+/*< private >*/
+void             clutter_timeline_advance_delta         (ClutterTimeline *timeline,
+                                                         guint            msecs);
+
 G_END_DECLS
 
 #endif /* _CLUTTER_TIMELINE_H__ */

@@ -1022,21 +1022,19 @@ clutter_timeline_set_speed (ClutterTimeline *timeline,
 
   if (priv->fps != fps)
     {
-      g_object_ref (timeline);
+      g_object_freeze_notify (G_OBJECT (timeline));
 
       priv->fps = fps;
       priv->frame_interval = 1000 / priv->fps;
 
-      /* FIXME if the timeline is playing restart */
-
-      g_object_freeze_notify (G_OBJECT (timeline));
+      /* if the timeline is playing restart */
+      if (priv->is_playing)
+        clutter_timeline_rewind (timeline);
 
       g_object_notify (G_OBJECT (timeline), "duration");
       g_object_notify (G_OBJECT (timeline), "fps");
 
       g_object_thaw_notify (G_OBJECT (timeline));
-
-      g_object_unref (timeline);
     }
 }
 
@@ -1372,7 +1370,7 @@ clutter_timeline_get_delta (ClutterTimeline *timeline,
 }
 
 /*
- * clutter_timeline_set_delta:
+ * clutter_timeline_advance_delta:
  * @timeline: a #ClutterTimeline
  * @msecs: advance in milliseconds
  *
@@ -1383,8 +1381,8 @@ clutter_timeline_get_delta (ClutterTimeline *timeline,
  * skip frames.
  */
 void
-_clutter_timeline_set_delta (ClutterTimeline *timeline,
-                             guint            msecs)
+clutter_timeline_advance_delta (ClutterTimeline *timeline,
+                                guint            msecs)
 {
   ClutterTimelinePrivate *priv;
 

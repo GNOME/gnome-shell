@@ -356,7 +356,7 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
       ClutterTimeline *timeline = l->data;
 
       if (clutter_timeline_is_playing (timeline))
-        _clutter_timeline_set_delta (timeline, msecs);
+        clutter_timeline_advance_delta (timeline, msecs);
     }
 
   master_clock->msecs_delta = msecs;
