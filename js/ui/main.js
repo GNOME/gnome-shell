@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -164,6 +165,21 @@ function hide_overlay() {
     overlay.hide();
     overlayActive = false;
     endModal();
+}
+
+function create_app_launch_context() {
+    let global = Shell.Global.get();
+    let screen = global.screen;
+    let display = screen.get_display();
+
+    let context = new Gdk.AppLaunchContext();
+    context.set_timestamp(display.get_current_time());
+
+    // Make sure that the app is opened on the current workspace even if
+    // the user switches before it seetarts
+    context.set_desktop(screen.get_active_workspace_index());
+
+    return context;
 }
 
 let _shellActors = [];

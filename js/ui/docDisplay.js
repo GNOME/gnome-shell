@@ -8,6 +8,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
 const GenericDisplay = imports.ui.genericDisplay;
+const Main = imports.ui.main;
 
 const ITEM_DISPLAY_ICON_MARGIN = 2;
 
@@ -78,7 +79,12 @@ DocDisplayItem.prototype = {
             appExec = appExec.replace(/%/g, "%%");
 
             let appInfo = Gio.app_info_create_from_commandline(appExec, null, 0, null);
-            appInfo.launch([], null, null);
+
+            // The app launch context doesn't work as well as we might like because
+            // it doesn't get the right StartupNotify key from the application's
+            // desktop file. So, we don't get startup notification, the application
+            // doesn't stick to the current workspace, and so forth.
+            appInfo.launch([], Main.create_app_launch_context());
         } else {
             log("Failed to get application info for " + this._docInfo.get_uri());
         }

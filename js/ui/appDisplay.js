@@ -5,13 +5,13 @@ const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
 const GenericDisplay = imports.ui.genericDisplay;
 const GtkUtil = imports.ui.gtkutil;
+const Main = imports.ui.main;
 
 const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
@@ -85,15 +85,7 @@ AppDisplayItem.prototype = {
 
     // Opens an application represented by this display item.
     launch : function() {
-        let global = Shell.Global.get();
-        let screen = global.screen;
-        let display = screen.get_display();
-        let timestamp = display.get_current_time();
-        let context = new Gdk.AppLaunchContext();
-        let icon = this._appInfo.get_icon();
-        context.set_icon(icon);
-        context.set_timestamp(timestamp);
-        this._appInfo.launch([], context);
+        this._appInfo.launch([], Main.create_app_launch_context());
     },
 
     //// Protected method overrides ////
