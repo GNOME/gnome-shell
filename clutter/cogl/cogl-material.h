@@ -109,7 +109,7 @@ void cogl_material_set_color (CoglHandle material, const CoglColor *color);
  *
  * This is the basic color of the material, used when no lighting is enabled.
  *
- * The default value is (1.0, 1.0, 1.0, 1.0)
+ * The default value is (0xff, 0xff, 0xff, 0xff)
  *
  * Since 1.0
  */
@@ -134,7 +134,7 @@ void cogl_material_set_color4ub (CoglHandle material,
  * Since 1.0
  */
 void cogl_material_set_color4f (CoglHandle material,
-			        float      red,
+                                float      red,
                                 float      green,
                                 float      blue,
                                 float      alpha);

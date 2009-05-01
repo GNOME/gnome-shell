@@ -194,6 +194,18 @@ cogl_material_set_color4ub (CoglHandle handle,
 }
 
 void
+cogl_material_set_color4f (CoglHandle handle,
+			   float red,
+                           float green,
+                           float blue,
+                           float alpha)
+{
+  CoglColor color;
+  cogl_color_set_from_4f (&color, red, green, blue, alpha);
+  cogl_material_set_color (handle, &color);
+}
+
+void
 cogl_material_get_ambient (CoglHandle  handle,
                            CoglColor  *ambient)
 {
