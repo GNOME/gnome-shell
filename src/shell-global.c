@@ -1170,7 +1170,6 @@ ClutterActor *
 shell_global_create_root_pixmap_actor (ShellGlobal *global)
 {
   GdkWindow *window;
-  GdkEventMask events;
   gboolean created_new_pixmap = FALSE;
   ClutterActor *clone;
 
@@ -1190,16 +1189,16 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
       g_signal_connect (G_OBJECT (global->root_pixmap), "destroy",
                         G_CALLBACK (root_pixmap_destroy), global);
 
-      /* Watch the root window for changes. */
-      window = gdk_get_default_root_window ();
-      events = gdk_window_get_events (window);
-      events |= GDK_PROPERTY_CHANGE_MASK;
-      gdk_window_set_events (window, events);
-      /* Metacity handles some root window property updates in its global
-       * event filter, though not this one. For all root window property
-       * updates, the global filter returns GDK_FILTER_CONTINUE, so our
-       * window specific filter will be called.
+      /* Metacity handles changes to some root window properties in its global
+       * event filter, though not _XROOTPMAP_ID. For all root window property
+       * changes, the global filter returns GDK_FILTER_CONTINUE, so our
+       * window specific filter will be called after the global one.
+       *
+       * Because Metacity is already handling root window property updates,
+       * we don't have to worry about adding the PropertyChange mask to the
+       * root window to get PropertyNotify events.
        */
+      window = gdk_get_default_root_window ();
       gdk_window_add_filter (window, root_window_filter, global);
 
       update_root_window_pixmap (global);
