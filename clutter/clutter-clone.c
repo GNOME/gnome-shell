@@ -122,6 +122,7 @@ clutter_clone_paint (ClutterActor *self)
   ClutterClonePrivate *priv = clone->priv;
   ClutterGeometry geom, clone_geom;
   gfloat x_scale, y_scale;
+  gboolean was_unmapped = FALSE;
 
   if (G_UNLIKELY (priv->clone_source == NULL))
     return;
@@ -155,7 +156,16 @@ clutter_clone_paint (ClutterActor *self)
   _clutter_actor_set_opacity_parent (priv->clone_source, self);
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, FALSE);
 
+  if (!CLUTTER_ACTOR_IS_MAPPED (priv->clone_source))
+    {
+      _clutter_actor_set_enable_paint_unmapped (priv->clone_source, TRUE);
+      was_unmapped = TRUE;
+    }
+
   clutter_actor_paint (priv->clone_source);
+
+  if (was_unmapped)
+    _clutter_actor_set_enable_paint_unmapped (priv->clone_source, FALSE);
 
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, TRUE);
   _clutter_actor_set_opacity_parent (priv->clone_source, NULL);

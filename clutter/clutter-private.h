@@ -232,6 +232,9 @@ void _clutter_actor_set_opacity_parent (ClutterActor *self,
 void _clutter_actor_set_enable_model_view_transform (ClutterActor *self,
                                                      gboolean      enable);
 
+void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
+                                               gboolean      enable);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

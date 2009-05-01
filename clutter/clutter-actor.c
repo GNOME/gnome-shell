@@ -328,7 +328,8 @@ struct _ClutterActorPrivate
   PangoContext   *pango_context;
 
   ClutterActor   *opacity_parent;
-  gboolean        enable_model_view_transform;
+  guint enable_model_view_transform : 1;
+  guint enable_paint_unmapped       : 1;
 };
 
 enum
@@ -514,13 +515,16 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                                          clutter_scriptable_iface_init));
 
 
-/* FIXME this is for debugging only, remove once working (or leave in
- * only in some debug mode). Should leave it for a little while
+#ifdef CLUTTER_ENABLE_DEBUG
+/* XXX - this is for debugging only, remove once working (or leave
+ * in only in some debug mode). Should leave it for a little while
  * until we're confident in the new map/realize/visible handling.
  */
-static void
+static inline void
 clutter_actor_verify_map_state (ClutterActor *self)
 {
+  ClutterActorPrivate *priv = self->priv;
+
   if (CLUTTER_ACTOR_IS_REALIZED (self))
     {
       /* all bets are off during reparent when we're potentially realized,
@@ -528,22 +532,20 @@ clutter_actor_verify_map_state (ClutterActor *self)
        */
       if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
         {
-          if (self->priv->parent_actor == NULL)
+          if (priv->parent_actor == NULL)
             {
               if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
                 {
                 }
               else
-                {
-                  g_warning ("Realized non-toplevel actor should have a parent");
-                }
+                g_warning ("Realized non-toplevel actor should have a parent");
             }
-          else if (!CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
+          else if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
             {
-              g_warning ("Realized actor %s %p has an unrealized parent %s %p",
+              g_warning ("Realized actor %s[%p] has an unrealized parent %s[%p]",
                          G_OBJECT_TYPE_NAME (self), self,
-                         G_OBJECT_TYPE_NAME (self->priv->parent_actor),
-                         self->priv->parent_actor);
+                         G_OBJECT_TYPE_NAME (priv->parent_actor),
+                         priv->parent_actor);
             }
         }
     }
@@ -558,7 +560,7 @@ clutter_actor_verify_map_state (ClutterActor *self)
        */
       if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
         {
-          if (self->priv->parent_actor == NULL)
+          if (priv->parent_actor == NULL)
             {
               if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
                 {
@@ -573,26 +575,46 @@ clutter_actor_verify_map_state (ClutterActor *self)
             }
           else
             {
-              if (!CLUTTER_ACTOR_IS_VISIBLE (self->priv->parent_actor))
+              ClutterActor *parent = priv->parent_actor;
+
+              /* check for the enable_paint_unmapped flag on any of the
+               * parents; if the flag is enabled at any point of this
+               * branch of the scene graph then all the later checks
+               * become pointless
+               */
+              while (parent != NULL)
                 {
-                  g_warning ("Actor should not be mapped if parent is not visible");
+                  if (parent->priv->enable_paint_unmapped)
+                    return;
+
+                  parent = parent->priv->parent_actor;
                 }
 
-              if (!CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
+              if (!CLUTTER_ACTOR_IS_VISIBLE (priv->parent_actor))
                 {
-                  g_warning ("Actor should not be mapped if parent is not realized");
+                  g_warning ("Actor should not be mapped if parent "
+                             "is not visible");
                 }
 
-              if (!(CLUTTER_PRIVATE_FLAGS (self->priv->parent_actor) &
+              if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
+                {
+                  g_warning ("Actor should not be mapped if parent "
+                             "is not realized");
+                }
+
+              if (!(CLUTTER_PRIVATE_FLAGS (priv->parent_actor) &
                     CLUTTER_ACTOR_IS_TOPLEVEL))
                 {
-                  if (!CLUTTER_ACTOR_IS_MAPPED (self->priv->parent_actor))
-                    g_warning ("Actor is mapped but its non-toplevel parent is not mapped");
+                  if (!CLUTTER_ACTOR_IS_MAPPED (priv->parent_actor))
+                    g_warning ("Actor is mapped but its non-toplevel "
+                               "parent is not mapped");
                 }
             }
         }
     }
 }
+
+#endif /* CLUTTER_ENABLE_DEBUG */
 
 static void
 clutter_actor_set_mapped (ClutterActor *self,
@@ -745,13 +767,28 @@ clutter_actor_update_map_state (ClutterActor  *self,
                 }
             }
 
+          /* if the actor has been set to be painted even if unmapped
+           * then we should map it and check for realization as well;
+           * this is an override for the branch of the scene graph
+           * which begins with this node
+           */
+          if (priv->enable_paint_unmapped)
+            {
+              if (priv->parent_actor == NULL)
+                g_warning ("Attempting to map an unparented actor");
+
+              should_be_mapped = TRUE;
+              must_be_realized = TRUE;
+            }
+
           if (!CLUTTER_ACTOR_IS_REALIZED (parent))
             may_be_realized = FALSE;
         }
 
       if (change == MAP_STATE_MAKE_MAPPED && !should_be_mapped)
         {
-          g_warning ("Attempting to map a child that does not meet the necessary invariants");
+          g_warning ("Attempting to map a child that does not "
+                     "meet the necessary invariants");
         }
 
       /* If in reparent, we temporarily suspend unmap and unrealize.
@@ -782,7 +819,8 @@ clutter_actor_update_map_state (ClutterActor  *self,
       if (should_be_mapped)
         {
           if (!must_be_realized)
-            g_warning ("Somehow we think an actor should be mapped but not realized, which isn't allowed");
+            g_warning ("Somehow we think an actor should be mapped but "
+                       "not realized, which isn't allowed");
 
           /* realization is allowed to fail (though I don't know what
            * an app is supposed to do about that - shouldn't it just
@@ -790,9 +828,7 @@ clutter_actor_update_map_state (ClutterActor  *self,
            * happens)
            */
           if (CLUTTER_ACTOR_IS_REALIZED (self))
-            {
-              clutter_actor_set_mapped (self, TRUE);
-            }
+            clutter_actor_set_mapped (self, TRUE);
         }
     }
 
@@ -950,7 +986,10 @@ clutter_actor_show (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+#ifdef CLUTTER_ENABLE_DEBUG
+  /* FIXME leave this for debugging only */
+  clutter_actor_verify_map_state (self);
+#endif
 
   priv = self->priv;
 
@@ -1027,7 +1066,10 @@ clutter_actor_hide (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+#ifdef CLUTTER_ENABLE_DEBUG
+  /* FIXME leave this for debugging only */
+  clutter_actor_verify_map_state (self);
+#endif
 
   priv = self->priv;
 
@@ -1092,7 +1134,10 @@ clutter_actor_realize (ClutterActor *self)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+#ifdef CLUTTER_ENABLE_DEBUG
+  /* FIXME leave this for debugging only */
+  clutter_actor_verify_map_state (self);
+#endif
 
   if (CLUTTER_ACTOR_IS_REALIZED (self))
     return;
@@ -1183,7 +1228,10 @@ clutter_actor_unrealize (ClutterActor *self)
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (!CLUTTER_ACTOR_IS_MAPPED (self));
 
-  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+#ifdef CLUTTER_ENABLE_DEBUG
+  /* FIXME leave this for debugging only */
+  clutter_actor_verify_map_state (self);
+#endif
 
   clutter_actor_hide (self);
 
@@ -1265,7 +1313,10 @@ _clutter_actor_rerealize (ClutterActor    *self,
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_verify_map_state (self); /* FIXME leave this for debugging only */
+#ifdef CLUTTER_ENABLE_DEBUG
+  /* FIXME leave this for debugging only */
+  clutter_actor_verify_map_state (self);
+#endif
 
   was_realized = CLUTTER_ACTOR_IS_REALIZED (self);
   was_mapped = CLUTTER_ACTOR_IS_MAPPED (self);
@@ -8929,6 +8980,24 @@ _clutter_actor_set_enable_model_view_transform (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   self->priv->enable_model_view_transform = enable;
+}
+
+void
+_clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
+                                          gboolean      enable)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  priv->enable_paint_unmapped = enable;
+
+  if (priv->enable_paint_unmapped)
+    clutter_actor_update_map_state (self, MAP_STATE_MAKE_MAPPED);
+  else
+    clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNMAPPED);
 }
 
 static void
