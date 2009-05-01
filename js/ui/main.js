@@ -176,7 +176,7 @@ function create_app_launch_context() {
     context.set_timestamp(display.get_current_time());
 
     // Make sure that the app is opened on the current workspace even if
-    // the user switches before it seetarts
+    // the user switches before it starts
     context.set_desktop(screen.get_active_workspace_index());
 
     return context;

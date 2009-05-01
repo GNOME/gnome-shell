@@ -80,10 +80,12 @@ DocDisplayItem.prototype = {
 
             let appInfo = Gio.app_info_create_from_commandline(appExec, null, 0, null);
 
-            // The app launch context doesn't work as well as we might like because
-            // it doesn't get the right StartupNotify key from the application's
-            // desktop file. So, we don't get startup notification, the application
-            // doesn't stick to the current workspace, and so forth.
+            // The point of passing an app launch context to launch() is mostly to get
+            // startup notification and associated benefits like the app appearing
+            // on the right desktop; but it doesn't really work for now because we aren't
+            // reading the application's desktop file, and thus don't find the
+            // StartupNotify=true in it. So, despite passing the app launch context,
+            // no startup notification occurs.
             appInfo.launch([], Main.create_app_launch_context());
         } else {
             log("Failed to get application info for " + this._docInfo.get_uri());
