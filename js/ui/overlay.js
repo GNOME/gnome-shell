@@ -922,7 +922,7 @@ Overlay.prototype = {
     },
 
     _deactivate : function() {
-        Main.hide_overlay();
+        Main.hideOverlay();
     }
 };
 

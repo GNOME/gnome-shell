@@ -85,7 +85,7 @@ AppDisplayItem.prototype = {
 
     // Opens an application represented by this display item.
     launch : function() {
-        this._appInfo.launch([], Main.create_app_launch_context());
+        this._appInfo.launch([], Main.createAppLaunchContext());
     },
 
     //// Protected method overrides ////
@@ -120,8 +120,8 @@ const MENU_UNSELECTED = 0;
 const MENU_SELECTED = 1;
 const MENU_ENTERED = 2;
 
-function MenuItem(name, id, icon_name) {
-    this._init(name, id, icon_name);
+function MenuItem(name, id, iconName) {
+    this._init(name, id, iconName);
 }
 
 /**
@@ -129,7 +129,7 @@ function MenuItem(name, id, icon_name) {
  * Shows the list of menus in the sidebar.
  */
 MenuItem.prototype = {
-    _init: function(name, id, icon_name) {
+    _init: function(name, id, iconName) {
         this.id = id;
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
@@ -147,7 +147,7 @@ MenuItem.prototype = {
                                            height: MENU_ICON_SIZE });
         // Wine manages not to have an icon
         try {
-            pixbuf = iconTheme.load_icon(icon_name, MENU_ICON_SIZE, 0 /* flags */);
+            pixbuf = iconTheme.load_icon(iconName, MENU_ICON_SIZE, 0 /* flags */);
         } catch (e) {
             pixbuf = iconTheme.load_icon('gtk-file', MENU_ICON_SIZE, 0);
         }

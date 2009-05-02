@@ -292,7 +292,7 @@ Workspace.prototype = {
                               Lang.bind(this,
                                         function(clone, time) {
                                             this._metaWorkspace.activate(time);
-                                            Main.hide_overlay();
+                                            Main.hideOverlay();
                                         }));
         this.actor.add_actor(this._desktop.actor);
 
@@ -721,7 +721,7 @@ Workspace.prototype = {
             workspace.activate_with_focus(clone.metaWindow, time);
         } else
             clone.metaWindow.activate(time);
-        Main.hide_overlay();
+        Main.hideOverlay();
     },
 
     _removeSelf : function(actor, event) {
@@ -1040,9 +1040,9 @@ Workspaces.prototype = {
 // Create a SpecialPropertyModifier to let us move windows in a
 // straight line on the screen even though their containing workspace
 // is also moving.
-Tweener.registerSpecialPropertyModifier("workspace_relative", _workspace_relative_modifier, _workspace_relative_get);
+Tweener.registerSpecialPropertyModifier("workspace_relative", _workspaceRelativeModifier, _workspaceRelativeGet);
 
-function _workspace_relative_modifier(workspace) {
+function _workspaceRelativeModifier(workspace) {
     let endX, endY;
 
     if (!workspace)
@@ -1065,6 +1065,6 @@ function _workspace_relative_modifier(workspace) {
            ];
 }
 
-function _workspace_relative_get(begin, end, time, params) {
+function _workspaceRelativeGet(begin, end, time, params) {
     return (begin + params.begin) + time * (end + params.end - (begin + params.begin)) - params.cur();
 }

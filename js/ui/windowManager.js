@@ -145,7 +145,7 @@ WindowManager.prototype = {
         }
     },
 
-    _maximizeWindow : function(actor, target_x, target_y, target_width, target_height) {
+    _maximizeWindow : function(actor, targetX, targetY, targetWidth, targetHeight) {
         if (!this._shouldAnimate(actor)) {
             this._shellwm.completed_maximize(actor);
             return;
@@ -155,17 +155,17 @@ WindowManager.prototype = {
          * window contents doesn't produce anything like the same results as
          * actually maximizing the window.
          */
-        let scale_x = target_width / actor.width;
-        let scale_y = target_height / actor.height;
-        let anchor_x = (actor.x - target_x) * actor.width/(target_width - actor.width);
-        let anchor_y = (actor.y - target_y) * actor.height/(target_height - actor.height);
+        let scaleX = targetWidth / actor.width;
+        let scaleY = targetHeight / actor.height;
+        let anchorX = (actor.x - targetX) * actor.width/(targetWidth - actor.width);
+        let anchorY = (actor.y - targetY) * actor.height/(targetHeight - actor.height);
         
-        actor.move_anchor_point(anchor_x, anchor_y);
+        actor.move_anchor_point(anchorX, anchorY);
 
         this._maximizing.push(actor);
         Tweener.addTween(actor,
-                         { scale_x: scale_x,
-                           scale_y: scale_y,
+                         { scale_x: scaleX,
+                           scale_y: scaleY,
                            time: WINDOW_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: this._maximizeWindowDone,
@@ -192,7 +192,7 @@ WindowManager.prototype = {
         }
     },
 
-    _unmaximizeWindow : function(actor, target_x, target_y, target_width, target_height) {
+    _unmaximizeWindow : function(actor, targetX, targetY, targetWidth, targetHeight) {
         this._shellwm.completed_unmaximize(actor);
     },
 

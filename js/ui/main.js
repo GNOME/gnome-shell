@@ -50,14 +50,14 @@ function start() {
         // Make sure not more than one run dialog is shown.
         if (!runDialog) {
             runDialog = new RunDialog.RunDialog();
-            let end_handler = function() {
+            let endHandler = function() {
                 runDialog.destroy();
                 runDialog = null;
             };
-            runDialog.connect('run', end_handler);
-            runDialog.connect('cancel', end_handler);
+            runDialog.connect('run', endHandler);
+            runDialog.connect('cancel', endHandler);
             if (!runDialog.show())
-                end_handler();
+                endHandler();
         }
     });
 
@@ -69,9 +69,9 @@ function start() {
     let display = global.screen.get_display();
     let toggleOverlay = function(display) {
         if (overlay.visible) {
-            hide_overlay();
+            hideOverlay();
         } else {
-            show_overlay();
+            showOverlay();
         }
     };
 
@@ -154,20 +154,20 @@ function endModal() {
     inModal = false;
 }
 
-function show_overlay() {
+function showOverlay() {
     if (startModal()) {
         overlayActive = true;
         overlay.show();
     }
 }
 
-function hide_overlay() {
+function hideOverlay() {
     overlay.hide();
     overlayActive = false;
     endModal();
 }
 
-function create_app_launch_context() {
+function createAppLaunchContext() {
     let global = Shell.Global.get();
     let screen = global.screen;
     let display = screen.get_display();

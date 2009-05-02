@@ -86,7 +86,7 @@ DocDisplayItem.prototype = {
             // reading the application's desktop file, and thus don't find the
             // StartupNotify=true in it. So, despite passing the app launch context,
             // no startup notification occurs.
-            appInfo.launch([], Main.create_app_launch_context());
+            appInfo.launch([], Main.createAppLaunchContext());
         } else {
             log("Failed to get application info for " + this._docInfo.get_uri());
         }

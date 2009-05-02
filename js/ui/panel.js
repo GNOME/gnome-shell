@@ -152,9 +152,9 @@ Panel.prototype = {
         this.button.button.connect('button-press-event',
             function(o, event) {
                 if (Main.overlay.visible)
-                    Main.hide_overlay();
+                    Main.hideOverlay();
                 else
-                    Main.show_overlay();
+                    Main.showOverlay();
 
                 return true;
             });
@@ -211,15 +211,15 @@ Panel.prototype = {
 
     _updateClock: function() {
         let me = this;
-        let display_date = new Date();
-        let msec_remaining = 60000 - (1000 * display_date.getSeconds() +
-                                      display_date.getMilliseconds());
-        if (msec_remaining < 500) {
-            display_date.setMinutes(display_date.getMinutes() + 1);
-            msec_remaining += 60000;
+        let displayDate = new Date();
+        let msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
+                                     displayDate.getMilliseconds());
+        if (msecRemaining < 500) {
+            displayDate.setMinutes(displayDate.getMinutes() + 1);
+            msecRemaining += 60000;
         }
-        this._clock.set_text(display_date.toLocaleFormat("%a %b %e, %l:%M %p"));
-        Mainloop.timeout_add(msec_remaining, function() {
+        this._clock.set_text(displayDate.toLocaleFormat("%a %b %e, %l:%M %p"));
+        Mainloop.timeout_add(msecRemaining, function() {
             me._updateClock();
             return false;
         });
