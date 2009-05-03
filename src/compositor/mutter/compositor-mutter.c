@@ -1767,6 +1767,7 @@ get_output_window (MetaScreen *screen)
 
   event_mask = FocusChangeMask |
                ExposureMask |
+               EnterWindowMask | LeaveWindowMask |
 	       PointerMotionMask |
                PropertyChangeMask |
                ButtonPressMask | ButtonReleaseMask |
@@ -1919,6 +1920,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   event_mask = FocusChangeMask |
                ExposureMask |
+               EnterWindowMask | LeaveWindowMask |
                PointerMotionMask |
                PropertyChangeMask |
                ButtonPressMask | ButtonReleaseMask |
