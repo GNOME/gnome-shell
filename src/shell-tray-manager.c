@@ -7,12 +7,12 @@
 #include "shell-tray-manager.h"
 #include "na-tray-manager.h"
 
-#include "shell-gtkwindow-actor.h"
+#include "shell-gtk-embed.h"
+#include "shell-embedded-window.h"
 
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
   ClutterStage *stage;
-  GdkWindow *stage_window;
   ClutterColor bg_color;
 
   GHashTable *icons;
@@ -130,7 +130,6 @@ shell_tray_manager_finalize (GObject *object)
 
   g_object_unref (manager->priv->na_manager);
   g_object_unref (manager->priv->stage);
-  g_object_unref (manager->priv->stage_window);
   g_hash_table_destroy (manager->priv->icons);
 
   G_OBJECT_CLASS (shell_tray_manager_parent_class)->finalize (object);
@@ -189,20 +188,35 @@ void
 shell_tray_manager_manage_stage (ShellTrayManager *manager,
                                  ClutterStage     *stage)
 {
-  Window stage_xwin;
+  Window stage_xwindow;
+  GdkWindow *stage_window;
+  GdkScreen *screen;
 
   g_return_if_fail (manager->priv->stage == NULL);
 
   manager->priv->stage = g_object_ref (stage);
-  stage_xwin = clutter_x11_get_stage_window (stage);
-  manager->priv->stage_window = gdk_window_lookup (stage_xwin);
-  if (manager->priv->stage_window)
-    g_object_ref (manager->priv->stage_window);
-  else
-    manager->priv->stage_window = gdk_window_foreign_new (stage_xwin);
 
-  na_tray_manager_manage_screen (manager->priv->na_manager,
-                                 gdk_drawable_get_screen (GDK_DRAWABLE (manager->priv->stage_window)));
+  stage_xwindow = clutter_x11_get_stage_window (stage);
+
+  /* This is a pretty ugly way to get the GdkScreen for the stage; it
+   *  will normally go through the foreign_new() case with a
+   *  round-trip to the X server, it might be nicer to pass the screen
+   *  in in some way. (The Clutter/Mutter combo is currently incapable
+   *  of multi-screen operation, so alternatively we could just assume
+   *  that clutter_x11_get_default_screen() gives us the right
+   *  screen.)
+   */
+  stage_window = gdk_window_lookup (stage_xwindow);
+  if (stage_window)
+    g_object_ref (stage_window);
+  else
+    stage_window = gdk_window_foreign_new (stage_xwindow);
+
+  screen = gdk_drawable_get_screen (stage_window);
+
+  g_object_unref (stage_window);
+
+  na_tray_manager_manage_screen (manager->priv->na_manager, screen);
 }
 
 static GdkPixmap *
@@ -230,6 +244,28 @@ create_bg_pixmap (GdkColormap  *colormap,
 }
 
 static void
+shell_tray_manager_child_on_realize (GtkWidget             *widget,
+                                     ShellTrayManagerChild *child)
+{
+  GdkPixmap *bg_pixmap;
+
+  /* If the tray child is using an RGBA colormap (and so we have real
+   * transparency), we don't need to worry about the background. If
+   * not, we obey the bg-color property by creating a 1x1 pixmap of
+   * that color and setting it as our background. Then "parent-relative"
+   * background on the socket and the plug within that will cause
+   * the icons contents to appear on top of our background color.
+   */
+  if (!na_tray_child_has_alpha (NA_TRAY_CHILD (child->socket)))
+    {
+      bg_pixmap = create_bg_pixmap (gtk_widget_get_colormap (widget),
+                                    &child->manager->priv->bg_color);
+      gdk_window_set_back_pixmap (widget->window, bg_pixmap, FALSE);
+      g_object_unref (bg_pixmap);
+    }
+}
+
+static void
 na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
                     gpointer user_data)
 {
@@ -237,7 +273,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   GtkWidget *win;
   ClutterActor *icon;
   ShellTrayManagerChild *child;
-  GdkPixmap *bg_pixmap;
 
   /* We don't need the NaTrayIcon to be composited on the window we
    * put it in: the window is the same size as the tray icon
@@ -247,43 +282,24 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
    */
   na_tray_child_set_composited (NA_TRAY_CHILD (socket), FALSE);
 
-  win = gtk_window_new (GTK_WINDOW_POPUP);
+  win = shell_embedded_window_new ();
   gtk_container_add (GTK_CONTAINER (win), socket);
 
   /* The colormap of the socket matches that of its contents; make
    * the window we put it in match that as well */
   gtk_widget_set_colormap (win, gtk_widget_get_colormap (socket));
 
-  gtk_widget_set_size_request (win, 24, 24);
-  gtk_widget_realize (win);
-
-  /* If the tray child is using an RGBA colormap (and so we have real
-   * transparency), we don't need to worry about the background. If
-   * not, we obey the bg-color property by creating a 1x1 pixmap of
-   * that color and setting it as our background. Then "parent-relative"
-   * background on the socket and the plug within that will cause
-   * the icons contents to appear on top of our background color.
-   */
-  if (!na_tray_child_has_alpha (NA_TRAY_CHILD (socket)))
-    {
-      bg_pixmap = create_bg_pixmap (gtk_widget_get_colormap (win),
-                                    &manager->priv->bg_color);
-      gdk_window_set_back_pixmap (win->window, bg_pixmap, FALSE);
-      g_object_unref (bg_pixmap);
-    }
-
-  gtk_widget_set_parent_window (win, manager->priv->stage_window);
-  gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
-  gtk_widget_show_all (win);
-
-  icon = shell_gtk_window_actor_new (win);
-
-  /* Move to ShellGtkWindowActor? FIXME */
-  clutter_actor_set_size (icon, 24, 24);
-
   child = g_slice_new (ShellTrayManagerChild);
   child->window = win;
   child->socket = socket;
+
+  g_signal_connect (win, "realize",
+                    G_CALLBACK (shell_tray_manager_child_on_realize), child);
+
+  gtk_widget_show_all (win);
+
+  icon = shell_gtk_embed_new (SHELL_EMBEDDED_WINDOW (win));
+
   child->actor = g_object_ref (icon);
   g_hash_table_insert (manager->priv->icons, socket, child);
 

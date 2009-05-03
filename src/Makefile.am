@@ -57,8 +57,11 @@ libgnome_shell_la_SOURCES =			\
 	shell-app-system.h			\
 	shell-arrow.c			\
 	shell-arrow.h			\
-	shell-gtkwindow-actor.c			\
-	shell-gtkwindow-actor.h			\
+	shell-embedded-window.c			\
+	shell-embedded-window.h			\
+	shell-embedded-window-private.h		\
+	shell-gtk-embed.c			\
+	shell-gtk-embed.h			\
 	shell-process.c				\
 	shell-process.h				\
 	shell-global.c				\
@@ -70,8 +73,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-wm.c				\
 	shell-wm.h
 
-# ClutterGLXTexturePixmap is currently not wrapped
-non_gir_sources = shell-gtkwindow-actor.h
+non_gir_sources =						\
+	shell-embedded-window-private.h
 
 shell_recorder_sources =        \
 	shell-recorder.c	\
