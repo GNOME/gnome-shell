@@ -35,6 +35,7 @@
 #include <gjs/gjs.h>
 #include <girepository.h>
 #include <gmodule.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "display.h"
