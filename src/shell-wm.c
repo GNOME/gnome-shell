@@ -27,6 +27,8 @@ enum
   SWITCH_WORKSPACE,
   KILL_SWITCH_WORKSPACE,
 
+  BEGIN_ALT_TAB,
+
   LAST_SIGNAL
 };
 
@@ -40,6 +42,7 @@ static guint shell_wm_signals [LAST_SIGNAL] = { 0 };
 static void
 shell_wm_init (ShellWM *wm)
 {
+  meta_alt_tab_handler_register (SHELL_TYPE_ALT_TAB_HANDLER);
 }
 
 static void
@@ -166,6 +169,15 @@ shell_wm_class_init (ShellWMClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  shell_wm_signals[BEGIN_ALT_TAB] =
+    g_signal_new ("begin-alt-tab",
+		  G_TYPE_FROM_CLASS (klass),
+		  G_SIGNAL_RUN_LAST,
+		  0,
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1,
+                  META_TYPE_ALT_TAB_HANDLER);
 }
 
 void
@@ -377,6 +389,14 @@ _shell_wm_destroy (ShellWM      *wm,
                    MutterWindow *actor)
 {
   g_signal_emit (wm, shell_wm_signals[DESTROY], 0, actor);
+}
+
+/* Called from shell-alttab.c */
+void
+_shell_wm_begin_alt_tab (ShellWM              *wm,
+                         ShellAltTabHandler   *handler)
+{
+  g_signal_emit (wm, shell_wm_signals[BEGIN_ALT_TAB], 0, handler);
 }
 
 /**

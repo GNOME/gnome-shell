@@ -5,6 +5,7 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
+const AltTab = imports.ui.altTab;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -76,6 +77,11 @@ WindowManager.prototype = {
         this._shellwm.connect('kill-destroy',
             function(o, actor) {
                 me._destroyWindowDone(actor);
+            });
+
+        this._shellwm.connect('begin-alt-tab',
+            function(o, handler) {
+                me._beginAltTab(handler);
             });
     },
 
@@ -365,6 +371,14 @@ WindowManager.prototype = {
         switchData.outGroup.destroy();
 
         this._shellwm.completed_switch_workspace();
-    }
+    },
 
+    _beginAltTab : function(handler) {
+        let popup = new AltTab.AltTabPopup();
+
+        handler.connect('window-added', function(handler, window) { popup.addWindow(window); });
+        handler.connect('show', function(handler, initialSelection) { popup.show(initialSelection); });
+        handler.connect('destroy', function() { popup.destroy(); });
+        handler.connect('notify::selected', function() { popup.select(handler.selected); });
+    }  
 };

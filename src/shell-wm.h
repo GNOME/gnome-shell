@@ -4,6 +4,8 @@
 #include <glib-object.h>
 #include <mutter-plugin.h>
 
+#include "shell-alttab.h"
+
 G_BEGIN_DECLS
 
 typedef struct _ShellWM      ShellWM;
@@ -70,6 +72,11 @@ void _shell_wm_switch_workspace (ShellWM              *wm,
 void _shell_wm_kill_effect      (ShellWM              *wm,
 				 MutterWindow         *actor,
 				 gulong                events);
+
+/* Called by ShellAltTabHandler */
+
+void _shell_wm_begin_alt_tab    (ShellWM              *wm,
+				 ShellAltTabHandler   *handler);
 
 G_END_DECLS
 
