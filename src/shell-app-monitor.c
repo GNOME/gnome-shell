@@ -24,6 +24,7 @@
  */
 
 #define APP_MONITOR_GCONF_DIR SHELL_GCONF_DIR"/app_monitor"
+#define ENABLE_MONITORING_KEY APP_MONITOR_GCONF_DIR"/enable_monitoring"
 
 /* Data is saved to file SHELL_CONFIG_DIR/DATA_FILENAME */
 #define DATA_FILENAME "applications_usage"
@@ -82,6 +83,7 @@ struct _ShellAppMonitor
   GFile *configfile;
   XScreenSaverInfo *info;
   GdkDisplay *display;
+  GConfClient *gconf_client;
   glong activity_time;
   gulong last_idle;
   guint poll_id;
@@ -140,10 +142,12 @@ static void save_to_file (ShellAppMonitor *monitor);
 
 static void restore_from_file (ShellAppMonitor *monitor);
 
-static void on_conf_changed (GConfClient *client,
-                             guint        cnxn_id,
-                             GConfEntry  *entry,
-                             gpointer     monitor);
+static void update_enable_monitoring (ShellAppMonitor *monitor);
+
+static void on_enable_monitoring_key_changed (GConfClient *client,
+                                              guint        connexion_id,
+                                              GConfEntry  *entry,
+                                              gpointer     monitor);
 
 static glong
 get_time (void)
@@ -194,19 +198,6 @@ shell_app_monitor_init (ShellAppMonitor *self)
   Display *xdisplay;
   char *path;
   char *shell_config_dir;
-  GConfClient *gconf_client;
-  
-  /* Apps usage tracking */
-
-  /* Check conf to see whether to track app usage or not */
-  gconf_client = gconf_client_get_default ();
-  gconf_client_add_dir (gconf_client, APP_MONITOR_GCONF_DIR,
-                        GCONF_CLIENT_PRELOAD_NONE, NULL);
-  self->gconf_notify =
-    gconf_client_notify_add (gconf_client, APP_MONITOR_GCONF_DIR"/enable_monitoring",
-                             on_conf_changed, self, NULL, NULL);
-  self->enable_monitoring =
-    gconf_client_get_bool (gconf_client, APP_MONITOR_GCONF_DIR"/enable_monitoring", NULL);
 
   /* FIXME: should we create as many monitors as there are GdkScreens? */
   display = gdk_display_get_default();
@@ -222,6 +213,7 @@ shell_app_monitor_init (ShellAppMonitor *self)
   self->activity_time = get_time ();
   self->last_idle = 0;
   self->currently_idle = FALSE;
+  self->enable_monitoring = FALSE;
 
   /* No need for free functions: value is an int stored as a pointer, and keys are
    * freed manually in finalize () since we replace elements and reuse app names */
@@ -235,20 +227,14 @@ shell_app_monitor_init (ShellAppMonitor *self)
   g_free (shell_config_dir);
   self->configfile = g_file_new_for_path (path);
   restore_from_file (self);
-  /* If no stats are available so far, set burst mode on */
-  if (g_hash_table_size(self->popularities))
-    self->upload_apps_burst_count = 0;
-  else
-    self->upload_apps_burst_count = SAVE_APPS_BURST_LENGTH / SAVE_APPS_BURST_TIMEOUT;
 
-  /* If monitoring is disabled, we still report apps usage based on (possibly)
-   * saved data, but don't set timers */
-  if (self->enable_monitoring)
-    {
-      self->poll_id = g_timeout_add_seconds (5, poll_for_idleness, self);
-      self->save_apps_id =
-        g_timeout_add_seconds (SAVE_APPS_BURST_TIMEOUT, on_save_apps_timeout, self);
-    }
+  self->gconf_client = gconf_client_get_default ();
+  gconf_client_add_dir (self->gconf_client, APP_MONITOR_GCONF_DIR,
+                        GCONF_CLIENT_PRELOAD_NONE, NULL);
+  self->gconf_notify =
+    gconf_client_notify_add (self->gconf_client, ENABLE_MONITORING_KEY,
+                             on_enable_monitoring_key_changed, self, NULL, NULL);
+  update_enable_monitoring (self);
 }
 
 static void
@@ -260,7 +246,8 @@ shell_app_monitor_finalize (GObject *object)
   XFree (self->info);
   g_source_remove (self->poll_id);
   g_source_remove (self->save_apps_id);
-  gconf_client_notify_remove (gconf_client_get_default (), self->gconf_notify);
+  gconf_client_notify_remove (self->gconf_client, self->gconf_notify);
+  g_object_unref (self->gconf_client);
   g_object_unref (self->display);
   g_hash_table_destroy (self->apps_by_wm_class);
   g_hash_table_foreach (self->popularities, destroy_popularity, NULL);
@@ -992,36 +979,58 @@ out:
       }
 }
 
+/* Enable or disable the timers, depending on the value of ENABLE_MONITORING_KEY
+ * and taking care of the previous state.  If monitoring is disabled, we still
+ * report apps usage based on (possibly) saved data, but don't collect data.
+ */
 static void
-on_conf_changed (GConfClient *client,
-                 guint        cnxn_id,
-                 GConfEntry  *entry,
-                 gpointer     monitor)
+update_enable_monitoring (ShellAppMonitor *monitor)
 {
-  ShellAppMonitor *self = monitor;
   GConfValue *value;
-  const char *key;
-  char *key_name;
+  gboolean enable;
 
-  key = gconf_entry_get_key (entry);
-  key_name = g_path_get_basename (key);
-  if (strcmp (key_name, "enable_monitoring") != 0)
+  value = gconf_client_get (monitor->gconf_client, ENABLE_MONITORING_KEY, NULL);
+  if (value)
     {
-      g_free (key_name);
-      return;
+      enable = gconf_value_get_bool (value);
+      gconf_value_free (value);
     }
-  value = gconf_entry_get_value (entry);
-  self->enable_monitoring = gconf_value_get_bool (value);
+  else /* Schema is not present, set default value by hand to avoid getting FALSE */
+    enable = TRUE;
+  
+  /* Be sure not to start the timers if they were already set */
+  if (enable && !monitor->enable_monitoring)
+    {
+      /* If no stats are available so far, set burst mode on */
+      if (g_hash_table_size (monitor->popularities))
+        monitor->upload_apps_burst_count = 0;
+      else
+        monitor->upload_apps_burst_count = SAVE_APPS_BURST_LENGTH / SAVE_APPS_BURST_TIMEOUT;
 
-  if (self->enable_monitoring)
-    {
-      self->poll_id = g_timeout_add_seconds (5, poll_for_idleness, self);
-      self->save_apps_id =
-        g_timeout_add_seconds (SAVE_APPS_BURST_TIMEOUT, on_save_apps_timeout, self);
+      monitor->poll_id = g_timeout_add_seconds (5, poll_for_idleness, monitor);
+      if (monitor->upload_apps_burst_count > 0)
+        monitor->save_apps_id =
+          g_timeout_add_seconds (SAVE_APPS_BURST_TIMEOUT, on_save_apps_timeout, monitor);
+      else
+        monitor->save_apps_id =
+          g_timeout_add_seconds (SAVE_APPS_TIMEOUT, on_save_apps_timeout, monitor);
     }
-  else
+  /* ...and don't try to stop them if they were not running */
+  else if (!enable && monitor->enable_monitoring)
     {
-      g_source_remove (self->poll_id);
-      g_source_remove (self->save_apps_id);
+      g_source_remove (monitor->poll_id);
+      g_source_remove (monitor->save_apps_id);
     }
+
+  monitor->enable_monitoring = enable;
+}
+
+/* Called when the ENABLE_MONITORING_KEY boolean has changed */
+static void
+on_enable_monitoring_key_changed (GConfClient *client,
+                                  guint        connexion_id,
+                                  GConfEntry  *entry,
+                                  gpointer     monitor)
+{
+  update_enable_monitoring ((ShellAppMonitor *) monitor);
 }
