@@ -913,10 +913,9 @@ restore_from_file (ShellAppMonitor *monitor)
   input = g_file_read (monitor->configfile, NULL, &error);
   if (error)
     {
-      if (error->code == G_IO_ERROR_NOT_FOUND)
-        g_message ("No applications usage data file found. This is normal if you start the program for the first time.");
-      else
+      if (error->code != G_IO_ERROR_NOT_FOUND)
         g_warning ("Could not load applications usage data: %s", error->message);
+
       g_error_free (error);
       return;
     }
