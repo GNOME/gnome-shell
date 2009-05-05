@@ -30,12 +30,13 @@ fi
 # libtool, pkgconfig
 #
 # Devel packages needed by gnome-shell and its deps:
-# dbus-glib, gconf, GL, gnome-menus, gtk, libffi, libgnomeui, librsvg, libwnck,
-# python, readline, spidermonkey ({mozilla,firefox,xulrunner}-js),
-# xdamage, xscrnsaver
+# dbus-glib, gconf, GL, gnome-menus, gstreamer, gtk, libffi,
+# libgnomeui, librsvg, libwnck, python, readline, spidermonkey
+# ({mozilla,firefox,xulrunner}-js), xdamage, xscrnsaver
 #
 # Non-devel packages needed by gnome-shell and its deps:
-# gdb, glxinfo, python, Xephyr, xeyes*, xlogo*, xterm*, zenity
+# gdb, glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
+# python, Xephyr, xeyes*, xlogo*, xterm*, zenity
 #
 # (*)ed packages are only needed because gnome-shell launches them
 # when running in Xephyr mode, and we should probably change it to use
@@ -64,6 +65,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
     libgnome-menu-dev libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
     mesa-common-dev python-dev libreadline5-dev xulrunner-dev \
     xserver-xephyr libxss-dev \
+    libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
     ; do
       if ! dpkg_is_installed $pkg; then
         reqd="$pkg $reqd"
@@ -85,8 +87,8 @@ if test x$system = xFedora ; then
     dbus-glib-devel GConf2-devel gnome-menus-devel gtk2-devel libffi-devel libgnomeui-devel \
     librsvg2-devel libwnck-devel mesa-libGL-devel python-devel readline-devel \
     xulrunner-devel libXdamage-devel libXScrnSaver-devel \
-    gdb glx-utils xorg-x11-apps xorg-x11-server-Xephyr xterm zenity \
     gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
+    gdb glx-utils xorg-x11-apps xorg-x11-server-Xephyr xterm zenity \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
