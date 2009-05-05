@@ -1475,14 +1475,7 @@ event_callback (XEvent   *event,
   
   modified = event_get_modified_window (display, event);
   
-  if (event->type == ButtonPress)
-    {
-      /* filter out scrollwheel */
-      if (event->xbutton.button == 4 ||
-	  event->xbutton.button == 5)
-	return FALSE;
-    }
-  else if (event->type == UnmapNotify)
+  if (event->type == UnmapNotify)
     {
       if (meta_ui_window_should_not_cause_focus (display->xdisplay,
                                                  modified))
@@ -1625,7 +1618,18 @@ event_callback (XEvent   *event,
       meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
-      if ((window &&
+      if (event->xbutton.button == 4 || event->xbutton.button == 5)
+        {
+          if (display->compositor && window)
+            {
+              return meta_compositor_process_event (display->compositor,
+                                                    event,
+                                                    window);
+            }
+          else
+            return FALSE;
+        }
+      else if ((window &&
            grab_op_is_mouse (display->grab_op) &&
            display->grab_button != (int) event->xbutton.button &&
            display->grab_window == window) ||
