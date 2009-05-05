@@ -290,6 +290,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   gtk_widget_set_colormap (win, gtk_widget_get_colormap (socket));
 
   child = g_slice_new (ShellTrayManagerChild);
+  child->manager = manager;
   child->window = win;
   child->socket = socket;
 
