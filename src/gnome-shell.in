@@ -120,15 +120,15 @@ def start_shell():
     if os.path.exists(os.path.join(bin_dir, 'gnome-shell.in')):
         running_from_source_tree = True
         top_dir = os.path.dirname(bin_dir)
-        plugin_dir = os.path.join(top_dir, "src")
+        plugin = os.path.join(top_dir, 'src', 'libgnome-shell.la')
         typelib_dir = os.path.join(top_dir, "src")
         taskpanel_dir = os.path.join(top_dir, "src")
         js_dir = os.path.join(top_dir, "js")
         data_dir = os.path.join(top_dir, "data")
     else:
         running_from_source_tree = False
+        plugin = 'libgnome-shell'
         js_dir = os.path.join('@pkgdatadir@', 'js')
-        plugin_dir = '@libdir@/metacity/plugins/clutter'
         taskpanel_dir = '@libexecdir@'
 
     # Set up environment
@@ -184,7 +184,6 @@ def start_shell():
     else:
         args = []
         
-    plugin = os.path.join(plugin_dir, "libgnome-shell.la")
     args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
     if options.sync:
         args.append('--sync')
