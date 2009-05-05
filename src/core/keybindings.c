@@ -940,7 +940,10 @@ meta_screen_grab_all_keys (MetaScreen *screen, guint32 timestamp)
               "Grabbing all keys on RootWindow\n");
   retval = grab_keyboard (screen->display, screen->xroot, timestamp);
   if (retval)
-    screen->all_keys_grabbed = TRUE;
+    {
+      screen->all_keys_grabbed = TRUE;
+      g_object_notify (G_OBJECT (screen), "keyboard-grabbed");
+    }
   else
     meta_screen_grab_keys (screen);
 
@@ -959,6 +962,7 @@ meta_screen_ungrab_all_keys (MetaScreen *screen, guint32 timestamp)
 
       /* Re-establish our standard bindings */
       meta_screen_grab_keys (screen);
+      g_object_notify (G_OBJECT (screen), "keyboard-grabbed");
     }
 }
 

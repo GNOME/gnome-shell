@@ -72,7 +72,8 @@ static void meta_screen_sn_event   (SnMonitorEvent *event,
 
 enum
 {
-  PROP_N_WORKSPACES = 1
+  PROP_N_WORKSPACES = 1,
+  PROP_KEYBOARD_GRABBED,
 };
 
 enum
@@ -117,6 +118,9 @@ meta_screen_get_property (GObject      *object,
     {
     case PROP_N_WORKSPACES:
       g_value_set_int (value, meta_screen_get_n_workspaces (screen));
+      break;
+    case PROP_KEYBOARD_GRABBED:
+      g_value_set_boolean (value, screen->all_keys_grabbed ? TRUE : FALSE);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -166,6 +170,16 @@ meta_screen_class_init (MetaScreenClass *klass)
 
   g_object_class_install_property (object_class,
                                    PROP_N_WORKSPACES,
+                                   pspec);
+
+  pspec = g_param_spec_boolean ("keyboard-grabbed",
+                                "Keyboard grabbed",
+                                "Whether the keyboard is grabbed",
+                                FALSE,
+                                G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_KEYBOARD_GRABBED,
                                    pspec);
 }
 
