@@ -382,8 +382,10 @@ enum
   PROP_CLIP_TO_ALLOCATION,
 
   PROP_OPACITY,
+
   PROP_VISIBLE,
   PROP_MAPPED,
+  PROP_REALIZED,
   PROP_REACTIVE,
 
   PROP_SCALE_X,
@@ -1167,6 +1169,7 @@ clutter_actor_realize (ClutterActor *self)
     }
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+  g_object_notify (G_OBJECT (self), "realized");
 
   g_signal_emit (self, actor_signals[REALIZE], 0);
 
@@ -1281,6 +1284,8 @@ clutter_actor_unrealize_not_hiding (ClutterActor *self)
   g_signal_emit (self, actor_signals[UNREALIZE], 0);
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+
+  g_object_notify (G_OBJECT (self), "realized");
 }
 
 /**
@@ -2653,12 +2658,13 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_string (value, priv->name);
       break;
     case PROP_VISIBLE:
-      g_value_set_boolean (value,
-		           CLUTTER_ACTOR_IS_VISIBLE (actor));
+      g_value_set_boolean (value, CLUTTER_ACTOR_IS_VISIBLE (actor));
       break;
     case PROP_MAPPED:
-      g_value_set_boolean (value,
-		           CLUTTER_ACTOR_IS_MAPPED (actor));
+      g_value_set_boolean (value, CLUTTER_ACTOR_IS_MAPPED (actor));
+      break;
+    case PROP_REALIZED:
+      g_value_set_boolean (value, CLUTTER_ACTOR_IS_REALIZED (actor));
       break;
     case PROP_HAS_CLIP:
       g_value_set_boolean (value, priv->has_clip);
@@ -3208,15 +3214,31 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:mapped:
    *
-   * Whether the actor is mapped (will be painted when stage is mapped).
+   * Whether the actor is mapped (will be painted when stage is mapped)
+   *
+   * Since: 1.0
    */
-  g_object_class_install_property (object_class,
-                                   PROP_MAPPED,
-                                   g_param_spec_boolean ("mapped",
-                                                         "Mapped",
-                                                         "Whether the actor will be painted",
-                                                         FALSE,
-                                                         G_PARAM_READABLE));
+  pspec = g_param_spec_boolean ("mapped",
+                                "Mapped",
+                                "Whether the actor will be painted",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_MAPPED, pspec);
+
+  /**
+   * ClutterActor:realized:
+   *
+   * Whether the actor has been realized
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("realized",
+                                "Realized",
+                                "Whether the actor has been realized",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (object_class, PROP_REALIZED, pspec);
+
   /**
    * ClutterActor:reactive:
    *
