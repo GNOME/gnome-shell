@@ -65,30 +65,42 @@ DocDisplayItem.prototype = {
 
     // Opens a document represented by this display item.
     launch : function() {
-        let appName = this._docInfo.last_application();
-        let [success, appExec, count, time] = this._docInfo.get_application_info(appName);
-        if (success) {
-            log("Will open a document with the following command: " + appExec);
-            // TODO: Change this once better support for creating GAppInfo is added to 
-            // GtkRecentInfo, as right now this relies on the fact that the file uri is
-            // already a part of appExec, so we don't supply any files to appInfo.launch().
+        // While using Gio.app_info_launch_default_for_uri() would be shorter
+        // in terms of lines of code, we are not doing so because that would 
+        // duplicate the work of retrieving the mime type.       
+        let mimeType = this._docInfo.get_mime_type();
+        let appInfo = Gio.app_info_get_default_for_type(mimeType, true);
 
-            // The 'command line' passed to create_from_command_line is allowed to contain
-            // '%<something>' macros that are exapnded to file name / icon name, etc,
-            // so we need to escape % as %%
-            appExec = appExec.replace(/%/g, "%%");
-
-            let appInfo = Gio.app_info_create_from_commandline(appExec, null, 0, null);
-
-            // The point of passing an app launch context to launch() is mostly to get
-            // startup notification and associated benefits like the app appearing
-            // on the right desktop; but it doesn't really work for now because we aren't
-            // reading the application's desktop file, and thus don't find the
-            // StartupNotify=true in it. So, despite passing the app launch context,
-            // no startup notification occurs.
-            appInfo.launch([], Main.createAppLaunchContext());
+        if (appInfo != null) {
+            appInfo.launch_uris([this._docInfo.get_uri()], Main.createAppLaunchContext());
         } else {
-            log("Failed to get application info for " + this._docInfo.get_uri());
+            log("Failed to get default application info for mime type " + mimeType + 
+                ". Will try to use the last application that registered the document."); 
+            let appName = this._docInfo.last_application();
+            let [success, appExec, count, time] = this._docInfo.get_application_info(appName);
+            if (success) {
+                log("Will open a document with the following command: " + appExec);
+                // TODO: Change this once better support for creating GAppInfo is added to 
+                // GtkRecentInfo, as right now this relies on the fact that the file uri is
+                // already a part of appExec, so we don't supply any files to appInfo.launch().
+
+                // The 'command line' passed to create_from_command_line is allowed to contain
+                // '%<something>' macros that are expanded to file name / icon name, etc,
+                // so we need to escape % as %%
+                appExec = appExec.replace(/%/g, "%%");
+
+                let appInfo = Gio.app_info_create_from_commandline(appExec, null, 0, null);
+
+                // The point of passing an app launch context to launch() is mostly to get
+                // startup notification and associated benefits like the app appearing
+                // on the right desktop; but it doesn't really work for now because with
+                // the way we create the appInfo we aren't reading the application's desktop 
+                // file, and thus don't find the StartupNotify=true in it. So, despite passing 
+                // the app launch context, no startup notification occurs.
+                appInfo.launch([], Main.createAppLaunchContext());
+            } else {
+                log("Failed to get application info for " + this._docInfo.get_uri());
+            }
         }
     },
 
