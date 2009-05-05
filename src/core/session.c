@@ -1737,13 +1737,6 @@ windows_cmp_by_title (MetaWindow *a,
   return g_utf8_collate (a->title, b->title);
 }
 
-typedef struct
-{
-  int child_pid;
-  int child_pipe;
-  gboolean shutdown;
-} LameClientsDialogData;
-
 static void
 finish_interact (gboolean shutdown)
 {
@@ -1755,63 +1748,26 @@ finish_interact (gboolean shutdown)
     }
 }
 
-static gboolean  
-io_from_warning_dialog (GIOChannel   *channel,
-                        GIOCondition  condition,
-                        gpointer      data)
+static void
+sigchld_handler (MetaNexus *nexus, guint arg1, gpointer arg2, gpointer user_data)
 {
-  LameClientsDialogData *d;
+  gboolean shutdown = GPOINTER_TO_INT (user_data);
 
-  d = data;
-  
-  meta_topic (META_DEBUG_PING,
-              "IO handler from lame clients dialog, condition = %x\n",
-              condition);
-  
-  if (condition & (G_IO_HUP | G_IO_NVAL | G_IO_ERR))
+  if (arg1 == 0) /* pressed "OK" */
     {
-      finish_interact (d->shutdown);
-
-      /* Remove the callback, freeing data */
-      return FALSE; 
+      finish_interact (shutdown);
     }
-  else if (condition & G_IO_IN)
-    {
-      /* Check for EOF */
-      
-      char buf[16];
-      int ret;
- 
-      ret = read (d->child_pipe, buf, sizeof (buf));
-      if (ret == 0)
- 	{
- 	  finish_interact (d->shutdown);
- 	  return FALSE;
- 	}
-    }
-
-  /* Keep callback installed */
-  return TRUE;
 }
 
 static void
 warn_about_lame_clients_and_finish_interact (gboolean shutdown)
 {
-  GSList *lame;
+  GSList *lame = NULL;
   GSList *windows;
-  char **argv;
-  int i;
+  GSList *lame_details = NULL;
   GSList *tmp;
-  int len;
-  int child_pid;
-  int child_pipe;
-  GError *err;
-  GIOChannel *channel;
-  LameClientsDialogData *d;
-  guint32 timestamp;
-  char timestampbuf[32];
+  GSList *columns = NULL;
   
-  lame = NULL;
   windows = meta_display_list_windows (meta_get_display ());
   tmp = windows;
   while (tmp != NULL)
@@ -1838,77 +1794,43 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
       finish_interact (shutdown);
       return;
     }
-  
+
+  columns = g_slist_prepend (columns, "Window");
+  columns = g_slist_prepend (columns, "Class");
+
   lame = g_slist_sort (lame, (GCompareFunc) windows_cmp_by_title);
 
-  timestamp = meta_display_get_current_time_roundtrip (meta_get_display ());
-  sprintf (timestampbuf, "%u", timestamp);
-
-  len = g_slist_length (lame);
-  len *= 2; /* titles and also classes */
-  len += 2; /* --timestamp flag and actual timestamp */
-  len += 1; /* NULL term */
-  len += 2; /* metacity-dialog command and option */
-  
-  argv = g_new0 (char*, len);
-  
-  i = 0;
-
-  argv[i] = METACITY_LIBEXECDIR"/metacity-dialog";
-  ++i;
-  argv[i] = "--timestamp";
-  ++i;
-  argv[i] = timestampbuf;
-  ++i;
-  argv[i] = "--warn-about-no-sm-support";
-  ++i;
-  
   tmp = lame;
   while (tmp != NULL)
     {
       MetaWindow *w = tmp->data;
 
-      argv[i] = w->title;
-      ++i;
-      argv[i] = w->res_class ? w->res_class : "";
-      ++i;
+      lame_details = g_slist_prepend (lame_details,
+                                      w->res_class ? w->res_class : "");
+      lame_details = g_slist_prepend (lame_details,
+                                      w->title);
 
       tmp = tmp->next;
     }
-
-  child_pipe = -1;
-  child_pid = -1;
-  err = NULL;
-  if (!g_spawn_async_with_pipes ("/",
-                                 argv,
-                                 NULL,
-                                 0,
-                                 NULL, NULL,
-                                 &child_pid,
-                                 NULL,
-                                 &child_pipe,
-                                 NULL,
-                                 &err))
-    {
-      meta_warning (_("Error launching metacity-dialog to warn about apps that don't support session management: %s\n"),
-                    err->message);
-      g_error_free (err);
-    }
-
-  g_free (argv);
   g_slist_free (lame);
 
-  d = g_new0 (LameClientsDialogData, 1);
-  d->child_pipe = child_pipe;
-  d->child_pid = child_pid;
-  d->shutdown = shutdown;
-  
-  channel = g_io_channel_unix_new (d->child_pipe);
-  g_io_add_watch_full (channel, G_PRIORITY_DEFAULT,
-                       G_IO_IN | G_IO_HUP | G_IO_ERR | G_IO_NVAL,
-                       io_from_warning_dialog,
-                       d, g_free);
-  g_io_channel_unref (channel);
+  meta_show_dialog("--list",
+                   _("These windows do not support &quot;save current setup&quot; "
+                     "and will have to be restarted manually next time "
+                     "you log in."),
+                   "240",
+                   meta_screen_get_screen_number (meta_get_display()->active_screen),
+                   NULL, NULL,
+                   None,
+                   columns,
+                   lame_details);
+
+  g_slist_free (lame_details);
+
+  g_signal_connect (sigchld_nexus, "sigchld",
+                    G_CALLBACK (sigchld_handler),
+                    GINT_TO_POINTER (shutdown));
+
 }
 
 #endif /* HAVE_SM */

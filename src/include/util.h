@@ -26,6 +26,7 @@
 #define META_UTIL_H
 
 #include <glib.h>
+#include <glib-object.h>
 
 gboolean meta_is_verbose  (void);
 void     meta_set_verbose (gboolean setting);
@@ -97,12 +98,15 @@ char* meta_g_utf8_strndup (const gchar *src, gsize n);
 
 void  meta_free_gslist_and_elements (GSList *list_to_deep_free);
 
-void meta_show_dialog (const char *type,
+GPid meta_show_dialog (const char *type,
                        const char *title,
                        const char *message,
                        gint timeout,
-                       const char **columns,
-                       const char **entries);
+                       const char *ok_text,
+                       const char *cancel_text,
+                       const int transient_for,
+                       GSList *columns,
+                       GSList *entries);
 
 /* To disable verbose mode, we make these functions into no-ops */
 #ifdef WITH_VERBOSE_MODE
@@ -126,6 +130,36 @@ void meta_show_dialog (const char *type,
 #  endif
 
 #endif /* !WITH_VERBOSE_MODE */
+
+#include <glib-object.h>
+
+#define META_TYPE_NEXUS            (meta_nexus_get_type ())
+#define META_NEXUS(obj)            (GTK_CHECK_CAST ((obj), META_TYPE_NEXUS, MetaNexus))
+#define META_NEXUS_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), META_TYPE_NEXUS, MetaNexusClass))
+#define META_IS_NEXUS(obj)         (GTK_CHECK_TYPE ((obj), META_TYPE_NEXUS))
+#define META_IS_NEXUS_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), META_TYPE_NEXUS))
+#define META_NEXUS_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), META_TYPE_NEXUS, MetaNexusClass))
+
+typedef struct _MetaNexus
+{
+  GObject parent_instance;
+} MetaNexus;
+
+typedef struct _MetaNexusClass
+{
+  GObjectClass parent_class;
+} MetaNexusClass;
+
+GType meta_nexus_get_type (void) G_GNUC_CONST;
+MetaNexus *meta_nexus_new ();
+
+/**
+ * An object which exists purely to attach signals to; this is to receive
+ * signals when a child process exits.  The signal is "sigchld" with no detail.
+ *
+ * \bug Eventually we should have a specialised type for objects like these.
+ */
+extern MetaNexus *sigchld_nexus;
 
 #endif /* META_UTIL_H */
 

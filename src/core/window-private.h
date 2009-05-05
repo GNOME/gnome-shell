@@ -354,7 +354,6 @@ struct _MetaWindow
   
   /* Current dialog open for this window */
   int dialog_pid;
-  int dialog_pipe;
 
   /* maintained by group.c */
   MetaGroup *group;

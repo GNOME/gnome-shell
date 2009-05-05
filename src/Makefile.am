@@ -177,9 +177,6 @@ libmetacityinclude_HEADERS =			\
 metacity_theme_viewer_SOURCES=  \
 	ui/theme-viewer.c
 
-metacity_dialog_SOURCES= 	\
-	ui/metacity-dialog.c
-
 schema_bindings_SOURCES =       \
         core/schema-bindings.c			\
 	metacity.schemas.in.in
@@ -190,7 +187,6 @@ metacity.schemas.in: schema_bindings ${srcdir}/metacity.schemas.in.in
 	${builddir}/schema_bindings ${srcdir}/metacity.schemas.in.in ${builddir}/metacity.schemas.in
 
 bin_PROGRAMS=metacity metacity-theme-viewer
-libexec_PROGRAMS=metacity-dialog
 
 api_version = $(METACITY_MAJOR_VERSION).$(METACITY_MINOR_VERSION)
 
@@ -232,7 +228,6 @@ metacity_LDADD=@METACITY_LIBS@ libmetacity-private.la $(EFENCE)
 metacity_LDFLAGS=-export-dynamic
 
 metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
-metacity_dialog_LDADD=@METACITY_LIBS@
 
 testboxes_SOURCES=include/util.h core/util.c include/boxes.h core/boxes.c core/testboxes.c
 testgradient_SOURCES=ui/gradient.h ui/gradient.c ui/testgradient.c

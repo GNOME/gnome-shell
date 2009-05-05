@@ -2416,6 +2416,7 @@ error_on_command (int         command_index,
                         text,
                         NULL,
                         screen_number,
+                        NULL, NULL, 0,
                         NULL, NULL);
 
       g_free (text);
@@ -2427,6 +2428,7 @@ error_on_command (int         command_index,
                         message,
                         NULL,
                         screen_number,
+                        NULL, NULL, 0,
                         NULL, NULL);
     }
 }

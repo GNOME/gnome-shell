@@ -37,6 +37,8 @@
 #include <X11/Xlib.h>   /* must explicitly be included for Solaris; #326746 */
 #include <X11/Xutil.h>  /* Just for the definition of the various gravities */
 
+MetaNexus *sigchld_nexus;
+
 #ifdef HAVE_BACKTRACE
 #include <execinfo.h>
 void
@@ -538,35 +540,26 @@ meta_gravity_to_string (int gravity)
     }
 }
 
-void
+GPid
 meta_show_dialog (const char *type,
                   const char *message,
                   const char *timeout,
                   const gint screen_number,
-                  const char **columns,
-                  const char **entries)
+                  const char *ok_text,
+                  const char *cancel_text,
+                  const int transient_for,
+                  GSList *columns,
+                  GSList *entries)
 {
   GError *error = NULL;
   char *screen_number_text = g_strdup_printf("%d", screen_number);
-
-  /*
-  We want:
-  
-zenity --display X --screen S --title Metacity --error --text "There was an error running <tt>terminal</tt>:\n\nYour computer is on fire."
-  ** with no pipes
-  
-zenity --display X --screen S --title Metacity --question --text "<big><b><tt>%s</tt> is not responding.</b></big>\n\n<i>You may choose to wait a short while for it to continue or force the application to quit entirely.</i>"
-
-zenity --display X --screen S --title Metacity --list --timeout 240 --text "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in." --column "Window" --column "Class" "Firefox" "foo" "Duke Nukem Forever" "bar"
-  */
-
-  const char **argvl;
+  GSList *tmp;
   int i=0;
   GPid child_pid;
-
-  argvl = g_malloc(sizeof (char*) *
-                   (9 + (timeout?2:0))
-                   );
+  const char **argvl = g_malloc(sizeof (char*) *
+                                (15 +
+                                 g_slist_length (columns)*2 +
+                                 g_slist_length (entries)));
 
   argvl[i++] = "zenity";
   argvl[i++] = type;
@@ -584,18 +577,54 @@ zenity --display X --screen S --title Metacity --list --timeout 240 --text "Thes
       argvl[i++] = timeout;
     }
 
+  if (ok_text)
+    {
+      argvl[i++] = "--ok-label";
+      argvl[i++] = ok_text;
+     }
+
+  if (cancel_text)
+    {
+      argvl[i++] = "--cancel-label";
+      argvl[i++] = cancel_text;
+    }
+  
+  tmp = columns;
+  while (tmp)
+    {
+      argvl[i++] = "--column";
+      argvl[i++] = tmp->data;
+      tmp = tmp->next;
+    }
+
+  tmp = entries;
+  while (tmp)
+    {
+      argvl[i++] = tmp->data;
+      tmp = tmp->next;
+    }
+    
   argvl[i] = NULL;
 
-  g_spawn_async_with_pipes (
-                            "/",
-                            (char**) argvl, /* ugh */
-                            NULL,
-                            G_SPAWN_SEARCH_PATH,
-                            NULL, NULL,
-                            &child_pid,
-                            NULL, NULL, NULL,
-                            &error
-                            );
+  if (transient_for)
+    {
+      gchar *env = g_strdup_printf("%d", transient_for);
+      setenv ("WINDOWID", env, 1);
+      g_free (env);
+    }
+
+  g_spawn_async (
+                 "/",
+                 (gchar**) argvl, /* ugh */
+                 NULL,
+                 G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+                 NULL, NULL,
+                 &child_pid,
+                 &error
+                 );
+
+  if (transient_for)
+    unsetenv ("WINDOWID");
 
   g_free (argvl);
   g_free (screen_number_text);
@@ -605,6 +634,33 @@ zenity --display X --screen S --title Metacity --list --timeout 240 --text "Thes
       meta_warning ("%s\n", error->message);
       g_error_free (error);
     }
+
+  return child_pid;
+}
+
+GType
+meta_nexus_get_type (void)
+{
+  static GType nexus_type = 0;
+
+  if (!nexus_type)
+    {
+      static const GTypeInfo nexus_info =
+      {
+        sizeof (MetaNexusClass),
+	NULL, NULL, NULL, NULL, NULL,
+	sizeof (MetaNexus),
+	0,
+	NULL, NULL
+      };
+
+      nexus_type = g_type_register_static (G_TYPE_OBJECT,
+					   "MetaNexus",
+					   &nexus_info,
+					   0);
+    }
+
+  return nexus_type;
 }
 
 /* eof util.c */
