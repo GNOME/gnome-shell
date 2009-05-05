@@ -441,6 +441,8 @@ clutter_model_check_type (GType gtype)
   return FALSE;
 }
 
+
+
 /**
  * clutter_model_resort:
  * @model: a #ClutterModel
@@ -1507,6 +1509,14 @@ static guint
 clutter_model_iter_real_get_row (ClutterModelIter *iter)
 {
   return iter->priv->row;
+}
+
+/* private function */
+void
+clutter_model_iter_set_row (ClutterModelIter *iter,
+                            guint             row)
+{
+  iter->priv->row = row;
 }
 
 static void

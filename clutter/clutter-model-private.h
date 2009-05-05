@@ -19,6 +19,9 @@ void     clutter_model_set_column_name (ClutterModel *model,
                                         gint          column,
                                         const gchar  *name);
 
+void    clutter_model_iter_set_row (ClutterModelIter *iter,
+                                    guint             row);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_MODEL_PRIVATE_H__ */

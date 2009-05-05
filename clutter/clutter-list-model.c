@@ -333,7 +333,7 @@ clutter_list_model_iter_next (ClutterModelIter *iter)
     row += 1;
 
   /* update the iterator and return it */
-  g_object_set (G_OBJECT (iter_default), "model", model, "row", row, NULL);
+  clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
   iter_default->seq_iter = filter_next;
 
   return CLUTTER_MODEL_ITER (iter_default);
@@ -376,7 +376,7 @@ clutter_list_model_iter_prev (ClutterModelIter *iter)
     row -= 1;
 
   /* update the iterator and return it */
-  g_object_set (G_OBJECT (iter_default), "model", model, "row", row, NULL);
+  clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
   iter_default->seq_iter = filter_prev;
 
   return CLUTTER_MODEL_ITER (iter_default);
