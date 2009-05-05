@@ -81,6 +81,8 @@ typedef struct _ClutterModelIterClass   ClutterListModelIterClass;
 struct _ClutterListModelPrivate
 {
   GSequence *sequence;
+
+  ClutterModelIter *temp_iter;
 };
 
 struct _ClutterListModelIter
@@ -225,9 +227,7 @@ clutter_list_model_iter_is_first (ClutterModelIter *iter)
   begin = g_sequence_get_begin_iter (sequence);
   end   = iter_default->seq_iter;
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_begin (begin))
     {
@@ -241,8 +241,6 @@ clutter_list_model_iter_is_first (ClutterModelIter *iter)
 
       begin = g_sequence_iter_next (begin);
     }
-
-  g_object_unref (temp_iter);
 
   /* This is because the 'begin_iter' is always *before* the last valid
    * iter, otherwise we'd have endless loops 
@@ -275,9 +273,7 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
   begin = g_sequence_iter_prev (begin);
   end   = iter_default->seq_iter;
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_begin (begin))
     {
@@ -291,8 +287,6 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
 
       begin = g_sequence_iter_prev (begin);
     }
-
-  g_object_unref (temp_iter);
 
   /* This is because the 'end_iter' is always *after* the last valid iter.
    * Otherwise we'd have endless loops 
@@ -320,9 +314,7 @@ clutter_list_model_iter_next (ClutterModelIter *iter)
   filter_next = g_sequence_iter_next (iter_default->seq_iter);
   g_assert (filter_next != NULL);
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_end (filter_next))
     {
@@ -336,8 +328,6 @@ clutter_list_model_iter_next (ClutterModelIter *iter)
 
       filter_next = g_sequence_iter_next (filter_next);
     }
-
-  g_object_unref (temp_iter);
 
   if (g_sequence_iter_is_end (filter_next))
     row += 1;
@@ -367,9 +357,7 @@ clutter_list_model_iter_prev (ClutterModelIter *iter)
   filter_prev = g_sequence_iter_prev (iter_default->seq_iter);
   g_assert (filter_prev != NULL);
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_begin (filter_prev))
     {
@@ -383,8 +371,6 @@ clutter_list_model_iter_prev (ClutterModelIter *iter)
 
       filter_prev = g_sequence_iter_prev (filter_prev);
     }
-
-  g_object_unref (temp_iter);
 
   if (g_sequence_iter_is_begin (filter_prev))
     row -= 1;
@@ -684,6 +670,20 @@ clutter_list_model_finalize (GObject *gobject)
 }
 
 static void
+clutter_list_model_dispose (GObject *gobject)
+{
+  ClutterListModel *model = CLUTTER_LIST_MODEL (gobject);
+
+  if (model->priv->temp_iter)
+    {
+      g_object_unref (model->priv->temp_iter);
+      model->priv->temp_iter = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_list_model_parent_class)->finalize (gobject);
+}
+
+static void
 clutter_list_model_class_init (ClutterListModelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -692,6 +692,7 @@ clutter_list_model_class_init (ClutterListModelClass *klass)
   g_type_class_add_private (klass, sizeof (ClutterListModelPrivate));
 
   gobject_class->finalize = clutter_list_model_finalize;
+  gobject_class->dispose = clutter_list_model_dispose;
 
   model_class->get_iter_at_row = clutter_list_model_get_iter_at_row;
   model_class->insert_row      = clutter_list_model_insert_row;
@@ -707,6 +708,10 @@ clutter_list_model_init (ClutterListModel *model)
   model->priv = CLUTTER_LIST_MODEL_GET_PRIVATE (model);
 
   model->priv->sequence = g_sequence_new (NULL);
+  model->priv->temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
+                                         "model",
+                                         model,
+                                         NULL);
 }
 
 /**
