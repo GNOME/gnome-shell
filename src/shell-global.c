@@ -372,17 +372,20 @@ shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info)
             g_clear_error (&error);
           }
       }
+    else if (gnome_thumbnail_factory_has_valid_failed_thumbnail (thumbnail_factory, uri, mtime))
+      return NULL;
     else if (gnome_thumbnail_factory_can_thumbnail (thumbnail_factory, uri, mime_type, mtime)) 
       {
         pixbuf = gnome_thumbnail_factory_generate_thumbnail (thumbnail_factory, uri, mime_type);
-        if (pixbuf == NULL) 
-          {
-            g_warning ("Could not generate thumbnail for %s", uri);
-          }          
-        else 
+        if (pixbuf)
           {
             // we need to save the thumbnail so that we don't need to generate it again in the future
             gnome_thumbnail_factory_save_thumbnail (thumbnail_factory, pixbuf, uri, mtime);
+          }          
+        else 
+          {
+            g_warning ("Could not generate thumbnail for %s", uri);
+            gnome_thumbnail_factory_create_failed_thumbnail (thumbnail_factory, uri, mtime);
           }
       }
 
