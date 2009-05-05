@@ -431,7 +431,7 @@ Workspace.prototype = {
 
             let size = Math.max(clone.actor.width, clone.actor.height);
             let desiredSize = global.screen_width * fraction;
-            let scale = Math.min(desiredSize / size, 1.0);
+            let scale = Math.min(desiredSize / size, 1.0 / this.scale);
 
             Tweener.addTween(clone.actor, 
                              { x: xCenter - 0.5 * scale * clone.actor.width,
