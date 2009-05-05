@@ -74,10 +74,10 @@ G_BEGIN_DECLS
  */
 #define CLUTTER_ACTOR_UNSET_FLAGS(a,f)  (((ClutterActor*)(a))->flags &= ~(f))
 
-#define CLUTTER_ACTOR_IS_MAPPED(e)      ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_MAPPED) != FALSE)
-#define CLUTTER_ACTOR_IS_REALIZED(e)    ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REALIZED) != FALSE)
-#define CLUTTER_ACTOR_IS_VISIBLE(e)     ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_VISIBLE) != FALSE)
-#define CLUTTER_ACTOR_IS_REACTIVE(e)    ((((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REACTIVE) != FALSE)
+#define CLUTTER_ACTOR_IS_MAPPED(a)      ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_MAPPED) != FALSE)
+#define CLUTTER_ACTOR_IS_REALIZED(a)    ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_REALIZED) != FALSE)
+#define CLUTTER_ACTOR_IS_VISIBLE(a)     ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_VISIBLE) != FALSE)
+#define CLUTTER_ACTOR_IS_REACTIVE(a)    ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_REACTIVE) != FALSE)
 
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
@@ -90,7 +90,8 @@ typedef struct _ClutterActorPrivate  ClutterActorPrivate;
  *
  * Generic callback
  */
-typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
+typedef void (*ClutterCallback) (ClutterActor *actor,
+                                 gpointer      data);
 
 /**
  * CLUTTER_CALLBACK
@@ -277,6 +278,12 @@ struct _ClutterActorClass
 };
 
 GType                 clutter_actor_get_type                  (void) G_GNUC_CONST;
+
+void                  clutter_actor_set_flags                 (ClutterActor          *self,
+                                                               ClutterActorFlags      flags);
+void                  clutter_actor_unset_flags               (ClutterActor          *self,
+                                                               ClutterActorFlags      flags);
+ClutterActorFlags     clutter_actor_get_flags                 (ClutterActor          *self);
 
 void                  clutter_actor_show                      (ClutterActor          *self);
 void                  clutter_actor_show_all                  (ClutterActor          *self);

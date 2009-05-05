@@ -132,7 +132,7 @@
 
 /**
  * CLUTTER_ACTOR_IS_MAPPED:
- * @e: a #ClutterActor
+ * @a: a #ClutterActor
  *
  * Evaluates to %TRUE if the %CLUTTER_ACTOR_MAPPED flag is set.
  *
@@ -149,7 +149,7 @@
 
 /**
  * CLUTTER_ACTOR_IS_REALIZED:
- * @e: a #ClutterActor
+ * @a: a #ClutterActor
  *
  * Evaluates to %TRUE if the %CLUTTER_ACTOR_REALIZED flag is set.
  *
@@ -167,7 +167,7 @@
 
 /**
  * CLUTTER_ACTOR_IS_VISIBLE:
- * @e: a #ClutterActor
+ * @a: a #ClutterActor
  *
  * Evaluates to %TRUE if the actor has been shown, %FALSE if it's hidden.
  * Equivalent to the ClutterActor::visible object property.
@@ -181,9 +181,11 @@
 
 /**
  * CLUTTER_ACTOR_IS_REACTIVE:
- * @e: a #ClutterActor
+ * @a: a #ClutterActor
  *
  * Evaluates to %TRUE if the %CLUTTER_ACTOR_REACTIVE flag is set.
+ *
+ * Only reactive actors will receive event-related signals.
  *
  * Since: 0.6
  */
@@ -901,6 +903,7 @@ clutter_actor_real_unmap (ClutterActor *self)
                                               NULL);
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+
   /* notify on parent mapped after potentially unmapping
    * children, so apps see a bottom-up notification.
    */
@@ -1038,6 +1041,7 @@ clutter_actor_real_hide (ClutterActor *self)
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
       CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
+
       /* we notify on the "visible" flag in the clutter_actor_hide()
        * wrapper so the entire hide signal emission completes first
        * (?)
@@ -9179,4 +9183,140 @@ clutter_anchor_coord_is_zero (const AnchorCoord *coord)
     return (coord->v.units.x == 0.0
             && coord->v.units.y == 0.0
             && coord->v.units.z == 0.0);
+}
+
+/**
+ * clutter_actor_get_flags:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the flags set on @self
+ *
+ * Return value: a bitwise or of #ClutterActorFlags or 0
+ *
+ * Since: 1.0
+ */
+ClutterActorFlags
+clutter_actor_get_flags (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  return self->flags;
+}
+
+/**
+ * clutter_actor_set_flags:
+ * @self: a #ClutterActor
+ * @flags: the flags to set
+ *
+ * Sets @flags on @self
+ *
+ * This function will emit notifications for the changed properties
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_set_flags (ClutterActor      *self,
+                         ClutterActorFlags  flags)
+{
+  ClutterActorFlags old_flags;
+  GObject *obj;
+  gboolean was_reactive_set, reactive_set;
+  gboolean was_realized_set, realized_set;
+  gboolean was_mapped_set, mapped_set;
+  gboolean was_visible_set, visible_set;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->flags == flags)
+    return;
+
+  obj = G_OBJECT (self);
+  g_object_freeze_notify (obj);
+
+  old_flags = self->flags;
+
+  was_reactive_set = ((old_flags & CLUTTER_ACTOR_REACTIVE) != 0);
+  was_realized_set = ((old_flags & CLUTTER_ACTOR_REALIZED) != 0);
+  was_mapped_set   = ((old_flags & CLUTTER_ACTOR_MAPPED)   != 0);
+  was_visible_set  = ((old_flags & CLUTTER_ACTOR_VISIBLE)  != 0);
+
+  self->flags |= flags;
+
+  reactive_set = ((self->flags & CLUTTER_ACTOR_REACTIVE) != 0);
+  realized_set = ((self->flags & CLUTTER_ACTOR_REALIZED) != 0);
+  mapped_set   = ((self->flags & CLUTTER_ACTOR_MAPPED)   != 0);
+  visible_set  = ((self->flags & CLUTTER_ACTOR_VISIBLE)  != 0);
+
+  if (reactive_set != was_reactive_set)
+    g_object_notify (obj, "reactive");
+
+  if (realized_set != was_realized_set)
+    g_object_notify (obj, "realized");
+
+  if (mapped_set != was_mapped_set)
+    g_object_notify (obj, "mapped");
+
+  if (visible_set != was_visible_set)
+    g_object_notify (obj, "visible");
+
+  g_object_thaw_notify (obj);
+}
+
+/**
+ * clutter_actor_unset_flags:
+ * @self: a #ClutterActor
+ * @flags: the flags to unset
+ *
+ * Unsets @flags on @self
+ *
+ * This function will emit notifications for the changed properties
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_unset_flags (ClutterActor      *self,
+                           ClutterActorFlags  flags)
+{
+  ClutterActorFlags old_flags;
+  GObject *obj;
+  gboolean was_reactive_set, reactive_set;
+  gboolean was_realized_set, realized_set;
+  gboolean was_mapped_set, mapped_set;
+  gboolean was_visible_set, visible_set;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  obj = G_OBJECT (self);
+  g_object_freeze_notify (obj);
+
+  old_flags = self->flags;
+
+  was_reactive_set = ((old_flags & CLUTTER_ACTOR_REACTIVE) != 0);
+  was_realized_set = ((old_flags & CLUTTER_ACTOR_REALIZED) != 0);
+  was_mapped_set   = ((old_flags & CLUTTER_ACTOR_MAPPED)   != 0);
+  was_visible_set  = ((old_flags & CLUTTER_ACTOR_VISIBLE)  != 0);
+
+  self->flags &= ~flags;
+
+  if (self->flags == old_flags)
+    return;
+
+  reactive_set = ((self->flags & CLUTTER_ACTOR_REACTIVE) != 0);
+  realized_set = ((self->flags & CLUTTER_ACTOR_REALIZED) != 0);
+  mapped_set   = ((self->flags & CLUTTER_ACTOR_MAPPED)   != 0);
+  visible_set  = ((self->flags & CLUTTER_ACTOR_VISIBLE)  != 0);
+
+  if (reactive_set != was_reactive_set)
+    g_object_notify (obj, "reactive");
+
+  if (realized_set != was_realized_set)
+    g_object_notify (obj, "realized");
+
+  if (mapped_set != was_mapped_set)
+    g_object_notify (obj, "mapped");
+
+  if (visible_set != was_visible_set)
+    g_object_notify (obj, "visible");
+
+  g_object_thaw_notify (obj);
 }
