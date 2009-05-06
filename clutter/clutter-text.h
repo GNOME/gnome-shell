@@ -186,6 +186,7 @@ void                  clutter_text_set_selection_color  (ClutterText        *sel
                                                          const ClutterColor *color);
 void                  clutter_text_get_selection_color  (ClutterText        *self,
                                                          ClutterColor       *color);
+gboolean              clutter_text_delete_selection     (ClutterText        *self);
 void                  clutter_text_set_password_char    (ClutterText        *self,
                                                          gunichar            wc);
 gunichar              clutter_text_get_password_char    (ClutterText        *self);

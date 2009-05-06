@@ -415,10 +415,10 @@ clutter_text_create_layout (ClutterText *text,
           /* If this cached layout is using the same size then we can
 	   * just return that directly
            */
-	  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %i x %i",
+	  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %.2fx%.2f",
 			text,
-                        CLUTTER_UNITS_TO_DEVICE (allocation_width),
-                        CLUTTER_UNITS_TO_DEVICE (allocation_height));
+                        allocation_width,
+                        allocation_height);
 
 	  return priv->cached_layouts[i].layout;
 	}
@@ -429,10 +429,10 @@ clutter_text_create_layout (ClutterText *text,
         }
     }
 
-  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache miss for size %i x %i",
+  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache miss for size %.2fx%.2f",
 		text,
-                CLUTTER_UNITS_TO_DEVICE (allocation_width),
-                CLUTTER_UNITS_TO_DEVICE (allocation_height));
+                allocation_width,
+                allocation_height);
 
   /* If we make it here then we didn't have a cached version so we
      need to recreate the layout */
@@ -562,10 +562,10 @@ clutter_text_ensure_cursor_position (ClutterText *self)
                                    &x, &y,
                                    &cursor_height);
 
-  cursor_pos.x      = CLUTTER_UNITS_TO_DEVICE (x);
-  cursor_pos.y      = CLUTTER_UNITS_TO_DEVICE (y);
+  cursor_pos.x      = x;
+  cursor_pos.y      = y;
   cursor_pos.width  = priv->cursor_size;
-  cursor_pos.height = CLUTTER_UNITS_TO_DEVICE (cursor_height) - 2;
+  cursor_pos.height = cursor_height - 2;
 
   x_changed      = priv->cursor_pos.x != cursor_pos.x;
   y_changed      = priv->cursor_pos.y != cursor_pos.y;
@@ -580,12 +580,29 @@ clutter_text_ensure_cursor_position (ClutterText *self)
     }
 }
 
-static gboolean
-clutter_text_truncate_selection (ClutterText *self)
+/**
+ * clutter_text_delete_selection:
+ * @self: a #ClutterText
+ *
+ * Deletes the currently selected text
+ *
+ * This function is only useful in subclasses of #ClutterText
+ *
+ * Return value: %TRUE if text was deleted or if the text actor
+ *   is empty, and %FALSE otherwise
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_text_delete_selection (ClutterText *self)
 {
-  ClutterTextPrivate *priv = self->priv;
+  ClutterTextPrivate *priv;
   gint start_index;
   gint end_index;
+
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  priv = self->priv;
 
   if (!priv->text)
     return TRUE;
@@ -1310,7 +1327,7 @@ clutter_text_key_press (ClutterActor    *actor,
           /* truncate the eventual selection so that the
            * Unicode character can replace it
            */
-          clutter_text_truncate_selection (self);
+          clutter_text_delete_selection (self);
           clutter_text_insert_unichar (self, key_unichar);
 
           return TRUE;
@@ -1760,7 +1777,7 @@ clutter_text_real_del_next (ClutterText         *self,
   gint pos;
   gint len;
 
-  if (clutter_text_truncate_selection (self))
+  if (clutter_text_delete_selection (self))
     return TRUE;
 
   pos = priv->position;
@@ -1782,7 +1799,7 @@ clutter_text_real_del_prev (ClutterText         *self,
   gint pos;
   gint len;
 
-  if (clutter_text_truncate_selection (self))
+  if (clutter_text_delete_selection (self))
     return TRUE;
 
   pos = priv->position;
