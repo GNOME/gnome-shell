@@ -59,7 +59,7 @@ typedef struct _ClutterAnimationClass           ClutterAnimationClass;
 struct _ClutterAnimation
 {
   /*< private >*/
-  GInitiallyUnowned parent_instance;
+  GObject parent_instance;
 
   ClutterAnimationPrivate *priv;
 };
@@ -77,7 +77,7 @@ struct _ClutterAnimation
 struct _ClutterAnimationClass
 {
   /*< private >*/
-  GInitiallyUnownedClass parent_class;
+  GObjectClass parent_class;
 
   /*< public >*/
   void (* started)   (ClutterAnimation *animation);

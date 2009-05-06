@@ -102,7 +102,7 @@ static guint animation_signals[LAST_SIGNAL] = { 0, };
 
 static GQuark quark_object_animation = 0;
 
-G_DEFINE_TYPE (ClutterAnimation, clutter_animation, G_TYPE_INITIALLY_UNOWNED);
+G_DEFINE_TYPE (ClutterAnimation, clutter_animation, G_TYPE_OBJECT);
 
 static void on_animation_weak_notify (gpointer  data,
                                       GObject  *animation_pointer);
@@ -853,9 +853,8 @@ on_animation_weak_notify (gpointer  data,
  * lifetime of a #ClutterAnimation instance, so you should consider using
  * those functions instead of manually creating an animation.
  *
- * Return value: the newly created #ClutterAnimation. Use g_object_ref_sink()
- *   to take ownership of the Animation instance, and g_object_unref() to
- *   release the associated resources
+ * Return value: the newly created #ClutterAnimation. Use g_object_unref()
+ *   to release the associated resources
  *
  * Since: 1.0
  */
@@ -886,8 +885,6 @@ clutter_animation_set_object (ClutterAnimation *animation,
 
   priv = animation->priv;
 
-  g_object_ref (object);
-
   if (priv->object)
     {
       g_object_weak_unref (G_OBJECT (animation),
@@ -897,13 +894,14 @@ clutter_animation_set_object (ClutterAnimation *animation,
       g_object_unref (priv->object);
     }
 
-  priv->object = object;
+  priv->object = g_object_ref (object);
   g_object_weak_ref (G_OBJECT (animation),
                      on_animation_weak_notify,
                      priv->object);
-  g_object_set_qdata (G_OBJECT (priv->object),
-                      quark_object_animation,
-                      animation);
+  g_object_set_qdata_full (G_OBJECT (priv->object),
+                           quark_object_animation,
+                           animation,
+                           NULL);
 
   g_object_notify (G_OBJECT (animation), "object");
 }
