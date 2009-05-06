@@ -367,9 +367,9 @@ clutter_stage_osx_hide (ClutterActor *actor)
 
 static void
 clutter_stage_osx_get_preferred_width (ClutterActor *actor,
-                                       ClutterUnit   for_height,
-                                       ClutterUnit  *min_width_p,
-                                       ClutterUnit  *natural_width_p)
+                                       gfloat        for_height,
+                                       gfloat       *min_width_p,
+                                       gfloat       *natural_width_p)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
   gboolean is_resizable;
@@ -394,9 +394,9 @@ clutter_stage_osx_get_preferred_width (ClutterActor *actor,
 
 static void
 clutter_stage_osx_get_preferred_height (ClutterActor *actor,
-                                        ClutterUnit   for_width,
-                                        ClutterUnit  *min_height_p,
-                                        ClutterUnit  *natural_height_p)
+                                        gfloat        for_width,
+                                        gfloat       *min_height_p,
+                                        gfloat       *natural_height_p)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
   gboolean is_resizable;

@@ -81,9 +81,9 @@ clutter_stage_win32_hide (ClutterActor *actor)
 
 static void
 clutter_stage_win32_get_preferred_width (ClutterActor  *self,
-					 ClutterUnit    for_height,
-					 ClutterUnit   *min_width_p,
-					 ClutterUnit   *natural_width_p)
+					 gfloat         for_height,
+					 gfloat        *min_width_p,
+					 gfloat        *natural_width_p)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
   int width;
@@ -105,9 +105,9 @@ clutter_stage_win32_get_preferred_width (ClutterActor  *self,
 
 static void
 clutter_stage_win32_get_preferred_height (ClutterActor  *self,
-					  ClutterUnit    for_width,
-					  ClutterUnit   *min_height_p,
-					  ClutterUnit   *natural_height_p)
+					  gfloat         for_width,
+					  gfloat        *min_height_p,
+					  gfloat        *natural_height_p)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
   int height;

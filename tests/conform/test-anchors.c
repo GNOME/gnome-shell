@@ -417,8 +417,8 @@ test_rotate_center (TestState *state)
   gdouble angle_x, angle_y, angle_z;
   ClutterVertex *center_x, *center_y, *center_z;
   ClutterGravity z_center_gravity;
-  guint stage_width, stage_height;
-  gint rect_x, rect_y;
+  gfloat stage_width, stage_height;
+  gfloat rect_x, rect_y;
   int i;
 
   /* Position the rectangle at the center of the stage so that
@@ -426,16 +426,17 @@ test_rotate_center (TestState *state)
      appear as a flat line. This makes verifying the transformations
      easier */
   clutter_actor_get_size (clutter_actor_get_stage (rect),
-                          &stage_width, &stage_height);
+                          &stage_width,
+                          &stage_height);
   rect_x = stage_width / 2;
   rect_y = stage_height / 2;
   clutter_actor_set_position (rect, rect_x, rect_y);
 
   /* Assert the default settings */
-  g_assert (clutter_actor_get_x (rect) == rect_x);
-  g_assert (clutter_actor_get_y (rect) == rect_y);
-  g_assert (clutter_actor_get_width (rect) == RECT_WIDTH);
-  g_assert (clutter_actor_get_height (rect) == RECT_HEIGHT);
+  g_assert_cmpfloat (clutter_actor_get_x (rect), ==, rect_x);
+  g_assert_cmpfloat (clutter_actor_get_y (rect), ==, rect_y);
+  g_assert_cmpfloat (clutter_actor_get_width (rect), ==, RECT_WIDTH);
+  g_assert_cmpfloat (clutter_actor_get_height (rect), ==, RECT_HEIGHT);
   g_object_get (rect,
                 "rotation-angle-x", &angle_x,
                 "rotation-angle-y", &angle_y,

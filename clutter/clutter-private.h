@@ -193,15 +193,15 @@ void          _clutter_backend_init_events    (ClutterBackend  *backend);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
-ClutterUnit   _clutter_backend_get_units_per_em   (ClutterBackend *backend);
+gfloat        _clutter_backend_get_units_per_em   (ClutterBackend *backend);
 
 void          _clutter_feature_init (void);
 
 /* Picking code */
-ClutterActor *_clutter_do_pick (ClutterStage   *stage,
-				 gint            x,
-				 gint            y,
-				 ClutterPickMode mode);
+ClutterActor *_clutter_do_pick (ClutterStage    *stage,
+				gint             x,
+				gint             y,
+				ClutterPickMode  mode);
 
 guint         _clutter_pixel_to_id (guchar pixel[4]);
 

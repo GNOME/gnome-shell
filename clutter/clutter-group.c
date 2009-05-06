@@ -120,13 +120,13 @@ clutter_group_pick (ClutterActor       *actor,
 }
 
 static void
-clutter_fixed_layout_get_preferred_width (GList       *children,
-                                          ClutterUnit *min_width_p,
-                                          ClutterUnit *natural_width_p)
+clutter_fixed_layout_get_preferred_width (GList  *children,
+                                          gfloat *min_width_p,
+                                          gfloat *natural_width_p)
 {
   GList *l;
-  ClutterUnit min_left, min_right;
-  ClutterUnit natural_left, natural_right;
+  gfloat min_left, min_right;
+  gfloat natural_left, natural_right;
 
   min_left = 0;
   min_right = 0;
@@ -136,9 +136,9 @@ clutter_fixed_layout_get_preferred_width (GList       *children,
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_x, child_min, child_natural;
+      gfloat child_x, child_min, child_natural;
 
-      child_x = clutter_actor_get_xu (child);
+      child_x = clutter_actor_get_x (child);
 
       clutter_actor_get_preferred_size (child,
                                         &child_min, NULL,
@@ -196,13 +196,13 @@ clutter_fixed_layout_get_preferred_width (GList       *children,
 }
 
 static void
-clutter_fixed_layout_get_preferred_height (GList       *children,
-                                           ClutterUnit *min_height_p,
-                                           ClutterUnit *natural_height_p)
+clutter_fixed_layout_get_preferred_height (GList  *children,
+                                           gfloat *min_height_p,
+                                           gfloat *natural_height_p)
 {
   GList *l;
-  ClutterUnit min_top, min_bottom;
-  ClutterUnit natural_top, natural_bottom;
+  gfloat min_top, min_bottom;
+  gfloat natural_top, natural_bottom;
 
   min_top = 0;
   min_bottom = 0;
@@ -212,9 +212,9 @@ clutter_fixed_layout_get_preferred_height (GList       *children,
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_y, child_min, child_natural;
+      gfloat child_y, child_min, child_natural;
 
-      child_y = clutter_actor_get_yu (child);
+      child_y = clutter_actor_get_y (child);
 
       clutter_actor_get_preferred_size (child,
                                         NULL, &child_min,
@@ -286,9 +286,9 @@ clutter_fixed_layout_allocate (GList    *children,
 
 static void
 clutter_group_get_preferred_width (ClutterActor *self,
-                                   ClutterUnit   for_height,
-                                   ClutterUnit  *min_width_p,
-                                   ClutterUnit  *natural_width_p)
+                                   gfloat        for_height,
+                                   gfloat       *min_width_p,
+                                   gfloat       *natural_width_p)
 {
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
@@ -300,9 +300,9 @@ clutter_group_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_group_get_preferred_height (ClutterActor *self,
-                                    ClutterUnit   for_width,
-                                    ClutterUnit  *min_height_p,
-                                    ClutterUnit  *natural_height_p)
+                                    gfloat        for_width,
+                                    gfloat       *min_height_p,
+                                    gfloat       *natural_height_p)
 {
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 

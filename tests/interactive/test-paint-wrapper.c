@@ -51,7 +51,7 @@ input_cb (ClutterStage *stage,
     {
       ClutterButtonEvent *button_event;
       ClutterActor *e;
-      gint x, y;
+      gfloat x, y;
 
       clutter_event_get_coords (event, &x, &y);
 
@@ -125,7 +125,7 @@ hand_pre_paint (ClutterActor *actor,
                 gpointer      user_data)
 {
   SuperOH *oh = (SuperOH *) user_data;
-  guint w, h;
+  gfloat w, h;
   int actor_num;
 
   for (actor_num = 0; oh->hand[actor_num] != actor; actor_num++);
@@ -145,7 +145,7 @@ hand_post_paint (ClutterActor *actor,
                  gpointer      user_data)
 {
   SuperOH *oh = (SuperOH *) user_data;
-  guint w, h;
+  gfloat w, h;
   int actor_num;
 
   for (actor_num = 0; oh->hand[actor_num] != actor; actor_num++);

@@ -61,7 +61,8 @@ struct _ClutterBackendPrivate
   guint double_click_distance;
 
   gdouble resolution;
-  gdouble units_per_em;
+
+  gfloat units_per_em;
 
   cairo_font_options_t *font_options;
 
@@ -133,12 +134,12 @@ update_units_per_em (ClutterBackend *backend)
         }
 
       /* 10 points at 96 DPI is 12 pixels */
-      priv->units_per_em = 1.2 * font_size
+      priv->units_per_em = 1.2f * font_size
                          * dpi
-                         / 96.0;
+                         / 96.0f;
     }
   else
-    priv->units_per_em = -1.0;
+    priv->units_per_em = -1.0f;
 }
 
 static void
@@ -359,7 +360,7 @@ _clutter_backend_init_events (ClutterBackend *backend)
     klass->init_events (backend);
 }
 
-ClutterUnit
+gfloat
 _clutter_backend_get_units_per_em (ClutterBackend *backend)
 {
   ClutterBackendPrivate *priv;

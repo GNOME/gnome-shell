@@ -21,8 +21,8 @@ on_button_press (ClutterActor       *actor,
                  gpointer            dummy)
 {
   ClutterAnimation *animation;
-  gint old_x, old_y, new_x, new_y;
-  guint old_width, old_height, new_width, new_height;
+  gfloat old_x, old_y, new_x, new_y;
+  gfloat old_width, old_height, new_width, new_height;
   gdouble new_angle;
   ClutterVertex vertex = { 0, };
   ClutterColor new_color = { 0, };
@@ -65,10 +65,10 @@ on_button_press (ClutterActor       *actor,
 
   animation =
     clutter_actor_animate (actor, CLUTTER_EASE_IN_EXPO, 2000,
-                           "x", new_x,
-                           "y", new_y,
-                           "width", new_width,
-                           "height", new_height,
+                           "x", (int) new_x,
+                           "y", (int) new_y,
+                           "width", (int) new_width,
+                           "height", (int) new_height,
                            "color", &new_color,
                            "rotation-angle-z", new_angle,
                            "fixed::rotation-center-z", &vertex,

@@ -127,9 +127,9 @@ static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 
 static void
 clutter_stage_get_preferred_width (ClutterActor *self,
-                                   ClutterUnit   for_height,
-                                   ClutterUnit  *min_width_p,
-                                   ClutterUnit  *natural_width_p)
+                                   gfloat        for_height,
+                                   gfloat       *min_width_p,
+                                   gfloat       *natural_width_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
@@ -143,9 +143,9 @@ clutter_stage_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_stage_get_preferred_height (ClutterActor *self,
-                                    ClutterUnit   for_width,
-                                    ClutterUnit  *min_height_p,
-                                    ClutterUnit  *natural_height_p)
+                                    gfloat        for_width,
+                                    gfloat       *min_height_p,
+                                    gfloat       *natural_height_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
@@ -169,13 +169,14 @@ clutter_stage_allocate (ClutterActor          *self,
    * then we simply ignore any allocation request and override the
    * allocation chain.
    */
-  if (G_LIKELY (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC)))
+  if ((!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC)))
     {
       ClutterActorClass *klass;
 
-      CLUTTER_NOTE (ACTOR, "Following allocation to %dx%d (origin %s)",
-                    CLUTTER_UNITS_TO_DEVICE (box->x2 - box->x1),
-                    CLUTTER_UNITS_TO_DEVICE (box->y2 - box->y1),
+      CLUTTER_NOTE (LAYOUT,
+                    "Following allocation to %dx%d (origin %s)",
+                    (int) (box->x2 - box->x1),
+                    (int) (box->y2 - box->y1),
                     origin_changed ? "changed" : "not changed");
 
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
@@ -188,7 +189,7 @@ clutter_stage_allocate (ClutterActor          *self,
     {
       ClutterActorBox override = { 0, };
       ClutterActorClass *klass;
-      ClutterUnit natural_width, natural_height;
+      gfloat natural_width, natural_height;
 
       /* propagate the allocation */
       klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
@@ -203,6 +204,15 @@ clutter_stage_allocate (ClutterActor          *self,
       override.y1 = 0;
       override.x2 = natural_width;
       override.y2 = natural_height;
+
+      CLUTTER_NOTE (LAYOUT,
+                    "Overrigin original allocation of %dx%d "
+                    "with %dx%d (origin %s)",
+                    (int) (box->x2 - box->x1),
+                    (int) (box->y2 - box->y1),
+                    (int) (override.x2),
+                    (int) (override.y2),
+                    origin_changed ? "changed" : "not changed");
 
       /* and store the overridden allocation */
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
@@ -320,7 +330,7 @@ static void
 clutter_stage_real_fullscreen (ClutterStage *stage)
 {
   ClutterStagePrivate *priv = stage->priv;
-  ClutterUnit natural_width, natural_height;
+  gfloat natural_width, natural_height;
   ClutterActorBox box;
 
   /* we need to force an allocation here because the size

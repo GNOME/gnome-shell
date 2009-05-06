@@ -119,7 +119,7 @@ clutter_get_show_fps (void)
 void
 _clutter_stage_maybe_relayout (ClutterActor *stage)
 {
-  ClutterUnit natural_width, natural_height;
+  gfloat natural_width, natural_height;
   ClutterActorBox box = { 0, };
 
   /* avoid reentrancy */
@@ -140,8 +140,8 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
       box.y2 = natural_height;
 
       CLUTTER_NOTE (ACTOR, "Allocating (0, 0 - %d, %d) for the stage",
-                    CLUTTER_UNITS_TO_DEVICE (natural_width),
-                    CLUTTER_UNITS_TO_DEVICE (natural_height));
+                    (int) natural_width,
+                    (int) natural_height);
 
       clutter_actor_allocate (stage, &box, FALSE);
 
@@ -155,7 +155,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
   if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
     {
       ClutterPerspective perspective;
-      guint width, height;
+      gfloat width, height;
 
       clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
       clutter_stage_get_perspective (stage, &perspective);
@@ -1931,8 +1931,8 @@ generate_enter_leave_events (ClutterEvent *event)
     {
       if (motion_current_actor)
         {
-          gint         x, y;
           ClutterEvent cev;
+          gfloat x, y;
 
           cev.crossing.device  = device;
           clutter_event_get_coords (event, &x, &y);
@@ -2153,7 +2153,7 @@ clutter_do_event (ClutterEvent *event)
       case CLUTTER_SCROLL:
         {
           ClutterActor *actor;
-          gint          x,y;
+          gfloat x, y;
 
           clutter_event_get_coords (event, &x, &y);
 
@@ -2170,7 +2170,7 @@ clutter_do_event (ClutterEvent *event)
                   if (event->type == CLUTTER_BUTTON_RELEASE)
                     {
                       CLUTTER_NOTE (EVENT,
-                                    "Release off stage received at %i, %i",
+                                    "Release off stage received at %.2f, %.2f",
                                     x, y);
 
                       event->button.source = stage;
@@ -2196,12 +2196,14 @@ clutter_do_event (ClutterEvent *event)
 
 
           /* FIXME: for an optimisation should check if there are
-           * actually any reactive actors and avoid the pick all togeather
+           * actually any reactive actors and avoid the pick all together
            * (signalling just the stage). Should be big help for gles.
            */
 
-          CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p",
-                        x, y, actor);
+          CLUTTER_NOTE (EVENT,
+                        "Reactive event received at %.2f, %.2f - actor: %p",
+                        x, y,
+                        actor);
 
           /* Create, enter/leave events if needed */
           generate_enter_leave_events (event);

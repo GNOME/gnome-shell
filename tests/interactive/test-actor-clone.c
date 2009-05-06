@@ -48,12 +48,12 @@ input_cb (ClutterActor *stage,
     {
       ClutterButtonEvent *button_event;
       ClutterActor *e;
-      gint x, y;
+      gfloat x, y;
 
       clutter_event_get_coords (event, &x, &y);
 
       button_event = (ClutterButtonEvent *) event;
-      g_print ("*** button press event (button:%d) at %d, %d ***\n",
+      g_print ("*** button press event (button:%d) at %.2f, %.2f ***\n",
 	       button_event->button,
                x, y);
 

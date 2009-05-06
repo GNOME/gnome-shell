@@ -26,7 +26,7 @@ raise_top (gpointer ignored)
 static ClutterActor *
 clone_box (ClutterActor *original)
 {
-  guint width, height;
+  gfloat width, height;
   ClutterActor *group;
   ClutterActor *clone;
 
@@ -35,38 +35,39 @@ clone_box (ClutterActor *original)
   group = clutter_group_new ();
   clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
-  clutter_actor_set_depth (clone, width/2);
+  clutter_actor_set_depth (clone, width / 2);
 
   clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
-  clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 180, width/2, 0, 0);
-  clutter_actor_set_depth (clone, -(gint)width/2);
+  clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 180, width / 2, 0, 0);
+  clutter_actor_set_depth (clone, -width / 2);
 
   clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 90, 0, 0, 0);
-  clutter_actor_set_depth (clone, width/2);
+  clutter_actor_set_depth (clone, width / 2);
   clutter_actor_set_position (clone, 0, 0);
 
   clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 90, 0, 0, 0);
-  clutter_actor_set_depth (clone, width/2);
+  clutter_actor_set_depth (clone, width / 2);
   clutter_actor_set_position (clone, width, 0);
 
   clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
-  clutter_actor_set_depth (clone, -(gint)width/2);
+  clutter_actor_set_depth (clone, -width / 2);
   clutter_actor_set_position (clone, 0, height);
 
   clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
-  clutter_actor_set_depth (clone, -(gint)width/2);
+  clutter_actor_set_depth (clone, -width / 2);
   clutter_actor_set_position (clone, 0, 0);
 
   clutter_actor_show_all (group);
+
   return group;
 }
 
@@ -78,8 +79,8 @@ janus_group (const gchar *front_text,
   ClutterColor  red = {0xff, 0x00, 0x00, 0xff};
   ClutterColor  green = {0x00, 0xff, 0x00, 0xff};
   ClutterActor *group, *rectangle, *front, *back;
-  guint width, height;
-  guint width2, height2;
+  gfloat width, height;
+  gfloat width2, height2;
 
   group = clutter_group_new ();
   rectangle = clutter_rectangle_new_with_color (&slide_color);
@@ -93,11 +94,12 @@ janus_group (const gchar *front_text,
 
   if (width2 > width)
     width = width2;
+
   if (height2 > height)
     height = height2;
 
   clutter_actor_set_size (rectangle, width, height);
-  clutter_actor_set_rotation (back, CLUTTER_Y_AXIS, 180, width/2, 0, 0);
+  clutter_actor_set_rotation (back, CLUTTER_Y_AXIS, 180, width / 2, 0, 0);
 
   clutter_container_add (CLUTTER_CONTAINER (group),
                          back, rectangle, front, NULL);

@@ -1196,6 +1196,9 @@ clutter_animation_get_timeline (ClutterAnimation *animation)
  * the current values of the #ClutterAnimation:mode and
  * #ClutterAnimation:timeline properties.
  *
+ * If @alpha is not %NULL, the #ClutterAnimation will take ownership
+ * of the #ClutterAlpha instance.
+ *
  * Since: 1.0
  */
 void

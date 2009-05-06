@@ -237,7 +237,7 @@ my_thing_get_preferred_width (ClutterActor *self,
 
       child = l->data;
 
-      child_x = clutter_actor_get_xu (child);
+      child_x = clutter_actor_get_x (child);
 
       clutter_actor_get_preferred_size (child,
                                         &child_min, NULL,
@@ -315,7 +315,7 @@ my_thing_get_preferred_height (ClutterActor *self,
 
       child = l->data;
 
-      child_y = clutter_actor_get_yu (child);
+      child_y = clutter_actor_get_y (child);
 
       clutter_actor_get_preferred_size (child,
                                         NULL, &child_min,
@@ -490,8 +490,7 @@ my_thing_paint (ClutterActor *actor)
 
       g_assert (child != NULL);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
-	clutter_actor_paint (child);
+      clutter_actor_paint (child);
     }
 
   cogl_pop_matrix();
@@ -748,7 +747,7 @@ test_layout_main (int argc, char *argv[])
 {
   ClutterActor *stage, *instructions;
   ClutterAlpha *alpha;
-  gint i;
+  gint i, size;
   GError *error = NULL;
 
   clutter_init (&argc, &argv);
@@ -776,7 +775,12 @@ test_layout_main (int argc, char *argv[])
   if (error)
     g_error ("Unable to load 'redhand.png': %s", error->message);
 
-  for (i = 0; i < 33; i++)
+  size = g_random_int_range (MIN_SIZE, MAX_SIZE);
+  clutter_actor_set_size (icon, size, size);
+  clutter_behaviour_apply (behaviour, icon);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), icon);
+
+  for (i = 1; i < 33; i++)
     {
       ClutterActor *clone = create_item (); 
 

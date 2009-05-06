@@ -552,12 +552,15 @@ notify_cb (GObject          *object,
  * @behave: a #ClutterBehaviour
  * @alpha: a #ClutterAlpha or %NULL to unset a previously set alpha
  *
- * Binds @alpha to a #ClutterBehaviour.  The #ClutterAlpha object
+ * Binds @alpha to a #ClutterBehaviour. The #ClutterAlpha object
  * is what makes a behaviour work: for each tick of the timeline
  * used by #ClutterAlpha a new value of the alpha parameter is
  * computed by the alpha function; the value should be used by
  * the #ClutterBehaviour to update one or more properties of the
  * actors to which the behaviour applies.
+ *
+ * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
+ * of the #ClutterAlpha instance.
  *
  * Since: 0.2
  */

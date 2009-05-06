@@ -186,11 +186,11 @@ test_clutter_cairo_flowers_main (int argc, char **argv)
     {
       flowers[i]       = g_new0(Flower, 1);
       flowers[i]->ctex = make_flower_actor();
-      flowers[i]->x   = rand() % clutter_actor_get_width(stage)
-                            - (PETAL_MIN+PETAL_VAR)*2;
-      flowers[i]->y   = rand() % clutter_actor_get_height(stage);
-      flowers[i]->rv  = rand() % 5 + 1;
-      flowers[i]->v   = rand() % 10 + 2;
+      flowers[i]->x    = rand() % (int) clutter_actor_get_width (stage)
+                       - (PETAL_MIN + PETAL_VAR) * 2;
+      flowers[i]->y    = rand() % (int) clutter_actor_get_height (stage);
+      flowers[i]->rv   = rand() % 5 + 1;
+      flowers[i]->v    = rand() % 10 + 2;
 
       clutter_group_add (CLUTTER_GROUP(stage), flowers[i]->ctex);
       clutter_actor_set_position (flowers[i]->ctex,

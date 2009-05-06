@@ -148,4 +148,24 @@
 
 #define clutter_shader_set_uniform_1f   clutter_shader_set_uniform_1f_REPLACED_BY_clutter_shader_set_uniform
 
+#define clutter_actor_set_xu            clutter_actor_set_xu_DEPRECATED_BY_clutter_actor_set_x
+#define clutter_actor_set_yu            clutter_actor_set_yu_DEPRECATED_BY_clutter_actor_set_y
+#define clutter_actor_set_widthu        clutter_actor_set_widthu_DEPRECATED_BY_clutter_actor_set_width
+#define clutter_actor_set_heightu       clutter_actor_set_heightu_DEPRECATED_BY_clutter_actor_set_height
+#define clutter_actor_set_depthu        clutter_actor_set_depthu_DEPRECATED_BY_clutter_actor_set_depth
+#define clutter_actor_set_positionu     clutter_actor_set_positionu_DEPRECATED_BY_clutter_actor_set_position
+#define clutter_actor_set_sizeu         clutter_actor_set_sizeu_DEPRECATED_BY_clutter_actor_set_size
+
+#define clutter_actor_set_anchor_pointu clutter_actor_set_anchor_pointu_DEPRECATED_BY_clutter_actor_set_anchor_point
+#define clutter_actor_get_anchor_pointu clutter_actor_get_anchor_pointu_DEPRECATED_BY_clutter_actor_get_anchor_point
+#define clutter_actor_move_byu          clutter_actor_move_byu_DEPRECATED_BY_clutter_actor_move_by
+
+#define clutter_actor_get_xu            clutter_actor_get_xu_DEPRECATED_BY_clutter_actor_get_x
+#define clutter_actor_get_yu            clutter_actor_get_yu_DEPRECATED_BY_clutter_actor_get_y
+#define clutter_actor_get_widthu        clutter_actor_get_widthu_DEPRECATED_BY_clutter_actor_get_width
+#define clutter_actor_get_heightu       clutter_actor_get_heightu_DEPRECATED_BY_clutter_actor_get_height
+#define clutter_actor_get_depthu        clutter_actor_get_depthu_DEPRECATED_BY_clutter_actor_get_depth
+#define clutter_actor_get_positionu     clutter_actor_get_positionu_DEPRECATED_BY_clutter_actor_get_position
+#define clutter_actor_get_sizeu         clutter_actor_get_sizeu_DEPRECATED_BY_clutter_actor_get_size
+
 #endif /* CLUTTER_DEPRECATED_H */

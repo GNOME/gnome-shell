@@ -94,7 +94,7 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
   if (stage_x11->xwin != None && stage_x11->is_foreign_xwin == FALSE)
     {
       XSizeHints *size_hints;
-      ClutterUnit min_width, min_height;
+      gfloat min_width, min_height;
 
       size_hints = XAllocSizeHints();
 
@@ -172,9 +172,9 @@ clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 
 static void
 clutter_stage_x11_get_preferred_width (ClutterActor *self,
-                                       ClutterUnit   for_height,
-                                       ClutterUnit  *min_width_p,
-                                       ClutterUnit  *natural_width_p)
+                                       gfloat        for_height,
+                                       gfloat       *min_width_p,
+                                       gfloat       *natural_width_p)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   gboolean resize;
@@ -211,9 +211,9 @@ clutter_stage_x11_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_stage_x11_get_preferred_height (ClutterActor *self,
-                                        ClutterUnit   for_width,
-                                        ClutterUnit  *min_height_p,
-                                        ClutterUnit  *natural_height_p)
+                                        gfloat        for_width,
+                                        gfloat       *min_height_p,
+                                        gfloat       *natural_height_p)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   gboolean resize;

@@ -76,7 +76,6 @@ frame_tick (gpointer data)
 {
   TestState *state = data;
   GTimeVal cur_tick = { 0, };
-  GSList *l;
   gulong msecs;
 
   g_get_current_time (&cur_tick);

@@ -77,8 +77,8 @@ typedef struct _ClutterTextureAsyncData ClutterTextureAsyncData;
 
 struct _ClutterTexturePrivate
 {
-  gint                         width;
-  gint                         height;
+  gfloat                       width;
+  gfloat                       height;
   gint                         max_tile_waste;
   ClutterTextureQuality        filter_quality;
   CoglHandle                   material;
@@ -351,9 +351,9 @@ clutter_texture_realize (ClutterActor *actor)
 
 static void
 clutter_texture_get_preferred_width (ClutterActor *self,
-                                     ClutterUnit   for_height,
-                                     ClutterUnit  *min_width_p,
-                                     ClutterUnit  *natural_width_p)
+                                     gfloat        for_height,
+                                     gfloat       *min_width_p,
+                                     gfloat       *natural_width_p)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
@@ -370,19 +370,14 @@ clutter_texture_get_preferred_width (ClutterActor *self,
               for_height < 0 ||
               priv->height <= 0)
             {
-              *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+              *natural_width_p = priv->width;
             }
           else
             {
               /* Set the natural width so as to preserve the aspect ratio */
-              gfloat ratio, height;
+              gfloat ratio = priv->width / priv->height;
 
-              ratio = (float)(priv->width) / (float)(priv->height);
-
-              height = CLUTTER_UNITS_TO_FLOAT (for_height);
-
-              *natural_width_p =
-                CLUTTER_UNITS_FROM_FLOAT (ratio * height);
+              *natural_width_p = ratio * for_height;
             }
         }
     }
@@ -395,9 +390,9 @@ clutter_texture_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_texture_get_preferred_height (ClutterActor *self,
-                                      ClutterUnit   for_width,
-                                      ClutterUnit  *min_height_p,
-                                      ClutterUnit  *natural_height_p)
+                                      gfloat        for_width,
+                                      gfloat       *min_height_p,
+                                      gfloat       *natural_height_p)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
@@ -414,19 +409,14 @@ clutter_texture_get_preferred_height (ClutterActor *self,
               for_width < 0 ||
               priv->width <= 0)
             {
-              *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+              *natural_height_p = priv->height;
             }
           else
             {
               /* Set the natural height so as to preserve the aspect ratio */
-              gfloat ratio, width;
+              gfloat ratio = priv->height / priv->width;
 
-              ratio = (float)(priv->height) / (float)(priv->width);
-
-              width = CLUTTER_UNITS_TO_FLOAT (for_width);
-
-              *natural_height_p =
-                CLUTTER_UNITS_FROM_FLOAT (ratio * width);
+              *natural_height_p = ratio * for_width;
             }
         }
     }
@@ -460,7 +450,7 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
   ClutterVertex verts[4];
   gfloat viewport[4];
-  ClutterUnit x_min, x_max, y_min, y_max;
+  gfloat x_min, x_max, y_min, y_max;
   gfloat tx_min, tx_max, ty_min, ty_max;
   gfloat tan_angle, near_size;
   ClutterPerspective perspective;
@@ -495,13 +485,13 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
 
-  tx_min = (CLUTTER_UNITS_TO_FLOAT (x_min) / viewport[2])
+  tx_min = (x_min / viewport[2])
          * 2 - 1.0;
-  tx_max = (CLUTTER_UNITS_TO_FLOAT (x_max) / viewport[2])
+  tx_max = (x_max / viewport[2])
          * 2 - 1.0;
-  ty_min = (CLUTTER_UNITS_TO_FLOAT (y_min) / viewport[3])
+  ty_min = (y_min / viewport[3])
          * 2 - 1.0;
-  ty_max = (CLUTTER_UNITS_TO_FLOAT (y_max) / viewport[3])
+  ty_max = (y_max / viewport[3])
          * 2 - 1.0;
 
   /* Set up a projection matrix so that the actor will be projected as
@@ -558,8 +548,8 @@ clutter_texture_paint (ClutterActor *self)
 
       if ((stage = clutter_actor_get_stage (self)))
 	{
-	  guint               stage_width, stage_height;
-	  ClutterActor       *source_parent;
+	  gfloat stage_width, stage_height;
+	  ClutterActor *source_parent;
 
 	  clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
 	  clutter_actor_get_size (stage, &stage_width, &stage_height);
@@ -571,6 +561,7 @@ clutter_texture_paint (ClutterActor *self)
 			       perspective.aspect,
 			       perspective.z_near,
 			       perspective.z_far);
+
 	  /* Use a projection matrix that makes the actor appear as it
 	     would if it was rendered at its normal screen location */
 	  clutter_texture_set_fbo_projection (self);
@@ -1445,7 +1436,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   priv->width      = width;
   priv->height     = height;
 
-  CLUTTER_NOTE (TEXTURE, "set size %ix%i\n",
+  CLUTTER_NOTE (TEXTURE, "set size %.2fx%.2f\n",
 		priv->width,
 		priv->height);
 
@@ -2310,7 +2301,7 @@ on_fbo_source_size_change (GObject          *object,
                            ClutterTexture   *texture)
 {
   ClutterTexturePrivate *priv = texture->priv;
-  guint                  w, h;
+  gfloat w, h;
 
   clutter_actor_get_transformed_size (priv->fbo_source, &w, &h);
 
@@ -2453,7 +2444,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 {
   ClutterTexture        *texture;
   ClutterTexturePrivate *priv;
-  guint                  w, h;
+  gfloat w, h;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
@@ -2523,8 +2514,8 @@ clutter_texture_new_from_actor (ClutterActor *actor)
                     G_CALLBACK(on_fbo_parent_change),
                     texture);
 
-  priv->width        = w;
-  priv->height       = h;
+  priv->width = w;
+  priv->height = h;
 
   clutter_actor_set_size (CLUTTER_ACTOR (texture), priv->width, priv->height);
 
