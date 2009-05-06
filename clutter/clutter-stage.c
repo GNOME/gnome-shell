@@ -1472,7 +1472,7 @@ clutter_stage_set_key_focus (ClutterStage *stage,
       priv->key_focused_actor = NULL;
     }
   else
-    g_signal_emit_by_name (stage, "focus-out");
+    g_signal_emit_by_name (stage, "key-focus-out");
 
   if (actor)
     {
@@ -1481,10 +1481,10 @@ clutter_stage_set_key_focus (ClutterStage *stage,
       g_object_weak_ref (G_OBJECT (actor),
 			 on_key_focused_weak_notify,
 			 stage);
-      g_signal_emit_by_name (priv->key_focused_actor, "focus-in");
+      g_signal_emit_by_name (priv->key_focused_actor, "key-focus-in");
     }
   else
-    g_signal_emit_by_name (stage, "focus-in");
+    g_signal_emit_by_name (stage, "key-focus-in");
 }
 
 /**

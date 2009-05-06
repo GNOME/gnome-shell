@@ -206,8 +206,8 @@ struct _ClutterActor
  * @enter_event: signal class closure for #ClutterActor::enter-event
  * @leave_event: signal class closure for #ClutterActor::leave-event
  * @captured_event: signal class closure for #ClutterActor::captured-event
- * @focus_in: signal class closure for #ClutterActor::focus-in
- * @focus_out: signal class closure for #ClutterActor::focus-out
+ * @key_focus_in: signal class closure for #ClutterActor::focus-in
+ * @key_focus_out: signal class closure for #ClutterActor::focus-out
  *
  * Base class for actors.
  */
@@ -269,8 +269,8 @@ struct _ClutterActorClass
                                      ClutterCrossingEvent *event);
   gboolean (* captured_event)       (ClutterActor         *actor,
                                      ClutterEvent         *event);
-  void     (* focus_in)             (ClutterActor         *actor);
-  void     (* focus_out)            (ClutterActor         *actor);
+  void     (* key_focus_in)         (ClutterActor         *actor);
+  void     (* key_focus_out)        (ClutterActor         *actor);
 
   /*< private >*/
   /* padding for future expansion */

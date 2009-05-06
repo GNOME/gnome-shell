@@ -417,8 +417,8 @@ enum
   HIDE,
   DESTROY,
   PARENT_SET,
-  FOCUS_IN,
-  FOCUS_OUT,
+  KEY_FOCUS_IN,
+  KEY_FOCUS_OUT,
   PAINT,
   PICK,
   REALIZE,
@@ -3886,35 +3886,35 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
-   * ClutterActor::focus-in:
+   * ClutterActor::key-focus-in:
    * @actor: the actor which now has key focus
    *
    * The ::focus-in signal is emitted when @actor recieves key focus.
    *
    * Since: 0.6
    */
-  actor_signals[FOCUS_IN] =
-    g_signal_new (I_("focus-in"),
+  actor_signals[KEY_FOCUS_IN] =
+    g_signal_new (I_("key-focus-in"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterActorClass, focus_in),
+		  G_STRUCT_OFFSET (ClutterActorClass, key_focus_in),
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   /**
-   * ClutterActor::focus-out:
+   * ClutterActor::key-focus-out:
    * @actor: the actor which now has key focus
    *
-   * The ::focus-out signal is emitted when @actor loses key focus.
+   * The ::key-focus-out signal is emitted when @actor loses key focus.
    *
    * Since: 0.6
    */
-  actor_signals[FOCUS_OUT] =
-    g_signal_new (I_("focus-out"),
+  actor_signals[KEY_FOCUS_OUT] =
+    g_signal_new (I_("key-focus-out"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterActorClass, focus_out),
+		  G_STRUCT_OFFSET (ClutterActorClass, key_focus_out),
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
