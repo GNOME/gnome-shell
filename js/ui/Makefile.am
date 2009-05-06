@@ -1,6 +1,7 @@
 jsuidir = $(pkgdatadir)/js/ui
 
 dist_jsui_DATA =		\
+	altTab.js		\
 	appDisplay.js		\
 	button.js		\
 	dnd.js			\
