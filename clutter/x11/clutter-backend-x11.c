@@ -95,7 +95,7 @@ static Display  *_foreign_dpy = NULL;
 
 /* options */
 static gchar *clutter_display_name = NULL;
-static gint clutter_screen = 0;
+static gint clutter_screen = -1;
 static gboolean clutter_synchronise = FALSE;
 
 /* X error trap */
@@ -167,7 +167,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
       CLUTTER_NOTE (BACKEND, "Getting the X screen");
 
-      if (clutter_screen == 0)
+      if (clutter_screen == -1)
         backend_x11->xscreen = DefaultScreenOfDisplay (backend_x11->xdpy);
       else
         backend_x11->xscreen = ScreenOfDisplay (backend_x11->xdpy,
