@@ -198,6 +198,11 @@ void                  clutter_text_set_single_line_mode (ClutterText        *sel
 gboolean              clutter_text_get_single_line_mode (ClutterText        *self);
 
 gboolean              clutter_text_activate             (ClutterText        *self);
+gboolean              clutter_text_position_to_coords   (ClutterText        *self,
+                                                         gint                position,
+                                                         gfloat             *x,
+                                                         gfloat             *y,
+                                                         gfloat             *line_height);
 
 G_END_DECLS
 
