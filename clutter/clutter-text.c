@@ -477,7 +477,7 @@ clutter_text_coords_to_position (ClutterText *text,
   return index_ + trailing;
 }
 
-/*
+/**
  * clutter_text_position_to_coords:
  * @self: a #ClutterText
  * @position: position in characters
@@ -488,18 +488,27 @@ clutter_text_coords_to_position (ClutterText *text,
  * Retrieves the coordinates of the given @position.
  *
  * Return value: %TRUE if the conversion was successful
+ *
+ * Since: 1.0
  */
-static gboolean
+gboolean
 clutter_text_position_to_coords (ClutterText *self,
                                  gint         position,
                                  ClutterUnit *x,
                                  ClutterUnit *y,
                                  ClutterUnit *line_height)
 {
-  ClutterTextPrivate *priv = self->priv;
+  ClutterTextPrivate *priv;
   PangoRectangle rect;
   gint password_char_bytes = 1;
   gint index_;
+
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  priv = self->priv;
+
+  if (position < -1 || position > priv->n_chars)
+    return FALSE;
 
   if (priv->password_char != 0)
     password_char_bytes = g_unichar_to_utf8 (priv->password_char, NULL);
@@ -527,7 +536,13 @@ clutter_text_position_to_coords (ClutterText *self,
                                &rect, NULL);
 
   if (x)
-    *x = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.x);
+    {
+      *x = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.x);
+
+      /* Take any offset due to scrolling into account */
+      if (priv->single_line_mode)
+        *x += priv->text_x;
+    }
 
   if (y)
     *y = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.y);
@@ -535,16 +550,6 @@ clutter_text_position_to_coords (ClutterText *self,
   if (line_height)
     *line_height = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.height);
 
-  if (self->priv->single_line_mode)
-    {
-      /* Take any offset due to scrolling into account */
-      if (x)
-        *x += self->priv->text_x;
-    }
-
-
-
-  /* FIXME: should return false if coords were outside text */
   return TRUE;
 }
 

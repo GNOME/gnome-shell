@@ -1599,6 +1599,7 @@ clutter_text_get_cursor_size
 
 <SUBSECTION>
 clutter_text_activate
+clutter_text_position_to_coords
 
 <SUBSECTION Standard>
 CLUTTER_IS_TEXT
