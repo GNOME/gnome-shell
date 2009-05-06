@@ -28,9 +28,9 @@
 #ifndef __COGL_BITMAP_H__
 #define __COGL_BITMAP_H__
 
-G_BEGIN_DECLS
-
 #include <cogl/cogl-types.h>
+
+G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-bitmap
