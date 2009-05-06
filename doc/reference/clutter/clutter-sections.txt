@@ -1584,6 +1584,7 @@ clutter_text_insert_text
 clutter_text_insert_unichar
 clutter_text_delete_chars
 clutter_text_delete_text
+clutter_text_delete_selection
 clutter_text_get_chars
 clutter_text_set_cursor_color
 clutter_text_get_cursor_color
