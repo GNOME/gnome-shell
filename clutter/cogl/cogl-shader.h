@@ -28,7 +28,7 @@
 #ifndef __COGL_SHADER_H__
 #define __COGL_SHADER_H__
 
-#include <glib.h>
+#include <cogl/cogl-types.h>
 
 G_BEGIN_DECLS
 
