@@ -1109,7 +1109,8 @@ clutter_timeline_clone (ClutterTimeline *timeline)
  * the value of the ClutterTimeline:fps property to compute the
  * equivalent number of frames.
  *
- * Return value: the newly created #ClutterTimeline
+ * Return value: the newly created #ClutterTimeline instance. Use
+ *   g_object_unref() when done using it
  *
  * Since: 0.6
  */
@@ -1128,7 +1129,8 @@ clutter_timeline_new_for_duration (guint msecs)
  *
  * Create a new  #ClutterTimeline instance.
  *
- * Return Value: a new #ClutterTimeline
+ * Return Value: the newly created #ClutterTimeline instance. Use
+ *   g_object_unref() when done using it
  */
 ClutterTimeline*
 clutter_timeline_new (guint n_frames,
