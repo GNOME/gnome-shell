@@ -4,6 +4,7 @@ dist_jsui_DATA =		\
 	altTab.js		\
 	appDisplay.js		\
 	button.js		\
+	chrome.js		\
 	dnd.js			\
 	docDisplay.js		\
 	genericDisplay.js	\

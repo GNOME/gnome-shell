@@ -159,49 +159,11 @@ Panel.prototype = {
 
         this.actor.add_actor(box);
 
-        global.stage.add_actor(this.actor);
-        // Declare just "box" (ie, not the drop shadow) as a shell actor
-        Main.addShellActor(box);
-
-        global.screen.connect('restacked', Lang.bind(this, this._restacked));
-        this._restacked();
+        Main.chrome.addActor(this.actor, box);
+        Main.chrome.setVisibleInOverlay(this.actor, true);
 
         // Start the clock
         this._updateClock();
-    },
-
-    _restacked: function() {
-        let global = Shell.Global.get();
-        let windows = global.get_windows();
-        let i;
-
-        // We want to be visible unless there is a window with layer
-        // FULLSCREEN, or a window with layer OVERRIDE_REDIRECT that
-        // completely covers us. (We can't set a non-rectangular
-        // stage_input_area, so we don't let windows overlap us
-        // partially.). "override_redirect" is not actually a layer
-        // above all other windows, but this seems to be how mutter
-        // treats it currently...
-        //
-        // @windows is sorted bottom to top.
-        this.actor.show();
-        for (i = windows.length - 1; i > -1; i--) {
-            let layer = windows[i].get_meta_window().get_layer();
-
-            if (layer == Meta.StackLayer.OVERRIDE_REDIRECT) {
-                if (windows[i].x <= this.actor.x &&
-                    windows[i].x + windows[i].width >= this.actor.x + this.actor.width &&
-                    windows[i].y <= this.actor.y &&
-                    windows[i].y + windows[i].height >= this.actor.y + PANEL_HEIGHT) {
-                    this.actor.hide();
-                    break;
-                }
-            } else if (layer == Meta.StackLayer.FULLSCREEN) {
-                this.actor.hide();
-                break;
-            } else
-                break;
-        }
     },
 
     _updateClock: function() {

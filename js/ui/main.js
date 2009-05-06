@@ -9,6 +9,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
+const Chrome = imports.ui.chrome;
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
@@ -18,6 +19,7 @@ const WindowManager = imports.ui.windowManager;
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
+let chrome = null;
 let panel = null;
 let overlay = null;
 let runDialog = null;
@@ -62,8 +64,8 @@ function start() {
     });
 
     overlay = new Overlay.Overlay();
+    chrome = new Chrome.Chrome();
     panel = new Panel.Panel();
-
     wm = new WindowManager.WindowManager();
     
     global.screen.connect('toggle-recording', function() {
@@ -87,9 +89,6 @@ function start() {
     display.connect('overlay-key', Lang.bind(overlay, overlay.toggle));
     global.connect('panel-main-menu', Lang.bind(overlay, overlay.toggle));
     
-    // Need to update struts on new workspaces when they are added
-    global.screen.connect('notify::n-workspaces', _setStageArea);
-
     Mainloop.idle_add(_removeUnusedWorkspaces);
 }
 
@@ -159,88 +158,4 @@ function createAppLaunchContext() {
     context.set_desktop(screen.get_active_workspace_index());
 
     return context;
-}
-
-let _shellActors = [];
-
-// For adding an actor that is part of the shell in the normal desktop view
-function addShellActor(actor) {
-    let global = Shell.Global.get();
-
-    _shellActors.push(actor);
-
-    actor.connect('notify::visible', _setStageArea);
-    actor.connect('destroy', function(actor) {
-                      let i = _shellActors.indexOf(actor);
-                      if (i != -1)
-                          _shellActors.splice(i, 1);
-                      _setStageArea();
-                  });
-
-    while (actor != global.stage) {
-        actor.connect('notify::allocation', _setStageArea);
-        actor = actor.get_parent();
-    }
-
-    _setStageArea();
-}
-
-function _setStageArea() {
-    let global = Shell.Global.get();
-    let rects = [], struts = [];
-
-    for (let i = 0; i < _shellActors.length; i++) {
-        if (!_shellActors[i].visible)
-            continue;
-
-        let [x, y] = _shellActors[i].get_transformed_position();
-        let [w, h] = _shellActors[i].get_transformed_size();
-
-        let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h});
-        rects.push(rect);
-
-        // Metacity wants to know what side of the screen the strut is
-        // considered to be attached to. If the actor is only touching
-        // one edge, or is touching the entire width/height of one
-        // edge, then it's obvious which side to call it. If it's in a
-        // corner, we pick a side arbitrarily. If it doesn't touch any
-        // edges, or it spans the width/height across the middle of
-        // the screen, then we don't create a strut for it at all.
-        let side;
-        if (w >= global.screen_width) {
-            if (y <= 0)
-                side = Meta.Side.TOP;
-            else if (y + h >= global.screen_height)
-                side = Meta.Side.BOTTOM;
-            else
-                continue;
-        } else if (h >= global.screen_height) {
-            if (x <= 0)
-                side = Meta.Side.LEFT;
-            else if (x + w >= global.screen_width)
-                side = Meta.Side.RIGHT;
-            else
-                continue;
-        } else if (x <= 0)
-            side = Meta.Side.LEFT;
-        else if (y <= 0)
-            side = Meta.Side.TOP;
-        else if (x + w >= global.screen_width)
-            side = Meta.Side.RIGHT;
-        else if (y + h >= global.screen_height)
-            side = Meta.Side.BOTTOM;
-        else
-            continue;
-
-        let strut = new Meta.Strut({ rect: rect, side: side });
-        struts.push(strut);
-    }
-
-    let screen = global.screen;
-    for (let w = 0; w < screen.n_workspaces; w++) {
-        let workspace = screen.get_workspace_by_index(w);
-        workspace.set_builtin_struts(struts);
-    }
-
-    global.set_stage_input_region(rects);
 }
