@@ -379,7 +379,8 @@ _clutter_do_pick (ClutterStage   *stage,
 
   /* Disable dithering (if any) when doing the painting in pick mode */
   dither_was_on = glIsEnabled (GL_DITHER);
-  glDisable (GL_DITHER);
+  if (dither_was_on)
+    glDisable (GL_DITHER);
 
   /* Render the entire scence in pick mode - just single colored silhouette's
    * are drawn offscreen (as we never swap buffers)
@@ -390,11 +391,6 @@ _clutter_do_pick (ClutterStage   *stage,
 
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
-
-  /* Below to be safe, particularly on GL ES. an EGL wait call or full
-   * could be nicer.
-  */
-  glFinish();
 
   /* Read the color of the screen co-ords pixel */
   glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
