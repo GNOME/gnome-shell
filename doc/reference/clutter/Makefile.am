@@ -72,6 +72,7 @@ IGNORE_HFILES=\
 	clutter-keysyms.h \
 	clutter-keysyms-table.h \
 	clutter-marshal.h \
+	clutter-master-clock.h \
 	clutter-model-private.h \
 	clutter-private.h \
 	clutter-id-pool.h \
