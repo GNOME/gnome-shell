@@ -331,7 +331,10 @@ create_cogl_texture (ClutterTexture *texture,
       cogl_format = COGL_PIXEL_FORMAT_RGB_888;
     }
   else
-    g_critical ("Can't create a TFP cogl texture for pixmap with depth < 24");
+    {
+      g_critical ("Can't create a TFP cogl texture for pixmap with depth < 24");
+      return FALSE;
+    }
 
   /* We want to use the GL_ARB_texture_rectangle extension on some
      chipsets because GL_ARB_texture_non_power_of_two is not always
@@ -345,7 +348,7 @@ create_cogl_texture (ClutterTexture *texture,
       glGenTextures (1, &tex);
       glBindTexture (CGL_TEXTURE_RECTANGLE_ARB, tex);
       glTexImage2D (CGL_TEXTURE_RECTANGLE_ARB, 0,
-                    GL_RGB, width, height,
+                    gl_format, width, height,
                     0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
       handle = cogl_texture_new_from_foreign (tex, CGL_TEXTURE_RECTANGLE_ARB,
