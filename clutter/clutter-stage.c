@@ -331,6 +331,33 @@ clutter_stage_hide (ClutterActor *self)
 }
 
 static void
+clutter_stage_emit_key_focus_event (ClutterStage *stage,
+                                    gboolean      focus_in)
+{
+  ClutterStagePrivate *priv = stage->priv;
+
+  if (priv->key_focused_actor == NULL)
+    return;
+
+  if (focus_in)
+    g_signal_emit_by_name (priv->key_focused_actor, "key-focus-in");
+  else
+    g_signal_emit_by_name (priv->key_focused_actor, "key-focus-out");
+}
+
+static void
+clutter_stage_real_activate (ClutterStage *stage)
+{
+  clutter_stage_emit_key_focus_event (stage, TRUE);
+}
+
+static void
+clutter_stage_real_deactivate (ClutterStage *stage)
+{
+  clutter_stage_emit_key_focus_event (stage, FALSE);
+}
+
+static void
 clutter_stage_real_fullscreen (ClutterStage *stage)
 {
   ClutterStagePrivate *priv = stage->priv;
@@ -822,6 +849,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  G_TYPE_NONE, 0);
 
   klass->fullscreen = clutter_stage_real_fullscreen;
+  klass->activate = clutter_stage_real_activate;
+  klass->deactivate = clutter_stage_real_deactivate;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
