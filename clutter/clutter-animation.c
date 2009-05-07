@@ -1115,12 +1115,12 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
 
   priv = animation->priv;
 
-  if (timeline && priv->timeline == timeline)
+  if (timeline != NULL && priv->timeline == timeline)
     return;
 
   g_object_freeze_notify (G_OBJECT (animation));
 
-  if (priv->timeline)
+  if (priv->timeline != NULL)
     {
       if (priv->timeline_started_id)
         g_signal_handler_disconnect (priv->timeline,
@@ -1136,13 +1136,17 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
       priv->timeline = 0;
     }
 
-  if (!timeline)
-    timeline = g_object_new (CLUTTER_TYPE_TIMELINE,
-                             "duration", priv->duration,
-                             "loop", priv->loop,
-                             NULL);
+  if (timeline == NULL)
+    {
+      timeline = g_object_new (CLUTTER_TYPE_TIMELINE,
+                               "duration", priv->duration,
+                               "loop", priv->loop,
+                               NULL);
+    }
   else
     {
+      g_object_ref (timeline);
+
       priv->duration = clutter_timeline_get_duration (timeline);
       g_object_notify (G_OBJECT (animation), "duration");
 
@@ -1150,7 +1154,7 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
       g_object_notify (G_OBJECT (animation), "loop");
     }
 
-  priv->timeline = g_object_ref (timeline);
+  priv->timeline = timeline;
   g_object_notify (G_OBJECT (animation), "timeline");
 
   priv->timeline_started_id =
