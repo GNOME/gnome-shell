@@ -7065,6 +7065,12 @@ parse_units (ClutterActor   *self,
           goto out;
         }
 
+      if (strcmp (end, "em") == 0)
+        {
+          retval = CLUTTER_UNITS_FROM_EM (val);
+          goto out;
+        }
+
       if (strcmp (end, "mm") == 0)
         {
           retval = CLUTTER_UNITS_FROM_MM (val);
