@@ -1588,6 +1588,9 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   if (self->priv->queued_redraw)
     return;
 
+  CLUTTER_NOTE (PAINT, "Redraw queued on '%s'",
+                clutter_actor_get_name (self) ? clutter_actor_get_name (self)
+                                              : G_OBJECT_TYPE_NAME (self));
   self->priv->queued_redraw = TRUE;
 
   /* notify parents, if they are all visible eventually we'll
