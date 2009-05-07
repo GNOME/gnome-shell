@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -19,7 +20,6 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let panel = null;
 let overlay = null;
-let overlayActive = false;
 let runDialog = null;
 let wm = null;
 let recorder = null;
@@ -61,20 +61,11 @@ function start() {
         }
     });
 
+    overlay = new Overlay.Overlay();
     panel = new Panel.Panel();
 
-    overlay = new Overlay.Overlay();
     wm = new WindowManager.WindowManager();
     
-    let display = global.screen.get_display();
-    let toggleOverlay = function(display) {
-        if (overlay.visible) {
-            hideOverlay();
-        } else {
-            showOverlay();
-        }
-    };
-
     global.screen.connect('toggle-recording', function() {
         if (recorder == null) {
             // We have to initialize GStreamer first. This isn't done
@@ -92,8 +83,9 @@ function start() {
         }
     });
 
-    display.connect('overlay-key', toggleOverlay);
-    global.connect('panel-main-menu', toggleOverlay);
+    let display = global.screen.get_display();
+    display.connect('overlay-key', Lang.bind(overlay, overlay.toggle));
+    global.connect('panel-main-menu', Lang.bind(overlay, overlay.toggle));
     
     // Need to update struts on new workspaces when they are added
     global.screen.connect('notify::n-workspaces', _setStageArea);
@@ -152,19 +144,6 @@ function endModal() {
     global.ungrab_keyboard();
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
     inModal = false;
-}
-
-function showOverlay() {
-    if (startModal()) {
-        overlayActive = true;
-        overlay.show();
-    }
-}
-
-function hideOverlay() {
-    overlay.hide();
-    overlayActive = false;
-    endModal();
 }
 
 function createAppLaunchContext() {

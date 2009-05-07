@@ -292,7 +292,7 @@ Workspace.prototype = {
                               Lang.bind(this,
                                         function(clone, time) {
                                             this._metaWorkspace.activate(time);
-                                            Main.hideOverlay();
+                                            Main.overlay.hide();
                                         }));
         this.actor.add_actor(this._desktop.actor);
 
@@ -721,7 +721,7 @@ Workspace.prototype = {
             workspace.activate_with_focus(clone.metaWindow, time);
         } else
             clone.metaWindow.activate(time);
-        Main.hideOverlay();
+        Main.overlay.hide();
     },
 
     _removeSelf : function(actor, event) {

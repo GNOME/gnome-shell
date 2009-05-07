@@ -754,7 +754,7 @@ Overlay.prototype = {
             // TODO - have some sort of animation/effect while
             // transitioning to the new app.  We definitely need
             // startup-notification integration at least.
-            me._deactivate();
+            me.hide();
         });
         this._sideshow.connect('more-activated', function(sideshow) {
             if (me._workspaces != null) {
@@ -794,6 +794,8 @@ Overlay.prototype = {
 
     show : function() {
         if (this.visible)
+            return;
+        if (!Main.startModal())
             return;
 
         this.visible = true;
@@ -854,6 +856,8 @@ Overlay.prototype = {
                            onCompleteScope: this
 
                          });
+
+        this.emit('showing');
     },
 
     hide : function() {
@@ -885,6 +889,15 @@ Overlay.prototype = {
                            onComplete: this._hideDone,
                            onCompleteScope: this
                          });
+
+        this.emit('hiding');
+    },
+
+    toggle: function() {
+        if (this.visible)
+            this.hide();
+        else
+            this.show();
     },
 
     //// Private methods ////
@@ -903,6 +916,8 @@ Overlay.prototype = {
 
         this._sideshow.actor.raise_top();
         this._sideshow.actor.remove_clip();
+
+        this.emit('shown');
     },
 
     _hideDone: function() {
@@ -919,12 +934,12 @@ Overlay.prototype = {
 
         this.visible = false; 
         this._hideInProgress = false;
-    },
 
-    _deactivate : function() {
-        Main.hideOverlay();
+        Main.endModal();
+        this.emit('hidden');
     }
 };
+Signals.addSignalMethods(Overlay.prototype);
 
 Tweener.registerSpecialProperty("clipHeightBottom", _clipHeightBottomGet, _clipHeightBottomSet);
 

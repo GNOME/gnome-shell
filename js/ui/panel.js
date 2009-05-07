@@ -150,14 +150,8 @@ Panel.prototype = {
         // have the overlay act like a menu that allows the user to release the mouse on the activity the user wants
         // to switch to.
         this.button.button.connect('button-press-event',
-            function(o, event) {
-                if (Main.overlay.visible)
-                    Main.hideOverlay();
-                else
-                    Main.showOverlay();
-
-                return true;
-            });
+                                   Lang.bind(Main.overlay, Main.overlay.toggle));
+        Main.overlay.connect('hiding', Lang.bind(this.button, this.button.release));
 
         this.actor.add_actor(box);
 
@@ -217,9 +211,5 @@ Panel.prototype = {
         this._clock.set_text(displayDate.toLocaleFormat("%a %b %e, %l:%M %p"));
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
-    },
-
-    overlayHidden: function() {
-        this.button.release();
     }
 };
