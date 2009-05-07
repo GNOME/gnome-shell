@@ -46,7 +46,6 @@
 #include "xprops.h"
 #include "workspace-private.h"
 #include "bell.h"
-#include "effects.h"
 #include "compositor.h"
 #include <X11/Xatom.h>
 #include <X11/cursorfont.h>
@@ -475,7 +474,6 @@ meta_display_open (void)
 #endif
 
   the_display->grab_op = META_GRAB_OP_NONE;
-  the_display->grab_wireframe_active = FALSE;
   the_display->grab_window = NULL;
   the_display->grab_screen = NULL;
   the_display->grab_resize_popup = NULL;
@@ -2080,9 +2078,6 @@ event_callback (XEvent   *event,
                               "Window %s withdrawn\n",
                               window->desc);
 
-		  if (!window->override_redirect)
-		    meta_effect_run_close (window, NULL, NULL);
-
                   /* Unmanage withdrawn window */		  
                   window->withdrawn = TRUE;
                   meta_window_unmanage (window, timestamp);
@@ -3435,7 +3430,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_sync_request_alarm = None;
   display->grab_last_user_action_was_snap = FALSE;
 #endif
-  display->grab_was_cancelled = FALSE;
   display->grab_frame_action = frame_action;
 
   if (display->grab_resize_timeout_id)
@@ -3450,20 +3444,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                           &display->grab_initial_window_pos);
       display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
-      display->grab_wireframe_active =
-        (meta_prefs_get_reduced_resources () && !meta_prefs_get_gnome_accessibility ())  && 
-        (meta_grab_op_is_resizing (display->grab_op) ||
-         meta_grab_op_is_moving (display->grab_op));
-      
-      if (display->grab_wireframe_active)
-        {
-          meta_window_calc_showing (display->grab_window);
-          meta_window_begin_wireframe (window);
-        }
-      
 #ifdef HAVE_XSYNC
-      if (!display->grab_wireframe_active &&
-          meta_grab_op_is_resizing (display->grab_op) &&
+      if ( meta_grab_op_is_resizing (display->grab_op) &&
           display->grab_window->sync_request_counter != None)
         {
           XSyncAlarmAttributes values;
@@ -3612,28 +3594,6 @@ meta_display_end_grab_op (MetaDisplay *display,
                   display->grab_old_window_stacking);
       g_list_free (display->grab_old_window_stacking);
       display->grab_old_window_stacking = NULL;
-    }
-
-  if (display->grab_wireframe_active)
-    {
-      display->grab_wireframe_active = FALSE;
-      meta_window_end_wireframe (display->grab_window);
-
-      if (!display->grab_was_cancelled)
-        {
-          if (meta_grab_op_is_moving (display->grab_op))
-            meta_window_move (display->grab_window,
-                              TRUE,
-                              display->grab_wireframe_rect.x,
-                              display->grab_wireframe_rect.y);
-          if (meta_grab_op_is_resizing (display->grab_op))
-            meta_window_resize_with_gravity (display->grab_window,
-                                             TRUE,
-                                             display->grab_wireframe_rect.width,
-                                             display->grab_wireframe_rect.height,
-                                             meta_resize_gravity_from_grab_op (display->grab_op));
-        }
-      meta_window_calc_showing (display->grab_window);
     }
 
   if (display->grab_have_pointer)

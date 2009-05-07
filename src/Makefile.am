@@ -39,8 +39,6 @@ mutter_SOURCES= 				\
 	ui/draw-workspace.h			\
 	core/edge-resistance.c			\
 	core/edge-resistance.h			\
-	core/effects.c				\
-	core/effects.h				\
 	core/errors.c				\
 	include/errors.h			\
 	core/eventqueue.c			\

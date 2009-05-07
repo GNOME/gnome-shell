@@ -1141,17 +1141,8 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
   MetaRectangle old_outer, proposed_outer, new_outer;
   gboolean is_resize;
 
-  if (window == window->display->grab_window &&
-      window->display->grab_wireframe_active)
-    {
-      meta_window_get_xor_rect (window,
-                                &window->display->grab_wireframe_rect,
-                                &old_outer);
-    }
-  else
-    {
-      meta_window_get_outer_rect (window, &old_outer);
-    }
+  meta_window_get_outer_rect (window, &old_outer);
+
   proposed_outer = old_outer;
   proposed_outer.x += (*new_x - old_x);
   proposed_outer.y += (*new_y - old_y);
@@ -1236,17 +1227,7 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
   int proposed_outer_width, proposed_outer_height;
   gboolean is_resize;
 
-  if (window == window->display->grab_window &&
-      window->display->grab_wireframe_active)
-    {
-      meta_window_get_xor_rect (window,
-                                &window->display->grab_wireframe_rect,
-                                &old_outer);
-    }
-  else
-    {
-      meta_window_get_outer_rect (window, &old_outer);
-    }
+  meta_window_get_outer_rect (window, &old_outer);
   proposed_outer_width  = old_outer.width  + (*new_width  - old_width);
   proposed_outer_height = old_outer.height + (*new_height - old_height);
   meta_rectangle_resize_with_gravity (&old_outer, 

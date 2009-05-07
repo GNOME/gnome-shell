@@ -479,16 +479,6 @@ void        meta_window_get_geometry         (MetaWindow  *window,
                                               int         *y,
                                               int         *width,
                                               int         *height);
-void        meta_window_get_xor_rect         (MetaWindow          *window,
-                                              const MetaRectangle *grab_wireframe_rect,
-                                              MetaRectangle       *xor_rect);
-void        meta_window_begin_wireframe (MetaWindow *window);
-void        meta_window_update_wireframe (MetaWindow *window,
-                                          int         x,
-                                          int         y,
-                                          int         width,
-                                          int         height);
-void        meta_window_end_wireframe (MetaWindow *window);
 
 void        meta_window_kill               (MetaWindow  *window);
 void        meta_window_focus              (MetaWindow  *window,

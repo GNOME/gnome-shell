@@ -53,7 +53,6 @@ typedef enum
   META_PREF_VISUAL_BELL,
   META_PREF_AUDIBLE_BELL,
   META_PREF_VISUAL_BELL_TYPE,
-  META_PREF_REDUCED_RESOURCES,
   META_PREF_GNOME_ACCESSIBILITY,
   META_PREF_GNOME_ANIMATIONS,
   META_PREF_CURSOR_THEME,
@@ -90,7 +89,6 @@ gboolean                    meta_prefs_get_application_based  (void);
 gboolean                    meta_prefs_get_disable_workarounds (void);
 gboolean                    meta_prefs_get_auto_raise         (void);
 int                         meta_prefs_get_auto_raise_delay   (void);
-gboolean                    meta_prefs_get_reduced_resources  (void);
 gboolean                    meta_prefs_get_gnome_accessibility (void);
 gboolean                    meta_prefs_get_gnome_animations   (void);
 

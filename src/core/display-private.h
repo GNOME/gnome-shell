@@ -174,19 +174,13 @@ struct _MetaDisplay
   gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
-  guint       grab_wireframe_active : 1;
-  guint       grab_was_cancelled : 1;    /* Only used in wireframe mode */
   guint       grab_frame_action : 1;
-  MetaRectangle grab_wireframe_rect;
-  MetaRectangle grab_wireframe_last_xor_rect;
   MetaRectangle grab_initial_window_pos;
   int         grab_initial_x, grab_initial_y;  /* These are only relevant for */
   gboolean    grab_threshold_movement_reached; /* raise_on_click == FALSE.    */
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   guint32     grab_motion_notify_time;
-  int         grab_wireframe_last_display_width;
-  int         grab_wireframe_last_display_height;
   GList*      grab_old_window_stacking;
   MetaEdgeResistanceData *grab_edge_resistance_data;
   unsigned int grab_last_user_action_was_snap;
