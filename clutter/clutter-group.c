@@ -96,8 +96,7 @@ clutter_group_paint (ClutterActor *actor)
 
       g_assert (child != NULL);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
-	clutter_actor_paint (child);
+      clutter_actor_paint (child);
     }
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave '%s'",
@@ -109,14 +108,22 @@ static void
 clutter_group_pick (ClutterActor       *actor,
 		    const ClutterColor *color)
 {
+  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
+  GList               *child_item;
+
   /* Chain up so we get a bounding box pained (if we are reactive) */
   CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->pick (actor, color);
 
-  /* Just forward to the paint call which in turn will trigger
-   * the child actors also getting 'picked'.
-   */
-  if (CLUTTER_ACTOR_IS_VISIBLE (actor))
-    clutter_group_paint (actor);
+  for (child_item = priv->children;
+       child_item != NULL;
+       child_item = child_item->next)
+    {
+      ClutterActor *child = child_item->data;
+
+      g_assert (child != NULL);
+
+      clutter_actor_paint (child);
+    }
 }
 
 static void
