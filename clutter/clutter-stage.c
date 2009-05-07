@@ -1467,7 +1467,7 @@ clutter_stage_set_key_focus (ClutterStage *stage,
       g_object_weak_unref (G_OBJECT (priv->key_focused_actor),
 			   on_key_focused_weak_notify,
 			   stage);
-      g_signal_emit_by_name (priv->key_focused_actor, "focus-out");
+      g_signal_emit_by_name (priv->key_focused_actor, "key-focus-out");
 
       priv->key_focused_actor = NULL;
     }
