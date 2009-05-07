@@ -51,10 +51,8 @@ void meta_screen_set_compositor_data (MetaScreen *screen,
 
 MetaScreen *meta_screen_for_x_screen (Screen *xscreen);
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 void meta_screen_set_cm_selection (MetaScreen *screen);
 void meta_screen_unset_cm_selection (MetaScreen *screen);
-#endif
 
 GList *meta_screen_get_workspaces (MetaScreen *screen);
 

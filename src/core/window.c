@@ -53,9 +53,7 @@
 #include <X11/extensions/shape.h>
 #endif
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 #include <X11/extensions/Xcomposite.h>
-#endif
 
 static int destroying_windows_disallowed = 0;
 
@@ -463,14 +461,12 @@ meta_window_new_with_attrs (MetaDisplay       *display,
        /* any windows created via meta_create_offscreen_window: */
        (attrs->x == -100 && attrs->y == -100
 	&& attrs->width == 1 && attrs->height == 1) ||
-#ifdef HAVE_COMPOSITE_EXTENSIONS
        xwindow == screen->wm_cm_selection_window ||
        xwindow == screen->guard_window ||
        (display->compositor &&
         xwindow == XCompositeGetOverlayWindow (display->xdisplay,
 					       screen->xroot)
        )
-#endif
       )
      ) {
     meta_verbose ("Not managing our own windows\n");

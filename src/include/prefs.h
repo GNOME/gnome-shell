@@ -60,10 +60,7 @@ typedef enum
   META_PREF_CURSOR_SIZE,
   META_PREF_COMPOSITING_MANAGER,
   META_PREF_RESIZE_WITH_RIGHT_BUTTON,
-#ifdef WITH_CLUTTER
-  META_PREF_CLUTTER_DISABLED,
   META_PREF_CLUTTER_PLUGINS,
-#endif
   META_PREF_LIVE_HIDDEN_WINDOWS,
   META_PREF_NO_TAB_POPUP,
 } MetaPreference;
@@ -128,11 +125,6 @@ gboolean    meta_prefs_get_compositing_manager (void);
  */
 void meta_prefs_set_compositing_manager (gboolean whether);
 
-#ifdef WITH_CLUTTER
-
-gboolean meta_prefs_get_clutter_disabled (void);
-void     meta_prefs_set_clutter_disabled (gboolean whether);
-
 GSList * meta_prefs_get_clutter_plugins (void);
 
 /**
@@ -149,8 +141,6 @@ void meta_prefs_set_clutter_plugins (GSList *list);
  * \param list   list of plugin:option pairs
  */
 void meta_prefs_override_clutter_plugins (GSList *list);
-
-#endif
 
 gboolean meta_prefs_get_live_hidden_windows (void);
 void     meta_prefs_set_live_hidden_windows (gboolean whether);

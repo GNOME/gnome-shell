@@ -69,14 +69,12 @@
 #include <locale.h>
 #include <time.h>
 
-#ifdef WITH_CLUTTER
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
-#endif
 
 #ifdef HAVE_INTROSPECTION
 #include <girepository.h>
-#include "compositor/mutter/mutter-plugin-manager.h"
+#include "compositor/mutter-plugin-manager.h"
 #endif
 
 /**
@@ -178,11 +176,6 @@ meta_print_compilation_info (void)
 #else
   meta_verbose ("Compiled without startup notification\n");
 #endif
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-  meta_verbose ("Compiled with composite extensions\n");
-#else
-  meta_verbose ("Compiled without composite extensions\n");
-#endif
 }
 
 /**
@@ -237,12 +230,7 @@ typedef struct
   gchar *introspect;
 } MetaArguments;
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 #define COMPOSITE_OPTS_FLAGS 0
-#else /* HAVE_COMPOSITE_EXTENSIONS */
-/* No compositor, so don't show the arguments in --help */
-#define COMPOSITE_OPTS_FLAGS G_OPTION_FLAG_HIDDEN
-#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 /**
  * Parses argc and argv and returns the
@@ -316,14 +304,12 @@ meta_parse_options (int *argc, char ***argv,
       N_("Turn compositing off"),
       NULL
     },
-#ifdef WITH_CLUTTER
     {
       "mutter-plugins", 0, 0, G_OPTION_ARG_STRING,
       &my_args.mutter_plugins,
       N_("Comma-separated list of compositor plugins"),
       "PLUGINS"
     },
-#endif
     {
       "no-tab-popup", 0, 0, G_OPTION_ARG_NONE,
       &my_args.no_tab_popup,
@@ -344,15 +330,7 @@ meta_parse_options (int *argc, char ***argv,
 
   ctx = g_option_context_new (NULL);
   g_option_context_add_main_entries (ctx, options, "mutter");
-  
-#ifdef WITH_CLUTTER
-  /*
-   * This function is only available in clutter >= 0.8.2
-   */
-#if CLUTTER_CHECK_VERSION(0,8,2)
   g_option_context_add_group (ctx, clutter_get_option_group_without_init ());
-#endif
-#endif
 
   if (!g_option_context_parse (ctx, argc, argv, &error))
     {
@@ -365,8 +343,6 @@ meta_parse_options (int *argc, char ***argv,
   return ctx;
 }
 
-
-#ifdef WITH_CLUTTER
 /* Mutter is responsible for pulling events off the X queue, so Clutter
  * doesn't need (and shouldn't) run its normal event source which polls
  * the X fd, but we do have to deal with dispatching events that accumulate
@@ -419,19 +395,15 @@ meta_clutter_init (GOptionContext *ctx, int *argc, char ***argv)
   
   if (CLUTTER_INIT_SUCCESS == clutter_init (argc, argv))
     {
-      meta_compositor_can_use_clutter__ = 1;
-
       GSource *source = g_source_new (&event_funcs, sizeof (GSource));
       g_source_attach (source, NULL);
       g_source_unref (source);
     }
   else
     {
-      g_message ("Unable to initialize Clutter.\n");
-      meta_compositor_can_use_clutter__ = 0;
+	  meta_fatal ("Unable to initialize Clutter.\n");
     }
 }
-#endif
 
 /**
  * Selects which display Mutter should use. It first tries to use
@@ -581,7 +553,6 @@ main (int argc, char **argv)
   /* Parse command line arguments.*/
   ctx = meta_parse_options (&argc, &argv, &meta_args);
 
-#ifdef WITH_CLUTTER
   /* This must come before the introspect below, so we load all the plugins
    * in order to get their get_type functions.
    */
@@ -603,7 +574,6 @@ main (int argc, char **argv)
       g_slist_free(plugins_list);
       g_strfreev (plugins);
     }
-#endif /* WITH_CLUTTER */
 
 #ifdef HAVE_INTROSPECTION
   g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
@@ -648,12 +618,10 @@ main (int argc, char **argv)
   
   meta_ui_init (&argc, &argv);  
 
-#ifdef WITH_CLUTTER
   /*
    * Clutter can only be initialized after the UI.
    */
   meta_clutter_init (ctx, &argc, &argv);
-#endif
 
   g_option_context_free (ctx);
 

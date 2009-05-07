@@ -1,10 +1,6 @@
 lib_LTLIBRARIES = libmutter-private.la
 
-SUBDIRS=wm-tester tools
-
-if WITH_CLUTTER
-SUBDIRS += compositor/mutter/plugins
-endif
+SUBDIRS=wm-tester tools compositor/plugins
 
 INCLUDES=@MUTTER_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMUTTER_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMUTTER_PKGDATADIR=\"$(pkgdatadir)\" -DMUTTER_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"mutter\" -DSN_API_NOT_YET_FROZEN=1 -DMUTTER_MAJOR_VERSION=$(MUTTER_MAJOR_VERSION) -DMUTTER_MINOR_VERSION=$(MUTTER_MINOR_VERSION) -DMUTTER_MICRO_VERSION=$(MUTTER_MICRO_VERSION) -DMUTTER_PLUGIN_API_VERSION=$(MUTTER_PLUGIN_API_VERSION) -DMUTTER_PKGLIBDIR=\"$(pkglibdir)\" -DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"
 
@@ -21,9 +17,19 @@ mutter_SOURCES= 				\
 	include/boxes.h				\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
-	compositor/compositor-xrender.c		\
-	compositor/compositor-xrender.h		\
+	compositor/compositor-mutter.c		\
+	compositor/mutter-module.c		\
+	compositor/mutter-module.h		\
+	compositor/mutter-plugin.c		\
+	compositor/mutter-plugin-manager.c	\
+	compositor/mutter-plugin-manager.h	\
+	compositor/mutter-shaped-texture.c	\
+	compositor/mutter-shaped-texture.h	\
+	compositor/tidy/tidy-texture-frame.c	\
+	compositor/tidy/tidy-texture-frame.h	\
 	include/compositor.h			\
+	include/mutter-plugin.h			\
+	include/compositor-mutter.h 		\
 	core/constraints.c			\
 	core/constraints.h			\
 	core/core.c				\
@@ -107,22 +113,6 @@ mutter_SOURCES= 				\
 	ui/themewidget.h			\
 	ui/ui.c					\
 	include/all-keybindings.h
-
-if WITH_CLUTTER
-mutter_SOURCES += 					\
-	compositor/mutter/compositor-mutter.c		\
-	compositor/mutter/mutter-shaped-texture.c	\
-	compositor/mutter/mutter-shaped-texture.h	\
-	compositor/mutter/mutter-plugin-manager.c	\
-	compositor/mutter/mutter-plugin-manager.h	\
-	compositor/mutter/tidy/tidy-texture-frame.c	\
-	compositor/mutter/tidy/tidy-texture-frame.h	\
-	compositor/mutter/mutter-module.c		\
-	compositor/mutter/mutter-module.h		\
-	compositor/mutter/mutter-plugin.c		\
-	include/mutter-plugin.h				\
-	include/compositor-mutter.h
-endif
 
 # by setting libmutter_private_la_CFLAGS, the files shared with
 # mutter proper will be compiled with different names.

@@ -358,9 +358,7 @@ struct _MetaWindow
   /* maintained by group.c */
   MetaGroup *group;
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
   GObject *compositor_private;
-#endif
 };
 
 struct _MetaWindowClass

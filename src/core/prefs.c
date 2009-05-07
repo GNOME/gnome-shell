@@ -64,10 +64,7 @@
 
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
-#ifdef WITH_CLUTTER
-#define KEY_CLUTTER_DISABLED "/apps/mutter/general/clutter_disabled"
 #define KEY_CLUTTER_PLUGINS  "/apps/mutter/general/clutter_plugins"
-#endif
 
 #define KEY_LIVE_HIDDEN_WINDOWS "/apps/mutter/general/live_hidden_windows"
 
@@ -115,11 +112,8 @@ static char *terminal_command = NULL;
 
 static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 
-#ifdef WITH_CLUTTER
-static gboolean clutter_disabled = FALSE;
 static gboolean clutter_plugins_overridden = FALSE;
 static GSList *clutter_plugins = NULL;
-#endif
 
 static gboolean live_hidden_windows = FALSE;
 
@@ -428,13 +422,6 @@ static MetaBoolPreference preferences_bool[] =
       &resize_with_right_button,
       FALSE,
     },
-#ifdef WITH_CLUTTER
-    { "/apps/mutter/general/clutter_disabled",
-      META_PREF_CLUTTER_DISABLED,
-      &clutter_disabled,
-      FALSE,
-    },
-#endif
     { "/apps/mutter/general/live_hidden_windows",
       META_PREF_LIVE_HIDDEN_WINDOWS,
       &live_hidden_windows,
@@ -1068,13 +1055,11 @@ meta_prefs_init (void)
   handle_preference_init_string ();
   handle_preference_init_int ();
 
-#ifdef WITH_CLUTTER
   if (!clutter_plugins_overridden)
     clutter_plugins = gconf_client_get_list (default_client, KEY_CLUTTER_PLUGINS,
                                              GCONF_VALUE_STRING, &err);
 
   cleanup_error (&err);
-#endif
 
   /* @@@ Is there any reason we don't do the add_dir here? */
   for (gconf_dir_cursor=gconf_dirs_we_are_interested_in;
@@ -1223,7 +1208,6 @@ change_notify (GConfClient    *client,
     {
       queue_changed (META_PREF_KEYBINDINGS);
     }
-#ifdef WITH_CLUTTER
   else if (g_str_equal (key, KEY_CLUTTER_PLUGINS) && !clutter_plugins_overridden)
     {
       GError *err = NULL;
@@ -1241,7 +1225,6 @@ change_notify (GConfClient    *client,
       clutter_plugins = l;
       queue_changed (META_PREF_CLUTTER_PLUGINS);
     }
-#endif
   else
     {
       meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Mutter\n",
@@ -1825,14 +1808,13 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_RESIZE_WITH_RIGHT_BUTTON:
       return "RESIZE_WITH_RIGHT_BUTTON";
-#ifdef WITH_CLUTTER
-    case META_PREF_CLUTTER_DISABLED:
-      return "CLUTTER_DISABLED";
+
     case META_PREF_CLUTTER_PLUGINS:
       return "CLUTTER_PLUGINS";
-#endif
+
     case META_PREF_LIVE_HIDDEN_WINDOWS:
       return "LIVE_HIDDEN_WINDOWS";
+
     case META_PREF_NO_TAB_POPUP:
       return "NO_TAB_POPUP";
     }
@@ -2847,35 +2829,6 @@ meta_prefs_set_compositing_manager (gboolean whether)
 #endif
 }
 
-#ifdef WITH_CLUTTER
-gboolean
-meta_prefs_get_clutter_disabled (void)
-{
-  return clutter_disabled;
-}
-
-void
-meta_prefs_set_clutter_disabled (gboolean whether)
-{
-#ifdef HAVE_GCONF
-  GError *err = NULL;
-
-  gconf_client_set_bool (default_client,
-                         KEY_CLUTTER_DISABLED,
-                         whether,
-                         &err);
-
-  if (err)
-    {
-      meta_warning (_("Error setting clutter status status: %s\n"),
-                    err->message);
-      g_error_free (err);
-    }
-#else
-  clutter_disabled = whether;
-#endif
-}
-
 GSList *
 meta_prefs_get_clutter_plugins (void)
 {
@@ -2914,7 +2867,6 @@ meta_prefs_override_clutter_plugins (GSList *list)
 
   clutter_plugins = g_slist_reverse (clutter_plugins);
 }
-#endif
 
 gboolean
 meta_prefs_get_live_hidden_windows (void)

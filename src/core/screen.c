@@ -604,10 +604,7 @@ meta_screen_new (MetaDisplay *display,
                 LeaveWindowMask | EnterWindowMask |
                 KeyPressMask | KeyReleaseMask |
                 FocusChangeMask | StructureNotifyMask |
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-                ExposureMask |
-#endif
-		attr.your_event_mask);
+                ExposureMask | attr.your_event_mask);
   if (meta_error_trap_pop_with_return (display, FALSE) != Success)
     {
       meta_warning (_("Screen %d on display \"%s\" already has a window manager\n"),
@@ -638,11 +635,9 @@ meta_screen_new (MetaDisplay *display,
   screen->wm_sn_atom = wm_sn_atom;
   screen->wm_sn_timestamp = manager_timestamp;
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
   screen->wm_cm_selection_window = meta_create_offscreen_window (xdisplay, 
                                                                  xroot, 
                                                                  NoEventMask);
-#endif
   screen->work_area_idle = 0;
 
   screen->active_workspace = NULL;
@@ -939,7 +934,6 @@ meta_screen_manage_all_windows (MetaScreen *screen)
 void
 meta_screen_composite_all_windows (MetaScreen *screen)
 {
-#ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaDisplay *display;
   GSList *windows, *tmp;
 
@@ -955,7 +949,6 @@ meta_screen_composite_all_windows (MetaScreen *screen)
   
   /* initialize the compositor's view of the stacking order */
   meta_stack_tracker_sync_stack (screen->stack_tracker);
-#endif
 }
 
 /**
@@ -2967,7 +2960,6 @@ meta_screen_set_compositor_data (MetaScreen *screen,
   screen->compositor_data = compositor;
 }
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 void
 meta_screen_set_cm_selection (MetaScreen *screen)
 {
@@ -2991,7 +2983,6 @@ meta_screen_unset_cm_selection (MetaScreen *screen)
   a = XInternAtom (screen->display->xdisplay, selection, FALSE);
   XSetSelectionOwner (screen->display->xdisplay, a, None, CurrentTime);
 }
-#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 GList *
 meta_screen_get_workspaces (MetaScreen *screen)

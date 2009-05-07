@@ -62,20 +62,16 @@
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
 #endif
-#ifdef HAVE_RENDER
-#include <X11/extensions/Xrender.h>
-#endif
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
 #endif
 #ifdef HAVE_XCURSOR
 #include <X11/Xcursor/Xcursor.h>
 #endif
-#ifdef HAVE_COMPOSITE_EXTENSIONS
+#include <X11/extensions/Xrender.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xfixes.h>
-#endif
 #include <string.h>
 
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
@@ -546,7 +542,6 @@ meta_display_open (void)
   meta_verbose ("Not compiled with Shape support\n");
 #endif /* !HAVE_SHAPE */
 
-#ifdef HAVE_RENDER
   {
     the_display->have_render = FALSE;
     
@@ -567,11 +562,7 @@ meta_display_open (void)
                   the_display->render_error_base,
                   the_display->render_event_base);
   }
-#else  /* HAVE_RENDER */
-  meta_verbose ("Not compiled with Render support\n");
-#endif /* !HAVE_RENDER */
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
   {
     the_display->have_composite = FALSE;
 
@@ -647,9 +638,6 @@ meta_display_open (void)
                   the_display->xfixes_error_base, 
                   the_display->xfixes_event_base);
   }
-#else /* HAVE_COMPOSITE_EXTENSIONS */
-  meta_verbose ("Not compiled with Composite support\n");
-#endif /* !HAVE_COMPOSITE_EXTENSIONS */
       
 #ifdef HAVE_XCURSOR
   {
@@ -5204,7 +5192,6 @@ meta_display_overlay_key_activate (MetaDisplay *display)
   g_signal_emit (display, display_signals[OVERLAY_KEY], 0);
 }
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 void
 meta_display_get_compositor_version (MetaDisplay *display,
                                      int         *major,
@@ -5213,7 +5200,6 @@ meta_display_get_compositor_version (MetaDisplay *display,
   *major = display->composite_major_version;
   *minor = display->composite_minor_version;
 }
-#endif
 
 Display *
 meta_display_get_xdisplay (MetaDisplay *display)
@@ -5257,22 +5243,18 @@ meta_display_get_focus_window (MetaDisplay *display)
   return display->focus_window;
 }
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 int 
 meta_display_get_damage_event_base (MetaDisplay *display)
 {
   return display->damage_event_base;
 }
-#endif
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 #ifdef HAVE_SHAPE
 int
 meta_display_get_shape_event_base (MetaDisplay *display)
 {
   return display->shape_event_base;
 }
-#endif
 #endif
 
 Atom meta_display_get_atom (MetaDisplay *display, MetaAtom meta_atom)

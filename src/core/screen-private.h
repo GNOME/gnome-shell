@@ -117,9 +117,7 @@ struct _MetaScreen
   guint startup_sequence_timeout;
 #endif
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
   Window wm_cm_selection_window;
-#endif
 
   guint work_area_idle;
 

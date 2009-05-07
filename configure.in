@@ -153,16 +153,6 @@ AC_ARG_ENABLE(startup-notification,
                  [disable mutter's startup notification support, for embedded/size-sensitive custom non-GNOME builds]),,
   enable_startup_notification=auto)
 
-AC_ARG_ENABLE(compositor,
-  AC_HELP_STRING([--disable-compositor],
-                 [disable mutter's compositing manager]),,
-  enable_compositor=auto)
-
-AC_ARG_WITH(clutter,
-  AC_HELP_STRING([--without-clutter],
-                 [disable the use of clutter for compositing]),,
-  with_clutter=auto)
-
 AC_ARG_WITH(introspection,
   AC_HELP_STRING([--without-introspection],
                  [disable the use of GObject introspection]),,
@@ -172,11 +162,6 @@ AC_ARG_ENABLE(xsync,
   AC_HELP_STRING([--disable-xsync],
                  [disable mutter's use of the XSync extension]),,
   enable_xsync=auto)
-
-AC_ARG_ENABLE(render,
-  AC_HELP_STRING([--disable-render],
-                 [disable mutter's use of the RENDER extension]),,
-  enable_render=auto)
 
 AC_ARG_ENABLE(shape,
   AC_HELP_STRING([--disable-shape],
@@ -231,43 +216,10 @@ else
   echo "Building without libstartup-notification"
 fi
 
-## init this, it gets set either in the compositor check below
-## or the render-specific check later
-have_xrender=no
-
 XCOMPOSITE_VERSION=0.2
-if test x$enable_compositor = xyes; then
-   have_xcomposite=yes
-elif test x$enable_compositor = xauto; then
-   echo "Building compositing manager by default now."
-   have_xcomposite=yes
-else
-   have_xcomposite=no
-fi
 
-if test x$with_clutter = xyes; then
-   have_xcomposite=yes
-   have_clutter=yes
-elif test x$with_clutter = xauto; then
-   echo "Building clutter compositing manager by default now."
-   have_xcomposite=yes
-   have_clutter=yes
-else
-   have_clutter=no
-fi
-
-AM_CONDITIONAL(WITH_CLUTTER, test "$have_clutter" = "yes")
-
-if test x$have_xcomposite = xyes; then
-   AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
-   if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
-      AC_MSG_RESULT([yes])
-   else
-      AC_MSG_ERROR([no. Use --disable-compositor to disable.])
-   fi
-fi
-
-if test x$have_xcomposite = xyes; then
+AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
+if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
   AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, 1, [Building with compositing manager support])
   echo "Building with compositing manager"
@@ -275,42 +227,13 @@ if test x$have_xcomposite = xyes; then
   ## force on render also
   have_xrender=yes
 else
-  echo "Building without compositing manager"
+  AC_MSG_ERROR([no. Mutter requires the Xcomposite extension to build.])
 fi
 
-## if no compositor, still possibly enable render
-if test x$have_xcomposite = xno; then
-  XRENDER_VERSION=0.0
-  AC_MSG_CHECKING([xrender >= $XRENDER_VERSION])
-  if $PKG_CONFIG --atleast-version $XRENDER_VERSION xrender; then
-     have_xrender=yes
-  else
-     have_xrender=no
-  fi
-  AC_MSG_RESULT($have_xrender)
-
-  if test x$enable_render = xyes; then
-     have_xrender=yes
-     echo "Render support forced on"
-  elif test x$enable_render = xauto; then
-     true
-  else
-     have_xrender=no
-  fi
-
-  if test x$have_xrender = xyes; then
-     echo "Building with Render"
-     MUTTER_PC_MODULES="$MUTTER_PC_MODULES xrender >= $XRENDER_VERSION"
-  fi
-fi ## have_composite
-
-if test x$have_xrender = xyes; then
-  AC_DEFINE(HAVE_RENDER, , [Building with Render extension support])
-fi
-
+CLUTTER_VERSION=0.9.3
 CLUTTER_PACKAGE=clutter-0.9
 AC_SUBST(CLUTTER_PACKAGE)
-if test x$have_clutter = xyes; then
+if $PKG_CONFIG --atleast-version $CLUTTER_VERSION $CLUTTER_PACKAGE ; then
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES $CLUTTER_PACKAGE "
   PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
   AC_DEFINE(WITH_CLUTTER, , [Building with Clutter compositor])
@@ -327,6 +250,8 @@ if test x$have_clutter = xyes; then
     AC_DEFINE(HAVE_GLX_TEXTURE_PIXMAP, ,
               [Is ClutterGLXTexturePixmap available?])
   fi
+else
+  AC_MSG_ERROR([no. Mutter requires Clutter version $CLUTTER_VERSION.])
 fi
 
 if test x$with_introspection != xno; then
@@ -578,7 +503,7 @@ src/wm-tester/Makefile
 src/libmutter-private.pc
 src/mutter-plugins.pc
 src/tools/Makefile
-src/compositor/mutter/plugins/Makefile
+src/compositor/plugins/Makefile
 po/Makefile.in
 ])
 
@@ -611,15 +536,11 @@ mutter-$VERSION:
 	XFree86 Xinerama:         ${use_xfree_xinerama}
 	Solaris Xinerama:         ${use_solaris_xinerama}
 	Startup notification:     ${have_startup_notification}
-	Compositing manager:      ${have_xcomposite}
 	Introspection:            ${have_introspection}
 	Session management:       ${found_sm}
 	Shape extension:          ${found_shape}
-	Resize-and-rotate:        ${found_randr}
 	Xsync:                    ${found_xsync}
-	Render:                   ${have_xrender}
 	Xcursor:                  ${have_xcursor}
-	Clutter:                  ${have_clutter}
 "
 
 MUTTER_MINOR_VERSION=mutter_minor_version
