@@ -2,6 +2,7 @@
 
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
+const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -47,7 +48,6 @@ function Panel() {
 
 Panel.prototype = {
     _init : function() {
-        let me = this;
         let global = Shell.Global.get();
 
         // Put the background under the panel within a group.
@@ -87,12 +87,12 @@ Panel.prototype = {
         box.append(this.button.button, Big.BoxPackFlags.NONE);
 
         let statusbox = new Big.Box();
-        this._statusmenu = new Shell.StatusMenu();
+        let statusmenu = this._statusmenu = new Shell.StatusMenu();
         statusbox.append(this._statusmenu, Big.BoxPackFlags.NONE);
         let statusbutton = new Button.Button(statusbox, PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
                                              true, null, PANEL_HEIGHT);
         statusbutton.button.connect('button-press-event', function (b, e) {
-            me._statusmenu.toggle(e);
+            statusmenu.toggle(e);
             return false;
         });
         box.append(statusbutton.button, Big.BoxPackFlags.END);
@@ -165,10 +165,7 @@ Panel.prototype = {
         // Declare just "box" (ie, not the drop shadow) as a shell actor
         Main.addShellActor(box);
 
-        global.screen.connect('restacked',
-            function() {
-                me._restacked();
-            });
+        global.screen.connect('restacked', Lang.bind(this, this._restacked));
         this._restacked();
 
         // Start the clock
@@ -210,7 +207,6 @@ Panel.prototype = {
     },
 
     _updateClock: function() {
-        let me = this;
         let displayDate = new Date();
         let msecRemaining = 60000 - (1000 * displayDate.getSeconds() +
                                      displayDate.getMilliseconds());
@@ -219,10 +215,8 @@ Panel.prototype = {
             msecRemaining += 60000;
         }
         this._clock.set_text(displayDate.toLocaleFormat("%a %b %e, %l:%M %p"));
-        Mainloop.timeout_add(msecRemaining, function() {
-            me._updateClock();
-            return false;
-        });
+        Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
+        return false;
     },
 
     overlayHidden: function() {
