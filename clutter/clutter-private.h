@@ -44,6 +44,7 @@
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-id-pool.h"
+#include "clutter-master-clock.h"
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
@@ -129,6 +130,7 @@ struct _ClutterMainContext
 
   guint32 last_event_time;
 
+  ClutterMasterClock *master_clock;
   gulong redraw_count;
 };
 

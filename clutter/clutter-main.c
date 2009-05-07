@@ -182,12 +182,12 @@ void
 clutter_redraw (ClutterStage *stage)
 {
   ClutterMainContext *ctx;
+  ClutterMasterClock *master_clock;
   static GTimer *timer = NULL;
   static guint timer_n_frames = 0;
 
   ctx  = clutter_context_get_default ();
-
-  CLUTTER_NOTE (PAINT, " Redraw enter for stage:%p", stage);
+  master_clock = _clutter_master_clock_get_default ();
 
   /* Before we can paint, we have to be sure we have the latest layout */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
@@ -208,9 +208,14 @@ clutter_redraw (ClutterStage *stage)
 
   /* Call through to the actual backend to do the painting down from
    * the stage. It will likely need to swap buffers, vblank sync etc
-   * which will be windowing system dependant.
+   * which will be windowing system dependent
   */
   _clutter_backend_redraw (ctx->backend, stage);
+
+  /* prepare for the next frame; if anything queues a redraw as the
+   * result of a timeline, this will end up redrawing the scene
+   */
+  _clutter_master_clock_advance (master_clock);
 
   /* Complete FPS info */
   if (G_UNLIKELY (clutter_get_show_fps ()))
@@ -225,7 +230,6 @@ clutter_redraw (ClutterStage *stage)
 	}
     }
 
-  CLUTTER_NOTE (PAINT, " Redraw leave for stage:%p", stage);
   CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish for stage:%p", stage);
 }
 
@@ -1051,6 +1055,8 @@ clutter_context_get_default (void)
 
       ctx->is_initialized = FALSE;
       ctx->motion_events_per_actor = TRUE;
+
+      ctx->master_clock = _clutter_master_clock_get_default ();
 
 #ifdef CLUTTER_ENABLE_DEBUG
       ctx->timer          =  g_timer_new ();

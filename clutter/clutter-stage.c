@@ -379,20 +379,22 @@ redraw_update_idle (gpointer user_data)
    */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
 
+  /* redrawing will advance the master clock */
   CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
   clutter_redraw (stage);
 
+  /* reset the guard, so that new redraws are possible */
+  priv->update_idle = 0;
+
   if (CLUTTER_CONTEXT ()->redraw_count > 0)
     {
-      CLUTTER_NOTE (PAINT, "Queued %lu redraws during the last cycle",
+      CLUTTER_NOTE (SCHEDULER, "Queued %lu redraws during the last cycle",
                     CLUTTER_CONTEXT ()->redraw_count);
 
       CLUTTER_CONTEXT ()->redraw_count = 0;
     }
 
-  priv->update_idle = 0;
-
-  return retval;
+  return FALSE;
 }
 
 static void
