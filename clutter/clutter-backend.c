@@ -103,55 +103,74 @@ clutter_backend_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
 }
 
-static inline void
-update_units_per_em (ClutterBackend *backend)
+static ClutterUnit
+get_units_per_em (ClutterBackend       *backend,
+                  PangoFontDescription *font_desc)
 {
-  ClutterBackendPrivate *priv = backend->priv;
-  const gchar *font_name;
+  ClutterUnit units_per_em = -1.0;
+  gboolean free_font_desc = FALSE;
   gdouble dpi;
 
-  font_name = clutter_backend_get_font_name (backend);
   dpi = clutter_backend_get_resolution (backend);
 
-  if (G_LIKELY (font_name != NULL && *font_name != '\0'))
+  if (font_desc == NULL)
     {
-      PangoFontDescription *font_desc;
-      gdouble font_size = 0;
+      const gchar *font_name = clutter_backend_get_font_name (backend);
 
-      font_desc = pango_font_description_from_string (font_name);
-      if (G_LIKELY (font_desc != NULL))
+      if (G_LIKELY (font_name != NULL && *font_name != '\0'))
         {
-          gint pango_size;
-          gboolean is_absolute;
-
-          pango_size = pango_font_description_get_size (font_desc);
-          is_absolute =
-            pango_font_description_get_size_is_absolute (font_desc);
-          if (!is_absolute)
-            font_size = ((gdouble) font_size) / PANGO_SCALE;
-
-          pango_font_description_free (font_desc);
+          font_desc = pango_font_description_from_string (font_name);
+          free_font_desc = TRUE;
         }
+    }
 
-      /* 10 points at 96 DPI is 12 pixels */
-      priv->units_per_em = 1.2f * font_size
-                         * dpi
-                         / 96.0f;
+  if (font_desc != NULL)
+    {
+      gdouble font_size = 0;
+      gint pango_size;
+      gboolean is_absolute;
+
+      pango_size = pango_font_description_get_size (font_desc);
+      is_absolute = pango_font_description_get_size_is_absolute (font_desc);
+
+      /* "absolute" means "device units" (usually, pixels); otherwise,
+       * it means logical units (points)
+       */
+      if (is_absolute)
+        font_size = (gdouble) pango_size / PANGO_SCALE;
+      else
+        font_size = (gdouble) pango_size / PANGO_SCALE
+                  * dpi
+                  / 96.0f;
+
+      /* 10 points at 96 DPI is 13.3 pixels */
+      units_per_em = (1.2f * font_size)
+                   * dpi
+                   / 96.0f;
     }
   else
-    priv->units_per_em = -1.0f;
+    units_per_em = -1.0f;
+
+  if (free_font_desc)
+    pango_font_description_free (font_desc);
+
+  return units_per_em;
 }
 
 static void
 clutter_backend_real_resolution_changed (ClutterBackend *backend)
 {
-  update_units_per_em (backend);
+  backend->priv->units_per_em = get_units_per_em (backend, NULL);
+
+  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->priv->units_per_em);
 }
 
 static void
 clutter_backend_real_font_changed (ClutterBackend *backend)
 {
-  update_units_per_em (backend);
+  backend->priv->units_per_em = get_units_per_em (backend, NULL);
+
+  CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->priv->units_per_em);
 }
 
 static void
@@ -361,7 +380,8 @@ _clutter_backend_init_events (ClutterBackend *backend)
 }
 
 gfloat
-_clutter_backend_get_units_per_em (ClutterBackend *backend)
+_clutter_backend_get_units_per_em (ClutterBackend       *backend,
+                                   PangoFontDescription *font_desc)
 {
   ClutterBackendPrivate *priv;
 
@@ -369,8 +389,12 @@ _clutter_backend_get_units_per_em (ClutterBackend *backend)
 
   priv = backend->priv;
 
-  if (G_UNLIKELY (priv->units_per_em < 0))
-    update_units_per_em (backend);
+  /* recompute for the font description, but do not cache the result */
+  if (font_desc != NULL)
+    return get_units_per_em (backend, font_desc);
+
+  if (priv->units_per_em < 0)
+    priv->units_per_em = get_units_per_em (backend, NULL);
 
   return priv->units_per_em;
 }
@@ -603,6 +627,8 @@ clutter_backend_get_font_options (ClutterBackend *backend)
   cairo_font_options_set_antialias (priv->font_options,
                                     CAIRO_ANTIALIAS_DEFAULT);
 
+  g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
+
   return priv->font_options;
 }
 
@@ -662,7 +688,12 @@ clutter_backend_get_font_name (ClutterBackend *backend)
   if (G_LIKELY (priv->font_name))
     return priv->font_name;
 
+  /* if we have never been called then we need to set the
+   * default font and update everything that relies on the
+   * ::font-changed signal
+   */
   priv->font_name = g_strdup (DEFAULT_FONT_NAME);
+  g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
 
   return priv->font_name;
 }

@@ -193,7 +193,8 @@ void          _clutter_backend_init_events    (ClutterBackend  *backend);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
-gfloat        _clutter_backend_get_units_per_em   (ClutterBackend *backend);
+gfloat        _clutter_backend_get_units_per_em   (ClutterBackend       *backend,
+                                                   PangoFontDescription *font_desc);
 
 void          _clutter_feature_init (void);
 

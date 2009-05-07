@@ -32,7 +32,8 @@
 #define __CLUTTER_UNITS_H__
 
 #include <glib-object.h>
-#include <clutter/clutter-fixed.h>
+
+#include <cogl/cogl.h>
 
 G_BEGIN_DECLS
 
@@ -192,10 +193,12 @@ typedef float ClutterUnit;
  */
 #define CLUTTER_UNITS_FROM_EM(x)        (clutter_units_em (x))
 
-ClutterUnit clutter_units_mm        (gdouble     mm);
-ClutterUnit clutter_units_pt        (gdouble     pt);
-ClutterUnit clutter_units_em        (gdouble     em);
-ClutterUnit clutter_units_pixels    (gint        px);
+ClutterUnit clutter_units_mm          (gdouble      mm);
+ClutterUnit clutter_units_pt          (gdouble      pt);
+ClutterUnit clutter_units_em          (gdouble      em);
+ClutterUnit clutter_units_em_for_font (const gchar *font_name,
+                                       gdouble      em);
+ClutterUnit clutter_units_pixels      (gint         px);
 
 gint        clutter_units_to_pixels (ClutterUnit units);
 

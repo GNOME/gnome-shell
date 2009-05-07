@@ -169,11 +169,52 @@ clutter_units_pt (gdouble pt)
 ClutterUnit
 clutter_units_em (gdouble em)
 {
-  ClutterBackend *backend;
+  ClutterBackend *backend = clutter_get_default_backend ();
 
-  backend = clutter_get_default_backend ();
+  return em * _clutter_backend_get_units_per_em (backend, NULL);
+}
 
-  return em * _clutter_backend_get_units_per_em (backend);
+/**
+ * clutter_units_em_for_font:
+ * @font_name: the font name and size
+ * @em: em to convert
+ *
+ * Converts a value in em to #ClutterUnit<!-- -->s at the
+ * current DPI for the given font name.
+ *
+ * The @font_name string must be in a format that
+ * pango_font_description_from_string() can parse, like
+ * for clutter_text_set_font_name() or clutter_backend_set_font_name().
+ *
+ * Return value: the value in units
+ *
+ * Since: 1.0
+ */
+ClutterUnit
+clutter_units_em_for_font (const gchar *font_name,
+                           gdouble      em)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+
+  if (font_name == NULL || *font_name == '\0')
+    return em * _clutter_backend_get_units_per_em (backend, NULL);
+  else
+    {
+      PangoFontDescription *font_desc;
+      gfloat res;
+
+      font_desc = pango_font_description_from_string (font_name);
+      if (font_desc == NULL)
+        res = -1.0;
+      else
+        {
+          res = em * _clutter_backend_get_units_per_em (backend, font_desc);
+
+          pango_font_description_free (font_desc);
+        }
+
+      return res;
+    }
 }
 
 /**
