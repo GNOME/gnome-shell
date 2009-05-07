@@ -91,12 +91,18 @@ test_text_field_main (gint    argc,
   ClutterColor  entry_color       = {0x33, 0xff, 0x33, 0xff};
   ClutterColor  label_color       = {0xff, 0xff, 0xff, 0xff};
   ClutterColor  background_color  = {0x00, 0x00, 0x00, 0xff};
-  guint         width, height;
+  gfloat        width, height;
+  gfloat        h_padding, v_padding;
 
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &background_color);
+
+  h_padding = clutter_units_em_for_font (FONT, 2.0); /* 2em */
+  v_padding = clutter_units_em_for_font (FONT, 3.0); /* 3em */
+
+  g_print ("padding: h:%.2f px, v:%.2f px\n", h_padding, v_padding);
 
   text = create_label (&label_color, "<b>Input field:</b>    ");
   clutter_actor_set_position (text, 10, 10);
@@ -106,15 +112,17 @@ test_text_field_main (gint    argc,
   height = clutter_actor_get_height (text);
 
   text = create_entry (&entry_color, "<i>some</i> text", 0, 0);
-  clutter_actor_set_position (text, width + 10 + 12, 10);
+  clutter_actor_set_position (text, 10 + width + h_padding, 10);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
   text = create_label (&label_color, "<i>A very long password field</i>: ");
-  clutter_actor_set_position (text, 10, height + 12);
+  clutter_actor_set_position (text, 10, height + v_padding);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
   text = create_entry (&entry_color, "password", '*', 8);
-  clutter_actor_set_position (text, width + 10 + 12, height + 12);
+  clutter_actor_set_position (text,
+                              width + 10 + h_padding,
+                              height + 10 + v_padding);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
   clutter_actor_show (stage);
