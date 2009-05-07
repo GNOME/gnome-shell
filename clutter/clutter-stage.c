@@ -266,7 +266,7 @@ clutter_stage_pick (ClutterActor       *self,
    * Chain up to the groups paint howerer so our children get picked
    * - clutter_group_pick
    */
-  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
+  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->pick (self, color);
 }
 
 static void
@@ -358,7 +358,6 @@ redraw_update_idle (gpointer user_data)
   ClutterStage *stage = user_data;
   ClutterStagePrivate *priv = stage->priv;
   ClutterMasterClock *master_clock;
-  gboolean retval = FALSE;
 
   /* before we redraw we advance the master clock of one tick; this means
    * that all the timelines that need advancing will be advanced by one
