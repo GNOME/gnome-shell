@@ -89,6 +89,8 @@ cogl_clear (const CoglColor *color, gulong buffers)
   fprintf(stderr, "\n ============== Paint Start ================ \n");
 #endif
 
+  cogl_clip_ensure ();
+
   if (buffers & COGL_BUFFER_BIT_COLOR)
     {
       GE( glClearColor (cogl_color_get_red_float (color),
