@@ -462,6 +462,7 @@ clutter_list_model_get_iter_at_row (ClutterModel *model,
   if (row == 0)
     {
       GSequenceIter *filter_next;
+      gboolean row_found = FALSE;
 
       filter_next = g_sequence_get_begin_iter (sequence);
       g_assert (filter_next != NULL);
@@ -471,9 +472,20 @@ clutter_list_model_get_iter_at_row (ClutterModel *model,
           retval->seq_iter = filter_next;
 
           if (clutter_model_filter_iter (model, CLUTTER_MODEL_ITER (retval)))
-            break;
+            {
+              /* We've found a row that is valid under the filter */
+              row_found = TRUE;
+              break;
+            }
 
           filter_next = g_sequence_iter_next (filter_next);
+        }
+
+      /* Everything has been filtered -> there is no first row */
+      if (!row_found)
+        {
+          g_object_unref (retval);
+          return NULL;
         }
     }
   else
