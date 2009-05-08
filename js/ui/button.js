@@ -25,15 +25,17 @@ Button.prototype = {
         if (pressedButtonColor == null)
             this._pressedButtonColor = DEFAULT_PRESSED_BUTTON_COLOR;
 
+        this._staysPressed = staysPressed
         if (staysPressed == null)
-            staysPressed = false;
+            this._staysPressed = false;
+
         if (minWidth == null)
             minWidth = 0;
         if (minHeight == null)
             minHeight = 0;
 
-        // if staysPressed is true, this.active will be true past the first release of a button, untill a subsequent one (the button
-        // is unpressed) or untill release() is called explicitly
+        // if this._staysPressed is true, this._active will be true past the first release of a button, until a subsequent one (the button
+        // is unpressed) or until release() is called explicitly
         this._active = false;
         this._isBetweenPressAndRelease = false;
         this._mouseIsOverButton = false;
@@ -66,7 +68,7 @@ Button.prototype = {
         this.button.connect('button-release-event',
             function(o, event) {
                 me._isBetweenPressAndRelease = false;
-                if (!staysPressed || me._active) {
+                if (!me._staysPressed || me._active) {
                     me.release();
                 } else {
                     me._active = true;
@@ -92,8 +94,15 @@ Button.prototype = {
             });
     },
 
+    pressIn : function() {
+        if (!this._isBetweenPressAndRelease && this._staysPressed) {
+            this._active = true;
+            this.button.backgroundColor = this._pressedButtonColor;
+        }
+    },
+
     release : function() {
-        if (!this._isBetweenPressAndRelease) {
+        if (!this._isBetweenPressAndRelease && this._staysPressed) {
             this._active = false;
             if (this._mouseIsOverButton) {
                 this.button.backgroundColor = this._buttonColor;

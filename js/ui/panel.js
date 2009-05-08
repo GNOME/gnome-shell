@@ -151,6 +151,10 @@ Panel.prototype = {
         // to switch to.
         this.button.button.connect('button-press-event',
                                    Lang.bind(Main.overlay, Main.overlay.toggle));
+        // In addition to pressing the button, the overlay can be entered and exited by other means, such as
+        // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the overlay is entered
+        // and to be released when it is exited regardless of how it was triggered.
+        Main.overlay.connect('showing', Lang.bind(this.button, this.button.pressIn));
         Main.overlay.connect('hiding', Lang.bind(this.button, this.button.release));
 
         this.actor.add_actor(box);
