@@ -491,6 +491,27 @@ void            cogl_set_source_texture       (CoglHandle texture_handle);
  */
 
 /**
+ * cogl_clip_push_window_rect:
+ * @x_offset: left edge of the clip rectangle in window coordinates
+ * @y_offset: top edge of the clip rectangle in window coordinates
+ * @width: width of the clip rectangle
+ * @height: height of the clip rectangle
+ *
+ * Specifies a rectangular clipping area for all subsequent drawing
+ * operations. Any drawing commands that extend outside the rectangle
+ * will be clipped so that only the portion inside the rectangle will
+ * be displayed. The rectangle dimensions are not transformed by the
+ * current model-view matrix.
+ *
+ * The rectangle is intersected with the current clip region. To undo
+ * the effect of this function, call cogl_clip_pop().
+ */
+void            cogl_clip_push_window_rect    (float x_offset,
+                                               float y_offset,
+                                               float width,
+                                               float height);
+
+/**
  * cogl_clip_push:
  * @x_offset: left edge of the clip rectangle
  * @y_offset: top edge of the clip rectangle
