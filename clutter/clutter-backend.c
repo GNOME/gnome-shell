@@ -304,8 +304,8 @@ void
 _clutter_backend_ensure_context (ClutterBackend *backend,
                                  ClutterStage   *stage)
 {
-  ClutterBackendClass *klass;
   static ClutterStage *current_context_stage = NULL;
+  ClutterBackendClass *klass;
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
@@ -314,8 +314,16 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
     {
       if (!CLUTTER_ACTOR_IS_REALIZED (stage))
         {
-          CLUTTER_NOTE (MULTISTAGE, "Stage is not realized, unsetting");
-          stage = NULL;
+          CLUTTER_NOTE (MULTISTAGE,
+                        "Stage [%p] is not realized, realizing",
+                        stage);
+
+          /* if we are asked to ensure a particular stage we need
+           * to make sure that is has been realized; calling
+           * realized() twice in a row is cheap, since the method
+           * will check first
+           */
+          clutter_actor_realize (CLUTTER_ACTOR (stage));
         }
       else
         CLUTTER_NOTE (MULTISTAGE, "Setting the new stage [%p]", stage);

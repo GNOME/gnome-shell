@@ -483,10 +483,13 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   stage_x11->backend = backend_x11;
   stage_x11->wrapper = wrapper;
 
-  CLUTTER_NOTE (BACKEND, "GLX stage created (display:%p, screen:%d, root:%u)",
+  CLUTTER_NOTE (BACKEND,
+                "GLX stage created[%p] (dpy:%p, screen:%d, root:%u, wrap:%p)",
+                stage,
                 stage_x11->xdpy,
                 stage_x11->xscreen,
-                (unsigned int) stage_x11->xwin_root);
+                (unsigned int) stage_x11->xwin_root,
+                wrapper);
 
   return stage;
 }

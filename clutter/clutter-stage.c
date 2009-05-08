@@ -275,8 +275,9 @@ clutter_stage_realize (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   /* Make sure the viewport and projection matrix are valid for the
-     first paint (which will likely occur before the ConfigureNotify
-     is received) */
+   * first paint (which will likely occur before the ConfigureNotify
+   * is received)
+   */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
 
   g_assert (priv->impl != NULL);
@@ -286,7 +287,10 @@ clutter_stage_realize (ClutterActor *self)
    * realization sequence was successful
    */
   if (CLUTTER_ACTOR_IS_REALIZED (priv->impl))
-    clutter_stage_ensure_current (CLUTTER_STAGE (self));
+    {
+      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+      clutter_stage_ensure_current (CLUTTER_STAGE (self));
+    }
   else
     CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 }
@@ -582,8 +586,9 @@ clutter_stage_dispose (GObject *object)
 
   if (priv->impl)
     {
-      CLUTTER_NOTE (MISC, "Disposing of the stage implementation");
-      g_object_unref (priv->impl);
+      CLUTTER_NOTE (BACKEND, "Disposing of the stage implementation");
+      clutter_actor_hide (priv->impl);
+      clutter_actor_destroy (priv->impl);
       priv->impl = NULL;
     }
 
@@ -846,6 +851,9 @@ clutter_stage_init (ClutterStage *self)
     }
   else
     g_object_ref_sink (priv->impl);
+
+  /* make sure that the implementation is considered a top level */
+  CLUTTER_SET_PRIVATE_FLAGS (priv->impl, CLUTTER_ACTOR_IS_TOPLEVEL);
 
   priv->is_offscreen      = FALSE;
   priv->is_fullscreen     = FALSE;
