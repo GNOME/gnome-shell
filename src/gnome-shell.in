@@ -134,7 +134,7 @@ def start_shell():
     # Set up environment
     env = dict(os.environ)
     env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
-                'PATH'                : '@META_BIN_DIR@:' + os.environ.get('PATH', '') + ':' + taskpanel_dir,
+                'PATH'                : '@MUTTER_BIN_DIR@:' + os.environ.get('PATH', '') + ':' + taskpanel_dir,
                 'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
     if running_from_source_tree:
@@ -187,7 +187,7 @@ def start_shell():
     else:
         args = []
         
-    args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
+    args.extend(['mutter', '--mutter-plugins=' + plugin, '--replace'])
     if options.sync:
         args.append('--sync')
     return subprocess.Popen(args, env=env)
