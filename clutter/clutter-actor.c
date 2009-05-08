@@ -558,8 +558,11 @@ clutter_actor_verify_map_state (ClutterActor *self)
             {
               if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
                 {
-                  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
-                    g_warning ("Toplevel actor is mapped but not visible");
+                  if (!CLUTTER_ACTOR_IS_VISIBLE (self) &&
+                      !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
+                    {
+                      g_warning ("Toplevel actor is mapped but not visible");
+                    }
                 }
               else
                 {
@@ -690,7 +693,9 @@ clutter_actor_update_map_state (ClutterActor  *self,
           break;
         }
 
-      if (CLUTTER_ACTOR_IS_MAPPED (self) && !CLUTTER_ACTOR_IS_VISIBLE (self))
+      if (CLUTTER_ACTOR_IS_MAPPED (self) &&
+          !CLUTTER_ACTOR_IS_VISIBLE (self) &&
+          !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
         {
           g_warning ("Clutter toplevel is not visible, but is "
                      "somehow still mapped");
@@ -1139,7 +1144,7 @@ clutter_actor_realize (ClutterActor *self)
   /* To be realized, our parent actors must be realized first.
    * This will only succeed if we're inside a toplevel.
    */
-  if (self->priv->parent_actor)
+  if (self->priv->parent_actor != NULL)
     clutter_actor_realize (self->priv->parent_actor);
 
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
@@ -2820,9 +2825,13 @@ clutter_actor_dispose (GObject *object)
 
   /* parent should be gone */
   g_assert (priv->parent_actor == NULL);
-  /* can't be mapped or realized with no parent */
-  g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
-  g_assert (!CLUTTER_ACTOR_IS_REALIZED (self));
+
+  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+    {
+      /* can't be mapped or realized with no parent */
+      g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
+      g_assert (!CLUTTER_ACTOR_IS_REALIZED (self));
+    }
 
   destroy_shader_data (self);
 
