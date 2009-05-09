@@ -53,6 +53,12 @@ gboolean
 _cogl_bitmap_fallback_can_unpremult (CoglPixelFormat format);
 
 gboolean
+_cogl_bitmap_can_premult (CoglPixelFormat format);
+
+gboolean
+_cogl_bitmap_fallback_can_premult (CoglPixelFormat format);
+
+gboolean
 _cogl_bitmap_convert (const CoglBitmap *bmp,
 		      CoglBitmap       *dst_bmp,
 		      CoglPixelFormat   dst_format);
@@ -68,6 +74,14 @@ _cogl_bitmap_unpremult (const CoglBitmap *bmp,
 gboolean
 _cogl_bitmap_fallback_unpremult (const CoglBitmap *bmp,
 				 CoglBitmap       *dst_bmp);
+
+gboolean
+_cogl_bitmap_premult (const CoglBitmap *bmp,
+		      CoglBitmap       *dst_bmp);
+
+gboolean
+_cogl_bitmap_fallback_premult (const CoglBitmap *bmp,
+			       CoglBitmap       *dst_bmp);
 
 gboolean
 _cogl_bitmap_from_file (CoglBitmap  *bmp,
