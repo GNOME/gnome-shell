@@ -59,8 +59,8 @@ Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(CLUTTER_COGL)/libclut
 
 BUILT_GIRSOURCES = Cogl-@CLUTTER_API_VERSION@.gir
 
-girdir = $(datadir)/gir-1.0
-gir_DATA = $(BUILT_GIRSOURCES)
+#girdir = $(datadir)/gir-1.0
+#gir_DATA = $(BUILT_GIRSOURCES)
 
 #typelibsdir = $(libdir)/girepository-1.0
 #typelibs_DATA = Cogl-@CLUTTER_API_VERSION@.typelib
