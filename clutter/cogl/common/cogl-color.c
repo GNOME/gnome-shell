@@ -154,6 +154,14 @@ cogl_color_get_alpha (const CoglColor *color)
 }
 
 void
+cogl_color_premultiply (CoglColor *color)
+{
+  color->red = (color->red * color->alpha + 128) / 255;
+  color->green = (color->green * color->alpha + 128) / 255;
+  color->blue = (color->blue * color->alpha + 128) / 255;
+}
+
+void
 cogl_set_source_color4ub (guint8 red,
                           guint8 green,
                           guint8 blue,
