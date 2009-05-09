@@ -228,6 +228,18 @@ float     cogl_color_get_blue        (const CoglColor *color);
  */
 float     cogl_color_get_alpha       (const CoglColor *color);
 
+/**
+ * cogl_color_premultiply:
+ * @color: the color to premultiply
+ *
+ * Converts a non-premultiplied color to a pre-multiplied color. For
+ * example, semi-transparent red is (1.0, 0, 0, 0.5) when non-premultiplied
+ * and (0.5, 0, 0, 0.5) when premultiplied.
+ *
+ * Since: 1.0
+ */
+void cogl_color_premultiply (CoglColor *color);
+
 G_END_DECLS
 
 #endif /* __COGL_COLOR_H__ */
