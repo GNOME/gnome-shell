@@ -1225,7 +1225,7 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
 
   if (cogl_texture_get_data (cogl_texture,
 			     priv->local_data_has_alpha
-			     ? COGL_PIXEL_FORMAT_RGBA_8888
+			     ? COGL_PIXEL_FORMAT_RGBA_8888_PRE
 			     : COGL_PIXEL_FORMAT_RGB_888,
 			     priv->local_data_rowstride,
 			     priv->local_data) == 0)
@@ -1252,7 +1252,7 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
 				     priv->local_data_height,
 				     priv->local_data_rowstride,
 				     priv->local_data_has_alpha ? 4: 3,
-				     0, NULL);
+				     CLUTTER_TEXTURE_RGB_FLAG_PREMULT, NULL);
 
   g_free (priv->local_data);
   priv->local_data = NULL;
