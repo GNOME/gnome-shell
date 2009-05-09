@@ -87,8 +87,8 @@ _cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
     }
 
   /* Do we need to unpremultiply */
-  if ((bmp->format & COGL_PREMULT_BIT) == 0 &&
-      (dst_format & COGL_PREMULT_BIT) > 0)
+  if ((bmp->format & COGL_PREMULT_BIT) > 0 &&
+      (dst_format & COGL_PREMULT_BIT) == 0)
     {
       /* Try unpremultiplying using imaging library */
       if (!_cogl_bitmap_unpremult (&new_bmp, &tmp_bmp))
@@ -112,14 +112,28 @@ _cogl_bitmap_convert_and_premult (const CoglBitmap *bmp,
     }
 
   /* Do we need to premultiply */
-  if ((bmp->format & COGL_PREMULT_BIT) > 0 &&
-      (dst_format & COGL_PREMULT_BIT) == 0)
+  if ((bmp->format & COGL_PREMULT_BIT) == 0 &&
+      (dst_format & COGL_PREMULT_BIT) > 0)
     {
-      /* FIXME: implement premultiplication */
+      /* Try premultiplying using imaging library */
+      if (!_cogl_bitmap_premult (&new_bmp, &tmp_bmp))
+	{
+	  /* ... or try fallback */
+	  if (!_cogl_bitmap_fallback_premult (&new_bmp, &tmp_bmp))
+	    {
+	      if (new_bmp_owner)
+		g_free (new_bmp.data);
+
+	      return FALSE;
+	    }
+	}
+
+      /* Update bitmap with new data */
       if (new_bmp_owner)
 	g_free (new_bmp.data);
 
-      return FALSE;
+      new_bmp = tmp_bmp;
+      new_bmp_owner = TRUE;
     }
 
   /* Output new bitmap info */
