@@ -455,8 +455,13 @@ void            cogl_set_source               (CoglHandle material);
  * cogl_set_source_color:
  * @color: a #CoglColor
  *
- * Sets the source color using normalized values for each component.
- * This color will be used for any subsequent drawing operation.
+ * This is a convenience function for creating a solid fill source material
+ * from the given color. This color will be used for any subsequent drawing
+ * operation.
+ *
+ * The color will be premultiplied by Cogl, so the color should be
+ * non-premultiplied. For example: use (1.0, 0.0, 0.0, 0.5) for
+ * semi-transparent red.
  *
  * See also cogl_set_source_color4ub() and cogl_set_source_color4f()
  * if you already have the color components.

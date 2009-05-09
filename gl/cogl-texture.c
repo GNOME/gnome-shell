@@ -1085,18 +1085,20 @@ _cogl_pixel_format_to_gl (CoglPixelFormat  format,
   GLenum          glformat = 0;
   GLenum          gltype = 0;
 
-  /* No premultiplied formats accepted  by GL
-   * (FIXME: latest hardware?) */
-
-  if (format & COGL_PREMULT_BIT)
-    format = (format & COGL_UNPREMULT_MASK);
-
-  /* Everything else accepted
-   * (FIXME: check YUV support) */
-  required_format = format;
+  /* If PREMULT_BIT isn't specified, that means that we premultiply
+   * textures with alpha before uploading to GL; once we are in GL land,
+   * everything is premultiplied.
+   *
+   * Everything else accepted (FIXME: check YUV support)
+   */
+  if ((format & COGL_A_BIT) != 0 &&
+      format != COGL_PIXEL_FORMAT_A_8)
+    required_format = format | COGL_PREMULT_BIT;
+  else
+    required_format = format;
 
   /* Find GL equivalents */
-  switch (format)
+  switch (format & COGL_UNPREMULT_MASK)
     {
     case COGL_PIXEL_FORMAT_A_8:
       glintformat = GL_ALPHA;
