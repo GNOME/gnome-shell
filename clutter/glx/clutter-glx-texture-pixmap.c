@@ -359,14 +359,16 @@ create_cogl_texture (ClutterTexture *texture,
       handle = cogl_texture_new_from_foreign (tex, CGL_TEXTURE_RECTANGLE_ARB,
                                               width, height,
                                               0, 0,
-                                              cogl_format | COGL_BGR_BIT);
+                                              cogl_format | COGL_BGR_BIT |
+                                              COGL_PREMULT_BIT);
     }
   else
     {
       handle
         = cogl_texture_new_with_size (width, height,
                                       COGL_TEXTURE_NO_SLICING,
-                                      cogl_format | COGL_BGR_BIT);
+                                      cogl_format | COGL_BGR_BIT |
+                                      COGL_PREMULT_BIT);
 
       using_rectangle = FALSE;
     }

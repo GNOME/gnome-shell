@@ -296,7 +296,7 @@ clutter_texture_realize (ClutterActor *actor)
       tex = cogl_texture_new_with_size (priv->width,
                                         priv->height,
                                         flags,
-                                        COGL_PIXEL_FORMAT_RGBA_8888);
+                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
       cogl_material_set_layer (priv->material, 0, tex);
 
@@ -2243,7 +2243,7 @@ on_fbo_source_size_change (GObject          *object,
       tex = cogl_texture_new_with_size (MAX (priv->width, 1),
                                         MAX (priv->height, 1),
                                         flags,
-                                        COGL_PIXEL_FORMAT_RGBA_8888);
+                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
       cogl_material_set_layer (priv->material, 0, tex);
 
