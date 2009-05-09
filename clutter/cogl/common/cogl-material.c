@@ -109,7 +109,7 @@ cogl_material_new (void)
   material->blend_constant[2] = 0;
   material->blend_constant[3] = 0;
 #endif
-  material->blend_src_factor_rgb = GL_SRC_ALPHA;
+  material->blend_src_factor_rgb = GL_ONE;
   material->blend_dst_factor_rgb = GL_ONE_MINUS_SRC_ALPHA;
   material->flags |= COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
 

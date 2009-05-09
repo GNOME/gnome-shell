@@ -106,7 +106,7 @@ test_coglbox_paint(ClutterActor *self)
   cogl_set_draw_buffer (COGL_WINDOW_BUFFER, 0);
 
   material = cogl_material_new ();
-  cogl_material_set_color4ub (material, 0xff, 0xff, 0xff, 0x88);
+  cogl_material_set_color4ub (material, 0x88, 0x88, 0x88, 0x88);
   cogl_material_set_layer (material, 0, priv->texture_id);
   cogl_set_source (material);
   cogl_rectangle_with_texture_coords (100, 100,

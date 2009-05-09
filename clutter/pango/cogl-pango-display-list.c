@@ -239,8 +239,10 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
                                          const CoglColor *color,
                                          CoglPangoDisplayListNode *node)
 {
+  CoglColor premult_color = *color;
   cogl_material_set_layer (material, 0, node->d.texture.texture);
-  cogl_material_set_color (material, color);
+  cogl_color_premultiply (&premult_color);
+  cogl_material_set_color (material, &premult_color);
   cogl_set_source (material);
 
   if (node->d.texture.vertex_buffer == COGL_INVALID_HANDLE)
@@ -311,6 +313,7 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
                                  cogl_color_get_alpha_byte (color));
       else
         draw_color = *color;
+      cogl_color_premultiply (&draw_color);
 
       switch (node->type)
         {

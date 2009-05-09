@@ -608,7 +608,8 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
-  cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff, paint_opacity);
+  cogl_material_set_color4ub (priv->material,
+			      paint_opacity, paint_opacity, paint_opacity, paint_opacity);
 
   clutter_actor_get_allocation_box (self, &box);
 
