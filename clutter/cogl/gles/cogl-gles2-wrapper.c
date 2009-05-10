@@ -1300,11 +1300,18 @@ cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 }
 
 void
-cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLfloat param)
+cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
 {
   /* This function is only used to set the texture mode once to
      GL_MODULATE. The shader is hard-coded to modulate the texture so
      nothing needs to be done here. */
+}
+
+void
+cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params)
+{
+  /* FIXME: Currently needed to support texture combining using
+   * COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT */
 }
 
 void

@@ -354,6 +354,8 @@ CoglMaterialAlphaFunc
 cogl_material_set_alpha_test_function
 CoglMaterialBlendFactor
 cogl_material_set_blend_factors
+cogl_material_set_blend
+cogl_material_set_blend_constant
 cogl_material_set_layer
 cogl_material_remove_layer
 CoglMaterialLayerCombineFunc
@@ -363,6 +365,8 @@ CoglMaterialLayerCombineSrc
 cogl_material_set_layer_combine_arg_src
 CoglMaterialLayerCombineOp
 cogl_material_set_layer_combine_arg_op
+cogl_material_set_layer_combine
+cogl_material_set_layer_combine_constant
 cogl_material_set_layer_matrix
 <SUBSECTION Private>
 CoglMaterial

@@ -78,6 +78,8 @@ struct _CoglMaterialLayer
   CoglMaterialLayerCombineSrc texture_combine_alpha_src[3];
   CoglMaterialLayerCombineOp texture_combine_alpha_op[3];
 
+  GLfloat texture_combine_constant[4];
+
   /* TODO: Support purely GLSL based material layers */
 
   CoglMatrix matrix;
@@ -114,8 +116,15 @@ struct _CoglMaterial
   GLfloat		alpha_func_reference;
 
   /* Determines how this material is blended with other primitives */
-  CoglMaterialBlendFactor blend_src_factor;
-  CoglMaterialBlendFactor blend_dst_factor;
+#ifndef HAVE_COGL_GLES
+  GLenum blend_equation_rgb;
+  GLenum blend_equation_alpha;
+  CoglMaterialBlendFactor blend_dst_factor_alpha;
+  CoglMaterialBlendFactor blend_src_factor_alpha;
+  GLfloat blend_constant[4];
+#endif
+  CoglMaterialBlendFactor blend_src_factor_rgb;
+  CoglMaterialBlendFactor blend_dst_factor_rgb;
 
   GList	   *layers;
 };

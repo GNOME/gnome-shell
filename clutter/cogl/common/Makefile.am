@@ -39,4 +39,6 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-matrix-stack.h		\
 	cogl-material.c			\
 	cogl-material-private.h		\
+	cogl-blend-string.c		\
+	cogl-blend-string.h		\
 	cogl-debug.c

@@ -442,6 +442,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   gint       bpp;
   GLint      viewport[4];
   CoglBitmap alpha_bmp;
+  CoglHandle prev_source;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -477,31 +478,21 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   if (ctx->texture_download_material == COGL_INVALID_HANDLE)
     {
       ctx->texture_download_material = cogl_material_new ();
-      cogl_material_set_layer_combine_function (
-                                    ctx->texture_download_material,
-                                    0, /* layer */
-                                    COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-                                    COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE);
-      cogl_material_set_layer_combine_arg_src (
-                                    ctx->texture_download_material,
-                                    0, /* layer */
-                                    0, /* arg */
-                                    COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-                                    COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE);
-      cogl_material_set_blend_factors (ctx->texture_download_material,
-                                       COGL_MATERIAL_BLEND_FACTOR_ONE,
-                                       COGL_MATERIAL_BLEND_FACTOR_ZERO);
+      cogl_material_set_blend (ctx->texture_download_material,
+                               "RGBA = ADD (SRC_COLOR, 0)",
+                               NULL);
     }
+
+  prev_source = cogl_handle_ref (ctx->source_material);
+  cogl_set_source (ctx->texture_download_material);
 
   cogl_material_set_layer (ctx->texture_download_material, 0, tex);
 
-  cogl_material_set_layer_combine_arg_op (
-                                  ctx->texture_download_material,
-                                  0, /* layer */
-                                  0, /* arg */
-                                  COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-                                  COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR);
-  cogl_material_flush_gl_state (ctx->texture_download_material, NULL);
+  cogl_material_set_layer_combine (ctx->texture_download_material,
+                                   0, /* layer */
+                                   "RGBA = REPLACE (TEXTURE)",
+                                   NULL);
+
   _cogl_texture_draw_and_read (tex, target_bmp, viewport);
 
   /* Check whether texture has alpha and framebuffer not */
@@ -534,13 +525,11 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
                                            alpha_bmp.height);
 
       /* Draw alpha values into RGB channels */
-      cogl_material_set_layer_combine_arg_op (
-                                  ctx->texture_download_material,
-                                  0, /* layer */
-                                  0, /* arg */
-                                  COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-                                  COGL_MATERIAL_LAYER_COMBINE_OP_SRC_ALPHA);
-      cogl_material_flush_gl_state (ctx->texture_download_material, NULL);
+      cogl_material_set_layer_combine (ctx->texture_download_material,
+                                       0, /* layer */
+                                       "RGBA = REPLACE (TEXTURE[A])",
+                                       NULL);
+
       _cogl_texture_draw_and_read (tex, &alpha_bmp, viewport);
 
       /* Copy temp R to target A */
@@ -567,6 +556,10 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   _cogl_current_matrix_pop ();
   _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
   _cogl_current_matrix_pop ();
+
+  /* restore the original material */
+  cogl_set_source (prev_source);
+  cogl_handle_unref (prev_source);
 
   return TRUE;
 }

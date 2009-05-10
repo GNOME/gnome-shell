@@ -28,6 +28,7 @@ test_conformance_SOURCES = 		\
 	test-anchors.c                  \
 	test-npot-texture.c             \
 	test-model.c			\
+	test-blend-strings.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
@@ -59,7 +60,7 @@ clean-wrappers:
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers
-	
+
 test_conformance_CFLAGS = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
