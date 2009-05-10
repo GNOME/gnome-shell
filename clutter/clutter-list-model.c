@@ -692,7 +692,7 @@ clutter_list_model_dispose (GObject *gobject)
       model->priv->temp_iter = NULL;
     }
 
-  G_OBJECT_CLASS (clutter_list_model_parent_class)->finalize (gobject);
+  G_OBJECT_CLASS (clutter_list_model_parent_class)->dispose (gobject);
 }
 
 static void
