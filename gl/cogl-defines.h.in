@@ -1020,6 +1020,18 @@ typedef void
   (APIENTRYP             COGL_PFNGLCLIENTACTIVETEXTUREPROC)
   (GLenum                texture);
 
+typedef void
+  (APIENTRYP             COGL_PFNGLBLENDFUNCSEPARATEPROC)
+  (GLenum                srcRGB,
+   GLenum                dstRGB,
+   GLenum                srcAlpha,
+   GLenum                dstAlpha);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLBLENDEQUATIONSEPARATEPROC)
+  (GLenum                modeRGB,
+   GLenum                modeAlpha);
+
 G_END_DECLS
 
 #endif

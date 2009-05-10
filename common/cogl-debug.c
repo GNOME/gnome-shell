@@ -39,7 +39,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "draw", COGL_DEBUG_DRAW },
   { "pango", COGL_DEBUG_PANGO },
   { "rectangles", COGL_DEBUG_RECTANGLES },
-  { "handle", COGL_DEBUG_HANDLE }
+  { "handle", COGL_DEBUG_HANDLE },
+  { "blend-strings", COGL_DEBUG_BLEND_STRINGS }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);

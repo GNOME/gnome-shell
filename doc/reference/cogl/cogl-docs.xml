@@ -55,6 +55,7 @@
     <xi:include href="xml/cogl.xml"/>
     <xi:include href="xml/cogl-color.xml"/>
     <xi:include href="xml/cogl-texture.xml"/>
+    <xi:include href="blend-strings.xml"/>
     <xi:include href="xml/cogl-material.xml"/>
     <xi:include href="xml/cogl-primitives.xml"/>
     <xi:include href="xml/cogl-vertex-buffer.xml"/>

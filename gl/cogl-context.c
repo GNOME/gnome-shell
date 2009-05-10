@@ -136,6 +136,9 @@ cogl_create_context ()
   _context->pf_glActiveTexture = NULL;
   _context->pf_glClientActiveTexture = NULL;
 
+  _context->pf_glBlendFuncSeparate = NULL;
+  _context->pf_glBlendEquationSeparate = NULL;
+
   /* Initialise the clip stack */
   _cogl_clip_stack_state_init ();
 

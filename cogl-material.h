@@ -43,7 +43,6 @@ G_BEGIN_DECLS
  * blended together.
  */
 
-
 /**
  * cogl_material_new:
  *
@@ -378,10 +377,12 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: (1-As, 1-As, 1-As, 1-As)
  * @COGL_MATERIAL_BLEND_FACTOR_DST_ALPHA: (Ad, Ad, Ad, Ad)
  * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_DST_ALPHA: (1-Ad, 1-Ad, 1-Ad, 1-Ad)
+ * @COGL_MATERIAL_BLEND_FACTOR_CONSTANT: (Rc, Gc, Bc, Ac)
+ * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_CONSTANT: (1-Rc, 1-Gc, 1-Bc, 1-Ac)
+ * @COGL_MATERIAL_BLEND_FACTOR_CONSTANT_ALPHA: (Ac, Ac, Ac, Ac)
+ * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA: (1-Ac, 1-Ac, 1-Ac, 1-Ac)
  * @COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA_SATURATE: (f,f,f,1) where f=MIN(As,1-Ad)
  *
- * Blending occurs after the alpha test function, and combines fragments with
- * the framebuffer.
  * <para>
  * A fixed function is used to determine the blended color, which is based on
  * the incoming source color of your fragment (Rs, Gs, Bs, As), a source
@@ -411,6 +412,14 @@ typedef enum _CoglMaterialBlendFactor
   COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA  = GL_ONE_MINUS_SRC_ALPHA,
   COGL_MATERIAL_BLEND_FACTOR_DST_ALPHA		  = GL_DST_ALPHA,
   COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_DST_ALPHA  = GL_ONE_MINUS_DST_ALPHA,
+#ifdef HAVE_COGL_GL
+  COGL_MATERIAL_BLEND_FACTOR_CONSTANT		  = GL_CONSTANT_COLOR,
+  COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_CONSTANT   =
+                                                  GL_ONE_MINUS_CONSTANT_COLOR,
+  COGL_MATERIAL_BLEND_FACTOR_CONSTANT_ALPHA	  = GL_CONSTANT_ALPHA,
+  COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA =
+                                                  GL_ONE_MINUS_CONSTANT_ALPHA,
+#endif
   COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA_SATURATE	  = GL_SRC_ALPHA_SATURATE,
 } CoglMaterialBlendFactor;
 
@@ -443,6 +452,92 @@ void cogl_material_set_blend_factors (CoglHandle              material,
 				      CoglMaterialBlendFactor dst_factor);
 
 /**
+ * cogl_material_set_blend:
+ * @material: A CoglMaterial object
+ * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
+ *                describing the desired blend function.
+ * @error: A GError that may report lack of driver support if you give
+ *         separate blend string statements for the alpha channel and RGB
+ *         channels since some drivers or backends such as GLES 1.1 dont
+ *         support this.
+ *
+ * If not already familiar; please refer
+ * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
+ * strings are and there syntax.
+ *
+ * Blending occurs after the alpha test function, and combines fragments with
+ * the framebuffer.
+
+ * Currently the only blend function Cogl exposes is ADD(). So any valid
+ * blend statements will be of the form:
+ *
+ * <programlisting>
+ * &lt;channel-mask&gt;=ADD(SRC_COLOR*(&lt;factor&gt;), DST_COLOR*(&lt;factor&gt;))
+ * </programlisting>
+ *
+ * <b>NOTE: The brackets around blend factors are currently not optional!</b>
+ *
+ * This is the list of source-names usable as blend factors:
+ * <itemizedlist>
+ * <listitem>SRC_COLOR: The color of the in comming fragment</listitem>
+ * <listitem>DST_COLOR: The color of the framebuffer</listitem>
+ * <listitem>
+ * CONSTANT: The constant set via cogl_material_set_blend_constant()</listitem>
+ * </itemizedlist>
+ * The source names can be used according to the
+ * <link linkend="cogl-Blend-String-syntax">color-source and factor syntax</link>,
+ * so for example "(1-SRC_COLOR[A])" would be a valid factor, as would
+ * "(CONSTANT[RGB])"
+ *
+ * These can also be used as factors:
+ * <itemizedlist>
+ * <listitem>0: (0, 0, 0, 0)</listitem>
+ * <listitem>1: (1, 1, 1, 1)</listitem>
+ * <listitem>SRC_ALPHA_SATURATE_FACTOR: (f,f,f,1)
+ * where f=MIN(SRC_COLOR[A],1-DST_COLOR[A])</listitem>
+ * </itemizedlist>
+ * <para>
+ * Remember; all color components are normalized to the range [0, 1] before
+ * computing the result of blending.
+ * </para>
+ * <section>
+ * <title>Examples</title>
+ * Blend a non-premultiplied source over a destination with
+ * premultiplied alpha:
+ * <programlisting>
+ * "RGB = ADD(SRC_COLOR*(SRC_COLOR[A]), DST_COLOR*(1-SRC_COLOR[A]))"
+ * "A   = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+ * </programlisting>
+ * Blend a premultiplied source over a destination with premultiplied alpha:
+ * <programlisting>
+ * "RGBA = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+ * </programlisting>
+ * </section>
+ *
+ * Returns: TRUE if the blend string was successfully parsed, and the described
+ *          blending is supported by the underlying driver/hardware. If there
+ *          was an error, it returns FALSE.
+ *
+ * Since: 1.0
+ */
+gboolean cogl_material_set_blend (CoglHandle  material,
+                                  const char *blend_string,
+                                  GError    **error);
+
+/**
+ * cogl_material_set_blend_constant:
+ * @material: A CoglMaterial object
+ * @constant_color: The constant color you want
+ *
+ * When blending is setup to reference a CONSTANT blend factor then
+ * blending will depend on the constant set with this function.
+ *
+ * Since: 1.0
+ */
+void cogl_material_set_blend_constant (CoglHandle             material,
+                                       CoglColor              *constant_color);
+
+/**
  * cogl_material_set_layer:
  * @material: A CoglMaterial object
  *
@@ -460,7 +555,7 @@ void cogl_material_set_blend_factors (CoglHandle              material,
  * Since 1.0
  */
 void cogl_material_set_layer (CoglHandle material,
-			      gint       layer_index,
+			      int        layer_index,
 			      CoglHandle texture);
 
 /**
@@ -472,6 +567,113 @@ void cogl_material_set_layer (CoglHandle material,
  */
 void cogl_material_remove_layer (CoglHandle material,
 				 gint       layer_index);
+
+
+/**
+ * cogl_material_set_layer_combine:
+ * @material: A CoglMaterial object
+ * @layer_index: Specifies the layer you want define a combine function for
+ * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
+ *                describing the desired texture combine function.
+ * @error: A GError that may report parse errors or lack of GPU/driver support.
+ *
+ * If not already familiar; you can refer
+ * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
+ * strings are and there syntax.
+ *
+ * These are all the functions available for texture combining:
+ * <itemizedlist>
+ * <listitem>REPLACE(arg0) = arg0</listitem>
+ * <listitem>MODULATE(arg0, arg1) = arg0 x arg1</listitem>
+ * <listitem>ADD(arg0, arg1) = arg0 + arg1</listitem>
+ * <listitem>ADD_SIGNED(arg0, arg1) = arg0 + arg1 - 0.5</listitem>
+ * <listitem>INTERPOLATE(arg0, arg1, arg2) =
+ * arg0 x arg2 + arg1 x (1 - arg2)</listitem>
+ * <listitem>SUBTRACT(arg0, arg1) = arg0 - arg1</listitem>
+ * <listitem>
+ * DOT3_RGB(arg0, arg1) =
+ * <programlisting>
+ * 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+ *      (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+ *      (arg0[B] - 0.5)) * (arg1[B] - 0.5))
+ * </programlisting>
+ * </listitem>
+ * <listitem>DOT3_RGBA(arg0, arg1) =
+ * <programlisting>
+ * 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+ *      (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+ *      (arg0[B] - 0.5)) * (arg1[B] - 0.5))
+ * </programlisting>
+ * </listitem>
+ * </itemizedlist>
+ *
+ * Refer to the
+ * <link linkend="cogl-Blend-String-syntax">color-source syntax</link> for
+ * describing the arguments. The valid source names for texture combining
+ * are:
+ * <itemizedlist>
+ * <listitem>
+ * TEXTURE: Use the color from the current texture layer
+ * </listitem>
+ * <listitem>
+ * TEXTURE_0, TEXTURE_1, etc: Use the color from the specified texture layer
+ * </listitem>
+ * <listitem>
+ * CONSTANT: Use the color from the constant given with
+ * cogl_material_set_layer_constant()
+ * </listitem>
+ * <listitem>
+ * PRIMARY: Use the color of the material as set with cogl_material_set_color()
+ * </listitem>
+ * <listitem>
+ * PREVIOUS: Either use the texture color from the previous layer, or if this
+ * is layer 0, use the color of the material as set with
+ * cogl_material_set_color()
+ * </listitem>
+ * </itemizedlist>
+ * <section>
+ * <title>Example</title>
+ * This is effectively what the default blending is:
+ * <programlisting>
+ * "RGBA = MODULATE (PREVIOUS, TEXTURE)"
+ * </programlisting>
+ * This could be used to cross-fade between two images, using the alpha
+ * component of a constant as the interpolator. The constant color
+ * is given by calling cogl_material_set_layer_constant.
+ * <programlisting>
+ * RGBA = INTERPOLATE (PREVIOUS, TEXTURE, CONSTANT[A])
+ * </programlisting>
+ * </section>
+ * <b>Note: you can't give a multiplication factor for arguments as you can
+ * with blending.</b>
+ *
+ * Returns: TRUE if the blend string was successfully parsed, and the described
+ *          texture combining is supported by the underlying driver/hardware.
+ *          If there was an error, it returns FALSE.
+ *
+ * Since: 1.0
+ */
+gboolean
+cogl_material_set_layer_combine (CoglHandle material,
+				 gint layer_index,
+				 const char *blend_string,
+                                 GError **error);
+
+/**
+ * cogl_material_set_layer_combine_constant:
+ * @material: A CoglMaterial object
+ * @layer_index: Specifies the layer you want to specify a constant used
+ *               for texture combining
+ * @color_constant: The constant color you want
+ *
+ * When you are using the 'CONSTANT' color source in a layer combine
+ * description then you can use this function to define its value.
+ *
+ * Since 1.0
+ */
+void cogl_material_set_layer_combine_constant (CoglHandle                     material,
+                                               int                            layer_index,
+                                               CoglColor                     *constant);
 
 /**
  * CoglMaterialLayerCombineFunc:
@@ -600,7 +802,7 @@ typedef enum _CoglMaterialLayerCombineChannels
  * </programlisting>
  */
 void cogl_material_set_layer_combine_function (CoglHandle                        material,
-                                               gint                              layer_index,
+                                               int                               layer_index,
                                                CoglMaterialLayerCombineChannels  channels,
                                                CoglMaterialLayerCombineFunc      func);
 
@@ -650,8 +852,8 @@ typedef enum _CoglMaterialLayerCombineSrc
  *
  */
 void cogl_material_set_layer_combine_arg_src (CoglHandle                       material,
-                                              gint                             layer_index,
-                                              gint                             argument,
+                                              int                              layer_index,
+                                              int                              argument,
                                               CoglMaterialLayerCombineChannels channels,
                                               CoglMaterialLayerCombineSrc      src);
 
@@ -674,32 +876,10 @@ typedef enum _CoglMaterialLayerCombineOp
  *
  */
 void cogl_material_set_layer_combine_arg_op (CoglHandle                       material,
-                                             gint                             layer_index,
-                                             gint                             argument,
+                                             int                              layer_index,
+                                             int                              argument,
                                              CoglMaterialLayerCombineChannels channels,
                                              CoglMaterialLayerCombineOp       op);
-
-/* TODO: */
-#if 0
- I think it would be be really neat to support a simple string description
- of the fixed function texture combine modes exposed above. I think we can
- consider this stuff to be set in stone from the POV that more advanced
- texture combine functions are catered for with GLSL, so it seems reasonable
- to find a concise string representation that can represent all the above
- modes in a *much* more readable/useable fashion. I think somthing like
- this would be quite nice:
-
-  "MODULATE(TEXTURE[RGB], PREVIOUS[A])"
-  "ADD(TEXTURE[A],PREVIOUS[RGB])"
-  "INTERPOLATE(TEXTURE[1-A], PREVIOUS[RGB])"
-
-void cogl_material_set_layer_rgb_combine (CoglHandle material
-					  gint layer_index,
-					  const char *combine_description);
-void cogl_material_set_layer_alpha_combine (CoglHandle material
-					    gint layer_index,
-					    const char *combine_description);
-#endif
 
 /**
  * cogl_material_set_layer_matrix:
@@ -709,7 +889,7 @@ void cogl_material_set_layer_alpha_combine (CoglHandle material
  * and rotate a single layer of a material used to fill your geometry.
  */
 void cogl_material_set_layer_matrix (CoglHandle  material,
-				     gint        layer_index,
+				     int         layer_index,
 				     CoglMatrix *matrix);
 
 
