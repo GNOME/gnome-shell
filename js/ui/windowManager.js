@@ -320,6 +320,10 @@ WindowManager.prototype = {
 
         for (let i = 0; i < windows.length; i++) {
             let window = windows[i];
+
+            if (!window.meta_window.showing_on_its_workspace())
+                continue;
+
             if (window.get_workspace() == from) {
                 switchData.windows.push({ window: window,
                                           parent: window.get_parent() });
