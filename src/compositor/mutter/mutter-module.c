@@ -64,9 +64,10 @@ mutter_module_load (GTypeModule *gmodule)
       return FALSE;
     }
 
-  if (g_module_symbol (priv->lib, "mutter_plugin_version", (gpointer *)&info) &&
+  if (g_module_symbol (priv->lib, "mutter_plugin_version",
+                       (gpointer *)(void *)&info) &&
       g_module_symbol (priv->lib, "mutter_plugin_register_type",
-		       (gpointer *)&register_type) &&
+		       (gpointer *)(void *)&register_type) &&
       info && register_type)
     {
       if (info->version_api != MUTTER_PLUGIN_API_VERSION)
