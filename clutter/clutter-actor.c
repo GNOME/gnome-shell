@@ -709,7 +709,6 @@ clutter_actor_update_map_state (ClutterActor  *self,
       gboolean may_be_realized;
       gboolean must_be_realized;
 
-
       should_be_mapped = FALSE;
       may_be_realized = TRUE;
       must_be_realized = FALSE;
@@ -832,8 +831,10 @@ clutter_actor_update_map_state (ClutterActor  *self,
         }
     }
 
+#ifdef CLUTTER_ENABLE_DEBUG
   /* check all invariants were kept */
   clutter_actor_verify_map_state (self);
+#endif
 }
 
 static void
