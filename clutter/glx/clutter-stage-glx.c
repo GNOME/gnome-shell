@@ -126,25 +126,23 @@ clutter_stage_glx_realize (ClutterActor *actor)
         {
           GLX_RGBA, 
           GLX_DOUBLEBUFFER,
-          GLX_RED_SIZE, 1,
-          GLX_GREEN_SIZE, 1,
-          GLX_BLUE_SIZE, 1,
+          GLX_RED_SIZE,     1,
+          GLX_GREEN_SIZE,   1,
+          GLX_BLUE_SIZE,    1,
           GLX_STENCIL_SIZE, 1,
           0
         };
 
-      if (stage_x11->xvisinfo)
+      if (stage_x11->xvisinfo != None)
         {
           XFree (stage_x11->xvisinfo);
           stage_x11->xvisinfo = None;
         }
 
-      /* The following check seems strange */
+      stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
+                                             stage_x11->xscreen,
+                                             gl_attributes);
       if (stage_x11->xvisinfo == None)
-        stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-                                               stage_x11->xscreen,
-                                               gl_attributes);
-      if (!stage_x11->xvisinfo)
         {
           g_critical ("Unable to find suitable GL visual.");
           goto fail;
