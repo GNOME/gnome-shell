@@ -686,6 +686,12 @@ set_foreign_window_callback (ClutterActor *actor,
   fwd->stage_x11->xwin_height = fwd->geom.height;
 
   clutter_actor_set_geometry (actor, &fwd->geom);
+
+  /* calling this with the stage unrealized will unset the stage
+   * from the GL context; once the stage is realized the GL context
+   * will be set again
+   */
+  clutter_stage_ensure_current (CLUTTER_STAGE (actor));
 }
 
 /**
@@ -749,7 +755,7 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
                             set_foreign_window_callback,
                             &fwd);
 
-  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
+  clutter_stage_ensure_viewport (stage);
 
   return TRUE;
 }
