@@ -312,32 +312,35 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
 
   if (current_context_stage != stage || !CLUTTER_ACTOR_IS_REALIZED (stage))
     {
+      ClutterStage *new_stage = NULL;
+
       if (!CLUTTER_ACTOR_IS_REALIZED (stage))
         {
-          CLUTTER_NOTE (MULTISTAGE,
-                        "Stage [%p] is not realized, realizing",
-                        stage);
+          new_stage = NULL;
 
-          /* if we are asked to ensure a particular stage we need
-           * to make sure that is has been realized; calling
-           * realized() twice in a row is cheap, since the method
-           * will check first
-           */
-          clutter_actor_realize (CLUTTER_ACTOR (stage));
+          CLUTTER_NOTE (MULTISTAGE,
+                        "Stage [%p] is not realized, unsetting the stage",
+                        stage);
         }
       else
-        CLUTTER_NOTE (MULTISTAGE, "Setting the new stage [%p]", stage);
-      
+        {
+          new_stage = stage;
+
+          CLUTTER_NOTE (MULTISTAGE,
+                        "Setting the new stage [%p]",
+                        new_stage);
+        }
+
       klass = CLUTTER_BACKEND_GET_CLASS (backend);
       if (G_LIKELY (klass->ensure_context))
-        klass->ensure_context (backend, stage);
+        klass->ensure_context (backend, new_stage);
       
       /* FIXME: With a NULL stage and thus no active context it may make more
        * sense to clean the context but then re call with the default stage 
        * so at least there is some kind of context in place (as to avoid
        * potential issue of GL calls with no context)
        */
-      current_context_stage = stage;
+      current_context_stage = new_stage;
 
       /* if the new stage has a different size than the previous one
        * we need to update the viewport; we do it by simply setting the
