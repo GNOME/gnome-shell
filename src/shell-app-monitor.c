@@ -889,7 +889,7 @@ static void
 restore_from_file (ShellAppMonitor *monitor)
 {
   int activity = -1; /* Means invalid ID */
-  GSList *popularity;
+  GSList *popularity = NULL;
   AppPopularity *app_popularity;
   GFileInputStream *input;
   GDataInputStream *data_input;
@@ -927,6 +927,7 @@ restore_from_file (ShellAppMonitor *monitor)
                   popularity = g_slist_sort (popularity, popularity_sort_apps);
                   g_hash_table_replace (monitor->popularities,
                                         GINT_TO_POINTER (activity), popularity);
+                  popularity = NULL;
                 }
               activity = atoi (line);
               /* FIXME: do something if conversion fails! */
@@ -942,7 +943,7 @@ restore_from_file (ShellAppMonitor *monitor)
         }
       /* Line is about an app.
        * If no activity was provided yet, just skip */
-      else if ((activity != 1) && (strcmp (line, "") != 0))
+      else if ((activity != -1) && (strcmp (line, "") != 0))
         {
           info = g_strsplit (line, ",", 0);
           if (info[0] && info [1] && info[2]) /* Skip on wrong syntax */
