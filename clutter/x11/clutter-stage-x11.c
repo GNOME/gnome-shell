@@ -757,11 +757,12 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 void
 clutter_stage_x11_map (ClutterStageX11 *stage_x11)
 {
-  /* set the mapped state on the wrapper */
-  clutter_actor_map (CLUTTER_ACTOR (stage_x11->wrapper));
+  CLUTTER_NOTE (BACKEND, "Mapping stage '%s' [%p]",
+                G_OBJECT_TYPE_NAME (stage_x11),
+                stage_x11);
 
-  /* and on the implementation second */
   clutter_actor_map (CLUTTER_ACTOR (stage_x11));
+  clutter_actor_map (CLUTTER_ACTOR (stage_x11->wrapper));
 
   if (stage_x11->fullscreen_on_map)
     clutter_stage_fullscreen (CLUTTER_STAGE (stage_x11->wrapper));
@@ -774,9 +775,10 @@ clutter_stage_x11_map (ClutterStageX11 *stage_x11)
 void
 clutter_stage_x11_unmap (ClutterStageX11 *stage_x11)
 {
-  /* like above, unset the MAPPED stage on both the implementation and
-   * the wrapper, but unmap in reverse order from map
-   */
+  CLUTTER_NOTE (BACKEND, "Unmapping stage '%s' [%p]",
+                G_OBJECT_TYPE_NAME (stage_x11),
+                stage_x11);
+
   clutter_actor_unmap (CLUTTER_ACTOR (stage_x11));
   clutter_actor_unmap (CLUTTER_ACTOR (stage_x11->wrapper));
 }

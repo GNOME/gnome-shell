@@ -1166,6 +1166,11 @@ clutter_actor_realize (ClutterActor *self)
         return;
     }
 
+  CLUTTER_NOTE (ACTOR, "Realizing actor '%s' [%p]",
+                self->priv->name ? self->priv->name
+                                 : G_OBJECT_TYPE_NAME (self),
+                self);
+
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
   g_object_notify (G_OBJECT (self), "realized");
 

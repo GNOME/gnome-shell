@@ -113,7 +113,9 @@ clutter_stage_glx_realize (ClutterActor *actor)
   ClutterBackendX11 *backend_x11;
   gboolean           is_offscreen;
 
-  CLUTTER_NOTE (MISC, "Realizing main stage");
+  CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
+                G_OBJECT_TYPE_NAME (actor),
+                actor);
 
   g_object_get (stage_x11->wrapper, "offscreen", &is_offscreen, NULL);
 
