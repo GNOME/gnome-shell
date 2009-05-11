@@ -343,7 +343,7 @@ WindowManager.prototype = {
                          { x: xDest,
                            y: yDest,
                            time: SWITCH_ANIMATION_TIME,
-                           transition: "easeOutBack",
+                           transition: "easeOutQuad",
                            onComplete: this._switchWorkspaceDone,
                            onCompleteScope: this
                          });
@@ -351,7 +351,7 @@ WindowManager.prototype = {
                          { x: 0,
                            y: 0,
                            time: SWITCH_ANIMATION_TIME,
-                           transition: "easeOutBack"
+                           transition: "easeOutQuad"
                          });
     },
 
