@@ -224,8 +224,7 @@ clutter_stage_paint (ClutterActor *self)
                            priv->color.alpha);
   cogl_clear (&stage_color,
 	      COGL_BUFFER_BIT_COLOR |
-	      COGL_BUFFER_BIT_DEPTH |
-	      COGL_BUFFER_BIT_STENCIL);
+	      COGL_BUFFER_BIT_DEPTH);
 
   if (priv->use_fog)
     {

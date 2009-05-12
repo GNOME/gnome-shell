@@ -595,8 +595,7 @@ clutter_texture_paint (ClutterActor *self)
       cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
       cogl_clear (&transparent_col,
 		  COGL_BUFFER_BIT_COLOR |
-		  COGL_BUFFER_BIT_DEPTH |
-		  COGL_BUFFER_BIT_STENCIL);
+		  COGL_BUFFER_BIT_DEPTH);
       cogl_disable_fog ();
 
       /* Clear the clipping stack so that if the FBO actor is being
