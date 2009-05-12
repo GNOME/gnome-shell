@@ -43,6 +43,17 @@ G_BEGIN_DECLS
  */
 
 /**
+ * CoglShaderType:
+ * @COGL_SHADER_TYPE_VERTEX: A program for proccessing vertices
+ * @COGL_SHADER_TYPE_FRAGMENT: A program for processing fragments
+ */
+typedef enum _CoglShaderType
+{
+  COGL_SHADER_TYPE_VERTEX,
+  COGL_SHADER_TYPE_FRAGMENT
+} CoglShaderType;
+
+/**
  * cogl_create_shader:
  * @shader_type: CGL_VERTEX_SHADER or CGL_FRAGMENT_SHADER.
  *
@@ -51,7 +62,7 @@ G_BEGIN_DECLS
  *
  * Returns: a new shader handle.
  */
-CoglHandle      cogl_create_shader            (COGLenum            shader_type);
+CoglHandle      cogl_create_shader            (CoglShaderType      shader_type);
 
 /**
  * cogl_shader_ref:
@@ -91,8 +102,8 @@ gboolean        cogl_is_shader               (CoglHandle          handle);
  * Replaces the current GLSL source associated with a shader with a new
  * one.
  */
-void            cogl_shader_source            (CoglHandle          shader,
-                                               const gchar        *source);
+void            cogl_shader_source            (CoglHandle         shader,
+                                               const char        *source);
 /**
  * cogl_shader_compile:
  * @handle: #CoglHandle for a shader.
@@ -113,22 +124,26 @@ void            cogl_shader_compile           (CoglHandle        handle);
  * messages that caused a shader to not compile correctly, mainly useful for
  * debugging purposes.
  */
-void            cogl_shader_get_info_log      (CoglHandle          handle,
-                                               guint               size,
-                                               gchar              *buffer);
+void            cogl_shader_get_info_log      (CoglHandle         handle,
+                                               size_t             size,
+                                               char              *buffer);
 
 /**
- * cogl_shader_get_parameteriv:
+ * cogl_shader_get_type:
  * @handle: #CoglHandle for a shader.
- * @pname: the named COGL parameter to retrieve.
- * @dest: storage location for COGLint return value.
  *
- * Retrieve a named parameter from a shader can be used to query to compile
- * satus of a shader by passing in CGL_OBJECT_COMPILE_STATUS for @pname.
+ * Returns: COGL_SHADER_TYPE_VERTEX if the shader is a vertex processor
+ *          or COGL_SHADER_TYPE_FRAGMENT if the shader is a frament processor
  */
-void            cogl_shader_get_parameteriv   (CoglHandle          handle,
-                                               COGLenum            pname,
-                                               COGLint            *dest);
+CoglShaderType  cogl_shader_get_type          (CoglHandle          handle);
+
+/**
+ * cogl_shader_is_compiled:
+ * @handle: #CoglHandle for a shader.
+ *
+ * Returns: TRUE if the shader object has sucessfully be compiled else FALSE
+ */
+gboolean        cogl_shader_is_compiled       (CoglHandle          handle);
 
 /**
  * cogl_create_program:
@@ -213,9 +228,9 @@ void            cogl_program_use              (CoglHandle        handle);
  *   This uniform can be set using cogl_program_uniform_1f() when the
  *   program is in use.
  */
-COGLint         cogl_program_get_uniform_location
-                                              (CoglHandle        handle,
-                                               const gchar      *uniform_name);
+int         cogl_program_get_uniform_location
+                                              (CoglHandle       handle,
+                                               const char      *uniform_name);
 
 /**
  * cogl_program_uniform_1f:
@@ -225,8 +240,8 @@ COGLint         cogl_program_get_uniform_location
  * Changes the value of a floating point uniform in the currently
  * used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_1f       (COGLint           uniform_no,
-                                               gfloat            value);
+void            cogl_program_uniform_1f       (int              uniform_no,
+                                               float            value);
 
 /**
  * cogl_program_uniform_1i:
@@ -236,8 +251,8 @@ void            cogl_program_uniform_1f       (COGLint           uniform_no,
  * Changes the value of an integer uniform in the currently
  * used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_1i       (COGLint           uniform_no,
-                                               gint              value);
+void            cogl_program_uniform_1i       (int              uniform_no,
+                                               int              value);
 
  /**
  * cogl_program_uniform_float:
@@ -249,9 +264,9 @@ void            cogl_program_uniform_1i       (COGLint           uniform_no,
  * Changes the value of a float vector uniform, or uniform array in the
  * currently used (see #cogl_program_use) shader program.
  */
-void            cogl_program_uniform_float    (COGLint           uniform_no,
-                                               gint              size,
-                                               gint              count,
+void            cogl_program_uniform_float    (int               uniform_no,
+                                               int               size,
+                                               int               count,
                                                const GLfloat    *value);
 
 /**
@@ -264,10 +279,10 @@ void            cogl_program_uniform_float    (COGLint           uniform_no,
  * Changes the value of a int vector uniform, or uniform array in the
  * currently used (see cogl_program_use()) shader program.
  */
-void            cogl_program_uniform_int      (COGLint           uniform_no,
-                                               gint              size,
-                                               gint              count,
-                                               const COGLint    *value);
+void            cogl_program_uniform_int      (int           uniform_no,
+                                               int           size,
+                                               int           count,
+                                               const int    *value);
 
 /**
  * cogl_program_uniform_matrix:
@@ -281,11 +296,11 @@ void            cogl_program_uniform_int      (COGLint           uniform_no,
  * currently used (see cogl_program_use()) shader program. The @size
  * parameter is used to determine the square size of the matrix.
  */
-void            cogl_program_uniform_matrix   (COGLint           uniform_no,
-                                               gint              size,
-                                               gint              count,
-                                               gboolean          transpose,
-                                               const GLfloat    *value);
+void            cogl_program_uniform_matrix   (int           uniform_no,
+                                               int           size,
+                                               int           count,
+                                               gboolean      transpose,
+                                               const float  *value);
 
 G_END_DECLS
 

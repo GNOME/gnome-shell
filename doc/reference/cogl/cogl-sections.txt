@@ -149,7 +149,8 @@ cogl_is_shader
 cogl_shader_source
 cogl_shader_compile
 cogl_shader_get_info_log
-cogl_shader_get_parameteriv
+cogl_shader_get_type
+cogl_shader_is_compiled
 <SUBSECTION>
 cogl_create_program
 cogl_program_ref

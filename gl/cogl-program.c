@@ -139,7 +139,7 @@ cogl_program_use (CoglHandle handle)
   glUseProgramObjectARB (gl_handle);
 }
 
-COGLint
+int
 cogl_program_get_uniform_location (CoglHandle   handle,
                                    const gchar *uniform_name)
 {
@@ -155,7 +155,7 @@ cogl_program_get_uniform_location (CoglHandle   handle,
 }
 
 void
-cogl_program_uniform_1f (COGLint uniform_no,
+cogl_program_uniform_1f (int uniform_no,
                          gfloat  value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -163,7 +163,7 @@ cogl_program_uniform_1f (COGLint uniform_no,
 }
 
 void
-cogl_program_uniform_1i (COGLint uniform_no,
+cogl_program_uniform_1i (int uniform_no,
                          gint    value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -171,7 +171,7 @@ cogl_program_uniform_1i (COGLint uniform_no,
 }
 
 void
-cogl_program_uniform_float (COGLint  uniform_no,
+cogl_program_uniform_float (int  uniform_no,
                             gint     size,
                             gint     count,
                             const GLfloat *value)
@@ -198,10 +198,10 @@ cogl_program_uniform_float (COGLint  uniform_no,
 }
 
 void
-cogl_program_uniform_int (COGLint  uniform_no,
+cogl_program_uniform_int (int  uniform_no,
                           gint     size,
                           gint     count,
-                          const COGLint *value)
+                          const int *value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -225,7 +225,7 @@ cogl_program_uniform_int (COGLint  uniform_no,
 }
 
 void
-cogl_program_uniform_matrix (COGLint   uniform_no,
+cogl_program_uniform_matrix (int   uniform_no,
                              gint      size,
                              gint      count,
                              gboolean  transpose,

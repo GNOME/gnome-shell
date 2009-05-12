@@ -68,8 +68,8 @@ struct _CoglTexture
   GArray            *slice_y_spans;
   GArray            *slice_gl_handles;
   gint               max_waste;
-  COGLenum           min_filter;
-  COGLenum           mag_filter;
+  CoglTextureFilter  min_filter;
+  CoglTextureFilter  mag_filter;
   gboolean           is_foreign;
   GLint              wrap_mode;
   gboolean           auto_mipmap;
