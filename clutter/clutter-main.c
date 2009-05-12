@@ -370,6 +370,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
+  cogl_clip_push_window_rect (x, y, 1, 1);
   cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
   cogl_disable_fog ();
   cogl_clear (&white,
@@ -387,6 +388,7 @@ _clutter_do_pick (ClutterStage   *stage,
   context->pick_mode = mode;
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   context->pick_mode = CLUTTER_PICK_NONE;
+  cogl_clip_pop ();
 
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
