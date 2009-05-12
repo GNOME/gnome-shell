@@ -1457,9 +1457,6 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   g_object_notify (G_OBJECT (texture), "cogl-texture");
 
-  /* Re-assert the filter quality on the new cogl texture */
-  clutter_texture_set_filter_quality (texture, CLUTTER_TEXTURE_QUALITY_MEDIUM);
-
   /* If resized actor may need resizing but paint() will do this */
   if (CLUTTER_ACTOR_IS_VISIBLE (texture))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
