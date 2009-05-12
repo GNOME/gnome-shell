@@ -6,6 +6,25 @@
 #define N_ACTORS 100
 #define N_EVENTS 5
 
+static gint n_actors = N_ACTORS;
+static gint n_events = N_EVENTS;
+
+static GOptionEntry entries[] = {
+  {
+    "num-actors", 'a',
+    0,
+    G_OPTION_ARG_INT, &n_actors,
+    "Number of actors", "ACTORS"
+  },
+  {
+    "num-events", 'e',
+    0,
+    G_OPTION_ARG_INT, &n_events,
+    "Number of events", "EVENTS"
+  },
+  { NULL }
+};
+
 static gboolean
 motion_event_cb (ClutterActor *actor, ClutterEvent *event, gpointer user_data)
 {
@@ -19,9 +38,9 @@ do_events (ClutterActor *stage)
   static gdouble angle = 0;
   ClutterEvent event;
 
-  for (i = 0; i < N_EVENTS; i++)
+  for (i = 0; i < n_events; i++)
     {
-      angle += (2.0 * M_PI) / (gdouble)N_ACTORS;
+      angle += (2.0 * M_PI) / (gdouble)n_actors;
       while (angle > M_PI * 2.0)
         angle -= M_PI * 2.0;
 
@@ -75,10 +94,13 @@ main (int argc, char **argv)
   gdouble angle;
   const ClutterColor black = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor color = { 0x00, 0x00, 0x00, 0xff };
-
   ClutterActor *stage, *rect;
 
-  clutter_init (&argc, &argv);
+  clutter_init_with_args (&argc, &argv,
+                          NULL,
+                          entries,
+                          NULL,
+                          NULL);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 512, 512);
@@ -86,21 +108,21 @@ main (int argc, char **argv)
 
   printf ("Picking performance test with "
           "%d actors and %d events per frame\n",
-          N_ACTORS,
-          N_EVENTS);
+          n_actors,
+          n_events);
 
-  for (i = N_ACTORS-1; i >= 0; i--)
+  for (i = n_actors - 1; i >= 0; i--)
     {
-      angle = ((2.0 * M_PI) / (gdouble)N_ACTORS) * i;
+      angle = ((2.0 * M_PI) / (gdouble) n_actors) * i;
 
-      color.red = (1.0 - ABS ((MAX (0, MIN (N_ACTORS/2.0 + 0, i))) /
-                  (gdouble)(N_ACTORS/4.0) - 1.0)) * 255.0;
-      color.green = (1.0 - ABS ((MAX (0, MIN (N_ACTORS/2.0 + 0,
-                    fmod (i + (N_ACTORS/3.0)*2, N_ACTORS)))) /
-                    (gdouble)(N_ACTORS/4) - 1.0)) * 255.0;
-      color.blue = (1.0 - ABS ((MAX (0, MIN (N_ACTORS/2.0 + 0,
-                   fmod ((i + (N_ACTORS/3.0)), N_ACTORS)))) /
-                   (gdouble)(N_ACTORS/4.0) - 1.0)) * 255.0;
+      color.red = (1.0 - ABS ((MAX (0, MIN (n_actors/2.0 + 0, i))) /
+                  (gdouble)(n_actors/4.0) - 1.0)) * 255.0;
+      color.green = (1.0 - ABS ((MAX (0, MIN (n_actors/2.0 + 0,
+                    fmod (i + (n_actors/3.0)*2, n_actors)))) /
+                    (gdouble)(n_actors/4) - 1.0)) * 255.0;
+      color.blue = (1.0 - ABS ((MAX (0, MIN (n_actors/2.0 + 0,
+                   fmod ((i + (n_actors/3.0)), n_actors)))) /
+                   (gdouble)(n_actors/4.0) - 1.0)) * 255.0;
 
       rect = clutter_rectangle_new_with_color (&color);
       clutter_actor_set_size (rect, 100, 100);
