@@ -1247,8 +1247,8 @@ cogl_texture_new_with_size (guint             width,
   tex->slice_gl_handles = NULL;
 
   tex->max_waste = max_waste;
-  tex->min_filter = CGL_NEAREST;
-  tex->mag_filter = CGL_NEAREST;
+  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
+  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
 
   /* Find closest GL format match */
   tex->bitmap.format =
@@ -1308,8 +1308,8 @@ cogl_texture_new_from_data (guint             width,
   tex->slice_gl_handles = NULL;
 
   tex->max_waste = max_waste;
-  tex->min_filter = CGL_NEAREST;
-  tex->mag_filter = CGL_NEAREST;
+  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
+  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
 
   /* FIXME: If upload fails we should set some kind of
    * error flag but still return texture handle (this
@@ -1365,8 +1365,8 @@ cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
   tex->slice_gl_handles = NULL;
 
   tex->max_waste = max_waste;
-  tex->min_filter = CGL_NEAREST;
-  tex->mag_filter = CGL_NEAREST;
+  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
+  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
 
   /* FIXME: If upload fails we should set some kind of
    * error flag but still return texture handle if the
@@ -1693,7 +1693,7 @@ cogl_texture_get_gl_texture (CoglHandle handle,
   return TRUE;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_min_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1706,7 +1706,7 @@ cogl_texture_get_min_filter (CoglHandle handle)
   return tex->min_filter;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_mag_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1721,8 +1721,8 @@ cogl_texture_get_mag_filter (CoglHandle handle)
 
 void
 cogl_texture_set_filters (CoglHandle handle,
-			  COGLenum   min_filter,
-			  COGLenum   mag_filter)
+			  CoglTextureFilter min_filter,
+			  CoglTextureFilter mag_filter)
 {
   CoglTexture *tex;
   GLuint       gl_handle;

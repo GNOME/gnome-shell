@@ -229,6 +229,52 @@ guint           cogl_texture_get_rowstride    (CoglHandle          handle);
 gint            cogl_texture_get_max_waste    (CoglHandle          handle);
 
 /**
+ * CoglTextureFilter:
+ * @COGL_TEXTURE_FILTER_NEAREST: Measuring in manhatten distance from the,
+ *                               current pixel center, use the nearest texture
+ *                               texel.
+ * @COGL_TEXTURE_FILTER_LINEAR: Use the weighted average of the 4 texels
+ *                              nearest the current pixel center.
+ * @COGL_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST: Select the mimap level whose
+ *                                              texel size most closely matches
+ *                                              the current pixel, and use the
+ *                                              COGL_TEXTURE_FILTER_NEAREST
+ *                                              criterion.
+ * @COGL_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST: Select the mimap level whose
+ *                                             texel size most closely matches
+ *                                             the current pixel, and use the
+ *                                             COGL_TEXTURE_FILTER_LINEAR
+ *                                             criterion.
+ * @COGL_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR: Select the two mimap levels
+ *                                             whose texel size most closely
+ *                                             matches the current pixel, use
+ *                                             the COGL_TEXTURE_FILTER_NEAREST
+ *                                             criterion on each one and take
+ *                                             their weighted average.
+ * @COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR: Select the two mimap levels
+ *                                            whose texel size most closely
+ *                                            matches the current pixel, use
+ *                                            the COGL_TEXTURE_FILTER_LINEAR
+ *                                            criterion on each one and take
+ *                                            their weighted average.
+ *
+ * Texture filtering is used whenever the current pixel maps either to more
+ * than one texture element (texel) or less than one. These filter enums
+ * correspond to different strategies used to come up with a pixel color, by
+ * possibly referring to multiple neighbouring texels and taking a weighted
+ * average or simply using the nearest texel.
+ */
+typedef enum _CoglTextureFilter
+{
+  COGL_TEXTURE_FILTER_NEAREST = GL_NEAREST,
+  COGL_TEXTURE_FILTER_LINEAR = GL_LINEAR,
+  COGL_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+  COGL_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+  COGL_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+  COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+} CoglTextureFilter;
+
+/**
  * cogl_texture_get_min_filter:
  * @handle: a #CoglHandle for a texture.
  *
@@ -236,7 +282,7 @@ gint            cogl_texture_get_max_waste    (CoglHandle          handle);
  *
  * Returns: the current downscaling filter for a cogl texture.
  */
-COGLenum        cogl_texture_get_min_filter   (CoglHandle          handle);
+CoglTextureFilter cogl_texture_get_min_filter (CoglHandle          handle);
 
 /**
  * cogl_texture_get_mag_filter:
@@ -246,7 +292,7 @@ COGLenum        cogl_texture_get_min_filter   (CoglHandle          handle);
  *
  * Returns: the current downscaling filter for a cogl texture.
  */
-COGLenum        cogl_texture_get_mag_filter   (CoglHandle          handle);
+CoglTextureFilter cogl_texture_get_mag_filter (CoglHandle          handle);
 
 /**
  * cogl_texture_is_sliced:
@@ -307,8 +353,8 @@ gint            cogl_texture_get_data         (CoglHandle          handle,
  * drawn at other scales than 100%.
  */
 void            cogl_texture_set_filters      (CoglHandle          handle,
-                                               COGLenum            min_filter,
-                                               COGLenum            mag_filter);
+                                               CoglTextureFilter   min_filter,
+                                               CoglTextureFilter   mag_filter);
 
 
 /**

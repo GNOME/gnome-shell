@@ -1778,7 +1778,7 @@ cogl_texture_get_gl_texture (CoglHandle handle,
   return TRUE;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_min_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1791,7 +1791,7 @@ cogl_texture_get_min_filter (CoglHandle handle)
   return tex->min_filter;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_mag_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1806,8 +1806,8 @@ cogl_texture_get_mag_filter (CoglHandle handle)
 
 void
 cogl_texture_set_filters (CoglHandle handle,
-			  COGLenum   min_filter,
-			  COGLenum   mag_filter)
+			  CoglTextureFilter   min_filter,
+			  CoglTextureFilter   mag_filter)
 {
   CoglTexture *tex;
   GLuint       gl_handle;

@@ -317,6 +317,22 @@ Release Notes for Clutter 1.0
   exposing color mask if anyone wants it later. It was assumed that no one was
   using this currently.
 
+* COGLenum, COGLint and COGLuint which were simply typedefs for GL{enum,int,uint}
+  have been removed from the API and replaced with specialised enum typedefs,
+  int and unsigned int. These were causing problems for generating bindings and
+  also considered poor style.
+
+* The cogl texture filter defines CGL_NEAREST and CGL_LINEAR etc are now
+  replaced by a namespaced typedef 'CoglTextureFilter' so they should be
+  replaced with COGL_TEXTURE_FILTER_NEAREST and COGL_TEXTURE_FILTER_LINEAR etc.
+
+* The shader type defines CGL_VERTEX_SHADER and CGL_FRAGMENT_SHADER are handled
+  by a CoglShaderType typedef and should be replaced with
+  COGL_SHADER_TYPE_VERTEX and COGL_SHADER_TYPE_FRAGMENT.
+
+* cogl_shader_get_parameteriv has been replaced by cogl_shader_get_type and
+  cogl_shader_is_compiled. More getters can be added later if desired.
+
 Release Notes for Clutter 0.8
 -------------------------------
 

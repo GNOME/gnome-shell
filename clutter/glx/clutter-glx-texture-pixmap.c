@@ -25,7 +25,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/*  TODO:  
+/*  TODO:
  *  - Automagically handle named pixmaps, and window resizes (i.e
  *    essentially handle window id's being passed in) ?
 */
@@ -94,8 +94,6 @@ static RectangleState    _rectangle_state = CLUTTER_GLX_RECTANGLE_ALLOW;
 
 struct _ClutterGLXTexturePixmapPrivate
 {
-  COGLenum      target_type;
-  guint         texture_id;
   GLXPixmap     glx_pixmap;
 
   gboolean      use_fallback;
@@ -107,14 +105,14 @@ struct _ClutterGLXTexturePixmapPrivate
   gboolean      using_rectangle;
 };
 
-static void 
+static void
 clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
                                         gint x,
                                         gint y,
                                         gint width,
                                         gint height);
 
-static void 
+static void
 clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *tex);
 
 static ClutterX11TexturePixmapClass *parent_class = NULL;
@@ -137,12 +135,12 @@ texture_bind (ClutterGLXTexturePixmap *tex)
   /* FIXME: fire off an error here? */
   glBindTexture (target, handle);
 
-  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (tex)) 
+  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (tex))
          == CLUTTER_TEXTURE_QUALITY_HIGH && tex->priv->can_mipmap)
     {
-      cogl_texture_set_filters (cogl_tex, 
-                                CGL_LINEAR_MIPMAP_LINEAR,
-                                CGL_LINEAR);
+      cogl_texture_set_filters (cogl_tex,
+                                COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR,
+                                COGL_TEXTURE_FILTER_LINEAR);
     }
 
   return TRUE;
@@ -157,13 +155,13 @@ on_glx_texture_pixmap_pre_paint (ClutterGLXTexturePixmap *texture,
       GLuint     handle = 0;
       GLenum     target = 0;
       CoglHandle cogl_tex;
-      cogl_tex = clutter_texture_get_cogl_texture 
+      cogl_tex = clutter_texture_get_cogl_texture
         (CLUTTER_TEXTURE(texture));
 
       texture_bind (texture);
 
       cogl_texture_get_gl_texture (cogl_tex, &handle, &target);
-      
+
       _gl_generate_mipmap (target);
 
       texture->priv->mipmap_generate_queued = 0;
@@ -408,11 +406,11 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
                 "pixmap-width",   &pixmap_width,
                 "pixmap-height",  &pixmap_height,
                 NULL);
-  
+
   if (!pixmap)
       return;
 
-  if (!create_cogl_texture (CLUTTER_TEXTURE (actor), 
+  if (!create_cogl_texture (CLUTTER_TEXTURE (actor),
                             pixmap_width, pixmap_height))
     {
       CLUTTER_NOTE (TEXTURE, "Unable to create a valid pixmap");
@@ -460,7 +458,7 @@ clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
 
       priv->bound = FALSE;
     }
-  
+
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
@@ -739,8 +737,8 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
   if (glx_pixmap != None)
     {
       priv->glx_pixmap = glx_pixmap;
-      
-      create_cogl_texture (CLUTTER_TEXTURE (texture), 
+
+      create_cogl_texture (CLUTTER_TEXTURE (texture),
                            pixmap_width, pixmap_height);
 
       CLUTTER_NOTE (TEXTURE, "Created GLXPixmap");
@@ -762,7 +760,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       priv->glx_pixmap   = None;
 
       /* Some fucky logic here - we've fallen back and need to make sure
-       * we realize here..  
+       * we realize here..
       */
       clutter_actor_realize (CLUTTER_ACTOR (texture));
     }
@@ -800,22 +798,22 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 
   if (priv->glx_pixmap == None)
     return;
-  
+
   if (texture_bind (CLUTTER_GLX_TEXTURE_PIXMAP(texture)))
     {
       CLUTTER_NOTE (TEXTURE, "Really updating via GLX");
 
       clutter_x11_trap_x_errors ();
-      
+
       (_gl_bind_tex_image) (dpy,
                             priv->glx_pixmap,
                             GLX_FRONT_LEFT_EXT,
                             NULL);
-      
+
       XSync (clutter_x11_get_default_display(), FALSE);
-      
+
       /* Note above fires X error for non name pixmaps - but
-       * things still seem to work - i.e pixmap updated  
+       * things still seem to work - i.e pixmap updated
        */
       if (clutter_x11_untrap_x_errors ())
         CLUTTER_NOTE (TEXTURE, "Update bind_tex_image failed");
@@ -829,7 +827,7 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
         {
           /* FIXME: It may make more sense to set a flag here and only
            *        generate the mipmap on a pre paint.. compressing need
-           *        to call generate mipmap 
+           *        to call generate mipmap
            *        May break clones however..
           */
           priv->mipmap_generate_queued++;
@@ -870,7 +868,7 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
  * clutter_glx_texture_pixmap_using_extension:
  * @texture: A #ClutterGLXTexturePixmap
  *
- * Return value: A boolean indicating if the texture is using the  
+ * Return value: A boolean indicating if the texture is using the
  * GLX_EXT_texture_from_pixmap OpenGL extension or falling back to
  * slower software mechanism.
  *
@@ -883,8 +881,8 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
 
-  return (_have_tex_from_pixmap_ext && !priv->use_fallback); 
-  /* Assume NPOT TFP's are supported even if regular NPOT isn't advertised 
+  return (_have_tex_from_pixmap_ext && !priv->use_fallback);
+  /* Assume NPOT TFP's are supported even if regular NPOT isn't advertised
    * but tfp is. Seemingly some Intel drivers do this ?
   */
   /* && clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT)); */

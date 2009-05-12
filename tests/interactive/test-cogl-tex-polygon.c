@@ -9,7 +9,7 @@
  *--------------------------------------------------*/
 
 G_BEGIN_DECLS
-  
+
 #define TEST_TYPE_COGLBOX test_coglbox_get_type()
 
 #define TEST_COGLBOX(obj) \
@@ -44,7 +44,7 @@ struct _TestCoglbox
   TestCoglboxPrivate *priv;
 };
 
-struct _TestCoglboxClass 
+struct _TestCoglboxClass
 {
   ClutterActorClass parent_class;
 
@@ -91,7 +91,7 @@ test_coglbox_fade_texture (CoglHandle tex_id,
 {
   CoglTextureVertex vertices[4];
   int i;
-  
+
   vertices[0].x = x1;
   vertices[0].y = y1;
   vertices[0].z = 0;
@@ -142,7 +142,7 @@ test_coglbox_triangle_texture (CoglHandle tex_id,
   CoglTextureVertex vertices[3];
   int tex_width = cogl_texture_get_width (tex_id);
   int tex_height = cogl_texture_get_height (tex_id);
-  
+
   vertices[0].x = x + tx1 * tex_width;
   vertices[0].y = y + ty1 * tex_height;
   vertices[0].z = 0;
@@ -176,9 +176,11 @@ test_coglbox_paint (ClutterActor *self)
 
   cogl_texture_set_filters (tex_handle,
 			    priv->use_linear_filtering
-			    ? CGL_LINEAR : CGL_NEAREST,
+			    ? COGL_TEXTURE_FILTER_LINEAR :
+                              COGL_TEXTURE_FILTER_NEAREST,
 			    priv->use_linear_filtering
-			    ? CGL_LINEAR : CGL_NEAREST);
+			    ? COGL_TEXTURE_FILTER_LINEAR :
+                              COGL_TEXTURE_FILTER_NEAREST);
 
   cogl_push_matrix ();
   cogl_translate (tex_width / 2, 0, 0);
@@ -227,11 +229,11 @@ static void
 test_coglbox_dispose (GObject *object)
 {
   TestCoglboxPrivate *priv;
-  
+
   priv = TEST_COGLBOX_GET_PRIVATE (object);
   cogl_handle_unref (priv->not_sliced_tex);
   cogl_handle_unref (priv->sliced_tex);
-  
+
   G_OBJECT_CLASS (test_coglbox_parent_class)->dispose (object);
 }
 
@@ -244,7 +246,7 @@ test_coglbox_init (TestCoglbox *self)
 
   priv->use_linear_filtering = FALSE;
   priv->use_sliced = FALSE;
-  
+
   priv->sliced_tex =
     cogl_texture_new_from_file  ("redhand.png", 10,
                                  COGL_TEXTURE_NONE,
@@ -286,9 +288,9 @@ test_coglbox_class_init (TestCoglboxClass *klass)
   ClutterActorClass *actor_class   = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->finalize     = test_coglbox_finalize;
-  gobject_class->dispose      = test_coglbox_dispose;  
+  gobject_class->dispose      = test_coglbox_dispose;
   actor_class->paint          = test_coglbox_paint;
-  
+
   g_type_class_add_private (gobject_class, sizeof (TestCoglboxPrivate));
 }
 
@@ -304,7 +306,7 @@ frame_cb (ClutterTimeline *timeline,
 	  gpointer         data)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (data);
-  
+
   priv->frame = frame_num;
   clutter_actor_queue_redraw (CLUTTER_ACTOR (data));
 }
@@ -330,11 +332,11 @@ make_toggle (const char *label_text, gboolean *toggle_val)
   ClutterActor *group = clutter_group_new ();
   ClutterActor *label = clutter_text_new_with_text ("Sans 14", label_text);
   ClutterActor *button = clutter_text_new_with_text ("Sans 14", "");
-  
+
   clutter_actor_set_reactive (button, TRUE);
 
   update_toggle_text (CLUTTER_TEXT (button), *toggle_val);
-  
+
   clutter_actor_set_position (button, clutter_actor_get_width (label) + 10, 0);
   clutter_container_add (CLUTTER_CONTAINER (group), label, button, NULL);
 
@@ -354,19 +356,19 @@ test_cogl_tex_polygon_main (int argc, char *argv[])
   ClutterActor     *note;
   ClutterTimeline  *timeline;
   ClutterColor      blue = { 0x30, 0x30, 0xff, 0xff };
-  
+
   clutter_init (&argc, &argv);
-  
+
   /* Stage */
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &blue);
   clutter_actor_set_size (stage, 640, 480);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Test");
-  
+
   /* Cogl Box */
   coglbox = test_coglbox_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
-  
+
   /* Timeline for animation */
   timeline = clutter_timeline_new (360, 60); /* num frames, fps */
   g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
@@ -398,10 +400,10 @@ test_cogl_tex_polygon_main (int argc, char *argv[])
 			 filtering_toggle,
 			 note,
 			 NULL);
-  
+
   clutter_actor_show (stage);
-  
+
   clutter_main ();
-  
+
   return 0;
 }

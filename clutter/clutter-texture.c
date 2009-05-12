@@ -187,18 +187,18 @@ clutter_texture_quality_to_filters (ClutterTextureQuality  quality,
   switch (quality)
     {
     case CLUTTER_TEXTURE_QUALITY_LOW:
-      min_filter = CGL_NEAREST;
-      mag_filter = CGL_NEAREST;
+      min_filter = COGL_TEXTURE_FILTER_NEAREST;
+      mag_filter = COGL_TEXTURE_FILTER_NEAREST;
       break;
 
     case CLUTTER_TEXTURE_QUALITY_MEDIUM:
-      min_filter = CGL_LINEAR;
-      mag_filter = CGL_LINEAR;
+      min_filter = COGL_TEXTURE_FILTER_LINEAR;
+      mag_filter = COGL_TEXTURE_FILTER_LINEAR;
       break;
 
     case CLUTTER_TEXTURE_QUALITY_HIGH:
-      min_filter = CGL_LINEAR_MIPMAP_LINEAR;
-      mag_filter = CGL_LINEAR;
+      min_filter = COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR;
+      mag_filter = COGL_TEXTURE_FILTER_LINEAR;
       break;
     }
 
@@ -1891,7 +1891,7 @@ clutter_texture_async_load (ClutterTexture *self,
  * If #ClutterTexture:load-async is set to %TRUE, this function
  * will return as soon as possible, and the actual image loading
  * from disk will be performed asynchronously. #ClutterTexture::size-change
- * will be emitten when the size of the texture is available and 
+ * will be emitten when the size of the texture is available and
  * #ClutterTexture::load-finished will be emitted when the image has been
  * loaded or if an error occurred.
  *

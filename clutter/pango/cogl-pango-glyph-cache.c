@@ -311,12 +311,12 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
 
 	  if (cache->use_mipmapping)
 	    cogl_texture_set_filters (texture->texture,
-				      CGL_LINEAR_MIPMAP_LINEAR,
-				      CGL_LINEAR);
+                                      COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR,
+				      COGL_TEXTURE_FILTER_LINEAR);
 	  else
 	    cogl_texture_set_filters (texture->texture,
-				      CGL_LINEAR,
-				      CGL_LINEAR);
+				      COGL_TEXTURE_FILTER_LINEAR,
+				      COGL_TEXTURE_FILTER_LINEAR);
 	}
 
       band = g_slice_new (CoglPangoGlyphCacheBand);

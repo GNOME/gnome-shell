@@ -122,7 +122,7 @@ cogl_program_use (CoglHandle handle)
   ctx->gles2.settings_dirty = TRUE;
 }
 
-COGLint
+int
 cogl_program_get_uniform_location (CoglHandle   handle,
                                    const gchar *uniform_name)
 {
@@ -155,21 +155,21 @@ cogl_program_get_uniform_location (CoglHandle   handle,
 }
 
 void
-cogl_program_uniform_1f (COGLint uniform_no,
+cogl_program_uniform_1f (int uniform_no,
                          gfloat  value)
 {
   cogl_program_uniform_float (uniform_no, 1, 1, &value);
 }
 
 void
-cogl_program_uniform_1i (COGLint uniform_no,
+cogl_program_uniform_1i (int uniform_no,
                          gint    value)
 {
   cogl_program_uniform_int (uniform_no, 1, 1, &value);
 }
 
 static void
-cogl_program_uniform_x (COGLint uniform_no,
+cogl_program_uniform_x (int uniform_no,
 			gint size,
 			gint count,
 			CoglBoxedType type,
@@ -215,7 +215,7 @@ cogl_program_uniform_x (COGLint uniform_no,
 }
 
 void
-cogl_program_uniform_float (COGLint  uniform_no,
+cogl_program_uniform_float (int  uniform_no,
                             gint     size,
                             gint     count,
                             const GLfloat *value)
@@ -225,7 +225,7 @@ cogl_program_uniform_float (COGLint  uniform_no,
 }
 
 void
-cogl_program_uniform_int (COGLint  uniform_no,
+cogl_program_uniform_int (int  uniform_no,
 			  gint   size,
 			  gint   count,
 			  const GLint *value)
@@ -235,7 +235,7 @@ cogl_program_uniform_int (COGLint  uniform_no,
 }
 
 void
-cogl_program_uniform_matrix (COGLint   uniform_no,
+cogl_program_uniform_matrix (int   uniform_no,
                              gint      size,
                              gint      count,
                              gboolean  transpose,
@@ -296,7 +296,7 @@ cogl_program_use (CoglHandle program_handle)
 {
 }
 
-COGLint
+int
 cogl_program_get_uniform_location (CoglHandle   program_handle,
                                    const gchar *uniform_name)
 {
@@ -304,13 +304,13 @@ cogl_program_get_uniform_location (CoglHandle   program_handle,
 }
 
 void
-cogl_program_uniform_1f (COGLint uniform_no,
+cogl_program_uniform_1f (int uniform_no,
                          gfloat  value)
 {
 }
 
 void
-cogl_program_uniform_float (COGLint  uniform_no,
+cogl_program_uniform_float (int  uniform_no,
                             gint     size,
                             gint     count,
                             const GLfloat *value)
@@ -318,15 +318,15 @@ cogl_program_uniform_float (COGLint  uniform_no,
 }
 
 void
-cogl_program_uniform_int (COGLint  uniform_no,
+cogl_program_uniform_int (int  uniform_no,
                           gint     size,
                           gint     count,
-                          const COGLint *value)
+                          const int *value)
 {
 }
 
 void
-cogl_program_uniform_matrix (COGLint   uniform_no,
+cogl_program_uniform_matrix (int   uniform_no,
                              gint      size,
                              gint      count,
                              gboolean  transpose,
