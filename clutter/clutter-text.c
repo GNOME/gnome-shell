@@ -2859,7 +2859,8 @@ clutter_text_get_selection (ClutterText *self)
   if (end_index == start_index)
     return g_strdup ("");
 
-  if (end_index < start_index)
+  if ((end_index != -1 && end_index < start_index) ||
+      start_index == -1)
     {
       gint temp = start_index;
       start_index = end_index;
