@@ -7,7 +7,6 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
-const Overlay = imports.ui.overlay;
 const Tweener = imports.ui.tweener;
 
 const POPUP_BG_COLOR = new Clutter.Color();
@@ -26,6 +25,9 @@ const POPUP_LABEL_MAX_WIDTH = POPUP_NUM_COLUMNS * (POPUP_ICON_SIZE + POPUP_GRID_
 
 const OVERLAY_COLOR = new Clutter.Color();
 OVERLAY_COLOR.from_pixel(0x00000044);
+
+const SHOW_TIME = 0.05;
+const SWITCH_TIME = 0.1;
 
 function AltTabPopup() {
     this._init();
@@ -53,7 +55,7 @@ AltTabPopup.prototype = {
 	this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
 
         // Selected-window label
-	this._label = new Clutter.Text({ font_name: "Sans 12",
+	this._label = new Clutter.Text({ font_name: "Sans 16px",
                                          ellipsize: Pango.EllipsizeMode.END });
 
         let labelbox = new Big.Box({ background_color: POPUP_INDICATOR_COLOR,
@@ -109,6 +111,8 @@ AltTabPopup.prototype = {
             }
         }
 
+        item.visible = item.metaWindow.showing_on_its_workspace();
+
         item.n = this._items.length;
         this._items.push(item);
 
@@ -129,6 +133,10 @@ AltTabPopup.prototype = {
         global.window_group.add_actor(this._overlay);
         this._overlay.raise_top();
         this._overlay.show();
+        this.actor.opacity = 0;
+        Tweener.addTween(this.actor, { opacity: 255,
+                                       time: SHOW_TIME,
+                                       transition: "easeOutQuad" });
 
 	this.actor.show_all();
         this.actor.x = (global.screen_width - this.actor.width) / 2;
@@ -138,9 +146,8 @@ AltTabPopup.prototype = {
     },
 
     destroy : function() {
-	this.actor.hide();
-        this._overlay.hide();
-        this._overlay.unparent();
+	this.actor.destroy();
+        this._overlay.destroy();
 
         Main.endModal();
     },
@@ -186,7 +193,8 @@ AltTabPopup.prototype = {
                                    y: by,
                                    width: this._selected.box.width,
                                    height: this._selected.box.height,
-                                   time: Overlay.ANIMATION_TIME });
+                                   time: SWITCH_TIME,
+                                   transition: "easeOutQuad" });
             } else {
                 Tweener.removeTweens(this.indicator);
                 this._indicator.set_position(bx, by);
@@ -195,7 +203,7 @@ AltTabPopup.prototype = {
             }
             this._indicator.show();
 
-            if (this._overlay.visible)
+            if (this._overlay.visible && this._selected.visible)
                 this._selected.window.raise(this._overlay);
 
             this._allocationChangedId =
