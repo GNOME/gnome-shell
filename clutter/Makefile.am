@@ -205,16 +205,16 @@ source_h_priv = \
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   $(CLUTTER_LIBS) \
+  $(top_builddir)/clutter/cogl/libclutter-cogl.la \
   $(top_builddir)/clutter/pango/libcoglpango.la \
   $(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
-  $(top_builddir)/clutter/cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
   $(clutter_json_libadd) \
   $(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
+  $(top_builddir)/clutter/cogl/libclutter-cogl.la \
   $(top_builddir)/clutter/pango/libcoglpango.la \
   $(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
-  $(top_builddir)/clutter/cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
   $(clutter_json_dep) \
   $(backendextralib)
 
@@ -245,8 +245,8 @@ json_gir_include_path=--add-include-path=json
 endif
 
 # We can't reference the list of COGL header files, since they are in a
-# subdir Makefile.am, so just extract them from cogl.h instead. The doc comments
-# for COGL are in the headers, so we don't need the source files.
+# subdir Makefile.am, so just extract them from cogl.h instead. The doc
+# comments for COGL are in the headers, so we don't need the source files.
 Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 	headers=`sed -n "s/#include <cogl\/\([^>]*\)>/\1/p" < $(top_srcdir)/clutter/cogl/cogl.h` ; \
 	cogl_headers="" ; \
@@ -274,11 +274,20 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 
 BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir
 
+# We build Cogl.gir in the cogl/ subdir, but it needs to reference the shared
+# library that it's built into, so we delay compiling the gir into typelib
+# until after we've built the shared library. To create the final Cogl.gir
+# that we compile and install, we transfer the shared-library="" line from
+# Clutter.gir to Cogl.gir
+Cogl-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir cogl/Cogl-@CLUTTER_API_VERSION@.gir
+	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
+	sed "s/shared-library=\"clutter-cogl\"/shared-library=\"$$shlib\"/"< cogl/Cogl-@CLUTTER_API_VERSION@.gir > $@
+
+BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
+
 if LOCAL_JSON_GLIB
-# We build ClutterJson.gir in the json/ subdir, but it needs to reference the shared library
-# that it's built into, so we delay compiling the gir into typelib until after we've built
-# the shared library. To create the final ClutterJson.gir that we compiler and install, we
-# transfer the shared-library="" line from Clutter.gir to ClutterJson.gir
+# If we are building it, ClutterJson gets the same handling as described
+# for Cogl above
 ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
 	sed "s/shared-library=\"clutter-json\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
@@ -286,12 +295,13 @@ ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/Cl
 BUILT_GIRSOURCES += ClutterJson-@CLUTTER_API_VERSION@.gir
 endif
 
-# INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to install
-# thing - we need to install inside our prefix.
+# INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
+# install anything - we need to install inside our prefix.
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(BUILT_GIRSOURCES)
 
 typelibsdir = $(libdir)/girepository-1.0/
+
 typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 %.typelib: %.gir $(INTROSPECTION_COMPILER)
