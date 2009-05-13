@@ -17,13 +17,6 @@ POPUP_INDICATOR_COLOR.from_pixel(0xf0f0f0ff);
 const POPUP_TRANSPARENT = new Clutter.Color();
 POPUP_TRANSPARENT.from_pixel(0x00000000);
 
-const RED = new Clutter.Color();
-RED.from_pixel(0xff0000ff);
-const GREEN = new Clutter.Color();
-GREEN.from_pixel(0x00ff00ff);
-const BLUE = new Clutter.Color();
-BLUE.from_pixel(0x0000ffff);
-
 const POPUP_INDICATOR_WIDTH = 4;
 const POPUP_GRID_SPACING = 8;
 const POPUP_ICON_SIZE = 48;
