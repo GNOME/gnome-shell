@@ -184,6 +184,9 @@ ClutterActor *_clutter_backend_create_stage   (ClutterBackend  *backend,
                                                GError         **error);
 void          _clutter_backend_ensure_context (ClutterBackend  *backend,
                                                ClutterStage    *stage);
+gboolean      _clutter_backend_create_context (ClutterBackend  *backend,
+                                               gboolean         is_offscreen,
+                                               GError         **error);
 
 void          _clutter_backend_add_options    (ClutterBackend  *backend,
                                                GOptionGroup    *group);

@@ -354,6 +354,57 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   return flags;
 }
 
+static gboolean
+clutter_backend_glx_create_context (ClutterBackend  *backend,
+                                    gboolean         is_offscreen,
+                                    GError         **error)
+{
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  if (backend_glx->gl_context == None)
+    {
+      XVisualInfo *xvisinfo;
+
+      xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, is_offscreen);
+
+      CLUTTER_NOTE (GL, "Creating GL Context (display: %p, %s)",
+                    backend_x11->xdpy,
+                    is_offscreen ? "offscreen" : "onscreen");
+
+      backend_glx->gl_context = glXCreateContext (backend_x11->xdpy,
+                                                  xvisinfo,
+                                                  0,
+                                                  is_offscreen ? False : True);
+
+      XFree (xvisinfo);
+
+      if (backend_glx->gl_context == None)
+        {
+          g_set_error (error, CLUTTER_INIT_ERROR,
+                       CLUTTER_INIT_ERROR_BACKEND,
+                       "Unable to create suitable %s GL context",
+                       is_offscreen ? "offscreen" : "onscreen");
+          return FALSE;
+        }
+
+      if (!is_offscreen)
+        {
+          gboolean is_direct;
+
+          is_direct = glXIsDirect (backend_x11->xdpy,
+                                   backend_glx->gl_context);
+
+          CLUTTER_NOTE (GL, "Setting %s context",
+                        is_direct ? "direct" : "indirect");
+          _cogl_set_indirect_context (!is_direct);
+        }
+    }
+
+  return TRUE;
+}
+
 static void
 clutter_backend_glx_ensure_context (ClutterBackend *backend, 
                                     ClutterStage   *stage)
@@ -469,7 +520,7 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
     }
 }
 
-static ClutterActor*
+static ClutterActor *
 clutter_backend_glx_create_stage (ClutterBackend  *backend,
                                   ClutterStage    *wrapper,
                                   GError         **error)
@@ -563,6 +614,7 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->add_options    = clutter_backend_glx_add_options;
   backend_class->get_features   = clutter_backend_glx_get_features;
   backend_class->redraw         = clutter_backend_glx_redraw;
+  backend_class->create_context = clutter_backend_glx_create_context;
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
 
   backendx11_class->get_visual_info = clutter_backend_glx_get_visual_info;

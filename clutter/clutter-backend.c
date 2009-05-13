@@ -300,6 +300,22 @@ _clutter_backend_redraw (ClutterBackend *backend,
     klass->redraw (backend, stage);
 }
 
+gboolean
+_clutter_backend_create_context (ClutterBackend  *backend,
+                                 gboolean         is_offscreen,
+                                 GError         **error)
+{
+  ClutterBackendClass *klass;
+
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (klass->create_context)
+    return klass->create_context (backend, is_offscreen, error);
+
+  return TRUE;
+}
+
 void
 _clutter_backend_ensure_context (ClutterBackend *backend,
                                  ClutterStage   *stage)
