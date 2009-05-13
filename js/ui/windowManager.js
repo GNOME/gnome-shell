@@ -10,7 +10,6 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
 const WINDOW_ANIMATION_TIME = 0.25;
-const SWITCH_ANIMATION_TIME = 0.5;
 
 function WindowManager() {
     this._init();
@@ -342,7 +341,7 @@ WindowManager.prototype = {
         Tweener.addTween(switchData.outGroup,
                          { x: xDest,
                            y: yDest,
-                           time: SWITCH_ANIMATION_TIME,
+                           time: WINDOW_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: this._switchWorkspaceDone,
                            onCompleteScope: this
@@ -350,7 +349,7 @@ WindowManager.prototype = {
         Tweener.addTween(switchData.inGroup,
                          { x: 0,
                            y: 0,
-                           time: SWITCH_ANIMATION_TIME,
+                           time: WINDOW_ANIMATION_TIME,
                            transition: "easeOutQuad"
                          });
     },
