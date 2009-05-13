@@ -1448,7 +1448,7 @@ clutter_text_get_preferred_height (ClutterActor *self,
                                    ClutterUnit  *min_height_p,
                                    ClutterUnit  *natural_height_p)
 {
-  ClutterText *text = CLUTTER_TEXT (self);
+  ClutterTextPrivate *priv = CLUTTER_TEXT (self)->priv;
 
   if (for_width == 0)
     {
@@ -1465,7 +1465,8 @@ clutter_text_get_preferred_height (ClutterActor *self,
       gint logical_height;
       ClutterUnit layout_height;
 
-      layout = clutter_text_create_layout (text, for_width, -1);
+      layout = clutter_text_create_layout (CLUTTER_TEXT (self),
+                                           for_width, -1);
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
@@ -1474,13 +1475,26 @@ clutter_text_get_preferred_height (ClutterActor *self,
        * the height accordingly
        */
       logical_height = logical_rect.y + logical_rect.height;
-
       layout_height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_height);
 
       if (min_height_p)
         {
-          if (text->priv->ellipsize)
-            *min_height_p = 1;
+          /* if we wrap and ellipsize then the minimum height is
+           * going to be at least the size of the first line
+           */
+          if (priv->ellipsize && priv->wrap)
+            {
+              PangoLayoutLine *line;
+              ClutterUnit line_height;
+
+              line = pango_layout_get_line_readonly (layout, 0);
+              pango_layout_line_get_extents (line, NULL, &logical_rect);
+
+              logical_height = logical_rect.y + logical_rect.height;
+              line_height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_height);
+
+              *min_height_p = line_height;
+            }
           else
             *min_height_p = layout_height;
         }
