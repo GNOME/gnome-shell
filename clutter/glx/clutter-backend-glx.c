@@ -434,8 +434,11 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   ClutterStageWindow *impl;
 
   impl = _clutter_stage_get_window (stage);
-  if (!impl)
-    return;
+  if (G_UNLIKELY (impl == NULL))
+    {
+      CLUTTER_NOTE (BACKEND, "Stage [%p] has no implementation", stage);
+      return;
+    }
 
   g_assert (CLUTTER_IS_STAGE_GLX (impl));
 
@@ -445,18 +448,23 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   /* this will cause the stage implementation to be painted */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 
-  /* Why this paint is done in backend as likely GL windowing system
-   * specific calls, like swapping buffers.
-  */
-  if (stage_x11->xwin)
+  if (stage_x11->xwin != None)
     {
+      /* wait for the next vblank */
+      CLUTTER_NOTE (BACKEND, "Waiting for vblank");
       clutter_backend_glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+
+      /* push on the screen */
+      CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
+                    stage_x11->xdpy,
+                    (unsigned long) stage_x11->xwin);
       glXSwapBuffers (stage_x11->xdpy, stage_x11->xwin);
     }
   else
     {
       /* offscreen */
       glXWaitGL ();
+
       CLUTTER_GLERR ();
     }
 }
@@ -494,11 +502,56 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   return stage;
 }
 
+static XVisualInfo *
+clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11,
+                                     gboolean           for_offscreen)
+{
+  XVisualInfo *xvisinfo;
+  int onscreen_gl_attributes[] = {
+    GLX_RGBA,
+    GLX_DOUBLEBUFFER,
+    GLX_RED_SIZE,     1,
+    GLX_GREEN_SIZE,   1,
+    GLX_BLUE_SIZE,    1,
+    GLX_STENCIL_SIZE, 1,
+    0
+  };
+  int offscreen_gl_attributes[] = {
+    GLX_RGBA,
+    GLX_USE_GL,
+    GLX_DEPTH_SIZE,   0,
+    GLX_ALPHA_SIZE,   0,
+    GLX_STENCIL_SIZE, 1,
+    GLX_RED_SIZE,     1,
+    GLX_GREEN_SIZE,   1,
+    GLX_BLUE_SIZE,    1,
+    0
+  };
+
+  if (backend_x11->xdpy == None || backend_x11->xscreen == None)
+    return NULL;
+
+  CLUTTER_NOTE (BACKEND,
+                "Retrieving GL visual (for %s use), dpy: %p, xscreen; %p (%d)",
+                for_offscreen ? "offscreen" : "onscreen",
+                backend_x11->xdpy,
+                backend_x11->xscreen,
+                backend_x11->xscreen_num);
+
+  xvisinfo = glXChooseVisual (backend_x11->xdpy,
+                              backend_x11->xscreen_num,
+                              for_offscreen ? offscreen_gl_attributes
+                                            : onscreen_gl_attributes);
+
+  return xvisinfo;
+}
+
 static void
 clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
+  ClutterBackendX11Class *backendx11_class = CLUTTER_BACKEND_X11_CLASS (klass);
 
   gobject_class->constructor = clutter_backend_glx_constructor;
   gobject_class->dispose     = clutter_backend_glx_dispose;
@@ -511,6 +564,8 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->get_features   = clutter_backend_glx_get_features;
   backend_class->redraw         = clutter_backend_glx_redraw;
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
+
+  backendx11_class->get_visual_info = clutter_backend_glx_get_visual_info;
 }
 
 static void

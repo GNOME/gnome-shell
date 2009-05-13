@@ -969,3 +969,17 @@ clutter_x11_has_composite_extension (void)
   return have_composite;
 }
 
+XVisualInfo *
+clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11,
+                                     gboolean           for_offscreen)
+{
+  ClutterBackendX11Class *klass;
+
+  g_return_val_if_fail (CLUTTER_IS_BACKEND_X11 (backend_x11), NULL);
+
+  klass = CLUTTER_BACKEND_X11_GET_CLASS (backend_x11);
+  if (klass->get_visual_info)
+    return klass->get_visual_info (backend_x11, for_offscreen);
+
+  return NULL;
+}

@@ -90,6 +90,9 @@ struct _ClutterBackendX11
 struct _ClutterBackendX11Class
 {
   ClutterBackendClass parent_class;
+
+  XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend,
+                                    gboolean           for_offscreen);
 };
 
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);
@@ -119,6 +122,10 @@ clutter_backend_x11_add_options (ClutterBackend *backend,
 
 ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend);
+
+XVisualInfo *
+clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11,
+                                     gboolean           for_offscreen);
 
 #ifdef USE_XINPUT
 void 

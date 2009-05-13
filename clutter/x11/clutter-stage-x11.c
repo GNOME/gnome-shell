@@ -656,13 +656,27 @@ XVisualInfo *
 clutter_x11_get_stage_visual (ClutterStage *stage)
 {
   ClutterStageWindow *impl;
+  ClutterStageX11 *stage_x11;
+  gboolean is_offscreen = FALSE;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  g_object_get (G_OBJECT (stage), "offscreen", &is_offscreen, NULL);
 
   impl = _clutter_stage_get_window (stage);
   g_assert (CLUTTER_IS_STAGE_X11 (impl));
 
-  return CLUTTER_STAGE_X11 (impl)->xvisinfo;
+  stage_x11 = CLUTTER_STAGE_X11 (impl);
+
+  if (stage_x11->xvisinfo == NULL)
+    {
+      ClutterBackendX11 *backend_x11 = stage_x11->backend;
+
+      stage_x11->xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, is_offscreen);
+    }
+
+  return stage_x11->xvisinfo;
 }
 
 typedef struct {

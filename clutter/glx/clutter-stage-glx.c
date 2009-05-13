@@ -124,26 +124,14 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
   if (G_LIKELY (!is_offscreen))
     {
-      int gl_attributes[] = 
-        {
-          GLX_RGBA, 
-          GLX_DOUBLEBUFFER,
-          GLX_RED_SIZE,     1,
-          GLX_GREEN_SIZE,   1,
-          GLX_BLUE_SIZE,    1,
-          GLX_STENCIL_SIZE, 1,
-          0
-        };
-
       if (stage_x11->xvisinfo != None)
         {
           XFree (stage_x11->xvisinfo);
           stage_x11->xvisinfo = None;
         }
 
-      stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-                                             stage_x11->xscreen,
-                                             gl_attributes);
+      stage_x11->xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, FALSE);
       if (stage_x11->xvisinfo == None)
         {
           g_critical ("Unable to find suitable GL visual.");
@@ -232,27 +220,15 @@ clutter_stage_glx_realize (ClutterActor *actor)
     }
   else
     {
-      int gl_attributes[] = {
-        GLX_DEPTH_SIZE,    0,
-        GLX_ALPHA_SIZE,    0,
-        GLX_RED_SIZE, 1,
-        GLX_GREEN_SIZE, 1,
-        GLX_BLUE_SIZE, 1,
-        GLX_USE_GL,
-        GLX_RGBA,
-        0
-      };
+      if (stage_x11->xvisinfo != None)
+        {
+          XFree (stage_x11->xvisinfo);
+          stage_x11->xvisinfo = None;
+        }
 
-      if (stage_x11->xvisinfo)
-         XFree (stage_x11->xvisinfo);
-
-      stage_x11->xvisinfo = NULL;
-
-      CLUTTER_NOTE (GL, "glXChooseVisual");
-      stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-                                             stage_x11->xscreen,
-                                             gl_attributes);
-      if (!stage_x11->xvisinfo)
+      stage_x11->xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, TRUE);
+      if (stage_x11->xvisinfo == None)
         {
           g_critical ("Unable to find suitable GL visual.");
           goto fail;
