@@ -3,6 +3,7 @@
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 
@@ -81,13 +82,22 @@ AltTabPopup.prototype = {
 	global.stage.add_actor(this.actor);
 
         // Dark translucent window used to cover all but the
-        // currently-selected window while Alt-Tabbing.
-        // FIXME: share overlay code with runDialog.js
-        this._overlay = new Clutter.Rectangle({ color: OVERLAY_COLOR,
-                                                width: global.screen_width,
-                                                height: global.screen_height,
-                                                border_width: 0,
-                                                reactive: true });
+        // currently-selected window while Alt-Tabbing. Actually
+        // contains four actors which can we rearrange to create
+        // a hole in the overlay.
+        this._overlay = new Clutter.Group({ reactive: true });
+        this._overlay_top = new Clutter.Rectangle({ color: OVERLAY_COLOR,
+                                                    border_width: 0 });
+        this._overlay_bottom = new Clutter.Rectangle({ color: OVERLAY_COLOR,
+                                                       border_width: 0 });
+        this._overlay_left = new Clutter.Rectangle({ color: OVERLAY_COLOR,
+                                                     border_width: 0 });
+        this._overlay_right = new Clutter.Rectangle({ color: OVERLAY_COLOR,
+                                                      border_width: 0 });
+        this._overlay.add_actor(this._overlay_top);
+        this._overlay.add_actor(this._overlay_bottom);
+        this._overlay.add_actor(this._overlay_left);
+        this._overlay.add_actor(this._overlay_right);
     },
 
     addWindow : function(win) {
@@ -112,6 +122,12 @@ AltTabPopup.prototype = {
         }
 
         item.visible = item.metaWindow.showing_on_its_workspace();
+
+        if (!item.visible) {
+            let rect = new Meta.Rectangle();
+            if (item.metaWindow.get_icon_geometry(rect))
+                item.icon_rect = rect;
+        }
 
         item.n = this._items.length;
         this._items.push(item);
@@ -203,8 +219,11 @@ AltTabPopup.prototype = {
             }
             this._indicator.show();
 
-            if (this._overlay.visible && this._selected.visible)
-                this._selected.window.raise(this._overlay);
+            if (this._overlay.visible) {
+                if (this._selected.visible)
+                    this._selected.window.raise(this._overlay);
+                this._adjust_overlay();
+            }
 
             this._allocationChangedId =
                 this._selected.box.connect('notify::allocation',
@@ -218,5 +237,55 @@ AltTabPopup.prototype = {
     _allocationChanged : function() {
         if (this._selected)
             this.select(this._selected.n);
+    },
+
+    _adjust_overlay : function() {
+	let global = Shell.Global.get();
+
+        if (this._selected && this._selected.icon_rect) {
+            // We want to highlight a specific rectangle within the
+            // task bar, so rearrange the pieces of the overlay to
+            // cover the whole screen except that rectangle
+
+            let rect = this._selected.icon_rect;
+
+            this._overlay_top.x = 0;
+            this._overlay_top.y = 0;
+            this._overlay_top.width = global.screen_width;
+            this._overlay_top.height = rect.y;
+
+            this._overlay_left.x = 0;
+            this._overlay_left.y = rect.y;
+            this._overlay_left.width = rect.x;
+            this._overlay_left.height = rect.height;
+            this._overlay_left.show();
+
+            this._overlay_right.x = rect.x + rect.width;
+            this._overlay_right.y = rect.y;
+            this._overlay_right.width = global.screen_width - rect.x - rect.width;
+            this._overlay_right.height = rect.height;
+            this._overlay_right.show();
+
+            this._overlay_bottom.x = 0;
+            this._overlay_bottom.y = rect.y + rect.height;
+            this._overlay_bottom.width = global.screen_width;
+            this._overlay_bottom.height = global.screen_height - rect.y - rect.height;
+            this._overlay_bottom.show();
+        } else {
+            // Either there's no current selection, or the selection
+            // is a visible window. Make the overlay cover the whole
+            // screen. select() will raise the selected window over
+            // the overlay.
+
+            this._overlay_top.x = 0;
+            this._overlay_top.y = 0;
+            this._overlay_top.width = global.screen_width;
+            this._overlay_top.height = global.screen_height;
+            this._overlay_top.show();
+
+            this._overlay_left.hide();
+            this._overlay_right.hide();
+            this._overlay_bottom.hide();
+        }
     }
 };
