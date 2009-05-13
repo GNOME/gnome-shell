@@ -70,7 +70,7 @@ GQuark clutter_init_error_quark (void);
  *
  * Since: 0.8
  */
-#define CLUTTER_PRIORITY_REDRAW         (G_PRIORITY_DEFAULT + 10)
+#define CLUTTER_PRIORITY_REDRAW         (G_PRIORITY_HIGH_IDLE + 20)
 
 /**
  * CLUTTER_PRIORITY_TIMELINE:
