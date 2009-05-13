@@ -70,6 +70,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-status-menu.h				\
 	shell-tray-manager.c			\
 	shell-tray-manager.h			\
+	shell-texture-cache.c			\
+	shell-texture-cache.h			\
 	shell-wm.c				\
 	shell-wm.h
 

@@ -10,7 +10,6 @@ const Lang = imports.lang;
 const Signals = imports.signals;
 
 const GenericDisplay = imports.ui.genericDisplay;
-const GtkUtil = imports.ui.gtkutil;
 const Main = imports.ui.main;
 
 const ENTERED_MENU_COLOR = new Clutter.Color();
@@ -70,7 +69,14 @@ AppDisplayItem.prototype = {
         let iconTheme = Gtk.IconTheme.get_default();
 
         let gicon = appInfo.get_icon();
-        let icon = GtkUtil.loadIconToTexture(gicon, GenericDisplay.ITEM_DISPLAY_ICON_SIZE, true);
+        let texCache = Shell.TextureCache.get_default();
+        let icon;
+        if (gicon == null)
+            icon = new Clutter.Texture({ width: GenericDisplay.ITEM_DISPLAY_ICON_SIZE,
+                                         height: GenericDisplay.ITEM_DISPLAY_ICON_SIZE
+                                       });
+        else
+            icon = texCache.load_gicon(gicon, GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
         this._setItemInfo(name, description, icon);
     },
 

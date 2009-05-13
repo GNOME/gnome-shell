@@ -128,16 +128,7 @@ DocDisplayItem.prototype = {
         if (this._docInfo.get_mime_type() == null || this._docInfo.get_mime_type().indexOf("image/") != 0)
             return null;
 
-        let largePreviewPixbuf = Shell.create_pixbuf_from_image_file(this._docInfo.get_uri(), availableWidth, availableHeight);
-        
-        if (largePreviewPixbuf == null)
-            return null;
-
-        let largePreviewIcon = new Clutter.Texture();
-
-        Shell.clutter_texture_set_from_pixbuf(largePreviewIcon, largePreviewPixbuf); 
-
-        return largePreviewIcon;
+        return Shell.TextureCache.load_uri_sync(this._docInfo.get_uri(), availableWidth, availableHeight);
     }
 };
 

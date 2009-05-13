@@ -8,7 +8,6 @@ dist_jsui_DATA =		\
 	dnd.js			\
 	docDisplay.js		\
 	genericDisplay.js	\
-        gtkutil.js		\
 	link.js			\
 	main.js			\
 	overlay.js		\
