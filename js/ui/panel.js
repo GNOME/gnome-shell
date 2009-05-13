@@ -2,6 +2,7 @@
 
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -33,14 +34,17 @@ PANEL_BUTTON_COLOR.from_pixel(0x00000015);
 const PRESSED_BUTTON_BACKGROUND_COLOR = new Clutter.Color();
 PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0x00000030);
 
+const TRAY_PADDING = 2;
+const TRAY_SPACING = 2;
+
+// Used for the tray icon container with gtk pre-2.16, which doesn't
+// fully support tray icon transparency
 const TRAY_BACKGROUND_COLOR = new Clutter.Color();
 TRAY_BACKGROUND_COLOR.from_pixel(0xefefefff);
 const TRAY_BORDER_COLOR = new Clutter.Color();
 TRAY_BORDER_COLOR.from_pixel(0x00000033);
 const TRAY_CORNER_RADIUS = 5;
 const TRAY_BORDER_WIDTH = 1;
-const TRAY_PADDING = 2;
-const TRAY_SPACING = 2;
 
 function Panel() {
     this._init();
@@ -112,19 +116,25 @@ Panel.prototype = {
         box.append(clockbox, Big.BoxPackFlags.END);
 
         // The tray icons live in trayBox within trayContainer.
-        // With Gtk 2.16, we can also use a transparent background for this.
         // The trayBox is hidden when there are no tray icons.
         let trayContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                           y_align: Big.BoxAlignment.CENTER });
         box.append(trayContainer, Big.BoxPackFlags.END);
         let trayBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                     height: TRAY_HEIGHT,
-                                    background_color: TRAY_BACKGROUND_COLOR,
-                                    corner_radius: TRAY_CORNER_RADIUS,
-                                    border: TRAY_BORDER_WIDTH,
-                                    border_color: TRAY_BORDER_COLOR,
                                     padding: TRAY_PADDING,
                                     spacing: TRAY_SPACING });
+
+        // gtk+ < 2.16 doesn't have fully-working icon transparency,
+        // so we want trayBox to be opaque in that case (the icons
+        // will at least pick up its background color).
+        if (Gtk.MAJOR_VERSION == 2 && Gtk.MINOR_VERSION < 16) {
+            trayBox.background_color = TRAY_BACKGROUND_COLOR;
+            trayBox.corner_radius = TRAY_CORNER_RADIUS;
+            trayBox.border = TRAY_BORDER_WIDTH;
+            trayBox.border_color = TRAY_BORDER_COLOR;
+        }
+
         trayBox.hide();
         trayContainer.append(trayBox, Big.BoxPackFlags.NONE);
 
