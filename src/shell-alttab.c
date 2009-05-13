@@ -148,7 +148,10 @@ shell_alt_tab_handler_forward (MetaAltTabHandler *handler)
 {
   ShellAltTabHandler *sth = SHELL_ALT_TAB_HANDLER (handler);
 
-  sth->selected = (sth->selected + 1) % sth->windows->len;
+  if (sth->selected == sth->windows->len - 1)
+    sth->selected = 0;
+  else
+    sth->selected++;
   g_object_notify (G_OBJECT (handler), "selected");
 }
 
@@ -157,7 +160,10 @@ shell_alt_tab_handler_backward (MetaAltTabHandler *handler)
 {
   ShellAltTabHandler *sth = SHELL_ALT_TAB_HANDLER (handler);
 
-  sth->selected = (sth->selected - 1) % sth->windows->len;
+  if (sth->selected == 0)
+    sth->selected = sth->windows->len - 1;
+  else
+    sth->selected--;
   g_object_notify (G_OBJECT (handler), "selected");
 }
 
