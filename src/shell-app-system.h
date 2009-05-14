@@ -31,7 +31,7 @@ struct _ShellAppSystemClass
 GType shell_app_system_get_type (void) G_GNUC_CONST;
 ShellAppSystem* shell_app_system_new(void);
 
-GList *shell_app_system_get_applications_for_menu (ShellAppSystem *monitor, const char *menu);
+GSList *shell_app_system_get_applications_for_menu (ShellAppSystem *system, const char *menu);
 
 typedef struct _ShellAppMenuEntry ShellAppMenuEntry;
 
@@ -43,6 +43,8 @@ struct _ShellAppMenuEntry {
 
 GType shell_app_menu_entry_get_type (void);
 
-GList *shell_app_system_get_menus (ShellAppSystem *monitor);
+GSList *shell_app_system_get_menus (ShellAppSystem *system);
+
+GSList *shell_app_system_get_all_settings (ShellAppSystem *system);
 
 #endif /* __SHELL_APP_SYSTEM_H__ */

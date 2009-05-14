@@ -20,10 +20,12 @@ enum {
 static guint signals[LAST_SIGNAL] = { 0 };
 
 struct _ShellAppSystemPrivate {
-  GMenuTree *tree;
-  GMenuTreeDirectory *trunk;
+  GMenuTree *apps_tree;
+  GMenuTree *settings_tree;
 
-  GList *cached_menus;
+  GSList *cached_app_menus; /* ShellAppMenuEntry */
+
+  GSList *cached_setting_ids; /* utf8 */
 };
 
 static void shell_app_system_finalize (GObject *object);
@@ -81,11 +83,11 @@ shell_app_system_init (ShellAppSystem *self)
                                                    SHELL_TYPE_APP_SYSTEM,
                                                    ShellAppSystemPrivate);
 
-  priv->tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
+  priv->apps_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
+  priv->settings_tree = gmenu_tree_lookup ("settings.menu", GMENU_TREE_FLAGS_NONE);
 
-  priv->trunk = gmenu_tree_get_root_directory (priv->tree);
-
-  gmenu_tree_add_monitor (priv->tree, on_tree_changed, self);
+  gmenu_tree_add_monitor (priv->apps_tree, on_tree_changed, self);
+  gmenu_tree_add_monitor (priv->settings_tree, on_tree_changed, self);
 
   reread_menus (self);
 }
@@ -96,23 +98,37 @@ shell_app_system_finalize (GObject *object)
   ShellAppSystem *self = SHELL_APP_SYSTEM (object);
   ShellAppSystemPrivate *priv = self->priv;
 
-  gmenu_tree_remove_monitor (priv->tree, on_tree_changed, self);
+  gmenu_tree_remove_monitor (priv->apps_tree, on_tree_changed, self);
+  gmenu_tree_remove_monitor (priv->settings_tree, on_tree_changed, self);
 
-  gmenu_tree_unref (priv->tree);
+  gmenu_tree_unref (priv->apps_tree);
+  gmenu_tree_unref (priv->settings_tree);
+
+  g_slist_foreach (priv->cached_app_menus, (GFunc)shell_app_menu_entry_free, NULL);
+  g_slist_free (priv->cached_app_menus);
+  priv->cached_app_menus = NULL;
+
+  g_slist_foreach (priv->cached_setting_ids, (GFunc)g_free, NULL);
+  g_slist_free (priv->cached_setting_ids);
+  priv->cached_setting_ids = NULL;
 
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize(object);
 }
 
 static void
-reread_menus (ShellAppSystem *self)
+reread_directories (ShellAppSystem *self, GSList **cache, GMenuTree *tree)
 {
-  GSList *entries = gmenu_tree_directory_get_contents (self->priv->trunk);
-  GSList *iter;
   ShellAppSystemPrivate *priv = self->priv;
+  GMenuTreeDirectory *trunk;
+  GSList *entries;
+  GSList *iter;
 
-  g_list_foreach (self->priv->cached_menus, (GFunc)shell_app_menu_entry_free, NULL);
-  g_list_free (self->priv->cached_menus);
-  self->priv->cached_menus = NULL;
+  trunk = gmenu_tree_get_root_directory (tree);
+  entries = gmenu_tree_directory_get_contents (trunk);
+
+  g_slist_foreach (*cache, (GFunc)shell_app_menu_entry_free, NULL);
+  g_slist_free (*cache);
+  *cache = NULL;
 
   for (iter = entries; iter; iter = iter->next)
     {
@@ -124,12 +140,11 @@ reread_menus (ShellAppSystem *self)
             {
               GMenuTreeDirectory *dir = iter->data;
               ShellAppMenuEntry *shell_entry = g_new0 (ShellAppMenuEntry, 1);
-
               shell_entry->name = g_strdup (gmenu_tree_directory_get_name (dir));
               shell_entry->id = g_strdup (gmenu_tree_directory_get_menu_id (dir));
               shell_entry->icon = g_strdup (gmenu_tree_directory_get_icon (dir));
 
-              priv->cached_menus = g_list_prepend (priv->cached_menus, shell_entry);
+              *cache = g_slist_prepend (*cache, shell_entry);
 
               gmenu_tree_item_unref (dir);
             }
@@ -138,9 +153,74 @@ reread_menus (ShellAppSystem *self)
             break;
         }
     }
-  priv->cached_menus = g_list_reverse (priv->cached_menus);
+  *cache = g_slist_reverse (*cache);
 
   g_slist_free (entries);
+  gmenu_tree_item_unref (trunk);
+}
+
+static GSList *
+gather_entries_recurse (ShellAppSystem     *monitor,
+                        GSList             *ids,
+                        GMenuTreeDirectory *root)
+{
+  GSList *contents;
+  GSList *iter;
+
+  contents = gmenu_tree_directory_get_contents (root);
+
+  for (iter = contents; iter; iter = iter->next)
+    {
+      GMenuTreeItem *item = iter->data;
+      switch (gmenu_tree_item_get_type (item))
+        {
+          case GMENU_TREE_ITEM_ENTRY:
+            {
+              GMenuTreeEntry *entry = (GMenuTreeEntry *)item;
+              const char *id = gmenu_tree_entry_get_desktop_file_id (entry);
+              ids = g_slist_prepend (ids, g_strdup (id));
+            }
+            break;
+          case GMENU_TREE_ITEM_DIRECTORY:
+            {
+              GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
+              ids = gather_entries_recurse (monitor, ids, dir);
+            }
+            break;
+          default:
+            break;
+        }
+      gmenu_tree_item_unref (item);
+    }
+
+  g_slist_free (contents);
+
+  return ids;
+}
+
+static void
+reread_entries (ShellAppSystem     *self,
+                GSList            **cache,
+                GMenuTree          *tree)
+{
+  GMenuTreeDirectory *trunk;
+
+  trunk = gmenu_tree_get_root_directory (tree);
+
+  g_slist_foreach (*cache, (GFunc)g_free, NULL);
+  g_slist_free (*cache);
+  *cache = NULL;
+
+  *cache = gather_entries_recurse (self, *cache, trunk);
+
+  gmenu_tree_item_unref (trunk);
+}
+
+static void
+reread_menus (ShellAppSystem *self)
+{
+  reread_directories (self, &(self->priv->cached_app_menus), self->priv->apps_tree);
+  reread_entries (self, &(self->priv->cached_setting_ids), self->priv->settings_tree);
 }
 
 static void
@@ -166,51 +246,15 @@ shell_app_menu_entry_get_type (void)
   return gtype;
 }
 
-static GList *
-gather_entries_recurse (ShellAppSystem     *monitor,
-                        GList              *ids,
-                        GMenuTreeDirectory *root)
-{
-  GSList *contents;
-  GSList *iter;
-
-  contents = gmenu_tree_directory_get_contents (root);
-
-  for (iter = contents; iter; iter = iter->next)
-    {
-      GMenuTreeItem *item = iter->data;
-      switch (gmenu_tree_item_get_type (item))
-        {
-          case GMENU_TREE_ITEM_ENTRY:
-            {
-              GMenuTreeEntry *entry = (GMenuTreeEntry *)item;
-              const char *id = gmenu_tree_entry_get_desktop_file_id (entry);
-              ids = g_list_prepend (ids, g_strdup (id));
-            }
-            break;
-          case GMENU_TREE_ITEM_DIRECTORY:
-            {
-              GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
-              ids = gather_entries_recurse (monitor, ids, dir);
-            }
-            break;
-          default:
-            break;
-        }
-      gmenu_tree_item_unref (item);
-    }
-
-  g_slist_free (contents);
-
-  return ids;
-}
-
 /**
  * shell_app_system_get_applications_for_menu:
  *
+ * Traverses a toplevel menu, and returns all items under it.  Nested items
+ * are flattened.
+ *
  * Return value: (transfer full) (element-type utf8): List of desktop file ids
  */
-GList *
+GSList *
 shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
                                             const char *menu)
 {
@@ -218,7 +262,7 @@ shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
   GMenuTreeDirectory *menu_entry;
 
   path = g_strdup_printf ("/%s", menu);
-  menu_entry = gmenu_tree_get_directory_from_path (monitor->priv->tree, path);
+  menu_entry = gmenu_tree_get_directory_from_path (monitor->priv->apps_tree, path);
   g_free (path);
   g_assert (menu_entry != NULL);
 
@@ -228,10 +272,25 @@ shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
 /**
  * shell_app_system_get_menus:
  *
+ * Returns a list of toplevel menu names, like "Accessories", "Programming", etc.
+ *
  * Return value: (transfer none) (element-type AppMenuEntry): List of toplevel menus
  */
-GList *
+GSList *
 shell_app_system_get_menus (ShellAppSystem *monitor)
 {
-  return monitor->priv->cached_menus;
+  return monitor->priv->cached_app_menus;
+}
+
+/**
+ * shell_app_system_get_all_settings:
+ *
+ * Returns a list of all desktop file ids under "settings.menu".
+ *
+ * Return value: (transfer full) (element-type utf8): List of desktop file ids
+ */
+GSList *
+shell_app_system_get_all_settings (ShellAppSystem *monitor)
+{
+  return monitor->priv->cached_setting_ids;
 }

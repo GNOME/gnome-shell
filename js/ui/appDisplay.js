@@ -237,7 +237,7 @@ AppDisplay.prototype = {
             this._redisplayMenus();
         }));
         this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
-            this._redisplay(false)
+            this._redisplay(false);
         }));
 
         // Load the GAppInfos now so it doesn't slow down the first
@@ -345,6 +345,18 @@ AppDisplay.prototype = {
         }
     },
 
+    addApp: function(appId) {
+        let appInfo = Gio.DesktopAppInfo.new(appId);
+        if (appInfo != null) {
+            this._allItems[appId] = appInfo;
+            // [] is returned if we could not get the categories or the list of categories was empty
+            let categories = Shell.get_categories_for_desktop_file(appId);
+            this._appCategories[appId] = categories;
+        } else {
+            log("appInfo for " + appId + " was not found.");
+        }
+    },
+
     //// Protected method overrides //// 
 
     // Gets information about all applications by calling Gio.app_info_get_all().
@@ -357,19 +369,25 @@ AppDisplay.prototype = {
 
         this._menus = this._appSystem.get_menus();
 
-        let apps = Gio.app_info_get_all();
-        for (let i = 0; i < apps.length; i++) {
-            let appInfo = apps[i];
-            
-            if (!appInfo.should_show())
-                continue;
-            
-            let appId = appInfo.get_id();
-            this._allItems[appId] = appInfo;
-            // [] is returned if we could not get the categories or the list of categories was empty
-            let categories = Shell.get_categories_for_desktop_file(appId);
-            this._appCategories[appId] = categories;
+        // Loop over the toplevel menu items, load the set of desktop file ids
+        // associated with each one
+        for (let i = 0; i < this._menus.length; i++) {
+            let menu = this._menus[i];
+            let menuApps = this._appSystem.get_applications_for_menu(menu.id);
+            for (let j = 0; j < menuApps.length; j++) {
+                let appId = menuApps[j];
+                this._addApp(appId);
+            }
         }
+
+        // Now grab the desktop file ids for settings/preferences.
+        // These show up in search, but not with the rest of apps.
+        let settings = this._appSystem.get_all_settings();
+        for (let i = 0; i < settings.length; i++) {
+            let appId = settings[i];
+			this._addApp(appId);
+        }
+
         this._appsStale = false;
     },
 
@@ -459,10 +477,12 @@ AppDisplay.prototype = {
 
         // we expect this._appCategories.hasOwnProperty(itemInfo.get_id()) to always be true here
         let categories = this._appCategories[itemInfo.get_id()];
-        for (let i = 0; i < categories.length; i++) {
-            let category = categories[i].toLowerCase();
-            if (category.indexOf(search) >= 0)
-                return true;
+        if (categories) {
+            for (let i = 0; i < categories.length; i++) {
+                let category = categories[i].toLowerCase();
+                if (category.indexOf(search) >= 0)
+                    return true;
+            }
         }
        
         return false;
