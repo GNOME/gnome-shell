@@ -463,6 +463,10 @@ clutter_text_coords_to_position (ClutterText *text,
   gint px, py;
   gint trailing;
 
+  /* Take any offset due to scrolling into account */
+  if (text->priv->single_line_mode)
+      x += text->priv->text_x * -1;
+
   px = x * PANGO_SCALE;
   py = y * PANGO_SCALE;
 
