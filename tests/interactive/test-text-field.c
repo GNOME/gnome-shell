@@ -28,7 +28,10 @@ static void
 on_entry_activate (ClutterText *text,
                    gpointer     data)
 {
-  g_print ("Text activated: %s\n", clutter_text_get_text (text));
+  g_print ("Text activated: %s (cursor: %d, selection at: %d)\n",
+           clutter_text_get_text (text),
+           clutter_text_get_cursor_position (text),
+           clutter_text_get_selection_bound (text));
 }
 
 static ClutterActor *
