@@ -23,7 +23,6 @@ CLEANFILES = $(pc_files)
 
 AM_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
 
-if HAVE_INTROSPECTION
 cogl_headers = \
 	$(top_srcdir)/clutter/cogl/cogl-bitmap.h	\
 	$(top_srcdir)/clutter/cogl/cogl-color.h		\
@@ -45,6 +44,7 @@ noinst_LTLIBRARIES = libclutter-cogl.la
 libclutter_cogl_la_LIBADD = $(CLUTTER_COGL)/libclutter-cogl.la
 libclutter_cogl_la_SOURCES = $(cogl_headers)
 
+if HAVE_INTROSPECTION
 Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(CLUTTER_COGL)/libclutter-cogl.la
 	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Cogl --nsversion=@CLUTTER_API_VERSION@ \
