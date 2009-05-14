@@ -2,6 +2,7 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \
 	-I$(top_srcdir)/clutter/cogl \
+	-I$(top_srcdir)/clutter/cogl/common \
 	-I$(top_srcdir)/clutter/cogl/$(CLUTTER_COGL) \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl \
@@ -19,6 +20,7 @@ EXTRA_DIST = stb_image.c
 
 libclutter_cogl_common_la_SOURCES = 	\
 	cogl-handle.h 			\
+	cogl-internal.h			\
 	cogl.c				\
 	cogl-util.h 			\
 	cogl-util.c 			\
