@@ -1439,7 +1439,12 @@ clutter_text_get_preferred_width (ClutterActor *self,
     }
 
   if (natural_width_p)
-    *natural_width_p = layout_width;
+    {
+      if (priv->editable && priv->single_line_mode)
+        *natural_width_p = layout_width + TEXT_PADDING * 2;
+      else
+        *natural_width_p = layout_width;
+    }
 }
 
 static void
