@@ -362,7 +362,7 @@ big_rectangle_paint(ClutterActor *actor)
 
     if (radius != 0) {
         cogl_color_set_from_4ub(&tmp_color,
-                                0xff, 0xff, 0xff, actor_opacity);
+                                actor_opacity, actor_opacity, actor_opacity, actor_opacity);
         cogl_material_set_color(rectangle->corner_material, &tmp_color);
         cogl_set_source(rectangle->corner_material);
 
@@ -401,6 +401,7 @@ big_rectangle_paint(ClutterActor *actor)
                                 border_color->green,
                                 border_color->blue,
                                 actor_opacity * border_color->alpha / 255);
+        cogl_color_premultiply (&tmp_color);
         cogl_material_set_color(rectangle->border_material, &tmp_color);
         cogl_set_source(rectangle->border_material);
 
@@ -429,6 +430,7 @@ big_rectangle_paint(ClutterActor *actor)
                             color->green,
                             color->blue,
                             actor_opacity * color->alpha / 255);
+    cogl_color_premultiply (&tmp_color);
     cogl_material_set_color(rectangle->background_material, &tmp_color);
     cogl_set_source(rectangle->background_material);
 
