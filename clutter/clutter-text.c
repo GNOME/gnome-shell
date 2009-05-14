@@ -1765,17 +1765,17 @@ clutter_text_real_del_prev (ClutterText         *self,
     {
       if (pos == -1)
         {
-          clutter_text_set_cursor_position (self, len - 1);
-          clutter_text_set_selection_bound (self, len - 1);
-
           clutter_text_delete_text (self, len - 1, len);
+
+          clutter_text_set_cursor_position (self, -1);
+          clutter_text_set_selection_bound (self, -1);
         }
       else
         {
+          clutter_text_delete_text (self, pos - 1, pos);
+
           clutter_text_set_cursor_position (self, pos - 1);
           clutter_text_set_selection_bound (self, pos - 1);
-
-          clutter_text_delete_text (self, pos - 1, pos);
         }
     }
 
