@@ -128,6 +128,7 @@ stamp-h1
 /tests/interactive/redhand_alpha.png
 /tests/interactive/test-script.json
 /tests/interactive/test-clutter-cairo-flowers
+/tests/conform/stamp-test-conformance
 /tests/conform/test-anchors
 /tests/conform/test-conformance
 /tests/conform/test-conformance-results.xml
