@@ -3141,6 +3141,8 @@ clutter_text_set_text_internal (ClutterText *self,
 {
   ClutterTextPrivate *priv = self->priv;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   if (priv->max_length > 0)
     {
       gint len = g_utf8_strlen (text, -1);
@@ -3176,8 +3178,16 @@ clutter_text_set_text_internal (ClutterText *self,
       priv->n_chars = g_utf8_strlen (text, -1);
     }
 
+  if (priv->n_bytes == 0)
+    {
+      clutter_text_set_cursor_position (self, -1);
+      clutter_text_set_selection_bound (self, -1);
+    }
+
   g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
   g_object_notify (G_OBJECT (self), "text");
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 static inline void
