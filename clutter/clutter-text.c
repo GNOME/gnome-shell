@@ -1354,11 +1354,10 @@ clutter_text_paint (ClutterActor *self)
           if (priv->position == -1)
             {
               text_x = actor_width - text_width;
-              priv->cursor_pos.x += text_x + TEXT_PADDING;
             }
           else if (priv->position == 0)
             {
-              text_x = 0;
+              text_x = TEXT_PADDING;
             }
           else
             {
@@ -1375,9 +1374,9 @@ clutter_text_paint (ClutterActor *self)
         }
       else
         {
-          text_x = 0;
-          priv->cursor_pos.x += text_x + TEXT_PADDING;
+          text_x = TEXT_PADDING;
         }
+      priv->cursor_pos.x += text_x;
     }
   else
     text_x = 0;
