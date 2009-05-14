@@ -1368,7 +1368,7 @@ clutter_text_paint (ClutterActor *self)
 
       if (actor_width < text_width)
         {
-          gint cursor_x = priv->cursor_pos.x;
+          gint cursor_x = priv->cursor_pos.x - alloc.x1;
 
           if (priv->position == -1)
             {
@@ -1380,16 +1380,19 @@ clutter_text_paint (ClutterActor *self)
             }
           else
             {
-              if (text_x <= 0)
+              if (cursor_x < 0)
                 {
-                  gint diff = -1 * text_x;
-
-                  if (cursor_x < diff)
-                    text_x += diff - cursor_x;
-                  else if (cursor_x > (diff + actor_width))
-                    text_x -= cursor_x - (diff - actor_width);
+                  text_x = text_x - cursor_x - TEXT_PADDING;
+                }
+              else if (cursor_x > actor_width)
+                {
+                  text_x = text_x + (actor_width - cursor_x) - TEXT_PADDING;
                 }
             }
+          /* Update the absolute cursor position as it may have moved due to
+           * scrolling */
+          clutter_text_ensure_cursor_position (text);
+
         }
       else
         {
@@ -1398,6 +1401,8 @@ clutter_text_paint (ClutterActor *self)
     }
   else
     text_x = 0;
+
+  priv->text_x = text_x;
 
   cursor_paint (text);
 
@@ -1417,7 +1422,6 @@ clutter_text_paint (ClutterActor *self)
   if (clip_set)
     cogl_clip_pop ();
 
-  priv->text_x = text_x;
 }
 
 static void
