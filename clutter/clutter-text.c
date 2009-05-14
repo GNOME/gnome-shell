@@ -962,6 +962,12 @@ cursor_paint (ClutterText *self)
 
                   range_x     = ranges[i * 2]
                               / PANGO_SCALE;
+
+                  /* Account for any scrolling in single line mode */
+                  if (priv->single_line_mode)
+                      range_x += priv->text_x;
+
+
                   range_width = (ranges[i * 2 + 1] - ranges[i * 2])
                               / PANGO_SCALE;
 
