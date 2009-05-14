@@ -98,8 +98,10 @@ void          clutter_cairo_texture_get_surface_size (ClutterCairoTexture *self,
                                                       guint               *width,
                                                       guint               *height);
 
-void clutter_cairo_set_source_color (cairo_t            *cr,
-                                     const ClutterColor *color);
+void          clutter_cairo_texture_clear            (ClutterCairoTexture *self);
+
+void          clutter_cairo_set_source_color         (cairo_t             *cr,
+						      const ClutterColor  *color);
 
 G_END_DECLS
 
