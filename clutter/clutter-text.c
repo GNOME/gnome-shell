@@ -535,6 +535,15 @@ clutter_text_position_to_coords (ClutterText *self,
   if (line_height)
     *line_height = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.height);
 
+  if (self->priv->single_line_mode)
+    {
+      /* Take any offset due to scrolling into account */
+      if (x)
+        *x += self->priv->text_x;
+    }
+
+
+
   /* FIXME: should return false if coords were outside text */
   return TRUE;
 }
@@ -1380,7 +1389,6 @@ clutter_text_paint (ClutterActor *self)
         {
           text_x = TEXT_PADDING;
         }
-      priv->cursor_pos.x += text_x;
     }
   else
     text_x = 0;
