@@ -1368,7 +1368,7 @@ clutter_text_paint (ClutterActor *self)
 
       if (actor_width < text_width)
         {
-          gint cursor_x = priv->cursor_pos.x - alloc.x1;
+          gint cursor_x = priv->cursor_pos.x;
 
           if (priv->position == -1)
             {
@@ -1391,6 +1391,7 @@ clutter_text_paint (ClutterActor *self)
             }
           /* Update the absolute cursor position as it may have moved due to
            * scrolling */
+          priv->text_x = text_x;
           clutter_text_ensure_cursor_position (text);
 
         }
