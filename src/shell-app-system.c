@@ -166,27 +166,15 @@ shell_app_menu_entry_get_type (void)
   return gtype;
 }
 
-/**
- * shell_app_system_get_applications_for_menu:
- *
- * Return value: (transfer full) (element-type utf8): List of desktop file ids
- */
-GList *
-shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
-                                             const char *menu)
+static GList *
+gather_entries_recurse (ShellAppSystem     *monitor,
+                        GList              *ids,
+                        GMenuTreeDirectory *root)
 {
-  GList *ret = NULL;
   GSList *contents;
   GSList *iter;
-  char *path;
-  GMenuTreeDirectory *menu_entry;
 
-  path = g_strdup_printf ("/%s", menu);
-  menu_entry = gmenu_tree_get_directory_from_path (monitor->priv->tree, path);
-  g_free (path);
-  g_assert (menu_entry != NULL);
-
-  contents = gmenu_tree_directory_get_contents (menu_entry);
+  contents = gmenu_tree_directory_get_contents (root);
 
   for (iter = contents; iter; iter = iter->next)
     {
@@ -197,7 +185,13 @@ shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
             {
               GMenuTreeEntry *entry = (GMenuTreeEntry *)item;
               const char *id = gmenu_tree_entry_get_desktop_file_id (entry);
-              ret = g_list_prepend (ret, g_strdup (id));
+              ids = g_list_prepend (ids, g_strdup (id));
+            }
+            break;
+          case GMENU_TREE_ITEM_DIRECTORY:
+            {
+              GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
+              ids = gather_entries_recurse (monitor, ids, dir);
             }
             break;
           default:
@@ -205,9 +199,30 @@ shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
         }
       gmenu_tree_item_unref (item);
     }
+
   g_slist_free (contents);
 
-  return ret;
+  return ids;
+}
+
+/**
+ * shell_app_system_get_applications_for_menu:
+ *
+ * Return value: (transfer full) (element-type utf8): List of desktop file ids
+ */
+GList *
+shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
+                                            const char *menu)
+{
+  char *path;
+  GMenuTreeDirectory *menu_entry;
+
+  path = g_strdup_printf ("/%s", menu);
+  menu_entry = gmenu_tree_get_directory_from_path (monitor->priv->tree, path);
+  g_free (path);
+  g_assert (menu_entry != NULL);
+
+  return gather_entries_recurse (monitor, NULL, menu_entry);
 }
 
 /**
