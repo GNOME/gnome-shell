@@ -25,16 +25,13 @@ INCLUDES = \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl \
         -DG_LOG_DOMAIN=\"Cogl-GLES\" \
-        -DCLUTTER_COMPILATION \
-	$(CLUTTER_CFLAGS) \
-	$(CLUTTER_DEBUG_CFLAGS) \
-	$(MAINTAINER_CFLAGS) \
-	$(GCC_FLAGS)
-
-LDADD = $(CLUTTER_LIBS)
+        -DCLUTTER_COMPILATION
 
 noinst_LTLIBRARIES = libclutter-cogl.la
 
+libclutter_cogl_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
+libclutter_cogl_la_DEPENDENCIES = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
 libclutter_cogl_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl.h \
 	$(top_builddir)/clutter/cogl/cogl-defines-gles.h \
@@ -76,8 +73,6 @@ EXTRA_DIST = cogl-defines.h.in \
 	stringify.sh \
 	cogl-fixed-vertex-shader.glsl \
 	cogl-fixed-fragment-shader.glsl
-
-libclutter_cogl_la_LIBADD = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
 
 .glsl.h :
 	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh -h $<
