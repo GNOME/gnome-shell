@@ -55,17 +55,17 @@ typedef struct _CoglBoxedValue
 
 #include <stdio.h>
 
-const char *_cogl_error_string(GLenum errorCode);
+const gchar *cogl_gl_error_to_string (GLenum error_code);
 
-#define GE(x...) G_STMT_START {                                  \
-        GLenum err;                                              \
-        (x);                                                     \
-        while ((err = glGetError()) != GL_NO_ERROR) {            \
-                fprintf(stderr, "glError: %s caught at %s:%u\n", \
-			(char *)_cogl_error_string(err),	 \
-			__FILE__, __LINE__);			 \
-        }                                                        \
-} G_STMT_END
+#define GE(x...)               G_STMT_START {   \
+  GLenum __err;                                 \
+  (x);                                          \
+  while ((err = glGetError ()) != GL_NO_ERROR)  \
+    {                                           \
+      g_warning ("%s: GL error (%d): %s\n",     \
+                 G_STRLOC,                      \
+                 cogl_gl_error_to_string (err));\
+    }                           } G_STMT_END
 
 #else /* COGL_DEBUG */
 
