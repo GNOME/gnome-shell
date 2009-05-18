@@ -373,7 +373,7 @@ _clutter_do_pick (ClutterStage   *stage,
 		  ClutterPickMode mode)
 {
   ClutterMainContext *context;
-  guchar              pixel[4];
+  guchar              pixel[4] = { 0xff, 0xff, 0xff, 0xff };
   GLint               viewport[4];
   CoglColor           white;
   guint32             id;
