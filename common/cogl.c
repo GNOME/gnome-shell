@@ -46,39 +46,41 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #include "cogl-gles2-wrapper.h"
 #endif
 
+#ifdef COGL_DEBUG
 /* GL error to string conversion */
-#if COGL_DEBUG
-struct token_string
-{
-  GLuint Token;
-  const char *String;
-};
+static const struct {
+  GLuint error_code;
+  const gchar *error_string;
+} gl_errors[] = {
+  { GL_NO_ERROR,          "No error" },
+  { GL_INVALID_ENUM,      "Invalid enumeration value" },
+  { GL_INVALID_VALUE,     "Invalid value" },
+  { GL_INVALID_OPERATION, "Invalid operation" },
+  { GL_STACK_OVERFLOW,    "Stack overflow" },
+  { GL_STACK_UNDERFLOW,   "Stack underflow" },
+  { GL_OUT_OF_MEMORY,     "Out of memory" },
 
-static const struct token_string Errors[] = {
-  { GL_NO_ERROR, "no error" },
-  { GL_INVALID_ENUM, "invalid enumerant" },
-  { GL_INVALID_VALUE, "invalid value" },
-  { GL_INVALID_OPERATION, "invalid operation" },
-  { GL_STACK_OVERFLOW, "stack overflow" },
-  { GL_STACK_UNDERFLOW, "stack underflow" },
-  { GL_OUT_OF_MEMORY, "out of memory" },
 #ifdef GL_INVALID_FRAMEBUFFER_OPERATION_EXT
-  { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "invalid framebuffer operation" },
+  { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "Invalid framebuffer operation" }
 #endif
-  { ~0, NULL }
 };
 
-const char*
-_cogl_error_string(GLenum errorCode)
+static const guint n_gl_errors = G_N_ELEMENTS (gl_errors);
+
+const gchar *
+cogl_gl_error_to_string (GLenum error_code)
 {
-  int i;
-  for (i = 0; Errors[i].String; i++) {
-    if (Errors[i].Token == errorCode)
-      return Errors[i].String;
-  }
-  return "unknown";
+  gint i;
+
+  for (i = 0; i < n_gl_errors; i++)
+    {
+      if (gl_errors[i].error_code == error_code)
+        return gl_errors[i].error_string;
+    }
+
+  return "Unknown error";
 }
-#endif
+#endif /* COGL_DEBUG */
 
 void
 cogl_clear (const CoglColor *color, gulong buffers)
