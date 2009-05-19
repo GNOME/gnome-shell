@@ -49,29 +49,28 @@ typedef struct _CoglBoxedValue
 } CoglBoxedValue;
 #endif
 
-#define COGL_DEBUG 0
+/* XXX - set to 1 to enable checks on every GL call */
+#define COGL_GL_DEBUG 0
 
-#if COGL_DEBUG
-
-#include <stdio.h>
+#if COGL_GL_DEBUG
 
 const gchar *cogl_gl_error_to_string (GLenum error_code);
 
-#define GE(x...)               G_STMT_START {   \
-  GLenum __err;                                 \
-  (x);                                          \
-  while ((err = glGetError ()) != GL_NO_ERROR)  \
-    {                                           \
-      g_warning ("%s: GL error (%d): %s\n",     \
-                 G_STRLOC,                      \
-                 cogl_gl_error_to_string (err));\
-    }                           } G_STMT_END
+#define GE(x...)                        G_STMT_START {  \
+  GLenum __err;                                         \
+  (x);                                                  \
+  while ((__err = glGetError ()) != GL_NO_ERROR)        \
+    {                                                   \
+      g_warning ("%s: GL error (%d): %s\n",             \
+                 G_STRLOC,                              \
+                 cogl_gl_error_to_string (__err));      \
+    }                                   } G_STMT_END
 
-#else /* COGL_DEBUG */
+#else /* !COGL_GL_DEBUG */
 
 #define GE(x) (x)
 
-#endif /* COGL_DEBUG */
+#endif /* COGL_GL_DEBUG */
 
 #define COGL_ENABLE_BLEND             (1<<1)
 #define COGL_ENABLE_ALPHA_TEST        (1<<2)
@@ -79,16 +78,10 @@ const gchar *cogl_gl_error_to_string (GLenum error_code);
 #define COGL_ENABLE_COLOR_ARRAY       (1<<4)
 #define COGL_ENABLE_BACKFACE_CULLING  (1<<5)
 
-void
-_cogl_features_init (void);
+void    _cogl_features_init (void);
+gint    _cogl_get_format_bpp (CoglPixelFormat format);
 
-gint
-_cogl_get_format_bpp (CoglPixelFormat format);
-
-void
-cogl_enable (gulong flags);
-
-gulong
-cogl_get_enable ();
+void    cogl_enable (gulong flags);
+gulong  cogl_get_enable (void);
 
 #endif /* __COGL_INTERNAL_H */

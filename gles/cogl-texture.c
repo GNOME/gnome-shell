@@ -40,17 +40,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-/*
-#define COGL_DEBUG 1
-
-#define GE(x) \
-{ \
-  glGetError(); x; \
-  GLuint err = glGetError(); \
-  if (err != 0) \
-    printf("err: 0x%x\n", err); \
-} */
-
 extern void _cogl_journal_flush (void);
 
 static void _cogl_texture_free (CoglTexture *tex);
