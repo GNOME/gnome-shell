@@ -38,6 +38,7 @@
 typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #endif
 
+#include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
@@ -46,7 +47,7 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #include "cogl-gles2-wrapper.h"
 #endif
 
-#ifdef COGL_DEBUG
+#ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
 static const struct {
   GLuint error_code;
@@ -78,18 +79,16 @@ cogl_gl_error_to_string (GLenum error_code)
         return gl_errors[i].error_string;
     }
 
-  return "Unknown error";
+  return "Unknown GL error";
 }
-#endif /* COGL_DEBUG */
+#endif /* COGL_GL_DEBUG */
 
 void
 cogl_clear (const CoglColor *color, gulong buffers)
 {
   GLbitfield gl_buffers = 0;
 
-#if COGL_DEBUG
-  fprintf(stderr, "\n ============== Paint Start ================ \n");
-#endif
+  COGL_NOTE (DRAW, "Clear begin");
 
   cogl_clip_ensure ();
 
@@ -101,20 +100,29 @@ cogl_clear (const CoglColor *color, gulong buffers)
 			0.0) );
       gl_buffers |= GL_COLOR_BUFFER_BIT;
     }
+
   if (buffers & COGL_BUFFER_BIT_DEPTH)
     gl_buffers |= GL_DEPTH_BUFFER_BIT;
+
   if (buffers & COGL_BUFFER_BIT_STENCIL)
     gl_buffers |= GL_STENCIL_BUFFER_BIT;
 
   if (!gl_buffers)
     {
       static gboolean shown = FALSE;
+
       if (!shown)
-	g_warning ("You should specify at least one auxiliary buffer when calling cogl_clear");
+        {
+	  g_warning ("You should specify at least one auxiliary buffer "
+                     "when calling cogl_clear");
+        }
+
       return;
     }
 
   glClear (gl_buffers);
+
+  COGL_NOTE (DRAW, "Clear end");
 }
 
 static inline gboolean
@@ -563,24 +571,31 @@ cogl_get_viewport (float v[4])
 }
 
 void
-cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
+cogl_get_bitmasks (gint *red,
+                   gint *green,
+                   gint *blue,
+                   gint *alpha)
 {
   GLint value;
+
   if (red)
     {
       GE( glGetIntegerv(GL_RED_BITS, &value) );
       *red = value;
     }
+
   if (green)
     {
       GE( glGetIntegerv(GL_GREEN_BITS, &value) );
       *green = value;
     }
+
   if (blue)
     {
       GE( glGetIntegerv(GL_BLUE_BITS, &value) );
       *blue = value;
     }
+
   if (alpha)
     {
       GE( glGetIntegerv(GL_ALPHA_BITS, &value ) );

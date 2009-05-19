@@ -372,9 +372,7 @@ _cogl_texture_sliced_quad (CoglTexture *tex,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-#if COGL_DEBUG
-  printf("=== Drawing Tex Quad (Sliced Mode) ===\n");
-#endif
+  COGL_NOTE (DRAW, "Drawing Tex Quad (Sliced Mode)");
 
   /* We can't use hardware repeat so we need to set clamp to edge
      otherwise it might pull in edge pixels from the other side */
@@ -485,17 +483,21 @@ _cogl_texture_sliced_quad (CoglTexture *tex,
               slice_tx2 /= iter_x.span->size;
             }
 
-#if COGL_DEBUG
-	  printf("~~~~~ slice (%d,%d)\n", iter_x.index, iter_y.index);
-	  printf("qx1: %f\n",  (slice_qx1));
-	  printf("qy1: %f\n",  (slice_qy1));
-	  printf("qx2: %f\n",  (slice_qx2));
-	  printf("qy2: %f\n",  (slice_qy2));
-	  printf("tx1: %f\n",  (slice_tx1));
-	  printf("ty1: %f\n",  (slice_ty1));
-	  printf("tx2: %f\n",  (slice_tx2));
-	  printf("ty2: %f\n",  (slice_ty2));
-#endif
+          COGL_NOTE (DRAW,
+                     "~~~~~ slice (%d, %d)\n"
+	             "qx1: %f\t"
+	             "qy1: %f\n"
+                     "qx2: %f\t"
+                     "qy2: %f\n"
+                     "tx1: %f\t"
+                     "ty1: %f\n"
+                     "tx2: %f\t"
+                     "ty2: %f\n",
+                     iter_x.index, iter_y.index,
+                     slice_qx1, slice_qy1,
+                     slice_qx2, slice_qy2,
+                     slice_tx1, slice_ty1,
+                     slice_tx2, slice_ty2);
 
 	  /* Pick and bind opengl texture object */
 	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint,

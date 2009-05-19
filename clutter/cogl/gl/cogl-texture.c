@@ -44,17 +44,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-/*
-#define COGL_DEBUG 1
-
-#define GE(x) \
-{ \
-  glGetError(); x; \
-  GLuint err = glGetError(); \
-  if (err != 0) \
-    printf("err: 0x%x\n", err); \
-} */
-
 #ifdef HAVE_COGL_GL
 
 #define glDrawRangeElements ctx->pf_glDrawRangeElements
@@ -943,12 +932,11 @@ _cogl_texture_slices_create (CoglTexture *tex)
 	{
 	  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, x);
 
-#if COGL_DEBUG
-	  printf ("CREATE SLICE (%d,%d)\n", x,y);
-	  printf ("size: (%d x %d)\n",
-	    x_span->size - x_span->waste,
-	    y_span->size - y_span->waste);
-#endif
+	  COGL_NOTE (TEXTURE, "CREATE SLICE (%d,%d)\tsize (%d,%d)",
+                     x, y,
+	             x_span->size - x_span->waste,
+                     y_span->size - y_span->waste);
+
 	  /* Setup texture parameters */
 	  GE( glBindTexture (tex->gl_target,
 			     gl_handles[y * n_x_slices + x]) );
