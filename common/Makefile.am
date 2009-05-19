@@ -12,7 +12,7 @@ INCLUDES = \
 noinst_LTLIBRARIES = libclutter-cogl-common.la
 EXTRA_DIST = stb_image.c
 
-libclutter_cogl_common_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+libclutter_cogl_common_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(COGL_DEBUG_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
 libclutter_cogl_common_la_LIBADD = -lm $(CLUTTER_LIBS)
 libclutter_cogl_common_la_SOURCES = 	\
 	cogl-handle.h 			\

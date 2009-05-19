@@ -24,6 +24,8 @@
 #ifndef __COGL_INTERNAL_H
 #define __COGL_INTERNAL_H
 
+#include "cogl-debug.h"
+
 #ifdef HAVE_COGL_GLES2
 typedef enum {
   COGL_BOXED_NONE,
@@ -49,10 +51,7 @@ typedef struct _CoglBoxedValue
 } CoglBoxedValue;
 #endif
 
-/* XXX - set to 1 to enable checks on every GL call */
-#define COGL_GL_DEBUG 0
-
-#if COGL_GL_DEBUG
+#ifdef COGL_GL_DEBUG
 
 const gchar *cogl_gl_error_to_string (GLenum error_code);
 
