@@ -783,83 +783,83 @@ clutter_texture_set_property (GObject      *object,
 			      const GValue *value,
 			      GParamSpec   *pspec)
 {
-  ClutterTexture        *texture;
+  ClutterTexture *texture;
   ClutterTexturePrivate *priv;
 
-  texture = CLUTTER_TEXTURE(object);
+  texture = CLUTTER_TEXTURE (object);
   priv = texture->priv;
 
   switch (prop_id)
     {
     case PROP_MAX_TILE_WASTE:
-      clutter_texture_set_max_tile_waste (texture,
-					  g_value_get_int (value));
+      clutter_texture_set_max_tile_waste (texture, g_value_get_int (value));
       break;
+
     case PROP_SYNC_SIZE:
-      priv->sync_actor_size = g_value_get_boolean (value);
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
+      clutter_texture_set_sync_size (texture, g_value_get_boolean (value));
       break;
+
     case PROP_REPEAT_X:
-      if (priv->repeat_x != g_value_get_boolean (value))
-	{
-	  priv->repeat_x = !priv->repeat_x;
-	  if (CLUTTER_ACTOR_IS_VISIBLE (texture))
-	    clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
-	}
+      clutter_texture_set_repeat (texture,
+                                  g_value_get_boolean (value),
+                                  priv->repeat_y);
       break;
+
     case PROP_REPEAT_Y:
-      if (priv->repeat_y != g_value_get_boolean (value))
-	{
-	  priv->repeat_y = !priv->repeat_y;
-	  if (CLUTTER_ACTOR_IS_VISIBLE (texture))
-	    clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
-	}
+      clutter_texture_set_repeat (texture,
+                                  priv->repeat_x,
+                                  g_value_get_boolean (value));
       break;
+
     case PROP_FILTER_QUALITY:
       clutter_texture_set_filter_quality (texture,
 					  g_value_get_enum (value));
       break;
+
     case PROP_COGL_TEXTURE:
-      clutter_texture_set_cogl_texture
-	(texture, (CoglHandle) g_value_get_boxed (value));
+      {
+        CoglHandle hnd = g_value_get_boxed (value);
+
+        clutter_texture_set_cogl_texture (texture, hnd);
+      }
       break;
-#if EXPOSE_COGL_MATERIAL_PROP
+
     case PROP_COGL_MATERIAL:
-      clutter_texture_set_cogl_material
-        (texture, (CoglHandle) g_value_get_boxed (value));
+      {
+        CoglHandle hnd = g_value_get_boxed (value);
+
+        clutter_texture_set_cogl_material (texture, hnd);
+      }
       break;
-#endif
+
     case PROP_FILENAME:
       clutter_texture_set_from_file (texture,
                                      g_value_get_string (value),
                                      NULL);
       break;
+
     case PROP_NO_SLICE:
       priv->no_slice = g_value_get_boolean (value);
       break;
+
     case PROP_KEEP_ASPECT_RATIO:
-      priv->keep_aspect_ratio = g_value_get_boolean (value);
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (object));
+      clutter_texture_set_keep_aspect_ratio (texture,
+                                             g_value_get_boolean (value));
       break;
+
     case PROP_LOAD_DATA_ASYNC:
-      if (g_value_get_boolean (value))
-        {
-          priv->load_async_set = TRUE;
-          priv->load_data_async = TRUE;
-        }
+      clutter_texture_set_load_data_async (texture,
+                                           g_value_get_boolean (value));
       break;
+
     case PROP_LOAD_ASYNC:
-      if (g_value_get_boolean (value))
-        {
-          priv->load_data_async = TRUE;
-          priv->load_async_set = TRUE;
-          priv->load_size_async = TRUE;
-        }
+      clutter_texture_set_load_async (texture, g_value_get_boolean (value));
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
-  }
+    }
 }
 
 static void
@@ -870,7 +870,6 @@ clutter_texture_get_property (GObject    *object,
 {
   ClutterTexture        *texture;
   ClutterTexturePrivate *priv;
-  CoglHandle             cogl_texture;
 
   texture = CLUTTER_TEXTURE(object);
   priv = texture->priv;
@@ -880,37 +879,43 @@ clutter_texture_get_property (GObject    *object,
     case PROP_MAX_TILE_WASTE:
       g_value_set_int (value, clutter_texture_get_max_tile_waste (texture));
       break;
+
     case PROP_PIXEL_FORMAT:
-      cogl_texture = clutter_texture_get_cogl_texture (texture);
-      if (cogl_texture == COGL_INVALID_HANDLE)
-	g_value_set_int (value, COGL_PIXEL_FORMAT_ANY);
-      else
-	g_value_set_int (value, cogl_texture_get_format (cogl_texture));
+      g_value_set_enum (value, clutter_texture_get_pixel_format (texture));
       break;
+
     case PROP_SYNC_SIZE:
       g_value_set_boolean (value, priv->sync_actor_size);
       break;
+
     case PROP_REPEAT_X:
       g_value_set_boolean (value, priv->repeat_x);
       break;
+
     case PROP_REPEAT_Y:
       g_value_set_boolean (value, priv->repeat_y);
       break;
+
     case PROP_FILTER_QUALITY:
       g_value_set_enum (value, clutter_texture_get_filter_quality (texture));
       break;
+
     case PROP_COGL_TEXTURE:
       g_value_set_boxed (value, clutter_texture_get_cogl_texture (texture));
       break;
+
     case PROP_COGL_MATERIAL:
       g_value_set_boxed (value, clutter_texture_get_cogl_material (texture));
       break;
+
     case PROP_NO_SLICE:
       g_value_set_boolean (value, priv->no_slice);
       break;
+
     case PROP_KEEP_ASPECT_RATIO:
       g_value_set_boolean (value, priv->keep_aspect_ratio);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -920,11 +925,8 @@ clutter_texture_get_property (GObject    *object,
 static void
 clutter_texture_class_init (ClutterTextureClass *klass)
 {
-  GObjectClass        *gobject_class;
-  ClutterActorClass *actor_class;
-
-  gobject_class = (GObjectClass*) klass;
-  actor_class = (ClutterActorClass*) klass;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
 
@@ -1003,13 +1005,12 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   g_object_class_install_property
     (gobject_class, PROP_PIXEL_FORMAT,
-     g_param_spec_int ("pixel-format",
-		       "Texture pixel format",
-		       "CoglPixelFormat to use.",
-		       0,
-		       G_MAXINT,
-		       COGL_PIXEL_FORMAT_RGBA_8888,
-		       G_PARAM_READABLE));
+     g_param_spec_enum ("pixel-format",
+		        "Texture pixel format",
+		        "CoglPixelFormat to use.",
+                        COGL_TYPE_PIXEL_FORMAT,
+		        COGL_PIXEL_FORMAT_RGBA_8888,
+		        CLUTTER_PARAM_READABLE));
 
   g_object_class_install_property
     (gobject_class, PROP_COGL_TEXTURE,
@@ -2159,26 +2160,18 @@ clutter_texture_new (void)
 
 /**
  * clutter_texture_get_base_size:
- * @texture: A #ClutterTexture
- * @width:   Pointer to gint to be populated with width value if non NULL.
- * @height:  Pointer to gint to be populated with height value if non NULL.
+ * @texture: a #ClutterTexture
+ * @width: (out): return location for the width, or %NULL
+ * @height: (out): return location for the height, or %NULL
  *
- * Gets the size in pixels of the untransformed underlying texture pixbuf data.
- *
- **/
-void 				/* FIXME: rename to get_image_size */
+ * Gets the size in pixels of the untransformed underlying image
+ */
+void
 clutter_texture_get_base_size (ClutterTexture *texture,
 			       gint           *width,
 			       gint           *height)
 {
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
-
-  /* Attempt to realize, mainly for subclasses ( such as labels )
-   * which may not create pixbuf data and thus base size until
-   * realization happens.
-   */
-  if (!CLUTTER_ACTOR_IS_REALIZED (texture))
-    clutter_actor_realize (CLUTTER_ACTOR (texture));
 
   if (width)
     *width = texture->priv->width;
@@ -2561,4 +2554,324 @@ texture_fbo_free_resources (ClutterTexture *texture)
       cogl_handle_unref (priv->fbo_handle);
       priv->fbo_handle = COGL_INVALID_HANDLE;
     }
+}
+
+/**
+ * clutter_texture_set_sync_size:
+ * @texture: a #ClutterTexture
+ * @sync_size: %TRUE if the texture should have the same size of the
+ *    underlying image data
+ *
+ * Sets whether @texture should have the same preferred size as the
+ * underlying image data.
+ *
+ * Since: 1.0
+ */
+void
+clutter_texture_set_sync_size (ClutterTexture *texture,
+                               gboolean        sync_size)
+{
+  ClutterTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
+  priv = texture->priv;
+
+  if (priv->sync_actor_size != sync_size)
+    {
+      priv->sync_actor_size = sync_size;
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
+
+      g_object_notify (G_OBJECT (texture), "sync-size");
+    }
+}
+
+/**
+ * clutter_texture_get_sync_size:
+ * @texture: a #ClutterTexture
+ *
+ * Retrieves the value set with clutter_texture_get_sync_size()
+ *
+ * Return value: %TRUE if the #ClutterTexture should have the same
+ *   preferred size of the underlying image data
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_texture_get_sync_size (ClutterTexture *texture)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
+  return texture->priv->sync_actor_size;
+}
+
+/**
+ * clutter_texture_set_repeat:
+ * @texture: a #ClutterTexture
+ * @repeat_x: %TRUE if the texture should repeat horizontally
+ * @repeat_y: %TRUE if the texture should repeat vertically
+ *
+ * Sets whether the @texture should repeat horizontally or
+ * vertically when the actor size is bigger than the image size
+ *
+ * Since: 1.0
+ */
+void
+clutter_texture_set_repeat (ClutterTexture *texture,
+                            gboolean        repeat_x,
+                            gboolean        repeat_y)
+{
+  ClutterTexturePrivate *priv;
+  gboolean changed = FALSE;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
+  priv = texture->priv;
+
+  g_object_freeze_notify (G_OBJECT (texture));
+
+  if (priv->repeat_x != repeat_x)
+    {
+      priv->repeat_x = repeat_x;
+
+      g_object_notify (G_OBJECT (texture), "repeat-x");
+
+      changed = TRUE;
+    }
+
+  if (priv->repeat_y != repeat_y)
+    {
+      priv->repeat_y = repeat_y;
+
+      g_object_notify (G_OBJECT (texture), "repeat-y");
+
+      changed = TRUE;
+    }
+
+  if (changed)
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
+
+  g_object_thaw_notify (G_OBJECT (texture));
+}
+
+/**
+ * clutter_texture_get_repeat:
+ * @texture: a #ClutterTexture
+ * @repeat_x: (out): return location for the horizontal repeat
+ * @repeat_y: (out): return location for the vertical repeat
+ *
+ * Retrieves the horizontal and vertical repeat values set
+ * using clutter_texture_set_repeat()
+ *
+ * Since: 1.0
+ */
+void
+clutter_texture_get_repeat (ClutterTexture *texture,
+                            gboolean       *repeat_x,
+                            gboolean       *repeat_y)
+{
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
+  if (repeat_x != NULL)
+    *repeat_x = texture->priv->repeat_x;
+
+  if (repeat_y != NULL)
+    *repeat_y = texture->priv->repeat_y;
+}
+
+/**
+ * clutter_texture_get_pixel_format:
+ * @texture: a #ClutterTexture
+ *
+ * Retrieves the pixel format used by @texture. This is
+ * equivalent to:
+ *
+ * |[
+ *   handle = clutter_texture_get_pixel_format (texture);
+ *
+ *   if (handle != COGL_INVALID_HANDLE)
+ *     format = cogl_texture_get_format (handle);
+ * ]|
+ *
+ * Return value: a #CoglPixelFormat value
+ *
+ * Since: 1.0
+ */
+CoglPixelFormat
+clutter_texture_get_pixel_format (ClutterTexture *texture)
+{
+  CoglHandle cogl_texture;
+
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_PIXEL_FORMAT_ANY);
+
+  cogl_texture = clutter_texture_get_cogl_texture (texture);
+  if (cogl_texture == COGL_INVALID_HANDLE)
+    return COGL_PIXEL_FORMAT_ANY;
+
+  return cogl_texture_get_format (cogl_texture);
+}
+
+/**
+ * clutter_texture_set_keep_aspect_ratio:
+ * @texture: a #ClutterTexture
+ * @keep_aspect: %TRUE to maintain aspect ratio
+ *
+ * Sets whether @texture should have a preferred size maintaining
+ * the aspect ratio of the underlying image
+ *
+ * Since: 1.0
+ */
+void
+clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
+                                       gboolean        keep_aspect)
+{
+  ClutterTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
+  priv = texture->priv;
+
+  if (priv->keep_aspect_ratio != keep_aspect)
+    {
+      priv->keep_aspect_ratio = keep_aspect;
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
+
+      g_object_notify (G_OBJECT (texture), "keep-aspect-ratio");
+    }
+}
+
+/**
+ * clutter_texture_get_keep_aspect_ratio:
+ * @texture: a #ClutterTexture
+ *
+ * Retrieves the value set using clutter_texture_get_keep_aspect_ratio()
+ *
+ * Return value: %TRUE if the #ClutterTexture should maintain the
+ *   aspect ratio of the underlying image
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
+  return texture->priv->keep_aspect_ratio;
+}
+
+/**
+ * clutter_texture_set_load_async:
+ * @texture: a #ClutterTexture
+ * @load_sync: %TRUE if the texture should asynchronously load data
+ *   from a filename
+ *
+ * Sets whether @texture should use a worker thread to load the data
+ * from disk asynchronously. Setting @load_async to %TRUE will make
+ * clutter_texture_set_from_file() return immediately.
+ *
+ * See the #ClutterTexture:load-async property documentation, and
+ * clutter_texture_set_load_data_async().
+ *
+ * Since: 1.0
+ */
+void
+clutter_texture_set_load_async (ClutterTexture *texture,
+                                gboolean        load_async)
+{
+  ClutterTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
+  priv = texture->priv;
+
+  if (priv->load_async_set != load_async)
+    {
+      priv->load_data_async = load_async;
+      priv->load_size_async = load_async;
+
+      priv->load_async_set = load_async;
+
+      g_object_notify (G_OBJECT (texture), "load-async");
+      g_object_notify (G_OBJECT (texture), "load-data-async");
+    }
+}
+
+/**
+ * clutter_texture_get_load_async:
+ * @texture: a #ClutterTexture
+ *
+ * Retrieves the value set using clutter_texture_get_load_async()
+ *
+ * Return value: %TRUE if the #ClutterTexture should load the data from
+ *   disk asynchronously
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_texture_get_load_async (ClutterTexture *texture)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
+  return texture->priv->load_async_set;
+}
+
+/**
+ * clutter_texture_set_load_data_async:
+ * @texture: a #ClutterTexture
+ * @load_async: %TRUE if the texture should asynchronously load data
+ *   from a filename
+ *
+ * Sets whether @texture should use a worker thread to load the data
+ * from disk asynchronously. Setting @load_async to %TRUE will make
+ * clutter_texture_set_from_file() block until the #ClutterTexture has
+ * determined the width and height of the image data.
+ *
+ * See the #ClutterTexture:load-async property documentation, and
+ * clutter_texture_set_load_async().
+ *
+ * Since: 1.0
+ */
+void
+clutter_texture_set_load_data_async (ClutterTexture *texture,
+                                     gboolean        load_async)
+{
+  ClutterTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
+  priv = texture->priv;
+
+  if (priv->load_data_async != load_async)
+    {
+      /* load-data-async always unsets load-size-async */
+      priv->load_data_async = load_async;
+      priv->load_size_async = FALSE;
+
+      priv->load_async_set = load_async;
+
+      g_object_notify (G_OBJECT (texture), "load-async");
+      g_object_notify (G_OBJECT (texture), "load-data-async");
+    }
+}
+
+/**
+ * clutter_texture_get_load_data_async:
+ * @texture: a #ClutterTexture
+ *
+ * Retrieves the value set by clutter_texture_set_load_data_async()
+ *
+ * Return value: %TRUE if the #ClutterTexture should load the image
+ *   data from a file asynchronously
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_texture_get_load_data_async (ClutterTexture *texture)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
+  return texture->priv->load_async_set &&
+         texture->priv->load_data_async;
 }

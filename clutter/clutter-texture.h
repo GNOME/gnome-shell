@@ -10,7 +10,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -105,12 +105,12 @@ struct _ClutterTextureClass
   ClutterActorClass parent_class;
 
   /*< public >*/
-  void (*size_change)   (ClutterTexture *texture,
-		         gint            width,
-		         gint            height);
-  void (*pixbuf_change) (ClutterTexture *texture);
-  void (*load_finished) (ClutterTexture *texture,
-                         GError         *error);
+  void (* size_change)   (ClutterTexture *texture,
+                          gint            width,
+                          gint            height);
+  void (* pixbuf_change) (ClutterTexture *texture);
+  void (* load_finished) (ClutterTexture *texture,
+                          const GError   *error);
 
   /*< private >*/
   /* padding, for future expansion */
@@ -123,6 +123,7 @@ struct _ClutterTextureClass
 
 /**
  * ClutterTextureFlags:
+ * @CLUTTER_TEXTURE_NONE: No flags
  * @CLUTTER_TEXTURE_RGB_FLAG_BGR: FIXME
  * @CLUTTER_TEXTURE_RGB_FLAG_PREMULT: FIXME
  * @CLUTTER_TEXTURE_YUV_FLAG_YUV2: FIXME
@@ -133,11 +134,12 @@ struct _ClutterTextureClass
  * Since: 0.4
  */
 typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
-    CLUTTER_TEXTURE_RGB_FLAG_BGR     = 1 << 1,
-    CLUTTER_TEXTURE_RGB_FLAG_PREMULT = 1 << 2, /* FIXME: not handled */
-    CLUTTER_TEXTURE_YUV_FLAG_YUV2    = 1 << 3
+  CLUTTER_TEXTURE_NONE             = 0,
+  CLUTTER_TEXTURE_RGB_FLAG_BGR     = 1 << 1,
+  CLUTTER_TEXTURE_RGB_FLAG_PREMULT = 1 << 2, /* FIXME: not handled */
+  CLUTTER_TEXTURE_YUV_FLAG_YUV2    = 1 << 3
 
-    /* FIXME: add compressed types ? */
+  /* FIXME: add compressed types ? */
 } ClutterTextureFlags;
 
 /**
@@ -154,7 +156,7 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
  * Since: 0.8
  */
 typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
-  CLUTTER_TEXTURE_QUALITY_LOW = 0,
+  CLUTTER_TEXTURE_QUALITY_LOW,
   CLUTTER_TEXTURE_QUALITY_MEDIUM,
   CLUTTER_TEXTURE_QUALITY_HIGH
 } ClutterTextureQuality;
@@ -209,6 +211,25 @@ void                  clutter_texture_set_cogl_texture      (ClutterTexture     
 CoglHandle            clutter_texture_get_cogl_material     (ClutterTexture         *texture);
 void                  clutter_texture_set_cogl_material     (ClutterTexture         *texture,
                                                              CoglHandle              cogl_material);
+void                  clutter_texture_set_sync_size         (ClutterTexture         *texture,
+                                                             gboolean                sync_size);
+gboolean              clutter_texture_get_sync_size         (ClutterTexture         *texture);
+void                  clutter_texture_set_repeat            (ClutterTexture         *texture,
+                                                             gboolean                repeat_x,
+                                                             gboolean                repeat_y);
+void                  clutter_texture_get_repeat            (ClutterTexture         *texture,
+                                                             gboolean               *repeat_x,
+                                                             gboolean               *repeat_y);
+CoglPixelFormat       clutter_texture_get_pixel_format      (ClutterTexture         *texture);
+void                  clutter_texture_set_keep_aspect_ratio (ClutterTexture         *texture,
+                                                             gboolean                keep_aspect);
+gboolean              clutter_texture_get_keep_aspect_ratio (ClutterTexture         *texture);
+void                  clutter_texture_set_load_async        (ClutterTexture         *texture,
+                                                             gboolean                load_async);
+gboolean              clutter_texture_get_load_async        (ClutterTexture         *texture);
+void                  clutter_texture_set_load_data_async   (ClutterTexture         *texture,
+                                                             gboolean                load_async);
+gboolean              clutter_texture_get_load_data_async   (ClutterTexture         *texture);
 
 G_END_DECLS
 

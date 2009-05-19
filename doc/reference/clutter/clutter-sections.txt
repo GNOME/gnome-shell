@@ -448,6 +448,8 @@ ClutterTextureQuality
 clutter_texture_new
 clutter_texture_new_from_file
 clutter_texture_new_from_actor
+
+<SUBSECTION>
 CLUTTER_TEXTURE_ERROR
 ClutterTextureError
 clutter_texture_set_from_file
@@ -455,6 +457,7 @@ clutter_texture_set_from_rgb_data
 clutter_texture_set_from_yuv_data
 clutter_texture_set_area_from_rgb_data
 clutter_texture_get_base_size
+clutter_texture_get_pixel_format
 clutter_texture_get_filter_quality
 clutter_texture_set_filter_quality
 clutter_texture_get_max_tile_waste
@@ -463,6 +466,16 @@ clutter_texture_get_cogl_texture
 clutter_texture_set_cogl_texture
 clutter_texture_get_cogl_material
 clutter_texture_set_cogl_material
+clutter_texture_get_sync_size
+clutter_texture_set_sync_size
+clutter_texture_get_repeat
+clutter_texture_set_repeat
+clutter_texture_get_keep_aspect_ratio
+clutter_texture_set_keep_aspect_ratio
+clutter_texture_get_load_async
+clutter_texture_set_load_async
+clutter_texture_get_load_data_async
+clutter_texture_set_load_data_async
 
 <SUBSECTION Standard>
 CLUTTER_TEXTURE
