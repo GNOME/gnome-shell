@@ -43,6 +43,7 @@ doc/reference/clutter/clutter.interfaces
 doc/reference/clutter/clutter.prerequisites
 doc/reference/clutter/clutter.signals
 doc/reference/clutter/*.stamp
+doc/reference/clutter/*.bak
 doc/reference/cogl/cogl-*.txt
 !/doc/reference/cogl/cogl-sections.txt
 doc/reference/cogl/html
@@ -55,6 +56,7 @@ doc/reference/cogl/cogl.interfaces
 doc/reference/cogl/cogl.prerequisites
 doc/reference/cogl/cogl.signals
 doc/reference/cogl/*.stamp
+doc/reference/cogl/*.bak
 doltcompile
 doltlibtool
 gtk-doc.make
