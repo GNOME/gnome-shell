@@ -18,7 +18,6 @@ cogl_headers = \
 	$(NULL)
 
 cogl_priv_headers = \
-	cogl-internal.h 	\
 	cogl-texture-private.h 	\
 	cogl-fbo.h 		\
 	cogl-shader-private.h 	\
