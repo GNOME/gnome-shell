@@ -585,6 +585,24 @@ fi
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
+m4_define([cogl_debug_default], [no])
+AC_ARG_ENABLE([cogl-debug],
+              [AC_HELP_STRING([--enable-cogl-debug=@<:@no/yes@:>@],
+                              [Turn on COGL debugging])],
+              [],
+              [enable_debug=debug_default])
+
+AS_CASE([$enable_debug],
+
+        [yes], [COGL_DEBUG_CFLAGS="-DCOGL_GL_DEBUG -DCOGL_HANDLE_DEBUG -DCOGL_ENABLE_DEBUG"],
+
+        [no],  [COGL_DEBUG_CFLAGS=""],
+
+        [*],   [AC_MSG_ERROR([Invalid value for --enable-cogl-debug])]
+)
+
+AC_SUBST(COGL_DEBUG_CFLAGS)
+
 dnl = Enable strict compiler flags =========================================
 
 # use strict compiler flags only on development releases
@@ -726,7 +744,8 @@ fi
 echo "                  GL Headers:   ${CLUTTER_GL_HEADER}"
 echo "               Image backend:   ${imagebackend}"
 echo "              Target library:   ${clutterbackendlib}"
-echo "                 Debug level:   ${enable_debug}"
+echo "         Clutter Debug level:   ${enable_debug}"
+echo "     Enable COGL debug flags:   ${enable_cogl_debug}"
 echo "              Compiler flags:   ${CPPFLAGS} ${MAINTAINER_CFLAGS}"
 echo "     Build API Documentation:   ${enable_gtk_doc}"
 echo "  Build Manual Documentation:   ${enable_manual}"

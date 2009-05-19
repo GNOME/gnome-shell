@@ -36,7 +36,8 @@ typedef enum {
   COGL_DEBUG_OFFSCREEN  = 1 << 4,
   COGL_DEBUG_DRAW       = 1 << 5,
   COGL_DEBUG_PANGO      = 1 << 6,
-  COGL_DEBUG_RECTANGLES = 1 << 7
+  COGL_DEBUG_RECTANGLES = 1 << 7,
+  COGL_DEBUG_HANDLE     = 1 << 8
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG

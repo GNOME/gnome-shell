@@ -29,7 +29,7 @@ INCLUDES = \
 
 noinst_LTLIBRARIES = libclutter-cogl.la
 
-libclutter_cogl_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+libclutter_cogl_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(COGL_DEBUG_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
 libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
 libclutter_cogl_la_DEPENDENCIES = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
 libclutter_cogl_la_SOURCES = \
