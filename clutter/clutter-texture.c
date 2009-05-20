@@ -514,7 +514,7 @@ clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
-  gint            x_1, y_1, x_2, y_2;
+  ClutterActorBox box = { 0, };
   CoglColor       transparent_col;
   gfloat          t_w, t_h;
   guint8          paint_opacity = clutter_actor_get_paint_opacity (self);
@@ -620,28 +620,28 @@ clutter_texture_paint (ClutterActor *self)
 
   cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff, paint_opacity);
 
-  clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
+  clutter_actor_get_allocation_box (self, &box);
 
-  CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
+  CLUTTER_NOTE (PAINT, "paint to x1: %f, y1: %f x2: %f, y2: %f "
 		       "opacity: %i",
-		x_1, y_1, x_2, y_2,
+		box.x1, box.y1, box.x2, box.y2,
 		clutter_actor_get_opacity (self));
 
   if (priv->repeat_x && priv->width > 0)
-    t_w = (float) (x_2 - x_1) / (float) (priv->width);
+    t_w = (box.x2 - box.x1) / priv->width;
   else
     t_w = 1.0;
 
   if (priv->repeat_y && priv->height > 0)
-    t_h = (float) (y_2 - y_1) / (float) (priv->height);
+    t_h = (box.y2 - box.y1) / priv->height;
   else
     t_h = 1.0;
 
   /* Paint will have translated us */
   cogl_set_source (priv->material);
   cogl_rectangle_with_texture_coords (0, 0,
-			              (float) (x_2 - x_1),
-			              (float) (y_2 - y_1),
+			              box.x2 - box.x1,
+                                      box.y2 - box.y1,
 			              0, 0, t_w, t_h);
 }
 
