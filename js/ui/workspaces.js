@@ -18,8 +18,6 @@ const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
 const Tweener = imports.ui.tweener;
 
-// Windows are slightly translucent in the overlay mode
-const WINDOW_OPACITY = 0.9 * 255;
 const FOCUS_ANIMATION_TIME = 0.15;
 
 const WINDOWCLONE_BG_COLOR = new Clutter.Color();
@@ -440,7 +438,6 @@ Workspace.prototype = {
                                scale_y: scale,
                                workspace_relative: workspaceZooming ? this : null,
                                time: Overlay.ANIMATION_TIME,
-                               opacity: WINDOW_OPACITY,
                                transition: "easeOutQuad"
                              });
         }
