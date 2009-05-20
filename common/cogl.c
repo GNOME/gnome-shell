@@ -1,10 +1,9 @@
 /*
  * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007, 2008 OpenedHand
- * Copyright (C) 2009 Intel Corp.
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,6 +38,7 @@
 typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #endif
 
+#include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
@@ -47,67 +47,82 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #include "cogl-gles2-wrapper.h"
 #endif
 
+#ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
-#if COGL_DEBUG
-struct token_string
-{
-  GLuint Token;
-  const char *String;
-};
+static const struct {
+  GLuint error_code;
+  const gchar *error_string;
+} gl_errors[] = {
+  { GL_NO_ERROR,          "No error" },
+  { GL_INVALID_ENUM,      "Invalid enumeration value" },
+  { GL_INVALID_VALUE,     "Invalid value" },
+  { GL_INVALID_OPERATION, "Invalid operation" },
+  { GL_STACK_OVERFLOW,    "Stack overflow" },
+  { GL_STACK_UNDERFLOW,   "Stack underflow" },
+  { GL_OUT_OF_MEMORY,     "Out of memory" },
 
-static const struct token_string Errors[] = {
-  { GL_NO_ERROR, "no error" },
-  { GL_INVALID_ENUM, "invalid enumerant" },
-  { GL_INVALID_VALUE, "invalid value" },
-  { GL_INVALID_OPERATION, "invalid operation" },
-  { GL_STACK_OVERFLOW, "stack overflow" },
-  { GL_STACK_UNDERFLOW, "stack underflow" },
-  { GL_OUT_OF_MEMORY, "out of memory" },
 #ifdef GL_INVALID_FRAMEBUFFER_OPERATION_EXT
-  { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "invalid framebuffer operation" },
+  { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "Invalid framebuffer operation" }
 #endif
-  { ~0, NULL }
 };
 
-const char*
-_cogl_error_string(GLenum errorCode)
+static const guint n_gl_errors = G_N_ELEMENTS (gl_errors);
+
+const gchar *
+cogl_gl_error_to_string (GLenum error_code)
 {
-  int i;
-  for (i = 0; Errors[i].String; i++) {
-    if (Errors[i].Token == errorCode)
-      return Errors[i].String;
-  }
-  return "unknown";
+  gint i;
+
+  for (i = 0; i < n_gl_errors; i++)
+    {
+      if (gl_errors[i].error_code == error_code)
+        return gl_errors[i].error_string;
+    }
+
+  return "Unknown GL error";
 }
-#endif
+#endif /* COGL_GL_DEBUG */
 
 void
-cogl_clear (const CoglColor *color)
+cogl_clear (const CoglColor *color, gulong buffers)
 {
-#if COGL_DEBUG
-  fprintf(stderr, "\n ============== Paint Start ================ \n");
-#endif
+  GLbitfield gl_buffers = 0;
 
-  GE( glClearColor (cogl_color_get_red_float (color),
-                    cogl_color_get_green_float (color),
-                    cogl_color_get_blue_float (color),
-                    0.0) );
+  COGL_NOTE (DRAW, "Clear begin");
 
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  cogl_clip_ensure ();
 
-  /*
-   *  Disable the depth test for now as has some strange side effects,
-   *  mainly on x/y axis rotation with multiple layers at same depth
-   *  (eg rotating text on a bg has very strange effect). Seems no clean
-   *  100% effective way to fix without other odd issues.. So for now
-   *  move to application to handle and add cogl_enable_depth_test()
-   *  as for custom actors (i.e groups) to enable if need be.
-   *
-   * glEnable (GL_DEPTH_TEST);
-   * glEnable (GL_ALPHA_TEST)
-   * glDepthFunc (GL_LEQUAL);
-   * glAlphaFunc (GL_GREATER, 0.1);
-   */
+  if (buffers & COGL_BUFFER_BIT_COLOR)
+    {
+      GE( glClearColor (cogl_color_get_red_float (color),
+			cogl_color_get_green_float (color),
+			cogl_color_get_blue_float (color),
+			0.0) );
+      gl_buffers |= GL_COLOR_BUFFER_BIT;
+    }
+
+  if (buffers & COGL_BUFFER_BIT_DEPTH)
+    gl_buffers |= GL_DEPTH_BUFFER_BIT;
+
+  if (buffers & COGL_BUFFER_BIT_STENCIL)
+    gl_buffers |= GL_STENCIL_BUFFER_BIT;
+
+  if (!gl_buffers)
+    {
+      static gboolean shown = FALSE;
+
+      if (!shown)
+        {
+	  g_warning ("You should specify at least one auxiliary buffer "
+                     "when calling cogl_clear");
+        }
+
+      return;
+    }
+
+  glClear (gl_buffers);
+
+  COGL_NOTE (DRAW, "Clear end");
 }
 
 static inline gboolean
@@ -556,24 +571,31 @@ cogl_get_viewport (float v[4])
 }
 
 void
-cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
+cogl_get_bitmasks (gint *red,
+                   gint *green,
+                   gint *blue,
+                   gint *alpha)
 {
   GLint value;
+
   if (red)
     {
       GE( glGetIntegerv(GL_RED_BITS, &value) );
       *red = value;
     }
+
   if (green)
     {
       GE( glGetIntegerv(GL_GREEN_BITS, &value) );
       *green = value;
     }
+
   if (blue)
     {
       GE( glGetIntegerv(GL_BLUE_BITS, &value) );
       *blue = value;
     }
+
   if (alpha)
     {
       GE( glGetIntegerv(GL_ALPHA_BITS, &value ) );

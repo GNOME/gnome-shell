@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,7 +28,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
-#include "cogl-bitmap.h"
+#include "cogl-bitmap-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material.h"
 #include "cogl-context.h"
@@ -41,17 +39,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-
-/*
-#define COGL_DEBUG 1
-
-#define GE(x) \
-{ \
-  glGetError(); x; \
-  GLuint err = glGetError(); \
-  if (err != 0) \
-    printf("err: 0x%x\n", err); \
-} */
 
 extern void _cogl_journal_flush (void);
 
@@ -485,9 +472,6 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   _cogl_current_matrix_push ();
   _cogl_current_matrix_identity ();
 
-  /* Draw to all channels */
-  cogl_draw_buffer (COGL_WINDOW_BUFFER | COGL_MASK_BUFFER, 0);
-
   /* Direct copy operation */
 
   if (ctx->texture_download_material == COGL_INVALID_HANDLE)
@@ -583,8 +567,6 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   _cogl_current_matrix_pop ();
   _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
   _cogl_current_matrix_pop ();
-
-  cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
 
   return TRUE;
 }
@@ -1435,12 +1417,13 @@ cogl_texture_new_from_data (guint             width,
 }
 
 CoglHandle
-cogl_texture_new_from_bitmap (CoglBitmap       *bmp,
+cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
                               gint              max_waste,
                               CoglTextureFlags  flags,
                               CoglPixelFormat   internal_format)
 {
   CoglTexture *tex;
+  CoglBitmap *bmp = (CoglBitmap *)bmp_handle;
 
   /* Create new texture and fill with loaded data */
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
@@ -1498,19 +1481,20 @@ cogl_texture_new_from_file (const gchar       *filename,
                             CoglPixelFormat    internal_format,
                             GError           **error)
 {
-  CoglBitmap  *bmp;
+  CoglHandle   bmp;
   CoglHandle   handle;
 
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
-  if (!(bmp = cogl_bitmap_new_from_file (filename, error)))
+  bmp = cogl_bitmap_new_from_file (filename, error);
+  if (bmp == COGL_INVALID_HANDLE)
     return COGL_INVALID_HANDLE;
 
   handle = cogl_texture_new_from_bitmap (bmp,
                                          max_waste,
                                          flags,
                                          internal_format);
-  cogl_bitmap_free (bmp);
+  cogl_handle_unref (bmp);
 
   return handle;
 }
@@ -1783,7 +1767,7 @@ cogl_texture_get_gl_texture (CoglHandle handle,
   return TRUE;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_min_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1796,7 +1780,7 @@ cogl_texture_get_min_filter (CoglHandle handle)
   return tex->min_filter;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_mag_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1811,8 +1795,8 @@ cogl_texture_get_mag_filter (CoglHandle handle)
 
 void
 cogl_texture_set_filters (CoglHandle handle,
-			  COGLenum   min_filter,
-			  COGLenum   mag_filter)
+			  CoglTextureFilter   min_filter,
+			  CoglTextureFilter   mag_filter)
 {
   CoglTexture *tex;
   GLuint       gl_handle;

@@ -1,3 +1,26 @@
+/*
+ * Cogl
+ *
+ * An object oriented GL/GLES Abstraction/Utility Layer
+ *
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
 #ifndef __COGL_DEBUG_H__
 #define __COGL_DEBUG_H__
 
@@ -13,7 +36,8 @@ typedef enum {
   COGL_DEBUG_OFFSCREEN  = 1 << 4,
   COGL_DEBUG_DRAW       = 1 << 5,
   COGL_DEBUG_PANGO      = 1 << 6,
-  COGL_DEBUG_RECTANGLES = 1 << 7
+  COGL_DEBUG_RECTANGLES = 1 << 7,
+  COGL_DEBUG_HANDLE     = 1 << 8
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG

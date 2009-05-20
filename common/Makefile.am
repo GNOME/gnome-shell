@@ -2,27 +2,25 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \
 	-I$(top_srcdir)/clutter/cogl \
+	-I$(top_srcdir)/clutter/cogl/common \
 	-I$(top_srcdir)/clutter/cogl/$(CLUTTER_COGL) \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl \
         -DG_LOG_DOMAIN=\"Cogl-Common\" \
-        -DCLUTTER_COMPILATION \
-	$(CLUTTER_CFLAGS) \
-	$(CLUTTER_DEBUG_CFLAGS) \
-	$(MAINTAINER_CFLAGS) \
-	$(GCC_FLAGS)
-
-LDADD = $(CLUTTER_LIBS)
+        -DCLUTTER_COMPILATION
 
 noinst_LTLIBRARIES = libclutter-cogl-common.la
 EXTRA_DIST = stb_image.c
 
+libclutter_cogl_common_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(COGL_DEBUG_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+libclutter_cogl_common_la_LIBADD = -lm $(CLUTTER_LIBS)
 libclutter_cogl_common_la_SOURCES = 	\
 	cogl-handle.h 			\
+	cogl-internal.h			\
 	cogl.c				\
 	cogl-util.h 			\
 	cogl-util.c 			\
-	cogl-bitmap.h 			\
+	cogl-bitmap-private.h 		\
 	cogl-bitmap.c 			\
 	cogl-bitmap-fallback.c 		\
 	cogl-current-matrix.c		\

@@ -1,7 +1,9 @@
-/* cogl-texture.h: Texture objects
- * This file is part of Clutter
+/*
+ * Cogl
  *
- * Copyright (C) 2008  Intel Corporation.
+ * An object oriented GL/GLES Abstraction/Utility Layer
+ *
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +16,9 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
 #if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
@@ -24,9 +28,9 @@
 #ifndef __COGL_TEXTURE_H__
 #define __COGL_TEXTURE_H__
 
-G_BEGIN_DECLS
-
 #include <cogl/cogl-types.h>
+
+G_BEGIN_DECLS
 
 /**
  * SECTION:cogl-texture
@@ -142,21 +146,21 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
 
 /**
  * cogl_texture_new_from_bitmap:
- * @bitmap: a #CoglBitmap
+ * @bmp_handle: A CoglBitmap handle
  * @max_waste: maximum extra horizontal and|or vertical margin pixels
  *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  * texture
  *
- * Creates a COGL texture from a #CoglBitmap.
+ * Creates a COGL texture from a CoglBitmap.
  *
  * Return value: a #CoglHandle to the newly created texture or
  *   %COGL_INVALID_HANDLE on failure
  *
  * Since: 1.0
  */
-CoglHandle      cogl_texture_new_from_bitmap (CoglBitmap       *bitmap,
+CoglHandle      cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
                                               gint              max_waste,
                                               CoglTextureFlags  flags,
                                               CoglPixelFormat   internal_format);
@@ -225,6 +229,52 @@ guint           cogl_texture_get_rowstride    (CoglHandle          handle);
 gint            cogl_texture_get_max_waste    (CoglHandle          handle);
 
 /**
+ * CoglTextureFilter:
+ * @COGL_TEXTURE_FILTER_NEAREST: Measuring in manhatten distance from the,
+ *                               current pixel center, use the nearest texture
+ *                               texel.
+ * @COGL_TEXTURE_FILTER_LINEAR: Use the weighted average of the 4 texels
+ *                              nearest the current pixel center.
+ * @COGL_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST: Select the mimap level whose
+ *                                              texel size most closely matches
+ *                                              the current pixel, and use the
+ *                                              COGL_TEXTURE_FILTER_NEAREST
+ *                                              criterion.
+ * @COGL_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST: Select the mimap level whose
+ *                                             texel size most closely matches
+ *                                             the current pixel, and use the
+ *                                             COGL_TEXTURE_FILTER_LINEAR
+ *                                             criterion.
+ * @COGL_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR: Select the two mimap levels
+ *                                             whose texel size most closely
+ *                                             matches the current pixel, use
+ *                                             the COGL_TEXTURE_FILTER_NEAREST
+ *                                             criterion on each one and take
+ *                                             their weighted average.
+ * @COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR: Select the two mimap levels
+ *                                            whose texel size most closely
+ *                                            matches the current pixel, use
+ *                                            the COGL_TEXTURE_FILTER_LINEAR
+ *                                            criterion on each one and take
+ *                                            their weighted average.
+ *
+ * Texture filtering is used whenever the current pixel maps either to more
+ * than one texture element (texel) or less than one. These filter enums
+ * correspond to different strategies used to come up with a pixel color, by
+ * possibly referring to multiple neighbouring texels and taking a weighted
+ * average or simply using the nearest texel.
+ */
+typedef enum _CoglTextureFilter
+{
+  COGL_TEXTURE_FILTER_NEAREST = GL_NEAREST,
+  COGL_TEXTURE_FILTER_LINEAR = GL_LINEAR,
+  COGL_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+  COGL_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+  COGL_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+  COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+} CoglTextureFilter;
+
+/**
  * cogl_texture_get_min_filter:
  * @handle: a #CoglHandle for a texture.
  *
@@ -232,7 +282,7 @@ gint            cogl_texture_get_max_waste    (CoglHandle          handle);
  *
  * Returns: the current downscaling filter for a cogl texture.
  */
-COGLenum        cogl_texture_get_min_filter   (CoglHandle          handle);
+CoglTextureFilter cogl_texture_get_min_filter (CoglHandle          handle);
 
 /**
  * cogl_texture_get_mag_filter:
@@ -242,7 +292,7 @@ COGLenum        cogl_texture_get_min_filter   (CoglHandle          handle);
  *
  * Returns: the current downscaling filter for a cogl texture.
  */
-COGLenum        cogl_texture_get_mag_filter   (CoglHandle          handle);
+CoglTextureFilter cogl_texture_get_mag_filter (CoglHandle          handle);
 
 /**
  * cogl_texture_is_sliced:
@@ -303,8 +353,8 @@ gint            cogl_texture_get_data         (CoglHandle          handle,
  * drawn at other scales than 100%.
  */
 void            cogl_texture_set_filters      (CoglHandle          handle,
-                                               COGLenum            min_filter,
-                                               COGLenum            mag_filter);
+                                               CoglTextureFilter   min_filter,
+                                               CoglTextureFilter   mag_filter);
 
 
 /**
@@ -358,45 +408,6 @@ CoglHandle      cogl_texture_ref              (CoglHandle          handle);
  * Deccrement the reference count for a cogl texture.
  */
 void            cogl_texture_unref            (CoglHandle          handle);
-
-/**
- * cogl_bitmap_new_from_file:
- * @filename: the file to load.
- * @error: a #GError or %NULL.
- *
- * Load an image file from disk. This function can be safely called from
- * within a thread.
- *
- * Returns: A #CoglBitmap to the new loaded image data, or %NULL if loading
- * the image failed.
- *
- * Since: 1.0
- */
-CoglBitmap *    cogl_bitmap_new_from_file     (const gchar    *filename,
-                                               GError        **error);
-
-/**
- * cogl_bitmap_get_size_from_file:
- * @filename: the file to check
- * @width: return location for the bitmap width
- * @height: return location for the bitmap height
- *
- * Parses an image file enough to extract the width and height
- * of the bitmap.
- *
- * Since: 1.0
- */
-gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
-                                                gint          *width,
-                                                gint          *height);
-
-/**
- * cogl_bitmap_free:
- * @bmp: a #CoglBitmap.
- *
- * Frees a #CoglBitmap.
- */
-void            cogl_bitmap_free              (CoglBitmap     *bmp);
 
 /**
  * cogl_rectangle_with_texture_coords:

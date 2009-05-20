@@ -1,13 +1,14 @@
-/* cogl-types.h: Shared COGL types
+/*
+ * Cogl
  *
- * This file is part of Clutter
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008  Intel Corporation.
+ * Copyright (C) 2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +16,9 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
 #if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
@@ -28,13 +31,6 @@
 #include <glib-object.h>
 
 G_BEGIN_DECLS
-
-/**
- * CoglBitmap:
- *
- * Type used for storing image data.
- */
-typedef struct _CoglBitmap CoglBitmap;
 
 /**
  * CoglHandle:
@@ -137,7 +133,7 @@ typedef enum
   COGL_PIXEL_FORMAT_RGBA_5551     = 6 | COGL_A_BIT,
   COGL_PIXEL_FORMAT_YUV           = 7,
   COGL_PIXEL_FORMAT_G_8           = 8,
-  
+
   COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
 
   COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 |
@@ -178,7 +174,7 @@ typedef enum
                                      COGL_PREMULT_BIT     |
                                      COGL_BGR_BIT         |
                                      COGL_AFIRST_BIT),
-  
+
   COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 |
                                      COGL_A_BIT                  |
                                      COGL_PREMULT_BIT),
@@ -186,8 +182,8 @@ typedef enum
   COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 |
                                      COGL_A_BIT                  |
                                      COGL_PREMULT_BIT),
-  
-  
+
+
 } CoglPixelFormat;
 
 #define COGL_TYPE_PIXEL_FORMAT          (cogl_pixel_format_get_type ())
@@ -232,7 +228,6 @@ GType cogl_feature_flags_get_type (void) G_GNUC_CONST;
 /**
  * CoglBufferTarget:
  * @COGL_WINDOW_BUFFER: FIXME
- * @COGL_MASK_BUFFER: FIXME
  * @COGL_OFFSCREEN_BUFFER: FIXME
  *
  * Target flags for FBOs.
@@ -242,8 +237,7 @@ GType cogl_feature_flags_get_type (void) G_GNUC_CONST;
 typedef enum
 {
   COGL_WINDOW_BUFFER      = (1 << 1),
-  COGL_MASK_BUFFER        = (1 << 2),
-  COGL_OFFSCREEN_BUFFER   = (1 << 3)
+  COGL_OFFSCREEN_BUFFER   = (1 << 2)
 } CoglBufferTarget;
 
 #define COGL_TYPE_BUFFER_TARGET         (cogl_buffer_target_get_type ())

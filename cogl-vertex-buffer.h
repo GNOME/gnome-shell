@@ -1,13 +1,9 @@
 /*
- * Cogl.
+ * Cogl
  *
- * An OpenGL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Vertex Buffer API: Handle extensible arrays of vertex attributes
- *
- * Copyright (C) 2008  Intel Corporation.
- *
- * Authored by: Robert Bragg <robert@linux.intel.com>
+ * Copyright (C) 2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +16,12 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Authors:
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
 #if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)

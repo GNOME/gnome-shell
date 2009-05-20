@@ -1,13 +1,12 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
+
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
@@ -41,6 +40,7 @@
 #include <cogl/cogl-material.h>
 #include <cogl/cogl-path.h>
 #include <cogl/cogl-shader.h>
+#include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-texture.h>
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-debug.h>
@@ -364,13 +364,28 @@ void            cogl_set_fog                  (const CoglColor *fog_color,
 void            cogl_disable_fog              (void);
 
 /**
+ * CoglBufferBit:
+ * @COGL_BUFFER_BIT_COLOR: Selects the primary color buffer
+ * @COGL_BUFFER_BIT_DEPTH: Selects the depth buffer
+ * @COGL_BUFFER_BIT_STENCIL: Selects the stencil buffer
+ */
+typedef enum _CoglBufferBit
+{
+  COGL_BUFFER_BIT_COLOR   = 1L<<0,
+  COGL_BUFFER_BIT_DEPTH   = 1L<<1,
+  COGL_BUFFER_BIT_STENCIL = 1L<<2
+} CoglBufferBit;
+
+/**
  * cogl_clear:
  * @color: Background color to clear to
+ * @buffers: A mask of @CoglBufferBit<!-- -->'s identifying which auxiliary
+ *           buffers to clear
  *
- * Clears the color buffer to @color. The depth buffer and stencil
- * buffers are also cleared.
+ * Clears all the auxiliary buffers identified in the @buffers mask, and if
+ * that includes the color buffer then the specified @color is used.
  */
-void            cogl_clear                    (const CoglColor *color);
+void            cogl_clear                    (const CoglColor *color, gulong buffers);
 
 /**
  * cogl_set_source:
@@ -476,6 +491,27 @@ void            cogl_set_source_texture       (CoglHandle texture_handle);
  */
 
 /**
+ * cogl_clip_push_window_rect:
+ * @x_offset: left edge of the clip rectangle in window coordinates
+ * @y_offset: top edge of the clip rectangle in window coordinates
+ * @width: width of the clip rectangle
+ * @height: height of the clip rectangle
+ *
+ * Specifies a rectangular clipping area for all subsequent drawing
+ * operations. Any drawing commands that extend outside the rectangle
+ * will be clipped so that only the portion inside the rectangle will
+ * be displayed. The rectangle dimensions are not transformed by the
+ * current model-view matrix.
+ *
+ * The rectangle is intersected with the current clip region. To undo
+ * the effect of this function, call cogl_clip_pop().
+ */
+void            cogl_clip_push_window_rect    (float x_offset,
+                                               float y_offset,
+                                               float width,
+                                               float height);
+
+/**
  * cogl_clip_push:
  * @x_offset: left edge of the clip rectangle
  * @y_offset: top edge of the clip rectangle
@@ -562,6 +598,35 @@ void            cogl_clip_stack_save          (void);
  * Since: 0.8.2
  */
 void            cogl_clip_stack_restore       (void);
+
+/**
+ * cogl_set_draw_buffer:
+ * @target: A #CoglBufferTarget that specifies what kind of draw buffer you
+ *          are setting as the render target.
+ * @offscreen: If you are setting a draw buffer of type COGL_OFFSCREEN_BUFFER
+ *             then this is a CoglHandle for the offscreen buffer.
+ *
+ * This redirects all subsequent drawing to the specified draw buffer. This
+ * can either be an offscreen buffer created with
+ * cogl_offscreen_new_to_texture () or you can revert to your original
+ * on screen window buffer.
+ */
+void            cogl_set_draw_buffer          (CoglBufferTarget    target,
+                                               CoglHandle          offscreen);
+
+/**
+ * cogl_push_draw_buffer:
+ *
+ * Save cogl_set_draw_buffer() state.
+ */
+void            cogl_push_draw_buffer         (void);
+
+/**
+ * cogl_pop_draw_buffer:
+ *
+ * Restore cogl_set_draw_buffer() state.
+ */
+void            cogl_pop_draw_buffer          (void);
 
 /**
  * cogl_flush_gl_state:

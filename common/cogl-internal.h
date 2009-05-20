@@ -1,10 +1,9 @@
 /*
  * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007, 2008 OpenedHand
- * Copyright (C) 2009 Intel Corp.
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +23,8 @@
 
 #ifndef __COGL_INTERNAL_H
 #define __COGL_INTERNAL_H
+
+#include "cogl-debug.h"
 
 #ifdef HAVE_COGL_GLES2
 typedef enum {
@@ -50,29 +51,25 @@ typedef struct _CoglBoxedValue
 } CoglBoxedValue;
 #endif
 
-#define COGL_DEBUG 0
+#ifdef COGL_GL_DEBUG
 
-#if COGL_DEBUG
+const gchar *cogl_gl_error_to_string (GLenum error_code);
 
-#include <stdio.h>
+#define GE(x...)                        G_STMT_START {  \
+  GLenum __err;                                         \
+  (x);                                                  \
+  while ((__err = glGetError ()) != GL_NO_ERROR)        \
+    {                                                   \
+      g_warning ("%s: GL error (%d): %s\n",             \
+                 G_STRLOC,                              \
+                 cogl_gl_error_to_string (__err));      \
+    }                                   } G_STMT_END
 
-const char *_cogl_error_string(GLenum errorCode);
-
-#define GE(x...) G_STMT_START {                                  \
-        GLenum err;                                              \
-        (x);                                                     \
-        while ((err = glGetError()) != GL_NO_ERROR) {            \
-                fprintf(stderr, "glError: %s caught at %s:%u\n", \
-			(char *)_cogl_error_string(err),	 \
-			__FILE__, __LINE__);			 \
-        }                                                        \
-} G_STMT_END
-
-#else /* COGL_DEBUG */
+#else /* !COGL_GL_DEBUG */
 
 #define GE(x) (x)
 
-#endif /* COGL_DEBUG */
+#endif /* COGL_GL_DEBUG */
 
 #define COGL_ENABLE_BLEND             (1<<1)
 #define COGL_ENABLE_ALPHA_TEST        (1<<2)
@@ -80,16 +77,10 @@ const char *_cogl_error_string(GLenum errorCode);
 #define COGL_ENABLE_COLOR_ARRAY       (1<<4)
 #define COGL_ENABLE_BACKFACE_CULLING  (1<<5)
 
-void
-_cogl_features_init (void);
+void    _cogl_features_init (void);
+gint    _cogl_get_format_bpp (CoglPixelFormat format);
 
-gint
-_cogl_get_format_bpp (CoglPixelFormat format);
-
-void
-cogl_enable (gulong flags);
-
-gulong
-cogl_get_enable ();
+void    cogl_enable (gulong flags);
+gulong  cogl_get_enable (void);
 
 #endif /* __COGL_INTERNAL_H */

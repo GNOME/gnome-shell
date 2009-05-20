@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,7 +24,7 @@
 #ifndef __COGL_TEXTURE_H
 #define __COGL_TEXTURE_H
 
-#include "cogl-bitmap.h"
+#include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
 
 typedef struct _CoglTexture       CoglTexture;
@@ -70,8 +68,8 @@ struct _CoglTexture
   GArray            *slice_y_spans;
   GArray            *slice_gl_handles;
   gint               max_waste;
-  COGLenum           min_filter;
-  COGLenum           mag_filter;
+  CoglTextureFilter  min_filter;
+  CoglTextureFilter  mag_filter;
   gboolean           is_foreign;
   GLint              wrap_mode;
   gboolean           auto_mipmap;

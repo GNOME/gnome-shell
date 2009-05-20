@@ -28,14 +28,17 @@
 
 #include <glib.h>
 
-struct _CoglBitmap
+#include "cogl-handle.h"
+
+typedef struct _CoglBitmap
 {
+  CoglHandleObject _parent;
   guchar          *data;
   CoglPixelFormat  format;
   gint             width;
   gint             height;
   gint             rowstride;
-};
+} CoglBitmap;
 
 gboolean
 _cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
