@@ -177,11 +177,15 @@ struct _ClutterModelClass
   void              (* filter_changed)  (ClutterModel     *model);
 
   /*< private >*/
-  /* padding for future */
+  /* padding for future expansion */
   void (*_clutter_model_1) (void);
   void (*_clutter_model_2) (void);
   void (*_clutter_model_3) (void);
   void (*_clutter_model_4) (void);
+  void (*_clutter_model_5) (void);
+  void (*_clutter_model_6) (void);
+  void (*_clutter_model_7) (void);
+  void (*_clutter_model_8) (void);
 };
 
 GType                 clutter_model_get_type           (void) G_GNUC_CONST;
@@ -334,11 +338,15 @@ struct _ClutterModelIterClass
   ClutterModelIter *(* copy)      (ClutterModelIter *iter);
 
   /*< private >*/
-  /* padding for future */
+  /* padding for future expansion */
   void (*_clutter_model_iter_1) (void);
   void (*_clutter_model_iter_2) (void);
   void (*_clutter_model_iter_3) (void);
   void (*_clutter_model_iter_4) (void);
+  void (*_clutter_model_iter_5) (void);
+  void (*_clutter_model_iter_6) (void);
+  void (*_clutter_model_iter_7) (void);
+  void (*_clutter_model_iter_8) (void);
 };
 
 GType             clutter_model_iter_get_type   (void) G_GNUC_CONST;
