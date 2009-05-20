@@ -7761,7 +7761,7 @@ destroy_shader_data (ClutterActor *self)
       shader_data->value_hash = NULL;
     }
 
-  g_free (shader_data);
+  g_slice_free (ShaderData, shader_data);
   actor_priv->shader_data = NULL;
 }
 
@@ -7788,7 +7788,7 @@ clutter_actor_get_shader (ClutterActor *self)
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;
 
-  if (!shader_data)
+  if (shader_data == NULL)
     return NULL;
 
   return shader_data->shader;
@@ -7800,6 +7800,7 @@ clutter_actor_get_shader (ClutterActor *self)
  * @shader: a #ClutterShader or %NULL to unset the shader.
  *
  * Sets the #ClutterShader to be used when rendering @self.
+ *
  * If @shader is %NULL it will unset any currently set shader
  * for the actor.
  *
@@ -7817,20 +7818,22 @@ clutter_actor_set_shader (ClutterActor  *self,
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (shader == NULL || CLUTTER_IS_SHADER (shader), FALSE);
 
-  if (shader)
+  if (shader != NULL)
     g_object_ref (shader);
   else
     {
       /* if shader passed in is NULL we destroy the shader */
       destroy_shader_data (self);
+      return TRUE;
     }
 
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;
 
-  if (shader_data != NULL)
+  if (shader_data == NULL)
     {
-      actor_priv->shader_data = shader_data = g_new0 (ShaderData, 1);
+      actor_priv->shader_data = shader_data = g_slice_new (ShaderData);
+      shader_data->shader = NULL;
       shader_data->value_hash =
         g_hash_table_new_full (g_str_hash, g_str_equal,
                                g_free,
@@ -7841,8 +7844,7 @@ clutter_actor_set_shader (ClutterActor  *self,
 
   shader_data->shader = shader;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+  clutter_actor_queue_redraw (self);
 
   return TRUE;
 }
