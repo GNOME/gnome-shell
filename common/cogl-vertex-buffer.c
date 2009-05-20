@@ -127,7 +127,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <glib/gprintf.h>
+#include <glib.h>
 
 #include "cogl.h"
 #include "cogl-internal.h"
@@ -1776,4 +1776,3 @@ _cogl_vertex_buffer_free (CoglVertexBuffer *buffer)
 
   g_slice_free (CoglVertexBuffer, buffer);
 }
-
