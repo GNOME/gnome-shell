@@ -104,6 +104,13 @@ cogl_color
 </SECTION>
 
 <SECTION>
+<FILE>cogl-bitmap</FILE>
+<TITLE>Bitmaps</TITLE>
+cogl_bitmap_new_from_file
+cogl_bitmap_get_size_from_file
+</SECTION>
+
+<SECTION>
 <FILE>cogl-texture</FILE>
 <TITLE>Textures</TITLE>
 CoglTextureVertex
@@ -130,12 +137,6 @@ cogl_texture_get_gl_texture
 cogl_texture_get_data
 cogl_texture_set_filters
 cogl_texture_set_region
-
-<SUBSECTION>
-CoglBitmap
-cogl_bitmap_new_from_file
-cogl_bitmap_free
-cogl_bitmap_get_size_from_file
 </SECTION>
 
 <SECTION>
@@ -148,7 +149,8 @@ cogl_is_shader
 cogl_shader_source
 cogl_shader_compile
 cogl_shader_get_info_log
-cogl_shader_get_parameteriv
+cogl_shader_get_type
+cogl_shader_is_compiled
 <SUBSECTION>
 cogl_create_program
 cogl_program_ref
@@ -172,9 +174,7 @@ cogl_offscreen_new_to_texture
 cogl_offscreen_ref
 cogl_offscreen_unref
 cogl_is_offscreen
-cogl_offscreen_blit
-cogl_offscreen_blit_region
-cogl_draw_buffer
+cogl_set_draw_buffer
 <SUBSECTION Private>
 cogl_offscreen_new_multisample
 </SECTION>

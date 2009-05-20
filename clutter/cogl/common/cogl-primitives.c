@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -374,9 +372,7 @@ _cogl_texture_sliced_quad (CoglTexture *tex,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-#if COGL_DEBUG
-  printf("=== Drawing Tex Quad (Sliced Mode) ===\n");
-#endif
+  COGL_NOTE (DRAW, "Drawing Tex Quad (Sliced Mode)");
 
   /* We can't use hardware repeat so we need to set clamp to edge
      otherwise it might pull in edge pixels from the other side */
@@ -487,17 +483,21 @@ _cogl_texture_sliced_quad (CoglTexture *tex,
               slice_tx2 /= iter_x.span->size;
             }
 
-#if COGL_DEBUG
-	  printf("~~~~~ slice (%d,%d)\n", iter_x.index, iter_y.index);
-	  printf("qx1: %f\n",  (slice_qx1));
-	  printf("qy1: %f\n",  (slice_qy1));
-	  printf("qx2: %f\n",  (slice_qx2));
-	  printf("qy2: %f\n",  (slice_qy2));
-	  printf("tx1: %f\n",  (slice_tx1));
-	  printf("ty1: %f\n",  (slice_ty1));
-	  printf("tx2: %f\n",  (slice_tx2));
-	  printf("ty2: %f\n",  (slice_ty2));
-#endif
+          COGL_NOTE (DRAW,
+                     "~~~~~ slice (%d, %d)\n"
+	             "qx1: %f\t"
+	             "qy1: %f\n"
+                     "qx2: %f\t"
+                     "qy2: %f\n"
+                     "tx1: %f\t"
+                     "ty1: %f\n"
+                     "tx2: %f\t"
+                     "ty2: %f\n",
+                     iter_x.index, iter_y.index,
+                     slice_qx1, slice_qy1,
+                     slice_qx2, slice_qy2,
+                     slice_tx1, slice_ty1,
+                     slice_tx2, slice_ty2);
 
 	  /* Pick and bind opengl texture object */
 	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint,
@@ -1322,9 +1322,9 @@ cogl_path_fill_preserve (void)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   cogl_clip_ensure ();
-  
+
   if (ctx->path_nodes->len == 0)
-    return;  
+    return;
 
   _cogl_path_fill_nodes ();
 }
@@ -1341,12 +1341,12 @@ void
 cogl_path_stroke_preserve (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   cogl_clip_ensure ();
 
   if (ctx->path_nodes->len == 0)
     return;
-  
+
   _cogl_path_stroke_nodes();
 }
 
@@ -1355,14 +1355,14 @@ cogl_path_move_to (float x,
                    float y)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   /* FIXME: handle multiple contours maybe? */
- 
+
   _cogl_path_add_node (TRUE, x, y);
-  
+
   ctx->path_start.x = x;
   ctx->path_start.y = y;
-  
+
   ctx->path_pen = ctx->path_start;
 }
 
@@ -1371,7 +1371,7 @@ cogl_path_rel_move_to (float x,
                        float y)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   cogl_path_move_to (ctx->path_pen.x + x,
                      ctx->path_pen.y + y);
 }
@@ -1381,9 +1381,9 @@ cogl_path_line_to (float x,
                    float y)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   _cogl_path_add_node (FALSE, x, y);
-  
+
   ctx->path_pen.x = x;
   ctx->path_pen.y = y;
 }
@@ -1393,7 +1393,7 @@ cogl_path_rel_line_to (float x,
                        float y)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   cogl_path_line_to (ctx->path_pen.x + x,
                      ctx->path_pen.y + y);
 }
@@ -1402,7 +1402,7 @@ void
 cogl_path_close (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   _cogl_path_add_node (FALSE, ctx->path_start.x, ctx->path_start.y);
   ctx->path_pen = ctx->path_start;
 }
@@ -1430,9 +1430,9 @@ cogl_path_polyline (float *coords,
 	            gint num_points)
 {
   gint c = 0;
-  
+
   cogl_path_move_to (coords[0], coords[1]);
-  
+
   for (c = 1; c < num_points; ++c)
     cogl_path_line_to (coords[2*c], coords[2*c+1]);
 }
@@ -1473,17 +1473,17 @@ _cogl_path_arc (float center_x,
   float sina  = 0x0;
   float px    = 0x0;
   float py    = 0x0;
-  
+
   /* Fix invalid angles */
-  
+
   if (angle_1 == angle_2 || angle_step == 0x0)
     return;
-  
+
   if (angle_step < 0x0)
     angle_step = -angle_step;
-  
+
   /* Walk the arc by given step */
-  
+
   a = angle_1;
   while (a != angle_2)
     {
@@ -1492,12 +1492,12 @@ _cogl_path_arc (float center_x,
 
       px = center_x + (cosa * radius_x);
       py = center_y + (sina * radius_y);
-      
+
       if (a == angle_1 && move_first)
 	cogl_path_move_to (px, py);
       else
 	cogl_path_line_to (px, py);
-      
+
       if (G_LIKELY (angle_2 > angle_1))
         {
           a += angle_step;
@@ -1513,7 +1513,7 @@ _cogl_path_arc (float center_x,
     }
 
   /* Make sure the final point is drawn */
-  
+
   cosa = cosf (angle_2 * (G_PI/180.0));
   sina = sinf (angle_2 * (G_PI/180.0));
 
@@ -1530,7 +1530,7 @@ cogl_path_arc (float center_x,
                float radius_y,
                float angle_1,
                float angle_2)
-{ 
+{
   float angle_step = 10;
   /* it is documented that a move to is needed to create a freestanding
    * arc
@@ -1552,7 +1552,7 @@ cogl_path_arc_rel (float center_x,
 		   float angle_step)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   _cogl_path_arc (ctx->path_pen.x + center_x,
 	          ctx->path_pen.y + center_y,
 	          radius_x,   radius_y,
@@ -1567,15 +1567,15 @@ cogl_path_ellipse (float center_x,
                    float radius_y)
 {
   float angle_step = 10;
-  
+
   /* FIXME: if shows to be slow might be optimized
    * by mirroring just a quarter of it */
-  
+
   _cogl_path_arc (center_x, center_y,
 	          radius_x, radius_y,
 	          0, 360,
 	          angle_step, 1 /* move first */);
-  
+
   cogl_path_close();
 }
 
@@ -1589,7 +1589,7 @@ cogl_path_round_rectangle (float x_1,
 {
   float inner_width = x_2 - x_1 - radius * 2;
   float inner_height = y_2 - y_1 - radius * 2;
-  
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   cogl_path_move_to (x_1, y_1 + radius);
@@ -1598,7 +1598,7 @@ cogl_path_round_rectangle (float x_1,
 		     180,
 		     270,
 		     arc_step);
-  
+
   cogl_path_line_to       (ctx->path_pen.x + inner_width,
                            ctx->path_pen.y);
   cogl_path_arc_rel       (0, radius,
@@ -1606,7 +1606,7 @@ cogl_path_round_rectangle (float x_1,
 			   -90,
 			   0,
 			   arc_step);
-  
+
   cogl_path_line_to       (ctx->path_pen.x,
                            ctx->path_pen.y + inner_height);
 
@@ -1615,7 +1615,7 @@ cogl_path_round_rectangle (float x_1,
 			   0,
 			   90,
 			   arc_step);
-  
+
   cogl_path_line_to       (ctx->path_pen.x - inner_width,
                            ctx->path_pen.y);
   cogl_path_arc_rel       (0, -radius,
@@ -1623,7 +1623,7 @@ cogl_path_round_rectangle (float x_1,
 			   90,
 			   180,
 			   arc_step);
-  
+
   cogl_path_close ();
 }
 
@@ -1644,16 +1644,16 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
   floatVec2  c4;
   floatVec2  c5;
   gint           cindex;
-  
+
   /* Put first curve on stack */
   cubics[0] = *cubic;
   cindex    =  0;
-  
+
   while (cindex >= 0)
     {
       c = &cubics[cindex];
-      
-      
+
+
       /* Calculate distance of control points from their
        * counterparts on the line between end points */
       dif1.x = (c->p2.x * 3) - (c->p1.x * 2) - c->p4.x;
@@ -1669,12 +1669,12 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
         dif2.x = -dif2.x;
       if (dif2.y < 0)
         dif2.y = -dif2.y;
-      
-      
+
+
       /* Pick the greatest of two distances */
       if (dif1.x < dif2.x) dif1.x = dif2.x;
       if (dif1.y < dif2.y) dif1.y = dif2.y;
-      
+
       /* Cancel if the curve is flat enough */
       if (dif1.x + dif1.y <= 1.0 ||
 	  cindex == _COGL_MAX_BEZ_RECURSE_DEPTH-1)
@@ -1689,10 +1689,10 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
 
           continue;
 	}
-      
+
       /* Left recursion goes on top of stack! */
       cright = c; cleft = &cubics[++cindex];
-      
+
       /* Subdivide into 2 sub-curves */
       c1.x = ((c->p1.x + c->p2.x) / 2);
       c1.y = ((c->p1.y + c->p2.y) / 2);
@@ -1700,21 +1700,21 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
       mm.y = ((c->p2.y + c->p3.y) / 2);
       c5.x = ((c->p3.x + c->p4.x) / 2);
       c5.y = ((c->p3.y + c->p4.y) / 2);
-      
+
       c2.x = ((c1.x + mm.x) / 2);
       c2.y = ((c1.y + mm.y) / 2);
       c4.x = ((mm.x + c5.x) / 2);
       c4.y = ((mm.y + c5.y) / 2);
-      
+
       c3.x = ((c2.x + c4.x) / 2);
       c3.y = ((c2.y + c4.y) / 2);
-      
+
       /* Add left recursion to stack */
       cleft->p1 = c->p1;
       cleft->p2 = c1;
       cleft->p3 = c2;
       cleft->p4 = c3;
-      
+
       /* Add right recursion to stack */
       cright->p1 = c3;
       cright->p2 = c4;
@@ -1761,7 +1761,7 @@ cogl_path_rel_curve_to (float x_1,
                         float y_3)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   cogl_path_curve_to (ctx->path_pen.x + x_1,
                       ctx->path_pen.y + y_1,
                       ctx->path_pen.x + x_2,
@@ -1789,17 +1789,17 @@ _cogl_path_bezier2_sub (CoglBezQuad *quad)
   floatVec2   c2;
   floatVec2   c3;
   gint            qindex;
-  
+
   /* Put first curve on stack */
   quads[0] = *quad;
   qindex   =  0;
-  
+
   /* While stack is not empty */
   while (qindex >= 0)
     {
-      
+
       q = &quads[qindex];
-      
+
       /* Calculate distance of control point from its
        * counterpart on the line between end points */
       mid.x = ((q->p1.x + q->p3.x) / 2);
@@ -1808,7 +1808,7 @@ _cogl_path_bezier2_sub (CoglBezQuad *quad)
       dif.y = (q->p2.y - mid.y);
       if (dif.x < 0) dif.x = -dif.x;
       if (dif.y < 0) dif.y = -dif.y;
-      
+
       /* Cancel if the curve is flat enough */
       if (dif.x + dif.y <= 1.0 ||
           qindex == _COGL_MAX_BEZ_RECURSE_DEPTH - 1)
@@ -1818,10 +1818,10 @@ _cogl_path_bezier2_sub (CoglBezQuad *quad)
 	  _cogl_path_add_node (FALSE, q->p3.x, q->p3.y);
 	  --qindex; continue;
 	}
-      
+
       /* Left recursion goes on top of stack! */
       qright = q; qleft = &quads[++qindex];
-      
+
       /* Subdivide into 2 sub-curves */
       c1.x = ((q->p1.x + q->p2.x) / 2);
       c1.y = ((q->p1.y + q->p2.y) / 2);
@@ -1829,12 +1829,12 @@ _cogl_path_bezier2_sub (CoglBezQuad *quad)
       c3.y = ((q->p2.y + q->p3.y) / 2);
       c2.x = ((c1.x + c3.x) / 2);
       c2.y = ((c1.y + c3.y) / 2);
-      
+
       /* Add left recursion onto stack */
       qleft->p1 = q->p1;
       qleft->p2 = c1;
       qleft->p3 = c2;
-      
+
       /* Add right recursion onto stack */
       qright->p1 = c2;
       qright->p2 = c3;
@@ -1861,7 +1861,7 @@ cogl_path_curve2_to (float x_1,
 
   /* Run subdivision */
   _cogl_path_bezier2_sub (&quad);
-  
+
   /* Add last point */
   _cogl_path_add_node (FALSE, quad.p3.x, quad.p3.y);
   ctx->path_pen = quad.p3;

@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,13 +24,10 @@
 #ifndef __COGL_DEFINES_H__
 #define __COGL_DEFINES_H__
 
+#include <glib.h>
 #include <@CLUTTER_GL_HEADER@>
 
 G_BEGIN_DECLS
-
-typedef GLenum COGLenum;
-typedef GLint COGLint;
-typedef GLuint COGLuint;
 
 /* FIXME + DOCUMENT */
 
@@ -227,7 +222,6 @@ typedef GLuint COGLuint;
 #define CGL_FOG_INDEX GL_FOG_INDEX
 #define CGL_FOG_START GL_FOG_START
 #define CGL_FOG_END GL_FOG_END
-#define CGL_LINEAR GL_LINEAR
 #define CGL_EXP GL_EXP
 #define CGL_LOGIC_OP GL_LOGIC_OP
 #define CGL_INDEX_LOGIC_OP GL_INDEX_LOGIC_OP
@@ -420,10 +414,6 @@ typedef GLuint COGLuint;
 #define CGL_TEXTURE_ALPHA_SIZE GL_TEXTURE_ALPHA_SIZE
 #define CGL_TEXTURE_LUMINANCE_SIZE GL_TEXTURE_LUMINANCE_SIZE
 #define CGL_TEXTURE_INTENSITY_SIZE GL_TEXTURE_INTENSITY_SIZE
-#define CGL_NEAREST_MIPMAP_NEAREST GL_NEAREST_MIPMAP_NEAREST
-#define CGL_NEAREST_MIPMAP_LINEAR GL_NEAREST_MIPMAP_LINEAR
-#define CGL_LINEAR_MIPMAP_NEAREST GL_LINEAR_MIPMAP_NEAREST
-#define CGL_LINEAR_MIPMAP_LINEAR GL_LINEAR_MIPMAP_LINEAR
 #define CGL_OBJECT_LINEAR GL_OBJECT_LINEAR
 #define CGL_OBJECT_PLANE GL_OBJECT_PLANE
 #define CGL_EYE_LINEAR GL_EYE_LINEAR
@@ -431,7 +421,6 @@ typedef GLuint COGLuint;
 #define CGL_SPHERE_MAP GL_SPHERE_MAP
 #define CGL_DECAL GL_DECAL
 #define CGL_MODULATE GL_MODULATE
-#define CGL_NEAREST GL_NEAREST
 #define CGL_REPEAT GL_REPEAT
 #define CGL_CLAMP GL_CLAMP
 #define CGL_S GL_S
@@ -693,9 +682,6 @@ typedef GLuint COGLuint;
 #define CGL_UNSIGNED_SHORT_8_8_MESA 0
 #endif
 
-#define CGL_FRAGMENT_SHADER GL_FRAGMENT_SHADER_ARB
-#define CGL_VERTEX_SHADER   GL_VERTEX_SHADER_ARB
-
 #define CGL_OBJECT_COMPILE_STATUS  GL_OBJECT_COMPILE_STATUS_ARB
 
 #define CLUTTER_COGL_HAS_GL 1
@@ -865,26 +851,26 @@ typedef void
 
 typedef void
   (APIENTRYP             COGL_PFNGLBINDBUFFERARBPROC)
-  (GLenum		 target, 
+  (GLenum		 target,
    GLuint		 buffer);
 
 typedef void
   (APIENTRYP		 COGL_PFNGLBUFFERDATAARBPROC)
-  (GLenum		 target, 
-   GLsizeiptr		 size, 
-   const GLvoid		*data, 
+  (GLenum		 target,
+   GLsizeiptr		 size,
+   const GLvoid		*data,
    GLenum		 usage);
 
 typedef void
   (APIENTRYP             COGL_PFNGLBUFFERSUBDATAARBPROC)
-  (GLenum		 target, 
-   GLintptr		 offset, 
+  (GLenum		 target,
+   GLintptr		 offset,
    GLsizeiptr		 size,
    const GLvoid		*data);
 
 typedef void *
   (APIENTRYP		 COGL_PFNGLMAPBUFFERARBPROC)
-  (GLenum		 target, 
+  (GLenum		 target,
    GLenum		 access);
 
 typedef GLboolean

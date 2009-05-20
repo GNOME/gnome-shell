@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Havoc Pennington <hp@pobox.com> for litl
- *
- * Copyright (C) 2009 OpenedHand
+ * Copyright (C) 2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +19,9 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Authors:
+ *   Havoc Pennington <hp@pobox.com> for litl
  */
 
 #ifdef HAVE_CONFIG_H

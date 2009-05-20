@@ -35,14 +35,17 @@ test_conformance_SOURCES = 		\
 
 UNIT_TESTS = `./test-conformance -l -m thorough | $(GREP) '^/'`
 
-wrappers: test-conformance$(EXEEXT)
+wrappers: stamp-test-conformance
+	@true
+stamp-test-conformance: test-conformance$(EXEEXT)
 	@for i in $(UNIT_TESTS); \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  GEN   $$unit"; \
 		( echo "#!/bin/sh" ; echo "$(top_srcdir)/tests/conform/test-launcher.sh '$$i'" ) > $$unit$(EXEEXT) ; \
 		chmod +x $$unit$(EXEEXT); \
-	done
+	done \
+	&& echo timestamp > $(@F)
 
 clean-wrappers:
 	@for i in $(UNIT_TESTS); \
@@ -50,7 +53,8 @@ clean-wrappers:
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "RM $$unit"; \
 		rm -f $$unit$(EXEEXT) ; \
-	done
+	done \
+	&& rm -f stamp-test-conformance
 
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests

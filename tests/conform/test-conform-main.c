@@ -142,6 +142,7 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
+  TEST_CONFORM_SIMPLE ("/model", test_list_model_filter);
 
   return g_test_run ();
 }

@@ -81,6 +81,8 @@ typedef struct _ClutterModelIterClass   ClutterListModelIterClass;
 struct _ClutterListModelPrivate
 {
   GSequence *sequence;
+
+  ClutterModelIter *temp_iter;
 };
 
 struct _ClutterListModelIter
@@ -214,27 +216,22 @@ clutter_list_model_iter_is_first (ClutterModelIter *iter)
   ClutterModelIter *temp_iter;
   GSequence *sequence;
   GSequenceIter *begin, *end;
-  guint row;
 
   iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
   model = clutter_model_iter_get_model (iter);
-  row   = clutter_model_iter_get_row (iter);
 
   sequence = CLUTTER_LIST_MODEL (model)->priv->sequence;
 
   begin = g_sequence_get_begin_iter (sequence);
   end   = iter_default->seq_iter;
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_begin (begin))
     {
       CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = begin;
-      g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
         {
@@ -243,10 +240,7 @@ clutter_list_model_iter_is_first (ClutterModelIter *iter)
         }
 
       begin = g_sequence_iter_next (begin);
-      row += 1;
     }
-
-  g_object_unref (temp_iter);
 
   /* This is because the 'begin_iter' is always *before* the last valid
    * iter, otherwise we'd have endless loops 
@@ -264,7 +258,6 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
   ClutterModel *model;
   GSequence *sequence;
   GSequenceIter *begin, *end;
-  guint row;
 
   iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
@@ -273,7 +266,6 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
     return TRUE;
 
   model = clutter_model_iter_get_model (iter);
-  row   = clutter_model_iter_get_row (iter);
 
   sequence = CLUTTER_LIST_MODEL (model)->priv->sequence;
 
@@ -281,14 +273,11 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
   begin = g_sequence_iter_prev (begin);
   end   = iter_default->seq_iter;
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_begin (begin))
     {
       CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = begin;
-      g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
         {
@@ -297,10 +286,7 @@ clutter_list_model_iter_is_last (ClutterModelIter *iter)
         }
 
       begin = g_sequence_iter_prev (begin);
-      row += 1;
     }
-
-  g_object_unref (temp_iter);
 
   /* This is because the 'end_iter' is always *after* the last valid iter.
    * Otherwise we'd have endless loops 
@@ -323,37 +309,31 @@ clutter_list_model_iter_next (ClutterModelIter *iter)
   g_assert (iter_default->seq_iter != NULL);
 
   model = clutter_model_iter_get_model (iter);
-  row   = clutter_model_iter_get_row (iter) + 1;
+  row   = clutter_model_iter_get_row (iter);
 
   filter_next = g_sequence_iter_next (iter_default->seq_iter);
   g_assert (filter_next != NULL);
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_end (filter_next))
     {
       CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = filter_next;
-      g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
-        break;
+        {
+          row += 1;
+          break;
+        }
 
       filter_next = g_sequence_iter_next (filter_next);
-      row += 1;
     }
 
-  g_object_unref (temp_iter);
-
-  /* We do this because the 'end_iter' is always *after* the last valid iter.
-   * Otherwise loops will go on forever
-   */
-  if (filter_next == iter_default->seq_iter)
-    filter_next = g_sequence_iter_next (filter_next);
+  if (g_sequence_iter_is_end (filter_next))
+    row += 1;
 
   /* update the iterator and return it */
-  g_object_set (G_OBJECT (iter_default), "model", model, "row", row, NULL);
+  clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
   iter_default->seq_iter = filter_next;
 
   return CLUTTER_MODEL_ITER (iter_default);
@@ -372,37 +352,31 @@ clutter_list_model_iter_prev (ClutterModelIter *iter)
   g_assert (iter_default->seq_iter != NULL);
 
   model = clutter_model_iter_get_model (iter);
-  row   = clutter_model_iter_get_row (iter) - 1;
+  row   = clutter_model_iter_get_row (iter);
 
   filter_prev = g_sequence_iter_prev (iter_default->seq_iter);
   g_assert (filter_prev != NULL);
 
-  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
-                            "model", model,
-                            NULL);
+  temp_iter = CLUTTER_LIST_MODEL (model)->priv->temp_iter;
 
   while (!g_sequence_iter_is_begin (filter_prev))
     {
       CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = filter_prev;
-      g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
-        break;
+        {
+          row -= 1;
+          break;
+        }
 
       filter_prev = g_sequence_iter_prev (filter_prev);
-      row -= 1;
     }
 
-  g_object_unref (temp_iter);
-
-  /* We do this because the 'end_iter' is always *after* the last valid iter.
-   * Otherwise loops will go on forever
-   */
-  if (filter_prev == iter_default->seq_iter)
-    filter_prev = g_sequence_iter_prev (filter_prev);
+  if (g_sequence_iter_is_begin (filter_prev))
+    row -= 1;
 
   /* update the iterator and return it */
-  g_object_set (G_OBJECT (iter_default), "model", model, "row", row, NULL);
+  clutter_model_iter_set_row (CLUTTER_MODEL_ITER (iter_default), row);
   iter_default->seq_iter = filter_prev;
 
   return CLUTTER_MODEL_ITER (iter_default);
@@ -466,16 +440,73 @@ clutter_list_model_get_iter_at_row (ClutterModel *model,
 {
   ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
   GSequence *sequence = model_default->priv->sequence;
+  gint seq_length = g_sequence_get_length (sequence);
   ClutterListModelIter *retval;
 
-  if (row >= g_sequence_get_length (sequence))
+  if (row >= seq_length)
     return NULL;
 
   retval = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                          "model", model,
                          "row", row,
                          NULL);
-  retval->seq_iter = g_sequence_get_iter_at_pos (sequence, row);
+
+  /* short-circuit in case we don't have a filter in place */
+  if (!clutter_model_get_filter_set (model))
+    {
+      retval->seq_iter = g_sequence_get_iter_at_pos (sequence, row);
+
+      return CLUTTER_MODEL_ITER (retval);
+    }
+
+  if (row == 0)
+    {
+      GSequenceIter *filter_next;
+      gboolean row_found = FALSE;
+
+      filter_next = g_sequence_get_begin_iter (sequence);
+      g_assert (filter_next != NULL);
+
+      while (!g_sequence_iter_is_end (filter_next))
+        {
+          retval->seq_iter = filter_next;
+
+          if (clutter_model_filter_iter (model, CLUTTER_MODEL_ITER (retval)))
+            {
+              /* We've found a row that is valid under the filter */
+              row_found = TRUE;
+              break;
+            }
+
+          filter_next = g_sequence_iter_next (filter_next);
+        }
+
+      /* Everything has been filtered -> there is no first row */
+      if (!row_found)
+        {
+          g_object_unref (retval);
+          return NULL;
+        }
+    }
+  else
+    {
+      GSequenceIter *filter_prev;
+
+      filter_prev = g_sequence_get_end_iter (sequence);
+      g_assert (filter_prev != NULL);
+
+      filter_prev = g_sequence_iter_prev (filter_prev);
+
+      while (!g_sequence_iter_is_begin (filter_prev))
+        {
+          retval->seq_iter = filter_prev;
+
+          if (clutter_model_filter_iter (model, CLUTTER_MODEL_ITER (retval)))
+            break;
+
+          filter_prev = g_sequence_iter_prev (filter_prev);
+        }
+    }
 
   return CLUTTER_MODEL_ITER (retval);
 }
@@ -507,7 +538,7 @@ clutter_list_model_insert_row (ClutterModel *model,
   if (index_ < 0)
     {
       seq_iter = g_sequence_append (sequence, array);
-      pos = g_sequence_get_length (sequence);
+      pos = g_sequence_get_length (sequence) - 1;
     }
   else if (index_ == 0)
     {
@@ -572,14 +603,6 @@ clutter_list_model_remove_row (ClutterModel *model,
       pos += 1;
       seq_iter = g_sequence_iter_next (seq_iter);
     }
-}
-
-static guint
-clutter_list_model_get_n_rows (ClutterModel *model)
-{
-  ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
-
-  return g_sequence_get_length (model_default->priv->sequence);
 }
 
 typedef struct
@@ -659,6 +682,20 @@ clutter_list_model_finalize (GObject *gobject)
 }
 
 static void
+clutter_list_model_dispose (GObject *gobject)
+{
+  ClutterListModel *model = CLUTTER_LIST_MODEL (gobject);
+
+  if (model->priv->temp_iter)
+    {
+      g_object_unref (model->priv->temp_iter);
+      model->priv->temp_iter = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_list_model_parent_class)->dispose (gobject);
+}
+
+static void
 clutter_list_model_class_init (ClutterListModelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -667,8 +704,8 @@ clutter_list_model_class_init (ClutterListModelClass *klass)
   g_type_class_add_private (klass, sizeof (ClutterListModelPrivate));
 
   gobject_class->finalize = clutter_list_model_finalize;
+  gobject_class->dispose = clutter_list_model_dispose;
 
-  model_class->get_n_rows      = clutter_list_model_get_n_rows;
   model_class->get_iter_at_row = clutter_list_model_get_iter_at_row;
   model_class->insert_row      = clutter_list_model_insert_row;
   model_class->remove_row      = clutter_list_model_remove_row;
@@ -683,6 +720,10 @@ clutter_list_model_init (ClutterListModel *model)
   model->priv = CLUTTER_LIST_MODEL_GET_PRIVATE (model);
 
   model->priv->sequence = g_sequence_new (NULL);
+  model->priv->temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
+                                         "model",
+                                         model,
+                                         NULL);
 }
 
 /**

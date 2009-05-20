@@ -1,3 +1,26 @@
+/*
+ * Cogl
+ *
+ * An object oriented GL/GLES Abstraction/Utility Layer
+ *
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
 #if !defined(__COGL_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
@@ -86,7 +109,7 @@ void cogl_material_set_color (CoglHandle material, const CoglColor *color);
  *
  * This is the basic color of the material, used when no lighting is enabled.
  *
- * The default value is (1.0, 1.0, 1.0, 1.0)
+ * The default value is (0xff, 0xff, 0xff, 0xff)
  *
  * Since 1.0
  */
@@ -111,7 +134,7 @@ void cogl_material_set_color4ub (CoglHandle material,
  * Since 1.0
  */
 void cogl_material_set_color4f (CoglHandle material,
-			        float      red,
+                                float      red,
                                 float      green,
                                 float      blue,
                                 float      alpha);

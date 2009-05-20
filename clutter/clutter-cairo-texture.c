@@ -54,6 +54,12 @@
  *   cairo_destroy (cr);
  * ]|
  *
+ * Although a new #cairo_t is created each time you call
+ * clutter_cairo_texture_create() or
+ * clutter_cairo_texture_create_region(), it uses the same
+ * #cairo_surface_t each time. You can call
+ * clutter_cairo_texture_clear() to erase the contents between calls.
+ *
  * <warning><para>Note that you should never use the code above inside the
  * #ClutterActor::paint or #ClutterActor::pick virtual functions or
  * signal handlers because it will lead to performance
@@ -759,4 +765,29 @@ clutter_cairo_texture_get_surface_size (ClutterCairoTexture *self,
 
   if (height)
     *height = self->priv->height;
+}
+
+/**
+ * clutter_cairo_texture_clear:
+ * @self: a #ClutterCairoTexture
+ *
+ * Clears @self's internal drawing surface, so that the next upload
+ * will replace the previous contents of the #ClutterCairoTexture
+ * rather than adding to it.
+ *
+ * Since: 1.0
+ */
+void
+clutter_cairo_texture_clear (ClutterCairoTexture *self)
+{
+  ClutterCairoTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self));
+
+  priv = self->priv;
+
+  if (!priv->cr_surface_data)
+    return;
+
+  memset (priv->cr_surface_data, 0, priv->height * priv->rowstride);
 }

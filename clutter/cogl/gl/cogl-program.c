@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2008 OpenedHand
+ * Copyright (C) 2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -96,7 +94,7 @@ cogl_program_attach_shader (CoglHandle program_handle,
   CoglShader *shader;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   if (!cogl_is_program (program_handle) || !cogl_is_shader (shader_handle))
     return;
 
@@ -111,7 +109,7 @@ cogl_program_link (CoglHandle handle)
 {
   CoglProgram *program;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   if (!cogl_is_program (handle))
     return;
 
@@ -126,7 +124,7 @@ cogl_program_use (CoglHandle handle)
   CoglProgram *program;
   GLhandleARB gl_handle;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   if (handle != COGL_INVALID_HANDLE && !cogl_is_program (handle))
     return;
 
@@ -141,13 +139,13 @@ cogl_program_use (CoglHandle handle)
   glUseProgramObjectARB (gl_handle);
 }
 
-COGLint
+int
 cogl_program_get_uniform_location (CoglHandle   handle,
                                    const gchar *uniform_name)
 {
   CoglProgram *program;
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   if (!cogl_is_program (handle))
     return 0;
 
@@ -157,7 +155,7 @@ cogl_program_get_uniform_location (CoglHandle   handle,
 }
 
 void
-cogl_program_uniform_1f (COGLint uniform_no,
+cogl_program_uniform_1f (int uniform_no,
                          gfloat  value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -165,7 +163,7 @@ cogl_program_uniform_1f (COGLint uniform_no,
 }
 
 void
-cogl_program_uniform_1i (COGLint uniform_no,
+cogl_program_uniform_1i (int uniform_no,
                          gint    value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -173,7 +171,7 @@ cogl_program_uniform_1i (COGLint uniform_no,
 }
 
 void
-cogl_program_uniform_float (COGLint  uniform_no,
+cogl_program_uniform_float (int  uniform_no,
                             gint     size,
                             gint     count,
                             const GLfloat *value)
@@ -200,10 +198,10 @@ cogl_program_uniform_float (COGLint  uniform_no,
 }
 
 void
-cogl_program_uniform_int (COGLint  uniform_no,
+cogl_program_uniform_int (int  uniform_no,
                           gint     size,
                           gint     count,
-                          const COGLint *value)
+                          const int *value)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -227,7 +225,7 @@ cogl_program_uniform_int (COGLint  uniform_no,
 }
 
 void
-cogl_program_uniform_matrix (COGLint   uniform_no,
+cogl_program_uniform_matrix (int   uniform_no,
                              gint      size,
                              gint      count,
                              gboolean  transpose,

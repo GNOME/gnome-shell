@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +19,11 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Authors:
+ *  Matthew Allum  <mallum@openedhand.com>
+ *  Neil Roberts   <neil@linux.intel.com>
+ *  Robert Bragg   <robert@linux.intel.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -31,6 +34,7 @@
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
+#include "cogl-bitmap-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material.h"
 #include "cogl-context.h"
@@ -39,17 +43,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-
-/*
-#define COGL_DEBUG 1
-
-#define GE(x) \
-{ \
-  glGetError(); x; \
-  GLuint err = glGetError(); \
-  if (err != 0) \
-    printf("err: 0x%x\n", err); \
-} */
 
 #ifdef HAVE_COGL_GL
 
@@ -939,12 +932,11 @@ _cogl_texture_slices_create (CoglTexture *tex)
 	{
 	  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, x);
 
-#if COGL_DEBUG
-	  printf ("CREATE SLICE (%d,%d)\n", x,y);
-	  printf ("size: (%d x %d)\n",
-	    x_span->size - x_span->waste,
-	    y_span->size - y_span->waste);
-#endif
+	  COGL_NOTE (TEXTURE, "CREATE SLICE (%d,%d)\tsize (%d,%d)",
+                     x, y,
+	             x_span->size - x_span->waste,
+                     y_span->size - y_span->waste);
+
 	  /* Setup texture parameters */
 	  GE( glBindTexture (tex->gl_target,
 			     gl_handles[y * n_x_slices + x]) );
@@ -1243,8 +1235,8 @@ cogl_texture_new_with_size (guint             width,
   tex->slice_gl_handles = NULL;
 
   tex->max_waste = max_waste;
-  tex->min_filter = CGL_NEAREST;
-  tex->mag_filter = CGL_NEAREST;
+  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
+  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
 
   /* Find closest GL format match */
   tex->bitmap.format =
@@ -1304,8 +1296,8 @@ cogl_texture_new_from_data (guint             width,
   tex->slice_gl_handles = NULL;
 
   tex->max_waste = max_waste;
-  tex->min_filter = CGL_NEAREST;
-  tex->mag_filter = CGL_NEAREST;
+  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
+  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
 
   /* FIXME: If upload fails we should set some kind of
    * error flag but still return texture handle (this
@@ -1336,12 +1328,15 @@ cogl_texture_new_from_data (guint             width,
 }
 
 CoglHandle
-cogl_texture_new_from_bitmap (CoglBitmap       *bmp,
+cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
                               gint              max_waste,
                               CoglTextureFlags  flags,
                               CoglPixelFormat   internal_format)
 {
   CoglTexture *tex;
+  CoglBitmap *bmp = (CoglBitmap *)bmp_handle;
+
+  g_return_val_if_fail (bmp_handle != COGL_INVALID_HANDLE, COGL_INVALID_HANDLE);
 
   /* Create new texture and fill with loaded data */
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
@@ -1358,8 +1353,8 @@ cogl_texture_new_from_bitmap (CoglBitmap       *bmp,
   tex->slice_gl_handles = NULL;
 
   tex->max_waste = max_waste;
-  tex->min_filter = CGL_NEAREST;
-  tex->mag_filter = CGL_NEAREST;
+  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
+  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
 
   /* FIXME: If upload fails we should set some kind of
    * error flag but still return texture handle if the
@@ -1399,19 +1394,20 @@ cogl_texture_new_from_file (const gchar       *filename,
                             CoglPixelFormat    internal_format,
                             GError           **error)
 {
-  CoglBitmap  *bmp;
+  CoglHandle   bmp;
   CoglHandle   handle;
 
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
-  if (!(bmp = cogl_bitmap_new_from_file (filename, error)))
+  bmp = cogl_bitmap_new_from_file (filename, error);
+  if (bmp == COGL_INVALID_HANDLE)
     return COGL_INVALID_HANDLE;
 
   handle = cogl_texture_new_from_bitmap (bmp,
                                          max_waste,
                                          flags,
                                          internal_format);
-  cogl_bitmap_free (bmp);
+  cogl_handle_unref (bmp);
 
   return handle;
 }
@@ -1685,7 +1681,7 @@ cogl_texture_get_gl_texture (CoglHandle handle,
   return TRUE;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_min_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1698,7 +1694,7 @@ cogl_texture_get_min_filter (CoglHandle handle)
   return tex->min_filter;
 }
 
-COGLenum
+CoglTextureFilter
 cogl_texture_get_mag_filter (CoglHandle handle)
 {
   CoglTexture *tex;
@@ -1713,8 +1709,8 @@ cogl_texture_get_mag_filter (CoglHandle handle)
 
 void
 cogl_texture_set_filters (CoglHandle handle,
-			  COGLenum   min_filter,
-			  COGLenum   mag_filter)
+			  CoglTextureFilter min_filter,
+			  CoglTextureFilter mag_filter)
 {
   CoglTexture *tex;
   GLuint       gl_handle;

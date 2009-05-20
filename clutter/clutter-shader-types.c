@@ -88,7 +88,7 @@ struct _ClutterShaderFloat
 struct _ClutterShaderInt
 {
   gint    size;
-  COGLint value[4];
+  int value[4];
 };
 
 struct _ClutterShaderMatrix
@@ -223,7 +223,7 @@ clutter_value_collect_shader_int (GValue      *value,
                                   guint        collect_flags)
 {
   gint int_count = collect_values[0].v_int;
-  const COGLint *ints = collect_values[1].v_pointer;
+  const int *ints = collect_values[1].v_pointer;
 
   if (!ints)
     return g_strdup_printf ("value location for '%s' passed as NULL",
@@ -242,7 +242,7 @@ clutter_value_lcopy_shader_int (const GValue *value,
                                 guint         collect_flags)
 {
   gint *int_count = collect_values[0].v_pointer;
-  COGLint **ints = collect_values[1].v_pointer;
+  int **ints = collect_values[1].v_pointer;
   ClutterShaderInt *shader_int = value->data[0].v_pointer;
 
   if (!int_count || !ints)
@@ -250,7 +250,7 @@ clutter_value_lcopy_shader_int (const GValue *value,
                             G_VALUE_TYPE_NAME (value));
 
   *int_count = shader_int->size;
-  *ints = g_memdup (shader_int->value, shader_int->size * sizeof (COGLint));
+  *ints = g_memdup (shader_int->value, shader_int->size * sizeof (int));
 
   return NULL;
 }
@@ -514,7 +514,7 @@ clutter_value_get_shader_float (const GValue *value,
  *
  * Since: 0.8
  */
-G_CONST_RETURN COGLint *
+G_CONST_RETURN int *
 clutter_value_get_shader_int (const GValue *value,
                               gsize        *length)
 {

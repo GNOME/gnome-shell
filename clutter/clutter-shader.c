@@ -84,7 +84,7 @@ struct _ClutterShaderPrivate
   CoglHandle  fragment_shader;
 };
 
-enum 
+enum
 {
   PROP_0,
 
@@ -126,11 +126,11 @@ clutter_shader_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_VERTEX_SOURCE:
-      clutter_shader_set_vertex_source (shader, 
+      clutter_shader_set_vertex_source (shader,
 					g_value_get_string (value), -1);
       break;
     case PROP_FRAGMENT_SOURCE:
-      clutter_shader_set_fragment_source (shader, 
+      clutter_shader_set_fragment_source (shader,
 					  g_value_get_string (value), -1);
       break;
     case PROP_ENABLED:
@@ -427,20 +427,19 @@ clutter_shader_glsl_bind (ClutterShader      *self,
                           GError            **error)
 {
   ClutterShaderPrivate *priv = self->priv;
-  GLint is_compiled = CGL_FALSE;
   CoglHandle shader = COGL_INVALID_HANDLE;
 
   switch (shader_type)
     {
     case CLUTTER_VERTEX_SHADER:
-      shader = cogl_create_shader (CGL_VERTEX_SHADER);
+      shader = cogl_create_shader (COGL_SHADER_TYPE_VERTEX);
       cogl_shader_source (shader, priv->vertex_source);
 
       priv->vertex_shader = shader;
       break;
 
     case CLUTTER_FRAGMENT_SHADER:
-      shader = cogl_create_shader (CGL_FRAGMENT_SHADER);
+      shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
       cogl_shader_source (shader, priv->fragment_source);
 
       priv->fragment_shader = shader;
@@ -450,11 +449,7 @@ clutter_shader_glsl_bind (ClutterShader      *self,
   g_assert (shader != COGL_INVALID_HANDLE);
 
   cogl_shader_compile (shader);
-  cogl_shader_get_parameteriv (shader,
-                               CGL_OBJECT_COMPILE_STATUS,
-                               &is_compiled);
-
-  if (is_compiled != CGL_TRUE)
+  if (!cogl_shader_is_compiled (shader))
     {
       gchar error_buf[512];
 
@@ -739,7 +734,7 @@ clutter_shader_set_uniform (ClutterShader *shader,
     }
   else if (CLUTTER_VALUE_HOLDS_SHADER_INT (value))
     {
-      const COGLint *ints;
+      const int *ints;
 
       ints = clutter_value_get_shader_int (value, &size);
       cogl_program_uniform_int (location, size, 1, ints);
@@ -759,7 +754,7 @@ clutter_shader_set_uniform (ClutterShader *shader,
     }
   else if (G_VALUE_HOLDS_INT (value))
     {
-      COGLint int_val = g_value_get_int (value);
+      int int_val = g_value_get_int (value);
 
       cogl_program_uniform_int (location, 1, 1, &int_val);
     }

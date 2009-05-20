@@ -23,8 +23,8 @@ clutter/stamp-*
 /clutter/cogl/*.pc
 /clutter/cogl/gles/cogl-fixed-vertex-shader.[ch]
 /clutter/cogl/gles/cogl-fixed-fragment-shader.[ch]
-/clutter/*.gir
-/clutter/*.typelib
+*.gir
+*.typelib
 /clutter/json/*.gir
 cogl-defines.h
 config.*
@@ -43,6 +43,7 @@ doc/reference/clutter/clutter.interfaces
 doc/reference/clutter/clutter.prerequisites
 doc/reference/clutter/clutter.signals
 doc/reference/clutter/*.stamp
+doc/reference/clutter/*.bak
 doc/reference/cogl/cogl-*.txt
 !/doc/reference/cogl/cogl-sections.txt
 doc/reference/cogl/html
@@ -55,6 +56,7 @@ doc/reference/cogl/cogl.interfaces
 doc/reference/cogl/cogl.prerequisites
 doc/reference/cogl/cogl.signals
 doc/reference/cogl/*.stamp
+doc/reference/cogl/*.bak
 doltcompile
 doltlibtool
 gtk-doc.make
@@ -128,6 +130,7 @@ stamp-h1
 /tests/interactive/redhand_alpha.png
 /tests/interactive/test-script.json
 /tests/interactive/test-clutter-cairo-flowers
+/tests/conform/stamp-test-conformance
 /tests/conform/test-anchors
 /tests/conform/test-conformance
 /tests/conform/test-conformance-results.xml
@@ -187,6 +190,7 @@ stamp-h1
 /tests/conform/test-vertex-buffer-mutability
 /tests/conform/test-list-model-iterate
 /tests/conform/test-list-model-populate
+/tests/conform/test-list-model-filter
 /tests/conform/test-npot-texture
 /tests/conform/redhand.png
 /tests/conform/test-map-recursive
@@ -194,6 +198,7 @@ stamp-h1
 /tests/conform/test-shown-not-parented
 /tests/micro-bench/test-glyph-perf
 /tests/micro-bench/test-text
+/tests/micro-bench/test-picking
 /tests/tools/disable-npots.sh
 /clutter/x11/clutter-x11-enum-types.[ch]
 /clutter/x11/stamp-clutter-x11-enum-types.h

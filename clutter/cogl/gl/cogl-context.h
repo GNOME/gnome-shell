@@ -1,11 +1,9 @@
 /*
- * Clutter COGL
+ * Cogl
  *
- * A basic GL/GLES Abstraction/Utility Layer
+ * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007,2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +35,12 @@ typedef struct
   GLfloat t[2];
   GLubyte c[4];
 } CoglTextureGLVertex;
+
+typedef struct
+{
+  CoglBufferTarget target;
+  CoglHandle offscreen;
+} CoglDrawBufferState;
 
 typedef struct
 {
@@ -84,7 +88,7 @@ typedef struct
   guint             n_texcoord_arrays_enabled;
 
   /* Framebuffer objects */
-  CoglBufferTarget  draw_buffer;
+  GSList           *draw_buffer_stack;
 
   /* Clip stack */
   CoglClipStackState clip;

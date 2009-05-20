@@ -129,7 +129,7 @@ struct _ClutterModel
  * @get_iter_at_row: virtual function for returning an iterator for the
  *   given row
  * @get_n_rows: virtual function for returning the number of rows
- *   of the model, not considering any filter function if present
+ *   of the model
  * @get_n_columns: virtual function for retuning the number of columns
  *   of the model
  * @resort: virtual function for sorting the model using the passed
@@ -177,11 +177,15 @@ struct _ClutterModelClass
   void              (* filter_changed)  (ClutterModel     *model);
 
   /*< private >*/
-  /* padding for future */
+  /* padding for future expansion */
   void (*_clutter_model_1) (void);
   void (*_clutter_model_2) (void);
   void (*_clutter_model_3) (void);
   void (*_clutter_model_4) (void);
+  void (*_clutter_model_5) (void);
+  void (*_clutter_model_6) (void);
+  void (*_clutter_model_7) (void);
+  void (*_clutter_model_8) (void);
 };
 
 GType                 clutter_model_get_type           (void) G_GNUC_CONST;
@@ -248,6 +252,7 @@ void                  clutter_model_set_filter         (ClutterModel     *model,
                                                         ClutterModelFilterFunc func, 
                                                         gpointer          user_data,
                                                         GDestroyNotify    notify);
+gboolean              clutter_model_get_filter_set     (ClutterModel     *model);
 
 void                  clutter_model_resort             (ClutterModel     *model);
 gboolean              clutter_model_filter_row         (ClutterModel     *model,
@@ -333,11 +338,15 @@ struct _ClutterModelIterClass
   ClutterModelIter *(* copy)      (ClutterModelIter *iter);
 
   /*< private >*/
-  /* padding for future */
+  /* padding for future expansion */
   void (*_clutter_model_iter_1) (void);
   void (*_clutter_model_iter_2) (void);
   void (*_clutter_model_iter_3) (void);
   void (*_clutter_model_iter_4) (void);
+  void (*_clutter_model_iter_5) (void);
+  void (*_clutter_model_iter_6) (void);
+  void (*_clutter_model_iter_7) (void);
+  void (*_clutter_model_iter_8) (void);
 };
 
 GType             clutter_model_iter_get_type   (void) G_GNUC_CONST;

@@ -373,13 +373,17 @@ _clutter_do_pick (ClutterStage   *stage,
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
+  cogl_clip_push_window_rect (x, y, 1, 1);
   cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
   cogl_disable_fog ();
-  cogl_clear (&white);
+  cogl_clear (&white,
+	      COGL_BUFFER_BIT_COLOR |
+	      COGL_BUFFER_BIT_DEPTH);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
   dither_was_on = glIsEnabled (GL_DITHER);
-  glDisable (GL_DITHER);
+  if (dither_was_on)
+    glDisable (GL_DITHER);
 
   /* Render the entire scence in pick mode - just single colored silhouette's
    * are drawn offscreen (as we never swap buffers)
@@ -387,14 +391,10 @@ _clutter_do_pick (ClutterStage   *stage,
   context->pick_mode = mode;
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   context->pick_mode = CLUTTER_PICK_NONE;
+  cogl_clip_pop ();
 
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
-
-  /* Below to be safe, particularly on GL ES. an EGL wait call or full
-   * could be nicer.
-  */
-  glFinish();
 
   /* Read the color of the screen co-ords pixel */
   glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);

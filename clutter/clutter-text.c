@@ -284,6 +284,7 @@ clutter_text_create_layout_no_cache (ClutterText *text,
   pango_layout_set_alignment (layout, priv->alignment);
   pango_layout_set_single_paragraph_mode (layout, priv->single_line_mode);
   pango_layout_set_justify (layout, priv->justify);
+  pango_layout_set_wrap (layout, priv->wrap_mode);
 
   /* Cases, assuming ellipsize != NONE on actor:
    *
@@ -309,11 +310,14 @@ clutter_text_create_layout_no_cache (ClutterText *text,
         }
     }
 
-  /* we do not limit the layout width on editable, single-line
-   * text actors, since those can scroll the layout
+  /* We do not limit the layout width on editable, single-line text
+   * actors, since those can scroll the layout. For non-editable
+   * actors we only want to set the width if wrapping or ellipsizing
+   * is enabled.
    */
   if (allocation_width > 0 &&
-      !(priv->editable && priv->single_line_mode))
+      (priv->editable ? !priv->single_line_mode
+       : (priv->ellipsize != PANGO_ELLIPSIZE_NONE || priv->wrap)))
     {
       gint width;
 
@@ -459,6 +463,10 @@ clutter_text_coords_to_position (ClutterText *text,
   gint px, py;
   gint trailing;
 
+  /* Take any offset due to scrolling into account */
+  if (text->priv->single_line_mode)
+      x += text->priv->text_x * -1;
+
   px = x * PANGO_SCALE;
   py = y * PANGO_SCALE;
 
@@ -528,7 +536,13 @@ clutter_text_position_to_coords (ClutterText *self,
                                &rect, NULL);
 
   if (x)
-    *x = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.x);
+    {
+      *x = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.x);
+
+      /* Take any offset due to scrolling into account */
+      if (priv->single_line_mode)
+        *x += priv->text_x;
+    }
 
   if (y)
     *y = CLUTTER_UNITS_FROM_PANGO_UNIT (rect.y);
@@ -970,6 +984,12 @@ cursor_paint (ClutterText *self)
 
                   range_x     = ranges[i * 2]
                               / PANGO_SCALE;
+
+                  /* Account for any scrolling in single line mode */
+                  if (priv->single_line_mode)
+                      range_x += priv->text_x;
+
+
                   range_width = (ranges[i * 2 + 1] - ranges[i * 2])
                               / PANGO_SCALE;
 
@@ -1375,33 +1395,37 @@ clutter_text_paint (ClutterActor *self)
           if (priv->position == -1)
             {
               text_x = actor_width - text_width;
-              priv->cursor_pos.x += text_x + TEXT_PADDING;
             }
           else if (priv->position == 0)
             {
-              text_x = 0;
+              text_x = TEXT_PADDING;
             }
           else
             {
-              if (text_x <= 0)
+              if (cursor_x < 0)
                 {
-                  gint diff = -1 * text_x;
-
-                  if (cursor_x < diff)
-                    text_x += diff - cursor_x;
-                  else if (cursor_x > (diff + actor_width))
-                    text_x -= cursor_x - (diff - actor_width);
+                  text_x = text_x - cursor_x - TEXT_PADDING;
+                }
+              else if (cursor_x > actor_width)
+                {
+                  text_x = text_x + (actor_width - cursor_x) - TEXT_PADDING;
                 }
             }
+          /* Update the absolute cursor position as it may have moved due to
+           * scrolling */
+          priv->text_x = text_x;
+          clutter_text_ensure_cursor_position (text);
+
         }
       else
         {
-          text_x = 0;
-          priv->cursor_pos.x += text_x + TEXT_PADDING;
+          text_x = TEXT_PADDING;
         }
     }
   else
     text_x = 0;
+
+  priv->text_x = text_x;
 
   cursor_paint (text);
 
@@ -1421,7 +1445,6 @@ clutter_text_paint (ClutterActor *self)
   if (clip_set)
     cogl_clip_pop ();
 
-  priv->text_x = text_x;
 }
 
 static void
@@ -1460,7 +1483,12 @@ clutter_text_get_preferred_width (ClutterActor *self,
     }
 
   if (natural_width_p)
-    *natural_width_p = layout_width;
+    {
+      if (priv->editable && priv->single_line_mode)
+        *natural_width_p = layout_width + TEXT_PADDING * 2;
+      else
+        *natural_width_p = layout_width;
+    }
 }
 
 static void
@@ -1469,7 +1497,7 @@ clutter_text_get_preferred_height (ClutterActor *self,
                                    gfloat       *min_height_p,
                                    gfloat       *natural_height_p)
 {
-  ClutterText *text = CLUTTER_TEXT (self);
+  ClutterTextPrivate *priv = CLUTTER_TEXT (self)->priv;
 
   if (for_width == 0)
     {
@@ -1486,7 +1514,8 @@ clutter_text_get_preferred_height (ClutterActor *self,
       gint logical_height;
       gfloat layout_height;
 
-      layout = clutter_text_create_layout (text, for_width, -1);
+      layout = clutter_text_create_layout (CLUTTER_TEXT (self),
+                                           for_width, -1);
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
@@ -1495,13 +1524,26 @@ clutter_text_get_preferred_height (ClutterActor *self,
        * the height accordingly
        */
       logical_height = logical_rect.y + logical_rect.height;
-
       layout_height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_height);
 
       if (min_height_p)
         {
-          if (text->priv->ellipsize)
-            *min_height_p = 1;
+          /* if we wrap and ellipsize then the minimum height is
+           * going to be at least the size of the first line
+           */
+          if (priv->ellipsize && priv->wrap)
+            {
+              PangoLayoutLine *line;
+              ClutterUnit line_height;
+
+              line = pango_layout_get_line_readonly (layout, 0);
+              pango_layout_line_get_extents (line, NULL, &logical_rect);
+
+              logical_height = logical_rect.y + logical_rect.height;
+              line_height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_height);
+
+              *min_height_p = line_height;
+            }
           else
             *min_height_p = layout_height;
         }
@@ -1772,17 +1814,17 @@ clutter_text_real_del_prev (ClutterText         *self,
     {
       if (pos == -1)
         {
-          clutter_text_set_cursor_position (self, len - 1);
-          clutter_text_set_selection_bound (self, len - 1);
-
           clutter_text_delete_text (self, len - 1, len);
+
+          clutter_text_set_cursor_position (self, -1);
+          clutter_text_set_selection_bound (self, -1);
         }
       else
         {
+          clutter_text_delete_text (self, pos - 1, pos);
+
           clutter_text_set_cursor_position (self, pos - 1);
           clutter_text_set_selection_bound (self, pos - 1);
-
-          clutter_text_delete_text (self, pos - 1, pos);
         }
     }
 
@@ -2880,7 +2922,8 @@ clutter_text_get_selection (ClutterText *self)
   if (end_index == start_index)
     return g_strdup ("");
 
-  if (end_index < start_index)
+  if ((end_index != -1 && end_index < start_index) ||
+      start_index == -1)
     {
       gint temp = start_index;
       start_index = end_index;
@@ -3147,6 +3190,8 @@ clutter_text_set_text_internal (ClutterText *self,
 {
   ClutterTextPrivate *priv = self->priv;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   if (priv->max_length > 0)
     {
       gint len = g_utf8_strlen (text, -1);
@@ -3182,8 +3227,16 @@ clutter_text_set_text_internal (ClutterText *self,
       priv->n_chars = g_utf8_strlen (text, -1);
     }
 
+  if (priv->n_bytes == 0)
+    {
+      clutter_text_set_cursor_position (self, -1);
+      clutter_text_set_selection_bound (self, -1);
+    }
+
   g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
   g_object_notify (G_OBJECT (self), "text");
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 static inline void
