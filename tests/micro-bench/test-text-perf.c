@@ -13,16 +13,16 @@ static int rows, cols;
 gboolean idle (gpointer data)
 {
   ClutterActor *stage = CLUTTER_ACTOR (data);
-  
+
   static GTimer *timer = NULL;
   static int fps = 0;
-  
+
   if (!timer)
     {
       timer = g_timer_new ();
       g_timer_start (timer);
     }
-  
+
   if (g_timer_elapsed (timer, NULL) >= 1)
     {
       printf ("fps=%d, strings/sec=%d, chars/sec=%d\n",
@@ -32,7 +32,7 @@ gboolean idle (gpointer data)
       g_timer_start (timer);
       fps = 0;
     }
-  
+
   clutter_actor_paint (stage);
   ++fps;
 
@@ -40,7 +40,7 @@ gboolean idle (gpointer data)
 }
 
 static ClutterActor *
-create_label()
+create_label ()
 {
   ClutterColor label_color = { 0xff, 0xff, 0xff, 0xff };
   ClutterActor *label;
@@ -51,7 +51,7 @@ create_label()
   font_name = g_strdup_printf ("Monospace %dpx", font_size);
 
   str = g_string_new (NULL);
-  for (i < 0; i < n_chars; i++)
+  for (i = 0; i < n_chars; i++)
     g_string_append_c (str, 'A' + (i % 26));
 
   label = clutter_text_new_with_text (font_name, str->str);
@@ -71,6 +71,8 @@ main (int argc, char *argv[])
   ClutterActor    *label;
   int              w, h;
   int              row, col;
+
+  g_setenv ("CLUTTER_VBLANK", "none", FALSE);
 
   clutter_init (&argc, &argv);
 
@@ -112,12 +114,9 @@ main (int argc, char *argv[])
 
   clutter_actor_show_all (stage);
 
-  g_signal_connect (stage, "key-press-event",
-		    G_CALLBACK (clutter_main_quit), NULL);
-  
   g_idle_add (idle, (gpointer) stage);
 
-  clutter_main();
+  clutter_main ();
 
   return 0;
 }
