@@ -1,4 +1,5 @@
 source_c = \
+	cogl-pango-display-list.c \
 	cogl-pango-fontmap.c    \
 	cogl-pango-render.c     \
 	cogl-pango-glyph-cache.c
@@ -6,6 +7,7 @@ source_c = \
 source_h = cogl-pango.h
 
 source_h_priv = \
+	cogl-pango-display-list.h \
 	cogl-pango-private.h    \
 	cogl-pango-glyph-cache.h
 
