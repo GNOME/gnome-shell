@@ -65,6 +65,19 @@ struct _CoglPangoRendererClass
   PangoRendererClass class_instance;
 };
 
+typedef struct _CoglPangoRendererQdata CoglPangoRendererQdata;
+
+/* An instance of this struct gets attached to each PangoLayout to
+   cache the VBO and to detect changes to the layout */
+struct _CoglPangoRendererQdata
+{
+  /* The cache of the geometry for the layout */
+  CoglPangoDisplayList *display_list;
+  /* A reference to the first line of the layout. This is just used to
+     detect changes */
+  PangoLayoutLine *first_line;
+};
+
 static void
 cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
                                 CoglPangoGlyphCacheValue *cache_value,
@@ -192,7 +205,7 @@ cogl_pango_get_renderer_from_context (PangoContext *context)
 }
 
 static GQuark
-cogl_pango_render_get_display_list_key (void)
+cogl_pango_render_get_qdata_key (void)
 {
   static GQuark key = 0;
 
@@ -200,6 +213,16 @@ cogl_pango_render_get_display_list_key (void)
     key = g_quark_from_static_string ("CoglPangoDisplayList");
 
   return key;
+}
+
+static void
+cogl_pango_render_qdata_destroy (CoglPangoRendererQdata *qdata)
+{
+  if (qdata->display_list)
+    _cogl_pango_display_list_free (qdata->display_list);
+  if (qdata->first_line)
+    pango_layout_line_unref (qdata->first_line);
+  g_slice_free (CoglPangoRendererQdata, qdata);
 }
 
 /**
@@ -221,37 +244,67 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
 				   const CoglColor *color,
 				   int              flags)
 {
-  PangoContext         *context;
-  CoglPangoRenderer    *priv;
-  CoglPangoDisplayList *display_list;
+  PangoContext           *context;
+  CoglPangoRenderer      *priv;
+  CoglPangoRendererQdata *qdata;
 
   context = pango_layout_get_context (layout);
   priv = cogl_pango_get_renderer_from_context (context);
   if (G_UNLIKELY (!priv))
     return;
 
-  display_list = g_object_get_qdata (G_OBJECT (layout),
-                                     cogl_pango_render_get_display_list_key ());
+  qdata = g_object_get_qdata (G_OBJECT (layout),
+                              cogl_pango_render_get_qdata_key ());
 
-  if (display_list == NULL)
+  if (qdata == NULL)
     {
-      priv->display_list = display_list =_cogl_pango_display_list_new ();
-      priv->color = *color;
+      qdata = g_slice_new0 (CoglPangoRendererQdata);
       g_object_set_qdata_full (G_OBJECT (layout),
-                               cogl_pango_render_get_display_list_key (),
-                               display_list,
-                               (GDestroyNotify) _cogl_pango_display_list_free);
-      pango_renderer_draw_layout (PANGO_RENDERER (priv), layout, 0, 0);
+                               cogl_pango_render_get_qdata_key (),
+                               qdata,
+                               (GDestroyNotify)
+                               cogl_pango_render_qdata_destroy);
+    }
 
+  /* Check if the layout has changed since the last build of the
+     display list. This trick was suggested by Behdad Esfahbod here:
+     http://mail.gnome.org/archives/gtk-i18n-list/2009-May/msg00019.html */
+  if (qdata->display_list && qdata->first_line
+      && qdata->first_line->layout != layout)
+    {
+      _cogl_pango_display_list_free (qdata->display_list);
+      qdata->display_list = NULL;
+    }
+
+  if (qdata->display_list == NULL)
+    {
+      qdata->display_list = _cogl_pango_display_list_new ();
+
+      priv->color = *color;
+      priv->display_list = qdata->display_list;
+      pango_renderer_draw_layout (PANGO_RENDERER (priv), layout, 0, 0);
       priv->display_list = NULL;
     }
 
   cogl_push_matrix ();
   cogl_translate (x / (gfloat) PANGO_SCALE, y / (gfloat) PANGO_SCALE, 0);
-  _cogl_pango_display_list_render (display_list,
+  _cogl_pango_display_list_render (qdata->display_list,
                                    priv->glyph_material,
                                    priv->solid_material);
   cogl_pop_matrix ();
+
+  /* Keep a reference to the first line of the layout so we can detect
+     changes */
+  if (qdata->first_line)
+    {
+      pango_layout_line_unref (qdata->first_line);
+      qdata->first_line = NULL;
+    }
+  if (pango_layout_get_line_count (layout) > 0)
+    {
+      qdata->first_line = pango_layout_get_line (layout, 0);
+      pango_layout_line_ref (qdata->first_line);
+    }
 }
 
 /**
