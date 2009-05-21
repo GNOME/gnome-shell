@@ -247,7 +247,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
     }
 
   cogl_push_matrix ();
-  cogl_translate (x, y, 0);
+  cogl_translate (x / (gfloat) PANGO_SCALE, y / (gfloat) PANGO_SCALE, 0);
   _cogl_pango_display_list_render (display_list,
                                    priv->glyph_material,
                                    priv->solid_material);
