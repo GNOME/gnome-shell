@@ -41,6 +41,13 @@ typedef enum
 typedef struct _CoglPangoDisplayListNode CoglPangoDisplayListNode;
 typedef struct _CoglPangoDisplayListVertex CoglPangoDisplayListVertex;
 
+#ifdef HAVE_CLUTTER_GLX
+#define COGL_PANGO_DISPLAY_LIST_DRAW_MODE GL_QUADS
+#else
+/* GLES doesn't support GL_QUADS so we use GL_TRIANGLES instead */
+#define COGL_PANGO_DISPLAY_LIST_DRAW_MODE GL_TRIANGLES
+#endif
+
 struct _CoglPangoDisplayList
 {
   CoglColor  color;
@@ -177,6 +184,24 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
   verts->y = y_1;
   verts->t_x = tx_2;
   verts->t_y = ty_1;
+
+#ifndef HAVE_CLUTTER_GLX
+
+  /* GLES doesn't support GL_QUADS so we use GL_TRIANGLES instead with
+     two extra vertices per quad. FIXME: It might be better to use
+     indexed elements here but cogl vertex buffers don't currently
+     support storing the indices */
+
+  g_array_set_size (node->d.texture.verts,
+                    node->d.texture.verts->len + 2);
+  verts = &g_array_index (node->d.texture.verts,
+                          CoglPangoDisplayListVertex,
+                          node->d.texture.verts->len - 6);
+
+  verts[4] = verts[0];
+  verts[5] = verts[2];
+
+#endif /* HAVE_CLUTTER_GLX */
 }
 
 void
@@ -246,7 +271,8 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
     }
 
   cogl_vertex_buffer_draw (node->d.texture.vertex_buffer,
-                           GL_QUADS, 0, node->d.texture.verts->len);
+                           COGL_PANGO_DISPLAY_LIST_DRAW_MODE,
+                           0, node->d.texture.verts->len);
 }
 
 void
