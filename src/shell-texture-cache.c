@@ -539,6 +539,7 @@ shell_texture_cache_load_gicon (ShellTextureCache *cache,
           data->icon = icon;
           data->icon_info = info;
           data->texture = g_object_ref (texture);
+          data->width = data->height = size;
           load_icon_pixbuf_async (cache, icon, info, size, NULL, on_pixbuf_loaded, data);
         }
     }
