@@ -1647,6 +1647,9 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 
   enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
 
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
   cogl_enable (enable_flags);
 }
 
