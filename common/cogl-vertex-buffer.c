@@ -1726,6 +1726,8 @@ cogl_vertex_buffer_draw (CoglHandle handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
+  cogl_clip_ensure ();
+
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
   enable_state_for_drawing_buffer (buffer);
@@ -1753,6 +1755,8 @@ cogl_vertex_buffer_draw_elements (CoglHandle handle,
 
   if (!cogl_is_vertex_buffer (handle))
     return;
+
+  cogl_clip_ensure ();
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
