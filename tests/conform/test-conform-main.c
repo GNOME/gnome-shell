@@ -76,13 +76,13 @@ main (int argc, char **argv)
 
   g_test_bug_base ("http://bugzilla.openedhand.com/show_bug.cgi?id=%s");
 
-  g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
-	    == CLUTTER_INIT_SUCCESS);
-
   /* Initialise the state you need to share with everything.
    */
   shared_state->argc_addr = &argc;
   shared_state->argv_addr = &argv;
+
+  g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
+	    == CLUTTER_INIT_SUCCESS);
 
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
