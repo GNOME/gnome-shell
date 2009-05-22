@@ -1567,7 +1567,10 @@ clutter_actor_paint (ClutterActor *self)
    * actors with 0 opacity to be a NOP... */
   if (G_LIKELY (context->pick_mode == CLUTTER_PICK_NONE) &&
       priv->opacity == 0)
-    return;
+    {
+      priv->queued_redraw = FALSE;
+      return;
+    }
 
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
     {
