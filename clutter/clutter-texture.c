@@ -1096,9 +1096,9 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextureClass, size_change),
 		  NULL, NULL,
-		  clutter_marshal_VOID__INT_INT,
+		  clutter_marshal_VOID__FLOAT_FLOAT,
 		  G_TYPE_NONE,
-		  2, G_TYPE_INT, G_TYPE_INT);
+		  2, G_TYPE_FLOAT, G_TYPE_FLOAT);
   /**
    * ClutterTexture::pixbuf-change:
    * @texture: the texture which received the signal
