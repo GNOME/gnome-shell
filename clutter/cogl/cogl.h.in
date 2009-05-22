@@ -325,9 +325,9 @@ void            cogl_enable_depth_test        (gboolean            setting);
  *
  * Sets whether textures positioned so that their backface is showing
  * should be hidden. This can be used to efficiently draw two-sided
- * textures or fully closed cubes without enabling depth testing. Only
- * calls to cogl_texture_rectangle() and cogl_texture_polygon() are
- * affected. Backface culling is disabled by default.
+ * textures or fully closed cubes without enabling depth testing. This
+ * only affects calls to the cogl_rectangle* family of functions and
+ * cogl_vertex_buffer_draw*. Backface culling is disabled by default.
  */
 void            cogl_enable_backface_culling  (gboolean            setting);
 

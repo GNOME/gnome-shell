@@ -62,6 +62,7 @@ const gchar *cogl_gl_error_to_string (GLenum error_code);
     {                                                   \
       g_warning ("%s: GL error (%d): %s\n",             \
                  G_STRLOC,                              \
+                 __err,                                 \
                  cogl_gl_error_to_string (__err));      \
     }                                   } G_STMT_END
 

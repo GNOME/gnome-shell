@@ -2250,6 +2250,13 @@ clutter_actor_paint (ClutterActor *self)
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
+  context = clutter_context_get_default ();
+
+  /* It's an important optimization that we consider painting of
+   * actors with 0 opacity to be a NOP... */
+  if (G_LIKELY (context->pick_mode == CLUTTER_PICK_NONE) &&
+      priv->opacity == 0)
+    return;
 
   /* if we aren't paintable (not in a toplevel with all
    * parents paintable) then do nothing.
@@ -2284,7 +2291,6 @@ clutter_actor_paint (ClutterActor *self)
       clip_set = TRUE;
     }
 
-  context = clutter_context_get_default ();
   if (G_UNLIKELY (context->pick_mode != CLUTTER_PICK_NONE))
     {
       ClutterColor col = { 0, };
@@ -4208,6 +4214,9 @@ clutter_actor_destroy (ClutterActor *self)
  *
  * This function will not do anything if @self is not visible, or
  * if the actor is inside an invisible part of the scenegraph.
+ *
+ * Also be aware that painting is a NOP for actors with an opacity of
+ * 0
  */
 void
 clutter_actor_queue_redraw (ClutterActor *self)

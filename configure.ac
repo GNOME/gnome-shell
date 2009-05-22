@@ -590,7 +590,7 @@ AC_ARG_ENABLE([cogl-debug],
               [AC_HELP_STRING([--enable-cogl-debug=@<:@no/yes@:>@],
                               [Turn on COGL debugging])],
               [],
-              [enable_debug=debug_default])
+              [enable_debug=cogl_debug_default])
 
 AS_CASE([$enable_debug],
 
