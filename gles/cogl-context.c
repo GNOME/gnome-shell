@@ -107,8 +107,7 @@ cogl_create_context ()
   _context->default_gl_texture_2d_tex =
     cogl_texture_new_from_data (1, /* width */
                                 1, /* height */
-                                -1, /* max waste */
-                                COGL_TEXTURE_NONE, /* flags */
+                                COGL_TEXTURE_NO_SLICING, /* flags */
                                 COGL_PIXEL_FORMAT_RGBA_8888, /* data format */
                                 /* internal format */
                                 COGL_PIXEL_FORMAT_RGBA_8888,
@@ -117,8 +116,7 @@ cogl_create_context ()
   _context->default_gl_texture_rect_tex =
     cogl_texture_new_from_data (1, /* width */
                                 1, /* height */
-                                -1, /* max waste */
-                                COGL_TEXTURE_NONE, /* flags */
+                                COGL_TEXTURE_NO_SLICING, /* flags */
                                 COGL_PIXEL_FORMAT_RGBA_8888, /* data format */
                                 /* internal format */
                                 COGL_PIXEL_FORMAT_RGBA_8888,
