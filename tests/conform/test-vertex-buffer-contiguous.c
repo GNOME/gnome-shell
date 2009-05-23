@@ -184,8 +184,7 @@ test_vertex_buffer_contiguous (TestConformSimpleFixture *fixture,
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
 
   state.texture = cogl_texture_new_from_data (2, 2,
-                                              0, /* max waste */
-                                              COGL_TEXTURE_NONE,
+                                              COGL_TEXTURE_NO_SLICING,
                                               COGL_PIXEL_FORMAT_RGBA_8888,
                                               COGL_PIXEL_FORMAT_ANY,
                                               0, /* auto calc row stride */

@@ -132,7 +132,7 @@ test_coglbox_init (TestCoglbox *self)
   /* Load image from file */
   
   priv->cogl_tex_id[0] =
-    cogl_texture_new_from_file ("redhand.png", 40,
+    cogl_texture_new_from_file ("redhand.png",
                                 COGL_TEXTURE_NONE,
                                 COGL_PIXEL_FORMAT_ANY, NULL);
   
@@ -168,7 +168,7 @@ test_coglbox_init (TestCoglbox *self)
   /* Create new texture from modified data */
   
   priv->cogl_tex_id[1] =
-    cogl_texture_new_from_data (width, height, 0,
+    cogl_texture_new_from_data (width, height,
                                 COGL_TEXTURE_NONE,
                                 format, format,
 				rowstride, data);

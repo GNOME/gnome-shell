@@ -86,21 +86,21 @@ test_cogl_multitexture_main (int argc, char *argv[])
 		    G_CALLBACK(material_rectangle_paint), state);
 
   state->alpha_tex =
-    cogl_texture_new_from_file ("./redhand_alpha.png",
-				-1, /* disable slicing */
-				TRUE,
+    cogl_texture_new_from_file ("redhand_alpha.png",
+                                COGL_TEXTURE_NO_SLICING |
+                                COGL_TEXTURE_AUTO_MIPMAP,
 				COGL_PIXEL_FORMAT_ANY,
 				NULL);
   state->redhand_tex =
-    cogl_texture_new_from_file ("./redhand.png",
-				-1, /* disable slicing */
-				TRUE,
+    cogl_texture_new_from_file ("redhand.png",
+                                COGL_TEXTURE_NO_SLICING |
+                                COGL_TEXTURE_AUTO_MIPMAP,
 				COGL_PIXEL_FORMAT_ANY,
 				NULL);
   state->light_tex0 =
-    cogl_texture_new_from_file ("./light0.png",
-				-1, /* disable slicing */
-				TRUE,
+    cogl_texture_new_from_file ("light0.png",
+                                COGL_TEXTURE_NO_SLICING |
+                                COGL_TEXTURE_AUTO_MIPMAP,
 				COGL_PIXEL_FORMAT_ANY,
 				NULL);
 

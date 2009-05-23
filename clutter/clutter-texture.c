@@ -79,7 +79,6 @@ struct _ClutterTexturePrivate
 {
   gfloat                       width;
   gfloat                       height;
-  gint                         max_tile_waste;
   ClutterTextureQuality        filter_quality;
   CoglHandle                   material;
   gboolean                     no_slice;
@@ -136,7 +135,7 @@ enum
   PROP_0,
   PROP_NO_SLICE,
   PROP_MAX_TILE_WASTE,
-  PROP_PIXEL_FORMAT,		/* Texture format */
+  PROP_PIXEL_FORMAT,
   PROP_SYNC_SIZE,
   PROP_REPEAT_Y,
   PROP_REPEAT_X,
@@ -287,20 +286,19 @@ clutter_texture_realize (ClutterActor *actor)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
       gint min_filter, mag_filter;
-      gint max_waste = -1;
       CoglHandle tex;
 
       /* Handle FBO's */
 
-      if (!priv->no_slice)
-        max_waste = priv->max_tile_waste;
+      if (priv->no_slice)
+        flags |= COGL_TEXTURE_NO_SLICING;
 
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
       tex = cogl_texture_new_with_size (priv->width,
                                         priv->height,
-                                        max_waste, flags,
+                                        flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_material_set_layer (priv->material, 0, tex);
@@ -775,10 +773,6 @@ clutter_texture_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_MAX_TILE_WASTE:
-      clutter_texture_set_max_tile_waste (texture, g_value_get_int (value));
-      break;
-
     case PROP_SYNC_SIZE:
       clutter_texture_set_sync_size (texture, g_value_get_boolean (value));
       break;
@@ -860,12 +854,12 @@ clutter_texture_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_MAX_TILE_WASTE:
-      g_value_set_int (value, clutter_texture_get_max_tile_waste (texture));
-      break;
-
     case PROP_PIXEL_FORMAT:
       g_value_set_enum (value, clutter_texture_get_pixel_format (texture));
+      break;
+
+    case PROP_MAX_TILE_WASTE:
+      g_value_set_int (value, clutter_texture_get_max_tile_waste (texture));
       break;
 
     case PROP_SYNC_SIZE:
@@ -946,6 +940,14 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   FALSE,
 			   G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
+  g_object_class_install_property
+    (gobject_class, PROP_MAX_TILE_WASTE,
+     g_param_spec_int ("tile-waste",
+                       "Tile Waste",
+                       "Maximum waste area of a sliced texture",
+                       -1, G_MAXINT,
+                       COGL_TEXTURE_MAX_WASTE,
+                       CLUTTER_PARAM_READABLE));
 
   g_object_class_install_property
     (gobject_class, PROP_REPEAT_X,
@@ -973,19 +975,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                        CLUTTER_TYPE_TEXTURE_QUALITY,
 		       CLUTTER_TEXTURE_QUALITY_MEDIUM,
 		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
-  g_object_class_install_property
-    (gobject_class, PROP_MAX_TILE_WASTE,
-     g_param_spec_int ("tile-waste",
-		       "Tile dimension to waste",
-		       "Max wastage dimension of a texture when using "
-		       "sliced textures or -1 to disable slicing. "
-		       "Bigger values use less textures, "
-		       "smaller values less texture memory.",
-		       -1,
-		       G_MAXINT,
-		       63,
-		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_PIXEL_FORMAT,
@@ -1199,7 +1188,6 @@ clutter_texture_init (ClutterTexture *self)
 
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
-  priv->max_tile_waste    = 63;
   priv->filter_quality    = CLUTTER_TEXTURE_QUALITY_MEDIUM;
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
@@ -1240,10 +1228,9 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
   /* Align to 4 bytes */
   priv->local_data_rowstride = (priv->local_data_width * bpp + 3) & ~3;
 
-  /* Store the filter quality and max_tile_waste from the texture
-     properties so that they will be restored the data is loaded
-     again */
-  priv->max_tile_waste = clutter_texture_get_max_tile_waste (texture);
+  /* Store the filter quality from the texture properties so that
+   * they will be restored the data is loaded again
+   */
   priv->filter_quality = clutter_texture_get_filter_quality (texture);
 
   priv->local_data = g_malloc (priv->local_data_rowstride
@@ -1478,10 +1465,9 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
   gint min_filter, mag_filter;
-  gint max_waste = -1;
 
-  if (!priv->no_slice)
-    max_waste = priv->max_tile_waste;
+  if (priv->no_slice)
+    flags |= COGL_TEXTURE_NO_SLICING;
 
   if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
     flags |= COGL_TEXTURE_AUTO_MIPMAP;
@@ -1491,7 +1477,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
    */
 
   new_texture = cogl_texture_new_from_data (width, height,
-                                            max_waste, flags,
+                                            flags,
                                             source_format,
                                             COGL_PIXEL_FORMAT_ANY,
                                             rowstride,
@@ -1669,20 +1655,19 @@ clutter_texture_async_load_complete (ClutterTexture *self,
   ClutterTexturePrivate *priv = self->priv;
   CoglHandle handle;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
-  gint waste = -1;
 
   priv->async_data = NULL;
 
   if (error == NULL)
     {
-      if (!priv->no_slice)
-        waste = priv->max_tile_waste;
+      if (priv->no_slice)
+        flags |= COGL_TEXTURE_NO_SLICING;
 
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
       handle = cogl_texture_new_from_bitmap (bitmap,
-                                             waste, flags,
+                                             flags,
                                              COGL_PIXEL_FORMAT_ANY);
       clutter_texture_set_cogl_texture (self, handle);
       if (priv->load_size_async)
@@ -1915,7 +1900,6 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   GError *internal_error = NULL;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
   gint min_filter, mag_filter;
-  gint max_waste = -1;
 
   priv = texture->priv;
 
@@ -1924,14 +1908,14 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   if (priv->load_data_async)
     return clutter_texture_async_load (texture, filename, error);
 
-  if (!priv->no_slice)
-    max_waste = priv->max_tile_waste;
+  if (priv->no_slice)
+    flags |= COGL_TEXTURE_NO_SLICING;
 
   if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
     flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
   new_texture = cogl_texture_new_from_file (filename,
-                                            max_waste, flags,
+                                            flags,
                                             COGL_PIXEL_FORMAT_ANY,
                                             &internal_error);
   if (new_texture == COGL_INVALID_HANDLE)
@@ -2048,40 +2032,6 @@ clutter_texture_get_filter_quality (ClutterTexture *texture)
 }
 
 /**
- * clutter_texture_set_max_tile_waste
- * @texture: A #ClutterTexture
- * @max_tile_waste: Maximum amount of waste in pixels or -1
- *
- * Sets the maximum number of pixels in either axis that can be wasted
- * for an individual texture slice. If -1 is specified then the
- * texture is forced not to be sliced and the texture creation will
- * fail if the hardware can't create a texture large enough.
- *
- * The value is only used when first creating a texture so changing it
- * after the texture data has been set has no effect.
- *
- * Since: 0.8
- */
-void
-clutter_texture_set_max_tile_waste (ClutterTexture *texture,
-				    gint            max_tile_waste)
-{
-  ClutterTexturePrivate *priv;
-  CoglHandle cogl_texture;
-
-  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
-
-  priv = texture->priv;
-  cogl_texture = clutter_texture_get_cogl_texture (texture);
-
-  /* There's no point in changing the max_tile_waste if the texture
-     has already been created because it will be overridden with the
-     value from the texture handle */
-  if (cogl_texture == COGL_INVALID_HANDLE)
-    priv->max_tile_waste = max_tile_waste;
-}
-
-/**
  * clutter_texture_get_max_tile_waste
  * @texture: A #ClutterTexture
  *
@@ -2089,7 +2039,7 @@ clutter_texture_set_max_tile_waste (ClutterTexture *texture,
  * -1 if slicing is disabled.
  *
  * Return value: The maximum waste or -1 if the texture waste is
- * unlimited.
+ *   unlimited.
  *
  * Since: 0.8
  */
@@ -2102,13 +2052,12 @@ clutter_texture_get_max_tile_waste (ClutterTexture *texture)
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), 0);
 
   priv = texture->priv;
+
   cogl_texture = clutter_texture_get_cogl_texture (texture);
 
   if (cogl_texture == COGL_INVALID_HANDLE)
-    return texture->priv->max_tile_waste;
+    return priv->no_slice ? -1 : COGL_TEXTURE_MAX_WASTE;
   else
-    /* If we have a valid texture handle then use the value from that
-       instead */
     return cogl_texture_get_max_waste (cogl_texture);
 }
 
@@ -2312,12 +2261,13 @@ on_fbo_source_size_change (GObject          *object,
       priv->width = w;
       priv->height = h;
 
+      flags |= COGL_TEXTURE_NO_SLICING;
+
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
       tex = cogl_texture_new_with_size (MAX (priv->width, 1),
                                         MAX (priv->height, 1),
-                                        -1,
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888);
 

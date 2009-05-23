@@ -297,7 +297,7 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
 	  texture->texture =
             cogl_texture_new_from_data (texture->texture_size,
                                         texture->texture_size,
-                                        32, flags,
+                                        flags,
                                         COGL_PIXEL_FORMAT_A_8,
                                         COGL_PIXEL_FORMAT_A_8,
                                         texture->texture_size,

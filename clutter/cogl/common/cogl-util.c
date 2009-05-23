@@ -223,6 +223,7 @@ cogl_texture_flags_get_type (void)
       static const GFlagsValue values[] = {
         { COGL_TEXTURE_NONE, "COGL_TEXTURE_NONE", "none" },
         { COGL_TEXTURE_AUTO_MIPMAP, "COGL_TEXTURE_AUTO_MIPMAP", "auto-mipmap" },
+        { COGL_TEXTURE_NO_SLICING, "COGL_TEXTURE_NO_SLICING", "no-slicing" },
         { 0, NULL, NULL }
       };
 

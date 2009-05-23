@@ -248,7 +248,7 @@ test_coglbox_init (TestCoglbox *self)
   priv->use_sliced = FALSE;
 
   priv->sliced_tex =
-    cogl_texture_new_from_file  ("redhand.png", 10,
+    cogl_texture_new_from_file  ("redhand.png",
                                  COGL_TEXTURE_NONE,
                                  COGL_PIXEL_FORMAT_ANY,
                                  &error);
@@ -265,8 +265,8 @@ test_coglbox_init (TestCoglbox *self)
     }
 
   priv->not_sliced_tex =
-    cogl_texture_new_from_file ("redhand.png", -1,
-                                COGL_TEXTURE_NONE,
+    cogl_texture_new_from_file ("redhand.png",
+                                COGL_TEXTURE_NO_SLICING,
                                 COGL_PIXEL_FORMAT_ANY,
                                 &error);
   if (priv->not_sliced_tex == COGL_INVALID_HANDLE)

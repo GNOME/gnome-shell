@@ -41,12 +41,12 @@ G_BEGIN_DECLS
  * loading and manipulating textures.
  */
 
+#define COGL_TEXTURE_MAX_WASTE  127
+
 /**
  * cogl_texture_new_with_size:
  * @width: width of texture in pixels.
  * @height: height of texture in pixels.
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  *    texture.
@@ -60,15 +60,12 @@ G_BEGIN_DECLS
  */
 CoglHandle      cogl_texture_new_with_size    (guint            width,
                                                guint            height,
-                                               gint             max_waste,
                                                CoglTextureFlags flags,
                                                CoglPixelFormat  internal_format);
 
 /**
  * cogl_texture_new_from_file:
  * @filename: the file to load
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  *    texture
@@ -82,7 +79,6 @@ CoglHandle      cogl_texture_new_with_size    (guint            width,
  * Since: 0.8
  */
 CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
-                                               gint               max_waste,
                                                CoglTextureFlags   flags,
                                                CoglPixelFormat    internal_format,
                                                GError           **error);
@@ -91,8 +87,6 @@ CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
  * cogl_texture_new_from_data:
  * @width: width of texture in pixels
  * @height: height of texture in pixels
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
  * @internal_format: the #CoglPixelFormat that will be used for storing
@@ -110,7 +104,6 @@ CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
  */
 CoglHandle      cogl_texture_new_from_data    (guint             width,
                                                guint             height,
-                                               gint              max_waste,
                                                CoglTextureFlags  flags,
                                                CoglPixelFormat   format,
                                                CoglPixelFormat   internal_format,
@@ -136,19 +129,17 @@ CoglHandle      cogl_texture_new_from_data    (guint             width,
  *
  * Since: 0.8
  */
-CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
-                                               GLenum              gl_target,
-                                               GLuint              width,
-                                               GLuint              height,
-                                               GLuint              x_pot_waste,
-                                               GLuint              y_pot_waste,
-                                               CoglPixelFormat     format);
+CoglHandle      cogl_texture_new_from_foreign (GLuint          gl_handle,
+                                               GLenum          gl_target,
+                                               GLuint          width,
+                                               GLuint          height,
+                                               GLuint          x_pot_waste,
+                                               GLuint          y_pot_waste,
+                                               CoglPixelFormat format);
 
 /**
  * cogl_texture_new_from_bitmap:
  * @bmp_handle: A CoglBitmap handle
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  * texture
@@ -160,10 +151,9 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
  *
  * Since: 1.0
  */
-CoglHandle      cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
-                                              gint              max_waste,
-                                              CoglTextureFlags  flags,
-                                              CoglPixelFormat   internal_format);
+CoglHandle      cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
+                                              CoglTextureFlags flags,
+                                              CoglPixelFormat  internal_format);
 
 /**
  * cogl_is_texture:

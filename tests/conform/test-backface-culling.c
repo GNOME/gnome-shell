@@ -11,20 +11,23 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 /* Size the texture so that it is just off a power of two to enourage
    it so use software tiling when NPOTs aren't available */
-#define TEXTURE_SIZE 33
+#define TEXTURE_SIZE        257
 
 #else /* CLUTTER_COGL_HAS_GL */
 
 /* We can't use the funny-sized texture on GL ES because it will break
    cogl_texture_polygon. However there is only one code path for
    rendering quads so there is no need */
-#define TEXTURE_SIZE 32
+#define TEXTURE_SIZE        32
 
 #endif /* CLUTTER_COGL_HAS_GL */
 
 /* Amount of pixels to skip off the top, bottom, left and right of the
    texture when reading back the stage */
-#define TEST_INSET   4
+#define TEST_INSET          4
+
+/* Size to actually render the texture at */
+#define TEXTURE_RENDER_SIZE 32
 
 typedef struct _TestState
 {
@@ -42,15 +45,15 @@ validate_part (int xnum, int ynum, gboolean shown)
   /* Read the appropriate part but skip out a few pixels around the
      edges */
   pixels = clutter_stage_read_pixels (CLUTTER_STAGE (stage),
-                                      xnum * TEXTURE_SIZE + TEST_INSET,
-                                      ynum * TEXTURE_SIZE + TEST_INSET,
-                                      TEXTURE_SIZE - TEST_INSET * 2,
-                                      TEXTURE_SIZE - TEST_INSET * 2);
+                                      xnum * TEXTURE_RENDER_SIZE + TEST_INSET,
+                                      ynum * TEXTURE_RENDER_SIZE + TEST_INSET,
+                                      TEXTURE_RENDER_SIZE - TEST_INSET * 2,
+                                      TEXTURE_RENDER_SIZE - TEST_INSET * 2);
 
   /* Make sure every pixels is the appropriate color */
   for (p = pixels;
-       p < pixels + ((TEXTURE_SIZE - TEST_INSET * 2)
-                     * (TEXTURE_SIZE - TEST_INSET * 2));
+       p < pixels + ((TEXTURE_RENDER_SIZE - TEST_INSET * 2)
+                     * (TEXTURE_RENDER_SIZE - TEST_INSET * 2));
        p += 4)
     {
       if (p[0] != (shown ? 255 : 0))
@@ -114,7 +117,7 @@ on_paint (ClutterActor *actor, TestState *state)
      the first */
   for (i = 0; i < 2; i++)
     {
-      float x1 = 0, x2, y1 = 0, y2 = (float)(TEXTURE_SIZE);
+      float x1 = 0, x2, y1 = 0, y2 = (float)(TEXTURE_RENDER_SIZE);
       CoglTextureVertex verts[4];
 
       memset (verts, 0, sizeof (verts));
@@ -124,21 +127,21 @@ on_paint (ClutterActor *actor, TestState *state)
       cogl_set_source_color4f (1.0, 1.0,
                                1.0, 1.0);
 
-      x2 = x1 + (float)(TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
 
       /* Draw a front-facing texture */
       cogl_set_source_texture (state->texture);
       cogl_rectangle (x1, y1, x2, y2);
 
       x1 = x2;
-      x2 = x1 + (float)(TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
 
       /* Draw a back-facing texture */
       cogl_set_source_texture (state->texture);
       cogl_rectangle (x2, y1, x1, y2);
 
       x1 = x2;
-      x2 = x1 + (float)(TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
 
       /* Draw a front-facing texture polygon */
       verts[0].x = x1;    verts[0].y = y2;
@@ -153,7 +156,7 @@ on_paint (ClutterActor *actor, TestState *state)
       cogl_polygon (verts, 4, FALSE);
 
       x1 = x2;
-      x2 = x1 + (float)(TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
 
       /* Draw a back-facing texture polygon */
       verts[0].x = x1;    verts[0].y = y1;
@@ -168,7 +171,7 @@ on_paint (ClutterActor *actor, TestState *state)
       cogl_polygon (verts, 4, FALSE);
 
       x1 = x2;
-      x2 = x1 + (float)(TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
 
       /* Draw a regular rectangle (this should always show) */
       cogl_set_source_color4f (1.0, 0, 0, 1.0);
@@ -176,7 +179,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
       /* The second time round draw beneath the first with backface
          culling disabled */
-      cogl_translate (0, TEXTURE_SIZE, 0);
+      cogl_translate (0, TEXTURE_RENDER_SIZE, 0);
       cogl_enable_backface_culling (FALSE);
     }
 
@@ -221,7 +224,6 @@ make_texture (void)
 
   tex = cogl_texture_new_from_data (TEXTURE_SIZE,
                                     TEXTURE_SIZE,
-                                    8,
                                     COGL_TEXTURE_NONE,
                                     COGL_PIXEL_FORMAT_RGBA_8888,
                                     COGL_PIXEL_FORMAT_ANY,

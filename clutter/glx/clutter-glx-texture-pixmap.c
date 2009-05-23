@@ -360,7 +360,7 @@ create_cogl_texture (ClutterTexture *texture,
     {
       handle
         = cogl_texture_new_with_size (width, height,
-                                      -1, FALSE,
+                                      COGL_TEXTURE_NO_SLICING,
                                       cogl_format | COGL_BGR_BIT);
 
       using_rectangle = FALSE;

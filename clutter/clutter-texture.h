@@ -202,9 +202,6 @@ void                  clutter_texture_get_base_size         (ClutterTexture     
 void                  clutter_texture_set_filter_quality    (ClutterTexture         *texture,
                                                              ClutterTextureQuality   filter_quality);
 ClutterTextureQuality clutter_texture_get_filter_quality    (ClutterTexture         *texture);
-void                  clutter_texture_set_max_tile_waste    (ClutterTexture         *texture,
-                                                             gint                    max_tile_waste);
-gint                  clutter_texture_get_max_tile_waste    (ClutterTexture         *texture);
 CoglHandle            clutter_texture_get_cogl_texture      (ClutterTexture         *texture);
 void                  clutter_texture_set_cogl_texture      (ClutterTexture         *texture,
                                                              CoglHandle              cogl_tex);
@@ -221,6 +218,7 @@ void                  clutter_texture_get_repeat            (ClutterTexture     
                                                              gboolean               *repeat_x,
                                                              gboolean               *repeat_y);
 CoglPixelFormat       clutter_texture_get_pixel_format      (ClutterTexture         *texture);
+gint                  clutter_texture_get_max_tile_waste    (ClutterTexture         *texture);
 void                  clutter_texture_set_keep_aspect_ratio (ClutterTexture         *texture,
                                                              gboolean                keep_aspect);
 gboolean              clutter_texture_get_keep_aspect_ratio (ClutterTexture         *texture);

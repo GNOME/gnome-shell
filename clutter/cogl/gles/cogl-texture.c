@@ -858,7 +858,8 @@ _cogl_pot_slices_for_size (gint     size_to_fill,
   span.waste = 0;
 
   /* Fix invalid max_waste */
-  if (max_waste < 0) max_waste = 0;
+  if (max_waste < 0)
+    max_waste = 0;
 
   while (TRUE)
     {
@@ -866,7 +867,9 @@ _cogl_pot_slices_for_size (gint     size_to_fill,
       if (size_to_fill > span.size)
 	{
 	  /* Not yet - add a span of this size */
-	  if (out_spans) g_array_append_val (out_spans, span);
+	  if (out_spans)
+            g_array_append_val (out_spans, span);
+
 	  span.start   += span.size;
 	  size_to_fill -= span.size;
 	  n_spans++;
@@ -875,7 +878,9 @@ _cogl_pot_slices_for_size (gint     size_to_fill,
 	{
 	  /* Yes and waste is small enough */
 	  span.waste = span.size - size_to_fill;
-	  if (out_spans) g_array_append_val (out_spans, span);
+	  if (out_spans)
+            g_array_append_val (out_spans, span);
+
 	  return ++n_spans;
 	}
       else
@@ -971,10 +976,10 @@ _cogl_texture_slices_create (CoglTexture *tex)
 
       /* Check if size supported else bail out */
       if (!_cogl_texture_size_supported (tex->gl_target,
-					tex->gl_format,
-					tex->gl_type,
-					max_width,
-					max_height))
+                                         tex->gl_format,
+                                         tex->gl_type,
+                                         max_width,
+                                         max_height))
 	{
 	  return FALSE;
 	}
@@ -1288,11 +1293,10 @@ _cogl_texture_free (CoglTexture *tex)
 }
 
 CoglHandle
-cogl_texture_new_with_size (guint             width,
-			    guint             height,
-			    gint              max_waste,
-                            CoglTextureFlags  flags,
-			    CoglPixelFormat   internal_format)
+cogl_texture_new_with_size (guint            width,
+			    guint            height,
+                            CoglTextureFlags flags,
+			    CoglPixelFormat  internal_format)
 {
   CoglTexture *tex;
   gint         bpp;
@@ -1323,7 +1327,11 @@ cogl_texture_new_with_size (guint             width,
   tex->slice_y_spans = NULL;
   tex->slice_gl_handles = NULL;
 
-  tex->max_waste = max_waste;
+  if (flags & COGL_TEXTURE_NO_SLICING)
+    tex->max_waste = -1;
+  else
+    tex->max_waste = COGL_TEXTURE_MAX_WASTE;
+
   tex->min_filter = CGL_NEAREST;
   tex->mag_filter = CGL_NEAREST;
 
@@ -1347,7 +1355,6 @@ cogl_texture_new_with_size (guint             width,
 CoglHandle
 cogl_texture_new_from_data (guint             width,
 			    guint             height,
-			    gint              max_waste,
                             CoglTextureFlags  flags,
 			    CoglPixelFormat   format,
 			    CoglPixelFormat   internal_format,
@@ -1384,7 +1391,11 @@ cogl_texture_new_from_data (guint             width,
   tex->slice_y_spans = NULL;
   tex->slice_gl_handles = NULL;
 
-  tex->max_waste = max_waste;
+  if (flags & COGL_TEXTURE_NO_SLICING)
+    tex->max_waste = -1;
+  else
+    tex->max_waste = COGL_TEXTURE_MAX_WASTE;
+
   tex->min_filter = CGL_NEAREST;
   tex->mag_filter = CGL_NEAREST;
 
@@ -1417,10 +1428,9 @@ cogl_texture_new_from_data (guint             width,
 }
 
 CoglHandle
-cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
-                              gint              max_waste,
-                              CoglTextureFlags  flags,
-                              CoglPixelFormat   internal_format)
+cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
+                              CoglTextureFlags flags,
+                              CoglPixelFormat  internal_format)
 {
   CoglTexture *tex;
   CoglBitmap *bmp = (CoglBitmap *)bmp_handle;
@@ -1439,7 +1449,11 @@ cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
   tex->slice_y_spans = NULL;
   tex->slice_gl_handles = NULL;
 
-  tex->max_waste = max_waste;
+  if (flags & COGL_TEXTURE_NO_SLICING)
+    tex->max_waste = -1;
+  else
+    tex->max_waste = COGL_TEXTURE_MAX_WASTE;
+
   tex->min_filter = CGL_NEAREST;
   tex->mag_filter = CGL_NEAREST;
 
@@ -1476,7 +1490,6 @@ cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
 
 CoglHandle
 cogl_texture_new_from_file (const gchar       *filename,
-                            gint               max_waste,
                             CoglTextureFlags   flags,
                             CoglPixelFormat    internal_format,
                             GError           **error)
@@ -1490,10 +1503,7 @@ cogl_texture_new_from_file (const gchar       *filename,
   if (bmp == COGL_INVALID_HANDLE)
     return COGL_INVALID_HANDLE;
 
-  handle = cogl_texture_new_from_bitmap (bmp,
-                                         max_waste,
-                                         flags,
-                                         internal_format);
+  handle = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
   cogl_handle_unref (bmp);
 
   return handle;
