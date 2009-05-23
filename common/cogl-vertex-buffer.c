@@ -136,6 +136,7 @@
 #include "cogl-handle.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-material-private.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
@@ -1638,14 +1639,14 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
         }
     }
 
-  cogl_material_flush_gl_state (ctx->source_material,
-                                COGL_MATERIAL_FLUSH_FALLBACK_MASK,
-                                fallback_mask,
-                                COGL_MATERIAL_FLUSH_DISABLE_MASK,
-                                disable_mask,
-                                NULL);
+  _cogl_material_flush_gl_state (ctx->source_material,
+                                 COGL_MATERIAL_FLUSH_FALLBACK_MASK,
+                                 fallback_mask,
+                                 COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                 disable_mask,
+                                 NULL);
 
-  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;

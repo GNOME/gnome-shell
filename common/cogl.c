@@ -42,6 +42,7 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
+#include "cogl-material-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -375,7 +376,7 @@ _cogl_add_stencil_clip (float x_offset,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+  _cogl_material_flush_gl_state (ctx->stencil_material, NULL);
 
   if (first)
     {
