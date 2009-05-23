@@ -20,7 +20,8 @@ Chrome.prototype = {
     _init: function() {
         let global = Shell.Global.get();
 
-        this.actor = new Clutter.Group();
+        // The group itself has zero size so it doesn't interfere with DND
+        this.actor = new Clutter.Group({ width: 0, height: 0 });
         global.stage.add_actor(this.actor);
         this.nonOverlayActor = new Clutter.Group();
         this.actor.add_actor(this.nonOverlayActor);
