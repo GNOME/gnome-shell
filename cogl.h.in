@@ -628,7 +628,12 @@ void            cogl_push_draw_buffer         (void);
  */
 void            cogl_pop_draw_buffer          (void);
 
-/**
+/* XXX: Removed before we release Clutter 1.0 since the implementation
+ * wasn't complete, and so we assume no one is using this yet. Util we
+ * have some one with a good usecase, we can't pretend to support breaking
+ * out into raw OpenGL. */
+#if 0
+/*
  * cogl_flush_gl_state:
  * @flags: flags controlling what is flushed; currently unused, pass in 0
  *
@@ -642,6 +647,7 @@ void            cogl_pop_draw_buffer          (void);
  * Since: 1.0
  */
 void            cogl_flush_gl_state         (int      flags);
+#endif
 
 /* private */
 void            _cogl_set_indirect_context  (gboolean indirect);

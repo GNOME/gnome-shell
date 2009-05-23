@@ -654,9 +654,11 @@ cogl_disable_fog (void)
   glDisable (GL_FOG);
 }
 
+#if 0
 void
 cogl_flush_gl_state (int flags)
 {
   _cogl_current_matrix_state_flush ();
 }
+#endif
 
