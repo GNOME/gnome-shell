@@ -500,8 +500,8 @@ arg_to_gl_blend_factor (CoglBlendStringArgument *arg)
 void
 setup_blend_state (CoglBlendStringStatement *statement,
                    GLenum *blend_equation,
-                   CoglMaterialBlendFactor *blend_src_factor,
-                   CoglMaterialBlendFactor *blend_dst_factor)
+                   GLint *blend_src_factor,
+                   GLint *blend_dst_factor)
 {
 #ifndef HAVE_COGL_GLES
   switch (statement->function->type)
@@ -600,26 +600,6 @@ cogl_material_set_blend_constant (CoglHandle handle,
 #endif
 }
 
-void
-cogl_material_set_blend_factors (CoglHandle handle,
-				 CoglMaterialBlendFactor src_factor,
-				 CoglMaterialBlendFactor dst_factor)
-{
-  CoglMaterial *material;
-
-  g_return_if_fail (cogl_is_material (handle));
-
-  material = _cogl_material_pointer_from_handle (handle);
-  material->blend_src_factor_rgb = src_factor;
-  material->blend_dst_factor_rgb = dst_factor;
-#ifndef HAVE_COGL_GLES
-  material->blend_src_factor_alpha = src_factor;
-  material->blend_dst_factor_alpha = dst_factor;
-#endif
-
-  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
-}
-
 /* Asserts that a layer corresponding to the given index exists. If no
  * match is found, then a new empty layer is added.
  */
@@ -659,21 +639,16 @@ _cogl_material_get_layer (CoglMaterial *material,
 
   /* Choose the same default combine mode as OpenGL:
    * MODULATE(PREVIOUS[RGBA],TEXTURE[RGBA]) */
-  layer->texture_combine_rgb_func = COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE;
-  layer->texture_combine_rgb_src[0] = COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS;
-  layer->texture_combine_rgb_src[1] = COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE;
-  layer->texture_combine_rgb_op[0] = COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR;
-  layer->texture_combine_rgb_op[1] = COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR;
-  layer->texture_combine_alpha_func =
-    COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE;
-  layer->texture_combine_alpha_src[0] =
-    COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS;
-  layer->texture_combine_alpha_src[1] =
-    COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE;
-  layer->texture_combine_alpha_op[0] =
-    COGL_MATERIAL_LAYER_COMBINE_OP_SRC_ALPHA;
-  layer->texture_combine_alpha_op[1] =
-    COGL_MATERIAL_LAYER_COMBINE_OP_SRC_ALPHA;
+  layer->texture_combine_rgb_func = GL_MODULATE;
+  layer->texture_combine_rgb_src[0] = GL_PREVIOUS;
+  layer->texture_combine_rgb_src[1] = GL_TEXTURE;
+  layer->texture_combine_rgb_op[0] = GL_SRC_COLOR;
+  layer->texture_combine_rgb_op[1] = GL_SRC_COLOR;
+  layer->texture_combine_alpha_func = GL_MODULATE;
+  layer->texture_combine_alpha_src[0] = GL_PREVIOUS;
+  layer->texture_combine_alpha_src[1] = GL_TEXTURE;
+  layer->texture_combine_alpha_op[0] = GL_SRC_ALPHA;
+  layer->texture_combine_alpha_op[1] = GL_SRC_ALPHA;
 
   cogl_matrix_init_identity (&layer->matrix);
 
@@ -728,9 +703,9 @@ cogl_material_set_layer (CoglHandle material_handle,
 
 static void
 setup_texture_combine_state (CoglBlendStringStatement *statement,
-                             CoglMaterialLayerCombineFunc *texture_combine_func,
-                             CoglMaterialLayerCombineSrc *texture_combine_src,
-                             CoglMaterialLayerCombineOp *texture_combine_op)
+                             GLint *texture_combine_func,
+                             GLint *texture_combine_src,
+                             GLint *texture_combine_op)
 {
   int i;
 
@@ -890,109 +865,6 @@ cogl_material_set_layer_combine_constant (CoglHandle handle,
 }
 
 void
-cogl_material_set_layer_combine_function (
-				  CoglHandle handle,
-				  gint layer_index,
-				  CoglMaterialLayerCombineChannels channels,
-				  CoglMaterialLayerCombineFunc func)
-{
-  CoglMaterial *material;
-  CoglMaterialLayer *layer;
-  gboolean set_alpha_func = FALSE;
-  gboolean set_rgb_func = FALSE;
-
-  g_return_if_fail (cogl_is_material (handle));
-
-  material = _cogl_material_pointer_from_handle (handle);
-  layer = _cogl_material_get_layer (material, layer_index, TRUE);
-
-  if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
-    set_alpha_func = set_rgb_func = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB)
-    set_rgb_func = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
-    set_alpha_func = TRUE;
-
-  if (set_rgb_func)
-    layer->texture_combine_rgb_func = func;
-  if (set_alpha_func)
-    layer->texture_combine_alpha_func = func;
-
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
-}
-
-void
-cogl_material_set_layer_combine_arg_src (
-				  CoglHandle handle,
-				  gint layer_index,
-				  gint argument,
-				  CoglMaterialLayerCombineChannels channels,
-				  CoglMaterialLayerCombineSrc src)
-{
-  CoglMaterial	    *material;
-  CoglMaterialLayer *layer;
-  gboolean           set_arg_alpha_src = FALSE;
-  gboolean           set_arg_rgb_src = FALSE;
-
-  g_return_if_fail (cogl_is_material (handle));
-  g_return_if_fail (argument >=0 && argument <= 3);
-
-  material = _cogl_material_pointer_from_handle (handle);
-  layer = _cogl_material_get_layer (material, layer_index, TRUE);
-
-  if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
-    set_arg_alpha_src = set_arg_rgb_src = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB)
-    set_arg_rgb_src = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
-    set_arg_alpha_src = TRUE;
-
-  if (set_arg_rgb_src)
-    layer->texture_combine_rgb_src[argument] = src;
-  if (set_arg_alpha_src)
-    layer->texture_combine_alpha_src[argument] = src;
-
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
-}
-
-void
-cogl_material_set_layer_combine_arg_op (
-				    CoglHandle material_handle,
-				    gint layer_index,
-				    gint argument,
-				    CoglMaterialLayerCombineChannels channels,
-				    CoglMaterialLayerCombineOp op)
-{
-  CoglMaterial *material;
-  CoglMaterialLayer *layer;
-  gboolean set_arg_alpha_op = FALSE;
-  gboolean set_arg_rgb_op = FALSE;
-
-  g_return_if_fail (cogl_is_material (material_handle));
-  g_return_if_fail (argument >=0 && argument <= 3);
-
-  material = _cogl_material_pointer_from_handle (material_handle);
-  layer = _cogl_material_get_layer (material, layer_index, TRUE);
-
-  if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
-    set_arg_alpha_op = set_arg_rgb_op = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB)
-    set_arg_rgb_op = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
-    set_arg_alpha_op = TRUE;
-
-  if (set_arg_rgb_op)
-    layer->texture_combine_rgb_op[argument] = op;
-  if (set_arg_alpha_op)
-    layer->texture_combine_alpha_op[argument] = op;
-
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
-}
-
-void
 cogl_material_set_layer_matrix (CoglHandle material_handle,
 				gint layer_index,
 				CoglMatrix *matrix)
@@ -1119,20 +991,20 @@ cogl_material_layer_get_flags (CoglHandle layer_handle)
 }
 
 static guint
-get_n_args_for_combine_func (CoglMaterialLayerCombineFunc func)
+get_n_args_for_combine_func (GLint func)
 {
   switch (func)
     {
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE:
+    case GL_REPLACE:
       return 1;
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD_SIGNED:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_SUBTRACT:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGB:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGBA:
+    case GL_MODULATE:
+    case GL_ADD:
+    case GL_ADD_SIGNED:
+    case GL_SUBTRACT:
+    case GL_DOT3_RGB:
+    case GL_DOT3_RGBA:
       return 2;
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_INTERPOLATE:
+    case GL_INTERPOLATE:
       return 3;
     }
   return 0;

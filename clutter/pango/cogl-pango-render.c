@@ -136,25 +136,11 @@ cogl_pango_renderer_init (CoglPangoRenderer *priv)
    * RGB channels are defined as (0, 0, 0) we don't want to modulate the RGB
    * channels, instead we want to simply replace them with our solid font
    * color...
-   *
-   * XXX: we could really do with a neat string based way for describing
-   * combine modes, like: "REPLACE(PREVIOUS[RGB])"
-   * XXX: potentially materials could have a fuzzy default combine mode
-   * such that they default to this for component alpha textures? This would
-   * give the same semantics as the old-style GL_MODULATE mode but sounds a
-   * bit hacky.
    */
-  cogl_material_set_layer_combine_function (
-                                    priv->glyph_material,
-                                    0, /* layer */
-                                    COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-                                    COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE);
-  cogl_material_set_layer_combine_arg_src (
-                                    priv->glyph_material,
-                                    0, /* layer */
-                                    0, /* arg */
-                                    COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-                                    COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
+  cogl_material_set_layer_combine (priv->glyph_material, 0, /* layer */
+                                   "RGB = REPLACE (PREVIOUS)"
+                                   "A = MODULATE (PREVIOUS, TEXTURE)",
+                                   NULL);
 
   priv->solid_material = cogl_material_new ();
 
