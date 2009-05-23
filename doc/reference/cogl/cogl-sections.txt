@@ -359,6 +359,9 @@ cogl_material_remove_layer
 cogl_material_set_layer_combine
 cogl_material_set_layer_combine_constant
 cogl_material_set_layer_matrix
+cogl_material_get_layers
+cogl_material_layer_get_type
+cogl_material_layer_get_texture
 <SUBSECTION Private>
 CoglMaterial
 CoglMaterialFlags

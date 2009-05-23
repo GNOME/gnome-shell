@@ -921,7 +921,7 @@ cogl_material_remove_layer (CoglHandle material_handle,
 /* XXX: This API is hopfully just a stop-gap solution. Ideally cogl_enable
  * will be replaced. */
 gulong
-cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
+_cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
 {
   CoglMaterial	*material;
   gulong	 enable_flags = 0;
@@ -979,7 +979,7 @@ cogl_material_layer_get_texture (CoglHandle layer_handle)
 }
 
 gulong
-cogl_material_layer_get_flags (CoglHandle layer_handle)
+_cogl_material_layer_get_flags (CoglHandle layer_handle)
 {
   CoglMaterialLayer *layer;
 
@@ -1393,7 +1393,7 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material)
 }
 
 void
-cogl_material_flush_gl_state (CoglHandle handle, ...)
+_cogl_material_flush_gl_state (CoglHandle handle, ...)
 {
   CoglMaterial           *material;
   va_list                 ap;

@@ -124,9 +124,9 @@ cogl_create_context ()
                                 default_texture_data);
 
   cogl_set_source (_context->default_material);
-  cogl_material_flush_gl_state (_context->source_material, NULL);
+  _cogl_material_flush_gl_state (_context->source_material, NULL);
   enable_flags =
-    cogl_material_get_cogl_enable_flags (_context->source_material);
+    _cogl_material_get_cogl_enable_flags (_context->source_material);
   cogl_enable (enable_flags);
 
   return TRUE;

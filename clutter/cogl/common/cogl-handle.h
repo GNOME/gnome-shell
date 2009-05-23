@@ -82,7 +82,7 @@ typedef struct _CoglHandleObject
 static CoglHandleClass _cogl_##type_name##_class;               \
 								\
 static GQuark                                                   \
-_cogl_##type_name##_get_type (void)                             \
+_cogl_handle_##type_name##_get_type (void)                      \
 {                                                               \
   static GQuark type = 0;                                       \
   if (!type)                                                    \
@@ -99,13 +99,13 @@ _cogl_##type_name##_handle_new (Cogl##TypeName *new_obj)	\
   obj->klass = &_cogl_##type_name##_class;                      \
   if (!obj->klass->type)                                        \
     {                                                           \
-      obj->klass->type = _cogl_##type_name##_get_type ();       \
-        obj->klass->virt_free = _cogl_##type_name##_free;       \
-      }                                                         \
+      obj->klass->type = _cogl_handle_##type_name##_get_type ();\
+      obj->klass->virt_free = _cogl_##type_name##_free;         \
+    }                                                           \
 								\
-    _COGL_HANDLE_DEBUG_NEW (TypeName, obj);                     \
-    return (CoglHandle) new_obj;			        \
-  }								\
+  _COGL_HANDLE_DEBUG_NEW (TypeName, obj);                       \
+  return (CoglHandle) new_obj;			                \
+}								\
 								\
 Cogl##TypeName *						\
 _cogl_##type_name##_pointer_from_handle (CoglHandle handle)	\
@@ -121,7 +121,8 @@ cogl_is_##type_name (CoglHandle handle)			        \
   if (handle == COGL_INVALID_HANDLE)                            \
     return FALSE;                                               \
                                                                 \
-  return (obj->klass->type == _cogl_##type_name##_get_type ()); \
+  return (obj->klass->type ==                                   \
+          _cogl_handle_##type_name##_get_type ());              \
 }								\
 								\
 CoglHandle G_GNUC_DEPRECATED					\

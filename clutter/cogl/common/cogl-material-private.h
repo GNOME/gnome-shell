@@ -129,5 +129,91 @@ struct _CoglMaterial
   GList	   *layers;
 };
 
+/*
+ * SECTION:cogl-material-internals
+ * @short_description: Functions for creating custom primitives that make use
+ *                     of Cogl materials for filling.
+ *
+ * Normally you shouldn't need to use this API directly, but if you need to
+ * developing a custom/specialised primitive - probably using raw OpenGL - then
+ * this API aims to expose enough of the material internals to support being
+ * able to fill your geometry according to a given Cogl material.
+ */
+
+
+/*
+ * cogl_material_get_cogl_enable_flags:
+ * @material: A CoglMaterial object
+ *
+ * This determines what flags need to be passed to cogl_enable before this
+ * material can be used. Normally you shouldn't need to use this function
+ * directly since Cogl will do this internally, but if you are developing
+ * custom primitives directly with OpenGL you may want to use this.
+ *
+ * Note: This API is hopfully just a stop-gap solution. Ideally cogl_enable
+ * will be replaced.
+ */
+/* TODO: find a nicer solution! */
+gulong _cogl_material_get_cogl_enable_flags (CoglHandle handle);
+
+/*
+ * CoglMaterialLayerFlags:
+ * @COGL_MATERIAL_LAYER_FLAG_USER_MATRIX: Means the user has supplied a
+ *                                        custom texture matrix.
+ */
+typedef enum _CoglMaterialLayerFlags
+{
+  COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX	= 1L<<0
+} CoglMaterialLayerFlags;
+/* XXX: NB: if you add flags here you will need to update
+ * CoglMaterialLayerPrivFlags!!! */
+
+/*
+ * cogl_material_layer_get_flags:
+ * @layer_handle: A CoglMaterialLayer layer handle
+ *
+ * This lets you get a number of flag attributes about the layer.  Normally
+ * you shouldn't need to use this function directly since Cogl will do this
+ * internally, but if you are developing custom primitives directly with
+ * OpenGL you may need this.
+ */
+gulong _cogl_material_layer_get_flags (CoglHandle layer_handle);
+
+/*
+ * CoglMaterialFlushOption:
+ * @COGL_MATERIAL_FLUSH_FALLBACK_MASK: Follow this by a guin32 mask
+ *      of the layers that can't be supported with the user supplied texture
+ *      and need to be replaced with fallback textures. (1 = fallback, and the
+ *      least significant bit = layer 0)
+ * @COGL_MATERIAL_FLUSH_DISABLE_MASK: Follow this by a guint32 mask
+ *      of the layers that you want to completly disable texturing for
+ *      (1 = fallback, and the least significant bit = layer 0)
+ * @COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE: Follow this by a GLuint OpenGL texture
+ *      name to override the texture used for layer 0 of the material. This is
+ *      intended for dealing with sliced textures where you will need to point
+ *      to each of the texture slices in turn when drawing your geometry.
+ *      Passing a value of 0 is the same as not passing the option at all.
+ */
+typedef enum _CoglMaterialFlushOption
+{
+  COGL_MATERIAL_FLUSH_FALLBACK_MASK = 1,
+  COGL_MATERIAL_FLUSH_DISABLE_MASK,
+  COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
+} CoglMaterialFlushOption;
+
+/*
+ * cogl_material_flush_gl_state:
+ * @material: A CoglMaterial object
+ * @...: A NULL terminated list of (CoglMaterialFlushOption, data) pairs
+ *
+ * This function commits the state of the specified CoglMaterial - including
+ * the texture state for all the layers - to the OpenGL[ES] driver.
+ *
+ * Since 1.0
+ */
+void _cogl_material_flush_gl_state (CoglHandle material,
+                                    ...) G_GNUC_NULL_TERMINATED;
+
+
 #endif /* __COGL_MATERIAL_PRIVATE_H */
 

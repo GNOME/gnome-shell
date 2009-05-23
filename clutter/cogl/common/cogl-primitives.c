@@ -29,7 +29,7 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
-#include "cogl-material.h"
+#include "cogl-material-private.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -112,16 +112,16 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
   disable_mask = (1 << batch_start->n_layers) - 1;
   disable_mask = ~disable_mask;
 
-  cogl_material_flush_gl_state (ctx->source_material,
-                                COGL_MATERIAL_FLUSH_FALLBACK_MASK,
-                                batch_start->fallback_mask,
-                                COGL_MATERIAL_FLUSH_DISABLE_MASK,
-                                disable_mask,
-                                /* Redundant when dealing with unsliced
-                                 * textures but does no harm... */
-                                COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
-                                batch_start->layer0_override_texture,
-                                NULL);
+  _cogl_material_flush_gl_state (ctx->source_material,
+                                 COGL_MATERIAL_FLUSH_FALLBACK_MASK,
+                                 batch_start->fallback_mask,
+                                 COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                 disable_mask,
+                                 /* Redundant when dealing with unsliced
+                                  * textures but does no harm... */
+                                 COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
+                                 batch_start->layer0_override_texture,
+                                 NULL);
 
   for (i = 0; i < batch_start->n_layers; i++)
     {
@@ -140,7 +140,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
 
   /* FIXME: This api is a bit yukky, ideally it will be removed if we
    * re-work the cogl_enable mechanism */
-  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
@@ -177,7 +177,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
                                       color == 1 ? 0xff : 0x00,
                                       color == 2 ? 0xff : 0x00,
                                       0xff);
-          cogl_material_flush_gl_state (outline, NULL);
+          _cogl_material_flush_gl_state (outline, NULL);
           _cogl_current_matrix_state_flush ();
           GE( glDrawArrays (GL_LINE_LOOP, 4 * i, 4) );
         }
@@ -791,7 +791,7 @@ _cogl_rectangles_with_multitexture_coords (
       /* We don't support multi texturing using textures with any waste if the
        * user has supplied a custom texture matrix, since we don't know if
        * the result will end up trying to texture from the waste area. */
-      flags = cogl_material_layer_get_flags (layer);
+      flags = _cogl_material_layer_get_flags (layer);
       if (flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX
           && _cogl_texture_span_has_waste (texture, 0, 0))
         {
@@ -1041,13 +1041,13 @@ _cogl_texture_sliced_polygon (CoglTextureVertex *vertices,
               v += stride;
 	    }
 
-          cogl_material_flush_gl_state (ctx->source_material,
-                                        COGL_MATERIAL_FLUSH_DISABLE_MASK,
-                                        (guint32)~1, /* disable all except the
+          _cogl_material_flush_gl_state (ctx->source_material,
+                                         COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                         (guint32)~1, /* disable all except the
                                                         first layer */
-                                        COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
-                                        gl_handle,
-                                        NULL);
+                                         COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
+                                         gl_handle,
+                                         NULL);
           _cogl_current_matrix_state_flush ();
 
 	  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
@@ -1136,10 +1136,10 @@ _cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
       c[3] = cogl_color_get_alpha_float (&vertices[i].color);
     }
 
-  cogl_material_flush_gl_state (ctx->source_material,
-                                COGL_MATERIAL_FLUSH_FALLBACK_MASK,
-                                fallback_mask,
-                                NULL);
+  _cogl_material_flush_gl_state (ctx->source_material,
+                                 COGL_MATERIAL_FLUSH_FALLBACK_MASK,
+                                 fallback_mask,
+                                 NULL);
   _cogl_current_matrix_state_flush ();
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
@@ -1254,7 +1254,7 @@ cogl_polygon (CoglTextureVertex *vertices,
 
   /* Prepare GL state */
   enable_flags = COGL_ENABLE_VERTEX_ARRAY;
-  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;

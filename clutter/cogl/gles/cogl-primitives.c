@@ -29,6 +29,7 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-clip-stack.h"
+#include "cogl-material-private.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -78,13 +79,13 @@ _cogl_path_stroke_nodes ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
   cogl_enable (enable_flags);
 
-  cogl_material_flush_gl_state (ctx->source_material,
-                                COGL_MATERIAL_FLUSH_DISABLE_MASK,
-                                (guint32)~0, /* disable all texture layers */
-                                NULL);
+  _cogl_material_flush_gl_state (ctx->source_material,
+                                 COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                 (guint32)~0, /* disable all texture layers */
+                                 NULL);
   _cogl_current_matrix_state_flush ();
 
   while (path_start < ctx->path_nodes->len)
@@ -139,10 +140,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Just setup a simple material that doesn't use texturing... */
-  cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+  _cogl_material_flush_gl_state (ctx->stencil_material, NULL);
 
   enable_flags |=
-    cogl_material_get_cogl_enable_flags (ctx->source_material);
+    _cogl_material_get_cogl_enable_flags (ctx->source_material);
   cogl_enable (enable_flags);
 
   _cogl_path_get_bounds (nodes_min, nodes_max,
