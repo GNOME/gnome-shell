@@ -70,13 +70,13 @@ struct _CoglMaterialLayer
 
   /* Determines how the color of individual texture fragments
    * are calculated. */
-  CoglMaterialLayerCombineFunc texture_combine_rgb_func;
-  CoglMaterialLayerCombineSrc texture_combine_rgb_src[3];
-  CoglMaterialLayerCombineOp texture_combine_rgb_op[3];
+  GLint texture_combine_rgb_func;
+  GLint texture_combine_rgb_src[3];
+  GLint texture_combine_rgb_op[3];
 
-  CoglMaterialLayerCombineFunc texture_combine_alpha_func;
-  CoglMaterialLayerCombineSrc texture_combine_alpha_src[3];
-  CoglMaterialLayerCombineOp texture_combine_alpha_op[3];
+  GLint texture_combine_alpha_func;
+  GLint texture_combine_alpha_src[3];
+  GLint texture_combine_alpha_op[3];
 
   GLfloat texture_combine_constant[4];
 
@@ -119,12 +119,12 @@ struct _CoglMaterial
 #ifndef HAVE_COGL_GLES
   GLenum blend_equation_rgb;
   GLenum blend_equation_alpha;
-  CoglMaterialBlendFactor blend_dst_factor_alpha;
-  CoglMaterialBlendFactor blend_src_factor_alpha;
+  GLint blend_src_factor_alpha;
+  GLint blend_dst_factor_alpha;
   GLfloat blend_constant[4];
 #endif
-  CoglMaterialBlendFactor blend_src_factor_rgb;
-  CoglMaterialBlendFactor blend_dst_factor_rgb;
+  GLint blend_src_factor_rgb;
+  GLint blend_dst_factor_rgb;
 
   GList	   *layers;
 };
