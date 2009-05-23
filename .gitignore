@@ -196,7 +196,7 @@ stamp-h1
 /tests/conform/test-map-recursive
 /tests/conform/test-realize-not-recursive
 /tests/conform/test-shown-not-parented
-/tests/micro-bench/test-glyph-perf
+/tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
 /tests/tools/disable-npots.sh
