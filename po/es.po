@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&component=general\n"
-"POT-Creation-Date: 2009-04-17 21:02+0000\n"
-"PO-Revision-Date: 2009-04-18 20:36+0200\n"
+"POT-Creation-Date: 2009-05-23 12:26+0000\n"
+"PO-Revision-Date: 2009-05-23 19:55+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgstr "Administrador de ventanas"
 
 #: ../src/core/bell.c:294
 msgid "Bell event"
-msgstr ""
+msgstr "Evento de campana"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -408,9 +408,6 @@ msgid "Unknown element %s"
 msgstr "Elemento desconocido %s"
 
 #: ../src/core/session.c:1812
-#| msgid ""
-#| "These windows do not support \"save current setup\" and will have to be "
-#| "restarted manually next time you log in."
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -510,7 +507,6 @@ msgstr "%s (como súper usuario)"
 #. * on this machine
 #: ../src/core/window-props.c:438
 #, c-format
-#| msgid "%s (on %s)"
 msgid "%s (as %s)"
 msgstr "%s (como %s)"
 
