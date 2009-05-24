@@ -414,13 +414,13 @@ get_gl_type_size (CoglVertexBufferAttribFlags flags)
 }
 
 void
-cogl_vertex_buffer_add (CoglHandle handle,
-		        const char *attribute_name,
-			guint8 n_components,
-			GLenum gl_type,
-			gboolean normalized,
-			guint16 stride,
-			const void *pointer)
+cogl_vertex_buffer_add (CoglHandle         handle,
+		        const char        *attribute_name,
+			guint8             n_components,
+			CoglAttributeType  type,
+			gboolean           normalized,
+			guint16            stride,
+			const void        *pointer)
 {
   CoglVertexBuffer *buffer;
   GQuark name_quark = g_quark_from_string (attribute_name);
@@ -488,7 +488,7 @@ cogl_vertex_buffer_add (CoglHandle handle,
   attribute->u.pointer = pointer;
   attribute->texture_unit = texture_unit;
 
-  flags |= get_attribute_gl_type_flag_from_gl_type (gl_type);
+  flags |= get_attribute_gl_type_flag_from_gl_type (type);
   flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED;
 
   /* Note: We currently just assume, if an attribute is *ever* updated
@@ -1719,10 +1719,10 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 }
 
 void
-cogl_vertex_buffer_draw (CoglHandle handle,
-		         GLenum mode,
-		         GLint first,
-		         GLsizei count)
+cogl_vertex_buffer_draw (CoglHandle       handle,
+		         CoglVerticesMode mode,
+		         int              first,
+		         int              count)
 {
   CoglVertexBuffer *buffer;
 
@@ -1772,13 +1772,13 @@ get_indices_type_size (GLuint indices_type)
 }
 
 void
-cogl_vertex_buffer_add_indices (CoglHandle handle,
-                                int id,
-			        unsigned int min_index,
-                                unsigned int max_index,
-                                CoglIndicesType indices_type,
-                                const void *indices_array,
-                                size_t indices_len)
+cogl_vertex_buffer_add_indices (CoglHandle       handle,
+                                int              id,
+			        int              min_index,
+                                int              max_index,
+                                CoglIndicesType  indices_type,
+                                const void      *indices_array,
+                                int              indices_len)
 {
   CoglVertexBuffer *buffer;
   GList *l;
@@ -1843,11 +1843,11 @@ cogl_vertex_buffer_add_indices (CoglHandle handle,
 }
 
 void
-cogl_vertex_buffer_draw_elements (CoglHandle handle,
-			          GLenum mode,
-                                  int indices_id,
-                                  unsigned int indices_offset,
-                                  unsigned int count)
+cogl_vertex_buffer_draw_elements (CoglHandle       handle,
+			          CoglVerticesMode mode,
+                                  int              indices_id,
+                                  int              indices_offset,
+                                  int              count)
 {
   CoglVertexBuffer *buffer;
   gboolean fallback =
