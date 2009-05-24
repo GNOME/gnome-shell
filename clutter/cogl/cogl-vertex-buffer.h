@@ -257,6 +257,54 @@ cogl_vertex_buffer_draw (CoglHandle handle,
 		         GLsizei    count);
 
 /**
+ * CoglIndicesType:
+ * @COGL_INDICES_TYPE_UNSIGNED_BYTE: Your indices are unsigned bytes
+ * @COGL_INDICES_TYPE_UNSIGNED_SHORT: Your indices are unsigned shorts
+ * @COGL_INDICES_TYPE_UNSIGNED_INT: You indices are unsigned integers
+ *
+ * You should aim to use the smallest data type that gives you enough
+ * range, since it reduces the size of your index array and can help
+ * reduce the demand on memory bandwidth.
+ */
+typedef enum _CoglIndicesType
+{
+  COGL_INDICES_TYPE_UNSIGNED_BYTE,
+  COGL_INDICES_TYPE_UNSIGNED_SHORT,
+  COGL_INDICES_TYPE_UNSIGNED_INT
+} CoglIndicesType;
+
+/**
+ * cogl_vertex_buffer_add_indices:
+ * @handle: A vertex buffer handle
+ * @id: Any unique number. It's used to identify the indices when you later
+ *      call cogl_vertex_buffer_draw_elements()
+ * @min_index: Specifies the minimum vertex index contained in indices
+ * @max_index: Specifies the maximum vertex index contained in indices
+ * @indices_type: a #CoglIndicesType specifying the data type used for
+ *                the indices.
+ * @indices_array: Specifies the address of your array of indices
+ * @indices_len: The number of indices in indices_array
+ *
+ * Depending on how much geometry you are submitting it can be worthwhile
+ * optimizing the number of redundant vertices you submit. Using an index
+ * array allows you to reference vertices multiple times, for example
+ * during triangle strips.
+ *
+ * You should aim to use the COGL_INDICES_TYPE_UNSIGNED_SHORT when possible
+ * and correctly reflect the range of index values in the {min,max}_index
+ * arguments. This allows Cogl to optimize the internal storage used for
+ * the indices and reduce the demand for memory bandwidth.
+ */
+void
+cogl_vertex_buffer_add_indices (CoglHandle handle,
+                                int id,
+			        unsigned int min_index,
+                                unsigned int max_index,
+                                CoglIndicesType indices_type,
+                                const void *indices_array,
+                                size_t indices_len);
+
+/**
  * cogl_vertex_buffer_draw_elements:
  * @handle: A vertex buffer handle
  * @mode: Specifies how the vertices should be interpreted, and should be
@@ -270,33 +318,26 @@ cogl_vertex_buffer_draw (CoglHandle handle,
  *	  <listitem>GL_TRIANGLE_FAN</listitem>
  *	  <listitem>GL_TRIANGLES</listitem>
  *	  </itemizedlist>
- *	  (Note: only types available in GLES are listed)
- * @min_index: Specifies the minimum vertex index contained in indices
- * @max_index: Specifies the maximum vertex index contained in indices
+ * @indices_id: The identifier for a an array of indices previously added to
+ *              the given Cogl vertex buffer using
+ *              cogl_vertex_buffer_add_indices().
+ * @indices_offset: An offset into named indices. The offset marks the first
+ *                  index to use for drawing.
  * @count: Specifies the number of vertices you want to draw.
- * @indices_type: Specifies the data type used for the indices, and must be
- *	          one of:
- *	  <itemizedlist>
- *	  <listitem>GL_UNSIGNED_BYTE</listitem>
- *	  <listitem>GL_UNSIGNED_SHORT</listitem>
- *        <listitem>GL_UNSIGNED_INT</listitem>
- *        </itemizedlist>
- * @indices: Specifies the address of your array of indices
  *
  * This function lets you use an array of indices to specify the vertices
- * within your vertex buffer that you want to draw.
+ * within your vertex buffer that you want to draw. The indices themselves
+ * are given by calling cogl_vertex_buffer_add_indices ()
  *
  * Any un-submitted attribute changes are automatically submitted before
  * drawing.
  */
 void
-cogl_vertex_buffer_draw_elements (CoglHandle     handle,
-			          GLenum         mode,
-			          GLuint         min_index,
-			          GLuint         max_index,
-			          GLsizei        count,
-			          GLenum         indices_type,
-			          const GLvoid  *indices);
+cogl_vertex_buffer_draw_elements (CoglHandle handle,
+			          GLenum mode,
+                                  int indices_id,
+                                  unsigned int indices_offset,
+                                  unsigned int count);
 
 /**
  * cogl_vertex_buffer_ref:

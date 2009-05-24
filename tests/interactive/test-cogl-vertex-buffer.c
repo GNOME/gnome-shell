@@ -140,11 +140,9 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw_elements (state->buffer,
                                     GL_TRIANGLE_STRIP,
-                                    0,
-                                    (MESH_WIDTH + 1) * (MESH_HEIGHT + 1),
-                                    state->n_static_indices,
-                                    GL_UNSIGNED_SHORT,
-                                    state->static_indices);
+                                    0, /* indices identifier */
+                                    0, /* indices offset */
+                                    state->n_static_indices);
 }
 
 static void
@@ -220,6 +218,15 @@ init_static_index_arrays (TestState *state)
     }
 
 #undef MESH_INDEX
+
+  cogl_vertex_buffer_add_indices (state->buffer,
+                                  0, /* identifier */
+                                  0, /* min index */
+                                  (MESH_WIDTH + 1) *
+                                  (MESH_HEIGHT + 1), /* max index */
+                                  COGL_INDICES_TYPE_UNSIGNED_SHORT,
+                                  state->static_indices,
+                                  state->n_static_indices);
 }
 
 static float

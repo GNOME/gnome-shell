@@ -214,6 +214,8 @@ cogl_vertex_buffer_new (guint n_vertices)
   buffer->submitted_vbos = NULL;
   buffer->new_attributes = NULL;
 
+  buffer->indices = NULL;
+
   /* return COGL_INVALID_HANDLE; */
   return _cogl_vertex_buffer_handle_new (buffer);
 }
@@ -1727,13 +1729,11 @@ cogl_vertex_buffer_draw (CoglHandle handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  cogl_clip_ensure ();
-
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  enable_state_for_drawing_buffer (buffer);
-
+  cogl_clip_ensure ();
   _cogl_current_matrix_state_flush ();
+  enable_state_for_drawing_buffer (buffer);
 
   /* FIXME: flush cogl cache */
   GE (glDrawArrays (mode, first, count));
@@ -1741,35 +1741,158 @@ cogl_vertex_buffer_draw (CoglHandle handle,
   disable_state_for_drawing_buffer (buffer);
 }
 
+static void
+free_vertex_buffer_indices (CoglVertexBufferIndices *indices)
+{
+  gboolean fallback =
+    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (fallback)
+    g_free (indices->vbo_name);
+  else
+    GE (glDeleteBuffers (1, (GLuint *)&indices->vbo_name));
+
+  g_slice_free (CoglVertexBufferIndices, indices);
+}
+
+static int
+get_indices_type_size (GLuint indices_type)
+{
+  if (indices_type == GL_UNSIGNED_BYTE)
+    return sizeof (GLubyte);
+  if (indices_type == GL_UNSIGNED_SHORT)
+    return sizeof (GLushort);
+  else
+    {
+      g_critical ("Unknown indices type %d\n", indices_type);
+      return 0;
+    }
+}
+
 void
-cogl_vertex_buffer_draw_elements (CoglHandle handle,
-			          GLenum mode,
-			          GLuint min_index,
-			          GLuint max_index,
-			          GLsizei count,
-			          GLenum indices_type,
-			          const GLvoid *indices)
+cogl_vertex_buffer_add_indices (CoglHandle handle,
+                                int id,
+			        unsigned int min_index,
+                                unsigned int max_index,
+                                CoglIndicesType indices_type,
+                                const void *indices_array,
+                                size_t indices_len)
 {
   CoglVertexBuffer *buffer;
+  GList *l;
+  gboolean fallback =
+    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
+  size_t indices_bytes;
+  CoglVertexBufferIndices *indices;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  cogl_clip_ensure ();
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+
+  for (l = buffer->indices; l; l = l->next)
+    {
+      CoglVertexBufferIndices *current_indices = l->data;
+      if (current_indices->id == id)
+        {
+          free_vertex_buffer_indices (l->data);
+          buffer->indices = g_list_delete_link (buffer->indices, l);
+          break;
+        }
+    }
+
+  indices = g_slice_alloc (sizeof (CoglVertexBufferIndices));
+  indices->id = id;
+  indices->min_index = min_index;
+  indices->max_index = max_index;
+
+  if (indices_type == COGL_INDICES_TYPE_UNSIGNED_BYTE)
+    indices->type = GL_UNSIGNED_BYTE;
+  else if (indices_type == COGL_INDICES_TYPE_UNSIGNED_SHORT)
+    indices->type = GL_UNSIGNED_SHORT;
+  else
+    {
+      g_critical ("unknown indices type %d", indices_type);
+      g_slice_free (CoglVertexBufferIndices, indices);
+      return;
+    }
+
+  indices_bytes = get_indices_type_size (indices->type) * indices_len;
+  if (fallback)
+    {
+      indices->vbo_name = g_malloc (indices_len);
+      memcpy (indices->vbo_name, indices_array, indices_bytes);
+    }
+  else
+    {
+      GE (glGenBuffers (1, (GLuint *)&indices->vbo_name));
+      GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER,
+			GPOINTER_TO_UINT (indices->vbo_name)));
+      GE (glBufferData (GL_ELEMENT_ARRAY_BUFFER,
+                        indices_bytes,
+                        indices_array,
+                        GL_STATIC_DRAW));
+      GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
+    }
+
+  buffer->indices = g_list_prepend (buffer->indices, indices);
+}
+
+void
+cogl_vertex_buffer_draw_elements (CoglHandle handle,
+			          GLenum mode,
+                                  int indices_id,
+                                  unsigned int indices_offset,
+                                  unsigned int count)
+{
+  CoglVertexBuffer *buffer;
+  gboolean fallback =
+    (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
+  size_t byte_offset;
+  GList *l;
+  CoglVertexBufferIndices *indices = NULL;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!cogl_is_vertex_buffer (handle))
+    return;
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
+  cogl_clip_ensure ();
+  _cogl_current_matrix_state_flush ();
   enable_state_for_drawing_buffer (buffer);
 
-  _cogl_current_matrix_state_flush ();
+  for (l = buffer->indices; l; l = l->next)
+    {
+      CoglVertexBufferIndices *current_indices = l->data;
+      if (current_indices->id == indices_id)
+        {
+          indices = current_indices;
+          break;
+        }
+    }
+  if (!indices)
+    return;
+
+  byte_offset = indices_offset * get_indices_type_size (indices->type);
+  if (fallback)
+    byte_offset = (size_t)(((char *)indices->vbo_name) + byte_offset);
+  else
+    GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER,
+                      GPOINTER_TO_UINT (indices->vbo_name)));
 
   /* FIXME: flush cogl cache */
-  GE (glDrawRangeElements (mode, min_index, max_index,
-                           count, indices_type, indices));
+  GE (glDrawRangeElements (mode, indices->min_index, indices->max_index,
+                           count, indices->type, (void *)byte_offset));
 
   disable_state_for_drawing_buffer (buffer);
+
+  GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
 }
 
 static void
@@ -1779,8 +1902,16 @@ _cogl_vertex_buffer_free (CoglVertexBuffer *buffer)
 
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     cogl_vertex_buffer_vbo_free (tmp->data, TRUE);
+  g_list_free (buffer->submitted_vbos);
+
   for (tmp = buffer->new_attributes; tmp != NULL; tmp = tmp->next)
     cogl_vertex_buffer_attribute_free (tmp->data);
+  g_list_free (buffer->new_attributes);
+
+  for (tmp = buffer->indices; tmp != NULL; tmp = tmp->next)
+    free_vertex_buffer_indices (tmp->data);
+  g_list_free (buffer->indices);
 
   g_slice_free (CoglVertexBuffer, buffer);
 }
+
