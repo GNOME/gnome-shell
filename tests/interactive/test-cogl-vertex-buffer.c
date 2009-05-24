@@ -139,7 +139,7 @@ on_paint (ClutterActor *actor, TestState *state)
 {
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw_elements (state->buffer,
-                                    GL_TRIANGLE_STRIP,
+                                    COGL_VERTICES_MODE_TRIANGLE_STRIP,
                                     0, /* indices identifier */
                                     0, /* indices offset */
                                     state->n_static_indices);
@@ -287,7 +287,7 @@ init_quad_mesh (TestState *state)
   cogl_vertex_buffer_add (state->buffer,
                           "gl_Vertex",
                           3, /* n components */
-                          GL_FLOAT,
+                          COGL_ATTRIBUTE_TYPE_FLOAT,
                           FALSE, /* normalized */
                           0, /* stride */
                           state->quad_mesh_verts);
@@ -295,7 +295,7 @@ init_quad_mesh (TestState *state)
   cogl_vertex_buffer_add (state->buffer,
                           "gl_Color",
                           4, /* n components */
-                          GL_UNSIGNED_BYTE,
+                          COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE,
                           FALSE, /* normalized */
                           0, /* stride */
                           state->quad_mesh_colors);
