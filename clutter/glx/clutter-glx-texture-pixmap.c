@@ -214,9 +214,9 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
 
       if ((rect_env = g_getenv ("CLUTTER_PIXMAP_TEXTURE_RECTANGLE")))
         {
-          if (strcasecmp (rect_env, "force") == 0)
+          if (g_ascii_strcasecmp (rect_env, "force") == 0)
             _rectangle_state = CLUTTER_GLX_RECTANGLE_FORCE;
-	  else if (strcasecmp (rect_env, "disable") == 0)
+	  else if (g_ascii_strcasecmp (rect_env, "disable") == 0)
             _rectangle_state = CLUTTER_GLX_RECTANGLE_DISALLOW;
 	  else if (rect_env[0])
 	    g_warning ("Unknown value for CLUTTER_PIXMAP_TEXTURE_RECTANGLE, "

@@ -219,7 +219,7 @@ clutter_backend_glx_constructor (GType                  gtype,
 static gboolean
 check_vblank_env (const char *name)
 {
-  if (clutter_vblank_name && !strcasecmp(clutter_vblank_name, name))
+  if (clutter_vblank_name && !g_ascii_strcasecmp (clutter_vblank_name, name))
     return TRUE;
 
   return FALSE;
