@@ -1,29 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
   <name>Clutter</name>
   <shortname>clutter</shortname>
   <created>2006-11-18</created>
 
-  <shortdesc xml:lang="en">
-    Clutter is an OpenGL based interface library
-  </shortdesc>
+  <shortdesc xml:lang="en">Clutter is an OpenGL based interface library</shortdesc>
 
-  <description xml:lang="en">
-    Clutter is an open source software library for creating fast, visually
-    rich and animated graphical user interfaces. Clutter uses OpenGL (and
-    optionally OpenGL ES for use on Mobile and embedded platforms) for
-    rendering, but with an API which hides the underlying GL complexity
-    from the developer. The Clutter API is intended to be easy to use,
-    efficient and flexible.
-  </description>
+  <description xml:lang="en">Clutter is an open source software library for creating
+  fast, visually rich, portable and animated graphical user interfaces. Clutter uses
+  OpenGL (and optionally OpenGL|ES for use on Mobile and embedded platforms) for
+  rendering, but with an API which hides the underlying GL complexity from the
+  developer. The Clutter API is intended to be easy to use, efficient and
+  flexible.</description>
 
   <homepage rdf:resource="http://www.clutter-project.org" />
-  <download-page rdf:resource="http://www.clutter-project.org/sources" />
   <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
   <bug-database rdf:resource="http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter"/>
+  <download-page rdf:resource="http://www.clutter-project.org/sources" />
   <mailing-list rdf:resource="mailto:clutter+subscribe@o-hand.com" />
 
   <programming-language>C</programming-language>
@@ -32,10 +30,18 @@
   <category rdf:resource="http://labs.o-hand.com/doap/category/graphics"/>
   <category rdf:resource="http://labs.o-hand.com/doap/category/embedded"/>
   <category rdf:resource="http://labs.o-hand.com/doap/category/clutter"/>
+
   <maintainer>
     <foaf:Person>
       <foaf:name>Matthew Allum</foaf:name>
       <foaf:mbox rdf:resource="mailto:mallum@o-hand.com"/>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Emmanuele Bassi</foaf:name>
+      <foaf:mbox rdf:resource="mailto:ebassi@linux.intel.com"/>
     </foaf:Person>
   </maintainer>
 
@@ -49,15 +55,36 @@
   <author>
     <foaf:Person>
       <foaf:name>Emmanuele Bassi</foaf:name>
-      <foaf:mbox rdf:resource="mailto:ebassi@o-hand.com"/>
+      <foaf:mbox rdf:resource="mailto:ebassi@linux.intel.com"/>
+    </foaf:Person>
+  </author>
+
+  <author>
+    <foaf:Person>
+      <foaf:name>Neil Roberts</foaf:name>
+      <foaf:mbox rdf:resource="mailto:neil@linux.intel.com"/>
+    </foaf:Person>
+  </author>
+
+  <author>
+    <foaf:Person>
+      <foaf:name>Robert Bragg</foaf:name>
+      <foaf:mbox rdf:resource="mailto:robert@linux.intel.com"/>
+    </foaf:Person>
+  </author>
+
+  <author>
+    <foaf:Person>
+      <foaf:name>Øyvind Kolås</foaf:name>
+      <foaf:mbox rdf:resource="mailto:pippin@linux.intel.com"/>
     </foaf:Person>
   </author>
 
   <repository>
-    <SVNRepository>
-      <browse rdf:resource="http://svn.o-hand.com/view/clutter"/>
-      <location rdf:resource="https://svn.o-hand.com/repos/clutter"/>
-    </SVNRepository>
+    <GitRepository>
+      <browse rdf:resource="http://git.clutter-project.org/?r=clutter"/>
+      <location rdf:resource="git://git.clutter-project.org/clutter"/>
+    </GitRepository>
   </repository>
 
   <release>
