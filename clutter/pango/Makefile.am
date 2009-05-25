@@ -13,21 +13,21 @@ source_h_priv = \
 
 noinst_LTLIBRARIES = libcoglpango.la
 
-libcoglpango_la_SOURCES = \
-	$(source_c)     \
-	$(source_h)     \
-	$(source_h_priv)
+libcoglpango_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
+libcoglpango_la_CPPFLAGS = $(CLUTTER_CFLAGS)
+libcoglpango_la_LIBADD = $(CLUTTER_LIBS)
 
 INCLUDES = \
-	@GCC_FLAGS@ @CLUTTER_CFLAGS@ 			\
-	$(CLUTTER_DEBUG_CFLAGS)				\
-	$(MAINTAINER_CFLAGS)				\
-	-DCLUTTER_COMPILATION                           \
-	-I$(top_srcdir)	                 		\
-	-I$(top_srcdir)/clutter				\
-	-I$(top_srcdir)/clutter/cogl                    \
-	-I$(top_builddir)/clutter	               	\
-	-I$(top_builddir)/clutter/cogl
+	-DCLUTTER_COMPILATION		\
+	-DG_LOG_DOMAIN=\"CoglPango\"	\
+	-I$(top_srcdir)			\
+	-I$(top_srcdir)/clutter		\
+	-I$(top_srcdir)/clutter/cogl	\
+	-I$(top_builddir)/clutter	\
+	-I$(top_builddir)/clutter/cogl	\
+	$(CLUTTER_DEBUG_CFLAGS)		\
+	$(COGL_DEBUG_CFLAGS)		\
+	$(MAINTAINER_CFLAGS)
 
 coglpangoheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/cogl
 coglpangoheaders_HEADERS = $(source_h)
