@@ -121,7 +121,7 @@ AM_CONDITIONAL(HAVE_LIBDL, [test "x$HAVE_LIBDL" = "xyes"])
 dnl === COGL GLES backend =====================================================
 
 AS_IF([test "x$clutterbackend" = "xeglnative" ||
-       test "x$clutterbackend" = "xeglx" ||
+       test "x$clutterbackend" = "xeglx"      ||
        test "x$clutterbackend" = "xfruity"],
 
       [
@@ -141,27 +141,34 @@ AS_IF([test "x$clutterbackend" = "xeglnative" ||
 
                   # check for upper/lower case libgles_em
                   # The powervr sdk uses lower case.
-                  AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
-                  if test "x$HAVE_LIBGLES" = "xno"
-                  then
-                    AC_CHECK_LIB(GLESv1_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+                  AC_CHECK_LIB(GLES_CM, [eglInitialize],
+                               [HAVE_LIBGLES=yes],
+                               [HAVE_LIBGLES=no])
 
-                    if test "x$HAVE_LIBGLES" = "xno"
-                    then
-                      AC_CHECK_LIB(gles_cm, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                        [GLES_LIBS="-lGLES_CM"],
+                        [
+                          AC_CHECK_LIB(GLESv1_CM, [eglInitialize],
+                                       [HAVE_LIBGLES=yes],
+                                       [HAVE_LIBGLES=no])
 
-                      if test "x$HAVE_LIBGLES" = "xno"
-                      then
-                        AC_MSG_ERROR([GLES library not found and egl backend requested.]);
-                      else
-                        GLES_LIBS="-lgles_cm"
-                      fi
-                    else
-                      GLES_LIBS="-lGLESv1_CM"
-                    fi
-                  else
-                    GLES_LIBS="-lGLES_CM"
-                  fi
+                          AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                                [GLES_LIBS="-lGLESv1_CM"],
+                                [
+                                  AC_CHECK_LIB(gles_cm, [eglInitialize],
+                                               [HAVE_LIBGLES=yes],
+                                               [HAVE_LIBGLES=no])
+
+                                  AS_IF([test "x$HAVE_LIBGLES" = "xyes"],
+                                        [GLES_LIBS="-lgles_cm"],
+                                        [
+                                          AC_MSG_ERROR([GLES library not found and egl backend requested.])
+                                        ]
+                                  )
+                                ]
+                          )
+                        ]
+                  )
                 ],
 
                 [2*],
@@ -217,11 +224,11 @@ AS_CASE([$clutterbackend],
                   SDL_CFLAGS=`$SDL_CONFIG --cflags`
                   SDL_LIBS=`$SDL_CONFIG --libs`
 
-                  # Use -lopengl32 under Windows instead of -lGL
                   AS_CASE([$host],
 
-                          [mingw32],
+                          [*mingw32*],
                           [
+                            # Use -lopengl32 under Windows instead of -lGL
                             SDL_LIBS="$SDL_LIBS -lopengl32"
                             CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
                           ],
