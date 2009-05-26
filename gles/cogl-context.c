@@ -39,7 +39,7 @@
 static CoglContext *_context = NULL;
 static gboolean gl_is_indirect = FALSE;
 
-gboolean
+static gboolean
 cogl_create_context ()
 {
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
@@ -133,7 +133,7 @@ cogl_create_context ()
 }
 
 void
-cogl_destroy_context ()
+_cogl_destroy_context ()
 {
   if (_context == NULL)
     return;

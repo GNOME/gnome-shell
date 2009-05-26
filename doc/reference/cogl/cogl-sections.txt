@@ -15,9 +15,6 @@ COGL_UNPREMULT_MASK
 CoglPixelFormat
 CoglBufferTarget
 <SUBSECTION>
-cogl_create_context
-cogl_destroy_context
-<SUBSECTION>
 CoglFeatureFlags
 cogl_get_features
 cogl_features_available
