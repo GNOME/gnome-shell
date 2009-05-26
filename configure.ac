@@ -581,11 +581,11 @@ AS_CASE([$enable_debug],
         [yes],
         [
           test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
-          CLUTTER_DEBUG_CFLAGS="-DCLUTTER_ENABLE_DEBUG -DCOGL_ENABLE_DEBUG"
+          CLUTTER_DEBUG_CFLAGS="-DCLUTTER_ENABLE_DEBUG"
         ],
 
         [minimum],
-        [CLUTTER_DEBUG_CFLAGS="-DCLUTTER_ENABLE_DEBUG -DCOGL_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"],
+        [CLUTTER_DEBUG_CFLAGS="-DCLUTTER_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"],
 
         [no],
         [CLUTTER_DEBUG_CFLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"],
@@ -762,15 +762,15 @@ echo "                     Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
 if test "x$clutterbackend" = "xeglx" || test "x$clutterbackend" = "xglx"; then
   echo "                      XInput:   ${xinput}"
 fi
-echo "                  GL Headers:   ${CLUTTER_GL_HEADER}"
+echo "                  GL headers:   ${CLUTTER_GL_HEADER}"
 echo "               Image backend:   ${imagebackend}"
 echo "              Target library:   ${clutterbackendlib}"
-echo "         Clutter Debug level:   ${enable_debug}"
-echo "     Enable COGL debug flags:   ${enable_cogl_debug}"
+echo "         Clutter debug level:   ${enable_debug}"
+echo "            COGL debug level:   ${enable_cogl_debug}"
 echo "              Compiler flags:   ${CPPFLAGS} ${MAINTAINER_CFLAGS}"
-echo "     Build API Documentation:   ${enable_gtk_doc}"
-echo "  Build Manual Documentation:   ${enable_manual}"
-echo "    Build Introspection data:   ${enable_introspection}"
+echo "     Build API documentation:   ${enable_gtk_doc}"
+echo "  Build manual documentation:   ${enable_manual}"
+echo "    Build introspection data:   ${enable_introspection}"
 echo ""
 
 # you can add more configuration options or flags that will bring up the
