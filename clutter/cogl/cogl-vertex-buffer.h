@@ -305,8 +305,6 @@ typedef enum _CoglIndicesType
 /**
  * cogl_vertex_buffer_add_indices:
  * @handle: A vertex buffer handle
- * @id: Any unique number. It's used to identify the indices when you later
- *      call cogl_vertex_buffer_draw_elements()
  * @min_index: Specifies the minimum vertex index contained in indices
  * @max_index: Specifies the maximum vertex index contained in indices
  * @indices_type: a #CoglIndicesType specifying the data type used for
@@ -319,19 +317,35 @@ typedef enum _CoglIndicesType
  * array allows you to reference vertices multiple times, for example
  * during triangle strips.
  *
- * You should aim to use the COGL_INDICES_TYPE_UNSIGNED_SHORT when possible
- * and correctly reflect the range of index values in the {min,max}_index
- * arguments. This allows Cogl to optimize the internal storage used for
- * the indices and reduce the demand for memory bandwidth.
+ * You should aim to use the smallest data type possible and correctly reflect
+ * the range of index values in the {min,max}_index arguments. This allows Cogl
+ * to optimize the internal storage used for the indices and reduce the demand
+ * for memory bandwidth.
+ *
+ * Returns: An identifier (greater than 0) for the indices which you can
+ *          pass to cogl_vertex_buffer_draw_elements().
  */
-void
+int
 cogl_vertex_buffer_add_indices (CoglHandle       handle,
-                                int              id,
 			        int              min_index,
                                 int              max_index,
                                 CoglIndicesType  indices_type,
                                 const void      *indices_array,
                                 int              indices_len);
+
+/**
+ * cogl_vertex_buffer_delete_indices:
+ * @handle: A vertex buffer handle
+ * @indices_id: The identifier for a an array of indices previously added to
+ *              the given Cogl vertex buffer using
+ *              cogl_vertex_buffer_add_indices().
+ *
+ * Frees the resources associated with a previously added array of vertex
+ * indices.
+ */
+void
+cogl_vertex_buffer_delete_indices (CoglHandle handle,
+                                   int indices_id);
 
 /**
  * cogl_vertex_buffer_draw_elements:
