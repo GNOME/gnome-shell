@@ -108,7 +108,7 @@ on_paint (ClutterActor *actor, TestState *state)
   int i;
   int frame_num;
 
-  cogl_enable_backface_culling (TRUE);
+  cogl_set_backface_culling_enabled (TRUE);
 
   cogl_push_matrix ();
 
@@ -180,7 +180,7 @@ on_paint (ClutterActor *actor, TestState *state)
       /* The second time round draw beneath the first with backface
          culling disabled */
       cogl_translate (0, TEXTURE_RENDER_SIZE, 0);
-      cogl_enable_backface_culling (FALSE);
+      cogl_set_backface_culling_enabled (FALSE);
     }
 
   cogl_pop_matrix ();

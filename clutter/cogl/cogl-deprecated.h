@@ -24,5 +24,6 @@
 #ifndef COGL_DEPRECATED_H
 
 #define cogl_color              cogl_color_REPLACED_BY_cogl_set_source_color
+#define cogl_enable_depth_test  cogl_enable_depth_test_RENAMED_TO_cogl_set_depth_test_enabled
 
 #endif

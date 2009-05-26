@@ -333,6 +333,9 @@ Release Notes for Clutter 1.0
 * cogl_shader_get_parameteriv has been replaced by cogl_shader_get_type and
   cogl_shader_is_compiled. More getters can be added later if desired.
 
+* cogl_enable_depth_test has been renamed to cogl_set_depth_test_enabled and
+  a corresponding cogl_get_depth_test_enabled function has been added.
+
 Release Notes for Clutter 0.8
 -------------------------------
 

@@ -214,28 +214,37 @@ cogl_get_enable ()
 }
 
 void
-cogl_enable_depth_test (gboolean setting)
+cogl_set_depth_test_enabled (gboolean setting)
 {
   if (setting)
     {
       glEnable (GL_DEPTH_TEST);
-      glEnable (GL_ALPHA_TEST);
       glDepthFunc (GL_LEQUAL);
-      glAlphaFunc (GL_GREATER, 0.1);
     }
   else
-    {
-      glDisable (GL_DEPTH_TEST);
-      glDisable (GL_ALPHA_TEST);
-    }
+    glDisable (GL_DEPTH_TEST);
+}
+
+gboolean
+cogl_get_depth_test_enabled (void)
+{
+  return glIsEnabled (GL_DEPTH_TEST) == GL_TRUE ? TRUE : FALSE;
 }
 
 void
-cogl_enable_backface_culling (gboolean setting)
+cogl_set_backface_culling_enabled (gboolean setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   ctx->enable_backface_culling = setting;
+}
+
+gboolean
+cogl_get_backface_culling_enabled (void)
+{
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  return ctx->enable_backface_culling;
 }
 
 void
