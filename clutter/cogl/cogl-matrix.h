@@ -199,22 +199,50 @@ void cogl_matrix_frustum (CoglMatrix *matrix,
                           float       z_far);
 
 /**
- * cogl_matrix_transform_point:
+ * cogl_matrix_perspective:
  * @matrix: A 4x4 transformation matrix
- * @x: The X component of your points position [in:out]
- * @y: The Y component of your points position [in:out]
- * @z: The Z component of your points position [in:out]
- * @w: The W component of your points position [in:out]
+ * @fov_y: A field of view angle for the Y axis
+ * @aspect: The ratio of width to height determining the field of view angle
+ *          for the x axis.
+ * @z_near: The distance to the near clip plane.
+ *          Never pass 0 and always pass a positive number.
+ * @z_far: The distance to the far clip plane. (Should always be positive)
  *
- * This transforms a point whos position is given and returned
- * as four float components.
+ * Multiplies the matrix by the described perspective matrix
+ *
+ * Note: you should be careful not to have to great a z_far / z_near ratio
+ * since that will reduce the effectiveness of depth testing since there wont
+ * be enough precision to identify the depth of objects near to each other.
  */
 void
-cogl_matrix_transform_point (const CoglMatrix *matrix,
-                             float *x,
-                             float *y,
-                             float *z,
-                             float *w);
+cogl_matrix_perspective (CoglMatrix *matrix,
+                         float       fov_y,
+                         float       aspect,
+                         float       z_near,
+                         float       z_far);
+
+/**
+ * cogl_matrix_ortho:
+ * @matrix: A 4x4 transformation matrix
+ * @left: The coordinate for the left clipping plane
+ * @right: The coordinate for the right clipping plane
+ * @bottom: The coordinate for the bottom clipping plane
+ * @top: The coordinate for the top clipping plane
+ * @near: The coordinate for the near clipping plane (may be negative if
+ *        the plane is behind the viewer)
+ * @far: The coordinate for the far clipping plane (may be negative if
+ *       the plane is behind the viewer)
+ *
+ * Multiples the matrix by a parallel projection matrix.
+ */
+void
+cogl_matrix_ortho (CoglMatrix *matrix,
+                   float       left,
+                   float       right,
+                   float       bottom,
+                   float       top,
+                   float       near,
+                   float       far);
 
 /**
  * cogl_matrix_init_from_array:
@@ -233,6 +261,24 @@ void cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array);
  * OpenGL.
  */
 const float *cogl_matrix_get_array (const CoglMatrix *matrix);
+
+/**
+ * cogl_matrix_transform_point:
+ * @matrix: A 4x4 transformation matrix
+ * @x: The X component of your points position [in:out]
+ * @y: The Y component of your points position [in:out]
+ * @z: The Z component of your points position [in:out]
+ * @w: The W component of your points position [in:out]
+ *
+ * This transforms a point whos position is given and returned
+ * as four float components.
+ */
+void
+cogl_matrix_transform_point (const CoglMatrix *matrix,
+                             float *x,
+                             float *y,
+                             float *z,
+                             float *w);
 
 G_END_DECLS
 

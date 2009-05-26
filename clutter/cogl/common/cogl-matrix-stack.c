@@ -258,6 +258,59 @@ _cogl_matrix_stack_multiply (CoglMatrixStack  *stack,
 }
 
 void
+_cogl_matrix_stack_frustum (CoglMatrixStack *stack,
+                            float            left,
+                            float            right,
+                            float            bottom,
+                            float            top,
+                            float            z_near,
+                            float            z_far)
+{
+  CoglMatrixState *state;
+
+  state = _cogl_matrix_stack_top_mutable (stack);
+  cogl_matrix_frustum (&state->matrix,
+                       left, right, bottom, top,
+                       z_near, z_far);
+  /* mark dirty */
+  stack->flushed_state = NULL;
+}
+
+void
+_cogl_matrix_stack_perspective (CoglMatrixStack *stack,
+                                float            fov_y,
+                                float            aspect,
+                                float            z_near,
+                                float            z_far)
+{
+  CoglMatrixState *state;
+
+  state = _cogl_matrix_stack_top_mutable (stack);
+  cogl_matrix_perspective (&state->matrix,
+                           fov_y, aspect, z_near, z_far);
+  /* mark dirty */
+  stack->flushed_state = NULL;
+}
+
+void
+_cogl_matrix_stack_ortho (CoglMatrixStack *stack,
+                          float            left,
+                          float            right,
+                          float            bottom,
+                          float            top,
+                          float            z_near,
+                          float            z_far)
+{
+  CoglMatrixState *state;
+
+  state = _cogl_matrix_stack_top_mutable (stack);
+  cogl_matrix_ortho (&state->matrix,
+                     left, right, bottom, top, z_near, z_far);
+  /* mark dirty */
+  stack->flushed_state = NULL;
+}
+
+void
 _cogl_matrix_stack_get (CoglMatrixStack *stack,
                         CoglMatrix      *matrix)
 {
@@ -276,25 +329,6 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
 
   state = _cogl_matrix_stack_top_mutable (stack);
   state->matrix = *matrix;
-  /* mark dirty */
-  stack->flushed_state = NULL;
-}
-
-void
-_cogl_matrix_stack_frustum (CoglMatrixStack *stack,
-                            float            left,
-                            float            right,
-                            float            bottom,
-                            float            top,
-                            float            z_near,
-                            float            z_far)
-{
-  CoglMatrixState *state;
-
-  state = _cogl_matrix_stack_top_mutable (stack);
-  cogl_matrix_frustum (&state->matrix,
-                       left, right, bottom, top,
-                       z_near, z_far);
   /* mark dirty */
   stack->flushed_state = NULL;
 }
