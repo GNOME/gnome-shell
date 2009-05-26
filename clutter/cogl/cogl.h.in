@@ -55,22 +55,6 @@ G_BEGIN_DECLS
  * General utility functions for COGL.
  */
 
-/* Context manipulation */
-
-/**
- * cogl_create_context:
- *
- * FIXME
- */
-gboolean        cogl_create_context           (void);
-
-/**
- * cogl_destroy_context:
- *
- * FIXME
- */
-void            cogl_destroy_context          (void);
-
 /**
  * cogl_get_option_group:
  *
@@ -627,6 +611,18 @@ void            cogl_push_draw_buffer         (void);
  * Restore cogl_set_draw_buffer() state.
  */
 void            cogl_pop_draw_buffer          (void);
+
+
+/*
+ * Internal API available only to Clutter.
+ *
+ * These are typically only to deal with the poor seperation of
+ * responsabilities that currently exists between Clutter and Cogl.
+ * Eventually a lot of the backend code currently in Clutter will
+ * move down into Cogl and these functions will be removed.
+ */
+
+void            _cogl_destroy_context          (void);
 
 /* XXX: Removed before we release Clutter 1.0 since the implementation
  * wasn't complete, and so we assume no one is using this yet. Util we
