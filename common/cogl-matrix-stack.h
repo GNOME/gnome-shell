@@ -51,10 +51,6 @@ void             _cogl_matrix_stack_rotate        (CoglMatrixStack  *stack,
                                                    float             z);
 void             _cogl_matrix_stack_multiply      (CoglMatrixStack  *stack,
                                                    const CoglMatrix *matrix);
-void             _cogl_matrix_stack_get           (CoglMatrixStack  *stack,
-                                                   CoglMatrix       *matrix);
-void             _cogl_matrix_stack_set           (CoglMatrixStack  *stack,
-                                                   const CoglMatrix *matrix);
 void             _cogl_matrix_stack_frustum       (CoglMatrixStack  *stack,
                                                    float             left,
                                                    float             right,
@@ -62,6 +58,22 @@ void             _cogl_matrix_stack_frustum       (CoglMatrixStack  *stack,
                                                    float             top,
                                                    float             z_near,
                                                    float             z_far);
+void             _cogl_matrix_stack_perspective   (CoglMatrixStack  *stack,
+                                                   float             fov_y,
+                                                   float             aspect,
+                                                   float             z_near,
+                                                   float             z_far);
+void             _cogl_matrix_stack_ortho         (CoglMatrixStack  *stack,
+                                                   float             left,
+                                                   float             right,
+                                                   float             bottom,
+                                                   float             top,
+                                                   float             z_near,
+                                                   float             z_far);
+void             _cogl_matrix_stack_get           (CoglMatrixStack  *stack,
+                                                   CoglMatrix       *matrix);
+void             _cogl_matrix_stack_set           (CoglMatrixStack  *stack,
+                                                   const CoglMatrix *matrix);
 void             _cogl_matrix_stack_flush_to_gl   (CoglMatrixStack  *stack,
                                                    GLenum            gl_mode);
 

@@ -171,6 +171,29 @@ void            cogl_frustum                  (float        left,
                                                float        z_far);
 
 /**
+ * cogl_ortho:
+ * @left: The coordinate for the left clipping plane
+ * @right: The coordinate for the right clipping plane
+ * @bottom: The coordinate for the bottom clipping plane
+ * @top: The coordinate for the top clipping plane
+ * @near: The coordinate for the near clipping plane (may be negative if
+ *        the plane is behind the viewer)
+ * @far: The coordinate for the far clipping plane (may be negative if
+ *       the plane is behind the viewer)
+ *
+ * Replaces the current projection matrix with a parallel projection
+ * matrix.
+ *
+ * Since: 1.0
+ */
+void            cogl_ortho                    (float left,
+                                               float right,
+                                               float bottom,
+                                               float top,
+                                               float near,
+                                               float far);
+
+/**
  * cogl_setup_viewport:
  * @width: Width of the viewport
  * @height: Height of the viewport
@@ -273,12 +296,28 @@ void            cogl_rotate                   (float                angle,
 void            cogl_get_modelview_matrix     (CoglMatrix *matrix);
 
 /**
+ * cogl_set_modelview_matrix:
+ * @matrix: pointer to a CoglMatrix to set as the new model-view matrix
+ *
+ * Loads matrix as the new model-view matrix.
+ */
+void            cogl_set_modelview_matrix     (CoglMatrix *matrix);
+
+/**
  * cogl_get_projection_matrix:
  * @matrix: pointer to a CoglMatrix to recieve the matrix
  *
  * Stores the current projection matrix in @matrix.
  */
 void            cogl_get_projection_matrix    (CoglMatrix *matrix);
+
+/**
+ * cogl_set_projection_matrix:
+ * @matrix: pointer to a CoglMatrix to set as the new projection matrix
+ *
+ * Loads matrix as the new projection matrix.
+ */
+void            cogl_set_projection_matrix    (CoglMatrix *matrix);
 
 /**
  * cogl_get_viewport:

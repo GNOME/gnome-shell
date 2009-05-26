@@ -152,21 +152,6 @@ cogl_matrix_invert (CoglMatrix *matrix)
 #endif
 
 void
-cogl_matrix_transform_point (const CoglMatrix *matrix,
-                             float *x,
-                             float *y,
-                             float *z,
-                             float *w)
-{
-  float _x = *x, _y = *y, _z = *z, _w = *w;
-
-  *x = matrix->xx * _x + matrix->xy * _y + matrix->xz * _z + matrix->xw * _w;
-  *y = matrix->yx * _x + matrix->yy * _y + matrix->yz * _z + matrix->yw * _w;
-  *z = matrix->zx * _x + matrix->zy * _y + matrix->zz * _z + matrix->zw * _w;
-  *w = matrix->wx * _x + matrix->wy * _y + matrix->wz * _z + matrix->ww * _w;
-}
-
-void
 cogl_matrix_frustum (CoglMatrix *matrix,
                      float       left,
                      float       right,
@@ -209,6 +194,62 @@ cogl_matrix_frustum (CoglMatrix *matrix,
 }
 
 void
+cogl_matrix_perspective (CoglMatrix *matrix,
+                         float       fov_y,
+                         float       aspect,
+                         float       z_near,
+                         float       z_far)
+{
+  float ymax = z_near * tan (fov_y * G_PI / 360.0);
+
+  cogl_matrix_frustum (matrix,
+                       -ymax * aspect,  /* left */
+                       ymax * aspect,   /* right */
+                       -ymax,           /* bottom */
+                       ymax,            /* top */
+                       z_near,
+                       z_far);
+}
+
+void
+cogl_matrix_ortho (CoglMatrix *matrix,
+                   float left,
+                   float right,
+                   float bottom,
+                   float top,
+                   float near,
+                   float far)
+{
+  CoglMatrix ortho;
+
+  /* column 0 */
+  ortho.xx = 2.0 / (right - left);
+  ortho.yx = 0.0;
+  ortho.zx = 0.0;
+  ortho.wx = 0.0;
+
+  /* column 1 */
+  ortho.xy = 0.0;
+  ortho.yy = 2.0 / (top - bottom);
+  ortho.zy = 0.0;
+  ortho.wy = 0.0;
+
+  /* column 2 */
+  ortho.xz = 0.0;
+  ortho.yz = 0.0;
+  ortho.zz = -2.0 / (far - near);
+  ortho.wz = 0.0;
+
+  /* column 3 */
+  ortho.xw = -(right + left) / (right - left);
+  ortho.yw = -(top + bottom) / (top - bottom);
+  ortho.zw = -(far + near) / (far - near);
+  ortho.ww = 1.0;
+
+  cogl_matrix_multiply (matrix, matrix, &ortho);
+}
+
+void
 cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 {
   memcpy (matrix, array, sizeof (float) * 16);
@@ -219,4 +260,20 @@ cogl_matrix_get_array (const CoglMatrix *matrix)
 {
   return (float *)matrix;
 }
+
+void
+cogl_matrix_transform_point (const CoglMatrix *matrix,
+                             float *x,
+                             float *y,
+                             float *z,
+                             float *w)
+{
+  float _x = *x, _y = *y, _z = *z, _w = *w;
+
+  *x = matrix->xx * _x + matrix->xy * _y + matrix->xz * _z + matrix->xw * _w;
+  *y = matrix->yx * _x + matrix->yy * _y + matrix->yz * _z + matrix->yw * _w;
+  *z = matrix->zx * _x + matrix->zy * _y + matrix->zz * _z + matrix->zw * _w;
+  *w = matrix->wx * _x + matrix->wy * _y + matrix->wz * _z + matrix->ww * _w;
+}
+
 
