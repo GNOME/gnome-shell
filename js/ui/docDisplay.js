@@ -128,7 +128,7 @@ DocDisplayItem.prototype = {
         if (this._docInfo.get_mime_type() == null || this._docInfo.get_mime_type().indexOf("image/") != 0)
             return null;
 
-        return Shell.TextureCache.load_uri_sync(this._docInfo.get_uri(), availableWidth, availableHeight);
+        return Shell.TextureCache.get_default().load_uri_sync(this._docInfo.get_uri(), availableWidth, availableHeight);
     }
 };
 
