@@ -1771,9 +1771,8 @@ get_indices_type_size (GLuint indices_type)
     }
 }
 
-void
+int
 cogl_vertex_buffer_add_indices (CoglHandle       handle,
-                                int              id,
 			        int              min_index,
                                 int              max_index,
                                 CoglIndicesType  indices_type,
@@ -1781,32 +1780,23 @@ cogl_vertex_buffer_add_indices (CoglHandle       handle,
                                 int              indices_len)
 {
   CoglVertexBuffer *buffer;
-  GList *l;
   gboolean fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
   size_t indices_bytes;
   CoglVertexBufferIndices *indices;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  static int next_indices_id = 1;
+
+
+  _COGL_GET_CONTEXT (ctx, 0);
 
   if (!cogl_is_vertex_buffer (handle))
-    return;
+    return 0;
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  for (l = buffer->indices; l; l = l->next)
-    {
-      CoglVertexBufferIndices *current_indices = l->data;
-      if (current_indices->id == id)
-        {
-          free_vertex_buffer_indices (l->data);
-          buffer->indices = g_list_delete_link (buffer->indices, l);
-          break;
-        }
-    }
-
   indices = g_slice_alloc (sizeof (CoglVertexBufferIndices));
-  indices->id = id;
+  indices->id = next_indices_id;
   indices->min_index = min_index;
   indices->max_index = max_index;
 
@@ -1818,7 +1808,7 @@ cogl_vertex_buffer_add_indices (CoglHandle       handle,
     {
       g_critical ("unknown indices type %d", indices_type);
       g_slice_free (CoglVertexBufferIndices, indices);
-      return;
+      return 0;
     }
 
   indices_bytes = get_indices_type_size (indices->type) * indices_len;
@@ -1840,6 +1830,32 @@ cogl_vertex_buffer_add_indices (CoglHandle       handle,
     }
 
   buffer->indices = g_list_prepend (buffer->indices, indices);
+
+  return next_indices_id++;
+}
+
+void
+cogl_vertex_buffer_delete_indices (CoglHandle handle,
+                                   int indices_id)
+{
+  CoglVertexBuffer *buffer;
+  GList *l;
+
+  if (!cogl_is_vertex_buffer (handle))
+    return;
+
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+
+  for (l = buffer->indices; l; l = l->next)
+    {
+      CoglVertexBufferIndices *current_indices = l->data;
+      if (current_indices->id == indices_id)
+        {
+          free_vertex_buffer_indices (l->data);
+          buffer->indices = g_list_delete_link (buffer->indices, l);
+          return;
+        }
+    }
 }
 
 void

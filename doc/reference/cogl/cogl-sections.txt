@@ -309,6 +309,7 @@ cogl_vertex_buffer_enable
 cogl_vertex_buffer_draw
 CoglIndicesType
 cogl_vertex_buffer_add_indices
+cogl_vertex_buffer_delete_indices
 cogl_vertex_buffer_draw_elements
 <SUBSECTION Private>
 CoglVertexBufferAttribFlags
