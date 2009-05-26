@@ -36,9 +36,13 @@ GType shell_app_monitor_get_type (void) G_GNUC_CONST;
 ShellAppMonitor* shell_app_monitor_new(void);
 
 /* Get the most popular applications for a given activity */
-GSList *shell_app_monitor_get_apps (ShellAppMonitor *monitor,
-                                    int              activity,
-                                    gint             number);
+GSList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
+                                              int              activity,
+                                              gint             number);
+
+/* Get whatever's running right now */
+GSList *shell_app_monitor_get_running_apps (ShellAppMonitor *monitor,
+                                            int              activity);
 
 G_END_DECLS
 

@@ -15,6 +15,7 @@
 #include "shell-app-monitor.h"
 #include "shell-global.h"
 
+#include "display.h"
 
 /* This file includes modified code from
  * desktop-data-engine/engine-dbus/hippo-application-monitor.c
@@ -260,32 +261,32 @@ shell_app_monitor_finalize (GObject *object)
 }
 
 /**
- * shell_app_monitor_get_apps:
+ * shell_app_monitor_get_most_used_apps:
  *
  * Get a list of desktop identifiers representing the most popular applications
  * for a given activity.
  *
  * @monitor: the app monitor instance to request
  * @activity: the activity for which stats are considered
- * @max_count: how many applications are requested. Note that the actual 
+ * @max_count: how many applications are requested. Note that the actual
  *     list size may be less, or NULL if not enough applications are registered.
  *
  * Returns: (element-type utf8) (transfer full): List of application desktop
  *     identifiers, in low case
  */
 GSList *
-shell_app_monitor_get_apps (ShellAppMonitor *monitor,
-                            gint             activity,
-                            gint             max_count)
+shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
+                                      gint             activity,
+                                      gint             max_count)
 {
   GSList *list = NULL;
   GSList *popularity;
   AppPopularity *app_popularity;
   int i;
-  
+
   popularity = g_hash_table_lookup (monitor->popularities,
                                     GINT_TO_POINTER (activity));
-  
+
   for (i = 0; i < max_count; i++)
     {
       if (!popularity)
@@ -304,154 +305,28 @@ get_active_app_properties (ShellAppMonitor *monitor,
                            char           **wm_class,
                            char           **title)
 {
-  Display *xdisplay = GDK_DISPLAY_XDISPLAY (monitor->display);
-  int n_screens = gdk_display_get_n_screens (monitor->display);
-  Atom net_active_window_x =
-    gdk_x11_get_xatom_by_name_for_display (monitor->display,
-                                           "_NET_ACTIVE_WINDOW");
-  GdkAtom net_active_window_gdk =
-    gdk_atom_intern ("_NET_ACTIVE_WINDOW", FALSE);
-  Window active_window = None;
-  int i;
+  ShellGlobal *global;
+  MetaScreen *screen;
+  MetaDisplay *display;
+  MetaWindow *active;
 
-  Atom type;
-  int format;
-  unsigned long n_items;
-  unsigned long bytes_after;
-  guchar *data;
-  gboolean is_desktop = FALSE;
+  global = shell_global_get ();
+  g_object_get (global, "screen", &screen, NULL);
+  display = meta_screen_get_display (screen);
+  g_object_unref (screen);
+
+  active = meta_display_get_focus_window (display);
 
   if (wm_class)
     *wm_class = NULL;
   if (title)
     *title = NULL;
 
-  /* Find the currently focused window by looking at the _NET_ACTIVE_WINDOW property
-   * on all the screens of the display.
-   */
-  for (i = 0; i < n_screens; i++)
-    {
-      GdkScreen *screen = gdk_display_get_screen (monitor->display, i);
-      GdkWindow *root = gdk_screen_get_root_window (screen);
+  if (active == NULL)
+    return;
 
-      if (!gdk_x11_screen_supports_net_wm_hint (screen, net_active_window_gdk))
-        continue;
-
-      XGetWindowProperty (xdisplay, GDK_DRAWABLE_XID (root),
-                          net_active_window_x,
-                          0, 1, False, XA_WINDOW,
-                          &type, &format, &n_items, &bytes_after, &data);
-      if (type == XA_WINDOW)
-        {
-          active_window = *(Window *) data;
-          XFree (data);
-          break;
-        }
-    }
-
-  /* Now that we have the active window, figure out the app name and WM class
-   */
-  gdk_error_trap_push ();
-
-  if (active_window && wm_class)
-    {
-      if (XGetWindowProperty (xdisplay, active_window,
-                              XA_WM_CLASS,
-                              0, G_MAXLONG, False, XA_STRING,
-                              &type, &format, &n_items, &bytes_after,
-                              &data) == Success && type == XA_STRING)
-        {
-          if (format == 8)
-            {
-              char **list;
-              int count;
-
-              count =
-                gdk_text_property_to_utf8_list_for_display (monitor->display,
-                                                            GDK_TARGET_STRING,
-                                                            8, data, n_items,
-                                                            &list);
-
-              if (count > 1)
-                {
-                  /* This is a check for Nautilus, which sets the instance to this
-                   * value for the desktop window; we do this rather than check for
-                   * the more general _NET_WM_WINDOW_TYPE_DESKTOP to avoid having
-                   * to do another XGetProperty on every iteration. We generally
-                   * don't want to count the desktop being focused as app
-                   * usage because it frequently can be a false-positive on an
-                   * empty workspace.
-                   */
-                  if (strcmp (list[0], "desktop_window") == 0)
-                    is_desktop = TRUE;
-                  else
-                    *wm_class = g_strdup (list[1]);
-                }
-
-              if (list)
-                g_strfreev (list);
-            }
-
-          XFree (data);
-        }
-    }
-
-  if (is_desktop)
-    active_window = None;
-
-  if (active_window && title)
-    {
-      Atom utf8_string =
-        gdk_x11_get_xatom_by_name_for_display (monitor->display,
-                                               "UTF8_STRING");
-
-      if (XGetWindowProperty (xdisplay, active_window,
-                              gdk_x11_get_xatom_by_name_for_display
-                              (monitor->display, "_NET_WM_NAME"), 0,
-                              G_MAXLONG, False, utf8_string, &type, &format,
-                              &n_items, &bytes_after, &data) == Success
-          && type == utf8_string)
-        {
-          if (format == 8 && g_utf8_validate ((char *) data, -1, NULL))
-            {
-              *title = g_strdup ((char *) data);
-            }
-
-          XFree (data);
-        }
-    }
-
-  if (active_window && title && *title == NULL)
-    {
-      if (XGetWindowProperty (xdisplay, active_window,
-                              XA_WM_NAME,
-                              0, G_MAXLONG, False, AnyPropertyType,
-                              &type, &format, &n_items, &bytes_after,
-                              &data) == Success && type != None)
-        {
-          if (format == 8)
-            {
-              char **list;
-              int count;
-
-              count =
-                gdk_text_property_to_utf8_list_for_display (monitor->display,
-                                                            gdk_x11_xatom_to_atom_for_display
-                                                            (monitor->display,
-                                                             type), 8, data,
-                                                            n_items, &list);
-
-              if (count > 0)
-                *title = g_strdup (list[0]);
-
-              if (list)
-                g_strfreev (list);
-            }
-
-          XFree (data);
-        }
-    }
-  gdk_error_trap_pop ();
+  *wm_class = g_strdup (meta_window_get_wm_class (active));
+  *title = g_strdup (meta_window_get_description (active));
 }
 
 void

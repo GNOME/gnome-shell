@@ -395,7 +395,7 @@ AppDisplay.prototype = {
     _setDefaultList : function() {
         // Ask or more app than we need, since the list of recently used apps
         // might contain an app we don't have a desktop file for
-        var apps = this._appMonitor.get_apps (0, Math.round(MAX_ITEMS * 1.5));
+        var apps = this._appMonitor.get_most_used_apps (0, Math.round(MAX_ITEMS * 1.5));
         this._matchedItems = [];
         for (let i = 0; i < apps.length; i++) {
             if (this._matchedItems.length > MAX_ITEMS)
