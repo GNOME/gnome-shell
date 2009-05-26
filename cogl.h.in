@@ -331,7 +331,7 @@ void            cogl_set_projection_matrix    (CoglMatrix *matrix);
 void            cogl_get_viewport             (float        v[4]);
 
 /**
- * cogl_enable_depth_test:
+ * cogl_set_depth_test_enable:
  * @setting: %TRUE to enable depth testing or %FALSE to disable.
  *
  * Sets whether depth testing is enabled. If it is disabled then the
@@ -340,10 +340,19 @@ void            cogl_get_viewport             (float        v[4]);
  * clutter_actor_lower(), otherwise it will also take into account the
  * actor's depth. Depth testing is disabled by default.
  */
-void            cogl_enable_depth_test        (gboolean            setting);
+void            cogl_set_depth_test_enable    (gboolean setting);
 
 /**
- * cogl_enable_backface_culling:
+ * cogl_get_depth_test_enable:
+ *
+ * Queries if depth testing has been enabled via cogl_set_depth_test_enable()
+ *
+ * Returns: TRUE if depth testing is enabled else FALSE
+ */
+gboolean        cogl_get_depth_test_enable    (void);
+
+/**
+ * cogl_set_backface_culling_enabled:
  * @setting: %TRUE to enable backface culling or %FALSE to disable.
  *
  * Sets whether textures positioned so that their backface is showing
@@ -352,7 +361,17 @@ void            cogl_enable_depth_test        (gboolean            setting);
  * only affects calls to the cogl_rectangle* family of functions and
  * cogl_vertex_buffer_draw*. Backface culling is disabled by default.
  */
-void            cogl_enable_backface_culling  (gboolean            setting);
+void            cogl_set_backface_culling_enabled (gboolean setting);
+
+/**
+ * cogl_get_backface_culling_enabled:
+ *
+ * Queries if backface culling has been enabled via
+ * cogl_set_backface_culling_enabled()
+ *
+ * Returns: TRUE if backface culling is enabled else FALSE
+ */
+gboolean        cogl_get_backface_culling_enabled (void);
 
 /**
  * cogl_set_fog:

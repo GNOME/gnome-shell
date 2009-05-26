@@ -40,8 +40,10 @@ cogl_get_viewport
 <SUBSECTION>
 cogl_clear
 cogl_get_bitmasks
-cogl_enable_depth_test
-cogl_enable_backface_culling
+cogl_set_depth_test_enabled
+cogl_get_depth_test_enabled
+cogl_set_backface_culling_enabled
+cogl_get_backface_culling_enabled
 <SUBSECTION>
 CoglFogMode
 cogl_set_fog
