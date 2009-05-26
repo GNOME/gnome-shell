@@ -345,7 +345,7 @@ AppDisplay.prototype = {
         }
     },
 
-    addApp: function(appId) {
+    _addApp: function(appId) {
         let appInfo = Gio.DesktopAppInfo.new(appId);
         if (appInfo != null) {
             this._allItems[appId] = appInfo;
@@ -385,7 +385,7 @@ AppDisplay.prototype = {
         let settings = this._appSystem.get_all_settings();
         for (let i = 0; i < settings.length; i++) {
             let appId = settings[i];
-			this._addApp(appId);
+            this._addApp(appId);
         }
 
         this._appsStale = false;
@@ -477,12 +477,10 @@ AppDisplay.prototype = {
 
         // we expect this._appCategories.hasOwnProperty(itemInfo.get_id()) to always be true here
         let categories = this._appCategories[itemInfo.get_id()];
-        if (categories) {
-            for (let i = 0; i < categories.length; i++) {
-                let category = categories[i].toLowerCase();
-                if (category.indexOf(search) >= 0)
-                    return true;
-            }
+        for (let i = 0; i < categories.length; i++) {
+            let category = categories[i].toLowerCase();
+            if (category.indexOf(search) >= 0)
+                return true;
         }
        
         return false;
