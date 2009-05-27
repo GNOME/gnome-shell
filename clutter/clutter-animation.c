@@ -778,6 +778,7 @@ on_alpha_notify (GObject          *gobject,
       const gchar *p_name = p->data;
       ClutterInterval *interval;
       GValue value = { 0, };
+      gboolean apply;
 
       interval = g_hash_table_lookup (priv->properties, p_name);
       g_assert (CLUTTER_IS_INTERVAL (interval));
@@ -791,19 +792,21 @@ on_alpha_notify (GObject          *gobject,
           initial = clutter_interval_peek_initial_value (interval);
           final   = clutter_interval_peek_final_value (interval);
 
-          clutter_animatable_animate_property (animatable, animation,
-                                               p_name,
-                                               initial, final,
-                                               alpha_value,
-                                               &value);
-
-          g_object_set_property (priv->object, p_name, &value);
+          apply = clutter_animatable_animate_property (animatable, animation,
+                                                       p_name,
+                                                       initial, final,
+                                                       alpha_value,
+                                                       &value);
         }
       else
         {
-          if (clutter_interval_compute_value (interval, alpha_value, &value))
-            g_object_set_property (priv->object, p_name, &value);
+          apply = clutter_interval_compute_value (interval,
+                                                  alpha_value,
+                                                  &value);
         }
+
+      if (apply)
+        g_object_set_property (priv->object, p_name, &value);
 
       g_value_unset (&value);
     }

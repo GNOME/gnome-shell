@@ -86,9 +86,12 @@ clutter_animatable_get_type (void)
  * All implementation of the #ClutterAnimatable interface must
  * implement this function.
  *
+ * Return value: %TRUE if the value has been validated and can
+ *   be applied to the #ClutterAnimatable, and %FALSE otherwise
+ *
  * Since: 1.0
  */
-void
+gboolean
 clutter_animatable_animate_property (ClutterAnimatable *animatable,
                                      ClutterAnimation  *animation,
                                      const gchar       *property_name,
@@ -97,21 +100,27 @@ clutter_animatable_animate_property (ClutterAnimatable *animatable,
                                      gdouble            progress,
                                      GValue            *value)
 {
-  g_return_if_fail (CLUTTER_IS_ANIMATABLE (animatable));
-  g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
-  g_return_if_fail (property_name != NULL);
-  g_return_if_fail (initial_value != NULL && final_value != NULL);
-  g_return_if_fail (G_VALUE_TYPE (initial_value) != G_TYPE_INVALID);
-  g_return_if_fail (G_VALUE_TYPE (final_value) != G_TYPE_INVALID);
-  g_return_if_fail (value != NULL);
-  g_return_if_fail (G_VALUE_TYPE (value) == G_VALUE_TYPE (initial_value) &&
-                    G_VALUE_TYPE (value) == G_VALUE_TYPE (final_value));
+  gboolean res;
 
-  CLUTTER_ANIMATABLE_GET_IFACE (animatable)->animate_property (animatable,
-                                                               animation,
-                                                               property_name,
-                                                               initial_value,
-                                                               final_value,
-                                                               progress,
-                                                               value);
+  g_return_val_if_fail (CLUTTER_IS_ANIMATABLE (animatable), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), FALSE);
+  g_return_val_if_fail (property_name != NULL, FALSE);
+  g_return_val_if_fail (initial_value != NULL && final_value != NULL, FALSE);
+  g_return_val_if_fail (G_VALUE_TYPE (initial_value) != G_TYPE_INVALID, FALSE);
+  g_return_val_if_fail (G_VALUE_TYPE (final_value) != G_TYPE_INVALID, FALSE);
+  g_return_val_if_fail (value != NULL, FALSE);
+  g_return_val_if_fail (G_VALUE_TYPE (value) == G_VALUE_TYPE (initial_value) &&
+                        G_VALUE_TYPE (value) == G_VALUE_TYPE (final_value),
+                        FALSE);
+
+  res =
+    CLUTTER_ANIMATABLE_GET_IFACE (animatable)->animate_property (animatable,
+                                                                 animation,
+                                                                 property_name,
+                                                                 initial_value,
+                                                                 final_value,
+                                                                 progress,
+                                                                 value);
+
+  return res;
 }
