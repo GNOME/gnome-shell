@@ -220,15 +220,15 @@ clutter_animation_get_property (GObject    *gobject,
       break;
 
     case PROP_MODE:
-      g_value_set_ulong (value, priv->mode);
+      g_value_set_ulong (value, clutter_animation_get_mode (animation));
       break;
 
     case PROP_DURATION:
-      g_value_set_uint (value, priv->duration);
+      g_value_set_uint (value, clutter_animation_get_duration (animation));
       break;
 
     case PROP_LOOP:
-      g_value_set_boolean (value, priv->loop);
+      g_value_set_boolean (value, clutter_animation_get_loop (animation));
       break;
 
     case PROP_TIMELINE:
@@ -747,7 +747,7 @@ on_timeline_completed (ClutterTimeline  *timeline,
 {
   CLUTTER_NOTE (ANIMATION, "Timeline [%p] complete", timeline);
 
-  if (!animation->priv->loop)
+  if (!clutter_animation_get_loop (animation))
     g_signal_emit (animation, animation_signals[COMPLETED], 0);
 }
 
@@ -1031,9 +1031,16 @@ clutter_animation_set_mode (ClutterAnimation *animation,
 gulong
 clutter_animation_get_mode (ClutterAnimation *animation)
 {
+  ClutterAnimationPrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), CLUTTER_LINEAR);
 
-  return animation->priv->mode;
+  priv = animation->priv;
+
+  if (priv->alpha != NULL)
+    return clutter_alpha_get_mode (priv->alpha);
+
+  return priv->mode;
 }
 
 /**
@@ -1104,17 +1111,16 @@ clutter_animation_set_loop (ClutterAnimation *animation,
 
   priv = animation->priv;
 
-  if (priv->loop == loop)
-    return;
-
-  priv->loop = loop;
-
   alpha = clutter_animation_get_alpha_internal (animation);
   timeline = clutter_alpha_get_timeline (alpha);
   if (timeline == NULL)
-    clutter_animation_create_timeline (animation);
+    {
+      priv->loop = loop;
+
+      clutter_animation_create_timeline (animation);
+    }
   else
-    clutter_timeline_set_loop (timeline, priv->loop);
+    clutter_timeline_set_loop (timeline, loop);
 
   g_object_notify (G_OBJECT (animation), "loop");
 }
@@ -1132,9 +1138,22 @@ clutter_animation_set_loop (ClutterAnimation *animation,
 gboolean
 clutter_animation_get_loop (ClutterAnimation *animation)
 {
+  ClutterAnimationPrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), FALSE);
 
-  return animation->priv->loop;
+  priv = animation->priv;
+
+  if (priv->alpha != NULL)
+    {
+      ClutterTimeline *timeline;
+
+      timeline = clutter_alpha_get_timeline (priv->alpha);
+      if (timeline != NULL)
+        return clutter_timeline_get_loop (timeline);
+    }
+
+  return priv->loop;
 }
 
 /**
@@ -1150,9 +1169,22 @@ clutter_animation_get_loop (ClutterAnimation *animation)
 guint
 clutter_animation_get_duration (ClutterAnimation *animation)
 {
+  ClutterAnimationPrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), 0);
 
-  return animation->priv->duration;
+  priv = animation->priv;
+
+  if (priv->alpha != NULL)
+    {
+      ClutterTimeline *timeline;
+
+      timeline = clutter_alpha_get_timeline (priv->alpha);
+      if (timeline != NULL)
+        return clutter_timeline_get_duration (timeline);
+    }
+
+  return priv->duration;
 }
 
 /**
