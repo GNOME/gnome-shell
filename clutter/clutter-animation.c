@@ -1075,11 +1075,15 @@ clutter_animation_set_duration (ClutterAnimation *animation,
 
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
 
+  g_object_freeze_notify (G_OBJECT (animation));
+
   timeline = clutter_animation_get_timeline_internal (animation);
   clutter_timeline_set_duration (timeline, msecs);
   clutter_timeline_rewind (timeline);
 
   g_object_notify (G_OBJECT (animation), "duration");
+
+  g_object_thaw_notify (G_OBJECT (animation));
 }
 
 /**
@@ -1105,10 +1109,14 @@ clutter_animation_set_loop (ClutterAnimation *animation,
 
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
 
+  g_object_freeze_notify (G_OBJECT (animation));
+
   timeline = clutter_animation_get_timeline_internal (animation);
   clutter_timeline_set_loop (timeline, loop);
 
   g_object_notify (G_OBJECT (animation), "loop");
+
+  g_object_thaw_notify (G_OBJECT (animation));
 }
 
 /**
