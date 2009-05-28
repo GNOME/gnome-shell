@@ -52,6 +52,11 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  *   implementation of this virtual function is required.
  * @foreach: virtual function for iterating over the container's children.
  *   The implementation of this virtual function is required.
+ * @foreach_with_internals: virtual functions for iterating over the
+ *   container's children, both added using the #ClutterContainer API
+ *   and internal children. The implementation of this virtual function
+ *   is required only if the #ClutterContainer implementation has
+ *   internal children.
  * @raise: virtual function for raising a child
  * @lower: virtual function for lowering a child
  * @sort_depth_order: virtual function for sorting the children of a

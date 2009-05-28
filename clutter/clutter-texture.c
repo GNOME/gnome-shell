@@ -2718,7 +2718,7 @@ clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
 /**
  * clutter_texture_set_load_async:
  * @texture: a #ClutterTexture
- * @load_sync: %TRUE if the texture should asynchronously load data
+ * @load_async: %TRUE if the texture should asynchronously load data
  *   from a filename
  *
  * Sets whether @texture should use a worker thread to load the data

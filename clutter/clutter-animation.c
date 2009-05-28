@@ -389,7 +389,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
                   G_TYPE_NONE, 0);
 
   /**
-   * ClutterAniamtion::completed:
+   * ClutterAnimation::completed:
    * @animation: the animation that emitted the signal
    *
    * The ::completed signal is emitted once the animation has

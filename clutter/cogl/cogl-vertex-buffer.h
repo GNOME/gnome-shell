@@ -96,12 +96,17 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
 
 /**
  * CoglAttributeType:
- * @COGL_ATTRIBUTE_TYPE_BYTE:
- * @COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE:
- * @COGL_ATTRIBUTE_TYPE_SHORT:
- * @COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT:
- * @COGL_ATTRIBUTE_TYPE_FLOAT:
+ * @COGL_ATTRIBUTE_TYPE_BYTE: Data is the same size of a byte
+ * @COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE: Data is the same size of an
+ *   unsigned byte
+ * @COGL_ATTRIBUTE_TYPE_SHORT: Data is the same size of a short integer
+ * @COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT: Data is the same size of
+ *   an unsigned short integer
+ * @COGL_ATTRIBUTE_TYPE_FLOAT: Data is the same size of a float
  *
+ * Data types for the components of cogl_vertex_buffer_add()
+ *
+ * Since: 1.0
  */
 typedef enum _CoglAttributeType
 {
@@ -245,14 +250,18 @@ cogl_vertex_buffer_enable (CoglHandle  handle,
 
 /**
  * CoglVerticesMode:
- * COGL_VERTICES_MODE_POINTS:
- * COGL_VERTICES_MODE_LINE_STRIP:
- * COGL_VERTICES_MODE_LINE_LOOP:
- * COGL_VERTICES_MODE_LINES:
- * COGL_VERTICES_MODE_TRIANGLE_STRIP:
- * COGL_VERTICES_MODE_TRIANGLE_FAN:
- * COGL_VERTICES_MODE_TRIANGLES:
+ * @COGL_VERTICES_MODE_POINTS: FIXME, equivalent to %GL_POINTS
+ * @COGL_VERTICES_MODE_LINE_STRIP: FIXME, equivalent to %GL_LINE_STRIP
+ * @COGL_VERTICES_MODE_LINE_LOOP: FIXME, equivalent to %GL_LINE_LOOP
+ * @COGL_VERTICES_MODE_LINES: FIXME, equivalent to %GL_LINES
+ * @COGL_VERTICES_MODE_TRIANGLE_STRIP: FIXME, equivalent to %GL_TRIANGLE_STRIP
+ * @COGL_VERTICES_MODE_TRIANGLE_FAN: FIXME, equivalent to %GL_TRIANGLE_FAN
+ * @COGL_VERTICES_MODE_TRIANGLES: FIXME, equivalent to %GL_TRIANGLES
  *
+ * How vertices passed to cogl_vertex_buffer_draw() and
+ * cogl_vertex_buffer_draw_elements() should be interpreted
+ *
+ * Since: 1.0
  */
 typedef enum _CoglVerticesMode
 {

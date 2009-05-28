@@ -46,6 +46,10 @@ G_BEGIN_DECLS
  * CoglShaderType:
  * @COGL_SHADER_TYPE_VERTEX: A program for proccessing vertices
  * @COGL_SHADER_TYPE_FRAGMENT: A program for processing fragments
+ *
+ * Types of shaders
+ *
+ * Since: 1.0
  */
 typedef enum _CoglShaderType
 {
@@ -132,8 +136,10 @@ void            cogl_shader_get_info_log      (CoglHandle         handle,
  * cogl_shader_get_type:
  * @handle: #CoglHandle for a shader.
  *
- * Returns: COGL_SHADER_TYPE_VERTEX if the shader is a vertex processor
- *          or COGL_SHADER_TYPE_FRAGMENT if the shader is a frament processor
+ * Retrieves the type of a shader #CoglHandle
+ *
+ * Return value: %COGL_SHADER_TYPE_VERTEX if the shader is a vertex processor
+ *          or %COGL_SHADER_TYPE_FRAGMENT if the shader is a frament processor
  */
 CoglShaderType  cogl_shader_get_type          (CoglHandle          handle);
 
@@ -141,7 +147,9 @@ CoglShaderType  cogl_shader_get_type          (CoglHandle          handle);
  * cogl_shader_is_compiled:
  * @handle: #CoglHandle for a shader.
  *
- * Returns: TRUE if the shader object has sucessfully be compiled else FALSE
+ * Retrieves whether a shader #CoglHandle has been compiled
+ *
+ * Return value: %TRUE if the shader object has sucessfully be compiled
  */
 gboolean        cogl_shader_is_compiled       (CoglHandle          handle);
 

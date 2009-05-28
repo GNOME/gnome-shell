@@ -140,7 +140,7 @@ guint            clutter_threads_add_frame_source_full (gint           priority,
 guint            clutter_threads_add_repaint_func      (GSourceFunc    func,
                                                         gpointer       data,
                                                         GDestroyNotify notify);
-void             clutter_threads_remove_repaint_func   (guint          handler_id);
+void             clutter_threads_remove_repaint_func   (guint          handle_id);
 
 void             clutter_set_motion_events_enabled   (gboolean enable);
 gboolean         clutter_get_motion_events_enabled   (void);

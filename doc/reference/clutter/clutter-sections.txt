@@ -47,6 +47,7 @@ CLUTTER_UNITS_FROM_EM
 clutter_units_mm
 clutter_units_pt
 clutter_units_em
+clutter_units_em_for_font
 clutter_units_pixels
 clutter_units_to_pixels
 
@@ -438,10 +439,9 @@ clutter_texture_set_from_yuv_data
 clutter_texture_set_area_from_rgb_data
 clutter_texture_get_base_size
 clutter_texture_get_pixel_format
+clutter_texture_get_max_tile_waste
 clutter_texture_get_filter_quality
 clutter_texture_set_filter_quality
-clutter_texture_get_max_tile_waste
-clutter_texture_set_max_tile_waste
 clutter_texture_get_cogl_texture
 clutter_texture_set_cogl_texture
 clutter_texture_get_cogl_material
@@ -1016,6 +1016,8 @@ clutter_threads_add_timeout
 clutter_threads_add_timeout_full
 clutter_threads_add_frame_source
 clutter_threads_add_frame_source_full
+clutter_threads_add_repaint_func
+clutter_threads_remove_repaint_func
 
 <SUBSECTION>
 clutter_get_keyboard_grab
@@ -1508,6 +1510,7 @@ clutter_cairo_texture_get_surface_size
 <SUBSECTION>
 clutter_cairo_texture_create
 clutter_cairo_texture_create_region
+clutter_cairo_texture_clear
 
 <SUBSECTION>
 clutter_cairo_set_source_color

@@ -180,6 +180,10 @@ struct _ClutterActor
  *   it should chain up to the parent's implementation
  * @unrealize: virtual function, used to deallocate resources allocated
  *   in ::realize; it should chain up to the parent's implementation
+ * @map: virtual function for containers and composite actors, to
+ *   map their children; it must chain up to the parent's implementation
+ * @unmap: virtual function for containers and composite actors, to
+ *   unmap their children; it must chain up to the parent's implementation
  * @paint: virtual function, used to paint the actor
  * @get_preferred_width: virtual function, used when querying the minimum
  *   and natural widths of an actor for a given height; it is used by
