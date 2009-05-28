@@ -616,6 +616,11 @@ const GList *cogl_material_get_layers (CoglHandle material_handle);
  * CoglMaterialLayerType:
  * @COGL_MATERIAL_LAYER_TYPE_TEXTURE: The layer represents a
  * <link linkend="cogl-Textures">Cogl texture</link>
+ *
+ * Available types of layers for a #CoglMaterial. This enumeration
+ * might be expanded in later versions.
+ *
+ * Since: 1.0
  */
 typedef enum _CoglMaterialLayerType
 {

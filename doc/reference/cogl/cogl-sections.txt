@@ -376,15 +376,9 @@ CoglMaterialLayerPrivFlags
 <SECTION>
 <FILE>cogl-material-internals</FILE>
 <TITLE>Material Internals</TITLE>
-cogl_material_get_cogl_enable_flags
-CoglMaterialFlushOption
-cogl_material_flush_gl_state
 CoglMaterialLayer
 cogl_material_get_layers
 CoglMaterialLayerType
 cogl_material_layer_get_type
-CoglMaterialLayerFlags
-cogl_material_layer_get_flags
 cogl_material_layer_get_texture
-cogl_material_layer_flush_gl_sampler_state
 </SECTION>

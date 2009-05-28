@@ -412,6 +412,10 @@ void            cogl_disable_fog              (void);
  * @COGL_BUFFER_BIT_COLOR: Selects the primary color buffer
  * @COGL_BUFFER_BIT_DEPTH: Selects the depth buffer
  * @COGL_BUFFER_BIT_STENCIL: Selects the stencil buffer
+ *
+ * Types of auxiliary buffers
+ *
+ * Since: 1.0
  */
 typedef enum _CoglBufferBit
 {
