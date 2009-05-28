@@ -303,10 +303,7 @@ typedef enum _CoglIndicesType
 } CoglIndicesType;
 
 /**
- * cogl_vertex_buffer_add_indices:
- * @handle: A vertex buffer handle
- * @min_index: Specifies the minimum vertex index contained in indices
- * @max_index: Specifies the maximum vertex index contained in indices
+ * cogl_vertex_buffer_indices_new:
  * @indices_type: a #CoglIndicesType specifying the data type used for
  *                the indices.
  * @indices_array: Specifies the address of your array of indices
@@ -317,19 +314,11 @@ typedef enum _CoglIndicesType
  * array allows you to reference vertices multiple times, for example
  * during triangle strips.
  *
- * You should aim to use the smallest data type possible and correctly reflect
- * the range of index values in the {min,max}_index arguments. This allows Cogl
- * to optimize the internal storage used for the indices and reduce the demand
- * for memory bandwidth.
- *
- * Returns: An identifier (greater than 0) for the indices which you can
- *          pass to cogl_vertex_buffer_draw_elements().
+ * Returns: A CoglHandle for the indices which you can pass to
+ *          cogl_vertex_buffer_draw_elements().
  */
-int
-cogl_vertex_buffer_add_indices (CoglHandle       handle,
-			        int              min_index,
-                                int              max_index,
-                                CoglIndicesType  indices_type,
+CoglHandle
+cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
                                 const void      *indices_array,
                                 int              indices_len);
 
@@ -352,16 +341,17 @@ cogl_vertex_buffer_delete_indices (CoglHandle handle,
  * @handle: A vertex buffer handle
  * @mode: A #CoglVerticesMode specifying how the vertices should be
  *        interpreted.
- * @indices_id: The identifier for a an array of indices previously added to
- *              the given Cogl vertex buffer using
- *              cogl_vertex_buffer_add_indices().
+ * @indices: A CoglHandle for a set of indices allocated via
+ *           cogl_vertex_buffer_indices_new ()
+ * @min_index: Specifies the minimum vertex index contained in indices
+ * @max_index: Specifies the maximum vertex index contained in indices
  * @indices_offset: An offset into named indices. The offset marks the first
  *                  index to use for drawing.
  * @count: Specifies the number of vertices you want to draw.
  *
  * This function lets you use an array of indices to specify the vertices
  * within your vertex buffer that you want to draw. The indices themselves
- * are given by calling cogl_vertex_buffer_add_indices ()
+ * are created by calling cogl_vertex_buffer_indices_new ()
  *
  * Any un-submitted attribute changes are automatically submitted before
  * drawing.
@@ -369,7 +359,9 @@ cogl_vertex_buffer_delete_indices (CoglHandle handle,
 void
 cogl_vertex_buffer_draw_elements (CoglHandle       handle,
 			          CoglVerticesMode mode,
-                                  int              indices_id,
+                                  CoglHandle       indices,
+                                  int              min_index,
+                                  int              max_index,
                                   int              indices_offset,
                                   int              count);
 

@@ -49,7 +49,7 @@ typedef struct _TestState
   GLubyte         *quad_mesh_colors;
   GLushort        *static_indices;
   guint            n_static_indices;
-  int              indices_id;
+  CoglHandle       indices;
   ClutterTimeline *timeline;
 } TestState;
 
@@ -141,7 +141,10 @@ on_paint (ClutterActor *actor, TestState *state)
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw_elements (state->buffer,
                                     COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                                    state->indices_id,
+                                    state->indices,
+                                    0, /* min index */
+                                    (MESH_WIDTH + 1) *
+                                    (MESH_HEIGHT + 1), /* max index */
                                     0, /* indices offset */
                                     state->n_static_indices);
 }
@@ -220,12 +223,8 @@ init_static_index_arrays (TestState *state)
 
 #undef MESH_INDEX
 
-  state->indices_id =
-    cogl_vertex_buffer_add_indices (state->buffer,
-                                    0, /* min index */
-                                    (MESH_WIDTH + 1) *
-                                    (MESH_HEIGHT + 1), /* max index */
-                                    COGL_INDICES_TYPE_UNSIGNED_SHORT,
+  state->indices =
+    cogl_vertex_buffer_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
                                     state->static_indices,
                                     state->n_static_indices);
 }
@@ -376,6 +375,7 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
   clutter_main ();
 
   cogl_handle_unref (state.buffer);
+  cogl_handle_unref (state.indices);
 
   g_source_remove (idle_source);
 

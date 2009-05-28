@@ -139,14 +139,13 @@ typedef struct _CoglVertexBufferVBO
 
 typedef struct _CoglVertexBufferIndices
 {
-  int     id;
+  CoglHandleObject _parent;
+
   /* Note: this is a pointer to handle fallbacks. It normally holds
    * a GLuint VBO name, but when the driver doesn't support VBOs then
    * this simply points to an malloc'd buffer. */
   void   *vbo_name;
   GLenum  type;
-  GLuint  min_index;
-  GLuint  max_index;
 } CoglVertexBufferIndices;
 
 typedef struct _CoglVertexBuffer
@@ -159,8 +158,6 @@ typedef struct _CoglVertexBuffer
   /* Note: new_attributes is normally NULL and only valid while
    * modifying a buffer. */
   GList  *new_attributes; /*!< attributes pending submission */
-
-  GList *indices; /*!< A list of associated index arrays */
 
 } CoglVertexBuffer;
 
