@@ -1018,7 +1018,6 @@ void
 clutter_animation_set_mode (ClutterAnimation *animation,
                             gulong            mode)
 {
-  ClutterTimeline *timeline;
   ClutterAlpha *alpha;
 
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
@@ -1027,9 +1026,6 @@ clutter_animation_set_mode (ClutterAnimation *animation,
 
   alpha = clutter_animation_get_alpha_internal (animation);
   clutter_alpha_set_mode (alpha, mode);
-
-  timeline = clutter_animation_get_timeline_internal (animation);
-  clutter_alpha_set_timeline (alpha, timeline);
 
   g_object_notify (G_OBJECT (animation), "mode");
 
@@ -1267,6 +1263,8 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
   if (priv->alpha == alpha)
     return;
 
+  g_object_freeze_notify (G_OBJECT (animation));
+
   if (priv->alpha != NULL)
     timeline = clutter_alpha_get_timeline (priv->alpha);
   else
@@ -1300,7 +1298,7 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
     }
 
   if (alpha == NULL)
-    return;
+    goto out;
 
   priv->alpha = g_object_ref_sink (alpha);
   priv->alpha_notify_id =
@@ -1324,12 +1322,15 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
   else
     timeline = clutter_animation_get_timeline_internal (animation);
 
+out:
   /* emit all relevant notifications */
   g_object_notify (G_OBJECT (animation), "mode");
   g_object_notify (G_OBJECT (animation), "duration");
   g_object_notify (G_OBJECT (animation), "loop");
   g_object_notify (G_OBJECT (animation), "alpha");
   g_object_notify (G_OBJECT (animation), "timeline");
+
+  g_object_thaw_notify (G_OBJECT (animation));
 }
 
 /**
