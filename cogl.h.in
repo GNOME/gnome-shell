@@ -193,8 +193,8 @@ void            cogl_ortho                    (float left,
                                                float near,
                                                float far);
 
-/**
- * cogl_setup_viewport:
+/*
+ * _cogl_setup_viewport:
  * @width: Width of the viewport
  * @height: Height of the viewport
  * @fovy: Field of view angle in degrees
@@ -208,9 +208,11 @@ void            cogl_ortho                    (float left,
  * with one that has a viewing angle of @fovy along the y-axis and a
  * view scaled according to @aspect along the x-axis. The view is
  * clipped according to @z_near and @z_far on the z-axis.
+ *
+ * This function is used only by Clutter.
  */
-void            cogl_setup_viewport           (guint               width,
-                                               guint               height,
+void            _cogl_setup_viewport          (guint        width,
+                                               guint        height,
                                                float        fovy,
                                                float        aspect,
                                                float        z_near,
