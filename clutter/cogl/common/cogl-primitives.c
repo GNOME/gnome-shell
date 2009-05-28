@@ -72,35 +72,6 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* The indices are always the same sequence regardless of the vertices so we
-   * only need to change it if there are more vertices than ever before. */
-  needed_indices = batch_len * 6;
-  if (needed_indices > ctx->static_indices->len)
-    {
-      int old_len = ctx->static_indices->len;
-      int vert_num = old_len / 6 * 4;
-      GLushort *q;
-
-      /* Add two triangles for each quad to the list of
-         indices. That makes six new indices but two of the
-         vertices in the triangles are shared. */
-      g_array_set_size (ctx->static_indices, needed_indices);
-      q = &g_array_index (ctx->static_indices, GLushort, old_len);
-
-      for (i = old_len;
-           i < ctx->static_indices->len;
-           i += 6, vert_num += 4)
-        {
-          *(q++) = vert_num + 0;
-          *(q++) = vert_num + 1;
-          *(q++) = vert_num + 3;
-
-          *(q++) = vert_num + 1;
-          *(q++) = vert_num + 2;
-          *(q++) = vert_num + 3;
-        }
-    }
-
   /* XXX NB:
    * Our vertex data is arranged as follows:
    * 4 vertices per quad: 2 GLfloats per position,
@@ -150,11 +121,52 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
 
   GE (glVertexPointer (2, GL_FLOAT, stride, vertex_pointer));
   _cogl_current_matrix_state_flush ();
-  GE (glDrawRangeElements (GL_TRIANGLES,
-                           0, ctx->static_indices->len - 1,
-                           6 * batch_len,
-                           GL_UNSIGNED_SHORT,
-                           ctx->static_indices->data));
+
+
+  if (batch_len > 1)
+    {
+      /* The indices are always the same sequence regardless of the vertices so
+       * we only need to change it if there are more vertices than ever before.
+       */
+      needed_indices = batch_len * 6;
+      if (needed_indices > ctx->static_indices->len)
+        {
+          int old_len = ctx->static_indices->len;
+          int vert_num = old_len / 6 * 4;
+          GLushort *q;
+
+          /* Add two triangles for each quad to the list of
+             indices. That makes six new indices but two of the
+             vertices in the triangles are shared. */
+          g_array_set_size (ctx->static_indices, needed_indices);
+          q = &g_array_index (ctx->static_indices, GLushort, old_len);
+
+          for (i = old_len;
+               i < ctx->static_indices->len;
+               i += 6, vert_num += 4)
+            {
+              *(q++) = vert_num + 0;
+              *(q++) = vert_num + 1;
+              *(q++) = vert_num + 3;
+
+              *(q++) = vert_num + 1;
+              *(q++) = vert_num + 2;
+              *(q++) = vert_num + 3;
+            }
+        }
+
+      GE (glDrawRangeElements (GL_TRIANGLES,
+                               0, ctx->static_indices->len - 1,
+                               6 * batch_len,
+                               GL_UNSIGNED_SHORT,
+                               ctx->static_indices->data));
+    }
+  else
+    {
+      GE (glDrawArrays (GL_TRIANGLE_FAN,
+                        0, /* first */
+                        4)); /* n vertices */
+    }
 
 
   /* DEBUGGING CODE XXX:
