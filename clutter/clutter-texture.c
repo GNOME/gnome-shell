@@ -556,11 +556,11 @@ clutter_texture_paint (ClutterActor *self)
 
 	  /* Use below to set the modelview matrix as if the viewport
 	     was still the same size as the stage */
-	  cogl_setup_viewport (stage_width, stage_height,
-			       perspective.fovy,
-			       perspective.aspect,
-			       perspective.z_near,
-			       perspective.z_far);
+          _cogl_setup_viewport (stage_width, stage_height,
+                                perspective.fovy,
+                                perspective.aspect,
+                                perspective.z_near,
+                                perspective.z_far);
 
 	  /* Use a projection matrix that makes the actor appear as it
 	     would if it was rendered at its normal screen location */

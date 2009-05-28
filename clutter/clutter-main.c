@@ -160,13 +160,15 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
       clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
       clutter_stage_get_perspective (stage, &perspective);
 
-      CLUTTER_NOTE (PAINT, "Setting up the viewport");
+      CLUTTER_NOTE (PAINT,
+                    "Setting up the viewport { w:%.2f, h:%.2f }",
+                    width, height);
 
-      cogl_setup_viewport (width, height,
-			   perspective.fovy,
-			   perspective.aspect,
-			   perspective.z_near,
-			   perspective.z_far);
+      _cogl_setup_viewport (width, height,
+                            perspective.fovy,
+                            perspective.aspect,
+                            perspective.z_near,
+                            perspective.z_far);
 
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }

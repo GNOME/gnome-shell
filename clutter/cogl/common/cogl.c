@@ -475,12 +475,12 @@ cogl_viewport (guint width,
 }
 
 void
-cogl_setup_viewport (guint width,
-		     guint height,
-		     float fovy,
-		     float aspect,
-		     float z_near,
-		     float z_far)
+_cogl_setup_viewport (guint width,
+                      guint height,
+                      float fovy,
+                      float aspect,
+                      float z_near,
+                      float z_far)
 {
   float z_camera;
   CoglMatrix projection_matrix;
@@ -488,7 +488,7 @@ cogl_setup_viewport (guint width,
   GE( glViewport (0, 0, width, height) );
 
   /* For Ortho projection.
-   * _cogl_current_matrix_ortho (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
+   * _cogl_current_matrix_ortho (0, width, 0,  height, -1, 1);
    */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
@@ -542,7 +542,7 @@ cogl_setup_viewport (guint width,
 }
 
 CoglFeatureFlags
-cogl_get_features ()
+cogl_get_features (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
