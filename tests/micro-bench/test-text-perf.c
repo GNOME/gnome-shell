@@ -10,10 +10,9 @@ static int font_size;
 static int n_chars;
 static int rows, cols;
 
-gboolean idle (gpointer data)
+static void
+on_paint (ClutterActor *actor, gconstpointer *data)
 {
-  ClutterActor *stage = CLUTTER_ACTOR (data);
-
   static GTimer *timer = NULL;
   static int fps = 0;
 
@@ -33,8 +32,13 @@ gboolean idle (gpointer data)
       fps = 0;
     }
 
-  clutter_actor_paint (stage);
   ++fps;
+}
+
+static gboolean
+queue_redraw (gpointer stage)
+{
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
   return TRUE;
 }
@@ -91,6 +95,8 @@ main (int argc, char *argv[])
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
+  g_signal_connect (stage, "paint", G_CALLBACK (on_paint), NULL);
+
   label = create_label ();
   w = clutter_actor_get_width (label);
   h = clutter_actor_get_height (label);
@@ -114,7 +120,7 @@ main (int argc, char *argv[])
 
   clutter_actor_show_all (stage);
 
-  g_idle_add (idle, (gpointer) stage);
+  g_idle_add (queue_redraw, stage);
 
   clutter_main ();
 
