@@ -394,6 +394,46 @@ cogl_vertex_buffer_ref (CoglHandle handle);
 void
 cogl_vertex_buffer_unref (CoglHandle handle);
 
+/**
+ * cogl_vertex_buffer_indices_get_for_quads:
+ * @n_indices: the number of indices in the vertex buffer.
+ *
+ * Creates a vertex buffer containing the indices needed to draw pairs
+ * of triangles from a list of vertices grouped as quads. There will
+ * be at least @n_indices entries in the buffer (but there may be
+ * more).
+ *
+ * The indices will follow this pattern:
+ *
+ * 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7 ... etc
+ *
+ * For example, if you submit vertices for a quad like this:
+ *
+ * |[
+ *    0        3
+ *     ########
+ *     #      #
+ *     #      #
+ *     ########
+ *    1        2
+ * ]|
+ *
+ * Then you can request 6 indices to render two triangles like this:
+ *
+ * |[
+ *    0           0        3
+ *     ##          ########
+ *     # ##          ##   #
+ *     #   ##          ## #
+ *     ########          ##
+ *    1        2           2
+ * ]|
+ *
+ * Returns: A %CoglHandle containing the indices. The handled is
+ * owned by Cogl and should not be modified or unref'd.
+ */
+CoglHandle
+cogl_vertex_buffer_indices_get_for_quads (guint n_indices);
 
 G_END_DECLS
 

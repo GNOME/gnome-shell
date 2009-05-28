@@ -171,6 +171,10 @@ cogl_create_context ()
     _cogl_material_get_cogl_enable_flags (_context->source_material);
   cogl_enable (enable_flags);
 
+  _context->quad_indices_byte = COGL_INVALID_HANDLE;
+  _context->quad_indices_short = COGL_INVALID_HANDLE;
+  _context->quad_indices_short_len = 0;
+
   return TRUE;
 }
 
@@ -206,6 +210,11 @@ _cogl_destroy_context ()
     g_array_free (_context->polygon_vertices, TRUE);
   if (_context->current_layers)
     g_array_free (_context->current_layers, TRUE);
+
+  if (_context->quad_indices_byte)
+    cogl_handle_unref (_context->quad_indices_byte);
+  if (_context->quad_indices_short)
+    cogl_handle_unref (_context->quad_indices_short);
 
   g_free (_context);
 }

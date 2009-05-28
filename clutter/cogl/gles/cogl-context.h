@@ -104,6 +104,12 @@ typedef struct
   floatVec2         path_nodes_max;
   CoglHandle        stencil_material;
 
+  /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
+     out of a vertex array of quads */
+  CoglHandle        quad_indices_byte;
+  guint             quad_indices_short_len;
+  CoglHandle        quad_indices_short;
+
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper     gles2;
 
@@ -111,7 +117,6 @@ typedef struct
      supported */
   GLint                viewport_store[4];
 #endif
-
 } CoglContext;
 
 CoglContext *

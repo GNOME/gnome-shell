@@ -313,6 +313,7 @@ CoglIndicesType
 cogl_vertex_buffer_add_indices
 cogl_vertex_buffer_delete_indices
 cogl_vertex_buffer_draw_elements
+cogl_vertex_buffer_indices_get_for_quads
 <SUBSECTION Private>
 CoglVertexBufferAttribFlags
 COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK
