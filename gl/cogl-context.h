@@ -102,6 +102,12 @@ typedef struct
   floatVec2         path_nodes_max;
   CoglHandle        stencil_material;
 
+  /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
+     out of a vertex array of quads */
+  CoglHandle        quad_indices_byte;
+  guint             quad_indices_short_len;
+  CoglHandle        quad_indices_short;
+
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
   COGL_PFNGLDELETERENDERBUFFERSEXTPROC             pf_glDeleteRenderbuffersEXT;
