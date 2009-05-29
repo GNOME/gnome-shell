@@ -88,6 +88,6 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-debug.c			\
 	$(NULL)
 
-EXTRA_DIST = stb_image.c cogl-enum-types.h.in cogl-enum-types.h.in
+EXTRA_DIST = stb_image.c cogl-enum-types.h.in cogl-enum-types.c.in
 CLEANFILES = stamp-cogl-enum-types.h
 DISTCLEANFILES = cogl-enum-types.h cogl-enum-types.c
