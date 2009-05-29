@@ -52,14 +52,14 @@ cogl_headers = \
 # so we create a libclutter-cogl.la that's just identical to the one
 # in the subdir
 noinst_LTLIBRARIES = libclutter-cogl.la
-libclutter_cogl_la_LIBADD = $(CLUTTER_COGL)/libclutter-cogl.la
+libclutter_cogl_la_LIBADD = $(CLUTTER_COGL)/libclutter-cogl-$(CLUTTER_COGL).la
 libclutter_cogl_la_SOURCES = $(cogl_headers)
 
 coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 coglinclude_HEADERS = $(cogl_headers)
 
 if HAVE_INTROSPECTION
-Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(CLUTTER_COGL)/libclutter-cogl.la
+Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-cogl.la
 	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Cogl --nsversion=@CLUTTER_API_VERSION@ \
 		-I$(top_srcdir)/clutter/cogl \
