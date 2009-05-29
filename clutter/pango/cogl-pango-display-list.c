@@ -231,11 +231,13 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
     {
       CoglHandle vb = cogl_vertex_buffer_new (node->d.texture.verts->len);
 
-      cogl_vertex_buffer_add (vb, "gl_Vertex", 2, GL_FLOAT, FALSE,
+      cogl_vertex_buffer_add (vb, "gl_Vertex", 2,
+                              COGL_ATTRIBUTE_TYPE_FLOAT, FALSE,
                               sizeof (CoglPangoDisplayListVertex),
                               &g_array_index (node->d.texture.verts,
                                               CoglPangoDisplayListVertex, 0).x);
-      cogl_vertex_buffer_add (vb, "gl_MultiTexCoord0", 2, GL_FLOAT, FALSE,
+      cogl_vertex_buffer_add (vb, "gl_MultiTexCoord0", 2,
+                              COGL_ATTRIBUTE_TYPE_FLOAT, FALSE,
                               sizeof (CoglPangoDisplayListVertex),
                               &g_array_index (node->d.texture.verts,
                                               CoglPangoDisplayListVertex,
