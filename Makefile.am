@@ -49,6 +49,10 @@ cogl_headers = \
 	$(top_builddir)/clutter/cogl/cogl.h				\
 	$(NULL)
 
+# this is copied in from common/ to make cogl.h work, but we
+# need to clean it up ourselves once we're done
+DISTCLEANFILES = cogl-enum-types.h
+
 # HACK - gobject-introspection can't scan a library in another directory
 # so we create a libclutter-cogl.la that's just identical to the one
 # in the subdir
