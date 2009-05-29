@@ -34,6 +34,7 @@ cogl_headers = \
 	$(top_srcdir)/clutter/cogl/cogl-bitmap.h			\
 	$(top_srcdir)/clutter/cogl/cogl-color.h				\
 	$(top_srcdir)/clutter/cogl/cogl-debug.h				\
+	$(top_srcdir)/clutter/cogl/cogl-deprecated.h			\
 	$(top_srcdir)/clutter/cogl/cogl-fixed.h				\
 	$(top_srcdir)/clutter/cogl/cogl-material.h			\
 	$(top_srcdir)/clutter/cogl/cogl-matrix.h			\
