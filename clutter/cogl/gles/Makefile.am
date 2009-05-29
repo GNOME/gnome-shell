@@ -27,12 +27,12 @@ INCLUDES = \
         -DG_LOG_DOMAIN=\"Cogl-GLES\" \
         -DCLUTTER_COMPILATION
 
-noinst_LTLIBRARIES = libclutter-cogl.la
+noinst_LTLIBRARIES = libclutter-cogl-gles.la
 
-libclutter_cogl_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(COGL_DEBUG_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
-libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
-libclutter_cogl_la_DEPENDENCIES = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
-libclutter_cogl_la_SOURCES = \
+libclutter_cogl_gles_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(COGL_DEBUG_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+libclutter_cogl_gles_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
+libclutter_cogl_gles_la_DEPENDENCIES = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
+libclutter_cogl_gles_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl.h \
 	$(top_builddir)/clutter/cogl/cogl-defines-gles.h \
         $(top_builddir)/clutter/cogl/cogl-color.h \
@@ -60,7 +60,7 @@ libclutter_cogl_la_SOURCES = \
 	cogl-shader.c
 
 if USE_GLES2_WRAPPER
-libclutter_cogl_la_SOURCES += \
+libclutter_cogl_gles_la_SOURCES += \
 	cogl-gles2-wrapper.c \
 	cogl-fixed-vertex-shader.h \
 	cogl-fixed-vertex-shader.c \
