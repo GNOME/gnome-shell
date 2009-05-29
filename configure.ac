@@ -397,6 +397,7 @@ AS_CASE([$imagebackend],
 
 dnl === X11 checks, only for X11-based backends ===============================
 X11_PC_FILES=""
+x11_tests=no
 
 AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
       [
@@ -504,9 +505,10 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
 
         # X11-specific tests are enabled conditionally
         AS_IF([test "x$have_xcomposite" = "xyes"], [x11_tests=yes], [x11_tests=no])
-        AM_CONDITIONAL(X11_TESTS, [test "x$x11_tests" = "xyes"])
       ]
 )
+
+AM_CONDITIONAL(X11_TESTS, [test "x$x11_tests" = "xyes"])
 
 dnl === JSON parser check =====================================================
 
