@@ -4,16 +4,19 @@
 /*** END file-header ***/
 
 /*** BEGIN file-production ***/
+
 /* enumerations from "@filename@" */
 #include "@filename@"
+
 /*** END file-production ***/
 
 /*** BEGIN value-header ***/
 GType
-@enum_name@_get_type(void) {
-  static GType etype = 0;
+@enum_name@_get_type (void)
+{
+  static volatile gsize g_enum_type_id__volatile = 0;
 
-  if (G_UNLIKELY (!etype))
+  if (g_once_init_enter (&g_enum_type_id__volatile))
     {
       static const G@Type@Value values[] = {
 /*** END value-header ***/
@@ -25,9 +28,14 @@ GType
 /*** BEGIN value-tail ***/
         { 0, NULL, NULL }
       };
-      etype = g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
+      GType g_enum_type_id;
+
+      g_enum_type_id =
+        g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
+
+      g_once_init_leave (&g_enum_type_id__volatile, g_enum_type_id);
     }
 
-  return etype;
+  return g_enum_type_id__volatile;
 }
 /*** END value-tail ***/
