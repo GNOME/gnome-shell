@@ -123,8 +123,7 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
  *
  * Since: 0.8
  */
-typedef enum
-{
+typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
   COGL_PIXEL_FORMAT_ANY           = 0,
   COGL_PIXEL_FORMAT_A_8           = 1 | COGL_A_BIT,
 
@@ -135,59 +134,20 @@ typedef enum
   COGL_PIXEL_FORMAT_G_8           = 8,
 
   COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
+  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
 
-  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 |
-                                     COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_RGBA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
 
-  COGL_PIXEL_FORMAT_RGBA_8888     =  COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT,
-
-  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT           |
-                                     COGL_BGR_BIT),
-
-  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT           |
-                                     COGL_AFIRST_BIT),
-
-  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT           |
-                                     COGL_BGR_BIT         |
-                                     COGL_AFIRST_BIT),
-
-  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT           |
-                                     COGL_PREMULT_BIT),
-
-  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT           |
-                                     COGL_PREMULT_BIT     |
-                                     COGL_BGR_BIT),
-
-  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT           |
-                                     COGL_PREMULT_BIT     |
-                                     COGL_AFIRST_BIT),
-
-  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 |
-                                     COGL_A_BIT           |
-                                     COGL_PREMULT_BIT     |
-                                     COGL_BGR_BIT         |
-                                     COGL_AFIRST_BIT),
-
-  COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 |
-                                     COGL_A_BIT                  |
-                                     COGL_PREMULT_BIT),
-
-  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 |
-                                     COGL_A_BIT                  |
-                                     COGL_PREMULT_BIT),
-
-
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT),
 } CoglPixelFormat;
-
-#define COGL_TYPE_PIXEL_FORMAT          (cogl_pixel_format_get_type ())
-GType cogl_pixel_format_get_type (void) G_GNUC_CONST;
 
 /**
  * CoglFeatureFlags:
@@ -222,9 +182,6 @@ typedef enum
   COGL_FEATURE_VBOS		      = (1 << 11)
 } CoglFeatureFlags;
 
-#define COGL_TYPE_FEATURE_FLAGS         (cogl_feature_flags_get_type ())
-GType cogl_feature_flags_get_type (void) G_GNUC_CONST;
-
 /**
  * CoglBufferTarget:
  * @COGL_WINDOW_BUFFER: FIXME
@@ -239,9 +196,6 @@ typedef enum
   COGL_WINDOW_BUFFER      = (1 << 1),
   COGL_OFFSCREEN_BUFFER   = (1 << 2)
 } CoglBufferTarget;
-
-#define COGL_TYPE_BUFFER_TARGET         (cogl_buffer_target_get_type ())
-GType cogl_buffer_target_get_type (void) G_GNUC_CONST;
 
 /**
  * CoglColor:
@@ -304,9 +258,6 @@ typedef enum {
   COGL_TEXTURE_NO_SLICING  = 1 << 1
 } CoglTextureFlags;
 
-#define COGL_TYPE_TEXTURE_FLAGS         (cogl_texture_flags_get_type ())
-GType cogl_texture_flags_get_type (void) G_GNUC_CONST;
-
 /**
  * CoglFogMode:
  * @COGL_FOG_MODE_LINEAR: Calculates the fog blend factor as:
@@ -335,15 +286,11 @@ GType cogl_texture_flags_get_type (void) G_GNUC_CONST;
  *
  * Since: 1.0
  */
-typedef enum _CoglFogMode
-{
+typedef enum {
   COGL_FOG_MODE_LINEAR,
   COGL_FOG_MODE_EXPONENTIAL,
   COGL_FOG_MODE_EXPONENTIAL_SQUARED
 } CoglFogMode;
-
-#define COGL_TYPE_FOG_MODE              (cogl_fog_mode_get_type ())
-GType cogl_fog_mode_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

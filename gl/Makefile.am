@@ -35,11 +35,6 @@ cogl_sources = \
 	cogl-context.c		\
 	$(NULL)
 
-coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
-coglinclude_HEADERS = \
-	$(cogl_headers) \
-	$(top_builddir)/clutter/cogl/cogl.h
-
 INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_srcdir)/clutter/cogl/common \

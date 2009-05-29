@@ -51,8 +51,7 @@ G_BEGIN_DECLS
  *
  * Since: 1.0
  */
-typedef enum _CoglShaderType
-{
+typedef enum {
   COGL_SHADER_TYPE_VERTEX,
   COGL_SHADER_TYPE_FRAGMENT
 } CoglShaderType;
@@ -115,7 +114,7 @@ void            cogl_shader_source            (CoglHandle         shader,
  * Compiles the shader, no return value, but the shader is now ready for
  * linking into a program.
  */
-void            cogl_shader_compile           (CoglHandle        handle);
+void            cogl_shader_compile           (CoglHandle         handle);
 
 /**
  * cogl_shader_get_info_log:
