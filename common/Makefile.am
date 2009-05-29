@@ -35,13 +35,13 @@ cogl_public_h = \
 noinst_LTLIBRARIES = libclutter-cogl-common.la
 
 cogl-enum-types.h: stamp-cogl-enum-types.h
-	$(QUIET_CP)cp -f $(@F) $(top_builddir)/clutter/cogl/cogl-enum-types.h
-
+	@true
 stamp-cogl-enum-types.h: $(cogl_public_h) Makefile
 	$(QUIET_GEN)( $(GLIB_MKENUMS) \
 		--template $(srcdir)/cogl-enum-types.h.in \
 	$(cogl_public_h) ) > xgen-ceth \
 	&& (cmp -s xgen-ceth cogl-enum-types.h || cp -f xgen-ceth cogl-enum-types.h) \
+	&& cp -f cogl-enum-types.h $(top_builddir)/clutter/cogl/cogl-enum-types.h \
 	&& rm -f xgen-ceth \
 	&& echo timestamp > $(@F)
 
