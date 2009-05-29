@@ -204,12 +204,11 @@ clutter_clock_dispatch (GSource     *source,
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
-  GSList *stages, *l;
+  const GSList *stages, *l;
 
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
 
-  /* FIXME - we need peek_stages() to avoid the copy */
-  stages = clutter_stage_manager_list_stages (stage_manager);
+  stages = clutter_stage_manager_peek_stages (stage_manager);
 
   /* queue a redraw for each stage; this will advance each timeline
    * held by the master clock of the amount of milliseconds elapsed
@@ -217,8 +216,6 @@ clutter_clock_dispatch (GSource     *source,
    */
   for (l = stages; l != NULL; l = l->next)
     clutter_actor_queue_redraw (l->data);
-
-  g_slist_free (stages);
 
   /* if this is the remainder of an advancement, needed for the last
    * timeline to finish its run, then we need to reset the prev_tick
