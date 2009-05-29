@@ -1,3 +1,9 @@
+NULL =
+
+V         = @
+Q         = $(V:1=)
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+
 SUBDIRS = common $(CLUTTER_COGL)
 
 BUILT_SOURCES = cogl.h
@@ -23,19 +29,24 @@ CLEANFILES = $(pc_files)
 
 AM_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
 
+# COGL installed headers
 cogl_headers = \
-	$(top_srcdir)/clutter/cogl/cogl-bitmap.h	\
-	$(top_srcdir)/clutter/cogl/cogl-color.h		\
-	$(top_srcdir)/clutter/cogl/cogl-debug.h		\
-	$(top_srcdir)/clutter/cogl/cogl-fixed.h		\
-	$(top_srcdir)/clutter/cogl/cogl-material.h	\
-	$(top_srcdir)/clutter/cogl/cogl-matrix.h	\
-	$(top_srcdir)/clutter/cogl/cogl-offscreen.h	\
-	$(top_srcdir)/clutter/cogl/cogl-path.h		\
-	$(top_srcdir)/clutter/cogl/cogl-shader.h	\
-	$(top_srcdir)/clutter/cogl/cogl-texture.h	\
-	$(top_srcdir)/clutter/cogl/cogl-types.h		\
-	$(top_srcdir)/clutter/cogl/cogl-vertex-buffer.h
+	$(top_srcdir)/clutter/cogl/cogl-bitmap.h			\
+	$(top_srcdir)/clutter/cogl/cogl-color.h				\
+	$(top_srcdir)/clutter/cogl/cogl-debug.h				\
+	$(top_srcdir)/clutter/cogl/cogl-fixed.h				\
+	$(top_srcdir)/clutter/cogl/cogl-material.h			\
+	$(top_srcdir)/clutter/cogl/cogl-matrix.h			\
+	$(top_srcdir)/clutter/cogl/cogl-offscreen.h			\
+	$(top_srcdir)/clutter/cogl/cogl-path.h				\
+	$(top_srcdir)/clutter/cogl/cogl-shader.h			\
+	$(top_srcdir)/clutter/cogl/cogl-texture.h			\
+	$(top_srcdir)/clutter/cogl/cogl-types.h				\
+	$(top_srcdir)/clutter/cogl/cogl-vertex-buffer.h			\
+	$(top_builddir)/clutter/cogl/cogl-defines-@CLUTTER_COGL@.h 	\
+	$(top_builddir)/clutter/cogl/cogl-enum-types.h			\
+	$(top_builddir)/clutter/cogl/cogl.h				\
+	$(NULL)
 
 # HACK - gobject-introspection can't scan a library in another directory
 # so we create a libclutter-cogl.la that's just identical to the one
@@ -43,6 +54,9 @@ cogl_headers = \
 noinst_LTLIBRARIES = libclutter-cogl.la
 libclutter_cogl_la_LIBADD = $(CLUTTER_COGL)/libclutter-cogl.la
 libclutter_cogl_la_SOURCES = $(cogl_headers)
+
+coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
+coglinclude_HEADERS = $(cogl_headers)
 
 if HAVE_INTROSPECTION
 Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(CLUTTER_COGL)/libclutter-cogl.la
@@ -59,8 +73,6 @@ Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(CLUTTER_COGL)/libclut
 		--libtool="$(top_builddir)/doltlibtool" \
 		--pkg gobject-2.0 \
 		--output $@ \
-		$(top_builddir)/clutter/cogl/cogl-defines-@CLUTTER_COGL@.h \
-		$(top_builddir)/clutter/cogl/cogl.h \
 		$(cogl_headers)
 
 BUILT_GIRSOURCES = Cogl-@CLUTTER_API_VERSION@.gir
