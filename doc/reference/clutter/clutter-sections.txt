@@ -301,6 +301,7 @@ clutter_actor_unmap
 <SUBSECTION>
 clutter_actor_allocate
 clutter_actor_allocate_preferred_size
+clutter_actor_allocate_available_size
 clutter_actor_get_allocation_coords
 clutter_actor_get_allocation_box
 clutter_actor_get_allocation_geometry

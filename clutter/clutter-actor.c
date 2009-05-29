@@ -8167,6 +8167,118 @@ clutter_actor_get_stage (ClutterActor *actor)
 }
 
 /**
+ * clutter_actor_allocate_available_size:
+ * @self: a #ClutterActor
+ * @x: the actor's X coordinate
+ * @y: the actor's Y coordinate
+ * @available_width: the maximum available width, or -1 to use the
+ *   actor's natural width
+ * @available_height: the maximum available height, or -1 to use the
+ *   actor's natural height
+ * @absolute_origin_changed: whether the position of the parent has
+ *   changed in stage coordinates
+ *
+ * Allocates @self taking into account the #ClutterActor<!-- -->'s
+ * preferred size, but limiting it to the maximum available width
+ * and height provided.
+ *
+ * This function will do the right thing when dealing with the
+ * actor's request mode.
+ *
+ * The implementation of this function is equivalent to:
+ *
+ * |[
+ *   if (request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+ *     {
+ *       clutter_actor_get_preferred_width (self, available_height,
+ *                                          &amp;min_width,
+ *                                          &amp;natural_width);
+ *       width = CLAMP (natural_width, min_width, available_width);
+ *
+ *       clutter_actor_get_preferred_height (self, width,
+ *                                           &amp;min_height,
+ *                                           &amp;natural_height);
+ *       height = CLAMP (natural_height, min_height, available_height);
+ *     }
+ *   else
+ *     {
+ *       clutter_actor_get_preferred_height (self, available_width,
+ *                                           &amp;min_height,
+ *                                           &amp;natural_height);
+ *       height = CLAMP (natural_height, min_height, available_height);
+ *
+ *       clutter_actor_get_preferred_width (self, height,
+ *                                          &amp;min_width,
+ *                                          &amp;natural_width);
+ *       width = CLAMP (natural_width, min_width, available_width);
+ *     }
+ *
+ *   box.x1 = x; box.y1 = y;
+ *   box.x2 = box.x1 + available_width;
+ *   box.y2 = box.y1 + available_height;
+ *   clutter_actor_allocate (self, &amp;box, absolute_origin_changed);
+ * ]|
+ *
+ * This function can be used by fluid layout managers to allocate
+ * an actor's preferred size without making it bigger than the area
+ * available for the container.
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_allocate_available_size (ClutterActor *self,
+                                       gfloat        x,
+                                       gfloat        y,
+                                       gfloat        available_width,
+                                       gfloat        available_height,
+                                       gboolean      absolute_origin_changed)
+{
+  ClutterActorPrivate *priv;
+  gfloat width, height;
+  gfloat min_width, min_height;
+  gfloat natural_width, natural_height;
+  ClutterActorBox box;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  switch (priv->request_mode)
+    {
+    case CLUTTER_REQUEST_HEIGHT_FOR_WIDTH:
+      clutter_actor_get_preferred_width (self, available_height,
+                                         &min_width,
+                                         &natural_width);
+      width  = CLAMP (natural_width, min_width, available_width);
+
+      clutter_actor_get_preferred_height (self, width,
+                                          &min_height,
+                                          &natural_height);
+      height = CLAMP (natural_height, min_height, available_height);
+      break;
+
+    case CLUTTER_REQUEST_WIDTH_FOR_HEIGHT:
+      clutter_actor_get_preferred_height (self, available_width,
+                                          &min_height,
+                                          &natural_height);
+      height = CLAMP (natural_height, min_height, available_height);
+
+      clutter_actor_get_preferred_width (self, height,
+                                         &min_width,
+                                         &natural_width);
+      width  = CLAMP (natural_width, min_width, available_width);
+      break;
+    }
+
+
+  box.x1 = x;
+  box.y1 = y;
+  box.x2 = box.x1 + width;
+  box.y2 = box.y1 + height;
+  clutter_actor_allocate (self, &box, absolute_origin_changed);
+}
+
+/**
  * clutter_actor_allocate_preferred_size:
  * @self: a #ClutterActor
  * @absolute_origin_changed: whether the position of the parent has

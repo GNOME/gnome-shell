@@ -323,6 +323,12 @@ void                  clutter_actor_allocate                  (ClutterActor     
                                                                gboolean               absolute_origin_changed);
 void                  clutter_actor_allocate_preferred_size   (ClutterActor          *self,
                                                                gboolean               absolute_origin_changed);
+void                  clutter_actor_allocate_available_size   (ClutterActor          *self,
+                                                               gfloat                 x,
+                                                               gfloat                 y,
+                                                               gfloat                 available_width,
+                                                               gfloat                 available_height,
+                                                               gboolean               absolute_origin_changed);
 void                  clutter_actor_get_allocation_coords     (ClutterActor          *self,
                                                                gint                  *x_1,
                                                                gint                  *y_1,
