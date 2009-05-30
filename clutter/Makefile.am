@@ -236,7 +236,6 @@ clutter_HEADERS = \
 	$(source_h) \
 	$(top_builddir)/clutter/clutter-json.h 		\
 	$(top_builddir)/clutter/clutter-enum-types.h 	\
-	$(top_builddir)/clutter/clutter-version.h 	\
 	$(top_srcdir)/clutter/clutter.h
 
 if HAVE_INTROSPECTION
