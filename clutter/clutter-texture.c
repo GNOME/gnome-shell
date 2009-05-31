@@ -1551,9 +1551,13 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
 	{
 	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported BPP");
+		       "Unsupported bits per pixel value '%d': "
+                       "Clutter supports only a BPP value of 4 "
+                       "for RGBA data",
+                       bpp);
 	  return FALSE;
 	}
+
       source_format = COGL_PIXEL_FORMAT_RGBA_8888;
     }
   else
@@ -1562,11 +1566,16 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
 	{
 	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported BPP");
+		       "Unsupported bits per pixel value '%d': "
+                       "Clutter supports only a BPP value of 3 "
+                       "for RGB data",
+                       bpp);
 	  return FALSE;
 	}
+
       source_format = COGL_PIXEL_FORMAT_RGB_888;
     }
+
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_BGR))
     source_format |= COGL_BGR_BIT;
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
@@ -1622,7 +1631,7 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "YUV2 not supported");
+		   "YUV2 textues are not supported");
       return FALSE;
     }
 
