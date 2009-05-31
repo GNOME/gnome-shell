@@ -1522,25 +1522,23 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
  *
  * Sets #ClutterTexture image data.
  *
- * Note: This function is likely to change in future versions.
- *
  * Return value: %TRUE on success, %FALSE on failure.
  *
  * Since: 0.4.
- **/
+ */
 gboolean
-clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
-				     const guchar       *data,
-				     gboolean            has_alpha,
-				     gint                width,
-				     gint                height,
-				     gint                rowstride,
-				     gint                bpp,
-				     ClutterTextureFlags flags,
-				     GError            **error)
+clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
+				   const guchar         *data,
+				   gboolean              has_alpha,
+				   gint                  width,
+				   gint                  height,
+				   gint                  rowstride,
+				   gint                  bpp,
+				   ClutterTextureFlags   flags,
+				   GError              **error)
 {
   ClutterTexturePrivate *priv;
-  CoglPixelFormat        source_format;
+  CoglPixelFormat source_format;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
 
@@ -1592,8 +1590,6 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
  *
  * Sets a #ClutterTexture from YUV image data. If an error occurred,
  * %FALSE is returned and @error is set.
- *
- * This function is likely to change in future versions.
  *
  * Return value: %TRUE if the texture was successfully updated
  *
