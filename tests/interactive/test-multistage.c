@@ -73,7 +73,7 @@ on_button_press (ClutterActor *actor,
   clutter_stage_set_title (CLUTTER_STAGE(new_stage), win_title);
 
   timeline = clutter_timeline_new_for_duration (2000);
-  g_object_set (timeline, "loop", TRUE, NULL);  
+  clutter_timeline_set_loop (timeline, TRUE);
 
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
   r_behave = clutter_behaviour_rotate_new (alpha,

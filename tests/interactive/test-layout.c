@@ -551,14 +551,13 @@ my_thing_init (MyThing *thing)
 }
 
 ClutterActor *
-my_thing_new (gint padding,
-              gint spacing)
+my_thing_new (gfloat padding,
+              gfloat spacing)
 {
   return g_object_new (MY_TYPE_THING,
-                       "padding", CLUTTER_UNITS_FROM_DEVICE (padding),
-                       "spacing", CLUTTER_UNITS_FROM_DEVICE (spacing),
+                       "padding", padding,
+                       "spacing", spacing,
                        NULL);
-
 }
 
 /* test code */
@@ -591,13 +590,13 @@ static void
 increase_property_value (ClutterActor *actor, 
                          const char   *property_name)
 {
-  ClutterUnit value;
+  gfloat value;
 
   g_object_get (G_OBJECT (actor),
                 property_name, &value,
                 NULL);
 
-  value = value + CLUTTER_UNITS_FROM_DEVICE (10);
+  value = value + 10.0;
 
   g_object_set (G_OBJECT (box),
                 property_name, value,
@@ -608,13 +607,13 @@ static void
 decrease_property_value (ClutterActor *actor, 
                          const char   *property_name)
 {
-  ClutterUnit value;
+  gfloat value;
 
   g_object_get (G_OBJECT (actor),
                 property_name, &value,
                 NULL);
 
-  value = MAX (0, value - CLUTTER_UNITS_FROM_DEVICE (10));
+  value = MAX (0, value - 10.0);
 
   g_object_set (G_OBJECT (box),
                 property_name, value,

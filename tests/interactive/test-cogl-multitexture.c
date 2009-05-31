@@ -123,7 +123,7 @@ test_cogl_multitexture_main (int argc, char *argv[])
 			       state->group);
 
   timeline = clutter_timeline_new (TIMELINE_FRAME_COUNT, 26 /* fps */);
-  g_object_set (timeline, "loop", TRUE, NULL);
+  clutter_timeline_set_loop (timeline, TRUE);
 
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), state);
 

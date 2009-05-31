@@ -265,8 +265,16 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
       {
         gdouble ia, ib, res;
 
-        ia = g_value_get_double (initial);
-        ib = g_value_get_double (final);
+        if (value_type == G_TYPE_DOUBLE)
+          {
+            ia = g_value_get_double (initial);
+            ib = g_value_get_double (final);
+          }
+        else
+          {
+            ia = g_value_get_float (initial);
+            ib = g_value_get_float (final);
+          }
 
         res = (factor * (ib - ia)) + ia;
 

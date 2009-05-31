@@ -209,7 +209,7 @@ test_paint_wrapper_main (int argc, char *argv[])
 
   /* Create a timeline to manage animation */
   timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
+  clutter_timeline_set_loop (timeline, TRUE);
 
   /* fire a callback for frame change */
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), oh);

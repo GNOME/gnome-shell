@@ -94,8 +94,8 @@ on_button_press (ClutterActor       *actor,
 
       animation =
         clutter_actor_animate (rectangle, cur_mode, 2000,
-                               "x", (int) event->x,
-                               "y", (int) event->y,
+                               "x", event->x,
+                               "y", event->y,
                                "color", &color,
                                NULL);
     }

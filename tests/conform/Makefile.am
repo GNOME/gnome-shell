@@ -78,6 +78,9 @@ test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@C
 test:
 	@gtester -o=test-conformance-results.xml ./test-conformance
 
+test-verbose:
+	@gtester --verbose -o=test-conformance-result.xml ./test-conformance
+
 test-report-normal:
 	@gtester -o=test-conformance-results.xml -k ./test-conformance \
 	  && ( gtester-report test-conformance-results.xml \

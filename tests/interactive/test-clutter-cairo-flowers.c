@@ -166,21 +166,19 @@ void foo(void) { g_usleep(10000000); }
 int
 test_clutter_cairo_flowers_main (int argc, char **argv)
 {
-  int              i;
-  ClutterActor    *stage;
-  ClutterColor     stage_color = { 0x0, 0x0, 0x0, 0xff };
-  Flower          *flowers[N_FLOWERS];
+  int           i;
+  ClutterActor *stage;
+  ClutterColor  stage_color = { 0x0, 0x0, 0x0, 0xff };
+  Flower       *flowers[N_FLOWERS];
 
-  srand(time(NULL));
+  srand (time (NULL));
 
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage),
-		           &stage_color);
-
-  g_object_set(stage, "fullscreen", TRUE, NULL);
+  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_stage_fullscreen (CLUTTER_STAGE (stage));
 
   for (i=0; i< N_FLOWERS; i++)
     {
@@ -192,14 +190,15 @@ test_clutter_cairo_flowers_main (int argc, char **argv)
       flowers[i]->rv   = rand() % 5 + 1;
       flowers[i]->v    = rand() % 10 + 2;
 
-      clutter_group_add (CLUTTER_GROUP(stage), flowers[i]->ctex);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                   flowers[i]->ctex);
       clutter_actor_set_position (flowers[i]->ctex,
 				  flowers[i]->x, flowers[i]->y);
     }
 
   g_timeout_add (50, tick, flowers);
 
-  clutter_actor_show_all (CLUTTER_ACTOR (stage));
+  clutter_actor_show (stage);
 
   g_signal_connect (stage, "key-press-event",
 		    G_CALLBACK (clutter_main_quit),
@@ -207,6 +206,6 @@ test_clutter_cairo_flowers_main (int argc, char **argv)
 
   clutter_main();
 
-  return 1;
+  return EXIT_SUCCESS;
 }
 
