@@ -161,5 +161,9 @@ typedef struct _CoglVertexBuffer
 
 } CoglVertexBuffer;
 
+CoglVertexBuffer *_cogl_vertex_buffer_pointer_from_handle (CoglHandle handle);
+CoglVertexBufferIndices *
+     _cogl_vertex_buffer_indices_pointer_from_handle (CoglHandle handle);
+
 #endif /* __COGL_VERTEX_BUFFER_H */
 

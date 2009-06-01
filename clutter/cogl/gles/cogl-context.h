@@ -80,7 +80,6 @@ typedef struct
    * can batch things together. */
   GArray           *journal;
   GArray           *logged_vertices;
-  GArray           *static_indices;
   GArray           *polygon_vertices;
 
   /* Some simple caching, to minimize state changes... */

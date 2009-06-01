@@ -30,6 +30,7 @@
 #include "cogl-context.h"
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
+#include "cogl-vertex-buffer-private.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -39,15 +40,7 @@
 
 #ifdef HAVE_COGL_GL
 
-#define glDrawRangeElements ctx->pf_glDrawRangeElements
 #define glClientActiveTexture ctx->pf_glClientActiveTexture
-
-#else
-
-/* GLES doesn't have glDrawRangeElements, so we simply pretend it does
- * but that it makes no use of the start, end constraints: */
-#define glDrawRangeElements(mode, start, end, count, type, indices) \
-  glDrawElements (mode, count, type, indices)
 
 #endif
 
@@ -63,7 +56,6 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
                                 gint              batch_len,
                                 GLfloat          *vertex_pointer)
 {
-  int     needed_indices;
   gsize   stride;
   int     i;
   gulong  enable_flags = 0;
@@ -122,52 +114,31 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
   GE (glVertexPointer (2, GL_FLOAT, stride, vertex_pointer));
   _cogl_current_matrix_state_flush ();
 
+#ifdef HAVE_COGL_GL
 
-  if (batch_len > 1)
-    {
-      /* The indices are always the same sequence regardless of the vertices so
-       * we only need to change it if there are more vertices than ever before.
-       */
-      needed_indices = batch_len * 6;
-      if (needed_indices > ctx->static_indices->len)
-        {
-          int old_len = ctx->static_indices->len;
-          int vert_num = old_len / 6 * 4;
-          GLushort *q;
+  GE( glDrawArrays (GL_QUADS, 0, batch_len * 4) );
 
-          /* Add two triangles for each quad to the list of
-             indices. That makes six new indices but two of the
-             vertices in the triangles are shared. */
-          g_array_set_size (ctx->static_indices, needed_indices);
-          q = &g_array_index (ctx->static_indices, GLushort, old_len);
+#else /* HAVE_COGL_GL */
 
-          for (i = old_len;
-               i < ctx->static_indices->len;
-               i += 6, vert_num += 4)
-            {
-              *(q++) = vert_num + 0;
-              *(q++) = vert_num + 1;
-              *(q++) = vert_num + 3;
+  /* GLES doesn't support GL_QUADS so we will use GL_TRIANGLES and
+     indices */
+  {
+    int needed_indices = batch_len * 6;
+    CoglHandle indices_handle
+      = cogl_vertex_buffer_indices_get_for_quads (needed_indices);
+    CoglVertexBufferIndices *indices
+      = _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
 
-              *(q++) = vert_num + 1;
-              *(q++) = vert_num + 2;
-              *(q++) = vert_num + 3;
-            }
-        }
+    GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER,
+                      GPOINTER_TO_UINT (indices->vbo_name)));
+    GE (glDrawElements (GL_TRIANGLES,
+                        6 * batch_len,
+                        indices->type,
+                        NULL));
+    GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
+  }
 
-      GE (glDrawRangeElements (GL_TRIANGLES,
-                               0, ctx->static_indices->len - 1,
-                               6 * batch_len,
-                               GL_UNSIGNED_SHORT,
-                               ctx->static_indices->data));
-    }
-  else
-    {
-      GE (glDrawArrays (GL_TRIANGLE_FAN,
-                        0, /* first */
-                        4)); /* n vertices */
-    }
-
+#endif /* HAVE_COGL_GL */
 
   /* DEBUGGING CODE XXX:
    * This path will cause all rectangles to be drawn with a red, green
