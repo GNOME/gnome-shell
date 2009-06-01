@@ -39,12 +39,12 @@ doc/reference/clutter/clutter-*.txt
 doc/reference/clutter/html
 doc/reference/clutter/tmpl
 doc/reference/clutter/xml
-doc/reference/clutter/version.xml
 doc/reference/clutter/clutter.args
 doc/reference/clutter/clutter.hierarchy
 doc/reference/clutter/clutter.interfaces
 doc/reference/clutter/clutter.prerequisites
 doc/reference/clutter/clutter.signals
+doc/reference/clutter/clutter-docs.xml
 doc/reference/clutter/*.stamp
 doc/reference/clutter/*.bak
 doc/reference/cogl/cogl-*.txt
@@ -52,12 +52,12 @@ doc/reference/cogl/cogl-*.txt
 doc/reference/cogl/html
 doc/reference/cogl/tmpl
 doc/reference/cogl/xml
-doc/reference/cogl/version.xml
 doc/reference/cogl/cogl.args
 doc/reference/cogl/cogl.hierarchy
 doc/reference/cogl/cogl.interfaces
 doc/reference/cogl/cogl.prerequisites
 doc/reference/cogl/cogl.signals
+doc/reference/cogl/cogl-docs.xml
 doc/reference/cogl/*.stamp
 doc/reference/cogl/*.bak
 doltcompile
