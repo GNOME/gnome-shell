@@ -200,6 +200,7 @@ stamp-h1
 /tests/conform/test-realize-not-recursive
 /tests/conform/test-shown-not-parented
 /tests/conform/test-blend-strings
+/tests/conform/test-conformance-result.xml
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
