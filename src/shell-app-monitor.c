@@ -693,6 +693,8 @@ static void
 save_to_file (ShellAppMonitor *monitor)
 {
   GHashTableIter iter;
+  gpointer key;
+  gpointer value;
   int activity;
   GSList *popularity;
   AppPopularity *app_popularity;
@@ -721,9 +723,11 @@ save_to_file (ShellAppMonitor *monitor)
   g_object_unref (output);
     
   g_hash_table_iter_init (&iter, monitor->popularities);
-  while (g_hash_table_iter_next (&iter, (gpointer *) &activity, (gpointer *) &popularity)
-         && popularity)
+  while (g_hash_table_iter_next (&iter, &key, &value) && value)
     { 
+      activity = GPOINTER_TO_INT (key);
+      popularity = value;
+
       line = g_strdup_printf ("%i\n", activity);
       g_data_output_stream_put_string (data_output, "--\n", NULL, NULL);
       g_data_output_stream_put_string (data_output, line, NULL, NULL);
