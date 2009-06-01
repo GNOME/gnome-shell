@@ -29,6 +29,7 @@ test_conformance_SOURCES = 		\
 	test-npot-texture.c             \
 	test-model.c			\
 	test-blend-strings.c		\
+	test-color.c			\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
