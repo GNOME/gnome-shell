@@ -451,16 +451,22 @@ clutter_shader_glsl_bind (ClutterShader      *self,
   cogl_shader_compile (shader);
   if (!cogl_shader_is_compiled (shader))
     {
-      gchar error_buf[512];
+      gchar *log_buf;
 
-      cogl_shader_get_info_log (shader, 512, error_buf);
+      log_buf = cogl_shader_get_info_log (shader);
 
+      /* translators: the first %s is the type of the shader, either
+       * Vertex shader or Fragment shader; the second %s is the actual
+       * error as reported by COGL
+       */
       g_set_error (error, CLUTTER_SHADER_ERROR,
                    CLUTTER_SHADER_ERROR_COMPILE,
                    _("%s compilation failed: %s"),
                    shader_type == CLUTTER_VERTEX_SHADER ? _("Vertex shader")
                                                         : _("Fragment shader"),
-                   error_buf);
+                   log_buf);
+
+      g_free (log_buf);
 
       return FALSE;
     }

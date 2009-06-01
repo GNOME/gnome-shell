@@ -106,7 +106,7 @@ gboolean        cogl_is_shader               (CoglHandle          handle);
  * one.
  */
 void            cogl_shader_source            (CoglHandle         shader,
-                                               const char        *source);
+                                               const gchar       *source);
 /**
  * cogl_shader_compile:
  * @handle: #CoglHandle for a shader.
@@ -119,17 +119,16 @@ void            cogl_shader_compile           (CoglHandle         handle);
 /**
  * cogl_shader_get_info_log:
  * @handle: #CoglHandle for a shader.
- * @size: maximum number of bytes to retrieve.
- * @buffer: location for info log.
  *
  * Retrieves the information log for a coglobject, can be used in conjunction
- * with #cogl_shader_get_parameteriv to retrieve the compiler warnings/error
+ * with cogl_shader_get_parameteriv() to retrieve the compiler warnings/error
  * messages that caused a shader to not compile correctly, mainly useful for
  * debugging purposes.
+ *
+ * Return value: a newly allocated string containing the info log. Use
+ *   g_free() to free it
  */
-void            cogl_shader_get_info_log      (CoglHandle         handle,
-                                               size_t             size,
-                                               char              *buffer);
+gchar *         cogl_shader_get_info_log      (CoglHandle         handle);
 
 /**
  * cogl_shader_get_type:
