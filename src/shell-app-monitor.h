@@ -41,8 +41,7 @@ GSList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
                                               gint             number);
 
 /* Get whatever's running right now */
-GSList *shell_app_monitor_get_running_apps (ShellAppMonitor *monitor,
-                                            int              activity);
+GList *shell_app_monitor_get_running_app_guesses (ShellAppMonitor *monitor);
 
 G_END_DECLS
 
