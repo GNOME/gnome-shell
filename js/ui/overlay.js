@@ -46,7 +46,7 @@ const DETAILS_BORDER_COLOR = new Clutter.Color();
 DETAILS_BORDER_COLOR.from_pixel(0xffffffff);
 
 // Time for initial animation going into overlay mode
-const ANIMATION_TIME = 0.5;
+const ANIMATION_TIME = 0.25;
 
 // We divide the screen into a grid of rows and columns, which we use
 // to help us position the overlay components, such as the side panel
