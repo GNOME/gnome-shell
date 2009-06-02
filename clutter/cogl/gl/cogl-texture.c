@@ -1345,8 +1345,7 @@ cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
   tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
 
   tex->bitmap = *bmp;
-  tex->bitmap_owner = TRUE;
-  bmp->data = NULL;
+  tex->bitmap_owner = FALSE;
 
   tex->slice_x_spans = NULL;
   tex->slice_y_spans = NULL;
