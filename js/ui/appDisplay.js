@@ -15,6 +15,8 @@ const Main = imports.ui.main;
 const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
 
+const APP_ICON_SIZE = 48;
+const APP_ITEM_SIZE = 64;
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
 
@@ -56,15 +58,13 @@ function AppDisplayItem(appInfo, availableWidth) {
 }
 
 AppDisplayItem.prototype = {
-    __proto__:  GenericDisplay.GenericDisplayItem.prototype,
-
-    _init : function(appInfo, availableWidth) {
-        GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth); 
+    _init : function(appInfo) {
         this._appInfo = appInfo;
 
-        let name = appInfo.get_name();
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                   spacing: 6 });
 
-        let description = appInfo.get_description();
+        let name = appInfo.get_name();
 
         let iconTheme = Gtk.IconTheme.get_default();
 
@@ -72,12 +72,19 @@ AppDisplayItem.prototype = {
         let texCache = Shell.TextureCache.get_default();
         let icon;
         if (gicon == null)
-            icon = new Clutter.Texture({ width: GenericDisplay.ITEM_DISPLAY_ICON_SIZE,
-                                         height: GenericDisplay.ITEM_DISPLAY_ICON_SIZE
+            icon = new Clutter.Texture({ width: APP_ICON_SIZE,
+                                         height: APP_ICON_SIZE
                                        });
         else
-            icon = texCache.load_gicon(gicon, GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
-        this._setItemInfo(name, description, icon);
+            icon = texCache.load_gicon(gicon, APP_ICON_SIZE);
+
+        this.actor.add_actor(icon);
+        let title = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
+                                       font_name: "Sans bold 14px",
+                                       ellipsize: Pango.EllipsizeMode.END,
+                                       text: name
+                                     });
+        this.actor.add_actor(title);
     },
 
     //// Public methods ////
@@ -92,33 +99,6 @@ AppDisplayItem.prototype = {
     // Opens an application represented by this display item.
     launch : function() {
         this._appInfo.launch([], Main.createAppLaunchContext());
-    },
-
-    //// Protected method overrides ////
-
-    // Ensures the preview icon is created.
-    _ensurePreviewIconCreated : function() {
-        if (!this._showPreview || this._previewIcon)
-            return; 
-
-        let previewIconPath = null;
-
-        if (this._gicon != null) {
-            let iconTheme = Gtk.IconTheme.get_default();
-            let previewIconInfo = iconTheme.lookup_by_gicon(this._gicon, GenericDisplay.PREVIEW_ICON_SIZE, Gtk.IconLookupFlags.NO_SVG);
-            if (previewIconInfo)
-                previewIconPath = previewIconInfo.get_filename();
-        }
-
-        if (previewIconPath) {
-            try {
-                this._previewIcon = new Clutter.Texture({ width: GenericDisplay.PREVIEW_ICON_SIZE, height: GenericDisplay.PREVIEW_ICON_SIZE});               
-                this._previewIcon.set_from_file(previewIconPath);
-            } catch (e) {
-                // we can get an error here if the file path doesn't exist on the system
-                log('Error loading AppDisplayItem preview icon ' + e);
-            }
-        }
     }
 };
 
@@ -202,9 +182,7 @@ MenuItem.prototype = {
 }
 Signals.addSignalMethods(MenuItem.prototype);
 
-/* This class represents a display containing a collection of application items.
- * The applications are sorted based on their popularity by default, and based on
- * their name if some search filter is applied.
+/* Displays favorite and running applications.
  *
  * width - width available for the display
  * height - height available for the display
@@ -214,135 +192,32 @@ function AppDisplay(width, height, numberOfColumns, columnGap) {
 }
 
 AppDisplay.prototype = {
-    __proto__:  GenericDisplay.GenericDisplay.prototype,
-
-    _init : function(width, height, numberOfColumns, columnGap) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, width, height, numberOfColumns, columnGap);
-
-        this._menus = [];
+    _init : function(width, height) {
+        this._favorites = []
         this._menuDisplays = [];
+
+        this.actor = new Tidy.Grid({ width: width, height: height });
 
         // map<itemId, array of category names>
         this._appCategories = {};
 
-        this._appMonitor = new Shell.AppMonitor();
-        this._appSystem = new Shell.AppSystem();
+        this._appMonitor = Shell.AppMonitor.get_default();
+        this._appSystem = Shell.AppSystem.get_default();
         this._appsStale = true;
         this._appSystem.connect('changed', Lang.bind(this, function(appSys) {
+            // This is a change in the set of known applications
             this._appsStale = true;
-            // We still need to determine what events other than search can trigger
-            // a change in the set of applications that are being shown while the
-            // user in in the overlay mode, however let's redisplay just in case.
             this._redisplay(false);
-            this._redisplayMenus();
         }));
         this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
+            // A change in running applications
             this._redisplay(false);
         }));
 
         // Load the GAppInfos now so it doesn't slow down the first
         // transition into the overlay
         this._refreshCache();
-
-        this._focusInMenus = true;
-        this._activeMenuIndex = -1;
-        this._activeMenu = null;
-        this._activeMenuApps = null;
-        this._menuDisplay = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                          spacing: MENU_SPACING
-                                       });
-        this._redisplayMenus();
-
-        this.connect('expanded', Lang.bind(this, function (self) {
-            this._filterReset();
-        }));
-    },
-
-    moveRight: function() {
-        if (this._expanded && this._focusInMenu) {
-            this._focusInMenu = false;
-            this._activeMenu.setState(MENU_ENTERED);
-            this.selectFirstItem();
-        }
-    },
-
-    moveLeft: function() {
-        if (this._expanded && !this._focusInMenu) {
-            this._activeMenu.setState(MENU_SELECTED);
-            this.unsetSelected();
-            this._focusInMenu = true;
-        }
-    },
-
-    // Override genericDisplay.js
-    getSideArea: function() {
-        return this._menuDisplay;
-    },
-
-    selectUp: function() {
-        if (!(this._expanded && this._focusInMenu))
-            return GenericDisplay.GenericDisplay.prototype.selectUp.call(this);
-        this._selectMenuIndex(this._activeMenuIndex - 1);
-        return true;
-    },
-
-    selectDown: function() {
-        if (!(this._expanded && this._focusInMenu))
-            return GenericDisplay.GenericDisplay.prototype.selectDown.call(this);
-        this._selectMenuIndex(this._activeMenuIndex+1);
-        return true;
-    },
-
-    // Protected overrides
-
-    _filterActive: function() {
-        return !!this._search || this._activeMenuIndex >= 0;
-    },
-
-    _filterReset: function() {
-        GenericDisplay.GenericDisplay.prototype._filterReset.call(this);
-        if (this._activeMenu != null)
-            this._activeMenu.setState(MENU_UNSELECTED);
-        this._activeMenuIndex = -1;
-        this._activeMenu = null;
-        this._focusInMenu = true;
-    },
-
-    //// Private ////
-
-    _emitStateChange: function() {
-        this.emit('state-changed');
-    },
-
-    _selectMenuIndex: function(index) {
-        if (index < 0 || index >= this._menus.length)
-            return;
-        this._menuDisplays[index].setState(MENU_SELECTED);
-    },
-
-    _redisplayMenus: function() {
-        this._menuDisplay.remove_all();
-        for (let i = 0; i < this._menus.length; i++) {
-            let menu = this._menus[i];
-            let display = new MenuItem(menu.name, menu.id, menu.icon);
-            this._menuDisplays.push(display);
-            let menuIndex = i;
-            display.connect('state-changed', Lang.bind(this, function (display) {
-                let activated = display.getState() != MENU_UNSELECTED;
-                if (!activated && display == this._activeMenu) {
-                    this._activeMenuIndex = -1;
-                    this._activeMenu = null;
-                } else if (activated) {
-                    if (display != this._activeMenu && this._activeMenu != null)
-                        this._activeMenu.setState(MENU_UNSELECTED);
-                    this._activeMenuIndex = menuIndex;
-                    this._activeMenu = display;
-                    this._activeMenuApps = this._appSystem.get_applications_for_menu(menu.id);
-                }
-                this._redisplay();
-            }));
-            this._menuDisplay.append(display.actor, 0);
-        }
+        this._redisplay(true);
     },
 
     _addApp: function(appId) {
@@ -357,9 +232,6 @@ AppDisplay.prototype = {
         }
     },
 
-    //// Protected method overrides //// 
-
-    // Gets information about all applications by calling Gio.app_info_get_all().
     _refreshCache : function() {
         let me = this;
         if (!this._appsStale)
@@ -392,14 +264,11 @@ AppDisplay.prototype = {
     },
 
     // Sets the list of the displayed items based on the most used apps.
-    _setDefaultList : function() {
+    _redisplay : function() {
         // Ask or more app than we need, since the list of recently used apps
         // might contain an app we don't have a desktop file for
-        var apps = this._appMonitor.get_most_used_apps (0, Math.round(MAX_ITEMS * 1.5));
-        this._matchedItems = [];
-        for (let i = 0; i < apps.length; i++) {
-            if (this._matchedItems.length > MAX_ITEMS)
-                break;
+        var running = this._appMonitor.get_running_apps();
+        for (let i = 0; i < running.length; i++) {
             let appId = apps[i] + ".desktop";
             let appInfo = this._allItems[appId];
             if (appInfo) {
