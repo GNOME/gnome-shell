@@ -103,11 +103,11 @@ clutter_backend_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
 }
 
-static ClutterUnit
+static gfloat
 get_units_per_em (ClutterBackend       *backend,
                   PangoFontDescription *font_desc)
 {
-  ClutterUnit units_per_em = -1.0;
+  gfloat units_per_em = -1.0;
   gboolean free_font_desc = FALSE;
   gdouble dpi;
 

@@ -9,18 +9,14 @@ on_entry_paint (ClutterActor *actor,
                 gpointer      data)
 {
   ClutterActorBox allocation = { 0, };
-  ClutterUnit width, height;
+  gfloat width, height;
 
   clutter_actor_get_allocation_box (actor, &allocation);
   width = allocation.x2 - allocation.x1;
   height = allocation.y2 - allocation.y1;
 
   cogl_set_source_color4ub (255, 255, 255, 255);
-  cogl_path_round_rectangle (0, 0,
-                             CLUTTER_UNITS_TO_FLOAT (width),
-                             CLUTTER_UNITS_TO_FLOAT (height),
-                             4.0,
-                             COGL_ANGLE_FROM_DEG (1.0));
+  cogl_path_round_rectangle (0, 0, width, height, 4.0, 1.0);
   cogl_path_stroke ();
 }
 

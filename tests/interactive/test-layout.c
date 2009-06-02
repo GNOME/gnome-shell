@@ -52,12 +52,12 @@ G_DEFINE_TYPE_WITH_CODE (MyThing,
 
 struct _MyThingPrivate
 {
-  GList       *children;
+  GList  *children;
   
-  ClutterUnit  spacing;
-  ClutterUnit  padding;
+  gfloat  spacing;
+  gfloat  padding;
 
-  guint        use_transformed_box : 1;
+  guint   use_transformed_box : 1;
 };
 
 /* Add, remove, foreach, copied from ClutterGroup code. */
@@ -139,11 +139,11 @@ my_thing_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_SPACING:
-      priv->spacing = clutter_value_get_unit (value);
+      priv->spacing = g_value_get_float (value);
       break;
 
     case PROP_PADDING:
-      priv->padding = clutter_value_get_unit (value);
+      priv->padding = g_value_get_float (value);
       break;
 
     case PROP_USE_TRANSFORMED_BOX:
@@ -174,11 +174,11 @@ my_thing_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_SPACING:
-      clutter_value_set_unit (value, priv->spacing);
+      g_value_set_float (value, priv->spacing);
       break;
 
     case PROP_PADDING:
-      clutter_value_set_unit (value, priv->padding);
+      g_value_set_float (value, priv->padding);
       break;
 
     case PROP_USE_TRANSFORMED_BOX:
@@ -214,14 +214,14 @@ my_thing_dispose (GObject *gobject)
 
 static void
 my_thing_get_preferred_width (ClutterActor *self,
-                              ClutterUnit   for_height,
-                              ClutterUnit  *min_width_p,
-                              ClutterUnit  *natural_width_p)
+                              gfloat   for_height,
+                              gfloat  *min_width_p,
+                              gfloat  *natural_width_p)
 {
   MyThingPrivate *priv;
   GList *l;
-  ClutterUnit min_left, min_right;
-  ClutterUnit natural_left, natural_right;
+  gfloat min_left, min_right;
+  gfloat natural_left, natural_right;
 
   priv = MY_THING (self)->priv;
 
@@ -233,7 +233,7 @@ my_thing_get_preferred_width (ClutterActor *self,
   for (l = priv->children; l != NULL; l = l->next)
     {
       ClutterActor *child;
-      ClutterUnit child_x, child_min, child_natural;
+      gfloat child_x, child_min, child_natural;
 
       child = l->data;
 
@@ -292,14 +292,14 @@ my_thing_get_preferred_width (ClutterActor *self,
 
 static void
 my_thing_get_preferred_height (ClutterActor *self,
-                               ClutterUnit   for_width,
-                               ClutterUnit  *min_height_p,
-                               ClutterUnit  *natural_height_p)
+                               gfloat   for_width,
+                               gfloat  *min_height_p,
+                               gfloat  *natural_height_p)
 {
   MyThingPrivate *priv;
   GList *l;
-  ClutterUnit min_top, min_bottom;
-  ClutterUnit natural_top, natural_bottom;
+  gfloat min_top, min_bottom;
+  gfloat natural_top, natural_bottom;
 
   priv = MY_THING (self)->priv;
 
@@ -311,7 +311,7 @@ my_thing_get_preferred_height (ClutterActor *self,
   for (l = priv->children; l != NULL; l = l->next)
     {
       ClutterActor *child;
-      ClutterUnit child_y, child_min, child_natural;
+      gfloat child_y, child_min, child_natural;
 
       child = l->data;
 
@@ -374,7 +374,7 @@ my_thing_allocate (ClutterActor          *self,
                    gboolean               origin_changed)
 {
   MyThingPrivate *priv;
-  ClutterUnit current_x, current_y, max_row_height;
+  gfloat current_x, current_y, max_row_height;
   GList *l;
 
   /* chain up to set actor->allocation */
@@ -394,7 +394,7 @@ my_thing_allocate (ClutterActor          *self,
   for (l = priv->children; l != NULL; l = l->next)
     {
       ClutterActor *child;
-      ClutterUnit natural_width, natural_height;
+      gfloat natural_width, natural_height;
       ClutterActorBox child_box;
  
       child = l->data;
@@ -517,21 +517,21 @@ my_thing_class_init (MyThingClass *klass)
 
   g_object_class_install_property (gobject_class,
                                    PROP_SPACING,
-                                   clutter_param_spec_unit ("spacing",
-                                                            "Spacing",
-                                                            "Spacing of the thing",
-                                                            0, CLUTTER_MAXUNIT,
-                                                            0,
-                                                            G_PARAM_READWRITE));
+                                   g_param_spec_float ("spacing",
+                                                       "Spacing",
+                                                       "Spacing of the thing",
+                                                       0, G_MAXFLOAT,
+                                                       0,
+                                                       G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_PADDING,
-                                   clutter_param_spec_unit ("padding",
-                                                            "Padding",
-                                                            "Padding around the thing",
-                                                            0, CLUTTER_MAXUNIT,
-                                                            0,
-                                                            G_PARAM_READWRITE));
+                                   g_param_spec_float ("padding",
+                                                       "Padding",
+                                                       "Padding around the thing",
+                                                       0, G_MAXFLOAT,
+                                                       0,
+                                                       G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_USE_TRANSFORMED_BOX,

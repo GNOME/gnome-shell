@@ -111,8 +111,8 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
          restrictions on the window size */
       if (!stage_x11->fullscreen_on_map)
         {
-          size_hints->min_width = CLUTTER_UNITS_TO_DEVICE (min_width);
-          size_hints->min_height = CLUTTER_UNITS_TO_DEVICE (min_height);
+          size_hints->min_width = (int) min_width;
+          size_hints->min_height = (int) min_height;
           size_hints->flags = PMinSize;
 
           if (!resize)
@@ -186,10 +186,10 @@ clutter_stage_x11_get_preferred_width (ClutterActor *self,
       width = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
 
       if (min_width_p)
-        *min_width_p = CLUTTER_UNITS_FROM_DEVICE (width);
+        *min_width_p = width;
 
       if (natural_width_p)
-        *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (width);
+        *natural_width_p = width;
 
       return;
     }
@@ -198,15 +198,14 @@ clutter_stage_x11_get_preferred_width (ClutterActor *self,
 
   if (min_width_p)
     {
-      /* FIXME need API to set this */
       if (resize)
-        *min_width_p = CLUTTER_UNITS_FROM_DEVICE (1);
+        *min_width_p = 1; /* FIXME need API to set this */
       else
-        *min_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_width);
+        *min_width_p = stage_x11->xwin_width;
     }
 
   if (natural_width_p)
-    *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_width);
+    *natural_width_p = stage_x11->xwin_width;
 }
 
 static void
@@ -225,10 +224,10 @@ clutter_stage_x11_get_preferred_height (ClutterActor *self,
       height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
 
       if (min_height_p)
-        *min_height_p = CLUTTER_UNITS_FROM_DEVICE (height);
+        *min_height_p = height;
 
       if (natural_height_p)
-        *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (height);
+        *natural_height_p = height;
 
       return;
     }
@@ -238,15 +237,13 @@ clutter_stage_x11_get_preferred_height (ClutterActor *self,
   if (min_height_p)
     {
       if (resize)
-        *min_height_p = CLUTTER_UNITS_FROM_DEVICE (1); /* FIXME need API
-                                                        * to set this
-                                                        */
+        *min_height_p = 1; /* FIXME need API to set this */
       else
-        *min_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_height);
+        *min_height_p = stage_x11->xwin_height;
     }
 
   if (natural_height_p)
-    *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_height);
+    *natural_height_p = stage_x11->xwin_height;
 }
 
 static void
@@ -258,8 +255,8 @@ clutter_stage_x11_allocate (ClutterActor          *self,
   ClutterActorClass *parent_class;
   gint new_width, new_height;
 
-  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1));
+  new_width  = ABS ((int) (box->x2 - box->x1));
+  new_height = ABS ((int) (box->y2 - box->y1));
 
   if (new_width == 0 || new_height == 0)
     {

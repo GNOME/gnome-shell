@@ -118,10 +118,10 @@ on_event (ClutterStage *stage,
       {
 	if (dragging)
 	  {
-	    gfloat x, y;
-	    gint i;
 	    ClutterActorBox box1, box2;
-	    ClutterUnit xp, yp;
+	    gfloat x, y;
+	    gfloat xp, yp;
+	    gint i;
 	    
 	    i = find_handle_index (dragging);
 
@@ -133,23 +133,17 @@ on_event (ClutterStage *stage,
 	    clutter_actor_get_allocation_box (dragging, &box1);
 	    clutter_actor_get_allocation_box (rect, &box2);
 
-	    xp = CLUTTER_UNITS_FROM_DEVICE (x - 3) - box1.x1;
-	    yp = CLUTTER_UNITS_FROM_DEVICE (y - 3) - box1.y1;
+	    xp = (x - 3) - box1.x1;
+	    yp = (y - 3) - box1.y1;
 	    
 	    if (i == 4)
 	      {
-		g_debug ("moving box by %f, %f",
-			 CLUTTER_UNITS_TO_FLOAT (xp),
-			 CLUTTER_UNITS_TO_FLOAT (yp));
-			 
+		g_debug ("moving box by %f, %f", xp, yp);
 		clutter_actor_move_by (rect, xp, yp);
 	      }
 	    else
 	      {
-		g_debug ("adjusting box by %f, %f, handle %d",
-			 CLUTTER_UNITS_TO_FLOAT (xp),
-			 CLUTTER_UNITS_TO_FLOAT (yp),
-			 i);
+		g_debug ("adjusting box by %f, %f, handle %d", xp, yp, i);
 
 		switch (i)
 		  {

@@ -60,8 +60,9 @@ on_button_press (ClutterActor       *actor,
       new_color.alpha = 0x88;
     }
 
-  vertex.x = CLUTTER_UNITS_FROM_FLOAT ((float) new_width / 2);
-  vertex.y = CLUTTER_UNITS_FROM_FLOAT ((float) new_height / 2);
+  vertex.x = new_width / 2;
+  vertex.y = new_height / 2;
+  vertex.z = 0.0;
 
   animation =
     clutter_actor_animate (actor, CLUTTER_EASE_IN_EXPO, 2000,

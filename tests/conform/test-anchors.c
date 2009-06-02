@@ -102,20 +102,19 @@ notify_cb (GObject *object, GParamSpec *pspec, TestState *state)
   ClutterVertex verts[4];                                               \
   clutter_actor_get_abs_allocation_vertices ((state)->rect, verts);     \
   check_coords ((state), (x_1), (y_1), (x_2), (y_2), verts);            \
-  g_assert (approx_equal ((x_1), CLUTTER_UNITS_TO_DEVICE (verts[0].x)));\
-  g_assert (approx_equal ((y_1), CLUTTER_UNITS_TO_DEVICE (verts[0].y)));\
-  g_assert (approx_equal ((x_2), CLUTTER_UNITS_TO_DEVICE (verts[3].x)));\
-  g_assert (approx_equal ((y_2), CLUTTER_UNITS_TO_DEVICE (verts[3].y)));\
-                                                        } G_STMT_END
+  g_assert (approx_equal ((x_1), verts[0].x));                          \
+  g_assert (approx_equal ((y_1), verts[0].y));                          \
+  g_assert (approx_equal ((x_2), verts[3].x));                          \
+  g_assert (approx_equal ((y_2), verts[3].y));          } G_STMT_END
 
 #define assert_position(state, x, y) \
   assert_coords((state), (x), (y), (x) + RECT_WIDTH, (y) + RECT_HEIGHT)
 
-#define assert_vertex_and_free(v, xc, yc, zc)           G_STMT_START {  \
-  g_assert (approx_equal (CLUTTER_UNITS_TO_DEVICE (v->x), xc) &&        \
-            approx_equal (CLUTTER_UNITS_TO_DEVICE (v->y), yc) &&        \
-            approx_equal (CLUTTER_UNITS_TO_DEVICE (v->z), zc));         \
-  g_boxed_free (CLUTTER_TYPE_VERTEX, v);                } G_STMT_END
+#define assert_vertex_and_free(v, xc, yc, zc)   G_STMT_START {  \
+  g_assert (approx_equal (v->x, xc) &&                          \
+            approx_equal (v->y, yc) &&                          \
+            approx_equal (v->z, zc));                           \
+  g_boxed_free (CLUTTER_TYPE_VERTEX, v);        } G_STMT_END
 
 static inline gboolean
 approx_equal (int a, int b)
@@ -134,15 +133,15 @@ check_coords (TestState *state,
   if (g_test_verbose ())
     g_print ("checking that (%i,%i,%i,%i) \xe2\x89\x88 (%i,%i,%i,%i): %s\n",
              x_1, y_1, x_2, y_2,
-             CLUTTER_UNITS_TO_DEVICE (verts[0].x),
-             CLUTTER_UNITS_TO_DEVICE (verts[0].y),
-             CLUTTER_UNITS_TO_DEVICE (verts[3].x),
-             CLUTTER_UNITS_TO_DEVICE (verts[3].y),
-             approx_equal (x_1, CLUTTER_UNITS_TO_DEVICE (verts[0].x))
-             && approx_equal (y_1, CLUTTER_UNITS_TO_DEVICE (verts[0].y))
-             && approx_equal (x_2, CLUTTER_UNITS_TO_DEVICE (verts[3].x))
-             && approx_equal (y_2, CLUTTER_UNITS_TO_DEVICE (verts[3].y))
-             ? "yes" : "NO");
+             (int) (verts[0].x),
+             (int) (verts[0].y),
+             (int) (verts[3].x),
+             (int) (verts[3].y),
+             approx_equal (x_1, verts[0].x) &&
+             approx_equal (y_1, verts[0].y) &&
+             approx_equal (x_2, verts[3].x) &&
+             approx_equal (y_2, verts[3].y) ? "yes"
+                                            : "NO");
 }
 
 static void
@@ -494,16 +493,14 @@ test_rotate_center (TestState *state)
       if (i == CLUTTER_X_AXIS)
         {
           g_assert (angle_x == 90.0);
-          assert_coords (state, rect_x, rect_y,
-                         CLUTTER_UNITS_TO_DEVICE (verts[3].x), rect_y);
+          assert_coords (state, rect_x, rect_y, verts[3].x, rect_y);
         }
       else
         g_assert (angle_x == 0.0);
       if (i == CLUTTER_Y_AXIS)
         {
           g_assert (angle_y == 90.0);
-          assert_coords (state, rect_x, rect_y,
-                         rect_x, CLUTTER_UNITS_TO_DEVICE (verts[3].y));
+          assert_coords (state, rect_x, rect_y, rect_x, verts[3].y);
         }
       else
         g_assert (angle_y == 0.0);
@@ -511,7 +508,8 @@ test_rotate_center (TestState *state)
         {
           g_assert (angle_z == 90.0);
           assert_coords (state, rect_x, rect_y,
-                         rect_x - RECT_HEIGHT, rect_y + RECT_WIDTH);
+                         rect_x - RECT_HEIGHT,
+                         rect_y + RECT_WIDTH);
         }
       else
         g_assert (angle_z == 0.0);
@@ -557,8 +555,8 @@ test_rotate_center (TestState *state)
         {
           g_assert (angle_x == 90.0);
           assert_coords (state,
-                         CLUTTER_UNITS_TO_DEVICE (verts[0].x), rect_y + 20,
-                         CLUTTER_UNITS_TO_DEVICE (verts[3].x), rect_y + 20);
+                         verts[0].x, rect_y + 20,
+                         verts[3].x, rect_y + 20);
           assert_vertex_and_free (center_x, 10, 20, 0);
         }
       else
@@ -570,8 +568,8 @@ test_rotate_center (TestState *state)
         {
           g_assert (angle_y == 90.0);
           assert_coords (state,
-                         rect_x + 10, CLUTTER_UNITS_TO_DEVICE (verts[0].y),
-                         rect_x + 10, CLUTTER_UNITS_TO_DEVICE (verts[3].y));
+                         rect_x + 10, verts[0].y,
+                         rect_x + 10, verts[3].y);
           assert_vertex_and_free (center_y, 10, 20, 0);
         }
       else
