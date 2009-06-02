@@ -29,7 +29,7 @@ struct _ShellAppSystemClass
 };
 
 GType shell_app_system_get_type (void) G_GNUC_CONST;
-ShellAppSystem* shell_app_system_new(void);
+ShellAppSystem* shell_app_system_get_default(void);
 
 GSList *shell_app_system_get_applications_for_menu (ShellAppSystem *system, const char *menu);
 

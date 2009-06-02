@@ -115,6 +115,22 @@ shell_app_system_finalize (GObject *object)
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize(object);
 }
 
+/**
+ * shell_app_system_get_default:
+ *
+ * Return Value: (transfer none): The global #ShellAppSystem singleton
+ */
+ShellAppSystem *
+shell_app_system_get_default ()
+{
+  static ShellAppSystem *instance = NULL;
+
+  if (instance == NULL)
+    instance = g_object_new (SHELL_TYPE_APP_SYSTEM, NULL);
+
+  return instance;
+}
+
 static void
 reread_directories (ShellAppSystem *self, GSList **cache, GMenuTree *tree)
 {

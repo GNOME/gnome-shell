@@ -261,6 +261,22 @@ shell_app_monitor_finalize (GObject *object)
 }
 
 /**
+ * shell_app_monitor_get_default:
+ *
+ * Return Value: (transfer none): The global #ShellAppMonitor singleton
+ */
+ShellAppMonitor *
+shell_app_monitor_get_default ()
+{
+  static ShellAppMonitor *instance = NULL;
+
+  if (instance == NULL)
+    instance = g_object_new (SHELL_TYPE_APP_Monitor, NULL);
+
+  return instance;
+}
+
+/**
  * shell_app_monitor_get_most_used_apps:
  *
  * Get a list of desktop identifiers representing the most popular applications
