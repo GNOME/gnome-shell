@@ -167,7 +167,7 @@ void             clutter_timeline_advance_to_marker     (ClutterTimeline *timeli
                                                          const gchar     *marker_name);
 
 /*< private >*/
-void             clutter_timeline_advance_delta         (ClutterTimeline *timeline,
+gboolean         clutter_timeline_advance_delta         (ClutterTimeline *timeline,
                                                          guint            msecs);
 
 G_END_DECLS
