@@ -671,7 +671,8 @@ cogl_material_set_layer (CoglHandle material_handle,
   int		     n_layers;
 
   g_return_if_fail (cogl_is_material (material_handle));
-  g_return_if_fail (cogl_is_texture (texture_handle));
+  g_return_if_fail (texture_handle == COGL_INVALID_HANDLE
+                    || cogl_is_texture (texture_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
   layer = _cogl_material_get_layer (material_handle, layer_index, TRUE);
@@ -692,7 +693,8 @@ cogl_material_set_layer (CoglHandle material_handle,
        * MAX_COMBINED_TEXTURE_IMAGE_UNITS layers. */
     }
 
-  cogl_handle_ref (texture_handle);
+  if (texture_handle)
+    cogl_handle_ref (texture_handle);
 
   if (layer->texture)
     cogl_handle_unref (layer->texture);
