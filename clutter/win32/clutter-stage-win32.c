@@ -187,18 +187,18 @@ _clutter_stage_win32_get_min_max_info (ClutterStageWin32 *stage_win32,
 }
 
 static void
-clutter_stage_win32_allocate (ClutterActor          *self,
-			      const ClutterActorBox *box,
-			      gboolean               origin_changed)
+clutter_stage_win32_allocate (ClutterActor           *self,
+			      const ClutterActorBox  *box,
+                              ClutterAllocationFlags  flags)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
   gint new_width, new_height;
 
-  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
+  new_width  = ABS (box->x2 - box->x1);
+  new_height = ABS (box->y2 - box->y1);
 
-  if (new_width != stage_win32->win_width
-      || new_height != stage_win32->win_height)
+  if (new_width != stage_win32->win_width ||
+      new_height != stage_win32->win_height)
     {
       /* Ignore size requests if we are in full screen mode */
       if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN) == 0)
@@ -226,7 +226,7 @@ clutter_stage_win32_allocate (ClutterActor          *self,
     }
 
   CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)
-    ->allocate (self, box, origin_changed);
+    ->allocate (self, box, flags);
 }
 
 static void

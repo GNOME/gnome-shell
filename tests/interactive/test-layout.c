@@ -369,17 +369,16 @@ my_thing_get_preferred_height (ClutterActor *self,
 }
 
 static void
-my_thing_allocate (ClutterActor          *self,
-                   const ClutterActorBox *box,
-                   gboolean               origin_changed)
+my_thing_allocate (ClutterActor           *self,
+                   const ClutterActorBox  *box,
+                   ClutterAllocationFlags  flags)
 {
   MyThingPrivate *priv;
   gfloat current_x, current_y, max_row_height;
   GList *l;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (my_thing_parent_class)->allocate (self, box,
-                                                         origin_changed);
+  CLUTTER_ACTOR_CLASS (my_thing_parent_class)->allocate (self, box, flags);
 
   priv = MY_THING (self)->priv;
 
@@ -418,7 +417,7 @@ my_thing_allocate (ClutterActor          *self,
       child_box.x2 = child_box.x1 + natural_width;
       child_box.y2 = child_box.y1 + natural_height;
 
-      clutter_actor_allocate (child, &child_box, origin_changed);
+      clutter_actor_allocate (child, &child_box, flags);
 
       /* if we take into account the transformation of the children
        * then we first check if it's transformed; then we get the
@@ -435,7 +434,7 @@ my_thing_allocate (ClutterActor          *self,
               ClutterActorBox transformed_box = { 0, };
 
               /* origin */
-              if (!origin_changed)
+              if (!(flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED))
                 {
                   v1.x = 0;
                   v1.y = 0;

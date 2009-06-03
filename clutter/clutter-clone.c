@@ -172,16 +172,16 @@ clutter_clone_paint (ClutterActor *self)
 }
 
 static void
-clutter_clone_allocate (ClutterActor *self,
-                        const ClutterActorBox *box,
-                        gboolean               origin_changed)
+clutter_clone_allocate (ClutterActor           *self,
+                        const ClutterActorBox  *box,
+                        ClutterAllocationFlags  flags)
 {
   ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
   ClutterActorClass *parent_class;
 
   /* chain up */
   parent_class = CLUTTER_ACTOR_CLASS (clutter_clone_parent_class);
-  parent_class->allocate (self, box, origin_changed);
+  parent_class->allocate (self, box, flags);
 
   if (G_UNLIKELY (priv->clone_source == NULL))
     return;
@@ -194,10 +194,7 @@ clutter_clone_allocate (ClutterActor *self,
    * paint cycle, we can safely give it as much size as it requires
    */
   if (clutter_actor_get_parent (priv->clone_source) == NULL)
-    {
-      clutter_actor_allocate_preferred_size (priv->clone_source,
-                                             origin_changed);
-    }
+    clutter_actor_allocate_preferred_size (priv->clone_source, flags);
 }
 
 static void

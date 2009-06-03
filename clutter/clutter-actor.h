@@ -121,6 +121,24 @@ typedef enum
 } ClutterActorFlags;
 
 /**
+ * ClutterAllocationFlags:
+ * @CLUTTER_ALLOCATION_NONE: No flag set
+ * @CLUTTER_ABSOLUTE_ORIGIN_CHANGED: Whether the absolute origin of the
+ *   actor has changed; this implies that any ancestor of the actor has
+ *   been moved
+ *
+ * Flags passed to the #ClutterActor::allocate() virtual function and
+ * to the clutter_actor_allocate() function
+ *
+ * Since: 1.0
+ */
+typedef enum
+{
+  CLUTTER_ALLOCATION_NONE         = 0,
+  CLUTTER_ABSOLUTE_ORIGIN_CHANGED = 1 << 1
+} ClutterAllocationFlags;
+
+/**
  * ClutterActorBox:
  * @x1: X coordinate of the top left corner
  * @y1: Y coordinate of the top left corner
@@ -241,17 +259,17 @@ struct _ClutterActorClass
                                  ClutterActor          *leaf_that_queued);
 
   /* size negotiation */
-  void (* get_preferred_width)  (ClutterActor          *actor,
-                                 gfloat                 for_height,
-                                 gfloat                *min_width_p,
-                                 gfloat                *natural_width_p);
-  void (* get_preferred_height) (ClutterActor          *actor,
-                                 gfloat                 for_width,
-                                 gfloat                *min_height_p,
-                                 gfloat                *natural_height_p);
-  void (* allocate)             (ClutterActor          *actor,
-                                 const ClutterActorBox *box,
-                                 gboolean               absolute_origin_changed);
+  void (* get_preferred_width)  (ClutterActor           *actor,
+                                 gfloat                  for_height,
+                                 gfloat                 *min_width_p,
+                                 gfloat                 *natural_width_p);
+  void (* get_preferred_height) (ClutterActor           *actor,
+                                 gfloat                  for_width,
+                                 gfloat                 *min_height_p,
+                                 gfloat                 *natural_height_p);
+  void (* allocate)             (ClutterActor           *actor,
+                                 const ClutterActorBox  *box,
+                                 ClutterAllocationFlags  flags);
   /* event signals */
   gboolean (* event)                (ClutterActor         *actor,
                                      ClutterEvent         *event);
@@ -320,15 +338,15 @@ void                  clutter_actor_get_preferred_size        (ClutterActor     
                                                                gfloat                *natural_height_p);
 void                  clutter_actor_allocate                  (ClutterActor          *self,
                                                                const ClutterActorBox *box,
-                                                               gboolean               absolute_origin_changed);
+                                                               ClutterAllocationFlags flags);
 void                  clutter_actor_allocate_preferred_size   (ClutterActor          *self,
-                                                               gboolean               absolute_origin_changed);
+                                                               ClutterAllocationFlags flags);
 void                  clutter_actor_allocate_available_size   (ClutterActor          *self,
                                                                gfloat                 x,
                                                                gfloat                 y,
                                                                gfloat                 available_width,
                                                                gfloat                 available_height,
-                                                               gboolean               absolute_origin_changed);
+                                                               ClutterAllocationFlags flags);
 void                  clutter_actor_get_allocation_coords     (ClutterActor          *self,
                                                                gint                  *x_1,
                                                                gint                  *y_1,

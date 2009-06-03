@@ -428,20 +428,21 @@ clutter_texture_get_preferred_height (ClutterActor *self,
 }
 
 static void
-clutter_texture_allocate (ClutterActor          *self,
-			  const ClutterActorBox *box,
-			  gboolean               origin_changed)
+clutter_texture_allocate (ClutterActor           *self,
+			  const ClutterActorBox  *box,
+                          ClutterAllocationFlags  flags)
 {
   ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->allocate (self, box,
-								origin_changed);
+  CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->allocate (self,
+                                                                box,
+                                                                flags);
 
   /* If we adopted the source fbo then allocate that at its preferred
      size */
   if (priv->fbo_source && clutter_actor_get_parent (priv->fbo_source) == self)
-    clutter_actor_allocate_preferred_size (priv->fbo_source, origin_changed);
+    clutter_actor_allocate_preferred_size (priv->fbo_source, flags);
 }
 
 static void

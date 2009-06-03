@@ -1541,9 +1541,9 @@ clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
 }
 
 static void
-clutter_actor_real_allocate (ClutterActor          *self,
-                             const ClutterActorBox *box,
-                             gboolean               absolute_origin_changed)
+clutter_actor_real_allocate (ClutterActor           *self,
+                             const ClutterActorBox  *box,
+                             ClutterAllocationFlags  flags)
 {
   ClutterActorPrivate *priv = self->priv;
   gboolean x1_changed, y1_changed, x2_changed, y2_changed;
@@ -4697,25 +4697,24 @@ clutter_actor_get_allocation_geometry (ClutterActor    *self,
  * clutter_actor_allocate:
  * @self: A #ClutterActor
  * @box: new allocation of the actor, in parent-relative coordinates
- * @absolute_origin_changed: whether the position of the parent has
- *   changed in stage coordinates
+ * @flags: flags that control the allocation
  *
  * Called by the parent of an actor to assign the actor its size.
  * Should never be called by applications (except when implementing
  * a container or layout manager).
  *
  * Actors can know from their allocation box whether they have moved
- * with respect to their parent actor. The absolute_origin_changed
- * parameter additionally indicates whether the parent has moved with
- * respect to the stage, for example because a grandparent's origin
- * has moved.
+ * with respect to their parent actor. The @flags parameter describes
+ * additional information about the allocation, for instance whether
+ * the parent has moved with respect to the stage, for example because
+ * a grandparent's origin has moved.
  *
  * Since: 0.8
  */
 void
-clutter_actor_allocate (ClutterActor          *self,
-                        const ClutterActorBox *box,
-                        gboolean               absolute_origin_changed)
+clutter_actor_allocate (ClutterActor           *self,
+                        const ClutterActorBox  *box,
+                        ClutterAllocationFlags  flags)
 {
   ClutterActorPrivate *priv;
   ClutterActorClass *klass;
@@ -4724,7 +4723,6 @@ clutter_actor_allocate (ClutterActor          *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
 
   child_moved = (box->x1 != priv->allocation.x1 ||
                  box->y1 != priv->allocation.y1);
@@ -4743,7 +4741,7 @@ clutter_actor_allocate (ClutterActor          *self,
    */
 
   if (!priv->needs_allocation &&
-      !absolute_origin_changed &&
+      !(flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED) &&
       !child_moved &&
       box->x2 == priv->allocation.x2 &&
       box->y2 == priv->allocation.y2)
@@ -4752,13 +4750,17 @@ clutter_actor_allocate (ClutterActor          *self,
       return;
     }
 
-  /* When absolute_origin_changed is passed in to
+  /* When ABSOLUTE_ORIGIN_CHANGED is passed in to
    * clutter_actor_allocate(), it indicates whether the parent has its
    * absolute origin moved; when passed in to ClutterActor::allocate()
    * virtual method though, it indicates whether the child has its
-   * absolute origin moved.  So we set it to TRUE if child_moved.
+   * absolute origin moved.  So we set it when child_moved is TRUE
    */
-  klass->allocate (self, box, absolute_origin_changed || child_moved);
+  if (child_moved)
+    flags |= CLUTTER_ABSOLUTE_ORIGIN_CHANGED;
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  klass->allocate (self, box, flags);
 }
 
 /**
@@ -8202,8 +8204,7 @@ clutter_actor_get_stage (ClutterActor *actor)
  *   actor's natural width
  * @available_height: the maximum available height, or -1 to use the
  *   actor's natural height
- * @absolute_origin_changed: whether the position of the parent has
- *   changed in stage coordinates
+ * @flags: flags controlling the allocation
  *
  * Allocates @self taking into account the #ClutterActor<!-- -->'s
  * preferred size, but limiting it to the maximum available width
@@ -8243,7 +8244,7 @@ clutter_actor_get_stage (ClutterActor *actor)
  *   box.x1 = x; box.y1 = y;
  *   box.x2 = box.x1 + available_width;
  *   box.y2 = box.y1 + available_height;
- *   clutter_actor_allocate (self, &amp;box, absolute_origin_changed);
+ *   clutter_actor_allocate (self, &amp;box, flags);
  * ]|
  *
  * This function can be used by fluid layout managers to allocate
@@ -8253,12 +8254,12 @@ clutter_actor_get_stage (ClutterActor *actor)
  * Since: 1.0
  */
 void
-clutter_actor_allocate_available_size (ClutterActor *self,
-                                       gfloat        x,
-                                       gfloat        y,
-                                       gfloat        available_width,
-                                       gfloat        available_height,
-                                       gboolean      absolute_origin_changed)
+clutter_actor_allocate_available_size (ClutterActor           *self,
+                                       gfloat                  x,
+                                       gfloat                  y,
+                                       gfloat                  available_width,
+                                       gfloat                  available_height,
+                                       ClutterAllocationFlags  flags)
 {
   ClutterActorPrivate *priv;
   gfloat width, height;
@@ -8302,14 +8303,13 @@ clutter_actor_allocate_available_size (ClutterActor *self,
   box.y1 = y;
   box.x2 = box.x1 + width;
   box.y2 = box.y1 + height;
-  clutter_actor_allocate (self, &box, absolute_origin_changed);
+  clutter_actor_allocate (self, &box, flags);
 }
 
 /**
  * clutter_actor_allocate_preferred_size:
  * @self: a #ClutterActor
- * @absolute_origin_changed: whether the position of the parent has
- *   changed in stage coordinates
+ * @flags: flags controlling the allocation
  *
  * Allocates the natural size of @self.
  *
@@ -8327,8 +8327,8 @@ clutter_actor_allocate_available_size (ClutterActor *self,
  * Since: 0.8
  */
 void
-clutter_actor_allocate_preferred_size (ClutterActor *self,
-                                       gboolean      absolute_origin_changed)
+clutter_actor_allocate_preferred_size (ClutterActor           *self,
+                                       ClutterAllocationFlags  flags)
 {
   gfloat actor_x, actor_y;
   gfloat natural_width, natural_height;
@@ -8349,7 +8349,7 @@ clutter_actor_allocate_preferred_size (ClutterActor *self,
   actor_box.x2 = actor_box.x1 + natural_width;
   actor_box.y2 = actor_box.y1 + natural_height;
 
-  clutter_actor_allocate (self, &actor_box, absolute_origin_changed);
+  clutter_actor_allocate (self, &actor_box, flags);
 }
 
 /**

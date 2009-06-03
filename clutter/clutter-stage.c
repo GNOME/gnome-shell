@@ -157,11 +157,14 @@ clutter_stage_get_preferred_height (ClutterActor *self,
                                                               natural_height_p);
 }
 static void
-clutter_stage_allocate (ClutterActor          *self,
-                        const ClutterActorBox *box,
-                        gboolean               origin_changed)
+clutter_stage_allocate (ClutterActor           *self,
+                        const ClutterActorBox  *box,
+                        ClutterAllocationFlags  flags)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  gboolean origin_changed;
+
+  origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED) ? TRUE : FALSE;
 
   g_assert (priv->impl != NULL);
 
@@ -180,10 +183,10 @@ clutter_stage_allocate (ClutterActor          *self,
                     origin_changed ? "changed" : "not changed");
 
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
-      klass->allocate (self, box, origin_changed);
+      klass->allocate (self, box, flags);
 
       klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
-      klass->allocate (priv->impl, box, origin_changed);
+      klass->allocate (priv->impl, box, flags);
     }
   else
     {
@@ -193,7 +196,7 @@ clutter_stage_allocate (ClutterActor          *self,
 
       /* propagate the allocation */
       klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
-      klass->allocate (self, box, origin_changed);
+      klass->allocate (self, box, flags);
 
       /* get the preferred size from the backend */
       clutter_actor_get_preferred_size (priv->impl,
@@ -216,7 +219,7 @@ clutter_stage_allocate (ClutterActor          *self,
 
       /* and store the overridden allocation */
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
-      klass->allocate (self, &override, origin_changed);
+      klass->allocate (self, &override, flags);
     }
 }
 
@@ -382,7 +385,9 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
   box.x2 = natural_width;
   box.y2 = natural_height;
 
-  clutter_actor_allocate (CLUTTER_ACTOR (stage), &box, FALSE);
+  clutter_actor_allocate (CLUTTER_ACTOR (stage),
+                          &box,
+                          CLUTTER_ALLOCATION_NONE);
 }
 
 static gboolean

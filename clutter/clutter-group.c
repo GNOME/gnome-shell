@@ -279,15 +279,15 @@ clutter_fixed_layout_get_preferred_height (GList  *children,
 }
 
 static void
-clutter_fixed_layout_allocate (GList    *children,
-                               gboolean  absolute_origin_changed)
+clutter_fixed_layout_allocate (GList                  *children,
+                               ClutterAllocationFlags  flags)
 {
   GList *l;
 
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      clutter_actor_allocate_preferred_size (child, absolute_origin_changed);
+      clutter_actor_allocate_preferred_size (child, flags);
     }
 }
 
@@ -320,22 +320,21 @@ clutter_group_get_preferred_height (ClutterActor *self,
 }
 
 static void
-clutter_group_allocate (ClutterActor          *self,
-                        const ClutterActorBox *box,
-                        gboolean               origin_changed)
+clutter_group_allocate (ClutterActor           *self,
+                        const ClutterActorBox  *box,
+                        ClutterAllocationFlags  flags)
 {
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->allocate (self, box,
-                                                              origin_changed);
+  CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->allocate (self, box, flags);
 
   /* Note that fixed-layout allocation of children does not care what
    * allocation the container received, so "box" is not passed in
    * here. We do not require that children's allocations are completely
    * contained by our own.
    */
-  clutter_fixed_layout_allocate (priv->children, origin_changed);
+  clutter_fixed_layout_allocate (priv->children, flags);
 }
 
 static void

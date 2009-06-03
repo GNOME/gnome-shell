@@ -143,7 +143,7 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
                     (int) natural_width,
                     (int) natural_height);
 
-      clutter_actor_allocate (stage, &box, FALSE);
+      clutter_actor_allocate (stage, &box, CLUTTER_ALLOCATION_NONE);
 
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
     }

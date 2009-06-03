@@ -132,9 +132,9 @@ clutter_stage_sdl_get_preferred_height (ClutterActor *self,
 }
 
 static void
-clutter_stage_sdl_allocate (ClutterActor          *self,
-                            const ClutterActorBox *box,
-                            gboolean               origin_changed)
+clutter_stage_sdl_allocate (ClutterActor           *self,
+                            const ClutterActorBox  *box,
+                            ClutterAllocationFlags  flags)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
   gint new_width, new_height;
@@ -162,7 +162,7 @@ clutter_stage_sdl_allocate (ClutterActor          *self,
     }
 
   parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class);
-  parent_class->allocate (self, box, origin_changed);
+  parent_class->allocate (self, box, flags);
 }
 
 static void

@@ -247,9 +247,9 @@ clutter_stage_x11_get_preferred_height (ClutterActor *self,
 }
 
 static void
-clutter_stage_x11_allocate (ClutterActor          *self,
-                            const ClutterActorBox *box,
-                            gboolean               origin_changed)
+clutter_stage_x11_allocate (ClutterActor           *self,
+                            const ClutterActorBox  *box,
+                            ClutterAllocationFlags  flags)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   ClutterActorClass *parent_class;
@@ -300,7 +300,7 @@ clutter_stage_x11_allocate (ClutterActor          *self,
 
   /* chain up to fill in actor->priv->allocation */
   parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class);
-  parent_class->allocate (self, box, origin_changed);
+  parent_class->allocate (self, box, flags);
 }
 
 static inline void
