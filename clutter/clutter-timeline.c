@@ -1381,23 +1381,21 @@ clutter_timeline_get_delta (ClutterTimeline *timeline,
  * elapsed since the last redraw operation. The @timeline will use this
  * interval to emit the #ClutterTimeline::new-frame signal and eventually
  * skip frames.
- *
- * Return value: %TRUE if the timeline advanced
  */
-gboolean
+void
 clutter_timeline_advance_delta (ClutterTimeline *timeline,
                                 guint            msecs)
 {
   ClutterTimelinePrivate *priv;
 
-  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
 
   priv = timeline->priv;
 
   priv->msecs_delta += msecs;
 
   if (priv->msecs_delta < priv->frame_interval)
-    return FALSE;
+    return;
   else
     {
       clutter_timeline_advance_internal (timeline);
@@ -1405,8 +1403,6 @@ clutter_timeline_advance_delta (ClutterTimeline *timeline,
       /* Keep the remainder of the frame time so that it will be
          counted towards the next time if the delta is short */
       priv->msecs_delta %= priv->frame_interval;
-
-      return TRUE;
     }
 }
 

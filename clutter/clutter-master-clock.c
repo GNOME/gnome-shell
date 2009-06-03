@@ -68,11 +68,6 @@ struct _ClutterMasterClock
    * after the last timeline has been completed
    */
   guint last_advance : 1;
-
-  /* a guard, so that we dispatch the redraws only if
-   * any timeline did advance
-   */
-  guint has_advanced : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -212,17 +207,6 @@ clutter_clock_dispatch (GSource     *source,
   const GSList *stages, *l;
 
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
-
-  /* do not force a redraw if no timeline has advanced; this might
-   * happen if we only have timelines with intervals smaller than
-   * the vblank interval
-   */
-  if (master_clock->has_advanced)
-    {
-      master_clock->has_advanced = FALSE;
-
-      return TRUE;
-    }
 
   stages = clutter_stage_manager_peek_stages (stage_manager);
 
@@ -454,7 +438,6 @@ void
 _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 {
   GTimeVal cur_tick = { 0, };
-  gboolean has_advanced;
   gulong msecs;
   GSList *l;
 
@@ -478,13 +461,12 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
                 g_slist_length (master_clock->timelines),
                 msecs);
 
-  has_advanced = FALSE;
   for (l = master_clock->timelines; l != NULL; l = l->next)
     {
       ClutterTimeline *timeline = l->data;
 
       if (clutter_timeline_is_playing (timeline))
-        has_advanced = clutter_timeline_advance_delta (timeline, msecs);
+        clutter_timeline_advance_delta (timeline, msecs);
     }
 
   /* store the previous state so that we can use
@@ -492,5 +474,4 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
    */
   master_clock->msecs_delta = msecs;
   master_clock->prev_tick = cur_tick;
-  master_clock->has_advanced = has_advanced;
 }
