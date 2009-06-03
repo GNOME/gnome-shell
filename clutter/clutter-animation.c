@@ -1414,18 +1414,11 @@ static void
 clutter_animation_setup_property (ClutterAnimation *animation,
                                   const gchar      *property_name,
                                   const GValue     *value,
-                                  GParamSpec       *pspec)
+                                  GParamSpec       *pspec,
+                                  gboolean          is_fixed)
 {
   ClutterAnimationPrivate *priv = animation->priv;
-  gboolean is_fixed = FALSE;
   GValue real_value = { 0, };
-
-  /* fixed properties will not be animated */
-  if (g_str_has_prefix (property_name, "fixed::"))
-    {
-      is_fixed = TRUE;
-      property_name += 7; /* strlen("fixed::") */
-    }
 
   if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
     {
@@ -1525,6 +1518,7 @@ clutter_animation_setupv (ClutterAnimation    *animation,
   ClutterAnimationPrivate *priv = animation->priv;
   GObjectClass *klass;
   gint i;
+  gboolean is_fixed = FALSE;
 
   klass = G_OBJECT_GET_CLASS (priv->object);
 
@@ -1534,7 +1528,10 @@ clutter_animation_setupv (ClutterAnimation    *animation,
       GParamSpec *pspec;
 
       if (g_str_has_prefix (property_name, "fixed::"))
-        property_name += 7; /* strlen("fixed::") */
+        {
+          property_name += 7; /* strlen("fixed::") */
+          is_fixed = TRUE;
+        }
 
       pspec = g_object_class_find_property (klass, property_name);
       if (!pspec)
@@ -1548,7 +1545,8 @@ clutter_animation_setupv (ClutterAnimation    *animation,
 
       clutter_animation_setup_property (animation, property_name,
                                         &values[i],
-                                        pspec);
+                                        pspec,
+                                        is_fixed);
     }
 }
 
@@ -1569,6 +1567,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       GParamSpec *pspec;
       GValue final = { 0, };
       gchar *error = NULL;
+      gboolean is_fixed = FALSE;
 
       if (g_str_has_prefix (property_name, "signal::"))
         {
@@ -1581,7 +1580,10 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       else
         {
           if (g_str_has_prefix (property_name, "fixed::"))
-            property_name += 7; /* strlen("fixed::") */
+            {
+              property_name += 7; /* strlen("fixed::") */
+              is_fixed = TRUE;
+            }
 
           pspec = g_object_class_find_property (klass, property_name);
           if (!pspec)
@@ -1604,7 +1606,8 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
 
           clutter_animation_setup_property (animation, property_name,
                                             &final,
-                                            pspec);
+                                            pspec,
+                                            is_fixed);
         }
 
       property_name = va_arg (var_args, gchar*);
