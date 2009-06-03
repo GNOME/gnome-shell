@@ -126,6 +126,7 @@ _cogl_material_free (CoglMaterial *material)
 
   g_list_foreach (material->layers,
 		  (GFunc)cogl_handle_unref, NULL);
+  g_list_free (material->layers);
   g_free (material);
 }
 
