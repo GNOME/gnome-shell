@@ -2612,7 +2612,7 @@ clutter_actor_set_property (GObject      *object,
 
     case PROP_ANCHOR_Y:
       {
-        gfloat anchor_y = g_value_get_int (value);
+        gfloat anchor_y = g_value_get_float (value);
         gfloat anchor_x;
 
         clutter_anchor_coord_get_units (actor, &priv->anchor,
