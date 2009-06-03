@@ -26,6 +26,8 @@ struct _ShellAppSystemPrivate {
   GSList *cached_app_menus; /* ShellAppMenuEntry */
 
   GSList *cached_setting_ids; /* utf8 */
+
+  GSList *cached_favorites; /* utf8 */
 };
 
 static void shell_app_system_finalize (GObject *object);
@@ -309,4 +311,18 @@ GSList *
 shell_app_system_get_all_settings (ShellAppSystem *monitor)
 {
   return monitor->priv->cached_setting_ids;
+}
+
+/**
+ * shell_app_system_get_favorites:
+ *
+ * Return the list of applications which have been explicitly added to the
+ * favorites.
+ *
+ * Return value: (transfer none) (element-type utf8): List of favorite application ids
+ */
+GSList *
+shell_app_system_get_favorites (ShellAppSystem *system)
+{
+  return monitor->priv->cached_favorites;
 }

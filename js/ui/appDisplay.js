@@ -267,7 +267,7 @@ AppDisplay.prototype = {
     _redisplay : function() {
         // Ask or more app than we need, since the list of recently used apps
         // might contain an app we don't have a desktop file for
-        var running = this._appMonitor.get_running_apps();
+        var running = this._appMonitor.get_running_app_guesses();
         for (let i = 0; i < running.length; i++) {
             let appId = apps[i] + ".desktop";
             let appInfo = this._allItems[appId];

@@ -47,4 +47,6 @@ GSList *shell_app_system_get_menus (ShellAppSystem *system);
 
 GSList *shell_app_system_get_all_settings (ShellAppSystem *system);
 
+GSList *shell_app_system_get_favorites (ShellAppSystem *system);
+
 #endif /* __SHELL_APP_SYSTEM_H__ */
