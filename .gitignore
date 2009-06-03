@@ -202,6 +202,8 @@ stamp-h1
 /tests/conform/test-blend-strings
 /tests/conform/test-color-from-string
 /tests/conform/test-color-to-string
+/tests/conform/test-units-constructors
+/tests/conform/test-units-string
 /tests/conform/test-conformance-result.xml
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text

@@ -25,7 +25,7 @@
  */
 
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
-#error "Only <clutter/clutter.h> can be included directly.h"
+#error "Only <clutter/clutter.h> can be included directly."
 #endif
 
 #ifndef __CLUTTER_UNITS_H__
@@ -38,240 +38,131 @@
 G_BEGIN_DECLS
 
 /**
- * ClutterUnit:
+ * ClutterUnitType:
+ * @CLUTTER_UNIT_PIXEL: Unit expressed in pixels (with subpixel precision)
+ * @CLUTTER_UNIT_EM: Unit expressed in em
+ * @CLUTTER_UNIT_MM: Unit expressed in millimeters
+ * @CLUTTER_UNIT_POINT: Unit expressed in points
  *
- * Device independent unit used by Clutter. The value held can be
- * transformed into other units, likes pixels
+ * The type of unit in which a value is expressed
  *
- * Since: 0.4
- */
-typedef float ClutterUnit;
-
-/**
- * CLUTTER_UNITS_FROM_INT:
- * @x: integer value
- *
- * Converts @x from an integer value to #ClutterUnit<!-- -->s
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_FROM_INT(x)        ((float)(x))
-
-/**
- * CLUTTER_UNITS_TO_INT:
- * @x: value in #ClutterUnit<!-- -->s
- *
- * Converts @x from a #ClutterUnit value into an integer
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_TO_INT(x)          ((int)(x))
-
-/**
- * CLUTTER_UNITS_FROM_FLOAT:
- * @x: float value
- *
- * Converts @x from a floating point value to #ClutterUnit<!-- -->s
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_FROM_FLOAT(x)      (x)
-
-/**
- * CLUTTER_UNITS_TO_FLOAT:
- * @x: value in #ClutterUnit<!-- -->s
- *
- * Converts @x from a #ClutterUnit value into a float
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_TO_FLOAT(x)        (x)
-
-/**
- * CLUTTER_UNITS_FROM_FIXED:
- * @x: #CoglFixed value
- *
- * Converts @x from a fixed point value to #ClutterUnit<!-- -->s
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_FROM_FIXED(x)      (COGL_FIXED_TO_FLOAT (x))
-
-/**
- * CLUTTER_UNITS_TO_FIXED:
- * @x: value in #ClutterUnit<!-- -->s
- *
- * Converts @x from a #ClutterUnit value into a #CoglFixed
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_TO_FIXED(x)        (COGL_FIXED_FROM_FLOAT (x))
-
-/**
- * CLUTTER_UNITS_FORMAT:
- *
- * Format string that should be used for scanning and printing units.
- * It is a string literal, but it does not include the percent sign to
- * allow precision and length modifiers between the percent sign and
- * the format:
- *
- * |[
- *   g_print ("%" CLUTTER_UNITS_FORMAT, units);
- * ]|
+ * This enumeration might be expanded at later date
  *
  * Since: 1.0
  */
-#define CLUTTER_UNITS_FORMAT             "f"
+typedef enum {
+  CLUTTER_UNIT_PIXEL,
+  CLUTTER_UNIT_EM,
+  CLUTTER_UNIT_MM,
+  CLUTTER_UNIT_POINT
+} ClutterUnitType;
 
 /**
- * CLUTTER_UNITS_FROM_DEVICE:
- * @x: value in pixels
+ * ClutterUnits:
  *
- * Converts @x from pixels to #ClutterUnit<!-- -->s
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_FROM_DEVICE(x)    (clutter_units_pixels ((x)))
-
-/**
- * CLUTTER_UNITS_TO_DEVICE:
- * @x: value in #ClutterUnit<!-- -->s
- *
- * Converts @x from #ClutterUnit<!-- -->s to pixels
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_TO_DEVICE(x)      (clutter_units_to_pixels ((x)))
-
-/**
- * CLUTTER_UNITS_FROM_PANGO_UNIT:
- * @x: value in Pango units
- *
- * Converts a value in Pango units to #ClutterUnit<!-- -->s
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_FROM_PANGO_UNIT(x) ((float)((x) / 1024.0))
-
-/**
- * CLUTTER_UNITS_TO_PANGO_UNIT:
- * @x: value in #ClutterUnit<!-- -->s
- *
- * Converts a value in #ClutterUnit<!-- -->s to Pango units
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_TO_PANGO_UNIT(x)   ((int)((x) * 1024))
-
-/**
- * CLUTTER_UNITS_FROM_MM:
- * @x: a value in millimeters
- *
- * Converts a value in millimeters into #ClutterUnit<!-- -->s
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_FROM_MM(x)        (clutter_units_mm (x))
-
-/**
- * CLUTTER_UNITS_FROM_POINTS:
- * @x: a value in typographic points
- *
- * Converts a value in typographic points into #ClutterUnit<!-- -->s
- *
- * Since: 0.6
- */
-#define CLUTTER_UNITS_FROM_POINTS(x)    (clutter_units_pt (x))
-
-/**
- * CLUTTER_UNITS_FROM_EM:
- * @x: a value in em
- *
- * Converts a value in em into #ClutterUnit<!-- -->s
+ * An opaque structure, to be used to store sizing and positioning
+ * values along with their unit.
  *
  * Since: 1.0
  */
-#define CLUTTER_UNITS_FROM_EM(x)        (clutter_units_em (x))
+typedef struct _ClutterUnits    ClutterUnits;
 
-ClutterUnit clutter_units_mm          (gdouble      mm);
-ClutterUnit clutter_units_pt          (gdouble      pt);
-ClutterUnit clutter_units_em          (gdouble      em);
-ClutterUnit clutter_units_em_for_font (const gchar *font_name,
-                                       gdouble      em);
-ClutterUnit clutter_units_pixels      (gint         px);
+struct _ClutterUnits
+{
+  /*< private >*/
+  ClutterUnitType unit_type;
 
-gint        clutter_units_to_pixels (ClutterUnit units);
+  gfloat value;
 
-#define CLUTTER_TYPE_UNIT                 (clutter_unit_get_type ())
-#define CLUTTER_TYPE_PARAM_UNIT           (clutter_param_unit_get_type ())
-#define CLUTTER_PARAM_SPEC_UNIT(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_UNIT, ClutterParamSpecUnit))
-#define CLUTTER_IS_PARAM_SPEC_UNIT(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_UNIT))
+  /* pre-filled by the provided constructors */
+  gfloat pixels;
+  guint pixels_set;
 
-/**
- * CLUTTER_MAXUNIT:
- *
- * Higher boundary for a #ClutterUnit
- *
- * Since: 0.8
- */
-#define CLUTTER_MAXUNIT         (G_MAXFLOAT)
+  /* padding for eventual expansion */
+  gint64 __padding_1;
+  gint64 __padding_2;
+};
 
-/**
- * CLUTTER_MINUNIT:
- *
- * Lower boundary for a #ClutterUnit
- *
- * Since: 0.8
- */
-#define CLUTTER_MINUNIT         (-G_MAXFLOAT)
+GType           clutter_units_get_type       (void) G_GNUC_CONST;
+ClutterUnitType clutter_units_get_unit_type  (const ClutterUnits *units);
+gfloat          clutter_units_get_unit_value (const ClutterUnits *units);
+
+ClutterUnits *  clutter_units_copy           (const ClutterUnits *units);
+void            clutter_units_free           (ClutterUnits       *units);
+
+void            clutter_units_pixels         (ClutterUnits       *units,
+                                              gint                px);
+void            clutter_units_em             (ClutterUnits       *units,
+                                              gfloat              em);
+void            clutter_units_em_for_font    (ClutterUnits       *units,
+                                              const gchar        *font_name,
+                                              gfloat              em);
+void            clutter_units_mm             (ClutterUnits       *units,
+                                              gfloat              mm);
+void            clutter_units_pt             (ClutterUnits       *units,
+                                              gfloat              pt);
+
+gfloat          clutter_units_to_pixels      (ClutterUnits       *units);
+
+gchar *         clutter_units_to_string      (const ClutterUnits *units);
+gboolean        clutter_units_from_string    (ClutterUnits       *units,
+                                              const gchar        *str);
+
+#define CLUTTER_TYPE_UNITS                 (clutter_units_get_type ())
+#define CLUTTER_TYPE_PARAM_UNITS           (clutter_param_units_get_type ())
+#define CLUTTER_PARAM_SPEC_UNITS(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_UNITS, ClutterParamSpecUnits))
+#define CLUTTER_IS_PARAM_SPEC_UNITS(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_UNITS))
 
 /**
  * CLUTTER_VALUE_HOLDS_UNIT:
  * @x: a #GValue
  *
- * Evaluates to %TRUE if @x holds #ClutterUnit<!-- -->s.
+ * Evaluates to %TRUE if @x holds a #ClutterUnits value
  *
  * Since: 0.8
  */
-#define CLUTTER_VALUE_HOLDS_UNIT(x)       (G_VALUE_HOLDS ((x), CLUTTER_TYPE_UNIT))
+#define CLUTTER_VALUE_HOLDS_UNITS(x)    (G_VALUE_HOLDS ((x), CLUTTER_TYPE_UNITS))
 
-typedef struct _ClutterParamSpecUnit    ClutterParamSpecUnit;
+typedef struct _ClutterParamSpecUnits   ClutterParamSpecUnits;
 
 /**
- * ClutterParamSpecUnit:
+ * ClutterParamSpecUnits:
+ * @default_type: default type
+ * @default_value: default value
  * @minimum: lower boundary
  * @maximum: higher boundary
- * @default_value: default value
  *
  * #GParamSpec subclass for unit based properties.
  *
- * Since: 0.8
+ * Since: 1.0
  */
-struct _ClutterParamSpecUnit
+struct _ClutterParamSpecUnits
 {
   /*< private >*/
-  GParamSpec    parent_instance;
+  GParamSpec parent_instance;
 
   /*< public >*/
-  ClutterUnit   minimum;
-  ClutterUnit   maximum;
-  ClutterUnit   default_value;
+  ClutterUnitType default_type;
+
+  gfloat default_value;
+  gfloat minimum;
+  gfloat maximum;
 };
 
-GType       clutter_unit_get_type       (void) G_GNUC_CONST;
-GType       clutter_param_unit_get_type (void) G_GNUC_CONST;
+GType clutter_param_units_get_type (void) G_GNUC_CONST;
 
-void        clutter_value_set_unit (GValue       *value,
-                                    ClutterUnit   units);
-ClutterUnit clutter_value_get_unit (const GValue *value);
+GParamSpec *                 clutter_param_spec_units (const gchar        *name,
+                                                       const gchar        *nick,
+                                                       const gchar        *blurb,
+                                                       ClutterUnitType     default_type,
+                                                       gfloat              minimum,
+                                                       gfloat              maximum,
+                                                       gfloat              default_value,
+                                                       GParamFlags         flags);
 
-GParamSpec *clutter_param_spec_unit (const gchar *name,
-                                     const gchar *nick,
-                                     const gchar *blurb,
-                                     ClutterUnit  minimum,
-                                     ClutterUnit  maximum,
-                                     ClutterUnit  default_value,
-                                     GParamFlags  flags);
+void                         clutter_value_set_units  (GValue             *value,
+                                                       const ClutterUnits *units);
+G_CONST_RETURN ClutterUnits *clutter_value_get_units  (const GValue       *value);
 
 G_END_DECLS
 

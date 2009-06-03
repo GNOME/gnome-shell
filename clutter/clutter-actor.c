@@ -2903,7 +2903,7 @@ clutter_actor_dispose (GObject *object)
                 object->ref_count);
 
   /* avoid recursing when called from clutter_actor_destroy() */
-  if (priv->parent_actor)
+  if (priv->parent_actor != NULL)
     {
       ClutterActor *parent = priv->parent_actor;
 
@@ -7147,91 +7147,29 @@ parse_units (ClutterActor   *self,
 
   if (G_VALUE_HOLDS (&value, G_TYPE_INT))
     {
-      retval = g_value_get_int (&value);
+      retval = (gfloat) g_value_get_int (&value);
+    }
+  else if (G_VALUE_HOLDS (&value, G_TYPE_FLOAT))
+    {
+      retval = g_value_get_float (&value);
     }
   else if (G_VALUE_HOLDS (&value, G_TYPE_STRING))
     {
-      gint64 val;
-      gchar *end;
+      ClutterUnits units;
+      gboolean res;
 
-      val = g_ascii_strtoll (g_value_get_string (&value), &end, 10);
-
-      /* skip whitespace */
-      while (g_ascii_isspace (*end))
-        end++;
-
-      /* assume pixels */
-      if (*end == '\0')
+      res = clutter_units_from_string (&units, g_value_get_string (&value));
+      if (res)
+        retval = clutter_units_to_pixels (&units);
+      else
         {
-          retval = val;
-          goto out;
+          g_warning ("Invalid value '%s': integers, strings or floating point "
+                     "values can be used for the x, y, width and height "
+                     "properties. Valid modifiers for strings are 'px', 'mm', "
+                     "'pt' and 'em'.",
+                     g_value_get_string (&value));
+          retval = 0;
         }
-
-      if (strcmp (end, "px") == 0)
-        {
-          retval = val;
-          goto out;
-        }
-
-      if (strcmp (end, "em") == 0)
-        {
-          retval = CLUTTER_UNITS_FROM_EM (val);
-          goto out;
-        }
-
-      if (strcmp (end, "mm") == 0)
-        {
-          retval = CLUTTER_UNITS_FROM_MM (val);
-          goto out;
-        }
-
-      if (strcmp (end, "pt") == 0)
-        {
-          retval = CLUTTER_UNITS_FROM_POINTS (val);
-          goto out;
-        }
-
-      if (end[0] == '%' && end[1] == '\0')
-        {
-          ClutterActor *stage;
-
-          if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
-            {
-              g_warning ("Unable to set percentage of %s on a top-level "
-                         "actor of type '%s'",
-                         (dimension == PARSE_X ||
-                          dimension == PARSE_WIDTH ||
-                          dimension == PARSE_ANCHOR_X) ? "width" : "height",
-                         g_type_name (G_OBJECT_TYPE (self)));
-              retval = 0;
-              goto out;
-            }
-
-          stage = clutter_actor_get_stage (self);
-          if (stage == NULL)
-            stage = clutter_stage_get_default ();
-
-          if (dimension == PARSE_X ||
-              dimension == PARSE_WIDTH ||
-              dimension == PARSE_ANCHOR_X)
-            {
-              retval = clutter_actor_get_width (stage) * val;
-            }
-          else
-            {
-              retval = clutter_actor_get_height (stage) * val;
-            }
-
-          goto out;
-        }
-
-      g_warning ("Invalid value '%s': integers, strings or floating point "
-                 "values can be used for the x, y, width and height "
-                 "properties. Valid modifiers for strings are 'px', 'mm' "
-                 "and '%%'.",
-                 g_value_get_string (&value));
-
-      retval = 0;
     }
   else if (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE))
     {
@@ -7505,7 +7443,18 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
                                    const gchar       *name,
                                    const GValue      *value)
 {
-  CLUTTER_NOTE (SCRIPT, "in ClutterActor::set_custom_property('%s')", name);
+#ifdef CLUTTER_ENABLE_DEBUG
+  {
+    gchar *tmp = g_strdup_value_contents (value);
+
+    CLUTTER_NOTE (SCRIPT,
+                  "in ClutterActor::set_custom_property('%s') = %s",
+                  name,
+                  tmp);
+
+    g_free (tmp);
+  }
+#endif
 
   if (strcmp (name, "rotation") == 0)
     {

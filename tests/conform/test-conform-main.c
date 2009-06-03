@@ -148,5 +148,8 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
   TEST_CONFORM_SIMPLE ("/color", test_color_to_string);
 
+  TEST_CONFORM_SIMPLE ("/units", test_units_constructors);
+  TEST_CONFORM_SIMPLE ("/units", test_units_string);
+
   return g_test_run ();
 }
