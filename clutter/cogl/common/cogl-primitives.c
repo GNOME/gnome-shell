@@ -1158,7 +1158,6 @@ cogl_polygon (CoglTextureVertex *vertices,
     {
       CoglHandle   layer = (CoglHandle)tmp->data;
       CoglHandle   tex_handle = cogl_material_layer_get_texture (layer);
-      CoglTexture *tex = _cogl_texture_pointer_from_handle (tex_handle);
 
       if (i == 0 && cogl_texture_is_sliced (tex_handle))
         {
@@ -1201,11 +1200,14 @@ cogl_polygon (CoglTextureVertex *vertices,
             }
 
 #ifdef HAVE_COGL_GL
-          /* Temporarily change the wrapping mode on all of the slices to use
-           * a transparent border
-           * XXX: it's doesn't look like we save/restore this, like the comment
-           * implies? */
-          _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_BORDER);
+          {
+            CoglTexture *tex = _cogl_texture_pointer_from_handle (tex_handle);
+            /* Temporarily change the wrapping mode on all of the slices to use
+             * a transparent border
+             * XXX: it's doesn't look like we save/restore this, like
+             * the comment implies? */
+            _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_BORDER);
+          }
 #endif
           break;
         }
