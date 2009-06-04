@@ -200,11 +200,10 @@ cogl_shader_compile (CoglHandle shader_handle)
 {
 }
 
-void
-cogl_shader_get_info_log (CoglHandle  handle,
-                          size_t      size,
-                          char       *buffer)
+gchar *
+cogl_shader_get_info_log (CoglHandle handle)
 {
+  return NULL;
 }
 
 CoglShaderType
