@@ -76,14 +76,14 @@ cogl_material_new (void)
 {
   /* Create new - blank - material */
   CoglMaterial *material = g_new0 (CoglMaterial, 1);
-  GLfloat *unlit = material->unlit;
+  GLubyte *unlit = material->unlit;
   GLfloat *ambient = material->ambient;
   GLfloat *diffuse = material->diffuse;
   GLfloat *specular = material->specular;
   GLfloat *emission = material->emission;
 
   /* Use the same defaults as the GL spec... */
-  unlit[0] = 1.0; unlit[1] = 1.0; unlit[2] = 1.0; unlit[3] = 1.0;
+  unlit[0] = 0xff; unlit[1] = 0xff; unlit[2] = 0xff; unlit[3] = 0xff;
   material->flags |= COGL_MATERIAL_FLAG_DEFAULT_COLOR;
 
   /* Use the same defaults as the GL spec... */
@@ -160,7 +160,7 @@ handle_automatic_blend_enable (CoglMaterial *material)
 	material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
     }
 
-  if (material->unlit[3] != 1.0)
+  if (material->unlit[3] != 0xff)
     material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
 }
 
@@ -184,11 +184,20 @@ cogl_material_get_color (CoglHandle  handle,
 
   material = _cogl_material_pointer_from_handle (handle);
 
-  cogl_color_set_from_4f (color,
-                          material->unlit[0],
-                          material->unlit[1],
-                          material->unlit[2],
-                          material->unlit[3]);
+  cogl_color_set_from_4ub (color,
+                           material->unlit[0],
+                           material->unlit[1],
+                           material->unlit[2],
+                           material->unlit[3]);
+}
+
+/* This is used heavily by the cogl journal when logging quads */
+void
+_cogl_material_get_colorubv (CoglHandle  handle,
+                             guint8     *color)
+{
+  CoglMaterial *material = _cogl_material_pointer_from_handle (handle);
+  memcpy (color, material->unlit, 4);
 }
 
 void
@@ -196,16 +205,16 @@ cogl_material_set_color (CoglHandle       handle,
 			 const CoglColor *unlit_color)
 {
   CoglMaterial *material;
-  GLfloat       unlit[4];
+  GLubyte       unlit[4];
 
   g_return_if_fail (cogl_is_material (handle));
 
   material = _cogl_material_pointer_from_handle (handle);
 
-  unlit[0] = cogl_color_get_red_float (unlit_color);
-  unlit[1] = cogl_color_get_green_float (unlit_color);
-  unlit[2] = cogl_color_get_blue_float (unlit_color);
-  unlit[3] = cogl_color_get_alpha_float (unlit_color);
+  unlit[0] = cogl_color_get_red_byte (unlit_color);
+  unlit[1] = cogl_color_get_green_byte (unlit_color);
+  unlit[2] = cogl_color_get_blue_byte (unlit_color);
+  unlit[3] = cogl_color_get_alpha_byte (unlit_color);
   if (memcmp (unlit, material->unlit, sizeof (unlit)) == 0)
     return;
 
@@ -215,10 +224,10 @@ cogl_material_set_color (CoglHandle       handle,
   memcpy (material->unlit, unlit, sizeof (unlit));
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_COLOR;
-  if (unlit[0] == 1.0 &&
-      unlit[1] == 1.0 &&
-      unlit[2] == 1.0 &&
-      unlit[3] == 1.0)
+  if (unlit[0] == 0xff &&
+      unlit[1] == 0xff &&
+      unlit[2] == 0xff &&
+      unlit[3] == 0xff)
     material->flags |= COGL_MATERIAL_FLAG_DEFAULT_COLOR;
 
   handle_automatic_blend_enable (material);
@@ -1469,10 +1478,10 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
           ctx->current_material_flush_options.flags &
           COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)
         {
-          GE (glColor4f (material->unlit[0],
-                         material->unlit[1],
-                         material->unlit[2],
-                         material->unlit[3]));
+          GE (glColor4ub (material->unlit[0],
+                          material->unlit[1],
+                          material->unlit[2],
+                          material->unlit[3]));
         }
     }
 

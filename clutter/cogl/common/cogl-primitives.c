@@ -575,16 +575,15 @@ _cogl_journal_log_quad (float       x_1,
   int               next_vert;
   GLfloat          *v;
   GLubyte          *c;
+  GLubyte          *src_c;
   int               i;
   int               next_entry;
   guint32           disable_layers;
   CoglJournalEntry *entry;
-  CoglColor         color;
-  guint8            r, g, b, a;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* The vertex data is logged into a seperate array in a layout that can be
+  /* The vertex data is logged into a separate array in a layout that can be
    * directly passed to OpenGL
    */
 
@@ -605,26 +604,23 @@ _cogl_journal_log_quad (float       x_1,
   /* XXX: we could defer expanding the vertex data for GL until we come
    * to flushing the journal. */
 
-  cogl_material_get_color (material, &color);
-  r = cogl_color_get_red_byte (&color);
-  g = cogl_color_get_green_byte (&color);
-  b = cogl_color_get_blue_byte (&color);
-  a = cogl_color_get_alpha_byte (&color);
+  /* FIXME: This is a hacky optimization, since it will break if we
+   * change the definition of CoglColor: */
+  _cogl_material_get_colorubv (material, c);
+  src_c = c;
+  for (i = 0; i < 3; i++)
+    {
+      c += byte_stride;
+      memcpy (c, src_c, 4);
+    }
 
   v[0] = x_1; v[1] = y_1;
-  c[0] = r; c[1] = g; c[2] = b; c[3] = a;
   v += stride;
-  c += byte_stride;
   v[0] = x_1; v[1] = y_2;
-  c[0] = r; c[1] = g; c[2] = b; c[3] = a;
   v += stride;
-  c += byte_stride;
   v[0] = x_2; v[1] = y_2;
-  c[0] = r; c[1] = g; c[2] = b; c[3] = a;
   v += stride;
-  c += byte_stride;
   v[0] = x_2; v[1] = y_1;
-  c[0] = r; c[1] = g; c[2] = b; c[3] = a;
 
   for (i = 0; i < n_layers; i++)
     {
