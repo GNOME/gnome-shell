@@ -447,6 +447,29 @@ clutter_units_from_string (ClutterUnits *units,
   return TRUE;
 }
 
+static const gchar *
+clutter_unit_type_name (ClutterUnitType unit_type)
+{
+  switch (unit_type)
+    {
+    case CLUTTER_UNIT_MM:
+      return "mm";
+
+    case CLUTTER_UNIT_POINT:
+      return "pt";
+
+    case CLUTTER_UNIT_EM:
+      return "em";
+
+    case CLUTTER_UNIT_PIXEL:
+      return "px";
+    }
+
+  g_warning ("Invalid unit type %d", (int) unit_type);
+
+  return "<invalid>";
+}
+
 /**
  * clutter_units_to_string:
  * @units: a #ClutterUnits
@@ -653,9 +676,24 @@ param_units_validate (GParamSpec *pspec,
 {
   ClutterParamSpecUnits *uspec = CLUTTER_PARAM_SPEC_UNITS (pspec);
   ClutterUnits *units = value->data[0].v_pointer;
+  ClutterUnitType otype = units->unit_type;
   gfloat oval = units->value;
 
   g_assert (CLUTTER_IS_PARAM_SPEC_UNITS (pspec));
+
+  if (otype != uspec->default_type)
+    {
+      gchar *str = clutter_units_to_string (units);
+
+      g_warning ("The units value of '%s' does not have the same unit "
+                 "type as declared by the ClutterParamSpecUnits of '%s'",
+                 str,
+                 clutter_unit_type_name (otype));
+
+      g_free (str);
+
+      return FALSE;
+    }
 
   units->value = CLAMP (units->value,
                         uspec->minimum,
