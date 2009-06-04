@@ -62,10 +62,8 @@ struct _ClutterStageX11
   ClutterBackendX11 *backend;
   ClutterStageState  state;
 
-#ifdef USE_XINPUT
-  int          event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
-  GList       *devices;
-#endif
+  int event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
+  GList *devices;
 
   ClutterStage *wrapper;
 };

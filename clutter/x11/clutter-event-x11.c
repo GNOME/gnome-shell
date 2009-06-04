@@ -43,7 +43,7 @@
 
 #include <X11/Xatom.h>
 
-#ifdef USE_XINPUT
+#ifdef HAVE_XINPUT
 #include <X11/extensions/XInput.h>
 #endif
 
@@ -263,7 +263,7 @@ set_user_time (ClutterBackendX11 *backend_x11,
     }
 }
 
-#if 0 /* See XInput keyboard comment below USE_XINPUT */
+#if 0 /* See XInput keyboard comment below HAVE_XINPUT */
 static void
 convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
 {
@@ -282,7 +282,7 @@ convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
   xevent->xkey.keycode = xkev->keycode;
   xevent->xkey.same_screen = xkev->same_screen;
 }
-#endif /* USE_XINPUT */
+#endif /* HAVE_XINPUT */
 
 static void
 translate_key_event (ClutterBackend   *backend,
@@ -738,7 +738,7 @@ event_translate (ClutterBackend *backend,
         }
       else
         {  /* XInput fun.. Needs clean up. */
-#ifdef USE_XINPUT
+#ifdef HAVE_XINPUT
           int *ev_types = backend_x11->event_types;
 
           CLUTTER_NOTE (EVENT, "XInput event type: %d", xevent->type);
