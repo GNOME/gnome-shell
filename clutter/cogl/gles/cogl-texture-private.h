@@ -30,6 +30,7 @@
 typedef struct _CoglTexture       CoglTexture;
 typedef struct _CoglTexSliceSpan  CoglTexSliceSpan;
 typedef struct _CoglSpanIter      CoglSpanIter;
+typedef struct _CoglTexturePixel  CoglTexturePixel;
 
 struct _CoglTexSliceSpan
 {
@@ -55,6 +56,18 @@ struct _CoglSpanIter
   gboolean          intersects;
 };
 
+/* This is used to store the first pixel of each slice. This is only
+   used when glGenerateMipmap is not available */
+struct _CoglTexturePixel
+{
+  /* We need to store the format of the pixel because we store the
+     data in the source format which might end up being different for
+     each slice if a subregion is updated with a different format */
+  GLenum gl_format;
+  GLenum gl_type;
+  guint8 data[4];
+};
+
 struct _CoglTexture
 {
   CoglHandleObject   _parent;
@@ -68,11 +81,17 @@ struct _CoglTexture
   GArray            *slice_y_spans;
   GArray            *slice_gl_handles;
   gint               max_waste;
-  CoglTextureFilter  min_filter;
-  CoglTextureFilter  mag_filter;
+  GLenum             min_filter;
+  GLenum             mag_filter;
   gboolean           is_foreign;
   GLint              wrap_mode;
   gboolean           auto_mipmap;
+  gboolean           mipmaps_dirty;
+
+  /* This holds a copy of the first pixel in each slice. It is only
+     used to force an automatic update of the mipmaps when
+     glGenerateMipmap is not available. */
+  CoglTexturePixel  *first_pixels;
 };
 
 /* To improve batching of geometry when submitting vertices to OpenGL we
@@ -92,6 +111,14 @@ _cogl_texture_pointer_from_handle (CoglHandle handle);
 void
 _cogl_texture_set_wrap_mode_parameter (CoglTexture *tex,
                                        GLenum wrap_mode);
+
+void
+_cogl_texture_set_filters (CoglHandle handle,
+                           GLenum min_filter,
+                           GLenum mag_filter);
+
+void
+_cogl_texture_ensure_mipmaps (CoglHandle handle);
 
 gboolean
 _cogl_texture_span_has_waste (CoglTexture *tex,
