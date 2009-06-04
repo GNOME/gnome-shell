@@ -103,7 +103,7 @@ gchar *
 cogl_shader_get_info_log (CoglHandle handle)
 {
   CoglShader *shader;
-  char buffer[512]
+  char buffer[512];
   int len = 0;
   _COGL_GET_CONTEXT (ctx, NULL);
 
