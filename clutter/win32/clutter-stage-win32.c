@@ -780,8 +780,8 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
 void
 clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
 {
-  CLUTTER_ACTOR_SET_FLAGS (stage_win32, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_SET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_MAPPED);
+  clutter_actor_map (CLUTTER_ACTOR (stage_win32));
+  clutter_actor_map (CLUTTER_ACTOR (stage_win32->wrapper));
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_win32->wrapper));
 }
@@ -789,6 +789,6 @@ clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
 void
 clutter_stage_win32_unmap (ClutterStageWin32 *stage_win32)
 {
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_MAPPED);
+  clutter_actor_unmap (CLUTTER_ACTOR (stage_win32));
+  clutter_actor_unmap (CLUTTER_ACTOR (stage_win32->wrapper));
 }
