@@ -228,10 +228,10 @@ cogl_matrix_perspective (CoglMatrix *matrix,
  * @right: The coordinate for the right clipping plane
  * @bottom: The coordinate for the bottom clipping plane
  * @top: The coordinate for the top clipping plane
- * @near: The coordinate for the near clipping plane (may be negative if
- *        the plane is behind the viewer)
- * @far: The coordinate for the far clipping plane (may be negative if
- *       the plane is behind the viewer)
+ * @z_near: The coordinate for the near clipping plane (may be negative if
+ *          the plane is behind the viewer)
+ * @z_far: The coordinate for the far clipping plane (may be negative if
+ *         the plane is behind the viewer)
  *
  * Multiples the matrix by a parallel projection matrix.
  */
@@ -241,8 +241,8 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float       right,
                    float       bottom,
                    float       top,
-                   float       near,
-                   float       far);
+                   float       z_near,
+                   float       z_far);
 
 /**
  * cogl_matrix_init_from_array:
