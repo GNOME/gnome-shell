@@ -1465,7 +1465,7 @@ clutter_text_get_preferred_width (ClutterActor *self,
   logical_width = logical_rect.x + logical_rect.width;
 
   layout_width = logical_width > 0
-    ? (logical_width * 1024)
+    ? (logical_width / 1024.0f)
     : 1;
 
   if (min_width_p)
