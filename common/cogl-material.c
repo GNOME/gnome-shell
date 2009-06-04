@@ -637,6 +637,8 @@ _cogl_material_get_layer (CoglMaterial *material,
   layer_handle = _cogl_material_layer_handle_new (layer);
   layer->index = index_;
   layer->flags = COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
+  layer->mag_filter = COGL_MATERIAL_FILTER_LINEAR;
+  layer->min_filter = COGL_MATERIAL_FILTER_LINEAR;
   layer->texture = COGL_INVALID_HANDLE;
 
   /* Choose the same default combine mode as OpenGL:
@@ -1014,6 +1016,15 @@ get_n_args_for_combine_func (GLint func)
   return 0;
 }
 
+static gboolean
+is_mipmap_filter (CoglMaterialFilter filter)
+{
+  return (filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST
+          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST
+          || filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR
+          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
+}
+
 static void
 _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
                                              CoglLayerInfo      *gl_layer_info)
@@ -1213,6 +1224,13 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 #endif
 
       GE (glActiveTexture (GL_TEXTURE0 + i));
+
+      _cogl_texture_set_filters (layer->texture,
+                                 layer->min_filter,
+                                 layer->mag_filter);
+      if (is_mipmap_filter (layer->min_filter)
+          || is_mipmap_filter (layer->mag_filter))
+        _cogl_texture_ensure_mipmaps (layer->texture);
 
       /* FIXME: We could be more clever here and only bind the texture
          if it is different from gl_layer_info->gl_texture to avoid
@@ -1474,3 +1492,44 @@ cogl_set_source_texture (CoglHandle texture_handle)
   cogl_set_source (ctx->default_material);
 }
 
+CoglMaterialFilter
+cogl_material_layer_get_min_filter (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer;
+
+  g_return_val_if_fail (cogl_is_material_layer (layer_handle), 0);
+
+  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
+
+  return layer->min_filter;
+}
+
+CoglMaterialFilter
+cogl_material_layer_get_mag_filter (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer;
+
+  g_return_val_if_fail (cogl_is_material_layer (layer_handle), 0);
+
+  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
+
+  return layer->mag_filter;
+}
+
+void
+cogl_material_set_layer_filters (CoglHandle         handle,
+                                 gint               layer_index,
+                                 CoglMaterialFilter min_filter,
+                                 CoglMaterialFilter mag_filter)
+{
+  CoglMaterial *material;
+  CoglMaterialLayer *layer;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  material = _cogl_material_pointer_from_handle (handle);
+  layer = _cogl_material_get_layer (material, layer_index, TRUE);
+
+  layer->min_filter = min_filter;
+  layer->mag_filter = mag_filter;
+}

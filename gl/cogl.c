@@ -399,6 +399,10 @@ _cogl_features_init (void)
 	(COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteFramebuffersEXT");
 
+      ctx->pf_glGenerateMipmapEXT =
+        (COGL_PFNGLGENERATEMIPMAPEXTPROC)
+        cogl_get_proc_address ("glGenerateMipmapEXT");
+
       if (ctx->pf_glGenRenderbuffersEXT         &&
 	  ctx->pf_glBindRenderbufferEXT         &&
 	  ctx->pf_glRenderbufferStorageEXT      &&
@@ -407,7 +411,8 @@ _cogl_features_init (void)
 	  ctx->pf_glFramebufferTexture2DEXT     &&
 	  ctx->pf_glFramebufferRenderbufferEXT  &&
 	  ctx->pf_glCheckFramebufferStatusEXT   &&
-	  ctx->pf_glDeleteFramebuffersEXT)
+	  ctx->pf_glDeleteFramebuffersEXT       &&
+          ctx->pf_glGenerateMipmapEXT)
 	flags |= COGL_FEATURE_OFFSCREEN;
     }
 

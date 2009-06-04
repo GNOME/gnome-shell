@@ -773,6 +773,10 @@ typedef void
    GLsizei               width,
    GLsizei               height);
 
+typedef void
+  (APIENTRYP             COGL_PFNGLGENERATEMIPMAPEXTPROC)
+  (GLenum                target);
+
 typedef GLhandleARB
   (APIENTRYP             COGL_PFNGLCREATEPROGRAMOBJECTARBPROC)
   (void);

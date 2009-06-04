@@ -244,8 +244,11 @@ struct _CoglTextureVertex
 /**
  * CoglTextureFlags:
  * @COGL_TEXTURE_NONE: No flags specified
- * @COGL_TEXTURE_AUTO_MIPMAP: Enables the automatic generation of the
- *   mipmap pyramid from the base level image whenever it is updated
+ * @COGL_TEXTURE_NO_AUTO_MIPMAP: Disables the automatic generation of
+ *   the mipmap pyramid from the base level image whenever it is
+ *   updated. The mipmaps are only generated when the texture is
+ *   rendered with a mipmap filter so it should be free to leave out
+ *   this flag when using other filtering modes.
  * @COGL_TEXTURE_NO_SLICING: Disables the slicing of the texture
  *
  * Flags to pass to the cogl_texture_new_* family of functions.
@@ -253,9 +256,9 @@ struct _CoglTextureVertex
  * Since: 1.0
  */
 typedef enum {
-  COGL_TEXTURE_NONE        = 0,
-  COGL_TEXTURE_AUTO_MIPMAP = 1 << 0,
-  COGL_TEXTURE_NO_SLICING  = 1 << 1
+  COGL_TEXTURE_NONE           = 0,
+  COGL_TEXTURE_NO_AUTO_MIPMAP = 1 << 0,
+  COGL_TEXTURE_NO_SLICING     = 1 << 1
 } CoglTextureFlags;
 
 /**
