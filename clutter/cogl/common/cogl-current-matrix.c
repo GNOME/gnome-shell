@@ -239,8 +239,8 @@ _cogl_current_matrix_ortho (float left,
                             float right,
                             float bottom,
                             float top,
-                            float near,
-                            float far)
+                            float near_val,
+                            float far_val)
 {
   _COGL_GET_CONTEXT_AND_STACK (ctx, current_stack, NO_RETVAL);
 
@@ -248,8 +248,8 @@ _cogl_current_matrix_ortho (float left,
     _cogl_matrix_stack_ortho (current_stack,
                               left, right,
                               bottom, top,
-                              near,
-                              far);
+                              near_val,
+                              far_val);
   else
     {
 #ifdef HAVE_COGL_GLES2
@@ -257,10 +257,10 @@ _cogl_current_matrix_ortho (float left,
       CoglMatrix matrix;
       _cogl_get_matrix (ctx->matrix_mode, &matrix);
       cogl_matrix_ortho (&matrix,
-                         left, right, bottom, top, near, far);
+                         left, right, bottom, top, near_val, far_val);
       _cogl_current_matrix_load (&matrix);
 #else
-      GE (glOrtho (left, right, bottom, top, near, far));
+      GE (glOrtho (left, right, bottom, top, near_val, far_val));
 #endif
     }
 }
@@ -453,14 +453,14 @@ cogl_ortho (float left,
 	    float right,
 	    float bottom,
 	    float top,
-	    float near,
-	    float far)
+	    float z_near,
+	    float z_far)
 {
   CoglMatrix ortho;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   cogl_matrix_init_identity (&ortho);
-  cogl_matrix_ortho (&ortho, left, right, bottom, top, near, far);
+  cogl_matrix_ortho (&ortho, left, right, bottom, top, z_near, z_far);
   _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
   _cogl_current_matrix_load (&ortho);
 
