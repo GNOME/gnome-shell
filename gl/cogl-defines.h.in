@@ -1032,6 +1032,17 @@ typedef void
   (GLenum                modeRGB,
    GLenum                modeAlpha);
 
+typedef void
+  (APIENTRYP             COGL_PFNGLBLENDEQUATIONPROC)
+  (GLenum                mode);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLBLENDCOLORPROC)
+  (GLclampf              red,
+   GLclampf              green,
+   GLclampf              blue,
+   GLclampf              alpha);
+
 G_END_DECLS
 
 #endif

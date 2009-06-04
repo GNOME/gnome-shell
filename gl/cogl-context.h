@@ -170,6 +170,8 @@ typedef struct
   COGL_PFNGLACTIVETEXTUREPROC                      pf_glActiveTexture;
   COGL_PFNGLCLIENTACTIVETEXTUREPROC                pf_glClientActiveTexture;
 
+  COGL_PFNGLBLENDEQUATIONPROC                      pf_glBlendEquation;
+  COGL_PFNGLBLENDCOLORPROC                         pf_glBlendColor;
   COGL_PFNGLBLENDFUNCSEPARATEPROC                  pf_glBlendFuncSeparate;
   COGL_PFNGLBLENDEQUATIONSEPARATEPROC              pf_glBlendEquationSeparate;
 } CoglContext;
