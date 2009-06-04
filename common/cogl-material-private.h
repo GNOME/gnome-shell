@@ -117,7 +117,7 @@ struct _CoglMaterial
   gulong    flags;
 
   /* If no lighting is enabled; this is the basic material color */
-  GLfloat   unlit[4];
+  GLubyte   unlit[4];
 
   /* Standard OpenGL lighting model attributes */
   GLfloat   ambient[4];
@@ -234,20 +234,11 @@ typedef struct _CoglMaterialFlushOptions
   GLuint                layer0_override_texture;
 } CoglMaterialFlushOptions;
 
-/*
- * cogl_material_flush_gl_state:
- * @material: A CoglMaterial object
- * @...: A NULL terminated list of (CoglMaterialFlushOption, data) pairs
- *
- * Note: It is possible for a layer object of type
- *       COGL_MATERIAL_LAYER_TYPE_TEXTURE to be realized before a texture
- *       object has been associated with the layer. For example this happens
- *       if you setup layer combining for a given layer index before calling
- *       cogl_material_set_layer for that index.
- *
- * Returns: A CoglHandle to the layers texture object or COGL_INVALID_HANDLE
- *          if a texture has not been set yet.
- */
+
+
+void _cogl_material_get_colorubv (CoglHandle  handle,
+                                  guint8     *color);
+
 void _cogl_material_flush_gl_state (CoglHandle material,
                                     CoglMaterialFlushOptions *options);
 
