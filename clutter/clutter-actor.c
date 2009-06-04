@@ -273,6 +273,7 @@ struct _ClutterActorPrivate
   gfloat request_natural_height;
 
   ClutterActorBox allocation;
+  ClutterAllocationFlags allocation_flags;
 
   guint position_set                : 1;
   guint min_width_set               : 1;
@@ -434,6 +435,7 @@ enum
   MOTION_EVENT,
   ENTER_EVENT,
   LEAVE_EVENT,
+  ALLOCATION_CHANGED,
 
   LAST_SIGNAL
 };
@@ -1547,6 +1549,7 @@ clutter_actor_real_allocate (ClutterActor           *self,
 {
   ClutterActorPrivate *priv = self->priv;
   gboolean x1_changed, y1_changed, x2_changed, y2_changed;
+  gboolean flags_changed;
   ClutterActorBox old = { 0, };
 
   clutter_actor_store_old_geometry (self, &old);
@@ -1556,13 +1559,25 @@ clutter_actor_real_allocate (ClutterActor           *self,
   x2_changed = priv->allocation.x2 != box->x2;
   y2_changed = priv->allocation.y2 != box->y2;
 
+  flags_changed = priv->allocation_flags != flags;
+
   priv->allocation = *box;
+  priv->allocation_flags = flags;
   priv->needs_allocation = FALSE;
 
   g_object_freeze_notify (G_OBJECT (self));
 
   if (x1_changed || y1_changed || x2_changed || y2_changed)
-    g_object_notify (G_OBJECT (self), "allocation");
+    {
+      g_object_notify (G_OBJECT (self), "allocation");
+
+      /* we also emit the ::allocation-changed signal for people
+       * that wish to track the allocation flags
+       */
+      g_signal_emit (self, actor_signals[ALLOCATION_CHANGED], 0,
+                     box,
+                     flags);
+    }
 
   clutter_actor_notify_if_geometry_changed (self, &old);
 
@@ -4199,6 +4214,32 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   clutter_marshal_VOID__BOXED,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_COLOR);
+
+  /**
+   * ClutterActor::allocation-changed:
+   * @actor: the #ClutterActor that emitted the signal
+   * @box: a #ClutterActorBox with the new allocation
+   * @flags: #ClutterAllocationFlags for the allocation
+   *
+   * The ::allocation-changed signal is emitted when the
+   * #ClutterActor:allocation property changes. Usually, application
+   * code should just use the notifications for the :allocation property
+   * but if you want to track the allocation flags as well, for instance
+   * to know whether the absolute origin of @actor changed, then you might
+   * want use this signal instead.
+   *
+   * Since: 1.0
+   */
+  actor_signals[ALLOCATION_CHANGED] =
+    g_signal_new (I_("allocation-changed"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  clutter_marshal_VOID__BOXED_FLAGS,
+                  G_TYPE_NONE, 2,
+                  CLUTTER_TYPE_ACTOR_BOX,
+                  CLUTTER_TYPE_ALLOCATION_FLAGS);
 
   klass->show = clutter_actor_real_show;
   klass->show_all = clutter_actor_show;
