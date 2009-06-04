@@ -12,7 +12,7 @@ const Button = imports.ui.button;
 const Main = imports.ui.main;
 
 const PANEL_HEIGHT = 32;
-const TRAY_HEIGHT = 28;
+const TRAY_HEIGHT = PANEL_HEIGHT - 1;
 const SHADOW_HEIGHT = 6;
 
 // The panel has a transparent white background with a gradient.
@@ -34,7 +34,7 @@ PANEL_BUTTON_COLOR.from_pixel(0x00000015);
 const PRESSED_BUTTON_BACKGROUND_COLOR = new Clutter.Color();
 PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0x00000030);
 
-const TRAY_PADDING = 2;
+const TRAY_PADDING = 0;
 const TRAY_SPACING = 2;
 
 // Used for the tray icon container with gtk pre-2.16, which doesn't
@@ -44,7 +44,7 @@ TRAY_BACKGROUND_COLOR.from_pixel(0xefefefff);
 const TRAY_BORDER_COLOR = new Clutter.Color();
 TRAY_BORDER_COLOR.from_pixel(0x00000033);
 const TRAY_CORNER_RADIUS = 5;
-const TRAY_BORDER_WIDTH = 1;
+const TRAY_BORDER_WIDTH = 0;
 
 function Panel() {
     this._init();
@@ -118,7 +118,7 @@ Panel.prototype = {
         // The tray icons live in trayBox within trayContainer.
         // The trayBox is hidden when there are no tray icons.
         let trayContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                          y_align: Big.BoxAlignment.CENTER });
+                                          y_align: Big.BoxAlignment.START });
         box.append(trayContainer, Big.BoxPackFlags.END);
         let trayBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                     height: TRAY_HEIGHT,

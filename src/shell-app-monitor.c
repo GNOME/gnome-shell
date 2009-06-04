@@ -326,7 +326,7 @@ get_active_app_properties (ShellAppMonitor *monitor,
     return;
 
   *wm_class = g_strdup (meta_window_get_wm_class (active));
-  *title = g_strdup (meta_window_get_description (active));
+  g_object_get (active, "title", title, NULL);
 }
 
 void
