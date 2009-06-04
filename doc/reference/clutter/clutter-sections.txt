@@ -542,18 +542,13 @@ clutter_stage_add
 ClutterTimeline
 ClutterTimelineClass
 clutter_timeline_new
-clutter_timeline_new_for_duration
 clutter_timeline_clone
 
 <SUBSECTION>
-clutter_timeline_set_speed
-clutter_timeline_get_speed
 clutter_timeline_set_duration
 clutter_timeline_get_duration
 clutter_timeline_set_loop
 clutter_timeline_get_loop
-clutter_timeline_set_n_frames
-clutter_timeline_get_n_frames
 clutter_timeline_set_delay
 clutter_timeline_get_delay
 ClutterTimelineDirection
@@ -567,14 +562,13 @@ clutter_timeline_stop
 clutter_timeline_rewind
 clutter_timeline_skip
 clutter_timeline_advance
-clutter_timeline_get_current_frame
+clutter_timeline_get_elapsed_time
 clutter_timeline_get_delta
 clutter_timeline_get_progress
 clutter_timeline_get_progressx
 clutter_timeline_is_playing
 
 <SUBSECTION>
-clutter_timeline_add_marker_at_frame
 clutter_timeline_add_marker_at_time
 clutter_timeline_has_marker
 clutter_timeline_list_markers

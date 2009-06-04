@@ -756,7 +756,7 @@ test_layout_main (int argc, char *argv[])
 
   clutter_color_from_string (&bg_color, "Red");
 
-  main_timeline = clutter_timeline_new_for_duration (2000);
+  main_timeline = clutter_timeline_new (2000);
   clutter_timeline_set_loop (main_timeline, TRUE);
   g_signal_connect (main_timeline, "new-frame",
                     G_CALLBACK (relayout_on_frame),

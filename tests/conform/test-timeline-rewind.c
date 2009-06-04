@@ -4,8 +4,7 @@
 
 #include "test-conform-common.h"
 
-#define TEST_TIMELINE_FPS 10
-#define TEST_TIMELINE_FRAME_COUNT 5
+#define TEST_TIMELINE_DURATION 500
 #define TEST_WATCHDOG_KICK_IN_SECONDS 10
 
 typedef struct _TestState
@@ -42,9 +41,9 @@ new_frame_cb (ClutterTimeline *timeline,
               gint frame_num,
               TestState *state)
 {
-  gint current_frame = clutter_timeline_get_current_frame (timeline);
+  gint elapsed_time = clutter_timeline_get_elapsed_time (timeline);
 
-  if (current_frame == TEST_TIMELINE_FRAME_COUNT)
+  if (elapsed_time == TEST_TIMELINE_DURATION)
     {
       g_test_message ("new-frame signal recieved (end of timeline)\n");
       g_test_message ("Rewinding timeline\n");
@@ -53,7 +52,7 @@ new_frame_cb (ClutterTimeline *timeline,
     }
   else
     {
-      if (current_frame == 0)
+      if (elapsed_time == 0)
         {
           g_test_message ("new-frame signal recieved (start of timeline)\n");
         }
@@ -101,8 +100,7 @@ test_timeline_rewind (TestConformSimpleFixture *fixture,
   TestState state;
 
   state.timeline = 
-    clutter_timeline_new (TEST_TIMELINE_FRAME_COUNT,
-                          TEST_TIMELINE_FPS);
+    clutter_timeline_new (TEST_TIMELINE_DURATION);
   g_signal_connect (G_OBJECT(state.timeline),
                     "new-frame",
                     G_CALLBACK(new_frame_cb),

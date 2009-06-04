@@ -86,7 +86,7 @@ test_scale_main (int argc, char *argv[])
 
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
-  timeline = clutter_timeline_new_for_duration (750);
+  timeline = clutter_timeline_new (750);
   alpha    = clutter_alpha_new_with_func (timeline,
 				          my_ramp_func,
 				          NULL, NULL);

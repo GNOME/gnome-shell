@@ -211,7 +211,7 @@ test_threads_main (int argc, char *argv[])
                          rect, progress_rect,
                          NULL);
 
-  timeline = clutter_timeline_new (150, 50);
+  timeline = clutter_timeline_new (3000);
   clutter_timeline_set_loop (timeline, TRUE);
 
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);

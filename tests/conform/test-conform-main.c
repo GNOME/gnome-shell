@@ -85,11 +85,8 @@ main (int argc, char **argv)
   shared_state->argv_addr = &argv;
 
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_dup_frames);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_dup_frames);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_rewind);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_smoothness);
 
   TEST_CONFORM_SIMPLE ("/picking", test_pick);
 

@@ -88,17 +88,18 @@ input_cb (ClutterStage *stage,
 /* Timeline handler */
 static void
 frame_cb (ClutterTimeline *timeline,
-	  gint             frame_num,
+	  gint             msecs,
 	  gpointer         data)
 {
-  SuperOH        *oh = (SuperOH *)data;
-  gint            i;
+  SuperOH *oh = (SuperOH *)data;
+  gint     i;
+  float    rotation = clutter_timeline_get_progress (timeline) * 360.0f;
 
   /* Rotate everything clockwise about stage center*/
 
   clutter_actor_set_rotation (CLUTTER_ACTOR (oh->group),
                               CLUTTER_Z_AXIS,
-                              frame_num,
+                              rotation,
 			      CLUTTER_STAGE_WIDTH () / 2,
                               CLUTTER_STAGE_HEIGHT () / 2,
 			      0);
@@ -116,7 +117,7 @@ frame_cb (ClutterTimeline *timeline,
        * unit based functions to fix.
        */
       clutter_actor_set_rotation (oh->hand[i], CLUTTER_Z_AXIS,
-				  - 6.0 * frame_num, 0, 0, 0);
+				  - 6.0 * rotation, 0, 0, 0);
     }
 }
 
@@ -208,7 +209,7 @@ test_paint_wrapper_main (int argc, char *argv[])
   oh = g_new(SuperOH, 1);
 
   /* Create a timeline to manage animation */
-  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
+  timeline = clutter_timeline_new (6000);
   clutter_timeline_set_loop (timeline, TRUE);
 
   /* fire a callback for frame change */

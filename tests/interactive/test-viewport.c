@@ -36,7 +36,7 @@ test_viewport_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), hand);
 
   /* Make a timeline */
-  timeline = clutter_timeline_new (200, 26); /* num frames, fps */
+  timeline = clutter_timeline_new (7692);
   clutter_timeline_set_loop (timeline, TRUE);
 
   /* Set an alpha func to power behaviour */

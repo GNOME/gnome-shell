@@ -81,8 +81,8 @@ static PaintFunc paint_func []=
 static void
 paint_cb (ClutterActor *self, ClutterTimeline *tl)
 {
-  gint paint_index = (clutter_timeline_get_current_frame (tl)
-                      % G_N_ELEMENTS (paint_func));
+  gint paint_index = (clutter_timeline_get_progress (tl)
+                      * G_N_ELEMENTS (paint_func));
 
   cogl_push_matrix ();
 
@@ -108,8 +108,7 @@ test_cogl_primitives_main (int argc, char *argv[])
 
   clutter_init(&argc, &argv);
 
-  /* One frame for each paint function at one frame per second */
-  tl = clutter_timeline_new (G_N_ELEMENTS (paint_func), 1);
+  tl = clutter_timeline_new (G_N_ELEMENTS (paint_func) * 1000);
   clutter_timeline_set_loop (tl, TRUE);
   clutter_timeline_start (tl);
 

@@ -112,17 +112,12 @@ struct _ClutterTimelineClass
 
 GType clutter_timeline_get_type (void) G_GNUC_CONST;
 
-ClutterTimeline *clutter_timeline_new                   (guint            n_frames,
-                                                         guint            fps);
-ClutterTimeline *clutter_timeline_new_for_duration      (guint            msecs);
+ClutterTimeline *clutter_timeline_new                   (guint            msecs);
 ClutterTimeline *clutter_timeline_clone                 (ClutterTimeline *timeline);
 
 guint            clutter_timeline_get_duration          (ClutterTimeline *timeline);
 void             clutter_timeline_set_duration          (ClutterTimeline *timeline,
                                                          guint            msecs);
-guint            clutter_timeline_get_speed             (ClutterTimeline *timeline);
-void             clutter_timeline_set_speed             (ClutterTimeline *timeline,
-                                                         guint            fps);
 ClutterTimelineDirection clutter_timeline_get_direction (ClutterTimeline *timeline);
 void             clutter_timeline_set_direction         (ClutterTimeline *timeline,
                                                          ClutterTimelineDirection direction);
@@ -134,32 +129,25 @@ void             clutter_timeline_set_loop              (ClutterTimeline *timeli
 gboolean         clutter_timeline_get_loop              (ClutterTimeline *timeline);
 void             clutter_timeline_rewind                (ClutterTimeline *timeline);
 void             clutter_timeline_skip                  (ClutterTimeline *timeline,
-                                                         guint            n_frames);
+                                                         guint            msecs);
 void             clutter_timeline_advance               (ClutterTimeline *timeline,
-                                                         guint            frame_num);
-gint             clutter_timeline_get_current_frame     (ClutterTimeline *timeline);
+                                                         guint            msecs);
+guint            clutter_timeline_get_elapsed_time      (ClutterTimeline *timeline);
 gdouble          clutter_timeline_get_progress          (ClutterTimeline *timeline);
 CoglFixed        clutter_timeline_get_progressx         (ClutterTimeline *timeline);
-void             clutter_timeline_set_n_frames          (ClutterTimeline *timeline,
-                                                         guint            n_frames);
-guint            clutter_timeline_get_n_frames          (ClutterTimeline *timeline);
 gboolean         clutter_timeline_is_playing            (ClutterTimeline *timeline);
 void             clutter_timeline_set_delay             (ClutterTimeline *timeline,
                                                          guint            msecs);
 guint            clutter_timeline_get_delay             (ClutterTimeline *timeline);
-guint            clutter_timeline_get_delta             (ClutterTimeline *timeline,
-                                                         guint           *msecs);
+guint            clutter_timeline_get_delta             (ClutterTimeline *timeline);
 
-void             clutter_timeline_add_marker_at_frame   (ClutterTimeline *timeline,
-                                                         const gchar     *marker_name,
-                                                         guint            frame_num);
 void             clutter_timeline_add_marker_at_time    (ClutterTimeline *timeline,
                                                          const gchar     *marker_name,
                                                          guint            msecs);
 void             clutter_timeline_remove_marker         (ClutterTimeline *timeline,
                                                          const gchar     *marker_name);
 gchar **         clutter_timeline_list_markers          (ClutterTimeline *timeline,
-                                                         gint             frame_num,
+                                                         gint             msecs,
                                                          gsize           *n_markers) G_GNUC_MALLOC;
 gboolean         clutter_timeline_has_marker            (ClutterTimeline *timeline,
                                                          const gchar     *marker_name);
