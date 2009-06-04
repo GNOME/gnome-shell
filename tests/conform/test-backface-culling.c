@@ -107,6 +107,11 @@ on_paint (ClutterActor *actor, TestState *state)
 {
   int i;
   int frame_num;
+  CoglHandle material = cogl_material_new ();
+
+  cogl_material_set_layer_filters (material, 0,
+                                   COGL_MATERIAL_FILTER_NEAREST,
+                                   COGL_MATERIAL_FILTER_NEAREST);
 
   cogl_set_backface_culling_enabled (TRUE);
 
@@ -120,24 +125,21 @@ on_paint (ClutterActor *actor, TestState *state)
       float x1 = 0, x2, y1 = 0, y2 = (float)(TEXTURE_RENDER_SIZE);
       CoglTextureVertex verts[4];
 
-      memset (verts, 0, sizeof (verts));
+      cogl_set_source (material);
 
-      /* Set the color to white so that all the textures will be drawn
-         at their own color */
-      cogl_set_source_color4f (1.0, 1.0,
-                               1.0, 1.0);
+      memset (verts, 0, sizeof (verts));
 
       x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
 
       /* Draw a front-facing texture */
-      cogl_set_source_texture (state->texture);
+      cogl_material_set_layer (material, 0, state->texture);
       cogl_rectangle (x1, y1, x2, y2);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
 
       /* Draw a back-facing texture */
-      cogl_set_source_texture (state->texture);
+      cogl_material_set_layer (material, 0, state->texture);
       cogl_rectangle (x2, y1, x1, y2);
 
       x1 = x2;
@@ -152,7 +154,7 @@ on_paint (ClutterActor *actor, TestState *state)
       verts[1].tx = 1.0;  verts[1].ty = 0;
       verts[2].tx = 1.0;  verts[2].ty = 1.0;
       verts[3].tx = 0;    verts[3].ty = 1.0;
-      cogl_set_source_texture (state->texture);
+      cogl_material_set_layer (material, 0, state->texture);
       cogl_polygon (verts, 4, FALSE);
 
       x1 = x2;
@@ -167,7 +169,7 @@ on_paint (ClutterActor *actor, TestState *state)
       verts[1].tx = 1.0;  verts[1].ty = 0;
       verts[2].tx = 1.0;  verts[2].ty = 1.0;
       verts[3].tx = 0;    verts[3].ty = 1.0;
-      cogl_set_source_texture (state->texture);
+      cogl_material_set_layer (material, 0, state->texture);
       cogl_polygon (verts, 4, FALSE);
 
       x1 = x2;
@@ -184,6 +186,8 @@ on_paint (ClutterActor *actor, TestState *state)
     }
 
   cogl_pop_matrix ();
+
+  cogl_handle_unref (material);
 
   /* XXX: Experiments have shown that for some buggy drivers, when using
    * glReadPixels there is some kind of race, so we delay our test for a

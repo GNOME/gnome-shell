@@ -132,12 +132,9 @@ cogl_texture_get_height
 cogl_texture_get_format
 cogl_texture_get_rowstride
 cogl_texture_get_max_waste
-cogl_texture_get_min_filter
-cogl_texture_get_mag_filter
 cogl_texture_is_sliced
 cogl_texture_get_gl_texture
 cogl_texture_get_data
-cogl_texture_set_filters
 cogl_texture_set_region
 </SECTION>
 
@@ -366,8 +363,12 @@ cogl_material_set_layer_combine
 cogl_material_set_layer_combine_constant
 cogl_material_set_layer_matrix
 cogl_material_get_layers
+CoglMaterialFilter
+cogl_material_set_layer_filters
 cogl_material_layer_get_type
 cogl_material_layer_get_texture
+cogl_material_layer_get_min_filter
+cogl_material_layer_get_mag_filter
 <SUBSECTION Private>
 CoglMaterial
 CoglMaterialFlags

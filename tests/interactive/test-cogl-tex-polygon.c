@@ -173,14 +173,17 @@ test_coglbox_paint (ClutterActor *self)
                                            : priv->not_sliced_tex;
   int tex_width = cogl_texture_get_width (tex_handle);
   int tex_height = cogl_texture_get_height (tex_handle);
+  CoglHandle material = cogl_material_new ();
 
-  cogl_texture_set_filters (tex_handle,
-			    priv->use_linear_filtering
-			    ? COGL_TEXTURE_FILTER_LINEAR :
-                              COGL_TEXTURE_FILTER_NEAREST,
-			    priv->use_linear_filtering
-			    ? COGL_TEXTURE_FILTER_LINEAR :
-                              COGL_TEXTURE_FILTER_NEAREST);
+  cogl_material_set_layer (material, 0, tex_handle);
+
+  cogl_material_set_layer_filters (material, 0,
+                                   priv->use_linear_filtering
+                                   ? COGL_MATERIAL_FILTER_LINEAR :
+                                   COGL_MATERIAL_FILTER_NEAREST,
+                                   priv->use_linear_filtering
+                                   ? COGL_MATERIAL_FILTER_LINEAR :
+                                   COGL_MATERIAL_FILTER_NEAREST);
 
   cogl_push_matrix ();
   cogl_translate (tex_width / 2, 0, 0);
@@ -188,7 +191,7 @@ test_coglbox_paint (ClutterActor *self)
   cogl_translate (-tex_width / 2, 0, 0);
 
   /* Draw a hand and refect it */
-  cogl_set_source_texture (tex_handle);
+  cogl_set_source (material);
   cogl_rectangle_with_texture_coords (0, 0, tex_width, tex_height,
                                       0, 0, 1, 1);
   test_coglbox_fade_texture (tex_handle,
@@ -217,6 +220,8 @@ test_coglbox_paint (ClutterActor *self)
 				 1, 1);
 
   cogl_pop_matrix ();
+
+  cogl_handle_unref (material);
 }
 
 static void

@@ -49,12 +49,8 @@ struct _CoglPangoRenderer
   /* The material used for solid fills. (boxes, rectangles + trapezoids) */
   CoglHandle solid_material;
 
-  /* Two caches of glyphs as textures, one with mipmapped textures and
-     one without */
+  /* Caches of glyphs as textures */
   CoglPangoGlyphCache *glyph_cache;
-  CoglPangoGlyphCache *mipmapped_glyph_cache;
-
-  gboolean use_mipmapping;
 
   /* The current display list that is being built */
   CoglPangoDisplayList *display_list;
@@ -144,9 +140,9 @@ cogl_pango_renderer_init (CoglPangoRenderer *priv)
 
   priv->solid_material = cogl_material_new ();
 
-  priv->glyph_cache = cogl_pango_glyph_cache_new (FALSE);
-  priv->mipmapped_glyph_cache = cogl_pango_glyph_cache_new (TRUE);
-  priv->use_mipmapping = FALSE;
+  priv->glyph_cache = cogl_pango_glyph_cache_new ();
+
+  _cogl_pango_renderer_set_use_mipmapping (priv, FALSE);
 }
 
 static void
@@ -167,7 +163,6 @@ cogl_pango_renderer_finalize (GObject *object)
 {
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (object);
 
-  cogl_pango_glyph_cache_free (priv->mipmapped_glyph_cache);
   cogl_pango_glyph_cache_free (priv->glyph_cache);
 
   G_OBJECT_CLASS (cogl_pango_renderer_parent_class)->finalize (object);
@@ -363,20 +358,31 @@ void
 _cogl_pango_renderer_clear_glyph_cache (CoglPangoRenderer *renderer)
 {
   cogl_pango_glyph_cache_clear (renderer->glyph_cache);
-  cogl_pango_glyph_cache_clear (renderer->mipmapped_glyph_cache);
 }
 
 void
 _cogl_pango_renderer_set_use_mipmapping (CoglPangoRenderer *renderer,
-					    gboolean value)
+                                         gboolean value)
 {
-  renderer->use_mipmapping = value;
+  if (value)
+    cogl_material_set_layer_filters (renderer->glyph_material, 0,
+                                     COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR,
+                                     COGL_MATERIAL_FILTER_LINEAR);
+  else
+    cogl_material_set_layer_filters (renderer->glyph_material, 0,
+                                     COGL_MATERIAL_FILTER_LINEAR,
+                                     COGL_MATERIAL_FILTER_LINEAR);
 }
 
 gboolean
 _cogl_pango_renderer_get_use_mipmapping (CoglPangoRenderer *renderer)
 {
-  return renderer->use_mipmapping;
+  const GList *layers = cogl_material_get_layers (renderer->glyph_material);
+
+  g_return_val_if_fail (layers != NULL, FALSE);
+
+  return (cogl_material_layer_get_min_filter (layers->data)
+          == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
 }
 
 static CoglPangoGlyphCacheValue *
@@ -386,12 +392,8 @@ cogl_pango_renderer_get_cached_glyph (PangoRenderer *renderer,
 {
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
   CoglPangoGlyphCacheValue *value;
-  CoglPangoGlyphCache *glyph_cache;
 
-  glyph_cache = priv->use_mipmapping ? priv->mipmapped_glyph_cache
-                                     : priv->glyph_cache;
-
-  value = cogl_pango_glyph_cache_lookup (glyph_cache, font, glyph);
+  value = cogl_pango_glyph_cache_lookup (priv->glyph_cache, font, glyph);
   if (value == NULL)
     {
       cairo_surface_t *surface;
@@ -423,7 +425,7 @@ cogl_pango_renderer_get_cached_glyph (PangoRenderer *renderer,
 
       /* Copy the glyph to the cache */
       value =
-        cogl_pango_glyph_cache_set (glyph_cache, font, glyph,
+        cogl_pango_glyph_cache_set (priv->glyph_cache, font, glyph,
                                     cairo_image_surface_get_data (surface),
                                     cairo_image_surface_get_width (surface),
                                     cairo_image_surface_get_height (surface),

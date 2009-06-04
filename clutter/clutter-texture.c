@@ -79,7 +79,6 @@ struct _ClutterTexturePrivate
 {
   gfloat                       width;
   gfloat                       height;
-  ClutterTextureQuality        filter_quality;
   CoglHandle                   material;
   gboolean                     no_slice;
 
@@ -176,36 +175,35 @@ clutter_texture_error_quark (void)
   return g_quark_from_static_string ("clutter-texture-error-quark");
 }
 
+static const struct
+{
+  gint min_filter;
+  gint mag_filter;
+}
+clutter_texture_quality_filters[] =
+  {
+    /* CLUTTER_TEXTURE_QUALITY_LOW */
+    { COGL_MATERIAL_FILTER_NEAREST, COGL_MATERIAL_FILTER_NEAREST },
+
+    /* CLUTTER_TEXTURE_QUALITY_MEDIUM */
+    { COGL_MATERIAL_FILTER_LINEAR, COGL_MATERIAL_FILTER_LINEAR },
+
+    /* CLUTTER_TEXTURE_QUALITY_HIGH */
+    { COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR, COGL_MATERIAL_FILTER_LINEAR }
+  };
+
 static inline void
 clutter_texture_quality_to_filters (ClutterTextureQuality  quality,
                                     gint                  *min_filter_p,
                                     gint                  *mag_filter_p)
 {
-  gint min_filter, mag_filter;
-
-  switch (quality)
-    {
-    case CLUTTER_TEXTURE_QUALITY_LOW:
-      min_filter = COGL_TEXTURE_FILTER_NEAREST;
-      mag_filter = COGL_TEXTURE_FILTER_NEAREST;
-      break;
-
-    case CLUTTER_TEXTURE_QUALITY_MEDIUM:
-      min_filter = COGL_TEXTURE_FILTER_LINEAR;
-      mag_filter = COGL_TEXTURE_FILTER_LINEAR;
-      break;
-
-    case CLUTTER_TEXTURE_QUALITY_HIGH:
-      min_filter = COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR;
-      mag_filter = COGL_TEXTURE_FILTER_LINEAR;
-      break;
-    }
+  g_return_if_fail (quality < G_N_ELEMENTS (clutter_texture_quality_filters));
 
   if (min_filter_p)
-    *min_filter_p = min_filter;
+    *min_filter_p = clutter_texture_quality_filters[quality].min_filter;
 
   if (mag_filter_p)
-    *mag_filter_p = mag_filter;
+    *mag_filter_p = clutter_texture_quality_filters[quality].mag_filter;
 }
 
 static void
@@ -216,7 +214,10 @@ texture_free_gl_resources (ClutterTexture *texture)
   CLUTTER_MARK();
 
   if (priv->material != COGL_INVALID_HANDLE)
-    cogl_material_remove_layer (priv->material, 0);
+    /* We want to keep the layer so that the filter settings will
+       remain but we want to free its resources so we clear the
+       texture handle */
+    cogl_material_set_layer (priv->material, 0, COGL_INVALID_HANDLE);
 }
 
 static void
@@ -285,7 +286,6 @@ clutter_texture_realize (ClutterActor *actor)
   if (priv->fbo_source)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
-      gint min_filter, mag_filter;
       CoglHandle tex;
 
       /* Handle FBO's */
@@ -293,21 +293,12 @@ clutter_texture_realize (ClutterActor *actor)
       if (priv->no_slice)
         flags |= COGL_TEXTURE_NO_SLICING;
 
-      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        flags |= COGL_TEXTURE_AUTO_MIPMAP;
-
       tex = cogl_texture_new_with_size (priv->width,
                                         priv->height,
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_material_set_layer (priv->material, 0, tex);
-
-      clutter_texture_quality_to_filters (priv->filter_quality,
-                                          &min_filter,
-                                          &mag_filter);
-
-      cogl_texture_set_filters (tex, min_filter, mag_filter);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
 
@@ -1189,7 +1180,6 @@ clutter_texture_init (ClutterTexture *self)
 
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
-  priv->filter_quality    = CLUTTER_TEXTURE_QUALITY_MEDIUM;
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
   priv->sync_actor_size   = TRUE;
@@ -1228,11 +1218,6 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
 
   /* Align to 4 bytes */
   priv->local_data_rowstride = (priv->local_data_width * bpp + 3) & ~3;
-
-  /* Store the filter quality from the texture properties so that
-   * they will be restored the data is loaded again
-   */
-  priv->filter_quality = clutter_texture_get_filter_quality (texture);
 
   priv->local_data = g_malloc (priv->local_data_rowstride
 			       * priv->local_data_height);
@@ -1465,13 +1450,9 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   ClutterTexturePrivate *priv = texture->priv;
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
-  gint min_filter, mag_filter;
 
   if (priv->no_slice)
     flags |= COGL_TEXTURE_NO_SLICING;
-
-  if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-    flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
   /* FIXME if we are not realized, we should store the data
    * for future use, instead of creating the texture.
@@ -1492,12 +1473,6 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
       return FALSE;
     }
-
-  clutter_texture_quality_to_filters (priv->filter_quality,
-                                      &min_filter,
-                                      &mag_filter);
-
-  cogl_texture_set_filters (new_texture, min_filter, mag_filter);
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1668,9 +1643,6 @@ clutter_texture_async_load_complete (ClutterTexture *self,
     {
       if (priv->no_slice)
         flags |= COGL_TEXTURE_NO_SLICING;
-
-      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
       handle = cogl_texture_new_from_bitmap (bitmap,
                                              flags,
@@ -1905,7 +1877,6 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   GError *internal_error = NULL;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
-  gint min_filter, mag_filter;
 
   priv = texture->priv;
 
@@ -1916,9 +1887,6 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
   if (priv->no_slice)
     flags |= COGL_TEXTURE_NO_SLICING;
-
-  if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-    flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
   new_texture = cogl_texture_new_from_file (filename,
                                             flags,
@@ -1940,12 +1908,6 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
       return FALSE;
     }
-
-  clutter_texture_quality_to_filters (priv->filter_quality,
-                                      &min_filter,
-                                      &mag_filter);
-
-  cogl_texture_set_filters (new_texture, min_filter, mag_filter);
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1987,26 +1949,14 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 
   if (filter_quality != old_quality)
     {
-      CoglHandle cogl_texture = clutter_texture_get_cogl_texture (texture);
       gint min_filter, mag_filter;
 
-      priv->filter_quality = filter_quality;
-
-      clutter_texture_quality_to_filters (priv->filter_quality,
+      clutter_texture_quality_to_filters (filter_quality,
                                           &min_filter,
                                           &mag_filter);
 
-      /* Is this actually needed - causes problems with TFP mipmaps */
-      if (cogl_texture != COGL_INVALID_HANDLE)
-	cogl_texture_set_filters (cogl_texture, min_filter, mag_filter);
-
-      if ((old_quality == CLUTTER_TEXTURE_QUALITY_HIGH ||
-           filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
-           CLUTTER_ACTOR_IS_REALIZED (texture))
-        {
-          _clutter_actor_rerealize (CLUTTER_ACTOR (texture),
-                                    NULL, NULL);
-        }
+      cogl_material_set_layer_filters (priv->material, 0,
+                                       min_filter, mag_filter);
 
       g_object_notify (G_OBJECT (texture), "filter-quality");
 
@@ -2029,12 +1979,28 @@ ClutterTextureQuality
 clutter_texture_get_filter_quality (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv;
+  const GList *layers;
+  CoglMaterialFilter min_filter, mag_filter;
+  int i;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), 0);
 
   priv = texture->priv;
 
-  return priv->filter_quality;
+  layers = cogl_material_get_layers (priv->material);
+  if (layers == NULL)
+    return CLUTTER_TEXTURE_QUALITY_MEDIUM;
+
+  min_filter = cogl_material_layer_get_min_filter (layers->data);
+  mag_filter = cogl_material_layer_get_mag_filter (layers->data);
+
+  for (i = 0; i < G_N_ELEMENTS (clutter_texture_quality_filters); i++)
+    if (clutter_texture_quality_filters[i].min_filter == min_filter
+        && clutter_texture_quality_filters[i].mag_filter == mag_filter)
+      return i;
+
+  /* Unknown filter combination */
+  return CLUTTER_TEXTURE_QUALITY_LOW;
 }
 
 /**
@@ -2255,7 +2221,6 @@ on_fbo_source_size_change (GObject          *object,
   if (w != priv->width || h != priv->height)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
-      gint min_filter, mag_filter;
       CoglHandle tex;
 
       /* tear down the FBO */
@@ -2269,21 +2234,12 @@ on_fbo_source_size_change (GObject          *object,
 
       flags |= COGL_TEXTURE_NO_SLICING;
 
-      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        flags |= COGL_TEXTURE_AUTO_MIPMAP;
-
       tex = cogl_texture_new_with_size (MAX (priv->width, 1),
                                         MAX (priv->height, 1),
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_material_set_layer (priv->material, 0, tex);
-
-      clutter_texture_quality_to_filters (priv->filter_quality,
-                                          &min_filter,
-                                          &mag_filter);
-
-      cogl_texture_set_filters (tex, min_filter, mag_filter);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
 

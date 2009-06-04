@@ -135,14 +135,6 @@ texture_bind (ClutterGLXTexturePixmap *tex)
   /* FIXME: fire off an error here? */
   glBindTexture (target, handle);
 
-  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (tex))
-         == CLUTTER_TEXTURE_QUALITY_HIGH && tex->priv->can_mipmap)
-    {
-      cogl_texture_set_filters (cogl_tex,
-                                COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR,
-                                COGL_TEXTURE_FILTER_LINEAR);
-    }
-
   return TRUE;
 }
 
@@ -167,6 +159,18 @@ on_glx_texture_pixmap_pre_paint (ClutterGLXTexturePixmap *texture,
       texture->priv->mipmap_generate_queued = 0;
     }
 
+  /* Disable mipmaps if we can't support them */
+  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
+      == CLUTTER_TEXTURE_QUALITY_HIGH
+      && !texture->priv->can_mipmap)
+    {
+      CoglHandle material
+        = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (texture));
+
+      cogl_material_set_layer_filters (material, 0,
+                                       COGL_MATERIAL_FILTER_LINEAR,
+                                       COGL_MATERIAL_FILTER_LINEAR);
+    }
 }
 
 static void

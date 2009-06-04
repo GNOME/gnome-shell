@@ -120,6 +120,7 @@ typedef struct
   COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC              pf_glDeleteFramebuffersEXT;
   COGL_PFNGLBLITFRAMEBUFFEREXTPROC                 pf_glBlitFramebufferEXT;
   COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC  pf_glRenderbufferStorageMultisampleEXT;
+  COGL_PFNGLGENERATEMIPMAPEXTPROC                  pf_glGenerateMipmapEXT;
 
   COGL_PFNGLCREATEPROGRAMOBJECTARBPROC             pf_glCreateProgramObjectARB;
   COGL_PFNGLCREATESHADEROBJECTARBPROC              pf_glCreateShaderObjectARB;

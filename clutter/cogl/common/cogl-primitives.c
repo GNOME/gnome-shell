@@ -1186,7 +1186,8 @@ cogl_polygon (CoglTextureVertex *vertices,
           use_sliced_polygon_fallback = TRUE;
           n_layers = 1;
 
-          if (tex->min_filter != GL_NEAREST || tex->mag_filter != GL_NEAREST)
+          if (cogl_material_layer_get_min_filter (layer) != GL_NEAREST
+              || cogl_material_layer_get_mag_filter (layer) != GL_NEAREST)
             {
               static gboolean warning_seen = FALSE;
               if (!warning_seen)

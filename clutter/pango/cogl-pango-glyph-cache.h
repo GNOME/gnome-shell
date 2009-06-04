@@ -49,7 +49,7 @@ struct _CoglPangoGlyphCacheValue
 };
 
 CoglPangoGlyphCache *
-cogl_pango_glyph_cache_new (gboolean use_mipmapping);
+cogl_pango_glyph_cache_new (void);
 
 void
 cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache);

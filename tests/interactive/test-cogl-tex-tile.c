@@ -147,10 +147,6 @@ test_coglbox_init (TestCoglbox *self)
                                                   COGL_TEXTURE_NONE,
                                                   COGL_PIXEL_FORMAT_ANY,
                                                   NULL);
-
-  cogl_texture_set_filters (priv->cogl_tex_id,
-                            COGL_TEXTURE_FILTER_LINEAR,
-                            COGL_TEXTURE_FILTER_LINEAR);
 }
 
 static void

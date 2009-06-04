@@ -44,6 +44,52 @@ G_BEGIN_DECLS
  */
 
 /**
+ * CoglMaterialFilter:
+ * @COGL_MATERIAL_FILTER_NEAREST: Measuring in manhatten distance from the,
+ *                               current pixel center, use the nearest texture
+ *                               texel.
+ * @COGL_MATERIAL_FILTER_LINEAR: Use the weighted average of the 4 texels
+ *                              nearest the current pixel center.
+ * @COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST: Select the mimap level whose
+ *                                              texel size most closely matches
+ *                                              the current pixel, and use the
+ *                                              COGL_MATERIAL_FILTER_NEAREST
+ *                                              criterion.
+ * @COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST: Select the mimap level whose
+ *                                             texel size most closely matches
+ *                                             the current pixel, and use the
+ *                                             COGL_MATERIAL_FILTER_LINEAR
+ *                                             criterion.
+ * @COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR: Select the two mimap levels
+ *                                             whose texel size most closely
+ *                                             matches the current pixel, use
+ *                                             the COGL_MATERIAL_FILTER_NEAREST
+ *                                             criterion on each one and take
+ *                                             their weighted average.
+ * @COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR: Select the two mimap levels
+ *                                            whose texel size most closely
+ *                                            matches the current pixel, use
+ *                                            the COGL_MATERIAL_FILTER_LINEAR
+ *                                            criterion on each one and take
+ *                                            their weighted average.
+ *
+ * Texture filtering is used whenever the current pixel maps either to more
+ * than one texture element (texel) or less than one. These filter enums
+ * correspond to different strategies used to come up with a pixel color, by
+ * possibly referring to multiple neighbouring texels and taking a weighted
+ * average or simply using the nearest texel.
+ */
+typedef enum _CoglMaterialFilter
+{
+  COGL_MATERIAL_FILTER_NEAREST = GL_NEAREST,
+  COGL_MATERIAL_FILTER_LINEAR = GL_LINEAR,
+  COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+  COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+  COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+  COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+} CoglMaterialFilter;
+
+/**
  * cogl_material_new:
  *
  * Allocates and initializes a blank white material
@@ -660,6 +706,40 @@ CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
  */
 CoglHandle cogl_material_layer_get_texture (CoglHandle layer_handle);
 
+/**
+ * cogl_material_layer_get_min_filter:
+ * @layer_handle: a #CoglHandle for a material layer.
+ *
+ * Query the currently set downscaling filter for a cogl material layer.
+ *
+ * Returns: the current downscaling filter for a cogl material layer.
+ */
+CoglMaterialFilter cogl_material_layer_get_min_filter (CoglHandle layer_handle);
+
+/**
+ * cogl_material_layer_get_mag_filter:
+ * @layer_handle: a #CoglHandle for a material layer.
+ *
+ * Query the currently set downscaling filter for a cogl material layer.
+ *
+ * Returns: the current downscaling filter for a cogl material layer.
+ */
+CoglMaterialFilter cogl_material_layer_get_mag_filter (CoglHandle layer_handle);
+
+/**
+ * cogl_material_set_layer_filters:
+ * @handle: a #CoglHandle to a material.
+ * @layer_index: the layer number to change.
+ * @min_filter: the filter used when scaling a texture down.
+ * @mag_filter: the filter used when magnifying a texture.
+ *
+ * Changes the decimation and interpolation filters used when a texture is
+ * drawn at other scales than 100%.
+ */
+void cogl_material_set_layer_filters (CoglHandle         handle,
+                                      gint               layer_index,
+                                      CoglMaterialFilter min_filter,
+                                      CoglMaterialFilter mag_filter);
 
 G_END_DECLS
 

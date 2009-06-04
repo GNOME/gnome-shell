@@ -68,6 +68,9 @@ struct _CoglMaterialLayer
   CoglHandle   texture;	/*!< The texture for this layer, or COGL_INVALID_HANDLE
 			     for an empty layer */
 
+  CoglMaterialFilter mag_filter;
+  CoglMaterialFilter min_filter;
+
   /* Determines how the color of individual texture fragments
    * are calculated. */
   GLint texture_combine_rgb_func;
