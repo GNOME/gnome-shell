@@ -4314,7 +4314,8 @@ clutter_actor_destroy (ClutterActor *self)
       /* if we are destroying we want to unrealize ourselves
        * first before the dispose run removes the parent
        */
-      clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+        clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNREALIZED);
 
       g_object_run_dispose (G_OBJECT (self));
 
