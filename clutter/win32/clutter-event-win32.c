@@ -359,7 +359,7 @@ message_translate (ClutterBackend *backend,
 	{
 	  WORD new_width = LOWORD (msg->lParam);
 	  WORD new_height = HIWORD (msg->lParam);
-	  guint old_width, old_height;
+	  gfloat old_width, old_height;
 
 	  clutter_actor_get_size (CLUTTER_ACTOR (stage),
 				  &old_width, &old_height);
