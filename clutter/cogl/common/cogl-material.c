@@ -52,6 +52,8 @@
 #define glActiveTexture ctx->pf_glActiveTexture
 #define glClientActiveTexture ctx->pf_glClientActiveTexture
 #define glBlendFuncSeparate ctx->pf_glBlendFuncSeparate
+#define glBlendEquation ctx->pf_glBlendEquation
+#define glBlendColor ctx->pf_glBlendColor
 #define glBlendEquationSeparate ctx->pf_glBlendEquationSeparate
 #endif
 

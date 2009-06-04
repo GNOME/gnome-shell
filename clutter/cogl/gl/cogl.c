@@ -486,6 +486,13 @@ _cogl_features_init (void)
         (COGL_PFNGLCLIENTACTIVETEXTUREPROC)
         cogl_get_proc_address ("glClientActiveTexture");
 
+  ctx->pf_glBlendEquation =
+         (COGL_PFNGLBLENDEQUATIONPROC)
+         cogl_get_proc_address ("glBlendEquation");
+  ctx->pf_glBlendColor =
+         (COGL_PFNGLBLENDCOLORPROC)
+         cogl_get_proc_address ("glBlendColor");
+
   /* Available in 1.4 */
   ctx->pf_glBlendFuncSeparate =
         (COGL_PFNGLBLENDFUNCSEPARATEPROC)
