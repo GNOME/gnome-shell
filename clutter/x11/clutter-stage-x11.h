@@ -41,6 +41,11 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageX11         ClutterStageX11;
 typedef struct _ClutterStageX11Class    ClutterStageX11Class;
 
+typedef enum
+{
+  STAGE_X11_WITHDRAWN = 1 << 1
+} ClutterStageX11State;
+
 struct _ClutterStageX11
 {
   ClutterGroup parent_instance;
@@ -62,6 +67,8 @@ struct _ClutterStageX11
   ClutterBackendX11 *backend;
   ClutterStageState  state;
 
+  ClutterStageX11State wm_state;
+
   int event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
   GList *devices;
 
@@ -76,7 +83,9 @@ struct _ClutterStageX11Class
 GType clutter_stage_x11_get_type (void) G_GNUC_CONST;
 
 /* Private to subclasses */
-void clutter_stage_x11_fix_window_size  (ClutterStageX11 *stage_x11);
+void clutter_stage_x11_fix_window_size  (ClutterStageX11 *stage_x11,
+                                         gint             new_width,
+                                         gint             new_height);
 void clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11);
 void clutter_stage_x11_map              (ClutterStageX11 *stage_x11);
 void clutter_stage_x11_unmap            (ClutterStageX11 *stage_x11);

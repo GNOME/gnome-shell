@@ -699,8 +699,9 @@ clutter_actor_update_map_state (ClutterActor  *self,
           !CLUTTER_ACTOR_IS_VISIBLE (self) &&
           !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
         {
-          g_warning ("Clutter toplevel is not visible, but is "
-                     "somehow still mapped");
+          g_warning ("Clutter toplevel of type '%s' is not visible, but "
+                     "it is somehow still mapped",
+                     G_OBJECT_TYPE_NAME (self));
         }
     }
   else

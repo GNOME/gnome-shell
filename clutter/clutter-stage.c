@@ -316,23 +316,26 @@ static void
 clutter_stage_show (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterStageWindow *impl;
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->show (self);
 
   g_assert (priv->impl != NULL);
-
-  clutter_actor_show (priv->impl);
+  impl = CLUTTER_STAGE_WINDOW (priv->impl);
+  CLUTTER_STAGE_WINDOW_GET_IFACE (impl)->show (impl, TRUE);
 }
 
 static void
 clutter_stage_hide (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-
-  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->hide (self);
+  ClutterStageWindow *impl;
 
   g_assert (priv->impl != NULL);
-  clutter_actor_hide (priv->impl);
+  impl = CLUTTER_STAGE_WINDOW (priv->impl);
+  CLUTTER_STAGE_WINDOW_GET_IFACE (impl)->hide (impl);
+
+  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->hide (self);
 }
 
 static void

@@ -199,7 +199,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
         }
 
       /* no user resize.. */
-      clutter_stage_x11_fix_window_size (stage_x11);
+      clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
       clutter_stage_x11_set_wm_protocols (stage_x11);
 
       /* ask for a context; a no-op, if a context already exists */
