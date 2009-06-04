@@ -292,14 +292,13 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 			       cairo,
                                clutter_cairo_texture_surface_destroy);
 
-  /* The texture data will be all zeroes so we can use it to create a
-   * blank Cogl texture even though its in a different format
+  /* Create a blank Cogl texture
    */
   clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (cairo),
 				     priv->cr_surface_data,
 				     TRUE, priv->width, priv->height,
 				     priv->rowstride,
-				     4, 0, NULL);
+				     4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT, NULL);
 }
 
 static void
@@ -451,9 +450,7 @@ clutter_cairo_texture_context_destroy (void *data)
 
   gint    cairo_width, cairo_height, cairo_rowstride;
   gint    surface_width, surface_height;
-  guchar *pixbuf_data, *dst, *cairo_data;
-  guint  *src, pixbuf_rowstride;
-  gint    x, y;
+  guchar *cairo_data;
 
   priv = CLUTTER_CAIRO_TEXTURE_GET_PRIVATE (cairo);
 
@@ -473,56 +470,19 @@ clutter_cairo_texture_context_destroy (void *data)
     }
 
   cairo_rowstride  = priv->rowstride;
-  cairo_data       = priv->cr_surface_data;
-  pixbuf_data      = g_malloc (cairo_width * cairo_height * 4);
-  pixbuf_rowstride = cairo_width * 4;
-
-  /* BAH BAH BAH ! un-pre-multiply alpha...
-   *
-   * FIXME: Need to figure out if GL has a premult texture
-   *        format, or we need to change the order of the
-   *        paint sequence in Clutter. or go back to battling
-   *        glitz (ugh).
-   *
-   * in theory, this could be moved to a shader, but apparently
-   * the performance gain is not really worth it.
-   */
-  for (y = 0; y < cairo_height; y++)
-    {
-      src = (unsigned int *) (cairo_data
-          + ((y + ctxt->rect.y) * cairo_rowstride)
-          + (ctxt->rect.x * 4));
-      dst = pixbuf_data + y * pixbuf_rowstride;
-
-      for (x = 0; x < cairo_width; x++)
-        {
-          guchar alpha = (*src >> 24) & 0xff;
-
-          if (alpha == 0)
-            dst[0] = dst[1] = dst[2] = dst[3] = alpha;
-          else
-            {
-              dst[0] = (((*src >> 16) & 0xff) * 255 ) / alpha;
-              dst[1] = (((*src >>  8) & 0xff) * 255 ) / alpha;
-              dst[2] = (((*src >>  0) & 0xff) * 255 ) / alpha;
-              dst[3] = alpha;
-            }
-
-          dst += 4;
-          src++;
-        }
-    }
+  cairo_data       = (priv->cr_surface_data
+		      + ctxt->rect.y * cairo_rowstride
+		      + ctxt->rect.x * 4);
 
   clutter_texture_set_area_from_rgb_data (CLUTTER_TEXTURE (cairo),
-					  pixbuf_data,
+					  cairo_data,
 					  TRUE,
 					  ctxt->rect.x,
 					  ctxt->rect.y,
 					  cairo_width, cairo_height,
-					  pixbuf_rowstride,
-					  4, 0, NULL);
+					  cairo_rowstride,
+					  4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT, NULL);
 
-  g_free (pixbuf_data);
   g_free (ctxt);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (cairo))
