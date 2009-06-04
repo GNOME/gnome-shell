@@ -205,7 +205,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
         }
 
       /* FIXME, do these in a clutterstage_x11_realise? */
-      clutter_stage_x11_fix_window_size (stage_x11);
+      clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
       clutter_stage_x11_set_wm_protocols (stage_x11);
 
       if (stage_egl->egl_surface != EGL_NO_SURFACE)
