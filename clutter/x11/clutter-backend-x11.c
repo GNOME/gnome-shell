@@ -677,10 +677,10 @@ _clutter_x11_register_xinput ()
 
   backend_singleton->have_xinput = TRUE;
 
-#ifdef HAVE_XGET_EXTENSION_VERSION
-  ext = XGetExtensionVersion (backend_singleton->xdpy, INAME);
-#elif HAVE_XQUERY_INPUT_VERSION
+#if defined(HAVE_XQUERY_INPUT_VERSION)
   ext = XQueryInputVersion (backend_singleton->xdpy, XI_2_Major, XI_2_Minor);
+#elif defined(HAVE_XGET_EXTENSION_VERSION)
+  ext = XGetExtensionVersion (backend_singleton->xdpy, INAME);
 #else
   g_critical ("XInput does not have XGetExtensionVersion nor "
               "XQueryInputVersion");
