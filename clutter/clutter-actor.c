@@ -5331,7 +5331,7 @@ clutter_actor_get_transformed_position (ClutterActor *self,
   ClutterVertex v1;
   ClutterVertex v2;
 
-  v1.x = v1.y = 0;
+  v1.x = v1.y = v1.z = 0;
   clutter_actor_apply_transform_to_point (self, &v1, &v2);
 
   if (x)
