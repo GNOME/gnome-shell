@@ -31,11 +31,18 @@ INSTALLATION
 See the INSTALL file. Info on specific Clutter options;
 
  --enable-debug=[no/minimum/yes]
-	Turn on debugging (default=yes):
+	Controls Clutter debugging level (default=yes):
 	  yes: All glib asserts, checks and runtime clutter verbose messages.
           minimum: Just glib cast checks and runtime clutter verbose messagaes.
           no: No glib asserts or checks and no runtime clutter verbose messages
 	      (Only really of use in extreme performance cases)
+
+ --enable-cogl-debug=[no/minimum/yes]
+        Controls COGL debugging level (default=minimum):
+          yes: All runtime verbose messages and error checking for each GL
+               primitive
+          minimum: All runtime verbose messages
+          no: No error checking and no messages
 
  --enable-maintainer-flags=[no/yes]
         Use strict compiler flags (default=no)
@@ -52,7 +59,7 @@ See the INSTALL file. Info on specific Clutter options;
 	Assume target hardware has no floating point unit. Useful only
 	for embedded targets such as ARM.
 
-  --with-flavour=[glx/eglx/eglnative/sdl/osx/win32]
+  --with-flavour=[glx/eglx/eglnative/sdl/osx/win32/fruity]
         Select the Clutter backend: (default=glx)
 
 	  glx:  Fully featured GLX backend. Using Open GL.
@@ -66,15 +73,15 @@ See the INSTALL file. Info on specific Clutter options;
 		tslib for touchscreen events.
 
 	  sdl:  Basic SDL backend, using Open GL. Should provide portability
-	        to Windows and possibly other OS's.
+	        to Windows and possibly other OS's. (DEPRECATED)
 
-          osx:  OS X backend. (experimental)
+          osx:  OS X backend. (EXPERIMENTAL)
 
           win32:
-                Microsoft Windows(tm) WGL backend (experimental)
+                Microsoft Windows(tm) WGL backend
 
           fruity:
-                Apple iPod Touch(tm)/iPhone(tm) backend (experimental)
+                Apple iPod Touch(tm)/iPhone(tm) backend (EXPERIMENTAL)
 
   --with-imagebackend=[gdk-pixbuf/quartz/internal]
         Select the image loading backend used by COGL
@@ -105,11 +112,11 @@ Clutter uses the common "Linux kernel" versioning system, where
 even-numbered minor versions are stable and odd-numbered minor
 versions are development snapshots.
 
-Different Minor versions break both API and ABI but are parallel
-installable. The same Minor version with differing Micro version is
-expected to be ABI compatible with other micro versions. Though this
-is not guarenteed, especially for odd numbered minor releases, we'll
-try our very hardest (promise).
+Different major versions break both API and ABI but are parallel
+installable. The same major version with differing minor version is
+expected to be ABI compatible with other minor versions; differing
+micro versions are meant just for bug fixing. On odd minor versions
+the newly added API might still change.
 
 The micro version indicates the origin of the release: even micro
 numbers are only used for released archives; odd micro numbers are
@@ -158,7 +165,7 @@ be in the unified diff format, using:
 
 If diffing against the SVN repository, you should use:
 
-  svn diff --diff-cmd=diff -x -Nuarp > clutter-patch.diff
+  git diff > clutter-patch.diff
 
 
 RELEASE NOTES
