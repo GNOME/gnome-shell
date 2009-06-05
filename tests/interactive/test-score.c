@@ -61,28 +61,28 @@ test_score_main (int argc, char **argv)
 
   clutter_init (&argc, &argv);
 
-  timeline_1 = clutter_timeline_new_for_duration (1000);
+  timeline_1 = clutter_timeline_new (1000);
   g_object_set_data_full (G_OBJECT (timeline_1),
                           "timeline-name", g_strdup ("Timeline 1"),
                           g_free);
 
-  timeline_2 = clutter_timeline_new_for_duration (1000);
+  timeline_2 = clutter_timeline_new (1000);
   clutter_timeline_add_marker_at_time (timeline_2, "foo", 500);
   g_object_set_data_full (G_OBJECT (timeline_2),
                           "timeline-name", g_strdup ("Timeline 2"),
                           g_free);
 
-  timeline_3 = clutter_timeline_new_for_duration (1000);
+  timeline_3 = clutter_timeline_new (1000);
   g_object_set_data_full (G_OBJECT (timeline_3),
                           "timeline-name", g_strdup ("Timeline 3"),
                           g_free);
 
-  timeline_4 = clutter_timeline_new_for_duration (1000);
+  timeline_4 = clutter_timeline_new (1000);
   g_object_set_data_full (G_OBJECT (timeline_4),
                           "timeline-name", g_strdup ("Timeline 4"),
                           g_free);
 
-  timeline_5 = clutter_timeline_new_for_duration (1000);
+  timeline_5 = clutter_timeline_new (1000);
   g_object_set_data_full (G_OBJECT (timeline_5),
                           "timeline-name", g_strdup ("Timeline 5"),
                           g_free);

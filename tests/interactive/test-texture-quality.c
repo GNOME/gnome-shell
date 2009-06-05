@@ -77,7 +77,7 @@ test_texture_quality_main (int argc, char *argv[])
     (clutter_actor_get_height (stage) - clutter_actor_get_height (image))/2);
   clutter_container_add (CLUTTER_CONTAINER (stage), image, NULL);
 
-  timeline = clutter_timeline_new (60*5, 60);
+  timeline = clutter_timeline_new (5000);
   g_signal_connect (timeline,
                     "completed", G_CALLBACK (timeline_completed),
                     NULL);

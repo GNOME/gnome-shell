@@ -15,6 +15,7 @@
    for. */
 
 #define FRAME_COUNT 10
+#define FPS         30
 
 typedef struct _TimelineData TimelineData;
 
@@ -53,13 +54,21 @@ timeline_complete_cb (ClutterTimeline *timeline,
 
 static void
 timeline_new_frame_cb (ClutterTimeline *timeline,
-                       gint             frame_no,
+                       gint             msec,
                        TimelineData    *data)
 {
+  /* Calculate an approximate frame number from the duration with
+     rounding */
+  int frame_no = ((msec * FRAME_COUNT + (FRAME_COUNT * 1000 / FPS) / 2)
+                  / (FRAME_COUNT * 1000 / FPS));
+
   if (g_test_verbose ())
     g_print ("%i: Doing frame %d, delta = %i\n",
              data->timeline_num, frame_no,
-             clutter_timeline_get_delta (timeline, NULL));
+             clutter_timeline_get_delta (timeline));
+
+  g_assert (frame_no >= 0 && frame_no <= FRAME_COUNT);
+
   data->frame_hit_count[frame_no]++;
 }
 
@@ -72,7 +81,7 @@ timeline_marker_reached_cb (ClutterTimeline *timeline,
   if (g_test_verbose ())
     g_print ("%i: Marker '%s' (%d) reached, delta = %i\n",
              data->timeline_num, marker_name, frame_num,
-             clutter_timeline_get_delta (timeline, NULL));
+             clutter_timeline_get_delta (timeline));
   data->markers_hit = g_slist_prepend (data->markers_hit,
                                        g_strdup (marker_name));
 }
@@ -128,7 +137,7 @@ check_timeline (ClutterTimeline *timeline,
   if (check_missed_frames)
     {
       for (i = 0; i < FRAME_COUNT; i++)
-        if (data->frame_hit_count[i + frame_offset] != 1)
+        if (data->frame_hit_count[i + frame_offset] < 1)
           missed_frame_count++;
 
       if (missed_frame_count)
@@ -230,16 +239,19 @@ test_timeline (TestConformSimpleFixture *fixture,
 
   counter = g_new0 (FrameCounter, 1);
 
-  source_id = clutter_threads_add_frame_source (60, frame_tick, counter);
+  source_id = clutter_threads_add_frame_source (FPS, frame_tick, counter);
 
   timeline_data_init (&data_1, 1);
-  timeline_1 = clutter_timeline_new (FRAME_COUNT, 30);
-  clutter_timeline_add_marker_at_frame (timeline_1, "foo", 5);
-  clutter_timeline_add_marker_at_frame (timeline_1, "bar", 5);
-  clutter_timeline_add_marker_at_frame (timeline_1, "baz", 5);
-  clutter_timeline_add_marker_at_frame (timeline_1, "near-end-marker", 9);
-  clutter_timeline_add_marker_at_frame (timeline_1, "end-marker", 10);
-  markers = clutter_timeline_list_markers (timeline_1, 5, &n_markers);
+  timeline_1 = clutter_timeline_new (FRAME_COUNT * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_1, "foo", 5 * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_1, "bar", 5 * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_1, "baz", 5 * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_1, "near-end-marker",
+                                       9 * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_1, "end-marker",
+                                       10 * 1000 / FPS);
+  markers = clutter_timeline_list_markers (timeline_1, 5 * 1000 / FPS,
+                                           &n_markers);
   g_assert (markers != NULL);
   g_assert (n_markers == 3);
   g_strfreev (markers);
@@ -248,7 +260,7 @@ test_timeline (TestConformSimpleFixture *fixture,
 
   timeline_data_init (&data_2, 2);
   timeline_2 = clutter_timeline_clone (timeline_1);
-  clutter_timeline_add_marker_at_frame (timeline_2, "bar", 2);
+  clutter_timeline_add_marker_at_time (timeline_2, "bar", 2 * 1000 / FPS);
   markers = clutter_timeline_list_markers (timeline_2, -1, &n_markers);
   g_assert (markers != NULL);
   g_assert (n_markers == 1);
@@ -260,10 +272,12 @@ test_timeline (TestConformSimpleFixture *fixture,
   timeline_data_init (&data_3, 3);
   timeline_3 = clutter_timeline_clone (timeline_1);
   clutter_timeline_set_direction (timeline_3, CLUTTER_TIMELINE_BACKWARD);
-  clutter_timeline_add_marker_at_frame (timeline_3, "foo", 5);
-  clutter_timeline_add_marker_at_frame (timeline_3, "baz", 8);
-  clutter_timeline_add_marker_at_frame (timeline_3, "near-end-marker", 1);
-  clutter_timeline_add_marker_at_frame (timeline_3, "end-marker", 0);
+  clutter_timeline_add_marker_at_time (timeline_3, "foo", 5 * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_3, "baz", 8 * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_3, "near-end-marker",
+                                       1 * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_3, "end-marker",
+                                       0 * 1000 / FPS);
 
   counter->timelines = g_slist_prepend (counter->timelines, timeline_3);
 

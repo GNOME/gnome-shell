@@ -59,8 +59,7 @@ frame_cb (ClutterTimeline *timeline,
           TestState       *state)
 {
   guint x, y;
-  guint n_frames = clutter_timeline_get_n_frames (timeline);
-  float period_progress = ((float)frame_num / (float)n_frames) * 2.0 * G_PI;
+  float period_progress = clutter_timeline_get_progress (timeline);
   float period_progress_sin = sinf (period_progress);
   float wave_shift = period_progress * WAVE_SPEED;
   float ripple_shift = period_progress * RIPPLE_SPEED;
@@ -354,7 +353,7 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
                               (stage_geom.width / 2.0) - (dummy_width / 2.0),
                               (stage_geom.height / 2.0) - (dummy_height / 2.0));
 
-  state.timeline = clutter_timeline_new (360, 60);
+  state.timeline = clutter_timeline_new (6000);
   clutter_timeline_set_loop (state.timeline, TRUE);
   g_signal_connect (state.timeline,
                     "new-frame",

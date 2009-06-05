@@ -7,10 +7,8 @@ test_conformance_SOURCES = 		\
 	test-conform-common.c 		\
 	test-conform-common.h 		\
 	\
-	test-timeline-dup-frames.c 	\
 	test-timeline-interpolate.c 	\
 	test-timeline-rewind.c 		\
-	test-timeline-smoothness.c 	\
 	test-timeline.c 		\
 	test-vertex-buffer-contiguous.c \
 	test-vertex-buffer-interleved.c \

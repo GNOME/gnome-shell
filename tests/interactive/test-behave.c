@@ -164,7 +164,7 @@ test_behave_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (group), rect, hand, NULL);
   
   /* Make a timeline */
-  timeline = clutter_timeline_new_for_duration (4000); /* num frames, fps */
+  timeline = clutter_timeline_new (4000); /* num frames, fps */
   clutter_timeline_set_loop (timeline, TRUE);
   g_signal_connect (timeline,
                     "completed", G_CALLBACK (timeline_completed),

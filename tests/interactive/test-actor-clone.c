@@ -105,12 +105,13 @@ frame_cb (ClutterTimeline *timeline,
 {
   SuperOH *oh = data;
   gint i;
+  float rotation = clutter_timeline_get_progress (timeline) * 360.0f;
 
   /* Rotate everything clockwise about stage center*/
 
   clutter_actor_set_rotation (oh->group,
                               CLUTTER_Z_AXIS,
-                              frame_num,
+                              rotation,
 			      oh->stage_width / 2,
                               oh->stage_height / 2,
 			      0);
@@ -126,7 +127,7 @@ frame_cb (ClutterTimeline *timeline,
        */
       clutter_actor_set_rotation (oh->hand[i],
                                   CLUTTER_Z_AXIS,
-                                  -6.0 * frame_num,
+                                  -6.0 * rotation,
                                   0, 0, 0);
     }
 }
@@ -178,7 +179,7 @@ test_actor_clone_main (int argc, char *argv[])
   oh = g_new (SuperOH, 1);
 
   /* Create a timeline to manage animation */
-  oh->timeline = clutter_timeline_new (360, 60);
+  oh->timeline = clutter_timeline_new (6000);
   clutter_timeline_set_loop (oh->timeline, TRUE);
 
   /* fire a callback for frame change */

@@ -157,7 +157,7 @@ test_depth_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 
   /* 3 seconds, at 60 fps */
-  timeline = clutter_timeline_new (180, 60);
+  timeline = clutter_timeline_new (3000);
   g_signal_connect (timeline,
                     "completed", G_CALLBACK (timeline_completed),
                     NULL);

@@ -9,7 +9,7 @@
  * will interpolate the number frames that should have
  * passed between timeouts. */
 #define TEST_TIMELINE_FPS 1000
-#define TEST_TIMELINE_FRAME_COUNT 5000
+#define TEST_TIMELINE_DURATION 5000
 
 /* We are at the mercy of the system scheduler so this
  * may not be a very reliable tolerance. */
@@ -42,7 +42,7 @@ new_frame_cb (ClutterTimeline *timeline,
 
   g_get_current_time (&current_time);
 
-  current_frame = clutter_timeline_get_current_frame (state->timeline);
+  current_frame = clutter_timeline_get_elapsed_time (state->timeline);
 
   msec_diff = (current_time.tv_sec - state->start_time.tv_sec) * 1000;
   msec_diff += (current_time.tv_usec - state->start_time.tv_usec)/1000;
@@ -50,13 +50,13 @@ new_frame_cb (ClutterTimeline *timeline,
   /* If we expect to have interpolated past the end of the timeline
    * we keep track of the overflow so we can determine when
    * the next timeout will happen. We then clip expected_frames
-   * to TEST_TIMELINE_FRAME_COUNT since clutter-timeline
+   * to TEST_TIMELINE_DURATION since clutter-timeline
    * semantics guaranty this frame is always signaled before
    * looping */
-  if (state->expected_frame > TEST_TIMELINE_FRAME_COUNT)
+  if (state->expected_frame > TEST_TIMELINE_DURATION)
     {
-      loop_overflow = state->expected_frame - TEST_TIMELINE_FRAME_COUNT;
-      state->expected_frame = TEST_TIMELINE_FRAME_COUNT;
+      loop_overflow = state->expected_frame - TEST_TIMELINE_DURATION;
+      state->expected_frame = TEST_TIMELINE_DURATION;
     }
 
   if (current_frame >= (state->expected_frame-TEST_ERROR_TOLERANCE)
@@ -99,10 +99,10 @@ new_frame_cb (ClutterTimeline *timeline,
       g_usleep (1000000);
     }
 
-  if (current_frame >= TEST_TIMELINE_FRAME_COUNT)
+  if (current_frame >= TEST_TIMELINE_DURATION)
     {
       state->expected_frame += loop_overflow;
-      state->expected_frame -= TEST_TIMELINE_FRAME_COUNT;
+      state->expected_frame -= TEST_TIMELINE_DURATION;
       g_test_message ("End of timeline reached: "
 		      "Wrapping expected frame too %i\n",
 		      state->expected_frame);
@@ -165,8 +165,7 @@ test_timeline_interpolate (TestConformSimpleFixture *fixture,
   TestState state;
 
   state.timeline = 
-    clutter_timeline_new (TEST_TIMELINE_FRAME_COUNT,
-			  TEST_TIMELINE_FPS);
+    clutter_timeline_new (TEST_TIMELINE_DURATION);
   clutter_timeline_set_loop (state.timeline, TRUE);
   g_signal_connect (G_OBJECT(state.timeline),
 		    "new-frame",
