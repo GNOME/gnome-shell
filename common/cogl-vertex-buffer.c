@@ -746,7 +746,7 @@ filter_strided_attribute (CoglVertexBufferAttrib *attribute,
       CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
 
-      if (!cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED)
+      if (!(cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED))
 	continue;
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
