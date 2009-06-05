@@ -45,6 +45,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-debug.h>
 #include <cogl/cogl-deprecated.h>
+#include <cogl/cogl-enum-types.h>
 
 G_BEGIN_DECLS
 
@@ -54,22 +55,6 @@ G_BEGIN_DECLS
  *
  * General utility functions for COGL.
  */
-
-/* Context manipulation */
-
-/**
- * cogl_create_context:
- *
- * FIXME
- */
-gboolean        cogl_create_context           (void);
-
-/**
- * cogl_destroy_context:
- *
- * FIXME
- */
-void            cogl_destroy_context          (void);
 
 /**
  * cogl_get_option_group:
@@ -187,7 +172,30 @@ void            cogl_frustum                  (float        left,
                                                float        z_far);
 
 /**
- * cogl_setup_viewport:
+ * cogl_ortho:
+ * @left: The coordinate for the left clipping plane
+ * @right: The coordinate for the right clipping plane
+ * @bottom: The coordinate for the bottom clipping plane
+ * @top: The coordinate for the top clipping plane
+ * @near: The coordinate for the near clipping plane (may be negative if
+ *        the plane is behind the viewer)
+ * @far: The coordinate for the far clipping plane (may be negative if
+ *       the plane is behind the viewer)
+ *
+ * Replaces the current projection matrix with a parallel projection
+ * matrix.
+ *
+ * Since: 1.0
+ */
+void            cogl_ortho                    (float left,
+                                               float right,
+                                               float bottom,
+                                               float top,
+                                               float near,
+                                               float far);
+
+/*
+ * _cogl_setup_viewport:
  * @width: Width of the viewport
  * @height: Height of the viewport
  * @fovy: Field of view angle in degrees
@@ -201,9 +209,11 @@ void            cogl_frustum                  (float        left,
  * with one that has a viewing angle of @fovy along the y-axis and a
  * view scaled according to @aspect along the x-axis. The view is
  * clipped according to @z_near and @z_far on the z-axis.
+ *
+ * This function is used only by Clutter.
  */
-void            cogl_setup_viewport           (guint               width,
-                                               guint               height,
+void            _cogl_setup_viewport          (guint        width,
+                                               guint        height,
                                                float        fovy,
                                                float        aspect,
                                                float        z_near,
@@ -289,12 +299,28 @@ void            cogl_rotate                   (float                angle,
 void            cogl_get_modelview_matrix     (CoglMatrix *matrix);
 
 /**
+ * cogl_set_modelview_matrix:
+ * @matrix: pointer to a CoglMatrix to set as the new model-view matrix
+ *
+ * Loads matrix as the new model-view matrix.
+ */
+void            cogl_set_modelview_matrix     (CoglMatrix *matrix);
+
+/**
  * cogl_get_projection_matrix:
  * @matrix: pointer to a CoglMatrix to recieve the matrix
  *
  * Stores the current projection matrix in @matrix.
  */
 void            cogl_get_projection_matrix    (CoglMatrix *matrix);
+
+/**
+ * cogl_set_projection_matrix:
+ * @matrix: pointer to a CoglMatrix to set as the new projection matrix
+ *
+ * Loads matrix as the new projection matrix.
+ */
+void            cogl_set_projection_matrix    (CoglMatrix *matrix);
 
 /**
  * cogl_get_viewport:
@@ -308,7 +334,7 @@ void            cogl_get_projection_matrix    (CoglMatrix *matrix);
 void            cogl_get_viewport             (float        v[4]);
 
 /**
- * cogl_enable_depth_test:
+ * cogl_set_depth_test_enable:
  * @setting: %TRUE to enable depth testing or %FALSE to disable.
  *
  * Sets whether depth testing is enabled. If it is disabled then the
@@ -317,10 +343,19 @@ void            cogl_get_viewport             (float        v[4]);
  * clutter_actor_lower(), otherwise it will also take into account the
  * actor's depth. Depth testing is disabled by default.
  */
-void            cogl_enable_depth_test        (gboolean            setting);
+void            cogl_set_depth_test_enable    (gboolean setting);
 
 /**
- * cogl_enable_backface_culling:
+ * cogl_get_depth_test_enable:
+ *
+ * Queries if depth testing has been enabled via cogl_set_depth_test_enable()
+ *
+ * Returns: TRUE if depth testing is enabled else FALSE
+ */
+gboolean        cogl_get_depth_test_enable    (void);
+
+/**
+ * cogl_set_backface_culling_enabled:
  * @setting: %TRUE to enable backface culling or %FALSE to disable.
  *
  * Sets whether textures positioned so that their backface is showing
@@ -329,7 +364,17 @@ void            cogl_enable_depth_test        (gboolean            setting);
  * only affects calls to the cogl_rectangle* family of functions and
  * cogl_vertex_buffer_draw*. Backface culling is disabled by default.
  */
-void            cogl_enable_backface_culling  (gboolean            setting);
+void            cogl_set_backface_culling_enabled (gboolean setting);
+
+/**
+ * cogl_get_backface_culling_enabled:
+ *
+ * Queries if backface culling has been enabled via
+ * cogl_set_backface_culling_enabled()
+ *
+ * Returns: TRUE if backface culling is enabled else FALSE
+ */
+gboolean        cogl_get_backface_culling_enabled (void);
 
 /**
  * cogl_set_fog:
@@ -368,9 +413,12 @@ void            cogl_disable_fog              (void);
  * @COGL_BUFFER_BIT_COLOR: Selects the primary color buffer
  * @COGL_BUFFER_BIT_DEPTH: Selects the depth buffer
  * @COGL_BUFFER_BIT_STENCIL: Selects the stencil buffer
+ *
+ * Types of auxiliary buffers
+ *
+ * Since: 1.0
  */
-typedef enum _CoglBufferBit
-{
+typedef enum {
   COGL_BUFFER_BIT_COLOR   = 1L<<0,
   COGL_BUFFER_BIT_DEPTH   = 1L<<1,
   COGL_BUFFER_BIT_STENCIL = 1L<<2
@@ -379,13 +427,14 @@ typedef enum _CoglBufferBit
 /**
  * cogl_clear:
  * @color: Background color to clear to
- * @buffers: A mask of @CoglBufferBit<!-- -->'s identifying which auxiliary
- *           buffers to clear
+ * @buffers: A mask of #CoglBufferBit<!-- -->'s identifying which auxiliary
+ *   buffers to clear
  *
  * Clears all the auxiliary buffers identified in the @buffers mask, and if
  * that includes the color buffer then the specified @color is used.
  */
-void            cogl_clear                    (const CoglColor *color, gulong buffers);
+void            cogl_clear                    (const CoglColor *color,
+                                               gulong           buffers);
 
 /**
  * cogl_set_source:
@@ -628,7 +677,24 @@ void            cogl_push_draw_buffer         (void);
  */
 void            cogl_pop_draw_buffer          (void);
 
-/**
+
+/*
+ * Internal API available only to Clutter.
+ *
+ * These are typically only to deal with the poor seperation of
+ * responsabilities that currently exists between Clutter and Cogl.
+ * Eventually a lot of the backend code currently in Clutter will
+ * move down into Cogl and these functions will be removed.
+ */
+
+void            _cogl_destroy_context          (void);
+
+/* XXX: Removed before we release Clutter 1.0 since the implementation
+ * wasn't complete, and so we assume no one is using this yet. Util we
+ * have some one with a good usecase, we can't pretend to support breaking
+ * out into raw OpenGL. */
+#if 0
+/*
  * cogl_flush_gl_state:
  * @flags: flags controlling what is flushed; currently unused, pass in 0
  *
@@ -642,6 +708,7 @@ void            cogl_pop_draw_buffer          (void);
  * Since: 1.0
  */
 void            cogl_flush_gl_state         (int      flags);
+#endif
 
 /* private */
 void            _cogl_set_indirect_context  (gboolean indirect);

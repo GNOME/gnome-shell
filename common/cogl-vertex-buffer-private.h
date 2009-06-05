@@ -99,9 +99,9 @@ typedef struct _CoglVertexBufferAttrib
   union _u
   {
     const void		  *pointer;
-    gsize		   vbo_offset;
+    size_t		   vbo_offset;
   } u;
-  gsize			   span_bytes;
+  size_t		   span_bytes;
   guint16		   stride;
   guint8		   n_components;
   guint8		   texture_unit;
@@ -129,25 +129,41 @@ typedef struct _CoglVertexBufferVBO
 {
   CoglVertexBufferVBOFlags flags;
 
-  /* Note: this is a pointer to handle fallbacks, and normally holds
-   * a GLuint value */
-  gpointer vbo_name; /*!< The name of the corresponding buffer object */
-  gsize	 vbo_bytes; /*!< The lengh of the allocated buffer object in bytes */
+  /* Note: this is a pointer to handle fallbacks. It normally holds
+   * a GLuint VBO name, but when the driver doesn't support VBOs then
+   * this simply points to an malloc'd buffer. */
+  void  *vbo_name; /*!< The name of the corresponding buffer object */
+  size_t vbo_bytes; /*!< The lengh of the allocated buffer object in bytes */
   GList *attributes;
 } CoglVertexBufferVBO;
 
+typedef struct _CoglVertexBufferIndices
+{
+  CoglHandleObject _parent;
+
+  /* Note: this is a pointer to handle fallbacks. It normally holds
+   * a GLuint VBO name, but when the driver doesn't support VBOs then
+   * this simply points to an malloc'd buffer. */
+  void   *vbo_name;
+  GLenum  type;
+} CoglVertexBufferIndices;
 
 typedef struct _CoglVertexBuffer
 {
   CoglHandleObject _parent;
 
-  guint  n_vertices; /*!< The number of vertices in the buffer */
-  GList *submitted_vbos; /* The VBOs currently submitted to the GPU */
+  int     n_vertices; /*!< The number of vertices in the buffer */
+  GList  *submitted_vbos; /* The VBOs currently submitted to the GPU */
 
   /* Note: new_attributes is normally NULL and only valid while
    * modifying a buffer. */
-  GList *new_attributes; /*!< attributes pending submission */
+  GList  *new_attributes; /*!< attributes pending submission */
+
 } CoglVertexBuffer;
+
+CoglVertexBuffer *_cogl_vertex_buffer_pointer_from_handle (CoglHandle handle);
+CoglVertexBufferIndices *
+     _cogl_vertex_buffer_indices_pointer_from_handle (CoglHandle handle);
 
 #endif /* __COGL_VERTEX_BUFFER_H */
 

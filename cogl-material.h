@@ -43,6 +43,51 @@ G_BEGIN_DECLS
  * blended together.
  */
 
+/**
+ * CoglMaterialFilter:
+ * @COGL_MATERIAL_FILTER_NEAREST: Measuring in manhatten distance from the,
+ *                               current pixel center, use the nearest texture
+ *                               texel.
+ * @COGL_MATERIAL_FILTER_LINEAR: Use the weighted average of the 4 texels
+ *                              nearest the current pixel center.
+ * @COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST: Select the mimap level whose
+ *                                              texel size most closely matches
+ *                                              the current pixel, and use the
+ *                                              COGL_MATERIAL_FILTER_NEAREST
+ *                                              criterion.
+ * @COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST: Select the mimap level whose
+ *                                             texel size most closely matches
+ *                                             the current pixel, and use the
+ *                                             COGL_MATERIAL_FILTER_LINEAR
+ *                                             criterion.
+ * @COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR: Select the two mimap levels
+ *                                             whose texel size most closely
+ *                                             matches the current pixel, use
+ *                                             the COGL_MATERIAL_FILTER_NEAREST
+ *                                             criterion on each one and take
+ *                                             their weighted average.
+ * @COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR: Select the two mimap levels
+ *                                            whose texel size most closely
+ *                                            matches the current pixel, use
+ *                                            the COGL_MATERIAL_FILTER_LINEAR
+ *                                            criterion on each one and take
+ *                                            their weighted average.
+ *
+ * Texture filtering is used whenever the current pixel maps either to more
+ * than one texture element (texel) or less than one. These filter enums
+ * correspond to different strategies used to come up with a pixel color, by
+ * possibly referring to multiple neighbouring texels and taking a weighted
+ * average or simply using the nearest texel.
+ */
+typedef enum _CoglMaterialFilter
+{
+  COGL_MATERIAL_FILTER_NEAREST = GL_NEAREST,
+  COGL_MATERIAL_FILTER_LINEAR = GL_LINEAR,
+  COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+  COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+  COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+  COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
+} CoglMaterialFilter;
 
 /**
  * cogl_material_new:
@@ -367,80 +412,90 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
 					    float                 alpha_reference);
 
 /**
- * CoglMaterialBlendFactor:
- * @COGL_MATERIAL_BLEND_FACTOR_ZERO: (0, 0, 0, 0)
- * @COGL_MATERIAL_BLEND_FACTOR_ONE: (1, 1, 1, 1)
- * @COGL_MATERIAL_BLEND_FACTOR_SRC_COLOR: (Rs, Gs, Bs, As)
- * @COGL_MATERIAL_BLEND_FACTOR_DST_COLOR: (Rd, Gd, Bd, Ad)
- * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_COLOR: (1-Rs, 1-Gs, 1-Bs, 1-As)
- * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_DST_COLOR: (1-Rd, 1-Gd, 1-Bd, 1-Ad)
- * @COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA: (As, As, As, As)
- * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: (1-As, 1-As, 1-As, 1-As)
- * @COGL_MATERIAL_BLEND_FACTOR_DST_ALPHA: (Ad, Ad, Ad, Ad)
- * @COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_DST_ALPHA: (1-Ad, 1-Ad, 1-Ad, 1-Ad)
- * @COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA_SATURATE: (f,f,f,1) where f=MIN(As,1-Ad)
+ * cogl_material_set_blend:
+ * @material: A CoglMaterial object
+ * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
+ *                describing the desired blend function.
+ * @error: A GError that may report lack of driver support if you give
+ *         separate blend string statements for the alpha channel and RGB
+ *         channels since some drivers or backends such as GLES 1.1 dont
+ *         support this.
+ *
+ * If not already familiar; please refer
+ * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
+ * strings are and there syntax.
  *
  * Blending occurs after the alpha test function, and combines fragments with
  * the framebuffer.
- * <para>
- * A fixed function is used to determine the blended color, which is based on
- * the incoming source color of your fragment (Rs, Gs, Bs, As), a source
- * factor (Sr, Sg, Sb, Sa), a destination color (Rd, Rg, Rb, Ra) and
- * a destination factor (Dr, Dg, Db, Da), and is given by these equations:
- * </para>
+
+ * Currently the only blend function Cogl exposes is ADD(). So any valid
+ * blend statements will be of the form:
+ *
  * <programlisting>
- * R = Rs*Sr + Rd*Dr
- * G = Gs*Sg + Gd*Dg
- * B = Bs*Sb + Bd*Db
- * A = As*Sa + Ad*Da
+ * &lt;channel-mask&gt;=ADD(SRC_COLOR*(&lt;factor&gt;), DST_COLOR*(&lt;factor&gt;))
  * </programlisting>
  *
- * All factors have a range [0, 1]
+ * <b>NOTE: The brackets around blend factors are currently not optional!</b>
  *
- * The factors are selected with the following constants:
+ * This is the list of source-names usable as blend factors:
+ * <itemizedlist>
+ * <listitem>SRC_COLOR: The color of the in comming fragment</listitem>
+ * <listitem>DST_COLOR: The color of the framebuffer</listitem>
+ * <listitem>
+ * CONSTANT: The constant set via cogl_material_set_blend_constant()</listitem>
+ * </itemizedlist>
+ * The source names can be used according to the
+ * <link linkend="cogl-Blend-String-syntax">color-source and factor syntax</link>,
+ * so for example "(1-SRC_COLOR[A])" would be a valid factor, as would
+ * "(CONSTANT[RGB])"
+ *
+ * These can also be used as factors:
+ * <itemizedlist>
+ * <listitem>0: (0, 0, 0, 0)</listitem>
+ * <listitem>1: (1, 1, 1, 1)</listitem>
+ * <listitem>SRC_ALPHA_SATURATE_FACTOR: (f,f,f,1)
+ * where f=MIN(SRC_COLOR[A],1-DST_COLOR[A])</listitem>
+ * </itemizedlist>
+ * <para>
+ * Remember; all color components are normalized to the range [0, 1] before
+ * computing the result of blending.
+ * </para>
+ * <section>
+ * <title>Examples</title>
+ * Blend a non-premultiplied source over a destination with
+ * premultiplied alpha:
+ * <programlisting>
+ * "RGB = ADD(SRC_COLOR*(SRC_COLOR[A]), DST_COLOR*(1-SRC_COLOR[A]))"
+ * "A   = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+ * </programlisting>
+ * Blend a premultiplied source over a destination with premultiplied alpha:
+ * <programlisting>
+ * "RGBA = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+ * </programlisting>
+ * </section>
+ *
+ * Returns: TRUE if the blend string was successfully parsed, and the described
+ *          blending is supported by the underlying driver/hardware. If there
+ *          was an error, it returns FALSE.
+ *
+ * Since: 1.0
  */
-typedef enum _CoglMaterialBlendFactor
-{
-  COGL_MATERIAL_BLEND_FACTOR_ZERO		  = GL_ZERO,
-  COGL_MATERIAL_BLEND_FACTOR_ONE		  = GL_ONE,
-  COGL_MATERIAL_BLEND_FACTOR_SRC_COLOR		  = GL_SRC_COLOR,
-  COGL_MATERIAL_BLEND_FACTOR_DST_COLOR		  = GL_DST_COLOR,
-  COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_COLOR  = GL_ONE_MINUS_SRC_COLOR,
-  COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_DST_COLOR  = GL_ONE_MINUS_DST_COLOR,
-  COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA		  = GL_SRC_ALPHA,
-  COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA  = GL_ONE_MINUS_SRC_ALPHA,
-  COGL_MATERIAL_BLEND_FACTOR_DST_ALPHA		  = GL_DST_ALPHA,
-  COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_DST_ALPHA  = GL_ONE_MINUS_DST_ALPHA,
-  COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA_SATURATE	  = GL_SRC_ALPHA_SATURATE,
-} CoglMaterialBlendFactor;
+gboolean cogl_material_set_blend (CoglHandle  material,
+                                  const char *blend_string,
+                                  GError    **error);
 
 /**
- * cogl_material_set_blend_factors:
+ * cogl_material_set_blend_constant:
  * @material: A CoglMaterial object
- * @src_factor: Chooses the @CoglMaterialBlendFactor you want plugged in to
- * the blend equation.
- * @dst_factor: Chooses the @CoglMaterialBlendFactor you want plugged in to
- * the blend equation.
+ * @constant_color: The constant color you want
  *
- * This function lets you control how primitives using this material will get
- * blended with the contents of your framebuffer. The blended RGBA components
- * are calculated like this:
+ * When blending is setup to reference a CONSTANT blend factor then
+ * blending will depend on the constant set with this function.
  *
- * (RsSr+RdDr, GsSg+GdDg, BsSb+BsSb, AsSa+AdDa)
- *
- * Where (Rs,Gs,Bs,As) represents your source - material- color,
- * (Rd,Gd,Bd,Ad) represents your destination - framebuffer - color,
- * (Sr,Sg,Sb,Sa) represents your source blend factor and
- * (Dr,Dg,Db,Da) represents you destination blend factor.
- *
- * All factors lie in the range [0,1] and incoming color components are also
- * normalized to the range [0,1]
- *
- * Since 1.0
+ * Since: 1.0
  */
-void cogl_material_set_blend_factors (CoglHandle              material,
-				      CoglMaterialBlendFactor src_factor,
-				      CoglMaterialBlendFactor dst_factor);
+void cogl_material_set_blend_constant (CoglHandle             material,
+                                       CoglColor              *constant_color);
 
 /**
  * cogl_material_set_layer:
@@ -460,7 +515,7 @@ void cogl_material_set_blend_factors (CoglHandle              material,
  * Since 1.0
  */
 void cogl_material_set_layer (CoglHandle material,
-			      gint       layer_index,
+			      int        layer_index,
 			      CoglHandle texture);
 
 /**
@@ -473,233 +528,112 @@ void cogl_material_set_layer (CoglHandle material,
 void cogl_material_remove_layer (CoglHandle material,
 				 gint       layer_index);
 
+
 /**
- * CoglMaterialLayerCombineFunc:
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE: Arg0
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE: Arg0 x Arg1
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD: Arg0 + Arg1
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD_SIGNED: Arg0 + Arg1 - 0.5
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_INTERPOLATE: Arg0 x Arg + Arg1 x (1-Arg2)
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_SUBTRACT: Arg0 - Arg1
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGB: 4 x ((Arg0r - 0.5) x (Arg1r - 0.5)) +
- * @COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGBA: ((Arg0b - 0.5) x (Arg1b - 0.5)) +
+ * cogl_material_set_layer_combine:
+ * @material: A CoglMaterial object
+ * @layer_index: Specifies the layer you want define a combine function for
+ * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
+ *                describing the desired texture combine function.
+ * @error: A GError that may report parse errors or lack of GPU/driver support.
  *
- * A material may comprise of 1 or more layers that can be combined using a
- * number of different functions. By default layers are modulated, which is
- * to say the components of the current source layer S are simply multipled
- * together with the combined results of the previous layer P like this:
+ * If not already familiar; you can refer
+ * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
+ * strings are and there syntax.
  *
+ * These are all the functions available for texture combining:
+ * <itemizedlist>
+ * <listitem>REPLACE(arg0) = arg0</listitem>
+ * <listitem>MODULATE(arg0, arg1) = arg0 x arg1</listitem>
+ * <listitem>ADD(arg0, arg1) = arg0 + arg1</listitem>
+ * <listitem>ADD_SIGNED(arg0, arg1) = arg0 + arg1 - 0.5</listitem>
+ * <listitem>INTERPOLATE(arg0, arg1, arg2) =
+ * arg0 x arg2 + arg1 x (1 - arg2)</listitem>
+ * <listitem>SUBTRACT(arg0, arg1) = arg0 - arg1</listitem>
+ * <listitem>
+ * DOT3_RGB(arg0, arg1) =
  * <programlisting>
- * (Rs*Rp, Gs*Gp, Bs*Bp, As*Ap)
+ * 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+ *      (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+ *      (arg0[B] - 0.5)) * (arg1[B] - 0.5))
  * </programlisting>
- *
- * For more advanced techniques, Cogl exposes the fixed function texture
- * combining capabilities of your GPU to give you greater control.
- */
-typedef enum _CoglMaterialLayerCombineFunc
-{
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE     = CGL_REPLACE,
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE    = CGL_MODULATE,
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD	       = CGL_ADD,
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD_SIGNED  = CGL_ADD_SIGNED,
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_INTERPOLATE = CGL_INTERPOLATE,
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_SUBTRACT    = CGL_SUBTRACT,
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGB    = CGL_DOT3_RGB,
-  COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGBA   = CGL_DOT3_RGBA
-} CoglMaterialLayerCombineFunc;
-
-/**
- * CoglMaterialLayerCombineChannels:
- * @COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB: Modify the function or argument
- *                                            src/op for the RGB components of a
- *                                            layer
- * @COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA: Modify the function or argument
- *                                              src/op for the Alpha component of a
- *                                              layer
- * @COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA: Modify the function or argument
- *                                             src/op for all the components of a
- *                                             layer
- *
- * Cogl optionally lets you describe 2 seperate combine modes for a single
- * layer; 1 for the RGB components, and 1 for the Alpha component, so in this
- * case you would repeat the 3 steps documented with the
- * @cogl_material_set_layer_combine_function function for each channel
- * selector.
- *
- * (Note: you can't have different modes for each channel, so if you need more
- *  control you will need to use a glsl fragment shader)
- */
-typedef enum _CoglMaterialLayerCombineChannels
-{
-  COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-  COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
-  COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA
-} CoglMaterialLayerCombineChannels;
-
-/**
- * cogl_material_set_layer_combine_function:
- * @material: A CoglMaterial object
- * @layer_index: Specifies the layer whos combine mode you want to modify
- * @channels: Specifies which channels combine mode you want to modify
- *            (RGB, ALPHA, or RGBA)
- * @func: Specifies the function you want to use for combining fragments
- *        of the specified layer with the results of previously combined
- *        layers.
- *
- * There are three basic steps to describing how a layer should be combined:
- * <orderedlist>
- * <listitem>
- * Choose a function.
  * </listitem>
- * <listitem>
- * Specify the source color for each argument of the chosen function. (Note
- *    the functions don't all take the same number of arguments)
- * </listitem>
- * <listitem>
- * Specify an operator for each argument that can modify the corresponding
- *    source color before the function is applied.
- * </listitem>
- * </orderedlist>
- *
- * Cogl optionally lets you describe 2 seperate combine modes for a single
- * layer; 1 for the RGB components, and 1 for the Alpha component, so in this
- * case you would repeat the 3 steps for each channel selector.
- *
- * (Note: you can't have different modes for each channel, so if you need more
- *  control you will need to use a glsl fragment shader)
- *
- * For example here is how you could elect to use the ADD function for all
- * components of layer 1 in your material:
+ * <listitem>DOT3_RGBA(arg0, arg1) =
  * <programlisting>
- * //Step 1: Choose a function. Note the ADD function takes 2 arguments...
- * cogl_material_set_layer_combine_function (material,
- *                                           1,
- *                                           COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
- *                                           COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD);
- * //Step 2: Specify the source color for the 2 ADD function arguments...
- * cogl_material_set_layer_combine_arg_src (material,
- *                                          1,//layer index
- *                                          0,//argument index
- *                                          COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
- * cogl_material_set_layer_combine_arg_src (material,
- *                                          1,//layer index
- *                                          1,//argument index
- *                                          COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
- *                                          COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE);
- * //Step 3: Specify the operators used to modify the arguments...
- * cogl_material_set_layer_combine_arg_op (material,
- *                                         1,//layer index
- *                                         0,//argument index
- *                                         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA,
- *                                         COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR);
- * cogl_material_set_layer_combine_arg_op (material,
- *                                         1,//layer index
- *                                         1,//argument index
- *                                         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA,
- *                                         COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR);
+ * 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+ *      (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+ *      (arg0[B] - 0.5)) * (arg1[B] - 0.5))
  * </programlisting>
- */
-void cogl_material_set_layer_combine_function (CoglHandle                        material,
-                                               gint                              layer_index,
-                                               CoglMaterialLayerCombineChannels  channels,
-                                               CoglMaterialLayerCombineFunc      func);
-
-/**
- * CoglMaterialLayerCombineSrc:
- * @COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE: The fragment color of the current texture layer
- * @COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE0: The fragment color of texture unit 0
- * @COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE1: The fragment color of texture unit 1
- * @COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE2: The fragment color of texture unit 2..7
- * @COGL_MATERIAL_LAYER_COMBINE_SRC_CONSTANT: A fixed constant color (TODO: no API yet to specify the actual color!)
- * @COGL_MATERIAL_LAYER_COMBINE_SRC_PRIMARY_COLOR: The basic color of the primitive ignoring texturing
- * @COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS: The result of combining all previous layers
+ * </listitem>
+ * </itemizedlist>
  *
- * Note for the constants @COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE0..n the
- * numbers may not correspond to the indices you choose for your layers since
- * your layer indices don't need to be contiguous. If you need to use these
- * it would probably be sensible to ensure the layer indices do infact
- * correspond.
+ * Refer to the
+ * <link linkend="cogl-Blend-String-syntax">color-source syntax</link> for
+ * describing the arguments. The valid source names for texture combining
+ * are:
+ * <itemizedlist>
+ * <listitem>
+ * TEXTURE: Use the color from the current texture layer
+ * </listitem>
+ * <listitem>
+ * TEXTURE_0, TEXTURE_1, etc: Use the color from the specified texture layer
+ * </listitem>
+ * <listitem>
+ * CONSTANT: Use the color from the constant given with
+ * cogl_material_set_layer_constant()
+ * </listitem>
+ * <listitem>
+ * PRIMARY: Use the color of the material as set with cogl_material_set_color()
+ * </listitem>
+ * <listitem>
+ * PREVIOUS: Either use the texture color from the previous layer, or if this
+ * is layer 0, use the color of the material as set with
+ * cogl_material_set_color()
+ * </listitem>
+ * </itemizedlist>
+ * <section>
+ * <title>Example</title>
+ * This is effectively what the default blending is:
+ * <programlisting>
+ * "RGBA = MODULATE (PREVIOUS, TEXTURE)"
+ * </programlisting>
+ * This could be used to cross-fade between two images, using the alpha
+ * component of a constant as the interpolator. The constant color
+ * is given by calling cogl_material_set_layer_constant.
+ * <programlisting>
+ * RGBA = INTERPOLATE (PREVIOUS, TEXTURE, CONSTANT[A])
+ * </programlisting>
+ * </section>
+ * <b>Note: you can't give a multiplication factor for arguments as you can
+ * with blending.</b>
+ *
+ * Returns: TRUE if the blend string was successfully parsed, and the described
+ *          texture combining is supported by the underlying driver/hardware.
+ *          If there was an error, it returns FALSE.
+ *
+ * Since: 1.0
  */
-typedef enum _CoglMaterialLayerCombineSrc
-{
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE = GL_TEXTURE,
-
-  /* Can we find a nicer way... */
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE0 = GL_TEXTURE0,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE1 = GL_TEXTURE1,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE2 = GL_TEXTURE2,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE3 = GL_TEXTURE3,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE4 = GL_TEXTURE4,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE5 = GL_TEXTURE5,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE6 = GL_TEXTURE6,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE7 = GL_TEXTURE7,
-  /* .. who would ever need more than 8 texture layers.. :-) */
-
-  COGL_MATERIAL_LAYER_COMBINE_SRC_CONSTANT	= CGL_CONSTANT,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_PRIMARY_COLOR = CGL_PRIMARY_COLOR,
-  COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS	= CGL_PREVIOUS
-} CoglMaterialLayerCombineSrc;
+gboolean
+cogl_material_set_layer_combine (CoglHandle material,
+				 gint layer_index,
+				 const char *blend_string,
+                                 GError **error);
 
 /**
- * cogl_material_set_layer_combine_arg_src:
+ * cogl_material_set_layer_combine_constant:
  * @material: A CoglMaterial object
- * @layer_index:
- * @argument:
- * @channels:
- * @src:
+ * @layer_index: Specifies the layer you want to specify a constant used
+ *               for texture combining
+ * @color_constant: The constant color you want
  *
- */
-void cogl_material_set_layer_combine_arg_src (CoglHandle                       material,
-                                              gint                             layer_index,
-                                              gint                             argument,
-                                              CoglMaterialLayerCombineChannels channels,
-                                              CoglMaterialLayerCombineSrc      src);
-
-typedef enum _CoglMaterialLayerCombineOp
-{
-  COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR	     = GL_SRC_COLOR,
-  COGL_MATERIAL_LAYER_COMBINE_OP_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
-
-  COGL_MATERIAL_LAYER_COMBINE_OP_SRC_ALPHA	     = GL_SRC_ALPHA,
-  COGL_MATERIAL_LAYER_COMBINE_OP_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA
-} CoglMaterialLayerCombineOp;
-
-/**
- * cogl_material_set_layer_combine_arg_op:
- * @material: A CoglMaterial object
- * @layer_index:
- * @argument:
- * @channels:
- * @op:
+ * When you are using the 'CONSTANT' color source in a layer combine
+ * description then you can use this function to define its value.
  *
+ * Since 1.0
  */
-void cogl_material_set_layer_combine_arg_op (CoglHandle                       material,
-                                             gint                             layer_index,
-                                             gint                             argument,
-                                             CoglMaterialLayerCombineChannels channels,
-                                             CoglMaterialLayerCombineOp       op);
-
-/* TODO: */
-#if 0
- I think it would be be really neat to support a simple string description
- of the fixed function texture combine modes exposed above. I think we can
- consider this stuff to be set in stone from the POV that more advanced
- texture combine functions are catered for with GLSL, so it seems reasonable
- to find a concise string representation that can represent all the above
- modes in a *much* more readable/useable fashion. I think somthing like
- this would be quite nice:
-
-  "MODULATE(TEXTURE[RGB], PREVIOUS[A])"
-  "ADD(TEXTURE[A],PREVIOUS[RGB])"
-  "INTERPOLATE(TEXTURE[1-A], PREVIOUS[RGB])"
-
-void cogl_material_set_layer_rgb_combine (CoglHandle material
-					  gint layer_index,
-					  const char *combine_description);
-void cogl_material_set_layer_alpha_combine (CoglHandle material
-					    gint layer_index,
-					    const char *combine_description);
-#endif
+void cogl_material_set_layer_combine_constant (CoglHandle                     material,
+                                               int                            layer_index,
+                                               CoglColor                     *constant);
 
 /**
  * cogl_material_set_layer_matrix:
@@ -709,37 +643,8 @@ void cogl_material_set_layer_alpha_combine (CoglHandle material
  * and rotate a single layer of a material used to fill your geometry.
  */
 void cogl_material_set_layer_matrix (CoglHandle  material,
-				     gint        layer_index,
+				     int         layer_index,
 				     CoglMatrix *matrix);
-
-
-/**
- * SECTION:cogl-material-internals
- * @short_description: Functions for creating custom primitives that make use
- *                     of Cogl materials for filling.
- *
- * Normally you shouldn't need to use this API directly, but if you need to
- * developing a custom/specialised primitive - probably using raw OpenGL - then
- * this API aims to expose enough of the material internals to support being
- * able to fill your geometry according to a given Cogl material.
- */
-
-
-/**
- * cogl_material_get_cogl_enable_flags:
- * @material: A CoglMaterial object
- *
- * This determines what flags need to be passed to cogl_enable before this
- * material can be used. Normally you shouldn't need to use this function
- * directly since Cogl will do this internally, but if you are developing
- * custom primitives directly with OpenGL you may want to use this.
- *
- * Note: This API is hopfully just a stop-gap solution. Ideally cogl_enable
- * will be replaced.
- */
-/* TODO: find a nicer solution! */
-gulong
-cogl_material_get_cogl_enable_flags (CoglHandle handle);
 
 /**
  * cogl_material_get_layers:
@@ -748,24 +653,20 @@ cogl_material_get_cogl_enable_flags (CoglHandle handle);
  * This function lets you access a materials internal list of layers
  * for iteration.
  *
- * Note: Normally you shouldn't need to use this function directly since
- * Cogl will do this internally, but if you are developing custom primitives
- * directly with OpenGL, you will need to iterate the layers that you want
- * to texture with.
- *
- * Note: This function may return more layers than OpenGL can use at once
- * so it's your responsability limit yourself to
- * CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS.
- *
- * Note: It's a bit out of the ordinary to return a const GList *, but it
- * was considered sensible to try and avoid list manipulation for every
- * primitive emitted in a scene, every frame.
+ * Returns: A list of #CoglHandle<!-- -->'s that can be passed to the
+ *          cogl_material_layer_* functions.
  */
 const GList *cogl_material_get_layers (CoglHandle material_handle);
 
 /**
  * CoglMaterialLayerType:
- * @COGL_MATERIAL_LAYER_TYPE_TEXTURE: The layer represents a CoglTexture
+ * @COGL_MATERIAL_LAYER_TYPE_TEXTURE: The layer represents a
+ * <link linkend="cogl-Textures">Cogl texture</link>
+ *
+ * Available types of layers for a #CoglMaterial. This enumeration
+ * might be expanded in later versions.
+ *
+ * Since: 1.0
  */
 typedef enum _CoglMaterialLayerType
 {
@@ -774,17 +675,12 @@ typedef enum _CoglMaterialLayerType
 
 /**
  * cogl_material_layer_get_type:
- * @layer_handle: A CoglMaterialLayer handle
+ * @layer_handle: A Cogl material layer handle
  *
  * Currently there is only one type of layer defined:
  * COGL_MATERIAL_LAYER_TYPE_TEXTURE, but considering we may add purely GLSL
  * based layers in the future, you should write code that checks the type
  * first.
- *
- * Note: Normally you shouldn't need to use this function directly since
- * Cogl will do this internally, but if you are developing custom primitives
- * directly with OpenGL, you will need to iterate the layers that you want
- * to texture with, and thus should be checking the layer types.
  */
 CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
 
@@ -792,75 +688,58 @@ CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
  * cogl_material_layer_get_texture:
  * @layer_handle: A CoglMaterialLayer handle
  *
- * This lets you extract a CoglTexture handle for a specific layer. Normally
- * you shouldn't need to use this function directly since Cogl will do this
- * internally, but if you are developing custom primitives directly with
- * OpenGL you may need this.
+ * This lets you extract a CoglTexture handle for a specific layer.
  *
  * Note: In the future, we may support purely GLSL based layers which will
- * likley return COGL_INVALID_HANDLE if you try to get the texture.
- * Considering this, you should always call cogl_material_layer_get_type
- * first, to check it is of type COGL_MATERIAL_LAYER_TYPE_TEXTURE.
+ *       likely return COGL_INVALID_HANDLE if you try to get the texture.
+ *       Considering this, you can call cogl_material_layer_get_type first,
+ *       to check it is of type COGL_MATERIAL_LAYER_TYPE_TEXTURE.
+ *
+ * Note: It is possible for a layer object of type
+ *       COGL_MATERIAL_LAYER_TYPE_TEXTURE to be realized before a texture
+ *       object has been associated with the layer. For example this happens
+ *       if you setup layer combining for a given layer index before calling
+ *       cogl_material_set_layer for that index.
+ *
+ * Returns: A CoglHandle to the layers texture object or COGL_INVALID_HANDLE
+ *          if a texture has not been set yet.
  */
 CoglHandle cogl_material_layer_get_texture (CoglHandle layer_handle);
 
 /**
- * CoglMaterialLayerFlags:
- * @COGL_MATERIAL_LAYER_FLAG_USER_MATRIX: Means the user has supplied a
- *                                        custom texture matrix.
+ * cogl_material_layer_get_min_filter:
+ * @layer_handle: a #CoglHandle for a material layer.
+ *
+ * Query the currently set downscaling filter for a cogl material layer.
+ *
+ * Returns: the current downscaling filter for a cogl material layer.
  */
-typedef enum _CoglMaterialLayerFlags
-{
-  COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX	= 1L<<0
-} CoglMaterialLayerFlags;
-/* XXX: NB: if you add flags here you will need to update
- * CoglMaterialLayerPrivFlags!!! */
+CoglMaterialFilter cogl_material_layer_get_min_filter (CoglHandle layer_handle);
 
 /**
- * cogl_material_layer_get_flags:
- * @layer_handle: A CoglMaterialLayer layer handle
+ * cogl_material_layer_get_mag_filter:
+ * @layer_handle: a #CoglHandle for a material layer.
  *
- * This lets you get a number of flag attributes about the layer.  Normally
- * you shouldn't need to use this function directly since Cogl will do this
- * internally, but if you are developing custom primitives directly with
- * OpenGL you may need this.
+ * Query the currently set downscaling filter for a cogl material layer.
+ *
+ * Returns: the current downscaling filter for a cogl material layer.
  */
-gulong cogl_material_layer_get_flags (CoglHandle layer_handle);
+CoglMaterialFilter cogl_material_layer_get_mag_filter (CoglHandle layer_handle);
 
 /**
- * CoglMaterialFlushOption:
- * @COGL_MATERIAL_FLUSH_FALLBACK_MASK: Follow this by a guin32 mask
- *      of the layers that can't be supported with the user supplied texture
- *      and need to be replaced with fallback textures. (1 = fallback, and the
- *      least significant bit = layer 0)
- * @COGL_MATERIAL_FLUSH_DISABLE_MASK: Follow this by a guint32 mask
- *      of the layers that you want to completly disable texturing for
- *      (1 = fallback, and the least significant bit = layer 0)
- * @COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE: Follow this by a GLuint OpenGL texture
- *      name to override the texture used for layer 0 of the material. This is
- *      intended for dealing with sliced textures where you will need to point
- *      to each of the texture slices in turn when drawing your geometry.
- *      Passing a value of 0 is the same as not passing the option at all.
- */
-typedef enum _CoglMaterialFlushOption
-{
-  COGL_MATERIAL_FLUSH_FALLBACK_MASK = 1,
-  COGL_MATERIAL_FLUSH_DISABLE_MASK,
-  COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
-} CoglMaterialFlushOption;
-
-/**
- * cogl_material_flush_gl_state:
- * @material: A CoglMaterial object
- * @...: A NULL terminated list of (CoglMaterialFlushOption, data) pairs
+ * cogl_material_set_layer_filters:
+ * @handle: a #CoglHandle to a material.
+ * @layer_index: the layer number to change.
+ * @min_filter: the filter used when scaling a texture down.
+ * @mag_filter: the filter used when magnifying a texture.
  *
- * This function commits the state of the specified CoglMaterial - including
- * the texture state for all the layers - to the OpenGL[ES] driver.
- *
- * Since 1.0
+ * Changes the decimation and interpolation filters used when a texture is
+ * drawn at other scales than 100%.
  */
-void cogl_material_flush_gl_state (CoglHandle material,
-                                   ...) G_GNUC_NULL_TERMINATED;
+void cogl_material_set_layer_filters (CoglHandle         handle,
+                                      gint               layer_index,
+                                      CoglMaterialFilter min_filter,
+                                      CoglMaterialFilter mag_filter);
 
 G_END_DECLS
 

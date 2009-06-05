@@ -399,6 +399,10 @@ _cogl_features_init (void)
 	(COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteFramebuffersEXT");
 
+      ctx->pf_glGenerateMipmapEXT =
+        (COGL_PFNGLGENERATEMIPMAPEXTPROC)
+        cogl_get_proc_address ("glGenerateMipmapEXT");
+
       if (ctx->pf_glGenRenderbuffersEXT         &&
 	  ctx->pf_glBindRenderbufferEXT         &&
 	  ctx->pf_glRenderbufferStorageEXT      &&
@@ -407,7 +411,8 @@ _cogl_features_init (void)
 	  ctx->pf_glFramebufferTexture2DEXT     &&
 	  ctx->pf_glFramebufferRenderbufferEXT  &&
 	  ctx->pf_glCheckFramebufferStatusEXT   &&
-	  ctx->pf_glDeleteFramebuffersEXT)
+	  ctx->pf_glDeleteFramebuffersEXT       &&
+          ctx->pf_glGenerateMipmapEXT)
 	flags |= COGL_FEATURE_OFFSCREEN;
     }
 
@@ -485,6 +490,23 @@ _cogl_features_init (void)
   ctx->pf_glClientActiveTexture =
         (COGL_PFNGLCLIENTACTIVETEXTUREPROC)
         cogl_get_proc_address ("glClientActiveTexture");
+
+  ctx->pf_glBlendEquation =
+         (COGL_PFNGLBLENDEQUATIONPROC)
+         cogl_get_proc_address ("glBlendEquation");
+  ctx->pf_glBlendColor =
+         (COGL_PFNGLBLENDCOLORPROC)
+         cogl_get_proc_address ("glBlendColor");
+
+  /* Available in 1.4 */
+  ctx->pf_glBlendFuncSeparate =
+        (COGL_PFNGLBLENDFUNCSEPARATEPROC)
+        cogl_get_proc_address ("glBlendFuncSeparate");
+
+  /* Available in 2.0 */
+  ctx->pf_glBlendEquationSeparate =
+        (COGL_PFNGLBLENDEQUATIONSEPARATEPROC)
+        cogl_get_proc_address ("glBlendEquationSeparate");
 
   /* Cache features */
   ctx->feature_flags = flags;

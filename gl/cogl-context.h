@@ -78,7 +78,6 @@ typedef struct
    * can batch things together. */
   GArray           *journal;
   GArray           *logged_vertices;
-  GArray           *static_indices;
   GArray           *polygon_vertices;
 
   /* Some simple caching, to minimize state changes... */
@@ -102,6 +101,12 @@ typedef struct
   floatVec2         path_nodes_max;
   CoglHandle        stencil_material;
 
+  /* Pre-generated VBOs containing indices to generate GL_TRIANGLES
+     out of a vertex array of quads */
+  CoglHandle        quad_indices_byte;
+  guint             quad_indices_short_len;
+  CoglHandle        quad_indices_short;
+
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
   COGL_PFNGLDELETERENDERBUFFERSEXTPROC             pf_glDeleteRenderbuffersEXT;
@@ -115,6 +120,7 @@ typedef struct
   COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC              pf_glDeleteFramebuffersEXT;
   COGL_PFNGLBLITFRAMEBUFFEREXTPROC                 pf_glBlitFramebufferEXT;
   COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC  pf_glRenderbufferStorageMultisampleEXT;
+  COGL_PFNGLGENERATEMIPMAPEXTPROC                  pf_glGenerateMipmapEXT;
 
   COGL_PFNGLCREATEPROGRAMOBJECTARBPROC             pf_glCreateProgramObjectARB;
   COGL_PFNGLCREATESHADEROBJECTARBPROC              pf_glCreateShaderObjectARB;
@@ -164,6 +170,11 @@ typedef struct
 
   COGL_PFNGLACTIVETEXTUREPROC                      pf_glActiveTexture;
   COGL_PFNGLCLIENTACTIVETEXTUREPROC                pf_glClientActiveTexture;
+
+  COGL_PFNGLBLENDEQUATIONPROC                      pf_glBlendEquation;
+  COGL_PFNGLBLENDCOLORPROC                         pf_glBlendColor;
+  COGL_PFNGLBLENDFUNCSEPARATEPROC                  pf_glBlendFuncSeparate;
+  COGL_PFNGLBLENDEQUATIONSEPARATEPROC              pf_glBlendEquationSeparate;
 } CoglContext;
 
 CoglContext *

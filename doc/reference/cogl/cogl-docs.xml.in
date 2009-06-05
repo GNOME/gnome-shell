@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY version SYSTEM "version.xml">
+<!ENTITY version "@VERSION@">
 ]>
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -55,6 +55,7 @@
     <xi:include href="xml/cogl.xml"/>
     <xi:include href="xml/cogl-color.xml"/>
     <xi:include href="xml/cogl-texture.xml"/>
+    <xi:include href="blend-strings.xml"/>
     <xi:include href="xml/cogl-material.xml"/>
     <xi:include href="xml/cogl-primitives.xml"/>
     <xi:include href="xml/cogl-vertex-buffer.xml"/>

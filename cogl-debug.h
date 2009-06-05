@@ -29,15 +29,16 @@
 G_BEGIN_DECLS
 
 typedef enum {
-  COGL_DEBUG_MISC       = 1 << 0,
-  COGL_DEBUG_TEXTURE    = 1 << 1,
-  COGL_DEBUG_MATERIAL   = 1 << 2,
-  COGL_DEBUG_SHADER     = 1 << 3,
-  COGL_DEBUG_OFFSCREEN  = 1 << 4,
-  COGL_DEBUG_DRAW       = 1 << 5,
-  COGL_DEBUG_PANGO      = 1 << 6,
-  COGL_DEBUG_RECTANGLES = 1 << 7,
-  COGL_DEBUG_HANDLE     = 1 << 8
+  COGL_DEBUG_MISC           = 1 << 0,
+  COGL_DEBUG_TEXTURE        = 1 << 1,
+  COGL_DEBUG_MATERIAL       = 1 << 2,
+  COGL_DEBUG_SHADER         = 1 << 3,
+  COGL_DEBUG_OFFSCREEN      = 1 << 4,
+  COGL_DEBUG_DRAW           = 1 << 5,
+  COGL_DEBUG_PANGO          = 1 << 6,
+  COGL_DEBUG_RECTANGLES     = 1 << 7,
+  COGL_DEBUG_HANDLE         = 1 << 8,
+  COGL_DEBUG_BLEND_STRINGS  = 1 << 9
 } CoglDebugFlags;
 
 #ifdef COGL_ENABLE_DEBUG
@@ -69,3 +70,4 @@ extern guint cogl_debug_flags;
 G_END_DECLS
 
 #endif /* __COGL_DEBUG_H__ */
+
