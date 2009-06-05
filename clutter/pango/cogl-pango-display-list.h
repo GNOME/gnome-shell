@@ -33,8 +33,9 @@ typedef struct _CoglPangoDisplayList CoglPangoDisplayList;
 
 CoglPangoDisplayList *_cogl_pango_display_list_new (void);
 
-void _cogl_pango_display_list_set_color (CoglPangoDisplayList *dl,
-                                         const CoglColor *color);
+void _cogl_pango_display_list_set_color_override (CoglPangoDisplayList *dl,
+                                                  const CoglColor *color);
+void _cogl_pango_display_list_remove_color_override (CoglPangoDisplayList *dl);
 
 void _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
                                            CoglHandle texture,
@@ -56,6 +57,7 @@ void _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
                                              float x_22);
 
 void _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
+                                      const CoglColor *color,
                                       CoglHandle glyph_material,
                                       CoglHandle solid_material);
 

@@ -42,8 +42,6 @@ struct _CoglPangoRenderer
 {
   PangoRenderer parent_instance;
 
-  /* The color to draw the glyphs with */
-  CoglColor color;
   /* The material used to texture from the glyph cache with */
   CoglHandle glyph_material;
   /* The material used for solid fills. (boxes, rectangles + trapezoids) */
@@ -261,7 +259,6 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
     {
       qdata->display_list = _cogl_pango_display_list_new ();
 
-      priv->color = *color;
       priv->display_list = qdata->display_list;
       pango_renderer_draw_layout (PANGO_RENDERER (priv), layout, 0, 0);
       priv->display_list = NULL;
@@ -270,6 +267,7 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
   cogl_push_matrix ();
   cogl_translate (x / (gfloat) PANGO_SCALE, y / (gfloat) PANGO_SCALE, 0);
   _cogl_pango_display_list_render (qdata->display_list,
+                                   color,
                                    priv->glyph_material,
                                    priv->solid_material);
   cogl_pop_matrix ();
@@ -340,13 +338,11 @@ cogl_pango_render_layout_line (PangoLayoutLine *line,
     return;
 
   priv->display_list = _cogl_pango_display_list_new ();
-  priv->color = *color;
 
   pango_renderer_draw_layout_line (PANGO_RENDERER (priv), line, x, y);
 
-  cogl_material_set_color (priv->glyph_material, color);
-  cogl_material_set_color (priv->solid_material, color);
   _cogl_pango_display_list_render (priv->display_list,
+                                   color,
                                    priv->glyph_material,
                                    priv->solid_material);
 
@@ -492,19 +488,21 @@ cogl_pango_renderer_set_color_for_part (PangoRenderer   *renderer,
 {
   PangoColor *pango_color = pango_renderer_get_color (renderer, part);
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
-  CoglColor color;
 
   if (pango_color)
     {
-      color.red = pango_color->red >> 8;
-      color.green = pango_color->green >> 8;
-      color.blue = pango_color->blue >> 8;
-      color.alpha = priv->color.alpha;
+      CoglColor color;
+
+      cogl_color_set_from_4ub (&color,
+                               pango_color->red >> 8,
+                               pango_color->green >> 8,
+                               pango_color->blue >> 8,
+                               0xff);
+
+      _cogl_pango_display_list_set_color_override (priv->display_list, &color);
     }
   else
-    color = priv->color;
-
-  _cogl_pango_display_list_set_color (priv->display_list, &color);
+    _cogl_pango_display_list_remove_color_override (priv->display_list);
 }
 
 static void

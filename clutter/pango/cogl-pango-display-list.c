@@ -43,6 +43,7 @@ typedef struct _CoglPangoDisplayListVertex CoglPangoDisplayListVertex;
 
 struct _CoglPangoDisplayList
 {
+  gboolean   color_override;
   CoglColor  color;
   GSList    *nodes;
   GSList    *last_node;
@@ -52,6 +53,7 @@ struct _CoglPangoDisplayListNode
 {
   CoglPangoDisplayListNodeType type;
 
+  gboolean color_override;
   CoglColor color;
 
   union
@@ -106,10 +108,17 @@ _cogl_pango_display_list_append_node (CoglPangoDisplayList *dl,
 }
 
 void
-_cogl_pango_display_list_set_color (CoglPangoDisplayList *dl,
-                                    const CoglColor *color)
+_cogl_pango_display_list_set_color_override (CoglPangoDisplayList *dl,
+                                             const CoglColor *color)
 {
+  dl->color_override = TRUE;
   dl->color = *color;
+}
+
+void
+_cogl_pango_display_list_remove_color_override (CoglPangoDisplayList *dl)
+{
+  dl->color_override = FALSE;
 }
 
 void
@@ -128,7 +137,10 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
   if (dl->last_node
       && (node = dl->last_node->data)->type == COGL_PANGO_DISPLAY_LIST_TEXTURE
       && node->d.texture.texture == texture
-      && !memcmp (&dl->color, &node->color, sizeof (CoglColor)))
+      && (dl->color_override
+          ? (node->color_override && !memcmp (&dl->color, &node->color,
+                                              sizeof (CoglColor)))
+          : !node->color_override))
     {
       /* Get rid of the vertex buffer so that it will be recreated */
       if (node->d.texture.vertex_buffer != COGL_INVALID_HANDLE)
@@ -143,6 +155,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       node = g_slice_new (CoglPangoDisplayListNode);
 
       node->type = COGL_PANGO_DISPLAY_LIST_TEXTURE;
+      node->color_override = dl->color_override;
       node->color = dl->color;
       node->d.texture.texture = cogl_texture_ref (texture);
       node->d.texture.verts
@@ -187,6 +200,7 @@ _cogl_pango_display_list_add_rectangle (CoglPangoDisplayList *dl,
   CoglPangoDisplayListNode *node = g_slice_new (CoglPangoDisplayListNode);
 
   node->type = COGL_PANGO_DISPLAY_LIST_RECTANGLE;
+  node->color_override = dl->color_override;
   node->color = dl->color;
   node->d.rectangle.x_1 = x_1;
   node->d.rectangle.y_1 = y_1;
@@ -208,6 +222,7 @@ _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
   CoglPangoDisplayListNode *node = g_slice_new (CoglPangoDisplayListNode);
 
   node->type = COGL_PANGO_DISPLAY_LIST_TRAPEZOID;
+  node->color_override = dl->color_override;
   node->color = dl->color;
   node->d.trapezoid.y_1 = y_1;
   node->d.trapezoid.x_11 = x_11;
@@ -221,10 +236,11 @@ _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
 
 static void
 _cogl_pango_display_list_render_texture (CoglHandle material,
+                                         const CoglColor *color,
                                          CoglPangoDisplayListNode *node)
 {
   cogl_material_set_layer (material, 0, node->d.texture.texture);
-  cogl_material_set_color (material, &node->color);
+  cogl_material_set_color (material, color);
   cogl_set_source (material);
 
   if (node->d.texture.vertex_buffer == COGL_INVALID_HANDLE)
@@ -274,6 +290,7 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
 
 void
 _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
+                                 const CoglColor *color,
                                  CoglHandle glyph_material,
                                  CoglHandle solid_material)
 {
@@ -282,15 +299,28 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
   for (l = dl->nodes; l; l = l->next)
     {
       CoglPangoDisplayListNode *node = l->data;
+      CoglColor draw_color;
+
+      if (node->color_override)
+        /* Use the override color but preserve the alpha from the
+           draw color */
+        cogl_color_set_from_4ub (&draw_color,
+                                 cogl_color_get_red_byte (&node->color),
+                                 cogl_color_get_green_byte (&node->color),
+                                 cogl_color_get_blue_byte (&node->color),
+                                 cogl_color_get_alpha_byte (color));
+      else
+        draw_color = *color;
 
       switch (node->type)
         {
         case COGL_PANGO_DISPLAY_LIST_TEXTURE:
-          _cogl_pango_display_list_render_texture (glyph_material, node);
+          _cogl_pango_display_list_render_texture (glyph_material,
+                                                   &draw_color, node);
           break;
 
         case COGL_PANGO_DISPLAY_LIST_RECTANGLE:
-          cogl_material_set_color (solid_material, &node->color);
+          cogl_material_set_color (solid_material, &draw_color);
           cogl_set_source (solid_material);
           cogl_rectangle (node->d.rectangle.x_1,
                           node->d.rectangle.y_1,
@@ -311,7 +341,7 @@ _cogl_pango_display_list_render (CoglPangoDisplayList *dl,
             points[6] =  node->d.trapezoid.x_21;
             points[7] =  node->d.trapezoid.y_1;
 
-            cogl_material_set_color (solid_material, &node->color);
+            cogl_material_set_color (solid_material, &draw_color);
             cogl_set_source (solid_material);
             cogl_path_polygon (points, 4);
             cogl_path_fill ();
