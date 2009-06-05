@@ -798,8 +798,7 @@ event_translate (ClutterBackend *backend,
                   xbev->button == 6 ||
                   xbev->button == 7)
                 {
-                  res = FALSE;
-                  goto out;
+                  return FALSE;
                 }
 
               event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
@@ -862,7 +861,7 @@ event_translate (ClutterBackend *backend,
             }
 #endif
           else 
-#endif
+#endif /* HAVE_XINPUT */
             {
               CLUTTER_NOTE (EVENT, "Uknown Event");
               res = FALSE;
@@ -870,7 +869,6 @@ event_translate (ClutterBackend *backend,
         }
     }
 
- out:  
   return res;
 }
 

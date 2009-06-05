@@ -638,11 +638,10 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
     }
 }
 
-#ifdef HAVE_XINPUT
-
 void
 _clutter_x11_register_xinput ()
 {
+#ifdef HAVE_XINPUT
   XDeviceInfo *xdevices = NULL;
   XDeviceInfo *info = NULL;
 
@@ -823,6 +822,7 @@ _clutter_x11_register_xinput ()
       g_slist_free (context->input_devices);
       context->input_devices = NULL;
     }
+#endif /* HAVE_XINPUT */
 }
 
 void
@@ -834,6 +834,7 @@ _clutter_x11_unregister_xinput ()
 void
 _clutter_x11_select_events (Window xwin)
 {
+#ifdef HAVE_XINPUT
   GSList *list_it;
   ClutterX11XInputDevice *device = NULL;
 
@@ -858,11 +859,13 @@ _clutter_x11_select_events (Window xwin)
                            device->xevent_list,
                            device->num_events);
   }
+#endif /* HAVE_XINPUT */
 }
 
 ClutterX11XInputDevice *
 _clutter_x11_get_device_for_xid (XID id)
 {
+#ifdef HAVE_XINPUT
   GSList *list_it;
   ClutterX11XInputDevice *device = NULL;
   ClutterMainContext  *context;
@@ -885,17 +888,18 @@ _clutter_x11_get_device_for_xid (XID id)
       return device;
   }
 
+#endif /* HAVE_XINPUT */
+
   return NULL;
 }
-#endif
 
 /* FIXME: This nasty little func needs moving elsewhere.. */
-GSList*
+GSList *
 clutter_x11_get_input_devices (void)
 {
+#ifdef HAVE_XINPUT
   ClutterMainContext  *context;
 
-#ifdef HAVE_XINPUT
   if (!backend_singleton)
     {
       g_critical ("X11 backend has not been initialised");
@@ -955,9 +959,9 @@ clutter_x11_has_xinput (void)
 gboolean
 clutter_x11_has_composite_extension (void)
 {
-  static gboolean                 have_composite = FALSE, done_check = FALSE;
-  int                             error = 0, event = 0;
-  Display                        *dpy;
+  static gboolean have_composite = FALSE, done_check = FALSE;
+  int error = 0, event = 0;
+  Display *dpy;
 
   if (done_check)
     return have_composite;

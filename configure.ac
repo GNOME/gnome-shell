@@ -485,7 +485,7 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
                               [PKG_CHECK_MODULES(XINPUT, [xi], [xinput=yes], [xinput=no])]
                         )
                       ],
-                      [xinput=yes])
+                      [xinput=no])
 
         AS_CASE([$xinput],
 
