@@ -709,7 +709,7 @@ clutter_timeline_pause (ClutterTimeline *timeline)
 
   priv = timeline->priv;
 
-  if (priv->delay_id == 0 || !priv->is_playing)
+  if (priv->delay_id == 0 && !priv->is_playing)
     return;
 
   if (priv->delay_id)
