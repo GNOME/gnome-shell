@@ -138,8 +138,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       && (node = dl->last_node->data)->type == COGL_PANGO_DISPLAY_LIST_TEXTURE
       && node->d.texture.texture == texture
       && (dl->color_override
-          ? (node->color_override && !memcmp (&dl->color, &node->color,
-                                              sizeof (CoglColor)))
+          ? (node->color_override && cogl_color_equal (&dl->color, &node->color))
           : !node->color_override))
     {
       /* Get rid of the vertex buffer so that it will be recreated */
