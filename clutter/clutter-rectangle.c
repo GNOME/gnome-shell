@@ -60,8 +60,10 @@ enum
 
 struct _ClutterRectanglePrivate
 {
-  ClutterColor color;
-  ClutterColor border_color;
+  ClutterColor  primary_color;
+  CoglHandle    primary_material;
+  ClutterColor  border_color;
+  CoglHandle    border_material;
 
   guint border_width;
 
@@ -78,6 +80,7 @@ clutter_rectangle_paint (ClutterActor *self)
   ClutterRectanglePrivate *priv;
   ClutterGeometry          geom;
   guint8                   tmp_alpha;
+  guint8                   opacity;
 
   rectangle = CLUTTER_RECTANGLE(self);
   priv = rectangle->priv;
@@ -88,6 +91,8 @@ clutter_rectangle_paint (ClutterActor *self)
                                               : "unknown");
   clutter_actor_get_allocation_geometry (self, &geom);
 
+  opacity = clutter_actor_get_paint_opacity (self);
+
   /* parent paint call will have translated us into position so
    * paint from 0, 0
    */
@@ -96,15 +101,26 @@ clutter_rectangle_paint (ClutterActor *self)
       /* compute the composited opacity of the actor taking into
        * account the opacity of the color set by the user
        */
-      tmp_alpha = clutter_actor_get_paint_opacity (self)
-                * priv->border_color.alpha
-                / 255;
+      tmp_alpha = opacity * priv->border_color.alpha / 255;
 
       /* paint the border */
-      cogl_set_source_color4ub (priv->border_color.red,
-                                priv->border_color.green,
-                                priv->border_color.blue,
-                                tmp_alpha);
+
+      /* We are assuming this is a NOP when the color doesn't change.
+       * This is important since we should aim to never modify
+       * materials mid-scene. */
+      cogl_material_set_color4ub (priv->border_material,
+                                  priv->border_color.red,
+                                  priv->border_color.green,
+                                  priv->border_color.blue,
+                                  tmp_alpha);
+
+      cogl_set_source (priv->border_material);
+
+      cogl_material_set_color4ub (priv->border_material,
+                                  priv->border_color.red,
+                                  priv->border_color.green,
+                                  priv->border_color.blue,
+                                  tmp_alpha);
 
       /* this sucks, but it's the only way to make a border */
       cogl_rectangle (priv->border_width, 0,
@@ -124,15 +140,16 @@ clutter_rectangle_paint (ClutterActor *self)
                       priv->border_width,
                       geom.height - priv->border_width);
 
-      tmp_alpha = clutter_actor_get_paint_opacity (self)
-                * priv->color.alpha
-                / 255;
+      tmp_alpha = opacity * priv->primary_color.alpha / 255;
 
       /* now paint the rectangle */
-      cogl_set_source_color4ub (priv->color.red,
-                                priv->color.green,
-                                priv->color.blue,
-                                tmp_alpha);
+      cogl_set_source (priv->primary_material);
+
+      cogl_material_set_color4ub (priv->primary_material,
+                                  priv->primary_color.red,
+                                  priv->primary_color.green,
+                                  priv->primary_color.blue,
+                                  tmp_alpha);
 
       cogl_rectangle (priv->border_width, priv->border_width,
                       geom.width - priv->border_width,
@@ -143,14 +160,16 @@ clutter_rectangle_paint (ClutterActor *self)
       /* compute the composited opacity of the actor taking into
        * account the opacity of the color set by the user
        */
-      tmp_alpha = clutter_actor_get_paint_opacity (self)
-                * priv->color.alpha
-                / 255;
+      tmp_alpha = opacity * priv->primary_color.alpha / 255;
 
-      cogl_set_source_color4ub (priv->color.red,
-                                priv->color.green,
-                                priv->color.blue,
-                                tmp_alpha);
+      /* now paint the rectangle */
+      cogl_set_source (priv->primary_material);
+
+      cogl_material_set_color4ub (priv->primary_material,
+                                  priv->primary_color.red,
+                                  priv->primary_color.green,
+                                  priv->primary_color.blue,
+                                  tmp_alpha);
 
       cogl_rectangle (0, 0, geom.width, geom.height);
     }
@@ -197,7 +216,7 @@ clutter_rectangle_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_value_set_color (value, &priv->color);
+      clutter_value_set_color (value, &priv->primary_color);
       break;
     case PROP_BORDER_COLOR:
       clutter_value_set_color (value, &priv->border_color);
@@ -308,8 +327,10 @@ clutter_rectangle_init (ClutterRectangle *self)
 
   self->priv = priv = CLUTTER_RECTANGLE_GET_PRIVATE (self);
 
-  priv->color = default_color;
+  priv->primary_color = default_color;
   priv->border_color = default_border_color;
+  priv->primary_material = cogl_material_new ();
+  priv->border_material = cogl_material_new ();
 
   priv->border_width = 0;
 
@@ -364,10 +385,10 @@ clutter_rectangle_get_color (ClutterRectangle *rectangle,
 
   priv = rectangle->priv;
 
-  color->red = priv->color.red;
-  color->green = priv->color.green;
-  color->blue = priv->color.blue;
-  color->alpha = priv->color.alpha;
+  color->red = priv->primary_color.red;
+  color->green = priv->primary_color.green;
+  color->blue = priv->primary_color.blue;
+  color->alpha = priv->primary_color.alpha;
 }
 
 /**
@@ -390,10 +411,10 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
 
   priv = rectangle->priv;
 
-  priv->color.red = color->red;
-  priv->color.green = color->green;
-  priv->color.blue = color->blue;
-  priv->color.alpha = color->alpha;
+  priv->primary_color.red = color->red;
+  priv->primary_color.green = color->green;
+  priv->primary_color.blue = color->blue;
+  priv->primary_color.alpha = color->alpha;
 
 #if 0
   /* FIXME - appears to be causing border to always get drawn */
@@ -525,7 +546,7 @@ clutter_rectangle_set_border_color (ClutterRectangle   *rectangle,
       priv->border_color.blue = color->blue;
       priv->border_color.alpha = color->alpha;
 
-      if (clutter_color_equal (&priv->color, &priv->border_color))
+      if (clutter_color_equal (&priv->primary_color, &priv->border_color))
         priv->has_border = FALSE;
       else
         priv->has_border = TRUE;
