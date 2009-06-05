@@ -174,14 +174,8 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
     }
 }
 
-/**
- * clutter_redraw:
- *
- * Forces a redraw of the entire stage. Applications should never use this
- * function, but queue a redraw using clutter_actor_queue_redraw().
- */
 void
-clutter_redraw (ClutterStage *stage)
+_clutter_do_redraw (ClutterStage *stage)
 {
   ClutterMainContext *ctx;
   ClutterMasterClock *master_clock;
@@ -233,6 +227,32 @@ clutter_redraw (ClutterStage *stage)
     }
 
   CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish for stage:%p", stage);
+}
+
+/**
+ * clutter_redraw:
+ *
+ * Forces a redraw of the entire stage. Applications should never use this
+ * function, but queue a redraw using clutter_actor_queue_redraw().
+ *
+ * This function should only be used by libraries integrating Clutter from
+ * within another toolkit.
+ */
+void
+clutter_redraw (ClutterStage *stage)
+{
+  ClutterMasterClock *master_clock;
+
+  /* we need to do this because the clutter_redraw() might be called by
+   * clutter-gtk, and this will not cause the master clock to advance nor
+   * the repaint functions to be run
+   */
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_advance (master_clock);
+
+  _clutter_run_repaint_functions ();
+
+  _clutter_do_redraw (stage);
 }
 
 /**

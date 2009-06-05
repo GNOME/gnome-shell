@@ -211,6 +211,9 @@ ClutterActor *_clutter_do_pick (ClutterStage    *stage,
 				gint             y,
 				ClutterPickMode  mode);
 
+/* the actual redraw */
+void          _clutter_do_redraw (ClutterStage *stage);
+
 guint         _clutter_pixel_to_id (guchar pixel[4]);
 
 void          _clutter_id_to_color (guint id, ClutterColor *col);

@@ -417,7 +417,7 @@ redraw_update_idle (gpointer user_data)
   CLUTTER_NOTE (PAINT, "Repaint functions");
   _clutter_run_repaint_functions ();
 
-  /* clutter_redraw() will also call maybe_relayout(), but since a relayout
+  /* clutter_do_redraw() will also call maybe_relayout(), but since a relayout
    * can queue a redraw, we want to do the relayout before we clear the
    * update_idle to avoid painting the stage twice. Calling maybe_relayout()
    * twice in a row is cheap because of caching of requested and allocated
@@ -427,7 +427,7 @@ redraw_update_idle (gpointer user_data)
 
   /* redrawing will advance the master clock */
   CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
-  clutter_redraw (stage);
+  _clutter_do_redraw (stage);
 
   /* reset the guard, so that new redraws are possible */
   priv->update_idle = 0;
