@@ -85,7 +85,9 @@ send_wmspec_change_state (ClutterBackendX11 *backend_x11,
 }
 
 void
-clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
+clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
+                                   gint             new_width,
+                                   gint             new_height)
 {
   gboolean resize;
 
@@ -94,16 +96,23 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
   if (stage_x11->xwin != None && stage_x11->is_foreign_xwin == FALSE)
     {
       XSizeHints *size_hints;
-      ClutterUnit min_width, min_height;
+      gfloat min_width, min_height;
 
       size_hints = XAllocSizeHints();
 
-      clutter_actor_get_preferred_width (CLUTTER_ACTOR (stage_x11),
-                                         -1,
-                                         &min_width, NULL);
-      clutter_actor_get_preferred_height (CLUTTER_ACTOR (stage_x11),
-                                          min_width,
-                                          &min_height, NULL);
+      if (new_width < 0)
+        clutter_actor_get_preferred_width (CLUTTER_ACTOR (stage_x11),
+                                           -1,
+                                           &min_width, NULL);
+      else
+        min_width = new_width;
+
+      if (new_height < 0)
+        clutter_actor_get_preferred_height (CLUTTER_ACTOR (stage_x11),
+                                            min_width,
+                                            &min_height, NULL);
+      else
+        min_height = new_height;
 
       size_hints->flags = 0;
 
@@ -111,8 +120,8 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
          restrictions on the window size */
       if (!stage_x11->fullscreen_on_map)
         {
-          size_hints->min_width = CLUTTER_UNITS_TO_DEVICE (min_width);
-          size_hints->min_height = CLUTTER_UNITS_TO_DEVICE (min_height);
+          size_hints->min_width = (int) min_width;
+          size_hints->min_height = (int) min_height;
           size_hints->flags = PMinSize;
 
           if (!resize)
@@ -127,34 +136,6 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
 
       XFree(size_hints);
     }
-}
-
-static void
-clutter_stage_x11_show (ClutterActor *actor)
-{
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
-
-  CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class)->show (actor);
-
-  if (stage_x11->xwin)
-    {
-      /* Fire off a redraw to avoid flicker on first map.
-       * Appears not to work perfectly on intel drivers at least.
-       */
-      clutter_redraw (stage_x11->wrapper);
-
-      XSync (stage_x11->xdpy, FALSE);
-      XMapWindow (stage_x11->xdpy, stage_x11->xwin);
-    }
-}
-
-static void
-clutter_stage_x11_hide (ClutterActor *actor)
-{
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
-
-  if (stage_x11->xwin)
-    XUnmapWindow (stage_x11->xdpy, stage_x11->xwin);
 }
 
 void
@@ -172,9 +153,9 @@ clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 
 static void
 clutter_stage_x11_get_preferred_width (ClutterActor *self,
-                                       ClutterUnit   for_height,
-                                       ClutterUnit  *min_width_p,
-                                       ClutterUnit  *natural_width_p)
+                                       gfloat        for_height,
+                                       gfloat       *min_width_p,
+                                       gfloat       *natural_width_p)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   gboolean resize;
@@ -186,10 +167,10 @@ clutter_stage_x11_get_preferred_width (ClutterActor *self,
       width = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
 
       if (min_width_p)
-        *min_width_p = CLUTTER_UNITS_FROM_DEVICE (width);
+        *min_width_p = width;
 
       if (natural_width_p)
-        *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (width);
+        *natural_width_p = width;
 
       return;
     }
@@ -198,22 +179,21 @@ clutter_stage_x11_get_preferred_width (ClutterActor *self,
 
   if (min_width_p)
     {
-      /* FIXME need API to set this */
       if (resize)
-        *min_width_p = CLUTTER_UNITS_FROM_DEVICE (1);
+        *min_width_p = 1; /* FIXME need API to set this */
       else
-        *min_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_width);
+        *min_width_p = stage_x11->xwin_width;
     }
 
   if (natural_width_p)
-    *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_width);
+    *natural_width_p = stage_x11->xwin_width;
 }
 
 static void
 clutter_stage_x11_get_preferred_height (ClutterActor *self,
-                                        ClutterUnit   for_width,
-                                        ClutterUnit  *min_height_p,
-                                        ClutterUnit  *natural_height_p)
+                                        gfloat        for_width,
+                                        gfloat       *min_height_p,
+                                        gfloat       *natural_height_p)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   gboolean resize;
@@ -225,10 +205,10 @@ clutter_stage_x11_get_preferred_height (ClutterActor *self,
       height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
 
       if (min_height_p)
-        *min_height_p = CLUTTER_UNITS_FROM_DEVICE (height);
+        *min_height_p = height;
 
       if (natural_height_p)
-        *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (height);
+        *natural_height_p = height;
 
       return;
     }
@@ -238,28 +218,26 @@ clutter_stage_x11_get_preferred_height (ClutterActor *self,
   if (min_height_p)
     {
       if (resize)
-        *min_height_p = CLUTTER_UNITS_FROM_DEVICE (1); /* FIXME need API
-                                                        * to set this
-                                                        */
+        *min_height_p = 1; /* FIXME need API to set this */
       else
-        *min_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_height);
+        *min_height_p = stage_x11->xwin_height;
     }
 
   if (natural_height_p)
-    *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_x11->xwin_height);
+    *natural_height_p = stage_x11->xwin_height;
 }
 
 static void
-clutter_stage_x11_allocate (ClutterActor          *self,
-                            const ClutterActorBox *box,
-                            gboolean               origin_changed)
+clutter_stage_x11_allocate (ClutterActor           *self,
+                            const ClutterActorBox  *box,
+                            ClutterAllocationFlags  flags)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   ClutterActorClass *parent_class;
   gint new_width, new_height;
 
-  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1));
+  new_width  = ABS ((int) (box->x2 - box->x1));
+  new_height = ABS ((int) (box->y2 - box->y1));
 
   if (new_width == 0 || new_height == 0)
     {
@@ -270,6 +248,10 @@ clutter_stage_x11_allocate (ClutterActor          *self,
       new_width = 1;
       new_height = 1;
     }
+
+  CLUTTER_NOTE (BACKEND, "New allocation received: (%d, %d)",
+                new_width,
+                new_height);
 
   if (new_width != stage_x11->xwin_width ||
       new_height != stage_x11->xwin_height)
@@ -292,19 +274,18 @@ clutter_stage_x11_allocate (ClutterActor          *self,
                          stage_x11->xwin_height);
         }
 
-      clutter_stage_x11_fix_window_size (stage_x11);
+      clutter_stage_x11_fix_window_size (stage_x11, new_width, new_height);
 
       if (stage_x11->xpixmap != None)
         {
           /* Need to recreate to resize */
-          clutter_actor_unrealize (self);
-          clutter_actor_realize (self);
+          _clutter_actor_rerealize (self, NULL, NULL);
         }
     }
 
   /* chain up to fill in actor->priv->allocation */
   parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class);
-  parent_class->allocate (self, box, origin_changed);
+  parent_class->allocate (self, box, flags);
 }
 
 static inline void
@@ -444,7 +425,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
                  the maximum and minimum window hints. Otherwise
                  metacity will honour the restrictions and not
                  fullscreen correctly. */
-              clutter_stage_x11_fix_window_size (stage_x11);
+              clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
 
               send_wmspec_change_state (backend_x11, stage_x11->xwin,
                                         backend_x11->atom_NET_WM_STATE_FULLSCREEN,
@@ -474,7 +455,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
 
               /* Fix the window size to restore the minimum/maximum
                  restriction */
-              clutter_stage_x11_fix_window_size (stage_x11);
+              clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
             }
         }
     }
@@ -507,7 +488,104 @@ clutter_stage_x11_set_user_resizable (ClutterStageWindow *stage_window,
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
-  clutter_stage_x11_fix_window_size (stage_x11);
+  clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
+}
+
+#define STAGE_X11_IS_MAPPED(s)  ((((ClutterStageX11 *) (s))->wm_state & STAGE_X11_WITHDRAWN) == 0)
+
+static void
+update_wm_hints (ClutterStageX11 *stage_x11)
+{
+  XWMHints wm_hints;
+
+  if (stage_x11->wm_state & STAGE_X11_WITHDRAWN)
+    return;
+
+  wm_hints.flags = StateHint;
+  wm_hints.initial_state = NormalState;
+
+  XSetWMHints (stage_x11->xdpy, stage_x11->xwin, &wm_hints);
+}
+
+static void
+set_stage_state (ClutterStageX11      *stage_x11,
+                 ClutterStageX11State  unset_flags,
+                 ClutterStageX11State  set_flags)
+{
+  ClutterStageX11State new_stage_state, old_stage_state;
+
+  old_stage_state = stage_x11->wm_state;
+
+  new_stage_state = old_stage_state;
+  new_stage_state |= set_flags;
+  new_stage_state &= ~unset_flags;
+
+  if (new_stage_state == old_stage_state)
+    return;
+
+  stage_x11->wm_state = new_stage_state;
+}
+
+static void
+clutter_stage_x11_show (ClutterStageWindow *stage_window,
+                        gboolean            do_raise)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  if (stage_x11->xwin != None)
+    {
+      if (do_raise)
+        XRaiseWindow (stage_x11->xdpy, stage_x11->xwin);
+
+      if (!STAGE_X11_IS_MAPPED (stage_x11))
+        {
+          CLUTTER_NOTE (BACKEND, "Mapping stage[%lu] (%d, %d)",
+                        (unsigned long) stage_x11->xwin,
+                        stage_x11->xwin_width,
+                        stage_x11->xwin_height);
+
+          update_wm_hints (stage_x11);
+
+          if (stage_x11->fullscreen_on_map)
+            clutter_stage_x11_set_fullscreen (stage_window, TRUE);
+          else
+            clutter_stage_x11_set_fullscreen (stage_window, FALSE);
+
+          set_stage_state (stage_x11, STAGE_X11_WITHDRAWN, 0);
+
+          clutter_stage_ensure_viewport (CLUTTER_STAGE (stage_x11->wrapper));
+        }
+
+      g_assert (STAGE_X11_IS_MAPPED (stage_x11));
+
+      XMapWindow (stage_x11->xdpy, stage_x11->xwin);
+
+      clutter_actor_map (CLUTTER_ACTOR (stage_x11));
+      clutter_actor_map (CLUTTER_ACTOR (stage_x11->wrapper));
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_x11->wrapper));
+    }
+}
+
+static void
+clutter_stage_x11_hide (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  if (stage_x11->xwin != None)
+    {
+      if (STAGE_X11_IS_MAPPED (stage_x11))
+        set_stage_state (stage_x11, 0, STAGE_X11_WITHDRAWN);
+
+      g_assert (!STAGE_X11_IS_MAPPED (stage_x11));
+
+      clutter_actor_unmap (CLUTTER_ACTOR (stage_x11));
+      clutter_actor_unmap (CLUTTER_ACTOR (stage_x11->wrapper));
+
+      XWithdrawWindow (stage_x11->xdpy,
+                       stage_x11->xwin,
+                       0);
+    }
 }
 
 static ClutterActor *
@@ -529,11 +607,6 @@ clutter_stage_x11_finalize (GObject *gobject)
 static void
 clutter_stage_x11_dispose (GObject *gobject)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
-
-  if (stage_x11->xwin)
-    clutter_actor_unrealize (CLUTTER_ACTOR (stage_x11));
-
   G_OBJECT_CLASS (clutter_stage_x11_parent_class)->dispose (gobject);
 }
 
@@ -547,8 +620,6 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
   gobject_class->dispose = clutter_stage_x11_dispose;
 
   actor_class->realize = clutter_stage_x11_realize;
-  actor_class->show = clutter_stage_x11_show;
-  actor_class->hide = clutter_stage_x11_hide;
 
   actor_class->get_preferred_width = clutter_stage_x11_get_preferred_width;
   actor_class->get_preferred_height = clutter_stage_x11_get_preferred_height;
@@ -566,6 +637,8 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->xwin_width = 640;
   stage->xwin_height = 480;
   stage->xvisinfo = None;
+
+  stage->wm_state = STAGE_X11_WITHDRAWN;
 
   stage->is_foreign_xwin = FALSE;
   stage->fullscreen_on_map = FALSE;
@@ -586,6 +659,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_fullscreen = clutter_stage_x11_set_fullscreen;
   iface->set_cursor_visible = clutter_stage_x11_set_cursor_visible;
   iface->set_user_resizable = clutter_stage_x11_set_user_resizable;
+  iface->show = clutter_stage_x11_show;
+  iface->hide = clutter_stage_x11_hide;
 }
 
 /**
@@ -662,13 +737,56 @@ XVisualInfo *
 clutter_x11_get_stage_visual (ClutterStage *stage)
 {
   ClutterStageWindow *impl;
+  ClutterStageX11 *stage_x11;
+  gboolean is_offscreen = FALSE;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  g_object_get (G_OBJECT (stage), "offscreen", &is_offscreen, NULL);
 
   impl = _clutter_stage_get_window (stage);
   g_assert (CLUTTER_IS_STAGE_X11 (impl));
 
-  return CLUTTER_STAGE_X11 (impl)->xvisinfo;
+  stage_x11 = CLUTTER_STAGE_X11 (impl);
+
+  if (stage_x11->xvisinfo == NULL)
+    {
+      ClutterBackendX11 *backend_x11 = stage_x11->backend;
+
+      stage_x11->xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, is_offscreen);
+    }
+
+  return stage_x11->xvisinfo;
+}
+
+typedef struct {
+  ClutterStageX11 *stage_x11;
+  ClutterGeometry geom;
+  Window xwindow;
+} ForeignWindowData;
+
+static void
+set_foreign_window_callback (ClutterActor *actor,
+                             void         *data)
+{
+  ForeignWindowData *fwd = data;
+
+  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) fwd->xwindow);
+
+  fwd->stage_x11->xwin = fwd->xwindow;
+  fwd->stage_x11->is_foreign_xwin = TRUE;
+
+  fwd->stage_x11->xwin_width = fwd->geom.width;
+  fwd->stage_x11->xwin_height = fwd->geom.height;
+
+  clutter_actor_set_geometry (actor, &fwd->geom);
+
+  /* calling this with the stage unrealized will unset the stage
+   * from the GL context; once the stage is realized the GL context
+   * will be set again
+   */
+  clutter_stage_ensure_current (CLUTTER_STAGE (actor));
 }
 
 /**
@@ -693,7 +811,7 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   guint width, height, border, depth;
   Window root_return;
   Status status;
-  ClutterGeometry geom;
+  ForeignWindowData fwd;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (xwindow != None, FALSE);
@@ -721,49 +839,18 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
       return FALSE;
     }
 
-  clutter_actor_unrealize (actor);
+  fwd.stage_x11 = stage_x11;
+  fwd.xwindow = xwindow;
+  fwd.geom.x = x;
+  fwd.geom.y = y;
+  fwd.geom.width = width;
+  fwd.geom.height = height;
 
-  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) xwindow);
+  _clutter_actor_rerealize (actor,
+                            set_foreign_window_callback,
+                            &fwd);
 
-  stage_x11->xwin = xwindow;
-  stage_x11->is_foreign_xwin = TRUE;
-
-  geom.x = x;
-  geom.y = y;
-  geom.width = stage_x11->xwin_width = width;
-  geom.height = stage_x11->xwin_height = height;
-
-  clutter_actor_set_geometry (actor, &geom);
-  clutter_actor_realize (actor);
-
-  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
+  clutter_stage_ensure_viewport (stage);
 
   return TRUE;
-}
-
-void
-clutter_stage_x11_map (ClutterStageX11 *stage_x11)
-{
-  /* set the mapped flag on the implementation */
-  CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
-
-  /* and on the wrapper itself */
-  CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
-
-  if (stage_x11->fullscreen_on_map)
-    clutter_stage_fullscreen (CLUTTER_STAGE (stage_x11->wrapper));
-  else
-    clutter_stage_unfullscreen (CLUTTER_STAGE (stage_x11->wrapper));
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_x11->wrapper));
-}
-
-void
-clutter_stage_x11_unmap (ClutterStageX11 *stage_x11)
-{
-  /* like above, unset the MAPPED stage on both the implementation and
-   * the wrapper
-   */
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
 }

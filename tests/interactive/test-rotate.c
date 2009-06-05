@@ -44,8 +44,8 @@ test_rotate_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
   
   /* Make a timeline */
-  timeline = clutter_timeline_new (200, 26); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);  
+  timeline = clutter_timeline_new (7692); /* num frames, fps */
+  clutter_timeline_set_loop (timeline, TRUE);
 
   /* Set an alpha func to power behaviour */
   alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);

@@ -49,6 +49,7 @@
 #define glDrawRangeElements ctx->pf_glDrawRangeElements
 #define glActiveTexture ctx->pf_glActiveTexture
 #define glClientActiveTexture ctx->pf_glClientActiveTexture
+#define glGenerateMipmap ctx->pf_glGenerateMipmapEXT
 
 #else
 
@@ -247,17 +248,29 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
       /* Iterate horizontal slices */
       for (x = 0; x < tex->slice_x_spans->len; ++x)
 	{
+          gint slice_num = y * tex->slice_x_spans->len + x;
+
 	  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, x);
 
 	  /* Pick the gl texture object handle */
-	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint,
-				     y * tex->slice_x_spans->len + x);
+	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, slice_num);
 
 	  /* Setup gl alignment to match rowstride and top-left corner */
 	  prep_for_gl_pixels_upload (tex->bitmap.rowstride,
 				     x_span->start,
 				     y_span->start,
 				     bpp);
+
+          /* Keep a copy of the first pixel if needed */
+          if (tex->first_pixels)
+            {
+              memcpy (tex->first_pixels[slice_num].data,
+                      tex->bitmap.data + x_span->start * bpp
+                      + y_span->start * tex->bitmap.rowstride,
+                      bpp);
+              tex->first_pixels[slice_num].gl_format = tex->gl_format;
+              tex->first_pixels[slice_num].gl_type = tex->gl_type;
+            }
 
 	  /* Upload new image data */
 	  GE( glBindTexture (tex->gl_target, gl_handle) );
@@ -342,6 +355,8 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 
   if (waste_buf)
     g_free (waste_buf);
+
+  tex->mipmaps_dirty = TRUE;
 
   return TRUE;
 }
@@ -494,6 +509,8 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 	   _cogl_span_iter_next (&x_iter),
 	   source_x += inter_w )
         {
+          gint slice_num;
+
 	  /* Discard slices out of the subregion early */
 	  if (!x_iter.intersects)
             {
@@ -516,16 +533,27 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 	  local_y =  (y_iter.intersect_start -
 				       y_iter.pos);
 
+          slice_num = y_iter.index * tex->slice_x_spans->len + x_iter.index;
+
 	  /* Pick slice GL handle */
-	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint,
-				     y_iter.index * tex->slice_x_spans->len +
-				     x_iter.index);
+	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, slice_num);
 
 	  /* Setup gl alignment to match rowstride and top-left corner */
 	  prep_for_gl_pixels_upload (source_bmp->rowstride,
 				     source_x,
 				     source_y,
 				     bpp);
+
+          /* Keep a copy of the first pixel if needed */
+          if (tex->first_pixels && local_x == 0 && local_y == 0)
+            {
+              memcpy (tex->first_pixels[slice_num].data,
+                      source_bmp->data + source_x * bpp
+                      + source_y * source_bmp->rowstride,
+                      bpp);
+              tex->first_pixels[slice_num].gl_format = source_gl_format;
+              tex->first_pixels[slice_num].gl_type = source_gl_type;
+            }
 
 	  /* Upload new image data */
 	  GE( glBindTexture (tex->gl_target, gl_handle) );
@@ -640,14 +668,16 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
   if (waste_buf)
     g_free (waste_buf);
 
+  tex->mipmaps_dirty = TRUE;
+
   return TRUE;
 }
 
 static gint
-_cogl_rect_slices_for_size (gint     size_to_fill,
-			    gint     max_span_size,
-			    gint     max_waste,
-			    GArray  *out_spans)
+_cogl_rect_slices_for_size (gint    size_to_fill,
+			    gint    max_span_size,
+			    gint    max_waste,
+			    GArray *out_spans)
 {
   gint             n_spans = 0;
   CoglTexSliceSpan span;
@@ -679,10 +709,10 @@ _cogl_rect_slices_for_size (gint     size_to_fill,
 }
 
 static gint
-_cogl_pot_slices_for_size (gint     size_to_fill,
-			   gint     max_span_size,
-			   gint     max_waste,
-			   GArray  *out_spans)
+_cogl_pot_slices_for_size (gint    size_to_fill,
+			   gint    max_span_size,
+			   gint    max_waste,
+			   GArray *out_spans)
 {
   gint             n_spans = 0;
   CoglTexSliceSpan span;
@@ -693,7 +723,8 @@ _cogl_pot_slices_for_size (gint     size_to_fill,
   span.waste = 0;
 
   /* Fix invalid max_waste */
-  if (max_waste < 0) max_waste = 0;
+  if (max_waste < 0)
+    max_waste = 0;
 
   while (TRUE)
     {
@@ -826,10 +857,10 @@ _cogl_texture_slices_create (CoglTexture *tex)
 
       /* Check if size supported else bail out */
       if (!_cogl_texture_size_supported (tex->gl_target,
-					tex->gl_format,
-					tex->gl_type,
-					max_width,
-					max_height))
+                                         tex->gl_format,
+                                         tex->gl_type,
+                                         max_width,
+                                         max_height))
 	{
 	  return FALSE;
 	}
@@ -912,6 +943,14 @@ _cogl_texture_slices_create (CoglTexture *tex)
 
   g_array_set_size (tex->slice_gl_handles, n_slices);
 
+  /* Allocate some space to store a copy of the first pixel of each
+     slice. This is only needed to glGenerateMipmap (which is part of
+     the FBO extension) is not available */
+  if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+    tex->first_pixels = NULL;
+  else
+    tex->first_pixels = g_new (CoglTexturePixel, n_slices);
+
   /* Wrap mode not yet set */
   tex->wrap_mode = GL_FALSE;
 
@@ -940,14 +979,6 @@ _cogl_texture_slices_create (CoglTexture *tex)
 	  /* Setup texture parameters */
 	  GE( glBindTexture (tex->gl_target,
 			     gl_handles[y * n_x_slices + x]) );
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER,
-			       tex->mag_filter) );
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER,
-			       tex->min_filter) );
-
-          if (tex->auto_mipmap)
-            GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP,
-				 GL_TRUE) );
 
 	  /* Use a transparent border color so that we can leave the
 	     color buffer alone when using texture co-ordinates
@@ -984,6 +1015,9 @@ _cogl_texture_slices_free (CoglTexture *tex)
 
       g_array_free (tex->slice_gl_handles, TRUE);
     }
+
+  if (tex->first_pixels != NULL)
+    g_free (tex->first_pixels);
 }
 
 gboolean
@@ -1199,11 +1233,10 @@ _cogl_texture_free (CoglTexture *tex)
 }
 
 CoglHandle
-cogl_texture_new_with_size (guint             width,
-			    guint             height,
-			    gint              max_waste,
-                            CoglTextureFlags  flags,
-			    CoglPixelFormat   internal_format)
+cogl_texture_new_with_size (guint            width,
+			    guint            height,
+                            CoglTextureFlags flags,
+			    CoglPixelFormat  internal_format)
 {
   CoglTexture *tex;
   gint         bpp;
@@ -1221,7 +1254,8 @@ cogl_texture_new_with_size (guint             width,
   tex = (CoglTexture*) g_malloc (sizeof (CoglTexture));
 
   tex->is_foreign = FALSE;
-  tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
+  tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
+  tex->mipmaps_dirty = TRUE;
 
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1234,9 +1268,14 @@ cogl_texture_new_with_size (guint             width,
   tex->slice_y_spans = NULL;
   tex->slice_gl_handles = NULL;
 
-  tex->max_waste = max_waste;
-  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
-  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
+  if (flags & COGL_TEXTURE_NO_SLICING)
+    tex->max_waste = -1;
+  else
+    tex->max_waste = COGL_TEXTURE_MAX_WASTE;
+
+  /* Unknown filter */
+  tex->min_filter = GL_FALSE;
+  tex->mag_filter = GL_FALSE;
 
   /* Find closest GL format match */
   tex->bitmap.format =
@@ -1258,7 +1297,6 @@ cogl_texture_new_with_size (guint             width,
 CoglHandle
 cogl_texture_new_from_data (guint             width,
 			    guint             height,
-			    gint              max_waste,
                             CoglTextureFlags  flags,
 			    CoglPixelFormat   format,
 			    CoglPixelFormat   internal_format,
@@ -1282,7 +1320,8 @@ cogl_texture_new_from_data (guint             width,
   tex = (CoglTexture*) g_malloc (sizeof (CoglTexture));
 
   tex->is_foreign = FALSE;
-  tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
+  tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
+  tex->mipmaps_dirty = TRUE;
 
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1295,9 +1334,14 @@ cogl_texture_new_from_data (guint             width,
   tex->slice_y_spans = NULL;
   tex->slice_gl_handles = NULL;
 
-  tex->max_waste = max_waste;
-  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
-  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
+  if (flags & COGL_TEXTURE_NO_SLICING)
+    tex->max_waste = -1;
+  else
+    tex->max_waste = COGL_TEXTURE_MAX_WASTE;
+
+  /* Unknown filter */
+  tex->min_filter = GL_FALSE;
+  tex->mag_filter = GL_FALSE;
 
   /* FIXME: If upload fails we should set some kind of
    * error flag but still return texture handle (this
@@ -1328,10 +1372,9 @@ cogl_texture_new_from_data (guint             width,
 }
 
 CoglHandle
-cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
-                              gint              max_waste,
-                              CoglTextureFlags  flags,
-                              CoglPixelFormat   internal_format)
+cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
+                              CoglTextureFlags flags,
+                              CoglPixelFormat  internal_format)
 {
   CoglTexture *tex;
   CoglBitmap *bmp = (CoglBitmap *)bmp_handle;
@@ -1342,7 +1385,8 @@ cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
 
   tex->is_foreign = FALSE;
-  tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
+  tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
+  tex->mipmaps_dirty = TRUE;
 
   tex->bitmap = *bmp;
   tex->bitmap_owner = FALSE;
@@ -1351,9 +1395,14 @@ cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
   tex->slice_y_spans = NULL;
   tex->slice_gl_handles = NULL;
 
-  tex->max_waste = max_waste;
-  tex->min_filter = COGL_TEXTURE_FILTER_NEAREST;
-  tex->mag_filter = COGL_TEXTURE_FILTER_NEAREST;
+  if (flags & COGL_TEXTURE_NO_SLICING)
+    tex->max_waste = -1;
+  else
+    tex->max_waste = COGL_TEXTURE_MAX_WASTE;
+
+  /* Unknown filter */
+  tex->min_filter = GL_FALSE;
+  tex->mag_filter = GL_FALSE;
 
   /* FIXME: If upload fails we should set some kind of
    * error flag but still return texture handle if the
@@ -1388,13 +1437,12 @@ cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
 
 CoglHandle
 cogl_texture_new_from_file (const gchar       *filename,
-                            gint               max_waste,
                             CoglTextureFlags   flags,
                             CoglPixelFormat    internal_format,
                             GError           **error)
 {
-  CoglHandle   bmp;
-  CoglHandle   handle;
+  CoglHandle bmp;
+  CoglHandle handle;
 
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
@@ -1402,10 +1450,7 @@ cogl_texture_new_from_file (const gchar       *filename,
   if (bmp == COGL_INVALID_HANDLE)
     return COGL_INVALID_HANDLE;
 
-  handle = cogl_texture_new_from_bitmap (bmp,
-                                         max_waste,
-                                         flags,
-                                         internal_format);
+  handle = cogl_texture_new_from_bitmap (bmp, flags, internal_format);
   cogl_handle_unref (bmp);
 
   return handle;
@@ -1433,8 +1478,6 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   GLint            gl_int_format = 0;
   GLint            gl_width = 0;
   GLint            gl_height = 0;
-  GLint            gl_min_filter;
-  GLint            gl_mag_filter;
   GLint            gl_gen_mipmap;
   guint            bpp;
   CoglTexture     *tex;
@@ -1483,14 +1526,6 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 				&gl_height) );
 
   GE( glGetTexParameteriv (gl_target,
-			   GL_TEXTURE_MIN_FILTER,
-			   &gl_min_filter) );
-
-  GE( glGetTexParameteriv (gl_target,
-			   GL_TEXTURE_MAG_FILTER,
-			   &gl_mag_filter) );
-
-  GE( glGetTexParameteriv (gl_target,
                            GL_GENERATE_MIPMAP,
                            &gl_gen_mipmap) );
 
@@ -1508,18 +1543,16 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
     return COGL_INVALID_HANDLE;
 
   /* Try and match to a cogl format */
-  if (!_cogl_pixel_format_from_gl_internal (gl_int_format,
-					    &format))
-    {
-      return COGL_INVALID_HANDLE;
-    }
+  if (!_cogl_pixel_format_from_gl_internal (gl_int_format, &format))
+    return COGL_INVALID_HANDLE;
 
   /* Create new texture */
-  tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
+  tex = (CoglTexture *) g_malloc (sizeof (CoglTexture));
 
   /* Setup bitmap info */
   tex->is_foreign = TRUE;
   tex->auto_mipmap = (gl_gen_mipmap == GL_TRUE) ? TRUE : FALSE;
+  tex->mipmaps_dirty = TRUE;
 
   bpp = _cogl_get_format_bpp (format);
   tex->bitmap.format = format;
@@ -1533,8 +1566,9 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   tex->gl_format = gl_int_format;
   tex->gl_type = GL_UNSIGNED_BYTE;
 
-  tex->min_filter = gl_min_filter;
-  tex->mag_filter = gl_mag_filter;
+  /* Unknown filter */
+  tex->min_filter = GL_FALSE;
+  tex->mag_filter = GL_FALSE;
   tex->max_waste = 0;
 
   /* Wrap mode not yet set */
@@ -1680,36 +1714,10 @@ cogl_texture_get_gl_texture (CoglHandle handle,
   return TRUE;
 }
 
-CoglTextureFilter
-cogl_texture_get_min_filter (CoglHandle handle)
-{
-  CoglTexture *tex;
-
-  if (!cogl_is_texture (handle))
-    return 0;
-
-  tex = _cogl_texture_pointer_from_handle (handle);
-
-  return tex->min_filter;
-}
-
-CoglTextureFilter
-cogl_texture_get_mag_filter (CoglHandle handle)
-{
-  CoglTexture *tex;
-
-  if (!cogl_is_texture (handle))
-    return 0;
-
-  tex = _cogl_texture_pointer_from_handle (handle);
-
-  return tex->mag_filter;
-}
-
 void
-cogl_texture_set_filters (CoglHandle handle,
-			  CoglTextureFilter min_filter,
-			  CoglTextureFilter mag_filter)
+_cogl_texture_set_filters (CoglHandle handle,
+                           GLenum min_filter,
+                           GLenum mag_filter)
 {
   CoglTexture *tex;
   GLuint       gl_handle;
@@ -1720,13 +1728,17 @@ cogl_texture_set_filters (CoglHandle handle,
 
   tex = _cogl_texture_pointer_from_handle (handle);
 
-  /* Store new values */
-  tex->min_filter = min_filter;
-  tex->mag_filter = mag_filter;
-
   /* Make sure slices were created */
   if (tex->slice_gl_handles == NULL)
     return;
+
+  if (min_filter == tex->min_filter
+      && mag_filter == tex->mag_filter)
+    return;
+
+  /* Store new values */
+  tex->min_filter = min_filter;
+  tex->mag_filter = mag_filter;
 
   /* Apply new filters to every slice */
   for (i=0; i<tex->slice_gl_handles->len; ++i)
@@ -1738,6 +1750,52 @@ cogl_texture_set_filters (CoglHandle handle,
       GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER,
 			   tex->min_filter) );
     }
+}
+
+void
+_cogl_texture_ensure_mipmaps (CoglHandle handle)
+{
+  CoglTexture *tex;
+  int          i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!cogl_is_texture (handle))
+    return;
+
+  tex = _cogl_texture_pointer_from_handle (handle);
+
+  /* Only update if the mipmaps are dirty */
+  if (!tex->auto_mipmap || !tex->mipmaps_dirty)
+    return;
+
+  /* Make sure slices were created */
+  if (tex->slice_gl_handles == NULL)
+    return;
+
+  /* Regenerate the mipmaps on every slice */
+  for (i = 0; i < tex->slice_gl_handles->len; i++)
+    {
+      GLuint gl_handle = g_array_index (tex->slice_gl_handles, GLuint, i);
+      GE( glBindTexture (tex->gl_target, gl_handle) );
+
+      /* glGenerateMipmap is defined in the FBO extension */
+      if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
+        GE( glGenerateMipmap (tex->gl_target) );
+      else
+        {
+          CoglTexturePixel *pixel = tex->first_pixels + i;
+          /* Temporarily enable automatic mipmap generation and
+             re-upload the first pixel to cause a regeneration */
+          GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP, GL_TRUE) );
+          GE( glTexSubImage2D (tex->gl_target, 0, 0, 0, 1, 1,
+                               pixel->gl_format, pixel->gl_type,
+                               pixel->data) );
+          GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP, GL_FALSE) );
+        }
+    }
+
+  tex->mipmaps_dirty = FALSE;
 }
 
 gboolean

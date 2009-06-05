@@ -21,19 +21,17 @@ init_handles ()
       clutter_actor_set_position (p[i], 0, 0);
       clutter_group_add (CLUTTER_GROUP (main_stage), p[i]);
 
-      clutter_actor_set_positionu (p[i],
-				   v[i].x -
-				   clutter_actor_get_widthu (p[i])/2,
-				   v[i].y -
-				   clutter_actor_get_heightu (p[i])/2);
+      clutter_actor_set_position (p[i],
+				  v[i].x - clutter_actor_get_width (p[i]) / 2,
+				  v[i].y - clutter_actor_get_height (p[i]) / 2);
 
       clutter_actor_raise_top (p[i]);
 
       clutter_actor_show (p[i]);
     }
 
-  v1.x = clutter_actor_get_widthu (rect) / 2;
-  v1.y = clutter_actor_get_heightu (rect) / 2;
+  v1.x = clutter_actor_get_width (rect) / 2;
+  v1.y = clutter_actor_get_height (rect) / 2;
   v1.z = 0;
   
   clutter_actor_apply_transform_to_point (rect, &v1, &v2);
@@ -41,11 +39,9 @@ init_handles ()
   clutter_actor_set_size (p[4], 5, 5);
   clutter_actor_set_position (p[4], 0, 0);
   clutter_group_add (CLUTTER_GROUP (main_stage), p[4]);
-  clutter_actor_set_positionu (p[4],
-			       v2.x -
-			       clutter_actor_get_widthu (p[4])/2,
-			       v2.y -
-			       clutter_actor_get_heightu (p[4])/2);
+  clutter_actor_set_position (p[4],
+			      v2.x - clutter_actor_get_width (p[4]) / 2,
+			      v2.y - clutter_actor_get_height (p[4]) / 2);
 
   clutter_actor_raise_top (p[4]);
   
@@ -62,21 +58,19 @@ place_handles ()
   clutter_actor_get_abs_allocation_vertices (rect, v);
   for (i = 0; i < 4; ++i)
     {
-      clutter_actor_set_positionu (p[i],
-				   v[i].x -
-				   clutter_actor_get_widthu (p[i])/2,
-				   v[i].y -
-				   clutter_actor_get_heightu (p[i])/2);
+      clutter_actor_set_position (p[i],
+				  v[i].x - clutter_actor_get_width (p[i])/2,
+				  v[i].y - clutter_actor_get_height (p[i])/2);
     }
 
-  v1.x = clutter_actor_get_widthu (rect)/2;
-  v1.y = clutter_actor_get_heightu (rect)/2;
+  v1.x = clutter_actor_get_width (rect) / 2;
+  v1.y = clutter_actor_get_height (rect) / 2;
   v1.z = 0;
   
   clutter_actor_apply_transform_to_point (rect, &v1, &v2);
-  clutter_actor_set_positionu (p[4],
-			       v2.x - clutter_actor_get_widthu (p[4])/2,
-			       v2.y - clutter_actor_get_heightu (p[4])/2);
+  clutter_actor_set_position (p[4],
+			       v2.x - clutter_actor_get_width (p[4])/2,
+			       v2.y - clutter_actor_get_height (p[4])/2);
 }
 
 #define M(m,row,col)  (m)[col*4+row]
@@ -103,12 +97,14 @@ on_event (ClutterStage *stage,
     {
     case CLUTTER_BUTTON_PRESS:
       {
-	gint x, y;
-	ClutterActor * actor;
+	ClutterActor *actor;
+	gfloat x, y;
 
         clutter_event_get_coords (event, &x, &y);
 
-	actor = clutter_stage_get_actor_at_pos (stage, x, y);
+	actor = clutter_stage_get_actor_at_pos (stage,
+                                                CLUTTER_PICK_ALL,
+                                                x, y);
 	
         if (actor != CLUTTER_ACTOR (stage))
 	  {
@@ -122,10 +118,10 @@ on_event (ClutterStage *stage,
       {
 	if (dragging)
 	  {
-	    gint x, y;
-	    gint i;
 	    ClutterActorBox box1, box2;
-	    ClutterUnit xp, yp;
+	    gfloat x, y;
+	    gfloat xp, yp;
+	    gint i;
 	    
 	    i = find_handle_index (dragging);
 
@@ -137,23 +133,17 @@ on_event (ClutterStage *stage,
 	    clutter_actor_get_allocation_box (dragging, &box1);
 	    clutter_actor_get_allocation_box (rect, &box2);
 
-	    xp = CLUTTER_UNITS_FROM_DEVICE (x - 3) - box1.x1;
-	    yp = CLUTTER_UNITS_FROM_DEVICE (y - 3) - box1.y1;
+	    xp = (x - 3) - box1.x1;
+	    yp = (y - 3) - box1.y1;
 	    
 	    if (i == 4)
 	      {
-		g_debug ("moving box by %f, %f",
-			 CLUTTER_UNITS_TO_FLOAT (xp),
-			 CLUTTER_UNITS_TO_FLOAT (yp));
-			 
-		clutter_actor_move_byu (rect, xp, yp);
+		g_debug ("moving box by %f, %f", xp, yp);
+		clutter_actor_move_by (rect, xp, yp);
 	      }
 	    else
 	      {
-		g_debug ("adjusting box by %f, %f, handle %d",
-			 CLUTTER_UNITS_TO_FLOAT (xp),
-			 CLUTTER_UNITS_TO_FLOAT (yp),
-			 i);
+		g_debug ("adjusting box by %f, %f, handle %d", xp, yp, i);
 
 		switch (i)
 		  {

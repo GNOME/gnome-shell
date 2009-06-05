@@ -106,15 +106,15 @@ GType clutter_geometry_get_type (void) G_GNUC_CONST;
  * @y: Y coordinate of the vertex
  * @z: Z coordinate of the vertex
  *
- * Vertex of an actor in 3D space, expressed in device independent units.
+ * Vertex of an actor in 3D space, expressed in pixels
  *
  * Since: 0.4
  */
 struct _ClutterVertex
 {
-  ClutterUnit x;
-  ClutterUnit y;
-  ClutterUnit z;
+  gfloat x;
+  gfloat y;
+  gfloat z;
 };
 
 GType clutter_vertex_get_type (void) G_GNUC_CONST;

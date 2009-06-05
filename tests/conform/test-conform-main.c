@@ -60,11 +60,10 @@ int
 main (int argc, char **argv)
 {
   TestConformSharedState *shared_state = g_new0 (TestConformSharedState, 1);
-  const gchar *display;
 
 #ifdef HAVE_CLUTTER_GLX
   /* on X11 we need a display connection to run the test suite */
-  display = g_getenv ("DISPLAY");
+  const gchar *display = g_getenv ("DISPLAY");
   if (!display || *display == '\0')
     {
       g_print ("No DISPLAY found. Unable to run the conformance "
@@ -86,11 +85,8 @@ main (int argc, char **argv)
   shared_state->argv_addr = &argv;
 
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_dup_frames);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_dup_frames);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_rewind);
-  TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_smoothness);
 
   TEST_CONFORM_SIMPLE ("/picking", test_pick);
 
@@ -116,7 +112,10 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/fixed", test_fixed_constants);
 
   TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
+  TEST_CONFORM_SIMPLE ("/invariants", test_shown_not_parented);
   TEST_CONFORM_SIMPLE ("/invariants", test_realized);
+  TEST_CONFORM_SIMPLE ("/invariants", test_realize_not_recursive);
+  TEST_CONFORM_SIMPLE ("/invariants", test_map_recursive);
   TEST_CONFORM_SIMPLE ("/invariants", test_mapped);
   TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
 
@@ -140,6 +139,14 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/model", test_list_model_populate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_filter);
+
+  TEST_CONFORM_SIMPLE ("/material", test_blend_strings);
+
+  TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
+  TEST_CONFORM_SIMPLE ("/color", test_color_to_string);
+
+  TEST_CONFORM_SIMPLE ("/units", test_units_constructors);
+  TEST_CONFORM_SIMPLE ("/units", test_units_string);
 
   return g_test_run ();
 }

@@ -39,7 +39,12 @@
 #include "clutter-backend-x11.h"
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"
+
 #include <X11/extensions/Xcomposite.h>
+
+#ifdef HAVE_XINPUT
+#include <X11/extensions/XInput.h>
+#endif
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
@@ -53,15 +58,18 @@ G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
 struct _ClutterX11XInputDevice
 {
   ClutterInputDevice device;
-#ifdef USE_XINPUT
+
+#ifdef HAVE_XINPUT
   XDevice           *xdevice;
   XEventClass        xevent_list[5];   /* MAX 5 event types */
   int                num_events;
 #endif
-  ClutterX11InputDeviceType type; /* FIXME: generic to ClutterInputDevice? */
+
+  /* FIXME: generic to ClutterInputDevice? */
+  ClutterX11InputDeviceType type;
 };
 
-#ifdef USE_XINPUT
+#ifdef HAVE_XINPUT
 void  _clutter_x11_register_xinput ();
 #endif
 
@@ -185,7 +193,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
       clutter_backend_set_resolution (backend, dpi);
 
-#ifdef USE_XINPUT
+#ifdef HAVE_XINPUT
       _clutter_x11_register_xinput ();
 #endif
 
@@ -630,11 +638,10 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
     }
 }
 
-#ifdef USE_XINPUT
-
 void
 _clutter_x11_register_xinput ()
 {
+#ifdef HAVE_XINPUT
   XDeviceInfo *xdevices = NULL;
   XDeviceInfo *info = NULL;
 
@@ -669,7 +676,15 @@ _clutter_x11_register_xinput ()
 
   backend_singleton->have_xinput = TRUE;
 
-  ext = XGetExtensionVersion(backend_singleton->xdpy, INAME);
+#if defined(HAVE_XQUERY_INPUT_VERSION)
+  ext = XQueryInputVersion (backend_singleton->xdpy, XI_2_Major, XI_2_Minor);
+#elif defined(HAVE_XGET_EXTENSION_VERSION)
+  ext = XGetExtensionVersion (backend_singleton->xdpy, INAME);
+#else
+  g_critical ("XInput does not have XGetExtensionVersion nor "
+              "XQueryInputVersion");
+  return;
+#endif
 
   if (!ext || (ext == (XExtensionVersion*) NoSuchExtension))
     {
@@ -807,6 +822,7 @@ _clutter_x11_register_xinput ()
       g_slist_free (context->input_devices);
       context->input_devices = NULL;
     }
+#endif /* HAVE_XINPUT */
 }
 
 void
@@ -818,6 +834,7 @@ _clutter_x11_unregister_xinput ()
 void
 _clutter_x11_select_events (Window xwin)
 {
+#ifdef HAVE_XINPUT
   GSList *list_it;
   ClutterX11XInputDevice *device = NULL;
 
@@ -842,11 +859,13 @@ _clutter_x11_select_events (Window xwin)
                            device->xevent_list,
                            device->num_events);
   }
+#endif /* HAVE_XINPUT */
 }
 
 ClutterX11XInputDevice *
 _clutter_x11_get_device_for_xid (XID id)
 {
+#ifdef HAVE_XINPUT
   GSList *list_it;
   ClutterX11XInputDevice *device = NULL;
   ClutterMainContext  *context;
@@ -869,17 +888,18 @@ _clutter_x11_get_device_for_xid (XID id)
       return device;
   }
 
+#endif /* HAVE_XINPUT */
+
   return NULL;
 }
-#endif
 
 /* FIXME: This nasty little func needs moving elsewhere.. */
-GSList*
+GSList *
 clutter_x11_get_input_devices (void)
 {
+#ifdef HAVE_XINPUT
   ClutterMainContext  *context;
 
-#ifdef USE_XINPUT
   if (!backend_singleton)
     {
       g_critical ("X11 backend has not been initialised");
@@ -889,9 +909,9 @@ clutter_x11_get_input_devices (void)
   context = clutter_context_get_default ();
 
   return context->input_devices;
-#else
+#else /* !HAVE_XINPUT */
   return NULL;
-#endif
+#endif /* HAVE_XINPUT */
 }
 
 /**
@@ -923,7 +943,7 @@ clutter_x11_get_input_device_type (ClutterX11XInputDevice *device)
 gboolean
 clutter_x11_has_xinput (void)
 {
-#ifdef USE_XINPUT
+#ifdef HAVE_XINPUT
   if (!backend_singleton)
     {
       g_critical ("X11 backend has not been initialised");
@@ -939,9 +959,9 @@ clutter_x11_has_xinput (void)
 gboolean
 clutter_x11_has_composite_extension (void)
 {
-  static gboolean                 have_composite = FALSE, done_check = FALSE;
-  int                             error = 0, event = 0;
-  Display                        *dpy;
+  static gboolean have_composite = FALSE, done_check = FALSE;
+  int error = 0, event = 0;
+  Display *dpy;
 
   if (done_check)
     return have_composite;
@@ -969,3 +989,17 @@ clutter_x11_has_composite_extension (void)
   return have_composite;
 }
 
+XVisualInfo *
+clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11,
+                                     gboolean           for_offscreen)
+{
+  ClutterBackendX11Class *klass;
+
+  g_return_val_if_fail (CLUTTER_IS_BACKEND_X11 (backend_x11), NULL);
+
+  klass = CLUTTER_BACKEND_X11_GET_CLASS (backend_x11);
+  if (klass->get_visual_info)
+    return klass->get_visual_info (backend_x11, for_offscreen);
+
+  return NULL;
+}

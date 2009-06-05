@@ -81,9 +81,9 @@ clutter_stage_win32_hide (ClutterActor *actor)
 
 static void
 clutter_stage_win32_get_preferred_width (ClutterActor  *self,
-					 ClutterUnit    for_height,
-					 ClutterUnit   *min_width_p,
-					 ClutterUnit   *natural_width_p)
+					 gfloat         for_height,
+					 gfloat        *min_width_p,
+					 gfloat        *natural_width_p)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
   int width;
@@ -105,9 +105,9 @@ clutter_stage_win32_get_preferred_width (ClutterActor  *self,
 
 static void
 clutter_stage_win32_get_preferred_height (ClutterActor  *self,
-					  ClutterUnit    for_width,
-					  ClutterUnit   *min_height_p,
-					  ClutterUnit   *natural_height_p)
+					  gfloat         for_width,
+					  gfloat        *min_height_p,
+					  gfloat        *natural_height_p)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
   int height;
@@ -187,18 +187,18 @@ _clutter_stage_win32_get_min_max_info (ClutterStageWin32 *stage_win32,
 }
 
 static void
-clutter_stage_win32_allocate (ClutterActor          *self,
-			      const ClutterActorBox *box,
-			      gboolean               origin_changed)
+clutter_stage_win32_allocate (ClutterActor           *self,
+			      const ClutterActorBox  *box,
+                              ClutterAllocationFlags  flags)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
   gint new_width, new_height;
 
-  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
+  new_width  = ABS (box->x2 - box->x1);
+  new_height = ABS (box->y2 - box->y1);
 
-  if (new_width != stage_win32->win_width
-      || new_height != stage_win32->win_height)
+  if (new_width != stage_win32->win_width ||
+      new_height != stage_win32->win_height)
     {
       /* Ignore size requests if we are in full screen mode */
       if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN) == 0)
@@ -226,7 +226,7 @@ clutter_stage_win32_allocate (ClutterActor          *self,
     }
 
   CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)
-    ->allocate (self, box, origin_changed);
+    ->allocate (self, box, flags);
 }
 
 static void
@@ -574,10 +574,8 @@ clutter_stage_win32_unrealize (ClutterActor *actor)
 
   CLUTTER_NOTE (BACKEND, "Unrealizing stage");
 
-  /* Chain up so all children get unrealized, needed to move texture
-   * data across contexts
-   */
-  CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize != NULL)
+    CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize (actor);
 
   if (stage_win32->client_dc)
     {
@@ -601,9 +599,6 @@ static void
 clutter_stage_win32_dispose (GObject *gobject)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (gobject);
-
-  if (stage_win32->hwnd)
-    clutter_actor_unrealize (CLUTTER_ACTOR (gobject));
 
   G_OBJECT_CLASS (clutter_stage_win32_parent_class)->dispose (gobject);
 }
@@ -749,6 +744,12 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
   impl = _clutter_stage_get_window (stage);
   stage_win32 = CLUTTER_STAGE_WIN32 (impl);
 
+  /* FIXME this needs updating to use _clutter_actor_rerealize(),
+   * see the analogous code in x11 backend. Probably best if
+   * win32 maintainer does it so they can be sure it compiles
+   * and works.
+   */
+
   clutter_actor_unrealize (actor);
 
   if (!GetClientRect (hwnd, &client_rect))
@@ -779,8 +780,8 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
 void
 clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
 {
-  CLUTTER_ACTOR_SET_FLAGS (stage_win32, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_SET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_MAPPED);
+  clutter_actor_map (CLUTTER_ACTOR (stage_win32));
+  clutter_actor_map (CLUTTER_ACTOR (stage_win32->wrapper));
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_win32->wrapper));
 }
@@ -788,6 +789,6 @@ clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
 void
 clutter_stage_win32_unmap (ClutterStageWin32 *stage_win32)
 {
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_MAPPED);
+  clutter_actor_unmap (CLUTTER_ACTOR (stage_win32));
+  clutter_actor_unmap (CLUTTER_ACTOR (stage_win32->wrapper));
 }

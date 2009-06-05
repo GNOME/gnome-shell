@@ -56,24 +56,24 @@ struct _ClutterAnimatableIface
   GTypeInterface parent_iface;
 
   /*< public >*/
-  void (* animate_property) (ClutterAnimatable *animatable,
-                             ClutterAnimation  *animation,
-                             const gchar       *property_name,
-                             const GValue      *initial_value,
-                             const GValue      *final_value,
-                             gdouble            progress,
-                             GValue            *value);
+  gboolean (* animate_property) (ClutterAnimatable *animatable,
+                                 ClutterAnimation  *animation,
+                                 const gchar       *property_name,
+                                 const GValue      *initial_value,
+                                 const GValue      *final_value,
+                                 gdouble            progress,
+                                 GValue            *value);
 };
 
 GType clutter_animatable_get_type (void) G_GNUC_CONST;
 
-void clutter_animatable_animate_property (ClutterAnimatable *animatable,
-                                          ClutterAnimation  *animation,
-                                          const gchar       *property_name,
-                                          const GValue      *initial_value,
-                                          const GValue      *final_value,
-                                          gdouble            progress,
-                                          GValue            *value);
+gboolean clutter_animatable_animate_property (ClutterAnimatable *animatable,
+                                              ClutterAnimation  *animation,
+                                              const gchar       *property_name,
+                                              const GValue      *initial_value,
+                                              const GValue      *final_value,
+                                              gdouble            progress,
+                                              GValue            *value);
 
 G_END_DECLS
 

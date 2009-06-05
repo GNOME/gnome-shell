@@ -169,6 +169,7 @@ source_c = \
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
 	clutter-marshal.c			\
+	$(srcdir)/clutter-master-clock.c	\
 	$(srcdir)/clutter-media.c 		\
 	$(srcdir)/clutter-model.c		\
 	$(srcdir)/clutter-path.c		\
@@ -195,6 +196,7 @@ source_h_priv = \
 	$(srcdir)/clutter-bezier.h		\
 	$(srcdir)/clutter-debug.h 		\
 	$(srcdir)/clutter-keysyms-table.h	\
+	$(srcdir)/clutter-master-clock.h	\
 	$(srcdir)/clutter-model-private.h	\
 	$(srcdir)/clutter-private.h 		\
 	$(srcdir)/clutter-id-pool.h 		\
@@ -234,7 +236,6 @@ clutter_HEADERS = \
 	$(source_h) \
 	$(top_builddir)/clutter/clutter-json.h 		\
 	$(top_builddir)/clutter/clutter-enum-types.h 	\
-	$(top_builddir)/clutter/clutter-version.h 	\
 	$(top_srcdir)/clutter/clutter.h
 
 if HAVE_INTROSPECTION
@@ -248,11 +249,6 @@ endif
 # subdir Makefile.am, so just extract them from cogl.h instead. The doc
 # comments for COGL are in the headers, so we don't need the source files.
 Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
-	headers=`sed -n "s/#include <cogl\/\([^>]*\)>/\1/p" < $(top_srcdir)/clutter/cogl/cogl.h` ; \
-	cogl_headers="" ; \
-	for header in $$headers; do \
-		cogl_headers="$$cogl_headers $(top_srcdir)/clutter/cogl/$$header " ; \
-	done ; \
 	$(INTROSPECTION_SCANNER) -v --namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 	     $(INCLUDES) \
 	     $(json_gir_include_path) \
@@ -260,6 +256,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
              --include=GObject-2.0 \
              --include=Pango-1.0 \
              --include=PangoCairo-1.0 \
+	     --include=Cogl-@CLUTTER_API_VERSION@ \
              --include=ClutterJson-@CLUTTER_API_VERSION@ \
 	     --library=clutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@ \
 	     --libtool="$(top_builddir)/doltlibtool" \
@@ -268,8 +265,6 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
              --pkg pangocairo \
              --output $@ \
 	     $(clutter_HEADERS) \
-	     $$cogl_headers \
-	     $(top_builddir)/clutter/cogl/cogl-defines-$(CLUTTER_COGL).h \
 	     $(source_c)
 
 BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir

@@ -233,7 +233,7 @@ test_pixmap_main (int argc, char **argv)
   clutter_actor_set_position (stage, 0, 150);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &gry);
 
-  timeline = clutter_timeline_new (60*5, 60);
+  timeline = clutter_timeline_new (5000);
   g_signal_connect (timeline,
                     "completed", G_CALLBACK (timeline_completed),
                     NULL);

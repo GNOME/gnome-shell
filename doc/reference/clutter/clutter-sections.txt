@@ -27,44 +27,35 @@ clutter_media_get_type
 <SECTION>
 <FILE>clutter-units</FILE>
 <TITLE>Unit conversion</TITLE>
-ClutterUnit
-CLUTTER_UNITS_FORMAT
-CLUTTER_UNITS_FROM_FLOAT
-CLUTTER_UNITS_TO_FLOAT
-CLUTTER_UNITS_FROM_INT
-CLUTTER_UNITS_TO_INT
-
-<SUBSECTION>
-CLUTTER_UNITS_FROM_DEVICE
-CLUTTER_UNITS_TO_DEVICE
-CLUTTER_UNITS_FROM_FIXED
-CLUTTER_UNITS_TO_FIXED
-CLUTTER_UNITS_FROM_PANGO_UNIT
-CLUTTER_UNITS_TO_PANGO_UNIT
-CLUTTER_UNITS_FROM_MM
-CLUTTER_UNITS_FROM_POINTS
-CLUTTER_UNITS_FROM_EM
+ClutterUnitType
+ClutterUnits
 clutter_units_mm
 clutter_units_pt
 clutter_units_em
+clutter_units_em_for_font
 clutter_units_pixels
 clutter_units_to_pixels
+clutter_units_copy
+clutter_units_free
+clutter_units_get_unit_type
+clutter_units_get_unit_value
+clutter_units_from_string
+clutter_units_to_string
 
 <SUBSECTION>
-CLUTTER_MAXUNIT
-CLUTTER_MINUNIT
-ClutterParamSpecUnit
-clutter_param_spec_unit
-CLUTTER_VALUE_HOLDS_UNIT
-clutter_value_set_unit
-clutter_value_get_unit
+ClutterParamSpecUnits
+clutter_param_spec_units
+CLUTTER_VALUE_HOLDS_UNITS
+clutter_value_set_units
+clutter_value_get_units
+
 <SUBSECTION Private>
-CLUTTER_TYPE_UNIT
-CLUTTER_TYPE_PARAM_UNIT
-CLUTTER_PARAM_SPEC_UNIT
-CLUTTER_IS_PARAM_SPEC_UNIT
-clutter_unit_get_type
-clutter_param_unit_get_type
+CLUTTER_TYPE_UNITS
+CLUTTER_TYPE_PARAM_UNITS
+CLUTTER_PARAM_SPEC_UNITS
+CLUTTER_IS_PARAM_SPEC_UNITS
+clutter_units_get_type
+clutter_param_units_get_type
 </SECTION>
 
 <SECTION>
@@ -186,6 +177,7 @@ clutter_container_remove
 clutter_container_remove_valist
 clutter_container_get_children
 clutter_container_foreach
+clutter_container_foreach_with_internals
 
 <SUBSECTION>
 clutter_container_find_child_by_name
@@ -275,6 +267,11 @@ CLUTTER_CALLBACK
 ClutterCallback
 ClutterActor
 ClutterActorClass
+clutter_actor_set_flags
+clutter_actor_unset_flags
+clutter_actor_get_flags
+
+<SUBSECTION>
 clutter_actor_show
 clutter_actor_show_all
 clutter_actor_hide
@@ -288,10 +285,13 @@ clutter_actor_destroy
 clutter_actor_event
 clutter_actor_pick
 clutter_actor_should_pick_paint
+clutter_actor_map
+clutter_actor_unmap
 
 <SUBSECTION>
 clutter_actor_allocate
 clutter_actor_allocate_preferred_size
+clutter_actor_allocate_available_size
 clutter_actor_get_allocation_coords
 clutter_actor_get_allocation_box
 clutter_actor_get_allocation_geometry
@@ -387,34 +387,6 @@ clutter_actor_set_shader_param_float
 clutter_actor_set_shader_param_int
 
 <SUBSECTION>
-clutter_actor_set_depthu
-clutter_actor_get_depthu
-clutter_actor_set_heightu
-clutter_actor_get_heightu
-clutter_actor_set_widthu
-clutter_actor_get_widthu
-clutter_actor_set_xu
-clutter_actor_get_xu
-clutter_actor_set_yu
-clutter_actor_get_yu
-clutter_actor_set_positionu
-clutter_actor_get_positionu
-clutter_actor_set_sizeu
-clutter_actor_get_sizeu
-clutter_actor_set_scale_fullu
-clutter_actor_get_scale_centeru
-clutter_actor_set_anchor_pointu
-clutter_actor_get_anchor_pointu
-clutter_actor_move_anchor_pointu
-clutter_actor_set_clipu
-clutter_actor_get_clipu
-clutter_actor_set_rotationu
-clutter_actor_get_rotationu
-clutter_actor_move_byu
-clutter_actor_get_transformed_positionu
-clutter_actor_get_transformed_sizeu
-
-<SUBSECTION>
 clutter_actor_grab_key_focus
 clutter_actor_get_pango_context
 clutter_actor_create_pango_context
@@ -458,10 +430,9 @@ clutter_texture_set_from_yuv_data
 clutter_texture_set_area_from_rgb_data
 clutter_texture_get_base_size
 clutter_texture_get_pixel_format
+clutter_texture_get_max_tile_waste
 clutter_texture_get_filter_quality
 clutter_texture_set_filter_quality
-clutter_texture_get_max_tile_waste
-clutter_texture_set_max_tile_waste
 clutter_texture_get_cogl_texture
 clutter_texture_set_cogl_texture
 clutter_texture_get_cogl_material
@@ -509,6 +480,7 @@ clutter_stage_fullscreen
 clutter_stage_unfullscreen
 clutter_stage_show_cursor
 clutter_stage_hide_cursor
+ClutterPickMode
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
 clutter_stage_ensure_viewport
@@ -560,18 +532,13 @@ clutter_stage_add
 ClutterTimeline
 ClutterTimelineClass
 clutter_timeline_new
-clutter_timeline_new_for_duration
 clutter_timeline_clone
 
 <SUBSECTION>
-clutter_timeline_set_speed
-clutter_timeline_get_speed
 clutter_timeline_set_duration
 clutter_timeline_get_duration
 clutter_timeline_set_loop
 clutter_timeline_get_loop
-clutter_timeline_set_n_frames
-clutter_timeline_get_n_frames
 clutter_timeline_set_delay
 clutter_timeline_get_delay
 ClutterTimelineDirection
@@ -585,14 +552,13 @@ clutter_timeline_stop
 clutter_timeline_rewind
 clutter_timeline_skip
 clutter_timeline_advance
-clutter_timeline_get_current_frame
+clutter_timeline_get_elapsed_time
 clutter_timeline_get_delta
 clutter_timeline_get_progress
 clutter_timeline_get_progressx
 clutter_timeline_is_playing
 
 <SUBSECTION>
-clutter_timeline_add_marker_at_frame
 clutter_timeline_add_marker_at_time
 clutter_timeline_has_marker
 clutter_timeline_list_markers
@@ -609,6 +575,7 @@ CLUTTER_TIMELINE_GET_CLASS
 <SUBSECTION Private>
 ClutterTimelinePrivate
 clutter_timeline_get_type
+clutter_timeline_advance_delta
 </SECTION>
 
 <SECTION>
@@ -1034,6 +1001,8 @@ clutter_threads_add_timeout
 clutter_threads_add_timeout_full
 clutter_threads_add_frame_source
 clutter_threads_add_frame_source_full
+clutter_threads_add_repaint_func
+clutter_threads_remove_repaint_func
 
 <SUBSECTION>
 clutter_get_keyboard_grab
@@ -1526,6 +1495,7 @@ clutter_cairo_texture_get_surface_size
 <SUBSECTION>
 clutter_cairo_texture_create
 clutter_cairo_texture_create_region
+clutter_cairo_texture_clear
 
 <SUBSECTION>
 clutter_cairo_set_source_color

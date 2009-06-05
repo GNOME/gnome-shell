@@ -67,10 +67,8 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
 
   g_object_get (stage_x11->wrapper, "offscreen", &was_offscreen, NULL);
 
-  /* Chain up so all children get unrealized, needed to move texture data
-   * across contexts
-  */
-  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize != NULL)
+    CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize (actor);
 
   clutter_x11_trap_x_errors ();
 
@@ -99,6 +97,12 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
         stage_x11->xwin = None;
     }
 
+  if (stage_x11->xvisinfo != None)
+    {
+      XFree (stage_x11->xvisinfo);
+      stage_x11->xvisinfo = None;
+    }
+
   XSync (stage_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
@@ -111,42 +115,29 @@ clutter_stage_glx_realize (ClutterActor *actor)
 {
   ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (actor);
   ClutterStageGLX   *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterBackend    *backend;
   ClutterBackendGLX *backend_glx;
   ClutterBackendX11 *backend_x11;
   gboolean           is_offscreen;
 
-  CLUTTER_NOTE (MISC, "Realizing main stage");
+  CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
+                G_OBJECT_TYPE_NAME (actor),
+                actor);
 
   g_object_get (stage_x11->wrapper, "offscreen", &is_offscreen, NULL);
 
-  backend_glx = CLUTTER_BACKEND_GLX (clutter_get_default_backend ());
-  backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
+  backend     = clutter_get_default_backend ();
+  backend_glx = CLUTTER_BACKEND_GLX (backend);
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   if (G_LIKELY (!is_offscreen))
     {
-      int gl_attributes[] = 
-        {
-          GLX_RGBA, 
-          GLX_DOUBLEBUFFER,
-          GLX_RED_SIZE, 1,
-          GLX_GREEN_SIZE, 1,
-          GLX_BLUE_SIZE, 1,
-          GLX_STENCIL_SIZE, 1,
-          0
-        };
+      GError *error;
 
-      if (stage_x11->xvisinfo)
-        {
-          XFree (stage_x11->xvisinfo);
-          stage_x11->xvisinfo = None;
-        }
+      stage_x11->xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, FALSE);
 
-      /* The following check seems strange */
       if (stage_x11->xvisinfo == None)
-        stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-                                               stage_x11->xscreen,
-                                               gl_attributes);
-      if (!stage_x11->xvisinfo)
         {
           g_critical ("Unable to find suitable GL visual.");
           goto fail;
@@ -208,25 +199,17 @@ clutter_stage_glx_realize (ClutterActor *actor)
         }
 
       /* no user resize.. */
-      clutter_stage_x11_fix_window_size (stage_x11);
+      clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
       clutter_stage_x11_set_wm_protocols (stage_x11);
 
-      if (G_UNLIKELY (backend_glx->gl_context == None))
+      /* ask for a context; a no-op, if a context already exists */
+      error = NULL;
+      _clutter_backend_create_context (backend, FALSE, &error);
+      if (error)
         {
-          CLUTTER_NOTE (GL, "Creating GL Context");
-          backend_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
-                                                      stage_x11->xvisinfo, 
-                                                      0,
-                                                      True);
-
-          if (backend_glx->gl_context == None)
-            {
-              g_critical ("Unable to create suitable GL context.");
-              goto fail;
-            }
-
-          _cogl_set_indirect_context (!glXIsDirect (stage_x11->xdpy,
-                                                    backend_glx->gl_context));
+          g_critical ("Unable to realize stage: %s", error->message);
+          g_error_free (error);
+          goto fail;
         }
 
       CLUTTER_NOTE (BACKEND, "Marking stage as realized");
@@ -234,33 +217,23 @@ clutter_stage_glx_realize (ClutterActor *actor)
     }
   else
     {
-      int gl_attributes[] = {
-        GLX_DEPTH_SIZE,    0,
-        GLX_ALPHA_SIZE,    0,
-        GLX_RED_SIZE, 1,
-        GLX_GREEN_SIZE, 1,
-        GLX_BLUE_SIZE, 1,
-        GLX_USE_GL,
-        GLX_RGBA,
-        0
-      };
+      GError *error;
 
-      if (stage_x11->xvisinfo)
-         XFree (stage_x11->xvisinfo);
+      if (stage_x11->xvisinfo != None)
+        {
+          XFree (stage_x11->xvisinfo);
+          stage_x11->xvisinfo = None;
+        }
 
-      stage_x11->xvisinfo = NULL;
+      stage_x11->xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, TRUE);
 
-      CLUTTER_NOTE (GL, "glXChooseVisual");
-      stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-                                             stage_x11->xscreen,
-                                             gl_attributes);
-      if (!stage_x11->xvisinfo)
+      if (stage_x11->xvisinfo == None)
         {
           g_critical ("Unable to find suitable GL visual.");
           goto fail;
         }
 
-     
       stage_x11->xpixmap = XCreatePixmap (stage_x11->xdpy,
                                           stage_x11->xwin_root,
                                           stage_x11->xwin_width, 
@@ -272,25 +245,20 @@ clutter_stage_glx_realize (ClutterActor *actor)
                                                  stage_x11->xvisinfo,
                                                  stage_x11->xpixmap);
 
-      if (backend_glx->gl_context == None)
+      /* ask for a context; a no-op, if a context already exists
+       *
+       * FIXME: we probably need a seperate offscreen context here
+       * - though it likely makes most sense to drop offscreen stages
+       * and rely on FBO's instead and GLXPixmaps seems mostly broken
+       * anyway..
+       */
+      error = NULL;
+      _clutter_backend_create_context (backend, TRUE, &error);
+      if (error)
         {
-          CLUTTER_NOTE (GL, "Creating GL Context");
-
-          /* FIXME: we probably need a seperate offscreen context here
-           * - though it likely makes most sense to drop offscreen stages
-           * and rely on FBO's instead and GLXPixmaps seems mostly broken
-           * anyway..
-          */
-          backend_glx->gl_context =  glXCreateContext (stage_x11->xdpy, 
-                                                       stage_x11->xvisinfo, 
-                                                       0,
-                                                       False);
-
-          if (backend_glx->gl_context == None)
-            {
-              g_critical ("Unable to create suitable GL context.");
-              goto fail;
-            }
+          g_critical ("Unable to realize stage: %s", error->message);
+          g_error_free (error);
+          goto fail;
         }
 
       CLUTTER_NOTE (BACKEND, "Marking stage as realized");
@@ -310,12 +278,6 @@ fail:
 static void
 clutter_stage_glx_dispose (GObject *gobject)
 {
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (gobject);
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
-
-  if (stage_x11->xwin)
-    clutter_actor_unrealize (CLUTTER_ACTOR (stage_glx));
-
   G_OBJECT_CLASS (clutter_stage_glx_parent_class)->dispose (gobject);
 }
 

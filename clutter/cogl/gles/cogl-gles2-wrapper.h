@@ -259,6 +259,7 @@ struct _CoglGles2WrapperShader
 
 #define GL_TEXTURE_ENV         0x2300
 #define GL_TEXTURE_ENV_MODE    0x2200
+#define GL_TEXTURE_ENV_COLOR   0x2201
 #define GL_MODULATE            0x2100
 
 #define GL_EXP                 0x8000
@@ -327,7 +328,8 @@ void cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
 void cogl_wrap_glNormalPointer (GLenum type, GLsizei stride,
 				const GLvoid *pointer);
 
-void cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLfloat param);
+void cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param);
+void cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params);
 
 void cogl_wrap_glClientActiveTexture (GLenum texture);
 void cogl_wrap_glActiveTexture (GLenum texture);
@@ -384,6 +386,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 #define glColorPointer               cogl_wrap_glColorPointer
 #define glNormalPointer              cogl_wrap_glNormalPointer
 #define glTexEnvi                    cogl_wrap_glTexEnvi
+#define glTexEnvfv                   cogl_wrap_glTexEnvfv
 #define glActiveTexture              cogl_wrap_glActiveTexture
 #define glClientActiveTexture        cogl_wrap_glClientActiveTexture
 #define glEnableClientState          cogl_wrap_glEnableClientState

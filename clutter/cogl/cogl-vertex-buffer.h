@@ -95,6 +95,29 @@ guint
 cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
 
 /**
+ * CoglAttributeType:
+ * @COGL_ATTRIBUTE_TYPE_BYTE: Data is the same size of a byte
+ * @COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE: Data is the same size of an
+ *   unsigned byte
+ * @COGL_ATTRIBUTE_TYPE_SHORT: Data is the same size of a short integer
+ * @COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT: Data is the same size of
+ *   an unsigned short integer
+ * @COGL_ATTRIBUTE_TYPE_FLOAT: Data is the same size of a float
+ *
+ * Data types for the components of cogl_vertex_buffer_add()
+ *
+ * Since: 1.0
+ */
+typedef enum _CoglAttributeType
+{
+  COGL_ATTRIBUTE_TYPE_BYTE = GL_BYTE,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE = GL_UNSIGNED_BYTE,
+  COGL_ATTRIBUTE_TYPE_SHORT = GL_SHORT,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT = GL_UNSIGNED_SHORT,
+  COGL_ATTRIBUTE_TYPE_FLOAT = GL_FLOAT
+} CoglAttributeType;
+
+/**
  * cogl_vertex_buffer_add:
  * @handle: A vertex buffer handle
  * @attribute_name: The name of your attribute. It should be a valid GLSL
@@ -111,10 +134,9 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
  *		    the name can have a detail component, E.g.
  *		    "gl_Color::active" or "gl_Color::inactive"
  * @n_components: The number of components per attribute and must be 1,2,3 or 4
- * @gl_type: Specifies the data type of each component (GL_BYTE, GL_UNSIGNED_BYTE,
- *	     GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, GL_UNSIGNED_INT or GL_FLOAT)
+ * @type: a #CoglAttributeType specifying the data type of each component.
  * @normalized: If GL_TRUE, this specifies that values stored in an integer
- *		format should be mapped into the range [-1.0, 1.0] or [0.1, 1.0]
+ *		format should be mapped into the range [-1.0, 1.0] or [0.0, 1.0]
  *		for unsigned values. If GL_FALSE they are converted to floats
  *		directly.
  * @stride: This specifies the number of bytes from the start of one attribute
@@ -156,13 +178,13 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
  * (Though you can have multiple groups of interleved attributes)
  */
 void
-cogl_vertex_buffer_add (CoglHandle  handle,
-		        const char *attribute_name,
-			guint8      n_components,
-			GLenum      gl_type,
-			gboolean    normalized,
-			guint16     stride,
-			const void *pointer);
+cogl_vertex_buffer_add (CoglHandle         handle,
+		        const char        *attribute_name,
+			guint8             n_components,
+			CoglAttributeType  type,
+			gboolean           normalized,
+			guint16            stride,
+			const void        *pointer);
 
 /**
  * cogl_vertex_buffer_delete:
@@ -227,20 +249,36 @@ cogl_vertex_buffer_enable (CoglHandle  handle,
 			   const char *attribute_name);
 
 /**
+ * CoglVerticesMode:
+ * @COGL_VERTICES_MODE_POINTS: FIXME, equivalent to %GL_POINTS
+ * @COGL_VERTICES_MODE_LINE_STRIP: FIXME, equivalent to %GL_LINE_STRIP
+ * @COGL_VERTICES_MODE_LINE_LOOP: FIXME, equivalent to %GL_LINE_LOOP
+ * @COGL_VERTICES_MODE_LINES: FIXME, equivalent to %GL_LINES
+ * @COGL_VERTICES_MODE_TRIANGLE_STRIP: FIXME, equivalent to %GL_TRIANGLE_STRIP
+ * @COGL_VERTICES_MODE_TRIANGLE_FAN: FIXME, equivalent to %GL_TRIANGLE_FAN
+ * @COGL_VERTICES_MODE_TRIANGLES: FIXME, equivalent to %GL_TRIANGLES
+ *
+ * How vertices passed to cogl_vertex_buffer_draw() and
+ * cogl_vertex_buffer_draw_elements() should be interpreted
+ *
+ * Since: 1.0
+ */
+typedef enum _CoglVerticesMode
+{
+  COGL_VERTICES_MODE_POINTS = GL_POINTS,
+  COGL_VERTICES_MODE_LINE_STRIP = GL_LINE_STRIP,
+  COGL_VERTICES_MODE_LINE_LOOP = GL_LINE_LOOP,
+  COGL_VERTICES_MODE_LINES = GL_LINES,
+  COGL_VERTICES_MODE_TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
+  COGL_VERTICES_MODE_TRIANGLE_FAN = GL_TRIANGLE_FAN,
+  COGL_VERTICES_MODE_TRIANGLES = GL_TRIANGLES
+} CoglVerticesMode;
+
+/**
  * cogl_vertex_buffer_draw:
  * @handle: A vertex buffer handle
- * @mode: Specifies how the vertices should be interpreted, and should be
- *        a valid GL primitive type:
- *	  <itemizedlist>
- *	  <listitem>GL_POINTS</listitem>
- *	  <listitem>GL_LINE_STRIP</listitem>
- *	  <listitem>GL_LINE_LOOP</listitem>
- *	  <listitem>GL_LINES</listitem>
- *	  <listitem>GL_TRIANGLE_STRIP</listitem>
- *	  <listitem>GL_TRIANGLE_FAN</listitem>
- *	  <listitem>GL_TRIANGLES</listitem>
- *	  </itemizedlist>
- *	  (Note: only types available in GLES are listed)
+ * @mode: A #CoglVerticesMode specifying how the vertices should be
+ *        interpreted.
  * @first: Specifies the index of the first vertex you want to draw with
  * @count: Specifies the number of vertices you want to draw.
  *
@@ -251,52 +289,90 @@ cogl_vertex_buffer_enable (CoglHandle  handle,
  * drawing.
  */
 void
-cogl_vertex_buffer_draw (CoglHandle handle,
-		         GLenum     mode,
-		         GLint      first,
-		         GLsizei    count);
+cogl_vertex_buffer_draw (CoglHandle       handle,
+		         CoglVerticesMode mode,
+		         int              first,
+		         int              count);
+
+/**
+ * CoglIndicesType:
+ * @COGL_INDICES_TYPE_UNSIGNED_BYTE: Your indices are unsigned bytes
+ * @COGL_INDICES_TYPE_UNSIGNED_SHORT: Your indices are unsigned shorts
+ * @COGL_INDICES_TYPE_UNSIGNED_INT: You indices are unsigned integers
+ *
+ * You should aim to use the smallest data type that gives you enough
+ * range, since it reduces the size of your index array and can help
+ * reduce the demand on memory bandwidth.
+ */
+typedef enum _CoglIndicesType
+{
+  COGL_INDICES_TYPE_UNSIGNED_BYTE,
+  COGL_INDICES_TYPE_UNSIGNED_SHORT,
+  COGL_INDICES_TYPE_UNSIGNED_INT
+} CoglIndicesType;
+
+/**
+ * cogl_vertex_buffer_indices_new:
+ * @indices_type: a #CoglIndicesType specifying the data type used for
+ *                the indices.
+ * @indices_array: Specifies the address of your array of indices
+ * @indices_len: The number of indices in indices_array
+ *
+ * Depending on how much geometry you are submitting it can be worthwhile
+ * optimizing the number of redundant vertices you submit. Using an index
+ * array allows you to reference vertices multiple times, for example
+ * during triangle strips.
+ *
+ * Returns: A CoglHandle for the indices which you can pass to
+ *          cogl_vertex_buffer_draw_elements().
+ */
+CoglHandle
+cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
+                                const void      *indices_array,
+                                int              indices_len);
+
+/**
+ * cogl_vertex_buffer_delete_indices:
+ * @handle: A vertex buffer handle
+ * @indices_id: The identifier for a an array of indices previously added to
+ *              the given Cogl vertex buffer using
+ *              cogl_vertex_buffer_add_indices().
+ *
+ * Frees the resources associated with a previously added array of vertex
+ * indices.
+ */
+void
+cogl_vertex_buffer_delete_indices (CoglHandle handle,
+                                   int indices_id);
 
 /**
  * cogl_vertex_buffer_draw_elements:
  * @handle: A vertex buffer handle
- * @mode: Specifies how the vertices should be interpreted, and should be
- *        a valid GL primitive type:
- *	  <itemizedlist>
- *	  <listitem>GL_POINTS</listitem>
- *	  <listitem>GL_LINE_STRIP</listitem>
- *	  <listitem>GL_LINE_LOOP</listitem>
- *	  <listitem>GL_LINES</listitem>
- *	  <listitem>GL_TRIANGLE_STRIP</listitem>
- *	  <listitem>GL_TRIANGLE_FAN</listitem>
- *	  <listitem>GL_TRIANGLES</listitem>
- *	  </itemizedlist>
- *	  (Note: only types available in GLES are listed)
+ * @mode: A #CoglVerticesMode specifying how the vertices should be
+ *        interpreted.
+ * @indices: A CoglHandle for a set of indices allocated via
+ *           cogl_vertex_buffer_indices_new ()
  * @min_index: Specifies the minimum vertex index contained in indices
  * @max_index: Specifies the maximum vertex index contained in indices
+ * @indices_offset: An offset into named indices. The offset marks the first
+ *                  index to use for drawing.
  * @count: Specifies the number of vertices you want to draw.
- * @indices_type: Specifies the data type used for the indices, and must be
- *	          one of:
- *	  <itemizedlist>
- *	  <listitem>GL_UNSIGNED_BYTE</listitem>
- *	  <listitem>GL_UNSIGNED_SHORT</listitem>
- *        <listitem>GL_UNSIGNED_INT</listitem>
- *        </itemizedlist>
- * @indices: Specifies the address of your array of indices
  *
  * This function lets you use an array of indices to specify the vertices
- * within your vertex buffer that you want to draw.
+ * within your vertex buffer that you want to draw. The indices themselves
+ * are created by calling cogl_vertex_buffer_indices_new ()
  *
  * Any un-submitted attribute changes are automatically submitted before
  * drawing.
  */
 void
-cogl_vertex_buffer_draw_elements (CoglHandle     handle,
-			          GLenum         mode,
-			          GLuint         min_index,
-			          GLuint         max_index,
-			          GLsizei        count,
-			          GLenum         indices_type,
-			          const GLvoid  *indices);
+cogl_vertex_buffer_draw_elements (CoglHandle       handle,
+			          CoglVerticesMode mode,
+                                  CoglHandle       indices,
+                                  int              min_index,
+                                  int              max_index,
+                                  int              indices_offset,
+                                  int              count);
 
 /**
  * cogl_vertex_buffer_ref:
@@ -318,6 +394,46 @@ cogl_vertex_buffer_ref (CoglHandle handle);
 void
 cogl_vertex_buffer_unref (CoglHandle handle);
 
+/**
+ * cogl_vertex_buffer_indices_get_for_quads:
+ * @n_indices: the number of indices in the vertex buffer.
+ *
+ * Creates a vertex buffer containing the indices needed to draw pairs
+ * of triangles from a list of vertices grouped as quads. There will
+ * be at least @n_indices entries in the buffer (but there may be
+ * more).
+ *
+ * The indices will follow this pattern:
+ *
+ * 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7 ... etc
+ *
+ * For example, if you submit vertices for a quad like this:
+ *
+ * |[
+ *    0        3
+ *     ########
+ *     #      #
+ *     #      #
+ *     ########
+ *    1        2
+ * ]|
+ *
+ * Then you can request 6 indices to render two triangles like this:
+ *
+ * |[
+ *    0           0        3
+ *     ##          ########
+ *     # ##          ##   #
+ *     #   ##          ## #
+ *     ########          ##
+ *    1        2           2
+ * ]|
+ *
+ * Returns: A %CoglHandle containing the indices. The handled is
+ * owned by Cogl and should not be modified or unref'd.
+ */
+CoglHandle
+cogl_vertex_buffer_indices_get_for_quads (guint n_indices);
 
 G_END_DECLS
 

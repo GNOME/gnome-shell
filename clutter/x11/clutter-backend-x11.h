@@ -28,10 +28,6 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#ifdef USE_XINPUT
-#include <X11/extensions/XInput.h>
-#endif
-
 #include "clutter-x11.h"
 
 G_BEGIN_DECLS
@@ -79,10 +75,8 @@ struct _ClutterBackendX11
   Atom atom_NET_WM_NAME;
   Atom atom_UTF8_STRING;
 
-#ifdef USE_XINPUT
-  int         event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
-  gboolean    have_xinput;
-#endif
+  int event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
+  gboolean have_xinput;
 
   Time last_event_time;
 };
@@ -90,6 +84,9 @@ struct _ClutterBackendX11
 struct _ClutterBackendX11Class
 {
   ClutterBackendClass parent_class;
+
+  XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend,
+                                    gboolean           for_offscreen);
 };
 
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);
@@ -120,7 +117,10 @@ clutter_backend_x11_add_options (ClutterBackend *backend,
 ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend);
 
-#ifdef USE_XINPUT
+XVisualInfo *
+clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11,
+                                     gboolean           for_offscreen);
+
 void 
 _clutter_x11_register_xinput (void);
 
@@ -129,7 +129,6 @@ _clutter_x11_unregister_xinput (void);
 
 ClutterX11XInputDevice *
 _clutter_x11_get_device_for_xid (XID id);
-#endif
 
 void
 _clutter_x11_select_events (Window xwin);

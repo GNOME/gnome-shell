@@ -35,11 +35,6 @@ cogl_sources = \
 	cogl-context.c		\
 	$(NULL)
 
-coglincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
-coglinclude_HEADERS = \
-	$(cogl_headers) \
-	$(top_builddir)/clutter/cogl/cogl.h
-
 INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_srcdir)/clutter/cogl/common \
@@ -50,12 +45,12 @@ INCLUDES = \
 	-DG_LOG_DOMAIN=\"Cogl-GL\" \
 	-DCLUTTER_COMPILATION
 
-noinst_LTLIBRARIES = libclutter-cogl.la
+noinst_LTLIBRARIES = libclutter-cogl-gl.la
 
-libclutter_cogl_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(COGL_DEBUG_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
-libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
-libclutter_cogl_la_DEPENDENCIES = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
-libclutter_cogl_la_SOURCES = \
+libclutter_cogl_gl_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(COGL_DEBUG_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+libclutter_cogl_gl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
+libclutter_cogl_gl_la_DEPENDENCIES = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
+libclutter_cogl_gl_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl.h 	\
 	$(cogl_headers) 			\
 	$(cogl_priv_headers)			\

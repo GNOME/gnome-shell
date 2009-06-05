@@ -219,7 +219,7 @@ clutter_backend_glx_constructor (GType                  gtype,
 static gboolean
 check_vblank_env (const char *name)
 {
-  if (clutter_vblank_name && !strcasecmp(clutter_vblank_name, name))
+  if (clutter_vblank_name && !g_ascii_strcasecmp (clutter_vblank_name, name))
     return TRUE;
 
   return FALSE;
@@ -354,6 +354,57 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   return flags;
 }
 
+static gboolean
+clutter_backend_glx_create_context (ClutterBackend  *backend,
+                                    gboolean         is_offscreen,
+                                    GError         **error)
+{
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  if (backend_glx->gl_context == None)
+    {
+      XVisualInfo *xvisinfo;
+
+      xvisinfo =
+        clutter_backend_x11_get_visual_info (backend_x11, is_offscreen);
+
+      CLUTTER_NOTE (GL, "Creating GL Context (display: %p, %s)",
+                    backend_x11->xdpy,
+                    is_offscreen ? "offscreen" : "onscreen");
+
+      backend_glx->gl_context = glXCreateContext (backend_x11->xdpy,
+                                                  xvisinfo,
+                                                  0,
+                                                  is_offscreen ? False : True);
+
+      XFree (xvisinfo);
+
+      if (backend_glx->gl_context == None)
+        {
+          g_set_error (error, CLUTTER_INIT_ERROR,
+                       CLUTTER_INIT_ERROR_BACKEND,
+                       "Unable to create suitable %s GL context",
+                       is_offscreen ? "offscreen" : "onscreen");
+          return FALSE;
+        }
+
+      if (!is_offscreen)
+        {
+          gboolean is_direct;
+
+          is_direct = glXIsDirect (backend_x11->xdpy,
+                                   backend_glx->gl_context);
+
+          CLUTTER_NOTE (GL, "Setting %s context",
+                        is_direct ? "direct" : "indirect");
+          _cogl_set_indirect_context (!is_direct);
+        }
+    }
+
+  return TRUE;
+}
+
 static void
 clutter_backend_glx_ensure_context (ClutterBackend *backend, 
                                     ClutterStage   *stage)
@@ -434,8 +485,11 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   ClutterStageWindow *impl;
 
   impl = _clutter_stage_get_window (stage);
-  if (!impl)
-    return;
+  if (G_UNLIKELY (impl == NULL))
+    {
+      CLUTTER_NOTE (BACKEND, "Stage [%p] has no implementation", stage);
+      return;
+    }
 
   g_assert (CLUTTER_IS_STAGE_GLX (impl));
 
@@ -445,23 +499,28 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
   /* this will cause the stage implementation to be painted */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 
-  /* Why this paint is done in backend as likely GL windowing system
-   * specific calls, like swapping buffers.
-  */
-  if (stage_x11->xwin)
+  if (stage_x11->xwin != None)
     {
+      /* wait for the next vblank */
+      CLUTTER_NOTE (BACKEND, "Waiting for vblank");
       clutter_backend_glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
+
+      /* push on the screen */
+      CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
+                    stage_x11->xdpy,
+                    (unsigned long) stage_x11->xwin);
       glXSwapBuffers (stage_x11->xdpy, stage_x11->xwin);
     }
   else
     {
       /* offscreen */
       glXWaitGL ();
+
       CLUTTER_GLERR ();
     }
 }
 
-static ClutterActor*
+static ClutterActor *
 clutter_backend_glx_create_stage (ClutterBackend  *backend,
                                   ClutterStage    *wrapper,
                                   GError         **error)
@@ -483,12 +542,59 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   stage_x11->backend = backend_x11;
   stage_x11->wrapper = wrapper;
 
-  CLUTTER_NOTE (BACKEND, "GLX stage created (display:%p, screen:%d, root:%u)",
+  CLUTTER_NOTE (BACKEND,
+                "GLX stage created[%p] (dpy:%p, screen:%d, root:%u, wrap:%p)",
+                stage,
                 stage_x11->xdpy,
                 stage_x11->xscreen,
-                (unsigned int) stage_x11->xwin_root);
+                (unsigned int) stage_x11->xwin_root,
+                wrapper);
 
   return stage;
+}
+
+static XVisualInfo *
+clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11,
+                                     gboolean           for_offscreen)
+{
+  XVisualInfo *xvisinfo;
+  int onscreen_gl_attributes[] = {
+    GLX_RGBA,
+    GLX_DOUBLEBUFFER,
+    GLX_RED_SIZE,     1,
+    GLX_GREEN_SIZE,   1,
+    GLX_BLUE_SIZE,    1,
+    GLX_STENCIL_SIZE, 1,
+    0
+  };
+  int offscreen_gl_attributes[] = {
+    GLX_RGBA,
+    GLX_USE_GL,
+    GLX_DEPTH_SIZE,   0,
+    GLX_ALPHA_SIZE,   0,
+    GLX_STENCIL_SIZE, 1,
+    GLX_RED_SIZE,     1,
+    GLX_GREEN_SIZE,   1,
+    GLX_BLUE_SIZE,    1,
+    0
+  };
+
+  if (backend_x11->xdpy == None || backend_x11->xscreen == None)
+    return NULL;
+
+  CLUTTER_NOTE (BACKEND,
+                "Retrieving GL visual (for %s use), dpy: %p, xscreen; %p (%d)",
+                for_offscreen ? "offscreen" : "onscreen",
+                backend_x11->xdpy,
+                backend_x11->xscreen,
+                backend_x11->xscreen_num);
+
+  xvisinfo = glXChooseVisual (backend_x11->xdpy,
+                              backend_x11->xscreen_num,
+                              for_offscreen ? offscreen_gl_attributes
+                                            : onscreen_gl_attributes);
+
+  return xvisinfo;
 }
 
 static void
@@ -496,6 +602,7 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
+  ClutterBackendX11Class *backendx11_class = CLUTTER_BACKEND_X11_CLASS (klass);
 
   gobject_class->constructor = clutter_backend_glx_constructor;
   gobject_class->dispose     = clutter_backend_glx_dispose;
@@ -507,7 +614,10 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->add_options    = clutter_backend_glx_add_options;
   backend_class->get_features   = clutter_backend_glx_get_features;
   backend_class->redraw         = clutter_backend_glx_redraw;
+  backend_class->create_context = clutter_backend_glx_create_context;
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
+
+  backendx11_class->get_visual_info = clutter_backend_glx_get_visual_info;
 }
 
 static void

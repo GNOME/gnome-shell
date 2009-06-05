@@ -45,6 +45,9 @@
 #define glFrustum(L,R,B,T,N,F) \
             glFrustumf((GLfloat)L, (GLfloat)R, (GLfloat)B, \
                        (GLfloat)T, (GLfloat)N, (GLfloat)F)
+
+#define glOrtho glOrthof
+
 #endif
 
 #include <string.h>
@@ -209,30 +212,57 @@ _cogl_current_matrix_frustum (float left,
 }
 
 void
-_cogl_current_matrix_ortho (float             left,
-                            float             right,
-                            float             bottom,
-                            float             top,
-                            float             near_val,
-                            float             far_val)
+_cogl_current_matrix_perspective (float fov_y,
+                                  float aspect,
+                                  float z_near,
+                                  float z_far)
 {
-#if 0
+  _COGL_GET_CONTEXT_AND_STACK (ctx, current_stack, NO_RETVAL);
+
+  if (current_stack != NULL)
+    _cogl_matrix_stack_perspective (current_stack,
+                                    fov_y, aspect, z_near, z_far);
+  else
+    {
+      /* NB: There is no glPerspective() (only gluPerspective()) so we use
+       * cogl_matrix_perspective: */
+      CoglMatrix matrix;
+      _cogl_get_matrix (ctx->matrix_mode, &matrix);
+      cogl_matrix_perspective (&matrix,
+                               fov_y, aspect, z_near, z_far);
+      _cogl_current_matrix_load (&matrix);
+    }
+}
+
+void
+_cogl_current_matrix_ortho (float left,
+                            float right,
+                            float bottom,
+                            float top,
+                            float near_val,
+                            float far_val)
+{
   _COGL_GET_CONTEXT_AND_STACK (ctx, current_stack, NO_RETVAL);
 
   if (current_stack != NULL)
     _cogl_matrix_stack_ortho (current_stack,
                               left, right,
-                              top, bottom,
+                              bottom, top,
                               near_val,
                               far_val);
   else
-    GE (glOrtho (left, right, bottom, top, near_val, far_val));
+    {
+#ifdef HAVE_COGL_GLES2
+      /* NB: GLES 2 has no glOrtho(): */
+      CoglMatrix matrix;
+      _cogl_get_matrix (ctx->matrix_mode, &matrix);
+      cogl_matrix_ortho (&matrix,
+                         left, right, bottom, top, near_val, far_val);
+      _cogl_current_matrix_load (&matrix);
 #else
-  /* Nobody is using glOrtho right now anyway, so not bothering */
-  g_warning ("%s not implemented, need to code cogl_matrix_ortho() if you need"
-             " this function",
-             G_STRFUNC);
+      GE (glOrtho (left, right, bottom, top, near_val, far_val));
 #endif
+    }
 }
 
 void
@@ -274,6 +304,12 @@ _cogl_get_matrix (CoglMatrixMode mode,
       GE (glGetFloatv (gl_mode, gl_matrix));
       cogl_matrix_init_from_array (matrix, gl_matrix);
     }
+}
+
+void
+_cogl_set_matrix (const CoglMatrix *matrix)
+{
+  _cogl_current_matrix_load (matrix);
 }
 
 void
@@ -354,85 +390,19 @@ cogl_rotate (float angle, float x, float y, float z)
 }
 
 void
-_cogl_set_matrix (const CoglMatrix *matrix)
-{
-  _cogl_current_matrix_load (matrix);
-}
-
-void
-cogl_get_modelview_matrix (CoglMatrix *matrix)
-{
-  _cogl_get_matrix (COGL_MATRIX_MODELVIEW,
-                    matrix);
-}
-
-void
-cogl_get_projection_matrix (CoglMatrix *matrix)
-{
-  _cogl_get_matrix (COGL_MATRIX_PROJECTION,
-                    matrix);
-}
-
-void
-cogl_perspective (float fovy,
+cogl_perspective (float fov_y,
 		  float aspect,
-		  float zNear,
-		  float zFar)
+		  float z_near,
+		  float z_far)
 {
-  float xmax, ymax;
-  float x, y, c, d;
-  float fovy_rad_half = (fovy * G_PI) / 360;
-  CoglMatrix perspective;
-  GLfloat m[16];
+  float ymax = z_near * tanf (fov_y * G_PI / 360.0);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  memset (&m[0], 0, sizeof (m));
-
-  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-  _cogl_current_matrix_identity ();
-
-  /*
-   * Based on the original algorithm in perspective():
-   *
-   * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
-   * same true for y, hence: a == 0 && b == 0;
-   *
-   * 2) When working with small numbers, we are loosing significant
-   * precision
-   */
-  ymax = (zNear * (sinf (fovy_rad_half) / cosf (fovy_rad_half)));
-  xmax = (ymax * aspect);
-
-  x = (zNear / xmax);
-  y = (zNear / ymax);
-  c = (-(zFar + zNear) / ( zFar - zNear));
-  d = (-(2 * zFar) * zNear) / (zFar - zNear);
-
-#define M(row,col)  m[col*4+row]
-  M(0,0) = x;
-  M(1,1) = y;
-  M(2,2) = c;
-  M(2,3) = d;
-  M(3,2) = -1.0;
-
-  cogl_matrix_init_from_array (&perspective, m);
-  _cogl_current_matrix_multiply (&perspective);
-
-  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-
-  /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
-
-#define m ctx->inverse_projection
-  M(0, 0) = (1.0 / x);
-  M(1, 1) = (1.0 / y);
-  M(2, 3) = -1.0;
-  M(3, 2) = (1.0 / d);
-  M(3, 3) = (c / d);
-#undef m
-
-#undef M
+  cogl_frustum (-ymax * aspect,  /* left */
+                ymax * aspect,   /* right */
+                -ymax,           /* bottom */
+                ymax,            /* top */
+                z_near,
+                z_far);
 }
 
 void
@@ -474,4 +444,65 @@ cogl_frustum (float        left,
   M(3,2) = 1.0 / d;
   M(3,3) = c / d;
 #undef M
+
+  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
 }
+
+void
+cogl_ortho (float left,
+	    float right,
+	    float bottom,
+	    float top,
+	    float z_near,
+	    float z_far)
+{
+  CoglMatrix ortho;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_matrix_init_identity (&ortho);
+  cogl_matrix_ortho (&ortho, left, right, bottom, top, z_near, z_far);
+  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+  _cogl_current_matrix_load (&ortho);
+
+  /* Calculate and store the inverse of the matrix */
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
+
+#define M(row,col)  ctx->inverse_projection[col*4+row]
+  M(0,0) =  1.0 / ortho.xx;
+  M(0,3) =  -ortho.xw;
+  M(1,1) =  1.0 / ortho.yy;
+  M(1,3) =  -ortho.yw;
+  M(2,2) =  1.0 / ortho.zz;
+  M(2,3) =  -ortho.zw;
+  M(3,3) =  1.0;
+#undef M
+}
+
+void
+cogl_get_modelview_matrix (CoglMatrix *matrix)
+{
+  _cogl_get_matrix (COGL_MATRIX_MODELVIEW,
+                    matrix);
+}
+
+void
+cogl_set_modelview_matrix (CoglMatrix *matrix)
+{
+  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+  _cogl_current_matrix_load (matrix);
+}
+
+void
+cogl_get_projection_matrix (CoglMatrix *matrix)
+{
+  _cogl_get_matrix (COGL_MATRIX_PROJECTION,
+                    matrix);
+}
+
+void
+cogl_set_projection_matrix (CoglMatrix *matrix)
+{
+  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+  _cogl_current_matrix_load (matrix);
+}
+

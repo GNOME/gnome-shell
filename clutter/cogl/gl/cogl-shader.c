@@ -108,22 +108,23 @@ cogl_shader_compile (CoglHandle handle)
   glCompileShaderARB (shader->gl_handle);
 }
 
-void
-cogl_shader_get_info_log (CoglHandle  handle,
-                          size_t      size,
-                          char       *buffer)
+gchar *
+cogl_shader_get_info_log (CoglHandle handle)
 {
   CoglShader *shader;
+  char buffer[512];
   int len;
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   if (!cogl_is_shader (handle))
-    return;
+    return NULL;
 
   shader = _cogl_shader_pointer_from_handle (handle);
 
-  glGetInfoLogARB (shader->gl_handle, size-1, &len, buffer);
+  glGetInfoLogARB (shader->gl_handle, 511, &len, buffer);
   buffer[len]='\0';
+
+  return g_strdup (buffer);
 }
 
 CoglShaderType

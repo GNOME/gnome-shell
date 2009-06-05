@@ -49,7 +49,8 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   CLUTTER_MARK();
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize != NULL)
+    CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize (actor);
 
   if (stage_egl->egl_surface)
     {
@@ -220,9 +221,9 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
 static void
 clutter_stage_egl_get_preferred_width (ClutterActor *self,
-                                       ClutterUnit   for_height,
-                                       ClutterUnit  *min_width_p,
-                                       ClutterUnit  *natural_width_p)
+                                       gfloat        for_height,
+                                       gfloat       *min_width_p,
+                                       gfloat       *natural_width_p)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
 
@@ -235,9 +236,9 @@ clutter_stage_egl_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_stage_egl_get_preferred_height (ClutterActor *self,
-                                        ClutterUnit   for_width,
-                                        ClutterUnit  *min_height_p,
-                                        ClutterUnit  *natural_height_p)
+                                        gfloat        for_width,
+                                        gfloat       *min_height_p,
+                                        gfloat       *natural_height_p)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
 
@@ -252,8 +253,6 @@ static void
 clutter_stage_egl_dispose (GObject *gobject)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (gobject);
-
-  clutter_actor_unrealize (CLUTTER_ACTOR (stage_egl));
 
   G_OBJECT_CLASS (clutter_stage_egl_parent_class)->dispose (gobject);
 }

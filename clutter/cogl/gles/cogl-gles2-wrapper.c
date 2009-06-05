@@ -89,13 +89,13 @@ cogl_gles2_wrapper_create_shader (GLenum type, const char *source)
 
   if (!status)
     {
-      char log[1024];
+      char shader_log[1024];
       GLint len;
 
-      glGetShaderInfoLog (shader, sizeof (log) - 1, &len, log);
-      log[len] = '\0';
+      glGetShaderInfoLog (shader, sizeof (shader_log) - 1, &len, shader_log);
+      shader_log[len] = '\0';
 
-      g_critical ("%s", log);
+      g_critical ("%s", shader_log);
 
       glDeleteShader (shader);
 
@@ -538,9 +538,9 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 	  CoglShader *shader
 	    = _cogl_shader_pointer_from_handle ((CoglHandle) node->data);
 
-	  if (shader->type == CGL_VERTEX_SHADER)
+	  if (shader->type == COGL_SHADER_TYPE_VERTEX)
 	    custom_vertex_shader = TRUE;
-	  else if (shader->type == CGL_FRAGMENT_SHADER)
+	  else if (shader->type == COGL_SHADER_TYPE_FRAGMENT)
 	    custom_fragment_shader = TRUE;
 	}
     }
@@ -581,13 +581,13 @@ cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
 
   if (!status)
     {
-      char log[1024];
+      char shader_log[1024];
       GLint len;
 
-      glGetProgramInfoLog (program->program, sizeof (log) - 1, &len, log);
-      log[len] = '\0';
+      glGetProgramInfoLog (program->program, sizeof (shader_log) - 1, &len, shader_log);
+      shader_log[len] = '\0';
 
-      g_critical ("%s", log);
+      g_critical ("%s", shader_log);
 
       glDeleteProgram (program->program);
       g_slice_free (CoglGles2WrapperProgram, program);
@@ -1300,11 +1300,18 @@ cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 }
 
 void
-cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLfloat param)
+cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLint param)
 {
   /* This function is only used to set the texture mode once to
      GL_MODULATE. The shader is hard-coded to modulate the texture so
      nothing needs to be done here. */
+}
+
+void
+cogl_wrap_glTexEnvfv (GLenum target, GLenum pname, const GLfloat *params)
+{
+  /* FIXME: Currently needed to support texture combining using
+   * COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT */
 }
 
 void

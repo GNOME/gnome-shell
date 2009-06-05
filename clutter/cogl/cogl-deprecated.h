@@ -23,6 +23,14 @@
 
 #ifndef COGL_DEPRECATED_H
 
-#define cogl_color              cogl_color_REPLACED_BY_cogl_set_source_color
+#define cogl_color                      cogl_color_REPLACED_BY_cogl_set_source_color
+#define cogl_enable_depth_test          cogl_enable_depth_test_RENAMED_TO_cogl_set_depth_test_enabled
+#define cogl_enable_backface_culling    cogl_enable_backface_culling_RENAMED_TO_cogl_set_backface_culling_enabled
+
+#define cogl_texture_rectangle          cogl_texture_rectangle_REPLACE_BY_cogl_set_source_texture_AND_cogl_rectangle_with_texture_coords
+
+#define cogl_texture_multiple_rectangles        cogl_texture_multiple_rectangles_REPLACED_BY_cogl_set_source_texture_AND_cogl_rectangles_with_texture_coords
+
+#define cogl_texture_polygon            cogl_texture_polygon_REPLACED_BY_cogl_set_source_texture_AND_cogl_polygon
 
 #endif

@@ -218,7 +218,8 @@ set_shader_num (ClutterActor *actor, gint new_no)
       
       error = NULL;
       g_object_set (G_OBJECT (shader),
-                    "fragment-source", shaders[shader_no].source, NULL);
+                    "fragment-source", shaders[shader_no].source,
+                    NULL);
 
       /* try to bind the shader, provoking an error we catch if there is issues
        * with the shader sources we've provided. At a later stage it should be

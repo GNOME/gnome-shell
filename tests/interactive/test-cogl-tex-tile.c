@@ -143,14 +143,10 @@ test_coglbox_init (TestCoglbox *self)
   TestCoglboxPrivate *priv;
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
 
-  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png", 0,
+  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png",
                                                   COGL_TEXTURE_NONE,
                                                   COGL_PIXEL_FORMAT_ANY,
                                                   NULL);
-
-  cogl_texture_set_filters (priv->cogl_tex_id,
-                            COGL_TEXTURE_FILTER_LINEAR,
-                            COGL_TEXTURE_FILTER_LINEAR);
 }
 
 static void
@@ -202,8 +198,8 @@ test_cogl_tex_tile_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
 
   /* Timeline for animation */
-  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
+  timeline = clutter_timeline_new (6000); /* num frames, fps */
+  clutter_timeline_set_loop (timeline, TRUE);
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), coglbox);
   clutter_timeline_start (timeline);
 

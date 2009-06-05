@@ -68,6 +68,7 @@ on_timeout (State *state)
             guint32 gid;
             ClutterActor *actor
               = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (state->stage),
+                                                CLUTTER_PICK_ALL,
                                                 x * state->actor_width
                                                 + state->actor_width / 2,
                                                 y * state->actor_height

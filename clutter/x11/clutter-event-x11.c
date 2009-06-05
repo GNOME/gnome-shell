@@ -43,7 +43,7 @@
 
 #include <X11/Xatom.h>
 
-#ifdef USE_XINPUT
+#ifdef HAVE_XINPUT
 #include <X11/extensions/XInput.h>
 #endif
 
@@ -263,7 +263,7 @@ set_user_time (ClutterBackendX11 *backend_x11,
     }
 }
 
-#if 0 /* See XInput keyboard comment below USE_XINPUT */
+#if 0 /* See XInput keyboard comment below HAVE_XINPUT */
 static void
 convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
 {
@@ -282,7 +282,7 @@ convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
   xevent->xkey.keycode = xkev->keycode;
   xevent->xkey.same_screen = xkev->same_screen;
 }
-#endif /* USE_XINPUT */
+#endif /* HAVE_XINPUT */
 
 static void
 translate_key_event (ClutterBackend   *backend,
@@ -479,15 +479,16 @@ event_translate (ClutterBackend *backend,
                         xevent->xconfigure.width,
                         xevent->xconfigure.height);
 
-	  clutter_actor_set_size (CLUTTER_ACTOR (stage),
-				  xevent->xconfigure.width,
-				  xevent->xconfigure.height);
+          stage_x11->xwin_width = xevent->xconfigure.width;
+          stage_x11->xwin_height = xevent->xconfigure.height;
 
           /* the resize process is complete, so we can ask the stage
            * to set up the GL viewport with the new size
            */
           CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
                                      CLUTTER_ACTOR_SYNC_MATRICES);
+
+          clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_x11->wrapper));
         }
       res = FALSE;
       break;
@@ -552,12 +553,10 @@ event_translate (ClutterBackend *backend,
       break;
 
     case MapNotify:
-      clutter_stage_x11_map (stage_x11);
       res = FALSE;
       break;
 
     case UnmapNotify:
-      clutter_stage_x11_unmap (stage_x11);
       res = FALSE;
       break;
 
@@ -738,7 +737,7 @@ event_translate (ClutterBackend *backend,
         }
       else
         {  /* XInput fun.. Needs clean up. */
-#ifdef USE_XINPUT
+#ifdef HAVE_XINPUT
           int *ev_types = backend_x11->event_types;
 
           CLUTTER_NOTE (EVENT, "XInput event type: %d", xevent->type);
@@ -799,8 +798,7 @@ event_translate (ClutterBackend *backend,
                   xbev->button == 6 ||
                   xbev->button == 7)
                 {
-                  res = FALSE;
-                  goto out;
+                  return FALSE;
                 }
 
               event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
@@ -863,7 +861,7 @@ event_translate (ClutterBackend *backend,
             }
 #endif
           else 
-#endif
+#endif /* HAVE_XINPUT */
             {
               CLUTTER_NOTE (EVENT, "Uknown Event");
               res = FALSE;
@@ -871,7 +869,6 @@ event_translate (ClutterBackend *backend,
         }
     }
 
- out:  
   return res;
 }
 

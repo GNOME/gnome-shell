@@ -173,14 +173,17 @@ test_coglbox_paint (ClutterActor *self)
                                            : priv->not_sliced_tex;
   int tex_width = cogl_texture_get_width (tex_handle);
   int tex_height = cogl_texture_get_height (tex_handle);
+  CoglHandle material = cogl_material_new ();
 
-  cogl_texture_set_filters (tex_handle,
-			    priv->use_linear_filtering
-			    ? COGL_TEXTURE_FILTER_LINEAR :
-                              COGL_TEXTURE_FILTER_NEAREST,
-			    priv->use_linear_filtering
-			    ? COGL_TEXTURE_FILTER_LINEAR :
-                              COGL_TEXTURE_FILTER_NEAREST);
+  cogl_material_set_layer (material, 0, tex_handle);
+
+  cogl_material_set_layer_filters (material, 0,
+                                   priv->use_linear_filtering
+                                   ? COGL_MATERIAL_FILTER_LINEAR :
+                                   COGL_MATERIAL_FILTER_NEAREST,
+                                   priv->use_linear_filtering
+                                   ? COGL_MATERIAL_FILTER_LINEAR :
+                                   COGL_MATERIAL_FILTER_NEAREST);
 
   cogl_push_matrix ();
   cogl_translate (tex_width / 2, 0, 0);
@@ -188,7 +191,7 @@ test_coglbox_paint (ClutterActor *self)
   cogl_translate (-tex_width / 2, 0, 0);
 
   /* Draw a hand and refect it */
-  cogl_set_source_texture (tex_handle);
+  cogl_set_source (material);
   cogl_rectangle_with_texture_coords (0, 0, tex_width, tex_height,
                                       0, 0, 1, 1);
   test_coglbox_fade_texture (tex_handle,
@@ -217,6 +220,8 @@ test_coglbox_paint (ClutterActor *self)
 				 1, 1);
 
   cogl_pop_matrix ();
+
+  cogl_handle_unref (material);
 }
 
 static void
@@ -248,7 +253,7 @@ test_coglbox_init (TestCoglbox *self)
   priv->use_sliced = FALSE;
 
   priv->sliced_tex =
-    cogl_texture_new_from_file  ("redhand.png", 10,
+    cogl_texture_new_from_file  ("redhand.png",
                                  COGL_TEXTURE_NONE,
                                  COGL_PIXEL_FORMAT_ANY,
                                  &error);
@@ -265,8 +270,8 @@ test_coglbox_init (TestCoglbox *self)
     }
 
   priv->not_sliced_tex =
-    cogl_texture_new_from_file ("redhand.png", -1,
-                                COGL_TEXTURE_NONE,
+    cogl_texture_new_from_file ("redhand.png",
+                                COGL_TEXTURE_NO_SLICING,
                                 COGL_PIXEL_FORMAT_ANY,
                                 &error);
   if (priv->not_sliced_tex == COGL_INVALID_HANDLE)
@@ -370,8 +375,8 @@ test_cogl_tex_polygon_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
 
   /* Timeline for animation */
-  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
+  timeline = clutter_timeline_new (6000);
+  clutter_timeline_set_loop (timeline, TRUE);
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), coglbox);
   clutter_timeline_start (timeline);
 

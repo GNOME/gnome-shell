@@ -7,10 +7,8 @@ test_conformance_SOURCES = 		\
 	test-conform-common.c 		\
 	test-conform-common.h 		\
 	\
-	test-timeline-dup-frames.c 	\
 	test-timeline-interpolate.c 	\
 	test-timeline-rewind.c 		\
-	test-timeline-smoothness.c 	\
 	test-timeline.c 		\
 	test-vertex-buffer-contiguous.c \
 	test-vertex-buffer-interleved.c \
@@ -28,6 +26,9 @@ test_conformance_SOURCES = 		\
 	test-anchors.c                  \
 	test-npot-texture.c             \
 	test-model.c			\
+	test-blend-strings.c		\
+	test-color.c			\
+	test-clutter-units.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
@@ -59,7 +60,7 @@ clean-wrappers:
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers
-	
+
 test_conformance_CFLAGS = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
@@ -76,6 +77,9 @@ test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@C
 
 test:
 	@gtester -o=test-conformance-results.xml ./test-conformance
+
+test-verbose:
+	@gtester --verbose -o=test-conformance-result.xml ./test-conformance
 
 test-report-normal:
 	@gtester -o=test-conformance-results.xml -k ./test-conformance \

@@ -42,6 +42,7 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
+#include "cogl-material-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -213,28 +214,37 @@ cogl_get_enable ()
 }
 
 void
-cogl_enable_depth_test (gboolean setting)
+cogl_set_depth_test_enabled (gboolean setting)
 {
   if (setting)
     {
       glEnable (GL_DEPTH_TEST);
-      glEnable (GL_ALPHA_TEST);
       glDepthFunc (GL_LEQUAL);
-      glAlphaFunc (GL_GREATER, 0.1);
     }
   else
-    {
-      glDisable (GL_DEPTH_TEST);
-      glDisable (GL_ALPHA_TEST);
-    }
+    glDisable (GL_DEPTH_TEST);
+}
+
+gboolean
+cogl_get_depth_test_enabled (void)
+{
+  return glIsEnabled (GL_DEPTH_TEST) == GL_TRUE ? TRUE : FALSE;
 }
 
 void
-cogl_enable_backface_culling (gboolean setting)
+cogl_set_backface_culling_enabled (gboolean setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   ctx->enable_backface_culling = setting;
+}
+
+gboolean
+cogl_get_backface_culling_enabled (void)
+{
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  return ctx->enable_backface_culling;
 }
 
 void
@@ -375,7 +385,7 @@ _cogl_add_stencil_clip (float x_offset,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+  _cogl_material_flush_gl_state (ctx->stencil_material, NULL);
 
   if (first)
     {
@@ -465,12 +475,12 @@ cogl_viewport (guint width,
 }
 
 void
-cogl_setup_viewport (guint width,
-		     guint height,
-		     float fovy,
-		     float aspect,
-		     float z_near,
-		     float z_far)
+_cogl_setup_viewport (guint width,
+                      guint height,
+                      float fovy,
+                      float aspect,
+                      float z_near,
+                      float z_far)
 {
   float z_camera;
   CoglMatrix projection_matrix;
@@ -478,7 +488,7 @@ cogl_setup_viewport (guint width,
   GE( glViewport (0, 0, width, height) );
 
   /* For Ortho projection.
-   * _cogl_current_matrix_ortho (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
+   * _cogl_current_matrix_ortho (0, width, 0,  height, -1, 1);
    */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
@@ -532,7 +542,7 @@ cogl_setup_viewport (guint width,
 }
 
 CoglFeatureFlags
-cogl_get_features ()
+cogl_get_features (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
 
@@ -653,9 +663,11 @@ cogl_disable_fog (void)
   glDisable (GL_FOG);
 }
 
+#if 0
 void
 cogl_flush_gl_state (int flags)
 {
   _cogl_current_matrix_state_flush ();
 }
+#endif
 

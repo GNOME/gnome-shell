@@ -46,9 +46,12 @@ G_BEGIN_DECLS
  * CoglShaderType:
  * @COGL_SHADER_TYPE_VERTEX: A program for proccessing vertices
  * @COGL_SHADER_TYPE_FRAGMENT: A program for processing fragments
+ *
+ * Types of shaders
+ *
+ * Since: 1.0
  */
-typedef enum _CoglShaderType
-{
+typedef enum {
   COGL_SHADER_TYPE_VERTEX,
   COGL_SHADER_TYPE_FRAGMENT
 } CoglShaderType;
@@ -103,7 +106,7 @@ gboolean        cogl_is_shader               (CoglHandle          handle);
  * one.
  */
 void            cogl_shader_source            (CoglHandle         shader,
-                                               const char        *source);
+                                               const gchar       *source);
 /**
  * cogl_shader_compile:
  * @handle: #CoglHandle for a shader.
@@ -111,29 +114,30 @@ void            cogl_shader_source            (CoglHandle         shader,
  * Compiles the shader, no return value, but the shader is now ready for
  * linking into a program.
  */
-void            cogl_shader_compile           (CoglHandle        handle);
+void            cogl_shader_compile           (CoglHandle         handle);
 
 /**
  * cogl_shader_get_info_log:
  * @handle: #CoglHandle for a shader.
- * @size: maximum number of bytes to retrieve.
- * @buffer: location for info log.
  *
  * Retrieves the information log for a coglobject, can be used in conjunction
- * with #cogl_shader_get_parameteriv to retrieve the compiler warnings/error
+ * with cogl_shader_get_parameteriv() to retrieve the compiler warnings/error
  * messages that caused a shader to not compile correctly, mainly useful for
  * debugging purposes.
+ *
+ * Return value: a newly allocated string containing the info log. Use
+ *   g_free() to free it
  */
-void            cogl_shader_get_info_log      (CoglHandle         handle,
-                                               size_t             size,
-                                               char              *buffer);
+gchar *         cogl_shader_get_info_log      (CoglHandle         handle);
 
 /**
  * cogl_shader_get_type:
  * @handle: #CoglHandle for a shader.
  *
- * Returns: COGL_SHADER_TYPE_VERTEX if the shader is a vertex processor
- *          or COGL_SHADER_TYPE_FRAGMENT if the shader is a frament processor
+ * Retrieves the type of a shader #CoglHandle
+ *
+ * Return value: %COGL_SHADER_TYPE_VERTEX if the shader is a vertex processor
+ *          or %COGL_SHADER_TYPE_FRAGMENT if the shader is a frament processor
  */
 CoglShaderType  cogl_shader_get_type          (CoglHandle          handle);
 
@@ -141,7 +145,9 @@ CoglShaderType  cogl_shader_get_type          (CoglHandle          handle);
  * cogl_shader_is_compiled:
  * @handle: #CoglHandle for a shader.
  *
- * Returns: TRUE if the shader object has sucessfully be compiled else FALSE
+ * Retrieves whether a shader #CoglHandle has been compiled
+ *
+ * Return value: %TRUE if the shader object has sucessfully be compiled
  */
 gboolean        cogl_shader_is_compiled       (CoglHandle          handle);
 

@@ -29,6 +29,7 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-clip-stack.h"
+#include "cogl-material-private.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -78,13 +79,13 @@ _cogl_path_stroke_nodes ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
   cogl_enable (enable_flags);
 
-  cogl_material_flush_gl_state (ctx->source_material,
-                                COGL_MATERIAL_FLUSH_DISABLE_MASK,
-                                (guint32)~0, /* disable all texture layers */
-                                NULL);
+  _cogl_material_flush_gl_state (ctx->source_material,
+                                 COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                 (guint32)~0, /* disable all texture layers */
+                                 NULL);
   _cogl_current_matrix_state_flush ();
 
   while (path_start < ctx->path_nodes->len)
@@ -139,10 +140,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Just setup a simple material that doesn't use texturing... */
-  cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+  _cogl_material_flush_gl_state (ctx->stencil_material, NULL);
 
   enable_flags |=
-    cogl_material_get_cogl_enable_flags (ctx->source_material);
+    _cogl_material_get_cogl_enable_flags (ctx->source_material);
   cogl_enable (enable_flags);
 
   _cogl_path_get_bounds (nodes_min, nodes_max,
@@ -361,30 +362,30 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
         while (iter)
           {
             GSList *next = iter->next;
-            GLfloat x0, x1;
-            GLfloat y0, y1;
+            GLfloat x_0, x_1;
+            GLfloat y_0, y_1;
             if (!next)
               break;
 
-            x0 = GPOINTER_TO_INT (iter->data);
-            x1 = GPOINTER_TO_INT (next->data);
-            y0 = bounds_y + i;
-            y1 = bounds_y + i + 1.0625f;
+            x_0 = GPOINTER_TO_INT (iter->data);
+            x_1 = GPOINTER_TO_INT (next->data);
+            y_0 = bounds_y + i;
+            y_1 = bounds_y + i + 1.0625f;
             /* render scanlines 1.0625 high to avoid gaps when
                transformed */
 
-            coords[span_no * 12 + 0] = x0;
-            coords[span_no * 12 + 1] = y0;
-            coords[span_no * 12 + 2] = x1;
-            coords[span_no * 12 + 3] = y0;
-            coords[span_no * 12 + 4] = x1;
-            coords[span_no * 12 + 5] = y1;
-            coords[span_no * 12 + 6] = x0;
-            coords[span_no * 12 + 7] = y0;
-            coords[span_no * 12 + 8] = x0;
-            coords[span_no * 12 + 9] = y1;
-            coords[span_no * 12 + 10] = x1;
-            coords[span_no * 12 + 11] = y1;
+            coords[span_no * 12 + 0] = x_0;
+            coords[span_no * 12 + 1] = y_0;
+            coords[span_no * 12 + 2] = x_1;
+            coords[span_no * 12 + 3] = y_0;
+            coords[span_no * 12 + 4] = x_1;
+            coords[span_no * 12 + 5] = y_1;
+            coords[span_no * 12 + 6] = x_0;
+            coords[span_no * 12 + 7] = y_0;
+            coords[span_no * 12 + 8] = x_0;
+            coords[span_no * 12 + 9] = y_1;
+            coords[span_no * 12 + 10] = x_1;
+            coords[span_no * 12 + 11] = y_1;
             span_no ++;
             iter = next->next;
           }

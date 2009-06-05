@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY version SYSTEM "version.xml">
+]>
+
+<refentry id="cogl-Blend-Strings">
+<refmeta>
+<refentrytitle role="top_of_page" id="cogl-Blend-Strings.top_of_page">Material Blend Strings</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>COGL Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Material Blend Strings</refname>
+<refpurpose>A simple syntax and grammar for describing blending and texture
+combining functions.</refpurpose>
+</refnamediv>
+
+<refsect1 id="cogl-Blend-Strings.description" role="desc">
+<title>Cogl Blend Strings</title>
+<para>
+Describing GPU blending and texture combining states is rather awkward to do
+in a consise but also readable fashion. Cogl helps by supporting
+string based descriptions using a simple syntax.
+</para>
+
+<section>
+<title>Some examples</title>
+
+<para>Here is an example used for blending:</para>
+<programlisting>
+"RGBA = ADD (SRC_COLOR * (SRC_COLOR[A]), DST_COLOR * (1-SRC_COLOR[A]))"
+</programlisting>
+<para>In OpenGL terms this replaces glBlendFunc[Separate] and
+glBlendEquation[Separate]</para>
+<para>
+Actually in this case it's more verbose than the GL equivalent:
+</para>
+<programlisting>
+glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+</programlisting>
+<para>
+But unless you are familiar with OpenGL or refer to its API documentation
+you wouldn't know that the default function used by OpenGL is GL_FUNC_ADD
+nor would you know that the above arguments determine what the source color
+and destination color will be multiplied by before being adding.
+</para>
+
+<para>Here is an example used for texture combining:</para>
+<programlisting>
+"RGB = REPLACE (PREVIOUS)"
+"A = MODULATE (PREVIOUS, TEXTURE)"
+</programlisting>
+<para>
+In OpenGL terms this replaces glTexEnv, and the above example is equivalent
+to this OpenGL code:
+</para>
+<programlisting>
+  glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+  glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+  glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
+  glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB, GL_PREVIOUS);
+  glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+  glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
+  glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB, GL_PREVIOUS);
+  glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+  glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_RGB, GL_TEXTURE);
+  glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
+</programlisting>
+
+</section>
+
+<section id="cogl-Blend-String-syntax">
+<title>Here's the syntax</title>
+
+<programlisting>
+&lt;statement&gt;:
+  &lt;channel-mask&gt;=&lt;function-name&gt;(&lt;arg-list&gt;)
+
+  You can either use a single statement with an RGBA channel-mask or you can use
+  two statements; one with an A channel-mask and the other with an RGB
+  channel-mask.
+
+&lt;channel-mask&gt;:
+  A or RGB or RGBA
+
+&lt;function-name&gt;:
+  [A-Za-z_]*
+
+&lt;arg-list&gt;:
+  &lt;arg&gt;,&lt;arg&gt;
+  or &lt;arg&gt;
+  or ""
+
+  I.e. functions may take 0 or more arguments
+
+&lt;arg&gt;:
+  &lt;color-source&gt;
+  1 - &lt;color-source&gt;                : Only intended for texture combining
+  &lt;color-source&gt; * ( &lt;factor&gt; )     : Only intended for blending
+  0                                 : Only intended for blending
+
+  See the blending or texture combining sections for further notes and examples.
+
+&lt;color-source&gt;:
+  &lt;source-name&gt;[&lt;channel-mask&gt;]
+  &lt;source-name&gt;
+
+  See the blending or texture combining sections for the list of source-names
+  valid in each context.
+
+  If a channel mask is not given then the channel mask of the statement
+  is assumed instead.
+
+&lt;factor&gt;:
+  0
+  1
+  &lt;color-source&gt;
+  1-&lt;color-source&gt;
+  SRC_ALPHA_SATURATE
+</programlisting>
+
+</section>
+
+
+</refsect1>
+
+
+</refentry>

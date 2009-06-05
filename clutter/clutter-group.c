@@ -96,8 +96,7 @@ clutter_group_paint (ClutterActor *actor)
 
       g_assert (child != NULL);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
-	clutter_actor_paint (child);
+      clutter_actor_paint (child);
     }
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave '%s'",
@@ -106,43 +105,35 @@ clutter_group_paint (ClutterActor *actor)
 }
 
 static void
-clutter_group_realize (ClutterActor *actor)
-{
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_realize),
-                             NULL);
-}
-
-static void
-clutter_group_unrealize (ClutterActor *actor)
-{
-  clutter_container_foreach (CLUTTER_CONTAINER (actor),
-                             CLUTTER_CALLBACK (clutter_actor_unrealize),
-                             NULL);
-}
-
-static void
 clutter_group_pick (ClutterActor       *actor,
 		    const ClutterColor *color)
 {
+  ClutterGroupPrivate *priv = CLUTTER_GROUP (actor)->priv;
+  GList               *child_item;
+
   /* Chain up so we get a bounding box pained (if we are reactive) */
   CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->pick (actor, color);
 
-  /* Just forward to the paint call which in turn will trigger
-   * the child actors also getting 'picked'.
-   */
-  if (CLUTTER_ACTOR_IS_VISIBLE (actor))
-    clutter_group_paint (actor);
+  for (child_item = priv->children;
+       child_item != NULL;
+       child_item = child_item->next)
+    {
+      ClutterActor *child = child_item->data;
+
+      g_assert (child != NULL);
+
+      clutter_actor_paint (child);
+    }
 }
 
 static void
-clutter_fixed_layout_get_preferred_width (GList       *children,
-                                          ClutterUnit *min_width_p,
-                                          ClutterUnit *natural_width_p)
+clutter_fixed_layout_get_preferred_width (GList  *children,
+                                          gfloat *min_width_p,
+                                          gfloat *natural_width_p)
 {
   GList *l;
-  ClutterUnit min_left, min_right;
-  ClutterUnit natural_left, natural_right;
+  gfloat min_left, min_right;
+  gfloat natural_left, natural_right;
 
   min_left = 0;
   min_right = 0;
@@ -152,9 +143,9 @@ clutter_fixed_layout_get_preferred_width (GList       *children,
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_x, child_min, child_natural;
+      gfloat child_x, child_min, child_natural;
 
-      child_x = clutter_actor_get_xu (child);
+      child_x = clutter_actor_get_x (child);
 
       clutter_actor_get_preferred_size (child,
                                         &child_min, NULL,
@@ -212,13 +203,13 @@ clutter_fixed_layout_get_preferred_width (GList       *children,
 }
 
 static void
-clutter_fixed_layout_get_preferred_height (GList       *children,
-                                           ClutterUnit *min_height_p,
-                                           ClutterUnit *natural_height_p)
+clutter_fixed_layout_get_preferred_height (GList  *children,
+                                           gfloat *min_height_p,
+                                           gfloat *natural_height_p)
 {
   GList *l;
-  ClutterUnit min_top, min_bottom;
-  ClutterUnit natural_top, natural_bottom;
+  gfloat min_top, min_bottom;
+  gfloat natural_top, natural_bottom;
 
   min_top = 0;
   min_bottom = 0;
@@ -228,9 +219,9 @@ clutter_fixed_layout_get_preferred_height (GList       *children,
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_y, child_min, child_natural;
+      gfloat child_y, child_min, child_natural;
 
-      child_y = clutter_actor_get_yu (child);
+      child_y = clutter_actor_get_y (child);
 
       clutter_actor_get_preferred_size (child,
                                         NULL, &child_min,
@@ -288,23 +279,23 @@ clutter_fixed_layout_get_preferred_height (GList       *children,
 }
 
 static void
-clutter_fixed_layout_allocate (GList    *children,
-                               gboolean  absolute_origin_changed)
+clutter_fixed_layout_allocate (GList                  *children,
+                               ClutterAllocationFlags  flags)
 {
   GList *l;
 
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      clutter_actor_allocate_preferred_size (child, absolute_origin_changed);
+      clutter_actor_allocate_preferred_size (child, flags);
     }
 }
 
 static void
 clutter_group_get_preferred_width (ClutterActor *self,
-                                   ClutterUnit   for_height,
-                                   ClutterUnit  *min_width_p,
-                                   ClutterUnit  *natural_width_p)
+                                   gfloat        for_height,
+                                   gfloat       *min_width_p,
+                                   gfloat       *natural_width_p)
 {
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
@@ -316,9 +307,9 @@ clutter_group_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_group_get_preferred_height (ClutterActor *self,
-                                    ClutterUnit   for_width,
-                                    ClutterUnit  *min_height_p,
-                                    ClutterUnit  *natural_height_p)
+                                    gfloat        for_width,
+                                    gfloat       *min_height_p,
+                                    gfloat       *natural_height_p)
 {
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
@@ -329,22 +320,21 @@ clutter_group_get_preferred_height (ClutterActor *self,
 }
 
 static void
-clutter_group_allocate (ClutterActor          *self,
-                        const ClutterActorBox *box,
-                        gboolean               origin_changed)
+clutter_group_allocate (ClutterActor           *self,
+                        const ClutterActorBox  *box,
+                        ClutterAllocationFlags  flags)
 {
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->allocate (self, box,
-                                                              origin_changed);
+  CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->allocate (self, box, flags);
 
   /* Note that fixed-layout allocation of children does not care what
    * allocation the container received, so "box" is not passed in
    * here. We do not require that children's allocations are completely
    * contained by our own.
    */
-  clutter_fixed_layout_allocate (priv->children, origin_changed);
+  clutter_fixed_layout_allocate (priv->children, flags);
 }
 
 static void
@@ -587,8 +577,6 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->pick            = clutter_group_pick;
   actor_class->show_all        = clutter_group_real_show_all;
   actor_class->hide_all        = clutter_group_real_hide_all;
-  actor_class->realize         = clutter_group_realize;
-  actor_class->unrealize       = clutter_group_unrealize;
 
   actor_class->get_preferred_width  = clutter_group_get_preferred_width;
   actor_class->get_preferred_height = clutter_group_get_preferred_height;

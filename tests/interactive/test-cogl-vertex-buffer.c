@@ -49,6 +49,7 @@ typedef struct _TestState
   GLubyte         *quad_mesh_colors;
   GLushort        *static_indices;
   guint            n_static_indices;
+  CoglHandle       indices;
   ClutterTimeline *timeline;
 } TestState;
 
@@ -58,8 +59,7 @@ frame_cb (ClutterTimeline *timeline,
           TestState       *state)
 {
   guint x, y;
-  guint n_frames = clutter_timeline_get_n_frames (timeline);
-  float period_progress = ((float)frame_num / (float)n_frames) * 2.0 * G_PI;
+  float period_progress = clutter_timeline_get_progress (timeline);
   float period_progress_sin = sinf (period_progress);
   float wave_shift = period_progress * WAVE_SPEED;
   float ripple_shift = period_progress * RIPPLE_SPEED;
@@ -139,12 +139,13 @@ on_paint (ClutterActor *actor, TestState *state)
 {
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_vertex_buffer_draw_elements (state->buffer,
-                                    GL_TRIANGLE_STRIP,
-                                    0,
-                                    (MESH_WIDTH + 1) * (MESH_HEIGHT + 1),
-                                    state->n_static_indices,
-                                    GL_UNSIGNED_SHORT,
-                                    state->static_indices);
+                                    COGL_VERTICES_MODE_TRIANGLE_STRIP,
+                                    state->indices,
+                                    0, /* min index */
+                                    (MESH_WIDTH + 1) *
+                                    (MESH_HEIGHT + 1), /* max index */
+                                    0, /* indices offset */
+                                    state->n_static_indices);
 }
 
 static void
@@ -220,6 +221,11 @@ init_static_index_arrays (TestState *state)
     }
 
 #undef MESH_INDEX
+
+  state->indices =
+    cogl_vertex_buffer_indices_new (COGL_INDICES_TYPE_UNSIGNED_SHORT,
+                                    state->static_indices,
+                                    state->n_static_indices);
 }
 
 static float
@@ -280,7 +286,7 @@ init_quad_mesh (TestState *state)
   cogl_vertex_buffer_add (state->buffer,
                           "gl_Vertex",
                           3, /* n components */
-                          GL_FLOAT,
+                          COGL_ATTRIBUTE_TYPE_FLOAT,
                           FALSE, /* normalized */
                           0, /* stride */
                           state->quad_mesh_verts);
@@ -288,7 +294,7 @@ init_quad_mesh (TestState *state)
   cogl_vertex_buffer_add (state->buffer,
                           "gl_Color",
                           4, /* n components */
-                          GL_UNSIGNED_BYTE,
+                          COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE,
                           FALSE, /* normalized */
                           0, /* stride */
                           state->quad_mesh_colors);
@@ -347,7 +353,7 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
                               (stage_geom.width / 2.0) - (dummy_width / 2.0),
                               (stage_geom.height / 2.0) - (dummy_height / 2.0));
 
-  state.timeline = clutter_timeline_new (360, 60);
+  state.timeline = clutter_timeline_new (6000);
   clutter_timeline_set_loop (state.timeline, TRUE);
   g_signal_connect (state.timeline,
                     "new-frame",
@@ -368,6 +374,7 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
   clutter_main ();
 
   cogl_handle_unref (state.buffer);
+  cogl_handle_unref (state.indices);
 
   g_source_remove (idle_source);
 

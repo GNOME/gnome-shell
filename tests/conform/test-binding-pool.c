@@ -154,20 +154,16 @@ key_group_paint (ClutterActor *actor)
 
           clutter_actor_get_allocation_box (child, &box);
 
-          box.x1 -= CLUTTER_UNITS_FROM_DEVICE (2);
-          box.y1 -= CLUTTER_UNITS_FROM_DEVICE (2);
-          box.x2 += CLUTTER_UNITS_FROM_DEVICE (2);
-          box.y2 += CLUTTER_UNITS_FROM_DEVICE (2);
+          box.x1 -= 2;
+          box.y1 -= 2;
+          box.x2 += 2;
+          box.y2 += 2;
 
           cogl_set_source_color4ub (255, 255, 0, 224);
-          cogl_rectangle (CLUTTER_UNITS_TO_DEVICE (box.x1),
-                          CLUTTER_UNITS_TO_DEVICE (box.y1),
-                          CLUTTER_UNITS_TO_DEVICE (box.x2),
-                          CLUTTER_UNITS_TO_DEVICE (box.y2));
+          cogl_rectangle (box.x1, box.y1, box.x2, box.y2);
         }
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
-        clutter_actor_paint (child);
+      clutter_actor_paint (child);
     }
 
   g_list_free (children);
@@ -273,19 +269,19 @@ test_binding_pool (TestConformSimpleFixture *fixture,
 
   clutter_container_add (CLUTTER_CONTAINER (key_group),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "width", 50,
-                                       "height", 50,
-                                       "x", 0, "y", 0,
+                                       "width", 50.0,
+                                       "height", 50.0,
+                                       "x", 0.0, "y", 0.0,
                                        NULL),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "width", 50,
-                                       "height", 50,
-                                       "x", 75, "y", 0,
+                                       "width", 50.0,
+                                       "height", 50.0,
+                                       "x", 75.0, "y", 0.0,
                                        NULL),
                          g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "width", 50,
-                                       "height", 50,
-                                       "x", 150, "y", 0,
+                                       "width", 50.0,
+                                       "height", 50.0,
+                                       "x", 150.0, "y", 0.0,
                                        NULL),
                          NULL);
 

@@ -35,6 +35,7 @@
 
 #include "cogl-material-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-blend-string.h"
 
 #include <glib.h>
 #include <string.h>
@@ -50,6 +51,10 @@
 #ifdef HAVE_COGL_GL
 #define glActiveTexture ctx->pf_glActiveTexture
 #define glClientActiveTexture ctx->pf_glClientActiveTexture
+#define glBlendFuncSeparate ctx->pf_glBlendFuncSeparate
+#define glBlendEquation ctx->pf_glBlendEquation
+#define glBlendColor ctx->pf_glBlendColor
+#define glBlendEquationSeparate ctx->pf_glBlendEquationSeparate
 #endif
 
 static void _cogl_material_free (CoglMaterial *tex);
@@ -59,6 +64,12 @@ COGL_HANDLE_DEFINE (Material, material);
 COGL_HANDLE_DEFINE (MaterialLayer, material_layer);
 
 /* #define DISABLE_MATERIAL_CACHE 1 */
+
+GQuark
+_cogl_material_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-material-error-quark");
+}
 
 CoglHandle
 cogl_material_new (void)
@@ -88,8 +99,18 @@ cogl_material_new (void)
   material->flags |= COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC;
 
   /* Not the same as the GL default, but seems saner... */
-  material->blend_src_factor = COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA;
-  material->blend_dst_factor = COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+#ifndef HAVE_COGL_GLES
+  material->blend_equation_rgb = GL_FUNC_ADD;
+  material->blend_equation_alpha = GL_FUNC_ADD;
+  material->blend_src_factor_alpha = GL_SRC_ALPHA;
+  material->blend_dst_factor_alpha = GL_ONE_MINUS_SRC_ALPHA;
+  material->blend_constant[0] = 0;
+  material->blend_constant[1] = 0;
+  material->blend_constant[2] = 0;
+  material->blend_constant[3] = 0;
+#endif
+  material->blend_src_factor_rgb = GL_SRC_ALPHA;
+  material->blend_dst_factor_rgb = GL_ONE_MINUS_SRC_ALPHA;
   material->flags |= COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
 
   material->layers = NULL;
@@ -408,20 +429,177 @@ cogl_material_set_alpha_test_function (CoglHandle handle,
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC;
 }
 
+GLenum
+arg_to_gl_blend_factor (CoglBlendStringArgument *arg)
+{
+  if (arg->source.is_zero)
+    return GL_ZERO;
+  if (arg->factor.is_one)
+    return GL_ONE;
+  else if (arg->factor.is_src_alpha_saturate)
+    return GL_SRC_ALPHA_SATURATE;
+  else if (arg->factor.source.info->type ==
+           COGL_BLEND_STRING_COLOR_SOURCE_SRC_COLOR)
+    {
+      if (arg->factor.source.mask == COGL_BLEND_STRING_CHANNEL_MASK_RGB)
+        {
+          if (arg->factor.source.one_minus)
+            return GL_ONE_MINUS_SRC_COLOR;
+          else
+            return GL_SRC_COLOR;
+        }
+      else
+        {
+          if (arg->factor.source.one_minus)
+            return GL_ONE_MINUS_SRC_ALPHA;
+          else
+            return GL_SRC_ALPHA;
+        }
+    }
+  else if (arg->factor.source.info->type ==
+           COGL_BLEND_STRING_COLOR_SOURCE_DST_COLOR)
+    {
+      if (arg->factor.source.mask == COGL_BLEND_STRING_CHANNEL_MASK_RGB)
+        {
+          if (arg->factor.source.one_minus)
+            return GL_ONE_MINUS_DST_COLOR;
+          else
+            return GL_DST_COLOR;
+        }
+      else
+        {
+          if (arg->factor.source.one_minus)
+            return GL_ONE_MINUS_DST_ALPHA;
+          else
+            return GL_DST_ALPHA;
+        }
+    }
+#ifndef HAVE_COGL_GLES
+  else if (arg->factor.source.info->type ==
+           COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT)
+    {
+      if (arg->factor.source.mask == COGL_BLEND_STRING_CHANNEL_MASK_RGB)
+        {
+          if (arg->factor.source.one_minus)
+            return GL_ONE_MINUS_CONSTANT_COLOR;
+          else
+            return GL_CONSTANT_COLOR;
+        }
+      else
+        {
+          if (arg->factor.source.one_minus)
+            return GL_ONE_MINUS_CONSTANT_ALPHA;
+          else
+            return GL_CONSTANT_ALPHA;
+        }
+    }
+#endif
+
+  g_warning ("Unable to determine valid blend factor from blend string\n");
+  return GL_ONE;
+}
+
 void
-cogl_material_set_blend_factors (CoglHandle handle,
-				 CoglMaterialBlendFactor src_factor,
-				 CoglMaterialBlendFactor dst_factor)
+setup_blend_state (CoglBlendStringStatement *statement,
+                   GLenum *blend_equation,
+                   GLint *blend_src_factor,
+                   GLint *blend_dst_factor)
+{
+#ifndef HAVE_COGL_GLES
+  switch (statement->function->type)
+    {
+    case COGL_BLEND_STRING_FUNCTION_ADD:
+      *blend_equation = GL_FUNC_ADD;
+      break;
+    /* TODO - add more */
+    default:
+      g_warning ("Unsupported blend function given");
+      *blend_equation = GL_FUNC_ADD;
+    }
+#endif
+
+  *blend_src_factor = arg_to_gl_blend_factor (&statement->args[0]);
+  *blend_dst_factor = arg_to_gl_blend_factor (&statement->args[1]);
+}
+
+gboolean
+cogl_material_set_blend (CoglHandle handle,
+                         const char *blend_description,
+                         GError **error)
 {
   CoglMaterial *material;
+  CoglBlendStringStatement statements[2];
+  CoglBlendStringStatement split[2];
+  CoglBlendStringStatement *rgb;
+  CoglBlendStringStatement *a;
+  int count;
+
+  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+
+  material = _cogl_material_pointer_from_handle (handle);
+
+  count =
+    _cogl_blend_string_compile (blend_description,
+                                COGL_BLEND_STRING_CONTEXT_BLENDING,
+                                statements,
+                                error);
+  if (!count)
+    return FALSE;
+
+  if (statements[0].mask == COGL_BLEND_STRING_CHANNEL_MASK_RGBA)
+    {
+      _cogl_blend_string_split_rgba_statement (statements,
+                                               &split[0], &split[1]);
+      rgb = &split[0];
+      a = &split[1];
+    }
+  else
+    {
+      rgb = &statements[0];
+      a = &statements[1];
+    }
+
+#ifndef HAVE_COGL_GLES
+  setup_blend_state (rgb,
+                     &material->blend_equation_rgb,
+                     &material->blend_src_factor_rgb,
+                     &material->blend_dst_factor_rgb);
+  setup_blend_state (a,
+                     &material->blend_equation_alpha,
+                     &material->blend_src_factor_alpha,
+                     &material->blend_dst_factor_alpha);
+#else
+  setup_blend_state (rgb,
+                     NULL,
+                     &material->blend_src_factor_rgb,
+                     &material->blend_dst_factor_rgb);
+#endif
+
+  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
+
+  return TRUE;
+}
+
+void
+cogl_material_set_blend_constant (CoglHandle handle,
+                                  CoglColor *constant_color)
+{
+#ifndef HAVE_COGL_GLES
+  CoglMaterial *material;
+  GLfloat      *constant;
 
   g_return_if_fail (cogl_is_material (handle));
 
   material = _cogl_material_pointer_from_handle (handle);
-  material->blend_src_factor = src_factor;
-  material->blend_dst_factor = dst_factor;
+
+  constant = material->blend_constant;
+  constant[0] = cogl_color_get_red_float (constant_color);
+  constant[1] = cogl_color_get_green_float (constant_color);
+  constant[2] = cogl_color_get_blue_float (constant_color);
+  constant[3] = cogl_color_get_alpha_float (constant_color);
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
+#endif
 }
 
 /* Asserts that a layer corresponding to the given index exists. If no
@@ -459,25 +637,22 @@ _cogl_material_get_layer (CoglMaterial *material,
   layer_handle = _cogl_material_layer_handle_new (layer);
   layer->index = index_;
   layer->flags = COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
+  layer->mag_filter = COGL_MATERIAL_FILTER_LINEAR;
+  layer->min_filter = COGL_MATERIAL_FILTER_LINEAR;
   layer->texture = COGL_INVALID_HANDLE;
 
   /* Choose the same default combine mode as OpenGL:
    * MODULATE(PREVIOUS[RGBA],TEXTURE[RGBA]) */
-  layer->texture_combine_rgb_func = COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE;
-  layer->texture_combine_rgb_src[0] = COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS;
-  layer->texture_combine_rgb_src[1] = COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE;
-  layer->texture_combine_rgb_op[0] = COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR;
-  layer->texture_combine_rgb_op[1] = COGL_MATERIAL_LAYER_COMBINE_OP_SRC_COLOR;
-  layer->texture_combine_alpha_func =
-    COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE;
-  layer->texture_combine_alpha_src[0] =
-    COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS;
-  layer->texture_combine_alpha_src[1] =
-    COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE;
-  layer->texture_combine_alpha_op[0] =
-    COGL_MATERIAL_LAYER_COMBINE_OP_SRC_ALPHA;
-  layer->texture_combine_alpha_op[1] =
-    COGL_MATERIAL_LAYER_COMBINE_OP_SRC_ALPHA;
+  layer->texture_combine_rgb_func = GL_MODULATE;
+  layer->texture_combine_rgb_src[0] = GL_PREVIOUS;
+  layer->texture_combine_rgb_src[1] = GL_TEXTURE;
+  layer->texture_combine_rgb_op[0] = GL_SRC_COLOR;
+  layer->texture_combine_rgb_op[1] = GL_SRC_COLOR;
+  layer->texture_combine_alpha_func = GL_MODULATE;
+  layer->texture_combine_alpha_src[0] = GL_PREVIOUS;
+  layer->texture_combine_alpha_src[1] = GL_TEXTURE;
+  layer->texture_combine_alpha_op[0] = GL_SRC_ALPHA;
+  layer->texture_combine_alpha_op[1] = GL_SRC_ALPHA;
 
   cogl_matrix_init_identity (&layer->matrix);
 
@@ -498,7 +673,8 @@ cogl_material_set_layer (CoglHandle material_handle,
   int		     n_layers;
 
   g_return_if_fail (cogl_is_material (material_handle));
-  g_return_if_fail (cogl_is_texture (texture_handle));
+  g_return_if_fail (texture_handle == COGL_INVALID_HANDLE
+                    || cogl_is_texture (texture_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
   layer = _cogl_material_get_layer (material_handle, layer_index, TRUE);
@@ -519,7 +695,8 @@ cogl_material_set_layer (CoglHandle material_handle,
        * MAX_COMBINED_TEXTURE_IMAGE_UNITS layers. */
     }
 
-  cogl_handle_ref (texture_handle);
+  if (texture_handle)
+    cogl_handle_ref (texture_handle);
 
   if (layer->texture)
     cogl_handle_unref (layer->texture);
@@ -530,104 +707,164 @@ cogl_material_set_layer (CoglHandle material_handle,
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
 }
 
-void
-cogl_material_set_layer_combine_function (
-				  CoglHandle handle,
-				  gint layer_index,
-				  CoglMaterialLayerCombineChannels channels,
-				  CoglMaterialLayerCombineFunc func)
+static void
+setup_texture_combine_state (CoglBlendStringStatement *statement,
+                             GLint *texture_combine_func,
+                             GLint *texture_combine_src,
+                             GLint *texture_combine_op)
+{
+  int i;
+
+  switch (statement->function->type)
+    {
+    case COGL_BLEND_STRING_FUNCTION_AUTO_COMPOSITE:
+      *texture_combine_func = GL_MODULATE; /* FIXME */
+      break;
+    case COGL_BLEND_STRING_FUNCTION_REPLACE:
+      *texture_combine_func = GL_REPLACE;
+      break;
+    case COGL_BLEND_STRING_FUNCTION_MODULATE:
+      *texture_combine_func = GL_MODULATE;
+      break;
+    case COGL_BLEND_STRING_FUNCTION_ADD:
+      *texture_combine_func = GL_ADD;
+      break;
+    case COGL_BLEND_STRING_FUNCTION_ADD_SIGNED:
+      *texture_combine_func = GL_ADD_SIGNED;
+      break;
+    case COGL_BLEND_STRING_FUNCTION_INTERPOLATE:
+      *texture_combine_func = GL_INTERPOLATE;
+      break;
+    case COGL_BLEND_STRING_FUNCTION_SUBTRACT:
+      *texture_combine_func = GL_SUBTRACT;
+      break;
+    case COGL_BLEND_STRING_FUNCTION_DOT3_RGB:
+      *texture_combine_func = GL_DOT3_RGB;
+      break;
+    case COGL_BLEND_STRING_FUNCTION_DOT3_RGBA:
+      *texture_combine_func = GL_DOT3_RGBA;
+      break;
+    }
+
+  for (i = 0; i < statement->function->argc; i++)
+    {
+      CoglBlendStringArgument *arg = &statement->args[i];
+
+      switch (arg->source.info->type)
+        {
+        case COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT:
+          texture_combine_src[i] = GL_CONSTANT;
+          break;
+        case COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE:
+          texture_combine_src[i] = GL_TEXTURE;
+          break;
+        case COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE_N:
+          texture_combine_src[i] =
+            GL_TEXTURE0 + arg->source.texture;
+          break;
+        case COGL_BLEND_STRING_COLOR_SOURCE_PRIMARY:
+          texture_combine_src[i] = GL_PRIMARY_COLOR;
+          break;
+        case COGL_BLEND_STRING_COLOR_SOURCE_PREVIOUS:
+          texture_combine_src[i] = GL_PREVIOUS;
+          break;
+        default:
+          g_warning ("Unexpected texture combine source");
+          texture_combine_src[i] = GL_TEXTURE;
+        }
+
+      if (arg->source.mask == COGL_BLEND_STRING_CHANNEL_MASK_RGB)
+        {
+          if (statement->args[i].source.one_minus)
+            texture_combine_op[i] = GL_ONE_MINUS_SRC_COLOR;
+          else
+            texture_combine_op[i] = GL_SRC_COLOR;
+        }
+      else
+        {
+          if (statement->args[i].source.one_minus)
+            texture_combine_op[i] = GL_ONE_MINUS_SRC_ALPHA;
+          else
+            texture_combine_op[i] = GL_SRC_ALPHA;
+        }
+    }
+}
+
+gboolean
+cogl_material_set_layer_combine (CoglHandle handle,
+				 gint layer_index,
+				 const char *combine_description,
+                                 GError **error)
 {
   CoglMaterial *material;
   CoglMaterialLayer *layer;
-  gboolean set_alpha_func = FALSE;
-  gboolean set_rgb_func = FALSE;
+  CoglBlendStringStatement statements[2];
+  CoglBlendStringStatement split[2];
+  CoglBlendStringStatement *rgb;
+  CoglBlendStringStatement *a;
+  int count;
+
+  g_return_val_if_fail (cogl_is_material (handle), FALSE);
+
+  material = _cogl_material_pointer_from_handle (handle);
+  layer = _cogl_material_get_layer (material, layer_index, TRUE);
+
+  count =
+    _cogl_blend_string_compile (combine_description,
+                                COGL_BLEND_STRING_CONTEXT_TEXTURE_COMBINE,
+                                statements,
+                                error);
+  if (!count)
+    return FALSE;
+
+  if (statements[0].mask == COGL_BLEND_STRING_CHANNEL_MASK_RGBA)
+    {
+      _cogl_blend_string_split_rgba_statement (statements,
+                                               &split[0], &split[1]);
+      rgb = &split[0];
+      a = &split[1];
+    }
+  else
+    {
+      rgb = &statements[0];
+      a = &statements[1];
+    }
+
+  setup_texture_combine_state (rgb,
+                               &layer->texture_combine_rgb_func,
+                               layer->texture_combine_rgb_src,
+                               layer->texture_combine_rgb_op);
+
+  setup_texture_combine_state (a,
+                               &layer->texture_combine_alpha_func,
+                               layer->texture_combine_alpha_src,
+                               layer->texture_combine_alpha_op);
+
+
+  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
+  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
+  return TRUE;
+}
+
+void
+cogl_material_set_layer_combine_constant (CoglHandle handle,
+				          gint layer_index,
+                                          CoglColor *constant_color)
+{
+  CoglMaterial      *material;
+  CoglMaterialLayer *layer;
+  GLfloat           *constant;
 
   g_return_if_fail (cogl_is_material (handle));
 
   material = _cogl_material_pointer_from_handle (handle);
   layer = _cogl_material_get_layer (material, layer_index, TRUE);
 
-  if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
-    set_alpha_func = set_rgb_func = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB)
-    set_rgb_func = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
-    set_alpha_func = TRUE;
-
-  if (set_rgb_func)
-    layer->texture_combine_rgb_func = func;
-  if (set_alpha_func)
-    layer->texture_combine_alpha_func = func;
-
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
-}
-
-void
-cogl_material_set_layer_combine_arg_src (
-				  CoglHandle handle,
-				  gint layer_index,
-				  gint argument,
-				  CoglMaterialLayerCombineChannels channels,
-				  CoglMaterialLayerCombineSrc src)
-{
-  CoglMaterial	    *material;
-  CoglMaterialLayer *layer;
-  gboolean           set_arg_alpha_src = FALSE;
-  gboolean           set_arg_rgb_src = FALSE;
-
-  g_return_if_fail (cogl_is_material (handle));
-  g_return_if_fail (argument >=0 && argument <= 3);
-
-  material = _cogl_material_pointer_from_handle (handle);
-  layer = _cogl_material_get_layer (material, layer_index, TRUE);
-
-  if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
-    set_arg_alpha_src = set_arg_rgb_src = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB)
-    set_arg_rgb_src = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
-    set_arg_alpha_src = TRUE;
-
-  if (set_arg_rgb_src)
-    layer->texture_combine_rgb_src[argument] = src;
-  if (set_arg_alpha_src)
-    layer->texture_combine_alpha_src[argument] = src;
-
-  layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
-  layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
-}
-
-void
-cogl_material_set_layer_combine_arg_op (
-				    CoglHandle material_handle,
-				    gint layer_index,
-				    gint argument,
-				    CoglMaterialLayerCombineChannels channels,
-				    CoglMaterialLayerCombineOp op)
-{
-  CoglMaterial *material;
-  CoglMaterialLayer *layer;
-  gboolean set_arg_alpha_op = FALSE;
-  gboolean set_arg_rgb_op = FALSE;
-
-  g_return_if_fail (cogl_is_material (material_handle));
-  g_return_if_fail (argument >=0 && argument <= 3);
-
-  material = _cogl_material_pointer_from_handle (material_handle);
-  layer = _cogl_material_get_layer (material, layer_index, TRUE);
-
-  if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGBA)
-    set_arg_alpha_op = set_arg_rgb_op = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB)
-    set_arg_rgb_op = TRUE;
-  else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
-    set_arg_alpha_op = TRUE;
-
-  if (set_arg_rgb_op)
-    layer->texture_combine_rgb_op[argument] = op;
-  if (set_arg_alpha_op)
-    layer->texture_combine_alpha_op[argument] = op;
+  constant = layer->texture_combine_constant;
+  constant[0] = cogl_color_get_red_float (constant_color);
+  constant[1] = cogl_color_get_green_float (constant_color);
+  constant[2] = cogl_color_get_blue_float (constant_color);
+  constant[3] = cogl_color_get_alpha_float (constant_color);
 
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
   layer->flags &= ~COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
@@ -690,7 +927,7 @@ cogl_material_remove_layer (CoglHandle material_handle,
 /* XXX: This API is hopfully just a stop-gap solution. Ideally cogl_enable
  * will be replaced. */
 gulong
-cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
+_cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
 {
   CoglMaterial	*material;
   gulong	 enable_flags = 0;
@@ -713,7 +950,7 @@ cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
  * probably sensible to try and avoid list manipulation for every
  * primitive emitted in a scene, every frame.
  *
- * Alternativly; we could either add a _foreach function, or maybe
+ * Alternatively; we could either add a _foreach function, or maybe
  * a function that gets a passed a buffer (that may be stack allocated)
  * by the caller.
  */
@@ -748,7 +985,7 @@ cogl_material_layer_get_texture (CoglHandle layer_handle)
 }
 
 gulong
-cogl_material_layer_get_flags (CoglHandle layer_handle)
+_cogl_material_layer_get_flags (CoglHandle layer_handle)
 {
   CoglMaterialLayer *layer;
 
@@ -760,23 +997,32 @@ cogl_material_layer_get_flags (CoglHandle layer_handle)
 }
 
 static guint
-get_n_args_for_combine_func (CoglMaterialLayerCombineFunc func)
+get_n_args_for_combine_func (GLint func)
 {
   switch (func)
     {
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE:
+    case GL_REPLACE:
       return 1;
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_ADD_SIGNED:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_SUBTRACT:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGB:
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_DOT3_RGBA:
+    case GL_MODULATE:
+    case GL_ADD:
+    case GL_ADD_SIGNED:
+    case GL_SUBTRACT:
+    case GL_DOT3_RGB:
+    case GL_DOT3_RGBA:
       return 2;
-    case COGL_MATERIAL_LAYER_COMBINE_FUNC_INTERPOLATE:
+    case GL_INTERPOLATE:
       return 3;
     }
   return 0;
+}
+
+static gboolean
+is_mipmap_filter (CoglMaterialFilter filter)
+{
+  return (filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_NEAREST
+          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_NEAREST
+          || filter == COGL_MATERIAL_FILTER_NEAREST_MIPMAP_LINEAR
+          || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
 }
 
 static void
@@ -851,6 +1097,9 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
           GE (glTexEnvi (GL_TEXTURE_ENV, GL_OPERAND2_ALPHA,
                          layer->texture_combine_alpha_op[2]));
         }
+
+      GE (glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
+                      layer->texture_combine_constant));
     }
 
 #ifndef DISABLE_MATERIAL_CACHE
@@ -975,6 +1224,13 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 #endif
 
       GE (glActiveTexture (GL_TEXTURE0 + i));
+
+      _cogl_texture_set_filters (layer->texture,
+                                 layer->min_filter,
+                                 layer->mag_filter);
+      if (is_mipmap_filter (layer->min_filter)
+          || is_mipmap_filter (layer->mag_filter))
+        _cogl_texture_ensure_mipmaps (layer->texture);
 
       /* FIXME: We could be more clever here and only bind the texture
          if it is different from gl_layer_info->gl_texture to avoid
@@ -1122,12 +1378,44 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material)
   if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC
         && material->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC))
     {
-      GE (glBlendFunc (material->blend_src_factor, material->blend_dst_factor));
+#if defined (HAVE_COGL_GLES2)
+      gboolean have_blend_equation_seperate = TRUE;
+#elif defined (HAVE_COGL_GL)
+      gboolean have_blend_equation_seperate = FALSE;
+      if (ctx->pf_glBlendEquationSeparate) /* Only GL 2.0 + */
+        have_blend_equation_seperate = TRUE;
+#endif
+
+#ifndef HAVE_COGL_GLES /* GLES 1 only has glBlendFunc */
+      if (material->blend_src_factor_rgb != material->blend_src_factor_alpha
+          || (material->blend_src_factor_rgb !=
+              material->blend_src_factor_alpha))
+        {
+          if (have_blend_equation_seperate &&
+              material->blend_equation_rgb != material->blend_equation_alpha)
+            GE (glBlendEquationSeparate (material->blend_equation_rgb,
+                                         material->blend_equation_alpha));
+          else
+            GE (glBlendEquation (material->blend_equation_rgb));
+
+          GE (glBlendFuncSeparate (material->blend_src_factor_rgb,
+                                   material->blend_dst_factor_rgb,
+                                   material->blend_src_factor_alpha,
+                                   material->blend_dst_factor_alpha));
+          GE (glBlendColor (material->blend_constant[0],
+                            material->blend_constant[1],
+                            material->blend_constant[2],
+                            material->blend_constant[3]));
+        }
+      else
+#endif
+      GE (glBlendFunc (material->blend_src_factor_rgb,
+                       material->blend_dst_factor_rgb));
     }
 }
 
 void
-cogl_material_flush_gl_state (CoglHandle handle, ...)
+_cogl_material_flush_gl_state (CoglHandle handle, ...)
 {
   CoglMaterial           *material;
   va_list                 ap;
@@ -1204,3 +1492,44 @@ cogl_set_source_texture (CoglHandle texture_handle)
   cogl_set_source (ctx->default_material);
 }
 
+CoglMaterialFilter
+cogl_material_layer_get_min_filter (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer;
+
+  g_return_val_if_fail (cogl_is_material_layer (layer_handle), 0);
+
+  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
+
+  return layer->min_filter;
+}
+
+CoglMaterialFilter
+cogl_material_layer_get_mag_filter (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer;
+
+  g_return_val_if_fail (cogl_is_material_layer (layer_handle), 0);
+
+  layer = _cogl_material_layer_pointer_from_handle (layer_handle);
+
+  return layer->mag_filter;
+}
+
+void
+cogl_material_set_layer_filters (CoglHandle         handle,
+                                 gint               layer_index,
+                                 CoglMaterialFilter min_filter,
+                                 CoglMaterialFilter mag_filter)
+{
+  CoglMaterial *material;
+  CoglMaterialLayer *layer;
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  material = _cogl_material_pointer_from_handle (handle);
+  layer = _cogl_material_get_layer (material, layer_index, TRUE);
+
+  layer->min_filter = min_filter;
+  layer->mag_filter = mag_filter;
+}

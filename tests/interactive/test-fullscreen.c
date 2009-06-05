@@ -15,7 +15,7 @@ static int state = START;
 static void
 on_fullscreen (ClutterStage *stage)
 {
-  g_debug ("fullscreen set, size: %dx%d, mapped: %s",
+  g_debug ("fullscreen set, size: %.2fx%.2f, mapped: %s",
            clutter_actor_get_width (CLUTTER_ACTOR (stage)),
            clutter_actor_get_height (CLUTTER_ACTOR (stage)),
            CLUTTER_ACTOR_IS_MAPPED (stage) ? "true" : "false");
@@ -24,7 +24,7 @@ on_fullscreen (ClutterStage *stage)
 static void
 on_unfullscreen (ClutterStage *stage)
 {
-  g_debug ("fullscreen unset, size: %dx%d, mapped: %s",
+  g_debug ("fullscreen unset, size: %.2fx%.2f, mapped: %s",
            clutter_actor_get_width (CLUTTER_ACTOR (stage)),
            clutter_actor_get_height (CLUTTER_ACTOR (stage)),
            CLUTTER_ACTOR_IS_MAPPED (stage) ? "true" : "false");
@@ -85,7 +85,7 @@ test_fullscreen_main (int argc, char *argv[])
   clutter_stage_fullscreen (CLUTTER_STAGE (stage));
   clutter_actor_show (stage);
 
-  g_debug ("stage size: %dx%d, mapped: %s",
+  g_debug ("stage size: %.2fx%.2f, mapped: %s",
            clutter_actor_get_width (stage),
            clutter_actor_get_height (stage),
            CLUTTER_ACTOR_IS_MAPPED (stage) ? "true" : "false");

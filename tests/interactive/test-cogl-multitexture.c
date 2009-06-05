@@ -9,8 +9,6 @@
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 
-#define TIMELINE_FRAME_COUNT 200
-
 typedef struct _TestMultiLayerMaterialState
 {
   ClutterActor	*group;
@@ -45,9 +43,7 @@ material_rectangle_paint (ClutterActor *actor, gpointer data)
   TestMultiLayerMaterialState *state = data;
 
   cogl_set_source (state->material);
-  cogl_rectangle_with_multitexture_coords (0, 0,
-                                           TIMELINE_FRAME_COUNT,
-                                           TIMELINE_FRAME_COUNT,
+  cogl_rectangle_with_multitexture_coords (0, 0, 200, 200,
                                            state->tex_coords,
                                            12);
 }
@@ -86,21 +82,18 @@ test_cogl_multitexture_main (int argc, char *argv[])
 		    G_CALLBACK(material_rectangle_paint), state);
 
   state->alpha_tex =
-    cogl_texture_new_from_file ("./redhand_alpha.png",
-				-1, /* disable slicing */
-				TRUE,
+    cogl_texture_new_from_file ("redhand_alpha.png",
+                                COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
 				NULL);
   state->redhand_tex =
-    cogl_texture_new_from_file ("./redhand.png",
-				-1, /* disable slicing */
-				TRUE,
+    cogl_texture_new_from_file ("redhand.png",
+                                COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
 				NULL);
   state->light_tex0 =
-    cogl_texture_new_from_file ("./light0.png",
-				-1, /* disable slicing */
-				TRUE,
+    cogl_texture_new_from_file ("light0.png",
+                                COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
 				NULL);
 
@@ -122,8 +115,8 @@ test_cogl_multitexture_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER(stage),
 			       state->group);
 
-  timeline = clutter_timeline_new (TIMELINE_FRAME_COUNT, 26 /* fps */);
-  g_object_set (timeline, "loop", TRUE, NULL);
+  timeline = clutter_timeline_new (7692);
+  clutter_timeline_set_loop (timeline, TRUE);
 
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), state);
 

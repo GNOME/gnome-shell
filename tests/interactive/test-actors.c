@@ -48,16 +48,18 @@ input_cb (ClutterActor *stage,
     {
       ClutterButtonEvent *button_event;
       ClutterActor *e;
-      gint x, y;
+      gfloat x, y;
 
       clutter_event_get_coords (event, &x, &y);
 
       button_event = (ClutterButtonEvent *) event;
-      g_print ("*** button press event (button:%d) at %d, %d ***\n",
+      g_print ("*** button press event (button:%d) at %.2f, %.2f ***\n",
 	       button_event->button,
                x, y);
 
-      e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage), x, y);
+      e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage),
+                                          CLUTTER_PICK_ALL,
+                                          x, y);
 
       /* only allow hiding the clones */
       if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
@@ -96,17 +98,18 @@ input_cb (ClutterActor *stage,
 /* Timeline handler */
 static void
 frame_cb (ClutterTimeline *timeline,
-	  gint             frame_num,
+	  gint             msecs,
 	  gpointer         data)
 {
   SuperOH *oh = data;
   gint i;
+  float rotation = clutter_timeline_get_progress (timeline) * 360.0f;
 
   /* Rotate everything clockwise about stage center*/
 
   clutter_actor_set_rotation (oh->group,
                               CLUTTER_Z_AXIS,
-                              frame_num,
+                              rotation,
 			      oh->stage_width / 2,
                               oh->stage_height / 2,
 			      0);
@@ -118,7 +121,7 @@ frame_cb (ClutterTimeline *timeline,
        */
       clutter_actor_set_rotation (oh->hand[i],
                                   CLUTTER_Z_AXIS,
-                                  -6.0 * frame_num,
+                                  -6.0 * rotation,
                                   0, 0, 0);
     }
 }
@@ -170,7 +173,7 @@ test_actors_main (int argc, char *argv[])
   oh->stage = stage;
 
   /* Create a timeline to manage animation */
-  oh->timeline = clutter_timeline_new (360, 60);
+  oh->timeline = clutter_timeline_new (6000);
   clutter_timeline_set_loop (oh->timeline, TRUE);
 
   /* fire a callback for frame change */

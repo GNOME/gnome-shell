@@ -7,15 +7,20 @@
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 /* Non-power-of-two sized texture that should cause slicing */
-#define TEXTURE_SIZE 191
+#define TEXTURE_SIZE        257
 /* Number of times to split the texture up on each axis */
-#define PARTS        2
+#define PARTS               2
 /* The texture is split into four parts, each with a different colour */
-#define PART_SIZE    (TEXTURE_SIZE / PARTS)
+#define PART_SIZE           (TEXTURE_SIZE / PARTS)
 
 /* Amount of pixels to skip off the top, bottom, left and right of the
    texture when reading back the stage */
-#define TEST_INSET   4
+#define TEST_INSET          4
+
+/* Size to actually render the texture at */
+#define TEXTURE_RENDER_SIZE 128
+/* The size of a part once rendered */
+#define PART_RENDER_SIZE    (TEXTURE_RENDER_SIZE / PARTS)
 
 static const ClutterColor corner_colors[PARTS * PARTS] =
   {
@@ -41,15 +46,15 @@ validate_part (int xnum, int ynum, const ClutterColor *color)
   /* Read the appropriate part but skip out a few pixels around the
      edges */
   pixels = clutter_stage_read_pixels (CLUTTER_STAGE (stage),
-                                      xnum * PART_SIZE + TEST_INSET,
-                                      ynum * PART_SIZE + TEST_INSET,
-                                      PART_SIZE - TEST_INSET * 2,
-                                      PART_SIZE - TEST_INSET * 2);
+                                      xnum * PART_RENDER_SIZE + TEST_INSET,
+                                      ynum * PART_RENDER_SIZE + TEST_INSET,
+                                      PART_RENDER_SIZE - TEST_INSET * 2,
+                                      PART_RENDER_SIZE - TEST_INSET * 2);
 
   /* Make sure every pixels is the appropriate color */
   for (p = pixels;
-       p < pixels + ((PART_SIZE - TEST_INSET * 2)
-                     * (PART_SIZE - TEST_INSET * 2));
+       p < pixels + ((PART_RENDER_SIZE - TEST_INSET * 2)
+                     * (PART_RENDER_SIZE - TEST_INSET * 2));
        p += 4)
     {
       if (p[0] != color->red)
@@ -88,7 +93,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
   /* Just render the texture in the top left corner */
   cogl_set_source_texture (state->texture);
-  cogl_rectangle (0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+  cogl_rectangle (0, 0, TEXTURE_RENDER_SIZE, TEXTURE_RENDER_SIZE);
 
   /* XXX: Experiments have shown that for some buggy drivers, when using
    * glReadPixels there is some kind of race, so we delay our test for a
@@ -152,7 +157,6 @@ make_texture (void)
 
   tex = cogl_texture_new_from_data (TEXTURE_SIZE,
                                     TEXTURE_SIZE,
-                                    8,
                                     COGL_TEXTURE_NONE,
                                     COGL_PIXEL_FORMAT_RGBA_8888,
                                     COGL_PIXEL_FORMAT_ANY,

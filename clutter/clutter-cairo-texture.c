@@ -325,9 +325,9 @@ clutter_cairo_texture_notify (GObject    *object,
 
 static void
 clutter_cairo_texture_get_preferred_width (ClutterActor *actor,
-                                           ClutterUnit   for_height,
-                                           ClutterUnit  *min_width,
-                                           ClutterUnit  *natural_width)
+                                           gfloat        for_height,
+                                           gfloat       *min_width,
+                                           gfloat       *natural_width)
 {
   ClutterCairoTexturePrivate *priv = CLUTTER_CAIRO_TEXTURE (actor)->priv;
 
@@ -335,14 +335,14 @@ clutter_cairo_texture_get_preferred_width (ClutterActor *actor,
     *min_width = 0;
 
   if (natural_width)
-    *natural_width = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+    *natural_width = (gfloat) priv->width;
 }
 
 static void
 clutter_cairo_texture_get_preferred_height (ClutterActor *actor,
-                                            ClutterUnit   for_width,
-                                            ClutterUnit  *min_height,
-                                            ClutterUnit  *natural_height)
+                                            gfloat        for_width,
+                                            gfloat       *min_height,
+                                            gfloat       *natural_height)
 {
   ClutterCairoTexturePrivate *priv = CLUTTER_CAIRO_TEXTURE (actor)->priv;
 
@@ -350,7 +350,7 @@ clutter_cairo_texture_get_preferred_height (ClutterActor *actor,
     *min_height = 0;
 
   if (natural_height)
-    *natural_height = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+    *natural_height = (gfloat) priv->height;
 }
 
 static void

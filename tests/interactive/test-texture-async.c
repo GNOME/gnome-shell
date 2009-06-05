@@ -61,7 +61,7 @@ static gboolean task (gpointer foo)
 
   for (i=0; i<3; i++)
     {
-      timeline = clutter_timeline_new (60*5, 60);
+      timeline = clutter_timeline_new (5000);
       alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
       depth_behavior = clutter_behaviour_depth_new (alpha, -2500, 0);
       clutter_behaviour_apply (depth_behavior, image[i]);

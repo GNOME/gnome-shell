@@ -103,9 +103,9 @@ clutter_stage_sdl_realize (ClutterActor *actor)
 
 static void
 clutter_stage_sdl_get_preferred_width (ClutterActor *self,
-                                       ClutterUnit   for_height,
-                                       ClutterUnit  *min_width_p,
-                                       ClutterUnit  *natural_width_p)
+                                       gfloat        for_height,
+                                       gfloat       *min_width_p,
+                                       gfloat       *natural_width_p)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
 
@@ -118,9 +118,9 @@ clutter_stage_sdl_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_stage_sdl_get_preferred_height (ClutterActor *self,
-                                        ClutterUnit   for_width,
-                                        ClutterUnit  *min_height_p,
-                                        ClutterUnit  *natural_height_p)
+                                        gfloat        for_width,
+                                        gfloat       *min_height_p,
+                                        gfloat       *natural_height_p)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
 
@@ -132,9 +132,9 @@ clutter_stage_sdl_get_preferred_height (ClutterActor *self,
 }
 
 static void
-clutter_stage_sdl_allocate (ClutterActor          *self,
-                            const ClutterActorBox *box,
-                            gboolean               origin_changed)
+clutter_stage_sdl_allocate (ClutterActor           *self,
+                            const ClutterActorBox  *box,
+                            ClutterAllocationFlags  flags)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
   gint new_width, new_height;
@@ -162,7 +162,7 @@ clutter_stage_sdl_allocate (ClutterActor          *self,
     }
 
   parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class);
-  parent_class->allocate (self, box, origin_changed);
+  parent_class->allocate (self, box, flags);
 }
 
 static void
@@ -198,8 +198,6 @@ static void
 clutter_stage_sdl_dispose (GObject *gobject)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (gobject);
-
-  clutter_actor_unrealize (CLUTTER_ACTOR (stage_sdl));
 
   G_OBJECT_CLASS (clutter_stage_sdl_parent_class)->dispose (gobject);
 }

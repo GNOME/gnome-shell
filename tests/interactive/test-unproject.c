@@ -23,18 +23,17 @@ on_event (ClutterStage *stage,
     {
     case CLUTTER_BUTTON_PRESS:
       {
-	gint x, y;
-	ClutterActor * actor;
-	ClutterUnit xu2, yu2;
+	ClutterActor *actor;
+	gfloat xu2, yu2;
+	gfloat x, y;
 
         clutter_event_get_coords (event, &x, &y);
 
-	actor = clutter_stage_get_actor_at_pos (stage, x, y);
+	actor = clutter_stage_get_actor_at_pos (stage,
+                                                CLUTTER_PICK_ALL,
+                                                x, y);
 
-	if (clutter_actor_transform_stage_point (actor,
-                                                 CLUTTER_UNITS_FROM_DEVICE (x),
-                                                 CLUTTER_UNITS_FROM_DEVICE (y),
-                                                 &xu2, &yu2))
+	if (clutter_actor_transform_stage_point (actor, x, y, &xu2, &yu2))
 	  {
 	    gchar *txt;
 
@@ -42,16 +41,14 @@ on_event (ClutterStage *stage,
 	      txt = g_strdup_printf ("Click on rectangle\n"
 				     "Screen coords: [%d, %d]\n"
 				     "Local coords : [%d, %d]",
-				     x, y,
-				     CLUTTER_UNITS_TO_DEVICE (xu2),
-				     CLUTTER_UNITS_TO_DEVICE (yu2));
+				     (int) x, (int) y,
+				     (int) xu2, (int) yu2);
 	    else
 	      txt = g_strdup_printf ("Click on stage\n"
 				     "Screen coords: [%d, %d]\n"
 				     "Local coords : [%d, %d]",
-				     x, y,
-				     CLUTTER_UNITS_TO_DEVICE (xu2),
-				     CLUTTER_UNITS_TO_DEVICE (yu2));
+				     (int) x, (int) y,
+                                     (int) xu2, (int) yu2);
 
 	    clutter_text_set_text (CLUTTER_TEXT (label), txt);
 	    g_free (txt);

@@ -52,12 +52,12 @@ G_DEFINE_TYPE_WITH_CODE (MyThing,
 
 struct _MyThingPrivate
 {
-  GList       *children;
+  GList  *children;
   
-  ClutterUnit  spacing;
-  ClutterUnit  padding;
+  gfloat  spacing;
+  gfloat  padding;
 
-  guint        use_transformed_box : 1;
+  guint   use_transformed_box : 1;
 };
 
 /* Add, remove, foreach, copied from ClutterGroup code. */
@@ -139,11 +139,11 @@ my_thing_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_SPACING:
-      priv->spacing = clutter_value_get_unit (value);
+      priv->spacing = g_value_get_float (value);
       break;
 
     case PROP_PADDING:
-      priv->padding = clutter_value_get_unit (value);
+      priv->padding = g_value_get_float (value);
       break;
 
     case PROP_USE_TRANSFORMED_BOX:
@@ -174,11 +174,11 @@ my_thing_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_SPACING:
-      clutter_value_set_unit (value, priv->spacing);
+      g_value_set_float (value, priv->spacing);
       break;
 
     case PROP_PADDING:
-      clutter_value_set_unit (value, priv->padding);
+      g_value_set_float (value, priv->padding);
       break;
 
     case PROP_USE_TRANSFORMED_BOX:
@@ -214,14 +214,14 @@ my_thing_dispose (GObject *gobject)
 
 static void
 my_thing_get_preferred_width (ClutterActor *self,
-                              ClutterUnit   for_height,
-                              ClutterUnit  *min_width_p,
-                              ClutterUnit  *natural_width_p)
+                              gfloat   for_height,
+                              gfloat  *min_width_p,
+                              gfloat  *natural_width_p)
 {
   MyThingPrivate *priv;
   GList *l;
-  ClutterUnit min_left, min_right;
-  ClutterUnit natural_left, natural_right;
+  gfloat min_left, min_right;
+  gfloat natural_left, natural_right;
 
   priv = MY_THING (self)->priv;
 
@@ -233,11 +233,11 @@ my_thing_get_preferred_width (ClutterActor *self,
   for (l = priv->children; l != NULL; l = l->next)
     {
       ClutterActor *child;
-      ClutterUnit child_x, child_min, child_natural;
+      gfloat child_x, child_min, child_natural;
 
       child = l->data;
 
-      child_x = clutter_actor_get_xu (child);
+      child_x = clutter_actor_get_x (child);
 
       clutter_actor_get_preferred_size (child,
                                         &child_min, NULL,
@@ -292,14 +292,14 @@ my_thing_get_preferred_width (ClutterActor *self,
 
 static void
 my_thing_get_preferred_height (ClutterActor *self,
-                               ClutterUnit   for_width,
-                               ClutterUnit  *min_height_p,
-                               ClutterUnit  *natural_height_p)
+                               gfloat   for_width,
+                               gfloat  *min_height_p,
+                               gfloat  *natural_height_p)
 {
   MyThingPrivate *priv;
   GList *l;
-  ClutterUnit min_top, min_bottom;
-  ClutterUnit natural_top, natural_bottom;
+  gfloat min_top, min_bottom;
+  gfloat natural_top, natural_bottom;
 
   priv = MY_THING (self)->priv;
 
@@ -311,11 +311,11 @@ my_thing_get_preferred_height (ClutterActor *self,
   for (l = priv->children; l != NULL; l = l->next)
     {
       ClutterActor *child;
-      ClutterUnit child_y, child_min, child_natural;
+      gfloat child_y, child_min, child_natural;
 
       child = l->data;
 
-      child_y = clutter_actor_get_yu (child);
+      child_y = clutter_actor_get_y (child);
 
       clutter_actor_get_preferred_size (child,
                                         NULL, &child_min,
@@ -369,17 +369,16 @@ my_thing_get_preferred_height (ClutterActor *self,
 }
 
 static void
-my_thing_allocate (ClutterActor          *self,
-                   const ClutterActorBox *box,
-                   gboolean               origin_changed)
+my_thing_allocate (ClutterActor           *self,
+                   const ClutterActorBox  *box,
+                   ClutterAllocationFlags  flags)
 {
   MyThingPrivate *priv;
-  ClutterUnit current_x, current_y, max_row_height;
+  gfloat current_x, current_y, max_row_height;
   GList *l;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (my_thing_parent_class)->allocate (self, box,
-                                                         origin_changed);
+  CLUTTER_ACTOR_CLASS (my_thing_parent_class)->allocate (self, box, flags);
 
   priv = MY_THING (self)->priv;
 
@@ -394,7 +393,7 @@ my_thing_allocate (ClutterActor          *self,
   for (l = priv->children; l != NULL; l = l->next)
     {
       ClutterActor *child;
-      ClutterUnit natural_width, natural_height;
+      gfloat natural_width, natural_height;
       ClutterActorBox child_box;
  
       child = l->data;
@@ -418,7 +417,7 @@ my_thing_allocate (ClutterActor          *self,
       child_box.x2 = child_box.x1 + natural_width;
       child_box.y2 = child_box.y1 + natural_height;
 
-      clutter_actor_allocate (child, &child_box, origin_changed);
+      clutter_actor_allocate (child, &child_box, flags);
 
       /* if we take into account the transformation of the children
        * then we first check if it's transformed; then we get the
@@ -435,7 +434,7 @@ my_thing_allocate (ClutterActor          *self,
               ClutterActorBox transformed_box = { 0, };
 
               /* origin */
-              if (!origin_changed)
+              if (!(flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED))
                 {
                   v1.x = 0;
                   v1.y = 0;
@@ -490,8 +489,7 @@ my_thing_paint (ClutterActor *actor)
 
       g_assert (child != NULL);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
-	clutter_actor_paint (child);
+      clutter_actor_paint (child);
     }
 
   cogl_pop_matrix();
@@ -518,21 +516,21 @@ my_thing_class_init (MyThingClass *klass)
 
   g_object_class_install_property (gobject_class,
                                    PROP_SPACING,
-                                   clutter_param_spec_unit ("spacing",
-                                                            "Spacing",
-                                                            "Spacing of the thing",
-                                                            0, CLUTTER_MAXUNIT,
-                                                            0,
-                                                            G_PARAM_READWRITE));
+                                   g_param_spec_float ("spacing",
+                                                       "Spacing",
+                                                       "Spacing of the thing",
+                                                       0, G_MAXFLOAT,
+                                                       0,
+                                                       G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_PADDING,
-                                   clutter_param_spec_unit ("padding",
-                                                            "Padding",
-                                                            "Padding around the thing",
-                                                            0, CLUTTER_MAXUNIT,
-                                                            0,
-                                                            G_PARAM_READWRITE));
+                                   g_param_spec_float ("padding",
+                                                       "Padding",
+                                                       "Padding around the thing",
+                                                       0, G_MAXFLOAT,
+                                                       0,
+                                                       G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_USE_TRANSFORMED_BOX,
@@ -552,14 +550,13 @@ my_thing_init (MyThing *thing)
 }
 
 ClutterActor *
-my_thing_new (gint padding,
-              gint spacing)
+my_thing_new (gfloat padding,
+              gfloat spacing)
 {
   return g_object_new (MY_TYPE_THING,
-                       "padding", CLUTTER_UNITS_FROM_DEVICE (padding),
-                       "spacing", CLUTTER_UNITS_FROM_DEVICE (spacing),
+                       "padding", padding,
+                       "spacing", spacing,
                        NULL);
-
 }
 
 /* test code */
@@ -592,13 +589,13 @@ static void
 increase_property_value (ClutterActor *actor, 
                          const char   *property_name)
 {
-  ClutterUnit value;
+  gfloat value;
 
   g_object_get (G_OBJECT (actor),
                 property_name, &value,
                 NULL);
 
-  value = value + CLUTTER_UNITS_FROM_DEVICE (10);
+  value = value + 10.0;
 
   g_object_set (G_OBJECT (box),
                 property_name, value,
@@ -609,13 +606,13 @@ static void
 decrease_property_value (ClutterActor *actor, 
                          const char   *property_name)
 {
-  ClutterUnit value;
+  gfloat value;
 
   g_object_get (G_OBJECT (actor),
                 property_name, &value,
                 NULL);
 
-  value = MAX (0, value - CLUTTER_UNITS_FROM_DEVICE (10));
+  value = MAX (0, value - 10.0);
 
   g_object_set (G_OBJECT (box),
                 property_name, value,
@@ -748,7 +745,7 @@ test_layout_main (int argc, char *argv[])
 {
   ClutterActor *stage, *instructions;
   ClutterAlpha *alpha;
-  gint i;
+  gint i, size;
   GError *error = NULL;
 
   clutter_init (&argc, &argv);
@@ -758,7 +755,7 @@ test_layout_main (int argc, char *argv[])
 
   clutter_color_from_string (&bg_color, "Red");
 
-  main_timeline = clutter_timeline_new_for_duration (2000);
+  main_timeline = clutter_timeline_new (2000);
   clutter_timeline_set_loop (main_timeline, TRUE);
   g_signal_connect (main_timeline, "new-frame",
                     G_CALLBACK (relayout_on_frame),
@@ -776,7 +773,12 @@ test_layout_main (int argc, char *argv[])
   if (error)
     g_error ("Unable to load 'redhand.png': %s", error->message);
 
-  for (i = 0; i < 33; i++)
+  size = g_random_int_range (MIN_SIZE, MAX_SIZE);
+  clutter_actor_set_size (icon, size, size);
+  clutter_behaviour_apply (behaviour, icon);
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), icon);
+
+  for (i = 1; i < 33; i++)
     {
       ClutterActor *clone = create_item (); 
 

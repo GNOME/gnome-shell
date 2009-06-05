@@ -44,9 +44,11 @@
 #include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-id-pool.h"
+#include "clutter-master-clock.h"
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
+#include "clutter-timeline.h"
 
 G_BEGIN_DECLS
 
@@ -64,12 +66,6 @@ typedef enum {
   CLUTTER_ACTOR_IN_RELAYOUT      = 1 << 5, /* Used to avoid recursion */
   CLUTTER_TEXTURE_IN_CLONE_PAINT = 1 << 6  /* Used for safety in clones */
 } ClutterPrivateFlags;
-
-typedef enum {
-  CLUTTER_PICK_NONE = 0,
-  CLUTTER_PICK_REACTIVE,
-  CLUTTER_PICK_ALL
-} ClutterPickMode;
 
 struct _ClutterInputDevice
 {
@@ -133,6 +129,11 @@ struct _ClutterMainContext
                                            MultiTouch */
 
   guint32 last_event_time;
+
+  ClutterMasterClock *master_clock;
+  gulong redraw_count;
+
+  GList *repaint_funcs;
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
@@ -185,6 +186,9 @@ ClutterActor *_clutter_backend_create_stage   (ClutterBackend  *backend,
                                                GError         **error);
 void          _clutter_backend_ensure_context (ClutterBackend  *backend,
                                                ClutterStage    *stage);
+gboolean      _clutter_backend_create_context (ClutterBackend  *backend,
+                                               gboolean         is_offscreen,
+                                               GError         **error);
 
 void          _clutter_backend_add_options    (ClutterBackend  *backend,
                                                GOptionGroup    *group);
@@ -196,20 +200,20 @@ void          _clutter_backend_init_events    (ClutterBackend  *backend);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
-ClutterUnit   _clutter_backend_get_units_per_em   (ClutterBackend *backend);
+gfloat        _clutter_backend_get_units_per_em   (ClutterBackend       *backend,
+                                                   PangoFontDescription *font_desc);
 
 void          _clutter_feature_init (void);
 
 /* Picking code */
-ClutterActor *_clutter_do_pick (ClutterStage   *stage,
-				 gint            x,
-				 gint            y,
-				 ClutterPickMode mode);
+ClutterActor *_clutter_do_pick (ClutterStage    *stage,
+				gint             x,
+				gint             y,
+				ClutterPickMode  mode);
 
 guint         _clutter_pixel_to_id (guchar pixel[4]);
 
 void          _clutter_id_to_color (guint id, ClutterColor *col);
-
 
 /* use this function as the accumulator if you have a signal with
  * a G_TYPE_BOOLEAN return value; this will stop the emission as
@@ -223,11 +227,20 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
 						       ClutterActor *ancestor);
 
+void _clutter_actor_rerealize           (ClutterActor    *self,
+                                         ClutterCallback  callback,
+                                         void            *data);
+
 void _clutter_actor_set_opacity_parent (ClutterActor *self,
                                         ClutterActor *parent);
 
 void _clutter_actor_set_enable_model_view_transform (ClutterActor *self,
                                                      gboolean      enable);
+
+void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
+                                               gboolean      enable);
+
+void _clutter_run_repaint_functions (void);
 
 G_END_DECLS
 

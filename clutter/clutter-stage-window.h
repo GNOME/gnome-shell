@@ -27,6 +27,10 @@ struct _ClutterStageWindowIface
                                         gboolean            cursor_visible);
   void          (* set_user_resizable) (ClutterStageWindow *stage_window,
                                         gboolean            is_resizable);
+
+  void          (* show)               (ClutterStageWindow *stage_window,
+                                        gboolean            do_raise);
+  void          (* hide)               (ClutterStageWindow *stage_window);
 };
 
 GType clutter_stage_window_get_type (void) G_GNUC_CONST;

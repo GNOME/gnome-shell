@@ -65,17 +65,18 @@ on_motion_idle (gpointer user_data)
 {
   CallbackData *data = (CallbackData *) user_data;
   guchar *pixels, *p;
-  guint stage_width, stage_height;
+  gfloat stage_width, stage_height;
   gint x, y;
 
   data->idle_source = 0;
 
   clutter_actor_get_size (data->stage, &stage_width, &stage_height);
 
-  x = CLAMP (data->event.x - TEX_SIZE / 2, 0, (int) stage_width - TEX_SIZE);
-  y = CLAMP (data->event.y - TEX_SIZE / 2, 0, (int) stage_height - TEX_SIZE);
+  x = CLAMP (data->event.x - TEX_SIZE / 2, 0, stage_width - TEX_SIZE);
+  y = CLAMP (data->event.y - TEX_SIZE / 2, 0, stage_height - TEX_SIZE);
 
-  clutter_actor_set_position (data->box, x + TEX_SIZE / 2 - 1,
+  clutter_actor_set_position (data->box,
+                              x + TEX_SIZE / 2 - 1,
 			      y + TEX_SIZE / 2 - 1);
   clutter_actor_show (data->box);
   /* Redraw so that the layouting will be done and the box will be
@@ -83,7 +84,8 @@ on_motion_idle (gpointer user_data)
   clutter_redraw (CLUTTER_STAGE (data->stage));
 
   pixels = clutter_stage_read_pixels (CLUTTER_STAGE (data->stage),
-				      x, y, TEX_SIZE, TEX_SIZE);
+				      x, y,
+                                      TEX_SIZE, TEX_SIZE);
 
   /* Make a red dot in the center */
   p = pixels + (TEX_SIZE / 2 - DOT_SIZE / 2) * TEX_SIZE * 4

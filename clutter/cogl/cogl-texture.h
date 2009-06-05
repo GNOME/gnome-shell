@@ -41,12 +41,12 @@ G_BEGIN_DECLS
  * loading and manipulating textures.
  */
 
+#define COGL_TEXTURE_MAX_WASTE  127
+
 /**
  * cogl_texture_new_with_size:
  * @width: width of texture in pixels.
  * @height: height of texture in pixels.
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  *    texture.
@@ -60,15 +60,12 @@ G_BEGIN_DECLS
  */
 CoglHandle      cogl_texture_new_with_size    (guint            width,
                                                guint            height,
-                                               gint             max_waste,
                                                CoglTextureFlags flags,
                                                CoglPixelFormat  internal_format);
 
 /**
  * cogl_texture_new_from_file:
  * @filename: the file to load
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  *    texture
@@ -82,7 +79,6 @@ CoglHandle      cogl_texture_new_with_size    (guint            width,
  * Since: 0.8
  */
 CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
-                                               gint               max_waste,
                                                CoglTextureFlags   flags,
                                                CoglPixelFormat    internal_format,
                                                GError           **error);
@@ -91,8 +87,6 @@ CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
  * cogl_texture_new_from_data:
  * @width: width of texture in pixels
  * @height: height of texture in pixels
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
  * @internal_format: the #CoglPixelFormat that will be used for storing
@@ -110,7 +104,6 @@ CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
  */
 CoglHandle      cogl_texture_new_from_data    (guint             width,
                                                guint             height,
-                                               gint              max_waste,
                                                CoglTextureFlags  flags,
                                                CoglPixelFormat   format,
                                                CoglPixelFormat   internal_format,
@@ -136,19 +129,17 @@ CoglHandle      cogl_texture_new_from_data    (guint             width,
  *
  * Since: 0.8
  */
-CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
-                                               GLenum              gl_target,
-                                               GLuint              width,
-                                               GLuint              height,
-                                               GLuint              x_pot_waste,
-                                               GLuint              y_pot_waste,
-                                               CoglPixelFormat     format);
+CoglHandle      cogl_texture_new_from_foreign (GLuint          gl_handle,
+                                               GLenum          gl_target,
+                                               GLuint          width,
+                                               GLuint          height,
+                                               GLuint          x_pot_waste,
+                                               GLuint          y_pot_waste,
+                                               CoglPixelFormat format);
 
 /**
  * cogl_texture_new_from_bitmap:
  * @bmp_handle: A CoglBitmap handle
- * @max_waste: maximum extra horizontal and|or vertical margin pixels
- *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  * texture
@@ -160,10 +151,9 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
  *
  * Since: 1.0
  */
-CoglHandle      cogl_texture_new_from_bitmap (CoglHandle        bmp_handle,
-                                              gint              max_waste,
-                                              CoglTextureFlags  flags,
-                                              CoglPixelFormat   internal_format);
+CoglHandle      cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
+                                              CoglTextureFlags flags,
+                                              CoglPixelFormat  internal_format);
 
 /**
  * cogl_is_texture:
@@ -229,72 +219,6 @@ guint           cogl_texture_get_rowstride    (CoglHandle          handle);
 gint            cogl_texture_get_max_waste    (CoglHandle          handle);
 
 /**
- * CoglTextureFilter:
- * @COGL_TEXTURE_FILTER_NEAREST: Measuring in manhatten distance from the,
- *                               current pixel center, use the nearest texture
- *                               texel.
- * @COGL_TEXTURE_FILTER_LINEAR: Use the weighted average of the 4 texels
- *                              nearest the current pixel center.
- * @COGL_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST: Select the mimap level whose
- *                                              texel size most closely matches
- *                                              the current pixel, and use the
- *                                              COGL_TEXTURE_FILTER_NEAREST
- *                                              criterion.
- * @COGL_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST: Select the mimap level whose
- *                                             texel size most closely matches
- *                                             the current pixel, and use the
- *                                             COGL_TEXTURE_FILTER_LINEAR
- *                                             criterion.
- * @COGL_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR: Select the two mimap levels
- *                                             whose texel size most closely
- *                                             matches the current pixel, use
- *                                             the COGL_TEXTURE_FILTER_NEAREST
- *                                             criterion on each one and take
- *                                             their weighted average.
- * @COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR: Select the two mimap levels
- *                                            whose texel size most closely
- *                                            matches the current pixel, use
- *                                            the COGL_TEXTURE_FILTER_LINEAR
- *                                            criterion on each one and take
- *                                            their weighted average.
- *
- * Texture filtering is used whenever the current pixel maps either to more
- * than one texture element (texel) or less than one. These filter enums
- * correspond to different strategies used to come up with a pixel color, by
- * possibly referring to multiple neighbouring texels and taking a weighted
- * average or simply using the nearest texel.
- */
-typedef enum _CoglTextureFilter
-{
-  COGL_TEXTURE_FILTER_NEAREST = GL_NEAREST,
-  COGL_TEXTURE_FILTER_LINEAR = GL_LINEAR,
-  COGL_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
-  COGL_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
-  COGL_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
-  COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR
-} CoglTextureFilter;
-
-/**
- * cogl_texture_get_min_filter:
- * @handle: a #CoglHandle for a texture.
- *
- * Query the currently set downscaling filter for a cogl texture.
- *
- * Returns: the current downscaling filter for a cogl texture.
- */
-CoglTextureFilter cogl_texture_get_min_filter (CoglHandle          handle);
-
-/**
- * cogl_texture_get_mag_filter:
- * @handle: a #CoglHandle for a texture.
- *
- * Query the currently set downscaling filter for a cogl texture.
- *
- * Returns: the current downscaling filter for a cogl texture.
- */
-CoglTextureFilter cogl_texture_get_mag_filter (CoglHandle          handle);
-
-/**
  * cogl_texture_is_sliced:
  * @handle: a #CoglHandle for a texture.
  *
@@ -342,20 +266,6 @@ gint            cogl_texture_get_data         (CoglHandle          handle,
                                                CoglPixelFormat     format,
                                                guint               rowstride,
                                                guchar             *data);
-
-/**
- * cogl_texture_set_filters:
- * @handle: a #CoglHandle.
- * @min_filter: the filter used when scaling the texture down.
- * @mag_filter: the filter used when magnifying the texture.
- *
- * Changes the decimation and interpolation filters used when the texture is
- * drawn at other scales than 100%.
- */
-void            cogl_texture_set_filters      (CoglHandle          handle,
-                                               CoglTextureFilter   min_filter,
-                                               CoglTextureFilter   mag_filter);
-
 
 /**
  * cogl_texture_set_region:

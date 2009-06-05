@@ -135,14 +135,6 @@ texture_bind (ClutterGLXTexturePixmap *tex)
   /* FIXME: fire off an error here? */
   glBindTexture (target, handle);
 
-  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (tex))
-         == CLUTTER_TEXTURE_QUALITY_HIGH && tex->priv->can_mipmap)
-    {
-      cogl_texture_set_filters (cogl_tex,
-                                COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR,
-                                COGL_TEXTURE_FILTER_LINEAR);
-    }
-
   return TRUE;
 }
 
@@ -167,6 +159,18 @@ on_glx_texture_pixmap_pre_paint (ClutterGLXTexturePixmap *texture,
       texture->priv->mipmap_generate_queued = 0;
     }
 
+  /* Disable mipmaps if we can't support them */
+  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
+      == CLUTTER_TEXTURE_QUALITY_HIGH
+      && !texture->priv->can_mipmap)
+    {
+      CoglHandle material
+        = clutter_texture_get_cogl_material (CLUTTER_TEXTURE (texture));
+
+      cogl_material_set_layer_filters (material, 0,
+                                       COGL_MATERIAL_FILTER_LINEAR,
+                                       COGL_MATERIAL_FILTER_LINEAR);
+    }
 }
 
 static void
@@ -214,9 +218,9 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
 
       if ((rect_env = g_getenv ("CLUTTER_PIXMAP_TEXTURE_RECTANGLE")))
         {
-          if (strcasecmp (rect_env, "force") == 0)
+          if (g_ascii_strcasecmp (rect_env, "force") == 0)
             _rectangle_state = CLUTTER_GLX_RECTANGLE_FORCE;
-	  else if (strcasecmp (rect_env, "disable") == 0)
+	  else if (g_ascii_strcasecmp (rect_env, "disable") == 0)
             _rectangle_state = CLUTTER_GLX_RECTANGLE_DISALLOW;
 	  else if (rect_env[0])
 	    g_warning ("Unknown value for CLUTTER_PIXMAP_TEXTURE_RECTANGLE, "
@@ -360,7 +364,7 @@ create_cogl_texture (ClutterTexture *texture,
     {
       handle
         = cogl_texture_new_with_size (width, height,
-                                      -1, FALSE,
+                                      COGL_TEXTURE_NO_SLICING,
                                       cogl_format | COGL_BGR_BIT);
 
       using_rectangle = FALSE;

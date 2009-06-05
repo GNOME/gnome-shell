@@ -398,7 +398,7 @@ clutter_color_from_string (ClutterColor *color,
   g_return_val_if_fail (str != NULL, FALSE);
 
   /* if the string contains a color encoded using the hexadecimal
-   * notations (#rrggbbaa or #rrggbb) we attempt a rough pass at
+   * notations (#rrggbbaa or #rgba) we attempt a rough pass at
    * parsing the color ourselves, as we need the alpha channel that
    * Pango can't retrieve.
    */
@@ -407,36 +407,34 @@ clutter_color_from_string (ClutterColor *color,
       gint32 result;
 
       if (sscanf (str + 1, "%x", &result))
-	{
-	  if (strlen (str) == 9)
-	    {
+        {
+          if (strlen (str) == 9)
+            {
               /* #rrggbbaa */
-	      color->red   = (result >> 24) & 0xff;
-	      color->green = (result >> 16) & 0xff;
-	      color->blue  = (result >>  8) & 0xff;
+              color->red   = (result >> 24) & 0xff;
+              color->green = (result >> 16) & 0xff;
+              color->blue  = (result >>  8) & 0xff;
 
-	      color->alpha = result & 0xff;
+              color->alpha = result & 0xff;
 
-	      return TRUE;
-	    }
-	  else if (strlen (str) == 7)
-	    {
-              /* #rrggbb */
-	      color->red   = (result >> 16) & 0xff;
-	      color->green = (result >>  8) & 0xff;
-	      color->blue  = result & 0xff;
+              return TRUE;
+            }
+          else if (strlen (str) == 5)
+            {
+              /* #rgba */
+              color->red   = ((result >> 12) & 0xf);
+              color->green = ((result >>  8) & 0xf);
+              color->blue  = ((result >>  4) & 0xf);
+              color->alpha = result & 0xf;
 
-	      color->alpha = 0xff;
+              color->red   = (color->red   << 4) | color->red;
+              color->green = (color->green << 4) | color->green;
+              color->blue  = (color->blue  << 4) | color->blue;
+              color->alpha = (color->alpha << 4) | color->alpha;
 
-	      return TRUE;
-	    }
-	}
-
-      /* XXX - should we return FALSE here? it's not like
-       * Pango is endowed with mystical parsing powers and
-       * will be able to do better than the code above.
-       * still, it doesn't hurt
-       */
+              return TRUE;
+            }
+        }
     }
   
   /* Fall back to pango for named colors */

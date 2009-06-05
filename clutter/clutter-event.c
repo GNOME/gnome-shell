@@ -120,10 +120,10 @@ clutter_event_get_state (ClutterEvent *event)
  */
 void
 clutter_event_get_coords (ClutterEvent *event,
-                          gint         *x,
-                          gint         *y)
+                          gfloat       *x,
+                          gfloat       *y)
 {
-  gint event_x, event_y;
+  gfloat event_x, event_y;
 
   g_return_if_fail (event != NULL);
 
@@ -141,15 +141,18 @@ clutter_event_get_coords (ClutterEvent *event,
     case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
       break;
+
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
       event_x = event->button.x;
       event_y = event->button.y;
       break;
+
     case CLUTTER_MOTION:
       event_x = event->motion.x;
       event_y = event->motion.y;
       break;
+
     case CLUTTER_SCROLL:
       event_x = event->scroll.x;
       event_y = event->scroll.y;

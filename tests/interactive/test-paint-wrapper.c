@@ -51,7 +51,7 @@ input_cb (ClutterStage *stage,
     {
       ClutterButtonEvent *button_event;
       ClutterActor *e;
-      gint x, y;
+      gfloat x, y;
 
       clutter_event_get_coords (event, &x, &y);
 
@@ -59,7 +59,7 @@ input_cb (ClutterStage *stage,
       g_print ("*** button press event (button:%d) ***\n",
 	       button_event->button);
 
-      e = clutter_stage_get_actor_at_pos (stage, x, y);
+      e = clutter_stage_get_actor_at_pos (stage, CLUTTER_PICK_ALL, x, y);
 
       if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
         {
@@ -88,17 +88,18 @@ input_cb (ClutterStage *stage,
 /* Timeline handler */
 static void
 frame_cb (ClutterTimeline *timeline,
-	  gint             frame_num,
+	  gint             msecs,
 	  gpointer         data)
 {
-  SuperOH        *oh = (SuperOH *)data;
-  gint            i;
+  SuperOH *oh = (SuperOH *)data;
+  gint     i;
+  float    rotation = clutter_timeline_get_progress (timeline) * 360.0f;
 
   /* Rotate everything clockwise about stage center*/
 
   clutter_actor_set_rotation (CLUTTER_ACTOR (oh->group),
                               CLUTTER_Z_AXIS,
-                              frame_num,
+                              rotation,
 			      CLUTTER_STAGE_WIDTH () / 2,
                               CLUTTER_STAGE_HEIGHT () / 2,
 			      0);
@@ -116,7 +117,7 @@ frame_cb (ClutterTimeline *timeline,
        * unit based functions to fix.
        */
       clutter_actor_set_rotation (oh->hand[i], CLUTTER_Z_AXIS,
-				  - 6.0 * frame_num, 0, 0, 0);
+				  - 6.0 * rotation, 0, 0, 0);
     }
 }
 
@@ -125,7 +126,7 @@ hand_pre_paint (ClutterActor *actor,
                 gpointer      user_data)
 {
   SuperOH *oh = (SuperOH *) user_data;
-  guint w, h;
+  gfloat w, h;
   int actor_num;
 
   for (actor_num = 0; oh->hand[actor_num] != actor; actor_num++);
@@ -145,7 +146,7 @@ hand_post_paint (ClutterActor *actor,
                  gpointer      user_data)
 {
   SuperOH *oh = (SuperOH *) user_data;
-  guint w, h;
+  gfloat w, h;
   int actor_num;
 
   for (actor_num = 0; oh->hand[actor_num] != actor; actor_num++);
@@ -208,8 +209,8 @@ test_paint_wrapper_main (int argc, char *argv[])
   oh = g_new(SuperOH, 1);
 
   /* Create a timeline to manage animation */
-  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
+  timeline = clutter_timeline_new (6000);
+  clutter_timeline_set_loop (timeline, TRUE);
 
   /* fire a callback for frame change */
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), oh);

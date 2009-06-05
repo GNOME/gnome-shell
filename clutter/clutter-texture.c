@@ -77,10 +77,8 @@ typedef struct _ClutterTextureAsyncData ClutterTextureAsyncData;
 
 struct _ClutterTexturePrivate
 {
-  gint                         width;
-  gint                         height;
-  gint                         max_tile_waste;
-  ClutterTextureQuality        filter_quality;
+  gfloat                       width;
+  gfloat                       height;
   CoglHandle                   material;
   gboolean                     no_slice;
 
@@ -136,7 +134,7 @@ enum
   PROP_0,
   PROP_NO_SLICE,
   PROP_MAX_TILE_WASTE,
-  PROP_PIXEL_FORMAT,		/* Texture format */
+  PROP_PIXEL_FORMAT,
   PROP_SYNC_SIZE,
   PROP_REPEAT_Y,
   PROP_REPEAT_X,
@@ -177,36 +175,35 @@ clutter_texture_error_quark (void)
   return g_quark_from_static_string ("clutter-texture-error-quark");
 }
 
+static const struct
+{
+  gint min_filter;
+  gint mag_filter;
+}
+clutter_texture_quality_filters[] =
+  {
+    /* CLUTTER_TEXTURE_QUALITY_LOW */
+    { COGL_MATERIAL_FILTER_NEAREST, COGL_MATERIAL_FILTER_NEAREST },
+
+    /* CLUTTER_TEXTURE_QUALITY_MEDIUM */
+    { COGL_MATERIAL_FILTER_LINEAR, COGL_MATERIAL_FILTER_LINEAR },
+
+    /* CLUTTER_TEXTURE_QUALITY_HIGH */
+    { COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR, COGL_MATERIAL_FILTER_LINEAR }
+  };
+
 static inline void
 clutter_texture_quality_to_filters (ClutterTextureQuality  quality,
                                     gint                  *min_filter_p,
                                     gint                  *mag_filter_p)
 {
-  gint min_filter, mag_filter;
-
-  switch (quality)
-    {
-    case CLUTTER_TEXTURE_QUALITY_LOW:
-      min_filter = COGL_TEXTURE_FILTER_NEAREST;
-      mag_filter = COGL_TEXTURE_FILTER_NEAREST;
-      break;
-
-    case CLUTTER_TEXTURE_QUALITY_MEDIUM:
-      min_filter = COGL_TEXTURE_FILTER_LINEAR;
-      mag_filter = COGL_TEXTURE_FILTER_LINEAR;
-      break;
-
-    case CLUTTER_TEXTURE_QUALITY_HIGH:
-      min_filter = COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR;
-      mag_filter = COGL_TEXTURE_FILTER_LINEAR;
-      break;
-    }
+  g_return_if_fail (quality < G_N_ELEMENTS (clutter_texture_quality_filters));
 
   if (min_filter_p)
-    *min_filter_p = min_filter;
+    *min_filter_p = clutter_texture_quality_filters[quality].min_filter;
 
   if (mag_filter_p)
-    *mag_filter_p = mag_filter;
+    *mag_filter_p = clutter_texture_quality_filters[quality].mag_filter;
 }
 
 static void
@@ -217,7 +214,10 @@ texture_free_gl_resources (ClutterTexture *texture)
   CLUTTER_MARK();
 
   if (priv->material != COGL_INVALID_HANDLE)
-    cogl_material_remove_layer (priv->material, 0);
+    /* We want to keep the layer so that the filter settings will
+       remain but we want to free its resources so we clear the
+       texture handle */
+    cogl_material_set_layer (priv->material, 0, COGL_INVALID_HANDLE);
 }
 
 static void
@@ -286,30 +286,19 @@ clutter_texture_realize (ClutterActor *actor)
   if (priv->fbo_source)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
-      gint min_filter, mag_filter;
-      gint max_waste = -1;
       CoglHandle tex;
 
       /* Handle FBO's */
 
-      if (!priv->no_slice)
-        max_waste = priv->max_tile_waste;
-
-      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        flags |= COGL_TEXTURE_AUTO_MIPMAP;
+      if (priv->no_slice)
+        flags |= COGL_TEXTURE_NO_SLICING;
 
       tex = cogl_texture_new_with_size (priv->width,
                                         priv->height,
-                                        max_waste, flags,
+                                        flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_material_set_layer (priv->material, 0, tex);
-
-      clutter_texture_quality_to_filters (priv->filter_quality,
-                                          &min_filter,
-                                          &mag_filter);
-
-      cogl_texture_set_filters (tex, min_filter, mag_filter);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
 
@@ -337,19 +326,15 @@ clutter_texture_realize (ClutterActor *actor)
     }
   else
     {
-      if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
-	{
-	  /* Dont allow realization with no data - note set_data
-	   * will set realize flags.
-	   */
-	  CLUTTER_NOTE (TEXTURE,
-			"Texture has no image data cannot realize");
-
-	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
-	  return;
-	}
+      /* If we have no data, then realization is a no-op but
+       * we still want to be in REALIZED state to maintain
+       * invariants. We may have already created the texture
+       * if someone set some data earlier, or we may create it
+       * later if someone sets some data later. The fact that
+       * we may have created it earlier is really a bug, since
+       * it means ClutterTexture can have GL resources without
+       * being realized.
+       */
     }
 
   CLUTTER_NOTE (TEXTURE, "Texture realized");
@@ -357,9 +342,9 @@ clutter_texture_realize (ClutterActor *actor)
 
 static void
 clutter_texture_get_preferred_width (ClutterActor *self,
-                                     ClutterUnit   for_height,
-                                     ClutterUnit  *min_width_p,
-                                     ClutterUnit  *natural_width_p)
+                                     gfloat        for_height,
+                                     gfloat       *min_width_p,
+                                     gfloat       *natural_width_p)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
@@ -376,19 +361,14 @@ clutter_texture_get_preferred_width (ClutterActor *self,
               for_height < 0 ||
               priv->height <= 0)
             {
-              *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+              *natural_width_p = priv->width;
             }
           else
             {
               /* Set the natural width so as to preserve the aspect ratio */
-              gfloat ratio, height;
+              gfloat ratio = priv->width / priv->height;
 
-              ratio = (float)(priv->width) / (float)(priv->height);
-
-              height = CLUTTER_UNITS_TO_FLOAT (for_height);
-
-              *natural_width_p =
-                CLUTTER_UNITS_FROM_FLOAT (ratio * height);
+              *natural_width_p = ratio * for_height;
             }
         }
     }
@@ -401,9 +381,9 @@ clutter_texture_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_texture_get_preferred_height (ClutterActor *self,
-                                      ClutterUnit   for_width,
-                                      ClutterUnit  *min_height_p,
-                                      ClutterUnit  *natural_height_p)
+                                      gfloat        for_width,
+                                      gfloat       *min_height_p,
+                                      gfloat       *natural_height_p)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
@@ -420,19 +400,14 @@ clutter_texture_get_preferred_height (ClutterActor *self,
               for_width < 0 ||
               priv->width <= 0)
             {
-              *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+              *natural_height_p = priv->height;
             }
           else
             {
               /* Set the natural height so as to preserve the aspect ratio */
-              gfloat ratio, width;
+              gfloat ratio = priv->height / priv->width;
 
-              ratio = (float)(priv->height) / (float)(priv->width);
-
-              width = CLUTTER_UNITS_TO_FLOAT (for_width);
-
-              *natural_height_p =
-                CLUTTER_UNITS_FROM_FLOAT (ratio * width);
+              *natural_height_p = ratio * for_width;
             }
         }
     }
@@ -444,20 +419,21 @@ clutter_texture_get_preferred_height (ClutterActor *self,
 }
 
 static void
-clutter_texture_allocate (ClutterActor          *self,
-			  const ClutterActorBox *box,
-			  gboolean               origin_changed)
+clutter_texture_allocate (ClutterActor           *self,
+			  const ClutterActorBox  *box,
+                          ClutterAllocationFlags  flags)
 {
   ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
 
   /* chain up to set actor->allocation */
-  CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->allocate (self, box,
-								origin_changed);
+  CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->allocate (self,
+                                                                box,
+                                                                flags);
 
   /* If we adopted the source fbo then allocate that at its preferred
      size */
   if (priv->fbo_source && clutter_actor_get_parent (priv->fbo_source) == self)
-    clutter_actor_allocate_preferred_size (priv->fbo_source, origin_changed);
+    clutter_actor_allocate_preferred_size (priv->fbo_source, flags);
 }
 
 static void
@@ -466,7 +442,7 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
   ClutterVertex verts[4];
   gfloat viewport[4];
-  ClutterUnit x_min, x_max, y_min, y_max;
+  gfloat x_min, x_max, y_min, y_max;
   gfloat tx_min, tx_max, ty_min, ty_max;
   gfloat tan_angle, near_size;
   ClutterPerspective perspective;
@@ -501,13 +477,13 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
 
-  tx_min = (CLUTTER_UNITS_TO_FLOAT (x_min) / viewport[2])
+  tx_min = (x_min / viewport[2])
          * 2 - 1.0;
-  tx_max = (CLUTTER_UNITS_TO_FLOAT (x_max) / viewport[2])
+  tx_max = (x_max / viewport[2])
          * 2 - 1.0;
-  ty_min = (CLUTTER_UNITS_TO_FLOAT (y_min) / viewport[3])
+  ty_min = (y_min / viewport[3])
          * 2 - 1.0;
-  ty_max = (CLUTTER_UNITS_TO_FLOAT (y_max) / viewport[3])
+  ty_max = (y_max / viewport[3])
          * 2 - 1.0;
 
   /* Set up a projection matrix so that the actor will be projected as
@@ -528,7 +504,7 @@ clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
-  gint            x_1, y_1, x_2, y_2;
+  ClutterActorBox box = { 0, };
   CoglColor       transparent_col;
   gfloat          t_w, t_h;
   guint8          paint_opacity = clutter_actor_get_paint_opacity (self);
@@ -540,9 +516,6 @@ clutter_texture_paint (ClutterActor *self)
        */
       return;
     }
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
-    clutter_actor_realize (CLUTTER_ACTOR(texture));
 
   if (priv->fbo_handle != COGL_INVALID_HANDLE)
     {
@@ -567,19 +540,20 @@ clutter_texture_paint (ClutterActor *self)
 
       if ((stage = clutter_actor_get_stage (self)))
 	{
-	  guint               stage_width, stage_height;
-	  ClutterActor       *source_parent;
+	  gfloat stage_width, stage_height;
+	  ClutterActor *source_parent;
 
 	  clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
 	  clutter_actor_get_size (stage, &stage_width, &stage_height);
 
 	  /* Use below to set the modelview matrix as if the viewport
 	     was still the same size as the stage */
-	  cogl_setup_viewport (stage_width, stage_height,
-			       perspective.fovy,
-			       perspective.aspect,
-			       perspective.z_near,
-			       perspective.z_far);
+          _cogl_setup_viewport (stage_width, stage_height,
+                                perspective.fovy,
+                                perspective.aspect,
+                                perspective.z_near,
+                                perspective.z_far);
+
 	  /* Use a projection matrix that makes the actor appear as it
 	     would if it was rendered at its normal screen location */
 	  clutter_texture_set_fbo_projection (self);
@@ -636,28 +610,28 @@ clutter_texture_paint (ClutterActor *self)
 
   cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff, paint_opacity);
 
-  clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
+  clutter_actor_get_allocation_box (self, &box);
 
-  CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
+  CLUTTER_NOTE (PAINT, "paint to x1: %f, y1: %f x2: %f, y2: %f "
 		       "opacity: %i",
-		x_1, y_1, x_2, y_2,
+		box.x1, box.y1, box.x2, box.y2,
 		clutter_actor_get_opacity (self));
 
   if (priv->repeat_x && priv->width > 0)
-    t_w = (float) (x_2 - x_1) / (float) (priv->width);
+    t_w = (box.x2 - box.x1) / priv->width;
   else
     t_w = 1.0;
 
   if (priv->repeat_y && priv->height > 0)
-    t_h = (float) (y_2 - y_1) / (float) (priv->height);
+    t_h = (box.y2 - box.y1) / priv->height;
   else
     t_h = 1.0;
 
   /* Paint will have translated us */
   cogl_set_source (priv->material);
   cogl_rectangle_with_texture_coords (0, 0,
-			              (float) (x_2 - x_1),
-			              (float) (y_2 - y_1),
+			              box.x2 - box.x1,
+                                      box.y2 - box.y1,
 			              0, 0, t_w, t_h);
 }
 
@@ -791,10 +765,6 @@ clutter_texture_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_MAX_TILE_WASTE:
-      clutter_texture_set_max_tile_waste (texture, g_value_get_int (value));
-      break;
-
     case PROP_SYNC_SIZE:
       clutter_texture_set_sync_size (texture, g_value_get_boolean (value));
       break;
@@ -876,12 +846,12 @@ clutter_texture_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_MAX_TILE_WASTE:
-      g_value_set_int (value, clutter_texture_get_max_tile_waste (texture));
-      break;
-
     case PROP_PIXEL_FORMAT:
       g_value_set_enum (value, clutter_texture_get_pixel_format (texture));
+      break;
+
+    case PROP_MAX_TILE_WASTE:
+      g_value_set_int (value, clutter_texture_get_max_tile_waste (texture));
       break;
 
     case PROP_SYNC_SIZE:
@@ -962,6 +932,14 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   FALSE,
 			   G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
+  g_object_class_install_property
+    (gobject_class, PROP_MAX_TILE_WASTE,
+     g_param_spec_int ("tile-waste",
+                       "Tile Waste",
+                       "Maximum waste area of a sliced texture",
+                       -1, G_MAXINT,
+                       COGL_TEXTURE_MAX_WASTE,
+                       CLUTTER_PARAM_READABLE));
 
   g_object_class_install_property
     (gobject_class, PROP_REPEAT_X,
@@ -989,19 +967,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                        CLUTTER_TYPE_TEXTURE_QUALITY,
 		       CLUTTER_TEXTURE_QUALITY_MEDIUM,
 		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
-  g_object_class_install_property
-    (gobject_class, PROP_MAX_TILE_WASTE,
-     g_param_spec_int ("tile-waste",
-		       "Tile dimension to waste",
-		       "Max wastage dimension of a texture when using "
-		       "sliced textures or -1 to disable slicing. "
-		       "Bigger values use less textures, "
-		       "smaller values less texture memory.",
-		       -1,
-		       G_MAXINT,
-		       63,
-		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_PIXEL_FORMAT,
@@ -1112,9 +1077,9 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextureClass, size_change),
 		  NULL, NULL,
-		  clutter_marshal_VOID__INT_INT,
+		  clutter_marshal_VOID__FLOAT_FLOAT,
 		  G_TYPE_NONE,
-		  2, G_TYPE_INT, G_TYPE_INT);
+		  2, G_TYPE_FLOAT, G_TYPE_FLOAT);
   /**
    * ClutterTexture::pixbuf-change:
    * @texture: the texture which received the signal
@@ -1215,8 +1180,6 @@ clutter_texture_init (ClutterTexture *self)
 
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
-  priv->max_tile_waste    = 63;
-  priv->filter_quality    = CLUTTER_TEXTURE_QUALITY_MEDIUM;
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
   priv->sync_actor_size   = TRUE;
@@ -1255,12 +1218,6 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
 
   /* Align to 4 bytes */
   priv->local_data_rowstride = (priv->local_data_width * bpp + 3) & ~3;
-
-  /* Store the filter quality and max_tile_waste from the texture
-     properties so that they will be restored the data is loaded
-     again */
-  priv->max_tile_waste = clutter_texture_get_max_tile_waste (texture);
-  priv->filter_quality = clutter_texture_get_filter_quality (texture);
 
   priv->local_data = g_malloc (priv->local_data_rowstride
 			       * priv->local_data_height);
@@ -1396,6 +1353,12 @@ clutter_texture_get_cogl_texture (ClutterTexture *texture)
  * @cogl_tex. A reference to the texture is taken so if the handle is
  * no longer needed it should be deref'd with cogl_handle_unref.
  *
+ * This should not be called on an unrealizable texture (one that
+ * isn't inside a stage). (Currently the ClutterTexture
+ * implementation relies on being able to have a GL texture while
+ * unrealized, which means you can get away with it, but it's
+ * not correct and may change in the future.)
+ *
  * Since: 0.8
  */
 void
@@ -1408,6 +1371,12 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
   g_return_if_fail (cogl_is_texture (cogl_tex));
+
+  /* FIXME this implementation should realize the actor if it's in a
+   * stage, and warn and return if not in a stage yet. However, right
+   * now everything would break if we did that, so we just fudge it
+   * and we're broken: we can have a texture without being realized.
+   */
 
   priv = texture->priv;
 
@@ -1424,6 +1393,14 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   /* Remove old texture */
   texture_free_gl_resources (texture);
+
+  /* Free any saved data so realization doesn't resend it to GL */
+  if (priv->local_data)
+    {
+      g_free (priv->local_data);
+      priv->local_data = NULL;
+    }
+
   /* Use the new texture */
 
   cogl_material_set_layer (priv->material, 0, cogl_tex);
@@ -1436,11 +1413,9 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   priv->width      = width;
   priv->height     = height;
 
-  CLUTTER_NOTE (TEXTURE, "set size %ix%i\n",
+  CLUTTER_NOTE (TEXTURE, "set size %.2fx%.2f\n",
 		priv->width,
 		priv->height);
-
-  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
 
   if (size_change)
     {
@@ -1475,17 +1450,16 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   ClutterTexturePrivate *priv = texture->priv;
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
-  gint min_filter, mag_filter;
-  gint max_waste = -1;
 
-  if (!priv->no_slice)
-    max_waste = priv->max_tile_waste;
+  if (priv->no_slice)
+    flags |= COGL_TEXTURE_NO_SLICING;
 
-  if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-    flags |= COGL_TEXTURE_AUTO_MIPMAP;
+  /* FIXME if we are not realized, we should store the data
+   * for future use, instead of creating the texture.
+   */
 
   new_texture = cogl_texture_new_from_data (width, height,
-                                            max_waste, flags,
+                                            flags,
                                             source_format,
                                             COGL_PIXEL_FORMAT_ANY,
                                             rowstride,
@@ -1499,12 +1473,6 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
       return FALSE;
     }
-
-  clutter_texture_quality_to_filters (priv->filter_quality,
-                                      &min_filter,
-                                      &mag_filter);
-
-  cogl_texture_set_filters (new_texture, min_filter, mag_filter);
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1530,25 +1498,23 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
  *
  * Sets #ClutterTexture image data.
  *
- * Note: This function is likely to change in future versions.
- *
  * Return value: %TRUE on success, %FALSE on failure.
  *
  * Since: 0.4.
- **/
+ */
 gboolean
-clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
-				     const guchar       *data,
-				     gboolean            has_alpha,
-				     gint                width,
-				     gint                height,
-				     gint                rowstride,
-				     gint                bpp,
-				     ClutterTextureFlags flags,
-				     GError            **error)
+clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
+				   const guchar         *data,
+				   gboolean              has_alpha,
+				   gint                  width,
+				   gint                  height,
+				   gint                  rowstride,
+				   gint                  bpp,
+				   ClutterTextureFlags   flags,
+				   GError              **error)
 {
   ClutterTexturePrivate *priv;
-  CoglPixelFormat        source_format;
+  CoglPixelFormat source_format;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
 
@@ -1561,9 +1527,13 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 	{
 	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported BPP");
+		       "Unsupported bits per pixel value '%d': "
+                       "Clutter supports only a BPP value of 4 "
+                       "for RGBA data",
+                       bpp);
 	  return FALSE;
 	}
+
       source_format = COGL_PIXEL_FORMAT_RGBA_8888;
     }
   else
@@ -1572,11 +1542,16 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 	{
 	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Unsupported BPP");
+		       "Unsupported bits per pixel value '%d': "
+                       "Clutter supports only a BPP value of 3 "
+                       "for RGB data",
+                       bpp);
 	  return FALSE;
 	}
+
       source_format = COGL_PIXEL_FORMAT_RGB_888;
     }
+
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_BGR))
     source_format |= COGL_BGR_BIT;
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
@@ -1600,8 +1575,6 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
  *
  * Sets a #ClutterTexture from YUV image data. If an error occurred,
  * %FALSE is returned and @error is set.
- *
- * This function is likely to change in future versions.
  *
  * Return value: %TRUE if the texture was successfully updated
  *
@@ -1634,7 +1607,7 @@ clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		   "YUV2 not supported");
+		   "YUV2 textues are not supported");
       return FALSE;
     }
 
@@ -1663,20 +1636,16 @@ clutter_texture_async_load_complete (ClutterTexture *self,
   ClutterTexturePrivate *priv = self->priv;
   CoglHandle handle;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
-  gint waste = -1;
 
   priv->async_data = NULL;
 
   if (error == NULL)
     {
-      if (!priv->no_slice)
-        waste = priv->max_tile_waste;
-
-      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        flags |= COGL_TEXTURE_AUTO_MIPMAP;
+      if (priv->no_slice)
+        flags |= COGL_TEXTURE_NO_SLICING;
 
       handle = cogl_texture_new_from_bitmap (bitmap,
-                                             waste, flags,
+                                             flags,
                                              COGL_PIXEL_FORMAT_ANY);
       clutter_texture_set_cogl_texture (self, handle);
       if (priv->load_size_async)
@@ -1908,8 +1877,6 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   GError *internal_error = NULL;
   CoglTextureFlags flags = COGL_TEXTURE_NONE;
-  gint min_filter, mag_filter;
-  gint max_waste = -1;
 
   priv = texture->priv;
 
@@ -1918,14 +1885,11 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   if (priv->load_data_async)
     return clutter_texture_async_load (texture, filename, error);
 
-  if (!priv->no_slice)
-    max_waste = priv->max_tile_waste;
-
-  if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-    flags |= COGL_TEXTURE_AUTO_MIPMAP;
+  if (priv->no_slice)
+    flags |= COGL_TEXTURE_NO_SLICING;
 
   new_texture = cogl_texture_new_from_file (filename,
-                                            max_waste, flags,
+                                            flags,
                                             COGL_PIXEL_FORMAT_ANY,
                                             &internal_error);
   if (new_texture == COGL_INVALID_HANDLE)
@@ -1944,12 +1908,6 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
       return FALSE;
     }
-
-  clutter_texture_quality_to_filters (priv->filter_quality,
-                                      &min_filter,
-                                      &mag_filter);
-
-  cogl_texture_set_filters (new_texture, min_filter, mag_filter);
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1991,33 +1949,14 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 
   if (filter_quality != old_quality)
     {
-      CoglHandle cogl_texture = clutter_texture_get_cogl_texture (texture);
       gint min_filter, mag_filter;
 
-      priv->filter_quality = filter_quality;
-
-      clutter_texture_quality_to_filters (priv->filter_quality,
+      clutter_texture_quality_to_filters (filter_quality,
                                           &min_filter,
                                           &mag_filter);
 
-      /* Is this actually needed - causes problems with TFP mipmaps */
-      if (cogl_texture != COGL_INVALID_HANDLE)
-	cogl_texture_set_filters (cogl_texture, min_filter, mag_filter);
-
-      if ((old_quality == CLUTTER_TEXTURE_QUALITY_HIGH ||
-           filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
-           CLUTTER_ACTOR_IS_REALIZED (texture))
-        {
-          gboolean was_visible;
-
-          was_visible = CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (texture));
-
-          clutter_actor_unrealize (CLUTTER_ACTOR (texture));
-          clutter_actor_realize (CLUTTER_ACTOR (texture));
-
-          if (was_visible)
-            clutter_actor_show (CLUTTER_ACTOR (texture));
-        }
+      cogl_material_set_layer_filters (priv->material, 0,
+                                       min_filter, mag_filter);
 
       g_object_notify (G_OBJECT (texture), "filter-quality");
 
@@ -2040,46 +1979,28 @@ ClutterTextureQuality
 clutter_texture_get_filter_quality (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv;
+  const GList *layers;
+  CoglMaterialFilter min_filter, mag_filter;
+  int i;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), 0);
 
   priv = texture->priv;
 
-  return priv->filter_quality;
-}
+  layers = cogl_material_get_layers (priv->material);
+  if (layers == NULL)
+    return CLUTTER_TEXTURE_QUALITY_MEDIUM;
 
-/**
- * clutter_texture_set_max_tile_waste
- * @texture: A #ClutterTexture
- * @max_tile_waste: Maximum amount of waste in pixels or -1
- *
- * Sets the maximum number of pixels in either axis that can be wasted
- * for an individual texture slice. If -1 is specified then the
- * texture is forced not to be sliced and the texture creation will
- * fail if the hardware can't create a texture large enough.
- *
- * The value is only used when first creating a texture so changing it
- * after the texture data has been set has no effect.
- *
- * Since: 0.8
- */
-void
-clutter_texture_set_max_tile_waste (ClutterTexture *texture,
-				    gint            max_tile_waste)
-{
-  ClutterTexturePrivate *priv;
-  CoglHandle cogl_texture;
+  min_filter = cogl_material_layer_get_min_filter (layers->data);
+  mag_filter = cogl_material_layer_get_mag_filter (layers->data);
 
-  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+  for (i = 0; i < G_N_ELEMENTS (clutter_texture_quality_filters); i++)
+    if (clutter_texture_quality_filters[i].min_filter == min_filter
+        && clutter_texture_quality_filters[i].mag_filter == mag_filter)
+      return i;
 
-  priv = texture->priv;
-  cogl_texture = clutter_texture_get_cogl_texture (texture);
-
-  /* There's no point in changing the max_tile_waste if the texture
-     has already been created because it will be overridden with the
-     value from the texture handle */
-  if (cogl_texture == COGL_INVALID_HANDLE)
-    priv->max_tile_waste = max_tile_waste;
+  /* Unknown filter combination */
+  return CLUTTER_TEXTURE_QUALITY_LOW;
 }
 
 /**
@@ -2090,7 +2011,7 @@ clutter_texture_set_max_tile_waste (ClutterTexture *texture,
  * -1 if slicing is disabled.
  *
  * Return value: The maximum waste or -1 if the texture waste is
- * unlimited.
+ *   unlimited.
  *
  * Since: 0.8
  */
@@ -2103,13 +2024,12 @@ clutter_texture_get_max_tile_waste (ClutterTexture *texture)
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), 0);
 
   priv = texture->priv;
+
   cogl_texture = clutter_texture_get_cogl_texture (texture);
 
   if (cogl_texture == COGL_INVALID_HANDLE)
-    return texture->priv->max_tile_waste;
+    return priv->no_slice ? -1 : COGL_TEXTURE_MAX_WASTE;
   else
-    /* If we have a valid texture handle then use the value from that
-       instead */
     return cogl_texture_get_max_waste (cogl_texture);
 }
 
@@ -2247,8 +2167,15 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   if ((flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT))
     source_format |= COGL_PREMULT_BIT;
 
-  clutter_actor_realize (CLUTTER_ACTOR (texture));
+  /* attempt to realize ... */
+  if (!CLUTTER_ACTOR_IS_REALIZED (texture) &&
+      clutter_actor_get_stage (CLUTTER_ACTOR (texture)) != NULL)
+    clutter_actor_realize (CLUTTER_ACTOR (texture));
 
+  /* due to the fudging of clutter_texture_set_cogl_texture()
+   * which allows setting a texture pre-realize, we may end
+   * up having a texture even if we couldn't realize yet.
+   */
   cogl_texture = clutter_texture_get_cogl_texture (texture);
   if (cogl_texture == COGL_INVALID_HANDLE)
     {
@@ -2287,14 +2214,13 @@ on_fbo_source_size_change (GObject          *object,
                            ClutterTexture   *texture)
 {
   ClutterTexturePrivate *priv = texture->priv;
-  guint                  w, h;
+  gfloat w, h;
 
   clutter_actor_get_transformed_size (priv->fbo_source, &w, &h);
 
   if (w != priv->width || h != priv->height)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
-      gint min_filter, mag_filter;
       CoglHandle tex;
 
       /* tear down the FBO */
@@ -2306,22 +2232,14 @@ on_fbo_source_size_change (GObject          *object,
       priv->width = w;
       priv->height = h;
 
-      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        flags |= COGL_TEXTURE_AUTO_MIPMAP;
+      flags |= COGL_TEXTURE_NO_SLICING;
 
       tex = cogl_texture_new_with_size (MAX (priv->width, 1),
                                         MAX (priv->height, 1),
-                                        -1,
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_material_set_layer (priv->material, 0, tex);
-
-      clutter_texture_quality_to_filters (priv->filter_quality,
-                                          &min_filter,
-                                          &mag_filter);
-
-      cogl_texture_set_filters (tex, min_filter, mag_filter);
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (tex);
 
@@ -2332,8 +2250,6 @@ on_fbo_source_size_change (GObject          *object,
       if (priv->fbo_handle == COGL_INVALID_HANDLE)
         {
           g_warning ("%s: Offscreen texture creation failed", G_STRLOC);
-	  CLUTTER_ACTOR_UNSET_FLAGS (CLUTTER_ACTOR (texture),
-				     CLUTTER_ACTOR_REALIZED);
           return;
         }
 
@@ -2439,7 +2355,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 {
   ClutterTexture        *texture;
   ClutterTexturePrivate *priv;
-  guint                  w, h;
+  gfloat w, h;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
@@ -2509,8 +2425,8 @@ clutter_texture_new_from_actor (ClutterActor *actor)
                     G_CALLBACK(on_fbo_parent_change),
                     texture);
 
-  priv->width        = w;
-  priv->height       = h;
+  priv->width = w;
+  priv->height = h;
 
   clutter_actor_set_size (CLUTTER_ACTOR (texture), priv->width, priv->height);
 
@@ -2764,7 +2680,7 @@ clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
 /**
  * clutter_texture_set_load_async:
  * @texture: a #ClutterTexture
- * @load_sync: %TRUE if the texture should asynchronously load data
+ * @load_async: %TRUE if the texture should asynchronously load data
  *   from a filename
  *
  * Sets whether @texture should use a worker thread to load the data

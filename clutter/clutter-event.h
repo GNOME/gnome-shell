@@ -221,8 +221,8 @@ typedef struct _ClutterInputDevice      ClutterInputDevice;
  */
 struct _ClutterAnyEvent
 {
-  ClutterEventType  type;
-  guint32           time;
+  ClutterEventType type;
+  guint32 time;
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
@@ -290,8 +290,8 @@ struct _ClutterButtonEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
-  gint x;
-  gint y;
+  gfloat x;
+  gfloat y;
   ClutterModifierType modifier_state;
   guint32 button;
   guint click_count;
@@ -322,8 +322,8 @@ struct _ClutterCrossingEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
-  gint x;
-  gint y;
+  gfloat x;
+  gfloat y;
   ClutterInputDevice *device; /* future use */
   ClutterActor *related;
 };
@@ -352,8 +352,8 @@ struct _ClutterMotionEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
-  gint x;
-  gint y;
+  gfloat x;
+  gfloat y;
   ClutterModifierType modifier_state;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
@@ -384,8 +384,8 @@ struct _ClutterScrollEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
-  gint x;
-  gint y;
+  gfloat x;
+  gfloat y;
   ClutterScrollDirection direction;
   ClutterModifierType modifier_state;
   gdouble *axes; /* future use */
@@ -451,8 +451,8 @@ ClutterEventType    clutter_event_type          (ClutterEvent       *event);
 guint32             clutter_event_get_time      (ClutterEvent       *event);
 ClutterModifierType clutter_event_get_state     (ClutterEvent       *event);
 void                clutter_event_get_coords    (ClutterEvent       *event,
-                                                 gint               *x,
-                                                 gint               *y);
+                                                 gfloat             *x,
+                                                 gfloat             *y);
 gint                clutter_event_get_device_id (ClutterEvent       *event);
 ClutterActor*       clutter_event_get_source    (ClutterEvent       *event);
 

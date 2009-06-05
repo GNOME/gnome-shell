@@ -51,10 +51,6 @@ struct _CoglPangoGlyphCache
 
   /* List of horizontal bands of glyphs */
   CoglPangoGlyphCacheBand    *bands;
-
-  /* If TRUE all of the textures will be created with automatic mipmap
-     generation enabled */
-  gboolean                       use_mipmapping;
 };
 
 struct _CoglPangoGlyphCacheKey
@@ -177,7 +173,7 @@ cogl_pango_glyph_cache_free_bands (CoglPangoGlyphCacheBand *node)
 }
 
 CoglPangoGlyphCache *
-cogl_pango_glyph_cache_new (gboolean use_mipmapping)
+cogl_pango_glyph_cache_new (void)
 {
   CoglPangoGlyphCache *cache;
 
@@ -191,7 +187,6 @@ cogl_pango_glyph_cache_new (gboolean use_mipmapping)
 
   cache->textures = NULL;
   cache->bands = NULL;
-  cache->use_mipmapping = use_mipmapping;
 
   return cache;
 }
@@ -272,7 +267,6 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
 	   texture = texture->next);
       if (texture == NULL)
 	{
-          CoglTextureFlags flags = COGL_TEXTURE_NONE;
 	  guchar *clear_data;
 
 	  /* Allocate a new texture that is the nearest power of two
@@ -291,13 +285,10 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
 	  clear_data =
             g_malloc0 (texture->texture_size * texture->texture_size);
 
-          if (cache->use_mipmapping)
-            flags |= COGL_TEXTURE_AUTO_MIPMAP;
-
 	  texture->texture =
             cogl_texture_new_from_data (texture->texture_size,
                                         texture->texture_size,
-                                        32, flags,
+                                        COGL_TEXTURE_NONE,
                                         COGL_PIXEL_FORMAT_A_8,
                                         COGL_PIXEL_FORMAT_A_8,
                                         texture->texture_size,
@@ -308,15 +299,6 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
 	  texture->space_remaining = texture->texture_size;
 	  texture->next = cache->textures;
 	  cache->textures = texture;
-
-	  if (cache->use_mipmapping)
-	    cogl_texture_set_filters (texture->texture,
-                                      COGL_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR,
-				      COGL_TEXTURE_FILTER_LINEAR);
-	  else
-	    cogl_texture_set_filters (texture->texture,
-				      COGL_TEXTURE_FILTER_LINEAR,
-				      COGL_TEXTURE_FILTER_LINEAR);
 	}
 
       band = g_slice_new (CoglPangoGlyphCacheBand);
