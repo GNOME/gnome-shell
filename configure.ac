@@ -536,6 +536,8 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
 
         # X11-specific tests are enabled conditionally
         AS_IF([test "x$have_xcomposite" = "xyes"], [x11_tests=yes], [x11_tests=no])
+
+        BACKEND_PC_FILES="$BACKEND_PC_FILES $X11_PC_FILES"
       ]
 )
 
@@ -587,14 +589,14 @@ AC_SUBST(JSON_PREFIX)
 AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
 
 dnl === Dependencies, compiler flags and linker libraries =====================
-CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 gobject-2.0 >= 2.16 gthread-2.0 gmodule-no-export-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
+CLUTTER_REQUIRES="cairo >= 1.4 pangocairo >= 1.20 gobject-2.0 >= 2.16 gthread-2.0 gmodule-no-export-2.0 $IMAGE_PC_FILES $BACKEND_PC_FILES $JSON_GLIB_PC"
 
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 
 AC_SUBST(CLUTTER_REQUIRES)
 
 CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS"
-CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS"
+CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $X11_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
