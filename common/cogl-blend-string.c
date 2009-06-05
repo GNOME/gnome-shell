@@ -759,13 +759,13 @@ _cogl_blend_string_compile (const char *string,
                             GError **error)
 {
   const char *p = string;
-  const char *mark;
+  const char *mark = NULL;
   const char *error_string;
   ParserState state = PARSER_STATE_EXPECT_DEST_CHANNELS;
   CoglBlendStringStatement *statement = statements;
   int current_statement = 0;
   int current_arg = 0;
-  int remaining_argc;
+  int remaining_argc = 0;
 
 #if 0
   cogl_debug_flags |= COGL_DEBUG_BLEND_STRINGS;
