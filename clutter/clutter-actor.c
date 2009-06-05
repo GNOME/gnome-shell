@@ -2271,7 +2271,9 @@ clutter_actor_paint (ClutterActor *self)
   /* It's an important optimization that we consider painting of
    * actors with 0 opacity to be a NOP... */
   if (G_LIKELY (context->pick_mode == CLUTTER_PICK_NONE) &&
-      priv->opacity == 0)
+      /* If the actor is being painted from a clone then check the
+         clone's opacity instead */
+      (priv->opacity_parent ? priv->opacity_parent->priv : priv)->opacity == 0)
     {
       priv->queued_redraw = FALSE;
       return;
