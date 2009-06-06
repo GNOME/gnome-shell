@@ -1184,17 +1184,9 @@ _cogl_pixel_format_to_gl (CoglPixelFormat  format,
   GLenum          glformat = 0;
   GLenum          gltype = 0;
 
-  /* If PREMULT_BIT isn't specified, that means that we premultiply
-   * textures with alpha before uploading to GL; once we are in GL land,
-   * everything is premultiplied.
-   *
-   * Everything else accepted (FIXME: check YUV support)
-   */
-  if ((format & COGL_A_BIT) != 0 &&
-      format != COGL_PIXEL_FORMAT_A_8)
-    required_format = format | COGL_PREMULT_BIT;
-  else
-    required_format = format;
+  /* FIXME: check YUV support */
+
+  required_format = format;
 
   /* Find GL equivalents */
   switch (format & COGL_UNPREMULT_MASK)
@@ -1273,9 +1265,15 @@ _cogl_texture_bitmap_prepare (CoglTexture     *tex,
   CoglPixelFormat   new_data_format;
   gboolean          success;
 
-  /* Was there any internal conversion requested? */
+  /* Was there any internal conversion requested?
+   * By default Cogl will use a premultiplied internal format. Later we will
+   * add control over this. */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
-    internal_format = tex->bitmap.format;
+    {
+      if ((tex->bitmap.format & COGL_A_BIT) &&
+          tex->bitmap.format != COGL_PIXEL_FORMAT_A_8)
+        internal_format = tex->bitmap.format | COGL_PREMULT_BIT;
+    }
 
   /* Find closest format accepted by GL */
   new_data_format = _cogl_pixel_format_to_gl (internal_format,
