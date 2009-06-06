@@ -175,6 +175,8 @@ ClutterStageWindow *_clutter_stage_get_window           (ClutterStage       *sta
 ClutterStageWindow *_clutter_stage_get_default_window   (void);
 void                _clutter_stage_maybe_setup_viewport (ClutterStage       *stage);
 void                _clutter_stage_maybe_relayout       (ClutterActor       *stage);
+gboolean            _clutter_stage_needs_update         (ClutterStage       *stage);
+void                _clutter_stage_do_update            (ClutterStage       *stage);
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);

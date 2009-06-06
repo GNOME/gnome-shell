@@ -95,22 +95,28 @@ static GSourceFuncs clock_funcs = {
 G_DEFINE_TYPE (ClutterMasterClock, clutter_master_clock, G_TYPE_OBJECT);
 
 /*
- * has_running_timeline:
+ * master_clock_is_running:
  * @master_clock: a #ClutterMasterClock
  *
- * Checks if @master_clock has any running timeline.
+ * Checks if we should currently be advancing timelines or redrawing
+ * stages.
  *
  * Return value: %TRUE if the #ClutterMasterClock has at least
  *   one running timeline
  */
 static gboolean
-has_running_timeline (ClutterMasterClock *master_clock)
+master_clock_is_running (ClutterMasterClock *master_clock)
 {
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
   const GSList *stages, *l;
 
   if (master_clock->timelines)
     return TRUE;
+
+  stages = clutter_stage_manager_peek_stages (stage_manager);
+  for (l = stages; l; l = l->next)
+    if (_clutter_stage_needs_update (l->data))
+      return TRUE;
 
   return FALSE;
 }
@@ -148,7 +154,7 @@ clutter_clock_prepare (GSource *source,
   /* just like an idle source, we are ready if nothing else is */
   *timeout = -1;
 
-  retval = has_running_timeline (master_clock);
+  retval = master_clock_is_running (master_clock);
 
   return retval;
 }
@@ -160,7 +166,7 @@ clutter_clock_check (GSource *source)
   ClutterMasterClock *master_clock = clock_source->master_clock;
   gboolean retval;
 
-  retval = has_running_timeline (master_clock);
+  retval = master_clock_is_running (master_clock);
 
   return retval;
 }
@@ -170,6 +176,8 @@ clutter_clock_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
+  ClutterClockSource *clock_source = (ClutterClockSource *) source;
+  ClutterMasterClock *master_clock = clock_source->master_clock;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
   const GSList *stages, *l;
 
@@ -177,12 +185,13 @@ clutter_clock_dispatch (GSource     *source,
 
   stages = clutter_stage_manager_peek_stages (stage_manager);
 
-  /* queue a redraw for each stage; this will advance each timeline
-   * held by the master clock of the amount of milliseconds elapsed
-   * since the last redraw
+   _clutter_master_clock_advance (master_clock);
+
+  /* Update any stage that needs redraw/relayout after the clock
+   * is advanced.
    */
   for (l = stages; l != NULL; l = l->next)
-    clutter_actor_queue_redraw (l->data);
+    _clutter_stage_do_update (l->data);
 
   return TRUE;
 }

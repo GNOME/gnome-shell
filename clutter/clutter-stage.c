@@ -87,8 +87,7 @@ struct _ClutterStagePrivate
   gchar              *title;
   ClutterActor       *key_focused_actor;
 
-  guint               update_idle;      /* repaint idler id */
-
+  guint redraw_pending    : 1;
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
   guint is_cursor_visible : 1;
@@ -390,29 +389,43 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
                           CLUTTER_ALLOCATION_NONE);
 }
 
-static gboolean
-redraw_update_idle (gpointer user_data)
+/**
+ * _clutter_stage_needs_update:
+ * @stage: A #ClutterStage
+ *
+ * Determines if _clutter_stage_do_update() needs to be called.
+ *
+ * Return value: %TRUE if the stages need layout or painting
+ */
+gboolean
+_clutter_stage_needs_update (ClutterStage *stage)
 {
-  ClutterStage *stage = user_data;
-  ClutterStagePrivate *priv = stage->priv;
-  ClutterMasterClock *master_clock;
+  ClutterStagePrivate *priv;
 
-  /* before we redraw we advance the master clock of one tick; this means
-   * that all the timelines that need advancing will be advanced by one
-   * frame. this will cause multiple redraw requests, so we do this before
-   * we ask for a relayout and before we do the actual redraw. this ensures
-   * that we paint the most updated scenegraph state and that all animations
-   * are in sync with the paint process.
-   */
-  CLUTTER_NOTE (PAINT, "Avdancing master clock");
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_advance (master_clock);
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
-  /* run the (eventual) repaint functions; since those might end up queuing
-   * a relayout or a redraw we need to execute them before maybe_relayout()
-   */
-  CLUTTER_NOTE (PAINT, "Repaint functions");
-  _clutter_run_repaint_functions ();
+  priv = stage->priv;
+
+  return priv->redraw_pending;
+}
+
+/**
+ * _clutter_stage_do_update:
+ * @stage: A #ClutterStage
+ *
+ * Handles per-frame layout and repaint for the stage.
+ */
+void
+_clutter_stage_do_update (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (!priv->redraw_pending)
+    return;
 
   /* clutter_do_redraw() will also call maybe_relayout(), but since a relayout
    * can queue a redraw, we want to do the relayout before we clear the
@@ -422,12 +435,11 @@ redraw_update_idle (gpointer user_data)
    */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
 
-  /* redrawing will advance the master clock */
   CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
   _clutter_do_redraw (stage);
 
   /* reset the guard, so that new redraws are possible */
-  priv->update_idle = 0;
+  priv->redraw_pending = FALSE;
 
   if (CLUTTER_CONTEXT ()->redraw_count > 0)
     {
@@ -436,8 +448,6 @@ redraw_update_idle (gpointer user_data)
 
       CLUTTER_CONTEXT ()->redraw_count = 0;
     }
-
-  return FALSE;
 }
 
 static void
@@ -450,15 +460,15 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   CLUTTER_NOTE (PAINT, "Redraw request number %lu",
                 CLUTTER_CONTEXT ()->redraw_count + 1);
 
-  if (priv->update_idle == 0)
+  if (!priv->redraw_pending)
     {
-      CLUTTER_NOTE (PAINT, "Adding idle source for stage: %p", stage);
+      priv->redraw_pending = TRUE;
 
-      priv->update_idle =
-        clutter_threads_add_idle_full (CLUTTER_PRIORITY_REDRAW,
-                                       redraw_update_idle,
-                                       stage,
-                                       NULL);
+      /* If called from a thread, we need to wake up the main loop
+       * out of its sleep so the clock source notices that we have
+       * a redraw pending
+       */
+      g_main_context_wakeup (NULL);
     }
   else
     CLUTTER_CONTEXT ()->redraw_count += 1;
@@ -607,12 +617,6 @@ clutter_stage_dispose (GObject *object)
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
 
   clutter_actor_hide (CLUTTER_ACTOR (object));
-
-  if (priv->update_idle)
-    {
-      g_source_remove (priv->update_idle);
-      priv->update_idle = 0;
-    }
 
   _clutter_stage_manager_remove_stage (stage_manager, stage);
 
