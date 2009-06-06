@@ -375,12 +375,6 @@ switch_workspace (MutterPlugin *plugin,
 
       if (win_workspace == to || win_workspace == from)
         {
-          gint x, y;
-          guint w, h;
-
-          clutter_actor_get_position (window, &x, &y);
-          clutter_actor_get_size (window, &w, &h);
-
           apriv->orig_parent = clutter_actor_get_parent (window);
 
           clutter_actor_reparent (window,
@@ -548,8 +542,8 @@ maximize (MutterPlugin *plugin,
 
   gdouble  scale_x    = 1.0;
   gdouble  scale_y    = 1.0;
-  gint     anchor_x   = 0;
-  gint     anchor_y   = 0;
+  gfloat   anchor_x   = 0;
+  gfloat   anchor_y   = 0;
 
   type = mutter_window_get_window_type (mc_window);
 
@@ -558,8 +552,8 @@ maximize (MutterPlugin *plugin,
       ClutterAnimation *animation;
       EffectCompleteData *data = g_new0 (EffectCompleteData, 1);
       ActorPrivate *apriv = get_actor_private (mc_window);
-      guint width, height;
-      gint  x, y;
+      gfloat width, height;
+      gfloat x, y;
 
       apriv->is_maximized = TRUE;
 

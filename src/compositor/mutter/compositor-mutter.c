@@ -577,7 +577,7 @@ mutter_window_set_property (GObject      *object,
           }
         else if (!newv && !priv->shadow && mutter_window_has_shadow (mw))
           {
-            guint        w, h;
+            gfloat       w, h;
             MetaDisplay *display = meta_screen_get_display (priv->screen);
             Mutter      *compositor;
 

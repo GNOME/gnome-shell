@@ -227,7 +227,7 @@ mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
         }
       else
         priv->mask_texture = cogl_texture_new_from_data (tex_width, tex_height,
-                                                         -1, FALSE,
+                                                         COGL_TEXTURE_NO_SLICING,
                                                          COGL_PIXEL_FORMAT_A_8,
                                                          COGL_PIXEL_FORMAT_ANY,
                                                          tex_width,
@@ -282,30 +282,10 @@ mutter_shaped_texture_paint (ClutterActor *actor)
     {
       priv->material = cogl_material_new ();
 
-      /* Replace the RGB from layer 1 with the RGB from layer 0 */
-      cogl_material_set_layer_combine_function
-        (priv->material, 1,
-         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-         COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE);
-      cogl_material_set_layer_combine_arg_src
-        (priv->material, 1, 0,
-         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-         COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
-
-      /* Modulate the alpha in layer 1 with the alpha from the
-         previous layer */
-      cogl_material_set_layer_combine_function
-        (priv->material, 1,
-         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
-         COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE);
-      cogl_material_set_layer_combine_arg_src
-        (priv->material, 1, 0,
-         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
-         COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
-      cogl_material_set_layer_combine_arg_src
-        (priv->material, 1, 1,
-         COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
-         COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE);
+      cogl_material_set_layer_combine (priv->material, 1,
+				       "RGB = REPLACE (PREVIOUS)"
+				       "A = MODULATE (PREVIOUS, TEXTURE)",
+				       NULL);
     }
   material = priv->material;
 
@@ -325,30 +305,10 @@ mutter_shaped_texture_paint (ClutterActor *actor)
         {
           material = priv->material_workaround = cogl_material_new ();
 
-          /* Replace the RGB from layer 1 with the RGB from layer 0 */
-          cogl_material_set_layer_combine_function
-            (material, 1,
-             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-             COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE);
-          cogl_material_set_layer_combine_arg_src
-            (material, 1, 0,
-             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
-             COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
-
-          /* Use the alpha from layer 1 modulated with the alpha from
-             the primary color */
-          cogl_material_set_layer_combine_function
-            (material, 1,
-             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
-             COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE);
-          cogl_material_set_layer_combine_arg_src
-            (material, 1, 0,
-             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
-             COGL_MATERIAL_LAYER_COMBINE_SRC_PRIMARY_COLOR);
-          cogl_material_set_layer_combine_arg_src
-            (material, 1, 1,
-             COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA,
-             COGL_MATERIAL_LAYER_COMBINE_SRC_TEXTURE);
+	  cogl_material_set_layer_combine (material, 1,
+					   "RGB = REPLACE (PREVIOUS)"
+					   "A = MODULATE (PRIMARY, TEXTURE)",
+					   NULL);
         }
 
       material = priv->material_workaround;
@@ -369,8 +329,8 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 
   clutter_actor_get_allocation_box (actor, &alloc);
   cogl_rectangle (0, 0,
-                  CLUTTER_UNITS_TO_FLOAT (alloc.x2 - alloc.x1),
-                  CLUTTER_UNITS_TO_FLOAT (alloc.y2 - alloc.y1));
+                  alloc.x2 - alloc.x1,
+                  alloc.y2 - alloc.y1);
 }
 
 static void
@@ -411,8 +371,8 @@ mutter_shaped_texture_pick (ClutterActor *actor,
       /* Paint the mask rectangle in the given color */
       cogl_set_source_texture (priv->mask_texture);
       cogl_rectangle_with_texture_coords (0, 0,
-                                          CLUTTER_UNITS_TO_FLOAT (alloc.x2 - alloc.x1),
-                                          CLUTTER_UNITS_TO_FLOAT (alloc.y2 - alloc.y1),
+                                          alloc.x2 - alloc.x1,
+                                          alloc.y2 - alloc.y1,
                                           0, 0, 1, 1);
     }
 }
