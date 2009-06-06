@@ -430,6 +430,21 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
               ]
         )
 
+        # XEXT (required)
+        AC_MSG_CHECKING([for XEXT extension])
+        PKG_CHECK_EXISTS([xext], [have_xext=yes], [have_xext=no])
+        AS_IF([test "x$have_xext" = "xyes"],
+              [
+                AC_DEFINE(HAVE_XEXT, [1], [Define to 1 if we have the XEXT X extension])
+
+                X11_LIBS="$X11_LIBS -lXext"
+                X11_PC_FILES="$X11_PC_FILES xext"
+
+                AC_MSG_RESULT([found])
+              ],
+              [AC_MSG_ERROR([Not found])]
+        )
+
         # XFIXES (required)
         AC_MSG_CHECKING([for XFIXES extension >= 3])
         PKG_CHECK_EXISTS([xfixes >= 3], [have_xfixes=yes], [have_xfixes=no])
