@@ -43,11 +43,11 @@ static GOptionEntry g_options[] =
 };
 
 static gboolean
-stage_key_release_cb (ClutterActor    *actor,
-		      ClutterEvent    *event,
-		      gpointer         data)
+stage_key_release_cb (ClutterActor *actor,
+		      ClutterEvent *event,
+		      gpointer      data)
 {
-  switch (clutter_key_event_symbol (&event->key))
+  switch (clutter_event_get_key_symbol (event))
     {
     case CLUTTER_q:
     case CLUTTER_Q:

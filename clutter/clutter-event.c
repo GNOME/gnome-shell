@@ -38,6 +38,9 @@
  * @short_description: User and window system events
  *
  * Windowing events handled by Clutter.
+ *
+ * The events usually come from the windowing backend, but can also
+ * be synthesized by Clutter itself or by the application code.
  */
 
 /**
@@ -94,13 +97,17 @@ clutter_event_get_state (ClutterEvent *event)
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       return event->key.modifier_state;
+
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
       return event->button.modifier_state;
+
     case CLUTTER_MOTION:
       return event->motion.modifier_state;
+
     case CLUTTER_SCROLL:
       return event->scroll.modifier_state;
+
     default:
       break;
     }
@@ -177,7 +184,7 @@ clutter_event_get_coords (ClutterEvent *event,
  *
  * Since: 0.6
  */
-ClutterActor*
+ClutterActor *
 clutter_event_get_source (ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, NULL);
@@ -190,13 +197,13 @@ clutter_event_get_source (ClutterEvent *event)
  * @event: a #ClutterEvent
  *
  * Retrieves the source #ClutterStage the event originated for, or
- * NULL if the event has no stage.
+ * %NULL if the event has no stage.
  *
  * Return value: (transfer none): a #ClutterStage
  *
  * Since: 0.8
  */
-ClutterStage*
+ClutterStage *
 clutter_event_get_stage (ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, NULL);
@@ -205,59 +212,151 @@ clutter_event_get_stage (ClutterEvent *event)
 }
 
 /**
- * clutter_button_event_button:
- * @buttev: a #ClutterButtonEvent
+ * clutter_event_get_flags:
+ * @event: a #ClutterEvent
  *
- * Retrieve the button number of the event.
+ * Retrieves the #ClutterEventFlags of @event
  *
- * Return value: the button number.
+ * Return value: the event flags
  *
- * Since: 0.4
+ * Since: 1.0
+ */
+ClutterEventFlags
+clutter_event_get_flags (ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, CLUTTER_EVENT_NONE);
+
+  return event->any.flags;
+}
+
+/**
+ * clutter_event_get_related:
+ * @event: a #ClutterEvent of type %CLUTTER_ENTER or of
+ *   type %CLUTTER_LEAVE
+ *
+ * Retrieves the related actor of a crossing event.
+ *
+ * Return value: (transfer none): the related #ClutterActor, or %NULL
+ *
+ * Since: 1.0
+ */
+ClutterActor *
+clutter_event_get_related (ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, NULL);
+  g_return_val_if_fail (event->type == CLUTTER_ENTER ||
+                        event->type == CLUTTER_LEAVE, NULL);
+
+  return event->crossing.related;
+}
+
+/**
+ * clutter_event_get_scroll_direction:
+ * @event: a #ClutterEvent of type %CLUTTER_SCROLL
+ *
+ * Retrieves the direction of the scrolling of @event
+ *
+ * Return value: the scrolling direction
+ *
+ * Since: 1.0
+ */
+ClutterScrollDirection
+clutter_event_get_scroll_direction (ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, CLUTTER_SCROLL_UP);
+  g_return_val_if_fail (event->type == CLUTTER_SCROLL, CLUTTER_SCROLL_UP);
+
+  return event->scroll.direction;
+}
+
+/**
+ * clutter_event_get_button:
+ * @event: a #ClutterEvent of type %CLUTTER_BUTTON_PRESS or
+ *   of type %CLUTTER_BUTTON_RELEASE
+ *
+ * Retrieves the button number of @event
+ *
+ * Return value: the button number
+ *
+ * Since: 1.0
  */
 guint32
-clutter_button_event_button (ClutterButtonEvent *buttev)
+clutter_event_get_button (ClutterEvent *event)
 {
-  g_return_val_if_fail (buttev != NULL, 0);
+  g_return_val_if_fail (event != NULL, 0);
+  g_return_val_if_fail (event->type == CLUTTER_BUTTON_PRESS ||
+                        event->type == CLUTTER_BUTTON_RELEASE, 0);
 
-  return buttev->button;
+  return event->button.button;
+}
+
+/**
+ * clutter_event_get_click_count:
+ * @event: a #ClutterEvent of type %CLUTTER_BUTTON_PRESS or
+ *   of type %CLUTTER_BUTTON_RELEASE
+ *
+ * Retrieves the number of clicks of @event
+ *
+ * Return value: the click count
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_event_get_click_count (ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, 0);
+  g_return_val_if_fail (event->type == CLUTTER_BUTTON_PRESS ||
+                        event->type == CLUTTER_BUTTON_RELEASE, 0);
+
+  return event->button.click_count;
 }
 
 /* keys */
 
 /**
- * clutter_key_event_symbol:
- * @keyev: A #ClutterKeyEvent
+ * clutter_event_get_key_symbol:
+ * @event: a #ClutterEvent of type %CLUTTER_KEY_PRESS or
+ *   of type %CLUTTER_KEY_RELEASE
  *
- * Retrieves the symbol of the key that caused @keyev.
+ * Retrieves the key symbol of @event
  *
- * Return value: The key symbol representing the key
+ * Return value: the key symbol representing the key
+ *
+ * Since: 1.0
  */
 guint
-clutter_key_event_symbol (ClutterKeyEvent *keyev)
+clutter_event_get_key_symbol (ClutterEvent *event)
 {
-  g_return_val_if_fail (keyev != NULL, 0);
+  g_return_val_if_fail (event != NULL, 0);
+  g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
+                        event->type == CLUTTER_KEY_RELEASE, 0);
 
-  return keyev->keyval;
+  return event->key.keyval;
 }
 
 /**
- * clutter_key_event_code:
- * @keyev: A #ClutterKeyEvent
+ * clutter_event_get_key_code:
+ * @event: a #ClutterEvent of type %CLUTTER_KEY_PRESS or
+ *    of type %CLUTTER_KEY_RELEASE
  *
- * Retrieves the keycode of the key that caused @keyev.
+ * Retrieves the keycode of the key that caused @event
  *
  * Return value: The keycode representing the key
+ *
+ * Since: 1.0
  */
 guint16
-clutter_key_event_code (ClutterKeyEvent *keyev)
+clutter_event_get_key_code (ClutterEvent *event)
 {
-  g_return_val_if_fail (keyev != NULL, 0);
+  g_return_val_if_fail (event != NULL, 0);
+  g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
+                        event->type == CLUTTER_KEY_RELEASE, 0);
 
-  return keyev->hardware_keycode;
+  return event->key.hardware_keycode;
 }
 
 /**
- * clutter_key_event_unicode:
+ * clutter_event_get_key_unicode:
  * @keyev: A #ClutterKeyEvent
  *
  * Retrieves the unicode value for the key that caused @keyev.
@@ -265,14 +364,16 @@ clutter_key_event_code (ClutterKeyEvent *keyev)
  * Return value: The unicode value representing the key
  */
 guint32
-clutter_key_event_unicode (ClutterKeyEvent *keyev)
+clutter_event_get_key_unicode (ClutterEvent *event)
 {
-  g_return_val_if_fail (keyev != NULL, 0);
+  g_return_val_if_fail (event != NULL, 0);
+  g_return_val_if_fail (event->type == CLUTTER_KEY_PRESS ||
+                        event->type == CLUTTER_KEY_RELEASE, 0);
 
-  if (keyev->unicode_value)
-    return keyev->unicode_value;
+  if (event->key.unicode_value)
+    return event->key.unicode_value;
   else
-    return clutter_keysym_to_unicode (keyev->keyval);
+    return clutter_keysym_to_unicode (event->key.keyval);
 }
 
 /**
@@ -282,9 +383,9 @@ clutter_key_event_unicode (ClutterKeyEvent *keyev)
  * Convert from a Clutter key symbol to the corresponding ISO10646 (Unicode)
  * character.
  * 
- * Return value: the corresponding unicode character, or 0 if there
- *               is no corresponding character.
- **/
+ * Return value: a Unicode character, or 0 if there  is no corresponding
+ *   character.
+ */
 guint32
 clutter_keysym_to_unicode (guint keyval)
 {
@@ -303,17 +404,20 @@ clutter_keysym_to_unicode (guint keyval)
     return keyval & 0x00ffffff;
 
   /* binary search in table */
-  while (max >= min) {
-    mid = (min + max) / 2;
-    if (clutter_keysym_to_unicode_tab[mid].keysym < keyval)
-      min = mid + 1;
-    else if (clutter_keysym_to_unicode_tab[mid].keysym > keyval)
-      max = mid - 1;
-    else {
-      /* found it */
-      return clutter_keysym_to_unicode_tab[mid].ucs;
+  while (max >= min)
+    {
+      mid = (min + max) / 2;
+
+      if (clutter_keysym_to_unicode_tab[mid].keysym < keyval)
+        min = mid + 1;
+      else if (clutter_keysym_to_unicode_tab[mid].keysym > keyval)
+        max = mid - 1;
+      else
+        {
+          /* found it */
+          return clutter_keysym_to_unicode_tab[mid].ucs;
+        }
     }
-  }
  
   /* No matching Unicode value found */
   return 0;
@@ -326,8 +430,8 @@ clutter_keysym_to_unicode (guint keyval)
  * Retrieves the events device id if set.
  * 
  * Return value: A unique identifier for the device or -1 if the event has
- *               no specific device set.
- **/
+ *   no specific device set.
+ */
 gint
 clutter_event_get_device_id (ClutterEvent *event)
 {
@@ -357,15 +461,15 @@ clutter_event_get_device_id (ClutterEvent *event)
       break;
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
+      device = event->scroll.device;
       break;
     }
 
-  if (device)
+  if (device != NULL)
     return device->id;
   else
     return -1;
 }
-
 
 GType
 clutter_event_get_type (void)
@@ -428,10 +532,8 @@ clutter_event_copy (ClutterEvent *event)
 void
 clutter_event_free (ClutterEvent *event)
 {
-  if (G_LIKELY (event))
-    {
-      g_slice_free (ClutterEvent, event);
-    }
+  if (G_LIKELY (event != NULL))
+    g_slice_free (ClutterEvent, event);
 }
 
 /**
@@ -488,11 +590,11 @@ clutter_event_peek (void)
  * clutter_event_put:
  * @event: a #ClutterEvent
  *
- * Puts a copy of the event on the back of the event queue. The event will have
- * the #CLUTTER_EVENT_FLAG_SYNTHETIC flag set. If the source is set event
- * signals will be emitted for this source and capture/bubbling for it's
- * ancestors. If the source is not set it will be generated by picking or use
- * the actor that currently has keyboard focus.
+ * Puts a copy of the event on the back of the event queue. The event will
+ * have the %CLUTTER_EVENT_FLAG_SYNTHETIC flag set. If the source is set
+ * event signals will be emitted for this source and capture/bubbling for
+ * its ancestors. If the source is not set it will be generated by picking
+ * or use the actor that currently has keyboard focus
  *
  * Since: 0.6
  */

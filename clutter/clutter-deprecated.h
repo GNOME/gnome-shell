@@ -168,4 +168,9 @@
 #define clutter_actor_get_positionu     clutter_actor_get_positionu_DEPRECATED_BY_clutter_actor_get_position
 #define clutter_actor_get_sizeu         clutter_actor_get_sizeu_DEPRECATED_BY_clutter_actor_get_size
 
+#define clutter_key_event_symbol        clutter_key_event_symbol_REPLACED_BY_clutter_event_get_key_symbol
+#define clutter_key_event_code          clutter_key_event_code_REPLACED_BY_clutter_event_get_key_code
+#define clutter_key_event_unicode       clutter_key_event_unicode_REPLACED_BY_clutter_event_get_key_unicode
+#define clutter_button_event_button     clutter_button_event_button_REPLACED_BY_clutter_event_get_button
+
 #endif /* CLUTTER_DEPRECATED_H */

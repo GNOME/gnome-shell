@@ -141,14 +141,14 @@ static ClutterActor *count_label   = NULL;
 static ClutterActor *help_label    = NULL;
 static ClutterActor *progress_rect = NULL;
 
-static void
-on_key_press_event (ClutterStage    *stage,
-                    ClutterKeyEvent *event,
-                    gpointer         user_data)
+static gboolean
+on_key_press_event (ClutterStage *stage,
+                    ClutterEvent *event,
+                    gpointer      user_data)
 {
   TestThreadData *data;
 
-  switch (clutter_key_event_symbol (event))
+  switch (clutter_event_get_key_symbol (event))
     {
     case CLUTTER_s:
       clutter_text_set_text (CLUTTER_TEXT (help_label), "Press 'q' to quit");
@@ -161,11 +161,17 @@ on_key_press_event (ClutterStage    *stage,
       data->progress = g_object_ref (progress_rect);
       data->timeline = g_object_ref (timeline);
       g_thread_create (test_thread_func, data, FALSE, NULL);
-      break;
+      return TRUE;
+
     case CLUTTER_q:
       clutter_main_quit ();
+      return TRUE;
+
+    default:
       break;
     }
+
+  return FALSE;
 }
 
 G_MODULE_EXPORT int

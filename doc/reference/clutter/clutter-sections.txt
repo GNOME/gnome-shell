@@ -925,6 +925,7 @@ clutter_event_get_state
 clutter_event_get_time
 clutter_event_get_source
 clutter_event_get_stage
+clutter_event_get_flags
 
 <SUBSECTION>
 clutter_event_get
@@ -933,13 +934,20 @@ clutter_event_put
 clutter_events_pending
 
 <SUBSECTION>
-clutter_button_event_button
+clutter_event_get_button
+clutter_event_get_click_count
 
 <SUBSECTION>
-clutter_key_event_symbol
-clutter_key_event_code
-clutter_key_event_unicode
+clutter_event_get_key_symbol
+clutter_event_get_key_code
+clutter_event_get_key_unicode
 clutter_keysym_to_unicode
+
+<SUBSECTION>
+clutter_event_get_related
+
+<SUBSECTION>
+clutter_event_get_scroll_direction
 
 <SUBSECTION>
 clutter_event_get_device_id

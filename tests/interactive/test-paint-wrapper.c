@@ -69,12 +69,10 @@ input_cb (ClutterStage *stage,
     }
   else if (event->type == CLUTTER_KEY_RELEASE)
     {
-      ClutterKeyEvent *kev = (ClutterKeyEvent *) event;
-
       g_print ("*** key press event (key:%c) ***\n",
-	       clutter_key_event_symbol (kev));
+	       clutter_event_get_key_symbol (event));
 
-      if (clutter_key_event_symbol (kev) == CLUTTER_q)
+      if (clutter_event_get_key_symbol (event) == CLUTTER_q)
         {
 	  clutter_main_quit ();
           return TRUE;

@@ -106,6 +106,7 @@ typedef enum {
 
 /**
  * ClutterEventFlags:
+ * @CLUTTER_EVENT_NONE: No flag set
  * @CLUTTER_EVENT_FLAG_SYNTHETIC: Synthetic event
  *
  * Flags for the #ClutterEvent
@@ -113,6 +114,7 @@ typedef enum {
  * Since: 0.6
  */
 typedef enum {
+  CLUTTER_EVENT_NONE           = 0,
   CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0,
 } ClutterEventFlags;
 
@@ -440,33 +442,41 @@ union _ClutterEvent
 
 GType clutter_event_get_type (void) G_GNUC_CONST;
 
-gboolean            clutter_events_pending      (void);
-ClutterEvent *      clutter_event_get           (void);
-ClutterEvent *      clutter_event_peek          (void);
-void                clutter_event_put           (ClutterEvent       *event);
-ClutterEvent *      clutter_event_new           (ClutterEventType    type);
-ClutterEvent *      clutter_event_copy          (ClutterEvent       *event);
-void                clutter_event_free          (ClutterEvent       *event);
-ClutterEventType    clutter_event_type          (ClutterEvent       *event);
-guint32             clutter_event_get_time      (ClutterEvent       *event);
-ClutterModifierType clutter_event_get_state     (ClutterEvent       *event);
-void                clutter_event_get_coords    (ClutterEvent       *event,
-                                                 gfloat             *x,
-                                                 gfloat             *y);
-gint                clutter_event_get_device_id (ClutterEvent       *event);
-ClutterActor*       clutter_event_get_source    (ClutterEvent       *event);
+gboolean               clutter_events_pending             (void);
+ClutterEvent *         clutter_event_get                  (void);
+ClutterEvent *         clutter_event_peek                 (void);
+void                   clutter_event_put                  (ClutterEvent     *event);
 
-guint               clutter_key_event_symbol    (ClutterKeyEvent    *keyev);
-guint16             clutter_key_event_code      (ClutterKeyEvent    *keyev);
-guint32             clutter_key_event_unicode   (ClutterKeyEvent    *keyev);
+ClutterEvent *         clutter_event_new                  (ClutterEventType  type);
+ClutterEvent *         clutter_event_copy                 (ClutterEvent     *event);
+void                   clutter_event_free                 (ClutterEvent     *event);
 
-guint32             clutter_button_event_button (ClutterButtonEvent *buttev);
+ClutterEventType       clutter_event_type                 (ClutterEvent     *event);
+ClutterEventFlags      clutter_event_get_flags            (ClutterEvent     *event);
+guint32                clutter_event_get_time             (ClutterEvent     *event);
+ClutterModifierType    clutter_event_get_state            (ClutterEvent     *event);
+gint                   clutter_event_get_device_id        (ClutterEvent     *event);
+ClutterActor *         clutter_event_get_source           (ClutterEvent     *event);
+ClutterStage *         clutter_event_get_stage            (ClutterEvent     *event);
 
-guint32             clutter_keysym_to_unicode   (guint               keyval);
+void                   clutter_event_get_coords           (ClutterEvent     *event,
+                                                           gfloat           *x,
+                                                           gfloat           *y);
 
-ClutterStage*       clutter_event_get_stage     (ClutterEvent       *event);
+guint                  clutter_event_get_key_symbol       (ClutterEvent     *event);
+guint16                clutter_event_get_key_code         (ClutterEvent     *event);
+guint32                clutter_event_get_key_unicode      (ClutterEvent     *event);
 
-guint32             clutter_get_current_event_time (void);
+guint32                clutter_event_get_button           (ClutterEvent     *event);
+guint                  clutter_event_get_click_count      (ClutterEvent     *event);
+
+ClutterActor *         clutter_event_get_related          (ClutterEvent     *event);
+
+ClutterScrollDirection clutter_event_get_scroll_direction (ClutterEvent     *event);
+
+guint32                clutter_keysym_to_unicode          (guint             keyval);
+
+guint32                clutter_get_current_event_time     (void);
 
 G_END_DECLS
 

@@ -634,11 +634,11 @@ create_item (void)
 }
 
 static gboolean
-keypress_cb (ClutterActor    *actor,
-	     ClutterKeyEvent *event,
-	     gpointer         data)
+keypress_cb (ClutterActor *actor,
+	     ClutterEvent *event,
+	     gpointer      data)
 {
-  switch (clutter_key_event_symbol (event))
+  switch (clutter_event_get_key_symbol (event))
     {
     case CLUTTER_q:
       {

@@ -1280,12 +1280,9 @@ clutter_text_key_press (ClutterActor    *actor,
   ClutterTextPrivate *priv = self->priv;
   ClutterBindingPool *pool;
   gboolean res;
-  gint keyval;
 
   if (!priv->editable)
     return FALSE;
-
-  keyval = clutter_key_event_symbol (event);
 
   /* we need to use the ClutterText type name to find our own
    * key bindings; subclasses will override or chain up this
@@ -1297,10 +1294,10 @@ clutter_text_key_press (ClutterActor    *actor,
   /* we allow passing synthetic events that only contain
    * the Unicode value and not the key symbol
    */
-  if (keyval == 0 && (event->flags & CLUTTER_EVENT_FLAG_SYNTHETIC))
+  if (event->keyval == 0 && (event->flags & CLUTTER_EVENT_FLAG_SYNTHETIC))
     res = FALSE;
   else
-    res = clutter_binding_pool_activate (pool, keyval,
+    res = clutter_binding_pool_activate (pool, event->keyval,
                                          event->modifier_state,
                                          G_OBJECT (actor));
 
@@ -1313,7 +1310,9 @@ clutter_text_key_press (ClutterActor    *actor,
     return TRUE;
   else
     {
-      gunichar key_unichar = clutter_key_event_unicode (event);
+      gunichar key_unichar;
+
+      key_unichar = clutter_event_get_key_unicode ((ClutterEvent *) event);
 
       /* return is reported as CR, but we want LF */
       if (key_unichar == '\r')
