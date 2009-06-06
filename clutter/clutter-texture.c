@@ -1471,6 +1471,8 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
                    "Failed to create COGL texture");
 
+      g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, *error);
+
       return FALSE;
     }
 
@@ -1478,7 +1480,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
   cogl_handle_unref (new_texture);
 
-  g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
+  g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
 
   return TRUE;
 }
@@ -1654,6 +1656,7 @@ clutter_texture_async_load_complete (ClutterTexture *self,
                          cogl_texture_get_width(handle),
                          cogl_texture_get_height (handle));
         }
+
       cogl_handle_unref (handle);
     }
 
@@ -1892,19 +1895,21 @@ clutter_texture_set_from_file (ClutterTexture *texture,
                                             flags,
                                             COGL_PIXEL_FORMAT_ANY,
                                             &internal_error);
-  if (new_texture == COGL_INVALID_HANDLE)
-    {
-      /* If COGL didn't give an error then make one up */
-      if (internal_error == NULL)
-	{
-	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
-		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
-		       "Failed to create COGL texture");
-	}
-      else
-        g_propagate_error (error, internal_error);
 
-      g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
+  /* If COGL didn't give an error then make one up */
+  if (internal_error == NULL && new_texture == COGL_INVALID_HANDLE)
+    {
+      g_set_error (&internal_error, CLUTTER_TEXTURE_ERROR,
+                   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
+		   "Failed to create COGL texture");
+    }
+
+  if (internal_error != NULL)
+    {
+      g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0,
+                     internal_error);
+
+      g_propagate_error (error, internal_error);
 
       return FALSE;
     }
@@ -1913,7 +1918,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
   cogl_handle_unref (new_texture);
 
-  g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
+  g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, NULL);
 
   return TRUE;
 }

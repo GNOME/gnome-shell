@@ -2,6 +2,41 @@
 #include <gmodule.h>
 #include <clutter/clutter.h>
 
+enum
+{
+  LOAD_SYNC,
+  LOAD_DATA_ASYNC,
+  LOAD_ASYNC
+};
+
+static void
+on_load_finished (ClutterTexture *texture,
+                  const GError   *error,
+                  gpointer        user_data)
+{
+  gint load_type = GPOINTER_TO_INT (user_data);
+  const gchar *load_str = NULL;
+
+  switch (load_type)
+    {
+    case LOAD_SYNC:
+      load_str = "synchronous loading";
+      break;
+
+    case LOAD_DATA_ASYNC:
+      load_str = "asynchronous data loading";
+      break;
+
+    case LOAD_ASYNC:
+      load_str = "asynchronous loading";
+      break;
+    }
+
+  if (error != NULL)
+    g_print ("%s failed: %s\n", load_str, error->message);
+  else
+    g_print ("%s successful\n", load_str);
+}
 
 static void size_change_cb (ClutterTexture *texture,
                             gint            width,
@@ -24,6 +59,7 @@ static gboolean task (gpointer foo)
   gint i;
 
   stage = clutter_stage_get_default ();
+
 #if 0
   for (i=0;i<4;i++)
     image[i] = g_object_new (CLUTTER_TYPE_TEXTURE,
@@ -32,23 +68,35 @@ static gboolean task (gpointer foo)
                              NULL);
 #else
   /*for (i=0;i<4;i++)*/
-    image[0] = g_object_new (CLUTTER_TYPE_TEXTURE,
-                             "filename", path,
-                             NULL);
+  image[0] = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
+  g_signal_connect (image[0], "load-finished",
+                    G_CALLBACK (on_load_finished),
+                    GINT_TO_POINTER (LOAD_SYNC));
+
   image[1] = g_object_new (CLUTTER_TYPE_TEXTURE,
-                           "filename", path,
                            "load-data-async", TRUE,
                            NULL);
+  g_signal_connect (image[1], "load-finished",
+                    G_CALLBACK (on_load_finished),
+                    GINT_TO_POINTER (LOAD_DATA_ASYNC));
   image[2] = g_object_new (CLUTTER_TYPE_TEXTURE,
-                           "filename", path,
                            "load-async", TRUE,
                            NULL);
-
+  g_signal_connect (image[2], "load-finished",
+                    G_CALLBACK (on_load_finished),
+                    GINT_TO_POINTER (LOAD_ASYNC));
 #endif
+
+  for (i=0;i<3;i++)
+    {
+      clutter_texture_set_from_file (CLUTTER_TEXTURE (image[i]), path, NULL);
+    }
+
   for (i=0;i<3;i++)
     {
       clutter_container_add (CLUTTER_CONTAINER (stage), image[i], NULL);
     }
+
   for (i=0;i<3;i++)
     {
       clutter_actor_set_position (image[i], 50+i*100, 0+i*50);
