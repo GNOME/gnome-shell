@@ -57,7 +57,6 @@ struct _ClutterMasterClock
    * the delta
    */
   GTimeVal prev_tick;
-  gulong msecs_delta;
 
   /* an idle source, used by the Master Clock to queue
    * a redraw on the stage and drive the animations
@@ -330,6 +329,5 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
   /* store the previous state so that we can use
    * it for the next advancement
    */
-  master_clock->msecs_delta = msecs;
   master_clock->prev_tick = cur_tick;
 }
