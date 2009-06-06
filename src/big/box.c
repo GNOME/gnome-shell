@@ -291,6 +291,23 @@ big_box_real_foreach (ClutterContainer *container,
 }
 
 static void
+big_box_real_foreach_with_internals (ClutterContainer *container,
+                                     ClutterCallback   callback,
+                                     gpointer          user_data)
+{
+  BigBox *group = BIG_BOX (container);
+  BigBoxPrivate *priv = group->priv;
+
+  big_box_real_foreach (container, callback, user_data);
+
+  if (priv->background_texture)
+    (* callback) (priv->background_texture, user_data);
+
+  if (priv->background_rectangle)
+    (* callback) (priv->background_rectangle, user_data);
+}
+
+static void
 big_box_real_raise (ClutterContainer *container,
                     ClutterActor     *child,
                     ClutterActor     *sibling)
@@ -439,6 +456,7 @@ clutter_container_iface_init (ClutterContainerIface *iface)
   iface->add = big_box_real_add;
   iface->remove = big_box_real_remove;
   iface->foreach = big_box_real_foreach;
+  iface->foreach_with_internals = big_box_real_foreach_with_internals;
   iface->raise = big_box_real_raise;
   iface->lower = big_box_real_lower;
   iface->sort_depth_order = big_box_real_sort_depth_order;
