@@ -670,8 +670,7 @@ AC_SUBST(COGL_DEBUG_CFLAGS)
 dnl === Enable strict compiler flags ==========================================
 
 # use strict compiler flags only on development releases
-m4_define([maintainer_flags_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes],
-[no])])
+m4_define([maintainer_flags_default], [m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [no])])
 AC_ARG_ENABLE([maintainer-flags],
               [AC_HELP_STRING([--enable-maintainer-flags=@<:@no/yes@:>@],
                               [Use strict compiler flags @<:@default=maintainer_flags_default@:>@])],
@@ -680,7 +679,7 @@ AC_ARG_ENABLE([maintainer-flags],
 
 AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
       [
-        MAINTAINER_CFLAGS="-Werror -Wall -Wshadow -Wcast-align -Wno-strict-aliasing -Wno-uninitialized -Wempty-body -Wformat-security -Winit-self"
+        MAINTAINER_CFLAGS="-Wall -Wshadow -Wcast-align -Wno-uninitialized -Wno-strict-aliasing -Wempty-body -Wformat-security -Winit-self"
       ]
 )
 
