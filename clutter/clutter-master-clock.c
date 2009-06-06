@@ -63,11 +63,6 @@ struct _ClutterMasterClock
    * a redraw on the stage and drive the animations
    */
   GSource *source;
-
-  /* a guard, so that we dispatch the last redraw even
-   * after the last timeline has been completed
-   */
-  guint last_advance : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -83,10 +78,6 @@ struct _ClutterClockSource
 };
 
 static void on_timeline_started   (ClutterTimeline    *timeline,
-                                   ClutterMasterClock *master_clock);
-static void on_timeline_completed (ClutterTimeline    *timeline,
-                                   ClutterMasterClock *master_clock);
-static void on_timeline_paused    (ClutterTimeline    *timeline,
                                    ClutterMasterClock *master_clock);
 
 static gboolean clutter_clock_prepare  (GSource     *source,
@@ -124,9 +115,6 @@ has_running_timeline (ClutterMasterClock *master_clock,
                       ClutterTimeline    *filter)
 {
   GSList *l;
-
-  if (master_clock->last_advance)
-    return TRUE;
 
   if (master_clock->timelines == NULL)
     return FALSE;
@@ -201,8 +189,6 @@ clutter_clock_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
-  ClutterClockSource *clock_source = (ClutterClockSource *) source;
-  ClutterMasterClock *master_clock = clock_source->master_clock;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
   const GSList *stages, *l;
 
@@ -216,15 +202,6 @@ clutter_clock_dispatch (GSource     *source,
    */
   for (l = stages; l != NULL; l = l->next)
     clutter_actor_queue_redraw (l->data);
-
-  /* if this is the remainder of an advancement, needed for the last
-   * timeline to finish its run, then we need to reset the prev_tick
-   */
-  if (master_clock->last_advance)
-    {
-      master_clock->prev_tick.tv_sec = 0;
-      master_clock->last_advance = FALSE;
-    }
 
   return TRUE;
 }
@@ -258,12 +235,6 @@ clutter_master_clock_finalize (GObject *gobject)
 
       g_signal_handlers_disconnect_by_func (timeline,
                                             G_CALLBACK (on_timeline_started),
-                                            master_clock);
-      g_signal_handlers_disconnect_by_func (timeline,
-                                            G_CALLBACK (on_timeline_completed),
-                                            master_clock);
-      g_signal_handlers_disconnect_by_func (timeline,
-                                            G_CALLBACK (on_timeline_paused),
                                             master_clock);
     }
 
@@ -326,28 +297,6 @@ on_timeline_started (ClutterTimeline    *timeline,
     master_clock->prev_tick.tv_sec = 0;
 }
 
-static void
-on_timeline_completed (ClutterTimeline *timeline,
-                       ClutterMasterClock *master_clock)
-{
-  /* if this is the last timeline we need to turn :last-advance
-   * on in order to queue the redraw of the scene for the last
-   * frame; otherwise the ClockSource will fail the prepare and
-   * check phases and the last frame will not be painted
-   */
-  if (!has_running_timeline (master_clock, NULL))
-    master_clock->last_advance = TRUE;
-}
-
-static void
-on_timeline_paused (ClutterTimeline *timeline,
-                    ClutterMasterClock *master_clock)
-{
-  /* see the comment in on_timeline_completed */
-  if (!has_running_timeline (master_clock, NULL))
-    master_clock->last_advance = TRUE;
-}
-
 /*
  * _clutter_master_clock_add_timeline:
  * @master_clock: a #ClutterMasterClock
@@ -378,12 +327,6 @@ _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
   g_signal_connect (timeline, "started",
                     G_CALLBACK (on_timeline_started),
                     master_clock);
-  g_signal_connect (timeline, "completed",
-                    G_CALLBACK (on_timeline_completed),
-                    master_clock);
-  g_signal_connect (timeline, "paused",
-                    G_CALLBACK (on_timeline_paused),
-                    master_clock);
 }
 
 /*
@@ -411,12 +354,6 @@ _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
 
   g_signal_handlers_disconnect_by_func (timeline,
                                         G_CALLBACK (on_timeline_started),
-                                        master_clock);
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (on_timeline_completed),
-                                        master_clock);
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (on_timeline_paused),
                                         master_clock);
 
   /* last timeline: unset the prev_tick so that we can start

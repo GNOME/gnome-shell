@@ -208,11 +208,6 @@ _clutter_do_redraw (ClutterStage *stage)
   */
   _clutter_backend_redraw (ctx->backend, stage);
 
-  /* prepare for the next frame; if anything queues a redraw as the
-   * result of a timeline, this will end up redrawing the scene
-   */
-  _clutter_master_clock_advance (master_clock);
-
   /* Complete FPS info */
   if (G_UNLIKELY (clutter_get_show_fps ()))
     {
