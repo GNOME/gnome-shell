@@ -82,11 +82,11 @@ void          tidy_grid_set_column_major       (TidyGrid    *self,
                                                 gboolean     value);
 gboolean      tidy_grid_get_column_major       (TidyGrid    *self);
 void          tidy_grid_set_row_gap            (TidyGrid    *self,
-                                                ClutterUnit  value);
-ClutterUnit   tidy_grid_get_row_gap            (TidyGrid    *self);
+                                                gfloat       value);
+gfloat        tidy_grid_get_row_gap            (TidyGrid    *self);
 void          tidy_grid_set_column_gap         (TidyGrid    *self,
-                                                ClutterUnit  value);
-ClutterUnit   tidy_grid_get_column_gap         (TidyGrid    *self);
+                                                gfloat       value);
+gfloat        tidy_grid_get_column_gap         (TidyGrid    *self);
 void          tidy_grid_set_valign             (TidyGrid    *self,
                                                 gdouble      value);
 gdouble       tidy_grid_get_valign             (TidyGrid    *self);
