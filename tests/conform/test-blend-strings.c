@@ -359,7 +359,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
   /* Comment this out if you want visual feedback for what this test paints */
 #if 1
-  if (frame_num == 2)
+  if (frame_num == 3)
     clutter_main_quit ();
 #endif
 }
