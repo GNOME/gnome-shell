@@ -87,6 +87,8 @@ struct _ClutterStagePrivate
   gchar              *title;
   ClutterActor       *key_focused_actor;
 
+  GQueue             *event_queue;
+
   guint redraw_pending    : 1;
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
@@ -389,6 +391,86 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
                           CLUTTER_ALLOCATION_NONE);
 }
 
+void
+_clutter_stage_queue_event (ClutterStage *stage,
+			    ClutterEvent *event)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  g_queue_push_tail (priv->event_queue,
+		     clutter_event_copy (event));
+}
+
+gboolean
+_clutter_stage_has_queued_events (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  priv = stage->priv;
+
+  return priv->event_queue->length > 0;
+}
+
+void
+_clutter_stage_process_queued_events (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+  GList *events, *l;;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->event_queue->length == 0)
+    return;
+
+  /* In case the stage gets destroyed during event processing */
+  g_object_ref (stage);
+
+  /* Steal events before starting processing to avoid reentrancy
+   * issues */
+  events = priv->event_queue->head;
+  priv->event_queue->head =  NULL;
+  priv->event_queue->tail = NULL;
+  priv->event_queue->length = 0;
+
+  for (l = events; l; l = l->next)
+    {
+      ClutterEvent *event;
+      ClutterEvent *next_event;
+
+      event = l->data;
+      next_event = l->next ? l->next->data : NULL;
+
+      /* Skip consecutive motion events */
+      if (next_event &&
+	  event->type == CLUTTER_MOTION &&
+	  (next_event->type == CLUTTER_MOTION ||
+	   next_event->type == CLUTTER_LEAVE))
+	{
+	  CLUTTER_NOTE (EVENT,
+			"Omitting motion event at %.2f, %.2f",
+			event->motion.x, event->motion.y);
+	  goto next_event;
+	}
+
+      _clutter_process_event (event);
+
+    next_event:
+      clutter_event_free (event);
+    }
+
+  g_list_free (events);
+
+  g_object_unref (stage);
+}
+
 /**
  * _clutter_stage_needs_update:
  * @stage: A #ClutterStage
@@ -635,9 +717,13 @@ static void
 clutter_stage_finalize (GObject *object)
 {
   ClutterStage *stage = CLUTTER_STAGE (object);
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_queue_foreach (priv->event_queue, (GFunc)clutter_event_free, NULL);
+  g_queue_free (priv->event_queue);
 
   g_free (stage->priv->title);
-  
+
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
 
@@ -907,6 +993,8 @@ clutter_stage_init (ClutterStage *self)
 
   /* make sure that the implementation is considered a top level */
   CLUTTER_SET_PRIVATE_FLAGS (priv->impl, CLUTTER_ACTOR_IS_TOPLEVEL);
+
+  priv->event_queue = g_queue_new ();
 
   priv->is_offscreen      = FALSE;
   priv->is_fullscreen     = FALSE;

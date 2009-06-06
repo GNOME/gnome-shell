@@ -115,7 +115,8 @@ master_clock_is_running (ClutterMasterClock *master_clock)
 
   stages = clutter_stage_manager_peek_stages (stage_manager);
   for (l = stages; l; l = l->next)
-    if (_clutter_stage_needs_update (l->data))
+    if (_clutter_stage_has_queued_events (l->data) ||
+        _clutter_stage_needs_update (l->data))
       return TRUE;
 
   return FALSE;
@@ -179,11 +180,20 @@ clutter_clock_dispatch (GSource     *source,
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
-  const GSList *stages, *l;
+  GSList *stages, *l;
 
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
 
-  stages = clutter_stage_manager_peek_stages (stage_manager);
+  /* We need to protect ourselves against stages being destroyed during
+   * event handling
+   */
+  stages = clutter_stage_manager_list_stages (stage_manager);
+  g_slist_foreach (stages, (GFunc)g_object_ref, NULL);
+
+  /* Process queued events
+   */
+  for (l = stages; l != NULL; l = l->next)
+    _clutter_stage_process_queued_events (l->data);
 
    _clutter_master_clock_advance (master_clock);
 
@@ -192,6 +202,9 @@ clutter_clock_dispatch (GSource     *source,
    */
   for (l = stages; l != NULL; l = l->next)
     _clutter_stage_do_update (l->data);
+
+  g_slist_foreach (stages, (GFunc)g_object_unref, NULL);
+  g_slist_free (stages);
 
   return TRUE;
 }

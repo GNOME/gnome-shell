@@ -144,8 +144,6 @@ void             clutter_threads_remove_repaint_func   (guint          handle_id
 
 void             clutter_set_motion_events_enabled   (gboolean enable);
 gboolean         clutter_get_motion_events_enabled   (void);
-void             clutter_set_motion_events_frequency (guint    frequency);
-guint            clutter_get_motion_events_frequency (void);
 
 void             clutter_set_default_frame_rate      (guint    frames_per_sec);
 guint            clutter_get_default_frame_rate      (void);

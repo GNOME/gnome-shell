@@ -70,7 +70,6 @@ typedef enum {
 struct _ClutterInputDevice
 {
   gint          id;
-  gint32        motion_last_time;
   ClutterActor *pointer_grab_actor;
   ClutterActor *motion_last_actor;
 
@@ -99,7 +98,6 @@ struct _ClutterMainContext
 
   ClutterPickMode  pick_mode;          /* Indicates pick render mode   */
 
-  guint            motion_frequency;   /* Motion events per second */
   gint             num_reactives;      /* Num of reactive actors */
 
   ClutterIDPool   *id_pool;            /* mapping between reused integer ids 
@@ -178,6 +176,11 @@ void                _clutter_stage_maybe_relayout       (ClutterActor       *sta
 gboolean            _clutter_stage_needs_update         (ClutterStage       *stage);
 void                _clutter_stage_do_update            (ClutterStage       *stage);
 
+void     _clutter_stage_queue_event           (ClutterStage *stage,
+					       ClutterEvent *event);
+gboolean _clutter_stage_has_queued_events     (ClutterStage *stage);
+void     _clutter_stage_process_queued_events (ClutterStage *stage);
+
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);
 
@@ -206,6 +209,9 @@ gfloat        _clutter_backend_get_units_per_em   (ClutterBackend       *backend
                                                    PangoFontDescription *font_desc);
 
 void          _clutter_feature_init (void);
+
+/* Reinjecting queued events for processing */
+void _clutter_process_event (ClutterEvent *event);
 
 /* Picking code */
 ClutterActor *_clutter_do_pick (ClutterStage    *stage,
