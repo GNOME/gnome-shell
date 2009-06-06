@@ -1951,6 +1951,7 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
     {
       gint min_filter, mag_filter;
 
+      min_filter = mag_filter = COGL_MATERIAL_FILTER_LINEAR;
       clutter_texture_quality_to_filters (filter_quality,
                                           &min_filter,
                                           &mag_filter);

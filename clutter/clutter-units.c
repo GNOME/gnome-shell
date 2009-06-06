@@ -487,8 +487,8 @@ clutter_unit_type_name (ClutterUnitType unit_type)
 gchar *
 clutter_units_to_string (const ClutterUnits *units)
 {
-  const gchar *unit_name;
-  gchar *fmt;
+  const gchar *unit_name = NULL;
+  gchar *fmt = NULL;
 
   g_return_val_if_fail (units != NULL, NULL);
 
@@ -512,6 +512,10 @@ clutter_units_to_string (const ClutterUnits *units)
     case CLUTTER_UNIT_PIXEL:
       unit_name = "px";
       fmt = g_strdup_printf ("%d", (int) units->value);
+      break;
+
+    default:
+      g_assert_not_reached ();
       break;
     }
 

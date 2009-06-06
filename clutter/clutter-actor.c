@@ -8316,6 +8316,8 @@ clutter_actor_allocate_available_size (ClutterActor           *self,
 
   priv = self->priv;
 
+  width = height = 0.0;
+
   switch (priv->request_mode)
     {
     case CLUTTER_REQUEST_HEIGHT_FOR_WIDTH:
