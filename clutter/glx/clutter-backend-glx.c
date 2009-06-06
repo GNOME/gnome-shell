@@ -637,26 +637,48 @@ _clutter_backend_impl_get_type (void)
 void
 clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
 {
+  /* If we are going to wait for VBLANK manually, we not only need
+   * to flush out pending drawing to the GPU before we sleep, we
+   * need to wait for it to finish. Otherwise, we may end up with
+   * the situation:
+   *
+   *        - We finish drawing      - GPU drawing continues
+   *        - We go to sleep         - GPU drawing continues
+   * VBLANK - We call glXSwapBuffers - GPU drawing continues
+   *                                 - GPU drawing continues
+   *                                 - Swap buffers happens
+   *
+   * Producing a tear. Calling glFinish() first will cause us to properly
+   * wait for the next VBLANK before we swap. This obviously does not
+   * happen when we use GLX_SWAP and let the driver do the right thing
+   */
+
   switch (backend_glx->vblank_type)
     {
     case CLUTTER_VBLANK_GLX_SWAP:
-      {
-        /* Nothing */
-        break;
-      }
+      /* Nothing */
+      break;
+
     case CLUTTER_VBLANK_GLX:
       {
         unsigned int retraceCount;
+
+        glFinish ();
+
         backend_glx->get_video_sync (&retraceCount);
         backend_glx->wait_video_sync (2, 
                                       (retraceCount + 1) % 2,
                                       &retraceCount); 
       }
       break;
+
     case CLUTTER_VBLANK_DRI:
 #ifdef __linux__
       {
         drm_wait_vblank_t blank;
+
+        glFinish ();
+
         blank.request.type     = DRM_VBLANK_RELATIVE;
         blank.request.sequence = 1;
         blank.request.signal   = 0;
@@ -664,6 +686,7 @@ clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
       }
 #endif
       break;
+
     case CLUTTER_VBLANK_NONE:
     default:
       break;
