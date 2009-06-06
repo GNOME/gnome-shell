@@ -328,9 +328,6 @@ clutter_units_to_pixels (ClutterUnits *units)
 {
   g_return_val_if_fail (units != NULL, 0.0);
 
-  if (units->pixels_set)
-    return units->pixels;
-
   switch (units->unit_type)
     {
     case CLUTTER_UNIT_MM:
