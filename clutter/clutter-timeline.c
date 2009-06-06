@@ -204,8 +204,11 @@ clutter_timeline_finalize (GObject *object)
   if (priv->markers_by_name)
     g_hash_table_destroy (priv->markers_by_name);
 
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_remove_timeline (master_clock, self);
+  if (priv->is_playing)
+    {
+      master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_remove_timeline (master_clock, self);
+    }
 
   G_OBJECT_CLASS (clutter_timeline_parent_class)->finalize (object);
 }
@@ -412,7 +415,6 @@ static void
 clutter_timeline_init (ClutterTimeline *self)
 {
   ClutterTimelinePrivate *priv;
-  ClutterMasterClock *master_clock;
 
   self->priv = priv =
     G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_TIMELINE,
@@ -421,9 +423,6 @@ clutter_timeline_init (ClutterTimeline *self)
   priv->duration = 0;
   priv->delay = 0;
   priv->elapsed_time = 0;
-
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_add_timeline (master_clock, self);
 }
 
 static void
@@ -473,6 +472,26 @@ is_complete (ClutterTimeline *timeline)
   return (priv->direction == CLUTTER_TIMELINE_FORWARD
           ? priv->elapsed_time >= priv->duration
           : priv->elapsed_time <= 0);
+}
+
+static void
+set_is_playing (ClutterTimeline *timeline,
+                gboolean         is_playing)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+  ClutterMasterClock *master_clock;
+
+  is_playing = is_playing != FALSE;
+
+  if (is_playing == priv->is_playing)
+    return;
+
+  priv->is_playing = is_playing;
+  master_clock = _clutter_master_clock_get_default ();
+  if (priv->is_playing)
+    _clutter_master_clock_add_timeline (master_clock, timeline);
+  else
+    _clutter_master_clock_remove_timeline (master_clock, timeline);
 }
 
 static gboolean
@@ -561,7 +580,7 @@ clutter_timeline_advance_internal (ClutterTimeline *timeline)
            * XXX Perhaps we should remove this earlier, and regardless
            * of priv->loop. Are we limiting the things that could be done in
            * the above new-frame signal handler */
-          priv->is_playing = FALSE;
+	  set_is_playing (timeline, FALSE);
         }
 
       g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
@@ -613,7 +632,7 @@ delay_timeout_func (gpointer data)
 
   priv->delay_id = 0;
   priv->msecs_delta = 0;
-  priv->is_playing = TRUE;
+  set_is_playing (timeline, TRUE);
 
   g_signal_emit (timeline, timeline_signals[STARTED], 0);
 
@@ -648,7 +667,7 @@ clutter_timeline_start (ClutterTimeline *timeline)
   else
     {
       priv->msecs_delta = 0;
-      priv->is_playing = TRUE;
+      set_is_playing (timeline, TRUE);
 
       g_signal_emit (timeline, timeline_signals[STARTED], 0);
     }
@@ -679,7 +698,7 @@ clutter_timeline_pause (ClutterTimeline *timeline)
     }
 
   priv->msecs_delta = 0;
-  priv->is_playing = FALSE;
+  set_is_playing (timeline, FALSE);
 
   g_signal_emit (timeline, timeline_signals[PAUSED], 0);
 }

@@ -77,9 +77,6 @@ struct _ClutterClockSource
   ClutterMasterClock *master_clock;
 };
 
-static void on_timeline_started   (ClutterTimeline    *timeline,
-                                   ClutterMasterClock *master_clock);
-
 static gboolean clutter_clock_prepare  (GSource     *source,
                                         gint        *timeout);
 static gboolean clutter_clock_check    (GSource     *source);
@@ -101,35 +98,20 @@ G_DEFINE_TYPE (ClutterMasterClock, clutter_master_clock, G_TYPE_OBJECT);
 /*
  * has_running_timeline:
  * @master_clock: a #ClutterMasterClock
- * @filter: a #ClutterTimeline or %NULL
  *
- * Checks if @master_clock has any running timeline; if @filter
- * is not %NULL then the timeline will be filtered from the
- * list of timelines held by @master_clock
+ * Checks if @master_clock has any running timeline.
  *
  * Return value: %TRUE if the #ClutterMasterClock has at least
  *   one running timeline
  */
 static gboolean
-has_running_timeline (ClutterMasterClock *master_clock,
-                      ClutterTimeline    *filter)
+has_running_timeline (ClutterMasterClock *master_clock)
 {
-  GSList *l;
+  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+  const GSList *stages, *l;
 
-  if (master_clock->timelines == NULL)
-    return FALSE;
-
-  for (l = master_clock->timelines; l != NULL; l = l->next)
-    {
-      /* if we get a timeline then we should filter it
-       * from the list of timelines we want to check
-       */
-      if (filter != NULL && filter == l->data)
-        continue;
-
-      if (clutter_timeline_is_playing (l->data))
-        return TRUE;
-    }
+  if (master_clock->timelines)
+    return TRUE;
 
   return FALSE;
 }
@@ -167,7 +149,7 @@ clutter_clock_prepare (GSource *source,
   /* just like an idle source, we are ready if nothing else is */
   *timeout = -1;
 
-  retval = has_running_timeline (master_clock, NULL);
+  retval = has_running_timeline (master_clock);
 
   return retval;
 }
@@ -179,7 +161,7 @@ clutter_clock_check (GSource *source)
   ClutterMasterClock *master_clock = clock_source->master_clock;
   gboolean retval;
 
-  retval = has_running_timeline (master_clock, NULL);
+  retval = has_running_timeline (master_clock);
 
   return retval;
 }
@@ -207,36 +189,9 @@ clutter_clock_dispatch (GSource     *source,
 }
 
 static void
-timeline_weak_ref (gpointer  data,
-                   GObject  *object_pointer)
-{
-  ClutterMasterClock *master_clock = data;
-
-  master_clock->timelines =
-    g_slist_remove (master_clock->timelines, object_pointer);
-
-  if (master_clock->timelines == NULL)
-    master_clock->prev_tick.tv_sec = 0;
-}
-
-static void
 clutter_master_clock_finalize (GObject *gobject)
 {
   ClutterMasterClock *master_clock = CLUTTER_MASTER_CLOCK (gobject);
-  GSList *l;
-
-  for (l = master_clock->timelines; l != NULL; l = l->next)
-    {
-      ClutterTimeline *timeline = l->data;
-
-      g_object_weak_unref (G_OBJECT (timeline),
-                           timeline_weak_ref,
-                           master_clock);
-
-      g_signal_handlers_disconnect_by_func (timeline,
-                                            G_CALLBACK (on_timeline_started),
-                                            master_clock);
-    }
 
   g_slist_free (master_clock->timelines);
 
@@ -284,49 +239,33 @@ _clutter_master_clock_get_default (void)
   return default_clock;
 }
 
-static void
-on_timeline_started (ClutterTimeline    *timeline,
-                     ClutterMasterClock *master_clock)
-{
-  /* we want to reset the prev_tick if this is the first
-   * timeline; since timeline is playing we need to filter
-   * it out, otherwise has_running_timeline() will return
-   * TRUE and prev_tick will not be unset
-   */
-  if (!has_running_timeline (master_clock, timeline))
-    master_clock->prev_tick.tv_sec = 0;
-}
-
 /*
  * _clutter_master_clock_add_timeline:
  * @master_clock: a #ClutterMasterClock
  * @timeline: a #ClutterTimeline
  *
- * Adds @timeline to the list of timelines held by the master
- * clock. This function should be called during the instance
- * creation phase of the timeline.
+ * Adds @timeline to the list of playing timelines held by the master
+ * clock.
  */
 void
 _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
                                     ClutterTimeline    *timeline)
 {
-  gboolean is_first = FALSE;
+  gboolean is_first;
 
   if (g_slist_find (master_clock->timelines, timeline))
     return;
 
-  is_first = (master_clock->timelines == NULL) ? TRUE : FALSE;
+  is_first = master_clock->timelines == NULL;
 
   master_clock->timelines = g_slist_prepend (master_clock->timelines,
                                              timeline);
 
-  g_object_weak_ref (G_OBJECT (timeline),
-                     timeline_weak_ref,
-                     master_clock);
-
-  g_signal_connect (timeline, "started",
-                    G_CALLBACK (on_timeline_started),
-                    master_clock);
+  if (is_first)
+    {
+      /* Start timing from scratch */
+      master_clock->prev_tick.tv_sec = 0;
+    }
 }
 
 /*
@@ -334,33 +273,15 @@ _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
  * @master_clock: a #ClutterMasterClock
  * @timeline: a #ClutterTimeline
  *
- * Removes @timeline from the list of timelines held by the
- * master clock. This function should be called during the
- * #ClutterTimeline finalization.
+ * Removes @timeline from the list of playing timelines held by the
+ * master clock.
  */
 void
 _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
                                        ClutterTimeline    *timeline)
 {
-  if (!g_slist_find (master_clock->timelines, timeline))
-    return;
-
   master_clock->timelines = g_slist_remove (master_clock->timelines,
                                             timeline);
-
-  g_object_weak_unref (G_OBJECT (timeline),
-                       timeline_weak_ref,
-                       master_clock);
-
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (on_timeline_started),
-                                        master_clock);
-
-  /* last timeline: unset the prev_tick so that we can start
-   * from scratch when we add a new timeline
-   */
-  if (master_clock->timelines == NULL)
-    master_clock->prev_tick.tv_sec = 0;
 }
 
 /*
