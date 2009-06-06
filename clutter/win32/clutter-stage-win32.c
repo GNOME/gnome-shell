@@ -558,8 +558,7 @@ clutter_stage_win32_realize (ClutterActor *actor)
 	}
     }
 
-  CLUTTER_NOTE (BACKEND, "Marking stage as realized");
-  CLUTTER_ACTOR_SET_FLAGS (stage_win32, CLUTTER_ACTOR_REALIZED);
+  CLUTTER_NOTE (BACKEND, "Successfully realized stage");
 
   return;
 

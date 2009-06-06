@@ -295,11 +295,7 @@ clutter_stage_osx_realize (ClutterActor *actor)
 
   CLUTTER_OSX_POOL_RELEASE();
 
-  /* FIXME: ClutterStage:realize is using the class pointer directly rather
-   * than clutter_actor_realize which would set the REALIZED flag for us.
-   */
-  CLUTTER_NOTE (BACKEND, "Marking stage as realized");
-  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+  CLUTTER_NOTE (BACKEND, "Stage successfully realized");
 }
 
 static void
@@ -321,8 +317,6 @@ clutter_stage_osx_unrealize (ClutterActor *actor)
   self->window = NULL;
 
   CLUTTER_OSX_POOL_RELEASE();
-
-  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
 static void

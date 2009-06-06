@@ -251,8 +251,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
           CLUTTER_NOTE (GL, "Created EGL Context");
         }
-
-      CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
     }
   else
     {

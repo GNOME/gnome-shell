@@ -188,8 +188,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
           CLUTTER_NOTE (GL, "Created EGL Context");
         }
 
-      CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
-      CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_NOTE (BACKEND, "Setting context");
 
       /* eglnative can have only one stage */
       status = eglMakeCurrent (backend_egl->edpy,

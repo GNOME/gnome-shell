@@ -212,8 +212,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
           goto fail;
         }
 
-      CLUTTER_NOTE (BACKEND, "Marking stage as realized");
-      CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_NOTE (BACKEND, "Successfully realized stage");
     }
   else
     {
@@ -261,8 +260,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
           goto fail;
         }
 
-      CLUTTER_NOTE (BACKEND, "Marking stage as realized");
-      CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_NOTE (BACKEND, "Successfully realized stage");
     }
 
   /* we need to chain up to the X11 stage implementation in order to

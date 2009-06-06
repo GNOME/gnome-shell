@@ -89,8 +89,6 @@ clutter_stage_sdl_realize (ClutterActor *actor)
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
 	}
-      else
-        CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
     }
   else
     {

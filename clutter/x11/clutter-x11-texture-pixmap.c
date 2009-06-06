@@ -531,8 +531,6 @@ clutter_x11_texture_pixmap_realize (ClutterActor *actor)
   CLUTTER_ACTOR_CLASS (clutter_x11_texture_pixmap_parent_class)->
       realize (actor);
 
-  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-
   clutter_x11_texture_pixmap_update_area_real (texture,
 					       0, 0,
 					       priv->pixmap_width,

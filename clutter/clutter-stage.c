@@ -292,10 +292,7 @@ clutter_stage_realize (ClutterActor *self)
    * realization sequence was successful
    */
   if (CLUTTER_ACTOR_IS_REALIZED (priv->impl))
-    {
-      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
-      clutter_stage_ensure_current (CLUTTER_STAGE (self));
-    }
+    clutter_stage_ensure_current (CLUTTER_STAGE (self));
   else
     CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 }
