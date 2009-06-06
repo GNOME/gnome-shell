@@ -264,6 +264,11 @@ _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
     {
       /* Start timing from scratch */
       master_clock->prev_tick.tv_sec = 0;
+
+      /* If called from a different thread, we need to wake up the
+       * main loop to start running the timelines
+       */
+      g_main_context_wakeup (NULL);
     }
 }
 
