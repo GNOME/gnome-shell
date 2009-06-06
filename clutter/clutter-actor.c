@@ -574,19 +574,19 @@ clutter_actor_verify_map_state (ClutterActor *self)
             }
           else
             {
-              ClutterActor *parent = priv->parent_actor;
+              ClutterActor *iter = self;
 
-              /* check for the enable_paint_unmapped flag on any of the
-               * parents; if the flag is enabled at any point of this
+              /* check for the enable_paint_unmapped flag on the actor
+               * and parents; if the flag is enabled at any point of this
                * branch of the scene graph then all the later checks
                * become pointless
                */
-              while (parent != NULL)
+              while (iter != NULL)
                 {
-                  if (parent->priv->enable_paint_unmapped)
+                  if (iter->priv->enable_paint_unmapped)
                     return;
 
-                  parent = parent->priv->parent_actor;
+                  iter = iter->priv->parent_actor;
                 }
 
               if (!CLUTTER_ACTOR_IS_VISIBLE (priv->parent_actor))
@@ -8568,9 +8568,19 @@ _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
   priv->enable_paint_unmapped = enable;
 
   if (priv->enable_paint_unmapped)
-    clutter_actor_update_map_state (self, MAP_STATE_MAKE_MAPPED);
+    {
+      /* Make sure that the parents of the widget are realized first;
+       * otherwise checks in clutter_actor_update_map_state() will
+       * fail.
+       */
+      clutter_actor_realize (self);
+
+      clutter_actor_update_map_state (self, MAP_STATE_MAKE_MAPPED);
+    }
   else
-    clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNMAPPED);
+    {
+      clutter_actor_update_map_state (self, MAP_STATE_MAKE_UNMAPPED);
+    }
 }
 
 static void
