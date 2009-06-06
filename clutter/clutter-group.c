@@ -132,8 +132,8 @@ clutter_fixed_layout_get_preferred_width (GList  *children,
                                           gfloat *natural_width_p)
 {
   GList *l;
-  gfloat min_left, min_right;
-  gfloat natural_left, natural_right;
+  gdouble min_left, min_right;
+  gdouble natural_left, natural_right;
 
   min_left = 0;
   min_right = 0;
@@ -208,8 +208,8 @@ clutter_fixed_layout_get_preferred_height (GList  *children,
                                            gfloat *natural_height_p)
 {
   GList *l;
-  gfloat min_top, min_bottom;
-  gfloat natural_top, natural_bottom;
+  gdouble min_top, min_bottom;
+  gdouble natural_top, natural_bottom;
 
   min_top = 0;
   min_bottom = 0;
