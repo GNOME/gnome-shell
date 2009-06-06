@@ -43,7 +43,7 @@ typedef struct {
 
 struct BigRectangle {
     ClutterRectangle parent_instance;
-    ClutterUnit      radius;
+    float            radius;
     Corner          *corner;
     CoglHandle       corner_material;
     CoglHandle       border_material;
@@ -210,8 +210,7 @@ create_corner_texture(Corner *src)
     g_free(data);
 
     texture = cogl_texture_new_from_data(size, size,
-                                         0,
-                                         FALSE,
+                                         COGL_TEXTURE_NONE,
                                          COGL_PIXEL_FORMAT_RGBA_8888,
                                          COGL_PIXEL_FORMAT_ANY,
                                          rowstride,
@@ -287,7 +286,7 @@ big_rectangle_update_corners(BigRectangle *rectangle)
                      "color", &color,
                      NULL);
 
-        corner = corner_get(CLUTTER_UNITS_TO_DEVICE(rectangle->radius),
+        corner = corner_get(rectangle->radius,
                             color,
                             border_width,
                             border_color);
@@ -485,7 +484,7 @@ big_rectangle_set_property(GObject      *object,
 
     switch (prop_id) {
     case PROP_CORNER_RADIUS:
-        rectangle->radius = CLUTTER_UNITS_FROM_DEVICE(g_value_get_uint(value));
+        rectangle->radius = g_value_get_uint(value);
         rectangle->corners_dirty = TRUE;
         break;
 
@@ -508,7 +507,7 @@ big_rectangle_get_property(GObject    *object,
 
     switch (prop_id) {
     case PROP_CORNER_RADIUS:
-        g_value_set_uint(value, CLUTTER_UNITS_TO_DEVICE(rectangle->radius));
+        g_value_set_uint(value, rectangle->radius);
         break;
 
     default:
