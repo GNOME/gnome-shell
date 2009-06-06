@@ -598,12 +598,12 @@ static void
 position_menu (GtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer user_data)
 {
   ShellStatusMenu *status = SHELL_STATUS_MENU (user_data);
-  int src_x, src_y;
+  float src_x, src_y;
 
   clutter_actor_get_transformed_position (CLUTTER_ACTOR (status), &src_x, &src_y);
 
-  *x = src_x;
-  *y = src_y;
+  *x = (gint)(0.5 + src_x);
+  *y = (gint)(0.5 + src_y);
 }
 
 void

@@ -188,7 +188,7 @@ create_recording_icon (void)
 
   cairo_destroy (cr);
 
-  texture = cogl_texture_new_from_data (32, 32, 63,
+  texture = cogl_texture_new_from_data (32, 32,
                                         COGL_TEXTURE_NONE,
                                         COGL_PIXEL_FORMAT_BGRA_8888,
                                         COGL_PIXEL_FORMAT_ANY,
@@ -576,11 +576,11 @@ static void
 recorder_queue_redraw (ShellRecorder *recorder)
 {
   /* If we just queue a redraw on every mouse motion (for example), we
-   * starve ClutterTimeline, which operates at a very low priority. So
+   * starve Clutter, which operates at a very low priority. So
    * we need to queue a "low priority redraw" after timeline updates
    */
   if (recorder->state == RECORDER_STATE_RECORDING && recorder->redraw_idle == 0)
-    recorder->redraw_idle = g_idle_add_full (CLUTTER_PRIORITY_TIMELINE + 1,
+    recorder->redraw_idle = g_idle_add_full (CLUTTER_PRIORITY_REDRAW + 1,
                                              recorder_idle_redraw, recorder, NULL);
 }
 

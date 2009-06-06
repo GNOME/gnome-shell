@@ -204,10 +204,9 @@ ClutterFrameTicker.prototype = {
     _init : function() {
         // We don't have a finite duration; tweener will tell us to stop
         // when we need to stop, so use 1000 seconds as "infinity"
-        this._timeline = new Clutter.Timeline({ fps: this.FRAME_RATE,
-                                                duration: 1000*1000 });
-        this._currentTime = 0;
-        this._frame = 0;
+        this._timeline = new Clutter.Timeline({ duration: 1000*1000 });
+        this._startTime = -1;
+        this._currentTime = -1;
 
         let me = this;
         this._timeline.connect('new-frame',
@@ -220,20 +219,13 @@ ClutterFrameTicker.prototype = {
         // If there is a lot of setup to start the animation, then
         // first frame number we get from clutter might be a long ways
         // into the animation (or the animation might even be done).
-        // That looks bad, so we always start one frame into the
+        // That looks bad, so we always start at the first frame of the
         // animation then only do frame dropping from there.
-        let delta;
-        if (this._frame == 0)
-            delta = 1;
-        else
-            delta = frame - this._frame;
-
-        if (delta == 0) // protect against divide-by-0 if we get a frame twice
-            delta = 1;
+        if (this._startTime < 0)
+            this._startTime = this._timeline.get_elapsed_time();
 
         // currentTime is in milliseconds
-        this._currentTime += (1000 * delta) / this.FRAME_RATE;
-        this._frame = frame;
+        this._currentTime = this._timeline.get_elapsed_time() - this._startTime;
         this.emit('prepare-frame');
     },
 
@@ -247,8 +239,8 @@ ClutterFrameTicker.prototype = {
 
     stop : function() {
         this._timeline.stop();
-        this._frame = 0;
-        this._currentTime = 0;
+        this._startTime = -1;
+        this._currentTime = -1;
     }
 };
 

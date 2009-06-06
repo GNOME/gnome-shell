@@ -648,7 +648,8 @@ GenericDisplay.prototype = {
                                            // Check if the pointer is over one of the items and display the preview pop-up if it is.
                                            let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
                                            let global = Shell.Global.get();
-                                           let actor = global.stage.get_actor_at_pos(x, y);
+                                           let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
+                                                                                     x, y);
                                            if (actor != null) {
                                                let item = this._findDisplayedByActor(actor.get_parent());
                                                if (item != null) {

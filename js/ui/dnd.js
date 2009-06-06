@@ -122,7 +122,9 @@ _Draggable.prototype = {
             // Because we want to find out what other actor is located at the current position of this._dragActor,
             // we have to temporarily hide this._dragActor.
             this._dragActor.hide(); 
-            let target = actor.get_stage().get_actor_at_pos(stageX + this._dragOffsetX, stageY + this._dragOffsetY);
+            let target = actor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
+                                                            stageX + this._dragOffsetX,
+                                                            stageY + this._dragOffsetY);
             this._dragActor.show();
             while (target) {
                 if (target._delegate && target._delegate.handleDragOver) {
@@ -156,7 +158,8 @@ _Draggable.prototype = {
         // Find a drop target
         actor.hide();
         let [dropX, dropY] = event.get_coords();
-        let target = actor.get_stage().get_actor_at_pos(dropX, dropY);
+        let target = actor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
+                                                        dropX, dropY);
         actor.show();
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
