@@ -288,7 +288,8 @@ clutter_glx_texture_pixmap_notify (GObject *object, GParamSpec *pspec)
   if (g_str_equal (pspec->name, "pixmap"))
     {
       ClutterGLXTexturePixmap *texture = CLUTTER_GLX_TEXTURE_PIXMAP (object);
-      clutter_glx_texture_pixmap_create_glx_pixmap (texture);
+      if (CLUTTER_ACTOR_IS_REALIZED (texture))
+	clutter_glx_texture_pixmap_create_glx_pixmap (texture);
     }
 }
 
@@ -377,12 +378,6 @@ create_cogl_texture (ClutterTexture *texture,
 
       clutter_texture_set_cogl_texture (texture, handle);
 
-      CLUTTER_ACTOR_SET_FLAGS (texture, CLUTTER_ACTOR_REALIZED);
-
-      clutter_glx_texture_pixmap_update_area
-                                  (CLUTTER_X11_TEXTURE_PIXMAP (texture),
-                                   0, 0,
-                                   width, height);
       return TRUE;
     }
 
@@ -392,37 +387,16 @@ create_cogl_texture (ClutterTexture *texture,
 static void
 clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 {
+  ClutterGLXTexturePixmap        *texture;
   ClutterGLXTexturePixmapPrivate *priv;
-  Pixmap                          pixmap;
-  guint                           pixmap_width, pixmap_height;
 
-  priv = CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
+  texture = CLUTTER_GLX_TEXTURE_PIXMAP (actor);
+  priv = texture->priv;
+
+  clutter_glx_texture_pixmap_create_glx_pixmap (texture);
 
   if (priv->use_fallback)
     {
-      CLUTTER_NOTE (TEXTURE, "texture from pixmap appears unsupported");
-      CLUTTER_NOTE (TEXTURE, "Falling back to X11 manual mechansim");
-
-      CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
-        realize (actor);
-      return;
-    }
-
-  g_object_get (actor,
-                "pixmap", &pixmap,
-                "pixmap-width",   &pixmap_width,
-                "pixmap-height",  &pixmap_height,
-                NULL);
-
-  if (!pixmap)
-      return;
-
-  if (!create_cogl_texture (CLUTTER_TEXTURE (actor),
-                            pixmap_width, pixmap_height))
-    {
-      CLUTTER_NOTE (TEXTURE, "Unable to create a valid pixmap");
-      CLUTTER_NOTE (TEXTURE, "Falling back to X11 manual mechanism");
-      priv->use_fallback = TRUE;
       CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
         realize (actor);
       return;
@@ -648,21 +622,17 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
   GLXFBConfig                    *fbconfig;
   Display                        *dpy;
   guint                           depth;
-  Pixmap                          pixmap;
-  guint				  pixmap_width, pixmap_height;
+  Pixmap                          pixmap = None;
+  guint				  pixmap_width = 0, pixmap_height = 0;
   ClutterBackendGLX              *backend_glx;
   ClutterTextureQuality           quality;
-
-  CLUTTER_NOTE (TEXTURE, "Creating GLXPixmap");
 
   backend_glx = CLUTTER_BACKEND_GLX(clutter_get_default_backend ());
 
   dpy = clutter_x11_get_default_display ();
 
-  if (!clutter_glx_texture_pixmap_using_extension (texture))
+  if (!_have_tex_from_pixmap_ext)
     goto cleanup;
-
-  priv->use_fallback = FALSE;
 
   g_object_get (texture,
                 "pixmap-width",  &pixmap_width,
@@ -675,6 +645,8 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
     {
       goto cleanup;
     }
+
+  CLUTTER_NOTE (TEXTURE, "Creating GLXPixmap");
 
   fbconfig = get_fbconfig_for_depth (texture, depth);
 
@@ -696,7 +668,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
     }
   else
     {
-      g_warning ("Pixmap with depth bellow 24 are not supported");
+      g_warning ("Pixmap with depth below 24 are not supported");
       goto cleanup;
     }
 
@@ -736,6 +708,16 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       glx_pixmap = None;
     }
 
+  if (!create_cogl_texture (CLUTTER_TEXTURE (texture),
+			    pixmap_width, pixmap_height))
+    {
+      CLUTTER_NOTE (TEXTURE, "Unable to create texture for pixmap");
+
+      glXDestroyGLXPixmap (dpy, glx_pixmap);
+      glx_pixmap = None;
+      goto cleanup;
+    }
+
  cleanup:
 
   if (priv->glx_pixmap)
@@ -743,12 +725,14 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   if (glx_pixmap != None)
     {
+      priv->use_fallback = FALSE;
       priv->glx_pixmap = glx_pixmap;
 
-      create_cogl_texture (CLUTTER_TEXTURE (texture),
-                           pixmap_width, pixmap_height);
-
       CLUTTER_NOTE (TEXTURE, "Created GLXPixmap");
+
+      clutter_glx_texture_pixmap_update_area (CLUTTER_X11_TEXTURE_PIXMAP (texture),
+					      0, 0,
+					      pixmap_width, pixmap_height);
 
       /* Get ready to queue initial mipmap generation */
       if (_gl_generate_mipmap
@@ -763,13 +747,11 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
     }
   else
     {
+      if (pixmap)
+	CLUTTER_NOTE (TEXTURE, "Falling back to X11 manual mechansim");
+
       priv->use_fallback = TRUE;
       priv->glx_pixmap   = None;
-
-      /* Some fucky logic here - we've fallen back and need to make sure
-       * we realize here..
-      */
-      clutter_actor_realize (CLUTTER_ACTOR (texture));
     }
 }
 
