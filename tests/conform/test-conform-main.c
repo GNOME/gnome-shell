@@ -129,6 +129,7 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/texture", test_backface_culling);
   TEST_CONFORM_SIMPLE ("/texture", test_npot_texture);
+  TEST_CONFORM_SIMPLE ("/texture", test_premult);
 
   TEST_CONFORM_SIMPLE ("/path", test_path);
 
