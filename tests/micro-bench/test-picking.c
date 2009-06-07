@@ -36,7 +36,6 @@ do_events (ClutterActor *stage)
 {
   glong i;
   static gdouble angle = 0;
-  ClutterEvent event;
 
   for (i = 0; i < n_events; i++)
     {
@@ -44,18 +43,13 @@ do_events (ClutterActor *stage)
       while (angle > M_PI * 2.0)
         angle -= M_PI * 2.0;
 
-      event.type = CLUTTER_MOTION;
-      event.any.stage = CLUTTER_STAGE (stage);
-      event.any.time = CLUTTER_CURRENT_TIME;
-      event.motion.flags = 0;
-      event.motion.source = NULL;
-      event.motion.x = (gint)(256.0 + 206.0 * cos (angle));
-      event.motion.y = (gint)(256.0 + 206.0 * sin (angle));
-      event.motion.modifier_state = 0;
-      event.motion.axes = NULL;
-      event.motion.device = NULL;
-
-      clutter_event_put (&event);
+      /* If we synthesized events, they would be motion compressed;
+       * calling get_actor_at_position() doesn't have that problem
+       */
+      clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage),
+				      CLUTTER_PICK_REACTIVE,
+				      256.0 + 206.0 * cos (angle),
+				      256.0 + 206.0 * sin (angle));
     }
 }
 
