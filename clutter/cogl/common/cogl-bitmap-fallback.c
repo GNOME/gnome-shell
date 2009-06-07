@@ -163,9 +163,9 @@ _cogl_unpremult_alpha_last (const guchar *src, guchar *dst)
 {
   guchar alpha = src[3];
 
-  dst[0] = ((((gulong) src[0] >> 16) & 0xff) * 255 ) / alpha;
-  dst[1] = ((((gulong) src[1] >> 8) & 0xff) * 255 ) / alpha;
-  dst[2] = ((((gulong) src[2] >> 0) & 0xff) * 255 ) / alpha;
+  dst[0] = (src[0] * 255) / alpha;
+  dst[1] = (src[1] * 255) / alpha;
+  dst[2] = (src[2] * 255) / alpha;
   dst[3] = alpha;
 }
 
@@ -175,9 +175,9 @@ _cogl_unpremult_alpha_first (const guchar *src, guchar *dst)
   guchar alpha = src[0];
 
   dst[0] = alpha;
-  dst[1] = ((((gulong) src[1] >> 16) & 0xff) * 255 ) / alpha;
-  dst[2] = ((((gulong) src[2] >> 8) & 0xff) * 255 ) / alpha;
-  dst[3] = ((((gulong) src[3] >> 0) & 0xff) * 255 ) / alpha;
+  dst[1] = (src[1] * 255) / alpha;
+  dst[2] = (src[2] * 255) / alpha;
+  dst[3] = (src[3] * 255) / alpha;
 }
 
 /* No division form of floor((c*a + 128)/255) (I first encountered
@@ -365,35 +365,35 @@ _cogl_bitmap_fallback_unpremult (const CoglBitmap *bmp,
 			    * dst_bmp->height
 			    * dst_bmp->rowstride);
 
-  /* FIXME: Optimize */
   for (y = 0; y < bmp->height; y++)
     {
       src = (guchar*)bmp->data      + y * bmp->rowstride;
       dst = (guchar*)dst_bmp->data  + y * dst_bmp->rowstride;
 
-      for (x = 0; x < bmp->width; x++)
-	{
-	  /* FIXME: Would be nice to at least remove this inner
-           * branching, but not sure it can be done without
-           * rewriting of the whole loop */
-	  if (bmp->format & COGL_AFIRST_BIT)
-	    {
-	      if (src[0] == 0)
-		_cogl_unpremult_alpha_0 (src, dst);
-	      else
-		_cogl_unpremult_alpha_first (src, dst);
-	    }
-	  else
-	    {
-	      if (src[3] == 0)
-		_cogl_unpremult_alpha_0 (src, dst);
-	      else
-		_cogl_unpremult_alpha_last (src, dst);
-	    }
-
-	  src += bpp;
-	  dst += bpp;
-	}
+      if (bmp->format & COGL_AFIRST_BIT)
+        {
+          for (x = 0; x < bmp->width; x++)
+            {
+              if (src[0] == 0)
+                _cogl_unpremult_alpha_0 (src, dst);
+              else
+                _cogl_unpremult_alpha_first (src, dst);
+              src += bpp;
+              dst += bpp;
+            }
+        }
+      else
+        {
+          for (x = 0; x < bmp->width; x++)
+            {
+              if (src[0] == 0)
+                _cogl_unpremult_alpha_0 (src, dst);
+              else
+                _cogl_unpremult_alpha_last (src, dst);
+              src += bpp;
+              dst += bpp;
+            }
+        }
     }
 
   return TRUE;
