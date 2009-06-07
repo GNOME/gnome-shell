@@ -416,7 +416,7 @@ _cogl_bitmap_fallback_premult (const CoglBitmap *bmp,
 
   /* Initialize destination bitmap */
   *dst_bmp = *bmp;
-  dst_bmp->format = (bmp->format & COGL_UNPREMULT_MASK);
+  dst_bmp->format |= COGL_PREMULT_BIT;
 
   /* Allocate a new buffer to hold converted data */
   dst_bmp->data = g_malloc (sizeof(guchar)
