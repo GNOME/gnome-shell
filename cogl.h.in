@@ -386,13 +386,22 @@ gboolean        cogl_get_backface_culling_enabled (void);
  * @z_near: Position along z-axis where no fogging should be applied
  * @z_far: Position along z-axes where full fogging should be applied
  *
- * Enables fogging. Fogging causes vertices that are further away from
- * the eye to be rendered with a different color. The color is determined
- * according to the chosen fog mode; at it's simplest the color is
- * linearly interpolated so that vertices at @z_near are drawn fully
- * with their original color and vertices at @z_far are drawn fully
- * with @fog_color. Fogging will remain enabled until you call
- * cogl_disable_fog().
+ * Enables fogging. Fogging causes vertices that are further away from the eye
+ * to be rendered with a different color. The color is determined according to
+ * the chosen fog mode; at it's simplest the color is linearly interpolated so
+ * that vertices at @z_near are drawn fully with their original color and
+ * vertices at @z_far are drawn fully with @fog_color. Fogging will remain
+ * enabled until you call cogl_disable_fog().
+ *
+ * Note: The fogging functions only work correctly when primitives use
+ *       unmultiplied alpha colors. By default Cogl will premultiply textures
+ *       and cogl_set_source_color will premultiply colors, so unless you
+ *       explicitly load your textures requesting an unmultiplied
+ *       internal_format and use cogl_material_set_color you can only use
+ *       fogging with fully opaque primitives.
+ *
+ *       We can look to improve this in the future when we can depend on
+ *       fragment shaders.
  */
 void            cogl_set_fog                  (const CoglColor *fog_color,
                                                CoglFogMode      mode,
