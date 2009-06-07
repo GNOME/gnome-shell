@@ -53,6 +53,10 @@ struct _ClutterMasterClock
   /* the list of timelines handled by the clock */
   GSList *timelines;
 
+  /* the current state of the clock
+   */
+  GTimeVal cur_tick;
+
   /* the previous state of the clock, used to compute
    * the delta
    */
@@ -62,6 +66,8 @@ struct _ClutterMasterClock
    * a redraw on the stage and drive the animations
    */
   GSource *source;
+
+  guint timelines_running : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -123,6 +129,59 @@ master_clock_is_running (ClutterMasterClock *master_clock)
 }
 
 /*
+ * master_clock_next_frame_delay:
+ * @master_clock: a #ClutterMasterClock
+ *
+ * Computes the number of delay before we need to draw the next frame.
+ *
+ * Return value: -1 if there is no next frame pending, otherwise the
+ *  number of millseconds before the we need to draw the next frame
+ */
+static gint
+master_clock_next_frame_delay (ClutterMasterClock *master_clock)
+{
+  GTimeVal now;
+  GTimeVal next;
+
+  if (!master_clock_is_running (master_clock))
+    return -1;
+
+  if (clutter_feature_available (CLUTTER_FEATURE_SYNC_TO_VBLANK))
+    {
+      /* When we have sync-to-vblank, we count on that to throttle
+       * our frame rate, and otherwise draw frames as fast as possible.
+       */
+      return 0;
+    }
+
+  if (master_clock->prev_tick.tv_sec == 0)
+    {
+      /* If we weren't previously running, then draw the next frame
+       * immediately
+       */
+      return 0;
+    }
+
+  /* Otherwise, wait at least 1/frame_rate seconds since we last started a frame */
+
+  g_source_get_current_time (master_clock->source, &now);
+
+  next = master_clock->prev_tick;
+  g_time_val_add (&next, 1000000 / clutter_get_default_frame_rate ());
+
+  if (next.tv_sec < now.tv_sec ||
+      (next.tv_sec == now.tv_sec && next.tv_usec < now.tv_usec))
+    {
+      return 0;
+    }
+  else
+    {
+      return ((next.tv_sec - now.tv_sec) * 1000 +
+              (next.tv_usec - now.tv_usec) / 1000);
+    }
+}
+
+/*
  * clutter_clock_source_new:
  * @master_clock: a #ClutterMasterClock for the source
  *
@@ -150,14 +209,13 @@ clutter_clock_prepare (GSource *source,
 {
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
-  gboolean retval;
+  int delay;
 
-  /* just like an idle source, we are ready if nothing else is */
-  *timeout = -1;
+  delay = master_clock_next_frame_delay (master_clock);
 
-  retval = master_clock_is_running (master_clock);
+  *timeout = delay;
 
-  return retval;
+  return delay == 0;
 }
 
 static gboolean
@@ -165,11 +223,11 @@ clutter_clock_check (GSource *source)
 {
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
-  gboolean retval;
+  int delay;
 
-  retval = master_clock_is_running (master_clock);
+  delay = master_clock_next_frame_delay (master_clock);
 
-  return retval;
+  return delay == 0;
 }
 
 static gboolean
@@ -183,6 +241,10 @@ clutter_clock_dispatch (GSource     *source,
   GSList *stages, *l;
 
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
+
+  /* Get the time to use for this frame.
+   */
+  g_source_get_current_time (source, &master_clock->cur_tick);
 
   /* We need to protect ourselves against stages being destroyed during
    * event handling
@@ -205,6 +267,8 @@ clutter_clock_dispatch (GSource     *source,
 
   g_slist_foreach (stages, (GFunc)g_object_unref, NULL);
   g_slist_free (stages);
+
+  master_clock->prev_tick = master_clock->cur_tick;
 
   return TRUE;
 }
@@ -283,15 +347,7 @@ _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
                                              timeline);
 
   if (is_first)
-    {
-      /* Start timing from scratch */
-      master_clock->prev_tick.tv_sec = 0;
-
-      /* If called from a different thread, we need to wake up the
-       * main loop to start running the timelines
-       */
-      g_main_context_wakeup (NULL);
-    }
+    _clutter_master_clock_start_running (master_clock);
 }
 
 /*
@@ -308,6 +364,24 @@ _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
 {
   master_clock->timelines = g_slist_remove (master_clock->timelines,
                                             timeline);
+  if (master_clock->timelines == NULL)
+    master_clock->timelines_running = FALSE;
+}
+
+/*
+ * _clutter_master_clock_start_running:
+ * @master_clock: a #ClutterMasterClock
+ *
+ * Called when we have events or redraws to process; if the clock
+ * is stopped, does the processing necessary to wake it up again.
+ */
+void
+_clutter_master_clock_start_running (ClutterMasterClock *master_clock)
+{
+  /* If called from a different thread, we need to wake up the
+   * main loop to start running the timelines
+   */
+  g_main_context_wakeup (NULL);
 }
 
 /*
@@ -321,7 +395,6 @@ _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
 void
 _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 {
-  GTimeVal cur_tick = { 0, };
   gulong msecs;
   GSList *l;
 
@@ -330,13 +403,18 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
   if (master_clock->timelines == NULL)
     return;
 
-  g_get_current_time (&cur_tick);
+  if (!master_clock->timelines_running)
+    {
+      /* When we start running, we count the first frame as time 0,
+       * so we don't need an advance. (And master_clock->prev_tick
+       * doesn't meaningfully relate to these timelines.)
+       */
+      master_clock->timelines_running = TRUE;
+      return;
+    }
 
-  if (master_clock->prev_tick.tv_sec == 0)
-    master_clock->prev_tick = cur_tick;
-
-  msecs = (cur_tick.tv_sec - master_clock->prev_tick.tv_sec) * 1000
-        + (cur_tick.tv_usec - master_clock->prev_tick.tv_usec) / 1000;
+  msecs = (master_clock->cur_tick.tv_sec - master_clock->prev_tick.tv_sec) * 1000
+        + (master_clock->cur_tick.tv_usec - master_clock->prev_tick.tv_usec) / 1000;
 
   if (msecs == 0)
     return;
@@ -352,9 +430,4 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
       if (clutter_timeline_is_playing (timeline))
         clutter_timeline_advance_delta (timeline, msecs);
     }
-
-  /* store the previous state so that we can use
-   * it for the next advancement
-   */
-  master_clock->prev_tick = cur_tick;
 }

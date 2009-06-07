@@ -396,13 +396,22 @@ _clutter_stage_queue_event (ClutterStage *stage,
 			    ClutterEvent *event)
 {
   ClutterStagePrivate *priv;
+  gboolean first_event;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
 
+  first_event = priv->event_queue->length == 0;
+
   g_queue_push_tail (priv->event_queue,
 		     clutter_event_copy (event));
+
+  if (first_event)
+    {
+      ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_start_running (master_clock);
+    }
 }
 
 gboolean
@@ -544,13 +553,12 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
 
   if (!priv->redraw_pending)
     {
+      ClutterMasterClock *master_clock;
+
       priv->redraw_pending = TRUE;
 
-      /* If called from a thread, we need to wake up the main loop
-       * out of its sleep so the clock source notices that we have
-       * a redraw pending
-       */
-      g_main_context_wakeup (NULL);
+      master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_start_running (master_clock);
     }
   else
     CLUTTER_CONTEXT ()->redraw_count += 1;

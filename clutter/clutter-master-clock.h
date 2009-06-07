@@ -42,6 +42,8 @@ void                _clutter_master_clock_add_timeline    (ClutterMasterClock *m
 void                _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
                                                            ClutterTimeline    *timeline);
 void                _clutter_master_clock_advance         (ClutterMasterClock *master_clock);
+void                _clutter_master_clock_start_running   (ClutterMasterClock *master_clock);
+
 
 G_END_DECLS
 

@@ -2293,8 +2293,7 @@ clutter_base_init (void)
 /**
  * clutter_get_default_frame_rate:
  *
- * Retrieves the default frame rate used when creating #ClutterTimeline<!--
- * -->s.
+ * Retrieves the default frame rate. See clutter_set_default_frame_rate().
  *
  * Return value: the default frame rate
  *
@@ -2314,8 +2313,10 @@ clutter_get_default_frame_rate (void)
  * clutter_set_default_frame_rate:
  * @frames_per_sec: the new default frame rate
  *
- * Sets the default frame rate to be used when creating #ClutterTimeline<!--
- * -->s
+ * Sets the default frame rate. This frame rate will be used to limit
+ * the number of frames drawn if Clutter is not able to synchronize
+ * with the vertical refresh rate of the display. When synchronization
+ * is possible, this value is ignored.
  *
  * Since: 0.6
  */

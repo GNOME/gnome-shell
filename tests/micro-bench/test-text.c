@@ -48,6 +48,7 @@ main (int argc, char *argv[])
   ClutterActor    *group;
 
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
+  g_setenv ("CLUTTER_DEFAULT_FPS", "1000", FALSE);
 
   clutter_init (&argc, &argv);
 
