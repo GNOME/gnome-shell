@@ -1676,6 +1676,8 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 
   g_array_append_val (tex->slice_gl_handles, gl_handle);
 
+  tex->first_pixels = NULL;
+
   return _cogl_texture_handle_new (tex);
 }
 
