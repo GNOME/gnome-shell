@@ -230,7 +230,7 @@ test_events_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
 
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "red box");
-  g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
+  g_signal_connect (actor, "key-focus-in", G_CALLBACK (key_focus_in_cb),
 		    focus_box);
 
   /* Toggle motion - enter/leave capture */
@@ -248,7 +248,7 @@ test_events_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
 
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "green box");
-  g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
+  g_signal_connect (actor, "key-focus-in", G_CALLBACK (key_focus_in_cb),
 		    focus_box);
 
   g_signal_connect (actor, "captured-event", G_CALLBACK (capture_cb), NULL);
@@ -262,7 +262,7 @@ test_events_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER(stage), actor, NULL);
 
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "blue box");
-  g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
+  g_signal_connect (actor, "key-focus-in", G_CALLBACK (key_focus_in_cb),
 		    focus_box);
   /* Fullscreen */
   g_signal_connect (actor, "button-press-event",
@@ -276,10 +276,10 @@ test_events_main (int argc, char *argv[])
   clutter_container_add (CLUTTER_CONTAINER(stage), actor, NULL);
 
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "blue box");
-  g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
+  g_signal_connect (actor, "key-focus-in", G_CALLBACK (key_focus_in_cb),
 		    focus_box);
 
-  g_signal_connect (stage, "focus-in", G_CALLBACK (key_focus_in_cb), 
+  g_signal_connect (stage, "key-focus-in", G_CALLBACK (key_focus_in_cb),
 		    focus_box);
 
   /* non reactive group, with reactive child */
