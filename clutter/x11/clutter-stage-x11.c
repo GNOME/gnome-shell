@@ -44,6 +44,8 @@
 #include <X11/extensions/Xfixes.h>
 #endif
 
+#define STAGE_X11_IS_MAPPED(s)  ((((ClutterStageX11 *) (s))->wm_state & STAGE_X11_WITHDRAWN) == 0)
+
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageX11,
@@ -158,9 +160,14 @@ clutter_stage_x11_get_preferred_width (ClutterActor *self,
                                        gfloat       *natural_width_p)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
-  gboolean resize;
+  gboolean is_fullscreen, resize;
 
-  if (stage_x11->fullscreen_on_map)
+  is_fullscreen = FALSE;
+  g_object_get (G_OBJECT (stage_x11->wrapper),
+                "fullscreen", &is_fullscreen,
+                NULL);
+
+  if (is_fullscreen || stage_x11->fullscreen_on_map)
     {
       int width;
 
@@ -196,9 +203,14 @@ clutter_stage_x11_get_preferred_height (ClutterActor *self,
                                         gfloat       *natural_height_p)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
-  gboolean resize;
+  gboolean is_fullscreen, resize;
 
-  if (stage_x11->fullscreen_on_map)
+  is_fullscreen = FALSE;
+  g_object_get (G_OBJECT (stage_x11->wrapper),
+                "fullscreen", &is_fullscreen,
+                NULL);
+
+  if (is_fullscreen || stage_x11->fullscreen_on_map)
     {
       int height;
 
@@ -373,7 +385,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
   ClutterStage *stage = stage_x11->wrapper;
 
-  if (!stage)
+  if (stage == NULL)
     return;
 
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
@@ -399,9 +411,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
       stage_x11->xwin_width = width;
       stage_x11->xwin_height = height;
 
-      clutter_actor_set_size (CLUTTER_ACTOR (stage), width, height);
-
-      stage_x11->fullscreen_on_map = TRUE;
+      if (!STAGE_X11_IS_MAPPED (stage_x11))
+        stage_x11->fullscreen_on_map = TRUE;
 
       if (stage_x11->xwin != None)
         {
@@ -435,7 +446,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
     }
   else
     {
-      stage_x11->fullscreen_on_map = FALSE;
+      if (!STAGE_X11_IS_MAPPED (stage_x11))
+        stage_x11->fullscreen_on_map = FALSE;
 
       if (stage_x11->xwin != None)
         {
@@ -459,6 +471,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
             }
         }
     }
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (stage));
 }
 
 static void
@@ -490,8 +504,6 @@ clutter_stage_x11_set_user_resizable (ClutterStageWindow *stage_window,
 
   clutter_stage_x11_fix_window_size (stage_x11, -1, -1);
 }
-
-#define STAGE_X11_IS_MAPPED(s)  ((((ClutterStageX11 *) (s))->wm_state & STAGE_X11_WITHDRAWN) == 0)
 
 static void
 update_wm_hints (ClutterStageX11 *stage_x11)
