@@ -119,7 +119,7 @@ check_timeline (ClutterTimeline *timeline,
       else
         {
           if (g_test_verbose ())
-            g_print ("FAIL: unknown marker '%s' hit for %i\n",
+            g_print ("FAIL: unknown marker '%s' hit for timeline %i\n",
                      (char *) node->data, data->timeline_num);
           succeeded = FALSE;
         }
@@ -129,7 +129,7 @@ check_timeline (ClutterTimeline *timeline,
     if (marker_reached_count[i] != 1)
       {
         if (g_test_verbose ())
-          g_print ("FAIL: marker '%s' hit %i times for %i\n",
+          g_print ("FAIL: marker '%s' hit %i times for timeline %i\n",
                    markers[i], marker_reached_count[i], data->timeline_num);
         succeeded = FALSE;
       }
@@ -143,7 +143,7 @@ check_timeline (ClutterTimeline *timeline,
       if (missed_frame_count)
         {
           if (g_test_verbose ())
-            g_print ("FAIL: missed %i frame%s for %i\n",
+            g_print ("FAIL: missed %i frame%s for timeline %i\n",
                      missed_frame_count, missed_frame_count == 1 ? "" : "s",
                      data->timeline_num);
           succeeded = FALSE;
