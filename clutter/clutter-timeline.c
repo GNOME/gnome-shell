@@ -62,8 +62,13 @@ struct _ClutterTimelinePrivate
 
   GHashTable *markers_by_name;
 
+  /* Time we last advanced the elapsed time and showed a frame */
+  GTimeVal last_frame_time;
+
   guint loop       : 1;
   guint is_playing : 1;
+  /* If we've just started playing and haven't yet gotten a tick from the master clock */
+  guint waiting_first_tick : 1;
 };
 
 typedef struct {
@@ -489,13 +494,18 @@ set_is_playing (ClutterTimeline *timeline,
   priv->is_playing = is_playing;
   master_clock = _clutter_master_clock_get_default ();
   if (priv->is_playing)
-    _clutter_master_clock_add_timeline (master_clock, timeline);
+    {
+      _clutter_master_clock_add_timeline (master_clock, timeline);
+      priv->waiting_first_tick = TRUE;
+    }
   else
-    _clutter_master_clock_remove_timeline (master_clock, timeline);
+    {
+      _clutter_master_clock_remove_timeline (master_clock, timeline);
+    }
 }
 
 static gboolean
-clutter_timeline_advance_internal (ClutterTimeline *timeline)
+clutter_timeline_do_frame (ClutterTimeline *timeline)
 {
   ClutterTimelinePrivate *priv;
 
@@ -1135,19 +1145,18 @@ clutter_timeline_get_delta (ClutterTimeline *timeline)
 }
 
 /*
- * clutter_timeline_advance_delta:
+ * clutter_timeline_do_tick
  * @timeline: a #ClutterTimeline
- * @msecs: advance in milliseconds
+ * @tick_time: time of advance
  *
- * Advances @timeline by @msecs. This function is called by the master
- * clock and it is used to advance a timeline by the amount of milliseconds
- * elapsed since the last redraw operation. The @timeline will use this
- * interval to emit the #ClutterTimeline::new-frame signal and eventually
- * skip frames.
+ * Advances @timeline based on the time passed in @msecs. This
+ * function is called by the master clock. The @timeline will use this
+ * interval to emit the #ClutterTimeline::new-frame signal and
+ * eventually skip frames.
  */
 void
-clutter_timeline_advance_delta (ClutterTimeline *timeline,
-                                guint            msecs)
+clutter_timeline_do_tick (ClutterTimeline *timeline,
+			  GTimeVal        *tick_time)
 {
   ClutterTimelinePrivate *priv;
 
@@ -1155,9 +1164,25 @@ clutter_timeline_advance_delta (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
-  priv->msecs_delta = msecs;
+  if (priv->waiting_first_tick)
+    {
+      priv->last_frame_time = *tick_time;
+      priv->waiting_first_tick = FALSE;
+    }
+  else
+    {
+      gint msecs =
+	(tick_time->tv_sec - priv->last_frame_time.tv_sec) * 1000
+        + (tick_time->tv_usec - priv->last_frame_time.tv_usec) / 1000;
 
-  clutter_timeline_advance_internal (timeline);
+      if (msecs != 0)
+	{
+	  /* Avoid accumulating error */
+	  g_time_val_add (&priv->last_frame_time, msecs * 1000L);
+	  priv->msecs_delta = msecs;
+	  clutter_timeline_do_frame (timeline);
+	}
+    }
 }
 
 static inline void

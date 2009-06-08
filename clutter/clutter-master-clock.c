@@ -66,8 +66,6 @@ struct _ClutterMasterClock
    * a redraw on the stage and drive the animations
    */
   GSource *source;
-
-  guint timelines_running : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -364,8 +362,6 @@ _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
 {
   master_clock->timelines = g_slist_remove (master_clock->timelines,
                                             timeline);
-  if (master_clock->timelines == NULL)
-    master_clock->timelines_running = FALSE;
 }
 
 /*
@@ -395,39 +391,14 @@ _clutter_master_clock_start_running (ClutterMasterClock *master_clock)
 void
 _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 {
-  gulong msecs;
-  GSList *l;
+  GSList *l, *next;
 
   g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
 
-  if (master_clock->timelines == NULL)
-    return;
-
-  if (!master_clock->timelines_running)
+  for (l = master_clock->timelines; l != NULL; l = next)
     {
-      /* When we start running, we count the first frame as time 0,
-       * so we don't need an advance. (And master_clock->prev_tick
-       * doesn't meaningfully relate to these timelines.)
-       */
-      master_clock->timelines_running = TRUE;
-      return;
-    }
+      next = l->next;
 
-  msecs = (master_clock->cur_tick.tv_sec - master_clock->prev_tick.tv_sec) * 1000
-        + (master_clock->cur_tick.tv_usec - master_clock->prev_tick.tv_usec) / 1000;
-
-  if (msecs == 0)
-    return;
-
-  CLUTTER_NOTE (SCHEDULER, "Advancing %d timelines by %lu milliseconds",
-                g_slist_length (master_clock->timelines),
-                msecs);
-
-  for (l = master_clock->timelines; l != NULL; l = l->next)
-    {
-      ClutterTimeline *timeline = l->data;
-
-      if (clutter_timeline_is_playing (timeline))
-        clutter_timeline_advance_delta (timeline, msecs);
+      clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
     }
 }

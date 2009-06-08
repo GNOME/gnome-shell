@@ -185,9 +185,6 @@ typedef struct _FrameCounter    FrameCounter;
 
 struct _FrameCounter
 {
-  GTimeVal prev_tick;
-  gulong msecs_delta;
-
   GSList *timelines;
 };
 
@@ -197,26 +194,16 @@ frame_tick (gpointer data)
   FrameCounter *counter = data;
   GTimeVal cur_tick = { 0, };
   GSList *l;
-  gulong msecs;
 
   g_get_current_time (&cur_tick);
-
-  if (counter->prev_tick.tv_sec == 0)
-    counter->prev_tick = cur_tick;
-
-  msecs = (cur_tick.tv_sec - counter->prev_tick.tv_sec) * 1000
-        + (cur_tick.tv_usec - counter->prev_tick.tv_usec) / 1000;
 
   for (l = counter->timelines; l != NULL; l = l->next)
     {
       ClutterTimeline *timeline = l->data;
 
       if (clutter_timeline_is_playing (timeline))
-        clutter_timeline_advance_delta (timeline, msecs);
+        clutter_timeline_do_tick (timeline, &cur_tick);
     }
-
-  counter->msecs_delta = msecs;
-  counter->prev_tick = cur_tick;
 
   return TRUE;
 }
