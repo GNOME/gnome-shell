@@ -270,7 +270,7 @@ clutter_glx_texture_pixmap_dispose (GObject *object)
     {
       clutter_x11_trap_x_errors ();
 
-      glXDestroyGLXPixmap (clutter_x11_get_default_display(),
+      glXDestroyPixmap (clutter_x11_get_default_display(),
                            priv->glx_pixmap);
       XSync (clutter_x11_get_default_display(), FALSE);
 
@@ -607,7 +607,7 @@ clutter_glx_texture_pixmap_free_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   clutter_x11_trap_x_errors ();
   if (priv->glx_pixmap)
-    glXDestroyGLXPixmap (dpy, priv->glx_pixmap);
+    glXDestroyPixmap (dpy, priv->glx_pixmap);
   XSync (dpy, FALSE);
   clutter_x11_untrap_x_errors ();
   priv->glx_pixmap = None;
