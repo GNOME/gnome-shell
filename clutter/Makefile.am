@@ -251,6 +251,7 @@ endif
 Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 	$(INTROSPECTION_SCANNER) -v --namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 	     $(INCLUDES) \
+	     --add-include-path=cogl \
 	     $(json_gir_include_path) \
              --include=GL-1.0 \
              --include=GObject-2.0 \
