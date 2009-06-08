@@ -933,6 +933,7 @@ update_root_window_pixmap (ShellGlobal *global)
   gulong nitems;
   gulong bytes_after;
   guchar *data;
+  Pixmap root_pixmap_id = None;
 
   if (!XGetWindowProperty (gdk_x11_get_default_xdisplay (),
                            gdk_x11_get_default_root_xwindow (),
@@ -947,8 +948,7 @@ update_root_window_pixmap (ShellGlobal *global)
      if (type == XA_PIXMAP && format == 32 && nitems == 1)
        {
          /* Was what we expected. */
-         clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (global->root_pixmap),
-                                                *(Pixmap *)data);
+         root_pixmap_id = *(Pixmap *)data;
        }
      else
        {
@@ -957,6 +957,9 @@ update_root_window_pixmap (ShellGlobal *global)
 
      XFree(data);
   }
+
+  clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (global->root_pixmap),
+                                         root_pixmap_id);
 }
 
 /*
@@ -974,6 +977,22 @@ root_window_filter (GdkXEvent *native, GdkEvent *event, gpointer data)
     update_root_window_pixmap (SHELL_GLOBAL (data));
 
   return GDK_FILTER_CONTINUE;
+}
+
+/* Workaround for a clutter bug where if ClutterGLXTexturePixmap
+ * is painted without the pixmap being set, a crash will occur inside
+ * Cogl.
+ *
+ * http://bugzilla.openedhand.com/show_bug.cgi?id=1644
+ */
+static void
+root_pixmap_paint (ClutterActor *actor, gpointer data)
+{
+  Pixmap pixmap;
+
+  g_object_get (G_OBJECT (actor), "pixmap", &pixmap, NULL);
+  if (!pixmap)
+    g_signal_stop_emission_by_name (actor, "paint");
 }
 
 /*
@@ -1020,6 +1039,9 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
       stage = mutter_plugin_get_stage (global->plugin);
       clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                    global->root_pixmap);
+
+      g_signal_connect (global->root_pixmap, "paint",
+                        G_CALLBACK (root_pixmap_paint), NULL);
 
       /* This really should never happen; but just in case... */
       g_signal_connect (global->root_pixmap, "destroy",
