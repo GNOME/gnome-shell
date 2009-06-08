@@ -1197,6 +1197,8 @@ _cogl_texture_bitmap_prepare (CoglTexture     *tex,
       if ((tex->bitmap.format & COGL_A_BIT) &&
           tex->bitmap.format != COGL_PIXEL_FORMAT_A_8)
         internal_format = tex->bitmap.format | COGL_PREMULT_BIT;
+      else
+        internal_format = tex->bitmap.format;
     }
 
   /* Find closest format accepted by GL */
