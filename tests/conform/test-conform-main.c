@@ -72,6 +72,13 @@ main (int argc, char **argv)
     }
 #endif
 
+  /* Turning of sync-to-vblank removes a dependency on the specifics of the
+   * test environment. It also means that the timeline-only tests are
+   * throttled to a reasonable frame rate rather than running in tight
+   * infinite loop.
+   */
+  g_setenv ("CLUTTER_VBLANK", "none", FALSE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.openedhand.com/show_bug.cgi?id=%s");

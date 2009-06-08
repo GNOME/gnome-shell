@@ -23,7 +23,6 @@ typedef struct _TestState
   gint expected_frame;
   gint completion_count;
   gboolean passed;
-  guint source_id;
 } TestState;
 
 
@@ -132,20 +131,6 @@ completed_cb (ClutterTimeline *timeline,
     }
 }
 
-static gboolean
-frame_tick (gpointer data)
-{
-  TestState *state = data;
-  GTimeVal cur_tick = { 0, };
-
-  g_get_current_time (&cur_tick);
-
-  if (clutter_timeline_is_playing (state->timeline))
-   clutter_timeline_do_tick (state->timeline, &cur_tick);
-
-  return TRUE;
-}
-
 void
 test_timeline_interpolate (TestConformSimpleFixture *fixture, 
 			   gconstpointer data)
@@ -169,14 +154,10 @@ test_timeline_interpolate (TestConformSimpleFixture *fixture,
   state.passed = TRUE;
   state.expected_frame = 0;
 
-  state.source_id =
-    clutter_threads_add_frame_source (60, frame_tick, &state);
-
   g_get_current_time (&state.start_time);
   clutter_timeline_start (state.timeline);
   
   clutter_main();
 
-  g_source_remove (state.source_id);
   g_object_unref (state.timeline);
 }

@@ -11,7 +11,6 @@ typedef struct _TestState
 {
   ClutterTimeline *timeline;
   gint rewind_count;
-  guint source_id;
 } TestState;
 
 static gboolean
@@ -67,20 +66,6 @@ new_frame_cb (ClutterTimeline *timeline,
     }
 }
 
-static gboolean
-frame_tick (gpointer data)
-{
-  TestState *state = data;
-  GTimeVal cur_tick = { 0, };
-
-  g_get_current_time (&cur_tick);
-
-  if (clutter_timeline_is_playing (state->timeline))
-   clutter_timeline_do_tick (state->timeline, &cur_tick);
-
-  return TRUE;
-}
-
 void
 test_timeline_rewind (TestConformSimpleFixture *fixture,
 		      gconstpointer data)
@@ -100,13 +85,9 @@ test_timeline_rewind (TestConformSimpleFixture *fixture,
                  &state);
   state.rewind_count = 0;
 
-  state.source_id =
-    clutter_threads_add_frame_source (60, frame_tick, &state);
-
   clutter_timeline_start (state.timeline);
   
   clutter_main();
 
-  g_source_remove (state.source_id);
   g_object_unref (state.timeline);
 }

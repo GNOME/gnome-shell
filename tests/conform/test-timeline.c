@@ -181,38 +181,10 @@ delay_cb (gpointer data)
   return TRUE;
 }
 
-typedef struct _FrameCounter    FrameCounter;
-
-struct _FrameCounter
-{
-  GSList *timelines;
-};
-
-static gboolean
-frame_tick (gpointer data)
-{
-  FrameCounter *counter = data;
-  GTimeVal cur_tick = { 0, };
-  GSList *l;
-
-  g_get_current_time (&cur_tick);
-
-  for (l = counter->timelines; l != NULL; l = l->next)
-    {
-      ClutterTimeline *timeline = l->data;
-
-      if (clutter_timeline_is_playing (timeline))
-        clutter_timeline_do_tick (timeline, &cur_tick);
-    }
-
-  return TRUE;
-}
-
 void
 test_timeline (TestConformSimpleFixture *fixture,
 	       gconstpointer data)
 {
-  FrameCounter *counter;
   ClutterTimeline *timeline_1;
   TimelineData data_1;
   ClutterTimeline *timeline_2;
@@ -222,11 +194,6 @@ test_timeline (TestConformSimpleFixture *fixture,
   gchar **markers;
   gsize n_markers;
   guint delay_tag;
-  guint source_id;
-
-  counter = g_new0 (FrameCounter, 1);
-
-  source_id = clutter_threads_add_frame_source (FPS, frame_tick, counter);
 
   timeline_data_init (&data_1, 1);
   timeline_1 = clutter_timeline_new (FRAME_COUNT * 1000 / FPS);
@@ -243,8 +210,6 @@ test_timeline (TestConformSimpleFixture *fixture,
   g_assert (n_markers == 3);
   g_strfreev (markers);
 
-  counter->timelines = g_slist_prepend (counter->timelines, timeline_1);
-
   timeline_data_init (&data_2, 2);
   timeline_2 = clutter_timeline_clone (timeline_1);
   clutter_timeline_add_marker_at_time (timeline_2, "bar", 2 * 1000 / FPS);
@@ -253,8 +218,6 @@ test_timeline (TestConformSimpleFixture *fixture,
   g_assert (n_markers == 1);
   g_assert (strcmp (markers[0], "bar") == 0);
   g_strfreev (markers);
-
-  counter->timelines = g_slist_prepend (counter->timelines, timeline_2);
 
   timeline_data_init (&data_3, 3);
   timeline_3 = clutter_timeline_clone (timeline_1);
@@ -265,8 +228,6 @@ test_timeline (TestConformSimpleFixture *fixture,
                                        1 * 1000 / FPS);
   clutter_timeline_add_marker_at_time (timeline_3, "end-marker",
                                        0 * 1000 / FPS);
-
-  counter->timelines = g_slist_prepend (counter->timelines, timeline_3);
 
   g_signal_connect (timeline_1,
                     "marker-reached", G_CALLBACK (timeline_marker_reached_cb),
@@ -346,9 +307,4 @@ test_timeline (TestConformSimpleFixture *fixture,
   timeline_data_destroy (&data_3);
 
   g_source_remove (delay_tag);
-
-  g_source_remove (source_id);
-
-  g_slist_free (counter->timelines);
-  g_free (counter);
 }
