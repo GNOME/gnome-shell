@@ -533,6 +533,7 @@ cogl_material_set_blend (CoglHandle handle,
   CoglBlendStringStatement split[2];
   CoglBlendStringStatement *rgb;
   CoglBlendStringStatement *a;
+  GError *internal_error = NULL;
   int count;
 
   g_return_val_if_fail (cogl_is_material (handle), FALSE);
@@ -543,9 +544,19 @@ cogl_material_set_blend (CoglHandle handle,
     _cogl_blend_string_compile (blend_description,
                                 COGL_BLEND_STRING_CONTEXT_BLENDING,
                                 statements,
-                                error);
+                                &internal_error);
   if (!count)
-    return FALSE;
+    {
+      if (error)
+	g_propagate_error (error, internal_error);
+      else
+	{
+	  g_warning ("Cannot compile blend description: %s\n",
+		     internal_error->message);
+	  g_error_free (internal_error);
+	}
+      return FALSE;
+    }
 
   if (statements[0].mask == COGL_BLEND_STRING_CHANNEL_MASK_RGBA)
     {
@@ -806,6 +817,7 @@ cogl_material_set_layer_combine (CoglHandle handle,
   CoglBlendStringStatement split[2];
   CoglBlendStringStatement *rgb;
   CoglBlendStringStatement *a;
+  GError *internal_error = NULL;
   int count;
 
   g_return_val_if_fail (cogl_is_material (handle), FALSE);
@@ -817,9 +829,19 @@ cogl_material_set_layer_combine (CoglHandle handle,
     _cogl_blend_string_compile (combine_description,
                                 COGL_BLEND_STRING_CONTEXT_TEXTURE_COMBINE,
                                 statements,
-                                error);
+                                &internal_error);
   if (!count)
-    return FALSE;
+    {
+      if (error)
+	g_propagate_error (error, internal_error);
+      else
+	{
+	  g_warning ("Cannot compile combine description: %s\n",
+		     internal_error->message);
+	  g_error_free (internal_error);
+	}
+      return FALSE;
+    }
 
   if (statements[0].mask == COGL_BLEND_STRING_CHANNEL_MASK_RGBA)
     {

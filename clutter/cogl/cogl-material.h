@@ -419,7 +419,8 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  * @error: A GError that may report lack of driver support if you give
  *         separate blend string statements for the alpha channel and RGB
  *         channels since some drivers or backends such as GLES 1.1 dont
- *         support this.
+ *         support this. May be %NULL, in which case a warning will be
+ *         printed out if an error is encountered.
  *
  * If not already familiar; please refer
  * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
@@ -536,6 +537,8 @@ void cogl_material_remove_layer (CoglHandle material,
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
  *                describing the desired texture combine function.
  * @error: A GError that may report parse errors or lack of GPU/driver support.
+ *         May be %NULL, in which case a warning will be printed out if an
+ *         error is encountered.
  *
  * If not already familiar; you can refer
  * <link linkend="cogl-Blend-Strings">here</link> for an overview of what blend
