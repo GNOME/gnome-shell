@@ -714,7 +714,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
     {
       CLUTTER_NOTE (TEXTURE, "Unable to create texture for pixmap");
 
-      glXDestroyGLXPixmap (dpy, glx_pixmap);
+      glXDestroyPixmap (dpy, glx_pixmap);
       glx_pixmap = None;
       goto cleanup;
     }
