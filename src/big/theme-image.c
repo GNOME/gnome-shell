@@ -279,7 +279,7 @@ big_theme_image_paint(ClutterActor *actor)
 static void
 big_theme_image_allocate(ClutterActor          *actor,
                          const ClutterActorBox *box,
-                         gboolean               absolute_origin_changed)
+                         ClutterAllocationFlags flags)
 {
     BigThemeImage *image;
     guint old_width;
@@ -289,8 +289,8 @@ big_theme_image_allocate(ClutterActor          *actor,
 
     image = BIG_THEME_IMAGE(actor);
 
-    width = ABS(CLUTTER_UNITS_TO_DEVICE(box->x2 - box->x1));
-    height = ABS(CLUTTER_UNITS_TO_DEVICE(box->y2 - box->y1));
+    width = ABS(box->x2 - box->x1);
+    height = ABS(box->y2 - box->y1);
 
     g_object_get(actor,
                  "surface-width", &old_width,
@@ -307,14 +307,14 @@ big_theme_image_allocate(ClutterActor          *actor,
     if (CLUTTER_ACTOR_CLASS(big_theme_image_parent_class))
         CLUTTER_ACTOR_CLASS(big_theme_image_parent_class)->allocate(actor,
                                                                     box,
-                                                                    absolute_origin_changed);
+                                                                    flags);
 }
 
 static void
 big_theme_image_get_preferred_height(ClutterActor *actor,
-                                     ClutterUnit   for_width,
-                                     ClutterUnit  *min_height_p,
-                                     ClutterUnit  *natural_height_p)
+                                     float         for_width,
+                                     float        *min_height_p,
+                                     float        *natural_height_p)
 {
     BigThemeImage *image;
 
@@ -333,8 +333,7 @@ big_theme_image_get_preferred_height(ClutterActor *actor,
         if (!image->u.surface)
             break;
 
-        *natural_height_p = CLUTTER_UNITS_FROM_DEVICE(
-                   cairo_image_surface_get_height(image->u.surface));
+        *natural_height_p = cairo_image_surface_get_height(image->u.surface);
         break;
     case BIG_THEME_IMAGE_SVG:
         {
@@ -344,8 +343,7 @@ big_theme_image_get_preferred_height(ClutterActor *actor,
                 return;
 
             rsvg_handle_get_dimensions(image->u.svg_handle, &dimensions);
-            *natural_height_p =
-                CLUTTER_UNITS_FROM_DEVICE(dimensions.height);
+            *natural_height_p = dimensions.height;
             break;
         }
     default:
@@ -355,9 +353,9 @@ big_theme_image_get_preferred_height(ClutterActor *actor,
 
 static void
 big_theme_image_get_preferred_width(ClutterActor *actor,
-                                    ClutterUnit   for_height,
-                                    ClutterUnit  *min_width_p,
-                                    ClutterUnit  *natural_width_p)
+                                    float         for_height,
+                                    float        *min_width_p,
+                                    float        *natural_width_p)
 {
     BigThemeImage *image;
 
@@ -376,7 +374,7 @@ big_theme_image_get_preferred_width(ClutterActor *actor,
         if (!image->u.surface)
             break;
 
-        *natural_width_p = CLUTTER_UNITS_FROM_DEVICE(cairo_image_surface_get_width(image->u.surface));
+        *natural_width_p = cairo_image_surface_get_width(image->u.surface);
         break;
     case BIG_THEME_IMAGE_SVG:
         {
@@ -386,7 +384,7 @@ big_theme_image_get_preferred_width(ClutterActor *actor,
                 return;
 
             rsvg_handle_get_dimensions(image->u.svg_handle, &dimensions);
-            *natural_width_p = CLUTTER_UNITS_FROM_DEVICE(dimensions.width);
+            *natural_width_p = dimensions.width;
             break;
         }
     default:

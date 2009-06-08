@@ -147,9 +147,9 @@ shell_gtk_embed_get_property (GObject         *object,
 
 static void
 shell_gtk_embed_get_preferred_width (ClutterActor *actor,
-                                     ClutterUnit   for_height,
-                                     ClutterUnit  *min_width_p,
-                                     ClutterUnit  *natural_width_p)
+                                     float         for_height,
+                                     float        *min_width_p,
+                                     float        *natural_width_p)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
 
@@ -166,9 +166,9 @@ shell_gtk_embed_get_preferred_width (ClutterActor *actor,
 
 static void
 shell_gtk_embed_get_preferred_height (ClutterActor *actor,
-                                      ClutterUnit   for_width,
-                                      ClutterUnit  *min_height_p,
-                                      ClutterUnit  *natural_height_p)
+                                      float         for_width,
+                                      float        *min_height_p,
+                                      float        *natural_height_p)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
 
@@ -186,13 +186,13 @@ shell_gtk_embed_get_preferred_height (ClutterActor *actor,
 static void
 shell_gtk_embed_allocate (ClutterActor          *actor,
                           const ClutterActorBox *box,
-                          gboolean               absolute_origin_changed)
+                          ClutterAllocationFlags flags)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
-  int wx = 0, wy = 0, x, y, ax, ay;
+  float wx = 0.0, wy = 0.0, x, y, ax, ay;
 
   CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->
-    allocate (actor, box, absolute_origin_changed);
+    allocate (actor, box, flags);
 
   /* Find the actor's new coordinates in terms of the stage (which is
    * priv->window's parent window.
@@ -209,7 +209,7 @@ shell_gtk_embed_allocate (ClutterActor          *actor,
     }
 
   _shell_embedded_window_allocate (embed->priv->window,
-                                   wx, wy,
+                                   (int)(0.5 + wx), (int)(0.5 + wy),
                                    box->x2 - box->x1,
                                    box->y2 - box->y1);
 }

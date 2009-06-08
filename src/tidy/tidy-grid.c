@@ -76,19 +76,19 @@ static void tidy_grid_pick (ClutterActor *actor,
 
 static void
 tidy_grid_get_preferred_width (ClutterActor *self,
-                                         ClutterUnit for_height,
-                                         ClutterUnit *min_width_p,
-                                         ClutterUnit *natural_width_p);
+			       gfloat        for_height,
+			       gfloat       *min_width_p,
+			       gfloat       *natural_width_p);
 
 static void
 tidy_grid_get_preferred_height (ClutterActor *self,
-                                           ClutterUnit for_width,
-                                           ClutterUnit *min_height_p,
-                                           ClutterUnit *natural_height_p);
+				gfloat        for_width,
+				gfloat       *min_height_p,
+				gfloat       *natural_height_p);
 
-static void tidy_grid_allocate (ClutterActor *self,
-                                           const ClutterActorBox *box,
-                                           gboolean absolute_origin_changed);
+static void tidy_grid_allocate (ClutterActor          *self,
+				const ClutterActorBox *box,
+				ClutterAllocationFlags flags);
 
 G_DEFINE_TYPE_WITH_CODE (TidyGrid, tidy_grid,
                          CLUTTER_TYPE_ACTOR,
@@ -101,26 +101,25 @@ G_DEFINE_TYPE_WITH_CODE (TidyGrid, tidy_grid,
 
 struct _TidyGridPrivate
 {
-  ClutterUnit for_height,  for_width;
-  ClutterUnit pref_width,  pref_height;
-  ClutterUnit alloc_width, alloc_height;
+  gfloat      for_height,  for_width;
+  gfloat      pref_width,  pref_height;
+  gfloat      alloc_width, alloc_height;
 
-  gboolean    absolute_origin_changed;
   GHashTable *hash_table;
   GList      *list;
 
   gboolean    homogenous_rows;
   gboolean    homogenous_columns;
   gboolean    end_align;
-  ClutterUnit column_gap, row_gap;
+  gfloat      column_gap, row_gap;
   gdouble     valign, halign;
 
   gboolean    column_major;
 
   gboolean    first_of_batch;
-  ClutterUnit a_current_sum, a_wrap;
-  ClutterUnit max_extent_a;
-  ClutterUnit max_extent_b;
+  gfloat      a_current_sum, a_wrap;
+  gfloat      max_extent_a;
+  gfloat      max_extent_b;
 };
 
 enum
@@ -139,8 +138,8 @@ enum
 struct _TidyGridActorData
 {
   gboolean    xpos_set,   ypos_set;
-  ClutterUnit xpos,       ypos;
-  ClutterUnit pref_width, pref_height;
+  gfloat      xpos,       ypos;
+  gfloat      pref_width, pref_height;
 };
 
 static void
@@ -167,22 +166,22 @@ tidy_grid_class_init (TidyGridClass *klass)
   g_object_class_install_property
                    (gobject_class,
                     PROP_ROW_GAP,
-                    clutter_param_spec_unit ("row-gap",
-                                             "Row gap",
-                                             "gap between rows in the layout",
-                                             0, CLUTTER_MAXUNIT,
-                                             0,
-                                             G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
+                    g_param_spec_float ("row-gap",
+					"Row gap",
+					"gap between rows in the layout",
+					0.0, G_MAXFLOAT,
+					0.0,
+					G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
 
   g_object_class_install_property
                    (gobject_class,
                     PROP_COLUMN_GAP,
-                    clutter_param_spec_unit ("column-gap",
-                                             "Column gap",
-                                             "gap between columns in the layout",
-                                             0, CLUTTER_MAXUNIT,
-                                             0,
-                                             G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
+                    g_param_spec_float ("column-gap",
+					"Column gap",
+					"gap between columns in the layout",
+					0.0, G_MAXFLOAT,
+					0.0,
+					G_PARAM_READWRITE|G_PARAM_CONSTRUCT));
 
 
   g_object_class_install_property
@@ -367,14 +366,14 @@ tidy_grid_get_column_major (TidyGrid *self)
 
 void
 tidy_grid_set_column_gap (TidyGrid    *self,
-                          ClutterUnit  value)
+                          gfloat       value)
 {
   TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
   priv->column_gap = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
-ClutterUnit
+gfloat
 tidy_grid_get_column_gap (TidyGrid *self)
 {
   TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
@@ -385,14 +384,14 @@ tidy_grid_get_column_gap (TidyGrid *self)
 
 void
 tidy_grid_set_row_gap (TidyGrid    *self,
-                       ClutterUnit  value)
+                       gfloat       value)
 {
   TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
   priv->row_gap = value;
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
-ClutterUnit
+gfloat
 tidy_grid_get_row_gap (TidyGrid *self)
 {
   TidyGridPrivate *priv = TIDY_GRID_GET_PRIVATE (self);
@@ -463,10 +462,10 @@ tidy_grid_set_property (GObject      *object,
       tidy_grid_set_column_major (grid, g_value_get_boolean (value));
       break;
     case PROP_COLUMN_GAP:
-      tidy_grid_set_column_gap (grid, clutter_value_get_unit (value));
+      tidy_grid_set_column_gap (grid, g_value_get_float (value));
       break;
     case PROP_ROW_GAP:
-      tidy_grid_set_row_gap (grid, clutter_value_get_unit (value));
+      tidy_grid_set_row_gap (grid, g_value_get_float (value));
       break;
     case PROP_VALIGN:
       tidy_grid_set_valign (grid, g_value_get_double (value));
@@ -507,10 +506,10 @@ tidy_grid_get_property (GObject    *object,
       g_value_set_boolean (value, tidy_grid_get_column_major (grid));
       break;
     case PROP_COLUMN_GAP:
-      clutter_value_set_unit (value, tidy_grid_get_column_gap (grid));
+      g_value_set_float (value, tidy_grid_get_column_gap (grid));
       break;
     case PROP_ROW_GAP:
-      clutter_value_set_unit (value, tidy_grid_get_row_gap (grid));
+      g_value_set_float (value, tidy_grid_get_row_gap (grid));
       break;
     case PROP_VALIGN:
       g_value_set_double (value, tidy_grid_get_valign (grid));
@@ -661,15 +660,15 @@ tidy_grid_pick (ClutterActor *actor,
 
 static void
 tidy_grid_get_preferred_width (ClutterActor *self,
-                                          ClutterUnit for_height,
-                                          ClutterUnit *min_width_p,
-                                          ClutterUnit *natural_width_p)
+                                          gfloat      for_height,
+                                          gfloat      *min_width_p,
+                                          gfloat      *natural_width_p)
 {
   TidyGrid *layout = (TidyGrid *) self;
   TidyGridPrivate *priv = layout->priv;
-  ClutterUnit natural_width;
+  gfloat natural_width;
 
-  natural_width = CLUTTER_UNITS_FROM_INT (200);
+  natural_width = 200.0;
   if (min_width_p)
     *min_width_p = natural_width;
   if (natural_width_p)
@@ -680,15 +679,15 @@ tidy_grid_get_preferred_width (ClutterActor *self,
 
 static void
 tidy_grid_get_preferred_height (ClutterActor *self,
-                                ClutterUnit for_width,
-                                ClutterUnit *min_height_p,
-                                ClutterUnit *natural_height_p)
+                                gfloat      for_width,
+                                gfloat      *min_height_p,
+                                gfloat      *natural_height_p)
 {
   TidyGrid *layout = (TidyGrid *) self;
   TidyGridPrivate *priv = layout->priv;
-  ClutterUnit natural_height;
+  gfloat natural_height;
 
-  natural_height = CLUTTER_UNITS_FROM_INT (200);
+  natural_height = 200.0;
 
   priv->for_width = for_width;
   priv->pref_height = natural_height;
@@ -699,17 +698,17 @@ tidy_grid_get_preferred_height (ClutterActor *self,
     *natural_height_p = natural_height;
 }
 
-static ClutterUnit
+static gfloat
 compute_row_height (GList                    *siblings,
-                    ClutterUnit               best_yet,
-                    ClutterUnit               current_a,
+                    gfloat                    best_yet,
+                    gfloat                    current_a,
                     TidyGridPrivate *priv)
 {
   GList *l;
 
   gboolean homogenous_a;
   gboolean homogenous_b;
-  ClutterUnit gap;
+  gfloat gap;
 
   if (priv->column_major)
     {
@@ -727,7 +726,7 @@ compute_row_height (GList                    *siblings,
   for (l = siblings; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit natural_width, natural_height;
+      gfloat natural_width, natural_height;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
@@ -736,7 +735,7 @@ compute_row_height (GList                    *siblings,
 
       if (priv->column_major)
         {
-          ClutterUnit temp = natural_height;
+          gfloat temp = natural_height;
           natural_height = natural_width;
           natural_width = temp;
         }
@@ -762,17 +761,17 @@ compute_row_height (GList                    *siblings,
 
 
 
-static ClutterUnit
+static gfloat
 compute_row_start (GList           *siblings,
-                   ClutterUnit      start_x,
+                   gfloat           start_x,
                    TidyGridPrivate *priv)
 {
-  ClutterUnit current_a = start_x;
+  gfloat current_a = start_x;
   GList *l;
 
   gboolean homogenous_a;
   gboolean homogenous_b;
-  ClutterUnit gap;
+  gfloat gap;
 
   if (priv->column_major)
     {
@@ -790,7 +789,7 @@ compute_row_start (GList           *siblings,
   for (l = siblings; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit natural_width, natural_height;
+      gfloat natural_width, natural_height;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
@@ -819,17 +818,17 @@ compute_row_start (GList           *siblings,
 
 static void
 tidy_grid_allocate (ClutterActor          *self,
-                              const ClutterActorBox *box,
-                              gboolean               absolute_origin_changed)
+		    const ClutterActorBox *box,
+		    ClutterAllocationFlags flags)
 {
   TidyGrid *layout = (TidyGrid *) self;
   TidyGridPrivate *priv = layout->priv;
 
-  ClutterUnit current_a;
-  ClutterUnit current_b;
-  ClutterUnit next_b;
-  ClutterUnit agap;
-  ClutterUnit bgap;
+  gfloat current_a;
+  gfloat current_b;
+  gfloat next_b;
+  gfloat agap;
+  gfloat bgap;
 
   gboolean homogenous_a;
   gboolean homogenous_b;
@@ -842,11 +841,10 @@ tidy_grid_allocate (ClutterActor          *self,
 
   /* chain up to set actor->allocation */
   CLUTTER_ACTOR_CLASS (tidy_grid_parent_class)
-    ->allocate (self, box, absolute_origin_changed);
+    ->allocate (self, box, flags);
 
   priv->alloc_width = box->x2 - box->x1;
   priv->alloc_height = box->y2 - box->y1;
-  priv->absolute_origin_changed = absolute_origin_changed;
 
   /* Make sure we have calculated the preferred size */
   /* what does this do? */
@@ -885,8 +883,8 @@ tidy_grid_allocate (ClutterActor          *self,
       for (iter = priv->list; iter; iter = iter->next)
         {
           ClutterActor *child = iter->data;
-          ClutterUnit natural_width;
-          ClutterUnit natural_height;
+          gfloat natural_width;
+          gfloat natural_height;
 
           /* each child will get as much space as they require */
           clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
@@ -901,7 +899,7 @@ tidy_grid_allocate (ClutterActor          *self,
 
   if (priv->column_major)
     {
-      ClutterUnit temp = priv->max_extent_a;
+      gfloat temp = priv->max_extent_a;
       priv->max_extent_a = priv->max_extent_b;
       priv->max_extent_b = temp;
     }
@@ -909,8 +907,8 @@ tidy_grid_allocate (ClutterActor          *self,
   for (iter = priv->list; iter; iter=iter->next)
     {
       ClutterActor *child = iter->data;
-      ClutterUnit natural_a;
-      ClutterUnit natural_b;
+      gfloat natural_a;
+      gfloat natural_b;
 
       /* each child will get as much space as they require */
       clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
@@ -919,7 +917,7 @@ tidy_grid_allocate (ClutterActor          *self,
 
       if (priv->column_major) /* swap axes around if column is major */
         {
-          ClutterUnit temp = natural_a;
+          gfloat temp = natural_a;
           natural_a = natural_b;
           natural_b = temp;
         }
@@ -945,7 +943,7 @@ tidy_grid_allocate (ClutterActor          *self,
           next_b = current_b + natural_b;
 
         {
-          ClutterUnit     row_height;
+          gfloat          row_height;
           ClutterActorBox child_box;
 
           if (homogenous_b)
@@ -976,7 +974,7 @@ tidy_grid_allocate (ClutterActor          *self,
 
           if (priv->column_major)
             {
-              ClutterUnit temp = child_box.x1;
+              gfloat temp = child_box.x1;
               child_box.x1 = child_box.y1;
               child_box.y1 = temp;
 
@@ -988,7 +986,7 @@ tidy_grid_allocate (ClutterActor          *self,
           /* update the allocation */
           clutter_actor_allocate (CLUTTER_ACTOR (child),
                                   &child_box,
-                                  absolute_origin_changed);
+                                  flags);
 
           if (homogenous_a)
             {

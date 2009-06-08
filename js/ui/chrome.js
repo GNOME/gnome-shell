@@ -289,6 +289,10 @@ Chrome.prototype = {
 
             let [x, y] = actorData.actor.get_transformed_position();
             let [w, h] = actorData.actor.get_transformed_size();
+            x = Math.round(x);
+            y = Math.round(y);
+            w = Math.round(w);
+            h = Math.round(h);
             let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h});
 
             if (actorData.inputRegion && actorData.actor.get_paint_visibility())

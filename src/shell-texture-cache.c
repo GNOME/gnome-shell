@@ -434,8 +434,7 @@ pixbuf_to_cogl_handle (GdkPixbuf *pixbuf)
 {
   return cogl_texture_new_from_data (gdk_pixbuf_get_width (pixbuf),
                                      gdk_pixbuf_get_height (pixbuf),
-                                     63, /* taken from clutter-texture.c default */
-                                     COGL_TEXTURE_AUTO_MIPMAP,
+                                     COGL_TEXTURE_NONE,
                                      gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
                                      COGL_PIXEL_FORMAT_ANY,
                                      gdk_pixbuf_get_rowstride (pixbuf),

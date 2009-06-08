@@ -44,7 +44,7 @@ struct _ShellGlobal {
   const char *configdir;
 
   /* Displays the root window; see shell_global_create_root_pixmap_actor() */
-  ClutterGLXTexturePixmap *root_pixmap;
+  ClutterActor *root_pixmap;
 };
 
 enum {
@@ -1002,23 +1002,27 @@ ClutterActor *
 shell_global_create_root_pixmap_actor (ShellGlobal *global)
 {
   GdkWindow *window;
-  gboolean created_new_pixmap = FALSE;
-  ClutterActor *clone;
+  ClutterActor *stage;
 
   /* The actor created is actually a ClutterClone of global->root_pixmap. */
 
   if (global->root_pixmap == NULL)
     {
-      global->root_pixmap = CLUTTER_GLX_TEXTURE_PIXMAP (clutter_glx_texture_pixmap_new ());
+      global->root_pixmap = clutter_glx_texture_pixmap_new ();
 
       /* The low and medium quality filters give nearest-neighbor resizing. */
       clutter_texture_set_filter_quality (CLUTTER_TEXTURE (global->root_pixmap),
                                           CLUTTER_TEXTURE_QUALITY_HIGH);
 
-      /* The pixmap actor is only referenced by its clones. */
-      g_object_ref_sink (global->root_pixmap);
+      /* We can only clone an actor within a stage, so we hide the source
+       * texture then add it to the stage */
+      clutter_actor_hide (global->root_pixmap);
+      stage = mutter_plugin_get_stage (global->plugin);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                                   global->root_pixmap);
 
-      g_signal_connect (G_OBJECT (global->root_pixmap), "destroy",
+      /* This really should never happen; but just in case... */
+      g_signal_connect (global->root_pixmap, "destroy",
                         G_CALLBACK (root_pixmap_destroy), global);
 
       /* Metacity handles changes to some root window properties in its global
@@ -1034,16 +1038,9 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
       gdk_window_add_filter (window, root_window_filter, global);
 
       update_root_window_pixmap (global);
-
-      created_new_pixmap = TRUE;
     }
 
-  clone = clutter_clone_new (CLUTTER_ACTOR (global->root_pixmap));
-
-  if (created_new_pixmap)
-    g_object_unref(global->root_pixmap);
-
-  return clone;
+  return clutter_clone_new (global->root_pixmap);
 }
 
 void
