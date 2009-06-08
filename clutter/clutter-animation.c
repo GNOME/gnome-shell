@@ -777,11 +777,16 @@ on_alpha_notify (GObject          *gobject,
                  GParamSpec       *pspec,
                  ClutterAnimation *animation)
 {
-  ClutterAnimationPrivate *priv = animation->priv;
+  ClutterAnimationPrivate *priv;
   GList *properties, *p;
   gdouble alpha_value;
   gboolean is_animatable = FALSE;
   ClutterAnimatable *animatable = NULL;
+
+  /* make sure the animation survives the notification */
+  g_object_ref (animation);
+
+  priv = animation->priv;
 
   alpha_value = clutter_alpha_get_alpha (CLUTTER_ALPHA (gobject));
 
@@ -835,6 +840,8 @@ on_alpha_notify (GObject          *gobject,
   g_list_free (properties);
 
   g_object_thaw_notify (priv->object);
+
+  g_object_unref (animation);
 }
 
 static ClutterAlpha *
