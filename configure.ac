@@ -679,7 +679,10 @@ AC_ARG_ENABLE([maintainer-flags],
 
 AS_IF([test "x$enable_maintainer_flags" = "xyes" && test "x$GCC" = "xyes"],
       [
-        MAINTAINER_CFLAGS="-Wall -Wshadow -Wcast-align -Wno-uninitialized -Wno-strict-aliasing -Wempty-body -Wformat-security -Winit-self"
+        AS_COMPILER_FLAGS([MAINTAINER_CFLAGS],
+                          ["-Wall -Wshadow -Wcast-align -Wno-uninitialized
+                            -Wno-strict-aliasing -Wempty-body -Wformat-security
+                            -Winit-self"])
       ]
 )
 
