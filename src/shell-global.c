@@ -921,6 +921,53 @@ shell_global_create_vertical_gradient (ClutterColor *top,
   return texture;
 }
 
+/**
+ * shell_global_create_horizontal_gradient:
+ * @left: the color at the top
+ * @right: the color at the bottom
+ *
+ * Creates a vertical gradient actor.
+ *
+ * Return value: (transfer none): a #ClutterCairoTexture actor with the
+ *               gradient. The texture actor is floating, hence (transfer none).
+ */
+ClutterCairoTexture *
+shell_global_create_horizontal_gradient (ClutterColor *left,
+                                         ClutterColor *right)
+{
+  ClutterCairoTexture *texture;
+  cairo_t *cr;
+  cairo_pattern_t *pattern;
+
+  /* Draw the gradient on an 8x8 pixel texture. Because the gradient is drawn
+   * from the uppermost to the lowermost row, after stretching 1/16 of the
+   * texture height has the top color and 1/16 has the bottom color. The 8
+   * pixel width is chosen for reasons related to graphics hardware internals.
+   */
+  texture = CLUTTER_CAIRO_TEXTURE (clutter_cairo_texture_new (8, 8));
+  cr = clutter_cairo_texture_create (texture);
+
+  pattern = cairo_pattern_create_linear (0, 0, 8, 0);
+  cairo_pattern_add_color_stop_rgba (pattern, 0,
+                                     left->red / 255.,
+                                     left->green / 255.,
+                                     left->blue / 255.,
+                                     left->alpha / 255.);
+  cairo_pattern_add_color_stop_rgba (pattern, 1,
+                                     right->red / 255.,
+                                     right->green / 255.,
+                                     right->blue / 255.,
+                                     right->alpha / 255.);
+
+  cairo_set_source (cr, pattern);
+  cairo_paint (cr);
+
+  cairo_pattern_destroy (pattern);
+  cairo_destroy (cr);
+
+  return texture;
+}
+
 /*
  * Updates the global->root_pixmap actor with the root window's pixmap or fails
  * with a warning.

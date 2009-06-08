@@ -33,17 +33,13 @@ const DASH_MIN_WIDTH = 250;
 const DASH_SECTION_PADDING_TOP = 6;
 const DASH_SECTION_SPACING = 6;
 const DASH_COLUMNS = 1;
-const DETAILS_CORNER_RADIUS = 5;
-const DETAILS_BORDER_WIDTH = 1;
-const DETAILS_PADDING = 6;
+const DASH_CORNER_RADIUS = 5;
 // This is the height of section components other than the item display.
 const DASH_SECTION_MISC_HEIGHT = (LABEL_HEIGHT + DASH_SECTION_SPACING) * 2 + DASH_SECTION_PADDING_TOP;
 const DASH_SEARCH_BG_COLOR = new Clutter.Color();
 DASH_SEARCH_BG_COLOR.from_pixel(0xffffffff);
 const DASH_TEXT_COLOR = new Clutter.Color();
 DASH_TEXT_COLOR.from_pixel(0xffffffff);
-const DETAILS_BORDER_COLOR = new Clutter.Color();
-DETAILS_BORDER_COLOR.from_pixel(0xffffffff);
 
 // Time for initial animation going into overlay mode
 const ANIMATION_TIME = 0.25;
@@ -73,18 +69,44 @@ const WORKSPACE_GRID_PADDING = 12;
 
 const COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN = 3;
 const ROWS_FOR_WORKSPACES_REGULAR_SCREEN = 6;
-const WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN = 4 - 0.25;
 const EXPANDED_DASH_COLUMNS_REGULAR_SCREEN = 2;
 
 const COLUMNS_FOR_WORKSPACES_WIDE_SCREEN = 4;
 const ROWS_FOR_WORKSPACES_WIDE_SCREEN = 8;
-const WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN = 5 - 0.25;
 const EXPANDED_DASH_COLUMNS_WIDE_SCREEN = 3;
 
 // A multi-state; PENDING is used during animations
 const STATE_ACTIVE = true;
 const STATE_PENDING_INACTIVE = false;
 const STATE_INACTIVE = false;
+
+// The dash has a slightly transparent blue background with a gradient.
+const DASH_LEFT_COLOR = new Clutter.Color();
+DASH_LEFT_COLOR.from_pixel(0x324c6faa);
+const DASH_MIDDLE_COLOR = new Clutter.Color();
+DASH_MIDDLE_COLOR.from_pixel(0x324c6fbb);
+const DASH_RIGHT_COLOR = new Clutter.Color();
+DASH_RIGHT_COLOR.from_pixel(0x324c6fcc);
+
+// The results pane has a somewhat transparent blue background with a gradient.
+const RESULTS_LEFT_COLOR = new Clutter.Color();
+RESULTS_LEFT_COLOR.from_pixel(0x324c6fcc);
+const RESULTS_MIDDLE_COLOR = new Clutter.Color();
+RESULTS_MIDDLE_COLOR.from_pixel(0x324c6fdd);
+const RESULTS_RIGHT_COLOR = new Clutter.Color();
+RESULTS_RIGHT_COLOR.from_pixel(0x324c6fee);
+
+const RESULTS_BORDER_COLOR = new Clutter.Color();
+RESULTS_BORDER_COLOR.from_pixel(0x213b5dff);
+
+const RESULTS_BORDER_WIDTH = 2;
+
+const SHADOW_COLOR = new Clutter.Color();
+SHADOW_COLOR.from_pixel(0x00000033);
+const TRANSPARENT_COLOR = new Clutter.Color();
+TRANSPARENT_COLOR.from_pixel(0x00000000);
+
+const SHADOW_WIDTH = 6;
 
 let wideScreen = false;
 let displayGridColumnWidth = null;
@@ -136,30 +158,50 @@ Dash.prototype = {
     _init : function() {
         let me = this;
 
-        let asideXFactor = wideScreen ? WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN : WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN; 
         this._expandedDashColumns = wideScreen ? EXPANDED_DASH_COLUMNS_WIDE_SCREEN : EXPANDED_DASH_COLUMNS_REGULAR_SCREEN;
 
         this._width = displayGridColumnWidth;
-        this._displayWidth = this._width - DASH_PAD;
 
-        this._expandedWidth = displayGridColumnWidth * asideXFactor;
+        this._displayWidth = displayGridColumnWidth - DASH_PAD * 2;
+        this._resultsWidth = displayGridColumnWidth;  
 
-        // this figures out the additional width we can give to the display in the 'More' mode,
-        // assuming that we want to keep the columns the same width in both modes
-        this._additionalWidth = (this._width / DASH_COLUMNS) *
-                                (this._expandedDashColumns - DASH_COLUMNS);
-
-        let bottomHeight = displayGridRowHeight / 2;
+        let bottomHeight = DASH_PAD;
 
         let global = Shell.Global.get();
 
-        let previewWidth = this._expandedWidth - this._width -
-                           this._additionalWidth - DASH_SECTION_SPACING;
-
-        let previewHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight;
+        let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight;
 
         this.actor = new Clutter.Group();
         this.actor.height = global.screen_height;
+
+        let dashPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                     x: 0,
+                                     y: Panel.PANEL_HEIGHT + DASH_PAD,
+                                     width: this._width + SHADOW_WIDTH,
+                                     height: global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight});
+
+        let dashBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                           width: this._width,
+                                           height: global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight,
+                                           corner_radius: DASH_CORNER_RADIUS,
+                                           border: RESULTS_BORDER_WIDTH,
+                                           border_color: RESULTS_BORDER_COLOR });
+
+        dashPane.append(dashBackground, Big.BoxPackFlags.EXPAND);
+        
+        let dashLeft = global.create_horizontal_gradient(DASH_LEFT_COLOR,
+                                                         DASH_MIDDLE_COLOR);
+        let dashRight = global.create_horizontal_gradient(DASH_MIDDLE_COLOR,
+                                                          DASH_RIGHT_COLOR);
+        let dashShadow = global.create_horizontal_gradient(SHADOW_COLOR,
+                                                           TRANSPARENT_COLOR);
+        dashShadow.set_width(SHADOW_WIDTH);
+        
+        dashBackground.append(dashLeft, Big.BoxPackFlags.EXPAND);
+        dashBackground.append(dashRight, Big.BoxPackFlags.EXPAND);
+        dashPane.append(dashShadow, Big.BoxPackFlags.NONE);
+        
+        this.actor.add_actor(dashPane);
 
         this._appsSection = new Big.Box({ x: DASH_PAD,
                                           y: Panel.PANEL_HEIGHT + DASH_PAD,
@@ -220,19 +262,39 @@ Dash.prototype = {
         this._docsDisplayControlBox = new Big.Box({x_align: Big.BoxAlignment.CENTER});
         this._docsDisplayControlBox.append(this._docDisplay.displayControl, Big.BoxPackFlags.NONE);
 
-        this._details = new Big.Box({ x: this._width + this._additionalWidth + DASH_SECTION_SPACING,
-                                      y: Panel.PANEL_HEIGHT + DASH_PAD,
-                                      width: previewWidth,
-                                      height: previewHeight,
-                                      corner_radius: DETAILS_CORNER_RADIUS,
-                                      border: DETAILS_BORDER_WIDTH,
-                                      border_color: DETAILS_BORDER_COLOR,
-                                      padding: DETAILS_PADDING});
-        this._appDisplay.setAvailableDimensionsForItemDetails(previewWidth - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2,
-                                                              previewHeight - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2);
-        this._docDisplay.setAvailableDimensionsForItemDetails(previewWidth - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2,
-                                                              previewHeight - DETAILS_PADDING * 2 - DETAILS_BORDER_WIDTH * 2);
- 
+        this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                          x: this._width,
+                                          y: Panel.PANEL_HEIGHT + DASH_PAD,
+                                          width: this._resultsWidth + SHADOW_WIDTH,
+                                          height: resultsHeight });
+
+        let resultsBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                              width: this._resultsWidth,
+                                              height: resultsHeight,
+                                              corner_radius: DASH_CORNER_RADIUS,
+                                              border: RESULTS_BORDER_WIDTH,
+                                              border_color: RESULTS_BORDER_COLOR });
+
+        this._resultsPane.append(resultsBackground, Big.BoxPackFlags.EXPAND);
+
+        let resultsLeft = global.create_horizontal_gradient(RESULTS_LEFT_COLOR,
+                                                            RESULTS_MIDDLE_COLOR);
+        let resultsRight = global.create_horizontal_gradient(RESULTS_MIDDLE_COLOR,
+                                                             RESULTS_RIGHT_COLOR);
+        let resultsShadow = global.create_horizontal_gradient(SHADOW_COLOR,
+                                                              TRANSPARENT_COLOR);
+        resultsShadow.set_width(SHADOW_WIDTH);
+        
+        resultsBackground.append(resultsLeft, Big.BoxPackFlags.EXPAND);
+        resultsBackground.append(resultsRight, Big.BoxPackFlags.EXPAND);
+        this._resultsPane.append(resultsShadow, Big.BoxPackFlags.NONE);
+
+        this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
+                                               font_name: "Sans 12",
+                                               x: DASH_SECTION_SPACING,
+                                               y: 0 });
+        this._resultsPane.add_actor(this._resultsText);
+
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
             me.emit('activated');
@@ -291,6 +353,12 @@ Dash.prototype = {
     hide: function() {
         this._appsContent.hide();
         this._docDisplay.hide();
+        this.unsetMoreMode();
+    },
+
+    unsetMoreMode: function() {
+        this._unsetMoreAppsMode();
+        this._unsetMoreDocsMode();
     },
 
     // Ensures that one of the displays has the selection if neither owns it after the
@@ -308,32 +376,67 @@ Dash.prototype = {
             }
         }
     },
+
+    // Sets the 'More' mode for browsing applications.
+    _setMoreAppsMode: function() {
+        if (this._moreAppsMode)
+            return;
+
+        this._unsetMoreDocsMode();
+        this._moreAppsMode = true;
+
+        this.actor.add_actor(this._resultsPane);
+
+        this._moreAppsLink.setText("Less...");
+
+        this._resultsText.text = "Application Results";
  
-    // Updates the applications section display and the 'More...' or 'Less...' control associated with it
-    // depending on the current mode. This function must only be called once after the 'More' mode has been
-    // changed, which is ensured by _setMoreAppsMode() and _unsetMoreAppsMode() functions. 
-    _updateAppsSection: function() {
-        if (this._moreAppsMode) {
-            // Subtract one from columns since we are displaying menus
-            this._appDisplay.setExpanded(true, this._displayWidth, this._additionalWidth,
-                                         this._itemDisplayHeight + DASH_SECTION_MISC_HEIGHT,
-                                         this._expandedDashColumns - 1);
-            this._moreAppsLink.setText("Less...");
-            this._appsSection.insert_after(this._appsDisplayControlBox, this._appsContent, Big.BoxPackFlags.NONE);
-            this.actor.add_actor(this._details);
-            this._details.append(this._appDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
-        } else {
-            this._appDisplay.setExpanded(false, this._displayWidth, 0,
-                                         this._appsSectionDefaultHeight - DASH_SECTION_MISC_HEIGHT,
-                                         DASH_COLUMNS);
-            this._moreAppsLink.setText("More...");
-            this._appsSection.remove_actor(this._appsDisplayControlBox);
-            this.actor.remove_actor(this._details);
-            this._details.remove_all();
-        }
-        this._moreAppsLink.actor.show();
-    }
+        this.emit('more-activated');
+    },
+
+    // Unsets the 'More' mode for browsing applications.
+    _unsetMoreAppsMode: function() {
+        if (!this._moreAppsMode)
+            return;
+
+        this._moreAppsMode = false;
+
+        this.actor.remove_actor(this._resultsPane); 
+        this._moreAppsLink.setText("More...");
+
+        this.emit('less-activated');
+    },   
+ 
+    // Sets the 'More' mode for browsing documents.
+    _setMoreDocsMode: function() {
+        if (this._moreDocsMode)
+            return;
+
+        this._unsetMoreAppsMode();
+        this._moreDocsMode = true;
+
+        this.actor.add_actor(this._resultsPane);
+         
+        this._moreDocsLink.setText("Less..."); 
+
+        this._resultsText.text = "Document Results";
+
+        this.emit('more-activated');
+    },
+
+    // Unsets the 'More' mode for browsing documents. 
+    _unsetMoreDocsMode: function() {
+        if (!this._moreDocsMode)
+            return;
+
+        this._moreDocsMode = false;
+
+        this.actor.remove_actor(this._resultsPane); 
+        this._moreDocsLink.setText("More...");
+        this.emit('less-activated');
+    }   
 };
+
 Signals.addSignalMethods(Dash.prototype);
 
 function Overlay() {
@@ -376,6 +479,13 @@ Overlay.prototype = {
         background.y = -global.screen_height * (4 * BACKGROUND_SCALE - 3) / 6;
         this._group.add_actor(background);
 
+        this._transparentBackground = new Clutter.Rectangle({ color: TRANSPARENT_COLOR,
+                                                              width: global.screen_width,
+                                                              height: global.screen_height - Panel.PANEL_HEIGHT,
+                                                              y: Panel.PANEL_HEIGHT,
+                                                              reactive: true });
+        this._group.add_actor(this._transparentBackground);
+
         // Draw a semitransparent rectangle over the background for readability.
         let backOver = new Clutter.Rectangle({ color: ROOT_OVERLAY_COLOR,
                                                width: global.screen_width,
@@ -390,6 +500,7 @@ Overlay.prototype = {
         this._dash = new Dash();
         this._group.add_actor(this._dash.actor);
         this._workspaces = null;
+        this._buttonEventHandlerId = null;
         this._dash.connect('activated', function(dash) {
             // TODO - have some sort of animation/effect while
             // transitioning to the new app.  We definitely need
@@ -398,25 +509,34 @@ Overlay.prototype = {
         });
         this._dash.connect('more-activated', function(dash) {
             if (me._workspaces != null) {
-                let asideXFactor = wideScreen ? WORKSPACES_X_FACTOR_ASIDE_MODE_WIDE_SCREEN : WORKSPACES_X_FACTOR_ASIDE_MODE_REGULAR_SCREEN;  
-        
-                let workspacesX = displayGridColumnWidth * asideXFactor + WORKSPACE_GRID_PADDING;
-                me._workspaces.addButton.hide();
-                me._workspaces.updatePosition(workspacesX, null);
+                me._transparentBackground.raise_top();
+                me._dash.actor.raise_top();
+                me._buttonEventHandlerId = me._transparentBackground.connect('button-release-event', function(background) {
+                    me._dash.unsetMoreMode();
+                    return true;
+                }); 
             }    
         });
         this._dash.connect('less-activated', function(dash) {
             if (me._workspaces != null) {
-                let workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
-                me._workspaces.addButton.show();
-                me._workspaces.updatePosition(workspacesX, null);
+                me._transparentBackground.lower_bottom();  
+                me._transparentBackground.disconnect(me._buttonEventHandlerId);  
             }
         });
     },
 
     //// Draggable target interface ////
 
+    // Unsets the expanded display mode if a GenericDisplayItem is being 
+    // dragged over the overlay, i.e. as soon as it starts being dragged.
+    // This closes the additional panes and allows the user to place
+    // the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
+        if (source instanceof GenericDisplay.GenericDisplayItem) {
+            this._dash.unsetMoreMode();
+            return true;
+        }
+  
         return false;
     },
 
