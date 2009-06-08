@@ -566,11 +566,19 @@ clutter_timeline_advance_internal (ClutterTimeline *timeline)
       gint end_msecs;
 
       /* Update the current elapsed time in case the signal handlers
-         want to take a peek. */
+       * want to take a peek. If we clamp elapsed time, then we need
+       * to correpondingly reduce msecs_delta to reflect the correct
+       * range of times */
       if (priv->direction == CLUTTER_TIMELINE_FORWARD)
-        priv->elapsed_time = priv->duration;
+	{
+	  priv->msecs_delta -= (priv->elapsed_time - priv->duration);
+	  priv->elapsed_time = priv->duration;
+	}
       else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
-        priv->elapsed_time = 0;
+	{
+	  priv->msecs_delta -= - priv->elapsed_time;
+	  priv->elapsed_time = 0;
+	}
 
       end_msecs = priv->elapsed_time;
 
