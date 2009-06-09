@@ -702,7 +702,7 @@ json_object_end (JsonParser *parser,
 
       val = json_node_new (JSON_NODE_VALUE);
       json_node_set_string (val, fake);
-      json_object_add_member (object, "id", val);
+      json_object_set_member (object, "id", val);
 
       g_free (fake);
     }

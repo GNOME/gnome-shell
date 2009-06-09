@@ -32,8 +32,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "json-marshal.h"
+#include "json-types-private.h"
+
 #include "json-generator.h"
+#include "json-marshal.h"
 
 #define JSON_GENERATOR_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), JSON_TYPE_GENERATOR, JsonGeneratorPrivate))
