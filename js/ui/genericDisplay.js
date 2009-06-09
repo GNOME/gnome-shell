@@ -469,8 +469,6 @@ GenericDisplay.prototype = {
         // See also getSideArea.
         this.actor = this._grid;
         this.displayControl = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
-                                            corner_radius: 4,
-                                            height: 24,
                                             spacing: 12,
                                             orientation: Big.BoxOrientation.HORIZONTAL});
 
