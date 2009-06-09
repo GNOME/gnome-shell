@@ -30,12 +30,12 @@ const LABEL_HEIGHT = 16;
 // between sideshow columns.
 const DASH_PAD = 6;
 const DASH_MIN_WIDTH = 250;
-const DASH_SECTION_PADDING_TOP = 6;
+const DASH_SECTION_PADDING = 6;
 const DASH_SECTION_SPACING = 6;
 const DASH_COLUMNS = 1;
 const DASH_CORNER_RADIUS = 5;
 // This is the height of section components other than the item display.
-const DASH_SECTION_MISC_HEIGHT = (LABEL_HEIGHT + DASH_SECTION_SPACING) * 2 + DASH_SECTION_PADDING_TOP;
+const DASH_SECTION_MISC_HEIGHT = (LABEL_HEIGHT + DASH_SECTION_SPACING) * 2 + DASH_SECTION_PADDING;
 const DASH_SEARCH_BG_COLOR = new Clutter.Color();
 DASH_SEARCH_BG_COLOR.from_pixel(0xffffffff);
 const DASH_TEXT_COLOR = new Clutter.Color();
@@ -90,11 +90,11 @@ DASH_RIGHT_COLOR.from_pixel(0x324c6fcc);
 
 // The results pane has a somewhat transparent blue background with a gradient.
 const RESULTS_LEFT_COLOR = new Clutter.Color();
-RESULTS_LEFT_COLOR.from_pixel(0x324c6fcc);
+RESULTS_LEFT_COLOR.from_pixel(0x324c6ff0);
 const RESULTS_MIDDLE_COLOR = new Clutter.Color();
-RESULTS_MIDDLE_COLOR.from_pixel(0x324c6fdd);
+RESULTS_MIDDLE_COLOR.from_pixel(0x324c6ff4);
 const RESULTS_RIGHT_COLOR = new Clutter.Color();
-RESULTS_RIGHT_COLOR.from_pixel(0x324c6fee);
+RESULTS_RIGHT_COLOR.from_pixel(0x324c6ff8);
 
 const RESULTS_BORDER_COLOR = new Clutter.Color();
 RESULTS_BORDER_COLOR.from_pixel(0x213b5dff);
@@ -171,7 +171,10 @@ Dash.prototype = {
 
         let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight;
 
-        this.actor = new Clutter.Group();
+        // The whole dash group needs to be reactive so that the clicks are not passed to the transparent background underneath it.
+        // This background is used in the workspaces area when the additional dash panes are being shown. It handles clicks in the
+        // workspaces area by closing these additional dash panes and revealing all workspaces.
+        this.actor = new Clutter.Group({reactive: true});
         this.actor.height = global.screen_height;
 
         let dashPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
@@ -205,7 +208,7 @@ Dash.prototype = {
 
         this._appsSection = new Big.Box({ x: DASH_PAD,
                                           y: Panel.PANEL_HEIGHT + DASH_PAD,
-                                          padding_top: DASH_SECTION_PADDING_TOP,
+                                          padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
 
         this._itemDisplayHeight = global.screen_height - this._appsSection.y - DASH_SECTION_MISC_HEIGHT * 2 - bottomHeight;
@@ -229,13 +232,10 @@ Dash.prototype = {
         this.actor.add_actor(this._appsSection);
   
         this._appsSectionDefaultHeight = this._appsSection.height;
-    
-        this._appsDisplayControlBox = new Big.Box({x_align: Big.BoxAlignment.CENTER});
-        this._appsDisplayControlBox.append(this._appDisplay.displayControl, Big.BoxPackFlags.NONE);
 
         this._docsSection = new Big.Box({ x: DASH_PAD,
                                           y: this._appsSection.y + this._appsSection.height,
-                                          padding_top: DASH_SECTION_PADDING_TOP,
+                                          padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
 
         this._docsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
@@ -259,8 +259,26 @@ Dash.prototype = {
 
         this._docsSectionDefaultHeight = this._docsSection.height;
 
-        this._docsDisplayControlBox = new Big.Box({x_align: Big.BoxAlignment.CENTER});
-        this._docsDisplayControlBox.append(this._docDisplay.displayControl, Big.BoxPackFlags.NONE);
+        // Prepare docs display for the results pane.
+        this._resultsDocsSection = new Big.Box({ height: resultsHeight,
+                                                 padding: DASH_SECTION_PADDING,
+                                                 spacing: DASH_SECTION_SPACING });
+
+        this._resultsDocsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
+                                                   font_name: "Sans Bold 14px",
+                                                   text: "Recent Documents",
+                                                   height: LABEL_HEIGHT });
+        this._resultsDocsSection.append(this._resultsDocsText, Big.BoxPackFlags.EXPAND);
+
+        let resultsDocDisplayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
+        this._resultsDocDisplay = new DocDisplay.DocDisplay(this._displayWidth, resultsDocDisplayHeight, DASH_COLUMNS, DASH_PAD);
+        
+        this._resultsDocsSection.append(this._resultsDocDisplay.actor, Big.BoxPackFlags.EXPAND);
+
+        this._resultsDocsDisplayControlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
+        this._resultsDocsDisplayControlBox.append(this._resultsDocDisplay.displayControl, Big.BoxPackFlags.NONE);
+        
+        this._resultsDocsSection.append(this._resultsDocsDisplayControlBox, Big.BoxPackFlags.END);
 
         this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
@@ -290,9 +308,9 @@ Dash.prototype = {
         this._resultsPane.append(resultsShadow, Big.BoxPackFlags.NONE);
 
         this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
-                                               font_name: "Sans 12",
-                                               x: DASH_SECTION_SPACING,
-                                               y: 0 });
+                                               font_name: "Sans Bold 14px",
+                                               x: DASH_SECTION_PADDING,
+                                               y: DASH_SECTION_PADDING });
         this._resultsPane.add_actor(this._resultsText);
 
         /* Proxy the activated signals */
@@ -389,7 +407,7 @@ Dash.prototype = {
 
         this._moreAppsLink.setText("Less...");
 
-        this._resultsText.text = "Application Results";
+        this._resultsText.text = "Applications";
  
         this.emit('more-activated');
     },
@@ -402,6 +420,8 @@ Dash.prototype = {
         this._moreAppsMode = false;
 
         this.actor.remove_actor(this._resultsPane); 
+        this._resultsText.text = "";
+       
         this._moreAppsLink.setText("More...");
 
         this.emit('less-activated');
@@ -415,11 +435,11 @@ Dash.prototype = {
         this._unsetMoreAppsMode();
         this._moreDocsMode = true;
 
+        this._resultsDocDisplay.show();
+        this._resultsPane.add_actor(this._resultsDocsSection);
         this.actor.add_actor(this._resultsPane);
          
         this._moreDocsLink.setText("Less..."); 
-
-        this._resultsText.text = "Document Results";
 
         this.emit('more-activated');
     },
@@ -431,7 +451,10 @@ Dash.prototype = {
 
         this._moreDocsMode = false;
 
-        this.actor.remove_actor(this._resultsPane); 
+        this.actor.remove_actor(this._resultsPane);
+        this._resultsPane.remove_actor(this._resultsDocsSection);
+        this._resultsDocDisplay.hide();
+ 
         this._moreDocsLink.setText("More...");
         this.emit('less-activated');
     }   
