@@ -12,7 +12,7 @@ test_perspective_main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &red);
-  clutter_stage_fullscreen (CLUTTER_STAGE (stage));
+  clutter_stage_set_fullscreen (CLUTTER_STAGE (stage), TRUE);
   
   rect = clutter_rectangle_new_with_color (&white);
   clutter_actor_set_size (rect, 

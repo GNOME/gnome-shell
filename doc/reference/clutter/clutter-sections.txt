@@ -476,8 +476,8 @@ clutter_stage_is_default
 <SUBSECTION>
 clutter_stage_set_color
 clutter_stage_get_color
-clutter_stage_fullscreen
-clutter_stage_unfullscreen
+clutter_stage_set_fullscreen
+clutter_stage_get_fullscreen
 clutter_stage_show_cursor
 clutter_stage_hide_cursor
 ClutterPickMode

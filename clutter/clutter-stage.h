@@ -202,8 +202,9 @@ void          clutter_stage_set_perspective   (ClutterStage       *stage,
 			                       ClutterPerspective *perspective);
 void          clutter_stage_get_perspective   (ClutterStage       *stage,
 			                       ClutterPerspective *perspective);
-void          clutter_stage_fullscreen        (ClutterStage       *stage);
-void          clutter_stage_unfullscreen      (ClutterStage       *stage);
+void          clutter_stage_set_fullscreen    (ClutterStage       *stage,
+                                               gboolean            fullscreen);
+gboolean      clutter_stage_get_fullscreen    (ClutterStage       *stage);
 void          clutter_stage_show_cursor       (ClutterStage       *stage);
 void          clutter_stage_hide_cursor       (ClutterStage       *stage);
 

@@ -666,8 +666,11 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * Whether the stage should be fullscreen or not.
    *
-   * This property is set by calling clutter_stage_fullscreen()
-   * and clutter_stage_unfullscreen()
+   * This property is set by calling clutter_stage_set_fullscreen()
+   * but since the actual implementation is delegated to the backend
+   * you should connect to the notify::fullscreen-set signal in order
+   * to get notification if the fullscreen state has been successfully
+   * achieved.
    *
    * Since: 1.0
    */
@@ -1044,23 +1047,36 @@ clutter_stage_get_perspective (ClutterStage       *stage,
 }
 
 /**
- * clutter_stage_fullscreen:
+ * clutter_stage_set_fullscreen:
  * @stage: a #ClutterStage
+ ( @fullscreen: %TRUE to to set the stage fullscreen
  *
- * Asks to place the stage window in the fullscreen state. Note that you
- * shouldn't assume the window is definitely full screen afterward, because
- * other entities (e.g. the user or window manager) could unfullscreen it
- * again, and not all window managers honor requests to fullscreen windows.
+ * Asks to place the stage window in the fullscreen or unfullscreen
+ * states.
+ *
+ ( Note that you shouldn't assume the window is definitely full screen
+ * afterward, because other entities (e.g. the user or window manager)
+ * could unfullscreen it again, and not all window managers honor
+ * requests to fullscreen windows.
+ *
+ * If you want to receive notification of the fullscreen state you
+ * should either use the #ClutterStage::fullscreen and
+ * #ClutterStage::unfullscreen signals, or use the notify signal
+ * for the #ClutterStage:fullscreen-set property
+ *
+ * Since: 1.0
  */
 void
-clutter_stage_fullscreen (ClutterStage *stage)
+clutter_stage_set_fullscreen (ClutterStage *stage,
+                              gboolean      fullscreen)
 {
   ClutterStagePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
-  if (!priv->is_fullscreen)
+
+  if (priv->is_fullscreen != fullscreen)
     {
       ClutterStageWindow *impl = CLUTTER_STAGE_WINDOW (priv->impl);
       ClutterStageWindowIface *iface;
@@ -1068,46 +1084,31 @@ clutter_stage_fullscreen (ClutterStage *stage)
       iface = CLUTTER_STAGE_WINDOW_GET_IFACE (impl);
 
       /* Only set if backend implements.
+       *
        * Also see clutter_stage_event() for setting priv->is_fullscreen
        * on state change event.
-      */
+       */
       if (iface->set_fullscreen)
-	iface->set_fullscreen (impl, TRUE);
+	iface->set_fullscreen (impl, fullscreen);
     }
 }
 
 /**
- * clutter_stage_unfullscreen:
+ * clutter_stage_get_fullscreen:
  * @stage: a #ClutterStage
  *
- * Asks to toggle off the fullscreen state for the stage window. Note that
- * you shouldn't assume the window is definitely not full screen afterward,
- * because other entities (e.g. the user or window manager) could fullscreen
- * it again, and not all window managers honor requests to unfullscreen
- * windows.
+ * Retrieves whether the stage is full screen or not
+ *
+ * Return value: %TRUE if the stage is full screen
+ *
+ * Since: 1.0
  */
-void
-clutter_stage_unfullscreen (ClutterStage *stage)
+gboolean
+clutter_stage_get_fullscreen (ClutterStage *stage)
 {
-  ClutterStagePrivate *priv;
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  priv = stage->priv;
-  if (priv->is_fullscreen)
-    {
-      ClutterStageWindow *impl = CLUTTER_STAGE_WINDOW (priv->impl);
-      ClutterStageWindowIface *iface;
-
-      iface = CLUTTER_STAGE_WINDOW_GET_IFACE (impl);
-
-      /* Only set if backend implements.
-       * Also see clutter_stage_event() for setting priv->is_fullscreen
-       * on state change event.
-      */
-      if (iface->set_fullscreen)
-	iface->set_fullscreen (impl, FALSE);
-    }
+  return stage->priv->is_fullscreen;
 }
 
 /**

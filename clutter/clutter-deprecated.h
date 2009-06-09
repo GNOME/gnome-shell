@@ -173,4 +173,7 @@
 #define clutter_key_event_unicode       clutter_key_event_unicode_REPLACED_BY_clutter_event_get_key_unicode
 #define clutter_button_event_button     clutter_button_event_button_REPLACED_BY_clutter_event_get_button
 
+#define clutter_stage_fullscreen        clutter_stage_fullscreen_REPLACED_BY_clutter_stage_set_fullscreen
+#define clutter_stage_unfullscreen      clutter_stage_unfullscreen_REPLACED_BY_clutter_stage_set_fullscreen
+
 #endif /* CLUTTER_DEPRECATED_H */

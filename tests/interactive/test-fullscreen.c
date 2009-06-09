@@ -54,7 +54,7 @@ toggle_fullscreen (gpointer dummy)
 
     case SHOW:
       g_debug ("show:  is_fullscreen := %s", is_fullscreen ? "true" : "false");
-      clutter_stage_unfullscreen (CLUTTER_STAGE (stage));
+      clutter_stage_set_fullscreen (CLUTTER_STAGE (stage), FALSE);
       state = DONE;
       return TRUE;
 
@@ -82,7 +82,7 @@ test_fullscreen_main (int argc, char *argv[])
                     "unfullscreen", G_CALLBACK (on_unfullscreen),
                     NULL);
 
-  clutter_stage_fullscreen (CLUTTER_STAGE (stage));
+  clutter_stage_set_fullscreen (CLUTTER_STAGE (stage), TRUE);
   clutter_actor_show (stage);
 
   g_debug ("stage size: %.2fx%.2f, mapped: %s",
