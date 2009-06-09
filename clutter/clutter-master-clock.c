@@ -255,7 +255,8 @@ clutter_clock_dispatch (GSource     *source,
   for (l = stages; l != NULL; l = l->next)
     _clutter_stage_process_queued_events (l->data);
 
-   _clutter_master_clock_advance (master_clock);
+  _clutter_master_clock_advance (master_clock);
+  _clutter_run_repaint_functions ();
 
   /* Update any stage that needs redraw/relayout after the clock
    * is advanced.
