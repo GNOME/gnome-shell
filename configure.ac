@@ -97,6 +97,8 @@ clutterbackend=glx
 clutter_gl_header=""
 glesversion=1.1
 use_gles2_wrapper=no
+experimental_backend=no
+experimental_image=no
 
 AC_ARG_WITH([flavour],
             [AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl/osx/win32/fruity@:>@],
@@ -209,6 +211,7 @@ AS_CASE([$clutterbackend],
 
         [sdl],
         [
+          experimental_backend="yes"
           clutter_gl_header="GL/gl.h"
           CLUTTER_FLAVOUR="sdl"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_SDL"
@@ -306,6 +309,7 @@ AS_CASE([$clutterbackend],
 
         [fruity],
         [
+          experimental_backend="yes"
           # the GL header is defined in the COGL checks above
           CLUTTER_FLAVOUR="fruity"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
@@ -317,6 +321,7 @@ AS_CASE([$clutterbackend],
 
         [osx],
         [
+          experimental_backend="yes"
           clutter_gl_header="OpenGL/gl.h"
           CLUTTER_FLAVOUR="osx"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
@@ -381,7 +386,10 @@ AC_ARG_WITH([imagebackend],
 AS_CASE([$imagebackend],
 
         [quartz],
-        [AC_DEFINE([USE_QUARTZ], 1, [Use Core Graphics (Quartz) for loading image data])],
+        [
+          experimental_image=yes
+          AC_DEFINE([USE_QUARTZ], 1, [Use Core Graphics (Quartz) for loading image data])
+        ],
 
         [gdk-pixbuf],
         [
@@ -390,7 +398,10 @@ AS_CASE([$imagebackend],
         ],
 
         [internal],
-        [AC_DEFINE([USE_INTERNAL], 1, [Use internal image decoding for loading image data])],
+        [
+          experimental_image=yes
+          AC_DEFINE([USE_INTERNAL], 1, [Use internal image decoding for loading image data])
+        ],
 
         [AC_MSG_ERROR([Unknown argument for --with-imagebackend])]
 )
@@ -827,12 +838,12 @@ echo ""
 # you can add more configuration options or flags that will bring up the
 # the experimental/unstable warning summary.
 
-if test "x$imagebackend" = "xinternal"; then
-  experimental_stuff="$experimental_stuff      imagebackend:  $imagebackend\n"
+if test "x$experimental_backend" = "xyes"; then
+  experimental_stuff="$experimental_stuff   Clutter backend:  ${clutterbackend}\n"
 fi
 
-if test "x$clutterbackend" = "xfruity"; then
-  experimental_stuff="$experimental_stuff    clutterbackend:  $clutterbackend\n"
+if test "x$experimental_image" = "xyes"; then
+  experimental_stuff="$experimental_stuff     Image backend:  ${imagebackend}\n"
 fi
 
 if test "x$experimental_stuff" != "x"; then
