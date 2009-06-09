@@ -295,7 +295,7 @@ _clutter_backend_impl_get_type (void)
 }
 
 /**
- * clutter_egl_display
+ * clutter_eglx_display:
  *
  * Gets the current EGLDisplay.
  *

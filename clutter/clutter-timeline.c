@@ -29,54 +29,6 @@
  *
  * #ClutterTimeline is a base class for managing time based events such
  * as animations.
- *
- * Every timeline shares the same #ClutterTimeoutPool to decrease the
- * possibility of starving the main loop when using many timelines
- * at the same time; this might cause problems if you are also using
- * a library making heavy use of threads with no GLib main loop integration.
- *
- * In that case you might disable the common timeline pool by setting
- * the %CLUTTER_TIMELINE=no-pool environment variable prior to launching
- * your application.
- *
- * One way to visualise a timeline is as a path with marks along its length.
- * When creating a timeline of N frames via clutter_timeline_new(), then the
- * number of frames can be seen as the paths length, and each unit of
- * length (each frame) is delimited by a mark.
- *
- * For a non looping timeline there will be (N frames + 1) marks along its
- * length. For a looping timeline, the two ends are joined with one mark.
- * Technically this mark represents two discrete frame numbers, but for a
- * looping timeline the start and end frame numbers are considered equivalent.
- *
- * When you create a timeline it will be initialized so that the current
- * frame, as returned by clutter_timeline_get_current_frame(), will be 0.
- *
- * After starting a timeline, the first timeout is for frame number
- * one (notably it isn't zero since there is a delay before the first
- * #ClutterTimeline::new-frame signal, so re-asserting the frame number
- * zero wouldn't make sense).
- *
- * This implies that actors you intend to be affected by the timeline's
- * progress should be manually primed or positioned for frame zero which
- * will be displayed before the first timeout (if you are not careful about
- * this point you will likely see flashes of incorrect actor state in your
- * program).
- *
- * For a non looping timeline the last timeout would be for the number
- * of frames in the timeline, as returned by clutter_timeline_get_n_frames().
- *
- * For a looping timeline the timeout for the last frame would be followed
- * by a timeout for frame number 1.
- *
- * There may be times when a system is not able to meet the frame rate
- * requested for a timeline, and in this case the frame number will be
- * interpolated at the next timeout event. The interpolation is calculated from
- * the time that the timeline was started, not from the time of the last
- * timeout, so a given timeline should basically elapse in the same - real
- * world - time on any given system. An invariable here though is that
- * the last frame will always be signaled, but notably frame number 1 can
- * be interpolated past and thus never signaled.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -929,7 +881,7 @@ clutter_timeline_clone (ClutterTimeline *timeline)
 }
 
 /**
- * clutter_timeline_new_for_duration:
+ * clutter_timeline_new:
  * @msecs: Duration of the timeline in milliseconds
  *
  * Creates a new #ClutterTimeline with a duration of @msecs.

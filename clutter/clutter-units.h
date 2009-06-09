@@ -114,7 +114,7 @@ gboolean        clutter_units_from_string    (ClutterUnits       *units,
 #define CLUTTER_IS_PARAM_SPEC_UNITS(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_UNITS))
 
 /**
- * CLUTTER_VALUE_HOLDS_UNIT:
+ * CLUTTER_VALUE_HOLDS_UNITS:
  * @x: a #GValue
  *
  * Evaluates to %TRUE if @x holds a #ClutterUnits value

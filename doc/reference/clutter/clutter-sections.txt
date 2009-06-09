@@ -289,6 +289,7 @@ clutter_actor_map
 clutter_actor_unmap
 
 <SUBSECTION>
+ClutterAllocationFlags
 clutter_actor_allocate
 clutter_actor_allocate_preferred_size
 clutter_actor_allocate_available_size

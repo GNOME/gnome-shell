@@ -1049,7 +1049,7 @@ clutter_stage_get_perspective (ClutterStage       *stage,
 /**
  * clutter_stage_set_fullscreen:
  * @stage: a #ClutterStage
- ( @fullscreen: %TRUE to to set the stage fullscreen
+ * @fullscreen: %TRUE to to set the stage fullscreen
  *
  * Asks to place the stage window in the fullscreen or unfullscreen
  * states.

@@ -23,6 +23,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-eglnative
+ * @short_description: EGL specific API
+ *
+ * The EGL backend for Clutter provides some specific API.
+ */
+
 #ifndef __CLUTTER_EGL_H__
 #define __CLUTTER_EGL_H__
 

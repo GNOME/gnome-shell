@@ -23,6 +23,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-eglx
+ * @short_description: EGLX specific API
+ *
+ * The EGLX backend for Clutter provides some specific API on
+ * top of the X11-specific one
+ */
+
 #ifndef __CLUTTER_EGL_H__
 #define __CLUTTER_EGL_H__
 

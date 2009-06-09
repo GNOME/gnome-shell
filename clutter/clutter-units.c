@@ -317,7 +317,7 @@ clutter_units_free (ClutterUnits *units)
  * clutter_units_to_pixels:
  * @units: units to convert
  *
- * Converts a value in #ClutterUnit<!-- -->s to pixels
+ * Converts a value in #ClutterUnits to pixels
  *
  * Return value: the value in pixels
  *
@@ -363,9 +363,9 @@ clutter_units_to_pixels (ClutterUnits *units)
  *
  * |[
  *   number: [0-9]
- *   unit_value: <numbers>+
+ *   unit_value: &lt;numbers&gt;+
  *   unit_name: px|pt|mm|em
- *   units: <unit_value> <unit_name>
+ *   units: &lt;unit_value&gt; &lt;unit_name&gt;
  * ]|
  *
  * For instance, these are valid strings:

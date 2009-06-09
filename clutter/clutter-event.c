@@ -357,7 +357,7 @@ clutter_event_get_key_code (ClutterEvent *event)
 
 /**
  * clutter_event_get_key_unicode:
- * @keyev: A #ClutterKeyEvent
+ * @event: A #ClutterKeyEvent
  *
  * Retrieves the unicode value for the key that caused @keyev.
  *
