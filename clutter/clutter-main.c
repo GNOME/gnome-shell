@@ -236,18 +236,9 @@ _clutter_do_redraw (ClutterStage *stage)
 void
 clutter_redraw (ClutterStage *stage)
 {
-  ClutterMasterClock *master_clock;
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  /* we need to do this because the clutter_redraw() might be called by
-   * clutter-gtk, and this will not cause the master clock to advance nor
-   * the repaint functions to be run
-   */
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_advance (master_clock);
-
-  _clutter_run_repaint_functions ();
-
-  _clutter_do_redraw (stage);
+  clutter_stage_ensure_redraw (stage);
 }
 
 /**

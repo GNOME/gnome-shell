@@ -485,6 +485,7 @@ ClutterPickMode
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
 clutter_stage_ensure_viewport
+clutter_stage_ensure_redraw
 clutter_stage_queue_redraw
 clutter_stage_event
 clutter_stage_set_key_focus
