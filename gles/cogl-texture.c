@@ -1331,6 +1331,7 @@ cogl_texture_new_with_size (guint            width,
   tex->is_foreign = FALSE;
   tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
   tex->mipmaps_dirty = TRUE;
+  tex->first_pixels = NULL;
 
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1397,6 +1398,7 @@ cogl_texture_new_from_data (guint             width,
   tex->is_foreign = FALSE;
   tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
   tex->mipmaps_dirty = TRUE;
+  tex->first_pixels = NULL;
 
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1460,6 +1462,7 @@ cogl_texture_new_from_bitmap (CoglHandle       bmp_handle,
   tex->is_foreign = FALSE;
   tex->auto_mipmap = (flags & COGL_TEXTURE_NO_AUTO_MIPMAP) == 0;
   tex->mipmaps_dirty = TRUE;
+  tex->first_pixels = NULL;
 
   tex->bitmap = *bmp;
   tex->bitmap_owner = TRUE;
@@ -1629,6 +1632,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   tex->is_foreign = TRUE;
   tex->auto_mipmap = (gl_gen_mipmap == GL_TRUE) ? TRUE : FALSE;
   tex->mipmaps_dirty = TRUE;
+  tex->first_pixels = NULL;
 
   bpp = _cogl_get_format_bpp (format);
   tex->bitmap.format = format;
@@ -1860,7 +1864,7 @@ _cogl_texture_ensure_mipmaps (CoglHandle handle)
       /* glGenerateMipmap is defined in the FBO extension */
       if (cogl_features_available (COGL_FEATURE_OFFSCREEN))
         GE( cogl_wrap_glGenerateMipmap (tex->gl_target) );
-      else
+      else if (tex->first_pixels)
         {
           CoglTexturePixel *pixel = tex->first_pixels + i;
           /* Temporarily enable automatic mipmap generation and
