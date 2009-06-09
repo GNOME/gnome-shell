@@ -23,11 +23,15 @@ blue_button_cb (ClutterActor    *actor,
   stage = clutter_stage_get_default ();
 
   if (IsFullScreen)
-    IsFullScreen = FALSE;
+    {
+      IsFullScreen = FALSE;
+      clutter_stage_unfullscreen (CLUTTER_STAGE (stage));
+    }
   else
-    IsFullScreen = TRUE;
-
-  g_object_set (stage, "fullscreen", IsFullScreen, NULL);
+    {
+      IsFullScreen = TRUE;
+      clutter_stage_fullscreen (CLUTTER_STAGE (stage));
+    }
 
   g_print ("*** Fullscreen %s ***\n",
            IsFullScreen ? "enabled" : "disabled");

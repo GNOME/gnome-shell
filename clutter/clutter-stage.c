@@ -101,7 +101,7 @@ enum
   PROP_0,
 
   PROP_COLOR,
-  PROP_FULLSCREEN,
+  PROP_FULLSCREEN_SET,
   PROP_OFFSCREEN,
   PROP_CURSOR_VISIBLE,
   PROP_PERSPECTIVE,
@@ -514,13 +514,6 @@ clutter_stage_set_property (GObject      *object,
       }
       break;
 
-    case PROP_FULLSCREEN:
-      if (g_value_get_boolean (value))
-        clutter_stage_fullscreen (stage);
-      else
-        clutter_stage_unfullscreen (stage);
-      break;
-
     case PROP_CURSOR_VISIBLE:
       if (g_value_get_boolean (value))
         clutter_stage_show_cursor (stage);
@@ -572,7 +565,7 @@ clutter_stage_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->is_offscreen);
       break;
 
-    case PROP_FULLSCREEN:
+    case PROP_FULLSCREEN_SET:
       g_value_set_boolean (value, priv->is_fullscreen);
       break;
 
@@ -672,38 +665,48 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * ClutterStage:fullscreen:
    *
    * Whether the stage should be fullscreen or not.
+   *
+   * This property is set by calling clutter_stage_fullscreen()
+   * and clutter_stage_unfullscreen()
+   *
+   * Since: 1.0
    */
-  g_object_class_install_property
-    (gobject_class, PROP_FULLSCREEN,
-     g_param_spec_boolean ("fullscreen",
-			   "Fullscreen",
-			   "Whether the main stage is fullscreen",
-			   FALSE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("fullscreen-set",
+                                "Fullscreen Set",
+                                "Whether the main stage is fullscreen",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_FULLSCREEN_SET,
+                                   pspec);
   /**
    * ClutterStage:offscreen:
    *
    * Whether the stage should be rendered in an offscreen buffer.
    */
-  g_object_class_install_property
-    (gobject_class, PROP_OFFSCREEN,
-     g_param_spec_boolean ("offscreen",
-			   "Offscreen",
-			   "Whether the main stage is renderer offscreen",
-			   FALSE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("offscreen",
+                                "Offscreen",
+                                "Whether the main stage should be "
+                                "rendered offscreen",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_OFFSCREEN,
+                                   pspec);
   /**
    * ClutterStage:cursor-visible:
    *
    * Whether the mouse pointer should be visible
    */
-  g_object_class_install_property
-    (gobject_class, PROP_CURSOR_VISIBLE,
-     g_param_spec_boolean ("cursor-visible",
-			   "Cursor Visible",
-			   "Whether the mouse pointer is visible on the main stage ",
-			   TRUE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("cursor-visible",
+                                "Cursor Visible",
+                                "Whether the mouse pointer is visible "
+                                "on the main stage",
+                                TRUE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_CURSOR_VISIBLE,
+                                   pspec);
   /**
    * ClutterStage:user-resizable:
    *
@@ -711,14 +714,15 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * Since: 0.4
    */
-  g_object_class_install_property
-    (gobject_class, PROP_USER_RESIZE,
-     g_param_spec_boolean ("user-resizable",
-			   "User Resizable",
-			   "Whether the stage is able to be resized via "
-			   "user interaction",
-			   FALSE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("user-resizable",
+                                "User Resizable",
+                                "Whether the stage is able to be resized "
+                                "via user interaction",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_USER_RESIZE,
+                                   pspec);
   /**
    * ClutterStage:color:
    *
@@ -739,13 +743,14 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * Since: 0.8.2
    */
-  g_object_class_install_property
-    (gobject_class, PROP_PERSPECTIVE,
-     g_param_spec_boxed ("perspective",
-			 "Perspective",
-			 "Perspective projection parameters",
-			 CLUTTER_TYPE_PERSPECTIVE,
-			 CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boxed ("perspective",
+                              "Perspective",
+                              "Perspective projection parameters",
+                              CLUTTER_TYPE_PERSPECTIVE,
+                              CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_PERSPECTIVE,
+                                   pspec);
 
   /**
    * ClutterStage:title:
@@ -754,13 +759,13 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * Since: 0.4
    */
-  g_object_class_install_property
-    (gobject_class, PROP_TITLE,
-     g_param_spec_string ("title",
-			  "Title",
-			  "Stage Title",
-			  NULL,
-			  CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_string ("title",
+                               "Title",
+                               "Stage Title",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_TITLE, pspec);
+
   /**
    * ClutterStage:use-fog:
    *
@@ -770,13 +775,13 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_USE_FOG,
-                                   g_param_spec_boolean ("use-fog",
-                                                         "Use Fog",
-                                                         "Whether to enable depth cueing",
-                                                         FALSE,
-                                                         CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("use-fog",
+                                "Use Fog",
+                                "Whether to enable depth cueing",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_USE_FOG, pspec);
+
   /**
    * ClutterStage:fog:
    *
@@ -1397,14 +1402,14 @@ clutter_stage_event (ClutterStage *stage,
 	  priv->is_fullscreen = TRUE;
 	  g_signal_emit (stage, stage_signals[FULLSCREEN], 0);
 
-          g_object_notify (G_OBJECT (stage), "fullscreen");
+          g_object_notify (G_OBJECT (stage), "fullscreen-set");
 	}
       else
 	{
 	  priv->is_fullscreen = FALSE;
 	  g_signal_emit (stage, stage_signals[UNFULLSCREEN], 0);
 
-          g_object_notify (G_OBJECT (stage), "fullscreen");
+          g_object_notify (G_OBJECT (stage), "fullscreen-set");
 	}
     }
 

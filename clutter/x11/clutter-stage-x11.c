@@ -164,7 +164,7 @@ clutter_stage_x11_get_preferred_width (ClutterActor *self,
 
   is_fullscreen = FALSE;
   g_object_get (G_OBJECT (stage_x11->wrapper),
-                "fullscreen", &is_fullscreen,
+                "fullscreen-set", &is_fullscreen,
                 NULL);
 
   if (is_fullscreen || stage_x11->fullscreen_on_map)
@@ -207,7 +207,7 @@ clutter_stage_x11_get_preferred_height (ClutterActor *self,
 
   is_fullscreen = FALSE;
   g_object_get (G_OBJECT (stage_x11->wrapper),
-                "fullscreen", &is_fullscreen,
+                "fullscreen-set", &is_fullscreen,
                 NULL);
 
   if (is_fullscreen || stage_x11->fullscreen_on_map)

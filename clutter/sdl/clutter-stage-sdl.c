@@ -64,7 +64,7 @@ clutter_stage_sdl_realize (ClutterActor *actor)
   is_offscreen = is_fullscreen = FALSE;
   g_object_get (stage_sdl->wrapper,
                 "offscreen", &is_offscreen,
-                "fullscreen", &is_fullscreen,
+                "fullscreen-set", &is_fullscreen,
                 NULL);
 
   if (G_LIKELY (!is_offscreen))

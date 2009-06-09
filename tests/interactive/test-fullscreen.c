@@ -36,7 +36,7 @@ toggle_fullscreen (gpointer dummy)
   ClutterActor *stage = clutter_stage_get_default ();
   gboolean is_fullscreen = FALSE;
 
-  g_object_get (G_OBJECT (stage), "fullscreen", &is_fullscreen, NULL);
+  g_object_get (G_OBJECT (stage), "fullscreen-set", &is_fullscreen, NULL);
 
   switch (state)
     {
