@@ -3273,7 +3273,7 @@ clutter_text_set_markup_internal (ClutterText *self,
   if (attrs)
     {
       if (priv->effective_attrs)
-        pango_attr_list_ref (priv->effective_attrs);
+        pango_attr_list_unref (priv->effective_attrs);
 
       priv->effective_attrs = attrs;
     }
