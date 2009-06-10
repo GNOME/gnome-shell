@@ -174,7 +174,7 @@ ClutterStageWindow *_clutter_stage_get_default_window   (void);
 void                _clutter_stage_maybe_setup_viewport (ClutterStage       *stage);
 void                _clutter_stage_maybe_relayout       (ClutterActor       *stage);
 gboolean            _clutter_stage_needs_update         (ClutterStage       *stage);
-void                _clutter_stage_do_update            (ClutterStage       *stage);
+gboolean            _clutter_stage_do_update            (ClutterStage       *stage);
 
 void     _clutter_stage_queue_event           (ClutterStage *stage,
 					       ClutterEvent *event);

@@ -486,7 +486,7 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
  *
  * Determines if _clutter_stage_do_update() needs to be called.
  *
- * Return value: %TRUE if the stages need layout or painting
+ * Return value: %TRUE if the stage need layout or painting
  */
 gboolean
 _clutter_stage_needs_update (ClutterStage *stage)
@@ -505,18 +505,20 @@ _clutter_stage_needs_update (ClutterStage *stage)
  * @stage: A #ClutterStage
  *
  * Handles per-frame layout and repaint for the stage.
+ *
+ * Return value: %TRUE if the stage was updated
  */
-void
+gboolean
 _clutter_stage_do_update (ClutterStage *stage)
 {
   ClutterStagePrivate *priv;
 
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
 
   priv = stage->priv;
 
   if (!priv->redraw_pending)
-    return;
+    return FALSE;
 
   /* clutter_do_redraw() will also call maybe_relayout(), but since a relayout
    * can queue a redraw, we want to do the relayout before we clear the
@@ -539,6 +541,8 @@ _clutter_stage_do_update (ClutterStage *stage)
 
       CLUTTER_CONTEXT ()->redraw_count = 0;
     }
+
+  return TRUE;
 }
 
 static void

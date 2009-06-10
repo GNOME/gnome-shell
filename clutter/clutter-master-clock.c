@@ -66,6 +66,8 @@ struct _ClutterMasterClock
    * a redraw on the stage and drive the animations
    */
   GSource *source;
+
+  guint updated_stages : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -144,7 +146,8 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
   if (!master_clock_is_running (master_clock))
     return -1;
 
-  if (clutter_feature_available (CLUTTER_FEATURE_SYNC_TO_VBLANK))
+  if (clutter_feature_available (CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
+      master_clock->updated_stages)
     {
       /* When we have sync-to-vblank, we count on that to throttle
        * our frame rate, and otherwise draw frames as fast as possible.
@@ -250,6 +253,8 @@ clutter_clock_dispatch (GSource     *source,
   stages = clutter_stage_manager_list_stages (stage_manager);
   g_slist_foreach (stages, (GFunc)g_object_ref, NULL);
 
+  master_clock->updated_stages = FALSE;
+
   /* Process queued events
    */
   for (l = stages; l != NULL; l = l->next)
@@ -262,7 +267,7 @@ clutter_clock_dispatch (GSource     *source,
    * is advanced.
    */
   for (l = stages; l != NULL; l = l->next)
-    _clutter_stage_do_update (l->data);
+    master_clock->updated_stages |= _clutter_stage_do_update (l->data);
 
   g_slist_foreach (stages, (GFunc)g_object_unref, NULL);
   g_slist_free (stages);
@@ -297,6 +302,8 @@ clutter_master_clock_init (ClutterMasterClock *self)
 
   source = clutter_clock_source_new (self);
   self->source = source;
+
+  self->updated_stages = TRUE;
 
   g_source_set_priority (source, CLUTTER_PRIORITY_REDRAW);
   g_source_set_can_recurse (source, FALSE);
