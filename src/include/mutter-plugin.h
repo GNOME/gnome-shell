@@ -108,7 +108,7 @@ struct _MutterPluginClass
                             MutterWindow     *actor,
                             gulong            events);
 
-  /* General XEvent filter. This is fired *before* metacity itself handles
+  /* General XEvent filter. This is fired *before* mutter itself handles
    * an event. Return TRUE to block any further processing.
    */
   gboolean (*xevent_filter) (MutterPlugin       *plugin,
@@ -137,7 +137,7 @@ const MutterPluginInfo * mutter_plugin_get_info (MutterPlugin *plugin);
 struct _MutterPluginVersion
 {
   /*
-   * Version information; the first three numbers match the Metacity version
+   * Version information; the first three numbers match the Mutter version
    * with which the plugin was compiled (see clutter-plugins/simple.c for sample
    * code).
    */
@@ -159,10 +159,10 @@ struct _MutterPluginVersion
 #define MUTTER_PLUGIN_DECLARE(ObjectName, object_name)                  \
   G_MODULE_EXPORT MutterPluginVersion mutter_plugin_version =           \
     {                                                                   \
-      METACITY_MAJOR_VERSION,                                           \
-      METACITY_MINOR_VERSION,                                           \
-      METACITY_MICRO_VERSION,                                           \
-      METACITY_CLUTTER_PLUGIN_API_VERSION                               \
+      MUTTER_MAJOR_VERSION,                                           \
+      MUTTER_MINOR_VERSION,                                           \
+      MUTTER_MICRO_VERSION,                                           \
+      MUTTER_PLUGIN_API_VERSION                               \
     };                                                                  \
                                                                         \
   static GType g_define_type_id = 0;                                    \

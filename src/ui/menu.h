@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity window menu */
+/* Mutter window menu */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington

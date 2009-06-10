@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity window groups */
+/* Mutter window groups */
 
 /* 
  * Copyright (C) 2002 Red Hat Inc.

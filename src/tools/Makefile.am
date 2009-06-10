@@ -1,33 +1,33 @@
 @INTLTOOL_DESKTOP_RULE@
 
 icondir=$(pkgdatadir)/icons
-icon_DATA=metacity-window-demo.png
+icon_DATA=mutter-window-demo.png
 
-INCLUDES=@METACITY_WINDOW_DEMO_CFLAGS@ @METACITY_MESSAGE_CFLAGS@ \
-	-DMETACITY_ICON_DIR=\"$(pkgdatadir)/icons\" \
-	-DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\"
+INCLUDES=@MUTTER_WINDOW_DEMO_CFLAGS@ @MUTTER_MESSAGE_CFLAGS@ \
+	-DMUTTER_ICON_DIR=\"$(pkgdatadir)/icons\" \
+	-DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\"
 
-metacity_message_SOURCES= 				\
-	metacity-message.c
+mutter_message_SOURCES= 				\
+	mutter-message.c
 
-metacity_window_demo_SOURCES=				\
-	metacity-window-demo.c
+mutter_window_demo_SOURCES=				\
+	mutter-window-demo.c
 
-metacity_mag_SOURCES=					\
-	metacity-mag.c
+mutter_mag_SOURCES=					\
+	mutter-mag.c
 
-metacity_grayscale_SOURCES=				\
-	metacity-grayscale.c
+mutter_grayscale_SOURCES=				\
+	mutter-grayscale.c
 
-bin_PROGRAMS=metacity-message metacity-window-demo
+bin_PROGRAMS=mutter-message mutter-window-demo
 
 ## cheesy hacks I use, don't really have any business existing. ;-)
-noinst_PROGRAMS=metacity-mag metacity-grayscale
+noinst_PROGRAMS=mutter-mag mutter-grayscale
 
-metacity_message_LDADD= @METACITY_MESSAGE_LIBS@
-metacity_window_demo_LDADD= @METACITY_WINDOW_DEMO_LIBS@
-metacity_mag_LDADD= @METACITY_WINDOW_DEMO_LIBS@
-metacity_grayscale_LDADD = @METACITY_WINDOW_DEMO_LIBS@
+mutter_message_LDADD= @MUTTER_MESSAGE_LIBS@
+mutter_window_demo_LDADD= @MUTTER_WINDOW_DEMO_LIBS@
+mutter_mag_LDADD= @MUTTER_WINDOW_DEMO_LIBS@
+mutter_grayscale_LDADD = @MUTTER_WINDOW_DEMO_LIBS@
 
 EXTRA_DIST=$(icon_DATA)
 

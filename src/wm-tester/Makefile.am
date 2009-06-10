@@ -1,5 +1,5 @@
 
-INCLUDES=@METACITY_CFLAGS@
+INCLUDES=@MUTTER_CFLAGS@
 
 wm_tester_SOURCES= 				\
 	main.c
@@ -18,8 +18,8 @@ test_size_hints_SOURCES=			\
 
 noinst_PROGRAMS=wm-tester test-gravity test-resizing focus-window test-size-hints
 
-wm_tester_LDADD= @METACITY_LIBS@
-test_gravity_LDADD= @METACITY_LIBS@
-test_resizing_LDADD= @METACITY_LIBS@
-test_size_hints_LDADD= @METACITY_LIBS@
-focus_window_LDADD= @METACITY_LIBS@
+wm_tester_LDADD= @MUTTER_LIBS@
+test_gravity_LDADD= @MUTTER_LIBS@
+test_resizing_LDADD= @MUTTER_LIBS@
+test_size_hints_LDADD= @MUTTER_LIBS@
+focus_window_LDADD= @MUTTER_LIBS@

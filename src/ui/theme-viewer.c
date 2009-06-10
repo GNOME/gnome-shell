@@ -770,7 +770,7 @@ main (int argc, char **argv)
   GtkWidget *notebook;
   int i;
   
-  bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
+  bindtextdomain (GETTEXT_PACKAGE, MUTTER_LOCALEDIR);
   textdomain(GETTEXT_PACKAGE);
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
 
@@ -781,7 +781,7 @@ main (int argc, char **argv)
 
   gtk_init (&argc, &argv);
 
-  if (g_getenv ("METACITY_DEBUG") != NULL)
+  if (g_getenv ("MUTTER_DEBUG") != NULL)
     {
       meta_set_debugging (TRUE);
       meta_set_verbose (TRUE);

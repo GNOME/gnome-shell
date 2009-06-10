@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity X property convenience routines */
+/* Mutter X property convenience routines */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -86,7 +86,7 @@ from The Open Group.
 #include "util.h"
 #include "async-getprop.h"
 #include "ui.h"
-#include "metacity-Xatomtype.h"
+#include "mutter-Xatomtype.h"
 #include <X11/Xatom.h>
 #include <string.h>
 #include "window-private.h"

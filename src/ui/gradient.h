@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity gradient rendering */
+/* Mutter gradient rendering */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington, 99% copied from wrlib in

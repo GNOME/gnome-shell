@@ -3,7 +3,7 @@
 /* Draw a workspace */
 
 /* This file should not be modified to depend on other files in
- * libwnck or metacity, since it's used in both of them
+ * libwnck or mutter, since it's used in both of them
  */
 
 /* 

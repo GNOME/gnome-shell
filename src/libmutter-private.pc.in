@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+libgnome_serverdir=@libexecdir@
+
+Name: libmutter-private
+Description: Mutter internals shared
+Requires: gtk+-2.0
+Version: @VERSION@
+Libs: -L${libdir} -lmutter-private
+Cflags: -I${includedir}/mutter

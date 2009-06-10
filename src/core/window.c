@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity X managed windows */
+/* Mutter X managed windows */
 
 /*
  * Copyright (C) 2001 Havoc Pennington, Anders Carlsson
@@ -1419,7 +1419,7 @@ set_wm_state (MetaWindow *window,
   meta_verbose ("Setting wm state %s on %s\n",
                 wm_state_to_string (state), window->desc);
 
-  /* Metacity doesn't use icon windows, so data[1] should be None
+  /* Mutter doesn't use icon windows, so data[1] should be None
    * according to the ICCCM 2.0 Section 4.1.3.1.
    */
   data[0] = state;
@@ -1987,9 +1987,9 @@ meta_window_queue (MetaWindow *window, guint queuebits)
 
           const gint window_queue_idle_priority[NUMBER_OF_QUEUES] =
             {
-              G_PRIORITY_DEFAULT_IDLE,  /* CALC_SHOWING */
-              META_PRIORITY_RESIZE,     /* MOVE_RESIZE */
-              G_PRIORITY_DEFAULT_IDLE   /* UPDATE_ICON */
+              META_PRIORITY_BEFORE_REDRAW, /* CALC_SHOWING */
+              META_PRIORITY_RESIZE,        /* MOVE_RESIZE */
+              META_PRIORITY_BEFORE_REDRAW  /* UPDATE_ICON */
             };
 
           const GSourceFunc window_queue_idle_handler[NUMBER_OF_QUEUES] =
@@ -3332,7 +3332,7 @@ window_activate (MetaWindow     *window,
 }
 
 /* This function exists since most of the functionality in window_activate
- * is useful for Metacity, but Metacity shouldn't need to specify a client
+ * is useful for Mutter, but Mutter shouldn't need to specify a client
  * type for itself.  ;-)
  */
 void
@@ -3863,10 +3863,10 @@ meta_window_move_resize_internal (MetaWindow          *window,
     need_configure_notify = TRUE;
 
   /* MapRequest events with a PPosition or UPosition hint with a frame
-   * are moved by metacity without resizing; send a configure notify
+   * are moved by mutter without resizing; send a configure notify
    * in such cases.  See #322840.  (Note that window->constructing is
    * only true iff this call is due to a MapRequest, and when
-   * PPosition/UPosition hints aren't set, metacity seems to send a
+   * PPosition/UPosition hints aren't set, mutter seems to send a
    * ConfigureNotify anyway due to the above code.)
    */
   if (window->constructing && window->frame &&
@@ -5707,7 +5707,7 @@ meta_window_notify_focus (MetaWindow *window,
    *
    * My suggestion is to change it so that we clearly separate
    * actual keyboard focus tracking using the xterm algorithm,
-   * and metacity's "pretend" focus window, and go through all
+   * and mutter's "pretend" focus window, and go through all
    * the code and decide which one should be used in each place;
    * a hard bit is deciding on a policy for that.
    *
@@ -6577,8 +6577,8 @@ set_allowed_actions_hint (MetaWindow *window)
       data[i] = window->display->atom__NET_WM_ACTION_SHADE;
       ++i;
     }
-  /* sticky according to EWMH is different from metacity's sticky;
-   * metacity doesn't support EWMH sticky
+  /* sticky according to EWMH is different from mutter's sticky;
+   * mutter doesn't support EWMH sticky
    */
   if (window->has_maximize_func)
     {

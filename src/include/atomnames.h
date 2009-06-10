@@ -26,7 +26,7 @@
 /**
  * \file atomnames.h  A list of atom names.
  *
- * This is a list of the names of all the X atoms that Metacity uses.
+ * This is a list of the names of all the X atoms that Mutter uses.
  * Each is wrapped in a macro "item()" which is undefined here; the
  * idea is that when you need to make a big list of all the X atoms,
  * you can define item(), include this file, and then undefine it
@@ -54,15 +54,15 @@ item(WM_WINDOW_ROLE)
 item(UTF8_STRING)
 item(WM_ICON_SIZE)
 item(_KWM_WIN_ICON)
-item(_METACITY_RESTART_MESSAGE)
-item(_METACITY_RELOAD_THEME_MESSAGE)
-item(_METACITY_SET_KEYBINDINGS_MESSAGE)
-item(_METACITY_TOGGLE_VERBOSE)
+item(_MUTTER_RESTART_MESSAGE)
+item(_MUTTER_RELOAD_THEME_MESSAGE)
+item(_MUTTER_SET_KEYBINDINGS_MESSAGE)
+item(_MUTTER_TOGGLE_VERBOSE)
 item(_GNOME_PANEL_ACTION)
 item(_GNOME_PANEL_ACTION_MAIN_MENU)
 item(_GNOME_PANEL_ACTION_RUN_DIALOG)
-item(_METACITY_SENTINEL)
-item(_METACITY_VERSION)
+item(_MUTTER_SENTINEL)
+item(_MUTTER_VERSION)
 item(WM_CLIENT_MACHINE)
 item(MANAGER)
 item(TARGETS)

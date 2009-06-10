@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity X display handler */
+/* Mutter X display handler */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -403,7 +403,7 @@ meta_display_open (void)
 #endif
   
   /* FIXME copy the checks from GDK probably */
-  the_display->static_gravity_works = g_getenv ("METACITY_USE_STATIC_GRAVITY") != NULL;
+  the_display->static_gravity_works = g_getenv ("MUTTER_USE_STATIC_GRAVITY") != NULL;
   
   meta_bell_init (the_display);
 
@@ -681,11 +681,11 @@ meta_display_open (void)
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,
                                     the_display->atom__NET_WM_NAME,
-                                    "Metacity");
+                                    "Mutter");
     
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,
-                                    the_display->atom__METACITY_VERSION,
+                                    the_display->atom__MUTTER_VERSION,
                                     VERSION);
 
     data[0] = the_display->leader_window;
@@ -1434,7 +1434,7 @@ handle_net_restack_window (MetaDisplay* display,
 
 /**
  * This is the most important function in the whole program. It is the heart,
- * it is the nexus, it is the Grand Central Station of Metacity's world.
+ * it is the nexus, it is the Grand Central Station of Mutter's world.
  * When we create a MetaDisplay, we ask GDK to pass *all* events for *all*
  * windows to this function. So every time anything happens that we might
  * want to know about, this function gets called. You see why it gets a bit
@@ -1663,7 +1663,7 @@ event_callback (XEvent   *event,
           gboolean unmodified;
 
           grab_mask = display->window_grab_modifiers;
-          if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
+          if (g_getenv ("MUTTER_DEBUG_BUTTON_GRABS"))
             grab_mask |= ControlMask;
 
           /* Two possible sources of an unmodified event; one is a
@@ -2235,7 +2235,7 @@ event_callback (XEvent   *event,
              * sentinel_counter variable declaration in display.h
 	     */
 	    if (event->xproperty.atom ==
-		display->atom__METACITY_SENTINEL)
+		display->atom__MUTTER_SENTINEL)
 	      {
 		meta_display_decrement_focus_sentinel (display);
 	      }
@@ -2346,13 +2346,13 @@ event_callback (XEvent   *event,
                     }
                 }
               else if (event->xclient.message_type ==
-                       display->atom__METACITY_RESTART_MESSAGE)
+                       display->atom__MUTTER_RESTART_MESSAGE)
                 {
                   meta_verbose ("Received restart request\n");
                   meta_restart ();
                 }
               else if (event->xclient.message_type ==
-                       display->atom__METACITY_RELOAD_THEME_MESSAGE)
+                       display->atom__MUTTER_RELOAD_THEME_MESSAGE)
                 {
                   meta_verbose ("Received reload theme request\n");
                   meta_ui_set_current_theme (meta_prefs_get_theme (),
@@ -2360,14 +2360,14 @@ event_callback (XEvent   *event,
                   meta_display_retheme_all ();
                 }
               else if (event->xclient.message_type ==
-                       display->atom__METACITY_SET_KEYBINDINGS_MESSAGE)
+                       display->atom__MUTTER_SET_KEYBINDINGS_MESSAGE)
                 {
                   meta_verbose ("Received set keybindings request = %d\n",
                                 (int) event->xclient.data.l[0]);
                   meta_set_keybindings_disabled (!event->xclient.data.l[0]);
                 }
               else if (event->xclient.message_type ==
-                       display->atom__METACITY_TOGGLE_VERBOSE)
+                       display->atom__MUTTER_TOGGLE_VERBOSE)
                 {
                   meta_verbose ("Received toggle verbose message\n");
                   meta_set_verbose (!meta_is_verbose ());
@@ -3756,7 +3756,7 @@ meta_display_grab_window_buttons (MetaDisplay *display,
 
   if (display->window_grab_modifiers != 0)
     {
-      gboolean debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
+      gboolean debug = g_getenv ("MUTTER_DEBUG_BUTTON_GRABS") != NULL;
       int i;
       for (i = 1; i < 4; i++)
         {
@@ -3798,7 +3798,7 @@ meta_display_ungrab_window_buttons  (MetaDisplay *display,
   if (display->window_grab_modifiers == 0)
     return;
   
-  debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
+  debug = g_getenv ("MUTTER_DEBUG_BUTTON_GRABS") != NULL;
   i = 1;
   while (i < 4)
     {
@@ -3995,7 +3995,7 @@ static gboolean is_syncing = FALSE;
  *
  * \bug This is *only* called by meta_display_open, but by that time
  * we have already turned syncing on or off on startup, and we don't
- * have any way to do so while Metacity is running, so it's rather
+ * have any way to do so while Mutter is running, so it's rather
  * pointless.
  */
 gboolean
@@ -4971,7 +4971,7 @@ meta_display_increment_focus_sentinel (MetaDisplay *display)
   
   XChangeProperty (display->xdisplay,
                    ((MetaScreen*) display->screens->data)->xroot,
-                   display->atom__METACITY_SENTINEL,
+                   display->atom__MUTTER_SENTINEL,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   

@@ -3990,10 +3990,10 @@ meta_theme_load (const char *theme_name,
             }
         }
 
-      /* Look for themes in METACITY_DATADIR */
+      /* Look for themes in MUTTER_DATADIR */
       if (text == NULL)
         {
-          theme_dir = g_build_filename (METACITY_DATADIR,
+          theme_dir = g_build_filename (MUTTER_DATADIR,
                                         "themes",
                                         theme_name,
                                         THEME_SUBDIR,

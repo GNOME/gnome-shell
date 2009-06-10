@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity Keybindings */ 
+/* Mutter Keybindings */
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002 Red Hat Inc.
@@ -2396,7 +2396,7 @@ error_on_command (int         command_index,
                   command_index, command, message);  
 
   /*
-    metacity-dialog said:
+    mutter-dialog said:
         
     FIXME offer to change the value of the command's gconf key
   */

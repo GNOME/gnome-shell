@@ -200,7 +200,7 @@ keybind (toggle_recording, handle_toggle_recording, 0, 0, "<Control><Shift><Alt>
 
 /* Yes, the param is offset by one.  Historical reasons.  (Maybe worth fixing
  * at some point.)  The description is NULL here because the stanza is
- * irregularly shaped in metacity.schemas.in.  This will probably be fixed
+ * irregularly shaped in mutter.schemas.in.  This will probably be fixed
  * as well.
  */
 keybind (run_command_1,  handle_run_command,  0, 0, NULL, NULL)

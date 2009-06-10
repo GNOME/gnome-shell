@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity window group private header */
+/* Mutter window group private header */
 
 /* 
  * Copyright (C) 2002 Red Hat Inc.

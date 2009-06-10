@@ -1,0 +1,338 @@
+#!/usr/bin/python
+#
+# mutter-test.py -- testing for Mutter
+# 
+# Copyright (C) 2008 Thomas Thurman
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+#
+# ---------------------
+#
+# This code is copied in from the test-system branch to trunk; it is
+# here because it's useful, with no guarantees (well, not that GPL
+# software comes with guarantees in the first place).  The test-system
+# branch is the place to look if you want the real version of this.
+#
+# ---------------------
+
+
+import sys
+import inspect
+import getopt
+import os
+import tempfile
+import commands
+import traceback
+
+class Test(object):
+    """Grandfather of all tests.  (Yes, I know about the 'unittest'
+    module; I think what we're doing here isn't terribly similar.)"""
+    # If when we get this working I'm shown to be wrong, well,
+    # that's fine too.
+
+    def prerequisites(self):
+        return []
+
+tests_by_name = {}
+tests_by_bug_number = {}
+
+pristine_copy = '/usr/local/src/mutter'
+working_directory = pristine_copy
+homepath = os.getcwd ()
+
+def run(verb, command):
+    """Prints the verb, then executes the command.
+    It's here so we can toggle dry runs
+    (although this isn't currently implemented).
+    If the command is None, writes the command in brackets and exits.
+    """
+
+    if command is None:
+        sys.stdout.write('(%s) ' % verb)
+        return True
+
+    sys.stdout.write('%s ' % verb)
+    sys.stdout.flush()
+
+    os.chdir (working_directory)
+
+    (status, output) = commands.getstatusoutput(command)
+
+    os.chdir (homepath) # in case it matters to anyone
+
+    if status!=0:
+        (fd, name) = tempfile.mkstemp(suffix='.txt', text=True)
+
+        # Can't do this in one line.  No idea why not.
+        temp = os.fdopen(fd, 'w')
+        temp.write("%s - %s\n\n%s\n\nReturn result is: %d" % (verb, command, output, status))
+        del temp
+
+        sys.stdout.write('(See %s ): ' % name)
+        sys.stdout.flush()
+
+        return False
+    else:
+        return True
+
+
+class TestFailure(Exception):
+    "Houston, we have a problem."
+    def __init__(self, problem):
+        self.problem = problem
+
+    def __str__(self):
+        return self.problem
+
+    def message(self):
+        return self.problem
+
+#################
+#
+#  These belong in a file, one of several in a subdirectory
+#  which gets scanned, so we can easily do plugins, and so
+#  we get precompilation.
+#
+#  There will be class decorators in Python 2.6, but until
+#  we get them, we will make do with adding the classes to
+#  dictionaries directly.
+
+class BuildTest(Test):
+    "Convenience class to build others around"
+    # Should this go in the included files, or the main file?
+
+    def executable_name(self):
+        name = self.__class__.__name__
+        if name.startswith('test_'):
+            name = name[5:]
+        return name
+
+    def run_build(self, **params):
+        """Generalised routine to attempt to build Mutter.
+
+        Parameters are:
+        action = (string)  -- run "make (string)" rather than "make"
+        autogen = (string) -- opts for autogen (or its kids)
+        c = (string) -- C flags
+        """
+        working_directory = pristine_copy
+        if False:
+            # This is an idea I had about copying everything into /tmp
+            # so we could work with -r being a r/o directory.
+            # It slows everything down to turn it on by default, though.
+            # XXX allow people to turn it on.
+            temp_directory = tempfile.mkdtemp(prefix='metatest_')
+            if not run('copy', 'cp -LpR %s %s' % (pristine_copy, temp_directory)):
+                raise('There were errors during copying (your repository is probably '+\
+                 'a little untidy).  Please go and tidy up and then come back.')
+            working_directory = temp_directory
+
+        makefile = os.path.join(working_directory, 'Makefile')
+
+        targetdir = os.path.abspath ('.built')
+
+        # TODO -- if not run(...) raise TestFailure (...) is common and could be
+        # an extra param on run() instead.
+
+        if os.path.lexists (makefile):
+            if not run ('clean', "make distclean"):
+                raise TestFailure('Could not clean up; this is bad')
+        else:
+            run('clean', None)
+
+        autogen_opts = ''
+        if params.has_key ('autogen'):
+            autogen_opts = params['autogen']
+
+        if not run('config', './autogen.sh %s' % autogen_opts):
+            raise TestFailure('Autogen failed; can\'t really go on from here.')
+
+        flags = []
+        if params.has_key ('cflags'):
+            flags.append ('CFLAGS=%s' % params['cflags'].replace(' ','\ '))
+
+        command = ''
+        if params.has_key ('action'):
+            command = params['action']
+
+        if not run('make', 'env %s make %s' % (' '.join(flags), command)):
+            raise TestFailure('Build failed; can\'t really go on from here.')
+
+        binary = 'src/mutter' # or 'mutter/src/mutter' sometimes. hmm....
+
+        if not os.path.lexists(binary):
+            raise TestFailure('Binary was not built.')
+
+        output = commands.getoutput("env LANG=C %s --version" % binary)
+
+        if not output.startswith('mutter '):
+            raise TestFailure('Built program fails to identify itself: ['+output+']')
+
+        # Should also test what it says about its flags
+        # (and make it show its flags)
+
+        if not run ('recopy', 'cp %s %s/mutter-%s' % (binary, homepath, self.executable_name())):
+            raise TestFailure('Couldn\'t copy binary somewhere safe')
+
+        # Should clear up build if it's temp directory
+
+        return True
+
+class test_ansi(BuildTest):
+    def run(self):
+        return self.run_build(c='ansi')
+
+class test_gconfoff(BuildTest):
+    def run(self):
+        return self.run_build(autogen='--disable-gconf')
+
+class test_compositoroff(BuildTest):
+    def run(self):
+        return self.run_build(autogen='--disable-compositor')
+
+class test_teston(BuildTest):
+    def run(self):
+        return self.run_build(autogen='--enable-testing')
+
+class test_distcheck(BuildTest):
+    def run(self):
+        return self.run_build(action='distcheck')
+
+class test_warningerrors(BuildTest):
+    def run(self):
+        return self.run_build(cflags='-Wall')
+
+class test_pedantic(BuildTest):
+    def run(self):
+        return self.run_build(cflags='-Wall -Werror -pedantic')
+
+# Populate tests_by_name by introspection
+for (name, klass) in inspect.getmembers(sys.modules['__main__']):
+    if not name.startswith('test_'): continue
+
+    tests_by_name[name[5:]] = klass
+
+#################
+#
+#  And back in the ordinary world...
+
+def show_help():
+    print '  --- mutter-test ---  a test system for mutter.'
+    print 'There are three kinds of test: unit, regression, or build.'
+    print 'Only build tests are currently implemented.'
+    print
+    print 'Syntax:'
+    print '  mutter-test <switches> <test names>'
+    print 'where <switches> can be:'
+    print '  -h    Show this help and exit'
+    print '  -l    List all known tests and exit'
+    print '  -r=n  Use revision n, or directory n as pristine'
+    print '          (defaults to %s if you have it)' % pristine_copy
+    print
+
+def show_tests():
+    print 'Build tests:'
+    for name in tests_by_name.keys():
+        test = tests_by_name[name]
+        if test.__doc__:
+            print '     %s - %s' % (name, test.__doc__)
+        else:
+            print '     %s' % (name)
+
+    print
+    print 'Unit tests:'
+    print '  -- Not yet implemented.'
+    print
+    print 'Regression tests:'
+    print '  -- Not yet implemented.'
+
+def main():
+    try:
+        (opts, testlist) = getopt.gnu_getopt(
+            sys.argv[1:],
+            'lhr=',
+            )
+    except getopt.GetoptError, e:
+        print 'Error:', e
+        print 'Use -h for help, or -l to list all tests.'
+        sys.exit(1)
+
+    if (len(opts)==0 and len(testlist)==0) or (('-h', '') in opts):
+        show_help()
+    elif ('-l', '') in opts:
+        show_tests()
+    elif ('-r', '') in opts:
+        print 'Sorry, actual parsing of -r isn\'t written yet; use %s.' % pristine_copy
+        sys.exit(1)
+    elif not testlist:
+        print "Warning: You didn't specify any tests to run."
+    else:
+        # Later we need to add
+        #  - .foo = all with the tag "foo"
+        #  - .build, etc., which are implicit tags
+        #  - for regression tests, selection by bug number
+        #  - very simple dependencies (you need the output of a particular build
+        #    test before you can run a given unit test on it!)
+
+        tests_to_run = {}
+        tests_that_dont_exist = []
+
+        switch_polarity = 0
+
+        if not os.path.lexists('.built'):
+            os.mkdir ('.built')
+
+        for test in testlist:
+            if test in ('all', 'allbut'):
+                switch_polarity = 1
+            elif tests_by_name.has_key(test):
+                tests_to_run[test] = tests_by_name[test]
+            else:
+                tests_that_dont_exist.append(test)
+
+        if tests_that_dont_exist:
+            print 'You asked for these tests which don\'t exist:', ' '.join(tests_that_dont_exist)
+            print 'Stopping now until you decide what you really want.'
+            print 'Try the -l option, maybe.'
+            sys.exit(1)
+
+        if switch_polarity:
+            temp = {}
+            for test in tests_by_name.keys():
+                if not tests_to_run.has_key(test):
+                    temp[test] = tests_by_name[test]
+            tests_to_run = temp
+
+        # okay, kick it off
+        for name in tests_to_run.keys():
+            sys.stdout.write('%s... ' % name)
+            test = tests_to_run[name]()
+            try:
+                result = test.run()
+                if result:
+                    print 'PASS'
+                else:
+                    print 'FAIL'
+            except TestFailure, tf:
+                print 'FAIL (%s)' % tf
+            except:
+                # obviously not good
+                print 'FAIL'
+                traceback.print_exception(*sys.exc_info())
+            
+
+if __name__=='__main__':
+    main()

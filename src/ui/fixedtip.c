@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity fixed tooltip routine */
+/* Mutter fixed tooltip routine */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington

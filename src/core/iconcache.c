@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity window icons */
+/* Mutter window icons */
 
 /*
  * Copyright (C) 2002 Havoc Pennington

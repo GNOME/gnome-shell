@@ -12,7 +12,7 @@ The stable releases so far are 2.4.x, 2.6.x, 2.8.[01], 2.8.1.x, 2.8.5-,
 Unstable branches are 2.3.x, 2.5.x, 2.8.2-4, 2.9.x, 2.11.x, 2.13.x,
 2.15.x, 2.17.x.
 
-COMPILING METACITY
+COMPILING MUTTER
 ===
 
 You need GTK+ 2.2.  For startup notification to work you need
@@ -20,6 +20,7 @@ libstartup-notification at
 http://www.freedesktop.org/software/startup-notification/ or on the
 GNOME ftp site. You also need GConf 1.2 (unless building a funky
 extra-small embedded metacity with --disable-gconf, see below).
+You need Clutter 0.9.3. You need gobject-introspection 0.6.3.
 
 REPORTING BUGS AND SUBMITTING PATCHES
 ===
@@ -36,46 +37,10 @@ Feel free to send patches too; Metacity is relatively small and
 simple, so if you find a bug or want to add a feature it should be
 pretty easy.  Send me mail, or put the patch in bugzilla.
 
-See the HACKING file for some notes on hacking Metacity.
+See the HACKING file for some notes on hacking Mutter.
 
-SHRINKING METACITY
+MUTTER FEATURES
 ===
-
-Not that metacity is huge, but a substantial amount of code is in
-preferences handling, in static strings that aren't essential, and in
-the theme engine.
-
-You can strip about 70K from the metacity binary by compiling with 
-options such as:
-
- --disable-gconf
- --disable-sm
- --disable-verbose 
- --disable-startup-notification
-
-However the result is no good for desktop use, all prefs have to be
-hardcoded in the binary, for example. If you wanted to make a really
-small metacity, here's some additional stuff you might consider
-implementing:
- 
- - add --disable-themes, which would replace theme.c and theme-parser.c 
-   with a hardcoded implementation of the interface in theme.h, 
-   should save about 80K. This should be fairly easy.
-
- - add --disable-gtk, which would implement the interface in ui.h
-   without using GTK. This one is easier than you think because the
-   main part of the window manager doesn't use GTK directly, but is
-   still fairly hard to do.  You would probably have to give up some
-   of the features, such as window menus, as menus are pretty complex
-   to implement well.  So time may be better spent adding a GTK
-   configure script feature to build GTK with only a small core set of
-   functionality.
-
-METACITY FEATURES
-===
-
- - Boring window manager for the adult in you. Many window managers
-   are like Marshmallow Froot Loops; Metacity is like Cheerios.
 
  - Uses GTK+ 2.0 for drawing window frames. This means colors, fonts, 
    etc. come from GTK+ theme.
@@ -132,8 +97,6 @@ METACITY FEATURES
    Also try the GNOME keyboard shortcuts control panel, or
    gconf-editor.
 
-   See metacity.schemas for all available bindings.
-
  - Window keybindings:
 
     Alt-space         window menu
@@ -185,13 +148,13 @@ METACITY FEATURES
 
  - Session management:
 
-    Metacity connects to the session manager and will set itself up to
+    Mutter connects to the session manager and will set itself up to
      be respawned. It theoretically restores sizes/positions/workspace
      for session-aware applications.
 
- - Metacity implements much of the EWMH window manager specification
+ - Mutter implements much of the EWMH window manager specification
    from freedesktop.org, as well as the older ICCCM.  Please refer to
-   the COMPLIANCE file for information on metacity compliance with
+   the COMPLIANCE file for information on mutter compliance with
    these standards.
 
  - Uses Pango to render text, so has cool i18n capabilities. 
@@ -210,7 +173,7 @@ METACITY FEATURES
  - handles the window manager selection from the ICCCM. Will exit if
    another WM claims it, and can claim it from another WM if you pass
    the --replace argument. So if you're running another
-   ICCCM-compliant WM, you can run "metacity --replace" to replace it
+   ICCCM-compliant WM, you can run "mutter --replace" to replace it
    with Metacity.
 
  - does basic colormap handling
@@ -220,7 +183,7 @@ METACITY FEATURES
 HOW TO ADD EXTERNAL FEATURES
 ===
 
-You can write a metacity "plugin" such as a pager, window list, icon
+You can write a mutter "plugin" such as a pager, window list, icon
 box, task menu, or even things like "window matching" using the
 Extended Window Manager Hints. See http://www.freedesktop.org for the
 EWMH specification. An easy-to-use library called "libwnck" is
@@ -228,10 +191,10 @@ available that uses the EWMH and is specifically designed for writing
 WM accessories.
 
 You might be interested in existing accessories such as "Devil's Pie"
-by Ross Burton, which add features to Metacity (or other
+by Ross Burton, which add features to Mutter (or other
 EWMH-compliant WMs).
 
-METACITY BUGS, NON-FEATURES, AND CAVEATS
+MUTTER BUGS, NON-FEATURES, AND CAVEATS
 ===
 
 See bugzilla: http://bugzilla.gnome.org/query.cgi
@@ -270,26 +233,15 @@ A: If it makes sense to turn on unconditionally, or is genuinely a
    http://pobox.com/~hp/free-software-ui.html
    http://pobox.com/~hp/features.html   
 
-Q: Will Metacity be part of GNOME?
+Q: Will Mutter be part of GNOME?
 
-A: It is officially part of GNOME as of GNOME 2.2. Prior to that, 
-   it was unofficially shipped as the default GNOME WM by several 
-   OS vendors.
+A: It is not officially part of GNOME as of GNOME 2.27. We are
+   hoping to have mutter officially included as of GNOME 2.28. 
 
-Q: Is Metacity a Red Hat project?
-
-A: Metacity's original creation was in no way funded, endorsed, or
-   encouraged by Red Hat, Inc. - I'm guessing Red Hat would not
-   consider "insufficient number of window managers for Linux" an
-   urgent problem. Just a wild guess though.
-
-   Now that metacity is the default WM however, Red Hat supports some
-   bugfixing and other work.
- 
-Q: Why does Metacity remember the workspace/position of some apps 
+Q: Why does Mutter remember the workspace/position of some apps 
    but not others across logout/login?
 
-A: Metacity only stores sizes/positions for apps that are session
+A: Mutter only stores sizes/positions for apps that are session
    managed. As far as I can determine, there is no way to attempt to
    remember workspace/position for non-session-aware apps without
    causing a lot of weird effects.
@@ -304,7 +256,7 @@ A: Metacity only stores sizes/positions for apps that are session
    place. And in fact I see a lot of bugs like this in window managers
    that try to handle non-session-aware apps.
 
-   However, for session-aware apps, Metacity can tell that the
+   However, for session-aware apps, Mutter can tell that the
    application instance is from the session and thus restore it
    reliably, assuming the app properly restores the windows it had 
    open on session save.
@@ -456,7 +408,7 @@ A: There are quite a few, though many opportunities remain.  Sometimes
 
    - and much more.
 
-Q: I think metacity sucks.
+Q: I think mutter sucks.
 
 A: Feel free to use any WM you like. The reason metacity follows the
    ICCCM and EWMH specifications is that it makes metacity a modular,

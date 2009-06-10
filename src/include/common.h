@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity common types shared by core.h and ui.h */
+/* Mutter common types shared by core.h and ui.h */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -287,8 +287,57 @@ struct _MetaButtonLayout
 
 #define META_DEFAULT_ICON_NAME "window"
 
+/* Main loop priorities determine when activity in the GLib
+ * will take precendence over the others. Priorities are sometimes
+ * used to enforce ordering: give A a higher priority than B if
+ * A must occur before B. But that poses a problem since then
+ * if A occurs frequently enough, B will never occur.
+ *
+ * Anything we want to occur more or less immediately should
+ * have a priority of G_PRIORITY_DEFAULT. When we want to
+ * coelesce multiple things together, the appropriate place to
+ * do it is usually META_PRIORITY_BEFORE_REDRAW.
+ *
+ * (FIXME: Use a Clutter paint() function instead, to prevent
+ * starving the repaints)
+ *
+ * If something has a priority lower than the redraw priority
+ * (such as a default priority idle), then it may be arbitrarily
+ * delayed. This happens if the screen is updating rapidly: we
+ * are spending all our time either redrawing or waiting for a
+ * vblank-synced buffer swap. (When X is improved to allow
+ * clutter to do the buffer-swap asychronously, this will get
+ * better.)
+ */
+
+/* G_PRIORITY_DEFAULT:
+ *  events
+ *  many timeouts
+ */
+
+/* GTK_PRIORITY_RESIZE:         (G_PRIORITY_HIGH_IDLE + 10) */
+#define META_PRIORITY_RESIZE    (G_PRIORITY_HIGH_IDLE + 15)
+/* GTK_PRIORITY_REDRAW:         (G_PRIORITY_HIGH_IDLE + 20) */
+
+#define META_PRIORITY_BEFORE_REDRAW  (G_PRIORITY_HIGH_IDLE + 40)
+/*  calc-showing idle
+ *  update-icon idle
+ */
+
+/* CLUTTER_PRIORITY_REDRAW:     (G_PRIORITY_HIGH_IDLE + 50) */
+#define META_PRIORITY_REDRAW    (G_PRIORITY_HIGH_IDLE + 50)
+
+/* ==== Anything below here can be starved arbitrarily ==== */
+
+/* G_PRIORITY_DEFAULT_IDLE:
+ *  Mutter plugin unloading
+ *  GConf notify idle
+ */
+
+/* Chosen to be below the GConf notify idle */
 #define META_PRIORITY_PREFS_NOTIFY   (G_PRIORITY_DEFAULT_IDLE + 10)
-#define META_PRIORITY_WORK_AREA_HINT (G_PRIORITY_DEFAULT_IDLE + 15)
+
+/************************************************************/
 
 #define POINT_IN_RECT(xcoord, ycoord, rect) \
  ((xcoord) >= (rect).x &&                   \

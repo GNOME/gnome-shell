@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity X display handler */
+/* Mutter X display handler */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington

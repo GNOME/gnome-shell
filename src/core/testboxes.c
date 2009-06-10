@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity box operation testing program */
+/* Mutter box operation testing program */
 
 /* 
  * Copyright (C) 2005 Elijah Newren

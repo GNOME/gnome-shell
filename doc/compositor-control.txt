@@ -42,5 +42,5 @@ options you can set are:
       menus zooming, dialogues being semi-transparent, and so on. Try it
       and see whether you like it.
 
-If you have any problems, ask on metacity-devel-list@gnome.org, or
+If you have any problems, ask on mutter-devel-list@gnome.org, or
 #gnome-hackers on gimpnet, or come and find me (tthurman at gnome) and ask.

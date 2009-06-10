@@ -113,7 +113,7 @@ void     meta_display_end_grab_op   (MetaDisplay *display,
                                      guint32      timestamp);
 /* meta_display_set_input_focus_window is like XSetInputFocus, except
  * that (a) it can't detect timestamps later than the current time,
- * since Metacity isn't part of the XServer, and thus gives erroneous
+ * since Mutter isn't part of the XServer, and thus gives erroneous
  * behavior in this circumstance (so don't do it), (b) it uses
  * display->last_focus_time since we don't have access to the true
  * Xserver one, (c) it makes use of display->user_time since checking

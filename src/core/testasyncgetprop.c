@@ -276,7 +276,7 @@ main (int argc, char **argv)
       return 1;
     }
 
-  if (getenv ("METACITY_SYNC") != NULL)
+  if (getenv ("MUTTER_SYNC") != NULL)
     XSynchronize (xdisplay, True);
 
   XSetErrorHandler (x_error_handler);

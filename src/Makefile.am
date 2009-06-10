@@ -1,14 +1,14 @@
-lib_LTLIBRARIES = libmetacity-private.la
+lib_LTLIBRARIES = libmutter-private.la
 
-SUBDIRS=wm-tester tools themes
+SUBDIRS=wm-tester tools
 
 if WITH_CLUTTER
 SUBDIRS += compositor/mutter/plugins
 endif
 
-INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1 -DMETACITY_MAJOR_VERSION=$(METACITY_MAJOR_VERSION) -DMETACITY_MINOR_VERSION=$(METACITY_MINOR_VERSION) -DMETACITY_MICRO_VERSION=$(METACITY_MICRO_VERSION) -DMETACITY_CLUTTER_PLUGIN_API_VERSION=$(METACITY_CLUTTER_PLUGIN_API_VERSION) -DMETACITY_PKGLIBDIR=\"$(pkglibdir)\" -DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"
+INCLUDES=@MUTTER_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMUTTER_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMUTTER_PKGDATADIR=\"$(pkgdatadir)\" -DMUTTER_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"mutter\" -DSN_API_NOT_YET_FROZEN=1 -DMUTTER_MAJOR_VERSION=$(MUTTER_MAJOR_VERSION) -DMUTTER_MINOR_VERSION=$(MUTTER_MINOR_VERSION) -DMUTTER_MICRO_VERSION=$(MUTTER_MICRO_VERSION) -DMUTTER_PLUGIN_API_VERSION=$(MUTTER_PLUGIN_API_VERSION) -DMUTTER_PKGLIBDIR=\"$(pkglibdir)\" -DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"
 
-metacity_SOURCES= 			\
+mutter_SOURCES= 				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
 	core/alttabhandler.c			\
@@ -57,7 +57,7 @@ metacity_SOURCES= 			\
 	core/keybindings-private.h		\
 	core/main.c				\
 	include/main.h				\
-	core/metacity-Xatomtype.h		\
+	core/mutter-Xatomtype.h		\
 	core/place.c				\
 	core/place.h				\
 	core/prefs.c				\
@@ -107,7 +107,7 @@ metacity_SOURCES= 			\
 	include/all-keybindings.h
 
 if WITH_CLUTTER
-metacity_SOURCES += 				\
+mutter_SOURCES += 					\
 	compositor/mutter/compositor-mutter.c		\
 	compositor/mutter/mutter-shaped-texture.c	\
 	compositor/mutter/mutter-shaped-texture.h	\
@@ -122,10 +122,10 @@ metacity_SOURCES += 				\
 	include/compositor-mutter.h
 endif
 
-# by setting libmetacity_private_la_CFLAGS, the files shared with
-# metacity proper will be compiled with different names.
-libmetacity_private_la_CFLAGS =
-libmetacity_private_la_SOURCES=			\
+# by setting libmutter_private_la_CFLAGS, the files shared with
+# mutter proper will be compiled with different names.
+libmutter_private_la_CFLAGS =
+libmutter_private_la_SOURCES=			\
 	core/boxes.c				\
 	include/boxes.h				\
 	ui/gradient.c				\
@@ -140,12 +140,12 @@ libmetacity_private_la_SOURCES=			\
 	ui/theme.c				\
 	ui/theme.h
 
-libmetacity_private_la_LDFLAGS = -no-undefined
-libmetacity_private_la_LIBADD  = @METACITY_LIBS@
+libmutter_private_la_LDFLAGS = -no-undefined
+libmutter_private_la_LIBADD  = @MUTTER_LIBS@
 
-libmetacityincludedir = $(includedir)/metacity-1/metacity-private
+libmutterincludedir = $(includedir)/mutter/mutter-private
 
-libmetacityinclude_base_headers =		\
+libmutterinclude_base_headers =		\
 	include/alttabhandler.h			\
 	include/boxes.h				\
 	ui/gradient.h				\
@@ -167,28 +167,19 @@ libmetacityinclude_base_headers =		\
 	include/mutter-plugin.h
 
 # Excluded from scanning for introspection but installed
-libmetacityinclude_extra_headers =		\
+libmutterinclude_extra_headers =		\
 	include/atomnames.h
 
-libmetacityinclude_HEADERS =			\
-	$(libmetacityinclude_base_headers)	\
-	$(libmetacityinclude_extra_headers)
+libmutterinclude_HEADERS =			\
+	$(libmutterinclude_base_headers)	\
+	$(libmutterinclude_extra_headers)
 
-metacity_theme_viewer_SOURCES=  \
+mutter_theme_viewer_SOURCES=  \
 	ui/theme-viewer.c
 
-schema_bindings_SOURCES =       \
-        core/schema-bindings.c			\
-	metacity.schemas.in.in
+bin_PROGRAMS=mutter mutter-theme-viewer
 
-schema_bindings_LDADD = @METACITY_LIBS@
-metacity.schemas.in: schema_bindings ${srcdir}/metacity.schemas.in.in
-	@echo Generating keybinding schemas... ${srcdir}/metacity.schemas.in.in
-	${builddir}/schema_bindings ${srcdir}/metacity.schemas.in.in ${builddir}/metacity.schemas.in
-
-bin_PROGRAMS=metacity metacity-theme-viewer
-
-api_version = $(METACITY_MAJOR_VERSION).$(METACITY_MINOR_VERSION)
+api_version = $(MUTTER_MAJOR_VERSION).$(MUTTER_MINOR_VERSION)
 
 if WITH_INTROSPECTION
 # These files are in package-private directories, even though they may be used
@@ -200,9 +191,9 @@ gir_DATA = Meta-$(api_version).gir
 typelibdir = $(pkglibdir)
 typelib_DATA = Meta-$(api_version).typelib
 
-# We need to strip out the attribute that would point back to libmetacity-introspect
+# We need to strip out the attribute that would point back to libmutter-introspect
 # so that libgirepository looks for symbols in the executable instead
-Meta-$(api_version).gir: $(G_IR_SCANNER) metacity $(libmetacityinclude_HEADERS) $(metacity_SOURCES)
+Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mutter_SOURCES)
 	$(G_IR_SCANNER)					\
 		--namespace=Meta			\
 		--nsversion=$(api_version)		\
@@ -213,9 +204,9 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) metacity $(libmetacityinclude_HEADERS) 
 		--pkg=clutter-0.9			\
 		--pkg=gtk+-2.0				\
 		--include=xfixes-4.0			\
-		--program=./metacity			\
-		$(filter %.c,$(metacity_SOURCES))	\
-		$(libmetacityinclude_base_headers)	\
+		--program=./mutter			\
+		$(filter %.c,$(mutter_SOURCES))	\
+		$(libmutterinclude_base_headers)	\
 		$(INCLUDES)				\
 		-o $@
 
@@ -224,42 +215,38 @@ Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
 endif
 
 EFENCE=
-metacity_LDADD=@METACITY_LIBS@ libmetacity-private.la $(EFENCE)
-metacity_LDFLAGS=-export-dynamic
+mutter_LDADD=@MUTTER_LIBS@ libmutter-private.la $(EFENCE)
+mutter_LDFLAGS=-export-dynamic
 
-metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
+mutter_theme_viewer_LDADD= @MUTTER_LIBS@ libmutter-private.la
 
 testboxes_SOURCES=include/util.h core/util.c include/boxes.h core/boxes.c core/testboxes.c
 testgradient_SOURCES=ui/gradient.h ui/gradient.c ui/testgradient.c
 testasyncgetprop_SOURCES=core/async-getprop.h core/async-getprop.c core/testasyncgetprop.c
 
-noinst_PROGRAMS=testboxes testgradient testasyncgetprop schema_bindings
+noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD= @METACITY_LIBS@ libmetacity-private.la
-testgradient_LDADD= @METACITY_LIBS@ libmetacity-private.la
-testasyncgetprop_LDADD= @METACITY_LIBS@ libmetacity-private.la
+testboxes_LDADD= @MUTTER_LIBS@ libmutter-private.la
+testgradient_LDADD= @MUTTER_LIBS@ libmutter-private.la
+testasyncgetprop_LDADD= @MUTTER_LIBS@ libmutter-private.la
 
 @INTLTOOL_DESKTOP_RULE@
 
 desktopfilesdir=$(datadir)/applications
-desktopfiles_in_files=metacity.desktop.in
+desktopfiles_in_files=mutter.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 
 wmpropertiesdir=$(datadir)/gnome/wm-properties
-wmproperties_in_files=metacity-wm.desktop.in
+wmproperties_in_files=mutter-wm.desktop.in
 wmproperties_files=$(wmproperties_in_files:.desktop.in=.desktop)
 wmproperties_DATA = $(wmproperties_files)
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
-schema_in_files = metacity.schemas.in
+schema_in_files = mutter.schemas.in
 schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 
 @INTLTOOL_XML_NOMERGE_RULE@
-
-xmldir       = @GNOME_KEYBINDINGS_KEYSDIR@
-xml_in_files = 50-metacity-desktop-key.xml.in 50-metacity-key.xml.in
-xml_DATA     = $(xml_in_files:.xml.in=.xml)
 
 @INTLTOOL_SCHEMAS_RULE@
 
@@ -276,14 +263,14 @@ VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES = inlinepixbufs.h metacity.desktop metacity-wm.desktop metacity.schemas metacity.schemas.in 50-metacity-desktop-key.xml 50-metacity-key.xml
+CLEANFILES = inlinepixbufs.h mutter.desktop mutter-wm.desktop mutter.schemas
 
 inlinepixbufs.h: $(IMAGES)
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libmetacity-private.pc metacity-plugins.pc
+pkgconfig_DATA = libmutter-private.pc mutter-plugins.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\
@@ -291,7 +278,6 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	$(schema_in_files)		\
-	$(xml_in_files)			\
-	libmetacity-private.pc.in	\
-	metacity-plugins.pc.in
+	libmutter-private.pc.in	\
+	mutter-plugins.pc.in
 

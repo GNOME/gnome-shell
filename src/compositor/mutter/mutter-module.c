@@ -69,7 +69,7 @@ mutter_module_load (GTypeModule *gmodule)
 		       (gpointer *)&register_type) &&
       info && register_type)
     {
-      if (info->version_api != METACITY_CLUTTER_PLUGIN_API_VERSION)
+      if (info->version_api != MUTTER_PLUGIN_API_VERSION)
 	g_warning ("Plugin API mismatch for [%s]", priv->path);
       else
         {

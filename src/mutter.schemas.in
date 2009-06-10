@@ -1,0 +1,56 @@
+<gconfschemafile>
+  <schemalist>
+
+    <!-- General preferences -->        
+
+    <schema>
+      <key>/schemas/apps/mutter/general/overlay_key</key>
+      <applyto>/apps/metacity/general/overlay_key</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Super_L&gt;</default>
+      <locale name="C">
+         <short>Modifier to use for extended window management operations</short>
+         <long>
+			This key will initiate the "overlay", which is a combination window
+			overview and application launching system.  The default is intended
+			to be the "Windows key" on PC hardware.
+
+			It's expected that this binding either the default or set to 
+			the empty string.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/mutter/general/clutter_plugins</key>
+      <applyto>/apps/mutter/general/clutter_plugins</applyto>
+      <owner>mutter</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[default]</default>
+      <locale name="C">
+        <short>Clutter Plugins</short>
+        <long>
+          Plugins to load for the Clutter-based compositing manager.
+        </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/mutter/general/live_hidden_windows</key>
+      <applyto>/apps/mutter/general/live_hidden_windows</applyto>
+      <owner>mutter</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Live Hidden Windows</short>
+        <long>
+          Determines whether hidden windows (i.e., minimized windows and
+          windows on other workspaces than the current one) should be kept
+          alive.
+        </long>
+      </locale>
+    </schema>
+  </schemalist>  
+</gconfschemafile>

@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity main() */
+/* Mutter main() */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -26,14 +26,14 @@
  * \file 
  * Program startup.
  * Functions which parse the command-line arguments, create the display,
- * kick everything off and then close down Metacity when it's time to go.
+ * kick everything off and then close down Mutter when it's time to go.
  */
 
 /**
  * \mainpage
- * Metacity - a boring window manager for the adult in you
+ * Mutter - a boring window manager for the adult in you
  *
- * Many window managers are like Marshmallow Froot Loops; Metacity
+ * Many window managers are like Marshmallow Froot Loops; Mutter
  * is like Cheerios.
  *
  * The best way to get a handle on how the whole system fits together
@@ -85,13 +85,13 @@
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
 
 /**
- * Handle on the main loop, so that we have an easy way of shutting Metacity
+ * Handle on the main loop, so that we have an easy way of shutting Mutter
  * down.
  */
 static GMainLoop *meta_main_loop = NULL;
 
 /**
- * If set, Metacity will spawn an identical copy of itself immediately
+ * If set, Mutter will spawn an identical copy of itself immediately
  * before quitting.
  */
 static gboolean meta_restart_after_quit = FALSE;
@@ -100,7 +100,7 @@ static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
 /**
- * Prints log messages. If Metacity was compiled with backtrace support,
+ * Prints log messages. If Mutter was compiled with backtrace support,
  * also prints a backtrace (see meta_print_backtrace()).
  *
  * \param log_domain  the domain the error occurred in (we ignore this)
@@ -120,13 +120,13 @@ log_handler (const gchar   *log_domain,
 }
 
 /**
- * Prints the version notice. This is shown when Metacity is called
+ * Prints the version notice. This is shown when Mutter is called
  * with the --version switch.
  */
 static void
 version (void)
 {
-  g_print (_("metacity %s\n"
+  g_print (_("mutter %s\n"
              "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
              "This is free software; see the source for copying conditions.\n"
              "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
@@ -136,7 +136,7 @@ version (void)
 
 /**
  * Prints a list of which configure script options were used to
- * build this copy of Metacity. This is actually always called
+ * build this copy of Mutter. This is actually always called
  * on startup, but it's all no-op unless we're in verbose mode
  * (see meta_set_verbose).
  */
@@ -189,7 +189,7 @@ meta_print_compilation_info (void)
  * Prints the version number, the current timestamp (not the
  * build date), the locale, the character encoding, and a list
  * of configure script options that were used to build this
- * copy of Metacity. This is actually always called
+ * copy of Mutter. This is actually always called
  * on startup, but it's all no-op unless we're in verbose mode
  * (see meta_set_verbose).
  */
@@ -204,7 +204,7 @@ meta_print_self_identity (void)
   g_date_clear (&d, 1);
   g_date_set_time_t (&d, time (NULL));
   g_date_strftime (buf, sizeof (buf), "%x", &d);
-  meta_verbose ("Metacity version %s running on %s\n",
+  meta_verbose ("Mutter version %s running on %s\n",
     VERSION, buf);
   
   /* Locale and encoding. */
@@ -217,7 +217,7 @@ meta_print_self_identity (void)
 }
 
 /**
- * The set of possible options that can be set on Metacity's
+ * The set of possible options that can be set on Mutter's
  * command line. This type exists so that meta_parse_options() can
  * write to an instance of it.
  */
@@ -246,14 +246,14 @@ typedef struct
 
 /**
  * Parses argc and argv and returns the
- * arguments that Metacity understands in meta_args.
+ * arguments that Mutter understands in meta_args.
  *
  * The strange call signature has to be written like it is so
  * that g_option_context_parse() gets a chance to modify argc and
  * argv.
  *
- * \param argc  Pointer to the number of arguments Metacity was given
- * \param argv  Pointer to the array of arguments Metacity was given
+ * \param argc  Pointer to the number of arguments Mutter was given
+ * \param argv  Pointer to the array of arguments Mutter was given
  * \param meta_args  The result of parsing the arguments.
  **/
 static GOptionContext *
@@ -272,7 +272,7 @@ meta_parse_options (int *argc, char ***argv,
     {
       "replace", 0, 0, G_OPTION_ARG_NONE,
       &my_args.replace_wm,
-      N_("Replace the running window manager with Metacity"),
+      N_("Replace the running window manager with Mutter"),
       NULL
     },
     {
@@ -343,7 +343,7 @@ meta_parse_options (int *argc, char ***argv,
   GError *error = NULL;
 
   ctx = g_option_context_new (NULL);
-  g_option_context_add_main_entries (ctx, options, "metacity");
+  g_option_context_add_main_entries (ctx, options, "mutter");
   
 #ifdef WITH_CLUTTER
   /*
@@ -356,7 +356,7 @@ meta_parse_options (int *argc, char ***argv,
 
   if (!g_option_context_parse (ctx, argc, argv, &error))
     {
-      g_print ("metacity: %s\n", error->message);
+      g_print ("mutter: %s\n", error->message);
       exit(1);
     }
 
@@ -367,7 +367,7 @@ meta_parse_options (int *argc, char ***argv,
 
 
 #ifdef WITH_CLUTTER
-/* Metacity is responsible for pulling events off the X queue, so Clutter
+/* Mutter is responsible for pulling events off the X queue, so Clutter
  * doesn't need (and shouldn't) run its normal event source which polls
  * the X fd, but we do have to deal with dispatching events that accumulate
  * in the clutter queue. This happens, for example, when clutter generate
@@ -434,9 +434,9 @@ meta_clutter_init (GOptionContext *ctx, int *argc, char ***argv)
 #endif
 
 /**
- * Selects which display Metacity should use. It first tries to use
+ * Selects which display Mutter should use. It first tries to use
  * display_name as the display. If display_name is NULL then
- * try to use the environment variable METACITY_DISPLAY. If that
+ * try to use the environment variable MUTTER_DISPLAY. If that
  * also is NULL, use the default - :0.0
  */
 static void
@@ -445,9 +445,9 @@ meta_select_display (gchar *display_name)
   gchar *envVar = "";
   if (display_name)
     envVar = g_strconcat ("DISPLAY=", display_name, NULL);
-  else if (g_getenv ("METACITY_DISPLAY"))
+  else if (g_getenv ("MUTTER_DISPLAY"))
     envVar = g_strconcat ("DISPLAY=",
-      g_getenv ("METACITY_DISPLAY"), NULL);
+      g_getenv ("MUTTER_DISPLAY"), NULL);
   /* DO NOT FREE envVar, putenv() sucks */
   putenv (envVar);
 }
@@ -560,9 +560,9 @@ main (int argc, char **argv)
     g_printerr ("Failed to register SIGCHLD handler: %s\n",
 		g_strerror (errno));
 
-  if (g_getenv ("METACITY_VERBOSE"))
+  if (g_getenv ("MUTTER_VERBOSE"))
     meta_set_verbose (TRUE);
-  if (g_getenv ("METACITY_DEBUG"))
+  if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
 
   if (g_get_home_dir ())
@@ -574,7 +574,7 @@ main (int argc, char **argv)
 
   meta_print_self_identity ();
   
-  bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
+  bindtextdomain (GETTEXT_PACKAGE, MUTTER_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
@@ -606,7 +606,7 @@ main (int argc, char **argv)
 #endif /* WITH_CLUTTER */
 
 #ifdef HAVE_INTROSPECTION
-  g_irepository_prepend_search_path (METACITY_PKGLIBDIR);  
+  g_irepository_prepend_search_path (MUTTER_PKGLIBDIR);
   if (meta_args.introspect)
     {
       GError *error = NULL;
@@ -631,7 +631,7 @@ main (int argc, char **argv)
     }
 #endif
 
-  meta_set_syncing (meta_args.sync || (g_getenv ("METACITY_SYNC") != NULL));
+  meta_set_syncing (meta_args.sync || (g_getenv ("MUTTER_SYNC") != NULL));
 
   if (meta_args.print_version)
     version ();
@@ -674,7 +674,7 @@ main (int argc, char **argv)
 
 #endif
 
-  if (g_getenv ("METACITY_G_FATAL_WARNINGS") != NULL)
+  if (g_getenv ("MUTTER_G_FATAL_WARNINGS") != NULL)
     g_log_set_always_fatal (G_LOG_LEVEL_MASK);
   
   meta_ui_set_current_theme (meta_prefs_get_theme (), FALSE);
@@ -692,7 +692,7 @@ main (int argc, char **argv)
       GError *err = NULL;
       GDir   *themes_dir = NULL;
       
-      if (!(themes_dir = g_dir_open (METACITY_DATADIR"/themes", 0, &err)))
+      if (!(themes_dir = g_dir_open (MUTTER_DATADIR"/themes", 0, &err)))
         {
           meta_fatal (_("Failed to scan themes directory: %s\n"), err->message);
           g_error_free (err);
@@ -711,7 +711,7 @@ main (int argc, char **argv)
   
   if (!meta_ui_have_a_theme ())
     meta_fatal (_("Could not find a theme! Be sure %s exists and contains the usual themes.\n"),
-                METACITY_DATADIR"/themes");
+                MUTTER_DATADIR"/themes");
   
   /* Connect to SM as late as possible - but before managing display,
    * or we might try to manage a window before we have the session
@@ -782,7 +782,7 @@ main (int argc, char **argv)
 }
 
 /**
- * Stops Metacity. This tells the event loop to stop processing; it is rather
+ * Stops Mutter. This tells the event loop to stop processing; it is rather
  * dangerous to use this rather than meta_restart() because this will leave
  * the user with no window manager. We generally do this only if, for example,
  * the session manager asks us to; we assume the session manager knows what
@@ -800,10 +800,10 @@ meta_quit (MetaExitCode code)
 }
 
 /**
- * Restarts Metacity. In practice, this tells the event loop to stop
+ * Restarts Mutter. In practice, this tells the event loop to stop
  * processing, having first set the meta_restart_after_quit flag which
- * tells Metacity to spawn an identical copy of itself before quitting.
- * This happens on receipt of a _METACITY_RESTART_MESSAGE client event.
+ * tells Mutter to spawn an identical copy of itself before quitting.
+ * This happens on receipt of a _MUTTER_RESTART_MESSAGE client event.
  */
 void
 meta_restart (void)

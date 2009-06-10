@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity preferences */
+/* Mutter preferences */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington, Copyright (C) 2002 Red Hat Inc.
@@ -57,7 +57,7 @@
 #define KEY_TERMINAL_DIR "/desktop/gnome/applications/terminal"
 #define KEY_TERMINAL_COMMAND KEY_TERMINAL_DIR "/exec"
 
-#define KEY_OVERLAY_KEY "/apps/metacity/general/overlay_key"
+#define KEY_OVERLAY_KEY "/apps/mutter/general/overlay_key"
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
 #define KEY_LIST_BINDINGS_SUFFIX "_list"
@@ -65,11 +65,11 @@
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
 #ifdef WITH_CLUTTER
-#define KEY_CLUTTER_DISABLED "/apps/metacity/general/clutter_disabled"
-#define KEY_CLUTTER_PLUGINS  "/apps/metacity/general/clutter_plugins"
+#define KEY_CLUTTER_DISABLED "/apps/mutter/general/clutter_disabled"
+#define KEY_CLUTTER_PLUGINS  "/apps/mutter/general/clutter_plugins"
 #endif
 
-#define KEY_LIVE_HIDDEN_WINDOWS "/apps/metacity/general/live_hidden_windows"
+#define KEY_LIVE_HIDDEN_WINDOWS "/apps/mutter/general/live_hidden_windows"
 
 #define KEY_NO_TAB_POPUP "/apps/metacity/general/no_tab_popup"
 
@@ -328,7 +328,7 @@ typedef struct
 
 /* FIXMEs: */
 /* @@@ Don't use NULL lines at the end; glib can tell you how big it is */
-/* @@@ /apps/metacity/general should be assumed if first char is not / */
+/* @@@ /apps/mutter/general should be assumed if first char is not / */
 /* @@@ Will it ever be possible to merge init and update? If not, why not? */
 
 static MetaEnumPreference preferences_enum[] =
@@ -429,13 +429,13 @@ static MetaBoolPreference preferences_bool[] =
       FALSE,
     },
 #ifdef WITH_CLUTTER
-    { "/apps/metacity/general/clutter_disabled",
+    { "/apps/mutter/general/clutter_disabled",
       META_PREF_CLUTTER_DISABLED,
       &clutter_disabled,
       FALSE,
     },
 #endif
-    { "/apps/metacity/general/live_hidden_windows",
+    { "/apps/mutter/general/live_hidden_windows",
       META_PREF_LIVE_HIDDEN_WINDOWS,
       &live_hidden_windows,
       FALSE,
@@ -1028,6 +1028,7 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
 /* @@@ again, use glib's ability to tell you the size of the array */
 static gchar *gconf_dirs_we_are_interested_in[] = {
   "/apps/metacity",
+  "/apps/mutter",
   KEY_TERMINAL_DIR,
   KEY_GNOME_ACCESSIBILITY,
   "/desktop/gnome/peripherals/mouse",
@@ -1243,7 +1244,7 @@ change_notify (GConfClient    *client,
 #endif
   else
     {
-      meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Metacity\n",
+      meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Mutter\n",
                   key);
     }
   

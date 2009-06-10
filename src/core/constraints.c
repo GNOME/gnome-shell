@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity size/position constraints */
+/* Mutter size/position constraints */
 
 /*
  * Copyright (C) 2002, 2003 Red Hat, Inc.

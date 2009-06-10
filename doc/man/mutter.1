@@ -1,0 +1,60 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH MUTTER 1 "11 February 2006"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+MUTTER \- Clutter based compositing GTK2 Window Manager
+.SH SYNOPSIS
+.B mutter
+[\-\-display=\fIDISPLAY\fP] [\-\-replace] [\-\-sm\-client\-id=\fIID\fP] [\-\-sm\-disable] [\-\-sm\-save\-file=\fIFILENAME\fP] [\-\-version] [\-\-help]
+.SH DESCRIPTION
+This manual page documents briefly
+.B mutter\fP.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
+.\" respectively.
+\fBmutter\fP is a minimal X window manager aimed at nontechnical users and is designed to integrate well with the GNOME desktop.  \fBmutter\fP lacks some features that may be expected by traditional UNIX or other technical users; these users may want to investigate other available window managers for use with GNOME or standalone.
+.SH OPTIONS
+.TP
+.B \-\-display=DISPLAY
+Connect to X display \fIDISPLAY\fP.
+.TP
+.B \-\-replace
+a window manager which is running is replaced by \fBmutter\fP.  Users are encouraged to change the GNOME window manager by running the new WM with the --replace or -replace option, and subsequently saving the session.
+.TP
+.B \-\-sm\-client\-id=ID
+Specify a session management \fIID\fP.
+.TP
+.B \-\-sm\-disable
+Disable the session management.
+.TP
+.B \-\-sm\-save\-file=FILENAME
+Load a session from \fIFILENAME\fP.
+.TP
+.B \-\-version
+Print the version number.
+.TP
+.B \-?, \-\-help
+Show summary of options.
+.SH CONFIGURATION
+\fBmutter\fP configuration can be found under \fIPreferences\fP->\fIWindows\fP and \fIPreferences\fP->\fIKeyboard Shortcuts\fP on the menu-panel. Advanced configuration can be achieved directly through gconf editing (gconf-editor or gconftool-2).
+.SH SEE ALSO
+.BR mutter-message (1)
+.SH AUTHOR
+The original manual page was written by Thom May <thom@debian.org>.  It was updated by Akira TAGOH <tagoh@debian.org>
+for the Debian GNU/Linux system (with permission to use by others), and then updated by Luke Morton and Philip O'Brien
+for inclusion in mutter.

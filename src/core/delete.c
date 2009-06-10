@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity window deletion */
+/* Mutter window deletion */
 
 /* 
  * Copyright (C) 2001, 2002 Havoc Pennington
@@ -71,7 +71,8 @@ sigchld_handler (MetaNexus *nexus, guint arg1, gpointer arg2, gpointer user_data
   if (GPOINTER_TO_INT (arg2) == ours->dialog_pid)
     {
       if (arg1 == 1 /* pressed "force quit" */)
-        g_idle_add (delete_window_callback, user_data);
+        g_idle_add_full (G_PRIORITY_DEFAULT,
+                         delete_window_callback, user_data, NULL);
 
       ours->dialog_pid = -1; /* forget it anyway */
     }
@@ -249,7 +250,7 @@ meta_window_present_delete_dialog (MetaWindow *window, guint32 timestamp)
       GSList *tmp;
 
       /* Activate transient for window that belongs to
-       * metacity-dialog
+       * mutter-dialog
        */
       
       windows = meta_display_list_windows (window->display);
@@ -260,7 +261,7 @@ meta_window_present_delete_dialog (MetaWindow *window, guint32 timestamp)
 
           if (w->xtransient_for == window->xwindow &&
               w->res_class &&
-              g_ascii_strcasecmp (w->res_class, "metacity-dialog") == 0)
+              g_ascii_strcasecmp (w->res_class, "mutter-dialog") == 0)
             {
               meta_window_activate (w, timestamp);
               break;

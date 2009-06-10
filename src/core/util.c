@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity utilities */
+/* Mutter utilities */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -81,14 +81,14 @@ static FILE* logfile = NULL;
 static void
 ensure_logfile (void)
 {
-  if (logfile == NULL && g_getenv ("METACITY_USE_LOGFILE"))
+  if (logfile == NULL && g_getenv ("MUTTER_USE_LOGFILE"))
     {
       char *filename = NULL;
       char *tmpl;
       int fd;
       GError *err;
       
-      tmpl = g_strdup_printf ("metacity-%d-debug-log-XXXXXX",
+      tmpl = g_strdup_printf ("mutter-%d-debug-log-XXXXXX",
                               (int) getpid ());
 
       err = NULL;
@@ -135,7 +135,7 @@ meta_set_verbose (gboolean setting)
 {
 #ifndef WITH_VERBOSE_MODE
   if (setting)
-    meta_fatal (_("Metacity was compiled without support for verbose mode\n"));
+    meta_fatal (_("Mutter was compiled without support for verbose mode\n"));
 #else 
   if (setting)
     ensure_logfile ();
@@ -567,7 +567,7 @@ meta_show_dialog (const char *type,
   argvl[i++] = screen_number_text;
   argvl[i++] = "--title";
   /* Translators: This is the title used on dialog boxes */
-  argvl[i++] = _("Metacity");
+  argvl[i++] = _("Mutter");
   argvl[i++] = "--text";
   argvl[i++] = message;
   

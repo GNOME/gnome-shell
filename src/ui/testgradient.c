@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity gradient test program */
+/* Mutter gradient test program */
 
 /* 
  * Copyright (C) 2002 Havoc Pennington

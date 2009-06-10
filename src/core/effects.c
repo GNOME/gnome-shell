@@ -442,7 +442,7 @@ draw_box_animation (MetaScreen     *screen,
     
   g_return_if_fail (seconds_duration > 0.0);
 
-  if (g_getenv ("METACITY_DEBUG_EFFECTS"))
+  if (g_getenv ("MUTTER_DEBUG_EFFECTS"))
     seconds_duration *= 10; /* slow things down */
   
   /* Create the animation context */

@@ -1,0 +1,43 @@
+.\" In .TH, FOO should be all caps, SECTION should be 1-8, maybe w/ subsection
+.\" other parms are allowed: see man(7), man(1)
+.\"
+.\" Based on template provided by Tom Christiansen <tchrist@jhereg.perl.com>.
+.\" 
+.TH MUTTER-THEME-VIEWER 1 "1 June 2004" 
+.SH NAME
+mutter-theme-viewer \- view mutter themes
+.SH SYNOPSIS
+.B mutter-theme-viewer
+[
+.I THEMENAME
+]
+.SH DESCRIPTION
+.\" Putting a newline after each sentence can generate better output.
+.B mutter-theme-viewer
+allows you to preview any installed Mutter theme.
+.PP
+When designing a new Mutter theme, you can use
+.B mutter-theme-viewer
+to measure the performance of a window frame option, and to preview
+the option.
+.SH OPTIONS
+.TP
+.I THEMENAME
+Name of the theme to be shown (\fIAtlanta\fR by default).
+It is case-sensitive.
+.SH FILES
+.br
+.nf
+.TP
+.I /usr/share/themes
+system themes directory
+.TP
+.I /usr/share/themes/*/mutter-1/mutter-theme-1.xml
+theme specification file
+.SH AUTHOR
+This manual page was written by Jose M. Moya <josem@die.upm.es>, for
+the Debian  GNU/Linux system (but may be used by others).
+.SH "SEE ALSO"
+.\" Always quote multiple words for .SH
+.BR mutter (1),
+.BR mutter-window-demo (1).

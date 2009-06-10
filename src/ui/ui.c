@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity interface for talking to GTK+ UI module */
+/* Mutter interface for talking to GTK+ UI module */
 
 /* 
  * Copyright (C) 2002 Havoc Pennington

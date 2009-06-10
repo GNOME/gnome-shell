@@ -3,7 +3,7 @@
 /**
  * \file bell.h Ring the bell or flash the screen
  *
- * Sometimes, X programs "ring the bell", whatever that means. Metacity lets
+ * Sometimes, X programs "ring the bell", whatever that means. Mutter lets
  * the user configure the bell to be audible or visible (aka visual), and
  * if it's visual it can be configured to be frame-flash or fullscreen-flash.
  * We never get told about audible bells; X handles them just fine by itself.
@@ -54,7 +54,7 @@ void meta_bell_notify (MetaDisplay *display, XkbAnyEvent *xkb_ev);
 
 /**
  * Turns the bell to audible or visual. This tells X what to do, but
- * not Metacity; you will need to set the "visual bell" pref for that.
+ * not Mutter; you will need to set the "visual bell" pref for that.
  *
  * If the configure script found we had no XKB, this is a no-op.
  *
