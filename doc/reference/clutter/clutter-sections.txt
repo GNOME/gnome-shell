@@ -577,7 +577,7 @@ CLUTTER_TIMELINE_GET_CLASS
 <SUBSECTION Private>
 ClutterTimelinePrivate
 clutter_timeline_get_type
-clutter_timeline_advance_delta
+clutter_timeline_do_tick
 </SECTION>
 
 <SECTION>
@@ -969,7 +969,6 @@ clutter_event_get_type
 <FILE>clutter-main</FILE>
 <TITLE>General</TITLE>
 CLUTTER_PRIORITY_REDRAW
-CLUTTER_PRIORITY_TIMELINE
 
 <SUBSECTION>
 ClutterInitError
@@ -992,8 +991,6 @@ clutter_set_default_frame_rate
 clutter_get_default_frame_rate
 clutter_set_motion_events_enabled
 clutter_get_motion_events_enabled
-clutter_set_motion_events_frequency
-clutter_get_motion_events_frequency
 clutter_clear_glyph_cache
 ClutterFontFlags
 clutter_set_font_flags
