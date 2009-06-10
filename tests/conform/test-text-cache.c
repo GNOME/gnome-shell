@@ -49,7 +49,14 @@ on_paint (ClutterActor *label, CallbackData *data)
 static void
 force_redraw (CallbackData *data)
 {
-  clutter_redraw (CLUTTER_STAGE (clutter_actor_get_stage (data->label)));
+  /* XXX - this is fugly; we force a paint on the stage, which
+   * will then paint the Text actor. inside the Text actor we
+   * check for a Layout with the allocation size. if the allocation
+   * has changed it will cause a relayout in the middle of the
+   * paint, which is expensive and broken. this will ensure that
+   * the test passes, though
+   */
+  clutter_actor_paint (clutter_actor_get_stage (data->label));
 }
 
 static gboolean
