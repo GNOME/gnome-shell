@@ -108,5 +108,6 @@ void meta_window_unmaximize (MetaWindow        *window,
                              MetaMaximizeFlags  directions);
 void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
+const char *meta_window_get_title (MetaWindow *window);
 
 #endif

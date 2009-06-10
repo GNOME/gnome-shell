@@ -8735,6 +8735,20 @@ meta_window_get_role (MetaWindow *window)
   return window->role;
 }
 
+/**
+ * meta_window_get_title:
+ * @window: a #MetaWindow
+ *
+ * Returns the current title of the window.
+ */
+const char *
+meta_window_get_title (MetaWindow *window)
+{
+  g_return_val_if_fail (META_IS_WINDOW (window), NULL);
+
+  return window->title;
+}
+
 MetaStackLayer
 meta_window_get_layer (MetaWindow *window)
 {
