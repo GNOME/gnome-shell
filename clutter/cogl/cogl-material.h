@@ -500,7 +500,9 @@ void cogl_material_set_blend_constant (CoglHandle             material,
 
 /**
  * cogl_material_set_layer:
- * @material: A CoglMaterial object
+ * @material: A #CoglHandle for a material object
+ * @layer_index: the index of the layer
+ * @texture: a #CoglHandle for the layer object
  *
  * In addition to the standard OpenGL lighting model a Cogl material may have
  * one or more layers comprised of textures that can be blended together in
@@ -510,8 +512,8 @@ void cogl_material_set_blend_constant (CoglHandle             material,
  * The index values of multiple layers do not have to be consecutive; it is
  * only their relative order that is important.
  *
- * XXX: In the future, we may define other types of material layers, such
- * as purely GLSL based layers.
+ * <note>In the future, we may define other types of material layers, such
+ * as purely GLSL based layers.</note>
  *
  * Since 1.0
  */
@@ -627,16 +629,16 @@ cogl_material_set_layer_combine (CoglHandle material,
  * @material: A CoglMaterial object
  * @layer_index: Specifies the layer you want to specify a constant used
  *               for texture combining
- * @color_constant: The constant color you want
+ * @constant: The constant color you want
  *
  * When you are using the 'CONSTANT' color source in a layer combine
  * description then you can use this function to define its value.
  *
  * Since 1.0
  */
-void cogl_material_set_layer_combine_constant (CoglHandle                     material,
-                                               int                            layer_index,
-                                               CoglColor                     *constant);
+void cogl_material_set_layer_combine_constant (CoglHandle  material,
+                                               int         layer_index,
+                                               CoglColor  *constant);
 
 /**
  * cogl_material_set_layer_matrix:
@@ -659,7 +661,7 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
  * Returns: A list of #CoglHandle<!-- -->'s that can be passed to the
  *          cogl_material_layer_* functions.
  */
-const GList *cogl_material_get_layers (CoglHandle material_handle);
+const GList *cogl_material_get_layers (CoglHandle material);
 
 /**
  * CoglMaterialLayerType:
@@ -680,10 +682,14 @@ typedef enum _CoglMaterialLayerType
  * cogl_material_layer_get_type:
  * @layer_handle: A Cogl material layer handle
  *
+ * Retrieves the type of the layer
+ *
  * Currently there is only one type of layer defined:
- * COGL_MATERIAL_LAYER_TYPE_TEXTURE, but considering we may add purely GLSL
+ * %COGL_MATERIAL_LAYER_TYPE_TEXTURE, but considering we may add purely GLSL
  * based layers in the future, you should write code that checks the type
  * first.
+ *
+ * Return value: the type of the layer
  */
 CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
 

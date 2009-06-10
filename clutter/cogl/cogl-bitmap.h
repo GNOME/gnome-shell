@@ -47,11 +47,11 @@ G_BEGIN_DECLS
  * @filename: the file to load.
  * @error: a #GError or %NULL.
  *
- * Load an image file from disk. This function can be safely called from
+ * Loads an image file from disk. This function can be safely called from
  * within a thread.
  *
- * Returns: A CoglBitmap to the new loaded image data, or %NULL if loading
- * the image failed.
+ * Returns: a #CoglHandle to the new loaded image data, or
+ *   %COGL_INVALID_HANDLE if loading the image failed.
  *
  * Since: 1.0
  */
@@ -66,6 +66,8 @@ CoglHandle      cogl_bitmap_new_from_file     (const gchar    *filename,
  *
  * Parses an image file enough to extract the width and height
  * of the bitmap.
+ *
+ * Returns: %TRUE if the image was successfully parsed
  *
  * Since: 1.0
  */

@@ -55,10 +55,10 @@ G_BEGIN_DECLS
  *
  * Note: This does not work with sliced Cogl textures.
  *
- * Returns: a CoglHandle for the new offscreen buffer or COGL_INVALID_HANDLE
+ * Returns: a #CoglHandle for the new offscreen buffer or %COGL_INVALID_HANDLE
  *          if it wasn't possible to create the buffer.
  */
-CoglHandle      cogl_offscreen_new_to_texture (CoglHandle         texhandle);
+CoglHandle      cogl_offscreen_new_to_texture (CoglHandle         handle);
 
 /**
  * cogl_offscreen_ref:

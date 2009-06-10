@@ -3,6 +3,10 @@
 <TITLE>General API</TITLE>
 COGL_INVALID_HANDLE
 CoglHandle
+cogl_handle_ref
+cogl_handle_unref
+
+<SUBSECTION>
 CoglFuncPtr
 COGL_PIXEL_FORMAT_24
 COGL_PIXEL_FORMAT_32
@@ -14,12 +18,18 @@ COGL_UNORDERED_MASK
 COGL_UNPREMULT_MASK
 CoglPixelFormat
 CoglBufferTarget
+CoglBufferBit
+CoglAttributeType
+
 <SUBSECTION>
 CoglFeatureFlags
 cogl_get_features
 cogl_features_available
 cogl_check_extension
 cogl_get_proc_address
+cogl_get_option_group
+cogl_gl_error_to_string
+
 <SUBSECTION>
 cogl_push_matrix
 cogl_pop_matrix
@@ -29,14 +39,15 @@ cogl_rotate
 cogl_frustum
 cogl_perspective
 cogl_ortho
+
 <SUBSECTION>
 cogl_get_modelview_matrix
 cogl_set_modelview_matrix
 cogl_get_projection_matrix
 cogl_set_projection_matrix
 cogl_viewport
-cogl_setup_viewport
 cogl_get_viewport
+
 <SUBSECTION>
 cogl_clear
 cogl_get_bitmasks
@@ -44,18 +55,61 @@ cogl_set_depth_test_enabled
 cogl_get_depth_test_enabled
 cogl_set_backface_culling_enabled
 cogl_get_backface_culling_enabled
+
 <SUBSECTION>
 CoglFogMode
 cogl_set_fog
 cogl_disable_fog
+
 <SUBSECTION>
 cogl_set_source
 cogl_set_source_color
 cogl_set_source_color4ub
 cogl_set_source_color4f
 cogl_set_source_texture
+
+<SUBSECTION Standard>
+COGL_TYPE_ATTRIBUTE_TYPE
+COGL_TYPE_BUFFER_BIT
+COGL_TYPE_BUFFER_TARGET
+COGL_TYPE_DEBUG_FLAGS
+COGL_TYPE_FEATURE_FLAGS
+COGL_TYPE_FIXED
+COGL_TYPE_FOG_MODE
+COGL_TYPE_HANDLE
+COGL_TYPE_INDICES_TYPE
+COGL_TYPE_MATERIAL_ALPHA_FUNC
+COGL_TYPE_MATERIAL_FILTER
+COGL_TYPE_MATERIAL_LAYER_TYPE
+COGL_TYPE_MATRIX_MODE
+COGL_TYPE_PIXEL_FORMAT
+COGL_TYPE_SHADER_TYPE
+COGL_TYPE_TEXTURE_FLAGS
+COGL_TYPE_VERTICES_MODE
+
 <SUBSECTION Private>
 cogl_util_next_p2
+cogl_attribute_type_get_type
+cogl_buffer_bit_get_type
+cogl_buffer_target_get_type
+cogl_debug_flags_get_type
+cogl_feature_flags_get_type
+cogl_fixed_get_type
+cogl_fog_mode_get_type
+cogl_handle_get_type
+cogl_indices_type_get_type
+cogl_material_alpha_func_get_type
+cogl_material_filter_get_type
+cogl_material_layer_type_get_type
+cogl_matrix_mode_get_type
+cogl_pixel_format_get_type
+cogl_shader_type_get_type
+cogl_texture_flags_get_type
+cogl_vertices_mode_get_type
+GE
+COGL_NOTE
+CoglDebugFlags
+cogl_debug_flags
 </SECTION>
 
 <SECTION>
@@ -64,6 +118,7 @@ CoglClipStackState
 cogl_clip_push
 cogl_clip_push_from_path
 cogl_clip_push_from_path_preserve
+cogl_clip_push_window_rect
 cogl_clip_pop
 cogl_clip_stack_save
 cogl_clip_stack_restore
@@ -75,6 +130,7 @@ cogl_clip_ensure
 <TITLE>Primitives</TITLE>
 <SUBSECTION>
 cogl_rectangle
+cogl_rectangles
 cogl_rectangle_with_texture_coords
 cogl_rectangles_with_texture_coords
 cogl_rectangle_with_multitexture_coords
@@ -141,6 +197,7 @@ cogl_texture_set_region
 <SECTION>
 <FILE>cogl-shaders</FILE>
 <TITLE>Shaders and Programmable Pipeline</TITLE>
+CoglShaderType
 cogl_create_shader
 cogl_shader_ref
 cogl_shader_unref
@@ -150,6 +207,7 @@ cogl_shader_compile
 cogl_shader_get_info_log
 cogl_shader_get_type
 cogl_shader_is_compiled
+
 <SUBSECTION>
 cogl_create_program
 cogl_program_ref
@@ -174,8 +232,8 @@ cogl_offscreen_ref
 cogl_offscreen_unref
 cogl_is_offscreen
 cogl_set_draw_buffer
-<SUBSECTION Private>
-cogl_offscreen_new_multisample
+cogl_pop_draw_buffer
+cogl_push_draw_buffer
 </SECTION>
 
 <SECTION>
@@ -192,6 +250,7 @@ COGL_FIXED_FROM_FLOAT
 COGL_FIXED_TO_FLOAT
 COGL_FIXED_FROM_INT
 COGL_FIXED_TO_INT
+COGL_FIXED_FROM_DOUBLE
 COGL_FIXED_TO_DOUBLE
 COGL_FLOAT_TO_INT
 COGL_FLOAT_TO_UINT
@@ -306,8 +365,10 @@ cogl_vertex_buffer_submit
 cogl_vertex_buffer_disable
 cogl_vertex_buffer_enable
 cogl_vertex_buffer_draw
+
+<SUBSECTION>
 CoglIndicesType
-cogl_vertex_buffer_add_indices
+cogl_vertex_buffer_indices_new
 cogl_vertex_buffer_delete_indices
 cogl_vertex_buffer_draw_elements
 cogl_vertex_buffer_indices_get_for_quads
@@ -321,7 +382,13 @@ COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK
 <FILE>cogl-matrix</FILE>
 <TITLE>Matrices</TITLE>
 CoglMatrix
+CoglMatrixMode
+CoglMatrixStack
 cogl_matrix_init_identity
+cogl_matrix_frustum
+cogl_matrix_ortho
+cogl_matrix_perspective
+cogl_matrix_transform_point
 cogl_matrix_multiply
 cogl_matrix_rotate
 cogl_matrix_translate
@@ -354,7 +421,12 @@ cogl_material_set_shininess
 cogl_material_get_shininess
 CoglMaterialAlphaFunc
 cogl_material_set_alpha_test_function
-CoglMaterialBlendFactor
+CoglBlendStringChannelMask
+CoglBlendStringColorSourceType
+CoglBlendStringContext
+CoglBlendStringError
+CoglBlendStringFunctionType
+COGL_BLEND_STRING_ERROR
 cogl_material_set_blend
 cogl_material_set_blend_constant
 cogl_material_set_layer
@@ -372,6 +444,7 @@ cogl_material_layer_get_mag_filter
 <SUBSECTION Private>
 CoglMaterial
 CoglMaterialFlags
+CoglMaterialLayerFlags
 CoglMaterialLayerPrivFlags
 </SECTION>
 

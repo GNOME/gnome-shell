@@ -54,11 +54,9 @@ CFILE_GLOB=\
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
-	cogl-bitmap.h \
 	cogl-defines-gl.h \
         cogl-defines-gles.h \
 	cogl-handle.h \
-        cogl-primitives.h \
 	gl \
 	gles
 
