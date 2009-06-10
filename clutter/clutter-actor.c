@@ -2008,8 +2008,8 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
  * @self: A #ClutterActor
  * @ancestor: A #ClutterActor to calculate the vertices against, or %NULL
  *   to use the default #ClutterStage
- * @verts: (out) (array): return location for an array of 4 #ClutterVertex in which
- *   to store the result.
+ * @verts: (out) (array fixed-size=4): return location for an array of
+ *   4 #ClutterVertex in which to store the result.
  *
  * Calculates the transformed coordinates of the four corners of the
  * actor in the plane of @ancestor. The returned vertices relate to
@@ -2100,8 +2100,8 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
 /**
  * clutter_actor_get_abs_allocation_vertices:
  * @self: A #ClutterActor
- * @verts: Pointer to a location of an array of 4 #ClutterVertex where to
- * store the result.
+ * @verts: (out) (array fixed-size=4): Pointer to a location of an array
+ *   of 4 #ClutterVertex where to store the result.
  *
  * Calculates the transformed screen coordinates of the four corners of
  * the actor; the returned vertices relate to the #ClutterActorBox
