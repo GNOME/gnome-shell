@@ -1372,8 +1372,8 @@ clutter_stage_read_pixels (ClutterStage *stage,
   g_return_val_if_fail (x >= 0 && y >= 0, NULL);
 
   /* Force a redraw of the stage before reading back pixels */
-  clutter_redraw (stage);
   clutter_stage_ensure_current (stage);
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   glGetIntegerv (GL_VIEWPORT, viewport);
   stage_x      = viewport[0];
