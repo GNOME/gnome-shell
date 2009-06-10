@@ -61,11 +61,16 @@
  *    4 RGBA GLubytes,
  *    2 GLfloats per tex coord * n_layers
  *
- * So for a given number of layers this gets the stride in
- * 32bit words:
+ * Where n_layers corresponds to the number of material layers enabled
+ *
+ * To avoid frequent changes in the stride of our vertex data we always pad
+ * n_layers to be >= 2
+ *
+ * So for a given number of layers this gets the stride in 32bit words:
  */
+#define MIN_LAYER_PADING 2
 #define GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS(N_LAYERS) \
-  (2 + 1 + 2 * (N_LAYERS))
+  (2 + 1 + 2 * (N_LAYERS < MIN_LAYER_PADING ? MIN_LAYER_PADING : N_LAYERS))
 
 
 typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
@@ -76,6 +81,7 @@ typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
 
 typedef struct _CoglJournalFlushState
 {
+  size_t              stride;
   /* Note: this is a pointer to handle fallbacks. It normally holds a VBO
    * offset, but when the driver doesn't support VBOs then this points into
    * our GArray of logged vertices. */
@@ -303,43 +309,35 @@ compare_entry_materials (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
     return FALSE;
 }
 
-/* At this point we know the stride has changed from the previous batch
- * of journal entries */
+/* Since the stride may not reflect the number of texture layers in use
+ * (due to padding) we deal with texture coordinate offsets separately
+ * from vertex and color offsets... */
 static void
-_cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
-                                             gint              batch_len,
-                                             void             *data)
+_cogl_journal_flush_texcoord_vbo_offsets_and_entries (
+                                          CoglJournalEntry *batch_start,
+                                          gint              batch_len,
+                                          void             *data)
 {
-  CoglJournalFlushState   *state = data;
-  size_t                   stride;
-  int                      i;
-  int                      prev_n_texcoord_arrays_enabled;
-#ifndef HAVE_COGL_GL
-  int                      needed_indices = batch_len * 6;
-  CoglHandle               indices_handle;
-  CoglVertexBufferIndices *indices;
-#endif
+  CoglJournalFlushState *state = data;
+  int                    prev_n_texcoord_arrays_enabled;
+  int                    i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* XXX NB:
-   * Our vertex data is arranged as follows:
-   * 4 vertices per quad: 2 GLfloats per position,
-   *                      4 RGBA GLubytes,
-   *                      2 GLfloats per tex coord * n_layers
-   */
-  stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (batch_start->n_layers);
-  stride *= sizeof (GLfloat);
-
-  GE (glVertexPointer (2, GL_FLOAT, stride, (void *)state->vbo_offset));
-  GE (glColorPointer (4, GL_UNSIGNED_BYTE, stride,
-                      (void *)(state->vbo_offset + 8)));
 
   for (i = 0; i < batch_start->n_layers; i++)
     {
       GE (glClientActiveTexture (GL_TEXTURE0 + i));
       GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
-      GE (glTexCoordPointer (2, GL_FLOAT, stride,
+      /* XXX NB:
+       * Our journal's vertex data is arranged as follows:
+       * 4 vertices per quad:
+       *    2 GLfloats per position
+       *    4 RGBA GLubytes,
+       *    2 GLfloats per tex coord * n_layers
+       * (though n_layers may be padded; see definition of
+       *  GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details)
+       */
+      GE (glTexCoordPointer (2, GL_FLOAT, state->stride,
                              (void *)(state->vbo_offset + 12 + 8 * i)));
     }
   prev_n_texcoord_arrays_enabled =
@@ -350,6 +348,56 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
       GE (glClientActiveTexture (GL_TEXTURE0 + i));
       GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
     }
+
+  batch_and_call (batch_start,
+                  batch_len,
+                  compare_entry_materials,
+                  _cogl_journal_flush_material_and_entries,
+                  data);
+}
+
+static gboolean
+compare_entry_n_layers (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
+{
+  if (entry0->n_layers == entry1->n_layers)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+/* At this point we know the stride has changed from the previous batch
+ * of journal entries */
+static void
+_cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
+                                             gint              batch_len,
+                                             void             *data)
+{
+  CoglJournalFlushState   *state = data;
+  size_t                   stride;
+#ifndef HAVE_COGL_GL
+  int                      needed_indices = batch_len * 6;
+  CoglHandle               indices_handle;
+  CoglVertexBufferIndices *indices;
+#endif
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* XXX NB:
+   * Our journal's vertex data is arranged as follows:
+   * 4 vertices per quad:
+   *    2 GLfloats per position
+   *    4 RGBA GLubytes,
+   *    2 GLfloats per tex coord * n_layers
+   * (though n_layers may be padded; see definition of
+   *  GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details)
+   */
+  stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (batch_start->n_layers);
+  stride *= sizeof (GLfloat);
+  state->stride = stride;
+
+  GE (glVertexPointer (2, GL_FLOAT, stride, (void *)state->vbo_offset));
+  GE (glColorPointer (4, GL_UNSIGNED_BYTE, stride,
+                      (void *)(state->vbo_offset + 8)));
 
 #ifndef HAVE_COGL_GL
   indices_handle = cogl_vertex_buffer_indices_get_for_quads (needed_indices);
@@ -384,8 +432,8 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   batch_and_call (batch_start,
                   batch_len,
-                  compare_entry_materials,
-                  _cogl_journal_flush_material_and_entries,
+                  compare_entry_n_layers,
+                  _cogl_journal_flush_texcoord_vbo_offsets_and_entries,
                   data);
 
 #ifndef HAVE_COGL_GL
@@ -402,9 +450,9 @@ compare_entry_strides (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
   /* Currently the only thing that affects the stride for our vertex arrays
    * is the number of material layers. We need to update our VBO offsets
    * whenever the stride changes. */
-  /* TODO: We should be padding the n_layers == 1 case as if it were
-   * n_layers == 2 so we can reduce the need to split batches. */
-  if (entry0->n_layers == entry1->n_layers)
+  if (entry0->n_layers == entry1->n_layers ||
+      (entry0->n_layers <= MIN_LAYER_PADING &&
+       entry1->n_layers <= MIN_LAYER_PADING))
     return TRUE;
   else
     return FALSE;
