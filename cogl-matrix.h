@@ -54,21 +54,24 @@ G_BEGIN_DECLS
  * applied.
  *
  * The transformation of a vertex (x, y, z, w) by a CoglMatrix is given by:
- * <programlisting>
- * x_new = xx * x + xy * y + xz * z + xw * w
- * y_new = yx * x + yy * y + yz * z + yw * w
- * z_new = zx * x + zy * y + zz * z + zw * w
- * w_new = wx * x + wy * y + wz * z + ww * w
- * </programlisting>
+ *
+ * |[
+ *   x_new = xx * x + xy * y + xz * z + xw * w
+ *   y_new = yx * x + yy * y + yz * z + yw * w
+ *   z_new = zx * x + zy * y + zz * z + zw * w
+ *   w_new = wx * x + wy * y + wz * z + ww * w
+ * ]|
+ *
  * Where w is normally 1
  *
- * Note: You must consider the members of the CoglMatrix structure read only,
+ * <note>You must consider the members of the CoglMatrix structure read only,
  * and all matrix modifications must be done via the cogl_matrix API. This
  * allows Cogl to annotate the matrices internally. Violation of this will give
  * undefined results. If you need to initialize a matrix with a constant other
- * than the identity matrix you can use cogl_matrix_init_from_array().
+ * than the identity matrix you can use cogl_matrix_init_from_array().</note>
  */
 typedef struct _CoglMatrix {
+    /*< private >*/
 
     /* column 0 */
     float xx;
@@ -93,8 +96,6 @@ typedef struct _CoglMatrix {
     float yw;
     float zw;
     float ww;
-
-    /*< private >*/
 
     /* Note: we may want to extend this later with private flags
      * and a cache of the inverse transform matrix. */
@@ -184,11 +185,10 @@ void cogl_matrix_scale (CoglMatrix *matrix,
  * @right: coord of right vertical clipping plane
  * @bottom: coord of bottom horizontal clipping plane
  * @top: coord of top horizontal clipping plane
- * @near: positive distance to near depth clipping plane
- * @far: positive distance to far depth clipping plane
+ * @z_near: positive distance to near depth clipping plane
+ * @z_far: positive distance to far depth clipping plane
  *
  * Multiplies the matrix by the given frustum perspective matrix.
- *
  */
 void cogl_matrix_frustum (CoglMatrix *matrix,
                           float       left,
@@ -210,7 +210,7 @@ void cogl_matrix_frustum (CoglMatrix *matrix,
  *
  * Multiplies the matrix by the described perspective matrix
  *
- * Note: you should be careful not to have to great a z_far / z_near ratio
+ * Note: you should be careful not to have to great a @z_far / @z_near ratio
  * since that will reduce the effectiveness of depth testing since there wont
  * be enough precision to identify the depth of objects near to each other.
  */
@@ -259,8 +259,10 @@ void cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array);
  *
  * This casts a CoglMatrix to a float array which can be directly passed to
  * OpenGL.
+ *
+ * Return value: a pointer to the float array
  */
-const float *cogl_matrix_get_array (const CoglMatrix *matrix);
+G_CONST_RETURN float *cogl_matrix_get_array (const CoglMatrix *matrix);
 
 /**
  * cogl_matrix_transform_point:

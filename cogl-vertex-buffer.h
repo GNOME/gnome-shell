@@ -79,8 +79,9 @@ G_BEGIN_DECLS
  * cogl_vertex_buffer_new:
  * @n_vertices: The number of vertices that your attributes will correspond to.
  *
- * This creates a Cogl handle for a new vertex buffer that you can then start
- * to add attributes too.
+ * Creates a new vertex buffer that you can use to add attributes.
+ *
+ * Return value: a new #CoglHandle
  */
 CoglHandle
 cogl_vertex_buffer_new (guint n_vertices);
@@ -89,7 +90,9 @@ cogl_vertex_buffer_new (guint n_vertices);
  * cogl_vertex_buffer_get_n_vertices:
  * @handle: A vertex buffer handle
  *
- * This returns the number of vertices that @handle represents
+ * Retrieves the number of vertices that @handle represents
+ *
+ * Return value: the number of vertices
  */
 guint
 cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
