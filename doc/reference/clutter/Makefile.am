@@ -95,12 +95,12 @@ IGNORE_HFILES=\
 	win32
 
 EXTRA_HFILES=\
-        ../../../clutter/x11/clutter-x11.h \
-	../../../clutter/x11/clutter-x11-texture-pixmap.h \
-	../../../clutter/glx/clutter-glx-texture-pixmap.h \
-	../../../clutter/eglnative/clutter-egl.h \
-	../../../clutter/eglx/clutter-eglx.h \
-	../../../clutter/win32/clutter-win32.h
+        $(top_srcdir)/clutter/x11/clutter-x11.h \
+	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
+	$(top_srcdir)/clutter/glx/clutter-glx-texture-pixmap.h \
+	$(top_srcdir)/clutter/eglnative/clutter-egl.h \
+	$(top_srcdir)/clutter/eglx/clutter-eglx.h \
+	$(top_srcdir)/clutter/win32/clutter-win32.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
