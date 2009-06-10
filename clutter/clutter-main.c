@@ -94,7 +94,8 @@ static const GDebugKey clutter_debug_keys[] = {
   { "shader", CLUTTER_DEBUG_SHADER },
   { "multistage", CLUTTER_DEBUG_MULTISTAGE },
   { "animation", CLUTTER_DEBUG_ANIMATION },
-  { "layout", CLUTTER_DEBUG_LAYOUT }
+  { "layout", CLUTTER_DEBUG_LAYOUT },
+  { "nop-picking", CLUTTER_DEBUG_NOP_PICKING }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -374,6 +375,9 @@ _clutter_do_pick (ClutterStage   *stage,
   CoglColor           white;
   guint32             id;
   GLboolean           dither_was_on;
+
+  if (clutter_debug_flags & CLUTTER_DEBUG_NOP_PICKING)
+    return CLUTTER_ACTOR (stage);
 
   context = _clutter_context_get_default ();
 

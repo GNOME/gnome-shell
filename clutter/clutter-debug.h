@@ -22,7 +22,8 @@ typedef enum {
   CLUTTER_DEBUG_SHADER          = 1 << 12,
   CLUTTER_DEBUG_MULTISTAGE      = 1 << 13,
   CLUTTER_DEBUG_ANIMATION       = 1 << 14,
-  CLUTTER_DEBUG_LAYOUT          = 1 << 15
+  CLUTTER_DEBUG_LAYOUT          = 1 << 15,
+  CLUTTER_DEBUG_NOP_PICKING     = 1 << 16,
 } ClutterDebugFlag;
 
 #ifdef CLUTTER_ENABLE_DEBUG
