@@ -178,6 +178,9 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 {
   CoglJournalFlushState *state = data;
 
+  if (cogl_debug_flags & COGL_DEBUG_BATCHING)
+    g_print ("BATCHING:    modelview batch len = %d\n", batch_len);
+
   GE (glLoadMatrixf ((GLfloat *)&batch_start->model_view));
 
 #ifdef HAVE_COGL_GL
@@ -263,10 +266,8 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-#if 0
-  if (batch_len != 1)
-    g_debug ("batch len = %d", batch_len);
-#endif
+  if (cogl_debug_flags & COGL_DEBUG_BATCHING)
+    g_print ("BATCHING:   material batch len = %d\n", batch_len);
 
   _cogl_material_flush_gl_state (batch_start->material,
                                  &batch_start->flush_options);
@@ -382,6 +383,9 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  if (cogl_debug_flags & COGL_DEBUG_BATCHING)
+    g_print ("BATCHING:  vbo offset batch len = %d\n", batch_len);
+
   /* XXX NB:
    * Our journal's vertex data is arranged as follows:
    * 4 vertices per quad:
@@ -418,7 +422,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   /* We only call gl{Vertex,Color,Texture}Pointer when the stride within
    * the VBO changes. (due to a change in the number of material layers)
    * While the stride remains constant we walk forward through the above
-   * VBO use a vertex offset passed to glDraw{Arrays,Elements} */
+   * VBO using a vertex offset passed to glDraw{Arrays,Elements} */
   state->vertex_offset = 0;
 
   if (cogl_debug_flags & COGL_DEBUG_JOURNAL)
@@ -521,6 +525,9 @@ _cogl_journal_flush (void)
 
   if (ctx->journal->len == 0)
     return;
+
+  if (cogl_debug_flags & COGL_DEBUG_BATCHING && ctx->journal->len != 1)
+    g_print ("BATCHING: journal len = %d\n", ctx->journal->len);
 
   /* Load all the vertex data we have accumulated so far into a single VBO
    * to minimize memory management costs within the GL driver. */
