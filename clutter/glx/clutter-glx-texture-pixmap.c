@@ -829,9 +829,7 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   else
     g_warning ("Failed to bind initial tex");
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(texture)))
   clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
-
 }
 
 static void

@@ -1306,9 +1306,6 @@ clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 {
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(texture)))
-    return; /* No need to update when not visible */
-
   g_signal_emit (texture, signals[UPDATE_AREA], 0, x, y, width, height);
 }
 
