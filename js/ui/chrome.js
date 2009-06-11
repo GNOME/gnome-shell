@@ -231,7 +231,8 @@ Chrome.prototype = {
 
     _queueUpdateRegions: function() {
         if (!this._updateRegionIdle)
-            this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this._updateRegions));
+            this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this._updateRegions),
+                                                       Meta.PRIORITY_BEFORE_REDRAW);
     },
 
     _windowsRestacked: function() {
