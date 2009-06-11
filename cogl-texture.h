@@ -68,7 +68,13 @@ CoglHandle      cogl_texture_new_with_size    (guint            width,
  * @filename: the file to load
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- *    texture
+ *    texture. If COGL_PIXEL_FORMAT_ANY is given then a premultiplied
+ *    format similar to the format of the source data will be used. The
+ *    default blending equations of Cogl expect premultiplied color data;
+ *    the main use of passing a non-premultiplied format here is if you
+ *    have non-premultiplied source data and are going to adjust the blend
+ *    mode (see cogl_material_set_blend()) or use the data for something
+ *    other than straight blending.
  * @error: return location for a #GError or %NULL
  *
  * Creates a COGL texture from an image file.
@@ -90,7 +96,13 @@ CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
  * @internal_format: the #CoglPixelFormat that will be used for storing
- *    the buffer on the GPU
+ *    the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
+ *    premultiplied format similar to the format of the source data will
+ *    be used. The default blending equations of Cogl expect premultiplied
+ *    color data; the main use of passing a non-premultiplied format here
+ *    is if you have non-premultiplied source data and are going to adjust
+ *    the blend mode (see cogl_material_set_blend()) or use the data for
+ *    something other than straight blending.
  * @rowstride: the memory offset in bytes between the starts of
  *    scanlines in @data
  * @data: pointer the memory region where the source buffer resides
