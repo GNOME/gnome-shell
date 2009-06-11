@@ -36,7 +36,24 @@ static GOptionEntry super_oh_entries[] = {
   { NULL }
 };
 
-/* input handler */
+static gboolean
+on_button_press_event (ClutterActor *actor,
+                       ClutterEvent *event,
+                       SuperOH      *oh)
+{
+  gfloat x, y;
+
+  clutter_event_get_coords (event, &x, &y);
+
+  g_print ("*** button press event (button:%d) at %.2f, %.2f ***\n",
+           clutter_event_get_button (event),
+           x, y);
+
+  clutter_actor_hide (actor);
+
+  return TRUE;
+}
+
 static gboolean
 input_cb (ClutterActor *stage,
 	  ClutterEvent *event,
@@ -44,31 +61,7 @@ input_cb (ClutterActor *stage,
 {
   SuperOH *oh = data;
 
-  if (event->type == CLUTTER_BUTTON_PRESS)
-    {
-      ClutterButtonEvent *button_event;
-      ClutterActor *e;
-      gfloat x, y;
-
-      clutter_event_get_coords (event, &x, &y);
-
-      button_event = (ClutterButtonEvent *) event;
-      g_print ("*** button press event (button:%d) at %.2f, %.2f ***\n",
-	       button_event->button,
-               x, y);
-
-      e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage),
-                                          CLUTTER_PICK_ALL,
-                                          x, y);
-
-      /* only allow hiding the clones */
-      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
-        {
-	  clutter_actor_hide (e);
-          return TRUE;
-        }
-    }
-  else if (event->type == CLUTTER_KEY_RELEASE)
+  if (event->type == CLUTTER_KEY_RELEASE)
     {
       g_print ("*** key press event (key:%c) ***\n",
 	       clutter_event_get_key_symbol (event));
@@ -76,6 +69,7 @@ input_cb (ClutterActor *stage,
       if (clutter_event_get_key_symbol (event) == CLUTTER_q)
         {
 	  clutter_main_quit ();
+
           return TRUE;
         }
       else if (clutter_event_get_key_symbol (event) == CLUTTER_r)
@@ -91,7 +85,6 @@ input_cb (ClutterActor *stage,
 
   return FALSE;
 }
-
 
 /* Timeline handler */
 static void
@@ -209,6 +202,8 @@ test_actors_main (int argc, char *argv[])
       else
         oh->hand[i] = clutter_clone_new (real_hand);
 
+      clutter_actor_set_reactive (oh->hand[i], TRUE);
+
       clutter_actor_set_size (oh->hand[i], 200, 213);
 
       /* Place around a circle */
@@ -233,6 +228,10 @@ test_actors_main (int argc, char *argv[])
       /* Add to our group group */
       clutter_container_add_actor (CLUTTER_CONTAINER (oh->group), oh->hand[i]);
 
+      g_signal_connect (oh->hand[i], "button-press-event",
+                        G_CALLBACK (on_button_press_event),
+                        oh);
+
       if (i % 2)
 	clutter_behaviour_apply (oh->scaler_1, oh->hand[i]);
       else
@@ -245,9 +244,6 @@ test_actors_main (int argc, char *argv[])
   /* Show everying */
   clutter_actor_show (stage);
 
-  g_signal_connect (stage, "button-press-event",
-		    G_CALLBACK (input_cb),
-		    oh);
   g_signal_connect (stage, "key-release-event",
 		    G_CALLBACK (input_cb),
 		    oh);
