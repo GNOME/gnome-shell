@@ -296,7 +296,7 @@ clutter_texture_realize (ClutterActor *actor)
       tex = cogl_texture_new_with_size (priv->width,
                                         priv->height,
                                         flags,
-                                        COGL_PIXEL_FORMAT_RGBA_8888);
+                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
       cogl_material_set_layer (priv->material, 0, tex);
 
@@ -608,7 +608,8 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
-  cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff, paint_opacity);
+  cogl_material_set_color4ub (priv->material,
+			      paint_opacity, paint_opacity, paint_opacity, paint_opacity);
 
   clutter_actor_get_allocation_box (self, &box);
 
@@ -1224,7 +1225,7 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
 
   if (cogl_texture_get_data (cogl_texture,
 			     priv->local_data_has_alpha
-			     ? COGL_PIXEL_FORMAT_RGBA_8888
+			     ? COGL_PIXEL_FORMAT_RGBA_8888_PRE
 			     : COGL_PIXEL_FORMAT_RGB_888,
 			     priv->local_data_rowstride,
 			     priv->local_data) == 0)
@@ -1251,7 +1252,7 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
 				     priv->local_data_height,
 				     priv->local_data_rowstride,
 				     priv->local_data_has_alpha ? 4: 3,
-				     0, NULL);
+				     CLUTTER_TEXTURE_RGB_FLAG_PREMULT, NULL);
 
   g_free (priv->local_data);
   priv->local_data = NULL;
@@ -2243,7 +2244,7 @@ on_fbo_source_size_change (GObject          *object,
       tex = cogl_texture_new_with_size (MAX (priv->width, 1),
                                         MAX (priv->height, 1),
                                         flags,
-                                        COGL_PIXEL_FORMAT_RGBA_8888);
+                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
       cogl_material_set_layer (priv->material, 0, tex);
 

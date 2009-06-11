@@ -871,7 +871,8 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 					     width, height,
 					     bytes_per_line,
 					     4,
-					     CLUTTER_TEXTURE_RGB_FLAG_BGR,
+					     CLUTTER_TEXTURE_RGB_FLAG_BGR |
+					     CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
 					     &error);
   else
     clutter_texture_set_from_rgb_data  (CLUTTER_TEXTURE (texture),
@@ -880,7 +881,8 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 					width, height,
 					bytes_per_line,
 					4,
-					CLUTTER_TEXTURE_RGB_FLAG_BGR,
+					CLUTTER_TEXTURE_RGB_FLAG_BGR |
+					CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
 					&error);
 
 

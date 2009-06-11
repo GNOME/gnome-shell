@@ -1788,6 +1788,16 @@ clutter_stage_set_use_fog (ClutterStage *stage,
  *   }
  * ]|
  *
+ * Note: The fogging functions only work correctly when the visible actors use
+ *       unmultiplied alpha colors. By default Cogl will premultiply textures
+ *       and cogl_set_source_color will premultiply colors, so unless you
+ *       explicitly load your textures requesting an unmultiplied
+ *       internal_format and use cogl_material_set_color you can only use
+ *       fogging with fully opaque actors.
+ *
+ *       We can look to improve this in the future when we can depend on
+ *       fragment shaders.
+ *
  * Since: 0.6
  */
 void

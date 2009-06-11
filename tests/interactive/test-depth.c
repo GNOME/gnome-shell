@@ -119,15 +119,12 @@ test_depth_main (int argc, char *argv[])
   ClutterActor     *group, *hand, *label, *rect, *janus, *box;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
   ClutterColor      rect_color  = { 0, 0, 0, 0x88 };
-  ClutterFog        stage_fog   = { 10.0, -50.0 };
   GError           *error;
 
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_stage_set_fog (CLUTTER_STAGE (stage), &stage_fog);
-  clutter_stage_set_use_fog (CLUTTER_STAGE (stage), TRUE);
 
   g_signal_connect (stage,
                     "button-press-event", G_CALLBACK (clutter_main_quit),

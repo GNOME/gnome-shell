@@ -138,6 +138,11 @@ gboolean cogl_is_material (CoglHandle handle);
  *
  * This is the basic color of the material, used when no lighting is enabled.
  *
+ * Note that if you don't add any layers to the material then the color
+ * will be blended unmodified with the destination; the default blend
+ * expects premultiplied colors: for example, use (0.5, 0.0, 0.0, 0.5) for
+ * semi-transparent red. See cogl_color_premultiply().
+ *
  * The default value is (1.0, 1.0, 1.0, 1.0)
  *
  * Since 1.0
@@ -474,6 +479,11 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  * "RGBA = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
  * </programlisting>
  * </section>
+ *
+ * The default blend string is:
+ *  "RGBA = ADD (SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+ * That gives normal alpha-blending when the calculated color for the material
+ * is in premultiplied form.
  *
  * Returns: TRUE if the blend string was successfully parsed, and the described
  *          blending is supported by the underlying driver/hardware. If there

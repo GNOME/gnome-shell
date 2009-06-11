@@ -29,6 +29,7 @@ test_conformance_SOURCES = 		\
 	test-blend-strings.c		\
 	test-color.c			\
 	test-clutter-units.c		\
+	test-premult.c			\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:

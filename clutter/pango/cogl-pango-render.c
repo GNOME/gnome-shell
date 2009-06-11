@@ -124,16 +124,20 @@ cogl_pango_renderer_init (CoglPangoRenderer *priv)
 
   /* The default combine mode of materials is to modulate (A x B) the texture
    * RGBA channels with the RGBA channels of the previous layer (which in our
-   * case is just the solid font color)
+   * case is just the font color)
    *
-   * Since our glyph cache textures are component alpha textures, and so the
-   * RGB channels are defined as (0, 0, 0) we don't want to modulate the RGB
-   * channels, instead we want to simply replace them with our solid font
-   * color...
+   * Since the RGB for an alpha texture is defined as 0, this gives us:
+   *
+   *  result.rgb = color.rgb * 0
+   *  result.a = color.a * texture.a
+   *
+   * What we want is premultiplied rgba values:
+   *
+   *  result.rgba = color.rgb * texture.a
+   *  result.a = color.a * texture.a
    */
   cogl_material_set_layer_combine (priv->glyph_material, 0, /* layer */
-                                   "RGB = REPLACE (PREVIOUS)"
-                                   "A = MODULATE (PREVIOUS, TEXTURE)",
+                                   "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
                                    NULL);
 
   priv->solid_material = cogl_material_new ();
