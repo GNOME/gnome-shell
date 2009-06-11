@@ -430,76 +430,22 @@ clutter_timeline_init (ClutterTimeline *self)
   priv->elapsed_time = 0;
 }
 
-static gboolean
-have_passed_time (ClutterTimeline *timeline,
-                  gint new_time,
-                  gint msecs)
-{
-  ClutterTimelinePrivate *priv = timeline->priv;
-
-  /* Ignore markers that are outside the duration of the timeline */
-  if (msecs < 0 || msecs > priv->duration)
-    return FALSE;
-
-  if (priv->direction == CLUTTER_TIMELINE_FORWARD)
-    {
-      /* We need to special case when a marker is added at the
-         beginning of the timeline */
-      if (msecs == 0 &&
-          priv->msecs_delta > 0 &&
-          new_time - priv->msecs_delta <= 0)
-        return TRUE;
-
-      /* If the timeline is looping then we need to check for wrap
-         around */
-      if (priv->loop && new_time >= priv->duration)
-        return (msecs > new_time - priv->msecs_delta ||
-                msecs <= new_time % priv->duration);
-
-      /* Otherwise it's just a simple test if the time is in range of
-         the previous time and the new time */
-      return (msecs > new_time - priv->msecs_delta
-              && msecs <= new_time);
-    }
-  else
-    {
-      /* We need to special case when a marker is added at the
-         end of the timeline */
-      if (msecs == priv->duration &&
-          priv->msecs_delta > 0 &&
-          new_time + priv->msecs_delta >= priv->duration)
-        return TRUE;
-
-      /* If the timeline is looping then we need to check for wrap
-         around */
-      if (priv->loop && new_time <= 0)
-        return (msecs < new_time + priv->msecs_delta ||
-                msecs >= (priv->duration -
-                          (-new_time % priv->duration)));
-
-      /* Otherwise it's just a simple test if the time is in range of
-         the previous time and the new time */
-      return (msecs >= new_time
-              && msecs < new_time + priv->msecs_delta);
-    }
-}
-
-struct CheckIfMarkerHitClosure
-{
-  ClutterTimeline *timeline;
-  gint new_time;
-};
-
 static void
 check_if_marker_hit (const gchar *name,
                      TimelineMarker *marker,
-                     struct CheckIfMarkerHitClosure *data)
+                     ClutterTimeline *timeline)
 {
-  if (have_passed_time (data->timeline, data->new_time, marker->msecs))
+  ClutterTimelinePrivate *priv = timeline->priv;
+
+  if (priv->direction == CLUTTER_TIMELINE_FORWARD
+      ? (marker->msecs > priv->elapsed_time - priv->msecs_delta
+         && marker->msecs <= priv->elapsed_time)
+      : (marker->msecs >= priv->elapsed_time
+         && marker->msecs < priv->elapsed_time + priv->msecs_delta))
     {
       CLUTTER_NOTE (SCHEDULER, "Marker '%s' reached", name);
 
-      g_signal_emit (data->timeline, timeline_signals[MARKER_REACHED],
+      g_signal_emit (timeline, timeline_signals[MARKER_REACHED],
                      marker->quark,
                      name,
                      marker->msecs);
@@ -507,12 +453,10 @@ check_if_marker_hit (const gchar *name,
 }
 
 static void
-emit_frame_signal (ClutterTimeline *timeline, gint new_time)
+emit_frame_signal (ClutterTimeline *timeline)
 {
   ClutterTimelinePrivate *priv = timeline->priv;
-  struct CheckIfMarkerHitClosure data;
 
-  /* Emit the signal */
   g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
                  priv->elapsed_time);
 
@@ -520,12 +464,9 @@ emit_frame_signal (ClutterTimeline *timeline, gint new_time)
   if (priv->markers_by_name == NULL)
     return;
 
-  data.timeline = timeline;
-  data.new_time = new_time;
-
   g_hash_table_foreach (priv->markers_by_name,
                         (GHFunc) check_if_marker_hit,
-                        &data);
+                        timeline);
 }
 
 static gboolean
@@ -586,7 +527,7 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
   if (!is_complete (timeline))
     {
       /* Emit the signal */
-      emit_frame_signal (timeline, priv->elapsed_time);
+      emit_frame_signal (timeline);
 
       /* Signal pauses timeline ? */
       if (!priv->is_playing)
@@ -601,31 +542,29 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
   else
     {
       /* Handle loop or stop */
+      ClutterTimelineDirection saved_direction = priv->direction;
+      guint overflow_msecs = priv->elapsed_time;
       gint end_msecs;
-      gint overflow_msecs = priv->elapsed_time;
 
       /* Update the current elapsed time in case the signal handlers
-       * want to take a peek */
-      if (priv->loop)
-        {
-          /* We try and interpolate smoothly around a loop */
-          if (priv->direction == CLUTTER_TIMELINE_FORWARD)
-            priv->elapsed_time = priv->elapsed_time % priv->duration;
-          else
-            priv->elapsed_time = (priv->duration -
-                                  (-priv->elapsed_time % priv->duration));
-        }
-      else if (priv->direction == CLUTTER_TIMELINE_FORWARD)
-        priv->elapsed_time = priv->duration;
+       * want to take a peek. If we clamp elapsed time, then we need
+       * to correpondingly reduce msecs_delta to reflect the correct
+       * range of times */
+      if (priv->direction == CLUTTER_TIMELINE_FORWARD)
+	{
+	  priv->msecs_delta -= (priv->elapsed_time - priv->duration);
+	  priv->elapsed_time = priv->duration;
+	}
       else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
-        priv->elapsed_time = 0;
+	{
+	  priv->msecs_delta -= - priv->elapsed_time;
+	  priv->elapsed_time = 0;
+	}
 
       end_msecs = priv->elapsed_time;
 
-      /* Check if the markers have been hit using the old value of
-         elapsed time so it will use the right value for the previous
-         elapsed time */
-      emit_frame_signal (timeline, overflow_msecs);
+      /* Emit the signal */
+      emit_frame_signal (timeline);
 
       /* Did the signal handler modify the elapsed time? */
       if (priv->elapsed_time != end_msecs)
@@ -670,11 +609,28 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
           return TRUE;
         }
 
-      if (!priv->loop)
-        clutter_timeline_rewind (timeline);
+      if (priv->loop)
+        {
+          /* We try and interpolate smoothly around a loop */
+          if (saved_direction == CLUTTER_TIMELINE_FORWARD)
+            priv->elapsed_time = overflow_msecs - priv->duration;
+          else
+            priv->elapsed_time = priv->duration + overflow_msecs;
 
-      g_object_unref (timeline);
-      return priv->loop;
+          /* Or if the direction changed, we try and bounce */
+          if (priv->direction != saved_direction)
+            priv->elapsed_time = priv->duration - priv->elapsed_time;
+
+          g_object_unref (timeline);
+          return TRUE;
+        }
+      else
+        {
+          clutter_timeline_rewind (timeline);
+
+          g_object_unref (timeline);
+          return FALSE;
+        }
     }
 }
 

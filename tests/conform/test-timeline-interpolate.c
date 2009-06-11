@@ -46,12 +46,14 @@ new_frame_cb (ClutterTimeline *timeline,
 
   /* If we expect to have interpolated past the end of the timeline
    * we keep track of the overflow so we can determine when
-   * the next timeout will happen. We then wrap expected_frames
-   * around TEST_TIMELINE_DURATION */
+   * the next timeout will happen. We then clip expected_frames
+   * to TEST_TIMELINE_DURATION since clutter-timeline
+   * semantics guaranty this frame is always signaled before
+   * looping */
   if (state->expected_frame > TEST_TIMELINE_DURATION)
     {
       loop_overflow = state->expected_frame - TEST_TIMELINE_DURATION;
-      state->expected_frame %= TEST_TIMELINE_DURATION;
+      state->expected_frame = TEST_TIMELINE_DURATION;
     }
 
   if (current_frame >= (state->expected_frame-TEST_ERROR_TOLERANCE)
