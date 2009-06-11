@@ -16,17 +16,17 @@ typedef struct _TestState
 static gboolean
 watchdog_timeout (TestState *state)
 {
-  g_test_message ("Watchdog timer kicking in\n");
-  g_test_message ("rewind_count=%i\n", state->rewind_count);
+  g_test_message ("Watchdog timer kicking in");
+  g_test_message ("rewind_count=%i", state->rewind_count);
   if (state->rewind_count <= 3)
     {
       /* The test has hung */
-      g_test_message ("Failed (This test shouldn't have hung!)\n");
+      g_test_message ("Failed (This test shouldn't have hung!)");
       exit (EXIT_FAILURE);
     }
   else
     {
-      g_test_message ("Passed\n");
+      g_test_message ("Passed");
       clutter_main_quit ();
     }
 
@@ -42,8 +42,8 @@ new_frame_cb (ClutterTimeline *timeline,
 
   if (elapsed_time == TEST_TIMELINE_DURATION)
     {
-      g_test_message ("new-frame signal recieved (end of timeline)\n");
-      g_test_message ("Rewinding timeline\n");
+      g_test_message ("new-frame signal received (end of timeline)");
+      g_test_message ("Rewinding timeline");
       clutter_timeline_rewind (timeline);
       state->rewind_count++;
     }
@@ -51,16 +51,16 @@ new_frame_cb (ClutterTimeline *timeline,
     {
       if (elapsed_time == 0)
         {
-          g_test_message ("new-frame signal recieved (start of timeline)\n");
+          g_test_message ("new-frame signal received (start of timeline)");
         }
       else
         {
-          g_test_message ("new-frame signal recieved (mid frame)\n");
+          g_test_message ("new-frame signal received (mid frame)");
         }
 
       if (state->rewind_count >= 2)
         {
-          g_test_message ("Sleeping for 1 second\n");
+          g_test_message ("Sleeping for 1 second");
           g_usleep (1000000);
         }
     }
@@ -79,7 +79,7 @@ test_timeline_rewind (TestConformSimpleFixture *fixture,
                     G_CALLBACK(new_frame_cb),
                     &state);
   g_test_message ("Installing a watchdog timeout "
-		  "to determine if this test hangs\n");
+		  "to determine if this test hangs");
   g_timeout_add (TEST_WATCHDOG_KICK_IN_SECONDS*1000,
 		 (GSourceFunc)watchdog_timeout,
                  &state);

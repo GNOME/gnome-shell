@@ -57,16 +57,16 @@ new_frame_cb (ClutterTimeline *timeline,
   if (current_frame >= (state->expected_frame-TEST_ERROR_TOLERANCE)
       && current_frame <= (state->expected_frame+TEST_ERROR_TOLERANCE))
     {
-      g_test_message ("\nelapsed milliseconds=%-5li "
-		      "expected frame=%-4i actual frame=%-4i (OK)\n",
+      g_test_message ("elapsed milliseconds=%-5li "
+		      "expected frame=%-4i actual frame=%-4i (OK)",
 		      msec_diff,
 		      state->expected_frame,
 		      current_frame);
     }
   else
     {
-      g_test_message ("\nelapsed milliseconds=%-5li "
-		      "expected frame=%-4i actual frame=%-4i (FAILED)\n",
+      g_test_message ("elapsed milliseconds=%-5li "
+		      "expected frame=%-4i actual frame=%-4i (FAILED)",
 		      msec_diff,
 		      state->expected_frame,
 		      current_frame);
@@ -77,7 +77,7 @@ new_frame_cb (ClutterTimeline *timeline,
     {
       state->expected_frame = current_frame + (TEST_TIMELINE_FPS / 4);
       g_test_message ("Sleeping for 250ms "
-		      "so next frame should be (%i + %i) = %i\n",
+		      "so next frame should be (%i + %i) = %i",
 		      current_frame,
 		      (TEST_TIMELINE_FPS / 4),
 		      state->expected_frame);
@@ -87,7 +87,7 @@ new_frame_cb (ClutterTimeline *timeline,
     {
       state->expected_frame = current_frame + TEST_TIMELINE_FPS;
       g_test_message ("Sleeping for 1sec "
-		      "so next frame should be (%i + %i) = %i\n",
+		      "so next frame should be (%i + %i) = %i",
 		      current_frame,
 		      TEST_TIMELINE_FPS,
 		      state->expected_frame);
@@ -99,7 +99,7 @@ new_frame_cb (ClutterTimeline *timeline,
       state->expected_frame += loop_overflow;
       state->expected_frame -= TEST_TIMELINE_DURATION;
       g_test_message ("End of timeline reached: "
-		      "Wrapping expected frame too %i\n",
+		      "Wrapping expected frame too %i",
 		      state->expected_frame);
     }
 
