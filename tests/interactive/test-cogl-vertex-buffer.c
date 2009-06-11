@@ -55,7 +55,7 @@ typedef struct _TestState
 
 static void
 frame_cb (ClutterTimeline *timeline,
-          gint             frame_num,
+          gint             elapsed_msecs,
           TestState       *state)
 {
   guint x, y;
@@ -101,6 +101,10 @@ frame_cb (ClutterTimeline *timeline,
         /* A bit of a sneaky cast, but it seems safe to assume the ClutterColor
          * typedef is set in stone... */
         clutter_color_from_hls ((ClutterColor *)color, h * 360.0, l, s);
+
+        color[0] = (color[0] * color[3] + 128) / 255;
+        color[1] = (color[1] * color[3] + 128) / 255;
+        color[2] = (color[2] * color[3] + 128) / 255;
       }
 
   cogl_vertex_buffer_add (state->buffer,
@@ -122,13 +126,13 @@ frame_cb (ClutterTimeline *timeline,
 
   clutter_actor_set_rotation (state->dummy,
                               CLUTTER_Z_AXIS,
-                              frame_num,
+                              360 * period_progress,
                               (MESH_WIDTH * QUAD_WIDTH) / 2,
                               (MESH_HEIGHT * QUAD_HEIGHT) / 2,
                               0);
   clutter_actor_set_rotation (state->dummy,
                               CLUTTER_X_AXIS,
-                              frame_num,
+                              360 * period_progress,
                               (MESH_WIDTH * QUAD_WIDTH) / 2,
                               (MESH_HEIGHT * QUAD_HEIGHT) / 2,
                               0);
@@ -320,14 +324,6 @@ create_dummy_actor (guint width, guint height)
   return group;
 }
 
-static gboolean
-queue_redraw (gpointer stage)
-{
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-
-  return TRUE;
-}
-
 G_MODULE_EXPORT int
 test_cogl_vertex_buffer_main (int argc, char *argv[])
 {
@@ -336,7 +332,6 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
   ClutterColor    stage_clr = {0x0, 0x0, 0x0, 0xff};
   ClutterGeometry stage_geom;
   gint            dummy_width, dummy_height;
-  guint           idle_source;
 
   clutter_init (&argc, &argv);
 
@@ -353,15 +348,12 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
                               (stage_geom.width / 2.0) - (dummy_width / 2.0),
                               (stage_geom.height / 2.0) - (dummy_height / 2.0));
 
-  state.timeline = clutter_timeline_new (6000);
+  state.timeline = clutter_timeline_new (1000);
   clutter_timeline_set_loop (state.timeline, TRUE);
   g_signal_connect (state.timeline,
                     "new-frame",
                     G_CALLBACK (frame_cb),
                     &state);
-
-  /* We want continuous redrawing of the stage... */
-  idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (state.dummy, "paint", G_CALLBACK (on_paint), &state);
 
@@ -375,8 +367,6 @@ test_cogl_vertex_buffer_main (int argc, char *argv[])
 
   cogl_handle_unref (state.buffer);
   cogl_handle_unref (state.indices);
-
-  g_source_remove (idle_source);
 
   return 0;
 }
