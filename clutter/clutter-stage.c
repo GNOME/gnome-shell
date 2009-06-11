@@ -87,8 +87,9 @@ struct _ClutterStagePrivate
   gchar              *title;
   ClutterActor       *key_focused_actor;
 
-  guint               update_idle;      /* repaint idler id */
+  GQueue             *event_queue;
 
+  guint redraw_pending    : 1;
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
   guint is_cursor_visible : 1;
@@ -390,29 +391,134 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
                           CLUTTER_ALLOCATION_NONE);
 }
 
-static gboolean
-redraw_update_idle (gpointer user_data)
+void
+_clutter_stage_queue_event (ClutterStage *stage,
+			    ClutterEvent *event)
 {
-  ClutterStage *stage = user_data;
-  ClutterStagePrivate *priv = stage->priv;
-  ClutterMasterClock *master_clock;
+  ClutterStagePrivate *priv;
+  gboolean first_event;
 
-  /* before we redraw we advance the master clock of one tick; this means
-   * that all the timelines that need advancing will be advanced by one
-   * frame. this will cause multiple redraw requests, so we do this before
-   * we ask for a relayout and before we do the actual redraw. this ensures
-   * that we paint the most updated scenegraph state and that all animations
-   * are in sync with the paint process.
-   */
-  CLUTTER_NOTE (PAINT, "Avdancing master clock");
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_advance (master_clock);
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  /* run the (eventual) repaint functions; since those might end up queuing
-   * a relayout or a redraw we need to execute them before maybe_relayout()
-   */
-  CLUTTER_NOTE (PAINT, "Repaint functions");
-  _clutter_run_repaint_functions ();
+  priv = stage->priv;
+
+  first_event = priv->event_queue->length == 0;
+
+  g_queue_push_tail (priv->event_queue,
+		     clutter_event_copy (event));
+
+  if (first_event)
+    {
+      ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_start_running (master_clock);
+    }
+}
+
+gboolean
+_clutter_stage_has_queued_events (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  priv = stage->priv;
+
+  return priv->event_queue->length > 0;
+}
+
+void
+_clutter_stage_process_queued_events (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+  GList *events, *l;;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->event_queue->length == 0)
+    return;
+
+  /* In case the stage gets destroyed during event processing */
+  g_object_ref (stage);
+
+  /* Steal events before starting processing to avoid reentrancy
+   * issues */
+  events = priv->event_queue->head;
+  priv->event_queue->head =  NULL;
+  priv->event_queue->tail = NULL;
+  priv->event_queue->length = 0;
+
+  for (l = events; l; l = l->next)
+    {
+      ClutterEvent *event;
+      ClutterEvent *next_event;
+
+      event = l->data;
+      next_event = l->next ? l->next->data : NULL;
+
+      /* Skip consecutive motion events */
+      if (next_event &&
+	  event->type == CLUTTER_MOTION &&
+	  (next_event->type == CLUTTER_MOTION ||
+	   next_event->type == CLUTTER_LEAVE))
+	{
+	  CLUTTER_NOTE (EVENT,
+			"Omitting motion event at %.2f, %.2f",
+			event->motion.x, event->motion.y);
+	  goto next_event;
+	}
+
+      _clutter_process_event (event);
+
+    next_event:
+      clutter_event_free (event);
+    }
+
+  g_list_free (events);
+
+  g_object_unref (stage);
+}
+
+/**
+ * _clutter_stage_needs_update:
+ * @stage: A #ClutterStage
+ *
+ * Determines if _clutter_stage_do_update() needs to be called.
+ *
+ * Return value: %TRUE if the stage need layout or painting
+ */
+gboolean
+_clutter_stage_needs_update (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  priv = stage->priv;
+
+  return priv->redraw_pending;
+}
+
+/**
+ * _clutter_stage_do_update:
+ * @stage: A #ClutterStage
+ *
+ * Handles per-frame layout and repaint for the stage.
+ *
+ * Return value: %TRUE if the stage was updated
+ */
+gboolean
+_clutter_stage_do_update (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  priv = stage->priv;
+
+  if (!priv->redraw_pending)
+    return FALSE;
 
   /* clutter_do_redraw() will also call maybe_relayout(), but since a relayout
    * can queue a redraw, we want to do the relayout before we clear the
@@ -422,12 +528,11 @@ redraw_update_idle (gpointer user_data)
    */
   _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
 
-  /* redrawing will advance the master clock */
   CLUTTER_NOTE (PAINT, "redrawing via idle for stage[%p]", stage);
   _clutter_do_redraw (stage);
 
   /* reset the guard, so that new redraws are possible */
-  priv->update_idle = 0;
+  priv->redraw_pending = FALSE;
 
   if (CLUTTER_CONTEXT ()->redraw_count > 0)
     {
@@ -437,7 +542,7 @@ redraw_update_idle (gpointer user_data)
       CLUTTER_CONTEXT ()->redraw_count = 0;
     }
 
-  return FALSE;
+  return TRUE;
 }
 
 static void
@@ -450,15 +555,14 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
   CLUTTER_NOTE (PAINT, "Redraw request number %lu",
                 CLUTTER_CONTEXT ()->redraw_count + 1);
 
-  if (priv->update_idle == 0)
+  if (!priv->redraw_pending)
     {
-      CLUTTER_NOTE (PAINT, "Adding idle source for stage: %p", stage);
+      ClutterMasterClock *master_clock;
 
-      priv->update_idle =
-        clutter_threads_add_idle_full (CLUTTER_PRIORITY_REDRAW,
-                                       redraw_update_idle,
-                                       stage,
-                                       NULL);
+      priv->redraw_pending = TRUE;
+
+      master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_start_running (master_clock);
     }
   else
     CLUTTER_CONTEXT ()->redraw_count += 1;
@@ -608,12 +712,6 @@ clutter_stage_dispose (GObject *object)
 
   clutter_actor_hide (CLUTTER_ACTOR (object));
 
-  if (priv->update_idle)
-    {
-      g_source_remove (priv->update_idle);
-      priv->update_idle = 0;
-    }
-
   _clutter_stage_manager_remove_stage (stage_manager, stage);
 
   if (priv->impl)
@@ -631,9 +729,13 @@ static void
 clutter_stage_finalize (GObject *object)
 {
   ClutterStage *stage = CLUTTER_STAGE (object);
+  ClutterStagePrivate *priv = stage->priv;
+
+  g_queue_foreach (priv->event_queue, (GFunc)clutter_event_free, NULL);
+  g_queue_free (priv->event_queue);
 
   g_free (stage->priv->title);
-  
+
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
 
@@ -903,6 +1005,8 @@ clutter_stage_init (ClutterStage *self)
 
   /* make sure that the implementation is considered a top level */
   CLUTTER_SET_PRIVATE_FLAGS (priv->impl, CLUTTER_ACTOR_IS_TOPLEVEL);
+
+  priv->event_queue = g_queue_new ();
 
   priv->is_offscreen      = FALSE;
   priv->is_fullscreen     = FALSE;
@@ -1272,8 +1376,8 @@ clutter_stage_read_pixels (ClutterStage *stage,
   g_return_val_if_fail (x >= 0 && y >= 0, NULL);
 
   /* Force a redraw of the stage before reading back pixels */
-  clutter_redraw (stage);
   clutter_stage_ensure_current (stage);
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   glGetIntegerv (GL_VIEWPORT, viewport);
   stage_x      = viewport[0];
@@ -1860,6 +1964,33 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+/**
+ * clutter_stage_ensure_redraw:
+ * @stage: a #ClutterStage
+ *
+ * Ensures that @stage is redrawn
+ *
+ * This function should not be called by applications: it is
+ * used when embedding a #ClutterStage into a toolkit with
+ * another windowing system, like GTK+.
+ *
+ * Since: 1.0
+ */
+void
+clutter_stage_ensure_redraw (ClutterStage *stage)
+{
+  ClutterMasterClock *master_clock;
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+  priv->redraw_pending = TRUE;
+
+  master_clock = _clutter_master_clock_get_default ();
+  _clutter_master_clock_start_running (master_clock);
 }
 
 /**

@@ -23,9 +23,6 @@ typedef struct _TestState
   gint expected_frame;
   gint completion_count;
   gboolean passed;
-  guint source_id;
-  GTimeVal prev_tick;
-  gulong msecs_delta;
 } TestState;
 
 
@@ -62,16 +59,16 @@ new_frame_cb (ClutterTimeline *timeline,
   if (current_frame >= (state->expected_frame-TEST_ERROR_TOLERANCE)
       && current_frame <= (state->expected_frame+TEST_ERROR_TOLERANCE))
     {
-      g_test_message ("\nelapsed milliseconds=%-5li "
-		      "expected frame=%-4i actual frame=%-4i (OK)\n",
+      g_test_message ("elapsed milliseconds=%-5li "
+		      "expected frame=%-4i actual frame=%-4i (OK)",
 		      msec_diff,
 		      state->expected_frame,
 		      current_frame);
     }
   else
     {
-      g_test_message ("\nelapsed milliseconds=%-5li "
-		      "expected frame=%-4i actual frame=%-4i (FAILED)\n",
+      g_test_message ("elapsed milliseconds=%-5li "
+		      "expected frame=%-4i actual frame=%-4i (FAILED)",
 		      msec_diff,
 		      state->expected_frame,
 		      current_frame);
@@ -82,7 +79,7 @@ new_frame_cb (ClutterTimeline *timeline,
     {
       state->expected_frame = current_frame + (TEST_TIMELINE_FPS / 4);
       g_test_message ("Sleeping for 250ms "
-		      "so next frame should be (%i + %i) = %i\n",
+		      "so next frame should be (%i + %i) = %i",
 		      current_frame,
 		      (TEST_TIMELINE_FPS / 4),
 		      state->expected_frame);
@@ -92,7 +89,7 @@ new_frame_cb (ClutterTimeline *timeline,
     {
       state->expected_frame = current_frame + TEST_TIMELINE_FPS;
       g_test_message ("Sleeping for 1sec "
-		      "so next frame should be (%i + %i) = %i\n",
+		      "so next frame should be (%i + %i) = %i",
 		      current_frame,
 		      TEST_TIMELINE_FPS,
 		      state->expected_frame);
@@ -104,7 +101,7 @@ new_frame_cb (ClutterTimeline *timeline,
       state->expected_frame += loop_overflow;
       state->expected_frame -= TEST_TIMELINE_DURATION;
       g_test_message ("End of timeline reached: "
-		      "Wrapping expected frame too %i\n",
+		      "Wrapping expected frame too %i",
 		      state->expected_frame);
     }
 
@@ -134,30 +131,6 @@ completed_cb (ClutterTimeline *timeline,
     }
 }
 
-static gboolean
-frame_tick (gpointer data)
-{
-  TestState *state = data;
-  GTimeVal cur_tick = { 0, };
-  gulong msecs;
-
-  g_get_current_time (&cur_tick);
-
-  if (state->prev_tick.tv_sec == 0)
-    state->prev_tick = cur_tick;
-
-  msecs = (cur_tick.tv_sec - state->prev_tick.tv_sec) * 1000
-        + (cur_tick.tv_usec - state->prev_tick.tv_usec) / 1000;
-
-  if (clutter_timeline_is_playing (state->timeline))
-   clutter_timeline_advance_delta (state->timeline, msecs);
-
-  state->msecs_delta = msecs;
-  state->prev_tick = cur_tick;
-
-  return TRUE;
-}
-
 void
 test_timeline_interpolate (TestConformSimpleFixture *fixture, 
 			   gconstpointer data)
@@ -180,18 +153,11 @@ test_timeline_interpolate (TestConformSimpleFixture *fixture,
   state.new_frame_counter = 0;
   state.passed = TRUE;
   state.expected_frame = 0;
-  state.prev_tick.tv_sec = 0;
-  state.prev_tick.tv_usec = 0;
-  state.msecs_delta = 0;
-
-  state.source_id =
-    clutter_threads_add_frame_source (60, frame_tick, &state);
 
   g_get_current_time (&state.start_time);
   clutter_timeline_start (state.timeline);
   
   clutter_main();
 
-  g_source_remove (state.source_id);
   g_object_unref (state.timeline);
 }

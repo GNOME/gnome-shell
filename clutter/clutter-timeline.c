@@ -62,8 +62,13 @@ struct _ClutterTimelinePrivate
 
   GHashTable *markers_by_name;
 
+  /* Time we last advanced the elapsed time and showed a frame */
+  GTimeVal last_frame_time;
+
   guint loop       : 1;
   guint is_playing : 1;
+  /* If we've just started playing and haven't yet gotten a tick from the master clock */
+  guint waiting_first_tick : 1;
 };
 
 typedef struct {
@@ -204,8 +209,11 @@ clutter_timeline_finalize (GObject *object)
   if (priv->markers_by_name)
     g_hash_table_destroy (priv->markers_by_name);
 
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_remove_timeline (master_clock, self);
+  if (priv->is_playing)
+    {
+      master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_remove_timeline (master_clock, self);
+    }
 
   G_OBJECT_CLASS (clutter_timeline_parent_class)->finalize (object);
 }
@@ -412,7 +420,6 @@ static void
 clutter_timeline_init (ClutterTimeline *self)
 {
   ClutterTimelinePrivate *priv;
-  ClutterMasterClock *master_clock;
 
   self->priv = priv =
     G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_TIMELINE,
@@ -421,31 +428,93 @@ clutter_timeline_init (ClutterTimeline *self)
   priv->duration = 0;
   priv->delay = 0;
   priv->elapsed_time = 0;
+}
 
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_add_timeline (master_clock, self);
+struct CheckIfMarkerHitClosure
+{
+  ClutterTimeline *timeline;
+  ClutterTimelineDirection direction;
+  gint new_time;
+  gint duration;
+  gint delta;
+};
+
+static gboolean
+have_passed_time (const struct CheckIfMarkerHitClosure *data,
+                  gint msecs)
+{
+  /* Ignore markers that are outside the duration of the timeline */
+  if (msecs < 0 || msecs > data->duration)
+    return FALSE;
+
+  if (data->direction == CLUTTER_TIMELINE_FORWARD)
+    {
+      /* We need to special case when a marker is added at the
+         beginning of the timeline */
+      if (msecs == 0 &&
+          data->delta > 0 &&
+          data->new_time - data->delta <= 0)
+        return TRUE;
+
+      /* Otherwise it's just a simple test if the time is in range of
+         the previous time and the new time */
+      return (msecs > data->new_time - data->delta
+              && msecs <= data->new_time);
+    }
+  else
+    {
+      /* We need to special case when a marker is added at the
+         end of the timeline */
+      if (msecs == data->duration &&
+          data->delta > 0 &&
+          data->new_time + data->delta >= data->duration)
+        return TRUE;
+
+      /* Otherwise it's just a simple test if the time is in range of
+         the previous time and the new time */
+      return (msecs >= data->new_time
+              && msecs < data->new_time + data->delta);
+    }
 }
 
 static void
 check_if_marker_hit (const gchar *name,
                      TimelineMarker *marker,
-                     ClutterTimeline *timeline)
+                     struct CheckIfMarkerHitClosure *data)
 {
-  ClutterTimelinePrivate *priv = timeline->priv;
-
-  if (priv->direction == CLUTTER_TIMELINE_FORWARD
-      ? (marker->msecs > priv->elapsed_time - priv->msecs_delta
-         && marker->msecs <= priv->elapsed_time)
-      : (marker->msecs >= priv->elapsed_time
-         && marker->msecs < priv->elapsed_time + priv->msecs_delta))
+  if (have_passed_time (data, marker->msecs))
     {
       CLUTTER_NOTE (SCHEDULER, "Marker '%s' reached", name);
 
-      g_signal_emit (timeline, timeline_signals[MARKER_REACHED],
+      g_signal_emit (data->timeline, timeline_signals[MARKER_REACHED],
                      marker->quark,
                      name,
                      marker->msecs);
     }
+}
+
+static void
+check_markers (ClutterTimeline *timeline,
+               gint delta)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+  struct CheckIfMarkerHitClosure data;
+
+  /* shortcircuit here if we don't have any marker installed */
+  if (priv->markers_by_name == NULL)
+    return;
+
+  /* store the details of the timeline so that changing them in a
+     marker signal handler won't affect which markers are hit */
+  data.timeline = timeline;
+  data.direction = priv->direction;
+  data.new_time = priv->elapsed_time;
+  data.duration = priv->duration;
+  data.delta = delta;
+
+  g_hash_table_foreach (priv->markers_by_name,
+                        (GHFunc) check_if_marker_hit,
+                        &data);
 }
 
 static void
@@ -455,14 +524,6 @@ emit_frame_signal (ClutterTimeline *timeline)
 
   g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
                  priv->elapsed_time);
-
-  /* shortcircuit here if we don't have any marker installed */
-  if (priv->markers_by_name == NULL)
-    return;
-
-  g_hash_table_foreach (priv->markers_by_name,
-                        (GHFunc) check_if_marker_hit,
-                        timeline);
 }
 
 static gboolean
@@ -475,8 +536,33 @@ is_complete (ClutterTimeline *timeline)
           : priv->elapsed_time <= 0);
 }
 
+static void
+set_is_playing (ClutterTimeline *timeline,
+                gboolean         is_playing)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+  ClutterMasterClock *master_clock;
+
+  is_playing = is_playing != FALSE;
+
+  if (is_playing == priv->is_playing)
+    return;
+
+  priv->is_playing = is_playing;
+  master_clock = _clutter_master_clock_get_default ();
+  if (priv->is_playing)
+    {
+      _clutter_master_clock_add_timeline (master_clock, timeline);
+      priv->waiting_first_tick = TRUE;
+    }
+  else
+    {
+      _clutter_master_clock_remove_timeline (master_clock, timeline);
+    }
+}
+
 static gboolean
-clutter_timeline_advance_internal (ClutterTimeline *timeline)
+clutter_timeline_do_frame (ClutterTimeline *timeline)
 {
   ClutterTimelinePrivate *priv;
 
@@ -499,6 +585,7 @@ clutter_timeline_advance_internal (ClutterTimeline *timeline)
     {
       /* Emit the signal */
       emit_frame_signal (timeline);
+      check_markers (timeline, priv->msecs_delta);
 
       /* Signal pauses timeline ? */
       if (!priv->is_playing)
@@ -514,21 +601,22 @@ clutter_timeline_advance_internal (ClutterTimeline *timeline)
     {
       /* Handle loop or stop */
       ClutterTimelineDirection saved_direction = priv->direction;
+      gint elapsed_time_delta = priv->msecs_delta;
       guint overflow_msecs = priv->elapsed_time;
       gint end_msecs;
 
       /* Update the current elapsed time in case the signal handlers
        * want to take a peek. If we clamp elapsed time, then we need
-       * to correpondingly reduce msecs_delta to reflect the correct
+       * to correpondingly reduce elapsed_time_delta to reflect the correct
        * range of times */
       if (priv->direction == CLUTTER_TIMELINE_FORWARD)
 	{
-	  priv->msecs_delta -= (priv->elapsed_time - priv->duration);
+	  elapsed_time_delta -= (priv->elapsed_time - priv->duration);
 	  priv->elapsed_time = priv->duration;
 	}
       else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
 	{
-	  priv->msecs_delta -= - priv->elapsed_time;
+	  elapsed_time_delta -= - priv->elapsed_time;
 	  priv->elapsed_time = 0;
 	}
 
@@ -536,6 +624,7 @@ clutter_timeline_advance_internal (ClutterTimeline *timeline)
 
       /* Emit the signal */
       emit_frame_signal (timeline);
+      check_markers (timeline, elapsed_time_delta);
 
       /* Did the signal handler modify the elapsed time? */
       if (priv->elapsed_time != end_msecs)
@@ -561,7 +650,7 @@ clutter_timeline_advance_internal (ClutterTimeline *timeline)
            * XXX Perhaps we should remove this earlier, and regardless
            * of priv->loop. Are we limiting the things that could be done in
            * the above new-frame signal handler */
-          priv->is_playing = FALSE;
+	  set_is_playing (timeline, FALSE);
         }
 
       g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
@@ -592,6 +681,14 @@ clutter_timeline_advance_internal (ClutterTimeline *timeline)
           if (priv->direction != saved_direction)
             priv->elapsed_time = priv->duration - priv->elapsed_time;
 
+          /* If we have overflowed then we are changing the elapsed
+             time without emitting the new frame signal so we need to
+             check for markers again */
+          check_markers (timeline,
+                         priv->direction == CLUTTER_TIMELINE_FORWARD ?
+                         priv->elapsed_time :
+                         priv->duration - priv->elapsed_time);
+
           g_object_unref (timeline);
           return TRUE;
         }
@@ -613,7 +710,7 @@ delay_timeout_func (gpointer data)
 
   priv->delay_id = 0;
   priv->msecs_delta = 0;
-  priv->is_playing = TRUE;
+  set_is_playing (timeline, TRUE);
 
   g_signal_emit (timeline, timeline_signals[STARTED], 0);
 
@@ -648,7 +745,7 @@ clutter_timeline_start (ClutterTimeline *timeline)
   else
     {
       priv->msecs_delta = 0;
-      priv->is_playing = TRUE;
+      set_is_playing (timeline, TRUE);
 
       g_signal_emit (timeline, timeline_signals[STARTED], 0);
     }
@@ -679,7 +776,7 @@ clutter_timeline_pause (ClutterTimeline *timeline)
     }
 
   priv->msecs_delta = 0;
-  priv->is_playing = FALSE;
+  set_is_playing (timeline, FALSE);
 
   g_signal_emit (timeline, timeline_signals[PAUSED], 0);
 }
@@ -1116,19 +1213,18 @@ clutter_timeline_get_delta (ClutterTimeline *timeline)
 }
 
 /*
- * clutter_timeline_advance_delta:
+ * clutter_timeline_do_tick
  * @timeline: a #ClutterTimeline
- * @msecs: advance in milliseconds
+ * @tick_time: time of advance
  *
- * Advances @timeline by @msecs. This function is called by the master
- * clock and it is used to advance a timeline by the amount of milliseconds
- * elapsed since the last redraw operation. The @timeline will use this
- * interval to emit the #ClutterTimeline::new-frame signal and eventually
- * skip frames.
+ * Advances @timeline based on the time passed in @msecs. This
+ * function is called by the master clock. The @timeline will use this
+ * interval to emit the #ClutterTimeline::new-frame signal and
+ * eventually skip frames.
  */
 void
-clutter_timeline_advance_delta (ClutterTimeline *timeline,
-                                guint            msecs)
+clutter_timeline_do_tick (ClutterTimeline *timeline,
+			  GTimeVal        *tick_time)
 {
   ClutterTimelinePrivate *priv;
 
@@ -1136,9 +1232,25 @@ clutter_timeline_advance_delta (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
-  priv->msecs_delta = msecs;
+  if (priv->waiting_first_tick)
+    {
+      priv->last_frame_time = *tick_time;
+      priv->waiting_first_tick = FALSE;
+    }
+  else
+    {
+      gint msecs =
+	(tick_time->tv_sec - priv->last_frame_time.tv_sec) * 1000
+        + (tick_time->tv_usec - priv->last_frame_time.tv_usec) / 1000;
 
-  clutter_timeline_advance_internal (timeline);
+      if (msecs != 0)
+	{
+	  /* Avoid accumulating error */
+	  g_time_val_add (&priv->last_frame_time, msecs * 1000L);
+	  priv->msecs_delta = msecs;
+	  clutter_timeline_do_frame (timeline);
+	}
+    }
 }
 
 static inline void

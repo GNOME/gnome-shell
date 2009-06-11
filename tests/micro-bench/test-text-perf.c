@@ -77,6 +77,7 @@ main (int argc, char *argv[])
   int              row, col;
 
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
+  g_setenv ("CLUTTER_DEFAULT_FPS", "1000", FALSE);
 
   clutter_init (&argc, &argv);
 

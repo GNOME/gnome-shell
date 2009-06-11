@@ -208,11 +208,6 @@ _clutter_do_redraw (ClutterStage *stage)
   */
   _clutter_backend_redraw (ctx->backend, stage);
 
-  /* prepare for the next frame; if anything queues a redraw as the
-   * result of a timeline, this will end up redrawing the scene
-   */
-  _clutter_master_clock_advance (master_clock);
-
   /* Complete FPS info */
   if (G_UNLIKELY (clutter_get_show_fps ()))
     {
@@ -241,18 +236,9 @@ _clutter_do_redraw (ClutterStage *stage)
 void
 clutter_redraw (ClutterStage *stage)
 {
-  ClutterMasterClock *master_clock;
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  /* we need to do this because the clutter_redraw() might be called by
-   * clutter-gtk, and this will not cause the master clock to advance nor
-   * the repaint functions to be run
-   */
-  master_clock = _clutter_master_clock_get_default ();
-  _clutter_master_clock_advance (master_clock);
-
-  _clutter_run_repaint_functions ();
-
-  _clutter_do_redraw (stage);
+  clutter_stage_ensure_redraw (stage);
 }
 
 /**
@@ -2010,6 +1996,29 @@ generate_enter_leave_events (ClutterEvent *event)
 void
 clutter_do_event (ClutterEvent *event)
 {
+  if (!event->any.stage)
+    return;
+
+  /* Instead of processing events when received, we queue them up to
+   * handle per-frame before animations, layout, and drawing.
+   *
+   * This gives us the chance to reliably compress motion events
+   * because we've "looked ahead" and know all motion events that
+   * will occur before drawing the frame.
+   */
+  _clutter_stage_queue_event (event->any.stage, event);
+}
+
+/**
+ * _clutter_process_event
+ * @event: a #ClutterEvent.
+ *
+ * Does the actual work of processing an event that was queued earlier
+ * out of clutter_do_event().
+ */
+void
+_clutter_process_event (ClutterEvent *event)
+{
   /* FIXME: This should probably be clutter_cook_event() - it would
    * take a raw event from the backend and 'cook' it so its more tasty.
    *
@@ -2018,8 +2027,6 @@ clutter_do_event (ClutterEvent *event)
   ClutterBackend      *backend;
   ClutterActor        *stage;
   ClutterInputDevice  *device = NULL;
-  static gint32        motion_last_time = 0L;
-  gint32               local_motion_time;
 
   context = clutter_context_get_default ();
   backend = context->backend;
@@ -2095,52 +2102,6 @@ clutter_do_event (ClutterEvent *event)
 
       case CLUTTER_MOTION:
         device = event->motion.device;
-
-        if (device)
-          local_motion_time = device->motion_last_time;
-        else
-          local_motion_time = motion_last_time;
-
-        /* avoid rate throttling for synthetic motion events or if
-         * the per-actor events are disabled
-         */
-        if (!(event->any.flags & CLUTTER_EVENT_FLAG_SYNTHETIC) ||
-            !context->motion_events_per_actor)
-          {
-            gint32 frame_rate, delta;
-
-            /* avoid issuing too many motion events, which leads to many
-             * redraws in pick mode (performance penalty)
-             */
-            frame_rate = clutter_get_motion_events_frequency ();
-            delta = 1000 / frame_rate;
-
-            CLUTTER_NOTE (EVENT,
-                  "skip motion event: %s (last:%d, delta:%d, time:%d)",
-                  (event->any.time < (local_motion_time + delta) ? "yes" : "no"),
-                  local_motion_time,
-                  delta,
-                  event->any.time);
-
-            /* we need to guard against roll-overs and the
-             * case where the time is rolled backwards and
-             * the backend is not ensuring a monotonic clock
-             * for the events.
-             *
-             * see:
-             *   http://bugzilla.openedhand.com/show_bug.cgi?id=1130
-             */
-            if (event->any.time >= local_motion_time &&
-                event->any.time < (local_motion_time + delta))
-              break;
-            else
-              local_motion_time = event->any.time;
-          }
-
-        if (device)
-          device->motion_last_time = local_motion_time;
-        else
-          motion_last_time = local_motion_time;
 
         /* Only stage gets motion events if clutter_set_motion_events is TRUE,
          * and the event is not a synthetic event with source set.
@@ -2323,11 +2284,7 @@ clutter_base_init (void)
 /**
  * clutter_get_default_frame_rate:
  *
- * Retrieves the default frame rate used when creating #ClutterTimeline<!--
- * -->s.
- *
- * This value is also used to compute the default frequency of motion
- * events.
+ * Retrieves the default frame rate. See clutter_set_default_frame_rate().
  *
  * Return value: the default frame rate
  *
@@ -2347,8 +2304,10 @@ clutter_get_default_frame_rate (void)
  * clutter_set_default_frame_rate:
  * @frames_per_sec: the new default frame rate
  *
- * Sets the default frame rate to be used when creating #ClutterTimeline<!--
- * -->s
+ * Sets the default frame rate. This frame rate will be used to limit
+ * the number of frames drawn if Clutter is not able to synchronize
+ * with the vertical refresh rate of the display. When synchronization
+ * is possible, this value is ignored.
  *
  * Since: 0.6
  */
@@ -2624,61 +2583,6 @@ clutter_get_keyboard_grab (void)
   context = clutter_context_get_default ();
 
   return context->keyboard_grab_actor;
-}
-
-/**
- * clutter_get_motion_events_frequency:
- *
- * Retrieves the number of motion events per second that are delivered
- * to the stage.
- *
- * See clutter_set_motion_events_frequency().
- *
- * Return value: the number of motion events per second
- *
- * Since: 0.6
- */
-guint
-clutter_get_motion_events_frequency (void)
-{
-  ClutterMainContext *context = clutter_context_get_default ();
-
-  if (G_LIKELY (context->motion_frequency == 0))
-    {
-      guint frequency;
-
-      frequency = clutter_default_fps / 4;
-      frequency = CLAMP (frequency, 20, 45);
-
-      return frequency;
-    }
-  else
-    return context->motion_frequency;
-}
-
-/**
- * clutter_set_motion_events_frequency:
- * @frequency: the number of motion events per second, or 0 for the
- *   default value
- *
- * Sets the motion events frequency. Setting this to a non-zero value
- * will override the default setting, so it should be rarely used.
- *
- * Motion events are delivered from the default backend to the stage
- * and are used to generate the enter/leave events pair. This might lead
- * to a performance penalty due to the way the actors are identified.
- * Using this function is possible to reduce the frequency of the motion
- * events delivery to the stage.
- *
- * Since: 0.6
- */
-void
-clutter_set_motion_events_frequency (guint frequency)
-{
-  ClutterMainContext *context = clutter_context_get_default ();
-
-  /* never allow the motion events to exceed the default frame rate */
-  context->motion_frequency = CLAMP (frequency, 1, clutter_default_fps);
 }
 
 /**

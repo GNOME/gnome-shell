@@ -66,20 +66,15 @@ GQuark clutter_init_error_quark (void);
 /**
  * CLUTTER_PRIORITY_REDRAW:
  *
- * Priority of the redraws.
+ * Priority of the redraws. This is chosen to be lower than the GTK+
+ * redraw and resize priorities, because in application with both
+ * GTK+ and Clutter it's more likely that the Clutter part will be
+ * continually animating (and thus able to starve GTK+) than
+ * vice-versa.
  *
  * Since: 0.8
  */
-#define CLUTTER_PRIORITY_REDRAW         (G_PRIORITY_HIGH_IDLE + 20)
-
-/**
- * CLUTTER_PRIORITY_TIMELINE:
- *
- * Priority of the timelines.
- *
- * Since: 0.8
- */
-#define CLUTTER_PRIORITY_TIMELINE       (G_PRIORITY_DEFAULT + 30)
+#define CLUTTER_PRIORITY_REDRAW         (G_PRIORITY_HIGH_IDLE + 50)
 
 /* Initialisation */
 void             clutter_base_init        (void);
@@ -144,8 +139,6 @@ void             clutter_threads_remove_repaint_func   (guint          handle_id
 
 void             clutter_set_motion_events_enabled   (gboolean enable);
 gboolean         clutter_get_motion_events_enabled   (void);
-void             clutter_set_motion_events_frequency (guint    frequency);
-guint            clutter_get_motion_events_frequency (void);
 
 void             clutter_set_default_frame_rate      (guint    frames_per_sec);
 guint            clutter_get_default_frame_rate      (void);

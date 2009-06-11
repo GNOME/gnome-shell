@@ -53,21 +53,21 @@ struct _ClutterMasterClock
   /* the list of timelines handled by the clock */
   GSList *timelines;
 
+  /* the current state of the clock
+   */
+  GTimeVal cur_tick;
+
   /* the previous state of the clock, used to compute
    * the delta
    */
   GTimeVal prev_tick;
-  gulong msecs_delta;
 
   /* an idle source, used by the Master Clock to queue
    * a redraw on the stage and drive the animations
    */
   GSource *source;
 
-  /* a guard, so that we dispatch the last redraw even
-   * after the last timeline has been completed
-   */
-  guint last_advance : 1;
+  guint updated_stages : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -81,13 +81,6 @@ struct _ClutterClockSource
 
   ClutterMasterClock *master_clock;
 };
-
-static void on_timeline_started   (ClutterTimeline    *timeline,
-                                   ClutterMasterClock *master_clock);
-static void on_timeline_completed (ClutterTimeline    *timeline,
-                                   ClutterMasterClock *master_clock);
-static void on_timeline_paused    (ClutterTimeline    *timeline,
-                                   ClutterMasterClock *master_clock);
 
 static gboolean clutter_clock_prepare  (GSource     *source,
                                         gint        *timeout);
@@ -108,42 +101,85 @@ static GSourceFuncs clock_funcs = {
 G_DEFINE_TYPE (ClutterMasterClock, clutter_master_clock, G_TYPE_OBJECT);
 
 /*
- * has_running_timeline:
+ * master_clock_is_running:
  * @master_clock: a #ClutterMasterClock
- * @filter: a #ClutterTimeline or %NULL
  *
- * Checks if @master_clock has any running timeline; if @filter
- * is not %NULL then the timeline will be filtered from the
- * list of timelines held by @master_clock
+ * Checks if we should currently be advancing timelines or redrawing
+ * stages.
  *
  * Return value: %TRUE if the #ClutterMasterClock has at least
  *   one running timeline
  */
 static gboolean
-has_running_timeline (ClutterMasterClock *master_clock,
-                      ClutterTimeline    *filter)
+master_clock_is_running (ClutterMasterClock *master_clock)
 {
-  GSList *l;
+  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+  const GSList *stages, *l;
 
-  if (master_clock->last_advance)
+  if (master_clock->timelines)
     return TRUE;
 
-  if (master_clock->timelines == NULL)
-    return FALSE;
-
-  for (l = master_clock->timelines; l != NULL; l = l->next)
-    {
-      /* if we get a timeline then we should filter it
-       * from the list of timelines we want to check
-       */
-      if (filter != NULL && filter == l->data)
-        continue;
-
-      if (clutter_timeline_is_playing (l->data))
-        return TRUE;
-    }
+  stages = clutter_stage_manager_peek_stages (stage_manager);
+  for (l = stages; l; l = l->next)
+    if (_clutter_stage_has_queued_events (l->data) ||
+        _clutter_stage_needs_update (l->data))
+      return TRUE;
 
   return FALSE;
+}
+
+/*
+ * master_clock_next_frame_delay:
+ * @master_clock: a #ClutterMasterClock
+ *
+ * Computes the number of delay before we need to draw the next frame.
+ *
+ * Return value: -1 if there is no next frame pending, otherwise the
+ *  number of millseconds before the we need to draw the next frame
+ */
+static gint
+master_clock_next_frame_delay (ClutterMasterClock *master_clock)
+{
+  GTimeVal now;
+  GTimeVal next;
+
+  if (!master_clock_is_running (master_clock))
+    return -1;
+
+  if (clutter_feature_available (CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
+      master_clock->updated_stages)
+    {
+      /* When we have sync-to-vblank, we count on that to throttle
+       * our frame rate, and otherwise draw frames as fast as possible.
+       */
+      return 0;
+    }
+
+  if (master_clock->prev_tick.tv_sec == 0)
+    {
+      /* If we weren't previously running, then draw the next frame
+       * immediately
+       */
+      return 0;
+    }
+
+  /* Otherwise, wait at least 1/frame_rate seconds since we last started a frame */
+
+  g_source_get_current_time (master_clock->source, &now);
+
+  next = master_clock->prev_tick;
+  g_time_val_add (&next, 1000000 / clutter_get_default_frame_rate ());
+
+  if (next.tv_sec < now.tv_sec ||
+      (next.tv_sec == now.tv_sec && next.tv_usec < now.tv_usec))
+    {
+      return 0;
+    }
+  else
+    {
+      return ((next.tv_sec - now.tv_sec) * 1000 +
+              (next.tv_usec - now.tv_usec) / 1000);
+    }
 }
 
 /*
@@ -174,14 +210,13 @@ clutter_clock_prepare (GSource *source,
 {
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
-  gboolean retval;
+  int delay;
 
-  /* just like an idle source, we are ready if nothing else is */
-  *timeout = -1;
+  delay = master_clock_next_frame_delay (master_clock);
 
-  retval = has_running_timeline (master_clock, NULL);
+  *timeout = delay;
 
-  return retval;
+  return delay == 0;
 }
 
 static gboolean
@@ -189,11 +224,11 @@ clutter_clock_check (GSource *source)
 {
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
-  gboolean retval;
+  int delay;
 
-  retval = has_running_timeline (master_clock, NULL);
+  delay = master_clock_next_frame_delay (master_clock);
 
-  return retval;
+  return delay == 0;
 }
 
 static gboolean
@@ -204,68 +239,48 @@ clutter_clock_dispatch (GSource     *source,
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
-  const GSList *stages, *l;
+  GSList *stages, *l;
 
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
 
-  stages = clutter_stage_manager_peek_stages (stage_manager);
+  /* Get the time to use for this frame.
+   */
+  g_source_get_current_time (source, &master_clock->cur_tick);
 
-  /* queue a redraw for each stage; this will advance each timeline
-   * held by the master clock of the amount of milliseconds elapsed
-   * since the last redraw
+  /* We need to protect ourselves against stages being destroyed during
+   * event handling
+   */
+  stages = clutter_stage_manager_list_stages (stage_manager);
+  g_slist_foreach (stages, (GFunc)g_object_ref, NULL);
+
+  master_clock->updated_stages = FALSE;
+
+  /* Process queued events
    */
   for (l = stages; l != NULL; l = l->next)
-    clutter_actor_queue_redraw (l->data);
+    _clutter_stage_process_queued_events (l->data);
 
-  /* if this is the remainder of an advancement, needed for the last
-   * timeline to finish its run, then we need to reset the prev_tick
+  _clutter_master_clock_advance (master_clock);
+  _clutter_run_repaint_functions ();
+
+  /* Update any stage that needs redraw/relayout after the clock
+   * is advanced.
    */
-  if (master_clock->last_advance)
-    {
-      master_clock->prev_tick.tv_sec = 0;
-      master_clock->last_advance = FALSE;
-    }
+  for (l = stages; l != NULL; l = l->next)
+    master_clock->updated_stages |= _clutter_stage_do_update (l->data);
+
+  g_slist_foreach (stages, (GFunc)g_object_unref, NULL);
+  g_slist_free (stages);
+
+  master_clock->prev_tick = master_clock->cur_tick;
 
   return TRUE;
-}
-
-static void
-timeline_weak_ref (gpointer  data,
-                   GObject  *object_pointer)
-{
-  ClutterMasterClock *master_clock = data;
-
-  master_clock->timelines =
-    g_slist_remove (master_clock->timelines, object_pointer);
-
-  if (master_clock->timelines == NULL)
-    master_clock->prev_tick.tv_sec = 0;
 }
 
 static void
 clutter_master_clock_finalize (GObject *gobject)
 {
   ClutterMasterClock *master_clock = CLUTTER_MASTER_CLOCK (gobject);
-  GSList *l;
-
-  for (l = master_clock->timelines; l != NULL; l = l->next)
-    {
-      ClutterTimeline *timeline = l->data;
-
-      g_object_weak_unref (G_OBJECT (timeline),
-                           timeline_weak_ref,
-                           master_clock);
-
-      g_signal_handlers_disconnect_by_func (timeline,
-                                            G_CALLBACK (on_timeline_started),
-                                            master_clock);
-      g_signal_handlers_disconnect_by_func (timeline,
-                                            G_CALLBACK (on_timeline_completed),
-                                            master_clock);
-      g_signal_handlers_disconnect_by_func (timeline,
-                                            G_CALLBACK (on_timeline_paused),
-                                            master_clock);
-    }
 
   g_slist_free (master_clock->timelines);
 
@@ -287,6 +302,8 @@ clutter_master_clock_init (ClutterMasterClock *self)
 
   source = clutter_clock_source_new (self);
   self->source = source;
+
+  self->updated_stages = TRUE;
 
   g_source_set_priority (source, CLUTTER_PRIORITY_REDRAW);
   g_source_set_can_recurse (source, FALSE);
@@ -313,77 +330,30 @@ _clutter_master_clock_get_default (void)
   return default_clock;
 }
 
-static void
-on_timeline_started (ClutterTimeline    *timeline,
-                     ClutterMasterClock *master_clock)
-{
-  /* we want to reset the prev_tick if this is the first
-   * timeline; since timeline is playing we need to filter
-   * it out, otherwise has_running_timeline() will return
-   * TRUE and prev_tick will not be unset
-   */
-  if (!has_running_timeline (master_clock, timeline))
-    master_clock->prev_tick.tv_sec = 0;
-}
-
-static void
-on_timeline_completed (ClutterTimeline *timeline,
-                       ClutterMasterClock *master_clock)
-{
-  /* if this is the last timeline we need to turn :last-advance
-   * on in order to queue the redraw of the scene for the last
-   * frame; otherwise the ClockSource will fail the prepare and
-   * check phases and the last frame will not be painted
-   */
-  if (!has_running_timeline (master_clock, NULL))
-    master_clock->last_advance = TRUE;
-}
-
-static void
-on_timeline_paused (ClutterTimeline *timeline,
-                    ClutterMasterClock *master_clock)
-{
-  /* see the comment in on_timeline_completed */
-  if (!has_running_timeline (master_clock, NULL))
-    master_clock->last_advance = TRUE;
-}
-
 /*
  * _clutter_master_clock_add_timeline:
  * @master_clock: a #ClutterMasterClock
  * @timeline: a #ClutterTimeline
  *
- * Adds @timeline to the list of timelines held by the master
- * clock. This function should be called during the instance
- * creation phase of the timeline.
+ * Adds @timeline to the list of playing timelines held by the master
+ * clock.
  */
 void
 _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
                                     ClutterTimeline    *timeline)
 {
-  gboolean is_first = FALSE;
+  gboolean is_first;
 
   if (g_slist_find (master_clock->timelines, timeline))
     return;
 
-  is_first = (master_clock->timelines == NULL) ? TRUE : FALSE;
+  is_first = master_clock->timelines == NULL;
 
   master_clock->timelines = g_slist_prepend (master_clock->timelines,
                                              timeline);
 
-  g_object_weak_ref (G_OBJECT (timeline),
-                     timeline_weak_ref,
-                     master_clock);
-
-  g_signal_connect (timeline, "started",
-                    G_CALLBACK (on_timeline_started),
-                    master_clock);
-  g_signal_connect (timeline, "completed",
-                    G_CALLBACK (on_timeline_completed),
-                    master_clock);
-  g_signal_connect (timeline, "paused",
-                    G_CALLBACK (on_timeline_paused),
-                    master_clock);
+  if (is_first)
+    _clutter_master_clock_start_running (master_clock);
 }
 
 /*
@@ -391,39 +361,31 @@ _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
  * @master_clock: a #ClutterMasterClock
  * @timeline: a #ClutterTimeline
  *
- * Removes @timeline from the list of timelines held by the
- * master clock. This function should be called during the
- * #ClutterTimeline finalization.
+ * Removes @timeline from the list of playing timelines held by the
+ * master clock.
  */
 void
 _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
                                        ClutterTimeline    *timeline)
 {
-  if (!g_slist_find (master_clock->timelines, timeline))
-    return;
-
   master_clock->timelines = g_slist_remove (master_clock->timelines,
                                             timeline);
+}
 
-  g_object_weak_unref (G_OBJECT (timeline),
-                       timeline_weak_ref,
-                       master_clock);
-
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (on_timeline_started),
-                                        master_clock);
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (on_timeline_completed),
-                                        master_clock);
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (on_timeline_paused),
-                                        master_clock);
-
-  /* last timeline: unset the prev_tick so that we can start
-   * from scratch when we add a new timeline
+/*
+ * _clutter_master_clock_start_running:
+ * @master_clock: a #ClutterMasterClock
+ *
+ * Called when we have events or redraws to process; if the clock
+ * is stopped, does the processing necessary to wake it up again.
+ */
+void
+_clutter_master_clock_start_running (ClutterMasterClock *master_clock)
+{
+  /* If called from a different thread, we need to wake up the
+   * main loop to start running the timelines
    */
-  if (master_clock->timelines == NULL)
-    master_clock->prev_tick.tv_sec = 0;
+  g_main_context_wakeup (NULL);
 }
 
 /*
@@ -437,41 +399,14 @@ _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
 void
 _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 {
-  GTimeVal cur_tick = { 0, };
-  gulong msecs;
-  GSList *l;
+  GSList *l, *next;
 
   g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
 
-  if (master_clock->timelines == NULL)
-    return;
-
-  g_get_current_time (&cur_tick);
-
-  if (master_clock->prev_tick.tv_sec == 0)
-    master_clock->prev_tick = cur_tick;
-
-  msecs = (cur_tick.tv_sec - master_clock->prev_tick.tv_sec) * 1000
-        + (cur_tick.tv_usec - master_clock->prev_tick.tv_usec) / 1000;
-
-  if (msecs == 0)
-    return;
-
-  CLUTTER_NOTE (SCHEDULER, "Advancing %d timelines by %lu milliseconds",
-                g_slist_length (master_clock->timelines),
-                msecs);
-
-  for (l = master_clock->timelines; l != NULL; l = l->next)
+  for (l = master_clock->timelines; l != NULL; l = next)
     {
-      ClutterTimeline *timeline = l->data;
+      next = l->next;
 
-      if (clutter_timeline_is_playing (timeline))
-        clutter_timeline_advance_delta (timeline, msecs);
+      clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
     }
-
-  /* store the previous state so that we can use
-   * it for the next advancement
-   */
-  master_clock->msecs_delta = msecs;
-  master_clock->prev_tick = cur_tick;
 }
