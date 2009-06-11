@@ -197,6 +197,8 @@ test_timeline (TestConformSimpleFixture *fixture,
 
   timeline_data_init (&data_1, 1);
   timeline_1 = clutter_timeline_new (FRAME_COUNT * 1000 / FPS);
+  clutter_timeline_add_marker_at_time (timeline_1, "start-marker",
+                                       0 * 1000 / FPS);
   clutter_timeline_add_marker_at_time (timeline_1, "foo", 5 * 1000 / FPS);
   clutter_timeline_add_marker_at_time (timeline_1, "bar", 5 * 1000 / FPS);
   clutter_timeline_add_marker_at_time (timeline_1, "baz", 5 * 1000 / FPS);
@@ -222,6 +224,8 @@ test_timeline (TestConformSimpleFixture *fixture,
   timeline_data_init (&data_3, 3);
   timeline_3 = clutter_timeline_clone (timeline_1);
   clutter_timeline_set_direction (timeline_3, CLUTTER_TIMELINE_BACKWARD);
+  clutter_timeline_add_marker_at_time (timeline_3, "start-marker",
+                                       FRAME_COUNT * 1000 / FPS);
   clutter_timeline_add_marker_at_time (timeline_3, "foo", 5 * 1000 / FPS);
   clutter_timeline_add_marker_at_time (timeline_3, "baz", 8 * 1000 / FPS);
   clutter_timeline_add_marker_at_time (timeline_3, "near-end-marker",
