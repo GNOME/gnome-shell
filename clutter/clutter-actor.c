@@ -851,8 +851,6 @@ clutter_actor_real_map (ClutterActor *self)
    */
   g_object_notify (G_OBJECT (self), "mapped");
 
-  clutter_actor_queue_redraw (self);
-
   if (CLUTTER_IS_CONTAINER (self))
     clutter_container_foreach_with_internals (CLUTTER_CONTAINER (self),
                                               CLUTTER_CALLBACK (clutter_actor_map),
@@ -922,8 +920,6 @@ clutter_actor_real_unmap (ClutterActor *self)
           clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
         }
     }
-
-  clutter_actor_queue_redraw (self);
 }
 
 /**
@@ -1011,6 +1007,9 @@ clutter_actor_show (ClutterActor *self)
       g_object_notify (G_OBJECT (self), "visible");
     }
 
+  if (priv->parent_actor)
+    clutter_actor_queue_redraw (priv->parent_actor);
+
   g_object_thaw_notify (G_OBJECT (self));
 }
 
@@ -1090,6 +1089,9 @@ clutter_actor_hide (ClutterActor *self)
       g_signal_emit (self, actor_signals[HIDE], 0);
       g_object_notify (G_OBJECT (self), "visible");
     }
+
+  if (priv->parent_actor)
+    clutter_actor_queue_redraw (priv->parent_actor);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -1589,10 +1591,6 @@ static void
 clutter_actor_queue_redraw_with_origin (ClutterActor *self,
                                         ClutterActor *origin)
 {
-  /* short-circuit the trivial case */
-  if (!CLUTTER_ACTOR_IS_MAPPED(self))
-    return;
-
   /* already queued since last paint() */
   if (self->priv->queued_redraw)
     return;
@@ -1607,10 +1605,6 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
 {
   ClutterActor *parent;
 
-  /* short-circuit the trivial case */
-  if (!CLUTTER_ACTOR_IS_MAPPED (self))
-    return;
-
   /* already queued since last paint() */
   if (self->priv->queued_redraw)
     return;
@@ -1619,6 +1613,13 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
                 clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : G_OBJECT_TYPE_NAME (self));
   self->priv->queued_redraw = TRUE;
+
+  /* If the actor isn't visible, we still had to emit the signal
+   * to allow for a ClutterClone, but the appearance of the parent
+   * won't change so we don't have to propagate up the hierarchy.
+   */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return;
 
   /* notify parents, if they are all visible eventually we'll
    * queue redraw on the stage, which queues the redraw idle.
