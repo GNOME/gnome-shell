@@ -13,16 +13,18 @@ source_h = \
 	$(top_srcdir)/clutter/json/json-parser.h 	\
 	$(top_srcdir)/clutter/json/json-types.h
 
+source_h_priv = \
+	$(top_srcdir)/clutter/json/json-types-private.h
+
 noinst_LTLIBRARIES = libclutter-json.la
 
-libclutter_json_la_SOURCES = $(source_c) $(source_h)
+libclutter_json_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
+libclutter_json_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir) \
-	-DG_DISABLE_DEPRECATED \
-	$(GCC_FLAGS) \
-	$(CLUTTER_CFLAGS) \
-	$(CLUTTER_DEBUG_CFLAGS)
+	-DG_LOG_DOMAIN=\"Clutter-Json\" \
+	-DG_DISABLE_DEPRECATED
 
 clutterjsondir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter/json
 clutterjson_HEADERS = $(source_h)
