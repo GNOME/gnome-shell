@@ -210,7 +210,7 @@ tidy_texture_frame_paint (ClutterActor *self)
   g_assert (priv->material != COGL_INVALID_HANDLE);
 
   /* set the source material using the parent texture's COGL handle */
-  cogl_material_set_color4ub (priv->material, 255, 255, 255, opacity);
+  cogl_material_set_color4ub (priv->material, opacity, opacity, opacity, opacity);
   cogl_material_set_layer (priv->material, 0, cogl_texture);
   cogl_set_source (priv->material);
 
