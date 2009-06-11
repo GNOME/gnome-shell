@@ -1085,18 +1085,12 @@ _cogl_pixel_format_to_gl (CoglPixelFormat  format,
   GLenum          glformat = 0;
   GLenum          gltype = 0;
 
-  /* No premultiplied formats accepted  by GL
-   * (FIXME: latest hardware?) */
+  /* FIXME: check YUV support */
 
-  if (format & COGL_PREMULT_BIT)
-    format = (format & COGL_UNPREMULT_MASK);
-
-  /* Everything else accepted
-   * (FIXME: check YUV support) */
   required_format = format;
 
   /* Find GL equivalents */
-  switch (format)
+  switch (format & COGL_UNPREMULT_MASK)
     {
     case COGL_PIXEL_FORMAT_A_8:
       glintformat = GL_ALPHA;
@@ -1195,9 +1189,15 @@ _cogl_texture_bitmap_prepare (CoglTexture     *tex,
   CoglPixelFormat   new_data_format;
   gboolean          success;
 
-  /* Was there any internal conversion requested? */
+  /* Was there any internal conversion requested?
+   * By default Cogl will use a premultiplied internal format. Later we will
+   * add control over this. */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
-    internal_format = tex->bitmap.format;
+    {
+      if ((tex->bitmap.format & COGL_A_BIT) &&
+          tex->bitmap.format != COGL_PIXEL_FORMAT_A_8)
+        internal_format = tex->bitmap.format | COGL_PREMULT_BIT;
+    }
 
   /* Find closest format accepted by GL */
   new_data_format = _cogl_pixel_format_to_gl (internal_format,

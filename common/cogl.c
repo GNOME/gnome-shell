@@ -250,12 +250,17 @@ cogl_get_backface_culling_enabled (void)
 void
 cogl_set_source_color (const CoglColor *color)
 {
+  CoglColor premultiplied;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* In case cogl_set_source_texture was previously used... */
   cogl_material_remove_layer (ctx->default_material, 0);
 
-  cogl_material_set_color (ctx->default_material, color);
+  premultiplied = *color;
+  cogl_color_premultiply (&premultiplied);
+  cogl_material_set_color (ctx->default_material, &premultiplied);
+
   cogl_set_source (ctx->default_material);
 }
 
