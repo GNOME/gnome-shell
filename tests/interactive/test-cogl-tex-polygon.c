@@ -120,6 +120,7 @@ test_coglbox_fade_texture (CoglHandle tex_id,
                                255,
                                255,
                                ((i ^ (i >> 1)) & 1) ? 0 : 128);
+      cogl_color_premultiply (&(vertices[i].color));
     }
 
   cogl_set_source_texture (tex_id);
@@ -307,12 +308,13 @@ test_coglbox_new (void)
 
 static void
 frame_cb (ClutterTimeline *timeline,
-	  gint             frame_num,
+	  gint             elapsed_msecs,
 	  gpointer         data)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (data);
+  gdouble progress = clutter_timeline_get_progress (timeline);
 
-  priv->frame = frame_num;
+  priv->frame = 360.0 * progress;
   clutter_actor_queue_redraw (CLUTTER_ACTOR (data));
 }
 
