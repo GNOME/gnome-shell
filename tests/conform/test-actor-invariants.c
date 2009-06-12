@@ -222,3 +222,37 @@ test_show_on_set_parent (TestConformSimpleFixture *fixture,
   clutter_actor_destroy (actor);
   clutter_actor_destroy (group);
 }
+
+void
+test_clone_no_map (TestConformSimpleFixture *fixture,
+                   gconstpointer             data)
+{
+  ClutterActor *stage;
+  ClutterActor *group;
+  ClutterActor *actor;
+  ClutterActor *clone;
+
+  stage = clutter_stage_get_default ();
+
+  group = clutter_group_new ();
+  actor = clutter_rectangle_new ();
+
+  clutter_actor_hide (group);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (group), actor);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
+
+  g_assert (!(CLUTTER_ACTOR_IS_MAPPED (group)));
+  g_assert (!(CLUTTER_ACTOR_IS_MAPPED (actor)));
+
+  clone = clutter_clone_new (group);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), clone);
+
+  g_assert (CLUTTER_ACTOR_IS_MAPPED (clone));
+  g_assert (!(CLUTTER_ACTOR_IS_MAPPED (group)));
+  g_assert (!(CLUTTER_ACTOR_IS_MAPPED (actor)));
+
+  clutter_actor_destroy (CLUTTER_ACTOR (clone));
+  clutter_actor_destroy (CLUTTER_ACTOR (group));
+}

@@ -125,6 +125,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/invariants", test_map_recursive);
   TEST_CONFORM_SIMPLE ("/invariants", test_mapped);
   TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
+  TEST_CONFORM_SIMPLE ("/invariants", test_clone_no_map);
 
   TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_contiguous);
   TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_interleved);

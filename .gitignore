@@ -206,6 +206,8 @@ TAGS
 /tests/conform/test-color-to-string
 /tests/conform/test-units-constructors
 /tests/conform/test-units-string
+/tests/conform/test-premult
+/tests/conform/test-clone-no-map
 /tests/conform/test-conformance-result.xml
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
