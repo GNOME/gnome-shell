@@ -71,7 +71,7 @@ G_DEFINE_TYPE (TestCoglbox, test_coglbox, CLUTTER_TYPE_ACTOR);
 struct _TestCoglboxPrivate
 {
   CoglHandle cogl_tex_id;
-  gint       frame;
+  gdouble    animation_progress;
 };
 
 /* Coglbox implementation
@@ -82,26 +82,23 @@ test_coglbox_paint (ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
   gfloat texcoords[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-  gfloat sin_frame, cos_frame;
-  gfloat frac_frame;
-  gint pingpong_frame;
+  gfloat angle;
+  gfloat frac;
   gint t;
 
-  sin_frame = sinf ((float) priv->frame);
-  cos_frame = cosf ((float) priv->frame);
+  angle = priv->animation_progress * 2 * G_PI;
 
-  pingpong_frame = (priv->frame <= 180 ? priv->frame : 360 - priv->frame);
-  frac_frame = (float) pingpong_frame / 180.0;
-  frac_frame += 0.5;
-  frac_frame *= 2;
+  frac = ((priv->animation_progress <= 0.5f
+           ? priv->animation_progress
+           : 1.0f - priv->animation_progress) + 0.5f) * 2.0f;
 
   for (t=0; t<4; t+=2)
     {
-      texcoords[t]   += cos_frame;
-      texcoords[t+1] += sin_frame;
+      texcoords[t]   += cos (angle);
+      texcoords[t+1] += sin (angle);
 
-      texcoords[t]   = (texcoords[t] * frac_frame);
-      texcoords[t+1] = (texcoords[t+1] * frac_frame);
+      texcoords[t]   *= frac;
+      texcoords[t+1] *= frac;
     }
 
   priv = TEST_COGLBOX_GET_PRIVATE (self);
@@ -170,12 +167,12 @@ test_coglbox_new (void)
 
 static void
 frame_cb (ClutterTimeline *timeline,
-	  gint             frame_num,
+	  gint             msecs,
 	  gpointer         data)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (data);
 
-  priv->frame = frame_num;
+  priv->animation_progress = clutter_timeline_get_progress (timeline);
   clutter_actor_queue_redraw (CLUTTER_ACTOR (data));
 }
 
@@ -198,7 +195,7 @@ test_cogl_tex_tile_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
 
   /* Timeline for animation */
-  timeline = clutter_timeline_new (6000); /* num frames, fps */
+  timeline = clutter_timeline_new (6000); /* 6 second duration */
   clutter_timeline_set_loop (timeline, TRUE);
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), coglbox);
   clutter_timeline_start (timeline);
