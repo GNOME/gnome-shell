@@ -1,7 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 #define _GNU_SOURCE
-#define _XOPEN_SOURCE 500 /* for usleep() */
 
 #include <config.h>
 

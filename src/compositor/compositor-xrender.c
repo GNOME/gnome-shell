@@ -22,7 +22,7 @@
  */
 
 #define _GNU_SOURCE
-#define _XOPEN_SOURCE 500 /* for usleep() */
+#define _XOPEN_SOURCE 600 /* for usleep() */
 
 #include <config.h>
 
