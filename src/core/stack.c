@@ -1033,6 +1033,10 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
           changes.stack_mode = Above;
 
           meta_error_trap_push (screen->display);
+          meta_stack_tracker_record_raise_above (screen->stack_tracker,
+                                                 xwindow,
+                                                 children[i],
+                                                 XNextRequest (screen->display->xdisplay));
           XConfigureWindow (screen->display->xdisplay,
                             xwindow,
                             CWSibling | CWStackMode,
@@ -1051,6 +1055,9 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
        * to be sure we're below any override redirect windows.
        */
       meta_error_trap_push (screen->display);
+      meta_stack_tracker_record_lower (screen->stack_tracker,
+                                       xwindow,
+                                       XNextRequest (screen->display->xdisplay));
       XLowerWindow (screen->display->xdisplay,
                     xwindow);
       meta_error_trap_pop (screen->display, FALSE);
@@ -1159,9 +1166,15 @@ stack_sync_to_server (MetaStack *stack)
       meta_topic (META_DEBUG_STACK, "Don't know last stack state, restacking everything\n");
 
       if (root_children_stacked->len > 0)
-        XRestackWindows (stack->screen->display->xdisplay,
-                         (Window *) root_children_stacked->data,
-                         root_children_stacked->len);
+        {
+          meta_stack_tracker_record_restack_windows (stack->screen->stack_tracker,
+                                                     (Window *) root_children_stacked->data,
+                                                     root_children_stacked->len,
+                                                     XNextRequest (stack->screen->display->xdisplay));
+          XRestackWindows (stack->screen->display->xdisplay,
+                           (Window *) root_children_stacked->data,
+                           root_children_stacked->len);
+        }
     }
   else if (root_children_stacked->len > 0)
     {
@@ -1223,7 +1236,10 @@ stack_sync_to_server (MetaStack *stack)
 
                   meta_topic (META_DEBUG_STACK, "Placing window 0x%lx below 0x%lx\n",
                               *newp, last_window);
-                  
+
+                  meta_stack_tracker_record_lower_below (stack->screen->stack_tracker,
+                                                         *newp, last_window,
+                                                         XNextRequest (stack->screen->display->xdisplay));
                   XConfigureWindow (stack->screen->display->xdisplay,
                                     *newp,
                                     CWSibling | CWStackMode,
@@ -1246,13 +1262,23 @@ stack_sync_to_server (MetaStack *stack)
            */
           if (newp != new_stack)
             --newp;
+          meta_stack_tracker_record_restack_windows (stack->screen->stack_tracker,
+                                                     (Window *) newp, new_end - newp,
+                                                     XNextRequest (stack->screen->display->xdisplay));
           XRestackWindows (stack->screen->display->xdisplay,
                            (Window *) newp, new_end - newp);
         }
     }
 
   /* Push hidden windows to the bottom of the stack under the guard window */
+  meta_stack_tracker_record_lower (stack->screen->stack_tracker,
+                                   stack->screen->guard_window,
+                                   XNextRequest (stack->screen->display->xdisplay));
   XLowerWindow (stack->screen->display->xdisplay, stack->screen->guard_window);
+  meta_stack_tracker_record_restack_windows (stack->screen->stack_tracker,
+                                             (Window *)all_hidden->data,
+                                             all_hidden->len,
+                                             XNextRequest (stack->screen->display->xdisplay));
   XRestackWindows (stack->screen->display->xdisplay,
 		   (Window *)all_hidden->data,
 		   all_hidden->len);

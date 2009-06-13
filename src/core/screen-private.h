@@ -36,6 +36,7 @@
 #include "display-private.h"
 #include "screen.h"
 #include <X11/Xutil.h>
+#include "stack-tracker.h"
 #include "alttabhandler.h"
 #include "ui.h"
 
@@ -94,6 +95,7 @@ struct _MetaScreen
   GList *workspaces;
 
   MetaStack *stack;
+  MetaStackTracker *stack_tracker;
 
   MetaCursor current_cursor;
 

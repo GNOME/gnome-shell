@@ -76,7 +76,8 @@ Window meta_ui_create_frame_window (MetaUI *ui,
 				    gint y,
 				    gint width,
 				    gint height,
-				    gint screen_no);
+				    gint screen_no,
+                                    gulong *create_serial);
 void meta_ui_destroy_frame_window (MetaUI *ui,
 				   Window  xwindow);
 void meta_ui_move_resize_frame (MetaUI *ui,

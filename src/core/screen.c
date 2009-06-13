@@ -439,11 +439,15 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
 {
   XSetWindowAttributes attributes;
   Window guard_window;
+  gulong create_serial;
   
   attributes.event_mask = NoEventMask;
   attributes.override_redirect = True;
   attributes.background_pixel = BlackPixel (xdisplay, screen->number);
 
+  /* We have to call record_add() after we have the new window ID,
+   * so save the serial for the CreateWindow request until then */
+  create_serial = XNextRequest(xdisplay);
   guard_window =
     XCreateWindow (xdisplay,
 		   screen->xroot,
@@ -457,6 +461,13 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
 		   CopyFromParent, /* visual */
 		   CWEventMask|CWOverrideRedirect|CWBackPixel,
 		   &attributes);
+  meta_stack_tracker_record_add (screen->stack_tracker,
+                                 guard_window,
+                                 create_serial);
+
+  meta_stack_tracker_record_lower (screen->stack_tracker,
+                                   guard_window,
+                                   XNextRequest (xdisplay));
   XLowerWindow (xdisplay, guard_window);
   XMapWindow (xdisplay, guard_window);
   return guard_window;
@@ -730,6 +741,7 @@ meta_screen_new (MetaDisplay *display,
   screen->ws_popup = NULL;
   
   screen->stack = meta_stack_new (screen);
+  screen->stack_tracker = meta_stack_tracker_new (screen);
 
   meta_prefs_add_listener (prefs_changed_callback, screen);
 
@@ -807,6 +819,7 @@ meta_screen_free (MetaScreen *screen,
   meta_ui_free (screen->ui);
 
   meta_stack_free (screen->stack);
+  meta_stack_tracker_free (screen->stack_tracker);
 
   meta_error_trap_push_with_return (screen->display);
   XSelectInput (screen->display->xdisplay, screen->xroot, 0);

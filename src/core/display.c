@@ -2019,9 +2019,27 @@ event_callback (XEvent   *event,
     case VisibilityNotify:
       break;
     case CreateNotify:
+      {
+        MetaScreen *screen;
+
+        screen = meta_display_screen_for_root (display,
+                                               event->xcreatewindow.parent);
+        if (screen)
+          meta_stack_tracker_create_event (screen->stack_tracker,
+                                           &event->xcreatewindow);
+      }
       break;
       
     case DestroyNotify:
+      {
+        MetaScreen *screen;
+
+        screen = meta_display_screen_for_root (display,
+                                               event->xdestroywindow.event);
+        if (screen)
+          meta_stack_tracker_destroy_event (screen->stack_tracker,
+                                            &event->xdestroywindow);
+      }
       if (window)
         {
           /* FIXME: It sucks that DestroyNotify events don't come with
@@ -2135,8 +2153,30 @@ event_callback (XEvent   *event,
         }
       break;
     case ReparentNotify:
+      {
+        MetaScreen *screen;
+
+        screen = meta_display_screen_for_root (display,
+                                               event->xconfigure.event);
+        if (screen)
+          {
+            if (screen)
+              meta_stack_tracker_reparent_event (screen->stack_tracker,
+                                                 &event->xreparent);
+          }
+      }
       break;
     case ConfigureNotify:
+      if (event->xconfigure.event != event->xconfigure.window)
+        {
+          MetaScreen *screen;
+
+          screen = meta_display_screen_for_root (display,
+                                                 event->xconfigure.event);
+          if (screen)
+            meta_stack_tracker_configure_event (screen->stack_tracker,
+                                                &event->xconfigure);
+        }
       if (window && window->override_redirect)
 	meta_window_configure_notify (window, &event->xconfigure);
       else
