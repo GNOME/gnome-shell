@@ -69,6 +69,7 @@ ltmain.sh
 missing
 mkinstalldirs
 stamp-h1
+TAGS
 /tests/interactive/*.o
 /tests/conform/*.o
 /tests/micro-bench/*.o
@@ -171,6 +172,7 @@ stamp-h1
 /tests/conform/test-mesh-interleved
 /tests/conform/test-mesh-mutability
 /tests/conform/test-paint-opacity
+/tests/conform/test-premult
 /tests/conform/test-rectangle-opacity
 /tests/conform/test-backface-culling
 /tests/conform/test-binding-pool
