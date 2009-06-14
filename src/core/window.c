@@ -1039,7 +1039,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    * And we shouldn't unminimize windows if they were initially
    * iconic.
    */
-  if (!display->display_opening && !window->initially_iconic)
+  if (!window->override_redirect &&
+      !display->display_opening &&
+      !window->initially_iconic)
     unminimize_window_and_all_transient_parents (window);
 
   meta_error_trap_pop (display, FALSE); /* pop the XSync()-reducing trap */
@@ -2712,6 +2714,8 @@ queue_calc_showing_func (MetaWindow *window,
 void
 meta_window_minimize (MetaWindow  *window)
 {
+  g_return_if_fail (!window->override_redirect);
+
   if (!window->minimized)
     {
       window->minimized = TRUE;
@@ -2739,6 +2743,8 @@ meta_window_minimize (MetaWindow  *window)
 void
 meta_window_unminimize (MetaWindow  *window)
 {
+  g_return_if_fail (!window->override_redirect);
+
   if (window->minimized)
     {
       window->minimized = FALSE;
@@ -2892,8 +2898,11 @@ void
 meta_window_maximize (MetaWindow        *window,
                       MetaMaximizeFlags  directions)
 {
-  /* At least one of the two directions ought to be set */
   gboolean maximize_horizontally, maximize_vertically;
+
+  g_return_if_fail (!window->override_redirect);
+
+  /* At least one of the two directions ought to be set */
   maximize_horizontally = directions & META_MAXIMIZE_HORIZONTAL;
   maximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
   g_assert (maximize_horizontally || maximize_vertically);
@@ -2987,8 +2996,11 @@ void
 meta_window_unmaximize (MetaWindow        *window,
                         MetaMaximizeFlags  directions)
 {
-  /* At least one of the two directions ought to be set */
   gboolean unmaximize_horizontally, unmaximize_vertically;
+
+  g_return_if_fail (!window->override_redirect);
+
+  /* At least one of the two directions ought to be set */
   unmaximize_horizontally = directions & META_MAXIMIZE_HORIZONTAL;
   unmaximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
   g_assert (unmaximize_horizontally || unmaximize_vertically);
@@ -3085,6 +3097,8 @@ meta_window_unmaximize (MetaWindow        *window,
 void
 meta_window_make_above (MetaWindow  *window)
 {
+  g_return_if_fail (!window->override_redirect);
+
   window->wm_state_above = TRUE;
   meta_window_update_layer (window);
   meta_window_raise (window);
@@ -3094,6 +3108,8 @@ meta_window_make_above (MetaWindow  *window)
 void
 meta_window_unmake_above (MetaWindow  *window)
 {
+  g_return_if_fail (!window->override_redirect);
+
   window->wm_state_above = FALSE;
   meta_window_raise (window);
   meta_window_update_layer (window);
@@ -3138,6 +3154,8 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
 void
 meta_window_make_fullscreen (MetaWindow  *window)
 {
+  g_return_if_fail (!window->override_redirect);
+
   if (!window->fullscreen)
     {
       meta_window_make_fullscreen_internal (window);
@@ -3150,6 +3168,8 @@ meta_window_make_fullscreen (MetaWindow  *window)
 void
 meta_window_unmake_fullscreen (MetaWindow  *window)
 {
+  g_return_if_fail (!window->override_redirect);
+
   if (window->fullscreen)
     {
       MetaRectangle target_rect;
@@ -3213,6 +3233,8 @@ void
 meta_window_shade (MetaWindow  *window,
                    guint32      timestamp)
 {
+  g_return_if_fail (!window->override_redirect);
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Shading %s\n", window->desc);
   if (!window->shaded)
@@ -3237,6 +3259,8 @@ void
 meta_window_unshade (MetaWindow  *window,
                      guint32      timestamp)
 {
+  g_return_if_fail (!window->override_redirect);
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Unshading %s\n", window->desc);
   if (window->shaded)
@@ -3358,6 +3382,8 @@ void
 meta_window_activate (MetaWindow     *window,
                       guint32         timestamp)
 {
+  g_return_if_fail (!window->override_redirect);
+
   /* We're not really a pager, but the behavior we want is the same as if
    * we were such.  If we change the pager behavior later, we could revisit
    * this and just add extra flags to window_activate.
@@ -3370,6 +3396,8 @@ meta_window_activate_with_workspace (MetaWindow     *window,
                                      guint32         timestamp,
                                      MetaWorkspace  *workspace)
 {
+  g_return_if_fail (!window->override_redirect);
+
   /* We're not really a pager, but the behavior we want is the same as if
    * we were such.  If we change the pager behavior later, we could revisit
    * this and just add extra flags to window_activate.
@@ -4470,6 +4498,8 @@ meta_window_focus (MetaWindow  *window,
 {
   MetaWindow *modal_transient;
 
+  g_return_if_fail (!window->override_redirect);
+
   meta_topic (META_DEBUG_FOCUS,
               "Setting input focus to window %s, input: %d take_focus: %d\n",
               window->desc, window->input, window->take_focus);
@@ -4601,6 +4631,8 @@ void
 meta_window_change_workspace (MetaWindow    *window,
                               MetaWorkspace *workspace)
 {
+  g_return_if_fail (!window->override_redirect);
+
   meta_window_change_workspace_without_transients (window, workspace);
 
   meta_window_foreach_transient (window, change_workspace_foreach,
@@ -4698,6 +4730,9 @@ void
 meta_window_stick (MetaWindow  *window)
 {
   gboolean stick = TRUE;
+
+  g_return_if_fail (!window->override_redirect);
+
   window_stick_impl (window);
   meta_window_foreach_transient (window,
                                  stick_foreach_func,
@@ -4708,6 +4743,9 @@ void
 meta_window_unstick (MetaWindow  *window)
 {
   gboolean stick = FALSE;
+
+  g_return_if_fail (!window->override_redirect);
+
   window_unstick_impl (window);
   meta_window_foreach_transient (window,
                                  stick_foreach_func,
@@ -4808,6 +4846,9 @@ void
 meta_window_raise (MetaWindow  *window)
 {
   MetaWindow *ancestor;
+
+  g_return_if_fail (!window->override_redirect);
+
   ancestor = meta_window_find_root_ancestor (window);
 
   meta_topic (META_DEBUG_WINDOW_OPS,
@@ -4849,6 +4890,8 @@ meta_window_raise (MetaWindow  *window)
 void
 meta_window_lower (MetaWindow  *window)
 {
+  g_return_if_fail (!window->override_redirect);
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Lowering window %s\n", window->desc);
 
@@ -5159,6 +5202,8 @@ meta_window_change_workspace_by_index (MetaWindow *window,
 {
   MetaWorkspace *workspace;
   MetaScreen    *screen;
+
+  g_return_if_fail (!window->override_redirect);
 
   if (space_index == -1)
     {
@@ -7007,6 +7052,8 @@ meta_window_show_menu (MetaWindow *window,
   MetaWorkspaceLayout layout;
   int n_workspaces;
   gboolean ltr;
+
+  g_return_if_fail (!window->override_redirect);
 
   if (window->display->window_menu)
     {
