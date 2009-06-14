@@ -96,6 +96,15 @@ void meta_window_reload_properties_from_xwindow
                                     gboolean    initial);
 
 /**
+ * Requests the current values for standard properties for a given
+ * window from the server, and deals with them appropriately.
+ * Does not return them to the caller (they've been dealt with!)
+ *
+ * \param window      The window.
+ */
+void meta_window_load_initial_properties (MetaWindow *window);
+
+/**
  * Initialises the hooks used for the reload_propert* functions
  * on a particular display, and stores a pointer to them in the
  * display.
