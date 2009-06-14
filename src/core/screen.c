@@ -953,9 +953,8 @@ meta_screen_composite_all_windows (MetaScreen *screen)
     meta_compositor_add_window (display->compositor, tmp->data);
   g_slist_free (windows);
   
-  /* trigger a stack_sync_to_server: */
-  meta_stack_freeze (screen->stack);
-  meta_stack_thaw (screen->stack);
+  /* initialize the compositor's view of the stacking order */
+  meta_stack_tracker_sync_stack (screen->stack_tracker);
 #endif
 }
 

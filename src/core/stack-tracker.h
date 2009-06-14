@@ -79,8 +79,11 @@ void meta_stack_tracker_reparent_event  (MetaStackTracker    *tracker,
 void meta_stack_tracker_configure_event (MetaStackTracker    *tracker,
 					 XConfigureEvent     *event);
 
-void meta_stack_tracker_get_stack (MetaStackTracker *tracker,
-				   Window          **windows,
-				   int              *n_windows);
+void meta_stack_tracker_get_stack  (MetaStackTracker  *tracker,
+                                    Window           **windows,
+                                    int               *n_windows);
+
+void meta_stack_tracker_sync_stack       (MetaStackTracker *tracker);
+void meta_stack_tracker_queue_sync_stack (MetaStackTracker *tracker);
 
 #endif /* META_STACK_TRACKER_H */

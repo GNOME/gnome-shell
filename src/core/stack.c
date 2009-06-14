@@ -35,10 +35,6 @@
 #include "prefs.h"
 #include "workspace.h"
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-#include "compositor.h"
-#endif
-
 #include <X11/Xatom.h>
 
 #define WINDOW_HAS_TRANSIENT_TYPE(w)                    \
@@ -1091,10 +1087,6 @@ stack_sync_to_server (MetaStack *stack)
 
   stack_ensure_sorted (stack);
 
-  meta_compositor_sync_stack (stack->screen->display->compositor,
-			      stack->screen,
-			      stack->sorted);
-  
   /* Create stacked xwindow arrays.
    * Painfully, "stacked" is in bottom-to-top order for the
    * _NET hints, and "root_children_stacked" is in top-to-bottom
@@ -1312,8 +1304,6 @@ stack_sync_to_server (MetaStack *stack)
   if (stack->last_root_children_stacked)
     g_array_free (stack->last_root_children_stacked, TRUE);
   stack->last_root_children_stacked = root_children_stacked;
-  
-  meta_screen_restacked (stack->screen);
 
   /* That was scary... */
 }
