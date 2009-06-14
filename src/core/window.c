@@ -2377,7 +2377,7 @@ unmap_client_window (MetaWindow *window,
 }
 
 /* XXX META_EFFECT_*_MAP */
-void
+static void
 meta_window_show (MetaWindow *window)
 {
   gboolean did_show;
