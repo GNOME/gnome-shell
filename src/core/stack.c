@@ -1015,31 +1015,35 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
            * to be moved below.
            */
         }
-      else if (meta_display_lookup_x_window (screen->display,
-                                             children[i]) != NULL)
+      else
         {
-          XWindowChanges changes;
-          
-          /* children[i] is the topmost managed child */
-          meta_topic (META_DEBUG_STACK,
-                      "Moving 0x%lx above topmost managed child window 0x%lx\n",
-                      xwindow, children[i]);
+          MetaWindow *other = meta_display_lookup_x_window (screen->display,
+                                                            children[i]);
+          if (other != NULL && !other->override_redirect)
+            {
+              XWindowChanges changes;
 
-          changes.sibling = children[i];
-          changes.stack_mode = Above;
+              /* children[i] is the topmost managed child */
+              meta_topic (META_DEBUG_STACK,
+                          "Moving 0x%lx above topmost managed child window 0x%lx\n",
+                          xwindow, children[i]);
 
-          meta_error_trap_push (screen->display);
-          meta_stack_tracker_record_raise_above (screen->stack_tracker,
-                                                 xwindow,
-                                                 children[i],
-                                                 XNextRequest (screen->display->xdisplay));
-          XConfigureWindow (screen->display->xdisplay,
-                            xwindow,
-                            CWSibling | CWStackMode,
-                            &changes);
-          meta_error_trap_pop (screen->display, FALSE);
+              changes.sibling = children[i];
+              changes.stack_mode = Above;
 
-          break;
+              meta_error_trap_push (screen->display);
+              meta_stack_tracker_record_raise_above (screen->stack_tracker,
+                                                     xwindow,
+                                                     children[i],
+                                                     XNextRequest (screen->display->xdisplay));
+              XConfigureWindow (screen->display->xdisplay,
+                                xwindow,
+                                CWSibling | CWStackMode,
+                                &changes);
+              meta_error_trap_pop (screen->display, FALSE);
+
+              break;
+            }
         }
 
       --i;

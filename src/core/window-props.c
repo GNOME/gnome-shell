@@ -1435,7 +1435,8 @@ reload_transient_for (MetaWindow    *window,
   meta_window_recalc_window_type (window);
 
   /* update stacking constraints */
-  meta_stack_update_transient (window->screen->stack, window);
+  if (!window->override_redirect)
+    meta_stack_update_transient (window->screen->stack, window);
 
   /* possibly change its group. We treat being a window's transient as
    * equivalent to making it your group leader, to work around shortcomings
