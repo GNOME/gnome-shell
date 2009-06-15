@@ -898,44 +898,50 @@ meta_window_new_with_attrs (MetaDisplay       *display,
         }
     }
 
-  if (window->workspace == NULL &&
-      window->xtransient_for != None)
-    {
-      /* Try putting dialog on parent's workspace */
-      MetaWindow *parent;
-
-      parent = meta_display_lookup_x_window (window->display,
-                                             window->xtransient_for);
-
-      if (parent && parent->workspace)
-        {
-          meta_topic (META_DEBUG_PLACEMENT,
-                      "Putting window %s on same workspace as parent %s\n",
-                      window->desc, parent->desc);
-
-          if (parent->on_all_workspaces)
-            window->on_all_workspaces = TRUE;
-
-	  /* this will implicitly add to the appropriate MRU lists
-	   */
-          meta_workspace_add_window (parent->workspace, window);
-        }
-    }
-
-  if (window->workspace == NULL)
-    {
-      meta_topic (META_DEBUG_PLACEMENT,
-                  "Putting window %s on active workspace\n",
-                  window->desc);
-
-      space = window->screen->active_workspace;
-
-      meta_workspace_add_window (space, window);
-    }
-
-  /* for the various on_all_workspaces = TRUE possible above */
+  /* override-redirect windows are subtly different from other windows
+   * with window->on_all_workspaces == TRUE. Other windows are part of
+   * some workspace (so they can return to that if the flag is turned off),
+   * but appear on other workspaces. override-redirect windows are part
+   * of no workspace.
+   */
   if (!window->override_redirect)
     {
+      if (window->workspace == NULL &&
+          window->xtransient_for != None)
+        {
+          /* Try putting dialog on parent's workspace */
+          MetaWindow *parent;
+
+          parent = meta_display_lookup_x_window (window->display,
+                                                 window->xtransient_for);
+
+          if (parent && parent->workspace)
+            {
+              meta_topic (META_DEBUG_PLACEMENT,
+                          "Putting window %s on same workspace as parent %s\n",
+                          window->desc, parent->desc);
+
+              if (parent->on_all_workspaces)
+                window->on_all_workspaces = TRUE;
+
+              /* this will implicitly add to the appropriate MRU lists
+               */
+              meta_workspace_add_window (parent->workspace, window);
+            }
+        }
+
+      if (window->workspace == NULL)
+        {
+          meta_topic (META_DEBUG_PLACEMENT,
+                      "Putting window %s on active workspace\n",
+                      window->desc);
+
+          space = window->screen->active_workspace;
+
+          meta_workspace_add_window (space, window);
+        }
+
+      /* for the various on_all_workspaces = TRUE possible above */
       meta_window_set_current_workspace_hint (window);
 
       meta_window_update_struts (window);
