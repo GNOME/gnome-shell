@@ -104,20 +104,13 @@ on_button_press (ClutterActor       *actor,
     {
       ClutterAnimation *animation;
       ClutterAnimationMode cur_mode;
-      ClutterColor color = { 0, 0, 0, 255 };
 
       cur_mode = easing_modes[current_mode].mode;
-
-      clutter_color_from_hls (&color,
-                              g_random_double_range (0.0, 360.0),
-                              g_random_double_range (0.0, 1.0),
-                              g_random_double_range (0.0, 1.0));
 
       animation =
         clutter_actor_animate (rectangle, cur_mode, duration * 1000,
                                "x", event->x,
                                "y", event->y,
-                               "color", &color,
                                NULL);
 
       if (recenter)
@@ -127,6 +120,55 @@ on_button_press (ClutterActor       *actor,
     }
 
   return TRUE;
+}
+
+static ClutterActor *
+make_bouncer (const ClutterColor *base_color,
+              gfloat              width,
+              gfloat              height)
+{
+  ClutterActor *retval;
+  cairo_t *cr;
+  cairo_pattern_t *pattern;
+  gfloat radius = MAX (width, height);
+
+  retval = clutter_cairo_texture_new (width, height);
+
+  cr = clutter_cairo_texture_create (CLUTTER_CAIRO_TEXTURE (retval));
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+  cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
+
+  cairo_arc (cr, radius / 2, radius / 2, radius / 2, 0.0, 2.0 * G_PI);
+
+  pattern = cairo_pattern_create_radial (radius / 2, radius / 2, 0,
+                                         radius, radius, radius);
+  cairo_pattern_add_color_stop_rgba (pattern,
+                                     0,
+                                     base_color->red / 255.0,
+                                     base_color->green / 255.0,
+                                     base_color->blue / 255.0,
+                                     base_color->alpha / 255.0);
+  cairo_pattern_add_color_stop_rgba (pattern,
+                                     0.9,
+                                     base_color->red / 255.0,
+                                     base_color->green / 255.0,
+                                     base_color->blue / 255.0,
+                                     0.1);
+
+  cairo_set_source (cr, pattern);
+  cairo_fill_preserve (cr);
+
+  cairo_pattern_destroy (pattern);
+  cairo_destroy (cr);
+
+  clutter_actor_set_name (retval, "bouncer");
+  clutter_actor_set_size (retval, width, height);
+  clutter_actor_set_anchor_point (retval, width / 2, height / 2);
+  clutter_actor_set_reactive (retval, TRUE);
+
+  return retval;
 }
 
 static GOptionEntry test_easing_entries[] = {
@@ -152,8 +194,8 @@ G_MODULE_EXPORT int
 test_easing_main (int argc, char *argv[])
 {
   ClutterActor *stage, *rect, *label;
-  ClutterColor stage_color = { 0x66, 0x66, 0xdd, 0xff };
-  ClutterColor rect_color = { 0x44, 0xdd, 0x44, 0xff };
+  ClutterColor stage_color = { 0x88, 0x88, 0xdd, 0xff };
+  ClutterColor rect_color = { 0xee, 0x33, 0, 0xff };
   gchar *text;
   gfloat stage_width, stage_height;
   gfloat label_width, label_height;
@@ -170,15 +212,9 @@ test_easing_main (int argc, char *argv[])
 
   clutter_actor_get_size (stage, &stage_width, &stage_height);
 
-  rect = clutter_rectangle_new_with_color (&rect_color);
+  rect = make_bouncer (&rect_color, 50, 50);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), rect);
-  clutter_actor_set_size (rect, 50, 50);
-  clutter_actor_set_anchor_point (rect, 25, 25);
   clutter_actor_set_position (rect, stage_width / 2, stage_height / 2);
-  clutter_actor_set_opacity (rect, 0x88);
-  g_signal_connect (stage,
-                    "button-press-event", G_CALLBACK (on_button_press),
-                    rect);
 
   text = g_strdup_printf ("Easing mode: %s (%d of %d)\n"
                           "Right click to change the easing mode",
@@ -197,6 +233,10 @@ test_easing_main (int argc, char *argv[])
   easing_mode_label = label;
 
   g_free (text);
+
+  g_signal_connect (stage,
+                    "button-press-event", G_CALLBACK (on_button_press),
+                    rect);
 
   clutter_actor_show (stage);
 
