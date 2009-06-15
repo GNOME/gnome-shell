@@ -42,8 +42,29 @@ const struct {
 static const gint n_easing_modes = G_N_ELEMENTS (easing_modes);
 static gint current_mode = 0;
 
+static gint duration = 1;
+static gboolean recenter = FALSE;
+
 static ClutterActor *main_stage        = NULL;
 static ClutterActor *easing_mode_label = NULL;
+
+static void
+on_animation_completed (ClutterAnimation *animation,
+                        ClutterActor     *rectangle)
+{
+  gfloat base_x, base_y;
+  gint cur_mode;
+
+  base_x = clutter_actor_get_width (main_stage) / 2;
+  base_y = clutter_actor_get_height (main_stage) / 2;
+
+  cur_mode = easing_modes[current_mode].mode;
+
+  clutter_actor_animate (rectangle, cur_mode, 150,
+                         "x", base_x,
+                         "y", base_y,
+                         NULL);
+}
 
 static gboolean
 on_button_press (ClutterActor       *actor,
@@ -93,15 +114,39 @@ on_button_press (ClutterActor       *actor,
                               g_random_double_range (0.0, 1.0));
 
       animation =
-        clutter_actor_animate (rectangle, cur_mode, 2000,
+        clutter_actor_animate (rectangle, cur_mode, duration * 1000,
                                "x", event->x,
                                "y", event->y,
                                "color", &color,
                                NULL);
+
+      if (recenter)
+        g_signal_connect_after (animation, "completed",
+                                G_CALLBACK (on_animation_completed),
+                                rectangle);
     }
 
   return TRUE;
 }
+
+static GOptionEntry test_easing_entries[] = {
+  {
+    "re-center", 'r',
+    0,
+    G_OPTION_ARG_NONE, &recenter,
+    "Re-center the actor when the animation ends",
+    NULL
+  },
+  {
+    "duration", 'd',
+    0,
+    G_OPTION_ARG_INT, &duration,
+    "Duration of the animation",
+    "SECONDS"
+  },
+
+  { NULL }
+};
 
 G_MODULE_EXPORT int
 test_easing_main (int argc, char *argv[])
@@ -113,7 +158,11 @@ test_easing_main (int argc, char *argv[])
   gfloat stage_width, stage_height;
   gfloat label_width, label_height;
 
-  clutter_init (&argc, &argv);
+  clutter_init_with_args (&argc, &argv,
+                          NULL,
+                          test_easing_entries,
+                          NULL,
+                          NULL);
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);

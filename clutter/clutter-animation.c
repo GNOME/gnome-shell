@@ -127,8 +127,25 @@ static GQuark quark_object_animation = 0;
 
 G_DEFINE_TYPE (ClutterAnimation, clutter_animation, G_TYPE_OBJECT);
 
-static void on_animation_weak_notify (gpointer  data,
-                                      GObject  *animation_pointer);
+static void
+clutter_animation_real_completed (ClutterAnimation *self)
+{
+  ClutterAnimationPrivate *priv = self->priv;
+  ClutterAnimation *animation;
+
+  /* at this point, if this animation was created by clutter_actor_animate()
+   * and friends, the animation will be attached to the object's data; since
+   * we want to allow developers to use g_signal_connect_after("completed")
+   * to concatenate a new animation, we need to remove the animation back
+   * pointer here, and unref() the animation
+   */
+  animation = g_object_get_qdata (priv->object, quark_object_animation);
+  if (animation == self)
+    {
+      g_object_set_qdata (priv->object, quark_object_animation, NULL);
+      g_object_unref (animation);
+    }
+}
 
 static void
 clutter_animation_finalize (GObject *gobject)
@@ -173,13 +190,7 @@ clutter_animation_dispose (GObject *gobject)
   priv->alpha = NULL;
 
   if (priv->object != NULL)
-    {
-      g_object_weak_unref (G_OBJECT (gobject),
-                           on_animation_weak_notify,
-                           priv->object);
-      g_object_set_qdata (priv->object, quark_object_animation, NULL);
-      g_object_unref (priv->object);
-    }
+    g_object_unref (priv->object);
 
   priv->object = NULL;
 
@@ -277,6 +288,8 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
     g_quark_from_static_string ("clutter-actor-animation");
 
   g_type_class_add_private (klass, sizeof (ClutterAnimationPrivate));
+
+  klass->completed = clutter_animation_real_completed;
 
   gobject_class->set_property = clutter_animation_set_property;
   gobject_class->get_property = clutter_animation_get_property;
@@ -903,23 +916,6 @@ clutter_animation_get_timeline_internal (ClutterAnimation *animation)
   return timeline;
 }
 
-/*
- * Removes the animation pointer from the qdata section of the
- * actor attached to the animation
- */
-static void
-on_animation_weak_notify (gpointer  data,
-                          GObject  *animation_pointer)
-{
-  GObject *actor = data;
-
-  CLUTTER_NOTE (ANIMATION, "Removing Animation from actor %d[%p]",
-                clutter_actor_get_gid (CLUTTER_ACTOR (actor)),
-                actor);
-
-  g_object_set_qdata (actor, quark_object_animation, NULL);
-}
-
 /**
  * clutter_animation_new:
  *
@@ -965,27 +961,20 @@ clutter_animation_set_object (ClutterAnimation *animation,
   ClutterAnimationPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
-  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (object == NULL || G_IS_OBJECT (object));
 
   priv = animation->priv;
 
-  if (priv->object)
+  if (priv->object != NULL)
     {
-      g_object_weak_unref (G_OBJECT (animation),
-                           on_animation_weak_notify,
-                           priv->object);
       g_object_set_qdata (priv->object, quark_object_animation, NULL);
+
       g_object_unref (priv->object);
+      priv->object = NULL;
     }
 
-  priv->object = g_object_ref (object);
-  g_object_weak_ref (G_OBJECT (animation),
-                     on_animation_weak_notify,
-                     priv->object);
-  g_object_set_qdata_full (G_OBJECT (priv->object),
-                           quark_object_animation,
-                           animation,
-                           NULL);
+  if (object != NULL)
+    priv->object = g_object_ref (object);
 
   g_object_notify (G_OBJECT (animation), "object");
 }
@@ -1389,15 +1378,6 @@ clutter_animation_completed (ClutterAnimation *animation)
   g_signal_emit (animation, animation_signals[COMPLETED], 0);
 }
 
-static void
-on_animation_completed (ClutterAnimation *animation)
-{
-  CLUTTER_NOTE (ANIMATION, "Animation[%p] completed, unreferencing",
-                animation);
-
-  g_object_unref (animation);
-}
-
 /*
  * starts the timeline
  */
@@ -1653,6 +1633,35 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
     }
 }
 
+static ClutterAnimation *
+animation_create_for_actor (ClutterActor *actor)
+{
+  ClutterAnimation *animation;
+  GObject *object = G_OBJECT (actor);
+
+  animation = g_object_get_qdata (object, quark_object_animation);
+  if (animation == NULL)
+    {
+      animation = clutter_animation_new ();
+      clutter_animation_set_object (animation, object);
+      g_object_set_qdata (object, quark_object_animation, animation);
+
+      CLUTTER_NOTE (ANIMATION,
+                    "Created new Animation [%p] for actor [%p]",
+                    animation,
+                    actor);
+    }
+  else
+    {
+      CLUTTER_NOTE (ANIMATION,
+                    "Reusing Animation [%p] for actor [%p]",
+                    animation,
+                    actor);
+    }
+
+  return animation;
+}
+
 /**
  * clutter_actor_animate_with_alpha:
  * @actor: a #ClutterActor
@@ -1697,21 +1706,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
       return NULL;
     }
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
-  if (animation == NULL)
-    {
-      animation = clutter_animation_new ();
-      clutter_animation_set_object (animation, G_OBJECT (actor));
-
-      g_signal_connect (animation, "completed",
-                        G_CALLBACK (on_animation_completed),
-                        NULL);
-
-      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
-    }
-  else
-    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
-
+  animation = animation_create_for_actor (actor);
   clutter_animation_set_alpha (animation, alpha);
 
   va_start (args, first_property_name);
@@ -1761,21 +1756,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
   g_return_val_if_fail (first_property_name != NULL, NULL);
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
-  if (animation == NULL)
-    {
-      animation = clutter_animation_new ();
-      clutter_animation_set_object (animation, G_OBJECT (actor));
-
-      g_signal_connect (animation, "completed",
-                        G_CALLBACK (on_animation_completed),
-                        NULL);
-
-      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
-    }
-  else
-    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
-
+  animation = animation_create_for_actor (actor);
   clutter_animation_set_mode (animation, mode);
   clutter_animation_set_timeline (animation, timeline);
 
@@ -1893,39 +1874,26 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *                          NULL);
  * ]|
  *
- * <note>Unless the animation is looping, it will become invalid as soon
- * as it is complete. To avoid this, you should keep a reference on the
- * returned value using g_object_ref(). If you want to keep the animation
- * alive across multiple cycles, you also have to add a reference each
- * time the #ClutterAnimation::completed signal is emitted.</note>
+ * <note>Unless the animation is looping, the #ClutterAnimation created by
+ * clutter_actor_animate() will become invalid as soon as it is
+ * complete.</note>
  *
  * Since the created #ClutterAnimation instance attached to @actor
  * is guaranteed to be valid throughout the #ClutterAnimation::completed
  * signal emission chain, you will not be able to create a new animation
  * using clutter_actor_animate() on the same @actor from within the
- * #ClutterAnimation::completed signal handler. Instead, you should use
- * clutter_threads_add_idle() to install an idle handler and call
- * clutter_actor_animate() in the handler, for instance:
+ * #ClutterAnimation::completed signal handler unless you use
+ * g_signal_connect_after() to connect the callback function, for instance:
  *
  * |[
- *   static gboolean
- *   queue_animation (gpointer data)
- *   {
- *     ClutterActor *actor = data;
- *
- *     clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 250,
- *                            "width", 200,
- *                            "height", 200,
- *                            NULL);
- *
- *     return FALSE;
- *   }
- *
  *   static void
- *   on_animation_completed (ClutterAnimation *animation)
+ *   on_animation_completed (ClutterAnimation *animation,
+ *                           ClutterActor     *actor)
  *   {
- *     clutter_threads_add_idle (queue_animation,
- *                               clutter_animation_get_object (animation));
+ *     clutter_actor_animate (actor, CLUTTER_EASE_OUT_CUBIC, 250,
+ *                            "x", 500,
+ *                            "y", 500,
+ *                            NULL);
  *   }
  *
  *     ...
@@ -1935,7 +1903,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *                                        NULL);
  *     g_signal_connect (animation, "completed",
  *                       G_CALLBACK (on_animation_completed),
- *                       NULL);
+ *                       actor);
  *     ...
  * ]|
  *
@@ -1960,28 +1928,7 @@ clutter_actor_animate (ClutterActor *actor,
   g_return_val_if_fail (duration > 0, NULL);
   g_return_val_if_fail (first_property_name != NULL, NULL);
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
-  if (animation == NULL)
-    {
-      /* if there is no animation already attached to the actor,
-       * create one and set up the timeline and alpha using the
-       * current values for duration, mode and loop
-       */
-      animation = clutter_animation_new ();
-      clutter_animation_set_object (animation, G_OBJECT (actor));
-
-      g_signal_connect (animation, "completed",
-                        G_CALLBACK (on_animation_completed),
-                        NULL);
-
-      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
-    }
-  else
-    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
-
-  /* force the update of duration and mode using the new
-   * values coming from the parameters of this function
-   */
+  animation = animation_create_for_actor (actor);
   clutter_animation_set_mode (animation, mode);
   clutter_animation_set_duration (animation, duration);
 
@@ -2037,28 +1984,7 @@ clutter_actor_animatev (ClutterActor        *actor,
   g_return_val_if_fail (properties != NULL, NULL);
   g_return_val_if_fail (values != NULL, NULL);
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
-  if (animation == NULL)
-    {
-      /* if there is no animation already attached to the actor,
-       * create one and set up the timeline and alpha using the
-       * current values for duration, mode and loop
-       */
-      animation = clutter_animation_new ();
-      clutter_animation_set_object (animation, G_OBJECT (actor));
-
-      g_signal_connect (animation, "completed",
-                        G_CALLBACK (on_animation_completed),
-                        NULL);
-
-      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
-    }
-  else
-    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
-
-  /* force the update of duration and mode using the new
-   * values coming from the parameters of this function
-   */
+  animation = animation_create_for_actor (actor);
   clutter_animation_set_mode (animation, mode);
   clutter_animation_set_duration (animation, duration);
   clutter_animation_setupv (animation, n_properties, properties, values);
@@ -2114,21 +2040,7 @@ clutter_actor_animate_with_timelinev (ClutterActor        *actor,
   g_return_val_if_fail (properties != NULL, NULL);
   g_return_val_if_fail (values != NULL, NULL);
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
-  if (animation == NULL)
-    {
-      animation = clutter_animation_new ();
-      clutter_animation_set_object (animation, G_OBJECT (actor));
-
-      g_signal_connect (animation, "completed",
-                        G_CALLBACK (on_animation_completed),
-                        NULL);
-
-      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
-    }
-  else
-    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
-
+  animation = animation_create_for_actor (actor);
   clutter_animation_set_mode (animation, mode);
   clutter_animation_set_timeline (animation, timeline);
   clutter_animation_setupv (animation, n_properties, properties, values);
@@ -2190,21 +2102,7 @@ clutter_actor_animate_with_alphav (ClutterActor        *actor,
       return NULL;
     }
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
-  if (animation == NULL)
-    {
-      animation = clutter_animation_new ();
-      clutter_animation_set_object (animation, G_OBJECT (actor));
-
-      g_signal_connect (animation, "completed",
-                        G_CALLBACK (on_animation_completed),
-                        NULL);
-
-      CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
-    }
-  else
-    CLUTTER_NOTE (ANIMATION, "Reusing Animation [%p]", animation);
-
+  animation = animation_create_for_actor (actor);
   clutter_animation_set_alpha (animation, alpha);
   clutter_animation_setupv (animation, n_properties, properties, values);
   clutter_animation_start (animation);
