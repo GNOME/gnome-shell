@@ -1584,6 +1584,38 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
 
           g_signal_connect (animation, signal_name, callback, userdata);
         }
+      else if (g_str_has_prefix (property_name, "signal-"))
+        {
+          GCallback callback = va_arg (var_args, GCallback);
+          gpointer  userdata = va_arg (var_args, gpointer);
+          const gchar *signal_name;
+          GConnectFlags flags;
+
+          if (g_str_has_prefix (property_name, "signal-after::"))
+            {
+              signal_name = property_name + 14;
+              flags = G_CONNECT_AFTER;
+            }
+          else if (g_str_has_prefix (property_name, "signal-swapped::"))
+            {
+              signal_name = property_name + 16;
+              flags = G_CONNECT_SWAPPED;
+            }
+          else
+            {
+              g_warning ("Unable to connect to '%s': the valid signal "
+                         "modifiers are 'signal-swapped::' and "
+                         "'signal-swapped::'",
+                         property_name);
+              break;
+            }
+
+          g_signal_connect_data (animation, signal_name,
+                                 callback,
+                                 userdata,
+                                 NULL,
+                                 flags);
+        }
       else
         {
           if (g_str_has_prefix (property_name, "fixed::"))
@@ -1805,9 +1837,10 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * to control the animation or to know when the animation has been
  * completed.
  *
- * If a name argument starts with "signal::" the two following arguments
- * are used as callback function and userdata for a signal handler installed
- * on the #ClutterAnimation object for the specified signal name, for
+ * If a name argument starts with "signal::", "signal-after::" or
+ * "signal-swapped::" the two following arguments are used as callback
+ * function and data for a signal handler installed on the
+ * #ClutterAnimation object for the specified signal name, for
  * instance:
  *
  * |[
@@ -1824,6 +1857,14 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *                          "signal::completed", on_animation_completed, actor,
  *                          NULL);
  * ]|
+ *
+ * The "signal::" modifier is the equivalent of using g_signal_connect();
+ * the "signal-after::" modifier is the equivalent of using
+ * g_signal_connect_after(); the "signal-swapped::" modifier is the equivalent
+ * of using g_signal_connect_swapped(). The clutter_actor_animate() function
+ * will not keep track of multiple connections to the same signal, so it is
+ * your responsability to avoid them when calling clutter_actor_animate()
+ * multiple times on the same actor.
  *
  * Calling this function on an actor that is already being animated
  * will cause the current animation to change with the new final values,
