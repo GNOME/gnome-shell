@@ -135,6 +135,7 @@ AS_IF([test "x$clutterbackend" = "xeglnative" ||
 
                   CLUTTER_COGL="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
                   AC_CHECK_HEADERS([GLES/egl.h],
                                    [],
@@ -179,6 +180,7 @@ AS_IF([test "x$clutterbackend" = "xeglnative" ||
                   use_gles2_wrapper=yes
                   CLUTTER_COGL="gles"
                   AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
+		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
 
                   AC_CHECK_HEADERS([EGL/egl.h],
                                    [],
@@ -192,6 +194,7 @@ AS_IF([test "x$clutterbackend" = "xeglnative" ||
                   clutter_gl_header="GLES/gl.h"
                   CLUTTER_COGL="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
                   AC_CHECK_HEADERS([GLES/egl.h],
                                    [],
