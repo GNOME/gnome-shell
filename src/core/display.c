@@ -812,15 +812,6 @@ meta_display_open (void)
   return TRUE;
 }
 
-static void
-listify_func (gpointer key, gpointer value, gpointer data)
-{
-  GSList **listp;
-
-  listp = data;
-  *listp = g_slist_prepend (*listp, value);
-}
-
 static gint
 ptrcmp (gconstpointer a, gconstpointer b)
 {
@@ -832,17 +823,38 @@ ptrcmp (gconstpointer a, gconstpointer b)
     return 0;
 }
 
+/**
+ * meta_display_list_windows:
+ * @display: a #MetaDisplay
+ * @flags: options for listing
+ *
+ * Lists windows for the display, the @flags parameter for
+ * now determines whether override-redirect windows will be
+ * included.
+ *
+ * Return value: (transfer container): the list of windows.
+ */
 GSList*
-meta_display_list_windows (MetaDisplay *display)
+meta_display_list_windows (MetaDisplay          *display,
+                           MetaListWindowsFlags  flags)
 {
   GSList *winlist;
   GSList *tmp;
   GSList *prev;
-  
+  GHashTableIter iter;
+  gpointer key, value;
+
   winlist = NULL;
-  g_hash_table_foreach (display->window_ids,
-                        listify_func,
-                        &winlist);
+
+  g_hash_table_iter_init (&iter, display->window_ids);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      MetaWindow *window = value;
+
+      if (!window->override_redirect ||
+          (flags & META_LIST_INCLUDE_OVERRIDE_REDIRECT) != 0)
+        winlist = g_slist_prepend (winlist, window);
+    }
 
   /* Uniquify the list, since both frame windows and plain
    * windows are in the hash
@@ -3931,7 +3943,7 @@ meta_display_queue_retheme_all_windows (MetaDisplay *display)
   GSList* windows;
   GSList *tmp;
 
-  windows = meta_display_list_windows (display);
+  windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   tmp = windows;
   while (tmp != NULL)
     {
@@ -4441,7 +4453,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
     GSList *tmp;
     MetaWindow *l_window;
 
-    tmp = meta_display_list_windows (display);
+    tmp = meta_display_list_windows (display, META_LIST_DEFAULT);
 
     /* Go through all windows */
     while (tmp != NULL)
@@ -4824,7 +4836,8 @@ meta_display_unmanage_windows_for_screen (MetaDisplay *display,
   GSList *tmp;
   GSList *winlist;
 
-  winlist = meta_display_list_windows (display);
+  winlist = meta_display_list_windows (display,
+                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
   winlist = g_slist_sort (winlist, meta_display_stack_cmp);
 
   /* Unmanage all windows */
@@ -4916,7 +4929,7 @@ prefs_changed_callback (MetaPreference pref,
       GSList *windows;
       GSList *tmp;
       
-      windows = meta_display_list_windows (display);
+      windows = meta_display_list_windows (display, META_LIST_DEFAULT);
       
       /* Ungrab all */
       tmp = windows;
@@ -5018,7 +5031,7 @@ sanity_check_timestamps (MetaDisplay *display,
                     display->last_user_time, timestamp);
       display->last_user_time = timestamp;
 
-      windows = meta_display_list_windows (display);
+      windows = meta_display_list_windows (display, META_LIST_DEFAULT);
       tmp = windows;
       while (tmp != NULL)
         {

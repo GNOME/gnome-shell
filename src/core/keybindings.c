@@ -460,7 +460,7 @@ regrab_key_bindings (MetaDisplay *display)
       tmp = tmp->next;
     }
 
-  windows = meta_display_list_windows (display);
+  windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   tmp = windows;
   while (tmp != NULL)
     {

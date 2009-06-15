@@ -253,7 +253,7 @@ meta_window_present_delete_dialog (MetaWindow *window, guint32 timestamp)
        * mutter-dialog
        */
       
-      windows = meta_display_list_windows (window->display);
+      windows = meta_display_list_windows (window->display, META_LIST_DEFAULT);
       tmp = windows;
       while (tmp != NULL)
         {

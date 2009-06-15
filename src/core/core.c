@@ -766,7 +766,7 @@ meta_invalidate_default_icons (void)
   if (display == NULL)
     return; /* We can validly be called before the display is opened. */
 
-  windows = meta_display_list_windows (display);
+  windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   for (l = windows; l != NULL; l = l->next)
     {
       MetaWindow *window = (MetaWindow*)l->data;

@@ -4440,7 +4440,7 @@ get_modal_transient (MetaWindow *window)
    */
   modal_transient = window;
 
-  windows = meta_display_list_windows (window->display);
+  windows = meta_display_list_windows (window->display, META_LIST_DEFAULT);
   tmp = windows;
   while (tmp != NULL)
     {
@@ -8157,7 +8157,7 @@ meta_window_foreach_transient (MetaWindow            *window,
   GSList *windows;
   GSList *tmp;
 
-  windows = meta_display_list_windows (window->display);
+  windows = meta_display_list_windows (window->display, META_LIST_DEFAULT);
 
   tmp = windows;
   while (tmp != NULL)

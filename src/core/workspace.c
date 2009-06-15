@@ -620,8 +620,14 @@ meta_workspace_update_window_hints (MetaWorkspace *workspace)
     }
 }
 
-/* get windows contained on workspace, including workspace->windows
- * and also sticky windows.
+/**
+ * meta_workspace_list_windows:
+ * @display: a #MetaDisplay
+ *
+ * Gets windows contained on the workspace, including workspace->windows
+ * and also sticky windows. Override-redirect windows are not included.
+ *
+ * Return value: (transfer container): the list of windows.
  */
 GList*
 meta_workspace_list_windows (MetaWorkspace *workspace)
@@ -630,7 +636,8 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
   GSList *tmp;
   GList *workspace_windows;
   
-  display_windows = meta_display_list_windows (workspace->screen->display);
+  display_windows = meta_display_list_windows (workspace->screen->display,
+                                               META_LIST_DEFAULT);
 
   workspace_windows = NULL;
   tmp = display_windows;

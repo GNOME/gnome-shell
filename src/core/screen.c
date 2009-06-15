@@ -934,7 +934,8 @@ meta_screen_composite_all_windows (MetaScreen *screen)
   if (!display->compositor)
     return;
 
-  windows = meta_display_list_windows (display);
+  windows = meta_display_list_windows (display,
+                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
   for (tmp = windows; tmp != NULL; tmp = tmp->next)
     meta_compositor_add_window (display->compositor, tmp->data);
   g_slist_free (windows);
@@ -2476,7 +2477,7 @@ queue_windows_showing (MetaScreen *screen)
    * active_workspace's window list, because the active_workspace's
    * window list may not contain the on_all_workspace windows.
    */
-  windows = meta_display_list_windows (screen->display);
+  windows = meta_display_list_windows (screen->display, META_LIST_DEFAULT);
 
   tmp = windows;
   while (tmp != NULL)

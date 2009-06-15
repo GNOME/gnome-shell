@@ -839,7 +839,7 @@ meta_window_place (MetaWindow        *window,
     GSList *all_windows;
     GSList *tmp;
     
-    all_windows = meta_display_list_windows (window->display);
+    all_windows = meta_display_list_windows (window->display, META_LIST_DEFAULT);
 
     tmp = all_windows;
     while (tmp != NULL)
