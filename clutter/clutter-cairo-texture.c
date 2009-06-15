@@ -109,6 +109,15 @@ enum
 
 #define CLUTTER_CAIRO_TEXTURE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CAIRO_TEXTURE, ClutterCairoTexturePrivate))
 
+/* Cairo stores the data in native byte order as ARGB but Cogl's pixel
+   formats specify the actual byte order. Therefore we need to use a
+   different format depending on the architecture */
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT COGL_PIXEL_FORMAT_BGRA_8888_PRE
+#else
+#define CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT COGL_PIXEL_FORMAT_ARGB_8888_PRE
+#endif
+
 struct _ClutterCairoTexturePrivate
 {
   cairo_format_t   format;
@@ -229,6 +238,7 @@ static inline void
 clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 {
   ClutterCairoTexturePrivate *priv = cairo->priv;
+  CoglHandle cogl_texture;
 
   if (priv->cr_surface)
     {
@@ -294,12 +304,14 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 
   /* Create a blank Cogl texture
    */
-  clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (cairo),
-				     priv->cr_surface_data,
-				     TRUE, priv->width, priv->height,
-				     priv->rowstride,
-				     4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
-                                     NULL);
+  cogl_texture = cogl_texture_new_from_data (priv->width, priv->height,
+                                             COGL_TEXTURE_NONE,
+                                             CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
+                                             COGL_PIXEL_FORMAT_ANY,
+                                             priv->rowstride,
+                                             priv->cr_surface_data);
+  clutter_texture_set_cogl_texture (CLUTTER_TEXTURE (cairo), cogl_texture);
+  cogl_handle_unref (cogl_texture);
 }
 
 static void
@@ -451,6 +463,7 @@ clutter_cairo_texture_context_destroy (void *data)
   guchar *cairo_data;
   gint cairo_width, cairo_height;
   gint surface_width, surface_height;
+  CoglHandle cogl_texture;
 
   if (!priv->cr_surface)
     return;
@@ -461,7 +474,9 @@ clutter_cairo_texture_context_destroy (void *data)
   cairo_width  = MIN (ctxt->rect.width, surface_width);
   cairo_height = MIN (ctxt->rect.height, surface_height);
 
-  if (!cairo_width || !cairo_height)
+  cogl_texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (cairo));
+
+  if (!cairo_width || !cairo_height || cogl_texture == COGL_INVALID_HANDLE)
     {
       g_free (ctxt);
 
@@ -472,15 +487,14 @@ clutter_cairo_texture_context_destroy (void *data)
              + (ctxt->rect.y * priv->rowstride)
              + (ctxt->rect.x * 4));
 
-  clutter_texture_set_area_from_rgb_data (CLUTTER_TEXTURE (cairo),
-					  cairo_data,
-					  TRUE,
-					  ctxt->rect.x,
-					  ctxt->rect.y,
-					  cairo_width, cairo_height,
-					  priv->rowstride,
-					  4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
-                                          NULL);
+  cogl_texture_set_region (cogl_texture,
+                           0, 0,
+                           ctxt->rect.x, ctxt->rect.y,
+                           cairo_width, cairo_height,
+                           cairo_width, cairo_height,
+                           CLUTTER_CAIRO_TEXTURE_PIXEL_FORMAT,
+                           priv->rowstride,
+                           cairo_data);
 
   g_free (ctxt);
 
