@@ -1045,6 +1045,15 @@ listify_func (gpointer key, gpointer value, gpointer data)
   *listp = g_slist_prepend (*listp, value);
 }
 
+/**
+ * meta_screen_foreach_window:
+ * @screen: a #MetaScreen
+ * @func: function to call for each window
+ * @data: user data to pass to @func
+ *
+ * Calls the specified function for each window on the screen,
+ * ignoring override-redirect windows.
+ */
 void
 meta_screen_foreach_window (MetaScreen *screen,
                             MetaScreenWindowFunc func,
@@ -1075,7 +1084,7 @@ meta_screen_foreach_window (MetaScreen *screen,
         {
           MetaWindow *window = tmp->data;
 
-          if (window->screen == screen)
+          if (window->screen == screen && !window->override_redirect)
             (* func) (screen, window, data);
         }
       
