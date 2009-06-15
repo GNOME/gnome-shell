@@ -5227,6 +5227,16 @@ meta_window_client_message (MetaWindow *window,
 
   display = window->display;
 
+  if (window->override_redirect)
+    {
+      /* Don't warn here: we could warn on any of the messages below,
+       * but we might also receive other client messages that are
+       * part of protocols we don't know anything about. So, silently
+       * ignoring is simplest.
+       */
+      return FALSE;
+    }
+
   if (event->xclient.message_type ==
       display->atom__NET_CLOSE_WINDOW)
     {
