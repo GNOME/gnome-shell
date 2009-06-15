@@ -1446,7 +1446,7 @@ reload_transient_for (MetaWindow    *window,
       window->xtransient_for != window->xgroup_leader)
     meta_window_group_leader_changed (window);
 
-  if (!window->constructing)
+  if (!window->constructing && !window->override_redirect)
     meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 }
 

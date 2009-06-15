@@ -678,8 +678,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->hidden = 0;
   /* if already mapped, no need to worry about focus-on-first-time-showing */
   window->showing_for_first_time = !window->mapped;
-  /* if already mapped we don't want to do the placement thing */
-  window->placed = (window->mapped && !window->hidden);
+  /* if already mapped we don't want to do the placement thing;
+   * override-redirect windows are placed by the app */
+  window->placed = ((window->mapped && !window->hidden) || window->override_redirect);
   if (window->placed)
     meta_topic (META_DEBUG_PLACEMENT,
                 "Not placing window 0x%lx since it's already mapped\n",
@@ -963,13 +964,14 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    */
   flags =
     META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
-  meta_window_move_resize_internal (window,
-                                    flags,
-                                    window->size_hints.win_gravity,
-                                    window->size_hints.x,
-                                    window->size_hints.y,
-                                    window->size_hints.width,
-                                    window->size_hints.height);
+  if (!window->override_redirect)
+    meta_window_move_resize_internal (window,
+                                      flags,
+                                      window->size_hints.win_gravity,
+                                      window->size_hints.x,
+                                      window->size_hints.y,
+                                      window->size_hints.width,
+                                      window->size_hints.height);
 
   /* Now try applying saved stuff from the session */
   {
@@ -1957,6 +1959,9 @@ void
 meta_window_queue (MetaWindow *window, guint queuebits)
 {
   guint queuenum;
+
+  /* Easier to debug by checking here rather than in the idle */
+  g_return_if_fail (!window->override_redirect || (queuebits & META_QUEUE_MOVE_RESIZE) == 0);
 
   for (queuenum=0; queuenum<NUMBER_OF_QUEUES; queuenum++)
     {
@@ -3628,6 +3633,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
   MetaRectangle new_rect;
   MetaRectangle old_rect;
 
+  g_return_if_fail (!window->override_redirect);
+
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
   is_user_action = (flags & META_IS_USER_ACTION) != 0;
@@ -4028,6 +4035,8 @@ meta_window_resize (MetaWindow  *window,
   int x, y;
   MetaMoveResizeFlags flags;
 
+  g_return_if_fail (!window->override_redirect);
+
   meta_window_get_position (window, &x, &y);
 
   flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
@@ -4043,8 +4052,12 @@ meta_window_move (MetaWindow  *window,
                   int          root_x_nw,
                   int          root_y_nw)
 {
-  MetaMoveResizeFlags flags =
-    (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
+  MetaMoveResizeFlags flags;
+
+  g_return_if_fail (!window->override_redirect);
+
+  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
+
   meta_window_move_resize_internal (window,
                                     flags,
                                     NorthWestGravity,
@@ -4061,8 +4074,11 @@ meta_window_move_resize (MetaWindow  *window,
                          int          w,
                          int          h)
 {
-  MetaMoveResizeFlags flags =
-    (user_op ? META_IS_USER_ACTION : 0) |
+  MetaMoveResizeFlags flags;
+
+  g_return_if_fail (!window->override_redirect);
+
+  flags = (user_op ? META_IS_USER_ACTION : 0) |
     META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
                                     flags,
@@ -7175,6 +7191,8 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
   GList         *onscreen_region;
   int            horiz_amount, vert_amount;
   int            newx, newy;
+
+  g_return_if_fail (!window->override_redirect);
 
   /* If there's no titlebar, don't bother */
   if (!window->frame)
