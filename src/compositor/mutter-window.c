@@ -1512,8 +1512,6 @@ check_needs_repair (MutterWindow *self)
                     "pixmap-height", &pxm_height,
                     NULL);
 
-      clutter_actor_set_size (priv->actor, pxm_width, pxm_height);
-
       if (priv->shadow)
         clutter_actor_set_size (priv->shadow, pxm_width, pxm_height);
 
