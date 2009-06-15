@@ -8,6 +8,7 @@ LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR
 AM_CFLAGS = \
 	$(CLUTTER_CFLAGS) \
 	$(MAINTAINER_CFLAGS) \
+	-DG_DISABLE_SINGLE_INCLUDES \
 	-DTESTS_DATA_DIR=\""$(top_srcdir)/tests/data/"\"
 AM_LDFLAGS = $(CLUTTER_LIBS)
 

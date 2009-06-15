@@ -74,9 +74,14 @@ wrappers: test-interactive$(EXEEXT)
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers redhand.png redhand_alpha.png light0.png light1.png test-script.json
 
-INCLUDES = -I$(top_srcdir)/ -I$(top_srcdir)/clutter -I$(top_builddir)/clutter
+INCLUDES = \
+	-I$(top_srcdir)	\
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter \
+	-DG_DISABLE_SINGLE_INCLUDES
+
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
-AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+AM_CPPFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 AM_LDFLAGS = $(CLUTTER_LIBS)
 
 noinst_PROGRAMS = test-interactive

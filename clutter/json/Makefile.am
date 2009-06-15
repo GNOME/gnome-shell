@@ -23,6 +23,7 @@ libclutter_json_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir) \
+	-DG_DISABLE_SINGLE_INCLUDES \
 	-DG_LOG_DOMAIN=\"Clutter-Json\" \
 	-DG_DISABLE_DEPRECATED
 

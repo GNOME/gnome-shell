@@ -18,6 +18,7 @@ libcoglpango_la_CPPFLAGS = $(CLUTTER_CFLAGS)
 libcoglpango_la_LIBADD = $(CLUTTER_LIBS)
 
 INCLUDES = \
+	-DG_DISABLE_SINGLE_INCLUDES	\
 	-DCLUTTER_COMPILATION		\
 	-DG_LOG_DOMAIN=\"CoglPango\"	\
 	-I$(top_srcdir)			\

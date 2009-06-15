@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib/gtestutils.h>
+#include <glib.h>
 
 #include <clutter/clutter.h>
 

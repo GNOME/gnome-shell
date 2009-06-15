@@ -66,6 +66,7 @@ test_conformance_CFLAGS = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter \
+	-DG_DISABLE_SINGLE_INCLUDES \
 	$(CLUTTER_CFLAGS) \
 	$(MAINTAINER_CFLAGS)
 
