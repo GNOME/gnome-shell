@@ -42,6 +42,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl \
+	-DG_DISABLE_SINGLE_INCLUDES \
 	-DG_LOG_DOMAIN=\"Cogl-GL\" \
 	-DCLUTTER_COMPILATION
 
