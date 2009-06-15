@@ -147,8 +147,8 @@ test_coglbox_init (TestCoglbox *self)
   /* Obtain pixel data */
   
   format = cogl_texture_get_format (priv->cogl_tex_id[0]);
-  g_assert(format == COGL_PIXEL_FORMAT_RGBA_8888 ||
-           format == COGL_PIXEL_FORMAT_ARGB_8888);
+  g_assert(format == COGL_PIXEL_FORMAT_RGBA_8888_PRE ||
+           format == COGL_PIXEL_FORMAT_ARGB_8888_PRE);
 
   width = cogl_texture_get_width (priv->cogl_tex_id[0]);
   height = cogl_texture_get_height (priv->cogl_tex_id[0]);
@@ -188,7 +188,7 @@ test_coglbox_init (TestCoglbox *self)
       for (x=0; x<width; ++x)
 	{
 	  pixel = data + y * rowstride + x * 4;
-	  if (format == COGL_PIXEL_FORMAT_RGBA_8888)
+	  if (format == COGL_PIXEL_FORMAT_RGBA_8888_PRE)
 	    {
 	      t = pixel[0];
 	      pixel[0] = pixel[1];
