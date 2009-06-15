@@ -298,7 +298,8 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 				     priv->cr_surface_data,
 				     TRUE, priv->width, priv->height,
 				     priv->rowstride,
-				     4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT, NULL);
+				     4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
+                                     NULL);
 }
 
 static void
@@ -445,34 +446,31 @@ static void
 clutter_cairo_texture_context_destroy (void *data)
 {
   ClutterCairoTextureContext *ctxt = data;
-  ClutterCairoTexture        *cairo = ctxt->cairo;
-  ClutterCairoTexturePrivate *priv;
-
-  gint    cairo_width, cairo_height, cairo_rowstride;
-  gint    surface_width, surface_height;
+  ClutterCairoTexture *cairo = ctxt->cairo;
+  ClutterCairoTexturePrivate *priv = cairo->priv;
   guchar *cairo_data;
-
-  priv = CLUTTER_CAIRO_TEXTURE_GET_PRIVATE (cairo);
+  gint cairo_width, cairo_height;
+  gint surface_width, surface_height;
 
   if (!priv->cr_surface)
     return;
 
-  surface_width = cairo_image_surface_get_width (priv->cr_surface);
+  surface_width  = cairo_image_surface_get_width (priv->cr_surface);
   surface_height = cairo_image_surface_get_height (priv->cr_surface);
 
-  cairo_width = MIN (ctxt->rect.width, surface_width);
+  cairo_width  = MIN (ctxt->rect.width, surface_width);
   cairo_height = MIN (ctxt->rect.height, surface_height);
 
   if (!cairo_width || !cairo_height)
     {
       g_free (ctxt);
+
       return;
     }
 
-  cairo_rowstride  = priv->rowstride;
-  cairo_data       = (priv->cr_surface_data
-		      + ctxt->rect.y * cairo_rowstride
-		      + ctxt->rect.x * 4);
+  cairo_data = (priv->cr_surface_data
+             + (ctxt->rect.y * priv->rowstride)
+             + (ctxt->rect.x * 4));
 
   clutter_texture_set_area_from_rgb_data (CLUTTER_TEXTURE (cairo),
 					  cairo_data,
@@ -480,13 +478,13 @@ clutter_cairo_texture_context_destroy (void *data)
 					  ctxt->rect.x,
 					  ctxt->rect.y,
 					  cairo_width, cairo_height,
-					  cairo_rowstride,
-					  4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT, NULL);
+					  priv->rowstride,
+					  4, CLUTTER_TEXTURE_RGB_FLAG_PREMULT,
+                                          NULL);
 
   g_free (ctxt);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (cairo))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (cairo));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (cairo));
 }
 
 static void
