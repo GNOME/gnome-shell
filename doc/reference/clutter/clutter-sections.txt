@@ -259,7 +259,6 @@ CLUTTER_ACTOR_IS_VISIBLE
 CLUTTER_ACTOR_IS_REACTIVE
 
 <SUBSECTION>
-ClutterActorBox
 ClutterActorFlags
 ClutterRequestMode
 ClutterGeometry
@@ -367,10 +366,6 @@ clutter_actor_get_paint_visibility
 clutter_actor_get_abs_allocation_vertices
 
 <SUBSECTION>
-ClutterVertex
-clutter_actor_box_get_from_vertices
-
-<SUBSECTION>
 clutter_actor_set_anchor_point
 clutter_actor_get_anchor_point
 clutter_actor_set_anchor_point_from_gravity
@@ -392,6 +387,25 @@ clutter_actor_grab_key_focus
 clutter_actor_get_pango_context
 clutter_actor_create_pango_context
 clutter_actor_create_pango_layout
+
+<SUBSECTION>
+ClutterActorBox
+clutter_actor_box_new
+clutter_actor_box_copy
+clutter_actor_box_free
+clutter_actor_box_equal
+clutter_actor_box_get_origin
+clutter_actor_box_get_size
+clutter_actor_box_get_area
+clutter_actor_box_contains
+clutter_actor_box_from_vertices
+
+<SUBSECTION>
+ClutterVertex
+clutter_vertex_new
+clutter_vertex_copy
+clutter_vertex_free
+clutter_vertex_equal
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY

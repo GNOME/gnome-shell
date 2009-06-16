@@ -34,27 +34,18 @@
 #include <pango/pango.h>
 
 #include <clutter/clutter-color.h>
-#include <clutter/clutter-fixed.h>
 #include <clutter/clutter-types.h>
-#include <clutter/clutter-units.h>
 #include <clutter/clutter-event.h>
 #include <clutter/clutter-shader.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_ACTOR_BOX  (clutter_actor_box_get_type ())
-#define CLUTTER_TYPE_ACTOR      (clutter_actor_get_type ())
-
-#define CLUTTER_ACTOR(obj) \
- (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_ACTOR, ClutterActor))
-#define CLUTTER_ACTOR_CLASS(klass) \
- (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_ACTOR, ClutterActorClass))
-#define CLUTTER_IS_ACTOR(obj) \
- (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_ACTOR))
-#define CLUTTER_IS_ACTOR_CLASS(klass) \
- (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ACTOR))
-#define CLUTTER_ACTOR_GET_CLASS(obj) \
- (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ACTOR, ClutterActorClass))
+#define CLUTTER_TYPE_ACTOR              (clutter_actor_get_type ())
+#define CLUTTER_ACTOR(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_ACTOR, ClutterActor))
+#define CLUTTER_ACTOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_ACTOR, ClutterActorClass))
+#define CLUTTER_IS_ACTOR(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_ACTOR))
+#define CLUTTER_IS_ACTOR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ACTOR))
+#define CLUTTER_ACTOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ACTOR, ClutterActorClass))
 
 /**
  * CLUTTER_ACTOR_SET_FLAGS:
@@ -80,7 +71,6 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_IS_REACTIVE(a)    ((((ClutterActor*)(a))->flags & CLUTTER_ACTOR_REACTIVE) != FALSE)
 
 typedef struct _ClutterActorClass    ClutterActorClass;
-typedef struct _ClutterActorBox      ClutterActorBox;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 
 /**
@@ -137,28 +127,6 @@ typedef enum
   CLUTTER_ALLOCATION_NONE         = 0,
   CLUTTER_ABSOLUTE_ORIGIN_CHANGED = 1 << 1
 } ClutterAllocationFlags;
-
-/**
- * ClutterActorBox:
- * @x1: X coordinate of the top left corner
- * @y1: Y coordinate of the top left corner
- * @x2: X coordinate of the bottom right corner
- * @y2: Y coordinate of the bottom right corner
- *
- * Bounding box of an actor. The coordinates of the top left and right bottom
- * corners of an actor. The coordinates of the two points are expressed in
- * pixels with sub-pixel precision
- */
-struct _ClutterActorBox
-{
-  gfloat x1;
-  gfloat y1;
-
-  gfloat x2;
-  gfloat y2;
-};
-
-GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 
 /**
  * ClutterActor:
@@ -529,9 +497,6 @@ gboolean clutter_actor_transform_stage_point          (ClutterActor   *self,
 gboolean clutter_actor_is_rotated                     (ClutterActor   *self);
 gboolean clutter_actor_is_scaled                      (ClutterActor   *self);
 gboolean clutter_actor_should_pick_paint              (ClutterActor   *self);
-
-void     clutter_actor_box_get_from_vertices          (ClutterVertex        vtx[4],
-				                       ClutterActorBox     *box);
 
 void clutter_actor_get_abs_allocation_vertices        (ClutterActor        *self,
                                                        ClutterVertex        verts[4]);

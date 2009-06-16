@@ -176,4 +176,6 @@
 #define clutter_stage_fullscreen        clutter_stage_fullscreen_REPLACED_BY_clutter_stage_set_fullscreen
 #define clutter_stage_unfullscreen      clutter_stage_unfullscreen_REPLACED_BY_clutter_stage_set_fullscreen
 
+#define clutter_actor_get_box_from_vertices     clutter_actor_get_box_from_vertices_REPLACED_BY_clutter_actor_box_from_vertices
+
 #endif /* CLUTTER_DEPRECATED_H */

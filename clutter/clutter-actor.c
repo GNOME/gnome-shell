@@ -7743,17 +7743,93 @@ clutter_geometry_get_type (void)
  * ClutterVertices
  */
 
-static ClutterVertex *
-clutter_vertex_copy (const ClutterVertex *vertex)
+/**
+ * clutter_vertex_new:
+ * @x: X coordinate
+ * @y: Y coordinate
+ * @z: Z coordinate
+ *
+ * Creates a new #ClutterVertex for the point in 3D space
+ * identified by the 3 coordinates @x, @y, @z
+ *
+ * Return value: the newly allocate #ClutterVertex. Use
+ *   clutter_vertex_free() to free the resources
+ *
+ * Since: 1.0
+ */
+ClutterVertex *
+clutter_vertex_new (gfloat x,
+                    gfloat y,
+                    gfloat z)
 {
-  return g_slice_dup (ClutterVertex, vertex);
+  ClutterVertex *vertex;
+
+  vertex = g_slice_new (ClutterVertex);
+  vertex->x = x;
+  vertex->y = y;
+  vertex->z = z;
+
+  return vertex;
 }
 
-static void
+/**
+ * clutter_vertex_copy:
+ * @vertex: a #ClutterVertex
+ *
+ * Copies @vertex
+ *
+ * Return value: a newly allocated copy of #ClutterVertex. Use
+ *   clutter_vertex_free() to free the allocated resources
+ *
+ * Since: 1.0
+ */
+ClutterVertex *
+clutter_vertex_copy (const ClutterVertex *vertex)
+{
+  if (G_LIKELY (vertex != NULL))
+    return g_slice_dup (ClutterVertex, vertex);
+
+  return NULL;
+}
+
+/**
+ * clutter_vertext_free:
+ * @vertex: a #ClutterVertex
+ *
+ * Frees a #ClutterVertex allocated using clutter_vertex_copy()
+ *
+ * Since: 1.0
+ */
+void
 clutter_vertex_free (ClutterVertex *vertex)
 {
   if (G_UNLIKELY (vertex != NULL))
     g_slice_free (ClutterVertex, vertex);
+}
+
+/**
+ * clutter_vertex_equal:
+ * @vertex_a: a #ClutterVertex
+ * @vertex_b: a #ClutterVertex
+ *
+ * Compares @vertex_a and @vertex_b for equality
+ *
+ * Return value: %TRUE if the passed #ClutterVertex are equal
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_vertex_equal (const ClutterVertex *vertex_a,
+                      const ClutterVertex *vertex_b)
+{
+  g_return_val_if_fail (vertex_a != NULL && vertex_b != NULL, FALSE);
+
+  if (vertex_a == vertex_b)
+    return TRUE;
+
+  return vertex_a->x == vertex_b->x &&
+         vertex_a->y == vertex_b->y &&
+         vertex_a->z == vertex_b->z;
 }
 
 GType
@@ -7773,13 +7849,69 @@ clutter_vertex_get_type (void)
 /*
  * ClutterActorBox
  */
-static ClutterActorBox *
-clutter_actor_box_copy (const ClutterActorBox *box)
+
+/**
+ * clutter_actor_box_new:
+ * @x_1: X coordinate of the top left point
+ * @y_1: Y coordinate of the top left point
+ * @x_2: X coordinate of the bottom right point
+ * @y_2: Y coordinate of the bottom right point
+ *
+ * Allocates a new #ClutterActorBox using the passed coordinates
+ * for the top left and bottom right points
+ *
+ * Return value: the newly allocated #ClutterActorBox. Use
+ *   clutter_actor_box_free() to free the resources
+ *
+ * Since: 1.0
+ */
+ClutterActorBox *
+clutter_actor_box_new (gfloat x_1,
+                       gfloat y_1,
+                       gfloat x_2,
+                       gfloat y_2)
 {
-  return g_slice_dup (ClutterActorBox, box);
+  ClutterActorBox *box;
+
+  box = g_slice_new (ClutterActorBox);
+  box->x1 = x_1;
+  box->y1 = y_1;
+  box->x2 = x_2;
+  box->y2 = y_2;
+
+  return box;
 }
 
-static void
+/**
+ * clutter_actor_box_copy:
+ * @box: a #ClutterActorBox
+ *
+ * Copies @box
+ *
+ * Return value: a newly allocated copy of #ClutterActorBox. Use
+ *   clutter_actor_box_free() to free the allocated resources
+ *
+ * Since: 1.0
+ */
+ClutterActorBox *
+clutter_actor_box_copy (const ClutterActorBox *box)
+{
+  if (G_LIKELY (box != NULL))
+    return g_slice_dup (ClutterActorBox, box);
+
+  return NULL;
+}
+
+/**
+ * clutter_actor_box_free:
+ * @box: a #ClutterActorBox
+ *
+ * Frees a #ClutterActorBox allocated using clutter_actor_box_new()
+ * or clutter_actor_box_copy()
+ *
+ * Since: 1.0
+ */
+void
 clutter_actor_box_free (ClutterActorBox *box)
 {
   if (G_LIKELY (box != NULL))
@@ -7797,6 +7929,188 @@ clutter_actor_box_get_type (void)
                                     (GBoxedCopyFunc) clutter_actor_box_copy,
                                     (GBoxedFreeFunc) clutter_actor_box_free);
   return our_type;
+}
+
+/**
+ * clutter_actor_box_equal:
+ * @box_a: a #ClutterActorBox
+ * @box_b: a #ClutterActorBox
+ *
+ * Checks @box_a and @box_b for equality
+ *
+ * Return value: %TRUE if the passed #ClutterActorBox are equal
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_actor_box_equal (const ClutterActorBox *box_a,
+                         const ClutterActorBox *box_b)
+{
+  g_return_val_if_fail (box_a != NULL && box_b != NULL, FALSE);
+
+  if (box_a == box_b)
+    return TRUE;
+
+  return box_a->x1 == box_b->x1 && box_a->y1 == box_b->y1 &&
+         box_a->x2 == box_b->x2 && box_a->y2 == box_b->y2;
+}
+
+/**
+ * clutter_actor_box_get_origin:
+ * @box: a #ClutterActorBox
+ * @x: (out): return location for the X coordinate, or %NULL
+ * @y: (out): return location for the Y coordinate, or %NULL
+ *
+ * Retrieves the origin of @box
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_box_get_origin (const ClutterActorBox *box,
+                              gfloat                *x,
+                              gfloat                *y)
+{
+  g_return_if_fail (box != NULL);
+
+  if (x)
+    *x = box->x1;
+
+  if (y)
+    *y = box->y1;
+}
+
+/**
+ * clutter_actor_box_get_size:
+ * @box: a #ClutterActorBox
+ * @width: (out): return location for the width, or %NULL
+ * @height: (out): return location for the height, or %NULL
+ *
+ * Retrieves the size of @box
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_box_get_size (const ClutterActorBox *box,
+                            gfloat                *width,
+                            gfloat                *height)
+{
+  g_return_if_fail (box != NULL);
+
+  if (width)
+    *width = box->x2 - box->x1;
+
+  if (height)
+    *height = box->y2 - box->y1;
+}
+
+/**
+ * clutter_actor_box_get_area:
+ * @box: a #ClutterActorBox
+ *
+ * Retrieves the area of @box
+ *
+ * Return value: the area of a #ClutterActorBox, in pixels
+ *
+ * Since: 1.0
+ */
+gfloat
+clutter_actor_box_get_area (const ClutterActorBox *box)
+{
+  g_return_val_if_fail (box != NULL, 0.);
+
+  return (box->x2 - box->x1) * (box->y2 - box->y1);
+}
+
+/**
+ * clutter_actor_box_contains:
+ * @box: a #ClutterActorBox
+ * @x: X coordinate of the point
+ * @y: Y coordinate of the point
+ *
+ * Checks whether a point with @x, @y coordinates is contained
+ * withing @box
+ *
+ * Return value: %TRUE if the point is contained by the #ClutterActorBox
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_actor_box_contains (const ClutterActorBox *box,
+                            gfloat                 x,
+                            gfloat                 y)
+{
+  g_return_val_if_fail (box != NULL, FALSE);
+
+  return (x > box->x1 && x < box->x2) &&
+         (y > box->y1 && y < box->y2);
+}
+
+/**
+ * clutter_actor_box_from_vertices:
+ * @box: a #ClutterActorBox
+ * @verts: (array fixed-size=4): array of four #ClutterVertex
+ *
+ * Calculates the bounding box represented by the four vertices; for details
+ * of the vertex array see clutter_actor_get_abs_allocation_vertices().
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_box_from_vertices (ClutterActorBox     *box,
+                                 const ClutterVertex  verts[])
+{
+  gfloat x_1, x_2, y_1, y_2;
+
+  g_return_if_fail (box != NULL);
+  g_return_if_fail (verts != NULL);
+
+  /* 4-way min/max */
+  x_1 = verts[0].x;
+  y_1 = verts[0].y;
+
+  if (verts[1].x < x_1)
+    x_1 = verts[1].x;
+
+  if (verts[2].x < x_1)
+    x_1 = verts[2].x;
+
+  if (verts[3].x < x_1)
+    x_1 = verts[3].x;
+
+  if (verts[1].y < y_1)
+    y_1 = verts[1].y;
+
+  if (verts[2].y < y_1)
+    y_1 = verts[2].y;
+
+  if (verts[3].y < y_1)
+    y_1 = verts[3].y;
+
+  x_2 = verts[0].x;
+  y_2 = verts[0].y;
+
+  if (verts[1].x > x_2)
+    x_2 = verts[1].x;
+
+  if (verts[2].x > x_2)
+    x_2 = verts[2].x;
+
+  if (verts[3].x > x_2)
+    x_2 = verts[3].x;
+
+  if (verts[1].y > y_2)
+    y_2 = verts[1].y;
+
+  if (verts[2].y > y_2)
+    y_2 = verts[2].y;
+
+  if (verts[3].y > y_2)
+    y_2 = verts[3].y;
+
+  box->x1 = x_1;
+  box->x2 = x_2;
+  box->y1 = y_1;
+  box->y2 = y_2;
 }
 
 /******************************************************************************/
@@ -8145,71 +8459,6 @@ clutter_actor_is_scaled (ClutterActor *self)
     return TRUE;
 
   return FALSE;
-}
-
-/**
- * clutter_actor_box_get_from_vertices:
- * @vtx: array of four #ClutterVertex
- * @box: (out): return location for a #ClutterActorBox
- *
- * Calculates the bounding box represented by the four vertices; for details
- * of the vertex array see clutter_actor_get_abs_allocation_vertices().
- *
- * Since: 0.6
- */
-void
-clutter_actor_get_box_from_vertices (ClutterVertex    vtx[4],
-				     ClutterActorBox *box)
-{
-  gfloat x_1, x_2, y_1, y_2;
-
-  /* 4-way min/max */
-  x_1 = vtx[0].x;
-  y_1 = vtx[0].y;
-
-  if (vtx[1].x < x_1)
-    x_1 = vtx[1].x;
-
-  if (vtx[2].x < x_1)
-    x_1 = vtx[2].x;
-
-  if (vtx[3].x < x_1)
-    x_1 = vtx[3].x;
-
-  if (vtx[1].y < y_1)
-    y_1 = vtx[1].y;
-
-  if (vtx[2].y < y_1)
-    y_1 = vtx[2].y;
-
-  if (vtx[3].y < y_1)
-    y_1 = vtx[3].y;
-
-  x_2 = vtx[0].x;
-  y_2 = vtx[0].y;
-
-  if (vtx[1].x > x_2)
-    x_2 = vtx[1].x;
-
-  if (vtx[2].x > x_2)
-    x_2 = vtx[2].x;
-
-  if (vtx[3].x > x_2)
-    x_2 = vtx[3].x;
-
-  if (vtx[1].y > y_2)
-    y_2 = vtx[1].y;
-
-  if (vtx[2].y > y_2)
-    y_2 = vtx[2].y;
-
-  if (vtx[3].y > y_2)
-    y_2 = vtx[3].y;
-
-  box->x1 = x_1;
-  box->x2 = x_2;
-  box->y1 = y_1;
-  box->y2 = y_2;
 }
 
 /**

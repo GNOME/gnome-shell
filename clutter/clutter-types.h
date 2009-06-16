@@ -33,6 +33,7 @@
 
 G_BEGIN_DECLS
 
+#define CLUTTER_TYPE_ACTOR_BOX  (clutter_actor_box_get_type ())
 #define CLUTTER_TYPE_GEOMETRY   (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT       (clutter_knot_get_type ())
 #define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
@@ -75,9 +76,78 @@ typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
   CLUTTER_GRAVITY_CENTER
 } ClutterGravity;
 
+typedef struct _ClutterActorBox         ClutterActorBox;
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
 typedef struct _ClutterVertex           ClutterVertex;
+
+/**
+ * ClutterVertex:
+ * @x: X coordinate of the vertex
+ * @y: Y coordinate of the vertex
+ * @z: Z coordinate of the vertex
+ *
+ * Vertex of an actor in 3D space, expressed in pixels
+ *
+ * Since: 0.4
+ */
+struct _ClutterVertex
+{
+  gfloat x;
+  gfloat y;
+  gfloat z;
+};
+
+GType          clutter_vertex_get_type (void) G_GNUC_CONST;
+ClutterVertex *clutter_vertex_new      (gfloat               x,
+                                        gfloat               y,
+                                        gfloat               z);
+ClutterVertex *clutter_vertex_copy     (const ClutterVertex *vertex);
+void           clutter_vertex_free     (ClutterVertex       *vertex);
+gboolean       clutter_vertex_equal    (const ClutterVertex *vertex_a,
+                                        const ClutterVertex *vertex_b);
+
+/**
+ * ClutterActorBox:
+ * @x1: X coordinate of the top left corner
+ * @y1: Y coordinate of the top left corner
+ * @x2: X coordinate of the bottom right corner
+ * @y2: Y coordinate of the bottom right corner
+ *
+ * Bounding box of an actor. The coordinates of the top left and right bottom
+ * corners of an actor. The coordinates of the two points are expressed in
+ * pixels with sub-pixel precision
+ */
+struct _ClutterActorBox
+{
+  gfloat x1;
+  gfloat y1;
+
+  gfloat x2;
+  gfloat y2;
+};
+
+GType            clutter_actor_box_get_type      (void) G_GNUC_CONST;
+ClutterActorBox *clutter_actor_box_new           (gfloat                 x_1,
+                                                  gfloat                 y_1,
+                                                  gfloat                 x_2,
+                                                  gfloat                 y_2);
+ClutterActorBox *clutter_actor_box_copy          (const ClutterActorBox *box);
+void             clutter_actor_box_free          (ClutterActorBox       *box);
+gboolean         clutter_actor_box_equal         (const ClutterActorBox *box_a,
+                                                  const ClutterActorBox *box_b);
+void             clutter_actor_box_get_origin    (const ClutterActorBox *box,
+                                                  gfloat                *x,
+                                                  gfloat                *y);
+void             clutter_actor_box_get_size      (const ClutterActorBox *box,
+                                                  gfloat                *width,
+                                                  gfloat                *height);
+gfloat           clutter_actor_box_get_area      (const ClutterActorBox *box);
+gboolean         clutter_actor_box_contains      (const ClutterActorBox *box,
+                                                  gfloat                 x,
+                                                  gfloat                 y);
+void             clutter_actor_box_from_vertices (ClutterActorBox       *box,
+                                                  const ClutterVertex    verts[]);
 
 /**
  * ClutterGeometry:
@@ -98,26 +168,6 @@ struct _ClutterGeometry
 };
 
 GType clutter_geometry_get_type (void) G_GNUC_CONST;
-
-
-/**
- * ClutterVertex:
- * @x: X coordinate of the vertex
- * @y: Y coordinate of the vertex
- * @z: Z coordinate of the vertex
- *
- * Vertex of an actor in 3D space, expressed in pixels
- *
- * Since: 0.4
- */
-struct _ClutterVertex
-{
-  gfloat x;
-  gfloat y;
-  gfloat z;
-};
-
-GType clutter_vertex_get_type (void) G_GNUC_CONST;
 
 /**
  * ClutterKnot:
