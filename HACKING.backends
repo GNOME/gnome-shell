@@ -130,14 +130,12 @@ the stage implementation should:
   - create a new native window handle
   - if the backend doesn't have a drawing context (either GL or GLES),
     create one and pass it to the backend
-  - set the CLUTTER_ACTOR_REALIZED flag on itself
 
 In case of failure, the CLUTTER_ACTOR_REALIZED flag should be unset on
 the stage implementation.
 
 Inside the ::unrealize function the stage implementation should:
 
-  - unset the CLUTTER_ACTOR_REALIZED flag on itself
   - destroy the native window handle
 
 NOTES
