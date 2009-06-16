@@ -1269,8 +1269,10 @@ void
 cogl_rectangles (const float *verts,
                  guint        n_rects)
 {
-  struct _CoglMutiTexturedRect rects[n_rects];
+  struct _CoglMutiTexturedRect *rects;
   int i;
+
+  rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {
@@ -1289,8 +1291,10 @@ void
 cogl_rectangles_with_texture_coords (const float *verts,
                                      guint        n_rects)
 {
-  struct _CoglMutiTexturedRect rects[n_rects];
+  struct _CoglMutiTexturedRect *rects;
   int i;
+
+  rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {

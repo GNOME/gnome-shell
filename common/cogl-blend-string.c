@@ -68,9 +68,9 @@ typedef enum _ParserArgState
 
 
 #define DEFINE_COLOR_SOURCE(NAME, NAME_LEN) \
-  {.type = COGL_BLEND_STRING_COLOR_SOURCE_ ## NAME, \
-   .name = #NAME, \
-   .name_len = NAME_LEN}
+  {/*.type = */COGL_BLEND_STRING_COLOR_SOURCE_ ## NAME, \
+   /*.name = */#NAME, \
+   /*.name_len = */NAME_LEN}
 
 static CoglBlendStringColorSourceInfo blending_color_sources[] = {
   DEFINE_COLOR_SOURCE (SRC_COLOR, 9),
@@ -87,18 +87,18 @@ static CoglBlendStringColorSourceInfo tex_combine_color_sources[] = {
 };
 
 static CoglBlendStringColorSourceInfo tex_combine_texture_n_color_source = {
-  .type = COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE_N,
-  .name = "TEXTURE_N",
-  .name_len = 0
+  /*.type = */COGL_BLEND_STRING_COLOR_SOURCE_TEXTURE_N,
+  /*.name = */"TEXTURE_N",
+  /*.name_len = */0
 };
 
 #undef DEFINE_COLOR_SOURCE
 
 #define DEFINE_FUNCTION(NAME, NAME_LEN, ARGC) \
-  { .type = COGL_BLEND_STRING_FUNCTION_ ## NAME, \
-    .name = #NAME, \
-    .name_len = NAME_LEN, \
-    .argc = ARGC }
+  { /*.type = */COGL_BLEND_STRING_FUNCTION_ ## NAME, \
+    /*.name = */#NAME, \
+    /*.name_len = */NAME_LEN, \
+    /*.argc = */ARGC }
 
 /* NB: These must be sorted so any name that's a subset of another
  * comes later than the longer name. */

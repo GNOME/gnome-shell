@@ -729,10 +729,12 @@ cogl_read_pixels (int x,
   GLint   viewport[4];
   GLint   viewport_height;
   int     rowstride = width * 4;
-  guint8  temprow[rowstride];
+  guint8  *temprow;
 
   g_return_if_fail (format == COGL_PIXEL_FORMAT_RGBA_8888);
   g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
+
+  temprow = g_alloca (rowstride * sizeof (guint8));
 
   glGetIntegerv (GL_VIEWPORT, viewport);
   viewport_height = viewport[3];
