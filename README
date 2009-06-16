@@ -236,6 +236,38 @@ Release Notes for Clutter 1.0
 * The ClutterFixed symbols have been completely removed: fixed-point
   public entry points now take a CoglFixed.
 
+* The -x and -u API have been removed. All the pixel-based API now
+  takes a float to allow sub-pixel precision; this is true also for
+  properties. WARNING: functions with variadic arguments (like
+  g_object_set(), g_object_get() and clutter_actor_animate()) do not
+  behave very well when dealing with integers instead of expected
+  floating point values, and vice versa. On 32bit machines it will
+  most likely lead to a crash. So:
+
+    g_object_set (actor, "width", 100, NULL);
+
+  is incorrect, and should be changed in:
+
+    g_object_set (actor, "width", 100.0, NULL);
+
+* Composite actors that do not implement the Container interface
+  should implement the following virtual functions:
+
+    - void map   (ClutterActor*)
+    - void unmap (ClutterActor*)
+
+  and chain up to the parent's implementation.
+
+* Actors implementing the Container interface that have private
+  children that are not meant to be added/removed through the
+  Container API should implement the:
+
+    - void foreach_with_internals (ClutterContainer*,
+                                   ClutterCallback,
+                                   gpointer);
+
+  virtual function.
+
   Cogl API changes for Clutter 1.0
   --------------------------------
 
@@ -324,10 +356,10 @@ Release Notes for Clutter 1.0
   exposing color mask if anyone wants it later. It was assumed that no one was
   using this currently.
 
-* COGLenum, COGLint and COGLuint which were simply typedefs for GL{enum,int,uint}
-  have been removed from the API and replaced with specialised enum typedefs,
-  int and unsigned int. These were causing problems for generating bindings and
-  also considered poor style.
+* COGLenum, COGLint and COGLuint which were simply typedefs for
+  GL{enum,int,uint} have been removed from the API and replaced with
+  specialised enum typedefs, int and unsigned int. These were causing
+  problems for generating bindings and also considered poor style.
 
 * The cogl texture filter defines CGL_NEAREST and CGL_LINEAR etc are now
   replaced by a namespaced typedef 'CoglTextureFilter' so they should be
