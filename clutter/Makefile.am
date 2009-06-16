@@ -267,7 +267,6 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 	        --pkg gobject-2.0 \
 	        --pkg pango \
 	        --pkg pangocairo \
-		--pkg clutter-@CLUTTER_API_VERSION@ \
 	        --output $@ \
 		$(clutter_HEADERS) \
 		$(source_c)
