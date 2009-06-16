@@ -364,6 +364,8 @@ Dash.prototype = {
             // no item in the doc display has the selection.
             me._docDisplay.unsetSelected();
             me._docDisplay.hidePreview();
+            me._resultsDocDisplay.unsetSelected();
+            me._resultsDocDisplay.hidePreview();
         });
         this._docDisplay.connect('selected', function(docDisplay) {
             // We allow clicking on any item to select it, so if an 
@@ -371,6 +373,8 @@ Dash.prototype = {
             // no item in the app display has the selection.
             me._appDisplay.unsetSelected(); 
             me._appDisplay.hidePreview();
+            me._resultsDocDisplay.unsetSelected();
+            me._resultsDocDisplay.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
@@ -379,6 +383,10 @@ Dash.prototype = {
             me._detailsContent.append(me._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
         });
         this._resultsDocDisplay.connect('selected', function(resultsDocDisplay) {
+            me._appDisplay.unsetSelected(); 
+            me._appDisplay.hidePreview(); 
+            me._docDisplay.unsetSelected();
+            me._docDisplay.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
