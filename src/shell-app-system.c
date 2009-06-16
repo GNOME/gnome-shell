@@ -287,7 +287,7 @@ shell_app_system_get_menus (ShellAppSystem *monitor)
  *
  * Returns a list of all desktop file ids under "settings.menu".
  *
- * Return value: (transfer full) (element-type utf8): List of desktop file ids
+ * Return value: (transfer none) (element-type utf8): List of desktop file ids
  */
 GSList *
 shell_app_system_get_all_settings (ShellAppSystem *monitor)

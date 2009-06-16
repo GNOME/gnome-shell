@@ -341,23 +341,36 @@ shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
 static GnomeThumbnailFactory *thumbnail_factory;
 
 /**
- * shell_get_thumbnail_for_recent_info:
+ * shell_get_thumbnail:
  *
- * @recent_info: #GtkRecentInfo for which to return a thumbnail
+ * @uri: URI of the file to thumbnail
  *
- * Return value: #GdkPixbuf containing a thumbnail for the file described by #GtkRecentInfo 
+ * @mime_type: Mime-Type of the file to thumbnail
+ *
+ * Return value: #GdkPixbuf containing a thumbnail for file @uri
  *               if the thumbnail exists or can be generated, %NULL otherwise
  */
 GdkPixbuf *
-shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info)
+shell_get_thumbnail(const gchar *uri,
+                    const gchar *mime_type)
 {
     char *existing_thumbnail;
     GdkPixbuf *pixbuf = NULL;
-    const gchar *uri = gtk_recent_info_get_uri (recent_info);
-    time_t mtime = gtk_recent_info_get_modified (recent_info);
-    const gchar *mime_type = gtk_recent_info_get_mime_type (recent_info);
     GError *error = NULL;
-    
+    GFile *file = NULL;
+    GFileInfo *file_info = NULL;
+    GTimeVal mtime_g;
+    time_t mtime = 0;
+
+    file = g_file_new_for_uri (uri);
+    file_info = g_file_query_info (file, G_FILE_ATTRIBUTE_TIME_MODIFIED, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    g_object_unref (file);
+    if (file_info) {
+        g_file_info_get_modification_time (file_info, &mtime_g);
+        g_object_unref (file_info);
+        mtime = (time_t) mtime_g.tv_sec;
+    }
+
     if (thumbnail_factory == NULL)
       thumbnail_factory = gnome_thumbnail_factory_new (GNOME_THUMBNAIL_SIZE_NORMAL);
 
