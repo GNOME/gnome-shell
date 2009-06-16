@@ -7956,6 +7956,78 @@ clutter_actor_box_equal (const ClutterActorBox *box_a,
 }
 
 /**
+ * clutter_actor_get_x:
+ * @box: a #ClutterActorBox
+ *
+ * Retrieves the X coordinate of the origin of @box
+ *
+ * Return value: the X coordinate of the origin
+ *
+ * Since: 1.0
+ */
+gfloat
+clutter_actor_box_get_x (const ClutterActorBox *box)
+{
+  g_return_val_if_fail (box != NULL, 0.);
+
+  return box->x1;
+}
+
+/**
+ * clutter_actor_get_y:
+ * @box: a #ClutterActorBox
+ *
+ * Retrieves the Y coordinate of the origin of @box
+ *
+ * Return value: the Y coordinate of the origin
+ *
+ * Since: 1.0
+ */
+gfloat
+clutter_actor_box_get_y (const ClutterActorBox *box)
+{
+  g_return_val_if_fail (box != NULL, 0.);
+
+  return box->y1;
+}
+
+/**
+ * clutter_actor_get_width:
+ * @box: a #ClutterActorBox
+ *
+ * Retrieves the width of the @box
+ *
+ * Return value: the width of the box
+ *
+ * Since: 1.0
+ */
+gfloat
+clutter_actor_box_get_width (const ClutterActorBox *box)
+{
+  g_return_val_if_fail (box != NULL, 0.);
+
+  return box->x2 - box->x1;
+}
+
+/**
+ * clutter_actor_get_height:
+ * @box: a #ClutterActorBox
+ *
+ * Retrieves the height of the @box
+ *
+ * Return value: the height of the box
+ *
+ * Since: 1.0
+ */
+gfloat
+clutter_actor_box_get_height (const ClutterActorBox *box)
+{
+  g_return_val_if_fail (box != NULL, 0.);
+
+  return box->y2 - box->y1;
+}
+
+/**
  * clutter_actor_box_get_origin:
  * @box: a #ClutterActorBox
  * @x: (out): return location for the X coordinate, or %NULL

@@ -136,6 +136,10 @@ ClutterActorBox *clutter_actor_box_copy          (const ClutterActorBox *box);
 void             clutter_actor_box_free          (ClutterActorBox       *box);
 gboolean         clutter_actor_box_equal         (const ClutterActorBox *box_a,
                                                   const ClutterActorBox *box_b);
+gfloat           clutter_actor_box_get_x         (const ClutterActorBox *box);
+gfloat           clutter_actor_box_get_y         (const ClutterActorBox *box);
+gfloat           clutter_actor_box_get_width     (const ClutterActorBox *box);
+gfloat           clutter_actor_box_get_height    (const ClutterActorBox *box);
 void             clutter_actor_box_get_origin    (const ClutterActorBox *box,
                                                   gfloat                *x,
                                                   gfloat                *y);
