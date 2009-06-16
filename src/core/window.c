@@ -5888,7 +5888,7 @@ process_property_notify (MetaWindow     *window,
         xid = window->user_time_window;
     }
 
-  meta_window_reload_property (window, event->atom, FALSE);
+  meta_window_reload_property_from_xwindow (window, xid, event->atom, FALSE);
 
   return TRUE;
 }
