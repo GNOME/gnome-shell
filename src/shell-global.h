@@ -36,7 +36,7 @@ GType            shell_global_get_type            (void) G_GNUC_CONST;
 gboolean shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
                                                 GdkPixbuf      *pixbuf);
 
-GdkPixbuf *shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info);
+GdkPixbuf *shell_get_thumbnail(const gchar *uri, const gchar *mime_type);
 
 GSList *shell_get_categories_for_desktop_file(const char *desktop_file_name);
 

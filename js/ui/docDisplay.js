@@ -34,7 +34,7 @@ DocDisplayItem.prototype = {
         let description = ""; 
 
         let icon = new Clutter.Texture();
-        this._iconPixbuf = Shell.get_thumbnail_for_recent_info(docInfo);
+        this._iconPixbuf = Shell.get_thumbnail(docInfo.get_uri(), docInfo.get_mime_type());
         if (this._iconPixbuf) {
             // We calculate the width and height of the texture so as to preserve the aspect ratio of the thumbnail.
             // Because the images generated based on thumbnails don't have an internal padding like system icons do,
