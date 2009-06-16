@@ -1438,6 +1438,7 @@ cogl_vertex_buffer_submit_real (CoglVertexBuffer *buffer)
   for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     cogl_vertex_buffer_vbo_free (tmp->data, TRUE);
   g_list_free (buffer->submitted_vbos);
+  g_list_free (new_vbos);
 
   buffer->submitted_vbos = final_vbos;
 }
