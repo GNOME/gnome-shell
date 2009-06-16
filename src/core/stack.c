@@ -960,41 +960,33 @@ stack_ensure_sorted (MetaStack *stack)
  * This function is used to avoid raising a window above popup
  * menus and other such things.
  *
- * FIXME This is sort of an expensive function, should probably
- * do something to avoid it. One approach would be to reverse
- * the stacking algorithm to work by placing each window above
- * the others, and start by lowering a window to the bottom
- * (instead of the current way, which works by placing each
- * window below another and starting with a raise)
+ * The key to the operation of this function is that we are expecting
+ * at most one window to be added at a time. If xwindow is newly added,
+ * then its own stack position will be too high (the frame window
+ * is created at the top of the stack), but if we ignore xwindow,
+ * then the *next* managed window in the stack will be a window that
+ * we've already stacked.
+ *
+ * We could generalize this and remove the assumption that windows
+ * are added one at a time by keeping an explicit ->stacked flag in
+ * MetaWindow.
+ *
+ * An alternate approach would be to reverse the stacking algorithm to
+ * work by placing each window above the others, and start by lowering
+ * a window to the bottom (instead of the current way, which works by
+ * placing each window below another and starting with a raise)
  */
 static void
 raise_window_relative_to_managed_windows (MetaScreen *screen,
                                           Window      xwindow)
 {
 
-  Window ignored1, ignored2;
   Window *children;
-  unsigned int n_children;
+  int n_children;
   int i;
 
-  /* Normally XQueryTree() means "must grab server" but here
-   * we don't, since we know we won't manage any new windows
-   * or restack any windows before using the XQueryTree results.
-   */
-  
-  meta_error_trap_push_with_return (screen->display);
-  
-  XQueryTree (screen->display->xdisplay,
-              screen->xroot,
-              &ignored1, &ignored2, &children, &n_children);
-
-  if (meta_error_trap_pop_with_return (screen->display, TRUE) != Success)
-    {
-      meta_topic (META_DEBUG_STACK,
-                  "Error querying root children to raise window 0x%lx\n",
-                  xwindow);
-      return;
-    }
+  meta_stack_tracker_get_stack (screen->stack_tracker,
+                                &children, &n_children);
 
   /* Children are in order from bottom to top. We want to
    * find the topmost managed child, then configure
@@ -1062,9 +1054,6 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
                     xwindow);
       meta_error_trap_pop (screen->display, FALSE);
     }
-  
-  if (children)
-    XFree (children);
 }
 
 /**
@@ -1073,6 +1062,10 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
  * or XConfigureWindow on a few particular windows if we do and can figure
  * out the minimum set of changes.  After that, we set __NET_CLIENT_LIST
  * and __NET_CLIENT_LIST_STACKING.
+ *
+ * FIXME: Now that we have a good view of the stacking order on the server
+ * with MetaStackTracker it should be possible to do a simpler and better
+ * job of computing the minimal set of stacking requests needed.
  */
 static void
 stack_sync_to_server (MetaStack *stack)
