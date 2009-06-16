@@ -812,13 +812,11 @@ restore_from_file (ShellAppMonitor *monitor)
               /* FIXME: do something if conversion fails! */
               /* like: errno = NULL; ... if (errno) { g_free (line); goto out; } */
             }
-          else if (error)
+          else
             {
               g_free (line);
               goto out;
             }
-          else /* End of file */
-            goto out;
         }
       /* Line is about an app.
        * If no activity was provided yet, just skip */

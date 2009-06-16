@@ -188,6 +188,22 @@ typedef struct {
   int height;
 } Dimensions;
 
+static void
+icon_lookup_data_destroy (gpointer p)
+{
+  AsyncIconLookupData *data = p;
+
+  if (data->icon)
+    {
+      g_object_unref (data->icon);
+      gtk_icon_info_free (data->icon_info);
+    }
+  else if (data->uri)
+    g_free (data->uri);
+
+  g_free (data);
+}
+
 /**
  * on_image_size_prepared:
  *
@@ -321,7 +337,7 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
   AsyncIconLookupData *data;
   GError *error = NULL;
 
-  data = g_simple_async_result_get_op_res_gpointer (result);
+  data = g_object_get_data (result, "load_icon_pixbuf_async");
 
   if (data->uri)
     pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
@@ -336,25 +352,8 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
       return;
     }
 
-
   g_simple_async_result_set_op_res_gpointer (result, g_object_ref (pixbuf),
                                              g_object_unref);
-}
-
-static void
-icon_lookup_data_destroy (gpointer p)
-{
-  AsyncIconLookupData *data = p;
-
-  if (data->icon)
-    {
-      g_object_unref (data->icon);
-      gtk_icon_info_free (data->icon_info);
-    }
-  else if (data->uri)
-    g_free (data->uri);
-
-  g_free (data);
 }
 
 /**
@@ -383,8 +382,10 @@ load_icon_pixbuf_async (ShellTextureCache    *cache,
 
   result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_icon_pixbuf_async);
 
-  g_simple_async_result_set_op_res_gpointer (result, data, icon_lookup_data_destroy);
+  g_object_set_data_full (result, "load_icon_pixbuf_async", data, icon_lookup_data_destroy);
   g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
+
+  g_object_unref (result);
 }
 
 static void
@@ -407,8 +408,10 @@ load_uri_pixbuf_async (ShellTextureCache *cache,
 
   result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_uri_pixbuf_async);
 
-  g_simple_async_result_set_op_res_gpointer (result, data, icon_lookup_data_destroy);
+  g_object_set_data_full (result, "load_uri_pixbuf_async", data, icon_lookup_data_destroy);
   g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
+
+  g_object_unref (result);
 }
 
 static GdkPixbuf *
@@ -463,6 +466,8 @@ on_pixbuf_loaded (GObject      *source,
     }
 
   texdata = pixbuf_to_cogl_handle (pixbuf);
+
+  g_object_unref (pixbuf);
 
   if (data->icon)
     {
@@ -619,6 +624,7 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
 
   texture = CLUTTER_TEXTURE (clutter_texture_new ());
   texdata = pixbuf_to_cogl_handle (pixbuf);
+  g_object_unref (pixbuf);
   clutter_texture_set_cogl_texture (texture, texdata);
 
   return CLUTTER_ACTOR (texture);

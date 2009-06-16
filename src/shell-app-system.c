@@ -145,13 +145,13 @@ reread_directories (ShellAppSystem *self, GSList **cache, GMenuTree *tree)
               shell_entry->icon = g_strdup (gmenu_tree_directory_get_icon (dir));
 
               *cache = g_slist_prepend (*cache, shell_entry);
-
-              gmenu_tree_item_unref (dir);
             }
             break;
           default:
             break;
         }
+
+      gmenu_tree_item_unref (item);
     }
   *cache = g_slist_reverse (*cache);
 
@@ -260,13 +260,18 @@ shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
 {
   char *path;
   GMenuTreeDirectory *menu_entry;
+  GSList *apps;
 
   path = g_strdup_printf ("/%s", menu);
   menu_entry = gmenu_tree_get_directory_from_path (monitor->priv->apps_tree, path);
   g_free (path);
   g_assert (menu_entry != NULL);
 
-  return gather_entries_recurse (monitor, NULL, menu_entry);
+  apps = gather_entries_recurse (monitor, NULL, menu_entry);
+
+  gmenu_tree_item_unref (menu_entry);
+
+  return apps;
 }
 
 /**
