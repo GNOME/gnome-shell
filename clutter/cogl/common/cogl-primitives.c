@@ -960,18 +960,21 @@ _cogl_texture_sliced_polygon (CoglTextureVertex *vertices,
   v = (GLfloat *)ctx->logged_vertices->data;
   for (i = 0; i < n_vertices; i++)
     {
-      GLfloat *c;
+      guint8 *c;
 
       v[0] = vertices[i].x;
       v[1] = vertices[i].y;
       v[2] = vertices[i].z;
 
-      /* NB: [X,Y,Z,TX,TY,R,G,B,A,...] */
-      c = v + 5;
-      c[0] = cogl_color_get_red_byte (&vertices[i].color);
-      c[1] = cogl_color_get_green_byte (&vertices[i].color);
-      c[2] = cogl_color_get_blue_byte (&vertices[i].color);
-      c[3] = cogl_color_get_alpha_byte (&vertices[i].color);
+      if (use_color)
+        {
+          /* NB: [X,Y,Z,TX,TY,R,G,B,A,...] */
+          c = (guint8 *) (v + 5);
+          c[0] = cogl_color_get_red_byte (&vertices[i].color);
+          c[1] = cogl_color_get_green_byte (&vertices[i].color);
+          c[2] = cogl_color_get_blue_byte (&vertices[i].color);
+          c[3] = cogl_color_get_alpha_byte (&vertices[i].color);
+        }
 
       v += stride;
     }
@@ -1065,8 +1068,8 @@ _cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
        i < n_vertices;
        v += stride, i++)
     {
-      GLfloat *c;
-      int      j;
+      guint8 *c;
+      int     j;
 
       /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
       v[0] = vertices[i].x;
@@ -1111,12 +1114,15 @@ _cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
           t[1] = ty;
         }
 
-      /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
-      c = v + 3 + 2 * n_layers;
-      c[0] = cogl_color_get_red_float (&vertices[i].color);
-      c[1] = cogl_color_get_green_float (&vertices[i].color);
-      c[2] = cogl_color_get_blue_float (&vertices[i].color);
-      c[3] = cogl_color_get_alpha_float (&vertices[i].color);
+      if (use_color)
+        {
+          /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+          c = (guint8 *) (v + 3 + 2 * n_layers);
+          c[0] = cogl_color_get_red_byte (&vertices[i].color);
+          c[1] = cogl_color_get_green_byte (&vertices[i].color);
+          c[2] = cogl_color_get_blue_byte (&vertices[i].color);
+          c[3] = cogl_color_get_alpha_byte (&vertices[i].color);
+        }
     }
 
   _cogl_material_flush_gl_state (ctx->source_material,
@@ -1229,7 +1235,7 @@ cogl_polygon (CoglTextureVertex *vertices,
 
   /* Our data is arranged like:
    * [X, Y, Z, TX0, TY0, TX1, TY1..., R, G, B, A,...] */
-  stride = 3 + (2 * n_layers) + (use_color ? 4 : 0);
+  stride = 3 + (2 * n_layers) + (use_color ? 1 : 0);
   stride_bytes = stride * sizeof (GLfloat);
 
   /* Make sure there is enough space in the global vertex
@@ -1248,7 +1254,7 @@ cogl_polygon (CoglTextureVertex *vertices,
   if (use_color)
     {
       enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-      GE( glColorPointer (4, GL_FLOAT,
+      GE( glColorPointer (4, GL_UNSIGNED_BYTE,
                           stride_bytes,
                           /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
                           v + 3 + 2 * n_layers) );
