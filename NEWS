@@ -1,3 +1,81 @@
+Clutter 0.9.4 (19/06/2009)
+===============================================================================
+
+  * List of changes since 0.9.2:
+
+    o Set the layout height in ClutterText, so that wrapping and ellipsization
+      work correctly to fill all the allocated area.
+
+    o Remove all the units-based API, and migrate all the positional and
+      dimensional accessors to use floating point values when dealing with
+      pixels. All the properties dealing with pixels now that a floating
+      point value as well.
+
+    o Add the ability to track wether an actor is going to be painted or not,
+      using the "mapped" flag. This also allows Clutter to be more strict
+      in the handling of the scenegraph, ensuring correctness and avoiding
+      wasting resources on nodes that won't be painted.
+
+    o Add debugging facilities for COGL, similar to those of Clutter; through
+      them is also possible to have an on screen debugging mode that shows the
+      boundaries of each rectangle sent to the GPU.
+
+    o Rework "units" into real logical distance units that can be converted
+      between millimeters, typographic points and ems into pixels.
+
+    o Simplify the Animation class to avoid redundancy and the possibility
+      of it going out of sync with the Timeline and Alpha instances it uses.
+
+    o Move every operation into a single "master clock" source that advances
+      the timelines, dispatches events and redraws the stages in a predictable
+      sequence, thus avoiding unneeded redraws. The default is to follow the
+      sync-to-vblank cycle, if it is supported by the drivers.
+
+    o Cache the glyphs geometry into a vertex buffer object to avoid
+      resubmitting too much information to the GPU.
+
+    o Rework the behaviour of ClutterModel when a filter is applied.
+
+    o Allow submitting premultiplied texture data; this removes the need
+      for unpremultiplying data in CairoTexture.
+
+    o Add a simple API for submitting blending and texture combining modes
+      through a string description.
+
+    o Move Timelines to pure time-based objects.
+
+    o Lots of performance improvements.
+
+    o Removal of all the deprecated API.
+
+    o Removal of all the fixed point entry points.
+
+    o Lots of documentation fixes - the coverage is now 99% of the exported
+      1600 symbols for Clutter and 80%+ of the 300 exported symbols for COGL.
+
+    o Generate the GObject Introspection data for both Clutter and COGL
+      at build time.
+
+    o Build environment fixes.
+
+Many thanks to:
+
+    Owen W. Taylor <otaylor@fishsoup.net>
+    Thomas Wood <thomas.wood@intel.com>
+    Havoc Pennington <hp@pobox.com>
+    Bastian Winkler <buz@netbuz.org>
+    Chris Lord <chris@linux.intel.com>
+    Garry Bodsworth <gjb@camvine.com>
+    Rob Bradford <rob@linux.intel.com>
+    Johan Bilien <jobi@litl.com>
+    Jonas Bonn <jonas@southpole.se>
+    Raymond Liu <raymond.liu@intel.com>
+    Damien Lespiau <damien.lespiau@gmail.com>
+    Dan Winship <danw@gnome.org>
+    Marc-André Lureau <marcandre.lureau@gmail.com>
+    Robert Staudinger <robsta@gnome.org>
+    Tommi Komulainen <tko@litl.com>
+
 Clutter 0.9.2 (16/03/2009)
 ===============================================================================
 
