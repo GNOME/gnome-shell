@@ -15,41 +15,21 @@ General notes and rules on clutter core hacking;
    the eventual lifetime handling of the arguments/return values or locking
    of mutexes.
 
- - All public functions with floating point arguments should also provide a
-   fixed point version, with the 'x' postfix to the function name, e.g.:
-   
-     clutter_actor_set_foo      - floating point
-     clutter_actor_set_foox     - fixed point
-
-   Fixed point might also be used internally if the 16.16 precision and
-   range allow it.
-
- - All public functions dealing with pixels should also provide a
-   ClutterUnit version, with the 'u' postfix to the function name, e.g:
-
-     clutter_actor_set_bar      - pixels
-     clutter_actor_set_baru     - units
-   
-   ClutterUnit should always be used internally.
-
  - Properties should always be in floating point (never fixed point).
    The preferred precision is double for angles, and single precision
    for size and position -- especially if they have to be passed down
    to COGL.
 
- - Properties should use pixels whenever is possible. If sub-pixel
-   precision is fundamental, use ClutterParamSpecUnit and
-   clutter_param_spec_unit() to install ClutterUnit properties, and
-   clutter_value_set_unit()/clutter_value_get_unit() to handle GValues in
-   a safe way. Never install a ClutterUnit property using a GParamSpecInt,
-   GParamSpecFloat or GParamSpecDouble.
+ - Properties should use pixels whenever is possible. Dimensional and
+   positional properties can also use ClutterParamSpecUnits to define
+   the units-based logical values with a unit type.
 
  - Public entry points must always check their arguments with
    g_return_if_fail() or g_return_val_if_fail().
 
- - Private entry points should use g_assert() to verify internal state;
-   do not use g_return_if_fail()/g_return_val_if_fail() as they might
-   be compiled out.
+ - Private entry points should use g_assert() or g_warn_if_fail() to
+   verify internal state; do not use g_return_if_fail() or
+   g_return_val_if_fail() as they might be compiled out.
 
  - If you need to share some state variable across source files use
    ClutterContext and a private accessor.
@@ -101,30 +81,12 @@ brief.
       [text] Emit ::cursor-event only on changes
 
    The tag counts as part of overall character count, so try using
-   a short word.
+   a short word. Optionally, you can also use the "tag:" form.
 
    Think of the commit message as an email sent to the maintainers explaining
    "what" you did and, more importantly, "why" you did it. The "how" is not
    important, since "git show" will show the patch inlined with the commit
    message.
-
-LANGUAGE BINDINGS
-=================
-
- - Language bindings should not wrap the fixed-point entry points of the
-   API; the functions that usually accept fixed-point values are convenience
-   functions for C developers.
-
- - Similarly, ClutterUnit is a convenience type for the C library. It can
-   be safely wrapped as a floating point value, but it should be converted
-   to and from a floating point value using the provided macros.
-
- - To reduce the amount of entry points, methods with the -u suffix can be
-   wrapped either by overloading (if your language allows it) or by making
-   every Unit-based function the only entry point, e.g. wrapping
-   clutter_actor_get_position() as accepting floating point values as
-   parameters and calling clutter_actor_get_positionu() internally after
-   having converted the argument types.
 
 RELEASES
 ========
