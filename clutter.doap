@@ -91,7 +91,7 @@
     <Version>
       <name>0.8 Release</name>
       <created>2008-07-10</created>
-      <branch></branch>
+      <branch>clutter-0-8</branch>
       <revision>0.8</revision>
       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.8/clutter-0.8.0.tar.gz" />
     </Version>
@@ -101,7 +101,7 @@
     <Version>
        <name>0.6 Release</name>
        <created>2008-02-18</created>
-       <branch></branch>
+       <branch>clutter-0-6</branch>
        <revision>0.6</revision>
        <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.6/clutter-0.6.0.tar.gz" />
     </Version>
@@ -111,7 +111,7 @@
     <Version>
       <name>0.4 Release</name>
       <created>2007-08-07</created>
-      <branch></branch>
+      <branch>clutter-0-4</branch>
       <revision>0.4</revision>
       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.4/clutter-0.4.0.tar.gz" />
     </Version>
@@ -121,7 +121,7 @@
     <Version>
       <name>0.2 Release</name>
       <created>2007-01-18</created>
-      <branch></branch>
+      <branch>clutter-0-2</branch>
       <revision>0.2</revision>
       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.2/clutter-0.2.0.tar.gz" />
     </Version>
