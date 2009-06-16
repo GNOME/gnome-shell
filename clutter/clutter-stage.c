@@ -134,7 +134,8 @@ clutter_stage_get_preferred_width (ClutterActor *self,
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
-  g_assert (priv->impl != NULL);
+  if (priv->impl == NULL)
+    return;
 
   CLUTTER_ACTOR_GET_CLASS (priv->impl)->get_preferred_width (priv->impl,
                                                              for_height,
@@ -150,7 +151,8 @@ clutter_stage_get_preferred_height (ClutterActor *self,
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
-  g_assert (priv->impl != NULL);
+  if (priv->impl == NULL)
+    return;
 
   CLUTTER_ACTOR_GET_CLASS (priv->impl)->get_preferred_height (priv->impl,
                                                               for_width,
@@ -167,7 +169,8 @@ clutter_stage_allocate (ClutterActor           *self,
 
   origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED) ? TRUE : FALSE;
 
-  g_assert (priv->impl != NULL);
+  if (priv->impl == NULL)
+    return;
 
   /* if the stage is fixed size (for instance, it's using a frame-buffer)
    * then we simply ignore any allocation request and override the
