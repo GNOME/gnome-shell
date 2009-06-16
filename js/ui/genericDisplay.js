@@ -81,6 +81,16 @@ GenericDisplayItem.prototype = {
                                  x: 0, y: 0,
                                  width: availableWidth, height: ITEM_DISPLAY_HEIGHT });
         this.actor.add_actor(this._bg);
+
+        this._informationLink = new Link.Link({ color: ITEM_DISPLAY_NAME_COLOR,
+                                                font_name: "Sans Bold 14px",
+                                                text: "(i)",
+                                                height: LABEL_HEIGHT,
+                                                y: ITEM_DISPLAY_HEIGHT / 2 - LABEL_HEIGHT / 2});
+        this._informationLink.actor.x = availableWidth - ITEM_DISPLAY_PADDING - this._informationLink.actor.width;
+
+        this._informationLink.actor.hide();
+        this.actor.add_actor(this._informationLink.actor);
         
         this._name = null;
         this._description = null;
@@ -393,6 +403,7 @@ GenericDisplayItem.prototype = {
 
     // Performs actions on mouse enter event for the item. Currently, shows the preview for the item.
     _onEnter: function(actor, event) {
+        this._informationLink.actor.show();
         this._havePointer = true;
         let tooltipTimeout = Gtk.Settings.get_default().gtk_tooltip_timeout;
         this._previewEventSourceId = Mainloop.timeout_add(tooltipTimeout, 
@@ -408,6 +419,7 @@ GenericDisplayItem.prototype = {
 
     // Performs actions on mouse leave event for the item. Currently, hides the preview for the item.
     _onLeave: function(actor, event) {
+        this._informationLink.actor.hide();
         this._havePointer = false;
         this.hidePreview();
     },

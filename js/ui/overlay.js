@@ -88,18 +88,18 @@ DASH_MIDDLE_COLOR.from_pixel(0x324c6fbb);
 const DASH_RIGHT_COLOR = new Clutter.Color();
 DASH_RIGHT_COLOR.from_pixel(0x324c6fcc);
 
-// The results pane has a somewhat transparent blue background with a gradient.
-const RESULTS_LEFT_COLOR = new Clutter.Color();
-RESULTS_LEFT_COLOR.from_pixel(0x324c6ff0);
-const RESULTS_MIDDLE_COLOR = new Clutter.Color();
-RESULTS_MIDDLE_COLOR.from_pixel(0x324c6ff4);
-const RESULTS_RIGHT_COLOR = new Clutter.Color();
-RESULTS_RIGHT_COLOR.from_pixel(0x324c6ff8);
+const DASH_BORDER_COLOR = new Clutter.Color();
+DASH_BORDER_COLOR.from_pixel(0x213b5dff);
 
-const RESULTS_BORDER_COLOR = new Clutter.Color();
-RESULTS_BORDER_COLOR.from_pixel(0x213b5dff);
+const DASH_BORDER_WIDTH = 2;
 
-const RESULTS_BORDER_WIDTH = 2;
+// The results and details panes have a somewhat transparent blue background with a gradient.
+const PANE_LEFT_COLOR = new Clutter.Color();
+PANE_LEFT_COLOR.from_pixel(0x324c6ff0);
+const PANE_MIDDLE_COLOR = new Clutter.Color();
+PANE_MIDDLE_COLOR.from_pixel(0x324c6ff4);
+const PANE_RIGHT_COLOR = new Clutter.Color();
+PANE_RIGHT_COLOR.from_pixel(0x324c6ff8);
 
 const SHADOW_COLOR = new Clutter.Color();
 SHADOW_COLOR.from_pixel(0x00000033);
@@ -164,12 +164,14 @@ Dash.prototype = {
 
         this._displayWidth = displayGridColumnWidth - DASH_PAD * 2;
         this._resultsWidth = displayGridColumnWidth;  
+        this._detailsWidth = displayGridColumnWidth * 2;  
 
         let bottomHeight = DASH_PAD;
 
         let global = Shell.Global.get();
 
         let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight;
+        let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight;
 
         // The whole dash group needs to be reactive so that the clicks are not passed to the transparent background underneath it.
         // This background is used in the workspaces area when the additional dash panes are being shown. It handles clicks in the
@@ -187,8 +189,8 @@ Dash.prototype = {
                                            width: this._width,
                                            height: global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight,
                                            corner_radius: DASH_CORNER_RADIUS,
-                                           border: RESULTS_BORDER_WIDTH,
-                                           border_color: RESULTS_BORDER_COLOR });
+                                           border: DASH_BORDER_WIDTH,
+                                           border_color: DASH_BORDER_COLOR });
 
         dashPane.append(dashBackground, Big.BoxPackFlags.EXPAND);
         
@@ -261,7 +263,7 @@ Dash.prototype = {
 
         // Prepare docs display for the results pane.
         this._resultsDocsSection = new Big.Box({ height: resultsHeight,
-                                                 padding: DASH_SECTION_PADDING,
+                                                 padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
                                                  spacing: DASH_SECTION_SPACING });
 
         this._resultsDocsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
@@ -290,15 +292,15 @@ Dash.prototype = {
                                               width: this._resultsWidth,
                                               height: resultsHeight,
                                               corner_radius: DASH_CORNER_RADIUS,
-                                              border: RESULTS_BORDER_WIDTH,
-                                              border_color: RESULTS_BORDER_COLOR });
+                                              border: DASH_BORDER_WIDTH,
+                                              border_color: DASH_BORDER_COLOR });
 
         this._resultsPane.append(resultsBackground, Big.BoxPackFlags.EXPAND);
 
-        let resultsLeft = global.create_horizontal_gradient(RESULTS_LEFT_COLOR,
-                                                            RESULTS_MIDDLE_COLOR);
-        let resultsRight = global.create_horizontal_gradient(RESULTS_MIDDLE_COLOR,
-                                                             RESULTS_RIGHT_COLOR);
+        let resultsLeft = global.create_horizontal_gradient(PANE_LEFT_COLOR,
+                                                            PANE_MIDDLE_COLOR);
+        let resultsRight = global.create_horizontal_gradient(PANE_MIDDLE_COLOR,
+                                                             PANE_RIGHT_COLOR);
         let resultsShadow = global.create_horizontal_gradient(SHADOW_COLOR,
                                                               TRANSPARENT_COLOR);
         resultsShadow.set_width(SHADOW_WIDTH);
@@ -312,6 +314,42 @@ Dash.prototype = {
                                                x: DASH_SECTION_PADDING,
                                                y: DASH_SECTION_PADDING });
         this._resultsPane.add_actor(this._resultsText);
+
+        this._detailsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                          x: this._width,
+                                          y: Panel.PANEL_HEIGHT + DASH_PAD,
+                                          width: this._detailsWidth + SHADOW_WIDTH,
+                                          height: detailsHeight });
+
+        let detailsBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                              width: this._detailsWidth,
+                                              height: detailsHeight,
+                                              corner_radius: DASH_CORNER_RADIUS,
+                                              border: DASH_BORDER_WIDTH,
+                                              border_color: DASH_BORDER_COLOR });
+
+        this._detailsPane.append(detailsBackground, Big.BoxPackFlags.EXPAND);
+
+        let detailsLeft = global.create_horizontal_gradient(PANE_LEFT_COLOR,
+                                                            PANE_MIDDLE_COLOR);
+        let detailsRight = global.create_horizontal_gradient(PANE_MIDDLE_COLOR,
+                                                             PANE_RIGHT_COLOR);
+        let detailsShadow = global.create_horizontal_gradient(SHADOW_COLOR,
+                                                              TRANSPARENT_COLOR);
+        detailsShadow.set_width(SHADOW_WIDTH);
+        
+        detailsBackground.append(detailsLeft, Big.BoxPackFlags.EXPAND);
+        detailsBackground.append(detailsRight, Big.BoxPackFlags.EXPAND);
+        this._detailsPane.append(detailsShadow, Big.BoxPackFlags.NONE);
+
+        this._detailsContent = new Big.Box({ padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH });
+        this._detailsPane.add_actor(this._detailsContent);
+
+        let itemDetailsAvailableWidth = this._detailsWidth - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
+        let itemDetailsAvailableHeight = detailsHeight - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
+
+        this._docDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
+        this._resultsDocDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
 
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
@@ -332,7 +370,21 @@ Dash.prototype = {
             // item in the doc display is selected, we need to make sure that
             // no item in the app display has the selection.
             me._appDisplay.unsetSelected(); 
-            me._appDisplay.hidePreview(); 
+            me._appDisplay.hidePreview();
+            if (me._detailsPane.get_parent() == null) { 
+                me.actor.add_actor(me._detailsPane);
+                me.emit('panes-displayed');
+            }
+            me._detailsContent.remove_all();
+            me._detailsContent.append(me._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
+        });
+        this._resultsDocDisplay.connect('selected', function(resultsDocDisplay) {
+            if (me._detailsPane.get_parent() == null) { 
+                me.actor.add_actor(me._detailsPane);
+                me.emit('panes-displayed');
+            }
+            me._detailsContent.remove_all();
+            me._detailsContent.append(me._resultsDocDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
         });
         this._appDisplay.connect('redisplayed', function(appDisplay) {
             me._ensureItemSelected();
@@ -377,6 +429,10 @@ Dash.prototype = {
     unsetMoreMode: function() {
         this._unsetMoreAppsMode();
         this._unsetMoreDocsMode();
+        if (this._detailsPane.get_parent() != null) { 
+             this.actor.remove_actor(this._detailsPane);
+             this.emit('panes-removed');
+        }
     },
 
     // Ensures that one of the displays has the selection if neither owns it after the
@@ -409,7 +465,8 @@ Dash.prototype = {
 
         this._resultsText.text = "Applications";
  
-        this.emit('more-activated');
+        this._detailsPane.x = this._width + this._resultsWidth;;
+        this.emit('panes-displayed');
     },
 
     // Unsets the 'More' mode for browsing applications.
@@ -424,7 +481,12 @@ Dash.prototype = {
        
         this._moreAppsLink.setText("More...");
 
-        this.emit('less-activated');
+        this._detailsPane.x = this._width;
+
+
+        if (this._detailsPane.get_parent() == null) {
+            this.emit('panes-removed');
+        }
     },   
  
     // Sets the 'More' mode for browsing documents.
@@ -440,8 +502,9 @@ Dash.prototype = {
         this.actor.add_actor(this._resultsPane);
          
         this._moreDocsLink.setText("Less..."); 
-
-        this.emit('more-activated');
+        
+        this._detailsPane.x = this._width + this._resultsWidth; 
+        this.emit('panes-displayed');
     },
 
     // Unsets the 'More' mode for browsing documents. 
@@ -456,7 +519,12 @@ Dash.prototype = {
         this._resultsDocDisplay.hide();
  
         this._moreDocsLink.setText("More...");
-        this.emit('less-activated');
+
+        this._detailsPane.x = this._width;
+
+        if (this._detailsPane.get_parent() == null) {
+            this.emit('panes-removed');
+        }
     }   
 };
 
@@ -530,8 +598,8 @@ Overlay.prototype = {
             // startup-notification integration at least.
             me.hide();
         });
-        this._dash.connect('more-activated', function(dash) {
-            if (me._workspaces != null) {
+        this._dash.connect('panes-displayed', function(dash) {
+            if (me._buttonEventHandlerId == null) {
                 me._transparentBackground.raise_top();
                 me._dash.actor.raise_top();
                 me._buttonEventHandlerId = me._transparentBackground.connect('button-release-event', function(background) {
@@ -540,10 +608,11 @@ Overlay.prototype = {
                 }); 
             }    
         });
-        this._dash.connect('less-activated', function(dash) {
-            if (me._workspaces != null) {
+        this._dash.connect('panes-removed', function(dash) {
+            if (me._buttonEventHandlerId != null) {
                 me._transparentBackground.lower_bottom();  
                 me._transparentBackground.disconnect(me._buttonEventHandlerId);  
+                me._buttonEventHandlerId = null;
             }
         });
     },
