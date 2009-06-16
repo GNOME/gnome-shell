@@ -9,8 +9,8 @@ const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
+const AppInfo = imports.misc.appInfo;
 const GenericDisplay = imports.ui.genericDisplay;
-const Main = imports.ui.main;
 
 const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
@@ -48,7 +48,7 @@ const MAX_ITEMS = 30;
 
 /* This class represents a single display item containing information about an application.
  *
- * appInfo - GAppInfo object containing information about the application
+ * appInfo - AppInfo object containing information about the application
  * availableWidth - total width available for the item
  */
 function AppDisplayItem(appInfo, availableWidth) {
@@ -62,36 +62,15 @@ AppDisplayItem.prototype = {
         GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth); 
         this._appInfo = appInfo;
 
-        let name = appInfo.get_name();
-
-        let description = appInfo.get_description();
-
-        let iconTheme = Gtk.IconTheme.get_default();
-
-        let gicon = appInfo.get_icon();
-        let texCache = Shell.TextureCache.get_default();
-        let icon;
-        if (gicon == null)
-            icon = new Clutter.Texture({ width: GenericDisplay.ITEM_DISPLAY_ICON_SIZE,
-                                         height: GenericDisplay.ITEM_DISPLAY_ICON_SIZE
-                                       });
-        else
-            icon = texCache.load_gicon(gicon, GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
-        this._setItemInfo(name, description, icon);
-    },
-
-    //// Public methods ////
-
-    // Returns the application info associated with this display item.
-    getAppInfo : function () {
-        return this._appInfo;
+        this._setItemInfo(appInfo.name, appInfo.description,
+                          appInfo.getIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE));
     },
 
     //// Public method overrides ////
 
     // Opens an application represented by this display item.
     launch : function() {
-        this._appInfo.launch([], Main.createAppLaunchContext());
+        this._appInfo.launch();
     },
 
     //// Protected method overrides ////
@@ -101,15 +80,7 @@ AppDisplayItem.prototype = {
         if (!this._showPreview || this._previewIcon)
             return; 
 
-        let previewIconPath = null;
-
-        if (this._gicon != null) {
-            let iconTheme = Gtk.IconTheme.get_default();
-            let previewIconInfo = iconTheme.lookup_by_gicon(this._gicon, GenericDisplay.PREVIEW_ICON_SIZE, Gtk.IconLookupFlags.NO_SVG);
-            if (previewIconInfo)
-                previewIconPath = previewIconInfo.get_filename();
-        }
-
+        let previewIconPath = this._appInfo.getIconPath(GenericDisplay.PREVIEW_ICON_SIZE);
         if (previewIconPath) {
             try {
                 this._previewIcon = new Clutter.Texture({ width: GenericDisplay.PREVIEW_ICON_SIZE, height: GenericDisplay.PREVIEW_ICON_SIZE});               
@@ -346,7 +317,7 @@ AppDisplay.prototype = {
     },
 
     _addApp: function(appId) {
-        let appInfo = Gio.DesktopAppInfo.new(appId);
+        let appInfo = AppInfo.getAppInfo(appId);
         if (appInfo != null) {
             this._allItems[appId] = appInfo;
             // [] is returned if we could not get the categories or the list of categories was empty
@@ -393,31 +364,8 @@ AppDisplay.prototype = {
 
     // Sets the list of the displayed items based on the most used apps.
     _setDefaultList : function() {
-        // Ask or more app than we need, since the list of recently used apps
-        // might contain an app we don't have a desktop file for
-        var apps = this._appMonitor.get_most_used_apps (0, Math.round(MAX_ITEMS * 1.5));
-        this._matchedItems = [];
-        for (let i = 0; i < apps.length; i++) {
-            if (this._matchedItems.length > MAX_ITEMS)
-                break;
-            let appId = apps[i] + ".desktop";
-            let appInfo = this._allItems[appId];
-            if (appInfo) {
-                this._matchedItems.push(appId);
-            }
-        }
-        
-        // Fill the list with default applications it's not full yet
-        for (let i = 0; i < DEFAULT_APPLICATIONS.length; i++) {
-              if (this._matchedItems.length > MAX_ITEMS)
-                  break;
-              let appId = DEFAULT_APPLICATIONS[i];
-              let appInfo = this._allItems[appId];
-              // Don't add if not available or already present in the list
-              if (appInfo && (this._matchedItems.indexOf(appId) == -1)) {
-                  this._matchedItems.push(appId);
-            }
-        }
+        let matchedInfos = AppInfo.getMostUsedApps(MAX_ITEMS);
+        this._matchedItems = matchedInfos.map(function(info) { return info.appId; });
     },
 
     // Compares items associated with the item ids based on the alphabetical order
@@ -486,7 +434,7 @@ AppDisplay.prototype = {
         return false;
     },
 
-    // Creates an AppDisplayItem based on itemInfo, which is expected be a GAppInfo object.
+    // Creates an AppDisplayItem based on itemInfo, which is expected be an AppInfo object.
     _createDisplayItem: function(itemInfo) {
         return new AppDisplayItem(itemInfo, this._columnWidth);
     }

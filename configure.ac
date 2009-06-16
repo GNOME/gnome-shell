@@ -101,6 +101,7 @@ AC_OUTPUT([
   Makefile
   data/Makefile
   js/Makefile
+  js/misc/Makefile
   js/ui/Makefile
   src/Makefile
 ])
