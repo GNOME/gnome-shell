@@ -178,7 +178,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 {
   CoglJournalFlushState *state = data;
 
-  if (cogl_debug_flags & COGL_DEBUG_BATCHING)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:    modelview batch len = %d\n", batch_len);
 
   GE (glLoadMatrixf ((GLfloat *)&batch_start->model_view));
@@ -266,7 +266,7 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (cogl_debug_flags & COGL_DEBUG_BATCHING)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:   material batch len = %d\n", batch_len);
 
   _cogl_material_flush_gl_state (batch_start->material,
@@ -383,7 +383,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (cogl_debug_flags & COGL_DEBUG_BATCHING)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:  vbo offset batch len = %d\n", batch_len);
 
   /* XXX NB:
@@ -451,7 +451,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   /* progress forward through the VBO containing all our vertices */
   state->vbo_offset += (stride * 4 * batch_len);
-  if (cogl_debug_flags & COGL_DEBUG_JOURNAL)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
     g_print ("new vbo offset = %lu\n", (gulong)state->vbo_offset);
 }
 
@@ -526,7 +526,7 @@ _cogl_journal_flush (void)
   if (ctx->journal->len == 0)
     return;
 
-  if (cogl_debug_flags & COGL_DEBUG_BATCHING && ctx->journal->len != 1)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING: journal len = %d\n", ctx->journal->len);
 
   /* Load all the vertex data we have accumulated so far into a single VBO
@@ -653,7 +653,7 @@ _cogl_journal_log_quad (float       x_1,
       t[0] = tex_coords[2]; t[1] = tex_coords[1];
     }
 
-  if (cogl_debug_flags & COGL_DEBUG_JOURNAL)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
     {
       g_print ("Logged new quad:\n");
       v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
@@ -679,8 +679,8 @@ _cogl_journal_log_quad (float       x_1,
   entry->flush_options.layer0_override_texture = layer0_override_texture;
   cogl_get_modelview_matrix (&entry->model_view);
 
-  if (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING
-      || cogl_debug_flags & COGL_DEBUG_RECTANGLES)
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING
+                  || cogl_debug_flags & COGL_DEBUG_RECTANGLES))
     _cogl_journal_flush ();
 }
 
