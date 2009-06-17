@@ -1802,6 +1802,27 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
   return _cogl_vertex_buffer_indices_handle_new (indices);
 }
 
+CoglIndicesType
+cogl_vertex_buffer_indices_get_type (CoglHandle indices_handle)
+{
+  CoglVertexBufferIndices *indices = NULL;
+
+  if (!cogl_is_vertex_buffer_indices (indices_handle))
+    return COGL_INDICES_TYPE_UNSIGNED_SHORT;
+
+  indices = _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
+
+  if (indices->type == GL_UNSIGNED_BYTE)
+    return COGL_INDICES_TYPE_UNSIGNED_BYTE;
+  else if (indices->type == GL_UNSIGNED_SHORT)
+    return COGL_INDICES_TYPE_UNSIGNED_SHORT;
+  else
+    {
+      g_critical ("unknown indices type %d", indices->type);
+      return COGL_INDICES_TYPE_UNSIGNED_SHORT;
+    }
+}
+
 void
 _cogl_vertex_buffer_indices_free (CoglVertexBufferIndices *indices)
 {

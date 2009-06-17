@@ -333,6 +333,17 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
                                 int              indices_len);
 
 /**
+ * cogl_vertex_buffer_indices_get_type:
+ * @handle: An indices handle
+ *
+ * Queries back the data type used for the given indices
+ *
+ * Returns: The CoglIndicesType used
+ */
+CoglIndicesType
+cogl_vertex_buffer_indices_get_type (CoglHandle indices);
+
+/**
  * cogl_vertex_buffer_delete_indices:
  * @handle: A vertex buffer handle
  * @indices_id: The identifier for a an array of indices previously added to
