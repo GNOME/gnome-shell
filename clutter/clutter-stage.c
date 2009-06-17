@@ -1366,10 +1366,9 @@ clutter_stage_read_pixels (ClutterStage *stage,
                            gint          height)
 {
   guchar *pixels;
-  guchar *temprow;
   GLint   viewport[4];
   gint    rowstride;
-  gint    stage_x, stage_y, stage_width, stage_height;
+  gint    stage_width, stage_height;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
 
@@ -1383,8 +1382,6 @@ clutter_stage_read_pixels (ClutterStage *stage,
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   glGetIntegerv (GL_VIEWPORT, viewport);
-  stage_x      = viewport[0];
-  stage_y      = viewport[1];
   stage_width  = viewport[2];
   stage_height = viewport[3];
 
@@ -1397,42 +1394,11 @@ clutter_stage_read_pixels (ClutterStage *stage,
   rowstride = width * 4;
 
   pixels  = g_malloc (height * rowstride);
-  temprow = g_malloc (rowstride);
 
-  /* Setup the pixel store parameters that may have been changed by
-     Cogl */
-  glPixelStorei (GL_PACK_ALIGNMENT, 4);
-#ifdef HAVE_COGL_GL
-  glPixelStorei (GL_PACK_ROW_LENGTH, 0);
-  glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
-  glPixelStorei (GL_PACK_SKIP_ROWS, 0);
-#endif /* HAVE_COGL_GL */
-
-  /* The y co-ordinate should be given in OpenGL's coordinate system
-     so 0 is the bottom row */
-  y = stage_height - y - height;
-
-  glFinish ();
-
-  /* check whether we need to read into a smaller temporary buffer */
-  glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
-  /* vertically flip the buffer in-place */
-  for (y = 0; y < height / 2; y++)
-    {
-      if (y != height - y - 1) /* skip center row */
-        {
-          memcpy (temprow,
-                  pixels + y * rowstride, rowstride);
-          memcpy (pixels + y * rowstride,
-                  pixels + (height - y - 1) * rowstride, rowstride);
-          memcpy (pixels + (height - y - 1) * rowstride,
-                  temprow,
-                  rowstride);
-        }
-    }
-
-  g_free (temprow);
+  cogl_read_pixels (x, y, width, height,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    pixels);
 
   return pixels;
 }

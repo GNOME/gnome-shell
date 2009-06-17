@@ -124,8 +124,7 @@ test_blend (TestState *state,
 
   /* See what we got... */
 
-  /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
-  y_off = state->stage_geom.height - y * QUAD_WIDTH - (QUAD_WIDTH / 2);
+  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
   /* XXX:
@@ -134,7 +133,10 @@ test_blend (TestState *state,
   if (state->frame <= 2)
     return;
 
-  glReadPixels (x_off, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
+  cogl_read_pixels (x_off, y_off, 1, 1,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    pixel);
   if (g_test_verbose ())
     {
       g_print ("test_blend (%d, %d):\n%s\n", x, y, blend_string);
@@ -252,8 +254,7 @@ test_tex_combine (TestState *state,
 
   /* See what we got... */
 
-  /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
-  y_off = state->stage_geom.height - y * QUAD_WIDTH - (QUAD_WIDTH / 2);
+  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
   /* XXX:
@@ -262,7 +263,10 @@ test_tex_combine (TestState *state,
   if (state->frame <= 2)
     return;
 
-  glReadPixels (x_off, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
+  cogl_read_pixels (x_off, y_off, 1, 1,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    pixel);
   if (g_test_verbose ())
     {
       g_print ("test_tex_combine (%d, %d):\n%s\n", x, y, combine_string);

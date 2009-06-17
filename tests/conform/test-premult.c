@@ -101,9 +101,9 @@ check_texture (TestState *state,
                CoglHandle tex,
                guint32 expected_result)
 {
-  GLubyte pixel[4];
-  GLint y_off;
-  GLint x_off;
+  guchar        pixel[4];
+  int           y_off;
+  int           x_off;
 
   cogl_material_set_layer (state->passthrough_material, 0, tex);
 
@@ -115,8 +115,7 @@ check_texture (TestState *state,
 
   /* See what we got... */
 
-  /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
-  y_off = state->stage_geom.height - y * QUAD_WIDTH - (QUAD_WIDTH / 2);
+  y_off = y * QUAD_WIDTH + (QUAD_WIDTH / 2);
   x_off = x * QUAD_WIDTH + (QUAD_WIDTH / 2);
 
   /* XXX:
@@ -125,7 +124,10 @@ check_texture (TestState *state,
   if (state->frame <= SKIP_FRAMES)
     return;
 
-  glReadPixels (x_off, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
+  cogl_read_pixels (x_off, y_off, 1, 1,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    pixel);
   if (g_test_verbose ())
     {
       g_print ("check texture (%d, %d):\n", x, y);
