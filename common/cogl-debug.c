@@ -43,7 +43,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "blend-strings", COGL_DEBUG_BLEND_STRINGS },
   { "disable-batching", COGL_DEBUG_DISABLE_BATCHING },
   { "client-side-matrices", COGL_DEBUG_FORCE_CLIENT_SIDE_MATRICES },
-  { "disable-vbos", COGL_DEBUG_DISABLE_VBOS }
+  { "disable-vbos", COGL_DEBUG_DISABLE_VBOS },
+  { "journal", COGL_DEBUG_JOURNAL }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);
