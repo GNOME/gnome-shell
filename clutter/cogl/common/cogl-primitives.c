@@ -421,14 +421,19 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
    * VBO use a vertex offset passed to glDraw{Arrays,Elements} */
   state->vertex_offset = 0;
 
-  /* XXX: Uncomment for debugging */
-#if 0
-  g_assert (cogl_get_features () & COGL_FEATURE_VBOS);
-  _cogl_journal_dump_quad_batch (((guint8 *)ctx->logged_vertices->data) +
-                                 (size_t)state->vbo_offset,
-                                 batch_start->n_layers,
-                                 batch_len);
-#endif
+  if (cogl_debug_flags & COGL_DEBUG_JOURNAL)
+    {
+      guint8 *verts;
+
+      if (cogl_get_features () & COGL_FEATURE_VBOS)
+        verts = ((guint8 *)ctx->logged_vertices->data) +
+          (size_t)state->vbo_offset;
+      else
+        verts = (guint8 *)state->vbo_offset;
+      _cogl_journal_dump_quad_batch (verts,
+                                     batch_start->n_layers,
+                                     batch_len);
+    }
 
   batch_and_call (batch_start,
                   batch_len,
@@ -442,6 +447,8 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   /* progress forward through the VBO containing all our vertices */
   state->vbo_offset += (stride * 4 * batch_len);
+  if (cogl_debug_flags & COGL_DEBUG_JOURNAL)
+    g_print ("new vbo offset = %lu\n", (gulong)state->vbo_offset);
 }
 
 static gboolean
@@ -450,6 +457,8 @@ compare_entry_strides (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
   /* Currently the only thing that affects the stride for our vertex arrays
    * is the number of material layers. We need to update our VBO offsets
    * whenever the stride changes. */
+  /* TODO: We should be padding the n_layers == 1 case as if it were
+   * n_layers == 2 so we can reduce the need to split batches. */
   if (entry0->n_layers == entry1->n_layers ||
       (entry0->n_layers <= MIN_LAYER_PADING &&
        entry1->n_layers <= MIN_LAYER_PADING))
@@ -637,11 +646,12 @@ _cogl_journal_log_quad (float       x_1,
       t[0] = tex_coords[2]; t[1] = tex_coords[1];
     }
 
-  /* XXX: Uncomment for debugging */
-#if 0
-  v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
-  _cogl_journal_dump_quad_vertices ((guint8 *)v, n_layers);
-#endif
+  if (cogl_debug_flags & COGL_DEBUG_JOURNAL)
+    {
+      g_print ("Logged new quad:\n");
+      v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
+      _cogl_journal_dump_quad_vertices ((guint8 *)v, n_layers);
+    }
 
   next_entry = ctx->journal->len;
   g_array_set_size (ctx->journal, next_entry + 1);
