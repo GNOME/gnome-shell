@@ -691,6 +691,39 @@ void            cogl_push_draw_buffer         (void);
  */
 void            cogl_pop_draw_buffer          (void);
 
+/**
+ * CoglReadPixelsFlags:
+ * @COGL_READ_PIXELS_COLOR_BUFFER: Read from the color buffer
+ */
+typedef enum _CoglReadPixelsFlags
+{
+  COGL_READ_PIXELS_COLOR_BUFFER = 1L<<0
+} CoglReadPixelsFlags;
+
+/**
+ * cogl_read_pixels:
+ * @x: The window x position to start reading from
+ * @y: The window y position to start reading from
+ * @width: The width of the rectangle you want to read
+ * @height: The height of the rectangle you want to read
+ * @source: Identifies which auxillary buffer you want to read
+ *          (only COGL_READ_PIXELS_COLOR_BUFFER supported currently)
+ * @format: The pixel format you want the result in
+ *          (only COGL_PIXEL_FORMAT_RGBA_8888 supported currently)
+ * @pixels: The location to write the pixel data.
+ *
+ * This reads a rectangle of pixels from the current draw buffer where
+ * position (0, 0) is the top left. The pixel at (x, y) is the first
+ * read, and the data is returned with a rowstride of (width * 4)
+ */
+void            cogl_read_pixels (int x,
+                                  int y,
+                                  int width,
+                                  int height,
+                                  CoglReadPixelsFlags source,
+                                  CoglPixelFormat format,
+                                  guint8 *pixels);
+
 
 /*
  * Internal API available only to Clutter.

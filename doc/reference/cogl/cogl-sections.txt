@@ -68,6 +68,10 @@ cogl_set_source_color4ub
 cogl_set_source_color4f
 cogl_set_source_texture
 
+<SUBSECTION>
+CoglReadPixelsFlags
+cogl_read_pixels
+
 <SUBSECTION Standard>
 COGL_TYPE_ATTRIBUTE_TYPE
 COGL_TYPE_BUFFER_BIT

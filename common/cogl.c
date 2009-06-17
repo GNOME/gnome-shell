@@ -572,6 +572,8 @@ void
 cogl_get_viewport (float v[4])
 {
   /* FIXME: cogl_get_viewport should return a gint vec */
+  /* FIXME: cogl_get_viewport should only return a width + height
+   * (I don't think we need to support offset viewports) */
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
   GLint viewport[4];
   int i;
@@ -675,4 +677,58 @@ cogl_flush_gl_state (int flags)
   _cogl_current_matrix_state_flush ();
 }
 #endif
+
+void
+cogl_read_pixels (int x,
+                  int y,
+                  int width,
+                  int height,
+                  CoglReadPixelsFlags source,
+                  CoglPixelFormat format,
+                  guint8 *pixels)
+{
+  GLint   viewport[4];
+  GLint   viewport_height;
+  int     rowstride = width * 4;
+  guint8  temprow[rowstride];
+
+  g_return_if_fail (format == COGL_PIXEL_FORMAT_RGBA_8888);
+  g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
+
+  glGetIntegerv (GL_VIEWPORT, viewport);
+  viewport_height = viewport[3];
+
+  /* The y co-ordinate should be given in OpenGL's coordinate system
+     so 0 is the bottom row */
+  y = viewport_height - y - height;
+
+  /* Setup the pixel store parameters that may have been changed by
+     Cogl */
+  glPixelStorei (GL_PACK_ALIGNMENT, 4);
+#ifdef HAVE_COGL_GL
+  glPixelStorei (GL_PACK_ROW_LENGTH, 0);
+  glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
+  glPixelStorei (GL_PACK_SKIP_ROWS, 0);
+#endif /* HAVE_COGL_GL */
+
+  glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+  /* TODO: consider using the GL_MESA_pack_invert extension in the future
+   * to avoid this flip... */
+
+  /* vertically flip the buffer in-place */
+  for (y = 0; y < height / 2; y++)
+    {
+      if (y != height - y - 1) /* skip center row */
+        {
+          memcpy (temprow,
+                  pixels + y * rowstride, rowstride);
+          memcpy (pixels + y * rowstride,
+                  pixels + (height - y - 1) * rowstride, rowstride);
+          memcpy (pixels + (height - y - 1) * rowstride,
+                  temprow,
+                  rowstride);
+        }
+    }
+}
 
