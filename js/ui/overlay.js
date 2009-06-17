@@ -26,9 +26,6 @@ ROOT_OVERLAY_COLOR.from_pixel(0x000000bb);
 const BACKGROUND_SCALE = 2;
 
 const LABEL_HEIGHT = 16;
-// We use DASH_PAD for the padding on the left side of the sideshow and as a gap
-// between sideshow columns.
-const DASH_PAD = 6;
 const DASH_MIN_WIDTH = 250;
 const DASH_SECTION_PADDING = 6;
 const DASH_SECTION_SPACING = 6;
@@ -161,7 +158,7 @@ AppResults.prototype = {
                                    spacing: DASH_SECTION_SPACING });
 
         let height = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
-        this.display = new AppDisplay.AppDisplay(displayWidth, height, DASH_COLUMNS, DASH_PAD);
+        this.display = new AppDisplay.AppDisplay(displayWidth, height, DASH_COLUMNS, DASH_SECTION_PADDING);
 
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
 
@@ -183,7 +180,7 @@ DocResults.prototype = {
                                    spacing: DASH_SECTION_SPACING });
 
         let height = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
-        this.display = new DocDisplay.DocDisplay(displayWidth, height, DASH_COLUMNS, DASH_PAD);
+        this.display = new DocDisplay.DocDisplay(displayWidth, height, DASH_COLUMNS, DASH_SECTION_PADDING);
 
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
 
@@ -206,16 +203,16 @@ Dash.prototype = {
 
         this._width = displayGridColumnWidth;
 
-        this._displayWidth = displayGridColumnWidth - DASH_PAD * 2;
+        this._displayWidth = displayGridColumnWidth - DASH_SECTION_PADDING * 2;
         this._resultsWidth = displayGridColumnWidth;  
         this._detailsWidth = displayGridColumnWidth * 2;  
 
-        let bottomHeight = DASH_PAD;
+        let bottomHeight = DASH_SECTION_PADDING;
 
         let global = Shell.Global.get();
 
-        let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight;
-        let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight;
+        let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
+        let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
 
         // The whole dash group needs to be reactive so that the clicks are not passed to the transparent background underneath it.
         // This background is used in the workspaces area when the additional dash panes are being shown. It handles clicks in the
@@ -225,13 +222,13 @@ Dash.prototype = {
 
         let dashPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                      x: 0,
-                                     y: Panel.PANEL_HEIGHT + DASH_PAD,
+                                     y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
                                      width: this._width + SHADOW_WIDTH,
-                                     height: global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight});
+                                     height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight});
 
         let dashBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                            width: this._width,
-                                           height: global.screen_height - Panel.PANEL_HEIGHT - DASH_PAD - bottomHeight,
+                                           height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight,
                                            corner_radius: DASH_CORNER_RADIUS,
                                            border: DASH_BORDER_WIDTH,
                                            border_color: DASH_BORDER_COLOR });
@@ -252,16 +249,16 @@ Dash.prototype = {
         
         this.actor.add_actor(dashPane);
 
-        this._searchEntry = new SearchEntry(this._width);
+        this._searchEntry = new SearchEntry(this._width - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2);
         this.actor.add_actor(this._searchEntry.actor);
-        this._searchEntry.actor.set_position(DASH_PAD, Panel.PANEL_HEIGHT + DASH_PAD);
+        this._searchEntry.actor.set_position(DASH_SECTION_PADDING + DASH_BORDER_WIDTH, dashPane.y + DASH_SECTION_PADDING + DASH_BORDER_WIDTH);
 
         this._appsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
                                             font_name: "Sans Bold 14px",
                                             text: "Applications",
                                             height: LABEL_HEIGHT});
-        this._appsSection = new Big.Box({ x: DASH_PAD,
-                                          y: this._searchEntry.actor.y + this._searchEntry.actor.height + DASH_PAD,
+        this._appsSection = new Big.Box({ x: DASH_SECTION_PADDING,
+                                          y: this._searchEntry.actor.y + this._searchEntry.actor.height + DASH_SECTION_PADDING,
                                           padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
         this._appsSection.append(this._appsText, Big.BoxPackFlags.EXPAND);
@@ -270,7 +267,7 @@ Dash.prototype = {
         
         this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
         this._appsSection.append(this._appsContent, Big.BoxPackFlags.EXPAND);
-        this._appDisplay = new AppDisplay.AppDisplay(this._displayWidth, this._itemDisplayHeight / 2, DASH_COLUMNS, DASH_PAD);
+        this._appDisplay = new AppDisplay.AppDisplay(this._displayWidth, this._itemDisplayHeight / 2, DASH_COLUMNS, DASH_SECTION_PADDING);
         let sideArea = this._appDisplay.getSideArea();
         sideArea.hide();
         this._appsContent.append(sideArea, Big.BoxPackFlags.NONE);
@@ -288,7 +285,7 @@ Dash.prototype = {
   
         this._appsSectionDefaultHeight = this._appsSection.height;
 
-        this._docsSection = new Big.Box({ x: DASH_PAD,
+        this._docsSection = new Big.Box({ x: DASH_SECTION_PADDING,
                                           y: this._appsSection.y + this._appsSection.height,
                                           padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
@@ -299,7 +296,7 @@ Dash.prototype = {
                                             height: LABEL_HEIGHT});
         this._docsSection.append(this._docsText, Big.BoxPackFlags.EXPAND);
 
-        this._docDisplay = new DocDisplay.DocDisplay(this._displayWidth, this._itemDisplayHeight - this._appsContent.height, DASH_COLUMNS, DASH_PAD);
+        this._docDisplay = new DocDisplay.DocDisplay(this._displayWidth, this._itemDisplayHeight - this._appsContent.height, DASH_COLUMNS, DASH_SECTION_PADDING);
         this._docsSection.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreDocsBox = new Big.Box({x_align: Big.BoxAlignment.END});
@@ -320,7 +317,7 @@ Dash.prototype = {
 
         this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
-                                          y: Panel.PANEL_HEIGHT + DASH_PAD,
+                                          y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
                                           width: this._resultsWidth + SHADOW_WIDTH,
                                           height: resultsHeight });
 
@@ -353,7 +350,7 @@ Dash.prototype = {
 
         this._detailsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
-                                          y: Panel.PANEL_HEIGHT + DASH_PAD,
+                                          y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
                                           width: this._detailsWidth + SHADOW_WIDTH,
                                           height: detailsHeight });
 
@@ -403,6 +400,14 @@ Dash.prototype = {
             me._docDisplay.hidePreview();
             me._resultsDocsSection.display.unsetSelected();
             me._resultsDocsSection.display.hidePreview();
+            me._resultsAppsSection.display.unsetSelected();
+            me._resultsAppsSection.display.hidePreview();
+            if (me._detailsPane.get_parent() == null) { 
+                me.actor.add_actor(me._detailsPane);
+                me.emit('panes-displayed');
+            }
+            me._detailsContent.remove_all();
+            me._detailsContent.append(me._appDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
         });
         this._docDisplay.connect('selected', function(docDisplay) {
             // We allow clicking on any item to select it, so if an 
@@ -412,6 +417,8 @@ Dash.prototype = {
             me._appDisplay.hidePreview();
             me._resultsDocsSection.display.unsetSelected();
             me._resultsDocsSection.display.hidePreview();
+            me._resultsAppsSection.display.unsetSelected();
+            me._resultsAppsSection.display.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
@@ -424,12 +431,28 @@ Dash.prototype = {
             me._appDisplay.hidePreview(); 
             me._docDisplay.unsetSelected();
             me._docDisplay.hidePreview();
+            me._resultsAppsSection.display.unsetSelected();
+            me._resultsAppsSection.display.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
             }
             me._detailsContent.remove_all();
             me._detailsContent.append(me._resultsDocsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
+        });
+        this._resultsAppsSection.display.connect('selected', function(resultsAppDisplay) {
+            me._appDisplay.unsetSelected(); 
+            me._appDisplay.hidePreview(); 
+            me._docDisplay.unsetSelected();
+            me._docDisplay.hidePreview();
+            me._resultsDocsSection.display.unsetSelected();
+            me._resultsDocsSection.display.hidePreview();
+            if (me._detailsPane.get_parent() == null) { 
+                me.actor.add_actor(me._detailsPane);
+                me.emit('panes-displayed');
+            }
+            me._detailsContent.remove_all();
+            me._detailsContent.append(me._resultsAppsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
         });
         this._appDisplay.connect('redisplayed', function(appDisplay) {
             me._ensureItemSelected();
@@ -508,7 +531,7 @@ Dash.prototype = {
 
         this._resultsAppsSection.display.show();
         this._resultsPane.add_actor(this._resultsAppsSection.actor);
-        this._resultsAppsSection.actor.set_y(this._resultsText.height + DASH_PAD);
+        this._resultsAppsSection.actor.set_y(this._resultsText.height + DASH_SECTION_PADDING);
         this.actor.add_actor(this._resultsPane);
 
         this._moreAppsLink.setText("Less...");
@@ -550,7 +573,7 @@ Dash.prototype = {
 
         this._resultsDocsSection.display.show();
         this._resultsPane.add_actor(this._resultsDocsSection.actor);
-        this._resultsDocsSection.actor.set_y(this._resultsText.height + DASH_PAD);
+        this._resultsDocsSection.actor.set_y(this._resultsText.height + DASH_SECTION_PADDING);
         this.actor.add_actor(this._resultsPane);
          
         this._moreDocsLink.setText("Less...");
