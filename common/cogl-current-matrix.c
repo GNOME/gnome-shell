@@ -355,6 +355,21 @@ _cogl_current_matrix_state_flush (void)
 }
 
 void
+_cogl_current_matrix_state_dirty (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->matrix_mode != COGL_MATRIX_MODELVIEW)
+    {
+      g_warning ("matrix state must be dirtied in MODELVIEW mode");
+      return;
+    }
+
+  if (ctx->modelview_stack)
+    _cogl_matrix_stack_dirty (ctx->modelview_stack);
+}
+
+void
 cogl_push_matrix (void)
 {
   _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);

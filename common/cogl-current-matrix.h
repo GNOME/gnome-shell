@@ -88,5 +88,6 @@ void _cogl_get_matrix                    (CoglMatrixMode    mode,
 void _cogl_current_matrix_state_init     (void);
 void _cogl_current_matrix_state_destroy  (void);
 void _cogl_current_matrix_state_flush    (void);
+void _cogl_current_matrix_state_dirty    (void);
 
 #endif /* __COGL_CURRENT_MATRIX_H */
