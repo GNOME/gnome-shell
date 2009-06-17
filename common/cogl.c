@@ -574,6 +574,9 @@ cogl_get_features (void)
   if (!ctx->features_cached)
     _cogl_features_init ();
 
+  if (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS)
+    ctx->feature_flags &= ~COGL_FEATURE_VBOS;
+
   return ctx->feature_flags;
 }
 
