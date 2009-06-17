@@ -128,7 +128,6 @@ struct _ClutterMainContext
 
   guint32 last_event_time;
 
-  ClutterMasterClock *master_clock;
   gulong redraw_count;
 
   GList *repaint_funcs;

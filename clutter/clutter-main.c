@@ -1064,8 +1064,6 @@ clutter_context_get_default (void)
       ctx->is_initialized = FALSE;
       ctx->motion_events_per_actor = TRUE;
 
-      ctx->master_clock = _clutter_master_clock_get_default ();
-
 #ifdef CLUTTER_ENABLE_DEBUG
       ctx->timer          =  g_timer_new ();
       g_timer_start (ctx->timer);
