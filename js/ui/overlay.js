@@ -150,6 +150,50 @@ SearchEntry.prototype = {
     }
 };
 
+function AppResults(displayWidth, resultsHeight) {
+    this._init(displayWidth, resultsHeight);
+}
+
+AppResults.prototype = {
+    _init: function(displayWidth, resultsHeight) {
+        this.actor = new Big.Box({ height: resultsHeight,
+                                   padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
+                                   spacing: DASH_SECTION_SPACING });
+
+        let height = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
+        this.display = new AppDisplay.AppDisplay(displayWidth, height, DASH_COLUMNS, DASH_PAD);
+
+        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
+
+        let controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
+        controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
+
+        this.actor.append(controlBox, Big.BoxPackFlags.END);
+    }
+}
+
+function DocResults(displayWidth, resultsHeight) {
+    this._init(displayWidth, resultsHeight);
+}
+
+DocResults.prototype = {
+    _init: function(displayWidth, resultsHeight) {
+        this.actor = new Big.Box({ height: resultsHeight,
+                                   padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
+                                   spacing: DASH_SECTION_SPACING });
+
+        let height = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
+        this.display = new DocDisplay.DocDisplay(displayWidth, height, DASH_COLUMNS, DASH_PAD);
+
+        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
+
+        let controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
+        controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
+
+        this.actor.append(controlBox, Big.BoxPackFlags.END);
+    }
+}
+
 function Dash() {
     this._init();
 }
@@ -208,10 +252,19 @@ Dash.prototype = {
         
         this.actor.add_actor(dashPane);
 
+        this._searchEntry = new SearchEntry(this._width);
+        this.actor.add_actor(this._searchEntry.actor);
+        this._searchEntry.actor.set_position(DASH_PAD, Panel.PANEL_HEIGHT + DASH_PAD);
+
+        this._appsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
+                                            font_name: "Sans Bold 14px",
+                                            text: "Applications",
+                                            height: LABEL_HEIGHT});
         this._appsSection = new Big.Box({ x: DASH_PAD,
-                                          y: Panel.PANEL_HEIGHT + DASH_PAD,
+                                          y: this._searchEntry.actor.y + this._searchEntry.actor.height + DASH_PAD,
                                           padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
+        this._appsSection.append(this._appsText, Big.BoxPackFlags.EXPAND);
 
         this._itemDisplayHeight = global.screen_height - this._appsSection.y - DASH_SECTION_MISC_HEIGHT * 2 - bottomHeight;
         
@@ -261,26 +314,9 @@ Dash.prototype = {
 
         this._docsSectionDefaultHeight = this._docsSection.height;
 
-        // Prepare docs display for the results pane.
-        this._resultsDocsSection = new Big.Box({ height: resultsHeight,
-                                                 padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
-                                                 spacing: DASH_SECTION_SPACING });
-
-        this._resultsDocsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
-                                                   font_name: "Sans Bold 14px",
-                                                   text: "Recent Documents",
-                                                   height: LABEL_HEIGHT });
-        this._resultsDocsSection.append(this._resultsDocsText, Big.BoxPackFlags.EXPAND);
-
-        let resultsDocDisplayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
-        this._resultsDocDisplay = new DocDisplay.DocDisplay(this._displayWidth, resultsDocDisplayHeight, DASH_COLUMNS, DASH_PAD);
-        
-        this._resultsDocsSection.append(this._resultsDocDisplay.actor, Big.BoxPackFlags.EXPAND);
-
-        this._resultsDocsDisplayControlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
-        this._resultsDocsDisplayControlBox.append(this._resultsDocDisplay.displayControl, Big.BoxPackFlags.NONE);
-        
-        this._resultsDocsSection.append(this._resultsDocsDisplayControlBox, Big.BoxPackFlags.END);
+        // The "more"/result area
+        this._resultsAppsSection = new AppResults(this._displayWidth, resultsHeight);
+        this._resultsDocsSection = new DocResults(this._displayWidth, resultsHeight);
 
         this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
@@ -349,7 +385,8 @@ Dash.prototype = {
         let itemDetailsAvailableHeight = detailsHeight - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
 
         this._docDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
-        this._resultsDocDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
+        this._resultsAppsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
+        this._resultsDocsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
 
         /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
@@ -364,8 +401,8 @@ Dash.prototype = {
             // no item in the doc display has the selection.
             me._docDisplay.unsetSelected();
             me._docDisplay.hidePreview();
-            me._resultsDocDisplay.unsetSelected();
-            me._resultsDocDisplay.hidePreview();
+            me._resultsDocsSection.display.unsetSelected();
+            me._resultsDocsSection.display.hidePreview();
         });
         this._docDisplay.connect('selected', function(docDisplay) {
             // We allow clicking on any item to select it, so if an 
@@ -373,8 +410,8 @@ Dash.prototype = {
             // no item in the app display has the selection.
             me._appDisplay.unsetSelected(); 
             me._appDisplay.hidePreview();
-            me._resultsDocDisplay.unsetSelected();
-            me._resultsDocDisplay.hidePreview();
+            me._resultsDocsSection.display.unsetSelected();
+            me._resultsDocsSection.display.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
@@ -382,7 +419,7 @@ Dash.prototype = {
             me._detailsContent.remove_all();
             me._detailsContent.append(me._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
         });
-        this._resultsDocDisplay.connect('selected', function(resultsDocDisplay) {
+        this._resultsDocsSection.display.connect('selected', function(resultsDocDisplay) {
             me._appDisplay.unsetSelected(); 
             me._appDisplay.hidePreview(); 
             me._docDisplay.unsetSelected();
@@ -392,7 +429,7 @@ Dash.prototype = {
                 me.emit('panes-displayed');
             }
             me._detailsContent.remove_all();
-            me._detailsContent.append(me._resultsDocDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
+            me._detailsContent.append(me._resultsDocsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
         });
         this._appDisplay.connect('redisplayed', function(appDisplay) {
             me._ensureItemSelected();
@@ -467,11 +504,14 @@ Dash.prototype = {
         this._unsetMoreDocsMode();
         this._moreAppsMode = true;
 
+        this._resultsText.text = "Applications";
+
+        this._resultsAppsSection.display.show();
+        this._resultsPane.add_actor(this._resultsAppsSection.actor);
+        this._resultsAppsSection.actor.set_y(this._resultsText.height + DASH_PAD);
         this.actor.add_actor(this._resultsPane);
 
         this._moreAppsLink.setText("Less...");
-
-        this._resultsText.text = "Applications";
  
         this._detailsPane.x = this._width + this._resultsWidth;;
         this.emit('panes-displayed');
@@ -484,13 +524,14 @@ Dash.prototype = {
 
         this._moreAppsMode = false;
 
+        this._resultsPane.remove_actor(this._resultsAppsSection.actor);
+        this._resultsAppsSection.display.hide();
         this.actor.remove_actor(this._resultsPane); 
         this._resultsText.text = "";
        
         this._moreAppsLink.setText("More...");
 
         this._detailsPane.x = this._width;
-
 
         if (this._detailsPane.get_parent() == null) {
             this.emit('panes-removed');
@@ -505,11 +546,14 @@ Dash.prototype = {
         this._unsetMoreAppsMode();
         this._moreDocsMode = true;
 
-        this._resultsDocDisplay.show();
-        this._resultsPane.add_actor(this._resultsDocsSection);
+        this._resultsText.text = "Recent Documents";
+
+        this._resultsDocsSection.display.show();
+        this._resultsPane.add_actor(this._resultsDocsSection.actor);
+        this._resultsDocsSection.actor.set_y(this._resultsText.height + DASH_PAD);
         this.actor.add_actor(this._resultsPane);
          
-        this._moreDocsLink.setText("Less..."); 
+        this._moreDocsLink.setText("Less...");
         
         this._detailsPane.x = this._width + this._resultsWidth; 
         this.emit('panes-displayed');
@@ -523,8 +567,8 @@ Dash.prototype = {
         this._moreDocsMode = false;
 
         this.actor.remove_actor(this._resultsPane);
-        this._resultsPane.remove_actor(this._resultsDocsSection);
-        this._resultsDocDisplay.hide();
+        this._resultsPane.remove_actor(this._resultsDocsSection.actor);
+        this._resultsDocsSection.display.hide();
  
         this._moreDocsLink.setText("More...");
 
