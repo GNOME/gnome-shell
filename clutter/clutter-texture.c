@@ -524,7 +524,7 @@ clutter_texture_paint (ClutterActor *self)
       ClutterActor       *stage = NULL;
       ClutterPerspective  perspective;
 
-      context = clutter_context_get_default ();
+      context = _clutter_context_get_default ();
 
       if (context->shaders)
         shader = clutter_actor_get_shader (context->shaders->data);

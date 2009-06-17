@@ -217,7 +217,7 @@ clutter_event_dispatch (GSource     *source,
 
   clutter_threads_enter ();
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
 
 #ifdef HAVE_TSLIB
   /* FIXME while would be better here but need to deal with lockups */

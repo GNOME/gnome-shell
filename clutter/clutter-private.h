@@ -133,8 +133,8 @@ struct _ClutterMainContext
   GList *repaint_funcs;
 };
 
-#define CLUTTER_CONTEXT()	(clutter_context_get_default ())
-ClutterMainContext *clutter_context_get_default (void);
+#define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
+ClutterMainContext *_clutter_context_get_default (void);
 PangoContext *_clutter_context_create_pango_context (ClutterMainContext *self);
 PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
 

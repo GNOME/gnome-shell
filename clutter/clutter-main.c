@@ -182,7 +182,7 @@ _clutter_do_redraw (ClutterStage *stage)
   static GTimer *timer = NULL;
   static guint timer_n_frames = 0;
 
-  ctx  = clutter_context_get_default ();
+  ctx  = _clutter_context_get_default ();
   master_clock = _clutter_master_clock_get_default ();
 
   /* Before we can paint, we have to be sure we have the latest layout */
@@ -261,7 +261,7 @@ clutter_redraw (ClutterStage *stage)
 void
 clutter_set_motion_events_enabled (gboolean enable)
 {
-  ClutterMainContext *context = clutter_context_get_default ();
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   context->motion_events_per_actor = enable;
 }
@@ -278,7 +278,7 @@ clutter_set_motion_events_enabled (gboolean enable)
 gboolean
 clutter_get_motion_events_enabled (void)
 {
-  ClutterMainContext *context = clutter_context_get_default ();
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   return context->motion_events_per_actor;
 }
@@ -293,7 +293,7 @@ static inline void init_bits (void)
   if (G_LIKELY (done))
     return;
 
-  ctx = clutter_context_get_default ();
+  ctx = _clutter_context_get_default ();
 
   done = TRUE;
 }
@@ -302,8 +302,9 @@ void
 _clutter_id_to_color (guint id, ClutterColor *col)
 {
   ClutterMainContext *ctx;
-  gint                red, green, blue;
-  ctx = clutter_context_get_default ();
+  gint red, green, blue;
+
+  ctx = _clutter_context_get_default ();
 
   /* compute the numbers we'll store in the components */
   red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used))
@@ -340,7 +341,7 @@ _clutter_pixel_to_id (guchar pixel[4])
   gint  red, green, blue;
   guint id;
 
-  ctx = clutter_context_get_default ();
+  ctx = _clutter_context_get_default ();
 
   /* reduce the pixel components to the number of bits actually used of the
    * 8bits.
@@ -374,7 +375,7 @@ _clutter_do_pick (ClutterStage   *stage,
   guint32             id;
   GLboolean           dither_was_on;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   _clutter_backend_ensure_context (context->backend, stage);
 
@@ -1052,13 +1053,14 @@ clutter_get_debug_enabled (void)
 }
 
 ClutterMainContext *
-clutter_context_get_default (void)
+_clutter_context_get_default (void)
 {
   if (G_UNLIKELY(!ClutterCntx))
     {
       ClutterMainContext *ctx;
 
       ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
+
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
@@ -1088,7 +1090,7 @@ clutter_get_timestamp (void)
   ClutterMainContext *ctx;
   gdouble seconds;
 
-  ctx = clutter_context_get_default ();
+  ctx = _clutter_context_get_default ();
 
   /* FIXME: may need a custom timer for embedded setups */
   seconds = g_timer_elapsed (ctx->timer, NULL);
@@ -1154,7 +1156,7 @@ clutter_init_real (GError **error)
   /* Note, creates backend if not already existing, though parse args will
    * have likely created it
    */
-  ctx = clutter_context_get_default ();
+  ctx = _clutter_context_get_default ();
   backend = ctx->backend;
 
   if (!ctx->options_parsed)
@@ -1297,7 +1299,7 @@ pre_parse_hook (GOptionContext  *context,
     g_warning ("Locale not supported by C library.\n"
                "Using the fallback 'C' locale.");
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
 
   clutter_context->id_pool = clutter_id_pool_new (256);
 
@@ -1359,7 +1361,7 @@ post_parse_hook (GOptionContext  *context,
   if (clutter_is_initialized)
     return TRUE;
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
   backend = clutter_context->backend;
   g_assert (CLUTTER_IS_BACKEND (backend));
 
@@ -1424,7 +1426,7 @@ clutter_get_option_group (void)
 
   clutter_base_init ();
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   group = g_option_group_new ("clutter",
                               _("Clutter Options"),
@@ -1467,7 +1469,7 @@ clutter_get_option_group_without_init (void)
 
   clutter_base_init ();
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
   context->defer_display_setup = TRUE;
 
   group = clutter_get_option_group ();
@@ -1526,7 +1528,7 @@ clutter_init_with_args (int            *argc,
 
   clutter_base_init ();
 
-  ctx = clutter_context_get_default ();
+  ctx = _clutter_context_get_default ();
 
   if (!ctx->defer_display_setup)
     {
@@ -1631,7 +1633,7 @@ clutter_init (int    *argc,
 
   clutter_base_init ();
 
-  ctx = clutter_context_get_default ();
+  ctx = _clutter_context_get_default ();
 
   if (!ctx->defer_display_setup)
     {
@@ -1683,7 +1685,7 @@ event_click_count_generate (ClutterEvent *event)
   guint           double_click_time;
   guint           double_click_distance;
 
-  backend = clutter_context_get_default ()->backend;
+  backend = _clutter_context_get_default ()->backend;
   double_click_distance = clutter_backend_get_double_click_distance (backend);
   double_click_time = clutter_backend_get_double_click_time (backend);
 
@@ -2026,7 +2028,7 @@ _clutter_process_event (ClutterEvent *event)
   ClutterActor        *stage;
   ClutterInputDevice  *device = NULL;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
   backend = context->backend;
   stage   = CLUTTER_ACTOR(event->any.stage);
 
@@ -2250,7 +2252,7 @@ clutter_get_actor_by_gid (guint32 id)
 {
   ClutterMainContext *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   g_return_val_if_fail (context != NULL, NULL);
 
@@ -2293,7 +2295,7 @@ clutter_get_default_frame_rate (void)
 {
   ClutterMainContext *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   return context->frame_rate;
 }
@@ -2314,7 +2316,7 @@ clutter_set_default_frame_rate (guint frames_per_sec)
 {
   ClutterMainContext *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (context->frame_rate != frames_per_sec)
     context->frame_rate = frames_per_sec;
@@ -2328,7 +2330,7 @@ on_pointer_grab_weak_notify (gpointer data,
   ClutterInputDevice *dev = (ClutterInputDevice *)data;
   ClutterMainContext *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (dev)
     {
@@ -2369,7 +2371,7 @@ clutter_grab_pointer (ClutterActor *actor)
 
   g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (context->pointer_grab_actor == actor)
     return;
@@ -2486,7 +2488,7 @@ ClutterActor *
 clutter_get_pointer_grab (void)
 {
   ClutterMainContext *context;
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   return context->pointer_grab_actor;
 }
@@ -2498,7 +2500,7 @@ on_keyboard_grab_weak_notify (gpointer data,
 {
   ClutterMainContext *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
   context->keyboard_grab_actor = NULL;
 
   clutter_ungrab_keyboard ();
@@ -2529,7 +2531,7 @@ clutter_grab_keyboard (ClutterActor *actor)
 
   g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (context->keyboard_grab_actor == actor)
     return;
@@ -2578,7 +2580,8 @@ ClutterActor *
 clutter_get_keyboard_grab (void)
 {
   ClutterMainContext *context;
-  context = clutter_context_get_default ();
+
+  context = _clutter_context_get_default ();
 
   return context->keyboard_grab_actor;
 }
@@ -2705,7 +2708,7 @@ clutter_get_input_device_for_id (gint id)
   ClutterInputDevice *device = NULL;
   ClutterMainContext  *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   for (item = context->input_devices;
        item != NULL;

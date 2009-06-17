@@ -335,7 +335,7 @@ clutter_event_dispatch (GSource     *source,
 
   clutter_threads_enter ();
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
 
   while (SDL_PollEvent(&sdl_event))
     {

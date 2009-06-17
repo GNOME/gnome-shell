@@ -220,11 +220,11 @@ clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
-#define MAX_FINGERS 5
+#define MAX_FINGERS     5
 
-  for (i=0; i<MAX_FINGERS; i++)
+  for (i = 0; i < MAX_FINGERS; i++)
     {
       ClutterFruityFingerDevice *device;
 
@@ -240,6 +240,8 @@ clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
       device->x = 0;
       device->y = 0;
     }
+
+#undef MAX_FINGERS
 }
 
 GType

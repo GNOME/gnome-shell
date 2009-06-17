@@ -549,7 +549,7 @@ clutter_event_free (ClutterEvent *event)
 ClutterEvent *
 clutter_event_get (void)
 {
-  ClutterMainContext *context = clutter_context_get_default ();
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   if (!context->events_queue)
     return NULL;
@@ -573,7 +573,7 @@ clutter_event_get (void)
 ClutterEvent *
 clutter_event_peek (void)
 {
-  ClutterMainContext *context = clutter_context_get_default ();
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   g_return_val_if_fail (context != NULL, NULL);
   
@@ -601,7 +601,7 @@ clutter_event_peek (void)
 void
 clutter_event_put (ClutterEvent *event)
 {
-  ClutterMainContext *context = clutter_context_get_default ();
+  ClutterMainContext *context = _clutter_context_get_default ();
   ClutterEvent       *event_copy;
 
   /* FIXME: check queue is valid */
@@ -625,7 +625,7 @@ clutter_event_put (ClutterEvent *event)
 gboolean
 clutter_events_pending (void)
 {
-  ClutterMainContext *context = clutter_context_get_default ();
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   g_return_val_if_fail (context != NULL, FALSE);
 
@@ -648,7 +648,7 @@ clutter_events_pending (void)
 guint32
 clutter_get_current_event_time (void)
 {
-  ClutterMainContext *context = clutter_context_get_default ();
+  ClutterMainContext *context = _clutter_context_get_default ();
 
   g_return_val_if_fail (context != NULL, FALSE);
 

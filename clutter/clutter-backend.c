@@ -85,7 +85,7 @@ clutter_backend_dispose (GObject *gobject)
   ClutterBackendPrivate *priv = CLUTTER_BACKEND (gobject)->priv;
   ClutterMainContext *clutter_context;
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
 
   if (clutter_context && clutter_context->events_queue)
     {
@@ -270,7 +270,7 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
   g_return_val_if_fail (CLUTTER_IS_STAGE (wrapper), FALSE);
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (!context->stage_manager)
     context->stage_manager = clutter_stage_manager_get_default ();
@@ -394,7 +394,7 @@ _clutter_backend_init_events (ClutterBackend *backend)
   ClutterBackendClass *klass;
   ClutterMainContext  *clutter_context;
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
   g_return_if_fail (clutter_context != NULL);
@@ -443,7 +443,7 @@ clutter_get_default_backend (void)
 {
   ClutterMainContext *clutter_context;
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
 
   return clutter_context->backend;
 }

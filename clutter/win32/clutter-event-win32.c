@@ -228,10 +228,8 @@ void
 clutter_win32_disable_event_retrieval (void)
 {
   ClutterBackendWin32 *backend;
-  ClutterMainContext  *clutter_context;
 
-  clutter_context = clutter_context_get_default ();
-  backend = CLUTTER_BACKEND_WIN32 (clutter_context->backend);
+  backend = CLUTTER_BACKEND_WIN32 (clutter_get_default_backend ());
 
   backend->no_event_retrieval = TRUE;
 }
@@ -645,7 +643,7 @@ _clutter_stage_win32_window_proc (HWND hwnd, UINT umsg,
       ClutterMainContext *clutter_context;
       DWORD message_pos = GetMessagePos ();
 
-      clutter_context = clutter_context_get_default ();
+      clutter_context = _clutter_context_get_default ();
 
       msg.hwnd = hwnd;
       msg.message = umsg;

@@ -93,10 +93,10 @@ _clutter_feature_init (void)
   if (__features->features_set)
     return;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   __features->flags = (_clutter_features_from_cogl (cogl_get_features ())
-		       | _clutter_backend_get_features (context->backend));
+                    | _clutter_backend_get_features (context->backend));
 
   __features->features_set = TRUE;
 

@@ -292,7 +292,7 @@ clutter_backend_x11_dispose (GObject *gobject)
 
   CLUTTER_NOTE (BACKEND, "Disposing the of stages");
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
   stage_manager = context->stage_manager;
 
   /* Destroy all of the stages. g_slist_foreach is used because the
@@ -445,7 +445,7 @@ clutter_x11_get_default_display (void)
 void
 clutter_x11_set_display (Display *xdpy)
 {
-  ClutterMainContext *ctx = clutter_context_get_default ();
+  ClutterMainContext *ctx = _clutter_context_get_default ();
 
   if (ctx->is_initialized)
     {
@@ -472,7 +472,7 @@ clutter_x11_set_display (Display *xdpy)
 void
 clutter_x11_enable_xinput ()
 {
-  ClutterMainContext *ctx = clutter_context_get_default ();
+  ClutterMainContext *ctx = _clutter_context_get_default ();
 
   if (ctx->is_initialized)
     {
@@ -497,7 +497,7 @@ clutter_x11_enable_xinput ()
 void
 clutter_x11_disable_event_retrieval (void)
 {
-  ClutterMainContext *ctx = clutter_context_get_default ();
+  ClutterMainContext *ctx = _clutter_context_get_default ();
 
   if (ctx->is_initialized)
     {
@@ -672,7 +672,7 @@ _clutter_x11_register_xinput ()
       return;
     }
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   backend_singleton->have_xinput = TRUE;
 
@@ -840,7 +840,7 @@ _clutter_x11_select_events (Window xwin)
 
   ClutterMainContext  *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (!backend_singleton)
     {
@@ -870,7 +870,7 @@ _clutter_x11_get_device_for_xid (XID id)
   ClutterX11XInputDevice *device = NULL;
   ClutterMainContext  *context;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (!backend_singleton)
     {
@@ -906,7 +906,7 @@ clutter_x11_get_input_devices (void)
       return NULL;
     }
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   return context->input_devices;
 #else /* !HAVE_XINPUT */

@@ -1432,7 +1432,7 @@ clutter_actor_should_pick_paint (ClutterActor *self)
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   if (CLUTTER_ACTOR_IS_MAPPED (self) &&
       (G_UNLIKELY (context->pick_mode == CLUTTER_PICK_ALL) ||
@@ -2267,7 +2267,8 @@ clutter_actor_paint (ClutterActor *self)
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
-  context = clutter_context_get_default ();
+
+  context = _clutter_context_get_default ();
 
   /* It's an important optimization that we consider painting of
    * actors with 0 opacity to be a NOP... */
@@ -6463,15 +6464,11 @@ void
 clutter_actor_set_parent (ClutterActor *self,
 		          ClutterActor *parent)
 {
-  ClutterMainContext *clutter_context;
   ClutterActorPrivate *priv;
-
-  clutter_context = clutter_context_get_default ();
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
   g_return_if_fail (self != parent);
-  g_return_if_fail (clutter_context != NULL);
 
   priv = self->priv;
 
@@ -8341,7 +8338,7 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
   if (!shader_data)
     return;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
   shader = shader_data->shader;
 
   if (shader)
@@ -8369,7 +8366,7 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
   if (!shader_data)
     return;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
   shader = shader_data->shader;
 
   if (shader)

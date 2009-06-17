@@ -74,7 +74,7 @@ typedef struct {
   ClutterStage *stage = CLUTTER_STAGE_EGL(ba->stage)->wrapper;
   MEvent *event = (MEvent*)gs_event;
 
-  context = clutter_context_get_default ();
+  context = _clutter_context_get_default ();
 
   bool mapped[MAX_FINGERS] = {false, false, false, false, false}; /* an event has been mapped to this device */
   int  evs[MAX_FINGERS] = {0,0,0,0,0};

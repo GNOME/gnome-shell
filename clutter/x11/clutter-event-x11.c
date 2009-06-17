@@ -881,7 +881,7 @@ events_queue (ClutterBackend *backend)
   XEvent             xevent;
   ClutterMainContext  *clutter_context;
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
 
   while (!clutter_events_pending () && XPending (xdisplay))
     {
@@ -940,7 +940,7 @@ clutter_x11_handle_event (XEvent *xevent)
 
   clutter_threads_enter ();
 
-  clutter_context = clutter_context_get_default ();
+  clutter_context = _clutter_context_get_default ();
   backend = clutter_context->backend;
 
   event = clutter_event_new (CLUTTER_NOTHING);

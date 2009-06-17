@@ -99,13 +99,11 @@ static void
 clutter_backend_win32_dispose (GObject *gobject)
 {
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (gobject);
-  ClutterMainContext  *context;
   ClutterStageManager *stage_manager;
 
   CLUTTER_NOTE (BACKEND, "Disposing the of stages");
 
-  context = clutter_context_get_default ();
-  stage_manager = context->stage_manager;
+  stage_manager = clutter_stage_manager_get_default ();
 
   /* Destroy all of the stages. g_slist_foreach is used because the
      finalizer for the stages will remove the stage from the

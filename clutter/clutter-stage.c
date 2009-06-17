@@ -1947,11 +1947,12 @@ clutter_stage_new (void)
 void
 clutter_stage_ensure_current (ClutterStage *stage)
 {
-  ClutterMainContext *ctx = clutter_context_get_default ();
+  ClutterBackend *backend;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  _clutter_backend_ensure_context (ctx->backend, stage);
+  backend = clutter_get_default_backend ();
+  _clutter_backend_ensure_context (backend, stage);
 }
 
 /**

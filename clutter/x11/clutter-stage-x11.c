@@ -711,18 +711,16 @@ clutter_x11_get_stage_window (ClutterStage *stage)
 ClutterStage *
 clutter_x11_get_stage_from_window (Window win)
 {
-  ClutterMainContext  *context;
   ClutterStageManager *stage_manager;
-  GSList              *l;
+  const GSList        *stages, *s;
 
-  context = clutter_context_get_default ();
+  stage_manager = clutter_stage_manager_get_default ();
+  stages = clutter_stage_manager_peek_stages (stage_manager);
 
-  stage_manager = context->stage_manager;
-
-  /* FIXME: use a hash here for performance resaon */
-  for (l = stage_manager->stages; l; l = l->next)
+  /* XXX: might use a hash here for performance resaon */
+  for (s = stages; s != NULL; s = s->next)
     {
-      ClutterStage *stage = l->data;
+      ClutterStage *stage = s->data;
       ClutterStageWindow *impl;
 
       impl = _clutter_stage_get_window (stage);

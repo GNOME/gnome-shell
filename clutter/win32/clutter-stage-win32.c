@@ -693,11 +693,13 @@ clutter_win32_get_stage_from_window (HWND hwnd)
     {
       /* Otherwise it might be a foreign window so we should check the
 	 stage list */
-      ClutterMainContext  *context = clutter_context_get_default ();
-      ClutterStageManager *stage_manager = context->stage_manager;
-      GSList              *l;
+      ClutterStageManager *stage_manager
+      const GSList        *stages, *l;
 
-      for (l = stage_manager->stages; l; l = l->next)
+      stage_manager = clutter_stage_manager_get_default ();
+      stages = clutter_stage_manager_peek_stages (stage_manager);
+
+      for (l = stages; l != NULL; l = l->next)
 	{
 	  ClutterStage *stage = l->data;
 	  ClutterStageWindow *impl;
