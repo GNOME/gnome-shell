@@ -409,6 +409,9 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
 
+  /* Make sure Cogl flushes any batched geometry to the GPU driver */
+  _cogl_flush ();
+
   /* Read the color of the screen co-ords pixel */
   glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 

@@ -39,6 +39,7 @@
 #include "cogl-material.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
+#include "cogl-primitives.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -59,8 +60,6 @@
   glDrawElements (mode, count, type, indices)
 
 #endif
-
-extern void _cogl_journal_flush (void);
 
 static void _cogl_texture_free (CoglTexture *tex);
 

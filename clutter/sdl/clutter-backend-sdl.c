@@ -68,7 +68,8 @@ clutter_backend_sdl_redraw (ClutterBackend *backend,
                             ClutterStage   *stage)
 {
   clutter_actor_paint (CLUTTER_ACTOR (stage));
-  
+  _cogl_flush ();
+
   SDL_GL_SwapBuffers();
 }
 

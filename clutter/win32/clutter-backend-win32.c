@@ -297,6 +297,7 @@ clutter_backend_win32_redraw (ClutterBackend *backend,
 
   /* this will cause the stage implementation to be painted */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+  _cogl_flush ();
 
   if (stage_win32->client_dc)
     SwapBuffers (stage_win32->client_dc);

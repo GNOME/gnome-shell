@@ -81,6 +81,7 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
 
   eglWaitNative (EGL_CORE_NATIVE_ENGINE);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+  _cogl_flush ();
 
   eglWaitGL();
   eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
