@@ -598,12 +598,25 @@ static void
 position_menu (GtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer user_data)
 {
   ShellStatusMenu *status = SHELL_STATUS_MENU (user_data);
+  ClutterActor *parent;
   float src_x, src_y;
+  float width, height;
+  int menu_width;
 
-  clutter_actor_get_transformed_position (CLUTTER_ACTOR (status), &src_x, &src_y);
+  gtk_widget_get_size_request (GTK_WIDGET (menu), &menu_width, NULL);
 
-  *x = (gint)(0.5 + src_x);
-  *y = (gint)(0.5 + src_y);
+  /* Encapsulation breakage: it looks better if the menu is
+   * aligned with the bottom of the actor's grandparent - the
+   * panel, rather than with the bottom of the actor. We just
+   * assume what the hierarchy is and where we are positioned
+   * in the panel.
+   */
+  parent = clutter_actor_get_parent (CLUTTER_ACTOR (status));
+  parent = clutter_actor_get_parent (parent);
+  clutter_actor_get_transformed_position (parent, &src_x, &src_y);
+  clutter_actor_get_transformed_size (parent, &width, &height);
+  *x = (gint)(0.5 + src_x + width - menu_width);
+  *y = (gint)(0.5 + src_y + height);
 }
 
 void
