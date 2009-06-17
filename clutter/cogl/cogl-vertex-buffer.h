@@ -301,7 +301,6 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
  * CoglIndicesType:
  * @COGL_INDICES_TYPE_UNSIGNED_BYTE: Your indices are unsigned bytes
  * @COGL_INDICES_TYPE_UNSIGNED_SHORT: Your indices are unsigned shorts
- * @COGL_INDICES_TYPE_UNSIGNED_INT: You indices are unsigned integers
  *
  * You should aim to use the smallest data type that gives you enough
  * range, since it reduces the size of your index array and can help
@@ -311,7 +310,6 @@ typedef enum _CoglIndicesType
 {
   COGL_INDICES_TYPE_UNSIGNED_BYTE,
   COGL_INDICES_TYPE_UNSIGNED_SHORT,
-  COGL_INDICES_TYPE_UNSIGNED_INT
 } CoglIndicesType;
 
 /**
