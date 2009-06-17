@@ -1,1 +1,1 @@
-SUBDIRS = ui
+SUBDIRS = misc ui

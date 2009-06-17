@@ -40,7 +40,7 @@ fi
 
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 dbus-glib-1 metacity-plugins gjs-gi-1.0 xscrnsaver libgnome-menu $recorder_modules gconf-2.0 gdk-x11-2.0 clutter-x11-0.9 clutter-glx-0.9)
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 dbus-glib-1 mutter-plugins gjs-gi-1.0 xscrnsaver libgnome-menu $recorder_modules gconf-2.0 gdk-x11-2.0 clutter-x11-0.9 clutter-glx-0.9)
 PKG_CHECK_MODULES(TIDY, clutter-0.9)
 PKG_CHECK_MODULES(BIG, clutter-0.9 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
@@ -51,11 +51,13 @@ PKG_CHECK_MODULES(TASKPANEL, libwnck-1.0 dbus-glib-1)
 # it becomes stable.
 PKG_CHECK_MODULES(LIBGNOMEUI, libgnomeui-2.0)
 
-META_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix metacity-plugins`/bin
+MUTTER_BIN_DIR=`$PKG_CONFIG --variable=exec_prefix mutter-plugins`/bin
 # FIXME: metacity-plugins.pc should point directly to its .gir file
-META_LIB_DIR=`$PKG_CONFIG --variable=libdir metacity-plugins`
-AC_SUBST(META_BIN_DIR)
-AC_SUBST(META_LIB_DIR)
+MUTTER_LIB_DIR=`$PKG_CONFIG --variable=libdir mutter-plugins`
+MUTTER_PLUGIN_DIR=`$PKG_CONFIG --variable=plugindir mutter-plugins`
+AC_SUBST(MUTTER_BIN_DIR)
+AC_SUBST(MUTTER_LIB_DIR)
+AC_SUBST(MUTTER_PLUGIN_DIR)
 
 GJS_JS_DIR=`$PKG_CONFIG --variable=jsdir gjs-1.0`
 GJS_JS_NATIVE_DIR=`$PKG_CONFIG --variable=jsnativedir gjs-1.0`
@@ -92,13 +94,14 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-AC_PATH_PROG(metacity, [metacity])
-AC_SUBST(metacity)
+AC_PATH_PROG(mutter, [mutter])
+AC_SUBST(mutter)
 
 AC_OUTPUT([
   Makefile
   data/Makefile
   js/Makefile
+  js/misc/Makefile
   js/ui/Makefile
   src/Makefile
 ])

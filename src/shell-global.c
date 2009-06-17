@@ -421,7 +421,6 @@ shell_get_categories_for_desktop_file(const char *desktop_file_name)
     const char * const *search_dirs;
     char **categories = NULL;
     GSList *categories_list = NULL; 
-    char *full_path = NULL;   
     GError *error = NULL;
     gsize len;  
     int i; 
@@ -429,7 +428,7 @@ shell_get_categories_for_desktop_file(const char *desktop_file_name)
     key_file = g_key_file_new (); 
     search_dirs = get_applications_search_path();
    
-    g_key_file_load_from_dirs (key_file, desktop_file_name, (const char **)search_dirs, &full_path, 0, &error);
+    g_key_file_load_from_dirs (key_file, desktop_file_name, (const char **)search_dirs, NULL, 0, &error);
 
     if (error != NULL) 
       {

@@ -6,11 +6,13 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const AppDisplay = imports.ui.appDisplay;
+const AppInfo = imports.misc.appInfo;
 const DocDisplay = imports.ui.docDisplay;
+const DocInfo = imports.misc.docInfo;
 
 const COLLAPSED_WIDTH = 24;
 const EXPANDED_WIDTH = 200;
@@ -156,17 +158,118 @@ ClockWidget.prototype = {
 };
 
 
+const ITEM_ICON_SIZE = 48;
+const ITEM_PADDING = 1;
+const ITEM_SPACING = 4;
+
 const ITEM_BG_COLOR = new Clutter.Color();
 ITEM_BG_COLOR.from_pixel(0x00000000);
 const ITEM_NAME_COLOR = new Clutter.Color();
 ITEM_NAME_COLOR.from_pixel(0x000000ff);
-const ITEM_DESCRIPTION_COLOR = new Clutter.Color();
-ITEM_DESCRIPTION_COLOR.from_pixel(0x404040ff);
 
-function hackUpDisplayItemColors(item) {
-    item._bg.background_color = ITEM_BG_COLOR;
-    item._name.color = ITEM_NAME_COLOR;
-    item._description.color = ITEM_DESCRIPTION_COLOR;
+function LauncherWidget() {
+    this._init();
+}
+
+LauncherWidget.prototype = {
+    __proto__ : Widget.prototype,
+
+    addItem : function(info) {
+        let item = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                 width: EXPANDED_WIDTH,
+                                 height: ITEM_ICON_SIZE,
+                                 padding: ITEM_PADDING,
+                                 spacing: ITEM_SPACING,
+                                 reactive: true });
+        item._info = info;
+        item.append(info.getIcon(ITEM_ICON_SIZE), Big.BoxPackFlags.NONE);
+        item.append(new Clutter.Text({ color: ITEM_NAME_COLOR,
+                                       font_name: "Sans 14px",
+                                       ellipsize: Pango.EllipsizeMode.END,
+                                       text: info.name }),
+                    Big.BoxPackFlags.NONE);
+
+        this.actor.append(item, Big.BoxPackFlags.NONE);
+        item.connect('button-press-event', Lang.bind(this, this._buttonPress));
+        item.connect('button-release-event', Lang.bind(this, this._buttonRelease));
+        item.connect('leave-event', Lang.bind(this, this._leave));
+        item.connect('enter-event', Lang.bind(this, this._enter));
+
+        if (!this.collapsedActor)
+            return;
+
+        item = new Big.Box({ width: COLLAPSED_WIDTH,
+                             height: COLLAPSED_WIDTH,
+                             padding: ITEM_PADDING,
+                             reactive: true });
+        item._info = info;
+        item.append(info.getIcon(COLLAPSED_WIDTH - 2 * ITEM_PADDING),
+                    Big.BoxPackFlags.NONE);
+
+        this.collapsedActor.append(item, Big.BoxPackFlags.NONE);
+        item.connect('button-press-event', Lang.bind(this, this._buttonPress));
+        item.connect('button-release-event', Lang.bind(this, this._buttonRelease));
+        item.connect('leave-event', Lang.bind(this, this._leave));
+        item.connect('enter-event', Lang.bind(this, this._enter));
+    },
+
+    clear : function() {
+        let children, i;
+
+        children = this.actor.get_children();
+        for (i = 0; i < children.length; i++)
+            children[i].destroy();
+
+        if (this.collapsedActor) {
+            children = this.collapsedActor.get_children();
+            for (i = 0; i < children.length; i++)
+                children[i].destroy();
+        }
+    },
+
+    _buttonPress : function(item) {
+        Clutter.grab_pointer(item);
+        item._buttonDown = true;
+        item._inItem = true;
+        this._updateItemState(item);
+        return true;
+    },
+
+    _leave : function(item, evt) {
+        if (evt.get_source() == item && item._buttonDown) {
+            item._inItem = false;
+            this._updateItemState(item);
+        }
+        return false;
+    },
+
+    _enter : function(item, evt) {
+        if (evt.get_source() == item && item._buttonDown) {
+            item._inItem = true;
+            this._updateItemState(item);
+        }
+        return false;
+    },
+
+    _buttonRelease : function(item) {
+        Clutter.ungrab_pointer(item);
+        item._buttonDown = false;
+        this._updateItemState(item);
+
+        if (item._inItem) {
+            item._info.launch();
+            this.activated();
+        }
+        return true;
+    },
+
+    _updateItemState : function(item) {
+        if (item._buttonDown && item._inItem) {
+            item.padding_top = item.padding_left = 2 * ITEM_PADDING;
+            item.padding_bottom = item.padding_right = 0;
+        } else
+            item.padding = ITEM_PADDING;
+    }
 };
 
 function AppsWidget() {
@@ -174,44 +277,16 @@ function AppsWidget() {
 }
 
 AppsWidget.prototype = {
-    __proto__ : Widget.prototype,
+    __proto__ : LauncherWidget.prototype,
 
     _init : function() {
         this.title = "Applications";
         this.actor = new Big.Box({ spacing: 2 });
         this.collapsedActor = new Big.Box({ spacing: 2});
 
-        let added = 0;
-        for (let i = 0; i < AppDisplay.DEFAULT_APPLICATIONS.length && added < 5; i++) {
-            let id = AppDisplay.DEFAULT_APPLICATIONS[i];
-            let appInfo = Gio.DesktopAppInfo.new(id);
-            if (!appInfo)
-                continue;
-
-            let box = new Big.Box({ padding: 2,
-                                    corner_radius: 2 });
-            let appDisplayItem = new AppDisplay.AppDisplayItem(
-                appInfo, EXPANDED_WIDTH);
-            hackUpDisplayItemColors(appDisplayItem);
-            box.append(appDisplayItem.actor, Big.BoxPackFlags.NONE);
-            this.actor.append(box, Big.BoxPackFlags.NONE);
-            appDisplayItem.connect('select', Lang.bind(this, this._itemActivated));
-
-            // Cheaty cheat cheat
-            let icon = new Clutter.Clone({ source: appDisplayItem._icon,
-                                           width: COLLAPSED_WIDTH,
-                                           height: COLLAPSED_WIDTH,
-                                           reactive: true });
-            this.collapsedActor.append(icon, Big.BoxPackFlags.NONE);
-            icon.connect('button-release-event', Lang.bind(this, function() { this._itemActivated(appDisplayItem); }));
-
-            added++;
-        }
-    },
-
-    _itemActivated: function(item) {
-        item.launch();
-        this.activated();
+        let apps = AppInfo.getMostUsedApps(5);
+        for (let i = 0; i < apps.length; i++)
+            this.addItem(apps[i]);
     }
 };
 
@@ -220,7 +295,7 @@ function DocsWidget() {
 }
 
 DocsWidget.prototype = {
-    __proto__ : Widget.prototype,
+    __proto__ : LauncherWidget.prototype,
 
     _init : function() {
         this.title = "Recent Docs";
@@ -232,62 +307,21 @@ DocsWidget.prototype = {
     },
 
     _recentChanged: function() {
-        let i, docId;
+        let i;
 
-        this._allItems = {};
+        this.clear();
+
+        let items = [];
         let docs = this._recentManager.get_items();
         for (i = 0; i < docs.length; i++) {
-            let docInfo = docs[i];
-            let docId = docInfo.get_uri();
-            // we use GtkRecentInfo URI as an item Id
-            this._allItems[docId] = docInfo;
+            let docInfo = new DocInfo.DocInfo (docs[i]);
+
+            if (docInfo.exists())
+                items.push(docInfo);
         }
 
-        this._matchedItems = [];
-        let docIdsToRemove = [];
-        for (docId in this._allItems) {
-            // this._allItems[docId].exists() checks if the resource still exists
-            if (this._allItems[docId].exists())
-                this._matchedItems.push(docId);
-            else
-                docIdsToRemove.push(docId);
-        }
-
-        for (docId in docIdsToRemove) {
-            delete this._allItems[docId];
-        }
-
-        this._matchedItems.sort(Lang.bind(this, function (a,b) { return this._compareItems(a,b); }));
-
-        let children = this.actor.get_children();
-        for (let c = 0; c < children.length; c++)
-            this.actor.remove_actor(children[c]);
-
-        for (i = 0; i < Math.min(this._matchedItems.length, 5); i++) {
-            let box = new Big.Box({ padding: 2,
-                                    corner_radius: 2 });
-            let docDisplayItem = new DocDisplay.DocDisplayItem(
-                this._allItems[this._matchedItems[i]], EXPANDED_WIDTH);
-            hackUpDisplayItemColors(docDisplayItem);
-            box.append(docDisplayItem.actor, Big.BoxPackFlags.NONE);
-            this.actor.append(box, Big.BoxPackFlags.NONE);
-            docDisplayItem.connect('select', Lang.bind(this, this._itemActivated));
-        }
-    },
-
-   _compareItems : function(itemIdA, itemIdB) {
-        let docA = this._allItems[itemIdA];
-        let docB = this._allItems[itemIdB];
-        if (docA.get_modified() > docB.get_modified())
-            return -1;
-        else if (docA.get_modified() < docB.get_modified())
-            return 1;
-        else
-            return 0;
-    },
-
-    _itemActivated: function(item) {
-        item.launch();
-        this.activated();
+        items.sort(function (a,b) { return b.lastVisited() - a.lastVisited(); });
+        for (i = 0; i < Math.min(items.length, 5); i++)
+            this.addItem(items[i]);
     }
 };
