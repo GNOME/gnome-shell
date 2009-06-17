@@ -1629,6 +1629,10 @@ _cogl_material_equal (CoglHandle material0_handle,
   CoglMaterial  *material1;
   GList         *l0, *l1;
 
+  if (material0_handle == material1_handle &&
+      material0_flush_options->flags == material1_flush_options->flags)
+    return TRUE;
+
   if (!(flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS))
     {
       g_critical ("FIXME: _cogl_material_equal doesn't yet support "
