@@ -128,6 +128,11 @@ cogl_program_use (CoglHandle handle)
   if (handle != COGL_INVALID_HANDLE && !cogl_is_program (handle))
     return;
 
+  /* The Cogl journal doesn't currently cope with the use of
+   * shaders so we have to flush all priitives whenever the
+   * current shader changes... */
+  _cogl_journal_flush ();
+
   if (handle == COGL_INVALID_HANDLE)
     gl_handle = 0;
   else

@@ -40,7 +40,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "pango", COGL_DEBUG_PANGO },
   { "rectangles", COGL_DEBUG_RECTANGLES },
   { "handle", COGL_DEBUG_HANDLE },
-  { "blend-strings", COGL_DEBUG_BLEND_STRINGS }
+  { "blend-strings", COGL_DEBUG_BLEND_STRINGS },
+  { "disable-batching", COGL_DEBUG_DISABLE_BATCHING }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);

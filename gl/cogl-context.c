@@ -69,9 +69,13 @@ cogl_create_context ()
 
   _context->journal = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
+  _context->journal_vbo = 0;
+  _context->journal_vbo_len = 0;
 
   _context->current_material = NULL;
   _context->current_material_flags = 0;
+  memset (&_context->current_material_flush_options,
+          0, sizeof (CoglMaterialFlushOptions));
   _context->current_layers = g_array_new (FALSE, FALSE,
                                           sizeof (CoglLayerInfo));
   _context->n_texcoord_arrays_enabled = 0;

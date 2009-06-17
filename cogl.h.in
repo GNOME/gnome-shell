@@ -760,6 +760,20 @@ void            cogl_flush_gl_state         (int      flags);
 /* private */
 void            _cogl_set_indirect_context  (gboolean indirect);
 
+/* private
+ *
+ * cogl_flush:
+ *
+ * As an optimization Cogl drawing functions may batch up primitives
+ * internally, so you need to call _cogl_flush to ensure that the
+ * drawing operations you have submitted for the current frame get
+ * flushed through to the driver and GPU.
+ *
+ * This must be called before issuing a swap buffers.
+ */
+void            _cogl_flush (void);
+
+
 G_END_DECLS
 
 #undef __COGL_H_INSIDE__
