@@ -374,7 +374,7 @@ AppDisplay.prototype = {
     _compareItems : function(itemIdA, itemIdB) {
         let appA = this._allItems[itemIdA];
         let appB = this._allItems[itemIdB];
-        return appA.get_name().localeCompare(appB.get_name());
+        return appA.name.localeCompare(appB.name);
     },
 
     // Checks if the item info can be a match for the search string by checking
@@ -391,7 +391,7 @@ AppDisplay.prototype = {
     },
 
     _isInfoMatchingMenu : function(itemInfo, search) {
-        let id = itemInfo.get_id();
+        let id = itemInfo.id;
         for (let i = 0; i < this._activeMenuApps.length; i++) {
             let activeId = this._activeMenuApps[i];
             if (activeId == id)
@@ -404,27 +404,27 @@ AppDisplay.prototype = {
         if (search == null || search == '')
             return true;
 
-        let name = itemInfo.get_name().toLowerCase();
+        let name = itemInfo.name.toLowerCase();
         if (name.indexOf(search) >= 0)
             return true;
 
-        let description = itemInfo.get_description();
+        let description = itemInfo.description;
         if (description) {
             description = description.toLowerCase();
             if (description.indexOf(search) >= 0)
                 return true;
         }
 
-        if (itemInfo.get_executable() == null) {
-            log("Missing an executable for " + itemInfo.get_name());
+        if (itemInfo.executable == null) {
+            log("Missing an executable for " + itemInfo.name);
         } else {
-            let exec = itemInfo.get_executable().toLowerCase();
+            let exec = itemInfo.executable.toLowerCase();
             if (exec.indexOf(search) >= 0)
                 return true;
         }
 
-        // we expect this._appCategories.hasOwnProperty(itemInfo.get_id()) to always be true here
-        let categories = this._appCategories[itemInfo.get_id()];
+        // we expect this._appCategories.hasOwnProperty(itemInfo.id) to always be true here
+        let categories = this._appCategories[itemInfo.id];
         for (let i = 0; i < categories.length; i++) {
             let category = categories[i].toLowerCase();
             if (category.indexOf(search) >= 0)

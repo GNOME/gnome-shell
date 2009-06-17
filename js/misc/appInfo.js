@@ -44,8 +44,10 @@ AppInfo.prototype = {
         if (!this._gAppInfo)
             throw new Error('Unknown appId ' + appId);
 
+        this.id = this._gAppInfo.get_id();
         this.name = this._gAppInfo.get_name();
         this.description = this._gAppInfo.get_description();
+        this.executable = this._gAppInfo.get_executable();
 
         this._gicon = this._gAppInfo.get_icon();
     },
