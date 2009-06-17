@@ -57,7 +57,7 @@
 /* XXX NB:
  * Our journal's vertex data is arranged as follows:
  * 4 vertices per quad:
- *    2 or GLfloats per position
+ *    2 or 3 GLfloats per position (3 when doing software transforms)
  *    4 RGBA GLubytes,
  *    2 GLfloats per tex coord * n_layers
  *
@@ -66,11 +66,21 @@
  * To avoid frequent changes in the stride of our vertex data we always pad
  * n_layers to be >= 2
  *
+ * When we are transforming quads in software we need to also track the z
+ * coordinate of transformed vertices.
+ *
  * So for a given number of layers this gets the stride in 32bit words:
  */
-#define MIN_LAYER_PADING 2
+#define SW_TRANSFORM      (!(cogl_debug_flags & \
+                             COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+#define POS_STRIDE        (SW_TRANSFORM ? 3 : 2) /* number of 32bit words */
+#define N_POS_COMPONENTS  POS_STRIDE
+#define COLOR_STRIDE      1 /* number of 32bit words */
+#define TEX_STRIDE        2 /* number of 32bit words */
+#define MIN_LAYER_PADING  2
 #define GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS(N_LAYERS) \
-  (2 + 1 + 2 * (N_LAYERS < MIN_LAYER_PADING ? MIN_LAYER_PADING : N_LAYERS))
+  (POS_STRIDE + COLOR_STRIDE + \
+   TEX_STRIDE * (N_LAYERS < MIN_LAYER_PADING ? MIN_LAYER_PADING : N_LAYERS))
 
 
 typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
@@ -85,8 +95,8 @@ typedef struct _CoglJournalFlushState
   /* Note: this is a pointer to handle fallbacks. It normally holds a VBO
    * offset, but when the driver doesn't support VBOs then this points into
    * our GArray of logged vertices. */
-  char *              vbo_offset;
-  GLuint              vertex_offset;
+  char *                   vbo_offset;
+  GLuint                   vertex_offset;
 #ifndef HAVE_COGL_GL
   CoglJournalIndices *indices;
   size_t              indices_type_size;
@@ -108,19 +118,26 @@ _cogl_journal_dump_quad_vertices (guint8 *data, int n_layers)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_print ("stride = %d (%d bytes)\n", (int)stride, (int)stride * 4);
+  g_print ("n_layers = %d; stride = %d; pos stride = %d; color stride = %d; "
+           "tex stride = %d; stride in bytes = %d\n",
+           n_layers, (int)stride, POS_STRIDE, COLOR_STRIDE,
+           TEX_STRIDE, (int)stride * 4);
 
   for (i = 0; i < 4; i++)
     {
       float *v = (float *)data + (i * stride);
-      guint8 *c = data + 8 + (i * stride * 4);
+      guint8 *c = data + (POS_STRIDE * 4) + (i * stride * 4);
       int j;
 
-      g_print ("v%d: x = %f, y = %f, rgba=0x%02X%02X%02X%02X",
-               i, v[0], v[1], c[0], c[1], c[2], c[3]);
+      if (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)
+        g_print ("v%d: x = %f, y = %f, rgba=0x%02X%02X%02X%02X",
+                 i, v[0], v[1], c[0], c[1], c[2], c[3]);
+      else
+        g_print ("v%d: x = %f, y = %f, z = %f, rgba=0x%02X%02X%02X%02X",
+                 i, v[0], v[1], v[2], c[0], c[1], c[2], c[3]);
       for (j = 0; j < n_layers; j++)
         {
-          float *t = v + 3 + 2 * j;
+          float *t = v + POS_STRIDE + COLOR_STRIDE + TEX_STRIDE * j;
           g_print (", tx%d = %f, ty%d = %f", j, t[0], j, t[1]);
         }
       g_print ("\n");
@@ -181,7 +198,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING:    modelview batch len = %d\n", batch_len);
 
-  GE (glLoadMatrixf ((GLfloat *)&batch_start->model_view));
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+    GE (glLoadMatrixf ((GLfloat *)&batch_start->model_view));
 
 #ifdef HAVE_COGL_GL
 
@@ -248,6 +266,7 @@ compare_entry_modelviews (CoglJournalEntry *entry0,
    * if the age has increased, and if so record the change as a
    * boolean in the journal.
    */
+
   if (memcmp (&entry0->model_view, &entry1->model_view,
               sizeof (GLfloat) * 16) == 0)
     return TRUE;
@@ -283,12 +302,18 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
   enable_flags |= COGL_ENABLE_COLOR_ARRAY;
   cogl_enable (enable_flags);
 
-  batch_and_call (batch_start,
-                  batch_len,
-                  compare_entry_modelviews,
-                  _cogl_journal_flush_modelview_and_entries,
-                  data);
-
+  /* If we haven't transformed the quads in software then we need to also break
+   * up batches according to changes in the modelview matrix... */
+  if (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)
+    {
+      batch_and_call (batch_start,
+                      batch_len,
+                      compare_entry_modelviews,
+                      _cogl_journal_flush_modelview_and_entries,
+                      data);
+    }
+  else
+    _cogl_journal_flush_modelview_and_entries (batch_start, batch_len, data);
 }
 
 static gboolean
@@ -332,14 +357,16 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
       /* XXX NB:
        * Our journal's vertex data is arranged as follows:
        * 4 vertices per quad:
-       *    2 GLfloats per position
+       *    2 or 3 GLfloats per position (3 when doing software transforms)
        *    4 RGBA GLubytes,
        *    2 GLfloats per tex coord * n_layers
        * (though n_layers may be padded; see definition of
        *  GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details)
        */
       GE (glTexCoordPointer (2, GL_FLOAT, state->stride,
-                             (void *)(state->vbo_offset + 12 + 8 * i)));
+                             (void *)(state->vbo_offset +
+                                      (POS_STRIDE + COLOR_STRIDE) * 4 +
+                                      TEX_STRIDE * 4 * i)));
     }
   prev_n_texcoord_arrays_enabled =
     ctx->n_texcoord_arrays_enabled;
@@ -389,7 +416,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   /* XXX NB:
    * Our journal's vertex data is arranged as follows:
    * 4 vertices per quad:
-   *    2 GLfloats per position
+   *    2 or 3 GLfloats per position (3 when doing software transforms)
    *    4 RGBA GLubytes,
    *    2 GLfloats per tex coord * n_layers
    * (though n_layers may be padded; see definition of
@@ -399,9 +426,10 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
   stride *= sizeof (GLfloat);
   state->stride = stride;
 
-  GE (glVertexPointer (2, GL_FLOAT, stride, (void *)state->vbo_offset));
+  GE (glVertexPointer (N_POS_COMPONENTS, GL_FLOAT, stride,
+                       (void *)state->vbo_offset));
   GE (glColorPointer (4, GL_UNSIGNED_BYTE, stride,
-                      (void *)(state->vbo_offset + 8)));
+                      (void *)(state->vbo_offset + (POS_STRIDE * 4))));
 
 #ifndef HAVE_COGL_GL
   indices_handle = cogl_vertex_buffer_indices_get_for_quads (needed_indices);
@@ -540,19 +568,36 @@ _cogl_journal_flush (void)
    * we need to dirty our client side matrix stack cache... */
   _cogl_current_matrix_state_dirty ();
 
+  /* If we have transformed all our quads at log time then the whole journal
+   * then we ensure no further model transform is applied by loading the
+   * identity matrix here...*/
+  if (!(cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+    {
+      GE (glMatrixMode (GL_MODELVIEW));
+      glLoadIdentity ();
+    }
+
   /* batch_and_call() batches a list of journal entries according to some
    * given criteria and calls a callback once for each determined batch.
    *
-   * The process of flushing the journal is done by splitting the entries
-   * by three broad criteria:
-   * 1) We split the entries according the number of material layers.
-   *      Each time the number of material layers changes, then the stride
-   *      changes, so we need to call gl{Vertex,Color,Texture}Pointer to
-   *      inform GL of new VO offsets.
-   * 2) We then split according to compatible Cogl materials.
+   * The process of flushing the journal is staggered to reduce the amount
+   * of driver/GPU state changes necessary:
+   * 1) We split the entries according to the stride of the vertices:
+   *      Each time the stride of our vertex data changes we need to call
+   *      gl{Vertex,Color}Pointer to inform GL of new VBO offsets.
+   *      Currently the only thing that affects the stride of our vertex data
+   *      is the number of material layers.
+   * 2) We split the entries explicitly by the number of material layers:
+   *      We pad our vertex data when the number of layers is < 2 so that we
+   *      can minimize changes in stride. Each time the number of layers
+   *      changes we need to call glTexCoordPointer to inform GL of new VBO
+   *      offsets.
+   * 3) We then split according to compatible Cogl materials:
    *      This is where we flush material state
-   * 3) Finally we split according to modelview matrix changes.
+   * 4) Finally we split according to modelview matrix changes:
    *      This is when we finally tell GL to draw something.
+   *      Note: Splitting by modelview changes is skipped when are doing the
+   *      vertex transformation in software at log time.
    */
   batch_and_call ((CoglJournalEntry *)ctx->journal->data, /* first entry */
                   ctx->journal->len, /* max number of entries to consider */
@@ -612,7 +657,7 @@ _cogl_journal_log_quad (float       x_1,
   next_vert = ctx->logged_vertices->len;
   g_array_set_size (ctx->logged_vertices, next_vert + 4 * stride);
   v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
-  c = (GLubyte *)(v + 2);
+  c = (GLubyte *)(v + POS_STRIDE);
 
   /* XXX: All the jumping around to fill in this strided buffer doesn't
    * seem ideal. */
@@ -630,19 +675,47 @@ _cogl_journal_log_quad (float       x_1,
       memcpy (c, src_c, 4);
     }
 
-  v[0] = x_1; v[1] = y_1;
-  v += stride;
-  v[0] = x_1; v[1] = y_2;
-  v += stride;
-  v[0] = x_2; v[1] = y_2;
-  v += stride;
-  v[0] = x_2; v[1] = y_1;
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+    {
+      v[0] = x_1; v[1] = y_1;
+      v += stride;
+      v[0] = x_1; v[1] = y_2;
+      v += stride;
+      v[0] = x_2; v[1] = y_2;
+      v += stride;
+      v[0] = x_2; v[1] = y_1;
+    }
+  else
+    {
+      CoglMatrix  mv;
+      float       x, y, z, w;
+
+      cogl_get_modelview_matrix (&mv);
+
+      x = x_1, y = y_1, z = 0; w = 1;
+      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
+      v[0] = x; v[1] = y; v[2] = z;
+      v += stride;
+      x = x_1, y = y_2, z = 0; w = 1;
+      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
+      v[0] = x; v[1] = y; v[2] = z;
+      v += stride;
+      x = x_2, y = y_2, z = 0; w = 1;
+      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
+      v[0] = x; v[1] = y; v[2] = z;
+      v += stride;
+      x = x_2, y = y_1, z = 0; w = 1;
+      cogl_matrix_transform_point (&mv, &x, &y, &z, &w);
+      v[0] = x; v[1] = y; v[2] = z;
+    }
 
   for (i = 0; i < n_layers; i++)
     {
-      /* NB: See note at top about vertex buffer layout: */
-      GLfloat *t = &g_array_index (ctx->logged_vertices,
-                                   GLfloat, next_vert + 3 + 2 * i);
+      /* XXX: See definition of GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details
+       * about how we pack our vertex data */
+      GLfloat *t = &g_array_index (ctx->logged_vertices, GLfloat,
+                                   next_vert +  POS_STRIDE +
+                                   COLOR_STRIDE + TEX_STRIDE * i);
 
       t[0] = tex_coords[0]; t[1] = tex_coords[1];
       t += stride;
@@ -677,7 +750,8 @@ _cogl_journal_log_quad (float       x_1,
   entry->flush_options.fallback_layers = fallback_layers;
   entry->flush_options.disable_layers = disable_layers;
   entry->flush_options.layer0_override_texture = layer0_override_texture;
-  cogl_get_modelview_matrix (&entry->model_view);
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+    cogl_get_modelview_matrix (&entry->model_view);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING
                   || cogl_debug_flags & COGL_DEBUG_RECTANGLES))
