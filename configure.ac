@@ -503,7 +503,6 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
 
         # XINPUT (optional) - FIXME this is wrong
         xinput=no
-        AC_MSG_CHECKING([for XINPUT extension])
         AC_ARG_ENABLE([xinput],
                       [AS_HELP_STRING([--enable-xinput], [Use the XINPUT X extension])],
                       [
@@ -543,7 +542,16 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
                                     [Define to 1 if we have XGetExtensionVersion])
                         ])
 
+                  #Seems some distros ship with the header but not the symbol
+                  really_have_xinput_query_version=no   
                   AS_IF([test "x$have_xquery_input_version" = "xyes"],
+                        [
+                         AC_CHECK_LIB(Xi, [XQueryInputVersion],
+                                      [really_have_xinput_query_version=yes],
+                                      [])
+                        ])
+
+                  AS_IF([test "x$really_have_xquery_input_version" = "xyes"],
                         [
                           AC_DEFINE([HAVE_XQUERY_INPUT_VERSION],
                                     [1],
@@ -553,11 +561,10 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
                   X11_LIBS="$X11_LIBS -lXi"
                   X11_PC_FILES="$X11_PC_FILES xi"
 
-                  AC_MSG_RESULT([found])
                 ],
 
                 [no],
-                [AC_MSG_RESULT([not found or disabled])],
+                [],
         )
 
         # X11-specific tests are enabled conditionally

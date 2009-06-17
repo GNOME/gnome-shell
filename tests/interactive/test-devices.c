@@ -33,6 +33,8 @@ test_devices_main (int argc, char **argv)
   TestDevicesApp *app = NULL;
   ClutterColor stage_color = { 0x61, 0x64, 0x8c, 0xff };
 
+  g_type_init();
+
   clutter_x11_enable_xinput ();
   clutter_init (&argc, &argv);
 

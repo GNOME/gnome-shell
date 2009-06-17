@@ -182,7 +182,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
                             KeyPressMask | KeyReleaseMask |
                             EnterWindowMask | LeaveWindowMask |
                             PropertyChangeMask);
-#ifdef USE_XINPUT          
+#ifdef HAVE_XINPUT          
               _clutter_x11_select_events (stage_x11->xwin);
 #endif
             }
