@@ -360,3 +360,10 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
   if (gl_mode != GL_MODELVIEW)
     GE (glMatrixMode (GL_MODELVIEW));
 }
+
+void
+_cogl_matrix_stack_dirty (CoglMatrixStack *stack)
+{
+  stack->flushed_state = NULL;
+}
+

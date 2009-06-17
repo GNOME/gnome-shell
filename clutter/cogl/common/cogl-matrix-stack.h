@@ -76,5 +76,6 @@ void             _cogl_matrix_stack_set           (CoglMatrixStack  *stack,
                                                    const CoglMatrix *matrix);
 void             _cogl_matrix_stack_flush_to_gl   (CoglMatrixStack  *stack,
                                                    GLenum            gl_mode);
+void             _cogl_matrix_stack_dirty         (CoglMatrixStack  *stack);
 
 #endif /* __COGL_MATRIX_STACK_H */
