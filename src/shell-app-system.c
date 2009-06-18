@@ -299,3 +299,19 @@ shell_app_system_get_all_settings (ShellAppSystem *monitor)
 {
   return monitor->priv->cached_setting_ids;
 }
+
+/**
+ * shell_app_system_get_default:
+ *
+ * Return Value: (transfer none): The global #ShellAppSystem singleton
+ */
+ShellAppSystem *
+shell_app_system_get_default ()
+{
+  static ShellAppSystem *instance = NULL;
+
+  if (instance == NULL)
+    instance = g_object_new (SHELL_TYPE_APP_SYSTEM, NULL);
+
+  return instance;
+}

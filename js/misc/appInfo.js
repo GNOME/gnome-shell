@@ -104,7 +104,7 @@ function getAppInfo(appId) {
 //
 // Return value: the list of #AppInfo
 function getMostUsedApps(count) {
-    let appMonitor = new Shell.AppMonitor();
+    let appMonitor = Shell.AppMonitor.get_default();
 
     // Ask for more apps than we need, since the list of recently used
     // apps might contain an app we don't have a desktop file for

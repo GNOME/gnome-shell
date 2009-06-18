@@ -912,3 +912,19 @@ on_enable_monitoring_key_changed (GConfClient *client,
 {
   update_enable_monitoring ((ShellAppMonitor *) monitor);
 }
+
+/**
+ * shell_app_monitor_get_default:
+ *
+ * Return Value: (transfer none): The global #ShellAppMonitor instance
+ */
+ShellAppMonitor *
+shell_app_monitor_get_default ()
+{
+  static ShellAppMonitor *instance;
+
+  if (instance == NULL)
+    instance = g_object_new (SHELL_TYPE_APP_MONITOR, NULL);
+
+  return instance;
+}

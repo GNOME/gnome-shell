@@ -18,32 +18,6 @@ ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
 
-// TODO - move this into GConf once we're not a plugin anymore
-// but have taken over metacity
-// This list is taken from GNOME Online popular applications
-// http://online.gnome.org/applications
-// but with nautilus removed (since it should already be running)
-// and evince, totem, and gnome-file-roller removed (since they're
-// usually started by opening documents, not by opening the app
-// directly)
-const DEFAULT_APPLICATIONS = [
-    'mozilla-firefox.desktop',
-    'gnome-terminal.desktop',
-    'evolution.desktop',
-    'gedit.desktop',
-    'mozilla-thunderbird.desktop',
-    'rhythmbox.desktop',
-    'epiphany.desktop',
-    'xchat.desktop',
-    'openoffice.org-1.9-writer.desktop',
-    'emacs.desktop',
-    'gnome-system-monitor.desktop',
-    'openoffice.org-1.9-calc.desktop',
-    'eclipse.desktop',
-    'openoffice.org-1.9-impress.desktop',
-    'vncviewer.desktop'
-];
-
 const MAX_ITEMS = 30;
 
 /* This class represents a single display item containing information about an application.
@@ -196,8 +170,8 @@ AppDisplay.prototype = {
         // map<itemId, array of category names>
         this._appCategories = {};
 
-        this._appMonitor = new Shell.AppMonitor();
-        this._appSystem = new Shell.AppSystem();
+        this._appMonitor = Shell.AppMonitor.get_default();
+        this._appSystem = Shell.AppSystem.get_default();
         this._appsStale = true;
         this._appSystem.connect('changed', Lang.bind(this, function(appSys) {
             this._appsStale = true;

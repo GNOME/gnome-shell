@@ -33,7 +33,7 @@ struct _ShellAppMonitorClass
 
 GType shell_app_monitor_get_type (void) G_GNUC_CONST;
 
-ShellAppMonitor* shell_app_monitor_new(void);
+ShellAppMonitor* shell_app_monitor_get_default(void);
 
 /* Get the most popular applications for a given activity */
 GSList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
