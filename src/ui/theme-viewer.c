@@ -131,26 +131,27 @@ normal_contents (void)
    */
   toolbar = gtk_toolbar_new ();
 
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_NEW,
-                            _("Open another one of these windows"),
-                            NULL,
-                            NULL, NULL,
-                            -1);  /* -1 means "append" */
-  
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            _("This is a demo button with an 'open' icon"),
-                            NULL,
-                            NULL, NULL,
-                            -1);  /* -1 means "append" */
+  GtkToolItem *newButton = gtk_tool_button_new_from_stock(GTK_STOCK_NEW);
+  gtk_tool_item_set_tooltip_text(newButton,
+				 "Open another one of these windows");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     newButton,
+		     -1); /*-1 means append to end of toolbar*/
 
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_QUIT,
-                            _("This is a demo button with a 'quit' icon"),
-                            NULL,
-                            NULL, NULL,
-                            -1);  /* -1 means "append" */
+  GtkToolItem *openButton = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
+  gtk_tool_item_set_tooltip_text(openButton,
+				 "This is a demo button with an \'open\' icon");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     openButton,
+		     -1); /*-1 means append to end of toolbar*/
+
+  GtkToolItem *quitButton = gtk_tool_button_new_from_stock(GTK_STOCK_QUIT);
+  gtk_tool_item_set_tooltip_text(quitButton,
+				 "This is a demo button with a \'quit\' icon");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     quitButton,
+		     -1); /*-1 means append to end of toolbar*/
+
 
   handlebox = gtk_handle_box_new ();
 
