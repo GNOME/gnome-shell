@@ -381,6 +381,7 @@ Dash.prototype = {
         let itemDetailsAvailableWidth = this._detailsWidth - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
         let itemDetailsAvailableHeight = detailsHeight - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
 
+        this._appDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
         this._docDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
         this._resultsAppsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
         this._resultsDocsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
@@ -397,11 +398,8 @@ Dash.prototype = {
             // item in the app display is selected, we need to make sure that
             // no item in the doc display has the selection.
             me._docDisplay.unsetSelected();
-            me._docDisplay.hidePreview();
             me._resultsDocsSection.display.unsetSelected();
-            me._resultsDocsSection.display.hidePreview();
             me._resultsAppsSection.display.unsetSelected();
-            me._resultsAppsSection.display.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
@@ -414,11 +412,8 @@ Dash.prototype = {
             // item in the doc display is selected, we need to make sure that
             // no item in the app display has the selection.
             me._appDisplay.unsetSelected(); 
-            me._appDisplay.hidePreview();
             me._resultsDocsSection.display.unsetSelected();
-            me._resultsDocsSection.display.hidePreview();
             me._resultsAppsSection.display.unsetSelected();
-            me._resultsAppsSection.display.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
@@ -428,11 +423,8 @@ Dash.prototype = {
         });
         this._resultsDocsSection.display.connect('selected', function(resultsDocDisplay) {
             me._appDisplay.unsetSelected(); 
-            me._appDisplay.hidePreview(); 
             me._docDisplay.unsetSelected();
-            me._docDisplay.hidePreview();
             me._resultsAppsSection.display.unsetSelected();
-            me._resultsAppsSection.display.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
@@ -442,11 +434,8 @@ Dash.prototype = {
         });
         this._resultsAppsSection.display.connect('selected', function(resultsAppDisplay) {
             me._appDisplay.unsetSelected(); 
-            me._appDisplay.hidePreview(); 
             me._docDisplay.unsetSelected();
-            me._docDisplay.hidePreview();
             me._resultsDocsSection.display.unsetSelected();
-            me._resultsDocsSection.display.hidePreview();
             if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
