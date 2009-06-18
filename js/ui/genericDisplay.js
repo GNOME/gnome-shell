@@ -30,7 +30,8 @@ PREVIEW_BOX_BACKGROUND_COLOR.from_pixel(0xADADADf0);
 
 const ITEM_DISPLAY_HEIGHT = 50;
 const ITEM_DISPLAY_ICON_SIZE = 48;
-const ITEM_DISPLAY_PADDING = 1;
+const ITEM_DISPLAY_PADDING_TOP = 1;
+const ITEM_DISPLAY_PADDING_RIGHT = 2;
 const DEFAULT_COLUMN_GAP = 6;
 const LABEL_HEIGHT = 16;
 
@@ -41,6 +42,8 @@ const PREVIEW_BOX_CORNER_RADIUS = 10;
 // how far relative to the full item width the preview box should be placed
 const PREVIEW_PLACING = 3/4;
 const PREVIEW_DETAILS_MIN_WIDTH = PREVIEW_ICON_SIZE * 2;
+
+const INFORMATION_BUTTON_SIZE = 16;
 
 /* This is a virtual class that represents a single display item containing
  * a name, a description, and an icon. It allows selecting an item and represents 
@@ -78,17 +81,20 @@ GenericDisplayItem.prototype = {
                                  x: 0, y: 0,
                                  width: availableWidth, height: ITEM_DISPLAY_HEIGHT });
         this.actor.add_actor(this._bg);
-
-        this._informationLink = new Link.Link({ color: ITEM_DISPLAY_NAME_COLOR,
-                                                font_name: "Sans Bold 14px",
-                                                text: "(i)",
-                                                height: LABEL_HEIGHT,
-                                                y: ITEM_DISPLAY_HEIGHT / 2 - LABEL_HEIGHT / 2});
-        this._informationLink.actor.x = availableWidth - ITEM_DISPLAY_PADDING - this._informationLink.actor.width;
-
-        this._informationLink.actor.hide();
-        this.actor.add_actor(this._informationLink.actor);
         
+        this._informationButton = new Clutter.Texture({ x: availableWidth - ITEM_DISPLAY_PADDING_RIGHT - INFORMATION_BUTTON_SIZE,
+                                                      y: ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2,
+                                                      width: INFORMATION_BUTTON_SIZE,
+                                                      height: INFORMATION_BUTTON_SIZE,
+                                                      reactive: true
+                                                    });
+        let global = Shell.Global.get();
+        this._informationButton.set_from_file(global.imagedir + "info.svg");
+        this._informationButton.connect('button-release-event', this.select);
+        this._informationButton.hide();
+        this.actor.add_actor(this._informationButton);
+        this._informationButton.lower_bottom();
+
         this._name = null;
         this._description = null;
         this._icon = null;
@@ -129,9 +135,9 @@ GenericDisplayItem.prototype = {
 
     //// Public methods ////
 
-    // Shows the information link when the item was drawn under the mouse pointer.
+    // Shows the information button when the item was drawn under the mouse pointer.
     onDrawnUnderPointer: function() {
-        this._informationLink.actor.show();  
+        this._informationButton.show();  
     },
 
     // Highlights the item by setting a different background color than the default 
@@ -255,14 +261,14 @@ GenericDisplayItem.prototype = {
         this._icon = iconActor;
         this.actor.add_actor(this._icon);
 
-        let textWidth = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4);
+        let textWidth = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4) - INFORMATION_BUTTON_SIZE - ITEM_DISPLAY_PADDING_RIGHT;
         this._name = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
                                         font_name: "Sans 14px",
                                         width: textWidth,
                                         ellipsize: Pango.EllipsizeMode.END,
                                         text: nameText,
                                         x: ITEM_DISPLAY_ICON_SIZE + 4,
-                                        y: ITEM_DISPLAY_PADDING });
+                                        y: ITEM_DISPLAY_PADDING_TOP });
         this.actor.add_actor(this._name);
         this._description = new Clutter.Text({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
                                                font_name: "Sans 12px",
@@ -290,21 +296,21 @@ GenericDisplayItem.prototype = {
 
     //// Private methods ////
 
-    // Performs actions on mouse enter event for the item. Currently, shows the information link for the item.
+    // Performs actions on mouse enter event for the item. Currently, shows the information button for the item.
     _onEnter: function(actor, event) {
-        this._informationLink.actor.show();
+        this._informationButton.show();
     },
 
-    // Performs actions on mouse leave event for the item. Currently, hides the information link for the item.
+    // Performs actions on mouse leave event for the item. Currently, hides the information button for the item.
     _onLeave: function(actor, event) {
-        this._informationLink.actor.hide();
+        this._informationButton.hide();
     },
 
-    // Hides the information link once the item starts being dragged.
+    // Hides the information button once the item starts being dragged.
     _onDragBegin : function (draggable, time) {
         // For some reason, we are not getting leave-event signal when we are dragging an item,
         // so we should remove the link manually.
-        this._informationLink.actor.hide();
+        this._informationButton.hide();
     } 
 };
 
