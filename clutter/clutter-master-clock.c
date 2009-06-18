@@ -212,7 +212,9 @@ clutter_clock_prepare (GSource *source,
   ClutterMasterClock *master_clock = clock_source->master_clock;
   int delay;
 
+  clutter_threads_enter ();
   delay = master_clock_next_frame_delay (master_clock);
+  clutter_threads_leave ();
 
   *timeout = delay;
 
@@ -226,7 +228,9 @@ clutter_clock_check (GSource *source)
   ClutterMasterClock *master_clock = clock_source->master_clock;
   int delay;
 
+  clutter_threads_enter ();
   delay = master_clock_next_frame_delay (master_clock);
+  clutter_threads_leave ();
 
   return delay == 0;
 }
@@ -242,6 +246,8 @@ clutter_clock_dispatch (GSource     *source,
   GSList *stages, *l;
 
   CLUTTER_NOTE (SCHEDULER, "Master clock [tick]");
+
+  clutter_threads_enter ();
 
   /* Get the time to use for this frame.
    */
@@ -273,6 +279,8 @@ clutter_clock_dispatch (GSource     *source,
   g_slist_free (stages);
 
   master_clock->prev_tick = master_clock->cur_tick;
+
+  clutter_threads_leave ();
 
   return TRUE;
 }
