@@ -825,6 +825,7 @@ do_appwindow (void)
   GtkTextBuffer *buffer;
   GtkAccelGroup *accel_group;      
   GtkItemFactory *item_factory;
+
       
   /* Create the toplevel window
    */
@@ -905,45 +906,62 @@ do_appwindow (void)
    */
   toolbar = gtk_toolbar_new ();
 
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_NEW,
-                            "Open another one of these windows",
-                            NULL,
-                            G_CALLBACK (do_appwindow),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
+  GtkToolItem *newButton = gtk_tool_button_new_from_stock(GTK_STOCK_NEW);
+  gtk_tool_item_set_tooltip_text(newButton,
+				 "Open another one of these windows");
+  g_signal_connect(G_OBJECT(newButton),
+		   "clicked",
+		   G_CALLBACK(do_appwindow),
+		   window);
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     newButton,
+		     -1); /*-1 means append to end of toolbar*/
   
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            "This is a demo button that locks up the demo",
-                            NULL,
-                            G_CALLBACK (sleep_cb),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
+			    
+  GtkToolItem *lockButton = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
+  gtk_tool_item_set_tooltip_text(lockButton,
+				 "This is a demo button that locks up the demo");
+  g_signal_connect(G_OBJECT(lockButton),
+		   "clicked",
+		   G_CALLBACK(sleep_cb),
+		   window);
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     lockButton,
+		     -1); /*-1 means append to end of toolbar*/
+  
 
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            "This is a demo button that toggles window decorations",
-                            NULL,
-                            G_CALLBACK (toggle_decorated_cb),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
-  
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            "This is a demo button that locks the aspect ratio using a hint",
-                            NULL,
-                            G_CALLBACK (toggle_aspect_ratio),
-                            contents, /* user data for callback */
-                            -1);  /* -1 means "append" */
-  
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_QUIT,
-                            "This is a demo button with a 'quit' icon",
-                            NULL,
-                            G_CALLBACK (clicked_toolbar_cb),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
+  GtkToolItem *decoButton = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
+  gtk_tool_item_set_tooltip_text(decoButton,
+				 "This is a demo button that toggles window decorations");
+  g_signal_connect(G_OBJECT(decoButton),
+		   "clicked",
+		   G_CALLBACK(toggle_decorated_cb),
+		   window);
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     decoButton,
+		     -1); /*-1 means append to end of toolbar*/
+
+  GtkToolItem *lockRatioButton = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
+  gtk_tool_item_set_tooltip_text(lockRatioButton,
+				 "This is a demo button that locks the aspect ratio using a hint");
+  g_signal_connect(G_OBJECT(lockRatioButton),
+		   "clicked",
+		   G_CALLBACK(toggle_aspect_ratio),
+		   window);
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     lockRatioButton,
+		     -1); /*-1 means append to end of toolbar*/
+
+  GtkToolItem *quitButton = gtk_tool_button_new_from_stock(GTK_STOCK_QUIT);
+  gtk_tool_item_set_tooltip_text(quitButton,
+				 "This is a demo button with a 'quit' icon");
+  g_signal_connect(G_OBJECT(quitButton),
+		   "clicked",
+		   G_CALLBACK(clicked_toolbar_cb),
+		   window);
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),
+		     quitButton,
+		     -1); /*-1 means append to end of toolbar*/
 
   handlebox = gtk_handle_box_new ();
 
