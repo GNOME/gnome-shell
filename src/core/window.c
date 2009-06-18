@@ -2307,6 +2307,75 @@ window_would_be_covered (const MetaWindow *newbie)
   return FALSE; /* none found */
 }
 
+static gboolean
+map_frame (MetaWindow *window)
+{
+  if (window->frame && !window->frame->mapped)
+    {
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Frame actually needs map\n");
+      window->frame->mapped = TRUE;
+      meta_ui_map_frame (window->screen->ui, window->frame->xwindow);
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
+static gboolean
+unmap_frame (MetaWindow *window)
+{
+  if (window->frame && window->frame->mapped)
+    {
+      meta_topic (META_DEBUG_WINDOW_STATE, "Frame actually needs unmap\n");
+      window->frame->mapped = FALSE;
+      meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
+static gboolean
+map_client_window (MetaWindow *window)
+{
+  if (!window->mapped)
+    {
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "%s actually needs map\n", window->desc);
+      window->mapped = TRUE;
+      meta_error_trap_push (window->display);
+      XMapWindow (window->display->xdisplay, window->xwindow);
+      meta_error_trap_pop (window->display, FALSE);
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
+static gboolean
+unmap_client_window (MetaWindow *window,
+                     const char *reason)
+{
+  if (window->mapped)
+    {
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "%s actually needs unmap%s\n",
+                  window->desc, reason);
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Incrementing unmaps_pending on %s%s\n",
+                  window->desc, reason);
+      window->mapped = FALSE;
+      window->unmaps_pending += 1;
+      meta_error_trap_push (window->display);
+      XUnmapWindow (window->display->xdisplay, window->xwindow);
+      meta_error_trap_pop (window->display, FALSE);
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
 /* XXX META_EFFECT_*_MAP */
 void
 meta_window_show (MetaWindow *window)
@@ -2456,30 +2525,12 @@ meta_window_show (MetaWindow *window)
 
   /* Shaded means the frame is mapped but the window is not */
 
-  if (window->frame && !window->frame->mapped)
-    {
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "Frame actually needs map\n");
-      window->frame->mapped = TRUE;
-      meta_ui_map_frame (window->screen->ui, window->frame->xwindow);
-      did_show = TRUE;
-    }
+  if (map_frame (window))
+    did_show = TRUE;
 
   if (window->shaded)
     {
-      if (window->mapped)
-        {
-          meta_topic (META_DEBUG_WINDOW_STATE,
-                      "%s actually needs unmap (shaded)\n", window->desc);
-          meta_topic (META_DEBUG_WINDOW_STATE,
-                      "Incrementing unmaps_pending on %s for shade\n",
-                      window->desc);
-          window->mapped = FALSE;
-          window->unmaps_pending += 1;
-          meta_error_trap_push (window->display);
-          XUnmapWindow (window->display->xdisplay, window->xwindow);
-          meta_error_trap_pop (window->display, FALSE);
-        }
+      unmap_client_window (window, " (shading)");
 
       if (!window->iconic)
         {
@@ -2489,16 +2540,8 @@ meta_window_show (MetaWindow *window)
     }
   else
     {
-      if (!window->mapped)
-        {
-          meta_topic (META_DEBUG_WINDOW_STATE,
-                      "%s actually needs map\n", window->desc);
-          window->mapped = TRUE;
-          meta_error_trap_push (window->display);
-          XMapWindow (window->display->xdisplay, window->xwindow);
-          meta_error_trap_pop (window->display, FALSE);
-          did_show = TRUE;
-        }
+      if (map_client_window (window))
+        did_show = TRUE;
 
       if (meta_prefs_get_live_hidden_windows ())
         {
@@ -2607,20 +2650,11 @@ meta_window_hide (MetaWindow *window)
       if (window->hidden)
         return;
 
-      if (!window->mapped)
-	{
-	  Window top_level_window;
-	  meta_topic (META_DEBUG_WINDOW_STATE,
-                      "%s actually needs map\n", window->desc);
-          window->mapped = TRUE;
-          meta_error_trap_push (window->display);
-	  if (window->frame)
-	    top_level_window = window->frame->xwindow;
-	  else
-	    top_level_window = window->xwindow;
-	  XMapWindow (window->display->xdisplay, top_level_window);
-          meta_error_trap_pop (window->display, FALSE);
-	}
+      /* If this is the first time that we've calculating the showing
+       * state of the window, the frame and client window might not
+       * yet be mapped, so we need to map them now */
+      map_frame (window);
+      map_client_window (window);
 
       meta_stack_freeze (window->screen->stack);
       window->hidden = TRUE;
@@ -2641,28 +2675,13 @@ meta_window_hide (MetaWindow *window)
       meta_compositor_unmap_window (window->display->compositor,
 				    window);
 
-      if (window->frame && window->frame->mapped)
-        {
-          meta_topic (META_DEBUG_WINDOW_STATE, "Frame actually needs unmap\n");
-          window->frame->mapped = FALSE;
-          meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
-          did_hide = TRUE;
-        }
-
-      if (window->mapped)
-        {
-          meta_topic (META_DEBUG_WINDOW_STATE,
-                      "%s actually needs unmap\n", window->desc);
-          meta_topic (META_DEBUG_WINDOW_STATE,
-                      "Incrementing unmaps_pending on %s for hide\n",
-                      window->desc);
-          window->mapped = FALSE;
-          window->unmaps_pending += 1;
-          meta_error_trap_push (window->display);
-          XUnmapWindow (window->display->xdisplay, window->xwindow);
-          meta_error_trap_pop (window->display, FALSE);
-          did_hide = TRUE;
-        }
+      /* Unmapping the frame is enough to make the window disappear,
+       * but we need to hide the window itself so the client knows
+       * it has been hidden */
+      if (unmap_frame (window))
+        did_hide = TRUE;
+      if (unmap_client_window (window, " (hiding)"))
+        did_hide = TRUE;
     }
 
   if (!window->iconic)
