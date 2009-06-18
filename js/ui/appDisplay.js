@@ -18,32 +18,6 @@ ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
 
-// TODO - move this into GConf once we're not a plugin anymore
-// but have taken over metacity
-// This list is taken from GNOME Online popular applications
-// http://online.gnome.org/applications
-// but with nautilus removed (since it should already be running)
-// and evince, totem, and gnome-file-roller removed (since they're
-// usually started by opening documents, not by opening the app
-// directly)
-const DEFAULT_APPLICATIONS = [
-    'mozilla-firefox.desktop',
-    'gnome-terminal.desktop',
-    'evolution.desktop',
-    'gedit.desktop',
-    'mozilla-thunderbird.desktop',
-    'rhythmbox.desktop',
-    'epiphany.desktop',
-    'xchat.desktop',
-    'openoffice.org-1.9-writer.desktop',
-    'emacs.desktop',
-    'gnome-system-monitor.desktop',
-    'openoffice.org-1.9-calc.desktop',
-    'eclipse.desktop',
-    'openoffice.org-1.9-impress.desktop',
-    'vncviewer.desktop'
-];
-
 const MAX_ITEMS = 30;
 
 /* This class represents a single display item containing information about an application.
@@ -196,8 +170,8 @@ AppDisplay.prototype = {
         // map<itemId, array of category names>
         this._appCategories = {};
 
-        this._appMonitor = new Shell.AppMonitor();
-        this._appSystem = new Shell.AppSystem();
+        this._appMonitor = Shell.AppMonitor.get_default();
+        this._appSystem = Shell.AppSystem.get_default();
         this._appsStale = true;
         this._appSystem.connect('changed', Lang.bind(this, function(appSys) {
             this._appsStale = true;
@@ -208,6 +182,7 @@ AppDisplay.prototype = {
             this._redisplayMenus();
         }));
         this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
+            this._appsStale = true;
             this._redisplay(false);
         }));
 
@@ -316,19 +291,22 @@ AppDisplay.prototype = {
         }
     },
 
-    _addApp: function(appId) {
+    _addAppForId: function(appId) {
         let appInfo = AppInfo.getAppInfo(appId);
         if (appInfo != null) {
-            this._allItems[appId] = appInfo;
-            // [] is returned if we could not get the categories or the list of categories was empty
-            let categories = Shell.get_categories_for_desktop_file(appId);
-            this._appCategories[appId] = categories;
+            this._addApp(appInfo);
         } else {
             log("appInfo for " + appId + " was not found.");
         }
     },
 
-    //// Protected method overrides ////
+    _addApp: function(appInfo) {
+        let appId = appInfo.id;
+        this._allItems[appId] = appInfo;
+        // [] is returned if we could not get the categories or the list of categories was empty
+        let categories = Shell.get_categories_for_desktop_file(appId);
+        this._appCategories[appId] = categories;
+    },
 
     // Gets information about all applications by calling Gio.app_info_get_all().
     _refreshCache : function() {
@@ -347,7 +325,7 @@ AppDisplay.prototype = {
             let menuApps = this._appSystem.get_applications_for_menu(menu.id);
             for (let j = 0; j < menuApps.length; j++) {
                 let appId = menuApps[j];
-                this._addApp(appId);
+                this._addAppForId(appId);
             }
         }
 
@@ -356,7 +334,16 @@ AppDisplay.prototype = {
         let settings = this._appSystem.get_all_settings();
         for (let i = 0; i < settings.length; i++) {
             let appId = settings[i];
-            this._addApp(appId);
+            this._addAppForId(appId);
+        }
+
+        // Some applications, such as Evince, might not be in the menus,
+        // but might be returned by the applications monitor as most used
+        // applications, in which case we include them.
+        let mostUsedAppInfos = AppInfo.getMostUsedApps(MAX_ITEMS);
+        for (let i = 0; i < mostUsedAppInfos.length; i++) {
+            let appInfo = mostUsedAppInfos[i];
+            this._addApp(appInfo);
         }
 
         this._appsStale = false;
