@@ -393,6 +393,12 @@ Dash.prototype = {
         this._docDisplay.connect('activated', function(docDisplay) {
             me.emit('activated');
         });
+        this._resultsAppsSection.display.connect('activated', function(resultsAppsDisplay) {
+            me.emit('activated');
+        });
+        this._resultsDocsSection.display.connect('activated', function(resultsDocsDisplay) {
+            me.emit('activated');
+        });
         this._appDisplay.connect('selected', function(appDisplay) {
             // We allow clicking on any item to select it, so if an 
             // item in the app display is selected, we need to make sure that

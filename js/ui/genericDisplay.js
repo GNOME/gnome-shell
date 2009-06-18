@@ -63,15 +63,7 @@ GenericDisplayItem.prototype = {
                                          width: availableWidth,
                                          height: ITEM_DISPLAY_HEIGHT });
         this.actor._delegate = this;
-        this.actor.connect('button-press-event',
-                           Lang.bind(this,
-                                     function(actor, e) {
-                                         let clickCount = Shell.get_button_event_click_count(e);
-                                         if (clickCount == 1)
-                                             this.select();
-                                         else if (clickCount == 2)
-                                             this.activate();
-                                     }));
+        this.actor.connect('button-release-event', Lang.bind(this, this.activate));
 
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
@@ -83,14 +75,23 @@ GenericDisplayItem.prototype = {
         this.actor.add_actor(this._bg);
         
         this._informationButton = new Clutter.Texture({ x: availableWidth - ITEM_DISPLAY_PADDING_RIGHT - INFORMATION_BUTTON_SIZE,
-                                                      y: ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2,
-                                                      width: INFORMATION_BUTTON_SIZE,
-                                                      height: INFORMATION_BUTTON_SIZE,
-                                                      reactive: true
+                                                        y: ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2,
+                                                        width: INFORMATION_BUTTON_SIZE,
+                                                        height: INFORMATION_BUTTON_SIZE,
+                                                        reactive: true
                                                     });
         let global = Shell.Global.get();
         this._informationButton.set_from_file(global.imagedir + "info.svg");
-        this._informationButton.connect('button-release-event', this.select);
+        // Connecting to the button-press-event for the information button ensures that the actor, 
+        // which is a draggable actor, does not get the button-press-event and doesn't initiate
+        // the dragging, which then prevents us from getting the button-release-event for the button.
+        this._informationButton.connect('button-press-event', 
+                                        Lang.bind(this,
+                                                  function() {
+                                                      return true;
+                                                  }));
+        this._informationButton.connect('button-release-event', Lang.bind(this, this.select));
+
         this._informationButton.hide();
         this.actor.add_actor(this._informationButton);
         this._informationButton.lower_bottom();
@@ -151,14 +152,16 @@ GenericDisplayItem.prototype = {
        this._bg.background_color = color;
     },
 
-    // Activates the item, as though it was launched
+    // Activates the item by launching it
     activate: function() {
         this.emit('activate');
+        return true;
     },
 
-    // Selects the item, as though it was clicked
+    // Selects the item by highlighting it and displaying it details
     select: function() {
         this.emit('select');
+        return true;
     },
 
     /*
