@@ -337,7 +337,7 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
   AsyncIconLookupData *data;
   GError *error = NULL;
 
-  data = g_object_get_data (result, "load_icon_pixbuf_async");
+  data = g_object_get_data (G_OBJECT (result), "load_icon_pixbuf_async");
 
   if (data->uri)
     pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
@@ -382,7 +382,7 @@ load_icon_pixbuf_async (ShellTextureCache    *cache,
 
   result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_icon_pixbuf_async);
 
-  g_object_set_data_full (result, "load_icon_pixbuf_async", data, icon_lookup_data_destroy);
+  g_object_set_data_full (G_OBJECT (result), "load_icon_pixbuf_async", data, icon_lookup_data_destroy);
   g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
 
   g_object_unref (result);
@@ -408,7 +408,7 @@ load_uri_pixbuf_async (ShellTextureCache *cache,
 
   result = g_simple_async_result_new (G_OBJECT (cache), callback, user_data, load_uri_pixbuf_async);
 
-  g_object_set_data_full (result, "load_uri_pixbuf_async", data, icon_lookup_data_destroy);
+  g_object_set_data_full (G_OBJECT (result), "load_uri_pixbuf_async", data, icon_lookup_data_destroy);
   g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, cancellable);
 
   g_object_unref (result);
@@ -540,7 +540,7 @@ shell_texture_cache_load_gicon (ShellTextureCache *cache,
           AsyncTextureLoadData *data;
           data = g_new0 (AsyncTextureLoadData, 1);
 
-          data->icon = icon;
+          data->icon = g_object_ref (icon);
           data->icon_info = info;
           data->texture = g_object_ref (texture);
           data->width = data->height = size;
