@@ -397,7 +397,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 	  if (y_span->waste != 0 || x_span->waste != 0)
 	    {
 	      /* Setup temp bitmap for slice subregion */
-	      slice_bmp.format = tex->bitmap.format;
+	      slice_bmp.format = target_bmp->format;
 	      slice_bmp.width  = x_span->size;
 	      slice_bmp.height = y_span->size;
 	      slice_bmp.rowstride = bpp * slice_bmp.width;
