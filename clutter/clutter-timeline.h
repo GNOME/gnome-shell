@@ -134,7 +134,6 @@ void             clutter_timeline_advance               (ClutterTimeline *timeli
                                                          guint            msecs);
 guint            clutter_timeline_get_elapsed_time      (ClutterTimeline *timeline);
 gdouble          clutter_timeline_get_progress          (ClutterTimeline *timeline);
-CoglFixed        clutter_timeline_get_progressx         (ClutterTimeline *timeline);
 gboolean         clutter_timeline_is_playing            (ClutterTimeline *timeline);
 void             clutter_timeline_set_delay             (ClutterTimeline *timeline,
                                                          guint            msecs);

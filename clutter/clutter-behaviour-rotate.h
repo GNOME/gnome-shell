@@ -81,11 +81,6 @@ ClutterBehaviour *     clutter_behaviour_rotate_new           (ClutterAlpha     
                                                                ClutterRotateDirection  direction,
                                                                gdouble                 angle_start,
                                                                gdouble                 angle_end);
-ClutterBehaviour *     clutter_behaviour_rotate_newx          (ClutterAlpha           *alpha,
-                                                               ClutterRotateAxis       axis,
-                                                               ClutterRotateDirection  direction,
-                                                               CoglFixed               angle_start,
-                                                               CoglFixed               angle_end);
 void                   clutter_behaviour_rotate_get_center    (ClutterBehaviourRotate *rotate,
 							       gint                   *x,
 							       gint                   *y,
@@ -106,12 +101,6 @@ void                   clutter_behaviour_rotate_get_bounds    (ClutterBehaviourR
 void                   clutter_behaviour_rotate_set_bounds    (ClutterBehaviourRotate *rotate,
                                                                gdouble                 angle_start,
                                                                gdouble                 angle_end);
-void                   clutter_behaviour_rotate_get_boundsx   (ClutterBehaviourRotate *rotate,
-                                                               CoglFixed              *angle_start,
-                                                               CoglFixed              *angle_end);
-void                   clutter_behaviour_rotate_set_boundsx   (ClutterBehaviourRotate *rotate,
-                                                               CoglFixed               angle_start,
-                                                               CoglFixed               angle_end);
 
 G_END_DECLS
 

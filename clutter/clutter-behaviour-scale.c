@@ -315,38 +315,6 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
 }
 
 /**
- * clutter_behaviour_scale_newx:
- * @alpha: a #ClutterAlpha
- * @x_scale_start: initial scale factor on the X axis
- * @y_scale_start: initial scale factor on the Y axis
- * @x_scale_end: final scale factor on the X axis
- * @y_scale_end: final scale factor on the Y axis
- *
- * A fixed point implementation of clutter_behaviour_scale_new()
- *
- * Return value: the newly created #ClutterBehaviourScale
- *
- * Since: 0.2
- */
-ClutterBehaviour *
-clutter_behaviour_scale_newx (ClutterAlpha *alpha,
-			      CoglFixed     x_scale_start,
-			      CoglFixed     y_scale_start,
-			      CoglFixed     x_scale_end,
-			      CoglFixed     y_scale_end)
-{
-  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
-
-  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_SCALE,
-                       "alpha", alpha,
-                       "x-scale-start", COGL_FIXED_TO_DOUBLE (x_scale_start),
-                       "y-scale-start", COGL_FIXED_TO_DOUBLE (y_scale_start),
-                       "x-scale-end", COGL_FIXED_TO_DOUBLE (x_scale_end),
-                       "y-scale-end", COGL_FIXED_TO_DOUBLE (y_scale_end),
-                       NULL);
-}
-
-/**
  * clutter_behaviour_scale_set_bounds:
  * @scale: a #ClutterBehaviourScale
  * @x_scale_start: initial scale factor on the X axis
@@ -440,76 +408,4 @@ clutter_behaviour_scale_get_bounds (ClutterBehaviourScale *scale,
 
   if (y_scale_end)
     *y_scale_end = priv->y_scale_end;
-}
-
-/**
- * clutter_behaviour_scale_set_boundsx:
- * @scale: a #ClutterBehaviourScale
- * @x_scale_start: initial scale factor on the X axis
- * @y_scale_start: initial scale factor on the Y axis
- * @x_scale_end: final scale factor on the X axis
- * @y_scale_end: final scale factor on the Y axis
- *
- * Fixed point version of clutter_behaviour_scale_set_bounds().
- *
- * Sets the bounds used by scale behaviour.
- *
- * Since: 0.6
- */
-void
-clutter_behaviour_scale_set_boundsx (ClutterBehaviourScale *scale,
-                                     CoglFixed              x_scale_start,
-                                     CoglFixed              y_scale_start,
-                                     CoglFixed              x_scale_end,
-                                     CoglFixed              y_scale_end)
-{
-  clutter_behaviour_scale_set_bounds (scale,
-                                      COGL_FIXED_TO_DOUBLE (x_scale_start),
-                                      COGL_FIXED_TO_DOUBLE (y_scale_start),
-                                      COGL_FIXED_TO_DOUBLE (x_scale_end),
-                                      COGL_FIXED_TO_DOUBLE (y_scale_end));
-}
-
-/**
- * clutter_behaviour_scale_get_boundsx:
- * @scale: a #ClutterBehaviourScale
- * @x_scale_start: return location for the initial scale factor on the X
- *   axis, or %NULL
- * @y_scale_start: return location for the initial scale factor on the Y
- *   axis, or %NULL
- * @x_scale_end: return location for the final scale factor on the X axis,
- *   or %NULL
- * @y_scale_end: return location for the final scale factor on the Y axis,
- *   or %NULL
- *
- * Fixed point version of clutter_behaviour_scale_get_bounds().
- *
- * Retrieves the bounds used by scale behaviour.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
-                                     CoglFixed             *x_scale_start,
-                                     CoglFixed             *y_scale_start,
-                                     CoglFixed             *x_scale_end,
-                                     CoglFixed             *y_scale_end)
-{
-  ClutterBehaviourScalePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_SCALE (scale));
-
-  priv = scale->priv;
-
-  if (x_scale_start)
-    *x_scale_start = COGL_FIXED_FROM_DOUBLE (priv->x_scale_start);
-
-  if (x_scale_end)
-    *x_scale_end = COGL_FIXED_FROM_DOUBLE (priv->x_scale_end);
-
-  if (y_scale_start)
-    *y_scale_start = COGL_FIXED_FROM_DOUBLE (priv->y_scale_start);
-
-  if (y_scale_end)
-    *y_scale_end = COGL_FIXED_FROM_DOUBLE (priv->y_scale_end);
 }

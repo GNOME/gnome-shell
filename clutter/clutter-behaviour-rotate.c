@@ -437,51 +437,6 @@ clutter_behaviour_rotate_new (ClutterAlpha           *alpha,
 }
 
 /**
- * clutter_behaviour_rotate_newx:
- * @alpha: a #ClutterAlpha or %NULL
- * @axis: the rotation axis
- * @direction: the rotation direction
- * @angle_start: the starting angle, in fixed point notation in degrees,
- * between 0 and 360.
- * @angle_end: the final angle, in fixed point notation in degrees, between 0
- * and 360.
- *
- * Creates a new #ClutterBehaviourRotate. This is the fixed point version
- * of clutter_behaviour_rotate_new().
- *
- * Return value: the newly created #ClutterBehaviourRotate.
- *
- * Since: 0.4
- */
-ClutterBehaviour *
-clutter_behaviour_rotate_newx (ClutterAlpha           *alpha,
-                               ClutterRotateAxis       axis,
-                               ClutterRotateDirection  direction,
-                               CoglFixed               angle_start,
-                               CoglFixed               angle_end)
-{
-  ClutterBehaviour *retval;
-  ClutterBehaviourRotatePrivate *priv;
-
-  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
-
-  retval = g_object_new (CLUTTER_TYPE_BEHAVIOUR_ROTATE,
-                         "alpha", alpha,
-                         "axis", axis,
-                         "direction", direction,
-                         NULL);
-
-  /* we don't want to convert the angles from fixed to boolean
-   * and then back again to fixed.
-   */
-  priv = CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE (retval);
-  priv->angle_start = clamp_angle (angle_start);
-  priv->angle_end   = clamp_angle (angle_end);
-
-  return retval;
-}
-
-/**
  * clutter_behaviour_rotate_get_axis:
  * @rotate: a #ClutterBehaviourRotate
  *
@@ -639,57 +594,6 @@ clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
     }
 
   g_object_thaw_notify (G_OBJECT (rotate));
-}
-
-/**
- * clutter_behaviour_rotate_get_boundsx:
- * @rotate: a #ClutterBehaviourRotate
- * @angle_start: return value for the initial angle
- * @angle_end: return value for the final angle
- *
- * Retrieves the rotation boundaries of the rotate behaviour. This is
- * the fixed point notation version of clutter_behaviour_rotate_get_bounds().
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_rotate_get_boundsx (ClutterBehaviourRotate *rotate,
-                                      CoglFixed              *angle_start,
-                                      CoglFixed              *angle_end)
-{
-  ClutterBehaviourRotatePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
-
-  priv = rotate->priv;
-
-  if (angle_start)
-    *angle_start = COGL_FIXED_FROM_DOUBLE (priv->angle_start);
-
-  if (angle_end)
-    *angle_end = COGL_FIXED_FROM_DOUBLE (priv->angle_end);
-}
-
-/**
- * clutter_behaviour_rotate_set_boundsx:
- * @rotate: a #ClutterBehaviourRotate
- * @angle_start: initial angle, in fixed point notation in degrees, between 0
- * and 360.
- * @angle_end: final angle, in fixed point notation in degress, between 0 and
- * 360.
- *
- * Fixed point version of clutter_behaviour_rotate_set_bounds().
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_rotate_set_boundsx (ClutterBehaviourRotate *rotate,
-                                      CoglFixed               angle_start,
-                                      CoglFixed               angle_end)
-{
-  clutter_behaviour_rotate_set_bounds (rotate,
-                                       COGL_FIXED_TO_DOUBLE (angle_start),
-                                       COGL_FIXED_TO_DOUBLE (angle_end));
 }
 
 /**

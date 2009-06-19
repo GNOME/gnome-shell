@@ -1115,22 +1115,6 @@ clutter_timeline_get_progress (ClutterTimeline *timeline)
 }
 
 /**
- * clutter_timeline_get_progressx:
- * @timeline: a #ClutterTimeline
- *
- * Fixed point version of clutter_timeline_get_progress().
- *
- * Return value: the position of the timeline as a fixed point value
- *
- * Since: 0.6
- */
-CoglFixed
-clutter_timeline_get_progressx (ClutterTimeline *timeline)
-{
-  return COGL_FIXED_FROM_DOUBLE (clutter_timeline_get_progress (timeline));
-}
-
-/**
  * clutter_timeline_get_direction:
  * @timeline: a #ClutterTimeline
  *

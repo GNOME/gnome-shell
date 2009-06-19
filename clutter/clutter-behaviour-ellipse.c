@@ -5,9 +5,10 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Tomas Frydrych  <tf@openedhand.com>
+ * Authored By Tomas Frydrych <tf@openedhand.com>
  *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007 OpenedHand Ltd
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -587,58 +588,7 @@ clutter_behaviour_ellipse_new (ClutterAlpha           *alpha,
 }
 
 /**
- * clutter_behaviour_ellipse_newx:
- * @alpha: a #ClutterAlpha, or %NULL
- * @x: x coordinace of the center
- * @y: y coordiance of the center
- * @width: width of the ellipse
- * @height: height of the ellipse
- * @direction: #ClutterRotateDirection of rotation
- * @start: #CoglFixed angle in degrees at which movement starts
- * @end: #CoglFixed angle in degrees at which movement ends
- *
- * Creates a behaviour that drives actors along an elliptical path. This
- * is the fixed point variant of clutter_behaviour_ellipse_new().
- *
- * Return value: the newly created #ClutterBehaviourEllipse
- *
- * Since: 0.4
- */
-ClutterBehaviour *
-clutter_behaviour_ellipse_newx (ClutterAlpha           *alpha,
-                                gint                    x,
-                                gint                    y,
-                                gint                    width,
-                                gint                    height,
-                                ClutterRotateDirection  direction,
-                                CoglFixed               start,
-                                CoglFixed               end)
-{
-  ClutterKnot center;
-  gdouble real_start, real_end;
-
-  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
-
-  center.x = x;
-  center.y = y;
-
-  real_start = COGL_FIXED_TO_DOUBLE (start);
-  real_end   = COGL_FIXED_TO_DOUBLE (end);
-
-  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_ELLIPSE,
-                       "alpha", alpha,
-                       "center", &center,
-                       "width", width,
-                       "height", height,
-                       "direction", direction,
-                       "angle-start", real_start,
-                       "angle-end", real_end,
-                       NULL);
-}
-
-
-/**
- * clutter_behaviour_ellipse_set_center
+ * clutter_behaviour_ellipse_set_center:
  * @self: a #ClutterBehaviourEllipse
  * @x: x coordinace of centre
  * @y: y coordinace of centre
@@ -668,7 +618,7 @@ clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_get_center
+ * clutter_behaviour_ellipse_get_center:
  * @self: a #ClutterBehaviourEllipse
  * @x: return location for the X coordinate of the center, or %NULL
  * @y: return location for the Y coordinate of the center, or %NULL
@@ -697,7 +647,7 @@ clutter_behaviour_ellipse_get_center (ClutterBehaviourEllipse  *self,
 
 
 /**
- * clutter_behaviour_ellipse_set_width
+ * clutter_behaviour_ellipse_set_width:
  * @self: a #ClutterBehaviourEllipse
  * @width: width of the ellipse
  *
@@ -724,7 +674,7 @@ clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_get_width
+ * clutter_behaviour_ellipse_get_width:
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the width of the elliptical path.
@@ -742,7 +692,7 @@ clutter_behaviour_ellipse_get_width (ClutterBehaviourEllipse *self)
 }
 
 /**
- * clutter_behaviour_ellipse_set_height
+ * clutter_behaviour_ellipse_set_height:
  * @self: a #ClutterBehaviourEllipse
  * @height: height of the ellipse
  *
@@ -769,7 +719,7 @@ clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_get_height
+ * clutter_behaviour_ellipse_get_height:
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the height of the elliptical path.
@@ -787,7 +737,7 @@ clutter_behaviour_ellipse_get_height (ClutterBehaviourEllipse *self)
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_start
+ * clutter_behaviour_ellipse_set_angle_start:
  * @self: a #ClutterBehaviourEllipse
  * @angle_start: angle at which movement starts in degrees, between 0 and 360.
  *
@@ -817,27 +767,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_startx
- * @self: a #ClutterBehaviourEllipse
- * @angle_start: An angle, as #CoglFixed, at which movement starts, in
- * degrees, between 0 and 360.
- *
- * Sets the angle at which movement starts; angles >= 360 degress get clamped
- * to the canonical interval <0, 360).
- *
- * Since: 0.6
- */
-void
-clutter_behaviour_ellipse_set_angle_startx (ClutterBehaviourEllipse *self,
-                                            CoglFixed                angle_start)
-{
-  gdouble angle = COGL_FIXED_TO_DOUBLE (angle_start);
-
-  clutter_behaviour_ellipse_set_angle_start (self, angle);
-}
-
-/**
- * clutter_behaviour_ellipse_get_angle_start
+ * clutter_behaviour_ellipse_get_angle_start:
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the angle at which movements starts.
@@ -855,25 +785,7 @@ clutter_behaviour_ellipse_get_angle_start (ClutterBehaviourEllipse *self)
 }
 
 /**
- * clutter_behaviour_ellipse_get_angle_startx
- * @self: a #ClutterBehaviourEllipse
- *
- * Gets the angle at which movements starts.
- *
- * Return value: angle, as #CoglFixed, in degrees.
- *
- * Since: 0.6
- */
-CoglFixed
-clutter_behaviour_ellipse_get_angle_startx (ClutterBehaviourEllipse *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
-
-  return COGL_FIXED_FROM_DOUBLE (self->priv->angle_start);
-}
-
-/**
- * clutter_behaviour_ellipse_set_angle_end
+ * clutter_behaviour_ellipse_set_angle_end:
  * @self: a #ClutterBehaviourEllipse
  * @angle_end: angle at which movement ends in degrees, between 0 and 360.
  *
@@ -904,27 +816,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_endx
- * @self: a #ClutterBehaviourEllipse
- * @angle_end: angle, as #CoglFixed, at which movement ends, in degrees,
- * between 0 and 360.
- *
- * Sets the angle at which movement ends; angles >= 360 degress get clamped
- * to the canonical interval <0, 360).
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse *self,
-                                          CoglFixed                angle_end)
-{
-  gdouble angle = COGL_FIXED_TO_DOUBLE (angle_end);
-
-  clutter_behaviour_ellipse_set_angle_end (self, angle);
-}
-
-/**
- * clutter_behaviour_ellipse_get_angle_end
+ * clutter_behaviour_ellipse_get_angle_end:
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the at which movements ends.
@@ -942,25 +834,7 @@ clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse *self)
 }
 
 /**
- * clutter_behaviour_ellipse_get_angle_endx
- * @self: a #ClutterBehaviourEllipse
- *
- * Gets the angle at which movements ends.
- *
- * Return value: angle, as #CoglFixed, in degrees
- *
- * Since: 0.4
- */
-CoglFixed
-clutter_behaviour_ellipse_get_angle_endx (ClutterBehaviourEllipse *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
-
-  return COGL_FIXED_FROM_DOUBLE (self->priv->angle_end);
-}
-
-/**
- * clutter_behaviour_ellipse_set_angle_tilt
+ * clutter_behaviour_ellipse_set_angle_tilt:
  * @self: a #ClutterBehaviourEllipse
  * @axis: a #ClutterRotateAxis
  * @angle_tilt: tilt of the elipse around the center in the given axis in
@@ -1013,28 +887,7 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_tiltx
- * @self: a #ClutterBehaviourEllipse
- * @axis: a #ClutterRoateAxis
- * @angle_tilt: the tilt of the ellipse, in degrees as a fixed point
- *   value, around the center on the given axis
- *
- * Sets the angle at which the ellipse should be tilted around it's center.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
-                                           ClutterRotateAxis        axis,
-                                           CoglFixed                angle_tilt)
-{
-  gdouble angle = COGL_FIXED_TO_DOUBLE (angle_tilt);
-
-  clutter_behaviour_ellipse_set_angle_tilt (self, axis, angle);
-}
-
-/**
- * clutter_behaviour_ellipse_get_angle_tilt
+ * clutter_behaviour_ellipse_get_angle_tilt:
  * @self: a #ClutterBehaviourEllipse
  * @axis: a #ClutterRotateAxis
  *
@@ -1066,39 +919,7 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_get_angle_tiltx
- * @self: a #ClutterBehaviourEllipse
- * @axis: a #ClutterRotateAxis
- *
- * Gets the tilt of the ellipse around the center in the given axis
- *
- * Return value: the tilt angle in degrees, as a fixed point value
- *
- * Since: 0.4
- */
-CoglFixed
-clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self,
-                                           ClutterRotateAxis        axis)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
-
-  switch (axis)
-    {
-    case CLUTTER_X_AXIS:
-      return COGL_FIXED_FROM_DOUBLE (self->priv->angle_tilt_x);
-
-    case CLUTTER_Y_AXIS:
-      return COGL_FIXED_FROM_DOUBLE (self->priv->angle_tilt_y);
-
-    case CLUTTER_Z_AXIS:
-      return COGL_FIXED_FROM_DOUBLE (self->priv->angle_tilt_z);
-    }
-
-  return 0;
-}
-
-/**
- * clutter_behaviour_ellipse_set_tilt
+ * clutter_behaviour_ellipse_set_tilt:
  * @self: a #ClutterBehaviourEllipse
  * @angle_tilt_x: tilt of the elipse around the center in X axis in degrees.
  * @angle_tilt_y: tilt of the elipse around the center in Y axis in degrees.
@@ -1147,33 +968,7 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
 }
 
 /**
- * clutter_behaviour_ellipse_set_tiltx
- * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: tilt of the elipse in degrees, as #CoglFixed, around
- *   the center in X axis
- * @angle_tilt_y: tilt of the elipse in degrees, as #CoglFixed, around
- *   the center in Y axis
- * @angle_tilt_z: tilt of the elipse in degrees, as #CoglFixed, around
- *   the center in Z axis
- *
- * Sets the angle at which the ellipse should be tilted around it's center.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
-                                     CoglFixed                angle_tilt_x,
-                                     CoglFixed                angle_tilt_y,
-                                     CoglFixed                angle_tilt_z)
-{
-  clutter_behaviour_ellipse_set_tilt (self,
-                                      COGL_FIXED_TO_DOUBLE (angle_tilt_x),
-                                      COGL_FIXED_TO_DOUBLE (angle_tilt_y),
-                                      COGL_FIXED_TO_DOUBLE (angle_tilt_z));
-}
-
-/**
- * clutter_behaviour_ellipse_get_tilt
+ * clutter_behaviour_ellipse_get_tilt:
  * @self: a #ClutterBehaviourEllipse
  * @angle_tilt_x: return location for tilt angle on the X axis, or %NULL.
  * @angle_tilt_y: return location for tilt angle on the Y axis, or %NULL.
@@ -1203,42 +998,6 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
 
   if (angle_tilt_z)
     *angle_tilt_z = priv->angle_tilt_z;
-}
-
-/**
- * clutter_behaviour_ellipse_get_tiltx
- * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: location for tilt of the elipse, as #CoglFixed, around
- *   the center in X axis in degrees, or %NULL.
- * @angle_tilt_y: location for tilt of the elipse, as #CoglFixed, around
- *   the center in Y axis in degress, or %NULL.
- * @angle_tilt_z: location for tilt of the elipse, as #CoglFixed, around
- *   the center in Z axis in degrees, or %NULL.
- *
- * Gets the tilt of the ellipse around the center in Y axis.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_get_tiltx (ClutterBehaviourEllipse *self,
-                                     CoglFixed               *angle_tilt_x,
-                                     CoglFixed               *angle_tilt_y,
-                                     CoglFixed               *angle_tilt_z)
-{
-  ClutterBehaviourEllipsePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
-
-  priv = self->priv;
-
-  if (angle_tilt_x)
-    *angle_tilt_x = COGL_FIXED_FROM_DOUBLE (priv->angle_tilt_x);
-
-  if (angle_tilt_y)
-    *angle_tilt_y = COGL_FIXED_FROM_DOUBLE (priv->angle_tilt_y);
-
-  if (angle_tilt_z)
-    *angle_tilt_z = COGL_FIXED_FROM_DOUBLE (priv->angle_tilt_z);
 }
 
 /**

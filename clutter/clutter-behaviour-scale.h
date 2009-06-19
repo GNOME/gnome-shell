@@ -76,38 +76,21 @@ struct _ClutterBehaviourScaleClass
 
 GType clutter_behaviour_scale_get_type (void) G_GNUC_CONST;
 
-ClutterBehaviour *clutter_behaviour_scale_new  (ClutterAlpha   *alpha,
-                                                gdouble         x_scale_start,
-                                                gdouble         y_scale_start,
-                                                gdouble         x_scale_end,
-                                                gdouble         y_scale_end);
-ClutterBehaviour *clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
-                                                CoglFixed       x_scale_start,
-                                                CoglFixed       y_scale_start,
-                                                CoglFixed       x_scale_end,
-                                                CoglFixed       y_scale_end);
-
-void clutter_behaviour_scale_set_bounds  (ClutterBehaviourScale *scale,
-                                          gdouble                x_scale_start,
-                                          gdouble                y_scale_start,
-                                          gdouble                x_scale_end,
-                                          gdouble                y_scale_end);
-void clutter_behaviour_scale_get_bounds  (ClutterBehaviourScale *scale,
-                                          gdouble               *x_scale_start,
-                                          gdouble               *y_scale_start,
-                                          gdouble               *x_scale_end,
-                                          gdouble               *y_scale_end);
-
-void clutter_behaviour_scale_set_boundsx (ClutterBehaviourScale *scale,
-                                          CoglFixed              x_scale_start,
-                                          CoglFixed              y_scale_start,
-                                          CoglFixed              x_scale_end,
-                                          CoglFixed              y_scale_end);
-void clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
-                                          CoglFixed             *x_scale_start,
-                                          CoglFixed             *y_scale_start,
-                                          CoglFixed             *x_scale_end,
-                                          CoglFixed             *y_scale_end);
+ClutterBehaviour *clutter_behaviour_scale_new        (ClutterAlpha          *alpha,
+                                                      gdouble                x_scale_start,
+                                                      gdouble                y_scale_start,
+                                                      gdouble                x_scale_end,
+                                                      gdouble                y_scale_end);
+void              clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
+                                                      gdouble                x_scale_start,
+                                                      gdouble                y_scale_start,
+                                                      gdouble                x_scale_end,
+                                                      gdouble                y_scale_end);
+void              clutter_behaviour_scale_get_bounds (ClutterBehaviourScale *scale,
+                                                      gdouble               *x_scale_start,
+                                                      gdouble               *y_scale_start,
+                                                      gdouble               *x_scale_end,
+                                                      gdouble               *y_scale_end);
 
 G_END_DECLS
 
