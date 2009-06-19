@@ -100,6 +100,7 @@ static char *cursor_theme = NULL;
 static int   cursor_size = 24;
 static gboolean compositing_manager = FALSE;
 static gboolean resize_with_right_button = FALSE;
+static gboolean force_fullscreen = TRUE;
 
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_FULLSCREEN_FLASH;
 static MetaButtonLayout button_layout;
@@ -1800,6 +1801,9 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_RESIZE_WITH_RIGHT_BUTTON:
       return "RESIZE_WITH_RIGHT_BUTTON";
 
+    case META_PREF_FORCE_FULLSCREEN:
+      return "FORCE_FULLSCREEN";
+
     case META_PREF_CLUTTER_PLUGINS:
       return "CLUTTER_PLUGINS";
 
@@ -2792,6 +2796,12 @@ meta_prefs_get_mouse_button_menu (void)
   return resize_with_right_button ? 2: 3;
 }
 
+gboolean
+meta_prefs_get_force_fullscreen (void)
+{
+  return force_fullscreen;
+}
+
 void
 meta_prefs_set_compositing_manager (gboolean whether)
 {
@@ -2957,3 +2967,10 @@ init_button_layout(void)
 };
 
 #endif
+
+void
+meta_prefs_set_force_fullscreen (gboolean whether)
+{
+  force_fullscreen = whether;
+}
+
