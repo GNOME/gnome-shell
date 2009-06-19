@@ -1864,41 +1864,6 @@ unset_motion_last_actor (ClutterActor *actor, ClutterInputDevice *dev)
     dev->motion_last_actor = NULL;
 }
 
-static ClutterInputDevice * clutter_event_get_device (ClutterEvent *event);
-
-/* This function should perhaps be public and in clutter-event.c ?
- */
-static ClutterInputDevice *
-clutter_event_get_device (ClutterEvent *event)
-{
-  g_return_val_if_fail (event != NULL, NULL);
-
-  switch (event->type)
-    {
-    case CLUTTER_NOTHING:
-    case CLUTTER_STAGE_STATE:
-    case CLUTTER_DESTROY_NOTIFY:
-    case CLUTTER_CLIENT_MESSAGE:
-    case CLUTTER_DELETE:
-    case CLUTTER_ENTER:
-    case CLUTTER_LEAVE:
-      return NULL;
-      break;
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-      return event->button.device;
-    case CLUTTER_MOTION:
-      return event->motion.device;
-    case CLUTTER_SCROLL:
-      return event->scroll.device;
-      break;
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      break;
-    }
-  return NULL;
-}
-
 static void
 set_motion_last_actor (ClutterActor       *motion_current_actor,
                        ClutterInputDevice *device)

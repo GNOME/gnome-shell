@@ -426,9 +426,9 @@ clutter_keysym_to_unicode (guint keyval)
 /**
  * clutter_event_get_device_id:
  * @event: a clutter event 
- * 
+ *
  * Retrieves the events device id if set.
- * 
+ *
  * Return value: A unique identifier for the device or -1 if the event has
  *   no specific device set.
  */
@@ -469,6 +469,113 @@ clutter_event_get_device_id (ClutterEvent *event)
     return device->id;
   else
     return -1;
+}
+
+/**
+ * clutter_event_get_device_type:
+ * @event: a #ClutterEvent
+ *
+ * Retrieves the type of the device for @event
+ *
+ * Return value: the #ClutterInputDeviceType for the device, if
+ *   any is set
+ *
+ * Since: 1.0
+ */
+ClutterInputDeviceType
+clutter_event_get_device_type (ClutterEvent *event)
+{
+  ClutterInputDevice *device = NULL;
+
+  g_return_val_if_fail (event != NULL, CLUTTER_POINTER_DEVICE);
+
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+    case CLUTTER_STAGE_STATE:
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_CLIENT_MESSAGE:
+    case CLUTTER_DELETE:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
+      break;
+
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      device = event->button.device;
+      break;
+
+    case CLUTTER_MOTION:
+      device = event->motion.device;
+      break;
+
+    case CLUTTER_SCROLL:
+      device = event->scroll.device;
+      break;
+
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      device = event->scroll.device;
+      break;
+    }
+
+  if (device != NULL)
+    return device->device_type;
+  else
+    return CLUTTER_POINTER_DEVICE;
+}
+
+/**
+ * clutter_event_get_device:
+ * @event: a #ClutterEvent
+ *
+ * Retrieves the #ClutterInputDevice for the event.
+ *
+ * The #ClutterInputDevice structure is completely opaque and should
+ * be cast to the platform-specific implementation.
+ *
+ * Return value: the #ClutterInputDevice or %NULL
+ *
+ * Since: 1.0
+ */
+ClutterInputDevice *
+clutter_event_get_device (ClutterEvent *event)
+{
+  ClutterInputDevice *device = NULL;
+
+  g_return_val_if_fail (event != NULL, NULL);
+
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+    case CLUTTER_STAGE_STATE:
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_CLIENT_MESSAGE:
+    case CLUTTER_DELETE:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
+      break;
+
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      device = event->button.device;
+      break;
+
+    case CLUTTER_MOTION:
+      device = event->motion.device;
+      break;
+
+    case CLUTTER_SCROLL:
+      device = event->scroll.device;
+      break;
+
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      device = event->scroll.device;
+      break;
+    }
+
+  return device;
 }
 
 GType
@@ -656,4 +763,40 @@ clutter_get_current_event_time (void)
     return context->last_event_time;
 
   return CLUTTER_CURRENT_TIME;
+}
+
+/**
+ * clutter_input_device_get_device_type:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the type of @device
+ *
+ * Return value: the type of the device
+ *
+ * Since: 1.0
+ */
+ClutterInputDeviceType
+clutter_input_device_get_device_type (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (device != NULL, CLUTTER_POINTER_DEVICE);
+
+  return device->device_type;
+}
+
+/**
+ * clutter_input_device_get_device_id:
+ * @device: a #ClutterInputDevice
+ *
+ * Retrieves the unique identifier of @device
+ *
+ * Return value: the identifier of the device
+ *
+ * Since: 1.0
+ */
+gint
+clutter_input_device_get_device_id (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (device != NULL, -1);
+
+  return device->id;
 }

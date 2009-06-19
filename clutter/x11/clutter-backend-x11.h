@@ -127,7 +127,7 @@ _clutter_x11_register_xinput (void);
 void
 _clutter_x11_unregister_xinput (void);
 
-ClutterX11XInputDevice *
+ClutterInputDevice *
 _clutter_x11_get_device_for_xid (XID id);
 
 void

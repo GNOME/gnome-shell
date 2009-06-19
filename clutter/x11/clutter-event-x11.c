@@ -744,7 +744,12 @@ event_translate (ClutterBackend *backend,
 
           if (xevent->type == ev_types [CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT])
             {
-              XDeviceButtonEvent *xbev = (XDeviceButtonEvent *)xevent;
+              XDeviceButtonEvent *xbev = (XDeviceButtonEvent *) xevent;
+
+              CLUTTER_NOTE (EVENT, "XINPUT Button press event for %li at %d, %d",
+                            xbev->deviceid,
+                            xbev->x,
+                            xbev->y);
 
               switch (xbev->button)
                 {
@@ -767,9 +772,9 @@ event_translate (ClutterBackend *backend,
                   event->scroll.x = xbev->x;
                   event->scroll.y = xbev->y;
                   event->scroll.modifier_state = xbev->state;
-                  event->scroll.device 
-                    = (ClutterInputDevice *)_clutter_x11_get_device_for_xid (xbev->deviceid);
+                  event->scroll.device = _clutter_x11_get_device_for_xid (xbev->deviceid);
                   break;
+
                 default:
                   event->button.type = event->type = CLUTTER_BUTTON_PRESS;
                   event->button.time = xbev->time;
@@ -777,20 +782,21 @@ event_translate (ClutterBackend *backend,
                   event->button.y = xbev->y;
                   event->button.modifier_state = xbev->state;
                   event->button.button = xbev->button;
-                  event->button.device 
-                    = (ClutterInputDevice *)_clutter_x11_get_device_for_xid (xbev->deviceid);
+                  event->button.device = _clutter_x11_get_device_for_xid (xbev->deviceid);
                   break;
                 }
 
               set_user_time (backend_x11, &xwindow, xbev->time);
-
-              CLUTTER_NOTE(EVENT, "XINPUT Button press event for %li %d %d", 
-                           xbev->deviceid, xbev->x, xbev->y);
             } 
           else if (xevent->type 
                         == ev_types[CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT])
             {
               XDeviceButtonEvent *xbev = (XDeviceButtonEvent *)xevent;
+
+              CLUTTER_NOTE (EVENT, "XINPUT Button release event for %li at %d, %d",
+                            xbev->deviceid,
+                            xbev->x,
+                            xbev->y);
 
               /* scroll events don't have a corresponding release */
               if (xbev->button == 4 ||
@@ -807,27 +813,24 @@ event_translate (ClutterBackend *backend,
               event->button.y = xbev->y;
               event->button.modifier_state = xbev->state;
               event->button.button = xbev->button;
-              event->button.device 
-                    = (ClutterInputDevice *)_clutter_x11_get_device_for_xid (xbev->deviceid);
-              CLUTTER_NOTE(EVENT, "XINPUT Button release event for %li %d %d", 
-                           xbev->deviceid, xbev->x, xbev->y);
+              event->button.device = _clutter_x11_get_device_for_xid (xbev->deviceid);
             } 
           else if (xevent->type 
                        == ev_types [CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT]) 
             {
               XDeviceMotionEvent *xmev = (XDeviceMotionEvent *)xevent;
 
+              CLUTTER_NOTE(EVENT, "XINPUT Motion event for %li at %d, %d",
+                           xmev->deviceid,
+                           xmev->x,
+                           xmev->y);
+
               event->motion.type = event->type = CLUTTER_MOTION;
               event->motion.time = xmev->time;
               event->motion.x = xmev->x;
               event->motion.y = xmev->y;
               event->motion.modifier_state = xmev->state;
-              event->motion.device 
-                    = (ClutterInputDevice *) _clutter_x11_get_device_for_xid (xmev->deviceid);
-              CLUTTER_NOTE(EVENT, "XINPUT Motion event for %li %d %d", 
-                           xmev->deviceid, 
-                           xmev->x, 
-                           xmev->y);
+              event->motion.device = _clutter_x11_get_device_for_xid (xmev->deviceid);
             } 
 #if 0
         /* the Xinput handling of key presses/releases disabled for now since

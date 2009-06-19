@@ -70,6 +70,9 @@ typedef enum {
 struct _ClutterInputDevice
 {
   gint          id;
+
+  ClutterInputDeviceType device_type;
+
   ClutterActor *pointer_grab_actor;
   ClutterActor *motion_last_actor;
 

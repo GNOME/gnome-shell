@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <gmodule.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
@@ -16,11 +17,22 @@ stage_motion_event_cb (ClutterActor *actor,
                        gpointer userdata)
 {
   TestDevicesApp *app = (TestDevicesApp *)userdata;
+  ClutterInputDevice *device;
   ClutterActor *hand = NULL;
-  ClutterMotionEvent *mev = (ClutterMotionEvent *)event;
 
-  hand = g_hash_table_lookup (app->devices, mev->device);
-  clutter_actor_set_position (hand, mev->x, mev->y);
+  device = clutter_event_get_device (event);
+
+  hand = g_hash_table_lookup (app->devices, device);
+
+  if (hand != NULL)
+    {
+      gfloat event_x, event_y;
+
+      clutter_event_get_coords (event, &event_x, &event_y);
+      clutter_actor_set_position (hand, event_x, event_y);
+
+      return TRUE;
+    }
 
   return FALSE;
 }
@@ -28,10 +40,10 @@ stage_motion_event_cb (ClutterActor *actor,
 G_MODULE_EXPORT int
 test_devices_main (int argc, char **argv)
 {
-  ClutterActor *stage = NULL;
-  GSList *stage_devices = NULL;
-  TestDevicesApp *app = NULL;
+  ClutterActor *stage;
+  TestDevicesApp *app;
   ClutterColor stage_color = { 0x61, 0x64, 0x8c, 0xff };
+  const GSList *stage_devices, *l;
 
   g_type_init();
 
@@ -46,9 +58,9 @@ test_devices_main (int argc, char **argv)
   //clutter_stage_fullscreen (CLUTTER_STAGE (stage));
 
   g_signal_connect (stage, 
-                    "motion-event", 
-                    G_CALLBACK(stage_motion_event_cb), 
+                    "motion-event", G_CALLBACK(stage_motion_event_cb),
                     app);
+
   clutter_actor_show_all (stage);
 
   stage_devices = clutter_x11_get_input_devices ();
@@ -56,30 +68,26 @@ test_devices_main (int argc, char **argv)
   if (stage_devices == NULL)
     g_error ("No extended input devices found.");
 
-  do 
+  for (l = stage_devices; l != NULL; l = l->next)
     {
-      if (stage_devices)
+      ClutterInputDevice *device = l->data;
+      ClutterInputDeviceType device_type;
+      ClutterActor *hand = NULL;
+
+      device_type = clutter_input_device_get_device_type (device);
+      if (device_type  == CLUTTER_POINTER_DEVICE)
         {
-          ClutterX11XInputDevice *device = NULL;
-          ClutterActor *hand = NULL;
+          g_print ("got a pointer device with id %d...\n",
+                   clutter_input_device_get_device_id (device));
 
-          device = (ClutterX11XInputDevice *)stage_devices->data;
+          hand = clutter_texture_new_from_file ("redhand.png", NULL);
+          g_hash_table_insert (app->devices, device, hand);
 
-          if (clutter_x11_get_input_device_type (device)
-              == CLUTTER_X11_XINPUT_POINTER_DEVICE)
-            {
-
-              g_debug("got a pointer device...\n");
-
-              hand = clutter_texture_new_from_file ("redhand.png", NULL);
-              g_hash_table_insert (app->devices, device, hand);
-              clutter_container_add_actor (CLUTTER_CONTAINER (stage), hand);
-            }
-
+          clutter_container_add_actor (CLUTTER_CONTAINER (stage), hand);
         }
-    } while ((stage_devices = stage_devices->next) != NULL);
+    }
 
   clutter_main ();
 
-  return 0;
+  return EXIT_SUCCESS;
 } 

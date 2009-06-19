@@ -211,6 +211,28 @@ typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 typedef struct _ClutterInputDevice      ClutterInputDevice;
 
 /**
+ * ClutterInputDeviceType:
+ * @CLUTTER_POINTER_DEVICE: A pointer device
+ * @CLUTTER_KEYBOARD_DEVICE: A keyboard device
+ * @CLUTTER_EXTENSION_DEVICE: A generic extension device
+ * @CLUTTER_N_DEVICE_TYPES: The number of device types
+ *
+ * The types of input devices available.
+ *
+ * The #ClutterInputDeviceType enumeration can be extended at later
+ * date; not every platform supports every input device type.
+ *
+ * Since: 1.0
+ */
+typedef enum {
+  CLUTTER_POINTER_DEVICE,
+  CLUTTER_KEYBOARD_DEVICE,
+  CLUTTER_EXTENSION_DEVICE,
+
+  CLUTTER_N_DEVICE_TYPES
+} ClutterInputDeviceType;
+
+/**
  * ClutterAnyEvent:
  * @type: event type
  * @time: event time
@@ -254,6 +276,7 @@ struct _ClutterKeyEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
+
   ClutterModifierType modifier_state;
   guint keyval;
   guint16 hardware_keycode;
@@ -292,13 +315,14 @@ struct _ClutterButtonEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
+
   gfloat x;
   gfloat y;
   ClutterModifierType modifier_state;
   guint32 button;
   guint click_count;
   gdouble *axes; /* Future use */
-  ClutterInputDevice *device; /* Future use */
+  ClutterInputDevice *device;
 };
 
 /**
@@ -324,9 +348,10 @@ struct _ClutterCrossingEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
+
   gfloat x;
   gfloat y;
-  ClutterInputDevice *device; /* future use */
+  ClutterInputDevice *device;
   ClutterActor *related;
 };
 
@@ -354,11 +379,12 @@ struct _ClutterMotionEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
+
   gfloat x;
   gfloat y;
   ClutterModifierType modifier_state;
   gdouble *axes; /* Future use */
-  ClutterInputDevice *device; /* Future use */
+  ClutterInputDevice *device;
 };
 
 /**
@@ -386,12 +412,13 @@ struct _ClutterScrollEvent
   ClutterEventFlags flags;
   ClutterStage *stage;
   ClutterActor *source;
+
   gfloat x;
   gfloat y;
   ClutterScrollDirection direction;
   ClutterModifierType modifier_state;
   gdouble *axes; /* future use */
-  ClutterInputDevice *device; /* future use */
+  ClutterInputDevice *device;
 };
 
 /**
@@ -414,7 +441,8 @@ struct _ClutterStageStateEvent
   guint32 time;
   ClutterEventFlags flags;
   ClutterStage *stage;
-  ClutterActor *source; /* unused XXX: should probably be the stage itself */
+  ClutterActor *source; /* XXX: should probably be the stage itself */
+
   ClutterStageState changed_mask;
   ClutterStageState new_state;
 };
@@ -442,41 +470,46 @@ union _ClutterEvent
 
 GType clutter_event_get_type (void) G_GNUC_CONST;
 
-gboolean               clutter_events_pending             (void);
-ClutterEvent *         clutter_event_get                  (void);
-ClutterEvent *         clutter_event_peek                 (void);
-void                   clutter_event_put                  (ClutterEvent     *event);
+gboolean               clutter_events_pending               (void);
+ClutterEvent *         clutter_event_get                    (void);
+ClutterEvent *         clutter_event_peek                   (void);
+void                   clutter_event_put                    (ClutterEvent     *event);
 
-ClutterEvent *         clutter_event_new                  (ClutterEventType  type);
-ClutterEvent *         clutter_event_copy                 (ClutterEvent     *event);
-void                   clutter_event_free                 (ClutterEvent     *event);
+ClutterEvent *         clutter_event_new                    (ClutterEventType  type);
+ClutterEvent *         clutter_event_copy                   (ClutterEvent     *event);
+void                   clutter_event_free                   (ClutterEvent     *event);
 
-ClutterEventType       clutter_event_type                 (ClutterEvent     *event);
-ClutterEventFlags      clutter_event_get_flags            (ClutterEvent     *event);
-guint32                clutter_event_get_time             (ClutterEvent     *event);
-ClutterModifierType    clutter_event_get_state            (ClutterEvent     *event);
-gint                   clutter_event_get_device_id        (ClutterEvent     *event);
-ClutterActor *         clutter_event_get_source           (ClutterEvent     *event);
-ClutterStage *         clutter_event_get_stage            (ClutterEvent     *event);
+ClutterEventType       clutter_event_type                   (ClutterEvent     *event);
+ClutterEventFlags      clutter_event_get_flags              (ClutterEvent     *event);
+guint32                clutter_event_get_time               (ClutterEvent     *event);
+ClutterModifierType    clutter_event_get_state              (ClutterEvent     *event);
+gint                   clutter_event_get_device_id          (ClutterEvent     *event);
+ClutterInputDeviceType clutter_event_get_device_type        (ClutterEvent     *event);
+ClutterInputDevice *   clutter_event_get_device             (ClutterEvent     *event);
+ClutterActor *         clutter_event_get_source             (ClutterEvent     *event);
+ClutterStage *         clutter_event_get_stage              (ClutterEvent     *event);
 
-void                   clutter_event_get_coords           (ClutterEvent     *event,
-                                                           gfloat           *x,
-                                                           gfloat           *y);
+void                   clutter_event_get_coords             (ClutterEvent     *event,
+                                                             gfloat           *x,
+                                                             gfloat           *y);
 
-guint                  clutter_event_get_key_symbol       (ClutterEvent     *event);
-guint16                clutter_event_get_key_code         (ClutterEvent     *event);
-guint32                clutter_event_get_key_unicode      (ClutterEvent     *event);
+guint                  clutter_event_get_key_symbol         (ClutterEvent     *event);
+guint16                clutter_event_get_key_code           (ClutterEvent     *event);
+guint32                clutter_event_get_key_unicode        (ClutterEvent     *event);
 
-guint32                clutter_event_get_button           (ClutterEvent     *event);
-guint                  clutter_event_get_click_count      (ClutterEvent     *event);
+guint32                clutter_event_get_button             (ClutterEvent     *event);
+guint                  clutter_event_get_click_count        (ClutterEvent     *event);
 
-ClutterActor *         clutter_event_get_related          (ClutterEvent     *event);
+ClutterActor *         clutter_event_get_related            (ClutterEvent     *event);
 
-ClutterScrollDirection clutter_event_get_scroll_direction (ClutterEvent     *event);
+ClutterScrollDirection clutter_event_get_scroll_direction   (ClutterEvent     *event);
 
-guint32                clutter_keysym_to_unicode          (guint             keyval);
+guint32                clutter_keysym_to_unicode            (guint             keyval);
 
-guint32                clutter_get_current_event_time     (void);
+guint32                clutter_get_current_event_time       (void);
+
+ClutterInputDeviceType clutter_input_device_get_device_type (ClutterInputDevice *device);
+gint                   clutter_input_device_get_device_id   (ClutterInputDevice *device);
 
 G_END_DECLS
 
