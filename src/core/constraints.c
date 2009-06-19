@@ -27,6 +27,7 @@
 #include "constraints.h"
 #include "workspace.h"
 #include "place.h"
+#include "prefs.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -424,7 +425,8 @@ setup_constraint_info (ConstraintInfo      *info,
   /* Workaround braindead legacy apps that don't know how to
    * fullscreen themselves properly.
    */
-  if (meta_rectangle_equal (new, &xinerama_info->rect) &&
+  if (meta_prefs_get_force_fullscreen() &&
+      meta_rectangle_equal (new, &xinerama_info->rect) &&
       window->has_fullscreen_func &&
       !window->fullscreen)
     {

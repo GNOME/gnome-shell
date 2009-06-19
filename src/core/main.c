@@ -233,6 +233,7 @@ typedef struct
   gboolean sync;
   gboolean composite;
   gboolean no_composite;
+  gboolean no_force_fullscreen;
 } MetaArguments;
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -312,6 +313,12 @@ meta_parse_options (int *argc, char ***argv,
       "no-composite", 0, COMPOSITE_OPTS_FLAGS, G_OPTION_ARG_NONE,
       &my_args.no_composite,
       N_("Turn compositing off"),
+      NULL
+    },
+    {
+      "no-force-fullscreen", 0, COMPOSITE_OPTS_FLAGS, G_OPTION_ARG_NONE,
+      &my_args.no_force_fullscreen,
+      N_("Don't make fullscreen windows that are maximized and have no decorations"),
       NULL
     },
     {NULL}
@@ -583,6 +590,9 @@ main (int argc, char **argv)
 
   if (meta_args.composite || meta_args.no_composite)
     meta_prefs_set_compositing_manager (meta_args.composite);
+
+  if (meta_args.no_force_fullscreen)
+    meta_prefs_set_force_fullscreen (FALSE);
 
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
