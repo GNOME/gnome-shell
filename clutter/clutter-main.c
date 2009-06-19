@@ -1052,10 +1052,19 @@ clutter_get_debug_enabled (void)
 #endif
 }
 
+gboolean
+_clutter_context_is_initialized (void)
+{
+  if (ClutterCntx == NULL)
+    return FALSE;
+
+  return ClutterCntx->is_initialized;
+}
+
 ClutterMainContext *
 _clutter_context_get_default (void)
 {
-  if (G_UNLIKELY(!ClutterCntx))
+  if (G_UNLIKELY (ClutterCntx == NULL))
     {
       ClutterMainContext *ctx;
 
@@ -1067,7 +1076,7 @@ _clutter_context_get_default (void)
       ctx->motion_events_per_actor = TRUE;
 
 #ifdef CLUTTER_ENABLE_DEBUG
-      ctx->timer          =  g_timer_new ();
+      ctx->timer = g_timer_new ();
       g_timer_start (ctx->timer);
 #endif
     }

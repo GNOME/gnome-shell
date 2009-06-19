@@ -138,6 +138,7 @@ struct _ClutterMainContext
 
 #define CLUTTER_CONTEXT()	(_clutter_context_get_default ())
 ClutterMainContext *_clutter_context_get_default (void);
+gboolean            _clutter_context_is_initialized (void);
 PangoContext *_clutter_context_create_pango_context (ClutterMainContext *self);
 PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
 
