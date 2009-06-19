@@ -954,8 +954,12 @@ clutter_event_get_related
 clutter_event_get_scroll_direction
 
 <SUBSECTION>
+clutter_event_get_device
 clutter_event_get_device_id
+clutter_event_get_device_type
 clutter_get_input_device_for_id
+clutter_input_device_get_device_id
+clutter_input_device_get_device_type
 
 <SUBSECTION>
 clutter_get_current_event_time
