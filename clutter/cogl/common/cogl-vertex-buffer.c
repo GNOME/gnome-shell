@@ -1618,8 +1618,14 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
     {
       CoglHandle layer = (CoglHandle)tmp->data;
       CoglHandle tex_handle = cogl_material_layer_get_texture (layer);
-      CoglTexture *texture =
-        _cogl_texture_pointer_from_handle (tex_handle);
+      CoglTexture *texture;
+
+      /* invalid textures will be handled correctly in
+       * _cogl_material_flush_layers_gl_state */
+      if (tex_handle == COGL_INVALID_HANDLE)
+        continue;
+
+      texture = _cogl_texture_pointer_from_handle (tex_handle);
 
       if (cogl_texture_is_sliced (tex_handle)
           || _cogl_texture_span_has_waste (texture, 0, 0))

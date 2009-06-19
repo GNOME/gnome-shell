@@ -30,6 +30,7 @@ test_conformance_SOURCES = 		\
 	test-color.c			\
 	test-clutter-units.c		\
 	test-premult.c			\
+	test-materials.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:

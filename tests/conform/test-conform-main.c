@@ -149,6 +149,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/model", test_list_model_iterate);
   TEST_CONFORM_SIMPLE ("/model", test_list_model_filter);
 
+  TEST_CONFORM_SIMPLE ("/material", test_materials);
   TEST_CONFORM_SIMPLE ("/material", test_blend_strings);
 
   TEST_CONFORM_SIMPLE ("/color", test_color_from_string);
