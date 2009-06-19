@@ -521,49 +521,8 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
                 [
                   AC_DEFINE(HAVE_XINPUT, 1, Use the XINPUT X extension)
 
-                  # ugh, this is insane
-                  AC_TRY_COMPILE([#include <X11/extensions/XInput.h>],
-                              [
- XExtensionVersion *res;
- res = XGetExtensionVersion (NULL, INAME);
-                              ],
-                              [have_xget_extension_version=yes],
-                              [have_xget_extension_version=no])
-
-                  AC_TRY_COMPILE([#include <X11/extensions/XInput.h>],
-                              [
- XExtensionVersion *res;
- res = XQueryInputVersion (NULL, XI_2_Major, XI_2_Minor);
-                              ],
-                              [have_xquery_input_version=yes],
-                              [have_xquery_input_version=no])
-
-                  AS_IF([test "x$have_xget_extension_version" = "xyes"],
-                        [
-                          AC_DEFINE([HAVE_XGET_EXTENSION_VERSION],
-                                    [1],
-                                    [Define to 1 if we have XGetExtensionVersion])
-                        ])
-
-                  #Seems some distros ship with the header but not the symbol
-                  really_have_xinput_query_version=no   
-                  AS_IF([test "x$have_xquery_input_version" = "xyes"],
-                        [
-                         AC_CHECK_LIB(Xi, [XQueryInputVersion],
-                                      [really_have_xinput_query_version=yes],
-                                      [])
-                        ])
-
-                  AS_IF([test "x$really_have_xquery_input_version" = "xyes"],
-                        [
-                          AC_DEFINE([HAVE_XQUERY_INPUT_VERSION],
-                                    [1],
-                                    [Define to 1 if we have XQueryInputVersion])
-                        ])
-
                   X11_LIBS="$X11_LIBS -lXi"
                   X11_PC_FILES="$X11_PC_FILES xi"
-
                 ],
 
                 [no],

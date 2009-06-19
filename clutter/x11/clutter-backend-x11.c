@@ -644,8 +644,9 @@ _clutter_x11_register_xinput ()
   XDevice *xdevice = NULL;
 
   XInputClassInfo *xclass_info = NULL;
-  XExtensionVersion *ext;
 
+  gint opcode, event, error;
+  gint res;
   gint num_devices = 0;
   gint num_events = 0;
   gint i = 0, j = 0;
@@ -672,21 +673,15 @@ _clutter_x11_register_xinput ()
 
   context = _clutter_context_get_default ();
 
-  backend_singleton->have_xinput = TRUE;
+  backend_singleton->have_xinput = FALSE;
 
-#if defined(HAVE_XQUERY_INPUT_VERSION)
-  ext = XQueryInputVersion (backend_singleton->xdpy, XI_2_Major, XI_2_Minor);
-#elif defined(HAVE_XGET_EXTENSION_VERSION)
-  ext = XGetExtensionVersion (backend_singleton->xdpy, INAME);
-#else
-  g_critical ("XInput does not have XGetExtensionVersion nor "
-              "XQueryInputVersion");
-  return;
-#endif
-
-  if (!ext || (ext == (XExtensionVersion*) NoSuchExtension))
+  /* is the XInput extension available? */
+  res = XQueryExtension (backend_singleton->xdpy, "XInputExtension",
+                         &opcode, &event,
+                         &error);
+  if (!res)
     {
-      backend_singleton->have_xinput = FALSE;
+      CLUTTER_NOTE (BACKEND, "X Input extension not available");
       return;
     }
 
@@ -697,15 +692,12 @@ _clutter_x11_register_xinput ()
   CLUTTER_NOTE (BACKEND, "%d XINPUT devices found", num_devices);
 
   if (num_devices == 0)
-    {
-      backend_singleton->have_xinput = FALSE;
-      return;
-    }
+    return;
 
   for (i = 0; i < num_devices; i++)
     {
-      num_events = 0;
       info = xdevices + i;
+      num_events = 0;
 
       CLUTTER_NOTE (BACKEND, "Considering %li with type %d",
                     info->id,
@@ -713,11 +705,11 @@ _clutter_x11_register_xinput ()
 
       /* Only want 'raw' devices themselves not virtual ones */
       if (info->use == IsXExtensionPointer ||
-          /*info->use == IsXExtensionKeyboard || XInput is broken */
+        /*info->use == IsXExtensionKeyboard || XInput 1.x is broken */
           info->use == IsXExtensionDevice)
         {
           clutter_x11_trap_x_errors ();
-          xdevice = XOpenDevice (x11b->xdpy, info->id);
+          xdevice = XOpenDevice (backend_singleton->xdpy, info->id);
           if (clutter_x11_untrap_x_errors () || xdevice == NULL)
             continue;
 
@@ -734,11 +726,12 @@ _clutter_x11_register_xinput ()
               break;
 
 #if 0
-            /* XInput is broken for keyboards: */
+            /* XInput 1.x is broken for keyboards: */
             case IsXExtensionKeyboard:
               device->device.type = CLUTTER_KEYBOARD_DEVICE;
               break;
 #endif
+
             case IsXExtensionDevice:
               device->device.device_type = CLUTTER_EXTENSION_DEVICE;
               break;
@@ -751,8 +744,8 @@ _clutter_x11_register_xinput ()
           device->device.previous_y = -1;
           device->device.previous_button_number = -1;
 
-          device->xdevice = xdevice;
           device->num_events = 0;
+          device->xdevice = xdevice;
 
           CLUTTER_NOTE (BACKEND, "Registering XINPUT device with XID: %li",
                         xdevice->device_id);
@@ -769,7 +762,7 @@ _clutter_x11_register_xinput ()
               switch (xclass_info->input_class)
                 {
 #if 0
-                /* XInput is broken for keyboards: */
+                /* XInput 1.x is broken for keyboards: */
                 case KeyClass:
                   DeviceKeyPress (xdevice,
                                   x11b->event_types[CLUTTER_X11_XINPUT_KEY_PRESS_EVENT],
@@ -809,7 +802,7 @@ _clutter_x11_register_xinput ()
 
           device->num_events  = num_events;
 
-          input_devices = g_slist_append (input_devices, device);
+          input_devices = g_slist_prepend (input_devices, device);
         }
     }
 
@@ -824,17 +817,20 @@ _clutter_x11_register_xinput ()
       */
       g_warning ("No usuable XInput pointing devices found");
 
-      backend_singleton->have_xinput = FALSE;
-
       for (l = input_devices; l != NULL; l = l->next)
         g_slice_free (ClutterX11XInputDevice, l->data);
 
       g_slist_free (input_devices);
       context->input_devices = NULL;
-    }
-  else
-    context->input_devices = input_devices;
 
+      return;
+    }
+
+  /* store the list of input devices */
+  context->input_devices = g_slist_reverse (input_devices);
+
+  /* why yes, we are awesome */
+  backend_singleton->have_xinput = TRUE;
 #endif /* HAVE_XINPUT */
 }
 
