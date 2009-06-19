@@ -284,13 +284,10 @@ static void
 clutter_backend_x11_dispose (GObject *gobject)
 {
   ClutterBackendX11   *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
-  ClutterMainContext  *context;
   ClutterStageManager *stage_manager;
 
   CLUTTER_NOTE (BACKEND, "Disposing the of stages");
-
-  context = _clutter_context_get_default ();
-  stage_manager = context->stage_manager;
+  stage_manager = clutter_stage_manager_get_default ();
 
   /* Destroy all of the stages. g_slist_foreach is used because the
      finalizer for the stages will remove the stage from the

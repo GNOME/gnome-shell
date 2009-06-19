@@ -89,7 +89,6 @@ struct _ClutterMainContext
 {
   ClutterBackend  *backend;            /* holds a pointer to the windowing 
                                           system backend */
-  ClutterStageManager *stage_manager;  /* stages */
   GQueue          *events_queue;       /* the main event queue */
 
   guint            is_initialized : 1;  

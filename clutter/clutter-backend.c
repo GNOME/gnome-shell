@@ -263,17 +263,14 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
                                ClutterStage    *wrapper,
                                GError         **error)
 {
-  ClutterMainContext  *context;
   ClutterBackendClass *klass;
+  ClutterStageManager *stage_manager;
   ClutterActor        *stage = NULL;
 
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
   g_return_val_if_fail (CLUTTER_IS_STAGE (wrapper), FALSE);
 
-  context = _clutter_context_get_default ();
-
-  if (!context->stage_manager)
-    context->stage_manager = clutter_stage_manager_get_default ();
+  stage_manager = clutter_stage_manager_get_default ();
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->create_stage)
@@ -284,7 +281,7 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
 
   g_assert (CLUTTER_IS_STAGE_WINDOW (stage));
   _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
-  _clutter_stage_manager_add_stage (context->stage_manager, wrapper);
+  _clutter_stage_manager_add_stage (stage_manager, wrapper);
 
   return stage;
 }
