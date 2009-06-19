@@ -312,8 +312,10 @@ Dash.prototype = {
         this._docsSectionDefaultHeight = this._docsSection.height;
 
         // The "more"/result area
-        this._resultsAppsSection = new AppResults(this._displayWidth, resultsHeight);
-        this._resultsDocsSection = new DocResults(this._displayWidth, resultsHeight);
+        // This area does not include this._resultsText which is part of resultsHeight, so we need to subtract the height 
+        // of that text from the resultsHeight.
+        this._resultsAppsSection = new AppResults(this._displayWidth, resultsHeight - LABEL_HEIGHT - DASH_SECTION_PADDING);
+        this._resultsDocsSection = new DocResults(this._displayWidth, resultsHeight - LABEL_HEIGHT - DASH_SECTION_PADDING);
 
         this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
