@@ -442,12 +442,10 @@ clutter_x11_get_default_display (void)
 void
 clutter_x11_set_display (Display *xdpy)
 {
-  ClutterMainContext *ctx = _clutter_context_get_default ();
-
-  if (ctx->is_initialized)
+  if (_clutter_context_is_initialized ())
     {
       g_critical ("Display connection already exists. You can only call "
-		  "clutter_x11_set_display() once before clutter_init()\n");
+		  "clutter_x11_set_display() before clutter_init()");
       return;
     }
 
@@ -469,12 +467,10 @@ clutter_x11_set_display (Display *xdpy)
 void
 clutter_x11_enable_xinput ()
 {
-  ClutterMainContext *ctx = _clutter_context_get_default ();
-
-  if (ctx->is_initialized)
+  if (_clutter_context_is_initialized ())
     {
-      g_warning  ("clutter_x11_enable_xinput should "
-                  "be called before clutter_init");
+      g_critical ("clutter_x11_enable_xinput() can only be called "
+                  "before clutter_init()");
       return;
     }
 
@@ -494,12 +490,10 @@ clutter_x11_enable_xinput ()
 void
 clutter_x11_disable_event_retrieval (void)
 {
-  ClutterMainContext *ctx = _clutter_context_get_default ();
-
-  if (ctx->is_initialized)
+  if (_clutter_context_is_initialized ())
     {
-      g_warning  ("clutter_x11_disable_event_retrieval should "
-                  "be called before clutter_init");
+      g_warning  ("clutter_x11_disable_event_retrieval() can only be "
+                  "called before clutter_init()");
       return;
     }
 
