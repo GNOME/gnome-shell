@@ -45,9 +45,9 @@ test_devices_main (int argc, char **argv)
   ClutterColor stage_color = { 0x61, 0x64, 0x8c, 0xff };
   const GSList *stage_devices, *l;
 
-  g_type_init();
-
+  /* force enabling X11 support */
   clutter_x11_enable_xinput ();
+
   clutter_init (&argc, &argv);
 
   app = g_new0 (TestDevicesApp, 1);
