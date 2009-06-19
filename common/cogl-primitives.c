@@ -942,7 +942,6 @@ _cogl_multitexture_unsliced_quad (float        x_1,
   for (tmp = (GList *)layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
       CoglHandle         layer = (CoglHandle)tmp->data;
-      /* CoglLayerInfo   *layer_info; */
       CoglHandle         tex_handle;
       CoglTexture       *tex;
       const float       *in_tex_coords;
@@ -950,12 +949,13 @@ _cogl_multitexture_unsliced_quad (float        x_1,
       CoglTexSliceSpan  *x_span;
       CoglTexSliceSpan  *y_span;
 
-      /* layer_info = &layers[i]; */
-
-      /* FIXME - we shouldn't be checking this stuff if layer_info->gl_texture
-       * already == 0 */
-
       tex_handle = cogl_material_layer_get_texture (layer);
+
+      /* COGL_INVALID_HANDLE textures are handled by
+       * _cogl_material_flush_gl_state */
+      if (tex_handle == COGL_INVALID_HANDLE)
+        continue;
+
       tex = _cogl_texture_pointer_from_handle (tex_handle);
 
       in_tex_coords = &user_tex_coords[i * 4];
@@ -1131,13 +1131,22 @@ _cogl_rectangles_with_multitexture_coords (
   for (tmp = layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
       CoglHandle     layer = tmp->data;
-      CoglHandle     tex_handle = cogl_material_layer_get_texture (layer);
-      CoglTexture   *texture = _cogl_texture_pointer_from_handle (tex_handle);
+      CoglHandle     tex_handle;
+      CoglTexture   *texture = NULL;
       gulong         flags;
 
       if (cogl_material_layer_get_type (layer)
 	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
 	continue;
+
+      tex_handle = cogl_material_layer_get_texture (layer);
+
+      /* COGL_INVALID_HANDLE textures are handled by
+       * _cogl_material_flush_gl_state */
+      if (tex_handle == COGL_INVALID_HANDLE)
+        continue;
+
+      texture = _cogl_texture_pointer_from_handle (tex_handle);
 
       /* XXX:
        * For now, if the first layer is sliced then all other layers are
@@ -1503,6 +1512,13 @@ _cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
           float        tx, ty;
 
           tex_handle = cogl_material_layer_get_texture (layer);
+
+          /* COGL_INVALID_HANDLE textures will be handled in
+           * _cogl_material_flush_layers_gl_state but there is no need to worry
+           * about scaling texture coordinates in this case */
+          if (tex_handle == COGL_INVALID_HANDLE)
+            continue;
+
           tex = _cogl_texture_pointer_from_handle (tex_handle);
 
           y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
@@ -1584,6 +1600,11 @@ cogl_polygon (CoglTextureVertex *vertices,
     {
       CoglHandle   layer = (CoglHandle)tmp->data;
       CoglHandle   tex_handle = cogl_material_layer_get_texture (layer);
+
+      /* COGL_INVALID_HANDLE textures will be handled in
+       * _cogl_material_flush_layers_gl_state */
+      if (tex_handle == COGL_INVALID_HANDLE)
+        continue;
 
       if (i == 0 && cogl_texture_is_sliced (tex_handle))
         {

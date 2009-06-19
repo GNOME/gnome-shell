@@ -1336,7 +1336,13 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
         (disable_mask & (1<<i)) ? TRUE : FALSE;
 
       tex_handle = layer->texture;
-      cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
+      if (tex_handle != COGL_INVALID_HANDLE)
+        cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
+      else
+        {
+          new_gl_layer_info.fallback = TRUE;
+          gl_target = GL_TEXTURE_2D;
+        }
 
       if (new_gl_layer_info.layer0_overridden)
         gl_texture = layer0_override_texture;
