@@ -1947,8 +1947,8 @@ clutter_actor_animate (ClutterActor *actor,
  * @mode: an animation mode logical id
  * @duration: duration of the animation, in milliseconds
  * @n_properties: number of property names and values
- * @properties: (array length=n_properties): a vector containing the
- *    property names to set
+ * @properties: (array length=n_properties) (element-type utf8): a vector
+ *    containing the property names to set
  * @values: (array length=n_properies): a vector containing the
  *    property values to set
  *
@@ -1999,8 +1999,8 @@ clutter_actor_animatev (ClutterActor        *actor,
  * @mode: an animation mode logical id
  * @timeline: a #ClutterTimeline
  * @n_properties: number of property names and values
- * @properties: (array length=n_properties): a vector containing the
- *    property names to set
+ * @properties: (array length=n_properties) (element-type utf8): a vector
+ *    containing the property names to set
  * @values: (array length=n_properies): a vector containing the
  *    property values to set
  *
@@ -2054,8 +2054,8 @@ clutter_actor_animate_with_timelinev (ClutterActor        *actor,
  * @actor: a #ClutterActor
  * @alpha: a #ClutterAlpha
  * @n_properties: number of property names and values
- * @properties: (array length=n_properties): a vector containing the
- *    property names to set
+ * @properties: (array length=n_properties) (element-type utf8): a vector
+ *    containing the property names to set
  * @values: (array length=n_properies): a vector containing the
  *    property values to set
  *
