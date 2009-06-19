@@ -95,7 +95,7 @@ static ClutterBackendX11 *backend_singleton = NULL;
 
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_xevent_retrieval = FALSE;
-static gboolean _enable_xinput = FALSE;
+static gboolean clutter_enable_xinput = FALSE;
 static Display  *_foreign_dpy = NULL;
 
 /* options */
@@ -253,8 +253,16 @@ static const GOptionEntry entries[] =
   { "synch", 0,
     0,
     G_OPTION_ARG_NONE, &clutter_synchronise,
-    N_("Make X calls synchronous"), NULL,
+    N_("Make X calls synchronous"), NULL
   },
+#ifdef HAVE_XINPUT
+  {
+    "enable-xinput", 0,
+    0,
+    G_OPTION_ARG_NONE, &clutter_enable_xinput,
+    N_("Enable XInput support"), NULL
+  },
+#endif /* HAVE_XINPUT */
   { NULL }
 };
 
@@ -462,7 +470,7 @@ clutter_x11_set_display (Display *xdpy)
  * Since: 0.8
  */
 void
-clutter_x11_enable_xinput ()
+clutter_x11_enable_xinput (void)
 {
   if (_clutter_context_is_initialized ())
     {
@@ -471,7 +479,7 @@ clutter_x11_enable_xinput ()
       return;
     }
 
-  _enable_xinput = TRUE;
+  clutter_enable_xinput = TRUE;
 }
 
 /**
@@ -656,7 +664,7 @@ _clutter_x11_register_xinput ()
       return;
     }
 
-  if (!_enable_xinput)
+  if (!clutter_enable_xinput)
     {
       CLUTTER_NOTE (BACKEND, "Not enabling XInput");
       return;
