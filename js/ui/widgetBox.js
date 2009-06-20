@@ -15,7 +15,7 @@ WIDGETBOX_BG_COLOR.from_pixel(0xf0f0f0ff);
 const BLACK = new Clutter.Color();
 BLACK.from_pixel(0x000000ff);
 
-const WIDGETBOX_PADDING = 4;
+const WIDGETBOX_PADDING = 2;
 const ANIMATION_TIME = 0.5;
 const POP_IN_LAG = 250; /* milliseconds */
 
@@ -77,9 +77,15 @@ WidgetBox.prototype = {
 
         this.actor = new Clutter.Group();
         this._hbox = new Big.Box({ background_color: WIDGETBOX_BG_COLOR,
-                                   padding: WIDGETBOX_PADDING,
+                                   padding_top: WIDGETBOX_PADDING,
+                                   padding_bottom: WIDGETBOX_PADDING,
+                                   padding_right: WIDGETBOX_PADDING,
+                                   // Left padding is here to make up for
+                                   // the X offset used for the sidebar
+                                   // to hide its rounded corners
+                                   padding_left: 2 * WIDGETBOX_PADDING,
                                    spacing: WIDGETBOX_PADDING,
-                                   corner_radius: WIDGETBOX_PADDING / 2,
+                                   corner_radius: WIDGETBOX_PADDING,
                                    orientation: Big.BoxOrientation.HORIZONTAL,
                                    reactive: true });
         this.actor.add_actor(this._hbox);

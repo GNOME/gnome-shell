@@ -14,10 +14,12 @@ const WidgetBox = imports.ui.widgetBox;
 const SIDEBAR_SPACING = 4;
 const SIDEBAR_PADDING = 4;
 
-// The total sidebar width is the widget width plus the widget
-// padding, plus the sidebar padding
-const SIDEBAR_COLLAPSED_WIDTH = Widget.COLLAPSED_WIDTH + 2 * WidgetBox.WIDGETBOX_PADDING + 2 * SIDEBAR_PADDING;
-const SIDEBAR_EXPANDED_WIDTH = Widget.EXPANDED_WIDTH + 2 * WidgetBox.WIDGETBOX_PADDING + 2 * SIDEBAR_PADDING;
+// The total sidebar width is the widget width plus the widget padding
+// (counted twice for the widget box, and once again for the
+// out-of-screen padding), plus the empty space between the border of
+// the bar and of the windows
+const SIDEBAR_COLLAPSED_WIDTH = Widget.COLLAPSED_WIDTH + 3 * WidgetBox.WIDGETBOX_PADDING + SIDEBAR_PADDING;
+const SIDEBAR_EXPANDED_WIDTH = Widget.EXPANDED_WIDTH + 3 * WidgetBox.WIDGETBOX_PADDING + SIDEBAR_PADDING;
 
 // The maximum height of the sidebar would be extending from just
 // below the panel to just above the taskbar. Since the taskbar is
@@ -58,7 +60,7 @@ Sidebar.prototype = {
         // during the animation.
         this.box = new Big.Box ({ padding_top: SIDEBAR_PADDING,
                                   padding_bottom: SIDEBAR_PADDING,
-                                  padding_right: SIDEBAR_PADDING,
+                                  padding_right: 0,
                                   padding_left: 0,
                                   spacing: SIDEBAR_SPACING });
         this.actor.add_actor(this.box);
