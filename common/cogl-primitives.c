@@ -473,10 +473,6 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                   _cogl_journal_flush_texcoord_vbo_offsets_and_entries,
                   data);
 
-#ifndef HAVE_COGL_GL
-  GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0));
-#endif
-
   /* progress forward through the VBO containing all our vertices */
   state->vbo_offset += (stride * 4 * batch_len);
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_JOURNAL))
@@ -507,30 +503,15 @@ upload_vertices_to_vbo (GArray *vertices, CoglJournalFlushState *state)
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   needed_vbo_len = vertices->len * sizeof (GLfloat);
-  if (ctx->journal_vbo_len < needed_vbo_len)
-    {
-      GE (glDeleteBuffers (1, &ctx->journal_vbo));
 
-      GE (glGenBuffers (1, &ctx->journal_vbo));
-      GE (glBindBuffer (GL_ARRAY_BUFFER, ctx->journal_vbo));
-      GE (glBufferData (GL_ARRAY_BUFFER,
-                        needed_vbo_len,
-                        vertices->data,
-                        GL_STATIC_DRAW));
-      ctx->journal_vbo_len = needed_vbo_len;
-    }
-  else
-    {
-      GE (glBindBuffer (GL_ARRAY_BUFFER, ctx->journal_vbo));
-      GE (glBufferData (GL_ARRAY_BUFFER,
-                        needed_vbo_len,
-                        NULL,
-                        GL_STATIC_DRAW));
-      GE (glBufferSubData (GL_ARRAY_BUFFER,
-                           0,
-                           needed_vbo_len,
-                           vertices->data));
-    }
+  g_assert (ctx->journal_vbo == 0);
+  g_assert (needed_vbo_len);
+  GE (glGenBuffers (1, &ctx->journal_vbo));
+  GE (glBindBuffer (GL_ARRAY_BUFFER, ctx->journal_vbo));
+  GE (glBufferData (GL_ARRAY_BUFFER,
+                    needed_vbo_len,
+                    vertices->data,
+                    GL_STATIC_DRAW));
 
   /* As we flush the journal entries in batches we walk forward through the
    * above VBO starting at offset 0... */
@@ -613,7 +594,10 @@ _cogl_journal_flush (void)
     }
 
   if (!vbo_fallback)
-    GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
+    {
+      GE (glDeleteBuffers (1, &ctx->journal_vbo));
+      ctx->journal_vbo = 0;
+    }
 
   g_array_set_size (ctx->journal, 0);
   g_array_set_size (ctx->logged_vertices, 0);
