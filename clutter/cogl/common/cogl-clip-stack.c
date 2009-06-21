@@ -317,10 +317,10 @@ _cogl_clip_stack_rebuild (void)
   gboolean using_stencil_buffer = FALSE;
   GList *node;
   CoglClipStack *stack;
-  guint scissor_x0 = 0;
-  guint scissor_y0 = 0;
-  guint scissor_x1 = G_MAXUINT;
-  guint scissor_y1 = G_MAXUINT;
+  gint scissor_x0 = 0;
+  gint scissor_y0 = 0;
+  gint scissor_x1 = G_MAXINT;
+  gint scissor_y1 = G_MAXINT;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -418,7 +418,7 @@ _cogl_clip_stack_rebuild (void)
     scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = 0;
 
   if (!(scissor_x0 == 0 && scissor_y0 == 0 &&
-        scissor_x1 == G_MAXUINT && scissor_y1 == G_MAXUINT))
+        scissor_x1 == G_MAXINT && scissor_y1 == G_MAXINT))
     {
       GE (glEnable (GL_SCISSOR_TEST));
       GE (glScissor (scissor_x0, scissor_y0,
