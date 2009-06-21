@@ -169,12 +169,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
   GE( glDepthMask (FALSE) );
 
+  _cogl_current_matrix_state_flush ();
+
   while (path_start < path_size)
     {
-      /* NB: after calling _cogl_journal_flush the current matrix
-       * state is undefined */
-      _cogl_current_matrix_state_flush ();
-
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
                            (guchar *) path
                            + G_STRUCT_OFFSET (CoglPathNode, x)) );
@@ -186,9 +184,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
              significant bit */
           GE( glStencilMask (merge ? 6 : 3) );
           GE( glStencilOp (GL_ZERO, GL_REPLACE, GL_REPLACE) );
-          cogl_rectangle (bounds_x, bounds_y,
-                          bounds_x + bounds_w, bounds_y + bounds_h);
-          _cogl_journal_flush ();
+          glRectf (bounds_x, bounds_y,
+                   bounds_x + bounds_w, bounds_y + bounds_h);
           GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
         }
 
@@ -221,9 +218,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       _cogl_current_matrix_push ();
       _cogl_current_matrix_identity ();
 
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
-      _cogl_journal_flush ();
+      glRectf (-1.0, -1.0, 1.0, 1.0);
+      glRectf (-1.0, -1.0, 1.0, 1.0);
 
       _cogl_current_matrix_pop ();
 
