@@ -218,6 +218,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       _cogl_current_matrix_push ();
       _cogl_current_matrix_identity ();
 
+      _cogl_current_matrix_state_flush ();
+
       glRectf (-1.0, -1.0, 1.0, 1.0);
       glRectf (-1.0, -1.0, 1.0, 1.0);
 
