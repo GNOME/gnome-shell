@@ -69,8 +69,6 @@ cogl_create_context ()
 
   _context->journal = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
-  _context->polygon_vertices = g_array_new (FALSE, FALSE,
-                                            sizeof (CoglTextureGLVertex));
 
   _context->current_material = NULL;
   _context->current_material_flags = 0;
@@ -203,8 +201,6 @@ _cogl_destroy_context ()
   if (_context->logged_vertices)
     g_array_free (_context->logged_vertices, TRUE);
 
-  if (_context->polygon_vertices)
-    g_array_free (_context->polygon_vertices, TRUE);
   if (_context->current_layers)
     g_array_free (_context->current_layers, TRUE);
 
