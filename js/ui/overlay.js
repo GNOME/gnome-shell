@@ -253,6 +253,55 @@ Dash.prototype = {
         this.actor.add_actor(this._searchEntry.actor);
         this._searchEntry.actor.set_position(DASH_SECTION_PADDING + DASH_BORDER_WIDTH, dashPane.y + DASH_SECTION_PADDING + DASH_BORDER_WIDTH);
 
+        this._searchQueued = false;
+        this._searchEntry.entry.connect('text-changed', function (se, prop) {
+            if (me._searchQueued)
+                return;
+            me._searchQueued = true;
+            Mainloop.timeout_add(250, function() {
+                // Strip leading and trailing whitespace
+                let text = me._searchEntry.entry.text.replace(/^\s+/g, "").replace(/\s+$/g, "");
+                me._searchQueued = false;
+                me._resultsAppsSection.display.setSearch(text);
+                me._resultsDocsSection.display.setSearch(text);
+                return false;
+            });
+        });
+        this._searchEntry.entry.connect('activate', function (se) {
+            // only one of the displays will have an item selected, so it's ok to
+            // call activateSelected() on all of them
+            me._appDisplay.activateSelected();
+            me._docDisplay.activateSelected();
+            me._resultsAppsSection.display.activateSelected();
+            me._resultsDocsSection.display.activateSelected();
+            return true;
+        });
+        this._searchEntry.entry.connect('key-press-event', function (se, e) {
+            let symbol = Shell.get_event_key_symbol(e);
+            if (symbol == Clutter.Escape) {
+                // Escape will keep clearing things back to the desktop. First, if
+                // we have active text, we remove it.
+                if (me._searchEntry.entry.text != '')
+                    me._searchEntry.entry.text = '';
+                // Next, if we're in one of the "more" modes or showing the details pane, close them
+                else if (me._moreAppsMode || me._moreDocsMode || me._detailsShowing())
+                    me.unsetMoreMode();
+                // Finally, just close the overlay entirely
+                else
+                    me.emit('activated');
+                return true;
+            } else if (symbol == Clutter.Up) {
+                // selectUp and selectDown wrap around in their respective displays
+                // too, but there doesn't seem to be any flickering if we first select
+                // something in one display, but then unset the selection, and move
+                // it to the other display, so it's ok to do that.
+                // TODO: add the right logic
+            } else if (symbol == Clutter.Down) {
+                // TODO: add the right logic
+            }
+            return false;
+        });
+
         this._appsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
                                             font_name: "Sans Bold 14px",
                                             text: "Applications",
@@ -411,7 +460,7 @@ Dash.prototype = {
             me._resultsAppsSection.display.unsetSelected();
             if (me._firstSelectAfterOverlayShow) {
                 me._firstSelectAfterOverlayShow = false;
-            } else if (me._detailsPane.get_parent() == null) { 
+            } else if (!me._detailsShowing()) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
             }
@@ -425,7 +474,7 @@ Dash.prototype = {
             me._appDisplay.unsetSelected(); 
             me._resultsDocsSection.display.unsetSelected();
             me._resultsAppsSection.display.unsetSelected();
-            if (me._detailsPane.get_parent() == null) { 
+            if (!me._detailsShowing()) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
             }
@@ -436,7 +485,7 @@ Dash.prototype = {
             me._appDisplay.unsetSelected(); 
             me._docDisplay.unsetSelected();
             me._resultsAppsSection.display.unsetSelected();
-            if (me._detailsPane.get_parent() == null) { 
+            if (!me._detailsShowing()) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
             }
@@ -447,7 +496,7 @@ Dash.prototype = {
             me._appDisplay.unsetSelected(); 
             me._docDisplay.unsetSelected();
             me._resultsDocsSection.display.unsetSelected();
-            if (me._detailsPane.get_parent() == null) { 
+            if (!me._detailsShowing()) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
             }
@@ -486,19 +535,21 @@ Dash.prototype = {
         this._appDisplay.show();
         this._appsContent.show();
         this._docDisplay.show();
+        global.stage.set_key_focus(this._searchEntry.entry);
     },
 
     hide: function() {
         this._firstSelectAfterOverlayShow = true;
         this._appsContent.hide();
         this._docDisplay.hide();
+        this._searchEntry.entry.text = '';
         this.unsetMoreMode();
     },
 
     unsetMoreMode: function() {
         this._unsetMoreAppsMode();
         this._unsetMoreDocsMode();
-        if (this._detailsPane.get_parent() != null) { 
+        if (this._detailsShowing()) { 
              this.actor.remove_actor(this._detailsPane);
              this.emit('panes-removed');
         }
@@ -557,7 +608,7 @@ Dash.prototype = {
 
         this._detailsPane.x = this._width;
 
-        if (this._detailsPane.get_parent() == null) {
+        if (!this._detailsShowing()) {
             this.emit('panes-removed');
         }
     },   
@@ -598,9 +649,13 @@ Dash.prototype = {
 
         this._detailsPane.x = this._width;
 
-        if (this._detailsPane.get_parent() == null) {
+        if (!this._detailsShowing()) {
             this.emit('panes-removed');
         }
+    },
+
+    _detailsShowing: function() {
+        return (this._detailsPane.get_parent() != null);
     }   
 };
 
