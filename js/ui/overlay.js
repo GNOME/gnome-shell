@@ -355,6 +355,7 @@ Dash.prototype = {
                                           y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
                                           width: this._detailsWidth + SHADOW_WIDTH,
                                           height: detailsHeight });
+        this._firstSelectAfterOverlayShow = true;
 
         let detailsBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                               width: this._detailsWidth,
@@ -408,7 +409,9 @@ Dash.prototype = {
             me._docDisplay.unsetSelected();
             me._resultsDocsSection.display.unsetSelected();
             me._resultsAppsSection.display.unsetSelected();
-            if (me._detailsPane.get_parent() == null) { 
+            if (me._firstSelectAfterOverlayShow) {
+                me._firstSelectAfterOverlayShow = false;
+            } else if (me._detailsPane.get_parent() == null) { 
                 me.actor.add_actor(me._detailsPane);
                 me.emit('panes-displayed');
             }
@@ -486,6 +489,7 @@ Dash.prototype = {
     },
 
     hide: function() {
+        this._firstSelectAfterOverlayShow = true;
         this._appsContent.hide();
         this._docDisplay.hide();
         this.unsetMoreMode();
