@@ -133,6 +133,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   float       bounds_h;
   gulong      enable_flags = COGL_ENABLE_VERTEX_ARRAY;
   CoglHandle  prev_source;
+  int         i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -168,6 +169,13 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
 
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
   GE( glDepthMask (FALSE) );
+
+  for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = 0;
 
   _cogl_current_matrix_state_flush ();
 
