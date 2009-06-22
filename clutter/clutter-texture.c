@@ -77,8 +77,9 @@ typedef struct _ClutterTextureAsyncData ClutterTextureAsyncData;
 
 struct _ClutterTexturePrivate
 {
-  gfloat                       width;
-  gfloat                       height;
+  gint                         image_width;
+  gint                         image_height;
+
   CoglHandle                   material;
   gboolean                     no_slice;
 
@@ -293,8 +294,8 @@ clutter_texture_realize (ClutterActor *actor)
       if (priv->no_slice)
         flags |= COGL_TEXTURE_NO_SLICING;
 
-      tex = cogl_texture_new_with_size (priv->width,
-                                        priv->height,
+      tex = cogl_texture_new_with_size (priv->image_width,
+                                        priv->image_height,
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
@@ -313,7 +314,8 @@ clutter_texture_realize (ClutterActor *actor)
           return;
         }
 
-      clutter_actor_set_size (actor, priv->width, priv->height);
+      clutter_actor_set_size (actor, priv->image_width, priv->image_height);
+
       return;
     }
 
@@ -359,14 +361,15 @@ clutter_texture_get_preferred_width (ClutterActor *self,
         {
           if (!priv->keep_aspect_ratio ||
               for_height < 0 ||
-              priv->height <= 0)
+              priv->image_height <= 0)
             {
-              *natural_width_p = priv->width;
+              *natural_width_p = priv->image_width;
             }
           else
             {
               /* Set the natural width so as to preserve the aspect ratio */
-              gfloat ratio = priv->width / priv->height;
+              gfloat ratio = (gfloat) priv->image_width
+                           / (gfloat) priv->image_height;
 
               *natural_width_p = ratio * for_height;
             }
@@ -398,14 +401,15 @@ clutter_texture_get_preferred_height (ClutterActor *self,
         {
           if (!priv->keep_aspect_ratio ||
               for_width < 0 ||
-              priv->width <= 0)
+              priv->image_width <= 0)
             {
-              *natural_height_p = priv->height;
+              *natural_height_p = priv->image_height;
             }
           else
             {
               /* Set the natural height so as to preserve the aspect ratio */
-              gfloat ratio = priv->height / priv->width;
+              gfloat ratio = (gfloat) priv->image_height
+                           / (gfloat) priv->image_width;
 
               *natural_height_p = ratio * for_width;
             }
@@ -557,8 +561,10 @@ clutter_texture_paint (ClutterActor *self)
 	  /* Use a projection matrix that makes the actor appear as it
 	     would if it was rendered at its normal screen location */
 	  clutter_texture_set_fbo_projection (self);
+
 	  /* Reset the viewport to the size of the FBO */
-	  cogl_viewport (priv->width, priv->height);
+	  cogl_viewport (priv->image_width, priv->image_height);
+
 	  /* Reapply the source's parent transformations */
 	  if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
 	    _clutter_actor_apply_modelview_transform_recursive (source_parent,
@@ -618,13 +624,13 @@ clutter_texture_paint (ClutterActor *self)
 		box.x1, box.y1, box.x2, box.y2,
 		clutter_actor_get_opacity (self));
 
-  if (priv->repeat_x && priv->width > 0)
-    t_w = (box.x2 - box.x1) / priv->width;
+  if (priv->repeat_x && priv->image_width > 0)
+    t_w = (box.x2 - box.x1) / (gfloat) priv->image_width;
   else
     t_w = 1.0;
 
-  if (priv->repeat_y && priv->height > 0)
-    t_h = (box.y2 - box.y1) / priv->height;
+  if (priv->repeat_y && priv->image_height > 0)
+    t_h = (box.y2 - box.y1) / (gfloat) priv->image_height;
   else
     t_h = 1.0;
 
@@ -1078,9 +1084,10 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTextureClass, size_change),
 		  NULL, NULL,
-		  clutter_marshal_VOID__FLOAT_FLOAT,
-		  G_TYPE_NONE,
-		  2, G_TYPE_FLOAT, G_TYPE_FLOAT);
+		  clutter_marshal_VOID__INT_INT,
+		  G_TYPE_NONE, 2,
+                  G_TYPE_INT,
+                  G_TYPE_INT);
   /**
    * ClutterTexture::pixbuf-change:
    * @texture: the texture which received the signal
@@ -1367,8 +1374,8 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 				  CoglHandle       cogl_tex)
 {
   ClutterTexturePrivate  *priv;
-  gboolean                size_change;
-  guint                   width, height;
+  gboolean size_changed;
+  guint width, height;
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
   g_return_if_fail (cogl_is_texture (cogl_tex));
@@ -1410,19 +1417,19 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
      safely release the reference we claimed above */
   cogl_handle_unref (cogl_tex);
 
-  size_change      = width != priv->width || height != priv->height;
-  priv->width      = width;
-  priv->height     = height;
+  size_changed = (width != priv->image_width || height != priv->image_height);
+  priv->image_width = width;
+  priv->image_height = height;
 
-  CLUTTER_NOTE (TEXTURE, "set size %.2fx%.2f\n",
-		priv->width,
-		priv->height);
+  CLUTTER_NOTE (TEXTURE, "set size (w:%d, h:%d)",
+		priv->image_width,
+		priv->image_height);
 
-  if (size_change)
+  if (size_changed)
     {
       g_signal_emit (texture, texture_signals[SIZE_CHANGE], 0,
-                     priv->width,
-                     priv->height);
+                     priv->image_width,
+                     priv->image_height);
 
       if (priv->sync_actor_size)
         clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
@@ -1651,10 +1658,11 @@ clutter_texture_async_load_complete (ClutterTexture *self,
                                              flags,
                                              COGL_PIXEL_FORMAT_ANY);
       clutter_texture_set_cogl_texture (self, handle);
+
       if (priv->load_size_async)
         {
           g_signal_emit (self, texture_signals[SIZE_CHANGE], 0,
-                         cogl_texture_get_width(handle),
+                         cogl_texture_get_width (handle),
                          cogl_texture_get_height (handle));
         }
 
@@ -1812,8 +1820,8 @@ clutter_texture_async_load (ClutterTexture *self,
     }
   else
     {
-      priv->width = width;
-      priv->height = height;
+      priv->image_width = width;
+      priv->image_height = height;
     }
 
   clutter_texture_async_load_cancel (self);
@@ -2101,10 +2109,10 @@ clutter_texture_get_base_size (ClutterTexture *texture,
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
 
   if (width)
-    *width = texture->priv->width;
+    *width = texture->priv->image_width;
 
   if (height)
-    *height = texture->priv->height;
+    *height = texture->priv->image_height;
 }
 
 /**
@@ -2225,7 +2233,7 @@ on_fbo_source_size_change (GObject          *object,
 
   clutter_actor_get_transformed_size (priv->fbo_source, &w, &h);
 
-  if (w != priv->width || h != priv->height)
+  if (w != priv->image_width || h != priv->image_height)
     {
       CoglTextureFlags flags = COGL_TEXTURE_NONE;
       CoglHandle tex;
@@ -2236,13 +2244,13 @@ on_fbo_source_size_change (GObject          *object,
 
       texture_free_gl_resources (texture);
 
-      priv->width = w;
-      priv->height = h;
+      priv->image_width = w;
+      priv->image_height = h;
 
       flags |= COGL_TEXTURE_NO_SLICING;
 
-      tex = cogl_texture_new_with_size (MAX (priv->width, 1),
-                                        MAX (priv->height, 1),
+      tex = cogl_texture_new_with_size (MAX (priv->image_width, 1),
+                                        MAX (priv->image_height, 1),
                                         flags,
                                         COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
@@ -2432,10 +2440,12 @@ clutter_texture_new_from_actor (ClutterActor *actor)
                     G_CALLBACK(on_fbo_parent_change),
                     texture);
 
-  priv->width = w;
-  priv->height = h;
+  priv->image_width = w;
+  priv->image_height = h;
 
-  clutter_actor_set_size (CLUTTER_ACTOR (texture), priv->width, priv->height);
+  clutter_actor_set_size (CLUTTER_ACTOR (texture),
+                          priv->image_width,
+                          priv->image_height);
 
   return CLUTTER_ACTOR (texture);
 }
