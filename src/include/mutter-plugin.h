@@ -48,7 +48,7 @@
 #define MUTTER_TYPE_PLUGIN            (mutter_plugin_get_type ())
 #define MUTTER_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MUTTER_TYPE_PLUGIN, MutterPlugin))
 #define MUTTER_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
-#define MUTTER_IS_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MUTTER_PLUGIN_TYPE))
+#define MUTTER_IS_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MUTTER_TYPE_PLUGIN))
 #define MUTTER_IS_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MUTTER_TYPE_PLUGIN))
 #define MUTTER_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
 
