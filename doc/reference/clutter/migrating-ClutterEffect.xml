@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC
+  "-//OASIS//DTD DocBook XML V4.3//EN"
+  "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<chapter id="migrating-ClutterEffect">
+
+  <chapterinfo>
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+      <affiliation>
+        <address>
+          <email>ebassi@linux.intel.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Migrating from ClutterEffect</title>
+
+  <para>Since version 1.0, Clutter provides the #ClutterAnimation API
+  and the clutter_actor_animate() family of functions as replacements
+  for the <structname>ClutterEffectTemplate</structname> and
+  clutter_effect_* API for creating simple, one-off animations.</para>
+
+  <section id="using-actor-animate">
+    <title>Using <function>clutter_actor_animate()</function></title>
+
+    <para>Prior to Clutter 1.0, the way to create simple, one-off
+    animations involving a single actor was the ClutterEffect API. The
+    major downside of this API was that to abstract the duration and
+    easing function of the animation the application developer had to
+    create a <structname>ClutterEffectTemplate</structname> and keep it
+    around for the duration of the application.</para>
+
+    <para>The clutter_actor_animate() function performs all of the
+    memory management that was delegated to the
+    <structname>ClutterEffectTemplate</structname>, freeing the developer
+    from having to deal with object bookkeeping.</para>
+
+    <para>Another downside of the ClutterEffect API is that every
+    possible animation has its own function (scaling, opacity, rotation,
+    movement, etc.), and new functions cannot be added outside of
+    Clutter.</para>
+
+    <example id="example-clutter-effect">
+      <title>Effect example</title>
+      <para>The following code shows a simple animation using
+      the ClutterEffect API. It animates an actor linearly in 500
+      milliseconds, by moving it to the (100, 100) coordinates
+      while fading it out.</para>
+      <programlisting>
+  ClutterEffectTemplate *tmpl;
+
+  tmpl = clutter_effect_template_new_for_duration (500, clutter_ramp_inc_func);
+  clutter_effect_move (tmpl, actor, 100, 100, NULL, NULL);
+  clutter_effect_fade (tmpl, actor, 0, NULL, NULL);
+
+  g_object_unref (tmpl);
+      </programlisting>
+    </example>
+
+    <para>The clutter_actor_animate() function will implicitely
+    create a #ClutterAnimation with the passed duration and easing
+    mode, and will bind all the passed properties. All readable and
+    writable properties specified by a #ClutterActor are animatable
+    through clutter_actor_animate().</para>
+
+    <example id="example-actor-animate">
+      <title>Animation example</title>
+      <para>The following code shows the clutter_actor_animate() call
+      equivalent to the previous ClutterEffect example.</para>
+      <programlisting>
+  clutter_actor_animate (actor, CLUTTER_LINEAR, 500,
+                         "x", 100.0,
+                         "y", 100.0,
+                         "opacity", 0,
+                         NULL);
+      </programlisting>
+    </example>
+
+    <para>The ClutterEffect API provided a way to be notified of the
+    effect completion. Since the clutter_actor_animate() function creates
+    a #ClutterAnimation instance it's possible to use the
+    #ClutterAnimation::completed signal for the same notification.</para>
+
+    <example id="example-clutter-effect-complete">
+      <title>Effect complete example</title>
+      <para>The following code shows how to receive notification of the
+      completion of the animation.</para>
+      <programlisting>
+static void
+on_fade_complete (ClutterActor *actor,
+                  gpointer      data)
+{
+  clutter_actor_hide (actor);
+}
+
+  ClutterEffectTemplate *tmpl;
+
+  tmpl = clutter_effect_template_new_for_duration (500, clutter_ramp_inc_func);
+  clutter_effect_fade (tmpl, actor, 0, on_fade_complete, NULL);
+
+  g_object_unref (tmpl);
+      </programlisting>
+    </example>
+
+    <para>The clutter_actor_animate() function also has a convenience
+    wrapper that allows to inline the signal connection:</para>
+
+    <example id="example-actor-animate-complete">
+      <title>Animation completed example</title>
+      <para>The following code shows how to get the same notification
+      as the example above.</para>
+      <programlisting>
+  ClutterAnimation *animation;
+
+  animation = clutter_actor_animate (actor, CLUTTER_LINER, 500,
+                                     "opacity", 0,
+                                     NULL);
+  g_signal_connect_swapped (animation,
+                            "completed", G_CALLBACK (clutter_actor_hide),
+                            actor);
+
+  /* OR */
+
+  clutter_actor_animate (actor, CLUTTER_LINER, 500,
+                         "opacity", 0,
+                         "signal-swapped::completed", clutter_actor_hide, actor,
+                         NULL);
+      </programlisting>
+    </example>
+
+  </section>
+
+</chapter>

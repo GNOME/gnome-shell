@@ -172,11 +172,21 @@
       developing with Clutter.</para>
     </partintro>
 
-    <xi:include href="subclassing-ClutterActor.xml"/>
+    <xi:include href="xml/subclassing-ClutterActor.xml"/>
+    <xi:include href="xml/clutter-animation-tutorial.xml"/>
+    <xi:include href="xml/creating-behaviours.xml"/>
+  </part>
 
-    <xi:include href="clutter-animation-tutorial.xml"/>
+  <part>
+    <title>Migrating from previous version of Clutter</title>
 
-    <xi:include href="creating-behaviours.xml"/>
+    <partintro>
+      <part>This section describes the changes that need to be
+      done in applications using Clutter to use new features or
+      to migrate from old, deprecated API to the new ones.</part>
+    </partintro>
+
+    <xi:include href="xml/migrating-ClutterEffect.xml"/>
 
   </part>
 
