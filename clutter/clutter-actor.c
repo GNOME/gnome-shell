@@ -7790,7 +7790,7 @@ clutter_vertex_copy (const ClutterVertex *vertex)
 }
 
 /**
- * clutter_vertext_free:
+ * clutter_vertex_free:
  * @vertex: a #ClutterVertex
  *
  * Frees a #ClutterVertex allocated using clutter_vertex_copy()
@@ -7953,7 +7953,7 @@ clutter_actor_box_equal (const ClutterActorBox *box_a,
 }
 
 /**
- * clutter_actor_get_x:
+ * clutter_actor_box_get_x:
  * @box: a #ClutterActorBox
  *
  * Retrieves the X coordinate of the origin of @box
@@ -7971,7 +7971,7 @@ clutter_actor_box_get_x (const ClutterActorBox *box)
 }
 
 /**
- * clutter_actor_get_y:
+ * clutter_actor_box_get_y:
  * @box: a #ClutterActorBox
  *
  * Retrieves the Y coordinate of the origin of @box
@@ -7989,7 +7989,7 @@ clutter_actor_box_get_y (const ClutterActorBox *box)
 }
 
 /**
- * clutter_actor_get_width:
+ * clutter_actor_box_get_width:
  * @box: a #ClutterActorBox
  *
  * Retrieves the width of the @box
@@ -8007,7 +8007,7 @@ clutter_actor_box_get_width (const ClutterActorBox *box)
 }
 
 /**
- * clutter_actor_get_height:
+ * clutter_actor_box_get_height:
  * @box: a #ClutterActorBox
  *
  * Retrieves the height of the @box
