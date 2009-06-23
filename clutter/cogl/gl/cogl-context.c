@@ -149,18 +149,18 @@ cogl_create_context ()
     cogl_texture_new_from_data (1, /* width */
                                 1, /* height */
                                 COGL_TEXTURE_NO_SLICING,
-                                COGL_PIXEL_FORMAT_RGBA_8888, /* data format */
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* data format */
                                 /* internal format */
-                                COGL_PIXEL_FORMAT_RGBA_8888,
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                 0, /* auto calc row stride */
                                 default_texture_data);
   _context->default_gl_texture_rect_tex =
     cogl_texture_new_from_data (1, /* width */
                                 1, /* height */
                                 COGL_TEXTURE_NO_SLICING,
-                                COGL_PIXEL_FORMAT_RGBA_8888, /* data format */
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* data format */
                                 /* internal format */
-                                COGL_PIXEL_FORMAT_RGBA_8888,
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                 0, /* auto calc row stride */
                                 default_texture_data);
 
