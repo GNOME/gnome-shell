@@ -954,6 +954,7 @@ clutter_event_get_related
 clutter_event_get_scroll_direction
 
 <SUBSECTION>
+ClutterInputDeviceType
 clutter_event_get_device
 clutter_event_get_device_id
 clutter_event_get_device_type
@@ -1064,10 +1065,8 @@ clutter_x11_add_filter
 clutter_x11_remove_filter
 
 <SUBSECTION>
-ClutterX11InputDeviceType
 ClutterX11XInputDevice
 ClutterX11XInputEventTypes
-clutter_x11_get_input_device_type
 clutter_x11_get_input_devices
 clutter_x11_has_xinput
 clutter_x11_enable_xinput
