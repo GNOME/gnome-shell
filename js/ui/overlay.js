@@ -66,11 +66,9 @@ const WORKSPACE_GRID_PADDING = 12;
 
 const COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN = 3;
 const ROWS_FOR_WORKSPACES_REGULAR_SCREEN = 6;
-const EXPANDED_DASH_COLUMNS_REGULAR_SCREEN = 2;
 
 const COLUMNS_FOR_WORKSPACES_WIDE_SCREEN = 4;
 const ROWS_FOR_WORKSPACES_WIDE_SCREEN = 8;
-const EXPANDED_DASH_COLUMNS_WIDE_SCREEN = 3;
 
 // A multi-state; PENDING is used during animations
 const STATE_ACTIVE = true;
@@ -104,6 +102,8 @@ const TRANSPARENT_COLOR = new Clutter.Color();
 TRANSPARENT_COLOR.from_pixel(0x00000000);
 
 const SHADOW_WIDTH = 6;
+
+const NUMBER_OF_SECTIONS_IN_SEARCH = 2;
 
 let wideScreen = false;
 let displayGridColumnWidth = null;
@@ -153,19 +153,48 @@ function AppResults(displayWidth, resultsHeight) {
 
 AppResults.prototype = {
     _init: function(displayWidth, resultsHeight) {
+        this._displayWidth = displayWidth;
+        this._resultsHeight = resultsHeight;
+
         this.actor = new Big.Box({ height: resultsHeight,
                                    padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
                                    spacing: DASH_SECTION_SPACING });
 
-        let height = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
-        this.display = new AppDisplay.AppDisplay(displayWidth, height, DASH_COLUMNS, DASH_SECTION_PADDING);
+        this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
+                                               font_name: "Sans Bold 14px",
+                                               text: "Applications" });
+        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
+
+        // LABEL_HEIGHT is the height of this._resultsText and GenericDisplay.LABEL_HEIGHT is the height
+        // of the display controls.
+        this._displayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2;
+        this.display = new AppDisplay.AppDisplay(displayWidth, this._displayHeight, DASH_COLUMNS, DASH_SECTION_SPACING);
 
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
 
-        let controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
-        controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
+        this.controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
+        this.controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
 
-        this.actor.append(controlBox, Big.BoxPackFlags.END);
+        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
+    },
+
+    _setSearchMode: function() {
+        this.actor.height = this._resultsHeight /  NUMBER_OF_SECTIONS_IN_SEARCH;
+        let displayHeight = this._displayHeight - this._resultsHeight * (NUMBER_OF_SECTIONS_IN_SEARCH - 1) /  NUMBER_OF_SECTIONS_IN_SEARCH;
+        this.display.setExpanded(false, this._displayWidth, 0, displayHeight, DASH_COLUMNS);     
+        this.actor.remove_all();
+        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
+        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
+        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
+    },
+
+    _unsetSearchMode: function() {
+        this.actor.height = this._resultsHeight;
+        this.display.setExpanded(false, this._displayWidth, 0, this._displayHeight, DASH_COLUMNS);     
+        this.actor.remove_all();
+        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
+        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
+        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
     }
 }
 
@@ -175,19 +204,48 @@ function DocResults(displayWidth, resultsHeight) {
 
 DocResults.prototype = {
     _init: function(displayWidth, resultsHeight) {
+        this._displayWidth = displayWidth;
+        this._resultsHeight = resultsHeight;
+
         this.actor = new Big.Box({ height: resultsHeight,
                                    padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
                                    spacing: DASH_SECTION_SPACING });
 
-        let height = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2 - DASH_SECTION_PADDING * 2;
-        this.display = new DocDisplay.DocDisplay(displayWidth, height, DASH_COLUMNS, DASH_SECTION_PADDING);
+        this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
+                                               font_name: "Sans Bold 14px",
+                                               text: "Documents" });
+        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
+
+        // LABEL_HEIGHT is the height of this._resultsText and GenericDisplay.LABEL_HEIGHT is the height
+        // of the display controls.
+        this._displayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2;
+        this.display = new DocDisplay.DocDisplay(displayWidth, this._displayHeight, DASH_COLUMNS, DASH_SECTION_SPACING);
 
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
 
-        let controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
-        controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
+        this.controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
+        this.controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
 
-        this.actor.append(controlBox, Big.BoxPackFlags.END);
+        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
+    },
+
+    _setSearchMode: function() {
+        this.actor.height = this._resultsHeight /  NUMBER_OF_SECTIONS_IN_SEARCH;
+        let displayHeight = this._displayHeight - this._resultsHeight * (NUMBER_OF_SECTIONS_IN_SEARCH - 1) /  NUMBER_OF_SECTIONS_IN_SEARCH;
+        this.display.setExpanded(false, this._displayWidth, 0, displayHeight, DASH_COLUMNS);     
+        this.actor.remove_all();
+        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
+        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
+        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
+    },
+
+    _unsetSearchMode: function() {
+        this.actor.height = this._resultsHeight;
+        this.display.setExpanded(false, this._displayWidth, 0, this._displayHeight, DASH_COLUMNS);     
+        this.actor.remove_all();
+        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
+        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
+        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
     }
 }
 
@@ -199,7 +257,8 @@ Dash.prototype = {
     _init : function() {
         let me = this;
 
-        this._expandedDashColumns = wideScreen ? EXPANDED_DASH_COLUMNS_WIDE_SCREEN : EXPANDED_DASH_COLUMNS_REGULAR_SCREEN;
+        this._moreAppsMode = false;
+        this._moreDocsMode = false;
 
         this._width = displayGridColumnWidth;
 
@@ -264,6 +323,11 @@ Dash.prototype = {
                 me._searchQueued = false;
                 me._resultsAppsSection.display.setSearch(text);
                 me._resultsDocsSection.display.setSearch(text);
+                if (text == '')
+                    me._unsetSearchMode();
+                else 
+                    me._setSearchMode();
+                   
                 return false;
             });
         });
@@ -361,10 +425,8 @@ Dash.prototype = {
         this._docsSectionDefaultHeight = this._docsSection.height;
 
         // The "more"/result area
-        // This area does not include this._resultsText which is part of resultsHeight, so we need to subtract the height 
-        // of that text from the resultsHeight.
-        this._resultsAppsSection = new AppResults(this._displayWidth, resultsHeight - LABEL_HEIGHT - DASH_SECTION_PADDING);
-        this._resultsDocsSection = new DocResults(this._displayWidth, resultsHeight - LABEL_HEIGHT - DASH_SECTION_PADDING);
+        this._resultsAppsSection = new AppResults(this._displayWidth, resultsHeight);
+        this._resultsDocsSection = new DocResults(this._displayWidth, resultsHeight);
 
         this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
@@ -392,12 +454,6 @@ Dash.prototype = {
         resultsBackground.append(resultsLeft, Big.BoxPackFlags.EXPAND);
         resultsBackground.append(resultsRight, Big.BoxPackFlags.EXPAND);
         this._resultsPane.append(resultsShadow, Big.BoxPackFlags.NONE);
-
-        this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
-                                               font_name: "Sans Bold 14px",
-                                               x: DASH_SECTION_PADDING,
-                                               y: DASH_SECTION_PADDING });
-        this._resultsPane.add_actor(this._resultsText);
 
         this._detailsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
@@ -541,7 +597,7 @@ Dash.prototype = {
     hide: function() {
         this._firstSelectAfterOverlayShow = true;
         this._appsContent.hide();
-        this._docDisplay.hide();
+        this._docDisplay.hide(); 
         this._searchEntry.entry.text = '';
         this.unsetMoreMode();
     },
@@ -553,6 +609,7 @@ Dash.prototype = {
              this.actor.remove_actor(this._detailsPane);
              this.emit('panes-removed');
         }
+        this._unsetSearchMode();
     },
 
     // Ensures that one of the displays has the selection if neither owns it after the
@@ -577,18 +634,16 @@ Dash.prototype = {
             return;
 
         this._unsetMoreDocsMode();
+        this._unsetSearchMode();
         this._moreAppsMode = true;
-
-        this._resultsText.text = "Applications";
 
         this._resultsAppsSection.display.show();
         this._resultsPane.add_actor(this._resultsAppsSection.actor);
-        this._resultsAppsSection.actor.set_y(this._resultsText.height + DASH_SECTION_PADDING);
         this.actor.add_actor(this._resultsPane);
 
         this._moreAppsLink.setText("Less...");
  
-        this._detailsPane.x = this._width + this._resultsWidth;;
+        this._detailsPane.x = this._width + this._resultsWidth;
         this.emit('panes-displayed');
     },
 
@@ -602,7 +657,6 @@ Dash.prototype = {
         this._resultsPane.remove_actor(this._resultsAppsSection.actor);
         this._resultsAppsSection.display.hide();
         this.actor.remove_actor(this._resultsPane); 
-        this._resultsText.text = "";
        
         this._moreAppsLink.setText("More...");
 
@@ -619,13 +673,11 @@ Dash.prototype = {
             return;
 
         this._unsetMoreAppsMode();
+        this._unsetSearchMode();
         this._moreDocsMode = true;
-
-        this._resultsText.text = "Recent Documents";
 
         this._resultsDocsSection.display.show();
         this._resultsPane.add_actor(this._resultsDocsSection.actor);
-        this._resultsDocsSection.actor.set_y(this._resultsText.height + DASH_SECTION_PADDING);
         this.actor.add_actor(this._resultsPane);
          
         this._moreDocsLink.setText("Less...");
@@ -654,9 +706,54 @@ Dash.prototype = {
         }
     },
 
+    _setSearchMode: function() {
+        if (this._resultsShowing())
+            return;
+
+        this._resultsAppsSection._setSearchMode();
+        this._resultsAppsSection.display.show();
+        this._resultsPane.add_actor(this._resultsAppsSection.actor);
+
+        this._resultsDocsSection._setSearchMode();    
+        this._resultsDocsSection.display.show();
+        this._resultsPane.add_actor(this._resultsDocsSection.actor);
+        this._resultsDocsSection.actor.set_y(this._resultsAppsSection.actor.height);
+
+        this.actor.add_actor(this._resultsPane);
+
+        this._detailsPane.x = this._width + this._resultsWidth;
+        this.emit('panes-displayed');
+    },
+
+    _unsetSearchMode: function() {
+        if (this._moreDocsMode || this._moreAppsMode || !this._resultsShowing())
+            return;
+
+        this.actor.remove_actor(this._resultsPane);
+
+        this._resultsPane.remove_actor(this._resultsAppsSection.actor);
+        this._resultsAppsSection.display.hide();
+        this._resultsAppsSection._unsetSearchMode();
+
+        this._resultsPane.remove_actor(this._resultsDocsSection.actor);
+        this._resultsDocsSection.display.hide();
+        this._resultsDocsSection._unsetSearchMode();
+        this._resultsDocsSection.actor.set_y(0);
+
+        this._detailsPane.x = this._width;
+
+        if (!this._detailsShowing()) {
+            this.emit('panes-removed');
+        }
+    },
+
     _detailsShowing: function() {
         return (this._detailsPane.get_parent() != null);
-    }   
+    },
+
+    _resultsShowing: function() {
+        return (this._resultsPane.get_parent() != null);
+    }      
 };
 
 Signals.addSignalMethods(Dash.prototype);
