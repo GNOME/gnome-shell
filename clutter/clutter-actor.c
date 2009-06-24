@@ -332,8 +332,6 @@ struct _ClutterActorPrivate
   PangoContext   *pango_context;
 
   ClutterActor   *opacity_parent;
-
-  CoglHandle      pick_material;
 };
 
 enum
@@ -1376,13 +1374,11 @@ clutter_actor_real_pick (ClutterActor       *self,
       width = box.x2 - box.x1;
       height = box.y2 - box.y1;
 
-      cogl_material_set_color4ub (self->priv->pick_material,
-                                  color->red,
-                                  color->green,
-                                  color->blue,
-                                  color->alpha);
+      cogl_set_source_color4ub (color->red,
+                                color->green,
+                                color->blue,
+                                color->alpha);
 
-      cogl_set_source (self->priv->pick_material);
       cogl_rectangle (0, 0, width, height);
     }
 }
@@ -4257,8 +4253,6 @@ clutter_actor_init (ClutterActor *self)
 
   priv->opacity_parent = NULL;
   priv->enable_model_view_transform = TRUE;
-
-  priv->pick_material = cogl_material_new ();
 
   memset (priv->clip, 0, sizeof (gfloat) * 4);
 }
