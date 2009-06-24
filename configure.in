@@ -158,12 +158,12 @@ AC_ARG_ENABLE(compositor,
                  [disable mutter's compositing manager]),,
   enable_compositor=auto)
 
-AC_ARG_ENABLE(clutter,
+AC_ARG_WITH(clutter,
   AC_HELP_STRING([--without-clutter],
                  [disable the use of clutter for compositing]),,
   with_clutter=auto)
 
-AC_ARG_ENABLE(introspection,
+AC_ARG_WITH(introspection,
   AC_HELP_STRING([--without-introspection],
                  [disable the use of GObject introspection]),,
   with_introspection=auto)
