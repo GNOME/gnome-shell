@@ -1644,6 +1644,13 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
         }
     }
 
+  for (i = max_texcoord_attrib_unit + 1; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = max_texcoord_attrib_unit + 1;
+
   options.flags =
     COGL_MATERIAL_FLUSH_FALLBACK_MASK |
     COGL_MATERIAL_FLUSH_DISABLE_MASK;
