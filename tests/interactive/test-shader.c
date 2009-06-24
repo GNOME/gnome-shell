@@ -69,8 +69,10 @@ static ShaderSource shaders[]=
      FRAGMENT_SHADER_VARS
      "uniform float brightness, contrast;"
      FRAGMENT_SHADER_BEGIN
+     " color.rgb /= color.a;"
      " color.rgb = (color.rgb - vec3(0.5, 0.5, 0.5)) * contrast + "
           "vec3 (brightness + 0.5, brightness + 0.5, brightness + 0.5);"
+     " color.rgb *= color.a;"
      FRAGMENT_SHADER_END
     },
 
@@ -118,7 +120,9 @@ static ShaderSource shaders[]=
     {"invert",
      FRAGMENT_SHADER_VARS
      FRAGMENT_SHADER_BEGIN
+     "  color.rgb /= color.a;"
      "  color.rgb = vec3(1.0, 1.0, 1.0) - color.rgb;\n"
+     "  color.rgb *= color.a;"
      FRAGMENT_SHADER_END
     },
 
@@ -127,9 +131,11 @@ static ShaderSource shaders[]=
      "uniform float brightness;"
      "uniform float contrast;"
      FRAGMENT_SHADER_BEGIN
+     "  color.rgb /= color.a;"
      "  color.r = (color.r - 0.5) * contrast + brightness + 0.5;"
      "  color.g = (color.g - 0.5) * contrast + brightness + 0.5;"
      "  color.b = (color.b - 0.5) * contrast + brightness + 0.5;"
+     "  color.rgb *= color.a;"
      FRAGMENT_SHADER_END
     },
 
