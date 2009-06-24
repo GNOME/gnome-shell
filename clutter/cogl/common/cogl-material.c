@@ -1026,13 +1026,11 @@ cogl_material_remove_layer (CoglHandle material_handle,
   CoglMaterial	     *material;
   CoglMaterialLayer  *layer;
   GList		     *tmp;
+  gboolean            notified_change = FALSE;
 
   g_return_if_fail (cogl_is_material (material_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
-
-  /* possibly flush primitives referencing the current state... */
-  _cogl_material_pre_change_notify (material, FALSE, NULL);
 
   for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
     {
@@ -1040,6 +1038,14 @@ cogl_material_remove_layer (CoglHandle material_handle,
       if (layer->index == layer_index)
 	{
 	  CoglHandle handle = (CoglHandle) layer;
+
+          /* possibly flush primitives referencing the current state... */
+          if (!notified_change)
+            {
+              _cogl_material_pre_change_notify (material, FALSE, NULL);
+              notified_change = TRUE;
+            }
+
 	  cogl_handle_unref (handle);
 	  material->layers = g_list_remove (material->layers, layer);
           material->n_layers--;
