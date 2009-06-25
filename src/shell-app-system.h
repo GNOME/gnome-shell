@@ -43,8 +43,16 @@ struct _ShellAppMenuEntry {
 
 GType shell_app_menu_entry_get_type (void);
 
+char * shell_app_system_lookup_basename (ShellAppSystem *system, const char *id);
+
 GSList *shell_app_system_get_menus (ShellAppSystem *system);
 
 GSList *shell_app_system_get_all_settings (ShellAppSystem *system);
+
+GList *shell_app_system_get_favorites (ShellAppSystem *system);
+
+void shell_app_system_add_favorite (ShellAppSystem *system, const char *id);
+
+void shell_app_system_remove_favorite (ShellAppSystem *system, const char *id);
 
 #endif /* __SHELL_APP_SYSTEM_H__ */
