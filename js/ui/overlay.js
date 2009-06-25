@@ -798,7 +798,10 @@ Overlay.prototype = {
         background.y = -global.screen_height * (4 * BACKGROUND_SCALE - 3) / 6;
         this._group.add_actor(background);
 
-        this._transparentBackground = new Clutter.Rectangle({ color: TRANSPARENT_COLOR,
+        // Transparent background is used to catch clicks outside of the dash panes when the panes
+        // are being displayed and the workspaces area should not be reactive. Catching such a
+        // click results in the panes being closed and the workspaces area becoming reactive again. 
+        this._transparentBackground = new Clutter.Rectangle({ opacity: 0,
                                                               width: global.screen_width,
                                                               height: global.screen_height - Panel.PANEL_HEIGHT,
                                                               y: Panel.PANEL_HEIGHT,
