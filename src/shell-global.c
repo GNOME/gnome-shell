@@ -935,10 +935,10 @@ shell_global_create_vertical_gradient (ClutterColor *top,
 
 /**
  * shell_global_create_horizontal_gradient:
- * @left: the color at the top
- * @right: the color at the bottom
+ * @left: the color on the left
+ * @right: the color on the right
  *
- * Creates a vertical gradient actor.
+ * Creates a horizontal gradient actor.
  *
  * Return value: (transfer none): a #ClutterCairoTexture actor with the
  *               gradient. The texture actor is floating, hence (transfer none).
@@ -951,12 +951,14 @@ shell_global_create_horizontal_gradient (ClutterColor *left,
   cairo_t *cr;
   cairo_pattern_t *pattern;
 
-  /* Draw the gradient on an 8x8 pixel texture. Because the gradient is drawn
-   * from the uppermost to the lowermost row, after stretching 1/16 of the
-   * texture height has the top color and 1/16 has the bottom color. The 8
-   * pixel width is chosen for reasons related to graphics hardware internals.
+  /* Draw the gradient on an 8x1 pixel texture. Because the gradient is drawn
+   * from the left to the right column, after stretching 1/16 of the
+   * texture width has the left side color and 1/16 has the right side color. 
+   * There is no reason to use the 8 pixel height that would be similar to the
+   * reason we are using the 8 pixel width for the vertical gradient, so we
+   * are just using the 1 pixel height instead.
    */
-  texture = CLUTTER_CAIRO_TEXTURE (clutter_cairo_texture_new (8, 8));
+  texture = CLUTTER_CAIRO_TEXTURE (clutter_cairo_texture_new (8, 1));
   cr = clutter_cairo_texture_create (texture);
 
   pattern = cairo_pattern_create_linear (0, 0, 8, 0);
