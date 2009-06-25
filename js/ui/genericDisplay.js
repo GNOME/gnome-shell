@@ -63,7 +63,13 @@ GenericDisplayItem.prototype = {
                                          width: availableWidth,
                                          height: ITEM_DISPLAY_HEIGHT });
         this.actor._delegate = this;
-        this.actor.connect('button-release-event', Lang.bind(this, this.activate));
+        this.actor.connect('button-release-event', 
+                           Lang.bind(this, 
+                                     function() {
+                                         // Activates the item by launching it
+                                         this.emit('activate');
+                                         return true;  
+                                     }));
 
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
@@ -93,8 +99,13 @@ GenericDisplayItem.prototype = {
                                                   function() {
                                                       return true;
                                                   }));
-        this._informationButton.connect('button-release-event', Lang.bind(this, this.select));
-
+        this._informationButton.connect('button-release-event',
+                                        Lang.bind(this, 
+                                                  function() {
+                                                      // Selects the item by highlighting it and displaying its details
+                                                      this.emit('select');
+                                                      return true;  
+                                                  }));
         this._informationButton.hide();
         this.actor.add_actor(this._informationButton);
         this._informationButton.lower_bottom();
@@ -153,18 +164,6 @@ GenericDisplayItem.prototype = {
        else
            color = ITEM_DISPLAY_BACKGROUND_COLOR;
        this._bg.background_color = color;
-    },
-
-    // Activates the item by launching it
-    activate: function() {
-        this.emit('activate');
-        return true;
-    },
-
-    // Selects the item by highlighting it and displaying it details
-    select: function() {
-        this.emit('select');
-        return true;
     },
 
     /*
