@@ -540,14 +540,15 @@ AM_CONDITIONAL(X11_TESTS, [test "x$x11_tests" = "xyes"])
 
 dnl === JSON parser check =====================================================
 
-# allow building clutter with an external dependency on json-glib
-# using the --with-json=check argument, but keep the default to
-# the internal version
+# we allow building clutter with the internal copy of json-glib
+# for platforms without it, but by default we depend on the
+# system copy
+m4_define([default_json], [check])
 AC_ARG_WITH([json],
-            AC_HELP_STRING([--with-json=@<:@internal/check@:>@],
-                           [Select the JSON-GLib copy to use @<:@default=internal@:>@]),
+            AC_HELP_STRING([--with-json=@<:@internal/check/system@:>@],
+                           [Select the JSON-GLib copy to use @<:@default=default_json@:>@]),
             [],
-            [with_json=internal])
+            [with_json=default_json])
 
 AS_CASE([$with_json],
 
@@ -557,16 +558,41 @@ AS_CASE([$with_json],
           have_json=no
         ],
 
-        [check],
+        [system],
         [
           AC_MSG_CHECKING([for installed JSON-GLib])
-          PKG_CHECK_EXISTS([json-glib-1.0], [have_json=yes], [have_json=no])
+          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.7],
+                           [have_json=yes],
+                           [have_json=no])
           AS_IF([test "x$have_json" = "xyes"],
                 [
                   JSON_PREFIX=json-glib
-                  JSON_GLIB_PC=json-glib-1.0
+                  JSON_GLIB_PC="json-glib-1.0 >= 0.7"
 
-                  AC_DEFINE(HAVE_JSON_GLIB, 1, [Have the JSON-GLib library installed])
+                  AC_DEFINE([HAVE_JSON_GLIB],
+                            [1],
+                            [Have the JSON-GLib library installed])
+
+                  AC_MSG_RESULT([found])
+                ],
+                [AC_MSG_ERROR([not found])]
+          )
+        ],
+
+        [check],
+        [
+          AC_MSG_CHECKING([for installed JSON-GLib])
+          PKG_CHECK_EXISTS([json-glib-1.0 >= 0.7],
+                           [have_json=yes],
+                           [have_json=no])
+          AS_IF([test "x$have_json" = "xyes"],
+                [
+                  JSON_PREFIX=json-glib
+                  JSON_GLIB_PC="json-glib-1.0 >= 0.7"
+
+                  AC_DEFINE([HAVE_JSON_GLIB],
+                            [1],
+                            [Have the JSON-GLib library installed])
 
                   AC_MSG_RESULT([found])
                 ],
