@@ -13,9 +13,12 @@
 
 
 #include "shell-app-monitor.h"
+#include "shell-app-system.h"
 #include "shell-global.h"
+#include "shell-wm.h"
 
 #include "display.h"
+#include "window.h"
 
 /* This file includes modified code from
  * desktop-data-engine/engine-dbus/hippo-application-monitor.c
@@ -63,6 +66,7 @@ static struct
   const char *pattern;
   GRegex *regex;
 } title_patterns[] =  {
+    {"mozilla-firefox", ".* - Mozilla Firefox", NULL}, \
     {"openoffice.org-writer", ".* - OpenOffice.org Writer$", NULL}, \
     {"openoffice.org-calc", ".* - OpenOffice.org Calc$", NULL}, \
     {"openoffice.org-impress", ".* - OpenOffice.org Impress$", NULL}, \
@@ -92,6 +96,12 @@ struct _ShellAppMonitor
   guint gconf_notify;
   gboolean currently_idle;
   gboolean enable_monitoring;
+
+  /* <char *,guint> */
+  GHashTable *running_appids;
+
+  /* <MetaWindow *, char *> */
+  GHashTable *window_to_appid;
 
   GHashTable *apps_by_wm_class; /* Seen apps by wm_class */
   GHashTable *popularities; /* One AppPopularity struct list per activity */
@@ -191,6 +201,214 @@ destroy_popularity (gpointer key,
   g_slist_free (list);
 }
 
+static char *
+get_wmclass_for_window (MetaWindow   *window)
+{
+  static gboolean patterns_initialized = FALSE;
+  const char *wm_class;
+  char *title;
+  int i;
+
+  wm_class = meta_window_get_wm_class (window);
+  g_object_get (window, "title", &title, NULL);
+
+  if (!patterns_initialized) /* Generate match patterns once for all */
+    {
+      patterns_initialized = TRUE;
+      for (i = 0; title_patterns[i].app_id; i++)
+        {
+          title_patterns[i].regex = g_regex_new (title_patterns[i].pattern,
+                                                 0, 0, NULL);
+        }
+    }
+
+  /* Match window title patterns to identifiers for non-standard apps */
+  if (title)
+    {
+      for (i = 0; title_patterns[i].app_id; i++)
+        {
+          if (g_regex_match (title_patterns[i].regex, title, 0, NULL))
+            {
+              /* Set a pseudo WM class, handled like true ones */
+              wm_class = title_patterns[i].app_id;
+              break;
+            }
+        }
+    }
+
+  g_free (title);
+  return g_strdup (wm_class);
+}
+
+static char *
+get_cleaned_wmclass_for_window (MetaWindow  *window)
+{
+  char *wmclass;
+  char *cleaned_wmclass;
+
+  if (meta_window_get_window_type (window) != META_WINDOW_NORMAL)
+    return NULL;
+
+  wmclass = get_wmclass_for_window (window);
+  if (!wmclass)
+    return NULL;
+
+  cleaned_wmclass = g_utf8_strdown (wmclass, -1);
+  g_free (wmclass);
+  /* This handles "Fedora Eclipse", probably others */
+  wmclass = g_strdup (g_strdelimit (cleaned_wmclass, " ", '-'));
+  g_free (cleaned_wmclass);
+  return wmclass;
+}
+
+static char *
+get_appid_for_window (MetaWindow     *window)
+{
+  char *wmclass;
+  char *with_desktop;
+  char *fullpath;
+  ShellAppSystem *appsys;
+
+  wmclass = get_cleaned_wmclass_for_window (window);
+
+  if (!wmclass)
+    return NULL;
+
+  with_desktop = g_strjoin (NULL, wmclass, ".desktop", NULL);
+  g_free (wmclass);
+
+  appsys = shell_app_system_get_default ();
+
+  fullpath = shell_app_system_lookup_basename (appsys, with_desktop);
+
+  return fullpath;
+}
+
+static void
+track_window (ShellAppMonitor *self,
+              MetaWindow      *window)
+{
+  char *appid;
+  guint refcount;
+
+  appid = get_appid_for_window (window);
+  if (!appid)
+    return;
+
+  g_hash_table_insert (self->window_to_appid, window, g_strdup (appid));
+
+  refcount = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
+
+  refcount += 1;
+  g_hash_table_insert (self->running_appids, appid, GUINT_TO_POINTER (refcount));
+  if (refcount == 1)
+    g_signal_emit (self, signals[CHANGED], 0);
+}
+
+static void
+shell_app_monitor_on_window_added (MetaWorkspace   *workspace,
+                                   MetaWindow      *window,
+                                   gpointer         user_data)
+{
+  ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
+
+  track_window (self, window);
+}
+
+static void
+shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
+                                     MetaWindow      *window,
+                                     gpointer         user_data)
+{
+  ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
+  char *appid;
+  guint refcount;
+
+  appid = get_appid_for_window (window);
+  if (!appid)
+    return;
+
+  g_hash_table_remove (self->window_to_appid, window);
+
+  refcount = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
+
+  refcount -= 1;
+  if (refcount == 0)
+    {
+      g_hash_table_remove (self->running_appids, appid);
+      g_free (appid);
+      g_signal_emit (self, signals[CHANGED], 0);
+    }
+  else
+    {
+      g_hash_table_insert (self->running_appids, appid, GUINT_TO_POINTER (refcount));
+    }
+}
+
+static void
+load_initial_windows (ShellAppMonitor *monitor)
+{
+  ShellGlobal *global = shell_global_get ();
+  GList *windows = shell_global_get_windows (global);
+  GList *iter;
+
+  for (iter = windows; iter; iter = iter->next)
+    {
+      MetaWindow *window = iter->data;
+      track_window (monitor, window);
+    }
+}
+
+guint
+shell_app_monitor_get_window_count (ShellAppMonitor *self,
+                                    const char      *appid)
+{
+  return GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
+}
+
+static void
+shell_app_monitor_on_n_workspaces_changed (MetaScreen    *screen,
+                                           gpointer       user_data)
+{
+  ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
+  GList *workspaces, *iter;
+
+  workspaces = meta_screen_get_workspaces (screen);
+
+  for (iter = workspaces; iter; iter = iter->next)
+    {
+      MetaWorkspace *workspace = iter->data;
+
+      g_signal_handlers_disconnect_by_func (workspace,
+                                            shell_app_monitor_on_window_added,
+                                            self);
+      g_signal_handlers_disconnect_by_func (workspace,
+                                            shell_app_monitor_on_window_removed,
+                                            self);
+
+      g_signal_connect (workspace, "window-added",
+                        G_CALLBACK (shell_app_monitor_on_window_added), self);
+      g_signal_connect (workspace, "window-removed",
+                        G_CALLBACK (shell_app_monitor_on_window_removed), self);
+    }
+}
+
+static void
+init_window_monitoring (ShellAppMonitor *self)
+{
+  MetaScreen *screen;
+
+  g_object_get (shell_global_get (),
+                "screen", &screen,
+                NULL);
+
+  g_signal_connect (screen, "notify::n-workspaces",
+                    G_CALLBACK (shell_app_monitor_on_n_workspaces_changed), self);
+  shell_app_monitor_on_n_workspaces_changed (screen, self);
+
+  g_object_unref (screen);
+}
+
 static void
 shell_app_monitor_init (ShellAppMonitor *self)
 {
@@ -199,7 +417,6 @@ shell_app_monitor_init (ShellAppMonitor *self)
   Display *xdisplay;
   char *path;
   char *shell_config_dir;
-
   /* FIXME: should we create as many monitors as there are GdkScreens? */
   display = gdk_display_get_default();
   xdisplay = GDK_DISPLAY_XDISPLAY (display);
@@ -222,6 +439,15 @@ shell_app_monitor_init (ShellAppMonitor *self)
   self->apps_by_wm_class = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                   (GDestroyNotify) g_free,
                                                   (GDestroyNotify) g_free);
+
+  self->running_appids = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                g_free, NULL);
+
+  self->window_to_appid = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                                 NULL, (GDestroyNotify) g_free);
+
+  load_initial_windows (self);
+  init_window_monitoring (self);
 
   g_object_get (shell_global_get(), "configdir", &shell_config_dir, NULL),
   path = g_build_filename (shell_config_dir, DATA_FILENAME, NULL);
@@ -299,16 +525,31 @@ shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
   return list;
 }
 
-/* Find the active window in order to collect stats */
-void
-get_active_app_properties (ShellAppMonitor *monitor,
-                           char           **wm_class,
-                           char           **title)
+/**
+ * shell_app_monitor_get_running_app_ids:
+ *
+ * @monitor: An app monitor instance
+ *
+ * Returns: (element-type utf8) (transfer container): List of application desktop
+ *     identifiers
+ */
+GList *
+shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor)
 {
+  return g_hash_table_get_keys (monitor->running_appids);
+}
+
+void
+update_app_info (ShellAppMonitor *monitor)
+{
+  char *wm_class;
   ShellGlobal *global;
+  GHashTable *app_active_times = NULL; /* GTime spent per activity */
   MetaScreen *screen;
   MetaDisplay *display;
   MetaWindow *active;
+  int activity;
+  guint32 timestamp;
 
   global = shell_global_get ();
   g_object_get (global, "screen", &screen, NULL);
@@ -317,60 +558,14 @@ get_active_app_properties (ShellAppMonitor *monitor,
 
   active = meta_display_get_focus_window (display);
 
-  if (wm_class)
-    *wm_class = NULL;
-  if (title)
-    *title = NULL;
-
   if (active == NULL)
     return;
 
-  *wm_class = g_strdup (meta_window_get_wm_class (active));
-  g_object_get (active, "title", title, NULL);
-}
-
-void
-update_app_info (ShellAppMonitor *monitor)
-{
-  char *wm_class;
-  char *title;
-  GHashTable *app_active_times = NULL; /* GTime spent per activity */
-  static gboolean first_time = TRUE;
-  int activity;
-  guint32 timestamp;
-  int i;
-
-  if (first_time) /* Generate match patterns once for all */
-    {
-      first_time = FALSE;
-      for (i = 0; title_patterns[i].app_id; i++)
-        {
-          title_patterns[i].regex = g_regex_new (title_patterns[i].pattern,
-                                                 0, 0, NULL);
-        }
-    }
-
-  get_active_app_properties (monitor, &wm_class, &title);
-
-  /* Match window title patterns to identifiers for non-standard apps */
-  if (title)
-    {
-      for (i = 0; title_patterns[i].app_id; i++)
-        {
-          if ( g_regex_match (title_patterns[i].regex, title, 0, NULL) )
-            {
-              /* Set a pseudo WM class, handled like true ones */
-              g_free (wm_class);
-              wm_class = g_strdup(title_patterns[i].app_id);
-              break;
-            }
-        }
-      g_free (title);
-    }
+  wm_class = get_cleaned_wmclass_for_window (active);
 
   if (!wm_class)
     return;
-  
+
   app_active_times = g_hash_table_lookup (monitor->apps_by_wm_class, wm_class);
   if (!app_active_times)
     {
