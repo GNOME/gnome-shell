@@ -77,9 +77,9 @@ const STATE_INACTIVE = false;
 
 // The dash has a slightly transparent blue background with a gradient.
 const DASH_LEFT_COLOR = new Clutter.Color();
-DASH_LEFT_COLOR.from_pixel(0x324c6faa);
+DASH_LEFT_COLOR.from_pixel(0x324c6fbb);
 const DASH_MIDDLE_COLOR = new Clutter.Color();
-DASH_MIDDLE_COLOR.from_pixel(0x324c6fbb);
+DASH_MIDDLE_COLOR.from_pixel(0x324c6faa);
 const DASH_RIGHT_COLOR = new Clutter.Color();
 DASH_RIGHT_COLOR.from_pixel(0x324c6fcc);
 
@@ -90,11 +90,11 @@ const DASH_BORDER_WIDTH = 2;
 
 // The results and details panes have a somewhat transparent blue background with a gradient.
 const PANE_LEFT_COLOR = new Clutter.Color();
-PANE_LEFT_COLOR.from_pixel(0x324c6ff0);
+PANE_LEFT_COLOR.from_pixel(0x324c6ff4);
 const PANE_MIDDLE_COLOR = new Clutter.Color();
-PANE_MIDDLE_COLOR.from_pixel(0x324c6ff4);
+PANE_MIDDLE_COLOR.from_pixel(0x324c6ffa);
 const PANE_RIGHT_COLOR = new Clutter.Color();
-PANE_RIGHT_COLOR.from_pixel(0x324c6ff8);
+PANE_RIGHT_COLOR.from_pixel(0x324c6ff4);
 
 const SHADOW_COLOR = new Clutter.Color();
 SHADOW_COLOR.from_pixel(0x00000033);
