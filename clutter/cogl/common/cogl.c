@@ -500,6 +500,7 @@ cogl_viewport (guint width,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  COGL_NOTE (MISC, "glViewport(0, 0, %u, %u)", width, height);
   GE( glViewport (0, 0, width, height) );
 
   ctx->viewport_width = width;
