@@ -147,13 +147,13 @@ SearchEntry.prototype = {
     }
 };
 
-function AppResults(displayWidth, resultsHeight) {
-    this._init(displayWidth, resultsHeight);
+function ItemResults(resultsWidth, resultsHeight, displayClass, labelText) {
+    this._init(resultsWidth, resultsHeight, displayClass, labelText);
 }
 
-AppResults.prototype = {
-    _init: function(displayWidth, resultsHeight) {
-        this._displayWidth = displayWidth;
+ItemResults.prototype = {
+    _init: function(resultsWidth, resultsHeight, displayClass, labelText) {
+        this._resultsWidth = resultsWidth;
         this._resultsHeight = resultsHeight;
 
         this.actor = new Big.Box({ height: resultsHeight,
@@ -162,13 +162,13 @@ AppResults.prototype = {
 
         this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
                                                font_name: "Sans Bold 14px",
-                                               text: "Applications" });
+                                               text: labelText });
         this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
 
         // LABEL_HEIGHT is the height of this._resultsText and GenericDisplay.LABEL_HEIGHT is the height
         // of the display controls.
         this._displayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2;
-        this.display = new AppDisplay.AppDisplay(displayWidth, this._displayHeight, DASH_COLUMNS, DASH_SECTION_SPACING);
+        this.display = new displayClass(resultsWidth, this._displayHeight, DASH_COLUMNS, DASH_SECTION_SPACING);
 
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
 
@@ -181,7 +181,7 @@ AppResults.prototype = {
     _setSearchMode: function() {
         this.actor.height = this._resultsHeight /  NUMBER_OF_SECTIONS_IN_SEARCH;
         let displayHeight = this._displayHeight - this._resultsHeight * (NUMBER_OF_SECTIONS_IN_SEARCH - 1) /  NUMBER_OF_SECTIONS_IN_SEARCH;
-        this.display.setExpanded(false, this._displayWidth, 0, displayHeight, DASH_COLUMNS);     
+        this.display.setExpanded(false, this._resultsWidth, 0, displayHeight, DASH_COLUMNS);     
         this.actor.remove_all();
         this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
@@ -190,58 +190,7 @@ AppResults.prototype = {
 
     _unsetSearchMode: function() {
         this.actor.height = this._resultsHeight;
-        this.display.setExpanded(false, this._displayWidth, 0, this._displayHeight, DASH_COLUMNS);     
-        this.actor.remove_all();
-        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
-        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
-        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
-    }
-}
-
-function DocResults(displayWidth, resultsHeight) {
-    this._init(displayWidth, resultsHeight);
-}
-
-DocResults.prototype = {
-    _init: function(displayWidth, resultsHeight) {
-        this._displayWidth = displayWidth;
-        this._resultsHeight = resultsHeight;
-
-        this.actor = new Big.Box({ height: resultsHeight,
-                                   padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
-                                   spacing: DASH_SECTION_SPACING });
-
-        this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
-                                               font_name: "Sans Bold 14px",
-                                               text: "Documents" });
-        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
-
-        // LABEL_HEIGHT is the height of this._resultsText and GenericDisplay.LABEL_HEIGHT is the height
-        // of the display controls.
-        this._displayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2;
-        this.display = new DocDisplay.DocDisplay(displayWidth, this._displayHeight, DASH_COLUMNS, DASH_SECTION_SPACING);
-
-        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
-
-        this.controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
-        this.controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
-
-        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
-    },
-
-    _setSearchMode: function() {
-        this.actor.height = this._resultsHeight /  NUMBER_OF_SECTIONS_IN_SEARCH;
-        let displayHeight = this._displayHeight - this._resultsHeight * (NUMBER_OF_SECTIONS_IN_SEARCH - 1) /  NUMBER_OF_SECTIONS_IN_SEARCH;
-        this.display.setExpanded(false, this._displayWidth, 0, displayHeight, DASH_COLUMNS);     
-        this.actor.remove_all();
-        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
-        this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
-        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
-    },
-
-    _unsetSearchMode: function() {
-        this.actor.height = this._resultsHeight;
-        this.display.setExpanded(false, this._displayWidth, 0, this._displayHeight, DASH_COLUMNS);     
+        this.display.setExpanded(false, this._resultsWidth, 0, this._displayHeight, DASH_COLUMNS);     
         this.actor.remove_all();
         this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
@@ -424,9 +373,9 @@ Dash.prototype = {
 
         this._docsSectionDefaultHeight = this._docsSection.height;
 
-        // The "more"/result area
-        this._resultsAppsSection = new AppResults(this._displayWidth, resultsHeight);
-        this._resultsDocsSection = new DocResults(this._displayWidth, resultsHeight);
+        // The "More" or search results area
+        this._resultsAppsSection = new ItemResults(this._displayWidth, resultsHeight, AppDisplay.AppDisplay, "Applications");
+        this._resultsDocsSection = new ItemResults(this._displayWidth, resultsHeight, DocDisplay.DocDisplay, "Documents");
 
         this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
