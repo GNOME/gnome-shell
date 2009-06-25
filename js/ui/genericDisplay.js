@@ -73,15 +73,18 @@ GenericDisplayItem.prototype = {
                                  x: 0, y: 0,
                                  width: availableWidth, height: ITEM_DISPLAY_HEIGHT });
         this.actor.add_actor(this._bg);
-        
-        this._informationButton = new Clutter.Texture({ x: availableWidth - ITEM_DISPLAY_PADDING_RIGHT - INFORMATION_BUTTON_SIZE,
-                                                        y: ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2,
-                                                        width: INFORMATION_BUTTON_SIZE,
-                                                        height: INFORMATION_BUTTON_SIZE,
-                                                        reactive: true
-                                                    });
+
         let global = Shell.Global.get();
-        this._informationButton.set_from_file(global.imagedir + "info.svg");
+        let infoIconUri = "file://" + global.imagedir + "info.svg";
+
+        this._informationButton = Shell.TextureCache.get_default().load_uri_sync(infoIconUri, 
+                                                                                 INFORMATION_BUTTON_SIZE,
+                                                                                 INFORMATION_BUTTON_SIZE);
+
+        this._informationButton.x = availableWidth - ITEM_DISPLAY_PADDING_RIGHT - INFORMATION_BUTTON_SIZE;
+        this._informationButton.y = ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2; 
+        this._informationButton.reactive = true;
+
         // Connecting to the button-press-event for the information button ensures that the actor, 
         // which is a draggable actor, does not get the button-press-event and doesn't initiate
         // the dragging, which then prevents us from getting the button-release-event for the button.
