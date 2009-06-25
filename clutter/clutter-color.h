@@ -149,4 +149,4 @@ GParamSpec *clutter_param_spec_color     (const gchar        *name,
 
 G_END_DECLS
 
-#endif /* _HAVE_CLUTTER_COLOR_H */
+#endif /* __CLUTTER_COLOR_H__ */

@@ -516,4 +516,4 @@ PangoLayout * clutter_actor_create_pango_layout       (ClutterActor        *self
 
 G_END_DECLS
 
-#endif /* _HAVE_CLUTTER_ACTOR_H */
+#endif /* __CLUTTER_ACTOR_H__ */
