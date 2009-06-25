@@ -153,12 +153,15 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
 void
 _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 {
-  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
+  if ((CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES) &&
+      !(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_STAGE_IN_RESIZE))
     {
       ClutterPerspective perspective;
       gfloat width, height;
 
-      clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
+      clutter_actor_get_preferred_size (CLUTTER_ACTOR (stage),
+                                        NULL, NULL,
+                                        &width, &height);
       clutter_stage_get_perspective (stage, &perspective);
 
       CLUTTER_NOTE (PAINT,
