@@ -101,7 +101,7 @@ shell_global_get_property(GObject         *object,
       g_value_set_object (value, mutter_plugin_get_overlay_group (global->plugin));
       break;
     case PROP_SCREEN:
-      g_value_set_object (value, mutter_plugin_get_screen (global->plugin));
+      g_value_set_object (value, shell_global_get_screen (global));
       break;
     case PROP_SCREEN_WIDTH:
       {
@@ -606,6 +606,17 @@ shell_global_set_stage_input_region (ShellGlobal *global,
    * should actually change the input region right now.
    */
   shell_global_set_stage_input_mode (global, global->input_mode);
+}
+
+/**
+ * shell_global_get_screen:
+ *
+ * Return value: (transfer none): The default #MetaScreen
+ */
+MetaScreen *
+shell_global_get_screen (ShellGlobal  *global)
+{
+  return mutter_plugin_get_screen (global->plugin);
 }
 
 /**
