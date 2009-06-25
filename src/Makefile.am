@@ -15,7 +15,7 @@ mutter_SOURCES= 				\
 	core/bell.h				\
 	core/boxes.c				\
 	include/boxes.h				\
-	compositor/compositor-mutter.c		\
+	compositor/compositor.c			\
 	compositor/mutter-module.c		\
 	compositor/mutter-module.h		\
 	compositor/mutter-plugin.c		\

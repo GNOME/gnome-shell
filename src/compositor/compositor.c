@@ -117,7 +117,7 @@ composite_at_least_version (MetaDisplay *display, int maj, int min)
   return (major > maj || (major == maj && minor >= min));
 }
 
-typedef struct _Mutter
+struct _MetaCompositor
 {
   MetaDisplay    *display;
 
@@ -130,7 +130,7 @@ typedef struct _Mutter
   gboolean        show_redraw : 1;
   gboolean        debug       : 1;
   gboolean        no_mipmaps  : 1;
-} Mutter;
+};
 
 typedef struct _MetaCompScreen
 {
@@ -311,8 +311,8 @@ mutter_window_init (MutterWindow *self)
 
 static gboolean is_shaped (MetaDisplay *display, Window xwindow);
 static gboolean mutter_window_has_shadow (MutterWindow *self);
-static void update_shape (Mutter *compositor,
-                          MutterWindow *cw);
+static void update_shape (MetaCompositor *compositor,
+                          MutterWindow   *cw);
 
 static void
 mutter_meta_window_decorated_notify (MetaWindow *mw,
@@ -403,10 +403,10 @@ mutter_window_constructed (GObject *object)
   Display             *xdisplay = meta_display_get_xdisplay (display);
   XRenderPictFormat   *format;
   gulong               value;
-  Mutter              *compositor;
+  MetaCompositor      *compositor;
   Window               xwin_child;
 
-  compositor = (Mutter*) meta_display_get_compositor (display);
+  compositor = meta_display_get_compositor (display);
   xwin_child = meta_window_get_xwindow (priv->window);
 
   mutter_window_query_window_type (self);
@@ -575,9 +575,9 @@ mutter_window_set_property (GObject      *object,
           {
             gfloat       w, h;
             MetaDisplay *display = meta_screen_get_display (priv->screen);
-            Mutter      *compositor;
+            MetaCompositor *compositor;
 
-            compositor = (Mutter*) meta_display_get_compositor (display);
+            compositor = meta_display_get_compositor (display);
 
             clutter_actor_get_size (CLUTTER_ACTOR (mw), &w, &h);
 
@@ -1432,7 +1432,7 @@ repair_win (MutterWindow *cw)
   MetaDisplay         *display  = meta_screen_get_display (screen);
   Display             *xdisplay = meta_display_get_xdisplay (display);
   MetaCompScreen      *info     = meta_screen_get_compositor_data (screen);
-  Mutter              *compositor;
+  MetaCompositor      *compositor;
   Window               xwindow  = priv->xwindow;
   gboolean             full     = FALSE;
 
@@ -1440,7 +1440,7 @@ repair_win (MutterWindow *cw)
       xwindow == clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage)))
     return;
 
-  compositor = (Mutter*)meta_display_get_compositor (display);
+  compositor = meta_display_get_compositor (display);
 
   meta_error_trap_push (display);
 
@@ -1559,8 +1559,8 @@ repair_win (MutterWindow *cw)
 }
 
 static void
-process_damage (Mutter *compositor,
-                XDamageNotifyEvent    *event)
+process_damage (MetaCompositor     *compositor,
+                XDamageNotifyEvent *event)
 {
   XEvent   next;
   Display *dpy = event->display;
@@ -1598,8 +1598,8 @@ process_damage (Mutter *compositor,
 }
 
 static void
-update_shape (Mutter *compositor,
-              MutterWindow *cw)
+update_shape (MetaCompositor *compositor,
+              MutterWindow   *cw)
 {
   MutterWindowPrivate *priv = cw->priv;
 
@@ -1631,8 +1631,8 @@ update_shape (Mutter *compositor,
 
 #ifdef HAVE_SHAPE
 static void
-process_shape (Mutter	    *compositor,
-               XShapeEvent  *event)
+process_shape (MetaCompositor *compositor,
+               XShapeEvent    *event)
 {
   MutterWindow *cw = find_window_in_display (compositor->display,
                                              event->window);
@@ -1652,7 +1652,7 @@ process_shape (Mutter	    *compositor,
 #endif
 
 static void
-process_property_notify (Mutter		*compositor,
+process_property_notify (MetaCompositor	*compositor,
                          XPropertyEvent *event)
 {
   MetaDisplay *display = compositor->display;
@@ -2014,8 +2014,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
                                MetaWindow     *window)
 {
-  Mutter *xrc = (Mutter *) compositor;
-
   if (window)
     {
       MetaCompScreen *info;
@@ -2033,9 +2031,8 @@ meta_compositor_process_event (MetaCompositor *compositor,
   else
     {
       GSList *l;
-      Mutter *clc = (Mutter*)compositor;
 
-      l = meta_display_get_screens (clc->display);
+      l = meta_display_get_screens (compositor->display);
 
       while (l)
 	{
@@ -2061,30 +2058,30 @@ meta_compositor_process_event (MetaCompositor *compositor,
    */
 
 
-  meta_error_trap_push (xrc->display);
+  meta_error_trap_push (compositor->display);
   switch (event->type)
     {
     case PropertyNotify:
-      process_property_notify (xrc, (XPropertyEvent *) event);
+      process_property_notify (compositor, (XPropertyEvent *) event);
       break;
 
     default:
-      if (event->type == meta_display_get_damage_event_base (xrc->display) + XDamageNotify)
+      if (event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
         {
 	  DEBUG_TRACE ("clutter_cmp_process_event (process_damage)\n");
-          process_damage (xrc, (XDamageNotifyEvent *) event);
+          process_damage (compositor, (XDamageNotifyEvent *) event);
         }
 #ifdef HAVE_SHAPE
-      else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify)
+      else if (event->type == meta_display_get_shape_event_base (compositor->display) + ShapeNotify)
 	{
 	  DEBUG_TRACE ("clutter_cmp_process_event (process_shape)\n");
-	  process_shape (xrc, (XShapeEvent *) event);
+	  process_shape (compositor, (XShapeEvent *) event);
 	}
 #endif /* HAVE_SHAPE */
       break;
     }
 
-  meta_error_trap_pop (xrc->display, FALSE);
+  meta_error_trap_pop (compositor->display, FALSE);
 
   /* Clutter needs to know about MapNotify events otherwise it will
      think the stage is invisible */
@@ -2578,7 +2575,6 @@ meta_compositor_new (MetaDisplay *display)
     "_NET_WM_WINDOW_OPACITY",
   };
   Atom                   atoms[G_N_ELEMENTS(atom_names)];
-  Mutter *clc;
   MetaCompositor        *compositor;
   Display               *xdisplay = meta_display_get_xdisplay (display);
   guchar                *data;
@@ -2586,30 +2582,28 @@ meta_compositor_new (MetaDisplay *display)
   if (!composite_at_least_version (display, 0, 3))
     return NULL;
 
-  clc = g_new0 (Mutter, 1);
+  compositor = g_new0 (MetaCompositor, 1);
 
-  compositor = (MetaCompositor *) clc;
-
-  clc->display = display;
+  compositor->display = display;
 
   if (g_getenv("MUTTER_DISABLE_MIPMAPS"))
-    clc->no_mipmaps = TRUE;
+    compositor->no_mipmaps = TRUE;
 
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
 
-  clc->atom_x_root_pixmap = atoms[0];
-  clc->atom_x_set_root = atoms[1];
-  clc->atom_net_wm_window_opacity = atoms[2];
+  compositor->atom_x_root_pixmap = atoms[0];
+  compositor->atom_x_set_root = atoms[1];
+  compositor->atom_net_wm_window_opacity = atoms[2];
 
   /* Shadow setup */
 
   data = shadow_gaussian_make_tile ();
 
-  clc->shadow_src = clutter_texture_new ();
+  compositor->shadow_src = clutter_texture_new ();
 
-  clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (clc->shadow_src),
+  clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (compositor->shadow_src),
                                      data,
                                      TRUE,
                                      TILE_WIDTH,
