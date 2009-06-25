@@ -36,11 +36,16 @@
     </dependencies>
   </autotools>
 
+  <autotools id="gconf">
+    <branch repo="git.gnome.org" module="gconf"/>
+  </autotools>
+
   <autotools id="mutter" autogenargs="--with-clutter">
     <branch repo="git.gnome.org" module="mutter"/>
     <dependencies>
       <dep package="gir-repository"/>
       <dep package="clutter"/>
+      <dep package="gconf"/>
     </dependencies>
   </autotools>
 
@@ -51,6 +56,7 @@
         <dep package="gir-repository"/>
         <dep package="mutter"/>
         <dep package="gjs"/>
+        <dep package="gconf"/>
     </dependencies>
   </autotools>
 
