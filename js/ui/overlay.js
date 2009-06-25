@@ -283,7 +283,6 @@ Dash.prototype = {
         this._searchEntry.entry.connect('activate', function (se) {
             // only one of the displays will have an item selected, so it's ok to
             // call activateSelected() on all of them
-            me._appDisplay.activateSelected();
             me._docDisplay.activateSelected();
             me._resultsAppsSection.display.activateSelected();
             me._resultsDocsSection.display.activateSelected();
@@ -329,11 +328,9 @@ Dash.prototype = {
         
         this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
         this._appsSection.append(this._appsContent, Big.BoxPackFlags.EXPAND);
-        this._appDisplay = new AppDisplay.AppDisplay(this._displayWidth, this._itemDisplayHeight / 2, DASH_COLUMNS, DASH_SECTION_PADDING);
-        let sideArea = this._appDisplay.getSideArea();
-        sideArea.hide();
-        this._appsContent.append(sideArea, Big.BoxPackFlags.NONE);
-        this._appsContent.append(this._appDisplay.actor, Big.BoxPackFlags.EXPAND);
+        this._appWell = new AppDisplay.AppWell(this._displayWidth);
+        this._appWell.actor.show();
+        this._appsContent.append(this._appWell.actor, Big.BoxPackFlags.EXPAND);
 
         let moreAppsBox = new Big.Box({x_align: Big.BoxAlignment.END});
         this._moreAppsLink = new Link.Link({ color: DASH_TEXT_COLOR,
@@ -444,13 +441,12 @@ Dash.prototype = {
         let itemDetailsAvailableWidth = this._detailsWidth - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
         let itemDetailsAvailableHeight = detailsHeight - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
 
-        this._appDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
         this._docDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
         this._resultsAppsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
         this._resultsDocsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
 
         /* Proxy the activated signals */
-        this._appDisplay.connect('activated', function(appDisplay) {
+        this._appWell.connect('activated', function(well) {
             me.emit('activated');
         });
         this._docDisplay.connect('activated', function(docDisplay) {
@@ -462,27 +458,7 @@ Dash.prototype = {
         this._resultsDocsSection.display.connect('activated', function(resultsDocsDisplay) {
             me.emit('activated');
         });
-        this._appDisplay.connect('selected', function(appDisplay) {
-            // We allow clicking on any item to select it, so if an 
-            // item in the app display is selected, we need to make sure that
-            // no item in the doc display has the selection.
-            me._docDisplay.unsetSelected();
-            me._resultsDocsSection.display.unsetSelected();
-            me._resultsAppsSection.display.unsetSelected();
-            if (me._firstSelectAfterOverlayShow) {
-                me._firstSelectAfterOverlayShow = false;
-            } else if (!me._detailsShowing()) { 
-                me._detailsPane.show();
-                me.emit('panes-displayed');
-            }
-            me._detailsContent.remove_all();
-            me._detailsContent.append(me._appDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
-        });
         this._docDisplay.connect('selected', function(docDisplay) {
-            // We allow clicking on any item to select it, so if an 
-            // item in the doc display is selected, we need to make sure that
-            // no item in the app display has the selection.
-            me._appDisplay.unsetSelected(); 
             me._resultsDocsSection.display.unsetSelected();
             me._resultsAppsSection.display.unsetSelected();
             if (!me._detailsShowing()) { 
@@ -493,7 +469,6 @@ Dash.prototype = {
             me._detailsContent.append(me._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE); 
         });
         this._resultsDocsSection.display.connect('selected', function(resultsDocDisplay) {
-            me._appDisplay.unsetSelected(); 
             me._docDisplay.unsetSelected();
             me._resultsAppsSection.display.unsetSelected();
             if (!me._detailsShowing()) { 
@@ -504,7 +479,6 @@ Dash.prototype = {
             me._detailsContent.append(me._resultsDocsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
         });
         this._resultsAppsSection.display.connect('selected', function(resultsAppDisplay) {
-            me._appDisplay.unsetSelected(); 
             me._docDisplay.unsetSelected();
             me._resultsDocsSection.display.unsetSelected();
             if (!me._detailsShowing()) { 
@@ -513,12 +487,6 @@ Dash.prototype = {
             }
             me._detailsContent.remove_all();
             me._detailsContent.append(me._resultsAppsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
-        });
-        this._appDisplay.connect('redisplayed', function(appDisplay) {
-            me._ensureItemSelected();
-        });
-        this._docDisplay.connect('redisplayed', function(docDisplay) {
-            me._ensureItemSelected();
         });
 
         this._moreAppsLink.connect('clicked',
@@ -543,7 +511,6 @@ Dash.prototype = {
     show: function() {
         let global = Shell.Global.get();
 
-        this._appDisplay.show();
         this._appsContent.show();
         this._docDisplay.show();
         global.stage.set_key_focus(this._searchEntry.entry);
@@ -565,22 +532,6 @@ Dash.prototype = {
              this.emit('panes-removed');
         }
         this._unsetSearchMode();
-    },
-
-    // Ensures that one of the displays has the selection if neither owns it after the
-    // latest redisplay. This can be applicable if the display that earlier had the
-    // selection no longer has any items, or if their is a single section being shown 
-    // in the expanded view and it went from having no matching items to having some.
-    // We first try to place the selection in the applications section, because it is
-    // displayed above the documents section.
-    _ensureItemSelected: function() { 
-        if (!this._appDisplay.hasSelected() && !this._docDisplay.hasSelected()) {
-            if (this._appDisplay.hasItems()) { 
-                this._appDisplay.selectFirstItem();
-            } else if (this._docDisplay.hasItems()) {
-                this._docDisplay.selectFirstItem();
-            }
-        }
     },
 
     // Sets the 'More' mode for browsing applications.
@@ -811,6 +762,7 @@ Overlay.prototype = {
     // the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
         if (source instanceof GenericDisplay.GenericDisplayItem) {
+            log("unsetting more mode");
             this._dash.unsetMoreMode();
             return true;
         }

@@ -7,32 +7,6 @@ const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
 
-// TODO - move this into GConf once we're not a plugin anymore
-// but have taken over metacity
-// This list is taken from GNOME Online popular applications
-// http://online.gnome.org/applications
-// but with nautilus removed (since it should already be running)
-// and evince, totem, and gnome-file-roller removed (since they're
-// usually started by opening documents, not by opening the app
-// directly)
-const DEFAULT_APPLICATIONS = [
-    'mozilla-firefox.desktop',
-    'gnome-terminal.desktop',
-    'evolution.desktop',
-    'gedit.desktop',
-    'mozilla-thunderbird.desktop',
-    'rhythmbox.desktop',
-    'epiphany.desktop',
-    'xchat.desktop',
-    'openoffice.org-1.9-writer.desktop',
-    'emacs.desktop',
-    'gnome-system-monitor.desktop',
-    'openoffice.org-1.9-calc.desktop',
-    'eclipse.desktop',
-    'openoffice.org-1.9-impress.desktop',
-    'vncviewer.desktop'
-];
-
 function AppInfo(appId) {
     this._init(appId);
 }
@@ -41,8 +15,9 @@ AppInfo.prototype = {
     _init : function(appId) {
         this.appId = appId;
         this._gAppInfo = Gio.DesktopAppInfo.new(appId);
-        if (!this._gAppInfo)
+        if (!this._gAppInfo) {
             throw new Error('Unknown appId ' + appId);
+        }
 
         this.id = this._gAppInfo.get_id();
         this.name = this._gAppInfo.get_name();
@@ -120,16 +95,39 @@ function getMostUsedApps(count) {
         }
     }
 
+    let favs = getFavorites();
     // Fill the list with default applications it's not full yet
-    for (let i = 0; i < DEFAULT_APPLICATIONS.length && matches.length <= count; i++) {
-        let appId = DEFAULT_APPLICATIONS[i];
-        if (alreadyAdded[appId])
-            continue;
-
-        let appInfo = getAppInfo(appId);
-        if (appInfo)
-            matches.push(appInfo);
+    for (let i = 0; i < favs.length && favs.length <= count; i++) {
+        matches.push(favs[i]);
     }
 
     return matches;
+}
+
+function _idListToInfos(ids) {
+    let infos = [];
+    for (let i = 0; i < ids.length; i++) {
+        let display = getAppInfo(ids[i]);
+        if (display == null)
+            continue;
+        infos.push(display);
+    }
+    return infos;
+}
+
+function getFavorites() {
+    let system = Shell.AppSystem.get_default();
+
+    return _idListToInfos(system.get_favorites());
+}
+
+function getRunning() {
+    let monitor = Shell.AppMonitor.get_default();
+    let basename = function (n) {
+        let i = n.lastIndexOf('/');
+        if (i < 0)
+            return n;
+        return n.substring(i+1);
+    }
+    return _idListToInfos(monitor.get_running_app_ids().map(basename));
 }
