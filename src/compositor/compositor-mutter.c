@@ -17,7 +17,7 @@
 #include "frame.h"
 #include "errors.h"
 #include "window.h"
-#include "compositor-private.h"
+#include "compositor.h"
 #include "compositor-mutter.h"
 #include "mutter-plugin-manager.h"
 #include "tidy/tidy-texture-frame.h"
@@ -119,7 +119,6 @@ composite_at_least_version (MetaDisplay *display, int maj, int min)
 
 typedef struct _Mutter
 {
-  MetaCompositor  compositor;
   MetaDisplay    *display;
 
   Atom            atom_x_root_pixmap;
@@ -1138,8 +1137,8 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 }
 
 
-static void
-clutter_cmp_destroy (MetaCompositor *compositor)
+void
+meta_compositor_destroy (MetaCompositor *compositor)
 {
 }
 
@@ -1845,9 +1844,9 @@ mutter_empty_stage_input_region (MetaScreen *screen)
   mutter_set_stage_input_region (screen, region);
 }
 
-static void
-clutter_cmp_manage_screen (MetaCompositor *compositor,
-                           MetaScreen     *screen)
+void
+meta_compositor_manage_screen (MetaCompositor *compositor,
+                               MetaScreen     *screen)
 {
   MetaCompScreen *info;
   MetaDisplay    *display       = meta_screen_get_display (screen);
@@ -1968,15 +1967,15 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   clutter_actor_show (info->stage);
 }
 
-static void
-clutter_cmp_unmanage_screen (MetaCompositor *compositor,
-                             MetaScreen     *screen)
+void
+meta_compositor_unmanage_screen (MetaCompositor *compositor,
+                                 MetaScreen     *screen)
 {
 }
 
-static void
-clutter_cmp_add_window (MetaCompositor    *compositor,
-                        MetaWindow        *window)
+void
+meta_compositor_add_window (MetaCompositor    *compositor,
+                            MetaWindow        *window)
 {
   MetaScreen *screen = meta_window_get_screen (window);
   MetaDisplay *display = meta_screen_get_display (screen);
@@ -1989,9 +1988,9 @@ clutter_cmp_add_window (MetaCompositor    *compositor,
   meta_error_trap_pop (display, FALSE);
 }
 
-static void
-clutter_cmp_remove_window (MetaCompositor *compositor,
-                           MetaWindow     *window)
+void
+meta_compositor_remove_window (MetaCompositor *compositor,
+                               MetaWindow     *window)
 {
   MutterWindow         *cw     = NULL;
 
@@ -2003,17 +2002,17 @@ clutter_cmp_remove_window (MetaCompositor *compositor,
   destroy_win (cw);
 }
 
-static void
-clutter_cmp_set_updates (MetaCompositor *compositor,
-                         MetaWindow     *window,
-                         gboolean        update)
+void
+meta_compositor_set_updates (MetaCompositor *compositor,
+                             MetaWindow     *window,
+                             gboolean        updates)
 {
 }
 
-static gboolean
-clutter_cmp_process_event (MetaCompositor *compositor,
-                           XEvent         *event,
-                           MetaWindow     *window)
+gboolean
+meta_compositor_process_event (MetaCompositor *compositor,
+                               XEvent         *event,
+                               MetaWindow     *window)
 {
   Mutter *xrc = (Mutter *) compositor;
 
@@ -2099,22 +2098,47 @@ clutter_cmp_process_event (MetaCompositor *compositor,
   return FALSE;
 }
 
-static Pixmap
-clutter_cmp_get_window_pixmap (MetaCompositor *compositor,
-                               MetaWindow     *window)
+Pixmap
+meta_compositor_get_window_pixmap (MetaCompositor *compositor,
+                                   MetaWindow     *window)
 {
   return None;
 }
 
-static void
-clutter_cmp_set_active_window (MetaCompositor *compositor,
-                               MetaScreen     *screen,
-                               MetaWindow     *window)
+void
+meta_compositor_set_active_window (MetaCompositor *compositor,
+                                   MetaScreen     *screen,
+                                   MetaWindow     *window)
 {
 }
 
-static void
-clutter_cmp_map_window (MetaCompositor *compositor, MetaWindow *window)
+/* These functions are unused at the moment */
+void
+meta_compositor_begin_move (MetaCompositor *compositor,
+                            MetaWindow     *window,
+                            MetaRectangle  *initial,
+                            int             grab_x,
+                            int             grab_y)
+{
+}
+
+void
+meta_compositor_update_move (MetaCompositor *compositor,
+                             MetaWindow     *window,
+                             int             x,
+                             int             y)
+{
+}
+
+void
+meta_compositor_end_move (MetaCompositor *compositor,
+                          MetaWindow     *window)
+{
+}
+
+void
+meta_compositor_map_window (MetaCompositor *compositor,
+			    MetaWindow	   *window)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   DEBUG_TRACE ("clutter_cmp_map_window\n");
@@ -2124,8 +2148,9 @@ clutter_cmp_map_window (MetaCompositor *compositor, MetaWindow *window)
   map_win (cw);
 }
 
-static void
-clutter_cmp_unmap_window (MetaCompositor *compositor, MetaWindow *window)
+void
+meta_compositor_unmap_window (MetaCompositor *compositor,
+			      MetaWindow     *window)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   DEBUG_TRACE ("clutter_cmp_unmap_window\n");
@@ -2135,11 +2160,11 @@ clutter_cmp_unmap_window (MetaCompositor *compositor, MetaWindow *window)
   unmap_win (cw);
 }
 
-static void
-clutter_cmp_minimize_window (MetaCompositor *compositor,
-			     MetaWindow	    *window,
-			     MetaRectangle  *window_rect,
-			     MetaRectangle  *icon_rect)
+void
+meta_compositor_minimize_window (MetaCompositor *compositor,
+                                 MetaWindow     *window,
+				 MetaRectangle	*window_rect,
+				 MetaRectangle	*icon_rect)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
@@ -2168,11 +2193,11 @@ clutter_cmp_minimize_window (MetaCompositor *compositor,
     }
 }
 
-static void
-clutter_cmp_unminimize_window (MetaCompositor *compositor,
-			       MetaWindow     *window,
-			       MetaRectangle  *window_rect,
-			       MetaRectangle  *icon_rect)
+void
+meta_compositor_unminimize_window (MetaCompositor    *compositor,
+                                   MetaWindow        *window,
+				   MetaRectangle     *window_rect,
+				   MetaRectangle     *icon_rect)
 {
 #if 0
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
@@ -2209,10 +2234,10 @@ clutter_cmp_unminimize_window (MetaCompositor *compositor,
 }
 
 
-static void
-clutter_cmp_maximize_window (MetaCompositor *compositor,
-			     MetaWindow	    *window,
-			     MetaRectangle  *rect)
+void
+meta_compositor_maximize_window (MetaCompositor    *compositor,
+                                 MetaWindow        *window,
+				 MetaRectangle	   *window_rect)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
@@ -2230,17 +2255,17 @@ clutter_cmp_maximize_window (MetaCompositor *compositor,
       !mutter_plugin_manager_event_maximize (info->plugin_mgr,
 					     cw,
 					     MUTTER_PLUGIN_MAXIMIZE,
-					     rect->x, rect->y,
-					     rect->width, rect->height))
+					     window_rect->x, window_rect->y,
+					     window_rect->width, window_rect->height))
     {
       cw->priv->maximize_in_progress--;
     }
 }
 
-static void
-clutter_cmp_unmaximize_window (MetaCompositor *compositor,
-			       MetaWindow     *window,
-			       MetaRectangle  *rect)
+void
+meta_compositor_unmaximize_window (MetaCompositor    *compositor,
+                                   MetaWindow        *window,
+				   MetaRectangle     *window_rect)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
@@ -2258,16 +2283,16 @@ clutter_cmp_unmaximize_window (MetaCompositor *compositor,
       !mutter_plugin_manager_event_maximize (info->plugin_mgr,
 					     cw,
 					     MUTTER_PLUGIN_UNMAXIMIZE,
-					     rect->x, rect->y,
-					     rect->width, rect->height))
+					     window_rect->x, window_rect->y,
+					     window_rect->width, window_rect->height))
     {
       cw->priv->unmaximize_in_progress--;
     }
 }
 
-static void
-clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
-				       MetaWorkspace  *workspace)
+void
+meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
+                                           MetaWorkspace  *workspace)
 {
 #if 0
   /* FIXME -- should do away with this function in favour of MetaWorkspace
@@ -2288,12 +2313,12 @@ clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
 #endif
 }
 
-static void
-clutter_cmp_switch_workspace (MetaCompositor *compositor,
-			      MetaScreen     *screen,
-			      MetaWorkspace  *from,
-			      MetaWorkspace  *to,
-			      MetaMotionDirection direction)
+void
+meta_compositor_switch_workspace (MetaCompositor     *compositor,
+                                  MetaScreen         *screen,
+                                  MetaWorkspace      *from,
+                                  MetaWorkspace      *to,
+                                  MetaMotionDirection direction)
 {
   MetaCompScreen *info;
   gint            to_indx, from_indx;
@@ -2382,10 +2407,10 @@ sync_actor_stacking (GList *windows)
     }
 }
 
-static void
-clutter_cmp_sync_stack (MetaCompositor *compositor,
-			MetaScreen     *screen,
-			GList	       *stack)
+void
+meta_compositor_sync_stack (MetaCompositor  *compositor,
+			    MetaScreen	    *screen,
+			    GList	    *stack)
 {
   GList *old_stack;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
@@ -2471,11 +2496,11 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
   sync_actor_stacking (info->windows);
 }
 
-static void
-clutter_cmp_set_window_hidden (MetaCompositor *compositor,
-			       MetaScreen     *screen,
-			       MetaWindow     *window,
-			       gboolean	       hidden)
+void
+meta_compositor_set_window_hidden (MetaCompositor *compositor,
+				   MetaScreen	  *screen,
+				   MetaWindow	  *window,
+				   gboolean	   hidden)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MutterWindowPrivate *priv = cw->priv;
@@ -2509,9 +2534,9 @@ clutter_cmp_set_window_hidden (MetaCompositor *compositor,
     }
 }
 
-static void
-clutter_cmp_sync_window_geometry (MetaCompositor *compositor,
-				  MetaWindow *window)
+void
+meta_compositor_sync_window_geometry (MetaCompositor *compositor,
+				      MetaWindow *window)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
@@ -2526,11 +2551,11 @@ clutter_cmp_sync_window_geometry (MetaCompositor *compositor,
   sync_actor_position (cw);
 }
 
-static void
-clutter_cmp_sync_screen_size (MetaCompositor *compositor,
-			      MetaScreen     *screen,
-			      guint	      width,
-			      guint	      height)
+void
+meta_compositor_sync_screen_size (MetaCompositor  *compositor,
+				  MetaScreen	  *screen,
+				  guint		   width,
+				  guint		   height)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
@@ -2544,32 +2569,8 @@ clutter_cmp_sync_screen_size (MetaCompositor *compositor,
 		width, height);
 }
 
-static MetaCompositor comp_info = {
-  clutter_cmp_destroy,
-  clutter_cmp_manage_screen,
-  clutter_cmp_unmanage_screen,
-  clutter_cmp_add_window,
-  clutter_cmp_remove_window,
-  clutter_cmp_set_updates,
-  clutter_cmp_process_event,
-  clutter_cmp_get_window_pixmap,
-  clutter_cmp_set_active_window,
-  clutter_cmp_map_window,
-  clutter_cmp_unmap_window,
-  clutter_cmp_minimize_window,
-  clutter_cmp_unminimize_window,
-  clutter_cmp_maximize_window,
-  clutter_cmp_unmaximize_window,
-  clutter_cmp_update_workspace_geometry,
-  clutter_cmp_switch_workspace,
-  clutter_cmp_sync_stack,
-  clutter_cmp_set_window_hidden,
-  clutter_cmp_sync_window_geometry,
-  clutter_cmp_sync_screen_size
-};
-
 MetaCompositor *
-mutter_new (MetaDisplay *display)
+meta_compositor_new (MetaDisplay *display)
 {
   char *atom_names[] = {
     "_XROOTPMAP_ID",
@@ -2586,7 +2587,6 @@ mutter_new (MetaDisplay *display)
     return NULL;
 
   clc = g_new0 (Mutter, 1);
-  clc->compositor = comp_info;
 
   compositor = (MetaCompositor *) clc;
 

@@ -540,6 +540,9 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
     gint num_workspaces, current_space, new_space;
     MetaMotionDirection direction = 0;
 
+    if (!comp)
+      return;
+
     current_space = meta_workspace_index (old);
     new_space     = meta_workspace_index (workspace);
 
@@ -922,14 +925,17 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   /* We're all done, YAAY!  Record that everything has been validated. */
   workspace->work_areas_invalid = FALSE;
 
-  /*
-   * Notify the compositor that the workspace geometry has changed.
-   */
-  MetaScreen     *screen = workspace->screen;
-  MetaDisplay    *display = meta_screen_get_display (screen);
-  MetaCompositor *comp = meta_display_get_compositor (display);
+  {
+    /*
+     * Notify the compositor that the workspace geometry has changed.
+     */
+    MetaScreen     *screen = workspace->screen;
+    MetaDisplay    *display = meta_screen_get_display (screen);
+    MetaCompositor *comp = meta_display_get_compositor (display);
 
-  meta_compositor_update_workspace_geometry (comp, workspace);
+    if (comp)
+      meta_compositor_update_workspace_geometry (comp, workspace);
+  }
 }
 
 /**

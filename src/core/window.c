@@ -1274,8 +1274,9 @@ meta_window_unmanage (MetaWindow  *window,
   if (window->display->focus_window == window)
     {
       window->display->focus_window = NULL;
-      meta_compositor_set_active_window (window->display->compositor,
-                                         window->screen, NULL);
+      if (window->display->compositor)
+        meta_compositor_set_active_window (window->display->compositor,
+                                           window->screen, NULL);
     }
 
   if (window->maximized_horizontally || window->maximized_vertically)
@@ -2550,10 +2551,11 @@ meta_window_show (MetaWindow *window)
               meta_stack_freeze (window->screen->stack);
               window->hidden = FALSE;
 	      /* Inform the compositor that the window isn't hidden */
-	      meta_compositor_set_window_hidden (window->display->compositor,
-						 window->screen,
-						 window,
-						 window->hidden);
+              if (window->display->compositor)
+                meta_compositor_set_window_hidden (window->display->compositor,
+                                                   window->screen,
+                                                   window,
+                                                   window->hidden);
               meta_stack_thaw (window->screen->stack);
               did_show = TRUE;
             }
@@ -2582,8 +2584,11 @@ meta_window_show (MetaWindow *window)
 					    NULL, NULL);
 	    }
 	  else
-	    meta_compositor_map_window (window->display->compositor,
-					window);
+            {
+              if (window->display->compositor)
+                meta_compositor_map_window (window->display->compositor,
+                                            window);
+            }
 
 	  window->was_minimized = FALSE;
 	}
@@ -2659,21 +2664,24 @@ meta_window_hide (MetaWindow *window)
       meta_stack_freeze (window->screen->stack);
       window->hidden = TRUE;
       /* Tell the compositor this window is now hidden */
-      meta_compositor_set_window_hidden (window->display->compositor,
-					 window->screen,
-					 window,
-					 window->hidden);
+      if (window->display->compositor)
+        meta_compositor_set_window_hidden (window->display->compositor,
+                                           window->screen,
+                                           window,
+                                           window->hidden);
       meta_stack_thaw (window->screen->stack);
 
-      meta_compositor_unmap_window (window->display->compositor,
-				    window);
+      if (window->display->compositor)
+        meta_compositor_unmap_window (window->display->compositor,
+                                      window);
 
       did_hide = TRUE;
     }
   else
     {
-      meta_compositor_unmap_window (window->display->compositor,
-				    window);
+      if (window->display->compositor)
+        meta_compositor_unmap_window (window->display->compositor,
+                                      window);
 
       /* Unmapping the frame is enough to make the window disappear,
        * but we need to hide the window itself so the client knows
@@ -4019,8 +4027,9 @@ meta_window_move_resize_internal (MetaWindow          *window,
                   newx, newy, window->rect.width, window->rect.height,
                   window->user_rect.x, window->user_rect.y,
                   window->user_rect.width, window->user_rect.height);
-      meta_compositor_sync_window_geometry (window->display->compositor,
-					    window);
+      if (window->display->compositor)
+        meta_compositor_sync_window_geometry (window->display->compositor,
+                                              window);
     }
   else
     {
@@ -4188,7 +4197,8 @@ meta_window_configure_notify (MetaWindow *window, XConfigureEvent *event)
   if (!event->override_redirect && !event->send_event)
     meta_warning ("Unhandled change of windows override redirect status\n");
 
-  meta_compositor_sync_window_geometry (window->display->compositor, window);
+  if (window->display->compositor)
+    meta_compositor_sync_window_geometry (window->display->compositor, window);
 }
 
 void
@@ -5817,8 +5827,9 @@ meta_window_notify_focus (MetaWindow *window,
                       "* Focus --> %s\n", window->desc);
           window->display->focus_window = window;
           window->has_focus = TRUE;
-          meta_compositor_set_active_window (window->display->compositor,
-                                             window->screen, window);
+          if (window->display->compositor)
+            meta_compositor_set_active_window (window->display->compositor,
+                                               window->screen, window);
 
           /* Move to the front of the focusing workspace's MRU list.
            * We should only be "removing" it from the MRU list if it's
@@ -5906,8 +5917,9 @@ meta_window_notify_focus (MetaWindow *window,
           if (window->frame)
             meta_frame_queue_draw (window->frame);
 
-          meta_compositor_set_active_window (window->display->compositor,
-                                             window->screen, NULL);
+          if (window->display->compositor)
+            meta_compositor_set_active_window (window->display->compositor,
+                                               window->screen, NULL);
 
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,
