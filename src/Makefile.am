@@ -22,12 +22,15 @@ mutter_SOURCES= 				\
 	core/boxes.c				\
 	include/boxes.h				\
 	compositor/compositor.c			\
+	compositor/compositor-private.h		\
 	compositor/mutter-module.c		\
 	compositor/mutter-module.h		\
 	compositor/mutter-plugin.c		\
 	compositor/mutter-plugin-manager.c	\
 	compositor/mutter-plugin-manager.h	\
 	compositor/mutter-shaped-texture.c	\
+	compositor/shadow.c			\
+	compositor/shadow.h			\
 	compositor/mutter-shaped-texture.h	\
 	compositor/tidy/tidy-texture-frame.c	\
 	compositor/tidy/tidy-texture-frame.h	\
