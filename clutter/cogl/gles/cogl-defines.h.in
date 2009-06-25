@@ -448,6 +448,7 @@ G_BEGIN_DECLS
 #endif
 
 #define CLUTTER_COGL_HAS_GLES 1
+#define COGL_HAS_GLES 1
 
 /* These aren't always defined under GLES 2 but if they are then we
    should probably use the GL_* macro instead of assuming the

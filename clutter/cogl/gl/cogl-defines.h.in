@@ -685,6 +685,7 @@ G_BEGIN_DECLS
 #define CGL_OBJECT_COMPILE_STATUS  GL_OBJECT_COMPILE_STATUS_ARB
 
 #define CLUTTER_COGL_HAS_GL 1
+#define COGL_HAS_GL 1
 
 /* Extension function prototypes */
 
