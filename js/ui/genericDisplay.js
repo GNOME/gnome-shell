@@ -530,13 +530,13 @@ GenericDisplay.prototype = {
         Mainloop.timeout_add(5, 
                              Lang.bind(this,
                                        function() {
-                                           // Check if the pointer is over one of the items and display the preview pop-up if it is.
+                                           // Check if the pointer is over one of the items and display the information button if it is.
                                            let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
                                            let global = Shell.Global.get();
                                            let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
                                                                                      x, y);
                                            if (actor != null) {
-                                               let item = this._findDisplayedByActor(actor.get_parent());
+                                               let item = this._findDisplayedByActor(actor);
                                                if (item != null) {
                                                    item.onDrawnUnderPointer();
                                                }
