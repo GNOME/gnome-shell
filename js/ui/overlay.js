@@ -455,6 +455,9 @@ Dash.prototype = {
         resultsBackground.append(resultsRight, Big.BoxPackFlags.EXPAND);
         this._resultsPane.append(resultsShadow, Big.BoxPackFlags.NONE);
 
+        this.actor.add_actor(this._resultsPane);
+        this._resultsPane.hide();
+
         this._detailsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                           x: this._width,
                                           y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
@@ -485,6 +488,9 @@ Dash.prototype = {
 
         this._detailsContent = new Big.Box({ padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH });
         this._detailsPane.add_actor(this._detailsContent);
+
+        this.actor.add_actor(this._detailsPane);
+        this._detailsPane.hide();
 
         let itemDetailsAvailableWidth = this._detailsWidth - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
         let itemDetailsAvailableHeight = detailsHeight - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
@@ -517,7 +523,7 @@ Dash.prototype = {
             if (me._firstSelectAfterOverlayShow) {
                 me._firstSelectAfterOverlayShow = false;
             } else if (!me._detailsShowing()) { 
-                me.actor.add_actor(me._detailsPane);
+                me._detailsPane.show();
                 me.emit('panes-displayed');
             }
             me._detailsContent.remove_all();
@@ -531,7 +537,7 @@ Dash.prototype = {
             me._resultsDocsSection.display.unsetSelected();
             me._resultsAppsSection.display.unsetSelected();
             if (!me._detailsShowing()) { 
-                me.actor.add_actor(me._detailsPane);
+                me._detailsPane.show();
                 me.emit('panes-displayed');
             }
             me._detailsContent.remove_all();
@@ -542,7 +548,7 @@ Dash.prototype = {
             me._docDisplay.unsetSelected();
             me._resultsAppsSection.display.unsetSelected();
             if (!me._detailsShowing()) { 
-                me.actor.add_actor(me._detailsPane);
+                me._detailsPane.show();
                 me.emit('panes-displayed');
             }
             me._detailsContent.remove_all();
@@ -553,7 +559,7 @@ Dash.prototype = {
             me._docDisplay.unsetSelected();
             me._resultsDocsSection.display.unsetSelected();
             if (!me._detailsShowing()) { 
-                me.actor.add_actor(me._detailsPane);
+                me._detailsPane.show();
                 me.emit('panes-displayed');
             }
             me._detailsContent.remove_all();
@@ -606,7 +612,7 @@ Dash.prototype = {
         this._unsetMoreAppsMode();
         this._unsetMoreDocsMode();
         if (this._detailsShowing()) { 
-             this.actor.remove_actor(this._detailsPane);
+             this._detailsPane.hide();
              this.emit('panes-removed');
         }
         this._unsetSearchMode();
@@ -639,7 +645,7 @@ Dash.prototype = {
 
         this._resultsAppsSection.display.show();
         this._resultsPane.add_actor(this._resultsAppsSection.actor);
-        this.actor.add_actor(this._resultsPane);
+        this._resultsPane.show();
 
         this._moreAppsLink.setText("Less...");
  
@@ -656,7 +662,7 @@ Dash.prototype = {
 
         this._resultsPane.remove_actor(this._resultsAppsSection.actor);
         this._resultsAppsSection.display.hide();
-        this.actor.remove_actor(this._resultsPane); 
+        this._resultsPane.hide(); 
        
         this._moreAppsLink.setText("More...");
 
@@ -678,7 +684,7 @@ Dash.prototype = {
 
         this._resultsDocsSection.display.show();
         this._resultsPane.add_actor(this._resultsDocsSection.actor);
-        this.actor.add_actor(this._resultsPane);
+        this._resultsPane.show();
          
         this._moreDocsLink.setText("Less...");
         
@@ -693,7 +699,7 @@ Dash.prototype = {
 
         this._moreDocsMode = false;
 
-        this.actor.remove_actor(this._resultsPane);
+        this._resultsPane.hide();
         this._resultsPane.remove_actor(this._resultsDocsSection.actor);
         this._resultsDocsSection.display.hide();
  
@@ -719,7 +725,7 @@ Dash.prototype = {
         this._resultsPane.add_actor(this._resultsDocsSection.actor);
         this._resultsDocsSection.actor.set_y(this._resultsAppsSection.actor.height);
 
-        this.actor.add_actor(this._resultsPane);
+        this._resultsPane.show();
 
         this._detailsPane.x = this._width + this._resultsWidth;
         this.emit('panes-displayed');
@@ -729,7 +735,7 @@ Dash.prototype = {
         if (this._moreDocsMode || this._moreAppsMode || !this._resultsShowing())
             return;
 
-        this.actor.remove_actor(this._resultsPane);
+        this._resultsPane.hide();
 
         this._resultsPane.remove_actor(this._resultsAppsSection.actor);
         this._resultsAppsSection.display.hide();
@@ -748,11 +754,11 @@ Dash.prototype = {
     },
 
     _detailsShowing: function() {
-        return (this._detailsPane.get_parent() != null);
+        return this._detailsPane.visible;
     },
 
     _resultsShowing: function() {
-        return (this._resultsPane.get_parent() != null);
+        return this._resultsPane.visible;
     }      
 };
 
