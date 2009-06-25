@@ -15,6 +15,21 @@
 	</locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/favorite_apps</key>
+	<applyto>/desktop/gnome/shell/favorite_apps</applyto>
+	<owner>gnome-shell</owner>
+	<type>list</type>
+	<listtype>string</listtype>
+	<default>[mozilla-firefox.desktop,evolution.desktop,openoffice.org-writer.desktop]</default>
+	<locale name="C">
+	  <short>List of desktop file IDs for favorite applications</short>
+	  <long>
+        The applications corresponding to these identifiers will be displayed in the favorites area.
+	  </long>
+	</locale>
+      </schema>
+
   </schemalist>
 
 </gconfschemafile>
