@@ -1272,12 +1272,7 @@ meta_window_unmanage (MetaWindow  *window,
   g_assert (window->display->grab_window != window);
 
   if (window->display->focus_window == window)
-    {
-      window->display->focus_window = NULL;
-      if (window->display->compositor)
-        meta_compositor_set_active_window (window->display->compositor,
-                                           window->screen, NULL);
-    }
+    window->display->focus_window = NULL;
 
   if (window->maximized_horizontally || window->maximized_vertically)
     unmaximize_window_before_freeing (window);
@@ -5827,9 +5822,6 @@ meta_window_notify_focus (MetaWindow *window,
                       "* Focus --> %s\n", window->desc);
           window->display->focus_window = window;
           window->has_focus = TRUE;
-          if (window->display->compositor)
-            meta_compositor_set_active_window (window->display->compositor,
-                                               window->screen, window);
 
           /* Move to the front of the focusing workspace's MRU list.
            * We should only be "removing" it from the MRU list if it's
@@ -5916,10 +5908,6 @@ meta_window_notify_focus (MetaWindow *window,
           window->has_focus = FALSE;
           if (window->frame)
             meta_frame_queue_draw (window->frame);
-
-          if (window->display->compositor)
-            meta_compositor_set_active_window (window->display->compositor,
-                                               window->screen, NULL);
 
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,
@@ -7559,15 +7547,6 @@ update_move (MetaWindow  *window,
                                         update_move_timeout,
                                         snap,
                                         FALSE);
-
-  if (display->compositor)
-    {
-      int root_x = new_x - display->grab_anchor_window_pos.x + display->grab_anchor_root_x;
-      int root_y = new_y - display->grab_anchor_window_pos.y + display->grab_anchor_root_y;
-
-      meta_compositor_update_move (display->compositor,
-				   window, root_x, root_y);
-    }
 
   if (display->grab_wireframe_active)
     meta_window_update_wireframe (window, new_x, new_y,

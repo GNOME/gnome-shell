@@ -2095,44 +2095,6 @@ meta_compositor_process_event (MetaCompositor *compositor,
   return FALSE;
 }
 
-Pixmap
-meta_compositor_get_window_pixmap (MetaCompositor *compositor,
-                                   MetaWindow     *window)
-{
-  return None;
-}
-
-void
-meta_compositor_set_active_window (MetaCompositor *compositor,
-                                   MetaScreen     *screen,
-                                   MetaWindow     *window)
-{
-}
-
-/* These functions are unused at the moment */
-void
-meta_compositor_begin_move (MetaCompositor *compositor,
-                            MetaWindow     *window,
-                            MetaRectangle  *initial,
-                            int             grab_x,
-                            int             grab_y)
-{
-}
-
-void
-meta_compositor_update_move (MetaCompositor *compositor,
-                             MetaWindow     *window,
-                             int             x,
-                             int             y)
-{
-}
-
-void
-meta_compositor_end_move (MetaCompositor *compositor,
-                          MetaWindow     *window)
-{
-}
-
 void
 meta_compositor_map_window (MetaCompositor *compositor,
 			    MetaWindow	   *window)
