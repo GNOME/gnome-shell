@@ -343,15 +343,6 @@ AppDisplay.prototype = {
             this._addAppForId(appId);
         }
 
-        // Some applications, such as Evince, might not be in the menus,
-        // but might be returned by the applications monitor as most used
-        // applications, in which case we include them.
-        let mostUsedAppInfos = AppInfo.getMostUsedApps(MAX_ITEMS);
-        for (let i = 0; i < mostUsedAppInfos.length; i++) {
-            let appInfo = mostUsedAppInfos[i];
-            this._addApp(appInfo);
-        }
-
         this._appsStale = false;
     },
 
