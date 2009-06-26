@@ -2429,26 +2429,85 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
 			MetaScreen     *screen,
 			GList	       *stack)
 {
-  GList *tmp;
+  GList *old_stack;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   DEBUG_TRACE ("clutter_cmp_sync_stack\n");
-  /* NB: The first entry in stack, is stacked the highest */
 
-  for (tmp = stack; tmp != NULL; tmp = tmp->next)
+  /* This is painful because hidden windows that we are in the process
+   * of animating out of existence. They'll be at the bottom of the
+   * stack of X windows, but we want to leave them in their old position
+   * until the animation effect finishes.
+   */
+
+  /* Sources: first window is the highest */
+  stack = g_list_copy (stack); /* The new stack of MetaWindow */
+  old_stack = g_list_reverse (info->windows); /* The old stack of MutterWindow */
+  info->windows = NULL;
+
+  while (TRUE)
     {
-      MetaWindow    *window = tmp->data;
-      MutterWindow  *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
+      MutterWindow *old_actor = NULL, *stack_actor = NULL, *actor;
+      MetaWindow *old_window = NULL, *stack_window = NULL, *window;
 
-      if (!cw)
-	{
-	  meta_verbose ("Failed to find corresponding MutterWindow "
-			"for window %p\n", window);
-	  continue;
-	}
+      /* Find the remaining top actor in our existing stack (ignoring
+       * windows that have been hidden and are no longer animating) */
+      while (old_stack)
+        {
+          old_actor = old_stack->data;
+          old_window = mutter_window_get_meta_window (old_actor);
 
-      info->windows = g_list_remove (info->windows, (gconstpointer)cw);
-      info->windows = g_list_prepend (info->windows, cw);
+          if (old_window->hidden &&
+              !effect_in_progress (old_actor, TRUE))
+            old_stack = g_list_delete_link (old_stack, old_stack);
+          else
+            break;
+        }
+
+      /* And the remaining top actor in the new stack */
+      while (stack)
+        {
+          stack_window = stack->data;
+          stack_actor = MUTTER_WINDOW (meta_window_get_compositor_private (stack_window));
+          if (!stack_actor)
+            {
+              meta_verbose ("Failed to find corresponding MutterWindow "
+                            "for window %s\n", meta_window_get_description (stack_window));
+              stack = g_list_delete_link (stack, stack);
+            }
+          else
+            break;
+        }
+
+      if (!old_actor && !stack_actor) /* Nothing more to stack */
+        break;
+
+      /* We usually prefer the window in the new stack, but if if we
+       * found a hidden window in the process of being animated out
+       * of existence in the old stack we use that instead. We've
+       * filtered out non-animating hidden windows above.
+       */
+      if (old_actor &&
+          (!stack_actor || old_window->hidden))
+        {
+          actor = old_actor;
+          window = old_window;
+        }
+      else
+        {
+          actor = stack_actor;
+          window = stack_window;
+        }
+
+      /* OK, we know what actor we want next. Add it to our window
+       * list, and remove it from both source lists. (It will
+       * be at the front of at least one, hopefully it will be
+       * near the front of the other.)
+       */
+      info->windows = g_list_prepend (info->windows, actor);
+
+      stack = g_list_remove (stack, window);
+      old_stack = g_list_remove (old_stack, actor);
     }
 
   sync_actor_stacking (info->windows);
