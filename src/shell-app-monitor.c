@@ -295,7 +295,7 @@ track_window (ShellAppMonitor *self,
   if (!appid)
     return;
 
-  g_hash_table_insert (self->window_to_appid, window, g_strdup (appid));
+  g_hash_table_insert (self->window_to_appid, window, appid);
 
   refcount = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
 
@@ -368,6 +368,7 @@ shell_app_monitor_get_window_count (ShellAppMonitor *self,
 
 static void
 shell_app_monitor_on_n_workspaces_changed (MetaScreen    *screen,
+                                           GParamSpec    *pspec,
                                            gpointer       user_data)
 {
   ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
@@ -404,7 +405,7 @@ init_window_monitoring (ShellAppMonitor *self)
 
   g_signal_connect (screen, "notify::n-workspaces",
                     G_CALLBACK (shell_app_monitor_on_n_workspaces_changed), self);
-  shell_app_monitor_on_n_workspaces_changed (screen, self);
+  shell_app_monitor_on_n_workspaces_changed (screen, NULL, self);
 
   g_object_unref (screen);
 }
