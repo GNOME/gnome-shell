@@ -29,6 +29,8 @@ mutter_SOURCES= 				\
 	compositor/mutter-plugin-manager.c	\
 	compositor/mutter-plugin-manager.h	\
 	compositor/mutter-shaped-texture.c	\
+	compositor/mutter-window.c		\
+	compositor/mutter-window-private.h	\
 	compositor/shadow.c			\
 	compositor/shadow.h			\
 	compositor/mutter-shaped-texture.h	\
@@ -36,6 +38,7 @@ mutter_SOURCES= 				\
 	compositor/tidy/tidy-texture-frame.h	\
 	include/compositor.h			\
 	include/mutter-plugin.h			\
+	include/mutter-window.h			\
 	include/compositor-mutter.h 		\
 	core/constraints.c			\
 	core/constraints.h			\
@@ -162,7 +165,8 @@ libmutterinclude_base_headers =		\
 	include/display.h			\
 	include/group.h				\
 	include/keybindings.h			\
-	include/mutter-plugin.h
+	include/mutter-plugin.h			\
+	include/mutter-window.h
 
 # Excluded from scanning for introspection but installed
 libmutterinclude_extra_headers =		\

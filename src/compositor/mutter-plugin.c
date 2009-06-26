@@ -31,6 +31,9 @@
 #include <X11/extensions/shape.h>
 #include <clutter/x11/clutter-x11.h>
 
+#include "compositor-private.h"
+#include "mutter-window-private.h"
+
 G_DEFINE_ABSTRACT_TYPE (MutterPlugin, mutter_plugin, G_TYPE_OBJECT);
 
 #define MUTTER_PLUGIN_GET_PRIVATE(obj) \
@@ -389,7 +392,17 @@ mutter_plugin_effect_completed (MutterPlugin *plugin,
                  name ? name : "unknown");
     }
 
-  mutter_window_effect_completed (actor, event);
+  if (event == MUTTER_PLUGIN_SWITCH_WORKSPACE)
+    {
+      /* The window is just used to identify the screen */
+      MetaWindow *window = mutter_window_get_meta_window (actor);
+      MetaScreen *screen = meta_window_get_screen (window);
+      mutter_switch_workspace_completed (screen);
+    }
+    else
+    {
+      mutter_window_effect_completed (actor, event);
+    }
 }
 
 void
