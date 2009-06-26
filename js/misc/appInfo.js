@@ -98,6 +98,9 @@ function getMostUsedApps(count) {
     let favs = getFavorites();
     // Fill the list with default applications it's not full yet
     for (let i = 0; i < favs.length && favs.length <= count; i++) {
+        let appId = favs[i].appId;
+        if (alreadyAdded[appId])
+            continue;
         matches.push(favs[i]);
     }
 
