@@ -501,7 +501,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   MetaScreen *screen = meta_window_get_screen (window);
   MetaDisplay *display = meta_screen_get_display (screen);
 
-  DEBUG_TRACE ("clutter_cmp_add_window\n");
+  DEBUG_TRACE ("meta_compositor_add_window\n");
   meta_error_trap_push (display);
 
   add_win (window);
@@ -515,7 +515,7 @@ meta_compositor_remove_window (MetaCompositor *compositor,
 {
   MutterWindow         *cw     = NULL;
 
-  DEBUG_TRACE ("clutter_cmp_remove_window\n");
+  DEBUG_TRACE ("meta_compositor_remove_window\n");
   cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   if (!cw)
     return;
@@ -545,7 +545,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
 
       if (mutter_plugin_manager_xevent_filter (info->plugin_mgr, event))
 	{
-	  DEBUG_TRACE ("clutter_cmp_process_event (filtered,window==NULL)\n");
+	  DEBUG_TRACE ("meta_compositor_process_event (filtered,window==NULL)\n");
 	  return TRUE;
 	}
     }
@@ -564,7 +564,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
 
 	  if (mutter_plugin_manager_xevent_filter (info->plugin_mgr, event))
 	    {
-	      DEBUG_TRACE ("clutter_cmp_process_event (filtered,window==NULL)\n");
+	      DEBUG_TRACE ("meta_compositor_process_event (filtered,window==NULL)\n");
 	      return TRUE;
 	    }
 
@@ -589,13 +589,13 @@ meta_compositor_process_event (MetaCompositor *compositor,
     default:
       if (event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
         {
-	  DEBUG_TRACE ("clutter_cmp_process_event (process_damage)\n");
+	  DEBUG_TRACE ("meta_compositor_process_event (process_damage)\n");
           process_damage (compositor, (XDamageNotifyEvent *) event);
         }
 #ifdef HAVE_SHAPE
       else if (event->type == meta_display_get_shape_event_base (compositor->display) + ShapeNotify)
 	{
-	  DEBUG_TRACE ("clutter_cmp_process_event (process_shape)\n");
+	  DEBUG_TRACE ("meta_compositor_process_event (process_shape)\n");
 	  process_shape (compositor, (XShapeEvent *) event);
 	}
 #endif /* HAVE_SHAPE */
@@ -621,7 +621,7 @@ meta_compositor_map_window (MetaCompositor *compositor,
 			    MetaWindow	   *window)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("clutter_cmp_map_window\n");
+  DEBUG_TRACE ("meta_compositor_map_window\n");
   if (!cw)
     return;
 
@@ -633,7 +633,7 @@ meta_compositor_unmap_window (MetaCompositor *compositor,
 			      MetaWindow     *window)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("clutter_cmp_unmap_window\n");
+  DEBUG_TRACE ("meta_compositor_unmap_window\n");
   if (!cw)
     return;
 
@@ -650,7 +650,7 @@ meta_compositor_minimize_window (MetaCompositor *compositor,
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  DEBUG_TRACE ("clutter_cmp_minimize_window\n");
+  DEBUG_TRACE ("meta_compositor_minimize_window\n");
 
   g_return_if_fail (info);
 
@@ -692,7 +692,7 @@ meta_compositor_unminimize_window (MetaCompositor    *compositor,
     }
 #else
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("clutter_cmp_unminimize_window\n");
+  DEBUG_TRACE ("meta_compositor_unminimize_window\n");
   if (!cw)
     return;
 
@@ -707,7 +707,7 @@ meta_compositor_maximize_window (MetaCompositor    *compositor,
 				 MetaRectangle	   *window_rect)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("clutter_cmp_maximize_window\n");
+  DEBUG_TRACE ("meta_compositor_maximize_window\n");
   if (!cw)
     return;
 
@@ -720,7 +720,7 @@ meta_compositor_unmaximize_window (MetaCompositor    *compositor,
 				   MetaRectangle     *window_rect)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("clutter_cmp_unmaximize_window\n");
+  DEBUG_TRACE ("meta_compositor_unmaximize_window\n");
   if (!cw)
     return;
 
@@ -739,7 +739,7 @@ meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
   MetaCompScreen *info;
   MutterPluginManager *mgr;
 
-  DEBUG_TRACE ("clutter_cmp_update_workspace_geometry\n");
+  DEBUG_TRACE ("meta_compositor_update_workspace_geometry\n");
   info = meta_screen_get_compositor_data (screen);
   mgr  = info->plugin_mgr;
 
@@ -764,7 +764,7 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
   to_indx   = meta_workspace_index (to);
   from_indx = meta_workspace_index (from);
 
-  DEBUG_TRACE ("clutter_cmp_switch_workspace\n");
+  DEBUG_TRACE ("meta_compositor_switch_workspace\n");
   if (!meta_prefs_get_live_hidden_windows ())
     {
       GList *l;
@@ -844,7 +844,7 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
   GList *old_stack;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  DEBUG_TRACE ("clutter_cmp_sync_stack\n");
+  DEBUG_TRACE ("meta_compositor_sync_stack\n");
 
   /* This is painful because hidden windows that we are in the process
    * of animating out of existence. They'll be at the bottom of the
@@ -933,7 +933,7 @@ meta_compositor_set_window_hidden (MetaCompositor *compositor,
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
 
-  DEBUG_TRACE ("clutter_cmp_set_window_hidden\n");
+  DEBUG_TRACE ("meta_compositor_set_window_hidden\n");
   
   if (!cw)
     return;
@@ -949,7 +949,7 @@ meta_compositor_sync_window_geometry (MetaCompositor *compositor,
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  DEBUG_TRACE ("clutter_cmp_sync_window_geometry\n");
+  DEBUG_TRACE ("meta_compositor_sync_window_geometry\n");
   g_return_if_fail (info);
 
   if (!cw)
@@ -966,7 +966,7 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  DEBUG_TRACE ("clutter_cmp_sync_screen_size\n");
+  DEBUG_TRACE ("meta_compositor_sync_screen_size\n");
   g_return_if_fail (info);
 
   clutter_actor_set_size (info->stage, width, height);
