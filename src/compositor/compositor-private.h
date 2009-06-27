@@ -37,7 +37,6 @@ struct _MetaCompScreen
   GHashTable            *windows_by_xid;
   MetaWindow            *focus_window;
   Window                 output;
-  GSList                *dock_windows;
 
   /* Before we create the output window */
   XserverRegion     pending_input_region;

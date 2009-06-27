@@ -400,12 +400,6 @@ mutter_window_dispose (GObject *object)
       priv->damage = None;
     }
 
-  /*
-   * Check we are not in the dock list -- FIXME (do this in a cleaner way)
-   */
-  if (priv->type == META_COMP_WINDOW_DOCK)
-    info->dock_windows = g_slist_remove (info->dock_windows, self);
-
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
   g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
 
@@ -1217,12 +1211,6 @@ mutter_window_new (MetaWindow *window)
   clutter_container_add_actor (CLUTTER_CONTAINER (info->window_group),
 			       CLUTTER_ACTOR (self));
   clutter_actor_hide (CLUTTER_ACTOR (self));
-
-  if (priv->type == META_COMP_WINDOW_DOCK)
-    {
-      meta_verbose ("Appending %s to dock windows\n", meta_window_get_description (window));
-      info->dock_windows = g_slist_append (info->dock_windows, self);
-    }
 
   /*
    * Add this to the list at the top of the stack before it is mapped so that
