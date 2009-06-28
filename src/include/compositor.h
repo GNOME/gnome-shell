@@ -84,10 +84,12 @@ void meta_compositor_unminimize_window (MetaCompositor      *compositor,
                                         MetaRectangle       *icon_rect);
 void meta_compositor_maximize_window   (MetaCompositor      *compositor,
                                         MetaWindow          *window,
-                                        MetaRectangle       *window_rect);
+                                        MetaRectangle       *old_rect,
+                                        MetaRectangle       *new_rect);
 void meta_compositor_unmaximize_window (MetaCompositor      *compositor,
                                         MetaWindow          *window,
-                                        MetaRectangle       *window_rect);
+                                        MetaRectangle       *old_rect,
+                                        MetaRectangle       *new_rect);
 void meta_compositor_switch_workspace  (MetaCompositor      *compositor,
                                         MetaScreen          *screen,
                                         MetaWorkspace       *from,

@@ -2919,14 +2919,18 @@ meta_window_maximize (MetaWindow        *window,
 
       if (window->display->compositor)
         {
-	  MetaRectangle window_rect;
+          MetaRectangle old_rect;
+	  MetaRectangle new_rect;
+
+	  meta_window_get_outer_rect (window, &old_rect);
 
           meta_window_move_resize_now (window);
 
-	  meta_window_get_outer_rect (window, &window_rect);
+	  meta_window_get_outer_rect (window, &new_rect);
           meta_compositor_maximize_window (window->display->compositor,
                                            window,
-					   &window_rect);
+                                           &old_rect,
+					   &new_rect);
         }
       else
         {
@@ -3035,7 +3039,9 @@ meta_window_unmaximize (MetaWindow        *window,
 
       if (window->display->compositor)
         {
-	  MetaRectangle window_rect;
+          MetaRectangle old_rect, new_rect;
+
+	  meta_window_get_outer_rect (window, &old_rect);
 
           meta_window_move_resize (window,
                                    FALSE,
@@ -3043,13 +3049,12 @@ meta_window_unmaximize (MetaWindow        *window,
                                    target_rect.y,
                                    target_rect.width,
                                    target_rect.height);
-          meta_window_move_resize_now (window);
 
-	  meta_window_get_outer_rect (window, &window_rect);
-
+	  meta_window_get_outer_rect (window, &new_rect);
           meta_compositor_unmaximize_window (window->display->compositor,
 					     window,
-					     &window_rect);
+                                             &old_rect,
+					     &new_rect);
         }
       else
         {

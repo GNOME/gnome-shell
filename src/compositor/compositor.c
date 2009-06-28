@@ -142,6 +142,7 @@ mutter_switch_workspace_completed (MetaScreen *screen)
 void
 meta_compositor_destroy (MetaCompositor *compositor)
 {
+  clutter_threads_remove_repaint_func (compositor->repaint_func_id);
 }
 
 static void
@@ -704,27 +705,29 @@ meta_compositor_unminimize_window (MetaCompositor    *compositor,
 void
 meta_compositor_maximize_window (MetaCompositor    *compositor,
                                  MetaWindow        *window,
-				 MetaRectangle	   *window_rect)
+				 MetaRectangle	   *old_rect,
+				 MetaRectangle	   *new_rect)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   DEBUG_TRACE ("meta_compositor_maximize_window\n");
   if (!cw)
     return;
 
-  mutter_window_maximize (cw, window_rect);
+  mutter_window_maximize (cw, old_rect, new_rect);
 }
 
 void
 meta_compositor_unmaximize_window (MetaCompositor    *compositor,
                                    MetaWindow        *window,
-				   MetaRectangle     *window_rect)
+				   MetaRectangle     *old_rect,
+				   MetaRectangle     *new_rect)
 {
   MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   DEBUG_TRACE ("meta_compositor_unmaximize_window\n");
   if (!cw)
     return;
 
-  mutter_window_unmaximize (cw, window_rect);
+  mutter_window_unmaximize (cw, old_rect, new_rect);
 }
 
 void
@@ -976,6 +979,35 @@ meta_compositor_sync_screen_size (MetaCompositor  *compositor,
 		width, height);
 }
 
+static void
+pre_paint_windows (MetaCompScreen *info)
+{
+  GList *l;
+
+  for (l = info->windows; l; l = l->next)
+    mutter_window_pre_paint (l->data);
+}
+
+static gboolean
+mutter_repaint_func (gpointer data)
+{
+  MetaCompositor *compositor = data;
+  GSList *screens = meta_display_get_screens (compositor->display);
+  GSList *l;
+
+  for (l = screens; l; l = l->next)
+    {
+      MetaScreen *screen = l->data;
+      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+      if (!info)
+        continue;
+
+      pre_paint_windows (info);
+    }
+
+  return TRUE;
+}
+
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
@@ -1005,6 +1037,10 @@ meta_compositor_new (MetaDisplay *display)
   compositor->atom_x_root_pixmap = atoms[0];
   compositor->atom_x_set_root = atoms[1];
   compositor->atom_net_wm_window_opacity = atoms[2];
+
+  compositor->repaint_func_id = clutter_threads_add_repaint_func (mutter_repaint_func,
+                                                                  compositor,
+                                                                  NULL);
 
   return compositor;
 }

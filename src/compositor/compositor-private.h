@@ -19,6 +19,7 @@ struct _MetaCompositor
   Atom            atom_x_root_pixmap;
   Atom            atom_x_set_root;
   Atom            atom_net_wm_window_opacity;
+  guint           repaint_func_id;
 
   ClutterActor   *shadow_src;
 

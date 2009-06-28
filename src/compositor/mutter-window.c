@@ -61,6 +61,8 @@ struct _MutterWindowPrivate
   guint		    needs_map              : 1;
   guint		    needs_unmap            : 1;
   guint		    needs_repair           : 1;
+  guint		    needs_reshape          : 1;
+  guint		    size_changed           : 1;
 
   guint		    needs_destroy	   : 1;
 
@@ -94,7 +96,6 @@ static void     mutter_window_detach     (MutterWindow *self);
 static gboolean mutter_window_has_shadow (MutterWindow *self);
 
 
-static void     repair_win               (MutterWindow *self);
 static gboolean is_shaped                (MetaDisplay  *display,
                                           Window        xwindow);
 /*
@@ -739,6 +740,27 @@ mutter_window_effect_in_progress (MutterWindow *self,
 	  (include_destroy && self->priv->destroy_in_progress));
 }
 
+static void
+mutter_window_mark_for_repair (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  priv->needs_repair = TRUE;
+
+  if (priv->attrs.map_state == IsUnmapped)
+    return;
+
+  /* This will cause the compositor paint function to be run
+   * if the actor is visible or a clone of the actor is visible.
+   * if the actor isn't visible in any way, then we don't
+   * need to repair the window anyways, and can wait until
+   * the stage is redrawn for some other reason
+   *
+   * The compositor paint function repairs all windows.
+   */
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
 void
 mutter_window_effect_completed (MutterWindow *self,
 				gulong        event)
@@ -839,8 +861,7 @@ mutter_window_effect_completed (MutterWindow *self,
 	MetaRectangle rect;
 	meta_window_get_outer_rect (priv->window, &rect);
 	clutter_actor_set_position (actor, rect.x, rect.y);
-	mutter_window_detach (self);
-	repair_win (self);
+        clutter_actor_set_size (actor, rect.width,rect.height);
         effect_done = TRUE;
       }
     break;
@@ -857,8 +878,7 @@ mutter_window_effect_completed (MutterWindow *self,
 	MetaRectangle rect;
 	meta_window_get_outer_rect (priv->window, &rect);
 	clutter_actor_set_position (actor, rect.x, rect.y);
-	mutter_window_detach (self);
-	repair_win (self);
+        clutter_actor_set_size (actor, rect.width, rect.height);
         effect_done = TRUE;
       }
     break;
@@ -895,11 +915,22 @@ mutter_window_effect_completed (MutterWindow *self,
 	return;
       }
 
+    if (effect_done &&
+        (priv->needs_repair || priv->needs_reshape))
+      {
+        /* Make sure that pre_paint function gets called */
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+      }
   default:
     break;
   }
 }
 
+/* Called to drop our reference to a window backing pixmap that we
+ * previously obtained with XCompositeNameWindowPixmap. We do this
+ * when the window is unmapped or when we want to update to a new
+ * pixmap for a new size.
+ */
 static void
 mutter_window_detach (MutterWindow *self)
 {
@@ -913,6 +944,7 @@ mutter_window_detach (MutterWindow *self)
 
   XFreePixmap (xdisplay, priv->back_pixmap);
   priv->back_pixmap = None;
+  mutter_window_mark_for_repair (self);
 }
 
 void
@@ -990,7 +1022,10 @@ mutter_window_sync_actor_position (MutterWindow *self)
 
   if (priv->attrs.width != window_rect.width ||
       priv->attrs.height != window_rect.height)
-    mutter_window_detach (self);
+    {
+      priv->size_changed = TRUE;
+      mutter_window_mark_for_repair (self);
+    }
 
   /* XXX deprecated: please use meta_window_get_outer_rect instead */
   priv->attrs.width = window_rect.width;
@@ -1002,7 +1037,9 @@ mutter_window_sync_actor_position (MutterWindow *self)
     return;
 
   clutter_actor_set_position (CLUTTER_ACTOR (self),
-			      window_rect.x, window_rect.y);
+                              window_rect.x, window_rect.y);
+  clutter_actor_set_size (CLUTTER_ACTOR (self),
+                          window_rect.width, window_rect.height);
 }
 
 void
@@ -1022,13 +1059,7 @@ mutter_window_map (MutterWindow *self)
 
   priv->attrs.map_state = IsViewable;
 
-  /*
-   * Now repair the window; this ensures that the actor is correctly sized
-   * before we run any effects on it.
-   */
-  priv->needs_map = FALSE;
-  mutter_window_detach (self);
-  repair_win (self);
+  mutter_window_mark_for_repair (self);
 
   /*
    * Make sure the position is set correctly (we might have got moved while
@@ -1131,9 +1162,16 @@ mutter_window_minimize (MutterWindow *self)
 
 void
 mutter_window_maximize (MutterWindow       *self,
-                        MetaRectangle	   *window_rect)
+                        MetaRectangle      *old_rect,
+                        MetaRectangle      *new_rect)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
+
+  /* The window has already been resized (in order to compute new_rect),
+   * which by side effect caused the actor to be resized. Restore it to the
+   * old size and position */
+  clutter_actor_set_position (CLUTTER_ACTOR (self), old_rect->x, old_rect->y);
+  clutter_actor_set_size (CLUTTER_ACTOR (self), old_rect->width, old_rect->height);
 
   self->priv->maximize_in_progress++;
 
@@ -1141,8 +1179,8 @@ mutter_window_maximize (MutterWindow       *self,
       !mutter_plugin_manager_event_maximize (info->plugin_mgr,
 					     self,
 					     MUTTER_PLUGIN_MAXIMIZE,
-					     window_rect->x, window_rect->y,
-					     window_rect->width, window_rect->height))
+					     new_rect->x, new_rect->y,
+					     new_rect->width, new_rect->height))
 
     {
       self->priv->maximize_in_progress--;
@@ -1151,9 +1189,16 @@ mutter_window_maximize (MutterWindow       *self,
 
 void
 mutter_window_unmaximize (MutterWindow      *self,
-                          MetaRectangle     *window_rect)
+                          MetaRectangle     *old_rect,
+                          MetaRectangle     *new_rect)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
+
+  /* The window has already been resized (in order to compute new_rect),
+   * which by side effect caused the actor to be resized. Restore it to the
+   * old size and position */
+  clutter_actor_set_position (CLUTTER_ACTOR (self), old_rect->x, old_rect->y);
+  clutter_actor_set_size (CLUTTER_ACTOR (self), old_rect->width, old_rect->height);
 
   self->priv->unmaximize_in_progress++;
 
@@ -1161,8 +1206,8 @@ mutter_window_unmaximize (MutterWindow      *self,
       !mutter_plugin_manager_event_maximize (info->plugin_mgr,
 					     self,
 					     MUTTER_PLUGIN_UNMAXIMIZE,
-					     window_rect->x, window_rect->y,
-					     window_rect->width, window_rect->height))
+					     new_rect->x, new_rect->y,
+					     new_rect->width, new_rect->height))
     {
       self->priv->unmaximize_in_progress--;
     }
@@ -1202,8 +1247,7 @@ mutter_window_new (MetaWindow *window)
 
   priv = self->priv;
 
-  clutter_actor_set_position (CLUTTER_ACTOR (self),
-			      priv->attrs.x, priv->attrs.y);
+  mutter_window_sync_actor_position (self);
 
   /* Hang our compositor window state off the MetaWindow for fast retrieval */
   meta_window_set_compositor_private (window, G_OBJECT (self));
@@ -1230,7 +1274,7 @@ mutter_window_new (MetaWindow *window)
 }
 
 static void
-repair_win (MutterWindow *self)
+check_needs_repair (MutterWindow *self)
 {
   MutterWindowPrivate *priv     = self->priv;
   MetaScreen          *screen   = priv->screen;
@@ -1241,11 +1285,23 @@ repair_win (MutterWindow *self)
   Window               xwindow  = priv->xwindow;
   gboolean             full     = FALSE;
 
+  if (!priv->needs_repair)
+    return;
+
+  if (priv->attrs.map_state == IsUnmapped)
+    return;
+
   if (xwindow == meta_screen_get_xroot (screen) ||
       xwindow == clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage)))
     return;
 
   compositor = meta_display_get_compositor (display);
+
+  if (priv->size_changed)
+    {
+      mutter_window_detach (self);
+      priv->size_changed = FALSE;
+    }
 
   meta_error_trap_push (display);
 
@@ -1367,33 +1423,7 @@ void
 mutter_window_process_damage (MutterWindow       *self,
 			      XDamageNotifyEvent *event)
 {
-  MutterWindowPrivate *priv = self->priv;
-  Display *dpy = event->display;
-  Drawable drawable = event->drawable;
-  XEvent   next;
-
-  if (priv->destroy_pending        ||
-      priv->maximize_in_progress   ||
-      priv->unmaximize_in_progress)
-    {
-      priv->needs_repair = TRUE;
-      return;
-    }
-
-  /*
-   * Check if the event queue does not already contain DetstroyNotify for this
-   * window -- if it does, we need to stop updating the pixmap (to avoid damage
-   * notifications that come from the window teardown), and process the destroy
-   * immediately.
-   */
-  if (XCheckTypedWindowEvent (dpy, drawable, DestroyNotify, &next))
-    {
-      priv->destroy_pending = TRUE;
-      mutter_window_destroy (self);
-      return;
-    }
-
-  repair_win (self);
+  mutter_window_mark_for_repair (self);
 }
 
 void
@@ -1412,13 +1442,13 @@ mutter_window_finish_workspace_switch (MutterWindow *self)
     }
 }
 
-void
-mutter_window_update_shape (MutterWindow   *self,
-                            gboolean        shaped)
+static void
+check_needs_reshape (MutterWindow *self)
 {
   MutterWindowPrivate *priv = self->priv;
 
-  priv->shaped = shaped;
+  if (!priv->needs_reshape)
+    return;
 
   mutter_shaped_texture_clear_rectangles (MUTTER_SHAPED_TEXTURE (priv->actor));
 
@@ -1444,6 +1474,36 @@ mutter_window_update_shape (MutterWindow   *self,
         }
     }
 #endif
+
+  priv->needs_reshape = FALSE;
+}
+
+void
+mutter_window_update_shape (MutterWindow   *self,
+                            gboolean        shaped)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  priv->shaped = shaped;
+  priv->needs_reshape = TRUE;
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
+void
+mutter_window_pre_paint (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  /* The window is frozen due to a pending animation: we'll wait until
+   * the animation finishes to reshape and repair the window */
+  if (priv->destroy_in_progress    ||
+      priv->maximize_in_progress   ||
+      priv->unmaximize_in_progress)
+    return;
+
+  check_needs_reshape (self);
+  check_needs_repair (self);
 }
 
 void
