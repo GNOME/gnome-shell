@@ -241,12 +241,6 @@ get_standalone_layer (MetaWindow *window)
   MetaStackLayer layer;
   gboolean focused_transient = FALSE;
 
-  if (window->hidden)
-    {
-      layer = META_LAYER_DESKTOP;
-      return layer;
-    }
-
   switch (window->type)
     {
     case META_WINDOW_DESKTOP:
