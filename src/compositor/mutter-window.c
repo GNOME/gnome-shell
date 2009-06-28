@@ -730,14 +730,13 @@ mutter_window_showing_on_its_workspace (MutterWindow *self)
 }
 
 gboolean
-mutter_window_effect_in_progress (MutterWindow *self,
-				  gboolean      include_destroy)
+mutter_window_effect_in_progress (MutterWindow *self)
 {
   return (self->priv->minimize_in_progress ||
 	  self->priv->maximize_in_progress ||
 	  self->priv->unmaximize_in_progress ||
 	  self->priv->map_in_progress ||
-	  (include_destroy && self->priv->destroy_in_progress));
+	  self->priv->destroy_in_progress);
 }
 
 static void
@@ -899,7 +898,7 @@ mutter_window_effect_completed (MutterWindow *self,
 
     if (effect_done &&
 	priv->hide_after_effect &&
-	mutter_window_effect_in_progress (self, TRUE) == FALSE)
+	mutter_window_effect_in_progress (self) == FALSE)
       {
 	if (clutter_actor_get_parent (CLUTTER_ACTOR (self)) != info->hidden_group)
 	  {
@@ -909,7 +908,7 @@ mutter_window_effect_completed (MutterWindow *self,
 	priv->hide_after_effect = FALSE;
       }
 
-    if (priv->needs_destroy && mutter_window_effect_in_progress (self, TRUE) == FALSE)
+    if (priv->needs_destroy && mutter_window_effect_in_progress (self) == FALSE)
       {
         clutter_actor_destroy (CLUTTER_ACTOR (self));
 	return;
@@ -953,6 +952,7 @@ mutter_window_destroy (MutterWindow *self)
   MetaWindow	      *window;
   MetaCompScreen      *info;
   MutterWindowPrivate *priv;
+  gboolean             effect_in_progress;
 
   priv = self->priv;
 
@@ -982,6 +982,8 @@ mutter_window_destroy (MutterWindow *self)
       return;
     }
 
+  effect_in_progress = mutter_window_effect_in_progress (self);
+
   /*
    * If a plugin manager is present, try to run an effect; if no effect of this
    * type is present, destroy the actor.
@@ -1003,7 +1005,7 @@ mutter_window_destroy (MutterWindow *self)
     {
       priv->destroy_in_progress--;
 
-      if (mutter_window_effect_in_progress (self, FALSE))
+      if (effect_in_progress)
 	{
 	  priv->needs_destroy = TRUE;
 	}
@@ -1033,7 +1035,7 @@ mutter_window_sync_actor_position (MutterWindow *self)
   priv->attrs.x = window_rect.x;
   priv->attrs.y = window_rect.y;
 
-  if (mutter_window_effect_in_progress (self, FALSE))
+  if (mutter_window_effect_in_progress (self))
     return;
 
   clutter_actor_set_position (CLUTTER_ACTOR (self),
@@ -1538,7 +1540,7 @@ mutter_window_set_hidden (MutterWindow	  *self,
 
   if (hidden)
     {
-      if (mutter_window_effect_in_progress (self, TRUE))
+      if (mutter_window_effect_in_progress (self))
 	{
 	  priv->hide_after_effect = TRUE;
 	}

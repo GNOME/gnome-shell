@@ -873,7 +873,7 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
           old_window = mutter_window_get_meta_window (old_actor);
 
           if (old_window->hidden &&
-              !mutter_window_effect_in_progress (old_actor, TRUE))
+              !mutter_window_effect_in_progress (old_actor))
             old_stack = g_list_delete_link (old_stack, old_stack);
           else
             break;

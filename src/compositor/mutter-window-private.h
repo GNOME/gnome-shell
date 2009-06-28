@@ -24,8 +24,7 @@ void     mutter_window_process_damage          (MutterWindow       *cw,
                                                 XDamageNotifyEvent *event);
 void     mutter_window_pre_paint               (MutterWindow       *self);
 
-gboolean mutter_window_effect_in_progress      (MutterWindow       *cw,
-                                                gboolean            include_destroy);
+gboolean mutter_window_effect_in_progress      (MutterWindow       *cw);
 void     mutter_window_sync_actor_position     (MutterWindow       *cw);
 void     mutter_window_finish_workspace_switch (MutterWindow       *cw);
 void     mutter_window_update_window_type      (MutterWindow       *cw);
