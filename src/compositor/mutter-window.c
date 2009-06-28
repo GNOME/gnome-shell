@@ -1111,9 +1111,6 @@ mutter_window_unmap (MutterWindow *self)
   if (priv->attrs.map_state == IsUnmapped && !priv->needs_unmap)
     return;
 
-  if (priv->window && priv->window == info->focus_window)
-    info->focus_window = NULL;
-
   if (info->switch_workspace_in_progress)
     {
       /*

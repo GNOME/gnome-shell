@@ -412,8 +412,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   info->windows = NULL;
   info->windows_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
 
-  info->focus_window = meta_display_get_focus_window (display);
-
   meta_screen_set_cm_selection (screen);
 
   info->stage = clutter_stage_get_default ();

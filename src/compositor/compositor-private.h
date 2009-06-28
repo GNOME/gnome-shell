@@ -36,7 +36,6 @@ struct _MetaCompScreen
   ClutterActor		*hidden_group;
   GList                 *windows;
   GHashTable            *windows_by_xid;
-  MetaWindow            *focus_window;
   Window                 output;
 
   /* Before we create the output window */
