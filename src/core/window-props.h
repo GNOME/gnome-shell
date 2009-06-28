@@ -36,35 +36,6 @@
 #include "window-private.h"
 
 /**
- * meta_window_reload_property:
- * @window: The window.
- * @property: A single X atom.
- *
- * Requests the current values of a single property for a given
- * window from the server, and deals with it appropriately.
- * Does not return it to the caller (it's been dealt with!)
- */
-void meta_window_reload_property   (MetaWindow *window,
-                                    Atom        property,
-                                    gboolean    initial);
-
-
-/**
- * meta_window_reload_properties:
- * @window: The window.
- * @properties: A pointer to a list of X atoms, "n_properties" long.
- * @n_properties: The length of the properties list.
- *
- * Requests the current values of a set of properties for a given
- * window from the server, and deals with them appropriately.
- * Does not return them to the caller (they've been dealt with!)
- */
-void meta_window_reload_properties (MetaWindow *window,
-                                    const Atom *properties,
-                                    int         n_properties,
-                                    gboolean    initial);
-
-/**
  * meta_window_reload_property_from_xwindow:
  * @window:     A window on the same display as the one we're
  *                   investigating (only used to find the display)
@@ -75,30 +46,10 @@ void meta_window_reload_properties (MetaWindow *window,
  * window from the server, and deals with it appropriately.
  * Does not return it to the caller (it's been dealt with!)
  */
-void meta_window_reload_property_from_xwindow
-                                   (MetaWindow *window,
-                                    Window      xwindow,
-                                    Atom        property,
-                                    gboolean    initial);
-
-/**
- * meta_window_reload_properties_from_xwindow:
- * @window:     A window on the same display as the one we're
- *                   investigating (only used to find the display)
- * @xwindow:     The X handle for the window.
- * @properties:  A pointer to a list of X atoms, "n_properties" long.
- * @n_properties:  The length of the properties list.
- *
- * Requests the current values of a set of properties for a given
- * window from the server, and deals with them appropriately.
- * Does not return them to the caller (they've been dealt with!)
- */
-void meta_window_reload_properties_from_xwindow
-                                   (MetaWindow *window,
-                                    Window      xwindow,
-                                    const Atom *properties,
-                                    int         n_properties,
-                                    gboolean    initial);
+void meta_window_reload_property_from_xwindow (MetaWindow      *window,
+                                               Window           xwindow,
+                                               Atom             property,
+                                               gboolean         initial);
 
 /**
  * meta_window_load_initial_properties:
