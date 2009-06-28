@@ -961,6 +961,7 @@ meta_screen_manage_all_windows (MetaScreen *screen)
       MetaWindow *window;
 
       window = meta_window_new_with_attrs (screen->display, info->xwindow, TRUE,
+                                           META_COMP_EFFECT_NONE,
                                            &info->attrs);
     }
   meta_stack_thaw (screen->stack);

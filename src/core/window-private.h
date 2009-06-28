@@ -35,6 +35,7 @@
 #define META_WINDOW_PRIVATE_H
 
 #include <config.h>
+#include "compositor.h"
 #include "window.h"
 #include "screen-private.h"
 #include "util.h"
@@ -152,7 +153,6 @@ struct _MetaWindow
 
   /* Minimize is the state controlled by the minimize button */
   guint minimized : 1;
-  guint was_minimized : 1;
   guint tab_unminimized : 1;
 
   /* Whether the window is mapped; actual server-side state
@@ -164,6 +164,15 @@ struct _MetaWindow
    * of window stack.
    */
   guint hidden : 1;
+
+  /* Whether the compositor thinks the window is visible
+   */
+  guint visible_to_compositor : 1;
+
+  /* When we next show or hide the window, what effect we should
+   * tell the compositor to perform.
+   */
+  guint pending_compositor_effect : 4; /* MetaCompEffect */
 
   /* Iconic is the state in WM_STATE; happens for workspaces/shading
    * in addition to minimize
@@ -389,9 +398,10 @@ struct _MetaWindowClass
 MetaWindow* meta_window_new                (MetaDisplay *display,
                                             Window       xwindow,
                                             gboolean     must_be_viewable);
-MetaWindow* meta_window_new_with_attrs     (MetaDisplay *display,
-                                            Window       xwindow,
-                                            gboolean     must_be_viewable,
+MetaWindow* meta_window_new_with_attrs     (MetaDisplay       *display,
+                                            Window             xwindow,
+                                            gboolean           must_be_viewable,
+                                            MetaCompEffect     effect,
                                             XWindowAttributes *attrs);
 void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
@@ -445,6 +455,8 @@ void        meta_window_resize_with_gravity (MetaWindow  *window,
 
 /* Return whether the window should be currently mapped */
 gboolean    meta_window_should_be_showing   (MetaWindow  *window);
+
+gboolean    meta_window_toplevel_is_mapped  (MetaWindow  *window);
 
 /* See warning in window.c about this function */
 gboolean    __window_is_terminal (MetaWindow *window);

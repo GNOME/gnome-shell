@@ -433,19 +433,7 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
   tmp = workspace->windows;
   while (tmp != NULL)
     {
-      if (meta_prefs_get_live_hidden_windows ())
-        {
-          /*
-           * When we hide rather than unmap windows, we need the show/hide
-           * status of the window to be recalculated *before* we call the
-           * compositor switch_workspace hook.
-           */
-          meta_window_calc_showing (tmp->data);
-        }
-      else
-        {
-          meta_window_queue (tmp->data, META_QUEUE_CALC_SHOWING);
-        }
+      meta_window_queue (tmp->data, META_QUEUE_CALC_SHOWING);
 
       tmp = tmp->next;
     }
@@ -520,23 +508,8 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
       /* Removes window from other spaces */
       meta_window_change_workspace (move_window, workspace);
 
-  if (focus_this)
-    {
-      meta_window_focus (focus_this, timestamp);
-      meta_window_raise (focus_this);
-    }
-  else if (move_window)
-    {
-      meta_window_raise (move_window);
-    }
-  else
-    {
-      meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
-      meta_workspace_focus_default_window (workspace, NULL, timestamp);
-    }
-
    /*
-    * Notify the compositor that the active workspace changed.
+    * Notify the compositor that the active workspace is changing.
     */
    screen = workspace->screen;
    display = meta_screen_get_display (screen);
@@ -581,6 +554,26 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
    meta_screen_free_workspace_layout (&layout2);
 
    meta_compositor_switch_workspace (comp, screen, old, workspace, direction);
+
+  /* This needs to be done after telling the compositor we are switching
+   * workspaces since focusing a window will cause it to be immediately
+   * shown and that would confuse the compositor if it didn't know we
+   * were in a workspace switch.
+   */
+  if (focus_this)
+    {
+      meta_window_focus (focus_this, timestamp);
+      meta_window_raise (focus_this);
+    }
+  else if (move_window)
+    {
+      meta_window_raise (move_window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
+      meta_workspace_focus_default_window (workspace, NULL, timestamp);
+    }
 
    /* Emit switched signal from screen.c */
    meta_screen_workspace_switched (screen, current_space, new_space, direction);

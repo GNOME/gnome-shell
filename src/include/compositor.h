@@ -53,6 +53,32 @@ typedef enum _MetaCompWindowType
 
 } MetaCompWindowType;
 
+/**
+ * MetaCompEffect:
+ * @META_COMP_EFFECT_CREATE: The window is newly created
+ *   (also used for a window that was previously on a different
+ *   workspace and is changed to become visible on the active
+ *   workspace.)
+ * @META_COMP_EFFECT_UNMINIMIZE: The window should be shown
+ *   as unminimizing from its icon geometry.
+ * @META_COMP_EFFECT_DESTROY: The window is being destroyed
+ * @META_COMP_EFFECT_MINIMIZE: The window should be shown
+ *   as minimizing to its icon geometry.
+ * @META_COMP_EFFECT_NONE: No effect, the window should be
+ *   shown or hidden immediately.
+ *
+ * Indicates the appropriate effect to show the user for
+ * meta_compositor_show_window() and meta_compositor_hide_window()
+ */
+typedef enum
+{
+  META_COMP_EFFECT_CREATE,
+  META_COMP_EFFECT_UNMINIMIZE,
+  META_COMP_EFFECT_DESTROY,
+  META_COMP_EFFECT_MINIMIZE,
+  META_COMP_EFFECT_NONE
+} MetaCompEffect;
+
 MetaCompositor *meta_compositor_new     (MetaDisplay    *display);
 void            meta_compositor_destroy (MetaCompositor *compositor);
 
@@ -65,23 +91,69 @@ gboolean meta_compositor_process_event (MetaCompositor *compositor,
                                         XEvent         *event,
                                         MetaWindow     *window);
 
+/* At a high-level, a window is not-visible or visible. When a
+ * window is added (with add_window()) it is not visible.
+ * show_window() indicates a transition from not-visible to
+ * visible. Some of the reasons for this:
+ *
+ *  - Window newly created
+ *  - Window is unminimized
+ *  - Window is moved to the current desktop
+ *  - Window was made sticky
+ *
+ * hide_window() indicates that the window has transitioned from
+ * visible to not-visible. Some reasons include:
+ *
+ *  - Window was destroyed
+ *  - Window is minimized
+ *  - Window is moved to a different desktop
+ *  - Window no longer sticky.
+ *
+ * Note that combinations are possible - a window might have first
+ * been minimized and then moved to a different desktop. The
+ * 'effect' parameter to show_window() and hide_window() is a hint
+ * as to the appropriate effect to show the user and should not
+ * be considered to be indicative of a state change.
+ *
+ * When the active workspace is changed, switch_workspace() is called
+ * first, then show_window() and hide_window() are called individually
+ * for each window affected, with an effect of META_COMP_EFFECT_NONE.
+ * If hiding windows will affect the switch workspace animation, the
+ * compositor needs to delay hiding the windows until the switch
+ * workspace animation completes.
+ *
+ * maximize_window() and unmaximize_window() are transitions within
+ * the visible state. The window is resized *before* the call, so
+ * it may be necessary to readjust the display based on the old_rect
+ * to start the animation.
+ *
+ * window_mapped() and window_unmapped() are notifications when the
+ * toplevel window (frame or client window) is mapped or unmapped.
+ * That is, when the result of meta_window_toplevel_is_mapped()
+ * changes. The main use of this is to drop resources when a window
+ * is unmapped. A window will always be mapped before show_window()
+ * is called and will not be unmapped until after hide_window() is
+ * called. If the live_hidden_windows preference is set, windows will
+ * never be unmapped.
+ */
+
 void meta_compositor_add_window    (MetaCompositor *compositor,
                                     MetaWindow     *window);
 void meta_compositor_remove_window (MetaCompositor *compositor,
                                     MetaWindow     *window);
 
-void meta_compositor_map_window        (MetaCompositor      *compositor,
-                                        MetaWindow          *window);
-void meta_compositor_unmap_window      (MetaCompositor      *compositor,
-                                        MetaWindow          *window);
-void meta_compositor_minimize_window   (MetaCompositor      *compositor,
+void meta_compositor_show_window       (MetaCompositor      *compositor,
                                         MetaWindow          *window,
-                                        MetaRectangle       *window_rect,
-                                        MetaRectangle       *icon_rect);
-void meta_compositor_unminimize_window (MetaCompositor      *compositor,
+                                        MetaCompEffect       effect);
+void meta_compositor_hide_window       (MetaCompositor      *compositor,
                                         MetaWindow          *window,
-                                        MetaRectangle       *window_rect,
-                                        MetaRectangle       *icon_rect);
+                                        MetaCompEffect       effect);
+void meta_compositor_switch_workspace  (MetaCompositor      *compositor,
+                                        MetaScreen          *screen,
+                                        MetaWorkspace       *from,
+                                        MetaWorkspace       *to,
+                                        MetaMotionDirection  direction);
+
 void meta_compositor_maximize_window   (MetaCompositor      *compositor,
                                         MetaWindow          *window,
                                         MetaRectangle       *old_rect,
@@ -90,16 +162,11 @@ void meta_compositor_unmaximize_window (MetaCompositor      *compositor,
                                         MetaWindow          *window,
                                         MetaRectangle       *old_rect,
                                         MetaRectangle       *new_rect);
-void meta_compositor_switch_workspace  (MetaCompositor      *compositor,
-                                        MetaScreen          *screen,
-                                        MetaWorkspace       *from,
-                                        MetaWorkspace       *to,
-                                        MetaMotionDirection  direction);
 
-void meta_compositor_set_window_hidden    (MetaCompositor *compositor,
-                                           MetaScreen	  *screen,
-                                           MetaWindow     *window,
-                                           gboolean        hidden);
+void meta_compositor_window_mapped        (MetaCompositor *compositor,
+                                           MetaWindow     *window);
+void meta_compositor_window_unmapped      (MetaCompositor *compositor,
+                                           MetaWindow     *window);
 void meta_compositor_sync_window_geometry (MetaCompositor *compositor,
                                            MetaWindow     *window);
 void meta_compositor_set_updates          (MetaCompositor *compositor,

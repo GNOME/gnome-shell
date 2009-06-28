@@ -49,17 +49,13 @@ struct _MutterWindowPrivate
   gint              map_in_progress;
   gint              destroy_in_progress;
 
+  guint		    visible                : 1;
+  guint		    mapped                 : 1;
   guint		    shaped                 : 1;
-  guint		    destroy_pending        : 1;
   guint		    argb32                 : 1;
   guint		    disposed               : 1;
-  guint		    is_minimized           : 1;
-  guint		    hide_after_effect      : 1;
   guint             redecorating           : 1;
 
-  /* Desktop switching flags */
-  guint		    needs_map              : 1;
-  guint		    needs_unmap            : 1;
   guint		    needs_repair           : 1;
   guint		    needs_reshape          : 1;
   guint		    size_changed           : 1;
@@ -746,7 +742,7 @@ mutter_window_mark_for_repair (MutterWindow *self)
 
   priv->needs_repair = TRUE;
 
-  if (priv->attrs.map_state == IsUnmapped)
+  if (!priv->mapped)
     return;
 
   /* This will cause the compositor paint function to be run
@@ -760,15 +756,76 @@ mutter_window_mark_for_repair (MutterWindow *self)
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
+static gboolean
+start_simple_effect (MutterWindow *self,
+                     gulong        event)
+{
+  MutterWindowPrivate *priv = self->priv;
+  MetaCompScreen *info = meta_screen_get_compositor_data (priv->screen);
+  gint *counter = NULL;
+
+  if (!info->plugin_mgr)
+    return FALSE;
+
+  switch (event)
+  {
+  case MUTTER_PLUGIN_MINIMIZE:
+    counter = &priv->minimize_in_progress;
+    break;
+  case MUTTER_PLUGIN_MAP:
+    counter = &priv->map_in_progress;
+    break;
+  case MUTTER_PLUGIN_DESTROY:
+    counter = &priv->destroy_in_progress;
+    break;
+  case MUTTER_PLUGIN_UNMAXIMIZE:
+  case MUTTER_PLUGIN_MAXIMIZE:
+  case MUTTER_PLUGIN_SWITCH_WORKSPACE:
+    g_assert_not_reached ();
+    break;
+  }
+
+  g_assert (counter);
+
+  (*counter)++;
+
+  if (!mutter_plugin_manager_event_simple (info->plugin_mgr,
+                                           self,
+                                           event))
+    {
+      (*counter)--;
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+mutter_window_after_effects (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  if (priv->needs_destroy)
+    {
+      clutter_actor_destroy (CLUTTER_ACTOR (self));
+      return;
+    }
+
+  mutter_window_sync_visibility (self);
+  mutter_window_sync_actor_position (self);
+
+  if (!priv->window->mapped)
+    mutter_window_detach (self);
+
+  if (priv->needs_repair)
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
 void
 mutter_window_effect_completed (MutterWindow *self,
 				gulong        event)
 {
   MutterWindowPrivate *priv   = self->priv;
-  MetaScreen          *screen = priv->screen;
-  MetaCompScreen      *info   = meta_screen_get_compositor_data (screen);
-  ClutterActor        *actor  = CLUTTER_ACTOR (self);
-  gboolean             effect_done = FALSE;
 
   /* NB: Keep in mind that when effects get completed it possible
    * that the corresponding MetaWindow may have be been destroyed.
@@ -778,33 +835,11 @@ mutter_window_effect_completed (MutterWindow *self,
   {
   case MUTTER_PLUGIN_MINIMIZE:
     {
-      ClutterActor *a = CLUTTER_ACTOR (self);
-
       priv->minimize_in_progress--;
       if (priv->minimize_in_progress < 0)
 	{
 	  g_warning ("Error in minimize accounting.");
 	  priv->minimize_in_progress = 0;
-	}
-
-      if (!priv->minimize_in_progress)
-	{
-	  priv->is_minimized = TRUE;
-
-	  /*
-	   * We must ensure that the minimized actor is pushed down the stack
-	   * (the XConfigureEvent has 'above' semantics, i.e., when a window
-	   * is lowered, we get a bunch of 'raise' notifications, but might
-	   * not get any notification for the window that has been lowered.
-	   */
-	  clutter_actor_lower_bottom (a);
-
-	  /* Make sure that after the effect finishes, the actor is
-	   * made visible for sake of live previews.
-	   */
-	  clutter_actor_show (a);
-
-	  effect_done = TRUE;
 	}
     }
     break;
@@ -820,17 +855,6 @@ mutter_window_effect_completed (MutterWindow *self,
 	g_warning ("Error in map accounting.");
 	priv->map_in_progress = 0;
       }
-
-    if (!priv->map_in_progress && priv->window && !priv->no_more_x_calls)
-      {
-	MetaRectangle rect;
-	meta_window_get_outer_rect (priv->window, &rect);
-	priv->is_minimized = FALSE;
-	clutter_actor_set_anchor_point (actor, 0, 0);
-	clutter_actor_set_position (actor, rect.x, rect.y);
-	clutter_actor_show_all (actor);
-	effect_done = TRUE;
-      }
     break;
   case MUTTER_PLUGIN_DESTROY:
     priv->destroy_in_progress--;
@@ -840,12 +864,6 @@ mutter_window_effect_completed (MutterWindow *self,
 	g_warning ("Error in destroy accounting.");
 	priv->destroy_in_progress = 0;
       }
-
-    if (!priv->destroy_in_progress)
-      {
-	priv->needs_destroy = TRUE;
-	effect_done = TRUE;
-      }
     break;
   case MUTTER_PLUGIN_UNMAXIMIZE:
     priv->unmaximize_in_progress--;
@@ -853,15 +871,6 @@ mutter_window_effect_completed (MutterWindow *self,
       {
 	g_warning ("Error in unmaximize accounting.");
 	priv->unmaximize_in_progress = 0;
-      }
-
-    if (!priv->unmaximize_in_progress && priv->window && !priv->no_more_x_calls)
-      {
-	MetaRectangle rect;
-	meta_window_get_outer_rect (priv->window, &rect);
-	clutter_actor_set_position (actor, rect.x, rect.y);
-        clutter_actor_set_size (actor, rect.width,rect.height);
-        effect_done = TRUE;
       }
     break;
   case MUTTER_PLUGIN_MAXIMIZE:
@@ -871,58 +880,14 @@ mutter_window_effect_completed (MutterWindow *self,
 	g_warning ("Error in maximize accounting.");
 	priv->maximize_in_progress = 0;
       }
-
-    if (!priv->maximize_in_progress && priv->window && !priv->no_more_x_calls)
-      {
-	MetaRectangle rect;
-	meta_window_get_outer_rect (priv->window, &rect);
-	clutter_actor_set_position (actor, rect.x, rect.y);
-        clutter_actor_set_size (actor, rect.width, rect.height);
-        effect_done = TRUE;
-      }
     break;
   case MUTTER_PLUGIN_SWITCH_WORKSPACE:
     g_assert_not_reached ();
     break;
-  default:
-    break;
   }
 
-  switch (event)
-  {
-  case MUTTER_PLUGIN_MINIMIZE:
-  case MUTTER_PLUGIN_MAP:
-  case MUTTER_PLUGIN_DESTROY:
-  case MUTTER_PLUGIN_UNMAXIMIZE:
-  case MUTTER_PLUGIN_MAXIMIZE:
-
-    if (effect_done &&
-	priv->hide_after_effect &&
-	mutter_window_effect_in_progress (self) == FALSE)
-      {
-	if (clutter_actor_get_parent (CLUTTER_ACTOR (self)) != info->hidden_group)
-	  {
-	    clutter_actor_reparent (CLUTTER_ACTOR (self),
-				    info->hidden_group);
-	  }
-	priv->hide_after_effect = FALSE;
-      }
-
-    if (priv->needs_destroy && mutter_window_effect_in_progress (self) == FALSE)
-      {
-        clutter_actor_destroy (CLUTTER_ACTOR (self));
-	return;
-      }
-
-    if (effect_done &&
-        (priv->needs_repair || priv->needs_reshape))
-      {
-        /* Make sure that pre_paint function gets called */
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-      }
-  default:
-    break;
-  }
+  if (!mutter_window_effect_in_progress (self))
+    mutter_window_after_effects (self);
 }
 
 /* Called to drop our reference to a window backing pixmap that we
@@ -943,6 +908,9 @@ mutter_window_detach (MutterWindow *self)
 
   XFreePixmap (xdisplay, priv->back_pixmap);
   priv->back_pixmap = None;
+  clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor),
+                                         None);
+
   mutter_window_mark_for_repair (self);
 }
 
@@ -952,7 +920,6 @@ mutter_window_destroy (MutterWindow *self)
   MetaWindow	      *window;
   MetaCompScreen      *info;
   MutterWindowPrivate *priv;
-  gboolean             effect_in_progress;
 
   priv = self->priv;
 
@@ -982,13 +949,7 @@ mutter_window_destroy (MutterWindow *self)
       return;
     }
 
-  effect_in_progress = mutter_window_effect_in_progress (self);
-
-  /*
-   * If a plugin manager is present, try to run an effect; if no effect of this
-   * type is present, destroy the actor.
-   */
-  priv->destroy_in_progress++;
+  priv->needs_destroy = TRUE;
 
   /*
    * Once the window destruction is initiated we can no longer perform any
@@ -998,20 +959,8 @@ mutter_window_destroy (MutterWindow *self)
    */
   priv->no_more_x_calls = TRUE;
 
-  if (!info->plugin_mgr ||
-      !mutter_plugin_manager_event_simple (info->plugin_mgr,
-					   self,
-					   MUTTER_PLUGIN_DESTROY))
-    {
-      priv->destroy_in_progress--;
-
-      if (effect_in_progress)
-	{
-	  priv->needs_destroy = TRUE;
-	}
-      else
-        clutter_actor_destroy (CLUTTER_ACTOR (self));
-    }
+  if (!mutter_window_effect_in_progress (self))
+    clutter_actor_destroy (CLUTTER_ACTOR (self));
 }
 
 void
@@ -1045,118 +994,88 @@ mutter_window_sync_actor_position (MutterWindow *self)
 }
 
 void
-mutter_window_map (MutterWindow *self)
+mutter_window_show (MutterWindow   *self,
+                    MetaCompEffect  effect)
 {
   MutterWindowPrivate *priv;
   MetaCompScreen      *info;
-
-  if (!self)
-    return;
+  gulong               event;
 
   priv = self->priv;
   info = meta_screen_get_compositor_data (priv->screen);
 
-  if (priv->attrs.map_state == IsViewable)
-    return;
+  g_return_if_fail (!priv->visible);
 
-  priv->attrs.map_state = IsViewable;
+  self->priv->visible = TRUE;
 
-  mutter_window_mark_for_repair (self);
-
-  /*
-   * Make sure the position is set correctly (we might have got moved while
-   * unmapped.
-   */
-  if (!info->switch_workspace_in_progress)
+  event = 0;
+  switch (effect)
     {
-      MetaRectangle rect;
-      meta_window_get_outer_rect (priv->window, &rect);
-      clutter_actor_set_anchor_point (CLUTTER_ACTOR (self), 0, 0);
-      clutter_actor_set_position (CLUTTER_ACTOR (self), rect.x, rect.y);
+    case META_COMP_EFFECT_CREATE:
+      event = MUTTER_PLUGIN_MAP;
+      break;
+    case META_COMP_EFFECT_UNMINIMIZE:
+      /* FIXME: should have MUTTER_PLUGIN_UNMINIMIZE */
+      event = MUTTER_PLUGIN_MAP;
+      break;
+    case META_COMP_EFFECT_NONE:
+      break;
+    case META_COMP_EFFECT_DESTROY:
+    case META_COMP_EFFECT_MINIMIZE:
+      g_assert_not_reached();
     }
 
-  priv->map_in_progress++;
-
-  /*
-   * If a plugin manager is present, try to run an effect; if no effect of this
-   * type is present, destroy the actor.
-   */
   if (priv->redecorating ||
-      info->switch_workspace_in_progress || !info->plugin_mgr ||
-      !mutter_plugin_manager_event_simple (info->plugin_mgr,
-				self,
-                                MUTTER_PLUGIN_MAP))
+      info->switch_workspace_in_progress ||
+      event == 0 ||
+      !start_simple_effect (self, event))
     {
       clutter_actor_show_all (CLUTTER_ACTOR (self));
-      priv->map_in_progress--;
-      priv->is_minimized = FALSE;
       priv->redecorating = FALSE;
     }
 }
 
 void
-mutter_window_unmap (MutterWindow *self)
+mutter_window_hide (MutterWindow  *self,
+                    MetaCompEffect effect)
 {
   MutterWindowPrivate *priv;
   MetaCompScreen      *info;
+  gulong               event;
 
   priv = self->priv;
   info = meta_screen_get_compositor_data (priv->screen);
 
-  /*
-   * If the needs_unmap flag is set, we carry on even if the winow is
-   * already marked as unmapped; this is necessary so windows temporarily
-   * shown during an effect (like desktop switch) are properly hidden again.
+  g_return_if_fail (priv->visible);
+
+  priv->visible = FALSE;
+
+  /* If a plugin is animating a workspace transition, we have to
+   * hold off on hiding the window, and do it after the workspace
+   * switch completes
    */
-  if (priv->attrs.map_state == IsUnmapped && !priv->needs_unmap)
+  if (info->switch_workspace_in_progress)
     return;
 
-  if (info->switch_workspace_in_progress)
+  event = 0;
+  switch (effect)
     {
-      /*
-       * Cannot unmap windows while switching desktops effect is in progress.
-       */
-      priv->needs_unmap = TRUE;
-      return;
+    case META_COMP_EFFECT_DESTROY:
+      event = MUTTER_PLUGIN_DESTROY;
+      break;
+    case META_COMP_EFFECT_MINIMIZE:
+      event = MUTTER_PLUGIN_MINIMIZE;
+      break;
+    case META_COMP_EFFECT_NONE:
+      break;
+    case META_COMP_EFFECT_UNMINIMIZE:
+    case META_COMP_EFFECT_CREATE:
+      g_assert_not_reached();
     }
 
-  priv->attrs.map_state = IsUnmapped;
-  priv->needs_unmap = FALSE;
-  priv->needs_map   = FALSE;
-
-  if (!priv->minimize_in_progress &&
-      (!meta_prefs_get_live_hidden_windows () ||
-       priv->type == META_COMP_WINDOW_DROPDOWN_MENU ||
-       priv->type == META_COMP_WINDOW_POPUP_MENU ||
-       priv->type == META_COMP_WINDOW_TOOLTIP ||
-       priv->type == META_COMP_WINDOW_NOTIFICATION ||
-       priv->type == META_COMP_WINDOW_COMBO ||
-       priv->type == META_COMP_WINDOW_DND ||
-       priv->type == META_COMP_WINDOW_OVERRIDE_OTHER))
-    {
-      clutter_actor_hide (CLUTTER_ACTOR (self));
-    }
-}
-
-void
-mutter_window_minimize (MutterWindow *self)
-{
-  MetaCompScreen *info = meta_screen_get_compositor_data (self->priv->screen);
-
-  /*
-   * If there is a plugin manager, try to run an effect; if no effect is
-   * executed, hide the actor.
-   */
-  self->priv->minimize_in_progress++;
-
-  if (!info->plugin_mgr ||
-      !mutter_plugin_manager_event_simple (info->plugin_mgr,
-					   self,
-					   MUTTER_PLUGIN_MINIMIZE))
-    {
-      self->priv->is_minimized = TRUE;
-      self->priv->minimize_in_progress--;
-    }
+  if (event == 0 ||
+      !start_simple_effect (self, event))
+    clutter_actor_hide (CLUTTER_ACTOR (self));
 }
 
 void
@@ -1246,6 +1165,8 @@ mutter_window_new (MetaWindow *window)
 
   priv = self->priv;
 
+  priv->mapped = meta_window_toplevel_is_mapped (priv->window);
+
   mutter_window_sync_actor_position (self);
 
   /* Hang our compositor window state off the MetaWindow for fast retrieval */
@@ -1255,21 +1176,41 @@ mutter_window_new (MetaWindow *window)
 			       CLUTTER_ACTOR (self));
   clutter_actor_hide (CLUTTER_ACTOR (self));
 
-  /*
-   * Add this to the list at the top of the stack before it is mapped so that
-   * map_win can find it again
+  /* Initial position in the stack is arbitrary; stacking will be synced
+   * before we first paint.
    */
   info->windows = g_list_append (info->windows, self);
   g_hash_table_insert (info->windows_by_xid, (gpointer) top_window, self);
 
-  if (priv->attrs.map_state == IsViewable)
-    {
-      /* Need to reset the map_state for map_win() to work */
-      priv->attrs.map_state = IsUnmapped;
-      mutter_window_map (self);
-    }
-
   return self;
+}
+
+void
+mutter_window_mapped (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  g_return_if_fail (!priv->mapped);
+
+  priv->mapped = TRUE;
+
+  mutter_window_mark_for_repair (self);
+}
+
+void
+mutter_window_unmapped (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  g_return_if_fail (priv->mapped);
+
+  priv->mapped = FALSE;
+
+  if (mutter_window_effect_in_progress (self))
+    return;
+
+  mutter_window_detach (self);
+  priv->needs_repair = FALSE;
 }
 
 static void
@@ -1287,7 +1228,7 @@ check_needs_repair (MutterWindow *self)
   if (!priv->needs_repair)
     return;
 
-  if (priv->attrs.map_state == IsUnmapped)
+  if (!priv->mapped)
     return;
 
   if (xwindow == meta_screen_get_xroot (screen) ||
@@ -1426,18 +1367,16 @@ mutter_window_process_damage (MutterWindow       *self,
 }
 
 void
-mutter_window_finish_workspace_switch (MutterWindow *self)
+mutter_window_sync_visibility (MutterWindow *self)
 {
   MutterWindowPrivate *priv = self->priv;
 
-  if (priv->needs_map && !priv->needs_unmap)
+  if (CLUTTER_ACTOR_IS_VISIBLE (self) != priv->visible)
     {
-      mutter_window_map (self);
-    }
-
-  if (priv->needs_unmap)
-    {
-      mutter_window_unmap (self);
+      if (priv->visible)
+        clutter_actor_show (CLUTTER_ACTOR (self));
+      else
+        clutter_actor_hide (CLUTTER_ACTOR (self));
     }
 }
 
@@ -1526,50 +1465,4 @@ mutter_window_update_opacity (MutterWindow *self)
 
   self->priv->opacity = opacity;
   clutter_actor_set_opacity (CLUTTER_ACTOR (self), opacity);
-}
-
-void
-mutter_window_set_hidden (MutterWindow	  *self,
-                          gboolean	   hidden)
-{
-  MutterWindowPrivate *priv = self->priv;
-  MetaCompScreen *info = meta_screen_get_compositor_data (priv->screen);
-
-  if (hidden)
-    {
-      if (mutter_window_effect_in_progress (self))
-	{
-	  priv->hide_after_effect = TRUE;
-	}
-      else
-	{
-	  if (clutter_actor_get_parent (CLUTTER_ACTOR (self)) != info->hidden_group)
-	    {
-	      clutter_actor_reparent (CLUTTER_ACTOR (self),
-				      info->hidden_group);
-	    }
-	}
-    }
-  else
-    {
-      priv->hide_after_effect = FALSE;
-      if (clutter_actor_get_parent (CLUTTER_ACTOR (self)) != info->window_group)
-	clutter_actor_reparent (CLUTTER_ACTOR (self),
-				info->window_group);
-    }
-}
-
-void
-mutter_window_queue_map_change (MutterWindow *self,
-                                gboolean      should_be_mapped)
-{
-  if (should_be_mapped)
-    {
-      self->priv->needs_map = TRUE;
-      self->priv->needs_unmap = FALSE;
-    }
-  else
-    {
-      self->priv->needs_unmap = TRUE;
-    }
 }

@@ -90,28 +90,11 @@ static void sync_actor_stacking (GList *windows);
 static void
 mutter_finish_workspace_switch (MetaCompScreen *info)
 {
-#ifdef FIXME
-  GList *last = g_list_last (info->windows);
   GList *l;
 
-/*   printf ("FINISHING DESKTOP SWITCH\n"); */
-
-  if (!meta_prefs_get_live_hidden_windows ())
-    {
-      /* When running in the traditional mode where hidden windows get
-       * unmapped, we need to fix up the map status for each window, since
-       * we are ignoring unmap requests during the effect.
-       */
-      l = last;
-
-      while (l)
-	{
-          mutter_window_finish_workspace_switch (l->data);
-
-	  l = l->prev;
-	}
-    }
-#endif
+  /* Finish hiding and showing actors for the new workspace */
+  for (l = info->windows; l; l = l->next)
+    mutter_window_sync_visibility (l->data);
 
   /*
    * Fix up stacking order in case the plugin messed it up.
@@ -616,89 +599,30 @@ meta_compositor_process_event (MetaCompositor *compositor,
 }
 
 void
-meta_compositor_map_window (MetaCompositor *compositor,
-			    MetaWindow	   *window)
+meta_compositor_show_window (MetaCompositor *compositor,
+			     MetaWindow	    *window,
+                             MetaCompEffect  effect)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_map_window\n");
+  DEBUG_TRACE ("meta_compositor_show_window\n");
   if (!cw)
     return;
 
-  mutter_window_map (cw);
+  mutter_window_show (cw, effect);
 }
 
 void
-meta_compositor_unmap_window (MetaCompositor *compositor,
-			      MetaWindow     *window)
+meta_compositor_hide_window (MetaCompositor *compositor,
+                             MetaWindow     *window,
+                             MetaCompEffect  effect)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_unmap_window\n");
+  DEBUG_TRACE ("meta_compositor_hide_window\n");
   if (!cw)
     return;
 
-  mutter_window_unmap (cw);
+  mutter_window_hide (cw, effect);
 }
-
-void
-meta_compositor_minimize_window (MetaCompositor *compositor,
-                                 MetaWindow     *window,
-				 MetaRectangle	*window_rect,
-				 MetaRectangle	*icon_rect)
-{
-  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  MetaScreen	 *screen = meta_window_get_screen (window);
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  DEBUG_TRACE ("meta_compositor_minimize_window\n");
-
-  g_return_if_fail (info);
-
-  if (!cw)
-    return;
-
-  mutter_window_minimize (cw);
-}
-
-void
-meta_compositor_unminimize_window (MetaCompositor    *compositor,
-                                   MetaWindow        *window,
-				   MetaRectangle     *window_rect,
-				   MetaRectangle     *icon_rect)
-{
-#if 0
-  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  MetaScreen	 *screen = meta_window_get_screen (window);
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  g_return_if_fail (info);
-
-  if (!cw)
-    return;
-
-  /*
-   * If there is a plugin manager, try to run an effect; if no effect is
-   * executed, hide the actor.
-   */
-  cw->priv->unminimize_in_progress++;
-
-  if (!info->plugin_mgr ||
-      !mutter_plugin_manager_event_simple (info->plugin_mgr,
-					   cw,
-					   MUTTER_PLUGIN_UNMINIMIZE))
-    {
-      cw->priv->is_minimized = TRUE;
-      cw->priv->minimize_in_progress--;
-    }
-#else
-  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-  DEBUG_TRACE ("meta_compositor_unminimize_window\n");
-  if (!cw)
-    return;
-
-  mutter_window_map (cw);
-#endif
-}
-
 
 void
 meta_compositor_maximize_window (MetaCompositor    *compositor,
@@ -766,41 +690,6 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
   from_indx = meta_workspace_index (from);
 
   DEBUG_TRACE ("meta_compositor_switch_workspace\n");
-  if (!meta_prefs_get_live_hidden_windows ())
-    {
-      GList *l;
-
-      /*
-       * We are in the traditional mode where hidden windows get unmapped,
-       * we need to pre-calculate the map status of each window so that once
-       * the effect finishes we can put everything into proper order
-       * (we need to ignore the map notifications during the effect so that
-       * actors do not just disappear while the effect is running).
-       */
-      for (l = info->windows; l != NULL; l = l->next)
-	{
-	  MutterWindow *cw = l->data;
-	  MetaWindow   *mw = mutter_window_get_meta_window (cw);
-	  gboolean      sticky;
-	  gint          workspace = -1;
-
-	  sticky = (!mw || meta_window_is_on_all_workspaces (mw));
-
-	  if (!sticky)
-	    {
-	      MetaWorkspace *w;
-
-	      w = meta_window_get_workspace (mw);
-	      workspace = meta_workspace_index (w);
-
-	      /*
-	       * If the window is not on the target workspace, mark it for
-	       * unmap.
-	       */
-              mutter_window_queue_map_change (cw, to_indx == workspace);
-	    }
-	}
-    }
 
   info->switch_workspace_in_progress++;
 
@@ -927,19 +816,27 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
 }
 
 void
-meta_compositor_set_window_hidden (MetaCompositor *compositor,
-				   MetaScreen	  *screen,
-				   MetaWindow	  *window,
-				   gboolean	   hidden)
+meta_compositor_window_mapped (MetaCompositor *compositor,
+                               MetaWindow     *window)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
-
-  DEBUG_TRACE ("meta_compositor_set_window_hidden\n");
-  
+  DEBUG_TRACE ("meta_compositor_window_mapped\n");
   if (!cw)
     return;
 
-  mutter_window_set_hidden (cw, hidden);
+  mutter_window_mapped (cw);
+}
+
+void
+meta_compositor_window_unmapped (MetaCompositor *compositor,
+                                 MetaWindow     *window)
+{
+  MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
+  DEBUG_TRACE ("meta_compositor_window_unmapped\n");
+  if (!cw)
+    return;
+
+  mutter_window_unmapped (cw);
 }
 
 void

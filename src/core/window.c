@@ -42,7 +42,6 @@
 #include "group.h"
 #include "window-props.h"
 #include "constraints.h"
-#include "compositor.h"
 
 #include <X11/Xatom.h>
 #include <string.h>
@@ -391,7 +390,9 @@ meta_window_new (MetaDisplay *display,
           return NULL;
        }
       window = meta_window_new_with_attrs (display, xwindow,
-                                       must_be_viewable, &attrs);
+                                           must_be_viewable,
+                                           META_COMP_EFFECT_CREATE,
+                                           &attrs);
    }
   else
    {
@@ -414,6 +415,7 @@ MetaWindow*
 meta_window_new_with_attrs (MetaDisplay       *display,
                             Window             xwindow,
                             gboolean           must_be_viewable,
+                            MetaCompEffect     effect,
                             XWindowAttributes *attrs)
 {
   MetaWindow *window;
@@ -665,11 +667,12 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->shaded = FALSE;
   window->initially_iconic = FALSE;
   window->minimized = FALSE;
-  window->was_minimized = FALSE;
   window->tab_unminimized = FALSE;
   window->iconic = FALSE;
   window->mapped = attrs->map_state != IsUnmapped;
-  window->hidden = 0;
+  window->hidden = FALSE;
+  window->visible_to_compositor = FALSE;
+  window->pending_compositor_effect = effect;
   /* if already mapped, no need to worry about focus-on-first-time-showing */
   window->showing_for_first_time = !window->mapped;
   /* if already mapped we don't want to do the placement thing;
@@ -1186,7 +1189,13 @@ meta_window_unmanage (MetaWindow  *window,
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
   if (window->display->compositor)
-    meta_compositor_remove_window (window->display->compositor, window);
+    {
+      if (window->visible_to_compositor)
+        meta_compositor_hide_window (window->display->compositor, window,
+                                     META_COMP_EFFECT_DESTROY);
+
+      meta_compositor_remove_window (window->display->compositor, window);
+    }
 
   if (window->display->window_with_menu == window)
     {
@@ -1630,41 +1639,6 @@ meta_window_should_be_showing (MetaWindow  *window)
 }
 
 static void
-finish_minimize (gpointer data)
-{
-  MetaWindow *window = data;
-  /* FIXME: It really sucks to put timestamp pinging here; it'd
-   * probably make more sense in implement_showing() so that it's at
-   * least not duplicated in meta_window_show; but since
-   * finish_minimize is a callback making things just slightly icky, I
-   * haven't done that yet.
-   */
-  guint32 timestamp = meta_display_get_current_time_roundtrip (window->display);
-
-  meta_window_hide (window);
-  if (window->has_focus)
-    {
-      MetaWindow *not_this_one = NULL;
-      MetaWorkspace *my_workspace = meta_window_get_workspace (window);
-
-      /*
-       * If this window is modal, passing the not_this_one window to
-       * _focus_default_window() makes the focus to be given to this window's
-       * ancestor. This can only be the case if the window is on the currently
-       * active workspace; when it is not, we need to pass in NULL, so as to
-       * focus the default window for the active workspace (this scenario
-       * arises when we are switching workspaces).
-       */
-      if (my_workspace == window->screen->active_workspace)
-        not_this_one = window;
-
-      meta_workspace_focus_default_window (window->screen->active_workspace,
-                                           not_this_one,
-                                           timestamp);
-    }
-}
-
-static void
 implement_showing (MetaWindow *window,
                    gboolean    showing)
 {
@@ -1673,55 +1647,11 @@ implement_showing (MetaWindow *window,
                 showing, window->desc);
 
   if (!showing)
-    {
-      gboolean on_workspace;
-
-      on_workspace = meta_window_located_on_workspace (window,
-                                                       window->screen->active_workspace);
-
-      /* Really this effects code should probably
-       * be in meta_window_hide so the window->mapped
-       * test isn't duplicated here. Anyhow, we animate
-       * if we are mapped now, we are supposed to
-       * be minimized, and we are on the current workspace.
-       */
-      if (on_workspace && window->minimized && window->mapped &&
-          !window->hidden)
-        {
-          MetaRectangle icon_rect, window_rect;
-          gboolean result;
-
-          /* Check if the window has an icon geometry */
-          result = meta_window_get_icon_geometry (window, &icon_rect);
-
-          if (!result)
-            {
-              /* just animate into the corner somehow - maybe
-               * not a good idea...
-               */
-              icon_rect.x = window->screen->rect.width;
-              icon_rect.y = window->screen->rect.height;
-              icon_rect.width = 1;
-              icon_rect.height = 1;
-            }
-
-          meta_window_get_outer_rect (window, &window_rect);
-
-          meta_compositor_minimize_window (window->display->compositor,
-                                               window,
-					       &window_rect,
-					       &icon_rect);
-              finish_minimize (window);
-        }
-      else
-        {
-          finish_minimize (window);
-        }
-    }
+    meta_window_hide (window);
   else
-    {
-      meta_window_show (window);
-    }
+    meta_window_show (window);
+
+  window->pending_compositor_effect = META_COMP_EFFECT_NONE;
 }
 
 void
@@ -2324,6 +2254,7 @@ map_client_window (MetaWindow *window)
       meta_error_trap_push (window->display);
       XMapWindow (window->display->xdisplay, window->xwindow);
       meta_error_trap_pop (window->display, FALSE);
+
       return TRUE;
     }
   else
@@ -2347,13 +2278,32 @@ unmap_client_window (MetaWindow *window,
       meta_error_trap_push (window->display);
       XUnmapWindow (window->display->xdisplay, window->xwindow);
       meta_error_trap_pop (window->display, FALSE);
+
       return TRUE;
     }
   else
     return FALSE;
 }
 
-/* XXX META_EFFECT_*_MAP */
+/**
+ * meta_window_toplevel_is_mapped:
+ * @window: a #MetaWindow
+ *
+ * Determines whether the toplevel X window for the MetaWindow is
+ * mapped. (The frame window is mapped even without the client window
+ * when a window is shaded.)
+ *
+ * Return Value: %TRUE if the toplevel is mapped.
+ */
+gboolean
+meta_window_toplevel_is_mapped (MetaWindow *window)
+{
+  /* The frame is mapped but not the client window when the window
+   * is shaded.
+   */
+  return window->mapped || (window->frame && window->frame->mapped);
+}
+
 static void
 meta_window_show (MetaWindow *window)
 {
@@ -2362,17 +2312,14 @@ meta_window_show (MetaWindow *window)
   gboolean place_on_top_on_map;
   gboolean needs_stacking_adjustment;
   MetaWindow *focus_window;
-  guint32     timestamp;
-
-  /* FIXME: It really sucks to put timestamp pinging here; it'd
-   * probably make more sense in implement_showing() so that it's at
-   * least not duplicated in finish_minimize.  *shrug*
-   */
-  timestamp = meta_display_get_current_time_roundtrip (window->display);
+  gboolean toplevel_was_mapped;
+  gboolean toplevel_now_mapped;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Showing window %s, shaded: %d iconic: %d placed: %d\n",
               window->desc, window->shaded, window->iconic, window->placed);
+
+  toplevel_was_mapped = meta_window_toplevel_is_mapped (window);
 
   focus_window = window->display->focus_window;  /* May be NULL! */
   did_show = FALSE;
@@ -2402,6 +2349,10 @@ meta_window_show (MetaWindow *window)
     ) {
       if (meta_window_is_ancestor_of_transient (focus_window, window))
         {
+          guint32     timestamp;
+
+          timestamp = meta_display_get_current_time_roundtrip (window->display);
+
           /* This happens for error dialogs or alerts; these need to remain on
            * top, but it would be confusing to have its ancestor remain
            * focused.
@@ -2526,47 +2477,9 @@ meta_window_show (MetaWindow *window)
             {
               meta_stack_freeze (window->screen->stack);
               window->hidden = FALSE;
-	      /* Inform the compositor that the window isn't hidden */
-              if (window->display->compositor)
-                meta_compositor_set_window_hidden (window->display->compositor,
-                                                   window->screen,
-                                                   window,
-                                                   window->hidden);
               meta_stack_thaw (window->screen->stack);
               did_show = TRUE;
             }
-        }
-
-      if (did_show)
-	{
-	  MetaRectangle icon_rect;
-
-	  if (window->was_minimized
-	      && meta_window_get_icon_geometry (window, &icon_rect))
-	    {
-	      MetaRectangle window_rect;
-
-	      meta_window_get_outer_rect (window, &window_rect);
-
-	      if (window->display->compositor)
-		meta_compositor_unminimize_window (window->display->compositor,
-						   window,
-						   &window_rect,
-						   &icon_rect);
-	    }
-	  else
-            {
-              if (window->display->compositor)
-                meta_compositor_map_window (window->display->compositor,
-                                            window);
-            }
-
-	  window->was_minimized = FALSE;
-	}
-      else
-        {
-          if (window->display->compositor)
-	    meta_compositor_map_window (window->display->compositor, window);
         }
 
       if (window->iconic)
@@ -2574,6 +2487,38 @@ meta_window_show (MetaWindow *window)
           window->iconic = FALSE;
           set_wm_state (window, NormalState);
         }
+    }
+
+  toplevel_now_mapped = meta_window_toplevel_is_mapped (window);
+  if (toplevel_now_mapped != toplevel_was_mapped)
+    {
+      if (window->display->compositor)
+        meta_compositor_window_mapped (window->display->compositor, window);
+    }
+
+  if (!window->visible_to_compositor)
+    {
+      if (window->display->compositor)
+        {
+          MetaCompEffect effect = META_COMP_EFFECT_NONE;
+
+          switch (window->pending_compositor_effect)
+            {
+            case META_COMP_EFFECT_CREATE:
+            case META_COMP_EFFECT_UNMINIMIZE:
+              effect = window->pending_compositor_effect;
+              break;
+            case META_COMP_EFFECT_NONE:
+            case META_COMP_EFFECT_DESTROY:
+            case META_COMP_EFFECT_MINIMIZE:
+              break;
+            }
+
+          meta_compositor_show_window (window->display->compositor,
+                                       window, effect);
+        }
+
+      window->visible_to_compositor = TRUE;
     }
 
   /* We don't want to worry about all cases from inside
@@ -2585,6 +2530,10 @@ meta_window_show (MetaWindow *window)
       window->showing_for_first_time = FALSE;
       if (takes_focus_on_map)
         {
+          guint32     timestamp;
+
+          timestamp = meta_display_get_current_time_roundtrip (window->display);
+
           meta_window_focus (window, timestamp);
         }
       else
@@ -2610,50 +2559,64 @@ meta_window_show (MetaWindow *window)
     }
 }
 
-/* XXX META_EFFECT_*_UNMAP */
 static void
 meta_window_hide (MetaWindow *window)
 {
   gboolean did_hide;
+  gboolean toplevel_was_mapped;
+  gboolean toplevel_now_mapped;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Hiding window %s\n", window->desc);
+
+  toplevel_was_mapped = meta_window_toplevel_is_mapped (window);
+
+  if (window->visible_to_compositor)
+    {
+      if (window->display->compositor)
+        {
+          MetaCompEffect effect = META_COMP_EFFECT_NONE;
+
+          switch (window->pending_compositor_effect)
+            {
+            case META_COMP_EFFECT_CREATE:
+            case META_COMP_EFFECT_UNMINIMIZE:
+            case META_COMP_EFFECT_NONE:
+              break;
+            case META_COMP_EFFECT_DESTROY:
+            case META_COMP_EFFECT_MINIMIZE:
+              effect = window->pending_compositor_effect;
+              break;
+            }
+
+          meta_compositor_hide_window (window->display->compositor,
+                                       window, effect);
+        }
+
+      window->visible_to_compositor = FALSE;
+    }
 
   did_hide = FALSE;
 
   if (meta_prefs_get_live_hidden_windows ())
     {
-      if (window->hidden)
-        return;
-
       /* If this is the first time that we've calculating the showing
        * state of the window, the frame and client window might not
        * yet be mapped, so we need to map them now */
       map_frame (window);
       map_client_window (window);
 
-      meta_stack_freeze (window->screen->stack);
-      window->hidden = TRUE;
-      /* Tell the compositor this window is now hidden */
-      if (window->display->compositor)
-        meta_compositor_set_window_hidden (window->display->compositor,
-                                           window->screen,
-                                           window,
-                                           window->hidden);
-      meta_stack_thaw (window->screen->stack);
+      if (!window->hidden)
+        {
+          meta_stack_freeze (window->screen->stack);
+          window->hidden = TRUE;
+          meta_stack_thaw (window->screen->stack);
 
-      if (window->display->compositor)
-        meta_compositor_unmap_window (window->display->compositor,
-                                      window);
-
-      did_hide = TRUE;
+          did_hide = TRUE;
+        }
     }
   else
     {
-      if (window->display->compositor)
-        meta_compositor_unmap_window (window->display->compositor,
-                                      window);
-
       /* Unmapping the frame is enough to make the window disappear,
        * but we need to hide the window itself so the client knows
        * it has been hidden */
@@ -2669,6 +2632,19 @@ meta_window_hide (MetaWindow *window)
       set_wm_state (window, IconicState);
     }
 
+  toplevel_now_mapped = meta_window_toplevel_is_mapped (window);
+  if (toplevel_now_mapped != toplevel_was_mapped)
+    {
+      if (window->display->compositor)
+        {
+          /* As above, we may be *mapping* live hidden windows */
+          if (toplevel_now_mapped)
+            meta_compositor_window_mapped (window->display->compositor, window);
+          else
+            meta_compositor_window_unmapped (window->display->compositor, window);
+        }
+    }
+
   set_net_wm_state (window);
 
   if (did_hide && window->struts)
@@ -2677,6 +2653,28 @@ meta_window_hide (MetaWindow *window)
                   "Unmapped window %s with struts, so invalidating work areas\n",
                   window->desc);
       invalidate_work_areas (window);
+    }
+
+  if (window->has_focus)
+    {
+      MetaWindow *not_this_one = NULL;
+      MetaWorkspace *my_workspace = meta_window_get_workspace (window);
+      guint32 timestamp = meta_display_get_current_time_roundtrip (window->display);
+
+      /*
+       * If this window is modal, passing the not_this_one window to
+       * _focus_default_window() makes the focus to be given to this window's
+       * ancestor. This can only be the case if the window is on the currently
+       * active workspace; when it is not, we need to pass in NULL, so as to
+       * focus the default window for the active workspace (this scenario
+       * arises when we are switching workspaces).
+       */
+      if (my_workspace == window->screen->active_workspace)
+        not_this_one = window;
+
+      meta_workspace_focus_default_window (window->screen->active_workspace,
+                                           not_this_one,
+                                           timestamp);
     }
 }
 
@@ -2696,6 +2694,7 @@ meta_window_minimize (MetaWindow  *window)
   if (!window->minimized)
     {
       window->minimized = TRUE;
+      window->pending_compositor_effect = META_COMP_EFFECT_MINIMIZE;
       meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 
       meta_window_foreach_transient (window,
@@ -2725,7 +2724,7 @@ meta_window_unminimize (MetaWindow  *window)
   if (window->minimized)
     {
       window->minimized = FALSE;
-      window->was_minimized = TRUE;
+      window->pending_compositor_effect = META_COMP_EFFECT_UNMINIMIZE;
       meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 
       meta_window_foreach_transient (window,
