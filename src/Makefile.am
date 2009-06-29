@@ -61,6 +61,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-embedded-window.c			\
 	shell-embedded-window.h			\
 	shell-embedded-window-private.h		\
+	shell-gconf.c				\
+	shell-gconf.h				\
 	shell-gtk-embed.c			\
 	shell-gtk-embed.h			\
 	shell-overflow-list.c		\
