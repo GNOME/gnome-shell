@@ -299,9 +299,6 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   guint tex_width, tex_height;
   ClutterActorBox alloc;
   CoglHandle material;
-#if 1 /* please see comment below about workaround */
-  guint depth;
-#endif
 
   if (priv->clip_region && gdk_region_empty (priv->clip_region))
     return;
@@ -362,35 +359,6 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 					   NULL);
 	}
       material = priv->material;
-
-#if 1
-      /* This was added as a workaround. It seems that with the intel
-       * drivers when multi-texturing using an RGB TFP texture, the
-       * texture is actually setup internally as an RGBA texture, where
-       * the alpha channel is mostly 0.0 so you only see a shimmer of the
-       * window. This workaround forcibly defines the alpha channel as
-       * 1.0. Maybe there is some clutter/cogl state that is interacting
-       * with this that is being overlooked, but for now this seems to
-       * work. */
-      g_object_get (stex, "pixmap-depth", &depth, NULL);
-      if (depth == 24)
-	{
-	  if (priv->material_workaround == COGL_INVALID_HANDLE)
-	    {
-	      material = priv->material_workaround = cogl_material_new ();
-
-	      cogl_material_set_layer_combine (material, 0,
-					       "RGB = MODULATE (TEXTURE, PREVIOUS)"
-					       "A = REPLACE (PREVIOUS)",
-					       NULL);
-	      cogl_material_set_layer_combine (material, 1,
-					       "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
-					       NULL);
-	    }
-
-	  material = priv->material_workaround;
-	}
-#endif
 
       cogl_material_set_layer (material, 1, priv->mask_texture);
     }
