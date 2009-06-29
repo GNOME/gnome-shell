@@ -28,13 +28,6 @@ const SIDEBAR_EXPANDED_WIDTH = Widget.EXPANDED_WIDTH + 3 * WidgetBox.WIDGETBOX_P
 const HARDCODED_TASKBAR_HEIGHT = 24;
 const MAXIMUM_SIDEBAR_HEIGHT = Shell.Global.get().screen_height - Panel.PANEL_HEIGHT - HARDCODED_TASKBAR_HEIGHT;
 
-// FIXME, needs to be configurable, obviously
-const default_widgets = [
-    "imports.ui.widget.ClockWidget",
-    "imports.ui.widget.AppsWidget",
-    "imports.ui.widget.DocsWidget"
-];
-
 function Sidebar() {
     this._init();
 }
@@ -50,7 +43,6 @@ Sidebar.prototype = {
         this.actor = new Clutter.Group({ x: -WidgetBox.WIDGETBOX_PADDING,
                                          y: Panel.PANEL_HEIGHT,
                                          width: SIDEBAR_EXPANDED_WIDTH });
-        Main.chrome.addActor(this.actor);
 
         // The actual widgets go into a Big.Box inside this.actor. The
         // box's width will vary during the expand/collapse animations,
@@ -65,18 +57,33 @@ Sidebar.prototype = {
                                   spacing: SIDEBAR_SPACING });
         this.actor.add_actor(this.box);
 
-        this._visible = this.expanded = true;
+        this._gconf = Shell.GConf.get_default();
+
+        this._expanded = this._gconf.get_boolean ("sidebar/expanded");
+        if (!this._expanded)
+            this.actor.width = SIDEBAR_COLLAPSED_WIDTH;
+
+        this._visible = this._gconf.get_boolean ("sidebar/visible");
+        if (this._visible)
+            Main.chrome.addActor(this.actor);
 
         this._widgets = [];
-        this.addWidget(new ToggleWidget(this));
+        this.addWidget(new ToggleWidget());
+
+        let default_widgets = this._gconf.get_string_list("sidebar/widgets");
         for (let i = 0; i < default_widgets.length; i++)
             this.addWidget(default_widgets[i]);
+
+        this._gconf.connect('changed::sidebar/expanded',
+                            Lang.bind(this, this._expandedChanged));
+        this._gconf.connect('changed::sidebar/visible',
+                            Lang.bind(this, this._visibleChanged));
     },
 
     addWidget: function(widget) {
         let widgetBox;
         try {
-            widgetBox = new WidgetBox.WidgetBox(widget, this.expanded);
+            widgetBox = new WidgetBox.WidgetBox(widget, this._expanded);
         } catch(e) {
             logError(e, "Failed to add widget '" + widget + "'");
             return;
@@ -86,18 +93,32 @@ Sidebar.prototype = {
         this._widgets.push(widgetBox);
     },
 
-    show: function() {
-        this._visible = true;
-        this.actor.show();
+    _visibleChanged: function() {
+        let visible = this._gconf.get_boolean("sidebar/visible");
+        if (visible == this._visible)
+            return;
+
+        this._visible = visible;
+        if (visible)
+            Main.chrome.addActor(this.actor);
+        else
+            Main.chrome.removeActor(this.actor);
     },
 
-    hide: function() {
-        this._visible = false;
-        this.actor.hide();
+    _expandedChanged: function() {
+        let expanded = this._gconf.get_boolean("sidebar/expanded");
+        if (expanded == this._expanded)
+            return;
+
+        this._expanded = expanded;
+        if (expanded)
+            this._expand();
+        else
+            this._collapse();
     },
 
-    expand: function() {
-        this.expanded = true;
+    _expand: function() {
+        this._expanded = true;
         for (let i = 0; i < this._widgets.length; i++)
             this._widgets[i].expand();
 
@@ -108,8 +129,8 @@ Sidebar.prototype = {
                                  } });
     },
 
-    collapse: function() {
-        this.expanded = false;
+    _collapse: function() {
+        this._expanded = false;
         for (let i = 0; i < this._widgets.length; i++)
             this._widgets[i].collapse();
 
@@ -132,24 +153,33 @@ Sidebar.prototype = {
 const LEFT_DOUBLE_ARROW = "\u00AB";
 const RIGHT_DOUBLE_ARROW = "\u00BB";
 
-function ToggleWidget(sidebar) {
-    this._init(sidebar);
+function ToggleWidget() {
+    this._init();
 }
 
 ToggleWidget.prototype = {
     __proto__ : Widget.Widget.prototype,
 
-    _init : function(sidebar) {
-        this._sidebar = sidebar;
+    _init : function() {
+        this._gconf = Shell.GConf.get_default();
+
         this.actor = new Clutter.Text({ font_name: "Sans Bold 16px",
                                         text: LEFT_DOUBLE_ARROW,
                                         reactive: true });
         this.actor.connect('button-release-event',
-                           Lang.bind(this._sidebar, this._sidebar.collapse));
+                           Lang.bind(this, this._collapse));
         this.collapsedActor = new Clutter.Text({ font_name: "Sans Bold 16px",
                                                  text: RIGHT_DOUBLE_ARROW,
                                                  reactive: true });
         this.collapsedActor.connect('button-release-event',
-                                    Lang.bind(this._sidebar, this._sidebar.expand));
+                                    Lang.bind(this, this._expand));
+    },
+
+    _collapse : function () {
+        this._gconf.set_boolean ("sidebar/expanded", false);
+    },
+
+    _expand : function () {
+        this._gconf.set_boolean ("sidebar/expanded", true);
     }
 };

@@ -30,6 +30,49 @@
 	</locale>
       </schema>
 
+      <schema>
+        <key>/schemas/desktop/gnome/shell/sidebar/visible</key>
+	<applyto>/desktop/gnome/shell/sidebar/visible</applyto>
+	<owner>gnome-shell</owner>
+	<type>bool</type>
+	<default>true</default>
+	<locale name="C">
+	  <short>Whether or not to display the sidebar</short>
+	  <long>
+	    Determines whether or not the sidebar is visible.
+	  </long>
+	</locale>
+      </schema>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/sidebar/expanded</key>
+	<applyto>/desktop/gnome/shell/sidebar/expanded</applyto>
+	<owner>gnome-shell</owner>
+	<type>bool</type>
+	<default>true</default>
+	<locale name="C">
+	  <short>Whether the sidebar should be in the expanded (wide) mode</short>
+	  <long>
+	    Controls the expanded/collapsed state of the sidebar.
+	  </long>
+	</locale>
+      </schema>
+
+      <schema>
+        <key>/schemas/desktop/gnome/shell/sidebar/widgets</key>
+	<applyto>/desktop/gnome/shell/sidebar/widgets</applyto>
+	<owner>gnome-shell</owner>
+	<type>list</type>
+	<list_type>string</list_type>
+	<default>[imports.ui.widget.ClockWidget,imports.ui.widget.AppsWidget,imports.ui.widget.DocsWidget]</default>
+	<locale name="C">
+	  <short>The widgets to display in the sidebar</short>
+	  <long>
+	    The widgets to display in the sidebar, in order from top to bottom. Each widget "name" is actually a JavaScript expression referring to a widget constructor object.
+	  </long>
+	</locale>
+      </schema>
+
   </schemalist>
 
 </gconfschemafile>
