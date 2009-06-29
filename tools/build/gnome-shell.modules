@@ -36,7 +36,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gconf">
+  <autotools id="gconf" autogenargs="--disable-defaults-service">
     <branch repo="git.gnome.org" module="gconf"/>
   </autotools>
 
