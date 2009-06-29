@@ -27,8 +27,7 @@ DocDisplayItem.prototype = {
         GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth);     
         this._docInfo = docInfo;
     
-        this._setItemInfo(docInfo.name, "",
-                          docInfo.getIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE));
+        this._setItemInfo(docInfo.name, "");
     },
 
     //// Public methods ////
@@ -42,10 +41,15 @@ DocDisplayItem.prototype = {
 
     //// Protected method overrides ////
 
+    // Returns an icon for the item.
+    _createIcon : function() {
+        return this._docInfo.createIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
+    },
+
     // Ensures the preview icon is created.
     _ensurePreviewIconCreated : function() {
         if (!this._previewIcon)
-            this._previewIcon = this._docInfo.getIcon(GenericDisplay.PREVIEW_ICON_SIZE);
+            this._previewIcon = this._docInfo.createIcon(GenericDisplay.PREVIEW_ICON_SIZE);
     },
 
     // Creates and returns a large preview icon, but only if this._docInfo is an image file

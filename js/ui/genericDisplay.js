@@ -126,8 +126,7 @@ GenericDisplayItem.prototype = {
     // Returns a cloned texture of the item's icon to represent the item as it 
     // is being dragged. 
     getDragActor: function(stageX, stageY) {
-        this.dragActor = new Clutter.Clone({ source: this._icon });
-        [this.dragActor.width, this.dragActor.height] = this._icon.get_transformed_size();
+        this.dragActor = this._createIcon();
 
         // If the user dragged from the icon itself, then position
         // the dragActor over the original icon. Otherwise center it
@@ -142,8 +141,10 @@ GenericDisplayItem.prototype = {
         return this.dragActor;
     },
     
-    // Returns the original icon that is being used as a source for the cloned texture
-    // that represents the item as it is being dragged.
+    // Returns the item icon, a separate copy of which is used to
+    // represent the item as it is being dragged. This is used to
+    // determine a snap-back location for the drag icon if it does
+    // not get accepted by any drop target.
     getDragActorSource: function() {
         return this._icon;
     },
@@ -238,9 +239,8 @@ GenericDisplayItem.prototype = {
      *
      * nameText - name of the item
      * descriptionText - short description of the item
-     * iconActor - ClutterTexture containing the icon image which should be ITEM_DISPLAY_ICON_SIZE size
      */
-    _setItemInfo: function(nameText, descriptionText, iconActor) {
+    _setItemInfo: function(nameText, descriptionText) {
         if (this._name != null) {
             // this also removes this._name from the parent container,
             // so we don't need to call this.actor.remove_actor(this._name) directly
@@ -263,7 +263,7 @@ GenericDisplayItem.prototype = {
             this._previewIcon = null;
         }
 
-        this._icon = iconActor;
+        this._icon = this._createIcon();
         this.actor.add_actor(this._icon);
 
         let textWidth = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4) - INFORMATION_BUTTON_SIZE - ITEM_DISPLAY_PADDING_RIGHT;
@@ -293,6 +293,11 @@ GenericDisplayItem.prototype = {
     },
 
     //// Pure virtual protected methods ////
+
+    // Returns an icon for the item.
+    _createIcon: function() {
+        throw new Error("Not implemented");
+    },
 
     // Ensures the preview icon is created.
     _ensurePreviewIconCreated: function() {
@@ -588,32 +593,8 @@ GenericDisplay.prototype = {
             this.selectUp();
         } 
 
-        if (displayItem.dragActor) {
-            // The user might be handling a dragActor when the list of items 
-            // changes (for example, if the dragging caused us to transition
-            // from an expanded overlay view to the regular view). So we need
-            // to keep the item around so that the drag and drop action initiated
-            // by the user can be completed. However, we remove the item from the list.
-            // 
-            // For some reason, just removing the displayItem.actor
-            // is not enough to get displayItem._icon.visible
-            // to return false, so we hide the display item and
-            // all its children first. (We check displayItem._icon.visible
-            // when deciding if a dragActor has a place to snap back to
-            // in case the drop was not accepted by any actor.)
-            displayItem.actor.hide_all();
-            this._grid.remove_actor(displayItem.actor);
-            // We should not destroy the item up-front, because that would also
-            // destroy the icon that was used to clone the image for the drag actor.
-            // We destroy it once the dragActor is destroyed instead.             
-            displayItem.dragActor.connect('destroy',
-                                          function(item) {
-                                              displayItem.destroy();
-                                          });
-           
-        } else {
-            displayItem.destroy();
-        }
+        displayItem.destroy();
+
         delete this._displayedItems[itemId];
         this._displayedItemsCount--;        
     },

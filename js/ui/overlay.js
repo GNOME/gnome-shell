@@ -762,7 +762,6 @@ Overlay.prototype = {
     // the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
         if (source instanceof GenericDisplay.GenericDisplayItem) {
-            log("unsetting more mode");
             this._dash.unsetMoreMode();
             return true;
         }

@@ -41,8 +41,7 @@ AppDisplayItem.prototype = {
         GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth); 
         this._appInfo = appInfo;
 
-        this._setItemInfo(appInfo.name, appInfo.description,
-                          appInfo.getIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE));
+        this._setItemInfo(appInfo.name, appInfo.description);
     },
 
     //// Public method overrides ////
@@ -53,6 +52,11 @@ AppDisplayItem.prototype = {
     },
 
     //// Protected method overrides ////
+
+    // Returns an icon for the item.
+    _createIcon : function() {
+        return this._appInfo.createIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
+    },
 
     // Ensures the preview icon is created.
     _ensurePreviewIconCreated : function() {

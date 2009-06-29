@@ -182,7 +182,7 @@ LauncherWidget.prototype = {
                                  spacing: ITEM_SPACING,
                                  reactive: true });
         item._info = info;
-        item.append(info.getIcon(ITEM_ICON_SIZE), Big.BoxPackFlags.NONE);
+        item.append(info.createIcon(ITEM_ICON_SIZE), Big.BoxPackFlags.NONE);
         item.append(new Clutter.Text({ color: ITEM_NAME_COLOR,
                                        font_name: "Sans 14px",
                                        ellipsize: Pango.EllipsizeMode.END,
@@ -203,7 +203,7 @@ LauncherWidget.prototype = {
                              padding: ITEM_PADDING,
                              reactive: true });
         item._info = info;
-        item.append(info.getIcon(COLLAPSED_WIDTH - 2 * ITEM_PADDING),
+        item.append(info.createIcon(COLLAPSED_WIDTH - 2 * ITEM_PADDING),
                     Big.BoxPackFlags.NONE);
 
         this.collapsedActor.append(item, Big.BoxPackFlags.NONE);

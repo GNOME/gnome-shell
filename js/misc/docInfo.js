@@ -21,7 +21,7 @@ DocInfo.prototype = {
         this.mimeType = recentInfo.get_mime_type();
     },
 
-    getIcon : function(size) {
+    createIcon : function(size) {
         let icon = new Clutter.Texture();
         let iconPixbuf;
 
