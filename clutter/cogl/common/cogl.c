@@ -708,7 +708,7 @@ cogl_flush_gl_state (int flags)
 #endif
 
 void
-_cogl_flush (void)
+cogl_flush (void)
 {
   _cogl_journal_flush ();
 }
@@ -748,7 +748,7 @@ cogl_read_pixels (int x,
 
   /* make sure any batched primitives get emitted to the GL driver before
    * issuing our read pixels... */
-  _cogl_flush ();
+  cogl_flush ();
 
   glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 

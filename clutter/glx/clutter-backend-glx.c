@@ -498,7 +498,7 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
 
   /* this will cause the stage implementation to be painted */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
-  _cogl_flush ();
+  cogl_flush ();
 
   if (stage_x11->xwin != None)
     {

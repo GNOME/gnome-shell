@@ -724,6 +724,34 @@ void            cogl_read_pixels (int x,
                                   CoglPixelFormat format,
                                   guint8 *pixels);
 
+/**
+ * cogl_flush:
+ *
+ * This function should only need to be called in exceptional circumstances.
+ *
+ * As an optimization Cogl drawing functions may batch up primitives
+ * internally, so if you are trying to use raw GL outside of Cogl you stand a
+ * better chance of being successful if you ask Cogl to flush any batched
+ * geometry before making your state changes.
+ *
+ * It only ensure that the underlying driver is issued all the commands
+ * necessary to draw the batched primitives. It provides no guarantees about
+ * when the driver will complete the rendering.
+ *
+ * This provides no guarantees about the GL state upon returning and to avoid
+ * confusing Cogl you should aim to restore any changes you make before
+ * resuming use of Cogl.
+ *
+ * If you are making state changes with the intention of affecting Cogl drawing
+ * primitives you are 100% on your own since you stand a good chance of
+ * conflicting with Cogl internals. For example clutter-gst which currently
+ * uses direct GL calls to bind ARBfp programs will very likely break when Cogl
+ * starts to use ARBfb programs itself for the material API.
+ *
+ * Since: 1.0
+ */
+void            cogl_flush (void);
+
 
 /*
  * Internal API available only to Clutter.
@@ -759,20 +787,6 @@ void            cogl_flush_gl_state         (int      flags);
 
 /* private */
 void            _cogl_set_indirect_context  (gboolean indirect);
-
-/* private
- *
- * cogl_flush:
- *
- * As an optimization Cogl drawing functions may batch up primitives
- * internally, so you need to call _cogl_flush to ensure that the
- * drawing operations you have submitted for the current frame get
- * flushed through to the driver and GPU.
- *
- * This must be called before issuing a swap buffers.
- */
-void            _cogl_flush (void);
-
 
 G_END_DECLS
 
