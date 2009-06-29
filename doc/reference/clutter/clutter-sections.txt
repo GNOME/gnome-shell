@@ -282,7 +282,6 @@ clutter_actor_queue_redraw
 clutter_actor_queue_relayout
 clutter_actor_destroy
 clutter_actor_event
-clutter_actor_pick
 clutter_actor_should_pick_paint
 clutter_actor_map
 clutter_actor_unmap

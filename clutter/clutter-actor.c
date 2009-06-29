@@ -1384,35 +1384,6 @@ clutter_actor_real_pick (ClutterActor       *self,
 }
 
 /**
- * clutter_actor_pick:
- * @self: A #ClutterActor
- * @color: A #ClutterColor
- *
- * Renders a silhouette of the actor using the supplied color. Used
- * internally for mapping pointer events to actors.
- *
- * This function should never be called directly by applications.
- *
- * Subclasses overiding the ClutterActor::pick() method should call
- * clutter_actor_should_pick_paint() to decide whether to render their
- * silhouette. Containers should always recursively call pick for
- * each child.
- *
- * This function will emit the #ClutterActor::pick signal.
- *
- * Since: 0.4
- */
-void
-clutter_actor_pick (ClutterActor       *self,
-		    const ClutterColor *color)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (color != NULL);
-
-  g_signal_emit (self, actor_signals[PICK], 0, color);
-}
-
-/**
  * clutter_actor_should_pick_paint:
  * @self: A #ClutterActor
  *

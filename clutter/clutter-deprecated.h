@@ -198,4 +198,6 @@
 
 #define clutter_timeline_get_progressx  clutter_timeline_get_progressx_DEPRECATED_BY_clutter_timeline_get_progress
 
+#define clutter_actor_pick      clutter_actor_pick_DEPRECATED_BY_clutter_actor_paint
+
 #endif /* CLUTTER_DEPRECATED_H */

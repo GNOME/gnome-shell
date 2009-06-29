@@ -284,8 +284,6 @@ void                  clutter_actor_unrealize                 (ClutterActor     
 void                  clutter_actor_map                       (ClutterActor          *self);
 void                  clutter_actor_unmap                     (ClutterActor          *self);
 void                  clutter_actor_paint                     (ClutterActor          *self);
-void                  clutter_actor_pick                      (ClutterActor          *self,
-                                                               const ClutterColor    *color);
 void                  clutter_actor_queue_redraw              (ClutterActor          *self);
 void                  clutter_actor_queue_relayout            (ClutterActor          *self);
 void                  clutter_actor_destroy                   (ClutterActor          *self);
