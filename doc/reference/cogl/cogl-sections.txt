@@ -72,6 +72,9 @@ cogl_set_source_texture
 CoglReadPixelsFlags
 cogl_read_pixels
 
+<SUBSECTION>
+cogl_flush
+
 <SUBSECTION Standard>
 COGL_TYPE_ATTRIBUTE_TYPE
 COGL_TYPE_BUFFER_BIT
