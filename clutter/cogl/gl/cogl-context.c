@@ -90,6 +90,8 @@ cogl_create_context ()
   _context->last_path = 0;
   _context->stencil_material = cogl_material_new ();
 
+  _context->in_begin_gl_block = FALSE;
+
   _context->pf_glGenRenderbuffersEXT = NULL;
   _context->pf_glBindRenderbufferEXT = NULL;
   _context->pf_glRenderbufferStorageEXT = NULL;

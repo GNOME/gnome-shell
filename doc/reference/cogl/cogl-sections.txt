@@ -74,6 +74,8 @@ cogl_read_pixels
 
 <SUBSECTION>
 cogl_flush
+cogl_begin_gl
+cogl_end_gl
 
 <SUBSECTION Standard>
 COGL_TYPE_ATTRIBUTE_TYPE
