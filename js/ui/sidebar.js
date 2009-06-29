@@ -76,7 +76,7 @@ Sidebar.prototype = {
     addWidget: function(widget) {
         let widgetBox;
         try {
-            widgetBox = new WidgetBox.WidgetBox(widget);
+            widgetBox = new WidgetBox.WidgetBox(widget, this.expanded);
         } catch(e) {
             logError(e, "Failed to add widget '" + widget + "'");
             return;

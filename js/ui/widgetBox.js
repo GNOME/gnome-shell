@@ -19,17 +19,20 @@ const WIDGETBOX_PADDING = 2;
 const ANIMATION_TIME = 0.5;
 const POP_IN_LAG = 250; /* milliseconds */
 
-function WidgetBox(widget) {
-    this._init(widget);
+function WidgetBox(widget, expanded) {
+    this._init(widget, expanded);
 }
 
 WidgetBox.prototype = {
-    _init: function(widget) {
-	if (widget instanceof Widget.Widget)
+    _init: function(widget, expanded) {
+        this.state = expanded ? Widget.STATE_EXPANDED : Widget.STATE_COLLAPSED;
+
+	if (widget instanceof Widget.Widget) {
 	    this._widget = widget;
-	else {
+            this._widget.state = this.state;
+	} else {
 	    let ctor = this._ctorFromName(widget);
-            this._widget = new ctor();
+            this._widget = new ctor(this.state);
 	}
 
         if (!this._widget.actor)
@@ -37,7 +40,7 @@ WidgetBox.prototype = {
         else if (!this._widget.title && !this._widget.collapsedActor)
             throw new Error("widget has neither title nor collapsedActor");
 
-        this.state = this._widget.state = Widget.STATE_EXPANDED;
+        this.state = expanded ? Widget.STATE_EXPANDED : Widget.STATE_COLLAPSED;
 
         // The structure of a WidgetBox:
         //
@@ -128,7 +131,6 @@ WidgetBox.prototype = {
             this._activationHandler = this._widget.connect('activated',
                                                            Lang.bind(this, this._activationHandler));
         }
-        this._cgroup.hide();
 
         this._egroup = new Clutter.Group({ clip_to_allocation: true });
         this._hbox.append(this._egroup, Big.BoxPackFlags.NONE);
@@ -148,6 +150,11 @@ WidgetBox.prototype = {
         }
 
         this._ebox.append(this._widget.actor, Big.BoxPackFlags.NONE);
+
+        if (expanded)
+            this._setWidgetExpanded();
+        else
+            this._setWidgetCollapsed();
     },
 
     // Given a name like "imports.ui.widget.ClockWidget", turn that
@@ -184,15 +191,24 @@ WidgetBox.prototype = {
         this.state = this._widget.state = Widget.STATE_EXPANDING;
     },
 
-    _expandPart1Complete: function() {
+    _setWidgetExpanded: function() {
         this._cgroup.hide();
-        this._cbox.x = 0;
+        this._egroup.show();
 
         if (this._singleActor) {
-            log(this._widget.actor);
             this._widget.actor.unparent();
             this._ebox.append(this._widget.actor, Big.BoxPackFlags.NONE);
         }
+
+        if (this._htitle) {
+            this._htitle.show();
+            this._hline.show();
+        }
+    },
+
+    _expandPart1Complete: function() {
+        this._cbox.x = 0;
+        this._setWidgetExpanded();
 
         if (this._widget.expand) {
             try {
@@ -202,11 +218,6 @@ WidgetBox.prototype = {
             }
         }
 
-        this._egroup.show();
-        if (this._htitle) {
-            this._htitle.show();
-            this._hline.show();
-        }
         this._ebox.x = -Widget.EXPANDED_WIDTH;
         Tweener.addTween(this._ebox, { x: 0,
                                        time: ANIMATION_TIME / 2,
@@ -228,19 +239,27 @@ WidgetBox.prototype = {
         this.state = this._widget.state = Widget.STATE_COLLAPSING;
     },
 
-    _collapsePart1Complete: function() {
+    _setWidgetCollapsed: function() {
         this._egroup.hide();
-        this._ebox.x = 0;
+        this._cgroup.show();
+
+        if (this._singleActor) {
+            this._widget.actor.unparent();
+            this._cbox.append(this._widget.actor, Big.BoxPackFlags.NONE);
+        }
+
         if (this._htitle) {
             this._htitle.hide();
             this._hline.hide();
         }
 
-        if (this._singleActor) {
-            log(this._widget.actor);
-            this._widget.actor.unparent();
-            this._cbox.append(this._widget.actor, Big.BoxPackFlags.NONE);
-        }
+        if (this._vtitle)
+            this._cbox.height = this._ebox.height;
+    },
+
+    _collapsePart1Complete: function() {
+        this._ebox.x = 0;
+        this._setWidgetCollapsed();
 
         if (this._widget.collapse) {
             try {
@@ -250,10 +269,7 @@ WidgetBox.prototype = {
             }
         }
 
-        this._cgroup.show();
         this._cbox.x = -Widget.COLLAPSED_WIDTH;
-        if (this._vtitle)
-            this._cbox.height = this._ebox.height;
         Tweener.addTween(this._cbox, { x: 0,
                                        time: ANIMATION_TIME / 2,
                                        transition: "easeOutQuad",

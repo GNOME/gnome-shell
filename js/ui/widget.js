@@ -31,12 +31,22 @@ function Widget() {
 Widget.prototype = {
     // _init():
     //
-    // Your widget constructor. Receives no arguments. Must define a
-    // field named "actor" containing the Clutter.Actor to show in
-    // expanded mode. This actor will be clipped to
-    // Widget.EXPANDED_WIDTH. Most widgets will also define a field
-    // named "title" containing the title string to show above the
-    // widget in the sidebar.
+    // Your widget constructor. Your constructor function should look
+    // like:
+    //
+    //     function MyWidgetType() {
+    //         this._init.apply(this, arguments);
+    //     }
+    //
+    // and your _init method should start by doing:
+    //
+    //     Widget.Widget.prototype._init.apply(this, arguments);
+    //
+    // The _init method must define a field named "actor" containing
+    // the Clutter.Actor to show in expanded mode. This actor will be
+    // clipped to Widget.EXPANDED_WIDTH. Most widgets will also define
+    // a field named "title" containing the title string to show above
+    // the widget in the sidebar.
     //
     // If you want to have a separate collapsed view, you can define a
     // field "collapsedActor" containing the Clutter.Actor to show in
@@ -51,6 +61,9 @@ Widget.prototype = {
     // the sidebar is collapsed, the widget's expanded view will pop
     // out of the sidebar until either the cursor moves out of it,
     // or else the widget calls this.activated() on itself.
+    _init: function (initialState) {
+        this.state = initialState;
+    },
 
     // destroy():
     //
@@ -81,23 +94,22 @@ Widget.prototype = {
     // state:
     //
     // A field set on your widget by the sidebar. Will contain one of
-    // the Widget.STATE_* values. (Eg, Widget.STATE_EXPANDED). Note
-    // that this will not be set until *after* _init() is called, so
-    // you cannot rely on it being set at that point. The widget will
-    // always initially be in STATE_EXPANDED.
+    // the Widget.STATE_* values. (Eg, Widget.STATE_EXPANDED).
 };
 
 Signals.addSignalMethods(Widget.prototype);
 
 
 function ClockWidget() {
-  this._init();
+    this._init.apply(this, arguments);
 }
 
 ClockWidget.prototype = {
     __proto__ : Widget.prototype,
 
     _init: function() {
+        Widget.prototype._init.apply(this, arguments);
+
         this.actor = new Clutter.Text({ font_name: "Sans Bold 16px",
                                         text: "",
                                         // Give an explicit height to ensure
@@ -168,7 +180,7 @@ const ITEM_NAME_COLOR = new Clutter.Color();
 ITEM_NAME_COLOR.from_pixel(0x000000ff);
 
 function LauncherWidget() {
-    this._init();
+    this._init.apply(this, arguments);
 }
 
 LauncherWidget.prototype = {
@@ -273,13 +285,15 @@ LauncherWidget.prototype = {
 };
 
 function AppsWidget() {
-    this._init();
+    this._init.apply(this, arguments);
 }
 
 AppsWidget.prototype = {
     __proto__ : LauncherWidget.prototype,
 
     _init : function() {
+        Widget.prototype._init.apply(this, arguments);
+
         this.title = "Applications";
         this.actor = new Big.Box({ spacing: 2 });
         this.collapsedActor = new Big.Box({ spacing: 2});
@@ -291,13 +305,15 @@ AppsWidget.prototype = {
 };
 
 function DocsWidget() {
-    this._init();
+    this._init.apply(this, arguments);
 }
 
 DocsWidget.prototype = {
     __proto__ : LauncherWidget.prototype,
 
     _init : function() {
+        Widget.prototype._init.apply(this, arguments);
+
         this.title = "Recent Docs";
         this.actor = new Big.Box({ spacing: 2 });
 
