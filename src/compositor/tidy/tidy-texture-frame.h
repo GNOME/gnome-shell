@@ -76,6 +76,9 @@ void            tidy_texture_frame_get_frame          (TidyTextureFrame *frame,
                                                        gfloat           *bottom,
                                                        gfloat           *left);
 
+void            tidy_texture_frame_set_needs_paint    (TidyTextureFrame *frame,
+                                                       gboolean          needs_paint);
+
 G_END_DECLS
 
 #endif /* _HAVE_TIDY_TEXTURE_FRAME_H */

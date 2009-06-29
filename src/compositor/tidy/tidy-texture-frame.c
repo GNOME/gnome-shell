@@ -64,6 +64,8 @@ struct _TidyTextureFramePrivate
   gfloat bottom;
 
   CoglHandle material;
+
+  guint needs_paint : 1;
 };
 
 static void
@@ -173,6 +175,9 @@ tidy_texture_frame_paint (ClutterActor *self)
 
   /* no need to paint stuff if we don't have a texture */
   if (G_UNLIKELY (priv->parent_texture == NULL))
+    return;
+
+  if (!priv->needs_paint)
     return;
 
   /* parent texture may have been hidden, so need to make sure it gets
@@ -607,4 +612,30 @@ tidy_texture_frame_get_frame (TidyTextureFrame *frame,
 
   if (left)
     *left = priv->left;
+}
+
+/**
+ * tidy_texture_frame_set_needs_paint:
+ * @frame: a #TidyTextureframe
+ * @needs_paint: if %FALSE, the paint will be skipped
+ *
+ * Provides a hint to the texture frame that it is totally obscured
+ * and doesn't need to be painted. This would typically be called
+ * by a parent container if it detects the condition prior to
+ * painting its children and then unset afterwards.
+ *
+ * Since it is not supposed to have any effect on display, it does
+ * not queue a repaint.
+ */
+void
+tidy_texture_frame_set_needs_paint (TidyTextureFrame *frame,
+				    gboolean          needs_paint)
+{
+  TidyTextureFramePrivate *priv;
+
+  g_return_if_fail (TIDY_IS_TEXTURE_FRAME (frame));
+
+  priv = frame->priv;
+
+  priv->needs_paint = needs_paint;
 }

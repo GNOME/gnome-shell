@@ -31,6 +31,8 @@ mutter_SOURCES= 				\
 	compositor/mutter-shaped-texture.c	\
 	compositor/mutter-window.c		\
 	compositor/mutter-window-private.h	\
+	compositor/mutter-window-group.c	\
+	compositor/mutter-window-group.h	\
 	compositor/shadow.c			\
 	compositor/shadow.h			\
 	compositor/mutter-shaped-texture.h	\

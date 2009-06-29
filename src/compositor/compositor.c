@@ -12,6 +12,7 @@
 #include "xprops.h"
 #include "prefs.h"
 #include "mutter-window-private.h"
+#include "mutter-window-group.h"
 #include "../core/window-private.h" /* to check window->hidden */
 #include "../core/display-private.h" /* for meta_display_lookup_x_window() */
 #include <X11/extensions/shape.h>
@@ -420,7 +421,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   XSelectInput (xdisplay, xwin, event_mask);
 
-  info->window_group = clutter_group_new ();
+  info->window_group = mutter_window_group_new (screen);
   info->overlay_group = clutter_group_new ();
   info->hidden_group = clutter_group_new ();
 

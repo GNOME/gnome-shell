@@ -31,6 +31,8 @@
 #include <clutter/glx/clutter-glx.h>
 #endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
+#include <gdk/gdkregion.h>
+
 G_BEGIN_DECLS
 
 #define MUTTER_TYPE_SHAPED_TEXTURE			    \
@@ -89,6 +91,10 @@ void mutter_shaped_texture_add_rectangle (MutterShapedTexture *stex,
 void mutter_shaped_texture_add_rectangles (MutterShapedTexture *stex,
 					   size_t num_rects,
 					   const XRectangle *rects);
+
+/* Assumes ownership of clip_region */
+void mutter_shaped_texture_set_clip_region (MutterShapedTexture *stex,
+					    GdkRegion           *clip_region);
 
 G_END_DECLS
 

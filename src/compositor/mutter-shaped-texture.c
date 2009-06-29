@@ -57,9 +57,12 @@ struct _MutterShapedTexturePrivate
 {
   CoglHandle mask_texture;
   CoglHandle material;
+  CoglHandle material_unshaped;
 #if 1 /* see workaround comment in mutter_shaped_texture_paint */
   CoglHandle material_workaround;
 #endif
+
+  GdkRegion *clip_region;
 
   guint mask_width, mask_height;
 
@@ -106,6 +109,11 @@ mutter_shaped_texture_dispose (GObject *object)
       cogl_material_unref (priv->material);
       priv->material = COGL_INVALID_HANDLE;
     }
+  if (priv->material_unshaped != COGL_INVALID_HANDLE)
+    {
+      cogl_material_unref (priv->material_unshaped);
+      priv->material_unshaped = COGL_INVALID_HANDLE;
+    }
 #if 1 /* see comment in mutter_shaped_texture_paint */
   if (priv->material_workaround != COGL_INVALID_HANDLE)
     {
@@ -113,6 +121,8 @@ mutter_shaped_texture_dispose (GObject *object)
       priv->material_workaround = COGL_INVALID_HANDLE;
     }
 #endif
+
+  mutter_shaped_texture_set_clip_region (self, NULL);
 
   G_OBJECT_CLASS (mutter_shaped_texture_parent_class)->dispose (object);
 }
@@ -253,6 +263,9 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   guint depth;
 #endif
 
+  if (priv->clip_region && gdk_region_empty (priv->clip_region))
+    return;
+
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
     clutter_actor_realize (CLUTTER_ACTOR (stex));
 
@@ -264,61 +277,65 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   if (tex_width == 0 || tex_width == 0) /* no contents yet */
     return;
 
-  /* If there are no rectangles fallback to the regular paint
-     method */
-  if (priv->rectangles->len < 1)
-    {
-      CLUTTER_ACTOR_CLASS (mutter_shaped_texture_parent_class)
-        ->paint (actor);
-      return;
-    }
-
   if (paint_tex == COGL_INVALID_HANDLE)
     return;
 
-  mutter_shaped_texture_ensure_mask (stex);
-
-  if (priv->material == COGL_INVALID_HANDLE)
+  if (priv->rectangles->len < 1)
     {
-      priv->material = cogl_material_new ();
+      /* If there are no rectangles use a single-layer texture */
 
-      cogl_material_set_layer_combine (priv->material, 1,
-				       "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
-				       NULL);
+      if (priv->material_unshaped == COGL_INVALID_HANDLE)
+	priv->material_unshaped = cogl_material_new ();
+
+      material = priv->material_unshaped;
     }
-  material = priv->material;
-
-#if 1
-  /* This was added as a workaround. It seems that with the intel
-   * drivers when multi-texturing using an RGB TFP texture, the
-   * texture is actually setup internally as an RGBA texture, where
-   * the alpha channel is mostly 0.0 so you only see a shimmer of the
-   * window. This workaround forcibly defines the alpha channel as
-   * 1.0. Maybe there is some clutter/cogl state that is interacting
-   * with this that is being overlooked, but for now this seems to
-   * work. */
-  g_object_get (stex, "pixmap-depth", &depth, NULL);
-  if (depth == 24)
+  else
     {
-      if (priv->material_workaround == COGL_INVALID_HANDLE)
-        {
-          material = priv->material_workaround = cogl_material_new ();
+      mutter_shaped_texture_ensure_mask (stex);
 
-	  cogl_material_set_layer_combine (material, 0,
-					   "RGB = MODULATE (TEXTURE, PREVIOUS)"
-					   "A = REPLACE (PREVIOUS)",
-					   NULL);
-	  cogl_material_set_layer_combine (material, 1,
+      if (priv->material == COGL_INVALID_HANDLE)
+	{
+	  priv->material = cogl_material_new ();
+
+	  cogl_material_set_layer_combine (priv->material, 1,
 					   "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
 					   NULL);
-        }
+	}
+      material = priv->material;
 
-      material = priv->material_workaround;
-    }
+#if 1
+      /* This was added as a workaround. It seems that with the intel
+       * drivers when multi-texturing using an RGB TFP texture, the
+       * texture is actually setup internally as an RGBA texture, where
+       * the alpha channel is mostly 0.0 so you only see a shimmer of the
+       * window. This workaround forcibly defines the alpha channel as
+       * 1.0. Maybe there is some clutter/cogl state that is interacting
+       * with this that is being overlooked, but for now this seems to
+       * work. */
+      g_object_get (stex, "pixmap-depth", &depth, NULL);
+      if (depth == 24)
+	{
+	  if (priv->material_workaround == COGL_INVALID_HANDLE)
+	    {
+	      material = priv->material_workaround = cogl_material_new ();
+
+	      cogl_material_set_layer_combine (material, 0,
+					       "RGB = MODULATE (TEXTURE, PREVIOUS)"
+					       "A = REPLACE (PREVIOUS)",
+					       NULL);
+	      cogl_material_set_layer_combine (material, 1,
+					       "RGBA = MODULATE (PREVIOUS, TEXTURE[A])",
+					       NULL);
+	    }
+
+	  material = priv->material_workaround;
+	}
 #endif
 
+      cogl_material_set_layer (material, 1, priv->mask_texture);
+    }
+
   cogl_material_set_layer (material, 0, paint_tex);
-  cogl_material_set_layer (material, 1, priv->mask_texture);
 
   {
     CoglColor color;
@@ -330,9 +347,51 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   cogl_set_source (material);
 
   clutter_actor_get_allocation_box (actor, &alloc);
+
+  if (priv->clip_region)
+    {
+      GdkRectangle *rects;
+      int n_rects;
+      int i;
+
+      /* Limit to how many separate rectangles we'll draw; beyond this just
+       * fall back and draw the whole thing */
+#     define MAX_RECTS 16
+
+      /* Would be nice to be able to check the number of rects first */
+      gdk_region_get_rectangles (priv->clip_region, &rects, &n_rects);
+      if (n_rects > MAX_RECTS)
+	{
+	  g_free (rects);
+	  /* Fall through to following code */
+	}
+      else
+	{
+	  float coords[MAX_RECTS * 8];
+	  for (i = 0; i < n_rects; i++)
+	    {
+	      GdkRectangle *rect = &rects[i];
+
+	      coords[i * 8 + 0] = rect->x;
+	      coords[i * 8 + 1] = rect->y;
+	      coords[i * 8 + 2] = rect->x + rect->width;
+	      coords[i * 8 + 3] = rect->y + rect->height;
+	      coords[i * 8 + 4] = rect->x / (alloc.x2 - alloc.x1);
+	      coords[i * 8 + 5] = rect->y / (alloc.y2 - alloc.y1);
+	      coords[i * 8 + 6] = (rect->x + rect->width) / (alloc.x2 - alloc.x1);
+	      coords[i * 8 + 7] = (rect->y + rect->height) / (alloc.y2 - alloc.y1);
+	    }
+
+	  g_free (rects);
+
+	  cogl_rectangles_with_texture_coords (coords, n_rects);
+	  return;
+	}
+    }
+
   cogl_rectangle (0, 0,
-                  alloc.x2 - alloc.x1,
-                  alloc.y2 - alloc.y1);
+		  alloc.x2 - alloc.x1,
+		  alloc.y2 - alloc.y1);
 }
 
 static void
@@ -425,4 +484,38 @@ mutter_shaped_texture_add_rectangles (MutterShapedTexture *stex,
 
   mutter_shaped_texture_dirty_mask (stex);
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
+}
+
+/**
+ * mutter_shaped_texture_set_clip_region:
+ * @frame: a #TidyTextureframe
+ * @clip_region: (transfer full): the region of the texture that
+ *   is visible and should be painted. OWNERSHIP IS ASSUMED BY
+ *   THE FUNCTION (for efficiency to avoid a copy.)
+ *
+ * Provides a hint to the texture about what areas of the texture
+ * are not completely obscured and thus need to be painted. This
+ * is an optimization and is not supposed to have any effect on
+ * the output.
+ *
+ * Typically a parent container will set the clip region before
+ * painting its children, and then unset it afterwards.
+ */
+void
+mutter_shaped_texture_set_clip_region (MutterShapedTexture *stex,
+				       GdkRegion           *clip_region)
+{
+  MutterShapedTexturePrivate *priv;
+
+  g_return_if_fail (MUTTER_IS_SHAPED_TEXTURE (stex));
+
+  priv = stex->priv;
+
+  if (priv->clip_region)
+    {
+      gdk_region_destroy (priv->clip_region);
+      priv->clip_region = NULL;
+    }
+
+  priv->clip_region = clip_region;
 }

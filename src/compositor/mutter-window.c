@@ -1,5 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#define _ISOC99_SOURCE /* for roundf */
+#include <math.h>
+
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
@@ -18,6 +21,7 @@
 #include "mutter-shaped-texture.h"
 #include "mutter-window-private.h"
 #include "shadow.h"
+#include "tidy/tidy-texture-frame.h"
 
 struct _MutterWindowPrivate
 {
@@ -37,6 +41,12 @@ struct _MutterWindowPrivate
   guint8            opacity;
 
   gchar *           desc;
+
+  /* If the window is shaped, a region that matches the shape */
+  GdkRegion        *shape_region;
+  /* A rectangular region with the unshaped extends of the window
+   * texture */
+  GdkRegion        *bounding_region;
 
   /*
    * These need to be counters rather than flags, since more plugins
@@ -91,6 +101,8 @@ static void mutter_window_get_property (GObject      *object,
 static void     mutter_window_detach     (MutterWindow *self);
 static gboolean mutter_window_has_shadow (MutterWindow *self);
 
+static void mutter_window_clear_shape_region    (MutterWindow *self);
+static void mutter_window_clear_bounding_region (MutterWindow *self);
 
 static gboolean is_shaped                (MetaDisplay  *display,
                                           Window        xwindow);
@@ -387,6 +399,9 @@ mutter_window_dispose (GObject *object)
   info     = meta_screen_get_compositor_data (screen);
 
   mutter_window_detach (self);
+
+  mutter_window_clear_shape_region (self);
+  mutter_window_clear_bounding_region (self);
 
   if (priv->damage != None)
     {
@@ -1214,6 +1229,214 @@ mutter_window_unmapped (MutterWindow *self)
 }
 
 static void
+mutter_window_clear_shape_region (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  if (priv->shape_region)
+    {
+      gdk_region_destroy (priv->shape_region);
+      priv->shape_region = NULL;
+    }
+}
+
+static void
+mutter_window_clear_bounding_region (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  if (priv->bounding_region)
+    {
+      gdk_region_destroy (priv->bounding_region);
+      priv->bounding_region = NULL;
+    }
+}
+
+static void
+mutter_window_update_bounding_region (MutterWindow *self,
+                                      int           width,
+                                      int           height)
+{
+  MutterWindowPrivate *priv = self->priv;
+  GdkRectangle bounding_rectangle = { 0, 0, width, height };
+
+  mutter_window_clear_bounding_region (self);
+
+  priv->bounding_region = gdk_region_rectangle (&bounding_rectangle);
+}
+
+static void
+mutter_window_update_shape_region (MutterWindow *self,
+                                   int           n_rects,
+                                   XRectangle   *rects)
+{
+  MutterWindowPrivate *priv = self->priv;
+  int i;
+
+  mutter_window_clear_shape_region (self);
+
+  priv->shape_region = gdk_region_new ();
+  for (i = 0; i < n_rects; i++)
+    {
+      GdkRectangle rect = { rects[i].x, rects[i].y, rects[i].width, rects[i].height };
+      gdk_region_union_with_rect (priv->shape_region, &rect);
+    }
+}
+
+/**
+ * mutter_window_get_obscured_region:
+ * @self: a #MutterWindow
+ *
+ * Gets the region that is completely obscured by the window. Coordinates
+ * are relative to the upper-left of the window.
+ *
+ * Return value: (transfer none): the area obscured by the window,
+ *  %NULL is the same as an empty region.
+ */
+GdkRegion *
+mutter_window_get_obscured_region (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  if (!priv->argb32 && priv->back_pixmap)
+    {
+      if (priv->shaped)
+        return priv->shape_region;
+      else
+        return priv->bounding_region;
+    }
+  else
+    return NULL;
+}
+
+#if 0
+/* Print out a region; useful for debugging */
+static void
+dump_region (GdkRegion *region)
+{
+  GdkRectangle *rects;
+  int n_rects;
+  int i;
+
+  gdk_region_get_rectangles (region, &rects, &n_rects);
+  g_print ("[");
+  for (i = 0; i < n_rects; i++)
+    {
+      g_print ("+%d+%dx%dx%d ",
+               rects[i].x, rects[i].y, rects[i].width, rects[i].height);
+    }
+  g_print ("]\n");
+  g_free (rects);
+}
+#endif
+
+/**
+ * mutter_window_set_visible_region:
+ * @self: a #MutterWindow
+ * @visible_region: the region of the screen that isn't completely
+ *  obscured.
+ *
+ * Provides a hint as to what areas of the window need to be
+ * drawn. Regions not in @visible_region are completely obscured.
+ * This will be set before painting then unset afterwards.
+ */
+void
+mutter_window_set_visible_region (MutterWindow *self,
+                                  GdkRegion    *visible_region)
+{
+  MutterWindowPrivate *priv = self->priv;
+  GdkRegion *texture_clip_region = NULL;
+
+  /* Get the area of the window texture that would be drawn if
+   * we weren't obscured at all
+   */
+  if (priv->shaped)
+    {
+      if (priv->shape_region)
+        texture_clip_region = gdk_region_copy (priv->shape_region);
+    }
+  else
+    {
+      if (priv->bounding_region)
+        texture_clip_region = gdk_region_copy (priv->bounding_region);
+    }
+
+  if (!texture_clip_region)
+    texture_clip_region = gdk_region_new ();
+
+  /* Then intersect that with the visible region to get the region
+   * that we actually need to redraw.
+   */
+  gdk_region_intersect (texture_clip_region, visible_region);
+
+  /* Assumes ownership */
+  mutter_shaped_texture_set_clip_region (MUTTER_SHAPED_TEXTURE (priv->actor),
+                                         texture_clip_region);
+}
+
+/**
+ * mutter_window_set_visible_region_beneath:
+ * @self: a #MutterWindow
+ * @visible_region: the region of the screen that isn't completely
+ *  obscured beneath the main window texture.
+ *
+ * Provides a hint as to what areas need to be drawn *beneath*
+ * the main window texture.  This is the relevant visible region
+ * when drawing the shadow, properly accounting for areas of the
+ * shadow hid by the window itself. This will be set before painting
+ * then unset afterwards.
+ */
+void
+mutter_window_set_visible_region_beneath (MutterWindow *self,
+                                          GdkRegion    *beneath_region)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  if (priv->shadow)
+    {
+      GdkRectangle shadow_rect;
+      ClutterActorBox box;
+      GdkOverlapType overlap;
+
+      /* We could compute an full clip region as we do for the window
+       * texture, but the shadow is relatively cheap to draw, and
+       * a little more complex to clip, so we just catch the case where
+       * the shadow is completely obscured and doesn't need to be drawn
+       * at all.
+       */
+      clutter_actor_get_allocation_box (priv->shadow, &box);
+
+      shadow_rect.x = roundf (box.x1);
+      shadow_rect.y = roundf (box.y1);
+      shadow_rect.width = roundf (box.x2 - box.x1);
+      shadow_rect.height = roundf (box.y2 - box.y1);
+
+      overlap = gdk_region_rect_in (beneath_region, &shadow_rect);
+
+      tidy_texture_frame_set_needs_paint (TIDY_TEXTURE_FRAME (priv->shadow),
+                                          overlap != GDK_OVERLAP_RECTANGLE_OUT);
+    }
+}
+
+/**
+ * mutter_window_reset_visible_regions:
+ * @self: a #MutterWindow
+ *
+ * Unsets the regions set by mutter_window_reset_visible_region() and
+ *mutter_window_reset_visible_region_beneath()
+ */
+void
+mutter_window_reset_visible_regions (MutterWindow *self)
+{
+  MutterWindowPrivate *priv = self->priv;
+
+  mutter_shaped_texture_set_clip_region (MUTTER_SHAPED_TEXTURE (priv->actor),
+                                         NULL);
+  if (priv->shadow)
+    tidy_texture_frame_set_needs_paint (TIDY_TEXTURE_FRAME (priv->shadow), TRUE);
+}
+
+static void
 check_needs_repair (MutterWindow *self)
 {
   MutterWindowPrivate *priv     = self->priv;
@@ -1268,6 +1491,7 @@ check_needs_repair (MutterWindow *self)
       if (priv->back_pixmap == None)
         {
           meta_verbose ("Unable to get named pixmap for %p\n", self);
+          mutter_window_update_bounding_region (self, 0, 0);
           return;
         }
 
@@ -1292,6 +1516,8 @@ check_needs_repair (MutterWindow *self)
 
       if (priv->shadow)
         clutter_actor_set_size (priv->shadow, pxm_width, pxm_height);
+
+      mutter_window_update_bounding_region (self, pxm_width, pxm_height);
 
       full = TRUE;
     }
@@ -1389,6 +1615,7 @@ check_needs_reshape (MutterWindow *self)
     return;
 
   mutter_shaped_texture_clear_rectangles (MUTTER_SHAPED_TEXTURE (priv->actor));
+  mutter_window_clear_shape_region (self);
 
 #ifdef HAVE_SHAPE
   if (priv->shaped)
@@ -1407,6 +1634,8 @@ check_needs_reshape (MutterWindow *self)
         {
           mutter_shaped_texture_add_rectangles (MUTTER_SHAPED_TEXTURE (priv->actor),
                                               n_rects, rects);
+
+          mutter_window_update_shape_region (self, n_rects, rects);
 
           XFree (rects);
         }
