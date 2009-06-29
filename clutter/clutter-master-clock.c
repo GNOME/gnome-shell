@@ -152,6 +152,7 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
       /* When we have sync-to-vblank, we count on that to throttle
        * our frame rate, and otherwise draw frames as fast as possible.
        */
+      CLUTTER_NOTE (SCHEDULER, "vblank available and updated stages");
       return 0;
     }
 
@@ -160,24 +161,33 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
       /* If we weren't previously running, then draw the next frame
        * immediately
        */
+      CLUTTER_NOTE (SCHEDULER, "draw the first frame immediately");
       return 0;
     }
 
-  /* Otherwise, wait at least 1/frame_rate seconds since we last started a frame */
-
+  /* Otherwise, wait at least 1/frame_rate seconds since we last
+   * started a frame
+   */
   g_source_get_current_time (master_clock->source, &now);
 
   next = master_clock->prev_tick;
-  g_time_val_add (&next, 1000000 / clutter_get_default_frame_rate ());
+  g_time_val_add (&next, 1000000L / (gulong) clutter_get_default_frame_rate ());
 
   if (next.tv_sec < now.tv_sec ||
-      (next.tv_sec == now.tv_sec && next.tv_usec < now.tv_usec))
+      (next.tv_sec == now.tv_sec && next.tv_usec <= now.tv_usec))
     {
+      CLUTTER_NOTE (SCHEDULER, "Less than %lu microsecs",
+                    1000000L / (gulong) clutter_get_default_frame_rate ());
+
       return 0;
     }
   else
     {
-      return ((next.tv_sec - now.tv_sec) * 1000 +
+      CLUTTER_NOTE (SCHEDULER, "Waiting %lu msecs",
+                    (next.tv_sec - now.tv_sec) * 1000 +
+                    (next.tv_usec - now.tv_usec) / 1000);
+
+      return ((next.tv_sec  - now.tv_sec)  * 1000 +
               (next.tv_usec - now.tv_usec) / 1000);
     }
 }
