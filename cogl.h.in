@@ -752,6 +752,85 @@ void            cogl_read_pixels (int x,
  */
 void            cogl_flush (void);
 
+/**
+ * cogl_begin_gl:
+ *
+ * We do not advise nor reliably support the interleaving of raw GL drawing and
+ * Cogl drawing functions, but if you insist, cogl_begin_gl() and cogl_end_gl()
+ * provide a simple mechanism that may at least give you a fighting chance of
+ * succeeding.
+ *
+ * Note: this doesn't help you modify the behaviour of Cogl drawing functions
+ * through the modification of GL state; that will never be reliably supported,
+ * but if you are trying to do something like:
+ * <programlisting>
+ * {
+ *    - setup some OpenGL state.
+ *    - draw using OpenGL (e.g. glDrawArrays() )
+ *    - reset modified OpenGL state.
+ *    - continue using Cogl to draw
+ * }
+ * </programlisting>
+ * You should surround blocks of drawing using raw GL with cogl_begin_gl()
+ * and cogl_end_gl():
+ * <programlisting>
+ * {
+ *    cogl_begin_gl ();
+ *    - setup some OpenGL state.
+ *    - draw using OpenGL (e.g. glDrawArrays() )
+ *    - reset modified OpenGL state.
+ *    cogl_end_gl ();
+ *    - continue using Cogl to draw
+ * }
+ * </programlisting>
+ *
+ * Don't ever try and do:
+ * <programlisting>
+ * {
+ *    - setup some OpenGL state.
+ *    - use Cogl to draw
+ *    - reset modified OpenGL state.
+ * }
+ * </programlisting>
+ * When the internals of Cogl evolves, this is very liable to break.
+ *
+ * This function will flush all batched primitives, and subsequently flush
+ * all internal Cogl state to OpenGL as if it were going to draw something
+ * itself.
+ *
+ * The result is that the OpenGL modelview matrix will be setup; the state
+ * corresponding to the current source material will be set up and other world
+ * state such as backface culling, depth and fogging enabledness will be sent
+ * to OpenGL.
+ *
+ * Note: no special material state is flushed, so if you want Cogl to setup a
+ * simplified material state it is your responsibility to set a simple source
+ * material before calling cogl_begin_gl. E.g. by calling
+ * cogl_set_source_color4ub().
+ *
+ * Note: It is your responsibility to restore any OpenGL state that you modify
+ * to how it was after calling cogl_begin_gl() if you don't do this then the
+ * result of further Cogl calls is undefined.
+ *
+ * Note: You can not nest begin/end blocks.
+ *
+ * Again we would like to stress, we do not advise the use of this API and if
+ * possible we would prefer to improve Cogl than have developers require raw
+ * OpenGL.
+ *
+ * Since: 1.0
+ */
+void            cogl_begin_gl (void);
+
+/**
+ * cogl_end_gl:
+ *
+ * This is the counterpart to cogl_begin_gl() used to delimit blocks of drawing
+ * code using raw OpenGL. Please refer to cogl_begin_gl() for full details.
+ *
+ * Since: 1.0
+ */
+void            cogl_end_gl (void);
 
 /*
  * Internal API available only to Clutter.

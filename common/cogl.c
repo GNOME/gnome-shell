@@ -771,3 +771,78 @@ cogl_read_pixels (int x,
     }
 }
 
+void
+cogl_begin_gl (void)
+{
+  CoglMaterialFlushOptions options;
+  gulong enable_flags;
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->in_begin_gl_block)
+    {
+      static gboolean shown = FALSE;
+      if (!shown)
+        g_warning ("You should not nest cogl_begin_gl/cogl_end_gl blocks");
+      shown = TRUE;
+      return;
+    }
+  ctx->in_begin_gl_block = TRUE;
+
+  /* Flush all batched primitives */
+  cogl_flush ();
+
+  /* Flush our clipping state to GL */
+  cogl_clip_ensure ();
+
+  /* Flush any client side matrix state */
+  _cogl_current_matrix_state_flush ();
+
+
+  /* Setup the state for the current material */
+
+  /* We considered flushing a specific, minimal material here to try and
+   * simplify the GL state, but decided to avoid special cases and second
+   * guessing what would be actually helpful.
+   *
+   * A user should instead call cogl_set_source_color4ub() before
+   * cogl_begin_gl() to simplify the state flushed.
+   */
+  options.flags = 0;
+  _cogl_material_flush_gl_state (ctx->source_material, &options);
+
+  /* FIXME: This api is a bit yukky, ideally it will be removed if we
+   * re-work the cogl_enable mechanism */
+  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
+
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
+  cogl_enable (enable_flags);
+
+  /* Disable all client texture coordinate arrays */
+  for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = 0;
+}
+
+void
+cogl_end_gl (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!ctx->in_begin_gl_block)
+    {
+      static gboolean shown = FALSE;
+      if (!shown)
+        g_warning ("cogl_end_gl is being called before cogl_begin_gl");
+      shown = TRUE;
+      return;
+    }
+  ctx->in_begin_gl_block = FALSE;
+}
+

@@ -110,6 +110,8 @@ typedef struct
   guint             quad_indices_short_len;
   CoglHandle        quad_indices_short;
 
+  gboolean          in_begin_gl_block;
+
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
   COGL_PFNGLDELETERENDERBUFFERSEXTPROC             pf_glDeleteRenderbuffersEXT;
