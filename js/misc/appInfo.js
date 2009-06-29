@@ -27,7 +27,7 @@ AppInfo.prototype = {
         this._gicon = this._gAppInfo.get_icon();
     },
 
-    getIcon : function(size) {
+    createIcon : function(size) {
         if (this._gicon)
             return Shell.TextureCache.get_default().load_gicon(this._gicon, size);
         else

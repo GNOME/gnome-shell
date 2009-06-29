@@ -41,8 +41,7 @@ AppDisplayItem.prototype = {
         GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth);
         this._appInfo = appInfo;
 
-        this._setItemInfo(appInfo.name, appInfo.description,
-                          appInfo.getIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE));
+        this._setItemInfo(appInfo.name, appInfo.description);
     },
 
     //// Public method overrides ////
@@ -53,6 +52,11 @@ AppDisplayItem.prototype = {
     },
 
     //// Protected method overrides ////
+
+    // Returns an icon for the item.
+    _createIcon : function() {
+        return this._appInfo.createIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
+    },
 
     // Ensures the preview icon is created.
     _ensurePreviewIconCreated : function() {
@@ -447,7 +451,7 @@ WellDisplayItem.prototype = {
 
         let draggable = DND.makeDraggable(this.actor);
 
-        this._icon = appInfo.getIcon(APP_ICON_SIZE);
+        this._icon = appInfo.createIcon(APP_ICON_SIZE);
 
         this.actor.append(this._icon, Big.BoxPackFlags.NONE);
 
@@ -475,8 +479,7 @@ WellDisplayItem.prototype = {
 
     // Draggable interface - FIXME deduplicate with GenericDisplay
     getDragActor: function(stageX, stageY) {
-        this.dragActor = new Clutter.Clone({ source: this._icon });
-        [this.dragActor.width, this.dragActor.height] = this._icon.get_transformed_size();
+        this.dragActor = this.appInfo.createIcon(APP_ICON_SIZE);
 
         // If the user dragged from the icon itself, then position
         // the dragActor over the original icon. Otherwise center it
