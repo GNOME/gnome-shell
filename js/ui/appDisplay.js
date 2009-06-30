@@ -5,15 +5,20 @@ const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const Tidy = imports.gi.Tidy;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
+const Mainloop = imports.mainloop;
 
 const AppInfo = imports.misc.appInfo;
+const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 
 const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
+
+const APP_ICON_SIZE = 48;
 
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
@@ -147,6 +152,7 @@ MenuItem.prototype = {
 }
 Signals.addSignalMethods(MenuItem.prototype);
 
+
 /* This class represents a display containing a collection of application items.
  * The applications are sorted based on their popularity by default, and based on
  * their name if some search filter is applied.
@@ -173,16 +179,15 @@ AppDisplay.prototype = {
         this._appMonitor = Shell.AppMonitor.get_default();
         this._appSystem = Shell.AppSystem.get_default();
         this._appsStale = true;
-        this._appSystem.connect('changed', Lang.bind(this, function(appSys) {
+        this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
             this._appsStale = true;
-            // We still need to determine what events other than search can trigger
-            // a change in the set of applications that are being shown while the
-            // user in in the overlay mode, however let's redisplay just in case.
             this._redisplay(false);
             this._redisplayMenus();
         }));
+        this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
+            this._redisplay(false);
+        }));
         this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
-            this._appsStale = true;
             this._redisplay(false);
         }));
 
@@ -353,7 +358,7 @@ AppDisplay.prototype = {
 
     // Sets the list of the displayed items based on the most used apps.
     _setDefaultList : function() {
-        let matchedInfos = AppInfo.getMostUsedApps(MAX_ITEMS);
+        let matchedInfos = AppInfo.getTopApps(MAX_ITEMS);
         this._matchedItems = matchedInfos.map(function(info) { return info.appId; });
     },
 
@@ -430,3 +435,197 @@ AppDisplay.prototype = {
 };
 
 Signals.addSignalMethods(AppDisplay.prototype);
+
+function WellDisplayItem(appInfo, isFavorite) {
+    this._init(appInfo, isFavorite);
+}
+
+WellDisplayItem.prototype = {
+    _init : function(appInfo, isFavorite) {
+        this.appInfo = appInfo;
+
+        this.isFavorite = isFavorite;
+
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                   width: APP_ICON_SIZE,
+                                   reactive: true });
+        this.actor._delegate = this;
+        this.actor.connect('button-release-event', Lang.bind(this, function (b, e) {
+            this.launch();
+            this.emit('activated');
+        }));
+
+        let draggable = DND.makeDraggable(this.actor);
+
+        this._icon = appInfo.createIcon(APP_ICON_SIZE);
+
+        this.actor.append(this._icon, Big.BoxPackFlags.NONE);
+
+        let count = Shell.AppMonitor.get_default().get_window_count(appInfo.appId);
+
+        this._name = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
+                                        font_name: "Sans 12px",
+                                        ellipsize: Pango.EllipsizeMode.END,
+                                        text: appInfo.name });
+        if (count > 0) {
+            let runningBox = new Big.Box({ /* border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
+                                           border: 1,
+                                           padding: 1 */ });
+            runningBox.append(this._name, Big.BoxPackFlags.EXPAND);
+            this.actor.append(runningBox, Big.BoxPackFlags.NONE);
+        } else {
+            this.actor.append(this._name, Big.BoxPackFlags.NONE);
+        }
+    },
+
+    // Opens an application represented by this display item.
+    launch : function() {
+        this.appInfo.launch();
+    },
+
+    // Draggable interface - FIXME deduplicate with GenericDisplay
+    getDragActor: function(stageX, stageY) {
+        this.dragActor = this.appInfo.createIcon(APP_ICON_SIZE);
+
+        // If the user dragged from the icon itself, then position
+        // the dragActor over the original icon. Otherwise center it
+        // around the pointer
+        let [iconX, iconY] = this._icon.get_transformed_position();
+        let [iconWidth, iconHeight] = this._icon.get_transformed_size();
+        if (stageX > iconX && stageX <= iconX + iconWidth &&
+            stageY > iconY && stageY <= iconY + iconHeight)
+            this.dragActor.set_position(iconX, iconY);
+        else
+            this.dragActor.set_position(stageX - this.dragActor.width / 2, stageY - this.dragActor.height / 2);
+        return this.dragActor;
+    },
+
+    // Returns the original icon that is being used as a source for the cloned texture
+    // that represents the item as it is being dragged.
+    getDragActorSource: function() {
+        return this._icon;
+    }
+};
+
+Signals.addSignalMethods(WellDisplayItem.prototype);
+
+function WellArea(width, isFavorite) {
+    this._init(width, isFavorite);
+}
+
+WellArea.prototype = {
+    _init : function(width, isFavorite) {
+        this.isFavorite = isFavorite;
+
+        this.actor = new Tidy.Grid({ width: width });
+        this.actor._delegate = this;
+    },
+
+    redisplay: function (infos) {
+        let children;
+
+        children = this.actor.get_children();
+        children.forEach(Lang.bind(this, function (v) {
+            v.destroy();
+        }));
+
+        for (let i = 0; i < infos.length; i++) {
+            let display = new WellDisplayItem(infos[i], this.isFavorite);
+            display.connect('activated', Lang.bind(this, function (display) {
+                this.emit('activated', display);
+            }));
+            this.actor.add_actor(display.actor);
+        };
+    },
+
+    // Draggable target interface
+    acceptDrop : function(source, actor, x, y, time) {
+        let global = Shell.Global.get();
+
+        if (!(source instanceof WellDisplayItem)) {
+            return false;
+        }
+
+        let appSystem = Shell.AppSystem.get_default();
+        let id = source.appInfo.appId;
+        if (source.isFavorite && (!this.isFavorite)) {
+            Mainloop.idle_add(function () {
+                appSystem.remove_favorite(id);
+            });
+        } else if ((!source.isFavorite) && this.isFavorite) {
+            Mainloop.idle_add(function () {
+                appSystem.add_favorite(id);
+            });
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+}
+
+Signals.addSignalMethods(WellArea.prototype);
+
+function AppWell(width) {
+    this._init(width);
+}
+
+AppWell.prototype = {
+    _init : function(width) {
+        this._menus = [];
+        this._menuDisplays = [];
+
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                   width: width });
+
+        this._appSystem = Shell.AppSystem.get_default();
+        this._appMonitor = Shell.AppMonitor.get_default();
+
+        this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
+            this._redisplay();
+        }));
+        this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
+            this._redisplay();
+        }));
+        this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
+            this._redisplay();
+        }));
+
+        this._favoritesArea = new WellArea(width, true);
+        this._favoritesArea.connect('activated', Lang.bind(this, function (a, display) {
+            this.emit('activated');
+        }));
+        this.actor.append(this._favoritesArea.actor, Big.BoxPackFlags.NONE);
+
+        this._runningBox = new Big.Box({ border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
+                                         border: 1,
+                                         corner_radius: 3,
+                                         padding: GenericDisplay.PREVIEW_BOX_PADDING });
+        this._runningArea = new WellArea(width, false);
+        this._runningArea.connect('activated', Lang.bind(this, function (a, display) {
+            this.emit('activated');
+        }));
+        this._runningBox.append(this._runningArea.actor, Big.BoxPackFlags.EXPAND);
+        this.actor.append(this._runningBox, Big.BoxPackFlags.NONE);
+
+        this._redisplay();
+    },
+
+    _redisplay: function() {
+        let arrayToObject = function(a) {
+            let o = {};
+            for (let i = 0; i < a.length; i++)
+                o[a[i]] = 1;
+            return o;
+        };
+        let favorites = AppInfo.getFavorites();
+        let favoriteIds = arrayToObject(favorites.map(function (e) { return e.appId; }));
+        let running = AppInfo.getRunning().filter(function (e) {
+            return !(e.appId in favoriteIds);
+        });
+        this._favoritesArea.redisplay(favorites);
+        this._runningArea.redisplay(running);
+    }
+};
+
+Signals.addSignalMethods(AppWell.prototype);

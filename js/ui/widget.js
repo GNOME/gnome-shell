@@ -284,7 +284,7 @@ AppsWidget.prototype = {
         this.actor = new Big.Box({ spacing: 2 });
         this.collapsedActor = new Big.Box({ spacing: 2});
 
-        let apps = AppInfo.getMostUsedApps(5);
+        let apps = AppInfo.getTopApps(5);
         for (let i = 0; i < apps.length; i++)
             this.addItem(apps[i]);
     }
