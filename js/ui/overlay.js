@@ -222,17 +222,24 @@ Dash.prototype = {
         let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
         let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
 
-        // The whole dash group needs to be reactive so that the clicks are not passed to the transparent background underneath it.
-        // This background is used in the workspaces area when the additional dash panes are being shown. It handles clicks in the
-        // workspaces area by closing these additional dash panes and revealing all workspaces.
-        this.actor = new Clutter.Group({reactive: true});
+        this.actor = new Clutter.Group({});
         this.actor.height = global.screen_height;
 
+        // dashPane, as well as results and details panes need to be reactive so that the clicks in unoccupied places on them
+        // are not passed to the transparent background underneath them. This background is used for the workspaces area when 
+        // the additional dash panes are being shown and it handles clicks by closing the additional panes, so that the user
+        // can interact with the workspaces. However, this behavior is not desirable when the click is actually over a pane.
+        //
+        // We have to make the individual panes reactive instead of making the whole dash actor reactive because the width
+        // of the Group actor ends up including the width of its hidden children, so we were getting a reactive object as
+        // wide as the details pane that was blocking the clicks to the workspaces underneath it even when the details pane
+        // was actually hidden. 
         let dashPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                      x: 0,
                                      y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
                                      width: this._width + SHADOW_WIDTH,
-                                     height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight});
+                                     height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight,
+                                     reactive: true});
 
         let dashBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                            width: this._width,
@@ -378,7 +385,8 @@ Dash.prototype = {
                                           x: this._width,
                                           y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
                                           width: this._resultsWidth + SHADOW_WIDTH,
-                                          height: resultsHeight });
+                                          height: resultsHeight,
+                                          reactive: true });
 
         let resultsBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                               width: this._resultsWidth,
@@ -408,7 +416,8 @@ Dash.prototype = {
                                           x: this._width,
                                           y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
                                           width: this._detailsWidth + SHADOW_WIDTH,
-                                          height: detailsHeight });
+                                          height: detailsHeight,
+                                          reactive: true });
         this._firstSelectAfterOverlayShow = true;
 
         let detailsBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
