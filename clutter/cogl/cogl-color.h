@@ -240,6 +240,22 @@ float     cogl_color_get_alpha       (const CoglColor *color);
  */
 void cogl_color_premultiply (CoglColor *color);
 
+/**
+ * cogl_color_equal:
+ * @v1: a #CoglColor
+ * @v2: a #CoglColor
+ *
+ * Compares two #CoglColor<!-- -->s and checks if they are the same.
+ *
+ * This function can be passed to g_hash_table_new() as the @key_equal_func
+ * parameter, when using #CoglColor<!-- -->s as keys in a #GHashTable.
+ *
+ * Return value: %TRUE if the two colors are the same.
+ *
+ * Since: 1.0
+ */
+gboolean  cogl_color_equal (gconstpointer v1, gconstpointer v2);
+
 G_END_DECLS
 
 #endif /* __COGL_COLOR_H__ */

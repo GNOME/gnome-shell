@@ -138,8 +138,7 @@ _cogl_pango_display_list_add_texture (CoglPangoDisplayList *dl,
       && (node = dl->last_node->data)->type == COGL_PANGO_DISPLAY_LIST_TEXTURE
       && node->d.texture.texture == texture
       && (dl->color_override
-          ? (node->color_override && !memcmp (&dl->color, &node->color,
-                                              sizeof (CoglColor)))
+          ? (node->color_override && cogl_color_equal (&dl->color, &node->color))
           : !node->color_override))
     {
       /* Get rid of the vertex buffer so that it will be recreated */
@@ -244,6 +243,39 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
   cogl_color_premultiply (&premult_color);
   cogl_material_set_color (material, &premult_color);
   cogl_set_source (material);
+
+  /* For small runs of text like icon labels, we can get better performance
+   * going through the Cogl journal since text may then be batched together
+   * with other geometry. */
+  /* FIXME: 100 is a number I plucked out of thin air; it would be good
+   * to determine this empirically! */
+  if (node->d.texture.verts->len < 100)
+    {
+      int i;
+
+      for (i = 0; i < node->d.texture.verts->len; i += 4)
+        {
+          CoglPangoDisplayListVertex *v0 =
+            &g_array_index (node->d.texture.verts,
+                            CoglPangoDisplayListVertex, i);
+          CoglPangoDisplayListVertex *v1 =
+            &g_array_index (node->d.texture.verts,
+                            CoglPangoDisplayListVertex, i + 2);
+          cogl_rectangle_with_texture_coords (v0->x, v0->y, v1->x, v1->y,
+                                              v0->t_x, v0->t_y,
+                                              v1->t_x, v1->t_y);
+        }
+
+      return;
+    }
+
+  /* It's expensive to go through the Cogl journal for large runs
+   * of text in part because the journal transforms the quads in software
+   * to avoid changing the modelview matrix. So for larger runs of text
+   * we load the vertices into a VBO, and this has the added advantage
+   * that if the text doesn't change from frame to frame the VBO can
+   * be re-used avoiding the repeated cost of validating the data and
+   * mapping it into the GPU... */
 
   if (node->d.texture.vertex_buffer == COGL_INVALID_HANDLE)
     {

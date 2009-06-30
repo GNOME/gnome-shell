@@ -36,6 +36,16 @@
 typedef struct _CoglMaterial	      CoglMaterial;
 typedef struct _CoglMaterialLayer     CoglMaterialLayer;
 
+typedef enum _CoglMaterialEqualFlags
+{
+  /* Return FALSE if any component of either material isn't set to its
+   * default value. (Note: if the materials have corresponding flush
+   * options indicating that e.g. the material color won't be flushed then
+   * this will not assert a default color value.) */
+  COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS   = 1L<<0,
+
+} CoglMaterialEqualFlags;
+
 /* XXX: I don't think gtk-doc supports having private enums so these aren't
  * bundled in with CoglMaterialLayerFlags */
 typedef enum _CoglMaterialLayerPrivFlags
@@ -90,22 +100,24 @@ struct _CoglMaterialLayer
 
 typedef enum _CoglMaterialFlags
 {
-  COGL_MATERIAL_FLAG_ENABLE_BLEND	    = 1L<<0,
-  COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING  = 1L<<1,
-  COGL_MATERIAL_FLAG_DEFAULT_COLOR          = 1L<<2,
-  COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL    = 1L<<3,
-  COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC     = 1L<<4,
-  COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC     = 1L<<5
+  COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING  = 1L<<0,
+
+  COGL_MATERIAL_FLAG_DEFAULT_COLOR          = 1L<<1,
+  COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL    = 1L<<2,
+  COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC     = 1L<<3,
+  COGL_MATERIAL_FLAG_ENABLE_BLEND	    = 1L<<4,
+  COGL_MATERIAL_FLAG_DEFAULT_BLEND          = 1L<<5
 } CoglMaterialFlags;
 
 struct _CoglMaterial
 {
   CoglHandleObject _parent;
+  gulong           journal_ref_count;
 
   gulong    flags;
 
   /* If no lighting is enabled; this is the basic material color */
-  GLfloat   unlit[4];
+  GLubyte   unlit[4];
 
   /* Standard OpenGL lighting model attributes */
   GLfloat   ambient[4];
@@ -130,6 +142,7 @@ struct _CoglMaterial
   GLint blend_dst_factor_rgb;
 
   GList	   *layers;
+  guint     n_layers;
 };
 
 /*
@@ -183,39 +196,60 @@ typedef enum _CoglMaterialLayerFlags
 gulong _cogl_material_layer_get_flags (CoglHandle layer_handle);
 
 /*
- * CoglMaterialFlushOption:
- * @COGL_MATERIAL_FLUSH_FALLBACK_MASK: Follow this by a guin32 mask
- *      of the layers that can't be supported with the user supplied texture
- *      and need to be replaced with fallback textures. (1 = fallback, and the
- *      least significant bit = layer 0)
- * @COGL_MATERIAL_FLUSH_DISABLE_MASK: Follow this by a guint32 mask
- *      of the layers that you want to completly disable texturing for
- *      (1 = fallback, and the least significant bit = layer 0)
- * @COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE: Follow this by a GLuint OpenGL texture
- *      name to override the texture used for layer 0 of the material. This is
- *      intended for dealing with sliced textures where you will need to point
- *      to each of the texture slices in turn when drawing your geometry.
- *      Passing a value of 0 is the same as not passing the option at all.
+ * CoglMaterialFlushFlag:
+ * @COGL_MATERIAL_FLUSH_FALLBACK_MASK: The fallback_layers member is set to
+ *      a guint32 mask of the layers that can't be supported with the user
+ *      supplied texture and need to be replaced with fallback textures. (1 =
+ *      fallback, and the least significant bit = layer 0)
+ * @COGL_MATERIAL_FLUSH_DISABLE_MASK: The disable_layers member is set to
+ *      a guint32 mask of the layers that you want to completly disable
+ *      texturing for (1 = fallback, and the least significant bit = layer 0)
+ * @COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE: The layer0_override_texture member is
+ *      set to a GLuint OpenGL texture name to override the texture used for
+ *      layer 0 of the material. This is intended for dealing with sliced
+ *      textures where you will need to point to each of the texture slices in
+ *      turn when drawing your geometry.  Passing a value of 0 is the same as
+ *      not passing the option at all.
+ * @COGL_MATERIAL_FLUSH_SKIP_GL_COLOR: When flushing the GL state for the
+ *      material don't call glColor.
  */
-typedef enum _CoglMaterialFlushOption
+typedef enum _CoglMaterialFlushFlag
 {
-  COGL_MATERIAL_FLUSH_FALLBACK_MASK = 1,
-  COGL_MATERIAL_FLUSH_DISABLE_MASK,
-  COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
-} CoglMaterialFlushOption;
+  COGL_MATERIAL_FLUSH_FALLBACK_MASK     = 1L<<0,
+  COGL_MATERIAL_FLUSH_DISABLE_MASK      = 1L<<1,
+  COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE   = 1L<<2,
+  COGL_MATERIAL_FLUSH_SKIP_GL_COLOR     = 1L<<3
+} CoglMaterialFlushFlag;
 
 /*
- * cogl_material_flush_gl_state:
- * @material: A CoglMaterial object
- * @...: A NULL terminated list of (CoglMaterialFlushOption, data) pairs
+ * CoglMaterialFlushOptions:
  *
- * This function commits the state of the specified CoglMaterial - including
- * the texture state for all the layers - to the OpenGL[ES] driver.
- *
- * Since 1.0
  */
+typedef struct _CoglMaterialFlushOptions
+{
+  CoglMaterialFlushFlag flags;
+
+  guint32               fallback_layers;
+  guint32               disable_layers;
+  GLuint                layer0_override_texture;
+} CoglMaterialFlushOptions;
+
+
+
+void _cogl_material_get_colorubv (CoglHandle  handle,
+                                  guint8     *color);
+
 void _cogl_material_flush_gl_state (CoglHandle material,
-                                    ...) G_GNUC_NULL_TERMINATED;
+                                    CoglMaterialFlushOptions *options);
+
+gboolean _cogl_material_equal (CoglHandle material0_handle,
+                               CoglMaterialFlushOptions *material0_flush_options,
+                               CoglHandle material1_handle,
+                               CoglMaterialFlushOptions *material1_flush_options,
+                               CoglMaterialEqualFlags flags);
+
+CoglHandle _cogl_material_journal_ref (CoglHandle material_handle);
+void _cogl_material_journal_unref (CoglHandle material_handle);
 
 
 #endif /* __COGL_MATERIAL_PRIVATE_H */

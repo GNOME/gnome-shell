@@ -26,6 +26,7 @@
 
 #include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
+#include "cogl-material-private.h"
 
 typedef struct _CoglTexture       CoglTexture;
 typedef struct _CoglTexSliceSpan  CoglTexSliceSpan;
@@ -99,10 +100,13 @@ struct _CoglTexture
  * later flush the journal we aim to batch data, and gl draw calls. */
 typedef struct _CoglJournalEntry
 {
-  CoglHandle     material;
-  gint           n_layers;
-  guint32        fallback_mask;
-  GLuint         layer0_override_texture;
+  CoglHandle               material;
+  int                      n_layers;
+  CoglMaterialFlushOptions flush_options;
+  CoglMatrix               model_view;
+  /* XXX: These entries are pretty big now considering the padding in
+   * CoglMaterialFlushOptions and CoglMatrix, so we might need to optimize this
+   * later. */
 } CoglJournalEntry;
 
 CoglTexture*

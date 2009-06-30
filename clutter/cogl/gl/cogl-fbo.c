@@ -169,6 +169,8 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  _cogl_journal_flush ();
+
   g_assert (ctx->draw_buffer_stack != NULL);
   draw_buffer = ctx->draw_buffer_stack->data;
 

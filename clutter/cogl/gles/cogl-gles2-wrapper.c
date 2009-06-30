@@ -1481,6 +1481,13 @@ cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a)
 }
 
 void
+cogl_wrap_glColor4ub (GLubyte r, GLubyte g, GLubyte b, GLubyte a)
+{
+  glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB,
+                    r/255.0, g/255.0, b/255.0, a/255.0);
+}
+
+void
 cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation)
 {
   /* FIXME */

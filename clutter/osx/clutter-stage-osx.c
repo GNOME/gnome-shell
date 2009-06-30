@@ -128,6 +128,7 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 - (void) drawRect: (NSRect) bounds
 {
   clutter_actor_paint (CLUTTER_ACTOR (self->stage_osx->wrapper));
+  cogl_flush ();
   [[self openGLContext] flushBuffer];
 }
 

@@ -139,6 +139,7 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
 
   /* this will cause the stage implementation to be painted as well */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+  cogl_flush ();
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.

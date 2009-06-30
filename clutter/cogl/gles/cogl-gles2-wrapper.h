@@ -340,6 +340,7 @@ void cogl_wrap_glDisableClientState (GLenum array);
 void cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref);
 
 void cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a);
+void cogl_wrap_glColor4ub (GLubyte r, GLubyte g, GLubyte b, GLubyte a);
 
 void cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation);
 
@@ -393,6 +394,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 #define glDisableClientState         cogl_wrap_glDisableClientState
 #define glAlphaFunc                  cogl_wrap_glAlphaFunc
 #define glColor4f                    cogl_wrap_glColor4f
+#define glColor4ub                   cogl_wrap_glColor4ub
 #define glClipPlanef                 cogl_wrap_glClipPlanef
 #define glGetIntegerv                cogl_wrap_glGetIntegerv
 #define glGetFloatv                  cogl_wrap_glGetFloatv
