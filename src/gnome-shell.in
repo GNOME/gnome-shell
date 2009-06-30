@@ -141,6 +141,10 @@ def start_shell():
         env.update({'GNOME_SHELL_DATADIR' : data_dir,
                     'GI_TYPELIB_PATH'     : typelib_dir})
 
+    jhbuild_gconf_source = os.path.join('@sysconfdir@', 'gconf/2/path.jhbuild')
+    if os.path.exists(jhbuild_gconf_source):
+        env['GCONF_DEFAULT_SOURCE_PATH'] = jhbuild_gconf_source
+
     # Work around Ubuntu xulrunner bug,
     # http://bugzilla.gnome.org/show_bug.cgi?id=573413
     pkgconfig = subprocess.Popen(['pkg-config', '--variable=sdkdir', 'mozilla-js'],

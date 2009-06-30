@@ -14,6 +14,7 @@ gnome-shell: gnome-shell.in
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
 	    -e "s|@libdir[@]|$(libdir)|" \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|" \
+	    -e "s|@sysconfdir[@]|$(sysconfdir)|" \
 	    $< > $@ && chmod a+x $@
 CLEANFILES += gnome-shell
 EXTRA_DIST += gnome-shell.in
