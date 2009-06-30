@@ -39,9 +39,12 @@
 #include <gdmuser/gdm-user-manager.h>
 
 #include "shell-global.h"
+#include "shell-gconf.h"
 
 #define LOCKDOWN_DIR    "/desktop/gnome/lockdown"
 #define LOCKDOWN_KEY    LOCKDOWN_DIR "/disable_user_switching"
+
+#define SIDEBAR_VISIBLE_KEY SHELL_GCONF_DIR "/sidebar/visible"
 
 struct _ShellStatusMenuPrivate {
   GConfClient    *client;
@@ -54,6 +57,7 @@ struct _ShellStatusMenuPrivate {
 
   GtkWidget      *menu;
   GtkWidget      *account_item;
+  GtkWidget      *sidebar_item;
   GtkWidget      *control_panel_item;
   GtkWidget      *lock_screen_item;
   GtkWidget      *login_screen_item;
@@ -314,6 +318,14 @@ on_account_activate (GtkMenuItem   *item,
   spawn_external (status, "gnome-about-me");
 }
 
+static void
+on_sidebar_toggled (GtkCheckMenuItem *item,
+                    ShellStatusMenu  *status)
+{
+  gconf_client_set_bool (status->priv->client, SIDEBAR_VISIBLE_KEY,
+                         gtk_check_menu_item_get_active (item), NULL);
+}
+
 
 static void
 on_quit_session_activate (GtkMenuItem   *item,
@@ -471,6 +483,14 @@ create_sub_menu (ShellStatusMenu *status)
   g_signal_connect (priv->account_item, "activate",
       G_CALLBACK (on_account_activate), status);
   gtk_widget_show (priv->account_item);
+
+  priv->sidebar_item = gtk_check_menu_item_new_with_label (_("Sidebar"));
+  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (priv->sidebar_item),
+      gconf_client_get_bool (priv->client, SIDEBAR_VISIBLE_KEY, NULL));
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), priv->sidebar_item);
+  g_signal_connect (priv->sidebar_item, "toggled",
+      G_CALLBACK (on_sidebar_toggled), status);
+  gtk_widget_show (priv->sidebar_item);
 
   priv->control_panel_item = gtk_image_menu_item_new_with_label (_("System Preferences..."));
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (priv->control_panel_item),
