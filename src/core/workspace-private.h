@@ -73,7 +73,6 @@ void           meta_workspace_remove_window (MetaWorkspace *workspace,
                                              MetaWindow    *window);
 void           meta_workspace_relocate_windows (MetaWorkspace *workspace,
                                                 MetaWorkspace *new_home);
-GList*         meta_workspace_list_windows  (MetaWorkspace *workspace);
 
 void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
 

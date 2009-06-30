@@ -66,6 +66,7 @@ GType meta_workspace_get_type (void);
 
 int  meta_workspace_index (MetaWorkspace *workspace);
 MetaScreen *meta_workspace_get_screen (MetaWorkspace *workspace);
+GList* meta_workspace_list_windows (MetaWorkspace *workspace);
 void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
                                                  MetaRectangle *area);
 void meta_workspace_activate (MetaWorkspace *workspace, guint32 timestamp);
