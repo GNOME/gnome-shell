@@ -183,16 +183,15 @@ AppDisplay.prototype = {
         this._appMonitor = Shell.AppMonitor.get_default();
         this._appSystem = Shell.AppSystem.get_default();
         this._appsStale = true;
-        this._appSystem.connect('changed', Lang.bind(this, function(appSys) {
+        this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
             this._appsStale = true;
-            // We still need to determine what events other than search can trigger
-            // a change in the set of applications that are being shown while the
-            // user in in the overlay mode, however let's redisplay just in case.
             this._redisplay(false);
             this._redisplayMenus();
         }));
+        this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
+            this._redisplay(false);
+        }));
         this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
-            this._appsStale = true;
             this._redisplay(false);
         }));
 
@@ -574,7 +573,10 @@ AppWell.prototype = {
         this._appSystem = Shell.AppSystem.get_default();
         this._appMonitor = Shell.AppMonitor.get_default();
 
-        this._appSystem.connect('changed', Lang.bind(this, function(appSys) {
+        this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
+            this._redisplay();
+        }));
+        this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
             this._redisplay();
         }));
         this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {

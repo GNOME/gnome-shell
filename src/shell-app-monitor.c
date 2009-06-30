@@ -279,7 +279,7 @@ get_appid_for_window (MetaWindow     *window)
 {
   char *wmclass;
   char *with_desktop;
-  char *fullpath;
+  char *result;
   ShellAppSystem *appsys;
 
   wmclass = get_cleaned_wmclass_for_window (window);
@@ -291,10 +291,10 @@ get_appid_for_window (MetaWindow     *window)
   g_free (wmclass);
 
   appsys = shell_app_system_get_default ();
+  result = shell_app_system_lookup_basename (appsys, with_desktop);
+  g_free (with_desktop);
 
-  fullpath = shell_app_system_lookup_basename (appsys, with_desktop);
-
-  return fullpath;
+  return result;
 }
 
 static void

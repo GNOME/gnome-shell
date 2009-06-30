@@ -18,7 +18,8 @@ enum {
 };
 
 enum {
-  CHANGED,
+  INSTALLED_CHANGED,
+  FAVORITES_CHANGED,
   LAST_SIGNAL
 };
 
@@ -74,14 +75,22 @@ static void shell_app_system_class_init(ShellAppSystemClass *klass)
 
   gobject_class->finalize = shell_app_system_finalize;
 
-  signals[CHANGED] =
-    g_signal_new ("changed",
+  signals[INSTALLED_CHANGED] =
+    g_signal_new ("installed-changed",
 		  SHELL_TYPE_APP_SYSTEM,
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellAppSystemClass, changed),
+		  G_STRUCT_OFFSET (ShellAppSystemClass, installed_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  signals[FAVORITES_CHANGED] =
+    g_signal_new ("favorites-changed",
+                  SHELL_TYPE_APP_SYSTEM,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ShellAppSystemClass, favorites_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   g_type_class_add_private (gobject_class, sizeof (ShellAppSystemPrivate));
 }
@@ -254,7 +263,7 @@ on_tree_changed (GMenuTree *monitor, gpointer user_data)
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
 
-  g_signal_emit (self, signals[CHANGED], 0);
+  g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
 
   reread_menus (self);
 }
@@ -284,7 +293,7 @@ reread_favorite_apps (ShellAppSystem *system)
   GConfClient *client = gconf_client_get_default ();
   GConfValue *val;
 
-  val = gconf_client_get (client, "/desktop/gnome/shell/favorite_apps", NULL);
+  val = gconf_client_get (client, SHELL_APP_FAVORITES_KEY, NULL);
 
   if (!(val && val->type == GCONF_VALUE_LIST && gconf_value_get_list_type (val) == GCONF_VALUE_STRING))
     return;
@@ -296,11 +305,14 @@ reread_favorite_apps (ShellAppSystem *system)
 }
 
 void
-on_favorite_apps_changed (GConfClient *client, guint id, GConfEntry *entry, gpointer user_data)
+on_favorite_apps_changed (GConfClient *client,
+                          guint        id,
+                          GConfEntry  *entry,
+                          gpointer     user_data)
 {
   ShellAppSystem *system = SHELL_APP_SYSTEM (user_data);
   reread_favorite_apps (system);
-  g_signal_emit (G_OBJECT (system), signals[CHANGED], 0);
+  g_signal_emit (G_OBJECT (system), signals[FAVORITES_CHANGED], 0);
 }
 
 GType
@@ -392,7 +404,7 @@ shell_app_system_get_default ()
  * Return the list of applications which have been explicitly added to the
  * favorites.
  *
- * Return value: (transfer none) (element-type utf8): List of favorite application ids
+ * Return value: (transfer container) (element-type utf8): List of favorite application ids
  */
 GList *
 shell_app_system_get_favorites (ShellAppSystem *system)
@@ -424,13 +436,16 @@ shell_app_system_add_favorite (ShellAppSystem *system, const char *id)
 {
   GConfClient *client = gconf_client_get_default ();
   GConfValue *val;
+  GList *favorites;
 
   val = gconf_value_new (GCONF_VALUE_LIST);
   gconf_value_set_list_type (val, GCONF_VALUE_STRING);
 
   g_hash_table_insert (system->priv->cached_favorites, g_strdup (id), GUINT_TO_POINTER (1));
 
-  set_gconf_value_string_list (val, g_hash_table_get_keys (system->priv->cached_favorites));
+  favorites = g_hash_table_get_keys (system->priv->cached_favorites);
+  set_gconf_value_string_list (val, favorites);
+  g_list_free (favorites);
 
   gconf_client_set (client, SHELL_APP_FAVORITES_KEY, val, NULL);
 }
@@ -440,6 +455,7 @@ shell_app_system_remove_favorite (ShellAppSystem *system, const char *id)
 {
   GConfClient *client = gconf_client_get_default ();
   GConfValue *val;
+  GList *favorites;
 
   if (!g_hash_table_remove (system->priv->cached_favorites, id))
     return;
@@ -447,18 +463,19 @@ shell_app_system_remove_favorite (ShellAppSystem *system, const char *id)
   val = gconf_value_new (GCONF_VALUE_LIST);
   gconf_value_set_list_type (val, GCONF_VALUE_STRING);
 
-  set_gconf_value_string_list (val, g_hash_table_get_keys (system->priv->cached_favorites));
+  favorites = g_hash_table_get_keys (system->priv->cached_favorites);
+  set_gconf_value_string_list (val, favorites);
+  g_list_free (favorites);
 
   gconf_client_set (client, SHELL_APP_FAVORITES_KEY, val, NULL);
 }
 
-
-static char *
-full_path_for_id (ShellAppSystem      *system,
-                  const char          *target_id,
-                  GMenuTreeDirectory  *root)
+static gboolean
+desktop_id_exists (ShellAppSystem      *system,
+                   const char          *target_id,
+                   GMenuTreeDirectory  *root)
 {
-  char *ret = NULL;
+  gboolean found = FALSE;
   GSList *contents, *iter;
 
   contents = gmenu_tree_directory_get_contents (root);
@@ -467,7 +484,7 @@ full_path_for_id (ShellAppSystem      *system,
     {
       GMenuTreeItem *item = iter->data;
 
-      if (ret != NULL)
+      if (found)
         break;
 
       switch (gmenu_tree_item_get_type (item))
@@ -477,15 +494,13 @@ full_path_for_id (ShellAppSystem      *system,
               GMenuTreeEntry *entry = (GMenuTreeEntry *)item;
               const char *id = gmenu_tree_entry_get_desktop_file_id (entry);
               if (strcmp (id, target_id) == 0)
-                {
-                  ret = g_strdup (gmenu_tree_entry_get_desktop_file_path (entry));
-                }
+                found = TRUE;
             }
             break;
           case GMENU_TREE_ITEM_DIRECTORY:
             {
               GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
-              ret = full_path_for_id (system, target_id, dir);
+              found = desktop_id_exists (system, target_id, dir);
             }
             break;
           default:
@@ -494,33 +509,48 @@ full_path_for_id (ShellAppSystem      *system,
       gmenu_tree_item_unref (item);
     }
 
-  return ret;
+  g_slist_free (contents);
+
+  return found;
 }
 
+/**
+ * shell_app_system_lookup_basename:
+ * @name: Probable application identifier
+ *
+ * Determine whether a valid .desktop file ID corresponding to a given
+ * heuristically determined application identifier
+ * string.
+ */
 char *
 shell_app_system_lookup_basename (ShellAppSystem *system,
-                                  const char *id)
+                                  const char *name)
 {
   GMenuTreeDirectory *root;
-  char *path;
-  char *tmpid;
+  char *result;
 
   root = gmenu_tree_get_directory_from_path (system->priv->apps_tree, "/");
   g_assert (root != NULL);
 
-  path = full_path_for_id (system, id, root);
-  if (path != NULL)
-    return path;
+  if (desktop_id_exists (system, name, root))
+    {
+      result = g_strdup (name);
+      goto out;
+    }
 
-  tmpid = g_strjoin ("", "gnome-", id, NULL);
-  path = full_path_for_id (system, tmpid, root);
-  g_free (tmpid);
-  if (path != NULL)
-    return path;
+  /* These are common "vendor prefixes".  But using
+   * WM_CLASS as a source, we don't get the vendor
+   * prefix.  So try stripping them.
+   */
+  result = g_strjoin ("", "gnome-", name, NULL);
+  if (desktop_id_exists (system, result, root))
+    goto out;
 
-  tmpid = g_strjoin ("", "fedora-", id, NULL);
-  path = full_path_for_id (system, tmpid, root);
-  g_free (tmpid);
+  result = g_strjoin ("", "fedora-", name, NULL);
+  if (desktop_id_exists (system, result, root))
+    goto out;
 
-  return path;
+out:
+  gmenu_tree_item_unref (root);
+  return result;
 }

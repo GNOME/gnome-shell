@@ -16,7 +16,7 @@
       </schema>
 
       <schema>
-        <key>/schemas/desktop/gnome/favorite_apps</key>
+        <key>/schemas/desktop/gnome/shell/favorite_apps</key>
 	<applyto>/desktop/gnome/shell/favorite_apps</applyto>
 	<owner>gnome-shell</owner>
 	<type>list</type>
