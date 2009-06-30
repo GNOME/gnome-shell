@@ -15,7 +15,6 @@
 #include "shell-app-monitor.h"
 #include "shell-app-system.h"
 #include "shell-global.h"
-#include "shell-wm.h"
 
 #include "display.h"
 #include "window.h"
@@ -97,10 +96,10 @@ struct _ShellAppMonitor
   gboolean currently_idle;
   gboolean enable_monitoring;
 
-  /* <char *,guint> */
+  /* <char * appid, guint window_count> */
   GHashTable *running_appids;
 
-  /* <MetaWindow *, char *> */
+  /* <MetaWindow * window, char * appid> */
   GHashTable *window_to_appid;
 
   GHashTable *apps_by_wm_class; /* Seen apps by wm_class */
@@ -240,6 +239,13 @@ get_wmclass_for_window (MetaWindow   *window)
   return g_strdup (wm_class);
 }
 
+/**
+ * get_cleaned_wmclass_for_window:
+ *
+ * A "cleaned" wmclass is the WM_CLASS property of a window,
+ * after some transformations to turn it into a form
+ * somewhat more resilient to changes, such as lowercasing.
+ */
 static char *
 get_cleaned_wmclass_for_window (MetaWindow  *window)
 {
@@ -256,11 +262,18 @@ get_cleaned_wmclass_for_window (MetaWindow  *window)
   cleaned_wmclass = g_utf8_strdown (wmclass, -1);
   g_free (wmclass);
   /* This handles "Fedora Eclipse", probably others */
-  wmclass = g_strdup (g_strdelimit (cleaned_wmclass, " ", '-'));
+  g_strdelimit (cleaned_wmclass, " ", '-');
+  wmclass = g_strdup (cleaned_wmclass);
   g_free (cleaned_wmclass);
   return wmclass;
 }
 
+/**
+ * get_appid_for_window:
+ *
+ * Returns a desktop file ID for an application, or %NULL if
+ * we're unable to determine one.
+ */
 static char *
 get_appid_for_window (MetaWindow     *window)
 {
@@ -289,7 +302,7 @@ track_window (ShellAppMonitor *self,
               MetaWindow      *window)
 {
   char *appid;
-  guint refcount;
+  guint window_count;
 
   appid = get_appid_for_window (window);
   if (!appid)
@@ -297,11 +310,11 @@ track_window (ShellAppMonitor *self,
 
   g_hash_table_insert (self->window_to_appid, window, appid);
 
-  refcount = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
+  window_count = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
 
-  refcount += 1;
-  g_hash_table_insert (self->running_appids, appid, GUINT_TO_POINTER (refcount));
-  if (refcount == 1)
+  window_count += 1;
+  g_hash_table_insert (self->running_appids, g_strdup (appid), GUINT_TO_POINTER (window_count));
+  if (window_count == 1)
     g_signal_emit (self, signals[CHANGED], 0);
 }
 
@@ -322,18 +335,16 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
 {
   ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
   char *appid;
-  guint refcount;
+  guint window_count;
 
-  appid = get_appid_for_window (window);
+  appid = g_hash_table_lookup (self->window_to_appid, window);
   if (!appid)
     return;
 
-  g_hash_table_remove (self->window_to_appid, window);
+  window_count = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
 
-  refcount = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
-
-  refcount -= 1;
-  if (refcount == 0)
+  window_count -= 1;
+  if (window_count == 0)
     {
       g_hash_table_remove (self->running_appids, appid);
       g_free (appid);
@@ -341,21 +352,28 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
     }
   else
     {
-      g_hash_table_insert (self->running_appids, appid, GUINT_TO_POINTER (refcount));
+      g_hash_table_insert (self->running_appids, appid, GUINT_TO_POINTER (window_count));
     }
+  g_hash_table_remove (self->window_to_appid, window);
 }
 
 static void
 load_initial_windows (ShellAppMonitor *monitor)
 {
-  ShellGlobal *global = shell_global_get ();
-  GList *windows = shell_global_get_windows (global);
-  GList *iter;
+  GList *workspaces, *iter;
+  MetaScreen *screen = shell_global_get_screen (shell_global_get ());
+  workspaces = meta_screen_get_workspaces (screen);
 
-  for (iter = windows; iter; iter = iter->next)
+  for (iter = workspaces; iter; iter = iter->next)
     {
-      MetaWindow *window = iter->data;
-      track_window (monitor, window);
+      MetaWorkspace *workspace = iter->data;
+      GList *windows = meta_workspace_list_windows (workspace);
+      GList *window_iter;
+
+      for (window_iter = windows; window_iter; window_iter = window_iter->next)
+        track_window (monitor, (MetaWindow*)window_iter->data);
+
+      g_list_free (windows);
     }
 }
 
@@ -380,6 +398,10 @@ shell_app_monitor_on_n_workspaces_changed (MetaScreen    *screen,
     {
       MetaWorkspace *workspace = iter->data;
 
+      /* This pair of disconnect/connect is idempotent if we were
+       * already connected, while ensuring we get connected for
+       * new workspaces.
+       */
       g_signal_handlers_disconnect_by_func (workspace,
                                             shell_app_monitor_on_window_added,
                                             self);
@@ -397,17 +419,11 @@ shell_app_monitor_on_n_workspaces_changed (MetaScreen    *screen,
 static void
 init_window_monitoring (ShellAppMonitor *self)
 {
-  MetaScreen *screen;
-
-  g_object_get (shell_global_get (),
-                "screen", &screen,
-                NULL);
+  MetaScreen *screen = shell_global_get_screen (shell_global_get ());
 
   g_signal_connect (screen, "notify::n-workspaces",
                     G_CALLBACK (shell_app_monitor_on_n_workspaces_changed), self);
   shell_app_monitor_on_n_workspaces_changed (screen, NULL, self);
-
-  g_object_unref (screen);
 }
 
 static void
@@ -418,6 +434,7 @@ shell_app_monitor_init (ShellAppMonitor *self)
   Display *xdisplay;
   char *path;
   char *shell_config_dir;
+
   /* FIXME: should we create as many monitors as there are GdkScreens? */
   display = gdk_display_get_default();
   xdisplay = GDK_DISPLAY_XDISPLAY (display);
@@ -545,7 +562,7 @@ update_app_info (ShellAppMonitor *monitor)
 {
   char *wm_class;
   ShellGlobal *global;
-  GHashTable *app_active_times = NULL; /* GTime spent per activity */
+  GHashTable *app_active_times = NULL; /* last active time for an application */
   MetaScreen *screen;
   MetaDisplay *display;
   MetaWindow *active;

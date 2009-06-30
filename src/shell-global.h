@@ -48,6 +48,8 @@ ClutterActor *shell_get_event_related(ClutterEvent *event);
 
 ShellGlobal *shell_global_get (void);
 
+MetaScreen *shell_global_get_screen (ShellGlobal  *global);
+
 void shell_global_grab_dbus_service (ShellGlobal *global);
 
 void shell_global_start_task_panel (ShellGlobal *global);
