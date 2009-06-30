@@ -1046,7 +1046,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Load files inside a thread to avoid blocking when "
                            "loading images.",
 			   FALSE,
-			   CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT));
+			   CLUTTER_PARAM_WRITABLE));
 
 
   /**
@@ -1064,7 +1064,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Decode image data files inside a thread to reduce "
                            "blocking when loading images.",
 			   FALSE,
-			   CLUTTER_PARAM_WRITABLE | G_PARAM_CONSTRUCT));
+			   CLUTTER_PARAM_WRITABLE));
 
 
 
