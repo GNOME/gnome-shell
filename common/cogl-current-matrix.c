@@ -320,7 +320,10 @@ _cogl_current_matrix_state_init (void)
   ctx->matrix_mode = COGL_MATRIX_MODELVIEW;
   ctx->modelview_stack = NULL;
 
-  if (ctx->indirect)
+#if 0
+  if (ctx->indirect ||
+      cogl_debug_flags & COGL_DEBUG_FORCE_CLIENT_SIDE_MATRICES)
+#endif
     {
       ctx->modelview_stack =
         _cogl_matrix_stack_new ();

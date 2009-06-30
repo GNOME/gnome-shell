@@ -28,6 +28,7 @@
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-current-matrix.h"
+#include "cogl-material-private.h"
 
 typedef struct
 {
@@ -78,10 +79,13 @@ typedef struct
    * can batch things together. */
   GArray           *journal;
   GArray           *logged_vertices;
+  GLuint            journal_vbo;
+  size_t            journal_vbo_len;
 
   /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;
   gulong            current_material_flags;
+  CoglMaterialFlushOptions current_material_flush_options;
   GArray           *current_layers;
   guint             n_texcoord_arrays_enabled;
 
@@ -105,6 +109,8 @@ typedef struct
   CoglHandle        quad_indices_byte;
   guint             quad_indices_short_len;
   CoglHandle        quad_indices_short;
+
+  gboolean          in_begin_gl_block;
 
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;

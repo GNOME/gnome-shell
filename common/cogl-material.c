@@ -76,14 +76,14 @@ cogl_material_new (void)
 {
   /* Create new - blank - material */
   CoglMaterial *material = g_new0 (CoglMaterial, 1);
-  GLfloat *unlit = material->unlit;
+  GLubyte *unlit = material->unlit;
   GLfloat *ambient = material->ambient;
   GLfloat *diffuse = material->diffuse;
   GLfloat *specular = material->specular;
   GLfloat *emission = material->emission;
 
   /* Use the same defaults as the GL spec... */
-  unlit[0] = 1.0; unlit[1] = 1.0; unlit[2] = 1.0; unlit[3] = 1.0;
+  unlit[0] = 0xff; unlit[1] = 0xff; unlit[2] = 0xff; unlit[3] = 0xff;
   material->flags |= COGL_MATERIAL_FLAG_DEFAULT_COLOR;
 
   /* Use the same defaults as the GL spec... */
@@ -111,9 +111,10 @@ cogl_material_new (void)
 #endif
   material->blend_src_factor_rgb = GL_ONE;
   material->blend_dst_factor_rgb = GL_ONE_MINUS_SRC_ALPHA;
-  material->flags |= COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
+  material->flags |= COGL_MATERIAL_FLAG_DEFAULT_BLEND;
 
   material->layers = NULL;
+  material->n_layers = 0;
 
   return _cogl_material_handle_new (material);
 }
@@ -130,15 +131,24 @@ _cogl_material_free (CoglMaterial *material)
   g_free (material);
 }
 
-static void
-handle_automatic_blend_enable (CoglMaterial *material)
+static gboolean
+_cogl_material_needs_blending_enabled (CoglMaterial *material,
+                                       GLubyte      *override_color)
 {
   GList *tmp;
 
   /* XXX: If we expose manual control over ENABLE_BLEND, we'll add
    * a flag to know when it's user configured, so we don't trash it */
 
-  material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
+  /* XXX: Uncomment this to disable all blending */
+#if 0
+  return;
+#endif
+
+  if ((override_color && override_color[3] != 0xff) ||
+      material->unlit[3] != 0xff)
+    return TRUE;
+
   for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
     {
       CoglMaterialLayer *layer = tmp->data;
@@ -149,11 +159,44 @@ handle_automatic_blend_enable (CoglMaterial *material)
         continue;
 
       if (cogl_texture_get_format (layer->texture) & COGL_A_BIT)
-	material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+	return TRUE;
     }
 
-  if (material->unlit[3] != 1.0)
+  return FALSE;
+}
+
+static void
+handle_automatic_blend_enable (CoglMaterial *material)
+{
+  material->flags &= ~COGL_MATERIAL_FLAG_ENABLE_BLEND;
+
+  if (_cogl_material_needs_blending_enabled (material, NULL))
     material->flags |= COGL_MATERIAL_FLAG_ENABLE_BLEND;
+}
+
+/* If primitives have been logged in the journal referencing the current
+ * state of this material we need to flush the journal before we can
+ * modify it... */
+static void
+_cogl_material_pre_change_notify (CoglMaterial *material,
+                                  gboolean      only_color_change,
+                                  GLubyte      *new_color)
+{
+  /* XXX: We don't usually need to flush the journal just due to color changes
+   * since material colors are logged in the journals vertex buffer. The
+   * exception is when the change in color enables or disables the need for
+   * blending. */
+  if (only_color_change)
+    {
+      gboolean will_need_blending =
+        _cogl_material_needs_blending_enabled (material, new_color);
+      if (will_need_blending ==
+          (material->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND) ? TRUE : FALSE)
+        return;
+    }
+
+  if (material->journal_ref_count)
+    _cogl_journal_flush ();
 }
 
 void
@@ -166,11 +209,20 @@ cogl_material_get_color (CoglHandle  handle,
 
   material = _cogl_material_pointer_from_handle (handle);
 
-  cogl_color_set_from_4f (color,
-                          material->unlit[0],
-                          material->unlit[1],
-                          material->unlit[2],
-                          material->unlit[3]);
+  cogl_color_set_from_4ub (color,
+                           material->unlit[0],
+                           material->unlit[1],
+                           material->unlit[2],
+                           material->unlit[3]);
+}
+
+/* This is used heavily by the cogl journal when logging quads */
+void
+_cogl_material_get_colorubv (CoglHandle  handle,
+                             guint8     *color)
+{
+  CoglMaterial *material = _cogl_material_pointer_from_handle (handle);
+  memcpy (color, material->unlit, 4);
 }
 
 void
@@ -178,26 +230,29 @@ cogl_material_set_color (CoglHandle       handle,
 			 const CoglColor *unlit_color)
 {
   CoglMaterial *material;
-  GLfloat       unlit[4];
+  GLubyte       unlit[4];
 
   g_return_if_fail (cogl_is_material (handle));
 
   material = _cogl_material_pointer_from_handle (handle);
 
-  unlit[0] = cogl_color_get_red_float (unlit_color);
-  unlit[1] = cogl_color_get_green_float (unlit_color);
-  unlit[2] = cogl_color_get_blue_float (unlit_color);
-  unlit[3] = cogl_color_get_alpha_float (unlit_color);
+  unlit[0] = cogl_color_get_red_byte (unlit_color);
+  unlit[1] = cogl_color_get_green_byte (unlit_color);
+  unlit[2] = cogl_color_get_blue_byte (unlit_color);
+  unlit[3] = cogl_color_get_alpha_byte (unlit_color);
   if (memcmp (unlit, material->unlit, sizeof (unlit)) == 0)
     return;
+
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, TRUE, unlit);
 
   memcpy (material->unlit, unlit, sizeof (unlit));
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_COLOR;
-  if (unlit[0] == 1.0 &&
-      unlit[1] == 1.0 &&
-      unlit[2] == 1.0 &&
-      unlit[3] == 1.0)
+  if (unlit[0] == 0xff &&
+      unlit[1] == 0xff &&
+      unlit[2] == 0xff &&
+      unlit[3] == 0xff)
     material->flags |= COGL_MATERIAL_FLAG_DEFAULT_COLOR;
 
   handle_automatic_blend_enable (material);
@@ -255,6 +310,9 @@ cogl_material_set_ambient (CoglHandle handle,
 
   material = _cogl_material_pointer_from_handle (handle);
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   ambient = material->ambient;
   ambient[0] = cogl_color_get_red_float (ambient_color);
   ambient[1] = cogl_color_get_green_float (ambient_color);
@@ -291,6 +349,9 @@ cogl_material_set_diffuse (CoglHandle handle,
   g_return_if_fail (cogl_is_material (handle));
 
   material = _cogl_material_pointer_from_handle (handle);
+
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
 
   diffuse = material->diffuse;
   diffuse[0] = cogl_color_get_red_float (diffuse_color);
@@ -337,6 +398,9 @@ cogl_material_set_specular (CoglHandle handle,
 
   material = _cogl_material_pointer_from_handle (handle);
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   specular = material->specular;
   specular[0] = cogl_color_get_red_float (specular_color);
   specular[1] = cogl_color_get_green_float (specular_color);
@@ -372,6 +436,9 @@ cogl_material_set_shininess (CoglHandle handle,
 
   material = _cogl_material_pointer_from_handle (handle);
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   material->shininess = (GLfloat)shininess * 128.0;
 
   material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL;
@@ -405,6 +472,9 @@ cogl_material_set_emission (CoglHandle handle,
 
   material = _cogl_material_pointer_from_handle (handle);
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   emission = material->emission;
   emission[0] = cogl_color_get_red_float (emission_color);
   emission[1] = cogl_color_get_green_float (emission_color);
@@ -424,6 +494,10 @@ cogl_material_set_alpha_test_function (CoglHandle handle,
   g_return_if_fail (cogl_is_material (handle));
 
   material = _cogl_material_pointer_from_handle (handle);
+
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   material->alpha_func = alpha_func;
   material->alpha_func_reference = (GLfloat)alpha_reference;
 
@@ -571,6 +645,9 @@ cogl_material_set_blend (CoglHandle handle,
       a = &statements[1];
     }
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
 #ifndef HAVE_COGL_GLES
   setup_blend_state (rgb,
                      &material->blend_equation_rgb,
@@ -587,7 +664,7 @@ cogl_material_set_blend (CoglHandle handle,
                      &material->blend_dst_factor_rgb);
 #endif
 
-  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
+  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND;
 
   return TRUE;
 }
@@ -604,13 +681,16 @@ cogl_material_set_blend_constant (CoglHandle handle,
 
   material = _cogl_material_pointer_from_handle (handle);
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   constant = material->blend_constant;
   constant[0] = cogl_color_get_red_float (constant_color);
   constant[1] = cogl_color_get_green_float (constant_color);
   constant[2] = cogl_color_get_blue_float (constant_color);
   constant[3] = cogl_color_get_alpha_float (constant_color);
 
-  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC;
+  material->flags &= ~COGL_MATERIAL_FLAG_DEFAULT_BLEND;
 #endif
 }
 
@@ -643,6 +723,9 @@ _cogl_material_get_layer (CoglMaterial *material,
 
   if (!create_if_not_found)
     return NULL;
+
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
 
   layer = g_new0 (CoglMaterialLayer, 1);
 
@@ -682,20 +765,23 @@ cogl_material_set_layer (CoglHandle material_handle,
 {
   CoglMaterial	    *material;
   CoglMaterialLayer *layer;
-  int		     n_layers;
 
   g_return_if_fail (cogl_is_material (material_handle));
   g_return_if_fail (texture_handle == COGL_INVALID_HANDLE
                     || cogl_is_texture (texture_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
+
   layer = _cogl_material_get_layer (material_handle, layer_index, TRUE);
 
   if (texture_handle == layer->texture)
     return;
 
-  n_layers = g_list_length (material->layers);
-  if (n_layers >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
+  material->n_layers = g_list_length (material->layers);
+  if (material->n_layers >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
     {
       if (!(material->flags & COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING))
 	{
@@ -856,6 +942,9 @@ cogl_material_set_layer_combine (CoglHandle handle,
       a = &statements[1];
     }
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   setup_texture_combine_state (rgb,
                                &layer->texture_combine_rgb_func,
                                layer->texture_combine_rgb_src,
@@ -886,6 +975,9 @@ cogl_material_set_layer_combine_constant (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
   layer = _cogl_material_get_layer (material, layer_index, TRUE);
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   constant = layer->texture_combine_constant;
   constant[0] = cogl_color_get_red_float (constant_color);
   constant[1] = cogl_color_get_green_float (constant_color);
@@ -909,6 +1001,9 @@ cogl_material_set_layer_matrix (CoglHandle material_handle,
   material = _cogl_material_pointer_from_handle (material_handle);
   layer = _cogl_material_get_layer (material, layer_index, TRUE);
 
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
+
   layer->matrix = *matrix;
 
   layer->flags |= COGL_MATERIAL_LAYER_FLAG_DIRTY;
@@ -931,18 +1026,29 @@ cogl_material_remove_layer (CoglHandle material_handle,
   CoglMaterial	     *material;
   CoglMaterialLayer  *layer;
   GList		     *tmp;
+  gboolean            notified_change = FALSE;
 
   g_return_if_fail (cogl_is_material (material_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
+
   for (tmp = material->layers; tmp != NULL; tmp = tmp->next)
     {
       layer = tmp->data;
       if (layer->index == layer_index)
 	{
 	  CoglHandle handle = (CoglHandle) layer;
+
+          /* possibly flush primitives referencing the current state... */
+          if (!notified_change)
+            {
+              _cogl_material_pre_change_notify (material, FALSE, NULL);
+              notified_change = TRUE;
+            }
+
 	  cogl_handle_unref (handle);
 	  material->layers = g_list_remove (material->layers, layer);
+          material->n_layers--;
 	  break;
 	}
     }
@@ -990,6 +1096,18 @@ cogl_material_get_layers (CoglHandle material_handle)
   material = _cogl_material_pointer_from_handle (material_handle);
 
   return material->layers;
+}
+
+int
+cogl_material_get_n_layers (CoglHandle material_handle)
+{
+  CoglMaterial *material;
+
+  g_return_val_if_fail (cogl_is_material (material_handle), 0);
+
+  material = _cogl_material_pointer_from_handle (material_handle);
+
+  return material->n_layers;
 }
 
 CoglMaterialLayerType
@@ -1318,7 +1436,10 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
                 !gl_layer_info->disabled))
 #endif
             {
+  /* XXX: Debug: Comment this out to disable all texturing: */
+#if 1
               GE (glEnable (gl_target));
+#endif
             }
         }
       else
@@ -1369,18 +1490,30 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 }
 
 static void
-_cogl_material_flush_base_gl_state (CoglMaterial *material)
+_cogl_material_flush_base_gl_state (CoglMaterial *material,
+                                    gboolean skip_gl_color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR
-        && material->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
+  /* XXX:
+   * Currently we only don't update state when the flags indicate that the
+   * current material uses the defaults, and the new material also uses the
+   * defaults, but we could do deeper comparisons of state. */
+
+  if (!skip_gl_color)
     {
-      /* GLES doesn't have glColor4fv... */
-      GE (glColor4f (material->unlit[0],
-                     material->unlit[1],
-                     material->unlit[2],
-                     material->unlit[3]));
+      if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR
+            && material->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR) ||
+          /* Assume if we were previously told to skip the color, then
+           * the current color needs updating... */
+          ctx->current_material_flush_options.flags &
+          COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)
+        {
+          GE (glColor4ub (material->unlit[0],
+                          material->unlit[1],
+                          material->unlit[2],
+                          material->unlit[3]));
+        }
     }
 
   if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL
@@ -1401,8 +1534,8 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material)
       GE (glAlphaFunc (material->alpha_func, material->alpha_func_reference));
     }
 
-  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC
-        && material->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND_FUNC))
+  if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND
+        && material->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
     {
 #if defined (HAVE_COGL_GLES2)
       gboolean have_blend_equation_seperate = TRUE;
@@ -1441,32 +1574,33 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material)
 }
 
 void
-_cogl_material_flush_gl_state (CoglHandle handle, ...)
+_cogl_material_flush_gl_state (CoglHandle handle,
+                               CoglMaterialFlushOptions *options)
 {
-  CoglMaterial           *material;
-  va_list                 ap;
-  CoglMaterialFlushOption option;
-  guint32                 fallback_layers = 0;
-  guint32                 disable_layers = 0;
-  GLuint                  layer0_override_texture = 0;
+  CoglMaterial  *material;
+  guint32        fallback_layers = 0;
+  guint32        disable_layers = 0;
+  GLuint         layer0_override_texture = 0;
+  gboolean       skip_gl_color = FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   material = _cogl_material_pointer_from_handle (handle);
 
-  _cogl_material_flush_base_gl_state (material);
-
-  va_start (ap, handle);
-  while ((option = va_arg (ap, CoglMaterialFlushOption)))
+  if (options)
     {
-      if (option == COGL_MATERIAL_FLUSH_FALLBACK_MASK)
-        fallback_layers = va_arg (ap, guint32);
-      else if (option == COGL_MATERIAL_FLUSH_DISABLE_MASK)
-        disable_layers = va_arg (ap, guint32);
-      else if (option == COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE)
-        layer0_override_texture = va_arg (ap, GLuint);
+      if (options->flags & COGL_MATERIAL_FLUSH_FALLBACK_MASK)
+        fallback_layers = options->fallback_layers;
+      if (options->flags & COGL_MATERIAL_FLUSH_DISABLE_MASK)
+        disable_layers = options->disable_layers;
+      if (options->flags & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE)
+        layer0_override_texture = options->layer0_override_texture;
+      if (options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)
+        skip_gl_color = TRUE;
     }
-  va_end (ap);
+
+  _cogl_material_flush_base_gl_state (material,
+                                      skip_gl_color);
 
   _cogl_material_flush_layers_gl_state (material,
                                         fallback_layers,
@@ -1483,6 +1617,162 @@ _cogl_material_flush_gl_state (CoglHandle handle, ...)
 
   ctx->current_material = handle;
   ctx->current_material_flags = material->flags;
+  if (options)
+    ctx->current_material_flush_options = *options;
+  else
+    memset (&ctx->current_material_flush_options,
+            0, sizeof (CoglMaterialFlushOptions));
+}
+
+gboolean
+_cogl_material_equal (CoglHandle material0_handle,
+                      CoglMaterialFlushOptions *material0_flush_options,
+                      CoglHandle material1_handle,
+                      CoglMaterialFlushOptions *material1_flush_options,
+                      CoglMaterialEqualFlags flags)
+{
+  CoglMaterial  *material0;
+  CoglMaterial  *material1;
+  GList         *l0, *l1;
+
+  if (material0_handle == material1_handle &&
+      material0_flush_options->flags == material1_flush_options->flags)
+    return TRUE;
+
+  if (!(flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS))
+    {
+      g_critical ("FIXME: _cogl_material_equal doesn't yet support "
+                  "deep comparisons of materials");
+      return FALSE;
+    }
+  /* Note: the following code is written with the assumption this
+   * constraint will go away*/
+
+  material0 = _cogl_material_pointer_from_handle (material0_handle);
+  material1 = _cogl_material_pointer_from_handle (material1_handle);
+
+  if (!((material0_flush_options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR &&
+         material1_flush_options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)))
+    {
+      if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR) !=
+          (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
+        return FALSE;
+      else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
+               !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
+        return FALSE;
+      else if (!memcmp (material0->unlit, material1->unlit,
+                        sizeof (material0->unlit)))
+        return FALSE;
+    }
+
+  if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL) !=
+      (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL))
+    return FALSE;
+  else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
+           !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL))
+    return FALSE;
+#if 0
+  else if (!_deep_are_gl_materials_equal ())
+    return FALSE;
+#endif
+
+  if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC) !=
+      (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC))
+    return FALSE;
+  else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
+           !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC))
+    return FALSE;
+#if 0
+  else if (!_deep_are_alpha_funcs_equal ())
+    return FALSE;
+#endif
+
+  if ((material0->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND) !=
+      (material1->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND))
+    return FALSE;
+  /* XXX: potentially blending could be "enabled" but the blend mode
+   * could be equivalent to being disabled. */
+
+  if (material0->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND)
+    {
+      if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND) !=
+          (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
+        return FALSE;
+      else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
+               !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
+        return FALSE;
+#if 0
+      else if (!_deep_is_blend_equal ())
+        return FALSE;
+#endif
+    }
+
+  if (material0_flush_options->fallback_layers !=
+      material1_flush_options->fallback_layers ||
+      material0_flush_options->disable_layers !=
+      material1_flush_options->disable_layers)
+    return FALSE;
+
+  l0 = material0->layers;
+  l1 = material1->layers;
+
+  while (l0 && l1)
+    {
+      CoglMaterialLayer *layer0;
+      CoglMaterialLayer *layer1;
+
+      if ((l0 == NULL && l1 != NULL) ||
+          (l1 == NULL && l0 != NULL))
+        return FALSE;
+
+      layer0 = l0->data;
+      layer1 = l1->data;
+
+      if (layer0->texture != layer1->texture)
+        return FALSE;
+
+      if ((layer0->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
+          (layer1->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+        return FALSE;
+      else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
+               !(layer0->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+        return FALSE;
+#if 0
+      else if (!_deep_are_layer_combines_equal ())
+        return FALSE;
+#endif
+
+      l0 = l0->next;
+      l1 = l1->next;
+    }
+
+  if ((l0 == NULL && l1 != NULL) ||
+      (l1 == NULL && l0 != NULL))
+    return FALSE;
+
+  return TRUE;
+}
+
+/* While a material is referenced by the Cogl journal we can not allow
+ * modifications, so this gives us a mechanism to track journal
+ * references separately */
+CoglHandle
+_cogl_material_journal_ref (CoglHandle material_handle)
+{
+  CoglMaterial *material =
+    material = _cogl_material_pointer_from_handle (material_handle);
+  material->journal_ref_count++;
+  cogl_handle_ref (material_handle);
+  return material_handle;
+}
+
+void
+_cogl_material_journal_unref (CoglHandle material_handle)
+{
+  CoglMaterial *material =
+    material = _cogl_material_pointer_from_handle (material_handle);
+  material->journal_ref_count--;
+  cogl_handle_unref (material_handle);
 }
 
 /* TODO: Should go in cogl.c, but that implies duplication which is also
@@ -1557,6 +1847,9 @@ cogl_material_set_layer_filters (CoglHandle         handle,
 
   material = _cogl_material_pointer_from_handle (handle);
   layer = _cogl_material_get_layer (material, layer_index, TRUE);
+
+  /* possibly flush primitives referencing the current state... */
+  _cogl_material_pre_change_notify (material, FALSE, NULL);
 
   layer->min_filter = min_filter;
   layer->mag_filter = mag_filter;

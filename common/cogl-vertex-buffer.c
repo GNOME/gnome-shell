@@ -137,6 +137,7 @@
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
+#include "cogl-primitives.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
@@ -1500,9 +1501,10 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
   gulong       enable_flags = 0;
   guint        max_texcoord_attrib_unit = 0;
   const GList *layers;
-  guint32      fallback_mask = 0;
-  guint32      disable_mask = ~0;
+  guint32      fallback_layers = 0;
+  guint32      disable_layers = ~0;
   int          i;
+  CoglMaterialFlushOptions options;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1573,7 +1575,7 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 				     pointer));
               if (attribute->texture_unit > max_texcoord_attrib_unit)
                 max_texcoord_attrib_unit = attribute->texture_unit;
-              disable_mask &= ~(1 << attribute->texture_unit);
+              disable_layers &= ~(1 << attribute->texture_unit);
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
@@ -1638,17 +1640,24 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
            * vertices once for each layer, each time with a fiddled texture
            * matrix.
            */
-          fallback_mask |= (1 << i);
+          fallback_layers |= (1 << i);
         }
     }
 
-  _cogl_material_flush_gl_state (ctx->source_material,
-                                 COGL_MATERIAL_FLUSH_FALLBACK_MASK,
-                                 fallback_mask,
-                                 COGL_MATERIAL_FLUSH_DISABLE_MASK,
-                                 disable_mask,
-                                 NULL);
+  for (i = max_texcoord_attrib_unit + 1; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = max_texcoord_attrib_unit + 1;
 
+  options.flags =
+    COGL_MATERIAL_FLUSH_FALLBACK_MASK |
+    COGL_MATERIAL_FLUSH_DISABLE_MASK;
+  options.fallback_layers = fallback_layers;
+  options.disable_layers = disable_layers;
+
+  _cogl_material_flush_gl_state (ctx->source_material, &options);
   enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
 
   if (ctx->enable_backface_culling)
@@ -1729,6 +1738,9 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
 
   if (!cogl_is_vertex_buffer (handle))
     return;
+
+  _cogl_journal_flush ();
+  cogl_clip_ensure ();
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
@@ -1858,6 +1870,9 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
 
   if (!cogl_is_vertex_buffer (handle))
     return;
+
+  _cogl_journal_flush ();
+  cogl_clip_ensure ();
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 

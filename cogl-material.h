@@ -674,6 +674,16 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
 const GList *cogl_material_get_layers (CoglHandle material);
 
 /**
+ * cogl_material_get_n_layers:
+ * @material: A CoglMaterial object
+ *
+ * Returns: The number of layers defined for the given material
+ *
+ * Since: 1.0
+ */
+int cogl_material_get_n_layers (CoglHandle material);
+
+/**
  * CoglMaterialLayerType:
  * @COGL_MATERIAL_LAYER_TYPE_TEXTURE: The layer represents a
  * <link linkend="cogl-Textures">Cogl texture</link>
@@ -713,15 +723,6 @@ CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
  *       likely return COGL_INVALID_HANDLE if you try to get the texture.
  *       Considering this, you can call cogl_material_layer_get_type first,
  *       to check it is of type COGL_MATERIAL_LAYER_TYPE_TEXTURE.
- *
- * Note: It is possible for a layer object of type
- *       COGL_MATERIAL_LAYER_TYPE_TEXTURE to be realized before a texture
- *       object has been associated with the layer. For example this happens
- *       if you setup layer combining for a given layer index before calling
- *       cogl_material_set_layer for that index.
- *
- * Returns: A CoglHandle to the layers texture object or COGL_INVALID_HANDLE
- *          if a texture has not been set yet.
  */
 CoglHandle cogl_material_layer_get_texture (CoglHandle layer_handle);
 

@@ -324,6 +324,10 @@ _cogl_clip_stack_rebuild (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* The current primitive journal does not support tracking changes to the
+   * clip stack...  */
+  _cogl_journal_flush ();
+
   stack = (CoglClipStack *) ctx->clip.stacks->data;
 
   ctx->clip.stack_dirty = FALSE;

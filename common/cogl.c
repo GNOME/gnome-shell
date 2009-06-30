@@ -216,6 +216,9 @@ cogl_get_enable ()
 void
 cogl_set_depth_test_enabled (gboolean setting)
 {
+  /* Currently the journal can't track changes to depth state... */
+  _cogl_journal_flush ();
+
   if (setting)
     {
       glEnable (GL_DEPTH_TEST);
@@ -235,6 +238,9 @@ void
 cogl_set_backface_culling_enabled (gboolean setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Currently the journal can't track changes to backface culling state... */
+  _cogl_journal_flush ();
 
   ctx->enable_backface_culling = setting;
 }
@@ -388,9 +394,15 @@ _cogl_add_stencil_clip (float x_offset,
 			float height,
 			gboolean first)
 {
+  CoglHandle current_source;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+  _cogl_journal_flush ();
+
+  /* temporarily swap in our special stenciling material */
+  current_source = cogl_handle_ref (ctx->source_material);
+  cogl_set_source (ctx->stencil_material);
 
   if (first)
     {
@@ -443,9 +455,17 @@ _cogl_add_stencil_clip (float x_offset,
       _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
     }
 
+  /* make sure our rectangles hit the stencil buffer before we restore
+   * the stencil function / operation */
+  _cogl_journal_flush ();
+
   /* Restore the stencil mode */
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
   GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+
+  /* restore the original source material */
+  cogl_set_source (current_source);
+  cogl_handle_unref (current_source);
 }
 
 void
@@ -554,6 +574,9 @@ cogl_get_features (void)
   if (!ctx->features_cached)
     _cogl_features_init ();
 
+  if (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS)
+    ctx->feature_flags &= ~COGL_FEATURE_VBOS;
+
   return ctx->feature_flags;
 }
 
@@ -630,6 +653,9 @@ cogl_set_fog (const CoglColor *fog_color,
   GLfloat fogColor[4];
   GLenum gl_mode = GL_LINEAR;
 
+  /* The cogl journal doesn't currently track fog state changes */
+  _cogl_journal_flush ();
+
   fogColor[0] = cogl_color_get_red_float (fog_color);
   fogColor[1] = cogl_color_get_green_float (fog_color);
   fogColor[2] = cogl_color_get_blue_float (fog_color);
@@ -667,6 +693,9 @@ cogl_set_fog (const CoglColor *fog_color,
 void
 cogl_disable_fog (void)
 {
+  /* Currently the journal can't track changes to fog state... */
+  _cogl_journal_flush ();
+
   glDisable (GL_FOG);
 }
 
@@ -677,6 +706,12 @@ cogl_flush_gl_state (int flags)
   _cogl_current_matrix_state_flush ();
 }
 #endif
+
+void
+cogl_flush (void)
+{
+  _cogl_journal_flush ();
+}
 
 void
 cogl_read_pixels (int x,
@@ -711,6 +746,10 @@ cogl_read_pixels (int x,
   glPixelStorei (GL_PACK_SKIP_ROWS, 0);
 #endif /* HAVE_COGL_GL */
 
+  /* make sure any batched primitives get emitted to the GL driver before
+   * issuing our read pixels... */
+  cogl_flush ();
+
   glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
   /* TODO: consider using the GL_MESA_pack_invert extension in the future
@@ -730,5 +769,80 @@ cogl_read_pixels (int x,
                   rowstride);
         }
     }
+}
+
+void
+cogl_begin_gl (void)
+{
+  CoglMaterialFlushOptions options;
+  gulong enable_flags;
+  int i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->in_begin_gl_block)
+    {
+      static gboolean shown = FALSE;
+      if (!shown)
+        g_warning ("You should not nest cogl_begin_gl/cogl_end_gl blocks");
+      shown = TRUE;
+      return;
+    }
+  ctx->in_begin_gl_block = TRUE;
+
+  /* Flush all batched primitives */
+  cogl_flush ();
+
+  /* Flush our clipping state to GL */
+  cogl_clip_ensure ();
+
+  /* Flush any client side matrix state */
+  _cogl_current_matrix_state_flush ();
+
+
+  /* Setup the state for the current material */
+
+  /* We considered flushing a specific, minimal material here to try and
+   * simplify the GL state, but decided to avoid special cases and second
+   * guessing what would be actually helpful.
+   *
+   * A user should instead call cogl_set_source_color4ub() before
+   * cogl_begin_gl() to simplify the state flushed.
+   */
+  options.flags = 0;
+  _cogl_material_flush_gl_state (ctx->source_material, &options);
+
+  /* FIXME: This api is a bit yukky, ideally it will be removed if we
+   * re-work the cogl_enable mechanism */
+  enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
+
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
+  cogl_enable (enable_flags);
+
+  /* Disable all client texture coordinate arrays */
+  for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = 0;
+}
+
+void
+cogl_end_gl (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (!ctx->in_begin_gl_block)
+    {
+      static gboolean shown = FALSE;
+      if (!shown)
+        g_warning ("cogl_end_gl is being called before cogl_begin_gl");
+      shown = TRUE;
+      return;
+    }
+  ctx->in_begin_gl_block = FALSE;
 }
 

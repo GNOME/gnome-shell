@@ -76,16 +76,18 @@ _cogl_path_stroke_nodes ()
 {
   guint   path_start = 0;
   gulong  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
+  CoglMaterialFlushOptions options;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
   cogl_enable (enable_flags);
 
-  _cogl_material_flush_gl_state (ctx->source_material,
-                                 COGL_MATERIAL_FLUSH_DISABLE_MASK,
-                                 (guint32)~0, /* disable all texture layers */
-                                 NULL);
+  options.flags = COGL_MATERIAL_FLUSH_DISABLE_MASK;
+  /* disable all texture layers */
+  options.disable_layers = (guint32)~0;
+
+  _cogl_material_flush_gl_state (ctx->source_material, &options);
   _cogl_current_matrix_state_flush ();
 
   while (path_start < ctx->path_nodes->len)
@@ -123,18 +125,25 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                   CoglPathNode *path,
                                   gboolean      merge)
 {
-  guint   path_start = 0;
-  guint   sub_path_num = 0;
-  float   bounds_x;
-  float   bounds_y;
-  float   bounds_w;
-  float   bounds_h;
-  gulong  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
+  guint       path_start = 0;
+  guint       sub_path_num = 0;
+  float       bounds_x;
+  float       bounds_y;
+  float       bounds_w;
+  float       bounds_h;
+  gulong      enable_flags = COGL_ENABLE_VERTEX_ARRAY;
+  CoglHandle  prev_source;
+  int         i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  _cogl_journal_flush ();
+
   /* Just setup a simple material that doesn't use texturing... */
-  _cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+  prev_source = cogl_handle_ref (ctx->source_material);
+  cogl_set_source (ctx->stencil_material);
+
+  _cogl_material_flush_gl_state (ctx->source_material, NULL);
 
   enable_flags |=
     _cogl_material_get_cogl_enable_flags (ctx->source_material);
@@ -161,7 +170,15 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
   GE( glDepthMask (FALSE) );
 
+  for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = 0;
+
   _cogl_current_matrix_state_flush ();
+
   while (path_start < path_size)
     {
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
@@ -175,9 +192,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
              significant bit */
           GE( glStencilMask (merge ? 6 : 3) );
           GE( glStencilOp (GL_ZERO, GL_REPLACE, GL_REPLACE) );
-          cogl_rectangle (bounds_x, bounds_y,
-                          bounds_x + bounds_w, bounds_y + bounds_h);
-
+          glRectf (bounds_x, bounds_y,
+                   bounds_x + bounds_w, bounds_y + bounds_h);
           GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
         }
 
@@ -210,8 +226,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       _cogl_current_matrix_push ();
       _cogl_current_matrix_identity ();
 
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
-      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
+      _cogl_current_matrix_state_flush ();
+
+      glRectf (-1.0, -1.0, 1.0, 1.0);
+      glRectf (-1.0, -1.0, 1.0, 1.0);
 
       _cogl_current_matrix_pop ();
 
@@ -227,6 +245,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
 
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
   GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+
+  /* restore the original material */
+  cogl_set_source (prev_source);
+  cogl_handle_unref (prev_source);
 }
 
 void
