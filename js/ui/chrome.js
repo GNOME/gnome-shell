@@ -126,9 +126,11 @@ Chrome.prototype = {
     //
     // Removes @actor from the chrome layer
     removeActor: function(actor) {
-        this.actor.remove_actor(actor);
-        // We don't have to do anything else; the parent-set handlers
-        // will do the rest.
+        if (actor.get_parent() == this.nonOverlayActor)
+            this.nonOverlayActor.remove_actor(actor);
+        else
+            this.actor.remove_actor(actor);
+        this._untrackActor(actor, true, true);
     },
 
     _findActor: function(actor) {
@@ -170,7 +172,7 @@ Chrome.prototype = {
         this._trackedActors.push(actorData);
 
         actor = actor.get_parent();
-        if (actor != this.actor)
+        if (actor != this.actor && actor != this.nonOverlayActor)
             this._trackActor(actor, false, false);
 
         if (inputRegion || strut)
@@ -198,7 +200,7 @@ Chrome.prototype = {
             actor.disconnect(actorData.parentSetId);
 
             actor = actor.get_parent();
-            if (actor && actor != this.actor)
+            if (actor && actor != this.actor && actor != this.nonOverlayActor)
                 this._untrackActor(actor, false, false);
         }
 
@@ -209,10 +211,10 @@ Chrome.prototype = {
     _actorReparented: function(actor, oldParent) {
         if (this._verifyAncestry(actor, this.actor)) {
             let newParent = actor.get_parent();
-            if (newParent != this.actor)
+            if (newParent != this.actor && newParent != this.nonOverlayActor)
                 this._trackActor(newParent, false, false);
         }
-        if (oldParent != this.actor)
+        if (oldParent != this.actor && oldParent != this.nonOverlayActor)
             this._untrackActor(oldParent, false, false);
     },
 
