@@ -109,7 +109,11 @@ shell_app_system_init (ShellAppSystem *self)
                                                   (GDestroyNotify)g_free,
                                                   NULL);
 
-  priv->apps_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_NONE);
+  /* For now, we want to pick up Evince, Nautilus, etc.  We'll
+   * handle NODISPLAY semantics at a higher level or investigate them
+   * case by case.
+   */
+  priv->apps_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
   priv->settings_tree = gmenu_tree_lookup ("settings.menu", GMENU_TREE_FLAGS_NONE);
 
   gmenu_tree_add_monitor (priv->apps_tree, on_tree_changed, self);
