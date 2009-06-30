@@ -347,12 +347,12 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
   if (window_count == 0)
     {
       g_hash_table_remove (self->running_appids, appid);
-      g_free (appid);
       g_signal_emit (self, signals[CHANGED], 0);
     }
   else
     {
-      g_hash_table_insert (self->running_appids, appid, GUINT_TO_POINTER (window_count));
+      g_hash_table_insert (self->running_appids, g_strdup (appid),
+                           GUINT_TO_POINTER (window_count));
     }
   g_hash_table_remove (self->window_to_appid, window);
 }
