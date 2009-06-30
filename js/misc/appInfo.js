@@ -71,37 +71,41 @@ function getAppInfo(appId) {
     return info;
 }
 
-// getMostUsedApps:
+// getTopApps:
 // @count: maximum number of apps to retrieve
 //
 // Gets a list of #AppInfos for the @count most-frequently-used
-// applications
+// applications, with explicitly-chosen favorites first.
 //
 // Return value: the list of #AppInfo
-function getMostUsedApps(count) {
+function getTopApps(count) {
     let appMonitor = Shell.AppMonitor.get_default();
+
+    let matches = [], alreadyAdded = {};
+
+    let favs = getFavorites();
+    for (let i = 0; i < favs.length && favs.length <= count; i++) {
+        let appId = favs[i].appId;
+
+        if (alreadyAdded[appId])
+            continue;
+        alreadyAdded[appId] = true;
+
+        matches.push(favs[i]);
+    }
 
     // Ask for more apps than we need, since the list of recently used
     // apps might contain an app we don't have a desktop file for
     let apps = appMonitor.get_most_used_apps (0, Math.round(count * 1.5));
-    let matches = [], alreadyAdded = {};
-
     for (let i = 0; i < apps.length && matches.length <= count; i++) {
         let appId = apps[i] + ".desktop";
+        if (alreadyAdded[appId])
+            continue;
+        alreadyAdded[appId] = true;
         let appInfo = getAppInfo(appId);
         if (appInfo) {
             matches.push(appInfo);
-            alreadyAdded[appId] = true;
         }
-    }
-
-    let favs = getFavorites();
-    // Fill the list with default applications it's not full yet
-    for (let i = 0; i < favs.length && favs.length <= count; i++) {
-        let appId = favs[i].appId;
-        if (alreadyAdded[appId])
-            continue;
-        matches.push(favs[i]);
     }
 
     return matches;
@@ -126,11 +130,5 @@ function getFavorites() {
 
 function getRunning() {
     let monitor = Shell.AppMonitor.get_default();
-    let basename = function (n) {
-        let i = n.lastIndexOf('/');
-        if (i < 0)
-            return n;
-        return n.substring(i+1);
-    }
-    return _idListToInfos(monitor.get_running_app_ids().map(basename));
+    return _idListToInfos(monitor.get_running_app_ids());
 }

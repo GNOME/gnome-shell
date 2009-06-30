@@ -351,7 +351,7 @@ AppDisplay.prototype = {
 
     // Sets the list of the displayed items based on the most used apps.
     _setDefaultList : function() {
-        let matchedInfos = AppInfo.getMostUsedApps(MAX_ITEMS);
+        let matchedInfos = AppInfo.getTopApps(MAX_ITEMS);
         this._matchedItems = matchedInfos.map(function(info) { return info.appId; });
     },
 
@@ -519,7 +519,6 @@ WellArea.prototype = {
 
         children = this.actor.get_children();
         children.forEach(Lang.bind(this, function (v) {
-            this.actor.remove_actor(v);
             v.destroy();
         }));
 
@@ -550,6 +549,8 @@ WellArea.prototype = {
             Mainloop.idle_add(function () {
                 appSystem.add_favorite(id);
             });
+        } else {
+            return false;
         }
 
         return true;
