@@ -164,8 +164,6 @@ json_object_add_member (JsonObject  *object,
                         const gchar *member_name,
                         JsonNode    *node)
 {
-  gchar *name;
-
   g_return_if_fail (object != NULL);
   g_return_if_fail (member_name != NULL);
   g_return_if_fail (node != NULL);
