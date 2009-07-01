@@ -492,11 +492,18 @@ _cogl_disable_clip_planes (void)
   GE( glDisable (GL_CLIP_PLANE0) );
 }
 
+/* XXX: This should be deprecated and Cogl should be left to manage
+ * the glViewport automatically when switching draw buffers. */
 void
 cogl_viewport (guint width,
 	       guint height)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   GE( glViewport (0, 0, width, height) );
+
+  ctx->viewport_width = width;
+  ctx->viewport_height = height;
 }
 
 void
@@ -510,7 +517,7 @@ _cogl_setup_viewport (guint width,
   float z_camera;
   CoglMatrix projection_matrix;
 
-  GE( glViewport (0, 0, width, height) );
+  cogl_viewport (width, height);
 
   /* For Ortho projection.
    * _cogl_current_matrix_ortho (0, width, 0,  height, -1, 1);
@@ -591,23 +598,18 @@ cogl_features_available (CoglFeatureFlags features)
   return (ctx->feature_flags & features) == features;
 }
 
+/* XXX: This function should be deprecated, and replaced with a
+ * cogl_draw_buffer_get_size() API instead. We don't support offset
+ * viewports, and you can't have floating point viewport sizes. */
 void
 cogl_get_viewport (float v[4])
 {
-  /* FIXME: cogl_get_viewport should return a gint vec */
-  /* FIXME: cogl_get_viewport should only return a width + height
-   * (I don't think we need to support offset viewports) */
-#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
-  GLint viewport[4];
-  int i;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  glGetIntegerv (GL_VIEWPORT, viewport);
-
-  for (i = 0; i < 4; i++)
-    v[i] = (float)(viewport[i]);
-#else
-  glGetFloatv (GL_VIEWPORT, v);
-#endif
+  v[0] = 0;
+  v[1] = 0;
+  v[2] = ctx->viewport_width;
+  v[3] = ctx->viewport_height;
 }
 
 void

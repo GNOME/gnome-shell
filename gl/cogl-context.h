@@ -112,6 +112,9 @@ typedef struct
 
   gboolean          in_begin_gl_block;
 
+  guint             viewport_width;
+  guint             viewport_height;
+
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
   COGL_PFNGLDELETERENDERBUFFERSEXTPROC             pf_glDeleteRenderbuffersEXT;

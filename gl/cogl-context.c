@@ -92,6 +92,9 @@ cogl_create_context ()
 
   _context->in_begin_gl_block = FALSE;
 
+  _context->viewport_width = 0;
+  _context->viewport_height = 0;
+
   _context->pf_glGenRenderbuffersEXT = NULL;
   _context->pf_glBindRenderbufferEXT = NULL;
   _context->pf_glRenderbufferStorageEXT = NULL;
