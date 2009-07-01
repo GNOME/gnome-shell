@@ -20,7 +20,7 @@
 	<applyto>/desktop/gnome/shell/favorite_apps</applyto>
 	<owner>gnome-shell</owner>
 	<type>list</type>
-	<listtype>string</listtype>
+	<list_type>string</list_type>
 	<default>[mozilla-firefox.desktop,evolution.desktop,openoffice.org-writer.desktop]</default>
 	<locale name="C">
 	  <short>List of desktop file IDs for favorite applications</short>
