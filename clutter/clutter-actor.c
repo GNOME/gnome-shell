@@ -4605,51 +4605,6 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_allocation_coords:
- * @self: A #ClutterActor
- * @x_1: (out): x1 coordinate
- * @y_1: (out): y1 coordinate
- * @x_2: (out): x2 coordinate
- * @y_2: (out): y2 coordinate
- *
- * Gets the layout box an actor has been assigned.  The allocation can
- * only be assumed valid inside a paint() method; anywhere else, it
- * may be out-of-date.
- *
- * An allocation does not incorporate the actor's scale or anchor point;
- * those transformations do not affect layout, only rendering.
- *
- * The returned coordinates are in pixels.
- *
- * Since: 0.8
- */
-void
-clutter_actor_get_allocation_coords (ClutterActor  *self,
-                                     gint          *x_1,
-                                     gint          *y_1,
-                                     gint          *x_2,
-                                     gint          *y_2)
-{
-  ClutterActorBox allocation = { 0, };
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  clutter_actor_get_allocation_box (self, &allocation);
-
-  if (x_1)
-    *x_1 = allocation.x1;
-
-  if (y_1)
-    *y_1 = allocation.y1;
-
-  if (x_2)
-    *x_2 = allocation.x2;
-
-  if (y_2)
-    *y_2 = allocation.y2;
-}
-
-/**
  * clutter_actor_get_allocation_box:
  * @self: A #ClutterActor
  * @box: (out): the function fills this in with the actor's allocation
@@ -4721,14 +4676,17 @@ void
 clutter_actor_get_allocation_geometry (ClutterActor    *self,
                                        ClutterGeometry *geom)
 {
-  gint x2, y2;
+  ClutterActorBox box;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (geom != NULL);
 
-  clutter_actor_get_allocation_coords (self, &geom->x, &geom->y, &x2, &y2);
+  clutter_actor_get_allocation_box (self, &box);
 
-  geom->width = x2 - geom->x;
-  geom->height = y2 - geom->y;
+  geom->x = clutter_actor_box_get_x (&box);
+  geom->y = clutter_actor_box_get_y (&box);
+  geom->width = clutter_actor_box_get_width (&box);
+  geom->height = clutter_actor_box_get_height (&box);
 }
 
 /**
@@ -5257,7 +5215,7 @@ clutter_actor_set_size (ClutterActor *self,
  *
  * If you care whether you get the request vs. the allocation, you
  * should probably call a different function like
- * clutter_actor_get_allocation_coords() or
+ * clutter_actor_get_allocation_box() or
  * clutter_actor_get_preferred_width().
  *
  * Since: 0.2
@@ -5440,7 +5398,7 @@ clutter_actor_get_transformed_size (ClutterActor *self,
  *
  * If you care whether you get the preferred width or the width that
  * has been assigned to the actor, you should probably call a different
- * function like clutter_actor_get_allocation_coords() to retrieve the
+ * function like clutter_actor_get_allocation_box() to retrieve the
  * allocated size or clutter_actor_get_preferred_width() to retrieve the
  * preferred width.
  *
@@ -5496,7 +5454,7 @@ clutter_actor_get_width (ClutterActor *self)
  *
  * If you care whether you get the preferred height or the height that
  * has been assigned to the actor, you should probably call a different
- * function like clutter_actor_get_allocation_coords() to retrieve the
+ * function like clutter_actor_get_allocation_box() to retrieve the
  * allocated size or clutter_actor_get_preferred_height() to retrieve the
  * preferred height.
  *

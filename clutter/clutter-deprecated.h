@@ -200,4 +200,6 @@
 
 #define clutter_actor_pick      clutter_actor_pick_DEPRECATED_BY_clutter_actor_paint
 
+#define clutter_actor_get_allocation_coords     clutter_actor_get_allocation_coords_DEPRECATED_BY_clutter_actor_get_allocation_box
+
 #endif /* CLUTTER_DEPRECATED_H */
