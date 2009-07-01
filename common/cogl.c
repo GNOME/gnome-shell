@@ -48,6 +48,10 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #include "cogl-gles2-wrapper.h"
 #endif
 
+#ifdef HAVE_COGL_GL
+#define glClientActiveTexture ctx->pf_glClientActiveTexture
+#endif
+
 #ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
 static const struct {
