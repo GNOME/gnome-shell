@@ -209,7 +209,7 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	}
 
       /* Setup new viewport and matrices */
-      GE( glViewport (0, 0, fbo->width, fbo->height) );
+      cogl_viewport (fbo->width, fbo->height);
       _cogl_current_matrix_translate (-1.0f, -1.0f, 0.0f);
       _cogl_current_matrix_scale (2.0f / fbo->width, 2.0f / fbo->height, 1.0f);
 
