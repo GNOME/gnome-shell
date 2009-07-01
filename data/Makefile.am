@@ -2,6 +2,7 @@ imagedir = $(pkgdatadir)/images
 
 dist_image_DATA =		\
 	add-workspace.svg	\
+	info.svg			\
 	remove-workspace.svg
 
 schemadir  = @GCONF_SCHEMA_FILE_DIR@
