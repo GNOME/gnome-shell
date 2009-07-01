@@ -497,12 +497,12 @@ static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
-#define TRANSFORM_ABOUT_ANCHOR_COORD(actor,coord,transform) G_STMT_START { \
-  gfloat _tx, _ty, _tz;                                                    \
-  clutter_anchor_coord_get_units ((actor), (coord), &_tx, &_ty, &_tz);     \
-  cogl_translate (_tx, _ty, _tz);                                          \
-  { transform; }                                                           \
-  cogl_translate (-_tx, -_ty, -_tz);                        } G_STMT_END
+#define TRANSFORM_ABOUT_ANCHOR_COORD(a,m,c,_transform)  G_STMT_START { \
+  gfloat _tx, _ty, _tz;                                                \
+  clutter_anchor_coord_get_units ((a), (c), &_tx, &_ty, &_tz);         \
+  cogl_matrix_translate ((m), _tx, _ty, _tz);                          \
+  { _transform; }                                                      \
+  cogl_matrix_translate ((m), -_tx, -_ty, -_tz);        } G_STMT_END
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
@@ -2119,25 +2119,23 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
 					   verts);
 }
 
-/* Applies the transforms associated with this actor to the
- * OpenGL modelview matrix.
- *
- * This function does not push/pop matrix; it is the responsibility
- * of the caller to do so as appropriate
- */
 static void
-_clutter_actor_apply_modelview_transform (ClutterActor *self)
+clutter_actor_real_apply_transform (ClutterActor *self,
+                                    CoglMatrix   *matrix)
 {
   ClutterActorPrivate *priv = self->priv;
-  gboolean             is_stage = CLUTTER_IS_STAGE (self);
+  gboolean is_stage = CLUTTER_IS_STAGE (self);
 
   if (!is_stage)
-    cogl_translate (priv->allocation.x1,
-		    priv->allocation.y1,
-		    0);
+    {
+      cogl_matrix_translate (matrix,
+                             priv->allocation.x1,
+                             priv->allocation.y1,
+                             0.0);
+    }
 
   if (priv->z)
-    cogl_translate (0, 0, priv->z);
+    cogl_matrix_translate (matrix, 0, 0, priv->z);
 
   /*
    * because the rotation involves translations, we must scale before
@@ -2147,35 +2145,64 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
    */
   if (priv->scale_x != 1.0 || priv->scale_y != 1.0)
     {
-      TRANSFORM_ABOUT_ANCHOR_COORD (self,
+      TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
                                     &priv->scale_center,
-                                    cogl_scale (priv->scale_x,
-                                                priv->scale_y,
-                                                1.0));
+                                    cogl_matrix_scale (matrix,
+                                                       priv->scale_x,
+                                                       priv->scale_y,
+                                                       1.0));
     }
 
   if (priv->rzang)
-    TRANSFORM_ABOUT_ANCHOR_COORD (self,
+    TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
                                   &priv->rz_center,
-                                  cogl_rotate (priv->rzang, 0, 0, 1.0));
+                                  cogl_matrix_rotate (matrix,
+                                                      priv->rzang,
+                                                      0, 0, 1.0));
 
   if (priv->ryang)
-    TRANSFORM_ABOUT_ANCHOR_COORD (self,
+    TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
                                   &priv->ry_center,
-                                  cogl_rotate (priv->ryang, 0, 1.0, 0));
+                                  cogl_matrix_rotate (matrix,
+                                                      priv->ryang,
+                                                      0, 1.0, 0));
 
   if (priv->rxang)
-    TRANSFORM_ABOUT_ANCHOR_COORD (self,
+    TRANSFORM_ABOUT_ANCHOR_COORD (self, matrix,
                                   &priv->rx_center,
-                                  cogl_rotate (priv->rxang, 1.0, 0, 0));
+                                  cogl_matrix_rotate (matrix,
+                                                      priv->rxang,
+                                                      1.0, 0, 0));
 
   if (!is_stage && !clutter_anchor_coord_is_zero (&priv->anchor))
     {
       gfloat x, y, z;
 
       clutter_anchor_coord_get_units (self, &priv->anchor, &x, &y, &z);
-      cogl_translate (-x, -y, -z);
+      cogl_matrix_translate (matrix, -x, -y, -z);
     }
+}
+
+/* Applies the transforms associated with this actor to the
+ * OpenGL modelview matrix.
+ *
+ * This function does not push/pop matrix; it is the responsibility
+ * of the caller to do so as appropriate
+ */
+static void
+_clutter_actor_apply_modelview_transform (ClutterActor *self)
+{
+  CoglMatrix matrix, cur, new;
+
+  cogl_matrix_init_identity (&matrix);
+
+  clutter_actor_get_transformation_matrix (self, &matrix);
+
+  cogl_get_modelview_matrix (&cur);
+
+  cogl_matrix_multiply (&new, &cur, &matrix);
+
+  cogl_set_modelview_matrix (&new);
 }
 
 /* Recursively applies the transforms associated with this actor and
@@ -4229,6 +4256,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->get_preferred_height = clutter_actor_real_get_preferred_height;
   klass->allocate = clutter_actor_real_allocate;
   klass->queue_redraw = clutter_actor_real_queue_redraw;
+  klass->apply_transform = clutter_actor_real_apply_transform;
 }
 
 static void
@@ -9162,4 +9190,22 @@ clutter_actor_unset_flags (ClutterActor      *self,
     g_object_notify (obj, "visible");
 
   g_object_thaw_notify (obj);
+}
+
+/**
+ * clutter_actor_get_transformation_matrix:
+ * @self: a #ClutterActor
+ * @matrix: (out): the return location for a #CoglMatrix
+ *
+ * Retrieves the transformations applied to @self
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_get_transformation_matrix (ClutterActor *self,
+                                         CoglMatrix   *matrix)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }

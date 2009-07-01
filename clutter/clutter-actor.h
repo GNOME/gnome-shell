@@ -178,7 +178,11 @@ struct _ClutterActor
  *   and natural heights of an actor for a given width; it is used by
  *   clutter_actor_get_preferred_height()
  * @allocate: virtual function, used when settings the coordinates of an
- *   actor; it is used by clutter_actor_allocate()
+ *   actor; it is used by clutter_actor_allocate(); it must chain up to
+ *   the parent's implementation
+ * @apply_transform: virtual function, used when applying the transformations
+ *   to an actor before painting it or when transforming coordinates or
+ *   the allocation; it must chain up to the parent's implementation
  * @parent_set: signal class handler for the #ClutterActor::parent-set
  * @destroy: signal class handler for #ClutterActor::destroy
  * @pick: virtual function, used to draw an outline of the actor with
@@ -238,6 +242,11 @@ struct _ClutterActorClass
   void (* allocate)             (ClutterActor           *actor,
                                  const ClutterActorBox  *box,
                                  ClutterAllocationFlags  flags);
+
+  /* transformations */
+  void (* apply_transform)      (ClutterActor           *actor,
+                                 CoglMatrix             *matrix);
+
   /* event signals */
   gboolean (* event)                (ClutterActor         *actor,
                                      ClutterEvent         *event);
@@ -325,7 +334,6 @@ void                  clutter_actor_get_allocation_geometry   (ClutterActor     
 void                  clutter_actor_get_allocation_vertices   (ClutterActor          *self,
 							       ClutterActor          *ancestor,
                                                                ClutterVertex          verts[4]);
-
 void                  clutter_actor_set_geometry              (ClutterActor          *self,
                                                                const ClutterGeometry *geometry);
 void                  clutter_actor_get_geometry              (ClutterActor          *self,
@@ -513,6 +521,9 @@ PangoContext *clutter_actor_get_pango_context         (ClutterActor        *self
 PangoContext *clutter_actor_create_pango_context      (ClutterActor        *self);
 PangoLayout * clutter_actor_create_pango_layout       (ClutterActor        *self,
                                                        const gchar         *text);
+
+void clutter_actor_get_transformation_matrix          (ClutterActor        *self,
+                                                       CoglMatrix          *matrix);
 
 G_END_DECLS
 

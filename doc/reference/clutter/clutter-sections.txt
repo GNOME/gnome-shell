@@ -363,6 +363,7 @@ clutter_actor_get_transformed_size
 clutter_actor_get_paint_opacity
 clutter_actor_get_paint_visibility
 clutter_actor_get_abs_allocation_vertices
+clutter_actor_get_transformation_matrix
 
 <SUBSECTION>
 clutter_actor_set_anchor_point
