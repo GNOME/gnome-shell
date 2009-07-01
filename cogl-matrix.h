@@ -41,6 +41,7 @@ G_BEGIN_DECLS
  * be used for direct manipulation of these matrices.
  */
 
+typedef struct _CoglMatrix      CoglMatrix;
 
 /**
  * CoglMatrix:
@@ -70,7 +71,8 @@ G_BEGIN_DECLS
  * undefined results. If you need to initialize a matrix with a constant other
  * than the identity matrix you can use cogl_matrix_init_from_array().</note>
  */
-typedef struct _CoglMatrix {
+struct _CoglMatrix
+{
     /*< private >*/
 
     /* column 0 */
@@ -103,7 +105,7 @@ typedef struct _CoglMatrix {
     gulong  _padding1;
     gulong  _padding2;
     gulong  _padding3;
-} CoglMatrix;
+};
 
 /**
  * cogl_matrix_init_identity:
