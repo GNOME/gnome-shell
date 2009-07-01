@@ -105,7 +105,7 @@ if test x$system = xSUSE ; then
     curl \
     bison flex gnome-doc-utils-devel \
     gconf2-devel libffi-devel libgnomeui-devel librsvg-devel libwnck-devel \
-    libXScrnSaver-devel readline-devel mozilla-xulrunner190-devel \
+    xorg-x11-proto-devel readline-devel mozilla-xulrunner190-devel \
     xorg-x11-devel xterm xorg-x11 xorg-x11-server-extra \
     ; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
