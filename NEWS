@@ -1,3 +1,43 @@
+Clutter 0.9.6 (01/07/2009)
+===============================================================================
+
+  * List of changes since 0.9.4:
+
+    o Allow the manipulation of the actor's transformation matrix, so that is
+      is possible to apply additional transformations in a way that is
+      compatible with the transformations already applied by the scene graph.
+
+    o Fix a race in the X11 backend that happened between resizing the stage
+      drawable and the call to glViewport().
+
+    o Merge the cogl-journal-batching branch; this branch implements batching
+      the geometry of the elements of the scene graph before sending it to
+      OpenGL, thus minimizing the number of state changes and improving the
+      overall performance of Clutter-based applications.
+
+    o Add more debugging states for Clutter and COGL, which allow the developer
+      to track the state of the journal; to check the VBO fallback paths; to
+      disable picking for reliable profiling; to disable software-side matrix
+      transformations in favour of the driver/GPU ones.
+
+    o Improve the ability to "break out" of COGL by using gl_begin/gl_end
+      semantics; applications that drop into raw GL are, though, ignoring all
+      the caching performed by COGL and might incur in performance issues.
+
+    o Fixed the :load-async and :load-data-async properties of Texture by
+      removing the unneeded G_PARAM_CONSTRUCT flag.
+
+    o Added an initial migration guide that shows the porting process from
+      older releases of Clutter to the 1.0 API; the first chapter deals with
+      the migration from ClutterEffect to the new implicit animations API.
+
+    o Fixed MT-safety for the master clock.
+
+Many thanks to:
+
+  Ole André Vadla Ravnås
+  Tim Horton
+
 Clutter 0.9.4 (19/06/2009)
 ===============================================================================
 

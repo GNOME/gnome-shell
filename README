@@ -268,6 +268,11 @@ Release Notes for Clutter 1.0
 
   virtual function.
 
+* Actors that perform direct transformations using the COGL API inside
+  their paint() implementation should override the apply_transform()
+  virtual function instead. Implementations of the apply_transform()
+  vfunc must chain up to the implementation of the parent class.
+
   Cogl API changes for Clutter 1.0
   --------------------------------
 
