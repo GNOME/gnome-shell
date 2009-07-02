@@ -19,6 +19,7 @@ const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
 
 const APP_ICON_SIZE = 48;
+const APP_PADDING = 18;
 
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
@@ -42,6 +43,10 @@ AppDisplayItem.prototype = {
         this._appInfo = appInfo;
 
         this._setItemInfo(appInfo.name, appInfo.description);
+    },
+
+    getId: function() {
+        return this._appInfo.appId;
     },
 
     //// Public method overrides ////
@@ -442,8 +447,24 @@ WellDisplayItem.prototype = {
         this.isFavorite = isFavorite;
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   width: APP_ICON_SIZE,
+                                   corner_radius: 2,
+                                   border: 0,
+                                   padding: 1,
+                                   border_color: GenericDisplay.ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR,
+                                   width: APP_ICON_SIZE + APP_PADDING,
                                    reactive: true });
+        this.actor.connect('enter-event', Lang.bind(this,
+            function(o, event) {
+                this.actor.border = 1;
+                this.actor.padding = 0;
+                return false;
+            }));
+        this.actor.connect('leave-event', Lang.bind(this,
+            function(o, event) {
+                this.actor.border = 0;
+                this.actor.padding = 1;
+                return false;
+            }));
         this.actor._delegate = this;
         this.actor.connect('button-release-event', Lang.bind(this, function (b, e) {
             this.launch();
@@ -452,24 +473,33 @@ WellDisplayItem.prototype = {
 
         let draggable = DND.makeDraggable(this.actor);
 
+        let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                    x_align: Big.BoxAlignment.CENTER });
         this._icon = appInfo.createIcon(APP_ICON_SIZE);
+        iconBox.append(this._icon, Big.BoxPackFlags.NONE);
 
-        this.actor.append(this._icon, Big.BoxPackFlags.NONE);
+        this.actor.append(iconBox, Big.BoxPackFlags.NONE);
 
         let count = Shell.AppMonitor.get_default().get_window_count(appInfo.appId);
 
+        let nameBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                    x_align: Big.BoxAlignment.CENTER });
         this._name = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
                                         font_name: "Sans 12px",
                                         ellipsize: Pango.EllipsizeMode.END,
+                                        line_alignment: Pango.Alignment.CENTER,
+                                        line_wrap: true,
+                                        line_wrap_mode: Pango.WrapMode.WORD_CHAR,
                                         text: appInfo.name });
+        nameBox.append(this._name, Big.BoxPackFlags.EXPAND);
         if (count > 0) {
             let runningBox = new Big.Box({ /* border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
                                            border: 1,
                                            padding: 1 */ });
-            runningBox.append(this._name, Big.BoxPackFlags.EXPAND);
+            runningBox.append(nameBox, Big.BoxPackFlags.EXPAND);
             this.actor.append(runningBox, Big.BoxPackFlags.NONE);
         } else {
-            this.actor.append(this._name, Big.BoxPackFlags.NONE);
+            this.actor.append(nameBox, Big.BoxPackFlags.NONE);
         }
     },
 
@@ -512,14 +542,16 @@ WellArea.prototype = {
     _init : function(width, isFavorite) {
         this.isFavorite = isFavorite;
 
-        this.actor = new Tidy.Grid({ width: width });
-        this.actor._delegate = this;
+        this._grid = new Tidy.Grid({ width: width, row_gap: 4 });
+        this._grid._delegate = this;
+
+        this.actor = this._grid;
     },
 
     redisplay: function (infos) {
         let children;
 
-        children = this.actor.get_children();
+        children = this._grid.get_children();
         children.forEach(Lang.bind(this, function (v) {
             v.destroy();
         }));
@@ -537,12 +569,17 @@ WellArea.prototype = {
     acceptDrop : function(source, actor, x, y, time) {
         let global = Shell.Global.get();
 
-        if (!(source instanceof WellDisplayItem)) {
+        let id = null;
+        if (source instanceof WellDisplayItem) {
+            id = source.appInfo.appId;
+        } else if (source instanceof AppDisplayItem) {
+            id = source.getId();
+        } else {
             return false;
         }
 
         let appSystem = Shell.AppSystem.get_default();
-        let id = source.appInfo.appId;
+
         if (source.isFavorite && (!this.isFavorite)) {
             Mainloop.idle_add(function () {
                 appSystem.remove_favorite(id);
@@ -571,6 +608,7 @@ AppWell.prototype = {
         this._menuDisplays = [];
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                   spacing: 4,
                                    width: width });
 
         this._appSystem = Shell.AppSystem.get_default();
@@ -593,7 +631,7 @@ AppWell.prototype = {
         this.actor.append(this._favoritesArea.actor, Big.BoxPackFlags.NONE);
 
         this._runningBox = new Big.Box({ border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                         border: 1,
+                                         border_top: 1,
                                          corner_radius: 3,
                                          padding: GenericDisplay.PREVIEW_BOX_PADDING });
         this._runningArea = new WellArea(width, false);
