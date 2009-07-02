@@ -314,9 +314,19 @@ Dash.prototype = {
                 // too, but there doesn't seem to be any flickering if we first select
                 // something in one display, but then unset the selection, and move
                 // it to the other display, so it's ok to do that.
-                // TODO: add the right logic
+                if (me._resultsDocsSection.display.hasSelected())
+                  me._resultsDocsSection.display.selectUp();
+                else if (me._resultsAppsSection.display.hasItems())
+                  me._resultsAppsSection.display.selectUp();
+                else
+                  me._resultsDocsSection.display.selectUp();
             } else if (symbol == Clutter.Down) {
-                // TODO: add the right logic
+                if (me._resultsDocsSection.display.hasSelected())
+                  me._resultsDocsSection.display.selectDown();
+                else if (me._resultsAppsSection.display.hasItems())
+                  me._resultsAppsSection.display.selectDown();
+                else
+                  me._resultsDocsSection.display.selectDown();
             }
             return false;
         });
