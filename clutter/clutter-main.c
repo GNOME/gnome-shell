@@ -1504,16 +1504,17 @@ clutter_get_option_group_without_init (void)
 /**
  * clutter_init_with_args:
  * @argc: (inout): a pointer to the number of command line arguments
- * @argv: (array length=argc) (inout): a pointer to the array of command line arguments
- * @parameter_string: a string which is displayed in the
+ * @argv: (array length=argc) (inout) (allow-none): a pointer to the array
+ *   of command line arguments
+ * @parameter_string: (allow-none): a string which is displayed in the
  *   first line of <option>--help</option> output, after
  *   <literal><replaceable>programname</replaceable> [OPTION...]</literal>
- * @entries: a %NULL terminated array of #GOptionEntry<!-- -->s
+ * @entries: (allow-none): a %NULL terminated array of #GOptionEntry<!-- -->s
  *   describing the options of your program
- * @translation_domain: a translation domain to use for translating
- *   the <option>--help</option> output for the options in @entries
- *   with gettext(), or %NULL
- * @error: a return location for a #GError
+ * @translation_domain: (allow-none): a translation domain to use for
+ *   translating the <option>--help</option> output for the options in
+ *   @entries with gettext(), or %NULL
+ * @error: (allow-none): a return location for a #GError
  *
  * This function does the same work as clutter_init(). Additionally,
  * it allows you to add your own command line options, and it
@@ -1631,7 +1632,8 @@ clutter_parse_args (int    *argc,
 /**
  * clutter_init:
  * @argc: (inout): The number of arguments in @argv
- * @argv: (array length=argc) (inout): A pointer to an array of arguments.
+ * @argv: (array length=argc) (inout) (allow-none): A pointer to an array
+ *   of arguments.
  *
  * It will initialise everything needed to operate with Clutter and
  * parses some standard command line options. @argc and @argv are
