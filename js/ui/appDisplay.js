@@ -14,6 +14,7 @@ const Mainloop = imports.mainloop;
 const AppInfo = imports.misc.appInfo;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
+const Workspaces = imports.ui.workspaces;
 
 const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
@@ -574,6 +575,11 @@ WellArea.prototype = {
             id = source.appInfo.appId;
         } else if (source instanceof AppDisplayItem) {
             id = source.getId();
+        } else if (source instanceof Workspaces.WindowClone) {
+            let appMonitor = Shell.AppMonitor.get_default();
+            id = appMonitor.get_window_id(source.metaWindow);
+            if (id === null)
+                return false;
         } else {
             return false;
         }

@@ -545,6 +545,19 @@ shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
 }
 
 /**
+ * shell_app_monitor_get_window_id
+ * @monitor: An app monitor instance
+ * @metawin: A #MetaWindow
+ *
+ * Returns: (transfer full): Desktop file id associated with window
+ */
+char *
+shell_app_monitor_get_window_id (ShellAppMonitor *monitor, MetaWindow *metawin)
+{
+  return g_hash_table_lookup (monitor->window_to_appid, metawin);
+}
+
+/**
  * shell_app_monitor_get_running_app_ids:
  *
  * @monitor: An app monitor instance
