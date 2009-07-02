@@ -39,6 +39,8 @@
 #include "xprops.h"
 #include "compositor.h"
 #include "alttabhandlerdefault.h"
+#include "mutter-marshal.h"
+#include "mutter-enum-types.h"
 
 #ifdef HAVE_SOLARIS_XINERAMA
 #include <X11/extensions/xinerama.h>
@@ -80,6 +82,9 @@ enum
 {
   RESTACKED,
   TOGGLE_RECORDING,
+  WORKSPACE_ADDED,
+  WORKSPACE_REMOVED,
+  WORKSPACE_SWITCHED,
 
   LAST_SIGNAL
 };
@@ -158,6 +163,41 @@ meta_screen_class_init (MetaScreenClass *klass)
                             "Number of workspaces",
                             1, G_MAXINT, 1,
                             G_PARAM_READABLE);
+
+  screen_signals[WORKSPACE_ADDED] =
+    g_signal_new ("workspace-added",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__INT,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_INT);
+
+  screen_signals[WORKSPACE_REMOVED] =
+    g_signal_new ("workspace-removed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__INT,
+                  G_TYPE_NONE,
+                  1,
+                  G_TYPE_INT);
+
+  screen_signals[WORKSPACE_SWITCHED] =
+    g_signal_new ("workspace-switched",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  _mutter_marshal_VOID__INT_INT_ENUM,
+                  G_TYPE_NONE,
+                  3,
+                  G_TYPE_INT,
+                  G_TYPE_INT,
+                  MUTTER_TYPE_MOTION_DIRECTION);
 
   screen_signals[TOGGLE_RECORDING] =
     g_signal_new ("toggle-recording",
@@ -1241,6 +1281,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   GList         *l;
   MetaWorkspace *neighbour = NULL;
   GList         *next = NULL;
+  int index;
 
   l = screen->workspaces;
   while (l)
@@ -1276,6 +1317,9 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   if (workspace == screen->active_workspace)
     meta_workspace_activate (neighbour, timestamp);
 
+  /* To emit the signal after removing the workspace */
+  index = meta_workspace_index (workspace);
+
   /* This also removes the workspace from the screens list */
   meta_workspace_remove (workspace);
 
@@ -1293,6 +1337,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
 
   meta_screen_queue_workarea_recalc (screen);
 
+  g_signal_emit (screen, screen_signals[WORKSPACE_REMOVED], 0, index);
   g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
@@ -1328,6 +1373,8 @@ meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
 
   meta_screen_queue_workarea_recalc (screen);
 
+  g_signal_emit (screen, screen_signals[WORKSPACE_ADDED],
+                 0, meta_workspace_index (w));
   g_object_notify (G_OBJECT (screen), "n-workspaces");
 
   return w;
@@ -3012,3 +3059,14 @@ meta_screen_restacked (MetaScreen *screen)
 {
   g_signal_emit (screen, screen_signals[RESTACKED], 0);
 }
+
+void
+meta_screen_workspace_switched (MetaScreen         *screen,
+                                int                 from,
+                                int                 to,
+                                MetaMotionDirection direction)
+{
+  g_signal_emit (screen, screen_signals[WORKSPACE_SWITCHED], 0,
+                 from, to, direction);
+}
+

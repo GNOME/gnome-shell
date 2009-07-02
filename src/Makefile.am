@@ -4,6 +4,12 @@ SUBDIRS=wm-tester tools compositor/plugins
 
 INCLUDES=@MUTTER_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMUTTER_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMUTTER_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMUTTER_PKGDATADIR=\"$(pkgdatadir)\" -DMUTTER_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"mutter\" -DSN_API_NOT_YET_FROZEN=1 -DMUTTER_MAJOR_VERSION=$(MUTTER_MAJOR_VERSION) -DMUTTER_MINOR_VERSION=$(MUTTER_MINOR_VERSION) -DMUTTER_MICRO_VERSION=$(MUTTER_MICRO_VERSION) -DMUTTER_PLUGIN_API_VERSION=$(MUTTER_PLUGIN_API_VERSION) -DMUTTER_PKGLIBDIR=\"$(pkglibdir)\" -DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"
 
+mutter_built_sources = \
+	mutter-marshal.h \
+	mutter-marshal.c \
+	mutter-enum-types.h \
+	mutter-enum-types.c
+
 mutter_SOURCES= 				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
@@ -108,7 +114,8 @@ mutter_SOURCES= 				\
 	ui/themewidget.c			\
 	ui/themewidget.h			\
 	ui/ui.c					\
-	include/all-keybindings.h
+	include/all-keybindings.h               \
+	$(mutter_built_sources)
 
 # by setting libmutter_private_la_CFLAGS, the files shared with
 # mutter proper will be compiled with different names.
@@ -267,5 +274,49 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_in_files)	\
 	$(schema_in_files)		\
 	libmutter-private.pc.in	\
-	mutter-plugins.pc.in
+	mutter-plugins.pc.in  \
+	mutter-marshal.list
+
+BUILT_SOURCES += $(mutter_built_sources)
+MUTTER_STAMP_FILES = stamp-mutter-marshal.h
+CLEANFILES += $(MUTTER_STAMP_FILES)
+
+mutter-marshal.h: stamp-mutter-marshal.h
+	@true
+stamp-mutter-marshal.h: Makefile mutter-marshal.list
+	$(GLIB_GENMARSHAL) \
+		--prefix=_mutter_marshal \
+		--header \
+	$(srcdir)/mutter-marshal.list > xgen-tmh && \
+	(cmp -s xgen-tmh mutter-marshal.h || cp -f xgen-tmh mutter-marshal.h) && \
+	rm -f xgen-tmh && \
+	echo timestamp > $(@F)
+
+mutter-marshal.c: Makefile mutter-marshal.list
+	(echo "#include \"mutter-marshal.h\"" ; \
+	 $(GLIB_GENMARSHAL) \
+		--prefix=_mutter_marshal \
+		--body \
+	 $(srcdir)/mutter-marshal.list ) > xgen-tmc && \
+	cp -f xgen-tmc mutter-marshal.c && \
+	rm -f xgen-tmc
+
+mutter-enum-types.h: stamp-mutter-enum-types.h Makefile
+	@true
+stamp-mutter-enum-types.h: $(mutter_source_h) mutter-enum-types.h.in
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template $(srcdir)/mutter-enum-types.h.in \
+	  $(libmutterinclude_base_headers) ) >> xgen-teth && \
+	(cmp xgen-teth mutter-enum-types.h || cp xgen-teth mutter-enum-types.h) && \
+	rm -f xgen-teth && \
+	echo timestamp > $(@F)
+
+mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template $(srcdir)/mutter-enum-types.c.in \
+	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
+	cp xgen-tetc mutter-enum-types.c && \
+	rm -f xgen-tetc
 

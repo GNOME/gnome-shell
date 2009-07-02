@@ -37,22 +37,6 @@
 #include "boxes.h"
 #include "screen.h"
 
-/* Negative to avoid conflicting with real workspace
- * numbers
- */
-typedef enum
-{
-  META_MOTION_UP = -1,
-  META_MOTION_DOWN = -2,
-  META_MOTION_LEFT = -3,
-  META_MOTION_RIGHT = -4,
-  /* These are only used for effects */
-  META_MOTION_UP_LEFT = -5,
-  META_MOTION_UP_RIGHT = -6,
-  META_MOTION_DOWN_LEFT = -7,
-  META_MOTION_DOWN_RIGHT = -8
-} MetaMotionDirection;
-
 #define META_TYPE_WORKSPACE            (meta_workspace_get_type ())
 #define META_WORKSPACE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WORKSPACE, MetaWorkspace))
 #define META_WORKSPACE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WORKSPACE, MetaWorkspaceClass))

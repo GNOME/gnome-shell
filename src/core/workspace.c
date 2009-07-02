@@ -456,8 +456,14 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                     MetaWindow    *focus_this,
                                     guint32        timestamp)
 {
-  MetaWorkspace *old;
-  MetaWindow *move_window;
+  MetaWorkspace  *old;
+  MetaWindow     *move_window;
+  MetaScreen     *screen;
+  MetaDisplay    *display;
+  MetaCompositor *comp;
+  MetaWorkspaceLayout layout1, layout2;
+  gint num_workspaces, current_space, new_space;
+  MetaMotionDirection direction;
   
   meta_verbose ("Activating workspace %d\n",
                 meta_workspace_index (workspace));
@@ -467,7 +473,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
 
   /* Note that old can be NULL; e.g. when starting up */
   old = workspace->screen->active_workspace;
-  
+
   workspace->screen->active_workspace = workspace;
 
   set_active_space_hint (workspace->screen);
@@ -529,60 +535,55 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
       meta_workspace_focus_default_window (workspace, NULL, timestamp);
     }
 
-  {
-    /*
-     * Notify the compositor that the active workspace changed.
-     */
-    MetaScreen     *screen = workspace->screen;
-    MetaDisplay    *display = meta_screen_get_display (screen);
-    MetaCompositor *comp = meta_display_get_compositor (display);
-    MetaWorkspaceLayout layout1, layout2;
-    gint num_workspaces, current_space, new_space;
-    MetaMotionDirection direction = 0;
+   /*
+    * Notify the compositor that the active workspace changed.
+    */
+   screen = workspace->screen;
+   display = meta_screen_get_display (screen);
+   comp = meta_display_get_compositor (display);
+   direction = 0;
 
-    if (!comp)
-      return;
+   current_space = meta_workspace_index (old);
+   new_space     = meta_workspace_index (workspace);
+   num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
+   meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
+                                      current_space, &layout1);
 
-    current_space = meta_workspace_index (old);
-    new_space     = meta_workspace_index (workspace);
+   meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
+                                      new_space, &layout2);
 
-    num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
-    meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
-                                       current_space, &layout1);
+   if (layout1.current_col < layout2.current_col)
+     direction = META_MOTION_RIGHT;
+   if (layout1.current_col > layout2.current_col)
+     direction = META_MOTION_LEFT;
 
-    meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
-                                       new_space, &layout2);
+   if (layout1.current_row < layout2.current_row)
+     {
+       if (!direction)
+         direction = META_MOTION_DOWN;
+       else if (direction == META_MOTION_RIGHT)
+         direction = META_MOTION_DOWN_RIGHT;
+       else
+         direction = META_MOTION_DOWN_LEFT;
+     }
 
-    if (layout1.current_col < layout2.current_col)
-      direction = META_MOTION_RIGHT;
-    if (layout1.current_col > layout2.current_col)
-      direction = META_MOTION_LEFT;
+   if (layout1.current_row > layout2.current_row)
+     {
+       if (!direction)
+         direction = META_MOTION_UP;
+       else if (direction == META_MOTION_RIGHT)
+         direction = META_MOTION_UP_RIGHT;
+       else
+         direction = META_MOTION_UP_LEFT;
+     }
 
-    if (layout1.current_row < layout2.current_row)
-      {
-        if (!direction)
-          direction = META_MOTION_DOWN;
-        else if (direction == META_MOTION_RIGHT)
-          direction = META_MOTION_DOWN_RIGHT;
-        else
-          direction = META_MOTION_DOWN_LEFT;
-      }
+   meta_screen_free_workspace_layout (&layout1);
+   meta_screen_free_workspace_layout (&layout2);
 
-    if (layout1.current_row > layout2.current_row)
-      {
-        if (!direction)
-          direction = META_MOTION_UP;
-        else if (direction == META_MOTION_RIGHT)
-          direction = META_MOTION_UP_RIGHT;
-        else
-          direction = META_MOTION_UP_LEFT;
-      }
+   meta_compositor_switch_workspace (comp, screen, old, workspace, direction);
 
-    meta_screen_free_workspace_layout (&layout1);
-    meta_screen_free_workspace_layout (&layout2);
-
-    meta_compositor_switch_workspace (comp, screen, old, workspace, direction);
-  }
+   /* Emit switched signal from screen.c */
+   meta_screen_workspace_switched (screen, current_space, new_space, direction);
 }
 
 void

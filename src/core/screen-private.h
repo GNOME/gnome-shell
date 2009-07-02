@@ -246,4 +246,9 @@ void	 meta_screen_composite_all_windows (MetaScreen *screen);
 
 void     meta_screen_restacked (MetaScreen *screen);
 
+void     meta_screen_workspace_switched (MetaScreen         *screen,
+                                         int                 from,
+                                         int                 to,
+                                         MetaMotionDirection direction);
+
 #endif

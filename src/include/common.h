@@ -233,6 +233,22 @@ typedef enum
   META_DIRECTION_VERTICAL   = META_DIRECTION_UP   | META_DIRECTION_DOWN,
 } MetaDirection;
 
+/* Negative to avoid conflicting with real workspace
+ * numbers
+ */
+typedef enum
+{
+  META_MOTION_UP = -1,
+  META_MOTION_DOWN = -2,
+  META_MOTION_LEFT = -3,
+  META_MOTION_RIGHT = -4,
+  /* These are only used for effects */
+  META_MOTION_UP_LEFT = -5,
+  META_MOTION_UP_RIGHT = -6,
+  META_MOTION_DOWN_LEFT = -7,
+  META_MOTION_DOWN_RIGHT = -8
+} MetaMotionDirection;
+
 /* Sometimes we want to talk about sides instead of directions; note
  * that the values must be as follows or meta_window_update_struts()
  * won't work. Using these values also is a safety blanket since

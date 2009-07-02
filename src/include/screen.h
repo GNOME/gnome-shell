@@ -25,6 +25,7 @@
 #include <X11/Xlib.h>
 #include <glib-object.h>
 #include "types.h"
+#include "workspace.h"
 
 #define META_TYPE_SCREEN            (meta_screen_get_type ())
 #define META_SCREEN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_SCREEN, MetaScreen))
