@@ -344,10 +344,7 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
   if (stack->flushed_state == state)
     return;
 
-  /* NOTE we assume caller was in MODELVIEW mode */
-
-  if (gl_mode != GL_MODELVIEW)
-    GE (glMatrixMode (gl_mode));
+  GE (glMatrixMode (gl_mode));
 
   /* In theory it might help the GL implementation if we used our
    * local analysis of the matrix and called Translate/Scale rather
@@ -356,9 +353,6 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
 
   GE (glLoadMatrixf (cogl_matrix_get_array (&state->matrix)));
   stack->flushed_state = state;
-
-  if (gl_mode != GL_MODELVIEW)
-    GE (glMatrixMode (GL_MODELVIEW));
 }
 
 void

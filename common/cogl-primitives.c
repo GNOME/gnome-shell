@@ -546,8 +546,12 @@ _cogl_journal_flush (void)
     state.vbo_offset = (char *)ctx->logged_vertices->data;
 
   /* Since the journal deals with emitting the modelview matrices manually
-   * we need to dirty our client side matrix stack cache... */
+   * we need to dirty our client side modelview matrix stack cache... */
   _cogl_current_matrix_state_dirty ();
+
+  /* And explicitly flush other matrix stacks... */
+  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+  _cogl_current_matrix_state_flush ();
 
   /* If we have transformed all our quads at log time then the whole journal
    * then we ensure no further model transform is applied by loading the
@@ -1460,7 +1464,7 @@ _cogl_texture_sliced_polygon (CoglTextureVertex *vertices,
           options.layer0_override_texture = gl_handle;
 
           _cogl_material_flush_gl_state (ctx->source_material, &options);
-          _cogl_current_matrix_state_flush ();
+          _cogl_flush_matrix_stacks ();
 
 	  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
 	}
@@ -1564,7 +1568,7 @@ _cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
     options.flags |= COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
   options.fallback_layers = fallback_layers;
   _cogl_material_flush_gl_state (ctx->source_material, &options);
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
 }

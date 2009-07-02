@@ -324,7 +324,7 @@ set_clip_plane (GLint plane_num,
   _cogl_current_matrix_rotate (angle, 0.0f, 0.0f, 1.0f);
   _cogl_current_matrix_translate (-vertex_a[0], -vertex_a[1], -vertex_a[2]);
 
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
 
   plane[0] = 0;
   plane[1] = -1.0;
@@ -568,6 +568,7 @@ _cogl_setup_viewport (guint width,
   cogl_get_projection_matrix (&projection_matrix);
   z_camera = 0.5 * projection_matrix.xx;
 
+  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
   _cogl_current_matrix_identity ();
   _cogl_current_matrix_translate (-0.5f, -0.5f, -z_camera);
   _cogl_current_matrix_scale (1.0f / width, -1.0f / height, 1.0f / width);
@@ -706,7 +707,7 @@ cogl_disable_fog (void)
 void
 cogl_flush_gl_state (int flags)
 {
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
 }
 #endif
 
@@ -800,7 +801,7 @@ cogl_begin_gl (void)
   cogl_clip_ensure ();
 
   /* Flush any client side matrix state */
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
 
 
   /* Setup the state for the current material */
