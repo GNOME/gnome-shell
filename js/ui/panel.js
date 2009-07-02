@@ -7,6 +7,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+const Tweener = imports.ui.tweener;
 
 const Button = imports.ui.button;
 const Main = imports.ui.main;
@@ -174,6 +175,15 @@ Panel.prototype = {
 
         // Start the clock
         this._updateClock();
+    },
+
+    startupAnimation: function() {
+        this.actor.y = -this.actor.height;
+        Tweener.addTween(this.actor,
+                         { y: 0,
+                           time: 0.2,
+                           transition: "easeOutQuad"
+                         });
     },
 
     _updateClock: function() {

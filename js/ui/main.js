@@ -88,6 +88,8 @@ function start() {
         }
     });
 
+    panel.startupAnimation();
+
     let display = global.screen.get_display();
     display.connect('overlay-key', Lang.bind(overlay, overlay.toggle));
     global.connect('panel-main-menu', Lang.bind(overlay, overlay.toggle));
