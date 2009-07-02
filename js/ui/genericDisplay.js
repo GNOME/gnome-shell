@@ -12,6 +12,7 @@ const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const Tidy = imports.gi.Tidy;
 
+const Button = imports.ui.button;
 const DND = imports.ui.dnd;
 const Link = imports.ui.link;
 
@@ -84,33 +85,30 @@ GenericDisplayItem.prototype = {
 
         let global = Shell.Global.get();
         let infoIconUri = "file://" + global.imagedir + "info.svg";
-
-        this._informationButton = Shell.TextureCache.get_default().load_uri_sync(infoIconUri, 
-                                                                                 INFORMATION_BUTTON_SIZE,
-                                                                                 INFORMATION_BUTTON_SIZE);
-
-        this._informationButton.x = availableWidth - ITEM_DISPLAY_PADDING_RIGHT - INFORMATION_BUTTON_SIZE;
-        this._informationButton.y = ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2; 
-        this._informationButton.reactive = true;
+        let infoIcon = Shell.TextureCache.get_default().load_uri_sync(infoIconUri,
+                                                                      INFORMATION_BUTTON_SIZE,
+                                                                      INFORMATION_BUTTON_SIZE);
+        this._informationButton = new Button.iconButton(this.actor, INFORMATION_BUTTON_SIZE, infoIcon);
+        this._informationButton.actor.x = availableWidth - ITEM_DISPLAY_PADDING_RIGHT - INFORMATION_BUTTON_SIZE;
+        this._informationButton.actor.y = ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2;
 
         // Connecting to the button-press-event for the information button ensures that the actor, 
         // which is a draggable actor, does not get the button-press-event and doesn't initiate
         // the dragging, which then prevents us from getting the button-release-event for the button.
-        this._informationButton.connect('button-press-event', 
-                                        Lang.bind(this,
-                                                  function() {
-                                                      return true;
-                                                  }));
-        this._informationButton.connect('button-release-event',
-                                        Lang.bind(this, 
-                                                  function() {
-                                                      // Selects the item by highlighting it and displaying its details
-                                                      this.emit('select');
-                                                      return true;  
-                                                  }));
-        this._informationButton.hide();
-        this.actor.add_actor(this._informationButton);
-        this._informationButton.lower_bottom();
+        this._informationButton.actor.connect('button-press-event',
+                                              Lang.bind(this,
+                                                        function() {
+                                                            return true;
+                                                        }));
+        this._informationButton.actor.connect('button-release-event',
+                                              Lang.bind(this,
+                                                        function() {
+                                                            // Selects the item by highlighting it and displaying its details
+                                                            this.emit('select');
+                                                            return true;
+                                                        }));
+        this.actor.add_actor(this._informationButton.actor);
+        this._informationButton.actor.lower_bottom();
 
         this._name = null;
         this._description = null;
@@ -118,9 +116,6 @@ GenericDisplayItem.prototype = {
         this._previewIcon = null; 
 
         this.dragActor = null;
-
-        this.actor.connect('enter-event', Lang.bind(this, this._onEnter));
-        this.actor.connect('leave-event', Lang.bind(this, this._onLeave));
     },
 
     //// Draggable object interface ////
@@ -155,17 +150,21 @@ GenericDisplayItem.prototype = {
 
     // Shows the information button when the item was drawn under the mouse pointer.
     onDrawnUnderPointer: function() {
-        this._informationButton.show();  
+        this._informationButton.show();
     },
 
     // Highlights the item by setting a different background color than the default 
     // if isSelected is true, removes the highlighting otherwise.
     markSelected: function(isSelected) {
        let color;
-       if (isSelected)
+       if (isSelected) {
            color = ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR;
-       else
+           this._informationButton.forceShow(true);
+       }
+       else {
            color = ITEM_DISPLAY_BACKGROUND_COLOR;
+           this._informationButton.forceShow(false);
+       }
        this._bg.background_color = color;
     },
 
@@ -308,21 +307,11 @@ GenericDisplayItem.prototype = {
 
     //// Private methods ////
 
-    // Performs actions on mouse enter event for the item. Currently, shows the information button for the item.
-    _onEnter: function(actor, event) {
-        this._informationButton.show();
-    },
-
-    // Performs actions on mouse leave event for the item. Currently, hides the information button for the item.
-    _onLeave: function(actor, event) {
-        this._informationButton.hide();
-    },
-
     // Hides the information button once the item starts being dragged.
     _onDragBegin : function (draggable, time) {
         // For some reason, we are not getting leave-event signal when we are dragging an item,
         // so we should remove the link manually.
-        this._informationButton.hide();
+        this._informationButton.actor.hide();
     } 
 };
 
