@@ -1782,7 +1782,7 @@ clutter_actor_transform_point (ClutterActor *actor,
 /**
  * clutter_actor_apply_relative_transform_to_point:
  * @self: A #ClutterActor
- * @ancestor: A #ClutterActor ancestor, or %NULL to use the
+ * @ancestor: (allow-none): A #ClutterActor ancestor, or %NULL to use the
  *   default #ClutterStage
  * @point: A point as #ClutterVertex
  * @vertex: The translated #ClutterVertex
@@ -1978,8 +1978,8 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
 /**
  * clutter_actor_get_allocation_vertices:
  * @self: A #ClutterActor
- * @ancestor: A #ClutterActor to calculate the vertices against, or %NULL
- *   to use the default #ClutterStage
+ * @ancestor: (allow-none): A #ClutterActor to calculate the vertices
+ *   against, or %NULL to use the default #ClutterStage
  * @verts: (out) (array fixed-size=4): return location for an array of
  *   4 #ClutterVertex in which to store the result.
  *
@@ -4392,10 +4392,14 @@ clutter_actor_queue_relayout (ClutterActor *self)
 /**
  * clutter_actor_get_preferred_size:
  * @self: a #ClutterActor
- * @min_width_p: (out) (allow-none): return location for the minimum width, or %NULL
- * @min_height_p: (out) (allow-none): return location for the minimum height, or %NULL
- * @natural_width_p: (out) (allow-none): return location for the natural width, or %NULL
- * @natural_height_p: (out) (allow-none): return location for the natural height, or %NULL
+ * @min_width_p: (out) (allow-none): return location for the minimum
+ *   width, or %NULL
+ * @min_height_p: (out) (allow-none): return location for the minimum
+ *   height, or %NULL
+ * @natural_width_p: (out) (allow-none): return location for the natural
+ *   width, or %NULL
+ * @natural_height_p: (out) (allow-none): return location for the natural
+ *   height, or %NULL
  *
  * Computes the preferred minimum and natural size of an actor, taking into
  * account the actor's geometry management (either height-for-width
@@ -4470,8 +4474,10 @@ clutter_actor_get_preferred_size (ClutterActor *self,
  * @self: A #ClutterActor
  * @for_height: available height when computing the preferred width,
  *   or a negative value to indicate that no height is defined
- * @min_width_p: (out): return location for minimum width, or %NULL
- * @natural_width_p: (out): return location for the natural width, or %NULL
+ * @min_width_p: (out) (allow-none): return location for minimum width,
+ *   or %NULL
+ * @natural_width_p: (out) (allow-none): return location for the natural
+ *   width, or %NULL
  *
  * Computes the requested minimum and natural widths for an actor,
  * optionally depending on the specified height, or if they are
@@ -4540,8 +4546,10 @@ clutter_actor_get_preferred_width (ClutterActor *self,
  * @self: A #ClutterActor
  * @for_width: available width to assume in computing desired height,
  *   or a negative value to indicate that no width is defined
- * @min_height_p: (out): return location for minimum height, or %NULL
- * @natural_height_p: (out): return location for natural height, or %NULL
+ * @min_height_p: (out) (allow-none): return location for minimum height,
+ *   or %NULL
+ * @natural_height_p: (out) (allow-none): return location for natural
+ *   height, or %NULL
  *
  * Computes the requested minimum and natural heights for an actor,
  * or if they are already computed, returns the cached values.
@@ -5205,8 +5213,8 @@ clutter_actor_set_size (ClutterActor *self,
 /**
  * clutter_actor_get_size:
  * @self: A #ClutterActor
- * @width: return location for the width, or %NULL.
- * @height: return location for the height, or %NULL.
+ * @width: (out) (allow-none): return location for the width, or %NULL.
+ * @height: (out) (allow-none): return location for the height, or %NULL.
  *
  * This function tries to "do what you mean" and return
  * the size an actor will have. If the actor has a valid
@@ -5237,8 +5245,8 @@ clutter_actor_get_size (ClutterActor *self,
 /**
  * clutter_actor_get_position:
  * @self: a #ClutterActor
- * @x: return location for the X coordinate, or %NULL
- * @y: return location for the Y coordinate, or %NULL
+ * @x: (out) (allow-none): return location for the X coordinate, or %NULL
+ * @y: (out) (allow-none): return location for the Y coordinate, or %NULL
  *
  * This function tries to "do what you mean" and tell you where the
  * actor is, prior to any transformations. Retrieves the fixed
@@ -5267,8 +5275,8 @@ clutter_actor_get_position (ClutterActor *self,
 /**
  * clutter_actor_get_transformed_position:
  * @self: A #ClutterActor
- * @x: (out): return location for the X coordinate, or %NULL
- * @y: (out): return location for the Y coordinate, or %NULL
+ * @x: (out) (allow-none): return location for the X coordinate, or %NULL
+ * @y: (out) (allow-none): return location for the Y coordinate, or %NULL
  *
  * Gets the absolute position of an actor, in pixels relative to the stage.
  *
@@ -5295,8 +5303,8 @@ clutter_actor_get_transformed_position (ClutterActor *self,
 /**
  * clutter_actor_get_transformed_size:
  * @self: A #ClutterActor
- * @width: (out): return location for the width, or %NULL
- * @height: (out): return location for the height, or %NULL
+ * @width: (out) (allow-none): return location for the width, or %NULL
+ * @height: (out) (allow-none): return location for the height, or %NULL
  *
  * Gets the absolute size of an actor in pixels, taking into account the
  * scaling factors.
@@ -5826,10 +5834,12 @@ clutter_actor_set_scale_with_gravity (ClutterActor   *self,
 /**
  * clutter_actor_get_scale:
  * @self: A #ClutterActor
- * @scale_x: (out): Location to store horizonal float scale factor, or %NULL.
- * @scale_y: (out): Location to store vertical float scale factor, or %NULL.
+ * @scale_x: (out) (allow-none): Location to store horizonal
+ *   scale factor, or %NULL.
+ * @scale_y: (out) (allow-none): Location to store vertical
+ *   scale factor, or %NULL.
  *
- * Retrieves an actors scale in floating point.
+ * Retrieves an actors scale factors.
  *
  * Since: 0.2
  */
@@ -5850,8 +5860,10 @@ clutter_actor_get_scale (ClutterActor *self,
 /**
  * clutter_actor_get_scale_center:
  * @self: A #ClutterActor
- * @center_x: (out): Location to store the X position of the scale center, or %NULL.
- * @center_y: (out): Location to store the Y position of the scale center, or %NULL.
+ * @center_x: (out) (allow-none): Location to store the X position
+ *   of the scale center, or %NULL.
+ * @center_y: (out) (allow-none): Location to store the Y position
+ *   of the scale center, or %NULL.
  *
  * Retrieves the scale center coordinate in pixels relative to the top
  * left corner of the actor. If the scale center was specified using a
@@ -6368,10 +6380,14 @@ clutter_actor_has_clip (ClutterActor *self)
 /**
  * clutter_actor_get_clip:
  * @self: a #ClutterActor
- * @xoff: (out): return location for the X offset of the clip rectangle, or %NULL
- * @yoff: (out): return location for the Y offset of the clip rectangle, or %NULL
- * @width: (out): return location for the width of the clip rectangle, or %NULL
- * @height: (out): return location for the height of the clip rectangle, or %NULL
+ * @xoff: (out) (allow-none): return location for the X offset of
+ *   the clip rectangle, or %NULL
+ * @yoff: (out) (allow-none): return location for the Y offset of
+ *   the clip rectangle, or %NULL
+ * @width: (out) (allow-none): return location for the width of
+ *   the clip rectangle, or %NULL
+ * @height: (out) (allow-none): return location for the height of
+ *   the clip rectangle, or %NULL
  *
  * Gets the clip area for @self, if any is set
  *
@@ -6487,7 +6503,8 @@ clutter_actor_set_parent (ClutterActor *self,
  *
  * Retrieves the parent of @self.
  *
- * Return Value: (transfer none): The #ClutterActor parent, or %NULL if no parent is set
+ * Return Value: (transfer none): The #ClutterActor parent, or %NULL
+ *  if no parent is set
  */
 ClutterActor *
 clutter_actor_get_parent (ClutterActor *self)
@@ -7984,8 +8001,8 @@ clutter_actor_box_get_height (const ClutterActorBox *box)
 /**
  * clutter_actor_box_get_origin:
  * @box: a #ClutterActorBox
- * @x: (out): return location for the X coordinate, or %NULL
- * @y: (out): return location for the Y coordinate, or %NULL
+ * @x: (out) (allow-none): return location for the X coordinate, or %NULL
+ * @y: (out) (allow-none): return location for the Y coordinate, or %NULL
  *
  * Retrieves the origin of @box
  *
@@ -8008,8 +8025,8 @@ clutter_actor_box_get_origin (const ClutterActorBox *box,
 /**
  * clutter_actor_box_get_size:
  * @box: a #ClutterActorBox
- * @width: (out): return location for the width, or %NULL
- * @height: (out): return location for the height, or %NULL
+ * @width: (out) (allow-none): return location for the width, or %NULL
+ * @height: (out) (allow-none): return location for the height, or %NULL
  *
  * Retrieves the size of @box
  *
@@ -8191,8 +8208,8 @@ destroy_shader_data (ClutterActor *self)
  *
  * Queries the currently set #ClutterShader on @self.
  *
- * Return value: (transfer none): The currently set #ClutterShader or %NULL if no
- *   shader is set.
+ * Return value: (transfer none): The currently set #ClutterShader
+ *   or %NULL if no shader is set.
  *
  * Since: 0.6
  */
@@ -8216,7 +8233,7 @@ clutter_actor_get_shader (ClutterActor *self)
 /**
  * clutter_actor_set_shader:
  * @self: a #ClutterActor
- * @shader: a #ClutterShader or %NULL to unset the shader.
+ * @shader: (allow-none): a #ClutterShader or %NULL to unset the shader.
  *
  * Sets the #ClutterShader to be used when rendering @self.
  *
@@ -8766,7 +8783,7 @@ clutter_actor_create_pango_context (ClutterActor *self)
 /**
  * clutter_actor_create_pango_layout:
  * @self: a #ClutterActor
- * @text: the text to set on the #PangoLayout, or %NULL
+ * @text: (allow-none) the text to set on the #PangoLayout, or %NULL
  *
  * Creates a new #PangoLayout from the same #PangoContext used
  * by the #ClutterActor. The #PangoLayout is already configured
