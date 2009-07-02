@@ -1751,7 +1751,7 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
   cogl_clip_ensure ();
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
   enable_state_for_drawing_buffer (buffer);
 
   /* FIXME: flush cogl cache */
@@ -1888,7 +1888,7 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
   indices = _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
 
   cogl_clip_ensure ();
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
   enable_state_for_drawing_buffer (buffer);
 
   byte_offset = indices_offset * get_indices_type_size (indices->type);

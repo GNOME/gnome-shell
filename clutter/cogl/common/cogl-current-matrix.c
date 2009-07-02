@@ -22,6 +22,7 @@
  *
  * Authors:
  *   Havoc Pennington <hp@pobox.com> for litl
+ *   Robert Bragg     <robert@linux.intel.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -53,15 +54,42 @@
 #include <string.h>
 #include <math.h>
 
+static void
+_cogl_get_client_stack (CoglContext      *ctx,
+                        CoglMatrixMode    mode,
+                        CoglMatrixStack **current_stack_p)
+{
+  if (ctx->modelview_stack &&
+      mode == COGL_MATRIX_MODELVIEW)
+    *current_stack_p  = ctx->modelview_stack;
+  else if (ctx->projection_stack &&
+           mode == COGL_MATRIX_PROJECTION)
+    *current_stack_p  = ctx->projection_stack;
+  else
+    *current_stack_p = NULL;
+}
+
+#define _COGL_GET_CONTEXT_AND_STACK(contextvar, stackvar, rval) \
+  CoglMatrixStack *stackvar;                                    \
+  _COGL_GET_CONTEXT (contextvar, rval);                         \
+  _cogl_get_client_stack (contextvar, ctx->matrix_mode, &stackvar)
+
 void
 _cogl_set_current_matrix (CoglMatrixMode mode)
 {
   GLenum gl_mode;
+  CoglMatrixStack *current_stack;                                    \
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (mode == ctx->matrix_mode)
     return;
   ctx->matrix_mode = mode;
+
+  /* If we have a client side stack then then the GL matrix mode only needs
+   * changing when we come to flush it to OpenGL */
+  _cogl_get_client_stack (ctx, mode, &current_stack);
+  if (current_stack)
+    return;
 
   gl_mode = 0; /* silence compiler warning */
   switch (mode)
@@ -79,22 +107,6 @@ _cogl_set_current_matrix (CoglMatrixMode mode)
 
   GE (glMatrixMode (gl_mode));
 }
-
-static void
-_cogl_get_client_stack (CoglContext      *ctx,
-                        CoglMatrixStack **current_stack_p)
-{
-  if (ctx->modelview_stack &&
-      ctx->matrix_mode == COGL_MATRIX_MODELVIEW)
-    *current_stack_p  = ctx->modelview_stack;
-  else
-    *current_stack_p = NULL;
-}
-
-#define _COGL_GET_CONTEXT_AND_STACK(contextvar, stackvar, rval) \
-  CoglMatrixStack *stackvar;                                    \
-  _COGL_GET_CONTEXT (contextvar, rval);                         \
-  _cogl_get_client_stack (contextvar, &stackvar)
 
 void
 _cogl_current_matrix_push (void)
@@ -204,7 +216,7 @@ _cogl_current_matrix_frustum (float left,
   if (current_stack != NULL)
     _cogl_matrix_stack_frustum (current_stack,
                                 left, right,
-                                top, bottom,
+                                bottom, top,
                                 near_val,
                                 far_val);
   else
@@ -269,13 +281,13 @@ void
 _cogl_get_matrix (CoglMatrixMode mode,
                   CoglMatrix    *matrix)
 {
+  CoglMatrixStack *current_stack;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->modelview_stack != NULL &&
-      mode == COGL_MATRIX_MODELVIEW)
-    {
-      _cogl_matrix_stack_get (ctx->modelview_stack, matrix);
-    }
+  _cogl_get_client_stack (ctx, mode, &current_stack);
+
+  if (current_stack)
+    _cogl_matrix_stack_get (current_stack, matrix);
   else
     {
       GLenum gl_mode;
@@ -319,24 +331,25 @@ _cogl_current_matrix_state_init (void)
 
   ctx->matrix_mode = COGL_MATRIX_MODELVIEW;
   ctx->modelview_stack = NULL;
+  ctx->projection_stack = NULL;
 
 #if 0
   if (ctx->indirect ||
       cogl_debug_flags & COGL_DEBUG_FORCE_CLIENT_SIDE_MATRICES)
 #endif
     {
-      ctx->modelview_stack =
-        _cogl_matrix_stack_new ();
+      ctx->modelview_stack = _cogl_matrix_stack_new ();
+      ctx->projection_stack = _cogl_matrix_stack_new ();
     }
 }
 
 void
 _cogl_current_matrix_state_destroy (void)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT_AND_STACK (ctx, current_stack, NO_RETVAL);
 
-  if (ctx->modelview_stack)
-    _cogl_matrix_stack_destroy (ctx->modelview_stack);
+  if (current_stack)
+    _cogl_matrix_stack_destroy (current_stack);
 }
 
 void
@@ -344,32 +357,35 @@ _cogl_current_matrix_state_flush (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->matrix_mode != COGL_MATRIX_MODELVIEW)
+  if (ctx->matrix_mode != COGL_MATRIX_MODELVIEW &&
+      ctx->matrix_mode != COGL_MATRIX_PROJECTION)
     {
-      g_warning ("matrix state must be flushed in MODELVIEW mode");
+      g_warning ("matrix state must be flushed in "
+                 "MODELVIEW or PROJECTION mode");
       return;
     }
 
-  if (ctx->modelview_stack)
+  if (ctx->modelview_stack &&
+      ctx->matrix_mode == COGL_MATRIX_MODELVIEW)
     {
       _cogl_matrix_stack_flush_to_gl (ctx->modelview_stack,
                                       GL_MODELVIEW);
+    }
+  else if (ctx->projection_stack &&
+           ctx->matrix_mode == COGL_MATRIX_PROJECTION)
+    {
+      _cogl_matrix_stack_flush_to_gl (ctx->projection_stack,
+                                      GL_PROJECTION);
     }
 }
 
 void
 _cogl_current_matrix_state_dirty (void)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT_AND_STACK (ctx, current_stack, NO_RETVAL);
 
-  if (ctx->matrix_mode != COGL_MATRIX_MODELVIEW)
-    {
-      g_warning ("matrix state must be dirtied in MODELVIEW mode");
-      return;
-    }
-
-  if (ctx->modelview_stack)
-    _cogl_matrix_stack_dirty (ctx->modelview_stack);
+  if (current_stack)
+    _cogl_matrix_stack_dirty (current_stack);
 }
 
 void
@@ -444,8 +460,6 @@ cogl_frustum (float        left,
                                 top,
                                 z_near,
                                 z_far);
-
-  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
 
   /* Calculate and store the inverse of the matrix */
   memset (ctx->inverse_projection, 0, sizeof (float) * 16);
@@ -522,5 +536,14 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
 {
   _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
   _cogl_current_matrix_load (matrix);
+}
+
+void
+_cogl_flush_matrix_stacks (void)
+{
+  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
+  _cogl_current_matrix_state_flush ();
+  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+  _cogl_current_matrix_state_flush ();
 }
 

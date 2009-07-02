@@ -88,7 +88,7 @@ _cogl_path_stroke_nodes ()
   options.disable_layers = (guint32)~0;
 
   _cogl_material_flush_gl_state (ctx->source_material, &options);
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
 
   while (path_start < ctx->path_nodes->len)
     {
@@ -177,7 +177,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
     }
   ctx->n_texcoord_arrays_enabled = 0;
 
-  _cogl_current_matrix_state_flush ();
+  _cogl_flush_matrix_stacks ();
 
   while (path_start < path_size)
     {
@@ -226,7 +226,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       _cogl_current_matrix_push ();
       _cogl_current_matrix_identity ();
 
-      _cogl_current_matrix_state_flush ();
+      _cogl_flush_matrix_stacks ();
 
       glRectf (-1.0, -1.0, 1.0, 1.0);
       glRectf (-1.0, -1.0, 1.0, 1.0);

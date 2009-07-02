@@ -90,4 +90,6 @@ void _cogl_current_matrix_state_destroy  (void);
 void _cogl_current_matrix_state_flush    (void);
 void _cogl_current_matrix_state_dirty    (void);
 
+void _cogl_flush_matrix_stacks           (void);
+
 #endif /* __COGL_CURRENT_MATRIX_H */

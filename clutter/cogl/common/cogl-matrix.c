@@ -24,6 +24,7 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
+#include <cogl.h>
 #include <cogl-matrix.h>
 
 #include <glib.h>
