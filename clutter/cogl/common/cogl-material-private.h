@@ -245,8 +245,7 @@ void _cogl_material_flush_gl_state (CoglHandle material,
 gboolean _cogl_material_equal (CoglHandle material0_handle,
                                CoglMaterialFlushOptions *material0_flush_options,
                                CoglHandle material1_handle,
-                               CoglMaterialFlushOptions *material1_flush_options,
-                               CoglMaterialEqualFlags flags);
+                               CoglMaterialFlushOptions *material1_flush_options);
 
 CoglHandle _cogl_material_journal_ref (CoglHandle material_handle);
 void _cogl_material_journal_unref (CoglHandle material_handle);

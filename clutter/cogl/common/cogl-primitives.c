@@ -328,8 +328,7 @@ compare_entry_materials (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
   if (_cogl_material_equal (entry0->material,
                             &entry0->flush_options,
                             entry1->material,
-                            &entry1->flush_options,
-                            COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS))
+                            &entry1->flush_options))
     return TRUE;
   else
     return FALSE;
