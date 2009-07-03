@@ -1630,126 +1630,202 @@ _cogl_material_flush_gl_state (CoglHandle handle,
             0, sizeof (CoglMaterialFlushOptions));
 }
 
+
+/* This is used by the Cogl journal to compare materials so that it
+ * can split up geometry that needs different OpenGL state.
+ *
+ * It is acceptable to have false negatives - although they will result
+ * in redundant OpenGL calls that try and update the state.
+ *
+ * False positives aren't allowed.
+ */
 gboolean
 _cogl_material_equal (CoglHandle material0_handle,
                       CoglMaterialFlushOptions *material0_flush_options,
                       CoglHandle material1_handle,
-                      CoglMaterialFlushOptions *material1_flush_options,
-                      CoglMaterialEqualFlags flags)
+                      CoglMaterialFlushOptions *material1_flush_options)
 {
-  CoglMaterial  *material0;
-  CoglMaterial  *material1;
-  GList         *l0, *l1;
+  CoglMaterial          *material0;
+  CoglMaterial          *material1;
+  CoglMaterialFlushFlag  flush_flags0 = material0_flush_options->flags;
+  CoglMaterialFlushFlag  flush_flags1 = material1_flush_options->flags;
+  guint32                fallback_layers0;
+  guint32                fallback_layers1;
+  guint32                disable_layers0;
+  guint32                disable_layers1;
+  GList                 *l0, *l1;
+  int                    i;
 
-  if (material0_handle == material1_handle &&
-      material0_flush_options->flags == material1_flush_options->flags)
+  /* Compare the flush options first; if they are equivalent then we
+   * can potentially return quickly if the material handles then match. */
+
+
+  /* The skip color option is used when the color of the material is being
+   * submitted in a vertex array so cogl_material_flush_gl_state doesn't
+   * need to call glColor.
+   * - A skip gl color material following a non skip color material doesn't
+   *   need a state change since putting a color in a vertex array (as done
+   *   for skip color materials) would simply take precedence over one
+   *   previously specified by glColor (as done for non skip color materials)
+   * - A non skip color material following a skip color material also doesn't
+   *   need a state change for the same reason.
+   * - The problem is that a non skip color, followed by a skip color, followed
+   *   by a non skip color does require a state change. Since we don't have
+   *   enough contextual information here we currently return FALSE whenever
+   *   the skip color option changes. */
+  if ((flush_flags0 & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR) !=
+      (flush_flags1 & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR))
+    return FALSE;
+
+  fallback_layers0 = flush_flags0 & COGL_MATERIAL_FLUSH_FALLBACK_MASK ?
+    material0_flush_options->fallback_layers : 0;
+  fallback_layers1 = flush_flags1 & COGL_MATERIAL_FLUSH_FALLBACK_MASK ?
+    material1_flush_options->fallback_layers : 0;
+  if (fallback_layers0 != fallback_layers1)
+    return FALSE;
+
+  disable_layers0 = flush_flags0 & COGL_MATERIAL_FLUSH_DISABLE_MASK ?
+    material0_flush_options->disable_layers : 0;
+  disable_layers1 = flush_flags1 & COGL_MATERIAL_FLUSH_DISABLE_MASK ?
+    material1_flush_options->disable_layers : 0;
+  if (disable_layers0 != disable_layers1)
+    return FALSE;
+
+  /* NB: Some unlikely false negatives are possible here. */
+  if ((flush_flags0 & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE) !=
+      (flush_flags1 & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE))
+    return FALSE;
+
+  if ((flush_flags0 & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE) &&
+      material0_flush_options->layer0_override_texture !=
+      material1_flush_options->layer0_override_texture)
+    return FALSE;
+
+  /* Since we know the flush options match at this point, if the material
+   * handles match then we know they are equivalent. */
+  if (material0_handle == material1_handle)
     return TRUE;
 
-  if (!(flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS))
-    {
-      g_critical ("FIXME: _cogl_material_equal doesn't yet support "
-                  "deep comparisons of materials");
-      return FALSE;
-    }
-  /* Note: the following code is written with the assumption this
-   * constraint will go away*/
+  /* Now we need to look in more detail... */
 
   material0 = _cogl_material_pointer_from_handle (material0_handle);
   material1 = _cogl_material_pointer_from_handle (material1_handle);
 
-  if (!((material0_flush_options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR &&
-         material1_flush_options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR)))
-    {
-      if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR) !=
-          (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
-        return FALSE;
-      else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
-               !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
-        return FALSE;
-      else if (!memcmp (material0->unlit, material1->unlit,
-                        sizeof (material0->unlit)))
-        return FALSE;
-    }
+  if (!(material0_flush_options->flags & COGL_MATERIAL_FLUSH_SKIP_GL_COLOR) &&
+      !memcmp (material0->unlit, material1->unlit, sizeof (material0->unlit)))
+    return FALSE;
+
+  /* First we simply try and find a difference according to default flags
+   * for each material component to avoid deeper comparison. */
 
   if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL) !=
       (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL))
     return FALSE;
-  else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
-           !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL))
-    return FALSE;
-#if 0
-  else if (!_deep_are_gl_materials_equal ())
-    return FALSE;
-#endif
 
   if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC) !=
       (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC))
     return FALSE;
-  else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
-           !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC))
-    return FALSE;
-#if 0
-  else if (!_deep_are_alpha_funcs_equal ())
-    return FALSE;
-#endif
 
+  /* Potentially blending could be "enabled" but the blend mode
+   * could be equivalent to being disabled, but we accept those false
+   * negatives for now. */
   if ((material0->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND) !=
       (material1->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND))
     return FALSE;
-  /* XXX: potentially blending could be "enabled" but the blend mode
-   * could be equivalent to being disabled. */
+
+  if ((material0->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND) &&
+      (material0->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND) !=
+      (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
+    return FALSE;
+
+  /* If we still haven't found a difference then do a deeper comparison..
+   *
+   * Actually we don't currently do this; we simply assume anything
+   * non default is different and accept the false negatives for now.
+   */
+
+#if 0 /* TODO */
+  if (!_deep_are_gl_materials_equal ())
+    return FALSE;
+#else
+  /* Just assume that all non default materials are different */
+  if (!(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL))
+    return FALSE;
+#endif
+
+#if 0 /* TODO */
+  if (!_deep_are_alpha_funcs_equal ())
+    return FALSE;
+#else
+  /* Just assume that all non default alpha funcs are different */
+  if (!(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_ALPHA_FUNC))
+    return FALSE;
+#endif
 
   if (material0->flags & COGL_MATERIAL_FLAG_ENABLE_BLEND)
     {
-      if ((material0->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND) !=
-          (material1->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
+#if 0 /* TODO */
+      if (!_deep_is_blend_equal ())
         return FALSE;
-      else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
-               !(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
-        return FALSE;
-#if 0
-      else if (!_deep_is_blend_equal ())
+#else
+      if (!(material0->flags & COGL_MATERIAL_FLAG_DEFAULT_BLEND))
         return FALSE;
 #endif
     }
 
-  if (material0_flush_options->fallback_layers !=
-      material1_flush_options->fallback_layers ||
-      material0_flush_options->disable_layers !=
-      material1_flush_options->disable_layers)
-    return FALSE;
+
+  /* Finally compare each of the material layers ... */
 
   l0 = material0->layers;
   l1 = material1->layers;
+  i = 0;
+
+  /* NB: At this point we know if COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE is being
+   * used then both materials are overriding with the same texture so we can
+   * simply skip over layer 0 */
+  if (material0_flush_options->flags & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE &&
+      l0 && l1)
+    {
+      l0 = l0->next;
+      l1 = l1->next;
+      i++;
+    }
 
   while (l0 && l1)
     {
-      CoglMaterialLayer *layer0;
-      CoglMaterialLayer *layer1;
+      CoglMaterialLayer *m0_layer;
+      CoglMaterialLayer *m1_layer;
 
       if ((l0 == NULL && l1 != NULL) ||
           (l1 == NULL && l0 != NULL))
         return FALSE;
 
-      layer0 = l0->data;
-      layer1 = l1->data;
+      /* NB: At this point we know that the fallback and disable masks for
+       * both materials are equal */
+      if ((disable_layers0 & (1<<i)) || (fallback_layers0 & (1<<i)))
+        continue;
 
-      if (layer0->texture != layer1->texture)
+      m0_layer = l0->data;
+      m1_layer = l1->data;
+
+      if (m0_layer->texture != m1_layer->texture)
         return FALSE;
 
-      if ((layer0->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
-          (layer1->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+      if ((m0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
+          (m1_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
         return FALSE;
-      else if (flags & COGL_MATERIAL_EQUAL_FLAGS_ASSERT_ALL_DEFAULTS &&
-               !(layer0->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+
+#if 0 /* TODO */
+      if (!_deep_are_layer_combines_equal ())
         return FALSE;
-#if 0
-      else if (!_deep_are_layer_combines_equal ())
+#else
+      if (!(m0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
         return FALSE;
 #endif
 
       l0 = l0->next;
       l1 = l1->next;
+      i++;
     }
 
   if ((l0 == NULL && l1 != NULL) ||
