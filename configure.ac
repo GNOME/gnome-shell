@@ -701,7 +701,7 @@ AS_CASE([$enable_profile],
 	[yes], [
             if test "x$GCC" = "xyes"; then
               PKG_CHECK_MODULES([PROFILE_DEP], [uprof-0.2])
-              CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
+              CLUTTER_PROFILE_CFLAGS=" -DCLUTTER_ENABLE_PROFILE -DCOGL_ENABLE_PROFILE $PROFILE_DEP_CFLAGS"
               CLUTTER_PROFILE_LDFLAGS=" $PROFILE_DEP_LIBS"
               if test "x$enable_debug" = "xyes"; then
                   CLUTTER_PROFILE_CFLAGS+=" -DUPROF_DEBUG"

@@ -134,6 +134,8 @@ libclutter_cogl_la_SOURCES = 				\
 	$(srcdir)/cogl-framebuffer.c 			\
 	$(srcdir)/cogl-matrix-mesa.h 			\
 	$(srcdir)/cogl-matrix-mesa.c 			\
+	$(srcdir)/cogl-profile.h 			\
+	$(srcdir)/cogl-profile.c 			\
 	$(NULL)
 
 EXTRA_DIST += $(cogl_winsys_sources)

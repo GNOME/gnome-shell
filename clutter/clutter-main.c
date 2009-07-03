@@ -1542,6 +1542,13 @@ clutter_init_real (GError **error)
   _clutter_feature_init ();
 
 #ifdef CLUTTER_ENABLE_PROFILE
+    {
+      UProfContext *cogl_context;
+      cogl_context = uprof_find_context ("Cogl");
+      if (cogl_context)
+        uprof_context_link (_clutter_uprof_context, cogl_context);
+    }
+
   if (clutter_profile_flags & CLUTTER_PROFILE_PICKING_ONLY)
     _clutter_profile_suspend ();
 #endif

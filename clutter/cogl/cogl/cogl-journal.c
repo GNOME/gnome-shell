@@ -33,6 +33,7 @@
 #include "cogl-material-private.h"
 #include "cogl-vertex-buffer-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-profile.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -535,11 +536,18 @@ _cogl_journal_flush (void)
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
   CoglHandle            framebuffer;
   CoglMatrixStack      *modelview_stack;
+  COGL_STATIC_TIMER (flush_timer,
+                     "Mainloop", /* parent */
+                     "Journal Flush",
+                     "The time spent flushing the Cogl journal",
+                     0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (ctx->journal->len == 0)
     return;
+
+  COGL_TIMER_START (_cogl_uprof_context, flush_timer);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_BATCHING))
     g_print ("BATCHING: journal len = %d\n", ctx->journal->len);
@@ -608,6 +616,8 @@ _cogl_journal_flush (void)
 
   g_array_set_size (ctx->journal, 0);
   g_array_set_size (ctx->logged_vertices, 0);
+
+  COGL_TIMER_STOP (_cogl_uprof_context, flush_timer);
 }
 
 static void
@@ -644,8 +654,15 @@ _cogl_journal_log_quad (float         x_1,
   int               next_entry;
   guint32           disable_layers;
   CoglJournalEntry *entry;
+  COGL_STATIC_TIMER (log_timer,
+                     "Mainloop", /* parent */
+                     "Journal Log",
+                     "The time spent logging in the Cogl journal",
+                     0 /* no application private data */);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  COGL_TIMER_START (_cogl_uprof_context, log_timer);
 
   if (ctx->logged_vertices->len == 0)
     _cogl_journal_init ();
@@ -765,5 +782,7 @@ _cogl_journal_log_quad (float         x_1,
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_BATCHING
                   || cogl_debug_flags & COGL_DEBUG_RECTANGLES))
     _cogl_journal_flush ();
+
+  COGL_TIMER_STOP (_cogl_uprof_context, log_timer);
 }
 
