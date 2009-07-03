@@ -1306,7 +1306,7 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
 
   priv->alpha = g_object_ref_sink (alpha);
   priv->alpha_notify_id =
-    g_signal_connect (priv->alpha, "notify::value",
+    g_signal_connect (priv->alpha, "notify::alpha",
                       G_CALLBACK (on_alpha_notify),
                       animation);
 
