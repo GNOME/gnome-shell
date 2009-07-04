@@ -355,7 +355,7 @@ GenericDisplay.prototype = {
         this._selectedIndex = -1;
         // These two are public - .actor is the normal "actor subclass" property,
         // but we also expose a .displayControl actor which is separate.
-        // See also getSideArea.
+        // See also getNavigationArea.
         this.actor = this._list;
         this.displayControl = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
                                             spacing: 12,
@@ -463,7 +463,7 @@ GenericDisplay.prototype = {
 
     // Returns an actor which acts as a sidebar; this is used for
     // the applications category view
-    getSideArea: function () {
+    getNavigationArea: function () {
         return null;
     },
 

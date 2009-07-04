@@ -216,6 +216,7 @@ AppDisplay.prototype = {
         this.connect('expanded', Lang.bind(this, function (self) {
             this._filterReset();
         }));
+        this._filterReset();
     },
 
     moveRight: function() {
@@ -235,7 +236,7 @@ AppDisplay.prototype = {
     },
 
     // Override genericDisplay.js
-    getSideArea: function() {
+    getNavigationArea: function() {
         return this._menuDisplay;
     },
 
@@ -261,11 +262,7 @@ AppDisplay.prototype = {
 
     _filterReset: function() {
         GenericDisplay.GenericDisplay.prototype._filterReset.call(this);
-        if (this._activeMenu != null)
-            this._activeMenu.setState(MENU_UNSELECTED);
-        this._activeMenuIndex = -1;
-        this._activeMenu = null;
-        this._focusInMenu = true;
+        this._selectMenuIndex(0);
     },
 
     //// Private ////
@@ -280,28 +277,36 @@ AppDisplay.prototype = {
         this._menuDisplays[index].setState(MENU_SELECTED);
     },
 
+    _addMenuItem: function(name, id, icon, index) {
+        let display = new MenuItem(name, id, icon);
+        this._menuDisplays.push(display);
+        display.connect('state-changed', Lang.bind(this, function (display) {
+            let activated = display.getState() != MENU_UNSELECTED;
+            if (!activated && display == this._activeMenu) {
+                this._activeMenuIndex = -1;
+                this._activeMenu = null;
+            } else if (activated) {
+                if (display != this._activeMenu && this._activeMenu != null)
+                    this._activeMenu.setState(MENU_UNSELECTED);
+                this._activeMenuIndex = index;
+                this._activeMenu = display;
+                if (id == null) {
+                    this._activeMenuApps = this._appMonitor.get_most_used_apps(0, 30);
+                } else {
+                    this._activeMenuApps = this._appSystem.get_applications_for_menu(id);
+                }
+            }
+            this._redisplay();
+        }));
+        this._menuDisplay.append(display.actor, 0);
+    },
+
     _redisplayMenus: function() {
         this._menuDisplay.remove_all();
+        this._addMenuItem('Frequent', null, 'gtk-select-all');
         for (let i = 0; i < this._menus.length; i++) {
             let menu = this._menus[i];
-            let display = new MenuItem(menu.name, menu.id, menu.icon);
-            this._menuDisplays.push(display);
-            let menuIndex = i;
-            display.connect('state-changed', Lang.bind(this, function (display) {
-                let activated = display.getState() != MENU_UNSELECTED;
-                if (!activated && display == this._activeMenu) {
-                    this._activeMenuIndex = -1;
-                    this._activeMenu = null;
-                } else if (activated) {
-                    if (display != this._activeMenu && this._activeMenu != null)
-                        this._activeMenu.setState(MENU_UNSELECTED);
-                    this._activeMenuIndex = menuIndex;
-                    this._activeMenu = display;
-                    this._activeMenuApps = this._appSystem.get_applications_for_menu(menu.id);
-                }
-                this._redisplay();
-            }));
-            this._menuDisplay.append(display.actor, 0);
+            this._addMenuItem(menu.name, menu.id, menu.icon, i+1);
         }
     },
 
