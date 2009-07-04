@@ -348,14 +348,13 @@ Dash.prototype = {
                                             height: LABEL_HEIGHT});
         this._appsSection = new Big.Box({ padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
-        this._appsSection.append(this._appsText, Big.BoxPackFlags.EXPAND);
+        this._appsSection.append(this._appsText, Big.BoxPackFlags.NONE);
 
         this._itemDisplayHeight = global.screen_height - this._appsSection.y - DASH_SECTION_MISC_HEIGHT * 2 - bottomHeight;
         
         this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
         this._appsSection.append(this._appsContent, Big.BoxPackFlags.EXPAND);
         this._appWell = new AppDisplay.AppWell(this._displayWidth);
-        this._appWell.actor.show();
         this._appsContent.append(this._appWell.actor, Big.BoxPackFlags.EXPAND);
 
         let moreAppsBox = new Big.Box({x_align: Big.BoxAlignment.END});
@@ -364,13 +363,14 @@ Dash.prototype = {
                                              text: "More...",
                                              height: LABEL_HEIGHT });
         moreAppsBox.append(this._moreAppsLink.actor, Big.BoxPackFlags.EXPAND);
-        this._appsSection.append(moreAppsBox, Big.BoxPackFlags.EXPAND);
+        this._appsSection.append(moreAppsBox, Big.BoxPackFlags.NONE);
 
         this.dashContainer.append(this._appsSection, Big.BoxPackFlags.NONE);
 
         this._appsSectionDefaultHeight = this._appsSection.height;
 
         this._docsSection = new Big.Box({ padding_top: DASH_SECTION_PADDING,
+                                          padding_bottom: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
 
         this._docsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
@@ -388,7 +388,7 @@ Dash.prototype = {
                                              text: "More...",
                                              height: LABEL_HEIGHT });
         moreDocsBox.append(this._moreDocsLink.actor, Big.BoxPackFlags.EXPAND);
-        this._docsSection.append(moreDocsBox, Big.BoxPackFlags.EXPAND);
+        this._docsSection.append(moreDocsBox, Big.BoxPackFlags.NONE);
 
         this.dashContainer.append(this._docsSection, Big.BoxPackFlags.EXPAND);
 
