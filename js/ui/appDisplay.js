@@ -169,15 +169,15 @@ Signals.addSignalMethods(MenuItem.prototype);
  *
  * width - width available for the display
  */
-function AppDisplay(width, numberOfColumns, columnGap) {
-    this._init(width, numberOfColumns, columnGap);
+function AppDisplay(width) {
+    this._init(width);
 }
 
 AppDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function(width, numberOfColumns, columnGap) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, width, numberOfColumns, columnGap);
+    _init : function(width) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, width);
 
         this._menus = [];
         this._menuDisplays = [];
@@ -429,8 +429,8 @@ AppDisplay.prototype = {
     },
 
     // Creates an AppDisplayItem based on itemInfo, which is expected be an AppInfo object.
-    _createDisplayItem: function(itemInfo) {
-        return new AppDisplayItem(itemInfo, this._columnWidth);
+    _createDisplayItem: function(itemInfo, width) {
+        return new AppDisplayItem(itemInfo, width);
     }
 };
 

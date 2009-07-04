@@ -333,48 +333,46 @@ Signals.addSignalMethods(GenericDisplayItem.prototype);
  *
  * width - width available for the display
  */
-function GenericDisplay(width, numberOfColumns, columnGap) {
-    this._init(width, numberOfColumns, columnGap);
+function GenericDisplay(width) {
+    this._init(width);
 }
 
 GenericDisplay.prototype = {
-    _init : function(width, numberOfColumns, columnGap) {
+    _init : function(width) {
         this._search = '';
         this._expanded = false;
-        this._width = null;
-        this._columnWidth = null;
-
-        this._numberOfColumns = numberOfColumns;
-        this._columnGap = columnGap;
-        if (this._columnGap == null)
-            this._columnGap = DEFAULT_COLUMN_GAP;
+        this._width = width;
 
         this._maxItemsPerPage = null;
-        this._grid = new Tidy.Grid({width: this._width });
+        this._list = new Shell.OverflowList({ width: this._width,
+                                              spacing: 6.0,
+                                              item_height: ITEM_DISPLAY_HEIGHT });
 
-        this._setDimensionsAndMaxItems(width, 0);
+        this._list.connect('notify::n-pages', Lang.bind(this, function (grid, alloc) {
+            this._updateDisplayControl(true);
+        }));
+        this._list.connect('notify::page', Lang.bind(this, function (grid, alloc) {
+            this._updateDisplayControl(false);
+        }));
 
-        this._grid.column_major = true;
-        this._grid.column_gap = this._columnGap;
         // map<itemId, Object> where Object represents the item info
-        this._allItems = {}; 
-        // an array of itemIds of items that match the current request 
+        this._allItems = {};
+        // an array of itemIds of items that match the current request
         // in the order in which the items should be displayed
         this._matchedItems = [];
         // map<itemId, GenericDisplayItem>
-        this._displayedItems = {};  
+        this._displayedItems = {};
         this._displayedItemsCount = 0;
-        this._pageDisplayed = 0;
         this._selectedIndex = -1;
         // These two are public - .actor is the normal "actor subclass" property,
         // but we also expose a .displayControl actor which is separate.
         // See also getSideArea.
-        this.actor = this._grid;
+        this.actor = this._list;
         this.displayControl = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
                                             spacing: 12,
                                             orientation: Big.BoxOrientation.HORIZONTAL});
 
-        this._availableWidthForItemDetails = this._columnWidth;
+        this._availableWidthForItemDetails = width;
         this.selectedItemDetails = new Big.Box({});
     },
 
@@ -461,34 +459,15 @@ GenericDisplay.prototype = {
         return this._displayedItemsCount > 0;
     },
 
-    // Readjusts display layout and the items displayed based on the new dimensions.
-    setExpanded: function(expanded, baseWidth, expandWidth, numberOfColumns) {
-        this._expanded = expanded;
-        this._numberOfColumns = numberOfColumns;
-        this._setDimensionsAndMaxItems(baseWidth, expandWidth);
-        this._grid.width = this._width;
-        this._pageDisplayed = 0;
-        this._displayMatchedItems(true);
-        let gridWidth = this._width;
-        let sideArea = this.getSideArea();
-        if (sideArea) {
-            if (expanded)
-                sideArea.show();
-            else
-                sideArea.hide();
-        }
-        this.emit('expanded');
-    },
-
     // Updates the displayed items and makes the display actor visible.
     show: function() {
-        this._grid.show();
+        this._list.show();
         this._redisplay(true);
     },
 
     // Hides the display actor.
     hide: function() {
-        this._grid.hide();
+        this._list.hide();
         this._filterReset();
         this._removeAllDisplayItems();
     },
@@ -517,9 +496,7 @@ GenericDisplay.prototype = {
         let hadSelected = this.hasSelected();
 
         this._removeAllDisplayItems();
-
-        for (let i = this._maxItemsPerPage * this._pageDisplayed; i < this._matchedItems.length && i < this._maxItemsPerPage * (this._pageDisplayed + 1); i++) {
-            
+        for (let i = 0; i < this._matchedItems.length; i++) {
             this._addDisplayItem(this._matchedItems[i]);
         }
 
@@ -528,11 +505,9 @@ GenericDisplay.prototype = {
             this.selectFirstItem();
         }
 
-        this._updateDisplayControl(resetDisplayControl);
-
         // We currently redisplay matching items and raise the sideshow as part of two different callbacks.
-        // Checking what is under the pointer after a timeout allows us to not merge these callbacks into one, at least for now.  
-        Mainloop.timeout_add(5, 
+        // Checking what is under the pointer after a timeout allows us to not merge these callbacks into one, at least for now.
+        Mainloop.timeout_add(5,
                              Lang.bind(this,
                                        function() {
                                            // Check if the pointer is over one of the items and display the information button if it is.
@@ -559,9 +534,9 @@ GenericDisplay.prototype = {
         }
 
         let itemInfo = this._allItems[itemId];
-        let displayItem = this._createDisplayItem(itemInfo);
+        let displayItem = this._createDisplayItem(itemInfo, this._width);
 
-        displayItem.connect('activate', 
+        displayItem.connect('activate',
                             Lang.bind(this,
                                       function() {
                                           // update the selection
@@ -575,7 +550,7 @@ GenericDisplay.prototype = {
                                           // update the selection
                                           this._selectIndex(this._getIndexOfDisplayedActor(displayItem.actor));
                                       }));
-        this._grid.add_actor(displayItem.actor);
+        this._list.add_actor(displayItem.actor);
         this._displayedItems[itemId] = displayItem;
         this._displayedItemsCount++;
     },
@@ -585,7 +560,7 @@ GenericDisplay.prototype = {
         let displayItem = this._displayedItems[itemId];
         let displayItemIndex = this._getIndexOfDisplayedActor(displayItem.actor);
 
-        if (this.hasSelected() && (this._displayedItemsCount == 1 || !this._grid.visible)) { 
+        if (this.hasSelected() && (this._displayedItemsCount == 1 || !this._list.visible)) {
             this.unsetSelected();
         } else if (this.hasSelected() && displayItemIndex < this._selectedIndex) {
             this.selectUp();
@@ -625,9 +600,9 @@ GenericDisplay.prototype = {
      *             their own while the user was browsing through the result pages.
      */
     _redisplay: function(resetPage) {
-        if (!this._grid.visible)
+        if (!this._list.visible)
             return;
-        
+
         this._refreshCache();
         if (!this._filterActive())
             this._setDefaultList();
@@ -635,7 +610,7 @@ GenericDisplay.prototype = {
             this._doSearchFilter();
 
         if (resetPage)
-            this._pageDisplayed = 0;
+            this._list.page = 0;
 
         this._displayMatchedItems(true);
 
@@ -675,24 +650,6 @@ GenericDisplay.prototype = {
     },
 
     //// Private methods ////
-
-    // Sets this._width, this._columnWidth, and this._maxItemsPerPage based on the
-    // space available for the display, number of columns, and the number of items it can fit.
-    _setDimensionsAndMaxItems: function(baseWidth, expandWidth) {
-        this._width = baseWidth + expandWidth;
-        let gridWidth;
-        let sideArea = this.getSideArea();
-        if (this._expanded && sideArea) {
-            gridWidth = expandWidth;
-            sideArea.width = baseWidth;
-        } else {
-            gridWidth = this._width;
-        }
-        this._columnWidth = (gridWidth - this._columnGap * (this._numberOfColumns - 1)) / this._numberOfColumns;
-        let maxItemsInColumn = 5; // Math.floor(height / ITEM_DISPLAY_HEIGHT);
-        this._maxItemsPerPage =  maxItemsInColumn * this._numberOfColumns;
-        this._grid.width = gridWidth;
-    },
 
     _getSearchMatchedItems: function() {
         let matchedItemsForSearch = {};
@@ -743,13 +700,12 @@ GenericDisplay.prototype = {
                 return 1;
             else
                 return this._compareItems(a, b);
-        }));        
+        }));
     },
 
-    // Displays the page specified by the pageNumber argument. The pageNumber is 0-based.
+    // Displays the page specified by the pageNumber argument.
     _displayPage: function(pageNumber) {
-        this._pageDisplayed = pageNumber;
-        this._displayMatchedItems(false);
+        this._list.page = pageNumber;
     },
 
     /*
@@ -763,29 +719,29 @@ GenericDisplay.prototype = {
     _updateDisplayControl: function(resetDisplayControl) {
         if (resetDisplayControl) {
             this.displayControl.remove_all();
-            let pageNumber = 0;
-            for (let i = 0; i < this._matchedItems.length; i = i + this._maxItemsPerPage) {
-                let pageControl = new Link.Link({ color: (pageNumber == this._pageDisplayed) ? DISPLAY_CONTROL_SELECTED_COLOR : ITEM_DISPLAY_DESCRIPTION_COLOR,
+            let nPages = this._list.n_pages;
+            let pageNumber = this._list.page;
+            for (let i = 0; i < nPages; i++) {
+                let pageControl = new Link.Link({ color: (i == pageNumber) ? DISPLAY_CONTROL_SELECTED_COLOR : ITEM_DISPLAY_DESCRIPTION_COLOR,
                                                   font_name: "Sans Bold 16px",
-                                                  text: (pageNumber + 1) + "",
+                                                  text: (i+1) + "",
                                                   height: LABEL_HEIGHT,
-                                                  reactive: (pageNumber == this._pageDisplayed) ? false : true});
+                                                  reactive: (i == pageNumber) ? false : true});
                 this.displayControl.append(pageControl.actor, Big.BoxPackFlags.NONE);
 
                 // we use pageNumberLocalScope to get the page number right in the callback function
-                let pageNumberLocalScope = pageNumber;         
+                let pageNumberLocalScope = i;
                 pageControl.connect('clicked',
                                     Lang.bind(this,
                                               function(o, event) {
                                                   this._displayPage(pageNumberLocalScope);
                                               }));
-                pageNumber ++; 
             }
         } else {
             let pageControlActors = this.displayControl.get_children();
-            for (let i = 0; i < pageControlActors.length; i++) { 
+            for (let i = 0; i < pageControlActors.length; i++) {
                 let pageControlActor = pageControlActors[i];
-                if (i == this._pageDisplayed) {
+                if (i == this._list.page) {
                     pageControlActor.color =  DISPLAY_CONTROL_SELECTED_COLOR;
                     pageControlActor.reactive = false;
                 } else {
@@ -796,10 +752,10 @@ GenericDisplay.prototype = {
         }
     },
 
-    // Returns a display item based on its index in the ordering of the 
+    // Returns a display item based on its index in the ordering of the
     // display children.
     _findDisplayedByIndex: function(index) {
-        let displayedActors = this._grid.get_children();
+        let displayedActors = this._list.get_children();
         let actor = displayedActors[index];
         return this._findDisplayedByActor(actor);
     },
@@ -819,9 +775,9 @@ GenericDisplay.prototype = {
     // Returns and index that the actor has in the ordering of the display's
     // children.
     _getIndexOfDisplayedActor: function(actor) {
-        let children = this._grid.get_children();
+        let children = this._list.get_children();
         for (let i = 0; i < children.length; i++) {
-            if (children[i] == actor) 
+            if (children[i] == actor)
                 return i;
         }
         return -1;

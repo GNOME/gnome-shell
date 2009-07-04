@@ -67,15 +67,15 @@ DocDisplayItem.prototype = {
  *
  * width - width available for the display
  */
-function DocDisplay(width, numberOfColumns, columnGap) {
-    this._init(width, numberOfColumns, columnGap);
+function DocDisplay(width) {
+    this._init(width);
 }
 
 DocDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function(width, numberOfColumns, columnGap) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, width, numberOfColumns, columnGap);
+    _init : function(width) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, width);
         let me = this;
         this._recentManager = Gtk.RecentManager.get_default();
         this._docsStale = true;
@@ -170,9 +170,9 @@ DocDisplay.prototype = {
     },
 
     // Creates a DocDisplayItem based on itemInfo, which is expected to be a DocInfo object.
-    _createDisplayItem: function(itemInfo) {
-        return new DocDisplayItem(itemInfo, this._columnWidth);
-    } 
+    _createDisplayItem: function(itemInfo, width) {
+        return new DocDisplayItem(itemInfo, width);
+    }
 };
 
 Signals.addSignalMethods(DocDisplay.prototype);

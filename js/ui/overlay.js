@@ -30,7 +30,6 @@ const DASH_MIN_WIDTH = 250;
 const DASH_OUTER_PADDING = 4;
 const DASH_SECTION_PADDING = 6;
 const DASH_SECTION_SPACING = 6;
-const DASH_COLUMNS = 1;
 const DASH_CORNER_RADIUS = 5;
 // This is the height of section components other than the item display.
 const DASH_SECTION_MISC_HEIGHT = (LABEL_HEIGHT + DASH_SECTION_SPACING) * 2 + DASH_SECTION_PADDING;
@@ -168,7 +167,7 @@ ItemResults.prototype = {
         // LABEL_HEIGHT is the height of this._resultsText and GenericDisplay.LABEL_HEIGHT is the height
         // of the display controls.
         this._displayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2;
-        this.display = new displayClass(resultsWidth, DASH_COLUMNS, DASH_SECTION_SPACING);
+        this.display = new displayClass(resultsWidth);
 
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
 
@@ -181,7 +180,6 @@ ItemResults.prototype = {
     _setSearchMode: function() {
         this.actor.height = this._resultsHeight /  NUMBER_OF_SECTIONS_IN_SEARCH;
         let displayHeight = this._displayHeight - this._resultsHeight * (NUMBER_OF_SECTIONS_IN_SEARCH - 1) /  NUMBER_OF_SECTIONS_IN_SEARCH;
-        this.display.setExpanded(false, this._resultsWidth, 0, DASH_COLUMNS);
         this.actor.remove_all();
         this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
@@ -190,7 +188,6 @@ ItemResults.prototype = {
 
     _unsetSearchMode: function() {
         this.actor.height = this._resultsHeight;
-        this.display.setExpanded(false, this._resultsWidth, 0, DASH_COLUMNS);
         this.actor.remove_all();
         this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
@@ -379,7 +376,7 @@ Dash.prototype = {
                                             height: LABEL_HEIGHT});
         this._docsSection.append(this._docsText, Big.BoxPackFlags.NONE);
 
-        this._docDisplay = new DocDisplay.DocDisplay(this._displayWidth, DASH_COLUMNS, DASH_SECTION_PADDING);
+        this._docDisplay = new DocDisplay.DocDisplay(this._displayWidth);
         this._docsSection.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreDocsBox = new Big.Box({x_align: Big.BoxAlignment.END});
