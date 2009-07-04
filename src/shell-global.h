@@ -81,9 +81,17 @@ void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta,
 
 ClutterActor *shell_global_create_root_pixmap_actor (ShellGlobal *global);
 
+guint shell_global_get_max_word_width (ShellGlobal *global, ClutterActor *ref, const char *text, const char *font);
+
 void shell_global_clutter_cairo_texture_draw_clock (ClutterCairoTexture *texture,
 						    int                  hour,
 						    int                  minute);
+
+void shell_global_clutter_cairo_texture_draw_glow (ClutterCairoTexture *texture,
+                                                   double red,
+                                                   double blue,
+                                                   double green,
+                                                   double alpha);
 
 G_END_DECLS
 

@@ -1061,6 +1061,46 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
   return clutter_clone_new (global->root_pixmap);
 }
 
+/**
+ * shell_global_get_max_word_width:
+ * @global:
+ * @ref: Actor to use for font information
+ * @text: Text to analyze
+ * @font: Given font size to use
+ *
+ * Compute the largest pixel size among the individual words in text, when
+ * rendered in the given font.
+ */
+guint
+shell_global_get_max_word_width (ShellGlobal *global, ClutterActor *ref, const char *text, const char *font)
+{
+  PangoLayout *layout;
+  PangoFontDescription *fontdesc;
+  char **components;
+  char **iter;
+  gint max;
+
+  layout = clutter_actor_create_pango_layout (ref, NULL);
+  fontdesc = pango_font_description_from_string (font);
+  pango_layout_set_font_description (layout, fontdesc);
+  pango_font_description_free (fontdesc);
+
+  max = 0;
+  components = g_strsplit (text, " ", 0);
+  for (iter = components; *iter; iter++)
+    {
+      char *component = *iter;
+      gint width, height;
+      pango_layout_set_text (layout, component, -1);
+      pango_layout_get_pixel_size (layout, &width, &height);
+      if (width > max)
+        max = width;
+    }
+  g_object_unref (layout);
+  g_strfreev (components);
+  return (guint)max;
+}
+
 void
 shell_global_clutter_cairo_texture_draw_clock (ClutterCairoTexture *texture,
                                                int                  hour,
@@ -1105,5 +1145,39 @@ shell_global_clutter_cairo_texture_draw_clock (ClutterCairoTexture *texture,
                  yc + minute_radius * sin (angle));
   cairo_stroke (cr);
 
+  cairo_destroy (cr);
+}
+
+
+void
+shell_global_clutter_cairo_texture_draw_glow (ClutterCairoTexture *texture,
+                                              double red,
+                                              double green,
+                                              double blue,
+                                              double alpha)
+{
+  cairo_t *cr;
+  guint width, height;
+  cairo_pattern_t *gradient;
+
+  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+
+  clutter_cairo_texture_clear (texture);
+  cr = clutter_cairo_texture_create (texture);
+
+  cairo_save (cr);
+  cairo_translate (cr, width / 2.0, height / 2.0);
+  cairo_scale (cr, width / 2.0, height / 2.0);
+
+  gradient = cairo_pattern_create_radial (0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  cairo_pattern_add_color_stop_rgba (gradient, 0.0, red, green, blue, alpha);
+  cairo_pattern_add_color_stop_rgba (gradient, 0.7, red, green, blue, alpha * 0.7);
+  cairo_pattern_add_color_stop_rgba (gradient, 1.0, red, green, blue, alpha * 0.3);
+  cairo_set_source (cr, gradient);
+
+  cairo_arc (cr, 0.0, 0.0, 1.0, 0.0, 2.0 * M_PI);
+  cairo_fill (cr);
+  cairo_restore (cr);
+  cairo_pattern_destroy (gradient);
   cairo_destroy (cr);
 }

@@ -19,6 +19,10 @@ const Workspaces = imports.ui.workspaces;
 const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
 
+const GLOW_COLOR = new Clutter.Color();
+GLOW_COLOR.from_pixel(0x4f6ba4ff);
+const GLOW_PADDING = 5;
+
 const APP_ICON_SIZE = 48;
 const APP_PADDING = 18;
 
@@ -464,7 +468,6 @@ WellDisplayItem.prototype = {
                                    border: 0,
                                    padding: 1,
                                    border_color: GenericDisplay.ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR,
-                                   width: APP_ICON_SIZE + APP_PADDING,
                                    reactive: true });
         this.actor.connect('enter-event', Lang.bind(this,
             function(o, event) {
@@ -494,25 +497,46 @@ WellDisplayItem.prototype = {
 
         this._windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
 
-        let nameBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+        let nameBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                     x_align: Big.BoxAlignment.CENTER });
+        this._nameBox = nameBox;
+
+        this._wordWidth = Shell.Global.get().get_max_word_width(this.actor, appInfo.get_name(),
+                                                                "Sans 12px");
         this._name = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
                                         font_name: "Sans 12px",
-                                        ellipsize: Pango.EllipsizeMode.END,
                                         line_alignment: Pango.Alignment.CENTER,
                                         line_wrap: true,
-                                        line_wrap_mode: Pango.WrapMode.WORD_CHAR,
+                                        line_wrap_mode: Pango.WrapMode.WORD,
                                         text: appInfo.get_name() });
-        nameBox.append(this._name, Big.BoxPackFlags.EXPAND);
+        nameBox.append(this._name, Big.BoxPackFlags.NONE);
         if (this._windows.length > 0) {
-            let runningBox = new Big.Box({ /* border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                           border: 1,
-                                           padding: 1 */ });
-            runningBox.append(nameBox, Big.BoxPackFlags.EXPAND);
-            this.actor.append(runningBox, Big.BoxPackFlags.NONE);
-        } else {
-            this.actor.append(nameBox, Big.BoxPackFlags.NONE);
+            let glow = new Shell.DrawingArea({});
+            glow.connect('redraw', Lang.bind(this, function (e, tex) {
+                Shell.Global.clutter_cairo_texture_draw_glow(tex,
+                                                             GLOW_COLOR.red / 255,
+                                                             GLOW_COLOR.green / 255,
+                                                             GLOW_COLOR.blue / 255,
+                                                             GLOW_COLOR.alpha / 255);
+            }));
+            this._name.connect('notify::allocation', Lang.bind(this, function (n, alloc) {
+                let x = this._name.x;
+                let y = this._name.y;
+                let width = this._name.width;
+                let height = this._name.height;
+                // If we're smaller than the allocated box width, pad out the glow a bit
+                // to make it more visible
+                if ((width + GLOW_PADDING * 2) < this._nameBox.width) {
+                    width += GLOW_PADDING * 2;
+                    x -= GLOW_PADDING;
+                }
+                glow.set_size(width, height);
+                glow.set_position(x, y);
+            }));
+            nameBox.add_actor(glow);
+            glow.lower(this._name);
         }
+        this.actor.append(nameBox, Big.BoxPackFlags.NONE);
     },
 
     _handleActivate: function () {
@@ -560,6 +584,14 @@ WellDisplayItem.prototype = {
     // that represents the item as it is being dragged.
     getDragActorSource: function() {
         return this._icon;
+    },
+
+    getWordWidth: function() {
+        return this._wordWidth;
+    },
+
+    setWidth: function(width) {
+        this._nameBox.width = width + GLOW_PADDING * 2;
     }
 };
 
@@ -587,13 +619,31 @@ WellArea.prototype = {
             v.destroy();
         }));
 
+        this._maxWordWidth = 0;
+        let displays = []
         for (let i = 0; i < infos.length; i++) {
             let app = infos[i];
             let display = new WellDisplayItem(app, this.isFavorite);
+            displays.push(display);
+            let width = display.getWordWidth();
+            if (width > this._maxWordWidth)
+                this._maxWordWidth = width;
             display.connect('activated', Lang.bind(this, function (display) {
                 this.emit('activated', display);
             }));
             this.actor.add_actor(display.actor);
+        }
+        this._displays = displays;
+    },
+
+    getWordWidth: function() {
+        return this._maxWordWidth;
+    },
+
+    setItemWidth: function(width) {
+        for (let i = 0; i < this._displays.length; i++) {
+            let display = this._displays[i];
+            display.setWidth(width);
         }
     },
 
@@ -710,6 +760,11 @@ AppWell.prototype = {
         let running = this._lookupApps(runningIds);
         this._favoritesArea.redisplay(favorites);
         this._runningArea.redisplay(running);
+        let maxWidth = this._favoritesArea.getWordWidth();
+        if (this._runningArea.getWordWidth() > maxWidth)
+            maxWidth = this._runningArea.getWordWidth();
+        this._favoritesArea.setItemWidth(maxWidth);
+        this._runningArea.setItemWidth(maxWidth);
         // If it's empty, we hide it so the top border doesn't show up
         if (running.length == 0)
           this._runningBox.hide();
