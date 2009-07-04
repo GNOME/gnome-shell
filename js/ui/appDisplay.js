@@ -663,11 +663,11 @@ AppWell.prototype = {
         });
         this._favoritesArea.redisplay(favorites);
         this._runningArea.redisplay(running);
-        // If it's empty, we need to provide a minimum drop target
+        // If it's empty, we hide it so the top border doesn't show up
         if (running.length == 0)
-          this._runningArea.actor.set_size(this._width, 50);
+          this._runningBox.hide();
         else
-          this._runningArea.actor.set_size(-1, -1);
+          this._runningBox.show();
     }
 };
 
