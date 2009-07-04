@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* tidy-grid.h: Reflowing grid layout container for clutter.
  *
  * Copyright (C) 2008 Intel Corporation
@@ -102,7 +104,6 @@ G_DEFINE_TYPE_WITH_CODE (TidyGrid, tidy_grid,
 struct _TidyGridPrivate
 {
   gfloat      for_height,  for_width;
-  gfloat      pref_width,  pref_height;
   gfloat      alloc_width, alloc_height;
 
   GHashTable *hash_table;
@@ -139,7 +140,6 @@ struct _TidyGridActorData
 {
   gboolean    xpos_set,   ypos_set;
   gfloat      xpos,       ypos;
-  gfloat      pref_width, pref_height;
 };
 
 static void
@@ -660,21 +660,37 @@ tidy_grid_pick (ClutterActor *actor,
 
 static void
 tidy_grid_get_preferred_width (ClutterActor *self,
-                                          gfloat      for_height,
-                                          gfloat      *min_width_p,
-                                          gfloat      *natural_width_p)
+                               gfloat        for_height,
+                               gfloat       *min_width_p,
+                               gfloat       *natural_width_p)
 {
   TidyGrid *layout = (TidyGrid *) self;
   TidyGridPrivate *priv = layout->priv;
-  gfloat natural_width;
+  GList *iter;
+  gfloat natural_width = 0;
+  gfloat min_width = 0;
 
-  natural_width = 200.0;
+  for (iter = priv->list; iter; iter=iter->next)
+    {
+      ClutterActor *child = iter->data;
+      gfloat child_natural_w, child_natural_h;
+      gfloat child_min_w, child_min_h;
+
+      clutter_actor_get_preferred_size (child, &child_min_w, &child_min_h,
+                                        &child_natural_w, &child_natural_h);
+
+      if (child_min_w > min_width)
+        min_width = child_min_w;
+      natural_width += child_natural_w;
+
+      if (iter->next)
+	natural_width += priv->column_gap;
+    }
+
   if (min_width_p)
-    *min_width_p = natural_width;
+    *min_width_p = min_width;
   if (natural_width_p)
     *natural_width_p = natural_width;
-
-  priv->pref_width = natural_width;
 }
 
 static void
@@ -685,12 +701,42 @@ tidy_grid_get_preferred_height (ClutterActor *self,
 {
   TidyGrid *layout = (TidyGrid *) self;
   TidyGridPrivate *priv = layout->priv;
+  gfloat current_natural_width;
+  gfloat row_height;
   gfloat natural_height;
+  GList *iter;
 
-  natural_height = 200.0;
+  current_natural_width = 0;
+  natural_height = 0;
+  row_height = 0;
+  for (iter = priv->list; iter; iter=iter->next)
+    {
+      ClutterActor *child = iter->data;
+      gfloat child_natural_w, child_natural_h;
 
-  priv->for_width = for_width;
-  priv->pref_height = natural_height;
+      clutter_actor_get_preferred_size (child, NULL, NULL,
+                                        &child_natural_w, &child_natural_h);
+
+      if (iter == priv->list)
+        {
+          current_natural_width = child_natural_w;
+        }
+      else if ((current_natural_width + child_natural_w) > for_width)
+        {
+          natural_height += row_height + priv->row_gap;
+          current_natural_width = child_natural_w;
+          row_height = child_natural_h;
+        }
+      else
+        {
+          current_natural_width += priv->column_gap + child_natural_w;
+        }
+
+      if (child_natural_h > row_height)
+        row_height = child_natural_h;
+    }
+
+  natural_height += row_height;
 
   if (min_height_p)
     *min_height_p = natural_height;
@@ -757,9 +803,6 @@ compute_row_height (GList                    *siblings,
     }
   return best_yet;
 }
-
-
-
 
 static gfloat
 compute_row_start (GList           *siblings,
