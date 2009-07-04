@@ -170,6 +170,21 @@ shell_overflow_list_paint (ClutterActor *actor)
 }
 
 static void
+shell_overflow_list_pick (ClutterActor       *actor,
+                          const ClutterColor *color)
+{
+  ShellOverflowList *self = SHELL_OVERFLOW_LIST (actor);
+  ShellOverflowListPrivate *priv = self->priv;
+  GList *children, *iter;
+  int i;
+
+  (CLUTTER_ACTOR_CLASS (g_type_class_peek (clutter_actor_get_type ())))->pick (actor, color);
+
+  shell_overflow_list_paint (self);
+}
+
+
+static void
 shell_overflow_list_get_preferred_height (ClutterActor *actor,
                                           gfloat for_width,
                                           gfloat *min_height_p,
@@ -256,6 +271,7 @@ shell_overflow_list_class_init (ShellOverflowListClass *klass)
   actor_class->get_preferred_height = shell_overflow_list_get_preferred_height;
   actor_class->allocate = shell_overflow_list_allocate;
   actor_class->paint = shell_overflow_list_paint;
+  actor_class->pick = shell_overflow_list_pick;
 
   g_object_class_install_property (gobject_class,
                                    PROP_SPACING,
