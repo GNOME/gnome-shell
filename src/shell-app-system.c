@@ -217,7 +217,8 @@ gather_entries_recurse (ShellAppSystem     *monitor,
             {
               GMenuTreeEntry *entry = (GMenuTreeEntry *)item;
               const char *id = gmenu_tree_entry_get_desktop_file_id (entry);
-              ids = g_slist_prepend (ids, g_strdup (id));
+              if (!gmenu_tree_entry_get_is_nodisplay (entry))
+                ids = g_slist_prepend (ids, g_strdup (id));
             }
             break;
           case GMENU_TREE_ITEM_DIRECTORY:
