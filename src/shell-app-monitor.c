@@ -377,11 +377,34 @@ load_initial_windows (ShellAppMonitor *monitor)
     }
 }
 
-guint
-shell_app_monitor_get_window_count (ShellAppMonitor *self,
-                                    const char      *appid)
+/**
+ * shell_app_monitor_get_windows_for_app:
+ * @self:
+ * @appid: Find windows for this id
+ *
+ * Returns: (transfer container) (element-type MetaWindow): List of #MetaWindow corresponding to appid
+ */
+GSList *
+shell_app_monitor_get_windows_for_app (ShellAppMonitor *self,
+                                       const char      *appid)
 {
-  return GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
+  GHashTableIter iter;
+  gpointer key, value;
+  GSList *ret = NULL;
+
+  g_hash_table_iter_init (&iter, self->window_to_appid);
+
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      MetaWindow *window = key;
+      const char *id = value;
+
+      if (strcmp (id, appid) != 0)
+        continue;
+
+      ret = g_slist_prepend (ret, window);
+    }
+  return ret;
 }
 
 static void

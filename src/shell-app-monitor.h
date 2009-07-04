@@ -44,7 +44,7 @@ GSList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
                                               int              activity,
                                               gint             number);
 
-guint shell_app_monitor_get_window_count (ShellAppMonitor *monitor, const char *appid);
+GSList *shell_app_monitor_get_windows_for_app (ShellAppMonitor *monitor, const char *appid);
 
 /* Get whatever's running right now */
 GList *shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor);
