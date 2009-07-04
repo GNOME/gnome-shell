@@ -275,6 +275,8 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(schema_in_files)		\
 	libmutter-private.pc.in	\
 	mutter-plugins.pc.in  \
+	mutter-enum-types.h.in \
+	mutter-enum-types.c.in \
 	mutter-marshal.list
 
 BUILT_SOURCES += $(mutter_built_sources)
