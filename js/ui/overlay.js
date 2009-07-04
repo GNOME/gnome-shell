@@ -27,6 +27,7 @@ const BACKGROUND_SCALE = 2;
 
 const LABEL_HEIGHT = 16;
 const DASH_MIN_WIDTH = 250;
+const DASH_OUTER_PADDING = 4;
 const DASH_SECTION_PADDING = 6;
 const DASH_SECTION_SPACING = 6;
 const DASH_COLUMNS = 1;
@@ -114,7 +115,7 @@ function SearchEntry(width) {
 }
 
 SearchEntry.prototype = {
-    _init : function(width) {
+    _init : function() {
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                    y_align: Big.BoxAlignment.CENTER,
                                    background_color: DASH_SEARCH_BG_COLOR,
@@ -122,7 +123,6 @@ SearchEntry.prototype = {
                                    spacing: 4,
                                    padding_left: 4,
                                    padding_right: 4,
-                                   width: width,
                                    height: 24
                                  });
 
@@ -168,7 +168,7 @@ ItemResults.prototype = {
         // LABEL_HEIGHT is the height of this._resultsText and GenericDisplay.LABEL_HEIGHT is the height
         // of the display controls.
         this._displayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2;
-        this.display = new displayClass(resultsWidth, this._displayHeight, DASH_COLUMNS, DASH_SECTION_SPACING);
+        this.display = new displayClass(resultsWidth, DASH_COLUMNS, DASH_SECTION_SPACING);
 
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
 
@@ -181,7 +181,7 @@ ItemResults.prototype = {
     _setSearchMode: function() {
         this.actor.height = this._resultsHeight /  NUMBER_OF_SECTIONS_IN_SEARCH;
         let displayHeight = this._displayHeight - this._resultsHeight * (NUMBER_OF_SECTIONS_IN_SEARCH - 1) /  NUMBER_OF_SECTIONS_IN_SEARCH;
-        this.display.setExpanded(false, this._resultsWidth, 0, displayHeight, DASH_COLUMNS);     
+        this.display.setExpanded(false, this._resultsWidth, 0, DASH_COLUMNS);
         this.actor.remove_all();
         this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
@@ -190,7 +190,7 @@ ItemResults.prototype = {
 
     _unsetSearchMode: function() {
         this.actor.height = this._resultsHeight;
-        this.display.setExpanded(false, this._resultsWidth, 0, this._displayHeight, DASH_COLUMNS);     
+        this.display.setExpanded(false, this._resultsWidth, 0, DASH_COLUMNS);
         this.actor.remove_all();
         this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
         this.actor.append(this.display.actor, Big.BoxPackFlags.EXPAND);
@@ -225,8 +225,9 @@ Dash.prototype = {
         this.actor = new Clutter.Group({});
         this.actor.height = global.screen_height;
 
+
         // dashPane, as well as results and details panes need to be reactive so that the clicks in unoccupied places on them
-        // are not passed to the transparent background underneath them. This background is used for the workspaces area when 
+        // are not passed to the transparent background underneath them. This background is used for the workspaces area when
         // the additional dash panes are being shown and it handles clicks by closing the additional panes, so that the user
         // can interact with the workspaces. However, this behavior is not desirable when the click is actually over a pane.
         //
@@ -261,12 +262,22 @@ Dash.prototype = {
         dashBackground.append(dashLeft, Big.BoxPackFlags.EXPAND);
         dashBackground.append(dashRight, Big.BoxPackFlags.EXPAND);
         dashPane.append(dashShadow, Big.BoxPackFlags.NONE);
-        
+
         this.actor.add_actor(dashPane);
 
-        this._searchEntry = new SearchEntry(this._width - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2);
-        this.actor.add_actor(this._searchEntry.actor);
-        this._searchEntry.actor.set_position(DASH_SECTION_PADDING + DASH_BORDER_WIDTH, dashPane.y + DASH_SECTION_PADDING + DASH_BORDER_WIDTH);
+        this.dashOuterContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                               x: 0,
+                                               y: dashPane.y + DASH_BORDER_WIDTH,
+                                               width: this._width,
+                                               height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight,
+                                               padding: DASH_OUTER_PADDING
+                                             });
+        this.actor.add_actor(this.dashOuterContainer);
+        this.dashContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
+        this.dashOuterContainer.append(this.dashContainer, Big.BoxPackFlags.EXPAND);
+
+        this._searchEntry = new SearchEntry();
+        this.dashContainer.append(this._searchEntry.actor, Big.BoxPackFlags.NONE);
 
         this._searchQueued = false;
         this._searchEntry.entry.connect('text-changed', function (se, prop) {
@@ -335,9 +346,7 @@ Dash.prototype = {
                                             font_name: "Sans Bold 14px",
                                             text: "Applications",
                                             height: LABEL_HEIGHT});
-        this._appsSection = new Big.Box({ x: DASH_SECTION_PADDING,
-                                          y: this._searchEntry.actor.y + this._searchEntry.actor.height + DASH_SECTION_PADDING,
-                                          padding_top: DASH_SECTION_PADDING,
+        this._appsSection = new Big.Box({ padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
         this._appsSection.append(this._appsText, Big.BoxPackFlags.EXPAND);
 
@@ -357,22 +366,20 @@ Dash.prototype = {
         moreAppsBox.append(this._moreAppsLink.actor, Big.BoxPackFlags.EXPAND);
         this._appsSection.append(moreAppsBox, Big.BoxPackFlags.EXPAND);
 
-        this.actor.add_actor(this._appsSection);
-  
+        this.dashContainer.append(this._appsSection, Big.BoxPackFlags.NONE);
+
         this._appsSectionDefaultHeight = this._appsSection.height;
 
-        this._docsSection = new Big.Box({ x: DASH_SECTION_PADDING,
-                                          y: this._appsSection.y + this._appsSection.height,
-                                          padding_top: DASH_SECTION_PADDING,
+        this._docsSection = new Big.Box({ padding_top: DASH_SECTION_PADDING,
                                           spacing: DASH_SECTION_SPACING});
 
         this._docsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
                                             font_name: "Sans Bold 14px",
                                             text: "Recent Documents",
                                             height: LABEL_HEIGHT});
-        this._docsSection.append(this._docsText, Big.BoxPackFlags.EXPAND);
+        this._docsSection.append(this._docsText, Big.BoxPackFlags.NONE);
 
-        this._docDisplay = new DocDisplay.DocDisplay(this._displayWidth, this._itemDisplayHeight - this._appsContent.height, DASH_COLUMNS, DASH_SECTION_PADDING);
+        this._docDisplay = new DocDisplay.DocDisplay(this._displayWidth, DASH_COLUMNS, DASH_SECTION_PADDING);
         this._docsSection.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         let moreDocsBox = new Big.Box({x_align: Big.BoxAlignment.END});
@@ -383,7 +390,7 @@ Dash.prototype = {
         moreDocsBox.append(this._moreDocsLink.actor, Big.BoxPackFlags.EXPAND);
         this._docsSection.append(moreDocsBox, Big.BoxPackFlags.EXPAND);
 
-        this.actor.add_actor(this._docsSection);
+        this.dashContainer.append(this._docsSection, Big.BoxPackFlags.EXPAND);
 
         this._docsSectionDefaultHeight = this._docsSection.height;
 

@@ -168,17 +168,16 @@ Signals.addSignalMethods(MenuItem.prototype);
  * their name if some search filter is applied.
  *
  * width - width available for the display
- * height - height available for the display
  */
-function AppDisplay(width, height, numberOfColumns, columnGap) {
-    this._init(width, height, numberOfColumns, columnGap);
+function AppDisplay(width, numberOfColumns, columnGap) {
+    this._init(width, numberOfColumns, columnGap);
 }
 
 AppDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function(width, height, numberOfColumns, columnGap) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, width, height, numberOfColumns, columnGap);
+    _init : function(width, numberOfColumns, columnGap) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, width, numberOfColumns, columnGap);
 
         this._menus = [];
         this._menuDisplays = [];
@@ -664,6 +663,11 @@ AppWell.prototype = {
         });
         this._favoritesArea.redisplay(favorites);
         this._runningArea.redisplay(running);
+        // If it's empty, we need to provide a minimum drop target
+        if (running.length == 0)
+          this._runningArea.actor.set_size(this._width, 50);
+        else
+          this._runningArea.actor.set_size(-1, -1);
     }
 };
 

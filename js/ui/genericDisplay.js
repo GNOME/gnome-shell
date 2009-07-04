@@ -27,6 +27,8 @@ const DISPLAY_CONTROL_SELECTED_COLOR = new Clutter.Color();
 DISPLAY_CONTROL_SELECTED_COLOR.from_pixel(0x112288ff);
 const PREVIEW_BOX_BACKGROUND_COLOR = new Clutter.Color();
 PREVIEW_BOX_BACKGROUND_COLOR.from_pixel(0xADADADf0);
+const HOT_PINK_DEBUG = new Clutter.Color();
+HOT_PINK_DEBUG.from_pixel(0xFF8888FF);
 
 const ITEM_DISPLAY_HEIGHT = 50;
 const ITEM_DISPLAY_ICON_SIZE = 48;
@@ -330,18 +332,16 @@ Signals.addSignalMethods(GenericDisplayItem.prototype);
  * that can be filtered with a search string.
  *
  * width - width available for the display
- * height - height available for the display
  */
-function GenericDisplay(width, height, numberOfColumns, columnGap) {
-    this._init(width, height, numberOfColumns, columnGap);
+function GenericDisplay(width, numberOfColumns, columnGap) {
+    this._init(width, numberOfColumns, columnGap);
 }
 
 GenericDisplay.prototype = {
-    _init : function(width, height, numberOfColumns, columnGap) {
+    _init : function(width, numberOfColumns, columnGap) {
         this._search = '';
         this._expanded = false;
         this._width = null;
-        this._height = null;
         this._columnWidth = null;
 
         this._numberOfColumns = numberOfColumns;
@@ -350,9 +350,9 @@ GenericDisplay.prototype = {
             this._columnGap = DEFAULT_COLUMN_GAP;
 
         this._maxItemsPerPage = null;
-        this._grid = new Tidy.Grid({width: this._width, height: this._height});
+        this._grid = new Tidy.Grid({width: this._width });
 
-        this._setDimensionsAndMaxItems(width, 0, height);
+        this._setDimensionsAndMaxItems(width, 0);
 
         this._grid.column_major = true;
         this._grid.column_gap = this._columnGap;
@@ -375,8 +375,7 @@ GenericDisplay.prototype = {
                                             orientation: Big.BoxOrientation.HORIZONTAL});
 
         this._availableWidthForItemDetails = this._columnWidth;
-        this._availableHeightForItemDetails = this._height;
-        this.selectedItemDetails = new Big.Box({});     
+        this.selectedItemDetails = new Big.Box({});
     },
 
     //// Public methods ////
@@ -463,12 +462,11 @@ GenericDisplay.prototype = {
     },
 
     // Readjusts display layout and the items displayed based on the new dimensions.
-    setExpanded: function(expanded, baseWidth, expandWidth, height, numberOfColumns) {
+    setExpanded: function(expanded, baseWidth, expandWidth, numberOfColumns) {
         this._expanded = expanded;
         this._numberOfColumns = numberOfColumns;
-        this._setDimensionsAndMaxItems(baseWidth, expandWidth, height);
+        this._setDimensionsAndMaxItems(baseWidth, expandWidth);
         this._grid.width = this._width;
-        this._grid.height = this._height;
         this._pageDisplayed = 0;
         this._displayMatchedItems(true);
         let gridWidth = this._width;
@@ -678,25 +676,22 @@ GenericDisplay.prototype = {
 
     //// Private methods ////
 
-    // Sets this._width, this._height, this._columnWidth, and this._maxItemsPerPage based on the 
+    // Sets this._width, this._columnWidth, and this._maxItemsPerPage based on the
     // space available for the display, number of columns, and the number of items it can fit.
-    _setDimensionsAndMaxItems: function(baseWidth, expandWidth, height) {
+    _setDimensionsAndMaxItems: function(baseWidth, expandWidth) {
         this._width = baseWidth + expandWidth;
         let gridWidth;
         let sideArea = this.getSideArea();
         if (this._expanded && sideArea) {
             gridWidth = expandWidth;
             sideArea.width = baseWidth;
-            sideArea.height = this._height;
         } else {
             gridWidth = this._width;
         }
         this._columnWidth = (gridWidth - this._columnGap * (this._numberOfColumns - 1)) / this._numberOfColumns;
-        let maxItemsInColumn = Math.floor(height / ITEM_DISPLAY_HEIGHT);
+        let maxItemsInColumn = 5; // Math.floor(height / ITEM_DISPLAY_HEIGHT);
         this._maxItemsPerPage =  maxItemsInColumn * this._numberOfColumns;
-        this._height = maxItemsInColumn * ITEM_DISPLAY_HEIGHT;
         this._grid.width = gridWidth;
-        this._grid.height = this._height;
     },
 
     _getSearchMatchedItems: function() {
