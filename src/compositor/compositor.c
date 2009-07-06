@@ -691,6 +691,9 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
 
   DEBUG_TRACE ("meta_compositor_switch_workspace\n");
 
+  if (!info) /* During startup before manage_screen() */
+    return;
+
   info->switch_workspace_in_progress++;
 
   if (!info->plugin_mgr ||
