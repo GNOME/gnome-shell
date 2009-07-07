@@ -220,8 +220,8 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float right,
                    float bottom,
                    float top,
-                   float near,
-                   float far)
+                   float near_val,
+                   float far_val)
 {
   CoglMatrix ortho;
 
@@ -240,13 +240,13 @@ cogl_matrix_ortho (CoglMatrix *matrix,
   /* column 2 */
   ortho.xz = 0.0;
   ortho.yz = 0.0;
-  ortho.zz = -2.0 / (far - near);
+  ortho.zz = -2.0 / (far_val - near_val);
   ortho.wz = 0.0;
 
   /* column 3 */
   ortho.xw = -(right + left) / (right - left);
   ortho.yw = -(top + bottom) / (top - bottom);
-  ortho.zw = -(far + near) / (far - near);
+  ortho.zw = -(far_val + near_val) / (far_val - near_val);
   ortho.ww = 1.0;
 
   cogl_matrix_multiply (matrix, matrix, &ortho);
