@@ -732,11 +732,14 @@ _cogl_journal_log_quad (float       x_1,
   entry->flush_options.flags =
     COGL_MATERIAL_FLUSH_FALLBACK_MASK |
     COGL_MATERIAL_FLUSH_DISABLE_MASK |
-    COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE |
     COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
   entry->flush_options.fallback_layers = fallback_layers;
   entry->flush_options.disable_layers = disable_layers;
-  entry->flush_options.layer0_override_texture = layer0_override_texture;
+  if (layer0_override_texture)
+    {
+      entry->flush_options.flags |= COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE;
+      entry->flush_options.layer0_override_texture = layer0_override_texture;
+    }
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
     cogl_get_modelview_matrix (&entry->model_view);
 
