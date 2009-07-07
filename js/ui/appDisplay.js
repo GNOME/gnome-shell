@@ -3,6 +3,7 @@
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
+const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Tidy = imports.gi.Tidy;
@@ -11,7 +12,6 @@ const Lang = imports.lang;
 const Signals = imports.signals;
 const Mainloop = imports.mainloop;
 
-const AppInfo = imports.misc.appInfo;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Workspaces = imports.ui.workspaces;
@@ -40,14 +40,14 @@ AppDisplayItem.prototype = {
     __proto__:  GenericDisplay.GenericDisplayItem.prototype,
 
     _init : function(appInfo, availableWidth) {
-        GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth); 
+        GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth);
         this._appInfo = appInfo;
 
-        this._setItemInfo(appInfo.name, appInfo.description);
+        this._setItemInfo(appInfo.get_name(), appInfo.get_description());
     },
 
     getId: function() {
-        return this._appInfo.appId;
+        return this._appInfo.get_id();
     },
 
     //// Public method overrides ////
@@ -61,18 +61,26 @@ AppDisplayItem.prototype = {
 
     // Returns an icon for the item.
     _createIcon : function() {
-        return this._appInfo.createIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
+        return this._appInfo.create_icon_texture(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
     },
 
     // Ensures the preview icon is created.
     _ensurePreviewIconCreated : function() {
         if (!this._showPreview || this._previewIcon)
-            return; 
+            return;
 
-        let previewIconPath = this._appInfo.getIconPath(GenericDisplay.PREVIEW_ICON_SIZE);
+        let gicon = this._appInfo.get_icon();
+        let previewIconPath = null;
+        if (gicon) {
+            let iconTheme = Gtk.IconTheme.get_default();
+            let previewIconInfo = iconTheme.lookup_by_gicon(gicon, GenericDisplay.PREVIEW_ICON_SIZE, 0);
+            if (previewIconInfo)
+                previewIconPath = previewIconInfo.get_filename();
+        }
+
         if (previewIconPath) {
             try {
-                this._previewIcon = new Clutter.Texture({ width: GenericDisplay.PREVIEW_ICON_SIZE, height: GenericDisplay.PREVIEW_ICON_SIZE});               
+                this._previewIcon = new Clutter.Texture({ width: GenericDisplay.PREVIEW_ICON_SIZE, height: GenericDisplay.PREVIEW_ICON_SIZE});
                 this._previewIcon.set_from_file(previewIconPath);
             } catch (e) {
                 // we can get an error here if the file path doesn't exist on the system
@@ -200,7 +208,7 @@ AppDisplay.prototype = {
             this._redisplay(false);
         }));
 
-        // Load the GAppInfos now so it doesn't slow down the first
+        // Load the apps now so it doesn't slow down the first
         // transition into the overlay
         this._refreshCache();
 
@@ -257,7 +265,8 @@ AppDisplay.prototype = {
     // Protected overrides
 
     _filterActive: function() {
-        return !!this._search || this._activeMenuIndex >= 0;
+        // We always have a filter now since a menu must be selected
+        return true;
     },
 
     _filterReset: function() {
@@ -277,6 +286,12 @@ AppDisplay.prototype = {
         this._menuDisplays[index].setState(MENU_SELECTED);
     },
 
+    _getMostUsed: function() {
+        return this._appMonitor.get_most_used_apps(0, 30).map(Lang.bind(this, function (id) {
+            return this._appSystem.lookup_app(id + '.desktop');
+        })).filter(function (e) { return e != null });
+    },
+
     _addMenuItem: function(name, id, icon, index) {
         let display = new MenuItem(name, id, icon);
         this._menuDisplays.push(display);
@@ -291,7 +306,7 @@ AppDisplay.prototype = {
                 this._activeMenuIndex = index;
                 this._activeMenu = display;
                 if (id == null) {
-                    this._activeMenuApps = this._appMonitor.get_most_used_apps(0, 30);
+                    this._activeMenuApps = this._getMostUsed();
                 } else {
                     this._activeMenuApps = this._appSystem.get_applications_for_menu(id);
                 }
@@ -310,24 +325,12 @@ AppDisplay.prototype = {
         }
     },
 
-    _addAppForId: function(appId) {
-        let appInfo = AppInfo.getAppInfo(appId);
-        if (appInfo != null) {
-            this._addApp(appInfo);
-        } else {
-            log("appInfo for " + appId + " was not found.");
-        }
-    },
-
     _addApp: function(appInfo) {
-        let appId = appInfo.id;
+        let appId = appInfo.get_id();
         this._allItems[appId] = appInfo;
-        // [] is returned if we could not get the categories or the list of categories was empty
-        let categories = Shell.get_categories_for_desktop_file(appId);
-        this._appCategories[appId] = categories;
     },
 
-    //// Protected method overrides //// 
+    //// Protected method overrides ////
 
     // Gets information about all applications by calling Gio.app_info_get_all().
     _refreshCache : function() {
@@ -338,15 +341,14 @@ AppDisplay.prototype = {
         this._appCategories = {};
 
         this._menus = this._appSystem.get_menus();
-
         // Loop over the toplevel menu items, load the set of desktop file ids
         // associated with each one
         for (let i = 0; i < this._menus.length; i++) {
             let menu = this._menus[i];
             let menuApps = this._appSystem.get_applications_for_menu(menu.id);
             for (let j = 0; j < menuApps.length; j++) {
-                let appId = menuApps[j];
-                this._addAppForId(appId);
+                let app = menuApps[j];
+                this._addApp(app);
             }
         }
 
@@ -354,17 +356,16 @@ AppDisplay.prototype = {
         // These show up in search, but not with the rest of apps.
         let settings = this._appSystem.get_all_settings();
         for (let i = 0; i < settings.length; i++) {
-            let appId = settings[i];
-            this._addAppForId(appId);
+            let app = settings[i];
+            this._addApp(app);
         }
 
         this._appsStale = false;
     },
 
-    // Sets the list of the displayed items based on the most used apps.
+    // Stub this out; the app display always has a category selected
     _setDefaultList : function() {
-        let matchedInfos = AppInfo.getTopApps(MAX_ITEMS);
-        this._matchedItems = matchedInfos.map(function(info) { return info.appId; });
+        this._matchedItems = [];
     },
 
     // Compares items associated with the item ids based on the alphabetical order
@@ -373,14 +374,17 @@ AppDisplay.prototype = {
     _compareItems : function(itemIdA, itemIdB) {
         let appA = this._allItems[itemIdA];
         let appB = this._allItems[itemIdB];
-        return appA.name.localeCompare(appB.name);
+        return appA.get_name().localeCompare(appB.get_name());
     },
 
     // Checks if the item info can be a match for the search string by checking
-    // the name, description, execution command, and categories for the application. 
-    // Item info is expected to be GAppInfo.
+    // the name, description, execution command, and categories for the application.
+    // Item info is expected to be Shell.AppInfo.
     // Returns a boolean flag indicating if itemInfo is a match.
     _isInfoMatching : function(itemInfo, search) {
+        // Don't show nodisplay items here
+        if (itemInfo.get_is_nodisplay())
+            return false;
         // Search takes precedence; not typically useful to search within a
         // menu
         if (this._activeMenu == null || search != "")
@@ -390,10 +394,10 @@ AppDisplay.prototype = {
     },
 
     _isInfoMatchingMenu : function(itemInfo, search) {
-        let id = itemInfo.id;
+        let id = itemInfo.get_id();
         for (let i = 0; i < this._activeMenuApps.length; i++) {
-            let activeId = this._activeMenuApps[i];
-            if (activeId == id)
+            let activeApp = this._activeMenuApps[i];
+            if (activeApp.get_id() == id)
                 return true;
         }
         return false;
@@ -403,29 +407,34 @@ AppDisplay.prototype = {
         if (search == null || search == '')
             return true;
 
-        let name = itemInfo.name.toLowerCase();
+        let fold = function(s) {
+            return s;
+            if (!s)
+                return s;
+            return GLib.utf8_casefold(GLib.utf8_normalize(s, -1,
+                                                          GLib.NormalizeMode.ALL), -1);
+        };
+        let name = fold(itemInfo.get_name());
         if (name.indexOf(search) >= 0)
             return true;
 
-        let description = itemInfo.description;
+        let description = fold(itemInfo.get_description());
         if (description) {
-            description = description.toLowerCase();
             if (description.indexOf(search) >= 0)
                 return true;
         }
 
-        if (itemInfo.executable == null) {
+        let exec = fold(itemInfo.get_executable());
+        if (exec == null) {
             log("Missing an executable for " + itemInfo.name);
         } else {
-            let exec = itemInfo.executable.toLowerCase();
             if (exec.indexOf(search) >= 0)
                 return true;
         }
 
-        // we expect this._appCategories.hasOwnProperty(itemInfo.id) to always be true here
-        let categories = this._appCategories[itemInfo.id];
+        let categories = itemInfo.get_categories();
         for (let i = 0; i < categories.length; i++) {
-            let category = categories[i].toLowerCase();
+            let category = fold(categories[i]);
             if (category.indexOf(search) >= 0)
                 return true;
         }
@@ -433,7 +442,7 @@ AppDisplay.prototype = {
         return false;
     },
 
-    // Creates an AppDisplayItem based on itemInfo, which is expected be an AppInfo object.
+    // Creates an AppDisplayItem based on itemInfo, which is expected be an Shell.AppInfo object.
     _createDisplayItem: function(itemInfo, width) {
         return new AppDisplayItem(itemInfo, width);
     }
@@ -479,12 +488,12 @@ WellDisplayItem.prototype = {
 
         let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     x_align: Big.BoxAlignment.CENTER });
-        this._icon = appInfo.createIcon(APP_ICON_SIZE);
+        this._icon = appInfo.create_icon_texture(APP_ICON_SIZE);
         iconBox.append(this._icon, Big.BoxPackFlags.NONE);
 
         this.actor.append(iconBox, Big.BoxPackFlags.NONE);
 
-        this._windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.appId)
+        this._windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
 
         let nameBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     x_align: Big.BoxAlignment.CENTER });
@@ -494,7 +503,7 @@ WellDisplayItem.prototype = {
                                         line_alignment: Pango.Alignment.CENTER,
                                         line_wrap: true,
                                         line_wrap_mode: Pango.WrapMode.WORD_CHAR,
-                                        text: appInfo.name });
+                                        text: appInfo.get_name() });
         nameBox.append(this._name, Big.BoxPackFlags.EXPAND);
         if (this._windows.length > 0) {
             let runningBox = new Big.Box({ /* border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
@@ -524,7 +533,7 @@ WellDisplayItem.prototype = {
 
     // Draggable interface - FIXME deduplicate with GenericDisplay
     getDragActor: function(stageX, stageY) {
-        this.dragActor = this.appInfo.createIcon(APP_ICON_SIZE);
+        this.dragActor = this.appInfo.create_icon_texture(APP_ICON_SIZE);
 
         // If the user dragged from the icon itself, then position
         // the dragActor over the original icon. Otherwise center it
@@ -571,12 +580,13 @@ WellArea.prototype = {
         }));
 
         for (let i = 0; i < infos.length; i++) {
-            let display = new WellDisplayItem(infos[i], this.isFavorite);
+            let app = infos[i];
+            let display = new WellDisplayItem(app, this.isFavorite);
             display.connect('activated', Lang.bind(this, function (display) {
                 this.emit('activated', display);
             }));
             this.actor.add_actor(display.actor);
-        };
+        }
     },
 
     // Draggable target interface
@@ -585,12 +595,13 @@ WellArea.prototype = {
 
         let id = null;
         if (source instanceof WellDisplayItem) {
-            id = source.appInfo.appId;
+            id = source.appInfo.get_id();
         } else if (source instanceof AppDisplayItem) {
             id = source.getId();
         } else if (source instanceof Workspaces.WindowClone) {
             let appMonitor = Shell.AppMonitor.get_default();
-            id = appMonitor.get_window_id(source.metaWindow);
+            let app = appMonitor.get_window_app(source.metaWindow);
+            id = app.get_id();
             if (id === null)
                 return false;
         } else {
@@ -663,6 +674,14 @@ AppWell.prototype = {
         this._redisplay();
     },
 
+    _lookupApp: function(id) {
+        let app = this._appSystem.lookup_app(id);
+        if (!app) {
+          log("failed to look up app " + id);
+        };
+        return app;
+    },
+
     _redisplay: function() {
         let arrayToObject = function(a) {
             let o = {};
@@ -670,11 +689,13 @@ AppWell.prototype = {
                 o[a[i]] = 1;
             return o;
         };
-        let favorites = AppInfo.getFavorites();
-        let favoriteIds = arrayToObject(favorites.map(function (e) { return e.appId; }));
-        let running = AppInfo.getRunning().filter(function (e) {
-            return !(e.appId in favoriteIds);
+        let favoriteIds = this._appSystem.get_favorites();
+        let favoriteIdsObject = arrayToObject(favoriteIds);
+        let runningIds = this._appMonitor.get_running_app_ids().filter(function (e) {
+            return !(e in favoriteIdsObject);
         });
+        let favorites = favoriteIds.map(Lang.bind(this, this._lookupApp));
+        let running = runningIds.map(Lang.bind(this, this._lookupApp));
         this._favoritesArea.redisplay(favorites);
         this._runningArea.redisplay(running);
         // If it's empty, we hide it so the top border doesn't show up

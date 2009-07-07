@@ -4,8 +4,14 @@
 #include <string.h>
 
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
+#include <gtk/gtk.h>
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
+
+#include "shell-global.h"
+#include "shell-texture-cache.h"
+#include "display.h"
 
 #define GMENU_I_KNOW_THIS_IS_UNSTABLE
 #include <gmenu-tree.h>
@@ -29,9 +35,11 @@ struct _ShellAppSystemPrivate {
   GMenuTree *apps_tree;
   GMenuTree *settings_tree;
 
+  GHashTable *app_id_to_app;
+
   GSList *cached_app_menus; /* ShellAppMenuEntry */
 
-  GSList *cached_setting_ids; /* utf8 */
+  GSList *cached_settings; /* ShellAppInfo */
 
   GHashTable *cached_favorites; /* <utf8,integer> */
 
@@ -45,6 +53,18 @@ static void on_favorite_apps_changed (GConfClient *client, guint id, GConfEntry 
 static void reread_favorite_apps (ShellAppSystem *system);
 
 G_DEFINE_TYPE(ShellAppSystem, shell_app_system, G_TYPE_OBJECT);
+
+ShellAppInfo*
+shell_app_info_ref (ShellAppInfo *info)
+{
+  return gmenu_tree_item_ref ((GMenuTreeItem*)info);
+}
+
+void
+shell_app_info_unref (ShellAppInfo *info)
+{
+  gmenu_tree_item_unref ((GMenuTreeItem *)info);
+}
 
 static gpointer
 shell_app_menu_entry_copy (gpointer entryp)
@@ -109,6 +129,10 @@ shell_app_system_init (ShellAppSystem *self)
                                                   (GDestroyNotify)g_free,
                                                   NULL);
 
+  /* The key is owned by the value */
+  priv->app_id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                               NULL, (GDestroyNotify) shell_app_info_unref);
+
   /* For now, we want to pick up Evince, Nautilus, etc.  We'll
    * handle NODISPLAY semantics at a higher level or investigate them
    * case by case.
@@ -140,13 +164,15 @@ shell_app_system_finalize (GObject *object)
   gmenu_tree_unref (priv->apps_tree);
   gmenu_tree_unref (priv->settings_tree);
 
+  g_hash_table_destroy (priv->app_id_to_app);
+
   g_slist_foreach (priv->cached_app_menus, (GFunc)shell_app_menu_entry_free, NULL);
   g_slist_free (priv->cached_app_menus);
   priv->cached_app_menus = NULL;
 
-  g_slist_foreach (priv->cached_setting_ids, (GFunc)g_free, NULL);
-  g_slist_free (priv->cached_setting_ids);
-  priv->cached_setting_ids = NULL;
+  g_slist_foreach (priv->cached_settings, (GFunc)shell_app_info_unref, NULL);
+  g_slist_free (priv->cached_settings);
+  priv->cached_settings = NULL;
 
   g_hash_table_destroy (priv->cached_favorites);
 
@@ -200,7 +226,7 @@ reread_directories (ShellAppSystem *self, GSList **cache, GMenuTree *tree)
 
 static GSList *
 gather_entries_recurse (ShellAppSystem     *monitor,
-                        GSList             *ids,
+                        GSList             *apps,
                         GMenuTreeDirectory *root)
 {
   GSList *contents;
@@ -215,27 +241,25 @@ gather_entries_recurse (ShellAppSystem     *monitor,
         {
           case GMENU_TREE_ITEM_ENTRY:
             {
-              GMenuTreeEntry *entry = (GMenuTreeEntry *)item;
-              const char *id = gmenu_tree_entry_get_desktop_file_id (entry);
-              if (!gmenu_tree_entry_get_is_nodisplay (entry))
-                ids = g_slist_prepend (ids, g_strdup (id));
+              apps = g_slist_prepend (apps, item);
             }
             break;
           case GMENU_TREE_ITEM_DIRECTORY:
             {
               GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
-              ids = gather_entries_recurse (monitor, ids, dir);
+              apps = gather_entries_recurse (monitor, apps, dir);
             }
+            gmenu_tree_item_unref (item);
             break;
           default:
+            gmenu_tree_item_unref (item);
             break;
         }
-      gmenu_tree_item_unref (item);
     }
 
   g_slist_free (contents);
 
-  return ids;
+  return apps;
 }
 
 static void
@@ -247,7 +271,7 @@ reread_entries (ShellAppSystem     *self,
 
   trunk = gmenu_tree_get_root_directory (tree);
 
-  g_slist_foreach (*cache, (GFunc)g_free, NULL);
+  g_slist_foreach (*cache, (GFunc)shell_app_info_unref, NULL);
   g_slist_free (*cache);
   *cache = NULL;
 
@@ -257,10 +281,40 @@ reread_entries (ShellAppSystem     *self,
 }
 
 static void
+cache_by_id (ShellAppSystem *self, GSList *apps, gboolean ref)
+{
+  GSList *iter;
+
+  for (iter = apps; iter; iter = iter->next)
+    {
+      ShellAppInfo *info = iter->data;
+      if (ref)
+        gmenu_tree_item_ref ((GMenuTreeItem*) info);
+      /* the name is owned by the info itself */
+      g_hash_table_insert (self->priv->app_id_to_app, (char*)shell_app_info_get_id (info),
+                           info);
+    }
+}
+
+static void
 reread_menus (ShellAppSystem *self)
 {
+  GSList *apps;
+  GMenuTreeDirectory *trunk;
+
   reread_directories (self, &(self->priv->cached_app_menus), self->priv->apps_tree);
-  reread_entries (self, &(self->priv->cached_setting_ids), self->priv->settings_tree);
+
+  reread_entries (self, &(self->priv->cached_settings), self->priv->settings_tree);
+
+  /* Now loop over applications.menu and settings.menu, inserting each by desktop file
+   * ID into a hash */
+  g_hash_table_remove_all (self->priv->app_id_to_app);
+  trunk = gmenu_tree_get_root_directory (self->priv->apps_tree);
+  apps = gather_entries_recurse (self, NULL, trunk);
+  gmenu_tree_item_unref (trunk);
+  cache_by_id (self, apps, FALSE);
+  g_slist_free (apps);
+  cache_by_id (self, self->priv->cached_settings, TRUE);
 }
 
 static void
@@ -321,6 +375,19 @@ on_favorite_apps_changed (GConfClient *client,
 }
 
 GType
+shell_app_info_get_type (void)
+{
+  static GType gtype = G_TYPE_INVALID;
+  if (gtype == G_TYPE_INVALID)
+    {
+      gtype = g_boxed_type_register_static ("ShellAppInfo",
+          (GBoxedCopyFunc)shell_app_info_ref,
+          (GBoxedFreeFunc)shell_app_info_unref);
+    }
+  return gtype;
+}
+
+GType
 shell_app_menu_entry_get_type (void)
 {
   static GType gtype = G_TYPE_INVALID;
@@ -339,7 +406,7 @@ shell_app_menu_entry_get_type (void)
  * Traverses a toplevel menu, and returns all items under it.  Nested items
  * are flattened.
  *
- * Return value: (transfer full) (element-type utf8): List of desktop file ids
+ * Return value: (transfer container) (element-type ShellAppInfo): List of applications
  */
 GSList *
 shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
@@ -364,7 +431,7 @@ shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
 /**
  * shell_app_system_get_menus:
  *
- * Returns a list of toplevel menu names, like "Accessories", "Programming", etc.
+ * Returns a list of toplevel #ShellAppMenuEntry items
  *
  * Return value: (transfer none) (element-type AppMenuEntry): List of toplevel menus
  */
@@ -377,14 +444,14 @@ shell_app_system_get_menus (ShellAppSystem *monitor)
 /**
  * shell_app_system_get_all_settings:
  *
- * Returns a list of all desktop file ids under "settings.menu".
+ * Returns a list of application items under "settings.menu".
  *
- * Return value: (transfer none) (element-type utf8): List of desktop file ids
+ * Return value: (transfer none) (element-type ShellAppInfo): List of applications
  */
 GSList *
 shell_app_system_get_all_settings (ShellAppSystem *monitor)
 {
-  return monitor->priv->cached_setting_ids;
+  return monitor->priv->cached_settings;
 }
 
 /**
@@ -475,87 +542,225 @@ shell_app_system_remove_favorite (ShellAppSystem *system, const char *id)
   gconf_client_set (client, SHELL_APP_FAVORITES_KEY, val, NULL);
 }
 
-static gboolean
-desktop_id_exists (ShellAppSystem      *system,
-                   const char          *target_id,
-                   GMenuTreeDirectory  *root)
+/**
+ * shell_app_system_lookup_app:
+ *
+ * Return value: (transfer full): The #ShellAppInfo for id, or %NULL if none
+ */
+ShellAppInfo *
+shell_app_system_lookup_app (ShellAppSystem *self, const char *id)
 {
-  gboolean found = FALSE;
-  GSList *contents, *iter;
+  GMenuTreeEntry *entry;
 
-  contents = gmenu_tree_directory_get_contents (root);
-
-  for (iter = contents; iter; iter = iter->next)
-    {
-      GMenuTreeItem *item = iter->data;
-
-      if (found)
-        break;
-
-      switch (gmenu_tree_item_get_type (item))
-        {
-          case GMENU_TREE_ITEM_ENTRY:
-            {
-              GMenuTreeEntry *entry = (GMenuTreeEntry *)item;
-              const char *id = gmenu_tree_entry_get_desktop_file_id (entry);
-              if (strcmp (id, target_id) == 0)
-                found = TRUE;
-            }
-            break;
-          case GMENU_TREE_ITEM_DIRECTORY:
-            {
-              GMenuTreeDirectory *dir = (GMenuTreeDirectory*)item;
-              found = desktop_id_exists (system, target_id, dir);
-            }
-            break;
-          default:
-            break;
-        }
-      gmenu_tree_item_unref (item);
-    }
-
-  g_slist_free (contents);
-
-  return found;
+  entry = g_hash_table_lookup (self->priv->app_id_to_app, id);
+  if (entry)
+    gmenu_tree_item_ref ((GMenuTreeItem*) entry);
+  return (ShellAppInfo*)entry;
 }
 
 /**
- * shell_app_system_lookup_basename:
+ * shell_app_system_lookup_heuristic_basename:
  * @name: Probable application identifier
  *
- * Determine whether a valid .desktop file ID corresponding to a given
+ * Find a valid application corresponding to a given
  * heuristically determined application identifier
- * string.
+ * string, or %NULL if none.
+ *
+ * Returns: (transfer full): A #ShellAppInfo for name
  */
-char *
-shell_app_system_lookup_basename (ShellAppSystem *system,
-                                  const char *name)
+ShellAppInfo *
+shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
+                                            const char *name)
 {
-  GMenuTreeDirectory *root;
-  char *result;
+  char *tmpid;
+  ShellAppInfo *result;
 
-  root = gmenu_tree_get_directory_from_path (system->priv->apps_tree, "/");
-  g_assert (root != NULL);
-
-  if (desktop_id_exists (system, name, root))
-    {
-      result = g_strdup (name);
-      goto out;
-    }
+  result = shell_app_system_lookup_app (system, name);
+  if (result != NULL)
+    return result;
 
   /* These are common "vendor prefixes".  But using
    * WM_CLASS as a source, we don't get the vendor
    * prefix.  So try stripping them.
    */
-  result = g_strjoin ("", "gnome-", name, NULL);
-  if (desktop_id_exists (system, result, root))
-    goto out;
+  tmpid = g_strjoin ("", "gnome-", name, NULL);
+  result = shell_app_system_lookup_app (system, tmpid);
+  g_free (tmpid);
+  if (result != NULL)
+    return result;
 
-  result = g_strjoin ("", "fedora-", name, NULL);
-  if (desktop_id_exists (system, result, root))
-    goto out;
+  tmpid = g_strjoin ("", "fedora-", name, NULL);
+  result = shell_app_system_lookup_app (system, tmpid);
+  g_free (tmpid);
+  if (result != NULL)
+    return result;
 
-out:
-  gmenu_tree_item_unref (root);
-  return result;
+  return NULL;
+}
+
+const char *
+shell_app_info_get_id (ShellAppInfo *info)
+{
+  return gmenu_tree_entry_get_desktop_file_id ((GMenuTreeEntry*)info);
+}
+
+const char *
+shell_app_info_get_name (ShellAppInfo *info)
+{
+  return gmenu_tree_entry_get_name ((GMenuTreeEntry*)info);
+}
+
+const char *
+shell_app_info_get_description (ShellAppInfo *info)
+{
+  return gmenu_tree_entry_get_comment ((GMenuTreeEntry*)info);
+}
+
+const char *
+shell_app_info_get_executable (ShellAppInfo *info)
+{
+  return gmenu_tree_entry_get_exec ((GMenuTreeEntry*)info);
+}
+
+GIcon *
+shell_app_info_get_icon (ShellAppInfo *info)
+{
+  const char *iconname;
+  GIcon *icon;
+
+  /* This code adapted from gdesktopappinfo.c
+   * Copyright (C) 2006-2007 Red Hat, Inc.
+   * Copyright © 2007 Ryan Lortie
+   * LGPL
+   */
+
+  iconname = gmenu_tree_entry_get_icon ((GMenuTreeEntry*)info);
+  if (!iconname)
+    return NULL;
+
+  if (g_path_is_absolute (iconname))
+    {
+      GFile *file;
+
+      file = g_file_new_for_path (iconname);
+      icon = G_ICON (g_file_icon_new (file));
+      g_object_unref (file);
+    }
+  else
+    {
+      char *tmp_name, *p;
+      tmp_name = strdup (iconname);
+      /* Work around a common mistake in desktop files */
+      if ((p = strrchr (tmp_name, '.')) != NULL &&
+          (strcmp (p, ".png") == 0 ||
+           strcmp (p, ".xpm") == 0 ||
+           strcmp (p, ".svg") == 0))
+        {
+          *p = 0;
+        }
+
+      icon = g_themed_icon_new (tmp_name);
+      g_free (tmp_name);
+    }
+  return icon;
+}
+
+GSList *
+shell_app_info_get_categories (ShellAppInfo *info)
+{
+  return NULL; /* TODO */
+}
+
+gboolean
+shell_app_info_get_is_nodisplay (ShellAppInfo *info)
+{
+  return gmenu_tree_entry_get_is_nodisplay ((GMenuTreeEntry*)info);
+}
+
+/**
+ * shell_app_info_create_icon_texture:
+ *
+ * Look up the icon for this application, and create a #ClutterTexture
+ * for it at the given size.
+ *
+ * Return value: (transfer none): A floating #ClutterActor
+ */
+ClutterActor *
+shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
+{
+  GIcon *icon;
+  ClutterActor *ret;
+
+  icon = shell_app_info_get_icon (info);
+  if (!icon)
+    {
+      ret = clutter_texture_new ();
+      g_object_set (ret, "width", size, "height", size, NULL);
+      return ret;
+    }
+
+  return shell_texture_cache_load_gicon (shell_texture_cache_get_default (), icon, (int)size);
+}
+
+/**
+ * shell_app_info_launch_full:
+ * @timestamp: Event timestamp, or 0 for current event timestamp
+ * @uris: List of uris to pass to application
+ * @workspace: Start on this workspace, or -1 for default
+ * @startup_id: (out): Returned startup notification ID, or %NULL if none
+ * @error: A #GError
+ */
+gboolean
+shell_app_info_launch_full (ShellAppInfo *info,
+                            guint         timestamp,
+                            GList        *uris,
+                            int           workspace,
+                            char        **startup_id,
+                            GError      **error)
+{
+  GDesktopAppInfo *gapp;
+  const char *filename;
+  GdkAppLaunchContext *context;
+  gboolean ret;
+  ShellGlobal *global;
+  MetaScreen *screen;
+  MetaDisplay *display;
+
+  if (startup_id)
+    *startup_id = NULL;
+
+  filename = gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry*) info);
+
+  gapp = g_desktop_app_info_new_from_filename (filename);
+  if (!gapp)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Not found");
+      return FALSE;
+    }
+
+  global = shell_global_get ();
+  screen = shell_global_get_screen (global);
+  display = meta_screen_get_display (screen);
+
+  if (timestamp == 0)
+    timestamp = meta_display_get_current_time (display);
+  if (workspace < 0)
+    workspace = meta_screen_get_active_workspace_index (screen);
+
+  context = gdk_app_launch_context_new ();
+  gdk_app_launch_context_set_timestamp (context, timestamp);
+  gdk_app_launch_context_set_desktop (context, workspace);
+
+  ret = g_app_info_launch (G_APP_INFO (gapp), uris, (GAppLaunchContext*) context, error);
+
+  g_object_unref (G_OBJECT (gapp));
+
+  return ret;
+}
+
+gboolean
+shell_app_info_launch (ShellAppInfo    *info,
+                       GError         **error)
+{
+  return shell_app_info_launch_full (info, 0, NULL, -1, NULL, error);
 }

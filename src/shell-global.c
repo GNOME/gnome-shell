@@ -406,68 +406,6 @@ shell_get_thumbnail(const gchar *uri,
     return pixbuf;   
 }
 
-
-/**
- * shell_get_categories_for_desktop_file:
- *
- * @desktop_file_name: name of the desktop file for which to retrieve categories
- *
- * Return value: (element-type char*) (transfer full): List of categories
- *
- */
-GSList *
-shell_get_categories_for_desktop_file(const char *desktop_file_name)
-{
-    GKeyFile *key_file;
-    const char * const *search_dirs;
-    char **categories = NULL;
-    GSList *categories_list = NULL; 
-    GError *error = NULL;
-    gsize len;  
-    int i; 
-
-    key_file = g_key_file_new (); 
-    search_dirs = get_applications_search_path();
-   
-    g_key_file_load_from_dirs (key_file, desktop_file_name, (const char **)search_dirs, NULL, 0, &error);
-
-    if (error != NULL) 
-      {
-        g_warning ("Error when loading a key file for %s: %s", desktop_file_name, error->message);
-        g_clear_error (&error);
-      }
-    else 
-      {
-        categories = g_key_file_get_string_list (key_file,
-                                                 "Desktop Entry",
-                                                 "Categories",
-                                                 &len,
-                                                 &error);
-        if (error != NULL)
-          {
-            // "Categories" is not a required key in the desktop files, so it's ok if we didn't find it
-            g_clear_error (&error);
-          } 
-      }
-
-    g_key_file_free (key_file);
- 
-    if (categories == NULL)
-      return NULL;
-
-    // gjs currently does not support returning arrays (other than a NULL value for an array), so we need 
-    // to convert the array we are returning to GSList, returning which gjs supports. 
-    // See http://bugzilla.gnome.org/show_bug.cgi?id=560567 for more info on gjs array support.
-    for (i = 0; categories[i]; i++)
-      {
-        categories_list = g_slist_prepend (categories_list, g_strdup (categories[i])); 
-      }
-
-    g_strfreev (categories);
-
-    return categories_list;
-}
-
 /**
  * shell_get_event_key_symbol:
  *

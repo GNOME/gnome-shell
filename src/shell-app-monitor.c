@@ -99,8 +99,8 @@ struct _ShellAppMonitor
   /* <char * appid, guint window_count> */
   GHashTable *running_appids;
 
-  /* <MetaWindow * window, char * appid> */
-  GHashTable *window_to_appid;
+  /* <MetaWindow * window, ShellAppInfo *app> */
+  GHashTable *window_to_app;
 
   GHashTable *apps_by_wm_class; /* Seen apps by wm_class */
   GHashTable *popularities; /* One AppPopularity struct list per activity */
@@ -269,17 +269,17 @@ get_cleaned_wmclass_for_window (MetaWindow  *window)
 }
 
 /**
- * get_appid_for_window:
+ * get_app_for_window:
  *
- * Returns a desktop file ID for an application, or %NULL if
+ * Returns the application associated with a window, or %NULL if
  * we're unable to determine one.
  */
-static char *
-get_appid_for_window (MetaWindow     *window)
+static ShellAppInfo *
+get_app_for_window (MetaWindow     *window)
 {
   char *wmclass;
   char *with_desktop;
-  char *result;
+  ShellAppInfo *result;
   ShellAppSystem *appsys;
 
   wmclass = get_cleaned_wmclass_for_window (window);
@@ -291,7 +291,7 @@ get_appid_for_window (MetaWindow     *window)
   g_free (wmclass);
 
   appsys = shell_app_system_get_default ();
-  result = shell_app_system_lookup_basename (appsys, with_desktop);
+  result = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
   g_free (with_desktop);
 
   return result;
@@ -301,14 +301,18 @@ static void
 track_window (ShellAppMonitor *self,
               MetaWindow      *window)
 {
-  char *appid;
+  ShellAppInfo *app;
   guint window_count;
+  const char *appid;
 
-  appid = get_appid_for_window (window);
-  if (!appid)
+  app = get_app_for_window (window);
+  if (!app)
     return;
 
-  g_hash_table_insert (self->window_to_appid, window, appid);
+  /* Steal the ref */
+  g_hash_table_insert (self->window_to_app, window, app);
+
+  appid = shell_app_info_get_id (app);
 
   window_count = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
 
@@ -334,13 +338,15 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
                                      gpointer         user_data)
 {
   ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
-  char *appid;
+  ShellAppInfo *app;
+  const char *appid;
   guint window_count;
 
-  appid = g_hash_table_lookup (self->window_to_appid, window);
-  if (!appid)
+  app = g_hash_table_lookup (self->window_to_app, window);
+  if (!app)
     return;
 
+  appid = shell_app_info_get_id (app);
   window_count = GPOINTER_TO_UINT (g_hash_table_lookup (self->running_appids, appid));
 
   window_count -= 1;
@@ -354,7 +360,7 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
       g_hash_table_insert (self->running_appids, g_strdup (appid),
                            GUINT_TO_POINTER (window_count));
     }
-  g_hash_table_remove (self->window_to_appid, window);
+  g_hash_table_remove (self->window_to_app, window);
 }
 
 static void
@@ -392,12 +398,13 @@ shell_app_monitor_get_windows_for_app (ShellAppMonitor *self,
   gpointer key, value;
   GSList *ret = NULL;
 
-  g_hash_table_iter_init (&iter, self->window_to_appid);
+  g_hash_table_iter_init (&iter, self->window_to_app);
 
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       MetaWindow *window = key;
-      const char *id = value;
+      ShellAppInfo *app = value;
+      const char *id = shell_app_info_get_id (app);
 
       if (strcmp (id, appid) != 0)
         continue;
@@ -485,8 +492,8 @@ shell_app_monitor_init (ShellAppMonitor *self)
   self->running_appids = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                 g_free, NULL);
 
-  self->window_to_appid = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                                 NULL, (GDestroyNotify) g_free);
+  self->window_to_app = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                               NULL, (GDestroyNotify) shell_app_info_unref);
 
   load_initial_windows (self);
   init_window_monitoring (self);
@@ -568,16 +575,19 @@ shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
 }
 
 /**
- * shell_app_monitor_get_window_id
+ * shell_app_monitor_get_window_app
  * @monitor: An app monitor instance
  * @metawin: A #MetaWindow
  *
- * Returns: (transfer full): Desktop file id associated with window
+ * Returns: Desktop file id associated with window
  */
-char *
-shell_app_monitor_get_window_id (ShellAppMonitor *monitor, MetaWindow *metawin)
+ShellAppInfo *
+shell_app_monitor_get_window_app (ShellAppMonitor *monitor, MetaWindow *metawin)
 {
-  return g_hash_table_lookup (monitor->window_to_appid, metawin);
+  ShellAppInfo *info = g_hash_table_lookup (monitor->window_to_app, metawin);
+  if (info)
+    shell_app_info_ref (info);
+  return info;
 }
 
 /**

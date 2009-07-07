@@ -10,7 +10,6 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const AppInfo = imports.misc.appInfo;
 const DocDisplay = imports.ui.docDisplay;
 const DocInfo = imports.misc.docInfo;
 
@@ -284,6 +283,24 @@ LauncherWidget.prototype = {
     }
 };
 
+function AppsWidgetInfo(appInfo) {
+    this._init(appInfo);
+}
+
+AppsWidgetInfo.prototype = {
+    _init : function(appInfo) {
+        this._info = appInfo;
+    },
+
+    createIcon : function(size) {
+        return this._info.create_icon_texture(size);
+    },
+
+    launch : function() {
+        this._info.launch();
+    }
+}
+
 function AppsWidget() {
     this._init.apply(this, arguments);
 }
@@ -298,9 +315,12 @@ AppsWidget.prototype = {
         this.actor = new Big.Box({ spacing: 2 });
         this.collapsedActor = new Big.Box({ spacing: 2});
 
-        let apps = AppInfo.getTopApps(5);
-        for (let i = 0; i < apps.length; i++)
-            this.addItem(apps[i]);
+        let appSystem = Shell.AppSystem.get_default();
+        let apps = appSystem.get_favorites();
+        for (let i = 0; i < apps.length; i++) {
+            let app = appSystem.lookup_app(apps[i]);
+            this.addItem(new AppsWidgetInfo(app));
+        }
     }
 };
 
