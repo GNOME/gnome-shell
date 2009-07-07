@@ -1630,6 +1630,29 @@ _cogl_material_flush_gl_state (CoglHandle handle,
             0, sizeof (CoglMaterialFlushOptions));
 }
 
+static gboolean
+_cogl_material_layer_equal (CoglMaterialLayer *material0_layer,
+                            CoglHandle         material0_layer_texture,
+                            CoglMaterialLayer *material1_layer,
+                            CoglHandle         material1_layer_texture)
+{
+  if (material0_layer_texture != material1_layer_texture)
+    return FALSE;
+
+  if ((material0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
+      (material1_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+    return FALSE;
+
+#if 0 /* TODO */
+  if (!_deep_are_layer_combines_equal ())
+    return FALSE;
+#else
+  if (!(material0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+    return FALSE;
+#endif
+
+  return TRUE;
+}
 
 /* This is used by the Cogl journal to compare materials so that it
  * can split up geometry that needs different OpenGL state.
@@ -1781,11 +1804,17 @@ _cogl_material_equal (CoglHandle material0_handle,
   i = 0;
 
   /* NB: At this point we know if COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE is being
-   * used then both materials are overriding with the same texture so we can
-   * simply skip over layer 0 */
-  if (material0_flush_options->flags & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE &&
+   * used then both materials are overriding with the same texture. */
+  if (flush_flags0 & COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE &&
       l0 && l1)
     {
+      /* We still need to check if the combine modes etc are equal, but we
+       * simply pass COGL_INVALID_HANDLE for both texture handles so they will
+       * be considered equal */
+      if (!_cogl_material_layer_equal (l0->data, COGL_INVALID_HANDLE,
+                                       l1->data, COGL_INVALID_HANDLE))
+        return FALSE;
+
       l0 = l0->next;
       l1 = l1->next;
       i++;
@@ -1801,28 +1830,32 @@ _cogl_material_equal (CoglHandle material0_handle,
         return FALSE;
 
       /* NB: At this point we know that the fallback and disable masks for
-       * both materials are equal */
-      if ((disable_layers0 & (1<<i)) || (fallback_layers0 & (1<<i)))
-        continue;
+       * both materials are equal. */
+      if (disable_layers0 & (1<<i))
+        goto next_layer;
 
       m0_layer = l0->data;
       m1_layer = l1->data;
 
-      if (m0_layer->texture != m1_layer->texture)
-        return FALSE;
+      /* NB: The use of a fallback texture doesn't imply that the combine
+       * modes etc are the same.
+       */
+      if ((disable_layers0 & (1<<i)) || (fallback_layers0 & (1<<i)))
+        {
+          /* As with layer0 overrides, we simply pass COGL_INVALID_HANDLEs for
+           * both texture handles here so they will be considered equal. */
+          if (!_cogl_material_layer_equal (m0_layer, COGL_INVALID_HANDLE,
+                                           m1_layer, COGL_INVALID_HANDLE))
+            return FALSE;
+        }
+      else
+        {
+          if (!_cogl_material_layer_equal (m0_layer, m0_layer->texture,
+                                           m1_layer, m1_layer->texture))
+            return FALSE;
+        }
 
-      if ((m0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE) !=
-          (m1_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
-        return FALSE;
-
-#if 0 /* TODO */
-      if (!_deep_are_layer_combines_equal ())
-        return FALSE;
-#else
-      if (!(m0_layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
-        return FALSE;
-#endif
-
+next_layer:
       l0 = l0->next;
       l1 = l1->next;
       i++;
