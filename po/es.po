@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&component=general\n"
-"POT-Creation-Date: 2009-05-23 12:26+0000\n"
-"PO-Revision-Date: 2009-05-23 19:55+0200\n"
+"POT-Creation-Date: 2009-07-06 11:55+0000\n"
+"PO-Revision-Date: 2009-07-07 20:30+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -139,48 +139,55 @@ msgstr ""
 "condiciones de copia. NO se proporciona ninguna garantía; ni de\n"
 "MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Desactivar conexión al gestor de sesión"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Reemplazar el gestor de ventanas en ejecución por Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Especificar el ID se gestión de sesión"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Pantalla X que usar"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde el archivo de salvaguarda"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Hacer que las llamadas a las X sean síncronas"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Activar la composición"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Desactivar la composición"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"No poner a pantalla completa las ventanas maximizadas que no tienen "
+"decoración"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -188,7 +195,7 @@ msgstr ""
 "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los "
 "temas usuales.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "No se pudo reiniciar: %s\n"
@@ -204,25 +211,25 @@ msgstr "No se pudo reiniciar: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clave GConf «%s» está configurada con un valor inválido\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "%d almacenado en la clave de GConf %s está fuera de rango %d hasta %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clave GConf «%s» está configurada con un tipo inválido\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -230,14 +237,14 @@ msgstr ""
 "Los arreglos para aplicaciones rotas se han deshabilitado. Algunas "
 "aplicaciones podrían no comportarse correctamente.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No se ha podido interpretar la descripción de la tipografía «%s» de la clave "
 "GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -246,18 +253,18 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para el modificador del botón del ratón\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "Ocurrió un error configurando la número de espacios de trabajo para %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -266,14 +273,14 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para la combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "Ocurrió un error al establecer el nombre del área de trabajo %d como «%s»: %"
 "s \n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Error al establecer el estado del compositor: %s\n"
