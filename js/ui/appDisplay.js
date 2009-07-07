@@ -296,7 +296,7 @@ AppDisplay.prototype = {
                     this._activeMenuApps = this._appSystem.get_applications_for_menu(id);
                 }
             }
-            this._redisplay();
+            this._redisplay(true);
         }));
         this._menuDisplay.append(display.actor, 0);
     },
