@@ -232,7 +232,8 @@ Dash.prototype = {
         let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
         let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
 
-        this.actor = new Clutter.Group({});
+        // Size the actor to 0x0 so as not to interfere with DND
+        this.actor = new Clutter.Group({ width: 0, height: 0 });
         this.actor.height = global.screen_height;
 
 
