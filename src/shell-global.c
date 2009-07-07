@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <dbus/dbus-glib.h>
 #include <libgnomeui/gnome-thumbnail.h>
+#include <gio/gio.h>
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
 
