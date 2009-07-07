@@ -196,7 +196,7 @@ WidgetBox.prototype = {
         this._egroup.show();
 
         if (this._singleActor) {
-            this._widget.actor.unparent();
+            this._widget.actor.get_parent().remove_actor(this._widget.actor);
             this._ebox.append(this._widget.actor, Big.BoxPackFlags.NONE);
         }
 
@@ -244,7 +244,7 @@ WidgetBox.prototype = {
         this._cgroup.show();
 
         if (this._singleActor) {
-            this._widget.actor.unparent();
+            this._widget.actor.get_parent().remove_actor(this._widget.actor);
             this._cbox.append(this._widget.actor, Big.BoxPackFlags.NONE);
         }
 
