@@ -673,12 +673,16 @@ AppWell.prototype = {
         this._redisplay();
     },
 
-    _lookupApp: function(id) {
-        let app = this._appSystem.lookup_app(id);
-        if (!app) {
-          log("failed to look up app " + id);
-        };
-        return app;
+    _lookupApps: function(appIds) {
+        let result = [];
+        for (let i = 0; i < appIds.length; i++) {
+            let id = appIds[i];
+            let app = this._appSystem.lookup_app(id);
+            if (!app)
+                continue;
+            result.push(app);
+        }
+        return result;
     },
 
     _redisplay: function() {
@@ -693,8 +697,8 @@ AppWell.prototype = {
         let runningIds = this._appMonitor.get_running_app_ids().filter(function (e) {
             return !(e in favoriteIdsObject);
         });
-        let favorites = favoriteIds.map(Lang.bind(this, this._lookupApp));
-        let running = runningIds.map(Lang.bind(this, this._lookupApp));
+        let favorites = this._lookupApps(favoriteIds);
+        let running = this._lookupApps(runningIds);
         this._favoritesArea.redisplay(favorites);
         this._runningArea.redisplay(running);
         // If it's empty, we hide it so the top border doesn't show up
