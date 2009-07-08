@@ -79,7 +79,22 @@ RunDialog.prototype = {
     },
 
     _run : function(command) {
-        if (command == 'restart') {
+        if (command.slice(0, 3) == 'js ') {
+            let commandHeader = "const Clutter = imports.gi.Clutter; " +
+                                 "const GLib = imports.gi.GLib; " +
+                                 "const Gtk = imports.gi.Gtk; " +
+                                 "const Mainloop = imports.mainloop; " +
+                                 "const Meta = imports.gi.Meta; " +
+                                 "const Shell = imports.gi.Shell; " +
+                                 "const Main = imports.ui.main; ";
+            let cmd = commandHeader + command.substring(2);
+            try {
+                let result = eval(cmd);
+                log("" + result);
+            } catch (e) {
+                log(e);
+            }
+        } else if (command == 'restart') {
             let global = Shell.Global.get();
             global.reexec_self();
         } else if (command) {
