@@ -119,7 +119,6 @@ Button.prototype = {
 };
 
 /* Delay before the icon should appear, in seconds after the pointer has entered the parent */
-const SHOW_ICON_DELAY = 250; // 0.25 second
 const ANIMATION_TIME = 0.25;
 
 /* This is an icon button that fades in/out when mouse enters/leaves the parent.
@@ -149,8 +148,7 @@ iconButton.prototype = {
             if(actor.get_children().indexOf(Shell.get_event_related(event)) != -1)
                 return;
 
-            this._sourceId = Mainloop.timeout_add(SHOW_ICON_DELAY,
-                                                  Lang.bind(this, this._fadeIn));
+            this._fadeIn();
         }));
         parent.connect("leave-event", Lang.bind(this, function(actor, event) {
             // Nothing to do if the cursor has merely entered a child of the parent actor
@@ -197,10 +195,6 @@ iconButton.prototype = {
     /// Private methods ///
 
     _fadeIn : function() {
-        if(this._sourceId) {
-            Mainloop.source_remove(this._sourceId);
-            this._sourceId = null;
-        }
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor, { opacity: 255,
                                        time: ANIMATION_TIME,
@@ -208,10 +202,6 @@ iconButton.prototype = {
     },
 
     _fadeOut : function() {
-        if(this._sourceId) {
-            Mainloop.source_remove(this._sourceId);
-            this._sourceId = null;
-        }
         Tweener.removeTweens(this.actor);
         Tweener.addTween(this.actor, { opacity: 0,
                                        time: ANIMATION_TIME,
