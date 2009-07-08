@@ -70,7 +70,6 @@ mutter_SOURCES= 				\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main.c				\
-	include/main.h				\
 	core/mutter-Xatomtype.h		\
 	core/place.c				\
 	core/place.h				\
@@ -150,6 +149,7 @@ libmutterinclude_base_headers =		\
 	include/alttabhandler.h			\
 	include/boxes.h				\
 	ui/gradient.h				\
+	include/main.h				\
 	include/util.h				\
 	include/common.h			\
 	ui/preview-widget.h			\
