@@ -408,7 +408,6 @@ AppDisplay.prototype = {
             return true;
 
         let fold = function(s) {
-            return s;
             if (!s)
                 return s;
             return GLib.utf8_casefold(GLib.utf8_normalize(s, -1,
