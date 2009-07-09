@@ -1,3 +1,7 @@
+2009-06-08  Tomeu Vizoso  <tomeu@sugarlabs.org>
+
+	Add a switch to disable autofullscreen'ing maximized windows without decorations
+	
 2009-03-12  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.27.1.
