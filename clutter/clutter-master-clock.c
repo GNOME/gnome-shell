@@ -68,6 +68,7 @@ struct _ClutterMasterClock
   GSource *source;
 
   guint updated_stages : 1;
+  guint ensure_next_iteration : 1;
 };
 
 struct _ClutterMasterClockClass
@@ -124,6 +125,12 @@ master_clock_is_running (ClutterMasterClock *master_clock)
     if (_clutter_stage_has_queued_events (l->data) ||
         _clutter_stage_needs_update (l->data))
       return TRUE;
+
+  if (master_clock->ensure_next_iteration)
+    {
+      master_clock->ensure_next_iteration = FALSE;
+      return TRUE;
+    }
 
   return FALSE;
 }
@@ -322,6 +329,7 @@ clutter_master_clock_init (ClutterMasterClock *self)
   self->source = source;
 
   self->updated_stages = TRUE;
+  self->ensure_next_iteration = FALSE;
 
   g_source_set_priority (source, CLUTTER_PRIORITY_REDRAW);
   g_source_set_can_recurse (source, FALSE);
@@ -428,3 +436,18 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
       clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
     }
 }
+
+/**
+ * _clutter_master_clock_ensure_next_iteration:
+ * @master_clock: a #ClutterMasterClock
+ *
+ * Ensures that the master clock will run at least one iteration
+ */
+void
+_clutter_master_clock_ensure_next_iteration (ClutterMasterClock *master_clock)
+{
+  g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
+
+  master_clock->ensure_next_iteration = TRUE;
+}
+

@@ -36,13 +36,14 @@ typedef struct _ClutterMasterClock      ClutterMasterClock;
 
 GType clutter_master_clock_get_type (void) G_GNUC_CONST;
 
-ClutterMasterClock *_clutter_master_clock_get_default     (void);
-void                _clutter_master_clock_add_timeline    (ClutterMasterClock *master_clock,
-                                                           ClutterTimeline    *timeline);
-void                _clutter_master_clock_remove_timeline (ClutterMasterClock *master_clock,
-                                                           ClutterTimeline    *timeline);
-void                _clutter_master_clock_advance         (ClutterMasterClock *master_clock);
-void                _clutter_master_clock_start_running   (ClutterMasterClock *master_clock);
+ClutterMasterClock *_clutter_master_clock_get_default           (void);
+void                _clutter_master_clock_add_timeline          (ClutterMasterClock *master_clock,
+                                                                 ClutterTimeline    *timeline);
+void                _clutter_master_clock_remove_timeline       (ClutterMasterClock *master_clock,
+                                                                 ClutterTimeline    *timeline);
+void                _clutter_master_clock_advance               (ClutterMasterClock *master_clock);
+void                _clutter_master_clock_start_running         (ClutterMasterClock *master_clock);
+void                _clutter_master_clock_ensure_next_iteration (ClutterMasterClock *master_clock);
 
 
 G_END_DECLS
