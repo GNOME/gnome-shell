@@ -264,6 +264,13 @@ set_wm_check_hint (MetaScreen *screen)
   return Success;
 }
 
+static void
+unset_wm_check_hint (MetaScreen *screen)
+{
+  XDeleteProperty (screen->display->xdisplay, screen->xroot, 
+                   screen->display->atom__NET_SUPPORTING_WM_CHECK);
+}
+
 static int
 set_supported_hint (MetaScreen *screen)
 {
@@ -849,6 +856,8 @@ meta_screen_free (MetaScreen *screen,
   if (meta_error_trap_pop_with_return (screen->display, FALSE) != Success)
     meta_warning (_("Could not release screen %d on display \"%s\"\n"),
                   screen->number, screen->display->name);
+
+  unset_wm_check_hint (screen);
 
   XDestroyWindow (screen->display->xdisplay,
                   screen->wm_sn_selection_window);
