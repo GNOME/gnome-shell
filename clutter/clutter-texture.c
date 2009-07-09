@@ -119,11 +119,16 @@ struct _ClutterTextureAsyncData
   /* Source ID of the idle handler for loading. If this is zero then
      the data is being loaded in a thread from the thread pool. Once
      the thread is finished it will be converted to idle load handler
-     and load_idle will be nonzero. If load_idle is nonzero then the
-     rest of the load can safely be aborted by just removing the
-     source, otherwise the abort flag needs to be set and the data
-     should be disowned */
+     and load_idle will be nonzero. If load_idle is nonzero, and
+     upload_queued is FALSE then the rest of the load can safely be
+     aborted by just removing the source, otherwise the abort flag
+     needs to be set and the data should be disowned */
   guint           load_idle;
+
+  /* Set when the texture is queued for GPU upload, used to determine
+   * what to do with the texture data when load_idle is zero.
+  */
+  gboolean        upload_queued;  
 
   gchar          *load_filename;
   CoglHandle      load_bitmap;
@@ -160,6 +165,9 @@ enum
 static int texture_signals[LAST_SIGNAL] = { 0 };
 
 static GThreadPool *async_thread_pool = NULL;
+static guint        repaint_upload_func = 0;
+static GList       *upload_list = NULL;
+static GStaticMutex upload_list_mutex = G_STATIC_MUTEX_INIT;
 
 static void
 texture_fbo_free_resources (ClutterTexture *texture);
@@ -647,8 +655,8 @@ clutter_texture_async_data_free (ClutterTextureAsyncData *data)
 {
   /* This function should only be called either from the main thread
      once it is known that the load thread has completed or from the
-     load thread itself if the abort flag is true (in which case the
-     main thread has disowned the data) */
+     load thread/upload function itself if the abort flag is true (in
+     which case the main thread has disowned the data) */
 
   if (data->load_filename)
     g_free (data->load_filename);
@@ -702,7 +710,8 @@ clutter_texture_async_load_cancel (ClutterTexture *texture)
       else
         {
           /* Otherwise we need to tell the thread to abort and disown
-             the data */
+             the data, if the data has been loaded and decoded the data
+             is now waiting for a master clock iteration to be repainted */
           priv->async_data->abort = TRUE;
 
           if (mutex)
@@ -1682,6 +1691,12 @@ clutter_texture_thread_idle_func (gpointer user_data)
   /* Grab the mutex so we can be sure the thread has unlocked it
      before we destroy it */
   g_mutex_lock (data->mutex);
+  if (data->abort)
+    {
+      g_mutex_unlock (data->mutex);
+      clutter_texture_async_data_free (data);
+      return FALSE;
+    }
   g_mutex_unlock (data->mutex);
 
   clutter_texture_async_load_complete (data->texture, data->load_bitmap,
@@ -1690,6 +1705,36 @@ clutter_texture_thread_idle_func (gpointer user_data)
   clutter_texture_async_data_free (data);
 
   return FALSE;
+}
+
+static gboolean
+clutter_texture_repaint_upload_func (gpointer user_data)
+{
+  gulong start_time;
+
+  g_static_mutex_lock (&upload_list_mutex);
+
+  if (upload_list)
+    {
+      start_time = clutter_get_timestamp ();
+      do
+        {
+          ClutterTextureAsyncData *data = upload_list->data;
+          clutter_texture_thread_idle_func (data);
+          upload_list = g_list_remove (upload_list, data);
+        }
+      /* continue uploading textures as long as we havent spent more
+       * then 5ms doing so this stage redraw cycle.
+       */
+      while (upload_list && clutter_get_timestamp () < start_time + 5 * 1000);
+    }
+  if (upload_list)
+    {
+      _clutter_master_clock_ensure_next_iteration (
+         _clutter_master_clock_get_default());
+    }
+  g_static_mutex_unlock (&upload_list_mutex);
+  return TRUE;
 }
 
 static void
@@ -1732,10 +1777,21 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
        * set it while we're holding the mutex so we can safely start the
        * idle handler now without the possibility of calling the
        * callback after it is aborted */
-      data->load_idle =
-        clutter_threads_add_idle_full (G_PRIORITY_LOW, clutter_texture_thread_idle_func, data, NULL);
+      g_static_mutex_lock (&upload_list_mutex);
+      if (repaint_upload_func == 0)
+        {
+          repaint_upload_func = clutter_threads_add_repaint_func (
+                                       clutter_texture_repaint_upload_func,
+                                       NULL, NULL);
+        }
+      upload_list = g_list_append (upload_list, data);
+      data->upload_queued = TRUE;
+      g_static_mutex_unlock (&upload_list_mutex);
 
       g_mutex_unlock (data->mutex);
+      
+      _clutter_master_clock_ensure_next_iteration (
+         _clutter_master_clock_get_default());
     }
 
   return;
