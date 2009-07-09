@@ -1,3 +1,7 @@
+2009-06-09  Matthias Clasen  <mclasen@redhat.com>
+
+	unset _NET_SUPPORTING_WM_CHECK when shutting down
+
 2009-06-08  Tomeu Vizoso  <tomeu@sugarlabs.org>
 
 	Add a switch to disable autofullscreen'ing maximized windows without decorations
