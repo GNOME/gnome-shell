@@ -351,7 +351,6 @@ GenericDisplay.prototype = {
         this._matchedItems = [];
         // map<itemId, GenericDisplayItem>
         this._displayedItems = {};
-        this._displayedItemsCount = 0;
         this._selectedIndex = -1;
         // These two are public - .actor is the normal "actor subclass" property,
         // but we also expose a .displayControl actor which is separate.
@@ -397,10 +396,11 @@ GenericDisplay.prototype = {
     // to the bottom one. Returns true if the selection actually moved up, false if it wrapped 
     // around to the bottom.
     selectUp: function() {
+        let count = this._list.displayedCount;
         let selectedUp = true;
         let prev = this._selectedIndex - 1;
         if (this._selectedIndex <= 0) {
-            prev = this._displayedItemsCount - 1; 
+            prev = count - 1;
             selectedUp = false; 
         }
         this._selectIndex(prev);
@@ -411,9 +411,10 @@ GenericDisplay.prototype = {
     // to the top one. Returns true if the selection actually moved down, false if it wrapped 
     // around to the top.
     selectDown: function() {
+        let count = this._list.displayedCount;
         let selectedDown = true;
         let next = this._selectedIndex + 1;
-        if (this._selectedIndex == this._displayedItemsCount - 1) {
+        if (this._selectedIndex == count - 1) {
             next = 0;
             selectedDown = false;
         }
@@ -429,8 +430,9 @@ GenericDisplay.prototype = {
 
     // Selects the last item among the displayed items.
     selectLastItem: function() {
+        let count = this._list.displayedCount;
         if (this.hasItems())
-            this._selectIndex(this._displayedItemsCount - 1);
+            this._selectIndex(count - 1);
     },
 
     // Returns true if the display has some item selected.
@@ -445,7 +447,7 @@ GenericDisplay.prototype = {
 
     // Returns true if the display has any displayed items.
     hasItems: function() {
-        return this._displayedItemsCount > 0;
+        return this._list.displayedCount > 0;
     },
 
     // Updates the displayed items and makes the display actor visible.
@@ -541,15 +543,15 @@ GenericDisplay.prototype = {
                                       }));
         this._list.add_actor(displayItem.actor);
         this._displayedItems[itemId] = displayItem;
-        this._displayedItemsCount++;
     },
 
     // Removes an item identifed by the itemId from the displayed items.
     _removeDisplayItem: function(itemId) {
+        let count = this._list.displayedCount;
         let displayItem = this._displayedItems[itemId];
         let displayItemIndex = this._getIndexOfDisplayedActor(displayItem.actor);
 
-        if (this.hasSelected() && (this._displayedItemsCount == 1 || !this._list.visible)) {
+        if (this.hasSelected() && (count == 1 || !this._list.visible)) {
             this.unsetSelected();
         } else if (this.hasSelected() && displayItemIndex < this._selectedIndex) {
             this.selectUp();
@@ -558,7 +560,6 @@ GenericDisplay.prototype = {
         displayItem.destroy();
 
         delete this._displayedItems[itemId];
-        this._displayedItemsCount--;        
     },
 
     // Removes all displayed items.
@@ -707,6 +708,7 @@ GenericDisplay.prototype = {
      */
     _updateDisplayControl: function(resetDisplayControl) {
         if (resetDisplayControl) {
+            this._selectedIndex = -1;
             this.displayControl.remove_all();
             let nPages = this._list.n_pages;
             let pageNumber = this._list.page;
@@ -744,8 +746,7 @@ GenericDisplay.prototype = {
     // Returns a display item based on its index in the ordering of the
     // display children.
     _findDisplayedByIndex: function(index) {
-        let displayedActors = this._list.get_children();
-        let actor = displayedActors[index];
+        let actor = this._list.get_displayed_actor(index);
         return this._findDisplayedByActor(actor);
     },
 
@@ -775,7 +776,8 @@ GenericDisplay.prototype = {
     // Selects (e.g. highlights) a display item at the provided index,
     // updates this.selectedItemDetails actor, and emits 'selected' signal.
     _selectIndex: function(index) {
-        if (this._selectedIndex != -1) {
+        let count = this._list.displayedCount;
+        if (this._selectedIndex >= 0) {
             let prev = this._findDisplayedByIndex(this._selectedIndex);
             prev.markSelected(false);
             // Calling destroy() gets large image previews released as quickly as
@@ -787,12 +789,15 @@ GenericDisplay.prototype = {
     
             this.selectedItemDetails.remove_all();
         }
-        this._selectedIndex = index;
-        if (index != -1 && index < this._displayedItemsCount) {
-            let item = this._findDisplayedByIndex(index);
-            item.markSelected(true);
-            this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails, this._availableHeightForItemDetails), Big.BoxPackFlags.NONE);  
-            this.emit('selected'); 
+        if (index < count) {
+            this._selectedIndex = index;
+            if (index >= 0) {
+                let item = this._findDisplayedByIndex(index);
+                item.markSelected(true);
+                this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails,
+                   this._availableHeightForItemDetails), Big.BoxPackFlags.NONE);
+                this.emit('selected');
+            }
         }
     }
 };

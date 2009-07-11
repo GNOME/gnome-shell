@@ -10,6 +10,7 @@ enum {
   PROP_0,
   PROP_SPACING,
   PROP_ITEM_HEIGHT,
+  PROP_DISPLAYED_COUNT,
   PROP_PAGE,
   PROP_N_PAGES
 };
@@ -20,7 +21,35 @@ struct _ShellOverflowListPrivate {
   guint page;
   guint n_pages;
   guint items_per_page;
+  guint displayed_count;
 };
+
+static void
+recalc_displayed_count (ShellOverflowList *self)
+{
+  GList *children;
+  int n_children;
+  int displayed_count;
+  int page, n_pages;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  n_children = g_list_length (children);
+  g_list_free (children);
+
+  page = self->priv->page;
+  n_pages = self->priv->n_pages;
+  if (page < n_pages-1)
+    displayed_count = self->priv->items_per_page;
+  else if (n_pages > 0)
+    displayed_count = n_children - (self->priv->items_per_page * (n_pages-1));
+  else
+    displayed_count = 0;
+  if (displayed_count != self->priv->displayed_count)
+    {
+      self->priv->displayed_count = displayed_count;
+      g_object_notify (G_OBJECT (self), "displayed-count");
+    }
+}
 
 static void
 shell_overflow_list_set_property(GObject         *object,
@@ -43,6 +72,7 @@ shell_overflow_list_set_property(GObject         *object,
         break;
       case PROP_PAGE:
         priv->page = g_value_get_uint (value);
+        recalc_displayed_count (self);
         clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
         break;
     default:
@@ -67,6 +97,9 @@ shell_overflow_list_get_property(GObject         *object,
       break;
     case PROP_ITEM_HEIGHT:
       g_value_set_float (value, priv->spacing);
+      break;
+    case PROP_DISPLAYED_COUNT:
+      g_value_set_uint (value, priv->displayed_count);
       break;
     case PROP_PAGE:
       g_value_set_uint (value, priv->page);
@@ -135,11 +168,14 @@ shell_overflow_list_allocate (ClutterActor           *actor,
     }
 
   priv->items_per_page = n_fits;
+
   if (n_pages != priv->n_pages)
     {
       priv->n_pages = n_pages;
       g_object_notify (G_OBJECT (self), "n-pages");
     }
+
+  recalc_displayed_count (self);
 
   g_list_free (children);
 }
@@ -173,14 +209,9 @@ static void
 shell_overflow_list_pick (ClutterActor       *actor,
                           const ClutterColor *color)
 {
-  ShellOverflowList *self = SHELL_OVERFLOW_LIST (actor);
-  ShellOverflowListPrivate *priv = self->priv;
-  GList *children, *iter;
-  int i;
-
   (CLUTTER_ACTOR_CLASS (g_type_class_peek (clutter_actor_get_type ())))->pick (actor, color);
 
-  shell_overflow_list_paint (self);
+  shell_overflow_list_paint (actor);
 }
 
 
@@ -290,6 +321,14 @@ shell_overflow_list_class_init (ShellOverflowListClass *klass)
                                                         G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
+                                   PROP_DISPLAYED_COUNT,
+                                   g_param_spec_uint ("displayed-count",
+                                                      "Displayed count",
+                                                      "Number of items displayed on current page",
+                                                      0, G_MAXUINT, 0,
+                                                      G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class,
                                    PROP_PAGE,
                                    g_param_spec_uint ("page",
                                                       "Page number",
@@ -301,7 +340,7 @@ shell_overflow_list_class_init (ShellOverflowListClass *klass)
                                    PROP_N_PAGES,
                                    g_param_spec_uint ("n-pages",
                                                       "Number of pages",
-                                                      "Number of pagest",
+                                                      "Number of pages",
                                                        0, G_MAXUINT, 0,
                                                        G_PARAM_READABLE));
 
@@ -317,4 +356,32 @@ shell_overflow_list_init (ShellOverflowList *self)
                                             ShellOverflowListPrivate);
   self->priv->n_pages = 1;
   self->priv->page = 0;
+}
+
+/**
+ * shell_overflow_list_get_displayed_actor:
+ * @self:
+ * @index: 0-based index for displayed list
+ *
+ * Returns the actor at the given index on the current page.
+ *
+ * Return value: (transfer none): #ClutterActor at index
+ */
+ClutterActor *
+shell_overflow_list_get_displayed_actor (ShellOverflowList *self,
+                                         guint              index)
+{
+  GList *children, *iter;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+
+  if (children == NULL)
+    return NULL;
+
+  iter = g_list_nth (children, index + (self->priv->page * self->priv->items_per_page));
+
+  if (!iter)
+    return NULL;
+
+  return iter->data;
 }

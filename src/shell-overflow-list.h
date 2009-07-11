@@ -36,6 +36,8 @@ struct _ShellOverflowListClass
 
 GType shell_overflow_list_get_type (void) G_GNUC_CONST;
 
+ClutterActor *shell_overflow_list_get_displayed_actor (ShellOverflowList *list, guint index);
+
 G_END_DECLS
 
 #endif /* __SHELL_OVERFLOW_LIST_H__ */

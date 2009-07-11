@@ -332,6 +332,8 @@ Dash.prototype = {
                     me.emit('activated');
                 return true;
             } else if (symbol == Clutter.Up) {
+                if (!me._resultsShowing())
+                    return true;
                 // selectUp and selectDown wrap around in their respective displays
                 // too, but there doesn't seem to be any flickering if we first select
                 // something in one display, but then unset the selection, and move
@@ -342,13 +344,17 @@ Dash.prototype = {
                   me._resultsAppsSection.display.selectUp();
                 else
                   me._resultsDocsSection.display.selectUp();
+                return true;
             } else if (symbol == Clutter.Down) {
+                if (!me._resultsShowing())
+                    return true;
                 if (me._resultsDocsSection.display.hasSelected())
                   me._resultsDocsSection.display.selectDown();
                 else if (me._resultsAppsSection.display.hasItems())
                   me._resultsAppsSection.display.selectDown();
                 else
                   me._resultsDocsSection.display.selectDown();
+                return true;
             }
             return false;
         });
