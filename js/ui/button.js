@@ -128,14 +128,14 @@ const ANIMATION_TIME = 0.25;
  * size -- size in pixels of  both the button and the icon it contains
  * texture -- optional, must be used if the texture for the icon is already created (else, use setIconFromName)
  */
-function iconButton(parent, size, icon) {
-    this._init(parent, size, icon);
+function iconButton(parent, size, texture) {
+    this._init(parent, size, texture);
 }
 
 iconButton.prototype = {
     _init : function(parent, size, texture) {
         this._size = size;
-        if(texture)
+        if (texture)
             this.actor = texture;
         else
             this.actor = new Clutter.Texture({ width: this._size, height: this._size });
@@ -145,23 +145,23 @@ iconButton.prototype = {
             this._shouldHide = false;
 
             // Nothing to do if the cursor has come back from a child of the parent actor
-            if(actor.get_children().indexOf(Shell.get_event_related(event)) != -1)
+            if (actor.get_children().indexOf(Shell.get_event_related(event)) != -1)
                 return;
 
             this._fadeIn();
         }));
         parent.connect("leave-event", Lang.bind(this, function(actor, event) {
             // Nothing to do if the cursor has merely entered a child of the parent actor
-            if(actor.get_children().indexOf(Shell.get_event_related(event)) != -1)
+            if (actor.get_children().indexOf(Shell.get_event_related(event)) != -1)
                 return;
 
             // Remember that we should not be visible to hide the button if forceShow is unset
-            if(this._forceShow) {
+            if (this._forceShow) {
                 this._shouldHide = true;
                 return;
             }
 
-            this._fadeOut()
+            this._fadeOut();
         }));
     },
 
@@ -187,7 +187,7 @@ iconButton.prototype = {
     forceShow : function(show) {
         this._forceShow = show;
         // Hide the button if it should have been hidden under normal conditions
-        if(!this._forceShow && this._shouldHide) {
+        if (!this._forceShow && this._shouldHide) {
            this._fadeOut();
         }
     },
