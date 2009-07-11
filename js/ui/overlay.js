@@ -325,7 +325,7 @@ Dash.prototype = {
                 if (me._searchEntry.entry.text != '')
                     me._searchEntry.entry.text = '';
                 // Next, if we're in one of the "more" modes or showing the details pane, close them
-                else if (me._moreAppsMode || me._moreDocsMode || me._detailsShowing())
+                else if (me._resultsShowing())
                     me.unsetMoreMode();
                 // Finally, just close the overlay entirely
                 else
@@ -600,10 +600,7 @@ Dash.prototype = {
 
         this._moreAppsLink.setText("More...");
 
-        this._repositionDetails();
-        if (!this._detailsShowing()) {
-            this.emit('panes-removed');
-        }
+        this._hideDetails();
     },   
  
     // Sets the 'More' mode for browsing documents.
@@ -639,11 +636,7 @@ Dash.prototype = {
 
         this._moreDocsLink.setText("More...");
 
-        this._repositionDetails();
-
-        if (!this._detailsShowing()) {
-            this.emit('panes-removed');
-        }
+        this._hideDetails();
     },
 
     _setSearchMode: function() {
@@ -682,11 +675,7 @@ Dash.prototype = {
         this._resultsDocsSection._unsetSearchMode();
         this._resultsDocsSection.actor.set_y(0);
 
-        this._repositionDetails();
-
-        if (!this._detailsShowing()) {
-            this.emit('panes-removed');
-        }
+        this._hideDetails();
     },
 
     _repositionDetails: function () {
@@ -704,6 +693,13 @@ Dash.prototype = {
         this._repositionDetails();
         this.emit('panes-displayed');
     },
+
+    _hideDetails: function() {
+        if (!this._detailsShowing)
+            return;
+        this._detailsPane.hide();
+        this.emit('panes-removed');
+     },
 
     _detailsShowing: function() {
         return this._detailsPane.visible;
