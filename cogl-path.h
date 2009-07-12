@@ -169,7 +169,7 @@ void            cogl_path_rel_line_to    (float        x,
  * @center_x: X coordinate of the elliptical arc center
  * @center_y: Y coordinate of the elliptical arc center
  * @radius_x: X radius of the elliptical arc
- * @radius_y: Y radious of the elliptical arc
+ * @radius_y: Y radius of the elliptical arc
  * @angle_1: Angle in the unit-circle at which the arc begin
  * @angle_2: Angle in the unit-circle at which the arc ends
  *
