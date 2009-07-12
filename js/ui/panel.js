@@ -93,6 +93,7 @@ Panel.prototype = {
 
         let statusbox = new Big.Box();
         let statusmenu = this._statusmenu = new Shell.StatusMenu();
+        statusmenu.get_name().fontName = 'Sans Bold 16px';
         statusbox.append(this._statusmenu, Big.BoxPackFlags.NONE);
         let statusbutton = new Button.Button(statusbox, PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
                                              true, null, PANEL_HEIGHT);

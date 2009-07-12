@@ -37,6 +37,9 @@ GType             shell_status_menu_get_type     (void);
 
 void              shell_status_menu_toggle       (ShellStatusMenu *menu, ClutterEvent *event);
 
+ClutterText      *shell_status_menu_get_name     (ShellStatusMenu *menu);
+ClutterTexture   *shell_status_menu_get_icon     (ShellStatusMenu *menu);
+
 G_END_DECLS
 
 #endif /* __SHELL_STATUS_MENU_H__ */

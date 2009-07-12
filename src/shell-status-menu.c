@@ -117,12 +117,9 @@ static void
 update_name_text (ShellStatusMenu *status)
 {
   ShellStatusMenuPrivate *priv = status->priv;
-  char      *markup;
 
-  markup = g_markup_printf_escaped("<b>%s</b>",
-                                   gdm_user_get_real_name (GDM_USER (priv->user)));
-  clutter_text_set_markup (priv->name, markup);
-  g_free (markup);
+  clutter_text_set_text (priv->name,
+                         gdm_user_get_real_name (GDM_USER (priv->user)));
 }
 
 static void
@@ -654,4 +651,28 @@ shell_status_menu_toggle (ShellStatusMenu *status, ClutterEvent *event)
       gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, position_menu,
           status, 1, event->button.time);
     }
+}
+
+/**
+ * shell_status_menu_get_name:
+ * @menu: a #ShellStatusMenu
+ *
+ * Return value: (transfer none): the #ClutterText actor with the user's name.
+ */
+ClutterText *
+shell_status_menu_get_name (ShellStatusMenu *menu)
+{
+  return menu->priv->name;
+}
+
+/**
+ * shell_status_menu_get_icon:
+ * @menu: a #ShellStatusMenu
+ *
+ * Return value: (transfer none): the #ClutterTexture actor with the user icon.
+ */
+ClutterTexture *
+shell_status_menu_get_icon (ShellStatusMenu *menu)
+{
+  return menu->priv->user_icon;
 }
