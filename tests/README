@@ -8,5 +8,5 @@ The micro-bench/ tests should be focused perfomance test, ideally testing a sing
 The interactive/ tests are any tests whos status can not be determined without a user looking at some visual output, or providing some manual input etc. This covers most of the original Clutter tests. Ideally some of these tests will be migrated into the conformance/ directory so they can be used in automated nightly tests.
 
 Other notes:
-All tests should ideally include a detailed description in the source explaining exactly what the test is for, how the test was designed to work, and possibly a rationale for the aproach taken for testing.
+All tests should ideally include a detailed description in the source explaining exactly what the test is for, how the test was designed to work, and possibly a rationale for the approach taken for testing.
 

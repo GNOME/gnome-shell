@@ -93,7 +93,8 @@ RELEASES
 
 In making a new release;
 
- - Check out a fresh copy from SVN.
+ - Verify your working directory is fresh; i.e., check out a fresh copy
+   or "git reset --hard release_branch && git clean -f".
 
  - Verify versioning in configure.ac, increasing relevant
    clutter_major_version/clutter_minor_version/clutter_micro_version
