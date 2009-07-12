@@ -9,7 +9,6 @@ UNIT_TESTS = \
         test-actor-clone.c \
 	test-behave.c \
 	test-project.c \
-	test-perspective.c \
 	test-rotate.c \
 	test-depth.c \
 	test-threads.c \
