@@ -1708,7 +1708,7 @@ clutter_texture_thread_idle_func (gpointer user_data)
 }
 
 static gboolean
-clutter_texture_repaint_upload_func (gpointer user_data)
+texture_repaint_upload_func (gpointer user_data)
 {
   gulong start_time;
 
@@ -1717,23 +1717,31 @@ clutter_texture_repaint_upload_func (gpointer user_data)
   if (upload_list)
     {
       start_time = clutter_get_timestamp ();
-      do
-        {
-          ClutterTextureAsyncData *data = upload_list->data;
-          clutter_texture_thread_idle_func (data);
-          upload_list = g_list_remove (upload_list, data);
-        }
+
       /* continue uploading textures as long as we havent spent more
        * then 5ms doing so this stage redraw cycle.
        */
+      do
+        {
+          ClutterTextureAsyncData *data = upload_list->data;
+
+          clutter_texture_thread_idle_func (data);
+
+          upload_list = g_list_remove (upload_list, data);
+        }
       while (upload_list && clutter_get_timestamp () < start_time + 5 * 1000);
     }
+
   if (upload_list)
     {
-      _clutter_master_clock_ensure_next_iteration (
-         _clutter_master_clock_get_default());
+      ClutterMasterClock *master_clock;
+
+      master_clock = _clutter_master_clock_get_default ();
+      _clutter_master_clock_ensure_next_iteration (master_clock);
     }
+
   g_static_mutex_unlock (&upload_list_mutex);
+
   return TRUE;
 }
 
@@ -1771,6 +1779,8 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
     }
   else
     {
+      ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
+
       /* Make sure we give the image to GL in the main thread, where we
        * hold the main Clutter lock. Once load_idle is non-NULL then the
        * main thread is guaranteed not to set the abort flag. It can't
@@ -1778,23 +1788,23 @@ clutter_texture_thread_func (gpointer user_data, gpointer pool_data)
        * idle handler now without the possibility of calling the
        * callback after it is aborted */
       g_static_mutex_lock (&upload_list_mutex);
+
       if (repaint_upload_func == 0)
         {
-          repaint_upload_func = clutter_threads_add_repaint_func (
-                                       clutter_texture_repaint_upload_func,
-                                       NULL, NULL);
+          repaint_upload_func =
+            clutter_threads_add_repaint_func (texture_repaint_upload_func,
+                                              NULL, NULL);
         }
+
       upload_list = g_list_append (upload_list, data);
       data->upload_queued = TRUE;
+
       g_static_mutex_unlock (&upload_list_mutex);
 
       g_mutex_unlock (data->mutex);
-      
-      _clutter_master_clock_ensure_next_iteration (
-         _clutter_master_clock_get_default());
-    }
 
-  return;
+      _clutter_master_clock_ensure_next_iteration (master_clock);
+    }
 }
 
 static gboolean
