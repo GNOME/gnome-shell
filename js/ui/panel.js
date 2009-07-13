@@ -109,9 +109,7 @@ Panel.prototype = {
 
         this._clock = new Clutter.Text({ font_name: "Sans Bold 16px",
                                          text: "" });
-        let pad = (PANEL_HEIGHT - this._clock.height) / 2;
-        let clockbox = new Big.Box({ padding_top: pad,
-                                     padding_bottom: pad,
+        let clockbox = new Big.Box({ y_align: Big.BoxAlignment.CENTER,
                                      padding_left: 4,
                                      padding_right: 4 });
         clockbox.append(this._clock, Big.BoxPackFlags.NONE);
