@@ -54,6 +54,7 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
     {
       [self setDelegate: self];
       [self useOptimizedDrawing: YES];
+      [self setAcceptsMouseMovedEvents:YES];
       [self setContentView: aView];
       [self setTitle:[NSString stringWithUTF8String: aTitle ? aTitle : ""]];
       self->stage_osx = aStage;
