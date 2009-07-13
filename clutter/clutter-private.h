@@ -53,7 +53,7 @@
 G_BEGIN_DECLS
 
 typedef enum {
-  CLUTTER_ACTOR_UNUSED_FLAG = 0,
+  CLUTTER_ACTOR_UNUSED_FLAG    = 0,
 
   CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
   CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
@@ -62,10 +62,9 @@ typedef enum {
 					  * viewport / perspective etc
 					  * needs (re)setting.
                                           */
-  CLUTTER_ACTOR_IN_PAINT         = 1 << 4, /* Used to avoid recursion */
-  CLUTTER_ACTOR_IN_RELAYOUT      = 1 << 5, /* Used to avoid recursion */
-  CLUTTER_TEXTURE_IN_CLONE_PAINT = 1 << 6, /* Used for safety in clones */
-  CLUTTER_STAGE_IN_RESIZE        = 1 << 7
+  CLUTTER_ACTOR_IN_PAINT       = 1 << 4, /* Used to avoid recursion */
+  CLUTTER_ACTOR_IN_RELAYOUT    = 1 << 5, /* Used to avoid recursion */
+  CLUTTER_STAGE_IN_RESIZE      = 1 << 6
 } ClutterPrivateFlags;
 
 struct _ClutterInputDevice

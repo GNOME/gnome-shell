@@ -610,13 +610,6 @@ clutter_texture_paint (ClutterActor *self)
         clutter_shader_set_is_enabled (shader, TRUE);
     }
 
-  /* A clone may need to fire above if were a TFP/FBO but not visible.
-   * Ultimatly needs some reworking with maybe an extra prepare_paint
-   * method or some such.
-  */
-  if (CLUTTER_PRIVATE_FLAGS(self) & CLUTTER_TEXTURE_IN_CLONE_PAINT)
-    return;
-
   CLUTTER_NOTE (PAINT,
                 "painting texture '%s'",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
