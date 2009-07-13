@@ -577,14 +577,14 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
                              stage_x11->xwin_height);
             }
 
-          update_wm_hints (stage_x11);
-
           if (stage_x11->fullscreen_on_map)
             clutter_stage_x11_set_fullscreen (stage_window, TRUE);
           else
             clutter_stage_x11_set_fullscreen (stage_window, FALSE);
 
           set_stage_state (stage_x11, STAGE_X11_WITHDRAWN, 0);
+
+          update_wm_hints (stage_x11);
         }
 
       g_assert (STAGE_X11_IS_MAPPED (stage_x11));
