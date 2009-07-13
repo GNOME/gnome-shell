@@ -91,10 +91,10 @@ clutter_stage_win32_get_preferred_width (ClutterActor  *self,
   /* If we're in fullscreen mode then return the size of the screen
      instead */
   if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
-    width = CLUTTER_UNITS_FROM_DEVICE (stage_win32->fullscreen_rect.right
-				       - stage_win32->fullscreen_rect.left);
+    width = stage_win32->fullscreen_rect.right
+          - stage_win32->fullscreen_rect.left;
   else
-    width = CLUTTER_UNITS_FROM_DEVICE (stage_win32->win_width);
+    width = stage_win32->win_width;
 
   if (min_width_p)
     *min_width_p = width;
@@ -115,10 +115,10 @@ clutter_stage_win32_get_preferred_height (ClutterActor  *self,
   /* If we're in fullscreen mode then return the size of the screen
      instead */
   if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
-    height = CLUTTER_UNITS_FROM_DEVICE (stage_win32->fullscreen_rect.bottom
-				       - stage_win32->fullscreen_rect.top);
+    height = stage_win32->fullscreen_rect.bottom
+           - stage_win32->fullscreen_rect.top;
   else
-    height = CLUTTER_UNITS_FROM_DEVICE (stage_win32->win_height);
+    height = stage_win32->win_height;
 
   if (min_height_p)
     *min_height_p = height;
@@ -693,7 +693,7 @@ clutter_win32_get_stage_from_window (HWND hwnd)
     {
       /* Otherwise it might be a foreign window so we should check the
 	 stage list */
-      ClutterStageManager *stage_manager
+      ClutterStageManager *stage_manager;
       const GSList        *stages, *l;
 
       stage_manager = clutter_stage_manager_get_default ();
