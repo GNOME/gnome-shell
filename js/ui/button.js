@@ -14,12 +14,20 @@ DEFAULT_BUTTON_COLOR.from_pixel(0xeeddcc66);
 const DEFAULT_PRESSED_BUTTON_COLOR = new Clutter.Color();
 DEFAULT_PRESSED_BUTTON_COLOR.from_pixel(0xccbbaa66);
 
-function Button(widget, buttonColor, pressedButtonColor, staysPressed, minWidth, minHeight) {
-    this._init(widget, buttonColor, pressedButtonColor, staysPressed, minWidth, minHeight);
+const DEFAULT_TEXT_COLOR = new Clutter.Color();
+DEFAULT_TEXT_COLOR.from_pixel(0x000000ff);
+
+const DEFAULT_FONT = 'Sans Bold 16px';
+
+// Padding on the left and right side of the button.
+const SIDE_PADDING = 14;
+
+function Button(widget, buttonColor, pressedButtonColor, textColor, staysPressed, minWidth, minHeight, font) {
+    this._init(widget, buttonColor, pressedButtonColor, textColor, staysPressed, minWidth, minHeight, font);
 }
 
 Button.prototype = {
-    _init : function(widgetOrText, buttonColor, pressedButtonColor, staysPressed, minWidth, minHeight) {
+    _init : function(widgetOrText, buttonColor, pressedButtonColor, textColor, staysPressed, minWidth, minHeight, font) {
         let me = this;
 
         this._buttonColor = buttonColor
@@ -30,9 +38,17 @@ Button.prototype = {
         if (pressedButtonColor == null)
             this._pressedButtonColor = DEFAULT_PRESSED_BUTTON_COLOR;
 
+        this._textColor = textColor;
+        if (textColor == null)
+            this._textColor = DEFAULT_TEXT_COLOR;
+
         this._staysPressed = staysPressed
         if (staysPressed == null)
             this._staysPressed = false;
+
+        this._font = font;
+        if (font == null)
+            this._font = DEFAULT_FONT;
 
         if (minWidth == null)
             minWidth = 0;
@@ -47,13 +63,14 @@ Button.prototype = {
 
         this.button = new Big.Box({ reactive: true,
                                     corner_radius: 5,
-                                    padding_left: 4,
-                                    padding_right: 4,
+                                    padding_left: SIDE_PADDING,
+                                    padding_right: SIDE_PADDING,
                                     orientation: Big.BoxOrientation.HORIZONTAL,
                                     y_align: Big.BoxAlignment.CENTER
                                   });
         if (typeof widgetOrText == 'string') {
-            this._widget = new Clutter.Text({ font_name: "Sans Bold 16px",
+            this._widget = new Clutter.Text({ font_name: this._font,
+                                              color: this._textColor,
                                               text: widgetOrText });
         } else {
             this._widget = widgetOrText;

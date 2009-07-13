@@ -12,31 +12,29 @@ const Tweener = imports.ui.tweener;
 const Button = imports.ui.button;
 const Main = imports.ui.main;
 
-const PANEL_HEIGHT = 32;
+const PANEL_HEIGHT = 26;
 const TRAY_HEIGHT = PANEL_HEIGHT - 1;
-const SHADOW_HEIGHT = 6;
 
-// The panel has a transparent white background with a gradient.
-const PANEL_TOP_COLOR = new Clutter.Color();
-PANEL_TOP_COLOR.from_pixel(0xffffff99);
-const PANEL_MIDDLE_COLOR = new Clutter.Color();
-PANEL_MIDDLE_COLOR.from_pixel(0xffffff88);
-const PANEL_BOTTOM_COLOR = new Clutter.Color();
-PANEL_BOTTOM_COLOR.from_pixel(0xffffffaa);
+const PANEL_BACKGROUND_COLOR = new Clutter.Color();
+PANEL_BACKGROUND_COLOR.from_pixel(0x000000ff);
+const PANEL_FOREGROUND_COLOR = new Clutter.Color();
+PANEL_FOREGROUND_COLOR.from_pixel(0xffffffff);
 
-const SHADOW_COLOR = new Clutter.Color();
-SHADOW_COLOR.from_pixel(0x00000033);
 const TRANSPARENT_COLOR = new Clutter.Color();
 TRANSPARENT_COLOR.from_pixel(0x00000000);
 
-// Darken (pressed) buttons; lightening has no effect on white backgrounds.
+// Don't make the mouse hover effect visible to the user for a menu feel.
 const PANEL_BUTTON_COLOR = new Clutter.Color();
-PANEL_BUTTON_COLOR.from_pixel(0x00000015);
+PANEL_BUTTON_COLOR.from_pixel(0x00000000);
+
+// Lighten pressed buttons; darkening has no effect on a black background.
 const PRESSED_BUTTON_BACKGROUND_COLOR = new Clutter.Color();
-PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0x00000030);
+PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0x324c6ffa);
+
+const DEFAULT_FONT = 'Sans 16px';
 
 const TRAY_PADDING = 0;
-const TRAY_SPACING = 2;
+const TRAY_SPACING = 14;
 
 // Used for the tray icon container with gtk pre-2.16, which doesn't
 // fully support tray icon transparency
@@ -58,26 +56,11 @@ Panel.prototype = {
         // Put the background under the panel within a group.
         this.actor = new Clutter.Group();
 
-        // Create backBox, which contains two boxes, backUpper and backLower,
-        // for the background gradients and one for the shadow. The shadow at
-        // the bottom has a fixed height (packing flag NONE), and the rest of
-        // the height above is divided evenly between backUpper and backLower
-        // (with packing flag EXPAND).
-        let backBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                    x: 0,
-                                    y: 0,
-                                    width: global.screen_width,
-                                    height: PANEL_HEIGHT + SHADOW_HEIGHT });
-        let backUpper = global.create_vertical_gradient(PANEL_TOP_COLOR,
-                                                        PANEL_MIDDLE_COLOR);
-        let backLower = global.create_vertical_gradient(PANEL_MIDDLE_COLOR,
-                                                        PANEL_BOTTOM_COLOR);
-        let shadow = global.create_vertical_gradient(SHADOW_COLOR,
-                                                     TRANSPARENT_COLOR);
-        shadow.set_height(SHADOW_HEIGHT + 1);
-        backBox.append(backUpper, Big.BoxPackFlags.EXPAND);
-        backBox.append(backLower, Big.BoxPackFlags.EXPAND);
-        backBox.append(shadow, Big.BoxPackFlags.NONE);
+        // backBox contains the panel background and the clock.
+        let backBox = new Big.Box({ width: global.screen_width,
+                                    height: PANEL_HEIGHT,
+                                    backgroundColor: PANEL_BACKGROUND_COLOR,
+                                    x_align: Big.BoxAlignment.CENTER });
         this.actor.add_actor(backBox);
 
         let box = new Big.Box({ x: 0,
@@ -87,15 +70,20 @@ Panel.prototype = {
                                 orientation: Big.BoxOrientation.HORIZONTAL,
                                 spacing: 4 });
 
-        this.button = new Button.Button("Activities", PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, true, null, PANEL_HEIGHT);
+        this.button = new Button.Button("Activities", PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, PANEL_FOREGROUND_COLOR, true, null, PANEL_HEIGHT, DEFAULT_FONT);
 
         box.append(this.button.button, Big.BoxPackFlags.NONE);
 
         let statusbox = new Big.Box();
         let statusmenu = this._statusmenu = new Shell.StatusMenu();
-        statusmenu.get_name().fontName = 'Sans Bold 16px';
+        statusmenu.get_icon().hide();
+        statusmenu.get_name().fontName = DEFAULT_FONT;
+        statusmenu.get_name().color = PANEL_FOREGROUND_COLOR;
         statusbox.append(this._statusmenu, Big.BoxPackFlags.NONE);
-        let statusbutton = new Button.Button(statusbox, PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
+        let statusbutton = new Button.Button(statusbox,
+                                             PANEL_BUTTON_COLOR,
+                                             PRESSED_BUTTON_BACKGROUND_COLOR,
+                                             PANEL_FOREGROUND_COLOR,
                                              true, null, PANEL_HEIGHT);
         statusbutton.button.connect('button-press-event', function (b, e) {
             statusmenu.toggle(e);
@@ -107,13 +95,14 @@ Panel.prototype = {
             statusbutton.release();
         });
 
-        this._clock = new Clutter.Text({ font_name: "Sans Bold 16px",
+        this._clock = new Clutter.Text({ font_name: DEFAULT_FONT,
+                                         color: PANEL_FOREGROUND_COLOR,
                                          text: "" });
         let clockbox = new Big.Box({ y_align: Big.BoxAlignment.CENTER,
                                      padding_left: 4,
                                      padding_right: 4 });
         clockbox.append(this._clock, Big.BoxPackFlags.NONE);
-        box.append(clockbox, Big.BoxPackFlags.END);
+        backBox.append(clockbox, Big.BoxPackFlags.EXPAND);
 
         // The tray icons live in trayBox within trayContainer.
         // The trayBox is hidden when there are no tray icons.
@@ -193,7 +182,7 @@ Panel.prototype = {
             displayDate.setMinutes(displayDate.getMinutes() + 1);
             msecRemaining += 60000;
         }
-        this._clock.set_text(displayDate.toLocaleFormat("%a %b %e, %l:%M %p"));
+        this._clock.set_text(displayDate.toLocaleFormat("%a %l:%M %p"));
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
     }
