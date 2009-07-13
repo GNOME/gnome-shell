@@ -6,6 +6,8 @@ m4_define([clutter_minor_version], [9])
 m4_define([clutter_micro_version], [7])
 
 m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutter_micro_version])
+
+# TODO: hardcode to "1.0" when we release 1.0.0
 m4_define([clutter_api_version], [clutter_major_version.clutter_minor_version])
 
 # increase the interface age by 2 for each release; if the API changes,
@@ -504,7 +506,7 @@ AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
               [AC_MSG_RESULT([not found])]
         )
 
-        # XINPUT (optional) - FIXME this is wrong
+        # XINPUT (optional)
         xinput=no
         AC_ARG_ENABLE([xinput],
                       [AS_HELP_STRING([--enable-xinput], [Use the XINPUT X extension])],
@@ -676,13 +678,13 @@ dnl === GTK Doc check =========================================================
 
 GTK_DOC_CHECK([1.11])
 
-# we don't want to build the documentation from a SVN checkout unless we
+# we don't want to build the documentation from a Git clone unless we
 # explicitly tell configure to do so; this allows avoiding to recurse into
 # the documentation directory when building Clutter inside Poky for a
 # target device that doesn't have gtk-doc installed. for reference
 # see: http://bugzilla.openedhand.com/show_bug.cgi?id=1047
 #
-# we use autogen.sh as it exists only inside the SVN checkouts, and it
+# we use autogen.sh as it exists only inside the Git clones, and it
 # is not packaged into tarballs.
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
 
