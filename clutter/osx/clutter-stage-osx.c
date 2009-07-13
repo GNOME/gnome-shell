@@ -376,13 +376,13 @@ clutter_stage_osx_get_preferred_width (ClutterActor *actor,
   if (min_width_p)
     {
       if (is_resizable)
-        *min_width_p = CLUTTER_UNITS_FROM_FLOAT (1.0);
+        *min_width_p = 1.0;
       else
-        *min_width_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_width);
+        *min_width_p = self->requisition_width;
     }
 
   if (natural_width_p)
-    *natural_width_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_width);
+    *natural_width_p = self->requisition_width;
 
   CLUTTER_OSX_POOL_RELEASE();
 }
@@ -403,13 +403,13 @@ clutter_stage_osx_get_preferred_height (ClutterActor *actor,
   if (min_height_p)
     {
       if (is_resizable)
-        *min_height_p = CLUTTER_UNITS_FROM_FLOAT (1.0);
+        *min_height_p = 1.0;
       else
-        *min_height_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_height);
+        *min_height_p = self->requisition_height;
     }
 
   if (natural_height_p)
-    *natural_height_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_height);
+    *natural_height_p = self->requisition_height;
 
   CLUTTER_OSX_POOL_RELEASE();
 }
@@ -423,13 +423,13 @@ clutter_stage_osx_allocate (ClutterActor           *actor,
   ClutterActorClass *parent_class;
 
   CLUTTER_NOTE (BACKEND, "[%p], allocate: %d, %d - %d x %d", self,
-                CLUTTER_UNITS_TO_INT (box->x1),
-                CLUTTER_UNITS_TO_INT (box->y1),
-                CLUTTER_UNITS_TO_INT (box->x2 - box->x1),
-                CLUTTER_UNITS_TO_INT (box->y2 - box->y1));
+                (int) box->x1,
+                (int) box->y1,
+                (int) (box->x2 - box->x1),
+                (int) (box->y2 - box->y1));
 
-  self->requisition_width  = CLUTTER_UNITS_TO_INT (box->x2 - box->x1);
-  self->requisition_height = CLUTTER_UNITS_TO_INT (box->y2 - box->y1);
+  self->requisition_width  = (int) (box->x2 - box->x1);
+  self->requisition_height = (int) (box->y2 - box->y1);
 
   if (CLUTTER_ACTOR_IS_REALIZED (actor))
     {
