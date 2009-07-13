@@ -387,6 +387,7 @@ clutter_actor_grab_key_focus
 clutter_actor_get_pango_context
 clutter_actor_create_pango_context
 clutter_actor_create_pango_layout
+clutter_actor_is_in_clone_paint
 
 <SUBSECTION>
 ClutterActorBox

@@ -9184,3 +9184,35 @@ clutter_actor_get_transformation_matrix (ClutterActor *self,
 
   CLUTTER_ACTOR_GET_CLASS (self)->apply_transform (self, matrix);
 }
+
+/**
+ * clutter_actor_is_in_clone_paint:
+ * @self: a #ClutterActor
+ *
+ * Checks whether @self is being currently painted by a #ClutterClone
+ *
+ * This function is useful only inside the ::paint virtual function
+ * implementations or within handlers for the #ClutterActor::paint
+ * signal
+ *
+ * This function should not be used by applications
+ *
+ * Return value: %TRUE if the #ClutterActor is currently being painted
+ *   by a #ClutterClone, and %FALSE otherwise
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_actor_is_in_clone_paint (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  /* XXX - keep in sync with the overrides set by ClutterClone:
+   *
+   *  - opacity_parent != NULL
+   *  - enable_model_view_transform == FALSE
+   */
+
+  return self->priv->opacity_parent != NULL &&
+         !self->priv->enable_model_view_transform;
+}

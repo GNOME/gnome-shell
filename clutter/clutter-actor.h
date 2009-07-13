@@ -520,6 +520,8 @@ PangoLayout * clutter_actor_create_pango_layout       (ClutterActor        *self
 void clutter_actor_get_transformation_matrix          (ClutterActor        *self,
                                                        CoglMatrix          *matrix);
 
+gboolean clutter_actor_is_in_clone_paint              (ClutterActor        *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_H__ */
