@@ -77,9 +77,10 @@ DocDisplay.prototype = {
     _init : function(width) {
         GenericDisplay.GenericDisplay.prototype._init.call(this, width);
         let me = this;
-        this._recentManager = Gtk.RecentManager.get_default();
+
+        this._docManager = DocInfo.getDocManager(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
         this._docsStale = true;
-        this._recentManager.connect('changed', function(recentManager, userData) {
+        this._docManager.connect('changed', function(mgr, userData) {
             me._docsStale = true;
             // Changes in local recent files should not happen when we are in the overlay mode,
             // but redisplaying right away is cool when we use Zephyr.
@@ -96,15 +97,7 @@ DocDisplay.prototype = {
         let me = this;
         if (!this._docsStale)
             return;
-        this._allItems = {};
-        let docs = this._recentManager.get_items();
-        for (let i = 0; i < docs.length; i++) {
-            let recentInfo = docs[i];
-            let docInfo = new DocInfo.DocInfo(recentInfo);
-
-            // we use GtkRecentInfo URI as an item Id
-            this._allItems[docInfo.uri] = docInfo;
-        }
+        this._allItems = this._docManager.getItems();
         this._docsStale = false;
     },
 

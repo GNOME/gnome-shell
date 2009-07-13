@@ -5,6 +5,8 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 
+const Lang = imports.lang;
+const Signals = imports.signals;
 const Main = imports.ui.main;
 
 const THUMBNAIL_ICON_MARGIN = 2;
@@ -22,34 +24,19 @@ DocInfo.prototype = {
     },
 
     createIcon : function(size) {
-        let icon = new Clutter.Texture();
-        let iconPixbuf;
+        let icon = null;
+        let defaultPixbuf = this._recentInfo.get_icon(size);
 
-        if (this.uri.match("^file://"))
-            iconPixbuf = Shell.get_thumbnail(this.uri, this.mimeType);
-
-        if (iconPixbuf) {
-            // We calculate the width and height of the texture so as
-            // to preserve the aspect ratio of the thumbnail. Because
-            // the images generated based on thumbnails don't have an
-            // internal padding like system icons do, we create a
-            // slightly smaller texture and then create a group around
-            // it for padding purposes
-
-            let scalingFactor = (size - THUMBNAIL_ICON_MARGIN * 2) / Math.max(iconPixbuf.get_width(), iconPixbuf.get_height());
-            icon.set_width(Math.ceil(iconPixbuf.get_width() * scalingFactor));
-            icon.set_height(Math.ceil(iconPixbuf.get_height() * scalingFactor));
-            Shell.clutter_texture_set_from_pixbuf(icon, iconPixbuf);
-
-            let group = new Clutter.Group({ width: size,
-                                            height: size });
-            group.add_actor(icon);
-            icon.set_position(THUMBNAIL_ICON_MARGIN, THUMBNAIL_ICON_MARGIN);
-            return group;
-        } else {
-            Shell.clutter_texture_set_from_pixbuf(icon, this._recentInfo.get_icon(size));
-            return icon;
+        if (this.uri.match("^file://")) {
+            icon = Shell.TextureCache.get_default().load_thumbnail(size, this.uri, this.mimeType,
+                                                                   defaultPixbuf);
         }
+
+        if (!icon) {
+            icon = new Clutter.Texture({});
+            Shell.clutter_texture_set_from_pixbuf(icon, defaultPixbuf);
+        }
+        return icon;
     },
 
     launch : function() {
@@ -112,3 +99,58 @@ DocInfo.prototype = {
         return this._recentInfo.get_modified();
     }
 };
+
+var docManagerInstance = null;
+
+function getDocManager(size) {
+    if (docManagerInstance == null)
+        docManagerInstance = new DocManager(size);
+    return docManagerInstance;
+}
+
+function DocManager(size) {
+    this._init(size);
+}
+
+DocManager.prototype = {
+    _init: function(iconSize) {
+        this._iconSize = iconSize;
+        this._recentManager = Gtk.RecentManager.get_default();
+        this._items = {};
+        this._recentManager.connect('changed', Lang.bind(this, function(recentManager) {
+            this._reload();
+            this.emit('changed');
+        }));
+        this._reload();
+    },
+
+    _reload: function() {
+        let docs = this._recentManager.get_items();
+        let newItems = {};
+        for (let i = 0; i < docs.length; i++) {
+            let recentInfo = docs[i];
+            let docInfo = new DocInfo(recentInfo);
+
+            // we use GtkRecentInfo URI as an item Id
+            newItems[docInfo.uri] = docInfo;
+        }
+        let deleted = {};
+        for (var uri in this._items) {
+            if (!(uri in newItems))
+                deleted[uri] = 1;
+        }
+        /* If we'd cached any thumbnail references that no longer exist,
+           dump them here */
+        let texCache = Shell.TextureCache.get_default();
+        for (var uri in deleted) {
+            texCache.unref_thumbnail(this._iconSize, uri);
+        }
+        this._items = newItems;
+    },
+
+    getItems: function() {
+        return this._items;
+    }
+}
+
+Signals.addSignalMethods(DocManager.prototype);

@@ -2,6 +2,7 @@
 #define __SHELL_TEXTURE_CACHE_H__
 
 #include <gio/gio.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
 
 #define SHELL_TYPE_TEXTURE_CACHE                 (shell_texture_cache_get_type ())
@@ -36,6 +37,16 @@ ShellTextureCache* shell_texture_cache_get_default();
 ClutterActor *shell_texture_cache_load_gicon (ShellTextureCache *cache,
                                               GIcon             *icon,
                                               gint               size);
+
+ClutterActor *shell_texture_cache_load_thumbnail (ShellTextureCache *cache,
+                                                  int                size,
+                                                  const char        *uri,
+                                                  const char        *mimetype,
+                                                  GdkPixbuf         *fallback);
+
+void          shell_texture_cache_unref_thumbnail (ShellTextureCache *cache,
+                                                   int                size,
+                                                   const char        *uri);
 
 ClutterActor *shell_texture_cache_load_uri_async (ShellTextureCache *cache,
                                                   const gchar       *filename,
