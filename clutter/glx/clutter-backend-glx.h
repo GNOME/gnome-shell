@@ -45,20 +45,18 @@ G_BEGIN_DECLS
 typedef struct _ClutterBackendGLX       ClutterBackendGLX;
 typedef struct _ClutterBackendGLXClass  ClutterBackendGLXClass;
 
-typedef enum ClutterGLXVBlankType
-{
+typedef enum ClutterGLXVBlankType {
   CLUTTER_VBLANK_NONE = 0,
   CLUTTER_VBLANK_GLX_SWAP,
   CLUTTER_VBLANK_GLX,
   CLUTTER_VBLANK_DRI
-
 } ClutterGLXVBlankType;
 
 typedef int (*GetVideoSyncProc)  (unsigned int *count);
 typedef int (*WaitVideoSyncProc) (int           divisor,
-                                  int          remainder,
+                                  int           remainder,
                                   unsigned int *count);
-typedef int (*SwapIntervalProc) (int interval);
+typedef int (*SwapIntervalProc)  (int           interval);
 
 struct _ClutterBackendGLX
 {
@@ -83,8 +81,6 @@ struct _ClutterBackendGLXClass
 {
   ClutterBackendX11Class parent_class;
 };
-
-void  clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx);
 
 GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
 
