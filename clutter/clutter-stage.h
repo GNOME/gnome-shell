@@ -237,15 +237,17 @@ void                  clutter_stage_get_fog            (ClutterStage *stage,
 void                  clutter_stage_set_key_focus      (ClutterStage *stage,
                                                         ClutterActor *actor);
 ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
-
-/* New experiental calls */
 void                  clutter_stage_ensure_current     (ClutterStage *stage);
 void                  clutter_stage_queue_redraw       (ClutterStage *stage);
 gboolean              clutter_stage_is_default         (ClutterStage *stage);
 void                  clutter_stage_ensure_viewport    (ClutterStage *stage);
 void                  clutter_stage_ensure_redraw      (ClutterStage *stage);
 
-/* Commodity macro */
+void     clutter_stage_set_throttle_motion_events (ClutterStage *stage,
+                                                   gboolean      throttle);
+gboolean clutter_stage_get_throttle_motion_events (ClutterStage *stage);
+
+/* Commodity macro, for mallum only */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \
   if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \
     {                                                                   \

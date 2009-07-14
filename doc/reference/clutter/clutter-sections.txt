@@ -510,6 +510,8 @@ clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
 clutter_stage_read_pixels
+clutter_stage_set_throttle_motion_events
+clutter_stage_get_throttle_motion_events
 
 <SUBSECTION>
 ClutterPerspective

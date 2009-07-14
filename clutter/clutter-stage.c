@@ -89,12 +89,13 @@ struct _ClutterStagePrivate
 
   GQueue             *event_queue;
 
-  guint redraw_pending    : 1;
-  guint is_fullscreen     : 1;
-  guint is_offscreen      : 1;
-  guint is_cursor_visible : 1;
-  guint is_user_resizable : 1;
-  guint use_fog           : 1;
+  guint redraw_pending         : 1;
+  guint is_fullscreen          : 1;
+  guint is_offscreen           : 1;
+  guint is_cursor_visible      : 1;
+  guint is_user_resizable      : 1;
+  guint use_fog                : 1;
+  guint throttle_motion_events : 1;
 };
 
 enum
@@ -465,7 +466,8 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
       next_event = l->next ? l->next->data : NULL;
 
       /* Skip consecutive motion events */
-      if (next_event &&
+      if (priv->throttle_motion_events &&
+          next_event &&
 	  event->type == CLUTTER_MOTION &&
 	  (next_event->type == CLUTTER_MOTION ||
 	   next_event->type == CLUTTER_LEAVE))
@@ -1015,11 +1017,12 @@ clutter_stage_init (ClutterStage *self)
 
   priv->event_queue = g_queue_new ();
 
-  priv->is_offscreen      = FALSE;
-  priv->is_fullscreen     = FALSE;
-  priv->is_user_resizable = FALSE;
-  priv->is_cursor_visible = TRUE;
-  priv->use_fog           = FALSE;
+  priv->is_offscreen           = FALSE;
+  priv->is_fullscreen          = FALSE;
+  priv->is_user_resizable      = FALSE;
+  priv->is_cursor_visible      = TRUE;
+  priv->use_fog                = FALSE;
+  priv->throttle_motion_events = TRUE;
 
   priv->color = default_stage_color;
 
@@ -2054,4 +2057,53 @@ _clutter_stage_get_default_window (void)
   ClutterActor *stage = clutter_stage_get_default ();
 
   return _clutter_stage_get_window (CLUTTER_STAGE (stage));
+}
+
+/**
+ * clutter_stage_set_throttle_motion_events:
+ * @stage: a #ClutterStage
+ * @throttle: %TRUE to throttle motion events
+ *
+ * Sets whether motion events received between redraws should
+ * be throttled or not. If motion events are throttled, those
+ * events received by the windowing system between redraws will
+ * be compressed so that only the last event will be propagated
+ * to the @stage and its actors.
+ *
+ * This function should only be used if you want to have all
+ * the motion events delivered to your application code.
+ *
+ * Since: 1.0
+ */
+void
+clutter_stage_set_throttle_motion_events (ClutterStage *stage,
+                                          gboolean      throttle)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->throttle_motion_events != throttle)
+    priv->throttle_motion_events = throttle;
+}
+
+/**
+ * clutter_stage_get_throttle_motion_events:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the value set with clutter_stage_set_throttle_motion_events()
+ *
+ * Return value: %TRUE if the motion events are being throttled,
+ *   and %FALSE otherwise
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_stage_get_throttle_motion_events (ClutterStage *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  return stage->priv->throttle_motion_events;
 }
