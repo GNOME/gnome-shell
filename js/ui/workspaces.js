@@ -321,6 +321,7 @@ Workspace.prototype = {
     updateRemovable : function() {
         let global = Shell.Global.get();
         let removable = (this._windows.length == 1 /* just desktop */ &&
+                         this.workspaceNum != 0 &&
                          this.workspaceNum == global.screen.n_workspaces - 1);
 
         if (removable) {
