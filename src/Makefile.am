@@ -198,6 +198,8 @@ typelib_DATA = Meta-$(api_version).typelib
 # We need to strip out the attribute that would point back to libmutter-introspect
 # so that libgirepository looks for symbols in the executable instead
 Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mutter_SOURCES)
+	pwd=`pwd` ;					\
+        cd $(srcdir) &&					\
 	$(G_IR_SCANNER)					\
 		--namespace=Meta			\
 		--nsversion=$(api_version)		\
@@ -208,11 +210,11 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--pkg=clutter-0.9			\
 		--pkg=gtk+-2.0				\
 		--include=xfixes-4.0			\
-		--program=./mutter			\
-		$(filter %.c,$(mutter_SOURCES))	\
+		--program=$$pwd/mutter			\
+		$(filter %.c,$(mutter_SOURCES))		\
 		$(libmutterinclude_base_headers)	\
 		$(INCLUDES)				\
-		-o $@
+		-o $$pwd/$@
 
 Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
@@ -267,7 +269,14 @@ VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES = inlinepixbufs.h mutter.desktop mutter-wm.desktop mutter.schemas
+CLEANFILES =					\
+	inlinepixbufs.h				\
+	mutter.desktop				\
+	mutter-wm.desktop			\
+	mutter.schemas				\
+	$(mutter_built_sources)			\
+	$(typelib_DATA)				\
+	$(gir_DATA)
 
 inlinepixbufs.h: $(IMAGES)
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
@@ -278,7 +287,7 @@ pkgconfig_DATA = libmutter-private.pc mutter-plugins.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(wmproperties_files)		\
-	$(IMAGES) $(schema_DATA) 	\
+	$(IMAGES) 			\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	$(schema_in_files)		\
@@ -289,7 +298,7 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	mutter-marshal.list
 
 BUILT_SOURCES += $(mutter_built_sources)
-MUTTER_STAMP_FILES = stamp-mutter-marshal.h
+MUTTER_STAMP_FILES = stamp-mutter-marshal.h stamp-mutter-enum-types.h
 CLEANFILES += $(MUTTER_STAMP_FILES)
 
 mutter-marshal.h: stamp-mutter-marshal.h
@@ -330,4 +339,3 @@ mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
 	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
 	cp xgen-tetc mutter-enum-types.c && \
 	rm -f xgen-tetc
-
