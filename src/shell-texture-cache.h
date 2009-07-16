@@ -2,6 +2,7 @@
 #define __SHELL_TEXTURE_CACHE_H__
 
 #include <gio/gio.h>
+#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter.h>
 
@@ -30,6 +31,11 @@ struct _ShellTextureCacheClass
 
 };
 
+typedef enum {
+  SHELL_TEXTURE_CACHE_POLICY_NONE,
+  SHELL_TEXTURE_CACHE_POLICY_FOREVER
+} ShellTextureCachePolicy;
+
 GType shell_texture_cache_get_type (void) G_GNUC_CONST;
 
 ShellTextureCache* shell_texture_cache_get_default();
@@ -41,12 +47,19 @@ ClutterActor *shell_texture_cache_load_gicon (ShellTextureCache *cache,
 ClutterActor *shell_texture_cache_load_thumbnail (ShellTextureCache *cache,
                                                   int                size,
                                                   const char        *uri,
-                                                  const char        *mimetype,
-                                                  GdkPixbuf         *fallback);
+                                                  const char        *mimetype);
 
-void          shell_texture_cache_unref_thumbnail (ShellTextureCache *cache,
-                                                   int                size,
-                                                   const char        *uri);
+ClutterActor *shell_texture_cache_load_recent_thumbnail (ShellTextureCache *cache,
+                                                         int                size,
+                                                         GtkRecentInfo     *info);
+
+void shell_texture_cache_evict_thumbnail (ShellTextureCache *cache,
+                                          int                size,
+                                          const char        *uri);
+
+void shell_texture_cache_evict_recent_thumbnail (ShellTextureCache *cache,
+                                                 int                size,
+                                                 GtkRecentInfo     *info);
 
 ClutterActor *shell_texture_cache_load_uri_async (ShellTextureCache *cache,
                                                   const gchar       *filename,
@@ -54,6 +67,7 @@ ClutterActor *shell_texture_cache_load_uri_async (ShellTextureCache *cache,
                                                   int                available_height);
 
 ClutterActor *shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
+                                                 ShellTextureCachePolicy policy,
                                                  const gchar       *filename,
                                                  int                available_width,
                                                  int                available_height,

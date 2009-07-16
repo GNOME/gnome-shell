@@ -24,19 +24,7 @@ DocInfo.prototype = {
     },
 
     createIcon : function(size) {
-        let icon = null;
-        let defaultPixbuf = this._recentInfo.get_icon(size);
-
-        if (this.uri.match("^file://")) {
-            icon = Shell.TextureCache.get_default().load_thumbnail(size, this.uri, this.mimeType,
-                                                                   defaultPixbuf);
-        }
-
-        if (!icon) {
-            icon = new Clutter.Texture({});
-            Shell.clutter_texture_set_from_pixbuf(icon, defaultPixbuf);
-        }
-        return icon;
+        return Shell.TextureCache.get_default().load_recent_thumbnail(size, this._recentInfo);
     },
 
     launch : function() {
@@ -137,13 +125,13 @@ DocManager.prototype = {
         let deleted = {};
         for (var uri in this._items) {
             if (!(uri in newItems))
-                deleted[uri] = 1;
+                deleted[uri] = this._items[uri];
         }
         /* If we'd cached any thumbnail references that no longer exist,
            dump them here */
         let texCache = Shell.TextureCache.get_default();
         for (var uri in deleted) {
-            texCache.unref_thumbnail(this._iconSize, uri);
+            texCache.evict_recent_thumbnail(this._iconSize, this._items[uri]);
         }
         this._items = newItems;
     },

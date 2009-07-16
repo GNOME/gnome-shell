@@ -85,7 +85,8 @@ GenericDisplayItem.prototype = {
 
         let global = Shell.Global.get();
         let infoIconUri = "file://" + global.imagedir + "info.svg";
-        let infoIcon = Shell.TextureCache.get_default().load_uri_sync(infoIconUri,
+        let infoIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
+                                                                      infoIconUri,
                                                                       INFORMATION_BUTTON_SIZE,
                                                                       INFORMATION_BUTTON_SIZE);
         this._informationButton = new Button.iconButton(this.actor, INFORMATION_BUTTON_SIZE, infoIcon);
