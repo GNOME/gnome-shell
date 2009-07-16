@@ -179,15 +179,9 @@ AM_GLIB_GNU_GETTEXT
 ## here we get the flags we'll actually use
 # GOptionEntry requires	glib-2.6.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.6.0)
-# gtk_window_set_icon_name requires gtk2+-2.60
+# gtk_window_set_icon_name requires gtk2+-2.6.0
 PKG_CHECK_MODULES(MUTTER_MESSAGE, gtk+-2.0 >= 2.6.0)
 PKG_CHECK_MODULES(MUTTER_WINDOW_DEMO, gtk+-2.0 >= 2.6.0)
-
-if $PKG_CONFIG --atleast-version 1.2.0 pangoxft; then
-   echo "pangoxft found"
-else
-   AC_MSG_ERROR("Pango 1.2.0 or greater based on Xft2 is required")
-fi
 
 # Unconditionally use this dir to avoid a circular dep with gnomecc
 GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
