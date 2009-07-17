@@ -263,7 +263,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 		--include=Cogl-@CLUTTER_API_VERSION@ \
 	        --include=ClutterJson-@CLUTTER_API_VERSION@ \
 		--library=clutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@ \
-		--libtool="$(top_builddir)/doltlibtool" \
+		--libtool="$(top_builddir)/libtool" \
 	        --pkg gobject-2.0 \
 	        --pkg pango \
 	        --pkg pangocairo \
