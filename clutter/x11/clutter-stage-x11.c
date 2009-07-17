@@ -562,21 +562,6 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
           CLUTTER_NOTE (BACKEND, "Mapping stage[%lu]",
                         (unsigned long) stage_x11->xwin);
 
-          if (!stage_x11->is_foreign_xwin)
-            {
-              CLUTTER_NOTE (BACKEND, "Resizing stage[%lu] (%d, %d)",
-                            (unsigned long) stage_x11->xwin,
-                            stage_x11->xwin_width,
-                            stage_x11->xwin_height);
-
-              CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper,
-                                         CLUTTER_STAGE_IN_RESIZE);
-
-              XResizeWindow (stage_x11->xdpy, stage_x11->xwin,
-                             stage_x11->xwin_width,
-                             stage_x11->xwin_height);
-            }
-
           if (stage_x11->fullscreen_on_map)
             clutter_stage_x11_set_fullscreen (stage_window, TRUE);
           else

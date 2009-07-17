@@ -321,6 +321,10 @@ clutter_stage_show (ClutterActor *self)
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->show (self);
 
+  /* Possibly do an allocation run so that the stage will have the
+     right size before we map it */
+  _clutter_stage_maybe_relayout (self);
+
   g_assert (priv->impl != NULL);
   impl = CLUTTER_STAGE_WINDOW (priv->impl);
   CLUTTER_STAGE_WINDOW_GET_IFACE (impl)->show (impl, TRUE);
