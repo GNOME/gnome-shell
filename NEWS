@@ -1,3 +1,41 @@
+Clutter 0.9.8 (17/07/2009)
+===============================================================================
+
+  * List of changes since 0.9.6
+
+    o Add more introspection annotations for language bindings.
+
+    o Fix a bug in clutter_animation_set_alpha(), which also broke the
+      clutter_actor_animate_with_alpha() function.
+
+    o Check if the stage requires a relayout before showing it; this fixes
+      a bug in the X11-based backends, especially under compositing window
+      managers, where a 640x480 window would flicker before the default
+      stage was shown for the first time.
+
+    o Performance fixes for Cogl.
+
+    o Sliced textures were broken by the COGL journalling.
+
+    o Use the redraw cycle when asynchronously loading textures from
+      files.
+
+    o Miscellaneous compilation fixes for the OS X and Windows backends.
+
+    o Allow querying from within the paint function of an Actor whether
+      the actor is currently being directly painted or by a Clone actor.
+
+    o In the GLX backend, when using the non-implicit sync-to-vblank inside
+      glXSwapBuffers(), call glFinish() to avoid potential tearing.
+
+Many thanks to:
+
+  Colin Walters
+  Evan Martin
+  Marcos
+  Owen W. Taylor
+  Xu Li
+
 Clutter 0.9.6 (01/07/2009)
 ===============================================================================
 
