@@ -147,6 +147,8 @@ libmutter_private_la_LIBADD  = @MUTTER_LIBS@
 
 libmutterincludedir = $(includedir)/mutter/mutter-private
 
+# Headers installed for plugins; introspected information will
+# be extracted into Mutter-<version>.gir
 libmutterinclude_base_headers =		\
 	include/alttabhandler.h			\
 	include/boxes.h				\
@@ -154,7 +156,6 @@ libmutterinclude_base_headers =		\
 	include/main.h				\
 	include/util.h				\
 	include/common.h			\
-	ui/preview-widget.h			\
 	ui/theme-parser.h			\
 	ui/theme.h				\
 	include/prefs.h				\
@@ -171,7 +172,10 @@ libmutterinclude_base_headers =		\
 	include/mutter-window.h
 
 # Excluded from scanning for introspection but installed
+# preview-widget.h: only part of libmutter-private
+# atomnames.h: macros cause problems for scanning process
 libmutterinclude_extra_headers =		\
+	ui/preview-widget.h			\
 	include/atomnames.h
 
 libmutterinclude_HEADERS =			\
@@ -221,7 +225,7 @@ Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
 endif
 
 EFENCE=
-mutter_LDADD=@MUTTER_LIBS@ libmutter-private.la $(EFENCE)
+mutter_LDADD=@MUTTER_LIBS@ $(EFENCE)
 mutter_LDFLAGS=-export-dynamic
 
 mutter_theme_viewer_LDADD= @MUTTER_LIBS@ libmutter-private.la
@@ -232,9 +236,9 @@ testasyncgetprop_SOURCES=core/async-getprop.h core/async-getprop.c core/testasyn
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD= @MUTTER_LIBS@ libmutter-private.la
-testgradient_LDADD= @MUTTER_LIBS@ libmutter-private.la
-testasyncgetprop_LDADD= @MUTTER_LIBS@ libmutter-private.la
+testboxes_LDADD= @MUTTER_LIBS@
+testgradient_LDADD= @MUTTER_LIBS@
+testasyncgetprop_LDADD= @MUTTER_LIBS@
 
 @INTLTOOL_DESKTOP_RULE@
 
