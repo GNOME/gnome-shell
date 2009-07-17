@@ -273,6 +273,10 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 
 BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir
 
+# ClutterJson.gir and Cogl.gir are used included into Clutter.gir, so need
+# to be built before the typelib is generated
+Clutter-@CLUTTER_API_VERSION@.typelib: ClutterJson-@CLUTTER_API_VERSION@.gir Cogl-@CLUTTER_API_VERSION@.gir
+
 # We build Cogl.gir in the cogl/ subdir, but it needs to reference the shared
 # library that it's built into, so we delay compiling the gir into typelib
 # until after we've built the shared library. To create the final Cogl.gir
