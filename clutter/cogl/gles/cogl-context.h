@@ -48,15 +48,15 @@ typedef struct
 {
   /* Features cache */
   CoglFeatureFlags  feature_flags;
-  gboolean          features_cached;
 
   /* Enable cache */
   gulong            enable_flags;
   guint8            color_alpha;
 
-  gboolean          enable_backface_culling;
-
-  gboolean          indirect;
+  guint             features_cached : 1;
+  guint             enable_backface_culling : 1;
+  guint             indirect : 1;
+  guint             in_begin_gl_block : 1;
 
   /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    matrix_mode;
@@ -108,6 +108,9 @@ typedef struct
   CoglHandle        quad_indices_byte;
   guint             quad_indices_short_len;
   CoglHandle        quad_indices_short;
+
+  gfloat            viewport_width;
+  gfloat            viewport_height;
 
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper     gles2;
