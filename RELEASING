@@ -1,0 +1,56 @@
+RELEASING
+=========
+
+When making a new release;
+
+ - Verify your working directory is clean:
+
+     $ git reset --hard <release_branch>
+     $ git clean -xdf
+
+ - Run:
+
+     $ ./autogen.sh --enable-gtk-doc
+     $ make all
+
+ - Run:
+
+     $ make distcheck
+
+   and fix eventual issues. Commit the fixes.
+
+ - Update NEWS (New feature details, bug #'s), README (Any API changes
+   relevant to developers + version), AUTHORS if relevant.
+
+ - Clean everything again with:
+
+     $ git clean -xdf
+
+ - Verify versioning in configure.ac, increasing relevant
+   clutter_major_version/clutter_minor_version/clutter_micro_version
+   value. For point releases, bump clutter_micro_version to the next
+   even number.
+
+ - If there was no API change (addition, deprecation), increment
+   clutter_interface_age by two. If there was an API change,
+   set clutter_interface_age to zero. The interface_age is used to
+   keep the soname the same across releases.
+
+ - Build everything again, and run distcheck to create the tarball.
+
+ - Tag the release:
+
+     $ git tag -s <version>
+
+ - Bump clutter_micro_version to the next odd number version and commit.
+
+ - Push the branch and then the tag, e.g.:
+
+     $ git push origin master
+     $ git push origin 1.2.4
+
+ - Upload the tarball to clutter-project.org.
+
+ - Announce release to the waiting world on the blog and mailing lists
+
+ - Release any dependant add-ons following similar rules to above.
