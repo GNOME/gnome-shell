@@ -378,7 +378,6 @@ cogl_vertex_buffer_draw
 <SUBSECTION>
 CoglIndicesType
 cogl_vertex_buffer_indices_new
-cogl_vertex_buffer_delete_indices
 cogl_vertex_buffer_draw_elements
 cogl_vertex_buffer_indices_get_for_quads
 <SUBSECTION Private>
