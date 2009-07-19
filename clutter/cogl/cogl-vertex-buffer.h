@@ -344,20 +344,6 @@ CoglIndicesType
 cogl_vertex_buffer_indices_get_type (CoglHandle indices);
 
 /**
- * cogl_vertex_buffer_delete_indices:
- * @handle: A vertex buffer handle
- * @indices_id: The identifier for a an array of indices previously added to
- *              the given Cogl vertex buffer using
- *              cogl_vertex_buffer_add_indices().
- *
- * Frees the resources associated with a previously added array of vertex
- * indices.
- */
-void
-cogl_vertex_buffer_delete_indices (CoglHandle handle,
-                                   int indices_id);
-
-/**
  * cogl_vertex_buffer_draw_elements:
  * @handle: A vertex buffer handle
  * @mode: A #CoglVerticesMode specifying how the vertices should be
