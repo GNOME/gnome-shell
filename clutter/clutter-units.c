@@ -363,7 +363,7 @@ clutter_units_to_pixels (ClutterUnits *units)
  *
  * |[
  *   number: [0-9]
- *   unit_value: &lt;numbers&gt;+
+ *   unit_value: &lt;number&gt;+
  *   unit_name: px|pt|mm|em
  *   units: &lt;unit_value&gt; &lt;unit_name&gt;
  * ]|
@@ -372,12 +372,22 @@ clutter_units_to_pixels (ClutterUnits *units)
  *
  * |[
  *   10 px
- *   5 em
+ *   5.1 em
  *   24 pt
  *   12.6 mm
  * ]|
  *
- * Return value: %TRUE if the string was successfully parsed
+ * While these are not:
+ *
+ * |[
+ *   42 cats
+ *   omg!1!ponies
+ * ]|
+ *
+ * <note>If no unit is specified, pixels are assumed.</note>
+ *
+ * Return value: %TRUE if the string was successfully parsed,
+ *   and %FALSE otherwise
  *
  * Since: 1.0
  */
@@ -474,7 +484,11 @@ clutter_unit_type_name (ClutterUnitType unit_type)
  * Converts @units into a string
  *
  * See clutter_units_from_string() for the units syntax and for
- * examples of outputs
+ * examples of output
+ *
+ * <note>Fractional values are truncated to the second decimal
+ * position for em and mm, and to the first decimal position for
+ * typographic points. Pixels are integers.</note>
  *
  * Return value: a newly allocated string containing the encoded
  *   #ClutterUnits value. Use g_free() to free the string
