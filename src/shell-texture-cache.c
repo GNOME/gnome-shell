@@ -845,17 +845,17 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
       texdata = pixbuf_to_cogl_handle (pixbuf);
       g_object_unref (pixbuf);
 
+      clutter_texture_set_cogl_texture (texture, texdata);
+
       if (policy == SHELL_TEXTURE_CACHE_POLICY_FOREVER)
         {
           g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key), texdata);
         }
       else
-        {
-          cogl_handle_unref (texdata);
-        }
+        cogl_handle_unref (texdata);
     }
-
-  clutter_texture_set_cogl_texture (texture, texdata);
+  else
+    clutter_texture_set_cogl_texture (texture, texdata);
 
   return CLUTTER_ACTOR (texture);
 }
