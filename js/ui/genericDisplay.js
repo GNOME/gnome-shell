@@ -287,6 +287,10 @@ GenericDisplayItem.prototype = {
         this.actor.add_actor(this._description);
     },
 
+    _setDescriptionText: function(text) {
+        this._description.text = text;
+    },
+
     //// Virtual protected methods ////
 
     // Creates and returns a large preview icon, but only if we have a detailed image.

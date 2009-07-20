@@ -14,23 +14,36 @@ const Main = imports.ui.main;
 /* This class represents a single display item containing information about a document.
  *
  * docInfo - DocInfo object containing information about the document
+ * currentSeconds - current number of seconds since the epoch
  * availableWidth - total width available for the item
  */
-function DocDisplayItem(docInfo, availableWidth) {
-    this._init(docInfo, availableWidth);
+function DocDisplayItem(docInfo, currentSecs, availableWidth) {
+    this._init(docInfo, currentSecs, availableWidth);
 }
 
 DocDisplayItem.prototype = {
     __proto__:  GenericDisplay.GenericDisplayItem.prototype,
 
-    _init : function(docInfo, availableWidth) {
-        GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth);     
+    _init : function(docInfo, currentSecs, availableWidth) {
+        GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth);
         this._docInfo = docInfo;
-    
+
         this._setItemInfo(docInfo.name, "");
+        // We take the current number of seconds here to avoid looking up the current
+        // time for every item
+        this._resetTimeDisplay(currentSecs);
     },
 
     //// Public methods ////
+
+    getUpdateTimeout: function() {
+        return this._timeout;
+    },
+
+    // Update any relative-time based displays for this item.
+    redisplay: function(currentSecs) {
+        this._resetTimeDisplay(currentSecs);
+    },
 
     //// Public method overrides ////
 
@@ -60,6 +73,16 @@ DocDisplayItem.prototype = {
 
         return Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.NONE,
                                                               this._docInfo.uri, availableWidth, availableHeight);
+    },
+
+    //// Private Methods ////
+
+    _resetTimeDisplay: function(currentSecs) {
+        let lastSecs = this._docInfo.lastVisited().getTime() / 1000;
+        let timeDelta = currentSecs - lastSecs;
+        let [text, nextUpdate] = Shell.Global.get().format_time_relative_pretty(timeDelta);
+        this._timeout = nextUpdate;
+        this._setDescriptionText(text);
     }
 };
 
@@ -79,6 +102,9 @@ DocDisplay.prototype = {
         GenericDisplay.GenericDisplay.prototype._init.call(this, width);
         let me = this;
 
+        this._updateTimeoutTarget = 0;
+        this._updateTimeoutId = 0;
+
         this._docManager = DocInfo.getDocManager(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
         this._docsStale = true;
         this._docManager.connect('changed', function(mgr, userData) {
@@ -87,8 +113,13 @@ DocDisplay.prototype = {
             // but redisplaying right away is cool when we use Zephyr.
             // Also, we might be displaying remote documents, like Google Docs, in the future
             // which might be edited by someone else.
-            me._redisplay(false); 
+            me._redisplay(false);
         });
+
+        this.connect('destroy', Lang.bind(this, function (o) {
+            if (this._updateTimeoutId > 0)
+                Mainloop.source_remove(this._updateTimeoutId);
+        }));
     },
 
     //// Protected method overrides ////
@@ -165,7 +196,25 @@ DocDisplay.prototype = {
 
     // Creates a DocDisplayItem based on itemInfo, which is expected to be a DocInfo object.
     _createDisplayItem: function(itemInfo, width) {
-        return new DocDisplayItem(itemInfo, width);
+        let currentSecs = new Date().getTime() / 1000;
+        let doc = new DocDisplayItem(itemInfo, currentSecs, width);
+        if (doc.getUpdateTimeout() < this._updateTimeoutTarget) {
+            if (this._updateTimeoutId > 0)
+                Mainloop.source_remove(this._updateTimeoutId);
+            this._updateTimeoutId = Mainloop.timeout_add_seconds(doc.getUpdateTimeout(), Lang.bind(this, this._docTimeout));
+            this._updateTimeoutTarget = doc.getUpdateTimeout();
+        }
+        return doc;
+    },
+
+    //// Private Methods ////
+    _docTimeout: function () {
+        let currentSecs = new Date().getTime() / 1000;
+        for (let docId in this._allItems) {
+            let doc = this._allItems[docId];
+            doc.redisplay(currentSecs);
+        }
+        return true;
     }
 };
 
