@@ -304,7 +304,7 @@ void cogl_material_get_specular (CoglHandle  material, CoglColor  *specular);
 /**
  * cogl_material_set_shininess:
  * @material: A CoglMaterial object
- * shininess: The desired shininess; range: [0.0, 1.0]
+ * @shininess: The desired shininess; range: [0.0, 1.0]
  *
  * This function sets the materials shininess which determines how
  * specular highlights are calculated. A higher shininess will produce
@@ -441,7 +441,7 @@ void cogl_material_set_alpha_test_function (CoglHandle            material,
  * &lt;channel-mask&gt;=ADD(SRC_COLOR*(&lt;factor&gt;), DST_COLOR*(&lt;factor&gt;))
  * </programlisting>
  *
- * <b>NOTE: The brackets around blend factors are currently not optional!</b>
+ * <warning>The brackets around blend factors are currently not optional!</warning>
  *
  * This is the list of source-names usable as blend factors:
  * <itemizedlist>
@@ -548,7 +548,7 @@ void cogl_material_remove_layer (CoglHandle material,
  * @layer_index: Specifies the layer you want define a combine function for
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
  *                describing the desired texture combine function.
- * @error: A GError that may report parse errors or lack of GPU/driver support.
+ * @error: A #GError that may report parse errors or lack of GPU/driver support.
  *         May be %NULL, in which case a warning will be printed out if an
  *         error is encountered.
  *
@@ -606,33 +606,34 @@ void cogl_material_remove_layer (CoglHandle material,
  * cogl_material_set_color()
  * </listitem>
  * </itemizedlist>
- * <section>
+ * <refsect2>
  * <title>Example</title>
  * This is effectively what the default blending is:
- * <programlisting>
- * "RGBA = MODULATE (PREVIOUS, TEXTURE)"
- * </programlisting>
+ * |[
+ *   RGBA = MODULATE (PREVIOUS, TEXTURE)
+ * ]|
  * This could be used to cross-fade between two images, using the alpha
  * component of a constant as the interpolator. The constant color
  * is given by calling cogl_material_set_layer_constant.
- * <programlisting>
- * RGBA = INTERPOLATE (PREVIOUS, TEXTURE, CONSTANT[A])
- * </programlisting>
- * </section>
- * <b>Note: you can't give a multiplication factor for arguments as you can
- * with blending.</b>
+ * |[
+ *   RGBA = INTERPOLATE (PREVIOUS, TEXTURE, CONSTANT[A])
+ * ]|
+ * </refsect2>
  *
- * Returns: TRUE if the blend string was successfully parsed, and the described
- *          texture combining is supported by the underlying driver/hardware.
- *          If there was an error, it returns FALSE.
+ * <note>You can't give a multiplication factor for arguments as you can
+ * with blending.</note>
+ *
+ * Returns: %TRUE if the blend string was successfully parsed, and the
+ *   described texture combining is supported by the underlying driver and
+ *   or hardware. If there was an error, it returns FALSE.
  *
  * Since: 1.0
  */
 gboolean
-cogl_material_set_layer_combine (CoglHandle material,
-				 gint layer_index,
-				 const char *blend_string,
-                                 GError **error);
+cogl_material_set_layer_combine (CoglHandle   material,
+				 gint         layer_index,
+				 const char  *blend_string,
+                                 GError     **error);
 
 /**
  * cogl_material_set_layer_combine_constant:
@@ -653,6 +654,8 @@ void cogl_material_set_layer_combine_constant (CoglHandle  material,
 /**
  * cogl_material_set_layer_matrix:
  * @material: A CoglMaterial object
+ * @layer_index: the index for the layer inside @material
+ * @matrix: the transformation matrix for the layer
  *
  * This function lets you set a matrix that can be used to e.g. translate
  * and rotate a single layer of a material used to fill your geometry.
@@ -663,21 +666,24 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
 
 /**
  * cogl_material_get_layers:
- * @material: A CoglMaterial object
+ * @material: a #CoglHandle for a material
  *
  * This function lets you access a materials internal list of layers
  * for iteration.
  *
  * Returns: A list of #CoglHandle<!-- -->'s that can be passed to the
- *          cogl_material_layer_* functions.
+ *   cogl_material_layer_* functions. The list is owned by COGL and it
+ *   should not be modified or freed
  */
-const GList *cogl_material_get_layers (CoglHandle material);
+G_CONST_RETURN GList *cogl_material_get_layers (CoglHandle material);
 
 /**
  * cogl_material_get_n_layers:
- * @material: A CoglMaterial object
+ * @material: a #CoglHandle for a material
  *
- * Returns: The number of layers defined for the given material
+ * Retrieves the number of layers defined for the given @material
+ *
+ * Returns: the number of layers
  *
  * Since: 1.0
  */
@@ -693,14 +699,13 @@ int cogl_material_get_n_layers (CoglHandle material);
  *
  * Since: 1.0
  */
-typedef enum _CoglMaterialLayerType
-{
+typedef enum { /*< prefix=COGL_MATERIAL_LAYER_TYPE >*/
   COGL_MATERIAL_LAYER_TYPE_TEXTURE
 } CoglMaterialLayerType;
 
 /**
  * cogl_material_layer_get_type:
- * @layer_handle: A Cogl material layer handle
+ * @layer_handle: A #CoglHandle for a material layer
  *
  * Retrieves the type of the layer
  *
@@ -709,26 +714,28 @@ typedef enum _CoglMaterialLayerType
  * based layers in the future, you should write code that checks the type
  * first.
  *
- * Return value: the type of the layer
+ * Returns: the type of the layer
  */
 CoglMaterialLayerType cogl_material_layer_get_type (CoglHandle layer_handle);
 
 /**
  * cogl_material_layer_get_texture:
- * @layer_handle: A CoglMaterialLayer handle
+ * @layer_handle: A #CoglHandle for a material layer
  *
  * This lets you extract a CoglTexture handle for a specific layer.
  *
- * Note: In the future, we may support purely GLSL based layers which will
- *       likely return COGL_INVALID_HANDLE if you try to get the texture.
- *       Considering this, you can call cogl_material_layer_get_type first,
- *       to check it is of type COGL_MATERIAL_LAYER_TYPE_TEXTURE.
+ * <note>In the future, we may support purely GLSL based layers which will
+ * likely return %COGL_INVALID_HANDLE if you try to get the texture.
+ * Considering this, you can call cogl_material_layer_get_type first,
+ * to check it is of type %COGL_MATERIAL_LAYER_TYPE_TEXTURE.</note>
+ *
+ * Returns: a #CoglHandle for the texture inside @layer_handle
  */
 CoglHandle cogl_material_layer_get_texture (CoglHandle layer_handle);
 
 /**
  * cogl_material_layer_get_min_filter:
- * @layer_handle: a #CoglHandle for a material layer.
+ * @layer_handle: a #CoglHandle for a material layer
  *
  * Query the currently set downscaling filter for a cogl material layer.
  *
@@ -738,7 +745,7 @@ CoglMaterialFilter cogl_material_layer_get_min_filter (CoglHandle layer_handle);
 
 /**
  * cogl_material_layer_get_mag_filter:
- * @layer_handle: a #CoglHandle for a material layer.
+ * @layer_handle: a #CoglHandle for a material layer
  *
  * Query the currently set downscaling filter for a cogl material layer.
  *

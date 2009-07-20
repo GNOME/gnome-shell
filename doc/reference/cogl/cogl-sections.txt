@@ -28,7 +28,6 @@ cogl_features_available
 cogl_check_extension
 cogl_get_proc_address
 cogl_get_option_group
-cogl_gl_error_to_string
 
 <SUBSECTION>
 cogl_push_matrix
@@ -90,14 +89,12 @@ COGL_TYPE_INDICES_TYPE
 COGL_TYPE_MATERIAL_ALPHA_FUNC
 COGL_TYPE_MATERIAL_FILTER
 COGL_TYPE_MATERIAL_LAYER_TYPE
-COGL_TYPE_MATRIX_MODE
 COGL_TYPE_PIXEL_FORMAT
 COGL_TYPE_SHADER_TYPE
 COGL_TYPE_TEXTURE_FLAGS
 COGL_TYPE_VERTICES_MODE
 
 <SUBSECTION Private>
-cogl_util_next_p2
 cogl_attribute_type_get_type
 cogl_buffer_bit_get_type
 cogl_buffer_target_get_type
@@ -110,12 +107,10 @@ cogl_indices_type_get_type
 cogl_material_alpha_func_get_type
 cogl_material_filter_get_type
 cogl_material_layer_type_get_type
-cogl_matrix_mode_get_type
 cogl_pixel_format_get_type
 cogl_shader_type_get_type
 cogl_texture_flags_get_type
 cogl_vertices_mode_get_type
-GE
 COGL_NOTE
 CoglDebugFlags
 cogl_debug_flags
@@ -380,18 +375,12 @@ CoglIndicesType
 cogl_vertex_buffer_indices_new
 cogl_vertex_buffer_draw_elements
 cogl_vertex_buffer_indices_get_for_quads
-<SUBSECTION Private>
-CoglVertexBufferAttribFlags
-COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK
-COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK
 </SECTION>
 
 <SECTION>
 <FILE>cogl-matrix</FILE>
 <TITLE>Matrices</TITLE>
 CoglMatrix
-CoglMatrixMode
-CoglMatrixStack
 cogl_matrix_init_identity
 cogl_matrix_frustum
 cogl_matrix_ortho
@@ -429,11 +418,7 @@ cogl_material_set_shininess
 cogl_material_get_shininess
 CoglMaterialAlphaFunc
 cogl_material_set_alpha_test_function
-CoglBlendStringChannelMask
-CoglBlendStringColorSourceType
-CoglBlendStringContext
 CoglBlendStringError
-CoglBlendStringFunctionType
 COGL_BLEND_STRING_ERROR
 cogl_material_set_blend
 cogl_material_set_blend_constant
@@ -443,23 +428,18 @@ cogl_material_set_layer_combine
 cogl_material_set_layer_combine_constant
 cogl_material_set_layer_matrix
 cogl_material_get_layers
+cogl_material_get_n_layers
 CoglMaterialFilter
 cogl_material_set_layer_filters
 cogl_material_layer_get_type
 cogl_material_layer_get_texture
 cogl_material_layer_get_min_filter
 cogl_material_layer_get_mag_filter
-<SUBSECTION Private>
-CoglMaterial
-CoglMaterialFlags
-CoglMaterialLayerFlags
-CoglMaterialLayerPrivFlags
 </SECTION>
 
 <SECTION>
 <FILE>cogl-material-internals</FILE>
 <TITLE>Material Internals</TITLE>
-CoglMaterialLayer
 cogl_material_get_layers
 CoglMaterialLayerType
 cogl_material_layer_get_type

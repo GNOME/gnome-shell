@@ -51,7 +51,23 @@ typedef gpointer CoglHandle;
 #define COGL_TYPE_HANDLE        (cogl_handle_get_type ())
 GType cogl_handle_get_type (void) G_GNUC_CONST;
 
+/**
+ * cogl_handle_ref:
+ * @handle: a #CoglHandle
+ *
+ * Increases the reference count of @handle by 1
+ *
+ * Returns: the handle, with its reference count increased
+ */
 CoglHandle cogl_handle_ref   (CoglHandle handle);
+
+/**
+ * cogl_handle_unref:
+ * @handle: a #CoglHandle
+ *
+ * Drecreases the reference count of @handle by 1; if the reference
+ * count reaches 0, the resources allocated by @handle will be freed
+ */
 void       cogl_handle_unref (CoglHandle Handle);
 
 /**

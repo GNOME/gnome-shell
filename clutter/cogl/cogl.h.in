@@ -346,11 +346,11 @@ void            cogl_get_viewport             (float        v[4]);
 void            cogl_set_depth_test_enabled   (gboolean setting);
 
 /**
- * cogl_get_depth_test_enable:
+ * cogl_get_depth_test_enabled:
  *
  * Queries if depth testing has been enabled via cogl_set_depth_test_enable()
  *
- * Returns: TRUE if depth testing is enabled else FALSE
+ * Returns: %TRUE if depth testing is enabled, and %FALSE otherwise
  */
 gboolean        cogl_get_depth_test_enabled   (void);
 
@@ -372,7 +372,7 @@ void            cogl_set_backface_culling_enabled (gboolean setting);
  * Queries if backface culling has been enabled via
  * cogl_set_backface_culling_enabled()
  *
- * Returns: TRUE if backface culling is enabled else FALSE
+ * Returns: %TRUE if backface culling is enabled, and %FALSE otherwise
  */
 gboolean        cogl_get_backface_culling_enabled (void);
 
@@ -393,15 +393,13 @@ gboolean        cogl_get_backface_culling_enabled (void);
  * vertices at @z_far are drawn fully with @fog_color. Fogging will remain
  * enabled until you call cogl_disable_fog().
  *
- * Note: The fogging functions only work correctly when primitives use
- *       unmultiplied alpha colors. By default Cogl will premultiply textures
- *       and cogl_set_source_color will premultiply colors, so unless you
- *       explicitly load your textures requesting an unmultiplied
- *       internal_format and use cogl_material_set_color you can only use
- *       fogging with fully opaque primitives.
- *
- *       We can look to improve this in the future when we can depend on
- *       fragment shaders.
+ * <note>The fogging functions only work correctly when primitives use
+ * unmultiplied alpha colors. By default Cogl will premultiply textures
+ * and cogl_set_source_color() will premultiply colors, so unless you
+ * explicitly load your textures requesting an unmultiplied internal format
+ * and use cogl_material_set_color() you can only use fogging with fully
+ * opaque primitives. This might improve in the future when we can depend
+ * on fragment shaders.</note>
  */
 void            cogl_set_fog                  (const CoglColor *fog_color,
                                                CoglFogMode      mode,
@@ -694,10 +692,13 @@ void            cogl_pop_draw_buffer          (void);
 /**
  * CoglReadPixelsFlags:
  * @COGL_READ_PIXELS_COLOR_BUFFER: Read from the color buffer
+ *
+ * Flags for cogl_read_pixels()
+ *
+ * Since: 1.0
  */
-typedef enum _CoglReadPixelsFlags
-{
-  COGL_READ_PIXELS_COLOR_BUFFER = 1L<<0
+typedef enum { /*< prefix=COGL_READ_PIXELS >*/
+  COGL_READ_PIXELS_COLOR_BUFFER = 1L << 0
 } CoglReadPixelsFlags;
 
 /**

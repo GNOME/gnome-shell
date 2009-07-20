@@ -56,6 +56,13 @@ CFILE_GLOB=\
 IGNORE_HFILES=\
 	cogl-defines-gl.h \
         cogl-defines-gles.h \
+	cogl-internal.h \
+	cogl-material-private.h \
+	cogl-current-matrix.h \
+	cogl-bitmap-private.h \
+	cogl-blend-string.h \
+	cogl-vertex-buffer-private.h \
+	cogl-util.h \
 	cogl-handle.h \
 	gl \
 	gles
