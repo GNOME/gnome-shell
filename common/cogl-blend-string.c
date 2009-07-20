@@ -122,7 +122,7 @@ static CoglBlendStringFunctionInfo blend_functions[] = {
 #undef DEFINE_FUNCTION
 
 GQuark
-_cogl_blend_string_error_quark (void)
+cogl_blend_string_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-blend-string-error-quark");
 }

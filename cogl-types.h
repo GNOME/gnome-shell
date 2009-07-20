@@ -295,6 +295,17 @@ typedef enum {
   COGL_FOG_MODE_EXPONENTIAL_SQUARED
 } CoglFogMode;
 
+#define COGL_BLEND_STRING_ERROR (cogl_blend_string_error_quark ())
+
+typedef enum { /*< prefix=COGL_BLEND_STRING_ERROR >*/
+  COGL_BLEND_STRING_ERROR_PARSE_ERROR,
+  COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,
+  COGL_BLEND_STRING_ERROR_INVALID_ERROR,
+  COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR
+} CoglBlendStringError;
+
+GQuark cogl_blend_string_error_quark (void);
+
 G_END_DECLS
 
 #endif /* __COGL_TYPES_H__ */

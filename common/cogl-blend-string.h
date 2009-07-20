@@ -36,16 +36,6 @@ typedef enum _CoglBlendStringContext
   COGL_BLEND_STRING_CONTEXT_TEXTURE_COMBINE
 } CoglBlendStringContext;
 
-#define COGL_BLEND_STRING_ERROR _cogl_blend_string_error_quark ()
-
-typedef enum _CoglBlendStringError
-{
-  COGL_BLEND_STRING_ERROR_PARSE_ERROR,
-  COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,
-  COGL_BLEND_STRING_ERROR_INVALID_ERROR,
-  COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR
-} CoglBlendStringError;
-
 /* NB: debug stringify code will get upset if these
  * are re-ordered */
 typedef enum _CoglBlendStringChannelMask
@@ -143,9 +133,6 @@ void
 _cogl_blend_string_split_rgba_statement (CoglBlendStringStatement *statement,
                                          CoglBlendStringStatement *rgb,
                                          CoglBlendStringStatement *a);
-
-GQuark
-_cogl_blend_string_error_quark (void);
 
 #endif /* COGL_BLEND_STRING_H */
 
