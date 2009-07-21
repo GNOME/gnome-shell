@@ -13,6 +13,7 @@ import tempfile
 import termios
 import time
 import errno
+import dbus
 
 def find_cmd (cmd_list):
     """
@@ -230,7 +231,16 @@ if options.wide:
 
 metacity_pid = pidof("metacity")
 compiz_pid = pidof("compiz.real") or pidof("compiz")
-gnome_panel_pid = pidof("gnome-panel")
+
+# In Gnome 2.26 the panel grabs a dbus name and allows replacement; use that.
+bus = dbus.Interface(dbus.SessionBus().get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'),
+                     'org.freedesktop.DBus')
+names = bus.ListNames()
+gnome_panel_dbus = 'org.gnome.Panel' in names
+if gnome_panel_dbus:
+    gnome_panel_pid = None
+else:
+    gnome_panel_pid = pidof("gnome-panel")
 
 # Run in Xephyr if gnome-panel is already running and the user didn't
 # specify --replace. Otherwise, run fullscreen
@@ -299,7 +309,7 @@ finally:
             if options.verbose:
                 print "Restarting Compiz"
             subprocess.Popen(["/usr/bin/compiz"])
-        if gnome_panel_pid:
+        if gnome_panel_dbus or gnome_panel_pid:
             if options.verbose:
                 print "Restarting gnome-panel"
             subprocess.Popen(["/usr/bin/gnome-panel"])

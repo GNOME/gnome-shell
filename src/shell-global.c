@@ -739,11 +739,23 @@ shell_global_grab_dbus_service (ShellGlobal *global)
        */
       exit (0);  
     }
-  
+
+  /* Also grab org.gnome.Panel to replace any existing panel process */
+  if (!dbus_g_proxy_call (bus, "RequestName", &error,
+                          G_TYPE_STRING, "org.gnome.Panel",
+                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, &request_name_result,
+                          G_TYPE_INVALID))
+    {
+      g_print ("failed to acquire org.gnome.Panel: %s\n", error->message);
+      exit (1);
+    }
+
   g_object_unref (bus);
 }
 
-void 
+void
 shell_global_start_task_panel (ShellGlobal *global)
 {
   const char* panel_args[] = {"gnomeshell-taskpanel", SHELL_DBUS_SERVICE, NULL};
