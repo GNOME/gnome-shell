@@ -63,12 +63,12 @@
 #define clutter_color_shadex    clutter_color_shadex_DEPRECATED_BY_clutter_color_shade
 
 #define clutter_stage_set_perspectivex  clutter_stage_set_perspectivex_DEPRECATED_BY_clutter_stage_set_perspective
-#define clutter_stage_set_fogx          clutter_stage_set_fogx_DEPRECATED_BY_clutter_stage_set_fogx
+#define clutter_stage_set_fogx          clutter_stage_set_fogx_DEPRECATED_BY_clutter_stage_set_fog
 
 #define clutter_actor_set_rotationx     clutter_actor_set_rotationx_DEPRECATED_BY_clutter_actor_set_rotation
 #define clutter_actor_get_rotationx     clutter_actor_get_rotationx_DEPRECATED_BY_clutter_actor_get_rotation
-#define clutter_actor_set_scalex        clutter_actor_set_scalex_DEPRECATED_BY_clutter_actor_set_scalex
-#define clutter_actor_get_scalex        clutter_actor_get_scalex_DEPRECATED_BY_clutter_actor_get_scalex
+#define clutter_actor_set_scalex        clutter_actor_set_scalex_DEPRECATED_BY_clutter_actor_set_scale
+#define clutter_actor_get_scalex        clutter_actor_get_scalex_DEPRECATED_BY_clutter_actor_get_scale
 
 #define CLUTTER_ALPHA_RAMP_INC          clutter_ramp_inc_func
 #define CLUTTER_ALPHA_RAMP_DEC          clutter_ramp_dec_func
