@@ -95,12 +95,22 @@
               <varlistentry>
                 <term>--enable-debug=[no/minimum/yes]</term>
                 <listitem>
-                  <para>Turns on debugging. Possible values are: yes -  all
-                  glib asserts, checks and runtime clutter verbose messages;
-                 minimum - just glib cast checks and runtime clutter verbose
-                 messagaes; no - no glib asserts or checks and no runtime
-                 clutter verbose messages; default=yes.
-                 </para>
+                  <para>Controls the Clutter debugging level. Possible values
+                  are: yes (all GLib asserts, checks and runtime debug
+                  messages); minimum - just GLib cast checks and runtime
+                  debug messages; no (no GLib asserts or checks and no
+                  runtime debug messages). The default is yes for development
+                  cycles, and minimum for stable releases. You should not use
+                  no, unless the only performance critical paths are the
+                  GLib type system checks.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--enable-cogl-debug=[no/minimum/yes]</term>
+                <listitem>
+                  <para>Controls the COGL debugging level, similarly to
+                  --enable-debug.</para>
                 </listitem>
               </varlistentry>
 
@@ -130,10 +140,56 @@
               </varlistentry>
 
               <varlistentry>
-                <term>--with-flavour=[glx/eglx/eglnative/sdl]</term>
+                <term>--with-flavour=[glx/eglx/eglnative/sdl/win32/osx/fruity]</term>
                 <listitem>
                   <para>Select the Clutter backend; default=glx.
                   </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--with-imagebackend=[gdk-pixbuf/quartz/internal]</term>
+                <listitem>
+                  <para>Select the image loading backend; default is
+                  set to gdk-pixbuf on Linux and Windows, and to quartz
+                  on OS X. The internal image loading backend should only
+                  be used when porting to a new platform or for testing
+                  purposes, and its stability or functionality are not
+                  guaranteed.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--with-gles=[1.1/2.0]</term>
+                <listitem>
+                  <para>Select the version of GLES to support in COGL;
+                  default is 1.1.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--with-json=[internal/check]</term>
+                <listitem>
+                  <para>Select whether to use the internal copy of
+                  JSON-GLib to parse the ClutterScript UI definition
+                  files, or to check for the system installed library;
+                  default is internal.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--enable-xinput=[no/yes]</term>
+                <listitem>
+                  <para>Whether to enable XInput 1 support; default is
+                  no.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--enable-introspection=[no/auto/yes]</term>
+                <listitem>
+                  <para>Whether to generate GObject Introspection data
+                  at build time; default is auto.</para>
                 </listitem>
               </varlistentry>
 
