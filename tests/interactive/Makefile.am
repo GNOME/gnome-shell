@@ -79,13 +79,11 @@ INCLUDES = \
 	-I$(top_builddir)/clutter \
 	-DG_DISABLE_SINGLE_INCLUDES
 
-LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
-AM_CPPFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
-AM_LDFLAGS = $(CLUTTER_LIBS)
+common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 
 noinst_PROGRAMS = test-interactive
 
-test_interactive_SOURCES = \
-	test-main.c \
-	$(UNIT_TESTS)
+test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
+test_interactive_CPPFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 test_interactive_LDFLAGS = -export-dynamic
+test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
