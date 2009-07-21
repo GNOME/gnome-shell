@@ -9,51 +9,53 @@
         </address>
       </affiliation>
     </author>
+
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</firstname>
+      <affiliation>
+        <address>
+          <email>ebassi@linux.intel.com</email>
+        </address>
+      </affiliation>
+    </author>
   </chapterinfo>
 
   <title>Creating Animations with Clutter</title>
 
-  <para>
-
-  With Clutter using hardware accelration for graphics rendering,
+  <para>With Clutter using hardware accelration for graphics rendering,
   complex and fast animations are possible. This chapter describes basic
   techniques and the utilities Clutter provides in aiding animation
-  creation.
-
-  </para>
+  creation.</para>
 
   <section id="clutter-animation-basic">
-  <title>Basic Animations</title>
+    <title>Basic Animations</title>
 
-  <para>
+    <para>The most basic way to create animations with Clutter is via the use
+    of g_timeout_add(). This enables a callback function to be called at a
+    defined interval. The callback function can then modify actors visual
+    properties as to produce an animation.</para>
 
-   The most basic way to create animations with Clutter is via the use of
-   g_timeout_add(). This enables a callback function to be called at a
-   defined interval. The callback function can then modify actors visual
-   properties as to produce an animation.
-
-  </para>
-
-  <example id="clutter-timeout-example">
-  <para>
-  Simple Rotation...
-  </para>
-  <programlisting>
+    <example id="clutter-timeout-example">
+      <title>Simple timeout example</title>
+      <para>Implement a rotating actor using 360 "frames"</para>
+      <programlisting>
 struct RotationClosure {
   ClutterActor *actor;
-  ClutterFixed final_angle;
-  ClutterFixed current_angle;
+
+  gdouble final_angle;
+  gdouble current_angle;
 };
 
 static gboolean
 rotate_actor (gpointer data)
 {
-  RotationClosure *clos = data;
+  struct RotationClosure *clos = data;
 
-  clutter_actor_set_rotationx (clos-&gt;actor, clos-&gt;current_angle, 0, 0, 0);
+  clutter_actor_set_rotation (clos-&gt;actor, clos-&gt;current_angle, 0, 0, 0);
 
   /* add one degree */
-  clos-&gt;current_angle += COGL_FIXED_ONE;
+  clos-&gt;current_angle += 1.0
 
   if (clos-&gt;current_angle == clos-&gt;final_angle)
     return FALSE;
@@ -64,329 +66,229 @@ rotate_actor (gpointer data)
 static void
 rotate_actor_cleanup (gpointer data)
 {
-  RotationClosure *clos = data;
+  struct RotationClosure *clos = data;
 
   g_object_unref (clos-&gt;actor);
   g_free (clos);
 }
 
 ...
-  RotationClosure *clos = NULL;
+  struct RotationClosure *clos = NULL;
 
-  clos = g_new (RotationClosure, 1);
+  clos = g_new (struct RotationClosure, 1);
   clos-&gt;actor = g_object_ref (an_actor);
-  clos-&gt;final_angle = CLUTTER_FLOAT_TO_FIXED (360.0);
+  clos-&gt;final_angle = 360.0;
   clos-&gt;current_angle = 0;
 
-  g_timeout_add_full (1000 / 360, /* fps to interval in milliseconds */
+  g_timeout_add_full (1000 / 360, /* 360 updates in one second */
                       rotate_actor,
                       clos,
                       rotate_actor_cleanup);
-  </programlisting>
-  </example>
+      </programlisting>
+    </example>
 
-  <note><title>Priorities</title>
-  <para>
-
-  %G_PRIORITY_DEFAULT should always be used as the timeouts priority
-  (in case of g_timeout_add_full()) as not to intefere with Clutter's
-  scheduling of repaints and input event handling.
-
-  </para>
-  </note>
-
+    <note>
+      <title>Priorities</title>
+      <para>%G_PRIORITY_DEFAULT should always be used as the timeouts priority
+      (in case of g_timeout_add_full()) as not to intefere with Clutter's
+      scheduling of repaints and input event handling.</para>
+    </note>
   </section>
+
   <section id="clutter-animation-timelines">
-  <title>Timelines</title>
-  <para>
-  #ClutterTimeline<!-- -->s abstract a set period of time with a set frame
-  rate at which to call a provided callback.
-  </para>
-  
-  <para>
-  #ClutterTimeline<!-- -->s also extend the timeout sources functionality
-  further by:
-  </para>
-  
-  <orderedlist>
-    <listitem><para>Having a set duration (in milliseconds) and a set
-    'frame rate' - that is, the rate at which the callback is
-    called</para></listitem>
-    <listitem><para>Passing current progress information to the
-    callback</para></listitem>
-    <listitem><para>Handling 'dropped frames' and guarenteeing the set
-    duration by skipping over frames if the callback cannot keep up with
-    the set frame rate</para></listitem>
-    <listitem><para>Querying the number of milliseconds elapsed between
-    the current and previous callback.</para></listitem>
-    <listitem><para>Allowing the timeline to be modified on the fly as
-    well as being stopped, started, looped, rewound and
-    reversed</para></listitem>
-    <listitem><para>Using a #ClutterTimeoutPool to more efficiently
-    schedule multiple timeout sources without incurring in potential
-    starvation of the main loop slices</para></listitem>
-  </orderedlist>
+    <title>Timelines</title>
 
-  <para>
-  A Timeline is created with;
-  </para>
+    <para>Using g_timeout_add() to control an animation is complicated
+    and does not work in concert with the rest of the operations Clutter
+    must perform for each redraw cycle.</para>
 
-  <programlisting>
-clutter_timeline_new (n_frames, frames_per_seconds); 
-  </programlisting>
+    <para>For this reason, Clutter provides #ClutterTimeline, a class that
+    allows scheduling animations with a definite duration. Timelines are
+    advanced during the redraw cycle so that animations are ready to be
+    performed at the right time. This also means that animations will not
+    affect the event processing; it also means that if the animation is too
+    complex it will be called with a longer delay, thus not blocking the
+    whole UI.</para>
 
-  <para>
-  Taking a number of frames and a frames per second, or by;
-  </para>
+    <para>A Timeline is created with:</para>
 
-  <programlisting>
-clutter_timeline_new_for_duration (msecs);
-  </programlisting>
+    <programlisting>
+clutter_timeline_new (duration_in_milliseconds);
+    </programlisting>
 
-  <para>
-  Which takes the duration of the timeline in milliseconds with a
-  default frame rate (See clutter_get_default_frame_rate()).
-  </para>
+    <para>The duration of the timeline then be modifed via the
+    #ClutterTimeline:duration property or by using
+    clutter_timeline_set_duration().</para>
 
-  <para>
- 
-  The speed, duration and number of frames of the timeline then be
-  modifed via the objects properties and API calls. The timeline can
-  be made to loop by setting its "loop" property to %TRUE.
+    <para>A timeline is started via clutter_timeline_start() and its
+    playback further manipulated by the clutter_timeline_pause(),
+    clutter_timeline_stop(), clutter_timeline_rewind() and
+    clutter_timeline_skip() functions.</para>
 
-  </para>
-  <para>
+    <para>By attaching a handler to the timeline's
+    #ClutterTimeline::new-frame signal a timeline can then be used to
+    drive an animation by altering an actor's visual properties. The
+    callback looks like:</para>
 
-  The timelines is started via clutter_timeline_start() and its
-  playback further manipulated by the clutter_timeline_pause(),
-  clutter_timeline_stop(), clutter_timeline_rewind() and
-  clutter_timeline_skip() calls.
-
-  </para>
-  <para>
-
-  By attaching a handler to the timeline's #ClutterTimeline::new-frame
-  signal a timeline can then be used to drive an animation by altering
-  an actor's visual properties in this callback. The callback looks like:
-
-  </para>
-  <programlisting>
+    <programlisting>
 void
 on_new_frame (ClutterTimeline *timeline,
-              gint             frame_num,
+              gint             elapsed_msecs,
               gpointer         user_data)
 {
 }
-  </programlisting>
-  <para>
+    </programlisting>
 
-  The <literal>frame_num</literal> parameter is set to the timeline's
-  current frame number (which is between 1 and the "num-frames" property).
-  This value can be used to compute the state of a particular animation
-  that is dependant on the frame numer. The clutter_timeline_get_progress()
-  function can also be used to get a normalised value of the timeline's
-  current position between 0 and 1.
+    <para>The <literal>elapsed_msecs</literal> parameter is set to the amount
+    of time elapsed since the beginning of the timeline, and its value is
+    always between 0 and the #ClutterTimeline:duration value.</para>
 
-  </para>
-  <para>
+    <para>The function clutter_timeline_get_progress() can also be used to
+    get a normalised value of the timeline's current position between 0 and
+    1.</para>
 
-  Timelines can also be played in reverse by setting the direction using
-  clutter_timeline_set_direction(), and can also have a one-time delay set
-  before they begin playing by using clutter_timeline_set_delay().
+    <para>Timelines can also be played in reverse by setting the direction
+    using clutter_timeline_set_direction(), and can also have a one-time
+    delay set before they begin playing by using the function
+    clutter_timeline_set_delay().</para>
 
-  </para>
-  <para>
+    <para>Timelines can also control a pyshical simulation; the
+    clutter_timeline_get_delta() function allows retrieving the number of
+    milliseconds elapsed since the previous callback to ensure the physics
+    engine to be able to take the actual time elapsed between iterations
+    into account.</para>
 
-  Timelines can also control a pyshical simulation; the
-  clutter_timeline_get_delta() function allows retrieving the number of
-  frames and milliseconds elapsed since the previous callback to ensure
-  the physics engine to be able to take the actual time elapsed between
-  iterations into account.
-
-  </para>
-
-  <example id="clutter-timeline-example">
-  <para>
-  The following example demonstrates rotating an actor with a timeline.
-  </para>
-  <programlisting>
+    <example id="clutter-timeline-example">
+      <title>Using a Timeline to drive an animation</title>
+      <para>Rewrite the example above with a #ClutterTimeline instead of
+      using g_timeout_add()</para>
+      <programlisting>
 #include &lt;clutter/clutter.h&gt;
 
-void
-on_new_frame (ClutterTimeline *timeline, 
-	      gint             frame_num, 
-	      gpointer         data)
+static void
+on_new_frame (ClutterTimeline *timeline,
+	      gint             elapsed_msecs,
+	      ClutterActor    *actor)
 {
-  ClutterActor *actor = CLUTTER_ACTOR(data);
+  gdouble angle = 360 * clutter_timeline_get_progress (timeline);
 
   clutter_actor_set_rotation (actor, CLUTTER_Z_AXIS,
-                              (gdouble) frame_num,
+                              angle,
                               clutter_actor_get_width (actor) / 2,
 			      clutter_actor_get_height (actor) / 2,
                               0);
 }
 
-int
-main (int argc, char *argv[])
-{
+  ...
+
   ClutterTimeline *timeline;
 
-  ClutterActor    *stage, *actor;
-  GdkPixbuf       *pixbuf;
-
-  clutter_init (&amp;argc, &amp;argv);
-
-  stage = clutter_stage_get_default ();
-
-  pixbuf = gdk_pixbuf_new_from_file ("an-image.png", NULL);
-
-  actor  = clutter_texture_new_from_pixbuf (pixbuf);
-
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
-
-  clutter_actor_set_position (actor, 100, 100);
-
-  timeline = clutter_timeline_new_for (360, 60); /* one degree per frame */
+  timeline = clutter_timeline_new (1000); /* one second */
   clutter_timeline_set_loop (timeline, TRUE);
-
   g_signal_connect (timeline, "new-frame", G_CALLBACK (on_new_frame), actor);
-
-  clutter_actor_show_all (stage);
-
   clutter_timeline_start (timeline);
+      </programlisting>
+    </example>
 
-  clutter_main();
-
-  return 0;
-}
-  </programlisting>
-  </example>
-
-  <note><para>
-  Multiple timelines can be sequenced in order by means of the
-  #ClutterScore. See the #ClutterScore documentation for more details on
-  using this.
-  </para></note>
-
+    <note><para>Multiple timelines can be sequenced in order by using a
+    #ClutterScore. See the #ClutterScore documentation for more details on
+    using this.</para></note>
   </section>
+
   <section id="clutter-animation-behaviours">
-  <title>Behaviours</title>
-  <para>
+    <title>Behaviours</title>
+    <para>With a large application containing many animations, the use of
+    just timelines can become unwieldy and difficult to manage, with much
+    code duplication in the #ClutterTimeline::new-frame handlers that can
+    require over-complex code changes for minor animation modifications. To
+    ease these problems the #ClutterAlpha and #ClutterBehaviour classes were
+    created.</para>
 
-  With a large application containing many animations, the use of just
-  timelines can become unwieldy and difficult to manage with much code
-  duplication in the new-frame handlers that can require over complex
-  code changes for minor animation modifications. To ease these
-  problems the #ClutterAlpha and #ClutterBehaviour classes were created.
+    <para>#ClutterAlpha and #ClutterBehaviour attempt to generalise the
+    #ClutterTimeline::new-frame function by defining common actions (or
+    behaviours) that can be quickly modified, applied to multiple actors or
+    mixed on a single actor.</para>
 
-  </para>
-  <para>
+    <para>A #ClutterAlpha is a 'function of time' (and does not refer to the
+    alpha channel of a RGBA color). It is created by referencing a source
+    timeline and an "easing mode" whichproduces a value between -1.0 and 2.0
+    depending on the progress of the timeline. Clutter provides various
+    easing modes, as described by the #ClutterAnimationMode enumeration. It is
+    also possible to register new animation modes using the function
+    clutter_alpha_register_func() or to provide a custom #ClutterAlphaFunc for
+    a specific #ClutterAlpha instance.</para>
 
-  #ClutterAlpha and #ClutterBehaviour attempt to generalise the
-  new-frame function by defining common actions or behaviours that can
-  be quickly modified, applied to multiple actors or mixed on a single
-  actor.
+    <para>A #ClutterBehaviour is created with a #ClutterAlpha and a set of
+    parameters for whatever the behaviour modifies in an actor. The value of
+    a #ClutterAlpha during the animation is then mapped to a value for the
+    behaviour parameters and then applied on the actors referenced by the
+    #ClutterBehaviour. With the #ClutterAlpha's underlying timeline playing
+    the produced value will change and the behaviour will animate an
+    actor.</para>
 
-  </para>
-  <para>
+    <para>A #ClutterBehaviour is effectively 'driven' by a supplied
+    #ClutterAlpha and when then applied to an actor it will modify a visual
+    property or feature of the actor dependant on the Alpha's value. For
+    example, a path-based behaviour applied to an actor will alter its
+    position along a #ClutterPath, depending on the current alpha value over
+    time. The actual progress of the motion will depend on the chosen "easing
+    mode".</para>
 
-  A ClutterAlpha is simply a 'function of time' (not a pixel alpha channel!).
-  It is created by referencing a source timeline and an "easing mode" which
-  produces a value between -1 and 2 depending on the progress of the
-  timeline. Clutter provides various easing modes, as described by
-  the #ClutterAnimationMode enumeration. It is also possible to register
-  a new animation mode using clutter_alpha_register_func() or to provide
-  a custom #ClutterAlphaFunc for a specific #ClutterAlpha instance.
+    <para> Multiple behaviours can of course be applied to an actor as well
+    as a single behaviour being applied to multiple actors. The separation
+    of timelines, alphas and behaviours allows for a single timeline to drive
+    many behaviours each potentially using different alpha functions.
+    Behaviour parameters can also be changed on the fly.</para>
 
-  </para>
-  <para>
+    <para>
+      <figure id="behaviour-path-alpha">
+        <title>Effects of alpha functions on a path</title>
+        <graphic fileref="path-alpha-func.png" format="PNG"/>
+        <blockquote>The actors position between the path's end points
+        directly correlates to the #ClutterAlpha's current alpha value
+        driving the behaviour. With the #ClutterAlpha's animation mode
+        set to %CLUTTER_LINEAR the actor will follow the path at a constant
+        velocity, but when changing to  %CLUTTER_EASE_SINE_IN_OUT the actor
+        initially accelerates before quickly decelerating.</blockquote>
+      </figure>
+    </para>
 
-  A Behaviour is created with a #ClutterAlpha and a set of limits for
-  whatever the behaviour modifies in an actor. The current #ClutterAlpha
-  value is then mapped to a value between these limits and this value
-  set on any applied actors. With the #ClutterAlpha's underlying
-  timeline playing the produced value will change and the behaviour
-  will animate the actor.
+    <para>The behaviours included in Clutter are:</para>
 
-  </para>
-  <para>
+    <para>
+      <variablelist>
+        <varlistentry>
+          <term>#ClutterBehaviourDepth</term>
+          <listitem><simpara>Changes the depth of actors</simpara></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>#ClutterBehaviourEllipse</term>
+          <listitem><simpara>Moves actors along an elliptical path</simpara></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>#ClutterBehaviourOpacity</term>
+          <listitem><simpara>Changes the opacity of actors</simpara></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>#ClutterBehaviourPath</term>
+          <listitem><simpara>Moves actors along a path</simpara></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>#ClutterBehaviourRotate</term>
+          <listitem><simpara>Rotates actors along an axis</simpara></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>#ClutterBehaviourScale</term>
+          <listitem><simpara>Changes the scaling factors of actors</simpara></listitem>
+        </varlistentry>
+      </variablelist>
+    </para>
 
-  A #ClutterBehaviour is effectively 'driven' by a supplied #ClutterAlpha
-  and when then applied to an actor it will modify a visual property or
-  feature of the actor dependant on the Alpha's value. For example a
-  path based behaviour applied to an actor will alter its position
-  along the path dependant on the current alpha value over time. The
-  actual motion will depend on the chosen "easing mode".
-
-  </para>
-  <para>
-
-  Multiple behaviours can of course be applied to an actor as well as
-  a single behaviour being applied to multiple actors.  The separation
-  of timelines, alphas and behaviours allows for a single timeline to
-  drive many behaviours each potentially using different alpha
-  functions. Behaviour parameters can also be changed on the fly.
-
-  </para>
-
-  <para>
-  
-  <figure id="behaviour-path-alpha">
-    <title>Effects of alpha functions on a path</title>
-    <graphic fileref="path-alpha-func.png" format="PNG"/>
-    <blockquote>
-    The actors position between the path's end points directly correlates
-    to the #ClutterAlpha's current alpha value driving the behaviour. With
-    the #ClutterAlpha's animation mode set to %CLUTTER_LINEAR the actor
-    will follow the path at a constant velocity, but when changing to
-    %CLUTTER_EASE_SINE_IN_OUT the actor initially accelerates before quickly
-    decelerating.
-    </blockquote>
-  </figure>
-
-  </para>
-  <para>
-
-  The behaviours included in Clutter are
-
-  </para>
-  <para>
-
-  <variablelist>
-    <varlistentry>
-      <term>#ClutterBehaviourDepth</term>
-      <listitem><simpara>Changes the depth of actors</simpara></listitem>
-    </varlistentry>
-    <varlistentry>
-      <term>#ClutterBehaviourEllipse</term>
-      <listitem><simpara>Moves actors along an ellipsis</simpara></listitem>
-    </varlistentry>
-    <varlistentry>
-      <term>#ClutterBehaviourOpacity</term>
-      <listitem><simpara>Changes the opacity of actors</simpara></listitem>
-    </varlistentry>
-    <varlistentry>
-      <term>#ClutterBehaviourPath</term>
-      <listitem><simpara>Moves actors along a path</simpara></listitem>
-    </varlistentry>
-    <varlistentry>
-      <term>#ClutterBehaviourRotate</term>
-      <listitem><simpara>Rotates actors along an axis</simpara></listitem>
-    </varlistentry>
-    <varlistentry>
-      <term>#ClutterBehaviourScale</term>
-      <listitem><simpara>Changes the scaling factors of
-      actors</simpara></listitem>
-    </varlistentry>
-  </variablelist>
-
-  </para>
-
-  <example id="clutter-behaviour-example">
-  <para>
-  The following example demonstrates an ellipse behaviour in action.
-  </para>
-  <programlisting>
+    <example id="clutter-behaviour-example">
+      <title>Using a #ClutterBehaviour</title>
+      <para>The following example demonstrates an ellipse behaviour in
+      action.</para>
+      <programlisting>
 #include &lt;clutter/clutter.h&gt;
 
 int
@@ -402,18 +304,23 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
 
-  pixbuf = gdk_pixbuf_new_from_file ("ohpowers.png", NULL);
-
-  actor  = clutter_texture_new_from_pixbuf (pixbuf);
-
+  actor = clutter_texture_new_from_file ("ohpowers.png, NULL);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
 
-  timeline = clutter_timeline_new_for_duration (4000); /* milliseconds */
+  /* set up the animation to be 4 seconds long */
+  timeline = clutter_timeline_new (4000);
   clutter_timeline_set_loop (timeline, TRUE);
 
-  /* Set an alpha func to power the behaviour */
+  /* set up a sinusoidal easing mode to power the behaviour; the
+   * alpha will take a reference on the timeline so we can safely
+   * release the reference we hold
+   */
   alpha = clutter_alpha_new_full (timeline, CLUTTER_EASE_SINE_IN_OUT);
+  g_object_unref (timeline);
 
+  /* the behaviour will own the alpha by sinking its floating
+   * reference (if needed)
+   */
   behave = clutter_behaviour_ellipse_new (alpha, 
 					  200,               /* center x */
 					  200,               /* center y */
@@ -431,128 +338,121 @@ main (int argc, char *argv[])
 
   clutter_main();
 
-  /* clean up */
+  /* clean up; behaviours are top-level objects */
   g_object_unref (behave);
-  g_object_unref (timeline);
 
   return 0;
 }
+      </programlisting>
+    </example>
 
-  </programlisting>
-  </example>
+    <note><para>The parameters of a #ClutterBehaviour can be changed whilst
+    a animation is running.</para></note>
 
-  <note>Behaviour parameters can be changed whilst a animation is running</note>
+    <para>There can be many #ClutterAlpha's attached to a single timeline.
+    There can be many behaviours for a #ClutterAlpha. There can be many
+    behaviours applied to an actor. A #ClutterScore can be used to chain
+    many behaviours together.</para>
 
-  <para>
-  There can be many #ClutterAlpha's attached to a single timeline. There
-  can be many behaviours for a #ClutterAlpha. There can be many behaviours
-  applied to an actor. A #ClutterScore can be used to chain many behaviour
-  together.
-  </para>
+    <warning><para>Combining behaviours that effect the same actor properties
+    (i.e two separate paths) will cause unexpected results. The values will
+    not be merged in any way with only the last applied behaviour taking
+    precedence.</para></warning>
 
-  <warning><para>Combining behaviours that effect the same actor properties
-  (i.e two separate paths) will cause unexpected results. The values
-  will not be merged in any way with only the last applied behaviour taking
-  precedence.</para></warning>
-
-  <para>
-  Tips for implementing a new behaviour can be found <link
-  linkend="creating-your-own-behaviours">here</link>.
-  </para>
+    <note><para>Tips for implementing a new behaviour can be found <link
+      linkend="creating-your-own-behaviours">here</link>.</para></note>
 
   </section>
+
   <section id="clutter-animation-implicit">
-  <title>Implicit Animations</title>
+    <title>Implicit Animations</title>
 
-  <para>Using behaviours for simple animations of a single actor may
-  be too complicated, in terms of memory management and bookkeeping
-  of the object instances. For this reason, Clutter also provides a
-  simple animation API for implicit animations using properties of
-  an actor: clutter_actor_animate().</para>
+    <para>Using behaviours for simple animations of a single actor may
+    be too complicated, in terms of memory management and bookkeeping
+    of the object instances. For this reason, Clutter also provides a
+    simple animation API for implicit animations using properties of
+    an actor: clutter_actor_animate().</para>
 
-  <para>The clutter_actor_animate() family of functions will create
-  and use an implicit #ClutterAnimation instance, which will then
-  handle the animation of one or more #ClutterActor properties between
-  a range of values.</para>
+    <para>The clutter_actor_animate() family of functions will create
+    and use an implicit #ClutterAnimation instance, which will then
+    handle the animation of one or more #ClutterActor properties between
+    a range of values.</para>
 
-  <example id="clutter-actor-animate-example">
-  <para>
-  The following example demonstrates how to use the
-  clutter_actor_animate() method to tween an actor
-  between the current position and a new set of coordinates.
-  The animation takes 200 milliseconds to complete and
-  uses a linear speed.
-  </para>
-  <programlisting>
-    clutter_actor_animate (actor, CLUTTER_LINEAR, 200
-                           "x", 200,
-                           "y", 200,
+    <example id="clutter-actor-animate-example">
+      <title>Using clutter_actor_animate()</title>
+      <para>The following example demonstrates how to use the
+      clutter_actor_animate() method to tween an actor between the current
+      position and a new set of coordinates. The animation takes 200
+      milliseconds to complete and uses a linear progression.</para>
+      <programlisting>
+  clutter_actor_animate (actor, CLUTTER_LINEAR, 200
+                         "x", 200,
+                         "y", 200,
+                         NULL);
+      </programlisting>
+    </example>
+
+    <para>The clutter_actor_animate() method returns a #ClutterAnimation
+    instance that can be used to start, stop and modify the animation
+    while it's running. The #ClutterAnimation::completed signal will
+    be emitted when the animation has been completed.</para>
+
+    <warning><para>When the animation is complete it will be automatically
+    unreferenced, and disposed if nothing else is holding a reference
+    on it.</para></warning>
+
+    <example id="clutter-actor-animate-multi-example">
+      <title>Animating inside an event handler</title>
+      <para>The following example demonstrates how to animate an actor
+      inside the signal handler for a button press event. If the user
+      presses the button on a new position while the animation is running,
+      the animation will be restarted with the new final values
+      updated.</para>
+      <programlisting>
+  static gboolean
+  on_button_press (ClutterActor *actor,
+                   ClutterEvent *event,
+                   gpointer      user_data)
+  {
+    gfloat event_x, event_y;
+
+    clutter_event_get_coords (event, &amp;event_x, &amp;event_y);
+    clutter_actor_animate (actor, CLUTTER_EASE_SINE_OUT, 500,
+                           "x", event_x,
+                           "y", event_y,
                            NULL);
-  </programlisting>
-  </example>
+    return TRUE;
+  }
+      </programlisting>
+    </example>
 
-  <para>The clutter_actor_animate() method returns a #ClutterAnimation
-  instance that can be used to start, stop and modify the animation
-  while it's running. The #ClutterAnimation::completed signal will
-  be emitted when the animation has been completed.</para>
+    <para>Calling clutter_actor_animate() multiple times on an
+    actor which is being animated will cause the animation to be updated
+    with the new values.</para>
 
-  <warning><para>When the animation is complete it will be automatically
-  unreferenced, and disposed if nothing else is holding a reference
-  on it.</para></warning>
-
-  <para>Calling clutter_actor_animate() multiple times on an
-  actor which is being animated will cause the animation to be updated
-  with the new values.</para>
-
-  <example id="clutter-actor-animate-multi-example">
-  <para>
-  The following example demonstrates how to animate an actor
-  inside the signal handler for a button press event. If the
-  user presses the button on a new position while the animation
-  is running, the animation will be restarted with the new
-  final values updated.
-  </para>
-  <programlisting>
-    static gboolean
-    on_button_press (ClutterActor *actor,
-                     ClutterButtonEvent *event,
-                     gpointer            user_data)
-    {
-      clutter_actor_animate (actor, CLUTTER_EASE_SINE_OUT, 500,
-                             "x", event-&gt;x,
-                             "y", event-&gt;y,
-                             NULL);
-      return TRUE;
-    }
-  </programlisting>
-  </example>
+    <para>If you need to chain up multiple animations created using
+    clutter_actor_animate() you should connect to the
+    #ClutterAnimation::completed signal using g_signal_connect_after()
+    to have the guarantee that the current #ClutterAnimation has been
+    detached from the actor. The documentation for clutter_actor_animate()
+    has further examples.</para>
 
   </section>
 
   <section id="clutter-animation-conclusion">
-  <title>Conclusion</title>
-  <para>
+    <title>Conclusion</title>
+    <para>Clutter provides a number of utility classes to aid animations
+    and complex animations can be produced by combining the various features
+    provided.</para>
 
-  Clutter provides a number of utility classes to aid animations and
-  complex animations can be produced by combining the various features
-  provided.
+    <para>Of course animations can becreated outside of the Clutter animation
+    framework, as the framework is not expected to cover every kind of
+    possible animation scenario.</para>
 
-  </para>
-  <para>
-
-  Of course animations can becreated outside of the Clutter animation
-  framework, as the framework is not expected to cover every kind of
-  possible animation scenario.
-
-  </para>
-  <para>
-
-  The animation functionality in Clutter is primarily suited to
-  building animations with a set or finite running time - i.e transitions
-  and the like. For animations involving variable input (such as touchscreen
-  handling) physical simulations may be more suited.
-  
-  </para> 
-
+    <para>The animation functionality in Clutter is primarily suited to
+    building animations with a set or finite running time - i.e transitions
+    between states. For animations involving variable input (such as
+    touchscreen handling) physical simulations may be more suited.</para>
   </section>
+
 </chapter>
