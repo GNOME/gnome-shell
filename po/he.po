@@ -8,10 +8,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
-"POT-Creation-Date: 2009-06-24 10:27+0000\n"
-"PO-Revision-Date: 2009-07-04 15:46+0200\n"
-"Last-Translator: Mark Krapivner <mark125@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=metacity&component=general\n"
+"POT-Creation-Date: 2009-07-09 20:26+0000\n"
+"PO-Revision-Date: 2009-07-17 17:34+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,17 +38,16 @@ msgstr "Unknown window information request: %d"
 
 #: ../src/core/delete.c:104
 #, c-format
-#| msgid ""
-#| "You may choose to wait a short while for it to continue or force the "
-#| "application to quit entirely."
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
-"<i>You may choose to wait a short while for it to continue or force the application to quit entirely.</i>"
+"<i>You may choose to wait a short while for it to continue or force the "
+"application to quit entirely.</i>"
 msgstr ""
 "<big><b><tt>‏%s</tt> לא מגיב.</b></big>\n"
 "\n"
-"<i>ניתן לבחור האם להמתין זמן מה עד להמשך פעולת היישום או לאלץ את סגירת היישום לחלוטין.</i>"
+"<i>ניתן לבחור האם להמתין זמן מה עד להמשך פעולת היישום או לאלץ את סגירת "
+"היישום לחלוטין.</i>"
 
 #: ../src/core/delete.c:115
 msgid "_Wait"
@@ -90,7 +90,9 @@ msgstr "שגיאת קלט/פלט חמורה %d (%s) בתצוגה '%s'.\n"
 
 #: ../src/core/keybindings.c:680
 #, c-format
-msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
 msgstr "תוכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
 
 #. Displayed when a keybinding which is
@@ -119,70 +121,73 @@ msgstr "אף פקודת מסוף לא הוגדרה.\n"
 
 #: ../src/core/main.c:130
 #, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Disable connection to session manager"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Replace the running window manager with Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Specify session management ID"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "X Display to use"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Initialize session from savefile"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Print version"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Make X calls synchronous"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Turn compositing on"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Turn compositing off"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "אין ליצור חלונות על כל המסך כך שיהיו מוגדלים וללא עיצוב"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Failed to scan themes directory: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Failed to restart: %s\n"
@@ -198,92 +203,101 @@ msgstr "Failed to restart: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505
-#: ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf key '%s' is set to an invalid value\n"
 
-#: ../src/core/prefs.c:586
-#: ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d stored in GConf key %s is out of range %d to %d\n"
 
-#: ../src/core/prefs.c:630
-#: ../src/core/prefs.c:707
-#: ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819
-#: ../src/core/prefs.c:1112
-#: ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145
-#: ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf key \"%s\" is set to an invalid type\n"
 
-#: ../src/core/prefs.c:1231
-msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
-msgstr "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+#: ../src/core/prefs.c:1232
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Could not parse font description \"%s\" from GConf key %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
-msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
-msgstr "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Error setting number of workspaces to %d: %s\n"
 
-#: ../src/core/prefs.c:1971
-#: ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "סביבת עבודה %d"
 
-#: ../src/core/prefs.c:2001
-#: ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
-msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
-msgstr "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Error setting name for workspace %d to \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Error setting compositor status: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Screen %d on display '%s' is invalid\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
-msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
-msgstr "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Screen %d on display \"%s\" already has a window manager\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Could not release screen %d on display \"%s\"\n"
@@ -296,28 +310,41 @@ msgstr "Could not release screen %d on display \"%s\"\n"
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
 msgstr ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action.\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
 "\n"
-"This keybinding may be reversed by holding down the \"shift\" key; therefore, \"shift\" cannot be one of the keys it uses."
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
-"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action.\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
 "\n"
-"This keybinding may be reversed by holding down the \"shift\" key; therefore, \"shift\" cannot be one of the keys it uses."
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
 
-#: ../src/core/session.c:845
-#: ../src/core/session.c:852
+#: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Could not create directory '%s': %s\n"
@@ -353,10 +380,8 @@ msgstr "Failed to parse saved session file: %s\n"
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> attribute seen but we already have the session ID"
 
-#: ../src/core/session.c:1202
-#: ../src/core/session.c:1277
-#: ../src/core/session.c:1309
-#: ../src/core/session.c:1381
+#: ../src/core/session.c:1202 ../src/core/session.c:1277
+#: ../src/core/session.c:1309 ../src/core/session.c:1381
 #: ../src/core/session.c:1441
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
@@ -373,11 +398,12 @@ msgid "Unknown element %s"
 msgstr "Unknown element %s"
 
 #: ../src/core/session.c:1812
-#| msgid ""
-#| "These windows do not support \"save current setup\" and will have to be "
-#| "restarted manually next time you log in."
-msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
-msgstr "חלון זה אינו תומך ב־&quot;שמירת ההגדרות הנוכחיות&quot;, ויהיה צורך באתחול ידני בכניסה הבאה שלך."
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"חלון זה אינו תומך ב־&quot;שמירת ההגדרות הנוכחיות&quot;, ויהיה צורך באתחול "
+"ידני בכניסה הבאה שלך."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -394,8 +420,7 @@ msgstr "Failed to fdopen() log file %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Opened log file %s\n"
 
-#: ../src/core/util.c:138
-#: ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity was compiled without support for verbose mode\n"
@@ -418,8 +443,7 @@ msgstr "Window manager error: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:570
-#: ../src/metacity.desktop.in.h:1
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
 #: ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
@@ -427,8 +451,12 @@ msgstr "Metacity"
 #. first time through
 #: ../src/core/window.c:5627
 #, c-format
-msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
-msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -439,8 +467,12 @@ msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADE
 #.
 #: ../src/core/window.c:6192
 #, c-format
-msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
 
 #: ../src/core/window-props.c:244
 #, c-format
@@ -463,7 +495,6 @@ msgstr "‏%s (כמשתמש על)"
 #. * on this machine
 #: ../src/core/window-props.c:438
 #, c-format
-#| msgid "%s (on %s)"
 msgid "%s (as %s)"
 msgstr "‏%s (מעל %s)"
 
@@ -501,8 +532,10 @@ msgstr "Property %s on window 0x%lx contained invalid UTF-8\n"
 
 #: ../src/core/xprops.c:484
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 
 #: ../src/include/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -617,7 +650,6 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Move backward between panels and the desktop immediately"
 
 #: ../src/include/all-keybindings.h:191
-#| msgid "Hide all normal windows and set focus to the desktop background"
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Hide all normal windows and set focus to the desktop"
 
@@ -811,11 +843,20 @@ msgstr "Move window to center of screen"
 
 #: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Not implemented) Navigation works in terms of applications not windows"
+msgstr ""
+"(Not implemented) Navigation works in terms of applications not windows"
 
 #: ../src/metacity.schemas.in.in.h:2
-msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true."
-msgstr "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true."
+msgid ""
+"A font description string describing a font for window titlebars. The size "
+"from the description will only be used if the titlebar_font_size option is "
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
+msgstr ""
+"A font description string describing a font for window titlebars. The size "
+"from the description will only be used if the titlebar_font_size option is "
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
 
 #: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
@@ -834,21 +875,40 @@ msgid "Arrangement of buttons on the titlebar"
 msgstr "Arrangement of buttons on the titlebar"
 
 #: ../src/metacity.schemas.in.in.h:7
-msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,spacer,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions. A special spacer tag can be used to insert some space between two adjacent buttons."
-msgstr "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,spacer,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions. A special spacer tag can be used to insert some space between two adjacent buttons."
+msgid ""
+"Arrangement of buttons on the titlebar. The value should be a string, such "
+"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
+"corner of the window from the right corner, and the button names are comma-"
+"separated. Duplicate buttons are not allowed. Unknown button names are "
+"silently ignored so that buttons can be added in future metacity versions "
+"without breaking older versions. A special spacer tag can be used to insert "
+"some space between two adjacent buttons."
+msgstr ""
+"Arrangement of buttons on the titlebar. The value should be a string, such "
+"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
+"corner of the window from the right corner, and the button names are comma-"
+"separated. Duplicate buttons are not allowed. Unknown button names are "
+"silently ignored so that buttons can be added in future metacity versions "
+"without breaking older versions. A special spacer tag can be used to insert "
+"some space between two adjacent buttons."
 
 #: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
 msgstr "Automatically raises the focused window"
 
 #: ../src/metacity.schemas.in.in.h:9
-#| msgid ""
-#| "Clicking a window while holding down this modifier key will move the "
-#| "window (left click), resize the window (middle click), or show the window "
-#| "menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;"
-#| "Super&gt;\" for example."
-msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). The left and right operations may be swapped using the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
-msgstr "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). The left and right operations may be swapped using the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
+msgid ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
+msgstr ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
 
 #: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -875,8 +935,12 @@ msgid "Determines whether Metacity is a compositing manager."
 msgstr "Determines whether Metacity is a compositing manager."
 
 #: ../src/metacity.schemas.in.in.h:16
-msgid "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 
 #: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -887,20 +951,56 @@ msgid "Enable Visual Bell"
 msgstr "Enable Visual Bell"
 
 #: ../src/metacity.schemas.in.in.h:19
-msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
-msgstr "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
+msgstr ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
 
 #: ../src/metacity.schemas.in.in.h:20
-msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
-msgstr "If true, ignore the titlebar_font option, and use the standard application font for window titles."
+msgid ""
+"If true, ignore the titlebar_font option, and use the standard application "
+"font for window titles."
+msgstr ""
+"If true, ignore the titlebar_font option, and use the standard application "
+"font for window titles."
 
 #: ../src/metacity.schemas.in.in.h:21
-msgid "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
-msgstr "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
+msgid ""
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
+msgstr ""
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
 
 #: ../src/metacity.schemas.in.in.h:22
-msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
-msgstr "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
+msgid ""
+"If true, then Metacity works in terms of applications rather than windows. "
+"The concept is a bit abstract, but in general an application-based setup is "
+"more like the Mac and less like Windows. When you focus a window in "
+"application-based mode, all the windows in the application will be raised. "
+"Also, in application-based mode, focus clicks are not passed through to "
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
+msgstr ""
+"If true, then Metacity works in terms of applications rather than windows. "
+"The concept is a bit abstract, but in general an application-based setup is "
+"more like the Mac and less like Windows. When you focus a window in "
+"application-based mode, all the windows in the application will be raised. "
+"Also, in application-based mode, focus clicks are not passed through to "
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
 
 #: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
@@ -919,48 +1019,146 @@ msgid "Number of workspaces"
 msgstr "Number of workspaces"
 
 #: ../src/metacity.schemas.in.in.h:27
-msgid "Number of workspaces. Must be more than zero, and has a fixed maximum to prevent making the desktop unusable by accidentally asking for too many workspaces."
-msgstr "Number of workspaces. Must be more than zero, and has a fixed maximum to prevent making the desktop unusable by accidentally asking for too many workspaces."
+msgid ""
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
+msgstr ""
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
 
 #: ../src/metacity.schemas.in.in.h:28
 msgid "Run a defined command"
 msgstr "Run a defined command"
 
 #: ../src/metacity.schemas.in.in.h:29
-msgid "Set this to true to resize with the right button and show a menu with the middle button while holding down the key given in \"mouse_button_modifier\"; set it to false to make it work the opposite way around."
-msgstr "Set this to true to resize with the right button and show a menu with the middle button while holding down the key given in \"mouse_button_modifier\"; set it to false to make it work the opposite way around."
+msgid ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
+msgstr ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
 
 #: ../src/metacity.schemas.in.in.h:30
-msgid "Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Setting this option to false, which is strongly discouraged, will decouple raising from other user actions, and ignore raise requests generated by applications. See http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the \"bug\" they requested."
-msgstr "Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Setting this option to false, which is strongly discouraged, will decouple raising from other user actions, and ignore raise requests generated by applications. See http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the \"bug\" they requested."
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
 
 #: ../src/metacity.schemas.in.in.h:31
-msgid "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
-msgstr "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
+msgid ""
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
+msgstr ""
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
 
 #: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
 msgstr "System Bell is Audible"
 
 #: ../src/metacity.schemas.in.in.h:33
-msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
-msgstr "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
 
 #: ../src/metacity.schemas.in.in.h:34
-msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
-msgstr "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
+msgstr ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
 
 #: ../src/metacity.schemas.in.in.h:35
-msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
 
 #: ../src/metacity.schemas.in.in.h:36
-msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
-msgstr "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
 
 #: ../src/metacity.schemas.in.in.h:37
-msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgid ""
+"The keybinding that runs the correspondingly-numbered command in /apps/"
+"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"The keybinding that runs the correspondingly-numbered command in /apps/"
+"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
 
 #: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
@@ -971,40 +1169,120 @@ msgid "The screenshot command"
 msgstr "The screenshot command"
 
 #: ../src/metacity.schemas.in.in.h:40
-msgid "The theme determines the appearance of window borders, titlebar, and so forth."
-msgstr "The theme determines the appearance of window borders, titlebar, and so forth."
+msgid ""
+"The theme determines the appearance of window borders, titlebar, and so "
+"forth."
+msgstr ""
+"The theme determines the appearance of window borders, titlebar, and so "
+"forth."
 
 #: ../src/metacity.schemas.in.in.h:41
-msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
-msgstr "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
+msgid ""
+"The time delay before raising a window if auto_raise is set to true. The "
+"delay is given in thousandths of a second."
+msgstr ""
+"The time delay before raising a window if auto_raise is set to true. The "
+"delay is given in thousandths of a second."
 
 #: ../src/metacity.schemas.in.in.h:42
-msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
-msgstr "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
+msgid ""
+"The window focus mode indicates how windows are activated. It has three "
+"possible values; \"click\" means windows must be clicked in order to focus "
+"them, \"sloppy\" means windows are focused when the mouse enters the window, "
+"and \"mouse\" means windows are focused when the mouse enters the window and "
+"unfocused when the mouse leaves the window."
+msgstr ""
+"The window focus mode indicates how windows are activated. It has three "
+"possible values; \"click\" means windows must be clicked in order to focus "
+"them, \"sloppy\" means windows are focused when the mouse enters the window, "
+"and \"mouse\" means windows are focused when the mouse enters the window and "
+"unfocused when the mouse leaves the window."
 
 #: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
 msgstr "The window screenshot command"
 
 #: ../src/metacity.schemas.in.in.h:44
-msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgid ""
+"This option determines the effects of double-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+"This option determines the effects of double-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 
 #: ../src/metacity.schemas.in.in.h:45
-msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgid ""
+"This option determines the effects of middle-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+"This option determines the effects of middle-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 
 #: ../src/metacity.schemas.in.in.h:46
-msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
-msgstr "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgid ""
+"This option determines the effects of right-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+"This option determines the effects of right-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 
 #: ../src/metacity.schemas.in.in.h:47
-msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
-msgstr "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
+msgid ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
+msgstr ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
 
 #: ../src/metacity.schemas.in.in.h:48
-msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
-msgstr "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments."
+msgstr ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments."
 
 #: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
@@ -1121,8 +1399,7 @@ msgstr "הזז את שורת הכותרת על ה_מסך"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87
-#: ../src/ui/menu.c:89
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
 msgid "Always on _Top"
 msgstr "תמיד מ_למעלה"
 
@@ -1322,13 +1599,21 @@ msgstr "Gradients should have at least two colors"
 
 #: ../src/ui/theme.c:1146
 #, c-format
-msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
 
 #: ../src/ui/theme.c:1160
 #, c-format
-msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 
 #: ../src/ui/theme.c:1171
 #, c-format
@@ -1342,8 +1627,12 @@ msgstr "Did not understand color component \"%s\" in color specification"
 
 #: ../src/ui/theme.c:1214
 #, c-format
-msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
-msgstr "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
 
 #: ../src/ui/theme.c:1225
 #, c-format
@@ -1357,8 +1646,10 @@ msgstr "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 
 #: ../src/ui/theme.c:1282
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 
 #: ../src/ui/theme.c:1293
 #, c-format
@@ -1382,8 +1673,12 @@ msgstr "Coordinate expression contains character '%s' which is not allowed"
 
 #: ../src/ui/theme.c:1609
 #, c-format
-msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
-msgstr "Coordinate expression contains floating point number '%s' which could not be parsed"
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
 
 #: ../src/ui/theme.c:1623
 #, c-format
@@ -1392,30 +1687,36 @@ msgstr "Coordinate expression contains integer '%s' which could not be parsed"
 
 #: ../src/ui/theme.c:1745
 #, c-format
-msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
-msgstr "Coordinate expression contained unknown operator at the start of this text: \"%s\""
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
 
 #: ../src/ui/theme.c:1802
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Coordinate expression was empty or not understood"
 
-#: ../src/ui/theme.c:1913
-#: ../src/ui/theme.c:1923
-#: ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Coordinate expression results in division by zero"
 
 #: ../src/ui/theme.c:1965
 #, c-format
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 
 #: ../src/ui/theme.c:2021
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 
 #: ../src/ui/theme.c:2030
 #, c-format
@@ -1429,11 +1730,14 @@ msgstr "Coordinate expression ended with an operator instead of an operand"
 
 #: ../src/ui/theme.c:2048
 #, c-format
-msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
-msgstr "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
 
-#: ../src/ui/theme.c:2195
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Coordinate expression had unknown variable or constant \"%s\""
@@ -1451,60 +1755,63 @@ msgstr "Coordinate expression had a close parenthesis with no open parenthesis"
 #: ../src/ui/theme.c:2383
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+"Coordinate expression had an open parenthesis with no close parenthesis"
 
 #: ../src/ui/theme.c:2394
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Coordinate expression doesn't seem to have any operators or operands"
 
-#: ../src/ui/theme.c:2596
-#: ../src/ui/theme.c:2616
-#: ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Theme contained an expression that resulted in an error: %s\n"
 
 #: ../src/ui/theme.c:4203
 #, c-format
-msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
-msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
 
-#: ../src/ui/theme.c:4711
-#: ../src/ui/theme.c:4736
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Failed to load theme \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4910
-#: ../src/ui/theme.c:4917
-#: ../src/ui/theme.c:4924
-#: ../src/ui/theme.c:4931
-#: ../src/ui/theme.c:4938
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No <%s> set for theme \"%s\""
 
 #: ../src/ui/theme.c:4946
 #, c-format
-msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
-msgstr "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
 
-#: ../src/ui/theme.c:5389
-#: ../src/ui/theme.c:5451
-#: ../src/ui/theme.c:5514
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 
-#: ../src/ui/theme.c:5397
-#: ../src/ui/theme.c:5459
-#: ../src/ui/theme.c:5522
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constant \"%s\" has already been defined"
@@ -1517,8 +1824,7 @@ msgstr "Constant \"%s\" has already been defined"
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "No \"%s\" attribute on element <%s>"
 
-#: ../src/ui/theme-parser.c:231
-#: ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Line %d character %d: %s"
@@ -1528,8 +1834,7 @@ msgstr "Line %d character %d: %s"
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Attribute \"%s\" repeated twice on the same <%s> element"
 
-#: ../src/ui/theme-parser.c:437
-#: ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Attribute \"%s\" is invalid on <%s> element in this context"
@@ -1539,8 +1844,7 @@ msgstr "Attribute \"%s\" is invalid on <%s> element in this context"
 msgid "Could not parse \"%s\" as an integer"
 msgstr "לא ניתן להעביר את \"%s\" כמספר שלם"
 
-#: ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "לא ניתן להבין את התוים \"%s\" במחרוזת \"%s\""
@@ -1555,14 +1859,12 @@ msgstr "Integer %ld must be positive"
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Integer %ld is too large, current max is %d"
 
-#: ../src/ui/theme-parser.c:577
-#: ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Could not parse \"%s\" as a floating point number"
 
-#: ../src/ui/theme-parser.c:608
-#: ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Boolean values must be \"true\" or \"false\" not \"%s\""
@@ -1579,19 +1881,20 @@ msgstr "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 
 #: ../src/ui/theme-parser.c:791
 #, c-format
-msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
-msgstr "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936
-#: ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033
-#: ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> name \"%s\" used a second time"
 
-#: ../src/ui/theme-parser.c:948
-#: ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
 #: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
@@ -1626,25 +1929,23 @@ msgstr "Unknown style_set \"%s\" on <%s> element"
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Window type \"%s\" has already been assigned a style set"
 
-#: ../src/ui/theme-parser.c:1229
-#: ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519
-#: ../src/ui/theme-parser.c:2740
-#: ../src/ui/theme-parser.c:2786
-#: ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3126
-#: ../src/ui/theme-parser.c:3164
-#: ../src/ui/theme-parser.c:3202
-#: ../src/ui/theme-parser.c:3240
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> is not allowed below <%s>"
 
-#: ../src/ui/theme-parser.c:1343
-#: ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
-msgid "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
-msgstr "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
+msgstr ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
@@ -1676,21 +1977,18 @@ msgstr "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Did not understand value \"%s\" for type of gradient"
 
-#: ../src/ui/theme-parser.c:2109
-#: ../src/ui/theme-parser.c:2484
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Did not understand fill type \"%s\" for <%s> element"
 
-#: ../src/ui/theme-parser.c:2276
-#: ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
 #: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Did not understand state \"%s\" for <%s> element"
 
-#: ../src/ui/theme-parser.c:2286
-#: ../src/ui/theme-parser.c:2369
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Did not understand shadow \"%s\" for <%s> element"
@@ -1700,14 +1998,12 @@ msgstr "Did not understand shadow \"%s\" for <%s> element"
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Did not understand arrow \"%s\" for <%s> element"
 
-#: ../src/ui/theme-parser.c:2596
-#: ../src/ui/theme-parser.c:2692
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "No <draw_ops> called \"%s\" has been defined"
 
-#: ../src/ui/theme-parser.c:2608
-#: ../src/ui/theme-parser.c:2704
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Including draw_ops \"%s\" here would create a circular reference"
@@ -1722,8 +2018,7 @@ msgstr "Unknown position \"%s\" for frame piece"
 msgid "Frame style already has a piece at position %s"
 msgstr "Frame style already has a piece at position %s"
 
-#: ../src/ui/theme-parser.c:2844
-#: ../src/ui/theme-parser.c:2919
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "No <draw_ops> with the name \"%s\" has been defined"
@@ -1763,45 +2058,60 @@ msgstr "\"%s\" is not a valid value for state attribute"
 msgid "A style called \"%s\" has not been defined"
 msgstr "A style called \"%s\" has not been defined"
 
-#: ../src/ui/theme-parser.c:3013
-#: ../src/ui/theme-parser.c:3036
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" is not a valid value for resize attribute"
 
 #: ../src/ui/theme-parser.c:3047
 #, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
-msgstr "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
 
 #: ../src/ui/theme-parser.c:3061
 #, c-format
-msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgstr ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
 
-#: ../src/ui/theme-parser.c:3075
-#: ../src/ui/theme-parser.c:3097
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Style has already been specified for state %s resize %s focus %s"
 
-#: ../src/ui/theme-parser.c:3086
-#: ../src/ui/theme-parser.c:3108
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Style has already been specified for state %s focus %s"
 
 #: ../src/ui/theme-parser.c:3147
-msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
 
 #: ../src/ui/theme-parser.c:3185
-msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
 
 #: ../src/ui/theme-parser.c:3223
-msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 
 #: ../src/ui/theme-parser.c:3271
 #, c-format
@@ -1810,8 +2120,10 @@ msgstr "Outermost element in theme must be <metacity_theme> not <%s>"
 
 #: ../src/ui/theme-parser.c:3291
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 
 #: ../src/ui/theme-parser.c:3296
 #, c-format
@@ -1820,18 +2132,18 @@ msgstr "Element <%s> is not allowed inside a <constant> element"
 
 #: ../src/ui/theme-parser.c:3308
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 
 #: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Element <%s> is not allowed inside a draw operation element"
 
-#: ../src/ui/theme-parser.c:3340
-#: ../src/ui/theme-parser.c:3370
-#: ../src/ui/theme-parser.c:3375
-#: ../src/ui/theme-parser.c:3380
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> is not allowed inside a <%s> element"
@@ -1849,13 +2161,10 @@ msgstr "No draw_ops provided for button"
 msgid "No text is allowed inside element <%s>"
 msgstr "מלל לא מורשה בתג <%s>"
 
-#: ../src/ui/theme-parser.c:3724
-#: ../src/ui/theme-parser.c:3736
-#: ../src/ui/theme-parser.c:3748
-#: ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
 #, c-format
-#| msgid "<name> specified twice for this theme"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> צויין פעמיים בערכת נושא זו"
 
@@ -2021,8 +2330,14 @@ msgstr "Window Title Goes Here"
 
 #: ../src/ui/theme-viewer.c:1026
 #, c-format
-msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
-msgstr "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
 
 #: ../src/ui/theme-viewer.c:1245
 msgid "position expression test returned TRUE but set error"
@@ -2063,61 +2378,80 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 
 #~ msgid "Failed to parse message \"%s\" from dialog process\n"
 #~ msgstr "נכשל בהעברת ההודעה \"%s\" מתהליך תיבת דו-השיח\n"
+
 #~ msgid "Error reading from dialog display process: %s\n"
 #~ msgstr "שגיאה בקריאה מתהליך הצגת תיבת דו-שיח: %s\n"
+
 #~ msgid ""
 #~ "Error launching metacity-dialog to ask about killing an application: %s\n"
 #~ msgstr "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי השואלת אם להרוג יישום: %s\n"
+
 #~ msgid ""
 #~ "Error launching metacity-dialog to warn about apps that don't support "
 #~ "session management: %s\n"
 #~ msgstr ""
 #~ "Error launching metacity-dialog to warn about apps that don't support "
 #~ "session management: %s\n"
+
 #~ msgid "\"%s\" is not responding."
 #~ msgstr "\"%s\" אינו מגיב"
+
 #~ msgid "Title"
 #~ msgstr "כותרת"
+
 #~ msgid "Class"
 #~ msgstr "מחלקה"
+
 #~ msgid ""
 #~ "There was an error running \"%s\":\n"
 #~ "%s."
 #~ msgstr ""
 #~ "ארעה שגיאה בהפעלת \"%s\":\n"
 #~ "%s."
+
 #~ msgid "<author> specified twice for this theme"
 #~ msgstr "<author> צויין פעמיים בערכת נושא זו"
+
 #~ msgid "<copyright> specified twice for this theme"
 #~ msgstr "<copyright> צויין פעמיים בערכת נושא זו"
+
 #~ msgid "<date> specified twice for this theme"
 #~ msgstr "<date> צויין פעמיים בערכת נושא זו"
+
 #~ msgid "<description> specified twice for this theme"
 #~ msgstr "<description> צויין פעמיים בערכת נושא זו"
+
 #~ msgid ""
 #~ "Error launching metacity-dialog to print an error about a command: %s\n"
 #~ msgstr ""
 #~ "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי כדי להדפיס שגיאה על הפקודה: %s\n"
+
 #~ msgid "Type of %s was not integer"
 #~ msgstr "Type of %s was not integer"
+
 #~ msgid ""
 #~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 #~ "range 1..128\n"
 #~ msgstr ""
 #~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 #~ "range 1..128\n"
+
 #~ msgid ""
 #~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
 #~ "current maximum is %d\n"
 #~ msgstr ""
 #~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
 #~ "current maximum is %d\n"
+
 #~ msgid "Unknown attribute %s on <metacity_session> element"
 #~ msgstr "Unknown attribute %s on <metacity_session> element"
+
 #~ msgid "Unknown attribute %s on <maximized> element"
 #~ msgstr "Unknown attribute %s on <maximized> element"
+
 #~ msgid "Unknown attribute %s on <geometry> element"
 #~ msgstr "Unknown attribute %s on <geometry> element"
+
 #~ msgid ""
 #~ "Many actions (e.g. clicking in the client area, moving or resizing the "
 #~ "window) normally raise the window as a side-effect. Setting this option "
@@ -2130,6 +2464,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "to false, which is strongly discouraged, will decouple raising from other "
 #~ "user actions, and ignore raise requests generated by applications. See "
 #~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace above the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2144,6 +2479,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace below the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2158,6 +2494,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace on the left of the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2172,6 +2509,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding that switches to the workspace on the right of the current "
 #~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2186,6 +2524,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2200,6 +2539,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2214,6 +2554,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2228,6 +2569,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2242,6 +2584,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2256,6 +2599,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2270,6 +2614,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2284,6 +2629,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2298,6 +2644,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2312,6 +2659,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2326,6 +2674,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2340,6 +2689,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2354,6 +2704,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to activate the window menu. The format looks like "
 #~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -2368,6 +2719,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to enter \"move mode\" and begin moving a window "
 #~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2382,6 +2734,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
 #~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2396,6 +2749,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to hide all normal windows and set the focus to the "
 #~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2410,6 +2764,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to maximize a window. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2424,6 +2779,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to minimize a window. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2438,6 +2794,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace down. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2452,6 +2809,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace to the left. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2466,6 +2824,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace to the right. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2480,6 +2839,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window one workspace up. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2494,6 +2854,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 1. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2508,6 +2869,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 10. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2522,6 +2884,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 11. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2536,6 +2899,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 12. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2550,6 +2914,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 2. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2564,6 +2929,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 3. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2578,6 +2944,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 4. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2592,6 +2959,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 5. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2606,6 +2974,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 6. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2620,6 +2989,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 7. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2634,6 +3004,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 8. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2648,6 +3019,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move a window to workspace 9. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2662,6 +3034,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between panels and the "
 #~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
@@ -2676,6 +3049,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 #~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 #~ "\"disabled\", then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between panels and the "
 #~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
@@ -2690,6 +3064,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
 #~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 #~ "\"disabled\", then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows of an "
 #~ "application without a popup window. Holding \"shift\" together with this "
@@ -2708,6 +3083,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows of an "
 #~ "application, using a popup window. Holding \"shift\" together with this "
@@ -2726,6 +3102,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows without a "
 #~ "popup window. Holding \"shift\" together with this binding makes the "
@@ -2742,6 +3119,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 #~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
 #~ "\", then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus backwards between windows, using a "
 #~ "popup window. Holding \"shift\" together with this binding makes the "
@@ -2758,6 +3136,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 #~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
 #~ "\", then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus between panels and the desktop, using a "
 #~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2772,6 +3151,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus between panels and the desktop, without "
 #~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -2786,6 +3166,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application "
 #~ "without a popup window. Holding the \"shift\" key while using this "
@@ -2804,6 +3185,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows of an application, "
 #~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
@@ -2822,6 +3204,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows without a popup window. "
 #~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
@@ -2840,6 +3223,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to move focus between windows, using a popup window. "
 #~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -2858,6 +3242,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to toggle always on top. A window that is always on "
 #~ "top will always be visible over other overlapping windows. The format "
@@ -2874,6 +3259,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to toggle fullscreen mode. The format looks like "
 #~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -2888,6 +3274,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2902,6 +3289,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding used to toggle shaded/unshaded state. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -2916,6 +3304,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "The keybinding used to toggle whether the window is on all workspaces or "
 #~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -2930,6 +3319,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2944,6 +3334,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding which display's the panel's \"Run Application\" dialog "
 #~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2958,6 +3349,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
 #~ "you set the option to the special string \"disabled\", then there will be "
 #~ "no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
 #~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2972,6 +3364,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 #~ "special string \"disabled\", then there will be no keybinding for this "
 #~ "action."
+
 #~ msgid ""
 #~ "The keybinding which invokes the panel's screenshot utility to take a "
 #~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
@@ -2986,6 +3379,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 #~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
 #~ "\", then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding which invokes the panel's screenshot utility. The format "
 #~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -3000,6 +3394,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "The keybinding which shows the panel's main menu. The format looks like "
 #~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -3014,6 +3409,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "This keybinding changes whether a window is above or below other windows. "
 #~ "If the window is covered by another one, it raises the window above all "
@@ -3032,6 +3428,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding lowers a window below other windows. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -3046,6 +3443,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window against the north (top) side of the "
 #~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -3060,6 +3458,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
 #~ "you set the option to the special string \"disabled\", then there will be "
 #~ "no keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window into the east (right) side of the screen. "
 #~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -3074,6 +3473,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window into the north-east (top right) corner of "
 #~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -3088,6 +3488,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window into the north-west (top left) corner of "
 #~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -3102,6 +3503,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 #~ "\". If you set the option to the special string \"disabled\", then there "
 #~ "will be no keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window into the south (bottom) side of the "
 #~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -3116,6 +3518,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
 #~ "you set the option to the special string \"disabled\", then there will be "
 #~ "no keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window into the south-east (bottom right) corner "
 #~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -3130,6 +3533,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window into the south-west (bottom left) corner "
 #~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -3144,6 +3548,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
 #~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 #~ "then there will be no keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding moves a window into the west (left) side of the screen. "
 #~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -3158,6 +3563,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding raises the window above other windows. The format looks "
 #~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
@@ -3172,6 +3578,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
 #~ "the special string \"disabled\", then there will be no keybinding for "
 #~ "this action."
+
 #~ msgid ""
 #~ "This keybinding resizes a window to fill available horizontal space. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -3186,6 +3593,7 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid ""
 #~ "This keybinding resizes a window to fill available vertical space. The "
 #~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -3200,96 +3608,138 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
 #~ "the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
+
 #~ msgid "Toggle always on top state"
 #~ msgstr "Toggle always on top state"
+
 #~ msgid "Unmaximize window"
 #~ msgstr "Unmaximize window"
+
 #~ msgid "Unmaximize Window"
 #~ msgstr "שחזר חלון"
+
 #~ msgid "No \"%s\" attribute on <%s> element"
 #~ msgstr "No \"%s\" attribute on <%s> element"
+
 #~ msgid "Theme already has a fallback icon"
 #~ msgstr "Theme already has a fallback icon"
+
 #~ msgid "Theme already has a fallback mini_icon"
 #~ msgstr "Theme already has a fallback mini_icon"
+
 #~ msgid "No \"name\" attribute on element <%s>"
 #~ msgstr "No \"name\" attribute on element <%s>"
+
 #~ msgid "No \"value\" attribute on element <%s>"
 #~ msgstr "No \"value\" attribute on element <%s>"
+
 #~ msgid "No \"top\" attribute on element <%s>"
 #~ msgstr "No \"top\" attribute on element <%s>"
+
 #~ msgid "No \"bottom\" attribute on element <%s>"
 #~ msgstr "No \"bottom\" attribute on element <%s>"
+
 #~ msgid "No \"left\" attribute on element <%s>"
 #~ msgstr "No \"left\" attribute on element <%s>"
+
 #~ msgid "No \"right\" attribute on element <%s>"
 #~ msgstr "No \"right\" attribute on element <%s>"
+
 #~ msgid "No \"color\" attribute on element <%s>"
 #~ msgstr "No \"color\" attribute on element <%s>"
+
 #~ msgid "No \"x1\" attribute on element <%s>"
 #~ msgstr "No \"x1\" attribute on element <%s>"
+
 #~ msgid "No \"y1\" attribute on element <%s>"
 #~ msgstr "No \"y1\" attribute on element <%s>"
+
 #~ msgid "No \"x2\" attribute on element <%s>"
 #~ msgstr "No \"x2\" attribute on element <%s>"
+
 #~ msgid "No \"y2\" attribute on element <%s>"
 #~ msgstr "No \"y2\" attribute on element <%s>"
+
 #~ msgid "No \"y\" attribute on element <%s>"
 #~ msgstr "No \"y\" attribute on element <%s>"
+
 #~ msgid "No \"width\" attribute on element <%s>"
 #~ msgstr "No \"width\" attribute on element <%s>"
+
 #~ msgid "No \"height\" attribute on element <%s>"
 #~ msgstr "No \"height\" attribute on element <%s>"
+
 #~ msgid "No \"start_angle\" attribute on element <%s>"
 #~ msgstr "No \"start_angle\" attribute on element <%s>"
+
 #~ msgid "No \"extent_angle\" attribute on element <%s>"
 #~ msgstr "No \"extent_angle\" attribute on element <%s>"
+
 #~ msgid "No \"alpha\" attribute on element <%s>"
 #~ msgstr "No \"alpha\" attribute on element <%s>"
+
 #~ msgid "No \"type\" attribute on element <%s>"
 #~ msgstr "No \"type\" attribute on element <%s>"
+
 #~ msgid "No \"filename\" attribute on element <%s>"
 #~ msgstr "No \"filename\" attribute on element <%s>"
+
 #~ msgid "No \"state\" attribute on element <%s>"
 #~ msgstr "No \"state\" attribute on element <%s>"
+
 #~ msgid "No \"shadow\" attribute on element <%s>"
 #~ msgstr "No \"shadow\" attribute on element <%s>"
+
 #~ msgid "No \"arrow\" attribute on element <%s>"
 #~ msgstr "No \"arrow\" attribute on element <%s>"
+
 #~ msgid "No \"value\" attribute on <%s> element"
 #~ msgstr "No \"value\" attribute on <%s> element"
+
 #~ msgid "No \"position\" attribute on <%s> element"
 #~ msgstr "No \"position\" attribute on <%s> element"
+
 #~ msgid "No \"function\" attribute on <%s> element"
 #~ msgstr "No \"function\" attribute on <%s> element"
+
 #~ msgid "No \"state\" attribute on <%s> element"
 #~ msgstr "No \"state\" attribute on <%s> element"
+
 #~ msgid "No \"focus\" attribute on <%s> element"
 #~ msgstr "No \"focus\" attribute on <%s> element"
+
 #~ msgid "No \"style\" attribute on <%s> element"
 #~ msgstr "No \"style\" attribute on <%s> element"
+
 #~ msgid "No \"resize\" attribute on <%s> element"
 #~ msgstr "No \"resize\" attribute on <%s> element"
+
 #~ msgid "On _Top"
 #~ msgstr "מ_על"
+
 #~ msgid ""
 #~ "Forcing this application to quit will cause you to lose any unsaved "
 #~ "changes."
 #~ msgstr "להכריח את ישום זה לסיים יגרום לאיבוד שינויים שלא נשמרו"
+
 #~ msgid "Unknown function \"%s\" for menu icon"
 #~ msgstr "Unknown function \"%s\" for menu icon"
+
 #~ msgid "Unknown state \"%s\" for menu icon"
 #~ msgstr "Unknown state \"%s\" for menu icon"
+
 #~ msgid "Theme already has a menu icon for function %s state %s"
 #~ msgstr "Theme already has a menu icon for function %s state %s"
+
 #~ msgid "No draw_ops provided for menu icon"
 #~ msgstr "No draw_ops provided for menu icon"
+
 #~ msgid "Failed to read theme from file %s: %s\n"
 #~ msgstr "נכשל בקריאת ערכת נושא מהקובץ %s: %s\n"
+
 #~ msgid ""
 #~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 #~ "specified for this theme"
 #~ msgstr ""
 #~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 #~ "specified for this theme"
-
