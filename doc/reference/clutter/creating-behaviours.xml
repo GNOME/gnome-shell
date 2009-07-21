@@ -25,7 +25,7 @@
   modifications to any actors the behaviour is applied to.</para>
 
   <example id="clutter-behaviour-alpha-notify-example">
-    <title>Implementing the alpha-notify virtual function<title>
+    <title>Implementing the alpha-notify virtual function</title>
     <para>This example demonstrates a behaviour that produces a vertical
     'wipe' like affect by modifying the actors clip region</para>
 
