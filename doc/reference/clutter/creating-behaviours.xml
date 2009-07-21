@@ -12,55 +12,45 @@
   </chapterinfo>
 
   <title>Creating You Own Behaviours</title>
-  <para>
-
-  Clutter comes with a number of fairly generic prebuilt behaviour
+  <para>Clutter comes with a number of fairly generic prebuilt behaviour
   classes which provide a basis for transitions, animations and other
   visual effects. However even with the ability to combine a number of
-  these behaviours sometimes they are not enough and a custom
-  behaviour is needed to create a spcific animation.
+  these behaviours sometimes they are not enough and a custom behaviour
+  is needed to create a spcific animation.</para>
 
-  </para>
-
-  <para>
-
-  In order to implement a new #ClutterBehaviour subclass the usual
+  <para>In order to implement a new #ClutterBehaviour subclass the usual
   machinery for subclassing a GObject should be used. The new subclass
-  then just overides the ClutterBehaviour::alpha_notify() method. This
+  then just overides the #ClutterBehaviour::alpha_notify() method. This
   method is passed an alpha value which is then used to compute
-  modifications to any actors the behaviour is applied to.
-
-  </para>
+  modifications to any actors the behaviour is applied to.</para>
 
   <example id="clutter-behaviour-alpha-notify-example">
+    <title>Implementing the alpha-notify virtual function<title>
     <para>This example demonstrates a behaviour that produces a vertical
     'wipe' like affect by modifying the actors clip region</para>
 
     <programlisting>
 static void
 clutter_behaviour_foo_alpha_notify (ClutterBehaviour *behaviour,
-                                    guint32           alpha_value)
+                                    gdouble           factor)
 {
   ClutterActor *actor
-  gint          i, n;
-  gdouble       factor;
-
-  /* Normalise alpha value */
-  factor = (gdouble) alpha_value / CLUTTER_ALPHA_MAX_ALPHA;
+  gint i, n;
 
   n = clutter_behaviour_get_n_actors (behaviour);
 
-  /* Change clip height of each applied actor. Note usually better to use
-   * clutter_behaviour_actors_foreach () for performance reasons.
+  /* Change clip height of each applied actor. Note that it is
+   * usually better to use clutter_behaviour_actors_foreach()
+   * to avoid iterating multiple times
    */
-  for (i = 0; i&lt;n; i++)
+  for (i = 0; i &lt; n; i++)
     {
-      int clip_height;
+      gfloat clip_height;
 
       actor = clutter_behaviour_get_nth_actor (behaviour, i);
 
       clip_height = clutter_actor_get_height (actor)
-                    - (clutter_actor_get_height (actor) * factor);
+                  - (clutter_actor_get_height (actor) * factor);
 
       clutter_actor_set_clip (actor,
                               0,
@@ -72,10 +62,7 @@ clutter_behaviour_foo_alpha_notify (ClutterBehaviour *behaviour,
     </programlisting>
   </example>
 
-  <para>
-  If the new behaviour is meant to set an initial state on the
+  <para>If the new behaviour is meant to set an initial state on the
   actors to which its applied to, then the ClutterBehaviour::applied
-  signal class handler should be overridden.
-  </para>
-
+  signal class handler should be overridden.</para>
 </chapter>
