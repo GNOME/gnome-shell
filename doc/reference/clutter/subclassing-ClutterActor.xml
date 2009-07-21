@@ -77,6 +77,19 @@ foo_actor_init (FooActor *actor)
         done to determine the actors that received events</para></listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term>realization and visibility</term>
+        <listitem><para>used by containers and composite actors to
+        determine whether their children should allocate (and deallocate)
+        specific resources associated with being added to the #ClutterStage,
+        and whether their children should be painted or not. A
+        #ClutterContainer implementation should not care about overriding
+        the ClutterActor::realize(), ClutterActor::unrealize(),
+        ClutterActor::map() and ClutterActor::unmap() virtual functions, but
+        composite actors with private children MUST implement at least
+        ClutterActor::map() and ClutterActor::unmap().</para></listitem>
+      </varlistentry>
+
     </variablelist>
 
   </para>
@@ -349,8 +362,8 @@ static void
 foo_actor_paint (ClutterActor *actor)
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
-  ClutterUnit w, h, r;
-
+  ClutterActorBox allocation = { 0, };
+  gfloat width, height;
 
   /* FooActor has a specific background color
    *
@@ -364,19 +377,15 @@ foo_actor_paint (ClutterActor *actor)
                             priv-&gt;fgcol.blue,
                             clutter_actor_get_paint_opacity (actor));
 
-  /* get the size of the actor with sub-pixel precision */
-  w = CLUTTER_UNITS_TO_FIXED (clutter_actor_get_widthu (actor));
-  h = CLUTTER_UNITS_TO_FIXED (clutter_actor_get_heightu (actor));
-
-  /* this is the arc radius for the rounded rectangle corners */
-  r = CLUTTER_UNITS_TO_FIXED (foo_actor->radius);
+  clutter_actor_get_allocation_box (actor, &amp;allocation);
+  clutter_actor_box_get_size (&amp;allocation &amp;width, &amp;height);
 
   /* paint a rounded rectangle using GL primitives; the area of
    * paint is (0, 0) - (width, height), which means the whole
    * allocation or, if the actor has a fixed size, the size that
    * has been set.
    */
-  cogl_path_round_rectangle (0, 0, w, h, r, 5);
+  cogl_path_round_rectangle (0, 0, width, height, foo_actor-&gt;radius, 5);
 
   /* and fill it with the current color */
   cogl_path_fill ();
@@ -410,9 +419,7 @@ foo_actor_paint (ClutterActor *actor)
     {
       ClutterActor *child_actor = child-&gt;data;
 
-      /* paint only visible children */
-      if (CLUTTER_ACTOR_IS_VISIBLE (child_actor))
-        clutter_actor_paint (child_actor);
+      clutter_actor_paint (child_actor);
     }
 }
       </programlisting>
@@ -436,8 +443,8 @@ foo_actor_pick (ClutterActor       *actor,
                 const ClutterColor *pick_color)
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
-  ClutterUnit width, height;
-  ClutterFixed radius;
+  ClutterActorBox allocation = { 0, };
+  gfloat width, height;
 
   /* it is possible to avoid a costly paint by checking whether the
    * actor should really be painted in pick mode
@@ -445,10 +452,8 @@ foo_actor_pick (ClutterActor       *actor,
   if (!clutter_actor_should_pick_paint (actor))
     return;
 
-  clutter_actor_get_sizeu (actor, &amp;width, &amp;height);
-
-  /* this is the arc radius for the rounded rectangle corners */
-  radius = CLUTTER_UNITS_TO_FIXED (foo_actor-&amp;radius);
+  clutter_actor_get_allocation_box (actor, &amp;allocation);
+  clutter_actor_box_get_size (&amp;allocation, &amp;width, &amp;height);
 
   /* use the passed color to paint ourselves */
   cogl_set_source_color4ub (pick_color-&gt;red,
@@ -457,10 +462,10 @@ foo_actor_pick (ClutterActor       *actor,
                             pick_color-&gt;alpha);
 
   /* paint a round rectangle */
-  cogl_round_rectangle (0, 0, width, height, radius, 5);
+  cogl_path_round_rectangle (0, 0, width, height, foo_actor-&gt;radius, 5);
 
   /* and fill it with the current color */
-  cogl_fill ();
+  cogl_path_fill ();
 }
       </programlisting>
     </example>
@@ -486,8 +491,7 @@ foo_actor_pick (ClutterActor       *actor,
   /* clutter_actor_paint() is context-sensitive, and will perform
    * a pick paint if the scene graph is in pick mode
    */
-  if (CLUTTER_ACTOR_IS_VISIBLE (foo_actor-&gt;child))
-    clutter_actor_paint (foo_actor-&gt;child);
+  clutter_actor_paint (foo_actor-&gt;child);
 }
       </programlisting>
     </example>
@@ -584,6 +588,14 @@ foo_actor_add_baz (FooActor *foo_actor,
           <listitem>
             <para>The container should invoke the callback on every
             child it is holding.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>ClutterContainer::foreach_with_internals</term>
+          <listitem>
+            <para>The contained should invoke the callback on every
+            child it is holding, including eventual private children
+            that should not be handled by the #ClutterContainer API.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
