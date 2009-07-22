@@ -77,6 +77,8 @@ ClutterCairoTexture *shell_global_create_vertical_gradient (ClutterColor *top,
 ClutterCairoTexture *shell_global_create_horizontal_gradient (ClutterColor *left,
 							      ClutterColor *right);
 
+void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta, char **text, guint *update_time);
+
 ClutterActor *shell_global_create_root_pixmap_actor (ShellGlobal *global);
 
 void shell_global_clutter_cairo_texture_draw_clock (ClutterCairoTexture *texture,

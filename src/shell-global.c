@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <dbus/dbus-glib.h>
 #include <gio/gio.h>
+#include <glib/gi18n.h>
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
 
@@ -961,6 +962,44 @@ root_pixmap_destroy (GObject *sender, gpointer data)
   gdk_window_remove_filter (gdk_get_default_root_window (),
                             root_window_filter, global);
   global->root_pixmap = NULL;
+}
+
+/**
+ * shell_global_format_time_relative_pretty:
+ * @global:
+ * @delta: Time in seconds since the current time
+ * @text: (out): Relative human-consumption-only time string
+ * @next_update: (out): Time in seconds until we should redisplay the time
+ *
+ * Format a time value for human consumption only.  The passed time
+ * value is a delta in terms of seconds from the current time.
+ */
+void
+shell_global_format_time_relative_pretty (ShellGlobal *global,
+                                          guint        delta,
+                                          char       **text,
+                                          guint       *next_update)
+{
+#define MINUTE (60)
+#define HOUR (MINUTE*60)
+#define DAY (HOUR*24)
+#define WEEK (DAY*7)
+  if (delta < MINUTE) {
+    *text = g_strdup (_("Less than a minute ago"));
+    *next_update = MINUTE - delta;
+   } else if (delta < HOUR) {
+     *text = g_strdup_printf (ngettext ("%d minute ago", "%d minutes ago", delta / MINUTE), delta / MINUTE);
+     *next_update = MINUTE*(delta-MINUTE + 1) - delta;
+   } else if (delta < DAY) {
+     *text = g_strdup_printf (ngettext ("%d hour ago", "%d hours ago", delta / HOUR), delta / HOUR);
+     *next_update = HOUR*(delta-HOUR + 1) - delta;
+   } else if (delta < WEEK) {
+     *text = g_strdup_printf (ngettext ("%d day ago", "%d days ago", delta / DAY), delta / DAY);
+     *next_update = DAY*(delta-DAY + 1) - delta;
+   } else {
+     *text = g_strdup_printf (ngettext ("%d week ago", "%d weeks ago", delta / WEEK), delta / WEEK);
+     *next_update = WEEK*(delta-WEEK + 1) - delta;
+   }
 }
 
 /**
