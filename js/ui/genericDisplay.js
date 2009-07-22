@@ -116,6 +116,11 @@ GenericDisplayItem.prototype = {
         this._icon = null;
         this._previewIcon = null; 
 
+        // An array of details description actors that we create over time for the item.
+        // It is used for updating the description text inside the details actor when
+        // the description text for the item is updated.
+        this._detailsDescriptions = [];
+
         this.dragActor = null;
     },
 
@@ -200,6 +205,8 @@ GenericDisplayItem.prototype = {
                                                     line_wrap: true,
                                                     text: this._description.text });
         textDetails.append(detailsDescription, Big.BoxPackFlags.NONE);
+
+        this._detailsDescriptions.push(detailsDescription);
 
         mainDetails.append(textDetails, Big.BoxPackFlags.EXPAND);
 
@@ -287,8 +294,16 @@ GenericDisplayItem.prototype = {
         this.actor.add_actor(this._description);
     },
 
+    // Sets the description text for the item, including the description text
+    // in the details actors that have been created for the item. 
     _setDescriptionText: function(text) {
         this._description.text = text;
+        for (let i = 0; i < this._detailsDescriptions.length; i++) {
+            let detailsDescription = this._detailsDescriptions[i];
+            if (detailsDescription != null) {
+                detailsDescription.text = text;
+            }
+        }
     },
 
     //// Virtual protected methods ////

@@ -973,6 +973,8 @@ root_pixmap_destroy (GObject *sender, gpointer data)
  *
  * Format a time value for human consumption only.  The passed time
  * value is a delta in terms of seconds from the current time.
+ * This function needs to be in C because of its use of ngettext() which
+ * is not accessible from JavaScript.
  */
 void
 shell_global_format_time_relative_pretty (ShellGlobal *global,
@@ -989,16 +991,16 @@ shell_global_format_time_relative_pretty (ShellGlobal *global,
     *next_update = MINUTE - delta;
    } else if (delta < HOUR) {
      *text = g_strdup_printf (ngettext ("%d minute ago", "%d minutes ago", delta / MINUTE), delta / MINUTE);
-     *next_update = MINUTE*(delta-MINUTE + 1) - delta;
+     *next_update = MINUTE - (delta % MINUTE);
    } else if (delta < DAY) {
      *text = g_strdup_printf (ngettext ("%d hour ago", "%d hours ago", delta / HOUR), delta / HOUR);
-     *next_update = HOUR*(delta-HOUR + 1) - delta;
+     *next_update = HOUR - (delta % HOUR);
    } else if (delta < WEEK) {
      *text = g_strdup_printf (ngettext ("%d day ago", "%d days ago", delta / DAY), delta / DAY);
-     *next_update = DAY*(delta-DAY + 1) - delta;
+     *next_update = DAY - (delta % DAY);
    } else {
      *text = g_strdup_printf (ngettext ("%d week ago", "%d weeks ago", delta / WEEK), delta / WEEK);
-     *next_update = WEEK*(delta-WEEK + 1) - delta;
+     *next_update = WEEK - (delta % WEEK);
    }
 }
 
