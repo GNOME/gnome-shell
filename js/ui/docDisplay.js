@@ -6,6 +6,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Mainloop = imports.mainloop;
 
 const DocInfo = imports.misc.docInfo;
 const GenericDisplay = imports.ui.genericDisplay;
@@ -102,7 +103,7 @@ DocDisplay.prototype = {
         GenericDisplay.GenericDisplay.prototype._init.call(this, width);
         let me = this;
 
-        this._updateTimeoutTarget = 0;
+        this._updateTimeoutTarget = -1;
         this._updateTimeoutId = 0;
 
         this._docManager = DocInfo.getDocManager(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
@@ -198,10 +199,11 @@ DocDisplay.prototype = {
     _createDisplayItem: function(itemInfo, width) {
         let currentSecs = new Date().getTime() / 1000;
         let doc = new DocDisplayItem(itemInfo, currentSecs, width);
-        if (doc.getUpdateTimeout() < this._updateTimeoutTarget) {
+        let timeout = Math.round(doc.getUpdateTimeout() / 8)+1;
+        if (this._updateTimeoutTarget < 0 || timeout < this._updateTimeoutTarget) {
             if (this._updateTimeoutId > 0)
                 Mainloop.source_remove(this._updateTimeoutId);
-            this._updateTimeoutId = Mainloop.timeout_add_seconds(doc.getUpdateTimeout(), Lang.bind(this, this._docTimeout));
+            this._updateTimeoutId = Mainloop.timeout_add_seconds(timeout, Lang.bind(this, this._docTimeout));
             this._updateTimeoutTarget = doc.getUpdateTimeout();
         }
         return doc;
@@ -210,9 +212,9 @@ DocDisplay.prototype = {
     //// Private Methods ////
     _docTimeout: function () {
         let currentSecs = new Date().getTime() / 1000;
-        for (let docId in this._allItems) {
-            let doc = this._allItems[docId];
-            doc.redisplay(currentSecs);
+        for (let docId in this._displayedItems) {
+            let disp = this._displayedItems[docId];
+            disp.redisplay(currentSecs);
         }
         return true;
     }
