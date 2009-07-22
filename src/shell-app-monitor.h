@@ -6,6 +6,7 @@
 #include <glib.h>
 
 #include "window.h"
+#include "shell-app-system.h"
 
 /* 
  * This object provides monitoring of system application directories (.desktop files)
@@ -37,7 +38,7 @@ GType shell_app_monitor_get_type (void) G_GNUC_CONST;
 
 ShellAppMonitor* shell_app_monitor_get_default(void);
 
-char *shell_app_monitor_get_window_id (ShellAppMonitor *monitor, MetaWindow *metawin);
+ShellAppInfo *shell_app_monitor_get_window_app (ShellAppMonitor *monitor, MetaWindow *metawin);
 
 /* Get the most popular applications for a given activity */
 GSList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
