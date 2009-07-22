@@ -768,7 +768,7 @@ mutter_window_mark_for_repair (MutterWindow *self)
    *
    * The compositor paint function repairs all windows.
    */
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  clutter_actor_queue_redraw (priv->actor);
 }
 
 static gboolean
@@ -833,7 +833,7 @@ mutter_window_after_effects (MutterWindow *self)
     mutter_window_detach (self);
 
   if (priv->needs_repair)
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+    clutter_actor_queue_redraw (priv->actor);
 }
 
 void
@@ -1654,7 +1654,7 @@ mutter_window_update_shape (MutterWindow   *self,
   priv->shaped = shaped;
   priv->needs_reshape = TRUE;
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+  clutter_actor_queue_redraw (priv->actor);
 }
 
 void
