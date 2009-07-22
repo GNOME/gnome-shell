@@ -344,6 +344,39 @@ on_x_event_filter_too (XEvent *xev, ClutterEvent *cev, gpointer data)
   return CLUTTER_X11_FILTER_CONTINUE;
 }
 
+static void
+create_damage_resources (ClutterX11TexturePixmap *texture)
+{
+  ClutterX11TexturePixmapPrivate *priv;
+  Display                        *dpy;
+
+  priv = texture->priv;
+  dpy = clutter_x11_get_default_display();
+
+  if (!priv->window && !priv->pixmap)
+    return;
+
+  clutter_x11_trap_x_errors ();
+
+  if (priv->window)
+    priv->damage_drawable = priv->window;
+  else
+    priv->damage_drawable = priv->pixmap;
+
+  priv->damage = XDamageCreate (dpy,
+				priv->damage_drawable,
+				XDamageReportNonEmpty);
+
+  /* Errors here might occur if the window is already destroyed, we
+   * simply skip processing damage and assume that the texture pixmap
+   * will be cleaned up by the app when it gets a DestroyNotify.
+   */
+  XSync (dpy, FALSE);
+  clutter_x11_untrap_x_errors ();
+
+  if (priv->damage)
+    clutter_x11_add_filter (on_x_event_filter, (gpointer)texture);
+}
 
 static void
 free_damage_resources (ClutterX11TexturePixmap *texture)
@@ -362,9 +395,9 @@ free_damage_resources (ClutterX11TexturePixmap *texture)
       clutter_x11_untrap_x_errors ();
       priv->damage = None;
       priv->damage_drawable = None;
-    }
 
-  clutter_x11_remove_filter (on_x_event_filter, (gpointer)texture);
+      clutter_x11_remove_filter (on_x_event_filter, (gpointer)texture);
+    }
 }
 
 
@@ -1017,6 +1050,17 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
 
       priv->pixmap = pixmap;
       new_pixmap = TRUE;
+
+      /* The damage object is created on the window if there is any
+       * but if there is no window, then we create it directly on
+       * the pixmap, so it needs to be recreated with a change in
+       * pixmap.
+       */
+      if (priv->automatic_updates && new_pixmap && !priv->window)
+	{
+	  free_damage_resources (texture);
+	  create_damage_resources (texture);
+	}
     }
 
   if (priv->pixmap_width != width)
@@ -1152,6 +1196,12 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
       XSelectInput (dpy, priv->window,
                     attr.your_event_mask | StructureNotifyMask);
       clutter_x11_add_filter (on_x_event_filter_too, (gpointer)texture);
+    }
+
+  if (priv->automatic_updates)
+    {
+      free_damage_resources (texture);
+      create_damage_resources (texture);
     }
 
   g_object_ref (texture);
@@ -1325,24 +1375,8 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
 
   dpy = clutter_x11_get_default_display();
 
-  if (setting == TRUE)
-    {
-      clutter_x11_add_filter (on_x_event_filter, (gpointer)texture);
-
-      clutter_x11_trap_x_errors ();
-
-      if (priv->window)
-        priv->damage_drawable = priv->window;
-      else
-        priv->damage_drawable = priv->pixmap;
-
-      priv->damage = XDamageCreate (dpy,
-                                    priv->damage_drawable,
-                                    XDamageReportNonEmpty);
-
-      XSync (dpy, FALSE);
-      clutter_x11_untrap_x_errors ();
-    }
+  if (setting)
+    create_damage_resources (texture);
   else
     free_damage_resources (texture);
 
