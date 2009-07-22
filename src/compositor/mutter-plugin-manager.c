@@ -30,6 +30,8 @@
 
 #include <string.h>
 
+#include <clutter/x11/clutter-x11.h>
+
 /*
  * There is only one instace of each module per the process.
  */
@@ -585,11 +587,30 @@ mutter_plugin_manager_xevent_filter (MutterPluginManager *plugin_mgr,
                                      XEvent              *xev)
 {
   GList *l;
+  gboolean have_plugin_xevent_func;
 
   if (!plugin_mgr)
     return FALSE;
 
   l = plugin_mgr->plugins;
+
+  /* We need to make sure that clutter gets certain events, like
+   * ConfigureNotify on the stage window. If there is a plugin that
+   * provides an xevent_filter function, then it's the responsibility
+   * of that plugin to pass events to Clutter. Otherwise, we send the
+   * event directly to Clutter ourselves.
+   *
+   * What happens if there are two plugins with xevent_filter functions
+   * is undefined; in general, multiple competing plugins are something
+   * we don't support well or care much about.
+   *
+   * FIXME: Really, we should just always handle sending the event to
+   *  clutter if a plugin doesn't report the event as handled by
+   *  returning TRUE, but it doesn't seem worth breaking compatibility
+   *  of the plugin interface right now to achieve this; the way it is
+   *  now works fine in practice.
+   */
+  have_plugin_xevent_func = FALSE;
 
   while (l)
     {
@@ -598,12 +619,16 @@ mutter_plugin_manager_xevent_filter (MutterPluginManager *plugin_mgr,
 
       if (klass->xevent_filter)
         {
+          have_plugin_xevent_func = TRUE;
           if (klass->xevent_filter (plugin, xev) == TRUE)
             return TRUE;
         }
 
       l = l->next;
     }
+
+  if (!have_plugin_xevent_func)
+    return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 
   return FALSE;
 }
