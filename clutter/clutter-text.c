@@ -1049,7 +1049,7 @@ clutter_text_move_word_forward (ClutterText *self,
 
       pango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
 
-      retval = start - 1;
+      retval = start;
       while (retval > 0 && !log_attrs[retval].is_word_end)
         retval += 1;
 
@@ -1577,16 +1577,29 @@ clutter_text_real_move_left (ClutterText         *self,
 {
   ClutterTextPrivate *priv = self->priv;
   gint pos = priv->position;
+  gint new_pos = 0;
   gint len;
 
   len = priv->n_chars;
 
   if (pos != 0 && len != 0)
     {
-      if (pos == -1)
-        clutter_text_set_cursor_position (self, len - 1);
+      if (modifiers & CLUTTER_CONTROL_MASK)
+        {
+          if (pos == -1)
+            new_pos = clutter_text_move_word_backward (self, len - 1);
+          else
+            new_pos = clutter_text_move_word_backward (self, pos - 1);
+        }
       else
-        clutter_text_set_cursor_position (self, pos - 1);
+        {
+          if (pos == -1)
+            new_pos = len - 1;
+          else
+            new_pos = pos - 1;
+        }
+
+      clutter_text_set_cursor_position (self, new_pos);
     }
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
@@ -1603,14 +1616,25 @@ clutter_text_real_move_right (ClutterText         *self,
 {
   ClutterTextPrivate *priv = self->priv;
   gint pos = priv->position;
+  gint new_pos;
   gint len;
 
   len = priv->n_chars;
 
   if (pos != -1 && len !=0)
     {
-      if (pos != len)
-        clutter_text_set_cursor_position (self, pos + 1);
+      if (modifiers & CLUTTER_CONTROL_MASK)
+        {
+          if (pos != len)
+            new_pos = clutter_text_move_word_forward (self, pos + 1);
+        }
+      else
+        {
+          if (pos != len)
+            new_pos = pos + 1;
+        }
+
+      clutter_text_set_cursor_position (self, new_pos);
     }
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
@@ -1838,19 +1862,37 @@ clutter_text_real_activate (ClutterText         *self,
 }
 
 static inline void
-clutter_text_add_move_binding (ClutterBindingPool *pool,
-                               const gchar        *action,
-                               guint               key_val,
-                               GCallback           callback)
+clutter_text_add_move_binding (ClutterBindingPool  *pool,
+                               const gchar         *action,
+                               guint                key_val,
+                               ClutterModifierType  additional_modifiers,
+                               GCallback            callback)
 {
   clutter_binding_pool_install_action (pool, action,
-                                       key_val, 0,
+                                       key_val,
+                                       0,
                                        callback,
                                        NULL, NULL);
   clutter_binding_pool_install_action (pool, action,
-                                       key_val, CLUTTER_SHIFT_MASK,
+                                       key_val,
+                                       CLUTTER_SHIFT_MASK,
                                        callback,
                                        NULL, NULL);
+
+  if (additional_modifiers != 0)
+    {
+      clutter_binding_pool_install_action (pool, action,
+                                           key_val,
+                                           additional_modifiers,
+                                           callback,
+                                           NULL, NULL);
+      clutter_binding_pool_install_action (pool, action,
+                                           key_val,
+                                           CLUTTER_SHIFT_MASK |
+                                             additional_modifiers,
+                                           callback,
+                                           NULL, NULL);
+    }
 }
 
 static void
@@ -2305,44 +2347,44 @@ clutter_text_class_init (ClutterTextClass *klass)
   binding_pool = clutter_binding_pool_get_for_class (klass);
 
   clutter_text_add_move_binding (binding_pool, "move-left",
-                                 CLUTTER_Left,
+                                 CLUTTER_Left, CLUTTER_CONTROL_MASK,
                                  G_CALLBACK (clutter_text_real_move_left));
   clutter_text_add_move_binding (binding_pool, "move-left",
-                                 CLUTTER_KP_Left,
+                                 CLUTTER_KP_Left, CLUTTER_CONTROL_MASK,
                                  G_CALLBACK (clutter_text_real_move_left));
   clutter_text_add_move_binding (binding_pool, "move-right",
-                                 CLUTTER_Right,
+                                 CLUTTER_Right, CLUTTER_CONTROL_MASK,
                                  G_CALLBACK (clutter_text_real_move_right));
   clutter_text_add_move_binding (binding_pool, "move-right",
-                                 CLUTTER_KP_Right,
+                                 CLUTTER_KP_Right, CLUTTER_CONTROL_MASK,
                                  G_CALLBACK (clutter_text_real_move_right));
   clutter_text_add_move_binding (binding_pool, "move-up",
-                                 CLUTTER_Up,
+                                 CLUTTER_Up, 0,
                                  G_CALLBACK (clutter_text_real_move_up));
   clutter_text_add_move_binding (binding_pool, "move-up",
-                                 CLUTTER_KP_Up,
+                                 CLUTTER_KP_Up, 0,
                                  G_CALLBACK (clutter_text_real_move_up));
   clutter_text_add_move_binding (binding_pool, "move-down",
-                                 CLUTTER_Down,
+                                 CLUTTER_Down, 0,
                                  G_CALLBACK (clutter_text_real_move_down));
   clutter_text_add_move_binding (binding_pool, "move-down",
-                                 CLUTTER_KP_Down,
+                                 CLUTTER_KP_Down, 0,
                                  G_CALLBACK (clutter_text_real_move_down));
 
   clutter_text_add_move_binding (binding_pool, "line-start",
-                                 CLUTTER_Home,
+                                 CLUTTER_Home, 0,
                                  G_CALLBACK (clutter_text_real_line_start));
   clutter_text_add_move_binding (binding_pool, "line-start",
-                                 CLUTTER_KP_Home,
+                                 CLUTTER_KP_Home, 0,
                                  G_CALLBACK (clutter_text_real_line_start));
   clutter_text_add_move_binding (binding_pool, "line-start",
-                                 CLUTTER_Begin,
+                                 CLUTTER_Begin, 0,
                                  G_CALLBACK (clutter_text_real_line_start));
   clutter_text_add_move_binding (binding_pool, "line-end",
-                                 CLUTTER_End,
+                                 CLUTTER_End, 0,
                                  G_CALLBACK (clutter_text_real_line_end));
   clutter_text_add_move_binding (binding_pool, "line-end",
-                                 CLUTTER_KP_End,
+                                 CLUTTER_KP_End, 0,
                                  G_CALLBACK (clutter_text_real_line_end));
 
   clutter_binding_pool_install_action (binding_pool, "select-all",
