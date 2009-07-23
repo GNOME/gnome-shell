@@ -121,9 +121,10 @@ WindowClone.prototype = {
     _onDragBegin : function (draggable, time) {
         this._inDrag = true;
         this._updateTitle();
+        this.emit('drag-begin');
     },
 
-    _onDragEnd : function (draggable, time) {
+    _onDragEnd : function (draggable, time, snapback) {
         this._inDrag = false;
 
         // Most likely, the clone is going to move away from the
@@ -133,6 +134,8 @@ WindowClone.prototype = {
         // better to have the label mysteriously missing than
         // mysteriously present
         this._havePointer = false;
+
+        this.emit('drag-end');
     },
 
     // Called by Tweener
@@ -155,16 +158,7 @@ WindowClone.prototype = {
                                 padding: 4,
                                 spacing: 4,
                                 orientation: Big.BoxOrientation.HORIZONTAL });
-        
-        let icon = this.metaWindow.mini_icon;
-        let iconTexture = new Clutter.Texture({ x: this.actor.x,
-                                                y: this.actor.y + this.actor.height - 16,
-                                                width: 16,
-                                                height: 16,
-                                                keep_aspect_ratio: true });
-        Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
-        box.append(iconTexture, Big.BoxPackFlags.NONE);
-        
+
         let title = new Clutter.Text({ color: WINDOWCLONE_TITLE_COLOR,
                                        font_name: "Sans 12",
                                        text: this.metaWindow.title,
@@ -258,17 +252,25 @@ DesktopClone.prototype = {
 Signals.addSignalMethods(DesktopClone.prototype);
 
 
-function Workspace(workspaceNum) {
-    this._init(workspaceNum);
+/**
+ * @workspaceNum: Workspace index
+ * @parentActor: The actor which will be the parent of this workspace;
+ *               we need this in order to add chrome such as the icons
+ *               on top of the windows without having them be scaled.
+ */
+function Workspace(workspaceNum, parentActor) {
+    this._init(workspaceNum, parentActor);
 }
 
 Workspace.prototype = {
-    _init : function(workspaceNum) {
+    _init : function(workspaceNum, parentActor) {
         let me = this;
         let global = Shell.Global.get();
 
         this.workspaceNum = workspaceNum;
         this._metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
+
+        this.parentActor = parentActor;
 
         this.actor = new Clutter.Group();
         this.actor._delegate = this;
@@ -298,6 +300,7 @@ Workspace.prototype = {
         // Create clones for remaining windows that should be
         // visible in the overlay
         this._windows = [this._desktop];
+        this._windowIcons = [ null ];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverlayWindow(windows[i])) {
                 this._addWindowClone(windows[i]);
@@ -364,21 +367,19 @@ Workspace.prototype = {
         }
     },
 
-    _lookupIndexAndClone: function (metaWindow) {
+    _lookupIndex: function (metaWindow) {
         let index, clone;
         for (let i = 0; i < this._windows.length; i++) {
             if (this._windows[i].metaWindow == metaWindow) {
-                index = i;
-                clone = this._windows[index];
-                return [index, clone];
+                return i;
             }
         }
-        return [-1, null];
+        return -1;
     },
 
     lookupCloneForMetaWindow: function (metaWindow) {
-        let [index, clone] = this._lookupIndexAndClone (metaWindow);
-        return clone;
+        let index = this._lookupIndex (metaWindow);
+        return index < 0 ? null : this._windows[index];
     },
 
     _adjustRemoveButton : function() {
@@ -440,6 +441,7 @@ Workspace.prototype = {
 
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
+            let icon = this._windowIcons[i];
             clone.stackAbove = this._windows[i - 1].actor;
 
             let [xCenter, yCenter, fraction] = this._computeWindowPosition(i);
@@ -450,6 +452,7 @@ Workspace.prototype = {
             let desiredSize = global.screen_width * fraction;
             let scale = Math.min(desiredSize / size, 1.0 / this.scale);
 
+            icon.hide();
             Tweener.addTween(clone.actor, 
                              { x: xCenter - 0.5 * scale * clone.actor.width,
                                y: yCenter - 0.5 * scale * clone.actor.height,
@@ -457,8 +460,45 @@ Workspace.prototype = {
                                scale_y: scale,
                                workspace_relative: workspaceZooming ? this : null,
                                time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad"
+                               transition: "easeOutQuad",
+                               onComplete: Lang.bind(this, function() {
+                                  this._fadeInWindowIcon(clone, icon);
+                               })
                              });
+        }
+    },
+
+    _fadeInWindowIcon: function (clone, icon) {
+        icon.opacity = 0;
+        icon.show();
+        let [parentX, parentY] = icon.get_parent().get_transformed_position();
+        let [cloneX, cloneY] = clone.actor.get_transformed_position();
+        let [cloneWidth, cloneHeight] = clone.actor.get_transformed_size();
+        // Note we only round the first part, because we're still going to be
+        // positioned relative to the parent.  By subtracting a possibly
+        // non-integral parent X/Y we cancel it out.
+        let x = Math.round(cloneX + cloneWidth - icon.width) - parentX;
+        let y = Math.round(cloneY + cloneHeight - icon.height) - parentY;
+        icon.set_position(x, y);
+        icon.raise(this.actor);
+        Tweener.addTween(icon,
+                         { opacity: 255,
+                           time: Overlay.ANIMATION_TIME,
+                           transition: "easeOutQuad" });
+    },
+
+    _fadeInAllIcons: function () {
+        for (let i = 1; i < this._windows.length; i++) {
+            let clone = this._windows[i];
+            let icon = this._windowIcons[i];
+            this._fadeInWindowIcon(clone, icon);
+        }
+    },
+
+    _hideAllIcons: function () {
+        for (let i = 1; i < this._windows.length; i++) {
+            let icon = this._windowIcons[i];
+            icon.hide();
         }
     },
 
@@ -467,12 +507,16 @@ Workspace.prototype = {
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
-        let [index, clone] = this._lookupIndexAndClone (metaWin);
+        let index = this._lookupIndex (metaWin);
 
         if (index == -1)
             return;
 
+        let clone = this._windows[index];
+        let icon = this._windowIcons[index];
+
         this._windows.splice(index, 1);
+        this._windowIcons.splice(index, 1);
 
         // If metaWin.get_compositor_private() returned non-NULL, that
         // means the window still exists (and is just being moved to
@@ -490,6 +534,7 @@ Workspace.prototype = {
             };
         }
         clone.destroy();
+        icon.destroy();
 
         this._positionWindows(false);
         this.updateRemovable();
@@ -559,8 +604,10 @@ Workspace.prototype = {
 
     // Animates the return from overlay mode
     zoomFromOverlay : function() {
-        this.leavingOverlay = true; 
- 
+        this.leavingOverlay = true;
+
+        this._hideAllIcons();
+
         Tweener.addTween(this.actor,
                          { x: this.fullSizeX,
                            y: this.fullSizeY,
@@ -592,16 +639,18 @@ Workspace.prototype = {
     // Animates grid shrinking/expanding when a row or column
     // of workspaces is added or removed
     resizeToGrid : function (oldScale) {
+        this._hideAllIcons();
         Tweener.addTween(this.actor,
                          { x: this.gridX,
                            y: this.gridY,
                            scale_x: this.scale,
                            scale_y: this.scale,
                            time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
+                           transition: "easeOutQuad",
+                           onComplete: Lang.bind(this, this._fadeInAllIcons)
                          });
     },
-    
+
     // Animates the addition of a new (empty) workspace
     slideIn : function(oldScale) {
         let global = Shell.Global.get();
@@ -629,6 +678,8 @@ Workspace.prototype = {
     slideOut : function(onComplete) {
         let global = Shell.Global.get();
         let destX = this.actor.x, destY = this.actor.y;
+
+        this._hideAllIcons();
 
         if (this.gridCol > this.gridRow)
             destX = global.screen_width;
@@ -682,16 +733,47 @@ Workspace.prototype = {
         return !win.is_override_redirect();
     },
 
+    _createWindowIcon: function(window) {
+        let appSys = Shell.AppSystem.get_default();
+        let appMon = Shell.AppMonitor.get_default()
+        let appInfo = appMon.get_window_app(window.metaWindow);
+        let iconTexture = null;
+        // The design is application based, so prefer the application
+        // icon here if we have it.  FIXME - should move this fallback code
+        // into ShellAppMonitor.
+        if (appInfo) {
+            iconTexture = appInfo.create_icon_texture(48);
+        } else {
+            let icon = window.metaWindow.icon;
+            iconTexture = new Clutter.Texture({ width: 48,
+                                                height: 48,
+                                                keep_aspect_ratio: true });
+            Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
+        }
+        return iconTexture;
+    },
+
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone : function(win) {
+        let icon = this._createWindowIcon(win);
+        this.parentActor.add_actor(icon);
+
         let clone = new WindowClone(win);
         clone.connect('selected',
                       Lang.bind(this, this._onCloneSelected));
-        clone.connect('dragged',
-                      Lang.bind(this, this._onCloneDragged));
+        clone.connect('drag-begin',
+                      Lang.bind(this, function() {
+                          icon.hide();
+                      }));
+        clone.connect('drag-end',
+                      Lang.bind(this, function() {
+                          icon.show();
+                      }));
 
         this.actor.add_actor(clone.actor);
+
         this._windows.push(clone);
+        this._windowIcons.push(icon);
 
         return clone;
     },
@@ -715,10 +797,6 @@ Workspace.prototype = {
         let yCenter = (.5 / gridHeight) + Math.floor((windowIndex / gridWidth)) / gridHeight;
 
         return [xCenter, yCenter, fraction];
-    },
-
-    _onCloneDragged : function (clone, stageX, stageY, time) {
-        this.emit('window-dragged', clone, stageX, stageY, time);
     },
 
     _onCloneSelected : function (clone, time) {
@@ -1052,7 +1130,7 @@ Workspaces.prototype = {
     },
 
     _addWorkspaceActor : function(workspaceNum) {
-        let workspace  = new Workspace(workspaceNum);
+        let workspace  = new Workspace(workspaceNum, this.actor);
         this._workspaces[workspaceNum] = workspace;
         this.actor.add_actor(workspace.actor);
     },
