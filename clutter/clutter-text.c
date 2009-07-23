@@ -235,7 +235,11 @@ clutter_text_clear_selection (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
 
-  priv->selection_bound = priv->position;
+  if (priv->selection_bound != priv->position)
+    {
+      priv->selection_bound = priv->position;
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+    }
 }
 
 static PangoLayout *
