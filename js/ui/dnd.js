@@ -153,8 +153,6 @@ _Draggable.prototype = {
         if (!dragging)
             return false;
 
-        this.emit('drag-end', event.get_time());
-
         // Find a drop target
         actor.hide();
         let [dropX, dropY] = event.get_coords();
@@ -173,6 +171,7 @@ _Draggable.prototype = {
                     if (actor.get_parent() == actor.get_stage())
                         actor.destroy();
 
+                    this.emit('drag-end', event.get_time(), true);
                     return true;
                 }
             }
@@ -196,18 +195,20 @@ _Draggable.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._onSnapBackComplete,
                            onCompleteScope: this,
-                           onCompleteParams: [actor]
+                           onCompleteParams: [actor, event.get_time()]
                          });
         return true;
     },
 
-    _onSnapBackComplete : function (dragActor) {
+    _onSnapBackComplete : function (dragActor, eventTime) {
         if (this._dragOrigParent) {
             dragActor.reparent(this._dragOrigParent);
             dragActor.set_scale(this._dragOrigScale, this._dragOrigScale);
             dragActor.set_position(this._dragOrigX, this._dragOrigY);
-        } else
+        } else {
             dragActor.destroy();
+        }
+        this.emit('drag-end', eventTime, false);
     }
 };
 
