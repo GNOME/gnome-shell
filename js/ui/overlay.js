@@ -77,24 +77,24 @@ const STATE_INACTIVE = false;
 
 // The dash has a slightly transparent blue background with a gradient.
 const DASH_LEFT_COLOR = new Clutter.Color();
-DASH_LEFT_COLOR.from_pixel(0x324c6fbb);
+DASH_LEFT_COLOR.from_pixel(0x0d131fbb);
 const DASH_MIDDLE_COLOR = new Clutter.Color();
-DASH_MIDDLE_COLOR.from_pixel(0x324c6faa);
+DASH_MIDDLE_COLOR.from_pixel(0x0d131faa);
 const DASH_RIGHT_COLOR = new Clutter.Color();
-DASH_RIGHT_COLOR.from_pixel(0x324c6fcc);
+DASH_RIGHT_COLOR.from_pixel(0x0d131fcc);
 
 const DASH_BORDER_COLOR = new Clutter.Color();
-DASH_BORDER_COLOR.from_pixel(0x213b5dff);
+DASH_BORDER_COLOR.from_pixel(0x213b5dfa);
 
 const DASH_BORDER_WIDTH = 2;
 
 // The results and details panes have a somewhat transparent blue background with a gradient.
 const PANE_LEFT_COLOR = new Clutter.Color();
-PANE_LEFT_COLOR.from_pixel(0x324c6ff4);
+PANE_LEFT_COLOR.from_pixel(0x0d131ff4);
 const PANE_MIDDLE_COLOR = new Clutter.Color();
-PANE_MIDDLE_COLOR.from_pixel(0x324c6ffa);
+PANE_MIDDLE_COLOR.from_pixel(0x0d131ffa);
 const PANE_RIGHT_COLOR = new Clutter.Color();
-PANE_RIGHT_COLOR.from_pixel(0x324c6ff4);
+PANE_RIGHT_COLOR.from_pixel(0x0d131ff4);
 
 const SHADOW_COLOR = new Clutter.Color();
 SHADOW_COLOR.from_pixel(0x00000033);
@@ -225,12 +225,11 @@ Dash.prototype = {
         this._resultsWidth = displayGridColumnWidth;
         this._detailsWidth = displayGridColumnWidth * 2;
 
-        let bottomHeight = DASH_SECTION_PADDING;
-
         let global = Shell.Global.get();
 
-        let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
-        let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight;
+        let dashHeight = global.screen_height - Panel.PANEL_HEIGHT;
+        let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT;
+        let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT;
 
         // Size the actor to 0x0 so as not to interfere with DND
         this.actor = new Clutter.Group({ width: 0, height: 0 });
@@ -248,17 +247,14 @@ Dash.prototype = {
         // was actually hidden. 
         let dashPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                      x: 0,
-                                     y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
+                                     y: Panel.PANEL_HEIGHT,
                                      width: this._width + SHADOW_WIDTH,
-                                     height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight,
+                                     height: dashHeight,
                                      reactive: true});
 
         let dashBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                            width: this._width,
-                                           height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight,
-                                           corner_radius: DASH_CORNER_RADIUS,
-                                           border: DASH_BORDER_WIDTH,
-                                           border_color: DASH_BORDER_COLOR });
+                                           height: dashHeight });
 
         dashPane.append(dashBackground, Big.BoxPackFlags.EXPAND);
         
@@ -278,9 +274,9 @@ Dash.prototype = {
 
         this.dashOuterContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                                x: 0,
-                                               y: dashPane.y + DASH_BORDER_WIDTH,
+                                               y: dashPane.y,
                                                width: this._width,
-                                               height: global.screen_height - Panel.PANEL_HEIGHT - DASH_SECTION_PADDING - bottomHeight,
+                                               height: dashHeight,
                                                padding: DASH_OUTER_PADDING
                                              });
         this.actor.add_actor(this.dashOuterContainer);
@@ -367,7 +363,7 @@ Dash.prototype = {
                                           spacing: DASH_SECTION_SPACING});
         this._appsSection.append(this._appsText, Big.BoxPackFlags.NONE);
 
-        this._itemDisplayHeight = global.screen_height - this._appsSection.y - DASH_SECTION_MISC_HEIGHT * 2 - bottomHeight;
+        this._itemDisplayHeight = global.screen_height - this._appsSection.y - DASH_SECTION_MISC_HEIGHT * 2;
         
         this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
         this._appsSection.append(this._appsContent, Big.BoxPackFlags.EXPAND);
@@ -417,7 +413,7 @@ Dash.prototype = {
 
         this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                           x: this._width,
-                                          y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
+                                          y: Panel.PANEL_HEIGHT,
                                           height: resultsHeight,
                                           reactive: true });
 
@@ -449,7 +445,7 @@ Dash.prototype = {
         this._resultsPane.hide();
 
         this._detailsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                          y: Panel.PANEL_HEIGHT + DASH_SECTION_PADDING,
+                                          y: Panel.PANEL_HEIGHT,
                                           width: this._detailsWidth + SHADOW_WIDTH,
                                           height: detailsHeight,
                                           reactive: true });
@@ -684,7 +680,6 @@ Dash.prototype = {
             x = this._resultsPane.x + this._resultsPane.width;
         else
             x = this._width;
-        x += DASH_SECTION_PADDING;
         this._detailsPane.x = x;
     },
 
