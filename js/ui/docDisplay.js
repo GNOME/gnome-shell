@@ -224,7 +224,7 @@ DocDisplay.prototype = {
             docDisplayItem.redisplay(currentSecs);          
             this._updateTimeoutCallback(docDisplayItem, currentSecs);
         }
-        return true;
+        return false;
     },
 
     // Updates the timeout callback if the timeout time for the docDisplayItem 
