@@ -1,4 +1,4 @@
-SUBDIRS = data js src
+SUBDIRS = data js src po
 
 EXTRA_DIST =		\
 	.project	\

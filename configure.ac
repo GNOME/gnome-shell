@@ -22,6 +22,9 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
 
 PKG_PROG_PKG_CONFIG(0.16)
 
+IT_PROG_INTLTOOL(0.26)
+AM_GLIB_GNU_GETTEXT
+
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 AM_GCONF_SOURCE_2
 
@@ -120,4 +123,5 @@ AC_OUTPUT([
   js/misc/Makefile
   js/ui/Makefile
   src/Makefile
+  po/Makefile.in
 ])

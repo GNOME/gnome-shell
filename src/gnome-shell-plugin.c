@@ -153,6 +153,9 @@ gnome_shell_plugin_constructed (GObject *object)
   ClutterBackend *backend;
   cairo_font_options_t *font_options;
 
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
   /* Disable text mipmapping; it causes problems on pre-GEM Intel
    * drivers and we should just be rendering text at the right
    * size rather than scaling it. If we do effects where we dynamically

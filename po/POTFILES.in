@@ -1,0 +1,5 @@
+js/ui/panel.js
+js/ui/overlay.js
+src/gdmuser/gdm-user.c
+src/shell-global.c
+src/shell-status-menu.c
