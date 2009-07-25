@@ -82,7 +82,7 @@ DocDisplayItem.prototype = {
 
     // Updates the last visited time displayed in the description text for the item. 
     _resetTimeDisplay: function(currentSecs) {
-        let lastSecs = this._docInfo.lastVisited().getTime() / 1000;
+        let lastSecs = this._docInfo.timestamp;
         let timeDelta = currentSecs - lastSecs;
         let [text, nextUpdate] = Shell.Global.get().format_time_relative_pretty(timeDelta);
         this._timeoutTime = currentSecs + nextUpdate;
@@ -182,7 +182,7 @@ DocDisplay.prototype = {
         let docA = this._allItems[itemIdA];
         let docB = this._allItems[itemIdB];
 
-        return docB.lastVisited() - docA.lastVisited();
+        return docB.timestamp - docA.timestamp;
     },
 
     // Checks if the item info can be a match for the search string by checking

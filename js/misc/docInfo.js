@@ -18,6 +18,10 @@ function DocInfo(recentInfo) {
 DocInfo.prototype = {
     _init : function(recentInfo) {
         this._recentInfo = recentInfo;
+        // We actually used get_modified() instead of get_visited()
+        // here, as GtkRecentInfo doesn't updated get_visited()
+        // correctly. See http://bugzilla.gnome.org/show_bug.cgi?id=567094
+        this.timestamp = recentInfo.get_modified().getTime() / 1000;
         this.name = recentInfo.get_display_name();
         this.uri = recentInfo.get_uri();
         this.mimeType = recentInfo.get_mime_type();
@@ -76,15 +80,6 @@ DocInfo.prototype = {
 
     exists : function() {
         return this._recentInfo.exists();
-    },
-
-    lastVisited : function() {
-        // We actually used get_modified() instead of get_visited()
-        // here, as GtkRecentInfo doesn't updated get_visited()
-        // correctly. See
-        // http://bugzilla.gnome.org/show_bug.cgi?id=567094
-
-        return this._recentInfo.get_modified();
     }
 };
 

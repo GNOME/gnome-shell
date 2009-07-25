@@ -359,7 +359,7 @@ RecentDocsWidget.prototype = {
                 items.push(docInfo);
         }
 
-        items.sort(function (a,b) { return b.lastVisited() - a.lastVisited(); });
+        items.sort(function (a,b) { return b.timestamp - a.timestamp; });
         for (i = 0; i < Math.min(items.length, 5); i++)
             this.addItem(items[i]);
     }
