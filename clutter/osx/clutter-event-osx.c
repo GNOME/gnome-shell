@@ -40,7 +40,7 @@ static GPollFunc old_poll_func = NULL;
 @interface NSEvent (Clutter)
 - (gint)clutterTime;
 - (gint)clutterButton;
-- (void)clutterX:(gint*)ptrX y:(gint*)ptrY;
+- (void)clutterX:(gfloat*)ptrX y:(gfloat*)ptrY;
 - (gint)clutterModifierState;
 - (guint)clutterKeyVal;
 @end
@@ -62,13 +62,13 @@ static GPollFunc old_poll_func = NULL;
     }
 }
 
-- (void)clutterX:(gint*)ptrX y:(gint*)ptrY
+- (void)clutterX:(gfloat*)ptrX y:(gfloat*)ptrY
 {
   NSView *view = [[self window] contentView];
   NSPoint pt = [view convertPoint:[self locationInWindow] fromView:nil];
 
-  *ptrX = (gint)pt.x;
-  *ptrY = (gint)pt.y;
+  *ptrX = pt.x;
+  *ptrY = pt.y;
 }
 
 - (gint)clutterModifierState
@@ -199,7 +199,7 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
     case NSOtherMouseDragged:
       event->type = CLUTTER_MOTION;
 
-      [nsevent clutterX:(&event->motion.x) y:&(event->motion.y)];
+      [nsevent clutterX:&(event->motion.x) y:&(event->motion.y)];
       event->motion.modifier_state = [nsevent clutterModifierState];
 
       CLUTTER_NOTE (EVENT, "motion %d at %d,%d",
