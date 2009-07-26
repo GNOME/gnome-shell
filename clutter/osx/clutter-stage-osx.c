@@ -322,18 +322,17 @@ clutter_stage_osx_unrealize (ClutterActor *actor)
 }
 
 static void
-clutter_stage_osx_show (ClutterActor *actor)
+clutter_stage_osx_show (ClutterStageWindow *stage_window,
+                        gboolean            do_raise)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
   CLUTTER_NOTE (BACKEND, "[%p] show", self);
 
-  if (CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->show)
-    CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->show (actor);
-
-  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
-
   CLUTTER_OSX_POOL_ALLOC();
+
+  clutter_actor_map (CLUTTER_ACTOR (self));
+  clutter_actor_map (CLUTTER_ACTOR (self->wrapper));
 
   clutter_stage_osx_set_frame (self);
 
@@ -343,9 +342,9 @@ clutter_stage_osx_show (ClutterActor *actor)
 }
 
 static void
-clutter_stage_osx_hide (ClutterActor *actor)
+clutter_stage_osx_hide (ClutterStageWindow *stage_window)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
   CLUTTER_NOTE (BACKEND, "[%p] hide", self);
 
@@ -353,12 +352,10 @@ clutter_stage_osx_hide (ClutterActor *actor)
 
   [self->window orderOut: nil];
 
+  clutter_actor_unmap (CLUTTER_ACTOR (self));
+  clutter_actor_unmap (CLUTTER_ACTOR (self->wrapper));
+
   CLUTTER_OSX_POOL_RELEASE();
-
-  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
-
-  if (CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->hide)
-    CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->hide (actor);
 }
 
 static void
@@ -526,6 +523,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_wrapper    = clutter_stage_osx_get_wrapper;
   iface->set_title      = clutter_stage_osx_set_title;
   iface->set_fullscreen = clutter_stage_osx_set_fullscreen;
+  iface->show           = clutter_stage_osx_show;
+  iface->hide           = clutter_stage_osx_hide;
 }
 
 /*************************************************************************/
@@ -559,8 +558,6 @@ clutter_stage_osx_class_init (ClutterStageOSXClass *klass)
 
   actor_class->realize   = clutter_stage_osx_realize;
   actor_class->unrealize = clutter_stage_osx_unrealize;
-  actor_class->show      = clutter_stage_osx_show;
-  actor_class->hide      = clutter_stage_osx_hide;
 
   actor_class->allocate             = clutter_stage_osx_allocate;
   actor_class->get_preferred_width  = clutter_stage_osx_get_preferred_width;
