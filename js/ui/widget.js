@@ -327,17 +327,17 @@ AppsWidget.prototype = {
     }
 };
 
-function DocsWidget() {
+function RecentDocsWidget() {
     this._init.apply(this, arguments);
 }
 
-DocsWidget.prototype = {
+RecentDocsWidget.prototype = {
     __proto__ : LauncherWidget.prototype,
 
     _init : function() {
         Widget.prototype._init.apply(this, arguments);
 
-        this.title = "Recent Docs";
+        this.title = "Recent Documents";
         this.actor = new Big.Box({ spacing: 2 });
 
         this._recentManager = Gtk.RecentManager.get_default();

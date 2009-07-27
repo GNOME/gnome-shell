@@ -64,7 +64,7 @@
 	<owner>gnome-shell</owner>
 	<type>list</type>
 	<list_type>string</list_type>
-	<default>[imports.ui.widget.ClockWidget,imports.ui.widget.AppsWidget,imports.ui.widget.DocsWidget]</default>
+	<default>[imports.ui.widget.ClockWidget,imports.ui.widget.AppsWidget,imports.ui.widget.RecentDocsWidget]</default>
 	<locale name="C">
 	  <short>The widgets to display in the sidebar</short>
 	  <long>
