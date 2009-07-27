@@ -25,6 +25,7 @@
 #define __COGL_INTERNAL_H
 
 #include "cogl-debug.h"
+#include "cogl-types.h"
 
 #ifdef HAVE_COGL_GLES2
 typedef enum {

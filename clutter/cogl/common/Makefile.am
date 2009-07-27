@@ -84,6 +84,9 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-blend-string.c		\
 	cogl-blend-string.h		\
 	cogl-debug.c			\
+	cogl-texture-private.h		\
+	cogl-texture-driver.h		\
+	cogl-texture.c			\
 	$(NULL)
 
 EXTRA_DIST = stb_image.c cogl-enum-types.h.in cogl-enum-types.c.in
