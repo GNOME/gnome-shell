@@ -1923,7 +1923,7 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
 static void
 clutter_actor_transform_and_project_box (ClutterActor          *self,
 					 const ClutterActorBox *box,
-					 ClutterVertex          verts[4])
+					 ClutterVertex          verts[])
 {
   ClutterActor *stage;
   CoglMatrix mtx;
@@ -2003,7 +2003,7 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
 void
 clutter_actor_get_allocation_vertices (ClutterActor  *self,
                                        ClutterActor  *ancestor,
-                                       ClutterVertex  verts[4])
+                                       ClutterVertex  verts[])
 {
   ClutterActorPrivate *priv;
   ClutterActor *stage;
@@ -2089,7 +2089,7 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
  */
 void
 clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
-                                           ClutterVertex  verts[4])
+                                           ClutterVertex  verts[])
 {
   ClutterActorPrivate   *priv;
 

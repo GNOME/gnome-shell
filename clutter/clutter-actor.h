@@ -328,7 +328,7 @@ void                  clutter_actor_get_allocation_geometry   (ClutterActor     
                                                                ClutterGeometry       *geom);
 void                  clutter_actor_get_allocation_vertices   (ClutterActor          *self,
 							       ClutterActor          *ancestor,
-                                                               ClutterVertex          verts[4]);
+                                                               ClutterVertex          verts[]);
 void                  clutter_actor_set_geometry              (ClutterActor          *self,
                                                                const ClutterGeometry *geometry);
 void                  clutter_actor_get_geometry              (ClutterActor          *self,
@@ -500,7 +500,7 @@ gboolean clutter_actor_is_scaled                      (ClutterActor   *self);
 gboolean clutter_actor_should_pick_paint              (ClutterActor   *self);
 
 void clutter_actor_get_abs_allocation_vertices        (ClutterActor        *self,
-                                                       ClutterVertex        verts[4]);
+                                                       ClutterVertex        verts[]);
 
 void clutter_actor_apply_transform_to_point           (ClutterActor        *self,
                                                        const ClutterVertex *point,
