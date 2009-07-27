@@ -797,6 +797,10 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * ClutterStage:offscreen:
    *
    * Whether the stage should be rendered in an offscreen buffer.
+   *
+   * <warning><para>Not every backend supports redirecting the
+   * stage to an offscreen buffer. This property might not work
+   * and it might be deprecated at any later date.</para></warning>
    */
   pspec = g_param_spec_boolean ("offscreen",
                                 "Offscreen",
