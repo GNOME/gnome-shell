@@ -24,6 +24,7 @@
 #ifndef __COGL_GLES2_WRAPPER_H__
 #define __COGL_GLES2_WRAPPER_H__
 
+#include "cogl.h" /* needed for gl header include */
 #include "cogl-internal.h"
 
 G_BEGIN_DECLS

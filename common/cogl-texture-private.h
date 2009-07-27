@@ -21,8 +21,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __COGL_TEXTURE_H
-#define __COGL_TEXTURE_H
+#ifndef __COGL_TEXTURE_PRIVATE_H
+#define __COGL_TEXTURE_PRIVATE_H
 
 #include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
@@ -142,4 +142,10 @@ _cogl_span_iter_end (CoglSpanIter *iter);
 void
 _cogl_span_iter_next (CoglSpanIter *iter);
 
-#endif /* __COGL_TEXTURE_H */
+void
+_cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
+
+void
+_cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
+
+#endif /* __COGL_TEXTURE_PRIVATE_H */

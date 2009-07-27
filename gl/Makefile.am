@@ -20,7 +20,6 @@ cogl_headers = \
 	$(NULL)
 
 cogl_priv_headers = \
-	cogl-texture-private.h 	\
 	cogl-fbo.h 		\
 	cogl-shader-private.h 	\
 	cogl-program.h 		\
@@ -30,7 +29,7 @@ cogl_priv_headers = \
 cogl_sources = \
 	cogl.c 			\
 	cogl-primitives.c 	\
-	cogl-texture.c 		\
+	cogl-texture-driver.c 	\
 	cogl-fbo.c 		\
 	cogl-shader.c 		\
 	cogl-program.c 		\

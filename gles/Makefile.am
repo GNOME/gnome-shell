@@ -48,12 +48,11 @@ libclutter_cogl_gles_la_SOURCES = \
         $(top_builddir)/clutter/cogl/cogl-texture.h \
         $(top_builddir)/clutter/cogl/cogl-types.h \
         $(top_builddir)/clutter/cogl/cogl-debug.h \
-	cogl-texture-private.h \
 	cogl-fbo.h \
 	cogl-context.h \
 	cogl.c \
 	cogl-primitives.c \
-	cogl-texture.c \
+	cogl-texture-driver.c \
 	cogl-fbo.c \
 	cogl-context.c \
 	cogl-gles2-wrapper.h \
