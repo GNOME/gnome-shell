@@ -67,7 +67,7 @@ typedef enum {
 
 #else /* !COGL_ENABLE_DEBUG */
 
-#define COGL_NOTE(type,...)
+#define COGL_NOTE(type,...) G_STMT_START {} G_STMT_END
 
 #endif /* COGL_ENABLE_DEBUG */
 
