@@ -87,8 +87,8 @@ struct _ClutterShaderFloat
 
 struct _ClutterShaderInt
 {
-  gint    size;
-  int value[4];
+  gint  size;
+  GLint value[4];
 };
 
 struct _ClutterShaderMatrix
@@ -420,9 +420,9 @@ clutter_value_set_shader_float (GValue         *value,
  * Since: 0.8
  */
 void
-clutter_value_set_shader_int (GValue         *value,
-                              gint            size,
-                              const gint     *ints)
+clutter_value_set_shader_int (GValue     *value,
+                              gint        size,
+                              const gint *ints)
 {
   ClutterShaderInt *shader_int;
   gint i;
@@ -434,7 +434,7 @@ clutter_value_set_shader_int (GValue         *value,
   shader_int->size = size;
 
   for (i = 0; i < size; i++)
-    shader_int->value[i] = ints[i];
+    shader_int->value[i] = (GLint) ints[i];
 }
 
 /**
@@ -514,7 +514,7 @@ clutter_value_get_shader_float (const GValue *value,
  *
  * Since: 0.8
  */
-G_CONST_RETURN int *
+G_CONST_RETURN gint *
 clutter_value_get_shader_int (const GValue *value,
                               gsize        *length)
 {
