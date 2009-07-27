@@ -624,7 +624,9 @@ clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11,
     GLX_RED_SIZE,     1,
     GLX_GREEN_SIZE,   1,
     GLX_BLUE_SIZE,    1,
+    GLX_ALPHA_SIZE,   1,
     GLX_STENCIL_SIZE, 1,
+    GLX_DEPTH_SIZE,   1,
     0
   };
   int offscreen_gl_attributes[] = {
