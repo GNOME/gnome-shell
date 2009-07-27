@@ -4,6 +4,75 @@
 #include "test-conform-common.h"
 
 void
+test_color_hls_roundtrip (TestConformSimpleFixture *fixture,
+                          gconstpointer data)
+{
+  ClutterColor color;
+  gfloat hue, luminance, saturation;
+
+  /* test luminance only */
+  clutter_color_from_string (&color, "#7f7f7f");
+  g_assert_cmpint (color.red,   ==, 0x7f);
+  g_assert_cmpint (color.green, ==, 0x7f);
+  g_assert_cmpint (color.blue,  ==, 0x7f);
+
+  clutter_color_to_hls (&color, &hue, &luminance, &saturation);
+  g_assert_cmpfloat (hue, ==, 0.0);
+  g_assert (luminance >= 0.0 && luminance <= 1.0);
+  g_assert_cmpfloat (saturation, ==, 0.0);
+  if (g_test_verbose ())
+    {
+      g_print ("RGB = { %x, %x, %x }, HLS = { %.2f, %.2f, %.2f }\n",
+               color.red,
+               color.green,
+               color.blue,
+               hue,
+               luminance,
+               saturation);
+    }
+
+  color.red = color.green = color.blue = 0;
+  clutter_color_from_hls (&color, hue, luminance, saturation);
+
+  g_assert_cmpint (color.red,   ==, 0x7f);
+  g_assert_cmpint (color.green, ==, 0x7f);
+  g_assert_cmpint (color.blue,  ==, 0x7f);
+
+  /* full conversion */
+  clutter_color_from_string (&color, "#7f8f7f");
+  color.alpha = 255;
+
+  g_assert_cmpint (color.red,   ==, 0x7f);
+  g_assert_cmpint (color.green, ==, 0x8f);
+  g_assert_cmpint (color.blue,  ==, 0x7f);
+
+  clutter_color_to_hls (&color, &hue, &luminance, &saturation);
+  g_assert (hue >= 0.0 && hue < 360.0);
+  g_assert (luminance >= 0.0 && luminance <= 1.0);
+  g_assert (saturation >= 0.0 && saturation <= 1.0);
+  if (g_test_verbose ())
+    {
+      g_print ("RGB = { %x, %x, %x }, HLS = { %.2f, %.2f, %.2f }\n",
+               color.red,
+               color.green,
+               color.blue,
+               hue,
+               luminance,
+               saturation);
+    }
+
+  color.red = color.green = color.blue = 0;
+  clutter_color_from_hls (&color, hue, luminance, saturation);
+
+  g_assert_cmpint (color.red,   ==, 0x7f);
+  g_assert_cmpint (color.green, ==, 0x8f);
+  g_assert_cmpint (color.blue,  ==, 0x7f);
+
+  /* the alpha channel should be untouched */
+  g_assert_cmpint (color.alpha, ==, 255);
+}
+
+void
 test_color_from_string (TestConformSimpleFixture *fixture,
                         gconstpointer data)
 {
