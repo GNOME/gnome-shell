@@ -244,15 +244,10 @@ clutter_color_from_hls (ClutterColor *color,
 
   hue /= 360.0;
 
-  if (luminance == 0)
-    {
-      color->red = color->green = color->blue = 0;
-      return;
-    }
-
   if (saturation == 0)
     {
-      color->red = color->green = color->blue = luminance;
+      color->red = color->green = color->blue = (luminance * 255);
+
       return;
     }
 
@@ -271,6 +266,7 @@ clutter_color_from_hls (ClutterColor *color,
     {
       if (tmp3[i] < 0)
         tmp3[i] += 1.0;
+
       if (tmp3[i] > 1)
         tmp3[i] -= 1.0;
 
@@ -284,9 +280,9 @@ clutter_color_from_hls (ClutterColor *color,
         clr[i] = tmp1;
     }
 
-  color->red = clr[0] * 255.0;
+  color->red   = clr[0] * 255.0;
   color->green = clr[1] * 255.0;
-  color->blue = clr[2] * 255.0;
+  color->blue  = clr[2] * 255.0;
 }
 
 /**
