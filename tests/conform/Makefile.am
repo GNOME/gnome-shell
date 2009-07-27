@@ -71,7 +71,7 @@ test_conformance_CFLAGS = \
 	$(CLUTTER_CFLAGS) \
 	$(MAINTAINER_CFLAGS)
 
-test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
+test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 
 .PHONY: test
 .PHONY: test-report test-report-normal test-report-disable-npots

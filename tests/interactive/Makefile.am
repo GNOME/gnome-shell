@@ -79,7 +79,7 @@ INCLUDES = \
 	-I$(top_builddir)/clutter \
 	-DG_DISABLE_SINGLE_INCLUDES
 
-common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
+common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = test-interactive
 
