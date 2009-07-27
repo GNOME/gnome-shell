@@ -506,8 +506,7 @@ WellDisplayItem.prototype = {
         this._name = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
                                         font_name: "Sans 12px",
                                         line_alignment: Pango.Alignment.CENTER,
-                                        line_wrap: true,
-                                        line_wrap_mode: Pango.WrapMode.WORD,
+                                        ellipsize: Pango.EllipsizeMode.END,
                                         text: appInfo.get_name() });
         nameBox.append(this._name, Big.BoxPackFlags.NONE);
         if (this._windows.length > 0) {
@@ -721,7 +720,7 @@ AppWell.prototype = {
         this._runningBox = new Big.Box({ border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
                                          border_top: 1,
                                          corner_radius: 3,
-                                         padding: GenericDisplay.PREVIEW_BOX_PADDING });
+                                         padding_top: GenericDisplay.PREVIEW_BOX_PADDING });
         this._runningArea = new WellArea(width, false);
         this._runningArea.connect('activated', Lang.bind(this, function (a, display) {
             this.emit('activated');
