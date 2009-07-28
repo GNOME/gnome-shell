@@ -143,8 +143,8 @@ clutter_animation_real_completed (ClutterAnimation *self)
       ClutterInterval *interval = value;
       GValue *p_value;
 
-      value = clutter_interval_peek_final_value (interval);
-      g_object_set_property (priv->object, p_name, value);
+      p_value = clutter_interval_peek_final_value (interval);
+      g_object_set_property (priv->object, p_name, p_value);
     }
 
   /* at this point, if this animation was created by clutter_actor_animate()
