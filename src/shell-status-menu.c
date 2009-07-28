@@ -62,6 +62,7 @@ struct _ShellStatusMenuPrivate {
   GtkWidget      *lock_screen_item;
   GtkWidget      *login_screen_item;
   GtkWidget      *quit_session_item;
+  GtkWidget      *shut_down_item;
 
   guint           client_notify_lockdown_id;
 
@@ -324,9 +325,9 @@ on_sidebar_toggled (GtkCheckMenuItem *item,
 }
 
 
+/* Calls 'gnome-session-save arg' */
 static void
-on_quit_session_activate (GtkMenuItem   *item,
-                          ShellStatusMenu *status)
+gnome_session_save_command (const char *arg)
 {
   char      *args[3];
   GError    *error;
@@ -337,7 +338,7 @@ on_quit_session_activate (GtkMenuItem   *item,
   if (args[0] == NULL)
     return;
 
-  args[1] = "--logout-dialog";
+  args[1] = arg;
   args[2] = NULL;
 
   screen = gdk_screen_get_default ();
@@ -352,6 +353,21 @@ on_quit_session_activate (GtkMenuItem   *item,
     }
 
   g_free (args[0]);
+}
+
+
+static void
+on_quit_session_activate (GtkMenuItem   *item,
+                          ShellStatusMenu *status)
+{
+  gnome_session_save_command ("--logout-dialog");
+}
+
+static void
+on_shut_down_activate (GtkMenuItem   *item,
+                       ShellStatusMenu *status)
+{
+  gnome_session_save_command ("--shutdown-dialog");
 }
 
 static void
@@ -439,6 +455,8 @@ menuitem_style_set_cb (GtkWidget     *menuitem,
     icon_name = "user-info";
   else if (menuitem == priv->control_panel_item)
     icon_name = "preferences-desktop";
+  else if (menuitem == priv->shut_down_item)
+    icon_name = "system-shutdown";
   else
     icon_name = GTK_STOCK_MISSING_IMAGE;
 
@@ -524,7 +542,8 @@ create_sub_menu (ShellStatusMenu *status)
       G_CALLBACK (on_login_screen_activate), status);
   /* Only show switch user if there are other users */
 
-  priv->quit_session_item = gtk_image_menu_item_new_with_label (_("Quit..."));
+  /* Log Out */
+  priv->quit_session_item = gtk_image_menu_item_new_with_label (_("Log Out..."));
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (priv->quit_session_item),
       gtk_image_new ());
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), priv->quit_session_item);
@@ -533,6 +552,17 @@ create_sub_menu (ShellStatusMenu *status)
   g_signal_connect (priv->quit_session_item, "activate",
       G_CALLBACK (on_quit_session_activate), status);
   gtk_widget_show (priv->quit_session_item);
+
+  /* Shut down  */
+  priv->shut_down_item = gtk_image_menu_item_new_with_label (_("Shut Down..."));
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (priv->shut_down_item),
+      gtk_image_new ());
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), priv->shut_down_item);
+  g_signal_connect (priv->shut_down_item, "style-set",
+      G_CALLBACK (menuitem_style_set_cb), status);
+  g_signal_connect (priv->shut_down_item, "activate",
+      G_CALLBACK (on_shut_down_activate), status);
+  gtk_widget_show (priv->shut_down_item);
 
   g_signal_connect (G_OBJECT (priv->menu), "deactivate",
       G_CALLBACK (on_deactivate), status);
