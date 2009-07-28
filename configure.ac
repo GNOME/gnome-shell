@@ -1,14 +1,13 @@
 # clutter package version number, (as distinct from shared library version)
 # An odd micro number indicates in-progress development, (eg. from CVS)
 # An even micro number indicates a released version.
-m4_define([clutter_major_version], [0])
-m4_define([clutter_minor_version], [9])
-m4_define([clutter_micro_version], [9])
+m4_define([clutter_major_version], [1])
+m4_define([clutter_minor_version], [0])
+m4_define([clutter_micro_version], [0])
 
 m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutter_micro_version])
 
-# TODO: hardcode to "1.0" when we release 1.0.0
-m4_define([clutter_api_version], [clutter_major_version.clutter_minor_version])
+m4_define([clutter_api_version], [1.0])
 
 # increase the interface age by 2 for each release; if the API changes,
 # set to 0. interface_age and binary_age are used to create the soname
