@@ -25,50 +25,11 @@
 #include "config.h"
 #endif
 
-#include <string.h>
-
 #include "cogl.h"
-#include "cogl-internal.h"
-#include "cogl-context.h"
 
 CoglFuncPtr
-cogl_get_proc_address (const gchar* name)
+_cogl_winsys_get_proc_address (const char *name)
 {
   return NULL;
-}
-
-gboolean
-cogl_check_extension (const gchar *name, const gchar *ext)
-{
-  return FALSE;
-}
-
-void
-_cogl_features_init (void)
-{
-  CoglFeatureFlags flags = 0;
-  int              max_clip_planes = 0;
-  GLint            num_stencil_bits = 0;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
-  /* We need at least three stencil bits to combine clips */
-  if (num_stencil_bits > 2)
-    flags |= COGL_FEATURE_STENCIL_BUFFER;
-
-  GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
-  if (max_clip_planes >= 4)
-    flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
-
-#ifdef HAVE_COGL_GLES2
-  flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;
-#endif
-
-  flags |= COGL_FEATURE_VBOS;
-
-  /* Cache features */
-  ctx->feature_flags = flags;
-  ctx->features_cached = TRUE;
 }
 

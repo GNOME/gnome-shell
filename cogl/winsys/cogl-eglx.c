@@ -21,42 +21,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __COGL_PRIMITIVES_H
-#define __COGL_PRIMITIVES_H
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-typedef struct _floatVec2    floatVec2;
-typedef struct _CoglBezQuad      CoglBezQuad;
-typedef struct _CoglBezCubic     CoglBezCubic;
-typedef struct _CoglPathNode     CoglPathNode;
+#include "cogl.h"
 
-struct _floatVec2
+CoglFuncPtr
+_cogl_winsys_get_proc_address (const char *name)
 {
-  float x;
-  float y;
-};
+  return NULL;
+}
 
-struct _CoglPathNode
-{
-  GLfloat x;
-  GLfloat y;
-  guint   path_size;
-};
-
-struct _CoglBezQuad
-{
-  floatVec2 p1;
-  floatVec2 p2;
-  floatVec2 p3;
-};
-
-struct _CoglBezCubic
-{
-  floatVec2 p1;
-  floatVec2 p2;
-  floatVec2 p3;
-  floatVec2 p4;
-};
-
-void _cogl_journal_flush (void);
-
-#endif /* __COGL_PRIMITIVES_H */

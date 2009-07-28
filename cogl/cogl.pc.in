@@ -1,0 +1,17 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+apiversion=@CLUTTER_API_VERSION@
+requires=@CLUTTER_REQUIRES@
+backend=@COGL_WINSYS@ #only kept for backward compatability
+winsys=@COGL_WINSYS@
+cogl=@COGL_DRIVER@ #only kept for backward compatability
+driver=@COGL_DRIVER@
+
+Name: COGL
+Description: Clutter GL abstraction library (${winsys}/${driver} backend)
+Version: @VERSION@
+Libs: -L${libdir} -lclutter-${winsys}-${apiversion}
+Cflags: -I${includedir}/clutter-${apiversion}
+Requires: ${requires}
