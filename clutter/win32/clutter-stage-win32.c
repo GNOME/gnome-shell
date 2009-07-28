@@ -610,8 +610,6 @@ clutter_stage_win32_class_init (ClutterStageWin32Class *klass)
 
   gobject_class->dispose = clutter_stage_win32_dispose;
   
-  actor_class->show = clutter_stage_win32_show;
-  actor_class->hide = clutter_stage_win32_hide;
   actor_class->get_preferred_width = clutter_stage_win32_get_preferred_width;
   actor_class->get_preferred_height = clutter_stage_win32_get_preferred_height;
   actor_class->allocate = clutter_stage_win32_allocate;
@@ -642,6 +640,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_title = clutter_stage_win32_set_title;
   iface->set_fullscreen = clutter_stage_win32_set_fullscreen;
   iface->set_user_resizable = clutter_stage_win32_set_user_resize;
+  iface->show = clutter_stage_win32_show;
+  iface->hide = clutter_stage_win32_hide;
 }
 
 /**
