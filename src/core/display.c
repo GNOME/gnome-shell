@@ -1618,14 +1618,8 @@ event_callback (XEvent   *event,
     case ButtonPress:
       if (event->xbutton.button == 4 || event->xbutton.button == 5)
         {
-          if (display->compositor && window)
-            {
-              return meta_compositor_process_event (display->compositor,
-                                                    event,
-                                                    window);
-            }
-          else
-            return FALSE;
+          /* Scrollwheel event, do nothing and deliver event to compositor below
+           */
         }
       else if ((window &&
            grab_op_is_mouse (display->grab_op) &&
