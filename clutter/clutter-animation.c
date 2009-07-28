@@ -132,12 +132,28 @@ clutter_animation_real_completed (ClutterAnimation *self)
 {
   ClutterAnimationPrivate *priv = self->priv;
   ClutterAnimation *animation;
+  gpointer key, value;
+  GHashTableIter iter;
+
+  /* explicitly set the final state of the animation */
+  g_hash_table_iter_init (&iter, priv->properties);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      const gchar *p_name = key;
+      ClutterInterval *interval = value;
+      GValue *p_value;
+
+      value = clutter_interval_peek_final_value (interval);
+      g_object_set_property (priv->object, p_name, value);
+    }
 
   /* at this point, if this animation was created by clutter_actor_animate()
    * and friends, the animation will be attached to the object's data; since
    * we want to allow developers to use g_signal_connect_after("completed")
    * to concatenate a new animation, we need to remove the animation back
-   * pointer here, and unref() the animation
+   * pointer here, and unref() the animation. FIXME - we might want to
+   * provide a clutter_animation_attach()/clutter_animation_detach() pair
+   * to let the user reattach an animation
    */
   animation = g_object_get_qdata (priv->object, quark_object_animation);
   if (animation == self)
