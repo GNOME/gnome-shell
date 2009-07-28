@@ -2,13 +2,15 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-backend=@clutterbackend@
 apiversion=@CLUTTER_API_VERSION@
 requires=@CLUTTER_REQUIRES@
+backend=@CLUTTER_WINSYS@ #only kept for backward compatability
+winsys=@CLUTTER_WINSYS@
+cogl_driver=@COGL_DRIVER@
 
 Name: Clutter
-Description: Clutter Core Library (${backend} backend)
+Description: Clutter Core Library (${winsys}/${cogl_driver} backend)
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-${backend}-${apiversion}
+Libs: -L${libdir} -lclutter-${winsys}-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: ${requires}

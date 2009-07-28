@@ -3,10 +3,12 @@ libclutterinclude_HEADERS = clutter-osx.h
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterOSX\" 	\
-	-DCLUTTER_COMPILATION 		\
+        -DCLUTTER_COMPILATION 		\
 	-I$(top_srcdir) 		\
 	-I$(top_srcdir)/clutter 	\
-	-I$(top_builddir)/clutter
+	-I$(top_srcdir)/clutter/cogl 	\
+	-I$(top_builddir)/clutter 	\
+	-I$(top_builddir)/clutter/cogl
 
 common_ldadd = $(CLUTTER_LIBS)
 

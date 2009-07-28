@@ -4,12 +4,13 @@ libdir=@libdir@
 includedir=@includedir@
 apiversion=@CLUTTER_API_VERSION@
 requires=@CLUTTER_REQUIRES@
-backend=@CLUTTER_WINSYS@ #only kept for backward compatability
-winsys=@CLUTTER_WINSYS@
-cogl_driver=@COGL_DRIVER@
+backend=@COGL_WINSYS@ #only kept for backward compatability
+winsys=@COGL_WINSYS@
+cogl=@COGL_DRIVER@ #only kept for backward compatability
+driver=@COGL_DRIVER@
 
-Name: Clutter
-Description: Clutter Core Library (${winsys}/${cogl_driver} backend)
+Name: COGL
+Description: Clutter GL abstraction library (${winsys}/${driver} backend)
 Version: @VERSION@
 Libs: -L${libdir} -lclutter-${winsys}-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}

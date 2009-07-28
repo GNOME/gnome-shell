@@ -18,7 +18,9 @@ libdisable_npots_static_la_LIBADD = -ldl
 
 INCLUDES = \
 	-I$(top_srcdir)/clutter	                        \
+	-I$(top_srcdir)/clutter/cogl	                \
 	-I$(top_builddir)/clutter                       \
+	-I$(top_builddir)/clutter/cogl                  \
 	$(CLUTTER_CFLAGS)                               \
 	-D_GNU_SOURCE
 

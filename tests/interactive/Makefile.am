@@ -75,10 +75,12 @@ BUILT_SOURCES = wrappers redhand.png redhand_alpha.png light0.png test-script.js
 INCLUDES = \
 	-I$(top_srcdir)	\
 	-I$(top_srcdir)/clutter \
+	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_builddir)/clutter \
+	-I$(top_builddir)/clutter/cogl \
 	-DG_DISABLE_SINGLE_INCLUDES
 
-common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
+common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = test-interactive
 

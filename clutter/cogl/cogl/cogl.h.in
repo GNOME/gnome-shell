@@ -29,7 +29,7 @@
 
 #define __COGL_H_INSIDE__
 
-#include <cogl/cogl-defines-@CLUTTER_COGL@.h>
+#include <cogl/cogl-defines-@COGL_DRIVER@.h>
 
 #include <cogl/cogl-vertex-buffer.h>
 #include <cogl/cogl-matrix.h>

@@ -2,7 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = cogl pango $(backendextra) $(clutterbackend)
+SUBDIRS = cogl pango $(CLUTTER_WINSYS_BASE) $(CLUTTER_WINSYS)
 
 if LOCAL_JSON_GLIB
 SUBDIRS += json
@@ -13,8 +13,6 @@ clutter_json_gir = ClutterJson-@CLUTTER_API_VERSION@.gir
 endif
 
 DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32 fruity
-
-target = $(clutterbackend)
 
 # common definitions
 CLEANFILES =
@@ -28,6 +26,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/pango	\
 	-I$(top_srcdir)/clutter		\
 	$(clutter_json_include)		\
+	-I$(top_builddir)/clutter/cogl	\
 	-I$(top_builddir)/clutter	\
 	$(NULL)
 
@@ -180,31 +179,31 @@ source_h_priv = \
 	$(srcdir)/clutter-timeout-interval.h    \
 	$(NULL)
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
+libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LIBADD = \
 	$(CLUTTER_LIBS) \
-	$(top_builddir)/clutter/cogl/libclutter-cogl.la \
+	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/pango/libcoglpango.la \
-	$(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
 	$(clutter_json_libadd) \
-	$(backendextralib)
+	$(CLUTTER_WINSYS_BASE_LIB)
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
-	$(top_builddir)/clutter/cogl/libclutter-cogl.la \
+libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
+	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
 	$(top_builddir)/clutter/pango/libcoglpango.la \
-	$(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
 	$(clutter_json_dep) \
-	$(backendextralib)
+	$(CLUTTER_WINSYS_BASE_LIB)
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES = \
+libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c) \
 	$(source_h) \
 	$(source_h_priv)
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
+libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
 
-lib_LTLIBRARIES = $(clutterbackendlib)
+lib_LTLIBRARIES = $(CLUTTER_WINSYS_LIB)
 
-EXTRA_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
+EXTRA_LTLIBRARIES = libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
 
 clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
 clutter_HEADERS = \
@@ -229,11 +228,12 @@ endif
 # We can't reference the list of COGL header files, since they are in a
 # subdir Makefile.am, so just extract them from cogl.h instead. The doc
 # comments for COGL are in the headers, so we don't need the source files.
-Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
-	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
+
+Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
+        $(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
-		--add-include-path=cogl \
+		--add-include-path=cogl/cogl \
 		$(json_gir_include_path) \
 		--c-include='clutter/clutter.h' \
 		--include=GL-1.0 \
@@ -242,7 +242,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 		--include=PangoCairo-1.0 \
 		--include=Cogl-@CLUTTER_API_VERSION@ \
 		$(json_gir_include) \
-		--library=libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la \
+		--library=libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la \
 		--libtool="$(top_builddir)/libtool" \
 	        --pkg gobject-2.0 \
 	        --pkg pango \

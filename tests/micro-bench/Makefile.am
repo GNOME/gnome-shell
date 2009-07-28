@@ -5,8 +5,13 @@ noinst_PROGRAMS = \
 	test-picking \
 	test-text-perf
 
-INCLUDES = -I$(top_srcdir)/ -I$(top_srcdir)/clutter -I$(top_builddir)/clutter
-LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
+INCLUDES = \
+	-I$(top_srcdir)/ \
+	-I$(top_srcdir)/clutter \
+	-I$(top_srcdir)/clutter/cogl \
+	-I$(top_builddir)/clutter \
+	-I$(top_builddir)/clutter/cogl
+LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
 AM_CFLAGS = \
 	$(CLUTTER_CFLAGS) \
 	$(MAINTAINER_CFLAGS) \

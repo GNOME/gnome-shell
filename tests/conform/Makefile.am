@@ -70,12 +70,14 @@ BUILT_SOURCES = wrappers
 test_conformance_CFLAGS = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
+	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_builddir)/clutter \
+	-I$(top_builddir)/clutter/cogl \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	$(CLUTTER_CFLAGS) \
 	$(MAINTAINER_CFLAGS)
 
-test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
+test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
 
 .PHONY: test
 .PHONY: test-report test-report-normal test-report-disable-npots

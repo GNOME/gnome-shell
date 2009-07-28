@@ -7,8 +7,10 @@ INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterGLX\" \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \
+	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_srcdir)/clutter/x11 \
 	-I$(top_builddir)/clutter \
+	-I$(top_builddir)/clutter/cogl \
         -DCLUTTER_COMPILATION \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \

@@ -24,7 +24,7 @@ DOC_SOURCE_DIR=../../../clutter
 SCANGOBJ_OPTIONS=--type-init-func="clutter_base_init()"
 
 # Extra options to supply to gtkdoc-scan.
-# e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED" 
+# e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED"
 SCAN_OPTIONS=--deprecated-guards="CLUTTER_DISABLE_DEPRECATED"
 
 # Extra options to supply to gtkdoc-mkdb.
@@ -142,8 +142,8 @@ expand_content_files= \
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 
-INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/clutter $(CLUTTER_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
+INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/clutter -I$(top_srcdir)/clutter/cogl $(CLUTTER_CFLAGS)
+GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make

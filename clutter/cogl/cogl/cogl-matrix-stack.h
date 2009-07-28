@@ -27,7 +27,8 @@
 #ifndef __COGL_MATRIX_STACK_H
 #define __COGL_MATRIX_STACK_H
 
-#include <cogl/cogl-matrix.h>
+#include "cogl-matrix.h"
+#include "cogl.h" /* needed for GLenum */
 
 typedef struct _CoglMatrixStack CoglMatrixStack;
 

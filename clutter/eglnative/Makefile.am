@@ -2,11 +2,13 @@ libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
 libclutterinclude_HEADERS = clutter-egl.h
 
 INCLUDES = \
-	-DG_LOG_DOMAIN=\"ClutterEGL\" \
-        -DCLUTTER_COMPILATION \
-	-I$(top_srcdir) \
-	-I$(top_srcdir)/clutter \
-	-I$(top_builddir)/clutter
+	-DG_LOG_DOMAIN=\"ClutterEGL\"	\
+        -DCLUTTER_COMPILATION 		\
+	-I$(top_srcdir) 		\
+	-I$(top_srcdir)/clutter 	\
+	-I$(top_srcdir)/clutter/cogl 	\
+	-I$(top_builddir)/clutter 	\
+	-I$(top_builddir)/clutter/cogl
 
 common_ldadd = $(CLUTTER_LIBS)
 

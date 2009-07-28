@@ -104,9 +104,9 @@ PKG_PROG_PKG_CONFIG
 dnl ========================================================================
 
 # defaults
-backendextra=
-backendextralib=
-clutterbackend=glx
+CLUTTER_WINSYS_BASE=
+CLUTTER_WINSYS_BASE_LIB=
+CLUTTER_WINSYS=glx
 clutter_gl_header=""
 glesversion=1.1
 use_gles2_wrapper=no
@@ -115,8 +115,8 @@ experimental_image=no
 
 AC_ARG_WITH([flavour],
             [AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl/osx/win32/fruity@:>@],
-                            [Select the Clutter backend])],
-            [clutterbackend=$with_flavour])
+                            [Select the Clutter window system backend])],
+            [CLUTTER_WINSYS=$with_flavour])
 
 AC_ARG_WITH([gles],
             [AC_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
@@ -124,7 +124,7 @@ AC_ARG_WITH([gles],
             [glesversion=$with_gles])
 
 # the fruity backend requires a different handling for GLES
-AS_IF([test "x$clutterbackend" = "xfruity"], [glesversion=fruity])
+AS_IF([test "x$CLUTTER_WINSYS" = "xfruity"], [glesversion=fruity])
 
 # backend specific pkg-config files
 BACKEND_PC_FILES=""
@@ -135,9 +135,9 @@ AM_CONDITIONAL(HAVE_LIBDL, [test "x$HAVE_LIBDL" = "xyes"])
 
 dnl === COGL GLES backend =====================================================
 
-AS_IF([test "x$clutterbackend" = "xeglnative" ||
-       test "x$clutterbackend" = "xeglx"      ||
-       test "x$clutterbackend" = "xfruity"],
+AS_IF([test "x$CLUTTER_WINSYS" = "xeglnative" ||
+       test "x$CLUTTER_WINSYS" = "xeglx"      ||
+       test "x$CLUTTER_WINSYS" = "xfruity"],
 
       [
         AS_CASE([$glesversion],
@@ -146,7 +146,7 @@ AS_IF([test "x$clutterbackend" = "xeglnative" ||
                 [
                   clutter_gl_header="GLES/gl.h"
 
-                  CLUTTER_COGL="gles"
+                  COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
@@ -191,7 +191,7 @@ AS_IF([test "x$clutterbackend" = "xeglnative" ||
                 [
                   clutter_gl_header="GLES2/gl2.h"
                   use_gles2_wrapper=yes
-                  CLUTTER_COGL="gles"
+                  COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
 		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES2])
 
@@ -205,7 +205,7 @@ AS_IF([test "x$clutterbackend" = "xeglnative" ||
                 [fruity],
                 [
                   clutter_gl_header="GLES/gl.h"
-                  CLUTTER_COGL="gles"
+                  COGL_DRIVER="gles"
                   AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 		  AC_SUBST(COGL_GLES_VERSION, [COGL_HAS_GLES1])
 
@@ -223,17 +223,16 @@ AM_CONDITIONAL(USE_GLES2_WRAPPER, [test "x$use_gles2_wrapper" = "xyes"])
 
 dnl === Clutter windowing system backend ======================================
 
-AS_CASE([$clutterbackend],
+AS_CASE([$CLUTTER_WINSYS],
 
         [sdl],
         [
           experimental_backend="yes"
           clutter_gl_header="GL/gl.h"
-          CLUTTER_FLAVOUR="sdl"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_SDL"
           AC_DEFINE([HAVE_CLUTTER_SDL], [1], [Have the SDL backend])
 
-          CLUTTER_COGL="gl"
+          COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
           AC_PATH_PROG(SDL_CONFIG, [sdl-config])
@@ -265,11 +264,10 @@ AS_CASE([$clutterbackend],
         [glx],
         [
           clutter_gl_header="GL/gl.h"
-          CLUTTER_FLAVOUR="glx"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
           AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
 
-          CLUTTER_COGL="gl"
+          COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
           AC_CHECK_HEADERS([GL/glx.h],
@@ -283,8 +281,8 @@ AS_CASE([$clutterbackend],
           GLX_LIBS="$X11_LIBS -lGL"
           GLX_CFLAGS="$X11_CFLAGS"
 
-          backendextra=x11
-          backendextralib="x11/libclutter-x11.la"
+          CLUTTER_WINSYS_BASE=x11
+          CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
 
           # Mesa 7.3 added a GL pkg-config file, finally
           PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
@@ -293,15 +291,14 @@ AS_CASE([$clutterbackend],
         [eglx],
         [
           # the GL header is defined in the COGL checks above
-          CLUTTER_FLAVOUR="eglx"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
           AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
 
           EGL_LIBS="$GLES_LIBS $X11_LIBS"
           EGL_CFLAGS="$GLES_CFLAGS $X11_CFLAGS"
 
-          backendextra=x11
-          backendextralib="x11/libclutter-x11.la"
+          CLUTTER_WINSYS_BASE=x11
+          CLUTTER_WINSYS_BASE_LIB="x11/libclutter-x11.la"
 
           # Mesa 7.3 added a GL pkg-config file, finally
           PKG_CHECK_EXISTS([gl], [BACKEND_PC_FILES="$BACKEND_PC_FILES gl"], [])
@@ -310,7 +307,6 @@ AS_CASE([$clutterbackend],
         [eglnative],
         [
           # the GL header is defined in the COGL checks above
-          CLUTTER_FLAVOUR="eglnative"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLNATIVE"
           AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
 
@@ -327,7 +323,6 @@ AS_CASE([$clutterbackend],
         [
           experimental_backend="yes"
           # the GL header is defined in the COGL checks above
-          CLUTTER_FLAVOUR="fruity"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
           AC_DEFINE([HAVE_CLUTTER_FRUITY], [1], [Have the Fruity backend])
 
@@ -339,11 +334,10 @@ AS_CASE([$clutterbackend],
         [
           experimental_backend="yes"
           clutter_gl_header="OpenGL/gl.h"
-          CLUTTER_FLAVOUR="osx"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
           AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
 
-          CLUTTER_COGL="gl"
+          COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
           OSX_LIBS="-framework Cocoa -framework OpenGL"
@@ -352,11 +346,10 @@ AS_CASE([$clutterbackend],
         [win32],
         [
           clutter_gl_header="GL/gl.h"
-          CLUTTER_FLAVOUR="win32"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WIN32"
           AC_DEFINE([HAVE_CLUTTER_WIN32], [1], [Have the Win32 backend])
 
-          CLUTTER_COGL="gl"
+          COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
           WIN32_CFLAGS="-D_WIN32_WINNT=0x0500"
@@ -375,31 +368,45 @@ AC_CHECK_HEADERS([$clutter_gl_header],
 
 CLUTTER_GL_HEADER=$clutter_gl_header
 
-AC_SUBST([clutterbackend])
-AC_SUBST([imagebackend])
-AC_SUBST([backendextra])
-AC_SUBST([backendextralib])
-AC_SUBST(CLUTTER_FLAVOUR)
-AC_SUBST(CLUTTER_COGL)
+
+dnl === Clutter substitutions =================================================
+# Eventually the idea of a winsys should be hidden from Clutter and moved
+# into Cogl, but for now we have CLUTTER_WINSYS...
+AC_SUBST([CLUTTER_WINSYS])
+# The same goes for the winsys-base...
+AC_SUBST([CLUTTER_WINSYS_BASE])
+AC_SUBST([CLUTTER_WINSYS_BASE_LIB])
 AC_SUBST(CLUTTER_GL_HEADER)
 AC_SUBST(CLUTTER_STAGE_TYPE)
 
-clutterbackendlib=libclutter-$clutterbackend-$CLUTTER_API_VERSION.la
-AC_SUBST([clutterbackendlib])
+CLUTTER_WINSYS_LIB=libclutter-$CLUTTER_WINSYS-$CLUTTER_API_VERSION.la
+AC_SUBST([CLUTTER_WINSYS_LIB])
+
+dnl === Clutter substitutions kept for backwards compatibility ================
+CLUTTER_FLAVOUR=$CLUTTER_WINSYS
+AC_SUBST([CLUTTER_FLAVOUR])
+CLUTTER_COGL=$COGL_DRIVER
+AC_SUBST([CLUTTER_COGL])
+
+dnl === Cogl substitutions ====================================================
+AC_SUBST([COGL_IMAGE_BACKEND])
+COGL_WINSYS=$CLUTTER_WINSYS
+AC_SUBST([COGL_WINSYS])
+AC_SUBST([COGL_DRIVER])
 
 dnl === Image loading backend =================================================
 IMAGE_PC_FILES=""
 
-# Peek which flavour the user wants so that we can couple the osx flavour with
+# Peek which winsys the user wants so that we can couple the osx winsys with
 # quartz imageloader.
-AS_IF([test "x$with_flavour" = "xosx"], [imagebackend=quartz], [imagebackend=gdk-pixbuf])
+AS_IF([test "x$COGL_WINSYS" = "xosx"], [COGL_IMAGE_BACKEND=quartz], [COGL_IMAGE_BACKEND=gdk-pixbuf])
 
-AC_ARG_WITH([imagebackend],
+AC_ARG_WITH([COGL_IMAGE_BACKEND],
             [AC_HELP_STRING([--with-imagebackend=@<:@gdk-pixbuf/quartz/internal@:>@],
                             [Select COGL image loading backend])],
-            [imagebackend=$with_imagebackend])
+            [COGL_IMAGE_BACKEND=$with_imagebackend])
 
-AS_CASE([$imagebackend],
+AS_CASE([$COGL_IMAGE_BACKEND],
 
         [quartz],
         [
@@ -426,7 +433,7 @@ dnl === X11 checks, only for X11-based backends ===============================
 X11_PC_FILES=""
 x11_tests=no
 
-AS_IF([test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx"],
+AS_IF([test "x$CLUTTER_WINSYS" = "xglx" || test "x$CLUTTER_WINSYS" = "xeglx"],
       [
         # base X11 includes and libraries
         AC_MSG_CHECKING([for X11])
@@ -805,13 +812,15 @@ AC_CONFIG_FILES([
         clutter/win32/clutter-win32.pc
         clutter/sdl/Makefile
         clutter/cogl/Makefile
-	clutter/cogl/common/Makefile
-        clutter/cogl/cogl.h
-        clutter/cogl/cogl-defines-gl.h:clutter/cogl/gl/cogl-defines.h.in
-        clutter/cogl/cogl-defines-gles.h:clutter/cogl/gles/cogl-defines.h.in
-        clutter/cogl/cogl.pc
-        clutter/cogl/gl/Makefile
-        clutter/cogl/gles/Makefile
+        clutter/cogl/cogl/Makefile
+        clutter/cogl/cogl/cogl.h
+        clutter/cogl/cogl/cogl-defines-gl.h:clutter/cogl/cogl/driver/gl/cogl-defines.h.in
+        clutter/cogl/cogl/cogl-defines-gles.h:clutter/cogl/cogl/driver/gles/cogl-defines.h.in
+        clutter/cogl/cogl/cogl.pc
+        clutter/cogl/cogl/winsys/Makefile
+        clutter/cogl/cogl/driver/Makefile
+        clutter/cogl/cogl/driver/gl/Makefile
+        clutter/cogl/cogl/driver/gles/Makefile
         clutter/json/Makefile
         clutter/pango/Makefile
         tests/Makefile
@@ -842,13 +851,13 @@ echo "                   ===================="
 echo ""
 echo "                      prefix:   ${prefix}"
 echo ""
-echo "                     Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
-if test "x$clutterbackend" = "xeglx" || test "x$clutterbackend" = "xglx"; then
+echo "                     Flavour:   ${CLUTTER_WINSYS}/${COGL_DRIVER}"
+if test "x$CLUTTER_WINSYS" = "xeglx" || test "x$CLUTTER_WINSYS" = "xglx"; then
   echo "                      XInput:   ${xinput}"
 fi
 echo "                  GL headers:   ${CLUTTER_GL_HEADER}"
-echo "               Image backend:   ${imagebackend}"
-echo "              Target library:   ${clutterbackendlib}"
+echo "               Image backend:   ${COGL_IMAGE_BACKEND}"
+echo "              Target library:   ${CLUTTER_WINSYS_LIB}"
 echo "         Clutter debug level:   ${enable_debug}"
 echo "            COGL debug level:   ${enable_cogl_debug}"
 echo "              Compiler flags:   ${CPPFLAGS} ${MAINTAINER_CFLAGS}"
@@ -861,11 +870,11 @@ echo ""
 # the experimental/unstable warning summary.
 
 if test "x$experimental_backend" = "xyes"; then
-  experimental_stuff="$experimental_stuff   Clutter backend:  ${clutterbackend}\n"
+  experimental_stuff="$experimental_stuff   Clutter backend:  ${CLUTTER_WINSYS}\n"
 fi
 
 if test "x$experimental_image" = "xyes"; then
-  experimental_stuff="$experimental_stuff     Image backend:  ${imagebackend}\n"
+  experimental_stuff="$experimental_stuff     Image backend:  ${COGL_IMAGE_BACKEND}\n"
 fi
 
 if test "x$experimental_stuff" != "x"; then

@@ -12,7 +12,9 @@ INCLUDES = \
         -DCLUTTER_COMPILATION \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \
+	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_builddir)/clutter \
+	-I$(top_builddir)/clutter/cogl \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \
 	$(MAINTAINER_CFLAGS)

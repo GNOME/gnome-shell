@@ -14,15 +14,15 @@ ACLOCAL_AMFLAGS = -I build/autotools
 
 pcfiles = \
 	clutter-$(CLUTTER_API_VERSION).pc \
-	clutter-$(CLUTTER_FLAVOUR)-$(CLUTTER_API_VERSION).pc \
+	clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc \
 	$(NULL)
 
 # clutter-<major>.<minor>.pc - for generic dependencies
 clutter-$(CLUTTER_API_VERSION).pc: clutter.pc
 	$(QUIET_GEN)cp $< $@
 
-# clutter-<flavour>-<major>.<minor>.pc - for backend-specific dependencies
-clutter-$(CLUTTER_FLAVOUR)-$(CLUTTER_API_VERSION).pc: clutter.pc
+# clutter-<winsys>-<major>.<minor>.pc - for backend-specific dependencies
+clutter-$(CLUTTER_WINSYS)-$(CLUTTER_API_VERSION).pc: clutter.pc
 	$(QUIET_GEN)cp $< $@
 
 .PHONY: test-report full-report
@@ -31,8 +31,6 @@ test-report full-report:
 
 pkgconfig_DATA = $(pcfiles)
 pkgconfigdir   = $(libdir)/pkgconfig
-
-DEFAULT_FLAVOUR = @CLUTTER_FLAVOUR@
 
 EXTRA_DIST = 			\
 	ChangeLog.SVN		\

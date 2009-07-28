@@ -30,19 +30,14 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-
-#ifdef HAVE_CLUTTER_GLX
-#include <dlfcn.h>
-#include <GL/glx.h>
-
-typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
-#endif
+#include <gmodule.h>
 
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
 #include "cogl-material-private.h"
+#include "cogl-winsys.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -87,6 +82,32 @@ cogl_gl_error_to_string (GLenum error_code)
   return "Unknown GL error";
 }
 #endif /* COGL_GL_DEBUG */
+
+CoglFuncPtr
+cogl_get_proc_address (const gchar* name)
+{
+  void *address;
+  static GModule *module = NULL;
+
+  address = _cogl_winsys_get_proc_address (name);
+  if (address)
+    return address;
+
+  /* this should find the right function if the program is linked against a
+   * library providing it */
+  if (module == NULL)
+    module = g_module_open (NULL, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+
+  if (module)
+    {
+      gpointer symbol;
+
+      if (g_module_symbol (module, name, &symbol))
+        return symbol;
+    }
+
+  return NULL;
+}
 
 void
 cogl_clear (const CoglColor *color, gulong buffers)
