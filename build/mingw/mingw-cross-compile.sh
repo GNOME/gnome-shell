@@ -15,7 +15,7 @@ TOR_BINARIES=( \
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
 
 TOR_DEPS=( \
-    cairo-{dev-,}1.6.4-2.zip \
+    cairo{-dev,}_1.8.6-1_win32.zip \
     gettext-runtime-{dev-,}0.17-1.zip \
     fontconfig-{dev-,}2.4.2-tml-20071015.zip \
     freetype-{dev-,}2.3.6.zip \
