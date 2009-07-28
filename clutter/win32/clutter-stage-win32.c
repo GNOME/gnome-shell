@@ -59,15 +59,7 @@ clutter_stage_win32_show (ClutterActor *actor)
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (actor);
 
   if (stage_win32->hwnd)
-    {
-      /* Force a redraw so that the layout will be run and the correct
-	 size will be allocated to the window before it is
-	 shown. Otherwise a WM_SIZE message will be sent which will
-	 override the user's chosen size */
-      clutter_redraw (stage_win32->wrapper);
-
-      ShowWindow (stage_win32->hwnd, SW_SHOW);
-    }
+    ShowWindow (stage_win32->hwnd, SW_SHOW);
 }
 
 static void
