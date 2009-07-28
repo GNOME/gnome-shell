@@ -35,31 +35,31 @@
 #include <glib.h>
 
 /* Expecting ARB functions not to be defined */
-#define glCreateProgramObjectARB        ctx->pf_glCreateProgramObjectARB
-#define glAttachObjectARB               ctx->pf_glAttachObjectARB
-#define glUseProgramObjectARB           ctx->pf_glUseProgramObjectARB
-#define glLinkProgramARB                ctx->pf_glLinkProgramARB
-#define glGetUniformLocationARB         ctx->pf_glGetUniformLocationARB
-#define glUniform1fARB                  ctx->pf_glUniform1fARB
-#define glUniform2fARB                  ctx->pf_glUniform2fARB
-#define glUniform3fARB                  ctx->pf_glUniform3fARB
-#define glUniform4fARB                  ctx->pf_glUniform4fARB
-#define glUniform1fvARB                 ctx->pf_glUniform1fvARB
-#define glUniform2fvARB                 ctx->pf_glUniform2fvARB
-#define glUniform3fvARB                 ctx->pf_glUniform3fvARB
-#define glUniform4fvARB                 ctx->pf_glUniform4fvARB
-#define glUniform1iARB                  ctx->pf_glUniform1iARB
-#define glUniform2iARB                  ctx->pf_glUniform2iARB
-#define glUniform3iARB                  ctx->pf_glUniform3iARB
-#define glUniform4iARB                  ctx->pf_glUniform4iARB
-#define glUniform1ivARB                 ctx->pf_glUniform1ivARB
-#define glUniform2ivARB                 ctx->pf_glUniform2ivARB
-#define glUniform3ivARB                 ctx->pf_glUniform3ivARB
-#define glUniform4ivARB                 ctx->pf_glUniform4ivARB
-#define glUniformMatrix2fvARB           ctx->pf_glUniformMatrix2fvARB
-#define glUniformMatrix3fvARB           ctx->pf_glUniformMatrix3fvARB
-#define glUniformMatrix4fvARB           ctx->pf_glUniformMatrix4fvARB
-#define glDeleteObjectARB               ctx->pf_glDeleteObjectARB
+#define glCreateProgramObjectARB        ctx->drv.pf_glCreateProgramObjectARB
+#define glAttachObjectARB               ctx->drv.pf_glAttachObjectARB
+#define glUseProgramObjectARB           ctx->drv.pf_glUseProgramObjectARB
+#define glLinkProgramARB                ctx->drv.pf_glLinkProgramARB
+#define glGetUniformLocationARB         ctx->drv.pf_glGetUniformLocationARB
+#define glUniform1fARB                  ctx->drv.pf_glUniform1fARB
+#define glUniform2fARB                  ctx->drv.pf_glUniform2fARB
+#define glUniform3fARB                  ctx->drv.pf_glUniform3fARB
+#define glUniform4fARB                  ctx->drv.pf_glUniform4fARB
+#define glUniform1fvARB                 ctx->drv.pf_glUniform1fvARB
+#define glUniform2fvARB                 ctx->drv.pf_glUniform2fvARB
+#define glUniform3fvARB                 ctx->drv.pf_glUniform3fvARB
+#define glUniform4fvARB                 ctx->drv.pf_glUniform4fvARB
+#define glUniform1iARB                  ctx->drv.pf_glUniform1iARB
+#define glUniform2iARB                  ctx->drv.pf_glUniform2iARB
+#define glUniform3iARB                  ctx->drv.pf_glUniform3iARB
+#define glUniform4iARB                  ctx->drv.pf_glUniform4iARB
+#define glUniform1ivARB                 ctx->drv.pf_glUniform1ivARB
+#define glUniform2ivARB                 ctx->drv.pf_glUniform2ivARB
+#define glUniform3ivARB                 ctx->drv.pf_glUniform3ivARB
+#define glUniform4ivARB                 ctx->drv.pf_glUniform4ivARB
+#define glUniformMatrix2fvARB           ctx->drv.pf_glUniformMatrix2fvARB
+#define glUniformMatrix3fvARB           ctx->drv.pf_glUniformMatrix3fvARB
+#define glUniformMatrix4fvARB           ctx->drv.pf_glUniformMatrix4fvARB
+#define glDeleteObjectARB               ctx->drv.pf_glDeleteObjectARB
 
 static void _cogl_program_free (CoglProgram *program);
 

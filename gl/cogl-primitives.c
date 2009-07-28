@@ -37,7 +37,7 @@
 
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
-#define glClientActiveTexture ctx->pf_glClientActiveTexture
+#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
 
 void
 _cogl_path_add_node (gboolean new_sub_path,

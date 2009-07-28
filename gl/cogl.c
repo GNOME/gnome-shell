@@ -188,251 +188,251 @@ _cogl_features_init (void)
       cogl_check_extension ("GL_ARB_vertex_shader", gl_extensions) &&
       cogl_check_extension ("GL_ARB_fragment_shader", gl_extensions))
     {
-      ctx->pf_glCreateProgramObjectARB =
+      ctx->drv.pf_glCreateProgramObjectARB =
 	(COGL_PFNGLCREATEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glCreateProgramObjectARB");
 
-      ctx->pf_glCreateShaderObjectARB =
+      ctx->drv.pf_glCreateShaderObjectARB =
 	(COGL_PFNGLCREATESHADEROBJECTARBPROC)
 	cogl_get_proc_address ("glCreateShaderObjectARB");
 
-      ctx->pf_glShaderSourceARB =
+      ctx->drv.pf_glShaderSourceARB =
 	(COGL_PFNGLSHADERSOURCEARBPROC)
 	cogl_get_proc_address ("glShaderSourceARB");
 
-      ctx->pf_glCompileShaderARB =
+      ctx->drv.pf_glCompileShaderARB =
 	(COGL_PFNGLCOMPILESHADERARBPROC)
 	cogl_get_proc_address ("glCompileShaderARB");
 
-      ctx->pf_glAttachObjectARB =
+      ctx->drv.pf_glAttachObjectARB =
 	(COGL_PFNGLATTACHOBJECTARBPROC)
 	cogl_get_proc_address ("glAttachObjectARB");
 
-      ctx->pf_glLinkProgramARB =
+      ctx->drv.pf_glLinkProgramARB =
 	(COGL_PFNGLLINKPROGRAMARBPROC)
 	cogl_get_proc_address ("glLinkProgramARB");
 
-      ctx->pf_glUseProgramObjectARB =
+      ctx->drv.pf_glUseProgramObjectARB =
 	(COGL_PFNGLUSEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glUseProgramObjectARB");
 
-      ctx->pf_glGetUniformLocationARB =
+      ctx->drv.pf_glGetUniformLocationARB =
 	(COGL_PFNGLGETUNIFORMLOCATIONARBPROC)
 	cogl_get_proc_address ("glGetUniformLocationARB");
 
-      ctx->pf_glDeleteObjectARB =
+      ctx->drv.pf_glDeleteObjectARB =
 	(COGL_PFNGLDELETEOBJECTARBPROC)
 	cogl_get_proc_address ("glDeleteObjectARB");
 
-      ctx->pf_glGetInfoLogARB =
+      ctx->drv.pf_glGetInfoLogARB =
 	(COGL_PFNGLGETINFOLOGARBPROC)
 	cogl_get_proc_address ("glGetInfoLogARB");
 
-      ctx->pf_glGetObjectParameterivARB =
+      ctx->drv.pf_glGetObjectParameterivARB =
 	(COGL_PFNGLGETOBJECTPARAMETERIVARBPROC)
 	cogl_get_proc_address ("glGetObjectParameterivARB");
 
-      ctx->pf_glUniform1fARB =
+      ctx->drv.pf_glUniform1fARB =
 	(COGL_PFNGLUNIFORM1FARBPROC)
 	cogl_get_proc_address ("glUniform1fARB");
 
-      ctx->pf_glVertexAttribPointerARB =
+      ctx->drv.pf_glVertexAttribPointerARB =
 	(COGL_PFNGLVERTEXATTRIBPOINTERARBPROC)
 	cogl_get_proc_address ("glVertexAttribPointerARB");
 
-      ctx->pf_glEnableVertexAttribArrayARB =
+      ctx->drv.pf_glEnableVertexAttribArrayARB =
 	(COGL_PFNGLENABLEVERTEXATTRIBARRAYARBPROC)
 	cogl_get_proc_address ("glEnableVertexAttribArrayARB");
 
-      ctx->pf_glDisableVertexAttribArrayARB =
+      ctx->drv.pf_glDisableVertexAttribArrayARB =
 	(COGL_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC)
 	cogl_get_proc_address ("glDisableVertexAttribArrayARB");
 
-      ctx->pf_glUniform2fARB =
+      ctx->drv.pf_glUniform2fARB =
 	(COGL_PFNGLUNIFORM2FARBPROC)
 	cogl_get_proc_address ("glUniform2fARB");
 
-      ctx->pf_glUniform3fARB =
+      ctx->drv.pf_glUniform3fARB =
 	(COGL_PFNGLUNIFORM3FARBPROC)
 	cogl_get_proc_address ("glUniform3fARB");
 
-      ctx->pf_glUniform4fARB =
+      ctx->drv.pf_glUniform4fARB =
 	(COGL_PFNGLUNIFORM4FARBPROC)
 	cogl_get_proc_address ("glUniform4fARB");
 
-      ctx->pf_glUniform1fvARB =
+      ctx->drv.pf_glUniform1fvARB =
 	(COGL_PFNGLUNIFORM1FVARBPROC)
 	cogl_get_proc_address ("glUniform1fvARB");
 
-      ctx->pf_glUniform2fvARB =
+      ctx->drv.pf_glUniform2fvARB =
 	(COGL_PFNGLUNIFORM2FVARBPROC)
 	cogl_get_proc_address ("glUniform2fvARB");
 
-      ctx->pf_glUniform3fvARB =
+      ctx->drv.pf_glUniform3fvARB =
 	(COGL_PFNGLUNIFORM3FVARBPROC)
 	cogl_get_proc_address ("glUniform3fvARB");
 
-      ctx->pf_glUniform4fvARB =
+      ctx->drv.pf_glUniform4fvARB =
 	(COGL_PFNGLUNIFORM4FVARBPROC)
 	cogl_get_proc_address ("glUniform4fvARB");
 
-      ctx->pf_glUniform1iARB =
+      ctx->drv.pf_glUniform1iARB =
 	(COGL_PFNGLUNIFORM1IARBPROC)
 	cogl_get_proc_address ("glUniform1iARB");
 
-      ctx->pf_glUniform2iARB =
+      ctx->drv.pf_glUniform2iARB =
 	(COGL_PFNGLUNIFORM2IARBPROC)
 	cogl_get_proc_address ("glUniform2iARB");
 
-      ctx->pf_glUniform3iARB =
+      ctx->drv.pf_glUniform3iARB =
 	(COGL_PFNGLUNIFORM3IARBPROC)
 	cogl_get_proc_address ("glUniform3iARB");
 
-      ctx->pf_glUniform4iARB =
+      ctx->drv.pf_glUniform4iARB =
 	(COGL_PFNGLUNIFORM4IARBPROC)
 	cogl_get_proc_address ("glUniform4iARB");
 
-      ctx->pf_glUniform1ivARB =
+      ctx->drv.pf_glUniform1ivARB =
 	(COGL_PFNGLUNIFORM1IVARBPROC)
 	cogl_get_proc_address ("glUniform1ivARB");
 
-      ctx->pf_glUniform2ivARB =
+      ctx->drv.pf_glUniform2ivARB =
 	(COGL_PFNGLUNIFORM2IVARBPROC)
 	cogl_get_proc_address ("glUniform2ivARB");
 
-      ctx->pf_glUniform3ivARB =
+      ctx->drv.pf_glUniform3ivARB =
 	(COGL_PFNGLUNIFORM3IVARBPROC)
 	cogl_get_proc_address ("glUniform3ivARB");
 
-      ctx->pf_glUniform4ivARB =
+      ctx->drv.pf_glUniform4ivARB =
 	(COGL_PFNGLUNIFORM4IVARBPROC)
 	cogl_get_proc_address ("glUniform4ivARB");
 
-      ctx->pf_glUniformMatrix2fvARB =
+      ctx->drv.pf_glUniformMatrix2fvARB =
 	(COGL_PFNGLUNIFORMMATRIX2FVARBPROC)
 	cogl_get_proc_address ("glUniformMatrix2fvARB");
 
-      ctx->pf_glUniformMatrix3fvARB =
+      ctx->drv.pf_glUniformMatrix3fvARB =
 	(COGL_PFNGLUNIFORMMATRIX3FVARBPROC)
 	cogl_get_proc_address ("glUniformMatrix3fvARB");
 
-      ctx->pf_glUniformMatrix4fvARB =
+      ctx->drv.pf_glUniformMatrix4fvARB =
 	(COGL_PFNGLUNIFORMMATRIX4FVARBPROC)
 	cogl_get_proc_address ("glUniformMatrix4fvARB");
 
-      if (ctx->pf_glCreateProgramObjectARB    &&
-	  ctx->pf_glCreateShaderObjectARB     &&
-	  ctx->pf_glShaderSourceARB           &&
-	  ctx->pf_glCompileShaderARB          &&
-	  ctx->pf_glAttachObjectARB           &&
-	  ctx->pf_glLinkProgramARB            &&
-	  ctx->pf_glUseProgramObjectARB       &&
-	  ctx->pf_glGetUniformLocationARB     &&
-	  ctx->pf_glDeleteObjectARB           &&
-	  ctx->pf_glGetInfoLogARB             &&
-	  ctx->pf_glGetObjectParameterivARB   &&
-	  ctx->pf_glUniform1fARB              &&
-	  ctx->pf_glUniform2fARB              &&
-	  ctx->pf_glUniform3fARB              &&
-	  ctx->pf_glUniform4fARB              &&
-	  ctx->pf_glUniform1fvARB             &&
-	  ctx->pf_glUniform2fvARB             &&
-	  ctx->pf_glUniform3fvARB             &&
-	  ctx->pf_glUniform4fvARB             &&
-	  ctx->pf_glUniform1iARB              &&
-	  ctx->pf_glUniform2iARB              &&
-	  ctx->pf_glUniform3iARB              &&
-	  ctx->pf_glUniform4iARB              &&
-	  ctx->pf_glUniform1ivARB             &&
-	  ctx->pf_glUniform2ivARB             &&
-	  ctx->pf_glUniform3ivARB             &&
-	  ctx->pf_glUniform4ivARB             &&
-	  ctx->pf_glUniformMatrix2fvARB       &&
-	  ctx->pf_glUniformMatrix3fvARB       &&
-	  ctx->pf_glUniformMatrix4fvARB       &&
-	  ctx->pf_glVertexAttribPointerARB    &&
-	  ctx->pf_glEnableVertexAttribArrayARB &&
-	  ctx->pf_glDisableVertexAttribArrayARB)
+      if (ctx->drv.pf_glCreateProgramObjectARB    &&
+	  ctx->drv.pf_glCreateShaderObjectARB     &&
+	  ctx->drv.pf_glShaderSourceARB           &&
+	  ctx->drv.pf_glCompileShaderARB          &&
+	  ctx->drv.pf_glAttachObjectARB           &&
+	  ctx->drv.pf_glLinkProgramARB            &&
+	  ctx->drv.pf_glUseProgramObjectARB       &&
+	  ctx->drv.pf_glGetUniformLocationARB     &&
+	  ctx->drv.pf_glDeleteObjectARB           &&
+	  ctx->drv.pf_glGetInfoLogARB             &&
+	  ctx->drv.pf_glGetObjectParameterivARB   &&
+	  ctx->drv.pf_glUniform1fARB              &&
+	  ctx->drv.pf_glUniform2fARB              &&
+	  ctx->drv.pf_glUniform3fARB              &&
+	  ctx->drv.pf_glUniform4fARB              &&
+	  ctx->drv.pf_glUniform1fvARB             &&
+	  ctx->drv.pf_glUniform2fvARB             &&
+	  ctx->drv.pf_glUniform3fvARB             &&
+	  ctx->drv.pf_glUniform4fvARB             &&
+	  ctx->drv.pf_glUniform1iARB              &&
+	  ctx->drv.pf_glUniform2iARB              &&
+	  ctx->drv.pf_glUniform3iARB              &&
+	  ctx->drv.pf_glUniform4iARB              &&
+	  ctx->drv.pf_glUniform1ivARB             &&
+	  ctx->drv.pf_glUniform2ivARB             &&
+	  ctx->drv.pf_glUniform3ivARB             &&
+	  ctx->drv.pf_glUniform4ivARB             &&
+	  ctx->drv.pf_glUniformMatrix2fvARB       &&
+	  ctx->drv.pf_glUniformMatrix3fvARB       &&
+	  ctx->drv.pf_glUniformMatrix4fvARB       &&
+	  ctx->drv.pf_glVertexAttribPointerARB    &&
+	  ctx->drv.pf_glEnableVertexAttribArrayARB &&
+	  ctx->drv.pf_glDisableVertexAttribArrayARB)
 	flags |= COGL_FEATURE_SHADERS_GLSL;
     }
 
   if (cogl_check_extension ("GL_EXT_framebuffer_object", gl_extensions) ||
       cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions))
     {
-      ctx->pf_glGenRenderbuffersEXT =
+      ctx->drv.pf_glGenRenderbuffersEXT =
 	(COGL_PFNGLGENRENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenRenderbuffersEXT");
 
-      ctx->pf_glDeleteRenderbuffersEXT =
+      ctx->drv.pf_glDeleteRenderbuffersEXT =
 	(COGL_PFNGLDELETERENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteRenderbuffersEXT");
 
-      ctx->pf_glBindRenderbufferEXT =
+      ctx->drv.pf_glBindRenderbufferEXT =
 	(COGL_PFNGLBINDRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindRenderbufferEXT");
 
-      ctx->pf_glRenderbufferStorageEXT =
+      ctx->drv.pf_glRenderbufferStorageEXT =
 	(COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageEXT");
 
-      ctx->pf_glGenFramebuffersEXT =
+      ctx->drv.pf_glGenFramebuffersEXT =
 	(COGL_PFNGLGENFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenFramebuffersEXT");
 
-      ctx->pf_glBindFramebufferEXT =
+      ctx->drv.pf_glBindFramebufferEXT =
 	(COGL_PFNGLBINDFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindFramebufferEXT");
 
-      ctx->pf_glFramebufferTexture2DEXT =
+      ctx->drv.pf_glFramebufferTexture2DEXT =
 	(COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
 	cogl_get_proc_address ("glFramebufferTexture2DEXT");
 
-      ctx->pf_glFramebufferRenderbufferEXT =
+      ctx->drv.pf_glFramebufferRenderbufferEXT =
 	(COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glFramebufferRenderbufferEXT");
 
-      ctx->pf_glCheckFramebufferStatusEXT =
+      ctx->drv.pf_glCheckFramebufferStatusEXT =
 	(COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
 	cogl_get_proc_address ("glCheckFramebufferStatusEXT");
 
-      ctx->pf_glDeleteFramebuffersEXT =
+      ctx->drv.pf_glDeleteFramebuffersEXT =
 	(COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteFramebuffersEXT");
 
-      ctx->pf_glGenerateMipmapEXT =
+      ctx->drv.pf_glGenerateMipmapEXT =
         (COGL_PFNGLGENERATEMIPMAPEXTPROC)
         cogl_get_proc_address ("glGenerateMipmapEXT");
 
-      if (ctx->pf_glGenRenderbuffersEXT         &&
-	  ctx->pf_glBindRenderbufferEXT         &&
-	  ctx->pf_glRenderbufferStorageEXT      &&
-	  ctx->pf_glGenFramebuffersEXT          &&
-	  ctx->pf_glBindFramebufferEXT          &&
-	  ctx->pf_glFramebufferTexture2DEXT     &&
-	  ctx->pf_glFramebufferRenderbufferEXT  &&
-	  ctx->pf_glCheckFramebufferStatusEXT   &&
-	  ctx->pf_glDeleteFramebuffersEXT       &&
-          ctx->pf_glGenerateMipmapEXT)
+      if (ctx->drv.pf_glGenRenderbuffersEXT         &&
+	  ctx->drv.pf_glBindRenderbufferEXT         &&
+	  ctx->drv.pf_glRenderbufferStorageEXT      &&
+	  ctx->drv.pf_glGenFramebuffersEXT          &&
+	  ctx->drv.pf_glBindFramebufferEXT          &&
+	  ctx->drv.pf_glFramebufferTexture2DEXT     &&
+	  ctx->drv.pf_glFramebufferRenderbufferEXT  &&
+	  ctx->drv.pf_glCheckFramebufferStatusEXT   &&
+	  ctx->drv.pf_glDeleteFramebuffersEXT       &&
+          ctx->drv.pf_glGenerateMipmapEXT)
 	flags |= COGL_FEATURE_OFFSCREEN;
     }
 
   if (cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
     {
-      ctx->pf_glBlitFramebufferEXT =
+      ctx->drv.pf_glBlitFramebufferEXT =
 	(COGL_PFNGLBLITFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBlitFramebufferEXT");
 
-      if (ctx->pf_glBlitFramebufferEXT)
+      if (ctx->drv.pf_glBlitFramebufferEXT)
 	flags |= COGL_FEATURE_OFFSCREEN_BLIT;
     }
 
   if (cogl_check_extension ("GL_EXT_framebuffer_multisample", gl_extensions))
     {
-      ctx->pf_glRenderbufferStorageMultisampleEXT =
+      ctx->drv.pf_glRenderbufferStorageMultisampleEXT =
 	(COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageMultisampleEXT");
 
-      if (ctx->pf_glRenderbufferStorageMultisampleEXT)
+      if (ctx->drv.pf_glRenderbufferStorageMultisampleEXT)
 	flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
     }
 
@@ -447,64 +447,64 @@ _cogl_features_init (void)
 
   if (cogl_check_extension ("GL_ARB_vertex_buffer_object", gl_extensions))
     {
-      ctx->pf_glGenBuffersARB =
+      ctx->drv.pf_glGenBuffersARB =
 	    (COGL_PFNGLGENBUFFERSARBPROC)
 	    cogl_get_proc_address ("glGenBuffersARB");
-      ctx->pf_glBindBufferARB =
+      ctx->drv.pf_glBindBufferARB =
 	    (COGL_PFNGLBINDBUFFERARBPROC)
 	    cogl_get_proc_address ("glBindBufferARB");
-      ctx->pf_glBufferDataARB =
+      ctx->drv.pf_glBufferDataARB =
 	    (COGL_PFNGLBUFFERDATAARBPROC)
 	    cogl_get_proc_address ("glBufferDataARB");
-      ctx->pf_glBufferSubDataARB =
+      ctx->drv.pf_glBufferSubDataARB =
 	    (COGL_PFNGLBUFFERSUBDATAARBPROC)
 	    cogl_get_proc_address ("glBufferSubDataARB");
-      ctx->pf_glDeleteBuffersARB =
+      ctx->drv.pf_glDeleteBuffersARB =
 	    (COGL_PFNGLDELETEBUFFERSARBPROC)
 	    cogl_get_proc_address ("glDeleteBuffersARB");
-      ctx->pf_glMapBufferARB =
+      ctx->drv.pf_glMapBufferARB =
 	    (COGL_PFNGLMAPBUFFERARBPROC)
 	    cogl_get_proc_address ("glMapBufferARB");
-      ctx->pf_glUnmapBufferARB =
+      ctx->drv.pf_glUnmapBufferARB =
 	    (COGL_PFNGLUNMAPBUFFERARBPROC)
 	    cogl_get_proc_address ("glUnmapBufferARB");
-      if (ctx->pf_glGenBuffersARB
-	  && ctx->pf_glBindBufferARB
-	  && ctx->pf_glBufferDataARB
-	  && ctx->pf_glBufferSubDataARB
-	  && ctx->pf_glDeleteBuffersARB
-	  && ctx->pf_glMapBufferARB
-	  && ctx->pf_glUnmapBufferARB)
+      if (ctx->drv.pf_glGenBuffersARB
+	  && ctx->drv.pf_glBindBufferARB
+	  && ctx->drv.pf_glBufferDataARB
+	  && ctx->drv.pf_glBufferSubDataARB
+	  && ctx->drv.pf_glDeleteBuffersARB
+	  && ctx->drv.pf_glMapBufferARB
+	  && ctx->drv.pf_glUnmapBufferARB)
       flags |= COGL_FEATURE_VBOS;
     }
 
   /* These should always be available because they are defined in GL
      1.2, but we can't call it directly because under Windows
      functions > 1.1 aren't exported */
-  ctx->pf_glDrawRangeElements =
+  ctx->drv.pf_glDrawRangeElements =
         (COGL_PFNGLDRAWRANGEELEMENTSPROC)
         cogl_get_proc_address ("glDrawRangeElements");
-  ctx->pf_glActiveTexture =
+  ctx->drv.pf_glActiveTexture =
         (COGL_PFNGLACTIVETEXTUREPROC)
         cogl_get_proc_address ("glActiveTexture");
-  ctx->pf_glClientActiveTexture =
+  ctx->drv.pf_glClientActiveTexture =
         (COGL_PFNGLCLIENTACTIVETEXTUREPROC)
         cogl_get_proc_address ("glClientActiveTexture");
 
-  ctx->pf_glBlendEquation =
+  ctx->drv.pf_glBlendEquation =
          (COGL_PFNGLBLENDEQUATIONPROC)
          cogl_get_proc_address ("glBlendEquation");
-  ctx->pf_glBlendColor =
+  ctx->drv.pf_glBlendColor =
          (COGL_PFNGLBLENDCOLORPROC)
          cogl_get_proc_address ("glBlendColor");
 
   /* Available in 1.4 */
-  ctx->pf_glBlendFuncSeparate =
+  ctx->drv.pf_glBlendFuncSeparate =
         (COGL_PFNGLBLENDFUNCSEPARATEPROC)
         cogl_get_proc_address ("glBlendFuncSeparate");
 
   /* Available in 2.0 */
-  ctx->pf_glBlendEquationSeparate =
+  ctx->drv.pf_glBlendEquationSeparate =
         (COGL_PFNGLBLENDEQUATIONSEPARATEPROC)
         cogl_get_proc_address ("glBlendEquationSeparate");
 

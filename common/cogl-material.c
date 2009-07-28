@@ -49,12 +49,12 @@
 #endif
 
 #ifdef HAVE_COGL_GL
-#define glActiveTexture ctx->pf_glActiveTexture
-#define glClientActiveTexture ctx->pf_glClientActiveTexture
-#define glBlendFuncSeparate ctx->pf_glBlendFuncSeparate
-#define glBlendEquation ctx->pf_glBlendEquation
-#define glBlendColor ctx->pf_glBlendColor
-#define glBlendEquationSeparate ctx->pf_glBlendEquationSeparate
+#define glActiveTexture ctx->drv.pf_glActiveTexture
+#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
+#define glBlendFuncSeparate ctx->drv.pf_glBlendFuncSeparate
+#define glBlendEquation ctx->drv.pf_glBlendEquation
+#define glBlendColor ctx->drv.pf_glBlendColor
+#define glBlendEquationSeparate ctx->drv.pf_glBlendEquationSeparate
 #endif
 
 static void _cogl_material_free (CoglMaterial *tex);
@@ -1547,7 +1547,7 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
       gboolean have_blend_equation_seperate = TRUE;
 #elif defined (HAVE_COGL_GL)
       gboolean have_blend_equation_seperate = FALSE;
-      if (ctx->pf_glBlendEquationSeparate) /* Only GL 2.0 + */
+      if (ctx->drv.pf_glBlendEquationSeparate) /* Only GL 2.0 + */
         have_blend_equation_seperate = TRUE;
 #endif
 

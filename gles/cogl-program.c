@@ -56,10 +56,10 @@ _cogl_program_free (CoglProgram *program)
 
   _cogl_gles2_clear_cache_for_program ((CoglHandle) program);
 
-  if (ctx->gles2.settings.user_program == (CoglHandle) program)
+  if (ctx->drv.gles2.settings.user_program == (CoglHandle) program)
     {
-      ctx->gles2.settings.user_program = COGL_INVALID_HANDLE;
-      ctx->gles2.settings_dirty = TRUE;
+      ctx->drv.gles2.settings.user_program = COGL_INVALID_HANDLE;
+      ctx->drv.gles2.settings_dirty = TRUE;
     }
 
   for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
@@ -118,8 +118,8 @@ cogl_program_use (CoglHandle handle)
   if (handle != COGL_INVALID_HANDLE && !cogl_is_program (handle))
     return;
 
-  ctx->gles2.settings.user_program = handle;
-  ctx->gles2.settings_dirty = TRUE;
+  ctx->drv.gles2.settings.user_program = handle;
+  ctx->drv.gles2.settings_dirty = TRUE;
 }
 
 int
@@ -181,7 +181,7 @@ cogl_program_uniform_x (int uniform_no,
   if (uniform_no >= 0 && uniform_no < COGL_GLES2_NUM_CUSTOM_UNIFORMS
       && size >= 1 && size <= 4 && count >= 1)
     {
-      CoglBoxedValue *bv = ctx->gles2.custom_uniforms + uniform_no;
+      CoglBoxedValue *bv = ctx->drv.gles2.custom_uniforms + uniform_no;
 
       if (count == 1)
 	{
@@ -210,7 +210,7 @@ cogl_program_uniform_x (int uniform_no,
       bv->size = size;
       bv->count = count;
 
-      ctx->gles2.dirty_custom_uniforms |= 1 << uniform_no;
+      ctx->drv.gles2.dirty_custom_uniforms |= 1 << uniform_no;
     }
 }
 
@@ -245,7 +245,7 @@ cogl_program_uniform_matrix (int   uniform_no,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  bv = ctx->gles2.custom_uniforms + uniform_no;
+  bv = ctx->drv.gles2.custom_uniforms + uniform_no;
 
   cogl_program_uniform_x (uniform_no, size, count, COGL_BOXED_MATRIX,
 			  sizeof (float) * size * size, value);

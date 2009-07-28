@@ -34,12 +34,12 @@
 #include <glib.h>
 
 /* Expecting ARB functions not to be defined */
-#define glCreateShaderObjectARB         ctx->pf_glCreateShaderObjectARB
-#define glGetObjectParameterivARB       ctx->pf_glGetObjectParameterivARB
-#define glGetInfoLogARB                 ctx->pf_glGetInfoLogARB
-#define glCompileShaderARB              ctx->pf_glCompileShaderARB
-#define glShaderSourceARB               ctx->pf_glShaderSourceARB
-#define glDeleteObjectARB               ctx->pf_glDeleteObjectARB
+#define glCreateShaderObjectARB         ctx->drv.pf_glCreateShaderObjectARB
+#define glGetObjectParameterivARB       ctx->drv.pf_glGetObjectParameterivARB
+#define glGetInfoLogARB                 ctx->drv.pf_glGetInfoLogARB
+#define glCompileShaderARB              ctx->drv.pf_glCompileShaderARB
+#define glShaderSourceARB               ctx->drv.pf_glShaderSourceARB
+#define glDeleteObjectARB               ctx->drv.pf_glDeleteObjectARB
 
 static void _cogl_shader_free (CoglShader *shader);
 

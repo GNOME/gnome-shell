@@ -54,7 +54,7 @@ libclutter_cogl_gles_la_SOURCES = \
 	cogl-primitives.c \
 	cogl-texture-driver.c \
 	cogl-fbo.c \
-	cogl-context.c \
+	cogl-context-driver.c \
 	cogl-gles2-wrapper.h \
 	cogl-program.h \
 	cogl-program.c \

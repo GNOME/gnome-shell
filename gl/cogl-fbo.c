@@ -34,18 +34,18 @@
 #include "cogl-handle.h"
 
 /* Expecting EXT functions not to be defined - redirect to pointers in context  */
-#define glGenRenderbuffersEXT                ctx->pf_glGenRenderbuffersEXT
-#define glDeleteRenderbuffersEXT             ctx->pf_glDeleteRenderbuffersEXT
-#define glBindRenderbufferEXT                ctx->pf_glBindRenderbufferEXT
-#define glRenderbufferStorageEXT             ctx->pf_glRenderbufferStorageEXT
-#define glGenFramebuffersEXT                 ctx->pf_glGenFramebuffersEXT
-#define glBindFramebufferEXT                 ctx->pf_glBindFramebufferEXT
-#define glFramebufferTexture2DEXT            ctx->pf_glFramebufferTexture2DEXT
-#define glFramebufferRenderbufferEXT         ctx->pf_glFramebufferRenderbufferEXT
-#define glCheckFramebufferStatusEXT          ctx->pf_glCheckFramebufferStatusEXT
-#define glDeleteFramebuffersEXT              ctx->pf_glDeleteFramebuffersEXT
-#define glBlitFramebufferEXT                 ctx->pf_glBlitFramebufferEXT
-#define glRenderbufferStorageMultisampleEXT  ctx->pf_glRenderbufferStorageMultisampleEXT
+#define glGenRenderbuffersEXT                ctx->drv.pf_glGenRenderbuffersEXT
+#define glDeleteRenderbuffersEXT             ctx->drv.pf_glDeleteRenderbuffersEXT
+#define glBindRenderbufferEXT                ctx->drv.pf_glBindRenderbufferEXT
+#define glRenderbufferStorageEXT             ctx->drv.pf_glRenderbufferStorageEXT
+#define glGenFramebuffersEXT                 ctx->drv.pf_glGenFramebuffersEXT
+#define glBindFramebufferEXT                 ctx->drv.pf_glBindFramebufferEXT
+#define glFramebufferTexture2DEXT            ctx->drv.pf_glFramebufferTexture2DEXT
+#define glFramebufferRenderbufferEXT         ctx->drv.pf_glFramebufferRenderbufferEXT
+#define glCheckFramebufferStatusEXT          ctx->drv.pf_glCheckFramebufferStatusEXT
+#define glDeleteFramebuffersEXT              ctx->drv.pf_glDeleteFramebuffersEXT
+#define glBlitFramebufferEXT                 ctx->drv.pf_glBlitFramebufferEXT
+#define glRenderbufferStorageMultisampleEXT  ctx->drv.pf_glRenderbufferStorageMultisampleEXT
 
 #ifndef GL_READ_FRAMEBUFFER_EXT
 #define GL_READ_FRAMEBUFFER_EXT 0x8CA8
