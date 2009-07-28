@@ -252,20 +252,20 @@ _cogl_texture_driver_download_from_gl (CoglTexture *tex,
 
   /* Direct copy operation */
 
-  if (ctx->texture_download_material == COGL_INVALID_HANDLE)
+  if (ctx->drv.texture_download_material == COGL_INVALID_HANDLE)
     {
-      ctx->texture_download_material = cogl_material_new ();
-      cogl_material_set_blend (ctx->texture_download_material,
+      ctx->drv.texture_download_material = cogl_material_new ();
+      cogl_material_set_blend (ctx->drv.texture_download_material,
                                "RGBA = ADD (SRC_COLOR, 0)",
                                NULL);
     }
 
   prev_source = cogl_handle_ref (ctx->source_material);
-  cogl_set_source (ctx->texture_download_material);
+  cogl_set_source (ctx->drv.texture_download_material);
 
-  cogl_material_set_layer (ctx->texture_download_material, 0, tex);
+  cogl_material_set_layer (ctx->drv.texture_download_material, 0, tex);
 
-  cogl_material_set_layer_combine (ctx->texture_download_material,
+  cogl_material_set_layer_combine (ctx->drv.texture_download_material,
                                    0, /* layer */
                                    "RGBA = REPLACE (TEXTURE)",
                                    NULL);
@@ -302,7 +302,7 @@ _cogl_texture_driver_download_from_gl (CoglTexture *tex,
                                            alpha_bmp.height);
 
       /* Draw alpha values into RGB channels */
-      cogl_material_set_layer_combine (ctx->texture_download_material,
+      cogl_material_set_layer_combine (ctx->drv.texture_download_material,
                                        0, /* layer */
                                        "RGBA = REPLACE (TEXTURE[A])",
                                        NULL);

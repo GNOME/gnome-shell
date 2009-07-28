@@ -48,7 +48,7 @@
   {								\
     CoglContext *__ctxvar = _cogl_context_get_default ();	\
     if (__ctxvar == NULL) return retval;			\
-    wvar = &__ctxvar->gles2;					\
+    wvar = &__ctxvar->drv.gles2;				\
   }
 
 #define _COGL_GLES2_CHANGE_SETTING(w, var, val)	\

@@ -33,7 +33,7 @@ cogl_sources = \
 	cogl-fbo.c 		\
 	cogl-shader.c 		\
 	cogl-program.c 		\
-	cogl-context.c		\
+	cogl-context-driver.c	\
 	$(NULL)
 
 INCLUDES = \

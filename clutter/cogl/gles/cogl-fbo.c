@@ -170,7 +170,7 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	{
 	  /* Push the viewport and matrix setup if redirecting
              from a non-screen buffer */
-	  GE( glGetIntegerv (GL_VIEWPORT, ctx->viewport_store) );
+	  GE( glGetIntegerv (GL_VIEWPORT, ctx->drv.viewport_store) );
 
           _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
           _cogl_current_matrix_push ();
@@ -223,8 +223,10 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	{
 	  /* Pop viewport and matrices if redirecting back
              from an offscreen buffer */
-	  GE( glViewport (ctx->viewport_store[0], ctx->viewport_store[1],
-			  ctx->viewport_store[2], ctx->viewport_store[3]) );
+	  GE( glViewport (ctx->drv.viewport_store[0],
+                          ctx->drv.viewport_store[1],
+			  ctx->drv.viewport_store[2],
+                          ctx->drv.viewport_store[3]) );
 
            _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
            _cogl_current_matrix_pop ();

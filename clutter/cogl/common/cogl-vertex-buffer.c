@@ -149,15 +149,15 @@
 
 #if defined (HAVE_COGL_GL)
 
-#define glGenBuffers ctx->pf_glGenBuffersARB
-#define glBindBuffer ctx->pf_glBindBufferARB
-#define glBufferData ctx->pf_glBufferDataARB
-#define glBufferSubData ctx->pf_glBufferSubDataARB
-#define glDeleteBuffers ctx->pf_glDeleteBuffersARB
-#define glMapBuffer ctx->pf_glMapBufferARB
-#define glUnmapBuffer ctx->pf_glUnmapBufferARB
-#define glActiveTexture ctx->pf_glActiveTexture
-#define glClientActiveTexture ctx->pf_glClientActiveTexture
+#define glGenBuffers ctx->drv.pf_glGenBuffersARB
+#define glBindBuffer ctx->drv.pf_glBindBufferARB
+#define glBufferData ctx->drv.pf_glBufferDataARB
+#define glBufferSubData ctx->drv.pf_glBufferSubDataARB
+#define glDeleteBuffers ctx->drv.pf_glDeleteBuffersARB
+#define glMapBuffer ctx->drv.pf_glMapBufferARB
+#define glUnmapBuffer ctx->drv.pf_glUnmapBufferARB
+#define glActiveTexture ctx->drv.pf_glActiveTexture
+#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
 #endif
@@ -174,9 +174,9 @@
 
 #if defined (HAVE_COGL_GL)
 
-#define glVertexAttribPointer ctx->pf_glVertexAttribPointerARB
-#define glEnableVertexAttribArray ctx->pf_glEnableVertexAttribArrayARB
-#define glDisableVertexAttribArray ctx->pf_glEnableVertexAttribArrayARB
+#define glVertexAttribPointer ctx->drv.pf_glVertexAttribPointerARB
+#define glEnableVertexAttribArray ctx->drv.pf_glEnableVertexAttribArrayARB
+#define glDisableVertexAttribArray ctx->drv.pf_glEnableVertexAttribArrayARB
 #define MAY_HAVE_PROGRAMABLE_GL
 
 #elif defined (HAVE_COGL_GLES2)
@@ -197,7 +197,7 @@
 #else /* HAVE_COGL_GL */
 
 #define glDrawRangeElements(mode, start, end, count, type, indices) \
-  ctx->pf_glDrawRangeElements (mode, start, end, count, type, indices)
+  ctx->drv.pf_glDrawRangeElements (mode, start, end, count, type, indices)
 
 #endif /* HAVE_COGL_GL */
 

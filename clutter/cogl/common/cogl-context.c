@@ -34,11 +34,14 @@
 
 #include <string.h>
 
+extern void
+_cogl_create_context_driver (CoglContext *context);
+
 static CoglContext *_context = NULL;
 static gboolean gl_is_indirect = FALSE;
 
 static gboolean
-cogl_create_context ()
+cogl_create_context (void)
 {
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
   gulong  enable_flags = 0;
@@ -93,61 +96,18 @@ cogl_create_context ()
   _context->viewport_width = 0;
   _context->viewport_height = 0;
 
-  _context->pf_glGenRenderbuffersEXT = NULL;
-  _context->pf_glBindRenderbufferEXT = NULL;
-  _context->pf_glRenderbufferStorageEXT = NULL;
-  _context->pf_glGenFramebuffersEXT = NULL;
-  _context->pf_glBindFramebufferEXT = NULL;
-  _context->pf_glFramebufferTexture2DEXT = NULL;
-  _context->pf_glFramebufferRenderbufferEXT = NULL;
-  _context->pf_glCheckFramebufferStatusEXT = NULL;
-  _context->pf_glDeleteFramebuffersEXT = NULL;
-  _context->pf_glBlitFramebufferEXT = NULL;
-  _context->pf_glRenderbufferStorageMultisampleEXT = NULL;
-
-  _context->pf_glCreateProgramObjectARB = NULL;
-  _context->pf_glCreateShaderObjectARB = NULL;
-  _context->pf_glShaderSourceARB = NULL;
-  _context->pf_glCompileShaderARB = NULL;
-  _context->pf_glAttachObjectARB = NULL;
-  _context->pf_glLinkProgramARB = NULL;
-  _context->pf_glUseProgramObjectARB = NULL;
-  _context->pf_glGetUniformLocationARB = NULL;
-  _context->pf_glDeleteObjectARB = NULL;
-  _context->pf_glGetInfoLogARB = NULL;
-  _context->pf_glGetObjectParameterivARB = NULL;
-  _context->pf_glUniform1fARB = NULL;
-  _context->pf_glUniform2fARB = NULL;
-  _context->pf_glUniform3fARB = NULL;
-  _context->pf_glUniform4fARB = NULL;
-  _context->pf_glUniform1fvARB = NULL;
-  _context->pf_glUniform2fvARB = NULL;
-  _context->pf_glUniform3fvARB = NULL;
-  _context->pf_glUniform4fvARB = NULL;
-  _context->pf_glUniform1iARB = NULL;
-  _context->pf_glUniform2iARB = NULL;
-  _context->pf_glUniform3iARB = NULL;
-  _context->pf_glUniform4iARB = NULL;
-  _context->pf_glUniform1ivARB = NULL;
-  _context->pf_glUniform2ivARB = NULL;
-  _context->pf_glUniform3ivARB = NULL;
-  _context->pf_glUniform4ivARB = NULL;
-  _context->pf_glUniformMatrix2fvARB = NULL;
-  _context->pf_glUniformMatrix3fvARB = NULL;
-  _context->pf_glUniformMatrix4fvARB = NULL;
-
-  _context->pf_glDrawRangeElements = NULL;
-  _context->pf_glActiveTexture = NULL;
-  _context->pf_glClientActiveTexture = NULL;
-
-  _context->pf_glBlendFuncSeparate = NULL;
-  _context->pf_glBlendEquationSeparate = NULL;
+  _context->quad_indices_byte = COGL_INVALID_HANDLE;
+  _context->quad_indices_short = COGL_INVALID_HANDLE;
+  _context->quad_indices_short_len = 0;
 
   /* Initialise the clip stack */
   _cogl_clip_stack_state_init ();
 
   /* Initialise matrix stack */
   _cogl_current_matrix_state_init ();
+
+  /* Initialise the driver specific state */
+  _cogl_create_context_driver (_context);
 
   /* Create default textures used for fall backs */
   _context->default_gl_texture_2d_tex =
@@ -174,10 +134,6 @@ cogl_create_context ()
   enable_flags =
     _cogl_material_get_cogl_enable_flags (_context->source_material);
   cogl_enable (enable_flags);
-
-  _context->quad_indices_byte = COGL_INVALID_HANDLE;
-  _context->quad_indices_short = COGL_INVALID_HANDLE;
-  _context->quad_indices_short_len = 0;
 
   return TRUE;
 }

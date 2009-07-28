@@ -49,7 +49,7 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #endif
 
 #ifdef HAVE_COGL_GL
-#define glClientActiveTexture ctx->pf_glClientActiveTexture
+#define glClientActiveTexture ctx->drv.pf_glClientActiveTexture
 #endif
 
 #ifdef COGL_GL_DEBUG

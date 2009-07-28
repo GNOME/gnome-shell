@@ -24,12 +24,12 @@
 #ifndef __COGL_CONTEXT_H
 #define __COGL_CONTEXT_H
 
+#include "cogl-context-driver.h"
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-current-matrix.h"
 #include "cogl-material-private.h"
-#include "cogl-gles2-wrapper.h"
 
 typedef struct
 {
@@ -48,15 +48,15 @@ typedef struct
 {
   /* Features cache */
   CoglFeatureFlags  feature_flags;
+  gboolean          features_cached;
 
   /* Enable cache */
   gulong            enable_flags;
   guint8            color_alpha;
 
-  guint             features_cached : 1;
-  guint             enable_backface_culling : 1;
-  guint             indirect : 1;
-  guint             in_begin_gl_block : 1;
+  gboolean          enable_backface_culling;
+
+  gboolean          indirect;
 
   /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    matrix_mode;
@@ -73,7 +73,6 @@ typedef struct
   /* Textures */
   CoglHandle        default_gl_texture_2d_tex;
   CoglHandle        default_gl_texture_rect_tex;
-  CoglHandle        texture_download_material;
 
   /* Batching geometry... */
   /* We journal the texture rectangles we want to submit to OpenGL so
@@ -111,16 +110,12 @@ typedef struct
   guint             quad_indices_short_len;
   CoglHandle        quad_indices_short;
 
-  gfloat            viewport_width;
-  gfloat            viewport_height;
+  gboolean          in_begin_gl_block;
 
-#ifdef HAVE_COGL_GLES2
-  CoglGles2Wrapper     gles2;
+  guint             viewport_width;
+  guint             viewport_height;
 
-  /* Viewport store for FBOs. Needed because glPushAttrib() isn't
-     supported */
-  GLint                viewport_store[4];
-#endif
+  CoglContextDriver drv;
 } CoglContext;
 
 CoglContext *

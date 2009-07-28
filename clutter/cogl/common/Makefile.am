@@ -58,6 +58,8 @@ libclutter_cogl_common_la_SOURCES = 	\
 	$(top_builddir)/clutter/cogl/common/cogl-enum-types.h	\
 	$(top_builddir)/clutter/cogl/common/cogl-enum-types.c	\
 	cogl-handle.h 			\
+	cogl-context.h			\
+	cogl-context.c			\
 	cogl-internal.h			\
 	cogl.c				\
 	cogl-util.h 			\
