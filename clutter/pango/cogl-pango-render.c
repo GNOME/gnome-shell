@@ -437,7 +437,9 @@ cogl_pango_renderer_get_cached_glyph (PangoRenderer *renderer,
       COGL_NOTE (PANGO, "cache fail    %i", glyph);
     }
   else
-    COGL_NOTE (PANGO, "cache success %i", glyph);
+    {
+      COGL_NOTE (PANGO, "cache success %i", glyph);
+    }
 
   return value;
 }
