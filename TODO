@@ -1,7 +1,7 @@
 TODO
 ====
 
-See http://bugzilla.openedhand.com using the product Clutter and
-the target milestone of '1.0'.
+Clutter uses Bugzilla to track bugs and feature requests.
 
-$LastChangedDate$
+The 'milestone' field is used to mark the bugs and feature requests
+that are going to be implemented during a development cycle.
