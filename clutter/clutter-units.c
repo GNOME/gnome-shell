@@ -132,7 +132,7 @@ units_em_to_pixels (const gchar *font_name,
 }
 
 /**
- * clutter_units_mm:
+ * clutter_units_from_mm:
  * @units: a #ClutterUnits
  * @mm: millimeters
  *
@@ -141,8 +141,8 @@ units_em_to_pixels (const gchar *font_name,
  * Since: 1.0
  */
 void
-clutter_units_mm (ClutterUnits *units,
-                  gfloat        mm)
+clutter_units_from_mm (ClutterUnits *units,
+                       gfloat        mm)
 {
   g_return_if_fail (units != NULL);
 
@@ -153,7 +153,7 @@ clutter_units_mm (ClutterUnits *units,
 }
 
 /**
- * clutter_units_pt:
+ * clutter_units_from_pt:
  * @units: a #ClutterUnits
  * @pt: typographic points
  *
@@ -162,8 +162,8 @@ clutter_units_mm (ClutterUnits *units,
  * Since: 1.0
  */
 void
-clutter_units_pt (ClutterUnits *units,
-                  gfloat        pt)
+clutter_units_from_pt (ClutterUnits *units,
+                       gfloat        pt)
 {
   g_return_if_fail (units != NULL);
 
@@ -174,7 +174,7 @@ clutter_units_pt (ClutterUnits *units,
 }
 
 /**
- * clutter_units_em:
+ * clutter_units_from_em:
  * @units: a #ClutterUnits
  * @em: em
  *
@@ -184,8 +184,8 @@ clutter_units_pt (ClutterUnits *units,
  * Since: 1.0
  */
 void
-clutter_units_em (ClutterUnits *units,
-                  gfloat        em)
+clutter_units_from_em (ClutterUnits *units,
+                       gfloat        em)
 {
   g_return_if_fail (units != NULL);
 
@@ -196,7 +196,7 @@ clutter_units_em (ClutterUnits *units,
 }
 
 /**
- * clutter_units_em_for_font:
+ * clutter_units_from_em_for_font:
  * @units: a #ClutterUnits
  * @font_name: the font name and size
  * @em: em
@@ -206,9 +206,9 @@ clutter_units_em (ClutterUnits *units,
  * Since: 1.0
  */
 void
-clutter_units_em_for_font (ClutterUnits *units,
-                           const gchar  *font_name,
-                           gfloat        em)
+clutter_units_from_em_for_font (ClutterUnits *units,
+                                const gchar  *font_name,
+                                gfloat        em)
 {
   g_return_if_fail (units != NULL);
 
@@ -219,7 +219,7 @@ clutter_units_em_for_font (ClutterUnits *units,
 }
 
 /**
- * clutter_units_pixels:
+ * clutter_units_from_pixels:
  * @units: a #ClutterUnits
  * @px: pixels
  *
@@ -228,8 +228,8 @@ clutter_units_em_for_font (ClutterUnits *units,
  * Since: 1.0
  */
 void
-clutter_units_pixels (ClutterUnits *units,
-                      gint          px)
+clutter_units_from_pixels (ClutterUnits *units,
+                           gint          px)
 {
   g_return_if_fail (units != NULL);
 
@@ -550,7 +550,7 @@ static void
 clutter_value_transform_int_units (const GValue *src,
                                    GValue       *dest)
 {
-  clutter_units_pixels (dest->data[0].v_pointer, src->data[0].v_int);
+  clutter_units_from_pixels (dest->data[0].v_pointer, src->data[0].v_int);
 }
 
 /* units to float */
@@ -566,7 +566,7 @@ static void
 clutter_value_transform_float_units (const GValue *src,
                                      GValue       *dest)
 {
-  clutter_units_pixels (dest->data[0].v_pointer, src->data[0].v_float);
+  clutter_units_from_pixels (dest->data[0].v_pointer, src->data[0].v_float);
 }
 
 /* units to string */

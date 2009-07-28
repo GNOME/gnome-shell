@@ -29,11 +29,11 @@ clutter_media_get_type
 <TITLE>Unit conversion</TITLE>
 ClutterUnitType
 ClutterUnits
-clutter_units_mm
-clutter_units_pt
-clutter_units_em
-clutter_units_em_for_font
-clutter_units_pixels
+clutter_units_from_mm
+clutter_units_from_pt
+clutter_units_from_em
+clutter_units_from_em_for_font
+clutter_units_from_pixels
 clutter_units_to_pixels
 clutter_units_copy
 clutter_units_free
@@ -56,6 +56,11 @@ CLUTTER_PARAM_SPEC_UNITS
 CLUTTER_IS_PARAM_SPEC_UNITS
 clutter_units_get_type
 clutter_param_units_get_type
+clutter_units_em
+clutter_units_em_for_font
+clutter_units_mm
+clutter_units_pixels
+clutter_units_pt
 </SECTION>
 
 <SECTION>

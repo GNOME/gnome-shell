@@ -9,12 +9,12 @@ test_units_constructors (TestConformSimpleFixture *fixture,
 {
   ClutterUnits units;
 
-  clutter_units_pixels (&units, 100);
+  clutter_units_from_pixels (&units, 100);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 100.0);
   g_assert_cmpfloat (clutter_units_to_pixels (&units), ==, 100.0);
 
-  clutter_units_em (&units, 5.0);
+  clutter_units_from_em (&units, 5.0);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_EM);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 5.0);
   g_assert_cmpfloat (clutter_units_to_pixels (&units), !=, 5.0);
@@ -37,12 +37,12 @@ test_units_string (TestConformSimpleFixture *fixture,
 
   g_assert (clutter_units_from_string (&units, "1 pony") == FALSE);
 
-  clutter_units_pt (&units, 24.0);
+  clutter_units_from_pt (&units, 24.0);
   string = clutter_units_to_string (&units);
   g_assert_cmpstr (string, ==, "24.0 pt");
   g_free (string);
 
-  clutter_units_em (&units, 3.0);
+  clutter_units_from_em (&units, 3.0);
   string = clutter_units_to_string (&units);
   g_assert_cmpstr (string, ==, "3.00 em");
 

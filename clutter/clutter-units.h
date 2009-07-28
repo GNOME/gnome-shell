@@ -83,30 +83,37 @@ struct _ClutterUnits
   gint64 __padding_2;
 };
 
-GType           clutter_units_get_type       (void) G_GNUC_CONST;
-ClutterUnitType clutter_units_get_unit_type  (const ClutterUnits *units);
-gfloat          clutter_units_get_unit_value (const ClutterUnits *units);
+GType           clutter_units_get_type         (void) G_GNUC_CONST;
+ClutterUnitType clutter_units_get_unit_type    (const ClutterUnits *units);
+gfloat          clutter_units_get_unit_value   (const ClutterUnits *units);
 
-ClutterUnits *  clutter_units_copy           (const ClutterUnits *units);
-void            clutter_units_free           (ClutterUnits       *units);
+ClutterUnits *  clutter_units_copy             (const ClutterUnits *units);
+void            clutter_units_free             (ClutterUnits       *units);
 
-void            clutter_units_pixels         (ClutterUnits       *units,
-                                              gint                px);
-void            clutter_units_em             (ClutterUnits       *units,
-                                              gfloat              em);
-void            clutter_units_em_for_font    (ClutterUnits       *units,
-                                              const gchar        *font_name,
-                                              gfloat              em);
-void            clutter_units_mm             (ClutterUnits       *units,
-                                              gfloat              mm);
-void            clutter_units_pt             (ClutterUnits       *units,
-                                              gfloat              pt);
+void            clutter_units_from_pixels      (ClutterUnits       *units,
+                                                gint                px);
+void            clutter_units_from_em          (ClutterUnits       *units,
+                                                gfloat              em);
+void            clutter_units_from_em_for_font (ClutterUnits       *units,
+                                                const gchar        *font_name,
+                                                gfloat              em);
+void            clutter_units_from_mm          (ClutterUnits       *units,
+                                                gfloat              mm);
+void            clutter_units_from_pt          (ClutterUnits       *units,
+                                                gfloat              pt);
 
-gfloat          clutter_units_to_pixels      (ClutterUnits       *units);
+gfloat          clutter_units_to_pixels        (ClutterUnits       *units);
 
-gchar *         clutter_units_to_string      (const ClutterUnits *units);
-gboolean        clutter_units_from_string    (ClutterUnits       *units,
-                                              const gchar        *str);
+gboolean        clutter_units_from_string      (ClutterUnits       *units,
+                                                const gchar        *str);
+gchar *         clutter_units_to_string        (const ClutterUnits *units);
+
+/* shorthands for the constructors */
+#define clutter_units_pixels            clutter_units_from_pixels
+#define clutter_units_em                clutter_units_from_em
+#define clutter_units_em_for_font       clutter_units_from_em_for_font
+#define clutter_units_mm                clutter_units_from_mm
+#define clutter_units_pt                clutter_units_from_pt
 
 #define CLUTTER_TYPE_UNITS                 (clutter_units_get_type ())
 #define CLUTTER_TYPE_PARAM_UNITS           (clutter_param_units_get_type ())
