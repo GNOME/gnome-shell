@@ -96,9 +96,9 @@ pre_parse_hook (GOptionContext  *context,
                 gpointer         data,
                 GError         **error)
 {
+#ifdef COGL_ENABLE_DEBUG
   const char *env_string;
 
-#ifdef COGL_ENABLE_DEBUG
   env_string = g_getenv ("COGL_DEBUG");
   if (env_string != NULL)
     {
