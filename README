@@ -6,19 +6,32 @@ rich and animated graphical user interfaces.
 
 Clutter currently requires:
 
-  * GLib >= 2.14.0
+  * GLib >= 2.16.0
+  * Cairo >= 1.6
   * PangoCairo >= 1.20
   * OpenGL >= 1.4, OpenGL ES 1.1 or OpenGL ES 2.0
   * GLX, SDL, WGL or an EGL Implementation
 
+If you are building the API reference you will also need:
+
+  * GTK-Doc >= 1.11
+
+If you are building the Introspection data you will also need:
+
+  * GObject-Introspection >= 0.6.3
+
 The official website is:
    http://www.clutter-project.org
+
 The Clutter blog is at
    http://www.clutter-project.org/blog
+
 To subscribe to the Clutter mailing list, send mail to:
    clutter+subscribe@o-hand.com
+
 The official mailing list archive is:
    http://lists.o-hand.com/clutter/
+
 New bug page on Bugzilla:
    http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
@@ -54,10 +67,6 @@ See the INSTALL file. Info on specific Clutter options;
  --enable-manual=[no/yes]
         Build application developers manual. Requires jw and xmlto binaries.
 	Presently incomplete.
-
-  --without-fpu
-	Assume target hardware has no floating point unit. Useful only
-	for embedded targets such as ARM.
 
   --with-flavour=[glx/eglx/eglnative/sdl/osx/win32/fruity]
         Select the Clutter backend: (default=glx)
@@ -126,7 +135,11 @@ HACKING
 =======
 
 If you want to hack on and improve Clutter, check the contained TODO
-file for pending tasks, and HACKING for general coding guidelines.
+file for pending tasks, the HACKING file for general implementation guidelines,
+HACKING.backends for backend-specific implementation issues. The CODING_STYLE
+file contains the rules for writing code conformant to the style guidelines used
+throughout Clutter. Remember: the coding style is mandatory; patches not conforming
+to it will be rejected.
 
 BUGS
 ====
@@ -135,15 +148,16 @@ Bugs should be reported to the OpenedHand Bugzilla at:
 
   http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
-You will need an account.
+You will need a Bugzilla account.
 
 In the report you should include:
-* what system you're running Clutter on;
-* which version of Clutter you are using;
-* which version of GLib and OpenGL you are using;
-* which video card and which drivers you are using, including output of
-  glxinfo and xdpyinfo;
-* how to reproduce the bug.
+
+  * what system you're running Clutter on;
+  * which version of Clutter you are using;
+  * which version of GLib and OpenGL you are using;
+  * which video card and which drivers you are using, including output of
+    glxinfo and xdpyinfo (if applicable);
+  * how to reproduce the bug.
 
 If you cannot reproduce the bug with one of the tests that come with Clutter
 source code, you should include a small test case displaying the bad
@@ -151,7 +165,6 @@ behaviour.
 
 If the bug exposes a crash, the exact text printed out and a stack trace
 obtained using gdb are greatly appreciated.
-
 
 PATCHES
 =======
@@ -163,10 +176,22 @@ be in the unified diff format, using:
 
   diff -Nuarp clutter.source clutter.patched > clutter-patch.diff
 
-If diffing against the SVN repository, you should use:
+If diffing against the Git repository, you should use:
 
   git diff > clutter-patch.diff
 
+Or, better, commit locally and use `git format-patch` to generate a patch
+containing authorship details, so that members of the Clutter development
+team can credit your contribution properly.
+
+When attaching a patch to Bugzilla you should also toggle the
+'copyright-waived' attachment flag, after reading the Copyright Waiver notice
+here:
+
+  http://bugzilla.openedhand.com/waiver.html
+
+If you do not intend to waive your copyright you should contact the Clutter
+development team to arrange a suitable solution.
 
 RELEASE NOTES
 =============
@@ -231,7 +256,11 @@ Release Notes for Clutter 1.0
 
     - clutter_color_from_hls() and clutter_color_to_hls() do not
       normalize the values in the [ 0, 255 ] interval but use the
-      correct HLS intervals
+      correct HLS intervals:
+
+         Hue: [ 0, 360 )
+         Luminance: [ 0,  1]
+         Saturation: [ 0, 1 ]
 
 * The ClutterFixed symbols have been completely removed: fixed-point
   public entry points now take a CoglFixed.
@@ -256,7 +285,8 @@ Release Notes for Clutter 1.0
     - void map   (ClutterActor*)
     - void unmap (ClutterActor*)
 
-  and chain up to the parent's implementation.
+  and chain up to the parent's implementation after calling
+  clutter_actor_map() or clutter_actor_unmap() on their children.
 
 * Actors implementing the Container interface that have private
   children that are not meant to be added/removed through the
@@ -272,6 +302,18 @@ Release Notes for Clutter 1.0
   their paint() implementation should override the apply_transform()
   virtual function instead. Implementations of the apply_transform()
   vfunc must chain up to the implementation of the parent class.
+
+* The ClutterUnit type and the CLUTTER_UNITS_* conversion macros have
+  been removed: all Actors are now using sub-pixel precision directly
+  throughout the API. The new ClutterUnits type has been added as a
+  generic opaque storage for logical distance values.
+
+* Timelines are now fully time-based: all the frame-related properties
+  and methods have been removed. ClutterTimeline::new-frame will provide
+  the elapsed milliseconds since the beginning of the Timeline, instead
+  of the current frame number. The clutter_timeline_new() constructor
+  takes the duration of the timeline in milliseconds, and thus it replaces
+  the clutter_timeline_new_for_duration() variant.
 
   Cogl API changes for Clutter 1.0
   --------------------------------
@@ -430,7 +472,9 @@ Release Notes for Clutter 0.8
                                        gdk_pixbuf_get_width (pixbuf),
                                        gdk_pixbuf_get_height (pixbuf),
                                        gdk_pixbuf_get_rowstride (pixbuf),
-                                       4, 0,
+                                       gdk_pixbuf_get_has_alpha (pixbuf) ? 4
+                                                                         : 3,
+                                       0,
                                        &error);
 
   ClutterTexture also now has a new filename property and
