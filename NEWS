@@ -1,3 +1,29 @@
+Clutter 1.0.0 (28/07/2009)
+===============================================================================
+
+  * List of changes since 0.9.8
+
+    o Allow per-stage disabling of motion event throttling; this should allow
+      platforms or applications that require all the motion events not for
+      drawing purposes to get them exactly like Clutter gets them from the
+      windowing system.
+
+    o Various documentation fixes.
+
+    o Add per-word key navigation inside ClutterText.
+
+    o Fix the RGB<->HLS conversion.
+
+    o Various fixes for the OSX backend.
+
+    o Various build-related fixes.
+
+Many thanks to:
+
+  Geoff Gustafson
+  Michael Mortensen
+  Owen W. Taylor
+
 Clutter 0.9.8 (17/07/2009)
 ===============================================================================
 
