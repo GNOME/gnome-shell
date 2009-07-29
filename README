@@ -20,7 +20,7 @@ libstartup-notification at
 http://www.freedesktop.org/software/startup-notification/ or on the
 GNOME ftp site. You also need GConf 1.2 (unless building a funky
 extra-small embedded metacity with --disable-gconf, see below).
-You need Clutter 0.9.3. You need gobject-introspection 0.6.3.
+You need Clutter 1.0. You need gobject-introspection 0.6.3.
 
 REPORTING BUGS AND SUBMITTING PATCHES
 ===
