@@ -796,29 +796,39 @@ GenericDisplay.prototype = {
     // Selects (e.g. highlights) a display item at the provided index,
     // updates this.selectedItemDetails actor, and emits 'selected' signal.
     _selectIndex: function(index) {
-        let count = this._list.displayedCount;
+        if (index >= this._list.displayedCount)
+            return
+
+        // If the item is already selected, all we do is toggling the details pane.
+        if (this._selectedIndex == index && index >= 0) {
+            this.emit('toggle-details');
+            return;
+        }
+
+        // Cleanup from the previous item
         if (this._selectedIndex >= 0) {
-            let prev = this._findDisplayedByIndex(this._selectedIndex);
-            prev.markSelected(false);
+            this._findDisplayedByIndex(this._selectedIndex).markSelected(false);
+
             // Calling destroy() gets large image previews released as quickly as
             // possible, if we just removed them, they might hang around for a while
             // until the actor was garbage collected.
             let children = this.selectedItemDetails.get_children();
             for (let i = 0; i < children.length; i++)
                 children[i].destroy();
-    
+
             this.selectedItemDetails.remove_all();
         }
-        if (index < count) {
-            this._selectedIndex = index;
-            if (index >= 0) {
-                let item = this._findDisplayedByIndex(index);
-                item.markSelected(true);
-                this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails,
-                   this._availableHeightForItemDetails), Big.BoxPackFlags.NONE);
-                this.emit('selected');
-            }
-        }
+
+        this._selectedIndex = index;
+        if (index < 0)
+            return
+
+        // Mark the new item as selected and create its details pane
+        let item = this._findDisplayedByIndex(index);
+        item.markSelected(true);
+        this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails,
+            this._availableHeightForItemDetails), Big.BoxPackFlags.NONE);
+        this.emit('selected');
     }
 };
 

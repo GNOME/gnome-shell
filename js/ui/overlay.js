@@ -505,12 +505,18 @@ Dash.prototype = {
             this._detailsContent.remove_all();
             this._detailsContent.append(this._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
         }));
+        this._docDisplay.connect('toggle-details', Lang.bind(this, function(docDisplay) {
+            this._toggleDetails();
+        }));
         this._resultsDocsSection.display.connect('selected', Lang.bind(this, function(resultsDocDisplay) {
             this._docDisplay.unsetSelected();
             this._resultsAppsSection.display.unsetSelected();
             this._showDetails();
             this._detailsContent.remove_all();
             this._detailsContent.append(this._resultsDocsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
+        }));
+        this._resultsDocsSection.display.connect('toggle-details', Lang.bind(this, function(resultsDocDisplay) {
+            this._toggleDetails();
         }));
         this._resultsAppsSection.display.connect('selected', Lang.bind(this, function(resultsAppDisplay) {
             this._docDisplay.unsetSelected();
@@ -695,6 +701,13 @@ Dash.prototype = {
         this._detailsPane.hide();
         this.emit('panes-removed');
      },
+
+    _toggleDetails: function() {
+        if (this._detailsShowing())
+            this._hideDetails();
+        else
+            this._showDetails();
+    },
 
     _detailsShowing: function() {
         return this._detailsPane.visible;
