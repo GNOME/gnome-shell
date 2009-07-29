@@ -343,26 +343,3 @@ if y_or_n "Do you want to checkout and build Clutter?"; then
 	exit 1;
     fi;
 fi;
-
-if y_or_n "Do you want to checkout and build Clutter-Cairo?"; then
-    find_compiler;
-
-    guess_dir CLUTTER_CAIRO_BUILD_DIR "clutter-cairo" \
-	"the build directory for clutter-cairo" "Build dir";
-    svn checkout "$CLUTTER_SVN/clutter-cairo" $CLUTTER_CAIRO_BUILD_DIR;
-    if [ "$?" -ne 0 ]; then
-	echo "svn failed";
-	exit 1;
-    fi;
-    ( cd "$CLUTTER_CAIRO_BUILD_DIR" && ./autogen.sh --prefix="$ROOT_DIR" \
-	--host="$TARGET" --target="$TARGET" );
-    if [ "$?" -ne 0 ]; then
-	echo "autogen failed";
-	exit 1;
-    fi;
-    ( cd "$CLUTTER_CAIRO_BUILD_DIR" && make all install );
-    if [ "$?" -ne 0 ]; then
-	echo "make failed";
-	exit 1;
-    fi;
-fi;
