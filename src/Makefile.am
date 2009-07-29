@@ -210,8 +210,8 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		--include=GObject-2.0			\
 		--include=Gdk-2.0			\
 		--include=Gtk-2.0			\
-		--include=Clutter-0.9			\
-		--pkg=clutter-0.9			\
+		--include=Clutter-1.0			\
+		--pkg=clutter-1.0			\
 		--pkg=gtk+-2.0				\
 		--include=xfixes-4.0			\
 		--program=$$pwd/mutter			\
