@@ -62,10 +62,9 @@ DocDisplayItem.prototype = {
         return this._docInfo.createIcon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
     },
 
-    // Ensures the preview icon is created.
-    _ensurePreviewIconCreated : function() {
-        if (!this._previewIcon)
-            this._previewIcon = this._docInfo.createIcon(GenericDisplay.PREVIEW_ICON_SIZE);
+    // Returns a preview icon for the item.
+    _createPreviewIcon : function() {
+        return this._docInfo.createIcon(GenericDisplay.PREVIEW_ICON_SIZE);
     },
 
     // Creates and returns a large preview icon, but only if this._docInfo is an image file

@@ -114,7 +114,6 @@ GenericDisplayItem.prototype = {
         this._name = null;
         this._description = null;
         this._icon = null;
-        this._previewIcon = null; 
 
         // An array of details description actors that we create over time for the item.
         // It is used for updating the description text inside the details actor when
@@ -210,12 +209,11 @@ GenericDisplayItem.prototype = {
 
         mainDetails.append(textDetails, Big.BoxPackFlags.EXPAND);
 
-        this._ensurePreviewIconCreated();
+        let previewIcon = this._createPreviewIcon();
         let largePreviewIcon = this._createLargePreviewIcon(availableWidth, Math.max(0, availableHeight - mainDetails.height - PREVIEW_BOX_SPACING));
 
-        if (this._previewIcon != null && largePreviewIcon == null) {
-            let previewIconClone = new Clutter.Clone({ source: this._previewIcon });
-            mainDetails.prepend(previewIconClone, Big.BoxPackFlags.NONE);
+        if (previewIcon != null && largePreviewIcon == null) {
+            mainDetails.prepend(previewIcon, Big.BoxPackFlags.NONE);
         }
 
         details.append(mainDetails, Big.BoxPackFlags.NONE);
@@ -265,11 +263,6 @@ GenericDisplayItem.prototype = {
             // and therefore should be responsible for distroying it
             this._icon.destroy();
             this._icon = null;
-        } 
-        // This ensures we'll create a new previewIcon next time we need it
-        if (this._previewIcon != null) {
-            this._previewIcon.destroy();
-            this._previewIcon = null;
         }
 
         this._icon = this._createIcon();
@@ -320,8 +313,8 @@ GenericDisplayItem.prototype = {
         throw new Error("Not implemented");
     },
 
-    // Ensures the preview icon is created.
-    _ensurePreviewIconCreated: function() {
+    // Returns a preview icon for the item.
+    _createPreviewIcon: function() {
         throw new Error("Not implemented");
     },
 

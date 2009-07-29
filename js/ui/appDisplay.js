@@ -68,29 +68,9 @@ AppDisplayItem.prototype = {
         return this._appInfo.create_icon_texture(GenericDisplay.ITEM_DISPLAY_ICON_SIZE);
     },
 
-    // Ensures the preview icon is created.
-    _ensurePreviewIconCreated : function() {
-        if (!this._showPreview || this._previewIcon)
-            return;
-
-        let gicon = this._appInfo.get_icon();
-        let previewIconPath = null;
-        if (gicon) {
-            let iconTheme = Gtk.IconTheme.get_default();
-            let previewIconInfo = iconTheme.lookup_by_gicon(gicon, GenericDisplay.PREVIEW_ICON_SIZE, 0);
-            if (previewIconInfo)
-                previewIconPath = previewIconInfo.get_filename();
-        }
-
-        if (previewIconPath) {
-            try {
-                this._previewIcon = new Clutter.Texture({ width: GenericDisplay.PREVIEW_ICON_SIZE, height: GenericDisplay.PREVIEW_ICON_SIZE});
-                this._previewIcon.set_from_file(previewIconPath);
-            } catch (e) {
-                // we can get an error here if the file path doesn't exist on the system
-                log('Error loading AppDisplayItem preview icon ' + e);
-            }
-        }
+    // Returns a preview icon for the item.
+    _createPreviewIcon : function() {
+        return this._appInfo.create_icon_texture(GenericDisplay.PREVIEW_ICON_SIZE);
     }
 };
 
