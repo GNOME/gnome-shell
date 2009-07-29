@@ -42,7 +42,7 @@ GNUWIN32_DEPS=( \
     jpeg-6b-4-{bin,lib}.zip \
     tiff-3.8.2-1-{bin,lib}.zip );
 
-CLUTTER_SVN="http://svn.o-hand.com/repos/clutter/trunk";
+CLUTTER_GIT="git://git.clutter-project.org"
 
 function download_file ()
 {
@@ -330,9 +330,9 @@ if y_or_n "Do you want to checkout and build Clutter?"; then
 
     guess_dir CLUTTER_BUILD_DIR "clutter" \
 	"the build directory for clutter" "Build dir";
-    svn checkout "$CLUTTER_SVN/clutter" $CLUTTER_BUILD_DIR;
+    git clone "$CLUTTER_GIT/clutter" $CLUTTER_BUILD_DIR;
     if [ "$?" -ne 0 ]; then
-	echo "svn failed";
+	echo "git failed";
 	exit 1;
     fi;
     ( cd "$CLUTTER_BUILD_DIR" && ./autogen.sh --prefix="$ROOT_DIR" \
