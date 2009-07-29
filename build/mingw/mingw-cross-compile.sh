@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # This script will download and setup a cross compilation environment
-# for targetting Win32 from Linux. It will use the GTK binaries from
-# Tor Lillqvist.
+# for targetting Win32 from Linux. It can also be used to build on
+# Windows under the MSYS/MinGW environment. It will use the GTK
+# binaries from Tor Lillqvist.
 
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
