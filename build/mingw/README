@@ -1,16 +1,137 @@
 Building Clutter with mingw
 ===========================
 
-The mingw-cross-compile.sh script in this directory automates cross compilation
-of clutter with mingw for win32; it requires to have the mingw cross compiler
-installed, but it will point you in the right direction if it cannot find it.
-It will also fetch all the necessary dependencies; it build clutter from
-svn trunk, so you might want tweak it if you are looking for specific tag.
+The mingw-cross-compile.sh script in this directory automates
+compilation of Clutter using the MinGW compiler. You can run it from
+Linux to cross compile or you can use MSYS and MinGW to compile it
+directly on Windows.
 
-To cross-compile clutter,
+If you were looking to build Clutter with Visual Studio instead there
+is an external project which is maintaining build files for Clutter
+(and other glib-based projects) here:
+
+  https://launchpad.net/oah
+
+For cross compiling you need to have the compiler installed. The
+script should automatically download all other dependencies. Under
+Ubuntu (and probably other Debian-based distros) you can install the
+compiler with this command:
+
+  sudo apt-get install mingw32{,-binutils,-runtime}
+
+To compile clutter,
 
   mkdir build_dir
   cd build_dir
   ./mingw-cross-compile.sh
 
 and follow the prompts.
+
+Building under MSYS
+===================
+
+Building directly under Windows requires some extra work to get some
+basic utilities installed. Here are step-by-step instructions to build
+from a clean installation of Windows:
+
+First you need to install the MinGW and MSYS packages from [1].
+
+Select the top package called 'Automated MinGW Intaller' and download
+the exe of the latest version. Run the executable and install to the
+default location. Make sure you DON'T install 'MinGW make' to make
+life easier.
+
+Next download the 'MSYS Base System'. Use the .exe installer from
+'Current release' (not the technology preview). Run the executable and
+install to the default location. Answer yes to whether you want to
+continue with the post install and tell it the location where you
+installed MinGW (which should be c:/MinGW).
+
+Next install the 'MSYS supplementary tools'. Again select .exe from
+the current release and install it to the default location.
+
+To get the dependencies we want to run the mingw-cross-compile.sh
+script. However to do this we first need some extra utilities.
+
+Make a directory called c:/msys/1.0/clutter-work and another directory
+called downloads under that. Go back to the SourceForge page for MinGW
+and select the 'User Contributed: mingwPORT' section. Download the
+wget tarball to the newly created downloads folder.
+
+Start MSYS and type the following to install wget.
+
+cd /clutter-work/downloads
+tar -jvxf wget-1.9.1-mingwPORT.tar.bz2
+cd wget-1.9.1/mingwPORT
+mkdir /usr/src
+PATH="$PATH":"$PWD" ./mingwPORT.sh 
+
+Press enter at each question to just use the default
+
+Next we need to install unzip.exe which we can get from the GNUWin32
+ports. Visit here [2] and download the 'complete package, except
+sources'. Install it to the default location.
+
+Now we can type the following to download and install the clutter
+dependencies using the helper script:
+
+cd /clutter-work
+wget -O downloads/mingw-cross-compile.sh \
+http://folks.o-hand.com/neil/mingw-cross-compile.sh
+PATH="$PATH:/c/Program Files/GnuWin32/bin" \
+sh ./downloads/mingw-cross-compile.sh
+
+Press enter to all of the questions to get the default except the 'Do
+you want to download and install Clutter' question because that will
+try to use Git which we don't have installed.
+
+Next we need to install pkg-config to get Clutter's configure script
+to work. Type the following:
+
+cd /clutter-work/downloads
+wget 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.23.tar.gz'
+tar -zvxf pkg-config-0.23.tar.gz
+cd pkg-config-0.23
+prefix=/clutter-work/clutter-cross
+libdir="${prefix}/lib"
+includedir="${prefix}/include"
+CFLAGS="-g -O2 -Wall -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include" \
+LDFLAGS="-L${libdir} -lglib-2.0 -lintl -liconv" \
+./configure
+make all install
+
+Now we should finally be ready to compile Clutter:
+
+cd /clutter-work/downloads
+wget http://www.clutter-project.org/sources/clutter/1.0/clutter-1.0.0.tar.bz2
+cd ..
+tar -jvxf downloads/clutter-1.0.0.tar.bz2
+cd clutter-1.0.0
+PKG_CONFIG_PATH=/clutter-work/clutter-cross/lib/pkgconfig \
+ PATH="$PATH:/clutter-work/clutter-cross/bin" \
+ CFLAGS="-mms-bitfields -I/clutter-work/clutter-cross/include -g -O2 -Wall" \
+ ./configure --prefix=/clutter-work/clutter-cross --with-flavour=win32
+make all install
+
+Now to prove that it worked we can run test-actors. Windows needs the
+Clutter DLL to be in the system path for this to work so type the
+following:
+
+export PATH="$PATH:/clutter-work/clutter-cross/bin"
+cd /clutter-work/clutter-1.0.0/tests
+.libs/test-actors
+
+If you want to compile a simple app without using autotools, it's
+easiest to use the libtool generated in the Clutter source so that it
+can work some voodoo with the included libraries. This assumes you've
+still got your path set up from the previous test:
+
+libtool --mode=link gcc -Wall -g -o simple-app simple-app.c \
+-I/clutter-work/clutter-cross/include \
+`PKG_CONFIG_PATH=/clutter-work/clutter-cross/lib/pkgconfig
+    pkg-config clutter-0.8 --cflags --libs`
+
+Enjoy! 
+
+[1] http://sourceforge.net/project/showfiles.php?group_id=2435
+[2] http://gnuwin32.sourceforge.net/packages/unzip.htm
