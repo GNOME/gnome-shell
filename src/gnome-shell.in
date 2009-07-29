@@ -273,6 +273,8 @@ if options.debug:
 try:
     if run_in_xephyr:
         shell = start_xephyr()
+        # This makes us not grab the org.gnome.Panel name
+        os.environ['GNOME_SHELL_NO_REPLACE_PANEL'] = '1'
         start_shell()
     else:
         if gnome_panel_pid is not None:

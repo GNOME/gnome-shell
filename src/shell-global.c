@@ -741,18 +741,22 @@ shell_global_grab_dbus_service (ShellGlobal *global)
       exit (0);  
     }
 
-  /* Also grab org.gnome.Panel to replace any existing panel process */
-  if (!dbus_g_proxy_call (bus, "RequestName", &error,
-                          G_TYPE_STRING, "org.gnome.Panel",
-                          G_TYPE_UINT, DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
-                          G_TYPE_INVALID,
-                          G_TYPE_UINT, &request_name_result,
-                          G_TYPE_INVALID))
+  /* Also grab org.gnome.Panel to replace any existing panel process,
+   * unless a special environment variable is passed.  The environment
+   * variable is used by the gnome-shell (no --replace) launcher in
+   * Xephyr */
+  if (!g_getenv ("GNOME_SHELL_NO_REPLACE_PANEL"))
     {
-      g_print ("failed to acquire org.gnome.Panel: %s\n", error->message);
-      exit (1);
+      if (!dbus_g_proxy_call (bus, "RequestName", &error, G_TYPE_STRING,
+                              "org.gnome.Panel", G_TYPE_UINT,
+                              DBUS_NAME_FLAG_REPLACE_EXISTING | DBUS_NAME_FLAG_DO_NOT_QUEUE,
+                              G_TYPE_INVALID, G_TYPE_UINT,
+                              &request_name_result, G_TYPE_INVALID))
+        {
+          g_print ("failed to acquire org.gnome.Panel: %s\n", error->message);
+          exit (1);
+        }
     }
-
   g_object_unref (bus);
 }
 
