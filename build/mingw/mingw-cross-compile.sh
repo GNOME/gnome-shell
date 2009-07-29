@@ -7,29 +7,32 @@
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
 TOR_BINARIES=( \
-    glib/2.18/glib{-dev,}_2.18.2-1_win32.zip \
-    gtk+/2.14/gtk+{-dev,}_2.14.4-2_win32.zip \
+    glib/2.20/glib{-dev,}_2.20.4-1_win32.zip \
+    gtk+/2.16/gtk+{-dev,}_2.16.4-1_win32.zip \
     pango/1.22/pango{-dev,}_1.22.0-1_win32.zip \
-    atk/1.24/atk{-dev,}_1.24.0-1_win32.zip );
+    atk/1.26/atk{-dev,}_1.26.0-1_win32.zip );
 
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
 
 TOR_DEPS=( \
     cairo{-dev,}_1.8.6-1_win32.zip \
     gettext-runtime-{dev-,}0.17-1.zip \
-    fontconfig-{dev-,}2.4.2-tml-20071015.zip \
-    freetype-{dev-,}2.3.6.zip \
-    expat-2.0.0.zip );
+    fontconfig{-dev,}_2.6.0-2_win32.zip \
+    freetype{-dev,}_2.3.8-1_win32.zip \
+    expat_2.0.1-1_win32.zip );
 
 #SF_URL="http://kent.dl.sourceforge.net/sourceforge";
 #SF_URL="http://surfnet.dl.sourceforge.net/sourceforge";
+
+MESA_VER=7.5
+
 SF_URL="http://mesh.dl.sourceforge.net/sourceforge";
 
 OTHER_DEPS=( \
     "http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip" \
     "${SF_URL}/libpng/zlib123-dll.zip" \
     "http://www.libsdl.org/release/SDL-devel-1.2.13-mingw32.tar.gz" \
-    "${SF_URL}/mesa3d/MesaLib-7.2.tar.bz2" );
+    "${SF_URL}/mesa3d/MesaLib-${MESA_VER}.tar.bz2" );
 
 GNUWIN32_URL="${SF_URL}/gnuwin32";
 
@@ -303,12 +306,12 @@ mv "$ROOT_DIR/lib/pkgconfig/pangoft2.pc"{.tmp,};
 
 echo "Extracting Mesa headers...";
 if ! tar -C "$DOWNLOAD_DIR" \
-    -jxf "$DOWNLOAD_DIR/MesaLib-7.2.tar.bz2" \
-    Mesa-7.2/include; then
+    -jxf "$DOWNLOAD_DIR/MesaLib-${MESA_VER}.tar.bz2" \
+    Mesa-${MESA_VER}/include; then
     echo "Failed to extract Mesa headers";
     exit 1;
 fi;
-cp -R "$DOWNLOAD_DIR/Mesa-7.2/include/"* "$ROOT_DIR/include";
+cp -R "$DOWNLOAD_DIR/Mesa-${MESA_VER}/include/"* "$ROOT_DIR/include";
 
 ##
 # Build
