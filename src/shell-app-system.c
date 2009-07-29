@@ -622,6 +622,12 @@ shell_app_info_get_executable (ShellAppInfo *info)
   return gmenu_tree_entry_get_exec ((GMenuTreeEntry*)info);
 }
 
+const char *
+shell_app_info_get_desktop_file_path (ShellAppInfo *info)
+{
+  return gmenu_tree_entry_get_desktop_file_path ((GMenuTreeEntry*)info);
+}
+
 GIcon *
 shell_app_info_get_icon (ShellAppInfo *info)
 {

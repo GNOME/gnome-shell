@@ -57,6 +57,7 @@ const char *shell_app_info_get_id (ShellAppInfo *info);
 const char *shell_app_info_get_name (ShellAppInfo *info);
 const char *shell_app_info_get_description (ShellAppInfo *info);
 const char *shell_app_info_get_executable (ShellAppInfo *info);
+const char *shell_app_info_get_desktop_file_path (ShellAppInfo *info);
 GIcon *shell_app_info_get_icon (ShellAppInfo *info);
 ClutterActor *shell_app_info_create_icon_texture (ShellAppInfo *info, float size);
 GSList *shell_app_info_get_categories (ShellAppInfo *info);
