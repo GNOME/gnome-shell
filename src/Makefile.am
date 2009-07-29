@@ -153,7 +153,7 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefile
 		--namespace=Shell			\
 		--nsversion=0.1				\
 		--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
-		--include=Clutter-0.9			\
+		--include=Clutter-1.0			\
 		--include=Meta-2.27			\
 		--add-include-path=$(builddir)     \
 		--include=Big-1.0     \
@@ -174,7 +174,7 @@ Tidy-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makefil
 	$(G_IR_SCANNER)					\
 		--namespace=Tidy			\
 		--nsversion=1.0				\
-		--include=Clutter-0.9			\
+		--include=Clutter-1.0			\
 		--program=mutter			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(addprefix $(srcdir)/,$(tidy_source_h)) \
@@ -192,7 +192,7 @@ Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
 	$(G_IR_SCANNER)					\
 		--namespace=Big			\
 		--nsversion=1.0				\
-		--include=Clutter-0.9			\
+		--include=Clutter-1.0			\
 		--include=GdkPixbuf-2.0			\
 		--program=mutter			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \

@@ -34,16 +34,16 @@ if $PKG_CONFIG --exists gstreamer-0.10 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
    recorder_modules="gstreamer-0.10 gstreamer-base-0.10 xfixes"
-   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-0.9)
+   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules clutter-1.0)
 else
    AC_MSG_RESULT(no)
 fi
 
 AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugins gjs-gi-1.0 xscrnsaver libgnome-menu $recorder_modules gconf-2.0 gdk-x11-2.0 clutter-x11-0.9 clutter-glx-0.9)
-PKG_CHECK_MODULES(TIDY, clutter-0.9)
-PKG_CHECK_MODULES(BIG, clutter-0.9 gtk+-2.0 librsvg-2.0)
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugins gjs-gi-1.0 xscrnsaver libgnome-menu $recorder_modules gconf-2.0 gdk-x11-2.0 clutter-x11-1.0 clutter-glx-1.0)
+PKG_CHECK_MODULES(TIDY, clutter-1.0)
+PKG_CHECK_MODULES(BIG, clutter-1.0 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
 PKG_CHECK_MODULES(TRAY, gtk+-2.0)
 PKG_CHECK_MODULES(TASKPANEL, libwnck-1.0 dbus-glib-1)
