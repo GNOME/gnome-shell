@@ -2,7 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = cogl pango $(CLUTTER_WINSYS_BASE) $(CLUTTER_WINSYS)
+SUBDIRS = cogl $(CLUTTER_WINSYS_BASE) $(CLUTTER_WINSYS)
 
 if LOCAL_JSON_GLIB
 SUBDIRS += json
@@ -12,7 +12,7 @@ clutter_json_libadd = $(top_builddir)/clutter/json/libclutter-json.la
 clutter_json_gir = ClutterJson-@CLUTTER_API_VERSION@.gir
 endif
 
-DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32 fruity
+DIST_SUBDIRS = glx eglx eglnative cogl sdl json osx x11 win32 fruity
 
 # common definitions
 CLEANFILES =
@@ -21,13 +21,13 @@ EXTRA_DIST =
 BUILT_SOURCES =
 
 INCLUDES = \
-	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/clutter/cogl	\
-	-I$(top_srcdir)/clutter/pango	\
-	-I$(top_srcdir)/clutter		\
-	$(clutter_json_include)		\
-	-I$(top_builddir)/clutter/cogl	\
-	-I$(top_builddir)/clutter	\
+	-I$(top_srcdir) 				\
+	-I$(top_srcdir)/clutter/cogl			\
+	-I$(top_srcdir)/clutter/cogl/pango		\
+	-I$(top_srcdir)/clutter				\
+	$(clutter_json_include)				\
+	-I$(top_builddir)/clutter/cogl			\
+	-I$(top_builddir)/clutter			\
 	$(NULL)
 
 AM_CPPFLAGS = \
@@ -182,14 +182,14 @@ source_h_priv = \
 libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_LIBADD = \
 	$(CLUTTER_LIBS) \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
-	$(top_builddir)/clutter/pango/libcoglpango.la \
+	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
 	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
 	$(clutter_json_libadd) \
 	$(CLUTTER_WINSYS_BASE_LIB)
 
 libclutter_@CLUTTER_WINSYS@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
 	$(top_builddir)/clutter/cogl/cogl/libclutter-cogl.la \
-	$(top_builddir)/clutter/pango/libcoglpango.la \
+	$(top_builddir)/clutter/cogl/pango/libcoglpango.la \
 	$(top_builddir)/clutter/$(CLUTTER_WINSYS)/libclutter-$(CLUTTER_WINSYS).la \
 	$(clutter_json_dep) \
 	$(CLUTTER_WINSYS_BASE_LIB)

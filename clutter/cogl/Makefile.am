@@ -1,1 +1,1 @@
-SUBDIRS = cogl
+SUBDIRS = cogl pango
