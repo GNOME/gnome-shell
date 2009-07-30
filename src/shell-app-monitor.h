@@ -40,15 +40,14 @@ ShellAppMonitor* shell_app_monitor_get_default(void);
 
 ShellAppInfo *shell_app_monitor_get_window_app (ShellAppMonitor *monitor, MetaWindow *metawin);
 
-/* Get the most popular applications for a given activity */
-GSList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
-                                              int              activity,
-                                              gint             number);
+GList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
+                                             const char      *context,
+                                             gint             number);
 
 GSList *shell_app_monitor_get_windows_for_app (ShellAppMonitor *monitor, const char *appid);
 
 /* Get whatever's running right now */
-GList *shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor);
+GSList *shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor, const char *context);
 
 G_END_DECLS
 

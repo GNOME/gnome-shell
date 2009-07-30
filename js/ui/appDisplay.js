@@ -277,7 +277,8 @@ AppDisplay.prototype = {
     },
 
     _getMostUsed: function() {
-        return this._appMonitor.get_most_used_apps(0, 30).map(Lang.bind(this, function (id) {
+        let context = "";
+        return this._appMonitor.get_most_used_apps(context, 30).map(Lang.bind(this, function (id) {
             return this._appSystem.lookup_app(id + '.desktop');
         })).filter(function (e) { return e != null });
     },
@@ -723,6 +724,9 @@ AppWell.prototype = {
     },
 
     _redisplay: function() {
+        /* hardcode here pending some design about how exactly activities behave */
+        let contextId = "";
+
         let arrayToObject = function(a) {
             let o = {};
             for (let i = 0; i < a.length; i++)
@@ -731,7 +735,8 @@ AppWell.prototype = {
         };
         let favoriteIds = this._appSystem.get_favorites();
         let favoriteIdsObject = arrayToObject(favoriteIds);
-        let runningIds = this._appMonitor.get_running_app_ids().filter(function (e) {
+
+        let runningIds = this._appMonitor.get_running_app_ids(contextId).filter(function (e) {
             return !(e in favoriteIdsObject);
         });
         let favorites = this._lookupApps(favoriteIds);
