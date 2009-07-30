@@ -128,7 +128,14 @@ G_DEFINE_TYPE(MetaDisplay, meta_display, G_TYPE_OBJECT);
 enum
 {
   OVERLAY_KEY,
+  FOCUS_WINDOW,
   LAST_SIGNAL
+};
+
+enum {
+  PROP_0,
+
+  PROP_FOCUS_WINDOW
 };
 
 static guint display_signals [LAST_SIGNAL] = { 0 };
@@ -170,8 +177,46 @@ static void    sanity_check_timestamps   (MetaDisplay *display,
 MetaGroup*     get_focussed_group (MetaDisplay *display);
 
 static void
+meta_display_get_property(GObject         *object,
+                          guint            prop_id,
+                          GValue          *value,
+                          GParamSpec      *pspec)
+{
+  MetaDisplay *display = META_DISPLAY (object);
+
+  switch (prop_id)
+    {
+    case PROP_FOCUS_WINDOW:
+      g_value_set_object (value, display->focus_window);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_display_set_property(GObject         *object,
+                          guint            prop_id,
+                          const GValue    *value,
+                          GParamSpec      *pspec)
+{
+  switch (prop_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 meta_display_class_init (MetaDisplayClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->get_property = meta_display_get_property;
+  object_class->set_property = meta_display_set_property;
+
   display_signals[OVERLAY_KEY] =
     g_signal_new ("overlay-key",
                   G_TYPE_FROM_CLASS (klass),
@@ -179,8 +224,17 @@ meta_display_class_init (MetaDisplayClass *klass)
                   0,
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);  
+                  G_TYPE_NONE, 0);
+
+  g_object_class_install_property (object_class,
+                                   PROP_FOCUS_WINDOW,
+                                   g_param_spec_object ("focus-window",
+                                                        "Focus window",
+                                                        "Currently focused window",
+                                                        META_TYPE_WINDOW,
+                                                        G_PARAM_READABLE));
 }
+
 
 /**
  * Destructor for MetaPingData structs. Will destroy the
