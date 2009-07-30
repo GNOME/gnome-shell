@@ -84,6 +84,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-tray-manager.h			\
 	shell-texture-cache.c			\
 	shell-texture-cache.h			\
+	shell-uri-util.c           \
+	shell-uri-util.h           \
 	shell-wm.c				\
 	shell-wm.h
 
