@@ -124,8 +124,8 @@ CoglHandle      cogl_texture_new_from_data    (guint             width,
 
 /**
  * cogl_texture_new_from_foreign:
- * @gl_handle: opengl target type of foreign texture
- * @gl_target: opengl handle of foreign texture.
+ * @gl_handle: opengl handle of foreign texture.
+ * @gl_target: opengl target type of foreign texture
  * @width: width of foreign texture
  * @height: height of foreign texture.
  * @x_pot_waste: maximum horizontal waste.
