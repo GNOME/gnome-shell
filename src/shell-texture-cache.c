@@ -8,12 +8,12 @@ typedef struct
 {
   ShellTextureCachePolicy policy;
 
-  /* These 3 are exclusive */
+  /* These are exclusive */
   GIcon *icon;
   gchar *uri;
   gchar *thumbnail_uri;
 
-  /* This one is common to all 3 */
+  /* This one is common to all */
   guint size;
 } CacheKey;
 
@@ -32,14 +32,17 @@ static guint
 cache_key_hash (gconstpointer a)
 {
   CacheKey *akey = (CacheKey *)a;
+  guint base_hash;
 
   if (akey->icon)
-    return g_icon_hash (akey->icon) + 31*akey->size;
+    base_hash = g_icon_hash (akey->icon);
   else if (akey->uri)
-    return g_str_hash (akey->uri) + 31*akey->size;
+    base_hash = g_str_hash (akey->uri);
   else if (akey->thumbnail_uri)
-    return g_str_hash (akey->thumbnail_uri) + 31*akey->size;
-  g_assert_not_reached ();
+    base_hash = g_str_hash (akey->thumbnail_uri);
+  else
+    g_assert_not_reached ();
+  return base_hash + 31*akey->size;
 }
 
 static gboolean
@@ -768,6 +771,31 @@ shell_texture_cache_load_gicon (ShellTextureCache *cache,
     {
       set_texture_cogl_texture (texture, texdata);
     }
+
+  return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * shell_texture_cache_load_icon_name:
+ * @cache: The texture cache instance
+ * @name: Name of a themed icon
+ * @size: Size of themed
+ *
+ * Load a themed icon into a texture.
+ *
+ * Return Value: (transfer none): A new #ClutterTexture for the icon
+ */
+ClutterActor *
+shell_texture_cache_load_icon_name (ShellTextureCache *cache,
+                                    const char        *name,
+                                    gint               size)
+{
+  ClutterActor *texture;
+  GIcon *themed;
+
+  themed = g_themed_icon_new (name);
+  texture = shell_texture_cache_load_gicon (cache, themed, size);
+  g_object_unref (themed);
 
   return CLUTTER_ACTOR (texture);
 }
