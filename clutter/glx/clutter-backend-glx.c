@@ -355,6 +355,60 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 }
 
 static gboolean
+clutter_backend_glx_get_fbconfig (ClutterBackendX11 *backend_x11,
+                                  GLXFBConfig       *config)
+{
+  int attributes[] = {
+    GLX_DRAWABLE_TYPE,  GLX_WINDOW_BIT,
+    GLX_RENDER_TYPE,    GLX_RGBA_BIT,
+    GLX_DOUBLEBUFFER,   GL_TRUE,
+    GLX_RED_SIZE,       1,
+    GLX_GREEN_SIZE,     1,
+    GLX_BLUE_SIZE,      1,
+    GLX_ALPHA_SIZE,     1,
+    GLX_DEPTH_SIZE,     1,
+    GLX_STENCIL_SIZE,   1,
+    None
+  };
+  GLXFBConfig *configs = NULL;
+  int n_configs;
+
+  if (backend_x11->xdpy == None || backend_x11->xscreen == None)
+    return FALSE;
+
+  CLUTTER_NOTE (BACKEND,
+                "Retrieving GL fbconfig, dpy: %p, xscreen; %p (%d)",
+                backend_x11->xdpy,
+                backend_x11->xscreen,
+                backend_x11->xscreen_num);
+
+  configs = glXChooseFBConfig (backend_x11->xdpy,
+                               backend_x11->xscreen_num,
+                               attributes,
+                               &n_configs);
+  if (configs)
+    *config = configs[0];
+
+  XFree (configs);
+
+  if (configs)
+    return TRUE;
+  else
+    return FALSE;
+}
+
+static XVisualInfo *
+clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11)
+{
+  GLXFBConfig config;
+
+  if (!clutter_backend_glx_get_fbconfig (backend_x11, &config))
+    return NULL;
+
+  return glXGetVisualFromFBConfig (backend_x11->xdpy, config);
+}
+
+static gboolean
 clutter_backend_glx_create_context (ClutterBackend  *backend,
                                     GError         **error)
 {
@@ -363,20 +417,25 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
 
   if (backend_glx->gl_context == None)
     {
-      XVisualInfo *xvisinfo;
+      GLXFBConfig config;
       gboolean is_direct;
 
-      xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+      if (!clutter_backend_glx_get_fbconfig (backend_x11, &config))
+        {
+          g_set_error (error, CLUTTER_INIT_ERROR,
+                       CLUTTER_INIT_ERROR_BACKEND,
+                       "Unable to find suitable fbconfig for GL context");
+          return FALSE;
+        }
 
       CLUTTER_NOTE (GL, "Creating GL Context (display: %p)",
                     backend_x11->xdpy);
-
-      backend_glx->gl_context = glXCreateContext (backend_x11->xdpy,
-                                                  xvisinfo,
-                                                  0,
-                                                  True);
-
-      XFree (xvisinfo);
+      backend_glx->gl_context =
+        glXCreateNewContext (backend_x11->xdpy,
+                             config,
+                             GLX_RGBA_TYPE,
+                             NULL,
+                             True);
 
       if (backend_glx->gl_context == None)
         {
@@ -415,7 +474,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       backend_x11 = CLUTTER_BACKEND_X11 (backend);
       CLUTTER_NOTE (MULTISTAGE, "Clearing all context");
 
-      glXMakeCurrent (backend_x11->xdpy, None, NULL);
+      glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
     }
   else
     {
@@ -450,20 +509,21 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
           CLUTTER_NOTE (MULTISTAGE,
                         "Received a stale stage, clearing all context");
 
-          glXMakeCurrent (backend_x11->xdpy, None, NULL);
+          glXMakeContextCurrent (backend_x11->xdpy, None, None, NULL);
         }
       else
         {
           CLUTTER_NOTE (BACKEND,
-                        "MakeCurrent dpy: %p, window: 0x%x (%s), context: %p",
+                        "MakeContextCurrent dpy: %p, window: 0x%x (%s), context: %p",
                         stage_x11->xdpy,
                         (int) stage_x11->xwin,
                         stage_x11->is_foreign_xwin ? "foreign" : "native",
                         backend_glx->gl_context);
 
-          glXMakeCurrent (stage_x11->xdpy,
-                          stage_x11->xwin,
-                          backend_glx->gl_context);
+          glXMakeContextCurrent (stage_x11->xdpy,
+                                 stage_x11->xwin,
+                                 stage_x11->xwin,
+                                 backend_glx->gl_context);
         }
 
       if (clutter_x11_untrap_x_errors ())
@@ -601,38 +661,6 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
                 wrapper);
 
   return stage_window;
-}
-
-static XVisualInfo *
-clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11)
-{
-  XVisualInfo *xvisinfo;
-  int attributes[] = {
-    GLX_RGBA,
-    GLX_DOUBLEBUFFER,
-    GLX_RED_SIZE,     1,
-    GLX_GREEN_SIZE,   1,
-    GLX_BLUE_SIZE,    1,
-    GLX_ALPHA_SIZE,   1,
-    GLX_STENCIL_SIZE, 1,
-    GLX_DEPTH_SIZE,   1,
-    0
-  };
-
-  if (backend_x11->xdpy == None || backend_x11->xscreen == None)
-    return NULL;
-
-  CLUTTER_NOTE (BACKEND,
-                "Retrieving GL visual, dpy: %p, xscreen; %p (%d)",
-                backend_x11->xdpy,
-                backend_x11->xscreen,
-                backend_x11->xscreen_num);
-
-  xvisinfo = glXChooseVisual (backend_x11->xdpy,
-                              backend_x11->xscreen_num,
-                              attributes);
-
-  return xvisinfo;
 }
 
 static void
