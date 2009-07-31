@@ -238,32 +238,23 @@
 
       <section id='building-osx'>
           <title>OSX</title>
-          <para>For developing an application with Clutter, the recommended
-          way of installing it using the <ulink href="http://www.macports.org/">MacPorts</ulink>
+	  <para>Currently the only way to install Clutter for developing
+	  applications, or hacking on Clutter itself, is to build it yourself.
+	  The recommended route is to install the dependencies with
+	  the <ulink href="http://www.macports.org/">MacPorts</ulink>
           project, by simply invoking:</para>
 
           <informalexample><programlisting>
-            $ sudo port install clutter
+            $ sudo port install pango libpixman-devel cairo-devel
           </programlisting></informalexample>
 
-          <para>on a terminal, after installing and updating MacPorts.</para>
-
-          <para>For developing Clutter itself, the recommended way of building
-          it OSX is to use <ulink href="http://live.gnome.org/Jhbuild">Jhbuild</ulink>,
-          following the documentation for building the GTK+ stack as shown
-          <ulink href="http://developer.imendio.com/projects/gtk-macosx/build-instructions">here</ulink>.</para>
-
-          <para>
-            Jhbuild depends on SVN, which can be installed on OSX by using
-            the <ulink href="http://www.macports.org/">MacPorts</ulink>
-            project.
-          </para>
+          <para>on a terminal, after installing and updating MacPorts.
+	  This should give you all of the required dependencies for building
+	  Clutter 1.0.</para>
 
           <para>
             XCode should also be installed, either from the OSX installation
-            disk or downloading it from the Apple website. It is recommended
-            to also install the X11 development files, even though Clutter
-            does not strictly depend on them.
+            disk or downloading it from the Apple website.
           </para>
 
           <para>
@@ -284,6 +275,20 @@
             to the configure script.
           </para>
 
+	  <para>
+	    GTK introspection and shave support are untested on OSX so it is
+	    also recommended that you disable these with the
+	    <literal>--disable-shave</literal> and
+	    <literal>--disable-introspection</literal>.
+	  </para>
+
+	  <para>
+	    If building on top of MacPorts, as recommended, the following
+	    configure command should suffice:
+	    <informalexample><programlisting>
+	    ./configure --disable-gtk-doc --disable-docs --disable-shave
+	    --with-flavour=osx --disable-introspection --prefix=/opt
+	    </programlisting></informalexample>
       </section>
 
     </section>
