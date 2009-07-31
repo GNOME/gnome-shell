@@ -87,18 +87,18 @@ static int drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
 {
     int ret, rc;
 
-    do 
+    do
       {
         ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
         vbl->request.type &= ~DRM_VBLANK_RELATIVE;
         rc = errno;
-      } 
+      }
     while (ret && rc == EINTR);
-    
+
     return rc;
 }
 
-#endif 
+#endif
 
 G_CONST_RETURN gchar*
 clutter_backend_glx_get_vblank_method (void)
@@ -131,8 +131,8 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 
   if (clutter_backend_x11_post_parse (backend, error))
     {
-      if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor) 
-          || !(glx_major > 1 || glx_minor > 1)) 
+      if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor)
+          || !(glx_major > 1 || glx_minor > 1))
         {
           g_set_error (error, CLUTTER_INIT_ERROR,
                        CLUTTER_INIT_ERROR_BACKEND,
@@ -149,8 +149,8 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 
 static const GOptionEntry entries[] =
 {
-  { "vblank", 0, 
-    0, 
+  { "vblank", 0,
+    0,
     G_OPTION_ARG_STRING, &clutter_vblank_name,
     N_("VBlank method to be used (none, dri or glx)"), "METHOD"
   },
@@ -212,7 +212,7 @@ clutter_backend_glx_constructor (GType                  gtype,
 
   g_warning ("Attempting to create a new backend object. This should "
              "never happen, so we return the singleton instance.");
-  
+
   return g_object_ref (backend_singleton);
 }
 
@@ -231,7 +231,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   ClutterBackendGLX  *backend_glx = CLUTTER_BACKEND_GLX (backend);
   const gchar        *glx_extensions = NULL;
   ClutterFeatureFlags flags;
-  
+
   flags = clutter_backend_x11_get_features (backend);
   flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
@@ -251,7 +251,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
                 glGetString (GL_VERSION),
                 glGetString (GL_EXTENSIONS));
 
-  glx_extensions = 
+  glx_extensions =
     glXQueryExtensionsString (clutter_x11_get_default_display (),
 			      clutter_x11_get_default_screen ());
 
@@ -264,7 +264,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
     }
   else
     {
-      /* We try two GL vblank syncing mechanisms.  
+      /* We try two GL vblank syncing mechanisms.
        * glXSwapIntervalSGI is tried first, then glXGetVideoSyncSGI.
        *
        * glXSwapIntervalSGI is known to work with Mesa and in particular
@@ -276,10 +276,10 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
        * to be investigated. glXGetVideoSyncSGI on ATI at least seems to have
        * no effect.
       */
-      if (!check_vblank_env ("dri") && 
+      if (!check_vblank_env ("dri") &&
           cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
         {
-          backend_glx->swap_interval = 
+          backend_glx->swap_interval =
             (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
 
           CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
@@ -298,22 +298,22 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
             CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
         }
 
-      if (!check_vblank_env ("dri") && 
+      if (!check_vblank_env ("dri") &&
           !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
           cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
         {
           CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
 
-          backend_glx->get_video_sync = 
+          backend_glx->get_video_sync =
             (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
 
-          backend_glx->wait_video_sync = 
+          backend_glx->wait_video_sync =
             (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
 
           if ((backend_glx->get_video_sync != NULL) &&
               (backend_glx->wait_video_sync != NULL))
             {
-              CLUTTER_NOTE (BACKEND, 
+              CLUTTER_NOTE (BACKEND,
                             "glXGetVideoSyncSGI vblank setup success");
 
               backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
@@ -324,7 +324,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
             CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
         }
 #ifdef __linux__
-      /* 
+      /*
        * DRI is really an extreme fallback -rumoured to work with Via chipsets
       */
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
@@ -457,7 +457,7 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
 }
 
 static void
-clutter_backend_glx_ensure_context (ClutterBackend *backend, 
+clutter_backend_glx_ensure_context (ClutterBackend *backend,
                                     ClutterStage   *stage)
 {
   ClutterStageWindow *impl;
