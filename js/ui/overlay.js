@@ -583,9 +583,9 @@ Dash.prototype = {
         this._resultsAppsSection.display.show();
         this._resultsPane.append(this._resultsAppsSection.actor, Big.BoxPackFlags.EXPAND);
         this._resultsPane.show();
+        this._repositionDetails();
 
         this._moreAppsLink.setText("Less...");
-        this._repositionDetails();
         this.emit('panes-displayed');
     },
 
@@ -617,10 +617,9 @@ Dash.prototype = {
         this._resultsDocsSection.display.show();
         this._resultsPane.append(this._resultsDocsSection.actor, Big.BoxPackFlags.EXPAND);
         this._resultsPane.show();
+        this._repositionDetails();
 
         this._moreDocsLink.setText("Less...");
-
-        this._repositionDetails();
 
         this.emit('panes-displayed');
     },
@@ -642,7 +641,6 @@ Dash.prototype = {
     },
 
     _setSearchMode: function() {
-        this._repositionDetails();
 
         if (this._resultsShowing())
             return;
@@ -656,17 +654,18 @@ Dash.prototype = {
         this._resultsPane.append(this._resultsDocsSection.actor, Big.BoxPackFlags.EXPAND);
 
         this._resultsPane.show();
+        this._repositionDetails();
 
         this.emit('panes-displayed');
     },
 
     _unsetSearchMode: function() {
-        this._repositionDetails();
 
         if (this._moreDocsMode || this._moreAppsMode || !this._resultsShowing())
             return;
 
         this._resultsPane.hide();
+        this._repositionDetails();
 
         this._resultsPane.remove_actor(this._resultsAppsSection.actor);
         this._resultsAppsSection.display.hide();
