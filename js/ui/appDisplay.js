@@ -14,6 +14,7 @@ const Mainloop = imports.mainloop;
 
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
+const Main = imports.ui.main;
 const Workspaces = imports.ui.workspaces;
 
 const ENTERED_MENU_COLOR = new Clutter.Color();
@@ -527,17 +528,10 @@ WellDisplayItem.prototype = {
         if (this._windows.length == 0)
             this.launch();
         else {
-            /* Pick the first window and activate it, switching to its workspace
-             * if necessary.  In the future, we want to have a menu dropdown here. */
+            /* Pick the first window and activate it;
+             * In the future, we want to have a menu dropdown here. */
             let first = this._windows[0];
-            let firstWorkspace = first.get_workspace();
-            let currentWorkspaceIndex = Shell.Global.get().screen.get_active_workspace_index();
-            let currentWorkspace = Shell.Global.get().screen.get_workspace_by_index(currentWorkspaceIndex);
-            let ts = Clutter.get_current_event_time();
-            if (currentWorkspace != firstWorkspace)
-                firstWorkspace.activate_with_focus(first, ts);
-            else
-                first.activate(ts);
+            Main.overlay.activateWindow (first, Clutter.get_current_event_time());
         }
         this.emit('activated');
     },

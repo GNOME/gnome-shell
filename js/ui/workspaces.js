@@ -364,6 +364,23 @@ Workspace.prototype = {
         }
     },
 
+    _lookupIndexAndClone: function (metaWindow) {
+        let index, clone;
+        for (let i = 0; i < this._windows.length; i++) {
+            if (this._windows[i].metaWindow == metaWindow) {
+                index = i;
+                clone = this._windows[index];
+                return [index, clone];
+            }
+        }
+        return [-1, null];
+    },
+
+    lookupCloneForMetaWindow: function (metaWindow) {
+        let [index, clone] = this._lookupIndexAndClone (metaWindow);
+        return clone;
+    },
+
     _adjustRemoveButton : function() {
         this._removeButton.set_scale(1.0 / this.actor.scale_x,
                                      1.0 / this.actor.scale_y);
@@ -450,14 +467,7 @@ Workspace.prototype = {
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
-        let index = - 1, clone;
-        for (let i = 0; i < this._windows.length; i++) {
-            if (this._windows[i].metaWindow == metaWin) {
-                index = i;
-                clone = this._windows[index];
-                break;
-            }
-        }
+        let [index, clone] = this._lookupIndexAndClone (metaWin);
 
         if (index == -1)
             return;
@@ -712,15 +722,7 @@ Workspace.prototype = {
     },
 
     _onCloneSelected : function (clone, time) {
-        let global = Shell.Global.get();
-        let activeWorkspace = global.screen.get_active_workspace_index();
-
-        if (this.workspaceNum != activeWorkspace) {
-            let workspace = global.screen.get_workspace_by_index(this.workspaceNum);
-            workspace.activate_with_focus(clone.metaWindow, time);
-        } else
-            clone.metaWindow.activate(time);
-        Main.overlay.hide();
+        Main.overlay.activateWindow(clone.metaWindow, time);
     },
 
     _removeSelf : function(actor, event) {
@@ -826,6 +828,32 @@ Workspaces.prototype = {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
+    },
+
+    _lookupCloneForMetaWindow: function (metaWindow) {
+        for (let i = 0; i < this._workspaces.length; i++) {
+            let clone = this._workspaces[i].lookupCloneForMetaWindow(metaWindow);
+            if (clone)
+                return clone;
+        }
+        return null;
+    },
+
+    // Should only be called from active overlay context
+    activateWindowFromOverlay: function (metaWindow, time) {
+        let global = Shell.Global.get();
+        let activeWorkspaceNum = global.screen.get_active_workspace_index();
+        let windowWorkspaceNum = metaWindow.get_workspace().index();
+
+        let clone = this._lookupCloneForMetaWindow (metaWindow);
+        clone.actor.raise_top();
+
+        if (windowWorkspaceNum != activeWorkspaceNum) {
+            let workspace = global.screen.get_workspace_by_index(windowWorkspaceNum);
+            workspace.activate_with_focus(metaWindow, time);
+        } else {
+            metaWindow.activate(time);
+        }
     },
 
     // Updates position of the workspaces display based on the new coordinates.

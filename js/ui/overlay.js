@@ -934,6 +934,21 @@ Overlay.prototype = {
             this.show();
     },
 
+    /**
+     * activateWindow:
+     * @metaWindow: A #MetaWindow
+     * @time: Event timestamp integer
+     *
+     * Make the given MetaWindow be the focus window, switching
+     * to the workspace it's on if necessary.  This function
+     * should only be used when the overlay is currently active;
+     * outside of that, use the relevant methods on MetaDisplay.
+     */
+    activateWindow: function (metaWindow, time) {
+         this._workspaces.activateWindowFromOverlay(metaWindow, time);
+         this.hide();
+    },
+
     //// Private methods ////
 
     // Raises the Dash to the top, so that we can tell if the pointer is above one of its items.
