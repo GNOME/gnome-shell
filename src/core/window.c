@@ -8668,3 +8668,40 @@ meta_window_get_transient_for (MetaWindow *window)
   else
     return NULL;
 }
+
+/**
+ * meta_window_get_pid:
+ * @window: a #MetaWindow
+ *
+ * Returns pid of the process that created this window, if known (obtained from
+ * the _NET_WM_PID property).
+ *
+ * Return value: (transfer none): the pid, or -1 if not known.
+ */
+int
+meta_window_get_pid (MetaWindow *window)
+{
+  g_return_val_if_fail (META_IS_WINDOW (window), -1);
+
+  return window->net_wm_pid;
+}
+
+/**
+ * meta_window_get_client_machine:
+ * @window: a #MetaWindow
+ *
+ * Returns name of the client machine from which this windows was created,
+ * if known (obtained from the WM_CLIENT_MACHINE property).
+ *
+ * Return value: (transfer none): the machine name, or NULL; the string is
+ * owned by the window manager and should not be freed or modified by the
+ * caller.
+ */
+const char *
+meta_window_get_client_machine (MetaWindow *window)
+{
+  g_return_val_if_fail (META_IS_WINDOW (window), NULL);
+
+  return window->wm_client_machine;
+}
+
