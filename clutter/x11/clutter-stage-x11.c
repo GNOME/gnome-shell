@@ -574,12 +574,15 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
 
       g_assert (STAGE_X11_IS_MAPPED (stage_x11));
 
-      XMapWindow (stage_x11->xdpy, stage_x11->xwin);
-
       clutter_actor_map (CLUTTER_ACTOR (stage_x11));
       clutter_actor_map (CLUTTER_ACTOR (stage_x11->wrapper));
 
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_x11->wrapper));
+      /* we force a redraw here, so that by the time we have
+       * been mapped, the window has contents
+       */
+      _clutter_do_redraw (CLUTTER_STAGE (stage_x11->wrapper));
+
+      XMapWindow (stage_x11->xdpy, stage_x11->xwin);
     }
 }
 
