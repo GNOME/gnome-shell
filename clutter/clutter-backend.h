@@ -79,7 +79,6 @@ struct _ClutterBackendClass
   void                (* redraw)           (ClutterBackend  *backend,
                                             ClutterStage    *stage);
   gboolean            (* create_context)   (ClutterBackend  *backend,
-                                            gboolean         is_offscreen,
                                             GError         **error);
   void                (* ensure_context)   (ClutterBackend  *backend,
                                             ClutterStage    *stage);

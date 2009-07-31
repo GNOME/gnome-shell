@@ -263,8 +263,7 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
 }
 
 static XVisualInfo *
-clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11,
-                                     gboolean           for_offscreen)
+clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend_x11);
   EGLint visualid;

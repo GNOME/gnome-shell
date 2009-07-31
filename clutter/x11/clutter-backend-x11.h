@@ -86,8 +86,7 @@ struct _ClutterBackendX11Class
 {
   ClutterBackendClass parent_class;
 
-  XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend,
-                                    gboolean           for_offscreen);
+  XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend);
 };
 
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);
@@ -119,10 +118,9 @@ ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend);
 
 XVisualInfo *
-clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11,
-                                     gboolean           for_offscreen);
+clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11);
 
-void 
+void
 _clutter_x11_register_xinput (void);
 
 void

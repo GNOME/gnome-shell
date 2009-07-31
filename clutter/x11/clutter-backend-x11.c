@@ -981,8 +981,7 @@ clutter_x11_has_composite_extension (void)
 }
 
 XVisualInfo *
-clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11,
-                                     gboolean           for_offscreen)
+clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 {
   ClutterBackendX11Class *klass;
 
@@ -990,7 +989,7 @@ clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11,
 
   klass = CLUTTER_BACKEND_X11_GET_CLASS (backend_x11);
   if (klass->get_visual_info)
-    return klass->get_visual_info (backend_x11, for_offscreen);
+    return klass->get_visual_info (backend_x11);
 
   return NULL;
 }

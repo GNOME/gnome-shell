@@ -259,7 +259,6 @@ clutter_stage_osx_realize (ClutterActor *actor)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
   ClutterBackendOSX *backend_osx;
-  gboolean offscreen;
 
   CLUTTER_NOTE (BACKEND, "[%p] realize", self);
 
@@ -267,15 +266,6 @@ clutter_stage_osx_realize (ClutterActor *actor)
   g_return_if_fail (self->view == NULL && self->window == NULL);
 
   CLUTTER_OSX_POOL_ALLOC();
-
-  g_object_get (self->wrapper, "offscreen", &offscreen, NULL);
-
-  if (offscreen)
-    {
-      g_warning("OSX Backend does not yet support offscreen rendering\n");
-      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      return;
-    }
 
   backend_osx = CLUTTER_BACKEND_OSX (self->backend);
 

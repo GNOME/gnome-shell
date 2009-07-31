@@ -91,7 +91,6 @@ struct _ClutterStagePrivate
 
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
-  guint is_offscreen           : 1;
   guint is_cursor_visible      : 1;
   guint is_user_resizable      : 1;
   guint use_fog                : 1;
@@ -582,13 +581,6 @@ clutter_stage_real_queue_redraw (ClutterActor *actor,
 }
 
 static void
-set_offscreen_while_unrealized (ClutterActor *actor,
-                                void         *data)
-{
-  CLUTTER_STAGE (actor)->priv->is_offscreen = GPOINTER_TO_INT (data);
-}
-
-static void
 clutter_stage_set_property (GObject      *object,
 			    guint         prop_id,
 			    const GValue *value,
@@ -609,26 +601,8 @@ clutter_stage_set_property (GObject      *object,
       break;
 
     case PROP_OFFSCREEN:
-      {
-        gboolean was_showing;
-
-        if (priv->is_offscreen == g_value_get_boolean (value))
-          return;
-
-        was_showing = CLUTTER_ACTOR_IS_VISIBLE (actor);
-
-        /* Backend needs to check this prop and handle accordingly
-         * in realise.
-         * FIXME: More 'obvious' implementation needed?
-         */
-        _clutter_actor_rerealize (actor,
-                                  set_offscreen_while_unrealized,
-                                  GINT_TO_POINTER (g_value_get_boolean (value)));
-
-        if (was_showing &&
-            !CLUTTER_ACTOR_IS_REALIZED (actor))
-          priv->is_offscreen = ~g_value_get_boolean (value);
-      }
+      if (g_value_get_boolean (value))
+        g_warning ("Offscreen stages are currently not supported\n");
       break;
 
     case PROP_CURSOR_VISIBLE:
@@ -679,7 +653,7 @@ clutter_stage_get_property (GObject    *gobject,
       break;
 
     case PROP_OFFSCREEN:
-      g_value_set_boolean (value, priv->is_offscreen);
+      g_value_set_boolean (value, FALSE);
       break;
 
     case PROP_FULLSCREEN_SET:
@@ -1020,7 +994,6 @@ clutter_stage_init (ClutterStage *self)
 
   priv->event_queue = g_queue_new ();
 
-  priv->is_offscreen           = FALSE;
   priv->is_fullscreen          = FALSE;
   priv->is_user_resizable      = FALSE;
   priv->is_cursor_visible      = TRUE;

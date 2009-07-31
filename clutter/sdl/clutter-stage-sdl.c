@@ -54,42 +54,29 @@ static gboolean
 clutter_stage_sdl_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (stage_window);
-  gboolean is_offscreen, is_fullscreen;
+  gboolean is_fullscreen = FALSE;
+  gint flags = SDL_OPENGL;
 
   CLUTTER_NOTE (BACKEND, "Realizing main stage");
 
-  is_offscreen = is_fullscreen = FALSE;
   g_object_get (stage_sdl->wrapper,
-                "offscreen", &is_offscreen,
                 "fullscreen-set", &is_fullscreen,
                 NULL);
 
-  if (G_LIKELY (!is_offscreen))
+  if (is_fullscreen)
+    flags |= SDL_FULLSCREEN;
+
+  SDL_GL_SetAttribute (SDL_GL_ACCUM_RED_SIZE, 0);
+  SDL_GL_SetAttribute (SDL_GL_ACCUM_GREEN_SIZE, 0);
+  SDL_GL_SetAttribute (SDL_GL_ACCUM_BLUE_SIZE, 0);
+  SDL_GL_SetAttribute (SDL_GL_ACCUM_ALPHA_SIZE, 0);
+
+  if (SDL_SetVideoMode (stage_sdl->win_width,
+                        stage_sdl->win_height,
+                        0, flags) == NULL)
     {
-      gint flags = SDL_OPENGL;
-
-      if (is_fullscreen)
-        flags |= SDL_FULLSCREEN;
-
-      SDL_GL_SetAttribute (SDL_GL_ACCUM_RED_SIZE, 0);
-      SDL_GL_SetAttribute (SDL_GL_ACCUM_GREEN_SIZE, 0);
-      SDL_GL_SetAttribute (SDL_GL_ACCUM_BLUE_SIZE, 0);
-      SDL_GL_SetAttribute (SDL_GL_ACCUM_ALPHA_SIZE, 0);
-
-      if (SDL_SetVideoMode (stage_sdl->win_width, 
-			    stage_sdl->win_height, 
-			    0, flags) == NULL)
-	{
-	  CLUTTER_NOTE (BACKEND, "SDL appears not to handle this mode - %s",
-			SDL_GetError ());
-
-          return FALSE;
-	}
-    }
-  else
-    {
-      /* FIXME */
-      g_critical ("SDL Backend does not yet support offscreen rendering");
+      CLUTTER_NOTE (BACKEND, "SDL appears not to handle this mode - %s",
+                    SDL_GetError ());
 
       return FALSE;
     }

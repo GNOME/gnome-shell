@@ -67,155 +67,142 @@ clutter_stage_egl_realize (ClutterActor *actor)
   EGLConfig            configs[2];
   EGLint               config_count;
   EGLBoolean           status;
-  gboolean             is_offscreen;
+  EGLint cfg_attribs[] = { EGL_BUFFER_SIZE,     EGL_DONT_CARE,
+                           EGL_RED_SIZE,        5,
+                           EGL_GREEN_SIZE,      6,
+                           EGL_BLUE_SIZE,       5,
+                           EGL_DEPTH_SIZE,      16,
+                           EGL_ALPHA_SIZE,      EGL_DONT_CARE,
+                           EGL_STENCIL_SIZE,    2,
+#ifdef HAVE_COGL_GLES2
+                           EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+#else /* HAVE_COGL_GLES2 */
+                           EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
+#endif /* HAVE_COGL_GLES2 */
+                           EGL_NONE };
 
   CLUTTER_NOTE (BACKEND, "Realizing main stage");
 
-  g_object_get (stage_egl->wrapper, "offscreen", &is_offscreen, NULL);
-
   backend_egl = CLUTTER_BACKEND_EGL (clutter_get_default_backend ());
 
-  if (G_LIKELY (!is_offscreen))
+  status = eglGetConfigs (backend_egl->edpy,
+                          configs,
+                          2,
+                          &config_count);
+
+  if (status != EGL_TRUE)
     {
-      EGLint cfg_attribs[] = { EGL_BUFFER_SIZE,     EGL_DONT_CARE,
-			       EGL_RED_SIZE,        5,
-			       EGL_GREEN_SIZE,      6,
-			       EGL_BLUE_SIZE,       5,
-			       EGL_DEPTH_SIZE,      16,
-			       EGL_ALPHA_SIZE,      EGL_DONT_CARE,
-			       EGL_STENCIL_SIZE,    2, 
-#ifdef HAVE_COGL_GLES2
-			       EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-#else /* HAVE_COGL_GLES2 */
-			       EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
-#endif /* HAVE_COGL_GLES2 */
-			       EGL_NONE };
-
-      status = eglGetConfigs (backend_egl->edpy,
-			      configs, 
-			      2, 
-			      &config_count);
-
-      if (status != EGL_TRUE)
-        {
-	  g_critical ("eglGetConfigs failed");
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
-        }
-
-      status = eglChooseConfig (backend_egl->edpy,
-				cfg_attribs,
-				configs,
-                                G_N_ELEMENTS (configs),
-				&config_count);
-
-      if (status != EGL_TRUE)
-        {
-          g_critical ("eglChooseConfig failed");
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
-        }
-
-      CLUTTER_NOTE (BACKEND, "Got %i configs", config_count); 
-
-      if (stage_egl->egl_surface != EGL_NO_SURFACE)
-        {
-	  eglDestroySurface (backend_egl->edpy, stage_egl->egl_surface);
-          stage_egl->egl_surface = EGL_NO_SURFACE;
-        }
-
-       if (backend_egl->egl_context)
-         {
-            eglDestroyContext (backend_egl->edpy, backend_egl->egl_context);
-            backend_egl->egl_context = NULL;
-         }
-
-      stage_egl->egl_surface =
-	eglCreateWindowSurface (backend_egl->edpy,
-                                configs[0],
-                                NULL,
-                                NULL);
-
-      if (stage_egl->egl_surface == EGL_NO_SURFACE)
-        {
-	  g_critical ("Unable to create an EGL surface");
-
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
-        }
-
-      eglQuerySurface (backend_egl->edpy,
-		       stage_egl->egl_surface,
-		       EGL_WIDTH,
-		       &stage_egl->surface_width);
-
-      eglQuerySurface (backend_egl->edpy,
-		       stage_egl->egl_surface,
-		       EGL_HEIGHT,
-		       &stage_egl->surface_height);
-
-      CLUTTER_NOTE (BACKEND, "EGL surface is %ix%i", 
-		    stage_egl->surface_width,
-                    stage_egl->surface_height);
-
-      
-      if (G_UNLIKELY (backend_egl->egl_context == NULL))
-        {
-#ifdef HAVE_COGL_GLES2
-	  static const EGLint attribs[3]
-	    = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-
-          backend_egl->egl_context = eglCreateContext (backend_egl->edpy,
-						       configs[0],
-                                                       EGL_NO_CONTEXT,
-                                                       attribs);
-#else
-          /* Seems some GLES implementations 1.x do not like attribs... */
-          backend_egl->egl_context = eglCreateContext (backend_egl->edpy,
-						       configs[0],
-                                                       EGL_NO_CONTEXT,
-                                                       NULL);
-#endif
-
-          if (backend_egl->egl_context == EGL_NO_CONTEXT)
-            {
-              g_critical ("Unable to create a suitable EGL context");
-
-              CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-              return;
-            }
-
-          CLUTTER_NOTE (GL, "Created EGL Context");
-        }
-
-      CLUTTER_NOTE (BACKEND, "Setting context");
-
-      /* eglnative can have only one stage */
-      status = eglMakeCurrent (backend_egl->edpy,
-                               stage_egl->egl_surface,
-                               stage_egl->egl_surface,
-                               backend_egl->egl_context);
-
-      if (status != EGL_TRUE)
-        {
-          g_critical ("eglMakeCurrent failed");
-          
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
-        }
-
-      /* since we only have one size and it cannot change, we
-       * just need to update the GL viewport now that we have
-       * been realized
-       */
-      CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
-    }
-  else
-    {
-      g_warning ("EGL Backend does not yet support offscreen rendering\n");
+      g_critical ("eglGetConfigs failed");
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
       return;
     }
+
+  status = eglChooseConfig (backend_egl->edpy,
+                            cfg_attribs,
+                            configs,
+                            G_N_ELEMENTS (configs),
+                            &config_count);
+
+  if (status != EGL_TRUE)
+    {
+      g_critical ("eglChooseConfig failed");
+      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+      return;
+    }
+
+  CLUTTER_NOTE (BACKEND, "Got %i configs", config_count);
+
+  if (stage_egl->egl_surface != EGL_NO_SURFACE)
+    {
+      eglDestroySurface (backend_egl->edpy, stage_egl->egl_surface);
+      stage_egl->egl_surface = EGL_NO_SURFACE;
+    }
+
+   if (backend_egl->egl_context)
+     {
+        eglDestroyContext (backend_egl->edpy, backend_egl->egl_context);
+        backend_egl->egl_context = NULL;
+     }
+
+  stage_egl->egl_surface =
+    eglCreateWindowSurface (backend_egl->edpy,
+                            configs[0],
+                            NULL,
+                            NULL);
+
+  if (stage_egl->egl_surface == EGL_NO_SURFACE)
+    {
+      g_critical ("Unable to create an EGL surface");
+
+      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+      return;
+    }
+
+  eglQuerySurface (backend_egl->edpy,
+                   stage_egl->egl_surface,
+                   EGL_WIDTH,
+                   &stage_egl->surface_width);
+
+  eglQuerySurface (backend_egl->edpy,
+                   stage_egl->egl_surface,
+                   EGL_HEIGHT,
+                   &stage_egl->surface_height);
+
+  CLUTTER_NOTE (BACKEND, "EGL surface is %ix%i",
+                stage_egl->surface_width,
+                stage_egl->surface_height);
+
+
+  if (G_UNLIKELY (backend_egl->egl_context == NULL))
+    {
+#ifdef HAVE_COGL_GLES2
+      static const EGLint attribs[3]
+        = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+
+      backend_egl->egl_context = eglCreateContext (backend_egl->edpy,
+                                                   configs[0],
+                                                   EGL_NO_CONTEXT,
+                                                   attribs);
+#else
+      /* Seems some GLES implementations 1.x do not like attribs... */
+      backend_egl->egl_context = eglCreateContext (backend_egl->edpy,
+                                                   configs[0],
+                                                   EGL_NO_CONTEXT,
+                                                   NULL);
+#endif
+
+      if (backend_egl->egl_context == EGL_NO_CONTEXT)
+        {
+          g_critical ("Unable to create a suitable EGL context");
+
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
+        }
+
+      CLUTTER_NOTE (GL, "Created EGL Context");
+    }
+
+  CLUTTER_NOTE (BACKEND, "Setting context");
+
+  /* eglnative can have only one stage */
+  status = eglMakeCurrent (backend_egl->edpy,
+                           stage_egl->egl_surface,
+                           stage_egl->egl_surface,
+                           backend_egl->egl_context);
+
+  if (status != EGL_TRUE)
+    {
+      g_critical ("eglMakeCurrent failed");
+
+      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+      return;
+    }
+
+  /* since we only have one size and it cannot change, we
+   * just need to update the GL viewport now that we have
+   * been realized
+   */
+  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void

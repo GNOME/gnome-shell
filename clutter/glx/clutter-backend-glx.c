@@ -356,7 +356,6 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
 static gboolean
 clutter_backend_glx_create_context (ClutterBackend  *backend,
-                                    gboolean         is_offscreen,
                                     GError         **error)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
@@ -365,18 +364,17 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
   if (backend_glx->gl_context == None)
     {
       XVisualInfo *xvisinfo;
+      gboolean is_direct;
 
-      xvisinfo =
-        clutter_backend_x11_get_visual_info (backend_x11, is_offscreen);
+      xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
 
-      CLUTTER_NOTE (GL, "Creating GL Context (display: %p, %s)",
-                    backend_x11->xdpy,
-                    is_offscreen ? "offscreen" : "onscreen");
+      CLUTTER_NOTE (GL, "Creating GL Context (display: %p)",
+                    backend_x11->xdpy);
 
       backend_glx->gl_context = glXCreateContext (backend_x11->xdpy,
                                                   xvisinfo,
                                                   0,
-                                                  is_offscreen ? False : True);
+                                                  True);
 
       XFree (xvisinfo);
 
@@ -384,22 +382,16 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
         {
           g_set_error (error, CLUTTER_INIT_ERROR,
                        CLUTTER_INIT_ERROR_BACKEND,
-                       "Unable to create suitable %s GL context",
-                       is_offscreen ? "offscreen" : "onscreen");
+                       "Unable to create suitable GL context");
           return FALSE;
         }
 
-      if (!is_offscreen)
-        {
-          gboolean is_direct;
+      is_direct = glXIsDirect (backend_x11->xdpy,
+                               backend_glx->gl_context);
 
-          is_direct = glXIsDirect (backend_x11->xdpy,
-                                   backend_glx->gl_context);
-
-          CLUTTER_NOTE (GL, "Setting %s context",
-                        is_direct ? "direct" : "indirect");
-          _cogl_set_indirect_context (!is_direct);
-        }
+      CLUTTER_NOTE (GL, "Setting %s context",
+                    is_direct ? "direct" : "indirect");
+      _cogl_set_indirect_context (!is_direct);
     }
 
   return TRUE;
@@ -576,13 +568,6 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
                     (unsigned long) stage_x11->xwin);
       glXSwapBuffers (stage_x11->xdpy, stage_x11->xwin);
     }
-  else
-    {
-      /* offscreen */
-      glXWaitGL ();
-
-      CLUTTER_GLERR ();
-    }
 }
 
 static ClutterStageWindow *
@@ -619,11 +604,10 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
 }
 
 static XVisualInfo *
-clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11,
-                                     gboolean           for_offscreen)
+clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11)
 {
   XVisualInfo *xvisinfo;
-  int onscreen_gl_attributes[] = {
+  int attributes[] = {
     GLX_RGBA,
     GLX_DOUBLEBUFFER,
     GLX_RED_SIZE,     1,
@@ -634,32 +618,19 @@ clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11,
     GLX_DEPTH_SIZE,   1,
     0
   };
-  int offscreen_gl_attributes[] = {
-    GLX_RGBA,
-    GLX_USE_GL,
-    GLX_DEPTH_SIZE,   0,
-    GLX_ALPHA_SIZE,   0,
-    GLX_STENCIL_SIZE, 1,
-    GLX_RED_SIZE,     1,
-    GLX_GREEN_SIZE,   1,
-    GLX_BLUE_SIZE,    1,
-    0
-  };
 
   if (backend_x11->xdpy == None || backend_x11->xscreen == None)
     return NULL;
 
   CLUTTER_NOTE (BACKEND,
-                "Retrieving GL visual (for %s use), dpy: %p, xscreen; %p (%d)",
-                for_offscreen ? "offscreen" : "onscreen",
+                "Retrieving GL visual, dpy: %p, xscreen; %p (%d)",
                 backend_x11->xdpy,
                 backend_x11->xscreen,
                 backend_x11->xscreen_num);
 
   xvisinfo = glXChooseVisual (backend_x11->xdpy,
                               backend_x11->xscreen_num,
-                              for_offscreen ? offscreen_gl_attributes
-                                            : onscreen_gl_attributes);
+                              attributes);
 
   return xvisinfo;
 }
