@@ -162,9 +162,9 @@ ClockWidget.prototype = {
 
     _updateCairo: function(time) {
         let global = Shell.Global.get();
-        global.clutter_cairo_texture_draw_clock(this.collapsedActor,
-                                                time.getHours() % 12,
-                                                time.getMinutes());
+        Shell.draw_clock(this.collapsedActor,
+                         time.getHours() % 12,
+                         time.getMinutes());
     }
 };
 

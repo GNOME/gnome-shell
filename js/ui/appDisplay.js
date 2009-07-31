@@ -497,11 +497,11 @@ WellDisplayItem.prototype = {
         if (this._windows.length > 0) {
             let glow = new Shell.DrawingArea({});
             glow.connect('redraw', Lang.bind(this, function (e, tex) {
-                Shell.Global.clutter_cairo_texture_draw_glow(tex,
-                                                             GLOW_COLOR.red / 255,
-                                                             GLOW_COLOR.green / 255,
-                                                             GLOW_COLOR.blue / 255,
-                                                             GLOW_COLOR.alpha / 255);
+                Shell.draw_glow(tex,
+                                GLOW_COLOR.red / 255,
+                                GLOW_COLOR.green / 255,
+                                GLOW_COLOR.blue / 255,
+                                GLOW_COLOR.alpha / 255);
             }));
             this._name.connect('notify::allocation', Lang.bind(this, function (n, alloc) {
                 let x = this._name.x;

@@ -258,12 +258,12 @@ Dash.prototype = {
 
         dashPane.append(dashBackground, Big.BoxPackFlags.EXPAND);
         
-        let dashLeft = global.create_horizontal_gradient(DASH_LEFT_COLOR,
-                                                         DASH_MIDDLE_COLOR);
-        let dashRight = global.create_horizontal_gradient(DASH_MIDDLE_COLOR,
-                                                          DASH_RIGHT_COLOR);
-        let dashShadow = global.create_horizontal_gradient(SHADOW_COLOR,
-                                                           TRANSPARENT_COLOR);
+        let dashLeft = Shell.create_horizontal_gradient(DASH_LEFT_COLOR,
+                                                        DASH_MIDDLE_COLOR);
+        let dashRight = Shell.create_horizontal_gradient(DASH_MIDDLE_COLOR,
+                                                         DASH_RIGHT_COLOR);
+        let dashShadow = Shell.create_horizontal_gradient(SHADOW_COLOR,
+                                                          TRANSPARENT_COLOR);
         dashShadow.set_width(SHADOW_WIDTH);
         
         dashBackground.append(dashLeft, Big.BoxPackFlags.EXPAND);
@@ -424,12 +424,12 @@ Dash.prototype = {
                                               border_color: DASH_BORDER_COLOR });
         this._resultsPane.add_actor(resultsBackground);
 
-        let resultsLeft = global.create_horizontal_gradient(PANE_LEFT_COLOR,
-                                                            PANE_MIDDLE_COLOR);
-        let resultsRight = global.create_horizontal_gradient(PANE_MIDDLE_COLOR,
-                                                             PANE_RIGHT_COLOR);
-        let resultsShadow = global.create_horizontal_gradient(SHADOW_COLOR,
-                                                              TRANSPARENT_COLOR);
+        let resultsLeft = Shell.create_horizontal_gradient(PANE_LEFT_COLOR,
+                                                           PANE_MIDDLE_COLOR);
+        let resultsRight = Shell.create_horizontal_gradient(PANE_MIDDLE_COLOR,
+                                                            PANE_RIGHT_COLOR);
+        let resultsShadow = Shell.create_horizontal_gradient(SHADOW_COLOR,
+                                                             TRANSPARENT_COLOR);
         resultsShadow.set_width(SHADOW_WIDTH);
 
         resultsBackground.append(resultsLeft, Big.BoxPackFlags.EXPAND);
@@ -460,12 +460,12 @@ Dash.prototype = {
 
         this._detailsPane.append(detailsBackground, Big.BoxPackFlags.EXPAND);
 
-        let detailsLeft = global.create_horizontal_gradient(PANE_LEFT_COLOR,
-                                                            PANE_MIDDLE_COLOR);
-        let detailsRight = global.create_horizontal_gradient(PANE_MIDDLE_COLOR,
-                                                             PANE_RIGHT_COLOR);
-        let detailsShadow = global.create_horizontal_gradient(SHADOW_COLOR,
-                                                              TRANSPARENT_COLOR);
+        let detailsLeft = Shell.create_horizontal_gradient(PANE_LEFT_COLOR,
+                                                           PANE_MIDDLE_COLOR);
+        let detailsRight = Shell.create_horizontal_gradient(PANE_MIDDLE_COLOR,
+                                                            PANE_RIGHT_COLOR);
+        let detailsShadow = Shell.create_horizontal_gradient(SHADOW_COLOR,
+                                                             TRANSPARENT_COLOR);
         detailsShadow.set_width(SHADOW_WIDTH);
         
         detailsBackground.append(detailsLeft, Big.BoxPackFlags.EXPAND);

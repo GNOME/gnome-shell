@@ -58,6 +58,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-app-system.h			\
 	shell-arrow.c			\
 	shell-arrow.h			\
+	shell-drawing.c            \
+	shell-drawing.h            \
 	shell-drawing-area.c			\
 	shell-drawing-area.h			\
 	shell-embedded-window.c			\
