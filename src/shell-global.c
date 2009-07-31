@@ -760,20 +760,6 @@ shell_global_grab_dbus_service (ShellGlobal *global)
   g_object_unref (bus);
 }
 
-void
-shell_global_start_task_panel (ShellGlobal *global)
-{
-  const char* panel_args[] = {"gnomeshell-taskpanel", SHELL_DBUS_SERVICE, NULL};
-  GError *error = NULL;
-
-  if (!g_spawn_async (NULL, (char**)panel_args, NULL, G_SPAWN_SEARCH_PATH, NULL,
-                      NULL, NULL, &error)) 
-    {
-      g_critical ("failed to execute %s: %s", panel_args[0], error->message);
-      g_clear_error (&error);
-    }
-}
-
 static void 
 grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
 {

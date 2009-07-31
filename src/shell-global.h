@@ -48,8 +48,6 @@ MetaScreen *shell_global_get_screen (ShellGlobal  *global);
 
 void shell_global_grab_dbus_service (ShellGlobal *global);
 
-void shell_global_start_task_panel (ShellGlobal *global);
-
 typedef enum {
   SHELL_STAGE_INPUT_MODE_NONREACTIVE,
   SHELL_STAGE_INPUT_MODE_NORMAL,

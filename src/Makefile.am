@@ -23,7 +23,6 @@ include Makefile-tidy.am
 include Makefile-big.am
 include Makefile-gdmuser.am
 include Makefile-tray.am
-include Makefile-taskpanel.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\

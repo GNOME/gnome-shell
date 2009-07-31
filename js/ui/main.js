@@ -35,7 +35,6 @@ function start() {
     Gio.DesktopAppInfo.set_desktop_env("GNOME");
 
     global.grab_dbus_service();
-    global.start_task_panel();
 
     Tweener.init();
 

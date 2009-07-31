@@ -123,19 +123,17 @@ def start_shell():
         top_dir = os.path.dirname(bin_dir)
         plugin = os.path.join(top_dir, 'src', 'libgnome-shell.la')
         typelib_dir = os.path.join(top_dir, "src")
-        taskpanel_dir = os.path.join(top_dir, "src")
         js_dir = os.path.join(top_dir, "js")
         data_dir = os.path.join(top_dir, "data")
     else:
         running_from_source_tree = False
         plugin = 'libgnome-shell'
         js_dir = os.path.join('@pkgdatadir@', 'js')
-        taskpanel_dir = '@libexecdir@'
 
     # Set up environment
     env = dict(os.environ)
     env.update({'GNOME_SHELL_JS'      : '@GJS_JS_DIR@:@GJS_JS_NATIVE_DIR@:' + js_dir,
-                'PATH'                : '@MUTTER_BIN_DIR@:' + os.environ.get('PATH', '') + ':' + taskpanel_dir,
+                'PATH'                : '@MUTTER_BIN_DIR@:' + os.environ.get('PATH', ''),
                 'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
     if running_from_source_tree:
