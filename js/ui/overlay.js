@@ -15,6 +15,7 @@ const GenericDisplay = imports.ui.genericDisplay;
 const Link = imports.ui.link;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
+const Dash = imports.ui.dash;
 const Tweener = imports.ui.tweener;
 const Workspaces = imports.ui.workspaces;
 
@@ -24,19 +25,6 @@ ROOT_OVERLAY_COLOR.from_pixel(0x000000bb);
 // The factor to scale the overlay wallpaper with. This should not be less
 // than 3/2, because the rule of thirds is used for positioning (see below).
 const BACKGROUND_SCALE = 2;
-
-const LABEL_HEIGHT = 16;
-const DASH_MIN_WIDTH = 250;
-const DASH_OUTER_PADDING = 4;
-const DASH_SECTION_PADDING = 6;
-const DASH_SECTION_SPACING = 6;
-const DASH_CORNER_RADIUS = 5;
-// This is the height of section components other than the item display.
-const DASH_SECTION_MISC_HEIGHT = (LABEL_HEIGHT + DASH_SECTION_SPACING) * 2 + DASH_SECTION_PADDING;
-const DASH_SEARCH_BG_COLOR = new Clutter.Color();
-DASH_SEARCH_BG_COLOR.from_pixel(0xffffffff);
-const DASH_TEXT_COLOR = new Clutter.Color();
-DASH_TEXT_COLOR.from_pixel(0xffffffff);
 
 // Time for initial animation going into overlay mode
 const ANIMATION_TIME = 0.25;
@@ -61,6 +49,8 @@ const ROWS_REGULAR_SCREEN = 8;
 const COLUMNS_WIDE_SCREEN = 5;
 const ROWS_WIDE_SCREEN = 10;
 
+const DEFAULT_PADDING = 4;
+
 // Padding around workspace grid / Spacing between Dash and Workspaces
 const WORKSPACE_GRID_PADDING = 12;
 
@@ -75,27 +65,6 @@ const STATE_ACTIVE = true;
 const STATE_PENDING_INACTIVE = false;
 const STATE_INACTIVE = false;
 
-// The dash has a slightly transparent blue background with a gradient.
-const DASH_LEFT_COLOR = new Clutter.Color();
-DASH_LEFT_COLOR.from_pixel(0x0d131fbb);
-const DASH_MIDDLE_COLOR = new Clutter.Color();
-DASH_MIDDLE_COLOR.from_pixel(0x0d131faa);
-const DASH_RIGHT_COLOR = new Clutter.Color();
-DASH_RIGHT_COLOR.from_pixel(0x0d131fcc);
-
-const DASH_BORDER_COLOR = new Clutter.Color();
-DASH_BORDER_COLOR.from_pixel(0x213b5dfa);
-
-const DASH_BORDER_WIDTH = 2;
-
-// The results and details panes have a somewhat transparent blue background with a gradient.
-const PANE_LEFT_COLOR = new Clutter.Color();
-PANE_LEFT_COLOR.from_pixel(0x0d131ff4);
-const PANE_MIDDLE_COLOR = new Clutter.Color();
-PANE_MIDDLE_COLOR.from_pixel(0x0d131ffa);
-const PANE_RIGHT_COLOR = new Clutter.Color();
-PANE_RIGHT_COLOR.from_pixel(0x0d131ff4);
-
 const SHADOW_COLOR = new Clutter.Color();
 SHADOW_COLOR.from_pixel(0x00000033);
 const TRANSPARENT_COLOR = new Clutter.Color();
@@ -109,616 +78,6 @@ let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
 
-function SearchEntry(width) {
-    this._init(width);
-}
-
-SearchEntry.prototype = {
-    _init : function() {
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   y_align: Big.BoxAlignment.CENTER,
-                                   background_color: DASH_SEARCH_BG_COLOR,
-                                   corner_radius: 4,
-                                   spacing: 4,
-                                   padding_left: 4,
-                                   padding_right: 4,
-                                   height: 24
-                                 });
-
-        let icontheme = Gtk.IconTheme.get_default();
-        let searchIconTexture = new Clutter.Texture({});
-        let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
-        searchIconTexture.set_from_file(searchIconPath);
-        this.actor.append(searchIconTexture, 0);
-
-        // We need to initialize the text for the entry to have the cursor displayed
-        // in it. See http://bugzilla.openedhand.com/show_bug.cgi?id=1365
-        this.entry = new Clutter.Text({ font_name: "Sans 14px",
-                                        editable: true,
-                                        activatable: true,
-                                        singleLineMode: true,
-                                        text: ""
-                                      });
-        this.entry.connect('text-changed', Lang.bind(this, function (e) {
-            let text = this.entry.text;
-        }));
-        this.actor.append(this.entry, Big.BoxPackFlags.EXPAND);
-    }
-};
-
-function ItemResults(resultsWidth, resultsHeight, displayClass, labelText) {
-    this._init(resultsWidth, resultsHeight, displayClass, labelText);
-}
-
-ItemResults.prototype = {
-    _init: function(resultsWidth, resultsHeight, displayClass, labelText) {
-        this._resultsWidth = resultsWidth;
-        this._resultsHeight = resultsHeight;
-
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   height: resultsHeight,
-                                   padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH,
-                                   spacing: DASH_SECTION_SPACING });
-
-        this._resultsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
-                                               font_name: "Sans Bold 14px",
-                                               text: labelText });
-
-        this.resultsContainer = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                         spacing: 4 });
-        this.navContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
-        this.resultsContainer.append(this.navContainer, Big.BoxPackFlags.NONE);
-
-        // LABEL_HEIGHT is the height of this._resultsText and GenericDisplay.LABEL_HEIGHT is the height
-        // of the display controls.
-        this._displayHeight = resultsHeight - LABEL_HEIGHT - GenericDisplay.LABEL_HEIGHT - DASH_SECTION_SPACING * 2;
-        this.display = new displayClass(resultsWidth);
-
-        this.navArea = this.display.getNavigationArea();
-        if (this.navArea)
-            this.navContainer.append(this.navArea, Big.BoxPackFlags.EXPAND);
-
-        this.resultsContainer.append(this.display.actor, Big.BoxPackFlags.EXPAND);
-
-        this.controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
-        this.controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
-
-        this._unsetSearchMode();
-    },
-
-    _setSearchMode: function() {
-        if (this.navArea)
-            this.navArea.hide();
-        this.actor.height = this._resultsHeight /  NUMBER_OF_SECTIONS_IN_SEARCH;
-        let displayHeight = this._displayHeight - this._resultsHeight * (NUMBER_OF_SECTIONS_IN_SEARCH - 1) /  NUMBER_OF_SECTIONS_IN_SEARCH;
-        this.actor.remove_all();
-        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
-        this.actor.append(this.resultsContainer, Big.BoxPackFlags.EXPAND);
-        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
-    },
-
-    _unsetSearchMode: function() {
-        if (this.navArea)
-            this.navArea.show();
-        this.actor.height = this._resultsHeight;
-        this.actor.remove_all();
-        this.actor.append(this._resultsText, Big.BoxPackFlags.NONE);
-        this.actor.append(this.resultsContainer, Big.BoxPackFlags.EXPAND);
-        this.actor.append(this.controlBox, Big.BoxPackFlags.END);
-    }
-}
-
-function Dash() {
-    this._init();
-}
-
-Dash.prototype = {
-    _init : function() {
-        let me = this;
-
-        this._moreAppsMode = false;
-        this._moreDocsMode = false;
-
-        this._width = displayGridColumnWidth;
-
-        this._displayWidth = displayGridColumnWidth - DASH_SECTION_PADDING * 2;
-        this._resultsWidth = displayGridColumnWidth;
-        this._detailsWidth = displayGridColumnWidth * 2;
-
-        let global = Shell.Global.get();
-
-        let dashHeight = global.screen_height - Panel.PANEL_HEIGHT;
-        let resultsHeight = global.screen_height - Panel.PANEL_HEIGHT;
-        let detailsHeight = global.screen_height - Panel.PANEL_HEIGHT;
-
-        // Size the actor to 0x0 so as not to interfere with DND
-        this.actor = new Clutter.Group({ width: 0, height: 0 });
-        this.actor.height = global.screen_height;
-
-
-        // dashPane, as well as results and details panes need to be reactive so that the clicks in unoccupied places on them
-        // are not passed to the transparent background underneath them. This background is used for the workspaces area when
-        // the additional dash panes are being shown and it handles clicks by closing the additional panes, so that the user
-        // can interact with the workspaces. However, this behavior is not desirable when the click is actually over a pane.
-        //
-        // We have to make the individual panes reactive instead of making the whole dash actor reactive because the width
-        // of the Group actor ends up including the width of its hidden children, so we were getting a reactive object as
-        // wide as the details pane that was blocking the clicks to the workspaces underneath it even when the details pane
-        // was actually hidden. 
-        let dashPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                     x: 0,
-                                     y: Panel.PANEL_HEIGHT,
-                                     width: this._width + SHADOW_WIDTH,
-                                     height: dashHeight,
-                                     reactive: true});
-
-        let dashBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                           width: this._width,
-                                           height: dashHeight });
-
-        dashPane.append(dashBackground, Big.BoxPackFlags.EXPAND);
-        
-        let dashLeft = Shell.create_horizontal_gradient(DASH_LEFT_COLOR,
-                                                        DASH_MIDDLE_COLOR);
-        let dashRight = Shell.create_horizontal_gradient(DASH_MIDDLE_COLOR,
-                                                         DASH_RIGHT_COLOR);
-        let dashShadow = Shell.create_horizontal_gradient(SHADOW_COLOR,
-                                                          TRANSPARENT_COLOR);
-        dashShadow.set_width(SHADOW_WIDTH);
-        
-        dashBackground.append(dashLeft, Big.BoxPackFlags.EXPAND);
-        dashBackground.append(dashRight, Big.BoxPackFlags.EXPAND);
-        dashPane.append(dashShadow, Big.BoxPackFlags.NONE);
-
-        this.actor.add_actor(dashPane);
-
-        this.dashOuterContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                               x: 0,
-                                               y: dashPane.y,
-                                               width: this._width,
-                                               height: dashHeight,
-                                               padding: DASH_OUTER_PADDING
-                                             });
-        this.actor.add_actor(this.dashOuterContainer);
-        this.dashContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
-        this.dashOuterContainer.append(this.dashContainer, Big.BoxPackFlags.EXPAND);
-
-        this._searchEntry = new SearchEntry();
-        this.dashContainer.append(this._searchEntry.actor, Big.BoxPackFlags.NONE);
-
-        this._searchQueued = false;
-        this._searchEntry.entry.connect('text-changed', function (se, prop) {
-            if (me._searchQueued)
-                return;
-            me._searchQueued = true;
-            Mainloop.timeout_add(250, function() {
-                // Strip leading and trailing whitespace
-                let text = me._searchEntry.entry.text.replace(/^\s+/g, "").replace(/\s+$/g, "");
-                me._searchQueued = false;
-                me._resultsAppsSection.display.setSearch(text);
-                me._resultsDocsSection.display.setSearch(text);
-                if (text == '')
-                    me._unsetSearchMode();
-                else 
-                    me._setSearchMode();
-                   
-                return false;
-            });
-        });
-        this._searchEntry.entry.connect('activate', function (se) {
-            // only one of the displays will have an item selected, so it's ok to
-            // call activateSelected() on all of them
-            me._docDisplay.activateSelected();
-            me._resultsAppsSection.display.activateSelected();
-            me._resultsDocsSection.display.activateSelected();
-            return true;
-        });
-        this._searchEntry.entry.connect('key-press-event', function (se, e) {
-            let symbol = Shell.get_event_key_symbol(e);
-            if (symbol == Clutter.Escape) {
-                // Escape will keep clearing things back to the desktop. First, if
-                // we have active text, we remove it.
-                if (me._searchEntry.entry.text != '')
-                    me._searchEntry.entry.text = '';
-                // Next, if we're in one of the "more" modes or showing the details pane, close them
-                else if (me._resultsShowing())
-                    me.unsetMoreMode();
-                // Finally, just close the overlay entirely
-                else
-                    me.emit('activated');
-                return true;
-            } else if (symbol == Clutter.Up) {
-                if (!me._resultsShowing())
-                    return true;
-                // selectUp and selectDown wrap around in their respective displays
-                // too, but there doesn't seem to be any flickering if we first select
-                // something in one display, but then unset the selection, and move
-                // it to the other display, so it's ok to do that.
-                if (me._resultsDocsSection.display.hasSelected())
-                  me._resultsDocsSection.display.selectUp();
-                else if (me._resultsAppsSection.display.hasItems())
-                  me._resultsAppsSection.display.selectUp();
-                else
-                  me._resultsDocsSection.display.selectUp();
-                return true;
-            } else if (symbol == Clutter.Down) {
-                if (!me._resultsShowing())
-                    return true;
-                if (me._resultsDocsSection.display.hasSelected())
-                  me._resultsDocsSection.display.selectDown();
-                else if (me._resultsAppsSection.display.hasItems())
-                  me._resultsAppsSection.display.selectDown();
-                else
-                  me._resultsDocsSection.display.selectDown();
-                return true;
-            }
-            return false;
-        });
-
-        this._appsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
-                                            font_name: "Sans Bold 14px",
-                                            text: "Applications",
-                                            height: LABEL_HEIGHT});
-        this._appsSection = new Big.Box({ padding_top: DASH_SECTION_PADDING,
-                                          spacing: DASH_SECTION_SPACING});
-        this._appsSection.append(this._appsText, Big.BoxPackFlags.NONE);
-
-        this._itemDisplayHeight = global.screen_height - this._appsSection.y - DASH_SECTION_MISC_HEIGHT * 2;
-        
-        this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
-        this._appsSection.append(this._appsContent, Big.BoxPackFlags.EXPAND);
-        this._appWell = new AppDisplay.AppWell(this._displayWidth);
-        this._appsContent.append(this._appWell.actor, Big.BoxPackFlags.EXPAND);
-
-        let moreAppsBox = new Big.Box({x_align: Big.BoxAlignment.END});
-        this._moreAppsLink = new Link.Link({ color: DASH_TEXT_COLOR,
-                                             font_name: "Sans Bold 14px",
-                                             text: "More...",
-                                             height: LABEL_HEIGHT });
-        moreAppsBox.append(this._moreAppsLink.actor, Big.BoxPackFlags.EXPAND);
-        this._appsSection.append(moreAppsBox, Big.BoxPackFlags.NONE);
-
-        this.dashContainer.append(this._appsSection, Big.BoxPackFlags.NONE);
-
-        this._appsSectionDefaultHeight = this._appsSection.height;
-
-        this._docsSection = new Big.Box({ padding_top: DASH_SECTION_PADDING,
-                                          padding_bottom: DASH_SECTION_PADDING,
-                                          spacing: DASH_SECTION_SPACING});
-
-        this._docsText = new Clutter.Text({ color: DASH_TEXT_COLOR,
-                                            font_name: "Sans Bold 14px",
-                                            text: "Recent Documents",
-                                            height: LABEL_HEIGHT});
-        this._docsSection.append(this._docsText, Big.BoxPackFlags.NONE);
-
-        this._docDisplay = new DocDisplay.DocDisplay(this._displayWidth);
-        this._docsSection.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
-
-        let moreDocsBox = new Big.Box({x_align: Big.BoxAlignment.END});
-        this._moreDocsLink = new Link.Link({ color: DASH_TEXT_COLOR,
-                                             font_name: "Sans Bold 14px",
-                                             text: "More...",
-                                             height: LABEL_HEIGHT });
-        moreDocsBox.append(this._moreDocsLink.actor, Big.BoxPackFlags.EXPAND);
-        this._docsSection.append(moreDocsBox, Big.BoxPackFlags.NONE);
-
-        this.dashContainer.append(this._docsSection, Big.BoxPackFlags.EXPAND);
-
-        this._docsSectionDefaultHeight = this._docsSection.height;
-
-        // The "More" or search results area
-        this._resultsAppsSection = new ItemResults(this._resultsWidth, resultsHeight, AppDisplay.AppDisplay, "Applications");
-        this._resultsDocsSection = new ItemResults(this._resultsWidth, resultsHeight, DocDisplay.DocDisplay, "Documents");
-
-        this._resultsPane = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                          x: this._width,
-                                          y: Panel.PANEL_HEIGHT,
-                                          height: resultsHeight,
-                                          reactive: true });
-
-        let resultsBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                              height: resultsHeight,
-                                              corner_radius: DASH_CORNER_RADIUS,
-                                              border: DASH_BORDER_WIDTH,
-                                              border_color: DASH_BORDER_COLOR });
-        this._resultsPane.add_actor(resultsBackground);
-
-        let resultsLeft = Shell.create_horizontal_gradient(PANE_LEFT_COLOR,
-                                                           PANE_MIDDLE_COLOR);
-        let resultsRight = Shell.create_horizontal_gradient(PANE_MIDDLE_COLOR,
-                                                            PANE_RIGHT_COLOR);
-        let resultsShadow = Shell.create_horizontal_gradient(SHADOW_COLOR,
-                                                             TRANSPARENT_COLOR);
-        resultsShadow.set_width(SHADOW_WIDTH);
-
-        resultsBackground.append(resultsLeft, Big.BoxPackFlags.EXPAND);
-        resultsBackground.append(resultsRight, Big.BoxPackFlags.EXPAND);
-        this._resultsPane.add_actor(resultsShadow);
-        this._resultsPane.connect('notify::allocation', Lang.bind(this, function (b, a) {
-            let width = this._resultsPane.width;
-            resultsBackground.width = width;
-            resultsShadow.width = width;
-        }));
-
-        this.actor.add_actor(this._resultsPane);
-        this._resultsPane.hide();
-
-        this._detailsPane = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                          y: Panel.PANEL_HEIGHT,
-                                          width: this._detailsWidth + SHADOW_WIDTH,
-                                          height: detailsHeight,
-                                          reactive: true });
-        this._firstSelectAfterOverlayShow = true;
-
-        let detailsBackground = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                              width: this._detailsWidth,
-                                              height: detailsHeight,
-                                              corner_radius: DASH_CORNER_RADIUS,
-                                              border: DASH_BORDER_WIDTH,
-                                              border_color: DASH_BORDER_COLOR });
-
-        this._detailsPane.append(detailsBackground, Big.BoxPackFlags.EXPAND);
-
-        let detailsLeft = Shell.create_horizontal_gradient(PANE_LEFT_COLOR,
-                                                           PANE_MIDDLE_COLOR);
-        let detailsRight = Shell.create_horizontal_gradient(PANE_MIDDLE_COLOR,
-                                                            PANE_RIGHT_COLOR);
-        let detailsShadow = Shell.create_horizontal_gradient(SHADOW_COLOR,
-                                                             TRANSPARENT_COLOR);
-        detailsShadow.set_width(SHADOW_WIDTH);
-        
-        detailsBackground.append(detailsLeft, Big.BoxPackFlags.EXPAND);
-        detailsBackground.append(detailsRight, Big.BoxPackFlags.EXPAND);
-        this._detailsPane.append(detailsShadow, Big.BoxPackFlags.NONE);
-
-        this._detailsContent = new Big.Box({ padding: DASH_SECTION_PADDING + DASH_BORDER_WIDTH });
-        this._detailsPane.add_actor(this._detailsContent);
-
-        this.actor.add_actor(this._detailsPane);
-        this._detailsPane.hide();
-
-        let itemDetailsAvailableWidth = this._detailsWidth - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
-        let itemDetailsAvailableHeight = detailsHeight - DASH_SECTION_PADDING * 2 - DASH_BORDER_WIDTH * 2;
-
-        this._docDisplay.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
-        this._resultsAppsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
-        this._resultsDocsSection.display.setAvailableDimensionsForItemDetails(itemDetailsAvailableWidth, itemDetailsAvailableHeight);
-
-        /* Proxy the activated signals */
-        this._appWell.connect('activated', function(well) {
-            me.emit('activated');
-        });
-        this._docDisplay.connect('activated', function(docDisplay) {
-            me.emit('activated');
-        });
-        this._resultsAppsSection.display.connect('activated', function(resultsAppsDisplay) {
-            me.emit('activated');
-        });
-        this._resultsDocsSection.display.connect('activated', function(resultsDocsDisplay) {
-            me.emit('activated');
-        });
-        this._docDisplay.connect('selected', Lang.bind(this, function(docDisplay) {
-            this._resultsDocsSection.display.unsetSelected();
-            this._resultsAppsSection.display.unsetSelected();
-            this._showDetails();
-            this._detailsContent.remove_all();
-            this._detailsContent.append(this._docDisplay.selectedItemDetails, Big.BoxPackFlags.NONE);
-        }));
-        this._docDisplay.connect('toggle-details', Lang.bind(this, function(docDisplay) {
-            this._toggleDetails();
-        }));
-        this._resultsDocsSection.display.connect('selected', Lang.bind(this, function(resultsDocDisplay) {
-            this._docDisplay.unsetSelected();
-            this._resultsAppsSection.display.unsetSelected();
-            this._showDetails();
-            this._detailsContent.remove_all();
-            this._detailsContent.append(this._resultsDocsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
-        }));
-        this._resultsDocsSection.display.connect('toggle-details', Lang.bind(this, function(resultsDocDisplay) {
-            this._toggleDetails();
-        }));
-        this._resultsAppsSection.display.connect('selected', Lang.bind(this, function(resultsAppDisplay) {
-            this._docDisplay.unsetSelected();
-            this._resultsDocsSection.display.unsetSelected();
-            this._showDetails();
-            this._detailsContent.remove_all();
-            this._detailsContent.append(this._resultsAppsSection.display.selectedItemDetails, Big.BoxPackFlags.NONE);
-        }));
-
-        this._moreAppsLink.connect('clicked',
-            function(o, event) {
-                if (me._moreAppsMode) {
-                    me._unsetMoreAppsMode();
-                }  else {
-                    me._setMoreAppsMode();
-                }
-            });
-
-        this._moreDocsLink.connect('clicked',
-            function(o, event) {
-                if (me._moreDocsMode) {
-                    me._unsetMoreDocsMode();
-                }  else {
-                    me._setMoreDocsMode();
-                }
-            });
-    },
-
-    show: function() {
-        let global = Shell.Global.get();
-
-        this._appsContent.show();
-        this._docDisplay.show();
-        global.stage.set_key_focus(this._searchEntry.entry);
-    },
-
-    hide: function() {
-        this._firstSelectAfterOverlayShow = true;
-        this._appsContent.hide();
-        this._docDisplay.hide(); 
-        this._searchEntry.entry.text = '';
-        this.unsetMoreMode();
-    },
-
-    unsetMoreMode: function() {
-        this._unsetMoreAppsMode();
-        this._unsetMoreDocsMode();
-        if (this._detailsShowing()) { 
-             this._detailsPane.hide();
-             this.emit('panes-removed');
-        }
-        this._unsetSearchMode();
-    },
-
-    // Sets the 'More' mode for browsing applications.
-    _setMoreAppsMode: function() {
-        if (this._moreAppsMode)
-            return;
-
-        this._unsetMoreDocsMode();
-        this._unsetSearchMode();
-        this._moreAppsMode = true;
-
-        this._resultsAppsSection.display.show();
-        this._resultsPane.append(this._resultsAppsSection.actor, Big.BoxPackFlags.EXPAND);
-        this._resultsPane.show();
-        this._repositionDetails();
-
-        this._moreAppsLink.setText("Less...");
-        this.emit('panes-displayed');
-    },
-
-    // Unsets the 'More' mode for browsing applications.
-    _unsetMoreAppsMode: function() {
-        if (!this._moreAppsMode)
-            return;
-
-        this._moreAppsMode = false;
-
-        this._resultsPane.remove_actor(this._resultsAppsSection.actor);
-        this._resultsAppsSection.display.hide();
-        this._resultsPane.hide(); 
-
-        this._moreAppsLink.setText("More...");
-
-        this._hideDetails();
-    },   
- 
-    // Sets the 'More' mode for browsing documents.
-    _setMoreDocsMode: function() {
-        if (this._moreDocsMode)
-            return;
-
-        this._unsetMoreAppsMode();
-        this._unsetSearchMode();
-        this._moreDocsMode = true;
-
-        this._resultsDocsSection.display.show();
-        this._resultsPane.append(this._resultsDocsSection.actor, Big.BoxPackFlags.EXPAND);
-        this._resultsPane.show();
-        this._repositionDetails();
-
-        this._moreDocsLink.setText("Less...");
-
-        this.emit('panes-displayed');
-    },
-
-    // Unsets the 'More' mode for browsing documents. 
-    _unsetMoreDocsMode: function() {
-        if (!this._moreDocsMode)
-            return;
-
-        this._moreDocsMode = false;
-
-        this._resultsPane.hide();
-        this._resultsPane.remove_actor(this._resultsDocsSection.actor);
-        this._resultsDocsSection.display.hide();
-
-        this._moreDocsLink.setText("More...");
-
-        this._hideDetails();
-    },
-
-    _setSearchMode: function() {
-
-        if (this._resultsShowing())
-            return;
-
-        this._resultsAppsSection._setSearchMode();
-        this._resultsAppsSection.display.show();
-        this._resultsPane.append(this._resultsAppsSection.actor, Big.BoxPackFlags.EXPAND);
-
-        this._resultsDocsSection._setSearchMode();
-        this._resultsDocsSection.display.show();
-        this._resultsPane.append(this._resultsDocsSection.actor, Big.BoxPackFlags.EXPAND);
-
-        this._resultsPane.show();
-        this._repositionDetails();
-
-        this.emit('panes-displayed');
-    },
-
-    _unsetSearchMode: function() {
-
-        if (this._moreDocsMode || this._moreAppsMode || !this._resultsShowing())
-            return;
-
-        this._resultsPane.hide();
-        this._repositionDetails();
-
-        this._resultsPane.remove_actor(this._resultsAppsSection.actor);
-        this._resultsAppsSection.display.hide();
-        this._resultsAppsSection._unsetSearchMode();
-
-        this._resultsPane.remove_actor(this._resultsDocsSection.actor);
-        this._resultsDocsSection.display.hide();
-        this._resultsDocsSection._unsetSearchMode();
-        this._resultsDocsSection.actor.set_y(0);
-
-        this._hideDetails();
-    },
-
-    _repositionDetails: function () {
-        let x;
-        if (this._resultsPane.visible)
-            x = this._resultsPane.x + this._resultsPane.width;
-        else
-            x = this._width;
-        this._detailsPane.x = x;
-    },
-
-    _showDetails: function () {
-        this._detailsPane.show();
-        this._repositionDetails();
-        this.emit('panes-displayed');
-    },
-
-    _hideDetails: function() {
-        if (!this._detailsShowing)
-            return;
-        this._detailsPane.hide();
-        this.emit('panes-removed');
-     },
-
-    _toggleDetails: function() {
-        if (this._detailsShowing())
-            this._hideDetails();
-        else
-            this._showDetails();
-    },
-
-    _detailsShowing: function() {
-        return this._detailsPane.visible;
-    },
-
-    _resultsShowing: function() {
-        return this._resultsPane.visible;
-    }      
-};
-
-Signals.addSignalMethods(Dash.prototype);
-
 function Overlay() {
     this._init();
 }
@@ -729,10 +88,68 @@ Overlay.prototype = {
 
         let global = Shell.Global.get();
 
+        this._group = new Clutter.Group();
+        this._group._delegate = this;
+
+        this.visible = false;
+        this._hideInProgress = false;
+
+        this._recalculateGridSizes();
+
+        // A scaled root pixmap actor is used as a background. It is zoomed in
+        // to the lower right intersection of the lines that divide the image
+        // evenly in a 3x3 grid. This is based on the rule of thirds, a
+        // compositional rule of thumb in visual arts. The choice for the
+        // lower right point is based on a quick survey of GNOME wallpapers.
+        this._background = global.create_root_pixmap_actor();
+        this._group.add_actor(this._background);
+
+        this._activeDisplayPane = null;
+
+        // Used to catch any clicks when we have an active pane; see the comments
+        // in addPane below.
+        this._transparentBackground = new Clutter.Rectangle({ opacity: 0,
+                                                              reactive: true });
+        this._group.add_actor(this._transparentBackground);
+
+        // Draw a semitransparent rectangle over the background for readability.
+        this._backOver = new Clutter.Rectangle({ color: ROOT_OVERLAY_COLOR });
+        this._group.add_actor(this._backOver);
+
+        this._group.hide();
+        global.overlay_group.add_actor(this._group);
+
+        // TODO - recalculate everything when desktop size changes
+        this._dash = new Dash.Dash(displayGridColumnWidth);
+        this._group.add_actor(this._dash.actor);
+
+        // Container to hold popup pane chrome.
+        this._paneContainer = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                            spacing: 6
+                                          });
+        // Note here we explicitly don't set the paneContainer to be reactive yet; that's done
+        // inside the notify::visible handler on panes.
+        this._paneContainer.connect('button-release-event', Lang.bind(this, function(background) {
+            this._activeDisplayPane.close();
+            return true;
+        }));
+        this._group.add_actor(this._paneContainer);
+
+        this._transparentBackground.lower_bottom();
+        this._paneContainer.lower_bottom();
+
+        this._repositionChildren();
+
+        this._workspaces = null;
+    },
+
+    _recalculateGridSizes: function () {
+        let global = Shell.Global.get();
+
         wideScreen = (global.screen_width/global.screen_height > WIDE_SCREEN_CUT_OFF_RATIO);
 
         // We divide the screen into an imaginary grid which helps us determine the layout of
-        // different visual components.  
+        // different visual components.
         if (wideScreen) {
             displayGridColumnWidth = global.screen_width / COLUMNS_WIDE_SCREEN;
             displayGridRowHeight = global.screen_height / ROWS_WIDE_SCREEN;
@@ -740,87 +157,79 @@ Overlay.prototype = {
             displayGridColumnWidth = global.screen_width / COLUMNS_REGULAR_SCREEN;
             displayGridRowHeight = global.screen_height / ROWS_REGULAR_SCREEN;
         }
+    },
 
-        this._group = new Clutter.Group();
-        this._group._delegate = this;
+    _repositionChildren: function () {
+        let global = Shell.Global.get();
 
-        this.visible = false;
-        this._hideInProgress = false;
+        let contentHeight = global.screen_height - Panel.PANEL_HEIGHT;
 
-        // A scaled root pixmap actor is used as a background. It is zoomed in
-        // to the lower right intersection of the lines that divide the image
-        // evenly in a 3x3 grid. This is based on the rule of thirds, a
-        // compositional rule of thumb in visual arts. The choice for the
-        // lower right point is based on a quick survey of GNOME wallpapers.
-        let background = global.create_root_pixmap_actor();
-        background.width = global.screen_width * BACKGROUND_SCALE;
-        background.height = global.screen_height * BACKGROUND_SCALE;
-        background.x = -global.screen_width * (4 * BACKGROUND_SCALE - 3) / 6;
-        background.y = -global.screen_height * (4 * BACKGROUND_SCALE - 3) / 6;
-        this._group.add_actor(background);
+        this._dash.actor.set_position(0, Panel.PANEL_HEIGHT);
+        this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
 
-        // Transparent background is used to catch clicks outside of the dash panes when the panes
-        // are being displayed and the workspaces area should not be reactive. Catching such a
-        // click results in the panes being closed and the workspaces area becoming reactive again. 
-        this._transparentBackground = new Clutter.Rectangle({ opacity: 0,
-                                                              width: global.screen_width,
-                                                              height: global.screen_height - Panel.PANEL_HEIGHT,
-                                                              y: Panel.PANEL_HEIGHT,
-                                                              reactive: true });
-        this._group.add_actor(this._transparentBackground);
+        this._backOver.set_position(0, Panel.PANEL_HEIGHT);
+        this._backOver.set_size(global.screen_width, contentHeight);
 
-        // Draw a semitransparent rectangle over the background for readability.
-        let backOver = new Clutter.Rectangle({ color: ROOT_OVERLAY_COLOR,
-                                               width: global.screen_width,
-                                               height: global.screen_height - Panel.PANEL_HEIGHT,
-                                               y: Panel.PANEL_HEIGHT });
-        this._group.add_actor(backOver);
+        let bgPositionFactor = (4 * BACKGROUND_SCALE - 3) / 6;
+        this._background.set_size(global.screen_width * BACKGROUND_SCALE,
+                                  global.screen_height * BACKGROUND_SCALE);
+        this._background.set_position(-global.screen_width * bgPositionFactor,
+                                      -global.screen_height * bgPositionFactor);
 
-        this._group.hide();
-        global.overlay_group.add_actor(this._group);
+        this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
+                                         Panel.PANEL_HEIGHT);
+        // Dynamic width
+        this._paneContainer.height = contentHeight;
 
-        // TODO - recalculate everything when desktop size changes
-        this._dash = new Dash();
-        this._group.add_actor(this._dash.actor);
-        this._workspaces = null;
-        this._buttonEventHandlerId = null;
-        this._dash.connect('activated', function(dash) {
-            // TODO - have some sort of animation/effect while
-            // transitioning to the new app.  We definitely need
-            // startup-notification integration at least.
-            me.hide();
-        });
-        this._dash.connect('panes-displayed', function(dash) {
-            if (me._buttonEventHandlerId == null) {
-                me._transparentBackground.raise_top();
-                me._dash.actor.raise_top();
-                me._buttonEventHandlerId = me._transparentBackground.connect('button-release-event', function(background) {
-                    me._dash.unsetMoreMode();
+        this._transparentBackground.set_position(this._paneContainer.x, this._paneContainer.y);
+        this._transparentBackground.set_size(global.screen_width - this._paneContainer.x,
+                                             this._paneContainer.height);
+    },
+
+    addPane: function (pane) {
+        pane.actor.width = displayGridColumnWidth * 2;
+        this._paneContainer.append(pane.actor, Big.BoxPackFlags.NONE);
+        // When a pane is displayed, we raise the transparent background to the top
+        // and connect to button-release-event on it, then raise the pane above that.
+        // The idea here is that clicking anywhere outside the pane should close it.
+        // When the active pane is closed, undo the effect.
+        let backgroundEventId = null;
+        pane.connect('open-state-changed', Lang.bind(this, function (pane, isOpen) {
+            if (isOpen) {
+                this._activeDisplayPane = pane;
+                this._transparentBackground.raise_top();
+                this._paneContainer.raise_top();
+                if (backgroundEventId != null)
+                    this._transparentBackground.disconnect(backgroundEventId);
+                backgroundEventId = this._transparentBackground.connect('button-release-event', Lang.bind(this, function () {
+                    this._activeDisplayPane.close();
                     return true;
-                }); 
-            }    
-        });
-        this._dash.connect('panes-removed', function(dash) {
-            if (me._buttonEventHandlerId != null) {
-                me._transparentBackground.lower_bottom();  
-                me._transparentBackground.disconnect(me._buttonEventHandlerId);  
-                me._buttonEventHandlerId = null;
+                }));
+            } else if (pane == this._activeDisplayPane) {
+                this._activeDisplayPane = null;
+                if (backgroundEventId != null) {
+                    this._transparentBackground.disconnect(backgroundEventId);
+                    backgroundEventId = null;
+                }
+                this._transparentBackground.lower_bottom();
+                this._paneContainer.lower_bottom();
             }
-        });
+        }));
     },
 
     //// Draggable target interface ////
 
-    // Unsets the expanded display mode if a GenericDisplayItem is being 
+    // Closes any active panes if a GenericDisplayItem is being
     // dragged over the overlay, i.e. as soon as it starts being dragged.
-    // This closes the additional panes and allows the user to place
-    // the item on any workspace.
+    // This allows the user to place the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
-        if (source instanceof GenericDisplay.GenericDisplayItem) {
-            this._dash.unsetMoreMode();
+        if (source instanceof GenericDisplay.GenericDisplayItem
+            || source instanceof AppDisplay.WellDisplayItem) {
+            if (this._activeDisplayPane != null)
+                this._activeDisplayPane.close();
             return true;
         }
-  
+
         return false;
     },
 
@@ -901,7 +310,9 @@ Overlay.prototype = {
         let global = Shell.Global.get();
 
         this._hideInProgress = true;
-        // lower the Dash, so that workspaces display is on top and covers the Dash while it is sliding out
+        if (this._activeDisplayPane != null)
+            this._activeDisplayPane.close();
+        // lower the panes, so that workspaces display is on top while sliding out
         this._dash.actor.lower(this._workspaces.actor);
         this._workspaces.hide();
 

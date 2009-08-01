@@ -15,6 +15,7 @@ const Tidy = imports.gi.Tidy;
 const Button = imports.ui.button;
 const DND = imports.ui.dnd;
 const Link = imports.ui.link;
+const Main = imports.ui.main;
 
 const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
 ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);
@@ -28,20 +29,19 @@ const DISPLAY_CONTROL_SELECTED_COLOR = new Clutter.Color();
 DISPLAY_CONTROL_SELECTED_COLOR.from_pixel(0x112288ff);
 const PREVIEW_BOX_BACKGROUND_COLOR = new Clutter.Color();
 PREVIEW_BOX_BACKGROUND_COLOR.from_pixel(0xADADADf0);
-const HOT_PINK_DEBUG = new Clutter.Color();
-HOT_PINK_DEBUG.from_pixel(0xFF8888FF);
+
+const DEFAULT_PADDING = 4;
 
 const ITEM_DISPLAY_HEIGHT = 50;
 const ITEM_DISPLAY_ICON_SIZE = 48;
-const ITEM_DISPLAY_PADDING_TOP = 1;
+const ITEM_DISPLAY_PADDING = 1;
 const ITEM_DISPLAY_PADDING_RIGHT = 2;
 const DEFAULT_COLUMN_GAP = 6;
-const LABEL_HEIGHT = 16;
 
 const PREVIEW_ICON_SIZE = 96;
 const PREVIEW_BOX_PADDING = 6;
-const PREVIEW_BOX_SPACING = 4;
-const PREVIEW_BOX_CORNER_RADIUS = 10; 
+const PREVIEW_BOX_SPACING = DEFAULT_PADDING;
+const PREVIEW_BOX_CORNER_RADIUS = 10;
 // how far relative to the full item width the preview box should be placed
 const PREVIEW_PLACING = 3/4;
 const PREVIEW_DETAILS_MIN_WIDTH = PREVIEW_ICON_SIZE * 2;
@@ -49,25 +49,25 @@ const PREVIEW_DETAILS_MIN_WIDTH = PREVIEW_ICON_SIZE * 2;
 const INFORMATION_BUTTON_SIZE = 16;
 
 /* This is a virtual class that represents a single display item containing
- * a name, a description, and an icon. It allows selecting an item and represents 
+ * a name, a description, and an icon. It allows selecting an item and represents
  * it by highlighting it with a different background color than the default.
- *
- * availableWidth - total width available for the item
  */
-function GenericDisplayItem(availableWidth) {
-    this._init(availableWidth);
+function GenericDisplayItem() {
+    this._init();
 }
 
 GenericDisplayItem.prototype = {
-    _init: function(availableWidth) {
-        this._availableWidth = availableWidth;
+    _init: function() {
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                   spacing: ITEM_DISPLAY_PADDING,
+                                   reactive: true,
+                                   background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
+                                   corner_radius: 4,
+                                   height: ITEM_DISPLAY_HEIGHT });
 
-        this.actor = new Clutter.Group({ reactive: true,
-                                         width: availableWidth,
-                                         height: ITEM_DISPLAY_HEIGHT });
         this.actor._delegate = this;
-        this.actor.connect('button-release-event', 
-                           Lang.bind(this, 
+        this.actor.connect('button-release-event',
+                           Lang.bind(this,
                                      function() {
                                          // Activates the item by launching it
                                          this.emit('activate');
@@ -77,11 +77,16 @@ GenericDisplayItem.prototype = {
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
 
-        this._bg = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
-                                 corner_radius: 4,
-                                 x: 0, y: 0,
-                                 width: availableWidth, height: ITEM_DISPLAY_HEIGHT });
-        this.actor.add_actor(this._bg);
+        this._infoContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                          spacing: DEFAULT_PADDING });
+        this.actor.append(this._infoContent, Big.BoxPackFlags.EXPAND);
+
+        this._iconBox = new Big.Box();
+        this._infoContent.append(this._iconBox, Big.BoxPackFlags.NONE);
+
+        this._infoText = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                       spacing: DEFAULT_PADDING });
+        this._infoContent.append(this._infoText, Big.BoxPackFlags.EXPAND);
 
         let global = Shell.Global.get();
         let infoIconUri = "file://" + global.imagedir + "info.svg";
@@ -90,10 +95,14 @@ GenericDisplayItem.prototype = {
                                                                       INFORMATION_BUTTON_SIZE,
                                                                       INFORMATION_BUTTON_SIZE);
         this._informationButton = new Button.iconButton(this.actor, INFORMATION_BUTTON_SIZE, infoIcon);
-        this._informationButton.actor.x = availableWidth - ITEM_DISPLAY_PADDING_RIGHT - INFORMATION_BUTTON_SIZE;
-        this._informationButton.actor.y = ITEM_DISPLAY_HEIGHT / 2 - INFORMATION_BUTTON_SIZE / 2;
+        let buttonBox = new Big.Box({ width: INFORMATION_BUTTON_SIZE + 2 * DEFAULT_PADDING,
+                                      height: INFORMATION_BUTTON_SIZE,
+                                      padding_left: DEFAULT_PADDING, padding_right: DEFAULT_PADDING,
+                                      y_align: Big.BoxAlignment.CENTER });
+        buttonBox.append(this._informationButton.actor, Big.BoxPackFlags.NONE);
+        this.actor.append(buttonBox, Big.BoxPackFlags.END);
 
-        // Connecting to the button-press-event for the information button ensures that the actor, 
+        // Connecting to the button-press-event for the information button ensures that the actor,
         // which is a draggable actor, does not get the button-press-event and doesn't initiate
         // the dragging, which then prevents us from getting the button-release-event for the button.
         this._informationButton.actor.connect('button-press-event',
@@ -105,11 +114,9 @@ GenericDisplayItem.prototype = {
                                               Lang.bind(this,
                                                         function() {
                                                             // Selects the item by highlighting it and displaying its details
-                                                            this.emit('select');
+                                                            this.emit('show-details');
                                                             return true;
                                                         }));
-        this.actor.add_actor(this._informationButton.actor);
-        this._informationButton.actor.lower_bottom();
 
         this._name = null;
         this._description = null;
@@ -170,18 +177,17 @@ GenericDisplayItem.prototype = {
            color = ITEM_DISPLAY_BACKGROUND_COLOR;
            this._informationButton.forceShow(false);
        }
-       this._bg.background_color = color;
+       this.actor.background_color = color;
     },
 
     /*
-     * Returns an actor containing item details. In the future details can have more information than what 
+     * Returns an actor containing item details. In the future details can have more information than what
      * the preview pop-up has and be item-type specific.
      *
      * availableWidth - width available for displaying details
-     * availableHeight - height available for displaying details
-     */ 
-    createDetailsActor: function(availableWidth, availableHeight) {
- 
+     */
+    createDetailsActor: function(availableWidth) {
+
         let details = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     spacing: PREVIEW_BOX_SPACING,
                                     width: availableWidth });
@@ -196,7 +202,7 @@ GenericDisplayItem.prototype = {
         let detailsName = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
                                              font_name: "Sans bold 14px",
                                              line_wrap: true,
-                                             text: this._name.text});
+                                             text: this._name.text });
         textDetails.append(detailsName, Big.BoxPackFlags.NONE);
 
         let detailsDescription = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
@@ -210,7 +216,7 @@ GenericDisplayItem.prototype = {
         mainDetails.append(textDetails, Big.BoxPackFlags.EXPAND);
 
         let previewIcon = this._createPreviewIcon();
-        let largePreviewIcon = this._createLargePreviewIcon(availableWidth, Math.max(0, availableHeight - mainDetails.height - PREVIEW_BOX_SPACING));
+        let largePreviewIcon = this._createLargePreviewIcon(availableWidth, -1);
 
         if (previewIcon != null && largePreviewIcon == null) {
             mainDetails.prepend(previewIcon, Big.BoxPackFlags.NONE);
@@ -266,29 +272,24 @@ GenericDisplayItem.prototype = {
         }
 
         this._icon = this._createIcon();
-        this.actor.add_actor(this._icon);
+        this._iconBox.append(this._icon, Big.BoxPackFlags.NONE);
 
-        let textWidth = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4) - INFORMATION_BUTTON_SIZE - ITEM_DISPLAY_PADDING_RIGHT;
         this._name = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
                                         font_name: "Sans 14px",
-                                        width: textWidth,
                                         ellipsize: Pango.EllipsizeMode.END,
-                                        text: nameText,
-                                        x: ITEM_DISPLAY_ICON_SIZE + 4,
-                                        y: ITEM_DISPLAY_PADDING_TOP });
-        this.actor.add_actor(this._name);
+                                        text: nameText });
+        this._infoText.append(this._name, Big.BoxPackFlags.EXPAND);
+
         this._description = new Clutter.Text({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
                                                font_name: "Sans 12px",
-                                               width: textWidth,
                                                ellipsize: Pango.EllipsizeMode.END,
-                                               text: descriptionText ? descriptionText : "",
-                                               x: this._name.x,
-                                               y: this._name.height + 4 });
-        this.actor.add_actor(this._description);
+                                               text: descriptionText ? descriptionText : ""
+                                            });
+        this._infoText.append(this._description, Big.BoxPackFlags.EXPAND);
     },
 
     // Sets the description text for the item, including the description text
-    // in the details actors that have been created for the item. 
+    // in the details actors that have been created for the item.
     _setDescriptionText: function(text) {
         this._description.text = text;
         for (let i = 0; i < this._detailsDescriptions.length; i++) {
@@ -332,22 +333,18 @@ Signals.addSignalMethods(GenericDisplayItem.prototype);
 
 /* This is a virtual class that represents a display containing a collection of items
  * that can be filtered with a search string.
- *
- * width - width available for the display
  */
-function GenericDisplay(width) {
-    this._init(width);
+function GenericDisplay() {
+    this._init();
 }
 
 GenericDisplay.prototype = {
-    _init : function(width) {
+    _init : function() {
         this._search = '';
         this._expanded = false;
-        this._width = width;
 
         this._maxItemsPerPage = null;
-        this._list = new Shell.OverflowList({ width: this._width,
-                                              spacing: 6.0,
+        this._list = new Shell.OverflowList({ spacing: 6.0,
                                               item_height: ITEM_DISPLAY_HEIGHT });
 
         this._list.connect('notify::n-pages', Lang.bind(this, function (grid, alloc) {
@@ -364,6 +361,7 @@ GenericDisplay.prototype = {
         this._matchedItems = [];
         // map<itemId, GenericDisplayItem>
         this._displayedItems = {};
+        this._openDetailIndex = -1;
         this._selectedIndex = -1;
         // These two are public - .actor is the normal "actor subclass" property,
         // but we also expose a .displayControl actor which is separate.
@@ -372,23 +370,9 @@ GenericDisplay.prototype = {
         this.displayControl = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
                                             spacing: 12,
                                             orientation: Big.BoxOrientation.HORIZONTAL});
-
-        this._availableWidthForItemDetails = width;
-        this.selectedItemDetails = new Big.Box({});
     },
 
     //// Public methods ////
-
-    // Sets dimensions available for the item details display.
-    setAvailableDimensionsForItemDetails: function(availableWidth, availableHeight) {
-        this._availableWidthForItemDetails = availableWidth;
-        this._availableHeightForItemDetails = availableHeight;
-    },
-
-    // Returns dimensions available for the item details display.
-    getAvailableDimensionsForItemDetails: function() {
-        return [this._availableWidthForItemDetails, this._availableHeightForItemDetails];
-    },
 
     // Sets the search string and displays the matching items.
     setSearch: function(text) {
@@ -400,8 +384,9 @@ GenericDisplay.prototype = {
     activateSelected: function() {
         if (this._selectedIndex != -1) {
             let selected = this._findDisplayedByIndex(this._selectedIndex);
-            selected.launch()
-            this.emit('activated');
+            selected.launch();
+            this.unsetSelected();
+            Main.overlay.hide();
         }
     },
 
@@ -463,23 +448,26 @@ GenericDisplay.prototype = {
         return this._list.displayedCount > 0;
     },
 
-    // Updates the displayed items and makes the display actor visible.
-    show: function() {
-        this._list.show();
+    // Load the initial state
+    load: function() {
         this._redisplay(true);
     },
 
-    // Hides the display actor.
-    hide: function() {
-        this._list.hide();
+    // Should be called when the display is closed
+    resetState: function() {
         this._filterReset();
-        this._removeAllDisplayItems();
+        this._openDetailIndex = -1;
     },
 
     // Returns an actor which acts as a sidebar; this is used for
     // the applications category view
     getNavigationArea: function () {
         return null;
+    },
+
+    createDetailsForIndex: function(index, width, height) {
+        let item = this._findDisplayedByIndex(index);
+        return item.createDetailsActor(width, height);
     },
 
     //// Protected methods ////
@@ -538,7 +526,7 @@ GenericDisplay.prototype = {
         }
 
         let itemInfo = this._allItems[itemId];
-        let displayItem = this._createDisplayItem(itemInfo, this._width);
+        let displayItem = this._createDisplayItem(itemInfo);
 
         displayItem.connect('activate',
                             Lang.bind(this,
@@ -548,11 +536,18 @@ GenericDisplay.prototype = {
                                           this.activateSelected();
                                       }));
 
-        displayItem.connect('select', 
+        displayItem.connect('show-details',
                             Lang.bind(this,
                                       function() {
-                                          // update the selection
-                                          this._selectIndex(this._getIndexOfDisplayedActor(displayItem.actor));
+                                          let index = this._getIndexOfDisplayedActor(displayItem.actor);
+                                          /* Close the details pane if already open */
+                                          if (index == this._openDetailIndex) {
+                                              this._openDetailIndex = -1;
+                                              this.emit('show-details', -1);
+                                          } else {
+                                              this._openDetailIndex = index;
+                                              this.emit('show-details', index);
+                                          }
                                       }));
         this._list.add_actor(displayItem.actor);
         this._displayedItems[itemId] = displayItem;
@@ -564,11 +559,11 @@ GenericDisplay.prototype = {
         let displayItem = this._displayedItems[itemId];
         let displayItemIndex = this._getIndexOfDisplayedActor(displayItem.actor);
 
-        if (this.hasSelected() && (count == 1 || !this._list.visible)) {
+        if (this.hasSelected() && count == 1) {
             this.unsetSelected();
         } else if (this.hasSelected() && displayItemIndex < this._selectedIndex) {
             this.selectUp();
-        } 
+        }
 
         displayItem.destroy();
 
@@ -603,9 +598,6 @@ GenericDisplay.prototype = {
      *             their own while the user was browsing through the result pages.
      */
     _redisplay: function(resetPage) {
-        if (!this._list.visible)
-            return;
-
         this._refreshCache();
         if (!this._filterActive())
             this._setDefaultList();
@@ -729,7 +721,6 @@ GenericDisplay.prototype = {
                 let pageControl = new Link.Link({ color: (i == pageNumber) ? DISPLAY_CONTROL_SELECTED_COLOR : ITEM_DISPLAY_DESCRIPTION_COLOR,
                                                   font_name: "Sans Bold 16px",
                                                   text: (i+1) + "",
-                                                  height: LABEL_HEIGHT,
                                                   reactive: (i == pageNumber) ? false : true});
                 this.displayControl.append(pageControl.actor, Big.BoxPackFlags.NONE);
 
@@ -794,22 +785,13 @@ GenericDisplay.prototype = {
 
         // If the item is already selected, all we do is toggling the details pane.
         if (this._selectedIndex == index && index >= 0) {
-            this.emit('toggle-details');
+            this.emit('details', index);
             return;
         }
 
         // Cleanup from the previous item
         if (this._selectedIndex >= 0) {
             this._findDisplayedByIndex(this._selectedIndex).markSelected(false);
-
-            // Calling destroy() gets large image previews released as quickly as
-            // possible, if we just removed them, they might hang around for a while
-            // until the actor was garbage collected.
-            let children = this.selectedItemDetails.get_children();
-            for (let i = 0; i < children.length; i++)
-                children[i].destroy();
-
-            this.selectedItemDetails.remove_all();
         }
 
         this._selectedIndex = index;
@@ -819,8 +801,6 @@ GenericDisplay.prototype = {
         // Mark the new item as selected and create its details pane
         let item = this._findDisplayedByIndex(index);
         item.markSelected(true);
-        this.selectedItemDetails.append(item.createDetailsActor(this._availableWidthForItemDetails,
-            this._availableHeightForItemDetails), Big.BoxPackFlags.NONE);
         this.emit('selected');
     }
 };

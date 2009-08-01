@@ -18,19 +18,18 @@ const Main = imports.ui.main;
  *
  * docInfo - DocInfo object containing information about the document
  * currentSeconds - current number of seconds since the epoch
- * availableWidth - total width available for the item
  */
-function DocDisplayItem(docInfo, currentSecs, availableWidth) {
-    this._init(docInfo, currentSecs, availableWidth);
+function DocDisplayItem(docInfo, currentSecs) {
+    this._init(docInfo, currentSecs);
 }
 
 DocDisplayItem.prototype = {
     __proto__:  GenericDisplay.GenericDisplayItem.prototype,
 
-    _init : function(docInfo, currentSecs, availableWidth) {
-        GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth);
+    _init : function(docInfo, currentSecs) {
+        GenericDisplay.GenericDisplayItem.prototype._init.call(this);
         this._docInfo = docInfo;
-       
+
         this._setItemInfo(docInfo.name, "");
 
         this._timeoutTime = -1;
@@ -91,18 +90,16 @@ DocDisplayItem.prototype = {
 
 /* This class represents a display containing a collection of document items.
  * The documents are sorted by how recently they were last visited.
- *
- * width - width available for the display
  */
-function DocDisplay(width) {
-    this._init(width);
+function DocDisplay() {
+    this._init();
 }
 
 DocDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function(width) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, width);
+    _init : function() {
+        GenericDisplay.GenericDisplay.prototype._init.call(this);
         let me = this;
 
         // We keep a single timeout callback for updating last visited times
@@ -203,9 +200,9 @@ DocDisplay.prototype = {
     },
 
     // Creates a DocDisplayItem based on itemInfo, which is expected to be a DocInfo object.
-    _createDisplayItem: function(itemInfo, width) {
+    _createDisplayItem: function(itemInfo) {
         let currentSecs = new Date().getTime() / 1000;
-        let docDisplayItem = new DocDisplayItem(itemInfo, currentSecs, width);
+        let docDisplayItem = new DocDisplayItem(itemInfo, currentSecs);
         this._updateTimeoutCallback(docDisplayItem, currentSecs);
         return docDisplayItem;
     },
