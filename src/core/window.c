@@ -762,6 +762,16 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->compositor_private = NULL;
 
+  if (window->override_redirect)
+    {
+      window->decorated = FALSE;
+      window->always_sticky = TRUE;
+      window->has_close_func = FALSE;
+      window->has_shade_func = FALSE;
+      window->has_move_func = FALSE;
+      window->has_resize_func = FALSE;
+    }
+
   meta_display_register_x_window (display, &window->xwindow, window);
 
 
