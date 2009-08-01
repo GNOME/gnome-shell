@@ -1291,7 +1291,7 @@ meta_window_unmanage (MetaWindow  *window,
   if (window->display->focus_window == window)
     {
       window->display->focus_window = NULL;
-      g_object_notify (window->display, "focus-window");
+      g_object_notify (G_OBJECT (window->display), "focus-window");
     }
 
   if (window->maximized_horizontally || window->maximized_vertically)
@@ -5750,7 +5750,7 @@ meta_window_notify_focus (MetaWindow *window,
             meta_display_ungrab_focus_window_button (window->display, window);
 
           g_signal_emit (window, window_signals[FOCUS], 0);
-          g_object_notify (window->display, "focus-window");
+          g_object_notify (G_OBJECT (window->display), "focus-window");
         }
     }
   else if (event->type == FocusOut ||
@@ -5776,7 +5776,7 @@ meta_window_notify_focus (MetaWindow *window,
                       "* Focus --> NULL (was %s)\n", window->desc);
 
           window->display->focus_window = NULL;
-          g_object_notify (window->display, "focus-window");
+          g_object_notify (G_OBJECT (window->display), "focus-window");
           window->has_focus = FALSE;
           if (window->frame)
             meta_frame_queue_draw (window->frame);
