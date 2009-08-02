@@ -13,6 +13,7 @@ const Chrome = imports.ui.chrome;
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
+const LookingGlass = imports.ui.lookingGlass;
 const Sidebar = imports.ui.sidebar;
 const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
@@ -25,6 +26,7 @@ let panel = null;
 let sidebar = null;
 let overlay = null;
 let runDialog = null;
+let lookingGlass = null;
 let wm = null;
 let recorder = null;
 let inModal = false;
@@ -140,6 +142,14 @@ function endModal() {
     global.ungrab_keyboard();
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
     inModal = false;
+}
+
+function createLookingGlass() {
+    if (lookingGlass == null) {
+        lookingGlass = new LookingGlass.LookingGlass();
+        lookingGlass.slaveTo(panel.actor);
+    }
+    return lookingGlass;
 }
 
 function createAppLaunchContext() {

@@ -31,7 +31,12 @@ RunDialog.prototype = {
 
         this._isOpen = false;
 
-        this._internalCommands = { 'restart': Lang.bind(this, function() {
+        this._internalCommands = { 'lg':
+                                   Lang.bind(this, function() {
+                                       Mainloop.idle_add(function() { Main.createLookingGlass().open(); });
+                                   }),
+                                   
+                                   'restart': Lang.bind(this, function() {
                                        let global = Shell.Global.get();
                                        global.reexec_self();
                                    })
