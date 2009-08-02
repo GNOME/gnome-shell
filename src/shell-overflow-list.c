@@ -147,6 +147,9 @@ shell_overflow_list_allocate (ClutterActor           *actor,
       ClutterActor *actor = CLUTTER_ACTOR (iter->data);
       ClutterActorBox child_box;
 
+      if (iter != children)
+        curheight += priv->spacing;
+
       if ((curheight + priv->item_height) > avail_height)
         {
           overflow = TRUE;
@@ -163,8 +166,6 @@ shell_overflow_list_allocate (ClutterActor           *actor,
       clutter_actor_allocate (actor, &child_box, flags);
 
       curheight += priv->item_height;
-      if (iter != children)
-        curheight += priv->spacing;
     }
 
   priv->items_per_page = n_fits;
