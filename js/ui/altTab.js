@@ -62,7 +62,7 @@ AltTabPopup.prototype = {
         let labelbox = new Big.Box({ background_color: POPUP_INDICATOR_COLOR,
                                      corner_radius: POPUP_GRID_SPACING / 2,
                                      padding: POPUP_GRID_SPACING / 2 });
-        labelbox.append(this._label, Big.BoxPackFlags.EXPAND);
+        labelbox.append(this._label, Big.BoxPackFlags.NONE);
         let lcenterbox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                        x_align: Big.BoxAlignment.CENTER,
                                        width: POPUP_LABEL_MAX_WIDTH + POPUP_GRID_SPACING });
@@ -155,8 +155,8 @@ AltTabPopup.prototype = {
                                        transition: "easeOutQuad" });
 
 	this.actor.show_all();
-        this.actor.x = (global.screen_width - this.actor.width) / 2;
-        this.actor.y = (global.screen_height - this.actor.height) / 2;
+        this.actor.x = Math.floor((global.screen_width - this.actor.width) / 2);
+        this.actor.y = Math.floor((global.screen_height - this.actor.height) / 2);
 
         this.select(initialSelection);
     },
