@@ -1813,9 +1813,9 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
   g_return_if_fail (point != NULL);
   g_return_if_fail (vertex != NULL);
 
-  x = vertex->x;
-  y = vertex->y;
-  z = vertex->z;
+  x = point->x;
+  y = point->y;
+  z = point->z;
   w = 1.0;
 
   /* First we tranform the point using the OpenGL modelview matrix */
