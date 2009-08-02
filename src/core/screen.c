@@ -85,6 +85,7 @@ enum
   WORKSPACE_ADDED,
   WORKSPACE_REMOVED,
   WORKSPACE_SWITCHED,
+  STARTUP_SEQUENCE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -198,6 +199,15 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_INT,
                   G_TYPE_INT,
                   MUTTER_TYPE_MOTION_DIRECTION);
+
+  screen_signals[STARTUP_SEQUENCE_CHANGED] =
+    g_signal_new ("startup-sequence-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__POINTER,
+                  G_TYPE_NONE, 1, G_TYPE_POINTER);
 
   screen_signals[TOGGLE_RECORDING] =
     g_signal_new ("toggle-recording",
@@ -2662,9 +2672,9 @@ add_sequence (MetaScreen        *screen,
    * to compute exactly when we may next time out
    */
   if (screen->startup_sequence_timeout == 0)
-    screen->startup_sequence_timeout = g_timeout_add (1000,
-                                                      startup_sequence_timeout,
-                                                      screen);
+    screen->startup_sequence_timeout = g_timeout_add_seconds (1,
+                                                              startup_sequence_timeout,
+                                                              screen);
 
   update_startup_feedback (screen);
 }
@@ -2679,8 +2689,7 @@ remove_sequence (MetaScreen        *screen,
   
   screen->startup_sequences = g_slist_remove (screen->startup_sequences,
                                               sequence);
-  sn_startup_sequence_unref (sequence);
-  
+
   if (screen->startup_sequences == NULL &&
       screen->startup_sequence_timeout != 0)
     {
@@ -2689,6 +2698,8 @@ remove_sequence (MetaScreen        *screen,
     }
 
   update_startup_feedback (screen);
+
+  sn_startup_sequence_unref (sequence);
 }
 
 typedef struct
@@ -2779,7 +2790,9 @@ meta_screen_sn_event (SnMonitorEvent *event,
   screen = user_data;
 
   sequence = sn_monitor_event_get_startup_sequence (event);
-  
+
+  sn_startup_sequence_ref (sequence);
+
   switch (sn_monitor_event_get_type (event))
     {
     case SN_MONITOR_EVENT_INITIATED:
@@ -2818,6 +2831,22 @@ meta_screen_sn_event (SnMonitorEvent *event,
                   sn_startup_sequence_get_id (sequence));
       break;
     }
+
+  g_signal_emit (G_OBJECT (screen), screen_signals[STARTUP_SEQUENCE_CHANGED], 0, sequence);
+
+  sn_startup_sequence_unref (sequence);
+}
+
+/**
+ * meta_screen_get_startup_sequences:
+ * @screen:
+ *
+ * Return value: (transfer none): Currently active #SnStartupSequence items
+ */
+GSList *
+meta_screen_get_startup_sequences (MetaScreen *screen)
+{
+  return screen->startup_sequences;
 }
 #endif
 
