@@ -34,7 +34,9 @@ PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0x324c6ffa);
 const DEFAULT_FONT = 'Sans 16px';
 
 const TRAY_PADDING = 0;
+// See comments around _recomputeTraySize
 const TRAY_SPACING = 14;
+const TRAY_SPACING_MIN = 8;
 
 // Used for the tray icon container with gtk pre-2.16, which doesn't
 // fully support tray icon transparency
@@ -113,6 +115,7 @@ Panel.prototype = {
                                     height: TRAY_HEIGHT,
                                     padding: TRAY_PADDING,
                                     spacing: TRAY_SPACING });
+        this._trayBox = trayBox;
 
         // gtk+ < 2.16 doesn't have fully-working icon transparency,
         // so we want trayBox to be opaque in that case (the icons
@@ -129,19 +132,21 @@ Panel.prototype = {
 
         this._traymanager = new Shell.TrayManager({ bg_color: TRAY_BACKGROUND_COLOR });
         this._traymanager.connect('tray-icon-added',
-            function(o, icon) {
+            Lang.bind(this, function(o, icon) {
                 trayBox.append(icon, Big.BoxPackFlags.NONE);
 
                 // Make sure the trayBox is shown.
                 trayBox.show();
-            });
+                this._recomputeTraySize();
+            }));
         this._traymanager.connect('tray-icon-removed',
-            function(o, icon) {
+            Lang.bind(this, function(o, icon) {
                 trayBox.remove_actor(icon);
 
                 if (trayBox.get_children().length == 0)
                     trayBox.hide();
-            });
+                this._recomputeTraySize();
+            }));
         this._traymanager.manage_stage(global.stage);
 
         // TODO: decide what to do with the rest of the panel in the overlay mode (make it fade-out, become non-reactive, etc.)
@@ -172,6 +177,17 @@ Panel.prototype = {
                            time: 0.2,
                            transition: "easeOutQuad"
                          });
+    },
+
+    // By default, tray icons have a spacing of TRAY_SPACING.  However this
+    // starts to fail if we have too many as can sadly happen; just jump down
+    // to a spacing of 8 if we're over 6.
+    // http://bugzilla.gnome.org/show_bug.cgi?id=590495
+    _recomputeTraySize: function () {
+        if (this._trayBox.get_children().length > 6)
+            this._trayBox.spacing = TRAY_SPACING_MIN;
+        else
+            this._trayBox.spacing = TRAY_SPACING;
     },
 
     _updateClock: function() {
