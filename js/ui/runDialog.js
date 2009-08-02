@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -43,11 +44,12 @@ RunDialog.prototype = {
                               (global.screen_height - BOX_HEIGHT) / 2);
         this._group.add_actor(boxGroup);
 
-        let box = new Clutter.Rectangle({ color: BOX_BACKGROUND_COLOR,
-                                          reactive: false,
-                                          width: BOX_WIDTH,
-                                          height: BOX_HEIGHT,
-                                          border_width: 0 });
+        let box = new Big.Box({ background_color: BOX_BACKGROUND_COLOR,
+                                corner_radius: 4,
+                                reactive: false,
+                                width: BOX_WIDTH,
+                                height: BOX_HEIGHT
+                              });
         boxGroup.add_actor(box);
 
         let label = new Clutter.Text({ color: BOX_TEXT_COLOR,
