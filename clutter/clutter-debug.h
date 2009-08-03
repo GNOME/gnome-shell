@@ -28,7 +28,7 @@ typedef enum {
 
 #ifdef CLUTTER_ENABLE_DEBUG
 
-#ifdef __GNUC_
+#ifdef __GNUC__
 #define CLUTTER_NOTE(type,x,a...)               G_STMT_START {  \
         if (clutter_debug_flags & CLUTTER_DEBUG_##type)         \
           { g_message ("[" #type "] " G_STRLOC ": " x, ##a); }  \
