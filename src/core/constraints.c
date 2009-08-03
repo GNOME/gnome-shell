@@ -700,8 +700,17 @@ get_size_limits (const MetaWindow        *window,
 
       min_size->width  += fw;
       min_size->height += fh;
-      max_size->width  += fw;
-      max_size->height += fh;
+      /* Do check to avoid overflow (e.g. max_size->width & max_size->height
+       * may be set to G_MAXINT by meta_set_normal_hints()).
+       */
+      if (max_size->width < (G_MAXINT - fw))
+        max_size->width += fw;
+      else
+        max_size->width = G_MAXINT;
+      if (max_size->height < (G_MAXINT - fh))
+        max_size->height += fh;
+      else
+        max_size->height = G_MAXINT;
     }
 }
 
