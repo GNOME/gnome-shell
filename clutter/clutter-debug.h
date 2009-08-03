@@ -77,11 +77,11 @@ typedef enum {
 
 #else /* !CLUTTER_ENABLE_DEBUG */
 
-#define CLUTTER_NOTE(type,...)
-#define CLUTTER_MARK()
-#define CLUTTER_DBG(x)
-#define CLUTTER_GLERR()
-#define CLUTTER_TIMESTAMP(type,...)
+#define CLUTTER_NOTE(type,...)         G_STMT_START { } G_STMT_END
+#define CLUTTER_MARK()                 G_STMT_START { } G_STMT_END
+#define CLUTTER_DBG(x)                 G_STMT_START { } G_STMT_END
+#define CLUTTER_GLERR()                G_STMT_START { } G_STMT_END
+#define CLUTTER_TIMESTAMP(type,...)    G_STMT_START { } G_STMT_END
 
 #endif /* CLUTTER_ENABLE_DEBUG */
 
