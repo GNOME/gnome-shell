@@ -87,3 +87,6 @@ test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
 test_interactive_CPPFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
+
+EXTRA_DIST = wrapper.sh
+
