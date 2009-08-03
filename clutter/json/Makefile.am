@@ -27,6 +27,8 @@ INCLUDES = \
 	-DG_LOG_DOMAIN=\"Clutter-Json\" \
 	-DG_DISABLE_DEPRECATED
 
+AM_CFLAGS = $(MAINTAINER_CFLAGS)
+
 clutterjsondir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter/json
 clutterjson_HEADERS = $(source_h)
 

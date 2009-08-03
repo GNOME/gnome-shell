@@ -10,7 +10,7 @@ INCLUDES = \
 	-I$(top_builddir)/clutter \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \
-	$(GCC_FLAGS)
+	$(MAINTAINER_CFLAGS)
 
 LDADD = $(CLUTTER_LIBS) $(top_builddir)/clutter/x11/libclutter-x11.la
 
