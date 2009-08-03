@@ -58,8 +58,6 @@ redhand_alpha.png:
 	ln -sf $(top_srcdir)/tests/data/redhand_alpha.png
 light0.png:
 	ln -sf $(top_srcdir)/tests/data/light0.png
-light1.png:
-	ln -sf $(top_srcdir)/tests/data/light1.png
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers
@@ -71,7 +69,7 @@ wrappers: test-interactive$(EXEEXT)
 
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests
-BUILT_SOURCES = wrappers redhand.png redhand_alpha.png light0.png light1.png test-script.json
+BUILT_SOURCES = wrappers redhand.png redhand_alpha.png light0.png test-script.json
 
 INCLUDES = \
 	-I$(top_srcdir)	\
