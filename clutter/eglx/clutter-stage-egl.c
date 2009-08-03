@@ -32,6 +32,8 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageEGL,
 static void
 clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage_window);
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
@@ -41,7 +43,7 @@ clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
 
   if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
     {
-      XDestroyWindow (stage_x11->xdpy, stage_x11->xwin);
+      XDestroyWindow (backend_x11->xdpy, stage_x11->xwin);
       stage_x11->xwin = None;
     }
   else
@@ -53,7 +55,7 @@ clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
 
-  XSync (stage_x11->xdpy, False);
+  XSync (backend_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
 }
@@ -149,20 +151,20 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
 
   if (stage_x11->xwin == None)
     stage_x11->xwin =
-      XCreateSimpleWindow (stage_x11->xdpy,
-                           stage_x11->xwin_root,
+      XCreateSimpleWindow (backend_x11->xdpy,
+                           backend_x11->xwin_root,
                            0, 0,
                            stage_x11->xwin_width,
                            stage_x11->xwin_height,
                            0, 0,
-                           WhitePixel (stage_x11->xdpy,
-                                       stage_x11->xscreen));
+                           WhitePixel (backend_x11->xdpy,
+                                       backend_x11->xscreen_num));
 
   if (clutter_x11_has_event_retrieval ())
     {
       if (clutter_x11_has_xinput ())
         {
-          XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+          XSelectInput (backend_x11->xdpy, stage_x11->xwin,
                         StructureNotifyMask |
                         FocusChangeMask |
                         ExposureMask |
@@ -173,7 +175,7 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
 #endif
         }
       else
-        XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+        XSelectInput (backend_x11->xdpy, stage_x11->xwin,
                       StructureNotifyMask |
                       FocusChangeMask |
                       ExposureMask |

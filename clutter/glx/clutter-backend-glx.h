@@ -63,6 +63,8 @@ struct _ClutterBackendGLX
   ClutterBackendX11 parent_instance;
 
   /* Single context for all wins */
+  gboolean               found_fbconfig;
+  GLXFBConfig            fbconfig;
   GLXContext             gl_context;
 
   /* Vblank stuff */
@@ -83,6 +85,10 @@ struct _ClutterBackendGLXClass
 };
 
 GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
+
+gboolean
+_clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_x11,
+                                   GLXFBConfig       *config);
 
 G_END_DECLS
 

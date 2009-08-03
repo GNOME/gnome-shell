@@ -54,17 +54,11 @@ struct _ClutterStageX11
   guint        fullscreen_on_map  : 1;
   guint        is_cursor_visible  : 1;
 
-  Display     *xdpy;
-  Window       xwin_root;
-  int          xscreen;
-  XVisualInfo *xvisinfo;
-  Window       xwin;  
+  Window       xwin;
   gint         xwin_width;
   gint         xwin_height; /* FIXME target_width / height */
-  Pixmap       xpixmap;
   gchar       *title;
 
-  ClutterBackendX11 *backend;
   ClutterStageState  state;
 
   ClutterStageX11State wm_state;

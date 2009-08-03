@@ -354,10 +354,14 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   return flags;
 }
 
-static gboolean
-clutter_backend_glx_get_fbconfig (ClutterBackendX11 *backend_x11,
-                                  GLXFBConfig       *config)
+/* It seems the GLX spec never defined an invalid GLXFBConfig that
+ * we could overload as an indication of error, so we have to return
+ * an explicit boolean status. */
+gboolean
+_clutter_backend_glx_get_fbconfig (ClutterBackendGLX *backend_glx,
+                                   GLXFBConfig       *config)
 {
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend_glx);
   int attributes[] = {
     GLX_DRAWABLE_TYPE,  GLX_WINDOW_BIT,
     GLX_RENDER_TYPE,    GLX_RGBA_BIT,
@@ -376,6 +380,12 @@ clutter_backend_glx_get_fbconfig (ClutterBackendX11 *backend_x11,
   if (backend_x11->xdpy == None || backend_x11->xscreen == None)
     return FALSE;
 
+  if (backend_glx->found_fbconfig)
+    {
+      *config = backend_glx->fbconfig;
+      return TRUE;
+    }
+
   CLUTTER_NOTE (BACKEND,
                 "Retrieving GL fbconfig, dpy: %p, xscreen; %p (%d)",
                 backend_x11->xdpy,
@@ -387,12 +397,13 @@ clutter_backend_glx_get_fbconfig (ClutterBackendX11 *backend_x11,
                                attributes,
                                &n_configs);
   if (configs)
-    *config = configs[0];
-
-  XFree (configs);
-
-  if (configs)
-    return TRUE;
+    {
+      *config = configs[0];
+      backend_glx->found_fbconfig = TRUE;
+      backend_glx->fbconfig = configs[0];
+      XFree (configs);
+      return TRUE;
+    }
   else
     return FALSE;
 }
@@ -400,9 +411,10 @@ clutter_backend_glx_get_fbconfig (ClutterBackendX11 *backend_x11,
 static XVisualInfo *
 clutter_backend_glx_get_visual_info (ClutterBackendX11 *backend_x11)
 {
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend_x11);
   GLXFBConfig config;
 
-  if (!clutter_backend_glx_get_fbconfig (backend_x11, &config))
+  if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
     return NULL;
 
   return glXGetVisualFromFBConfig (backend_x11->xdpy, config);
@@ -420,7 +432,7 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
       GLXFBConfig config;
       gboolean is_direct;
 
-      if (!clutter_backend_glx_get_fbconfig (backend_x11, &config))
+      if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
         {
           g_set_error (error, CLUTTER_INIT_ERROR,
                        CLUTTER_INIT_ERROR_BACKEND,
@@ -479,6 +491,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
   else
     {
       ClutterBackendGLX *backend_glx;
+      ClutterBackendX11 *backend_x11;
       ClutterStageGLX   *stage_glx;
       ClutterStageX11   *stage_x11;
 
@@ -491,6 +504,7 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       stage_glx = CLUTTER_STAGE_GLX (impl);
       stage_x11 = CLUTTER_STAGE_X11 (impl);
       backend_glx = CLUTTER_BACKEND_GLX (backend);
+      backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
       /* no GL context to set */
       if (backend_glx->gl_context == None)
@@ -503,9 +517,6 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
        */
       if (stage_x11->xwin == None)
         {
-          ClutterBackendX11 *backend_x11;
-
-          backend_x11 = CLUTTER_BACKEND_X11 (backend);
           CLUTTER_NOTE (MULTISTAGE,
                         "Received a stale stage, clearing all context");
 
@@ -515,12 +526,12 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
         {
           CLUTTER_NOTE (BACKEND,
                         "MakeContextCurrent dpy: %p, window: 0x%x (%s), context: %p",
-                        stage_x11->xdpy,
+                        backend_x11->xdpy,
                         (int) stage_x11->xwin,
                         stage_x11->is_foreign_xwin ? "foreign" : "native",
                         backend_glx->gl_context);
 
-          glXMakeContextCurrent (stage_x11->xdpy,
+          glXMakeContextCurrent (backend_x11->xdpy,
                                  stage_x11->xwin,
                                  stage_x11->xwin,
                                  backend_glx->gl_context);
@@ -596,6 +607,7 @@ static void
 clutter_backend_glx_redraw (ClutterBackend *backend,
                             ClutterStage   *stage)
 {
+  ClutterBackendX11 *backend_x11;
   ClutterStageGLX *stage_glx;
   ClutterStageX11 *stage_x11;
   ClutterStageWindow *impl;
@@ -609,6 +621,7 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
 
   g_assert (CLUTTER_IS_STAGE_GLX (impl));
 
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
   stage_x11 = CLUTTER_STAGE_X11 (impl);
   stage_glx = CLUTTER_STAGE_GLX (impl);
 
@@ -624,9 +637,9 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
 
       /* push on the screen */
       CLUTTER_NOTE (BACKEND, "glXSwapBuffers (display: %p, window: 0x%lx)",
-                    stage_x11->xdpy,
+                    backend_x11->xdpy,
                     (unsigned long) stage_x11->xwin);
-      glXSwapBuffers (stage_x11->xdpy, stage_x11->xwin);
+      glXSwapBuffers (backend_x11->xdpy, stage_x11->xwin);
     }
 }
 
@@ -646,18 +659,14 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
 
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  stage_x11->xdpy = backend_x11->xdpy;
-  stage_x11->xwin_root = backend_x11->xwin_root;
-  stage_x11->xscreen = backend_x11->xscreen_num;
-  stage_x11->backend = backend_x11;
   stage_x11->wrapper = wrapper;
 
   CLUTTER_NOTE (BACKEND,
                 "GLX stage created[%p] (dpy:%p, screen:%d, root:%u, wrap:%p)",
                 stage_window,
-                stage_x11->xdpy,
-                stage_x11->xscreen,
-                (unsigned int) stage_x11->xwin_root,
+                backend_x11->xdpy,
+                backend_x11->xscreen_num,
+                (unsigned int) backend_x11->xwin_root,
                 wrapper);
 
   return stage_window;

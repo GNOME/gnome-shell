@@ -86,6 +86,11 @@ struct _ClutterBackendX11Class
 {
   ClutterBackendClass parent_class;
 
+  /*
+   * To support foreign stage windows the we need a way to ask for an
+   * XVisualInfo that may be used by toolkits to create an XWindow, and this
+   * may need to be handled differently for different backends.
+   */
   XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend);
 };
 

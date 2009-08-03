@@ -91,7 +91,12 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
                                    gint             new_width,
                                    gint             new_height)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   gboolean resize;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
 
@@ -134,7 +139,7 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
             }
         }
 
-      XSetWMNormalHints (stage_x11->xdpy, stage_x11->xwin, size_hints);
+      XSetWMNormalHints (backend_x11->xdpy, stage_x11->xwin, size_hints);
 
       XFree(size_hints);
     }
@@ -143,22 +148,31 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11,
 void
 clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 {
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   Atom protocols[2];
   int n = 0;
   
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
   protocols[n++] = backend_x11->atom_WM_DELETE_WINDOW;
   protocols[n++] = backend_x11->atom_NET_WM_PING;
 
-  XSetWMProtocols (stage_x11->xdpy, stage_x11->xwin, protocols, n);
+  XSetWMProtocols (backend_x11->xdpy, stage_x11->xwin, protocols, n);
 }
 
 static void
 clutter_stage_x11_get_geometry (ClutterStageWindow *stage_window,
                                 ClutterGeometry    *geometry)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   gboolean is_fullscreen, resize;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   is_fullscreen = FALSE;
   g_object_get (G_OBJECT (stage_x11->wrapper),
@@ -167,8 +181,8 @@ clutter_stage_x11_get_geometry (ClutterStageWindow *stage_window,
 
   if (is_fullscreen || stage_x11->fullscreen_on_map)
     {
-      geometry->width = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
-      geometry->height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
+      geometry->width = DisplayWidth (backend_x11->xdpy, backend_x11->xscreen_num);
+      geometry->height = DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num);
 
       return;
     }
@@ -193,10 +207,15 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                           gint                width,
                           gint                height)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   gboolean resize;
 
   resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   if (width == 0 || height == 0)
     {
@@ -227,7 +246,7 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
           CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper,
                                      CLUTTER_STAGE_IN_RESIZE);
 
-          XResizeWindow (stage_x11->xdpy,
+          XResizeWindow (backend_x11->xdpy,
                          stage_x11->xwin,
                          stage_x11->xwin_width,
                          stage_x11->xwin_height);
@@ -235,35 +254,28 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
 
       if (!resize)
         clutter_stage_x11_fix_window_size (stage_x11, width, height);
-
-      if (stage_x11->xpixmap != None)
-        {
-          /* Need to recreate to resize */
-          _clutter_actor_rerealize (CLUTTER_ACTOR (stage_x11->wrapper),
-                                    NULL,
-                                    NULL);
-        }
     }
 }
 
 static inline void
 set_wm_pid (ClutterStageX11 *stage_x11)
 {
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   long pid;
 
   if (stage_x11->xwin == None)
     return;
 
   /* this will take care of WM_CLIENT_MACHINE and WM_LOCALE_NAME */
-  XSetWMProperties (stage_x11->xdpy, stage_x11->xwin,
+  XSetWMProperties (backend_x11->xdpy, stage_x11->xwin,
                     NULL,
                     NULL,
                     NULL, 0,
                     NULL, NULL, NULL);
 
   pid = getpid();
-  XChangeProperty (stage_x11->xdpy,
+  XChangeProperty (backend_x11->xdpy,
                    stage_x11->xwin,
                    backend_x11->atom_NET_WM_PID, XA_CARDINAL, 32,
                    PropModeReplace,
@@ -273,26 +285,30 @@ set_wm_pid (ClutterStageX11 *stage_x11)
 static inline void
 set_wm_title (ClutterStageX11 *stage_x11)
 {
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   if (stage_x11->xwin == None)
     return;
 
   if (stage_x11->title == NULL)
     {
-      XDeleteProperty (stage_x11->xdpy, 
+      XDeleteProperty (backend_x11->xdpy,
                        stage_x11->xwin, 
                        backend_x11->atom_NET_WM_NAME);
     }
   else
     {
-      XChangeProperty (stage_x11->xdpy, 
+      XChangeProperty (backend_x11->xdpy,
                        stage_x11->xwin, 
-                       backend_x11->atom_NET_WM_NAME, 
-                       backend_x11->atom_UTF8_STRING, 
+                       backend_x11->atom_NET_WM_NAME,
+                       backend_x11->atom_UTF8_STRING,
                        8, 
                        PropModeReplace, 
-                       (unsigned char *) stage_x11->title, 
+                       (unsigned char *) stage_x11->title,
                        (int) strlen (stage_x11->title));
     }
 }
@@ -300,6 +316,12 @@ set_wm_title (ClutterStageX11 *stage_x11)
 static inline void
 set_cursor_visible (ClutterStageX11 *stage_x11)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
   if (stage_x11->xwin == None)
     return;
 
@@ -310,9 +332,9 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
   if (stage_x11->is_cursor_visible)
     {
 #if 0 /* HAVE_XFIXES - seems buggy/unreliable */
-      XFixesShowCursor (stage_x11->xdpy, stage_x11->xwin);
+      XFixesShowCursor (backend_x11->xdpy, stage_x11->xwin);
 #else
-      XUndefineCursor (stage_x11->xdpy, stage_x11->xwin);
+      XUndefineCursor (backend_x11->xdpy, stage_x11->xwin);
 #endif /* HAVE_XFIXES */
     }
   else
@@ -320,20 +342,20 @@ set_cursor_visible (ClutterStageX11 *stage_x11)
 #if 0 /* HAVE_XFIXES - seems buggy/unreliable, check cursor in firefox 
        *               loading page after hiding.  
       */
-      XFixesHideCursor (stage_x11->xdpy, stage_x11->xwin);
+      XFixesHideCursor (backend_x11->xdpy, stage_x11->xwin);
 #else
       XColor col;
       Pixmap pix;
       Cursor curs;
 
-      pix = XCreatePixmap (stage_x11->xdpy, stage_x11->xwin, 1, 1, 1);
+      pix = XCreatePixmap (backend_x11->xdpy, stage_x11->xwin, 1, 1, 1);
       memset (&col, 0, sizeof (col));
-      curs = XCreatePixmapCursor (stage_x11->xdpy, 
+      curs = XCreatePixmapCursor (backend_x11->xdpy,
                                   pix, pix,
                                   &col, &col,
                                   1, 1);
-      XFreePixmap (stage_x11->xdpy, pix);
-      XDefineCursor (stage_x11->xdpy, stage_x11->xwin, curs);
+      XFreePixmap (backend_x11->xdpy, pix);
+      XDefineCursor (backend_x11->xdpy, stage_x11->xwin, curs);
 #endif /* HAVE_XFIXES */
     }
 }
@@ -354,9 +376,13 @@ static void
 clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
                                   gboolean            is_fullscreen)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
   ClutterStage *stage = stage_x11->wrapper;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   if (stage == NULL)
     return;
@@ -372,8 +398,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
          but Metacity (at least) will fullscreen to only one of the
          displays. This will cause the actor to report the wrong size
          until the ConfigureNotify for the correct size is received */
-      width  = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
-      height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
+      width  = DisplayWidth (backend_x11->xdpy, backend_x11->xscreen_num);
+      height = DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num);
 
       /* we force the stage to the screen size here, in order to
        * get the fullscreen stage size right after the call to
@@ -397,7 +423,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
           if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
             {
               /* FIXME: This wont work if we support more states */
-              XChangeProperty (stage_x11->xdpy,
+              XChangeProperty (backend_x11->xdpy,
                                stage_x11->xwin,
                                backend_x11->atom_NET_WM_STATE, XA_ATOM, 32,
                                PropModeReplace,
@@ -427,7 +453,7 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
           if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
             {
               /* FIXME: This wont work if we support more states */
-              XDeleteProperty (stage_x11->xdpy, 
+              XDeleteProperty (backend_x11->xdpy,
                                stage_x11->xwin, 
                                backend_x11->atom_NET_WM_STATE);
             }
@@ -482,7 +508,12 @@ clutter_stage_x11_set_user_resizable (ClutterStageWindow *stage_window,
 static void
 update_wm_hints (ClutterStageX11 *stage_x11)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   XWMHints wm_hints;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   if (stage_x11->wm_state & STAGE_X11_WITHDRAWN)
     return;
@@ -490,7 +521,7 @@ update_wm_hints (ClutterStageX11 *stage_x11)
   wm_hints.flags = StateHint;
   wm_hints.initial_state = NormalState;
 
-  XSetWMHints (stage_x11->xdpy, stage_x11->xwin, &wm_hints);
+  XSetWMHints (backend_x11->xdpy, stage_x11->xwin, &wm_hints);
 }
 
 static void
@@ -516,7 +547,12 @@ static void
 clutter_stage_x11_show (ClutterStageWindow *stage_window,
                         gboolean            do_raise)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   if (stage_x11->xwin != None)
     {
@@ -524,7 +560,7 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
         {
           CLUTTER_NOTE (BACKEND, "Raising stage[%lu]",
                         (unsigned long) stage_x11->xwin);
-          XRaiseWindow (stage_x11->xdpy, stage_x11->xwin);
+          XRaiseWindow (backend_x11->xdpy, stage_x11->xwin);
         }
 
       if (!STAGE_X11_IS_MAPPED (stage_x11))
@@ -546,14 +582,19 @@ clutter_stage_x11_show (ClutterStageWindow *stage_window,
 
       clutter_actor_map (CLUTTER_ACTOR (stage_x11->wrapper));
 
-      XMapWindow (stage_x11->xdpy, stage_x11->xwin);
+      XMapWindow (backend_x11->xdpy, stage_x11->xwin);
     }
 }
 
 static void
 clutter_stage_x11_hide (ClutterStageWindow *stage_window)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  g_return_if_fail (CLUTTER_IS_BACKEND_X11 (backend));
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   if (stage_x11->xwin != None)
     {
@@ -564,7 +605,7 @@ clutter_stage_x11_hide (ClutterStageWindow *stage_window)
 
       clutter_actor_unmap (CLUTTER_ACTOR (stage_x11->wrapper));
 
-      XWithdrawWindow (stage_x11->xdpy,
+      XWithdrawWindow (backend_x11->xdpy,
                        stage_x11->xwin,
                        0);
     }
@@ -604,14 +645,9 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
 static void
 clutter_stage_x11_init (ClutterStageX11 *stage)
 {
-  stage->xdpy = NULL;
-  stage->xwin_root = None;
-  stage->xscreen = 0;
-
   stage->xwin = None;
   stage->xwin_width = 640;
   stage->xwin_height = 480;
-  stage->xvisinfo = None;
 
   stage->wm_state = STAGE_X11_WITHDRAWN;
 
@@ -645,7 +681,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
  * clutter_x11_get_stage_window:
  * @stage: a #ClutterStage
  *
- * Gets the stages X Window. 
+ * Gets the stages X Window.
  *
  * Return value: An XID for the stage window.
  *
@@ -703,34 +739,29 @@ clutter_x11_get_stage_from_window (Window win)
  * clutter_x11_get_stage_visual:
  * @stage: a #ClutterStage
  *
- * Returns the stage XVisualInfo
+ * Returns an XVisualInfo suitable for creating a foreign window for the given
+ * stage. NOTE: It doesn't do as the name may suggest, which is return the
+ * XVisualInfo that was used to create an existing window for the given stage.
  *
- * Return value: The XVisualInfo for the stage.
+ * XXX: It might be best to deprecate this function and replace with something
+ * along the lines of clutter_backend_x11_get_foreign_visual () or perhaps
+ * clutter_stage_x11_get_foreign_visual ()
+ *
+ * Return value: An XVisualInfo suitable for creating a foreign stage.
+ *               You should free this using XFree.
  *
  * Since: 0.4
  */
 XVisualInfo *
 clutter_x11_get_stage_visual (ClutterStage *stage)
 {
-  ClutterStageWindow *impl;
-  ClutterStageX11 *stage_x11;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
 
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+  g_return_val_if_fail (CLUTTER_IS_BACKEND_X11 (backend), NULL);
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  impl = _clutter_stage_get_window (stage);
-  g_assert (CLUTTER_IS_STAGE_X11 (impl));
-
-  stage_x11 = CLUTTER_STAGE_X11 (impl);
-
-  if (stage_x11->xvisinfo == NULL)
-    {
-      ClutterBackendX11 *backend_x11 = stage_x11->backend;
-
-      stage_x11->xvisinfo =
-        clutter_backend_x11_get_visual_info (backend_x11);
-    }
-
-  return stage_x11->xvisinfo;
+  return clutter_backend_x11_get_visual_info (backend_x11);
 }
 
 typedef struct {
@@ -745,6 +776,8 @@ set_foreign_window_callback (ClutterActor *actor,
                              void         *data)
 {
   ForeignWindowData *fwd = data;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)",
                 (unsigned int) fwd->xwindow);
@@ -753,7 +786,7 @@ set_foreign_window_callback (ClutterActor *actor,
     {
       CLUTTER_NOTE (BACKEND, "Destroying previous window (0x%x)",
                     (unsigned int) fwd->xwindow);
-      XDestroyWindow (fwd->stage_x11->xdpy, fwd->stage_x11->xwin);
+      XDestroyWindow (backend_x11->xdpy, fwd->stage_x11->xwin);
     }
 
   fwd->stage_x11->xwin = fwd->xwindow;
@@ -786,6 +819,8 @@ gboolean
 clutter_x11_set_stage_foreign (ClutterStage *stage,
                                Window        xwindow)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11;
   ClutterStageWindow *impl;
   ClutterActor *actor;
@@ -794,6 +829,10 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   Window root_return;
   Status status;
   ForeignWindowData fwd;
+  XVisualInfo *xvisinfo;
+
+  g_return_val_if_fail (CLUTTER_IS_BACKEND_X11 (backend), FALSE);
+  backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (xwindow != None, FALSE);
@@ -803,19 +842,21 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   impl = _clutter_stage_get_window (stage);
   stage_x11 = CLUTTER_STAGE_X11 (impl);
 
+  xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
+
   clutter_x11_trap_x_errors ();
 
-  status = XGetGeometry (stage_x11->xdpy, xwindow,
+  status = XGetGeometry (backend_x11->xdpy, xwindow,
                          &root_return,
                          &x, &y,
                          &width, &height,
                          &border,
                          &depth);
-  
+
   if (clutter_x11_untrap_x_errors () ||
       !status ||
       width == 0 || height == 0 ||
-      depth != stage_x11->xvisinfo->depth)
+      depth != xvisinfo->depth)
     {
       g_warning ("Unable to retrieve the new window geometry");
       return FALSE;

@@ -248,16 +248,12 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage);
-  stage_x11->xdpy = backend_x11->xdpy;
-  stage_x11->xwin_root = backend_x11->xwin_root;
-  stage_x11->xscreen = backend_x11->xscreen_num;
-  stage_x11->backend = backend_x11;
   stage_x11->wrapper = wrapper;
   
   CLUTTER_NOTE (MISC, "EGLX stage created (display:%p, screen:%d, root:%u)",
-                stage_x11->xdpy,
-                stage_x11->xscreen,
-                (unsigned int) stage_x11->xwin_root);
+                backend_x11->xdpy,
+                backend_x11->xscreen_num,
+                (unsigned int) backend_x11->xwin_root);
   
   return stage;
 }

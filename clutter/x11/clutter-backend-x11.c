@@ -993,3 +993,4 @@ clutter_backend_x11_get_visual_info (ClutterBackendX11 *backend_x11)
 
   return NULL;
 }
+

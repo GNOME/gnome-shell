@@ -60,6 +60,8 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
 static void
 clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
   /* Note unrealize should free up any backend stage related resources */
@@ -69,19 +71,13 @@ clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
 
   if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
     {
-      XDestroyWindow (stage_x11->xdpy, stage_x11->xwin);
+      XDestroyWindow (backend_x11->xdpy, stage_x11->xwin);
       stage_x11->xwin = None;
     }
   else
     stage_x11->xwin = None;
 
-  if (stage_x11->xvisinfo != None)
-    {
-      XFree (stage_x11->xvisinfo);
-      stage_x11->xvisinfo = None;
-    }
-
-  XSync (stage_x11->xdpy, False);
+  XSync (backend_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
 
@@ -105,47 +101,55 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
   backend_glx = CLUTTER_BACKEND_GLX (backend);
   backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  stage_x11->xvisinfo = clutter_backend_x11_get_visual_info (backend_x11);
-
-  if (stage_x11->xvisinfo == None)
-    {
-      g_critical ("Unable to find suitable GL visual.");
-      return FALSE;
-    }
-
   if (stage_x11->xwin == None)
     {
       XSetWindowAttributes xattr;
       unsigned long mask;
+      GLXFBConfig config;
+      XVisualInfo *xvisinfo;
 
       CLUTTER_NOTE (MISC, "Creating stage X window");
 
+      if (!_clutter_backend_glx_get_fbconfig (backend_glx, &config))
+        {
+          g_critical ("Unable to find suitable FBConfig to realize stage.");
+          return FALSE;
+        }
+
+      xvisinfo = glXGetVisualFromFBConfig (backend_x11->xdpy, config);
+      if (xvisinfo == NULL)
+        {
+          g_critical ("Unable to find suitable GL visual.");
+          return FALSE;
+        }
+
       /* window attributes */
-      xattr.background_pixel = WhitePixel (stage_x11->xdpy,
-                                           stage_x11->xscreen);
+      xattr.background_pixel = WhitePixel (backend_x11->xdpy,
+                                           backend_x11->xscreen_num);
       xattr.border_pixel = 0;
-      xattr.colormap = XCreateColormap (stage_x11->xdpy,
-                                        stage_x11->xwin_root,
-                                        stage_x11->xvisinfo->visual,
+      xattr.colormap = XCreateColormap (backend_x11->xdpy,
+                                        backend_x11->xwin_root,
+                                        xvisinfo->visual,
                                         AllocNone);
       mask = CWBorderPixel | CWColormap;
-      stage_x11->xwin = XCreateWindow (stage_x11->xdpy,
-                                       stage_x11->xwin_root,
+      stage_x11->xwin = XCreateWindow (backend_x11->xdpy,
+                                       backend_x11->xwin_root,
                                        0, 0,
                                        stage_x11->xwin_width,
                                        stage_x11->xwin_height,
                                        0,
-                                       stage_x11->xvisinfo->depth,
+                                       xvisinfo->depth,
                                        InputOutput,
-                                       stage_x11->xvisinfo->visual,
+                                       xvisinfo->visual,
                                        mask, &xattr);
+      XFree (xvisinfo);
     }
 
   if (clutter_x11_has_event_retrieval())
     {
       if (clutter_x11_has_xinput())
         {
-          XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+          XSelectInput (backend_x11->xdpy, stage_x11->xwin,
                         StructureNotifyMask |
                         FocusChangeMask |
                         ExposureMask |
@@ -157,7 +161,7 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 #endif
         }
       else
-        XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+        XSelectInput (backend_x11->xdpy, stage_x11->xwin,
                       StructureNotifyMask |
                       FocusChangeMask |
                       ExposureMask |
