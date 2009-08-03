@@ -274,7 +274,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   tex_width = cogl_texture_get_width (paint_tex);
   tex_height = cogl_texture_get_height (paint_tex);
 
-  if (tex_width == 0 || tex_width == 0) /* no contents yet */
+  if (tex_width == 0 || tex_height == 0) /* no contents yet */
     return;
 
   if (paint_tex == COGL_INVALID_HANDLE)
@@ -419,8 +419,8 @@ mutter_shaped_texture_pick (ClutterActor *actor,
       tex_width = cogl_texture_get_width (paint_tex);
       tex_height = cogl_texture_get_height (paint_tex);
 
-      if (tex_width == 0 || tex_width == 0) /* no contents yet */
-	return;
+      if (tex_width == 0 || tex_height == 0) /* no contents yet */
+        return;
 
       mutter_shaped_texture_ensure_mask (stex);
 
