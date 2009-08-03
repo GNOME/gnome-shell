@@ -51,17 +51,10 @@ function start() {
 
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.
-        if (!runDialog) {
+        if (runDialog == null) {
             runDialog = new RunDialog.RunDialog();
-            let endHandler = function() {
-                runDialog.destroy();
-                runDialog = null;
-            };
-            runDialog.connect('run', endHandler);
-            runDialog.connect('cancel', endHandler);
-            if (!runDialog.show())
-                endHandler();
         }
+        runDialog.open();
     });
 
     overlay = new Overlay.Overlay();

@@ -2,6 +2,8 @@
 
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
+const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -26,6 +28,14 @@ function RunDialog() {
 RunDialog.prototype = {
     _init : function() {
         let global = Shell.Global.get();
+
+        this._isOpen = false;
+
+        this._internalCommands = { 'restart': Lang.bind(this, function() {
+                                       let global = Shell.Global.get();
+                                       global.reexec_self();
+                                   })
+                                 };
 
         // All actors are inside _group. We create it initially
         // hidden then show it in show()
@@ -70,35 +80,27 @@ RunDialog.prototype = {
         this._entry.set_position(6, 30);
         boxGroup.add_actor(this._entry);
 
-        let me = this;
-
-        this._entry.connect('activate', function (o, e) {
-            me.hide();
-            me._run(o.get_text());
+        this._entry.connect('activate', Lang.bind(this, function (o, e) {
+            this._run(o.get_text());
+            this._entry.text = '';
+            this.close();
             return false;
-        });
-
+        }));
+        
+        this._entry.connect('key-press-event', Lang.bind(this, function(o, e) {
+            let symbol = Shell.get_event_key_symbol(e); 
+            if (symbol == Clutter.Escape) {
+                this.close();
+                return true;
+            }
+            return false;
+        }));
     },
 
     _run : function(command) {
-        if (command.slice(0, 3) == 'js ') {
-            let commandHeader = "const Clutter = imports.gi.Clutter; " +
-                                 "const GLib = imports.gi.GLib; " +
-                                 "const Gtk = imports.gi.Gtk; " +
-                                 "const Mainloop = imports.mainloop; " +
-                                 "const Meta = imports.gi.Meta; " +
-                                 "const Shell = imports.gi.Shell; " +
-                                 "const Main = imports.ui.main; ";
-            let cmd = commandHeader + command.substring(2);
-            try {
-                let result = eval(cmd);
-                log("" + result);
-            } catch (e) {
-                log(e);
-            }
-        } else if (command == 'restart') {
-            let global = Shell.Global.get();
-            global.reexec_self();
+        let f = this._internalCommands[command];
+        if (f) {
+            f();
         } else if (command) {
             var p = new Shell.Process({'args' : [command]});
             try {
@@ -108,47 +110,31 @@ RunDialog.prototype = {
                 log('Could not run command ' + command + '.');
             }
         }
-
-        this.emit('run');
     },
 
-    show : function() {
-        let me = this;
-
-        if (this._group.visible) // Already shown
-            return false;
+    open : function() {
+        if (this._isOpen) // Already shown
+            return;
 
         if (!Main.startModal())
-            return false;
-
-        this._group.show_all();
-
-        this._entry.connect('key-press-event', function(o, e) {
-            if (Shell.get_event_key_symbol(e) == Clutter.Escape) {
-                me.hide();
-                me.emit('cancel');
-                return true;
-            } else
-                return false;
-        });
+            return;
+            
+        this._isOpen = true;
+        this._group.show();
 
         let global = Shell.Global.get();
         global.stage.set_key_focus(this._entry);
-
-        return true;
     },
 
-    hide : function() {
-        if (!this._group.visible)
+    close : function() {
+        if (!this._isOpen)
             return;
 
+        this._isOpen = false;
+        
         this._group.hide();
-        Main.endModal();
-    },
 
-    destroy : function(){
-        this.hide();
-        this._group.destroy();
+        Main.endModal();
     }
 };
 Signals.addSignalMethods(RunDialog.prototype);
