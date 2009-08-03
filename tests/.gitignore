@@ -9,6 +9,7 @@ test-cogl-tex-getset
 test-cogl-tex-polygon
 test-cogl-tex-tile
 test-cogl-vertex-buffer
+test-color-hls-roundtrip
 test-depth
 test-devices
 test-effects
