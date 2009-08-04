@@ -23,6 +23,8 @@ void shell_draw_glow (ClutterCairoTexture *texture,
                       double green,
                       double alpha);
 
+guint shell_add_hook_paint_red_border (ClutterActor *actor);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

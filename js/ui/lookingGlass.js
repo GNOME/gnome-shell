@@ -230,6 +230,14 @@ LookingGlass.prototype = {
             let displayText = new Clutter.Text({ color: MATRIX_GREEN,
                                                  font_name: MATRIX_FONT, text: '' });
             eventHandler.append(displayText, Big.BoxPackFlags.EXPAND);
+
+            let borderPaintTarget = null;
+            let borderPaintId = null;
+            eventHandler.connect('destroy', Lang.bind(this, function() {
+                if (borderPaintTarget != null)
+                    borderPaintTarget.disconnect(borderPaintId);
+            }));
+
             eventHandler.connect('button-press-event', Lang.bind(this, function (actor, event) {
                 let global = Shell.Global.get();
                 Clutter.ungrab_pointer(eventHandler);
@@ -246,6 +254,7 @@ LookingGlass.prototype = {
                 global.stage.set_key_focus(this._entry);
                 return true;
             }));
+
             eventHandler.connect('motion-event', Lang.bind(this, function (actor, event) {
                 let global = Shell.Global.get();
                 let [stageX, stageY] = event.get_coords();
@@ -253,6 +262,10 @@ LookingGlass.prototype = {
                                                            stageX,
                                                            stageY);
                 displayText.text = '<inspect x: ' + stageX + ' y: ' + stageY + '> ' + target;
+                if (borderPaintTarget != null)
+                    borderPaintTarget.disconnect(borderPaintId);
+                borderPaintTarget = target;
+                borderPaintId = Shell.add_hook_paint_red_border(target);
                 return true;
             }));
             Clutter.grab_pointer(eventHandler);
