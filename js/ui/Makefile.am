@@ -9,6 +9,7 @@ dist_jsui_DATA =		\
 	docDisplay.js		\
 	genericDisplay.js	\
 	link.js			\
+	lookingGlass.js		\
 	main.js			\
 	overlay.js		\
 	panel.js		\
