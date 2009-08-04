@@ -106,11 +106,13 @@ ActorHierarchy.prototype = {
 
             let link = new Clutter.Text({ color: MATRIX_GREEN,
                                           font_name: MATRIX_FONT,
-                                          reactive: true });
+                                          reactive: true,
+                                          text: "" + parent });
             this.actor.append(link, Big.BoxPackFlags.IF_FITS);
             let parentTarget = parent;
             link.connect('button-press-event', Lang.bind(this, function () {
                 this._selectByActor(parentTarget);
+                return true;
             }));
         }
         this.emit('selection', actor);
@@ -289,8 +291,8 @@ LookingGlass.prototype = {
         inspectionBox.append(this._hierarchy.actor, Big.BoxPackFlags.EXPAND);
         this._propInspector = new PropertyInspector();
         inspectionBox.append(this._propInspector.actor, Big.BoxPackFlags.EXPAND);
-        this._hierarchy.connect('selected', Lang.bind(this, function (h, actor) {
-            this._propInspector.setTarget(actor);
+        this._hierarchy.connect('selection', Lang.bind(this, function (h, actor) {
+            this._pushResult('<parent selection>', actor);
         }));
 
         this._entry.connect('activate', Lang.bind(this, function (o, e) {
@@ -298,6 +300,10 @@ LookingGlass.prototype = {
             // Ensure we don't get newlines in the command; the history file is
             // newline-separated.
             text.replace('\n', ' ');
+            // Strip leading and trailing whitespace
+            text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
+            if (text == '')
+                return true;
             this._evaluate(text);
             this._historyNavIndex = -1;
             return true;
@@ -336,13 +342,13 @@ LookingGlass.prototype = {
         if (!this._historyFile.query_exists(null))
             return;
         let [result, contents, length, etag] = this._historyFile.load_contents(null);
-        this._history = contents.split('\n');
+        this._history = contents.split('\n').filter(function (e) { return e != ''; });
     },
 
     _queueHistorySave: function() {
         if (this._idleHistorySaveId > 0)
             return;
-        this._idleHistorySaveId = Mainloop.timeout_add_seconds(30, Lang.bind(this, this._doSaveHistory));
+        this._idleHistorySaveId = Mainloop.timeout_add_seconds(5, Lang.bind(this, this._doSaveHistory));
     },
 
     _doSaveHistory: function () {
