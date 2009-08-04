@@ -445,7 +445,7 @@ cogl_vertex_buffer_indices_get_for_quads (guint n_indices);
  * Since: 1.0
  */
 gboolean
-cogl_is_vertex_buffer (CoglHandle);
+cogl_is_vertex_buffer (CoglHandle handle);
 
 G_END_DECLS
 
