@@ -58,7 +58,7 @@ gtk_widget_get_type (void)
   /* dummy */
 }
 
-GtkType
+GType
 gtk_object_get_type (void)
 {
   /* dummy */

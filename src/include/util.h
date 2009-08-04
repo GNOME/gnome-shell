@@ -134,11 +134,11 @@ GPid meta_show_dialog (const char *type,
 #include <glib-object.h>
 
 #define META_TYPE_NEXUS            (meta_nexus_get_type ())
-#define META_NEXUS(obj)            (GTK_CHECK_CAST ((obj), META_TYPE_NEXUS, MetaNexus))
-#define META_NEXUS_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), META_TYPE_NEXUS, MetaNexusClass))
-#define META_IS_NEXUS(obj)         (GTK_CHECK_TYPE ((obj), META_TYPE_NEXUS))
-#define META_IS_NEXUS_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), META_TYPE_NEXUS))
-#define META_NEXUS_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), META_TYPE_NEXUS, MetaNexusClass))
+#define META_NEXUS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_NEXUS, MetaNexus))
+#define META_NEXUS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_NEXUS, MetaNexusClass))
+#define META_IS_NEXUS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_NEXUS))
+#define META_IS_NEXUS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_NEXUS))
+#define META_NEXUS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_NEXUS, MetaNexusClass))
 
 typedef struct _MetaNexus
 {

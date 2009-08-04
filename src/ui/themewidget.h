@@ -28,11 +28,11 @@
 #define META_THEME_WIDGET_H
 
 #define META_TYPE_AREA			 (meta_area_get_type ())
-#define META_AREA(obj)			 (GTK_CHECK_CAST ((obj), META_TYPE_AREA, MetaArea))
-#define META_AREA_CLASS(klass)		 (GTK_CHECK_CLASS_CAST ((klass), META_TYPE_AREA, MetaAreaClass))
-#define META_IS_AREA(obj)		 (GTK_CHECK_TYPE ((obj), META_TYPE_AREA))
-#define META_IS_AREA_CLASS(klass)	 (GTK_CHECK_CLASS_TYPE ((klass), META_TYPE_AREA))
-#define META_AREA_GET_CLASS(obj)         (GTK_CHECK_GET_CLASS ((obj), META_TYPE_AREA, MetaAreaClass))
+#define META_AREA(obj)			 (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_AREA, MetaArea))
+#define META_AREA_CLASS(klass)		 (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_AREA, MetaAreaClass))
+#define META_IS_AREA(obj)		 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_AREA))
+#define META_IS_AREA_CLASS(klass)	 (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_AREA))
+#define META_AREA_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_AREA, MetaAreaClass))
 
 typedef struct _MetaArea	MetaArea;
 typedef struct _MetaAreaClass	MetaAreaClass;
@@ -65,7 +65,7 @@ struct _MetaAreaClass
 };
 
 
-GtkType    meta_area_get_type	 (void) G_GNUC_CONST;
+GType    meta_area_get_type	 (void) G_GNUC_CONST;
 GtkWidget* meta_area_new	 (void);
 
 void meta_area_setup (MetaArea           *area,

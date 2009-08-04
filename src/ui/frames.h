@@ -60,11 +60,11 @@ typedef enum
  */
 
 #define META_TYPE_FRAMES            (meta_frames_get_type ())
-#define META_FRAMES(obj)            (GTK_CHECK_CAST ((obj), META_TYPE_FRAMES, MetaFrames))
-#define META_FRAMES_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), META_TYPE_FRAMES, MetaFramesClass))
-#define META_IS_FRAMES(obj)         (GTK_CHECK_TYPE ((obj), META_TYPE_FRAMES))
-#define META_IS_FRAMES_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), META_TYPE_FRAMES))
-#define META_FRAMES_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), META_TYPE_FRAMES, MetaFramesClass))
+#define META_FRAMES(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_FRAMES, MetaFrames))
+#define META_FRAMES_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_FRAMES, MetaFramesClass))
+#define META_IS_FRAMES(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_FRAMES))
+#define META_IS_FRAMES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_FRAMES))
+#define META_FRAMES_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_FRAMES, MetaFramesClass))
 
 typedef struct _MetaFrames        MetaFrames;
 typedef struct _MetaFramesClass   MetaFramesClass;

@@ -40,10 +40,10 @@ static void     meta_preview_finalize      (GObject          *object);
 
 static GtkWidgetClass *parent_class;
 
-GtkType
+GType
 meta_preview_get_type (void)
 {
-  static GtkType preview_type = 0;
+  static GType preview_type = 0;
 
   if (!preview_type)
     {

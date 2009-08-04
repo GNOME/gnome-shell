@@ -109,7 +109,8 @@ normal_contents (void)
 
   /* Set up item factory to go away */
   g_object_ref (item_factory);
-  gtk_object_sink (GTK_OBJECT (item_factory));
+  g_object_ref_sink (item_factory);
+  g_object_unref (item_factory);
   g_object_set_data_full (G_OBJECT (table),
                           "<main>",
                           item_factory,

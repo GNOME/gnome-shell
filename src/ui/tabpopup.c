@@ -597,7 +597,7 @@ meta_ui_tab_popup_select (MetaTabPopup *popup,
 }
 
 #define META_TYPE_SELECT_IMAGE            (meta_select_image_get_type ())
-#define META_SELECT_IMAGE(obj)            (GTK_CHECK_CAST ((obj), META_TYPE_SELECT_IMAGE, MetaSelectImage))
+#define META_SELECT_IMAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_SELECT_IMAGE, MetaSelectImage))
 
 typedef struct _MetaSelectImage       MetaSelectImage;
 typedef struct _MetaSelectImageClass  MetaSelectImageClass;
@@ -650,7 +650,7 @@ static GtkImageClass *parent_class;
 GType
 meta_select_image_get_type (void)
 {
-  static GtkType image_type = 0;
+  static GType image_type = 0;
 
   if (!image_type)
     {
@@ -678,7 +678,7 @@ meta_select_image_class_init (MetaSelectImageClass *klass)
 {
   GtkWidgetClass *widget_class;
   
-  parent_class = gtk_type_class (gtk_image_get_type ());
+  parent_class = g_type_class_peek (gtk_image_get_type ());
 
   widget_class = GTK_WIDGET_CLASS (klass);
   
@@ -737,7 +737,7 @@ meta_select_image_expose_event (GtkWidget      *widget,
 }
 
 #define META_TYPE_SELECT_WORKSPACE   (meta_select_workspace_get_type ())
-#define META_SELECT_WORKSPACE(obj)   (GTK_CHECK_CAST ((obj), META_TYPE_SELECT_WORKSPACE, MetaSelectWorkspace))
+#define META_SELECT_WORKSPACE(obj)   (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_SELECT_WORKSPACE, MetaSelectWorkspace))
 
 typedef struct _MetaSelectWorkspace       MetaSelectWorkspace;
 typedef struct _MetaSelectWorkspaceClass  MetaSelectWorkspaceClass;
@@ -803,7 +803,7 @@ static gboolean meta_select_workspace_expose_event (GtkWidget      *widget,
 GType
 meta_select_workspace_get_type (void)
 {
-  static GtkType workspace_type = 0;
+  static GType workspace_type = 0;
 
   if (!workspace_type)
     {

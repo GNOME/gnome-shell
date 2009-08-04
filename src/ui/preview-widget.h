@@ -28,11 +28,11 @@
 #define META_PREVIEW_WIDGET_H
 
 #define META_TYPE_PREVIEW			 (meta_preview_get_type ())
-#define META_PREVIEW(obj)			 (GTK_CHECK_CAST ((obj), META_TYPE_PREVIEW, MetaPreview))
-#define META_PREVIEW_CLASS(klass)		 (GTK_CHECK_CLASS_CAST ((klass), META_TYPE_PREVIEW, MetaPreviewClass))
-#define META_IS_PREVIEW(obj)		 (GTK_CHECK_TYPE ((obj), META_TYPE_PREVIEW))
-#define META_IS_PREVIEW_CLASS(klass)	 (GTK_CHECK_CLASS_TYPE ((klass), META_TYPE_PREVIEW))
-#define META_PREVIEW_GET_CLASS(obj)         (GTK_CHECK_GET_CLASS ((obj), META_TYPE_PREVIEW, MetaPreviewClass))
+#define META_PREVIEW(obj)			 (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_PREVIEW, MetaPreview))
+#define META_PREVIEW_CLASS(klass)		 (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_PREVIEW, MetaPreviewClass))
+#define META_IS_PREVIEW(obj)		 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_PREVIEW))
+#define META_IS_PREVIEW_CLASS(klass)	 (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_PREVIEW))
+#define META_PREVIEW_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_PREVIEW, MetaPreviewClass))
 
 typedef struct _MetaPreview	MetaPreview;
 typedef struct _MetaPreviewClass	MetaPreviewClass;
@@ -63,7 +63,7 @@ struct _MetaPreviewClass
 };
 
 
-GtkType    meta_preview_get_type (void) G_GNUC_CONST;
+GType    meta_preview_get_type (void) G_GNUC_CONST;
 GtkWidget* meta_preview_new	 (void);
 
 void meta_preview_set_theme         (MetaPreview            *preview,
