@@ -175,7 +175,7 @@ LookingGlass.prototype = {
         let global = Shell.Global.get();
 
         this._idleHistorySaveId = 0;
-        let historyPath = Shell.Global.get().configdir + "/lookingglass-history.txt";
+        let historyPath = global.configdir + "/lookingglass-history.txt";
         this._historyFile = Gio.file_new_for_path(historyPath);
         this._savedText = null;
         this._historyNavIndex = -1;
@@ -241,7 +241,6 @@ LookingGlass.prototype = {
                 this._hierarchy.setTarget(target);
                 eventHandler.destroy();
                 this.actor.show();
-                let global = Shell.Global.get();
                 global.stage.set_key_focus(this._entry);
                 return true;
             }));
