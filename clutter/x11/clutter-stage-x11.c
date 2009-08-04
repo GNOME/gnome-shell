@@ -781,6 +781,7 @@ typedef struct {
   ClutterStageX11 *stage_x11;
   ClutterGeometry geom;
   Window xwindow;
+  guint destroy_old_xwindow : 1;
 } ForeignWindowData;
 
 static void
@@ -790,6 +791,9 @@ set_foreign_window_callback (ClutterActor *actor,
   ForeignWindowData *fwd = data;
 
   CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) fwd->xwindow);
+
+  if (fwd->destroy_old_xwindow)
+    XDestroyWindow (fwd->stage_x11->xdpy, fwd->stage_x11->xwin);
 
   fwd->stage_x11->xwin = fwd->xwindow;
   fwd->stage_x11->is_foreign_xwin = TRUE;
@@ -858,6 +862,8 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 
   fwd.stage_x11 = stage_x11;
   fwd.xwindow = xwindow;
+  /* destroy the old Window, if we own it */
+  fwd.destroy_old_xwindow = stage_x11->is_foreign_xwin ? FALSE : TRUE;
   fwd.geom.x = x;
   fwd.geom.y = y;
   fwd.geom.width = width;
