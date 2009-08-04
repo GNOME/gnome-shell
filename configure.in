@@ -540,9 +540,10 @@ mutter-$VERSION:
 	Xcursor:                  ${have_xcursor}
 "
 
+
 MUTTER_MINOR_VERSION=mutter_minor_version
-if test $(( $(echo $MUTTER_MINOR_VERSION) %2)) == "1"; then
-   stable_version=$(( ($MUTTER_MINOR_VERSION / 2) * 2))
+if expr $MUTTER_MINOR_VERSION % 2 > /dev/null ; then
+   stable_version=`expr $MUTTER_MINOR_VERSION - 1`
    echo "This is the UNSTABLE branch of mutter"
    echo -n "Use 2.$stable_version.x for stable "
    echo    "(gnome-2-$stable_version branch in Subversion)"
