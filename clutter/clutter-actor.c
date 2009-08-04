@@ -789,8 +789,14 @@ clutter_actor_update_map_state (ClutterActor  *self,
 
       if (change == MAP_STATE_MAKE_MAPPED && !should_be_mapped)
         {
-          g_warning ("Attempting to map a child that does not "
-                     "meet the necessary invariants");
+          if (parent == NULL)
+            g_warning ("Attempting to map a child that does not "
+                       "meet the necessary invariants: the actor "
+                       "has no parent");
+          else
+            g_warning ("Attempting to map a child that does not "
+                       "meet the necessary invariants: the actor "
+                       "is parented to an unmapped actor");
         }
 
       /* If in reparent, we temporarily suspend unmap and unrealize.
