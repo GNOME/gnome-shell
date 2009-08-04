@@ -5701,6 +5701,13 @@ meta_window_notify_focus (MetaWindow *window,
 
   if (event->type == FocusIn)
     {
+      if (window->override_redirect)
+        {
+          window->display->focus_window = NULL;
+          g_object_notify (G_OBJECT (window->display), "focus-window");
+          return FALSE;
+        }
+
       if (window != window->display->focus_window)
         {
           meta_topic (META_DEBUG_FOCUS,
