@@ -304,6 +304,30 @@ clutter_stage_x11_allocate (ClutterActor           *self,
 }
 
 static inline void
+set_wm_pid (ClutterStageX11 *stage_x11)
+{
+  ClutterBackendX11 *backend_x11 = stage_x11->backend;
+  long pid;
+
+  if (stage_x11->xwin == None)
+    return;
+
+  /* this will take care of WM_CLIENT_MACHINE and WM_LOCALE_NAME */
+  XSetWMProperties (stage_x11->xdpy, stage_x11->xwin,
+                    NULL,
+                    NULL,
+                    NULL, 0,
+                    NULL, NULL, NULL);
+
+  pid = getpid();
+  XChangeProperty (stage_x11->xdpy,
+                   stage_x11->xwin,
+                   backend_x11->atom_NET_WM_PID, XA_CARDINAL, 32,
+                   PropModeReplace,
+                   (guchar *) &pid, 1);
+}
+
+static inline void
 set_wm_title (ClutterStageX11 *stage_x11)
 {
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
@@ -376,6 +400,7 @@ clutter_stage_x11_realize (ClutterActor *actor)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
 
+  set_wm_pid (stage_x11);
   set_wm_title (stage_x11);
   set_cursor_visible (stage_x11);
 }

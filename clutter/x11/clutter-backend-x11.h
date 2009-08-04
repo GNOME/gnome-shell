@@ -64,6 +64,7 @@ struct _ClutterBackendX11
   GSList  *event_filters;
 
   /* props */
+  Atom atom_NET_WM_PID;
   Atom atom_NET_WM_PING;
   Atom atom_NET_WM_STATE;
   Atom atom_NET_WM_STATE_FULLSCREEN;
