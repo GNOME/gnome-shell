@@ -42,6 +42,7 @@
 #include "group.h"
 #include "window-props.h"
 #include "constraints.h"
+#include "mutter-enum-types.h"
 
 #include <X11/Xatom.h>
 #include <string.h>
@@ -135,6 +136,7 @@ enum {
   PROP_MINI_ICON,
   PROP_DECORATED,
   PROP_FULLSCREEN,
+  PROP_WINDOW_TYPE
 };
 
 enum
@@ -196,6 +198,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_FULLSCREEN:
       g_value_set_boolean (value, win->fullscreen);
+      break;
+    case PROP_WINDOW_TYPE:
+      g_value_set_enum (value, win->type);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -265,6 +270,15 @@ meta_window_class_init (MetaWindowClass *klass)
                                                          "Whether windos is fullscreened",
                                                          FALSE,
                                                          G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_WINDOW_TYPE,
+                                   g_param_spec_enum ("window-type",
+                                                      "Window Type",
+                                                      "The type of the window",
+                                                      MUTTER_TYPE_WINDOW_TYPE,
+                                                      META_WINDOW_NORMAL,
+                                                      G_PARAM_READABLE));
 
   window_signals[WORKSPACE_CHANGED] =
     g_signal_new ("workspace-changed",
@@ -6503,6 +6517,7 @@ recalc_window_type (MetaWindow *window)
   if (old_type != window->type)
     {
       gboolean old_decorated = window->decorated;
+      GObject  *object = G_OBJECT (window);
 
       recalc_window_features (window);
 
@@ -6520,8 +6535,14 @@ recalc_window_type (MetaWindow *window)
 
       meta_window_grab_keys (window);
 
+      g_object_freeze_notify (object);
+
       if (old_decorated != window->decorated)
-        g_object_notify (G_OBJECT (window), "decorated");
+        g_object_notify (object, "decorated");
+
+      g_object_notify (object, "window-type");
+
+      g_object_thaw_notify (object);
     }
 }
 
