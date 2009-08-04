@@ -63,9 +63,9 @@ Result.prototype = {
                                            ellipsize: Pango.EllipsizeMode.END,
                                            text: "r(" + index + ") = " + o });
         this.actor.append(resultTxt, Big.BoxPackFlags.NONE);
-        let line = new Big.Box({ opacity: 0, border_color: GREY,
-                                border_bottom: 1,
-                                height: 4 });
+        let line = new Big.Box({ border_color: GREY,
+                                 border_bottom: 1,
+                                 height: 8 });
         this.actor.append(line, Big.BoxPackFlags.NONE);
     }
 }
@@ -264,7 +264,7 @@ LookingGlass.prototype = {
         this.actor.append(this._mainContent, Big.BoxPackFlags.EXPAND);
 
         this._resultsArea = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                        spacing: 0 });
+                                          spacing: 4 });
         this._mainContent.append(this._resultsArea, Big.BoxPackFlags.EXPAND);
 
         let entryArea = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
