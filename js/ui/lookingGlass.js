@@ -39,8 +39,86 @@ var commandHeader = "const Clutter = imports.gi.Clutter; " +
                     "const stage = global.stage; " +
                     "const color = function(pixel) { let c= new Clutter.Color(); c.from_pixel(pixel); return c; }; " +
                     /* Special lookingGlass functions */
-                    "const it = Main.lookingGlass.getIt(); " +
+                       "const it = Main.lookingGlass.getIt(); " +
                     "const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ";
+
+function Notebook() {
+    this._init();
+}
+
+Notebook.prototype = {
+    _init: function() {
+        this.actor = new Big.Box();
+
+        this.tabControls = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                         spacing: 4, padding: 2 });
+
+        this._selectedIndex = -1;
+        this._tabs = [];
+    },
+
+    appendPage: function(name, child) {
+        let labelOuterBox = new Big.Box({ padding: 2 });
+        let labelBox = new Big.Box({ padding: 2, border_color: MATRIX_GREEN,
+                                     reactive: true });
+        labelOuterBox.append(labelBox, Big.BoxPackFlags.NONE);
+        let label = new Clutter.Text({ color: MATRIX_GREEN,
+                                       font_name: MATRIX_FONT,
+                                       text: name });
+        labelBox.connect('button-press-event', Lang.bind(this, function () {
+            this.selectChild(child);
+            return true;
+        }));
+        labelBox.append(label, Big.BoxPackFlags.EXPAND);
+        this._tabs.push([child, labelBox]);
+        child.hide();
+        this.actor.append(child, Big.BoxPackFlags.EXPAND);
+        this.tabControls.append(labelOuterBox, Big.BoxPackFlags.NONE);
+        if (this._selectedIndex == -1)
+            this.selectIndex(0);
+    },
+
+    _unselect: function() {
+        if (this._selectedIndex < 0)
+            return;
+        let [child, labelBox] = this._tabs[this._selectedIndex];
+        labelBox.padding = 2;
+        labelBox.border = 0;
+        child.hide();
+        this._selectedIndex = -1;
+    },
+
+    selectIndex: function(index) {
+        if (index == this._selectedIndex)
+            return;
+        this._unselect();
+        if (index < 0) {
+            this.emit('selection', null);
+            return;
+        }
+        let [child, labelBox] = this._tabs[index];
+        labelBox.padding = 1;
+        labelBox.border = 1;
+        child.show();
+        this._selectedIndex = index;
+        this.emit('selection', child);
+    },
+
+    selectChild: function(child) {
+        if (child == null)
+            this.selectIndex(-1);
+        else {
+            for (let i = 0; i < this._tabs.length; i++) {
+                let [tabChild, labelBox] = this._tabs[i];
+                if (tabChild == child) {
+                    this.selectIndex(i);
+                    return;
+                }
+            }
+        }
+    }
+}
+Signals.addSignalMethods(Notebook.prototype);
 
 function Result(command, o, index) {
     this._init(command, o, index);
@@ -93,8 +171,8 @@ ActorHierarchy.prototype = {
 
         this.actor.remove_all();
 
-        /* FIXME - need scrolling here */
-        return;
+        if (!(actor instanceof Clutter.Actor))
+            return;
 
         if (this.target == null)
             return;
@@ -148,9 +226,6 @@ PropertyInspector.prototype = {
 
         this.actor.remove_all();
 
-        /* FIXME - need scrolling here */
-        return;
-
         for (let propName in actor) {
             let valueStr;
             try {
@@ -167,6 +242,69 @@ PropertyInspector.prototype = {
         }
     }
 }
+
+function Inspector() {
+    this._init();
+}
+
+Inspector.prototype = {
+    _init: function() {
+        let global = Shell.Global.get();
+        let width = 150;
+        let eventHandler = new Big.Box({ background_color: LG_BACKGROUND_COLOR,
+                                         border: 1,
+                                         border_color: LG_BORDER_COLOR,
+                                         corner_radius: 4,
+                                         y: global.stage.height/2,
+                                         reactive: true
+                                      });
+        eventHandler.connect('notify::allocation', Lang.bind(this, function () {
+            eventHandler.x = Math.floor((global.stage.width)/2 - (eventHandler.width)/2);
+        }));
+        global.stage.add_actor(eventHandler);
+        let displayText = new Clutter.Text({ color: MATRIX_GREEN,
+                                             font_name: MATRIX_FONT, text: '' });
+        eventHandler.append(displayText, Big.BoxPackFlags.EXPAND);
+
+        let borderPaintTarget = null;
+        let borderPaintId = null;
+        eventHandler.connect('destroy', Lang.bind(this, function() {
+            if (borderPaintTarget != null)
+                borderPaintTarget.disconnect(borderPaintId);
+        }));
+
+        eventHandler.connect('button-press-event', Lang.bind(this, function (actor, event) {
+            let global = Shell.Global.get();
+            Clutter.ungrab_pointer(eventHandler);
+
+            let [stageX, stageY] = event.get_coords();
+            let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
+                                                       stageX,
+                                                       stageY);
+            this.emit('target', target, stageX, stageY);
+            eventHandler.destroy();
+            this.emit('closed');
+            return true;
+        }));
+
+        eventHandler.connect('motion-event', Lang.bind(this, function (actor, event) {
+            let global = Shell.Global.get();
+            let [stageX, stageY] = event.get_coords();
+            let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
+                                                       stageX,
+                                                       stageY);
+            displayText.text = '<inspect x: ' + stageX + ' y: ' + stageY + '> ' + target;
+            if (borderPaintTarget != null)
+                borderPaintTarget.disconnect(borderPaintId);
+            borderPaintTarget = target;
+            borderPaintId = Shell.add_hook_paint_red_border(target);
+            return true;
+        }));
+        Clutter.grab_pointer(eventHandler);
+    }
+}
+
+Signals.addSignalMethods(Inspector.prototype);
 
 function LookingGlass() {
     this._init();
@@ -214,74 +352,34 @@ LookingGlass.prototype = {
         toolbar.append(inspectIcon, Big.BoxPackFlags.NONE);
         inspectIcon.reactive = true;
         inspectIcon.connect('button-press-event', Lang.bind(this, function () {
-            let global = Shell.Global.get();
-            let width = 150;
-            let eventHandler = new Big.Box({ background_color: LG_BACKGROUND_COLOR,
-                                             border: 1,
-                                             border_color: LG_BORDER_COLOR,
-                                             corner_radius: 4,
-                                             y: global.stage.height/2,
-                                             reactive: true
-                                          });
-            eventHandler.connect('notify::allocation', Lang.bind(this, function () {
-                eventHandler.x = Math.floor((global.stage.width)/2 - (eventHandler.width)/2);
-            }));
-            global.stage.add_actor(eventHandler);
-            let displayText = new Clutter.Text({ color: MATRIX_GREEN,
-                                                 font_name: MATRIX_FONT, text: '' });
-            eventHandler.append(displayText, Big.BoxPackFlags.EXPAND);
-
-            let borderPaintTarget = null;
-            let borderPaintId = null;
-            eventHandler.connect('destroy', Lang.bind(this, function() {
-                if (borderPaintTarget != null)
-                    borderPaintTarget.disconnect(borderPaintId);
-            }));
-
-            eventHandler.connect('button-press-event', Lang.bind(this, function (actor, event) {
-                let global = Shell.Global.get();
-                Clutter.ungrab_pointer(eventHandler);
-
-                let [stageX, stageY] = event.get_coords();
-                let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-                                                           stageX,
-                                                           stageY);
+            let inspector = new Inspector();
+            inspector.connect('target', Lang.bind(this, function(i, target, stageX, stageY) {
                 this._pushResult('<inspect x:' + stageX + ' y:' + stageY + '>',
                                  target);
                 this._hierarchy.setTarget(target);
-                eventHandler.destroy();
+            }));
+            inspector.connect('closed', Lang.bind(this, function() {
                 this.actor.show();
                 global.stage.set_key_focus(this._entry);
-                return true;
             }));
-
-            eventHandler.connect('motion-event', Lang.bind(this, function (actor, event) {
-                let global = Shell.Global.get();
-                let [stageX, stageY] = event.get_coords();
-                let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-                                                           stageX,
-                                                           stageY);
-                displayText.text = '<inspect x: ' + stageX + ' y: ' + stageY + '> ' + target;
-                if (borderPaintTarget != null)
-                    borderPaintTarget.disconnect(borderPaintId);
-                borderPaintTarget = target;
-                borderPaintId = Shell.add_hook_paint_red_border(target);
-                return true;
-            }));
-            Clutter.grab_pointer(eventHandler);
             this.actor.hide();
             return true;
         }));
 
-        this._mainContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                          spacing: 4 });
-        this.actor.append(this._mainContent, Big.BoxPackFlags.EXPAND);
+        let notebook = new Notebook();
+        this.actor.append(notebook.actor, Big.BoxPackFlags.EXPAND);
+        toolbar.append(notebook.tabControls, Big.BoxPackFlags.END);
+
+        this._evalBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                      spacing: 4 });
+        notebook.appendPage('Evaluator', this._evalBox);
 
         this._resultsArea = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                           spacing: 4 });
-        this._mainContent.append(this._resultsArea, Big.BoxPackFlags.EXPAND);
+        this._evalBox.append(this._resultsArea, Big.BoxPackFlags.EXPAND);
 
         let entryArea = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
+        this._evalBox.append(entryArea, Big.BoxPackFlags.NONE);
 
         let label = new Clutter.Text({ color: MATRIX_GREEN,
                                        font_name: MATRIX_FONT,
@@ -294,18 +392,21 @@ LookingGlass.prototype = {
                                          activatable: true,
                                          singleLineMode: true,
                                          text: ''});
+        /* kind of a hack */
+        notebook.connect('selection', Lang.bind(this, function (nb, child) {
+            if (child == this._evalBox)
+                global.stage.set_key_focus(this._entry);
+        }));
         entryArea.append(this._entry, Big.BoxPackFlags.EXPAND);
-        this.actor.append(entryArea, Big.BoxPackFlags.NONE);
-
-        let inspectionBox = new Big.Box({ spacing: 4 });
-        this._mainContent.append(inspectionBox, Big.BoxPackFlags.NONE);
 
         this._hierarchy = new ActorHierarchy();
-        inspectionBox.append(this._hierarchy.actor, Big.BoxPackFlags.EXPAND);
+        notebook.appendPage('Hierarchy', this._hierarchy.actor);
+
         this._propInspector = new PropertyInspector();
-        inspectionBox.append(this._propInspector.actor, Big.BoxPackFlags.EXPAND);
+        notebook.appendPage('Properties', this._propInspector.actor);
         this._hierarchy.connect('selection', Lang.bind(this, function (h, actor) {
             this._pushResult('<parent selection>', actor);
+            notebook.selectIndex(0);
         }));
 
         this._entry.connect('activate', Lang.bind(this, function (o, e) {
