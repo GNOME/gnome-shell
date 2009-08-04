@@ -90,6 +90,27 @@ cache_key_destroy (gpointer a)
   g_free (akey);
 }
 
+
+/* We want to preserve the aspect ratio by default, also the default
+ * material for an empty texture is full opacity white, which we
+ * definitely don't want.  Skip that by setting 0 opacity.
+ */
+static ClutterTexture *
+create_default_texture (ShellTextureCache *self)
+{
+  ClutterTexture * texture = CLUTTER_TEXTURE (clutter_texture_new ());
+  g_object_set (texture, "keep-aspect-ratio", TRUE, "opacity", 0, NULL);
+  return texture;
+}
+
+/* Reverse the opacity we added while loading */
+static void
+set_texture_cogl_texture (ClutterTexture *clutter_texture, CoglHandle cogl_texture)
+{
+  clutter_texture_set_cogl_texture (clutter_texture, cogl_texture);
+  g_object_set (clutter_texture, "opacity", 255, NULL);
+}
+
 static void
 shell_texture_cache_class_init (ShellTextureCacheClass *klass)
 {
@@ -678,7 +699,7 @@ on_pixbuf_loaded (GObject      *source,
         cache_key_destroy (key);
     }
 
-  clutter_texture_set_cogl_texture (data->texture, texdata);
+  set_texture_cogl_texture (data->texture, texdata);
 
 out:
   if (data->icon)
@@ -719,7 +740,7 @@ shell_texture_cache_load_gicon (ShellTextureCache *cache,
   CoglHandle texdata;
   CacheKey key;
 
-  texture = CLUTTER_TEXTURE (clutter_texture_new ());
+  texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
   memset (&key, 0, sizeof(key));
@@ -752,7 +773,7 @@ shell_texture_cache_load_gicon (ShellTextureCache *cache,
     }
   else
     {
-      clutter_texture_set_cogl_texture (texture, texdata);
+      set_texture_cogl_texture (texture, texdata);
     }
 
   return CLUTTER_ACTOR (texture);
@@ -781,7 +802,7 @@ shell_texture_cache_load_uri_async (ShellTextureCache *cache,
   ClutterTexture *texture;
   AsyncTextureLoadData *data;
 
-  texture = CLUTTER_TEXTURE (clutter_texture_new ());
+  texture = create_default_texture (cache);
 
   data = g_new0 (AsyncTextureLoadData, 1);
   data->policy = SHELL_TEXTURE_CACHE_POLICY_NONE;
@@ -825,7 +846,7 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
   GdkPixbuf *pixbuf;
   CacheKey key;
 
-  texture = CLUTTER_TEXTURE (clutter_texture_new ());
+  texture = create_default_texture (cache);
 
   memset (&key, 0, sizeof (CacheKey));
   key.policy = policy;
@@ -845,7 +866,7 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
       texdata = pixbuf_to_cogl_handle (pixbuf);
       g_object_unref (pixbuf);
 
-      clutter_texture_set_cogl_texture (texture, texdata);
+      set_texture_cogl_texture (texture, texdata);
 
       if (policy == SHELL_TEXTURE_CACHE_POLICY_FOREVER)
         {
@@ -855,7 +876,7 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
         cogl_handle_unref (texdata);
     }
   else
-    clutter_texture_set_cogl_texture (texture, texdata);
+    set_texture_cogl_texture (texture, texdata);
 
   return CLUTTER_ACTOR (texture);
 }
@@ -887,7 +908,7 @@ shell_texture_cache_load_thumbnail (ShellTextureCache *cache,
   CacheKey key;
   CoglHandle texdata;
 
-  texture = CLUTTER_TEXTURE (clutter_texture_new ());
+  texture = create_default_texture (cache);
   clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
 
   memset (&key, 0, sizeof(key));
@@ -909,7 +930,7 @@ shell_texture_cache_load_thumbnail (ShellTextureCache *cache,
     }
   else
     {
-      clutter_texture_set_cogl_texture (texture, texdata);
+      set_texture_cogl_texture (texture, texdata);
     }
 
   return CLUTTER_ACTOR (texture);
@@ -993,7 +1014,7 @@ shell_texture_cache_load_recent_thumbnail (ShellTextureCache *cache,
     }
   else
     {
-      clutter_texture_set_cogl_texture (texture, texdata);
+      set_texture_cogl_texture (texture, texdata);
     }
 
   return CLUTTER_ACTOR (texture);
