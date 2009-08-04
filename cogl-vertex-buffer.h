@@ -433,6 +433,20 @@ cogl_vertex_buffer_unref (CoglHandle handle);
 CoglHandle
 cogl_vertex_buffer_indices_get_for_quads (guint n_indices);
 
+/**
+ * cogl_is_vertex_buffer:
+ * @handle: a #CoglHandle for a vertex buffer object
+ *
+ * Checks whether @handle is a Vertex Buffer Object
+ *
+ * Return value: %TRUE if the handle is a VBO, and %FALSE
+ *   otherwise
+ *
+ * Since: 1.0
+ */
+gboolean
+cogl_is_vertex_buffer (CoglHandle);
+
 G_END_DECLS
 
 #endif /* __COGL_VERTEX_BUFFER_H__ */

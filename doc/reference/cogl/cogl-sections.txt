@@ -369,6 +369,7 @@ cogl_vertex_buffer_submit
 cogl_vertex_buffer_disable
 cogl_vertex_buffer_enable
 cogl_vertex_buffer_draw
+cogl_is_vertex_buffer
 
 <SUBSECTION>
 CoglIndicesType
