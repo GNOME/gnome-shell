@@ -8114,6 +8114,17 @@ find_ancestor_func (MetaWindow *window,
   return TRUE;
 }
 
+/**
+ * meta_window_is_ancestor_of_transient:
+ * @window: a #MetaWindow
+ * @transient: a #MetaWindow
+ *
+ * The function determines whether @window is an ancestor of @transient; it does
+ * so by traversing the @transient's ancestors until it either locates @window
+ * or reaches an ancestor that is not transient.
+ *
+ * Return Value: (transfer none): %TRUE if window is an ancestor of transient.
+ */
 gboolean
 meta_window_is_ancestor_of_transient (MetaWindow *window,
                                       MetaWindow *transient)

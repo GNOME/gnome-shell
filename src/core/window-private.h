@@ -574,8 +574,6 @@ void meta_window_free_delete_dialog (MetaWindow *window);
 void     meta_window_foreach_transient        (MetaWindow            *window,
                                                MetaWindowForeachFunc  func,
                                                void                  *data);
-gboolean meta_window_is_ancestor_of_transient (MetaWindow            *window,
-                                               MetaWindow            *transient);
 void     meta_window_foreach_ancestor         (MetaWindow            *window,
                                                MetaWindowForeachFunc  func,
                                                void                  *data);
