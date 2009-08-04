@@ -285,10 +285,12 @@
 	  <para>
 	    If building on top of MacPorts, as recommended, the following
 	    configure command should suffice:
-	    <informalexample><programlisting>
+          </para>
+
+          <informalexample><programlisting>
 	    ./configure --disable-gtk-doc --disable-docs --disable-shave
 	    --with-flavour=osx --disable-introspection --prefix=/opt
-	    </programlisting></informalexample>
+	  </programlisting></informalexample>
       </section>
 
     </section>
