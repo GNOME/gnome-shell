@@ -3448,7 +3448,7 @@ clutter_text_set_color (ClutterText        *self,
  * @self: a #ClutterText
  * @color: return location for a #ClutterColor
  *
- * Retrieves the text color as set by clutter_text_get_color().
+ * Retrieves the text color as set by clutter_text_set_color().
  *
  * Since: 1.0
  */
