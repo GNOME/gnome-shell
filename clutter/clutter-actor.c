@@ -4376,6 +4376,8 @@ clutter_actor_queue_relayout (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
 
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
   priv = self->priv;
 
   if (priv->needs_width_request &&
