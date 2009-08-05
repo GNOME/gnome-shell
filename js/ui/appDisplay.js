@@ -278,7 +278,7 @@ AppDisplay.prototype = {
     _getMostUsed: function() {
         let context = "";
         return this._appMonitor.get_most_used_apps(context, 30).map(Lang.bind(this, function (id) {
-            return this._appSystem.lookup_app(id);
+            return this._appSystem.lookup_cached_app(id);
         })).filter(function (e) { return e != null });
     },
 
@@ -774,7 +774,7 @@ AppWell.prototype = {
         let result = [];
         for (let i = 0; i < appIds.length; i++) {
             let id = appIds[i];
-            let app = this._appSystem.lookup_app(id);
+            let app = this._appSystem.lookup_cached_app(id);
             if (!app)
                 continue;
             result.push(app);

@@ -318,7 +318,7 @@ AppsWidget.prototype = {
         let appSystem = Shell.AppSystem.get_default();
         let apps = appSystem.get_favorites();
         for (let i = 0; i < apps.length; i++) {
-            let app = appSystem.lookup_app(apps[i]);
+            let app = appSystem.lookup_cached_app(apps[i]);
             if (!app)
                 continue;
             this.addItem(new AppsWidgetInfo(app));

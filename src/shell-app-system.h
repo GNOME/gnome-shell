@@ -45,19 +45,19 @@ struct _ShellAppMenuEntry {
 
 GType shell_app_menu_entry_get_type (void);
 
-/* Hidden typedef for a GMenuTreeEntry */
 typedef struct _ShellAppInfo ShellAppInfo;
 
+#define SHELL_TYPE_APP_INFO (shell_app_info_get_type ())
 GType shell_app_info_get_type (void);
 
 ShellAppInfo* shell_app_info_ref (ShellAppInfo *info);
 void shell_app_info_unref (ShellAppInfo *info);
 
 const char *shell_app_info_get_id (ShellAppInfo *info);
-const char *shell_app_info_get_name (ShellAppInfo *info);
-const char *shell_app_info_get_description (ShellAppInfo *info);
-const char *shell_app_info_get_executable (ShellAppInfo *info);
-const char *shell_app_info_get_desktop_file_path (ShellAppInfo *info);
+char *shell_app_info_get_name (ShellAppInfo *info);
+char *shell_app_info_get_description (ShellAppInfo *info);
+char *shell_app_info_get_executable (ShellAppInfo *info);
+char *shell_app_info_get_desktop_file_path (ShellAppInfo *info);
 GIcon *shell_app_info_get_icon (ShellAppInfo *info);
 ClutterActor *shell_app_info_create_icon_texture (ShellAppInfo *info, float size);
 GSList *shell_app_info_get_categories (ShellAppInfo *info);
@@ -71,7 +71,9 @@ gboolean shell_app_info_launch_full (ShellAppInfo *info,
 gboolean shell_app_info_launch (ShellAppInfo *info,
                                 GError      **error);
 
-ShellAppInfo *shell_app_system_lookup_app (ShellAppSystem *system, const char *id);
+ShellAppInfo *shell_app_system_load_from_desktop_file (ShellAppSystem *system, const char *filename, GError **error);
+
+ShellAppInfo *shell_app_system_lookup_cached_app (ShellAppSystem *system, const char *id);
 
 ShellAppInfo *shell_app_system_lookup_heuristic_basename (ShellAppSystem *system, const char *id);
 
