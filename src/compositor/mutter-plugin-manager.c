@@ -27,6 +27,7 @@
 #include "errors.h"
 #include "workspace.h"
 #include "mutter-module.h"
+#include "../core/window-private.h"
 
 #include <string.h>
 
@@ -401,6 +402,10 @@ mutter_plugin_manager_event_simple (MutterPluginManager *plugin_mgr,
 {
   GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
+  MetaDisplay *display  = meta_screen_get_display (plugin_mgr->screen);
+
+  if (display->display_opening)
+    return FALSE;
 
   while (l)
     {
@@ -476,6 +481,10 @@ mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
 {
   GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
+  MetaDisplay *display  = meta_screen_get_display (plugin_mgr->screen);
+
+  if (display->display_opening)
+    return FALSE;
 
   while (l)
     {
@@ -545,6 +554,10 @@ mutter_plugin_manager_switch_workspace (MutterPluginManager *plugin_mgr,
 {
   GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
+  MetaDisplay *display  = meta_screen_get_display (plugin_mgr->screen);
+
+  if (display->display_opening)
+    return FALSE;
 
   while (l)
     {
