@@ -131,7 +131,6 @@ DocDisplay.prototype = {
 
     // Gets the list of recent items from the recent items manager.
     _refreshCache : function() {
-        let me = this;
         if (!this._docsStale)
             return;
         this._allItems = this._docManager.getItems();

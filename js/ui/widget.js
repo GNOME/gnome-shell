@@ -10,7 +10,6 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const DocDisplay = imports.ui.docDisplay;
 const DocInfo = imports.misc.docInfo;
 
 const COLLAPSED_WIDTH = 24;

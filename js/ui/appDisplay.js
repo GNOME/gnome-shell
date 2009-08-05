@@ -424,7 +424,7 @@ AppDisplay.prototype = {
             if (category.indexOf(search) >= 0)
                 return true;
         }
-       
+
         return false;
     },
 

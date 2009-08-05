@@ -36,9 +36,9 @@ function AltTabPopup() {
 
 AltTabPopup.prototype = {
     _init : function() {
-	let global = Shell.Global.get();
+        let global = Shell.Global.get();
 
-	this.actor = new Big.Box({ background_color : POPUP_BG_COLOR,
+        this.actor = new Big.Box({ background_color : POPUP_BG_COLOR,
                                    corner_radius: POPUP_GRID_SPACING,
                                    padding: POPUP_GRID_SPACING,
                                    spacing: POPUP_GRID_SPACING,
@@ -48,15 +48,15 @@ AltTabPopup.prototype = {
         // but Tidy.Grid is lame in various ways. (Eg, it seems to
         // have a minimum size of 200x200.) So we create a vertical
         // Big.Box containing multiple horizontal Big.Boxes.
-	this._grid = new Big.Box({ spacing: POPUP_GRID_SPACING,
+        this._grid = new Big.Box({ spacing: POPUP_GRID_SPACING,
                                    orientation: Big.BoxOrientation.VERTICAL });
         let gcenterbox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                        x_align: Big.BoxAlignment.CENTER });
         gcenterbox.append(this._grid, Big.BoxPackFlags.NONE);
-	this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
+        this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
 
         // Selected-window label
-	this._label = new Clutter.Text({ font_name: "Sans 16px",
+        this._label = new Clutter.Text({ font_name: "Sans 16px",
                                          ellipsize: Pango.EllipsizeMode.END });
 
         let labelbox = new Big.Box({ background_color: POPUP_INDICATOR_COLOR,
@@ -67,7 +67,7 @@ AltTabPopup.prototype = {
                                        x_align: Big.BoxAlignment.CENTER,
                                        width: POPUP_LABEL_MAX_WIDTH + POPUP_GRID_SPACING });
         lcenterbox.append(labelbox, Big.BoxPackFlags.NONE);
-	this.actor.append(lcenterbox, Big.BoxPackFlags.NONE);
+        this.actor.append(lcenterbox, Big.BoxPackFlags.NONE);
 
         // Indicator around selected icon
         this._indicator = new Big.Rectangle({ border_width: POPUP_INDICATOR_WIDTH,
@@ -76,10 +76,10 @@ AltTabPopup.prototype = {
                                               color: POPUP_TRANSPARENT });
         this.actor.append(this._indicator, Big.BoxPackFlags.FIXED);
 
-	this._items = [];
+        this._items = [];
         this._toplevels = global.window_group.get_children();
 
-	global.stage.add_actor(this.actor);
+        global.stage.add_actor(this.actor);
 
         // Dark translucent window used to cover all but the
         // currently-selected window while Alt-Tabbing. Actually
@@ -142,7 +142,7 @@ AltTabPopup.prototype = {
     },
 
     show : function(initialSelection) {
-	let global = Shell.Global.get();
+        let global = Shell.Global.get();
 
         Main.startModal();
 
@@ -154,7 +154,7 @@ AltTabPopup.prototype = {
                                        time: SHOW_TIME,
                                        transition: "easeOutQuad" });
 
-	this.actor.show_all();
+        this.actor.show_all();
         this.actor.x = Math.floor((global.screen_width - this.actor.width) / 2);
         this.actor.y = Math.floor((global.screen_height - this.actor.height) / 2);
 
@@ -162,7 +162,7 @@ AltTabPopup.prototype = {
     },
 
     destroy : function() {
-	this.actor.destroy();
+        this.actor.destroy();
         this._overlay.destroy();
 
         Main.endModal();
@@ -240,7 +240,7 @@ AltTabPopup.prototype = {
     },
 
     _adjust_overlay : function() {
-	let global = Shell.Global.get();
+        let global = Shell.Global.get();
 
         if (this._selected && this._selected.icon_rect) {
             // We want to highlight a specific rectangle within the
