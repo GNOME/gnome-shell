@@ -87,7 +87,6 @@ RunDialog.prototype = {
 
         this._entry.connect('activate', Lang.bind(this, function (o, e) {
             this._run(o.get_text());
-            this._entry.text = '';
             this.close();
             return false;
         }));
@@ -138,6 +137,7 @@ RunDialog.prototype = {
         this._isOpen = false;
         
         this._group.hide();
+        this._entry.text = '';
 
         Main.endModal();
     }
