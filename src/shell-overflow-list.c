@@ -386,3 +386,40 @@ shell_overflow_list_get_displayed_actor (ShellOverflowList *self,
 
   return iter->data;
 }
+
+/**
+ * shell_overflow_list_get_actor_index:
+ * @self:
+ * @actor: a child of the list
+ *
+ * Returns the index on the current page of the given actor.
+ *
+ * Return value: index of @actor in
+ * the currently visible page
+ */
+int
+shell_overflow_list_get_actor_index (ShellOverflowList *self,
+                                     ClutterActor      *actor)
+{
+  GList *children, *iter;
+  int i;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+
+  if (children == NULL)
+    return NULL;
+
+  iter = g_list_nth (children, (self->priv->page) * self->priv->items_per_page);
+
+  int result = -1;
+  for (i = 0; iter; iter = iter->next, i++)
+    if (iter->data == actor)
+      {
+        result = i;
+        break;
+      }
+
+  g_list_free (children);
+
+  return result;
+}

@@ -532,14 +532,14 @@ GenericDisplay.prototype = {
                             Lang.bind(this,
                                       function() {
                                           // update the selection
-                                          this._selectIndex(this._getIndexOfDisplayedActor(displayItem.actor));
+                                          this._selectIndex(this._list.get_actor_index(displayItem.actor));
                                           this.activateSelected();
                                       }));
 
         displayItem.connect('show-details',
                             Lang.bind(this,
                                       function() {
-                                          let index = this._getIndexOfDisplayedActor(displayItem.actor);
+                                          let index = this._list.get_actor_index(displayItem.actor);
                                           /* Close the details pane if already open */
                                           if (index == this._openDetailIndex) {
                                               this._openDetailIndex = -1;
@@ -557,7 +557,7 @@ GenericDisplay.prototype = {
     _removeDisplayItem: function(itemId) {
         let count = this._list.displayedCount;
         let displayItem = this._displayedItems[itemId];
-        let displayItemIndex = this._getIndexOfDisplayedActor(displayItem.actor);
+        let displayItemIndex = this._list.get_actor_index(displayItem.actor);
 
         if (this.hasSelected() && count == 1) {
             this.unsetSelected();
@@ -764,17 +764,6 @@ GenericDisplay.prototype = {
             }
         }
         return null;
-    },
-
-    // Returns and index that the actor has in the ordering of the display's
-    // children.
-    _getIndexOfDisplayedActor: function(actor) {
-        let children = this._list.get_children();
-        for (let i = 0; i < children.length; i++) {
-            if (children[i] == actor)
-                return i;
-        }
-        return -1;
     },
 
     // Selects (e.g. highlights) a display item at the provided index,
