@@ -6481,8 +6481,6 @@ recalc_window_type (MetaWindow *window)
         window->type = META_WINDOW_COMBO;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DND)
         window->type = META_WINDOW_DND;
-      else if (window->override_redirect)
-	window->type = META_WINDOW_OVERRIDE_OTHER;
       else
         {
           char *atom_name;
@@ -6517,6 +6515,39 @@ recalc_window_type (MetaWindow *window)
   if (window->type == META_WINDOW_DIALOG &&
       window->wm_state_modal)
     window->type = META_WINDOW_MODAL_DIALOG;
+
+  /* We don't want to allow override-redirect windows to have decorated-window
+   * types since that's just confusing.
+   */
+  if (window->override_redirect)
+    {
+      switch (window->type)
+        {
+        /* Decorated types */
+        case META_WINDOW_NORMAL:
+        case META_WINDOW_DIALOG:
+        case META_WINDOW_MODAL_DIALOG:
+        case META_WINDOW_MENU:
+        case META_WINDOW_UTILITY:
+          window->type = META_WINDOW_OVERRIDE_OTHER;
+          break;
+        /* Undecorated types, normally not override-redirect */
+        case META_WINDOW_DESKTOP:
+        case META_WINDOW_DOCK:
+        case META_WINDOW_TOOLBAR:
+        case META_WINDOW_SPLASHSCREEN:
+        /* Undecorated types, normally override-redirect types */
+        case META_WINDOW_DROPDOWN_MENU:
+        case META_WINDOW_POPUP_MENU:
+        case META_WINDOW_TOOLTIP:
+        case META_WINDOW_NOTIFICATION:
+        case META_WINDOW_COMBO:
+        case META_WINDOW_DND:
+        /* To complete enum */
+        case META_WINDOW_OVERRIDE_OTHER:
+          break;
+        }
+    }
 
   meta_verbose ("Calculated type %u for %s, old type %u\n",
                 window->type, window->desc, old_type);
