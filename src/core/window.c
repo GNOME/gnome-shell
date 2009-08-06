@@ -8793,3 +8793,19 @@ meta_window_get_client_machine (MetaWindow *window)
   return window->wm_client_machine;
 }
 
+/**
+ * meta_window_is_modal:
+ * @window: a #MetaWindow
+ *
+ * Queries whether the window is in a modal state as described by the
+ * _NET_WM_STATE protocol.
+ *
+ * Return value: (transfer none): TRUE if the window is in modal state.
+ */
+gboolean
+meta_window_is_modal (MetaWindow *window)
+{
+  g_return_val_if_fail (META_IS_WINDOW (window), FALSE);
+
+  return window->wm_state_modal;
+}

@@ -116,4 +116,5 @@ void        meta_window_delete             (MetaWindow  *window,
                                             guint32      timestamp);
 int         meta_window_get_pid (MetaWindow *window);
 const char *meta_window_get_client_machine (MetaWindow *window);
+gboolean    meta_window_is_modal (MetaWindow *window);
 #endif
