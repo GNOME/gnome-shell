@@ -67,11 +67,6 @@ function start() {
     
     global.screen.connect('toggle-recording', function() {
         if (recorder == null) {
-            // We have to initialize GStreamer first. This isn't done
-            // inside ShellRecorder to make it usable inside projects
-            // with other usage of GStreamer.
-            let Gst = imports.gi.Gst;
-            Gst.init(null, null);
             recorder = new Shell.Recorder({ stage: global.stage });
         }
 

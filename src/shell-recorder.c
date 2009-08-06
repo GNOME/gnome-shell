@@ -232,6 +232,9 @@ get_memory_target (void)
 static void
 shell_recorder_init (ShellRecorder *recorder)
 {
+  /* Calling gst_init() is a no-op if GStreamer was previously initialized */
+  gst_init (NULL, NULL);
+
   shell_recorder_src_register ();
 
   recorder->recording_icon = create_recording_icon ();
