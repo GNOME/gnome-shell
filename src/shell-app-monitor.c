@@ -532,10 +532,11 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
     self->watched_window = NULL;
 
   usage->window_count--;
+  /* Remove before emitting */
+  g_hash_table_remove (self->window_to_app, window);
+
   if (usage->window_count == 0)
     g_signal_emit (self, signals[CHANGED], 0);
-
-  g_hash_table_remove (self->window_to_app, window);
 }
 
 static void
