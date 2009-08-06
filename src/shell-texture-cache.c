@@ -151,13 +151,6 @@ shell_texture_cache_finalize (GObject *object)
   G_OBJECT_CLASS (shell_texture_cache_parent_class)->finalize (object);
 }
 
-ShellTextureCache*
-shell_texture_cache_new ()
-{
-  return SHELL_TEXTURE_CACHE (g_object_new (SHELL_TYPE_TEXTURE_CACHE,
-				            NULL));
-}
-
 typedef struct {
   ShellTextureCache *cache;
   char *uri;
@@ -1030,7 +1023,7 @@ shell_texture_cache_load_recent_thumbnail (ShellTextureCache *cache,
  * created for a thumbnail.
  */
 void
-shell_texture_cache_unref_thumbnail (ShellTextureCache *cache,
+shell_texture_cache_evict_thumbnail (ShellTextureCache *cache,
                                      int                size,
                                      const char        *uri)
 {
@@ -1074,7 +1067,7 @@ static ShellTextureCache *instance = NULL;
  * Return value: (transfer none): The global texture cache
  */
 ShellTextureCache*
-shell_texture_cache_get_default ()
+shell_texture_cache_get_default (void)
 {
   if (instance == NULL)
     instance = g_object_new (SHELL_TYPE_TEXTURE_CACHE, NULL);

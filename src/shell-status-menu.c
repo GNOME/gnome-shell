@@ -338,7 +338,7 @@ gnome_session_save_command (const char *arg)
   if (args[0] == NULL)
     return;
 
-  args[1] = arg;
+  args[1] = (char *)arg;
   args[2] = NULL;
 
   screen = gdk_screen_get_default ();
@@ -633,12 +633,6 @@ shell_status_menu_class_init (ShellStatusMenuClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-}
-
-ShellStatusMenu *
-shell_status_menu_new (void)
-{
-  return g_object_new (SHELL_TYPE_STATUS_MENU, NULL);
 }
 
 static void

@@ -23,7 +23,6 @@ shell_stack_allocate (ClutterActor           *self,
                       const ClutterActorBox  *box,
                       ClutterAllocationFlags  flags)
 {
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
   GList *children, *iter;
 
   /* chain up to set actor->allocation */
@@ -138,7 +137,6 @@ shell_stack_get_preferred_width (ClutterActor *actor,
 static void
 shell_stack_class_init (ShellStackClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   actor_class->get_preferred_width = shell_stack_get_preferred_width;

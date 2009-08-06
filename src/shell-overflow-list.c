@@ -181,7 +181,7 @@ shell_overflow_list_allocate (ClutterActor           *actor,
   g_list_free (children);
 }
 
-void
+static void
 shell_overflow_list_paint (ClutterActor *actor)
 {
   ShellOverflowList *self = SHELL_OVERFLOW_LIST (actor);
@@ -403,15 +403,16 @@ shell_overflow_list_get_actor_index (ShellOverflowList *self,
 {
   GList *children, *iter;
   int i;
+  int result;
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (self));
 
   if (children == NULL)
-    return NULL;
+    return -1;
 
   iter = g_list_nth (children, (self->priv->page) * self->priv->items_per_page);
 
-  int result = -1;
+  result = -1;
   for (i = 0; iter; iter = iter->next, i++)
     if (iter->data == actor)
       {

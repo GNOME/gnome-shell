@@ -38,7 +38,7 @@ typedef enum {
 
 GType shell_texture_cache_get_type (void) G_GNUC_CONST;
 
-ShellTextureCache* shell_texture_cache_get_default();
+ShellTextureCache* shell_texture_cache_get_default (void);
 
 ClutterActor *shell_texture_cache_load_gicon (ShellTextureCache *cache,
                                               GIcon             *icon,

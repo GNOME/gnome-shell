@@ -272,49 +272,6 @@ shell_global_class_init (ShellGlobalClass *klass)
 }
 
 /**
- * search_path_init:
- *
- * search_path_init and get_applications_search_path below were copied from glib/gio/gdesktopappinfo.c
- * copyright Red Hat, Inc., written by Alex Larsson, licensed under the LGPL
- *
- * Return value: location of an array with user and system application directories.
- */ 
-static gpointer
-search_path_init (gpointer data)
-{ 	
-    char **args = NULL;
-    const char * const *data_dirs;
-    const char *user_data_dir;
-    int i, length, j;
- 	 
-    data_dirs = g_get_system_data_dirs ();
-    length = g_strv_length ((char **)data_dirs);
- 	
-    args = g_new (char *, length + 2);
- 	
-    j = 0;
-    user_data_dir = g_get_user_data_dir ();
-    args[j++] = g_build_filename (user_data_dir, "applications", NULL);
-    for (i = 0; i < length; i++)
-      args[j++] = g_build_filename (data_dirs[i],
- 	                            "applications", NULL);
-    args[j++] = NULL;
- 	 	
-    return args;
-}
-/**
- * get_applications_search_path:
- *
- * Return value: location of an array with user and system application directories.
- */
-static const char * const *
-get_applications_search_path (void)
-{
-    static GOnce once_init = G_ONCE_INIT;
-    return g_once (&once_init, search_path_init, NULL);
-} 
-
-/**
  * shell_clutter_texture_set_from_pixbuf: 
  * texture: #ClutterTexture to be modified
  * pixbuf: #GdkPixbuf to set as an image for #ClutterTexture

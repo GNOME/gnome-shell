@@ -52,8 +52,6 @@ static void shell_process_init (ShellProcess *self)
 
 static void shell_process_dispose (GObject *object)
 {
-  ShellProcess *self = (ShellProcess*)object;
-
   G_OBJECT_CLASS (shell_process_parent_class)->dispose(object);
 }
 
