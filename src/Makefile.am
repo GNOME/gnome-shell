@@ -199,10 +199,14 @@ gir_DATA = Meta-$(api_version).gir
 typelibdir = $(pkglibdir)
 typelib_DATA = Meta-$(api_version).typelib
 
+GIR_VERBOSE = $(GIR_VERBOSE_$(V))
+GIR_VERBOSE_ = $(GIR_VERBOSE_$(AM_DEFAULT_VERBOSITY))
+GIR_VERBOSE_0 = @echo GIR $@;
+
 # We need to strip out the attribute that would point back to libmutter-introspect
 # so that libgirepository looks for symbols in the executable instead
 Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mutter_SOURCES)
-	pwd=`pwd` ;					\
+	$(GIR_VERBOSE) pwd=`pwd` ;			\
         cd $(srcdir) &&					\
 	$(G_IR_SCANNER)					\
 		--namespace=Meta			\
@@ -221,7 +225,7 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		-o $$pwd/$@
 
 Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
+	$(GIR_VERBOSE) LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
 endif
 
 EFENCE=
@@ -308,7 +312,7 @@ CLEANFILES += $(MUTTER_STAMP_FILES)
 mutter-marshal.h: stamp-mutter-marshal.h
 	@true
 stamp-mutter-marshal.h: Makefile mutter-marshal.list
-	$(GLIB_GENMARSHAL) \
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
 		--prefix=_mutter_marshal \
 		--header \
 	$(srcdir)/mutter-marshal.list > xgen-tmh && \
@@ -317,7 +321,7 @@ stamp-mutter-marshal.h: Makefile mutter-marshal.list
 	echo timestamp > $(@F)
 
 mutter-marshal.c: Makefile mutter-marshal.list
-	(echo "#include \"mutter-marshal.h\"" ; \
+	 $(AM_V_GEN) (echo "#include \"mutter-marshal.h\"" ; \
 	 $(GLIB_GENMARSHAL) \
 		--prefix=_mutter_marshal \
 		--body \
@@ -328,16 +332,16 @@ mutter-marshal.c: Makefile mutter-marshal.list
 mutter-enum-types.h: stamp-mutter-enum-types.h Makefile
 	@true
 stamp-mutter-enum-types.h: $(mutter_source_h) mutter-enum-types.h.in
-	( cd $(srcdir) && \
+	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $(srcdir)/mutter-enum-types.h.in \
 	  $(libmutterinclude_base_headers) ) >> xgen-teth && \
-	(cmp xgen-teth mutter-enum-types.h || cp xgen-teth mutter-enum-types.h) && \
+	(cmp -s xgen-teth mutter-enum-types.h || cp xgen-teth mutter-enum-types.h) && \
 	rm -f xgen-teth && \
 	echo timestamp > $(@F)
 
 mutter-enum-types.c: stamp-mutter-enum-types.h mutter-enum-types.c.in
-	( cd $(srcdir) && \
+	  $(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $(srcdir)/mutter-enum-types.c.in \
 	  $(libmutterinclude_base_headers) ) >> xgen-tetc && \
