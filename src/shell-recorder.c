@@ -221,7 +221,8 @@ get_memory_target (void)
           return mem_total / 2;
         }
       /* Skip to the next line and discard what we read */
-      fgets(line_buffer, sizeof(line_buffer), f);
+      if (fgets(line_buffer, sizeof(line_buffer), f) == NULL)
+        break;
     }
 
   fclose(f);
