@@ -80,17 +80,31 @@ AC_SUBST(GIRDIR)
 TYPELIBDIR="$($PKG_CONFIG --variable=typelibdir gobject-introspection-1.0)"
 AC_SUBST(TYPELIBDIR)
 
-changequote(,)dnl
-if test "x$GCC" = "xyes"; then
-  case " $CFLAGS " in
-  *[\ \	]-Wall[\ \	]*) ;;
-  *) CFLAGS="$CFLAGS -Wall" ;;
-  esac
+# Stay command-line compatible with the gnome-common configure option. Here
+# minimum/yes/maximum are the same, however.
+AC_ARG_ENABLE(compile_warnings,
+  AC_HELP_STRING([--enable-compile-warnings=@<:@no/minimum/yes/maximum/error@:>@],
+                 [Turn on compiler warnings]),,
+  enable_compile_warnings=error)
 
-  case " $OBJCFLAGS " in
-  *[\ \	]-Wall[\ \	]*) ;;
-  *) OBJCFLAGS="$OBJCFLAGS -Wall" ;;
-  esac
+changequote(,)dnl
+if test "$enable_compile_warnings" != no ; then
+  if test "x$GCC" = "xyes"; then
+    case " $CFLAGS " in
+    *[\ \	]-Wall[\ \	]*) ;;
+    *) CFLAGS="$CFLAGS -Wall" ;;
+    esac
+    case " $CFLAGS " in
+    *[\ \	]-Wmissing-prototypes[\ \	]*) ;;
+    *) CFLAGS="$CFLAGS -Wmissing-prototypes" ;;
+    esac
+    if test "$enable_compile_warnings" = error ; then
+      case " $CFLAGS " in
+      *[\ \	]-Werror[\ \	]*) ;;
+      *) CFLAGS="$CFLAGS -Werror" ;;
+      esac
+    fi
+  fi
 fi
 changequote([,])dnl
 
