@@ -133,8 +133,8 @@ _Draggable.prototype = {
                     // We can check the return value of the function and break the loop if it's true if we don't want
                     // to continue checking the parents.
                     target._delegate.handleDragOver(this.actor._delegate, actor,
-                                                    (stageX + this._dragOffsetX + this._xOffset - targX) / target.scale_x,
-                                                    (stageY + this._dragOffsetY + this._yOffset - targY) / target.scale_y,
+                                                    (stageX + this._dragOffsetX - targX) / target.scale_x,
+                                                    (stageY + this._dragOffsetY - targY) / target.scale_y,
                                                     event.get_time());
                 }
                 target = target.get_parent();
@@ -163,8 +163,8 @@ _Draggable.prototype = {
             if (target._delegate && target._delegate.acceptDrop) {
                 let [targX, targY] = target.get_transformed_position();
                 if (target._delegate.acceptDrop(this.actor._delegate, actor,
-                                                (dropX + this._xOffset - targX) / target.scale_x,
-                                                (dropY + this._yOffset - targY) / target.scale_y,
+                                                (dropX - targX) / target.scale_x,
+                                                (dropY - targY) / target.scale_y,
                                                 event.get_time())) {
                     // If it accepted the drop without taking the actor,
                     // destroy it.
