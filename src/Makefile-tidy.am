@@ -33,7 +33,7 @@ tidy_source_c =					\
 tidy-marshal.h: stamp-tidy-marshal.h
 	@true
 stamp-tidy-marshal.h: Makefile tidy/tidy-marshal.list
-	$(GLIB_GENMARSHAL) \
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
 		--prefix=_tidy_marshal \
 		--header \
 	$(srcdir)/tidy/tidy-marshal.list > xgen-tmh && \
@@ -42,7 +42,7 @@ stamp-tidy-marshal.h: Makefile tidy/tidy-marshal.list
 	echo timestamp > $(@F)
 
 tidy-marshal.c: Makefile tidy/tidy-marshal.list
-	(echo "#include \"tidy-marshal.h\"" ; \
+	$(AM_V_GEN) (echo "#include \"tidy-marshal.h\"" ; \
 	 $(GLIB_GENMARSHAL) \
 		--prefix=_tidy_marshal \
 		--body \
@@ -53,16 +53,16 @@ tidy-marshal.c: Makefile tidy/tidy-marshal.list
 tidy-enum-types.h: stamp-tidy-enum-types.h Makefile
 	@true
 stamp-tidy-enum-types.h: $(tidy_source_h) tidy/tidy-enum-types.h.in
-	( cd $(srcdir) && \
+	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $(srcdir)/tidy/tidy-enum-types.h.in \
 	  $(tidy_source_h) ) >> xgen-teth && \
-	(cmp xgen-teth tidy-enum-types.h || cp xgen-teth tidy-enum-types.h) && \
+	(cmp -s xgen-teth tidy-enum-types.h || cp xgen-teth tidy-enum-types.h) && \
 	rm -f xgen-teth && \
 	echo timestamp > $(@F)
 
 tidy-enum-types.c: stamp-tidy-enum-types.h tidy/tidy-enum-types.c.in
-	( cd $(srcdir) && \
+	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $(srcdir)/tidy/tidy-enum-types.c.in \
 	  $(tidy_source_h) ) >> xgen-tetc && \

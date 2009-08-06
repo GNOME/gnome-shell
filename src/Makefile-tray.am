@@ -24,7 +24,7 @@ tray_source =			\
 na-marshal.h: stamp-na-marshal.h
 	@true
 stamp-na-marshal.h: Makefile tray/na-marshal.list
-	$(GLIB_GENMARSHAL) \
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
 		--prefix=_na_marshal \
 		--header \
 	$(srcdir)/tray/na-marshal.list > xgen-tmh && \
@@ -33,7 +33,7 @@ stamp-na-marshal.h: Makefile tray/na-marshal.list
 	echo timestamp > $(@F)
 
 na-marshal.c: Makefile tray/na-marshal.list
-	(echo "#include \"na-marshal.h\"" ; \
+	$(AM_V_GEN) (echo "#include \"na-marshal.h\"" ; \
 	 $(GLIB_GENMARSHAL) \
 		--prefix=_na_marshal \
 		--body \

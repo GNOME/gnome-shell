@@ -8,7 +8,7 @@ noinst_LTLIBRARIES =
 bin_SCRIPTS = gnome-shell
 
 gnome-shell: gnome-shell.in
-	sed -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
+	$(AM_V_GEN) sed -e "s|@MUTTER_BIN_DIR[@]|$(MUTTER_BIN_DIR)|" \
 	    -e "s|@GJS_JS_DIR[@]|$(GJS_JS_DIR)|" \
 	    -e "s|@GJS_JS_NATIVE_DIR[@]|$(GJS_JS_NATIVE_DIR)|" \
 	    -e "s|@libexecdir[@]|$(libexecdir)|" \
@@ -121,7 +121,7 @@ libgnome_shell_la_gir_sources = \
 shell-marshal.h: stamp-shell-marshal.h
 	@true
 stamp-shell-marshal.h: Makefile shell-marshal.list
-	$(GLIB_GENMARSHAL) \
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
 		--prefix=_shell_marshal \
 		--header \
 	$(srcdir)/shell-marshal.list > xgen-tmh && \
@@ -130,7 +130,7 @@ stamp-shell-marshal.h: Makefile shell-marshal.list
 	echo timestamp > $(@F)
 
 shell-marshal.c: Makefile shell-marshal.list
-	(echo "#include \"shell-marshal.h\"" ; \
+	$(AM_V_GEN) (echo "#include \"shell-marshal.h\"" ; \
 	 $(GLIB_GENMARSHAL) \
 		--prefix=_shell_marshal \
 		--body \
@@ -152,7 +152,7 @@ typelibdir = $(pkglibdir)
 typelib_DATA = Shell-0.1.typelib Tidy-1.0.typelib Big-1.0.typelib
 
 Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefile
-	$(G_IR_SCANNER)		\
+	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Shell			\
 		--nsversion=0.1				\
 		--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
@@ -174,7 +174,7 @@ Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
 CLEANFILES += Shell-0.1.typelib
 
 Tidy-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makefile
-	$(G_IR_SCANNER)					\
+	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Tidy			\
 		--nsversion=1.0				\
 		--include=Clutter-1.0			\
@@ -192,8 +192,8 @@ Tidy-1.0.typelib: libtidy-1.0.la Tidy-1.0.gir
 CLEANFILES += Tidy-1.0.typelib
 
 Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
-	$(G_IR_SCANNER)					\
-		--namespace=Big			\
+	$(AM_V_GEN) $(G_IR_SCANNER)			\
+		--namespace=Big				\
 		--nsversion=1.0				\
 		--include=Clutter-1.0			\
 		--include=GdkPixbuf-2.0			\

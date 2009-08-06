@@ -33,16 +33,16 @@ big_source_c =					\
 big-enum-types.h: stamp-big-enum-types.h Makefile
 	@true
 stamp-big-enum-types.h: $(big_source_h) big/big-enum-types.h.in
-	( cd $(srcdir) && \
+	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $(srcdir)/big/big-enum-types.h.in \
 	  $(big_source_h) ) >> xgen-teth && \
-	(cmp xgen-teth big-enum-types.h || cp xgen-teth big-enum-types.h) && \
+	(cmp -s xgen-teth big-enum-types.h || cp xgen-teth big-enum-types.h) && \
 	rm -f xgen-teth && \
 	echo timestamp > $(@F)
 
 big-enum-types.c: stamp-big-enum-types.h big/big-enum-types.c.in
-	( cd $(srcdir) && \
+	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $(srcdir)/big/big-enum-types.c.in \
 	  $(big_source_h) ) >> xgen-tetc && \
