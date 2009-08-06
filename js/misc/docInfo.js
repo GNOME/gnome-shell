@@ -42,7 +42,7 @@ DocInfo.prototype = {
         if (appInfo != null) {
             appInfo.launch_uris([this.uri], Main.createAppLaunchContext());
         } else {
-            log("Failed to get default application info for mime type " + mimeType +
+            log("Failed to get default application info for mime type " + this.mimeType +
                 ". Will try to use the last application that registered the document.");
             let appName = this._recentInfo.last_application();
             let [success, appExec, count, time] = this._recentInfo.get_application_info(appName);
