@@ -24,8 +24,11 @@ const GLOW_COLOR = new Clutter.Color();
 GLOW_COLOR.from_pixel(0x4f6ba4ff);
 const GLOW_PADDING = 5;
 
+
 const APP_ICON_SIZE = 48;
-const APP_PADDING = 18;
+const WELL_DEFAULT_COLUMNS = 4;
+const WELL_ITEM_HSPACING = 0;
+const WELL_ITEM_VSPACING = 4;
 
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
@@ -452,18 +455,6 @@ WellDisplayItem.prototype = {
                                    padding: 1,
                                    border_color: GenericDisplay.ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR,
                                    reactive: true });
-        this.actor.connect('enter-event', Lang.bind(this,
-            function(o, event) {
-                this.actor.border = 1;
-                this.actor.padding = 0;
-                return false;
-            }));
-        this.actor.connect('leave-event', Lang.bind(this,
-            function(o, event) {
-                this.actor.border = 0;
-                this.actor.padding = 1;
-                return false;
-            }));
         this.actor._delegate = this;
         this.actor.connect('button-release-event', Lang.bind(this, function (b, e) {
             this._handleActivate();
@@ -559,10 +550,6 @@ WellDisplayItem.prototype = {
         return this._icon;
     },
 
-    getWordWidth: function() {
-        return this._wordWidth;
-    },
-
     setWidth: function(width) {
         this._nameBox.width = width + GLOW_PADDING * 2;
     }
@@ -570,107 +557,200 @@ WellDisplayItem.prototype = {
 
 Signals.addSignalMethods(WellDisplayItem.prototype);
 
-function WellArea(width, isFavorite) {
-    this._init(width, isFavorite);
+function WellGrid() {
+    this._init();
 }
 
-WellArea.prototype = {
-    _init : function(width, isFavorite) {
-        this.isFavorite = isFavorite;
+WellGrid.prototype = {
+    _init: function() {
+        this.actor = new Shell.GenericContainer();
 
-        this._grid = new Tidy.Grid({ width: width, row_gap: 4 });
-        this._grid._delegate = this;
+        this._separator = new Big.Box({ border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
+                                        border_top: 1,
+                                        height: 1 });
+        this.actor.add_actor(this._separator);
+        this._separatorIndex = 0;
+        this._cachedSeparatorY = 0;
 
-        this.actor = this._grid;
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
     },
 
-    redisplay: function (infos) {
-        let children;
+    _getPreferredWidth: function (grid, forHeight, alloc) {
+        let [itemMin, itemNatural] = this._getItemPreferredWidth();
+        let children = this._getItemChildren();
+        let nColumns;
+        if (children.length < WELL_DEFAULT_COLUMNS)
+            nColumns = children.length;
+        else
+            nColumns = WELL_DEFAULT_COLUMNS;
+        let spacing = Math.max(nColumns - 1, 0) * WELL_ITEM_HSPACING;
+        alloc.min_size = itemMin * nColumns + spacing;
+        alloc.natural_size = itemNatural * nColumns + spacing;
+    },
 
-        children = this._grid.get_children();
-        children.forEach(Lang.bind(this, function (v) {
-            v.destroy();
-        }));
+    _getPreferredHeight: function (grid, forWidth, alloc) {
+        let [rows, columns, itemWidth, itemHeight] = this._computeLayout(forWidth);
+        let totalVerticalSpacing = Math.max(rows - 1, 0) * WELL_ITEM_VSPACING;
 
-        this._maxWordWidth = 0;
-        let displays = []
-        for (let i = 0; i < infos.length; i++) {
-            let app = infos[i];
-            let display = new WellDisplayItem(app, this.isFavorite);
-            displays.push(display);
-            let width = display.getWordWidth();
-            if (width > this._maxWordWidth)
-                this._maxWordWidth = width;
-            display.connect('activated', Lang.bind(this, function (display) {
-                this.emit('activated', display);
-            }));
-            this.actor.add_actor(display.actor);
+        let [separatorMin, separatorNatural] = this._separator.get_preferred_height(forWidth);
+        alloc.min_size = alloc.natural_size = rows * itemHeight + totalVerticalSpacing + separatorNatural;
+    },
+
+    _allocate: function (grid, box, flags) {
+        let children = this._getItemChildren();
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+
+        let [rows, columns, itemWidth, itemHeight] = this._computeLayout(availWidth);
+
+        let [separatorMin, separatorNatural] = this._separator.get_preferred_height(-1);
+
+        let x = box.x1;
+        let y = box.y1;
+        let columnIndex = 0;
+        for (let i = 0; i < children.length; i++) {
+            let [childMinWidth, childMinHeight,
+                 childNaturalWidth, childNaturalHeight] = children[i].get_preferred_size();
+
+            /* Center the item in its allocation */
+            let width = Math.min(itemWidth, childNaturalWidth);
+            let height = Math.min(itemHeight, childNaturalHeight);
+            let horizSpacing = (itemWidth - width) / 2;
+            let vertSpacing = (itemHeight - height) / 2;
+
+            let childBox = new Clutter.ActorBox();
+            childBox.x1 = Math.floor(x + horizSpacing);
+            childBox.y1 = Math.floor(y + vertSpacing);
+            childBox.x2 = childBox.x1 + width;
+            childBox.y2 = childBox.y1 + height;
+            children[i].allocate(childBox, flags);
+
+            let atSeparator = (i == this._separatorIndex - 1);
+
+            columnIndex++;
+            if (columnIndex == columns || atSeparator) {
+                columnIndex = 0;
+            }
+
+            if (columnIndex == 0) {
+                y += itemHeight + WELL_ITEM_VSPACING;
+                x = box.x1;
+            } else {
+                x += itemWidth + WELL_ITEM_HSPACING;
+            }
+
+            if (atSeparator) {
+                y += separatorNatural + WELL_ITEM_VSPACING;
+            }
         }
-        this._displays = displays;
+
+        let separatorRowIndex = Math.ceil(this._separatorIndex / columns);
+
+        /* Allocate the separator */
+        let childBox = new Clutter.ActorBox();
+        childBox.x1 = box.x1;
+        childBox.y1 = (itemHeight + WELL_ITEM_VSPACING) * separatorRowIndex;
+        this._cachedSeparatorY = childBox.y1;
+        childBox.x2 = box.x2;
+        childBox.y2 = childBox.y1+separatorNatural;
+        this._separator.allocate(childBox, flags);
     },
 
-    getWordWidth: function() {
-        return this._maxWordWidth;
+    setSeparatorIndex: function (index) {
+        this._separatorIndex = index;
+        this.actor.queue_relayout();
     },
 
-    setItemWidth: function(width) {
-        for (let i = 0; i < this._displays.length; i++) {
-            let display = this._displays[i];
-            display.setWidth(width);
+    removeAll: function () {
+        let itemChildren = this._getItemChildren();
+        for (let i = 0; i < itemChildren.length; i++) {
+            itemChildren[i].destroy();
         }
+        this._separatorIndex = 0;
     },
 
-    // Draggable target interface
-    acceptDrop : function(source, actor, x, y, time) {
-        let global = Shell.Global.get();
+    isBeforeSeparator: function(x, y) {
+        return y < this._cachedSeparatorY;
+    },
 
-        let id = null;
-        if (source instanceof WellDisplayItem) {
-            id = source.appInfo.get_id();
-        } else if (source instanceof AppDisplayItem) {
-            id = source.getId();
-        } else if (source instanceof Workspaces.WindowClone) {
-            let appMonitor = Shell.AppMonitor.get_default();
-            let app = appMonitor.get_window_app(source.metaWindow);
-            id = app.get_id();
-            if (id === null)
-                return false;
+    _getItemChildren: function () {
+        let children = this.actor.get_children();
+        children.shift();
+        return children;
+    },
+
+    _computeLayout: function (forWidth) {
+        let [itemMinWidth, itemNaturalWidth] = this._getItemPreferredWidth();
+        let columnsNatural;
+        let i;
+        let children = this._getItemChildren();
+        let nColumns;
+        if (children.length < WELL_DEFAULT_COLUMNS)
+            nColumns = children.length;
+         else
+            nColumns = WELL_DEFAULT_COLUMNS;
+
+        if (forWidth >= 0 && forWidth < minWidth) {
+           log("WellGrid: trying to allocate for width " + forWidth + " but min is " + minWidth);
+           /* FIXME - we should fall back to fewer than WELL_DEFAULT_COLUMNS here */
+        }
+
+        let horizSpacingTotal = Math.max(nColumns - 1, 0) * WELL_ITEM_HSPACING;
+        let minWidth = itemMinWidth * nColumns + horizSpacingTotal;
+
+        let lastColumnIndex = nColumns - 1;
+        let separatorColumns = lastColumnIndex - ((lastColumnIndex + this._separatorIndex) % nColumns);
+        let rows = Math.ceil((children.length + separatorColumns) / nColumns);
+
+        let itemWidth;
+        if (forWidth < 0) {
+            itemWidth = itemNaturalWidth;
         } else {
-            return false;
+            itemWidth = Math.max(forWidth - horizSpacingTotal, 0) / nColumns;
         }
 
-        let appSystem = Shell.AppSystem.get_default();
-
-        if (source.isFavorite && (!this.isFavorite)) {
-            Mainloop.idle_add(function () {
-                appSystem.remove_favorite(id);
-            });
-        } else if ((!source.isFavorite) && this.isFavorite) {
-            Mainloop.idle_add(function () {
-                appSystem.add_favorite(id);
-            });
-        } else {
-            return false;
+        let itemNaturalHeight = 0;
+        for (let i = 0; i < children.length; i++) {
+            let [childMin, childNatural] = children[i].get_preferred_height(itemWidth);
+            if (childNatural > itemNaturalHeight)
+                itemNaturalHeight = childNatural;
         }
 
-        return true;
+        return [rows, WELL_DEFAULT_COLUMNS, itemWidth, itemNaturalHeight];
+    },
+
+    _getItemPreferredWidth: function () {
+        let children = this._getItemChildren();
+        let minWidth = 0;
+        let naturalWidth = 0;
+        for (let i = 0; i < children.length; i++) {
+            let [childMin, childNatural] = children[i].get_preferred_width(-1);
+            if (childMin > minWidth)
+                minWidth = childMin;
+            if (childNatural > naturalWidth)
+                naturalWidth = childNatural;
+        }
+        return [minWidth, naturalWidth];
     }
 }
 
-Signals.addSignalMethods(WellArea.prototype);
-
-function AppWell(width) {
-    this._init(width);
+function AppWell() {
+    this._init();
 }
 
 AppWell.prototype = {
-    _init : function(width) {
+    _init : function() {
         this._menus = [];
         this._menuDisplays = [];
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   spacing: 4,
-                                   width: width });
+                                   x_align: Big.BoxAlignment.CENTER });
+        this.actor._delegate = this;
+
+        this._grid = new WellGrid();
+        this.actor.append(this._grid.actor, Big.BoxPackFlags.EXPAND);
 
         this._appSystem = Shell.AppSystem.get_default();
         this._appMonitor = Shell.AppMonitor.get_default();
@@ -684,23 +764,6 @@ AppWell.prototype = {
         this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
             this._redisplay();
         }));
-
-        this._favoritesArea = new WellArea(width, true);
-        this._favoritesArea.connect('activated', Lang.bind(this, function (a, display) {
-            Main.overlay.hide();
-        }));
-        this.actor.append(this._favoritesArea.actor, Big.BoxPackFlags.NONE);
-
-        this._runningBox = new Big.Box({ border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                         border_top: 1,
-                                         corner_radius: 3,
-                                         padding_top: GenericDisplay.PREVIEW_BOX_PADDING });
-        this._runningArea = new WellArea(width, false);
-        this._runningArea.connect('activated', Lang.bind(this, function (a, display) {
-            Main.overlay.hide();
-        }));
-        this._runningBox.append(this._runningArea.actor, Big.BoxPackFlags.EXPAND);
-        this.actor.append(this._runningBox, Big.BoxPackFlags.NONE);
 
         this._redisplay();
     },
@@ -717,36 +780,86 @@ AppWell.prototype = {
         return result;
     },
 
-    _redisplay: function() {
-        /* hardcode here pending some design about how exactly activities behave */
+    _arrayValues: function(array) {
+        return array.reduce(function (values, id, index) {
+                            values[id] = index; return values; }, {});
+    },
+
+    _redisplay: function () {
+        this._grid.removeAll();
+
+        let favoriteIds = this._appSystem.get_favorites();
+        let favoriteIdsHash = this._arrayValues(favoriteIds);
+
+        /* hardcode here pending some design about how exactly desktop contexts behave */
         let contextId = "";
 
-        let arrayToObject = function(a) {
-            let o = {};
-            for (let i = 0; i < a.length; i++)
-                o[a[i]] = 1;
-            return o;
-        };
-        let favoriteIds = this._appSystem.get_favorites();
-        let favoriteIdsObject = arrayToObject(favoriteIds);
-
         let runningIds = this._appMonitor.get_running_app_ids(contextId).filter(function (e) {
-            return !(e in favoriteIdsObject);
+            return !(e in favoriteIdsHash);
         });
         let favorites = this._lookupApps(favoriteIds);
         let running = this._lookupApps(runningIds);
-        this._favoritesArea.redisplay(favorites);
-        this._runningArea.redisplay(running);
-        let maxWidth = this._favoritesArea.getWordWidth();
-        if (this._runningArea.getWordWidth() > maxWidth)
-            maxWidth = this._runningArea.getWordWidth();
-        this._favoritesArea.setItemWidth(maxWidth);
-        this._runningArea.setItemWidth(maxWidth);
-        // If it's empty, we hide it so the top border doesn't show up
-        if (running.length == 0)
-          this._runningBox.hide();
-        else
-          this._runningBox.show();
+
+        let displays = []
+        this._addApps(favorites, true);
+        this._grid.setSeparatorIndex(favorites.length);
+        this._addApps(running, false);
+        this._displays = displays;
+    },
+
+    _addApps: function(apps) {
+        for (let i = 0; i < apps.length; i++) {
+            let app = apps[i];
+            let display = new WellDisplayItem(app, this.isFavorite);
+            display.connect('activated', Lang.bind(this, function (display) {
+                Main.overlay.hide();
+            }));
+            this._grid.actor.add_actor(display.actor);
+        }
+    },
+
+    // Draggable target interface
+    acceptDrop : function(source, actor, x, y, time) {
+        let global = Shell.Global.get();
+
+        let id = null;
+        if (source instanceof WellDisplayItem) {
+            id = source.appInfo.get_id();
+        } else if (source instanceof AppDisplayItem) {
+            id = source.getId();
+        } else if (source instanceof Workspaces.WindowClone) {
+            let appMonitor = Shell.AppMonitor.get_default();
+            let app = appMonitor.get_window_app(source.metaWindow);
+            id = app.get_id();
+        }
+
+        if (id == null) {
+            return false;
+        }
+
+        let appSystem = Shell.AppSystem.get_default();
+        let favoriteIds = this._appSystem.get_favorites();
+        let favoriteIdsObject = this._arrayValues(favoriteIds);
+
+        let dropIsFavorite = this._grid.isBeforeSeparator(x - this._grid.actor.x,
+                                                          y - this._grid.actor.y);
+        let srcIsFavorite = (id in favoriteIdsObject);
+
+        if (srcIsFavorite && (!dropIsFavorite)) {
+            Mainloop.idle_add(function () {
+                appSystem.remove_favorite(id);
+                return false;
+            });
+        } else if ((!srcIsFavorite) && dropIsFavorite) {
+            Mainloop.idle_add(function () {
+                appSystem.add_favorite(id);
+                return false;
+            });
+        } else {
+            return false;
+        }
+
+        return true;
     }
 };
 

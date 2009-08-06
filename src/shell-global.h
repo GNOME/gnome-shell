@@ -73,8 +73,6 @@ void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta,
 
 ClutterActor *shell_global_create_root_pixmap_actor (ShellGlobal *global);
 
-guint shell_global_get_max_word_width (ShellGlobal *global, ClutterActor *ref, const char *text, const char *font);
-
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

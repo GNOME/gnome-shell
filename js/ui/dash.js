@@ -428,7 +428,7 @@ Dash.prototype = {
 
         this._appsContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
         this._appsSection.append(this._appsContent, Big.BoxPackFlags.EXPAND);
-        this._appWell = new AppDisplay.AppWell(this._width);
+        this._appWell = new AppDisplay.AppWell();
         this._appsContent.append(this._appWell.actor, Big.BoxPackFlags.EXPAND);
 
         this._moreAppsPane = null;
