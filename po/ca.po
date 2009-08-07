@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-22 09:44+0200\n"
-"PO-Revision-Date: 2009-04-22 09:46+0200\n"
+"POT-Creation-Date: 2009-08-07 18:56+0200\n"
+"PO-Revision-Date: 2009-08-07 18:57+0200\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -135,48 +135,53 @@ msgstr ""
 "No hi ha CAP garantia; ni tan sols la garantia implícita de COMERCIABILITAT\n"
 "o ADEQUACIÓ A PER UN PROPÒSIT PARTICULAR.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Inhabilita la connexió al gestor de sessions"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Reemplaça el gestor de finestres en execució per el Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Especifica l'ID de gestió de sessió"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Visualització X per a usar"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Inicialitza la sessió des del fitxer desat"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Escriu versió"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Fes que les crides a l'X siguin síncrones"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Habilita la composició"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Inhabilita la composició"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "No s'ha pogut analitzar el directori de temes: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -184,7 +189,7 @@ msgstr ""
 "No s'ha trobat cap tema. Assegureu-vos que %s existeix i conté els temes "
 "habituals.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "No s'ha pogut reiniciar: %s\n"
@@ -200,25 +205,25 @@ msgstr "No s'ha pogut reiniciar: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clau GConf «%s» està establerta a un valor no vàlid\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "%d, emmagatzemat a la clau GConf %s, està fora de l'interval de %d a %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clau «%s» del Gconf està establerta a un tipus no vàlid\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -226,14 +231,14 @@ msgstr ""
 "Les solucions temporals per a aplicacions amb errors estan inhabilitades. "
 "Pot ser que certes aplicacions no funcionin correctament.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No s'ha pogut analitzar la descripció de tipus de lletra «%s» de la clau "
 "GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -242,18 +247,18 @@ msgstr ""
 "«%s», trobat a la base de dades de la configuració, no és un valor vàlid per "
 "al modificador del botó del ratolí\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "S'ha produït un error en establir el nombre d'espais de treball a %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Espai de treball %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -262,24 +267,24 @@ msgstr ""
 "«%s» trobat a la base de dades de la configuració no és un valor vàlid per a "
 "la vinculació de tecla «%s»\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "S'ha produït un error en establir el nom de l'espai de treball %d a «%s»: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr ""
 "S'ha produït un error en establir l'estat del gestor de composició: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La pantalla %d en la visualització '%s' no és vàlida\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -288,7 +293,7 @@ msgstr ""
 "La pantalla %d en la visualització «%s» ja té un gestor de finestres; proveu "
 "l'opció --replace per a reemplaçar el gestor de finestres actual.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -296,12 +301,12 @@ msgstr ""
 "No s'ha pogut adquirir la selecció del gestor de finestres en la pantalla %d "
 "visualització «%s»\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La pantalla %d en la visualització «%s» ja té un gestor de finestres\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No s'ha pogut alliberar la pantalla %d en la visualització «%s»\n"
@@ -2262,23 +2267,23 @@ msgstr "/Finestres/_Pantalla flaix"
 
 #: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Top dock"
-msgstr "/Finestres/Anclatge _superior"
+msgstr "/Finestres/Ancoratge _superior"
 
 #: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Bottom dock"
-msgstr "/Finestres/Anclatge _inferior"
+msgstr "/Finestres/Ancoratge _inferior"
 
 #: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Left dock"
-msgstr "/Finestres/Anclatge es_querre"
+msgstr "/Finestres/Ancoratge es_querre"
 
 #: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_Right dock"
-msgstr "/Finestres/Anclatge d_ret"
+msgstr "/Finestres/Ancoratge d_ret"
 
 #: ../src/ui/theme-viewer.c:85
 msgid "/Windows/_All docks"
-msgstr "/Finestres/_Tots els anclatges"
+msgstr "/Finestres/_Tots els ancoratges"
 
 #: ../src/ui/theme-viewer.c:86
 msgid "/Windows/Des_ktop"
