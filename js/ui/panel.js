@@ -76,6 +76,22 @@ Panel.prototype = {
 
         box.append(this.button.button, Big.BoxPackFlags.NONE);
 
+        let hotCorner = new Clutter.Rectangle({ width: 1,
+                                                height: 1,
+                                                opacity: 0,
+                                                reactive: true });
+
+        // In addition to being triggered by the mouse enter event, the hot corner
+        // can be triggered by clicking on it. This is useful if the user wants to 
+        // immediately undo the effect of triggering the hot corner once in the 
+        // hot corner.
+        hotCorner.connect('enter-event',
+                           Lang.bind(this, this._onHotCornerTriggered));
+        hotCorner.connect('button-release-event',
+                           Lang.bind(this, this._onHotCornerTriggered));
+
+        box.add_actor(hotCorner);
+
         let statusbox = new Big.Box();
         let statusmenu = this._statusmenu = new Shell.StatusMenu();
         statusmenu.get_icon().hide();
@@ -201,5 +217,10 @@ Panel.prototype = {
         this._clock.set_text(displayDate.toLocaleFormat("%a %l:%M %p"));
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
-    }
+    },
+
+    _onHotCornerTriggered : function() {
+        Main.overlay.toggle();
+        return false;
+     }
 };
