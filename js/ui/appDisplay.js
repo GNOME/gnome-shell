@@ -687,7 +687,7 @@ AppWell.prototype = {
 
         this._favoritesArea = new WellArea(width, true);
         this._favoritesArea.connect('activated', Lang.bind(this, function (a, display) {
-            this.emit('activated');
+            Main.overlay.hide();
         }));
         this.actor.append(this._favoritesArea.actor, Big.BoxPackFlags.NONE);
 
@@ -697,7 +697,7 @@ AppWell.prototype = {
                                          padding_top: GenericDisplay.PREVIEW_BOX_PADDING });
         this._runningArea = new WellArea(width, false);
         this._runningArea.connect('activated', Lang.bind(this, function (a, display) {
-            this.emit('activated');
+            Main.overlay.hide();
         }));
         this._runningBox.append(this._runningArea.actor, Big.BoxPackFlags.EXPAND);
         this.actor.append(this._runningBox, Big.BoxPackFlags.NONE);

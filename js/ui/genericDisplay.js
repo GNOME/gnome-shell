@@ -380,7 +380,7 @@ GenericDisplay.prototype = {
         this._redisplay(true);
     },
 
-    // Launches the item that is currently selected and emits 'activated' signal.
+    // Launches the item that is currently selected, closing the overlay
     activateSelected: function() {
         if (this._selectedIndex != -1) {
             let selected = this._findDisplayedByIndex(this._selectedIndex);
