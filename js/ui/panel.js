@@ -83,8 +83,7 @@ Panel.prototype = {
 
         // In addition to being triggered by the mouse enter event, the hot corner
         // can be triggered by clicking on it. This is useful if the user wants to 
-        // immediately undo the effect of triggering the hot corner once in the 
-        // hot corner.
+        // undo the effect of triggering the hot corner once in the hot corner.
         hotCorner.connect('enter-event',
                            Lang.bind(this, this._onHotCornerTriggered));
         hotCorner.connect('button-release-event',
@@ -220,7 +219,9 @@ Panel.prototype = {
     },
 
     _onHotCornerTriggered : function() {
-        Main.overlay.toggle();
+        if (!Main.overlay.animationInProgress) {
+            Main.overlay.toggle();
+        }
         return false;
      }
 };

@@ -92,6 +92,7 @@ Overlay.prototype = {
         this._group._delegate = this;
 
         this.visible = false;
+        this.animationInProgress = false;
         this._hideInProgress = false;
 
         this._recalculateGridSizes();
@@ -242,6 +243,7 @@ Overlay.prototype = {
             return;
 
         this.visible = true;
+        this.animationInProgress = true;
 
         let global = Shell.Global.get();
         let screenWidth = global.screen_width;
@@ -309,6 +311,7 @@ Overlay.prototype = {
 
         let global = Shell.Global.get();
 
+        this.animationInProgress = true;
         this._hideInProgress = true;
         if (this._activeDisplayPane != null)
             this._activeDisplayPane.close();
@@ -377,6 +380,8 @@ Overlay.prototype = {
         this._dash.actor.raise_top();
         this._dash.actor.remove_clip();
 
+        this.animationInProgress = false;
+
         this.emit('shown');
     },
 
@@ -393,6 +398,7 @@ Overlay.prototype = {
         this._group.hide();
 
         this.visible = false; 
+        this.animationInProgress = false;
         this._hideInProgress = false;
 
         Main.endModal();
