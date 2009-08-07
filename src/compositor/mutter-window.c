@@ -362,6 +362,15 @@ mutter_window_constructed (GObject *object)
 
       clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
 
+      /*
+       * Since we are holding a pointer to this actor independently of the
+       * ClutterContainer internals, and provide a public API to access it,
+       * add a reference here, so that if someone is messing about with us
+       * via the container interface, we do not end up with a dangling pointer.
+       * We will release it in dispose().
+       */
+      g_object_ref (priv->actor);
+
       g_signal_connect (priv->window, "notify::decorated",
                         G_CALLBACK (mutter_meta_window_decorated_notify), self);
     }
@@ -414,6 +423,12 @@ mutter_window_dispose (GObject *object)
 
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
   g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
+
+  /*
+   * Release the extra reference we took on the actor.
+   */
+  g_object_unref (priv->actor);
+  priv->actor = NULL;
 
   G_OBJECT_CLASS (mutter_window_parent_class)->dispose (object);
 }
