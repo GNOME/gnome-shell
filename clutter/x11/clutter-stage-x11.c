@@ -790,10 +790,15 @@ set_foreign_window_callback (ClutterActor *actor,
 {
   ForeignWindowData *fwd = data;
 
-  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) fwd->xwindow);
+  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)",
+                (unsigned int) fwd->xwindow);
 
-  if (fwd->destroy_old_xwindow)
-    XDestroyWindow (fwd->stage_x11->xdpy, fwd->stage_x11->xwin);
+  if (fwd->destroy_old_xwindow && fwd->stage_x11->xwin != None)
+    {
+      CLUTTER_NOTE (BACKEND, "Destroying previous window (0x%x)",
+                    (unsigned int) fwd->xwindow);
+      XDestroyWindow (fwd->stage_x11->xdpy, fwd->stage_x11->xwin);
+    }
 
   fwd->stage_x11->xwin = fwd->xwindow;
   fwd->stage_x11->is_foreign_xwin = TRUE;
@@ -862,8 +867,13 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 
   fwd.stage_x11 = stage_x11;
   fwd.xwindow = xwindow;
-  /* destroy the old Window, if we own it */
-  fwd.destroy_old_xwindow = stage_x11->is_foreign_xwin ? FALSE : TRUE;
+
+  /* destroy the old Window, if we have one and it's ours */
+  if (stage_x11->xwin != None && !stage_x11->is_foreign_xwin)
+    fwd.destroy_old_xwindow = TRUE;
+  else
+    fwd.destroy_old_xwindow = FALSE;
+
   fwd.geom.x = x;
   fwd.geom.y = y;
   fwd.geom.width = width;
