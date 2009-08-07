@@ -415,14 +415,17 @@ mutter_window_dispose (GObject *object)
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
   g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
 
-  g_free (priv->desc);
-
   G_OBJECT_CLASS (mutter_window_parent_class)->dispose (object);
 }
 
 static void
 mutter_window_finalize (GObject *object)
 {
+  MutterWindow        *self = MUTTER_WINDOW (object);
+  MutterWindowPrivate *priv = self->priv;
+
+  g_free (priv->desc);
+
   G_OBJECT_CLASS (mutter_window_parent_class)->finalize (object);
 }
 
