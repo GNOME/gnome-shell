@@ -32,7 +32,7 @@ fi
 # Devel packages needed by gnome-shell and its deps:
 # dbus-glib, gconf, GL, gnome-menus, gstreamer, gtk, libffi,
 # libgnomeui, librsvg, libwnck, python, readline, spidermonkey
-# ({mozilla,firefox,xulrunner}-js), xdamage, xscrnsaver
+# ({mozilla,firefox,xulrunner}-js), xdamage
 #
 # Non-devel packages needed by gnome-shell and its deps:
 # gdb, glxinfo, gstreamer-plugins-base, gstreamer-plugins-good,
@@ -64,7 +64,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
     libdbus-glib-1-dev libgconf2-dev libgtk2.0-dev libffi-dev \
     libgnome-menu-dev libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
     mesa-common-dev mesa-utils python-dev libreadline5-dev xulrunner-dev \
-    xserver-xephyr libxss-dev \
+    xserver-xephyr \
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
     ; do
       if ! dpkg_is_installed $pkg; then
@@ -86,7 +86,7 @@ if test x$system = xFedora ; then
     libtool pkgconfig \
     dbus-glib-devel GConf2-devel gnome-menus-devel gtk2-devel libffi-devel libgnomeui-devel \
     librsvg2-devel libwnck-devel mesa-libGL-devel python-devel readline-devel \
-    xulrunner-devel libXdamage-devel libXScrnSaver-devel \
+    xulrunner-devel libXdamage-devel \
     gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
     gdb glx-utils xorg-x11-apps xorg-x11-server-Xephyr xterm zenity \
     ; do
@@ -126,8 +126,7 @@ if test x$system = xMandrivaLinux ; then
     bison flex gnome-common gnome-doc-utils gtk-doc intltool \
     libGConf2-devel ffi5-devel libgnomeui2-devel librsvg2-devel \
     libwnck-1-devel GL-devel readline-devel libxulrunner-devel \
-    libxdamage-devel libxscrnsaver-devel \
-    mesa-demos x11-server-xephyr x11-apps xterm zenity \
+    libxdamage-devel mesa-demos x11-server-xephyr x11-apps xterm zenity \
     ; do
       if ! rpm -q --whatprovides $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
