@@ -411,13 +411,11 @@ Workspace.prototype = {
                                  this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
             this._frame.lower_bottom();
 
-            this._framePosHandler = this.actor.connect('notify::x', Lang.bind(this, this._updateFramePosition));
-            this._frameSizeHandler = this.actor.connect('notify::scale-x', Lang.bind(this, this._updateFrameSize));
+            this._framePosHandler = this.actor.connect('notify::scale-x', Lang.bind(this, this._updateFramePosition));
         } else {
             if (!this._frame)
                 return;
             this.actor.disconnect(this._framePosHandler);
-            this.actor.disconnect(this._frameSizeHandler);
             this._frame.destroy();
             this._frame = null;
         }
@@ -426,9 +424,6 @@ Workspace.prototype = {
     _updateFramePosition : function() {
         this._frame.set_position(this._desktop.actor.x - FRAME_SIZE / this.actor.scale_x,
                                  this._desktop.actor.y - FRAME_SIZE / this.actor.scale_y);
-    },
-
-    _updateFrameSize : function() {
         this._frame.set_size(this._desktop.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
                              this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
     },
