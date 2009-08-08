@@ -199,14 +199,10 @@ gir_DATA = Meta-$(api_version).gir
 typelibdir = $(pkglibdir)
 typelib_DATA = Meta-$(api_version).typelib
 
-GIR_VERBOSE = $(GIR_VERBOSE_$(V))
-GIR_VERBOSE_ = $(GIR_VERBOSE_$(AM_DEFAULT_VERBOSITY))
-GIR_VERBOSE_0 = @echo GIR $@;
-
 # We need to strip out the attribute that would point back to libmutter-introspect
 # so that libgirepository looks for symbols in the executable instead
 Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mutter_SOURCES)
-	$(GIR_VERBOSE) pwd=`pwd` ;			\
+	$(AM_V_GEN) pwd=`pwd` ;				\
         cd $(srcdir) &&					\
 	$(G_IR_SCANNER)					\
 		--namespace=Meta			\
@@ -225,7 +221,7 @@ Meta-$(api_version).gir: $(G_IR_SCANNER) mutter $(libmutterinclude_HEADERS) $(mu
 		-o $$pwd/$@
 
 Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
-	$(GIR_VERBOSE) LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
+	$(AM_V_GEN) LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
 endif
 
 EFENCE=
