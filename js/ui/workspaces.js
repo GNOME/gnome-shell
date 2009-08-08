@@ -472,9 +472,19 @@ Workspace.prototype = {
     _fadeInWindowIcon: function (clone, icon) {
         icon.opacity = 0;
         icon.show();
-        let [parentX, parentY] = icon.get_parent().get_transformed_position();
-        let [cloneX, cloneY] = clone.actor.get_transformed_position();
-        let [cloneWidth, cloneHeight] = clone.actor.get_transformed_size();
+        // This is a little messy and complicated because when we
+        // start the fade-in we may not have done the final positioning
+        // of the workspaces. (Tweener doesn't necessarily finish
+        // all animations before calling onComplete callbacks.)
+        // So we need to manually compute where the window will
+        // be after the workspace animation finishes.
+        let [parentX, parentY] = icon.get_parent().get_position();
+        let [cloneX, cloneY] = clone.actor.get_position();
+        let [cloneWidth, cloneHeight] = clone.actor.get_size();
+        cloneX = this.gridX + this.scale * cloneX;
+        cloneY = this.gridY + this.scale * cloneY;
+        cloneWidth = this.scale * clone.actor.scale_x * cloneWidth;
+        cloneHeight = this.scale * clone.actor.scale_y * cloneHeight;
         // Note we only round the first part, because we're still going to be
         // positioned relative to the parent.  By subtracting a possibly
         // non-integral parent X/Y we cancel it out.
