@@ -301,6 +301,11 @@ finally:
 
     if not run_in_xephyr:
         # Restart gnome-panel and window manager
+
+        # We don't want to start the new gnome-panel in the current
+        # directory; $HOME is better for stuff launched from it
+        os.chdir(os.path.expanduser("~"))
+
         if metacity_pid:
             if options.verbose:
                 print "Restarting Metacity"
