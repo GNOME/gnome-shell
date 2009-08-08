@@ -35,11 +35,11 @@ FRAME_COLOR.from_pixel(0xffffffff);
 // Each triplet is [xCenter, yCenter, scale] where the scale
 // is relative to the width of the workspace.
 const POSITIONS = {
-        1: [[0.5, 0.5, 0.8]],
-        2: [[0.25, 0.5, 0.45], [0.75, 0.5, 0.45]],
-        3: [[0.25, 0.25, 0.45],  [0.75, 0.25, 0.45],  [0.5, 0.75, 0.45]],
-        4: [[0.25, 0.25, 0.45],   [0.75, 0.25, 0.45], [0.75, 0.75, 0.45], [0.25, 0.75, 0.45]],
-        5: [[0.165, 0.25, 0.30], [0.495, 0.25, 0.30], [0.825, 0.25, 0.30], [0.25, 0.75, 0.30], [0.75, 0.75, 0.30]]
+        1: [[0.5, 0.5, 0.95]],
+        2: [[0.25, 0.5, 0.48], [0.75, 0.5, 0.48]],
+        3: [[0.25, 0.25, 0.48],  [0.75, 0.25, 0.48],  [0.5, 0.75, 0.48]],
+        4: [[0.25, 0.25, 0.47],   [0.75, 0.25, 0.47], [0.75, 0.75, 0.47], [0.25, 0.75, 0.47]],
+        5: [[0.165, 0.25, 0.32], [0.495, 0.25, 0.32], [0.825, 0.25, 0.32], [0.25, 0.75, 0.32], [0.75, 0.75, 0.32]]
 };
 
 // Spacing between workspaces. At the moment, the same spacing is used
@@ -448,9 +448,9 @@ Workspace.prototype = {
             xCenter = xCenter * global.screen_width;
             yCenter = yCenter * global.screen_height;
 
-            let size = Math.max(clone.actor.width, clone.actor.height);
-            let desiredSize = global.screen_width * fraction;
-            let scale = Math.min(desiredSize / size, 1.0 / this.scale);
+            let desiredWidth = global.screen_width * fraction;
+            let desiredHeight = global.screen_height * fraction;
+            let scale = Math.min(desiredWidth / clone.actor.width, desiredHeight / clone.actor.height, 1.0 / this.scale);
 
             icon.hide();
             Tweener.addTween(clone.actor, 
@@ -791,7 +791,7 @@ Workspace.prototype = {
         let gridWidth = Math.ceil(Math.sqrt(numberOfWindows));
         let gridHeight = Math.ceil(numberOfWindows / gridWidth);
 
-        let fraction = Math.sqrt(.5/(gridWidth * gridHeight));
+        let fraction = 0.95 * (1. / gridWidth);
 
         let xCenter = (.5 / gridWidth) + ((windowIndex) % gridWidth) / gridWidth;
         let yCenter = (.5 / gridHeight) + Math.floor((windowIndex / gridWidth)) / gridHeight;
