@@ -275,7 +275,7 @@ AppDisplay.prototype = {
     _getMostUsed: function() {
         let context = "";
         return this._appMonitor.get_most_used_apps(context, 30).map(Lang.bind(this, function (id) {
-            return this._appSystem.lookup_app(id + '.desktop');
+            return this._appSystem.lookup_app(id);
         })).filter(function (e) { return e != null });
     },
 
