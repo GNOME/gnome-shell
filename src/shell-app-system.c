@@ -41,7 +41,7 @@ struct _ShellAppSystemPrivate {
 
   GSList *cached_settings; /* ShellAppInfo */
 
-  GHashTable *cached_favorites; /* <utf8,integer> */
+  GList *cached_favorites; /* utf8 */
 
   gint app_monitor_id;
 };
@@ -125,10 +125,6 @@ shell_app_system_init (ShellAppSystem *self)
                                                    SHELL_TYPE_APP_SYSTEM,
                                                    ShellAppSystemPrivate);
 
-  priv->cached_favorites = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                  (GDestroyNotify)g_free,
-                                                  NULL);
-
   /* The key is owned by the value */
   priv->app_id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                NULL, (GDestroyNotify) shell_app_info_unref);
@@ -174,7 +170,7 @@ shell_app_system_finalize (GObject *object)
   g_slist_free (priv->cached_settings);
   priv->cached_settings = NULL;
 
-  g_hash_table_destroy (priv->cached_favorites);
+  g_list_free (priv->cached_favorites);
 
   gconf_client_notify_remove (gconf_client_get_default (), priv->app_monitor_id);
 
@@ -327,12 +323,13 @@ on_tree_changed (GMenuTree *monitor, gpointer user_data)
   reread_menus (self);
 }
 
-static void
-copy_gconf_value_string_list_to_hashset (GConfValue *value,
-                                         GHashTable *dest)
+static GList *
+convert_gconf_value_string_list_to_list_uniquify (GConfValue *value )
 {
   GSList *list;
   GSList *tmp;
+  GList *result = NULL;
+  GHashTable *tmp_table = g_hash_table_new (g_str_hash, g_str_equal);
 
   list = gconf_value_get_list (value);
 
@@ -342,8 +339,16 @@ copy_gconf_value_string_list_to_hashset (GConfValue *value,
       char *str = g_strdup (gconf_value_get_string (value));
       if (!str)
         continue;
-      g_hash_table_insert (dest, str, GUINT_TO_POINTER(1));
+      if (g_hash_table_lookup (tmp_table, str))
+        {
+          g_free (str);
+          continue;
+        }
+      g_hash_table_insert (tmp_table, str, GUINT_TO_POINTER(1));
+      result = g_list_prepend (result, str);
     }
+  g_hash_table_destroy (tmp_table);
+  return g_list_reverse (result);
 }
 
 static void
@@ -357,8 +362,9 @@ reread_favorite_apps (ShellAppSystem *system)
   if (!(val && val->type == GCONF_VALUE_LIST && gconf_value_get_list_type (val) == GCONF_VALUE_STRING))
     return;
 
-  g_hash_table_remove_all (system->priv->cached_favorites);
-  copy_gconf_value_string_list_to_hashset (val, system->priv->cached_favorites);
+  g_list_foreach (system->priv->cached_favorites, (GFunc) g_free, NULL);
+  g_list_free (system->priv->cached_favorites);
+  system->priv->cached_favorites = convert_gconf_value_string_list_to_list_uniquify (val);
 
   gconf_value_free (val);
 }
@@ -476,12 +482,12 @@ shell_app_system_get_default ()
  * Return the list of applications which have been explicitly added to the
  * favorites.
  *
- * Return value: (transfer container) (element-type utf8): List of favorite application ids
+ * Return value: (transfer none) (element-type utf8): List of favorite application ids
  */
 GList *
 shell_app_system_get_favorites (ShellAppSystem *system)
 {
-  return g_hash_table_get_keys (system->priv->cached_favorites);
+  return system->priv->cached_favorites;
 }
 
 static void
@@ -503,22 +509,25 @@ set_gconf_value_string_list (GConfValue *val, GList *items)
   g_slist_free (tmp);
 }
 
+
+
 void
 shell_app_system_add_favorite (ShellAppSystem *system, const char *id)
 {
   GConfClient *client = gconf_client_get_default ();
   GConfValue *val;
-  GList *favorites;
+  GList *iter;
+
+  iter = g_list_find_custom (system->priv->cached_favorites, id, (GCompareFunc)strcmp);
+  if (iter)
+    return;
 
   val = gconf_value_new (GCONF_VALUE_LIST);
   gconf_value_set_list_type (val, GCONF_VALUE_STRING);
 
-  g_hash_table_insert (system->priv->cached_favorites, g_strdup (id), GUINT_TO_POINTER (1));
+  system->priv->cached_favorites = g_list_append (system->priv->cached_favorites, g_strdup (id));
 
-  favorites = g_hash_table_get_keys (system->priv->cached_favorites);
-  set_gconf_value_string_list (val, favorites);
-  g_list_free (favorites);
-
+  set_gconf_value_string_list (val, system->priv->cached_favorites);
   gconf_client_set (client, SHELL_APP_FAVORITES_KEY, val, NULL);
 }
 
@@ -527,18 +536,18 @@ shell_app_system_remove_favorite (ShellAppSystem *system, const char *id)
 {
   GConfClient *client = gconf_client_get_default ();
   GConfValue *val;
-  GList *favorites;
+  GList *iter;
 
-  if (!g_hash_table_remove (system->priv->cached_favorites, id))
+  iter = g_list_find_custom (system->priv->cached_favorites, id, (GCompareFunc)strcmp);
+  if (!iter)
     return;
+  g_free (iter->data);
+  system->priv->cached_favorites = g_list_delete_link (system->priv->cached_favorites, iter);
 
   val = gconf_value_new (GCONF_VALUE_LIST);
   gconf_value_set_list_type (val, GCONF_VALUE_STRING);
 
-  favorites = g_hash_table_get_keys (system->priv->cached_favorites);
-  set_gconf_value_string_list (val, favorites);
-  g_list_free (favorites);
-
+  set_gconf_value_string_list (val, system->priv->cached_favorites);
   gconf_client_set (client, SHELL_APP_FAVORITES_KEY, val, NULL);
 }
 

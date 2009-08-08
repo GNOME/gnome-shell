@@ -115,6 +115,9 @@ struct _ShellAppMonitor
   gboolean currently_idle;
   gboolean enable_monitoring;
 
+  /* See comment in AppUsage below */
+  guint initially_seen_sequence;
+
   GSList *previously_running;
 
   long watch_start_time;
@@ -138,6 +141,12 @@ struct AppUsage
   /* how many windows are currently open; in terms of persistence we only save
    * whether the app had any windows or not. */
   guint window_count;
+
+  /* Transient data */
+  guint initially_seen_sequence; /* Arbitrary ordered integer for when we first saw
+                                  * this application in this session.  Used to order
+                                  * the open applications.
+                                  */
 };
 
 enum {
@@ -153,6 +162,9 @@ static void shell_app_monitor_finalize (GObject *object);
 static void on_session_status_changed (DBusGProxy *proxy, guint status, ShellAppMonitor *monitor);
 static void on_focus_window_changed (MetaDisplay *display, GParamSpec *spec, ShellAppMonitor *monitor);
 static void ensure_queued_save (ShellAppMonitor *monitor);
+static AppUsage * get_app_usage_for_context_and_id (ShellAppMonitor *monitor,
+                                                    const char      *context,
+                                                    const char      *appid);
 
 static gboolean idle_save_application_usage (gpointer data);
 
@@ -316,8 +328,8 @@ get_usages_for_context (ShellAppMonitor *monitor,
 
 static AppUsage *
 get_app_usage_for_context_and_id (ShellAppMonitor *monitor,
-                                   const char      *context,
-                                   const char      *appid)
+                                  const char      *context,
+                                  const char      *appid)
 {
   AppUsage *usage;
   GHashTable *context_usages;
@@ -329,6 +341,7 @@ get_app_usage_for_context_and_id (ShellAppMonitor *monitor,
     return usage;
 
   usage = g_new0 (AppUsage, 1);
+  usage->initially_seen_sequence = ++monitor->initially_seen_sequence;
   g_hash_table_insert (context_usages, g_strdup (appid), usage);
 
   return usage;
@@ -497,6 +510,8 @@ track_window (ShellAppMonitor *self,
    * when it switches between 0 and 1 we emit a changed signal.
    */
   usage->window_count++;
+  if (usage->initially_seen_sequence == 0)
+    usage->initially_seen_sequence = ++self->initially_seen_sequence;
   usage->last_seen = get_time ();
   if (usage->window_count == 1)
     g_signal_emit (self, signals[CHANGED], 0);
@@ -535,7 +550,10 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
   g_hash_table_remove (self->window_to_app, window);
 
   if (usage->window_count == 0)
-    g_signal_emit (self, signals[CHANGED], 0);
+    {
+      usage->initially_seen_sequence = 0;
+      g_signal_emit (self, signals[CHANGED], 0);
+    }
 }
 
 static void
@@ -787,6 +805,31 @@ shell_app_monitor_get_window_app (ShellAppMonitor *monitor,
   return info;
 }
 
+typedef struct {
+  ShellAppMonitor *self;
+  const char *context_id;
+} AppOpenSequenceSortData;
+
+static int
+sort_apps_by_open_sequence (gconstpointer a,
+                            gconstpointer b,
+                            gpointer datap)
+{
+  AppOpenSequenceSortData *data = datap;
+  const char *id_a = a;
+  const char *id_b = b;
+  AppUsage *usage_a;
+  AppUsage *usage_b;
+
+  usage_a = get_app_usage_for_context_and_id (data->self, data->context_id, id_a);
+  usage_b = get_app_usage_for_context_and_id (data->self, data->context_id, id_b);
+  if (usage_a->initially_seen_sequence == usage_b->initially_seen_sequence)
+    return 0;
+  if (usage_a->initially_seen_sequence < usage_b->initially_seen_sequence)
+    return -1;
+  return 1;
+}
+
 /**
  * shell_app_monitor_get_running_app_ids:
  * @monitor: An app monitor instance
@@ -807,6 +850,7 @@ shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor,
   const char *id;
   AppUsage *usage;
   GSList *ret;
+  AppOpenSequenceSortData data;
 
   usage_iterator_init (monitor, &iter);
 
@@ -820,7 +864,9 @@ shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor,
         ret = g_slist_prepend (ret, (char*)id);
     }
 
-  return ret;
+  data.self = monitor;
+  data.context_id = context;
+  return g_slist_sort_with_data (ret, sort_apps_by_open_sequence, &data);
 }
 
 static gboolean
@@ -1132,6 +1178,7 @@ shell_app_monitor_start_element_handler  (GMarkupParseContext *context,
       usage_table = get_usages_for_context (data->monitor, data->context);
 
       usage = g_new0 (AppUsage, 1);
+      usage->initially_seen_sequence = 0;
       g_hash_table_insert (usage_table, appid, usage);
 
       for (attribute = attribute_names, value = attribute_values; *attribute; attribute++, value++)
