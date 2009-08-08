@@ -431,7 +431,7 @@ Workspace.prototype = {
     // Reposition all windows in their zoomed-to-overlay position. if workspaceZooming
     // is true, then the workspace is moving at the same time and we need to take
     // that into account
-    _positionWindows : function(workspaceZooming) {
+    positionWindows : function(workspaceZooming) {
         let global = Shell.Global.get();
 
         for (let i = 1; i < this._windows.length; i++) {
@@ -547,7 +547,7 @@ Workspace.prototype = {
         clone.destroy();
         icon.destroy();
 
-        this._positionWindows(false);
+        this.positionWindows(false);
         this.updateRemovable();
     },
 
@@ -584,7 +584,7 @@ Workspace.prototype = {
             clone.actor.set_scale (scale, scale);
         }
 
-        this._positionWindows(false);
+        this.positionWindows(false);
         this.updateRemovable();
     },
 
@@ -610,7 +610,7 @@ Workspace.prototype = {
                          });
 
         // Likewise for each of the windows in the workspace.
-        this._positionWindows(true);
+        this.positionWindows(true);
     },
 
     // Animates the return from overlay mode
@@ -1118,6 +1118,14 @@ Workspaces.prototype = {
             let existingWorkspaces = Math.min(oldNumWorkspaces, newNumWorkspaces);
             for (let w = 0; w < existingWorkspaces; w++)
                 this._workspaces[w].resizeToGrid(oldScale);
+        }
+
+        if (newScale != oldScale) {
+            // The workspace scale affects window size/positioning because we clamp
+            // window size to a 1:1 ratio and never scale them up
+            let existingWorkspaces = Math.min(oldNumWorkspaces, newNumWorkspaces);
+            for (let w = 0; w < existingWorkspaces; w++)
+                this._workspaces[w].positionWindows(false);
         }
 
         if (newNumWorkspaces > oldNumWorkspaces) {
