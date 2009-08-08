@@ -314,6 +314,13 @@ clone_source_queue_redraw_cb (ClutterActor *source,
 }
 
 static void
+clone_source_queue_relayout_cb (ClutterActor *source,
+				ClutterClone *clone)
+{
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (clone));
+}
+
+static void
 clutter_clone_set_source_internal (ClutterClone *clone,
 				   ClutterActor *source)
 {
@@ -329,6 +336,9 @@ clutter_clone_set_source_internal (ClutterClone *clone,
       g_signal_handlers_disconnect_by_func (priv->clone_source,
 					    (void *) clone_source_queue_redraw_cb,
 					    clone);
+      g_signal_handlers_disconnect_by_func (priv->clone_source,
+					    (void *) clone_source_queue_relayout_cb,
+					    clone);
       g_object_unref (priv->clone_source);
       priv->clone_source = NULL;
     }
@@ -338,6 +348,8 @@ clutter_clone_set_source_internal (ClutterClone *clone,
       priv->clone_source = g_object_ref (source);
       g_signal_connect (priv->clone_source, "queue-redraw",
 			G_CALLBACK (clone_source_queue_redraw_cb), clone);
+      g_signal_connect (priv->clone_source, "queue-relayout",
+			G_CALLBACK (clone_source_queue_relayout_cb), clone);
     }
 
   g_object_notify (G_OBJECT (clone), "source");

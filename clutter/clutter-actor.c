@@ -425,6 +425,7 @@ enum
   REALIZE,
   UNREALIZE,
   QUEUE_REDRAW,
+  QUEUE_RELAYOUT,
   EVENT,
   CAPTURED_EVENT,
   BUTTON_PRESS_EVENT,
@@ -1607,6 +1608,23 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
       /* this will go up recursively */
       clutter_actor_queue_redraw_with_origin (parent, origin);
     }
+}
+
+void
+clutter_actor_real_queue_relayout (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  priv->needs_width_request  = TRUE;
+  priv->needs_height_request = TRUE;
+  priv->needs_allocation     = TRUE;
+
+  /* always repaint also (no-op if not mapped) */
+  clutter_actor_queue_redraw (self);
+
+  /* We need to go all the way up the hierarchy */
+  if (priv->parent_actor)
+    clutter_actor_queue_relayout (priv->parent_actor);
 }
 
 /* like ClutterVertex, but with a w component */
@@ -3852,6 +3870,32 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   CLUTTER_TYPE_ACTOR);
 
   /**
+   * ClutterActor::queue-relayout
+   * @actor: the actor being queued for relayout
+   *
+   * The ::queue_layout signal is emitted when clutter_actor_queue_relayout()
+   * is called on an actor.
+   *
+   * The default implementation for #ClutterActor chains up to the
+   * parent actor and queues a relayout on the parent, thus "bubbling"
+   * the relayout queue up through the actor graph.
+   *
+   * The main purpose of this signal is to allow relayout to be propagated
+   * properly in the procense of #ClutterClone actors. Applications will
+   * not normally need to connect to this signal.
+   *
+   * Since: 1.2
+   */
+  actor_signals[QUEUE_RELAYOUT] =
+    g_signal_new (I_("queue-relayout"),
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, queue_relayout),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /**
    * ClutterActor::event:
    * @actor: the actor which received the event
    * @event: a #ClutterEvent
@@ -4262,6 +4306,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->get_preferred_height = clutter_actor_real_get_preferred_height;
   klass->allocate = clutter_actor_real_allocate;
   klass->queue_redraw = clutter_actor_real_queue_redraw;
+  klass->queue_relayout = clutter_actor_real_queue_relayout;
   klass->apply_transform = clutter_actor_real_apply_transform;
 }
 
@@ -4385,16 +4430,7 @@ clutter_actor_queue_relayout (ClutterActor *self)
       priv->needs_allocation)
     return; /* save some cpu cycles */
 
-  priv->needs_width_request  = TRUE;
-  priv->needs_height_request = TRUE;
-  priv->needs_allocation     = TRUE;
-
-  /* always repaint also (no-op if not mapped) */
-  clutter_actor_queue_redraw (self);
-
-  /* We need to go all the way up the hierarchy */
-  if (priv->parent_actor)
-    clutter_actor_queue_relayout (priv->parent_actor);
+  g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
 }
 
 /**

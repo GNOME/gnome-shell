@@ -202,6 +202,7 @@ struct _ClutterActor
  * @captured_event: signal class closure for #ClutterActor::captured-event
  * @key_focus_in: signal class closure for #ClutterActor::focus-in
  * @key_focus_out: signal class closure for #ClutterActor::focus-out
+ * @queue_relayout: class handler for #ClutterActor::queue-relayout
  *
  * Base class for actors.
  */
@@ -271,9 +272,11 @@ struct _ClutterActorClass
   void     (* key_focus_in)         (ClutterActor         *actor);
   void     (* key_focus_out)        (ClutterActor         *actor);
 
+  void     (* queue_relayout)       (ClutterActor         *actor);
+
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[32];
+  gpointer _padding_dummy[31];
 };
 
 GType                 clutter_actor_get_type                  (void) G_GNUC_CONST;
