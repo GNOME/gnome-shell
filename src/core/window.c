@@ -2042,13 +2042,22 @@ intervening_user_event_occurred (MetaWindow *window)
   /* To determine the "launch" time of an application,
    * startup-notification can set the TIMESTAMP and the
    * application (usually via its toolkit such as gtk or qt) can
-   * set the _NET_WM_USER_TIME.  If both are set, then it means
-   * the user has interacted with the application since it
-   * launched, and _NET_WM_USER_TIME is the value that should be
-   * used in the comparison.
+   * set the _NET_WM_USER_TIME.  If both are set, we need to be
+   * using the newer of the two values.
+   *
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=573922
    */
-  compare = window->initial_timestamp_set ? window->initial_timestamp : 0;
-  compare = window->net_wm_user_time_set  ? window->net_wm_user_time  : compare;
+  compare = 0;
+  if (window->net_wm_user_time_set &&
+      window->initial_timestamp_set)
+    compare =
+      XSERVER_TIME_IS_BEFORE (window->net_wm_user_time,
+                              window->initial_timestamp) ?
+      window->initial_timestamp : window->net_wm_user_time;
+  else if (window->net_wm_user_time_set)
+    compare = window->net_wm_user_time;
+  else if (window->initial_timestamp_set)
+    compare = window->initial_timestamp;
 
   if ((focus_window != NULL) &&
       XSERVER_TIME_IS_BEFORE (compare, focus_window->net_wm_user_time))
@@ -2584,6 +2593,15 @@ meta_window_show (MetaWindow *window)
                   window->desc);
       invalidate_work_areas (window);
     }
+
+  /*
+   * Now that we have shown the window, we no longer want to consider the
+   * initial timestamp in any subsequent deliberations whether to focus this
+   * window or not, so clear the flag.
+   *
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=573922
+   */
+  window->initial_timestamp_set = FALSE;
 }
 
 static void
