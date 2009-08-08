@@ -448,14 +448,20 @@ Workspace.prototype = {
             xCenter = xCenter * global.screen_width;
             yCenter = yCenter * global.screen_height;
 
+            // clone.actor.width/height aren't reliably set at this point for
+            // a new window - they're only set when the window contents are
+            // initially updated prior to painting.
+            let cloneRect = new Meta.Rectangle();
+            clone.realWindow.meta_window.get_outer_rect(cloneRect);
+
             let desiredWidth = global.screen_width * fraction;
             let desiredHeight = global.screen_height * fraction;
-            let scale = Math.min(desiredWidth / clone.actor.width, desiredHeight / clone.actor.height, 1.0 / this.scale);
+            let scale = Math.min(desiredWidth / cloneRect.width, desiredHeight / cloneRect.height, 1.0 / this.scale);
 
             icon.hide();
             Tweener.addTween(clone.actor, 
-                             { x: xCenter - 0.5 * scale * clone.actor.width,
-                               y: yCenter - 0.5 * scale * clone.actor.height,
+                             { x: xCenter - 0.5 * scale * cloneRect.width,
+                               y: yCenter - 0.5 * scale * cloneRect.height,
                                scale_x: scale,
                                scale_y: scale,
                                workspace_relative: workspaceZooming ? this : null,
