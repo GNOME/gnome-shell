@@ -686,6 +686,8 @@ WellGrid.prototype = {
         let columnsNatural;
         let i;
         let children = this._getItemChildren();
+        if (children.length == 0)
+            return [0, WELL_DEFAULT_COLUMNS, 0, 0];
         let nColumns;
         if (children.length < WELL_DEFAULT_COLUMNS)
             nColumns = children.length;
