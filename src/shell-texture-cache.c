@@ -801,7 +801,7 @@ shell_texture_cache_load_icon_name (ShellTextureCache *cache,
 }
 
 /**
- * shell_texture_cache_load_uri:
+ * shell_texture_cache_load_uri_async:
  *
  * @cache: The texture cache instance
  * @uri: uri of the image file from which to create a pixbuf
