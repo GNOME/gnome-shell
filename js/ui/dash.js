@@ -28,11 +28,11 @@ const DASH_TEXT_COLOR = new Clutter.Color();
 DASH_TEXT_COLOR.from_pixel(0xffffffff);
 
 const PANE_BORDER_COLOR = new Clutter.Color();
-PANE_BORDER_COLOR.from_pixel(0x213b5dfa);
+PANE_BORDER_COLOR.from_pixel(0x101d3cfa);
 const PANE_BORDER_WIDTH = 2;
 
 const PANE_BACKGROUND_COLOR = new Clutter.Color();
-PANE_BACKGROUND_COLOR.from_pixel(0x0d131ff4);
+PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
 
 
 function Pane() {

@@ -20,11 +20,7 @@ const Tweener = imports.ui.tweener;
 const Workspaces = imports.ui.workspaces;
 
 const ROOT_OVERLAY_COLOR = new Clutter.Color();
-ROOT_OVERLAY_COLOR.from_pixel(0x000000bb);
-
-// The factor to scale the overlay wallpaper with. This should not be less
-// than 3/2, because the rule of thirds is used for positioning (see below).
-const BACKGROUND_SCALE = 2;
+ROOT_OVERLAY_COLOR.from_pixel(0x000000ff);
 
 // Time for initial animation going into overlay mode
 const ANIMATION_TIME = 0.25;
@@ -97,14 +93,6 @@ Overlay.prototype = {
 
         this._recalculateGridSizes();
 
-        // A scaled root pixmap actor is used as a background. It is zoomed in
-        // to the lower right intersection of the lines that divide the image
-        // evenly in a 3x3 grid. This is based on the rule of thirds, a
-        // compositional rule of thumb in visual arts. The choice for the
-        // lower right point is based on a quick survey of GNOME wallpapers.
-        this._background = global.create_root_pixmap_actor();
-        this._group.add_actor(this._background);
-
         this._activeDisplayPane = null;
 
         // Used to catch any clicks when we have an active pane; see the comments
@@ -113,7 +101,7 @@ Overlay.prototype = {
                                                               reactive: true });
         this._group.add_actor(this._transparentBackground);
 
-        // Draw a semitransparent rectangle over the background for readability.
+        // Background color for the overlay
         this._backOver = new Clutter.Rectangle({ color: ROOT_OVERLAY_COLOR });
         this._group.add_actor(this._backOver);
 
@@ -170,12 +158,6 @@ Overlay.prototype = {
 
         this._backOver.set_position(0, Panel.PANEL_HEIGHT);
         this._backOver.set_size(global.screen_width, contentHeight);
-
-        let bgPositionFactor = (4 * BACKGROUND_SCALE - 3) / 6;
-        this._background.set_size(global.screen_width * BACKGROUND_SCALE,
-                                  global.screen_height * BACKGROUND_SCALE);
-        this._background.set_position(-global.screen_width * bgPositionFactor,
-                                      -global.screen_height * bgPositionFactor);
 
         this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
                                          Panel.PANEL_HEIGHT);
