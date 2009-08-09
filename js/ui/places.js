@@ -65,7 +65,13 @@ Places.prototype = {
 
         this._menuBox.append(home.actor, Big.BoxPackFlags.NONE);
 
-        let networkApp = Shell.AppSystem.get_default().load_from_desktop_file('gnome-network-scheme.desktop');
+        let networkApp = null;
+        try {
+            networkApp = Shell.AppSystem.get_default().load_from_desktop_file('gnome-network-scheme.desktop');
+        } catch(e) {
+            log("Cannot create \"Network\" item: " + e);
+        }
+
         if (networkApp != null) {
             let networkIcon = networkApp.create_icon_texture(PLACES_ICON_SIZE);
             let network = new PlaceDisplay(networkApp.get_name(), networkIcon, Lang.bind(this, function () {
