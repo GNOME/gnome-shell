@@ -131,7 +131,7 @@ Places.prototype = {
                 continue;
             let label = null;
             if (components.length > 1)
-                label = components[1];
+                label = components.slice(1).join(' ');
             bookmarksToLabel[bookmark] = label;
             bookmarksOrder.push(bookmark);
         }
