@@ -69,7 +69,11 @@ Places.prototype = {
         try {
             networkApp = Shell.AppSystem.get_default().load_from_desktop_file('gnome-network-scheme.desktop');
         } catch(e) {
-            log("Cannot create \"Network\" item: " + e);
+            try {
+                networkApp = Shell.AppSystem.get_default().load_from_desktop_file('network-scheme.desktop');
+            } catch(e) {
+                log("Cannot create \"Network\" item, .desktop file not found or corrupt.");
+            }
         }
 
         if (networkApp != null) {
