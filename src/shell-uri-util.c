@@ -106,7 +106,7 @@ shell_util_get_file_display_for_common_files (GFile *file)
   return NULL;
 }
 
-char *
+static char *
 shell_util_get_file_description (GFile *file)
 {
   GFileInfo *info;

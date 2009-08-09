@@ -66,12 +66,14 @@ Places.prototype = {
         this._menuBox.append(home.actor, Big.BoxPackFlags.NONE);
 
         let networkApp = Shell.AppSystem.get_default().load_from_desktop_file('gnome-network-scheme.desktop');
-        let networkIcon = networkApp.create_icon_texture(PLACES_ICON_SIZE);
-        let network = new PlaceDisplay(networkApp.get_name(), networkIcon, Lang.bind(this, function () {
-            Main.overlay.hide();
-            networkApp.launch();
-        }));
-        this._menuBox.append(network.actor, Big.BoxPackFlags.NONE);
+        if (networkApp != null) {
+            let networkIcon = networkApp.create_icon_texture(PLACES_ICON_SIZE);
+            let network = new PlaceDisplay(networkApp.get_name(), networkIcon, Lang.bind(this, function () {
+                Main.overlay.hide();
+                networkApp.launch();
+            }));
+            this._menuBox.append(network.actor, Big.BoxPackFlags.NONE);
+        }
 
         let connectIcon = Shell.TextureCache.get_default().load_icon_name("applications-internet", PLACES_ICON_SIZE);
         let connect = new PlaceDisplay('Connect to...', connectIcon, Lang.bind(this, function () {

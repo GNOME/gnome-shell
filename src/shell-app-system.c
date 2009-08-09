@@ -652,7 +652,7 @@ shell_app_system_load_from_desktop_file (ShellAppSystem   *system,
     {
       char *app_path = g_build_filename ("applications", filename, NULL);
       success = g_key_file_load_from_data_dirs (keyfile, app_path, &full_path,
-                                                G_KEY_FILE_NONE, error);
+                                                G_KEY_FILE_NONE, NULL);
       g_free (app_path);
     }
 
@@ -784,7 +784,7 @@ shell_app_info_get_desktop_file_path (ShellAppInfo *info)
 GIcon *
 shell_app_info_get_icon (ShellAppInfo *info)
 {
-  char *iconname;
+  char *iconname = NULL;
   GIcon *icon;
 
   /* This code adapted from gdesktopappinfo.c
