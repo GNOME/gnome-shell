@@ -109,7 +109,7 @@ Overview.prototype = {
         global.overlay_group.add_actor(this._group);
 
         // TODO - recalculate everything when desktop size changes
-        this._dash = new Dash.Dash(displayGridColumnWidth);
+        this._dash = new Dash.Dash();
         this._group.add_actor(this._dash.actor);
 
         // Container to hold popup pane chrome.
@@ -149,10 +149,34 @@ Overview.prototype = {
     relayout: function () {
         let global = Shell.Global.get();
 
-        let contentHeight = global.screen_height - Panel.PANEL_HEIGHT;
+        let screenHeight = global.screen_height;
+        let screenWidth = global.screen_width;
 
-        this._dash.actor.set_position(0, Panel.PANEL_HEIGHT);
-        this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
+        let contentHeight = screenHeight - Panel.PANEL_HEIGHT;
+
+        let workspaceColumnsUsed = wideScreen ? COLUMNS_FOR_WORKSPACES_WIDE_SCREEN : COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN;
+        let workspaceRowsUsed = wideScreen ? ROWS_FOR_WORKSPACES_WIDE_SCREEN : ROWS_FOR_WORKSPACES_REGULAR_SCREEN;
+
+        this._workspacesWidth = displayGridColumnWidth * workspaceColumnsUsed
+                                  - WORKSPACE_GRID_PADDING * 2;
+        // We scale the vertical padding by (screenHeight / screenWidth)
+        // so that the workspace preserves its aspect ratio.
+        this._workspacesHeight = displayGridRowHeight * workspaceRowsUsed
+                                   - WORKSPACE_GRID_PADDING * (screenHeight / screenWidth) * 2;
+
+        this._workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
+        this._workspacesY = displayGridRowHeight + WORKSPACE_GRID_PADDING * (screenHeight / screenWidth);
+
+        let dashY = Panel.PANEL_HEIGHT;
+        this._dash.actor.set_position(0, dashY);
+        this._dash.actor.set_size(displayGridColumnWidth, screenHeight - dashY);
+        this._dash.searchArea.height = this._workspacesY - dashY;
+        this._dash.sectionArea.height = this._workspacesHeight;
+
+        // place the 'Add Workspace' button in the bottom row of the grid
+        this._addButtonSize = Math.floor(displayGridRowHeight * 3/5);
+        this._addButtonX = this._workspacesX + this._workspacesWidth - this._addButtonSize;
+        this._addButtonY = screenHeight - Math.floor(displayGridRowHeight * 4/5);
 
         this._backOver.set_position(0, Panel.PANEL_HEIGHT);
         this._backOver.set_size(global.screen_width, contentHeight);
@@ -165,10 +189,12 @@ Overview.prototype = {
         this._transparentBackground.set_position(this._paneContainer.x, this._paneContainer.y);
         this._transparentBackground.set_size(global.screen_width - this._paneContainer.x,
                                              this._paneContainer.height);
+
+        if (this._activeDisplayPane != null)
+            this._activeDisplayPane.actor.width = displayGridColumnWidth * 2;
     },
 
     addPane: function (pane) {
-        pane.actor.width = displayGridColumnWidth * 2;
         this._paneContainer.append(pane.actor, Big.BoxPackFlags.NONE);
         // When a pane is displayed, we raise the transparent background to the top
         // and connect to button-release-event on it, then raise the pane above that.
@@ -177,6 +203,7 @@ Overview.prototype = {
         let backgroundEventId = null;
         pane.connect('open-state-changed', Lang.bind(this, function (pane, isOpen) {
             if (isOpen) {
+                pane.actor.width = displayGridColumnWidth * 2;
                 this._activeDisplayPane = pane;
                 this._transparentBackground.raise_top();
                 this._paneContainer.raise_top();
@@ -251,28 +278,13 @@ Overview.prototype = {
         this.animationInProgress = true;
 
         let global = Shell.Global.get();
-        let screenWidth = global.screen_width;
-        let screenHeight = global.screen_height; 
 
         this._dash.show();
 
-        let columnsUsed = wideScreen ? COLUMNS_FOR_WORKSPACES_WIDE_SCREEN : COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN;
-        let rowsUsed = wideScreen ? ROWS_FOR_WORKSPACES_WIDE_SCREEN : ROWS_FOR_WORKSPACES_REGULAR_SCREEN;  
-         
-        let workspacesWidth = displayGridColumnWidth * columnsUsed - WORKSPACE_GRID_PADDING * 2;
-        // We scale the vertical padding by (screenHeight / screenWidth) so that the workspace preserves its aspect ratio.
-        let workspacesHeight = displayGridRowHeight * rowsUsed - WORKSPACE_GRID_PADDING * (screenHeight / screenWidth) * 2;
-
-        let workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
-        let workspacesY = displayGridRowHeight + WORKSPACE_GRID_PADDING * (screenHeight / screenWidth);
-
-        // place the 'Add Workspace' button in the bottom row of the grid
-        let addButtonSize = Math.floor(displayGridRowHeight * 3/5);
-        let addButtonX = workspacesX + workspacesWidth - addButtonSize;
-        let addButtonY = screenHeight - Math.floor(displayGridRowHeight * 4/5);
-
-        this._workspaces = new Workspaces.Workspaces(workspacesWidth, workspacesHeight, workspacesX, workspacesY, 
-                                                     addButtonSize, addButtonX, addButtonY);
+        /* TODO: make this stuff dynamic */
+        this._workspaces = new Workspaces.Workspaces(this._workspacesWidth, this._workspacesHeight,
+                                                     this._workspacesX, this._workspacesY,
+                                                     this._addButtonSize, this._addButtonX, this._addButtonY);
         this._group.add_actor(this._workspaces.actor);
 
         // The workspaces actor is as big as the screen, so we have to raise the dash above it

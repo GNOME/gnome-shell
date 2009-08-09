@@ -68,13 +68,13 @@ DocDisplayItem.prototype = {
 
     // Creates and returns a large preview icon, but only if this._docInfo is an image file
     // and we were able to generate a pixbuf from it successfully.
-    _createLargePreviewIcon : function(availableWidth, availableHeight) {
+    _createLargePreviewIcon : function() {
         if (this._docInfo.mimeType == null || this._docInfo.mimeType.indexOf("image/") != 0)
             return null;
 
         try {
             return Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.NONE,
-                                                                  this._docInfo.uri, availableWidth, availableHeight);
+                                                                  this._docInfo.uri, -1, -1);
         } catch (e) {
             // An exception will be raised when the image format isn't know
             /* FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=591480: should

@@ -183,18 +183,14 @@ GenericDisplayItem.prototype = {
     /*
      * Returns an actor containing item details. In the future details can have more information than what
      * the preview pop-up has and be item-type specific.
-     *
-     * availableWidth - width available for displaying details
      */
-    createDetailsActor: function(availableWidth) {
+    createDetailsActor: function() {
 
         let details = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                    spacing: PREVIEW_BOX_SPACING,
-                                    width: availableWidth });
+                                    spacing: PREVIEW_BOX_SPACING });
 
         let mainDetails = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                        spacing: PREVIEW_BOX_SPACING,
-                                        width: availableWidth });
+                                        spacing: PREVIEW_BOX_SPACING });
 
         // Inner box with name and description
         let textDetails = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
@@ -216,7 +212,7 @@ GenericDisplayItem.prototype = {
         mainDetails.append(textDetails, Big.BoxPackFlags.EXPAND);
 
         let previewIcon = this._createPreviewIcon();
-        let largePreviewIcon = this._createLargePreviewIcon(availableWidth, -1);
+        let largePreviewIcon = this._createLargePreviewIcon();
 
         if (previewIcon != null && largePreviewIcon == null) {
             mainDetails.prepend(previewIcon, Big.BoxPackFlags.NONE);
@@ -303,7 +299,7 @@ GenericDisplayItem.prototype = {
     //// Virtual protected methods ////
 
     // Creates and returns a large preview icon, but only if we have a detailed image.
-    _createLargePreviewIcon : function(availableWidth, availableHeight) {
+    _createLargePreviewIcon : function() {
         return null;
     },
 
@@ -465,9 +461,9 @@ GenericDisplay.prototype = {
         return null;
     },
 
-    createDetailsForIndex: function(index, width, height) {
+    createDetailsForIndex: function(index) {
         let item = this._findDisplayedByIndex(index);
-        return item.createDetailsActor(width, height);
+        return item.createDetailsActor();
     },
 
     //// Protected methods ////

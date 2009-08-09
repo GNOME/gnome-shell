@@ -20,8 +20,11 @@ const DEFAULT_PADDING = 4;
 
 const PANEL_ICON_SIZE = 24;
 
-const PANEL_BACKGROUND_COLOR = new Clutter.Color();
-PANEL_BACKGROUND_COLOR.from_pixel(0x000000ff);
+const BACKGROUND_TOP = new Clutter.Color();
+BACKGROUND_TOP.from_pixel(0x414141ff);
+const BACKGROUND_BOTTOM = new Clutter.Color();
+BACKGROUND_BOTTOM.from_pixel(0x000000ff);
+
 const PANEL_FOREGROUND_COLOR = new Clutter.Color();
 PANEL_FOREGROUND_COLOR.from_pixel(0xffffffff);
 const SN_BACKGROUND_COLOR = new Clutter.Color();
@@ -83,8 +86,7 @@ AppPanelMenu.prototype = {
         this.actor.append(labelBox, Big.BoxPackFlags.NONE);
 
         this._startupBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                         y_align: Big.BoxAlignment.CENTER
-                                          });
+                                         y_align: Big.BoxAlignment.CENTER });
         this.actor.append(this._startupBox, Big.BoxPackFlags.NONE);
 
         Main.overview.connect('hiding', Lang.bind(this, function () {
@@ -161,9 +163,17 @@ Panel.prototype = {
     _init : function() {
         let global = Shell.Global.get();
 
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   background_color: PANEL_BACKGROUND_COLOR
+
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL
                                  });
+        let backgroundGradient = Shell.create_vertical_gradient(BACKGROUND_TOP,
+                                                                BACKGROUND_BOTTOM);
+        this.actor.connect('notify::allocation', Lang.bind(this, function () {
+            let [width, height] = this.actor.get_size();
+            backgroundGradient.set_size(width, height);
+        }));
+        this.actor.add_actor(backgroundGradient);
+
         this._leftBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                       y_align: Big.BoxAlignment.CENTER,
                                       spacing: DEFAULT_PADDING,

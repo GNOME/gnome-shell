@@ -18,9 +18,8 @@ dist_image_DATA =		\
 	add-workspace.svg	\
 	close.svg		\
 	info.svg		\
-	remove-workspace.svg	\
-	view-more-activated.svg	\
-	view-more.svg
+	magnifier.svg  \
+	remove-workspace.svg
 
 schemadir  = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = gnome-shell.schemas

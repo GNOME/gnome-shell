@@ -398,7 +398,9 @@ Workspace.prototype = {
 
     // Mark the workspace selected/not-selected
     setSelected : function(selected) {
-        if (selected) {
+        let global = Shell.Global.get();
+        // Don't draw a frame if we only have one workspace
+        if (selected && global.screen.n_workspaces > 1) {
             if (this._frame)
                 return;
 
@@ -1112,6 +1114,11 @@ Workspaces.prototype = {
 
             // FIXME: deal with windows on the lost workspaces
         }
+
+        // Reset the selection state; if we went from > 1 workspace to 1,
+        // this has the side effect of removing the frame border
+        let activeIndex = global.screen.get_active_workspace_index();
+        this._workspaces[activeIndex].setSelected(true);
     },
 
     _activeWorkspaceChanged : function(wm, from, to, direction) {

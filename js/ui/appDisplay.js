@@ -565,9 +565,7 @@ WellGrid.prototype = {
     _init: function() {
         this.actor = new Shell.GenericContainer();
 
-        this._separator = new Big.Box({ border_color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                        border_top: 1,
-                                        height: 1 });
+        this._separator = new Big.Box({ height: 1 });
         this.actor.add_actor(this._separator);
         this._separatorIndex = 0;
         this._cachedSeparatorY = 0;
