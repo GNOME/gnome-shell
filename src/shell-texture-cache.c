@@ -210,7 +210,7 @@ compute_pixbuf_scale (gint      width,
     }
 
   // Scale the image only if that will not increase its original dimensions.
-  if (scaled_width >= 0 && scaled_height >= 0 && scaled_width < width && scaled_height < height)
+  if (scaled_width > 0 && scaled_height > 0 && scaled_width < width && scaled_height < height)
     {
       *new_width = scaled_width;
       *new_height = scaled_height;
