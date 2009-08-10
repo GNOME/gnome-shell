@@ -2,6 +2,7 @@
 
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
@@ -108,12 +109,13 @@ RunDialog.prototype = {
         if (f) {
             f();
         } else if (command) {
-            var p = new Shell.Process({'args' : [command]});
             try {
+                let [ok, len, args] = GLib.shell_parse_argv(command);
+                let p = new Shell.Process({'args' : args});
                 p.run();
             } catch (e) {
                 // TODO: Give the user direct feedback.
-                log('Could not run command ' + command + '.');
+                log('Could not run command ' + command + ': ' + e);
             }
         }
     },

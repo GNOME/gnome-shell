@@ -50,7 +50,8 @@ AM_CONDITIONAL(BUILD_RECORDER, $build_recorder)
 PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugins
                                  gjs-gi-1.0 libgnome-menu $recorder_modules gconf-2.0
                                  gdk-x11-2.0 clutter-x11-1.0 clutter-glx-1.0
-                                 gnome-desktop-2.0 >= 2.26 libstartup-notification-1.0)
+                                 gnome-desktop-2.0 >= 2.26 libstartup-notification-1.0
+                                 gobject-introspection-1.0 >= 0.6.4)
 PKG_CHECK_MODULES(TIDY, clutter-1.0)
 PKG_CHECK_MODULES(BIG, clutter-1.0 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
