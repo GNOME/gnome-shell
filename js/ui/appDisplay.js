@@ -490,7 +490,7 @@ WellDisplayItem.prototype = {
                                 GLOW_COLOR.blue / 255,
                                 GLOW_COLOR.alpha / 255);
             }));
-            this._name.connect('notify::allocation', Lang.bind(this, function (n, alloc) {
+            this._name.connect('notify::allocation', Lang.bind(this, function () {
                 let x = this._name.x;
                 let y = this._name.y;
                 let width = this._name.width;

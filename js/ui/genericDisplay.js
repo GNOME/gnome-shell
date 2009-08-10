@@ -347,10 +347,10 @@ GenericDisplay.prototype = {
         this._list = new Shell.OverflowList({ spacing: 6.0,
                                               item_height: ITEM_DISPLAY_HEIGHT });
 
-        this._list.connect('notify::n-pages', Lang.bind(this, function (grid, alloc) {
+        this._list.connect('notify::n-pages', Lang.bind(this, function () {
             this._updateDisplayControl(true);
         }));
-        this._list.connect('notify::page', Lang.bind(this, function (grid, alloc) {
+        this._list.connect('notify::page', Lang.bind(this, function () {
             this._updateDisplayControl(false);
         }));
 
