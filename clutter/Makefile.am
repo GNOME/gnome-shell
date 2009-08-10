@@ -244,6 +244,9 @@ BUILT_GIRSOURCES =
 
 if LOCAL_JSON_GLIB
 json_gir_include_path=--add-include-path=json
+json_gir_include=--include=ClutterJson-@CLUTTER_API_VERSION@
+else
+json_gir_include=--include=Json-1.0
 endif
 
 # We can't reference the list of COGL header files, since they are in a
@@ -261,7 +264,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 		--include=Pango-1.0 \
 		--include=PangoCairo-1.0 \
 		--include=Cogl-@CLUTTER_API_VERSION@ \
-	        --include=ClutterJson-@CLUTTER_API_VERSION@ \
+		$(json_gir_include) \
 		--library=clutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@ \
 		--libtool="$(top_builddir)/libtool" \
 	        --pkg gobject-2.0 \

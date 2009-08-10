@@ -281,11 +281,7 @@ get_id_from_node (JsonNode *node)
     case JSON_NODE_OBJECT:
       object = json_node_get_object (node);
       if (json_object_has_member (object, "id"))
-        {
-          JsonNode *id = json_object_get_member (object, "id");
-
-          return json_node_get_string (id);
-        }
+        return json_object_get_string_member (object, "id");
       break;
 
     case JSON_NODE_VALUE:
@@ -372,11 +368,8 @@ parse_signals (ClutterScript *script,
         }
       else
         {
-          val = json_object_get_member (object, "name");
-          if ((JSON_NODE_TYPE (val) == JSON_NODE_VALUE) &&
-              json_node_get_string (val) != NULL)
-            name = json_node_get_string (val);
-          else
+          name = json_object_get_string_member (object, "name");
+          if (!name)
             {
               warn_invalid_value (script, "name", "string", val);
               continue;
@@ -391,11 +384,8 @@ parse_signals (ClutterScript *script,
         }
       else
         {
-          val = json_object_get_member (object, "handler");
-          if ((JSON_NODE_TYPE (val) == JSON_NODE_VALUE) &&
-              json_node_get_string (val) != NULL)
-            handler = json_node_get_string (val);
-          else
+          handler = json_object_get_string_member (object, "handler");
+          if (!handler)
             {
               warn_invalid_value (script, "handler", "string", val);
               continue;
@@ -404,30 +394,21 @@ parse_signals (ClutterScript *script,
 
       /* optional: "object" */
       if (json_object_has_member (object, "object"))
-        {
-          val = json_object_get_member (object, "object");
-          if ((JSON_NODE_TYPE (val) == JSON_NODE_VALUE) &&
-              json_node_get_string (val) != NULL)
-            connect = json_node_get_string (val);
-          else
-            connect = NULL;
-        }
+        connect = json_object_get_string_member (object, "object");
       else
         connect = NULL;
 
       /* optional: "after" */
       if (json_object_has_member (object, "after"))
         {
-          val = json_object_get_member (object, "after");
-          if (json_node_get_boolean (val))
+          if (json_object_get_boolean_member (object, "after"))
             flags |= G_CONNECT_AFTER;
         }
 
       /* optional: "swapped" */
       if (json_object_has_member (object, "swapped"))
         {
-          val = json_object_get_member (object, "swapped");
-          if (json_node_get_boolean (val))
+          if (json_object_get_boolean_member (object, "swapped"))
             flags |= G_CONNECT_SWAPPED;
         }
 
@@ -764,8 +745,8 @@ json_object_end (JsonParser *parser,
   if (strcmp (oinfo->class_name, "ClutterStage") == 0 &&
       json_object_has_member (object, "is-default"))
     {
-      val = json_object_get_member (object, "is-default");
-      oinfo->is_stage_default = json_node_get_boolean (val);
+      oinfo->is_stage_default =
+        json_object_get_boolean_member (object, "is-default");
 
       json_object_remove_member (object, "is-default");
     }
