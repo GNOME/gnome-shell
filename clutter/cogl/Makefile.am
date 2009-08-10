@@ -1,8 +1,10 @@
 NULL =
 
-V         = @
-Q         = $(V:1=)
+if USE_SHAVE
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+else
+QUIET_GEN = $(AM_V_GEN)
+endif # USE_SHAVE
 
 SUBDIRS = common $(CLUTTER_COGL)
 

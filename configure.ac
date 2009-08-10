@@ -757,14 +757,26 @@ GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 
 dnl ===========================================================================
 
-SHAVE_INIT([build/autotools], [enable])
+m4_ifdef([AM_SILENT_RULES],
+	 [
+           AM_SILENT_RULES([yes])
+           use_shave=no
+         ],
+	 [
+           SHAVE_INIT([build/autotools], [enable])
+           AC_CONFIG_FILES([
+                build/autotools/shave
+                build/autotools/shave-libtool
+           ])
+           use_shave=yes
+         ])
+
+AM_CONDITIONAL([USE_SHAVE], [test "x$use_shave" = "xyes"])
 
 AC_CONFIG_FILES([
         Makefile
         build/Makefile
         build/autotools/Makefile
-        build/autotools/shave
-        build/autotools/shave-libtool
         clutter/Makefile
         clutter/clutter-version.h
         clutter/clutter-json.h
