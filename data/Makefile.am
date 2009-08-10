@@ -30,9 +30,9 @@ install-data-local:
 
 EXTRA_DIST =					\
 	gnome-shell.desktop.in.in		\
-	gnome-shell.desktop.in			\
 	$(schema_DATA)
 
 CLEANFILES =					\
+	gnome-shell.desktop.in			\
 	$(desktop_DATA)
 
