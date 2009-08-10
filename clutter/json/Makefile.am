@@ -29,7 +29,7 @@ INCLUDES = \
 
 AM_CFLAGS = $(MAINTAINER_CFLAGS)
 
-clutterjsondir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter/json
+clutterjsondir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/json
 clutterjson_HEADERS = $(source_h)
 
 noinst_DATA =
