@@ -4,7 +4,7 @@ m4_define([mutter_major_version], [2])
 m4_define([mutter_minor_version], [27])
 # Fibonacci sequence for micro version numbering:
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987
-m4_define([mutter_micro_version], [1])
+m4_define([mutter_micro_version], [2])
 
 m4_define([mutter_version],
           [mutter_major_version.mutter_minor_version.mutter_micro_version])
