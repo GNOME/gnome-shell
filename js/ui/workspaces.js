@@ -590,27 +590,25 @@ Workspace.prototype = {
 
     // Animate the full-screen to overlay transition.
     zoomToOverlay : function() {
-        // Move the workspace into size/position
-        this.actor.set_position(this.fullSizeX, this.fullSizeY);
-        
-        this.updateInOverlay();
+        this.actor.set_position(this.gridX, this.gridY);
+        this.actor.set_scale(this.scale, this.scale);
+
+        // Position and scale the windows.
+        this.positionWindows(true);
+
+        // Fade in the remove button if available, so that it doesn't appear
+        // too abrubtly and doesn't start at a too big size.
+        if (this._removeButton) {
+            Tweener.removeTweens(this._removeButton);
+            this._removeButton.opacity = 0;
+            Tweener.addTween(this._removeButton,
+                             { opacity: 255,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
 
         this._visible = true;
-    },
-
-    // Animates the display of a workspace and its windows to have the current dimensions and position.
-    updateInOverlay : function() {
-        Tweener.addTween(this.actor,
-                         { x: this.gridX,
-                           y: this.gridY,
-                           scale_x: this.scale,
-                           scale_y: this.scale,
-                           time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
-
-        // Likewise for each of the windows in the workspace.
-        this.positionWindows(true);
     },
 
     // Animates the return from overlay mode
@@ -619,17 +617,21 @@ Workspace.prototype = {
 
         this._hideAllIcons();
 
-        Tweener.addTween(this.actor,
-                         { x: this.fullSizeX,
-                           y: this.fullSizeY,
-                           scale_x: 1.0,
-                           scale_y: 1.0,
-                           time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this._doneLeavingOverlay,
-                           onCompleteScope: this
-                         });
+        Main.overlay.connect('hidden', Lang.bind(this,
+                                                 this._doneLeavingOverlay));
 
+        // Fade out the remove button if available, so that it doesn't
+        // disappear too abrubtly and doesn't become too big.
+        if (this._removeButton) {
+            Tweener.removeTweens(this._removeButton);
+            Tweener.addTween(this._removeButton,
+                             { opacity: 0,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
+
+        // Position and scale the windows.
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
             Tweener.addTween(clone.actor,
@@ -906,9 +908,15 @@ Workspaces.prototype = {
         let lastWorkspace = this._workspaces[this._workspaces.length - 1];
         lastWorkspace.updateRemovable(true);
 
-        // Position/scale the desktop windows and their children
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomToOverlay();
+        // Position/scale the desktop windows and their children after the
+        // workspaces have been created. This cannot be done first because
+        // window movement depends on the Workspaces object being accessible
+        // as an Overlay member.
+        Main.overlay.connect('showing',
+                             Lang.bind(this, function() {
+            for (let w = 0; w < this._workspaces.length; w++)
+                this._workspaces[w].zoomToOverlay();
+        }));
 
         // Track changes to the number of workspaces
         this._nWorkspacesNotifyId =
@@ -945,17 +953,6 @@ Workspaces.prototype = {
         }
     },
 
-    // Updates position of the workspaces display based on the new coordinates.
-    // Preserves the old value for the coordinate, if the passed value is null.
-    updatePosition : function(x, y) {
-        if (x != null)
-            this._x = x;
-        if (y != null)
-            this._y = y;
-
-        this._updateInOverlay();
-    },
-
     hide : function() {
         let global = Shell.Global.get();
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
@@ -982,35 +979,17 @@ Workspaces.prototype = {
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
     },
 
-    getFullSizeX : function() {
-        return this._workspaces[0].fullSizeX;
+    getScale : function() {
+        return this._workspaces[0].scale;
     },
 
-    // If j-th workspace in the i-th row is active, returns the full width
-    // of j workspaces including empty space if i = 1, or the width of one
-    // workspace.
-    // Used in overlay.js to determine when it is ok to remove the sideshow
-    // during animations for entering and leaving the overlay.
-    getWidthToTopActiveWorkspace : function() {
+    // Get the grid position of the active workspace.
+    getActiveWorkspacePosition : function() {
         let global = Shell.Global.get();
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
-        if (activeWorkspace.gridRow == 0)
-            return (activeWorkspace.gridCol + 1) * global.screen_width + activeWorkspace.gridCol * GRID_SPACING;
-        else
-            return global.screen_width;
-    },
-
-    // Updates the workspaces display based on the current dimensions and position.
-    _updateInOverlay : function() {
-        let global = Shell.Global.get();  
-  
-        this._positionWorkspaces(global);
-
-        // Position/scale the desktop windows and their children
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].updateInOverlay();
+        return [activeWorkspace.gridX, activeWorkspace.gridY];
     },
 
     // Assign grid positions to workspaces. We can't just do a simple
@@ -1062,14 +1041,6 @@ Workspaces.prototype = {
                     span++;
                 }
             }
-        }
-
-        // Now figure out their full-size coordinates
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-
-            workspace.fullSizeX = (workspace.gridCol - activeWorkspace.gridCol) * (global.screen_width + GRID_SPACING);
-            workspace.fullSizeY = (workspace.gridRow - activeWorkspace.gridRow) * (global.screen_height + GRID_SPACING);
         }
     },
 
@@ -1167,28 +1138,49 @@ Workspaces.prototype = {
 Tweener.registerSpecialPropertyModifier("workspace_relative", _workspaceRelativeModifier, _workspaceRelativeGet);
 
 function _workspaceRelativeModifier(workspace) {
-    let endX, endY;
+    let [startX, startY] = Main.overlay.getPosition();
+    let overlayPosX, overlayPosY, overlayScale;
 
     if (!workspace)
         return [];
 
     if (workspace.leavingOverlay) {
-        endX = workspace.fullSizeX;
-        endY = workspace.fullSizeY;        
+        let [zoomedInX, zoomedInY] = Main.overlay.getZoomedInPosition();
+        overlayPosX = { begin: startX, end: zoomedInX };
+        overlayPosY = { begin: startY, end: zoomedInY };
+        overlayScale = { begin: Main.overlay.getScale(),
+                         end: Main.overlay.getZoomedInScale() };
     } else {
-        endX = workspace.gridX;
-        endY = workspace.gridY;
+        overlayPosX = { begin: startX, end: 0 };
+        overlayPosY = { begin: startY, end: 0 };
+        overlayScale = { begin: Main.overlay.getScale(), end: 1 };
     }
 
     return [ { name: "x",
-               parameters: { begin: workspace.actor.x, end: endX,
-                             cur: function() { return workspace.actor.x; } } },
+               parameters: { workspacePos: workspace.gridX,
+                             overlayPos: overlayPosX,
+                             overlayScale: overlayScale } },
              { name: "y",
-               parameters: { begin: workspace.actor.y, end: endY,
-                             cur: function() { return workspace.actor.y; } } }
+               parameters: { workspacePos: workspace.gridY,
+                             overlayPos: overlayPosY,
+                             overlayScale: overlayScale } }
            ];
 }
 
 function _workspaceRelativeGet(begin, end, time, params) {
-    return (begin + params.begin) + time * (end + params.end - (begin + params.begin)) - params.cur();
+    let curOverlayPos = (1 - time) * params.overlayPos.begin +
+                        time * params.overlayPos.end;
+    let curOverlayScale = (1 - time) * params.overlayScale.begin +
+                          time * params.overlayScale.end;
+
+    // Calculate the screen position of the window.
+    let screen = (1 - time) *
+                 ((begin + params.workspacePos) * params.overlayScale.begin +
+                  params.overlayPos.begin) +
+                 time *
+                 ((end + params.workspacePos) * params.overlayScale.end +
+                 params.overlayPos.end);
+
+    // Return the workspace coordinates.
+    return (screen - curOverlayPos) / curOverlayScale - params.workspacePos;
 }

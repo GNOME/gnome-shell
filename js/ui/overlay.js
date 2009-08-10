@@ -218,6 +218,31 @@ Overlay.prototype = {
 
     //// Public methods ////
 
+    // Returns the scale the overlay has when we just start zooming out
+    // to overview mode. That is, when just the active workspace is showing.
+    getZoomedInScale : function() {
+        return 1 / this._workspaces.getScale();
+    },
+
+    // Returns the position the overlay has when we just start zooming out
+    // to overview mode. That is, when just the active workspace is showing.
+    getZoomedInPosition : function() {
+        let [posX, posY] = this._workspaces.getActiveWorkspacePosition();
+        let scale = this.getZoomedInScale();
+
+        return [- posX * scale, - posY * scale];
+    },
+
+    // Returns the current scale of the overlay.
+    getScale : function() {
+        return this._group.scaleX;
+    },
+
+    // Returns the current position of the overlay.
+    getPosition : function() {
+        return [this._group.x, this._group.y];
+    },
+
     show : function() {
         if (this.visible)
             return;
@@ -262,26 +287,29 @@ Overlay.prototype = {
         global.window_group.hide();
         this._group.show();
 
-        // Try to make the menu not too visible behind the empty space between
-        // the workspace previews by sliding in its clipping rectangle.
-        // We want to finish drawing the Dash just before the top workspace fully
-        // slides in on the top. Which means that we have more time to wait before
-        // drawing the dash if the active workspace is displayed on the bottom of
-        // the workspaces grid, and almost no time to wait if it is displayed in the top
-        // row of the workspaces grid. The calculations used below try to roughly
-        // capture the animation ratio for when workspaces are covering the top of the overlay
-        // vs. when workspaces are already below the top of the overlay, and apply it
-        // to clipping the dash. The clipping is removed in this._showDone().
-        this._dash.actor.set_clip(0, 0,
-                                      this._workspaces.getFullSizeX(),
-                                      this._dash.actor.height);
-        Tweener.addTween(this._dash.actor,
-                         { clipWidthRight: this._dash._width + WORKSPACE_GRID_PADDING + this._workspaces.getWidthToTopActiveWorkspace(),
+        // Create a zoom out effect. First scale the overlay group up and
+        // position it so that the active workspace fills up the whole screen,
+        // then transform the group to its normal dimensions and position.
+        // The opposite transition is used in hide().
+        this._group.scaleX = this._group.scaleY = this.getZoomedInScale();
+        [this._group.x, this._group.y] = this.getZoomedInPosition();
+        Tweener.addTween(this._group,
+                         { x: 0,
+                           y: 0,
+                           scaleX: 1,
+                           scaleY: 1,
+                           transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
                            onComplete: this._showDone,
                            onCompleteScope: this
+                          });
 
+        // Make Dash fade in so that it doesn't appear to big.
+        this._dash.actor.opacity = 0;
+        Tweener.addTween(this._dash.actor,
+                         { opacity: 255,
+                           transition: 'easeOutQuad',
+                           time: ANIMATION_TIME
                          });
 
         this.emit('showing');
@@ -297,27 +325,29 @@ Overlay.prototype = {
         this._hideInProgress = true;
         if (this._activeDisplayPane != null)
             this._activeDisplayPane.close();
-        // lower the panes, so that workspaces display is on top while sliding out
-        this._dash.actor.lower(this._workspaces.actor);
         this._workspaces.hide();
 
-        // Try to make the menu not too visible behind the empty space between
-        // the workspace previews by sliding in its clipping rectangle.
-        // The logic used is the same as described in this.show(). If the active workspace
-        // is displayed in the top row, than almost full animation time is needed for it
-        // to reach the top of the overlay and cover the Dash fully, while if the
-        // active workspace is in the lower row, than the top left workspace reaches the
-        // top of the overlay sooner as it is moving out of the way.
-        // The clipping is removed in this._hideDone().
-        this._dash.actor.set_clip(0, 0,
-                                      this._dash.actor.width + WORKSPACE_GRID_PADDING + this._workspaces.getWidthToTopActiveWorkspace(),
-                                      this._dash.actor.height);
-        Tweener.addTween(this._dash.actor,
-                         { clipWidthRight: this._workspaces.getFullSizeX() + this._workspaces.getWidthToTopActiveWorkspace() - global.screen_width,
+        // Create a zoom in effect by transforming the overlay group so that
+        // the active workspace fills up the whole screen. The opposite
+        // transition is used in show().
+        let scale = this.getZoomedInScale();
+        let [posX, posY] = this.getZoomedInPosition();
+        Tweener.addTween(this._group,
+                         { x: posX,
+                           y: posY,
+                           scaleX: scale,
+                           scaleY: scale,
+                           transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
-                           transition: "easeOutQuad",
                            onComplete: this._hideDone,
                            onCompleteScope: this
+                          });
+
+        // Make Dash fade out so that it doesn't appear to big.
+        Tweener.addTween(this._dash.actor,
+                         { opacity: 0,
+                           transition: 'easeOutQuad',
+                           time: ANIMATION_TIME
                          });
 
         this.emit('hiding');
@@ -347,20 +377,9 @@ Overlay.prototype = {
 
     //// Private methods ////
 
-    // Raises the Dash to the top, so that we can tell if the pointer is above one of its items.
-    // We need to do this once the workspaces are shown because the workspaces actor currently covers
-    // the whole screen, regardless of where the workspaces are actually displayed.
-    //
-    // Once we rework the workspaces actor to only cover the area it actually needs, we can
-    // remove this workaround. Also http://bugzilla.openedhand.com/show_bug.cgi?id=1513 requests being
-    // able to pick only a reactive actor at a certain position, rather than any actor. Being able
-    // to do that would allow us to not have to raise the Dash.
     _showDone: function() {
         if (this._hideInProgress)
             return;
-
-        this._dash.actor.raise_top();
-        this._dash.actor.remove_clip();
 
         this.animationInProgress = false;
 
@@ -375,7 +394,6 @@ Overlay.prototype = {
         this._workspaces.destroy();
         this._workspaces = null;
 
-        this._dash.actor.remove_clip();
         this._dash.hide();
         this._group.hide();
 
@@ -388,36 +406,3 @@ Overlay.prototype = {
     }
 };
 Signals.addSignalMethods(Overlay.prototype);
-
-Tweener.registerSpecialProperty("clipHeightBottom", _clipHeightBottomGet, _clipHeightBottomSet);
-
-function _clipHeightBottomGet(actor) {
-    let [xOffset, yOffset, clipWidth, clipHeight] = actor.get_clip();
-    return clipHeight;
-}
-
-function _clipHeightBottomSet(actor, clipHeight) {
-    actor.set_clip(0, 0, actor.width, clipHeight);
-}
-
-Tweener.registerSpecialProperty("clipHeightTop", _clipHeightTopGet, _clipHeightTopSet);
-
-function _clipHeightTopGet(actor) {
-    let [xOffset, yOffset, clipWidth, clipHeight] = actor.get_clip();
-    return clipHeight;
-}
-
-function _clipHeightTopSet(actor, clipHeight) {
-    actor.set_clip(0, actor.height - clipHeight, actor.width, clipHeight);
-}
-
-Tweener.registerSpecialProperty("clipWidthRight", _clipWidthRightGet, _clipWidthRightSet);
-
-function _clipWidthRightGet(actor) {
-    let [xOffset, yOffset, clipWidth, clipHeight] = actor.get_clip();
-    return clipWidth;
-}
-
-function _clipWidthRightSet(actor, clipWidth) {
-    actor.set_clip(0, 0, clipWidth, actor.height);
-}
