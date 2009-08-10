@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: metacity 2.21.x\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&component=general\n"
-"POT-Creation-Date: 2009-04-23 17:36+0000\n"
-"PO-Revision-Date: 2009-04-24 22:16+0200\n"
+"POT-Creation-Date: 2009-08-09 18:27+0000\n"
+"PO-Revision-Date: 2009-08-11 01:17+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,6 @@ msgid "Window Management"
 msgstr "Gestione finestre"
 
 #: ../src/core/bell.c:294
-#, fuzzy
 msgid "Bell event"
 msgstr "Evento campanella"
 
@@ -43,19 +42,17 @@ msgid "Unknown window information request: %d"
 msgstr "Richiesta informazioni finestra sconosciuta: %d"
 
 #: ../src/core/delete.c:104
-#, fuzzy, c-format
-#| msgid ""
-#| "You may choose to wait a short while for it to continue or force the "
-#| "application to quit entirely."
+#, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
 "<i>You may choose to wait a short while for it to continue or force the "
 "application to quit entirely.</i>"
 msgstr ""
-"<big><b><tt>%s</tt> non sta rispondendo.</b></big>\n"
+"<big><b>Nessuna risposta da<tt>%s</tt>.</b></big>\n"
 "\n"
-"<i>È possibile scegliere di attendere un po' lasciando che l'applicazione continui, oppure forzare la terminazione dell'applicazione.</i>"
+"<i>È possibile scegliere di attendere un po' lasciando che l'applicazione "
+"continui, oppure forzare la terminazione dell'applicazione.</i>"
 
 # GNOME-2-24
 #: ../src/core/delete.c:115
@@ -138,13 +135,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "Non è stato definito alcun comando di terminale.\n"
 
 #: ../src/core/main.c:130
-#, fuzzy, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -158,52 +149,60 @@ msgstr ""
 "NON è fornita alcuna garanzia; neanche di COMMERCIABILITÀ o\n"
 "APPLICABILITÀ PER UNO SCOPO PARTICOLARE.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Disabilita la connessione al gestore di sessione"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Sostituisce il window manager in esecuzione con Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Specifica l'ID di gestione sessione"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Display X da usare"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Inizializza la sessione da file salvato"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Stampa la versione"
 
 # GNOME-2-22
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Rende le chiamate X sincrone"
 
 # GNOME-2-26
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Attiva il compositing"
 
 # GNOME-2-26
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Disattiva il compositing"
 
+#: ../src/core/main.c:321
+#, fuzzy
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Non rendere a pieno schermo quelle finestre che sono massimizzate e che non "
+"hanno decorazioni"
+
 # GNOME-2-26
-#: ../src/core/main.c:536
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Scansione della directory dei temi non riuscita: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -212,7 +211,7 @@ msgstr ""
 "standard.\n"
 
 # GNOME-2-26
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Riavvio non riuscito: %s\n"
@@ -228,29 +227,29 @@ msgstr "Riavvio non riuscito: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La chiave GConf «%s» è impostata ad un valore non valido\n"
 
 # GNOME-2-24
 # lasciato "Il valore" iniziale che c'era in precendeza
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr ""
 "Il valore %d memorizzato nella chiave GConf %s è fuori dall'intervallo da %d "
 "a %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La chiave GConf «%s» è impostata ad un tipo non valido\n"
 
 # GNOME-2-26
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -258,7 +257,7 @@ msgstr ""
 "Disabilitate le funzionalità palliative per la applicazioni difettose. "
 "Alcune applicazioni potrebbero avere comportamenti errati.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
@@ -266,7 +265,7 @@ msgstr ""
 "GConf %s\n"
 
 # GNOME-2-26
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -275,18 +274,18 @@ msgstr ""
 "Il valore «%s» trovato nel database di configurazione non è valido per il "
 "modificatore del tasto del mouse\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Errore nell'impostare il numero di spazi di lavoro a %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Spazio di lavoro %d"
 
 # GNOME-2-26
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -295,23 +294,23 @@ msgstr ""
 "Il valore «%s» nel database di configurazione non è valido per l'associazione "
 "di tasti «%s»\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Errore nell'impostare il nome dello spazio di lavoro %d a «%s»: %s\n"
 
 # GNOME-2-26
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Errore nell'impostare lo stato del compositor: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Lo schermo %d nel display «%s» non è valido\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -320,7 +319,7 @@ msgstr ""
 "Lo schermo %d sul display «%s» ha già un window manager; provare a utilizzare "
 "l'opzione --replace per sostituirlo.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -328,12 +327,12 @@ msgstr ""
 "Impossibile acquisire la selezione del window manager per lo schermo %d nel "
 "display «%s»\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Lo schermo %d sul display «%s» ha già un window manager\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossibile rilasciare lo schermo %d sul display «%s»\n"
@@ -442,19 +441,16 @@ msgstr "tag <window> annidato"
 msgid "Unknown element %s"
 msgstr "Elemento %s sconosciuto"
 
-# GNOME-2-26
-# aggiunto modalità
+# aggiunto funzione
 # si riferisce a quella cosa di gnome-session
 # che però non funziona più dalla 2.24
 #: ../src/core/session.c:1812
-#, fuzzy
-#| msgid ""
-#| "These windows do not support \"save current setup\" and will have to be "
-#| "restarted manually next time you log in."
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
-msgstr "Queste finestre non supportano la funzione &quot;salva impostazioni attuali&quot; e dovranno essere riavviate manualmente al prossimo accesso."
+msgstr ""
+"Queste finestre non supportano la funzione &quot;salva impostazioni "
+"attuali&quot; e dovranno essere riavviate manualmente al prossimo accesso."
 
 # GNOME-2-26
 #: ../src/core/util.c:103
@@ -544,22 +540,21 @@ msgstr "%s (su %s)"
 
 #. Simple case-- don't bother to look it up.  It's root.
 #: ../src/core/window-props.c:420
-#, c-format, fuzzy
+#, c-format
 msgid "%s (as superuser)"
 msgstr "%s (come superutente)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine
 #: ../src/core/window-props.c:438
-#, fuzzy, c-format
-#| msgid "%s (on %s)"
+#, c-format
 msgid "%s (as %s)"
 msgstr "%s (come %s)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine, whose name we don't know
 #: ../src/core/window-props.c:444
-#, c-format, fuzzy
+#, c-format
 msgid "%s (as another user)"
 msgstr "%s (come altro utente)"
 
@@ -2445,8 +2440,7 @@ msgstr "Il testo non è consentito all'interno dell'elemento <%s>"
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
-#| msgid "<name> specified twice for this theme"
+#, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> specificato due volte per questo tema"
 
