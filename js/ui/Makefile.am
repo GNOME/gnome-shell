@@ -14,6 +14,7 @@ dist_jsui_DATA =		\
 	main.js			\
 	overlay.js		\
 	panel.js		\
+	places.js		\
 	runDialog.js		\
 	sidebar.js		\
 	tweener.js		\
