@@ -16,6 +16,8 @@ config.log
 config.status
 config
 configure
+data/gnome-shell.desktop
+data/gnome-shell.desktop.in
 libtool
 scripts/launcher.pyc
 src/*.gir
