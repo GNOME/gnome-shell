@@ -72,8 +72,15 @@ DocDisplayItem.prototype = {
         if (this._docInfo.mimeType == null || this._docInfo.mimeType.indexOf("image/") != 0)
             return null;
 
-        return Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.NONE,
-                                                              this._docInfo.uri, availableWidth, availableHeight);
+        try {
+            return Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.NONE,
+                                                                  this._docInfo.uri, availableWidth, availableHeight);
+        } catch (e) {
+            // An exception will be raised when the image format isn't know
+            /* FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=591480: should
+             *        only ignore GDK_PIXBUF_ERROR_UNKNOWN_TYPE. */
+            return null;
+        }
     },
 
     //// Private Methods ////
