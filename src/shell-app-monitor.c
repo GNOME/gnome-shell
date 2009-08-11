@@ -1383,7 +1383,7 @@ shell_app_monitor_get_startup_sequences (ShellAppMonitor *self)
 
 /* sn_startup_sequence_ref returns void, so make a
  * wrapper which returns self */
-SnStartupSequence *
+static SnStartupSequence *
 sequence_ref (SnStartupSequence *sequence)
 {
   sn_startup_sequence_ref (sequence);
