@@ -102,7 +102,7 @@ cogl_clear (const CoglColor *color, gulong buffers)
       GE( glClearColor (cogl_color_get_red_float (color),
 			cogl_color_get_green_float (color),
 			cogl_color_get_blue_float (color),
-			0.0) );
+			cogl_color_get_alpha_float (color)) );
       gl_buffers |= GL_COLOR_BUFFER_BIT;
     }
 
