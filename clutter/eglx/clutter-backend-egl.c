@@ -262,11 +262,53 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   return stage;
 }
 
+static XVisualInfo *
+clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11,
+                                     gboolean           for_offscreen)
+{
+  EGLint   visualId;
+  int i,nxvisuals;
+  XVisualInfo *visual_list, *visinfo = None;
+  XVisualInfo visual_template;
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend_x11);
+
+  /* Find all the visuals in the screen */
+  nxvisuals = 0;
+  visual_template.screen = backend_x11->xscreen_num;
+  visual_list = XGetVisualInfo (backend_x11->xdpy, VisualScreenMask,
+                                &visual_template,
+                                &nxvisuals);
+  if (!visual_list)
+    return None;
+
+ /*get xvisual id*/
+ eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
+                     EGL_NATIVE_VISUAL_ID, &visualId);
+
+ /* look up the xvisual matching with egl native visual id*/
+ for( i = 0; i < nxvisuals; i++)
+   {
+     if (visual_list[i].visualid == visualId)
+       break;
+   }
+
+ if (i < nxvisuals)
+   {
+     visinfo = (XVisualInfo*) Xalloc (sizeof (XVisualInfo));
+     *visinfo = visual_list[i];
+   }
+
+  XFree (visual_list);
+
+  return visinfo;
+}
+
 static void
 clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
+  ClutterBackendX11Class *backendx11_class = CLUTTER_BACKEND_X11_CLASS (klass);
 
   gobject_class->constructor = clutter_backend_egl_constructor;
   gobject_class->dispose     = clutter_backend_egl_dispose;
@@ -277,6 +319,7 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->get_features   = clutter_backend_egl_get_features;
   backend_class->create_stage   = clutter_backend_egl_create_stage;
   backend_class->ensure_context = clutter_backend_egl_ensure_context;
+  backendx11_class->get_visual_info = clutter_backend_egl_get_visual_info;
 }
 
 static void

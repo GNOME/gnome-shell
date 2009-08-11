@@ -101,7 +101,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 	EGL_RED_SIZE,       5,
 	EGL_GREEN_SIZE,     6,
 	EGL_BLUE_SIZE,      5,
-
+       EGL_STENCIL_SIZE, 8,
 #ifdef HAVE_COGL_GLES2
 	EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
 #else /* HAVE_COGL_GLES2 */
@@ -248,7 +248,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
               g_critical ("Unable to create a suitable EGL context");
               goto fail;
             }
-
+          backend_egl->egl_config = configs[0];
           CLUTTER_NOTE (GL, "Created EGL Context");
         }
     }
