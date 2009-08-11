@@ -28,7 +28,7 @@
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-current-matrix.h"
-
+#include "cogl-material-private.h"
 #include "cogl-gles2-wrapper.h"
 
 typedef struct
@@ -61,6 +61,7 @@ typedef struct
   /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    matrix_mode;
   CoglMatrixStack  *modelview_stack;
+  CoglMatrixStack  *projection_stack;
 
   /* Cache of inverse projection matrix */
   float            inverse_projection[16];
@@ -81,10 +82,12 @@ typedef struct
   GArray           *journal;
   GArray           *logged_vertices;
   GArray           *polygon_vertices;
+  GLuint	           journal_vbo;
 
   /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;
   gulong            current_material_flags;
+  CoglMaterialFlushOptions current_material_flush_options;
   GArray           *current_layers;
   guint             n_texcoord_arrays_enabled;
 

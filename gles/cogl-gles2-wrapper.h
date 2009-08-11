@@ -229,6 +229,11 @@ struct _CoglGles2WrapperShader
 #define GL_MODELVIEW           0x1700
 #define GL_PROJECTION          0x1701
 
+#ifdef COGL_ENABLE_DEBUG
+#define GL_STACK_OVERFLOW     0x0503
+#define GL_STACK_UNDERFLOW  0x0504
+#endif
+
 #define GL_VERTEX_ARRAY        0x8074
 #define GL_TEXTURE_COORD_ARRAY 0x8078
 #define GL_COLOR_ARRAY         0x8076
