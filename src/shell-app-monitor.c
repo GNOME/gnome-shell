@@ -271,9 +271,6 @@ get_cleaned_wmclass_for_window (MetaWindow  *window)
   char *wmclass;
   char *cleaned_wmclass;
 
-  if (meta_window_get_window_type (window) != META_WINDOW_NORMAL)
-    return NULL;
-
   wmclass = get_wmclass_for_window (window);
   if (!wmclass)
     return NULL;
@@ -510,6 +507,16 @@ track_window (ShellAppMonitor *self,
 {
   ShellAppInfo *app;
   AppUsage *usage;
+  MetaWindow *transient_for;
+
+  /* Just ignore anything that isn't NORMAL */
+  if (meta_window_get_window_type (window) != META_WINDOW_NORMAL)
+    return;
+
+  /* Also ignore transients */
+  transient_for = meta_window_get_transient_for (window);
+  if (transient_for != NULL)
+    return;
 
   app = get_app_for_window (window);
   if (!app)
@@ -633,6 +640,8 @@ on_session_status_changed (DBusGProxy      *proxy,
  * shell_app_monitor_get_windows_for_app:
  * @self:
  * @appid: Find windows for this id
+ *
+ * Returns the normal toplevel windows associated with the given application.
  *
  * Returns: (transfer container) (element-type MetaWindow): List of #MetaWindow corresponding to appid
  */
@@ -826,7 +835,14 @@ ShellAppInfo *
 shell_app_monitor_get_window_app (ShellAppMonitor *monitor,
                                   MetaWindow      *metawin)
 {
-  ShellAppInfo *info = g_hash_table_lookup (monitor->window_to_app, metawin);
+  MetaWindow *transient_for;
+  ShellAppInfo *info;
+
+  transient_for = meta_window_get_transient_for (metawin);
+  if (transient_for != NULL)
+    metawin = transient_for;
+
+  info = g_hash_table_lookup (monitor->window_to_app, metawin);
   if (info)
     shell_app_info_ref (info);
   return info;
