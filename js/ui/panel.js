@@ -252,7 +252,8 @@ Panel.prototype = {
         /* left side */
 
         this.button = new Button.Button("Activities", PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
-                                        PANEL_FOREGROUND_COLOR, true, null, PANEL_HEIGHT, DEFAULT_FONT);
+                                        PANEL_FOREGROUND_COLOR, true, DEFAULT_FONT);
+        this.button.button.height = PANEL_HEIGHT;
 
         this._leftBox.append(this.button.button, Big.BoxPackFlags.NONE);
 
@@ -336,7 +337,8 @@ Panel.prototype = {
                                              PANEL_BUTTON_COLOR,
                                              PRESSED_BUTTON_BACKGROUND_COLOR,
                                              PANEL_FOREGROUND_COLOR,
-                                             true, null, PANEL_HEIGHT);
+                                             true);
+        statusbutton.button.height = PANEL_HEIGHT;
         statusbutton.button.connect('button-press-event', function (b, e) {
             statusmenu.toggle(e);
             return false;

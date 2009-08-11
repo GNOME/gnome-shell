@@ -22,12 +22,12 @@ const DEFAULT_FONT = 'Sans Bold 16px';
 // Padding on the left and right side of the button.
 const SIDE_PADDING = 14;
 
-function Button(widget, buttonColor, pressedButtonColor, textColor, staysPressed, minWidth, minHeight, font) {
-    this._init(widget, buttonColor, pressedButtonColor, textColor, staysPressed, minWidth, minHeight, font);
+function Button(widget, buttonColor, pressedButtonColor, textColor, staysPressed, font) {
+    this._init(widget, buttonColor, pressedButtonColor, textColor, staysPressed, font);
 }
 
 Button.prototype = {
-    _init : function(widgetOrText, buttonColor, pressedButtonColor, textColor, staysPressed, minWidth, minHeight, font) {
+    _init : function(widgetOrText, buttonColor, pressedButtonColor, textColor, staysPressed, font) {
         let me = this;
 
         this._buttonColor = buttonColor
@@ -49,11 +49,6 @@ Button.prototype = {
         this._font = font;
         if (font == null)
             this._font = DEFAULT_FONT;
-
-        if (minWidth == null)
-            minWidth = 0;
-        if (minHeight == null)
-            minHeight = 0;
 
         // if this._staysPressed is true, this._active will be true past the first release of a button, until a subsequent one (the button
         // is unpressed) or until release() is called explicitly
@@ -77,9 +72,6 @@ Button.prototype = {
         }
 
         this.button.append(this._widget, Big.BoxPackFlags.EXPAND);
-
-        this._minWidth = minWidth;
-        this._minHeight = minHeight;
 
         this.button.connect('button-press-event',
             function(o, event) {
