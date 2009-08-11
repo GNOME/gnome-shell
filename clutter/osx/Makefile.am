@@ -13,7 +13,7 @@ common_ldadd = $(CLUTTER_LIBS)
 noinst_LTLIBRARIES = libclutter-osx.la
 
 libclutter_osx_la_CFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS) -xobjective-c
-libclutter_osx_la_LDADD = $(common_ldadd)
+libclutter_osx_la_LIBADD = $(common_ldadd)
 libclutter_osx_la_SOURCES = 	\
 	clutter-backend-osx.h 	\
 	clutter-backend-osx.c 	\
