@@ -88,6 +88,7 @@ typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
                                           void *data);
 typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
                                           CoglJournalEntry *entry1);
+typedef CoglVertexBufferIndices  CoglJournalIndices;
 
 typedef struct _CoglJournalFlushState
 {
@@ -212,8 +213,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       int indices_offset = (state->vertex_offset / 4) * 6;
       GE (glDrawElements (GL_TRIANGLES,
                           6 * batch_len,
-                          indices->type,
-                          indices_offset * state->indices_type_size));
+                          state->indices->type,
+                          (GLvoid*)(indices_offset * state->indices_type_size)));
     }
   else
     {

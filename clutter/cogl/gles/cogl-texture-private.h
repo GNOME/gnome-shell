@@ -25,6 +25,7 @@
 #define __COGL_TEXTURE_H
 
 #include "cogl-bitmap-private.h"
+#include "cogl-material-private.h"
 #include "cogl-handle.h"
 
 typedef struct _CoglTexture       CoglTexture;
@@ -103,6 +104,8 @@ typedef struct _CoglJournalEntry
   gint           n_layers;
   guint32        fallback_mask;
   GLuint         layer0_override_texture;
+  CoglMatrix	 model_view;
+  CoglMaterialFlushOptions	flush_options;
 } CoglJournalEntry;
 
 CoglTexture*
