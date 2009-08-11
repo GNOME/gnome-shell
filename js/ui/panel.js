@@ -164,22 +164,22 @@ Panel.prototype = {
             }));
         this._traymanager.manage_stage(global.stage);
 
-        // TODO: decide what to do with the rest of the panel in the overlay mode (make it fade-out, become non-reactive, etc.)
-        // We get into the overlay mode on button-press-event as opposed to button-release-event because eventually we'll probably
-        // have the overlay act like a menu that allows the user to release the mouse on the activity the user wants
+        // TODO: decide what to do with the rest of the panel in the Overview mode (make it fade-out, become non-reactive, etc.)
+        // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
+        // have the Overview act like a menu that allows the user to release the mouse on the activity the user wants
         // to switch to.
         this.button.button.connect('button-press-event',
-                                   Lang.bind(Main.overlay, Main.overlay.toggle));
-        // In addition to pressing the button, the overlay can be entered and exited by other means, such as
-        // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the overlay is entered
+                                   Lang.bind(Main.overview, Main.overview.toggle));
+        // In addition to pressing the button, the Overview can be entered and exited by other means, such as
+        // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the Overview is entered
         // and to be released when it is exited regardless of how it was triggered.
-        Main.overlay.connect('showing', Lang.bind(this.button, this.button.pressIn));
-        Main.overlay.connect('hiding', Lang.bind(this.button, this.button.release));
+        Main.overview.connect('showing', Lang.bind(this.button, this.button.pressIn));
+        Main.overview.connect('hiding', Lang.bind(this.button, this.button.release));
 
         this.actor.add_actor(box);
 
         Main.chrome.addActor(this.actor, box);
-        Main.chrome.setVisibleInOverlay(this.actor, true);
+        Main.chrome.setVisibleInOverview(this.actor, true);
 
         // Start the clock
         this._updateClock();
@@ -219,8 +219,8 @@ Panel.prototype = {
     },
 
     _onHotCornerTriggered : function() {
-        if (!Main.overlay.animationInProgress) {
-            Main.overlay.toggle();
+        if (!Main.overview.animationInProgress) {
+            Main.overview.toggle();
         }
         return false;
      }

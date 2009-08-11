@@ -59,7 +59,7 @@ Places.prototype = {
         let homeIcon = Shell.util_get_icon_for_uri (homeUri);
         let homeTexture = Shell.TextureCache.get_default().load_gicon(homeIcon, PLACES_ICON_SIZE);
         let home = new PlaceDisplay(homeLabel, homeTexture, Lang.bind(this, function() {
-            Main.overlay.hide();
+            Main.overview.hide();
             Gio.app_info_launch_default_for_uri(homeUri, Main.createAppLaunchContext());
         }));
 
@@ -79,7 +79,7 @@ Places.prototype = {
         if (networkApp != null) {
             let networkIcon = networkApp.create_icon_texture(PLACES_ICON_SIZE);
             let network = new PlaceDisplay(networkApp.get_name(), networkIcon, Lang.bind(this, function () {
-                Main.overlay.hide();
+                Main.overview.hide();
                 networkApp.launch();
             }));
             this._menuBox.append(network.actor, Big.BoxPackFlags.NONE);
@@ -87,7 +87,7 @@ Places.prototype = {
 
         let connectIcon = Shell.TextureCache.get_default().load_icon_name("applications-internet", PLACES_ICON_SIZE);
         let connect = new PlaceDisplay('Connect to...', connectIcon, Lang.bind(this, function () {
-            Main.overlay.hide();
+            Main.overview.hide();
             new Shell.Process({ args: ['nautilus-connect-server'] }).run();
         }));
         this._menuBox.append(connect.actor, Big.BoxPackFlags.NONE);
@@ -149,7 +149,7 @@ Places.prototype = {
             let icon = Shell.util_get_icon_for_uri(bookmark);
             let iconTexture = Shell.TextureCache.get_default().load_gicon(icon, PLACES_ICON_SIZE);
             let item = new PlaceDisplay(label, iconTexture, Lang.bind(this, function() {
-                Main.overlay.hide();
+                Main.overview.hide();
                 Gio.app_info_launch_default_for_uri(bookmark, Main.createAppLaunchContext());
             }));
             this._dirsBox.append(item.actor, Big.BoxPackFlags.NONE);

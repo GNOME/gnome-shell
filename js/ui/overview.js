@@ -19,14 +19,14 @@ const Dash = imports.ui.dash;
 const Tweener = imports.ui.tweener;
 const Workspaces = imports.ui.workspaces;
 
-const ROOT_OVERLAY_COLOR = new Clutter.Color();
-ROOT_OVERLAY_COLOR.from_pixel(0x000000ff);
+const ROOT_OVERVIEW_COLOR = new Clutter.Color();
+ROOT_OVERVIEW_COLOR.from_pixel(0x000000ff);
 
-// Time for initial animation going into overlay mode
+// Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
 
 // We divide the screen into a grid of rows and columns, which we use
-// to help us position the overlay components, such as the side panel
+// to help us position the Overview components, such as the side panel
 // that lists applications and documents, the workspaces display, and 
 // the button for adding additional workspaces.
 // In the regular mode, the side panel takes up one column on the left,
@@ -74,11 +74,11 @@ let wideScreen = false;
 let displayGridColumnWidth = null;
 let displayGridRowHeight = null;
 
-function Overlay() {
+function Overview() {
     this._init();
 }
 
-Overlay.prototype = {
+Overview.prototype = {
     _init : function() {
         let me = this;
 
@@ -101,8 +101,8 @@ Overlay.prototype = {
                                                               reactive: true });
         this._group.add_actor(this._transparentBackground);
 
-        // Background color for the overlay
-        this._backOver = new Clutter.Rectangle({ color: ROOT_OVERLAY_COLOR });
+        // Background color for the Overview
+        this._backOver = new Clutter.Rectangle({ color: ROOT_OVERVIEW_COLOR });
         this._group.add_actor(this._backOver);
 
         this._group.hide();
@@ -203,7 +203,7 @@ Overlay.prototype = {
     //// Draggable target interface ////
 
     // Closes any active panes if a GenericDisplayItem is being
-    // dragged over the overlay, i.e. as soon as it starts being dragged.
+    // dragged over the Overview, i.e. as soon as it starts being dragged.
     // This allows the user to place the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
         if (source instanceof GenericDisplay.GenericDisplayItem
@@ -218,13 +218,13 @@ Overlay.prototype = {
 
     //// Public methods ////
 
-    // Returns the scale the overlay has when we just start zooming out
+    // Returns the scale the Overview has when we just start zooming out
     // to overview mode. That is, when just the active workspace is showing.
     getZoomedInScale : function() {
         return 1 / this._workspaces.getScale();
     },
 
-    // Returns the position the overlay has when we just start zooming out
+    // Returns the position the Overview has when we just start zooming out
     // to overview mode. That is, when just the active workspace is showing.
     getZoomedInPosition : function() {
         let [posX, posY] = this._workspaces.getActiveWorkspacePosition();
@@ -233,12 +233,12 @@ Overlay.prototype = {
         return [- posX * scale, - posY * scale];
     },
 
-    // Returns the current scale of the overlay.
+    // Returns the current scale of the Overview.
     getScale : function() {
         return this._group.scaleX;
     },
 
-    // Returns the current position of the overlay.
+    // Returns the current position of the Overview.
     getPosition : function() {
         return [this._group.x, this._group.y];
     },
@@ -278,16 +278,16 @@ Overlay.prototype = {
         this._group.add_actor(this._workspaces.actor);
 
         // All the the actors in the window group are completely obscured,
-        // hiding the group holding them while the overlay is displayed greatly
-        // increases performance of the overlay especially when there are many
+        // hiding the group holding them while the Overview is displayed greatly
+        // increases performance of the Overview especially when there are many
         // windows visible.
         //
-        // If we switched to displaying the actors in the overlay rather than
+        // If we switched to displaying the actors in the Overview rather than
         // clones of them, this would obviously no longer be necessary.
         global.window_group.hide();
         this._group.show();
 
-        // Create a zoom out effect. First scale the overlay group up and
+        // Create a zoom out effect. First scale the Overview group up and
         // position it so that the active workspace fills up the whole screen,
         // then transform the group to its normal dimensions and position.
         // The opposite transition is used in hide().
@@ -327,7 +327,7 @@ Overlay.prototype = {
             this._activeDisplayPane.close();
         this._workspaces.hide();
 
-        // Create a zoom in effect by transforming the overlay group so that
+        // Create a zoom in effect by transforming the Overview group so that
         // the active workspace fills up the whole screen. The opposite
         // transition is used in show().
         let scale = this.getZoomedInScale();
@@ -367,11 +367,11 @@ Overlay.prototype = {
      *
      * Make the given MetaWindow be the focus window, switching
      * to the workspace it's on if necessary.  This function
-     * should only be used when the overlay is currently active;
+     * should only be used when the Overview is currently active;
      * outside of that, use the relevant methods on MetaDisplay.
      */
     activateWindow: function (metaWindow, time) {
-         this._workspaces.activateWindowFromOverlay(metaWindow, time);
+         this._workspaces.activateWindowFromOverview(metaWindow, time);
          this.hide();
     },
 
@@ -405,4 +405,4 @@ Overlay.prototype = {
         this.emit('hidden');
     }
 };
-Signals.addSignalMethods(Overlay.prototype);
+Signals.addSignalMethods(Overview.prototype);

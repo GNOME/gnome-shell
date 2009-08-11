@@ -9,7 +9,7 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 
 // This manages the shell "chrome"; the UI that's visible in the
-// normal mode (ie, outside the overlay), that surrounds the main
+// normal mode (ie, outside the Overview), that surrounds the main
 // workspace content.
 
 function Chrome() {
@@ -23,8 +23,8 @@ Chrome.prototype = {
         // The group itself has zero size so it doesn't interfere with DND
         this.actor = new Clutter.Group({ width: 0, height: 0 });
         global.stage.add_actor(this.actor);
-        this.nonOverlayActor = new Clutter.Group();
-        this.actor.add_actor(this.nonOverlayActor);
+        this.nonOverviewActor = new Clutter.Group();
+        this.actor.add_actor(this.nonOverviewActor);
 
         this._obscuredByFullscreen = false;
 
@@ -37,10 +37,10 @@ Chrome.prototype = {
         global.screen.connect('notify::n-workspaces',
                               Lang.bind(this, this._queueUpdateRegions));
 
-        Main.overlay.connect('showing',
-                             Lang.bind(this, this._overlayShowing));
-        Main.overlay.connect('hidden',
-                             Lang.bind(this, this._overlayHidden));
+        Main.overview.connect('showing',
+                             Lang.bind(this, this._overviewShowing));
+        Main.overview.connect('hidden',
+                             Lang.bind(this, this._overviewHidden));
 
         this._queueUpdateRegions();
     },
@@ -78,27 +78,27 @@ Chrome.prototype = {
         else if (shapeActor && !this._verifyAncestry(shapeActor, actor))
             throw new Error('shapeActor is not a descendent of actor');
 
-        this.nonOverlayActor.add_actor(actor);
+        this.nonOverviewActor.add_actor(actor);
 
         if (shapeActor)
             this._trackActor(shapeActor, true, true);
     },
 
-    // setVisibleInOverlay:
+    // setVisibleInOverview:
     // @actor: an actor in the chrome layer
-    // @visible: overlay visibility
+    // @visible: Overview visibility
     //
     // By default, actors in the chrome layer are automatically hidden
-    // when the overlay is shown. This can be used to override that
+    // when the Overview is shown. This can be used to override that
     // behavior
-    setVisibleInOverlay: function(actor, visible) {
+    setVisibleInOverview: function(actor, visible) {
         if (!this._verifyAncestry(actor, this.actor))
             throw new Error('actor is not a descendent of the chrome layer');
 
         if (visible)
             actor.reparent(this.actor);
         else
-            actor.reparent(this.nonOverlayActor);
+            actor.reparent(this.nonOverviewActor);
     },
 
     // addInputRegionActor:
@@ -126,8 +126,8 @@ Chrome.prototype = {
     //
     // Removes @actor from the chrome layer
     removeActor: function(actor) {
-        if (actor.get_parent() == this.nonOverlayActor)
-            this.nonOverlayActor.remove_actor(actor);
+        if (actor.get_parent() == this.nonOverviewActor)
+            this.nonOverviewActor.remove_actor(actor);
         else
             this.actor.remove_actor(actor);
         this._untrackActor(actor, true, true);
@@ -172,7 +172,7 @@ Chrome.prototype = {
         this._trackedActors.push(actorData);
 
         actor = actor.get_parent();
-        if (actor != this.actor && actor != this.nonOverlayActor)
+        if (actor != this.actor && actor != this.nonOverviewActor)
             this._trackActor(actor, false, false);
 
         if (inputRegion || strut)
@@ -200,7 +200,7 @@ Chrome.prototype = {
             actor.disconnect(actorData.parentSetId);
 
             actor = actor.get_parent();
-            if (actor && actor != this.actor && actor != this.nonOverlayActor)
+            if (actor && actor != this.actor && actor != this.nonOverviewActor)
                 this._untrackActor(actor, false, false);
         }
 
@@ -211,23 +211,23 @@ Chrome.prototype = {
     _actorReparented: function(actor, oldParent) {
         if (this._verifyAncestry(actor, this.actor)) {
             let newParent = actor.get_parent();
-            if (newParent != this.actor && newParent != this.nonOverlayActor)
+            if (newParent != this.actor && newParent != this.nonOverviewActor)
                 this._trackActor(newParent, false, false);
         }
-        if (oldParent != this.actor && oldParent != this.nonOverlayActor)
+        if (oldParent != this.actor && oldParent != this.nonOverviewActor)
             this._untrackActor(oldParent, false, false);
     },
 
-    _overlayShowing: function() {
+    _overviewShowing: function() {
         this.actor.show();
-        this.nonOverlayActor.hide();
+        this.nonOverviewActor.hide();
         this._queueUpdateRegions();
     },
 
-    _overlayHidden: function() {
+    _overviewHidden: function() {
         if (this._obscuredByFullscreen)
             this.actor.hide();
-        this.nonOverlayActor.show();
+        this.nonOverviewActor.show();
         this._queueUpdateRegions();
     },
 
@@ -272,7 +272,7 @@ Chrome.prototype = {
                 break;
         }
 
-        let shouldBeVisible = !this._obscuredByFullscreen || Main.overlay.visible;
+        let shouldBeVisible = !this._obscuredByFullscreen || Main.overview.visible;
         if (this.actor.visible != shouldBeVisible) {
             this.actor.visible = shouldBeVisible;
             this._queueUpdateRegions();

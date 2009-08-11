@@ -10,7 +10,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
 const Chrome = imports.ui.chrome;
-const Overlay = imports.ui.overlay;
+const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
@@ -24,7 +24,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 let chrome = null;
 let panel = null;
 let sidebar = null;
-let overlay = null;
+let overview = null;
 let runDialog = null;
 let lookingGlass = null;
 let wm = null;
@@ -46,7 +46,7 @@ function start() {
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
 
     // Mutter currently hardcodes putting "Yessir. The compositor is running""
-    // in the overlay. Clear that out.
+    // in the Overview. Clear that out.
     let children = global.overlay_group.get_children();
     for (let i = 0; i < children.length; i++)
         children[i].destroy();
@@ -59,7 +59,7 @@ function start() {
         runDialog.open();
     });
 
-    overlay = new Overlay.Overlay();
+    overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
     panel = new Panel.Panel();
     sidebar = new Sidebar.Sidebar();
@@ -80,8 +80,8 @@ function start() {
     panel.startupAnimation();
 
     let display = global.screen.get_display();
-    display.connect('overlay-key', Lang.bind(overlay, overlay.toggle));
-    global.connect('panel-main-menu', Lang.bind(overlay, overlay.toggle));
+    display.connect('overlay-key', Lang.bind(overview, overview.toggle));
+    global.connect('panel-main-menu', Lang.bind(overview, overview.toggle));
     
     Mainloop.idle_add(_removeUnusedWorkspaces);
 }

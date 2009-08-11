@@ -380,13 +380,13 @@ GenericDisplay.prototype = {
         this._redisplay(true);
     },
 
-    // Launches the item that is currently selected, closing the overlay
+    // Launches the item that is currently selected, closing the Overview
     activateSelected: function() {
         if (this._selectedIndex != -1) {
             let selected = this._findDisplayedByIndex(this._selectedIndex);
             selected.launch();
             this.unsetSelected();
-            Main.overlay.hide();
+            Main.overview.hide();
         }
     },
 

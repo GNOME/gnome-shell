@@ -114,7 +114,7 @@ DocDisplay.prototype = {
         this._docsStale = true;
         this._docManager.connect('changed', function(mgr, userData) {
             me._docsStale = true;
-            // Changes in local recent files should not happen when we are in the overlay mode,
+            // Changes in local recent files should not happen when we are in the Overview mode,
             // but redisplaying right away is cool when we use Zephyr.
             // Also, we might be displaying remote documents, like Google Docs, in the future
             // which might be edited by someone else.
@@ -148,7 +148,7 @@ DocDisplay.prototype = {
         // we should do the sorting manually because we want the order to be based on last visited.
         //
         // This function is called each time the search string is set back to '' or we display
-        // the overlay, so we are doing the sorting over the same items multiple times if the list
+        // the Overview, so we are doing the sorting over the same items multiple times if the list
         // of recent items didn't change. We could store an additional array of doc ids and sort
         // them once when they are returned by this._recentManager.get_items() to avoid having to do 
         // this sorting each time, but the sorting seems to be very fast anyway, so there is no need

@@ -15,7 +15,7 @@ const AppDisplay = imports.ui.appDisplay;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
-const Overlay = imports.ui.overlay;
+const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const Tweener = imports.ui.tweener;
 
@@ -293,16 +293,16 @@ Workspace.prototype = {
                               Lang.bind(this,
                                         function(clone, time) {
                                             this._metaWorkspace.activate(time);
-                                            Main.overlay.hide();
+                                            Main.overview.hide();
                                         }));
         this.actor.add_actor(this._desktop.actor);
 
         // Create clones for remaining windows that should be
-        // visible in the overlay
+        // visible in the Overview
         this._windows = [this._desktop];
         this._windowIcons = [ null ];
         for (let i = 0; i < windows.length; i++) {
-            if (this._isOverlayWindow(windows[i])) {
+            if (this._isOverviewWindow(windows[i])) {
                 this._addWindowClone(windows[i]);
             }
         }
@@ -318,7 +318,7 @@ Workspace.prototype = {
 
         this._frame = null;
 
-        this.leavingOverlay = false;
+        this.leavingOverview = false;
     },
 
     updateRemovable : function() {
@@ -346,7 +346,7 @@ Workspace.prototype = {
                 this._removeButton.set_opacity(0);
                 Tweener.addTween(this._removeButton,
                                  { opacity: 255,
-                                   time: Overlay.ANIMATION_TIME,
+                                   time: Overview.ANIMATION_TIME,
                                    transition: "easeOutQuad"
                                  });
             }
@@ -357,7 +357,7 @@ Workspace.prototype = {
             if (this._visible) {
                 Tweener.addTween(this._removeButton,
                                  { opacity: 0,
-                                   time: Overlay.ANIMATION_TIME,
+                                   time: Overview.ANIMATION_TIME,
                                    transition: "easeOutQuad",
                                    onComplete: this._removeRemoveButton,
                                    onCompleteScope: this
@@ -428,7 +428,7 @@ Workspace.prototype = {
                              this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
     },
 
-    // Reposition all windows in their zoomed-to-overlay position. if workspaceZooming
+    // Reposition all windows in their zoomed-to-Overview position. if workspaceZooming
     // is true, then the workspace is moving at the same time and we need to take
     // that into account
     positionWindows : function(workspaceZooming) {
@@ -460,7 +460,7 @@ Workspace.prototype = {
                                scale_x: scale,
                                scale_y: scale,
                                workspace_relative: workspaceZooming ? this : null,
-                               time: Overlay.ANIMATION_TIME,
+                               time: Overview.ANIMATION_TIME,
                                transition: "easeOutQuad",
                                onComplete: Lang.bind(this, function() {
                                   this._fadeInWindowIcon(clone, icon);
@@ -494,7 +494,7 @@ Workspace.prototype = {
         icon.raise(this.actor);
         Tweener.addTween(icon,
                          { opacity: 255,
-                           time: Overlay.ANIMATION_TIME,
+                           time: Overview.ANIMATION_TIME,
                            transition: "easeOutQuad" });
     },
 
@@ -531,14 +531,14 @@ Workspace.prototype = {
 
         // If metaWin.get_compositor_private() returned non-NULL, that
         // means the window still exists (and is just being moved to
-        // another workspace or something), so set its overlayHint
+        // another workspace or something), so set its overviewHint
         // accordingly. (If it returned NULL, then the window is being
         // destroyed; we'd like to animate this, but it's too late at
         // this point.)
         if (win) {
             let [stageX, stageY] = clone.actor.get_transformed_position();
             let [stageWidth, stageHeight] = clone.actor.get_transformed_size();
-            win._overlayHint = {
+            win._overviewHint = {
                 x: stageX,
                 y: stageY,
                 scale: stageWidth / clone.actor.width
@@ -552,7 +552,7 @@ Workspace.prototype = {
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
-        if (this.leavingOverlay) 
+        if (this.leavingOverview)
             return;
 
         let win = metaWin.get_compositor_private();
@@ -569,16 +569,16 @@ Workspace.prototype = {
             return;
         }
         
-        if (!this._isOverlayWindow(win))
+        if (!this._isOverviewWindow(win))
             return;        
 
         let clone = this._addWindowClone(win);
 
-        if (win._overlayHint) {
-            let x = (win._overlayHint.x - this.actor.x) / this.scale;
-            let y = (win._overlayHint.y - this.actor.y) / this.scale;
-            let scale = win._overlayHint.scale / this.scale;
-            delete win._overlayHint;
+        if (win._overviewHint) {
+            let x = (win._overviewHint.x - this.actor.x) / this.scale;
+            let y = (win._overviewHint.y - this.actor.y) / this.scale;
+            let scale = win._overviewHint.scale / this.scale;
+            delete win._overviewHint;
 
             clone.actor.set_position (x, y);
             clone.actor.set_scale (scale, scale);
@@ -588,8 +588,8 @@ Workspace.prototype = {
         this.updateRemovable();
     },
 
-    // Animate the full-screen to overlay transition.
-    zoomToOverlay : function() {
+    // Animate the full-screen to Overview transition.
+    zoomToOverview : function() {
         this.actor.set_position(this.gridX, this.gridY);
         this.actor.set_scale(this.scale, this.scale);
 
@@ -603,7 +603,7 @@ Workspace.prototype = {
             this._removeButton.opacity = 0;
             Tweener.addTween(this._removeButton,
                              { opacity: 255,
-                               time: Overlay.ANIMATION_TIME,
+                               time: Overview.ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });
         }
@@ -611,14 +611,14 @@ Workspace.prototype = {
         this._visible = true;
     },
 
-    // Animates the return from overlay mode
-    zoomFromOverlay : function() {
-        this.leavingOverlay = true;
+    // Animates the return from Overview mode
+    zoomFromOverview : function() {
+        this.leavingOverview = true;
 
         this._hideAllIcons();
 
-        Main.overlay.connect('hidden', Lang.bind(this,
-                                                 this._doneLeavingOverlay));
+        Main.overview.connect('hidden', Lang.bind(this,
+                                                 this._doneLeavingOverview));
 
         // Fade out the remove button if available, so that it doesn't
         // disappear too abrubtly and doesn't become too big.
@@ -626,7 +626,7 @@ Workspace.prototype = {
             Tweener.removeTweens(this._removeButton);
             Tweener.addTween(this._removeButton,
                              { opacity: 0,
-                               time: Overlay.ANIMATION_TIME,
+                               time: Overview.ANIMATION_TIME,
                                transition: 'easeOutQuad'
                              });
         }
@@ -640,7 +640,7 @@ Workspace.prototype = {
                                scale_x: 1.0,
                                scale_y: 1.0,
                                workspace_relative: this,
-                               time: Overlay.ANIMATION_TIME,
+                               time: Overview.ANIMATION_TIME,
                                opacity: 255,
                                transition: "easeOutQuad"
                              });
@@ -658,7 +658,7 @@ Workspace.prototype = {
                            y: this.gridY,
                            scale_x: this.scale,
                            scale_y: this.scale,
-                           time: Overlay.ANIMATION_TIME,
+                           time: Overview.ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: Lang.bind(this, this._fadeInAllIcons)
                          });
@@ -680,7 +680,7 @@ Workspace.prototype = {
                            y: this.gridY,
                            scale_x: this.scale,
                            scale_y: this.scale,
-                           time: Overlay.ANIMATION_TIME,
+                           time: Overview.ANIMATION_TIME,
                            transition: "easeOutQuad"
                          });
 
@@ -703,7 +703,7 @@ Workspace.prototype = {
                            y: destY,
                            scale_x: this.scale,
                            scale_y: this.scale,
-                           time: Overlay.ANIMATION_TIME,
+                           time: Overview.ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: onComplete
                          });
@@ -726,9 +726,9 @@ Workspace.prototype = {
         this._metaWorkspace.disconnect(this._windowRemovedId);
     },
 
-    // Sets this.leavingOverlay flag to false.
-    _doneLeavingOverlay : function() {
-        this.leavingOverlay = false;
+    // Sets this.leavingOverview flag to false.
+    _doneLeavingOverview : function() {
+        this.leavingOverview = false;
     },
 
     // Tests if @win belongs to this workspaces
@@ -737,8 +737,8 @@ Workspace.prototype = {
             (win.get_meta_window() && win.get_meta_window().is_on_all_workspaces());
     },
 
-    // Tests if @win should be shown in the overlay
-    _isOverlayWindow : function (win) {
+    // Tests if @win should be shown in the Overview
+    _isOverviewWindow : function (win) {
         let wintype = win.get_window_type();
         if (wintype == Meta.WindowType.DESKTOP || 
             wintype == Meta.WindowType.DOCK)
@@ -813,7 +813,7 @@ Workspace.prototype = {
     },
 
     _onCloneSelected : function (clone, time) {
-        Main.overlay.activateWindow(clone.metaWindow, time);
+        Main.overview.activateWindow(clone.metaWindow, time);
     },
 
     _removeSelf : function(actor, event) {
@@ -836,7 +836,7 @@ Workspace.prototype = {
 
             // Set a hint on the Mutter.Window so its initial position
             // in the new workspace will be correct
-            win._overlayHint = {
+            win._overviewHint = {
                 x: actor.x,
                 y: actor.y,
                 scale: actor.scale_x
@@ -911,11 +911,11 @@ Workspaces.prototype = {
         // Position/scale the desktop windows and their children after the
         // workspaces have been created. This cannot be done first because
         // window movement depends on the Workspaces object being accessible
-        // as an Overlay member.
-        Main.overlay.connect('showing',
+        // as an Overview member.
+        Main.overview.connect('showing',
                              Lang.bind(this, function() {
             for (let w = 0; w < this._workspaces.length; w++)
-                this._workspaces[w].zoomToOverlay();
+                this._workspaces[w].zoomToOverview();
         }));
 
         // Track changes to the number of workspaces
@@ -936,8 +936,8 @@ Workspaces.prototype = {
         return null;
     },
 
-    // Should only be called from active overlay context
-    activateWindowFromOverlay: function (metaWindow, time) {
+    // Should only be called from active Overview context
+    activateWindowFromOverview: function (metaWindow, time) {
         let global = Shell.Global.get();
         let activeWorkspaceNum = global.screen.get_active_workspace_index();
         let windowWorkspaceNum = metaWindow.get_workspace().index();
@@ -962,7 +962,7 @@ Workspaces.prototype = {
         activeWorkspace.actor.raise_top();
 
         for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomFromOverlay();
+            this._workspaces[w].zoomFromOverview();
     },
 
     destroy : function() {
@@ -1138,49 +1138,49 @@ Workspaces.prototype = {
 Tweener.registerSpecialPropertyModifier("workspace_relative", _workspaceRelativeModifier, _workspaceRelativeGet);
 
 function _workspaceRelativeModifier(workspace) {
-    let [startX, startY] = Main.overlay.getPosition();
-    let overlayPosX, overlayPosY, overlayScale;
+    let [startX, startY] = Main.overview.getPosition();
+    let overviewPosX, overviewPosY, overviewScale;
 
     if (!workspace)
         return [];
 
-    if (workspace.leavingOverlay) {
-        let [zoomedInX, zoomedInY] = Main.overlay.getZoomedInPosition();
-        overlayPosX = { begin: startX, end: zoomedInX };
-        overlayPosY = { begin: startY, end: zoomedInY };
-        overlayScale = { begin: Main.overlay.getScale(),
-                         end: Main.overlay.getZoomedInScale() };
+    if (workspace.leavingOverview) {
+        let [zoomedInX, zoomedInY] = Main.overview.getZoomedInPosition();
+        overviewPosX = { begin: startX, end: zoomedInX };
+        overviewPosY = { begin: startY, end: zoomedInY };
+        overviewScale = { begin: Main.overview.getScale(),
+                          end: Main.overview.getZoomedInScale() };
     } else {
-        overlayPosX = { begin: startX, end: 0 };
-        overlayPosY = { begin: startY, end: 0 };
-        overlayScale = { begin: Main.overlay.getScale(), end: 1 };
+        overviewPosX = { begin: startX, end: 0 };
+        overviewPosY = { begin: startY, end: 0 };
+        overviewScale = { begin: Main.overview.getScale(), end: 1 };
     }
 
     return [ { name: "x",
                parameters: { workspacePos: workspace.gridX,
-                             overlayPos: overlayPosX,
-                             overlayScale: overlayScale } },
+                             overviewPos: overviewPosX,
+                             overviewScale: overviewScale } },
              { name: "y",
                parameters: { workspacePos: workspace.gridY,
-                             overlayPos: overlayPosY,
-                             overlayScale: overlayScale } }
+                             overviewPos: overviewPosY,
+                             overviewScale: overviewScale } }
            ];
 }
 
 function _workspaceRelativeGet(begin, end, time, params) {
-    let curOverlayPos = (1 - time) * params.overlayPos.begin +
-                        time * params.overlayPos.end;
-    let curOverlayScale = (1 - time) * params.overlayScale.begin +
-                          time * params.overlayScale.end;
+    let curOverviewPos = (1 - time) * params.overviewPos.begin +
+                         time * params.overviewPos.end;
+    let curOverviewScale = (1 - time) * params.overviewScale.begin +
+                           time * params.overviewScale.end;
 
     // Calculate the screen position of the window.
     let screen = (1 - time) *
-                 ((begin + params.workspacePos) * params.overlayScale.begin +
-                  params.overlayPos.begin) +
+                 ((begin + params.workspacePos) * params.overviewScale.begin +
+                  params.overviewPos.begin) +
                  time *
-                 ((end + params.workspacePos) * params.overlayScale.end +
-                 params.overlayPos.end);
+                 ((end + params.workspacePos) * params.overviewScale.end +
+                 params.overviewPos.end);
 
     // Return the workspace coordinates.
-    return (screen - curOverlayPos) / curOverlayScale - params.workspacePos;
+    return (screen - curOverviewPos) / curOverviewScale - params.workspacePos;
 }

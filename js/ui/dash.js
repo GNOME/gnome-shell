@@ -389,9 +389,9 @@ Dash.prototype = {
                 // Next, if we're in one of the "more" modes or showing the details pane, close them
                 else if (this._activePane != null)
                     this._activePane.close();
-                // Finally, just close the overlay entirely
+                // Finally, just close the Overview entirely
                 else
-                    Main.overlay.hide();
+                    Main.overview.hide();
                 return true;
             } else if (symbol == Clutter.Up) {
                 if (!this._searchActive)
@@ -489,7 +489,7 @@ Dash.prototype = {
     },
 
     hide: function() {
-        this._firstSelectAfterOverlayShow = true;
+        this._firstSelectAfterOverviewShow = true;
         if (this._searchEntry.entry.text != '')
             this._searchEntry.entry.text = '';
         if (this._activePane != null)
@@ -512,7 +512,7 @@ Dash.prototype = {
                 this._activePane = null;
             }
         }));
-        Main.overlay.addPane(pane);
+        Main.overview.addPane(pane);
     }
 };
 Signals.addSignalMethods(Dash.prototype);

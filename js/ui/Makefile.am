@@ -12,7 +12,7 @@ dist_jsui_DATA =		\
 	link.js			\
 	lookingGlass.js		\
 	main.js			\
-	overlay.js		\
+	overview.js		\
 	panel.js		\
 	places.js		\
 	runDialog.js		\

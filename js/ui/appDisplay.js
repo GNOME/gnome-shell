@@ -198,7 +198,7 @@ AppDisplay.prototype = {
         }));
 
         // Load the apps now so it doesn't slow down the first
-        // transition into the overlay
+        // transition into the Overview
         this._refreshCache();
 
         this._focusInMenus = true;
@@ -517,7 +517,7 @@ WellDisplayItem.prototype = {
             /* Pick the first window and activate it;
              * In the future, we want to have a menu dropdown here. */
             let first = this._windows[0];
-            Main.overlay.activateWindow (first, Clutter.get_current_event_time());
+            Main.overview.activateWindow(first, Clutter.get_current_event_time());
         }
         this.emit('activated');
     },
@@ -814,7 +814,7 @@ AppWell.prototype = {
             let app = apps[i];
             let display = new WellDisplayItem(app, this.isFavorite);
             display.connect('activated', Lang.bind(this, function (display) {
-                Main.overlay.hide();
+                Main.overview.hide();
             }));
             this._grid.actor.add_actor(display.actor);
         }

@@ -85,7 +85,7 @@ WindowManager.prototype = {
     },
 
     _shouldAnimate : function(actor) {
-        if (Main.overlay.visible)
+        if (Main.overview.visible)
             return false;
         if (actor && (actor.get_window_type() != Meta.CompWindowType.NORMAL))
             return false;
