@@ -8,6 +8,7 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Tweener = imports.ui.tweener;
+const Signals = imports.signals;
 
 const Button = imports.ui.button;
 const Main = imports.ui.main;
@@ -17,10 +18,14 @@ const TRAY_HEIGHT = PANEL_HEIGHT - 1;
 
 const DEFAULT_PADDING = 4;
 
+const PANEL_ICON_SIZE = 24;
+
 const PANEL_BACKGROUND_COLOR = new Clutter.Color();
 PANEL_BACKGROUND_COLOR.from_pixel(0x000000ff);
 const PANEL_FOREGROUND_COLOR = new Clutter.Color();
 PANEL_FOREGROUND_COLOR.from_pixel(0xffffffff);
+const SN_BACKGROUND_COLOR = new Clutter.Color();
+SN_BACKGROUND_COLOR.from_pixel(0xffff00a0);
 
 const TRANSPARENT_COLOR = new Clutter.Color();
 TRANSPARENT_COLOR.from_pixel(0x00000000);
@@ -49,6 +54,105 @@ TRAY_BORDER_COLOR.from_pixel(0x00000033);
 const TRAY_CORNER_RADIUS = 5;
 const TRAY_BORDER_WIDTH = 0;
 
+
+function AppPanelMenu() {
+    this._init();
+}
+
+AppPanelMenu.prototype = {
+    _init: function() {
+        this._metaDisplay = Shell.Global.get().screen.get_display();
+
+        this._focusedApp = null;
+        this._activeSequence = null;
+        this._startupSequences = {};
+
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                   spacing: DEFAULT_PADDING,
+                                   y_align: Big.BoxAlignment.CENTER });
+        this._iconBox = new Big.Box({ width: PANEL_ICON_SIZE, height: PANEL_ICON_SIZE,
+                                      x_align: Big.BoxAlignment.CENTER,
+                                      y_align: Big.BoxAlignment.CENTER });
+        this.actor.append(this._iconBox, Big.BoxPackFlags.NONE);
+        let labelBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                     y_align: Big.BoxAlignment.CENTER });
+        this._label = new Clutter.Text({ font_name: DEFAULT_FONT,
+                                         color: PANEL_FOREGROUND_COLOR,
+                                         text: "" });
+        labelBox.append(this._label, Big.BoxPackFlags.EXPAND);
+        this.actor.append(labelBox, Big.BoxPackFlags.NONE);
+
+        this._startupBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                         y_align: Big.BoxAlignment.CENTER
+                                          });
+        this.actor.append(this._startupBox, Big.BoxPackFlags.NONE);
+
+        Main.overview.connect('hiding', Lang.bind(this, function () {
+            this.actor.opacity = 255;
+        }));
+        Main.overview.connect('showing', Lang.bind(this, function () {
+            this.actor.opacity = 192;
+        }));
+
+        this._metaDisplay.connect('notify::focus-window', Lang.bind(this, function () {
+            this._sync();
+        }));
+        Shell.AppMonitor.get_default().connect('startup-sequence-changed', Lang.bind(this, function() {
+            this._sync();
+        }));
+        this._sync();
+    },
+
+    _sync: function() {
+        let appMonitor = Shell.AppMonitor.get_default();
+
+        let focusWindow = this._metaDisplay.get_focus_window();
+        let focusedApp;
+        if (focusWindow == null) {
+           focusedApp = null;
+        } else {
+           focusedApp = appMonitor.get_window_app(focusWindow);
+        }
+
+        let lastSequence = null;
+        if (focusedApp == null) {
+            let sequences = appMonitor.get_startup_sequences();
+            if (sequences.length > 0)
+                lastSequence = sequences[sequences.length - 1];
+        }
+
+        // If the currently focused app hasn't changed and the current
+        // startup sequence hasn't changed, we have nothing to do
+        if (focusedApp == this._focusedApp
+            && ((lastSequence == null && this._activeSequence == null)
+                || (lastSequence != null && this._activeSequence != null
+                    && lastSequence.get_id() == this._activeSequence.get_id())))
+            return;
+
+        this._focusedApp = focusedApp;
+        this._activeSequence = lastSequence;
+
+        this._iconBox.remove_all();
+        this._iconBox.hide();
+        this._label.text = '';
+        if (this._focusedApp != null) {
+            let icon = focusedApp.create_icon_texture(PANEL_ICON_SIZE);
+            this._iconBox.append(icon, Big.BoxPackFlags.NONE);
+            this._iconBox.show();
+            this._label.text = focusedApp.get_name();
+        } else if (this._activeSequence != null) {
+            let icon = this._activeSequence.create_icon(PANEL_ICON_SIZE);
+            this._iconBox.append(icon, Big.BoxPackFlags.NONE);
+            this._iconBox.show();
+            this._label.text = this._activeSequence.get_name();
+        }
+
+        this.emit('changed');
+    }
+}
+
+Signals.addSignalMethods(AppPanelMenu.prototype);
+
 function Panel() {
     this._init();
 }
@@ -62,6 +166,7 @@ Panel.prototype = {
                                  });
         this._leftBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                       y_align: Big.BoxAlignment.CENTER,
+                                      spacing: DEFAULT_PADDING,
                                       padding_right: DEFAULT_PADDING });
         this._centerBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                         y_align: Big.BoxAlignment.CENTER });
@@ -165,6 +270,9 @@ Panel.prototype = {
                            Lang.bind(this, this._onHotCornerTriggered));
 
         this._leftBox.append(hotCorner, Big.BoxPackFlags.FIXED);
+
+        let appMenu = new AppPanelMenu();
+        this._leftBox.append(appMenu.actor, Big.BoxPackFlags.NONE);
 
         /* center */
 

@@ -49,6 +49,18 @@ GSList *shell_app_monitor_get_windows_for_app (ShellAppMonitor *monitor, const c
 /* Get whatever's running right now */
 GSList *shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor, const char *context);
 
+GSList *shell_app_monitor_get_startup_sequences (ShellAppMonitor *monitor);
+
+/* Hidden typedef for SnStartupSequence */
+typedef struct _ShellStartupSequence ShellStartupSequence;
+#define SHELL_TYPE_STARTUP_SEQUENCE (shell_startup_sequence_get_type ())
+GType shell_startup_sequence_get_type (void);
+
+const char *shell_startup_sequence_get_id (ShellStartupSequence *sequence);
+const char *shell_startup_sequence_get_name (ShellStartupSequence *sequence);
+gboolean shell_startup_sequence_get_completed (ShellStartupSequence *sequence);
+ClutterActor *shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size);
+
 G_END_DECLS
 
 #endif /* __SHELL_APP_MONITOR_H__ */

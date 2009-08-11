@@ -8,6 +8,7 @@
 #include <gtk/gtk.h>
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
+#include <clutter/clutter.h>
 
 #include "shell-global.h"
 #include "shell-texture-cache.h"
@@ -922,7 +923,13 @@ shell_app_info_launch_full (ShellAppInfo *info,
   display = meta_screen_get_display (screen);
 
   if (timestamp == 0)
-    timestamp = meta_display_get_current_time (display);
+    timestamp = clutter_get_current_event_time ();
+
+  /* Shell design calls for on application launch, no window is focused,
+   * and we have startup notification displayed.
+   */
+  meta_display_focus_the_no_focus_window (display, screen, timestamp);
+
   if (workspace < 0)
     workspace = meta_screen_get_active_workspace_index (screen);
 

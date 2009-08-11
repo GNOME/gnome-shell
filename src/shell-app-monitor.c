@@ -11,6 +11,10 @@
 #include <gconf/gconf-client.h>
 #include <dbus/dbus-glib.h>
 
+#define SN_API_NOT_YET_FROZEN 1
+#include <libsn/sn.h>
+
+#include "shell-texture-cache.h"
 #include "shell-app-monitor.h"
 #include "shell-app-system.h"
 #include "shell-global.h"
@@ -151,6 +155,7 @@ struct AppUsage
 
 enum {
   CHANGED,
+  STARTUP_SEQUENCE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -198,6 +203,14 @@ static void shell_app_monitor_class_init(ShellAppMonitorClass *klass)
                                    NULL, NULL,
                                    g_cclosure_marshal_VOID__VOID,
                                    G_TYPE_NONE, 0);
+
+  signals[STARTUP_SEQUENCE_CHANGED] = g_signal_new ("startup-sequence-changed",
+                                   SHELL_TYPE_APP_MONITOR,
+                                   G_SIGNAL_RUN_LAST,
+                                   0,
+                                   NULL, NULL,
+                                   g_cclosure_marshal_VOID__BOXED,
+                                   G_TYPE_NONE, 1, SHELL_TYPE_STARTUP_SEQUENCE);
 }
 
 static void
@@ -695,8 +708,18 @@ init_window_monitoring (ShellAppMonitor *self)
 }
 
 static void
+on_startup_sequence_changed (MetaScreen            *screen,
+                             SnStartupSequence     *sequence,
+                             ShellAppMonitor       *self)
+{
+  /* Just proxy the signal */
+  g_signal_emit (G_OBJECT (self), signals[STARTUP_SEQUENCE_CHANGED], 0, sequence);
+}
+
+static void
 shell_app_monitor_init (ShellAppMonitor *self)
 {
+  MetaScreen *screen;
   GdkDisplay *display;
   char *path;
   char *shell_config_dir;
@@ -704,6 +727,7 @@ shell_app_monitor_init (ShellAppMonitor *self)
 
   /* FIXME: should we create as many monitors as there are GdkScreens? */
   display = gdk_display_get_default ();
+  screen = shell_global_get_screen (shell_global_get ());
 
   session_bus = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
   self->session_proxy = dbus_g_proxy_new_for_name (session_bus, "org.gnome.SessionManager",
@@ -734,6 +758,9 @@ shell_app_monitor_init (ShellAppMonitor *self)
 
   load_initial_windows (self);
   init_window_monitoring (self);
+
+  g_signal_connect (G_OBJECT (screen), "startup-sequence-changed",
+                    G_CALLBACK (on_startup_sequence_changed), self);
 
   self->gconf_client = gconf_client_get_default ();
   gconf_client_add_dir (self->gconf_client, APP_MONITOR_GCONF_DIR,
@@ -1337,6 +1364,90 @@ on_enable_monitoring_key_changed (GConfClient *client,
                                   gpointer     monitor)
 {
   update_enable_monitoring ((ShellAppMonitor *) monitor);
+}
+
+
+/**
+ * shell_app_monitor_get_startup_sequences:
+ * @self:
+ *
+ * Returns: (transfer none) (element-type ShellStartupSequence): Currently active startup sequences
+ */
+GSList *
+shell_app_monitor_get_startup_sequences (ShellAppMonitor *self)
+{
+  ShellGlobal *global = shell_global_get ();
+  MetaScreen *screen = shell_global_get_screen (global);
+  return meta_screen_get_startup_sequences (screen);
+}
+
+/* sn_startup_sequence_ref returns void, so make a
+ * wrapper which returns self */
+SnStartupSequence *
+sequence_ref (SnStartupSequence *sequence)
+{
+  sn_startup_sequence_ref (sequence);
+  return sequence;
+}
+
+GType
+shell_startup_sequence_get_type (void)
+{
+  static GType gtype = G_TYPE_INVALID;
+  if (gtype == G_TYPE_INVALID)
+    {
+      gtype = g_boxed_type_register_static ("ShellStartupSequence",
+          (GBoxedCopyFunc)sequence_ref,
+          (GBoxedFreeFunc)sn_startup_sequence_unref);
+    }
+  return gtype;
+}
+
+const char *
+shell_startup_sequence_get_id (ShellStartupSequence *sequence)
+{
+  return sn_startup_sequence_get_id ((SnStartupSequence*)sequence);
+}
+
+const char *
+shell_startup_sequence_get_name (ShellStartupSequence *sequence)
+{
+  return sn_startup_sequence_get_name ((SnStartupSequence*)sequence);
+}
+
+gboolean
+shell_startup_sequence_get_completed (ShellStartupSequence *sequence)
+{
+  return sn_startup_sequence_get_completed ((SnStartupSequence*)sequence);
+}
+
+/**
+ * shell_startup_sequence_create_icon:
+ * @sequence:
+ * @size: Size in pixels of icon
+ *
+ * Returns: (transfer none): A new #ClutterTexture containing an icon for the sequence
+ */
+ClutterActor *
+shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size)
+{
+  GThemedIcon *themed;
+  const char *icon_name;
+  ClutterActor *texture;
+
+  icon_name = sn_startup_sequence_get_icon_name ((SnStartupSequence*)sequence);
+  if (!icon_name)
+    {
+      texture = clutter_texture_new ();
+      clutter_actor_set_size (texture, size, size);
+      return texture;
+    }
+
+  themed = (GThemedIcon*)g_themed_icon_new (icon_name);
+  texture = shell_texture_cache_load_gicon (shell_texture_cache_get_default (),
+                                            G_ICON (themed), size);
+  g_object_unref (G_OBJECT (themed));
+  return texture;
 }
 
 /**
