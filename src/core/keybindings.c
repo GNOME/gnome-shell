@@ -1281,13 +1281,16 @@ process_event (MetaKeyBinding       *bindings,
  * right. This cannot cause infinite recursion because we never call
  * ourselves when there wasn't a grab, and we always clear the grab
  * first; the invariant is enforced using an assertion. See #112560.
+ *
+ * The return value is whether we handled the key event.
+ *
  * FIXME: We need to prove there are no race conditions here.
  * FIXME: Does it correctly handle alt-Tab being followed by another
  * grabbing keypress without letting go of alt?
  * FIXME: An iterative solution would probably be simpler to understand
  * (and help us solve the other fixmes).
  */
-void
+gboolean
 meta_display_process_key_event (MetaDisplay *display,
                                 MetaWindow  *window,
                                 XEvent      *event)
@@ -1303,7 +1306,7 @@ meta_display_process_key_event (MetaDisplay *display,
                 all_bindings_disabled ? ReplayKeyboard : AsyncKeyboard,
                 event->xkey.time);
   if (all_bindings_disabled)
-    return;
+    return FALSE;
 
   /* if key event was on root window, we have a shortcut */
   screen = meta_display_screen_for_root (display, event->xkey.window);
@@ -1314,12 +1317,12 @@ meta_display_process_key_event (MetaDisplay *display,
                                               event->xany.window);
 
   if (screen == NULL)
-    return; /* event window is destroyed */
+    return FALSE; /* event window is destroyed */
   
   /* ignore key events on popup menus and such. */
   if (window == NULL &&
       meta_ui_window_is_widget (screen->ui, event->xany.window))
-    return;
+    return FALSE;
   
   /* window may be NULL */
   
@@ -1339,7 +1342,7 @@ meta_display_process_key_event (MetaDisplay *display,
   if (all_keys_grabbed)
     {
       if (display->grab_op == META_GRAB_OP_NONE)
-        return;
+        return TRUE;
       /* If we get here we have a global grab, because
         * we're in some special keyboard mode such as window move
         * mode.
@@ -1416,18 +1419,20 @@ meta_display_process_key_event (MetaDisplay *display,
                       "Ending grab op %u on key event sym %s\n",
                       display->grab_op, XKeysymToString (keysym));
           meta_display_end_grab_op (display, event->xkey.time);
-          return;
         }
-      }
+
+      return TRUE;
+    }
   
   handled = process_overlay_key (display, screen, event, keysym);
+  if (handled)
+    return TRUE;
   
   /* Do the normal keybindings */
-  if (!handled)
-    process_event (display->key_bindings,
-                   display->n_key_bindings,
-                   display, screen, window, event, keysym,
-                   !all_keys_grabbed && window);
+  return process_event (display->key_bindings,
+                        display->n_key_bindings,
+                        display, screen, window, event, keysym,
+                        !all_keys_grabbed && window);
 }
 
 static gboolean

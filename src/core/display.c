@@ -1509,6 +1509,7 @@ event_callback (XEvent   *event,
   MetaDisplay *display;
   Window modified;
   gboolean frame_was_receiver;
+  gboolean bypass_compositor;
   gboolean filter_out_event;
 
   display = data;
@@ -1522,6 +1523,7 @@ event_callback (XEvent   *event,
   sn_display_process_event (display->sn_display, event);
 #endif
   
+  bypass_compositor = FALSE;
   filter_out_event = FALSE;
   display->current_time = event_get_time (display, event);
   display->xinerama_cache_invalidated = TRUE;
@@ -1668,7 +1670,13 @@ event_callback (XEvent   *event,
     {
     case KeyPress:
     case KeyRelease:
-      meta_display_process_key_event (display, window, event);
+      /* For key events, it's important to enforce single-handling, or
+       * we can get into a confused state. So if a keybinding is
+       * handled (because it's one of our hot-keys, or because we are
+       * in a keyboard-grabbed mode like moving a window, we don't
+       * want to pass the key event to the compositor at all.
+       */
+      bypass_compositor = meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
       if (event->xbutton.button == 4 || event->xbutton.button == 5)
@@ -2534,7 +2542,7 @@ event_callback (XEvent   *event,
       break;
     }
 
-  if (display->compositor)
+  if (display->compositor && !bypass_compositor)
     {
       if (meta_compositor_process_event (display->compositor,
                                          event,

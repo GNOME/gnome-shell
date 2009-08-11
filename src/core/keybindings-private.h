@@ -45,7 +45,7 @@ gboolean meta_window_grab_all_keys          (MetaWindow  *window,
                                              guint32      timestamp);
 void     meta_window_ungrab_all_keys        (MetaWindow  *window,
                                              guint32      timestamp);
-void     meta_display_process_key_event     (MetaDisplay *display,
+gboolean meta_display_process_key_event     (MetaDisplay *display,
                                              MetaWindow  *window,
                                              XEvent      *event);
 void     meta_set_keybindings_disabled      (gboolean     setting);
