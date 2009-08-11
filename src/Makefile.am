@@ -126,9 +126,9 @@ stamp-shell-marshal.h: Makefile shell-marshal.list
 	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
 		--prefix=_shell_marshal \
 		--header \
-	$(srcdir)/shell-marshal.list > xgen-tmh && \
-	(cmp -s xgen-tmh shell-marshal.h || cp -f xgen-tmh shell-marshal.h) && \
-	rm -f xgen-tmh && \
+	$(srcdir)/shell-marshal.list > xgen-smh && \
+	(cmp -s xgen-smh shell-marshal.h || cp -f xgen-smh shell-marshal.h) && \
+	rm -f xgen-smh && \
 	echo timestamp > $(@F)
 
 shell-marshal.c: Makefile shell-marshal.list
@@ -136,9 +136,9 @@ shell-marshal.c: Makefile shell-marshal.list
 	 $(GLIB_GENMARSHAL) \
 		--prefix=_shell_marshal \
 		--body \
-	 $(srcdir)/shell-marshal.list ) > xgen-tmc && \
-	cp -f xgen-tmc shell-marshal.c && \
-	rm -f xgen-tmc
+	 $(srcdir)/shell-marshal.list ) > xgen-smc && \
+	cp -f xgen-smc shell-marshal.c && \
+	rm -f xgen-smc
 
 libgnome_shell_la_LDFLAGS = -avoid-version -module
 libgnome_shell_la_LIBADD =	\
