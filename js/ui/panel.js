@@ -15,6 +15,8 @@ const Main = imports.ui.main;
 const PANEL_HEIGHT = 26;
 const TRAY_HEIGHT = PANEL_HEIGHT - 1;
 
+const DEFAULT_PADDING = 4;
+
 const PANEL_BACKGROUND_COLOR = new Clutter.Color();
 PANEL_BACKGROUND_COLOR.from_pixel(0x000000ff);
 const PANEL_FOREGROUND_COLOR = new Clutter.Color();
@@ -55,26 +57,99 @@ Panel.prototype = {
     _init : function() {
         let global = Shell.Global.get();
 
-        // Put the background under the panel within a group.
-        this.actor = new Clutter.Group();
+        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                   background_color: PANEL_BACKGROUND_COLOR
+                                 });
+        this._leftBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                      y_align: Big.BoxAlignment.CENTER,
+                                      padding_right: DEFAULT_PADDING });
+        this._centerBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                        y_align: Big.BoxAlignment.CENTER });
+        this._rightBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                       y_align: Big.BoxAlignment.CENTER,
+                                       padding_left: DEFAULT_PADDING });
 
-        // backBox contains the panel background and the clock.
-        let backBox = new Big.Box({ width: global.screen_width,
-                                    height: PANEL_HEIGHT,
-                                    backgroundColor: PANEL_BACKGROUND_COLOR,
-                                    x_align: Big.BoxAlignment.CENTER });
-        this.actor.add_actor(backBox);
+        /* This box container ensures that the centerBox is positioned in the *absolute*
+         * center, but can be pushed aside if necessary. */
+        this._boxContainer = new Shell.GenericContainer();
+        this.actor.append(this._boxContainer, Big.BoxPackFlags.EXPAND);
+        this._boxContainer.add_actor(this._leftBox);
+        this._boxContainer.add_actor(this._centerBox);
+        this._boxContainer.add_actor(this._rightBox);
+        this._boxContainer.connect('get-preferred-width', Lang.bind(this, function(box, forHeight, alloc) {
+            let children = box.get_children();
+            for (let i = 0; i < children.length; i++) {
+                let [childMin, childNatural] = children[i].get_preferred_width(forHeight);
+                alloc.min_size += childMin;
+                alloc.natural_size += childNatural;
+            }
+        }));
+        this._boxContainer.connect('get-preferred-height', Lang.bind(this, function(box, forWidth, alloc) {
+            let children = box.get_children();
+            for (let i = 0; i < children.length; i++) {
+                let [childMin, childNatural] = children[i].get_preferred_height(forWidth);
+                if (childMin > alloc.min_size)
+                    alloc.min_size = childMin;
+                if (childNatural > alloc.natural_size)
+                    alloc.natural_size = childNatural;
+            }
+        }));
+        this._boxContainer.connect('allocate', Lang.bind(this, function(container, box, flags) {
+            let allocWidth = box.x2 - box.x1;
+            let allocHeight = box.y2 - box.y1;
+            let [leftMinWidth, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
+            let [centerMinWidth, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
+            let [rightMinWidth, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
+            let leftWidth, centerWidth, rightWidth;
+            if (allocWidth < (leftNaturalWidth + centerNaturalWidth + rightNaturalWidth)) {
+                leftWidth = leftMinWidth;
+                centerWidth = centerMinWidth;
+                rightWidth = rightMinWidth;
+            } else {
+                leftWidth = leftNaturalWidth;
+                centerWidth = centerNaturalWidth;
+                rightWidth = rightNaturalWidth;
+            }
 
-        let box = new Big.Box({ x: 0,
-                                y: 0,
-                                height: PANEL_HEIGHT,
-                                width: global.screen_width,
-                                orientation: Big.BoxOrientation.HORIZONTAL,
-                                spacing: 4 });
+            let x;
+            let childBox = new Clutter.ActorBox();
+            childBox.x1 = box.x1;
+            childBox.y1 = box.y1;
+            childBox.x2 = x = childBox.x1 + leftWidth;
+            childBox.y2 = box.y2;
+            this._leftBox.allocate(childBox, flags);
 
-        this.button = new Button.Button("Activities", PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, PANEL_FOREGROUND_COLOR, true, null, PANEL_HEIGHT, DEFAULT_FONT);
+            let centerNaturalX = Math.floor((box.x2 - box.x1) / 2 - (centerWidth / 2));
+            /* Check left side */
+            if (x < centerNaturalX) {
+                /* We didn't overflow the left, use the natural. */
+                x = centerNaturalX;
+            }
+            /* Check right side */
+            if (x + centerWidth > (box.x2 - rightWidth)) {
+                x = box.x2 - rightWidth - centerWidth;
+            }
+            childBox = new Clutter.ActorBox();
+            childBox.x1 = x;
+            childBox.y1 = box.y1;
+            childBox.x2 = x = childBox.x1 + centerWidth;
+            childBox.y2 = box.y2;
+            this._centerBox.allocate(childBox, flags);
 
-        box.append(this.button.button, Big.BoxPackFlags.NONE);
+            childBox = new Clutter.ActorBox();
+            childBox.x1 = box.x2 - rightWidth;
+            childBox.y1 = box.y1;
+            childBox.x2 = box.x2;
+            childBox.y2 = box.y2;
+            this._rightBox.allocate(childBox, flags);
+        }));
+
+        /* left side */
+
+        this.button = new Button.Button("Activities", PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
+                                        PANEL_FOREGROUND_COLOR, true, null, PANEL_HEIGHT, DEFAULT_FONT);
+
+        this._leftBox.append(this.button.button, Big.BoxPackFlags.NONE);
 
         let hotCorner = new Clutter.Rectangle({ width: 1,
                                                 height: 1,
@@ -89,43 +164,22 @@ Panel.prototype = {
         hotCorner.connect('button-release-event',
                            Lang.bind(this, this._onHotCornerTriggered));
 
-        box.add_actor(hotCorner);
+        this._leftBox.append(hotCorner, Big.BoxPackFlags.FIXED);
 
-        let statusbox = new Big.Box();
-        let statusmenu = this._statusmenu = new Shell.StatusMenu();
-        statusmenu.get_icon().hide();
-        statusmenu.get_name().fontName = DEFAULT_FONT;
-        statusmenu.get_name().color = PANEL_FOREGROUND_COLOR;
-        statusbox.append(this._statusmenu, Big.BoxPackFlags.NONE);
-        let statusbutton = new Button.Button(statusbox,
-                                             PANEL_BUTTON_COLOR,
-                                             PRESSED_BUTTON_BACKGROUND_COLOR,
-                                             PANEL_FOREGROUND_COLOR,
-                                             true, null, PANEL_HEIGHT);
-        statusbutton.button.connect('button-press-event', function (b, e) {
-            statusmenu.toggle(e);
-            return false;
-        });
-        box.append(statusbutton.button, Big.BoxPackFlags.END);
-        // We get a deactivated event when the popup disappears
-        this._statusmenu.connect('deactivated', function (sm) {
-            statusbutton.release();
-        });
+        /* center */
 
         this._clock = new Clutter.Text({ font_name: DEFAULT_FONT,
                                          color: PANEL_FOREGROUND_COLOR,
                                          text: "" });
-        let clockbox = new Big.Box({ y_align: Big.BoxAlignment.CENTER,
-                                     padding_left: 4,
-                                     padding_right: 4 });
-        clockbox.append(this._clock, Big.BoxPackFlags.NONE);
-        backBox.append(clockbox, Big.BoxPackFlags.EXPAND);
+        this._centerBox.append(this._clock, Big.BoxPackFlags.NONE);
+
+        /* right */
 
         // The tray icons live in trayBox within trayContainer.
         // The trayBox is hidden when there are no tray icons.
         let trayContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                           y_align: Big.BoxAlignment.START });
-        box.append(trayContainer, Big.BoxPackFlags.END);
+        this._rightBox.append(trayContainer, Big.BoxPackFlags.NONE);
         let trayBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                     height: TRAY_HEIGHT,
                                     padding: TRAY_PADDING,
@@ -164,6 +218,27 @@ Panel.prototype = {
             }));
         this._traymanager.manage_stage(global.stage);
 
+        let statusbox = new Big.Box();
+        let statusmenu = this._statusmenu = new Shell.StatusMenu();
+        statusmenu.get_icon().hide();
+        statusmenu.get_name().fontName = DEFAULT_FONT;
+        statusmenu.get_name().color = PANEL_FOREGROUND_COLOR;
+        statusbox.append(this._statusmenu, Big.BoxPackFlags.NONE);
+        let statusbutton = new Button.Button(statusbox,
+                                             PANEL_BUTTON_COLOR,
+                                             PRESSED_BUTTON_BACKGROUND_COLOR,
+                                             PANEL_FOREGROUND_COLOR,
+                                             true, null, PANEL_HEIGHT);
+        statusbutton.button.connect('button-press-event', function (b, e) {
+            statusmenu.toggle(e);
+            return false;
+        });
+        this._rightBox.append(statusbutton.button, Big.BoxPackFlags.NONE);
+        // We get a deactivated event when the popup disappears
+        this._statusmenu.connect('deactivated', function (sm) {
+            statusbutton.release();
+        });
+
         // TODO: decide what to do with the rest of the panel in the Overview mode (make it fade-out, become non-reactive, etc.)
         // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
         // have the Overview act like a menu that allows the user to release the mouse on the activity the user wants
@@ -176,9 +251,7 @@ Panel.prototype = {
         Main.overview.connect('showing', Lang.bind(this.button, this.button.pressIn));
         Main.overview.connect('hiding', Lang.bind(this.button, this.button.release));
 
-        this.actor.add_actor(box);
-
-        Main.chrome.addActor(this.actor, box);
+        Main.chrome.addActor(this.actor);
         Main.chrome.setVisibleInOverview(this.actor, true);
 
         // Start the clock

@@ -77,6 +77,8 @@ function start() {
         }
     });
 
+    _relayout();
+
     panel.startupAnimation();
 
     let display = global.screen.get_display();
@@ -84,6 +86,12 @@ function start() {
     global.connect('panel-main-menu', Lang.bind(overview, overview.toggle));
     
     Mainloop.idle_add(_removeUnusedWorkspaces);
+}
+
+function _relayout() {
+    let global = Shell.Global.get();
+    panel.actor.set_size(global.screen_width, Panel.PANEL_HEIGHT);
+    overview.relayout();
 }
 
 // metacity-clutter currently uses the same prefs as plain metacity,

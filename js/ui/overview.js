@@ -127,8 +127,6 @@ Overview.prototype = {
         this._transparentBackground.lower_bottom();
         this._paneContainer.lower_bottom();
 
-        this._repositionChildren();
-
         this._workspaces = null;
     },
 
@@ -148,7 +146,7 @@ Overview.prototype = {
         }
     },
 
-    _repositionChildren: function () {
+    relayout: function () {
         let global = Shell.Global.get();
 
         let contentHeight = global.screen_height - Panel.PANEL_HEIGHT;
