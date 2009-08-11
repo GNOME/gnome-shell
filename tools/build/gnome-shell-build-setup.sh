@@ -62,7 +62,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
     build-essential curl \
     automake bison flex git-core gnome-common gtk-doc-tools \
     libdbus-glib-1-dev libgconf2-dev libgtk2.0-dev libffi-dev \
-    libgnome-menu-dev libgnomeui-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
+    libgnome-menu-dev libgnome-desktop-dev librsvg2-dev libwnck-dev libgl1-mesa-dev \
     mesa-common-dev mesa-utils python-dev libreadline5-dev xulrunner-dev \
     xserver-xephyr \
     libgstreamer0.10-dev gstreamer0.10-plugins-base gstreamer0.10-plugins-good \
@@ -84,7 +84,7 @@ if test x$system = xFedora ; then
     binutils curl gcc make \
     automake bison flex git gnome-common gnome-doc-utils intltool \
     libtool pkgconfig \
-    dbus-glib-devel GConf2-devel gnome-menus-devel gtk2-devel libffi-devel libgnomeui-devel \
+    dbus-glib-devel GConf2-devel gnome-menus-devel gtk2-devel libffi-devel gnome-desktop-devel \
     librsvg2-devel libwnck-devel mesa-libGL-devel python-devel readline-devel \
     xulrunner-devel libXdamage-devel \
     gstreamer-devel gstreamer-plugins-base gstreamer-plugins-good \
@@ -104,7 +104,7 @@ if test x$system = xSUSE ; then
   for pkg in \
     curl \
     bison flex gnome-doc-utils-devel \
-    gconf2-devel libffi-devel libgnomeui-devel librsvg-devel libwnck-devel \
+    gconf2-devel libffi-devel gnome-desktop-devel librsvg-devel libwnck-devel \
     xorg-x11-proto-devel readline-devel mozilla-xulrunner190-devel \
     xorg-x11-devel xterm xorg-x11 xorg-x11-server-extra \
     ; do
