@@ -30,8 +30,6 @@ struct _ShellAppMonitorClass
 {
   GObjectClass parent_class;
   
-  void (*apps_changed)(ShellAppMonitor *menuwrapper,
-                       gpointer         data);
 };
 
 GType shell_app_monitor_get_type (void) G_GNUC_CONST;

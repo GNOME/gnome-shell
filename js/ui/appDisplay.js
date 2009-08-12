@@ -193,7 +193,10 @@ AppDisplay.prototype = {
         this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
             this._redisplay(false);
         }));
-        this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
+        this._appMonitor.connect('app-added', Lang.bind(this, function(monitor) {
+            this._redisplay(false);
+        }));
+        this._appMonitor.connect('app-removed', Lang.bind(this, function(monitor) {
             this._redisplay(false);
         }));
 
@@ -761,7 +764,10 @@ AppWell.prototype = {
         this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
             this._redisplay();
         }));
-        this._appMonitor.connect('changed', Lang.bind(this, function(monitor) {
+        this._appMonitor.connect('app-added', Lang.bind(this, function(monitor) {
+            this._redisplay();
+        }));
+        this._appMonitor.connect('app-removed', Lang.bind(this, function(monitor) {
             this._redisplay();
         }));
 
