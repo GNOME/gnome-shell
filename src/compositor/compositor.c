@@ -350,6 +350,117 @@ mutter_empty_stage_input_region (MetaScreen *screen)
   mutter_set_stage_input_region (screen, region);
 }
 
+gboolean
+mutter_begin_modal_for_plugin (MetaScreen       *screen,
+                               MutterPlugin     *plugin,
+                               Window            grab_window,
+                               Cursor            cursor,
+                               MetaModalOptions  options,
+                               guint32           timestamp)
+{
+  /* To some extent this duplicates code in meta_display_begin_grab_op(), but there
+   * are significant differences in how we handle grabs that make it difficult to
+   * merge the two.
+   */
+  MetaDisplay    *display    = meta_screen_get_display (screen);
+  Display        *xdpy       = meta_display_get_xdisplay (display);
+  MetaCompositor *compositor = display->compositor;
+  gboolean pointer_grabbed = FALSE;
+  gboolean keyboard_grabbed = FALSE;
+  int result;
+
+  if (compositor->modal_plugin != NULL || display->grab_op != META_GRAB_OP_NONE)
+    return FALSE;
+
+  if ((options & META_MODAL_POINTER_ALREADY_GRABBED) == 0)
+    {
+      result = XGrabPointer (xdpy, grab_window,
+                             False, /* owner_events */
+                             (ButtonPressMask | ButtonReleaseMask |
+                              EnterWindowMask | LeaveWindowMask | PointerMotionMask),
+                             GrabModeAsync, GrabModeAsync,
+                             None, /* confine to */
+                             cursor,
+                             timestamp);
+      if (result != Success)
+        goto fail;
+
+      pointer_grabbed = TRUE;
+    }
+
+  if ((options & META_MODAL_KEYBOARD_ALREADY_GRABBED) == 0)
+    {
+      XGrabKeyboard (xdpy, grab_window,
+                     False, /* owner_events */
+                     GrabModeAsync, GrabModeAsync,
+                     timestamp);
+
+      if (result != Success)
+        goto fail;
+
+      keyboard_grabbed = TRUE;
+    }
+
+  display->grab_op = META_GRAB_OP_COMPOSITOR;
+  display->grab_window = NULL;
+  display->grab_screen = screen;
+  display->grab_have_pointer = TRUE;
+  display->grab_have_keyboard = TRUE;
+
+  compositor->modal_plugin = plugin;
+
+  return TRUE;
+
+ fail:
+  if (pointer_grabbed)
+    XUngrabPointer (xdpy, timestamp);
+  if (keyboard_grabbed)
+    XUngrabKeyboard (xdpy, timestamp);
+
+  return FALSE;
+}
+
+void
+mutter_end_modal_for_plugin (MetaScreen       *screen,
+                             MutterPlugin     *plugin,
+                             guint32           timestamp)
+{
+  MetaDisplay    *display    = meta_screen_get_display (screen);
+  Display        *xdpy = meta_display_get_xdisplay (display);
+  MetaCompositor *compositor = display->compositor;
+
+  g_return_if_fail (compositor->modal_plugin == plugin);
+
+  XUngrabPointer (xdpy, timestamp);
+  XUngrabKeyboard (xdpy, timestamp);
+
+  display->grab_op = META_GRAB_OP_NONE;
+  display->grab_window = NULL;
+  display->grab_screen = NULL;
+  display->grab_have_pointer = FALSE;
+  display->grab_have_keyboard = FALSE;
+
+  compositor->modal_plugin = NULL;
+}
+
+/* This is used when reloading plugins to make sure we don't have
+ * a left-over modal grab for this screen.
+ */
+void
+mutter_check_end_modal (MetaScreen *screen)
+{
+  MetaDisplay    *display    = meta_screen_get_display (screen);
+  MetaCompositor *compositor = display->compositor;
+
+  if (compositor->modal_plugin &&
+      mutter_plugin_get_screen (compositor->modal_plugin) == screen)
+    {
+      mutter_end_modal_for_plugin (screen,
+                                   compositor->modal_plugin,
+                                   CurrentTime);
+    }
+}
+
 void
 meta_compositor_manage_screen (MetaCompositor *compositor,
                                MetaScreen     *screen)
@@ -513,11 +624,41 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 {
 }
 
+static gboolean
+is_grabbed_event (XEvent *event)
+{
+  switch (event->xany.type)
+    {
+    case ButtonPress:
+    case ButtonRelease:
+    case EnterNotify:
+    case LeaveNotify:
+    case MotionNotify:
+    case KeyPressMask:
+    case KeyReleaseMask:
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 gboolean
 meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
                                MetaWindow     *window)
 {
+  if (compositor->modal_plugin && is_grabbed_event (event))
+    {
+      MutterPluginClass *klass = MUTTER_PLUGIN_GET_CLASS (compositor->modal_plugin);
+
+      if (klass->xevent_filter)
+        klass->xevent_filter (compositor->modal_plugin, event);
+
+      /* We always consume events even if the plugin says it didn't handle them;
+       * exclusive is exclusive */
+      return TRUE;
+    }
+
   if (window)
     {
       MetaCompScreen *info;

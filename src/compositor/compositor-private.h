@@ -23,6 +23,8 @@ struct _MetaCompositor
 
   ClutterActor   *shadow_src;
 
+  MutterPlugin   *modal_plugin;
+
   gboolean        show_redraw : 1;
   gboolean        debug       : 1;
   gboolean        no_mipmaps  : 1;
@@ -50,5 +52,17 @@ void mutter_switch_workspace_completed (MetaScreen    *screen);
 void mutter_set_stage_input_region     (MetaScreen    *screen,
                                         XserverRegion  region);
 void mutter_empty_stage_input_region   (MetaScreen    *screen);
+
+gboolean mutter_begin_modal_for_plugin (MetaScreen       *screen,
+                                        MutterPlugin     *plugin,
+                                        Window            grab_window,
+                                        Cursor            cursor,
+                                        MetaModalOptions  options,
+                                        guint32           timestamp);
+void     mutter_end_modal_for_plugin   (MetaScreen       *screen,
+                                        MutterPlugin     *plugin,
+                                        guint32           timestamp);
+
+void mutter_check_end_modal (MetaScreen *screen);
 
 #endif /* META_COMPOSITOR_PRIVATE_H */

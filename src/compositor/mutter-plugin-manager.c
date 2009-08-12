@@ -22,6 +22,7 @@
  */
 
 #include "config.h"
+#include "compositor-private.h"
 #include "mutter-plugin-manager.h"
 #include "prefs.h"
 #include "errors.h"
@@ -340,6 +341,10 @@ mutter_plugin_manager_reload (MutterPluginManager *plugin_mgr)
    * plugins to unload? We are probably not going to have large numbers of
    * plugins loaded at the same time, so it might not be worth it.
    */
+
+  /* Prevent stale grabs on unloaded plugins */
+  mutter_check_end_modal (plugin_mgr->screen);
+
   mutter_plugin_manager_unload (plugin_mgr);
   return mutter_plugin_manager_load (plugin_mgr);
 }

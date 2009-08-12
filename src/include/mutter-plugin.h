@@ -255,6 +255,31 @@ void
 mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
                                       XserverRegion region);
 
+/**
+ * MetaModalOptions:
+ * @META_MODAL_POINTER_ALREADY_GRABBED: if set the pointer is already
+ *   grabbed by the plugin and should not be grabbed again.
+ * @META_MODAL_KEYBOARD_ALREADY_GRABBED: if set the keyboard is already
+ *   grabbed by the plugin and should not be grabbed again.
+ *
+ * Options that can be provided when calling mutter_plugin_begin_modal().
+ */
+typedef enum {
+  META_MODAL_POINTER_ALREADY_GRABBED = 1 << 0,
+  META_MODAL_KEYBOARD_ALREADY_GRABBED = 1 << 1
+} MetaModalOptions;
+
+gboolean
+mutter_plugin_begin_modal (MutterPlugin      *plugin,
+                           Window             grab_window,
+                           Cursor             cursor,
+                           MetaModalOptions   options,
+                           guint32            timestamp);
+
+void
+mutter_plugin_end_modal (MutterPlugin *plugin,
+                         guint32       timestamp);
+
 GList *
 mutter_plugin_get_windows (MutterPlugin *plugin);
 

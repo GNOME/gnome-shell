@@ -467,6 +467,64 @@ mutter_plugin_get_windows (MutterPlugin *plugin)
   return mutter_get_windows (priv->screen);
 }
 
+/**
+ * mutter_plugin_begin_modal:
+ * @plugin: a #MutterPlugin
+ * @grab_window: the X window to grab the keyboard and mouse on
+ * @cursor: the cursor to use for the pointer grab, or None,
+ *          to use the normal cursor for the grab window and
+ *          its descendants.
+ * @options: flags that modify the behavior of the modal grab
+ * @timestamp: the timestamp used for establishing grabs
+ *
+ * This function is used to grab the keyboard and mouse for the exclusive
+ * use of the plugin. Correct operation requires that both the keyboard
+ * and mouse are grabbed, or thing will break. (In particular, other
+ * passive X grabs in Mutter can trigger but not be handled by the normal
+ * keybinding handling code.) However, the plugin can establish the keyboard
+ * and/or mouse grabs ahead of time and pass in the
+ * %META_MODAL_POINTER_ALREADY_GRABBED and/or %META_MODAL_KEYBOARD_ALREADY_GRABBED
+ * options. This facility is provided for two reasons: first to allow using
+ * this function to establish modality after a passive grab, and second to
+ * allow using obscure features of XGrabPointer() and XGrabKeyboard() without
+ * having to add them to this API.
+ *
+ * Return value: whether we successfully grabbed the keyboard and
+ *  mouse and made the plugin modal.
+ */
+gboolean
+mutter_plugin_begin_modal (MutterPlugin      *plugin,
+                           Window             grab_window,
+                           Cursor             cursor,
+                           MetaModalOptions   options,
+                           guint32            timestamp)
+{
+  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+
+  return mutter_begin_modal_for_plugin (priv->screen, plugin,
+                                        grab_window, cursor, options, timestamp);
+}
+
+/**
+ * mutter_plugin_end_modal
+ * @plugin: a #MutterPlugin
+ * @timestamp: the time used for releasing grabs
+ *
+ * Ends the modal operation begun with meta_plugin_begin_modal(). This
+ * ungrabs both the mouse and keyboard even when
+ * %META_MODAL_POINTER_ALREADY_GRABBED or
+ * %META_MODAL_KEYBOARD_ALREADY_GRABBED were provided as options
+ * when beginnning the modal operation.
+ */
+void
+mutter_plugin_end_modal (MutterPlugin *plugin,
+                         guint32       timestamp)
+{
+  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+
+  mutter_end_modal_for_plugin (priv->screen, plugin, timestamp);
+}
+
 Display *
 mutter_plugin_get_xdisplay (MutterPlugin *plugin)
 {

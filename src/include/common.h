@@ -138,7 +138,10 @@ typedef enum
   META_GRAB_OP_CLICKING_ABOVE,
   META_GRAB_OP_CLICKING_UNABOVE,
   META_GRAB_OP_CLICKING_STICK,
-  META_GRAB_OP_CLICKING_UNSTICK
+  META_GRAB_OP_CLICKING_UNSTICK,
+
+  /* Special grab op when the compositor asked for a grab */
+  META_GRAB_OP_COMPOSITOR
 } MetaGrabOp;
 
 typedef enum

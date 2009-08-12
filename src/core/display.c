@@ -1199,6 +1199,7 @@ grab_op_is_mouse (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_SW:
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
     case META_GRAB_OP_KEYBOARD_MOVING:
+    case META_GRAB_OP_COMPOSITOR:
       return TRUE;
 
     default:
@@ -1228,6 +1229,7 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
     case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
+    case META_GRAB_OP_COMPOSITOR:
       return TRUE;
 
     default:
@@ -1670,6 +1672,9 @@ event_callback (XEvent   *event,
     {
     case KeyPress:
     case KeyRelease:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
       /* For key events, it's important to enforce single-handling, or
        * we can get into a confused state. So if a keybinding is
        * handled (because it's one of our hot-keys, or because we are
@@ -1679,12 +1684,14 @@ event_callback (XEvent   *event,
       bypass_compositor = meta_display_process_key_event (display, window, event);
       break;
     case ButtonPress:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
       if (event->xbutton.button == 4 || event->xbutton.button == 5)
-        {
-          /* Scrollwheel event, do nothing and deliver event to compositor below
-           */
-        }
-      else if ((window &&
+        /* Scrollwheel event, do nothing and deliver event to compositor below */
+        break;
+
+      if ((window &&
            grab_op_is_mouse (display->grab_op) &&
            display->grab_button != (int) event->xbutton.button &&
            display->grab_window == window) ||
@@ -1874,16 +1881,25 @@ event_callback (XEvent   *event,
         }
       break;
     case ButtonRelease:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
       if (display->grab_window == window &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case MotionNotify:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
       if (display->grab_window == window &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case EnterNotify:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
       if (display->grab_window == window &&
           grab_op_is_mouse (display->grab_op))
         {
@@ -1976,6 +1992,9 @@ event_callback (XEvent   *event,
         }
       break;
     case LeaveNotify:
+      if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+        break;
+
       if (display->grab_window == window &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
