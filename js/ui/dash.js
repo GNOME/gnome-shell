@@ -447,7 +447,7 @@ Dash.prototype = {
         this._searchAreaApps = null;
         this._searchAreaDocs = null;
 
-        this._searchId = 0;
+        this._searchTimeoutId = 0;
         this._searchEntry.entry.connect('text-changed', Lang.bind(this, function (se, prop) {
             let text = this._searchEntry.getText();
             text = text.replace(/^\s+/g, "").replace(/\s+$/g, "")
@@ -455,11 +455,11 @@ Dash.prototype = {
             if (!this._searchActive) {
                 if (this._searchPane != null)
                     this._searchPane.close();
-                if (this._searchId > 0)
-                    Mainloop.source_remove(this._searchId);
+                if (this._searchTimeoutId > 0)
+                    Mainloop.source_remove(this._searchTimeoutId);
                 return;
             }
-            if (this._searchId > 0)
+            if (this._searchTimeoutId > 0)
                 return;
             if (this._searchPane == null) {
                 this._searchPane = new ResultPane(this);
@@ -477,8 +477,8 @@ Dash.prototype = {
                 this._searchEntry.setPane(this._searchPane);
             }
             this._searchPane.open();
-            this._searchId = Mainloop.timeout_add(150, Lang.bind(this, function() {
-                this._searchId = 0;
+            this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, function() {
+                this._searchTimeoutId = 0;
                 let text = this._searchEntry.getText();
                 text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
                 this._searchAreaApps.setSearch(text);
