@@ -6,8 +6,6 @@
  * without changing the other headers.
  */
 
-#include "@JSON_PREFIX@/json-types.h"
-#include "@JSON_PREFIX@/json-parser.h"
-#include "@JSON_PREFIX@/json-generator.h"
+#include "@JSON_PREFIX@/json-glib.h"
 
 #endif /* __CLUTTER_JSON_H__ */
