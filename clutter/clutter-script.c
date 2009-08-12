@@ -965,7 +965,7 @@ clutter_script_parse_node (ClutterScript *script,
       switch (G_TYPE_FUNDAMENTAL (G_VALUE_TYPE (value)))
         {
         /* fundamental JSON types */
-        case G_TYPE_INT:
+        case G_TYPE_INT64:
         case G_TYPE_DOUBLE:
         case G_TYPE_STRING:
         case G_TYPE_BOOLEAN:
@@ -973,25 +973,30 @@ clutter_script_parse_node (ClutterScript *script,
           retval = TRUE;
           break;
 
+        case G_TYPE_INT:
+          g_value_set_int (value, g_value_get_int64 (&node_value));
+          retval = TRUE;
+          break;
+
         case G_TYPE_UINT:
-          g_value_set_uint (value, (guint) g_value_get_int (&node_value));
+          g_value_set_uint (value, (guint) g_value_get_int64 (&node_value));
           retval = TRUE;
           break;
 
         case G_TYPE_ULONG:
-          g_value_set_ulong (value, (gulong) g_value_get_int (&node_value));
+          g_value_set_ulong (value, (gulong) g_value_get_int64 (&node_value));
           retval = TRUE;
           break;
 
         case G_TYPE_UCHAR:
-          g_value_set_uchar (value, (guchar) g_value_get_int (&node_value));
+          g_value_set_uchar (value, (guchar) g_value_get_int64 (&node_value));
           retval = TRUE;
           break;
 
         case G_TYPE_ENUM:
-          if (G_VALUE_HOLDS (&node_value, G_TYPE_INT))
+          if (G_VALUE_HOLDS (&node_value, G_TYPE_INT64))
             {
-              g_value_set_enum (value, g_value_get_int (&node_value));
+              g_value_set_enum (value, g_value_get_int64 (&node_value));
               retval = TRUE;
             }
           else if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
@@ -1007,9 +1012,9 @@ clutter_script_parse_node (ClutterScript *script,
           break;
 
         case G_TYPE_FLAGS:
-          if (G_VALUE_HOLDS (&node_value, G_TYPE_INT))
+          if (G_VALUE_HOLDS (&node_value, G_TYPE_INT64))
             {
-              g_value_set_flags (value, g_value_get_int (&node_value));
+              g_value_set_flags (value, g_value_get_int64 (&node_value));
               retval = TRUE;
             }
           else if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
