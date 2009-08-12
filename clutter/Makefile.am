@@ -10,6 +10,7 @@ SUBDIRS += json
 clutter_json_include = -I$(top_srcdir)/clutter/json
 clutter_json_dep = json/libclutter-json.la
 clutter_json_libadd = $(top_builddir)/clutter/json/libclutter-json.la
+clutter_json_gir = ClutterJson-@CLUTTER_API_VERSION@.gir
 endif
 
 DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32 fruity
@@ -278,7 +279,7 @@ BUILT_GIRSOURCES += Clutter-@CLUTTER_API_VERSION@.gir
 
 # ClutterJson.gir and Cogl.gir are used included into Clutter.gir, so need
 # to be built before the typelib is generated
-Clutter-@CLUTTER_API_VERSION@.typelib: ClutterJson-@CLUTTER_API_VERSION@.gir Cogl-@CLUTTER_API_VERSION@.gir
+Clutter-@CLUTTER_API_VERSION@.typelib: $(clutter_json_gir) Cogl-@CLUTTER_API_VERSION@.gir
 
 # We build Cogl.gir in the cogl/ subdir, but it needs to reference the shared
 # library that it's built into, so we delay compiling the gir into typelib
