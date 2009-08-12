@@ -275,6 +275,11 @@ Overview.prototype = {
                                                      addButtonSize, addButtonX, addButtonY);
         this._group.add_actor(this._workspaces.actor);
 
+        // The workspaces actor is as big as the screen, so we have to raise the dash above it
+        // for drag and drop to work.  In the future we should fix the workspaces to not
+        // be as big as the screen.
+        this._dash.actor.raise(this._workspaces.actor);
+
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the Overview is displayed greatly
         // increases performance of the Overview especially when there are many
