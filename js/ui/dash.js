@@ -156,7 +156,7 @@ ResultArea.prototype = {
 
         this.controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
         this.controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
-        this.actor.append(this.controlBox, Big.BoxPackFlags.EXPAND);
+        this.actor.append(this.controlBox, Big.BoxPackFlags.NONE);
 
         this.display.load();
     }
