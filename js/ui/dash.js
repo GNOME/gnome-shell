@@ -447,11 +447,19 @@ Dash.prototype = {
         this._searchAreaApps = null;
         this._searchAreaDocs = null;
 
-        this._searchQueued = false;
+        this._searchId = 0;
         this._searchEntry.entry.connect('text-changed', Lang.bind(this, function (se, prop) {
             let text = this._searchEntry.getText();
+            text = text.replace(/^\s+/g, "").replace(/\s+$/g, "")
             this._searchActive = text != '';
-            if (this._searchQueued)
+            if (!this._searchActive) {
+                if (this._searchPane != null)
+                    this._searchPane.close();
+                if (this._searchId > 0)
+                    Mainloop.source_remove(this._searchId);
+                return;
+            }
+            if (this._searchId > 0)
                 return;
             if (this._searchPane == null) {
                 this._searchPane = new ResultPane(this);
@@ -468,18 +476,13 @@ Dash.prototype = {
                 this._addPane(this._searchPane);
                 this._searchEntry.setPane(this._searchPane);
             }
-            this._searchQueued = true;
-            Mainloop.timeout_add(250, Lang.bind(this, function() {
+            this._searchPane.open();
+            this._searchId = Mainloop.timeout_add(150, Lang.bind(this, function() {
+                this._searchId = 0;
                 let text = this._searchEntry.getText();
-                // Strip leading and trailing whitespace
                 text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
-                this._searchQueued = false;
                 this._searchAreaApps.setSearch(text);
                 this._searchAreaDocs.setSearch(text);
-                if (text == '')
-                    this._searchPane.close();
-                else
-                    this._searchPane.open();
                 return false;
             }));
         }));
