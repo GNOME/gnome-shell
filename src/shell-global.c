@@ -40,7 +40,6 @@ struct _ShellGlobal {
   
   MutterPlugin *plugin;
   ShellWM *wm;
-  gboolean keyboard_grabbed;
   const char *imagedir;
   const char *configdir;
 
@@ -475,66 +474,42 @@ _shell_global_set_plugin (ShellGlobal  *global,
 }
 
 /**
- * shell_global_grab_keyboard:
+ * shell_global_begin_modal:
  * @global: a #ShellGlobal
  *
- * Grab the keyboard to the stage window. The stage will receive
- * all keyboard events until shell_global_ungrab_keyboard() is called.
- * This is appropriate to do when the desktop goes into a special
- * mode where no normal global key shortcuts or application keyboard
- * processing should happen.
+ * Grabs the keyboard and mouse to the stage window. The stage will
+ * receive all keyboard and mouse events until shell_global_end_modal()
+ * is called. This is used to implement "modes" for the shell, such as the
+ * overview mode or the "looking glass" debug overlay, that block
+ * application and normal key shortcuts.
+ *
+ * Returns value: %TRUE if we succesfully entered the mode. %FALSE if we couldn't
+ *  enter the mode. Failure may occur because an application has the pointer
+ *  or keyboard grabbed, because Mutter is in a mode itself like moving a
+ *  window or alt-Tab window selection, or because shell_global_begin_modal()
+ *  was previouly called.
  */
 gboolean
-shell_global_grab_keyboard (ShellGlobal *global)
+shell_global_begin_modal (ShellGlobal *global,
+                          guint32      timestamp)
 {
-  MetaScreen *screen = mutter_plugin_get_screen (global->plugin);
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
   ClutterStage *stage = CLUTTER_STAGE (mutter_plugin_get_stage (global->plugin));
   Window stagewin = clutter_x11_get_stage_window (stage);
 
-  /* FIXME: we need to coordinate with the rest of Metacity or we
-   * may grab the keyboard away from other portions of Metacity
-   * and leave Metacity in a confused state. An X client is allowed
-   * to overgrab itself, though not allowed to grab they keyboard
-   * away from another applications.
-   */
-  if (global->keyboard_grabbed)
-    return FALSE;
-
-  if (XGrabKeyboard (xdisplay, stagewin,
-                     False, /* owner_events - steal events from the rest of metacity */
-                     GrabModeAsync, GrabModeAsync,
-                     CurrentTime) != Success)
-    return FALSE; /* probably AlreadyGrabbed, some other app has a keyboard grab */
-
-  global->keyboard_grabbed = TRUE;
-
-  return TRUE;
+  return mutter_plugin_begin_modal (global->plugin, stagewin, None, 0, timestamp);
 }
 
 /**
- * shell_global_ungrab_keyboard:
+ * shell_global_end_modal:
  * @global: a #ShellGlobal
  *
- * Undoes the effect of shell_global_grab_keyboard
+ * Undoes the effect of shell_global_begin_modal().
  */
 void
-shell_global_ungrab_keyboard (ShellGlobal *global)
+shell_global_end_modal (ShellGlobal *global,
+                        guint32      timestamp)
 {
-  MetaScreen *screen;
-  MetaDisplay *display;
-  Display *xdisplay;
-
-  g_return_if_fail (global->keyboard_grabbed);
-
-  screen = mutter_plugin_get_screen (global->plugin);
-  display = meta_screen_get_display (screen);
-  xdisplay = meta_display_get_xdisplay (display);
-
-  XUngrabKeyboard (xdisplay, CurrentTime);
-
-  global->keyboard_grabbed = FALSE;
+  mutter_plugin_end_modal (global->plugin, timestamp);
 }
 
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.

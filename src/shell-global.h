@@ -64,8 +64,10 @@ GList *shell_global_get_windows (ShellGlobal *global);
 void _shell_global_set_plugin (ShellGlobal  *global,
 			       MutterPlugin *plugin);
 
-gboolean shell_global_grab_keyboard   (ShellGlobal *global);
-void     shell_global_ungrab_keyboard (ShellGlobal *global);
+gboolean shell_global_begin_modal (ShellGlobal *global,
+				   guint32      timestamp);
+void     shell_global_end_modal   (ShellGlobal *global,
+				   guint32      timestamp);
 
 void shell_global_reexec_self (ShellGlobal *global);
 

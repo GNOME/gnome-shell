@@ -144,8 +144,6 @@ AltTabPopup.prototype = {
     show : function(initialSelection) {
         let global = Shell.Global.get();
 
-        Main.startModal();
-
         global.window_group.add_actor(this._overlay);
         this._overlay.raise_top();
         this._overlay.show();
@@ -164,8 +162,6 @@ AltTabPopup.prototype = {
     destroy : function() {
         this.actor.destroy();
         this._overlay.destroy();
-
-        Main.endModal();
     },
 
     select : function(n) {

@@ -137,10 +137,11 @@ function _removeUnusedWorkspaces() {
 // Used to go into a mode where all keyboard and mouse input goes to
 // the stage. Returns true if we successfully grabbed the keyboard and
 // went modal, false otherwise
-function startModal() {
+function beginModal() {
     let global = Shell.Global.get();
+    let timestamp = global.screen.get_display().get_current_time();
 
-    if (!global.grab_keyboard())
+    if (!global.begin_modal(timestamp))
         return false;
     global.set_stage_input_mode(Shell.StageInputMode.FULLSCREEN);
 
@@ -151,8 +152,9 @@ function startModal() {
 
 function endModal() {
     let global = Shell.Global.get();
+    let timestamp = global.screen.get_display().get_current_time();
 
-    global.ungrab_keyboard();
+    global.end_modal(timestamp);
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
     inModal = false;
 }

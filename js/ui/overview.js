@@ -271,7 +271,7 @@ Overview.prototype = {
     show : function() {
         if (this.visible)
             return;
-        if (!Main.startModal())
+        if (!Main.beginModal())
             return;
 
         this.visible = true;

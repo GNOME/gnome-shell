@@ -555,7 +555,7 @@ LookingGlass.prototype = {
 
         Tweener.removeTweens(this.actor);
 
-        if (!Main.startModal())
+        if (!Main.beginModal())
             return;
 
         let global = Shell.Global.get();

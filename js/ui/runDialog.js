@@ -124,7 +124,7 @@ RunDialog.prototype = {
         if (this._isOpen) // Already shown
             return;
 
-        if (!Main.startModal())
+        if (!Main.beginModal())
             return;
             
         this._isOpen = true;
