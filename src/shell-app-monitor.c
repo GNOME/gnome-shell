@@ -595,6 +595,8 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
   if (!app)
     return;
 
+  shell_app_info_ref (app);
+
   usage = get_app_usage_from_window (self, window);
 
   if (window == self->watched_window)
@@ -609,8 +611,10 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
   if (usage->window_count == 0)
     {
       usage->initially_seen_sequence = 0;
-      g_signal_emit (self, signals[APP_REMOVED], 0);
+      g_signal_emit (self, signals[APP_REMOVED], 0, app);
     }
+
+  shell_app_info_unref (app);
 }
 
 static void
