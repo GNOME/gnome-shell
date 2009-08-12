@@ -2,7 +2,6 @@
 
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
@@ -182,7 +181,7 @@ function createPaneForDetails(dash, display) {
 
         if (index >= 0) {
             detailPane.destroyContent();
-            let details = display.createDetailsForIndex(index, -1);
+            let details = display.createDetailsForIndex(index);
             detailPane.content.append(details, Big.BoxPackFlags.EXPAND);
             detailPane.open();
         } else {
