@@ -7164,9 +7164,9 @@ parse_units (ClutterActor   *self,
 
   json_node_get_value (node, &value);
 
-  if (G_VALUE_HOLDS (&value, G_TYPE_INT))
+  if (G_VALUE_HOLDS (&value, G_TYPE_INT64))
     {
-      retval = (gfloat) g_value_get_int (&value);
+      retval = (gfloat) g_value_get_int64 (&value);
     }
   else if (G_VALUE_HOLDS (&value, G_TYPE_FLOAT))
     {
@@ -7432,8 +7432,8 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
       units = parse_units (actor, dimension, node);
 
       /* convert back to pixels: all properties are pixel-based */
-      g_value_init (value, G_TYPE_INT);
-      g_value_set_int (value, units);
+      g_value_init (value, G_TYPE_FLOAT);
+      g_value_set_float (value, units);
 
       retval = TRUE;
     }
