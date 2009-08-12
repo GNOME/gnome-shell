@@ -241,7 +241,7 @@ json_array_get_element (JsonArray *array,
  *
  * Since: 0.8
  */
-gint
+gint64
 json_array_get_int_element (JsonArray *array,
                             guint      index_)
 {
@@ -483,7 +483,7 @@ json_array_add_element (JsonArray *array,
  */
 void
 json_array_add_int_element (JsonArray *array,
-                            gint       value)
+                            gint64     value)
 {
   JsonNode *node;
 

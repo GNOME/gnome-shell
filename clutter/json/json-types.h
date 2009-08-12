@@ -21,6 +21,10 @@
  *   Emmanuele Bassi  <ebassi@linux.intel.com>
  */
 
+#if !defined(__JSON_GLIB_INSIDE__) && !defined(JSON_COMPILATION)
+#error "Only <json-glib/json-glib.h> can be included directly."
+#endif
+
 #ifndef __JSON_TYPES_H__
 #define __JSON_TYPES_H__
 
@@ -151,8 +155,8 @@ void                  json_node_set_string      (JsonNode     *node,
 G_CONST_RETURN gchar *json_node_get_string      (JsonNode     *node);
 gchar *               json_node_dup_string      (JsonNode     *node);
 void                  json_node_set_int         (JsonNode     *node,
-                                                 gint          value);
-gint                  json_node_get_int         (JsonNode     *node);
+                                                 gint64        value);
+gint64                json_node_get_int         (JsonNode     *node);
 void                  json_node_set_double      (JsonNode     *node,
                                                  gdouble       value);
 gdouble               json_node_get_double      (JsonNode     *node);
@@ -180,7 +184,7 @@ void                  json_object_set_member         (JsonObject  *object,
                                                       JsonNode    *node);
 void                  json_object_set_int_member     (JsonObject  *object,
                                                       const gchar *member_name,
-                                                      gint         value);
+                                                      gint64       value);
 void                  json_object_set_double_member  (JsonObject  *object,
                                                       const gchar *member_name,
                                                       gdouble      value);
@@ -203,7 +207,7 @@ JsonNode *            json_object_get_member         (JsonObject  *object,
                                                       const gchar *member_name);
 JsonNode *            json_object_dup_member         (JsonObject  *object,
                                                       const gchar *member_name);
-gint                  json_object_get_int_member     (JsonObject  *object,
+gint64                json_object_get_int_member     (JsonObject  *object,
                                                       const gchar *member_name);
 gdouble               json_object_get_double_member  (JsonObject  *object,
                                                       const gchar *member_name);
@@ -235,7 +239,7 @@ void                  json_array_unref               (JsonArray   *array);
 void                  json_array_add_element         (JsonArray   *array,
                                                       JsonNode    *node);
 void                  json_array_add_int_element     (JsonArray   *array,
-                                                      gint         value);
+                                                      gint64       value);
 void                  json_array_add_double_element  (JsonArray   *array,
                                                       gdouble      value);
 void                  json_array_add_boolean_element (JsonArray   *array,
@@ -250,7 +254,7 @@ void                  json_array_add_object_element  (JsonArray   *array,
 GList *               json_array_get_elements        (JsonArray   *array);
 JsonNode *            json_array_get_element         (JsonArray   *array,
                                                       guint        index_);
-gint                  json_array_get_int_element     (JsonArray   *array,
+gint64                json_array_get_int_element     (JsonArray   *array,
                                                       guint        index_);
 gdouble               json_array_get_double_element  (JsonArray   *array,
                                                       guint        index_);

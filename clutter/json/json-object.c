@@ -139,10 +139,9 @@ object_set_member_internal (JsonObject  *object,
                             const gchar *member_name,
                             JsonNode    *node)
 {
-  gchar *name;
-
-  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
-  g_hash_table_replace (object->members, name, node);
+  g_hash_table_replace (object->members,
+                        g_strdup (member_name),
+                        node);
 }
 
 /**
@@ -221,7 +220,7 @@ json_object_set_member (JsonObject  *object,
 void
 json_object_set_int_member (JsonObject  *object,
                             const gchar *member_name,
-                            gint         value)
+                            gint64       value)
 {
   JsonNode *node;
 
@@ -381,7 +380,7 @@ json_object_set_array_member (JsonObject  *object,
  * Convenience function for setting an object @value of
  * @member_name inside @object.
  *
- * The @object will take ownership of the passed #JsonArray
+ * The @object will take ownership of the passed #JsonObject
  *
  * See also: json_object_set_member()
  *
@@ -397,7 +396,7 @@ json_object_set_object_member (JsonObject  *object,
   g_return_if_fail (object != NULL);
   g_return_if_fail (member_name != NULL);
 
-  node = json_node_new (JSON_NODE_ARRAY);
+  node = json_node_new (JSON_NODE_OBJECT);
   json_node_take_object (node, value);
   object_set_member_internal (object, member_name, node);
 }
@@ -521,16 +520,7 @@ static inline JsonNode *
 object_get_member_internal (JsonObject  *object,
                             const gchar *member_name)
 {
-  JsonNode *retval;
-  gchar *name;
-
-  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
-
-  retval = g_hash_table_lookup (object->members, name);
-
-  g_free (name);
-
-  return retval;
+  return g_hash_table_lookup (object->members, member_name);
 }
 
 /**
@@ -568,7 +558,7 @@ json_object_get_member (JsonObject  *object,
  *
  * Since: 0.8
  */
-gint
+gint64
 json_object_get_int_member (JsonObject  *object,
                             const gchar *member_name)
 {
@@ -776,17 +766,10 @@ gboolean
 json_object_has_member (JsonObject *object,
                         const gchar *member_name)
 {
-  gchar *name;
-  gboolean retval;
-
   g_return_val_if_fail (object != NULL, FALSE);
   g_return_val_if_fail (member_name != NULL, FALSE);
 
-  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
-  retval = (g_hash_table_lookup (object->members, name) != NULL);
-  g_free (name);
-
-  return retval;
+  return (g_hash_table_lookup (object->members, member_name) != NULL);
 }
 
 /**
@@ -816,14 +799,10 @@ void
 json_object_remove_member (JsonObject  *object,
                            const gchar *member_name)
 {
-  gchar *name;
-
   g_return_if_fail (object != NULL);
   g_return_if_fail (member_name != NULL);
 
-  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
-  g_hash_table_remove (object->members, name);
-  g_free (name);
+  g_hash_table_remove (object->members, member_name);
 }
 
 typedef struct _ForeachClosure  ForeachClosure;

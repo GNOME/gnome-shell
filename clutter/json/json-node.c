@@ -359,6 +359,13 @@ json_node_get_value (JsonNode *node,
     }
 }
 
+static void inline
+node_value_unset (JsonNode *node)
+{
+  if (G_VALUE_TYPE (&(node->data.value)) != G_TYPE_INVALID)
+    g_value_unset (&(node->data.value));
+}
+
 /**
  * json_node_set_value:
  * @node: a #JsonNode
@@ -372,12 +379,42 @@ json_node_set_value (JsonNode     *node,
 {
   g_return_if_fail (node != NULL);
   g_return_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE);
+  g_return_if_fail (G_VALUE_TYPE (value) != G_TYPE_INVALID);
 
-  if (G_VALUE_TYPE (&(node->data.value)) != 0)
-    g_value_unset (&(node->data.value));
+  switch (G_VALUE_TYPE (value))
+    {
+    /* direct copy for the types we use */
+    case G_TYPE_INT64:
+    case G_TYPE_BOOLEAN:
+    case G_TYPE_DOUBLE:
+    case G_TYPE_STRING:
+      node_value_unset (node);
+      g_value_init (&(node->data.value), G_VALUE_TYPE (value));
+      g_value_copy (value, &(node->data.value));
+      break;
 
-  g_value_init (&(node->data.value), G_VALUE_TYPE (value));
-  g_value_copy (value, &(node->data.value));
+    /* auto-promote ints to long longs */
+    case G_TYPE_INT:
+      node_value_unset (node);
+      g_value_init (&(node->data.value), G_TYPE_INT64);
+      g_value_set_int64 (&(node->data.value),
+                         g_value_get_int (value));
+      break;
+
+    /* auto-promote single precision to double precision */
+    case G_TYPE_FLOAT:
+      node_value_unset (node);
+      g_value_init (&(node->data.value), G_TYPE_DOUBLE);
+      g_value_set_double (&(node->data.value),
+                          g_value_get_float (value));
+      break;
+
+    default:
+      g_warning ("Invalid value of type '%s'",
+                 g_type_name (G_VALUE_TYPE (value)));
+      return;
+    }
+
 }
 
 /**
@@ -548,19 +585,19 @@ json_node_dup_string (JsonNode *node)
  */
 void
 json_node_set_int (JsonNode *node,
-                   gint      value)
+                   gint64    value)
 {
   g_return_if_fail (node != NULL);
   g_return_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE);
 
-  if (G_VALUE_TYPE (&(node->data.value)) == G_TYPE_INT)
-    g_value_set_int (&(node->data.value), value);
+  if (G_VALUE_TYPE (&(node->data.value)) == G_TYPE_INT64)
+    g_value_set_int64 (&(node->data.value), value);
   else
     {
       GValue copy = { 0, };
 
-      g_value_init (&copy, G_TYPE_INT);
-      g_value_set_int (&copy, value);
+      g_value_init (&copy, G_TYPE_INT64);
+      g_value_set_int64 (&copy, value);
 
       json_node_set_value (node, &copy);
 
@@ -576,7 +613,7 @@ json_node_set_int (JsonNode *node,
  *
  * Return value: an integer value.
  */
-gint
+gint64
 json_node_get_int (JsonNode *node)
 {
   g_return_val_if_fail (node != NULL, 0);
@@ -584,8 +621,8 @@ json_node_get_int (JsonNode *node)
   if (JSON_NODE_TYPE (node) == JSON_NODE_NULL)
     return 0;
 
-  if (G_VALUE_TYPE (&(node->data.value)) == G_TYPE_INT)
-    return g_value_get_int (&(node->data.value));
+  if (G_VALUE_TYPE (&(node->data.value)) == G_TYPE_INT64)
+    return g_value_get_int64 (&(node->data.value));
 
   return 0;
 }
