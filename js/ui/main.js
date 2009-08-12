@@ -40,6 +40,16 @@ function start() {
 
     Tweener.init();
 
+    // Ensure ShellAppMonitor is initialized; this will
+    // also initialize ShellAppSystem first.  ShellAppSystem
+    // needs to load all the .desktop files, and ShellAppMonitor
+    // will use those to associate with windows.  Right now
+    // the Monitor doesn't listen for installed app changes
+    // and recalculate application associations, so to avoid
+    // races for now we initialize it here.  It's better to
+    // be predictable anyways.
+    Shell.AppMonitor.get_default();
+
     // The background color really only matters if there is no desktop
     // window (say, nautilus) running. We set it mostly so things look good
     // when we are running inside Xephyr.
@@ -64,7 +74,7 @@ function start() {
     panel = new Panel.Panel();
     sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
-    
+
     global.screen.connect('toggle-recording', function() {
         if (recorder == null) {
             recorder = new Shell.Recorder({ stage: global.stage });
