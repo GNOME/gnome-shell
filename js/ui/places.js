@@ -95,13 +95,13 @@ Places.prototype = {
         this._bookmarksPath = GLib.build_filenamev([GLib.get_home_dir(), ".gtk-bookmarks"]);
         this._bookmarksFile = Gio.file_new_for_path(this._bookmarksPath);
         let monitor = this._bookmarksFile.monitor_file(Gio.FileMonitorFlags.NONE, null);
-        let timeoutId = 0;
+        this._bookmarkTimeoutId = 0;
         monitor.connect('changed', Lang.bind(this, function () {
-            if (timeoutId > 0)
+            if (this._bookmarkTimeoutId > 0)
                 return;
             /* Defensive event compression */
-            timeoutId = Mainloop.timeout_add(100, Lang.bind(this, function () {
-                this._timeoutId = 0;
+            this._bookmarkTimeoutId = Mainloop.timeout_add(100, Lang.bind(this, function () {
+                this._bookmarkTimeoutId = 0;
                 this._reloadBookmarks();
                 return false;
             }));
