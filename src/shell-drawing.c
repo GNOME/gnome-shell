@@ -146,25 +146,12 @@ shell_draw_clock (ClutterCairoTexture *texture,
   cairo_destroy (cr);
 }
 
-void
-shell_draw_glow (ClutterCairoTexture *texture,
-                 double red,
-                 double green,
-                 double blue,
-                 double alpha)
+static void
+draw_glow (cairo_t *cr, double red, double green, double blue, double alpha)
 {
-  cairo_t *cr;
-  guint width, height;
   cairo_pattern_t *gradient;
 
-  clutter_cairo_texture_get_surface_size (texture, &width, &height);
-
-  clutter_cairo_texture_clear (texture);
-  cr = clutter_cairo_texture_create (texture);
-
   cairo_save (cr);
-  cairo_translate (cr, width / 2.0, height / 2.0);
-  cairo_scale (cr, width / 2.0, height / 2.0);
 
   gradient = cairo_pattern_create_radial (0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
   cairo_pattern_add_color_stop_rgba (gradient, 0.0, red, green, blue, alpha);
@@ -174,8 +161,55 @@ shell_draw_glow (ClutterCairoTexture *texture,
 
   cairo_arc (cr, 0.0, 0.0, 1.0, 0.0, 2.0 * M_PI);
   cairo_fill (cr);
+
   cairo_restore (cr);
   cairo_pattern_destroy (gradient);
+}
+
+void
+shell_draw_app_highlight (ClutterCairoTexture *texture,
+                          gboolean             multi,
+                          double               red,
+                          double               green,
+                          double               blue,
+                          double               alpha)
+{
+  cairo_t *cr;
+  guint width, height;
+
+  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+
+  clutter_cairo_texture_clear (texture);
+  cr = clutter_cairo_texture_create (texture);
+
+  cairo_save (cr);
+  cairo_translate (cr, width / 2.0, height / 2.0);
+
+  if (multi)
+    {
+      double scale;
+
+      /* We draw three circles of radius 1, at 0.0, -1.8, and +1.8.
+       * Total width is therefore 1 + 1.8 + 1.8 + 1 = 5.6.
+       */
+      scale = MIN (height / 2.0, width / 5.6);
+      cairo_scale (cr, scale, scale);
+
+      draw_glow (cr, red, green, blue, alpha);
+
+      cairo_translate (cr, -1.8, 0.0);
+      draw_glow (cr, red, green, blue, alpha);
+
+      cairo_translate (cr, 3.6, 0.0);
+      draw_glow (cr, red, green, blue, alpha);
+    }
+  else
+    {
+      cairo_scale (cr, width / 2.0, height / 2.0);
+      draw_glow (cr, red, green, blue, alpha);
+    }
+
+  cairo_restore (cr);
   cairo_destroy (cr);
 }
 

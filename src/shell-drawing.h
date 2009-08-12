@@ -17,11 +17,12 @@ void shell_draw_clock (ClutterCairoTexture *texture,
 	               int                  hour,
 	               int                  minute);
 
-void shell_draw_glow (ClutterCairoTexture *texture,
-                      double red,
-                      double blue,
-                      double green,
-                      double alpha);
+void shell_draw_app_highlight (ClutterCairoTexture *texture,
+                               gboolean             multi,
+                               double               red,
+                               double               blue,
+                               double               green,
+                               double               alpha);
 
 guint shell_add_hook_paint_red_border (ClutterActor *actor);
 

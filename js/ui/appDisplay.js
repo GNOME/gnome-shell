@@ -487,11 +487,12 @@ WellDisplayItem.prototype = {
         if (this._windows.length > 0) {
             let glow = new Shell.DrawingArea({});
             glow.connect('redraw', Lang.bind(this, function (e, tex) {
-                Shell.draw_glow(tex,
-                                GLOW_COLOR.red / 255,
-                                GLOW_COLOR.green / 255,
-                                GLOW_COLOR.blue / 255,
-                                GLOW_COLOR.alpha / 255);
+                Shell.draw_app_highlight(tex,
+                                         this._windows.length > 1,
+                                         GLOW_COLOR.red / 255,
+                                         GLOW_COLOR.green / 255,
+                                         GLOW_COLOR.blue / 255,
+                                         GLOW_COLOR.alpha / 255);
             }));
             this._name.connect('notify::allocation', Lang.bind(this, function () {
                 let x = this._name.x;
@@ -764,10 +765,10 @@ AppWell.prototype = {
         this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
             this._redisplay();
         }));
-        this._appMonitor.connect('app-added', Lang.bind(this, function(monitor) {
+        this._appMonitor.connect('window-added', Lang.bind(this, function(monitor) {
             this._redisplay();
         }));
-        this._appMonitor.connect('app-removed', Lang.bind(this, function(monitor) {
+        this._appMonitor.connect('window-removed', Lang.bind(this, function(monitor) {
             this._redisplay();
         }));
 
