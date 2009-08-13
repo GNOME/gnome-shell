@@ -848,7 +848,7 @@ shell_app_info_get_is_nodisplay (ShellAppInfo *info)
   switch (info->type)
   {
     case SHELL_APP_INFO_TYPE_ENTRY:
-      return gmenu_tree_entry_get_is_nodisplay ((GMenuTreeEntry*)info);
+      return gmenu_tree_entry_get_is_nodisplay ((GMenuTreeEntry*)info->entry);
     case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
       return FALSE;
   }
