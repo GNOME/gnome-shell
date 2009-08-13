@@ -5167,6 +5167,44 @@ clutter_actor_set_request_mode (ClutterActor *self,
   clutter_actor_queue_relayout (self);
 }
 
+/* variant of set_width() without checks and without notification
+ * freeze+thaw, for internal usage only
+ */
+static inline void
+clutter_actor_set_width_internal (ClutterActor *self,
+                                  gfloat        width)
+{
+  if (width >= 0)
+    {
+      clutter_actor_set_min_width (self, width);
+      clutter_actor_set_natural_width (self, width);
+    }
+  else
+    {
+      clutter_actor_set_min_width_set (self, FALSE);
+      clutter_actor_set_natural_width_set (self, FALSE);
+    }
+}
+
+/* variant of set_height() without checks and without notification
+ * freeze+thaw, for internal usage only
+ */
+static inline void
+clutter_actor_set_height_internal (ClutterActor *self,
+                                   gfloat        height)
+{
+  if (height >= 0)
+    {
+      clutter_actor_set_min_height (self, height);
+      clutter_actor_set_natural_height (self, height);
+    }
+  else
+    {
+      clutter_actor_set_min_height_set (self, FALSE);
+      clutter_actor_set_natural_height_set (self, FALSE);
+    }
+}
+
 /**
  * clutter_actor_set_size
  * @self: A #ClutterActor
@@ -5193,27 +5231,8 @@ clutter_actor_set_size (ClutterActor *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (width >= 0)
-    {
-      clutter_actor_set_min_width (self, width);
-      clutter_actor_set_natural_width (self, width);
-    }
-  else
-    {
-      clutter_actor_set_min_width_set (self, FALSE);
-      clutter_actor_set_natural_width_set (self, FALSE);
-    }
-
-  if (height >= 0)
-    {
-      clutter_actor_set_min_height (self, height);
-      clutter_actor_set_natural_height (self, height);
-    }
-  else
-    {
-      clutter_actor_set_min_height_set (self, FALSE);
-      clutter_actor_set_natural_height_set (self, FALSE);
-    }
+  clutter_actor_set_width_internal (self, width);
+  clutter_actor_set_height_internal (self, height);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -5513,15 +5532,18 @@ clutter_actor_get_height (ClutterActor *self)
 /**
  * clutter_actor_set_width
  * @self: A #ClutterActor
- * @width: Requested new width for the actor, in pixels
+ * @width: Requested new width for the actor, in pixels, or -1
  *
  * Forces a width on an actor, causing the actor's preferred width
  * and height (if any) to be ignored.
  *
+ * If @width is -1 the actor will use its preferred width request
+ * instead of overriding it, i.e. you can "unset" the width with -1.
+ *
  * This function sets both the minimum and natural size of the actor.
  *
  * since: 0.2
- **/
+ */
 void
 clutter_actor_set_width (ClutterActor *self,
                          gfloat        width)
@@ -5530,8 +5552,7 @@ clutter_actor_set_width (ClutterActor *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_actor_set_min_width (self, width);
-  clutter_actor_set_natural_width (self, width);
+  clutter_actor_set_width_internal (self, width);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
@@ -5539,15 +5560,18 @@ clutter_actor_set_width (ClutterActor *self,
 /**
  * clutter_actor_set_height
  * @self: A #ClutterActor
- * @height: Requested new height for the actor, in pixels
+ * @height: Requested new height for the actor, in pixels, or -1
  *
  * Forces a height on an actor, causing the actor's preferred width
  * and height (if any) to be ignored.
  *
+ * If @height is -1 the actor will use its preferred height instead of
+ * overriding it, i.e. you can "unset" the height with -1.
+ *
  * This function sets both the minimum and natural size of the actor.
  *
  * since: 0.2
- **/
+ */
 void
 clutter_actor_set_height (ClutterActor *self,
                           gfloat        height)
@@ -5556,8 +5580,7 @@ clutter_actor_set_height (ClutterActor *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_actor_set_min_height (self, height);
-  clutter_actor_set_natural_height (self, height);
+  clutter_actor_set_height_internal (self, height);
 
   g_object_thaw_notify (G_OBJECT (self));
 }
