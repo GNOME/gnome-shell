@@ -1580,7 +1580,7 @@ on_key_focused_weak_notify (gpointer data,
 /**
  * clutter_stage_set_key_focus:
  * @stage: the #ClutterStage
- * @actor: the actor to set key focus to, or %NULL
+ * @actor: (allow-none): the actor to set key focus to, or %NULL
  *
  * Sets the key focus on @actor. An actor with key focus will receive
  * all the key events. If @actor is %NULL, the stage will receive
