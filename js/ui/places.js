@@ -32,7 +32,9 @@ PlaceDisplay.prototype = {
                                       ellipsize: Pango.EllipsizeMode.END,
                                       color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
                                       text: name });
-        this.actor.append(iconTexture, Big.BoxPackFlags.NONE);
+        let iconBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
+        iconBox.append(iconTexture, Big.BoxPackFlags.NONE);
+        this.actor.append(iconBox, Big.BoxPackFlags.NONE);
         this.actor.append(text, Big.BoxPackFlags.EXPAND);
     }
 };
