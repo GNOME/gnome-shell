@@ -6,12 +6,17 @@
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
 
   <bookinfo>
-    <title>COGL &version; Reference Manual</title>
-    <releaseinfo>Version &version;</releaseinfo>
+    <title>COGL Reference Manual</title>
+    <releaseinfo>for COGL &version;</releaseinfo>
 
     <copyright>
       <year>2008</year>
       <holder>OpenedHand LTD</holder>
+    </copyright>
+
+    <copyright>
+      <year>2009</year>
+      <holder>Intel Corporation</holder>
     </copyright>
 
     <legalnotice>
