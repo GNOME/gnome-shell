@@ -25,7 +25,8 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DG_LOG_DOMAIN=\"Clutter-Json\" \
-	-DG_DISABLE_DEPRECATED
+	-DG_DISABLE_DEPRECATED \
+	-DJSON_COMPILATION
 
 AM_CFLAGS = $(MAINTAINER_CFLAGS)
 
@@ -40,6 +41,7 @@ BUILT_GIRSOURCES =
 
 ClutterJson-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-json.la
 	$(INTROSPECTION_SCANNER) -v --namespace ClutterJson --nsversion=@CLUTTER_API_VERSION@ \
+		$(INCLUDES) \
 		--add-include-path=$(srcdir) --add-include-path=. \
 		--include=GObject-2.0 \
 		--library=clutter-json \
