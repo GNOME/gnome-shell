@@ -1802,8 +1802,8 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * |[
  *   clutter_actor_animate (rectangle, CLUTTER_LINEAR, 250,
- *                          "width", 100,
- *                          "height", 100,
+ *                          "width", 100.0,
+ *                          "height", 100.0,
  *                          NULL);
  * ]|
  *
@@ -1819,8 +1819,8 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  * by the "fixed::" string, for instance:
  *
  * |[
- *   clutter_actor_animate (actor, CLUTTER_EASE_IN, 100,
- *                          "rotation-angle-z", 360,
+ *   clutter_actor_animate (actor, CLUTTER_EASE_IN_SINE, 100,
+ *                          "rotation-angle-z", 360.0,
  *                          "fixed::rotation-center-z", &amp;center,
  *                          NULL);
  * ]|
@@ -1849,7 +1849,7 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *     clutter_actor_hide (actor);
  *   }
  *
- *   clutter_actor_animate (actor, CLUTTER_EASE_IN, 100,
+ *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 100,
  *                          "opacity", 0,
  *                          "signal::completed", on_animation_completed, actor,
  *                          NULL);
@@ -1869,13 +1869,13 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * |[
  *   clutter_actor_animate (actor, CLUTTER_LINEAR, 250,
- *                          "width", 100,
- *                          "height", 100,
+ *                          "width", 100.0,
+ *                          "height", 100.0,
  *                          NULL);
  *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 500,
- *                          "x", 100,
- *                          "y", 100,
- *                          "width", 200,
+ *                          "x", 100.0,
+ *                          "y", 100.0,
+ *                          "width", 200.0,
  *                          NULL);
  * ]|
  *
@@ -1883,10 +1883,10 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * |[
  *   clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 500,
- *                          "x", 100,
- *                          "y", 100,
- *                          "width", 200,
- *                          "height", 100,
+ *                          "x", 100.0,
+ *                          "y", 100.0,
+ *                          "width", 200.0,
+ *                          "height", 100.0,
  *                          NULL);
  * ]|
  *
@@ -1907,15 +1907,15 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *                           ClutterActor     *actor)
  *   {
  *     clutter_actor_animate (actor, CLUTTER_EASE_OUT_CUBIC, 250,
- *                            "x", 500,
- *                            "y", 500,
+ *                            "x", 500.0,
+ *                            "y", 500.0,
  *                            NULL);
  *   }
  *
  *     ...
  *     animation = clutter_actor_animate (actor, CLUTTER_EASE_IN_CUBIC, 250,
- *                                        "x", 100,
- *                                        "y", 100,
+ *                                        "x", 100.0,
+ *                                        "y", 100.0,
  *                                        NULL);
  *     g_signal_connect (animation, "completed",
  *                       G_CALLBACK (on_animation_completed),
