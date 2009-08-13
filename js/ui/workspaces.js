@@ -274,6 +274,12 @@ Workspace.prototype = {
 
         this.actor = new Clutter.Group();
         this.actor._delegate = this;
+        // Auto-sizing is unreliable in the presence of ClutterClone, so rather than
+        // implicitly counting on the workspace actor to be sized to the size of the
+        // included desktop actor clone, set the size explicitly to the screen size.
+        // See http://bugzilla.openedhand.com/show_bug.cgi?id=1755
+        this.actor.width = global.screen_width;
+        this.actor.height = global.screen_height;
         this.scale = 1.0;
 
         let windows = global.get_windows().filter(this._isMyWindow, this);
