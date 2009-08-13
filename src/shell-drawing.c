@@ -168,7 +168,7 @@ draw_glow (cairo_t *cr, double red, double green, double blue, double alpha)
 
 void
 shell_draw_app_highlight (ClutterCairoTexture *texture,
-                          gboolean             multi,
+                          int                  num_windows,
                           double               red,
                           double               green,
                           double               blue,
@@ -176,6 +176,8 @@ shell_draw_app_highlight (ClutterCairoTexture *texture,
 {
   cairo_t *cr;
   guint width, height;
+
+  g_return_if_fail (num_windows > 0);
 
   clutter_cairo_texture_get_surface_size (texture, &width, &height);
 
@@ -185,28 +187,38 @@ shell_draw_app_highlight (ClutterCairoTexture *texture,
   cairo_save (cr);
   cairo_translate (cr, width / 2.0, height / 2.0);
 
-  if (multi)
+  if (num_windows == 1)
     {
-      double scale;
-
-      /* We draw three circles of radius 1, at 0.0, -1.8, and +1.8.
-       * Total width is therefore 1 + 1.8 + 1.8 + 1 = 5.6.
-       */
-      scale = MIN (height / 2.0, width / 5.6);
-      cairo_scale (cr, scale, scale);
-
-      draw_glow (cr, red, green, blue, alpha);
-
-      cairo_translate (cr, -1.8, 0.0);
-      draw_glow (cr, red, green, blue, alpha);
-
-      cairo_translate (cr, 3.6, 0.0);
+      cairo_scale (cr, width / 2.0, height / 2.0);
       draw_glow (cr, red, green, blue, alpha);
     }
   else
     {
-      cairo_scale (cr, width / 2.0, height / 2.0);
+      int num_circles;
+      double scale, highlight_width;
+
+      num_circles = num_windows == 2 ? 2 : 3;
+
+      /* The circles will have radius 1.0 (diameter 2.0) and overlap
+       * by 0.2, so the total width of the highlight is:
+       */
+      highlight_width = 2.0 * num_circles - 0.2 * (num_circles - 1);
+
+      scale = MIN (height / 2.0, width / highlight_width);
+      cairo_scale (cr, scale, scale);
+
+      /* Leftmost circle first; its left side is at
+       * -highlight_width/2, so its center is that plus 1.
+       */
+      cairo_translate (cr, -highlight_width / 2.0 + 1.0, 0.0);
       draw_glow (cr, red, green, blue, alpha);
+
+      /* Remaining circles */
+      while (--num_circles)
+        {
+          cairo_translate (cr, 1.8, 0.0);
+          draw_glow (cr, red, green, blue, alpha);
+        }
     }
 
   cairo_restore (cr);

@@ -18,7 +18,7 @@ void shell_draw_clock (ClutterCairoTexture *texture,
 	               int                  minute);
 
 void shell_draw_app_highlight (ClutterCairoTexture *texture,
-                               gboolean             multi,
+                               int                  num_windows,
                                double               red,
                                double               blue,
                                double               green,

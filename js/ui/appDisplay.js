@@ -488,7 +488,7 @@ WellDisplayItem.prototype = {
             let glow = new Shell.DrawingArea({});
             glow.connect('redraw', Lang.bind(this, function (e, tex) {
                 Shell.draw_app_highlight(tex,
-                                         this._windows.length > 1,
+                                         this._windows.length,
                                          GLOW_COLOR.red / 255,
                                          GLOW_COLOR.green / 255,
                                          GLOW_COLOR.blue / 255,
