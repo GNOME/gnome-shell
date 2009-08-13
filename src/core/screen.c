@@ -327,9 +327,28 @@ reload_xinerama_infos (MetaScreen *screen)
   screen->last_xinerama_index = 0;
 
   screen->display->xinerama_cache_invalidated = TRUE;
+
+  if (g_getenv ("MUTTER_DEBUG_XINERAMA"))
+    {
+      meta_topic (META_DEBUG_XINERAMA,
+                  "Pretending a single monitor has two Xinerama screens\n");
+
+      screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 2);
+      screen->n_xinerama_infos = 2;
+
+      screen->xinerama_infos[0].number = 0;
+      screen->xinerama_infos[0].rect = screen->rect;
+      screen->xinerama_infos[0].rect.width = screen->rect.width / 2;
+
+      screen->xinerama_infos[1].number = 1;
+      screen->xinerama_infos[1].rect = screen->rect;
+      screen->xinerama_infos[1].rect.x = screen->rect.width / 2;
+      screen->xinerama_infos[1].rect.width = screen->rect.width / 2;
+    }
   
 #ifdef HAVE_XFREE_XINERAMA
-  if (XineramaIsActive (display->xdisplay))
+  if (screen->n_xinerama_infos == 0 &&
+      XineramaIsActive (display->xdisplay))
     {
       XineramaScreenInfo *infos;
       int n_infos;
@@ -370,7 +389,7 @@ reload_xinerama_infos (MetaScreen *screen)
       
       meta_XFree (infos);
     }
-  else
+  else if (screen->n_xinerama_infos > 0)
     {
       meta_topic (META_DEBUG_XINERAMA,
                   "No XFree86 Xinerama extension or XFree86 Xinerama inactive on display %s\n",
@@ -446,34 +465,14 @@ reload_xinerama_infos (MetaScreen *screen)
    */
   if (screen->n_xinerama_infos == 0)
     {
-      if (g_getenv ("MUTTER_DEBUG_XINERAMA"))
-        {
-          meta_topic (META_DEBUG_XINERAMA,
-                      "Pretending a single monitor has two Xinerama screens\n");
+      meta_topic (META_DEBUG_XINERAMA,
+                  "No Xinerama screens, using default screen info\n");
           
-          screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 2);
-          screen->n_xinerama_infos = 2;
+      screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 1);
+      screen->n_xinerama_infos = 1;
           
-          screen->xinerama_infos[0].number = 0;
-          screen->xinerama_infos[0].rect = screen->rect;
-          screen->xinerama_infos[0].rect.width = screen->rect.width / 2;
-
-          screen->xinerama_infos[1].number = 1;
-          screen->xinerama_infos[1].rect = screen->rect;
-          screen->xinerama_infos[1].rect.x = screen->rect.width / 2;
-          screen->xinerama_infos[1].rect.width = screen->rect.width / 2;
-        }
-      else
-        {
-          meta_topic (META_DEBUG_XINERAMA,
-                      "No Xinerama screens, using default screen info\n");
-          
-          screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 1);
-          screen->n_xinerama_infos = 1;
-          
-          screen->xinerama_infos[0].number = 0;
-          screen->xinerama_infos[0].rect = screen->rect;
-        }
+      screen->xinerama_infos[0].number = 0;
+      screen->xinerama_infos[0].rect = screen->rect;
     }
 
   g_assert (screen->n_xinerama_infos > 0);
