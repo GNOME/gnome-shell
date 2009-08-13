@@ -335,12 +335,18 @@ AppDisplay.prototype = {
         this._allItems = {};
         this._appCategories = {};
 
-        this._menus = this._appSystem.get_menus();
         // Loop over the toplevel menu items, load the set of desktop file ids
-        // associated with each one
-        for (let i = 0; i < this._menus.length; i++) {
-            let menu = this._menus[i];
+        // associated with each one, skipping empty menus
+        let allMenus = this._appSystem.get_menus();
+        this._menus = [];
+        for (let i = 0; i < allMenus.length; i++) {
+            let menu = allMenus[i];
             let menuApps = this._appSystem.get_applications_for_menu(menu.id);
+            let hasVisibleApps = menuApps.some(function (app) { return !app.get_is_nodisplay(); });
+            if (!hasVisibleApps) {
+                continue;
+            }
+            this._menus.push(menu);
             for (let j = 0; j < menuApps.length; j++) {
                 let app = menuApps[j];
                 this._addApp(app);
