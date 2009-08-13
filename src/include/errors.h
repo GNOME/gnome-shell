@@ -29,15 +29,8 @@
 #include "util.h"
 #include "display.h"
 
-typedef void (* ErrorHandler) (Display *dpy,
-                               XErrorEvent *error,
-                               gpointer data);
-
 void      meta_errors_init     (void);
-void	  meta_errors_register_foreign_display (Display      *foreign_dpy,
-						ErrorHandler  handler,
-						gpointer      data);
-						
+
 void      meta_error_trap_push (MetaDisplay *display);
 void      meta_error_trap_pop  (MetaDisplay *display,
                                 gboolean     last_request_was_roundtrip);

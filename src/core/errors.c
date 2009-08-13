@@ -40,31 +40,6 @@ meta_errors_init (void)
   XSetIOErrorHandler (x_io_error_handler);
 }
 
-typedef struct ForeignDisplay ForeignDisplay;
-
-struct ForeignDisplay
-{
-    Display *dpy;
-    ErrorHandler handler;
-    gpointer data;
-    ForeignDisplay *next;
-};
-
-static ForeignDisplay *foreign_displays;
-
-void
-meta_errors_register_foreign_display (Display      *foreign_dpy,
-				      ErrorHandler  handler,
-				      gpointer      data)
-{
-    ForeignDisplay *info = g_new0 (ForeignDisplay, 1);
-    info->dpy = foreign_dpy;
-    info->handler = handler;
-    info->data = data;
-    info->next = foreign_displays;
-    foreign_displays = info;
-}
-
 static void
 meta_error_trap_push_internal (MetaDisplay *display,
                                gboolean     need_sync)
@@ -206,18 +181,7 @@ x_error_handler (Display     *xdisplay,
   int retval;
   gchar buf[64];
   MetaDisplay *display;
-  ForeignDisplay *foreign;
 
-  for (foreign = foreign_displays; foreign != NULL; foreign = foreign->next)
-  {
-      if (foreign->dpy == xdisplay)
-      {
-	  foreign->handler (xdisplay, error, foreign->data);
-
-	  return 0;
-      }
-  }
-  
   XGetErrorText (xdisplay, error->error_code, buf, 63);  
 
   display = meta_display_for_x_display (xdisplay);
