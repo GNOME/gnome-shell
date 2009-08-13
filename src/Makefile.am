@@ -164,6 +164,7 @@ libmutterinclude_base_headers =		\
 	include/compositor.h			\
 	include/compositor-mutter.h		\
 	include/types.h				\
+	include/errors.h			\
 	include/screen.h			\
 	include/display.h			\
 	include/group.h				\
