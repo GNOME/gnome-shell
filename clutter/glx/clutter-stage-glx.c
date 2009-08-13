@@ -49,6 +49,8 @@
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
+static ClutterStageWindowIface *clutter_stage_glx_parent_iface = NULL;
+
 G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
                          clutter_stage_glx,
                          CLUTTER_TYPE_STAGE_X11,
@@ -56,19 +58,16 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
                                                 clutter_stage_window_iface_init));
 
 static void
-clutter_stage_glx_unrealize (ClutterActor *actor)
+clutter_stage_glx_unrealize (ClutterStageWindow *stage_window)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
   gboolean was_offscreen;
 
   /* Note unrealize should free up any backend stage related resources */
   CLUTTER_NOTE (BACKEND, "Unrealizing stage");
 
   g_object_get (stage_x11->wrapper, "offscreen", &was_offscreen, NULL);
-
-  if (CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize != NULL)
-    CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize (actor);
 
   clutter_x11_trap_x_errors ();
 
@@ -110,19 +109,19 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
   CLUTTER_MARK ();
 }
 
-static void
-clutter_stage_glx_realize (ClutterActor *actor)
+static gboolean
+clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 {
-  ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (actor);
-  ClutterStageGLX   *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  ClutterStageGLX   *stage_glx = CLUTTER_STAGE_GLX (stage_window);
   ClutterBackend    *backend;
   ClutterBackendGLX *backend_glx;
   ClutterBackendX11 *backend_x11;
   gboolean           is_offscreen;
 
   CLUTTER_NOTE (ACTOR, "Realizing stage '%s' [%p]",
-                G_OBJECT_TYPE_NAME (actor),
-                actor);
+                G_OBJECT_TYPE_NAME (stage_window),
+                stage_window);
 
   g_object_get (stage_x11->wrapper, "offscreen", &is_offscreen, NULL);
 
@@ -140,7 +139,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       if (stage_x11->xvisinfo == None)
         {
           g_critical ("Unable to find suitable GL visual.");
-          goto fail;
+          return FALSE;
         }
 
       if (stage_x11->xwin == None)
@@ -209,7 +208,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
         {
           g_critical ("Unable to realize stage: %s", error->message);
           g_error_free (error);
-          goto fail;
+          return FALSE;
         }
 
       CLUTTER_NOTE (BACKEND, "Successfully realized stage");
@@ -230,7 +229,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       if (stage_x11->xvisinfo == None)
         {
           g_critical ("Unable to find suitable GL visual.");
-          goto fail;
+          return FALSE;
         }
 
       stage_x11->xpixmap = XCreatePixmap (stage_x11->xdpy,
@@ -257,20 +256,14 @@ clutter_stage_glx_realize (ClutterActor *actor)
         {
           g_critical ("Unable to realize stage: %s", error->message);
           g_error_free (error);
-          goto fail;
+          return FALSE;
         }
 
       CLUTTER_NOTE (BACKEND, "Successfully realized stage");
     }
 
-  /* we need to chain up to the X11 stage implementation in order to
-   * set the window state in case we set it before realizing the stage
-   */
-  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->realize (actor);
-  return;
-  
-fail:
-  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+  /* chain up to the StageX11 implementation */
+  return clutter_stage_glx_parent_iface->realize (stage_window);
 }
 
 static void
@@ -283,12 +276,8 @@ static void
 clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_glx_dispose;
-  
-  actor_class->realize = clutter_stage_glx_realize;
-  actor_class->unrealize = clutter_stage_glx_unrealize;
 }
 
 static void
@@ -299,5 +288,10 @@ clutter_stage_glx_init (ClutterStageGLX *stage)
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
+  clutter_stage_glx_parent_iface = g_type_interface_peek_parent (iface);
+
+  iface->realize = clutter_stage_glx_realize;
+  iface->unrealize = clutter_stage_glx_unrealize;
+
   /* the rest is inherited from ClutterStageX11 */
 }

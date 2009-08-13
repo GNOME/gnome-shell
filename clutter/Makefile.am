@@ -93,6 +93,7 @@ source_h =					\
 	$(srcdir)/clutter-shader-types.h	\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
+	$(srcdir)/clutter-stage-window.h	\
 	$(srcdir)/clutter-texture.h 		\
         $(srcdir)/clutter-text.h                \
 	$(srcdir)/clutter-timeline.h 		\
@@ -206,7 +207,6 @@ source_h_priv = \
 	$(srcdir)/clutter-private.h 		\
 	$(srcdir)/clutter-id-pool.h 		\
 	$(srcdir)/clutter-script-private.h	\
-	$(srcdir)/clutter-stage-window.h	\
 	$(srcdir)/clutter-timeout-interval.h    \
 	$(NULL)
 

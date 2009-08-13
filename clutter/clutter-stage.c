@@ -78,7 +78,7 @@ G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 struct _ClutterStagePrivate
 {
   /* the stage implementation */
-  ClutterActor       *impl;
+  ClutterStageWindow *impl;
 
   ClutterColor        color;
   ClutterPerspective  perspective;
@@ -134,14 +134,18 @@ clutter_stage_get_preferred_width (ClutterActor *self,
                                    gfloat       *natural_width_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterGeometry geom = { 0, };
 
   if (priv->impl == NULL)
     return;
 
-  CLUTTER_ACTOR_GET_CLASS (priv->impl)->get_preferred_width (priv->impl,
-                                                             for_height,
-                                                             min_width_p,
-                                                             natural_width_p);
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
+
+  if (min_width_p)
+    *min_width_p = geom.width;
+
+  if (natural_width_p)
+    *natural_width_p = geom.width;
 }
 
 static void
@@ -151,14 +155,18 @@ clutter_stage_get_preferred_height (ClutterActor *self,
                                     gfloat       *natural_height_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  ClutterGeometry geom = { 0, };
 
   if (priv->impl == NULL)
     return;
 
-  CLUTTER_ACTOR_GET_CLASS (priv->impl)->get_preferred_height (priv->impl,
-                                                              for_width,
-                                                              min_height_p,
-                                                              natural_height_p);
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
+
+  if (min_height_p)
+    *min_height_p = geom.height;
+
+  if (natural_height_p)
+    *natural_height_p = geom.height;
 }
 static void
 clutter_stage_allocate (ClutterActor           *self,
@@ -167,11 +175,15 @@ clutter_stage_allocate (ClutterActor           *self,
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   gboolean origin_changed;
+  gint width, height;
 
   origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED) ? TRUE : FALSE;
 
   if (priv->impl == NULL)
     return;
+
+  width = clutter_actor_box_get_width (box);
+  height = clutter_actor_box_get_height (box);
 
   /* if the stage is fixed size (for instance, it's using a frame-buffer)
    * then we simply ignore any allocation request and override the
@@ -183,41 +195,31 @@ clutter_stage_allocate (ClutterActor           *self,
 
       CLUTTER_NOTE (LAYOUT,
                     "Following allocation to %dx%d (origin %s)",
-                    (int) (box->x2 - box->x1),
-                    (int) (box->y2 - box->y1),
+                    width, height,
                     origin_changed ? "changed" : "not changed");
 
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
       klass->allocate (self, box, flags);
 
-      klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
-      klass->allocate (priv->impl, box, flags);
+      _clutter_stage_window_resize (priv->impl, width, height);
     }
   else
     {
       ClutterActorBox override = { 0, };
+      ClutterGeometry geom = { 0, };
       ClutterActorClass *klass;
-      gfloat natural_width, natural_height;
 
-      /* propagate the allocation */
-      klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
-      klass->allocate (self, box, flags);
-
-      /* get the preferred size from the backend */
-      clutter_actor_get_preferred_size (priv->impl,
-                                        NULL, NULL,
-                                        &natural_width, &natural_height);
+      _clutter_stage_window_get_geometry (priv->impl, &geom);
 
       override.x1 = 0;
       override.y1 = 0;
-      override.x2 = natural_width;
-      override.y2 = natural_height;
+      override.x2 = geom.width;
+      override.y2 = geom.height;
 
       CLUTTER_NOTE (LAYOUT,
                     "Overrigin original allocation of %dx%d "
                     "with %dx%d (origin %s)",
-                    (int) (box->x2 - box->x1),
-                    (int) (box->y2 - box->y1),
+                    width, height,
                     (int) (override.x2),
                     (int) (override.y2),
                     origin_changed ? "changed" : "not changed");
@@ -260,8 +262,10 @@ clutter_stage_paint (ClutterActor *self)
   else
     cogl_disable_fog ();
 
+#if 0
   CLUTTER_NOTE (PAINT, "Proxying the paint to the stage implementation");
-  clutter_actor_paint (priv->impl);
+  _clutter_stage_window_paint (priv->impl);
+#endif
 
   /* this will take care of painting every child */
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
@@ -283,6 +287,7 @@ static void
 clutter_stage_realize (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  gboolean is_realized;
 
   /* Make sure the viewport and projection matrix are valid for the
    * first paint (which will likely occur before the ConfigureNotify
@@ -291,13 +296,16 @@ clutter_stage_realize (ClutterActor *self)
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
 
   g_assert (priv->impl != NULL);
-  clutter_actor_realize (priv->impl);
+  is_realized = _clutter_stage_window_realize (priv->impl);
 
   /* ensure that the stage is using the context if the
    * realization sequence was successful
    */
-  if (CLUTTER_ACTOR_IS_REALIZED (priv->impl))
-    clutter_stage_ensure_current (CLUTTER_STAGE (self));
+  if (is_realized)
+    {
+      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+      clutter_stage_ensure_current (CLUTTER_STAGE (self));
+    }
   else
     CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 }
@@ -309,7 +317,9 @@ clutter_stage_unrealize (ClutterActor *self)
 
   /* and then unrealize the implementation */
   g_assert (priv->impl != NULL);
-  clutter_actor_unrealize (priv->impl);
+  _clutter_stage_window_unrealize (priv->impl);
+
+  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
   clutter_stage_ensure_current (CLUTTER_STAGE (self));
 }
@@ -318,7 +328,6 @@ static void
 clutter_stage_show (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-  ClutterStageWindow *impl;
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->show (self);
 
@@ -327,19 +336,16 @@ clutter_stage_show (ClutterActor *self)
   _clutter_stage_maybe_relayout (self);
 
   g_assert (priv->impl != NULL);
-  impl = CLUTTER_STAGE_WINDOW (priv->impl);
-  CLUTTER_STAGE_WINDOW_GET_IFACE (impl)->show (impl, TRUE);
+  _clutter_stage_window_show (priv->impl, TRUE);
 }
 
 static void
 clutter_stage_hide (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
-  ClutterStageWindow *impl;
 
   g_assert (priv->impl != NULL);
-  impl = CLUTTER_STAGE_WINDOW (priv->impl);
-  CLUTTER_STAGE_WINDOW_GET_IFACE (impl)->hide (impl);
+  _clutter_stage_window_hide (priv->impl);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->hide (self);
 }
@@ -375,7 +381,7 @@ static void
 clutter_stage_real_fullscreen (ClutterStage *stage)
 {
   ClutterStagePrivate *priv = stage->priv;
-  gfloat natural_width, natural_height;
+  ClutterGeometry geom;
   ClutterActorBox box;
 
   /* we need to force an allocation here because the size
@@ -385,14 +391,12 @@ clutter_stage_real_fullscreen (ClutterStage *stage)
    * the fact that fullscreening the stage on the X11 backends
    * is really an asynchronous operation
    */
-  clutter_actor_get_preferred_size (CLUTTER_ACTOR (priv->impl),
-                                    NULL, NULL,
-                                    &natural_width, &natural_height);
+  _clutter_stage_window_get_geometry (priv->impl, &geom);
 
   box.x1 = 0;
   box.y1 = 0;
-  box.x2 = natural_width;
-  box.y2 = natural_height;
+  box.x2 = geom.width;
+  box.y2 = geom.height;
 
   clutter_actor_allocate (CLUTTER_ACTOR (stage),
                           &box,
@@ -723,11 +727,11 @@ clutter_stage_dispose (GObject *object)
 
   _clutter_stage_manager_remove_stage (stage_manager, stage);
 
-  if (priv->impl)
+  if (priv->impl != NULL)
     {
       CLUTTER_NOTE (BACKEND, "Disposing of the stage implementation");
-      clutter_actor_hide (priv->impl);
-      clutter_actor_destroy (priv->impl);
+
+      g_object_unref (priv->impl);
       priv->impl = NULL;
     }
 
@@ -1008,16 +1012,11 @@ clutter_stage_init (ClutterStage *self)
     {
       g_warning ("Unable to create a new stage, falling back to the "
                  "default stage.");
-      priv->impl = CLUTTER_ACTOR (_clutter_stage_get_default_window ());
+      priv->impl = _clutter_stage_get_default_window ();
 
       /* at this point we must have a default stage, or we're screwed */
       g_assert (priv->impl != NULL);
     }
-  else
-    g_object_ref_sink (priv->impl);
-
-  /* make sure that the implementation is considered a top level */
-  CLUTTER_SET_PRIVATE_FLAGS (priv->impl, CLUTTER_ACTOR_IS_TOPLEVEL);
 
   priv->event_queue = g_queue_new ();
 
@@ -2044,7 +2043,7 @@ _clutter_stage_set_window (ClutterStage       *stage,
   if (stage->priv->impl)
     g_object_unref (stage->priv->impl);
 
-  stage->priv->impl = CLUTTER_ACTOR (stage_window);
+  stage->priv->impl = stage_window;
 }
 
 ClutterStageWindow *
