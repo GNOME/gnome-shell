@@ -7,25 +7,18 @@ const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 
+const AppIcon = imports.ui.appIcon;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 
 const POPUP_BG_COLOR = new Clutter.Color();
-POPUP_BG_COLOR.from_pixel(0x00000080);
-const POPUP_INDICATOR_COLOR = new Clutter.Color();
-POPUP_INDICATOR_COLOR.from_pixel(0xf0f0f0ff);
+POPUP_BG_COLOR.from_pixel(0x000000ff);
 const POPUP_TRANSPARENT = new Clutter.Color();
 POPUP_TRANSPARENT.from_pixel(0x00000000);
 
-const POPUP_INDICATOR_WIDTH = 4;
 const POPUP_GRID_SPACING = 8;
 const POPUP_ICON_SIZE = 48;
 const POPUP_NUM_COLUMNS = 5;
-
-const POPUP_LABEL_MAX_WIDTH = POPUP_NUM_COLUMNS * (POPUP_ICON_SIZE + POPUP_GRID_SPACING);
-
-const SWITCH_TIME = 0.1;
 
 function AltTabPopup() {
     this._init();
@@ -50,48 +43,24 @@ AltTabPopup.prototype = {
         gcenterbox.append(this._grid, Big.BoxPackFlags.NONE);
         this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
 
-        // Selected-window label
-        this._label = new Clutter.Text({ font_name: "Sans 16px",
-                                         ellipsize: Pango.EllipsizeMode.END });
-
-        let labelbox = new Big.Box({ background_color: POPUP_INDICATOR_COLOR,
-                                     corner_radius: POPUP_GRID_SPACING / 2,
-                                     padding: POPUP_GRID_SPACING / 2 });
-        labelbox.append(this._label, Big.BoxPackFlags.NONE);
-        let lcenterbox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                       x_align: Big.BoxAlignment.CENTER,
-                                       width: POPUP_LABEL_MAX_WIDTH + POPUP_GRID_SPACING });
-        lcenterbox.append(labelbox, Big.BoxPackFlags.NONE);
-        this.actor.append(lcenterbox, Big.BoxPackFlags.NONE);
-
-        // Indicator around selected icon
-        this._indicator = new Big.Rectangle({ border_width: POPUP_INDICATOR_WIDTH,
-                                              corner_radius: POPUP_INDICATOR_WIDTH / 2,
-                                              border_color: POPUP_INDICATOR_COLOR,
-                                              color: POPUP_TRANSPARENT });
-        this.actor.append(this._indicator, Big.BoxPackFlags.FIXED);
-
-        this._items = [];
+        this._icons = [];
         this._haveModal = false;
+        this._selected = 0;
+        this._highlightedWindow = null;
+        this._toplevels = global.window_group.get_children();
 
         global.stage.add_actor(this.actor);
     },
 
-    _addWindow : function(win) {
-        let item = { window: win,
-                     metaWindow: win.get_meta_window() };
+    _addIcon : function(appIcon) {
+        appIcon.connect('activate', Lang.bind(this, this._appClicked));
+        appIcon.connect('activate-window', Lang.bind(this, this._windowClicked));
+        appIcon.connect('highlight-window', Lang.bind(this, this._windowHovered));
 
-        let pixbuf = item.metaWindow.icon;
-        item.icon = new Clutter.Texture({ width: POPUP_ICON_SIZE,
-                                          height: POPUP_ICON_SIZE,
-                                          keep_aspect_ratio: true });
-        Shell.clutter_texture_set_from_pixbuf(item.icon, pixbuf);
+        // FIXME?
+        appIcon.actor.border = 2;
 
-        item.box = new Big.Box({ padding: POPUP_INDICATOR_WIDTH * 2 });
-        item.box.append(item.icon, Big.BoxPackFlags.NONE);
-
-        item.n = this._items.length;
-        this._items.push(item);
+        this._icons.push(appIcon);
 
         // Add it to the grid
         if (!this._gridRow || this._gridRow.get_children().length == POPUP_NUM_COLUMNS) {
@@ -99,7 +68,7 @@ AltTabPopup.prototype = {
                                           orientation: Big.BoxOrientation.HORIZONTAL });
             this._grid.append(this._gridRow, Big.BoxPackFlags.NONE);
         }
-        this._gridRow.append(item.box, Big.BoxPackFlags.NONE);
+        this._gridRow.append(appIcon.actor, Big.BoxPackFlags.NONE);
     },
 
     show : function(initialSelection) {
@@ -116,17 +85,18 @@ AltTabPopup.prototype = {
         this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
         this._keyReleaseEventId = global.stage.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
 
-        // Fill in the windows
-        let windows = [];
-        for (let i = 0; i < apps.length; i++) {
-            let appWindows = appMonitor.get_windows_for_app(apps[i].get_id());
-            windows = windows.concat(appWindows);
-        }
-
-        windows.sort(function(w1, w2) { return w2.get_user_time() - w1.get_user_time(); });
-
-        for (let i = 0; i < windows.length; i++)
-            this._addWindow(windows[i].get_compositor_private());
+        // Contruct the AppIcons, sort by time, add to the popup
+        let icons = [];
+        for (let i = 0; i < apps.length; i++)
+            icons.push(new AppIcon.AppIcon(apps[i], AppIcon.MenuType.BELOW));
+        icons.sort(function(i1, i2) {
+                       // The app's most-recently-used window is first
+                       // in its list
+                       return (i2.windows[0].get_user_time() -
+                               i1.windows[0].get_user_time());
+                   });
+        for (let i = 0; i < icons.length; i++)
+            this._addIcon(icons[i]);
 
         // Need to specify explicit width and height because the
         // window_group may not actually cover the whole screen
@@ -158,14 +128,28 @@ AltTabPopup.prototype = {
         let keysym = event.get_key_symbol();
 
         if (keysym == Clutter.Alt_L || keysym == Clutter.Alt_R) {
-            if (this._selected) {
-                Main.activateWindow(this._selected.metaWindow,
-                                    event.get_time());
-            }
+            if (this._highlightedWindow)
+                Main.activateWindow(this._highlightedWindow, event.get_time());
             this.destroy();
         }
 
         return true;
+    },
+
+    _appClicked : function(icon) {
+        Main.activateWindow(icon.windows[0]);
+        this.destroy();
+    },
+
+    _windowClicked : function(icon, window) {
+        if (window)
+            Main.activateWindow(window);
+        this.destroy();
+    },
+
+    _windowHovered : function(icon, window) {
+        if (window)
+            this._highlightWindow(window);
     },
 
     destroy : function() {
@@ -186,66 +170,15 @@ AltTabPopup.prototype = {
     },
 
     _updateSelection : function(delta) {
-        let n = ((this._selected ? this._selected.n : 0) + this._items.length + delta) % this._items.length;
+        this._icons[this._selected].setHighlight(false);
+        this._selected = (this._selected + this._icons.length + delta) % this._icons.length;
+        this._icons[this._selected].setHighlight(true);
 
-        if (this._selected) {
-            // Unselect previous
-
-            if (this._allocationChangedId) {
-                this._selected.box.disconnect(this._allocationChangedId);
-                delete this._allocationChangedId;
-            }
-        }
-
-        let item = this._items[n];
-        let changed = this._selected && item != this._selected;
-        this._selected = item;
-
-        if (this._selected) {
-            this._label.set_size(-1, -1);
-            this._label.text = this._selected.metaWindow.title;
-            if (this._label.width > POPUP_LABEL_MAX_WIDTH)
-                this._label.width = POPUP_LABEL_MAX_WIDTH;
-
-            // Figure out this._selected.box's coordinates in terms of
-            // this.actor
-            let bx = this._selected.box.x, by = this._selected.box.y;
-            let actor = this._selected.box.get_parent();
-            while (actor != this.actor) {
-                bx += actor.x;
-                by += actor.y;
-                actor = actor.get_parent();
-            }
-
-            if (changed) {
-                Tweener.addTween(this._indicator,
-                                 { x: bx,
-                                   y: by,
-                                   width: this._selected.box.width,
-                                   height: this._selected.box.height,
-                                   time: SWITCH_TIME,
-                                   transition: "easeOutQuad" });
-            } else {
-                Tweener.removeTweens(this.indicator);
-                this._indicator.set_position(bx, by);
-                this._indicator.set_size(this._selected.box.width,
-                                         this._selected.box.height);
-            }
-            this._indicator.show();
-
-            this._lightbox.highlight(this._selected.window);
-
-            this._allocationChangedId =
-                this._selected.box.connect('notify::allocation',
-                                           Lang.bind(this, this._allocationChanged));
-        } else {
-            this._label.text = "";
-            this._indicator.hide();
-            this._lightbox.highlight(null);
-        }
+        this._highlightWindow(this._icons[this._selected].windows[0]);
     },
 
-    _allocationChanged : function() {
-        this._updateSelection(0);
+    _highlightWindow : function(metaWin) {
+        this._highlightedWindow = metaWin;
+        this._lightbox.highlight(this._highlightedWindow.get_compositor_private());
     }
 };
