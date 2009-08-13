@@ -6,8 +6,8 @@
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>Clutter &version; Reference Manual</title>
-    <releaseinfo>Version &version;</releaseinfo>
+    <title>Clutter Reference Manual</title>
+    <releaseinfo>for Clutter &version;</releaseinfo>
 
     <copyright>
       <year>2006,2007,2008</year>
