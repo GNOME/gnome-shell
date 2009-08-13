@@ -455,8 +455,10 @@ Dash.prototype = {
             if (!this._searchActive) {
                 if (this._searchPane != null)
                     this._searchPane.close();
-                if (this._searchTimeoutId > 0)
+                if (this._searchTimeoutId > 0) {
                     Mainloop.source_remove(this._searchTimeoutId);
+                    this._searchTimeoutId = 0;
+                }
                 return;
             }
             if (this._searchTimeoutId > 0)
