@@ -194,7 +194,7 @@ shell_draw_app_highlight (ClutterCairoTexture *texture,
     }
   else
     {
-      int num_circles;
+      int num_circles, i;
       double scale, highlight_width;
 
       num_circles = num_windows == 2 ? 2 : 3;
@@ -207,17 +207,14 @@ shell_draw_app_highlight (ClutterCairoTexture *texture,
       scale = MIN (height / 2.0, width / highlight_width);
       cairo_scale (cr, scale, scale);
 
-      /* Leftmost circle first; its left side is at
-       * -highlight_width/2, so its center is that plus 1.
+      /* The leftmost circle's left side is at -highlight_width/2, so
+       * its center is that plus 1.
        */
       cairo_translate (cr, -highlight_width / 2.0 + 1.0, 0.0);
-      draw_glow (cr, red, green, blue, alpha);
-
-      /* Remaining circles */
-      while (--num_circles)
+      for (i = 0; i < num_circles; i++)
         {
-          cairo_translate (cr, 1.8, 0.0);
           draw_glow (cr, red, green, blue, alpha);
+          cairo_translate (cr, 1.8, 0.0);
         }
     }
 
