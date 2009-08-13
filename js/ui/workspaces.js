@@ -894,18 +894,15 @@ Workspaces.prototype = {
         activeWorkspace.actor.raise_top();
         this._positionWorkspaces(global, activeWorkspace);
 
-        // Create (+) button
+        // Save the button size as a global variable so we can us it to create 
+        // matching button sizes for workspace remove buttons.
         buttonSize = addButtonSize;
-        this.addButton = new Clutter.Texture({ x: addButtonX,
-                                                y: addButtonY,
-                                                width: buttonSize,
-                                                height: buttonSize,
-                                                reactive: true
-                                              });
-        this.addButton.set_from_file(global.imagedir + "add-workspace.svg");
-        this.addButton.connect('button-release-event', this._appendNewWorkspace);
-        this.actor.add_actor(this.addButton);
-        this.addButton.lower_bottom();
+
+        // Create (+) button
+        this.addButton = new AddWorkspaceButton(addButtonSize, addButtonX, addButtonY, Lang.bind(this, this._addWorkspaceAcceptDrop));
+        this.addButton.actor.connect('button-release-event', Lang.bind(this, this._appendNewWorkspace));
+        this.actor.add_actor(this.addButton.actor);
+        this.addButton.actor.lower_bottom();
 
         let lastWorkspace = this._workspaces[this._workspaces.length - 1];
         lastWorkspace.updateRemovable(true);
@@ -1132,10 +1129,39 @@ Workspaces.prototype = {
         this.actor.add_actor(workspace.actor);
     },
 
-    _appendNewWorkspace : function(actor, event) {
+    _appendNewWorkspace : function() {
         let global = Shell.Global.get();
 
-        global.screen.append_new_workspace(false, event.get_time());
+        global.screen.append_new_workspace(false, global.screen.get_display().get_current_time());
+    },
+
+    // Creates a new workspace and drops the dropActor there
+    _addWorkspaceAcceptDrop : function(source, dropActor, x, y, time) {
+        this._appendNewWorkspace();
+        return this._workspaces[this._workspaces.length - 1].acceptDrop(source, dropActor, x, y, time);
+    }
+};
+
+function AddWorkspaceButton(buttonSize, buttonX, buttonY, acceptDropCallback) {
+    this._init(buttonSize, buttonX, buttonY, acceptDropCallback);
+}
+
+AddWorkspaceButton.prototype = {
+    _init : function(buttonSize, buttonX, buttonY, acceptDropCallback) {
+        this.actor = new Clutter.Texture({ x: buttonX,
+                                           y: buttonY,
+                                           width: buttonSize,
+                                           height: buttonSize,
+                                           reactive: true });
+        this._acceptDropCallback = acceptDropCallback;
+        let global = Shell.Global.get();
+        this.actor._delegate = this;
+        this.actor.set_from_file(global.imagedir + 'add-workspace.svg');
+    },
+
+    // Draggable target interface
+    acceptDrop : function(source, actor, x, y, time) {
+        return this._acceptDropCallback(source, actor, x, y, time);
     }
 };
 
