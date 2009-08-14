@@ -136,7 +136,7 @@ mutter_window_group_paint (ClutterActor *actor)
 
       mutter_window_set_visible_region (cw, visible_region);
 
-      if (clutter_actor_get_paint_opacity (actor) == 0xff)
+      if (clutter_actor_get_paint_opacity (CLUTTER_ACTOR (cw)) == 0xff)
         {
           GdkRegion *obscured_region = mutter_window_get_obscured_region (cw);
           if (obscured_region)
