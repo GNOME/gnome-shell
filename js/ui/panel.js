@@ -9,6 +9,8 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Tweener = imports.ui.tweener;
 const Signals = imports.signals;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const Button = imports.ui.button;
 const Main = imports.ui.main;
@@ -261,7 +263,7 @@ Panel.prototype = {
 
         /* left side */
 
-        this.button = new Button.Button("Activities", PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
+        this.button = new Button.Button(_("Activities"), PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
                                         PANEL_FOREGROUND_COLOR, true, DEFAULT_FONT);
         this.button.button.height = PANEL_HEIGHT;
 
@@ -406,7 +408,8 @@ Panel.prototype = {
             displayDate.setMinutes(displayDate.getMinutes() + 1);
             msecRemaining += 60000;
         }
-        this._clock.set_text(displayDate.toLocaleFormat("%a %l:%M %p"));
+        /* Translators: This is a time format.  */
+        this._clock.set_text(displayDate.toLocaleFormat(_("%a %l:%M %p")));
         Mainloop.timeout_add(msecRemaining, Lang.bind(this, this._updateClock));
         return false;
     },

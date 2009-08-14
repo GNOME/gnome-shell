@@ -9,6 +9,8 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const DocInfo = imports.misc.docInfo;
 
@@ -156,7 +158,8 @@ ClockWidget.prototype = {
     },
 
     _updateText: function(time) {
-        this.actor.set_text(time.toLocaleFormat("%H:%M"));
+        // Translators: This is a time format.
+        this.actor.set_text(time.toLocaleFormat(_("%H:%M")));
     },
 
     _updateCairo: function(time) {
@@ -311,7 +314,7 @@ AppsWidget.prototype = {
     _init : function() {
         Widget.prototype._init.apply(this, arguments);
 
-        this.title = "Applications";
+        this.title = _("Applications");
         this.actor = new Big.Box({ spacing: 2 });
         this.collapsedActor = new Big.Box({ spacing: 2});
 
@@ -336,7 +339,7 @@ RecentDocsWidget.prototype = {
     _init : function() {
         Widget.prototype._init.apply(this, arguments);
 
-        this.title = "Recent Documents";
+        this.title = _("Recent Documents");
         this.actor = new Big.Box({ spacing: 2 });
 
         this._recentManager = Gtk.RecentManager.get_default();

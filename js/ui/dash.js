@@ -8,6 +8,8 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
@@ -230,7 +232,7 @@ SearchEntry.prototype = {
                                    border_color: SEARCH_BORDER_BOTTOM_COLOR });
         this.pane = null;
 
-        this._defaultText = "Find apps or documents";
+        this._defaultText = _("Find apps or documents");
 
         let textProperties = { font_name: "Sans 12" };
         let entryProperties = { editable: true,
@@ -331,7 +333,7 @@ MoreLink.prototype = {
 
         let text = new Clutter.Text({ font_name: "Sans 12px",
                                       color: BRIGHT_TEXT_COLOR,
-                                      text: "Browse" });
+                                      text: _("Browse") });
         this.actor.append(text, Big.BoxPackFlags.NONE);
 
         this.actor.connect('button-press-event', Lang.bind(this, function (b, e) {
@@ -467,12 +469,12 @@ Dash.prototype = {
                 this._searchPane = new ResultPane(this);
                 this._searchPane.content.append(new Clutter.Text({ color: TEXT_COLOR,
                                                                    font_name: 'Sans Bold 10px',
-                                                                   text: "APPLICATIONS" }),
+                                                                   text: _("APPLICATIONS") }),
                                                  Big.BoxPackFlags.NONE);
                 this._searchAreaApps = this._searchPane.packResults(AppDisplay.AppDisplay, false);
                 this._searchPane.content.append(new Clutter.Text({ color: TEXT_COLOR,
                                                                    font_name: 'Sans Bold 10px',
-                                                                   text: "RECENT DOCUMENTS" }),
+                                                                   text: _("RECENT DOCUMENTS") }),
                                                  Big.BoxPackFlags.NONE);
                 this._searchAreaDocs = this._searchPane.packResults(DocDisplay.DocDisplay, false);
                 this._addPane(this._searchPane);
@@ -540,7 +542,7 @@ Dash.prototype = {
 
         /***** Applications *****/
 
-        let appsSection = new Section("APPLICATIONS");
+        let appsSection = new Section(_("APPLICATIONS"));
         let appWell = new AppDisplay.AppWell();
         appsSection.content.append(appWell.actor, Big.BoxPackFlags.EXPAND);
 
@@ -558,14 +560,14 @@ Dash.prototype = {
 
         /***** Places *****/
 
-        let placesSection = new Section("PLACES", true);
+        let placesSection = new Section(_("PLACES"), true);
         let placesDisplay = new Places.Places();
         placesSection.content.append(placesDisplay.actor, Big.BoxPackFlags.EXPAND);
         this.sectionArea.append(placesSection.actor, Big.BoxPackFlags.NONE);
 
         /***** Documents *****/
 
-        let docsSection = new Section("RECENT DOCUMENTS");
+        let docsSection = new Section(_("RECENT DOCUMENTS"));
 
         let docDisplay = new DocDisplay.DocDisplay();
         docDisplay.load();

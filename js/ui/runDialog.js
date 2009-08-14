@@ -6,6 +6,8 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const Main = imports.ui.main;
 
@@ -69,7 +71,7 @@ RunDialog.prototype = {
 
         let label = new Clutter.Text({ color: BOX_TEXT_COLOR,
                                        font_name: '18px Sans',
-                                       text: 'Please enter a command:' });
+                                       text: _("Please enter a command:") });
         label.set_position(6, 6);
         boxGroup.add_actor(label);
 
