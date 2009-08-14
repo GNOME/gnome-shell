@@ -1,0 +1,144 @@
+# Portuguese translations for gnome-shell package.
+# Copyright (C) 2009 THE gnome-shell'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# Og Maciel <ogmaciel@gnome.org>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-14 17:53-0400\n"
+"PO-Revision-Date: 2009-08-14 17:53-0400\n"
+"Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
+"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. left side
+#: ../js/ui/panel.js:266
+msgid "Activities"
+msgstr "Atividades"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:412
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#: ../js/ui/dash.js:235
+msgid "Find apps or documents"
+msgstr "Localizar aplicativos ou documentos"
+
+#: ../js/ui/dash.js:336
+msgid "Browse"
+msgstr "Navegar"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:472 ../js/ui/dash.js:545
+msgid "APPLICATIONS"
+msgstr "APLICATIVOS"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:477 ../js/ui/dash.js:570
+msgid "RECENT DOCUMENTS"
+msgstr "DOCUMENTOS RECENTES"
+
+#. **** Places ****
+#: ../js/ui/dash.js:563
+msgid "PLACES"
+msgstr "LOCAIS"
+
+#: ../js/ui/runDialog.js:74
+msgid "Please enter a command:"
+msgstr "Por favor digite um comando:"
+
+#: ../src/gdmuser/gdm-user.c:242
+msgid "Manager"
+msgstr "Gerenciador"
+
+#: ../src/gdmuser/gdm-user.c:243
+msgid "The user manager object this user is controlled by."
+msgstr "O objeto gerenciador de usuários que controla este usuário."
+
+#: ../src/shell-global.c:841
+msgid "Less than a minute ago"
+msgstr "Menos de um minuto atrás"
+
+#: ../src/shell-global.c:844
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minuto atrás"
+msgstr[1] "%d minutos atrás"
+
+#: ../src/shell-global.c:847
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d hora atrás"
+msgstr[1] "%d horas atrás"
+
+#: ../src/shell-global.c:850
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d dia atrás"
+msgstr[1] "%d dias atrás"
+
+#: ../src/shell-global.c:853
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d semana atrás"
+msgstr[1] "%d semanas atrás"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Não foi possível travar a tela: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "Não foi possível definir a proteção de tela para uma tela vazia: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Não foi possível encerrar a sessão: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Informação da conta..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Barra lateral"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Preferências do sistema..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Travar a tela"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Alternar usuário"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Encerrar sessão..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Desligar..."
