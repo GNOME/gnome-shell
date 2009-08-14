@@ -145,50 +145,13 @@ WindowManager.prototype = {
     },
 
     _maximizeWindow : function(actor, targetX, targetY, targetWidth, targetHeight) {
-        if (!this._shouldAnimate(actor)) {
-            this._shellwm.completed_maximize(actor);
-            return;
-        }
-
-        /* this doesn't work very well, as simply scaling up the existing
-         * window contents doesn't produce anything like the same results as
-         * actually maximizing the window.
-         */
-        let scaleX = targetWidth / actor.width;
-        let scaleY = targetHeight / actor.height;
-        let anchorX = (actor.x - targetX) * actor.width/(targetWidth - actor.width);
-        let anchorY = (actor.y - targetY) * actor.height/(targetHeight - actor.height);
-        
-        actor.move_anchor_point(anchorX, anchorY);
-
-        this._maximizing.push(actor);
-        Tweener.addTween(actor,
-                         { scale_x: scaleX,
-                           scale_y: scaleY,
-                           time: WINDOW_ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this._maximizeWindowDone,
-                           onCompleteScope: this,
-                           onCompleteParams: [actor],
-                           onOverwrite: this._maximizeWindowOverwrite,
-                           onOverwriteScope: this,
-                           onOverwriteParams: [actor]
-                         });
+        this._shellwm.completed_maximize(actor);
     },
 
     _maximizeWindowDone : function(actor) {
-        if (this._removeEffect(this._maximizing, actor)) {
-            Tweener.removeTweens(actor);
-            actor.set_scale(1.0, 1.0);
-            actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
-            this._shellwm.completed_maximize(actor);
-        }
     },
 
     _maximizeWindowOverwrite : function(actor) {
-        if (this._removeEffect(this._maximizing, actor)) {
-            this._shellwm.completed_maximize(actor);
-        }
     },
 
     _unmaximizeWindow : function(actor, targetX, targetY, targetWidth, targetHeight) {
