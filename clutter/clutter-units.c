@@ -499,30 +499,32 @@ gchar *
 clutter_units_to_string (const ClutterUnits *units)
 {
   const gchar *unit_name = NULL;
-  gchar *fmt = NULL;
+  const gchar *fmt = NULL;
+  gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
 
   g_return_val_if_fail (units != NULL, NULL);
 
   switch (units->unit_type)
     {
+    /* special case: there is no such thing as "half a pixel", so
+     * we round up to the nearest integer using C default
+     */
+    case CLUTTER_UNIT_PIXEL:
+      return g_strdup_printf ("%d px", (int) units->value);
+
     case CLUTTER_UNIT_MM:
       unit_name = "mm";
-      fmt = g_strdup_printf ("%.2f", units->value);
+      fmt = "%.2f";
       break;
 
     case CLUTTER_UNIT_POINT:
       unit_name = "pt";
-      fmt = g_strdup_printf ("%.1f", units->value);
+      fmt = "%.1f";
       break;
 
     case CLUTTER_UNIT_EM:
       unit_name = "em";
-      fmt = g_strdup_printf ("%.2f", units->value);
-      break;
-
-    case CLUTTER_UNIT_PIXEL:
-      unit_name = "px";
-      fmt = g_strdup_printf ("%d", (int) units->value);
+      fmt = "%.2f";
       break;
 
     default:
@@ -530,7 +532,9 @@ clutter_units_to_string (const ClutterUnits *units)
       break;
     }
 
-  return g_strconcat (fmt, " ", unit_name, NULL);
+  g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE, fmt, units->value);
+
+  return g_strconcat (buf, " ", unit_name, NULL);
 }
 
 /*
