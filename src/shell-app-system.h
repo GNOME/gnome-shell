@@ -4,6 +4,8 @@
 #include <gio/gio.h>
 #include <clutter/clutter.h>
 
+#include "window.h"
+
 #define SHELL_TYPE_APP_SYSTEM                 (shell_app_system_get_type ())
 #define SHELL_APP_SYSTEM(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHELL_TYPE_APP_SYSTEM, ShellAppSystem))
 #define SHELL_APP_SYSTEM_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_APP_SYSTEM, ShellAppSystemClass))
@@ -58,10 +60,10 @@ char *shell_app_info_get_name (ShellAppInfo *info);
 char *shell_app_info_get_description (ShellAppInfo *info);
 char *shell_app_info_get_executable (ShellAppInfo *info);
 char *shell_app_info_get_desktop_file_path (ShellAppInfo *info);
-GIcon *shell_app_info_get_icon (ShellAppInfo *info);
 ClutterActor *shell_app_info_create_icon_texture (ShellAppInfo *info, float size);
 GSList *shell_app_info_get_categories (ShellAppInfo *info);
 gboolean shell_app_info_get_is_nodisplay (ShellAppInfo *info);
+gboolean shell_app_info_is_transient (ShellAppInfo *info);
 gboolean shell_app_info_launch_full (ShellAppInfo *info,
                             guint         timestamp,
                             GList        *uris,
@@ -76,6 +78,8 @@ ShellAppInfo *shell_app_system_load_from_desktop_file (ShellAppSystem *system, c
 ShellAppInfo *shell_app_system_lookup_cached_app (ShellAppSystem *system, const char *id);
 
 ShellAppInfo *shell_app_system_lookup_heuristic_basename (ShellAppSystem *system, const char *id);
+
+ShellAppInfo *shell_app_system_create_from_window (ShellAppSystem *system, MetaWindow *window);
 
 GSList *shell_app_system_get_menus (ShellAppSystem *system);
 
