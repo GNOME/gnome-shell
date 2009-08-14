@@ -468,11 +468,12 @@ WellDisplayItem.prototype = {
         let draggable = DND.makeDraggable(this.actor);
 
         let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                    x_align: Big.BoxAlignment.CENTER });
+                                    x_align: Big.BoxAlignment.CENTER,
+                                    y_align: Big.BoxAlignment.CENTER });
         this._icon = appInfo.create_icon_texture(APP_ICON_SIZE);
         iconBox.append(this._icon, Big.BoxPackFlags.NONE);
 
-        this.actor.append(iconBox, Big.BoxPackFlags.NONE);
+        this.actor.append(iconBox, Big.BoxPackFlags.EXPAND);
 
         this._windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
 
@@ -615,20 +616,17 @@ WellGrid.prototype = {
         let y = box.y1;
         let columnIndex = 0;
         for (let i = 0; i < children.length; i++) {
-            let [childMinWidth, childMinHeight,
-                 childNaturalWidth, childNaturalHeight] = children[i].get_preferred_size();
+            let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(-1);
 
-            /* Center the item in its allocation */
+            /* Center the item in its allocation horizontally */
             let width = Math.min(itemWidth, childNaturalWidth);
-            let height = Math.min(itemHeight, childNaturalHeight);
             let horizSpacing = (itemWidth - width) / 2;
-            let vertSpacing = (itemHeight - height) / 2;
 
             let childBox = new Clutter.ActorBox();
             childBox.x1 = Math.floor(x + horizSpacing);
-            childBox.y1 = Math.floor(y + vertSpacing);
+            childBox.y1 = y;
             childBox.x2 = childBox.x1 + width;
-            childBox.y2 = childBox.y1 + height;
+            childBox.y2 = childBox.y1 + itemHeight;
             children[i].allocate(childBox, flags);
 
             let atSeparator = (i == this._separatorIndex - 1);
@@ -803,11 +801,10 @@ AppWell.prototype = {
         /* hardcode here pending some design about how exactly desktop contexts behave */
         let contextId = "";
 
-        let runningIds = this._appMonitor.get_running_app_ids(contextId).filter(function (e) {
-            return !(e in favoriteIdsHash);
+        let running = this._appMonitor.get_running_apps(contextId).filter(function (e) {
+            return !(e.get_id() in favoriteIdsHash);
         });
         let favorites = this._lookupApps(favoriteIds);
-        let running = this._lookupApps(runningIds);
 
         let displays = []
         this._addApps(favorites, true);
@@ -831,22 +828,25 @@ AppWell.prototype = {
     acceptDrop : function(source, actor, x, y, time) {
         let global = Shell.Global.get();
 
-        let id = null;
+        let appSystem = Shell.AppSystem.get_default();
+
+        let app = null;
         if (source instanceof WellDisplayItem) {
-            id = source.appInfo.get_id();
+            app = source.appInfo;
         } else if (source instanceof AppDisplayItem) {
-            id = source.getId();
+            app = appSystem.lookup_cached_app(source.getId());
         } else if (source instanceof Workspaces.WindowClone) {
             let appMonitor = Shell.AppMonitor.get_default();
-            let app = appMonitor.get_window_app(source.metaWindow);
-            id = app.get_id();
+            app = appMonitor.get_window_app(source.metaWindow);
         }
 
-        if (id == null) {
+        // Don't allow favoriting of transient apps
+        if (app == null || app.is_transient()) {
             return false;
         }
 
-        let appSystem = Shell.AppSystem.get_default();
+        let id = app.get_id();
+
         let favoriteIds = this._appSystem.get_favorites();
         let favoriteIdsObject = this._arrayValues(favoriteIds);
 

@@ -22,6 +22,7 @@
 
 #include "display.h"
 #include "window.h"
+#include "group.h"
 
 /* This file includes modified code from
  * desktop-data-engine/engine-dbus/hippo-application-monitor.c
@@ -140,6 +141,11 @@ G_DEFINE_TYPE (ShellAppMonitor, shell_app_monitor, G_TYPE_OBJECT);
 /* Represents an application record for a given context */
 struct AppUsage
 {
+  /* Whether the application we're tracking is "transient", see
+   * shell_app_info_is_transient.
+   */
+  gboolean transient;
+
   gdouble score; /* Based on the number of times we'e seen the app and normalized */
   long last_seen; /* Used to clear old apps we've only seen a few times */
 
@@ -317,24 +323,39 @@ get_cleaned_wmclass_for_window (MetaWindow  *window)
   return wmclass;
 }
 
+static gboolean
+window_is_tracked (MetaWindow *window)
+{
+  return !meta_window_is_override_redirect (window);
+}
+
+static ShellAppInfo *
+create_transient_app_for_window (MetaWindow *window)
+{
+  return shell_app_system_create_from_window (shell_app_system_get_default (), window);
+}
+
 /**
- * get_app_for_window:
+ * get_app_for_window_direct:
  *
- * Returns the application associated with a window, or %NULL if
- * we're unable to determine one.
+ * Looks only at the given window, and attempts to determine
+ * an application based on WM_CLASS.  If that fails, then
+ * a "transient" application is created.
+ *
+ * Return value: (transfer full): A newly-referenced #ShellAppInfo
  */
 static ShellAppInfo *
-get_app_for_window (MetaWindow     *window)
+get_app_for_window_direct (MetaWindow  *window)
 {
-  char *wmclass;
-  char *with_desktop;
   ShellAppInfo *result;
   ShellAppSystem *appsys;
+  char *wmclass;
+  char *with_desktop;
 
   wmclass = get_cleaned_wmclass_for_window (window);
 
   if (!wmclass)
-    return NULL;
+    return create_transient_app_for_window (window);
 
   with_desktop = g_strjoin (NULL, wmclass, ".desktop", NULL);
   g_free (wmclass);
@@ -343,7 +364,61 @@ get_app_for_window (MetaWindow     *window)
   result = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
   g_free (with_desktop);
 
+  if (result == NULL)
+    result = create_transient_app_for_window (window);
   return result;
+}
+
+/**
+ * get_app_for_window:
+ *
+ * Determines the application associated with a window, using
+ * all available information such as the window's MetaGroup,
+ * and what we know about other windows.
+ */
+static ShellAppInfo *
+get_app_for_window (ShellAppMonitor    *monitor,
+                    MetaWindow         *window)
+{
+  ShellAppInfo *result;
+  MetaWindow *source_window;
+  GSList *group_windows;
+  MetaGroup *group;
+  GSList *iter;
+
+  group = meta_window_get_group (window);
+  if (group == NULL)
+    group_windows = g_slist_prepend (NULL, window);
+  else
+    group_windows = meta_group_list_windows (group);
+
+  source_window = window;
+
+  result = NULL;
+  /* Try finding a window in the group of type NORMAL; if we
+   * succeed, use that as our source. */
+  for (iter = group_windows; iter; iter = iter->next)
+    {
+      MetaWindow *group_window = iter->data;
+
+      if (meta_window_get_window_type (group_window) != META_WINDOW_NORMAL)
+        continue;
+
+       source_window = group_window;
+       result = g_hash_table_lookup (monitor->window_to_app, group_window);
+       if (result)
+         break;
+    }
+
+  g_slist_free (group_windows);
+
+  if (result != NULL)
+    {
+      shell_app_info_ref (result);
+      return result;
+    }
+
+  return get_app_for_window_direct (source_window);
 }
 
 static const char *
@@ -410,10 +485,17 @@ get_active_window (ShellAppMonitor *monitor)
 {
   MetaScreen *screen;
   MetaDisplay *display;
+  MetaWindow *window;
+
   screen = shell_global_get_screen (shell_global_get ());
   display = meta_screen_get_display (screen);
-  return meta_display_get_focus_window (display);
+  window = meta_display_get_focus_window (display);
+
+  if (window != NULL && window_is_tracked (window))
+    return window;
+  return NULL;
 }
+
 
 typedef struct {
   gboolean in_context;
@@ -504,13 +586,6 @@ increment_usage_for_window_at_time (ShellAppMonitor *self,
   guint usage_count;
 
   usage = get_app_usage_from_window (self, window);
-  if (usage == NULL)
-    {
-      /* This could in theory happen if we lost the app tracking, i.e.
-       * the window changed WM_CLASS.  In that case, time for a punt.
-       */
-      return;
-    }
 
   usage->last_seen = time;
 
@@ -533,30 +608,50 @@ increment_usage_for_window (ShellAppMonitor *self,
   increment_usage_for_window_at_time (self, window, curtime);
 }
 
+/**
+ * reset_usage:
+ *
+ * For non-transient applications, just reset the "seen sequence".
+ *
+ * For transient ones, we don't want to keep an AppUsage around, so
+ * remove it entirely.
+ */
+static void
+reset_usage (ShellAppMonitor *self,
+             const char      *context,
+             const char      *appid,
+             AppUsage        *usage)
+{
+  if (!usage->transient)
+    {
+      usage->initially_seen_sequence = 0;
+    }
+  else
+    {
+      GHashTable *usages;
+      usages = g_hash_table_lookup (self->app_usages_for_context, context);
+      g_hash_table_remove (usages, appid);
+    }
+}
+
 static void
 track_window (ShellAppMonitor *self,
               MetaWindow      *window)
 {
   ShellAppInfo *app;
   AppUsage *usage;
-  MetaWindow *transient_for;
 
-  /* Just ignore anything that isn't NORMAL */
-  if (meta_window_get_window_type (window) != META_WINDOW_NORMAL)
+  if (!window_is_tracked (window))
     return;
 
-  /* Also ignore transients */
-  transient_for = meta_window_get_transient_for (window);
-  if (transient_for != NULL)
-    return;
-
-  app = get_app_for_window (window);
+  app = get_app_for_window (self, window);
   if (!app)
     return;
 
   g_hash_table_insert (self->window_to_app, window, app);
 
   usage = get_app_usage_from_window (self, window);
+  usage->transient = shell_app_info_is_transient (app);
 
   /* Keep track of the number of windows open for this app, when it
    * switches between 0 and 1 we emit an app-added signal.
@@ -590,6 +685,7 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
   ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
   ShellAppInfo *app;
   AppUsage *usage;
+  const char *context;
 
   app = g_hash_table_lookup (self->window_to_app, window);
   if (!app)
@@ -597,6 +693,7 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
 
   shell_app_info_ref (app);
 
+  context = get_window_context (window);
   usage = get_app_usage_from_window (self, window);
 
   if (window == self->watched_window)
@@ -610,8 +707,8 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
 
   if (usage->window_count == 0)
     {
-      usage->initially_seen_sequence = 0;
       g_signal_emit (self, signals[APP_REMOVED], 0, app);
+      reset_usage (self, context, shell_app_info_get_id (app), usage);
     }
 
   shell_app_info_unref (app);
@@ -870,7 +967,7 @@ shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
  * @monitor: An app monitor instance
  * @metawin: A #MetaWindow
  *
- * Returns: Desktop file id associated with window
+ * Returns: Application associated with window
  */
 ShellAppInfo *
 shell_app_monitor_get_window_app (ShellAppMonitor *monitor,
@@ -900,8 +997,10 @@ sort_apps_by_open_sequence (gconstpointer a,
                             gpointer datap)
 {
   AppOpenSequenceSortData *data = datap;
-  const char *id_a = a;
-  const char *id_b = b;
+  ShellAppInfo *app_a = (ShellAppInfo*)a;
+  ShellAppInfo *app_b = (ShellAppInfo*)b;
+  const char *id_a = shell_app_info_get_id (app_a);
+  const char *id_b = shell_app_info_get_id (app_b);
   AppUsage *usage_a;
   AppUsage *usage_b;
 
@@ -915,38 +1014,48 @@ sort_apps_by_open_sequence (gconstpointer a,
 }
 
 /**
- * shell_app_monitor_get_running_app_ids:
+ * shell_app_monitor_get_running_apps:
  * @monitor: An app monitor instance
  * @context: Activity identifier
  *
  * Returns the set of applications which currently have at least one open
  * window in the given context.
  *
- * Returns: (element-type utf8) (transfer container): List of application desktop
- *     identifiers
+ * Returns: (element-type ShellAppInfo) (transfer container): Active applications
  */
 GSList *
-shell_app_monitor_get_running_app_ids (ShellAppMonitor *monitor,
-                                       const char      *context)
+shell_app_monitor_get_running_apps (ShellAppMonitor *monitor,
+                                    const char      *context)
 {
-  UsageIterator iter;
-  const char *cur_context;
-  const char *id;
-  AppUsage *usage;
+  GHashTableIter iter;
+  gpointer key, value;
   GSList *ret;
   AppOpenSequenceSortData data;
+  GHashTable *unique_apps;
 
-  usage_iterator_init (monitor, &iter);
+  unique_apps = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_hash_table_iter_init (&iter, monitor->window_to_app);
 
   ret = NULL;
-  while (usage_iterator_next (monitor, &iter, &cur_context, &id, &usage))
+  while (g_hash_table_iter_next (&iter, &key, &value))
     {
-      if (strcmp (cur_context, context) != 0)
+      MetaWindow *window = key;
+      ShellAppInfo *app = value;
+      const char *id;
+
+      if (strcmp (get_window_context (window), context) != 0)
         continue;
 
-      if (usage->window_count > 0)
-        ret = g_slist_prepend (ret, (char*)id);
+      id = shell_app_info_get_id (app);
+
+      if (g_hash_table_lookup (unique_apps, id))
+        continue;
+      g_hash_table_insert (unique_apps, (gpointer)id, (gpointer)id);
+
+      ret = g_slist_prepend (ret, app);
     }
+  g_hash_table_destroy (unique_apps);
 
   data.self = monitor;
   data.context_id = context;
@@ -959,7 +1068,8 @@ idle_handle_focus_change (gpointer data)
   ShellAppMonitor *monitor = data;
   long curtime = get_time ();
 
-  increment_usage_for_window (monitor, monitor->watched_window);
+  if (monitor->watched_window != NULL)
+    increment_usage_for_window (monitor, monitor->watched_window);
 
   monitor->watched_window = get_active_window (monitor);
   monitor->watch_start_time = curtime;
@@ -1122,7 +1232,6 @@ idle_save_application_usage (gpointer data)
   GDataOutputStream *data_output;
   GError *error = NULL;
 
-
   monitor->save_id = 0;
 
   /* Parent directory is already created by shell-global */
@@ -1146,6 +1255,10 @@ idle_save_application_usage (gpointer data)
   current_context = NULL;
   while (usage_iterator_next (monitor, &iter, &context, &id, &usage))
     {
+      /* Don't save the fake apps we create for windows */
+      if (usage->transient)
+        continue;
+
       if (context != current_context)
         {
           if (current_context != NULL)
