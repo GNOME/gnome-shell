@@ -2322,6 +2322,18 @@ unmap_client_window (MetaWindow *window,
 }
 
 /**
+ * meta_window_is_mapped:
+ * @window: a #MetaWindow
+ *
+ * Determines whether the X window for the MetaWindow is mapped.
+ */
+gboolean
+meta_window_is_mapped (MetaWindow  *window)
+{
+  return window->mapped;
+}
+
+/**
  * meta_window_toplevel_is_mapped:
  * @window: a #MetaWindow
  *

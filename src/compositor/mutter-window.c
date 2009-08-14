@@ -10,7 +10,6 @@
 
 #include <clutter/x11/clutter-x11.h>
 
-#include "../core/window-private.h" /* FIXME: add meta_window_is_override_redirect */
 #include "display.h"
 #include "errors.h"
 #include "frame.h"
@@ -844,7 +843,7 @@ mutter_window_after_effects (MutterWindow *self)
   mutter_window_sync_visibility (self);
   mutter_window_sync_actor_position (self);
 
-  if (!priv->window->mapped)
+  if (!meta_window_is_mapped (priv->window))
     mutter_window_detach (self);
 
   if (priv->needs_repair)
@@ -1183,7 +1182,7 @@ mutter_window_new (MetaWindow *window)
 
   /* FIXME: Remove the redundant data we store in self->priv->attrs, and
    * simply query metacity core for the data. */
-  if (!XGetWindowAttributes (display->xdisplay, top_window, &attrs))
+  if (!XGetWindowAttributes (meta_display_get_xdisplay (display), top_window, &attrs))
     return NULL;
 
   self = g_object_new (MUTTER_TYPE_COMP_WINDOW,
@@ -1633,7 +1632,7 @@ check_needs_reshape (MutterWindow *self)
 #ifdef HAVE_SHAPE
   if (priv->shaped)
     {
-      Display *xdisplay = meta_display_get_xdisplay (priv->window->display);
+      Display *xdisplay = meta_display_get_xdisplay (meta_window_get_display (priv->window));
       XRectangle *rects;
       int n_rects, ordering;
 

@@ -456,8 +456,6 @@ void        meta_window_resize_with_gravity (MetaWindow  *window,
 /* Return whether the window should be currently mapped */
 gboolean    meta_window_should_be_showing   (MetaWindow  *window);
 
-gboolean    meta_window_toplevel_is_mapped  (MetaWindow  *window);
-
 /* See warning in window.c about this function */
 gboolean    __window_is_terminal (MetaWindow *window);
 
