@@ -1,4 +1,4 @@
-libclutterincludedir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
+libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
 libclutterinclude_HEADERS = clutter-egl.h
 
 INCLUDES = \
@@ -6,12 +6,9 @@ INCLUDES = \
         -DCLUTTER_COMPILATION \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \
-	-I$(top_builddir)/clutter \
-	$(CLUTTER_CFLAGS) \
-	$(CLUTTER_DEBUG_CFLAGS) \
-	$(MAINTAINER_CFLAGS)
+	-I$(top_builddir)/clutter
 
-LDADD = $(CLUTTER_LIBS)
+common_ldadd = $(CLUTTER_LIBS)
 
 noinst_LTLIBRARIES = libclutter-eglnative.la
 
@@ -22,3 +19,5 @@ libclutter_eglnative_la_SOURCES = \
 	clutter-stage-egl.h \
 	clutter-stage-egl.c \
 	clutter-egl-headers.h
+libclutter_eglnative_la_CPPFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+libclutter_eglnative_la_LIBADD = $(common_ldadd)
