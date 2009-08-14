@@ -3,6 +3,7 @@
 #include <clutter/clutter.h>
 
 #include <glib.h>
+#include <locale.h>
 #include <stdlib.h>
 
 #include "test-conform-common.h"
@@ -13,6 +14,8 @@ test_conform_skip_test (TestConformSimpleFixture *fixture,
 {
   /* void */
 }
+
+static TestConformSharedState *shared_state = NULL;
 
 /* This is a bit of sugar for adding new conformance tests:
  *
@@ -56,11 +59,10 @@ test_conform_skip_test (TestConformSimpleFixture *fixture,
               test_conform_skip_test,                                   \
               test_conform_simple_fixture_teardown);    } G_STMT_END
 
-int
-main (int argc, char **argv)
+static void
+clutter_test_init (gint    *argc,
+                   gchar ***argv)
 {
-  TestConformSharedState *shared_state = g_new0 (TestConformSharedState, 1);
-
 #ifdef HAVE_CLUTTER_GLX
   /* on X11 we need a display connection to run the test suite */
   const gchar *display = g_getenv ("DISPLAY");
@@ -68,7 +70,8 @@ main (int argc, char **argv)
     {
       g_print ("No DISPLAY found. Unable to run the conformance "
                "test suite without a display.");
-      return EXIT_SUCCESS;
+
+      exit (EXIT_SUCCESS);
     }
 #endif
 
@@ -79,17 +82,24 @@ main (int argc, char **argv)
    */
   g_setenv ("CLUTTER_VBLANK", "none", FALSE);
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (argc, argv, NULL);
 
   g_test_bug_base ("http://bugzilla.openedhand.com/show_bug.cgi?id=%s");
 
   /* Initialise the state you need to share with everything.
    */
-  shared_state->argc_addr = &argc;
-  shared_state->argv_addr = &argv;
+  shared_state = g_new0 (TestConformSharedState, 1);
+  shared_state->argc_addr = argc;
+  shared_state->argv_addr = argv;
 
   g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
 	    == CLUTTER_INIT_SUCCESS);
+}
+
+int
+main (int argc, char **argv)
+{
+  clutter_test_init (&argc, &argv);
 
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
   TEST_CONFORM_SKIP (!g_test_slow (), "/timeline", test_timeline_interpolate);
@@ -97,7 +107,6 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/picking", test_pick);
 
-  /* ClutterText */
   TEST_CONFORM_SIMPLE ("/text", test_text_utf8_validation);
   TEST_CONFORM_SIMPLE ("/text", test_text_empty);
   TEST_CONFORM_SIMPLE ("/text", test_text_set_empty);
