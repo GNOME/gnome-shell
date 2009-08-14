@@ -8579,6 +8579,20 @@ meta_window_is_shaded (MetaWindow *window)
   return window->shaded;
 }
 
+/**
+ * meta_window_is_override_redirect:
+ * @window: A #MetaWindow
+ *
+ * Returns if this window isn't managed by mutter; it will
+ * control its own positioning and mutter won't draw decorations
+ * among other things.  In X terminology this is "override redirect".
+ */
+gboolean
+meta_window_is_override_redirect (MetaWindow *window)
+{
+  return window->override_redirect;
+}
+
 MetaRectangle *
 meta_window_get_rect (MetaWindow *window)
 {

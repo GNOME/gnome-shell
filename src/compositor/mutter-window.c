@@ -701,10 +701,7 @@ mutter_window_get_window_type (MutterWindow *self)
 gboolean
 mutter_window_is_override_redirect (MutterWindow *self)
 {
-  if (self->priv->window->override_redirect)
-    return TRUE;
-
-  return FALSE;
+  return meta_window_is_override_redirect (self->priv->window);
 }
 
 const char *mutter_window_get_description (MutterWindow *self)
