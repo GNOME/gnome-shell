@@ -35,7 +35,7 @@
 	<applyto>/desktop/gnome/shell/sidebar/visible</applyto>
 	<owner>gnome-shell</owner>
 	<type>bool</type>
-	<default>true</default>
+	<default>false</default>
 	<locale name="C">
 	  <short>Whether or not to display the sidebar</short>
 	  <long>
