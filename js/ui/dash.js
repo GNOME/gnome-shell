@@ -252,7 +252,7 @@ SearchEntry.prototype = {
 
         // Mark as editable just to get a cursor
         let defaultTextProperties = { ellipsize: Pango.EllipsizeMode.END,
-                                      text: "Find apps or documents",
+                                      text: this._defaultText,
                                       editable: true,
                                       color: TEXT_COLOR,
                                       cursor_visible: false,
