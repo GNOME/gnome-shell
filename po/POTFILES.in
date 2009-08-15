@@ -1,4 +1,4 @@
-data/gnome-shell.desktop.in.in 
+data/gnome-shell.desktop.in.in
 js/ui/panel.js
 js/ui/dash.js
 js/ui/overview.js
@@ -6,4 +6,4 @@ js/ui/runDialog.js
 src/gdmuser/gdm-user.c
 src/shell-global.c
 src/shell-status-menu.c
-src/shell-uri-util.c 
+src/shell-uri-util.c
