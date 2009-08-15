@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 04:12-0600\n"
-"PO-Revision-Date: 2009-08-15 04:23-0600\n"
+"POT-Creation-Date: 2009-08-15 06:01-0600\n"
+"PO-Revision-Date: 2009-08-15 06:01-0600\n"
 "Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -155,3 +155,27 @@ msgstr "Logáil Amach..."
 #: ../src/shell-status-menu.c:557
 msgid "Shut Down..."
 msgstr "Múch..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Fillteán Baile"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Córas Comhad"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Cuardaigh"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
