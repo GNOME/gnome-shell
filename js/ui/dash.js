@@ -22,11 +22,23 @@ const DEFAULT_PADDING = 4;
 const DASH_SECTION_PADDING = 6;
 const DASH_SECTION_SPACING = 40;
 const DASH_CORNER_RADIUS = 5;
+const DASH_PADDING_SIDE = 14;
 
 const BACKGROUND_COLOR = new Clutter.Color();
 BACKGROUND_COLOR.from_pixel(0x000000c0);
 
-const DASH_PADDING_SIDE = 14;
+const TEXT_COLOR = new Clutter.Color();
+TEXT_COLOR.from_pixel(0x5f5f5fff);
+const BRIGHT_TEXT_COLOR = new Clutter.Color();
+BRIGHT_TEXT_COLOR.from_pixel(0xffffffff);
+const SEARCH_TEXT_COLOR = new Clutter.Color();
+SEARCH_TEXT_COLOR.from_pixel(0x333333ff);
+
+const SEARCH_CURSOR_COLOR = BRIGHT_TEXT_COLOR;
+const HIGHLIGHTED_SEARCH_CURSOR_COLOR = SEARCH_TEXT_COLOR;
+
+const HIGHLIGHTED_SEARCH_BACKGROUND_COLOR = new Clutter.Color();
+HIGHLIGHTED_SEARCH_BACKGROUND_COLOR.from_pixel(0xc4c4c4ff);
 
 const SEARCH_BORDER_BOTTOM_COLOR = new Clutter.Color();
 SEARCH_BORDER_BOTTOM_COLOR.from_pixel(0x191919ff);
@@ -44,11 +56,6 @@ const SECTION_INNER_SPACING = 8;
 
 const BROWSE_ACTIVATED_BG = new Clutter.Color();
 BROWSE_ACTIVATED_BG.from_pixel(0x303030f0);
-
-const TEXT_COLOR = new Clutter.Color();
-TEXT_COLOR.from_pixel(0x5f5f5fff);
-const BRIGHT_TEXT_COLOR = new Clutter.Color();
-BRIGHT_TEXT_COLOR.from_pixel(0xffffffff);
 
 const PANE_BORDER_COLOR = new Clutter.Color();
 PANE_BORDER_COLOR.from_pixel(0x101d3cfa);
@@ -229,7 +236,13 @@ SearchEntry.prototype = {
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                    y_align: Big.BoxAlignment.CENTER,
                                    border_bottom: SECTION_BORDER,
-                                   border_color: SEARCH_BORDER_BOTTOM_COLOR });
+                                   border_color: SEARCH_BORDER_BOTTOM_COLOR,
+                                   reactive: true  });
+        this.actor.connect('button-press-event', Lang.bind(this, function () {
+            this._resetTextState(true);
+            return false;
+        }));
+
         this.pane = null;
 
         this._defaultText = _("Find apps or documents");
@@ -238,15 +251,13 @@ SearchEntry.prototype = {
         let entryProperties = { editable: true,
                                 activatable: true,
                                 single_line_mode: true,
-                                color: BRIGHT_TEXT_COLOR,
-                                cursor_color: BRIGHT_TEXT_COLOR,
-                                text: '' };
+                                color: SEARCH_TEXT_COLOR,
+                                cursor_color: SEARCH_CURSOR_COLOR };
         Lang.copyProperties(textProperties, entryProperties);
-        // We need to initialize the text for the entry to have the cursor displayed
-        // in it. See http://bugzilla.openedhand.com/show_bug.cgi?id=1365
         this.entry = new Clutter.Text(entryProperties);
+
         this.entry.connect('notify::text', Lang.bind(this, function () {
-            this._resetTextState();
+            this._resetTextState(false);
         }));
         this.actor.append(this.entry, Big.BoxPackFlags.EXPAND);
 
@@ -277,7 +288,18 @@ SearchEntry.prototype = {
                                                                          closeUri, 18, 18);
         this._closeIcon.reactive = true;
         this._closeIcon.connect('button-press-event', Lang.bind(this, function () {
-            this.entry.text = '';
+            // Resetting this.entry.text will trigger notify::text signal which will
+            // result in this._resetTextState() being called, but we should not rely
+            // on that not short-circuiting if the text was already empty, so we call
+            // this._resetTextState() explicitly in that case.
+            if (this.entry.text == '')
+                this._resetTextState(false);
+            else
+                this.entry.text = '';
+
+            // Return true to stop the signal emission, so that this.actor doesn't get 
+            // the button-press-event and re-highlight itself.
+            return true;
         }));
         this._repositionDefaultText();
         this._resetTextState();
@@ -295,15 +317,22 @@ SearchEntry.prototype = {
         return this.entry.text;
     },
 
-    _resetTextState: function () {
+    _resetTextState: function (searchEntryClicked) {
         let text = this.getText();
         this._iconBox.remove_all();
-        if (text != '') {
-            this._defaultText.hide();
+        // We highlight the search box if the user starts typing in it 
+        // or just clicks in it to indicate that the search is active.
+        if (text != '' || searchEntryClicked) {
+            if (!searchEntryClicked)
+                this._defaultText.hide();
             this._iconBox.append(this._closeIcon, Big.BoxPackFlags.NONE);
+            this.actor.background_color = HIGHLIGHTED_SEARCH_BACKGROUND_COLOR;
+            this.entry.cursor_color = HIGHLIGHTED_SEARCH_CURSOR_COLOR;
         } else {
             this._defaultText.show();
             this._iconBox.append(this._magnifierIcon, Big.BoxPackFlags.NONE);
+            this.actor.background_color = BACKGROUND_COLOR;
+            this.entry.cursor_color = SEARCH_CURSOR_COLOR;
         }
     },
 
