@@ -1,0 +1,180 @@
+# Hungarian translation of gnome-shell
+# Copyright 2009. Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+#
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-15 11:35+0200\n"
+"PO-Revision-Date: 2009-08-15 11:35+0200\n"
+"Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
+"Language-Team: Hungarian <gnome at fsf dot hu>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. left side
+#: ../js/ui/panel.js:266
+msgid "Activities"
+msgstr "Tevékenységek"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:412
+msgid "%a %l:%M %p"
+msgstr "%a., %k.%M"
+
+#: ../js/ui/dash.js:235
+msgid "Find apps or documents"
+msgstr "Alkalmazások vagy dokumentumok keresése"
+
+#: ../js/ui/dash.js:336
+msgid "Browse"
+msgstr "Tallózás"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:472 ../js/ui/dash.js:545
+msgid "APPLICATIONS"
+msgstr "ALKALMAZÁSOK"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:477 ../js/ui/dash.js:570
+msgid "RECENT DOCUMENTS"
+msgstr "LEGUTÓBBI DOKUMENTUMOK"
+
+#. **** Places ****
+#: ../js/ui/dash.js:563
+msgid "PLACES"
+msgstr "HELYEK"
+
+#: ../js/ui/runDialog.js:74
+msgid "Please enter a command:"
+msgstr "Adjon meg egy parancsot:"
+
+#: ../src/gdmuser/gdm-user.c:242
+msgid "Manager"
+msgstr "Kezelő"
+
+#: ../src/gdmuser/gdm-user.c:243
+msgid "The user manager object this user is controlled by."
+msgstr "A felhasználót kezelő felhasználókezelő objektum."
+
+#: ../src/shell-global.c:841
+msgid "Less than a minute ago"
+msgstr "Kevesebb, mint egy perce"
+
+#: ../src/shell-global.c:844
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d perce"
+msgstr[1] "%d perce"
+
+#: ../src/shell-global.c:847
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d órája"
+msgstr[1] "%d órája"
+
+#: ../src/shell-global.c:850
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d napja"
+msgstr[1] "%d napja"
+
+#: ../src/shell-global.c:853
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d hete"
+msgstr[1] "%d hete"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Nem lehet zárolni a képernyőt: %s "
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr ""
+"Átmenetileg nem lehet beállítani a képernyővédőt a képernyő elsötétítésére: %"
+"s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Nem lehet kijelentkezni: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Fiókinformációk…"
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Oldalsáv"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Rendszerbeállítások…"
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Képernyő zárolása"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Felhasználóváltás"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Kijelentkezés…"
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Leállítás…"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Ablakkezelés és alkalmazásindítás"
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Saját mappa"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Fájlrendszer"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Oldalsáv"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
