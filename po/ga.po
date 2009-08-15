@@ -1,0 +1,157 @@
+# Irish translations for gnome-shell package.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+# Seán de Búrca <leftmostcat@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-15 04:12-0600\n"
+"PO-Revision-Date: 2009-08-15 04:23-0600\n"
+"Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
+"Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : (n%10==1 || n%10==2) ? 1 : (n%"
+"10>=3 && n%10<= 6) ? 2 : ((n%10>=7 && n%10<=9) || n==10) ? 3 : 4;\n"
+
+#. left side
+#: ../js/ui/panel.js:266
+msgid "Activities"
+msgstr "Gníomhartha"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:412
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#: ../js/ui/dash.js:235
+msgid "Find apps or documents"
+msgstr "Aimsigh feidhmchláir nó cáipéisí"
+
+#: ../js/ui/dash.js:336
+msgid "Browse"
+msgstr "Brabhsáil"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:472 ../js/ui/dash.js:545
+msgid "APPLICATIONS"
+msgstr "FEIDHMCHLÁIR"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:477 ../js/ui/dash.js:570
+msgid "RECENT DOCUMENTS"
+msgstr "CÁIPÉISÍ IS DÉANAÍ"
+
+#. **** Places ****
+#: ../js/ui/dash.js:563
+msgid "PLACES"
+msgstr "ÁITEANNA"
+
+#: ../js/ui/runDialog.js:74
+msgid "Please enter a command:"
+msgstr "Iontráil ordú, le do thoil:"
+
+#: ../src/gdmuser/gdm-user.c:242
+msgid "Manager"
+msgstr "Bainisteoir"
+
+#: ../src/gdmuser/gdm-user.c:243
+msgid "The user manager object this user is controlled by."
+msgstr "An réad bhainisteoir úsáideoirí a rialaíonn an t-úsáideoir seo."
+
+#: ../src/shell-global.c:841
+msgid "Less than a minute ago"
+msgstr "Níos lú ná nóiméad ó shin"
+
+#: ../src/shell-global.c:844
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d nóiméad ó shin"
+msgstr[1] "%d nóiméad ó shin"
+msgstr[2] "%d nóiméad ó shin"
+msgstr[3] "%d nóiméad ó shin"
+msgstr[4] "%d nóiméad ó shin"
+
+#: ../src/shell-global.c:847
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d uair ó shin"
+msgstr[1] "%d uair ó shin"
+msgstr[2] "%d uaire ó shin"
+msgstr[3] "%d n-uaire ó shin"
+msgstr[4] "%d uair ó shin"
+
+#: ../src/shell-global.c:850
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d lá ó shin"
+msgstr[1] "%d lá ó shin"
+msgstr[2] "%d lá ó shin"
+msgstr[3] "%d lá ó shin"
+msgstr[4] "%d lá ó shin"
+
+#: ../src/shell-global.c:853
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d seachtain ó shin"
+msgstr[1] "%d sheachtain ó shin"
+msgstr[2] "%d sheachtain ó shin"
+msgstr[3] "%d seachtain ó shin"
+msgstr[4] "%d seachtain ó shin"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Anaithnid"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Ní féidir scáileán a chur faoi ghlas: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "Ní féidir spárálaí scáileáin a shocrú chun scáileán a bhánú: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Ní féidir logáil amach: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Eolas Cuntais..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Barra Taoibh"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Sainroghanna an Chórais..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Cuir Scáileán Faoi Ghlas"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Athraigh Úsáideoir"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Logáil Amach..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Múch..."
