@@ -173,7 +173,11 @@ CLEANFILES += Shell-0.1.gir
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
 Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler --includedir=. --includedir=$(MUTTER_LIB_DIR)/mutter/ Shell-0.1.gir -o $@
+	$(AM_V_GEN) LD_LIBRARY_PATH=.$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}	\
+		$(G_IR_COMPILER)						\
+			--includedir=.						\
+			--includedir=$(MUTTER_LIB_DIR)/mutter/			\
+		Shell-0.1.gir -o $@
 CLEANFILES += Shell-0.1.typelib
 
 Tidy-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makefile
@@ -191,7 +195,8 @@ Tidy-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makefil
 CLEANFILES += Tidy-1.0.gir
 
 Tidy-1.0.typelib: libtidy-1.0.la Tidy-1.0.gir
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Tidy-1.0.gir -o $@
+	$(AM_V_GEN) LD_LIBRARY_PATH=.$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
+		$(G_IR_COMPILER) Tidy-1.0.gir -o $@
 CLEANFILES += Tidy-1.0.typelib
 
 Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
@@ -210,5 +215,6 @@ Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
 CLEANFILES += Big-1.0.gir
 
 Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Big-1.0.gir -o $@
+	$(AM_V_GEN) LD_LIBRARY_PATH=.$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
+		$(G_IR_COMPILER) Big-1.0.gir -o $@
 CLEANFILES += Big-1.0.typelib
