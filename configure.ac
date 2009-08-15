@@ -2,7 +2,7 @@ AC_INIT(gnome-shell, 2.27.0)
 
 AC_CONFIG_AUX_DIR(config)
 
-AM_INIT_AUTOMAKE([dist-bzip2 no-dist-gzip])
+AM_INIT_AUTOMAKE([dist-bzip2 no-dist-gzip foreign])
 AM_MAINTAINER_MODE
 
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
