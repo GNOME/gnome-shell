@@ -233,11 +233,14 @@ function SearchEntry() {
 
 SearchEntry.prototype = {
     _init : function() {
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   y_align: Big.BoxAlignment.CENTER,
+        this.actor = new Big.Box({ padding: DEFAULT_PADDING,
                                    border_bottom: SECTION_BORDER,
                                    border_color: SEARCH_BORDER_BOTTOM_COLOR,
-                                   reactive: true  });
+                                   corner_radius: DASH_CORNER_RADIUS,
+                                   reactive: true });
+        let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                y_align: Big.BoxAlignment.CENTER });
+        this.actor.append(box, Big.BoxPackFlags.EXPAND);
         this.actor.connect('button-press-event', Lang.bind(this, function () {
             this._resetTextState(true);
             return false;
@@ -259,7 +262,7 @@ SearchEntry.prototype = {
         this.entry.connect('notify::text', Lang.bind(this, function () {
             this._resetTextState(false);
         }));
-        this.actor.append(this.entry, Big.BoxPackFlags.EXPAND);
+        box.append(this.entry, Big.BoxPackFlags.EXPAND);
 
         // Mark as editable just to get a cursor
         let defaultTextProperties = { ellipsize: Pango.EllipsizeMode.END,
@@ -270,20 +273,21 @@ SearchEntry.prototype = {
                                       single_line_mode: true };
         Lang.copyProperties(textProperties, defaultTextProperties);
         this._defaultText = new Clutter.Text(defaultTextProperties);
-        this.actor.add_actor(this._defaultText);
+        box.add_actor(this._defaultText);
         this.entry.connect('notify::allocation', Lang.bind(this, function () {
             this._repositionDefaultText();
         }));
 
         this._iconBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER,
-                                      y_align: Big.BoxAlignment.CENTER });
-        this.actor.append(this._iconBox, Big.BoxPackFlags.END);
+                                      y_align: Big.BoxAlignment.CENTER,
+                                      padding_right: 4 });
+        box.append(this._iconBox, Big.BoxPackFlags.END);
 
         let global = Shell.Global.get();
         let magnifierUri = "file://" + global.imagedir + "magnifier.svg";
         this._magnifierIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                             magnifierUri, 29, 18);
-        let closeUri = "file://" + global.imagedir + "close.svg";
+                                                                             magnifierUri, 18, 18);
+        let closeUri = "file://" + global.imagedir + "close-black.svg";
         this._closeIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
                                                                          closeUri, 18, 18);
         this._closeIcon.reactive = true;

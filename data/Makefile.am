@@ -17,6 +17,7 @@ imagedir = $(pkgdatadir)/images
 dist_image_DATA =		\
 	add-workspace.svg	\
 	close.svg		\
+	close-black.svg       \
 	info.svg		\
 	magnifier.svg  \
 	remove-workspace.svg
