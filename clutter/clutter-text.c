@@ -1041,7 +1041,7 @@ clutter_text_move_word_forward (ClutterText *self,
   ClutterTextPrivate *priv = self->priv;
   gint retval = start;
 
-  if (priv->text && start > 0)
+  if (priv->text && start < priv->n_chars)
     {
       PangoLayout *layout = clutter_text_get_layout (self);
       PangoLogAttr *log_attrs = NULL;
@@ -1049,8 +1049,8 @@ clutter_text_move_word_forward (ClutterText *self,
 
       pango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
 
-      retval = start;
-      while (retval > 0 && !log_attrs[retval].is_word_end)
+      retval = start + 1;
+      while (retval < priv->n_chars && !log_attrs[retval].is_word_end)
         retval += 1;
 
       g_free (log_attrs);
@@ -1588,9 +1588,9 @@ clutter_text_real_move_left (ClutterText         *self,
       if (modifiers & CLUTTER_CONTROL_MASK)
         {
           if (pos == -1)
-            new_pos = clutter_text_move_word_backward (self, len - 1);
+            new_pos = clutter_text_move_word_backward (self, len);
           else
-            new_pos = clutter_text_move_word_backward (self, pos - 1);
+            new_pos = clutter_text_move_word_backward (self, pos);
         }
       else
         {
@@ -1627,7 +1627,7 @@ clutter_text_real_move_right (ClutterText         *self,
       if (modifiers & CLUTTER_CONTROL_MASK)
         {
           if (pos != len)
-            new_pos = clutter_text_move_word_forward (self, pos + 1);
+            new_pos = clutter_text_move_word_forward (self, pos);
         }
       else
         {
