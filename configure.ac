@@ -697,7 +697,7 @@ AC_SUBST(MAINTAINER_CFLAGS)
 
 dnl === GObject-Introspection check ===========================================
 
-GOBJECT_INTROSPECTION_CHECK([0.6.3])
+GOBJECT_INTROSPECTION_CHECK([0.6.4])
 
 dnl === GTK Doc check =========================================================
 

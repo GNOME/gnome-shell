@@ -75,7 +75,7 @@ Cogl-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-cogl.la
 		--c-include='cogl/cogl.h' \
 		--include=GL-1.0 \
 		--include=GObject-2.0 \
-		--library=clutter-cogl \
+		--library=libclutter-cogl.la \
 		--libtool="$(top_builddir)/libtool" \
 		--pkg gobject-2.0 \
 		--output $@ \

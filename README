@@ -20,7 +20,7 @@ If you are building the API reference you will also need:
 
 If you are building the Introspection data you will also need:
 
-  * GObject-Introspection >= 0.6.3
+  * GObject-Introspection >= 0.6.4
 
 
 The official website is:
