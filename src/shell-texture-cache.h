@@ -62,11 +62,9 @@ ClutterActor *shell_texture_cache_load_recent_thumbnail (ShellTextureCache *cach
                                                          GtkRecentInfo     *info);
 
 void shell_texture_cache_evict_thumbnail (ShellTextureCache *cache,
-                                          int                size,
                                           const char        *uri);
 
 void shell_texture_cache_evict_recent_thumbnail (ShellTextureCache *cache,
-                                                 int                size,
                                                  GtkRecentInfo     *info);
 
 ClutterActor *shell_texture_cache_load_uri_async (ShellTextureCache *cache,

@@ -64,7 +64,6 @@ const PANE_BORDER_WIDTH = 2;
 const PANE_BACKGROUND_COLOR = new Clutter.Color();
 PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
 
-
 function Pane() {
     this._init();
 }
@@ -604,10 +603,8 @@ Dash.prototype = {
 
         let docsSection = new Section(_("RECENT DOCUMENTS"));
 
-        let docDisplay = new DocDisplay.DocDisplay();
-        docDisplay.load();
+        let docDisplay = new DocDisplay.DashDocDisplay();
         docsSection.content.append(docDisplay.actor, Big.BoxPackFlags.EXPAND);
-        createPaneForDetails(this, docDisplay);
 
         this._moreDocsPane = null;
         docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {

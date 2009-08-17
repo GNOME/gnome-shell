@@ -85,19 +85,18 @@ DocInfo.prototype = {
 
 var docManagerInstance = null;
 
-function getDocManager(size) {
+function getDocManager() {
     if (docManagerInstance == null)
-        docManagerInstance = new DocManager(size);
+        docManagerInstance = new DocManager();
     return docManagerInstance;
 }
 
-function DocManager(size) {
-    this._init(size);
+function DocManager() {
+    this._init();
 }
 
 DocManager.prototype = {
-    _init: function(iconSize) {
-        this._iconSize = iconSize;
+    _init: function() {
         this._recentManager = Gtk.RecentManager.get_default();
         this._items = {};
         this._recentManager.connect('changed', Lang.bind(this, function(recentManager) {
@@ -112,6 +111,9 @@ DocManager.prototype = {
         let newItems = {};
         for (let i = 0; i < docs.length; i++) {
             let recentInfo = docs[i];
+            if (!recentInfo.exists())
+                continue;
+
             let docInfo = new DocInfo(recentInfo);
 
             // we use GtkRecentInfo URI as an item Id
@@ -126,7 +128,7 @@ DocManager.prototype = {
            dump them here */
         let texCache = Shell.TextureCache.get_default();
         for (var uri in deleted) {
-            texCache.evict_recent_thumbnail(this._iconSize, this._items[uri]);
+            texCache.evict_recent_thumbnail(this._items[uri]);
         }
         this._items = newItems;
     },

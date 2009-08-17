@@ -1196,47 +1196,44 @@ shell_texture_cache_load_recent_thumbnail (ShellTextureCache *cache,
 /**
  * shell_texture_cache_evict_thumbnail:
  * @cache:
- * @size: Size in pixels
  * @uri: Source URI
  *
- * Removes the reference the shell_texture_cache_load_thumbnail() function
- * created for a thumbnail.
+ * Removes all references added by shell_texture_cache_load_thumbnail() function
+ * created for the given URI.
  */
 void
 shell_texture_cache_evict_thumbnail (ShellTextureCache *cache,
-                                     int                size,
                                      const char        *uri)
 {
-  CacheKey key;
+  GHashTableIter iter;
+  gpointer key, value;
 
-  memset (&key, 0, sizeof(key));
-  key.size = size;
-  key.thumbnail_uri = (char*)uri;
+  g_hash_table_iter_init (&iter, cache->priv->keyed_cache);
 
-  g_hash_table_remove (cache->priv->keyed_cache, &key);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      CacheKey *cachekey = key;
+
+      if (cachekey->thumbnail_uri == NULL || strcmp (cachekey->thumbnail_uri, uri) != 0)
+        continue;
+
+      g_hash_table_iter_remove (&iter);
+    }
 }
 
 /**
  * shell_texture_cache_evict_recent_thumbnail:
  * @cache:
- * @size: Size in pixels
  * @info: A recent info
  *
- * Removes the reference the shell_texture_cache_load_recent_thumbnail() function
- * created for a thumbnail.
+ * Removes all references added by shell_texture_cache_load_recent_thumbnail() function
+ * for the URI associated with the given @info.
  */
 void
 shell_texture_cache_evict_recent_thumbnail (ShellTextureCache *cache,
-                                            int                size,
                                             GtkRecentInfo     *info)
 {
-  CacheKey key;
-
-  memset (&key, 0, sizeof(key));
-  key.size = size;
-  key.thumbnail_uri = (char*)gtk_recent_info_get_uri (info);
-
-  g_hash_table_remove (cache->priv->keyed_cache, &key);
+  shell_texture_cache_evict_thumbnail (cache, gtk_recent_info_get_uri (info));
 }
 
 static ShellTextureCache *instance = NULL;
