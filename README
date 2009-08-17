@@ -11,6 +11,8 @@ Clutter currently requires:
   * PangoCairo >= 1.20
   * OpenGL >= 1.4, OpenGL ES 1.1 or OpenGL ES 2.0
   * GLX, SDL, WGL or an EGL Implementation
+  * JSON-GLib >= 0.8 (optional)
+  * GDK-Pixbuf >= 2.0 (optional)
 
 If you are building the API reference you will also need:
 
@@ -19,6 +21,7 @@ If you are building the API reference you will also need:
 If you are building the Introspection data you will also need:
 
   * GObject-Introspection >= 0.6.3
+
 
 The official website is:
    http://www.clutter-project.org
@@ -106,13 +109,15 @@ See the INSTALL file. Info on specific Clutter options;
   --with-gles=[1.1/2.0]
         Select the GLES version (for EGL backends) (default=1.1)
 
-  --with-json=[internal/check]
-        Select the JSON-GLib copy to use (default=internal)
+  --with-json=[internal/check/system]
+        Select the JSON-GLib copy to use (default=check)
 
           internal: Use the internal copy of JSON-GLib for ClutterScript
 
           check: Check for the existence of a system copy of JSON-GLib
                  and if it is available, make Clutter depend on it
+
+          system: Only use the system copy of JSON-GLib
 
 VERSIONING
 ==========
