@@ -312,7 +312,11 @@ typelibsdir = $(libdir)/girepository-1.0/
 typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 %.typelib: %.gir $(INTROSPECTION_COMPILER)
-	$(QUIET_GEN)$(DEBUG) $(INTROSPECTION_COMPILER) --includedir=$(srcdir) --includedir=. $(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
+	$(QUIET_GEN)$(DEBUG) $(INTROSPECTION_COMPILER) \
+		--includedir=$(srcdir) \
+		--includedir=. \
+		--shared-library=libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la \
+		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif
