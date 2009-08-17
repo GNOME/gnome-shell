@@ -35,7 +35,8 @@
 #endif /* HAVE_PATHS_H */
 
 #include <glib.h>
-#include <glib/gi18n.h>
+/* Note on sync with gdm; need to use -lib here */
+#include <glib/gi18n-lib.h>
 #include <glib/gstdio.h>
 #include <glib-object.h>
 #include <gio/gio.h>

@@ -26,7 +26,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include <glib/gi18n.h>
+/* Note on sync with gdm; need to use -lib here */
+#include <glib/gi18n-lib.h>
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 

@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <dbus/dbus-glib.h>
 #include <gio/gio.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
 

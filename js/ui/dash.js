@@ -593,6 +593,8 @@ Dash.prototype = {
 
         /***** Places *****/
 
+        /* Translators: This is in the sense of locations for documents,
+           network locations, etc. */
         let placesSection = new Section(_("PLACES"), true);
         let placesDisplay = new Places.Places();
         placesSection.content.append(placesDisplay.actor, Big.BoxPackFlags.EXPAND);
