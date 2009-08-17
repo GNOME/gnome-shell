@@ -312,6 +312,7 @@ typelibsdir = $(libdir)/girepository-1.0/
 typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 %.typelib: %.gir $(INTROSPECTION_COMPILER)
+	LD_LIBRARY_PATH=.libs$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
 	$(QUIET_GEN)$(DEBUG) $(INTROSPECTION_COMPILER) \
 		--includedir=$(srcdir) \
 		--includedir=. \
