@@ -1312,7 +1312,8 @@ clutter_text_key_press (ClutterActor    *actor,
    */
   if (res)
     return TRUE;
-  else
+  /* Skip keys when control is pressed */
+  else if ((event->modifier_state & CLUTTER_CONTROL_MASK) == 0)
     {
       gunichar key_unichar;
 
