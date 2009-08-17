@@ -288,7 +288,7 @@ Clutter-@CLUTTER_API_VERSION@.typelib: $(clutter_json_gir) Cogl-@CLUTTER_API_VER
 # Clutter.gir to Cogl.gir
 Cogl-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir cogl/Cogl-@CLUTTER_API_VERSION@.gir
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
-	sed "s/shared-library=\"clutter-cogl\"/shared-library=\"$$shlib\"/"< cogl/Cogl-@CLUTTER_API_VERSION@.gir > $@
+	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< cogl/Cogl-@CLUTTER_API_VERSION@.gir > $@
 
 BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
 
@@ -297,7 +297,7 @@ if LOCAL_JSON_GLIB
 # for Cogl above
 ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
-	sed "s/shared-library=\"clutter-json\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
+	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
 
 BUILT_GIRSOURCES += ClutterJson-@CLUTTER_API_VERSION@.gir
 endif
@@ -315,7 +315,6 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 	$(QUIET_GEN)$(DEBUG) $(INTROSPECTION_COMPILER) \
 		--includedir=$(srcdir) \
 		--includedir=. \
-		--shared-library=libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la \
 		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
