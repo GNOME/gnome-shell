@@ -269,19 +269,40 @@ Panel.prototype = {
 
         this._leftBox.append(this.button.button, Big.BoxPackFlags.NONE);
 
+        // We use this flag to mark the case where the user has entered the
+        // hot corner and has not left both the hot corner and a surrounding
+        // guard area (the "environs"). This avoids triggering the hot corner
+        // multiple times due to an accidental jitter.
+        this._hotCornerEntered = false;
+
+        this._hotCornerEnvirons = new Clutter.Rectangle({ width: 3,
+                                                          height: 3,
+                                                          opacity: 0,
+                                                          reactive: true });
+
         let hotCorner = new Clutter.Rectangle({ width: 1,
                                                 height: 1,
                                                 opacity: 0,
                                                 reactive: true });
 
+        this._hotCornerEnvirons.connect('leave-event',
+                                        Lang.bind(this, this._onHotCornerEnvironsLeft));
+        // Clicking on the hot corner environs should result in the same bahavior
+        // as clicking on the hot corner.
+        this._hotCornerEnvirons.connect('button-release-event',
+                                        Lang.bind(this, this._onHotCornerClicked));
+
         // In addition to being triggered by the mouse enter event, the hot corner
         // can be triggered by clicking on it. This is useful if the user wants to 
         // undo the effect of triggering the hot corner once in the hot corner.
         hotCorner.connect('enter-event',
-                           Lang.bind(this, this._onHotCornerTriggered));
+                           Lang.bind(this, this._onHotCornerEntered));
         hotCorner.connect('button-release-event',
-                           Lang.bind(this, this._onHotCornerTriggered));
+                           Lang.bind(this, this._onHotCornerClicked));
+        hotCorner.connect('leave-event',
+                          Lang.bind(this, this._onHotCornerLeft));
 
+        this._leftBox.append(this._hotCornerEnvirons, Big.BoxPackFlags.FIXED);
         this._leftBox.append(hotCorner, Big.BoxPackFlags.FIXED);
 
         let appMenu = new AppPanelMenu();
@@ -414,10 +435,34 @@ Panel.prototype = {
         return false;
     },
 
-    _onHotCornerTriggered : function() {
-        if (!Main.overview.animationInProgress) {
-            Main.overview.toggle();
+    _onHotCornerEntered : function() {
+        if (!this._hotCornerEntered) {
+            this._hotCornerEntered = true;
+            if (!Main.overview.animationInProgress) {
+                Main.overview.toggle();
+            }
         }
         return false;
-     }
+    },
+
+    _onHotCornerClicked : function() {
+         if (!Main.overview.animationInProgress) {
+             Main.overview.toggle();
+         }
+         return false;
+    },
+
+    _onHotCornerLeft : function(actor, event) {
+        if (Shell.get_event_related(event) != this._hotCornerEnvirons) {
+            this._hotCornerEntered = false;
+        }
+        return false;
+    },
+
+    _onHotCornerEnvironsLeft : function(actor, event) {
+        if (Shell.get_event_related(event) != this._hotCorner) {
+            this._hotCornerEntered = false;
+        }
+        return false;
+    }
 };
