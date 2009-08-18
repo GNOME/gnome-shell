@@ -240,7 +240,6 @@ _cogl_pango_display_list_render_texture (CoglHandle material,
 {
   CoglColor premult_color = *color;
   cogl_material_set_layer (material, 0, node->d.texture.texture);
-  cogl_color_premultiply (&premult_color);
   cogl_material_set_color (material, &premult_color);
   cogl_set_source (material);
 
