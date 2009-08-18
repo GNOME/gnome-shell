@@ -1657,7 +1657,10 @@ update_enable_monitoring (ShellAppMonitor *monitor)
     {
       monitor->watched_window = NULL;
       if (monitor->save_id)
-        g_source_remove (monitor->save_id);
+        {
+          g_source_remove (monitor->save_id);
+          monitor->save_id = 0;
+        }
     }
 
   monitor->enable_monitoring = enable;
