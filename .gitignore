@@ -18,7 +18,15 @@ config
 configure
 data/gnome-shell.desktop
 data/gnome-shell.desktop.in
+intltool-extract.in
+intltool-merge.in
+intltool-update.in
 libtool
+omf.make
+po/*.gmo
+po/Makefile.in.in
+po/POTFILES
+po/stamp-it
 scripts/launcher.pyc
 src/*.gir
 src/*.typelib
@@ -31,3 +39,4 @@ src/gnome-shell
 src/test-recorder
 src/test-recorder.ogg
 stamp-h1
+xmldocs.make
