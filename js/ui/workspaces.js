@@ -11,9 +11,7 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-const AppDisplay = imports.ui.appDisplay;
 const DND = imports.ui.dnd;
-const GenericDisplay = imports.ui.genericDisplay;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
@@ -855,9 +853,9 @@ Workspace.prototype = {
                                                  false, // don't create workspace
                                                  time);
             return true;
-        } else if (source instanceof GenericDisplay.GenericDisplayItem || source instanceof AppDisplay.WellDisplayItem) {
+        } else if (source.shellWorkspaceLaunch) {
             this._metaWorkspace.activate(time);
-            source.launch();
+            source.shellWorkspaceLaunch();
             return true;
         }
 

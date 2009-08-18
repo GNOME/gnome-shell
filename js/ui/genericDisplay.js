@@ -126,8 +126,6 @@ GenericDisplayItem.prototype = {
         // It is used for updating the description text inside the details actor when
         // the description text for the item is updated.
         this._detailsDescriptions = [];
-
-        this.dragActor = null;
     },
 
     //// Draggable object interface ////
@@ -135,21 +133,9 @@ GenericDisplayItem.prototype = {
     // Returns a cloned texture of the item's icon to represent the item as it 
     // is being dragged. 
     getDragActor: function(stageX, stageY) {
-        this.dragActor = this._createIcon();
-
-        // If the user dragged from the icon itself, then position
-        // the dragActor over the original icon. Otherwise center it
-        // around the pointer
-        let [iconX, iconY] = this._icon.get_transformed_position();
-        let [iconWidth, iconHeight] = this._icon.get_transformed_size();
-        if (stageX > iconX && stageX <= iconX + iconWidth &&
-            stageY > iconY && stageY <= iconY + iconHeight)
-            this.dragActor.set_position(iconX, iconY);
-        else
-            this.dragActor.set_position(stageX - this.dragActor.width / 2, stageY - this.dragActor.height / 2);
-        return this.dragActor;
+        return this._createIcon();
     },
-    
+
     // Returns the item icon, a separate copy of which is used to
     // represent the item as it is being dragged. This is used to
     // determine a snap-back location for the drag icon if it does

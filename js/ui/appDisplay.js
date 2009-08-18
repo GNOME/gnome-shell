@@ -76,6 +76,10 @@ AppDisplayItem.prototype = {
     // Returns a preview icon for the item.
     _createPreviewIcon : function() {
         return this._appInfo.create_icon_texture(GenericDisplay.PREVIEW_ICON_SIZE);
+    },
+
+    shellWorkspaceLaunch: function() {
+        this.launch();
     }
 };
 
@@ -540,21 +544,12 @@ WellDisplayItem.prototype = {
         this.appInfo.launch();
     },
 
-    // Draggable interface - FIXME deduplicate with GenericDisplay
-    getDragActor: function(stageX, stageY) {
-        this.dragActor = this.appInfo.create_icon_texture(APP_ICON_SIZE);
+    shellWorkspaceLaunch : function() {
+        this.launch();
+    },
 
-        // If the user dragged from the icon itself, then position
-        // the dragActor over the original icon. Otherwise center it
-        // around the pointer
-        let [iconX, iconY] = this._icon.get_transformed_position();
-        let [iconWidth, iconHeight] = this._icon.get_transformed_size();
-        if (stageX > iconX && stageX <= iconX + iconWidth &&
-            stageY > iconY && stageY <= iconY + iconHeight)
-            this.dragActor.set_position(iconX, iconY);
-        else
-            this.dragActor.set_position(stageX - this.dragActor.width / 2, stageY - this.dragActor.height / 2);
-        return this.dragActor;
+    getDragActor: function(stageX, stageY) {
+        return this.appInfo.create_icon_texture(APP_ICON_SIZE);
     },
 
     // Returns the original icon that is being used as a source for the cloned texture

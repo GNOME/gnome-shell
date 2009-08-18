@@ -82,10 +82,21 @@ _Draggable.prototype = {
                 // Drag actor does not always have to be the same as actor. For example drag actor
                 // can be an image that's part of the actor. So to perform "snap back" correctly we need
                 // to know what was the drag actor source.
-                if (this.actor._delegate.getDragActorSource)
+                if (this.actor._delegate.getDragActorSource) {
                     this._dragActorSource = this.actor._delegate.getDragActorSource();
-                else  
+                    // If the user dragged from the source, then position
+                    // the dragActor over it. Otherwise, center it
+                    // around the pointer
+                    let [sourceX, sourceY] = this._dragActorSource.get_transformed_position();
+                    let [sourceWidth, sourceHeight] = this._dragActorSource.get_transformed_size();
+                    if (stageX > sourceX && stageX <= sourceX + sourceWidth &&
+                        stageY > sourceY && stageY <= sourceY + sourceHeight)
+                        this._dragActor.set_position(sourceX, sourceY);
+                    else
+                        this._dragActor.set_position(stageX - this._dragActor.width / 2, stageY - this._dragActor.height / 2);
+                } else {
                     this._dragActorSource = this.actor;
+                }
                 this._dragOrigParent = undefined;
                 this._ungrabActor(actor);
                 this._grabActor(this._dragActor);

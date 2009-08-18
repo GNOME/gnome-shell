@@ -83,9 +83,15 @@ DocDisplayItem.prototype = {
         }
     },
 
+    //// Drag and Drop ////
+
+    shellWorkspaceLaunch: function() {
+        this.launch();
+    },
+
     //// Private Methods ////
 
-    // Updates the last visited time displayed in the description text for the item. 
+    // Updates the last visited time displayed in the description text for the item.
     _resetTimeDisplay: function(currentSecs) {
         let lastSecs = this._docInfo.timestamp;
         let timeDelta = currentSecs - lastSecs;
