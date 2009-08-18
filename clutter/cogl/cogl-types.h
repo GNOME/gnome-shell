@@ -246,14 +246,15 @@ struct _CoglColor
  * @tx: Texture x-coordinate
  * @ty: Texture y-coordinate
  * @color: The color to use at this vertex. This is ignored if
- * @use_color is %FALSE when calling cogl_texture_polygon().
+ *   use_color is %FALSE when calling cogl_polygon()
  *
- * Used to specify vertex information when calling cogl_texture_polygon().
+ * Used to specify vertex information when calling cogl_polygon()
  */
 struct _CoglTextureVertex
 {
   float x, y, z;
   float tx, ty;
+
   CoglColor color;
 };
 
