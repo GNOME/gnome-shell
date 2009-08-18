@@ -1179,7 +1179,7 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
 #ifndef DISABLE_MATERIAL_CACHE
   if (!(gl_layer_info &&
         gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE &&
-        layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE))
+       (layer->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE)))
 #endif
     {
       GE (glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE));
@@ -1247,9 +1247,9 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
     }
 
 #ifndef DISABLE_MATERIAL_CACHE
-  if (gl_layer_info &&
-      (gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX ||
-       layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX))
+  if ((gl_layer_info &&
+       gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX) ||
+      (layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX))
 #endif
     {
       _cogl_set_current_matrix (COGL_MATRIX_TEXTURE);
