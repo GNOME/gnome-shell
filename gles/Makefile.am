@@ -74,10 +74,14 @@ EXTRA_DIST = cogl-defines.h.in \
 	cogl-fixed-vertex-shader.glsl \
 	cogl-fixed-fragment-shader.glsl
 
-.glsl.h :
-	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh -h $<
+BUILT_SOURCES = \
+	cogl-fixed-vertex-shader.h \
+	cogl-fixed-vertex-shader.c \
+	cogl-fixed-fragment-shader.h \
+	cogl-fixed-fragment-shader.c
 
-.glsl.c :
-	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh $<
+%.h: $(srcdir)/%.glsl
+	/bin/sh $(srcdir)/stringify.sh -h $< > $@
+%.c: $(srcdir)/%.glsl
+	/bin/sh $(srcdir)/stringify.sh $< > $@
 
-cogl-gles2-wrapper.lo : cogl-fixed-vertex-shader.h cogl-fixed-fragment-shader.h
