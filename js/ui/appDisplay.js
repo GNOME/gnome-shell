@@ -528,24 +528,24 @@ WellDisplayItem.prototype = {
     },
 
     _handleActivate: function () {
-        if (this._windows.length == 0)
-            this.launch();
-        else {
+        if (this._windows.length == 0) {
+            this.appInfo.launch();
+            Main.overview.hide();
+        } else {
             /* Pick the first window and activate it;
              * In the future, we want to have a menu dropdown here. */
             let first = this._windows[0];
             Main.overview.activateWindow(first, Clutter.get_current_event_time());
         }
-        this.emit('activated');
-    },
-
-    // Opens an application represented by this display item.
-    launch : function() {
-        this.appInfo.launch();
     },
 
     shellWorkspaceLaunch : function() {
-        this.launch();
+        if (this._windows.length == 0) {
+            this.appInfo.launch();
+        } else {
+            // We should open a new window for the app here, once we know
+            // how to do that.
+        }
     },
 
     getDragActor: function(stageX, stageY) {
@@ -562,8 +562,6 @@ WellDisplayItem.prototype = {
         this._nameBox.width = width + GLOW_PADDING * 2;
     }
 };
-
-Signals.addSignalMethods(WellDisplayItem.prototype);
 
 function WellGrid() {
     this._init();
@@ -818,9 +816,6 @@ AppWell.prototype = {
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
             let display = new WellDisplayItem(app, this.isFavorite);
-            display.connect('activated', Lang.bind(this, function (display) {
-                Main.overview.hide();
-            }));
             this._grid.actor.add_actor(display.actor);
         }
     },
