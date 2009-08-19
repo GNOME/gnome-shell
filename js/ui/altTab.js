@@ -44,10 +44,8 @@ AltTabPopup.prototype = {
                                    spacing: POPUP_GRID_SPACING,
                                    orientation: Big.BoxOrientation.VERTICAL });
 
-        // Icon grid. It would be nice to use Tidy.Grid for the this,
-        // but Tidy.Grid is lame in various ways. (Eg, it seems to
-        // have a minimum size of 200x200.) So we create a vertical
-        // Big.Box containing multiple horizontal Big.Boxes.
+        // Icon grid.  TODO: Investigate Nbtk.Grid once that lands.  Currently
+        // just implemented using a chain of Big.Box.
         this._grid = new Big.Box({ spacing: POPUP_GRID_SPACING,
                                    orientation: Big.BoxOrientation.VERTICAL });
         let gcenterbox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,

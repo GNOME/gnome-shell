@@ -10,7 +10,6 @@ const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
-const Tidy = imports.gi.Tidy;
 
 const Button = imports.ui.button;
 const DND = imports.ui.dnd;

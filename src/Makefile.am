@@ -19,7 +19,6 @@ gnome-shell: gnome-shell.in
 CLEANFILES += gnome-shell
 EXTRA_DIST += gnome-shell.in
 
-include Makefile-tidy.am
 include Makefile-big.am
 include Makefile-gdmuser.am
 include Makefile-tray.am
@@ -152,7 +151,7 @@ libgnome_shell_la_LIBADD =	\
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)
-typelib_DATA = Shell-0.1.typelib Tidy-1.0.typelib Big-1.0.typelib
+typelib_DATA = Shell-0.1.typelib Big-1.0.typelib
 
 Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
@@ -179,25 +178,6 @@ Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
 			--includedir=$(MUTTER_LIB_DIR)/mutter/			\
 		Shell-0.1.gir -o $@
 CLEANFILES += Shell-0.1.typelib
-
-Tidy-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makefile
-	$(AM_V_GEN) $(G_IR_SCANNER)			\
-		--namespace=Tidy			\
-		--nsversion=1.0				\
-		--include=Clutter-1.0			\
-		--program=mutter			\
-	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
-		$(addprefix $(srcdir)/,$(tidy_source_h)) \
-		$(addprefix $(srcdir)/,$(tidy_source_c)) \
-		$(srcdir)/tidy-enum-types.h		\
-		$(tidy_cflags)				\
-		-o $@
-CLEANFILES += Tidy-1.0.gir
-
-Tidy-1.0.typelib: libtidy-1.0.la Tidy-1.0.gir
-	$(AM_V_GEN) LD_LIBRARY_PATH=.$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
-		$(G_IR_COMPILER) Tidy-1.0.gir -o $@
-CLEANFILES += Tidy-1.0.typelib
 
 Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
