@@ -132,8 +132,13 @@ clutter_animation_real_completed (ClutterAnimation *self)
 {
   ClutterAnimationPrivate *priv = self->priv;
   ClutterAnimation *animation;
+  ClutterTimeline *timeline;
+  ClutterTimelineDirection direction;
   gpointer key, value;
   GHashTableIter iter;
+
+  timeline = clutter_animation_get_timeline (self);
+  direction = clutter_timeline_get_direction (timeline);
 
   /* explicitly set the final state of the animation */
   g_hash_table_iter_init (&iter, priv->properties);
@@ -143,7 +148,11 @@ clutter_animation_real_completed (ClutterAnimation *self)
       ClutterInterval *interval = value;
       GValue *p_value;
 
-      p_value = clutter_interval_peek_final_value (interval);
+      if (direction == CLUTTER_TIMELINE_FORWARD)
+        p_value = clutter_interval_peek_final_value (interval);
+      else
+        p_value = clutter_interval_peek_initial_value (interval);
+
       g_object_set_property (priv->object, p_name, p_value);
     }
 
