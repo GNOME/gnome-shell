@@ -27,6 +27,22 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* We were intending to put the version number
+ * in the subdirectory name, but we ended up
+ * using the filename instead.  The "-1" survives
+ * as a fossil.
+ */
+#define THEME_SUBDIR "metacity-1"
+
+/* Highest version of the theme format to
+ * look out for.
+ */
+#define THEME_MAJOR_VERSION 3
+#define THEME_MINOR_VERSION 0
+#define THEME_VERSION (1000 * THEME_MAJOR_VERSION + THEME_MINOR_VERSION)
+
+#define METACITY_THEME_FILENAME_FORMAT "metacity-theme-%d.xml"
+
 typedef enum
 {
   STATE_START,
@@ -79,7 +95,11 @@ typedef enum
 
 typedef struct
 {
+  /* This two lists contain stacks of state and required version
+   * (cast to pointers.) There is one list item for each currently
+   * open element. */
   GSList *states;
+  GSList *required_versions;
 
   const char *theme_name;       /* name of theme (directory it's in) */
   const char *theme_file;       /* theme filename */
@@ -95,7 +115,21 @@ typedef struct
   MetaFramePiece piece;         /* position of piece being parsed */
   MetaButtonType button_type;   /* type of button/menuitem being parsed */
   MetaButtonState button_state; /* state of button being parsed */
+  int skip_level;               /* depth of elements that we're ignoring */
 } ParseInfo;
+
+typedef enum {
+  THEME_PARSE_ERROR_TOO_OLD,
+  THEME_PARSE_ERROR_TOO_FAILED
+} ThemeParseError;
+
+static GQuark
+theme_parse_error_quark (void)
+{
+  return g_quark_from_static_string ("theme-parse-error-quark");
+}
+
+#define THEME_PARSE_ERROR (theme_parse_error_quark ())
 
 static void set_error (GError             **err,
                        GMarkupParseContext *context,
@@ -257,6 +291,7 @@ parse_info_init (ParseInfo *info)
 {
   info->theme_file = NULL;
   info->states = g_slist_prepend (NULL, GINT_TO_POINTER (STATE_START));
+  info->required_versions = NULL;
   info->theme = NULL;
   info->name = NULL;
   info->layout = NULL;
@@ -267,12 +302,14 @@ parse_info_init (ParseInfo *info)
   info->piece = META_FRAME_PIECE_LAST;
   info->button_type = META_BUTTON_TYPE_LAST;
   info->button_state = META_BUTTON_STATE_LAST;
+  info->skip_level = 0;
 }
 
 static void
 parse_info_free (ParseInfo *info)
 {
   g_slist_free (info->states);
+  g_slist_free (info->required_versions);
   
   if (info->theme)
     meta_theme_free (info->theme);
@@ -314,6 +351,31 @@ peek_state (ParseInfo *info)
   g_return_val_if_fail (info->states != NULL, STATE_START);
 
   return GPOINTER_TO_INT (info->states->data);
+}
+
+static void
+push_required_version (ParseInfo *info,
+                       int        version)
+{
+  info->required_versions = g_slist_prepend (info->required_versions,
+                                             GINT_TO_POINTER (version));
+}
+
+static void
+pop_required_version (ParseInfo *info)
+{
+  g_return_if_fail (info->required_versions != NULL);
+
+  info->required_versions = g_slist_delete_link (info->required_versions, info->required_versions);
+}
+
+static int
+peek_required_version (ParseInfo *info)
+{
+  if (info->required_versions)
+    return GPOINTER_TO_INT (info->required_versions->data);
+  else
+    return info->format_version;
 }
 
 #define ELEMENT_IS(name) (strcmp (element_name, (name)) == 0)
@@ -393,6 +455,13 @@ locate_attributes (GMarkupParseContext *context,
       int j;
       gboolean found;
 
+      /* Can be present anywhere */
+      if (strcmp (attribute_names[i], "version") == 0)
+        {
+          ++i;
+          continue;
+        }
+
       found = FALSE;
       j = 0;
       while (j < n_attrs)
@@ -469,7 +538,13 @@ check_no_attributes (GMarkupParseContext *context,
                      const char **attribute_values,
                      GError     **error)
 {
-  if (attribute_names[0] != NULL)
+  int i = 0;
+
+  /* Can be present anywhere */
+  if (attribute_names[0] && strcmp (attribute_names[i], "version") == 0)
+    i++;
+
+  if (attribute_names[i] != NULL)
     {
       set_error (error, context,
                  G_MARKUP_ERROR,
@@ -3239,6 +3314,91 @@ parse_menu_icon_element (GMarkupParseContext  *context,
     }
 }
 
+static const char *
+find_version (const char **attribute_names,
+              const char **attribute_values)
+{
+  int i;
+
+  for (i = 0; attribute_names[i]; i++)
+    {
+      if (strcmp (attribute_names[i], "version") == 0)
+        return attribute_values[i];
+    }
+
+  return NULL;
+}
+
+/* Returns whether the version element was successfully parsed.
+ * If successfully parsed, then two additional items are returned:
+ *
+ *  satisfied:        whether this version of Mutter meets the version check
+ *  minimum_required: minimum version of theme format required by version check
+ */
+static gboolean
+check_version (GMarkupParseContext *context,
+               const char          *version_str,
+               gboolean            *satisfied,
+               guint               *minimum_required,
+               GError             **error)
+{
+  static GRegex *version_regex;
+  GMatchInfo *info;
+  char *comparison_str, *major_str, *minor_str;
+  guint version;
+
+  *minimum_required = 0;
+
+  if (!version_regex)
+    version_regex = g_regex_new ("^\\s*([<>]=?)\\s*(\\d+)(\\.\\d+)?\\s*$", 0, 0, NULL);
+
+  if (!g_regex_match (version_regex, version_str, 0, &info))
+    {
+      g_match_info_free (info);
+      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                 _("Bad version specification '%s'"), version_str);
+      return FALSE;
+    }
+
+  comparison_str = g_match_info_fetch (info, 1);
+  major_str = g_match_info_fetch (info, 2);
+  minor_str = g_match_info_fetch (info, 3);
+
+  version = 1000 * atoi (major_str);
+  /* might get NULL, see: https://bugzilla.gnome.org/review?bug=588217 */
+  if (minor_str && minor_str[0])
+    version += atoi (minor_str + 1);
+
+  if (comparison_str[0] == '<')
+    {
+      if (comparison_str[1] == '=')
+        *satisfied = THEME_VERSION <= version;
+      else
+        {
+          *satisfied = THEME_VERSION < version;
+        }
+    }
+  else
+    {
+      if (comparison_str[1] == '=')
+        {
+          *satisfied = THEME_VERSION >= version;
+          *minimum_required = version;
+        }
+      else
+        {
+          *satisfied = THEME_VERSION > version;
+          *minimum_required = version + 1;
+        }
+    }
+
+  g_free (comparison_str);
+  g_free (major_str);
+  g_free (minor_str);
+  g_match_info_free (info);
+
+  return TRUE;
+}
 
 static void
 start_element_handler (GMarkupParseContext *context,
@@ -3249,6 +3409,65 @@ start_element_handler (GMarkupParseContext *context,
                        GError             **error)
 {
   ParseInfo *info = user_data;
+  const char *version;
+  guint required_version = 0;
+
+  if (info->skip_level > 0)
+    {
+      info->skip_level++;
+      return;
+    }
+
+  required_version = peek_required_version (info);
+
+  version = find_version (attribute_names, attribute_values);
+  if (version != NULL)
+    {
+      gboolean satisfied;
+      guint element_required;
+
+      if (required_version < 3000)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-theme-2.xml"));
+          return;
+        }
+
+      if (!check_version (context, version, &satisfied, &element_required, error))
+        return;
+
+      /* Two different ways of handling an unsatisfied version check:
+       * for the toplevel element of a file, we throw an error back so
+       * that the controlling code can go ahead and look for an
+       * alternate metacity-theme-1.xml or metacity-theme-2.xml; for
+       * other elements we just silently skip the element and children.
+       */
+      if (peek_state (info) == STATE_START)
+        {
+          if (satisfied)
+            {
+              if (element_required > info->format_version)
+                info->format_version = element_required;
+            }
+          else
+            {
+              set_error (error, context, THEME_PARSE_ERROR, THEME_PARSE_ERROR_TOO_OLD,
+                         _("Theme requires version %s but latest supported theme version is %d.%d"),
+                         version, THEME_VERSION, THEME_MINOR_VERSION);
+              return;
+            }
+        }
+      else if (!satisfied)
+        {
+          info->skip_level = 1;
+          return;
+        }
+
+      if (element_required > required_version)
+        required_version = element_required;
+    }
+
+  push_required_version (info, required_version);
 
   switch (peek_state (info))
     {
@@ -3387,6 +3606,12 @@ end_element_handler (GMarkupParseContext *context,
                      GError             **error)
 {
   ParseInfo *info = user_data;
+
+  if (info->skip_level > 0)
+    {
+      info->skip_level--;
+      return;
+    }
 
   switch (peek_state (info))
     {
@@ -3661,6 +3886,8 @@ end_element_handler (GMarkupParseContext *context,
       g_assert (peek_state (info) == STATE_THEME);
       break;
     }
+
+  pop_required_version (info);
 }
 
 #define NO_TEXT(element_name) set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, _("No text is allowed inside element <%s>"), element_name)
@@ -3694,6 +3921,9 @@ text_handler (GMarkupParseContext *context,
               GError             **error)
 {
   ParseInfo *info = user_data;
+
+  if (info->skip_level > 0)
+    return;
 
   if (all_whitespace (text, text_len))
     return;
@@ -3863,27 +4093,15 @@ text_handler (GMarkupParseContext *context,
     }
 }
 
-/* We were intending to put the version number
- * in the subdirectory name, but we ended up
- * using the filename instead.  The "-1" survives
- * as a fossil.
- */
-#define THEME_SUBDIR "metacity-1"
-
-/* Highest version of the theme format to
- * look out for.
- */
-#define THEME_VERSION 2
-
-#define METACITY_THEME_FILENAME_FORMAT "metacity-theme-%d.xml"
-
 /* If the theme is not-corrupt, keep looking for alternate versions
  * in other locations we might be compatible with
  */
 static gboolean
 theme_error_is_fatal (GError *error)
 {
-  return error->domain != G_FILE_ERROR;
+  return !(error->domain == G_FILE_ERROR ||
+          (error->domain == THEME_PARSE_ERROR &&
+           error->code == THEME_PARSE_ERROR_TOO_OLD));
 }
 
 static MetaTheme *
@@ -3923,7 +4141,7 @@ load_theme (const char *theme_dir,
   info.theme_file = theme_file;
   info.theme_dir = theme_dir;
 
-  info.format_version = major_version;
+  info.format_version = 1000 * major_version;
 
   context = g_markup_parse_context_new (&metacity_theme_parser,
                                         0, &info, NULL);
@@ -3980,7 +4198,7 @@ meta_theme_load (const char *theme_name,
   char *theme_dir;
   MetaTheme *retval;
   const gchar* const* xdg_data_dirs;
-  int version;
+  int major_version;
   int i;
 
   retval = NULL;
@@ -3989,10 +4207,10 @@ meta_theme_load (const char *theme_name,
     {
       /* Try in themes in our source tree */
       /* We try all supported major versions from current to oldest */
-      for (version = THEME_VERSION; (version > 0); version--)
+      for (major_version = THEME_MAJOR_VERSION; (major_version > 0); major_version--)
         {
           theme_dir = g_build_filename ("./themes", theme_name, NULL);
-          retval = load_theme (theme_dir, theme_name, version, &error);
+          retval = load_theme (theme_dir, theme_name, major_version, &error);
           g_free (theme_dir);
           if (!keep_trying (&error))
             goto out;
@@ -4000,7 +4218,7 @@ meta_theme_load (const char *theme_name,
     }
   
   /* We try all supported major versions from current to oldest */
-  for (version = THEME_VERSION; (version > 0); version--)
+  for (major_version = THEME_MAJOR_VERSION; (major_version > 0); major_version--)
     {
       /* We try first in home dir, XDG_DATA_DIRS, then system dir for themes */
 
@@ -4011,7 +4229,7 @@ meta_theme_load (const char *theme_name,
                                     THEME_SUBDIR,
                                     NULL);
 
-      retval = load_theme (theme_dir, theme_name, version, &error);
+      retval = load_theme (theme_dir, theme_name, major_version, &error);
       g_free (theme_dir);
       if (!keep_trying (&error))
         goto out;
@@ -4026,7 +4244,7 @@ meta_theme_load (const char *theme_name,
                                         THEME_SUBDIR,
                                         NULL);
 
-          retval = load_theme (theme_dir, theme_name, version, &error);
+          retval = load_theme (theme_dir, theme_name, major_version, &error);
           g_free (theme_dir);
           if (!keep_trying (&error))
             goto out;
@@ -4039,7 +4257,7 @@ meta_theme_load (const char *theme_name,
                                     THEME_SUBDIR,
                                     NULL);
 
-      retval = load_theme (theme_dir, theme_name, version, &error);
+      retval = load_theme (theme_dir, theme_name, major_version, &error);
       g_free (theme_dir);
       if (!keep_trying (&error))
         goto out;

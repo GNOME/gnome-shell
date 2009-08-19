@@ -6617,7 +6617,7 @@ meta_theme_earliest_version_with_button (MetaButtonType type)
     case META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND:
     case META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND:
     case META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND:
-      return 1;
+      return 1000;
       
     case META_BUTTON_TYPE_SHADE:
     case META_BUTTON_TYPE_ABOVE:
@@ -6625,10 +6625,10 @@ meta_theme_earliest_version_with_button (MetaButtonType type)
     case META_BUTTON_TYPE_UNSHADE:
     case META_BUTTON_TYPE_UNABOVE:
     case META_BUTTON_TYPE_UNSTICK:
-      return 2;
+      return 2000;
 
     default:
       meta_warning("Unknown button %d\n", type);
-      return 1; 
+      return 1000;
     }
 }

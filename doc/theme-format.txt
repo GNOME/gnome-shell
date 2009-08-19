@@ -4,6 +4,7 @@ of the theme format, and a given theme can support more than one format.
 Version 1:     THEMEDIR/metacity-1/metacity-theme-1.xml
   (original metacity format)
 Version 2:     THEMEDIR/metacity-1/metacity-theme-2.xml
+Version 3:     THEMEDIR/metacity-1/metacity-theme-3.xml
 
 The subdirectory name is "metacity-1" in all versions.
 
@@ -20,6 +21,27 @@ metacity will get angry.
 This document has separate sections for each format version. You may
 want to read the document in reverse order, since the base features
 are discussed under version 1.
+
+New Features in Theme Format Version 3
+======================================
+
+Format version 3 has exactly one new feature; any element in the file
+can now have a version attribute:
+
+  version="[<|<=|=>|>] MAJOR.MINOR"
+
+(< and > should be to be entity escaped as &lt; and &gt;). If this
+version check is not met, then the element and its children will be
+ignored. This allows having alternate sections of the theme file for
+older and newer version of the Metacity theme format.
+
+When placed on the toplevel <metacity_theme> element, an unsatisfied
+version check will not just cause the contents of the file to be
+ignored, it will also cause the lookup of a theme file to proceed on
+and look for an older format 2 or format 1 file. This allows making a
+metacity-theme-3.xml file that is only used the format version 3.2 or
+newer is supported, and using metacity-theme-1.xml for older window
+managers.
 
 New Features in Theme Format Version 2
 ======================================
