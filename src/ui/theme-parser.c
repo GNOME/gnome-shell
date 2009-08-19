@@ -82,8 +82,8 @@ typedef struct
   GSList *states;
 
   const char *theme_name;       /* name of theme (directory it's in) */
-  char *theme_file;             /* theme filename */
-  char *theme_dir;              /* dir the theme is inside */
+  const char *theme_file;       /* theme filename */
+  const char *theme_dir;        /* dir the theme is inside */
   MetaTheme *theme;             /* theme being parsed */
   guint format_version;         /* version of format of theme file */  
   char *name;                   /* name of named thing being parsed */
@@ -272,9 +272,6 @@ parse_info_init (ParseInfo *info)
 static void
 parse_info_free (ParseInfo *info)
 {
-  g_free (info->theme_file);
-  g_free (info->theme_dir);
-
   g_slist_free (info->states);
   
   if (info->theme)
@@ -3880,66 +3877,131 @@ text_handler (GMarkupParseContext *context,
 
 #define METACITY_THEME_FILENAME_FORMAT "metacity-theme-%d.xml"
 
+/* If the theme is not-corrupt, keep looking for alternate versions
+ * in other locations we might be compatible with
+ */
+static gboolean
+theme_error_is_fatal (GError *error)
+{
+  return error->domain != G_FILE_ERROR;
+}
+
+static MetaTheme *
+load_theme (const char *theme_dir,
+            const char *theme_name,
+            guint       major_version,
+            GError    **error)
+{
+  GMarkupParseContext *context;
+  ParseInfo info;
+  char *text;
+  gsize length;
+  char *theme_filename;
+  char *theme_file;
+  MetaTheme *retval;
+
+  g_return_val_if_fail (error && *error == NULL, NULL);
+
+  text = NULL;
+  retval = NULL;
+  context = NULL;
+
+  theme_filename = g_strdup_printf (METACITY_THEME_FILENAME_FORMAT, major_version);
+  theme_file = g_build_filename (theme_dir, theme_filename, NULL);
+
+  if (!g_file_get_contents (theme_file,
+                            &text,
+                            &length,
+                            error))
+    goto out;
+
+  meta_topic (META_DEBUG_THEMES, "Parsing theme file %s\n", theme_file);
+
+  parse_info_init (&info);
+
+  info.theme_name = theme_name;
+  info.theme_file = theme_file;
+  info.theme_dir = theme_dir;
+
+  info.format_version = major_version;
+
+  context = g_markup_parse_context_new (&metacity_theme_parser,
+                                        0, &info, NULL);
+
+  if (!g_markup_parse_context_parse (context,
+                                     text,
+                                     length,
+                                     error))
+    goto out;
+
+  if (!g_markup_parse_context_end_parse (context, error))
+    goto out;
+
+  retval = info.theme;
+  info.theme = NULL;
+
+ out:
+  if (*error && !theme_error_is_fatal (*error))
+    {
+      meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
+                  theme_file, (*error)->message);
+    }
+
+  g_free (theme_filename);
+  g_free (theme_file);
+  g_free (text);
+
+  if (context)
+    {
+      g_markup_parse_context_free (context);
+      parse_info_free (&info);
+    }
+
+  return retval;
+}
+
+static gboolean
+keep_trying (GError **error)
+{
+  if (*error && !theme_error_is_fatal (*error))
+    {
+      g_clear_error (error);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 MetaTheme*
 meta_theme_load (const char *theme_name,
                  GError    **err)
 {
-  GMarkupParseContext *context;
-  GError *error;
-  ParseInfo info;
-  char *text;
-  gsize length;
-  char *theme_file;
+  GError *error = NULL;
   char *theme_dir;
   MetaTheme *retval;
-  guint version;
   const gchar* const* xdg_data_dirs;
+  int version;
   int i;
 
-  text = NULL;
-  length = 0;
   retval = NULL;
-  context = NULL;
-  
-  theme_dir = NULL;
-  theme_file = NULL;
-  
+
   if (meta_is_debugging ())
     {
-      gchar *theme_filename = g_strdup_printf (METACITY_THEME_FILENAME_FORMAT,
-                                               THEME_VERSION);
-
       /* Try in themes in our source tree */
-      theme_dir = g_build_filename ("./themes", theme_name, NULL);
-      
-      theme_file = g_build_filename (theme_dir,
-                                     theme_filename,
-                                     NULL);
-      
-      error = NULL;
-      if (!g_file_get_contents (theme_file,
-                                &text,
-                                &length,
-                                &error))
+      /* We try all supported major versions from current to oldest */
+      for (version = THEME_VERSION; (version > 0); version--)
         {
-          meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
-                      theme_file, error->message);
-          g_error_free (error);
+          theme_dir = g_build_filename ("./themes", theme_name, NULL);
+          retval = load_theme (theme_dir, theme_name, version, &error);
           g_free (theme_dir);
-          g_free (theme_file);
-          theme_file = NULL;
+          if (!keep_trying (&error))
+            goto out;
         }
-      version = THEME_VERSION;
-
-      g_free (theme_filename);
     }
   
-  /* We try all supported versions from current to oldest */
-  for (version = THEME_VERSION; (version > 0) && (text == NULL); version--)
+  /* We try all supported major versions from current to oldest */
+  for (version = THEME_VERSION; (version > 0); version--)
     {
-      gchar *theme_filename = g_strdup_printf (METACITY_THEME_FILENAME_FORMAT,
-                                               version);
-      
       /* We try first in home dir, XDG_DATA_DIRS, then system dir for themes */
 
       /* Try home dir for themes */
@@ -3948,156 +4010,51 @@ meta_theme_load (const char *theme_name,
                                     theme_name,
                                     THEME_SUBDIR,
                                     NULL);
-      
-      theme_file = g_build_filename (theme_dir,
-                                     theme_filename,
-                                     NULL);
 
-      error = NULL;
-      if (!g_file_get_contents (theme_file,
-                                &text,
-                                &length,
-                                &error))
-        {
-          meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
-                      theme_file, error->message);
-          g_error_free (error);
-          g_free (theme_dir);
-          g_free (theme_file);
-          theme_file = NULL;
-        }
+      retval = load_theme (theme_dir, theme_name, version, &error);
+      g_free (theme_dir);
+      if (!keep_trying (&error))
+        goto out;
 
       /* Try each XDG_DATA_DIRS for theme */
       xdg_data_dirs = g_get_system_data_dirs();
       for(i = 0; xdg_data_dirs[i] != NULL; i++)
         {
-          if (text == NULL)
-            {
-              theme_dir = g_build_filename (xdg_data_dirs[i],
-                                            "themes",
-                                            theme_name,
-                                            THEME_SUBDIR,
-                                            NULL);
-
-              theme_file = g_build_filename (theme_dir,
-                                             theme_filename,
-                                             NULL);
-
-              error = NULL;
-              if (!g_file_get_contents (theme_file,
-                                        &text,
-                                        &length,
-                                        &error))
-                {
-                  meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
-                              theme_file, error->message);
-                  g_error_free (error);
-                  g_free (theme_dir);
-                  g_free (theme_file);
-                  theme_file = NULL;
-                }
-              else
-                {
-                  break;
-                }
-            }
-        }
-
-      /* Look for themes in MUTTER_DATADIR */
-      if (text == NULL)
-        {
-          theme_dir = g_build_filename (MUTTER_DATADIR,
+          theme_dir = g_build_filename (xdg_data_dirs[i],
                                         "themes",
                                         theme_name,
                                         THEME_SUBDIR,
                                         NULL);
-      
-          theme_file = g_build_filename (theme_dir,
-                                         theme_filename,
-                                         NULL);
 
-          error = NULL;
-          if (!g_file_get_contents (theme_file,
-                                    &text,
-                                    &length,
-                                    &error))
-            {
-              meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
-                            theme_file, error->message);
-              g_error_free (error);
-              g_free (theme_dir);
-              g_free (theme_file);
-              theme_file = NULL;
-            }
+          retval = load_theme (theme_dir, theme_name, version, &error);
+          g_free (theme_dir);
+          if (!keep_trying (&error))
+            goto out;
         }
 
-      g_free (theme_filename);
+      /* Look for themes in MUTTER_DATADIR */
+      theme_dir = g_build_filename (MUTTER_DATADIR,
+                                    "themes",
+                                    theme_name,
+                                    THEME_SUBDIR,
+                                    NULL);
+
+      retval = load_theme (theme_dir, theme_name, version, &error);
+      g_free (theme_dir);
+      if (!keep_trying (&error))
+        goto out;
     }
-
-  if (text == NULL)
-    {
-      g_set_error (err, META_THEME_ERROR, META_THEME_ERROR_FAILED,
-          _("Failed to find a valid file for theme %s\n"),
-          theme_name);
-
-      return NULL; /* all fallbacks failed */
-    }
-
-  meta_topic (META_DEBUG_THEMES, "Parsing theme file %s\n", theme_file);
-
-
-  parse_info_init (&info);
-  info.theme_name = theme_name;
-  
-  /* pass ownership to info so we free it with the info */
-  info.theme_file = theme_file;
-  info.theme_dir = theme_dir;
-
-  info.format_version = version + 1;
-  
-  context = g_markup_parse_context_new (&metacity_theme_parser,
-                                        0, &info, NULL);
-
-  error = NULL;
-  if (!g_markup_parse_context_parse (context,
-                                     text,
-                                     length,
-                                     &error))
-    goto out;
-
-  error = NULL;
-  if (!g_markup_parse_context_end_parse (context, &error))
-    goto out;
-
-  goto out;
 
  out:
-
-  if (context)
-    g_markup_parse_context_free (context);
-  g_free (text);
-
-  if (info.theme)
-    info.theme->format_version = info.format_version;
+  if (!error && !retval)
+    g_set_error (&error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
+                 _("Failed to find a valid file for theme %s\n"),
+                 theme_name);
 
   if (error)
     {
       g_propagate_error (err, error);
     }
-  else if (info.theme)
-    {
-      /* Steal theme from info */
-      retval = info.theme;
-      info.theme = NULL;
-    }
-  else
-    {
-      g_set_error (err, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                   _("Theme file %s did not contain a root <metacity_theme> element"),
-                   info.theme_file);
-    }
-
-  parse_info_free (&info);
 
   return retval;
 }
