@@ -24,7 +24,7 @@
 
 output_copyright ()
 {
-    cat <<EOF > "$1";
+    cat <<EOF
 /*
  * Cogl
  *
@@ -52,35 +52,33 @@ EOF
 
 # If two arguments are given then generate the header file instead
 if test "$#" = 2; then
-    bfname="${2%.glsl}";
-    bname=`basename "$bfname"`;
-    varname=`echo -n "${bname}" | tr -c a-z _`;
-    guardname=`echo -n "${varname}" | tr a-z A-Z`;
-    guardname="__${guardname}_H";
-    headername="${bfname}.h";
+    bfname="${2%.glsl}"
+    bname=`basename "$bfname"`
+    varname=`echo -n "${bname}" | tr -c a-z _`
+    guardname=`echo -n "${varname}" | tr a-z A-Z`
+    guardname="__${guardname}_H"
 
-    output_copyright "${headername}";
-    echo >> "${headername}";
-    echo "#ifndef ${guardname}" >> "${headername}";
-    echo "#define ${guardname}" >> "${headername}";
-    echo >> "${headername}";
+    output_copyright
+    echo
+    echo "#ifndef ${guardname}"
+    echo "#define ${guardname}"
+    echo
 
     sed -n \
      -e 's/^ *\/\*\*\* \([a-zA-Z0-9_]*\) \*\*\*\//extern const char \1[];/p' \
-     < "$2" >> "${headername}";
+     < "$2"
 
-    echo >> "${headername}";
-    echo "#endif /* ${guardname} */" >> "${headername}";
+    echo
+    echo "#endif /* ${guardname} */"
 
 else
 
     bfname="${1%.glsl}";
     bname=`basename "${bfname}"`;
-    cname="${bfname}.c";
     varname=`echo -n "${bname}" | tr -c a-z _`;
 
-    output_copyright "${cname}";
-    echo >> "${cname}";
+    output_copyright
+    echo
     sed -n \
 	-e h \
 	-e 's/^ *\/\*\*\* \([a-zA-Z0-9_]*\) \*\*\*\//  ;\nconst char \1[] =/' \
@@ -91,6 +89,6 @@ else
 	-e 's/$/\\n"/' \
 	-e ': got' \
 	-e p \
-	< "$1" >> "${cname}";
-    echo "  ;" >> "${cname}";
-fi;
+	< "$1"
+    echo "  ;"
+fi
