@@ -240,8 +240,8 @@ gdm_user_class_init (GdmUserClass *class)
         g_object_class_install_property (gobject_class,
                                          PROP_MANAGER,
                                          g_param_spec_object ("manager",
-                                                              _("Manager"),
-                                                              _("The user manager object this user is controlled by."),
+                                                              "Manager",
+                                                              "The user manager object this user is controlled by.",
                                                               GDM_TYPE_USER_MANAGER,
                                                               (G_PARAM_READWRITE |
                                                                G_PARAM_CONSTRUCT_ONLY)));
