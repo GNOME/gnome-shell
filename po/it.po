@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2009-08-19 03:28+0000\n"
-"PO-Revision-Date: 2009-08-20 16:48+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-20 23:25+0200\n"
+"PO-Revision-Date: 2009-08-20 23:26+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -64,17 +63,7 @@ msgstr "Risorse"
 
 #: ../js/ui/runDialog.js:75
 msgid "Please enter a command:"
-msgstr "Digitare un comando:"
-
-# (ndt) no idea...
-#: ../src/gdmuser/gdm-user.c:243
-msgid "Manager"
-msgstr "Manager"
-
-# (ndt) no idea...
-#: ../src/gdmuser/gdm-user.c:244
-msgid "The user manager object this user is controlled by."
-msgstr "L'oggetto user manager che controlla questo utente."
+msgstr "Inserire un comando:"
 
 #: ../src/shell-global.c:841
 msgid "Less than a minute ago"
@@ -153,7 +142,7 @@ msgstr "Cambia utente"
 #. Log Out
 #: ../src/shell-status-menu.c:546
 msgid "Log Out..."
-msgstr "Esci..."
+msgstr "Termina sessione..."
 
 # (ndt) da valutare... pare che ora anche Windows usi 'Arresta...'...
 #. Shut down
@@ -185,3 +174,11 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+# (ndt) no idea...
+#~ msgid "Manager"
+#~ msgstr "Manager"
+
+# (ndt) no idea...
+#~ msgid "The user manager object this user is controlled by."
+#~ msgstr "L'oggetto user manager che controlla questo utente."
