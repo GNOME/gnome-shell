@@ -2884,6 +2884,8 @@ meta_draw_op_free (MetaDrawOp *op)
 
       meta_draw_spec_free (op->data.title.x);
       meta_draw_spec_free (op->data.title.y);
+      if (op->data.title.ellipsize_width)
+        meta_draw_spec_free (op->data.title.ellipsize_width);
       break;
 
     case META_DRAW_OP_LIST:
@@ -3756,6 +3758,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
       if (info->title_layout)
         {
           int rx, ry;
+          PangoRectangle ink_rect, logical_rect;
 
           gc = get_gc_for_primitive (widget, drawable,
                                      op->data.title.color_spec,
@@ -3764,9 +3767,46 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
           rx = parse_x_position_unchecked (op->data.title.x, env);
           ry = parse_y_position_unchecked (op->data.title.y, env);
 
+          if (op->data.title.ellipsize_width)
+            {
+              int ellipsize_width;
+              int right_bearing;
+
+              ellipsize_width = parse_x_position_unchecked (op->data.title.ellipsize_width, env);
+              /* HACK: parse_x_position_unchecked adds in env->rect.x, subtract out again */
+              ellipsize_width -= env->rect.x;
+
+              pango_layout_set_width (info->title_layout, -1);
+              pango_layout_get_pixel_extents (info->title_layout,
+                                              &ink_rect, &logical_rect);
+
+              /* Pango's idea of ellipsization is with respect to the logical rect.
+               * correct for this, by reducing the ellipsization width by the overflow
+               * of the un-ellipsized text on the right... it's always the visual
+               * right we want regardless of bidi, since since the X we pass in to
+               * gdk_draw_layout() is always the left edge of the line.
+               */
+              right_bearing = (ink_rect.x + ink_rect.width) - (logical_rect.x + logical_rect.width);
+              right_bearing = MAX (right_bearing, 0);
+
+              ellipsize_width -= right_bearing;
+              ellipsize_width = MAX (ellipsize_width, 0);
+
+              /* Only ellipsizing when necessary is a performance optimization -
+               * pango_layout_set_width() will force a relayout if it isn't the
+               * same as the current width of -1.
+               */
+              if (ellipsize_width < logical_rect.width)
+                pango_layout_set_width (info->title_layout, PANGO_SCALE * ellipsize_width);
+            }
+
           gdk_draw_layout (drawable, gc,
                            rx, ry,
                            info->title_layout);
+
+          /* Remove any ellipsization we might have set; will short-circuit
+           * if the width is already -1 */
+          pango_layout_set_width (info->title_layout, -1);
 
           g_object_unref (G_OBJECT (gc));
         }
@@ -4326,7 +4366,7 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
   GdkRectangle bottom_titlebar_edge;
   GdkRectangle top_titlebar_edge;
   GdkRectangle left_edge, right_edge, bottom_edge;
-  PangoRectangle extents;
+  PangoRectangle logical_rect;
   MetaDrawInfo draw_info;
   
   g_return_if_fail (style_gtk->colormap == gdk_drawable_get_colormap (drawable));
@@ -4373,13 +4413,13 @@ meta_frame_style_draw_with_style (MetaFrameStyle          *style,
 
   if (title_layout)
     pango_layout_get_pixel_extents (title_layout,
-                                    NULL, &extents);
+                                    NULL, &logical_rect);
 
   draw_info.mini_icon = mini_icon;
   draw_info.icon = icon;
   draw_info.title_layout = title_layout;
-  draw_info.title_layout_width = title_layout ? extents.width : 0;
-  draw_info.title_layout_height = title_layout ? extents.height : 0;
+  draw_info.title_layout_width = title_layout ? logical_rect.width : 0;
+  draw_info.title_layout_height = title_layout ? logical_rect.height : 0;
   draw_info.fgeom = fgeom;
   
   /* The enum is in the order the pieces should be rendered. */

@@ -32,6 +32,10 @@ Additional predefined variables are added for positioning expressions:
  frame_y_center: the Y center of the entire frame, with respect to the
      piece currently being drawn.
 
+The <title/> element now supports an "ellipsize_width" attribute. When
+specified, this gives a width at which to ellipsize the title. If not
+specified, the title will simply be clipped to the title area.
+
 New Features in Theme Format Version 3
 ======================================
 

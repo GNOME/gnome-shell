@@ -2584,12 +2584,14 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *color;
       const char *x;
       const char *y;
+      const char *ellipsize_width;
       MetaColorSpec *color_spec;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
                               "!color", &color,
                               "!x", &x, "!y", &y,
+                              "ellipsize_width", &ellipsize_width,
                               NULL))
         return;
 
@@ -2599,7 +2601,17 @@ parse_draw_op_element (GMarkupParseContext  *context,
 
       if (!check_expression (y, FALSE, info->theme, context, error))
         return;
+
+      if (!check_expression (ellipsize_width, FALSE, info->theme, context, error))
+        return;
 #endif
+
+      if (ellipsize_width && peek_required_version (info) < 3001)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     ATTRIBUTE_NOT_FOUND, "ellipsize_width", element_name);
+          return;
+        }
 
       /* Check last so we don't have to free it when other
        * stuff fails
@@ -2617,6 +2629,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
 
       op->data.title.x = meta_draw_spec_new (info->theme, x, NULL);
       op->data.title.y = meta_draw_spec_new (info->theme, y, NULL);
+      if (ellipsize_width)
+        op->data.title.ellipsize_width = meta_draw_spec_new (info->theme, ellipsize_width, NULL);
 
       g_assert (info->op_list);
       
