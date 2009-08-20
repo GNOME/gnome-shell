@@ -266,39 +266,23 @@ static XVisualInfo *
 clutter_backend_egl_get_visual_info (ClutterBackendX11 *backend_x11,
                                      gboolean           for_offscreen)
 {
-  EGLint   visualId;
-  int i,nxvisuals;
-  XVisualInfo *visual_list, *visinfo = None;
-  XVisualInfo visual_template;
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend_x11);
+  EGLint visualid;
+  XVisualInfo visinfo_template;
+  XVisualInfo *visinfo = None;
+  int visinfos_count;
 
-  /* Find all the visuals in the screen */
-  nxvisuals = 0;
-  visual_template.screen = backend_x11->xscreen_num;
-  visual_list = XGetVisualInfo (backend_x11->xdpy, VisualScreenMask,
-                                &visual_template,
-                                &nxvisuals);
-  if (!visual_list)
+  eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
+                      EGL_NATIVE_VISUAL_ID, &visualid);
+
+  visinfo_template.screen = backend_x11->xscreen_num;
+  visinfo_template.visualid = visualid;
+  visinfo = XGetVisualInfo (backend_x11->xdpy,
+                            VisualScreenMask | VisualIDMask,
+                            &visinfo_template,
+                            &visinfos_count);
+  if (!visinfo)
     return None;
-
- /*get xvisual id*/
- eglGetConfigAttrib (backend_egl->edpy, backend_egl->egl_config,
-                     EGL_NATIVE_VISUAL_ID, &visualId);
-
- /* look up the xvisual matching with egl native visual id*/
- for( i = 0; i < nxvisuals; i++)
-   {
-     if (visual_list[i].visualid == visualId)
-       break;
-   }
-
- if (i < nxvisuals)
-   {
-     visinfo = (XVisualInfo*) Xalloc (sizeof (XVisualInfo));
-     *visinfo = visual_list[i];
-   }
-
-  XFree (visual_list);
 
   return visinfo;
 }
