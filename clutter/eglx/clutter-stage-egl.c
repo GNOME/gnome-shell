@@ -61,25 +61,29 @@ clutter_stage_egl_unrealize (ClutterStageWindow *stage_window)
 }
 
 static gboolean
-clutter_stage_egl_realize (ClutterStageWindow *stage_window)
+_clutter_stage_egl_try_realize (ClutterStageWindow *stage_window, int *retry_cookie)
 {
   ClutterStageEGL   *stage_egl = CLUTTER_STAGE_EGL (stage_window);
   ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackend    *backend;
   ClutterBackendEGL *backend_egl;
   ClutterBackendX11 *backend_x11;
-  EGLConfig          configs[2];
+  EGLConfig          config;
   EGLint             config_count;
   EGLBoolean         status;
-  int                c;
+  int                i;
   int                num_configs;
   EGLConfig         *all_configs;
   EGLint             cfg_attribs[] = {
-    EGL_BUFFER_SIZE,    EGL_DONT_CARE,
+    /* NB: This must be the first attribute, since we may
+     * try and fallback to no stencil buffer */
+    EGL_STENCIL_SIZE,   8,
+
     EGL_RED_SIZE,       5,
     EGL_GREEN_SIZE,     6,
     EGL_BLUE_SIZE,      5,
-    EGL_STENCIL_SIZE,   8,
+
+    EGL_BUFFER_SIZE,    EGL_DONT_CARE,
 
 #ifdef HAVE_COGL_GLES2
     EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
@@ -91,7 +95,16 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
   };
   EGLDisplay edpy;
 
-  CLUTTER_NOTE (BACKEND, "Realizing main stage");
+  /* Here we can change the attributes depending on the fallback count... */
+
+  /* Some GLES hardware can't support a stencil buffer: */
+  if (*retry_cookie == 1)
+    {
+      g_warning ("Trying with stencil buffer disabled...");
+      cfg_attribs[1 /* EGL_STENCIL_SIZE */] = 0;
+    }
+
+  /* XXX: at this point we only have one fallback */
 
   backend     = clutter_get_default_backend ();
   backend_egl = CLUTTER_BACKEND_EGL (backend);
@@ -107,24 +120,24 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
                  num_configs,
                  &num_configs);
 
-  for (c = 0; c < num_configs; ++c)
+  for (i = 0; i < num_configs; ++i)
     {
       EGLint red = -1, green = -1, blue = -1, alpha = -1, stencil = -1;
 
       eglGetConfigAttrib (edpy,
-                          all_configs[c],
+                          all_configs[i],
                           EGL_RED_SIZE, &red);
       eglGetConfigAttrib (edpy,
-                          all_configs[c],
+                          all_configs[i],
                           EGL_GREEN_SIZE, &green);
       eglGetConfigAttrib (edpy,
-                          all_configs[c],
+                          all_configs[i],
                           EGL_BLUE_SIZE, &blue);
       eglGetConfigAttrib (edpy,
-                          all_configs[c],
+                          all_configs[i],
                           EGL_ALPHA_SIZE, &alpha);
       eglGetConfigAttrib (edpy,
-                          all_configs[c],
+                          all_configs[i],
                           EGL_STENCIL_SIZE, &stencil);
       CLUTTER_NOTE (BACKEND, "EGLConfig == R:%d G:%d B:%d A:%d S:%d \n",
                     red, green, blue, alpha, stencil);
@@ -132,20 +145,13 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
 
   g_free (all_configs);
 
-  if (status != EGL_TRUE)
-    {
-      g_critical ("eglGetConfigs failed");
-      goto fail;
-    }
-
   status = eglChooseConfig (edpy,
                             cfg_attribs,
-                            configs, G_N_ELEMENTS (configs),
+                            &config, 1,
                             &config_count);
-
   if (status != EGL_TRUE)
     {
-      g_critical ("eglChooseConfig failed");
+      g_warning ("eglChooseConfig failed");
       goto fail;
     }
 
@@ -197,13 +203,13 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
 
   stage_egl->egl_surface =
     eglCreateWindowSurface (edpy,
-                            configs[0],
+                            config,
                             (NativeWindowType) stage_x11->xwin,
                             NULL);
 
   if (stage_egl->egl_surface == EGL_NO_SURFACE)
     {
-      g_critical ("Unable to create an EGL surface");
+      g_warning ("Unable to create an EGL surface");
       goto fail;
     }
 
@@ -214,33 +220,79 @@ clutter_stage_egl_realize (ClutterStageWindow *stage_window)
         = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
 
       backend_egl->egl_context = eglCreateContext (edpy,
-                                                   configs[0],
+                                                   config,
                                                    EGL_NO_CONTEXT,
                                                    attribs);
 #else
       /* Seems some GLES implementations 1.x do not like attribs... */
       backend_egl->egl_context = eglCreateContext (edpy,
-                                                   configs[0],
+                                                   config,
                                                    EGL_NO_CONTEXT,
                                                    NULL);
 #endif
       if (backend_egl->egl_context == EGL_NO_CONTEXT)
         {
-          g_critical ("Unable to create a suitable EGL context");
+          g_warning ("Unable to create a suitable EGL context");
           goto fail;
         }
 
-      backend_egl->egl_config = configs[0];
+      backend_egl->egl_config = config;
       CLUTTER_NOTE (GL, "Created EGL Context");
     }
 
-  CLUTTER_NOTE (BACKEND, "Successfully realized stage");
-
-  return clutter_stage_egl_parent_iface->realize (stage_window);
+  *retry_cookie = 0;
+  return TRUE;
 
 fail:
 
+  if (stage_egl->egl_surface != EGL_NO_SURFACE)
+    {
+      eglDestroySurface (backend_egl->edpy, stage_egl->egl_surface);
+      stage_egl->egl_surface = EGL_NO_SURFACE;
+    }
+  if (stage_x11->xwin != None)
+    {
+      XDestroyWindow (backend_x11->xdpy, stage_x11->xwin);
+      stage_x11->xwin = None;
+    }
+
+  /* NB: We currently only support a single fallback option */
+  if (*retry_cookie == 0)
+    *retry_cookie = 1; /* tell the caller to try again */
+  else
+    *retry_cookie = 0; /* tell caller not to try again! */
+
   return FALSE;
+}
+
+static gboolean
+clutter_stage_egl_realize (ClutterStageWindow *stage_window)
+{
+  int retry_cookie = 0;
+
+  CLUTTER_NOTE (BACKEND, "Realizing main stage");
+
+  while (1)
+    {
+      /* _clutter_stage_egl_try_realize supports fallbacks, and the number of
+       * fallbacks already tried is tracked in the retry_cookie, so what we are
+       * doing here is re-trying until we get told there are no more fallback
+       * options... */
+      if (_clutter_stage_egl_try_realize (stage_window, &retry_cookie))
+        {
+          gboolean ret = clutter_stage_egl_parent_iface->realize (stage_window);
+          if (G_LIKELY (ret))
+            CLUTTER_NOTE (BACKEND, "Successfully realized stage");
+
+          return ret;
+        }
+      if (retry_cookie == 0)
+        return FALSE; /* we've been told not to try again! */
+
+      g_warning ("%s: Trying fallback", G_STRFUNC);
+    }
+
+  g_return_val_if_reached (FALSE);
 }
 
 static void
