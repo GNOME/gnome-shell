@@ -22,6 +22,16 @@ This document has separate sections for each format version. You may
 want to read the document in reverse order, since the base features
 are discussed under version 1.
 
+New Features in Theme Format Version 3.1
+========================================
+
+Additional predefined variables are added for positioning expressions:
+
+ frame_x_center: the X center of the entire frame, with respect to the
+     piece currently being drawn.
+ frame_y_center: the Y center of the entire frame, with respect to the
+     piece currently being drawn.
+
 New Features in Theme Format Version 3
 ======================================
 

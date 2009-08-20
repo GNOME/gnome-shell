@@ -819,6 +819,8 @@ struct _MetaTheme
   GQuark quark_icon_height;
   GQuark quark_title_width;
   GQuark quark_title_height;
+  GQuark quark_frame_x_center;
+  GQuark quark_frame_y_center;
 };
 
 struct _MetaPositionExprEnv
@@ -834,6 +836,8 @@ struct _MetaPositionExprEnv
   int bottom_height;
   int title_width;
   int title_height;
+  int frame_x_center;
+  int frame_y_center;
   int mini_icon_width;
   int mini_icon_height;
   int icon_width;

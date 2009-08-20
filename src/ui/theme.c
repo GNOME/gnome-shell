@@ -2188,6 +2188,10 @@ pos_eval_get_variable (PosToken                  *t,
         *result = env->title_width;
       else if (t->d.v.name_quark == env->theme->quark_title_height)
         *result = env->title_height;
+      else if (t->d.v.name_quark == env->theme->quark_frame_x_center)
+        *result = env->frame_x_center;
+      else if (t->d.v.name_quark == env->theme->quark_frame_y_center)
+        *result = env->frame_y_center;
       else
         {
           g_set_error (err, META_THEME_ERROR,
@@ -2229,6 +2233,10 @@ pos_eval_get_variable (PosToken                  *t,
         *result = env->title_width;
       else if (strcmp (t->d.v.name, "title_height") == 0)
         *result = env->title_height;
+      else if (strcmp (t->d.v.name, "frame_x_center") == 0)
+        *result = env->frame_x_center;
+      else if (strcmp (t->d.v.name, "frame_y_center") == 0)
+        *result = env->frame_y_center;
       else
         {
           g_set_error (err, META_THEME_ERROR,
@@ -3437,6 +3445,8 @@ fill_env (MetaPositionExprEnv *env,
       env->right_width = info->fgeom->right_width;
       env->top_height = info->fgeom->top_height;
       env->bottom_height = info->fgeom->bottom_height;
+      env->frame_x_center = info->fgeom->width / 2 - logical_region.x;
+      env->frame_y_center = info->fgeom->height / 2 - logical_region.y;
     }
   else
     {
@@ -3444,6 +3454,8 @@ fill_env (MetaPositionExprEnv *env,
       env->right_width = 0;
       env->top_height = 0;
       env->bottom_height = 0;
+      env->frame_x_center = 0;
+      env->frame_y_center = 0;
     }
   
   env->mini_icon_width = info->mini_icon ? gdk_pixbuf_get_width (info->mini_icon) : 0;
@@ -4845,6 +4857,8 @@ meta_theme_new (void)
   theme->quark_icon_height = g_quark_from_static_string ("icon_height");
   theme->quark_title_width = g_quark_from_static_string ("title_width");
   theme->quark_title_height = g_quark_from_static_string ("title_height");
+  theme->quark_frame_x_center = g_quark_from_static_string ("frame_x_center");
+  theme->quark_frame_y_center = g_quark_from_static_string ("frame_y_center");
   return theme;
 }
 
