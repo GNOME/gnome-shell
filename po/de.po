@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-14 23:43+0200\n"
-"PO-Revision-Date: 2009-08-14 23:42+0200\n"
+"POT-Creation-Date: 2009-08-20 16:47+0200\n"
+"PO-Revision-Date: 2009-08-20 16:49+0200\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,48 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME-Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Fenster verwalten und Anwendungen starten"
+
 #. left side
 #: ../js/ui/panel.js:266
 msgid "Activities"
 msgstr "Aktivitäten"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:412
+#: ../js/ui/panel.js:433
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/dash.js:235
+#: ../js/ui/dash.js:251
 msgid "Find apps or documents"
 msgstr "Anwendungen oder Dokumente suchen"
 
-#: ../js/ui/dash.js:336
+#: ../js/ui/dash.js:369
 msgid "Browse"
 msgstr "Durchsuchen"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:472 ../js/ui/dash.js:545
+#: ../js/ui/dash.js:505 ../js/ui/dash.js:578
 msgid "APPLICATIONS"
 msgstr "ANWENDUNGEN"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:477 ../js/ui/dash.js:570
+#: ../js/ui/dash.js:510 ../js/ui/dash.js:605
 msgid "RECENT DOCUMENTS"
 msgstr "ZULETZT GEÖFFNETE DOKUMENTE"
 
 #. **** Places ****
-#: ../js/ui/dash.js:563
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:598
 msgid "PLACES"
 msgstr "ORTE"
 
-#: ../js/ui/runDialog.js:74
+#: ../js/ui/runDialog.js:75
 msgid "Please enter a command:"
 msgstr "Bitte geben Sie einen Befehl ein:"
 
-#: ../src/gdmuser/gdm-user.c:242
+#: ../src/gdmuser/gdm-user.c:243
 msgid "Manager"
 msgstr "Verwaltung"
 
-#: ../src/gdmuser/gdm-user.c:243
+#: ../src/gdmuser/gdm-user.c:244
 msgid "The user manager object this user is controlled by."
 msgstr "Das Benutzerverwaltungsobjekt welches diesen Benutzer überwacht."
 
@@ -118,7 +128,7 @@ msgstr "Abmelden ist nicht möglich: %s"
 
 #: ../src/shell-status-menu.c:492
 msgid "Account Information..."
-msgstr "Kontoinformationen …"
+msgstr "Benutzerinformationen …"
 
 #: ../src/shell-status-menu.c:502
 msgid "Sidebar"
@@ -146,3 +156,27 @@ msgstr "Abmelden …"
 #: ../src/shell-status-menu.c:557
 msgid "Shut Down..."
 msgstr "Ausschalten …"
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Persönlicher Ordner"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Dateisystem"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Suchen"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
