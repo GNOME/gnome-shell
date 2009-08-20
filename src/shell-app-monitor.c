@@ -323,10 +323,67 @@ get_cleaned_wmclass_for_window (MetaWindow  *window)
   return wmclass;
 }
 
+/**
+ * window_is_tracked:
+ *
+ * Returns: %TRUE iff we want to scan this window for application association
+ */
 static gboolean
 window_is_tracked (MetaWindow *window)
 {
-  return !meta_window_is_override_redirect (window);
+  if (meta_window_is_override_redirect (window))
+    return FALSE;
+
+  return TRUE;
+}
+
+/**
+ * window_is_usage_tracked:
+ *
+ * Determine if it makes sense to track the given window for application
+ * usage.  An example of a window we don't want to track is the root
+ * desktop window.  We skip all override-redirect types, and also
+ * exclude other window types like tooltip explicitly, though generally
+ * most of these should be override-redirect.
+ *
+ * The usage data is also currently used to return the list of user-interesting
+ * windows associated with an application.
+ *
+ * Returns: %TRUE iff we want to record focus time spent in this window
+ */
+static gboolean
+window_is_usage_tracked (MetaWindow *window)
+{
+  if (!window_is_tracked (window))
+    return FALSE;
+
+  switch (meta_window_get_window_type (window))
+    {
+      /* Definitely ignore these. */
+      case META_WINDOW_DESKTOP:
+      case META_WINDOW_DOCK:
+      case META_WINDOW_SPLASHSCREEN:
+      /* Should have already been handled by override_redirect above,
+       * but explicitly list here so we get the "unhandled enum"
+       * warning if in the future anything is added.*/
+      case META_WINDOW_DROPDOWN_MENU:
+      case META_WINDOW_POPUP_MENU:
+      case META_WINDOW_TOOLTIP:
+      case META_WINDOW_NOTIFICATION:
+      case META_WINDOW_COMBO:
+      case META_WINDOW_DND:
+      case META_WINDOW_OVERRIDE_OTHER:
+        return FALSE;
+      case META_WINDOW_NORMAL:
+      case META_WINDOW_DIALOG:
+      case META_WINDOW_MODAL_DIALOG:
+      case META_WINDOW_MENU:
+      case META_WINDOW_TOOLBAR:
+      case META_WINDOW_UTILITY:
+        break;
+    }
+
+  return TRUE;
 }
 
 static ShellAppInfo *
@@ -491,7 +548,7 @@ get_active_window (ShellAppMonitor *monitor)
   display = meta_screen_get_display (screen);
   window = meta_display_get_focus_window (display);
 
-  if (window != NULL && window_is_tracked (window))
+  if (window != NULL && window_is_usage_tracked (window))
     return window;
   return NULL;
 }
@@ -648,7 +705,16 @@ track_window (ShellAppMonitor *self,
   if (!app)
     return;
 
+  /* At this point we've stored the association from window -> application */
   g_hash_table_insert (self->window_to_app, window, app);
+
+  /* However, we don't want to record usage for all kinds of windows;
+   * the desktop window is a prime example.  If a window isn't usage
+   * tracked it doesn't count for the purposes of an application
+   * running.
+   */
+  if (!window_is_usage_tracked (window))
+    return;
 
   usage = get_app_usage_from_window (self, window);
   usage->transient = shell_app_info_is_transient (app);
@@ -684,8 +750,6 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
 {
   ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
   ShellAppInfo *app;
-  AppUsage *usage;
-  const char *context;
 
   app = g_hash_table_lookup (self->window_to_app, window);
   if (!app)
@@ -693,23 +757,30 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
 
   shell_app_info_ref (app);
 
-  context = get_window_context (window);
-  usage = get_app_usage_from_window (self, window);
-
   if (window == self->watched_window)
     self->watched_window = NULL;
 
-  usage->window_count--;
-  /* Remove before emitting */
-  g_hash_table_remove (self->window_to_app, window);
-
-  g_signal_emit (self, signals[WINDOW_REMOVED], 0, app, window);
-
-  if (usage->window_count == 0)
+  if (window_is_usage_tracked (window))
     {
-      g_signal_emit (self, signals[APP_REMOVED], 0, app);
-      reset_usage (self, context, shell_app_info_get_id (app), usage);
+      AppUsage *usage;
+      const char *context;
+
+      context = get_window_context (window);
+      usage = get_app_usage_from_window (self, window);
+      usage->window_count--;
+
+      g_hash_table_remove (self->window_to_app, window);
+
+      g_signal_emit (self, signals[WINDOW_REMOVED], 0, app, window);
+
+      if (usage->window_count == 0)
+        {
+          g_signal_emit (self, signals[APP_REMOVED], 0, app);
+          reset_usage (self, context, shell_app_info_get_id (app), usage);
+        }
     }
+  else
+    g_hash_table_remove (self->window_to_app, window);
 
   shell_app_info_unref (app);
 }
@@ -798,6 +869,9 @@ shell_app_monitor_get_windows_for_app (ShellAppMonitor *self,
       MetaWindow *window = key;
       ShellAppInfo *app = value;
       const char *id = shell_app_info_get_id (app);
+
+      if (!window_is_usage_tracked (window))
+        continue;
 
       if (strcmp (id, appid) != 0)
         continue;
@@ -1045,6 +1119,9 @@ shell_app_monitor_get_running_apps (ShellAppMonitor *monitor,
       const char *id;
 
       if (strcmp (get_window_context (window), context) != 0)
+        continue;
+
+      if (!window_is_usage_tracked (window))
         continue;
 
       id = shell_app_info_get_id (app);
