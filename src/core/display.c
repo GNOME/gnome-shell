@@ -3175,6 +3175,15 @@ meta_display_unregister_x_window (MetaDisplay *display,
   remove_pending_pings_for_window (display, xwindow);
 }
 
+/**
+ * meta_display_xwindow_is_a_no_focus_window:
+ * @display: A #MetaDisplay
+ * @xwindow: An X11 window
+ *
+ * Returns %TRUE iff window is one of mutter's internal "no focus" windows
+ * (there is one per screen) which will have the focus when there is no
+ * actual client window focused.
+ */
 gboolean
 meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
                                            Window xwindow)
