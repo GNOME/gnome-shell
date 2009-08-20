@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
 "POT-Creation-Date: 2009-08-19 03:28+0000\n"
-"PO-Revision-Date: 2009-08-20 11:40+0200\n"
+"PO-Revision-Date: 2009-08-20 16:48+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr ""
 #: ../src/shell-status-menu.c:351
 #, c-format
 msgid "Can't logout: %s"
-msgstr "Impossibile terminare le sessione: %s"
+msgstr "Impossibile terminare la sessione: %s"
 
 #: ../src/shell-status-menu.c:492
 msgid "Account Information..."
