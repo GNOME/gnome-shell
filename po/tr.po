@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Baris Cicek <baris@teamforce.name.tr>, 2009.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
@@ -73,28 +72,24 @@ msgstr "Bir dakikadan daha az süre önce"
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d dakika önce"
-msgstr[1] ""
 
 #: ../src/shell-global.c:847
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d saat önce"
-msgstr[1] ""
 
 #: ../src/shell-global.c:850
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d gün önce"
-msgstr[1] ""
 
 #: ../src/shell-global.c:853
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d hafta önce"
-msgstr[1] ""
 
 #: ../src/shell-status-menu.c:156
 msgid "Unknown"
