@@ -151,6 +151,9 @@ Places.prototype = {
 
         this._dirsBox.remove_all();
 
+        if (!GLib.file_test(this._bookmarksPath, GLib.FileTest.EXISTS))
+          return;
+
         let [success, bookmarksContent, len] = GLib.file_get_contents(this._bookmarksPath);
 
         if (!success)
