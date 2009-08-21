@@ -473,22 +473,17 @@ Dash.prototype = {
 
         /***** Search *****/
 
-        this._searchPane = null;
         this._searchActive = false;
         this._searchEntry = new SearchEntry();
         this.searchArea.append(this._searchEntry.actor, Big.BoxPackFlags.EXPAND);
-
-        this._searchAreaApps = null;
-        this._searchAreaDocs = null;
 
         this._searchTimeoutId = 0;
         this._searchEntry.entry.connect('text-changed', Lang.bind(this, function (se, prop) {
             let text = this._searchEntry.getText();
             text = text.replace(/^\s+/g, "").replace(/\s+$/g, "")
             this._searchActive = text != '';
+            this._updateDashActors();
             if (!this._searchActive) {
-                if (this._searchPane != null)
-                    this._searchPane.close();
                 if (this._searchTimeoutId > 0) {
                     Mainloop.source_remove(this._searchTimeoutId);
                     this._searchTimeoutId = 0;
@@ -497,36 +492,20 @@ Dash.prototype = {
             }
             if (this._searchTimeoutId > 0)
                 return;
-            if (this._searchPane == null) {
-                this._searchPane = new ResultPane(this);
-                this._searchPane.content.append(new Clutter.Text({ color: TEXT_COLOR,
-                                                                   font_name: 'Sans Bold 10px',
-                                                                   text: _("APPLICATIONS") }),
-                                                 Big.BoxPackFlags.NONE);
-                this._searchAreaApps = this._searchPane.packResults(AppDisplay.AppDisplay, false);
-                this._searchPane.content.append(new Clutter.Text({ color: TEXT_COLOR,
-                                                                   font_name: 'Sans Bold 10px',
-                                                                   text: _("RECENT DOCUMENTS") }),
-                                                 Big.BoxPackFlags.NONE);
-                this._searchAreaDocs = this._searchPane.packResults(DocDisplay.DocDisplay, false);
-                this._addPane(this._searchPane);
-                this._searchEntry.setPane(this._searchPane);
-            }
-            this._searchPane.open();
             this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, function() {
                 this._searchTimeoutId = 0;
                 let text = this._searchEntry.getText();
                 text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
-                this._searchAreaApps.setSearch(text);
-                this._searchAreaDocs.setSearch(text);
+                this._appSearchResultArea.display.setSearch(text);
+                this._docSearchResultArea.display.setSearch(text);
                 return false;
             }));
         }));
         this._searchEntry.entry.connect('activate', Lang.bind(this, function (se) {
             // only one of the displays will have an item selected, so it's ok to
             // call activateSelected() on all of them
-            this._searchAreaApps.activateSelected();
-            this._searchAreaDocs.activateSelected();
+            this._appSearchResultArea.display.activateSelected();
+            this._docSearchResultArea.display.activateSelected();
             return true;
         }));
         this._searchEntry.entry.connect('key-press-event', Lang.bind(this, function (se, e) {
@@ -551,22 +530,22 @@ Dash.prototype = {
                 // too, but there doesn't seem to be any flickering if we first select
                 // something in one display, but then unset the selection, and move
                 // it to the other display, so it's ok to do that.
-                if (this._searchAreaDocs.hasSelected())
-                  this._searchAreaDocs.selectUp();
-                else if (this._searchAreaApps.hasItems())
-                  this._searchAreaApps.selectUp();
+                if (this._docSearchResultArea.display.hasSelected())
+                    this._docSearchResultArea.display.selectUp();
+                else if (this._appSearchResultArea.display.hasItems())
+                    this._appSearchResultArea.display.selectUp();
                 else
-                  this._searchAreaDocs.selectUp();
+                    this._docSearchResultArea.display.selectUp();
                 return true;
             } else if (symbol == Clutter.Down) {
                 if (!this._searchActive)
                     return true;
-                if (this._searchAreaDocs.hasSelected())
-                  this._searchAreaDocs.selectDown();
-                else if (this._searchAreaApps.hasItems())
-                  this._searchAreaApps.selectDown();
+                if (this._docSearchResultArea.display.hasSelected())
+                    this._docSearchResultArea.display.selectDown();
+                else if (this._appSearchResultArea.display.hasItems())
+                    this._appSearchResultArea.display.selectDown();
                 else
-                  this._searchAreaDocs.selectDown();
+                    this._docSearchResultArea.display.selectDown();
                 return true;
             }
             return false;
@@ -574,12 +553,12 @@ Dash.prototype = {
 
         /***** Applications *****/
 
-        let appsSection = new Section(_("APPLICATIONS"));
+        this._appsSection = new Section(_("APPLICATIONS"));
         let appWell = new AppDisplay.AppWell();
-        appsSection.content.append(appWell.actor, Big.BoxPackFlags.EXPAND);
+        this._appsSection.content.append(appWell.actor, Big.BoxPackFlags.EXPAND);
 
         this._moreAppsPane = null;
-        appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
+        this._appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreAppsPane == null) {
                 this._moreAppsPane = new ResultPane(this);
                 this._moreAppsPane.packResults(AppDisplay.AppDisplay, true);
@@ -588,26 +567,26 @@ Dash.prototype = {
            }
         }));
 
-        this.sectionArea.append(appsSection.actor, Big.BoxPackFlags.NONE);
+        this.sectionArea.append(this._appsSection.actor, Big.BoxPackFlags.NONE);
 
         /***** Places *****/
 
         /* Translators: This is in the sense of locations for documents,
            network locations, etc. */
-        let placesSection = new Section(_("PLACES"), true);
+        this._placesSection = new Section(_("PLACES"), true);
         let placesDisplay = new Places.Places();
-        placesSection.content.append(placesDisplay.actor, Big.BoxPackFlags.EXPAND);
-        this.sectionArea.append(placesSection.actor, Big.BoxPackFlags.NONE);
+        this._placesSection.content.append(placesDisplay.actor, Big.BoxPackFlags.EXPAND);
+        this.sectionArea.append(this._placesSection.actor, Big.BoxPackFlags.NONE);
 
         /***** Documents *****/
 
-        let docsSection = new Section(_("RECENT DOCUMENTS"));
+        this._docsSection = new Section(_("RECENT DOCUMENTS"));
 
         let docDisplay = new DocDisplay.DashDocDisplay();
-        docsSection.content.append(docDisplay.actor, Big.BoxPackFlags.EXPAND);
+        this._docsSection.content.append(docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         this._moreDocsPane = null;
-        docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
+        this._docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreDocsPane == null) {
                 this._moreDocsPane = new ResultPane(this);
                 this._moreDocsPane.packResults(DocDisplay.DocDisplay, true);
@@ -616,7 +595,32 @@ Dash.prototype = {
            }
         }));
 
-        this.sectionArea.append(docsSection.actor, Big.BoxPackFlags.EXPAND);
+        this.sectionArea.append(this._docsSection.actor, Big.BoxPackFlags.EXPAND);
+
+        /***** Search Results *****/
+
+        this._searchResultsSection = new Section(_("SEARCH RESULTS"), true);
+
+        this._searchResultsSection.content.append(new Clutter.Text({ color: TEXT_COLOR,
+                                                                     font_name: 'Sans Bold 10px',
+                                                                     text: _("APPLICATIONS") }),
+                                                  Big.BoxPackFlags.NONE);
+
+        this._appSearchResultArea = new ResultArea(AppDisplay.AppDisplay, false);
+        this._searchResultsSection.content.append(this._appSearchResultArea.actor, Big.BoxPackFlags.EXPAND);
+        createPaneForDetails(this, this._appSearchResultArea.display);
+
+        this._searchResultsSection.content.append(new Clutter.Text({ color: TEXT_COLOR,
+                                                                     font_name: 'Sans Bold 10px',
+                                                                     text: _("DOCUMENTS") }),
+                                                  Big.BoxPackFlags.NONE);
+
+        this._docSearchResultArea = new ResultArea(DocDisplay.DocDisplay, false);
+        this._searchResultsSection.content.append(this._docSearchResultArea.actor, Big.BoxPackFlags.EXPAND);
+        createPaneForDetails(this, this._docSearchResultArea.display);
+
+        this.sectionArea.append(this._searchResultsSection.actor, Big.BoxPackFlags.EXPAND);
+        this._searchResultsSection.actor.hide();
     },
 
     show: function() {
@@ -648,6 +652,20 @@ Dash.prototype = {
             }
         }));
         Main.overview.addPane(pane);
+    },
+
+    _updateDashActors: function() {
+        if (!this._searchActive && this._searchResultsSection.actor.visible) {
+            this._searchResultsSection.actor.hide();
+            this._appsSection.actor.show();
+            this._placesSection.actor.show();
+            this._docsSection.actor.show();
+        } else if (this._searchActive && !this._searchResultsSection.actor.visible) {
+            this._searchResultsSection.actor.show();
+            this._appsSection.actor.hide();
+            this._placesSection.actor.hide();
+            this._docsSection.actor.hide();
+        }
     }
 };
 Signals.addSignalMethods(Dash.prototype);
