@@ -280,10 +280,10 @@ Panel.prototype = {
                                                           opacity: 0,
                                                           reactive: true });
 
-        let hotCorner = new Clutter.Rectangle({ width: 1,
-                                                height: 1,
-                                                opacity: 0,
-                                                reactive: true });
+        this._hotCorner = new Clutter.Rectangle({ width: 1,
+                                                  height: 1,
+                                                  opacity: 0,
+                                                  reactive: true });
 
         this._hotCornerEnvirons.connect('leave-event',
                                         Lang.bind(this, this._onHotCornerEnvironsLeft));
@@ -295,15 +295,15 @@ Panel.prototype = {
         // In addition to being triggered by the mouse enter event, the hot corner
         // can be triggered by clicking on it. This is useful if the user wants to 
         // undo the effect of triggering the hot corner once in the hot corner.
-        hotCorner.connect('enter-event',
-                           Lang.bind(this, this._onHotCornerEntered));
-        hotCorner.connect('button-release-event',
-                           Lang.bind(this, this._onHotCornerClicked));
-        hotCorner.connect('leave-event',
-                          Lang.bind(this, this._onHotCornerLeft));
+        this._hotCorner.connect('enter-event',
+                                Lang.bind(this, this._onHotCornerEntered));
+        this._hotCorner.connect('button-release-event',
+                                Lang.bind(this, this._onHotCornerClicked));
+        this._hotCorner.connect('leave-event',
+                                Lang.bind(this, this._onHotCornerLeft));
 
         this._leftBox.append(this._hotCornerEnvirons, Big.BoxPackFlags.FIXED);
-        this._leftBox.append(hotCorner, Big.BoxPackFlags.FIXED);
+        this._leftBox.append(this._hotCorner, Big.BoxPackFlags.FIXED);
 
         let appMenu = new AppPanelMenu();
         this._leftBox.append(appMenu.actor, Big.BoxPackFlags.NONE);
