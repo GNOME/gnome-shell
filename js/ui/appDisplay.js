@@ -540,12 +540,15 @@ WellDisplayItem.prototype = {
     },
 
     shellWorkspaceLaunch : function() {
-        if (this._windows.length == 0) {
-            this.appInfo.launch();
-        } else {
-            // We should open a new window for the app here, once we know
-            // how to do that.
-        }
+        // Here we just always launch the application again, even if we know
+        // it was already running.  For most applications this
+        // should have the effect of creating a new window, whether that's
+        // a second process (in the case of Calculator) or IPC to existing
+        // instance (Firefox).  There are a few less-sensical cases such
+        // as say Pidgin, but ideally what we do there is have the app
+        // express to us that it doesn't do relaunch=new-window in the
+        // .desktop file.
+        this.appInfo.launch();
     },
 
     getDragActor: function(stageX, stageY) {
