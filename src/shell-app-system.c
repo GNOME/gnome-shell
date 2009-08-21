@@ -101,6 +101,7 @@ shell_app_info_unref (ShellAppInfo *info)
   case SHELL_APP_INFO_TYPE_DESKTOP_FILE:
     g_key_file_free (info->keyfile);
     g_free (info->keyfile_path);
+    break;
   case SHELL_APP_INFO_TYPE_WINDOW:
     g_object_unref (info->window);
     g_free (info->window_id);
