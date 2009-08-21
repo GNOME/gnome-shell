@@ -409,7 +409,14 @@ static void
 clutter_backend_glx_ensure_context (ClutterBackend *backend, 
                                     ClutterStage   *stage)
 {
-  if (stage == NULL)
+  ClutterStageWindow *impl;
+
+  /* if there is no stage, the stage is being destroyed or it has no
+   * implementation attached to it then we clear the GL context
+   */
+  if (stage == NULL ||
+      (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION) ||
+      ((impl = _clutter_stage_get_window (stage)) == NULL))
     {
       ClutterBackendX11 *backend_x11;
 
@@ -420,12 +427,10 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
     }
   else
     {
-      ClutterBackendGLX  *backend_glx;
-      ClutterStageGLX    *stage_glx;
-      ClutterStageX11    *stage_x11;
-      ClutterStageWindow *impl;
+      ClutterBackendGLX *backend_glx;
+      ClutterStageGLX   *stage_glx;
+      ClutterStageX11   *stage_x11;
 
-      impl = _clutter_stage_get_window (stage);
       g_assert (impl != NULL);
 
       CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
