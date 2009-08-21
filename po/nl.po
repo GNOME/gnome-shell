@@ -1,0 +1,170 @@
+# Dutch translation for gnome-shell
+#
+# This file is distributed under the same license as the gnome-shell package.
+#
+# Sander Dijkhuis <sander.dijkhuis@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-21 19:59+0200\n"
+"PO-Revision-Date: 2009-08-21 20:06+0200\n"
+"Last-Translator: Sander Dijkhuis <sander.dijkhuis@gmail.com>\n"
+"Language-Team: Dutch <vertaling@vrijschrift.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Windowmanagement en toepassingen starten"
+
+#. left side
+#: ../js/ui/panel.js:266
+msgid "Activities"
+msgstr "Activiteiten"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:433
+msgid "%a %l:%M %p"
+msgstr "%a %k:%M"
+
+#: ../js/ui/dash.js:251
+msgid "Find apps or documents"
+msgstr "Zoeken"
+
+#: ../js/ui/dash.js:369
+msgid "Browse"
+msgstr "Bladeren"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:505 ../js/ui/dash.js:578
+msgid "APPLICATIONS"
+msgstr "TOEPASSINGEN"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:510 ../js/ui/dash.js:605
+msgid "RECENT DOCUMENTS"
+msgstr "RECENTE DOCUMENTEN"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:598
+msgid "PLACES"
+msgstr "LOCATIES"
+
+#: ../js/ui/runDialog.js:75
+msgid "Please enter a command:"
+msgstr "Voer een opdracht in:"
+
+#: ../src/shell-global.c:841
+msgid "Less than a minute ago"
+msgstr "Minder dan een minuut geleden"
+
+#: ../src/shell-global.c:844
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minuut geleden"
+msgstr[1] "%d minuten geleden"
+
+#: ../src/shell-global.c:847
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d uur geleden"
+msgstr[1] "%d uur geleden"
+
+#: ../src/shell-global.c:850
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d dag geleden"
+msgstr[1] "%d dagen geleden"
+
+#: ../src/shell-global.c:853
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d week geleden"
+msgstr[1] "%d weken geleden"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Kan het scherm niet vergrendelen: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "Kan de schermbeveiliging niet tijdelijk als zwart scherm instellen: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Kan niet uitloggen: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Account-informatie…"
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Zijbalk"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Systeemvoorkeuren…"
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Scherm vergrendelen"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Gebruiker wisselen"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Afmelden…"
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Afsluiten…"
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Persoonlijke map"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Bestandssysteem"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Zoeken"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
