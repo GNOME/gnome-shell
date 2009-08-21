@@ -19,6 +19,13 @@
 
 #define SHELL_APP_FAVORITES_KEY "/desktop/gnome/shell/favorite_apps"
 
+/* Vendor prefixes are something that can be preprended to a .desktop
+ * file name.  Undo this.
+ */
+static const char*const known_vendor_prefixes[] = { "gnome",
+                                                    "fedora",
+                                                    "mozilla" };
+
 enum {
    PROP_0,
 
@@ -722,28 +729,22 @@ ShellAppInfo *
 shell_app_system_lookup_heuristic_basename (ShellAppSystem *system,
                                             const char *name)
 {
-  char *tmpid;
   ShellAppInfo *result;
+  char **vendor_prefixes;
 
   result = shell_app_system_lookup_cached_app (system, name);
   if (result != NULL)
     return result;
 
-  /* These are common "vendor prefixes".  But using
-   * WM_CLASS as a source, we don't get the vendor
-   * prefix.  So try stripping them.
-   */
-  tmpid = g_strjoin ("", "gnome-", name, NULL);
-  result = shell_app_system_lookup_cached_app (system, tmpid);
-  g_free (tmpid);
-  if (result != NULL)
-    return result;
-
-  tmpid = g_strjoin ("", "fedora-", name, NULL);
-  result = shell_app_system_lookup_cached_app (system, tmpid);
-  g_free (tmpid);
-  if (result != NULL)
-    return result;
+  for (vendor_prefixes = (char**)known_vendor_prefixes;
+       *vendor_prefixes; vendor_prefixes++)
+    {
+      char *tmpid = g_strjoin (NULL, *vendor_prefixes, "-", name, NULL);
+      result = shell_app_system_lookup_cached_app (system, tmpid);
+      g_free (tmpid);
+      if (result != NULL)
+        return result;
+    }
 
   return NULL;
 }
