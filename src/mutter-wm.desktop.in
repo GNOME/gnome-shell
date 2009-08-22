@@ -1,6 +1,5 @@
 [Desktop Entry]
 Type=Application
-Encoding=UTF-8
 _Name=Mutter
 Exec=mutter
 # name of loadable control center module
