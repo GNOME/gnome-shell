@@ -1,0 +1,166 @@
+# gnome-shell korean translation.
+# Copyright (C) 2009 THE gnome-shell'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# Young-Ho Cha <ganadist@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-21 10:09+0900\n"
+"PO-Revision-Date: 2009-08-21 10:10+0900\n"
+"Last-Translator: Young-Ho Cha <ganadist@gmail.com>\n"
+"Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "그놈 쉘"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "창 관리와 프로그램 시작"
+
+#. left side
+#: ../js/ui/panel.js:266
+msgid "Activities"
+msgstr ""
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:433
+msgid "%a %l:%M %p"
+msgstr "%A %p %l:%M"
+
+#: ../js/ui/dash.js:250
+msgid "Find apps or documents"
+msgstr "프로그램과 문서를 찾습니다"
+
+#: ../js/ui/dash.js:368
+msgid "Browse"
+msgstr "찾아보기"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:504 ../js/ui/dash.js:577
+msgid "APPLICATIONS"
+msgstr "프로그램"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:509 ../js/ui/dash.js:604
+msgid "RECENT DOCUMENTS"
+msgstr "최근 문서"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:597
+msgid "PLACES"
+msgstr "위치"
+
+#: ../js/ui/runDialog.js:75
+msgid "Please enter a command:"
+msgstr "명령을 입력하십시오:"
+
+#: ../src/shell-global.c:841
+msgid "Less than a minute ago"
+msgstr "1분 이내"
+
+#: ../src/shell-global.c:844
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d분 전"
+
+#: ../src/shell-global.c:847
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d시간 전"
+
+#: ../src/shell-global.c:850
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d일 전"
+
+#: ../src/shell-global.c:853
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d주 전"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "알 수 없음"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "화면을 잠글 수 없습니다: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "임시로 화면보호기를 빈 화면으로 설정할 수 없습니다: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "로그아웃 할 수 없습니다: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "계정 정보..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "사이드바"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "시스템 설정..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "화면 잠그기"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "사용자 바꾸기"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "로그아웃..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "컴퓨터 끄기..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "내 폴더"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "파일시스템"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "찾기"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%s: %s"
