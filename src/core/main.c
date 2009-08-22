@@ -427,8 +427,11 @@ meta_select_display (gchar *display_name)
 static void
 meta_finalize (void)
 {
-  meta_display_close (meta_get_display (),
-                      CurrentTime); /* I doubt correct timestamps matter here */
+  MetaDisplay *display = meta_get_display ();
+
+  if (display)
+    meta_display_close (display,
+                        CurrentTime); /* I doubt correct timestamps matter here */
 
   meta_session_shutdown ();
 }

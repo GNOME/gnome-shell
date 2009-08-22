@@ -1007,6 +1007,7 @@ meta_display_close (MetaDisplay *display,
     meta_compositor_destroy (display->compositor);
   
   g_object_unref (display);
+  the_display = NULL;
 
   meta_quit (META_EXIT_SUCCESS);
 }
