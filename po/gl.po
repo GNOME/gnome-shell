@@ -1,0 +1,184 @@
+# Galician translation for gnome-shell.
+# Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# Fran Diéguez <fran.dieguez@mabishu.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-22 16:39+0200\n"
+"PO-Revision-Date: 2009-08-18 21:20+0100\n"
+"Last-Translator: Fran Diéguez <fran.dieguez@glug.es>\n"
+"Language-Team: Galician <gnome@mancomun.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Xestor de xanelas e lanzado de aplicativos"
+
+#. left side
+#: ../js/ui/panel.js:266
+msgid "Activities"
+msgstr "Actividades"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:433
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#: ../js/ui/dash.js:250
+msgid "Find apps or documents"
+msgstr "Atopar aplicativos ou documentos"
+
+#: ../js/ui/dash.js:368
+msgid "Browse"
+msgstr "Explorar"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:556 ../js/ui/dash.js:606
+msgid "APPLICATIONS"
+msgstr "APLICATIVOS"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:576
+msgid "PLACES"
+msgstr "LUGARES"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:583
+msgid "RECENT DOCUMENTS"
+msgstr "DOCUMENTOS RECENTES"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:602
+msgid "SEARCH RESULTS"
+msgstr ""
+
+#: ../js/ui/dash.js:615
+#, fuzzy
+msgid "DOCUMENTS"
+msgstr "DOCUMENTOS RECENTES"
+
+#: ../js/ui/runDialog.js:75
+msgid "Please enter a command:"
+msgstr "Insira unha orde:"
+
+#: ../src/shell-global.c:841
+msgid "Less than a minute ago"
+msgstr "Menos de un minuto"
+
+#: ../src/shell-global.c:844
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "fai %d minuto"
+msgstr[1] "fai %d minutos"
+
+#: ../src/shell-global.c:847
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "fai %d hora"
+msgstr[1] "fai %d horas"
+
+#: ../src/shell-global.c:850
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "fai %d día"
+msgstr[1] "fai %d días"
+
+#: ../src/shell-global.c:853
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "fai %d semana"
+msgstr[1] "fai %d semanas"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Descoñecido"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Non foi posíbel bloquear a pantalla: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr ""
+"Non foi posíbel establecer o salvapantallas a unha pantalla en branco: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Non foi posíbel pechar a sesión: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Información da conta..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Barra lateral"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Preferenzas do sistema..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Bloquear pantalla"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Cambiar de usuario"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Pechar sesión..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Apagar..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Cartafol persoal"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Sistema de ficheiros"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Buscar"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#~ msgid "Manager"
+#~ msgstr "Xestor"
