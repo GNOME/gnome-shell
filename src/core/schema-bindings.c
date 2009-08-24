@@ -166,7 +166,7 @@ main (int argc, char **argv)
    * "disabled" must also stay as it is.
    */
   about_keybindings = g_markup_escape_text(_( \
-        "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n\n"\
+        "The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n\n"\
         "The parser is fairly liberal and allows "\
   	"lower or upper case, and also abbreviations such as \"<Ctl>\" and " \
 	"\"<Ctrl>\". If you set the option to the special string " \
@@ -174,7 +174,7 @@ main (int argc, char **argv)
         -1);
 
   about_reversible_keybindings = g_markup_escape_text(_( \
-        "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n\n"\
+        "The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n\n"\
         "The parser is fairly liberal and allows "\
   	"lower or upper case, and also abbreviations such as \"<Ctl>\" and " \
 	"\"<Ctrl>\". If you set the option to the special string " \
