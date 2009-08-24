@@ -184,8 +184,16 @@ prep_for_gl_pixels_upload (gint	       pixels_rowstride,
 }
 
 static void
-prep_for_gl_pixels_download (gint pixels_rowstride)
+prep_for_gl_pixels_download (gint pixels_rowstride,
+                             gint pixels_src_x,
+                             gint pixels_src_y,
+                             gint pixels_bpp)
 {
+  GE( glPixelStorei (GL_PACK_ROW_LENGTH, pixels_rowstride / pixels_bpp) );
+
+  GE( glPixelStorei (GL_PACK_SKIP_PIXELS, pixels_src_x) );
+  GE( glPixelStorei (GL_PACK_SKIP_ROWS, pixels_src_y) );
+
   if (!(pixels_rowstride & 0x7))
     GE( glPixelStorei (GL_PACK_ALIGNMENT, 8) );
   else if (!(pixels_rowstride & 0x3))
@@ -404,7 +412,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 						   slice_bmp.height);
 
 	      /* Setup gl alignment to 0,0 top-left corner */
-	      prep_for_gl_pixels_download (slice_bmp.rowstride);
+	      prep_for_gl_pixels_download (slice_bmp.rowstride, 0, 0, bpp);
 
 	      /* Download slice image data into temp bmp */
 	      GE( glBindTexture (tex->gl_target, gl_handle) );
@@ -432,7 +440,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 			    + x_span->start * bpp
 			    + y_span->start * target_bmp->rowstride;
 
-	      prep_for_gl_pixels_download (target_bmp->rowstride);
+	      prep_for_gl_pixels_download (target_bmp->rowstride, 0, 0, bpp);
 
 	      /* Download slice image data */
 	      GE( glBindTexture (tex->gl_target, gl_handle) );
