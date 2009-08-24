@@ -268,13 +268,19 @@ if options.debug:
     # later, in case we kill gdb at a bad time
     termattrs = termios.tcgetattr(0);
 
+# We only respawn the previous environment on abnormal exit;
+# for a clean exit, we assume that gnome-shell was replaced with
+# something else.
+normal_exit = False
+
 try:
     if run_in_xephyr:
-        shell = start_xephyr()
+        xephyr = start_xephyr()
         # This makes us not grab the org.gnome.Panel name
         os.environ['GNOME_SHELL_NO_REPLACE_PANEL'] = '1'
-        start_shell()
+        shell = start_shell()
     else:
+        xephyr = None
         if gnome_panel_pid is not None:
             kill_gnome_panel(gnome_panel_pid)
         shell = start_shell()
@@ -283,8 +289,6 @@ try:
     if options.verbose:
         print "Waiting for shell to exit"
     shell.wait()
-    if options.verbose:
-        print "Shell is dead"
 
 except KeyboardInterrupt, e:
     try:
@@ -292,14 +296,31 @@ except KeyboardInterrupt, e:
     except:
         pass
     shell.wait()
-    if options.verbose:
-        print "Shell killed"
-
 finally:
+    # Clean up Xephyr if it outlived the shell
+    if xephyr:
+        try:
+            os.kill(xephyr.pid, signal.SIGKILL)
+        except OSError:
+            pass
+
+    if shell.returncode ==  0:
+        normal_exit = True
+        if options.verbose:
+            print "Shell exited normally"
+    elif shell.returncode < 0:
+        # Python has no mapping for strsignal; not worth using
+        # ctypes for this.
+        print "Shell killed with signal %d" % - shell.returncode
+    else:
+        # Normal reason here would be losing connection the X server
+        if options.verbose:
+            print "Shell exited with return code %d" % shell.returncode
+
     if options.debug:
         termios.tcsetattr(0, termios.TCSANOW, termattrs);
 
-    if not run_in_xephyr:
+    if not run_in_xephyr and not normal_exit:
         # Restart gnome-panel and window manager
 
         # We don't want to start the new gnome-panel in the current
