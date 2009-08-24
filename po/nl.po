@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-21 19:59+0200\n"
-"PO-Revision-Date: 2009-08-21 20:06+0200\n"
+"POT-Creation-Date: 2009-08-24 22:30+0200\n"
+"PO-Revision-Date: 2009-08-24 22:38+0200\n"
 "Last-Translator: Sander Dijkhuis <sander.dijkhuis@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr "GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "Windowmanagement en toepassingen starten"
+msgstr "Vensterbeheer en toepassingen starten"
 
 #. left side
 #: ../js/ui/panel.js:266
@@ -34,30 +34,39 @@ msgstr "Activiteiten"
 msgid "%a %l:%M %p"
 msgstr "%a %k:%M"
 
-#: ../js/ui/dash.js:251
+#: ../js/ui/dash.js:250
 msgid "Find apps or documents"
 msgstr "Zoeken"
 
-#: ../js/ui/dash.js:369
+#: ../js/ui/dash.js:368
 msgid "Browse"
 msgstr "Bladeren"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:505 ../js/ui/dash.js:578
+#: ../js/ui/dash.js:556 ../js/ui/dash.js:606
 msgid "APPLICATIONS"
 msgstr "TOEPASSINGEN"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:510 ../js/ui/dash.js:605
-msgid "RECENT DOCUMENTS"
-msgstr "RECENTE DOCUMENTEN"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:598
+#: ../js/ui/dash.js:576
 msgid "PLACES"
 msgstr "LOCATIES"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:583
+msgid "RECENT DOCUMENTS"
+msgstr "RECENTE DOCUMENTEN"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:602
+msgid "SEARCH RESULTS"
+msgstr "ZOEKRESULTATEN"
+
+#: ../js/ui/dash.js:615
+msgid "DOCUMENTS"
+msgstr "DOCUMENTEN"
 
 #: ../js/ui/runDialog.js:75
 msgid "Please enter a command:"
@@ -65,7 +74,7 @@ msgstr "Voer een opdracht in:"
 
 #: ../src/shell-global.c:841
 msgid "Less than a minute ago"
-msgstr "Minder dan een minuut geleden"
+msgstr "Korter dan een minuut geleden"
 
 #: ../src/shell-global.c:844
 #, c-format
@@ -112,7 +121,7 @@ msgstr "Kan de schermbeveiliging niet tijdelijk als zwart scherm instellen: %s"
 #: ../src/shell-status-menu.c:351
 #, c-format
 msgid "Can't logout: %s"
-msgstr "Kan niet uitloggen: %s"
+msgstr "Kan niet afmelden: %s"
 
 #: ../src/shell-status-menu.c:492
 msgid "Account Information..."
