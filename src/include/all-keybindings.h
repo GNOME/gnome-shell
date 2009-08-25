@@ -186,6 +186,18 @@ keybind (cycle_panels_backward,    handle_cycle,         META_TAB_LIST_DOCKS,
         _("Move backward between panels and the desktop immediately"))
 
 /***********************************/
+
+/* These two are special pseudo-bindings that are provided for allowing
+ * custom handlers, but will never be bound to a key. While a tab
+ * grab is in effect, they are invoked for releasing the primary modifier
+ * or pressing some unbound key, respectively.
+ */
+keybind (tab_popup_select,        handle_tab_popup_select, 0, 0, NULL,
+         "Select window from tab popup")
+keybind (tab_popup_cancel,        handle_tab_popup_cancel, 0, 0, NULL,
+         "Cancel tab popup")
+
+/***********************************/
      
 keybind (show_desktop, handle_show_desktop, 0, 0, "<Control><Alt>d",
       _("Hide all normal windows and set focus to the desktop"))
