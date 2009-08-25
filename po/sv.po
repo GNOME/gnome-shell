@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-20 16:51+0200\n"
-"PO-Revision-Date: 2009-08-20 16:56+0100\n"
+"POT-Creation-Date: 2009-08-25 07:48+0200\n"
+"PO-Revision-Date: 2009-08-25 07:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -34,44 +34,44 @@ msgstr "Aktiviteter"
 msgid "%a %l:%M %p"
 msgstr "%a %H.%M"
 
-#: ../js/ui/dash.js:251
+#: ../js/ui/dash.js:250
 msgid "Find apps or documents"
 msgstr "Hitta program eller dokument"
 
-#: ../js/ui/dash.js:369
+#: ../js/ui/dash.js:368
 msgid "Browse"
 msgstr "Bläddra"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:505
-#: ../js/ui/dash.js:578
+#: ../js/ui/dash.js:556
+#: ../js/ui/dash.js:606
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:510
-#: ../js/ui/dash.js:605
-msgid "RECENT DOCUMENTS"
-msgstr "SENASTE DOKUMENT"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:598
+#: ../js/ui/dash.js:576
 msgid "PLACES"
 msgstr "PLATSER"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:583
+msgid "RECENT DOCUMENTS"
+msgstr "SENASTE DOKUMENT"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:602
+msgid "SEARCH RESULTS"
+msgstr "SÖKRESULTAT"
+
+#: ../js/ui/dash.js:615
+msgid "DOCUMENTS"
+msgstr "DOKUMENT"
 
 #: ../js/ui/runDialog.js:75
 msgid "Please enter a command:"
 msgstr "Ange ett kommando:"
-
-#: ../src/gdmuser/gdm-user.c:243
-msgid "Manager"
-msgstr "Hanterare"
-
-#: ../src/gdmuser/gdm-user.c:244
-msgid "The user manager object this user is controlled by."
-msgstr "Användarhanteringsobjektet som denna användare styrs av."
 
 #: ../src/shell-global.c:841
 msgid "Less than a minute ago"
@@ -178,4 +178,9 @@ msgstr "Sök"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Manager"
+#~ msgstr "Hanterare"
+#~ msgid "The user manager object this user is controlled by."
+#~ msgstr "Användarhanteringsobjektet som denna användare styrs av."
 
