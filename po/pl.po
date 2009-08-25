@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-19 12:27+0100\n"
-"PO-Revision-Date: 2009-03-19 12:30+0100\n"
+"POT-Creation-Date: 2009-08-25 17:42+0200\n"
+"PO-Revision-Date: 2009-08-25 17:47+0100\n"
 "Last-Translator: Tomasz Dominikowski <dominikowski@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr "Zarządzanie oknami"
 
 #: ../src/core/bell.c:294
 msgid "Bell event"
-msgstr ""
+msgstr "Zdarzenie sygnału dźwiękowego"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -130,53 +130,57 @@ msgstr ""
 "Na program nie udziela się ŻADNYCH GWARANCJI, nawet domyślnej gwarancji\n"
 "PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Wyłącza połączenie z menedżerem sesji"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Podmienia uruchomionego menedżera okien na Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Określa ID zarządzania sesji"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Używany wyświetlacz X"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Inicjowanie sesji z zapisanego pliku"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Wezwania X synchroniczne"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Włączenie kompozycji"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Wyłączenie kompozycji"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "Bez przełączania okien na pełny ekran, jeśli są zmaksymalizowane i nie posiadają dekoracji"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nie można przejrzeć katalogu z motywami: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Nie można odnaleźć żadnego motywu. Proszę sprawdzić, że katalog %s istnieje i zawiera standardowe motywy.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ponowne uruchomienie nie powiodło się: %s\n"
@@ -192,92 +196,92 @@ msgstr "Ponowne uruchomienie nie powiodło się: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505
-#: ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506
+#: ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Kluczowi GConf \"%s\" jest przypisana niepoprawna wartość\n"
 
-#: ../src/core/prefs.c:586
-#: ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587
+#: ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "Wartość %d zapisana w kluczu GConf %s jest poza zakresem %d - %d\n"
 
-#: ../src/core/prefs.c:630
-#: ../src/core/prefs.c:707
-#: ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819
-#: ../src/core/prefs.c:1112
-#: ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145
-#: ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631
+#: ../src/core/prefs.c:708
+#: ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820
+#: ../src/core/prefs.c:1113
+#: ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146
+#: ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Klucz GConf \"%s\" jest niewłaściwego typu\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Obejścia dla niepoprawnie działających programów są nieaktywne. Niektóre z nich mogą się więc zachowywać w sposób nieprzewidywalny.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nie można przetworzyć opisu \"%s\", powiązanego z kluczem GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje poprawnie modyfikatora przycisku myszy\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Przy ustawianiu liczby obszarów roboczych na %d wystąpił błąd: %s\n"
 
-#: ../src/core/prefs.c:1971
-#: ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975
+#: ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
 
-#: ../src/core/prefs.c:2001
-#: ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005
+#: ../src/core/prefs.c:2183
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje poprawnie skrótu klawiszowego \"%s\"\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Błąd przy ustawianiu nazwy obszaru roboczego %d na \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Błąd przy ustawianiu stanu menedżera kompozycji: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Podekran %d ekranu \"%s\" jest niepoprawny\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien. Aby zastąpić działającego menedżera okien, spróbuj użyć opcji --replace.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nie można uzyskać zaznaczenia menedżera okien na podekranie %d ekranu \"%s\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
@@ -288,14 +292,17 @@ msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
 #.
 #: ../src/core/schema-bindings.c:169
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "Przykładowy zapis ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny atrybut \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+msgstr ""
+"Przykładowy zapis ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1.\n"
+"\n"
+"Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny atrybut \"disabled\" (wyłączone), wówczas z czynnością nie będzie powiązany żaden skrót klawiszowy."
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action.\n"
 "\n"
@@ -303,7 +310,8 @@ msgid ""
 msgstr ""
 "Przykładowy zapis ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1.\n"
 "\n"
-"Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy.\n"
+"Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (wyłączone), wówczas z czynnością nie będzie powiązany żaden skrót klawiszowy.\n"
+"\n"
 "Działanie skrótu może zostać odwrócone poprzez naciśnięcie klawisza \"shift\"; z tego powodu, do skrótu nie można przypisać klawisza \"shift\"."
 
 #: ../src/core/session.c:845
@@ -940,7 +948,7 @@ msgstr "Klucz /apps/metacity/global_keybindings/run_command_window_screenshot de
 
 #: ../src/metacity.schemas.in.in.h:37
 msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "Skrót klawiszowy, który wykonuje polecenie o odpowiadającym mu numerze, pobrane z ustawienia o kluczu /apps/metacity/keybinding_commands. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+msgstr "Skrót klawiszowy, który wykonuje polecenie o odpowiadającym mu numerze, pobrane z ustawienia o kluczu /apps/metacity/keybinding_commands. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. nieaktywne), wówczas z czynnością nie będzie powiązany żaden skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
