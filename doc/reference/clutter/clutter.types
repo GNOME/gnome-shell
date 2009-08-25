@@ -30,3 +30,4 @@ clutter_cairo_texture_get_type
 clutter_text_get_type
 clutter_animatable_get_type
 clutter_animation_get_type
+clutter_interval_get_type
