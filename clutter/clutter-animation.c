@@ -612,6 +612,7 @@ clutter_animation_bind_interval (ClutterAnimation *animation,
  * calls convenient in language bindings.
  *
  * Return value: (transfer none): The animation itself.
+ *
  * Since: 1.0
  */
 ClutterAnimation *
@@ -733,7 +734,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
 
   if (!clutter_animation_has_property (animation, property_name))
     {
-      g_warning ("Cannot unbind property '%s': the animation has "
+      g_warning ("Cannot update property '%s': the animation has "
                  "no bound property with that name",
                  property_name);
       return;
@@ -743,7 +744,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
   pspec = g_object_class_find_property (klass, property_name);
   if (!pspec)
     {
-      g_warning ("Cannot bind property '%s': objects of type '%s' have "
+      g_warning ("Cannot update property '%s': objects of type '%s' have "
                  "no such property",
                  property_name,
                  g_type_name (G_OBJECT_TYPE (priv->object)));
@@ -753,7 +754,7 @@ clutter_animation_update_interval (ClutterAnimation *animation,
   if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec),
                                 clutter_interval_get_value_type (interval)))
     {
-      g_warning ("Cannot bind property '%s': the interval value of "
+      g_warning ("Cannot update property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
                  "of type '%s'",
                  property_name,
