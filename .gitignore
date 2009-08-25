@@ -209,6 +209,7 @@ TAGS
 /tests/conform/test-premult
 /tests/conform/test-clone-no-map
 /tests/conform/test-materials
+/tests/conform/test-group-depth-sorting
 /tests/conform/test-conformance-result.xml
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text

@@ -168,5 +168,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/units", test_units_constructors);
   TEST_CONFORM_SIMPLE ("/units", test_units_string);
 
+  TEST_CONFORM_SIMPLE ("/group", test_group_depth_sorting);
+
   return g_test_run ();
 }
