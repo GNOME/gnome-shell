@@ -105,8 +105,10 @@ AltTabPopup.prototype = {
                                                global.screen_height);
 
         this.actor.show_all();
-        this.actor.x = Math.floor((global.screen_width - this.actor.width) / 2);
-        this.actor.y = Math.floor((global.screen_height - this.actor.height) / 2);
+
+        let primary = global.get_primary_monitor();
+        this.actor.x = primary.x + Math.floor((primary.width - this.actor.width) / 2);
+        this.actor.y = primary.y + Math.floor((primary.height - this.actor.height) / 2);
 
         this._updateSelection(initialSelection);
 

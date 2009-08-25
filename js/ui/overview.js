@@ -142,42 +142,44 @@ Overview.prototype = {
     },
 
     _recalculateGridSizes: function () {
-        wideScreen = (global.screen_width/global.screen_height > WIDE_SCREEN_CUT_OFF_RATIO) &&
-                     (global.screen_height >= WIDE_SCREEN_MINIMUM_HEIGHT);
+        let primary = global.get_primary_monitor();
+        wideScreen = (primary.width/primary.height > WIDE_SCREEN_CUT_OFF_RATIO) &&
+                     (primary.height >= WIDE_SCREEN_MINIMUM_HEIGHT);
 
         // We divide the screen into an imaginary grid which helps us determine the layout of
         // different visual components.
         if (wideScreen) {
-            displayGridColumnWidth = global.screen_width / COLUMNS_WIDE_SCREEN;
-            displayGridRowHeight = global.screen_height / ROWS_WIDE_SCREEN;
+            displayGridColumnWidth = primary.width / COLUMNS_WIDE_SCREEN;
+            displayGridRowHeight = primary.height / ROWS_WIDE_SCREEN;
         } else {
-            displayGridColumnWidth = global.screen_width / COLUMNS_REGULAR_SCREEN;
-            displayGridRowHeight = global.screen_height / ROWS_REGULAR_SCREEN;
+            displayGridColumnWidth = primary.width / COLUMNS_REGULAR_SCREEN;
+            displayGridRowHeight = primary.height / ROWS_REGULAR_SCREEN;
         }
     },
 
     relayout: function () {
-        let screenHeight = global.screen_height;
-        let screenWidth = global.screen_width;
+        let primary = global.get_primary_monitor();
+
+        this._group.set_position(primary.x, primary.y);
 
         let contentY = Panel.PANEL_HEIGHT;
-        let contentHeight = screenHeight - contentY;
+        let contentHeight = primary.height - contentY;
 
         this._coverPane.set_position(0, contentY);
-        this._coverPane.set_size(screenWidth, contentHeight);
+        this._coverPane.set_size(primary.width, contentHeight);
 
         let workspaceColumnsUsed = wideScreen ? COLUMNS_FOR_WORKSPACES_WIDE_SCREEN : COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN;
         let workspaceRowsUsed = wideScreen ? ROWS_FOR_WORKSPACES_WIDE_SCREEN : ROWS_FOR_WORKSPACES_REGULAR_SCREEN;
 
         this._workspacesWidth = displayGridColumnWidth * workspaceColumnsUsed
                                   - WORKSPACE_GRID_PADDING * 2;
-        // We scale the vertical padding by (screenHeight / screenWidth)
+        // We scale the vertical padding by (primary.height / primary.width)
         // so that the workspace preserves its aspect ratio.
         this._workspacesHeight = displayGridRowHeight * workspaceRowsUsed
-                                   - WORKSPACE_GRID_PADDING * (screenHeight / screenWidth) * 2;
+                                   - WORKSPACE_GRID_PADDING * (primary.height / primary.width) * 2;
 
         this._workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
-        this._workspacesY = displayGridRowHeight + WORKSPACE_GRID_PADDING * (screenHeight / screenWidth);
+        this._workspacesY = displayGridRowHeight + WORKSPACE_GRID_PADDING * (primary.height / primary.width);
 
         this._dash.actor.set_position(0, contentY);
         this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
@@ -187,10 +189,10 @@ Overview.prototype = {
         // place the 'Add Workspace' button in the bottom row of the grid
         addRemoveButtonSize = Math.floor(displayGridRowHeight * 3/5);
         this._addButtonX = this._workspacesX + this._workspacesWidth - addRemoveButtonSize;
-        this._addButtonY = screenHeight - Math.floor(displayGridRowHeight * 4/5);
+        this._addButtonY = primary.height - Math.floor(displayGridRowHeight * 4/5);
 
-        this._backOver.set_position(0, contentY);
-        this._backOver.set_size(global.screen_width, contentHeight);
+        this._backOver.set_position(0, 0);
+        this._backOver.set_size(global.screen_width, global.screen_height);
 
         this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
                                          contentY);
@@ -198,7 +200,7 @@ Overview.prototype = {
         this._paneContainer.height = contentHeight;
 
         this._transparentBackground.set_position(this._paneContainer.x, this._paneContainer.y);
-        this._transparentBackground.set_size(global.screen_width - this._paneContainer.x,
+        this._transparentBackground.set_size(primary.width - this._paneContainer.x,
                                              this._paneContainer.height);
 
         if (this._activeDisplayPane != null)

@@ -249,15 +249,16 @@ function Inspector() {
 Inspector.prototype = {
     _init: function() {
         let width = 150;
+        let primary = global.get_primary_monitor();
         let eventHandler = new Big.Box({ background_color: LG_BACKGROUND_COLOR,
                                          border: 1,
                                          border_color: LG_BORDER_COLOR,
                                          corner_radius: 4,
-                                         y: global.stage.height/2,
+                                         y: primary.y + Math.floor(primary.height / 2),
                                          reactive: true
                                       });
         eventHandler.connect('notify::allocation', Lang.bind(this, function () {
-            eventHandler.x = Math.floor((global.stage.width)/2 - (eventHandler.width)/2);
+            eventHandler.x = primary.x + Math.floor((primary.width - eventHandler.width) / 2);
         }));
         global.stage.add_actor(eventHandler);
         let displayText = new Clutter.Text({ color: MATRIX_GREEN,
@@ -518,11 +519,11 @@ LookingGlass.prototype = {
     },
 
     _resizeTo: function(actor) {
-        let stage = global.stage;
-        let myWidth = stage.width * 0.7;
-        let myHeight = stage.height * 0.7;
+        let primary = global.get_primary_monitor();
+        let myWidth = primary.width * 0.7;
+        let myHeight = primary.height * 0.7;
         let [srcX, srcY] = actor.get_transformed_position();
-        this.actor.x = srcX + (stage.width-myWidth)/2;
+        this.actor.x = srcX + (primary.width - myWidth) / 2;
         this._hiddenY = srcY + actor.height - myHeight - 4; // -4 to hide the top corners
         this._targetY = this._hiddenY + myHeight;
         this.actor.y = this._hiddenY;

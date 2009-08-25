@@ -121,7 +121,9 @@ function start() {
 }
 
 function _relayout() {
-    panel.actor.set_size(global.screen_width, Panel.PANEL_HEIGHT);
+    let primary = global.get_primary_monitor();
+    panel.actor.set_position(primary.x, primary.y);
+    panel.actor.set_size(primary.width, Panel.PANEL_HEIGHT);
     overview.relayout();
 }
 

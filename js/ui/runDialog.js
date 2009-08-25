@@ -60,24 +60,26 @@ RunDialog.prototype = {
 
         // All actors are inside _group. We create it initially
         // hidden then show it in show()
-        this._group = new Clutter.Group({ visible: false });
+        this._group = new Clutter.Group({ visible: false,
+                                          x: 0,
+                                          y: 0,
+                                          width: global.screen_width,
+                                          height: global.screen_height });
         global.stage.add_actor(this._group);
 
-        this._lightbox = new Lightbox.Lightbox(this._group);
+        let lightbox = new Lightbox.Lightbox(this._group);
 
-        let boxH = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                 x_align: Big.BoxAlignment.CENTER,
-                                 y_align: Big.BoxAlignment.CENTER,
-                                 width: global.screen_width,
-                                 height: global.screen_height });
+        this._boxH = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                   x_align: Big.BoxAlignment.CENTER,
+                                   y_align: Big.BoxAlignment.CENTER });
 
-        this._group.add_actor(boxH);
-        this._lightbox.highlight(boxH);
+        this._group.add_actor(this._boxH);
+        lightbox.highlight(this._boxH);
 
         let boxV = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                  y_align: Big.BoxAlignment.CENTER });
 
-        boxH.append(boxV, Big.BoxPackFlags.NONE);
+        this._boxH.append(boxV, Big.BoxPackFlags.NONE);
 
 
         let dialogBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
@@ -87,7 +89,7 @@ RunDialog.prototype = {
                                       padding: DIALOG_PADDING,
                                       width: DIALOG_WIDTH });
 
-        boxH.append(dialogBox, Big.BoxPackFlags.NONE);
+        this._boxH.append(dialogBox, Big.BoxPackFlags.NONE);
 
         let label = new Clutter.Text({ color: BOX_TEXT_COLOR,
                                        font_name: '18px Sans',
@@ -181,6 +183,12 @@ RunDialog.prototype = {
 
         if (!Main.pushModal(this._group))
             return;
+
+        // Position the dialog on the current monitor
+        let monitor = global.get_focus_monitor();
+
+        this._boxH.set_position(monitor.x, monitor.y);
+        this._boxH.set_size(monitor.width, monitor.height);
 
         this._isOpen = true;
         this._group.show();

@@ -869,3 +869,99 @@ shell_global_create_root_pixmap_actor (ShellGlobal *global)
 
   return clutter_clone_new (global->root_pixmap);
 }
+
+/**
+ * shell_global_get_monitors:
+ * @global: the #ShellGlobal
+ *
+ * Gets a list of the bounding boxes of the active screen's monitors.
+ *
+ * Return value: (transfer full) (element-type GdkRectangle): a list
+ * of monitor bounding boxes.
+ */
+GSList *
+shell_global_get_monitors (ShellGlobal *global)
+{
+  MetaScreen *screen = shell_global_get_screen (global);
+  GSList *monitors = NULL;
+  MetaRectangle rect;
+  int i;
+
+  g_assert (sizeof (MetaRectangle) == sizeof (GdkRectangle) &&
+            G_STRUCT_OFFSET (MetaRectangle, x) == G_STRUCT_OFFSET (GdkRectangle, x) &&
+            G_STRUCT_OFFSET (MetaRectangle, y) == G_STRUCT_OFFSET (GdkRectangle, y) &&
+            G_STRUCT_OFFSET (MetaRectangle, width) == G_STRUCT_OFFSET (GdkRectangle, width) &&
+            G_STRUCT_OFFSET (MetaRectangle, height) == G_STRUCT_OFFSET (GdkRectangle, height));
+
+  for (i = meta_screen_get_n_monitors (screen) - 1; i >= 0; i--)
+    {
+      meta_screen_get_monitor_geometry (screen, i, &rect);
+      monitors = g_slist_prepend (monitors,
+                                  g_boxed_copy (GDK_TYPE_RECTANGLE, &rect));
+    }
+  return monitors;
+}
+
+/**
+ * shell_global_get_primary_monitor:
+ * @global: the #ShellGlobal
+ *
+ * Gets the bounding box of the primary monitor (the one that the
+ * panel is on).
+ *
+ * Return value: the bounding box of the primary monitor
+ */
+GdkRectangle *
+shell_global_get_primary_monitor (ShellGlobal  *global)
+{
+  MetaScreen *screen = shell_global_get_screen (global);
+  MetaRectangle rect;
+
+  g_assert (sizeof (MetaRectangle) == sizeof (GdkRectangle) &&
+            G_STRUCT_OFFSET (MetaRectangle, x) == G_STRUCT_OFFSET (GdkRectangle, x) &&
+            G_STRUCT_OFFSET (MetaRectangle, y) == G_STRUCT_OFFSET (GdkRectangle, y) &&
+            G_STRUCT_OFFSET (MetaRectangle, width) == G_STRUCT_OFFSET (GdkRectangle, width) &&
+            G_STRUCT_OFFSET (MetaRectangle, height) == G_STRUCT_OFFSET (GdkRectangle, height));
+
+  meta_screen_get_monitor_geometry (screen, 0, &rect);
+  return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
+}
+
+/**
+ * shell_global_get_focus_monitor:
+ * @global: the #ShellGlobal
+ *
+ * Gets the bounding box of the monitor containing the window that
+ * currently contains the keyboard focus.
+ *
+ * Return value: the bounding box of the focus monitor
+ */
+GdkRectangle *
+shell_global_get_focus_monitor (ShellGlobal  *global)
+{
+  MetaScreen *screen = shell_global_get_screen (global);
+  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaWindow *focus = meta_display_get_focus_window (display);
+  MetaRectangle rect, wrect;
+  int nmonitors, i;
+
+  if (focus)
+    {
+      meta_window_get_outer_rect (focus, &wrect);
+      nmonitors = meta_screen_get_n_monitors (screen);
+
+      /* Find the monitor that the top-left corner of @focus is on. */
+      for (i = 0; i < nmonitors; i++)
+        {
+          meta_screen_get_monitor_geometry (screen, i, &rect);
+
+          if (rect.x < wrect.x && rect.y < wrect.y &&
+              rect.x + rect.width > wrect.x &&
+              rect.y + rect.height > wrect.y)
+            return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
+        }
+    }
+
+  meta_screen_get_monitor_geometry (screen, 0, &rect);
+  return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
+}
