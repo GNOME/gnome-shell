@@ -531,12 +531,16 @@ static gint
 sort_z_order (gconstpointer a,
               gconstpointer b)
 {
-  int depth_a, depth_b;
+  float depth_a, depth_b;
 
   depth_a = clutter_actor_get_depth (CLUTTER_ACTOR(a));
   depth_b = clutter_actor_get_depth (CLUTTER_ACTOR(b));
 
-  return (depth_a - depth_b);
+  if (depth_a < depth_b)
+    return -1;
+  if (depth_a > depth_b)
+    return 1;
+  return 0;
 }
 
 static void
