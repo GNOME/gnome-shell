@@ -766,6 +766,59 @@ clutter_animation_update_interval (ClutterAnimation *animation,
 }
 
 /**
+ * clutter_animation_update:
+ * @animation: a #ClutterAnimation
+ * @property_name: name of the property
+ * @final: The final value of the property
+ *
+ * Updates the @final value of the interval for @property_name
+ *
+ * Return value: (transfer none): The animation itself.
+ *
+ * Since: 1.0
+ */
+ClutterAnimation *
+clutter_animation_update (ClutterAnimation *animation,
+                          const gchar      *property_name,
+                          const GValue     *final)
+{
+  ClutterAnimationPrivate *priv;
+  ClutterInterval *interval;
+
+  g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+  g_return_val_if_fail (final != NULL, NULL);
+  g_return_val_if_fail (G_VALUE_TYPE (final) != G_TYPE_INVALID, NULL);
+
+  priv = animation->priv;
+
+  interval = clutter_animation_get_interval (animation, property_name);
+  if (interval == NULL)
+    {
+      g_warning ("Cannot update property '%s': the animation has "
+                 "no bound property with that name",
+                 property_name);
+      return NULL;
+    }
+
+  if (!g_value_type_compatible (G_VALUE_TYPE (final),
+                                clutter_interval_get_value_type (interval)))
+    {
+      g_warning ("Cannot update property '%s': the interval value of "
+                 "type '%s' is not compatible with the property value "
+                 "of type '%s'",
+                 property_name,
+                 g_type_name (clutter_interval_get_value_type (interval)),
+                 g_type_name (G_VALUE_TYPE (final)));
+      return NULL;
+    }
+
+  clutter_interval_set_final_value (interval, final);
+
+  return animation;
+}
+
+/**
  * clutter_animation_get_interval:
  * @animation: a #ClutterAnimation
  * @property_name: name of the property

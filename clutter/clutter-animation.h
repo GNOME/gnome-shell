@@ -126,6 +126,9 @@ ClutterAnimation *   clutter_animation_bind_interval   (ClutterAnimation     *an
                                                         ClutterInterval      *interval);
 gboolean             clutter_animation_has_property    (ClutterAnimation     *animation,
                                                         const gchar          *property_name);
+ClutterAnimation *   clutter_animation_update          (ClutterAnimation     *animation,
+                                                        const gchar          *property_name,
+                                                        const GValue         *final);
 void                 clutter_animation_update_interval (ClutterAnimation     *animation,
                                                         const gchar          *property_name,
                                                         ClutterInterval      *interval);

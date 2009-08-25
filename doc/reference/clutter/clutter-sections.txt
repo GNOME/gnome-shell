@@ -1436,6 +1436,7 @@ clutter_animation_completed
 <SUBSECTION>
 clutter_animation_bind
 clutter_animation_bind_interval
+clutter_animation_update
 clutter_animation_update_interval
 clutter_animation_has_property
 clutter_animation_unbind_property
