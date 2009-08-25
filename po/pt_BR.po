@@ -8,7 +8,7 @@
 # Raul Pereira <contato@raulpereira.com>, 2007.
 # Og Maciel <ogmaciel@gnome.org>, 2007-2008.
 # Rodrigo Flores <rodrigomarquesflores@gmail.com>, 2007.
-# Djavan Fagundes <dnoway@gmail.com>, 2008.
+# Djavan Fagundes <dnoway@gmail.com>, 2008, 2009.
 # Vladimir Melo <vmelo@gnome.org>, 2009.
 # Henrique P Machado <zehrique@gmail.com>, 2009.
 #
@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-18 22:27-0400\n"
-"PO-Revision-Date: 2009-08-17 16:06-0300\n"
-"Last-Translator: Henrique P Machado <zehrique@gmail.com>\n"
+"POT-Creation-Date: 2009-08-25 15:20-0300\n"
+"PO-Revision-Date: 2009-08-25 11:55-0300\n"
+"Last-Translator: Djavan Fagundes <dnoway@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -324,14 +324,14 @@ msgstr "Não foi possível liberar a tela %d na exibição \"%s\"\n"
 #.
 #: ../src/core/schema-bindings.c:169
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"O formato parece com \"<Control>a\" ou <Shift><Alt>F1\".\n"
+"O formato parece com \"<Control>a\" ou \"<Shift><Alt>F1\".\n"
 "\n"
 "O analisador é bem liberal e permite maiúsculas e minúsculas, e também "
 "abreviações como \"<Ctl>\" e \"<Ctrl>\". Se você definir a opção para string "
@@ -339,7 +339,7 @@ msgstr ""
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -349,7 +349,7 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"O formato parece com \"<Control>a\" ou <Shift><Alt>F1\".\n"
+"O formato parece com \"<Control>a\" ou \"<Shift><Alt>F1\".\n"
 "\n"
 "O analisador é bem liberal e permite maiúsculas e minúsculas, e também "
 "abreviações como \"<Ctl>\" e \"<Ctrl>\". Se você definir a opção para string "
