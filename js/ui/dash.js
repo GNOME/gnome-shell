@@ -27,6 +27,9 @@ const DASH_PADDING_SIDE = 14;
 const BACKGROUND_COLOR = new Clutter.Color();
 BACKGROUND_COLOR.from_pixel(0x000000c0);
 
+const PRELIGHT_COLOR = new Clutter.Color();
+PRELIGHT_COLOR.from_pixel(0x4f6fadaa);
+
 const TEXT_COLOR = new Clutter.Color();
 TEXT_COLOR.from_pixel(0x5f5f5fff);
 const BRIGHT_TEXT_COLOR = new Clutter.Color();
@@ -421,6 +424,36 @@ SectionHeader.prototype = {
     }
 }
 
+function SearchSectionHeader(title, onClick) {
+    this._init(title, onClick);
+}
+
+SearchSectionHeader.prototype = {
+    _init : function(title, onClick) {
+        let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                padding_top: DASH_SECTION_PADDING,
+                                padding_bottom: DASH_SECTION_PADDING });
+        let titleText = new Clutter.Text({ color: TEXT_COLOR,
+                                           font_name: 'Sans Bold 10px',
+                                           text: title });
+        this.countText = new Clutter.Text({ color: TEXT_COLOR,
+                                           font_name: 'Sans Bold 12px' });
+
+        box.append(titleText, Big.BoxPackFlags.NONE);
+        box.append(this.countText, Big.BoxPackFlags.END);
+
+        let button = new Button.Button(box, PRELIGHT_COLOR, BACKGROUND_COLOR,
+                                       TEXT_COLOR, false, null);
+        button.button.height = box.height;
+        button.button.padding_left = DEFAULT_PADDING;
+        button.button.padding_right = DEFAULT_PADDING;
+
+        button.button.connect('button-release-event', onClick);
+
+        this.actor = button.button;
+    }
+}
+
 function Section(titleString, suppressBrowse) {
     this._init(titleString, suppressBrowse);
 }
@@ -497,7 +530,9 @@ Dash.prototype = {
                 let text = this._searchEntry.getText();
                 text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
                 this._appSearchResultArea.display.setSearch(text);
+                this._appSearchHeader.countText.text = this._appSearchResultArea.display.getMatchedItemsCount() + "";
                 this._docSearchResultArea.display.setSearch(text);
+                this._docSearchHeader.countText.text = this._docSearchResultArea.display.getMatchedItemsCount() + "";
                 return false;
             }));
         }));
@@ -512,9 +547,12 @@ Dash.prototype = {
             let text = this._searchEntry.getText();
             let symbol = Shell.get_event_key_symbol(e);
             if (symbol == Clutter.Escape) {
-                // Escape will keep clearing things back to the desktop. First, if
-                // we have active text, we remove it.
-                if (text != '')
+                // Escape will keep clearing things back to the desktop.
+                // If we are showing a particular section of search, go back to all sections.
+                if (this._getOnlyAppSearchShown() || this._getOnlyDocSearchShown())
+                    this._showAllSearchSections();
+                // If we have an active search, we remove it.
+                else if (this._searchActive)
                     this._searchEntry.reset();
                 // Next, if we're in one of the "more" modes or showing the details pane, close them
                 else if (this._activePane != null)
@@ -601,21 +639,27 @@ Dash.prototype = {
 
         this._searchResultsSection = new Section(_("SEARCH RESULTS"), true);
 
-        this._searchResultsSection.content.append(new Clutter.Text({ color: TEXT_COLOR,
-                                                                     font_name: 'Sans Bold 10px',
-                                                                     text: _("APPLICATIONS") }),
-                                                  Big.BoxPackFlags.NONE);
-
+        this._appSearchHeader = new SearchSectionHeader(_("APPLICATIONS"),
+                                                        Lang.bind(this,
+                                                                  function () {
+                                                                      this._toggleOnlyAppSearchShown();
+                                                                      return true;
+                                                                  }));
+        this._searchResultsSection.content.append(this._appSearchHeader.actor, Big.BoxPackFlags.NONE);
         this._appSearchResultArea = new ResultArea(AppDisplay.AppDisplay, false);
+        this._appSearchResultArea.controlBox.hide();
         this._searchResultsSection.content.append(this._appSearchResultArea.actor, Big.BoxPackFlags.EXPAND);
         createPaneForDetails(this, this._appSearchResultArea.display);
 
-        this._searchResultsSection.content.append(new Clutter.Text({ color: TEXT_COLOR,
-                                                                     font_name: 'Sans Bold 10px',
-                                                                     text: _("DOCUMENTS") }),
-                                                  Big.BoxPackFlags.NONE);
-
+        this._docSearchHeader = new SearchSectionHeader(_("RECENT DOCUMENTS"),
+                                                        Lang.bind(this,
+                                                                  function () {
+                                                                      this._toggleOnlyDocSearchShown();
+                                                                      return true;
+                                                                  }));
+        this._searchResultsSection.content.append(this._docSearchHeader.actor, Big.BoxPackFlags.NONE);
         this._docSearchResultArea = new ResultArea(DocDisplay.DocDisplay, false);
+        this._docSearchResultArea.controlBox.hide();
         this._searchResultsSection.content.append(this._docSearchResultArea.actor, Big.BoxPackFlags.EXPAND);
         createPaneForDetails(this, this._docSearchResultArea.display);
 
@@ -656,6 +700,7 @@ Dash.prototype = {
 
     _updateDashActors: function() {
         if (!this._searchActive && this._searchResultsSection.actor.visible) {
+            this._showAllSearchSections();
             this._searchResultsSection.actor.hide();
             this._appsSection.actor.show();
             this._placesSection.actor.show();
@@ -666,6 +711,65 @@ Dash.prototype = {
             this._placesSection.actor.hide();
             this._docsSection.actor.hide();
         }
+    },
+
+    _toggleOnlyAppSearchShown: function() {
+        if (this._getOnlyAppSearchShown()) {
+            this._setDocSearchShown(true);
+        } else {
+            this._setDocSearchShown(false);
+        }
+    },
+
+    _toggleOnlyDocSearchShown: function() {
+        if (this._getOnlyDocSearchShown()) {
+            this._setAppSearchShown(true);
+        } else {
+            this._setAppSearchShown(false);
+        }
+    },
+
+    // TODO: the following two functions currently rely on us showing the
+    // section header even if there are no results in that section. We'll need
+    // to change the check if we update that behavior. We'll also need to change
+    // the check if we add more sections to search results.
+    _getOnlyAppSearchShown: function() {
+        return this._searchActive && !this._docSearchHeader.actor.visible;
+    },
+
+    _getOnlyDocSearchShown: function() {
+        return this._searchActive && !this._appSearchHeader.actor.visible;
+    },
+
+    _setAppSearchShown: function(show) {
+        if (show) {
+            this._appSearchHeader.actor.show();
+            this._appSearchResultArea.actor.show()
+            this._docSearchResultArea.display.displayPage(0);
+            this._docSearchResultArea.controlBox.hide();
+        } else {
+            this._appSearchHeader.actor.hide();
+            this._appSearchResultArea.actor.hide()
+            this._docSearchResultArea.controlBox.show();
+        }
+    },
+
+    _setDocSearchShown: function(show) {
+        if (show) {
+            this._docSearchHeader.actor.show();
+            this._docSearchResultArea.actor.show()
+            this._appSearchResultArea.display.displayPage(0);
+            this._appSearchResultArea.controlBox.hide();
+       } else {
+            this._docSearchHeader.actor.hide();
+            this._docSearchResultArea.actor.hide()
+            this._appSearchResultArea.controlBox.show();
+       }
+    },
+
+    _showAllSearchSections: function() {
+        this._setAppSearchShown(true);
+        this._setDocSearchShown(true);
     }
 };
 Signals.addSignalMethods(Dash.prototype);

@@ -430,6 +430,10 @@ GenericDisplay.prototype = {
         return this._list.displayedCount > 0;
     },
 
+    getMatchedItemsCount: function() {
+        return this._matchedItems.length;
+    },
+
     // Load the initial state
     load: function() {
         this._redisplay(true);
@@ -450,6 +454,11 @@ GenericDisplay.prototype = {
     createDetailsForIndex: function(index) {
         let item = this._findDisplayedByIndex(index);
         return item.createDetailsActor();
+    },
+
+    // Displays the page specified by the pageNumber argument.
+    displayPage: function(pageNumber) {
+        this._list.page = pageNumber;
     },
 
     //// Protected methods ////
@@ -680,11 +689,6 @@ GenericDisplay.prototype = {
         }));
     },
 
-    // Displays the page specified by the pageNumber argument.
-    _displayPage: function(pageNumber) {
-        this._list.page = pageNumber;
-    },
-
     /*
      * Updates the display control to reflect the matched items set and the page selected.
      *
@@ -711,7 +715,7 @@ GenericDisplay.prototype = {
                 pageControl.connect('clicked',
                                     Lang.bind(this,
                                               function(o, event) {
-                                                  this._displayPage(pageNumberLocalScope);
+                                                  this.displayPage(pageNumberLocalScope);
                                               }));
             }
         } else {
