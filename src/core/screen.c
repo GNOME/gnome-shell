@@ -1563,7 +1563,8 @@ meta_screen_tab_popup_get_selected (MetaScreen *screen)
 void
 meta_screen_tab_popup_destroy (MetaScreen *screen)
 {
-  g_return_if_fail (screen->tab_handler != NULL);
+  if (!screen->tab_handler)
+    return;
 
   meta_alt_tab_handler_destroy (screen->tab_handler);
   g_object_unref (screen->tab_handler);
