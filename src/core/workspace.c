@@ -439,6 +439,25 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
     }
 }
 
+/**
+ * meta_workspace_activate_with_focus:
+ * @workspace: a #MetaWorkspace
+ * @focus_this: the #MetaWindow to be focused, or %NULL
+ * @timestamp: timestamp for @focus_this
+ *
+ * Switches to @workspace and possibly activates the window @focus_this.
+ *
+ * The window @focus_this is activated by calling meta_window_activate()
+ * which will unminimize it and transient parents, raise it and give it
+ * the focus.
+ *
+ * If a window is currently being moved by the user, it will be
+ * moved to @workspace.
+ *
+ * The advantage of calling this function instead of meta_workspace_activate()
+ * followed by meta_window_activate() is that it happens as a unit, so
+ * no other window gets focused first before @focus_this.
+ */
 void
 meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                     MetaWindow    *focus_this,
@@ -562,8 +581,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
    */
   if (focus_this)
     {
-      meta_window_focus (focus_this, timestamp);
-      meta_window_raise (focus_this);
+      meta_window_activate (focus_this, timestamp);
     }
   else if (move_window)
     {
