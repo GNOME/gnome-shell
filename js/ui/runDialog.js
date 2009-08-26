@@ -36,9 +36,16 @@ RunDialog.prototype = {
 
         this._internalCommands = { 'lg':
                                    Lang.bind(this, function() {
+                                       // Run in an idle to avoid recursive key grab problems
                                        Mainloop.idle_add(function() { Main.createLookingGlass().open(); });
                                    }),
-                                   
+
+                                   'r': Lang.bind(this, function() {
+                                       let global = Shell.Global.get();
+                                       global.reexec_self();
+                                   }),
+
+                                   // Developer brain backwards compatibility
                                    'restart': Lang.bind(this, function() {
                                        let global = Shell.Global.get();
                                        global.reexec_self();
