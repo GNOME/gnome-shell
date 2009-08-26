@@ -993,6 +993,19 @@ clutter_script_parse_node (ClutterScript *script,
           retval = TRUE;
           break;
 
+        case G_TYPE_FLOAT:
+          if (G_VALUE_HOLDS (&node_value, G_TYPE_DOUBLE))
+            {
+              g_value_set_float (value, g_value_get_double (&node_value));
+              retval = TRUE;
+            }
+          else if (G_VALUE_HOLDS (&node_value, G_TYPE_INT64))
+            {
+              g_value_set_float (value, g_value_get_int64 (&node_value));
+              retval = TRUE;
+            }
+          break;
+
         case G_TYPE_ENUM:
           if (G_VALUE_HOLDS (&node_value, G_TYPE_INT64))
             {
