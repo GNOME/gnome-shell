@@ -1292,9 +1292,14 @@ clutter_texture_get_cogl_material (ClutterTexture *texture)
  * @texture: A #ClutterTexture
  * @cogl_material: A CoglHandle for a material
  *
- * Replaces the underlying COGL texture drawn by this actor with
- * @cogl_tex. A reference to the texture is taken so if the handle is
- * no longer needed it should be deref'd with cogl_handle_unref.
+ * Replaces the underlying Cogl material drawn by this actor with
+ * @cogl_material. A reference to the material is taken so if the
+ * handle is no longer needed it should be deref'd with
+ * cogl_handle_unref. Texture data is attached to the material so
+ * calling this function also replaces the Cogl
+ * texture. #ClutterTexture requires that the material have a texture
+ * layer so you should set one on the material before calling this
+ * function.
  *
  * Since: 0.8
  *
