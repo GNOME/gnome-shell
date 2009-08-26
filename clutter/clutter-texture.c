@@ -1312,6 +1312,8 @@ clutter_texture_set_cogl_material (ClutterTexture *texture,
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
 
+  cogl_handle_ref (cogl_material);
+
   /* This */
   if (texture->priv->material)
     cogl_handle_unref (texture->priv->material);
