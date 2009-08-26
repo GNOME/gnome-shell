@@ -12,10 +12,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
-"POT-Creation-Date: 2009-06-19 16:59+0000\n"
-"PO-Revision-Date: 2009-06-24 15:56+0530\n"
+"POT-Creation-Date: 2009-08-24 17:51+0000\n"
+"PO-Revision-Date: 2009-08-26 15:41+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
-"Language-Team: Bengali INDIA <discuss@lists.ankur.org.in>\n"
+"Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,8 +51,8 @@ msgid ""
 msgstr ""
 "<big><b><tt>%s</tt> থেকে কোনো প্রতিক্রিয়া পাওয়া যাচ্ছে না।</b></big>\n"
 "\n"
-"<i>অ্যাপ্লিকেশনটি বন্ধ করার জন্য কিছু সময় অপেক্ষা করা যাবে অথবা অ্যাপ্লিকেশনটি বলপূর্বক "
-"বন্ধ করা যাবে।</i>"
+"<i>অ্যাপ্লিকেশনটি বন্ধ করার জন্য কিছু সময় অপেক্ষা করা যাবে অথবা অ্যাপ্লিকেশনটি "
+"বলপূর্বক বন্ধ করা যাবে।</i>"
 
 #: ../src/core/delete.c:115
 msgid "_Wait"
@@ -140,55 +140,59 @@ msgstr ""
 "দেখুন।\n"
 "এর কোনো ওয়ারেন্টি উপলব্ধ নেই; বাণিজ্যিক ও কোনো সুনির্দিষ্ট কর্ম সাধনের জন্যও নয়।\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "সেশান পরিচালন ব্যবস্থার সাথে সংযোগ বিচ্ছিন্ন করা হবে"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "বর্তমানে ব্যবহৃত উইন্ডো পরিচালন ব্যবস্থার পরিবর্তে Metacity প্রয়োগ করা হবে"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "সেশান পরিচালনার ID উল্লেখ করুন"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "ব্যবহারের জন্য এক্স ডিসপ্লে"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "সংরক্ষণ ফাইল থেকে সেশন চালু করো"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "প্রিন্ট সংস্করণ"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "X-র কল সিঙ্ক্রোনাস করা হবে"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "কম্পোসিটিং ব্যবস্থা চালু করুন"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "কম্পোসিটিং ব্যবস্থা বন্ধ করুন"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "সর্বাধিক মাপে স্থাপিত সাজসজ্জাবিহীন উইন্ডোগুলির ক্ষেত্রে সম্পূর্ণ পর্দায় প্রদর্শন ব্যবস্থা প্রয়োগ করা হবে না"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "থীম এর ডিরেক্টরি স্ক্যান করতে ব্যর্থ: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "কোনো থিম খুঁজে পাওয়া যায়নি! অনুগ্রহ করে পরীক্ষা করুন %s উপস্থিত আছে কি না ও এর মধ্যে "
 "সাধারণ থিমগুলি অন্তর্ভুক্ত কি না।\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "আবার চালু করতে পারলাম না: %s\n"
@@ -204,24 +208,24 @@ msgstr "আবার চালু করতে পারলাম না: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-কি \"%s\"'র মান বৈধ নয়\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d মান যা GConf-কি %s-র মধ্যে সংরক্ষিত রয়েছে, %d থেকে %d-র সীমাবহির্ভূত\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-কি \"%s\"'র ধরন বৈধ নয়\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -229,29 +233,29 @@ msgstr ""
 "ক্ষতিগ্রস্ত অ্যাপ্লিকেশনের ত্রুটি অগ্রাহ্য করার প্রণালী নিষ্ক্রিয় করা হয়েছে। কয়েকটি "
 "অ্যাপ্লিকেশন সম্ভবত সঠিকরূপে চালানো সম্ভব হবে না।\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "\"%s\" ফন্টের বিবরণ GConf-কি %s থেকে পার্স করতে ব্যর্থ\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "কনফিগারেশন ডাটাবেসের মধ্যে উপস্থিত \"%s\" মাউস বাটন পরিবর্তকের জন্য বৈধ মান নয়\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "কর্মক্ষেত্রের সংখ্যা %d রূপে নির্ধারণ করতে ব্যর্থ: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "কর্মক্ষেত্র %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -260,22 +264,22 @@ msgstr ""
 "কনফিগারেশন ডাটাবেসের মধ্যে উপলব্ধ \"%s\", \"%s\" কি-বাইন্ডিং'র ক্ষেত্রে বৈধ মান "
 "নয়\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "কর্মক্ষেত্র %d'র নাম \"%s\" রূপে নির্ধারণ করতে ব্যর্থ: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "কম্পোসিটারের অবস্থা নির্ধারণ করতে ত্রুটি: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "পর্দা %d (ডিসপ্লে '%s') বৈধ নয়\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -284,19 +288,19 @@ msgstr ""
 "পর্দা %d'র (\"%s\" ডিসপ্লে) ক্ষেত্রে একটি উইন্ডো পরিচালনব্যবস্থা বর্তমানে উপস্তিত "
 "রয়েছে; বর্তমানে উইন্ডো পরিচালন ব্যবস্থা পরিবর্তন করতে --replace বিকল্প প্রয়োগ করুন।\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "পর্দা %d (ডিসপ্লে \"%s\")'র মধ্যে উইন্ডো পরিচালন ব্যবস্থার নির্বাচিত অংশ গ্রহণ করতে "
 "ব্যর্থ\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "পর্দা %d'র ( \"%s\" ডিসপ্লে) ক্ষেত্রে একটি উইন্ডো পরিচালন ব্যবস্থা উপস্থিত রয়েছে\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "পর্দা %d (ডিসপ্লে \"%s\") মুক্ত করতে ব্যর্থ\n"
@@ -306,24 +310,40 @@ msgstr "পর্দা %d (ডিসপ্লে \"%s\") মুক্ত কর
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"যে কি-বাইন্ডিং দ্বারা উইন্ডো বন্ধ করা হবে। \"<Control>a\" অথবা <Shift><Alt>F1\" "
-"বিন্যাস ব্যবহৃত হবে। \n"
+"\"<Control>a\" অথবা <Shift><Alt>F1\"-র অনুরূপ বিন্যাস ব্যবহৃত হবে।\n"
 "\n"
 "পার্সার হরফের ছাঁদ সম্পর্কে সচেতন নয় এবং প্রয়োজনে \"<Ctl>\" ও \"<Ctrl>\"-র অনুরূপ "
 "সংক্ষিপ্ত রূপও ব্যবহার করা যাবে। বিকল্পের ক্ষেত্রে বিশেষ পংক্তি \"disabled\" প্রয়োগ "
 "করা হলে এই কর্মের জন্য কোনো কি-বাইন্ডিং ব্যবহার করা হবে না।"
 
 #: ../src/core/schema-bindings.c:177
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action.\n"
+#| "\n"
+#| "This keybinding may be reversed by holding down the \"shift\" key; "
+#| "therefore, \"shift\" cannot be one of the keys it uses."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -333,8 +353,7 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"যে কি-বাইন্ডিং দ্বারা উইন্ডো বন্ধ করা হবে। \"<Control>a\" অথবা <Shift><Alt>F1\" "
-"বিন্যাস ব্যবহৃত হবে। \n"
+"\"<Control>a\" অথবা <Shift><Alt>F1\"-র অনুরূপ বিন্যাস ব্যবহৃত হবে।\n"
 "\n"
 "পার্সার হরফের ছাঁদ সম্পর্কে সচেতন নয় এবং প্রয়োজনে \"<Ctl>\" ও \"<Ctrl>\"-র অনুরূপ "
 "সংক্ষিপ্ত রূপও ব্যবহার করা যাবে। বিকল্পের ক্ষেত্রে বিশেষ পংক্তি \"disabled\" প্রয়োগ "
@@ -401,8 +420,8 @@ msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"এই উইন্ডোগুলির দ্বারা &quot;save current setup&quot; বৈশিষ্ট্য সমর্থিত হয় না এবং পরবর্তীবার "
-"লগ-ইন করা হলে ব্যবহারকারীর দ্বারা পুনরায় আরম্ভ করা প্রয়োজন।"
+"এই উইন্ডোগুলির দ্বারা &quot;save current setup&quot; বৈশিষ্ট্য সমর্থিত হয় না এবং "
+"পরবর্তীবার লগ-ইন করা হলে ব্যবহারকারীর দ্বারা পুনরায় আরম্ভ করা প্রয়োজন।"
 
 #: ../src/core/util.c:103
 #, c-format
