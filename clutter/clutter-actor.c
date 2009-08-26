@@ -7227,9 +7227,9 @@ parse_units (ClutterActor   *self,
     {
       retval = (gfloat) g_value_get_int64 (&value);
     }
-  else if (G_VALUE_HOLDS (&value, G_TYPE_FLOAT))
+  else if (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE))
     {
-      retval = g_value_get_float (&value);
+      retval = g_value_get_double (&value);
     }
   else if (G_VALUE_HOLDS (&value, G_TYPE_STRING))
     {
@@ -7249,39 +7249,6 @@ parse_units (ClutterActor   *self,
           retval = 0;
         }
     }
-  else if (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE))
-    {
-      ClutterActor *stage;
-      gdouble val;
-
-      stage = clutter_actor_get_stage (self);
-      if (stage == NULL)
-        stage = clutter_stage_get_default ();
-
-      if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
-        {
-          g_warning ("Unable to set percentage of %s on a top-level "
-                     "actor of type '%s'",
-                     (dimension == PARSE_X || dimension == PARSE_WIDTH) ? "width"
-                                                                        : "height",
-                     g_type_name (G_OBJECT_TYPE (self)));
-          retval = 0;
-          goto out;
-        }
-
-      val = g_value_get_double (&value);
-
-      if (dimension == PARSE_X ||
-          dimension == PARSE_WIDTH ||
-          dimension == PARSE_ANCHOR_X)
-        {
-          retval = clutter_actor_get_width (stage) * val;
-        }
-      else
-        {
-          retval = clutter_actor_get_height (stage) * val;
-        }
-    }
   else
     {
       g_warning ("Invalid value of type '%s': integers, strings of floating "
@@ -7290,7 +7257,6 @@ parse_units (ClutterActor   *self,
                  g_type_name (G_VALUE_TYPE (&value)));
     }
 
-out:
   g_value_unset (&value);
 
   return retval;
