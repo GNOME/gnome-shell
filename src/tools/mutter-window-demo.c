@@ -285,7 +285,7 @@ response_cb (GtkDialog *dialog,
 }
 
 static void
-dialog_cb (gpointer             callback_data,
+dialog_cb (gpointer		callback_data,
            guint                callback_action,
            GtkWidget           *widget)
 {
@@ -812,6 +812,26 @@ destroy_cb (GtkWidget *w, gpointer data)
     gtk_main_quit ();
 }
 
+static void
+insert_stock_button (GtkWidget          *toolbar,
+                     const gchar        *stock_id,
+                     const gchar        *text,
+                     GCallback           callback,
+                     gpointer            user_data)
+{
+  GtkToolItem *button;
+
+  button = gtk_tool_button_new_from_stock (stock_id);
+  gtk_tool_item_set_tooltip_text (button, text);
+  g_signal_connect (G_OBJECT (button),
+                    "clicked",
+                    callback,
+                    user_data);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar),
+                      button,
+                      -1); /*-1 means append to end of toolbar*/
+}
+
 static GtkWidget *
 do_appwindow (void)
 {
@@ -903,45 +923,25 @@ do_appwindow (void)
    */
   toolbar = gtk_toolbar_new ();
 
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_NEW,
-                            "Open another one of these windows",
-                            NULL,
-                            G_CALLBACK (do_appwindow),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
-  
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            "This is a demo button that locks up the demo",
-                            NULL,
-                            G_CALLBACK (sleep_cb),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
+  insert_stock_button (toolbar, GTK_STOCK_NEW,
+                       "Open another one of these windows",
+                       G_CALLBACK (do_appwindow), window);
 
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            "This is a demo button that toggles window decorations",
-                            NULL,
-                            G_CALLBACK (toggle_decorated_cb),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
-  
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            "This is a demo button that locks the aspect ratio using a hint",
-                            NULL,
-                            G_CALLBACK (toggle_aspect_ratio),
-                            contents, /* user data for callback */
-                            -1);  /* -1 means "append" */
-  
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_QUIT,
-                            "This is a demo button with a 'quit' icon",
-                            NULL,
-                            G_CALLBACK (clicked_toolbar_cb),
-                            window, /* user data for callback */
-                            -1);  /* -1 means "append" */
+  insert_stock_button (toolbar, GTK_STOCK_OPEN,
+                       "This is a demo button that locks up the demo",
+                       G_CALLBACK (sleep_cb), window);
+
+  insert_stock_button (toolbar, GTK_STOCK_OPEN,
+                       "This is a demo button that toggles window decorations",
+                       G_CALLBACK (toggle_decorated_cb), window);
+
+  insert_stock_button (toolbar, GTK_STOCK_OPEN,
+                       "This is a demo button that locks the aspect ratio using a hint",
+                       G_CALLBACK (toggle_aspect_ratio), contents);
+
+  insert_stock_button (toolbar, GTK_STOCK_QUIT,
+                       "This is a demo button with a 'quit' icon",
+                       G_CALLBACK (clicked_toolbar_cb), window);
 
   handlebox = gtk_handle_box_new ();
 

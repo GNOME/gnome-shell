@@ -86,6 +86,22 @@ static GtkItemFactoryEntry menu_items[] =
   { N_("/Windows/Des_ktop"),      NULL,          NULL,              0, NULL }
 };
 
+static void
+insert_stock_button (GtkWidget          *toolbar,
+                     const gchar        *stock_id,
+                     const gchar        *text)
+{
+  GtkToolItem *button;
+
+  button = gtk_tool_button_new_from_stock (stock_id);
+  gtk_tool_item_set_tooltip_text (button, text);
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar),
+                      button,
+                      -1); /*-1 means append to end of toolbar*/
+
+  return;
+}
+
 static GtkWidget *
 normal_contents (void)
 {
@@ -131,26 +147,12 @@ normal_contents (void)
    */
   toolbar = gtk_toolbar_new ();
 
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_NEW,
-                            _("Open another one of these windows"),
-                            NULL,
-                            NULL, NULL,
-                            -1);  /* -1 means "append" */
-  
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_OPEN,
-                            _("This is a demo button with an 'open' icon"),
-                            NULL,
-                            NULL, NULL,
-                            -1);  /* -1 means "append" */
-
-  gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar),
-                            GTK_STOCK_QUIT,
-                            _("This is a demo button with a 'quit' icon"),
-                            NULL,
-                            NULL, NULL,
-                            -1);  /* -1 means "append" */
+  insert_stock_button (toolbar, GTK_STOCK_NEW,
+                       _("Open another one of these windows"));
+  insert_stock_button (toolbar, GTK_STOCK_OPEN,
+                       _("This is a demo button with an 'open' icon"));
+  insert_stock_button (toolbar, GTK_STOCK_QUIT,
+                       _("This is a demo button with a 'quit' icon"));
 
   handlebox = gtk_handle_box_new ();
 
