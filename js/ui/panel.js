@@ -98,12 +98,17 @@ AppPanelMenu.prototype = {
             this.actor.opacity = 192;
         }));
 
-        this._metaDisplay.connect('notify::focus-window', Lang.bind(this, function () {
-            this._sync();
-        }));
-        Shell.AppMonitor.get_default().connect('startup-sequence-changed', Lang.bind(this, function() {
-            this._sync();
-        }));
+        this._metaDisplay.connect('notify::focus-window', Lang.bind(this, this._sync));
+
+        let appMonitor = Shell.AppMonitor.get_default();
+        appMonitor.connect('startup-sequence-changed', Lang.bind(this, this._sync));
+        // For now just resync on application add/remove; this is mainly to handle
+        // cases where the focused window's application changes without the focus
+        // changing.  An example case is how we map Firefox based on the window
+        // title which is a dynamic property.
+        appMonitor.connect('app-added', Lang.bind(this, this._sync));
+        appMonitor.connect('app-removed', Lang.bind(this, this._sync));
+
         this._sync();
     },
 

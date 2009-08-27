@@ -92,13 +92,13 @@ static struct
   const char *pattern;
   GRegex *regex;
 } title_patterns[] =  {
-    {"mozilla-firefox", ".* - Mozilla Firefox", NULL}, \
-    {"openoffice.org-writer", ".* - OpenOffice.org Writer$", NULL}, \
-    {"openoffice.org-calc", ".* - OpenOffice.org Calc$", NULL}, \
-    {"openoffice.org-impress", ".* - OpenOffice.org Impress$", NULL}, \
-    {"openoffice.org-draw", ".* - OpenOffice.org Draw$", NULL}, \
-    {"openoffice.org-base", ".* - OpenOffice.org Base$", NULL}, \
-    {"openoffice.org-math", ".* - OpenOffice.org Math$", NULL}, \
+    {"mozilla-firefox.desktop", ".* - Mozilla Firefox", NULL}, \
+    {"openoffice.org-writer.desktop", ".* - OpenOffice.org Writer$", NULL}, \
+    {"openoffice.org-calc.desktop", ".* - OpenOffice.org Calc$", NULL}, \
+    {"openoffice.org-impress.desktop", ".* - OpenOffice.org Impress$", NULL}, \
+    {"openoffice.org-draw.desktop", ".* - OpenOffice.org Draw$", NULL}, \
+    {"openoffice.org-base.desktop", ".* - OpenOffice.org Base$", NULL}, \
+    {"openoffice.org-math.desktop", ".* - OpenOffice.org Math$", NULL}, \
     {NULL, NULL, NULL}
 };
 
@@ -181,6 +181,9 @@ static AppUsage * get_app_usage_for_context_and_id (ShellAppMonitor *monitor,
                                                     const char      *context,
                                                     const char      *appid);
 
+static void track_window (ShellAppMonitor *monitor, MetaWindow *window);
+static void disassociate_window (ShellAppMonitor *monitor, MetaWindow *window);
+
 static gboolean idle_save_application_usage (gpointer data);
 
 static void restore_from_file (ShellAppMonitor *monitor);
@@ -257,15 +260,20 @@ destroy_usage (AppUsage *usage)
   g_free (usage);
 }
 
-static char *
-get_wmclass_for_window (MetaWindow   *window)
+/**
+ * get_app_id_from_title:
+ *
+ * Use a window's "title" property to determine an application ID.
+ * This is a temporary crutch for a few applications until we get
+ * them correctly setting their WM_CLASS.
+ */
+static const char *
+get_app_id_from_title (MetaWindow   *window)
 {
   static gboolean patterns_initialized = FALSE;
-  const char *wm_class;
   char *title;
   int i;
 
-  wm_class = meta_window_get_wm_class (window);
   g_object_get (window, "title", &title, NULL);
 
   if (!patterns_initialized) /* Generate match patterns once for all */
@@ -285,15 +293,15 @@ get_wmclass_for_window (MetaWindow   *window)
         {
           if (g_regex_match (title_patterns[i].regex, title, 0, NULL))
             {
+              g_free (title);
               /* Set a pseudo WM class, handled like true ones */
-              wm_class = title_patterns[i].app_id;
-              break;
+              return title_patterns[i].app_id;
             }
         }
     }
 
   g_free (title);
-  return g_strdup (wm_class);
+  return NULL;
 }
 
 /**
@@ -306,21 +314,20 @@ get_wmclass_for_window (MetaWindow   *window)
 static char *
 get_cleaned_wmclass_for_window (MetaWindow  *window)
 {
-  char *wmclass;
+  const char *wmclass;
   char *cleaned_wmclass;
 
-  wmclass = get_wmclass_for_window (window);
+  wmclass = meta_window_get_wm_class (window);
   if (!wmclass)
     return NULL;
 
   cleaned_wmclass = g_utf8_strdown (wmclass, -1);
-  g_free (wmclass);
+
   /* This handles "Fedora Eclipse", probably others.
    * Note g_strdelimit is modify-in-place. */
   g_strdelimit (cleaned_wmclass, " ", '-');
-  wmclass = g_strdup (cleaned_wmclass);
-  g_free (cleaned_wmclass);
-  return wmclass;
+
+  return cleaned_wmclass;
 }
 
 /**
@@ -422,7 +429,14 @@ get_app_for_window_direct (MetaWindow  *window)
   g_free (with_desktop);
 
   if (result == NULL)
-    result = create_transient_app_for_window (window);
+    {
+      const char *id = get_app_id_from_title (window);
+
+      if (id != NULL)
+        result = shell_app_system_load_from_desktop_file (appsys, id, NULL);
+      else
+        result = create_transient_app_for_window (window);
+    }
   return result;
 }
 
@@ -552,7 +566,6 @@ get_active_window (ShellAppMonitor *monitor)
     return window;
   return NULL;
 }
-
 
 typedef struct {
   gboolean in_context;
@@ -692,6 +705,36 @@ reset_usage (ShellAppMonitor *self,
 }
 
 static void
+on_transient_window_title_changed (MetaWindow      *window,
+                                   GParamSpec      *spec,
+                                   ShellAppMonitor *self)
+{
+  ShellAppSystem *appsys;
+  ShellAppInfo *current_app;
+  ShellAppInfo *new_app;
+  const char *id;
+
+  current_app = g_hash_table_lookup (self->window_to_app, window);
+  /* Can't have lost the app */
+  g_assert (current_app != NULL);
+
+  /* Check if we now have a mapping using the window title */
+  id = get_app_id_from_title (window);
+  if (id == NULL)
+    return;
+
+  appsys = shell_app_system_get_default ();
+  new_app = shell_app_system_load_from_desktop_file (appsys, id, NULL);
+  if (new_app == NULL)
+    return;
+  shell_app_info_unref (new_app);
+
+  /* It's simplest to just treat this as a remove + add. */
+  disassociate_window (self, window);
+  track_window (self, window);
+}
+
+static void
 track_window (ShellAppMonitor *self,
               MetaWindow      *window)
 {
@@ -719,6 +762,16 @@ track_window (ShellAppMonitor *self,
   usage = get_app_usage_from_window (self, window);
   usage->transient = shell_app_info_is_transient (app);
 
+  if (usage->transient)
+    {
+      /* For a transient application, it's possible one of our title regexps
+       * will match at a later time, i.e. the application may not have set
+       * its title fully at the time it initially maps a window.  Watch
+       * for title changes and recompute the app.
+       */
+      g_signal_connect (window, "notify::title", G_CALLBACK (on_transient_window_title_changed), self);
+    }
+
   /* Keep track of the number of windows open for this app, when it
    * switches between 0 and 1 we emit an app-added signal.
    */
@@ -743,12 +796,11 @@ shell_app_monitor_on_window_added (MetaWorkspace   *workspace,
   track_window (self, window);
 }
 
+
 static void
-shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
-                                     MetaWindow      *window,
-                                     gpointer         user_data)
+disassociate_window (ShellAppMonitor   *self,
+                     MetaWindow        *window)
 {
-  ShellAppMonitor *self = SHELL_APP_MONITOR (user_data);
   ShellAppInfo *app;
 
   app = g_hash_table_lookup (self->window_to_app, window);
@@ -783,6 +835,14 @@ shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
     g_hash_table_remove (self->window_to_app, window);
 
   shell_app_info_unref (app);
+}
+
+static void
+shell_app_monitor_on_window_removed (MetaWorkspace   *workspace,
+                                     MetaWindow      *window,
+                                     gpointer         user_data)
+{
+  disassociate_window (SHELL_APP_MONITOR (user_data), window);
 }
 
 static void
