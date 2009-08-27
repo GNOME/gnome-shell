@@ -190,7 +190,9 @@ def start_shell():
     else:
         args = []
         
-    args.extend(['mutter', '--mutter-plugins=' + plugin, '--replace'])
+    args.extend(['mutter', '--mutter-plugins=' + plugin])
+    if options.replace:
+        args.append('--replace')
     if options.sync:
         args.append('--sync')
     return subprocess.Popen(args, env=env)
@@ -207,6 +209,8 @@ parser.add_option("", "--debug-command", metavar="COMMAND",
                   help="Command to use for debugging (defaults to 'gdb --args')")
 parser.add_option("-v", "--verbose", action="store_true")
 parser.add_option("", "--sync", action="store_true")
+parser.add_option("", "--xephyr", action="store_true",
+                  help="Run a debugging instance inside Xephyr")
 parser.add_option("", "--geometry", metavar="GEOMETRY",
                   help="Specify Xephyr screen geometry",
                   default="1024x768");
@@ -240,14 +244,6 @@ if gnome_panel_dbus:
 else:
     gnome_panel_pid = pidof("gnome-panel")
 
-# Run in Xephyr if gnome-panel is already running and the user didn't
-# specify --replace. Otherwise, run fullscreen
-if options.replace:
-    run_in_xephyr = False
-else:
-    run_in_xephyr = (metacity_pid != None or compiz_pid != None or
-        gnome_panel_pid != None)
-
 # Figure out whether or not to use GL_EXT_texture_from_pixmap. By default
 # we use it iff we aren't running Xephyr, but we allow the user to
 # explicitly disable it.
@@ -258,7 +254,7 @@ if 'GNOME_SHELL_DISABLE_TFP' in os.environ and \
     use_tfp = False
 else:
     # tfp does not work correctly in Xephyr
-    use_tfp = not run_in_xephyr
+    use_tfp = not options.xephyr
 
 if options.verbose:
     print "Starting shell"
@@ -274,14 +270,14 @@ if options.debug:
 normal_exit = False
 
 try:
-    if run_in_xephyr:
+    if options.xephyr:
         xephyr = start_xephyr()
         # This makes us not grab the org.gnome.Panel name
         os.environ['GNOME_SHELL_NO_REPLACE_PANEL'] = '1'
         shell = start_shell()
     else:
         xephyr = None
-        if gnome_panel_pid is not None:
+        if options.replace and gnome_panel_pid is not None:
             kill_gnome_panel(gnome_panel_pid)
         shell = start_shell()
 
@@ -320,7 +316,7 @@ finally:
     if options.debug:
         termios.tcsetattr(0, termios.TCSANOW, termattrs);
 
-    if not run_in_xephyr and not normal_exit:
+    if not options.xephyr and options.replace and not normal_exit:
         # Restart gnome-panel and window manager
 
         # We don't want to start the new gnome-panel in the current
