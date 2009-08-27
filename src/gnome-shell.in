@@ -14,63 +14,6 @@ import termios
 import time
 import errno
 
-def find_cmd (cmd_list):
-    """
-    Takes a list of command candidates and returns the first one that exists.
-    Raises a system exit if none of the commands exist.
-    """
-    for cmd in cmd_list:
-        if os.path.exists(cmd):
-            return cmd
-    
-    raise SystemExit("None of the commands %s exist" % cmd_list)
-    
-def pidof(command):
-    pidof_cmd = find_cmd(["/sbin/pidof", "/bin/pidof", "/usr/bin/pidof"])
-    pidof = subprocess.Popen([pidof_cmd, command], stdout=subprocess.PIPE)
-    pids = pidof.communicate()[0].split()
-    pidof.wait()
-
-    # pidof doesn't have a "current user only" option, so we may have
-    # gotten the pids of other users' processes. Fix that.
-    for pid in pids:
-        try:
-            os.kill(int(pid), 0)
-            return pid
-        except Exception, e:
-            pass
-    return None
-
-def kill_legacy_gnome_panel():
-    # Do import lazily to save time and memory
-    import dbus
-
-    # In Gnome 2.26 the panel grabs a dbus name and allows replacement
-    bus = dbus.Interface(dbus.SessionBus().get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'),
-                         'org.freedesktop.DBus')
-    names = bus.ListNames()
-    if 'org.gnome.Panel' in names:
-        # OK, we have the new replaceable gnome panel (or gnome-shell), all we have to
-        # do is start the shell
-        return
-
-    gnome_panel_pid = pidof("gnome-panel")
-    if gnome_panel_pid is None:
-        # No gnome-panel, nothing to do
-        return
-
-    if options.verbose:
-        print "Terminating panel process %s" % pid
-
-    # We can't just kill it, since the session will auto-start it again, so
-    # we do this horrible thing
-    devnull = open("/dev/null", "w")
-    subprocess.call(["gdb", "-batch-silent",
-                     "-ex", "call panel_session_do_not_restart()",
-                     "-ex", "call exit(0)",
-                     "-p", gnome_panel_pid], stdout=devnull, stderr=devnull)
-    devnull.close()
-
 def start_xephyr():
     tmpdir = tempfile.mkdtemp("", "gnome-shell.")
     atexit.register(shutil.rmtree, tmpdir)
@@ -317,8 +260,6 @@ try:
         shell = start_shell()
     else:
         xephyr = None
-        if options.replace:
-            kill_legacy_gnome_panel()
         shell = start_shell()
 
     # Wait for shell to exit
