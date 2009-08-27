@@ -13,7 +13,6 @@ import tempfile
 import termios
 import time
 import errno
-import dbus
 
 def find_cmd (cmd_list):
     """
@@ -42,14 +41,34 @@ def pidof(command):
             pass
     return None
 
-def kill_gnome_panel(pid):
+def kill_legacy_gnome_panel():
+    # Do import lazily to save time and memory
+    import dbus
+
+    # In Gnome 2.26 the panel grabs a dbus name and allows replacement
+    bus = dbus.Interface(dbus.SessionBus().get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'),
+                         'org.freedesktop.DBus')
+    names = bus.ListNames()
+    if 'org.gnome.Panel' in names:
+        # OK, we have the new replaceable gnome panel (or gnome-shell), all we have to
+        # do is start the shell
+        return
+
+    gnome_panel_pid = pidof("gnome-panel")
+    if gnome_panel_pid is None:
+        # No gnome-panel, nothing to do
+        return
+
     if options.verbose:
         print "Terminating panel process %s" % pid
+
+    # We can't just kill it, since the session will auto-start it again, so
+    # we do this horrible thing
     devnull = open("/dev/null", "w")
     subprocess.call(["gdb", "-batch-silent",
                      "-ex", "call panel_session_do_not_restart()",
                      "-ex", "call exit(0)",
-                     "-p", pid], stdout=devnull, stderr=devnull)
+                     "-p", gnome_panel_pid], stdout=devnull, stderr=devnull)
     devnull.close()
 
 def start_xephyr():
@@ -197,6 +216,40 @@ def start_shell():
         args.append('--sync')
     return subprocess.Popen(args, env=env)
 
+def restore_gnome():
+    # Do imports lazily to save time and memory
+    import gio
+    import gconf
+
+    # We don't want to start the new gnome-panel in the current
+    # directory; $HOME is better for stuff launched from it
+    os.chdir(os.path.expanduser("~"))
+
+    def launch_component(gconf_path):
+        client = gconf.client_get_default()
+        component = client.get_string(gconf_path)
+
+        if component == None or component == "":
+            return
+
+        # See gnome-session/gsm-util.c:gsm_util_find_desktop_file_for_app_name()
+        # The one difference is that we don't search the autostart directories,
+        # and just search normal application search path. (Gio doesnt' know
+        # how to search the autostart dirs, so we'd have to do that ourselves.)
+        appinfo = None
+        try:
+            appinfo = gio.unix.DesktopAppInfo(component + ".desktop")
+        except:
+            try:
+                appinfo = gio.unix.DesktopAppInfo("gnome-" + component + ".desktop")
+            except:
+                pass
+
+        if appinfo:
+            appinfo.launch()
+
+    launch_component("/desktop/gnome/session/required_components/windowmanager")
+    launch_component("/desktop/gnome/session/required_components/panel")
 
 # Main program
 
@@ -231,19 +284,6 @@ elif options.debug:
 if options.wide:
     options.geometry = "1280x800"
 
-metacity_pid = pidof("metacity")
-compiz_pid = pidof("compiz.real") or pidof("compiz")
-
-# In Gnome 2.26 the panel grabs a dbus name and allows replacement; use that.
-bus = dbus.Interface(dbus.SessionBus().get_object('org.freedesktop.DBus', '/org/freedesktop/DBus'),
-                     'org.freedesktop.DBus')
-names = bus.ListNames()
-gnome_panel_dbus = 'org.gnome.Panel' in names
-if gnome_panel_dbus:
-    gnome_panel_pid = None
-else:
-    gnome_panel_pid = pidof("gnome-panel")
-
 # Figure out whether or not to use GL_EXT_texture_from_pixmap. By default
 # we use it iff we aren't running Xephyr, but we allow the user to
 # explicitly disable it.
@@ -277,8 +317,8 @@ try:
         shell = start_shell()
     else:
         xephyr = None
-        if options.replace and gnome_panel_pid is not None:
-            kill_gnome_panel(gnome_panel_pid)
+        if options.replace:
+            kill_legacy_gnome_panel()
         shell = start_shell()
 
     # Wait for shell to exit
@@ -317,21 +357,4 @@ finally:
         termios.tcsetattr(0, termios.TCSANOW, termattrs);
 
     if not options.xephyr and options.replace and not normal_exit:
-        # Restart gnome-panel and window manager
-
-        # We don't want to start the new gnome-panel in the current
-        # directory; $HOME is better for stuff launched from it
-        os.chdir(os.path.expanduser("~"))
-
-        if metacity_pid:
-            if options.verbose:
-                print "Restarting Metacity"
-            subprocess.Popen(["/usr/bin/metacity"])
-        elif compiz_pid:
-            if options.verbose:
-                print "Restarting Compiz"
-            subprocess.Popen(["/usr/bin/compiz"])
-        if gnome_panel_dbus or gnome_panel_pid:
-            if options.verbose:
-                print "Restarting gnome-panel"
-            subprocess.Popen(["/usr/bin/gnome-panel"])
+        restore_gnome()
