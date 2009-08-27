@@ -40,8 +40,18 @@ shell_drawing_area_allocate (ClutterActor          *self,
   ShellDrawingArea *area = SHELL_DRAWING_AREA (self);
   int width = box->x2 - box->x1;
   int height = box->y2 - box->y1;
+  ClutterActorBox child_box;
 
-  clutter_actor_allocate (CLUTTER_ACTOR (area->priv->texture), box, flags);
+  /* Chain up directly to ClutterActor to set actor->allocation.  We explicitly skip our parent class
+   * ClutterGroup here because we want to override the allocate function. */
+  (CLUTTER_ACTOR_CLASS (g_type_class_peek (clutter_actor_get_type ())))->allocate (self, box, flags);
+
+  child_box.x1 = 0;
+  child_box.x2 = width;
+  child_box.y1 = 0;
+  child_box.y2 = height;
+
+  clutter_actor_allocate (CLUTTER_ACTOR (area->priv->texture), &child_box, flags);
   if (width > 0 && height > 0)
     {
       clutter_cairo_texture_set_surface_size (area->priv->texture,

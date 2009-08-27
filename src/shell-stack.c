@@ -24,15 +24,25 @@ shell_stack_allocate (ClutterActor           *self,
                       ClutterAllocationFlags  flags)
 {
   GList *children, *iter;
+  float width, height;
 
-  /* chain up to set actor->allocation */
+  width = box->x2 - box->x1;
+  height = box->y2 - box->y1;
+
+  /* Chain up directly to ClutterActor to set actor->allocation.  We explicitly skip our parent class
+   * ClutterGroup here because we want to override the allocate function. */
   (CLUTTER_ACTOR_CLASS (g_type_class_peek (clutter_actor_get_type ())))->allocate (self, box, flags);
 
   children = clutter_container_get_children (CLUTTER_CONTAINER (self));
   for (iter = children; iter; iter = iter->next)
     {
       ClutterActor *actor = CLUTTER_ACTOR (iter->data);
-      clutter_actor_allocate (actor, box, flags);
+      ClutterActorBox child_box;
+      child_box.x1 = 0;
+      child_box.x2 = width;
+      child_box.y1 = 0;
+      child_box.y2 = height;
+      clutter_actor_allocate (actor, &child_box, flags);
     }
   g_list_free (children);
 }
