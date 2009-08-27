@@ -146,7 +146,6 @@ libgnome_shell_la_LIBADD =	\
         $(LIBGNOMEUI_LIBS)      \
 	libbig-1.0.la		\
 	libgdmuser-1.0.la	\
-	libtidy-1.0.la		\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
