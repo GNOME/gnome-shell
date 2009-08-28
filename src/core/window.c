@@ -8605,6 +8605,22 @@ meta_window_is_override_redirect (MetaWindow *window)
   return window->override_redirect;
 }
 
+/**
+ * meta_window_is_skip_taskbar:
+ * @window: A #MetaWindow
+ *
+ * Gets whether this window should be ignored by task lists.
+ *
+ * Return value: %TRUE if the skip bar hint is set.
+ */
+gboolean
+meta_window_is_skip_taskbar (MetaWindow *window)
+{
+  g_return_val_if_fail (META_IS_WINDOW (window), FALSE);
+
+  return window->skip_taskbar;
+}
+
 MetaRectangle *
 meta_window_get_rect (MetaWindow *window)
 {
