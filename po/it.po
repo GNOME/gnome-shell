@@ -1,29 +1,25 @@
 # Italian translation of Metacity.
 # This file is distributed under the same license as metacity package
-# Copyright (C) 2002-2007 Free Software Foundation, Inc.
+# Copyright (C) 2002,2003,2004,2005,2006,2007,2008,2009 Free Software Foundation, Inc.
 # Pier Luigi Fiorini <plfiorini@libero.it>, 2002.
 # Lapo Calamandrei <lapo.calamandrei@virgilio.it>, 2003.
-#
-# Luca Ferretti <elle.uca@libero.it>, 2004-2008, 2009.
+# Luca Ferretti <elle.uca@libero.it>, 2004,2005,2006,2007,2008,2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.21.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=metacity&component=general\n"
-"POT-Creation-Date: 2009-08-09 18:27+0000\n"
-"PO-Revision-Date: 2009-08-11 01:17+0200\n"
+"Project-Id-Version: metacity 2.27.x\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
+"POT-Creation-Date: 2009-08-24 17:51+0000\n"
+"PO-Revision-Date: 2009-08-28 09:51+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# GNOME-2-20
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
 msgstr "Ambiente grafico"
 
-# GNOME-2-20
 #: ../src/50-metacity-key.xml.in.h:1
 msgid "Window Management"
 msgstr "Gestione finestre"
@@ -32,8 +28,6 @@ msgstr "Gestione finestre"
 msgid "Bell event"
 msgstr "Evento campanella"
 
-# GNOME-2-20
-#
 # notare l'abilità con cui nella traduzione non si capisce
 # se sconosciuta è la finestra o la richiesta :-)    --Luca
 #: ../src/core/core.c:206
@@ -54,7 +48,6 @@ msgstr ""
 "<i>È possibile scegliere di attendere un po' lasciando che l'applicazione "
 "continui, oppure forzare la terminazione dell'applicazione.</i>"
 
-# GNOME-2-24
 #: ../src/core/delete.c:115
 msgid "_Wait"
 msgstr "_Attendi"
@@ -66,15 +59,13 @@ msgstr "_Forza uscita"
 #: ../src/core/delete.c:216
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr "Recupero del nome host fallito: %s\n"
+msgstr "Recupero del nome host non riuscito: %s\n"
 
-# GNOME-2-22
 #: ../src/core/display.c:258
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Estensione %s richiesta per il compositing mancante"
 
-# GNOME-2-26
 #: ../src/core/display.c:336
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
@@ -96,7 +87,6 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Errore fatale di IO %d (%s) relativo al display «%s».\n"
 
-# GNOME-2-26
 #: ../src/core/keybindings.c:680
 #, c-format
 msgid ""
@@ -106,7 +96,6 @@ msgstr ""
 "Qualche altro programma sta già usando il tasto %s con i modificatori %x "
 "come una associazione di tasti\n"
 
-# GNOME-2-26
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
@@ -121,13 +110,11 @@ msgstr ""
 "\n"
 "%s."
 
-# GNOME-2-26
 #: ../src/core/keybindings.c:2383
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Non è stato definito alcuno comando %d.\n"
 
-# GNOME-2-26
 # "comando di terminale" o "comando «terminal»" ???
 #: ../src/core/keybindings.c:3337
 #, c-format
@@ -173,30 +160,23 @@ msgstr "Inizializza la sessione da file salvato"
 msgid "Print version"
 msgstr "Stampa la versione"
 
-# GNOME-2-22
 #: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Rende le chiamate X sincrone"
 
-# GNOME-2-26
 #: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Attiva il compositing"
 
-# GNOME-2-26
 #: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Disattiva il compositing"
 
 #: ../src/core/main.c:321
-#, fuzzy
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
-msgstr ""
-"Non rendere a pieno schermo quelle finestre che sono massimizzate e che non "
-"hanno decorazioni"
+msgstr "Non rendere a schermo intero le finestre che sono massimizzate e che non hanno decorazioni"
 
-# GNOME-2-26
 #: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
@@ -210,7 +190,6 @@ msgstr ""
 "Non è stato trovato alcun tema. Assicurarsi che %s esista e contenga i temi "
 "standard.\n"
 
-# GNOME-2-26
 #: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
@@ -232,7 +211,6 @@ msgstr "Riavvio non riuscito: %s\n"
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La chiave GConf «%s» è impostata ad un valore non valido\n"
 
-# GNOME-2-24
 # lasciato "Il valore" iniziale che c'era in precendeza
 #: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
@@ -248,7 +226,6 @@ msgstr ""
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La chiave GConf «%s» è impostata ad un tipo non valido\n"
 
-# GNOME-2-26
 #: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
@@ -264,7 +241,6 @@ msgstr ""
 "Impossibile analizzare la descrizione del tipo di carattere «%s» dalla chiave "
 "GConf %s\n"
 
-# GNOME-2-26
 #: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
@@ -284,7 +260,6 @@ msgstr "Errore nell'impostare il numero di spazi di lavoro a %d: %s\n"
 msgid "Workspace %d"
 msgstr "Spazio di lavoro %d"
 
-# GNOME-2-26
 #: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
@@ -299,7 +274,6 @@ msgstr ""
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Errore nell'impostare il nome dello spazio di lavoro %d a «%s»: %s\n"
 
-# GNOME-2-26
 #: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
@@ -337,14 +311,20 @@ msgstr "Lo schermo %d sul display «%s» ha già un window manager\n"
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossibile rilasciare lo schermo %d sul display «%s»\n"
 
-# GNOME-2-26
 #. Translators: Please don't translate "Control", "Shift", etc, since these
 #. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -358,10 +338,19 @@ msgstr ""
 "l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è "
 "alcuna associazione di tasti per questa azione."
 
-# GNOME-2-26
 #: ../src/core/schema-bindings.c:177
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action.\n"
+#| "\n"
+#| "This keybinding may be reversed by holding down the \"shift\" key; "
+#| "therefore, \"shift\" cannot be one of the keys it uses."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -373,14 +362,9 @@ msgid ""
 msgstr ""
 "Il formato è tipo \"<Control>a\" o \"<Shift><Alt>F1\".\n"
 "\n"
-"Senza particolari restrizioni, è consentito l'utilizzo di lettere maiuscole "
-"e minuscole, così come abbreviazioni come \"<Ctl>\" o \"<Ctrl>\". Se "
-"l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è "
-"alcuna associazione di tasti per questa azione.\n"
+"Senza particolari restrizioni, è consentito l'utilizzo di lettere maiuscole e minuscole, così come abbreviazioni come \"<Ctl>\" o \"<Ctrl>\". Se l'opzione è impostata alla stringa speciale \"disabled\", allora non c'è alcuna associazione di tasti per questa azione.\n"
 "\n"
-"Questa associazioni di tasti può essere invertita tenendo premuto il tasto "
-"\"Maiusc\"; per questo motivo \"<Shift>\" non può essere incluso nei tasti "
-"da usare."
+"Questa associazioni di tasti può essere invertita tenendo premuto il tasto \"Maiusc\"; per questo motivo \"<Shift>\" non può essere incluso nei tasti da usare."
 
 #: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
@@ -402,20 +386,17 @@ msgstr "Errore nello scrivere il file di sessione «%s»: %s\n"
 msgid "Error closing session file '%s': %s\n"
 msgstr "Errore nel chiudere il file di sessione «%s»: %s\n"
 
-# GNOME-2-26
 #. oh, just give up
 #: ../src/core/session.c:1101
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Lettura del file della sessione %s non riuscita: %s\n"
 
-# GNOME-2-26
 #: ../src/core/session.c:1140
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Analisi del file della sessione salvato non riuscita: %s\n"
 
-# GNOME-2-26
 #: ../src/core/session.c:1189
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
@@ -423,7 +404,6 @@ msgstr ""
 "Attributo <metacity_session> individuato, ma è già presente un ID della "
 "sessione"
 
-# GNOME-2-26
 #: ../src/core/session.c:1202 ../src/core/session.c:1277
 #: ../src/core/session.c:1309 ../src/core/session.c:1381
 #: ../src/core/session.c:1441
@@ -452,19 +432,16 @@ msgstr ""
 "Queste finestre non supportano la funzione &quot;salva impostazioni "
 "attuali&quot; e dovranno essere riavviate manualmente al prossimo accesso."
 
-# GNOME-2-26
 #: ../src/core/util.c:103
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Apertura nel file di registro di debug non riuscita: %s\n"
 
-# GNOME-2-26
 #: ../src/core/util.c:113
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Esecuzione di fdopen() sul file di registro %s non riuscita: %s\n"
 
-# GNOME-2-26
 #: ../src/core/util.c:119
 #, c-format
 msgid "Opened log file %s\n"
@@ -509,7 +486,6 @@ msgstr ""
 "La finestra %s ha impostato SM_CLIENT_ID su se stessa, invece che sulla "
 "finestra WM_CLIENT_LEADER come da specifiche ICCCM.\n"
 
-# GNOME-2-26
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
 #. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
@@ -565,7 +541,6 @@ msgstr "%s (come altro utente)"
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Specificato un WM_TRANSIENT_FOR finestra 0x%lx non valido per %s.\n"
 
-# GNOME-2-26
 #: ../src/core/xprops.c:155
 #, c-format
 msgid ""
@@ -645,54 +620,44 @@ msgstr "Passa allo spazio di lavoro 11"
 msgid "Switch to workspace 12"
 msgstr "Passa allo spazio di lavoro 12"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:122
 msgid "Switch to workspace on the left of the current workspace"
 msgstr "Passa allo spazio di lavoro a sinistra di quello attuale"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:126
 msgid "Switch to workspace on the right of the current workspace"
 msgstr "Passa allo spazio di lavoro a destra di quello attuale"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:130
 msgid "Switch to workspace above the current workspace"
 msgstr "Passa allo spazio di lavoro sopra quello attuale"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:134
 msgid "Switch to workspace below the current workspace"
 msgstr "Passa allo spazio di lavoro sotto quello attuale"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:150
 msgid "Move between windows of an application, using a popup window"
 msgstr "Sposta tra le finestre di un'applicazione, usando una finestra"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:153
 msgid "Move backward between windows of an application, using a popup window"
 msgstr ""
 "Sposta al contrario tra le finestre di un'applicazione, usando una finestra "
 "a comparsa"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:157
 msgid "Move between windows, using a popup window"
 msgstr "Sposta tra le finestra, usando una finestra a comparsa"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:160
 msgid "Move backward between windows, using a popup window"
 msgstr "Sposta al contrario tra le finestra, usando una finestra a comparsa"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:163
 msgid "Move between panels and the desktop, using a popup window"
 msgstr "Sposta tra i pannelli e la scrivania, usando una finestra a comparsa"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:166
 msgid "Move backward between panels and the desktop, using a popup window"
 msgstr ""
@@ -703,27 +668,22 @@ msgstr ""
 msgid "Move between windows of an application immediately"
 msgstr "Sposta immediatamente tra le finestre di una applicazione"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:174
 msgid "Move backward between windows of an application immediately"
 msgstr "Sposta immediatamente al contrario tra le finestre di una applicazione"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:177
 msgid "Move between windows immediately"
 msgstr "Sposta immediatamente tra le finestre"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:180
 msgid "Move backward between windows immediately"
 msgstr "Sposta immediatamente al contrario tra le finestre"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:183
 msgid "Move between panels and the desktop immediately"
 msgstr "Sposta immediatamente tra i pannelli e la scrivania"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:186
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Sposta immediatamente al contrario tra i pannelli e la scrivania"
@@ -732,12 +692,10 @@ msgstr "Sposta immediatamente al contrario tra i pannelli e la scrivania"
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Nascondi tutte le finestre normali e imposta il focus sulla scrivania"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
 msgstr "Mostra il menù principale del pannello"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:197
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Mostra la casella di dialogo \"Esegui applicazione\" del pannello"
@@ -758,18 +716,14 @@ msgstr "Esegui un terminale"
 msgid "Activate the window menu"
 msgstr "Attiva il menù della finestra"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:260
 msgid "Toggle fullscreen mode"
 msgstr "Commuta la modalità schermo intero"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:262
 msgid "Toggle maximization state"
 msgstr "Commuta lo stato massimizzazione"
 
-# GNOME-2-26
-#
 # uuuuufffff
 #: ../src/include/all-keybindings.h:264
 msgid "Toggle whether a window will always be visible over other windows"
@@ -779,12 +733,10 @@ msgstr "Commuta la visibilità permanente di una finestra sopra le altre"
 msgid "Maximize window"
 msgstr "Massimizza la finestra"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:268
 msgid "Restore window"
 msgstr "Ripristina la finestra"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:270
 msgid "Toggle shaded state"
 msgstr "Commuta lo stato arrotolato"
@@ -805,15 +757,15 @@ msgstr "Muovi la finestra"
 msgid "Resize window"
 msgstr "Ridimensiona la finestra"
 
-# GNOME-2-26
-#
 # uuuuuuufff
 #: ../src/include/all-keybindings.h:281
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr ""
 "Commuta la presenza della finestra in tutti gli spazi di lavoro o solo in uno"
 
-# Nota: pur essendo il verbo originale "move" come poco sopra, è stato scelto di usare "Muovi" per l'azione "clic e trascina sulla barra del titolo" e sposta per questa azione
+# Nota: pur essendo il verbo originale "move" come poco sopra, è stato scelto di
+# usare "Muovi" per l'azione "clic e trascina sulla barra del titolo" e
+# "Sposta" per questa azione
 #: ../src/include/all-keybindings.h:285
 msgid "Move window to workspace 1"
 msgstr "Sposta la finestra sullo spazio di lavoro 1"
@@ -878,19 +830,16 @@ msgstr "Sposta la finestra sullo spazio di lavoro in alto"
 msgid "Move window one workspace down"
 msgstr "Sposta la finestra sullo spazio di lavoro in basso"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:342
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr ""
 "Solleva la finestra se è coperta da un'altra finestra, in caso contrario "
 "l'abbassa"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:344
 msgid "Raise window above other windows"
 msgstr "Solleva la finestra sopra le altre finestre"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:346
 msgid "Lower window below other windows"
 msgstr "Abbassa la finestra sotto le altre"
@@ -903,47 +852,38 @@ msgstr "Massimizza verticalmente la finestra"
 msgid "Maximize window horizontally"
 msgstr "Massimizza orizzontalmente la finestra"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:358
 msgid "Move window to north-west (top left) corner"
 msgstr "Muovi la finestra nell'angolo nord-ovest (sinistra in alto)"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:361
 msgid "Move window to north-east (top right) corner"
 msgstr "Muovi la finestra nell'angolo nord-est (destra in alto)"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:364
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Muovi la finestra nell'angolo sud-ovest (sinistra in basso)"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:367
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Muovi la finestra nell'angolo sud-est (destra in basso)"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:371
 msgid "Move window to north (top) side of screen"
 msgstr "Muovi la finestra sul lato nord (in alto) dello schermo"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:374
 msgid "Move window to south (bottom) side of screen"
 msgstr "Muovi la finestra sul lato sud (in basso) dello schermo"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:377
 msgid "Move window to east (right) side of screen"
 msgstr "Muovi la finestra sul lato est (desta) dello schermo"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:380
 msgid "Move window to west (left) side of screen"
 msgstr "Muovi la finestra sul lato ovest (sinistra) dello schermo"
 
-# GNOME-2-26
 #: ../src/include/all-keybindings.h:383
 msgid "Move window to center of screen"
 msgstr "Muovi la finestra al centro dello schermo"
@@ -969,27 +909,22 @@ msgstr ""
 "impostata a 0. Inoltre, questa opzione è disabilitata se l'opzione "
 "\"titlebar_uses_desktop_font\" è impostata a VERO."
 
-# GNOME-2-20
 #: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
 msgstr "Azione per doppio-clic su barra del titolo"
 
-# GNOME-2-20
 #: ../src/metacity.schemas.in.in.h:4
 msgid "Action on title bar middle-click"
 msgstr "Azione per clic-centrale su barra del titolo"
 
-# GNOME-2-20
 #: ../src/metacity.schemas.in.in.h:5
 msgid "Action on title bar right-click"
 msgstr "Azione per clic-destro su barra del titolo"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:6
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Disposizione pulsanti su barra del titolo"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:7
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
@@ -1009,12 +944,10 @@ msgstr ""
 "compatibilità con le versioni più vecchie. Un tag speciale \"spacer\" può "
 "essere usato per inserire dello spazio tra due pulsanti adiacenti."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
 msgstr "Solleva automaticamente la finestra col focus"
 
-# GNOME-2-26
 # Mi sa che l'originale è sbagliato aperto un bug
 #: ../src/metacity.schemas.in.in.h:9
 msgid ""
@@ -1031,7 +964,6 @@ msgstr ""
 "usando la chiave \"mouse_button_resize\". Il modificatore è espresso come "
 "\"&lt;Alt&gt;\" o \"&lt;Super&gt;\"."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
 msgstr "Comandi da eseguire in risposta alle associazioni di tasti"
@@ -1044,12 +976,10 @@ msgstr "Manager di composizione"
 msgid "Control how new windows get focus"
 msgstr "Controlla come le nuove finestre ottengono il focus"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:13
 msgid "Current theme"
 msgstr "Tema corrente"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Ritardo in millisecondi per l'opzione sollevamento automatico"
@@ -1058,7 +988,6 @@ msgstr "Ritardo in millisecondi per l'opzione sollevamento automatico"
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Determina se Metacity opera come un manager di composizione."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
@@ -1068,7 +997,6 @@ msgstr ""
 "può essere usato in congiunzione con \"visual_bell\" per consentire dei bip "
 "silenziosi."
 
-# GNOME-2-26
 # inadeguate: see http://catb.org/jargon/html/M/misfeature.html
 #: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -1080,7 +1008,6 @@ msgstr ""
 msgid "Enable Visual Bell"
 msgstr "Abilita campanella visiva"
 
-# GNOME-2-26
 # enter messo in modo un po' libero
 #: ../src/metacity.schemas.in.in.h:19
 msgid ""
@@ -1104,7 +1031,6 @@ msgstr ""
 "delle finestre viene usato il tipo di carattere predefinito per le "
 "applicazioni."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:21
 msgid ""
 "If true, metacity will give the user less feedback by using wireframes, "
@@ -1120,7 +1046,6 @@ msgstr ""
 "potrebbe essere un buon compromesso per i terminal server. Comunque, la "
 "funzionalità wireframe è disabilitata quando l'accessibilità è in funzione."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:22
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
@@ -1172,7 +1097,6 @@ msgstr ""
 msgid "Run a defined command"
 msgstr "Esegui un comando stabilito"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:29
 msgid ""
 "Set this to true to resize with the right button and show a menu with the "
@@ -1184,7 +1108,6 @@ msgstr ""
 "indicato in \"mouse_button_modifier\": impostare a FALSO per farli "
 "funzionare nel modo opposto."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:30
 msgid ""
 "Setting this option to false can lead to buggy behavior, so users are "
@@ -1227,7 +1150,6 @@ msgstr ""
 "window manager e che dovrebbero riportare il valore di questa opzione a VERO "
 "oppure convivere con il \"bug\" che hanno richiesto."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:31
 msgid ""
 "Some applications disregard specifications in ways that result in window "
@@ -1264,7 +1186,6 @@ msgstr ""
 "sconosciuta (come accade di solito nel caso della campanella di sistema), il "
 "lampeggio avviene sulla finestra che al momento ha il focus."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:34
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
@@ -1276,7 +1197,6 @@ msgstr ""
 "l'associazione di tasti per la chiave \"run_command_N\", viene eseguito il "
 "comando della chiave \"command_N\"."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:35
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
@@ -1286,7 +1206,6 @@ msgstr ""
 "una associazione di tasti che causa l'invocazione del comando specificato da "
 "questa impostazione."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:36
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
@@ -1297,7 +1216,6 @@ msgstr ""
 "definisce una associazione di tasti che causa l'invocazione del comando "
 "specificato da questa impostazione."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:37
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -1330,7 +1248,6 @@ msgstr ""
 "Il tema determina l'aspetto dei bordi delle finestre, della barra del titolo "
 "e così via."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:41
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
@@ -1339,7 +1256,6 @@ msgstr ""
 "L'intervallo di tempo in millisecondi prima che la finestra venga sollevata "
 "quando auto_raise è impostato a VERO."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:42
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
@@ -1359,7 +1275,6 @@ msgstr ""
 msgid "The window screenshot command"
 msgstr "Il comando per schermate di finestre"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:44
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
@@ -1381,7 +1296,6 @@ msgstr ""
 "per collocare la finestra sotto tutte le altre e \"none\" per non compiere "
 "alcuna azione."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:45
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
@@ -1403,7 +1317,6 @@ msgstr ""
 "per collocare la finestra sotto tutte le altre e \"none\" per non compiere "
 "alcuna azione."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:46
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
@@ -1447,24 +1360,20 @@ msgstr ""
 "\"bip\" o \"suona una campanella\"; utile per chi ha problemi d'udito o per "
 "l'uso in ambienti rumorosi."
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
 msgstr "Usare il carattere di sistema nei titoli delle finestre"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:50
 msgid "Visual Bell Type"
 msgstr "Tipo campanella visiva"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr ""
 "Indica se sollevare la finestra è un effetto secondario di altre interazioni "
 "utente"
 
-# GNOME-2-26
 #: ../src/metacity.schemas.in.in.h:52
 msgid "Whether to resize with the right button"
 msgstr "Indica se ridimensionare con il pulsante destro"
@@ -1488,7 +1397,6 @@ msgstr "Uso: %s\n"
 msgid "Close Window"
 msgstr "Chiude la finestra"
 
-# GNOME-2-26
 #: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Menù finestra"
@@ -1514,12 +1422,10 @@ msgstr "Arrotola la finestra"
 msgid "Unroll Window"
 msgstr "Srotola la finestra"
 
-# GNOME-2-26
 #: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Tiene la finestra in primo piano"
 
-# GNOME-2-26
 #: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Rimuove la finestra dalla primo piano"
@@ -1528,7 +1434,6 @@ msgstr "Rimuove la finestra dalla primo piano"
 msgid "Always On Visible Workspace"
 msgstr "Sempre sullo spazio di lavoro visibile"
 
-# GNOME-2-26
 #: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Pone la finestra su un solo spazio di lavoro"
@@ -1561,9 +1466,7 @@ msgstr "Arr_otola"
 msgid "_Unroll"
 msgstr "Sr_otola"
 
-# GNOME-2-24
 # mantenere in sync con libwnck
-#
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:80
 msgid "_Move"
@@ -1587,9 +1490,7 @@ msgstr "Muovi barra del titolo su _schermo"
 msgid "Always on _Top"
 msgstr "Sempre in _primo piano"
 
-# GNOME-2-24
 # mantenere in sync con libwnck
-#
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:91
 msgid "_Always on Visible Workspace"
@@ -1601,9 +1502,7 @@ msgstr "Sempre su spazio di lavoro _visibile"
 msgid "_Only on This Workspace"
 msgstr "Solo su _questo spazio di lavoro"
 
-# GNOME-2-24
 # mantenere in sync con libwnck
-#
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:95
 msgid "Move to Workspace _Left"
@@ -1615,17 +1514,13 @@ msgstr "Sposta su spazio di lavoro a s_inistra"
 msgid "Move to Workspace R_ight"
 msgstr "Sposta su spazio di lavoro a d_estra"
 
-# GNOME-2-24
 # mantenere in sync con libwnck
-#
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:99
 msgid "Move to Workspace _Up"
 msgstr "Sposta su spazio di lavoro in alt_o"
 
-# GNOME-2-24
 # mantenere in sync con libwnck
-#
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:101
 msgid "Move to Workspace _Down"
@@ -1638,9 +1533,7 @@ msgstr "Sposta su spazio di lavoro in _basso"
 msgid "_Close"
 msgstr "_Chiudi"
 
-# GNOME-2-24
 # mantenere in sync con libwnck
-#
 #: ../src/ui/menu.c:203
 #, c-format
 msgid "Workspace %d%n"
@@ -1658,7 +1551,6 @@ msgstr "Spazio di lavoro 1_0"
 msgid "Workspace %s%d"
 msgstr "Spazio di lavoro %s%d"
 
-# GNOME-2-24
 #: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
 msgstr "Sposta su _altro spazio di lavoro"
@@ -1803,7 +1695,6 @@ msgstr "La geometria della cornice non specifica la dimensione dei pulsanti"
 msgid "Gradients should have at least two colors"
 msgstr "I gradienti dovrebbero avere almeno due colori"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:1146
 #, c-format
 msgid ""
@@ -1813,7 +1704,6 @@ msgstr ""
 "La specificazione del colore GTK deve avere lo stato fra parentesi, per es. "
 "gtk:fg[NORMAL] dove NORMAL è lo stato; impossibile analizzare \"%s\""
 
-# GNOME-2-26
 #: ../src/ui/theme.c:1160
 #, c-format
 msgid ""
@@ -1909,13 +1799,11 @@ msgstr ""
 "L'espressione delle coordinate contiene un operatore sconosciuto all'inizio "
 "di questo testo: \"%s\""
 
-# GNOME-2-26
 #: ../src/ui/theme.c:1802
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "L'espressione delle coordinate è vuota o incomprensibile"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
 #, c-format
 msgid "Coordinate expression results in division by zero"
@@ -1986,20 +1874,17 @@ msgstr ""
 "L'espressione delle coordinate ha una parentesi di apertura senza la "
 "relativa di chiusura"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:2394
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "L'espressione delle coordinate non sembra avere né operatori né operandi"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Il tema contiene un'espressione che ha come risultato un errore: %s\n"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:4203
 #, c-format
 msgid ""
@@ -2009,7 +1894,6 @@ msgstr ""
 "È necessario specificare <button function=\"%s\" state=\"%s\" draw_ops="
 "\"whatever\"/> per questo stile di cornice"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
 msgid ""
@@ -2018,7 +1902,6 @@ msgstr ""
 "Risulta mancante <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style="
 "\"whatever\"/>"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
@@ -2030,7 +1913,6 @@ msgstr "Caricamento del tema «%s» non riuscito: %s\n"
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nessun <%s> impostato per il tema «%s»"
 
-# GNOME-2-26
 #: ../src/ui/theme.c:4946
 #, c-format
 msgid ""
@@ -2053,7 +1935,6 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "La costante «%s» è già definita"
 
-# GNOME-2-26
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
@@ -2082,7 +1963,6 @@ msgstr "L'attributo «%s» non è valido nell'elemento <%s> in questo contesto"
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Impossibile analizzare «%s» come un intero"
 
-# GNOME-2-26
 #: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
@@ -2103,7 +1983,6 @@ msgstr "L'intero %ld è troppo grande, il massimo corrente è %d"
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Impossibile analizzare «%s» come numero in virgola mobile"
 
-# GNOME-2-26
 #: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
@@ -2155,15 +2034,12 @@ msgstr "La geometria «%2$s» di <%1$s> non è stata definita"
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> deve specificare una geometria o un genitore che ha una geometria"
 
-# GNOME-2-20
 #: ../src/ui/theme-parser.c:1113
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr ""
 "È necessario specificare uno sfondo per un valore alpha affinché sia "
 "significativo"
 
-# GNOME-2-26
-#
 # in base al successivo, type dovrebbe essere parola chiave....
 #: ../src/ui/theme-parser.c:1180
 #, c-format
@@ -2175,7 +2051,6 @@ msgstr "type «%s» sconosciuto nell'elemento <%s>"
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "style_set «%s» sconosciuto nell'elemento <%s>"
 
-# GNOME-2-26
 #: ../src/ui/theme-parser.c:1199
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
@@ -2191,7 +2066,6 @@ msgstr ""
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "L'elemento <%s> non è consentito all'interno di <%s>"
 
-# GNOME-2-26
 #: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
 msgid ""
@@ -2216,13 +2090,11 @@ msgstr "Le proporzioni «%s» sono sconosciute"
 msgid "Border \"%s\" is unknown"
 msgstr "Il bordo «%s» è sconosciuto"
 
-# GNOME-2-20
 #: ../src/ui/theme-parser.c:1784
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Nessun attributo «start_angle» o «from» nell'elemento <%s>"
 
-# GNOME-2-20
 #: ../src/ui/theme-parser.c:1791
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
@@ -2254,27 +2126,23 @@ msgstr "Ombra «%s» incomprensibile per l'elemento <%s>"
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Freccia «%s» incomprensibile per l'elemento <%s>"
 
-# GNOME-2-26
 #: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Non è stato definito alcun <draw_ops> di nome «%s»"
 
-# GNOME-2-26
 #: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
 "Includendo draw_ops «%s» qui si potrebbe creare un riferimento circolare"
 
-# GNOME-2-26
 # piece dovrebbe essere parola chiave
 #: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Posizione «%s» sconosciuta per il piece di cornice"
 
-# GNOME-2-26
 # piece dovrebbe essere parola chiave
 #: ../src/ui/theme-parser.c:2827
 #, c-format
@@ -2291,7 +2159,6 @@ msgstr "Non è stato definito alcun <draw_ops> con il nome «%s»"
 msgid "Unknown function \"%s\" for button"
 msgstr "Funzione «%s» sconosciuta per il pulsante"
 
-# GNOME-2-20
 #: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
@@ -2337,7 +2204,6 @@ msgstr ""
 "Non si dovrebbe avere l'attributo «resize» nell'elemento <%s> per gli stati "
 "maximized/shaded"
 
-# GNOME-2-20
 #: ../src/ui/theme-parser.c:3061
 #, c-format
 msgid ""
@@ -2422,8 +2288,7 @@ msgstr ""
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "L'elemento <%s> non è consentito all'interno di un elemento <%s>"
 
-# GNOME-2-26
-# piece dovrebbe essere parola chiave..
+# piece dovrebbe essere parola chiave
 #: ../src/ui/theme-parser.c:3602
 msgid "No draw_ops provided for frame piece"
 msgstr "Nessun draw_ops fornito per il piece di cornice"
@@ -2444,7 +2309,6 @@ msgstr "Il testo non è consentito all'interno dell'elemento <%s>"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> specificato due volte per questo tema"
 
-# GNOME-2-20
 #: ../src/ui/theme-parser.c:4040
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
@@ -2654,54 +2518,3 @@ msgstr "valore y era %d, era atteso %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d espressioni di coordinate analizzate in %g secondi (%g secondi in media)\n"
-
-# GNOME-2-26
-#~ msgid "Failed to parse message \"%s\" from dialog process\n"
-#~ msgstr "Analisi del messaggio «%s» dal processo dialogo non riuscita\n"
-
-#~ msgid "Error reading from dialog display process: %s\n"
-#~ msgstr "Errore nel leggere dal processo visualizzazione dialogo: %s\n"
-
-# GNOME-2-26
-#~ msgid ""
-#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr ""
-#~ "Errore nel lanciare metacity-dialog per richiedere se terminare "
-#~ "un'applicazione: %s\n"
-
-# GNOME-2-26
-#~ msgid ""
-#~ "Error launching metacity-dialog to warn about apps that don't support "
-#~ "session management: %s\n"
-#~ msgstr ""
-#~ "Errore nel lanciare metacity-dialog per avvertire riguardo le "
-#~ "applicazioni che non supportano la gestione di sessione: %s\n"
-
-# reso impersonale
-#~ msgid "\"%s\" is not responding."
-#~ msgstr "Nessuna risposta da «%s»."
-
-#~ msgid "Title"
-#~ msgstr "Titolo"
-
-#~ msgid "Class"
-#~ msgstr "Classe"
-
-#~ msgid ""
-#~ "There was an error running \"%s\":\n"
-#~ "%s."
-#~ msgstr ""
-#~ "Si è verificato un errore nell'eseguire «%s»:\n"
-#~ "%s."
-
-#~ msgid "<author> specified twice for this theme"
-#~ msgstr "<author> specificato due volte per questo tema"
-
-#~ msgid "<copyright> specified twice for this theme"
-#~ msgstr "<copyright> specificato due volte per questo tema"
-
-#~ msgid "<date> specified twice for this theme"
-#~ msgstr "<date> specificato due volte per questo tema"
-
-#~ msgid "<description> specified twice for this theme"
-#~ msgstr "<description> specificato due volte per questo tema"
