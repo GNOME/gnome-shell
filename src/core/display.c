@@ -3725,6 +3725,21 @@ meta_display_end_grab_op (MetaDisplay *display,
     }
 }
 
+/**
+ * meta_display_get_grab_op:
+ * Gets the current grab operation, if any.
+ *
+ * Return value: the current grab operation, or %META_GRAB_OP_NONE if
+ * Mutter doesn't currently have a grab. %META_GRAB_OP_COMPOSITOR will
+ * be returned if a compositor-plugin modal operation is in effect
+ * (See mutter_begin_modal_for_plugin())
+ */
+MetaGrabOp
+meta_display_get_grab_op (MetaDisplay *display)
+{
+  return display->grab_op;
+}
+
 void
 meta_display_check_threshold_reached (MetaDisplay *display,
                                       int          x,

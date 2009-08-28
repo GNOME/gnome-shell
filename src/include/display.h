@@ -114,6 +114,10 @@ gboolean meta_display_begin_grab_op (MetaDisplay *display,
                                      int          root_y);
 void     meta_display_end_grab_op   (MetaDisplay *display,
                                      guint32      timestamp);
+
+MetaGrabOp meta_display_get_grab_op (MetaDisplay *display);
+
+
 /* meta_display_set_input_focus_window is like XSetInputFocus, except
  * that (a) it can't detect timestamps later than the current time,
  * since Mutter isn't part of the XServer, and thus gives erroneous
