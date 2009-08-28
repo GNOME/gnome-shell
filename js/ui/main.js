@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -94,7 +95,9 @@ function start() {
     let display = global.screen.get_display();
     display.connect('overlay-key', Lang.bind(overview, overview.toggle));
     global.connect('panel-main-menu', Lang.bind(overview, overview.toggle));
-    
+
+    global.stage.connect('captured-event', _globalKeyPressHandler);
+
     Mainloop.idle_add(_removeUnusedWorkspaces);
 }
 
@@ -128,6 +131,52 @@ function _removeUnusedWorkspaces() {
         for (let w = screen.n_workspaces - 1; w > maxWorkspace; w--) {
             let workspace = screen.get_workspace_by_index(w);
             screen.remove_workspace(workspace, 0);
+        }
+    }
+
+    return false;
+}
+
+// This function encapsulates hacks to make certain global keybindings
+// work even when we are in one of our modes where global keybindings
+// are disabled with a global grab. (When there is a global grab, then
+// all key events will be delivered to the stage, so ::captured-event
+// on the stage can be used for global keybindings.)
+//
+// We expect to need to conditionally enable just a few keybindings
+// depending on circumstance; the main hackiness here is that we are
+// assuming that keybindings have their default values; really we
+// should be asking Mutter to resolve the key into an action and then
+// base our handling based on the action.
+function _globalKeyPressHandler(actor, event) {
+    if (!inModal)
+        return false;
+
+    let type = event.type();
+
+    if (type == Clutter.EventType.KEY_PRESS) {
+        let symbol = Shell.get_event_key_symbol (event);
+        if (symbol == Clutter.Print) {
+            // We want to be able to take screenshots of the shell at all times
+            let gconf = Shell.GConf.get_default();
+            let command = gconf.get_string("/apps/metacity/keybinding_commands/command_screenshot");
+            if (command != null && command != "") {
+                let [ok, len, args] = GLib.shell_parse_argv(command);
+                let p = new Shell.Process({'args' : args});
+                p.run();
+            }
+
+            return true;
+        }
+    } else if (type == Clutter.EventType.KEY_RELEASE) {
+        let symbol = Shell.get_event_key_symbol (event);
+        if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
+            // The super key is the default for triggering the overview, and should
+            // get us out of the overview when we are already in it.
+            if (overview.visible)
+                overview.hide();
+
+            return true;
         }
     }
 
