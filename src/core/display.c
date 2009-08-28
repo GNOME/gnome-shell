@@ -2589,7 +2589,7 @@ event_callback (XEvent   *event,
 	    {
 	    case XkbBellNotify:
               if (XSERVER_TIME_IS_BEFORE(display->last_bell_time,
-                                         xkb_ev->time - 1000))
+                                         xkb_ev->time - 100))
                 {
                   display->last_bell_time = xkb_ev->time;
                   meta_bell_notify (display, xkb_ev);
