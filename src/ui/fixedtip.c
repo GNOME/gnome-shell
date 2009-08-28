@@ -71,6 +71,8 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
   if (tip == NULL)
     {      
       tip = gtk_window_new (GTK_WINDOW_POPUP);
+      gtk_window_set_type_hint (GTK_WINDOW(tip), GDK_WINDOW_TYPE_HINT_TOOLTIP);
+
       {
         GdkScreen *gdk_screen;
 	GdkRectangle monitor;
