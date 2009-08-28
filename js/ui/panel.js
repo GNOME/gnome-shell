@@ -381,9 +381,14 @@ Panel.prototype = {
             statusmenu.toggle(e);
             return false;
         });
-        // This depends on connection ordering: since we are after the Button's
-        // ::button-release-event handler, calling button.release() will properly
-        // unset the 'active' flag for this stays-pressed button
+        // If popping up the menu failed (because there was already a grab in
+        // effect from Mutter or another app), then we'll never get a ::deactivated
+        // signal because the menu was never activated, so we need to unhighlight
+        // separately when the user releases the mouse button.
+        //
+        // We depend on connection ordering; this needs to be called after Button's
+        // ::button-release-event handler; that will set the active flag for this
+        // stays-pressed button, then we unset the active flag by calling release().
         statusbutton.button.connect('button-release-event', function (b, e) {
             if (!statusmenu.is_active())
                 statusbutton.release();
