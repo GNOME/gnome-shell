@@ -252,7 +252,7 @@ SearchEntry.prototype = {
 
         this._defaultText = _("Find...");
 
-        let textProperties = { font_name: "Sans 12" };
+        let textProperties = { font_name: "Sans 16px" };
         let entryProperties = { editable: true,
                                 activatable: true,
                                 single_line_mode: true,
