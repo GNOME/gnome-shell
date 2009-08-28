@@ -745,11 +745,8 @@ Workspace.prototype = {
 
     // Tests if @win should be shown in the Overview
     _isOverviewWindow : function (win) {
-        let wintype = win.get_window_type();
-        if (wintype == Meta.WindowType.DESKTOP || 
-            wintype == Meta.WindowType.DOCK)
-            return false;
-        return !win.is_override_redirect();
+        let appMon = Shell.AppMonitor.get_default()
+        return appMon.is_window_usage_tracked(win.get_meta_window());
     },
 
     _createWindowIcon: function(window) {

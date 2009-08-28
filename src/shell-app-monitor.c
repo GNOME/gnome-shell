@@ -345,7 +345,7 @@ window_is_tracked (MetaWindow *window)
 }
 
 /**
- * window_is_usage_tracked:
+ * shell_app_monitor_is_window_usage_tracked:
  *
  * Determine if it makes sense to track the given window for application
  * usage.  An example of a window we don't want to track is the root
@@ -358,8 +358,8 @@ window_is_tracked (MetaWindow *window)
  *
  * Returns: %TRUE iff we want to record focus time spent in this window
  */
-static gboolean
-window_is_usage_tracked (MetaWindow *window)
+gboolean
+shell_app_monitor_is_window_usage_tracked (MetaWindow *window)
 {
   if (!window_is_tracked (window))
     return FALSE;
@@ -562,7 +562,7 @@ get_active_window (ShellAppMonitor *monitor)
   display = meta_screen_get_display (screen);
   window = meta_display_get_focus_window (display);
 
-  if (window != NULL && window_is_usage_tracked (window))
+  if (window != NULL && shell_app_monitor_is_window_usage_tracked (window))
     return window;
   return NULL;
 }
@@ -756,7 +756,7 @@ track_window (ShellAppMonitor *self,
    * tracked it doesn't count for the purposes of an application
    * running.
    */
-  if (!window_is_usage_tracked (window))
+  if (!shell_app_monitor_is_window_usage_tracked (window))
     return;
 
   usage = get_app_usage_from_window (self, window);
@@ -812,7 +812,7 @@ disassociate_window (ShellAppMonitor   *self,
   if (window == self->watched_window)
     self->watched_window = NULL;
 
-  if (window_is_usage_tracked (window))
+  if (shell_app_monitor_is_window_usage_tracked (window))
     {
       AppUsage *usage;
       const char *context;
@@ -930,7 +930,7 @@ shell_app_monitor_get_windows_for_app (ShellAppMonitor *self,
       ShellAppInfo *app = value;
       const char *id = shell_app_info_get_id (app);
 
-      if (!window_is_usage_tracked (window))
+      if (!shell_app_monitor_is_window_usage_tracked (window))
         continue;
 
       if (strcmp (id, appid) != 0)
@@ -1181,7 +1181,7 @@ shell_app_monitor_get_running_apps (ShellAppMonitor *monitor,
       if (strcmp (get_window_context (window), context) != 0)
         continue;
 
-      if (!window_is_usage_tracked (window))
+      if (!shell_app_monitor_is_window_usage_tracked (window))
         continue;
 
       id = shell_app_info_get_id (app);

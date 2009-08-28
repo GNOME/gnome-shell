@@ -44,6 +44,8 @@ GList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
 
 GSList *shell_app_monitor_get_windows_for_app (ShellAppMonitor *monitor, const char *appid);
 
+gboolean shell_app_monitor_is_window_usage_tracked (MetaWindow *window);
+
 /* Get whatever's running right now */
 GSList *shell_app_monitor_get_running_apps (ShellAppMonitor *monitor, const char *context);
 
