@@ -36,7 +36,7 @@ struct _ShellStatusMenuClass
 GType             shell_status_menu_get_type     (void);
 
 void              shell_status_menu_toggle       (ShellStatusMenu *menu, ClutterEvent *event);
-
+gboolean          shell_status_menu_is_active    (ShellStatusMenu *menu);
 ClutterText      *shell_status_menu_get_name     (ShellStatusMenu *menu);
 ClutterTexture   *shell_status_menu_get_icon     (ShellStatusMenu *menu);
 

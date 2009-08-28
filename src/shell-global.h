@@ -69,6 +69,8 @@ gboolean shell_global_begin_modal (ShellGlobal *global,
 void     shell_global_end_modal   (ShellGlobal *global,
 				   guint32      timestamp);
 
+gboolean shell_global_display_is_grabbed (ShellGlobal *global);
+
 void shell_global_reexec_self (ShellGlobal *global);
 
 void shell_global_format_time_relative_pretty (ShellGlobal *global, guint delta, char **text, guint *update_time);

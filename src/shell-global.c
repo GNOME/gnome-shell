@@ -512,6 +512,30 @@ shell_global_end_modal (ShellGlobal *global,
   mutter_plugin_end_modal (global->plugin, timestamp);
 }
 
+/**
+ * shell_global_display_is_grabbed
+ * @global: a #ShellGlobal
+ *
+ * Determines whether Mutter currently has a grab (keyboard or mouse or
+ * both) on the display. This could be the result of a current window
+ * management operation like a window move, or could be from
+ * shell_global_begin_modal().
+ *
+ * This function is useful to for ad-hoc checks to avoid over-grabbing
+ * the Mutter grab a grab from GTK+. Longer-term we might instead want a
+ * mechanism to make Mutter use GDK grabs instead of raw XGrabPointer().
+ *
+ * Return value: %TRUE if Mutter has a grab on the display
+ */
+gboolean
+shell_global_display_is_grabbed (ShellGlobal *global)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (global->plugin);
+  MetaDisplay *display = meta_screen_get_display (screen);
+
+  return meta_display_get_grab_op (display) != META_GRAB_OP_NONE;
+}
+
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
  *
  * Authors: Padraig O'Briain, Matthias Clasen, Lennart Poettering

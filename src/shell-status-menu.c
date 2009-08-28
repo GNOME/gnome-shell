@@ -660,21 +660,51 @@ position_menu (GtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer user
   *y = (gint)(0.5 + src_y + height);
 }
 
+/**
+ * shell_status_menu_toggle:
+ * @menu: a #ShellStatusMenu
+ *
+ * If the menu is not currently up, pops it up. Otherwise, hides it.
+ * Popping up may fail if another grab is already active; check with
+ * shell_status_menu_is_active().
+ */
 void
 shell_status_menu_toggle (ShellStatusMenu *status, ClutterEvent *event)
 {
   ShellStatusMenuPrivate *priv = status->priv;
 
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (priv->menu)))
+  if (GTK_WIDGET_VISIBLE (priv->menu))
     {
-      gtk_widget_hide (GTK_WIDGET (priv->menu));
+      gtk_menu_popdown (GTK_MENU (priv->menu));
     }
   else
     {
-      gtk_widget_show (GTK_WIDGET (priv->menu));
+      /* We don't want to overgrab a Mutter grab with the grab that GTK+
+       * uses on menus.
+       */
+      ShellGlobal *global = shell_global_get ();
+      if (shell_global_display_is_grabbed (global))
+        return;
+
       gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, position_menu,
-          status, 1, event->button.time);
+                      status, 1, event->button.time);
     }
+}
+
+/**
+ * shell_status_menu_is_active:
+ * @menu: a #ShellStatusMenu
+ *
+ * Gets whether the menu is currently popped up
+ *
+ * Return value: %TRUE if the menu is currently popped up
+ */
+gboolean
+shell_status_menu_is_active (ShellStatusMenu *status)
+{
+  ShellStatusMenuPrivate *priv = status->priv;
+
+  return GTK_WIDGET_VISIBLE (priv->menu);
 }
 
 /**

@@ -381,6 +381,14 @@ Panel.prototype = {
             statusmenu.toggle(e);
             return false;
         });
+        // This depends on connection ordering: since we are after the Button's
+        // ::button-release-event handler, calling button.release() will properly
+        // unset the 'active' flag for this stays-pressed button
+        statusbutton.button.connect('button-release-event', function (b, e) {
+            if (!statusmenu.is_active())
+                statusbutton.release();
+            return false;
+        });
         this._rightBox.append(statusbutton.button, Big.BoxPackFlags.NONE);
         // We get a deactivated event when the popup disappears
         this._statusmenu.connect('deactivated', function (sm) {
