@@ -364,6 +364,9 @@ shell_app_monitor_is_window_usage_tracked (MetaWindow *window)
   if (!window_is_tracked (window))
     return FALSE;
 
+  if (meta_window_is_skip_taskbar (window))
+    return FALSE;
+
   switch (meta_window_get_window_type (window))
     {
       /* Definitely ignore these. */
