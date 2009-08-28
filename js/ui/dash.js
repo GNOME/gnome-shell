@@ -19,6 +19,7 @@ const Button = imports.ui.button;
 const Main = imports.ui.main;
 
 const DEFAULT_PADDING = 4;
+const DEFAULT_SPACING = 4;
 const DASH_SECTION_PADDING = 6;
 const DASH_SECTION_SPACING = 40;
 const DASH_CORNER_RADIUS = 5;
@@ -32,6 +33,8 @@ PRELIGHT_COLOR.from_pixel(0x4f6fadaa);
 
 const TEXT_COLOR = new Clutter.Color();
 TEXT_COLOR.from_pixel(0x5f5f5fff);
+const BRIGHTER_TEXT_COLOR = new Clutter.Color();
+BRIGHTER_TEXT_COLOR.from_pixel(0xbbbbbbff);
 const BRIGHT_TEXT_COLOR = new Clutter.Color();
 BRIGHT_TEXT_COLOR.from_pixel(0xffffffff);
 const SEARCH_TEXT_COLOR = new Clutter.Color();
@@ -401,7 +404,9 @@ SectionHeader.prototype = {
         this._innerBox = new Big.Box({ border: SECTION_BORDER,
                                        border_color: SECTION_INNER_BORDER_COLOR,
                                        padding_left: DEFAULT_PADDING,
-                                       orientation: Big.BoxOrientation.HORIZONTAL });
+                                       padding_right: DEFAULT_PADDING,
+                                       orientation: Big.BoxOrientation.HORIZONTAL,
+                                       spacing: DEFAULT_SPACING });
         this.actor.append(this._innerBox, Big.BoxPackFlags.EXPAND);
         let backgroundGradient = Shell.create_vertical_gradient(SECTION_BACKGROUND_TOP_COLOR,
                                                                 SECTION_BACKGROUND_BOTTOM_COLOR);
@@ -410,13 +415,17 @@ SectionHeader.prototype = {
             let [width, height] = actor.get_size();
             backgroundGradient.set_size(width, height);
         }));
-        let textBox = new Big.Box({ padding_top: DEFAULT_PADDING,
+
+        let textBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                    padding_top: DEFAULT_PADDING,
                                     padding_bottom: DEFAULT_PADDING });
-        let text = new Clutter.Text({ color: TEXT_COLOR,
-                                      font_name: "Sans Bold 12px",
-                                      text: title });
-        textBox.append(text, Big.BoxPackFlags.NONE);
+        this.text = new Clutter.Text({ color: TEXT_COLOR,
+                                       font_name: "Sans Bold 12px",
+                                       text: title });
+        textBox.append(this.text, Big.BoxPackFlags.NONE);
+
         this._innerBox.append(textBox, Big.BoxPackFlags.EXPAND);
+
         if (!suppressBrowse) {
             this.moreLink = new MoreLink();
             this._innerBox.append(this.moreLink.actor, Big.BoxPackFlags.END);
@@ -432,15 +441,23 @@ SearchSectionHeader.prototype = {
     _init : function(title, onClick) {
         let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                 padding_top: DASH_SECTION_PADDING,
-                                padding_bottom: DASH_SECTION_PADDING });
-        let titleText = new Clutter.Text({ color: TEXT_COLOR,
-                                           font_name: 'Sans Bold 10px',
+                                padding_bottom: DASH_SECTION_PADDING,
+                                spacing: DEFAULT_SPACING });
+        let titleText = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
+                                           font_name: 'Sans Bold 12px',
                                            text: title });
-        this.countText = new Clutter.Text({ color: TEXT_COLOR,
-                                           font_name: 'Sans Bold 12px' });
+        this.tooltip = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
+                                          font_name: 'Sans 12px',
+                                          text: _("(see all)") });
+        this.countText = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
+                                           font_name: 'Sans Bold 14px' });
 
         box.append(titleText, Big.BoxPackFlags.NONE);
+        box.append(this.tooltip, Big.BoxPackFlags.NONE);
         box.append(this.countText, Big.BoxPackFlags.END);
+
+        this.tooltip.hide();
+        this._showTooltip = true;
 
         let button = new Button.Button(box, PRELIGHT_COLOR, BACKGROUND_COLOR,
                                        TEXT_COLOR, false, null);
@@ -449,8 +466,29 @@ SearchSectionHeader.prototype = {
         button.button.padding_right = DEFAULT_PADDING;
 
         button.button.connect('button-release-event', onClick);
-
+        button.connect('enter-event', Lang.bind(this, this._onButtonEntered));
+        button.connect('leave-event', Lang.bind(this, this._onButtonLeft));
         this.actor = button.button;
+    },
+
+    _onButtonEntered : function() {
+        if (this._showTooltip)
+            this.tooltip.show();
+    },
+
+    _onButtonLeft : function() {
+        this.tooltip.hide();
+    },
+
+    setShowTooltip : function(showTooltip) {
+        this._showTooltip = showTooltip;
+        // Because we only show tooltip on mouse-over,
+        // we should not just show it here if showTooltip is
+        // set to true, but in the future we could check if
+        // the mouse happens to be over the header and show it
+        // in that case.
+        if (!this._showTooltip)
+            this.tooltip.hide();
     }
 }
 
@@ -463,7 +501,7 @@ Section.prototype = {
         this.actor = new Big.Box({ spacing: SECTION_INNER_SPACING });
         this.header = new SectionHeader(titleString, suppressBrowse);
         this.actor.append(this.header.actor, Big.BoxPackFlags.NONE);
-        this.content = new Big.Box();
+        this.content = new Big.Box({spacing: SECTION_INNER_SPACING });
         this.actor.append(this.content, Big.BoxPackFlags.EXPAND);
     }
 }
@@ -530,9 +568,11 @@ Dash.prototype = {
                 let text = this._searchEntry.getText();
                 text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
                 this._appSearchResultArea.display.setSearch(text);
-                this._appSearchHeader.countText.text = this._appSearchResultArea.display.getMatchedItemsCount() + "";
                 this._docSearchResultArea.display.setSearch(text);
+
+                this._appSearchHeader.countText.text = this._appSearchResultArea.display.getMatchedItemsCount() + "";
                 this._docSearchHeader.countText.text = this._docSearchResultArea.display.getMatchedItemsCount() + "";
+                                
                 return false;
             }));
         }));
@@ -744,26 +784,30 @@ Dash.prototype = {
     _setAppSearchShown: function(show) {
         if (show) {
             this._appSearchHeader.actor.show();
-            this._appSearchResultArea.actor.show()
+            this._appSearchResultArea.actor.show();
             this._docSearchResultArea.display.displayPage(0);
             this._docSearchResultArea.controlBox.hide();
+            this._docSearchHeader.setShowTooltip(true);
         } else {
             this._appSearchHeader.actor.hide();
-            this._appSearchResultArea.actor.hide()
+            this._appSearchResultArea.actor.hide();
             this._docSearchResultArea.controlBox.show();
+            this._docSearchHeader.setShowTooltip(false);
         }
     },
 
     _setDocSearchShown: function(show) {
         if (show) {
             this._docSearchHeader.actor.show();
-            this._docSearchResultArea.actor.show()
+            this._docSearchResultArea.actor.show();
             this._appSearchResultArea.display.displayPage(0);
             this._appSearchResultArea.controlBox.hide();
-       } else {
+            this._appSearchHeader.setShowTooltip(true);
+       } else { 
             this._docSearchHeader.actor.hide();
-            this._docSearchResultArea.actor.hide()
+            this._docSearchResultArea.actor.hide();
             this._appSearchResultArea.controlBox.show();
+            this._appSearchHeader.setShowTooltip(false);
        }
     },
 

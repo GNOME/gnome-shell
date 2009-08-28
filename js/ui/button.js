@@ -4,8 +4,8 @@ const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 const Tweener = imports.ui.tweener;
 
 const DEFAULT_BUTTON_COLOR = new Clutter.Color();
@@ -95,6 +95,7 @@ Button.prototype = {
                 if (!me._active) {
                     me.button.backgroundColor = me._buttonColor;
                 }
+                me.emit('enter-event');
                 return false;
             });
         this.button.connect('leave-event',
@@ -104,6 +105,7 @@ Button.prototype = {
                 if (!me._active) {
                     me.button.backgroundColor = null;
                 }
+                me.emit('leave-event');
                 return false;
             });
     },
@@ -126,6 +128,8 @@ Button.prototype = {
         }
     }
 };
+
+Signals.addSignalMethods(Button.prototype);
 
 /* Delay before the icon should appear, in seconds after the pointer has entered the parent */
 const ANIMATION_TIME = 0.25;
