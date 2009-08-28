@@ -250,7 +250,7 @@ SearchEntry.prototype = {
 
         this.pane = null;
 
-        this._defaultText = _("Find apps or documents");
+        this._defaultText = _("Find...");
 
         let textProperties = { font_name: "Sans 12" };
         let entryProperties = { editable: true,
