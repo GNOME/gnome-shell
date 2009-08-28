@@ -23,7 +23,7 @@ const DEFAULT_PADDING = 4;
 const PANEL_ICON_SIZE = 24;
 
 const BACKGROUND_TOP = new Clutter.Color();
-BACKGROUND_TOP.from_pixel(0x414141ff);
+BACKGROUND_TOP.from_pixel(0x161616ff);
 const BACKGROUND_BOTTOM = new Clutter.Color();
 BACKGROUND_BOTTOM.from_pixel(0x000000ff);
 
