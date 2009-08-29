@@ -14,6 +14,7 @@
 G_DEFINE_TYPE(ShellButtonBox, shell_button_box, BIG_TYPE_BOX);
 
 struct _ShellButtonBoxPrivate {
+  gboolean active;
   gboolean held;
   gboolean hover;
   gboolean pressed;
@@ -29,11 +30,22 @@ enum
 enum {
   PROP_0,
 
+  PROP_ACTIVE,
   PROP_HOVER,
   PROP_PRESSED,
 };
 
 static guint shell_button_box_signals [LAST_SIGNAL] = { 0 };
+
+static void
+set_active (ShellButtonBox  *box,
+            gboolean         active)
+{
+  if (box->priv->active == active)
+    return;
+  box->priv->active = active;
+  g_object_notify (G_OBJECT (box), "active");
+}
 
 static void
 set_hover (ShellButtonBox  *box,
@@ -150,8 +162,13 @@ shell_button_box_set_property(GObject         *object,
                               const GValue    *value,
                               GParamSpec      *pspec)
 {
+  ShellButtonBox *box = SHELL_BUTTON_BOX (object);
+
   switch (prop_id)
     {
+    case PROP_ACTIVE:
+      set_active (box, g_value_get_boolean (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -168,6 +185,9 @@ shell_button_box_get_property(GObject         *object,
 
   switch (prop_id)
     {
+    case PROP_ACTIVE:
+      g_value_set_boolean (value, box->priv->active);
+      break;
     case PROP_PRESSED:
       g_value_set_boolean (value, box->priv->pressed);
       break;
@@ -203,6 +223,21 @@ shell_button_box_class_init (ShellButtonBoxClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * ShellButtonBox:active
+   *
+   * The property allows the button to be used as a "toggle button"; it's up to the
+   * application to update the active property in response to the activate signal;
+   * it doesn't happen automatically.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_ACTIVE,
+                                   g_param_spec_boolean ("active",
+                                                         "Active",
+                                                         "Whether the button persistently active",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 
   /**
    * ShellButtonBox:hover
