@@ -79,13 +79,14 @@ shell_button_box_contains (ShellButtonBox     *box,
 }
 
 static gboolean
-shell_button_box_on_enter (ShellButtonBox     *box,
-                           ClutterEvent       *event,
-                           gpointer            user_data)
+shell_button_box_enter_event (ClutterActor         *actor,
+                              ClutterCrossingEvent *event)
 {
-  if (shell_button_box_contains (box, event->crossing.related))
+  ShellButtonBox *box = SHELL_BUTTON_BOX (actor);
+
+  if (shell_button_box_contains (box, event->related))
     return TRUE;
-  if (!shell_button_box_contains (box, clutter_event_get_source (event)))
+  if (!shell_button_box_contains (box, event->source))
     return TRUE;
 
   set_hover (box, TRUE);
@@ -96,11 +97,12 @@ shell_button_box_on_enter (ShellButtonBox     *box,
 }
 
 static gboolean
-shell_button_box_on_leave (ShellButtonBox     *box,
-                           ClutterEvent       *event,
-                           gpointer            user_data)
+shell_button_box_leave_event (ClutterActor         *actor,
+                              ClutterCrossingEvent *event)
 {
-  if (shell_button_box_contains (box, event->crossing.related))
+  ShellButtonBox *box = SHELL_BUTTON_BOX (actor);
+
+  if (shell_button_box_contains (box, event->related))
     return TRUE;
 
   set_hover (box, FALSE);
@@ -110,17 +112,15 @@ shell_button_box_on_leave (ShellButtonBox     *box,
 }
 
 static gboolean
-shell_button_box_on_press (ShellButtonBox     *box,
-                           ClutterEvent       *event,
-                           gpointer            user_data)
+shell_button_box_button_press_event (ClutterActor       *actor,
+                                     ClutterButtonEvent *event)
 {
-  ClutterActor *source;
+  ShellButtonBox *box = SHELL_BUTTON_BOX (actor);
 
   if (box->priv->held)
     return TRUE;
 
-  source = clutter_event_get_source (event);
-  if (!shell_button_box_contains (box, source))
+  if (!shell_button_box_contains (box, event->source))
     return FALSE;
 
   box->priv->held = TRUE;
@@ -132,21 +132,18 @@ shell_button_box_on_press (ShellButtonBox     *box,
 }
 
 static gboolean
-shell_button_box_on_release (ShellButtonBox     *box,
-                             ClutterEvent       *event,
-                             gpointer            user_data)
+shell_button_box_button_release_event (ClutterActor       *actor,
+                                       ClutterButtonEvent *event)
 {
-  ClutterActor *source;
+  ShellButtonBox *box = SHELL_BUTTON_BOX (actor);
 
   if (!box->priv->held)
     return TRUE;
 
-  source = clutter_event_get_source (event);
-
   box->priv->held = FALSE;
   clutter_ungrab_pointer ();
 
-  if (!shell_button_box_contains (box, source))
+  if (!shell_button_box_contains (box, event->source))
     return FALSE;
 
   set_pressed (box, FALSE);
@@ -204,9 +201,15 @@ static void
 shell_button_box_class_init (ShellButtonBoxClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->get_property = shell_button_box_get_property;
   gobject_class->set_property = shell_button_box_set_property;
+
+  actor_class->enter_event = shell_button_box_enter_event;
+  actor_class->leave_event = shell_button_box_leave_event;
+  actor_class->button_press_event = shell_button_box_button_press_event;
+  actor_class->button_release_event = shell_button_box_button_release_event;
 
   /**
    * ShellButtonBox::activate
@@ -275,9 +278,4 @@ shell_button_box_init (ShellButtonBox *self)
 {
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, SHELL_TYPE_BUTTON_BOX,
                                             ShellButtonBoxPrivate);
-
-  g_signal_connect (G_OBJECT (self), "enter-event", G_CALLBACK(shell_button_box_on_enter), NULL);
-  g_signal_connect (G_OBJECT (self), "leave-event", G_CALLBACK(shell_button_box_on_leave), NULL);
-  g_signal_connect (G_OBJECT (self), "button-press-event", G_CALLBACK(shell_button_box_on_press), NULL);
-  g_signal_connect (G_OBJECT (self), "button-release-event", G_CALLBACK(shell_button_box_on_release), NULL);
 }
