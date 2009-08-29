@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 01:39+0200\n"
-"PO-Revision-Date: 2009-08-15 01:39+0200\n"
+"POT-Creation-Date: 2009-08-29 14:22+0200\n"
+"PO-Revision-Date: 2009-08-29 14:23+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
-"Language-Team: Hungarian <gnome at gnome dot hu>\n"
+"Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,7 +45,7 @@ msgstr "Vá_rakozás"
 
 #: ../src/core/delete.c:116
 msgid "_Force Quit"
-msgstr "_Erőszakos bezárás"
+msgstr "_Erőltetett kilépés"
 
 #: ../src/core/delete.c:217
 #, c-format
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Végzetes IO hiba %d (%s) a(z) „%s” képernyőn.\n"
 
-#: ../src/core/keybindings.c:681
+#: ../src/core/keybindings.c:697
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -91,7 +91,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2345
+#: ../src/core/keybindings.c:2392
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -102,12 +102,12 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2435
+#: ../src/core/keybindings.c:2482
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nincs %d parancs meghatározva.\n"
 
-#: ../src/core/keybindings.c:3427
+#: ../src/core/keybindings.c:3495
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Nincs terminálparancs meghatározva.\n"
@@ -177,20 +177,19 @@ msgstr ""
 msgid "Internal argument for GObject introspection"
 msgstr "Belső argumentum a GObject betekintéshez"
 
-#: ../src/core/main.c:665
+#: ../src/core/main.c:668
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Témakönyvtár beolvasása sikertelen: %s\n"
 
-#: ../src/core/main.c:681
+#: ../src/core/main.c:684
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Nem található téma! Bizonyosodjon meg róla hogy a(z) %s létezik és "
 "tartalmazza a szokásos témákat.\n"
 
-#: ../src/core/main.c:742
+#: ../src/core/main.c:745
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Újraindítás sikertelen: %s\n"
@@ -271,8 +270,7 @@ msgstr ""
 #: ../src/core/prefs.c:2610
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
-"Hiba a(z) %d. munkaterület nevének beállításánál a következőre: „%s”: %s\n"
+msgstr "Hiba a(z) %d. munkaterület nevének beállításánál a következőre: „%s”: %s\n"
 
 #: ../src/core/prefs.c:2808
 #, c-format
@@ -294,12 +292,12 @@ msgstr "Hiba az élő rejtett ablakok állapot beállításakor: %s\n"
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Hiba a nincs tab felugró állapot beállításakor: %s\n"
 
-#: ../src/core/screen.c:562
+#: ../src/core/screen.c:561
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A(z) %d képernyő a(z) „%s” megjelenítőn érvénytelen\n"
 
-#: ../src/core/screen.c:578
+#: ../src/core/screen.c:577
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -308,20 +306,19 @@ msgstr ""
 "A(z) %d képernyő a(z) „%s” megjelenítőn már rendelkezik egy ablakkezelővel; "
 "próbálja a --replace opcióval helyettesíteni a jelenlegi ablakkezelőt.\n"
 
-#: ../src/core/screen.c:605
+#: ../src/core/screen.c:604
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nem sikerült beolvasni az ablakkezelő kiválasztását a(z) %d képernyőn a(z) „%"
 "s” megjelenítőn\n"
 
-#: ../src/core/screen.c:660
+#: ../src/core/screen.c:659
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A(z) %d képernyőnek a(z) „%s” megjelenítőn már van ablakkezelője\n"
 
-#: ../src/core/screen.c:872
+#: ../src/core/screen.c:871
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nem sikerült elengedni a(z) %d képernyőt a(z) „%s” kijelzőn\n"
@@ -360,8 +357,7 @@ msgstr "Nem sikerült feldolgozni a mentett munkamenet fájlt: %s\n"
 #: ../src/core/session.c:1195
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr ""
-"A <mutter_session> attribútum megjelent, de már van munkamenet-azonosító"
+msgstr "A <mutter_session> attribútum megjelent, de már van munkamenet-azonosító"
 
 #: ../src/core/session.c:1208 ../src/core/session.c:1283
 #: ../src/core/session.c:1315 ../src/core/session.c:1387
@@ -433,7 +429,7 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:6060
+#: ../src/core/window.c:6072
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -449,7 +445,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6723
+#: ../src/core/window.c:6735
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -494,13 +490,11 @@ msgstr ""
 #: ../src/core/xprops.c:401
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
-"A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott\n"
+msgstr "A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott\n"
 
 #: ../src/core/xprops.c:484
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott a "
 "lista %d. elemében\n"
@@ -617,199 +611,199 @@ msgstr "Váltás a panelek és az asztal között azonnal"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Váltás hátrafelé a panelek és az asztal között azonnal"
 
-#: ../src/include/all-keybindings.h:191
+#: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Minden normál ablak elrejtése és fókusz átvitele az asztalra"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "A panel főmenüjének megjelenítése"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "A panel „Alkalmazás futtatása” párbeszédablakának megjelenítése"
 
-#: ../src/include/all-keybindings.h:199
+#: ../src/include/all-keybindings.h:211
 msgid "Start or stop recording the session"
 msgstr "A munkamenet felvételének indítása vagy leállítása"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "Képernyőkép készítése"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "Képernyőkép készítése egy ablakról"
 
-#: ../src/include/all-keybindings.h:244
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "Terminál nyitása"
 
-#: ../src/include/all-keybindings.h:259
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "Ablakmenü aktiválása"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "Teljes képernyős üzemmód"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "Maximalizált állapot átváltása"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr "Az ablak mindig látható lesz más ablakok fölött"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "Ablak maximalizálása"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "Ablak visszaállítása"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "Felgördített állapot átváltása"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "Ablak minimalizálása"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "Ablak bezárása"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "Ablak áthelyezése"
 
-#: ../src/include/all-keybindings.h:280
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "Ablak átméretezése"
 
-#: ../src/include/all-keybindings.h:283
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr "Ablak megjelenítése minden munkaterületen vagy csak az egyiken"
 
-#: ../src/include/all-keybindings.h:287
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "Ablak áthelyezése az 1. munkaterületre"
 
-#: ../src/include/all-keybindings.h:290
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "Ablak áthelyezése a 2. munkaterületre"
 
-#: ../src/include/all-keybindings.h:293
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "Ablak áthelyezése a 3. munkaterületre"
 
-#: ../src/include/all-keybindings.h:296
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "Ablak áthelyezése a 4. munkaterületre"
 
-#: ../src/include/all-keybindings.h:299
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "Ablak áthelyezése az 5. munkaterületre"
 
-#: ../src/include/all-keybindings.h:302
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "Ablak áthelyezése a 6. munkaterületre"
 
-#: ../src/include/all-keybindings.h:305
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "Ablak áthelyezése a 7. munkaterületre"
 
-#: ../src/include/all-keybindings.h:308
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "Ablak áthelyezése a 8. munkaterületre"
 
-#: ../src/include/all-keybindings.h:311
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "Ablak áthelyezése a 9. munkaterületre"
 
-#: ../src/include/all-keybindings.h:314
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "Ablak áthelyezése a 10. munkaterületre"
 
-#: ../src/include/all-keybindings.h:317
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "Ablak áthelyezése a 11. munkaterületre"
 
-#: ../src/include/all-keybindings.h:320
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "Ablak áthelyezése a 12. munkaterületre"
 
-#: ../src/include/all-keybindings.h:332
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "Ablak áthelyezése a balra lévő munkaterületre"
 
-#: ../src/include/all-keybindings.h:335
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "Ablak áthelyezése a jobbra lévő munkaterületre"
 
-#: ../src/include/all-keybindings.h:338
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "Ablak áthelyezése egy munkaterülettel feljebb"
 
-#: ../src/include/all-keybindings.h:341
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "Ablak áthelyezése egy munkaterülettel lejjebb"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr "Fedett ablak előtérbe hozása, egyébként háttérbe küldése"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "Ablak más ablakok elé hozása"
 
-#: ../src/include/all-keybindings.h:348
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "Ablak más ablakok mögé küldése"
 
-#: ../src/include/all-keybindings.h:352
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "Ablak függőleges maximalizálása"
 
-#: ../src/include/all-keybindings.h:356
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "Ablak vízszintes maximalizálása"
 
-#: ../src/include/all-keybindings.h:360
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "Ablak áthelyezése az északnyugati (bal felső) sarokba"
 
-#: ../src/include/all-keybindings.h:363
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "Ablak áthelyezése az északkeleti (jobb felső) sarokba"
 
-#: ../src/include/all-keybindings.h:366
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Ablak áthelyezése a délnyugati (bal alsó) sarokba"
 
-#: ../src/include/all-keybindings.h:369
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Ablak áthelyezése a délkeleti (jobb alsó) sarokba"
 
-#: ../src/include/all-keybindings.h:373
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "Ablak áthelyezése a képernyő északi (felső) oldalához"
 
-#: ../src/include/all-keybindings.h:376
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "Ablak áthelyezése a képernyő déli (alsó) oldalához"
 
-#: ../src/include/all-keybindings.h:379
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "Ablak áthelyezése a képernyő keleti (jobb) oldalához"
 
-#: ../src/include/all-keybindings.h:382
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "Ablak áthelyezése a képernyő nyugati (bal) oldalához"
 
-#: ../src/include/all-keybindings.h:385
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "Ablak áthelyezése a képernyő közepére"
 
@@ -1188,10 +1182,8 @@ msgstr "A(z) „%s” alfa érték a kevert színben nem 0.0 és 1.0 között va
 
 #: ../src/ui/theme.c:1282
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Az árnyék formátuma: „shade/base_color/factor”, „%s” nem felel meg ennek"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Az árnyék formátuma: „shade/base_color/factor”, „%s” nem felel meg ennek"
 
 #: ../src/ui/theme.c:1293
 #, c-format
@@ -1250,15 +1242,12 @@ msgstr "A koordinátakifejezés nullával való osztást okozott."
 
 #: ../src/ui/theme.c:1965
 #, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"A koordinátakifejezés mod operátort próbált használni lebegőpontos számon"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "A koordinátakifejezés mod operátort próbált használni lebegőpontos számon"
 
 #: ../src/ui/theme.c:2021
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "A koordinátakifejezésben egy operandus helyén „%s” operátor volt"
 
 #: ../src/ui/theme.c:2030
@@ -1303,8 +1292,7 @@ msgstr "A koordinátakifejezésben kezdő zárójel szerepelt záró nélkül"
 #: ../src/ui/theme.c:2394
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
-"A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem operandusok"
+msgstr "A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem operandusok"
 
 #: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
 #, c-format
@@ -1322,10 +1310,8 @@ msgstr ""
 
 #: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/> elem"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/> elem"
 
 #: ../src/ui/theme.c:4764
 #, c-format
@@ -1349,8 +1335,7 @@ msgstr ""
 
 #: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "A felhasználó által meghatározott konstansoknak nagybetűvel kell kezdődniük, "
 "a(z) „%s” nem ilyen"
@@ -1391,8 +1376,7 @@ msgstr "„%s” nem értelmezhető egész számként"
 #: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
-"Nem lehetett „%s” zárókaraktereket értelmezni a(z) „%s” karakterláncban"
+msgstr "Nem lehetett „%s” zárókaraktereket értelmezni a(z) „%s” karakterláncban"
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -1580,8 +1564,7 @@ msgstr "„%s” funkció ismeretlen a gombhoz"
 #: ../src/ui/theme-parser.c:2874
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
-"A(z) „%s” gombfunkció nem létezik ebben a verzióban (%d, szükséges: %d)"
+msgstr "A(z) „%s” gombfunkció nem létezik ebben a verzióban (%d, szükséges: %d)"
 
 #: ../src/ui/theme-parser.c:2886
 #, c-format
@@ -1591,8 +1574,7 @@ msgstr "„%s” állapot ismeretlen a gombhoz"
 #: ../src/ui/theme-parser.c:2894
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
-"A keretstílusnak már van gombja a(z) „%s” funkcióra a(z) „%s” állapotban"
+msgstr "A keretstílusnak már van gombja a(z) „%s” funkcióra a(z) „%s” állapotban"
 
 #: ../src/ui/theme-parser.c:2965
 #, c-format
@@ -1625,8 +1607,7 @@ msgstr ""
 
 #: ../src/ui/theme-parser.c:3053
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a teljes "
 "méretű állapothoz"
@@ -1634,8 +1615,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"%s állapothoz, %s átméretezéshez és %s fókuszhoz már meg van határozva stílus"
+msgstr "%s állapothoz, %s átméretezéshez és %s fókuszhoz már meg van határozva stílus"
 
 #: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
 #, c-format
@@ -1674,10 +1654,8 @@ msgstr "A téma legkülső eleme <metacity_theme> kell legyen, nem pedig <%s>"
 
 #: ../src/ui/theme-parser.c:3283
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"A(z) <%s> elem nem megengedett egy name/author/date/description elemen belül"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "A(z) <%s> elem nem megengedett egy name/author/date/description elemen belül"
 
 #: ../src/ui/theme-parser.c:3288
 #, c-format
@@ -1686,10 +1664,8 @@ msgstr "A(z) <%s> elem nem megengedett egy <constant> elemen belül"
 
 #: ../src/ui/theme-parser.c:3300
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"<%s> elem nem megengedett egy distance/border/aspect_ratio elemen belül"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "<%s> elem nem megengedett egy distance/border/aspect_ratio elemen belül"
 
 #: ../src/ui/theme-parser.c:3322
 #, c-format
@@ -1793,109 +1769,109 @@ msgstr "/Ablakok/Össz_es dokk"
 msgid "/Windows/Des_ktop"
 msgstr "/Ablakok/_Asztal"
 
-#: ../src/ui/theme-viewer.c:136
+#: ../src/ui/theme-viewer.c:151
 msgid "Open another one of these windows"
 msgstr "Egy újabb példány megnyitása ezekből az ablakokból"
 
-#: ../src/ui/theme-viewer.c:143
+#: ../src/ui/theme-viewer.c:153
 msgid "This is a demo button with an 'open' icon"
 msgstr "Ez egy mintagomb a „Megnyitás” ikonnal"
 
-#: ../src/ui/theme-viewer.c:150
+#: ../src/ui/theme-viewer.c:155
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Ez egy mintagomb a „Kilépés” ikonnal"
 
-#: ../src/ui/theme-viewer.c:243
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "Ez egy mintaüzenet egy minta párbeszédben"
 
-#: ../src/ui/theme-viewer.c:326
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "%d. hamis menüelem\n"
 
-#: ../src/ui/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "Csak keretes ablak"
 
-#: ../src/ui/theme-viewer.c:362
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "Sáv"
 
-#: ../src/ui/theme-viewer.c:379
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "Normál alkalmazásablak"
 
-#: ../src/ui/theme-viewer.c:383
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "Párbeszédablak"
 
-#: ../src/ui/theme-viewer.c:387
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "Kizárólagos párbeszéd doboz"
 
-#: ../src/ui/theme-viewer.c:391
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "Eszközpaletta"
 
-#: ../src/ui/theme-viewer.c:395
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Leválasztott menü"
 
-#: ../src/ui/theme-viewer.c:399
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "Szegély"
 
-#: ../src/ui/theme-viewer.c:727
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "Gombelrendezés teszt %d"
 
-#: ../src/ui/theme-viewer.c:756
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g ezredmásodpercig tartott egy ablakkeret kirajzolása"
 
-#: ../src/ui/theme-viewer.c:799
+#: ../src/ui/theme-viewer.c:801
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Használat: metacity-theme-viewer [TÉMANÉV]\n"
 
-#: ../src/ui/theme-viewer.c:806
+#: ../src/ui/theme-viewer.c:808
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Hiba történt a téma betöltése közben: %s\n"
 
-#: ../src/ui/theme-viewer.c:812
+#: ../src/ui/theme-viewer.c:814
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "A(z) „%s” téma %g másodperc alatt betöltve\n"
 
-#: ../src/ui/theme-viewer.c:853
+#: ../src/ui/theme-viewer.c:855
 msgid "Normal Title Font"
 msgstr "Normál cím betűtípus"
 
-#: ../src/ui/theme-viewer.c:859
+#: ../src/ui/theme-viewer.c:861
 msgid "Small Title Font"
 msgstr "Kicsi cím betűtípus"
 
-#: ../src/ui/theme-viewer.c:865
+#: ../src/ui/theme-viewer.c:867
 msgid "Large Title Font"
 msgstr "Nagy cím betűtípus"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:872
 msgid "Button Layouts"
 msgstr "Gombelrendezések"
 
-#: ../src/ui/theme-viewer.c:875
+#: ../src/ui/theme-viewer.c:877
 msgid "Benchmark"
 msgstr "Teljesítményteszt"
 
-#: ../src/ui/theme-viewer.c:922
+#: ../src/ui/theme-viewer.c:924
 msgid "Window Title Goes Here"
 msgstr "Ide kerül az ablak címe"
 
-#: ../src/ui/theme-viewer.c:1026
+#: ../src/ui/theme-viewer.c:1028
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1906,42 +1882,42 @@ msgstr ""
 "képkeretenként) és %g összes idő beleértve az X szerver erőforrásokat (%g "
 "ezredmásodperc képkeretenként)\n"
 
-#: ../src/ui/theme-viewer.c:1245
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned TRUE but set error"
 msgstr "a pozíció kifejezés teszt IGAZ értéket adott vissza, de hiba történt."
 
-#: ../src/ui/theme-viewer.c:1247
+#: ../src/ui/theme-viewer.c:1249
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-"a pozíció kifejezés teszt HAMIS értéket adott vissza, de nem történt hiba"
+msgstr "a pozíció kifejezés teszt HAMIS értéket adott vissza, de nem történt hiba"
 
-#: ../src/ui/theme-viewer.c:1251
+#: ../src/ui/theme-viewer.c:1253
 msgid "Error was expected but none given"
 msgstr "Hibát vártunk, de nem történt egy sem"
 
-#: ../src/ui/theme-viewer.c:1253
+#: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "A(z) %d hibát vártuk, de a(z) %d hiba következett be"
 
-#: ../src/ui/theme-viewer.c:1259
+#: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Nem várt hiba következett be: %s"
 
-#: ../src/ui/theme-viewer.c:1263
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x értéke %d volt, de a várt érték %d volt"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y értéke %d volt, de a várt érték %d volt"
 
-#: ../src/ui/theme-viewer.c:1331
+#: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "A %d koordináta kifejezések %g másodperc alatt lettek feldolgozva (átlagosan "
 "%g másodperc)\n"
+
