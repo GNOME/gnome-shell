@@ -269,10 +269,10 @@ Panel.prototype = {
         /* left side */
 
         this.button = new Button.Button(_("Activities"), PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
-                                        PANEL_FOREGROUND_COLOR, true, DEFAULT_FONT);
-        this.button.button.height = PANEL_HEIGHT;
+                                        PANEL_FOREGROUND_COLOR, DEFAULT_FONT);
+        this.button.actor.height = PANEL_HEIGHT;
 
-        this._leftBox.append(this.button.button, Big.BoxPackFlags.NONE);
+        this._leftBox.append(this.button.actor, Big.BoxPackFlags.NONE);
 
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
@@ -374,43 +374,46 @@ Panel.prototype = {
         let statusbutton = new Button.Button(statusbox,
                                              PANEL_BUTTON_COLOR,
                                              PRESSED_BUTTON_BACKGROUND_COLOR,
-                                             PANEL_FOREGROUND_COLOR,
-                                             true);
-        statusbutton.button.height = PANEL_HEIGHT;
-        statusbutton.button.connect('button-press-event', function (b, e) {
-            statusmenu.toggle(e);
-            return false;
+                                             PANEL_FOREGROUND_COLOR);
+        statusbutton.actor.height = PANEL_HEIGHT;
+        statusbutton.actor.connect('button-press-event', function (b, e) {
+            if (e.get_button() == 1 && e.get_click_count() == 1) {
+                statusmenu.toggle(e);
+                // The statusmenu might not pop up if it couldn't get a pointer grab
+                if (statusmenu.is_active())
+                    statusbutton.actor.active = true;
+                return true;
+            } else {
+                return false;
+            }
         });
-        // If popping up the menu failed (because there was already a grab in
-        // effect from Mutter or another app), then we'll never get a ::deactivated
-        // signal because the menu was never activated, so we need to unhighlight
-        // separately when the user releases the mouse button.
-        //
-        // We depend on connection ordering; this needs to be called after Button's
-        // ::button-release-event handler; that will set the active flag for this
-        // stays-pressed button, then we unset the active flag by calling release().
-        statusbutton.button.connect('button-release-event', function (b, e) {
-            if (!statusmenu.is_active())
-                statusbutton.release();
-            return false;
-        });
-        this._rightBox.append(statusbutton.button, Big.BoxPackFlags.NONE);
+        this._rightBox.append(statusbutton.actor, Big.BoxPackFlags.NONE);
         // We get a deactivated event when the popup disappears
         this._statusmenu.connect('deactivated', function (sm) {
-            statusbutton.release();
+            statusbutton.actor.active = false;
         });
 
         // TODO: decide what to do with the rest of the panel in the Overview mode (make it fade-out, become non-reactive, etc.)
         // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
         // have the Overview act like a menu that allows the user to release the mouse on the activity the user wants
         // to switch to.
-        this.button.button.connect('button-press-event',
-                                   Lang.bind(Main.overview, Main.overview.toggle));
+        this.button.actor.connect('button-press-event', function(b, e) {
+            if (e.get_button() == 1 && e.get_click_count() == 1) {
+                Main.overview.toggle();
+                return true;
+            } else {
+                return false;
+            }
+        });
         // In addition to pressing the button, the Overview can be entered and exited by other means, such as
         // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the Overview is entered
         // and to be released when it is exited regardless of how it was triggered.
-        Main.overview.connect('showing', Lang.bind(this.button, this.button.pressIn));
-        Main.overview.connect('hiding', Lang.bind(this.button, this.button.release));
+        Main.overview.connect('showing', Lang.bind(this, function() {
+            this.button.actor.active = true;
+        }));
+        Main.overview.connect('hiding', Lang.bind(this, function() {
+            this.button.actor.active = false;
+        }));
 
         Main.chrome.addActor(this.actor);
         Main.chrome.setVisibleInOverview(this.actor, true);

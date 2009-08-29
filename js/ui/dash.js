@@ -460,24 +460,23 @@ SearchSectionHeader.prototype = {
         this._showTooltip = true;
 
         let button = new Button.Button(box, PRELIGHT_COLOR, BACKGROUND_COLOR,
-                                       TEXT_COLOR, false, null);
-        button.button.height = box.height;
-        button.button.padding_left = DEFAULT_PADDING;
-        button.button.padding_right = DEFAULT_PADDING;
+                                       TEXT_COLOR);
+        button.actor.height = box.height;
+        button.actor.padding_left = DEFAULT_PADDING;
+        button.actor.padding_right = DEFAULT_PADDING;
 
-        button.button.connect('button-release-event', onClick);
-        button.connect('enter-event', Lang.bind(this, this._onButtonEntered));
-        button.connect('leave-event', Lang.bind(this, this._onButtonLeft));
-        this.actor = button.button;
+        button.actor.connect('activate', onClick);
+        button.actor.connect('notify::hover', Lang.bind(this, this._updateTooltip));
+        this.actor = button.actor;
     },
 
-    _onButtonEntered : function() {
-        if (this._showTooltip)
-            this.tooltip.show();
-    },
-
-    _onButtonLeft : function() {
-        this.tooltip.hide();
+    _updateTooltip : function(actor) {
+        if (actor.hover) {
+            if (this._showTooltip)
+                this.tooltip.show();
+        } else {
+            this.tooltip.hide();
+        }
     },
 
     setShowTooltip : function(showTooltip) {
@@ -683,7 +682,6 @@ Dash.prototype = {
                                                         Lang.bind(this,
                                                                   function () {
                                                                       this._toggleOnlyAppSearchShown();
-                                                                      return true;
                                                                   }));
         this._searchResultsSection.content.append(this._appSearchHeader.actor, Big.BoxPackFlags.NONE);
         this._appSearchResultArea = new ResultArea(AppDisplay.AppDisplay, false);
@@ -695,7 +693,6 @@ Dash.prototype = {
                                                         Lang.bind(this,
                                                                   function () {
                                                                       this._toggleOnlyDocSearchShown();
-                                                                      return true;
                                                                   }));
         this._searchResultsSection.content.append(this._docSearchHeader.actor, Big.BoxPackFlags.NONE);
         this._docSearchResultArea = new ResultArea(DocDisplay.DocDisplay, false);
