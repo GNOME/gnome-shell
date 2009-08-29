@@ -117,6 +117,9 @@ shell_button_box_button_press_event (ClutterActor       *actor,
 {
   ShellButtonBox *box = SHELL_BUTTON_BOX (actor);
 
+  if (event->button != 1 || event->click_count != 1)
+    return FALSE;
+
   if (box->priv->held)
     return TRUE;
 
@@ -136,6 +139,9 @@ shell_button_box_button_release_event (ClutterActor       *actor,
                                        ClutterButtonEvent *event)
 {
   ShellButtonBox *box = SHELL_BUTTON_BOX (actor);
+
+  if (event->button != 1 || event->click_count != 1)
+    return FALSE;
 
   if (!box->priv->held)
     return TRUE;
