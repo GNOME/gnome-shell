@@ -10,9 +10,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
-"POT-Creation-Date: 2009-08-24 17:51+0000\n"
-"PO-Revision-Date: 2009-08-29 13:59+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-29 14:00+0200\n"
+"PO-Revision-Date: 2009-08-29 14:06+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
-msgstr "Asztal"
+msgstr "Asztali környezet"
 
 #: ../src/50-metacity-key.xml.in.h:1
 msgid "Window Management"
@@ -40,9 +40,6 @@ msgstr "Ismeretlen ablakinformáció-kérés: %d"
 
 #: ../src/core/delete.c:104
 #, c-format
-#| msgid ""
-#| "You may choose to wait a short while for it to continue or force the "
-#| "application to quit entirely."
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
@@ -129,12 +126,6 @@ msgstr "Nincs terminálparancs meghatározva.\n"
 
 #: ../src/core/main.c:130
 #, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -186,7 +177,9 @@ msgstr "Kompozitálás kikapcsolása"
 
 #: ../src/core/main.c:321
 msgid "Don't make fullscreen windows that are maximized and have no decorations"
-msgstr "Ne tegye teljes képernyőssé a maximalizált és díszítésekkel nem rendelkező ablakokat"
+msgstr ""
+"Ne tegye teljes képernyőssé a maximalizált és díszítésekkel nem rendelkező "
+"ablakokat"
 
 #: ../src/core/main.c:543
 #, c-format
@@ -324,13 +317,6 @@ msgstr "Nem sikerült elengedni a(z) %d képernyőt a(z) „%s” kijelzőn\n"
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
-#| msgid ""
-#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#| "\n"
-#| "The parser is fairly liberal and allows lower or upper case, and also "
-#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#| "the special string \"disabled\", then there will be no keybinding for "
-#| "this action."
 msgid ""
 "The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
@@ -347,16 +333,6 @@ msgstr ""
 "ehhez a művelethez."
 
 #: ../src/core/schema-bindings.c:177
-#| msgid ""
-#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#| "\n"
-#| "The parser is fairly liberal and allows lower or upper case, and also "
-#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#| "the special string \"disabled\", then there will be no keybinding for "
-#| "this action.\n"
-#| "\n"
-#| "This keybinding may be reversed by holding down the \"shift\" key; "
-#| "therefore, \"shift\" cannot be one of the keys it uses."
 msgid ""
 "The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
@@ -434,13 +410,13 @@ msgid "Unknown element %s"
 msgstr "Ismeretlen elem: %s"
 
 #: ../src/core/session.c:1812
-#| msgid ""
-#| "These windows do not support \"save current setup\" and will have to be "
-#| "restarted manually next time you log in."
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
-msgstr "Az alábbi ablakok nem támogatják az &quot;aktuális beállítások mentését&quot;, emiatt ezeket a legközelebbi bejelentkezéskor manuálisan újra kell indítania."
+msgstr ""
+"Az alábbi ablakok nem támogatják az &quot;aktuális beállítások "
+"mentését&quot;, emiatt ezeket a legközelebbi bejelentkezéskor manuálisan "
+"újra kell indítania."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -460,7 +436,7 @@ msgstr "%s naplófájl megnyitva\n"
 #: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "A Metacity ablakkezelőt a bőbeszédű mód támogatása nélkül fordították\n"
+msgstr "A Metacity ablakkezelőt a részletes mód támogatása nélkül fordították\n"
 
 #: ../src/core/util.c:238
 msgid "Window manager: "
@@ -533,7 +509,6 @@ msgstr "%s (rendszergazdaként)"
 #. * on this machine
 #: ../src/core/window-props.c:438
 #, c-format
-#| msgid "%s (on %s)"
 msgid "%s (as %s)"
 msgstr "%s (mint: %s)"
 
@@ -2218,7 +2193,6 @@ msgstr "Nincs szöveg engedélyezve a(z) <%s> elemen belül"
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
 #, c-format
-#| msgid "<name> specified twice for this theme"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> kétszer lett meghatározva ehhez a témához"
 
