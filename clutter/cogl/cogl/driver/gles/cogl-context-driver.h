@@ -29,8 +29,6 @@
 typedef struct _CoglContextDriver
 
 {
-  CoglHandle        texture_download_material;
-
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper  gles2;
 

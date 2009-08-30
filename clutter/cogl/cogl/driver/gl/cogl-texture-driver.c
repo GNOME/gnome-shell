@@ -135,95 +135,16 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglTexture *tex,
 }
 
 gboolean
-_cogl_texture_driver_download_from_gl (CoglTexture *tex,
-				       CoglBitmap  *target_bmp,
-				       GLuint       target_gl_format,
-				       GLuint       target_gl_type)
+_cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
+                                       GLenum  dest_gl_format,
+                                       GLenum  dest_gl_type,
+                                       guint8 *dest)
 {
-  CoglTexSliceSpan  *x_span;
-  CoglTexSliceSpan  *y_span;
-  GLuint             gl_handle;
-  gint               bpp;
-  gint               x,y;
-  CoglBitmap         slice_bmp;
-
-  bpp = _cogl_get_format_bpp (target_bmp->format);
-
-  /* Iterate vertical slices */
-  for (y = 0; y < tex->slice_y_spans->len; ++y)
-    {
-      y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, y);
-
-      /* Iterate horizontal slices */
-      for (x = 0; x < tex->slice_x_spans->len; ++x)
-	{
-	  /*if (x != 0 || y != 1) continue;*/
-	  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, x);
-
-	  /* Pick the gl texture object handle */
-	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint,
-				     y * tex->slice_x_spans->len + x);
-
-	  /* If there's any waste we need to copy manually
-             (no glGetTexSubImage) */
-
-	  if (y_span->waste != 0 || x_span->waste != 0)
-	    {
-	      /* Setup temp bitmap for slice subregion */
-	      slice_bmp.format = target_bmp->format;
-	      slice_bmp.width  = x_span->size;
-	      slice_bmp.height = y_span->size;
-	      slice_bmp.rowstride = bpp * slice_bmp.width;
-	      slice_bmp.data = (guchar*) g_malloc (slice_bmp.rowstride *
-						   slice_bmp.height);
-
-	      /* Setup gl alignment to 0,0 top-left corner */
-	      _cogl_texture_driver_prep_gl_for_pixels_download (
-                                                          slice_bmp.rowstride,
-                                                          bpp);
-
-	      /* Download slice image data into temp bmp */
-	      GE( glBindTexture (tex->gl_target, gl_handle) );
-
-	      GE (glGetTexImage (tex->gl_target,
-				 0, /* level */
-				 target_gl_format,
-				 target_gl_type,
-				 slice_bmp.data) );
-
-	      /* Copy portion of slice from temp to target bmp */
-	      _cogl_bitmap_copy_subregion (&slice_bmp,
-					   target_bmp,
-					   0, 0,
-					   x_span->start,
-					   y_span->start,
-					   x_span->size - x_span->waste,
-					   y_span->size - y_span->waste);
-	      /* Free temp bitmap */
-	      g_free (slice_bmp.data);
-	    }
-	  else
-	    {
-	      GLvoid *dst = target_bmp->data
-			    + x_span->start * bpp
-			    + y_span->start * target_bmp->rowstride;
-
-	      _cogl_texture_driver_prep_gl_for_pixels_download (
-                                                        target_bmp->rowstride,
-                                                        bpp);
-
-	      /* Download slice image data */
-	      GE( glBindTexture (tex->gl_target, gl_handle) );
-
-	      GE( glGetTexImage (tex->gl_target,
-				 0, /* level */
-				 target_gl_format,
-				 target_gl_type,
-				 dst) );
-	    }
-	}
-    }
-
+  GE (glGetTexImage (gl_target,
+                     0, /* level */
+                     dest_gl_format,
+                     dest_gl_type,
+                     (GLvoid *)dest));
   return TRUE;
 }
 

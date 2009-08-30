@@ -92,6 +92,18 @@ _cogl_texture_driver_download_from_gl (CoglTexture *tex,
 				       GLuint       target_gl_type);
 
 /*
+ * This driver abstraction is needed because GLES doesn't support glGetTexImage
+ * (). On GLES this currently just returns FALSE which will lead to a generic
+ * fallback path being used that simply renders the texture and reads it back
+ * from the framebuffer. (See _cogl_texture_draw_and_read () )
+ */
+gboolean
+_cogl_texture_driver_gl_get_tex_image (GLenum  gl_target,
+                                       GLenum  dest_gl_format,
+                                       GLenum  dest_gl_type,
+                                       guint8 *dest);
+
+/*
  * It may depend on the driver as to what texture sizes are supported...
  */
 gboolean

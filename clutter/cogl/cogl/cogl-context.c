@@ -100,6 +100,8 @@ cogl_create_context (void)
   _context->quad_indices_short = COGL_INVALID_HANDLE;
   _context->quad_indices_short_len = 0;
 
+  _context->texture_download_material = COGL_INVALID_HANDLE;
+
   /* Initialise the clip stack */
   _cogl_clip_stack_state_init ();
 
