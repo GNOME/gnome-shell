@@ -28,72 +28,31 @@
 #include "cogl-handle.h"
 #include "cogl-material-private.h"
 
+#define COGL_TEXTURE(tex) ((CoglTexture *)(tex))
+
 typedef struct _CoglTexture       CoglTexture;
-typedef struct _CoglTexSliceSpan  CoglTexSliceSpan;
-typedef struct _CoglSpanIter      CoglSpanIter;
-typedef struct _CoglTexturePixel  CoglTexturePixel;
 
-struct _CoglTexSliceSpan
+typedef enum _CoglTextureType
 {
-  gint   start;
-  gint   size;
-  gint   waste;
-};
-
-struct _CoglSpanIter
-{
-  gint              index;
-  GArray           *array;
-  CoglTexSliceSpan *span;
-  float             pos;
-  float             next_pos;
-  float             origin;
-  float             cover_start;
-  float             cover_end;
-  float             intersect_start;
-  float             intersect_end;
-  float             intersect_start_local;
-  float             intersect_end_local;
-  gboolean          intersects;
-  gboolean          flipped;
-};
-
-/* This is used to store the first pixel of each slice. This is only
-   used when glGenerateMipmap is not available */
-struct _CoglTexturePixel
-{
-  /* We need to store the format of the pixel because we store the
-     data in the source format which might end up being different for
-     each slice if a subregion is updated with a different format */
-  GLenum gl_format;
-  GLenum gl_type;
-  guint8 data[4];
-};
+  COGL_TEXTURE_TYPE_2D_SLICED
+} CoglTextureType;
 
 struct _CoglTexture
 {
   CoglHandleObject   _parent;
+  CoglTextureType    type;
   CoglBitmap         bitmap;
   gboolean           bitmap_owner;
   GLenum             gl_target;
   GLenum             gl_intformat;
   GLenum             gl_format;
   GLenum             gl_type;
-  GArray            *slice_x_spans;
-  GArray            *slice_y_spans;
-  GArray            *slice_gl_handles;
-  gint               max_waste;
   GLenum             min_filter;
   GLenum             mag_filter;
   gboolean           is_foreign;
   GLint              wrap_mode;
   gboolean           auto_mipmap;
   gboolean           mipmaps_dirty;
-
-  /* This holds a copy of the first pixel in each slice. It is only
-     used to force an automatic update of the mipmaps when
-     glGenerateMipmap is not available. */
-  CoglTexturePixel  *first_pixels;
 };
 
 /* To improve batching of geometry when submitting vertices to OpenGL we
@@ -116,9 +75,6 @@ typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           float *slice_coords,
                                           float *virtual_coords,
                                           void *user_data);
-
-CoglTexture*
-_cogl_texture_pointer_from_handle (CoglHandle handle);
 
 void
 _cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
@@ -151,10 +107,34 @@ _cogl_texture_set_filters (CoglHandle handle,
 void
 _cogl_texture_ensure_mipmaps (CoglHandle handle);
 
+
+/* Functions currently only used by CoglTexture implementations or
+ * drivers... */
+
+void
+_cogl_texture_free (CoglTexture *tex);
+
+void
+_cogl_texture_bitmap_free (CoglTexture *tex);
+
+void
+_cogl_texture_bitmap_swap (CoglTexture  *tex,
+			   CoglBitmap   *new_bitmap);
+
+gboolean
+_cogl_texture_bitmap_prepare (CoglTexture     *tex,
+			      CoglPixelFormat  internal_format);
+
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
+
+gboolean
+_cogl_texture_draw_and_read (CoglTexture *tex,
+                             CoglBitmap  *target_bmp,
+                             GLuint       target_gl_format,
+                             GLuint       target_gl_type);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

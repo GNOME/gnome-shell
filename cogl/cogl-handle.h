@@ -81,7 +81,7 @@ typedef struct _CoglHandleObject
 								\
 static CoglHandleClass _cogl_##type_name##_class;               \
 								\
-static GQuark                                                   \
+GQuark                                                          \
 _cogl_handle_##type_name##_get_type (void)                      \
 {                                                               \
   static GQuark type = 0;                                       \
@@ -93,7 +93,7 @@ _cogl_handle_##type_name##_get_type (void)                      \
 static CoglHandle						\
 _cogl_##type_name##_handle_new (Cogl##TypeName *new_obj)	\
 {				                                \
-  CoglHandleObject *obj = &new_obj->_parent;                    \
+  CoglHandleObject *obj = (CoglHandleObject *)&new_obj->_parent;\
   obj->ref_count = 1;                                           \
 								\
   obj->klass = &_cogl_##type_name##_class;                      \

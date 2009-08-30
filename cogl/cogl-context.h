@@ -115,6 +115,8 @@ typedef struct
   guint             viewport_width;
   guint             viewport_height;
 
+  CoglHandle        texture_download_material;
+
   CoglContextDriver drv;
 } CoglContext;
 
