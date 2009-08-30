@@ -1,15 +1,15 @@
 # Czech translation of gnome-shell.
-# Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
+# Copyright (C) 2009 the author(s) of gnome-shell.
 # This file is distributed under the same license as the gnome-shell package.
 # Andre Klapper <ak-47@gmx.net>, 2009.
-#
+# Petr Kovar <pknbe@volny.cz>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 15:25+0200\n"
-"PO-Revision-Date: 2009-08-15 13:23+0000\n"
-"Last-Translator: Andre Klapper <ak-47@gmx.net>\n"
+"POT-Creation-Date: 2009-08-30 17:37+0200\n"
+"PO-Revision-Date: 2009-08-30 17:33+0200\n"
+"Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,95 +18,95 @@ msgstr ""
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
-msgstr ""
+msgstr "Prostředí GNOME Shell"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
-#, fuzzy
 msgid "Window management and application launching"
-msgstr "Správa oken"
+msgstr "Správa oken a spouštění aplikací"
 
 #. left side
-#: ../js/ui/panel.js:266
+#: ../js/ui/panel.js:271
 msgid "Activities"
-msgstr ""
+msgstr "Činnosti"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:412
+#: ../js/ui/panel.js:454
 msgid "%a %l:%M %p"
-msgstr ""
+msgstr "%a, %H:%M"
 
-#: ../js/ui/dash.js:235
-msgid "Find apps or documents"
-msgstr ""
+#: ../js/ui/dash.js:256
+msgid "Find..."
+msgstr "Najít..."
 
-#: ../js/ui/dash.js:336
-#, fuzzy
+#: ../js/ui/dash.js:374
 msgid "Browse"
 msgstr "Procházet"
 
+#: ../js/ui/dash.js:451
+msgid "(see all)"
+msgstr "(zobrazit vše)"
+
 #. **** Applications ****
-#: ../js/ui/dash.js:472 ../js/ui/dash.js:545
+#: ../js/ui/dash.js:633 ../js/ui/dash.js:681
 msgid "APPLICATIONS"
 msgstr "APLIKACE"
 
-#. **** Documents ****
-#: ../js/ui/dash.js:477 ../js/ui/dash.js:570
-msgid "RECENT DOCUMENTS"
-msgstr "NEDÁVNÉ DOKUMENTY"
-
 #. **** Places ****
-#: ../js/ui/dash.js:563
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:653
 msgid "PLACES"
 msgstr "MÍSTA"
 
-#: ../js/ui/runDialog.js:74
+#. **** Documents ****
+#: ../js/ui/dash.js:660 ../js/ui/dash.js:692
+msgid "RECENT DOCUMENTS"
+msgstr "NEDÁVNÉ DOKUMENTY"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:679
+msgid "SEARCH RESULTS"
+msgstr "VÝSLEDKY HLEDÁNÍ"
+
+#: ../js/ui/runDialog.js:82
 msgid "Please enter a command:"
-msgstr ""
+msgstr "Zadejte prosím příkaz:"
 
-#: ../src/gdmuser/gdm-user.c:242
-msgid "Manager"
-msgstr "Správce"
-
-#: ../src/gdmuser/gdm-user.c:243
-msgid "The user manager object this user is controlled by."
-msgstr "Objekt správce uživatele, kterým je tento uživatel ovládán."
-
-#: ../src/shell-global.c:841
-#, fuzzy
+#: ../src/shell-global.c:840
 msgid "Less than a minute ago"
-msgstr "Dříve než před minutou"
+msgstr "Před méně než minutou"
 
-#: ../src/shell-global.c:844
+#: ../src/shell-global.c:843
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] "%d minuta nazpět"
-msgstr[1] "%d minuty nazpět"
-msgstr[2] "%d minut nazpět"
+msgstr[0] "Před %d minutou"
+msgstr[1] "Před %d minutami"
+msgstr[2] "Před %d minutami"
 
-#: ../src/shell-global.c:847
+#: ../src/shell-global.c:846
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "%d hodina nazpět"
-msgstr[1] "%d hodiny nazpět"
-msgstr[2] "%d hodin nazpět"
+msgstr[0] "Před %d hodinou"
+msgstr[1] "Před %d hodinami"
+msgstr[2] "Před %d hodinami"
 
-#: ../src/shell-global.c:850
+#: ../src/shell-global.c:849
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] "%d den nazpět"
-msgstr[1] "%d dny nazpět"
-msgstr[2] "%d dnů nazpět"
+msgstr[0] "Před %d dnem"
+msgstr[1] "Před %d dny"
+msgstr[2] "Před %d dny"
 
-#: ../src/shell-global.c:853
+#: ../src/shell-global.c:852
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
-msgstr[0] "%d týden nazpět"
-msgstr[1] "%d týdny nazpět"
-msgstr[2] "%d týdnů nazpět"
+msgstr[0] "Před %d týdnem"
+msgstr[1] "Před %d týdny"
+msgstr[2] "Před %d týdny"
 
 #: ../src/shell-status-menu.c:156
 msgid "Unknown"
@@ -132,9 +132,8 @@ msgid "Account Information..."
 msgstr "Informace o účtu..."
 
 #: ../src/shell-status-menu.c:502
-#, fuzzy
 msgid "Sidebar"
-msgstr "Boční panel"
+msgstr "Postranní lišta"
 
 #: ../src/shell-status-menu.c:510
 msgid "System Preferences..."
@@ -179,6 +178,12 @@ msgstr "Hledat"
 #. * directory called "some-directory" is in the trash.
 #.
 #: ../src/shell-uri-util.c:298
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Manager"
+#~ msgstr "Správce"
+
+#~ msgid "The user manager object this user is controlled by."
+#~ msgstr "Objekt správce uživatele, kterým je tento uživatel ovládán."
