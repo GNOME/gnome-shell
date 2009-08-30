@@ -7,88 +7,99 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-14 20:38+0200\n"
-"PO-Revision-Date: 2009-08-14 23:59+0100\n"
+"POT-Creation-Date: 2009-08-30 18:53+0200\n"
+"PO-Revision-Date: 2009-08-30 18:57+0100\n"
 "Last-Translator: Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language-Team: \n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Gestió de finestres i execució d'aplicacions"
 
 #. left side
-#: ../js/ui/panel.js:266
+#: ../js/ui/panel.js:271
 msgid "Activities"
 msgstr "Activitats"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:412
+#: ../js/ui/panel.js:454
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/dash.js:235
-msgid "Find apps or documents"
-msgstr "Cerca aplicacions o documents"
+#: ../js/ui/dash.js:256
+msgid "Find..."
+msgstr "Cerca..."
 
-#: ../js/ui/dash.js:336
+#: ../js/ui/dash.js:374
 msgid "Browse"
 msgstr "Navega"
 
+#: ../js/ui/dash.js:451
+msgid "(see all)"
+msgstr "(mostra tot)"
+
 #. **** Applications ****
-#: ../js/ui/dash.js:472
-#: ../js/ui/dash.js:545
+#: ../js/ui/dash.js:633
+#: ../js/ui/dash.js:681
 msgid "APPLICATIONS"
 msgstr "APLICACIONS"
 
-#. **** Documents ****
-#: ../js/ui/dash.js:477
-#: ../js/ui/dash.js:570
-msgid "RECENT DOCUMENTS"
-msgstr "DOCUMENTS RECENTS"
-
 #. **** Places ****
-#: ../js/ui/dash.js:563
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:653
 msgid "PLACES"
 msgstr "LLOCS"
 
-#: ../js/ui/runDialog.js:74
+#. **** Documents ****
+#: ../js/ui/dash.js:660
+#: ../js/ui/dash.js:692
+msgid "RECENT DOCUMENTS"
+msgstr "DOCUMENTS RECENTS"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:679
+msgid "SEARCH RESULTS"
+msgstr "RESULTATS DE LA CERCA"
+
+#: ../js/ui/runDialog.js:82
 msgid "Please enter a command:"
 msgstr "Introduïu una ordre:"
 
-#: ../src/gdmuser/gdm-user.c:242
-msgid "Manager"
-msgstr "Gestor"
-
-#: ../src/gdmuser/gdm-user.c:243
-msgid "The user manager object this user is controlled by."
-msgstr "L'objecte gestor d'usuaris que controla a aquest usuari."
-
-#: ../src/shell-global.c:841
+#: ../src/shell-global.c:840
 msgid "Less than a minute ago"
 msgstr "Fa menys d'un minut"
 
-#: ../src/shell-global.c:844
+#: ../src/shell-global.c:843
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Fa %d minut"
 msgstr[1] "Fa %d minuts"
 
-#: ../src/shell-global.c:847
+#: ../src/shell-global.c:846
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Fa %d hora"
 msgstr[1] "Fa %d hores"
 
-#: ../src/shell-global.c:850
+#: ../src/shell-global.c:849
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Fa %d dia"
 msgstr[1] "Fa %d dies"
 
-#: ../src/shell-global.c:853
+#: ../src/shell-global.c:852
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -107,7 +118,7 @@ msgstr "No es pot blocar la pantalla: %s"
 #: ../src/shell-status-menu.c:227
 #, c-format
 msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "No es pot establir temporalment l'estalviador de pantalles a pantalla negra: %s"
+msgstr "No es pot establir temporalment l'estalvi de pantalla a pantalla negra: %s"
 
 #: ../src/shell-status-menu.c:351
 #, c-format
@@ -144,4 +155,35 @@ msgstr "Surt..."
 #: ../src/shell-status-menu.c:557
 msgid "Shut Down..."
 msgstr "Atura..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Carpeta d'inici"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Sistema de fitxers"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Cerca"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#~ msgid "Find apps or documents"
+#~ msgstr "Cerca aplicacions o documents"
+#~ msgid "Manager"
+#~ msgstr "Gestor"
+#~ msgid "The user manager object this user is controlled by."
+#~ msgstr "L'objecte gestor d'usuaris que controla a aquest usuari."
 
