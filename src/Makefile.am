@@ -1,9 +1,11 @@
 NULL = 
 BUILT_SOURCES =
 CLEANFILES =
-EXTRA_DIST = 
+EXTRA_DIST =
 libexec_PROGRAMS =
-noinst_LTLIBRARIES = 
+noinst_LTLIBRARIES =
+
+.AUTOPARALLEL:
 
 bin_SCRIPTS = gnome-shell
 
@@ -161,6 +163,7 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefile
 		--add-include-path=$(MUTTER_LIB_DIR)/mutter/ \
 		--include=Clutter-1.0			\
 		--include=Meta-2.27			\
+		--libtool="$(LIBTOOL)"    \
 		--add-include-path=$(builddir)     \
 		--include=Big-1.0     \
 		--program=mutter			\
@@ -180,12 +183,13 @@ Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
 		Shell-0.1.gir -o $@
 CLEANFILES += Shell-0.1.typelib
 
-Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
+Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la $(srcdir)/big-enum-types.h Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Big				\
 		--nsversion=1.0				\
 		--include=Clutter-1.0			\
 		--include=GdkPixbuf-2.0			\
+		--libtool="$(LIBTOOL)"    \
 		--program=mutter			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(addprefix $(srcdir)/,$(big_source_h))	\
