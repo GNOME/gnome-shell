@@ -2553,7 +2553,7 @@ handle_move_to_corner_backend (MetaDisplay    *display,
   int new_x, new_y;
   int frame_width, frame_height;
 
-  meta_window_get_work_area_all_xineramas (window, &work_area);
+  meta_window_get_work_area_all_monitors (window, &work_area);
   meta_window_get_outer_rect (window, &outer);
   meta_window_get_position (window, &orig_x, &orig_y);
 
@@ -2685,7 +2685,7 @@ handle_move_to_center  (MetaDisplay    *display,
   int orig_x, orig_y;
   int frame_width, frame_height;
 
-  meta_window_get_work_area_all_xineramas (window, &work_area);
+  meta_window_get_work_area_all_monitors (window, &work_area);
   meta_window_get_outer_rect (window, &outer);
   meta_window_get_position (window, &orig_x, &orig_y);
 

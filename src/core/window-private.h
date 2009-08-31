@@ -139,8 +139,8 @@ struct _MetaWindow
   /* Whether we're trying to constrain the window to be fully onscreen */
   guint require_fully_onscreen : 1;
 
-  /* Whether we're trying to constrain the window to be on a single xinerama */
-  guint require_on_single_xinerama : 1;
+  /* Whether we're trying to constrain the window to be on a single monitor */
+  guint require_on_single_monitor : 1;
 
   /* Whether we're trying to constrain the window's titlebar to be onscreen */
   guint require_titlebar_visible : 1;
@@ -544,13 +544,13 @@ GList* meta_window_get_workspaces (MetaWindow *window);
 gboolean meta_window_located_on_workspace (MetaWindow    *window,
                                            MetaWorkspace *workspace);
 
-void meta_window_get_work_area_current_xinerama (MetaWindow    *window,
-                                                 MetaRectangle *area);
-void meta_window_get_work_area_for_xinerama     (MetaWindow    *window,
-                                                 int            which_xinerama,
-                                                 MetaRectangle *area);
-void meta_window_get_work_area_all_xineramas    (MetaWindow    *window,
-                                                 MetaRectangle *area);
+void meta_window_get_work_area_current_monitor (MetaWindow    *window,
+                                                MetaRectangle *area);
+void meta_window_get_work_area_for_monitor     (MetaWindow    *window,
+                                                int            which_monitor,
+                                                MetaRectangle *area);
+void meta_window_get_work_area_all_monitors    (MetaWindow    *window,
+                                                MetaRectangle *area);
 
 
 gboolean meta_window_same_application (MetaWindow *window,

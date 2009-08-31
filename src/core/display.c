@@ -483,7 +483,7 @@ meta_display_open (void)
   the_display->leader_window = None;
   the_display->timestamp_pinging_window = None;
 
-  the_display->xinerama_cache_invalidated = TRUE;
+  the_display->monitor_cache_invalidated = TRUE;
 
   the_display->groups_by_leader = NULL;
 
@@ -1528,7 +1528,7 @@ event_callback (XEvent   *event,
   bypass_compositor = FALSE;
   filter_out_event = FALSE;
   display->current_time = event_get_time (display, event);
-  display->xinerama_cache_invalidated = TRUE;
+  display->monitor_cache_invalidated = TRUE;
   
   modified = event_get_modified_window (display, event);
   

@@ -299,7 +299,7 @@ set_wm_icon_size_hint (MetaScreen *screen)
 }
 
 static void
-reload_xinerama_infos (MetaScreen *screen)
+reload_monitor_infos (MetaScreen *screen)
 {
   MetaDisplay *display;
 
@@ -319,35 +319,35 @@ reload_xinerama_infos (MetaScreen *screen)
 
   display = screen->display;
   
-  if (screen->xinerama_infos)
-    g_free (screen->xinerama_infos);
+  if (screen->monitor_infos)
+    g_free (screen->monitor_infos);
   
-  screen->xinerama_infos = NULL;
-  screen->n_xinerama_infos = 0;
-  screen->last_xinerama_index = 0;
+  screen->monitor_infos = NULL;
+  screen->n_monitor_infos = 0;
+  screen->last_monitor_index = 0;
 
-  screen->display->xinerama_cache_invalidated = TRUE;
+  screen->display->monitor_cache_invalidated = TRUE;
 
   if (g_getenv ("MUTTER_DEBUG_XINERAMA"))
     {
       meta_topic (META_DEBUG_XINERAMA,
                   "Pretending a single monitor has two Xinerama screens\n");
 
-      screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 2);
-      screen->n_xinerama_infos = 2;
+      screen->monitor_infos = g_new (MetaMonitorInfo, 2);
+      screen->n_monitor_infos = 2;
 
-      screen->xinerama_infos[0].number = 0;
-      screen->xinerama_infos[0].rect = screen->rect;
-      screen->xinerama_infos[0].rect.width = screen->rect.width / 2;
+      screen->monitor_infos[0].number = 0;
+      screen->monitor_infos[0].rect = screen->rect;
+      screen->monitor_infos[0].rect.width = screen->rect.width / 2;
 
-      screen->xinerama_infos[1].number = 1;
-      screen->xinerama_infos[1].rect = screen->rect;
-      screen->xinerama_infos[1].rect.x = screen->rect.width / 2;
-      screen->xinerama_infos[1].rect.width = screen->rect.width / 2;
+      screen->monitor_infos[1].number = 1;
+      screen->monitor_infos[1].rect = screen->rect;
+      screen->monitor_infos[1].rect.x = screen->rect.width / 2;
+      screen->monitor_infos[1].rect.width = screen->rect.width / 2;
     }
   
 #ifdef HAVE_XFREE_XINERAMA
-  if (screen->n_xinerama_infos == 0 &&
+  if (screen->n_monitor_infos == 0 &&
       XineramaIsActive (display->xdisplay))
     {
       XineramaScreenInfo *infos;
@@ -363,25 +363,25 @@ reload_xinerama_infos (MetaScreen *screen)
 
       if (n_infos > 0)
         {
-          screen->xinerama_infos = g_new (MetaXineramaScreenInfo, n_infos);
-          screen->n_xinerama_infos = n_infos;
+          screen->monitor_infos = g_new (MetaMonitorInfo, n_infos);
+          screen->n_monitor_infos = n_infos;
           
           i = 0;
           while (i < n_infos)
             {
-              screen->xinerama_infos[i].number = infos[i].screen_number;
-              screen->xinerama_infos[i].rect.x = infos[i].x_org;
-              screen->xinerama_infos[i].rect.y = infos[i].y_org;
-              screen->xinerama_infos[i].rect.width = infos[i].width;
-              screen->xinerama_infos[i].rect.height = infos[i].height;
+              screen->monitor_infos[i].number = infos[i].screen_number;
+              screen->monitor_infos[i].rect.x = infos[i].x_org;
+              screen->monitor_infos[i].rect.y = infos[i].y_org;
+              screen->monitor_infos[i].rect.width = infos[i].width;
+              screen->monitor_infos[i].rect.height = infos[i].height;
 
               meta_topic (META_DEBUG_XINERAMA,
-                          "Xinerama %d is %d,%d %d x %d\n",
-                          screen->xinerama_infos[i].number,
-                          screen->xinerama_infos[i].rect.x,
-                          screen->xinerama_infos[i].rect.y,
-                          screen->xinerama_infos[i].rect.width,
-                          screen->xinerama_infos[i].rect.height);
+                          "Monitor %d is %d,%d %d x %d\n",
+                          screen->monitor_infos[i].number,
+                          screen->monitor_infos[i].rect.x,
+                          screen->monitor_infos[i].rect.y,
+                          screen->monitor_infos[i].rect.width,
+                          screen->monitor_infos[i].rect.height);
               
               ++i;
             }
@@ -389,7 +389,7 @@ reload_xinerama_infos (MetaScreen *screen)
       
       meta_XFree (infos);
     }
-  else if (screen->n_xinerama_infos > 0)
+  else if (screen->n_monitor_infos > 0)
     {
       meta_topic (META_DEBUG_XINERAMA,
                   "No XFree86 Xinerama extension or XFree86 Xinerama inactive on display %s\n",
@@ -402,7 +402,7 @@ reload_xinerama_infos (MetaScreen *screen)
 
 #ifdef HAVE_SOLARIS_XINERAMA
   /* This code from GDK, Copyright (C) 2002 Sun Microsystems */
-  if (screen->n_xinerama_infos == 0 &&
+  if (screen->n_monitor_infos == 0 &&
       XineramaGetState (screen->display->xdisplay,
                         screen->number))
     {
@@ -424,31 +424,31 @@ reload_xinerama_infos (MetaScreen *screen)
 	{
           g_assert (n_monitors > 0);
           
-          screen->xinerama_infos = g_new (MetaXineramaScreenInfo, n_monitors);
-          screen->n_xinerama_infos = n_monitors;
+          screen->monitor_infos = g_new (MetaMonitorInfo, n_monitors);
+          screen->n_monitor_infos = n_monitors;
           
           i = 0;
           while (i < n_monitors)
             {
-              screen->xinerama_infos[i].number = i;
-              screen->xinerama_infos[i].rect.x = monitors[i].x;
-              screen->xinerama_infos[i].rect.y = monitors[i].y;
-              screen->xinerama_infos[i].rect.width = monitors[i].width;
-              screen->xinerama_infos[i].rect.height = monitors[i].height;
+              screen->monitor_infos[i].number = i;
+              screen->monitor_infos[i].rect.x = monitors[i].x;
+              screen->monitor_infos[i].rect.y = monitors[i].y;
+              screen->monitor_infos[i].rect.width = monitors[i].width;
+              screen->monitor_infos[i].rect.height = monitors[i].height;
 
               meta_topic (META_DEBUG_XINERAMA,
-                          "Xinerama %d is %d,%d %d x %d\n",
-                          screen->xinerama_infos[i].number,
-                          screen->xinerama_infos[i].rect.x,
-                          screen->xinerama_infos[i].rect.y,
-                          screen->xinerama_infos[i].rect.width,
-                          screen->xinerama_infos[i].rect.height);              
+                          "Monitor %d is %d,%d %d x %d\n",
+                          screen->monitor_infos[i].number,
+                          screen->monitor_infos[i].rect.x,
+                          screen->monitor_infos[i].rect.y,
+                          screen->monitor_infos[i].rect.width,
+                          screen->monitor_infos[i].rect.height);              
               
               ++i;
             }
 	}
     }
-  else if (screen->n_xinerama_infos == 0)
+  else if (screen->n_monitor_infos == 0)
     {
       meta_topic (META_DEBUG_XINERAMA,
                   "No Solaris Xinerama extension or Solaris Xinerama inactive on display %s\n",
@@ -463,20 +463,20 @@ reload_xinerama_infos (MetaScreen *screen)
   /* If no Xinerama, fill in the single screen info so
    * we can use the field unconditionally
    */
-  if (screen->n_xinerama_infos == 0)
+  if (screen->n_monitor_infos == 0)
     {
       meta_topic (META_DEBUG_XINERAMA,
                   "No Xinerama screens, using default screen info\n");
           
-      screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 1);
-      screen->n_xinerama_infos = 1;
+      screen->monitor_infos = g_new (MetaMonitorInfo, 1);
+      screen->n_monitor_infos = 1;
           
-      screen->xinerama_infos[0].number = 0;
-      screen->xinerama_infos[0].rect = screen->rect;
+      screen->monitor_infos[0].number = 0;
+      screen->monitor_infos[0].rect = screen->rect;
     }
 
-  g_assert (screen->n_xinerama_infos > 0);
-  g_assert (screen->xinerama_infos != NULL);
+  g_assert (screen->n_monitor_infos > 0);
+  g_assert (screen->monitor_infos != NULL);
 }
 
 /* The guard window allows us to leave minimized windows mapped so
@@ -727,11 +727,11 @@ meta_screen_new (MetaDisplay *display,
                                      &gc_values);
   }
   
-  screen->xinerama_infos = NULL;
-  screen->n_xinerama_infos = 0;
-  screen->last_xinerama_index = 0;  
+  screen->monitor_infos = NULL;
+  screen->n_monitor_infos = 0;
+  screen->last_monitor_index = 0;  
   
-  reload_xinerama_infos (screen);
+  reload_monitor_infos (screen);
   
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
 
@@ -890,8 +890,8 @@ meta_screen_free (MetaScreen *screen,
   XFreeGC (screen->display->xdisplay,
            screen->root_xor_gc);
   
-  if (screen->xinerama_infos)
-    g_free (screen->xinerama_infos);
+  if (screen->monitor_infos)
+    g_free (screen->monitor_infos);
   
   g_free (screen->screen_name);
 
@@ -1703,61 +1703,61 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
   return window;
 }
 
-const MetaXineramaScreenInfo*
-meta_screen_get_xinerama_for_rect (MetaScreen    *screen,
-				   MetaRectangle *rect)
+const MetaMonitorInfo*
+meta_screen_get_monitor_for_rect (MetaScreen    *screen,
+                                  MetaRectangle *rect)
 {
   int i;
-  int best_xinerama, xinerama_score;
+  int best_monitor, monitor_score;
 
-  if (screen->n_xinerama_infos == 1)
-    return &screen->xinerama_infos[0];
+  if (screen->n_monitor_infos == 1)
+    return &screen->monitor_infos[0];
 
-  best_xinerama = 0;
-  xinerama_score = 0;
+  best_monitor = 0;
+  monitor_score = 0;
 
-  for (i = 0; i < screen->n_xinerama_infos; i++)
+  for (i = 0; i < screen->n_monitor_infos; i++)
     {
       MetaRectangle dest;
-      if (meta_rectangle_intersect (&screen->xinerama_infos[i].rect,
+      if (meta_rectangle_intersect (&screen->monitor_infos[i].rect,
                                     rect,
                                     &dest))
         {
           int cur = meta_rectangle_area (&dest);
-          if (cur > xinerama_score)
+          if (cur > monitor_score)
             {
-              xinerama_score = cur;
-              best_xinerama = i;
+              monitor_score = cur;
+              best_monitor = i;
             }
         }
     }
 
-  return &screen->xinerama_infos[best_xinerama];
+  return &screen->monitor_infos[best_monitor];
 }
 
-const MetaXineramaScreenInfo*
-meta_screen_get_xinerama_for_window (MetaScreen *screen,
-				     MetaWindow *window)
+const MetaMonitorInfo*
+meta_screen_get_monitor_for_window (MetaScreen *screen,
+                                    MetaWindow *window)
 {
   MetaRectangle window_rect;
   
   meta_window_get_outer_rect (window, &window_rect);
 
-  return meta_screen_get_xinerama_for_rect (screen, &window_rect);
+  return meta_screen_get_monitor_for_rect (screen, &window_rect);
 }
 
-const MetaXineramaScreenInfo* 
-meta_screen_get_xinerama_neighbor (MetaScreen         *screen,
-                                   int                 which_xinerama,
-                                   MetaScreenDirection direction)
+const MetaMonitorInfo* 
+meta_screen_get_monitor_neighbor (MetaScreen         *screen,
+                                  int                 which_monitor,
+                                  MetaScreenDirection direction)
 {
-  MetaXineramaScreenInfo* input = screen->xinerama_infos + which_xinerama;
-  MetaXineramaScreenInfo* current;
+  MetaMonitorInfo* input = screen->monitor_infos + which_monitor;
+  MetaMonitorInfo* current;
   int i;
 
-  for (i = 0; i < screen->n_xinerama_infos; i++)
+  for (i = 0; i < screen->n_monitor_infos; i++)
     {
-      current = screen->xinerama_infos + i;
+      current = screen->monitor_infos + i;
 
       if ((direction == META_SCREEN_RIGHT && 
            current->rect.x == input->rect.x + input->rect.width &&
@@ -1780,110 +1780,110 @@ meta_screen_get_xinerama_neighbor (MetaScreen         *screen,
 }
 
 void
-meta_screen_get_natural_xinerama_list (MetaScreen *screen,
-                                       int**       xineramas_list,
-                                       int*        n_xineramas)
+meta_screen_get_natural_monitor_list (MetaScreen *screen,
+                                      int**       monitors_list,
+                                      int*        n_monitors)
 {
-  const MetaXineramaScreenInfo* current;
-  const MetaXineramaScreenInfo* tmp;
-  GQueue* xinerama_queue;
+  const MetaMonitorInfo* current;
+  const MetaMonitorInfo* tmp;
+  GQueue* monitor_queue;
   int* visited;
   int cur = 0;
   int i;
 
-  *n_xineramas = screen->n_xinerama_infos;
-  *xineramas_list = g_new (int, screen->n_xinerama_infos);
+  *n_monitors = screen->n_monitor_infos;
+  *monitors_list = g_new (int, screen->n_monitor_infos);
 
-  /* we calculate a natural ordering by which to choose xineramas for
-   * window placement.  We start at the current xinerama, and perform
-   * a breadth-first search of the xineramas starting from that
-   * xinerama.  We choose preferentially left, then right, then down,
+  /* we calculate a natural ordering by which to choose monitors for
+   * window placement.  We start at the current monitor, and perform
+   * a breadth-first search of the monitors starting from that
+   * monitor.  We choose preferentially left, then right, then down,
    * then up.  The visitation order produced by this traversal is the
-   * natural xinerama ordering.
+   * natural monitor ordering.
    */
 
-  visited = g_new (int, screen->n_xinerama_infos);
-  for (i = 0; i < screen->n_xinerama_infos; i++)
+  visited = g_new (int, screen->n_monitor_infos);
+  for (i = 0; i < screen->n_monitor_infos; i++)
     {
       visited[i] = FALSE;
     }
 
-  current = meta_screen_get_current_xinerama (screen);
-  xinerama_queue = g_queue_new ();
-  g_queue_push_tail (xinerama_queue, (gpointer) current);
+  current = meta_screen_get_current_monitor (screen);
+  monitor_queue = g_queue_new ();
+  g_queue_push_tail (monitor_queue, (gpointer) current);
   visited[current->number] = TRUE;
 
-  while (!g_queue_is_empty (xinerama_queue))
+  while (!g_queue_is_empty (monitor_queue))
     {
-      current = (const MetaXineramaScreenInfo*) 
-        g_queue_pop_head (xinerama_queue);
+      current = (const MetaMonitorInfo*) 
+        g_queue_pop_head (monitor_queue);
 
-      (*xineramas_list)[cur++] = current->number;
+      (*monitors_list)[cur++] = current->number;
 
       /* enqueue each of the directions */
-      tmp = meta_screen_get_xinerama_neighbor (screen,
-                                               current->number,
-                                               META_SCREEN_LEFT);
+      tmp = meta_screen_get_monitor_neighbor (screen,
+                                              current->number,
+                                              META_SCREEN_LEFT);
       if (tmp && !visited[tmp->number])
         {
-          g_queue_push_tail (xinerama_queue,
-                             (MetaXineramaScreenInfo*) tmp);
+          g_queue_push_tail (monitor_queue,
+                             (MetaMonitorInfo*) tmp);
           visited[tmp->number] = TRUE;
         }
-      tmp = meta_screen_get_xinerama_neighbor (screen,
-                                               current->number,
-                                               META_SCREEN_RIGHT);
+      tmp = meta_screen_get_monitor_neighbor (screen,
+                                              current->number,
+                                              META_SCREEN_RIGHT);
       if (tmp && !visited[tmp->number])
         {
-          g_queue_push_tail (xinerama_queue,
-                             (MetaXineramaScreenInfo*) tmp);
+          g_queue_push_tail (monitor_queue,
+                             (MetaMonitorInfo*) tmp);
           visited[tmp->number] = TRUE;
         }
-      tmp = meta_screen_get_xinerama_neighbor (screen,
-                                               current->number,
-                                               META_SCREEN_UP);
+      tmp = meta_screen_get_monitor_neighbor (screen,
+                                              current->number,
+                                              META_SCREEN_UP);
       if (tmp && !visited[tmp->number])
         {
-          g_queue_push_tail (xinerama_queue,
-                             (MetaXineramaScreenInfo*) tmp);
+          g_queue_push_tail (monitor_queue,
+                             (MetaMonitorInfo*) tmp);
           visited[tmp->number] = TRUE;
         }
-      tmp = meta_screen_get_xinerama_neighbor (screen,
-                                               current->number,
-                                               META_SCREEN_DOWN);
+      tmp = meta_screen_get_monitor_neighbor (screen,
+                                              current->number,
+                                              META_SCREEN_DOWN);
       if (tmp && !visited[tmp->number])
         {
-          g_queue_push_tail (xinerama_queue,
-                             (MetaXineramaScreenInfo*) tmp);
+          g_queue_push_tail (monitor_queue,
+                             (MetaMonitorInfo*) tmp);
           visited[tmp->number] = TRUE;
         }
     }
 
-  /* in case we somehow missed some set of xineramas, go through the
-   * visited list and add in any xineramas that were missed
+  /* in case we somehow missed some set of monitors, go through the
+   * visited list and add in any monitors that were missed
    */
-  for (i = 0; i < screen->n_xinerama_infos; i++)
+  for (i = 0; i < screen->n_monitor_infos; i++)
     {
       if (visited[i] == FALSE)
         {
-          (*xineramas_list)[cur++] = i;
+          (*monitors_list)[cur++] = i;
         }
     }
 
   g_free (visited);
-  g_queue_free (xinerama_queue);
+  g_queue_free (monitor_queue);
 }
 
-const MetaXineramaScreenInfo*
-meta_screen_get_current_xinerama (MetaScreen *screen)
+const MetaMonitorInfo*
+meta_screen_get_current_monitor (MetaScreen *screen)
 {
-  if (screen->n_xinerama_infos == 1)
-    return &screen->xinerama_infos[0];
+  if (screen->n_monitor_infos == 1)
+    return &screen->monitor_infos[0];
   
   /* Sadly, we have to do it this way. Yuck.
    */
   
-  if (screen->display->xinerama_cache_invalidated)
+  if (screen->display->monitor_cache_invalidated)
     {
       Window root_return, child_return;
       int win_x_return, win_y_return;
@@ -1891,7 +1891,7 @@ meta_screen_get_current_xinerama (MetaScreen *screen)
       int i;
       MetaRectangle pointer_position;
       
-      screen->display->xinerama_cache_invalidated = FALSE;
+      screen->display->monitor_cache_invalidated = FALSE;
       
       pointer_position.width = pointer_position.height = 1;
       XQueryPointer (screen->display->xdisplay,
@@ -1904,23 +1904,23 @@ meta_screen_get_current_xinerama (MetaScreen *screen)
                      &win_y_return,
                      &mask_return);
 
-      screen->last_xinerama_index = 0;
-      for (i = 0; i < screen->n_xinerama_infos; i++)
+      screen->last_monitor_index = 0;
+      for (i = 0; i < screen->n_monitor_infos; i++)
         {
-          if (meta_rectangle_contains_rect (&screen->xinerama_infos[i].rect,
+          if (meta_rectangle_contains_rect (&screen->monitor_infos[i].rect,
                                             &pointer_position))
             {
-              screen->last_xinerama_index = i;
+              screen->last_monitor_index = i;
               break;
             }
         }
       
       meta_topic (META_DEBUG_XINERAMA,
-                  "Rechecked current Xinerama, now %d\n",
-                  screen->last_xinerama_index);
+                  "Rechecked current monitor, now %d\n",
+                  screen->last_monitor_index);
     }
 
-  return &screen->xinerama_infos[screen->last_xinerama_index];
+  return &screen->monitor_infos[screen->last_monitor_index];
 }
 
 #define _NET_WM_ORIENTATION_HORZ 0
@@ -2145,7 +2145,7 @@ set_work_area_hint (MetaScreen *screen)
 
       if (workspace->screen == screen)
         {
-          meta_workspace_get_work_area_all_xineramas (workspace, &area);
+          meta_workspace_get_work_area_all_monitors (workspace, &area);
           tmp[0] = area.x;
           tmp[1] = area.y;
           tmp[2] = area.width;
@@ -2513,7 +2513,7 @@ meta_screen_resize (MetaScreen *screen,
   screen->rect.width = width;
   screen->rect.height = height;
 
-  reload_xinerama_infos (screen);
+  reload_monitor_infos (screen);
   set_desktop_geometry_hint (screen);
   
   if (screen->display->compositor)

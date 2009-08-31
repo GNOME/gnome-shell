@@ -58,7 +58,7 @@ typedef enum
 typedef enum
 {
   META_EDGE_WINDOW,
-  META_EDGE_XINERAMA,
+  META_EDGE_MONITOR,
   META_EDGE_SCREEN
 } MetaEdgeType;
 
@@ -193,7 +193,7 @@ void     meta_rectangle_expand_to_avoiding_struts (
  * or
  *   meta_rectangle_find_onscreen_edges ()
  * or
- *   meta_rectangle_find_nonintersected_xinerama_edges()
+ *   meta_rectangle_find_nonintersected_monitor_edges()
  */
 void     meta_rectangle_free_list_and_elements (GList *filled_list);
 
@@ -280,11 +280,11 @@ GList* meta_rectangle_remove_intersections_with_boxes_from_edges (
 GList* meta_rectangle_find_onscreen_edges (const MetaRectangle *basic_rect,
                                            const GSList        *all_struts);
 
-/* Finds edges between adjacent xineramas which are not covered by the given
+/* Finds edges between adjacent monitors which are not covered by the given
  * struts.
  */
-GList* meta_rectangle_find_nonintersected_xinerama_edges (
-                                           const GList         *xinerama_rects,
+GList* meta_rectangle_find_nonintersected_monitor_edges (
+                                           const GList         *monitor_rects,
                                            const GSList        *all_struts);
 
 #endif /* META_BOXES_H */

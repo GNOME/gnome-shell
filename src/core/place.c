@@ -104,7 +104,7 @@ find_next_cascade (MetaWindow *window,
   int window_width, window_height;
   int cascade_stage;
   MetaRectangle work_area;
-  const MetaXineramaScreenInfo* current;
+  const MetaMonitorInfo* current;
   
   sorted = g_list_copy (windows);
   sorted = g_list_sort (sorted, northwestcmp);
@@ -135,8 +135,8 @@ find_next_cascade (MetaWindow *window,
    * of NW corner of window frame.
    */
 
-  current = meta_screen_get_current_xinerama (window->screen);
-  meta_window_get_work_area_for_xinerama (window, current->number, &work_area);
+  current = meta_screen_get_current_monitor (window->screen);
+  meta_window_get_work_area_for_monitor (window, current->number, &work_area);
 
   cascade_x = MAX (0, work_area.x);
   cascade_y = MAX (0, work_area.y);
@@ -257,7 +257,7 @@ find_most_freespace (MetaWindow *window,
   frame_size_left = fgeom ? fgeom->left_width : 0;
   frame_size_top  = fgeom ? fgeom->top_height : 0;
 
-  meta_window_get_work_area_current_xinerama (focus_window, &work_area);
+  meta_window_get_work_area_current_monitor (focus_window, &work_area);
   meta_window_get_outer_rect (focus_window, &avoid);
   meta_window_get_outer_rect (window, &outer);
 
@@ -508,7 +508,7 @@ find_first_fit (MetaWindow *window,
                 MetaFrameGeometry *fgeom,
                 /* visible windows on relevant workspaces */
                 GList      *windows,
-		int         xinerama,
+		int         monitor,
                 int         x,
                 int         y,
                 int        *new_x,
@@ -551,16 +551,16 @@ find_first_fit (MetaWindow *window,
 
 #ifdef WITH_VERBOSE_MODE
     {
-      char xinerama_location_string[RECT_LENGTH];
-      meta_rectangle_to_string (&window->screen->xinerama_infos[xinerama].rect,
-                                xinerama_location_string);
+      char monitor_location_string[RECT_LENGTH];
+      meta_rectangle_to_string (&window->screen->monitor_infos[monitor].rect,
+                                monitor_location_string);
       meta_topic (META_DEBUG_XINERAMA,
-		  "Natural xinerama is %s\n",
-		  xinerama_location_string);
+		  "Natural monitor is %s\n",
+		  monitor_location_string);
     }
 #endif
 
-    meta_window_get_work_area_for_xinerama (window, xinerama, &work_area);
+    meta_window_get_work_area_for_monitor (window, monitor, &work_area);
 
     center_tile_rect_in_area (&rect, &work_area);
 
@@ -658,7 +658,7 @@ meta_window_place (MetaWindow        *window,
                    int               *new_y)
 {
   GList *windows;
-  const MetaXineramaScreenInfo *xi;
+  const MetaMonitorInfo *xi;
 
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry. But remember fgeom == NULL
@@ -810,11 +810,11 @@ meta_window_place (MetaWindow        *window,
       window->type == META_WINDOW_MODAL_DIALOG ||
       window->type == META_WINDOW_SPLASHSCREEN)
     {
-      /* Center on current xinerama (i.e. on current monitor) */
+      /* Center on current monitor */
       int w, h;
 
       /* Warning, this function is a round trip! */
-      xi = meta_screen_get_current_xinerama (window->screen);
+      xi = meta_screen_get_current_monitor (window->screen);
 
       w = xi->rect.width;
       h = xi->rect.height;
@@ -825,7 +825,7 @@ meta_window_place (MetaWindow        *window,
       x += xi->rect.x;
       y += xi->rect.y;
       
-      meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen %d xinerama %d\n",
+      meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen %d monitor %d\n",
                   window->desc, window->screen->number, xi->number);
 
       goto done_check_denied_focus;
@@ -859,7 +859,7 @@ meta_window_place (MetaWindow        *window,
   }
 
   /* Warning, this is a round trip! */
-  xi = meta_screen_get_current_xinerama (window->screen);
+  xi = meta_screen_get_current_monitor (window->screen);
   
   /* "Origin" placement algorithm */
   x = xi->rect.x;
@@ -880,9 +880,9 @@ meta_window_place (MetaWindow        *window,
       MetaRectangle workarea;
       MetaRectangle outer;
 
-      meta_window_get_work_area_for_xinerama (window,
-                                              xi->number,
-                                              &workarea);      
+      meta_window_get_work_area_for_monitor (window,
+                                             xi->number,
+                                             &workarea);      
       meta_window_get_outer_rect (window, &outer);
       
       /* If the window is bigger than the screen, then automaximize.  Do NOT

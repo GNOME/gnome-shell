@@ -340,12 +340,12 @@ apply_edge_resistance (MetaWindow                *window,
 
   const int PIXEL_DISTANCE_THRESHOLD_TOWARDS_WINDOW    = 16;
   const int PIXEL_DISTANCE_THRESHOLD_AWAYFROM_WINDOW   =  0;
-  const int PIXEL_DISTANCE_THRESHOLD_TOWARDS_XINERAMA  = 32;
-  const int PIXEL_DISTANCE_THRESHOLD_AWAYFROM_XINERAMA =  0;
+  const int PIXEL_DISTANCE_THRESHOLD_TOWARDS_MONITOR   = 32;
+  const int PIXEL_DISTANCE_THRESHOLD_AWAYFROM_MONITOR  =  0;
   const int PIXEL_DISTANCE_THRESHOLD_TOWARDS_SCREEN    = 32;
   const int PIXEL_DISTANCE_THRESHOLD_AWAYFROM_SCREEN   =  0;
   const int TIMEOUT_RESISTANCE_LENGTH_MS_WINDOW   =   0;
-  const int TIMEOUT_RESISTANCE_LENGTH_MS_XINERAMA =   0;
+  const int TIMEOUT_RESISTANCE_LENGTH_MS_MONITOR =   0;
   const int TIMEOUT_RESISTANCE_LENGTH_MS_SCREEN   =   0;
 
   /* Quit if no movement was specified */
@@ -423,8 +423,8 @@ apply_edge_resistance (MetaWindow                *window,
                 case META_EDGE_WINDOW:
                   timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_WINDOW;
                   break;
-                case META_EDGE_XINERAMA:
-                  timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_XINERAMA;
+                case META_EDGE_MONITOR:
+                  timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_MONITOR;
                   break;
                 case META_EDGE_SCREEN:
                   timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_SCREEN;
@@ -468,11 +468,11 @@ apply_edge_resistance (MetaWindow                *window,
               else
                 threshold = PIXEL_DISTANCE_THRESHOLD_AWAYFROM_WINDOW;
               break;
-            case META_EDGE_XINERAMA:
+            case META_EDGE_MONITOR:
               if (movement_towards_edge (edge->side_type, increment))
-                threshold = PIXEL_DISTANCE_THRESHOLD_TOWARDS_XINERAMA;
+                threshold = PIXEL_DISTANCE_THRESHOLD_TOWARDS_MONITOR;
               else
-                threshold = PIXEL_DISTANCE_THRESHOLD_AWAYFROM_XINERAMA;
+                threshold = PIXEL_DISTANCE_THRESHOLD_AWAYFROM_MONITOR;
               break;
             case META_EDGE_SCREEN:
               if (movement_towards_edge (edge->side_type, increment))
@@ -761,7 +761,7 @@ stupid_sort_requiring_extra_pointer_dereference (gconstpointer a,
 static void
 cache_edges (MetaDisplay *display,
              GList *window_edges,
-             GList *xinerama_edges,
+             GList *monitor_edges,
              GList *screen_edges)
 {
   MetaEdgeResistanceData *edge_data;
@@ -776,7 +776,7 @@ cache_edges (MetaDisplay *display,
   if (meta_is_verbose())
     {
       int max_edges = MAX (MAX( g_list_length (window_edges), 
-                                g_list_length (xinerama_edges)),
+                                g_list_length (monitor_edges)),
                            g_list_length (screen_edges));
       char big_buffer[(EDGE_LENGTH+2)*max_edges];
 
@@ -784,9 +784,9 @@ cache_edges (MetaDisplay *display,
       meta_topic (META_DEBUG_EDGE_RESISTANCE,
                   "Window edges for resistance  : %s\n", big_buffer);
 
-      meta_rectangle_edge_list_to_string (xinerama_edges, ", ", big_buffer);
+      meta_rectangle_edge_list_to_string (monitor_edges, ", ", big_buffer);
       meta_topic (META_DEBUG_EDGE_RESISTANCE,
-                  "Xinerama edges for resistance: %s\n", big_buffer);
+                  "Monitor edges for resistance: %s\n", big_buffer);
 
       meta_rectangle_edge_list_to_string (screen_edges, ", ", big_buffer);
       meta_topic (META_DEBUG_EDGE_RESISTANCE,
@@ -807,7 +807,7 @@ cache_edges (MetaDisplay *display,
           tmp = window_edges;
           break;
         case 1:
-          tmp = xinerama_edges;
+          tmp = monitor_edges;
           break;
         case 2:
           tmp = screen_edges;
@@ -875,7 +875,7 @@ cache_edges (MetaDisplay *display,
           tmp = window_edges;
           break;
         case 1:
-          tmp = xinerama_edges;
+          tmp = monitor_edges;
           break;
         case 2:
           tmp = screen_edges;
@@ -1110,12 +1110,12 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
 
   /*
    * 5th: Cache the combination of these edges with the onscreen and
-   * xinerama edges in an array for quick access.  Free the edges since
+   * monitor edges in an array for quick access.  Free the edges since
    * they've been cached elsewhere.
    */
   cache_edges (display,
                edges,
-               display->grab_screen->active_workspace->xinerama_edges,
+               display->grab_screen->active_workspace->monitor_edges,
                display->grab_screen->active_workspace->screen_edges);
   g_list_free (edges);
 

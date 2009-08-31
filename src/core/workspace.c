@@ -170,16 +170,16 @@ meta_workspace_new (MetaScreen *screen)
   meta_screen_foreach_window (screen, maybe_add_to_list, &workspace->mru_list);
 
   workspace->work_areas_invalid = TRUE;
-  workspace->work_area_xinerama = NULL;
+  workspace->work_area_monitor = NULL;
   workspace->work_area_screen.x = 0;
   workspace->work_area_screen.y = 0;
   workspace->work_area_screen.width = 0;
   workspace->work_area_screen.height = 0;
 
   workspace->screen_region = NULL;
-  workspace->xinerama_region = NULL;
+  workspace->monitor_region = NULL;
   workspace->screen_edges = NULL;
-  workspace->xinerama_edges = NULL;
+  workspace->monitor_edges = NULL;
   workspace->list_containing_self = g_list_prepend (NULL, workspace);
 
   workspace->builtin_struts = NULL;
@@ -263,7 +263,7 @@ meta_workspace_remove (MetaWorkspace *workspace)
   workspace->screen->workspaces =
     g_list_remove (workspace->screen->workspaces, workspace);
   
-  g_free (workspace->work_area_xinerama);
+  g_free (workspace->work_area_monitor);
 
   g_list_free (workspace->mru_list);
   g_list_free (workspace->list_containing_self);
@@ -280,12 +280,12 @@ meta_workspace_remove (MetaWorkspace *workspace)
   if (!workspace->work_areas_invalid)
     {
       workspace_free_all_struts (workspace);
-      for (i = 0; i < screen->n_xinerama_infos; i++)
-        meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
-      g_free (workspace->xinerama_region);
+      for (i = 0; i < screen->n_monitor_infos; i++)
+        meta_rectangle_free_list_and_elements (workspace->monitor_region[i]);
+      g_free (workspace->monitor_region);
       meta_rectangle_free_list_and_elements (workspace->screen_region);
       meta_rectangle_free_list_and_elements (workspace->screen_edges);
-      meta_rectangle_free_list_and_elements (workspace->xinerama_edges);
+      meta_rectangle_free_list_and_elements (workspace->monitor_edges);
     }
 
   g_object_unref (workspace);
@@ -713,21 +713,21 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
               "Invalidating work area for workspace %d\n",
               meta_workspace_index (workspace));
 
-  g_free (workspace->work_area_xinerama);
-  workspace->work_area_xinerama = NULL;
+  g_free (workspace->work_area_monitor);
+  workspace->work_area_monitor = NULL;
       
   workspace_free_all_struts (workspace);
 
-  for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
-    meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
-  g_free (workspace->xinerama_region);
+  for (i = 0; i < workspace->screen->n_monitor_infos; i++)
+    meta_rectangle_free_list_and_elements (workspace->monitor_region[i]);
+  g_free (workspace->monitor_region);
   meta_rectangle_free_list_and_elements (workspace->screen_region);
   meta_rectangle_free_list_and_elements (workspace->screen_edges);
-  meta_rectangle_free_list_and_elements (workspace->xinerama_edges);
-  workspace->xinerama_region = NULL;
+  meta_rectangle_free_list_and_elements (workspace->monitor_edges);
+  workspace->monitor_region = NULL;
   workspace->screen_region = NULL;
   workspace->screen_edges = NULL;
-  workspace->xinerama_edges = NULL;
+  workspace->monitor_edges = NULL;
   
   workspace->work_areas_invalid = TRUE;
 
@@ -780,10 +780,10 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
     return;
 
   g_assert (workspace->all_struts == NULL);
-  g_assert (workspace->xinerama_region == NULL);
+  g_assert (workspace->monitor_region == NULL);
   g_assert (workspace->screen_region == NULL);
   g_assert (workspace->screen_edges == NULL);
-  g_assert (workspace->xinerama_edges == NULL);
+  g_assert (workspace->monitor_edges == NULL);
 
   /* STEP 1: Get the list of struts */
 
@@ -803,18 +803,18 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   g_list_free (windows);
 
   /* STEP 2: Get the maximal/spanning rects for the onscreen and
-   *         on-single-xinerama regions
+   *         on-single-monitor regions
    */  
-  g_assert (workspace->xinerama_region == NULL);
+  g_assert (workspace->monitor_region == NULL);
   g_assert (workspace->screen_region   == NULL);
 
-  workspace->xinerama_region = g_new (GList*,
-                                      workspace->screen->n_xinerama_infos);
-  for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
+  workspace->monitor_region = g_new (GList*,
+                                      workspace->screen->n_monitor_infos);
+  for (i = 0; i < workspace->screen->n_monitor_infos; i++)
     {
-      workspace->xinerama_region[i] =
+      workspace->monitor_region[i] =
         meta_rectangle_get_minimal_spanning_set_for_region (
-          &workspace->screen->xinerama_infos[i].rect,
+          &workspace->screen->monitor_infos[i].rect,
           workspace->all_struts);
     }
   workspace->screen_region =
@@ -823,7 +823,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
       workspace->all_struts);
 
   /* STEP 3: Get the work areas (region-to-maximize-to) for the screen and
-   *         xineramas.
+   *         monitors.
    */
   work_area = workspace->screen->rect;  /* start with the screen */
   if (workspace->screen_region == NULL)
@@ -878,35 +878,35 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
               workspace->work_area_screen.width,
               workspace->work_area_screen.height);    
 
-  /* Now find the work areas for each xinerama */
-  g_free (workspace->work_area_xinerama);
-  workspace->work_area_xinerama = g_new (MetaRectangle,
-                                         workspace->screen->n_xinerama_infos);
+  /* Now find the work areas for each monitor */
+  g_free (workspace->work_area_monitor);
+  workspace->work_area_monitor = g_new (MetaRectangle,
+                                         workspace->screen->n_monitor_infos);
 
-  for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
+  for (i = 0; i < workspace->screen->n_monitor_infos; i++)
     {
-      work_area = workspace->screen->xinerama_infos[i].rect;
+      work_area = workspace->screen->monitor_infos[i].rect;
 
-      if (workspace->xinerama_region[i] == NULL)
+      if (workspace->monitor_region[i] == NULL)
         /* FIXME: constraints.c untested with this, but it might be nice for
          * a screen reader or magnifier.
          */
         work_area = meta_rect (work_area.x, work_area.y, -1, -1);
       else
-        meta_rectangle_clip_to_region (workspace->xinerama_region[i],
+        meta_rectangle_clip_to_region (workspace->monitor_region[i],
                                        FIXED_DIRECTION_NONE,
                                        &work_area);
 
-      workspace->work_area_xinerama[i] = work_area;
+      workspace->work_area_monitor[i] = work_area;
       meta_topic (META_DEBUG_WORKAREA,
                   "Computed work area for workspace %d "
-                  "xinerama %d: %d,%d %d x %d\n",
+                  "monitor %d: %d,%d %d x %d\n",
                   meta_workspace_index (workspace),
                   i,
-                  workspace->work_area_xinerama[i].x,
-                  workspace->work_area_xinerama[i].y,
-                  workspace->work_area_xinerama[i].width,
-                  workspace->work_area_xinerama[i].height);
+                  workspace->work_area_monitor[i].x,
+                  workspace->work_area_monitor[i].y,
+                  workspace->work_area_monitor[i].width,
+                  workspace->work_area_monitor[i].height);
     }
 
   /* STEP 4: Make sure the screen_region is nonempty (separate from step 2
@@ -920,17 +920,17 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
       workspace->screen_region = g_list_prepend (NULL, nonempty_region);
     }
 
-  /* STEP 5: Cache screen and xinerama edges for edge resistance and snapping */
+  /* STEP 5: Cache screen and monitor edges for edge resistance and snapping */
   g_assert (workspace->screen_edges    == NULL);
-  g_assert (workspace->xinerama_edges  == NULL);
+  g_assert (workspace->monitor_edges  == NULL);
   workspace->screen_edges =
     meta_rectangle_find_onscreen_edges (&workspace->screen->rect,
                                         workspace->all_struts);
   tmp = NULL;
-  for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
-    tmp = g_list_prepend (tmp, &workspace->screen->xinerama_infos[i].rect);
-  workspace->xinerama_edges =
-    meta_rectangle_find_nonintersected_xinerama_edges (tmp,
+  for (i = 0; i < workspace->screen->n_monitor_infos; i++)
+    tmp = g_list_prepend (tmp, &workspace->screen->monitor_infos[i].rect);
+  workspace->monitor_edges =
+    meta_rectangle_find_nonintersected_monitor_edges (tmp,
                                                        workspace->all_struts);
   g_list_free (tmp);
 
@@ -970,21 +970,21 @@ meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
 }
 
 void
-meta_workspace_get_work_area_for_xinerama (MetaWorkspace *workspace,
-                                           int            which_xinerama,
-                                           MetaRectangle *area)
+meta_workspace_get_work_area_for_monitor (MetaWorkspace *workspace,
+                                          int            which_monitor,
+                                          MetaRectangle *area)
 {
-  g_assert (which_xinerama >= 0);
+  g_assert (which_monitor >= 0);
 
   ensure_work_areas_validated (workspace);
-  g_assert (which_xinerama < workspace->screen->n_xinerama_infos);
+  g_assert (which_monitor < workspace->screen->n_monitor_infos);
   
-  *area = workspace->work_area_xinerama[which_xinerama];
+  *area = workspace->work_area_monitor[which_monitor];
 }
 
 void
-meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
-                                            MetaRectangle *area)
+meta_workspace_get_work_area_all_monitors (MetaWorkspace *workspace,
+                                           MetaRectangle *area)
 {
   ensure_work_areas_validated (workspace);
   
@@ -1000,12 +1000,12 @@ meta_workspace_get_onscreen_region (MetaWorkspace *workspace)
 }
 
 GList*
-meta_workspace_get_onxinerama_region (MetaWorkspace *workspace,
-                                      int            which_xinerama)
+meta_workspace_get_onmonitor_region (MetaWorkspace *workspace,
+                                     int            which_monitor)
 {
   ensure_work_areas_validated (workspace);
 
-  return workspace->xinerama_region[which_xinerama];
+  return workspace->monitor_region[which_monitor];
 }
 
 #ifdef WITH_VERBOSE_MODE
