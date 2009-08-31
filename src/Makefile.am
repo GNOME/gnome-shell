@@ -1,3 +1,6 @@
+# Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
+.AUTOPARALLEL:
+
 lib_LTLIBRARIES = libmutter-private.la
 
 SUBDIRS=wm-tester tools compositor/plugins
