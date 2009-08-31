@@ -1923,6 +1923,42 @@ meta_screen_get_current_monitor (MetaScreen *screen)
   return &screen->monitor_infos[screen->last_monitor_index];
 }
 
+/**
+ * meta_screen_get_n_monitors:
+ * @screen: a #MetaScreen
+ *
+ * Gets the number of monitors that are joined together to form @screen.
+ *
+ * Return value: the number of monitors
+ */
+int
+meta_screen_get_n_monitors (MetaScreen *screen)
+{
+  g_return_val_if_fail (META_IS_SCREEN (screen), 0);
+
+  return screen->n_monitor_infos;
+}
+
+/**
+ * meta_screen_get_monitor_geometry:
+ * @screen: a #MetaScreen
+ * @monitor: the monitor number
+ * @geometry: (out): location to store the monitor geometry
+ *
+ * Stores the location and size of the indicated monitor in @geometry.
+ */
+void
+meta_screen_get_monitor_geometry (MetaScreen    *screen,
+                                  int            monitor,
+                                  MetaRectangle *geometry)
+{
+  g_return_if_fail (META_IS_SCREEN (screen));
+  g_return_if_fail (monitor >= 0 && monitor < screen->n_monitor_infos);
+  g_return_if_fail (geometry != NULL);
+
+  *geometry = screen->monitor_infos[monitor].rect;
+}
+
 #define _NET_WM_ORIENTATION_HORZ 0
 #define _NET_WM_ORIENTATION_VERT 1
 

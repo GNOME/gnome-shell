@@ -75,4 +75,9 @@ int meta_screen_get_active_workspace_index (MetaScreen *screen);
 
 MetaWorkspace * meta_screen_get_active_workspace (MetaScreen *screen);
 
+int  meta_screen_get_n_monitors       (MetaScreen    *screen);
+void meta_screen_get_monitor_geometry (MetaScreen    *screen,
+                                       int            monitor,
+                                       MetaRectangle *geometry);
+
 #endif
