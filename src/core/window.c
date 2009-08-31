@@ -136,7 +136,8 @@ enum {
   PROP_MINI_ICON,
   PROP_DECORATED,
   PROP_FULLSCREEN,
-  PROP_WINDOW_TYPE
+  PROP_WINDOW_TYPE,
+  PROP_USER_TIME
 };
 
 enum
@@ -201,6 +202,9 @@ meta_window_get_property(GObject         *object,
       break;
     case PROP_WINDOW_TYPE:
       g_value_set_enum (value, win->type);
+      break;
+    case PROP_USER_TIME:
+      g_value_set_uint (value, win->net_wm_user_time);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -278,6 +282,16 @@ meta_window_class_init (MetaWindowClass *klass)
                                                       "The type of the window",
                                                       MUTTER_TYPE_WINDOW_TYPE,
                                                       META_WINDOW_NORMAL,
+                                                      G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_USER_TIME,
+                                   g_param_spec_uint ("user-time",
+                                                      "User time",
+                                                      "Timestamp of last user interaction",
+                                                      0,
+                                                      G_MAXUINT,
+                                                      0,
                                                       G_PARAM_READABLE));
 
   window_signals[WORKSPACE_CHANGED] =
@@ -8514,6 +8528,8 @@ meta_window_set_user_time (MetaWindow *window,
           __window_is_terminal (window))
         window->display->allow_terminal_deactivation = FALSE;
     }
+
+  g_object_notify (G_OBJECT (window), "user-time");
 }
 
 /* Sets the demands_attention hint on a window, but only
