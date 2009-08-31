@@ -1,12 +1,22 @@
 # clutter package version number, (as distinct from shared library version)
-# An odd micro number indicates in-progress development, (eg. from CVS)
-# An even micro number indicates a released version.
+# An odd micro number indicates in-progress development from Git
+# An even micro number indicates a released version
+#
+# Making a point release:
+# - increase clutter_micro_version to the next even number
+# - increase clutter_interface_age to the next even number
+#   UNLESS there was an API addition/deprecation, in which case
+#   - set clutter_interface_age to 0
+# After the release:
+# - increase clutter_micro_version to the next odd number
+# - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [1])
 m4_define([clutter_micro_version], [1])
 
 m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutter_micro_version])
 
+# change this only when breaking the API
 m4_define([clutter_api_version], [1.0])
 
 # increase the interface age by 2 for each release; if the API changes,
@@ -18,13 +28,14 @@ m4_define([clutter_api_version], [1.0])
 # this allows using the same soname for different micro-releases in case
 # no API was added or deprecated. for instance:
 #
-#   clutter 1.2.0 -> 100 * 2 + 0 = 200, interface age = 0 -> 200
-#   clutter 1.2.2 -> 100 * 2 + 2 = 202, interface age = 2 -> 200
-#   clutter 1.2.4 -> 100 * 2 + 4 = 204, interface age = 4 -> 200
+#   clutter 1.2.0  -> 100 * 2 + 0  = 200, interface age = 0 -> 200
+#   clutter 1.2.2  -> 100 * 2 + 2  = 202, interface age = 2 -> 200
+#   clutter 1.2.4  -> 100 * 2 + 4  = 204, interface age = 4 -> 200
 #   [ API addition, deprecation ]
-#   clutter 1.2.6 -> 100 * 2 + 6 = 206, interface age = 0 -> 206
+#   clutter 1.2.6  -> 100 * 2 + 6  = 206, interface age = 0 -> 206
+#   clutter 1.2.8  -> 100 * 2 + 8  = 208, interface age = 2 -> 206
+#   clutter 1.2.10 -> 100 * 2 + 10 = 210, interface age = 4 -> 206
 #   ...
-#
 m4_define([clutter_interface_age], [0])
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
