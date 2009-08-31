@@ -331,7 +331,7 @@ mutter-marshal.c: Makefile mutter-marshal.list
 
 mutter-enum-types.h: stamp-mutter-enum-types.h Makefile
 	@true
-stamp-mutter-enum-types.h: $(mutter_source_h) mutter-enum-types.h.in
+stamp-mutter-enum-types.h: $(libmutterinclude_base_headers) mutter-enum-types.h.in
 	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template $(srcdir)/mutter-enum-types.h.in \
