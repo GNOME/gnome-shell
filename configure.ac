@@ -28,6 +28,10 @@ AM_GLIB_GNU_GETTEXT
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 AM_GCONF_SOURCE_2
 
+# Get a value to substitute into gnome-shell.in
+AM_PATH_PYTHON([2.5])
+AC_SUBST(PYTHON)
+
 # We need at least this, since gst_plugin_register_static() was added
 # in 0.10.16, but nothing older than 0.10.21 has been tested.
 GSTREAMER_MIN_VERSION=0.10.16
