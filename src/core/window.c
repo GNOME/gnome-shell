@@ -8456,6 +8456,26 @@ meta_window_stack_just_below (MetaWindow *window,
     }
 }
 
+/**
+ * meta_window_get_user_time:
+ *
+ * The user time represents a timestamp for the last time the user
+ * interacted with this window.  Note this property is only available
+ * for non-override-redirect windows.
+ *
+ * The property is set by Mutter initially upon window creation,
+ * and updated thereafter on input events (key and button presses) seen by Mutter,
+ * client updates to the _NET_WM_USER_TIME property (if later than the current time)
+ * and when focusing the window.
+ *
+ * Returns: The last time the user interacted with this window.
+ */
+guint32
+meta_window_get_user_time (MetaWindow *window)
+{
+  return window->net_wm_user_time;
+}
+
 void
 meta_window_set_user_time (MetaWindow *window,
                            guint32     timestamp)
