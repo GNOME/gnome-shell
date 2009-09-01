@@ -30,7 +30,7 @@
 #define META_TYPE_SCREEN            (meta_screen_get_type ())
 #define META_SCREEN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_SCREEN, MetaScreen))
 #define META_SCREEN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_SCREEN, MetaScreenClass))
-#define META_IS_SCREEN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_SCREEN_TYPE))
+#define META_IS_SCREEN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_SCREEN))
 #define META_IS_SCREEN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_SCREEN))
 #define META_SCREEN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_SCREEN, MetaScreenClass))
 
