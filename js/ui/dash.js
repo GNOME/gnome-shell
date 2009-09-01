@@ -393,6 +393,31 @@ MoreLink.prototype = {
 
 Signals.addSignalMethods(MoreLink.prototype);
 
+function BackLink() {
+    this._init();
+}
+
+BackLink.prototype = {
+    _init : function () {
+        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                           padding_right: DEFAULT_PADDING,
+                                           padding_left: DEFAULT_PADDING,
+                                           reactive: true,
+                                           x_align: Big.BoxAlignment.CENTER,
+                                           y_align: Big.BoxAlignment.CENTER,
+                                           border_right: SECTION_BORDER,
+                                           border_color: SECTION_BORDER_COLOR });
+
+        let global = Shell.Global.get();
+        let backIconUri = "file://" + global.imagedir + "back.svg";
+        let backIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
+                                                                      backIconUri,
+                                                                      12,
+                                                                      16);
+        this.actor.append(backIcon, Big.BoxPackFlags.NONE);
+    }
+}
+
 function SectionHeader(title, suppressBrowse) {
     this._init(title, suppressBrowse);
 }
@@ -416,6 +441,14 @@ SectionHeader.prototype = {
             backgroundGradient.set_size(width, height);
         }));
 
+        this.backLink = new BackLink();
+        this._innerBox.append(this.backLink.actor, Big.BoxPackFlags.NONE);
+        this.backLink.actor.hide();
+
+        this.backLink.actor.connect('activate', Lang.bind(this, function (actor) {
+            this.emit('back-link-activated');   
+        }));
+
         let textBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                     padding_top: DEFAULT_PADDING,
                                     padding_bottom: DEFAULT_PADDING });
@@ -424,14 +457,41 @@ SectionHeader.prototype = {
                                        text: title });
         textBox.append(this.text, Big.BoxPackFlags.NONE);
 
+        this.countText = new Clutter.Text({ color: TEXT_COLOR,
+                                            font_name: 'Sans Bold 14px' });
+        textBox.append(this.countText, Big.BoxPackFlags.END);
+        this.countText.hide();
+
         this._innerBox.append(textBox, Big.BoxPackFlags.EXPAND);
 
         if (!suppressBrowse) {
             this.moreLink = new MoreLink();
             this._innerBox.append(this.moreLink.actor, Big.BoxPackFlags.END);
         }
+    },
+
+    setTitle : function(title) {
+        this.text.text = title;
+    },
+
+    setBackLinkVisible : function(visible) {
+        if (visible)
+            this.backLink.actor.show();
+        else
+            this.backLink.actor.hide();
+    },
+
+    setCountText : function(countText) {
+        if (countText == "") {
+            this.countText.hide();
+        } else {
+            this.countText.show();
+            this.countText.text = countText;
+        }
     }
 }
+
+Signals.addSignalMethods(SectionHeader.prototype);
 
 function SearchSectionHeader(title, onClick) {
     this._init(title, onClick);
@@ -457,7 +517,6 @@ SearchSectionHeader.prototype = {
         box.append(this.countText, Big.BoxPackFlags.END);
 
         this.tooltip.hide();
-        this._showTooltip = true;
 
         let button = new Button.Button(box, PRELIGHT_COLOR, BACKGROUND_COLOR,
                                        TEXT_COLOR);
@@ -471,22 +530,9 @@ SearchSectionHeader.prototype = {
     },
 
     _updateTooltip : function(actor) {
-        if (actor.hover) {
-            if (this._showTooltip)
-                this.tooltip.show();
-        } else {
-            this.tooltip.hide();
-        }
-    },
-
-    setShowTooltip : function(showTooltip) {
-        this._showTooltip = showTooltip;
-        // Because we only show tooltip on mouse-over,
-        // we should not just show it here if showTooltip is
-        // set to true, but in the future we could check if
-        // the mouse happens to be over the header and show it
-        // in that case.
-        if (!this._showTooltip)
+        if (actor.hover)
+            this.tooltip.show();
+        else
             this.tooltip.hide();
     }
 }
@@ -568,14 +614,22 @@ Dash.prototype = {
                 text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
                 this._appSearchResultArea.display.setSearch(text);
                 this._docSearchResultArea.display.setSearch(text);
+ 
+                let appsCount = this._appSearchResultArea.display.getMatchedItemsCount() + "";
+                let docsCount = this._docSearchResultArea.display.getMatchedItemsCount() + "";
 
-                this._appSearchHeader.countText.text = this._appSearchResultArea.display.getMatchedItemsCount() + "";
-                this._docSearchHeader.countText.text = this._docSearchResultArea.display.getMatchedItemsCount() + "";
-                                
-                if (this._appSearchResultArea.display.hasItems() && !this._getOnlyDocSearchShown()) {
+                this._appSearchHeader.countText.text = appsCount;
+                this._docSearchHeader.countText.text = docsCount;
+
+                if (this._appSearchResultsOnlyShown)
+                    this._searchResultsSection.header.setCountText(appsCount);
+                else if (this._docSearchResultsOnlyShown)
+                    this._searchResultsSection.header.setCountText(docsCount);
+                               
+                if (this._appSearchResultArea.display.hasItems() && !this._docSearchResultsOnlyShown) {
                     this._appSearchResultArea.display.selectFirstItem();
                     this._docSearchResultArea.display.unsetSelected();
-                } else if (this._docSearchResultArea.display.hasItems() && !this._getOnlyAppSearchShown()) {
+                } else if (this._docSearchResultArea.display.hasItems() && !this._appSearchResultsOnlyShown) {
                     this._docSearchResultArea.display.selectFirstItem();
                     this._appSearchResultArea.display.unsetSelected();
                 }
@@ -596,7 +650,7 @@ Dash.prototype = {
             if (symbol == Clutter.Escape) {
                 // Escape will keep clearing things back to the desktop.
                 // If we are showing a particular section of search, go back to all sections.
-                if (this._getOnlyAppSearchShown() || this._getOnlyDocSearchShown())
+                if (this._appSearchResultsOnlyShown || this._docSearchResultsOnlyShown)
                     this._showAllSearchSections();
                 // If we have an active search, we remove it.
                 else if (this._searchActive)
@@ -616,12 +670,12 @@ Dash.prototype = {
                 // something in one display, but then unset the selection, and move
                 // it to the other display, so it's ok to do that.
                 if (this._appSearchResultArea.display.hasSelected()) {
-                    if (!this._appSearchResultArea.display.selectUp() && this._docSearchResultArea.display.hasItems() && !this._getOnlyAppSearchShown()) {
+                    if (!this._appSearchResultArea.display.selectUp() && this._docSearchResultArea.display.hasItems() && !this._appSearchResultsOnlyShown) {
                         this._docSearchResultArea.display.selectLastItem();
                         this._appSearchResultArea.display.unsetSelected();
                     }
                 } else if (this._docSearchResultArea.display.hasSelected()) {
-                    if (!this._docSearchResultArea.display.selectUp() && this._appSearchResultArea.display.hasItems() && !this._getOnlyDocSearchShown()) {
+                    if (!this._docSearchResultArea.display.selectUp() && this._appSearchResultArea.display.hasItems() && !this._docSearchResultsOnlyShown) {
                         this._appSearchResultArea.display.selectLastItem();
                         this._docSearchResultArea.display.unsetSelected();
                     }
@@ -631,12 +685,12 @@ Dash.prototype = {
                 if (!this._searchActive)
                     return true;
                 if (this._appSearchResultArea.display.hasSelected()) {
-                    if (!this._appSearchResultArea.display.selectDown() && this._docSearchResultArea.display.hasItems() && !this._getOnlyAppSearchShown()) {
+                    if (!this._appSearchResultArea.display.selectDown() && this._docSearchResultArea.display.hasItems() && !this._appSearchResultsOnlyShown) {
                         this._docSearchResultArea.display.selectFirstItem();
                         this._appSearchResultArea.display.unsetSelected();
                     }
                 } else if (this._docSearchResultArea.display.hasSelected()) {
-                    if (!this._docSearchResultArea.display.selectDown() && this._appSearchResultArea.display.hasItems() && !this._getOnlyDocSearchShown()) {
+                    if (!this._docSearchResultArea.display.selectDown() && this._appSearchResultArea.display.hasItems() && !this._docSearchResultsOnlyShown) {
                         this._appSearchResultArea.display.selectFirstItem();
                         this._docSearchResultArea.display.unsetSelected();
                     }
@@ -696,6 +750,14 @@ Dash.prototype = {
 
         this._searchResultsSection = new Section(_("SEARCH RESULTS"), true);
 
+        this._searchResultsSection.header.connect('back-link-activated', Lang.bind(this, function () {
+            if (this._appSearchResultsOnlyShown)
+                this._toggleOnlyAppSearchShown();
+            else if (this._docSearchResultsOnlyShown)
+                this._toggleOnlyDocSearchShown();                
+        }));
+
+        this._appSearchResultsOnlyShown = false;
         this._appSearchHeader = new SearchSectionHeader(_("APPLICATIONS"),
                                                         Lang.bind(this,
                                                                   function () {
@@ -707,6 +769,7 @@ Dash.prototype = {
         this._searchResultsSection.content.append(this._appSearchResultArea.actor, Big.BoxPackFlags.EXPAND);
         createPaneForDetails(this, this._appSearchResultArea.display);
 
+        this._docSearchResultsOnlyShown = false;
         this._docSearchHeader = new SearchSectionHeader(_("RECENT DOCUMENTS"),
                                                         Lang.bind(this,
                                                                   function () {
@@ -769,7 +832,7 @@ Dash.prototype = {
     },
 
     _toggleOnlyAppSearchShown: function() {
-        if (this._getOnlyAppSearchShown()) {
+        if (this._appSearchResultsOnlyShown) {
             this._setDocSearchShown(true);
         } else {
             this._setDocSearchShown(false);
@@ -777,23 +840,11 @@ Dash.prototype = {
     },
 
     _toggleOnlyDocSearchShown: function() {
-        if (this._getOnlyDocSearchShown()) {
+        if (this._docSearchResultsOnlyShown) {
             this._setAppSearchShown(true);
         } else {
             this._setAppSearchShown(false);
         }
-    },
-
-    // TODO: the following two functions currently rely on us showing the
-    // section header even if there are no results in that section. We'll need
-    // to change the check if we update that behavior. We'll also need to change
-    // the check if we add more sections to search results.
-    _getOnlyAppSearchShown: function() {
-        return this._searchActive && !this._docSearchHeader.actor.visible;
-    },
-
-    _getOnlyDocSearchShown: function() {
-        return this._searchActive && !this._appSearchHeader.actor.visible;
     },
 
     _setAppSearchShown: function(show) {
@@ -802,14 +853,23 @@ Dash.prototype = {
             this._appSearchResultArea.actor.show();
             this._docSearchResultArea.display.displayPage(0);
             this._docSearchResultArea.controlBox.hide();
-            this._docSearchHeader.setShowTooltip(true);
+            this._searchResultsSection.header.setTitle(_("SEARCH RESULTS"));
+            this._searchResultsSection.header.setBackLinkVisible(false);
+            this._searchResultsSection.header.setCountText("");
+            this._docSearchHeader.actor.show();
+            this._docSearchResultsOnlyShown = false;
         } else {
             this._appSearchHeader.actor.hide();
             this._appSearchResultArea.actor.hide();
             this._appSearchResultArea.display.unsetSelected();
             this._docSearchResultArea.display.selectFirstItem();
             this._docSearchResultArea.controlBox.show();
-            this._docSearchHeader.setShowTooltip(false);
+            this._searchResultsSection.header.setTitle(_("RECENT DOCUMENTS"));
+            this._searchResultsSection.header.setBackLinkVisible(true);
+            let docsCount = this._docSearchResultArea.display.getMatchedItemsCount() + "";
+            this._searchResultsSection.header.setCountText(docsCount);
+            this._docSearchHeader.actor.hide();
+            this._docSearchResultsOnlyShown = true;
         }
     },
 
@@ -819,15 +879,24 @@ Dash.prototype = {
             this._docSearchResultArea.actor.show();
             this._appSearchResultArea.display.displayPage(0);
             this._appSearchResultArea.controlBox.hide();
-            this._appSearchHeader.setShowTooltip(true);
-       } else { 
+            this._searchResultsSection.header.setTitle(_("SEARCH RESULTS"));
+            this._searchResultsSection.header.setBackLinkVisible(false);
+            this._searchResultsSection.header.setCountText("");
+            this._appSearchHeader.actor.show();
+            this._appSearchResultsOnlyShown = false;
+        } else {
             this._docSearchHeader.actor.hide();
             this._docSearchResultArea.actor.hide();
             this._docSearchResultArea.display.unsetSelected();
             this._appSearchResultArea.display.selectFirstItem();
             this._appSearchResultArea.controlBox.show();
-            this._appSearchHeader.setShowTooltip(false);
-       }
+            this._searchResultsSection.header.setTitle(_("APPLICATIONS"));
+            this._searchResultsSection.header.setBackLinkVisible(true);
+            let appsCount = this._appSearchResultArea.display.getMatchedItemsCount() + "";
+            this._searchResultsSection.header.setCountText(appsCount);
+            this._appSearchHeader.actor.hide();
+            this._appSearchResultsOnlyShown = true;
+        }
     },
 
     _showAllSearchSections: function() {
