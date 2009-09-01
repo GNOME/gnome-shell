@@ -8,15 +8,17 @@ const Tweener = imports.ui.tweener;
 
 const SNAP_BACK_ANIMATION_TIME = 0.25;
 
-function _Draggable(actor) {
-    this._init(actor);
+function _Draggable(actor, manualMode) {
+    this._init(actor, manualMode);
 }
 
 _Draggable.prototype = {
-    _init : function(actor) {
+    _init : function(actor, manualMode) {
         this.actor = actor;
-        this.actor.connect('button-press-event',
-                           Lang.bind(this, this._onButtonPress));
+        if (!manualMode)
+            this.actor.connect('button-press-event',
+                               Lang.bind(this, this._onButtonPress));
+        this._haveSourceGrab = false;
     },
 
     _onButtonPress : function (actor, event) {
@@ -25,6 +27,7 @@ _Draggable.prototype = {
         if (Tweener.getTweenCount(actor))
             return false;
 
+        this._haveSourceGrab = true;
         this._grabActor(actor);
 
         let [stageX, stageY] = event.get_coords();
@@ -66,6 +69,80 @@ _Draggable.prototype = {
             return false;
     },
 
+    /**
+     * startDrag:
+     * @actor: Origin actor for drag and drop
+     * @stageX: X coordinate of event
+     * @stageY: Y coordinate of event
+     * @time: Event timestamp
+     *
+     * Directly initiate a drag and drop operation from the given actor.
+     * This function is useful to call if you've specified manualMode
+     * for the draggable.
+     */
+    startDrag: function (actor, stageX, stageY, time) {
+        this.emit('drag-begin', time);
+
+        this._dragStartX = stageX;
+        this._dragStartY = stageY;
+
+        if (this.actor._delegate && this.actor._delegate.getDragActor) {
+            this._dragActor = this.actor._delegate.getDragActor(this._dragStartX, this._dragStartY);
+            // Drag actor does not always have to be the same as actor. For example drag actor
+            // can be an image that's part of the actor. So to perform "snap back" correctly we need
+            // to know what was the drag actor source.
+            if (this.actor._delegate.getDragActorSource) {
+                this._dragActorSource = this.actor._delegate.getDragActorSource();
+                // If the user dragged from the source, then position
+                // the dragActor over it. Otherwise, center it
+                // around the pointer
+                let [sourceX, sourceY] = this._dragActorSource.get_transformed_position();
+                let [sourceWidth, sourceHeight] = this._dragActorSource.get_transformed_size();
+                let x, y;
+                if (stageX > sourceX && stageX <= sourceX + sourceWidth &&
+                    stageY > sourceY && stageY <= sourceY + sourceHeight) {
+                    x = sourceX;
+                    y = sourceY;
+                } else {
+                    x = stageX - this._dragActor.width / 2;
+                    y = stageY - this._dragActor.height / 2;
+                }
+                this._dragActor.set_position(x, y);
+            } else {
+                this._dragActorSource = this.actor;
+            }
+            this._dragOrigParent = undefined;
+            if (this._haveSourceGrab) {
+                this._haveSourceGrab = false;
+                this._ungrabActor(actor);
+            }
+            this._grabActor(this._dragActor);
+
+            this._dragOffsetX = this._dragActor.x - this._dragStartX;
+            this._dragOffsetY = this._dragActor.y - this._dragStartY;
+        } else {
+            this._dragActor = actor;
+            this._dragActorSource = undefined;
+            this._dragOrigParent = actor.get_parent();
+            this._dragOrigX = this._dragActor.x;
+            this._dragOrigY = this._dragActor.y;
+            this._dragOrigScale = this._dragActor.scale_x;
+
+            let [actorStageX, actorStageY] = actor.get_transformed_position();
+            this._dragOffsetX = actorStageX - this._dragStartX;
+            this._dragOffsetY = actorStageY - this._dragStartY;
+
+            // Set the actor's scale such that it will keep the same
+            // transformed size when it's reparented to the stage
+            let [scaledWidth, scaledHeight] = actor.get_transformed_size();
+            actor.set_scale(scaledWidth / actor.width,
+                           scaledHeight / actor.height);
+        }
+
+        this._dragActor.reparent(actor.get_stage());
+        this._dragActor.raise_top();
+    },
+
     _onMotion : function (actor, event) {
         let [stageX, stageY] = event.get_coords();
 
@@ -75,55 +152,7 @@ _Draggable.prototype = {
         if (!this._dragActor &&
             (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
-            this.emit('drag-begin', event.get_time());
-
-            if (this.actor._delegate && this.actor._delegate.getDragActor) {
-                this._dragActor = this.actor._delegate.getDragActor(this._dragStartX, this._dragStartY);
-                // Drag actor does not always have to be the same as actor. For example drag actor
-                // can be an image that's part of the actor. So to perform "snap back" correctly we need
-                // to know what was the drag actor source.
-                if (this.actor._delegate.getDragActorSource) {
-                    this._dragActorSource = this.actor._delegate.getDragActorSource();
-                    // If the user dragged from the source, then position
-                    // the dragActor over it. Otherwise, center it
-                    // around the pointer
-                    let [sourceX, sourceY] = this._dragActorSource.get_transformed_position();
-                    let [sourceWidth, sourceHeight] = this._dragActorSource.get_transformed_size();
-                    if (stageX > sourceX && stageX <= sourceX + sourceWidth &&
-                        stageY > sourceY && stageY <= sourceY + sourceHeight)
-                        this._dragActor.set_position(sourceX, sourceY);
-                    else
-                        this._dragActor.set_position(stageX - this._dragActor.width / 2, stageY - this._dragActor.height / 2);
-                } else {
-                    this._dragActorSource = this.actor;
-                }
-                this._dragOrigParent = undefined;
-                this._ungrabActor(actor);
-                this._grabActor(this._dragActor);
-
-                this._dragOffsetX = this._dragActor.x - this._dragStartX;
-                this._dragOffsetY = this._dragActor.y - this._dragStartY;
-            } else {
-                this._dragActor = actor;
-                this._dragActorSource = undefined;
-                this._dragOrigParent = actor.get_parent();
-                this._dragOrigX = this._dragActor.x;
-                this._dragOrigY = this._dragActor.y;
-                this._dragOrigScale = this._dragActor.scale_x;
-
-                let [actorStageX, actorStageY] = actor.get_transformed_position();
-                this._dragOffsetX = actorStageX - this._dragStartX;
-                this._dragOffsetY = actorStageY - this._dragStartY;
-
-                // Set the actor's scale such that it will keep the same
-                // transformed size when it's reparented to the stage
-                let [scaledWidth, scaledHeight] = actor.get_transformed_size();
-                actor.set_scale(scaledWidth / actor.width,
-                                scaledHeight / actor.height);
-            }
-
-            this._dragActor.reparent(actor.get_stage());
-            this._dragActor.raise_top();
+                this.startDrag(actor, stageX, stageY, event.get_time());
         }
 
         // If we are dragging, update the position
@@ -149,7 +178,7 @@ _Draggable.prototype = {
                                                     event.get_time());
                 }
                 target = target.get_parent();
-            }  
+            }
         }
 
         return true;
@@ -225,6 +254,13 @@ _Draggable.prototype = {
 
 Signals.addSignalMethods(_Draggable.prototype);
 
-function makeDraggable(actor) {
-    return new _Draggable(actor);
+/**
+ * makeDraggable:
+ * @actor: Source actor
+ * @manualMode: If given, do not automatically start drag and drop on click
+ *
+ * Create an object which controls drag and drop for the given actor.
+ */
+function makeDraggable(actor, manualMode) {
+    return new _Draggable(actor, manualMode);
 }
