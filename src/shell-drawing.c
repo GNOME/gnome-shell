@@ -146,6 +146,36 @@ shell_draw_clock (ClutterCairoTexture *texture,
   cairo_destroy (cr);
 }
 
+void
+shell_draw_box_pointer (ClutterCairoTexture *texture,
+                        ClutterColor        *border_color,
+                        ClutterColor        *background_color)
+{
+  guint width, height;
+  cairo_t *cr;
+
+  clutter_cairo_texture_get_surface_size (texture, &width, &height);
+
+  clutter_cairo_texture_clear (texture);
+  cr = clutter_cairo_texture_create (texture);
+
+  cairo_set_line_width (cr, 1.0);
+
+  clutter_cairo_set_source_color (cr, border_color);
+
+  cairo_move_to (cr, width, 0);
+  cairo_line_to (cr, 0, floor (height * 0.5));
+  cairo_line_to (cr, width, height);
+
+  cairo_stroke_preserve (cr);
+
+  clutter_cairo_set_source_color (cr, background_color);
+
+  cairo_fill (cr);
+
+  cairo_destroy (cr);
+}
+
 static void
 hook_paint_red_border (ClutterActor  *actor,
                        gpointer       user_data)

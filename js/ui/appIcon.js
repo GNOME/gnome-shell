@@ -24,20 +24,22 @@ function AppIcon(appInfo) {
 AppIcon.prototype = {
     _init : function(appInfo) {
         this.appInfo = appInfo;
+        this.windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
+        for (let i = 0; i < this.windows.length; i++) {
+            this.windows[i].connect('notify::user-time', Lang.bind(this, this._resortWindows));
+        }
+        this._resortWindows();
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                    corner_radius: 2,
-                                   border: 0,
                                    padding: 1,
-                                   border_color: GenericDisplay.ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR,
                                    reactive: true });
-        this.actor._delegate = this;
 
         let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     x_align: Big.BoxAlignment.CENTER,
                                     y_align: Big.BoxAlignment.CENTER });
-        this._icon = appInfo.create_icon_texture(APP_ICON_SIZE);
-        iconBox.append(this._icon, Big.BoxPackFlags.NONE);
+        this.icon = appInfo.create_icon_texture(APP_ICON_SIZE);
+        iconBox.append(this.icon, Big.BoxPackFlags.NONE);
 
         this.actor.append(iconBox, Big.BoxPackFlags.EXPAND);
 
@@ -98,7 +100,6 @@ AppIcon.prototype = {
         this._name.allocate(childBox, flags);
 
         // Now the glow
-
         if (this._glowBox != null) {
             let glowPaddingHoriz = Math.max(0, xPadding - GLOW_PADDING_HORIZONTAL);
             glowPaddingHoriz = Math.max(GLOW_PADDING_HORIZONTAL, glowPaddingHoriz);
@@ -108,5 +109,25 @@ AppIcon.prototype = {
             childBox.y2 = availHeight;
             this._glowBox.allocate(childBox, flags);
         }
+    },
+
+    _resortWindows: function() {
+        this.windows.sort(function (a, b) {
+            let timeA = a.get_user_time();
+            let timeB = b.get_user_time();
+            if (timeA == timeB)
+                return 0;
+            else if (timeA > timeB)
+                return -1;
+            return 1;
+        });
+    },
+
+    getDragActor: function() {
+        return this.appInfo.create_icon_texture(APP_ICON_SIZE);
+    },
+
+    getDragActorSource: function() {
+        return this.icon;
     }
 };

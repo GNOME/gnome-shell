@@ -232,7 +232,7 @@ Overview.prototype = {
     // This allows the user to place the item on any workspace.
     handleDragOver : function(source, actor, x, y, time) {
         if (source instanceof GenericDisplay.GenericDisplayItem
-            || source instanceof AppDisplay.WellDisplayItem) {
+            || source instanceof AppDisplay.BaseWellItem) {
             if (this._activeDisplayPane != null)
                 this._activeDisplayPane.close();
             return true;
@@ -388,6 +388,29 @@ Overview.prototype = {
     activateWindow: function (metaWindow, time) {
          this._workspaces.activateWindowFromOverview(metaWindow, time);
          this.hide();
+    },
+
+    /**
+     * setHighlightWindow:
+     * @metaWindow: A #MetaWindow
+     *
+     * Draw the user's attention to the given window @metaWindow.
+     */
+    setHighlightWindow: function (metaWindow) {
+        if (this._workspaces)
+            this._workspaces.setHighlightWindow(metaWindow);
+    },
+
+    /**
+     * setWindowApplicationFilter:
+     * @id: A string application identifier
+     *
+     * Hide all windows which are not owned by the application
+     * identified by @id.
+     */
+    setWindowApplicationFilter: function (id) {
+        if (this._workspaces)
+            this._workspaces.setWindowApplicationFilter(id);
     },
 
     //// Private methods ////

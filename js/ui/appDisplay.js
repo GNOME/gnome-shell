@@ -26,6 +26,27 @@ const WELL_DEFAULT_COLUMNS = 4;
 const WELL_ITEM_HSPACING = 0;
 const WELL_ITEM_VSPACING = 4;
 
+const WELL_MENU_POPUP_TIMEOUT_MS = 600;
+
+const TRANSPARENT_COLOR = new Clutter.Color();
+TRANSPARENT_COLOR.from_pixel(0x00000000);
+
+const WELL_MENU_BACKGROUND_COLOR = new Clutter.Color();
+WELL_MENU_BACKGROUND_COLOR.from_pixel(0x292929ff);
+const WELL_MENU_FONT = 'Sans 14px';
+const WELL_MENU_COLOR = new Clutter.Color();
+WELL_MENU_COLOR.from_pixel(0xffffffff);
+const WELL_MENU_SELECTED_COLOR = new Clutter.Color();
+WELL_MENU_SELECTED_COLOR.from_pixel(0x005b97ff);
+const WELL_MENU_BORDER_COLOR = new Clutter.Color();
+WELL_MENU_BORDER_COLOR.from_pixel(0x787878ff);
+const WELL_MENU_SEPARATOR_COLOR = new Clutter.Color();
+WELL_MENU_SEPARATOR_COLOR.from_pixel(0x787878ff);
+const WELL_MENU_BORDER_WIDTH = 1;
+const WELL_MENU_ARROW_SIZE = 12;
+const WELL_MENU_CORNER_RADIUS = 4;
+const WELL_MENU_PADDING = 4;
+
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
 
@@ -160,7 +181,6 @@ MenuItem.prototype = {
     }
 }
 Signals.addSignalMethods(MenuItem.prototype);
-
 
 /* This class represents a display containing a collection of application items.
  * The applications are sorted based on their popularity by default, and based on
@@ -448,35 +468,202 @@ AppDisplay.prototype = {
 
 Signals.addSignalMethods(AppDisplay.prototype);
 
-function WellDisplayItem(appInfo, isFavorite) {
+function WellMenu(source) {
+    this._init(source);
+}
+
+WellMenu.prototype = {
+    _init: function(source) {
+        this._source = source;
+
+
+        this.actor = new Shell.GenericContainer({ reactive: true });
+        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
+        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
+        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+
+        this._windowContainer = new Shell.Menu({ orientation: Big.BoxOrientation.VERTICAL,
+                                                 border_color: WELL_MENU_BORDER_COLOR,
+                                                 border: WELL_MENU_BORDER_WIDTH,
+                                                 background_color: WELL_MENU_BACKGROUND_COLOR,
+                                                 padding: 4,
+                                                 corner_radius: WELL_MENU_CORNER_RADIUS,
+                                                 width: Main.overview._dash.actor.width * 0.75 });
+        this._windowContainer.connect('popdown', Lang.bind(this, this._onPopdown));
+        this._windowContainer.connect('unselected', Lang.bind(this, this._onWindowUnselected));
+        this._windowContainer.connect('selected', Lang.bind(this, this._onWindowSelected));
+        this._windowContainer.connect('activate', Lang.bind(this, this._onWindowActivate));
+        this.actor.add_actor(this._windowContainer);
+
+        this._arrow = new Shell.DrawingArea();
+        this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
+            Shell.draw_box_pointer(texture, WELL_MENU_BORDER_COLOR, WELL_MENU_BACKGROUND_COLOR);
+        }));
+        this.actor.add_actor(this._arrow);
+
+        let stage = Shell.Global.get().stage;
+
+        // Chain our visibility and lifecycle to that of the source
+        source.actor.connect('notify::mapped', Lang.bind(this, function () {
+            if (!source.actor.mapped)
+                this._windowContainer.popdown();
+        }));
+        source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
+
+        stage.add_actor(this.actor);
+    },
+
+    _getPreferredWidth: function(actor, forHeight, alloc) {
+        let [min, natural] = this._windowContainer.get_preferred_width(forHeight);
+        alloc.min_size = min + WELL_MENU_ARROW_SIZE;
+        alloc.natural_size = natural + WELL_MENU_ARROW_SIZE;
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        let [min, natural] = this._windowContainer.get_preferred_height(forWidth);
+        alloc.min_size = min;
+        alloc.natural_size = natural;
+    },
+
+    _allocate: function(actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+
+        let width = box.x2 - box.x1;
+        let height = box.y2 - box.y1;
+
+        childBox.x1 = 0;
+        childBox.x2 = WELL_MENU_ARROW_SIZE;
+        childBox.y1 = (height / 2) - (WELL_MENU_ARROW_SIZE / 2);
+        childBox.y2 = childBox.y1 + WELL_MENU_ARROW_SIZE;
+        this._arrow.allocate(childBox, flags);
+
+        /* overlap by one pixel to hide the border */
+        childBox.x1 = WELL_MENU_ARROW_SIZE - 1;
+        childBox.x2 = width;
+        childBox.y1 = 0;
+        childBox.y2 = height;
+        this._windowContainer.allocate(childBox, flags);
+    },
+
+    _redisplay: function() {
+        this._windowContainer.remove_all();
+
+        let windows = this._source.windows;
+
+        this._windowContainer.show();
+
+        let iconsDiffer = false;
+        let texCache = Shell.TextureCache.get_default();
+        let firstIcon = windows[0].mini_icon;
+        for (let i = 1; i < windows.length; i++) {
+            if (!texCache.pixbuf_equal(windows[i].mini_icon, firstIcon)) {
+                iconsDiffer = true;
+                break;
+            }
+        }
+
+        let activeWorkspace = Shell.Global.get().screen.get_active_workspace();
+
+        let currentWorkspaceWindows = windows.filter(function (w) {
+            return w.get_workspace() == activeWorkspace;
+        });
+        let otherWorkspaceWindows = windows.filter(function (w) {
+            return w.get_workspace() != activeWorkspace;
+        });
+
+        this._appendWindows(currentWorkspaceWindows, iconsDiffer);
+        if (currentWorkspaceWindows.length > 0 && otherWorkspaceWindows.length > 0) {
+            let box = new Big.Box({ padding_top: 2, padding_bottom: 2 });
+            box.append(new Clutter.Rectangle({ height: 1,
+                                               color: WELL_MENU_SEPARATOR_COLOR }),
+                       Big.BoxPackFlags.EXPAND);
+            this._windowContainer.append_separator(box, Big.BoxPackFlags.NONE);
+        }
+        this._appendWindows(otherWorkspaceWindows, iconsDiffer);
+    },
+
+    _appendWindows: function (windows, iconsDiffer) {
+        for (let i = 0; i < windows.length; i++) {
+            let window = windows[i];
+            /* Use padding here rather than spacing in the box above so that
+             * we have a larger reactive area.
+             */
+            let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                    padding_top: 4,
+                                    padding_bottom: 4,
+                                    spacing: 4,
+                                    reactive: true });
+            box._window = window;
+            let vCenter;
+            if (iconsDiffer) {
+                vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
+                let icon = Shell.TextureCache.get_default().bind_pixbuf_property(window, "mini-icon");
+                vCenter.append(icon, Big.BoxPackFlags.NONE);
+                box.append(vCenter, Big.BoxPackFlags.NONE);
+            }
+            vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
+            let label = new Clutter.Text({ text: window.title,
+                                           font_name: WELL_MENU_FONT,
+                                           ellipsize: Pango.EllipsizeMode.END,
+                                           color: WELL_MENU_COLOR });
+            vCenter.append(label, Big.BoxPackFlags.NONE);
+            box.append(vCenter, Big.BoxPackFlags.NONE);
+            this._windowContainer.append(box, Big.BoxPackFlags.NONE);
+        }
+    },
+
+    popup: function() {
+        let [stageX, stageY] = this._source.actor.get_transformed_position();
+        let [stageWidth, stageHeight] = this._source.actor.get_transformed_size();
+
+        this._redisplay();
+
+        this._windowContainer.popup(0, Clutter.get_current_event_time());
+
+        this.emit('popup', true);
+
+        let y = Math.floor(stageY + (stageHeight / 2) - (this.actor.height / 2));
+        this.actor.set_position(stageX + stageWidth, y);
+        this.actor.show();
+    },
+
+    _onWindowUnselected: function (actor, child) {
+        child.background_color = TRANSPARENT_COLOR;
+
+        this.emit('highlight-window', null);
+    },
+
+    _onWindowSelected: function (actor, child) {
+        child.background_color = WELL_MENU_SELECTED_COLOR;
+
+        let window = child._window;
+        this.emit('highlight-window', window);
+    },
+
+    _onWindowActivate: function (actor, child) {
+        let window = child._window;
+        Main.overview.activateWindow(window, Clutter.get_current_event_time());
+    },
+
+    _onPopdown: function () {
+        this.emit('highlight-window', null);
+        this.emit('popup', false);
+        this.actor.hide();
+    }
+}
+
+Signals.addSignalMethods(WellMenu.prototype);
+
+function BaseWellItem(appInfo, isFavorite) {
     this._init(appInfo, isFavorite);
 }
 
-WellDisplayItem.prototype = {
-    __proto__ : AppIcon.AppIcon.prototype,
-
-    _init : function(appInfo, isFavorite) {
-        AppIcon.AppIcon.prototype._init.call(this, appInfo);
-
+BaseWellItem.prototype = {
+    _init: function(appInfo, isFavorite) {
+        this.appInfo = appInfo;
         this.isFavorite = isFavorite;
-
-        this.actor.connect('button-release-event', Lang.bind(this, function (b, e) {
-            this._handleActivate();
-        }));
-
-        let draggable = DND.makeDraggable(this.actor);
-    },
-
-    _handleActivate: function () {
-        if (this._windows.length == 0) {
-            this.appInfo.launch();
-            Main.overview.hide();
-        } else {
-            /* Pick the first window and activate it;
-             * In the future, we want to have a menu dropdown here. */
-            let first = this._windows[0];
-            Main.overview.activateWindow(first, Clutter.get_current_event_time());
-        }
+        this.icon = new AppIcon.AppIcon(appInfo);
+        this.windows = this.icon.windows;
     },
 
     shellWorkspaceLaunch : function() {
@@ -492,17 +679,149 @@ WellDisplayItem.prototype = {
     },
 
     getDragActor: function(stageX, stageY) {
-        return this.appInfo.create_icon_texture(this._icon.height);
+        return this.icon.getDragActor(stageX, stageY);
     },
 
     // Returns the original icon that is being used as a source for the cloned texture
     // that represents the item as it is being dragged.
     getDragActorSource: function() {
-        return this._icon;
+        return this.icon.getDragActorSource();
+    }
+}
+
+function RunningWellItem(appInfo, isFavorite) {
+    this._init(appInfo, isFavorite);
+}
+
+RunningWellItem.prototype = {
+    __proto__: BaseWellItem.prototype,
+
+    _init: function(appInfo, isFavorite) {
+        BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
+
+        this._menuTimeoutId = 0;
+        this._menu = null;
+        this._dragStartX = 0;
+        this._dragStartY = 0;
+
+        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
+                                           border: WELL_MENU_BORDER_WIDTH,
+                                           corner_radius: WELL_MENU_CORNER_RADIUS,
+                                           reactive: true });
+        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
+        this.actor.connect('activate', Lang.bind(this, this.activateMostRecentWindow));
+
+        this.icon.actor._delegate = this;
+        this._draggable = DND.makeDraggable(this.icon.actor, true);
+
+        this.actor.append(this.icon.actor, Big.BoxPackFlags.NONE);
     },
 
-    setWidth: function(width) {
-        this._nameBox.width = width + GLOW_PADDING * 2;
+    activateMostRecentWindow: function () {
+        // The _get_windows_for_app sorts them for us
+        let mostRecentWindow = this.windows[0];
+        Main.overview.activateWindow(mostRecentWindow, Clutter.get_current_event_time());
+    },
+
+    _onHoverChanged: function() {
+        let hover = this.actor.hover;
+        if (!hover && this._menuTimeoutId > 0) {
+            Mainloop.source_remove(this._menuTimeoutId);
+            this._menuTimeoutId = 0;
+            if (this.actor.pressed && this._dragStartX != null) {
+                this.actor.fake_release();
+                this._draggable.startDrag(this.icon.actor, this._dragStartX, this._dragStartY,
+                                          Clutter.get_current_event_time());
+            } else {
+                this._dragStartX = null;
+                this._dragStartY = null;
+            }
+        }
+    },
+
+    _onButtonPress: function(actor, event) {
+        let [stageX, stageY] = event.get_coords();
+        this._dragStartX = stageX;
+        this._dragStartY = stageY;
+        if (this._menuTimeoutId > 0)
+            Mainloop.source_remove(this._menuTimeoutId);
+        this._menuTimeoutId = Mainloop.timeout_add(WELL_MENU_POPUP_TIMEOUT_MS,
+                                                   Lang.bind(this, this._popupMenu));
+        return false;
+    },
+
+    _popupMenu: function() {
+        this._menuTimeoutId = 0;
+
+        this.actor.fake_release();
+
+        if (this._menu == null) {
+            this._menu = new WellMenu(this);
+            this._menu.connect('highlight-window', Lang.bind(this, function (menu, window) {
+                Main.overview.setHighlightWindow(window);
+            }));
+            this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
+                let id;
+                if (isPoppedUp)
+                    id = this.appInfo.get_id();
+                else
+                    id = null;
+                Main.overview.setWindowApplicationFilter(id);
+            }));
+        }
+
+        this._menu.popup();
+
+        return false;
+    }
+}
+
+function InactiveWellItem(appInfo, isFavorite) {
+    this._init(appInfo, isFavorite);
+}
+
+InactiveWellItem.prototype = {
+    __proto__: BaseWellItem.prototype,
+
+    _init : function(appInfo, isFavorite) {
+        BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
+
+        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
+                                           border: WELL_MENU_BORDER_WIDTH,
+                                           corner_radius: WELL_MENU_CORNER_RADIUS,
+                                           reactive: true });
+        this.actor._delegate = this;
+        this.actor.connect('notify::pressed', Lang.bind(this, this._onPressedChanged));
+        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
+        this.actor.connect('activate', Lang.bind(this, this._onActivate));
+
+        this.icon.actor._delegate = this;
+        let draggable = DND.makeDraggable(this.icon.actor);
+
+        this.actor.append(this.icon.actor, Big.BoxPackFlags.NONE);
+    },
+
+    _onPressedChanged: function() {
+        let pressed = this.actor.pressed;
+        if (pressed) {
+            this.actor.border_color = WELL_MENU_BORDER_COLOR;
+        } else {
+            this.actor.border_color = TRANSPARENT_COLOR;
+        }
+    },
+
+    _onHoverChanged: function() {
+        let hover = this.actor.hover;
+    },
+
+    _onActivate: function() {
+        if (this.windows.length == 0) {
+            this.appInfo.launch();
+            Main.overview.hide();
+            return true;
+        }
+        return false;
     }
 };
 
@@ -755,10 +1074,15 @@ AppWell.prototype = {
         this._displays = displays;
     },
 
-    _addApps: function(apps) {
+    _addApps: function(apps, isFavorite) {
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
-            let display = new WellDisplayItem(app, this.isFavorite);
+            let windows = this._appMonitor.get_windows_for_app(app.get_id());
+            let display;
+            if (windows.length > 0)
+                display = new RunningWellItem(app, isFavorite);
+            else
+                display = new InactiveWellItem(app, isFavorite);
             this._grid.actor.add_actor(display.actor);
         }
     },
@@ -770,7 +1094,7 @@ AppWell.prototype = {
         let appSystem = Shell.AppSystem.get_default();
 
         let app = null;
-        if (source instanceof WellDisplayItem) {
+        if (source instanceof BaseWellItem) {
             app = source.appInfo;
         } else if (source instanceof AppDisplayItem) {
             app = appSystem.lookup_cached_app(source.getId());

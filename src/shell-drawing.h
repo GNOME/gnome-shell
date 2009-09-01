@@ -13,6 +13,10 @@ ClutterCairoTexture *shell_create_vertical_gradient (ClutterColor *top,
 ClutterCairoTexture *shell_create_horizontal_gradient (ClutterColor *left,
                                                        ClutterColor *right);
 
+void shell_draw_box_pointer (ClutterCairoTexture *texture,
+                             ClutterColor        *border_color,
+                             ClutterColor        *background_color);
+
 void shell_draw_clock (ClutterCairoTexture *texture,
 	               int                  hour,
 	               int                  minute);

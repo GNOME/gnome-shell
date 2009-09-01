@@ -25,6 +25,8 @@ const WINDOWCLONE_TITLE_COLOR = new Clutter.Color();
 WINDOWCLONE_TITLE_COLOR.from_pixel(0xffffffff);
 const FRAME_COLOR = new Clutter.Color();
 FRAME_COLOR.from_pixel(0xffffffff);
+const LIGHTBOX_COLOR = new Clutter.Color();
+LIGHTBOX_COLOR.from_pixel(0x00000044);
 
 // Define a layout scheme for small window counts. For larger
 // counts we fall back to an algorithm. We need more schemes here
@@ -64,6 +66,8 @@ WindowClone.prototype = {
         this.origX = realWindow.x;
         this.origY = realWindow.y;
 
+        this._title = null;
+
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
 
@@ -77,6 +81,29 @@ WindowClone.prototype = {
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this._inDrag = false;
+    },
+
+    setHighlighted: function (highlighted) {
+        let factor = 0.1;
+        if (highlighted) {
+            this.actor.scale_x += factor;
+            this.actor.scale_y += factor;
+        } else {
+            this.actor.scale_x -= factor;
+            this.actor.scale_y -= factor;
+        }
+    },
+
+    setVisibleWithChrome: function(visible) {
+        if (visible) {
+            this.actor.show();
+            if (this._title)
+                this._title.show();
+        } else {
+            this.actor.hide();
+            if (this._title)
+                this._title.hide();
+        }
     },
 
     destroy: function () {
@@ -280,6 +307,14 @@ Workspace.prototype = {
         this.actor.height = global.screen_height;
         this.scale = 1.0;
 
+        this._lightbox = new Clutter.Rectangle({ color: LIGHTBOX_COLOR });
+        this.actor.connect('notify::allocation', Lang.bind(this, function () {
+            let [width, height] = this.actor.get_size();
+            this._lightbox.set_size(width, height);
+        }));
+        this.actor.add_actor(this._lightbox);
+        this._lightbox.hide();
+
         let windows = global.get_windows().filter(this._isMyWindow, this);
 
         // Find the desktop window
@@ -310,6 +345,9 @@ Workspace.prototype = {
                 this._addWindowClone(windows[i]);
             }
         }
+
+        // A filter for what windows we display
+        this._showOnlyWindows = null;
 
         // Track window changes
         this._windowAddedId = this._metaWorkspace.connect('window-added',
@@ -386,6 +424,32 @@ Workspace.prototype = {
         return index < 0 ? null : this._windows[index];
     },
 
+    containsMetaWindow: function (metaWindow) {
+        return this._lookupIndex(metaWindow) >= 0;
+    },
+
+    setShowOnlyWindows: function(showOnlyWindows) {
+        this._showOnlyWindows = showOnlyWindows;
+        this.positionWindows(false);
+    },
+
+    setLightboxMode: function (showLightbox) {
+        if (showLightbox)
+            this._lightbox.show();
+        else
+            this._lightbox.hide();
+    },
+
+    setHighlightWindow: function (metaWindow) {
+        for (let i = 0; i < this._windows.length; i++) {
+            this._windows[i].actor.lower(this._lightbox);
+        }
+        if (metaWindow != null) {
+            let clone = this.lookupCloneForMetaWindow(metaWindow);
+            clone.actor.raise(this._lightbox);
+        }
+    },
+
     _adjustRemoveButton : function() {
         this._removeButton.set_scale(1.0 / this.actor.scale_x,
                                      1.0 / this.actor.scale_y);
@@ -440,12 +504,37 @@ Workspace.prototype = {
     positionWindows : function(workspaceZooming) {
         let global = Shell.Global.get();
 
+        let totalVisible = 0;
+
+        for (let i = 1; i < this._windows.length; i++) {
+            let clone = this._windows[i];
+
+            if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
+                continue;
+
+            totalVisible += 1;
+        }
+
+        let previousWindow = this._windows[0];
+        let visibleIndex = 0;
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let icon = this._windowIcons[i];
-            clone.stackAbove = this._windows[i - 1].actor;
 
-            let [xCenter, yCenter, fraction] = this._computeWindowPosition(i);
+            if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows)) {
+                clone.setVisibleWithChrome(false);
+                icon.hide();
+                continue;
+            } else {
+                clone.setVisibleWithChrome(true);
+            }
+
+            clone.stackAbove = previousWindow.actor;
+            previousWindow = clone;
+
+            visibleIndex += 1;
+
+            let [xCenter, yCenter, fraction] = this._computeWindowPosition(visibleIndex, totalVisible);
             xCenter = xCenter * global.screen_width;
             yCenter = yCenter * global.screen_height;
 
@@ -508,6 +597,8 @@ Workspace.prototype = {
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let icon = this._windowIcons[i];
+            if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
+                continue;
             this._fadeInWindowIcon(clone, icon);
         }
     },
@@ -794,10 +885,10 @@ Workspace.prototype = {
         return clone;
     },
 
-    _computeWindowPosition : function(index) {
+    _computeWindowPosition : function(index, totalWindows) {
         // ignore this._windows[0], which is the desktop
         let windowIndex = index - 1;
-        let numberOfWindows = this._windows.length - 1;
+        let numberOfWindows = totalWindows;
 
         if (numberOfWindows in POSITIONS)
             return POSITIONS[numberOfWindows][windowIndex];
@@ -872,15 +963,19 @@ Workspaces.prototype = {
 
         this.actor = new Clutter.Group();
 
+        this._appIdFilter = null;
+
         let screenHeight = global.screen_height;
-          
+
         this._width = width;
         this._height = height;
         this._x = x;
         this._y = y;
 
         this._workspaces = [];
-        
+
+        this._highlightWindow = null;
+
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace;
 
@@ -927,6 +1022,14 @@ Workspaces.prototype = {
                                           Lang.bind(this, this._activeWorkspaceChanged));
     },
 
+    _lookupWorkspaceForMetaWindow: function (metaWindow) {
+        for (let i = 0; i < this._workspaces.length; i++) {
+            if (this._workspaces[i].containsMetaWindow(metaWindow))
+                return this._workspaces[i];
+        }
+        return null;
+    },
+
     _lookupCloneForMetaWindow: function (metaWindow) {
         for (let i = 0; i < this._workspaces.length; i++) {
             let clone = this._workspaces[i].lookupCloneForMetaWindow(metaWindow);
@@ -934,6 +1037,39 @@ Workspaces.prototype = {
                 return clone;
         }
         return null;
+    },
+
+    setHighlightWindow: function (metaWindow) {
+        // Looping over all workspaces is easier than keeping track of the last
+        // highlighted window while trying to handle the window or workspace possibly
+        // going away.
+        for (let i = 0; i < this._workspaces.length; i++) {
+            this._workspaces[i].setLightboxMode(metaWindow != null);
+            this._workspaces[i].setHighlightWindow(null);
+        }
+        if (metaWindow != null) {
+            let workspace = this._lookupWorkspaceForMetaWindow(metaWindow);
+            workspace.setHighlightWindow(metaWindow);
+        }
+    },
+
+    setWindowApplicationFilter: function (appId) {
+        let appSys = Shell.AppMonitor.get_default();
+
+        let showOnlyWindows;
+        if (appId) {
+            let windows = appSys.get_windows_for_app(appId);
+            showOnlyWindows = {};
+            for (let i = 0; i < windows.length; i++) {
+                showOnlyWindows[windows[i]] = 1;
+            }
+        } else {
+            showOnlyWindows = null;
+        }
+        this._appIdFilter = appId;
+        for (let i = 0; i < this._workspaces.length; i++) {
+            this._workspaces[i].setShowOnlyWindows(showOnlyWindows);
+        }
     },
 
     // Should only be called from active Overview context
