@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
@@ -41,9 +42,17 @@ const Tweener = imports.tweener.tweener;
 // calls any of these is almost certainly wrong anyway, because they
 // affect the entire application.)
 
+let slowDownFactor = 1.0;
 
 // Called from Main.start
 function init() {
+    let slowdownEnv = GLib.getenv("GNOME_SHELL_SLOWDOWN_FACTOR");
+    if (slowdownEnv) {
+        let factor = parseFloat(slowdownEnv);
+        if (!isNaN(factor) && factor > 0.0)
+            slowDownFactor = factor;
+    }
+
     Tweener.setFrameTicker(new ClutterFrameTicker());
 }
 
@@ -208,11 +217,10 @@ ClutterFrameTicker.prototype = {
         this._startTime = -1;
         this._currentTime = -1;
 
-        let me = this;
-        this._timeline.connect('new-frame',
+        this._timeline.connect('new-frame', Lang.bind(this,
             function(timeline, frame) {
-                me._onNewFrame(frame);
-            });
+                this._onNewFrame(frame);
+            }));
     },
 
     _onNewFrame : function(frame) {
@@ -225,7 +233,7 @@ ClutterFrameTicker.prototype = {
             this._startTime = this._timeline.get_elapsed_time();
 
         // currentTime is in milliseconds
-        this._currentTime = this._timeline.get_elapsed_time() - this._startTime;
+        this._currentTime = (this._timeline.get_elapsed_time() - this._startTime) / slowDownFactor;
         this.emit('prepare-frame');
     },
 
