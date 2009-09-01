@@ -65,6 +65,7 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-rotate.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-binding-pool.h 	\
+	$(srcdir)/clutter-box.h			\
 	$(srcdir)/clutter-cairo-texture.h	\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone.h		\
@@ -130,6 +131,7 @@ source_c = \
 	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-binding-pool.c	\
+	$(srcdir)/clutter-box.c			\
 	$(srcdir)/clutter-cairo-texture.c       \
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-clone.c		\

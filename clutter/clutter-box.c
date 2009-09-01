@@ -1,0 +1,368 @@
+/**
+ * SECTION:clutter-box
+ * @short_description: A Generic layout container
+ *
+ * #ClutterBox is a FIXME
+ *
+ * #ClutterBox is available since Clutter 1.2
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include "clutter-box.h"
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
+#include "clutter-marshal.h"
+#include "clutter-private.h"
+
+#define CLUTTER_BOX_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BOX, ClutterBoxPrivate))
+
+struct _ClutterBoxPrivate
+{
+  ClutterLayoutManager *manager;
+
+  GList *children;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_LAYOUT_MANAGER
+};
+
+static void clutter_container_iface_init (ClutterContainerIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterBox, clutter_box, CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
+                                                clutter_container_iface_init));
+
+static gint
+sort_by_depth (gconstpointer a,
+               gconstpointer b)
+{
+  gfloat depth_a = clutter_actor_get_depth ((ClutterActor *) a);
+  gfloat depth_b = clutter_actor_get_depth ((ClutterActor *) b);
+
+  if (depth_a < depth_b)
+    return -1;
+
+  if (depth_a > depth_b)
+    return 1;
+
+  return 0;
+}
+
+static void
+clutter_box_real_add (ClutterContainer *container,
+                      ClutterActor     *actor)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
+
+  g_object_ref (actor);
+
+  priv->children = g_list_insert_sorted (priv->children,
+                                         actor,
+                                         sort_by_depth);
+
+  clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
+  clutter_actor_queue_relayout (actor);
+
+  g_signal_emit_by_name (container, "actor-added", actor);
+
+  g_object_unref (actor);
+}
+
+static void
+clutter_box_real_remove (ClutterContainer *container,
+                         ClutterActor     *actor)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
+
+  g_object_ref (actor);
+
+  priv->children = g_list_remove (priv->children, actor);
+  clutter_actor_unparent (actor);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
+
+  g_signal_emit_by_name (container, "actor-removed", actor);
+
+  g_object_unref (actor);
+}
+
+static void
+clutter_box_real_foreach (ClutterContainer *container,
+                          ClutterCallback   callback,
+                          gpointer          user_data)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
+  GList *l;
+
+  for (l = priv->children; l != NULL; l = l->next)
+    (* callback) (l->data, user_data);
+}
+
+static void
+clutter_box_real_raise (ClutterContainer *container,
+                        ClutterActor     *actor,
+                        ClutterActor     *sibling)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
+
+  priv->children = g_list_remove (priv->children, actor);
+
+  if (sibling == NULL)
+    priv->children = g_list_append (priv->children, actor);
+  else
+    {
+      gint index_ = g_list_index (priv->children, sibling) + 1;
+
+      priv->children = g_list_insert (priv->children, actor, index_);
+    }
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+}
+
+static void
+clutter_box_real_lower (ClutterContainer *container,
+                        ClutterActor     *actor,
+                        ClutterActor     *sibling)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
+
+  priv->children = g_list_remove (priv->children, actor);
+
+  if (sibling == NULL)
+    priv->children = g_list_prepend (priv->children, actor);
+  else
+    {
+      gint index_ = g_list_index (priv->children, sibling);
+
+      priv->children = g_list_insert (priv->children, actor, index_);
+    }
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+}
+
+static void
+clutter_box_real_sort_depth_order (ClutterContainer *container)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (container)->priv;
+
+  priv->children = g_list_sort (priv->children, sort_by_depth);
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+}
+
+static void
+clutter_container_iface_init (ClutterContainerIface *iface)
+{
+  iface->add = clutter_box_real_add;
+  iface->remove = clutter_box_real_remove;
+  iface->foreach = clutter_box_real_foreach;
+  iface->raise = clutter_box_real_raise;
+  iface->lower = clutter_box_real_lower;
+  iface->sort_depth_order = clutter_box_real_sort_depth_order;
+}
+
+static void
+clutter_box_real_paint (ClutterActor *actor)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+
+  g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
+}
+
+static void
+clutter_box_real_pick (ClutterActor       *actor,
+                       const ClutterColor *pick)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+
+  CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->pick (actor, pick);
+
+  g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
+}
+
+static void
+clutter_box_real_get_preferred_width (ClutterActor *actor,
+                                      gfloat        for_height,
+                                      gfloat       *min_width,
+                                      gfloat       *natural_width)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+
+  if (priv->children == NULL)
+    {
+      if (min_width)
+        *min_width = 0.0;
+
+      if (natural_width)
+        *natural_width = 0.0;
+
+      return;
+    }
+
+  clutter_layout_manager_get_preferred_width (priv->manager,
+                                              CLUTTER_CONTAINER (actor),
+                                              for_height,
+                                              min_width, natural_width);
+}
+
+static void
+clutter_box_real_get_preferred_height (ClutterActor *actor,
+                                       gfloat        for_width,
+                                       gfloat       *min_height,
+                                       gfloat       *natural_height)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+
+  if (priv->children == NULL)
+    {
+      if (min_height)
+        *min_height = 0.0;
+
+      if (natural_height)
+        *natural_height = 0.0;
+
+      return;
+    }
+
+  clutter_layout_manager_get_preferred_height (priv->manager,
+                                               CLUTTER_CONTAINER (actor),
+                                               for_width,
+                                               min_height, natural_height);
+}
+
+static void
+clutter_box_real_allocate (ClutterActor           *actor,
+                           const ClutterActorBox  *allocation,
+                           ClutterAllocationFlags  flags)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+  ClutterActorClass *klass;
+
+  klass = CLUTTER_ACTOR_CLASS (clutter_box_parent_class);
+  klass->allocate (actor, allocation, flags);
+
+  if (priv->children == NULL)
+    return;
+
+  clutter_layout_manager_allocate (priv->manager,
+                                   CLUTTER_CONTAINER (actor),
+                                   allocation, flags);
+}
+
+static void
+clutter_box_dispose (GObject *gobject)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (gobject)->priv;
+
+  if (priv->manager != NULL)
+    {
+      g_object_unref (priv->manager);
+      priv->manager = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_box_parent_class)->dispose (gobject);
+}
+
+static void
+clutter_box_set_property (GObject      *gobject,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_LAYOUT_MANAGER:
+      priv->manager = g_value_dup_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_box_get_property (GObject    *gobject,
+                          guint       prop_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
+{
+  ClutterBoxPrivate *priv = CLUTTER_BOX (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_LAYOUT_MANAGER:
+      g_value_set_object (value, priv->manager);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_box_class_init (ClutterBoxClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
+
+  g_type_class_add_private (klass, sizeof (ClutterBoxPrivate));
+
+  actor_class->get_preferred_width = clutter_box_real_get_preferred_width;
+  actor_class->get_preferred_height = clutter_box_real_get_preferred_height;
+  actor_class->allocate = clutter_box_real_allocate;
+  actor_class->paint = clutter_box_real_paint;
+  actor_class->pick = clutter_box_real_pick;
+
+  gobject_class->set_property = clutter_box_set_property;
+  gobject_class->get_property = clutter_box_get_property;
+  gobject_class->dispose = clutter_box_dispose;
+
+  pspec = g_param_spec_object ("layout-manager",
+                               "Layout Manager",
+                               "The layout manager used by the box",
+                               CLUTTER_TYPE_LAYOUT_MANAGER,
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (gobject_class,
+                                   PROP_LAYOUT_MANAGER,
+                                   pspec);
+}
+
+static void
+clutter_box_init (ClutterBox *self)
+{
+  self->priv = CLUTTER_BOX_GET_PRIVATE (self);
+}
+
+/**
+ * clutter_box_new:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Creates a new #ClutterBox. The children of the box will be layed
+ * out by the passed @manager
+ *
+ * Return value: the newly created #ClutterBox actor
+ *
+ * Since: 1.0
+ */
+ClutterActor *
+clutter_box_new (ClutterLayoutManager *manager)
+{
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), NULL);
+
+  return g_object_new (CLUTTER_TYPE_BOX,
+                       "layout-manager", manager,
+                       NULL);
+}
