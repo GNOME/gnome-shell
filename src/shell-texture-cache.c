@@ -1236,6 +1236,35 @@ shell_texture_cache_evict_recent_thumbnail (ShellTextureCache *cache,
   shell_texture_cache_evict_thumbnail (cache, gtk_recent_info_get_uri (info));
 }
 
+static size_t
+pixbuf_byte_size (GdkPixbuf *pixbuf)
+{
+  /* This bit translated from gtk+/gdk-pixbuf/gdk-pixbuf.c:gdk_pixbuf_copy.  The comment
+   * there was:
+   *
+   * Calculate a semi-exact size.  Here we copy with full rowstrides;
+   * maybe we should copy each row individually with the minimum
+   * rowstride?
+   */
+  return (gdk_pixbuf_get_height (pixbuf) - 1) * gdk_pixbuf_get_rowstride (pixbuf) +
+    + gdk_pixbuf_get_width (pixbuf) * ((gdk_pixbuf_get_n_channels (pixbuf)* gdk_pixbuf_get_bits_per_sample (pixbuf) + 7) / 8);
+}
+
+/**
+ * shell_texture_cache_pixbuf_equal:
+ *
+ * Returns: %TRUE iff the given pixbufs are bytewise-equal
+ */
+gboolean
+shell_texture_cache_pixbuf_equal (ShellTextureCache *cache, GdkPixbuf *a, GdkPixbuf *b)
+{
+  size_t size_a = pixbuf_byte_size (a);
+  size_t size_b = pixbuf_byte_size (b);
+  if (size_a != size_b)
+    return FALSE;
+  return memcmp (gdk_pixbuf_get_pixels (a), gdk_pixbuf_get_pixels (b), size_a) == 0;
+}
+
 static ShellTextureCache *instance = NULL;
 
 /**
