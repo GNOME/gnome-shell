@@ -30,4 +30,6 @@ struct _ShellButtonBoxClass
 
 GType shell_button_box_get_type (void) G_GNUC_CONST;
 
+void shell_button_box_fake_release (ShellButtonBox *box);
+
 #endif /* __SHELL_BUTTON_BOX_H__ */

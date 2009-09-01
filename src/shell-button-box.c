@@ -89,9 +89,13 @@ shell_button_box_enter_event (ClutterActor         *actor,
   if (!shell_button_box_contains (box, event->source))
     return TRUE;
 
-  set_hover (box, TRUE);
+  g_object_freeze_notify (G_OBJECT (actor));
+
   if (box->priv->held)
     set_pressed (box, TRUE);
+  set_hover (box, TRUE);
+
+  g_object_thaw_notify (G_OBJECT (actor));
 
   return TRUE;
 }
@@ -157,6 +161,31 @@ shell_button_box_button_release_event (ClutterActor       *actor,
   g_signal_emit (G_OBJECT (box), shell_button_box_signals[ACTIVATE], 0);
 
   return TRUE;
+}
+
+/**
+ * shell_button_box_fake_release:
+ * @box:
+ *
+ * If this button box is holding a pointer grab, this function will
+ * will ungrab it, and reset the pressed state.  The effect is
+ * similar to if the user had released the mouse button, but without
+ * emitting the activate signal.
+ *
+ * This function is useful if for example you want to do something after the user
+ * is holding the mouse button for a given period of time, breaking the
+ * grab.
+ */
+void
+shell_button_box_fake_release (ShellButtonBox *box)
+{
+  if (!box->priv->held)
+    return;
+
+  box->priv->held = FALSE;
+  clutter_ungrab_pointer ();
+
+  set_pressed (box, FALSE);
 }
 
 static void
