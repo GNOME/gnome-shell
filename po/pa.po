@@ -1,0 +1,182 @@
+# Punjabi translation for gnome-shell.
+# Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+#
+# A S Alam <aalam@users.sf.net>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2009-08-31 22:31+0000\n"
+"PO-Revision-Date: 2009-09-01 06:51+0530\n"
+"Last-Translator: A S Alam <aalam@users.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.0\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "ਗਨੋਮ ਸ਼ੈਲ"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "ਵਿੰਡੋ ਪਰਬੰਧ ਅਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਓ"
+
+#. left side
+#: ../js/ui/panel.js:271
+msgid "Activities"
+msgstr "ਸਰਗਰਮੀਆਂ"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:454
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#: ../js/ui/dash.js:256
+msgid "Find..."
+msgstr "ਖੋਜ..."
+
+#: ../js/ui/dash.js:374
+msgid "Browse"
+msgstr "ਝਲਕ"
+
+#: ../js/ui/dash.js:451
+msgid "(see all)"
+msgstr "(ਸਭ ਵੇਖੋ)"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:633 ../js/ui/dash.js:681
+msgid "APPLICATIONS"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:653
+msgid "PLACES"
+msgstr "ਥਾਵਾਂ"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:660 ../js/ui/dash.js:692
+msgid "RECENT DOCUMENTS"
+msgstr "ਤਾਜ਼ਾ ਡੌਕੂਮੈਂਟ"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:679
+msgid "SEARCH RESULTS"
+msgstr "ਖੋਜ ਨਤੀਜੇ"
+
+#: ../js/ui/runDialog.js:82
+msgid "Please enter a command:"
+msgstr "ਕਮਾਂਡ ਦਿਓ ਜੀ:"
+
+#: ../src/shell-global.c:840
+msgid "Less than a minute ago"
+msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਚਿਰ ਪਹਿਲਾਂ"
+
+#: ../src/shell-global.c:843
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
+
+#: ../src/shell-global.c:846
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
+
+#: ../src/shell-global.c:849
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d ਦਿਨ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਦਿਨ ਪਹਿਲਾਂ"
+
+#: ../src/shell-global.c:852
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d ਹਫ਼ਤਾ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਹਫ਼ਤੇ ਪਹਿਲਾਂ"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "ਅਣਜਾਣ"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "ਸਕਰੀਨ ਲਾਕ ਨਹੀਂ ਹੋ ਸਕਦੀ: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "ਸਕਰੀਨ ਬੰਦ ਕਰਨ ਲਈ ਆਰਜ਼ੀ ਰੂਪ ਵਿੱਚ ਸਕਰੀਨ-ਸੇਵਰ ਨਹੀਂ ਸੈੱਟ ਕੀਤਾ ਜਾ ਸਕਦਾ: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "ਲਾਗਆਉਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "ਅਕਾਊਂਟ ਜਾਣਕਾਰੀ..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "ਬਾਹੀ"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "ਸਿਸਟਮ ਪਸੰਦ..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "ਲਾਗਆਉਟ..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "ਬੰਦ ਕਰੋ..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "ਘਰ ਫੋਲਡਰ"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "ਖੋਜ"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
