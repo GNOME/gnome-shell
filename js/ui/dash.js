@@ -572,6 +572,14 @@ Dash.prototype = {
                 this._appSearchHeader.countText.text = this._appSearchResultArea.display.getMatchedItemsCount() + "";
                 this._docSearchHeader.countText.text = this._docSearchResultArea.display.getMatchedItemsCount() + "";
                                 
+                if (this._appSearchResultArea.display.hasItems() && !this._getOnlyDocSearchShown()) {
+                    this._appSearchResultArea.display.selectFirstItem();
+                    this._docSearchResultArea.display.unsetSelected();
+                } else if (this._docSearchResultArea.display.hasItems() && !this._getOnlyAppSearchShown()) {
+                    this._docSearchResultArea.display.selectFirstItem();
+                    this._appSearchResultArea.display.unsetSelected();
+                }
+
                 return false;
             }));
         }));
@@ -607,22 +615,32 @@ Dash.prototype = {
                 // too, but there doesn't seem to be any flickering if we first select
                 // something in one display, but then unset the selection, and move
                 // it to the other display, so it's ok to do that.
-                if (this._docSearchResultArea.display.hasSelected())
-                    this._docSearchResultArea.display.selectUp();
-                else if (this._appSearchResultArea.display.hasItems())
-                    this._appSearchResultArea.display.selectUp();
-                else
-                    this._docSearchResultArea.display.selectUp();
+                if (this._appSearchResultArea.display.hasSelected()) {
+                    if (!this._appSearchResultArea.display.selectUp() && this._docSearchResultArea.display.hasItems() && !this._getOnlyAppSearchShown()) {
+                        this._docSearchResultArea.display.selectLastItem();
+                        this._appSearchResultArea.display.unsetSelected();
+                    }
+                } else if (this._docSearchResultArea.display.hasSelected()) {
+                    if (!this._docSearchResultArea.display.selectUp() && this._appSearchResultArea.display.hasItems() && !this._getOnlyDocSearchShown()) {
+                        this._appSearchResultArea.display.selectLastItem();
+                        this._docSearchResultArea.display.unsetSelected();
+                    }
+                }
                 return true;
             } else if (symbol == Clutter.Down) {
                 if (!this._searchActive)
                     return true;
-                if (this._docSearchResultArea.display.hasSelected())
-                    this._docSearchResultArea.display.selectDown();
-                else if (this._appSearchResultArea.display.hasItems())
-                    this._appSearchResultArea.display.selectDown();
-                else
-                    this._docSearchResultArea.display.selectDown();
+                if (this._appSearchResultArea.display.hasSelected()) {
+                    if (!this._appSearchResultArea.display.selectDown() && this._docSearchResultArea.display.hasItems() && !this._getOnlyAppSearchShown()) {
+                        this._docSearchResultArea.display.selectFirstItem();
+                        this._appSearchResultArea.display.unsetSelected();
+                    }
+                } else if (this._docSearchResultArea.display.hasSelected()) {
+                    if (!this._docSearchResultArea.display.selectDown() && this._appSearchResultArea.display.hasItems() && !this._getOnlyDocSearchShown()) {
+                        this._appSearchResultArea.display.selectFirstItem();
+                        this._docSearchResultArea.display.unsetSelected();
+                    }
+                }
                 return true;
             }
             return false;
@@ -788,6 +806,8 @@ Dash.prototype = {
         } else {
             this._appSearchHeader.actor.hide();
             this._appSearchResultArea.actor.hide();
+            this._appSearchResultArea.display.unsetSelected();
+            this._docSearchResultArea.display.selectFirstItem();
             this._docSearchResultArea.controlBox.show();
             this._docSearchHeader.setShowTooltip(false);
         }
@@ -803,6 +823,8 @@ Dash.prototype = {
        } else { 
             this._docSearchHeader.actor.hide();
             this._docSearchResultArea.actor.hide();
+            this._docSearchResultArea.display.unsetSelected();
+            this._appSearchResultArea.display.selectFirstItem();
             this._appSearchResultArea.controlBox.show();
             this._appSearchHeader.setShowTooltip(false);
        }

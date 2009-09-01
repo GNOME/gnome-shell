@@ -426,7 +426,11 @@ GenericDisplay.prototype = {
 
     // Returns true if the display has any displayed items.
     hasItems: function() {
-        return this._list.displayedCount > 0;
+        // TODO: figure out why this._list.displayedCount is returning a
+        // positive number when this._mathedItems.length is 0
+        // This can be triggered if a search string is entered for which there are no matches.
+        // log("this._mathedItems.length: " + this._matchedItems.length + " this._list.displayedCount " + this._list.displayedCount);
+        return this._matchedItems.length > 0;
     },
 
     getMatchedItemsCount: function() {
@@ -457,6 +461,10 @@ GenericDisplay.prototype = {
 
     // Displays the page specified by the pageNumber argument.
     displayPage: function(pageNumber) {
+        // Cleanup from the previous selection, but don't unset this._selectedIndex
+        if (this.hasSelected()) {
+            this._findDisplayedByIndex(this._selectedIndex).markSelected(false);
+        }
         this._list.page = pageNumber;
     },
 
@@ -698,7 +706,6 @@ GenericDisplay.prototype = {
      */
     _updateDisplayControl: function(resetDisplayControl) {
         if (resetDisplayControl) {
-            this._selectedIndex = -1;
             this.displayControl.remove_all();
             let nPages = this._list.n_pages;
             let pageNumber = this._list.page;
@@ -730,6 +737,9 @@ GenericDisplay.prototype = {
                 }
             } 
         }
+        if (this.hasSelected()) {
+            this.selectFirstItem();
+        }
     },
 
     // Returns a display item based on its index in the ordering of the
@@ -754,17 +764,8 @@ GenericDisplay.prototype = {
     // Selects (e.g. highlights) a display item at the provided index,
     // updates this.selectedItemDetails actor, and emits 'selected' signal.
     _selectIndex: function(index) {
-        if (index >= this._list.displayedCount)
-            return
-
-        // If the item is already selected, all we do is toggling the details pane.
-        if (this._selectedIndex == index && index >= 0) {
-            this.emit('details', index);
-            return;
-        }
-
         // Cleanup from the previous item
-        if (this._selectedIndex >= 0) {
+        if (this.hasSelected()) {
             this._findDisplayedByIndex(this._selectedIndex).markSelected(false);
         }
 
