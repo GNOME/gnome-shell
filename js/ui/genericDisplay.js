@@ -495,24 +495,16 @@ GenericDisplay.prototype = {
             this.selectFirstItem();
         }
 
-        // We currently redisplay matching items and raise the sideshow as part of two different callbacks.
-        // Checking what is under the pointer after a timeout allows us to not merge these callbacks into one, at least for now.
-        Mainloop.timeout_add(5,
-                             Lang.bind(this,
-                                       function() {
-                                           // Check if the pointer is over one of the items and display the information button if it is.
-                                           let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
-                                           let global = Shell.Global.get();
-                                           let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
-                                                                                     x, y);
-                                           if (actor != null) {
-                                               let item = this._findDisplayedByActor(actor);
-                                               if (item != null) {
-                                                   item.onDrawnUnderPointer();
-                                               }
-                                           }
-                                           return false;
-                                       }));
+        // Check if the pointer is over one of the items and display the information button if it is.
+        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let global = Shell.Global.get();
+        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
+        if (actor != null) {
+            let item = this._findDisplayedByActor(actor);
+            if (item != null) {
+                item.onDrawnUnderPointer();
+            }
+        }
     },
 
     // Creates a display item based on the information associated with itemId 
