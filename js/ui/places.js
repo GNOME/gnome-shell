@@ -80,6 +80,9 @@ Places.prototype = {
         this._menuBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                       spacing: PLACES_VSPACING });
         this.actor.append(this._menuBox, Big.BoxPackFlags.EXPAND);
+        this._devBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                      spacing: PLACES_VSPACING });
+
         this._dirsBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                       spacing: PLACES_VSPACING });
         this.actor.append(this._dirsBox, Big.BoxPackFlags.EXPAND);
@@ -97,6 +100,23 @@ Places.prototype = {
             });
 
         this._menuBox.append(home.actor, Big.BoxPackFlags.NONE);
+
+        /*
+        * Show devices, code more or less ported from nautilus-places-sidebar.c
+        */
+
+        this._menuBox.append(this._devBox, Big.BoxPackFlags.NONE);
+        this._volumeMonitor = Gio.VolumeMonitor.get();
+        this._volumeMonitor.connect('volume-added', Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('volume-removed',Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('volume-changed', Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('mount-added', Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('mount-removed', Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('mount-changed', Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('drive-connected', Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('drive-disconnected', Lang.bind(this, this._updateDevices));
+        this._volumeMonitor.connect('drive-changed', Lang.bind(this, this._updateDevices));
+        this._updateDevices();
 
         let networkApp = null;
         try {
@@ -197,6 +217,62 @@ Places.prototype = {
                 });
             this._dirsBox.append(item.actor, Big.BoxPackFlags.NONE);
         }
+    },
+
+    _updateDevices: function() {
+        this._devBox.remove_all();
+
+        /* first go through all connected drives */
+        let drives = this._volumeMonitor.get_connected_drives();
+        for (let i = 0; i < drives.length; i++) {
+                let volumes = drives[i].get_volumes();
+                for(let j = 0; j < volumes.length; j++) {
+                        let mount = volumes[j].get_mount();
+                        if(mount != null) {
+                                this._addMount(mount);
+                        }
+                }
+        }
+
+        /* add all volumes that is not associated with a drive */
+        let volumes = this._volumeMonitor.get_volumes();
+        for(let i = 0; i < volumes.length; i++) {
+                if(volumes[i].get_drive() != null)
+                        continue;
+
+                let mount = volumes[i].get_mount();
+                if(mount != null) {
+                        this._addMount(mount);
+                }
+        }
+
+        /* add mounts that have no volume (/etc/mtab mounts, ftp, sftp,...) */
+        let mounts = this._volumeMonitor.get_mounts();
+        for(let i = 0; i < mounts.length; i++) {
+                if(mounts[i].is_shadowed())
+                        continue;
+
+                if(mounts[i].get_volume())
+                        continue;
+
+                this._addMount(mounts[i]);
+        }
+    },
+
+    _addMount: function(mount) {
+        let mountLabel = mount.get_name();
+        let mountIcon = mount.get_icon();
+        let root = mount.get_root();
+        let mountUri = root.get_uri();
+        let devItem = new PlaceDisplay(mountLabel,
+               function() {
+                        return Shell.TextureCache.get_default().load_gicon(mountIcon, PLACES_ICON_SIZE);
+               },
+               function() {
+                        Gio.app_info_launch_default_for_uri(mountUri, Main.createAppLaunchContext());
+               });
+        this._devBox.append(devItem.actor, Big.BoxPackFlags.NONE);
     }
+
 };
 Signals.addSignalMethods(Places.prototype);
