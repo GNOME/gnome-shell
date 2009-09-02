@@ -483,6 +483,12 @@ is_symbol_char (const char c)
 }
 
 static gboolean
+is_alphanum_char (const char c)
+{
+  return (g_ascii_isalnum (c) || c == '_') ? TRUE : FALSE;
+}
+
+static gboolean
 parse_argument (const char *string, /* original user string */
                 const char **ret_p, /* start of argument IN:OUT */
                 const CoglBlendStringStatement *statement,
@@ -845,7 +851,7 @@ _cogl_blend_string_compile (const char *string,
         case PARSER_STATE_SCRAPING_FUNCTION_NAME:
           if (*p != '(')
             {
-              if (!is_symbol_char (*p))
+              if (!is_alphanum_char (*p))
                 {
                   error_string = "non alpha numeric character in function"
                     "name";
