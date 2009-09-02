@@ -52,10 +52,13 @@ struct _ShellAppSystemPrivate {
   GList *cached_favorites; /* utf8 */
 
   gint app_monitor_id;
+
+  guint app_change_timeout_id;
 };
 
 static void shell_app_system_finalize (GObject *object);
-static void on_tree_changed (GMenuTree *tree, gpointer user_data);
+static void on_tree_changed (gpointer user_data);
+static void on_tree_changed_cb (GMenuTree *tree, gpointer user_data);
 static void reread_menus (ShellAppSystem *self);
 static void on_favorite_apps_changed (GConfClient *client, guint id, GConfEntry *entry, gpointer user_data);
 static void reread_favorite_apps (ShellAppSystem *system);
@@ -233,8 +236,10 @@ shell_app_system_init (ShellAppSystem *self)
   priv->apps_tree = gmenu_tree_lookup ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
   priv->settings_tree = gmenu_tree_lookup ("settings.menu", GMENU_TREE_FLAGS_NONE);
 
-  gmenu_tree_add_monitor (priv->apps_tree, on_tree_changed, self);
-  gmenu_tree_add_monitor (priv->settings_tree, on_tree_changed, self);
+  priv->app_change_timeout_id = 0;
+
+  gmenu_tree_add_monitor (priv->apps_tree, on_tree_changed_cb, self);
+  gmenu_tree_add_monitor (priv->settings_tree, on_tree_changed_cb, self);
 
   reread_menus (self);
 
@@ -251,8 +256,8 @@ shell_app_system_finalize (GObject *object)
   ShellAppSystem *self = SHELL_APP_SYSTEM (object);
   ShellAppSystemPrivate *priv = self->priv;
 
-  gmenu_tree_remove_monitor (priv->apps_tree, on_tree_changed, self);
-  gmenu_tree_remove_monitor (priv->settings_tree, on_tree_changed, self);
+  gmenu_tree_remove_monitor (priv->apps_tree, on_tree_changed_cb, self);
+  gmenu_tree_remove_monitor (priv->settings_tree, on_tree_changed_cb, self);
 
   gmenu_tree_unref (priv->apps_tree);
   gmenu_tree_unref (priv->settings_tree);
@@ -411,13 +416,37 @@ reread_menus (ShellAppSystem *self)
 }
 
 static void
-on_tree_changed (GMenuTree *monitor, gpointer user_data)
+on_tree_changed (gpointer user_data)
+{
+  ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
+  g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
+  reread_menus (self);
+  self->priv->app_change_timeout_id = 0;
+}
+
+static void
+on_tree_changed_cb (GMenuTree *monitor, gpointer user_data)
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
 
-  g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
+  /* GMenu currently gives us a separate notification on the entire
+   * menu tree for each node in the tree that might potentially have
+   * changed. (See http://bugzilla.gnome.org/show_bug.cgi?id=172046.)
+   * We need to compress these to avoid doing large extra amounts of
+   * work.
+   *
+   * Even when that bug is fixed, compression is still useful; for one
+   * thing we want to need to compress across notifications of changes
+   * to the settings tree. Second we want to compress if multiple
+   * changes are made to the desktop files at different times but in
+   * short succession.
+   */
 
-  reread_menus (self);
+  if (self->priv->app_change_timeout_id != 0)
+    return;
+  self->priv->app_change_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 3000,
+                                                          (GSourceFunc) on_tree_changed,
+                                                          self, NULL);
 }
 
 static GList *
