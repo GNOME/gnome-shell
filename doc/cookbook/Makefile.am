@@ -1,11 +1,19 @@
-DOCDIR = $(DESTDIR)/$(datadir)/doc/@PACKAGE@-@CLUTTER_API_VERSION@/cookbook
-HTML_FILES =  html/*.html
-IMAGE_FILES = images/*.png
-EXTRA_DIST =  \
-        version.xml.in \
-	cookbook.xsl \
-	style.css \
-	$(srcdir)/$(IMAGE_FILES)
+HTML_DIR = $(datadir)/gtk-doc/html
+TARGET_DIR = $(HTML_DIR)/clutter-cookbook
+
+HTML_FILES = $(srcdir)/html/*.html
+IMAGE_FILES = $(srcdir)/images/*.png
+
+EXTRA_DIST =  			\
+        version.xml.in 		\
+	cookbook.xsl 		\
+	common.xsl		\
+	devhelp.xsl		\
+	html.xsl		\
+	ref-html-style.xsl	\
+	style.css 		\
+	$(IMAGE_FILES)
+
 CLEANFILES = \
 	pdf-build.stamp \
 	txt-build.stamp \
@@ -13,59 +21,58 @@ CLEANFILES = \
 
 pdf-build.stamp: clutter-cookbook.xml
 	SP_ENCODING=XML SP_CHARSET_FIXED=YES \
-	$(JW) -b pdf $(srcdir)/clutter-cookbook.xml && \
-	mv $(srcdir)/clutter-cookbook.pdf clutter-cookbook-@CLUTTER_API_VERSION@.pdf && \
-	touch pdf-build.stamp
+	$(JW) -b pdf $(srcdir)/clutter-cookbook.xml \
+	&& mv -f $(srcdir)/clutter-cookbook.pdf clutter-cookbook-@CLUTTER_API_VERSION@.pdf \
+	&& echo timestamp > $(@F)
 
-txt-build.stamp: clutter-cookbook.xml
-	$(XMLTO) txt $(srcdir)/clutter-cookbook.xml && \
-	mv $(srcdir)/clutter-cookbook.txt clutter-cookbook-@CLUTTER_MAJORMINOR@.txt && \
-	touch txt-build.stamp
-
-htmldoc-build.stamp: clutter-cookbook.xml
-	$(mkinstalldirs) html && \
-	$(XMLTO) -m cookbook.xsl -o html/ xhtml $(srcdir)/clutter-cookbook.xml && \
-	cp $(srcdir)/style.css html/ && \
-	touch htmldoc-build.stamp
-
-doc: txt-build.stamp htmldoc-build.stamp pdf-build.stamp
+html-build.stamp: clutter-cookbook.xml
+	$(mkinstalldirs) html \
+	&& $(XSLTPROC) --nonet --xinclude -o $(srcdir)/html/ \
+		--path $(srcdir) \
+		--stringparam gtkdoc.bookname "clutter-cookbook" \
+		--stringparam gtkdoc.version @CLUTTER_API_VERSION@ \
+		$(srcdir)/ref-html-style.xsl \
+	$(srcdir)/clutter-cookbook.xml \
+	&& echo timestamp > $(@F)
 
 if ENABLE_MANUAL
-all-local: doc
+all-local: html-build.stamp
 else
 all-local:
 endif
 
 clean-local:
-	rm -rf html/*.html
-	rm -f html/style.css
-	rm -f clutter-cookbook-*.txt
+	rm -rf html
 	rm -f *.pdf
+	rm -f *.stamp
 
 uninstall-local:
-	rm -rf $(DOCDIR);
 
 install-data-local:
 	installfiles=`echo $(srcdir)/html/*`; \
-	if test "$$installfiles" = '$(srcdir)/html/*'; then \
-	echo '-- Nothing to install' ; \
+	if test "$$installfiles" = '$(srcdir)/html/*'; \
+	then echo '-- Nothing to install' ; \
 	else \
-	  $(mkinstalldirs) $(DOCDIR)/html/images ; \
+	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 	  for file in `ls $(srcdir)/$(HTML_FILES)`; do \
 	    if [ -f $$file ]; then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-	      $(INSTALL_DATA) $$file $(DOCDIR)/html/$$basefile; \
+	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/$$basefile; \
 	    fi \
 	  done; \
+	fi; \
+	if [ -d $(srcdir)/images ]; \
+	then \
+	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
 	  for file in `ls $(srcdir)/$(IMAGE_FILES)`; do \
-	    if [ -f $$file ]; then \
+	    if [ -f $$file ]; \
+	    then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-	      $(INSTALL_DATA) $$file $(DOCDIR)/html/images/$$basefile; \
+	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/images/$$basefile; \
 	    fi \
 	  done; \
-	  $(INSTALL_DATA) $(srcdir)/style.css $(DOCDIR)/html/style.css; \
-	  $(INSTALL_DATA) $(srcdir)/clutter-cookbook-@CLUTTER_MAJORMINOR@.txt $(DOCDIR)/clutter-cookbook-@CLUTTER_MAJORMINOR@.txt; \
-	  $(INSTALL_DATA) $(srcdir)/clutter-cookbook-@CLUTTER_MAJORMINOR@.pdf $(DOCDIR)/clutter-cookbook-@CLUTTER_MAJORMINOR@.pdf; \
-	fi
+	fi; \
+	$(INSTALL_DATA) $(srcdir)/style.css $(DESTDIR)$(TARGET_DIR)/style.css; \
+	$(INSTALL_DATA) $(srcdir)/html/clutter-cookbook.devhelp	$(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
 
 .PHONY : doc

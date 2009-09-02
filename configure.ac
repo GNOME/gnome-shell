@@ -761,12 +761,17 @@ AS_IF([test "x$enable_manual" = "xyes"],
       [
         AC_PATH_PROG(JW, [jw], [no])
         AS_IF([test "x$JW" = "xno"],
-              [AC_MSG_ERROR(['jw' program needed by the manual not found in path])]
+              [AC_MSG_ERROR(['jw' program needed by the manual not found in PATH])]
         )
 
         AC_PATH_PROG(XMLTO, [xmlto], [no])
         AS_IF([test "x$XMLTO" = "xno"],
-              [AC_MSG_ERROR(['xmlto' program needed by the manual not found in path])]
+              [AC_MSG_ERROR(['xmlto' program needed by the manual not found in PATH])]
+        )
+
+        AC_PATH_PROG(XSLTPROC, [xsltproc], [no])
+        AS_IF([test "x$XSLTPROC" = "xno"],
+              [AC_MSG_ERROR(['xsltproc' needed by the manual not found in PATH])]
         )
       ]
 )
