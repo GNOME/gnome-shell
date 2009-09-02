@@ -8,6 +8,7 @@
 ]>
 
 <book lang="en">
+
   <bookinfo> <!-- {{{ -->
     <author>
       <firstname>Emmanuele</firstname>
@@ -354,7 +355,7 @@ on_paint (ClutterActor *actor,
       <para>introduction</para>
     </section>
 
-    <section id="textures-aspect-ratio">
+    <section id="textures-aspect-ratio"> <!-- recipe 1 {{{ -->
       <title>Maintaining the aspect ratio when loading a texture</title>
 
       <section>
@@ -419,7 +420,7 @@ on_paint (ClutterActor *actor,
 
   </chapter> <!-- animations }}} -->
 
-  <appendix id="contributing"> <!-- {{{ -->
+  <appendix id="contributing"> <!-- contributing {{{ -->
     <title>Contributing to this document</title>
 
     <para>This document is written in Docbook XML. The source file for this
