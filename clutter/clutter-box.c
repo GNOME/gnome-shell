@@ -281,7 +281,8 @@ clutter_box_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_LAYOUT_MANAGER:
-      priv->manager = g_value_dup_object (value);
+      priv->manager = g_value_get_object (value);
+      g_object_ref_sink (priv->manager);
       break;
 
     default:

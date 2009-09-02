@@ -30,7 +30,7 @@ typedef struct _ClutterLayoutManagerClass       ClutterLayoutManagerClass;
  */
 struct _ClutterLayoutManager
 {
-  GObject parent_instance;
+  GInitiallyUnowned parent_instance;
 };
 
 /**
@@ -43,7 +43,7 @@ struct _ClutterLayoutManager
  */
 struct _ClutterLayoutManagerClass
 {
-  GObjectClass parent_class;
+  GInitiallyUnownedClass parent_class;
 
   void (* get_preferred_width)  (ClutterLayoutManager   *manager,
                                  ClutterContainer       *container,

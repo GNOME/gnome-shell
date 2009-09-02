@@ -23,7 +23,9 @@
                    G_OBJECT_TYPE_NAME (_obj),                           \
                    (method));                           } G_STMT_END
 
-G_DEFINE_ABSTRACT_TYPE (ClutterLayoutManager, clutter_layout_manager, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (ClutterLayoutManager,
+                        clutter_layout_manager,
+                        G_TYPE_INITIALLY_UNOWNED);
 
 static void
 layout_manager_real_get_preferred_width (ClutterLayoutManager *manager,
