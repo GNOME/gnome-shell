@@ -222,13 +222,16 @@ clutter_model_finalize (GObject *object)
 
   g_free (priv->column_types);
 
-  /* the column_names vector might have holes in it, so we need to
-   * use the columns number to clear up everything
-   */
-  for (i = 0; i < priv->n_columns; i++)
-    g_free (priv->column_names[i]);
+  if (priv->column_names != NULL)
+    {
+      /* the column_names vector might have holes in it, so we need
+       * to use the columns number to clear up everything
+       */
+      for (i = 0; i < priv->n_columns; i++)
+        g_free (priv->column_names[i]);
 
-  g_free (priv->column_names);
+      g_free (priv->column_names);
+    }
 
   G_OBJECT_CLASS (clutter_model_parent_class)->finalize (object);
 }
