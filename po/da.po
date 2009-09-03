@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-29 10:24+0200\n"
-"PO-Revision-Date: 2009-08-23 20:32+0200\n"
+"POT-Creation-Date: 2009-09-04 01:26+0200\n"
+"PO-Revision-Date: 2009-09-01 21:48+0200\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -30,43 +30,43 @@ msgid "Activities"
 msgstr "Aktiviteter"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:451
+#: ../js/ui/panel.js:454
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #: ../js/ui/dash.js:256
 msgid "Find..."
-msgstr ""
+msgstr "Find..."
 
 #: ../js/ui/dash.js:374
 msgid "Browse"
 msgstr "Gennemse"
 
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:511
 msgid "(see all)"
-msgstr ""
+msgstr "(se alle)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:634 ../js/ui/dash.js:682
+#: ../js/ui/dash.js:705 ../js/ui/dash.js:761 ../js/ui/dash.js:893
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:654
+#: ../js/ui/dash.js:725
 msgid "PLACES"
 msgstr "STEDER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:661 ../js/ui/dash.js:694
+#: ../js/ui/dash.js:732 ../js/ui/dash.js:773 ../js/ui/dash.js:867
 msgid "RECENT DOCUMENTS"
 msgstr "SENESTE DOKUMENTER"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:680
+#: ../js/ui/dash.js:751 ../js/ui/dash.js:856 ../js/ui/dash.js:882
 msgid "SEARCH RESULTS"
-msgstr ""
+msgstr "SØGERESULTATER"
 
 #: ../js/ui/runDialog.js:82
 msgid "Please enter a command:"
