@@ -722,6 +722,13 @@ meta_display_open (void)
                                     the_display->leader_window,
                                     the_display->atom__NET_WM_NAME,
                                     "Mutter");
+
+    /* The GNOME keybindings capplet should include both the Mutter and Metacity
+     * keybindings */
+    meta_prop_set_utf8_string_hint (the_display,
+                                    the_display->leader_window,
+                                    the_display->atom__GNOME_WM_KEYBINDINGS,
+                                    "Mutter,Metacity");
     
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,
