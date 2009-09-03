@@ -115,7 +115,7 @@
 
   </part>
 
-  <part>
+  <part id="cluttertools">
     <title>Clutter Tools</title>
 
     <chapter>
@@ -147,7 +147,7 @@
     </chapter>
   </part>
 
-  <part>
+  <part id="clutterbackends">
     <title>Clutter Backends</title>
 
     <partintro>
@@ -164,7 +164,7 @@
     <xi:include href="xml/clutter-eglx.xml"/>
   </part>
 
-  <part>
+  <part id="additionaldocs">
     <title>Additional Documentation</title>
 
     <partintro>
@@ -177,7 +177,7 @@
     <xi:include href="xml/creating-behaviours.xml"/>
   </part>
 
-  <part>
+  <part id="migration">
     <title>Migrating from previous version of Clutter</title>
 
     <partintro>
@@ -190,32 +190,67 @@
 
   </part>
 
+  <part id="clutterobjects">
+    <title>Clutter Actors and Objects</title>
+
+    <chapter id="clutterobjecthierarchy">
+      <title>Object Hierarchy</title>
+
+      <xi:include href="xml/tree_index.sgml"/>
+    </chapter>
+
+    <chapter id="clutterobjectindex">
+      <title>Object Index</title>
+
+      <xi:include href="xml/object_index.sgml"/>
+    </chapter>
+  </part>
+
+  <part id="clutterglossary">
+    <title>Glossaries</title>
+
+    <xi:include href="xml/glossary.xml"><xi:fallback /></xi:include>
+    <xi:include href="xml/annotation-glossary.xml"/>
+  </part>
+
   <index>
-    <title>Index</title>
+    <title>Index of all symbols</title>
+    <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
   </index>
 
   <index role="deprecated">
     <title>Index of deprecated symbols</title>
+    <xi:include href="xml/api-index-deprecated.xml"><xi:fallback /></xi:include>
   </index>
 
   <index role="0.2">
     <title>Index of new symbols in 0.2</title>
+    <xi:include href="xml/api-index-0.2.xml"><xi:fallback /></xi:include>
   </index>
 
   <index role="0.4">
     <title>Index of new symbols in 0.4</title>
+    <xi:include href="xml/api-index-0.4.xml"><xi:fallback /></xi:include>
   </index>
 
   <index role="0.6">
     <title>Index of new symbols in 0.6</title>
+    <xi:include href="xml/api-index-0.6.xml"><xi:fallback /></xi:include>
   </index>
 
   <index role="0.8">
     <title>Index of new symbols in 0.8</title>
+    <xi:include href="xml/api-index-0.8.xml"><xi:fallback /></xi:include>
   </index>
 
   <index role="1.0">
     <title>Index of new symbols in 1.0</title>
+    <xi:include href="xml/api-index-1.0.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <index role="1.2">
+    <title>Index of new symbols in 1.2</title>
+    <xi:include href="xml/api-index-1.2.xml"><xi:fallback /></xi:include>
   </index>
 
   <appendix id="license">

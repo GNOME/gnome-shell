@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+]>
+
+<glossary>
+  <title>Glossary</title>
+
+  <glossentry id="actor">
+    <glossterm>actor</glossterm>
+    <glossdef>
+      <para>An item on the <glossterm linkend="scenegraph">scenegraph</glossterm>. Every
+      actor has a <glossterm linkend="parent">parent</glossterm>, except the <glossterm
+      linkend="stage">stage</glossterm>, and some actors can be <glossterm
+      linkend="container">containers</glossterm>. Every actor has a <glossterm
+      linkend="geometry">geometry</glossterm> and, when visible, it should paint its
+      contents. The base class for actors is #ClutterActor.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="allocation">
+    <glossterm>allocation</glossterm>
+    <glossdef>
+      <para>The final size of an <glossterm linkend="actor">actor</glossterm> within its
+      <glossterm linkend="parent">parent</glossterm>. For example, an actor might have
+      a preferred <glossterm linkend="minimum-size">minimum size</glossterm> of
+      20&times;20 pixels and a <glossterm linkend="natural-size">natural
+      size</glossterm> of
+      40&times;40 pixels, but its parent may decide to allocate 50&times;20 pixels for
+      it instead.</para>
+      <glossseealso>
+        <glossterm linkend="minimum-size">minimum size</glossterm>
+        <glossterm linkend="natural-size">natural size</glossterm>
+      </glossseealso>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="child">
+    <glossterm>child</glossterm>
+    <glossdef>
+      <para>A <glossterm linkend="container">container's</glossterm> child is an
+      <glossterm linkend="actor">actor</glossterm> contained inside it.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="container">
+    <glossterm>container</glossterm>
+    <glossdef>
+      <para>An <glossterm linkend="actor">actor</glossterm> which can contain other
+      actors. If a container is meant to be extended using public API it should implement
+      the #ClutterContainer interface; otherwise it is a composite actor. A container
+      can let its <glossterm linkend="child">children</glossterm> manage their <glossterm
+      linkend="geometry">geometry</glossterm>, like #ClutterGroup, or they can take care of
+      assigning one.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="event">
+    <glossterm>event</glossterm>
+    <glossdef>
+      <para>Events are the way in which the Clutter backend informs Clutter about external
+      events like pointer motion, button clicks, key presses, etc.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="geometry">
+    <glossterm>geometry</glossterm>
+    <glossdef>
+      <para>An <glossterm linkend="actor">actor's</glossterm> position and size. A
+      geometry can be expressed in <glossterm linkend="actor">actor-relative</glossterm>
+      <glossterm linkend="transformation">untransformed</glossterm> coordinates; or in
+      <glossterm linkend="stage">stage-relative</glossterm>, <glossterm
+      linkend="transformation">transformed</glossterm> coordinates.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="minimum-size">
+    <glossterm>minimum size</glossterm>
+    <glossdef>
+      <para>The minimum, useful size of an <glossterm linkend="actor">actor</glossterm>.
+      For instance, a button might have a minimum size of 20&times;20 millimeters on a
+      touch screen, to retain the ability for the user to press it. A <glossterm
+      linkend="container">container</glossterm> that manages the size of its <glossterm
+      linkend="child">children</glossterm> should always try to <glossterm
+      linkend="allocation">allocate</glossterm> at least their minimum size.</para>
+      <glossseealso>
+        <glossterm linkend="natural-size">natural size</glossterm>
+        <glossterm linkend="allocation">allocation</glossterm>
+      </glossseealso>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="natural-size">
+    <glossterm>natural size</glossterm>
+    <glossdef>
+      <para>The default size requested by an <glossterm linkend="actor">actor</glossterm>.</para>
+      <glossseealso>
+        <glossterm linkend="minimum-size">minimum size</glossterm>
+        <glossterm linkend="allocation">allocation</glossterm>
+      </glossseealso>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="parent">
+    <glossterm>parent</glossterm>
+    <glossdef>
+      <para>An <glossterm linkend="actor">actor's</glossterm> parent is the
+      <glossterm linkend="container">container</glossterm> inside which the actor
+      resides.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="scenegraph">
+    <glossterm>scenegraph</glossterm>
+    <glossdef>
+      <para>The tree of all <glossterm linkend="actor">actors</glossterm>, starting
+      from the <glossterm linkend="stage">stage</glossterm> at the root and following
+      the <glossterm linkend="container">containers</glossterm>.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="stage">
+    <glossterm>stage</glossterm>
+    <glossdef>
+      <para>The top-level <glossterm linkend="container">container</glossterm> for
+      <glossterm linkend="actor">actors</glossterm>. Depending on the Clutter back end a
+      stage can be associated to a window or to a frame buffer; also depending on the back
+      end is the number of instantiatable stages. Stages in Clutter can be manipulated using
+      the #ClutterStage API.</para>
+    </glossdef>
+  </glossentry>
+
+  <glossentry id="transformation">
+    <glossterm>transformation</glossterm>
+    <glossdef>
+      <para>A rotation, scaling or traslation of an <glossterm
+      linkend="actor">actor</glossterm>. Transformations are independent
+      of the actor's <glossterm linkend="geometry">geometry</glossterm>.</para>
+    </glossdef>
+  </glossentry>
+
+</glossary>
