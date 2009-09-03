@@ -893,7 +893,7 @@ Workspaces.prototype = {
             }
         }
         activeWorkspace.actor.raise_top();
-        this._positionWorkspaces(global, activeWorkspace);
+        this._positionWorkspaces(global);
 
         // Save the button size as a global variable so we can us it to create 
         // matching button sizes for workspace remove buttons.
@@ -958,7 +958,7 @@ Workspaces.prototype = {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
-        this._positionWorkspaces(global, activeWorkspace);
+        this._positionWorkspaces(global);
         activeWorkspace.actor.raise_top();
 
         for (let w = 0; w < this._workspaces.length; w++)
@@ -1002,12 +1002,7 @@ Workspaces.prototype = {
     // first row.)
     //
     // FIXME: need to make the metacity internal layout agree with this!
-    _positionWorkspaces : function(global, activeWorkspace) {
-        if (!activeWorkspace) {
-            let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-            activeWorkspace = this._workspaces[activeWorkspaceIndex];
-        }
-
+    _positionWorkspaces : function(global) {
         let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
         let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
 
