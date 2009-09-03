@@ -751,32 +751,32 @@ AC_SUBST(PANGO_PREFIX)
 
 dnl === Manual ================================================================
 
-AC_ARG_ENABLE([manual],
-              [AC_HELP_STRING([--enable-manual=@<:@no/yes@:>@],
-                              [Build application developers manual. Requires jw and xmlto.])],
-              [enable_manual=$enableval],
-              [enable_manual=no])
+AC_ARG_ENABLE([docs],
+              [AC_HELP_STRING([--enable-docs=@<:@no/yes@:>@],
+                              [Build optional documentation; requires xsltproc and jw.])],
+              [enable_docs=$enableval],
+              [enable_docs=no])
 
-AS_IF([test "x$enable_manual" = "xyes"],
+enable_pdfs=no
+AS_IF([test "x$enable_docs" = "xyes"],
       [
         AC_PATH_PROG(JW, [jw], [no])
         AS_IF([test "x$JW" = "xno"],
-              [AC_MSG_ERROR(['jw' program needed by the manual not found in PATH])]
-        )
-
-        AC_PATH_PROG(XMLTO, [xmlto], [no])
-        AS_IF([test "x$XMLTO" = "xno"],
-              [AC_MSG_ERROR(['xmlto' program needed by the manual not found in PATH])]
-        )
+              [
+                AC_MSG_WARN([jw not found; pdf generation has been disabled])
+              ],
+              [enable_pdfs=yes])
 
         AC_PATH_PROG(XSLTPROC, [xsltproc], [no])
         AS_IF([test "x$XSLTPROC" = "xno"],
-              [AC_MSG_ERROR(['xsltproc' needed by the manual not found in PATH])]
-        )
+              [
+                AC_MSG_ERROR([xsltproc not found])
+              ])
       ]
 )
 
-AM_CONDITIONAL(ENABLE_MANUAL, [test "x$enable_manual" = "xyes"])
+AM_CONDITIONAL(ENABLE_DOCS, [test "x$enable_docs" = "xyes"])
+AM_CONDITIONAL(ENABLE_PDFS, [test "x$enable_pdfs" = "xyes"])
 
 dnl === I18N ==================================================================
 
@@ -847,10 +847,11 @@ AC_CONFIG_FILES([
         doc/reference/clutter/clutter-docs.xml
         doc/reference/cogl/Makefile
         doc/reference/cogl/cogl-docs.xml
-        doc/manual/clutter-manual.xml
+        doc/common/Makefile
         doc/manual/Makefile
-        doc/cookbook/version.xml
+        doc/manual/clutter-manual.xml
         doc/cookbook/Makefile
+        doc/cookbook/clutter-cookbook.xml
         po/Makefile.in
         clutter.pc
 ])
@@ -877,7 +878,7 @@ echo "        Compiler flags: ${MAINTAINER_CFLAGS}"
 echo ""
 echo " • Documentation:"
 echo "        Build API Reference: ${enable_gtk_doc}"
-echo "        Build Manual: ${enable_manual}"
+echo "        Build Additional Documentation: ${enable_docs}"
 
 echo ""
 echo " • Extra:"

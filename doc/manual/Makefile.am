@@ -1,64 +1,76 @@
-DOCDIR = $(DESTDIR)/$(datadir)/doc/@PACKAGE@-@CLUTTER_API_VERSION@
-HTML_FILES =  html/*.html
-IMAGE_FILES = images/*.png
-EXTRA_DIST =  clutter-manual.xml.in manual.xsl style.css $(srcdir)/$(IMAGE_FILES)
-CLEANFILES = pdf-build.stamp txt-build.stamp htmldoc-build.stamp clutter-manual.xml
+HTML_DIR = $(datadir)/gtk-doc/html
+TARGET_DIR = $(HTML_DIR)/clutter-manual
+
+HTML_FILES = $(srcdir)/html/*.html
+IMAGE_FILES = $(srcdir)/images/*.png
+
+EXTRA_DIST = $(IMAGE_FILES)
+
+CLEANFILES = \
+	pdf-build.stamp \
+	html-build.stamp
 
 pdf-build.stamp: clutter-manual.xml
 	SP_ENCODING=XML SP_CHARSET_FIXED=YES \
-	$(JW) -b pdf $(srcdir)/clutter-manual.xml && \
-	mv $(srcdir)/clutter-manual.pdf clutter-manual-@CLUTTER_API_VERSION@.pdf && \
-	touch pdf-build.stamp
+	$(JW) -b pdf $(srcdir)/clutter-manual.xml \
+	&& mv -f $(srcdir)/clutter-manual.pdf clutter-manual-@CLUTTER_API_VERSION@.pdf \
+	&& echo timestamp > $(@F)
 
-txt-build.stamp: clutter-manual.xml
-	$(XMLTO) txt $(srcdir)/clutter-manual.xml && \
-	mv $(srcdir)/clutter-manual.txt clutter-manual-@CLUTTER_API_VERSION@.txt && \
-	touch txt-build.stamp
+html-build.stamp: clutter-manual.xml
+	$(mkinstalldirs) html \
+	&& $(XSLTPROC) --nonet --xinclude -o $(srcdir)/html/ \
+		--path $(top_srcdir)/doc/common \
+		--path $(srcdir) \
+		--stringparam gtkdoc.bookname "clutter-manual" \
+		--stringparam gtkdoc.version @CLUTTER_API_VERSION@ \
+		$(srcdir)/ref-html-style.xsl \
+	$(srcdir)/clutter-manual.xml \
+	&& echo timestamp > $(@F)
 
-htmldoc-build.stamp: clutter-manual.xml
-	$(mkinstalldirs) html && \
-	$(XMLTO) -m manual.xsl -o html/ xhtml $(srcdir)/clutter-manual.xml && \
-	cp $(srcdir)/style.css html/ && \
-	touch htmldoc-build.stamp
+if ENABLE_PDFS
+pdf_target = pdf-build.stamp
+else
+pdf_target =
+endif
 
-doc: txt-build.stamp htmldoc-build.stamp pdf-build.stamp
-
-if ENABLE_MANUAL
-all-local: doc
+if ENABLE_DOCS
+all-local: html-build.stamp $(pdf_target)
 else
 all-local:
 endif
 
 clean-local:
-	rm -rf html/*.html
-	rm -f html/style.css
-	rm -f clutter-manual-*.txt
-	rm -f *.pdf
+	@rm -rf html ; \
+	rm -f *.pdf ; \
+	rm -f *.stamp
 
 uninstall-local:
-	rm -rf $(DOCDIR);
 
 install-data-local:
 	installfiles=`echo $(srcdir)/html/*`; \
-	if test "$$installfiles" = '$(srcdir)/html/*'; then \
-	echo '-- Nothing to install' ; \
+	if test "$$installfiles" = '$(srcdir)/html/*'; \
+	then echo '-- Nothing to install' ; \
 	else \
-	  $(mkinstalldirs) $(DOCDIR)/html/images ; \
+	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR) ; \
 	  for file in `ls $(srcdir)/$(HTML_FILES)`; do \
 	    if [ -f $$file ]; then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-	      $(INSTALL_DATA) $$file $(DOCDIR)/html/$$basefile; \
+	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/$$basefile; \
 	    fi \
 	  done; \
+	fi; \
+	if [ -d $(srcdir)/images ]; \
+	then \
+	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images ; \
 	  for file in `ls $(srcdir)/$(IMAGE_FILES)`; do \
-	    if [ -f $$file ]; then \
+	    if [ -f $$file ]; \
+	    then \
 	      basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-	      $(INSTALL_DATA) $$file $(DOCDIR)/html/images/$$basefile; \
+	      $(INSTALL_DATA) $$file $(DESTDIR)$(TARGET_DIR)/images/$$basefile; \
 	    fi \
 	  done; \
-	  $(INSTALL_DATA) $(srcdir)/style.css $(DOCDIR)/html/style.css; \
-	  $(INSTALL_DATA) $(srcdir)/clutter-manual-@CLUTTER_API_VERSION@.txt $(DOCDIR)/clutter-manual-@CLUTTER_API_VERSION@.txt; \
-	  $(INSTALL_DATA) $(srcdir)/clutter-manual-@CLUTTER_API_VERSION@.pdf $(DOCDIR)/clutter-manual-@CLUTTER_API_VERSION@.pdf; \
-	fi
+	fi; \
+	$(INSTALL_DATA) $(top_srcdir)/doc/common/style.css $(DESTDIR)$(TARGET_DIR)/style.css; \
+	$(INSTALL_DATA) $(srcdir)/html/clutter-manual.devhelp	$(DESTDIR)$(TARGET_DIR)/clutter-manual.devhelp
 
 .PHONY : doc

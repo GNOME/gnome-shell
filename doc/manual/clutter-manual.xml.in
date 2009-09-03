@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
         "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
-<!ENTITY appversion "@CLUTTER_MAJORMINOR@">
-<!ENTITY appurl "http://clutter-project.org">
+<!ENTITY apiversion "@CLUTTER_API_VERSION@">
+<!ENTITY appurl "http://www.clutter-project.org/docs">
 <!ENTITY author_mail "mallum@o-hand.com">
 ]>
 
@@ -24,9 +24,8 @@
 				program.
 			</para>
 		</legalnotice>
-		<title>
-			Clutter Application Developer Manual &appversion;
-		</title>
+		<title>Clutter Application Developer Manual</title>
+                <releaseinfo>for Clutter &apiversion;</releaseinfo>
 	</bookinfo>
 
 	<chapter id="intro">
