@@ -89,10 +89,10 @@ AppIcon.prototype = {
         let targetWidth = availWidth;
         let xPadding = 0;
         if (naturalWidth < availWidth) {
-            xPadding = (availWidth - naturalWidth) / 2;
+            xPadding = Math.floor((availWidth - naturalWidth) / 2);
         }
-        childBox.x1 = Math.floor(xPadding);
-        childBox.x2 = availWidth;
+        childBox.x1 = xPadding;
+        childBox.x2 = availWidth - xPadding;
         childBox.y1 = GLOW_PADDING_VERTICAL;
         childBox.y2 = availHeight - GLOW_PADDING_VERTICAL;
         this._name.allocate(childBox, flags);
@@ -101,7 +101,8 @@ AppIcon.prototype = {
 
         if (this._glowBox != null) {
             let glowPaddingHoriz = Math.max(0, xPadding - GLOW_PADDING_HORIZONTAL);
-            childBox.x1 = Math.floor(glowPaddingHoriz);
+            glowPaddingHoriz = Math.max(GLOW_PADDING_HORIZONTAL, glowPaddingHoriz);
+            childBox.x1 = glowPaddingHoriz;
             childBox.x2 = availWidth - glowPaddingHoriz;
             childBox.y1 = 0;
             childBox.y2 = availHeight;
