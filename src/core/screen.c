@@ -3114,6 +3114,11 @@ meta_screen_get_active_workspace_index (MetaScreen *screen)
   return meta_workspace_index (active);
 }
 
+/**
+ * meta_screen_get_active_workspace:
+ *
+ * Returns: (transfer none): The current workspace
+ */
 MetaWorkspace *
 meta_screen_get_active_workspace (MetaScreen *screen)
 {
