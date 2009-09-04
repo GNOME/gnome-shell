@@ -75,6 +75,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-generic-container.h           \
 	shell-gtk-embed.c			\
 	shell-gtk-embed.h			\
+	shell-menu.c       \
+	shell-menu.h       \
 	shell-overflow-list.c		\
 	shell-overflow-list.h		\
 	shell-process.c				\
