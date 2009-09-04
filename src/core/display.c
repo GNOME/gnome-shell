@@ -5111,9 +5111,9 @@ sanity_check_timestamps (MetaDisplay *display,
               meta_warning ("%s appears to be one of the offending windows "
                             "with a timestamp of %u.  Working around...\n",
                             window->desc, window->net_wm_user_time);
-              window->net_wm_user_time = timestamp;
+              meta_window_set_user_time (window, timestamp);
             }
-          
+
           tmp = tmp->next;
         }
 
