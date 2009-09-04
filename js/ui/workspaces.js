@@ -28,6 +28,10 @@ FRAME_COLOR.from_pixel(0xffffffff);
 const LIGHTBOX_COLOR = new Clutter.Color();
 LIGHTBOX_COLOR.from_pixel(0x00000044);
 
+const SCROLL_SCALE_AMOUNT = 100 / 5;
+
+const ZOOM_OVERLAY_FADE_TIME = 0.15;
+
 // Define a layout scheme for small window counts. For larger
 // counts we fall back to an algorithm. We need more schemes here
 // unless we have a really good algorithm.
@@ -42,6 +46,15 @@ const POSITIONS = {
         5: [[0.165, 0.25, 0.32], [0.495, 0.25, 0.32], [0.825, 0.25, 0.32], [0.25, 0.75, 0.32], [0.75, 0.75, 0.32]]
 };
 
+
+function _interpolate(start, end, step) {
+    return start + (end - start) * step;
+}
+
+function _clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
 // Spacing between workspaces. At the moment, the same spacing is used
 // in both zoomed-in and zoomed-out views; this is slightly
 // metaphor-breaking, but the alternatives are also weird.
@@ -49,6 +62,39 @@ const GRID_SPACING = 15;
 const FRAME_SIZE = GRID_SPACING / 3;
 
 let buttonSize = false;
+
+function ScaledPoint(x, y, scaleX, scaleY) {
+    [this.x, this.y, this.scaleX, this.scaleY] = arguments;
+}
+
+ScaledPoint.prototype = {
+    getPosition : function() {
+        return [this.x, this.y];
+    },
+
+    getScale : function() {
+        return [this.scaleX, this.scaleY];
+    },
+
+    setPosition : function(x, y) {
+        [this.x, this.y] = arguments;
+    },
+
+    setScale : function(scaleX, scaleY) {
+        [this.scaleX, this.scaleY] = arguments;
+    },
+
+    interpPosition : function(other, step) {
+        return [_interpolate(this.x, other.x, step),
+                _interpolate(this.y, other.y, step)];
+    },
+
+    interpScale : function(other, step) {
+        return [_interpolate(this.scaleX, other.scaleX, step),
+                _interpolate(this.scaleY, other.scaleY, step)];
+    }
+};
+
 
 function WindowClone(realWindow) {
     this._init(realWindow);
@@ -70,6 +116,9 @@ WindowClone.prototype = {
 
         this.actor.connect('button-release-event',
                            Lang.bind(this, this._onButtonRelease));
+
+        this.actor.connect('scroll-event',
+                           Lang.bind(this, this._onScroll));
 
         this.actor.connect('enter-event',
                            Lang.bind(this, this._onEnter));
@@ -131,12 +180,106 @@ WindowClone.prototype = {
             return;
 
         this._havePointer = false;
-
-        if (Tweener.isTweening(this.actor))
-            return;
-
-    	actor.raise(this.stackAbove);
         this._updateTitle();
+
+        if (this._zoomStep)
+            this._zoomEnd();
+    },
+
+    _onScroll : function (actor, event) {
+        let direction = event.get_scroll_direction();
+        if (direction == Clutter.ScrollDirection.UP) {
+            if (this._zoomStep == undefined)
+                this._zoomStart();
+            if (this._zoomStep < 100) {
+                this._zoomStep += SCROLL_SCALE_AMOUNT;
+                this._zoomUpdate();
+            }
+        } else if (direction == Clutter.ScrollDirection.DOWN) {
+            if (this._zoomStep > 0) {
+                this._zoomStep -= SCROLL_SCALE_AMOUNT;
+                this._zoomStep = Math.max(0, this._zoomStep);
+                this._zoomUpdate();
+            }
+            if (this._zoomStep <= 0.0)
+                this._zoomEnd();
+        }
+
+    },
+
+    _zoomUpdate : function () {
+        let global = Shell.Global.get();
+
+        [this.actor.x, this.actor.y] = this._zoomGlobalOrig.interpPosition(this._zoomTarget, this._zoomStep / 100);
+        [this.actor.scale_x, this.actor.scale_y] = this._zoomGlobalOrig.interpScale(this._zoomTarget, this._zoomStep / 100);
+
+        let [width, height] = this.actor.get_transformed_size();
+
+        this.actor.x = _clamp(this.actor.x, 0, global.screen_width  - width);
+        this.actor.y = _clamp(this.actor.y, Panel.PANEL_HEIGHT, global.screen_height - height);
+    },
+
+    _zoomStart : function () {
+        let global = Shell.Global.get();
+        this._zoomOverlay = new Clutter.Rectangle({ reactive: true,
+                                                    color: LIGHTBOX_COLOR,
+                                                    border_width: 0,
+                                                    x: 0,
+                                                    y: 0,
+                                                    width: global.screen_width,
+                                                    height: global.screen_height,
+                                                    opacity: 0 });
+        this._zoomOverlay.show();
+        global.stage.add_actor(this._zoomOverlay);
+        Tweener.addTween(this._zoomOverlay,
+                         { opacity: 255,
+                           time: ZOOM_OVERLAY_FADE_TIME,
+                           transition: "easeOutQuad"
+                         });
+
+        this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);
+        this._zoomGlobalOrig = new ScaledPoint();
+        let parent = this._origParent = this.actor.get_parent();
+        [width, height] = this.actor.get_transformed_size();
+        this._zoomGlobalOrig.setPosition.apply(this._zoomGlobalOrig, this.actor.get_transformed_position());
+        this._zoomGlobalOrig.setScale(width / this.actor.width, height / this.actor.height);
+
+        this._zoomOverlay.raise_top();
+        this._zoomOverlay.show();
+
+        this.actor.reparent(global.stage);
+
+        [this.actor.x, this.actor.y]             = this._zoomGlobalOrig.getPosition();
+        [this.actor.scale_x, this.actor.scale_y] = this._zoomGlobalOrig.getScale();
+
+        this.actor.raise_top();
+
+        this._zoomTarget = new ScaledPoint(0, 0, 1.0, 1.0);
+        this._zoomTarget.setPosition(this.actor.x - (this.actor.width - width) / 2, this.actor.y - (this.actor.height - height) / 2);
+        this._zoomStep = 0;
+
+        this._hideEventId = Main.overview.connect('hiding', Lang.bind(this, function () { this._zoomEnd(); }));
+        this._zoomUpdate();
+    },
+
+    _zoomEnd : function () {
+        this.actor.reparent(this._origParent);
+
+        [this.actor.x, this.actor.y]             = this._zoomLocalOrig.getPosition();
+        [this.actor.scale_x, this.actor.scale_y] = this._zoomLocalOrig.getScale();
+
+        this._adjustTitle();
+
+        this._zoomOverlay.destroy();
+        Main.overview.disconnect(this._hideEventId);
+
+        this._zoomLocalPosition  = undefined;
+        this._zoomLocalScale     = undefined;
+        this._zoomGlobalPosition = undefined;
+        this._zoomGlobalScale    = undefined;
+        this._zoomTargetPosition = undefined;
+        this._zoomStep       = undefined;
+        this._zoomOverlay    = undefined;
     },
 
     _onButtonRelease : function (actor, event) {
