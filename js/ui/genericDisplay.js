@@ -7,6 +7,7 @@ const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -496,15 +497,23 @@ GenericDisplay.prototype = {
         }
 
         // Check if the pointer is over one of the items and display the information button if it is.
-        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
-        let global = Shell.Global.get();
-        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
-        if (actor != null) {
-            let item = this._findDisplayedByActor(actor);
-            if (item != null) {
-                item.onDrawnUnderPointer();
-            }
-        }
+        // We want to do this between finishing our changes to the display and the point where
+        // the display is redrawn.
+        Mainloop.idle_add(Lang.bind(this,
+                                    function() {
+                                        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+                                        let global = Shell.Global.get();
+                                        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
+                                                                                  x, y);
+                                        if (actor != null) {
+                                            let item = this._findDisplayedByActor(actor);
+                                            if (item != null) {
+                                                item.onDrawnUnderPointer();
+                                            }
+                                        }
+                                        return false;
+                                    }),
+                          Meta.PRIORITY_BEFORE_REDRAW);
     },
 
     // Creates a display item based on the information associated with itemId 
