@@ -6,9 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-20 23:25+0200\n"
-"PO-Revision-Date: 2009-08-20 23:26+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&component=general\n"
+"POT-Creation-Date: 2009-09-05 00:19+0000\n"
+"PO-Revision-Date: 2009-09-06 18:31+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -25,72 +26,80 @@ msgid "Window management and application launching"
 msgstr "Gestione finestre e avvio applicazioni"
 
 #. left side
-#: ../js/ui/panel.js:266
+#: ../js/ui/panel.js:271
 msgid "Activities"
 msgstr "Attività"
 
 # (ndt) proviamo col k, se non funge, sappiamo il perché...
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:433
+#: ../js/ui/panel.js:454
 msgid "%a %l:%M %p"
 msgstr "%a %k.%M"
 
-# (ndt) è da valutare se è troppo lunga, è in una casella di ricerca
-#: ../js/ui/dash.js:251
-msgid "Find apps or documents"
-msgstr "Trova programmi e documenti"
+#: ../js/ui/dash.js:256
+msgid "Find..."
+msgstr "Trova..."
 
-#: ../js/ui/dash.js:369
+#: ../js/ui/dash.js:374
 msgid "Browse"
 msgstr "Esplora"
 
+#: ../js/ui/dash.js:511
+msgid "(see all)"
+msgstr "(vedi tutto)"
+
 #. **** Applications ****
-#: ../js/ui/dash.js:505 ../js/ui/dash.js:578
+#: ../js/ui/dash.js:705 ../js/ui/dash.js:761 ../js/ui/dash.js:893
 msgid "APPLICATIONS"
 msgstr "Applicazioni"
-
-#. **** Documents ****
-#: ../js/ui/dash.js:510 ../js/ui/dash.js:605
-msgid "RECENT DOCUMENTS"
-msgstr "Documenti recenti"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:598
+#: ../js/ui/dash.js:725
 msgid "PLACES"
 msgstr "Risorse"
 
-#: ../js/ui/runDialog.js:75
+#. **** Documents ****
+#: ../js/ui/dash.js:732 ../js/ui/dash.js:773 ../js/ui/dash.js:867
+msgid "RECENT DOCUMENTS"
+msgstr "Documenti recenti"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:751 ../js/ui/dash.js:856 ../js/ui/dash.js:882
+msgid "SEARCH RESULTS"
+msgstr "Risultati ricerca"
+
+#: ../js/ui/runDialog.js:82
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
-#: ../src/shell-global.c:841
+#: ../src/shell-global.c:840
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:844
+#: ../src/shell-global.c:843
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:847
+#: ../src/shell-global.c:846
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:850
+#: ../src/shell-global.c:849
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:853
+#: ../src/shell-global.c:852
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -174,6 +183,10 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+# (ndt) è da valutare se è troppo lunga, è in una casella di ricerca
+#~ msgid "Find apps or documents"
+#~ msgstr "Trova programmi e documenti"
 
 # (ndt) no idea...
 #~ msgid "Manager"
