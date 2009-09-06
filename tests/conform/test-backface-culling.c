@@ -74,27 +74,31 @@ validate_result (TestState *state)
 {
   /* Front-facing texture */
   g_assert (validate_part (0, 0, TRUE));
+  /* Front-facing texture with flipped tex coords */
+  g_assert (validate_part (1, 0, TRUE));
   /* Back-facing texture */
-  g_assert (validate_part (1, 0, FALSE));
+  g_assert (validate_part (2, 0, FALSE));
   /* Front-facing texture polygon */
-  g_assert (validate_part (2, 0, TRUE));
+  g_assert (validate_part (3, 0, TRUE));
   /* Back-facing texture polygon */
-  g_assert (validate_part (3, 0, FALSE));
+  g_assert (validate_part (4, 0, FALSE));
   /* Regular rectangle */
-  g_assert (validate_part (4, 0, TRUE));
+  g_assert (validate_part (5, 0, TRUE));
 
   /* Backface culling disabled - everything should be shown */
 
   /* Front-facing texture */
   g_assert (validate_part (0, 1, TRUE));
-  /* Back-facing texture */
+  /* Front-facing texture with flipped tex coords */
   g_assert (validate_part (1, 1, TRUE));
-  /* Front-facing texture polygon */
+  /* Back-facing texture */
   g_assert (validate_part (2, 1, TRUE));
-  /* Back-facing texture polygon */
+  /* Front-facing texture polygon */
   g_assert (validate_part (3, 1, TRUE));
-  /* Regular rectangle */
+  /* Back-facing texture polygon */
   g_assert (validate_part (4, 1, TRUE));
+  /* Regular rectangle */
+  g_assert (validate_part (5, 1, TRUE));
 
   /* Comment this out if you want visual feedback of what this test
    * paints.
@@ -134,6 +138,14 @@ on_paint (ClutterActor *actor, TestState *state)
       /* Draw a front-facing texture */
       cogl_material_set_layer (material, 0, state->texture);
       cogl_rectangle (x1, y1, x2, y2);
+
+      x1 = x2;
+      x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
+
+      /* Draw a front-facing texture with flipped texcoords */
+      cogl_material_set_layer (material, 0, state->texture);
+      cogl_rectangle_with_texture_coords (x1, y1, x2, y2,
+                                          1.0, 0.0, 0.0, 1.0);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_RENDER_SIZE);
