@@ -1616,6 +1616,39 @@ clutter_animation_setupv (ClutterAnimation    *animation,
     }
 }
 
+static const struct
+{
+  const gchar *name;
+  GConnectFlags flags;
+} signal_prefixes[] =
+  {
+    { "::", 0 },
+    { "-swapped::", G_CONNECT_SWAPPED },
+    { "-after::", G_CONNECT_AFTER },
+    { "-swapped-after::", G_CONNECT_SWAPPED | G_CONNECT_AFTER }
+  };
+
+static gboolean
+clutter_animation_has_signal_prefix (const gchar *property_name,
+                                     GConnectFlags *flags,
+                                     int *offset)
+{
+  int i;
+
+  if (!g_str_has_prefix (property_name, "signal"))
+    return FALSE;
+
+  for (i = 0; i < G_N_ELEMENTS (signal_prefixes); i++)
+    if (g_str_has_prefix (property_name + 6, signal_prefixes[i].name))
+      {
+        *offset = strlen (signal_prefixes[i].name) + 6;
+        *flags = signal_prefixes[i].flags;
+        return TRUE;
+      }
+
+  return FALSE;
+}
+
 static void
 clutter_animation_setup_valist (ClutterAnimation *animation,
                                 const gchar      *first_property_name,
@@ -1634,46 +1667,20 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       GValue final = { 0, };
       gchar *error = NULL;
       gboolean is_fixed = FALSE;
+      GConnectFlags flags;
+      int offset;
 
-      if (g_str_has_prefix (property_name, "signal::"))
+      if (clutter_animation_has_signal_prefix (property_name,
+                                               &flags,
+                                               &offset))
         {
-          const gchar *signal_name = property_name + 8;
+          const gchar *signal_name = property_name + offset;
           GCallback callback = va_arg (var_args, GCallback);
           gpointer  userdata = va_arg (var_args, gpointer);
-
-          g_signal_connect (animation, signal_name, callback, userdata);
-        }
-      else if (g_str_has_prefix (property_name, "signal-"))
-        {
-          GCallback callback = va_arg (var_args, GCallback);
-          gpointer  userdata = va_arg (var_args, gpointer);
-          const gchar *signal_name;
-          GConnectFlags flags;
-
-          if (g_str_has_prefix (property_name, "signal-after::"))
-            {
-              signal_name = property_name + 14;
-              flags = G_CONNECT_AFTER;
-            }
-          else if (g_str_has_prefix (property_name, "signal-swapped::"))
-            {
-              signal_name = property_name + 16;
-              flags = G_CONNECT_SWAPPED;
-            }
-          else
-            {
-              g_warning ("Unable to connect to '%s': the valid signal "
-                         "modifiers are 'signal-swapped::' and "
-                         "'signal-swapped::'",
-                         property_name);
-              break;
-            }
 
           g_signal_connect_data (animation, signal_name,
-                                 callback,
-                                 userdata,
-                                 NULL,
-                                 flags);
+                                 callback, userdata,
+                                 NULL, flags);
         }
       else
         {
