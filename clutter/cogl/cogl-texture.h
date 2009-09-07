@@ -245,9 +245,10 @@ gboolean        cogl_texture_is_sliced        (CoglHandle          handle);
 /**
  * cogl_texture_get_gl_texture:
  * @handle: a #CoglHandle for a texture.
- * @out_gl_handle: pointer to return location for the textures GL handle, or
- * NULL.
- * @out_gl_target: pointer to return location for the GL target type, or NULL.
+ * @out_gl_handle: (out) (allow-none): pointer to return location for the
+ *   textures GL handle, or %NULL.
+ * @out_gl_target: (out) (allow-none): pointer to return location for the
+ *   GL target type, or %NULL.
  *
  * Query the GL handles for a GPU side texture through it's #CoglHandle,
  * if the texture is spliced the data for the first sub texture will be
