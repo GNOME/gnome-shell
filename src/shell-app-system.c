@@ -57,7 +57,7 @@ struct _ShellAppSystemPrivate {
 };
 
 static void shell_app_system_finalize (GObject *object);
-static void on_tree_changed (gpointer user_data);
+static gboolean on_tree_changed (gpointer user_data);
 static void on_tree_changed_cb (GMenuTree *tree, gpointer user_data);
 static void reread_menus (ShellAppSystem *self);
 static void on_favorite_apps_changed (GConfClient *client, guint id, GConfEntry *entry, gpointer user_data);
@@ -415,13 +415,14 @@ reread_menus (ShellAppSystem *self)
   cache_by_id (self, self->priv->cached_settings, TRUE);
 }
 
-static void
+static gboolean
 on_tree_changed (gpointer user_data)
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
   reread_menus (self);
   self->priv->app_change_timeout_id = 0;
+  return FALSE;
 }
 
 static void
