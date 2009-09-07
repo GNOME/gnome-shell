@@ -8,7 +8,7 @@
       <applyto>/apps/mutter/general/overlay_key</applyto>
       <owner>mutter</owner>
       <type>string</type>
-      <default>&lt;Super_L&gt;</default>
+      <default>Super_L</default>
       <locale name="C">
          <short>Modifier to use for extended window management operations</short>
          <long>
