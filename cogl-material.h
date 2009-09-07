@@ -147,7 +147,8 @@ gboolean cogl_is_material (CoglHandle handle);
  *
  * Since 1.0
  */
-void cogl_material_set_color (CoglHandle material, const CoglColor *color);
+void cogl_material_set_color (CoglHandle material,
+                              const CoglColor *color);
 
 /**
  * cogl_material_set_color4ub:
@@ -198,7 +199,8 @@ void cogl_material_set_color4f (CoglHandle material,
  *
  * Since 1.0
  */
-void cogl_material_get_color (CoglHandle  material, CoglColor  *color);
+void cogl_material_get_color (CoglHandle  material,
+                              CoglColor  *color);
 
 /**
  * cogl_material_set_ambient:
@@ -227,7 +229,8 @@ void cogl_material_set_ambient (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_ambient (CoglHandle  material, CoglColor  *ambient);
+void cogl_material_get_ambient (CoglHandle  material,
+                                CoglColor  *ambient);
 
 /**
  * cogl_material_set_diffuse:
@@ -255,7 +258,8 @@ void cogl_material_set_diffuse (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_diffuse (CoglHandle  material, CoglColor  *diffuse);
+void cogl_material_get_diffuse (CoglHandle  material,
+                                CoglColor  *diffuse);
 
 /**
  * cogl_material_set_ambient_and_diffuse:
@@ -299,7 +303,8 @@ void cogl_material_set_specular (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_specular (CoglHandle  material, CoglColor  *specular);
+void cogl_material_get_specular (CoglHandle  material,
+                                 CoglColor  *specular);
 
 /**
  * cogl_material_set_shininess:
@@ -353,7 +358,8 @@ void cogl_material_set_emission (CoglHandle       material,
  *
  * Since 1.0
  */
-void cogl_material_get_emission (CoglHandle material, CoglColor *emission);
+void cogl_material_get_emission (CoglHandle material,
+                                 CoglColor *emission);
 
 /**
  * CoglMaterialAlphaFunc:
@@ -505,8 +511,8 @@ gboolean cogl_material_set_blend (CoglHandle  material,
  *
  * Since: 1.0
  */
-void cogl_material_set_blend_constant (CoglHandle             material,
-                                       CoglColor              *constant_color);
+void cogl_material_set_blend_constant (CoglHandle material,
+                                       CoglColor *constant_color);
 
 /**
  * cogl_material_set_layer:
@@ -671,9 +677,10 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
  * This function lets you access a materials internal list of layers
  * for iteration.
  *
- * Returns: A list of #CoglHandle<!-- -->'s that can be passed to the
- *   cogl_material_layer_* functions. The list is owned by COGL and it
- *   should not be modified or freed
+ * Returns: (element-type Handle) (transfer none): A list of
+ *   #CoglHandle<!-- -->'s that can be passed to the  cogl_material_layer_*
+ *   functions. The list is owned by COGL and it  should not be modified or
+ *   freed
  */
 G_CONST_RETURN GList *cogl_material_get_layers (CoglHandle material);
 
