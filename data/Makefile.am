@@ -16,6 +16,7 @@ imagedir = $(pkgdatadir)/images
 
 dist_image_DATA =		\
 	add-workspace.svg	\
+	app-well-glow.png	\
         back.svg                \
 	close.svg		\
 	close-black.svg       \
