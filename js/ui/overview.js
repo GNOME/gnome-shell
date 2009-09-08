@@ -397,16 +397,18 @@ Overview.prototype = {
             this._workspaces.setHighlightWindow(metaWindow);
     },
 
+
     /**
-     * setWindowApplicationFilter:
-     * @id: A string application identifier
+     * beginApplicationWindowSelection:
+     * @appid: Application identifier string
      *
-     * Hide all windows which are not owned by the application
-     * identified by @id.
+     * Enter a mode which shows only the widnows owned by the
+     * given application, and allow highlighting of a specific
+     * window with setHighlightWindow().
      */
-    setWindowApplicationFilter: function (id) {
+    beginApplicationWindowSelection: function (appid) {
         if (this._workspaces)
-            this._workspaces.setWindowApplicationFilter(id);
+            this._workspaces.beginApplicationWindowSelection(appid);
     },
 
     //// Private methods ////

@@ -130,17 +130,6 @@ WindowClone.prototype = {
         this._inDrag = false;
     },
 
-    setHighlighted: function (highlighted) {
-        let factor = 0.1;
-        if (highlighted) {
-            this.actor.scale_x += factor;
-            this.actor.scale_y += factor;
-        } else {
-            this.actor.scale_x -= factor;
-            this.actor.scale_y -= factor;
-        }
-    },
-
     setVisibleWithChrome: function(visible) {
         if (visible) {
             this.actor.show();
@@ -568,11 +557,19 @@ Workspace.prototype = {
         this.positionWindows(false);
     },
 
+    /**
+     * setLightboxMode:
+     * @showLightbox: If true, dim background and allow highlighting a specific window
+     *
+     * This function also resets the highlighted window state.
+     */
     setLightboxMode: function (showLightbox) {
-        if (showLightbox)
+        if (showLightbox) {
+            this.setHighlightWindow(null);
             this._lightbox.show();
-        else
+        } else {
             this._lightbox.hide();
+        }
     },
 
     setHighlightWindow: function (metaWindow) {
@@ -1153,7 +1150,6 @@ Workspaces.prototype = {
         // highlighted window while trying to handle the window or workspace possibly
         // going away.
         for (let i = 0; i < this._workspaces.length; i++) {
-            this._workspaces[i].setLightboxMode(metaWindow != null);
             this._workspaces[i].setHighlightWindow(null);
         }
         if (metaWindow != null) {
@@ -1162,7 +1158,7 @@ Workspaces.prototype = {
         }
     },
 
-    setWindowApplicationFilter: function (appId) {
+    beginApplicationWindowSelection: function (appId) {
         let appSys = Shell.AppMonitor.get_default();
 
         let showOnlyWindows;
@@ -1177,6 +1173,7 @@ Workspaces.prototype = {
         }
         this._appIdFilter = appId;
         for (let i = 0; i < this._workspaces.length; i++) {
+            this._workspaces[i].setLightboxMode(showOnlyWindows != null);
             this._workspaces[i].setShowOnlyWindows(showOnlyWindows);
         }
     },

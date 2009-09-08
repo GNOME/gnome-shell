@@ -791,7 +791,7 @@ RunningWellItem.prototype = {
                     id = this.appInfo.get_id();
                 else
                     id = null;
-                Main.overview.setWindowApplicationFilter(id);
+                Main.overview.beginApplicationWindowSelection(id);
             }));
         }
 
