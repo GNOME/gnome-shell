@@ -533,7 +533,7 @@ WellMenu.prototype = {
 
         childBox.x1 = 0;
         childBox.x2 = WELL_MENU_ARROW_SIZE;
-        childBox.y1 = (height / 2) - (WELL_MENU_ARROW_SIZE / 2);
+        childBox.y1 = Math.floor((height / 2) - (WELL_MENU_ARROW_SIZE / 2));
         childBox.y2 = childBox.y1 + WELL_MENU_ARROW_SIZE;
         this._arrow.allocate(childBox, flags);
 
@@ -622,8 +622,9 @@ WellMenu.prototype = {
 
         this.emit('popup', true);
 
+        let x = Math.floor(stageX + stageWidth);
         let y = Math.floor(stageY + (stageHeight / 2) - (this.actor.height / 2));
-        this.actor.set_position(stageX + stageWidth, y);
+        this.actor.set_position(x, y);
         this.actor.show();
     },
 
