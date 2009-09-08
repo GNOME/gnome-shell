@@ -1,5 +1,9 @@
 2009-09-08  Frederic Peters  <fpeters@gnome.org>
 
+        * configure.in: Post-release bump to 2.27.2.
+
+2009-09-08  Frederic Peters  <fpeters@gnome.org>
+
         * NEWS: 2.27.1 release.
 
 2009-06-09  Matthias Clasen  <mclasen@redhat.com>
