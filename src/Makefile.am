@@ -24,6 +24,7 @@ EXTRA_DIST += gnome-shell.in
 
 include Makefile-big.am
 include Makefile-gdmuser.am
+include Makefile-nbtk.am
 include Makefile-tray.am
 
 gnome_shell_cflags =				\
@@ -152,14 +153,15 @@ libgnome_shell_la_LIBADD =	\
 	$(MUTTER_PLUGIN_LIBS)	\
         $(LIBGNOMEUI_LIBS)      \
 	libbig-1.0.la		\
+	libnbtk-1.0.la       \
 	libgdmuser-1.0.la	\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)
-typelib_DATA = Shell-0.1.typelib Big-1.0.typelib
+typelib_DATA = Shell-0.1.typelib Big-1.0.typelib Nbtk-1.0.typelib
 
-Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefile
+Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir Nbtk-1.0.gir libgnome-shell.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Shell			\
 		--nsversion=0.1				\
@@ -169,6 +171,7 @@ Shell-0.1.gir: $(mutter) $(G_IR_SCANNER) Big-1.0.gir libgnome-shell.la Makefile
 		--libtool="$(LIBTOOL)"    \
 		--add-include-path=$(builddir)     \
 		--include=Big-1.0     \
+		--include=Nbtk-1.0     \
 		--program=mutter			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(addprefix $(srcdir)/,$(libgnome_shell_la_gir_sources)) \
@@ -179,14 +182,14 @@ CLEANFILES += Shell-0.1.gir
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
 Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir Big-1.0.gir
-	$(AM_V_GEN) LD_LIBRARY_PATH=.$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH}	\
+	$(AM_V_GEN) \
 		$(G_IR_COMPILER)						\
 			--includedir=.						\
 			--includedir=$(MUTTER_LIB_DIR)/mutter/			\
 		Shell-0.1.gir -o $@
 CLEANFILES += Shell-0.1.typelib
 
-Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la $(srcdir)/big-enum-types.h Makefile
+Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)			\
 		--namespace=Big				\
 		--nsversion=1.0				\
@@ -203,6 +206,26 @@ Big-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la $(srcdir)
 CLEANFILES += Big-1.0.gir
 
 Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
-	$(AM_V_GEN) LD_LIBRARY_PATH=.$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
-		$(G_IR_COMPILER) Big-1.0.gir -o $@
+	$(AM_V_GEN) $(G_IR_COMPILER) Big-1.0.gir -o $@
 CLEANFILES += Big-1.0.typelib
+
+Nbtk-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libnbtk-1.0.la Makefile
+	$(AM_V_GEN) $(G_IR_SCANNER)         \
+        --namespace=Nbtk             \
+        --nsversion=1.0             \
+        --include=Clutter-1.0           \
+        --include=Gtk-2.0         \
+        --libtool="$(LIBTOOL)"    \
+        --program=mutter            \
+            --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
+        -DNBTK_COMPILATION \
+        $(addprefix $(srcdir)/,$(nbtk_source_h)) \
+        $(addprefix $(srcdir)/,$(nbtk_source_c)) \
+        $(srcdir)/nbtk-enum-types.h      \
+        $(NBTK_CFLAGS)               \
+        -o $@
+CLEANFILES += Nbtk-1.0.gir
+
+Nbtk-1.0.typelib: Nbtk-1.0.gir
+	$(AM_V_GEN) $(G_IR_COMPILER) Nbtk-1.0.gir -o $@
+CLEANFILES += Nbtk-1.0.typelib

@@ -1,0 +1,101 @@
+nbtk_cflags =                    \
+    -I$(top_srcdir)/src         \
+    -DPREFIX=\""$(prefix)"\"        \
+    -DLIBDIR=\""$(libdir)"\"        \
+    -DG_DISABLE_DEPRECATED          \
+    -DG_LOG_DOMAIN=\"Nbtk\"          \
+    -DNBTK_COMPILATION  \
+    $(NBTK_CFLAGS)           \
+    $(NULL)
+
+nbtk_built_sources = \
+    nbtk-enum-types.h   \
+    nbtk-enum-types.c   \
+    nbtk-marshal.h      \
+    nbtk-marshal.c
+
+BUILT_SOURCES += $(nbtk_built_sources)
+
+EXTRA_DIST += \
+	nbtk/nbtk-marshal.list \
+	nbtk/nbtk-enum-types.h.in \
+	nbtk/nbtk-enum-types.c.in
+
+CLEANFILES += stamp-nbtk-marshal.h stamp-nbtk-enum-types.h
+
+nbtk-marshal.h: stamp-nbtk-marshal.h
+	@true
+stamp-nbtk-marshal.h: Makefile nbtk/nbtk-marshal.list
+	$(GLIB_GENMARSHAL) \
+		--prefix=_nbtk_marshal \
+		--header \
+	$(srcdir)/nbtk/nbtk-marshal.list > $@.tmp && \
+	(cmp -s $@.tmp nbtk-marshal.h || cp -f $@.tmp nbtk-marshal.h) && \
+	rm -f $@.tmp && \
+	echo timestamp > $(@F)
+
+nbtk-marshal.c: Makefile nbtk/nbtk-marshal.list
+	(echo "#include \"nbtk-marshal.h\"" ; \
+	 $(GLIB_GENMARSHAL) \
+		--prefix=_nbtk_marshal \
+		--body \
+	 $(srcdir)/nbtk/nbtk-marshal.list ) > $@.tmp && \
+	cp -f $@.tmp nbtk-marshal.c && \
+	rm -f $@.tmp
+
+nbtk-enum-types.h: stamp-nbtk-enum-types.h Makefile
+	@true
+stamp-nbtk-enum-types.h: $(source_h) nbtk/nbtk-enum-types.h.in
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template nbtk/nbtk-enum-types.h.in \
+	  $(nbtk_source_h) ) >> $@.tmp && \
+	(cmp -s $@.tmp nbtk-enum-types.h || cp $@.tmp nbtk-enum-types.h) && \
+	rm -f $@.tmp && \
+	echo timestamp > $(@F)
+
+nbtk-enum-types.c: stamp-nbtk-enum-types.h nbtk/nbtk-enum-types.c.in
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template nbtk/nbtk-enum-types.c.in \
+	  $(nbtk_source_h) ) >> $@.tmp && \
+	cp $@.tmp $@ && \
+	rm -f $@.tmp
+
+# please, keep this sorted alphabetically
+nbtk_source_h =                  \
+    nbtk/nbtk-bin.h                   \
+    nbtk/nbtk-private.h               \
+    nbtk/nbtk-stylable.h              \
+    nbtk/nbtk-style.h                 \
+    nbtk/nbtk-subtexture.h            \
+    nbtk/nbtk-texture-cache.h         \
+    nbtk/nbtk-texture-frame.h         \
+    nbtk/nbtk-tooltip.h               \
+    nbtk/nbtk-types.h                 \
+    nbtk/nbtk-widget.h                \
+    $(NULL)
+
+# please, keep this sorted alphabetically
+nbtk_source_c =                  \
+    nbtk/nbtk-bin.c                   \
+    nbtk/nbtk-private.c               \
+    nbtk/nbtk-stylable.c              \
+    nbtk/nbtk-style.c                 \
+    nbtk/nbtk-subtexture.c            \
+    nbtk/nbtk-texture-cache.c         \
+    nbtk/nbtk-texture-frame.c         \
+    nbtk/nbtk-tooltip.c               \
+    nbtk/nbtk-widget.c                \
+    $(NULL)
+
+noinst_LTLIBRARIES += libnbtk-1.0.la
+
+libnbtk_1_0_la_LIBADD = $(NBTK_LIBS)
+libnbtk_1_0_la_SOURCES = \
+    $(nbtk_source_c) \
+    $(nbtk_source_h) \
+    $(nbtk_built_sources) \
+    $(NULL)
+libnbtk_1_0_la_CPPFLAGS = $(nbtk_cflags)
+libnbtk_1_0_la_LDFLAGS = $(LDADD)
