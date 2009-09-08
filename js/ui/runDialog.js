@@ -32,8 +32,6 @@ function RunDialog() {
 
 RunDialog.prototype = {
     _init : function() {
-        let global = Shell.Global.get();
-
         this._isOpen = false;
 
         this._internalCommands = { 'lg':
@@ -43,13 +41,11 @@ RunDialog.prototype = {
                                    }),
 
                                    'r': Lang.bind(this, function() {
-                                       let global = Shell.Global.get();
                                        global.reexec_self();
                                    }),
 
                                    // Developer brain backwards compatibility
                                    'restart': Lang.bind(this, function() {
-                                       let global = Shell.Global.get();
                                        global.reexec_self();
                                    })
                                  };
@@ -181,7 +177,6 @@ RunDialog.prototype = {
         this._isOpen = true;
         this._group.show();
 
-        let global = Shell.Global.get();
         global.stage.set_key_focus(this._entry);
     },
 

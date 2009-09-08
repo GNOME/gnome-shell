@@ -88,7 +88,6 @@ GenericDisplayItem.prototype = {
                                        spacing: DEFAULT_PADDING });
         this._infoContent.append(this._infoText, Big.BoxPackFlags.EXPAND);
 
-        let global = Shell.Global.get();
         let infoIconUri = "file://" + global.imagedir + "info.svg";
         let infoIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
                                                                       infoIconUri,
@@ -502,7 +501,6 @@ GenericDisplay.prototype = {
         Mainloop.idle_add(Lang.bind(this,
                                     function() {
                                         let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
-                                        let global = Shell.Global.get();
                                         let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
                                                                                   x, y);
                                         if (actor != null) {

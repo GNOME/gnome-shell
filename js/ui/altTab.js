@@ -36,8 +36,6 @@ function AltTabPopup() {
 
 AltTabPopup.prototype = {
     _init : function() {
-        let global = Shell.Global.get();
-
         this.actor = new Big.Box({ background_color : POPUP_BG_COLOR,
                                    corner_radius: POPUP_GRID_SPACING,
                                    padding: POPUP_GRID_SPACING,
@@ -140,8 +138,6 @@ AltTabPopup.prototype = {
     },
 
     show : function(initialSelection) {
-        let global = Shell.Global.get();
-
         global.window_group.add_actor(this._overlay);
         this._overlay.raise_top();
         this._overlay.show();
@@ -234,8 +230,6 @@ AltTabPopup.prototype = {
     },
 
     _adjust_overlay : function() {
-        let global = Shell.Global.get();
-
         if (this._selected && this._selected.icon_rect) {
             // We want to highlight a specific rectangle within the
             // task bar, so rearrange the pieces of the overlay to

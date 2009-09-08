@@ -1089,8 +1089,6 @@ AppWell.prototype = {
 
     // Draggable target interface
     acceptDrop : function(source, actor, x, y, time) {
-        let global = Shell.Global.get();
-
         let appSystem = Shell.AppSystem.get_default();
 
         let app = null;

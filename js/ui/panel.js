@@ -168,8 +168,6 @@ function Panel() {
 
 Panel.prototype = {
     _init : function() {
-        let global = Shell.Global.get();
-
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL
                                  });

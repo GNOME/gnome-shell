@@ -18,8 +18,6 @@ function Chrome() {
 
 Chrome.prototype = {
     _init: function() {
-        let global = Shell.Global.get();
-
         // The group itself has zero size so it doesn't interfere with DND
         this.actor = new Clutter.Group({ width: 0, height: 0 });
         global.stage.add_actor(this.actor);
@@ -238,7 +236,6 @@ Chrome.prototype = {
     },
 
     _windowsRestacked: function() {
-        let global = Shell.Global.get();
         let windows = global.get_windows();
 
         // The chrome layer should be visible unless there is a window
@@ -280,7 +277,6 @@ Chrome.prototype = {
     },
 
     _updateRegions: function() {
-        let global = Shell.Global.get();
         let rects = [], struts = [], i;
 
         delete this._updateRegionIdle;

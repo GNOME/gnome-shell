@@ -82,8 +82,6 @@ Overview.prototype = {
     _init : function() {
         let me = this;
 
-        let global = Shell.Global.get();
-
         this._group = new Clutter.Group();
         this._group._delegate = this;
 
@@ -131,8 +129,6 @@ Overview.prototype = {
     },
 
     _recalculateGridSizes: function () {
-        let global = Shell.Global.get();
-
         wideScreen = (global.screen_width/global.screen_height > WIDE_SCREEN_CUT_OFF_RATIO);
 
         // We divide the screen into an imaginary grid which helps us determine the layout of
@@ -147,8 +143,6 @@ Overview.prototype = {
     },
 
     relayout: function () {
-        let global = Shell.Global.get();
-
         let screenHeight = global.screen_height;
         let screenWidth = global.screen_width;
 
@@ -277,8 +271,6 @@ Overview.prototype = {
         this.visible = true;
         this.animationInProgress = true;
 
-        let global = Shell.Global.get();
-
         this._dash.show();
 
         /* TODO: make this stuff dynamic */
@@ -333,8 +325,6 @@ Overview.prototype = {
     hide : function() {
         if (!this.visible || this._hideInProgress)
             return;
-
-        let global = Shell.Global.get();
 
         this.animationInProgress = true;
         this._hideInProgress = true;
@@ -425,8 +415,6 @@ Overview.prototype = {
     },
 
     _hideDone: function() {
-        let global = Shell.Global.get();
-
         global.window_group.show();
 
         this._workspaces.destroy();

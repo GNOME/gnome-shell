@@ -33,7 +33,10 @@ let recorder = null;
 let inModal = false;
 
 function start() {
-    let global = Shell.Global.get();
+    // Add a binding for "global" in the global JS namespace; (gjs
+    // keeps the web browser convention of having that namespace be
+    // called "window".)
+    window.global = Shell.Global.get();
 
     Gio.DesktopAppInfo.set_desktop_env("GNOME");
 
@@ -102,7 +105,6 @@ function start() {
 }
 
 function _relayout() {
-    let global = Shell.Global.get();
     panel.actor.set_size(global.screen_width, Panel.PANEL_HEIGHT);
     overview.relayout();
 }
@@ -113,8 +115,6 @@ function _relayout() {
 // global.get_windows() still returns NULL at the point when start()
 // is called.)
 function _removeUnusedWorkspaces() {
-
-    let global = Shell.Global.get();
 
     let windows = global.get_windows();
     let maxWorkspace = 0;
@@ -187,7 +187,6 @@ function _globalKeyPressHandler(actor, event) {
 // the stage. Returns true if we successfully grabbed the keyboard and
 // went modal, false otherwise
 function beginModal() {
-    let global = Shell.Global.get();
     let timestamp = global.screen.get_display().get_current_time();
 
     if (!global.begin_modal(timestamp))
@@ -200,7 +199,6 @@ function beginModal() {
 }
 
 function endModal() {
-    let global = Shell.Global.get();
     let timestamp = global.screen.get_display().get_current_time();
 
     global.end_modal(timestamp);
@@ -217,7 +215,6 @@ function createLookingGlass() {
 }
 
 function createAppLaunchContext() {
-    let global = Shell.Global.get();
     let screen = global.screen;
     let display = screen.get_display();
 

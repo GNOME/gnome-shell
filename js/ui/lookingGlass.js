@@ -249,7 +249,6 @@ function Inspector() {
 
 Inspector.prototype = {
     _init: function() {
-        let global = Shell.Global.get();
         let width = 150;
         let eventHandler = new Big.Box({ background_color: LG_BACKGROUND_COLOR,
                                          border: 1,
@@ -274,7 +273,6 @@ Inspector.prototype = {
         }));
 
         eventHandler.connect('button-press-event', Lang.bind(this, function (actor, event) {
-            let global = Shell.Global.get();
             Clutter.ungrab_pointer(eventHandler);
 
             let [stageX, stageY] = event.get_coords();
@@ -288,7 +286,6 @@ Inspector.prototype = {
         }));
 
         eventHandler.connect('motion-event', Lang.bind(this, function (actor, event) {
-            let global = Shell.Global.get();
             let [stageX, stageY] = event.get_coords();
             let target = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
                                                        stageX,
@@ -312,8 +309,6 @@ function LookingGlass() {
 
 LookingGlass.prototype = {
     _init : function() {
-        let global = Shell.Global.get();
-
         this._idleHistorySaveId = 0;
         let historyPath = global.configdir + "/lookingglass-history.txt";
         this._historyFile = Gio.file_new_for_path(historyPath);
@@ -558,7 +553,6 @@ LookingGlass.prototype = {
         if (!Main.beginModal())
             return;
 
-        let global = Shell.Global.get();
         global.stage.set_key_focus(this._entry);
 
         Tweener.addTween(this.actor, { time: 0.5,

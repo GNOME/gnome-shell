@@ -163,7 +163,6 @@ ClockWidget.prototype = {
     },
 
     _updateCairo: function(time) {
-        let global = Shell.Global.get();
         Shell.draw_clock(this.collapsedActor,
                          time.getHours() % 12,
                          time.getMinutes());

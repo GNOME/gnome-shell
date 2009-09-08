@@ -34,8 +34,6 @@ function Sidebar() {
 
 Sidebar.prototype = {
     _init : function() {
-        let global = Shell.Global.get();
-
         // The top-left corner of the sidebar is fixed at:
         // x = -WidgetBox.WIDGETBOX_PADDING, y = Panel.PANEL_HEIGHT.
         // (The negative X is so that we don't see the rounded

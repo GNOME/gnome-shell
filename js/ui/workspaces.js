@@ -258,7 +258,6 @@ DesktopClone.prototype = {
             this.actor = new Clutter.Clone({ source: window.get_texture(),
                                              reactive: true });
         } else {
-            let global = Shell.Global.get();
             this.actor = new Clutter.Rectangle({ color: global.stage.color,
                                                  reactive: true,
                                                  width: global.screen_width,
@@ -290,7 +289,6 @@ function Workspace(workspaceNum, parentActor) {
 Workspace.prototype = {
     _init : function(workspaceNum, parentActor) {
         let me = this;
-        let global = Shell.Global.get();
 
         this.workspaceNum = workspaceNum;
         this._metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
@@ -364,7 +362,6 @@ Workspace.prototype = {
     },
 
     updateRemovable : function() {
-        let global = Shell.Global.get();
         let removable = (this._windows.length == 1 /* just desktop */ &&
                          this.workspaceNum != 0 &&
                          this.workspaceNum == global.screen.n_workspaces - 1);
@@ -466,7 +463,6 @@ Workspace.prototype = {
 
     // Mark the workspace selected/not-selected
     setSelected : function(selected) {
-        let global = Shell.Global.get();
         // Don't draw a frame if we only have one workspace
         if (selected && global.screen.n_workspaces > 1) {
             if (this._frame)
@@ -502,8 +498,6 @@ Workspace.prototype = {
     // is true, then the workspace is moving at the same time and we need to take
     // that into account
     positionWindows : function(workspaceZooming) {
-        let global = Shell.Global.get();
-
         let totalVisible = 0;
 
         for (let i = 1; i < this._windows.length; i++) {
@@ -611,7 +605,6 @@ Workspace.prototype = {
     },
 
     _windowRemoved : function(metaWorkspace, metaWin) {
-        let global = Shell.Global.get();
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
@@ -763,8 +756,6 @@ Workspace.prototype = {
 
     // Animates the addition of a new (empty) workspace
     slideIn : function(oldScale) {
-        let global = Shell.Global.get();
-
         if (this.gridCol > this.gridRow) {
             this.actor.set_position(global.screen_width, this.gridY);
             this.actor.set_scale(oldScale, oldScale);
@@ -786,7 +777,6 @@ Workspace.prototype = {
     
     // Animates the removal of a workspace
     slideOut : function(onComplete) {
-        let global = Shell.Global.get();
         let destX = this.actor.x, destY = this.actor.y;
 
         this._hideAllIcons();
@@ -813,8 +803,6 @@ Workspace.prototype = {
     },
     
     destroy : function() {
-        let global = Shell.Global.get();
-
         Tweener.removeTweens(this.actor);
         this.actor.destroy();
         this.actor = null;
@@ -911,7 +899,6 @@ Workspace.prototype = {
     },
 
     _removeSelf : function(actor, event) {
-        let global = Shell.Global.get();
         let screen = global.screen;
         let workspace = screen.get_workspace_by_index(this.workspaceNum);
 
@@ -921,8 +908,6 @@ Workspace.prototype = {
 
     // Draggable target interface
     acceptDrop : function(source, actor, x, y, time) {
-        let global = Shell.Global.get();
-
         if (source instanceof WindowClone) {
             let win = source.realWindow;
             if (this._isMyWindow(win))
@@ -959,8 +944,6 @@ function Workspaces(width, height, x, y, addButtonSize, addButtonX, addButtonY) 
 
 Workspaces.prototype = {
     _init : function(width, height, x, y, addButtonSize, addButtonX, addButtonY) {
-        let global = Shell.Global.get();
-
         this.actor = new Clutter.Group();
 
         this._appIdFilter = null;
@@ -1074,7 +1057,6 @@ Workspaces.prototype = {
 
     // Should only be called from active Overview context
     activateWindowFromOverview: function (metaWindow, time) {
-        let global = Shell.Global.get();
         let activeWorkspaceNum = global.screen.get_active_workspace_index();
         let windowWorkspaceNum = metaWindow.get_workspace().index();
 
@@ -1090,7 +1072,6 @@ Workspaces.prototype = {
     },
 
     hide : function() {
-        let global = Shell.Global.get();
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
@@ -1102,8 +1083,6 @@ Workspaces.prototype = {
     },
 
     destroy : function() {
-        let global = Shell.Global.get();
-
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].destroy();
         this._workspaces = [];
@@ -1121,7 +1100,6 @@ Workspaces.prototype = {
 
     // Get the grid position of the active workspace.
     getActiveWorkspacePosition : function() {
-        let global = Shell.Global.get();
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
@@ -1176,8 +1154,6 @@ Workspaces.prototype = {
     },
 
     _workspacesChanged : function() {
-        let global = Shell.Global.get();
-
         let oldNumWorkspaces = this._workspaces.length;
         let newNumWorkspaces = global.screen.n_workspaces;
 
@@ -1262,8 +1238,6 @@ Workspaces.prototype = {
     },
 
     _appendNewWorkspace : function() {
-        let global = Shell.Global.get();
-
         global.screen.append_new_workspace(false, global.screen.get_display().get_current_time());
     },
 
@@ -1286,7 +1260,6 @@ AddWorkspaceButton.prototype = {
                                            height: buttonSize,
                                            reactive: true });
         this._acceptDropCallback = acceptDropCallback;
-        let global = Shell.Global.get();
         this.actor._delegate = this;
         this.actor.set_from_file(global.imagedir + 'add-workspace.svg');
     },

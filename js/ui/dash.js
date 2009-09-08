@@ -92,7 +92,6 @@ Pane.prototype = {
         let chromeTop = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                       spacing: 6 });
 
-        let global = Shell.Global.get();
         let closeIconUri = "file://" + global.imagedir + "close.svg";
         let closeIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
                                                                        closeIconUri,
@@ -288,7 +287,6 @@ SearchEntry.prototype = {
                                       padding_right: 4 });
         box.append(this._iconBox, Big.BoxPackFlags.END);
 
-        let global = Shell.Global.get();
         let magnifierUri = "file://" + global.imagedir + "magnifier.svg";
         this._magnifierIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
                                                                              magnifierUri, 18, 18);
@@ -408,7 +406,6 @@ BackLink.prototype = {
                                            border_right: SECTION_BORDER,
                                            border_color: SECTION_BORDER_COLOR });
 
-        let global = Shell.Global.get();
         let backIconUri = "file://" + global.imagedir + "back.svg";
         let backIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
                                                                       backIconUri,
@@ -557,8 +554,6 @@ function Dash() {
 
 Dash.prototype = {
     _init : function() {
-        let global = Shell.Global.get();
-
         // dash and the popup panes need to be reactive so that the clicks in unoccupied places on them
         // are not passed to the transparent background underneath them. This background is used for the workspaces area when
         // the additional dash panes are being shown and it handles clicks by closing the additional panes, so that the user
@@ -786,7 +781,6 @@ Dash.prototype = {
     },
 
     show: function() {
-        let global = Shell.Global.get();
         global.stage.set_key_focus(this._searchEntry.entry);
     },
 
