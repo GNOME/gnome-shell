@@ -1,5 +1,5 @@
 # Serbian translation of metacity
-# Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004, 2005, 2006, 2007.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2003 - 2009.
 #
 # This file is distributed under the same license as the metacity package.
 #
@@ -9,8 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-21 20:50+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=metacity&component=general\n"
+"POT-Creation-Date: 2009-08-24 17:51+0000\n"
 "PO-Revision-Date: 2007-09-12 03:29+0200\n"
 "Last-Translator: Горан Ракић <grakic@devbase.net>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -28,7 +29,7 @@ msgstr "Управљање прозорима"
 
 #: ../src/core/bell.c:294
 msgid "Bell event"
-msgstr ""
+msgstr "Звонце"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -36,15 +37,17 @@ msgid "Unknown window information request: %d"
 msgstr "Захтевана је непозната информација о прозору: %d"
 
 #: ../src/core/delete.c:104
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
 "<i>You may choose to wait a short while for it to continue or force the "
 "application to quit entirely.</i>"
 msgstr ""
-"Можеш мало сачекати док се програм не сабере или приморати програм да "
-"комплетно прекине са радом."
+"<big><b><tt>%s</tt> не даје одзив.</b></big>\n"
+"\n"
+"<i>Можете мало сачекати док се програм не сабере или приморати програм да "
+"комплетно прекине са радом.</i>"
 
 #: ../src/core/delete.c:115
 msgid "_Wait"
@@ -119,7 +122,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "Није дефинисана наредба терминала.\n"
 
 #: ../src/core/main.c:130
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -128,53 +131,59 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "метасити %s\n"
-"Сва права задржана (C) 2001–2008 Havoc Pennington, Red Hat, Inc., и остали\n"
+"Сва права задржана (C) 2001–%s Havoc Pennington, Red Hat, Inc., и остали\n"
 "Ово је слободан програм; погледајте изворни код за услове коришћења.\n"
 "Никаква гаранција НЕ постоји; чак ни гаранција о подобности за одређену "
 "намену.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Онемогући везу са управником сесије"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Замени текућег управника прозорима Метаситијем"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Наведи ИД за управљање сесијом"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Жељени X екран"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Користи сесију из датотеке"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Испиши издање"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Синхронизуј X-ове позиве"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Укључи композицију"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Искључи композицију"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Не постављај преко целог екрана прозоре који нису увећани и не поседују оквир"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Нисам успео да прочитам директоријум тема: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -182,7 +191,7 @@ msgstr ""
 "Нисам могао да пронђем тему! Проверите да %s постоји и да садржи уобичајне "
 "теме.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Нисам успео да се поново покренем: %s\n"
@@ -198,24 +207,24 @@ msgstr "Нисам успео да се поново покренем: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Кључ „%s“ у гном подешавањима је подешен на непрописну вредност\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d сачуван у кључу %s је изван опдега од %d до %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Кључ „%s“ у гном подешавањима је подешен на непрописни тип\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -223,12 +232,12 @@ msgstr ""
 "Компромиси за лоше програме су искључени. Неке апликације се могу понашати "
 "чудно.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Нисам могао да обрадим опис „%s“ из кључа %s у гном подешавањима\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -237,39 +246,39 @@ msgstr ""
 "“%s“ је пронађен у бази подешавања што није исправна вредност за типку која "
 "мења понашање тастера миша\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка приликом постављања броја радних површина на %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. радни простор"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "“%s“ из базе са подешавањима није исправна комбинација тастера „%s“\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка приликом постављања имена за радну површину %d у „%s“: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Грешка при постављању стања композитора: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Приказ %d на екрану „%s“ није исправан\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -278,19 +287,19 @@ msgstr ""
 "Приказ %d на екрану „%s“ већ има покренут менаџер прозора; покушајте да "
 "користите --replace опцију како бисте заменили тренутни менаџер прозора.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Нисам могао да добијем избор менаџера прозора на приказу %d еркана „%s“\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Приказ %d на екрану „%s“ већ има менаџер прозора\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Нисам могао да испустим приказ %d на екрану „%s“\n"
@@ -300,8 +309,15 @@ msgstr "Нисам могао да испустим приказ %d на екр�
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -312,11 +328,21 @@ msgstr ""
 "\n"
 "Програм за обраду је доста слободан и дозвољава велика или мала слова, као и "
 "скраћенице попут „<Ctl>“ или „<Ctrl>“. Уколико поставите опцију на "
-"„disabled“, неће бити коришћена ниједна комбинација тастера за ову акцију."
+"„disabled“, неће бити коришћена ниједна комбинација тастера за ову радњу."
 
 #: ../src/core/schema-bindings.c:177
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action.\n"
+#| "\n"
+#| "This keybinding may be reversed by holding down the \"shift\" key; "
+#| "therefore, \"shift\" cannot be one of the keys it uses."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -330,7 +356,10 @@ msgstr ""
 "\n"
 "Програм за обраду је доста слободан и дозвољава велика или мала слова, као и "
 "скраћенице попут „<Ctl>“ или „<Ctrl>“. Уколико поставите опцију на "
-"„disabled“, неће бити коришћена ниједна комбинација тастера за ову акцију."
+"„disabled“, неће бити коришћена ниједна комбинација тастера за ову радњу.\n"
+"\n"
+"Можете обрнути комбинацију тастера притиском на „<Shift>“, па тастер "
+"„<Shift>“ не може бити један од оних које овде користе."
 
 #: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
@@ -387,7 +416,6 @@ msgid "Unknown element %s"
 msgstr "Непознат елемент %s"
 
 #: ../src/core/session.c:1812
-#, fuzzy
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -480,21 +508,21 @@ msgstr "%s (на %s)"
 #: ../src/core/window-props.c:420
 #, c-format
 msgid "%s (as superuser)"
-msgstr ""
+msgstr "%s (као администратор)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine
 #: ../src/core/window-props.c:438
-#, fuzzy, c-format
+#, c-format
 msgid "%s (as %s)"
-msgstr "%s (на %s)"
+msgstr "%s (као %s)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine, whose name we don't know
 #: ../src/core/window-props.c:444
 #, c-format
 msgid "%s (as another user)"
-msgstr ""
+msgstr "%s (као други корсник)"
 
 #: ../src/core/window-props.c:1429
 #, c-format
@@ -2152,9 +2180,9 @@ msgstr "Није дозвољен текст унутар елемента <%s>"
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "Елемент <name> је наведен два пута у овој теми"
+msgstr "Елемент <%s> је наведен два пута у овој теми"
 
 #: ../src/ui/theme-parser.c:4040
 #, c-format
