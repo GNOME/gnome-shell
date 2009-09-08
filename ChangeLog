@@ -1,3 +1,7 @@
+2009-09-08  Frederic Peters  <fpeters@gnome.org>
+
+        * NEWS: 2.27.1 release.
+
 2009-06-09  Matthias Clasen  <mclasen@redhat.com>
 
 	unset _NET_SUPPORTING_WM_CHECK when shutting down

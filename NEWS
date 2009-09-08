@@ -1,3 +1,28 @@
+2.27.1
+======
+
+Thanks to Tomeu Vizoso and Matthias Clasen for improvements in this version.
+
+  - Unset _NET_SUPPORTING_WM_CHECK when shutting down (Matthias Clasen) (#564561)
+  - Add a switch to disable autofullscreen'ing maximized windows without
+    decorations (Tomeu Vizoso) (#586600)
+
+Translations
+  Khaled Hosny (ar), Alexander Shopov (bg), Runa Bhattacharjee (bn_IN), Denis
+  Arnaud (br), Gil Forcada, Jordi Mas i Hernandez (ca), Christian Kirbach (de),
+  Simos Xenitellis (el), Jorge González, Jorge Gonzalez (es), Ivar Smolin,
+  Mattias Põldaru (et), Inaki Larranaga Murgoitio (eu), Tommi Vainikainen (fi),
+  Claude Paroz (fr), Seán de Búrca (ga), Antón Méixome, Ignacio Casal Quinteiro
+  (gl), Sweta Kothari (gu), Yaron Sharabani, Mark Krapivner (he), Gabor Kelemen
+  (hu), Luca Ferretti (it), Shankar Prasad (kn), Changwoo Ryu (ko), Gintautas
+  Miliauskas (lt), Manoj Kumar Giri (or), Tomasz Dominikowski (pl), Og B.
+  Maciel, Djavan Fagundes, Henrique P. Machado (pt_BR), Duarte Loreto (pt),
+  Nickolay V. Shmyrev (ru), Marcel Telka (sk), Matej Urban (sl), Miloš Popović,
+  Goran Rakic (sr@latin), Miloš Popović, Goran Rakic (sr), Daniel Nylander
+  (sv), ifelix, drtvasudevan (ta), krishnababu k (te), Theppitak
+  Karoonboonyanan (th), Baris Cicek (tr), Maxim V. Dziumanenko (uk), Ray Wang,
+  Funda Wang (zh_CN), Chao-Hsiung Liao (zh_HK), Chao-Hsiung Liao (zh_TW) 
+
 2.27.0
 ======
 
