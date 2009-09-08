@@ -735,7 +735,22 @@ RunningWellItem.prototype = {
 
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
-        this.actor.connect('activate', Lang.bind(this, this.activateMostRecentWindow));
+        this.actor.connect('activate', Lang.bind(this, this._onActivate));
+    },
+
+    _onActivate: function (actor, event) {
+        let modifiers = event.get_state();
+
+        if (this._menuTimeoutId > 0) {
+            Mainloop.source_remove(this._menuTimeoutId);
+            this._menuTimeoutId = 0;
+        }
+
+        if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
+            this.appInfo.launch();
+        } else {
+            this.activateMostRecentWindow();
+        }
     },
 
     activateMostRecentWindow: function () {
