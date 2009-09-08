@@ -664,6 +664,34 @@ BaseWellItem.prototype = {
         this.isFavorite = isFavorite;
         this.icon = new AppIcon.AppIcon(appInfo);
         this.windows = this.icon.windows;
+        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
+                                           border: WELL_MENU_BORDER_WIDTH,
+                                           corner_radius: WELL_MENU_CORNER_RADIUS,
+                                           reactive: true });
+        this.icon.actor._delegate = this;
+        this._draggable = DND.makeDraggable(this.icon.actor, true);
+
+        // Do these as anonymous functions to avoid conflict with handlers in subclasses
+        this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+            let [stageX, stageY] = event.get_coords();
+            this._dragStartX = stageX;
+            this._dragStartY = stageY;
+            return false;
+        }));
+        this.actor.connect('notify::hover', Lang.bind(this, function () {
+            let hover = this.actor.hover;
+            if (!hover) {
+                if (this.actor.pressed && this._dragStartX != null) {
+                    this.actor.fake_release();
+                    this._draggable.startDrag(this.icon.actor, this._dragStartX, this._dragStartY,
+                                              Clutter.get_current_event_time());
+                } else {
+                    this._dragStartX = null;
+                    this._dragStartY = null;
+                }
+            }
+        }));
+        this.actor.append(this.icon.actor, Big.BoxPackFlags.NONE);
     },
 
     shellWorkspaceLaunch : function() {
@@ -704,18 +732,9 @@ RunningWellItem.prototype = {
         this._dragStartX = 0;
         this._dragStartY = 0;
 
-        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
-                                           border: WELL_MENU_BORDER_WIDTH,
-                                           corner_radius: WELL_MENU_CORNER_RADIUS,
-                                           reactive: true });
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
         this.actor.connect('activate', Lang.bind(this, this.activateMostRecentWindow));
-
-        this.icon.actor._delegate = this;
-        this._draggable = DND.makeDraggable(this.icon.actor, true);
-
-        this.actor.append(this.icon.actor, Big.BoxPackFlags.NONE);
     },
 
     activateMostRecentWindow: function () {
@@ -729,21 +748,10 @@ RunningWellItem.prototype = {
         if (!hover && this._menuTimeoutId > 0) {
             Mainloop.source_remove(this._menuTimeoutId);
             this._menuTimeoutId = 0;
-            if (this.actor.pressed && this._dragStartX != null) {
-                this.actor.fake_release();
-                this._draggable.startDrag(this.icon.actor, this._dragStartX, this._dragStartY,
-                                          Clutter.get_current_event_time());
-            } else {
-                this._dragStartX = null;
-                this._dragStartY = null;
-            }
         }
     },
 
     _onButtonPress: function(actor, event) {
-        let [stageX, stageY] = event.get_coords();
-        this._dragStartX = stageX;
-        this._dragStartY = stageY;
         if (this._menuTimeoutId > 0)
             Mainloop.source_remove(this._menuTimeoutId);
         this._menuTimeoutId = Mainloop.timeout_add(WELL_MENU_POPUP_TIMEOUT_MS,
@@ -787,19 +795,9 @@ InactiveWellItem.prototype = {
     _init : function(appInfo, isFavorite) {
         BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
 
-        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
-                                           border: WELL_MENU_BORDER_WIDTH,
-                                           corner_radius: WELL_MENU_CORNER_RADIUS,
-                                           reactive: true });
-        this.actor._delegate = this;
         this.actor.connect('notify::pressed', Lang.bind(this, this._onPressedChanged));
         this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
         this.actor.connect('activate', Lang.bind(this, this._onActivate));
-
-        this.icon.actor._delegate = this;
-        let draggable = DND.makeDraggable(this.icon.actor);
-
-        this.actor.append(this.icon.actor, Big.BoxPackFlags.NONE);
     },
 
     _onPressedChanged: function() {
