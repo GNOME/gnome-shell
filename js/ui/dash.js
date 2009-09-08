@@ -641,7 +641,7 @@ Dash.prototype = {
         }));
         this._searchEntry.entry.connect('key-press-event', Lang.bind(this, function (se, e) {
             let text = this._searchEntry.getText();
-            let symbol = Shell.get_event_key_symbol(e);
+            let symbol = e.get_key_symbol();
             if (symbol == Clutter.Escape) {
                 // Escape will keep clearing things back to the desktop.
                 // If we are showing a particular section of search, go back to all sections.

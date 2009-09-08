@@ -296,7 +296,7 @@ WidgetBox.prototype = {
                     this.state == Widget.STATE_POPPING_OUT)) {
             // If moving into another actor within this._hbox, let the
             // event be propagated
-            let into = Shell.get_event_related(event);
+            let into = event.get_related();
             while (into) {
                 if (into == this._hbox)
                     return false;

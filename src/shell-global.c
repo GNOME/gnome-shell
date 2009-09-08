@@ -296,47 +296,6 @@ shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
 }
 
 /**
- * shell_get_event_key_symbol:
- *
- * Return value: Clutter key value for the key press and release events, 
- *               as specified in clutter-keysyms.h  
- */
-guint16
-shell_get_event_key_symbol(ClutterEvent *event)
-{
-  g_return_val_if_fail(event->type == CLUTTER_KEY_PRESS ||
-                       event->type == CLUTTER_KEY_RELEASE, 0);
-
-  return event->key.keyval;
-}
-
-/**
- * shell_get_button_event_click_count:
- *
- * Return value: click count for button press and release events
- */
-guint16
-shell_get_button_event_click_count(ClutterEvent *event)
-{
-  g_return_val_if_fail(event->type == CLUTTER_BUTTON_PRESS ||
-                       event->type == CLUTTER_BUTTON_RELEASE, 0);
-  return event->button.click_count;
-}
-
-/**
- * shell_get_event_related:
- *
- * Return value: (transfer none): related actor
- */
-ClutterActor *
-shell_get_event_related (ClutterEvent *event)
-{
-  g_return_val_if_fail (event->type == CLUTTER_ENTER ||
-                        event->type == CLUTTER_LEAVE, NULL);
-  return event->crossing.related;
-}
-
-/**
  * shell_global_get:
  *
  * Gets the singleton global object that represents the desktop.

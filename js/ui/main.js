@@ -155,7 +155,7 @@ function _globalKeyPressHandler(actor, event) {
     let type = event.type();
 
     if (type == Clutter.EventType.KEY_PRESS) {
-        let symbol = Shell.get_event_key_symbol (event);
+        let symbol = event.get_key_symbol();
         if (symbol == Clutter.Print) {
             // We want to be able to take screenshots of the shell at all times
             let gconf = Shell.GConf.get_default();
@@ -169,7 +169,7 @@ function _globalKeyPressHandler(actor, event) {
             return true;
         }
     } else if (type == Clutter.EventType.KEY_RELEASE) {
-        let symbol = Shell.get_event_key_symbol (event);
+        let symbol = event.get_key_symbol();
         if (symbol == Clutter.Super_L || symbol == Clutter.Super_R) {
             // The super key is the default for triggering the overview, and should
             // get us out of the overview when we are already in it.

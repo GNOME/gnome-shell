@@ -472,14 +472,14 @@ Panel.prototype = {
     },
 
     _onHotCornerLeft : function(actor, event) {
-        if (Shell.get_event_related(event) != this._hotCornerEnvirons) {
+        if (event.get_related() != this._hotCornerEnvirons) {
             this._hotCornerEntered = false;
         }
         return false;
     },
 
     _onHotCornerEnvironsLeft : function(actor, event) {
-        if (Shell.get_event_related(event) != this._hotCorner) {
+        if (event.get_related() != this._hotCorner) {
             this._hotCornerEntered = false;
         }
         return false;

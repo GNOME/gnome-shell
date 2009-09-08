@@ -132,7 +132,7 @@ RunDialog.prototype = {
         }));
 
         this._entry.connect('key-press-event', Lang.bind(this, function(o, e) {
-            let symbol = Shell.get_event_key_symbol(e); 
+            let symbol = e.get_key_symbol();
             if (symbol == Clutter.Escape) {
                 this.close();
                 return true;

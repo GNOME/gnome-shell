@@ -108,16 +108,15 @@ iconButton.prototype = {
         this.actor.set_opacity(0);
         parent.connect("enter-event", Lang.bind(this, function(actor, event) {
             this._shouldHide = false;
-
             // Nothing to do if the cursor has come back from a child of the parent actor
-            if (actor.get_children().indexOf(Shell.get_event_related(event)) != -1)
+            if (actor.get_children().indexOf(event.get_related()) != -1)
                 return;
 
             this._fadeIn();
         }));
         parent.connect("leave-event", Lang.bind(this, function(actor, event) {
             // Nothing to do if the cursor has merely entered a child of the parent actor
-            if (actor.get_children().indexOf(Shell.get_event_related(event)) != -1)
+            if (actor.get_children().indexOf(event.get_related()) != -1)
                 return;
 
             // Remember that we should not be visible to hide the button if forceShow is unset
