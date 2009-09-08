@@ -158,7 +158,7 @@ shell_button_box_button_release_event (ClutterActor       *actor,
 
   set_pressed (box, FALSE);
 
-  g_signal_emit (G_OBJECT (box), shell_button_box_signals[ACTIVATE], 0);
+  g_signal_emit (G_OBJECT (box), shell_button_box_signals[ACTIVATE], 0, event);
 
   return TRUE;
 }
@@ -249,6 +249,7 @@ shell_button_box_class_init (ShellButtonBoxClass *klass)
   /**
    * ShellButtonBox::activate
    * @box: The #ShellButtonBox
+   * @event: Release event which triggered the activation
    *
    * This signal is emitted when the button should take the action
    * associated with button click+release.
@@ -260,7 +261,7 @@ shell_button_box_class_init (ShellButtonBoxClass *klass)
                   0,
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  G_TYPE_NONE, 1, CLUTTER_TYPE_EVENT);
 
   /**
    * ShellButtonBox:active
