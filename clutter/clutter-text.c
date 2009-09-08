@@ -759,6 +759,10 @@ clutter_text_get_property (GObject    *gobject,
       g_value_set_string (value, priv->font_name);
       break;
 
+    case PROP_USE_MARKUP:
+      g_value_set_boolean (value, priv->use_markup);
+      break;
+
     case PROP_COLOR:
       clutter_value_set_color (value, &priv->text_color);
       break;
