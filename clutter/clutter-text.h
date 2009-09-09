@@ -204,6 +204,11 @@ gboolean              clutter_text_position_to_coords   (ClutterText        *sel
                                                          gfloat             *y,
                                                          gfloat             *line_height);
 
+void                  clutter_text_set_preedit_string   (ClutterText        *self,
+                                                         const gchar        *preedit_str,
+                                                         PangoAttrList      *preedit_attr,
+                                                         guint               cursor_position);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TEXT_H__ */

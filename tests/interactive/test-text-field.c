@@ -30,6 +30,182 @@ on_entry_activate (ClutterText *text,
            clutter_text_get_selection_bound (text));
 }
 
+#define is_hex_digit(c)         (((c) >= '0' && (c) <= '9') || \
+                                 ((c) >= 'a' && (c) <= 'f') || \
+                                 ((c) >= 'A' && (c) <= 'F'))
+#define to_hex_digit(c)         (((c) <= '9') ? (c) - '0' : ((c) & 7) + 9)
+
+static gboolean
+on_captured_event (ClutterText *text,
+                   ClutterEvent *event,
+                   gpointer      dummy G_GNUC_UNUSED)
+{
+  gboolean is_unicode_mode = FALSE;
+  gunichar c;
+  guint keyval;
+
+  if (event->type != CLUTTER_KEY_PRESS)
+    return FALSE;
+
+  is_unicode_mode = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (text),
+                                                        "unicode-mode"));
+
+  c = clutter_event_get_key_unicode (event);
+  keyval = clutter_event_get_key_symbol (event);
+  if (keyval == CLUTTER_u)
+    {
+      ClutterModifierType mods = clutter_event_get_state (event);
+
+      if (is_unicode_mode)
+        {
+          GString *str = g_object_get_data (G_OBJECT (text), "unicode-str");
+
+          clutter_text_set_preedit_string (text, NULL, NULL, 0);
+
+          g_object_set_data (G_OBJECT (text), "unicode-mode",
+                             GINT_TO_POINTER (FALSE));
+          g_object_set_data (G_OBJECT (text), "unicode-str",
+                             NULL);
+
+          g_string_free (str, TRUE);
+
+          return FALSE;
+        }
+
+      if ((mods & CLUTTER_CONTROL_MASK) &&
+          (mods & CLUTTER_SHIFT_MASK))
+        {
+          PangoAttrList *attrs;
+          PangoAttribute *a;
+          GString *str = g_string_sized_new (5);
+
+          g_string_append (str, "u");
+
+          g_object_set_data (G_OBJECT (text),
+                             "unicode-mode",
+                             GINT_TO_POINTER (TRUE));
+          g_object_set_data (G_OBJECT (text),
+                             "unicode-str",
+                             str);
+
+          attrs = pango_attr_list_new ();
+
+          a = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+          a->start_index = 0;
+          a->end_index = str->len;
+          pango_attr_list_insert (attrs, a);
+
+          clutter_text_set_preedit_string (text, str->str, attrs, str->len);
+
+          pango_attr_list_unref (attrs);
+
+          return TRUE;
+        }
+
+      return FALSE;
+    }
+  else if (is_unicode_mode && is_hex_digit (c))
+    {
+      GString *str = g_object_get_data (G_OBJECT (text), "unicode-str");
+      PangoAttrList *attrs;
+      PangoAttribute *a;
+      gchar buf[8];
+      gsize len;
+
+      len = g_unichar_to_utf8 (c, buf);
+      buf[len] = '\0';
+
+      g_string_append (str, buf);
+
+      g_debug ("added '%s' to '%s' (len:%d)", buf, str->str, str->len);
+
+      attrs = pango_attr_list_new ();
+
+      a = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+      a->start_index = 0;
+      a->end_index = str->len;
+      pango_attr_list_insert (attrs, a);
+
+      clutter_text_set_preedit_string (text, str->str, attrs, str->len);
+
+      pango_attr_list_unref (attrs);
+
+      return TRUE;
+    }
+  else if (is_unicode_mode && (keyval == CLUTTER_BackSpace))
+    {
+      GString *str = g_object_get_data (G_OBJECT (text), "unicode-str");
+      PangoAttrList *attrs;
+      PangoAttribute *a;
+
+      g_string_truncate (str, str->len - 1);
+
+      attrs = pango_attr_list_new ();
+
+      a = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+      a->start_index = 0;
+      a->end_index = str->len;
+      pango_attr_list_insert (attrs, a);
+
+      clutter_text_set_preedit_string (text, str->str, attrs, str->len);
+
+      pango_attr_list_unref (attrs);
+
+      return TRUE;
+    }
+  else if (is_unicode_mode &&
+           (keyval == CLUTTER_Return ||
+            keyval == CLUTTER_KP_Enter ||
+            keyval == CLUTTER_ISO_Enter ||
+            keyval == CLUTTER_KP_Space))
+    {
+      GString *str = g_object_get_data (G_OBJECT (text), "unicode-str");
+      const gchar *contents = clutter_text_get_text (text);
+      gunichar uchar = 0;
+      gchar ch;
+      gint i;
+
+      clutter_text_set_preedit_string (text, NULL, NULL, 0);
+
+      g_object_set_data (G_OBJECT (text), "unicode-mode",
+                         GINT_TO_POINTER (FALSE));
+      g_object_set_data (G_OBJECT (text), "unicode-str",
+                         NULL);
+
+      for (i = 0; i < str->len; i++)
+        {
+          ch = str->str[i];
+
+          if (is_hex_digit (ch))
+            uchar += ((gunichar) to_hex_digit (ch) << ((4 - i) * 4));
+        }
+
+      g_assert (g_unichar_validate (uchar));
+
+      g_string_overwrite (str, 0, contents);
+      g_string_insert_unichar (str,
+                               clutter_text_get_cursor_position (text),
+                               uchar);
+
+      i = clutter_text_get_cursor_position (text);
+      clutter_text_set_text (text, str->str);
+
+      if (i >= 0)
+        i += 1;
+      else
+        i = -1;
+
+      clutter_text_set_cursor_position (text, i);
+      clutter_text_set_selection_bound (text, i);
+
+      g_string_free (str, TRUE);
+
+      return TRUE;
+    }
+  else
+    return FALSE;
+}
+
 static ClutterActor *
 create_label (const ClutterColor *color,
               const gchar        *text)
@@ -76,6 +252,9 @@ create_entry (const ClutterColor *color,
                     NULL);
   g_signal_connect (retval, "paint",
                     G_CALLBACK (on_entry_paint),
+                    NULL);
+  g_signal_connect (retval, "captured-event",
+                    G_CALLBACK (on_captured_event),
                     NULL);
 
   return retval;

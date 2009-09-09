@@ -104,6 +104,7 @@ struct _ClutterTextPrivate
 
   gchar *text;
   gchar *font_name;
+  gchar *preedit_str;
 
   ClutterColor text_color;
 
@@ -112,6 +113,7 @@ struct _ClutterTextPrivate
 
   PangoAttrList *attrs;
   PangoAttrList *effective_attrs;
+  PangoAttrList *preedit_attrs;
 
   guint alignment           : 2;
   guint wrap                : 1;
@@ -128,6 +130,7 @@ struct _ClutterTextPrivate
   guint selection_color_set : 1;
   guint in_select_drag      : 1;
   guint cursor_color_set    : 1;
+  guint preedit_set         : 1;
 
   /* current cursor position */
   gint position;
@@ -156,6 +159,9 @@ struct _ClutterTextPrivate
   ClutterGeometry cursor_pos;
   ClutterColor cursor_color;
   guint cursor_size;
+
+  guint preedit_cursor_pos;
+  gint preedit_n_chars;
 
   ClutterColor selection_color;
 
@@ -242,6 +248,39 @@ clutter_text_clear_selection (ClutterText *self)
     }
 }
 
+static gchar *
+clutter_text_get_display_text (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+
+  if (priv->text == NULL)
+    return g_strdup ("");
+
+  if (G_LIKELY (priv->password_char == 0))
+    return g_strndup (priv->text, priv->n_bytes);
+  else
+    {
+      GString *str = g_string_sized_new (priv->n_bytes);
+      gunichar invisible_char;
+      gchar buf[7];
+      gint char_len, i;
+
+      invisible_char = priv->password_char;
+
+      /* we need to convert the string built of invisible
+       * characters into UTF-8 for it to be fed to the Pango
+       * layout
+       */
+      memset (buf, 0, sizeof (buf));
+      char_len = g_unichar_to_utf8 (invisible_char, buf);
+
+      for (i = 0; i < priv->n_chars; i++)
+        g_string_append_len (str, buf, char_len);
+
+      return g_string_free (str, FALSE);
+    }
+}
+
 static PangoLayout *
 clutter_text_create_layout_no_cache (ClutterText *text,
                                      gfloat       allocation_width,
@@ -249,38 +288,41 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 {
   ClutterTextPrivate *priv = text->priv;
   PangoLayout *layout;
+  gchar *contents;
+  gsize contents_len;
 
   layout = clutter_actor_create_pango_layout (CLUTTER_ACTOR (text), NULL);
   pango_layout_set_font_description (layout, priv->font_desc);
 
-  if (priv->text)
+  contents = clutter_text_get_display_text (text);
+  contents_len = strlen (contents);
+
+  if (priv->editable && priv->preedit_set)
     {
-      if (G_LIKELY (priv->password_char == 0))
-        pango_layout_set_text (layout, priv->text, priv->n_bytes);
+      GString *tmp = g_string_new (contents);
+      PangoAttrList *tmp_attrs = pango_attr_list_new ();
+      gint cursor_index;
+
+      if (priv->position == 0)
+        cursor_index = 0;
       else
-        {
-          GString *str = g_string_sized_new (priv->n_bytes);
-          gunichar invisible_char;
-          gchar buf[7];
-          gint char_len, i;
+        cursor_index = offset_to_bytes (contents, priv->position);
 
-          invisible_char = priv->password_char;
+      g_string_insert (tmp, cursor_index, priv->preedit_str);
 
-          /* we need to convert the string built of invisible
-           * characters into UTF-8 for it to be fed to the Pango
-           * layout
-           */
-          memset (buf, 0, sizeof (buf));
-          char_len = g_unichar_to_utf8 (invisible_char, buf);
+      pango_layout_set_text (layout, tmp->str, tmp->len);
 
-          for (i = 0; i < priv->n_chars; i++)
-            g_string_append_len (str, buf, char_len);
+      pango_attr_list_splice (tmp_attrs, priv->preedit_attrs,
+                              cursor_index,
+                              strlen (priv->preedit_str));
 
-          pango_layout_set_text (layout, str->str, str->len);
+      pango_layout_set_attributes (layout, tmp_attrs);
 
-          g_string_free (str, TRUE);
-        }
+      g_string_free (tmp, TRUE);
+      pango_attr_list_unref (tmp_attrs);
     }
+  else
+    pango_layout_set_text (layout, contents, contents_len);
 
   if (!priv->editable && priv->effective_attrs)
     pango_layout_set_attributes (layout, priv->effective_attrs);
@@ -354,6 +396,8 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 
       pango_layout_set_height (layout, height);
     }
+
+  g_free (contents);
 
   return layout;
 }
@@ -505,6 +549,7 @@ clutter_text_position_to_coords (ClutterText *self,
 {
   ClutterTextPrivate *priv;
   PangoRectangle rect;
+  gint n_chars;
   gint password_char_bytes = 1;
   gint index_;
 
@@ -512,7 +557,12 @@ clutter_text_position_to_coords (ClutterText *self,
 
   priv = self->priv;
 
-  if (position < -1 || position > priv->n_chars)
+  if (priv->preedit_set)
+    n_chars = priv->n_chars + priv->preedit_n_chars;
+  else
+    n_chars = priv->n_chars;
+
+  if (position < -1 || position > n_chars)
     return FALSE;
 
   if (priv->password_char != 0)
@@ -523,7 +573,7 @@ clutter_text_position_to_coords (ClutterText *self,
       if (priv->password_char == 0)
         index_ = priv->n_bytes;
       else
-        index_ = priv->n_chars * password_char_bytes;
+        index_ = n_chars * password_char_bytes;
     }
   else if (position == 0)
     {
@@ -534,10 +584,11 @@ clutter_text_position_to_coords (ClutterText *self,
       if (priv->password_char == 0)
         index_ = offset_to_bytes (priv->text, position);
       else
-        index_ = priv->position * password_char_bytes;
+        index_ = position * password_char_bytes;
     }
 
-  pango_layout_get_cursor_pos (clutter_text_get_layout (self), index_,
+  pango_layout_get_cursor_pos (clutter_text_get_layout (self),
+                               index_,
                                &rect, NULL);
 
   if (x)
@@ -566,9 +617,17 @@ clutter_text_ensure_cursor_position (ClutterText *self)
   ClutterGeometry cursor_pos = { 0, };
   gboolean x_changed, y_changed;
   gboolean width_changed, height_changed;
+  gint position;
+
+  position = priv->position;
+
+  CLUTTER_NOTE (MISC, "Cursor at %d (preedit %s at pos: %d)",
+                position,
+                priv->preedit_set ? "set" : "unset",
+                priv->preedit_set ? priv->preedit_cursor_pos : 0);
 
   x = y = cursor_height = 0;
-  clutter_text_position_to_coords (self, priv->position,
+  clutter_text_position_to_coords (self, position,
                                    &x, &y,
                                    &cursor_height);
 
@@ -1033,11 +1092,14 @@ cursor_paint (ClutterText *self)
     {
       guint8 paint_opacity = clutter_actor_get_paint_opacity (actor);
       const ClutterColor *color;
+      gint position;
 
-      if (priv->position == 0)
+      position = priv->position;
+
+      if (position == 0)
         priv->cursor_pos.x -= priv->cursor_size;
 
-      if (priv->position == priv->selection_bound)
+      if (position == priv->selection_bound)
         {
           if (priv->cursor_color_set)
             color = &priv->cursor_color;
@@ -1055,12 +1117,11 @@ cursor_paint (ClutterText *self)
                           priv->cursor_pos.y,
                           priv->cursor_pos.x + priv->cursor_pos.width,
                           priv->cursor_pos.y + priv->cursor_pos.height);
-
         }
       else
         {
           PangoLayout *layout = clutter_text_get_layout (self);
-          const gchar *utf8 = priv->text;
+          gchar *utf8 = clutter_text_get_display_text (self);
           gint lines;
           gint start_index;
           gint end_index;
@@ -1080,10 +1141,10 @@ cursor_paint (ClutterText *self)
                                     * color->alpha
                                     / 255);
 
-          if (priv->position == 0)
+          if (position == 0)
             start_index = 0;
           else
-            start_index = offset_to_bytes (utf8, priv->position);
+            start_index = offset_to_bytes (utf8, position);
 
           if (priv->selection_bound == 0)
             end_index = 0;
@@ -1146,6 +1207,8 @@ cursor_paint (ClutterText *self)
 
               g_free (ranges);
             }
+
+          g_free (utf8);
         }
     }
 }
@@ -1554,7 +1617,6 @@ clutter_text_paint (ClutterActor *self)
            * scrolling */
           priv->text_x = text_x;
           clutter_text_ensure_cursor_position (text);
-
         }
       else
         {
@@ -2606,6 +2668,7 @@ clutter_text_init (ClutterText *self)
 
   priv->selection_color_set = FALSE;
   priv->cursor_color_set = FALSE;
+  priv->preedit_set = FALSE;
 
   priv->password_char = 0;
 
@@ -4382,4 +4445,70 @@ clutter_text_get_single_line_mode (ClutterText *self)
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
 
   return self->priv->single_line_mode;
+}
+
+/**
+ * clutter_text_set_preedit_string:
+ * @self: a #ClutterText
+ * @preedit_str: (allow-none): the pre-edit string, or %NULL to unset it
+ * @preedit_attrs: (allow-none): the pre-edit string attributes
+ * @cursor_pos: the cursor position for the pre-edit string
+ *
+ * Sets, or unsets, the pre-edit string. This function is useful
+ * for input methods to display a string (with eventual specific
+ * Pango attributes) before it is entered inside the #ClutterText
+ * buffer.
+ *
+ * The preedit string and attributes are ignored if the #ClutterText
+ * actor is not editable.
+ *
+ * This function should not be used by applications
+ *
+ * Since: 1.2
+ */
+void
+clutter_text_set_preedit_string (ClutterText   *self,
+                                 const gchar   *preedit_str,
+                                 PangoAttrList *preedit_attrs,
+                                 guint          cursor_pos)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  g_free (priv->preedit_str);
+
+  if (priv->preedit_attrs != NULL)
+    {
+      pango_attr_list_unref (priv->preedit_attrs);
+      priv->preedit_attrs = NULL;
+    }
+
+  priv->preedit_n_chars = 0;
+  priv->preedit_cursor_pos = 0;
+
+  if (preedit_str == NULL || *preedit_str == '\0')
+    priv->preedit_set = FALSE;
+  else
+    {
+      priv->preedit_str = g_strdup (preedit_str);
+
+      if (priv->preedit_str != NULL)
+        priv->preedit_n_chars = g_utf8_strlen (priv->preedit_str, -1);
+      else
+        priv->preedit_n_chars = 0;
+
+      if (preedit_attrs != NULL)
+        priv->preedit_attrs = pango_attr_list_ref (preedit_attrs);
+
+      priv->preedit_cursor_pos =
+        CLAMP (cursor_pos, 0, priv->preedit_n_chars);
+
+      priv->preedit_set = TRUE;
+    }
+
+  clutter_text_dirty_cache (self);
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
