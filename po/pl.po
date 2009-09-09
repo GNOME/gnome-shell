@@ -7,15 +7,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
-"POT-Creation-Date: 2009-08-28 20:35+0000\n"
-"PO-Revision-Date: 2009-09-09 02:54+0200\n"
-"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-09 03:06+0200\n"
+"PO-Revision-Date: 2009-09-09 03:02+0100\n"
+"Last-Translator: Tomasz Dominikowski <dominikowski@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
@@ -28,60 +29,58 @@ msgid "Window management and application launching"
 msgstr "Zarządzanie oknami i uruchamianiem programów"
 
 #. left side
-#: ../js/ui/panel.js:271
+#: ../js/ui/panel.js:269
 msgid "Activities"
 msgstr "Czynności"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:451
+#: ../js/ui/panel.js:452
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
-#: ../js/ui/dash.js:256
+#: ../js/ui/dash.js:255
 msgid "Find..."
 msgstr "Znajdź..."
 
-#: ../js/ui/dash.js:374
+#: ../js/ui/dash.js:372
 msgid "Browse"
 msgstr "Przeglądaj"
 
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:508
 msgid "(see all)"
 msgstr "(wyświetl wszystko)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:634
-#: ../js/ui/dash.js:682
+#: ../js/ui/dash.js:700 ../js/ui/dash.js:756 ../js/ui/dash.js:887
 msgid "APPLICATIONS"
 msgstr "Programy"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:654
+#: ../js/ui/dash.js:720
 msgid "PLACES"
 msgstr "Miejsca"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:661
-#: ../js/ui/dash.js:694
+#: ../js/ui/dash.js:727 ../js/ui/dash.js:768 ../js/ui/dash.js:861
 msgid "RECENT DOCUMENTS"
 msgstr "Ostatnie dokumenty"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:680
+#: ../js/ui/dash.js:746 ../js/ui/dash.js:850 ../js/ui/dash.js:876
 msgid "SEARCH RESULTS"
 msgstr "Wyniki wyszukiwania"
 
-#: ../js/ui/runDialog.js:82
+#: ../js/ui/runDialog.js:90
 msgid "Please enter a command:"
 msgstr "Proszę wprowadzić polecenie:"
 
-#: ../src/shell-global.c:840
+#: ../src/shell-global.c:799
 msgid "Less than a minute ago"
 msgstr "Mniej niż minutę temu"
 
-#: ../src/shell-global.c:843
+#: ../src/shell-global.c:802
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -89,7 +88,7 @@ msgstr[0] "%d minuta temu"
 msgstr[1] "%d minuty temu"
 msgstr[2] "%d minut temu"
 
-#: ../src/shell-global.c:846
+#: ../src/shell-global.c:805
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -97,7 +96,7 @@ msgstr[0] "%d godzina temu"
 msgstr[1] "%d godziny temu"
 msgstr[2] "%d godzin temu"
 
-#: ../src/shell-global.c:849
+#: ../src/shell-global.c:808
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -105,7 +104,7 @@ msgstr[0] "%d dzień temu"
 msgstr[1] "%d dni temu"
 msgstr[2] "%d dni temu"
 
-#: ../src/shell-global.c:852
+#: ../src/shell-global.c:811
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -125,7 +124,8 @@ msgstr "Nie można zablokować ekranu: %s"
 #: ../src/shell-status-menu.c:227
 #, c-format
 msgid "Can't temporarily set screensaver to blank screen: %s"
-msgstr "Nie można tymczasowo ustawić wygaszacza ekranu na wygaszenie ekranu: %s"
+msgstr ""
+"Nie można tymczasowo ustawić wygaszacza ekranu na wygaszenie ekranu: %s"
 
 #: ../src/shell-status-menu.c:351
 #, c-format
@@ -176,3 +176,13 @@ msgstr "System plików"
 #: ../src/shell-uri-util.c:248
 msgid "Search"
 msgstr "Wyszukaj"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
