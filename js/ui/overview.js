@@ -438,8 +438,6 @@ Overview.prototype = {
     },
 
     _addNewWorkspace: function() {
-        let global = Shell.Global.get();
-
         global.screen.append_new_workspace(false, global.screen.get_display().get_current_time());
     },
 
@@ -462,7 +460,6 @@ AddWorkspaceButton.prototype = {
                                            height: buttonSize,
                                            reactive: true });
         this._acceptDropCallback = acceptDropCallback;
-        let global = Shell.Global.get();
         this.actor._delegate = this;
         this.actor.set_from_file(global.imagedir + 'add-workspace.svg');
     },

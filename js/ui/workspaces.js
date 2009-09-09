@@ -206,8 +206,6 @@ WindowClone.prototype = {
     },
 
     _zoomUpdate : function () {
-        let global = Shell.Global.get();
-
         [this.actor.x, this.actor.y] = this._zoomGlobalOrig.interpPosition(this._zoomTarget, this._zoomStep / 100);
         [this.actor.scale_x, this.actor.scale_y] = this._zoomGlobalOrig.interpScale(this._zoomTarget, this._zoomStep / 100);
 
@@ -218,7 +216,6 @@ WindowClone.prototype = {
     },
 
     _zoomStart : function () {
-        let global = Shell.Global.get();
         this._zoomOverlay = new Clutter.Rectangle({ reactive: true,
                                                     color: LIGHTBOX_COLOR,
                                                     border_width: 0,
