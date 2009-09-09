@@ -399,16 +399,16 @@ Overview.prototype = {
 
 
     /**
-     * beginApplicationWindowSelection:
+     * setApplicationWindowSelection:
      * @appid: Application identifier string
      *
-     * Enter a mode which shows only the widnows owned by the
+     * Enter a mode which shows only the windows owned by the
      * given application, and allow highlighting of a specific
      * window with setHighlightWindow().
      */
-    beginApplicationWindowSelection: function (appid) {
+    setApplicationWindowSelection: function (appid) {
         if (this._workspaces)
-            this._workspaces.beginApplicationWindowSelection(appid);
+            this._workspaces.setApplicationWindowSelection(appid);
     },
 
     //// Private methods ////

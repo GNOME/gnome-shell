@@ -1081,8 +1081,6 @@ Workspaces.prototype = {
     _init : function(width, height, x, y) {
         this.actor = new Clutter.Group();
 
-        this._appIdFilter = null;
-
         this._width = width;
         this._height = height;
         this._x = x;
@@ -1158,7 +1156,8 @@ Workspaces.prototype = {
         }
     },
 
-    beginApplicationWindowSelection: function (appId) {
+    // See comments in overview.js
+    setApplicationWindowSelection: function (appId) {
         let appSys = Shell.AppMonitor.get_default();
 
         let showOnlyWindows;
@@ -1171,7 +1170,6 @@ Workspaces.prototype = {
         } else {
             showOnlyWindows = null;
         }
-        this._appIdFilter = appId;
         for (let i = 0; i < this._workspaces.length; i++) {
             this._workspaces[i].setLightboxMode(showOnlyWindows != null);
             this._workspaces[i].setShowOnlyWindows(showOnlyWindows);
