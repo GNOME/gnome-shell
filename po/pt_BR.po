@@ -11,14 +11,15 @@
 # Djavan Fagundes <dnoway@gmail.com>, 2008, 2009.
 # Vladimir Melo <vmelo@gnome.org>, 2009.
 # Henrique P Machado <zehrique@gmail.com>, 2009.
+# Fábio Nogueira <fnogueira@gnome.org>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-25 15:20-0300\n"
-"PO-Revision-Date: 2009-08-25 11:55-0300\n"
-"Last-Translator: Djavan Fagundes <dnoway@gmail.com>\n"
+"POT-Creation-Date: 2009-09-09 10:02-0300\n"
+"PO-Revision-Date: 2009-09-09 10:03-0300\n"
+"Last-Translator: Fábio Nogueira <fnogueira@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -371,7 +372,7 @@ msgstr "Não foi possível abrir o arquivo de sessão \"%s\" para gravação: %s
 #: ../src/core/session.c:1003
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Erro ao gravar o arquivo de sessão\"%s\": %s\n"
+msgstr "Erro ao gravar o arquivo de sessão \"%s\": %s\n"
 
 #: ../src/core/session.c:1008
 #, c-format
