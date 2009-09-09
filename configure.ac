@@ -725,8 +725,10 @@ GTK_DOC_CHECK([1.11])
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
 
 # prefixes for fixing gtk-doc references
+CAIRO_PREFIX="`$PKG_CONFIG --variable=prefix cairo`"
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
+AC_SUBST(CAIRO_PREFIX)
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(PANGO_PREFIX)
 
