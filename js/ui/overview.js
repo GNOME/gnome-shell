@@ -454,14 +454,20 @@ function AddWorkspaceButton(buttonSize, buttonX, buttonY, acceptDropCallback) {
 
 AddWorkspaceButton.prototype = {
     _init: function(buttonSize, buttonX, buttonY, acceptDropCallback) {
-        this.actor = new Clutter.Texture({ x: buttonX,
-                                           y: buttonY,
-                                           width: buttonSize,
-                                           height: buttonSize,
-                                           reactive: true });
-        this._acceptDropCallback = acceptDropCallback;
+        this.actor = new Clutter.Group({ x: buttonX,
+                                         y: buttonY,
+                                         width: global.screen_width - buttonX,
+                                         height: global.screen_height - buttonY,
+                                         reactive: true });
         this.actor._delegate = this;
-        this.actor.set_from_file(global.imagedir + 'add-workspace.svg');
+        this._acceptDropCallback = acceptDropCallback;
+
+        let plus = new Clutter.Texture({ x: 0,
+                                         y: 0,
+                                         width: buttonSize,
+                                         height: buttonSize });
+        plus.set_from_file(global.imagedir + 'add-workspace.svg');
+        this.actor.add_actor(plus);
     },
 
     // Draggable target interface
