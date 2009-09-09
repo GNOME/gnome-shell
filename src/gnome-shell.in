@@ -253,6 +253,7 @@ if options.debug:
 normal_exit = False
 
 try:
+    shell = None
     if options.xephyr:
         xephyr = start_xephyr()
         # This makes us not grab the org.gnome.Panel name
@@ -281,7 +282,9 @@ finally:
         except OSError:
             pass
 
-    if shell.returncode ==  0:
+    if shell is None:
+        print "Failed to start shell"
+    elif shell.returncode == 0:
         normal_exit = True
         if options.verbose:
             print "Shell exited normally"
