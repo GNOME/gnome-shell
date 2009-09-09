@@ -78,7 +78,13 @@ AppDisplayItem.prototype = {
 
     // Opens an application represented by this display item.
     launch : function() {
-        this._appInfo.launch();
+        let windows = Shell.AppMonitor.get_default().get_windows_for_app(this._appInfo.get_id());
+        if (windows.length > 0) {
+            let mostRecentWindow = windows[0];
+            Main.overview.activateWindow(mostRecentWindow, Clutter.get_current_event_time());
+        } else {
+            this._appInfo.launch();
+        }
     },
 
     //// Protected method overrides ////
