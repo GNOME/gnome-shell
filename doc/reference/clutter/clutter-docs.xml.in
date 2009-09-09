@@ -187,6 +187,7 @@
     </partintro>
 
     <xi:include href="xml/migrating-ClutterEffect.xml"/>
+    <xi:include href="xml/migrating-ClutterPath.xml"/>
 
   </part>
 

@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC
+  "-//OASIS//DTD DocBook XML V4.3//EN"
+  "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<chapter id="migrating-ClutterPath">
+
+  <chapterinfo>
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+      <affiliation>
+        <address>
+          <email>ebassi@linux.intel.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Migrating to ClutterPath</title>
+
+  <para>Between Clutter 0.8 and Clutter 1.0 the #ClutterBehaviourPath
+  behaviour lost all the path manipulation functions and the
+  <structname>ClutterBehaviourBspline</structname> class was entirely
+  deprecated.</para>
+
+  <para>The class that replaced the path description and manipulation
+  functionality is called #ClutterPath. A #ClutterPath allows
+  describing a path using a sequence of #ClutterPahtNode<!-- -->s or
+  using a subset of the SVG path description syntax. A Path instance
+  also allows describing complex paths, with linear and Bezier segments
+  and with gaps.</para>
+
+  <para>Finally, #ClutterPath also provides integration with Cairo,
+  by being able to add paths described by the Cairo
+  <structname>cairo_path_t</structname> data structure and being able
+  to "replay" a #ClutterPath onto a <structname>cairo_t</structname>
+  Cairo context.</para>
+
+  <section id="creating-paths">
+    <title>Creating a #ClutterPath</title>
+
+    <para>Before Clutter 1.0, all the path-related functions inside
+    #ClutterBehaviourPath and <structname>ClutterBehaviourBspline</structname>
+    were replicated, but were also subtly different given the different nature
+    of the types of path handled by the two #ClutterBehaviour<!-- -->s.</para>
+
+    <example id="example-clutter-behaviour-path">
+      <title>ClutterBehaviourPath example</title>
+      <para>The following code shows how a #ClutterBehaviourPath was
+      created prior to the introduction of #ClutterPath. The path described
+      is a square box between 100, 100 and 200, 200.</para>
+      <programlisting>
+  ClutterBehaviour *behaviour;
+  ClutterKnot knots[] = {
+    { 100, 100 },
+    { 200, 100 },
+    { 200, 200 },
+    { 100, 200 },
+    { 100, 100 }
+  };
+
+  behaviour = clutter_behaviour_path_new (alpha, knots, G_N_ELEMENTS (knots));
+      </programlisting>
+    </example>
+
+    <para>The construction for a B-Spline path behaviour was similar, though
+    the #ClutterKnot<!-- -->s could only describe a curvilinear path.</para>
+
+    <example id="example-construct-clutter-path">
+      <title>Constructing ClutterPath</title>
+      <para>The following code shows how to construct a #ClutterPath and
+      assign it to a #ClutterBehaviourPath. The created path is the same as
+      the example above.</para>
+      <programlisting>
+  ClutterBehaviour *behaviour;
+  ClutterPath *path;
+
+  path = clutter_path_new ();
+  clutter_path_add_move_to (path, 100, 100);
+  clutter_path_add_line_to (path, 200, 100);
+  clutter_path_add_line_to (path, 200, 200);
+  clutter_path_add_line_to (path, 100, 200);
+  clutter_path_add_close (path);
+
+  behaviour = clutter_behaviour_path_new (alpha, path);
+      </programlisting>
+    </example>
+
+    <para><note>A #ClutterPath object can be shared across behaviours, just
+    like the #ClutterAlpha objects can.</note></para>
+
+    <para>Path can be described by using a subset of the SVG notation for
+    paths as well as using #ClutterPathNode structures.</para>
+
+    <example id="example-describe-clutter-path">
+      <title>Describing ClutterPath</title>
+      <para>The SVG path notation subset used by #ClutterPath is in
+      string format and can be both set as the whole path description
+      using clutter_path_set_description() or can be added to an
+      existing #ClutterPath using clutter_path_add_string(). The following
+      example shows the same path as the two examples above.</para>
+      <programlisting>
+  ClutterPath *path = clutter_path_new ();
+
+  clutter_path_set_description (path,
+                                "M 100,100 " /* move to */
+                                "L 200,100 " /* line to */
+                                "L 200,200 "
+                                "L 100,200 "
+                                "z"          /* close   */);
+      </programlisting>
+    </example>
+
+    <para>A #ClutterPath can describe not only linear, closed paths; it
+    can also describe paths with Beziér curvers and can add gaps.</para>
+
+    <example id="example-describe-mixed-clutter-path">
+      <title>Describing a mixed ClutterPath</title>
+      <para>A mixed #ClutterPath, with a Beziér curve between the point
+      at 200, 200 and 100, 100 and both control points in 100, 200.</para>
+      <programlisting>
+  ClutterPath *path = clutter_path_new ();
+
+  clutter_path_set_description (path,
+                                "M 100,100 "
+                                "L 200,100 "
+                                "L 200,200 "
+                                "C 100,200 100,200 100,100");
+      </programlisting>
+    </example>
+
+  </section>
+
+  <section id="iterating-paths">
+    <title>Iterating over a #ClutterPath</title>
+
+    <para>It is possible to iterate over all the #ClutterPathNode<!-- -->s
+    inside a #ClutterPath by using clutter_path_get_nodes(), which will return
+    a #GSList of #ClutterPathNode<!-- -->s; or by using clutter_path_foreach()
+    with a function.</para>
+
+    <para>The function pointer passed to clutter_path_foreach() should have the
+    following definition:</para>
+
+    <informalexample><programlisting>
+  static void
+  foreach_node (ClutterPathNode *path_node,
+                gpointer         user_data)
+  {
+  }
+    </programlisting></informalexample>
+  </section>
+
+  <section id="using-cairo">
+    <title>Integration with Cairo</title>
+
+    <para>A #ClutterPath can use a previously defined
+    <structname>cairo_path_t</structname> to add new nodes, by using
+    the clutter_path_add_cairo_path() function.</para>
+
+    <para>It is also possible to paint a #ClutterPath on a Cairo context,
+    by moving the Cairo pen across the nodes of the path using the
+    clutter_path_to_cairo_path() function.</para>
+  </section>
+
+</chapter>

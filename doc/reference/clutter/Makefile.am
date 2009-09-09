@@ -120,7 +120,8 @@ content_files= \
 	clutter-overview.xml \
 	building-clutter.xml \
 	running-clutter.xml \
-	migrating-ClutterEffect.xml
+	migrating-ClutterEffect.xml \
+	migrating-ClutterPath.xml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
@@ -133,7 +134,8 @@ expand_content_files= \
 	clutter-overview.xml \
 	building-clutter.xml \
 	running-clutter.xml \
-	migrating-ClutterEffect.xml
+	migrating-ClutterEffect.xml \
+	migrating-ClutterPath.xml
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
