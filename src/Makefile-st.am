@@ -65,10 +65,15 @@ st-enum-types.c: stamp-st-enum-types.h st/st-enum-types.c.in
 
 # please, keep this sorted alphabetically
 st_source_h =					\
+    st/st-adjustment.h				\
     st/st-bin.h					\
+    st/st-button.h				\
     st/st-private.h				\
     st/st-stylable.h				\
     st/st-style.h				\
+    st/st-scrollable.h				\
+    st/st-scroll-bar.h				\
+    st/st-scroll-view.h				\
     st/st-subtexture.h				\
     st/st-texture-cache.h			\
     st/st-texture-frame.h			\
@@ -79,8 +84,13 @@ st_source_h =					\
 
 # please, keep this sorted alphabetically
 st_source_c =					\
+    st/st-adjustment.c				\
     st/st-bin.c					\
+    st/st-button.c				\
     st/st-private.c				\
+    st/st-scrollable.c				\
+    st/st-scroll-bar.c				\
+    st/st-scroll-view.c				\
     st/st-stylable.c				\
     st/st-style.c				\
     st/st-subtexture.c				\
