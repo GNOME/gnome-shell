@@ -70,6 +70,9 @@ st_source_h =					\
     st/st-box-layout.h				\
     st/st-box-layout-child.h			\
     st/st-button.h				\
+    st/st-clipboard.h				\
+    st/st-entry.h				\
+    st/st-label.h				\
     st/st-private.h				\
     st/st-stylable.h				\
     st/st-style.h				\
@@ -91,6 +94,9 @@ st_source_c =					\
     st/st-box-layout.c				\
     st/st-box-layout-child.c			\
     st/st-button.c				\
+    st/st-clipboard.c				\
+    st/st-entry.c				\
+    st/st-label.c				\
     st/st-private.c				\
     st/st-scrollable.c				\
     st/st-scroll-bar.c				\

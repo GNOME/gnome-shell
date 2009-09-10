@@ -7,6 +7,8 @@
       href="git://git.clutter-project.org/"/>
   <repository type="git" name="git.gnome.org"
       href="git://git.gnome.org/"/>
+  <repository type="git" name="git.moblin.org"
+      href="git://git.moblin.org"/>
 
   <autotools id="gobject-introspection">
     <branch repo="git.gnome.org" module="gobject-introspection"/>
@@ -33,6 +35,13 @@
     <branch repo="git.clutter-project.org" module="clutter" revision="clutter-1.0"/>
     <dependencies>
         <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="clutter-imcontext">
+    <branch repo="git.moblin.org" module="clutter-imcontext"/>
+    <dependencies>
+        <dep package="clutter"/>
     </dependencies>
   </autotools>
 
