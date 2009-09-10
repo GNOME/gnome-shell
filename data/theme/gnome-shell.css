@@ -60,3 +60,39 @@ StScrollBar StButton#vhandle:hover
 {
   border-image: url("scroll-vhandle.png") 5;
 }
+
+/* LookingGlass */
+
+#LookingGlassDialog
+{
+  background-color: rgba(0,0,0,0.85);
+  spacing: 4px;
+  padding: 4px;
+  border: 1px solid rgba(0,0,172,0.85);
+  border-radius: 4px;
+  font-family: Monospace;
+
+  color: #88ff66;
+}
+
+#LookingGlassDialog > #Toolbar
+{
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
+#LookingGlassDialog StLabel
+{
+  color: #88ff66;
+}
+
+#LookingGlassDialog StEntry
+{
+  color: #88ff66;
+}
+
+#LookingGlassDialog StBoxLayout#EvalBox
+{
+  padding: 4px;
+  spacing: 4px;
+}
