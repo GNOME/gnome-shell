@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-14 23:06+0200\n"
-"PO-Revision-Date: 2009-03-14 23:03+0200\n"
+"POT-Creation-Date: 2009-09-10 14:43+0300\n"
+"PO-Revision-Date: 2009-09-10 14:43+0300\n"
 "Last-Translator: Gintautas Miliauskas <gintautas@miliauskas.lt>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
 "100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
@@ -30,7 +30,7 @@ msgstr "Langų valdymas"
 
 #: ../src/core/bell.c:294
 msgid "Bell event"
-msgstr ""
+msgstr "Signalo įvykis"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -38,13 +38,16 @@ msgid "Unknown window information request: %d"
 msgstr "Nežinoma langų informacijos užklausa: %d"
 
 #: ../src/core/delete.c:104
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
 "<i>You may choose to wait a short while for it to continue or force the "
 "application to quit entirely.</i>"
-msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
+msgstr ""
+"<big><b><tt>%s</tt> neatsako.</b></big>\n"
+"\n"
+"<i>Galite šiek tiek palaukti arba priverstinai uždaryti programą.</i>"
 
 #: ../src/core/delete.c:115
 msgid "_Wait"
@@ -119,7 +122,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "Terminalo komanda nebuvo nurodyta.\n"
 
 #: ../src/core/main.c:130
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -128,55 +131,61 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Autorinės teisės (C) priklauso 2001-2008 Havoc Pennington, Red Hat, Inc.\n"
+"Autorinės teisės (C) priklauso 2001-%s Havoc Pennington, Red Hat, Inc.\n"
 "ir kitiems.\n"
 "Tai yra laisva programinė įranga; platinimo sąlygos yra aprašytos \n"
 "programos pradiniuose tekstuose.\n"
 "Nėra JOKIOS garantijos; net dėl PREKIAVIMO ar TAM TIKRO PANAUDOJIMO TIKSLO "
 "ATITIKIMO.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Išjungti susijungimą su sesijos valdykle"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Pakeisti veikiančią langų valdyklę su Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Nurodyti sesijos valdymo ID"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Naudotinas X ekranas"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Inicializuoti sesiją iš išsaugojimo failo"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Parodyti versiją"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Sinchronizuoti X iškvietimus"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Įjungti komponavimą"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Išjungti komponavimą"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Nekurti pilno ekrano langų, kurie yra maksimizuoti ir neturi dekoracijų"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nepavyko nuskanuoti temų aplanko: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -184,7 +193,7 @@ msgstr ""
 "Nepavyko rasti temos! Įsitikinkite, kad %s egzistuoja ir kad ten yra "
 "įprastos temos.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nepavyko perleisti: %s\n"
@@ -200,24 +209,24 @@ msgstr "Nepavyko perleisti: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf rakte „%s“ nurodyta netinkama reikšmė\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d reikšmė, saugoma GConf rakte %s, netelpa tarp %d ir %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf raktui „%s“ nustatytas neteisingas tipas\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -225,12 +234,12 @@ msgstr ""
 "Apsauga nuo sugadintų programų atjungta. Kai kurios programos gali pradėti "
 "keistai elgtis.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepavyko apdoroti šrifto aprašymo „%s“ saugomo GConf rakte %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -239,17 +248,17 @@ msgstr ""
 "„%s“ reikšmė rasta nustatymų duomenų bazėje yra netinkama pelės mygtuko "
 "keitiklio aprašymui\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Įvyko klaida nustatant darbalaukų skaičių į %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbalaukis %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -258,22 +267,22 @@ msgstr ""
 "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų "
 "kombinacijai „%s“\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Įvyko klaida pervadinant darbalaukį %d į „%s“: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Įvyko klaida nustatant komponavimo posistemės būseną: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ netinkamas\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -282,19 +291,19 @@ msgstr ""
 "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę; pabandykite "
 "pasinaudoti parinktimi --replace, jei norite pakeisti esamą langų valdyklę.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nepavyko aptikti langų valdyklės pasirinkimo ekrano %d vaizduoklyje „%s“\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepavyko pasitraukti iš ekrano %d vaizduoklyje „%s“\n"
@@ -305,7 +314,7 @@ msgstr "Nepavyko pasitraukti iš ekrano %d vaizduoklyje „%s“\n"
 #.
 #: ../src/core/schema-bindings.c:169
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -321,7 +330,7 @@ msgstr ""
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -338,8 +347,8 @@ msgstr ""
 "„<Ctrl>“. Nustačius specialų požymį „disabled“, su šiuo veiksmu nebus "
 "susieta jokia klavišų kombinacija.\n"
 "\n"
-"Šis klavišų susiejimas gali būti apsuktas nuspaudus „Shift“ klavišą, taigi "
-"jame negalima naudoti „Shift“."
+"Šis klavišų susiejimas gali būti apsuktas nuspaudus „Lyg2“ (Shift) klavišą, "
+"taigi jame negalima naudoti „Shift“."
 
 #: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
@@ -396,12 +405,11 @@ msgid "Unknown element %s"
 msgstr "Nežinomas elementas %s"
 
 #: ../src/core/session.c:1812
-#, fuzzy
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Šie langai nepalaiko „išsaugoti esamus nustatymus“ komandos ir turi būti "
+"Šie langai nepalaiko komandos „išsaugoti esamus nustatymus“ ir turės būti "
 "paleisti rankiniu būdu, kai prisijungsite kitą kartą."
 
 #: ../src/core/util.c:103
@@ -489,21 +497,21 @@ msgstr "%s (kompiuteryje %s)"
 #: ../src/core/window-props.c:420
 #, c-format
 msgid "%s (as superuser)"
-msgstr ""
+msgstr "%s (kaip supernaudotojas)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine
 #: ../src/core/window-props.c:438
-#, fuzzy, c-format
+#, c-format
 msgid "%s (as %s)"
-msgstr "%s (kompiuteryje %s)"
+msgstr "%s (kaip %s)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine, whose name we don't know
 #: ../src/core/window-props.c:444
 #, c-format
 msgid "%s (as another user)"
-msgstr ""
+msgstr "%s (kaip kitas naudotojas)"
 
 #: ../src/core/window-props.c:1429
 #, c-format
@@ -1609,7 +1617,7 @@ msgid ""
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "GTK spalvų aprašymas turi turėti būsenos aprašymą patalpintą tarp laužtinių "
-"skliaustų, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti \"%"
+"skliaustų, pvz., gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti \"%"
 "s\""
 
 #: ../src/ui/theme.c:1160
@@ -1619,7 +1627,7 @@ msgid ""
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "GTK spalvų aprašymas po būsenos turi turėti uždarančius laužtinius "
-"skliaustus, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti "
+"skliaustus, pvz., gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti "
 "\"%s\""
 
 #: ../src/ui/theme.c:1171
@@ -2188,9 +2196,9 @@ msgstr "Elemente <%s> tekstas negalimas"
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "<name> elementas temos aprašyme nurodytas du kartus"
+msgstr "<%s> šioje temoje nurodytas du kartus"
 
 #: ../src/ui/theme-parser.c:4040
 #, c-format
