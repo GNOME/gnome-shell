@@ -110,8 +110,8 @@
  * }
  * </programlisting></informalexample>
  *
- * #ClutterModel is an abstract class. Clutter provides a default model
- * implementation called #ClutterModelDefault which has been optimised
+ * #ClutterModel is an abstract class. Clutter provides a list model
+ * implementation called #ClutterListModel which has been optimised
  * for insertion and look up in sorted lists.
  *
  * #ClutterModel is available since Clutter 0.6
