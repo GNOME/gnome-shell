@@ -303,8 +303,6 @@ st_scroll_view_allocate (ClutterActor          *actor,
                    "scrollbar-width", &sb_width,
                    "scrollbar-height", &sb_height,
                    NULL);
-  sb_width = 28;
-  sb_height = 28;
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     sb_width = 0;
