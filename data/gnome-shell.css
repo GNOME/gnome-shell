@@ -1,0 +1,62 @@
+/* Copyright 2009, Red Hat, Inc.
+ *
+ * Portions adapted from NBTK's data/style/default.css
+ *   Copyright 2009 Intel Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU Lesser General Public License,
+ * version 2.1, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+NbtkScrollBar
+{
+  background-color: #354761;
+  padding: 0px;
+}
+
+NbtkScrollView
+{
+  scrollbar-width: 16;
+  scrollbar-height: 16;
+}
+
+NbtkButton#up-stepper
+{
+  border-image: url("file://scroll-button-up.png") 5;
+}
+
+NbtkButton#up-stepper:hover,
+NbtkButton#up-stepper:active
+{
+  border-image: url("file://scroll-button-up-hover.png") 5;
+}
+
+NbtkButton#down-stepper
+{
+  border-image: url("file://scroll-button-down.png") 5;
+}
+
+NbtkButton#down-stepper:hover,
+NbtkButton#down-stepper:active
+{
+  border-image: url("file://scroll-button-down-hover.png") 5;
+}
+
+NbtkScrollBar NbtkButton#vhandle
+{
+  border-image: url("file://scroll-vhandle.png") 5;
+}
+
+NbtkScrollBar NbtkButton#vhandle:hover
+{
+  border-image: url("file://scroll-vhandle.png") 5;
+}
