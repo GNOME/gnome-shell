@@ -66,6 +66,8 @@ nbtk-enum-types.c: stamp-nbtk-enum-types.h nbtk/nbtk-enum-types.c.in
 nbtk_source_h =                  \
     nbtk/nbtk-adjustment.h            \
     nbtk/nbtk-bin.h                   \
+    nbtk/nbtk-box-layout.h            \
+    nbtk/nbtk-box-layout-child.h      \
     nbtk/nbtk-button.h                \
     nbtk/nbtk-private.h               \
     nbtk/nbtk-scrollable.h            \
@@ -86,6 +88,8 @@ nbtk_source_h =                  \
 nbtk_source_c =                  \
     nbtk/nbtk-adjustment.c           \
     nbtk/nbtk-bin.c                   \
+    nbtk/nbtk-box-layout.c            \
+    nbtk/nbtk-box-layout-child.c      \
     nbtk/nbtk-button.c                \
     nbtk/nbtk-private.c               \
     nbtk/nbtk-scrollable.c            \
