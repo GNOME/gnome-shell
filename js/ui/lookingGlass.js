@@ -4,6 +4,7 @@ const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Pango = imports.gi.Pango;
+const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
@@ -12,18 +13,7 @@ const Mainloop = imports.mainloop;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 
-const LG_BORDER_COLOR = new Clutter.Color();
-LG_BORDER_COLOR.from_pixel(0x0000aca0);
-const LG_BACKGROUND_COLOR = new Clutter.Color();
-LG_BACKGROUND_COLOR.from_pixel(0x000000d5);
-const GREY = new Clutter.Color();
-GREY.from_pixel(0xAFAFAFFF);
-const MATRIX_GREEN = new Clutter.Color();
-MATRIX_GREEN.from_pixel(0x88ff66ff);
-// FIXME pull from GConf
-const MATRIX_FONT = 'Monospace 10';
-
-                    /* Imports...feel free to add here as needed */
+/* Imports...feel free to add here as needed */
 var commandHeader = "const Clutter = imports.gi.Clutter; " +
                     "const GLib = imports.gi.GLib; " +
                     "const Gtk = imports.gi.Gtk; " +
@@ -47,7 +37,7 @@ function Notebook() {
 
 Notebook.prototype = {
     _init: function() {
-        this.actor = new Big.Box();
+        this.actor = new St.BoxLayout({ vertical: true });
 
         this.tabControls = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                          spacing: 4, padding: 2 });
@@ -58,21 +48,24 @@ Notebook.prototype = {
 
     appendPage: function(name, child) {
         let labelOuterBox = new Big.Box({ padding: 2 });
-        let labelBox = new Big.Box({ padding: 2, border_color: MATRIX_GREEN,
-                                     reactive: true });
+        let labelBox = new St.BoxLayout({ reactive: true });
         labelOuterBox.append(labelBox, Big.BoxPackFlags.NONE);
-        let label = new Clutter.Text({ color: MATRIX_GREEN,
-                                       font_name: MATRIX_FONT,
-                                       text: name });
+        let label = new St.Label({ text: name });
         labelBox.connect('button-press-event', Lang.bind(this, function () {
             this.selectChild(child);
             return true;
         }));
-        labelBox.append(label, Big.BoxPackFlags.EXPAND);
-        this._tabs.push([child, labelBox]);
-        child.hide();
-        this.actor.append(child, Big.BoxPackFlags.EXPAND);
+        labelBox.add(label, { expand: true });
         this.tabControls.append(labelOuterBox, Big.BoxPackFlags.NONE);
+
+        let scrollview = new St.ScrollView({ x_fill: true, y_fill: true });
+        scrollview.get_hscroll_bar().hide();
+        scrollview.add_actor(child);
+
+        this._tabs.push([child, labelBox, scrollview]);
+        scrollview.hide();
+        this.actor.add(scrollview, { expand: true });
+
         if (this._selectedIndex == -1)
             this.selectIndex(0);
     },
@@ -80,10 +73,10 @@ Notebook.prototype = {
     _unselect: function() {
         if (this._selectedIndex < 0)
             return;
-        let [child, labelBox] = this._tabs[this._selectedIndex];
+        let [child, labelBox, scrollview] = this._tabs[this._selectedIndex];
         labelBox.padding = 2;
         labelBox.border = 0;
-        child.hide();
+        scrollview.hide();
         this._selectedIndex = -1;
     },
 
@@ -95,10 +88,10 @@ Notebook.prototype = {
             this.emit('selection', null);
             return;
         }
-        let [child, labelBox] = this._tabs[index];
+        let [child, labelBox, scrollview] = this._tabs[index];
         labelBox.padding = 1;
         labelBox.border = 1;
-        child.show();
+        scrollview.show();
         this._selectedIndex = index;
         this.emit('selection', child);
     },
@@ -108,7 +101,7 @@ Notebook.prototype = {
             this.selectIndex(-1);
         else {
             for (let i = 0; i < this._tabs.length; i++) {
-                let [tabChild, labelBox] = this._tabs[i];
+                let [tabChild, labelBox, scrollview] = this._tabs[i];
                 if (tabChild == child) {
                     this.selectIndex(i);
                     return;
@@ -130,20 +123,19 @@ Result.prototype = {
 
         this.actor = new Big.Box();
 
-        let cmdTxt = new Clutter.Text({ color: MATRIX_GREEN,
-                                        font_name: MATRIX_FONT,
-                                        ellipsize: Pango.EllipsizeMode.END,
-                                        text: command });
+        let cmdTxt = new St.Label({ text: command });
+        cmdTxt.ellipsize = Pango.EllipsizeMode.END;
+
         this.actor.append(cmdTxt, Big.BoxPackFlags.NONE);
-        let resultTxt = new Clutter.Text({ color: MATRIX_GREEN,
-                                           font_name: MATRIX_FONT,
-                                           ellipsize: Pango.EllipsizeMode.END,
-                                           text: "r(" + index + ") = " + o });
+        let resultTxt = new St.Label({ text: "r(" + index + ") = " + o });
+        resultTxt.ellipsize = Pango.EllipsizeMode.END;
+
         this.actor.append(resultTxt, Big.BoxPackFlags.NONE);
-        let line = new Big.Box({ border_color: GREY,
-                                 border_bottom: 1,
-                                 height: 8 });
-        this.actor.append(line, Big.BoxPackFlags.NONE);
+        let line = new Clutter.Rectangle({ name: "Separator",
+                                           height: 1 });
+        let padBin = new St.Bin({ name: "Separator", x_fill: true, y_fill: true });
+        padBin.add_actor(line);
+        this.actor.append(padBin, Big.BoxPackFlags.NONE);
     }
 }
 
@@ -158,17 +150,14 @@ ActorHierarchy.prototype = {
 
         this._parentList = [];
 
-        this.actor = new Big.Box({ spacing: 4,
-                                   border: 1,
-                                   padding: 4,
-                                   border_color: GREY });
+        this.actor = new St.BoxLayout({ name: "ActorHierarchy", vertical: true });
     },
 
     setTarget: function(actor) {
         this._previousTarget = this._target;
         this.target = actor;
 
-        this.actor.remove_all();
+        this.actor.get_children().forEach(function (child) { child.destroy(); });
 
         if (!(actor instanceof Clutter.Actor))
             return;
@@ -181,11 +170,9 @@ ActorHierarchy.prototype = {
         while ((parent = parent.get_parent()) != null) {
             this._parentList.push(parent);
 
-            let link = new Clutter.Text({ color: MATRIX_GREEN,
-                                          font_name: MATRIX_FONT,
-                                          reactive: true,
-                                          text: "" + parent });
-            this.actor.append(link, Big.BoxPackFlags.IF_FITS);
+            let link = new St.Label({ reactive: true,
+                                      text: "" + parent });
+            this.actor.add_actor(link);
             let parentTarget = parent;
             link.connect('button-press-event', Lang.bind(this, function () {
                 this._selectByActor(parentTarget);
@@ -214,16 +201,13 @@ PropertyInspector.prototype = {
 
         this._parentList = [];
 
-        this.actor = new Big.Box({ spacing: 4,
-                                   border: 1,
-                                   padding: 4,
-                                   border_color: GREY });
+        this.actor = new St.BoxLayout({ name: "PropertyInspector", vertical: true });
     },
 
     setTarget: function(actor) {
         this.target = actor;
 
-        this.actor.remove_all();
+        this.actor.get_children().forEach(function (child) { child.destroy(); });
 
         for (let propName in actor) {
             let valueStr;
@@ -233,11 +217,9 @@ PropertyInspector.prototype = {
                 valueStr = '<error>';
             }
             let propText = propName + ": " + valueStr;
-            let propDisplay = new Clutter.Text({ color: MATRIX_GREEN,
-                                                 font_name: MATRIX_FONT,
-                                                 reactive: true,
-                                                 text: propText });
-            this.actor.append(propDisplay, Big.BoxPackFlags.IF_FITS);
+            let propDisplay = new St.Label({ reactive: true,
+                                             text: propText });
+            this.actor.add_actor(propDisplay);
         }
     }
 }
@@ -250,20 +232,16 @@ Inspector.prototype = {
     _init: function() {
         let width = 150;
         let primary = global.get_primary_monitor();
-        let eventHandler = new Big.Box({ background_color: LG_BACKGROUND_COLOR,
-                                         border: 1,
-                                         border_color: LG_BORDER_COLOR,
-                                         corner_radius: 4,
-                                         y: primary.y + Math.floor(primary.height / 2),
-                                         reactive: true
-                                      });
+        let eventHandler = new St.BoxLayout({ name: "LookingGlassDialog",
+                                              vertical: false,
+                                              y: primary.y + Math.floor(primary.height / 2),
+                                              reactive: true });
         eventHandler.connect('notify::allocation', Lang.bind(this, function () {
             eventHandler.x = primary.x + Math.floor((primary.width - eventHandler.width) / 2);
         }));
         global.stage.add_actor(eventHandler);
-        let displayText = new Clutter.Text({ color: MATRIX_GREEN,
-                                             font_name: MATRIX_FONT, text: '' });
-        eventHandler.append(displayText, Big.BoxPackFlags.EXPAND);
+        let displayText = new St.Label();
+        eventHandler.add(displayText, { expand: true });
 
         let borderPaintTarget = null;
         let borderPaintId = null;
@@ -322,29 +300,19 @@ LookingGlass.prototype = {
         this._offset = 0;
         this._results = [];
 
-        // TODO replace with scrolling or something better
-        this._maxItems = 10;
+        // Sort of magic, but...eh.
+        this._maxItems = 150;
 
-        this.actor = new Big.Box({ background_color: LG_BACKGROUND_COLOR,
-                                   border: 1,
-                                   border_color: LG_BORDER_COLOR,
-                                   corner_radius: 4,
-                                   padding_top: 8,
-                                   padding_left: 4,
-                                   padding_right: 4,
-                                   padding_bottom: 4,
-                                   spacing: 4,
-                                   visible: false
-                                });
+        this.actor = new St.BoxLayout({ name: "LookingGlassDialog",
+                                        vertical: true,
+                                        visible: false });
         global.stage.add_actor(this.actor);
 
-        let toolbar = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                    border: 1, border_color: GREY,
-                                    corner_radius: 4 });
-        this.actor.append(toolbar, Big.BoxPackFlags.NONE);
+        let toolbar = new St.BoxLayout({ name: "Toolbar" });
+        this.actor.add_actor(toolbar);
         let inspectIcon = Shell.TextureCache.get_default().load_gicon(new Gio.ThemedIcon({ name: 'gtk-color-picker' }),
                                                                       24);
-        toolbar.append(inspectIcon, Big.BoxPackFlags.NONE);
+        toolbar.add_actor(inspectIcon);
         inspectIcon.reactive = true;
         inspectIcon.connect('button-press-event', Lang.bind(this, function () {
             let inspector = new Inspector();
@@ -362,31 +330,26 @@ LookingGlass.prototype = {
         }));
 
         let notebook = new Notebook();
-        this.actor.append(notebook.actor, Big.BoxPackFlags.EXPAND);
-        toolbar.append(notebook.tabControls, Big.BoxPackFlags.END);
+        this.actor.add(notebook.actor, { expand: true });
 
-        this._evalBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                      spacing: 4 });
+        let emptyBox = new St.Bin();
+        toolbar.add(emptyBox, { expand: true });
+        toolbar.add_actor(notebook.tabControls);
+
+        this._evalBox = new St.BoxLayout({ name: "EvalBox", vertical: true });
         notebook.appendPage('Evaluator', this._evalBox);
 
         this._resultsArea = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                           spacing: 4 });
-        this._evalBox.append(this._resultsArea, Big.BoxPackFlags.EXPAND);
+        this._evalBox.add(this._resultsArea, { expand: true });
 
         let entryArea = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
-        this._evalBox.append(entryArea, Big.BoxPackFlags.NONE);
+        this._evalBox.add_actor(entryArea);
 
-        let label = new Clutter.Text({ color: MATRIX_GREEN,
-                                       font_name: MATRIX_FONT,
-                                       text: 'js>>> ' });
+        let label = new St.Label({ text: 'js>>> ' });
         entryArea.append(label, Big.BoxPackFlags.NONE);
 
-        this._entry = new Clutter.Text({ color: MATRIX_GREEN,
-                                         font_name: MATRIX_FONT,
-                                         editable: true,
-                                         activatable: true,
-                                         singleLineMode: true,
-                                         text: ''});
+        this._entry = new St.Entry();
         /* unmapping the edit box will un-focus it, undo that */
         notebook.connect('selection', Lang.bind(this, function (nb, child) {
             if (child == this._evalBox)
@@ -404,7 +367,7 @@ LookingGlass.prototype = {
             notebook.selectIndex(0);
         }));
 
-        this._entry.connect('activate', Lang.bind(this, function (o, e) {
+        this._entry.clutter_text.connect('activate', Lang.bind(this, function (o, e) {
             let text = o.get_text();
             // Ensure we don't get newlines in the command; the history file is
             // newline-separated.
@@ -417,7 +380,7 @@ LookingGlass.prototype = {
             this._historyNavIndex = -1;
             return true;
         }));
-        this._entry.connect('key-press-event', Lang.bind(this, function(o, e) {
+        this._entry.clutter_text.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Escape) {
                 this.close();
