@@ -15,6 +15,9 @@ G_DEFINE_TYPE(ShellMenu, shell_menu, BIG_TYPE_BOX);
 struct _ShellMenuPrivate {
   gboolean have_grab;
 
+  gboolean released_on_source;
+  ClutterActor *source_actor;
+
   ClutterActor *selected;
 };
 
@@ -31,10 +34,10 @@ enum
 static guint shell_menu_signals [LAST_SIGNAL] = { 0 };
 
 static gboolean
-shell_menu_contains (ShellMenu     *box,
-                     ClutterActor  *actor)
+shell_menu_contains (ClutterContainer *container,
+                     ClutterActor     *actor)
 {
-  while (actor != NULL && actor != (ClutterActor*)box)
+  while (actor != NULL && actor != (ClutterActor*)container)
     {
       actor = clutter_actor_get_parent (actor);
     }
@@ -73,7 +76,7 @@ shell_menu_enter_event (ClutterActor         *actor,
 {
   ShellMenu *box = SHELL_MENU (actor);
 
-  if (!shell_menu_contains (box, event->source))
+  if (!shell_menu_contains (CLUTTER_CONTAINER (box), event->source))
     return TRUE;
 
   if (event->source == (ClutterActor*)box)
@@ -107,9 +110,21 @@ shell_menu_button_release_event (ClutterActor       *actor,
   if (event->button != 1)
     return FALSE;
 
+  if (box->priv->source_actor && !box->priv->released_on_source)
+    {
+      if (box->priv->source_actor == event->source ||
+          (CLUTTER_IS_CONTAINER (box->priv->source_actor) &&
+           shell_menu_contains (CLUTTER_CONTAINER (box->priv->source_actor), event->source)))
+        {
+          /* On the next release, we want to pop down the menu regardless */
+          box->priv->released_on_source = TRUE;
+          return TRUE;
+        }
+    }
+
   shell_menu_popdown (box);
 
-  if (!shell_menu_contains (box, event->source))
+  if (!shell_menu_contains (CLUTTER_CONTAINER (box), event->source))
     return FALSE;
 
   if (box->priv->selected == NULL)
@@ -126,6 +141,7 @@ shell_menu_popup (ShellMenu         *box,
                   guint32            activate_time)
 {
   box->priv->have_grab = TRUE;
+  box->priv->released_on_source = FALSE;
   clutter_grab_pointer (CLUTTER_ACTOR (box));
 }
 
@@ -136,6 +152,45 @@ shell_menu_popdown (ShellMenu *box)
     clutter_ungrab_pointer ();
   clutter_actor_hide (CLUTTER_ACTOR (box));
   g_signal_emit (G_OBJECT (box), shell_menu_signals[POPDOWN], 0);
+}
+
+static void
+on_source_destroyed (ClutterActor *actor,
+                     ShellMenu    *box)
+{
+  box->priv->source_actor = NULL;
+}
+
+/**
+ * shell_menu_set_persistent_source:
+ * @box:
+ * @source: Actor to use as menu origin
+ *
+ * This function changes the menu behavior on button release.  Normally
+ * when the mouse is released anywhere, the menu "pops down"; when this
+ * function is called, if the mouse is released over the source actor,
+ * the menu stays.
+ *
+ * The given @source actor must be reactive for this function to work.
+ */
+void
+shell_menu_set_persistent_source (ShellMenu    *box,
+                                  ClutterActor *source)
+{
+  if (box->priv->source_actor)
+    {
+      g_signal_handlers_disconnect_by_func (G_OBJECT (box->priv->source_actor),
+                                            G_CALLBACK (on_source_destroyed),
+                                            box);
+    }
+  box->priv->source_actor = source;
+  if (box->priv->source_actor)
+    {
+      g_signal_connect (G_OBJECT (box->priv->source_actor),
+                        "destroy",
+                        G_CALLBACK (on_source_destroyed),
+                        box);
+    }
 }
 
 /**

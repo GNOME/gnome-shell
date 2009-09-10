@@ -1134,7 +1134,7 @@ Workspaces.prototype = {
         return null;
     },
 
-    _lookupCloneForMetaWindow: function (metaWindow) {
+    lookupCloneForMetaWindow: function (metaWindow) {
         for (let i = 0; i < this._workspaces.length; i++) {
             let clone = this._workspaces[i].lookupCloneForMetaWindow(metaWindow);
             if (clone)
@@ -1181,7 +1181,7 @@ Workspaces.prototype = {
         let activeWorkspaceNum = global.screen.get_active_workspace_index();
         let windowWorkspaceNum = metaWindow.get_workspace().index();
 
-        let clone = this._lookupCloneForMetaWindow (metaWindow);
+        let clone = this.lookupCloneForMetaWindow (metaWindow);
         clone.actor.raise_top();
 
         if (windowWorkspaceNum != activeWorkspaceNum) {
