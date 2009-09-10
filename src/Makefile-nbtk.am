@@ -64,8 +64,13 @@ nbtk-enum-types.c: stamp-nbtk-enum-types.h nbtk/nbtk-enum-types.c.in
 
 # please, keep this sorted alphabetically
 nbtk_source_h =                  \
+    nbtk/nbtk-adjustment.h            \
     nbtk/nbtk-bin.h                   \
+    nbtk/nbtk-button.h                \
     nbtk/nbtk-private.h               \
+    nbtk/nbtk-scrollable.h            \
+    nbtk/nbtk-scroll-bar.h            \
+    nbtk/nbtk-scroll-view.h           \
     nbtk/nbtk-stylable.h              \
     nbtk/nbtk-style.h                 \
     nbtk/nbtk-subtexture.h            \
@@ -73,19 +78,26 @@ nbtk_source_h =                  \
     nbtk/nbtk-texture-frame.h         \
     nbtk/nbtk-tooltip.h               \
     nbtk/nbtk-types.h                 \
+    nbtk/nbtk-viewport.h              \
     nbtk/nbtk-widget.h                \
     $(NULL)
 
 # please, keep this sorted alphabetically
 nbtk_source_c =                  \
+    nbtk/nbtk-adjustment.c           \
     nbtk/nbtk-bin.c                   \
+    nbtk/nbtk-button.c                \
     nbtk/nbtk-private.c               \
+    nbtk/nbtk-scrollable.c            \
+    nbtk/nbtk-scroll-bar.c            \
+    nbtk/nbtk-scroll-view.c           \
     nbtk/nbtk-stylable.c              \
     nbtk/nbtk-style.c                 \
     nbtk/nbtk-subtexture.c            \
     nbtk/nbtk-texture-cache.c         \
     nbtk/nbtk-texture-frame.c         \
     nbtk/nbtk-tooltip.c               \
+    nbtk/nbtk-viewport.c              \
     nbtk/nbtk-widget.c                \
     $(NULL)
 
