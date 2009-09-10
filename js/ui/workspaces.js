@@ -107,6 +107,7 @@ WindowClone.prototype = {
         this.actor._delegate = this;
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
+        this.metaWindow._delegate = this;
         this.origX = realWindow.x;
         this.origY = realWindow.y;
 
