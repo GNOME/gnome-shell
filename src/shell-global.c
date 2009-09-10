@@ -40,6 +40,7 @@ struct _ShellGlobal {
   
   MutterPlugin *plugin;
   ShellWM *wm;
+  const char *datadir;
   const char *imagedir;
   const char *configdir;
 
@@ -57,6 +58,7 @@ enum {
   PROP_STAGE,
   PROP_WINDOW_GROUP,
   PROP_WINDOW_MANAGER,
+  PROP_DATADIR,
   PROP_IMAGEDIR,
   PROP_CONFIGDIR,
 };
@@ -128,6 +130,9 @@ shell_global_get_property(GObject         *object,
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
       break;
+    case PROP_DATADIR:
+      g_value_set_string (value, global->datadir);
+      break;
     case PROP_IMAGEDIR:
       g_value_set_string (value, global->imagedir);
       break;
@@ -149,6 +154,7 @@ shell_global_init (ShellGlobal *global)
 
   if (!datadir)
     datadir = GNOME_SHELL_DATADIR;
+  global->datadir = datadir;
 
   /* We make sure imagedir ends with a '/', since the JS won't have
    * access to g_build_filename() and so will end up just
@@ -253,6 +259,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Window Manager",
                                                         "Window management interface",
                                                         SHELL_TYPE_WM,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_DATADIR,
+                                   g_param_spec_string ("datadir",
+                                                        "Data directory",
+                                                        "Directory containing gnome-shell data files",
+                                                        NULL,
                                                         G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
                                    PROP_IMAGEDIR,
