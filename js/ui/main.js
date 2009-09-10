@@ -7,6 +7,7 @@ const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
+const Nbtk = imports.gi.Nbtk;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -65,6 +66,10 @@ function start() {
     let children = global.overlay_group.get_children();
     for (let i = 0; i < children.length; i++)
         children[i].destroy();
+
+    let style = Nbtk.Style.get_default();
+    let stylesheetPath = global.datadir + "/gnome-shell.css";
+    style.load_from_file(stylesheetPath);
 
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.
