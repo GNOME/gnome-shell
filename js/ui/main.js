@@ -10,6 +10,7 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 
 const Chrome = imports.ui.chrome;
 const Overview = imports.ui.overview;
@@ -74,6 +75,10 @@ function start() {
     let children = global.overlay_group.get_children();
     for (let i = 0; i < children.length; i++)
         children[i].destroy();
+
+    let style = St.Style.get_default();
+    let stylesheetPath = global.datadir + "/gnome-shell.css";
+    style.load_from_file(stylesheetPath);
 
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.
