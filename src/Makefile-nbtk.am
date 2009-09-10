@@ -69,6 +69,9 @@ nbtk_source_h =                  \
     nbtk/nbtk-box-layout.h            \
     nbtk/nbtk-box-layout-child.h      \
     nbtk/nbtk-button.h                \
+    nbtk/nbtk-clipboard.h             \
+    nbtk/nbtk-entry.h                 \
+    nbtk/nbtk-label.h                 \
     nbtk/nbtk-private.h               \
     nbtk/nbtk-scrollable.h            \
     nbtk/nbtk-scroll-bar.h            \
@@ -91,6 +94,9 @@ nbtk_source_c =                  \
     nbtk/nbtk-box-layout.c            \
     nbtk/nbtk-box-layout-child.c      \
     nbtk/nbtk-button.c                \
+    nbtk/nbtk-clipboard.c             \
+    nbtk/nbtk-entry.c                 \
+    nbtk/nbtk-label.c                 \
     nbtk/nbtk-private.c               \
     nbtk/nbtk-scrollable.c            \
     nbtk/nbtk-scroll-bar.c            \
