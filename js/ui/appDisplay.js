@@ -191,16 +191,21 @@ Signals.addSignalMethods(MenuItem.prototype);
 /* This class represents a display containing a collection of application items.
  * The applications are sorted based on their popularity by default, and based on
  * their name if some search filter is applied.
+ *
+ * showPrefs - a boolean indicating if this AppDisplay should contain preference
+ *             applets, rather than applications
  */
-function AppDisplay() {
-    this._init();
+function AppDisplay(showPrefs) {
+    this._init(showPrefs);
 }
 
 AppDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function() {
+    _init : function(showPrefs) {
         GenericDisplay.GenericDisplay.prototype._init.call(this);
+
+        this._showPrefs = showPrefs;
 
         this._menus = [];
         this._menuDisplays = [];
@@ -359,30 +364,32 @@ AppDisplay.prototype = {
         this._allItems = {};
         this._appCategories = {};
 
-        // Loop over the toplevel menu items, load the set of desktop file ids
-        // associated with each one, skipping empty menus
-        let allMenus = this._appSystem.get_menus();
-        this._menus = [];
-        for (let i = 0; i < allMenus.length; i++) {
-            let menu = allMenus[i];
-            let menuApps = this._appSystem.get_applications_for_menu(menu.id);
-            let hasVisibleApps = menuApps.some(function (app) { return !app.get_is_nodisplay(); });
-            if (!hasVisibleApps) {
-                continue;
-            }
-            this._menus.push(menu);
-            for (let j = 0; j < menuApps.length; j++) {
-                let app = menuApps[j];
+        if (this._showPrefs) {
+            // Get the desktop file ids for settings/preferences.
+            // These are used for search results, but not in the app menus.
+            let settings = this._appSystem.get_all_settings();
+            for (let i = 0; i < settings.length; i++) {
+                let app = settings[i];
                 this._addApp(app);
             }
-        }
-
-        // Now grab the desktop file ids for settings/preferences.
-        // These show up in search, but not with the rest of apps.
-        let settings = this._appSystem.get_all_settings();
-        for (let i = 0; i < settings.length; i++) {
-            let app = settings[i];
-            this._addApp(app);
+        } else {
+            // Loop over the toplevel menu items, load the set of desktop file ids
+            // associated with each one, skipping empty menus
+            let allMenus = this._appSystem.get_menus();
+            this._menus = [];
+            for (let i = 0; i < allMenus.length; i++) {
+                let menu = allMenus[i];
+                let menuApps = this._appSystem.get_applications_for_menu(menu.id);
+                let hasVisibleApps = menuApps.some(function (app) { return !app.get_is_nodisplay(); });
+                if (!hasVisibleApps) {
+                    continue;
+                }
+                this._menus.push(menu);
+                for (let j = 0; j < menuApps.length; j++) {
+                    let app = menuApps[j];
+                    this._addApp(app);
+                }
+            }
         }
 
         this._appsStale = false;

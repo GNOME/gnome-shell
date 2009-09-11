@@ -70,6 +70,10 @@ const PANE_BORDER_WIDTH = 2;
 const PANE_BACKGROUND_COLOR = new Clutter.Color();
 PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
 
+const APPS = "apps";
+const PREFS = "prefs";
+const DOCS = "docs";
+
 /*
  * Returns the index in an array of a given length that is obtained
  * if the provided index is incremented by an increment and the array
@@ -81,6 +85,17 @@ PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
  */
 function _getIndexWrapped(index, increment, length) {
    return (index + increment + length) % length;
+}
+
+function _createDisplay(displayType) {
+    if (displayType == APPS)
+        return new AppDisplay.AppDisplay();
+    else if (displayType == PREFS)
+        return new AppDisplay.AppDisplay(true);
+    else if (displayType == DOCS)
+        return new DocDisplay.DocDisplay();
+
+    return null;
 }
 
 function Pane() {
@@ -158,12 +173,12 @@ Pane.prototype = {
 }
 Signals.addSignalMethods(Pane.prototype);
 
-function ResultArea(displayClass, enableNavigation) {
-    this._init(displayClass, enableNavigation);
+function ResultArea(displayType, enableNavigation) {
+    this._init(displayType, enableNavigation);
 }
 
 ResultArea.prototype = {
-    _init : function(displayClass, enableNavigation) {
+    _init : function(displayType, enableNavigation) {
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
         this.resultsContainer = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                               spacing: DEFAULT_PADDING
@@ -172,7 +187,7 @@ ResultArea.prototype = {
         this.navContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
         this.resultsContainer.append(this.navContainer, Big.BoxPackFlags.NONE);
 
-        this.display = new displayClass();
+        this.display = _createDisplay(displayType);
 
         this.navArea = this.display.getNavigationArea();
         if (enableNavigation && this.navArea)
@@ -229,10 +244,10 @@ ResultPane.prototype = {
         this._dash = dash;
     },
 
-    // Create an instance of displayClass and pack it into this pane's
-    // content area.  Return the displayClass instance.
-    packResults: function(displayClass, enableNavigation) {
-        let resultArea = new ResultArea(displayClass, enableNavigation);
+    // Create a display of displayType and pack it into this pane's
+    // content area.  Return the display.
+    packResults: function(displayType, enableNavigation) {
+        let resultArea = new ResultArea(displayType, enableNavigation);
 
         createPaneForDetails(this._dash, resultArea.display);
 
@@ -726,7 +741,7 @@ Dash.prototype = {
         this._appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreAppsPane == null) {
                 this._moreAppsPane = new ResultPane(this);
-                this._moreAppsPane.packResults(AppDisplay.AppDisplay, true);
+                this._moreAppsPane.packResults(APPS, true);
                 this._addPane(this._moreAppsPane);
                 link.setPane(this._moreAppsPane);
            }
@@ -754,7 +769,7 @@ Dash.prototype = {
         this._docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreDocsPane == null) {
                 this._moreDocsPane = new ResultPane(this);
-                this._moreDocsPane.packResults(DocDisplay.DocDisplay, true);
+                this._moreDocsPane.packResults(DOCS, true);
                 this._addPane(this._moreDocsPane);
                 link.setPane(this._moreDocsPane);
            }
@@ -773,17 +788,20 @@ Dash.prototype = {
         }));
 
         this._searchSections = [
-            { type: "apps",
+            { type: APPS,
               title: _("APPLICATIONS"),
               header: null,
-              resultArea: null,
-              displayClass: AppDisplay.AppDisplay
+              resultArea: null
             },
-            { type: "docs",
+            { type: PREFS,
+              title: _("PREFERENCES"),
+              header: null,
+              resultArea: null
+            },
+            { type: DOCS,
               title: _("RECENT DOCUMENTS"),
               header: null,
-              resultArea: null,
-              displayClass: DocDisplay.DocDisplay
+              resultArea: null
             }
         ];
 
@@ -795,7 +813,7 @@ Dash.prototype = {
                                                                    this._showSingleSearchSection(section.type);
                                                                }));
             this._searchResultsSection.content.append(section.header.actor, Big.BoxPackFlags.NONE);
-            section.resultArea = new ResultArea(section.displayClass, false);
+            section.resultArea = new ResultArea(section.type, false);
             section.resultArea.controlBox.hide();
             this._searchResultsSection.content.append(section.resultArea.actor, Big.BoxPackFlags.EXPAND);
             createPaneForDetails(this, section.resultArea.display);
