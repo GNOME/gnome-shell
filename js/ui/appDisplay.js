@@ -38,8 +38,6 @@ const WELL_MENU_COLOR = new Clutter.Color();
 WELL_MENU_COLOR.from_pixel(0xffffffff);
 const WELL_MENU_SELECTED_COLOR = new Clutter.Color();
 WELL_MENU_SELECTED_COLOR.from_pixel(0x005b97ff);
-const WELL_MENU_BORDER_COLOR = new Clutter.Color();
-WELL_MENU_BORDER_COLOR.from_pixel(0x787878ff);
 const WELL_MENU_SEPARATOR_COLOR = new Clutter.Color();
 WELL_MENU_SEPARATOR_COLOR.from_pixel(0x787878ff);
 const WELL_MENU_BORDER_WIDTH = 1;
@@ -497,7 +495,7 @@ WellMenu.prototype = {
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         this._windowContainer = new Shell.Menu({ orientation: Big.BoxOrientation.VERTICAL,
-                                                 border_color: WELL_MENU_BORDER_COLOR,
+                                                 border_color: AppIcon.APPICON_BORDER_COLOR,
                                                  border: WELL_MENU_BORDER_WIDTH,
                                                  background_color: WELL_MENU_BACKGROUND_COLOR,
                                                  padding: 4,
@@ -519,7 +517,7 @@ WellMenu.prototype = {
 
         this._arrow = new Shell.DrawingArea();
         this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
-            Shell.draw_box_pointer(texture, WELL_MENU_BORDER_COLOR, WELL_MENU_BACKGROUND_COLOR);
+            Shell.draw_box_pointer(texture, AppIcon.APPICON_BORDER_COLOR, WELL_MENU_BACKGROUND_COLOR);
         }));
         this.actor.add_actor(this._arrow);
 
@@ -757,17 +755,14 @@ function BaseWellItem(appInfo, isFavorite) {
 }
 
 BaseWellItem.prototype = {
+    __proto__: AppIcon.AppIcon.prototype,
+
     _init: function(appInfo, isFavorite) {
-        this.appInfo = appInfo;
+        AppIcon.AppIcon.prototype._init.call(this, appInfo);
+
         this.isFavorite = isFavorite;
-        this.icon = new AppIcon.AppIcon(appInfo);
-        this.windows = this.icon.windows;
-        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
-                                           border: WELL_MENU_BORDER_WIDTH,
-                                           corner_radius: WELL_MENU_CORNER_RADIUS,
-                                           reactive: true });
-        this.icon.actor._delegate = this;
-        this._draggable = DND.makeDraggable(this.icon.actor, true);
+
+        this._draggable = DND.makeDraggable(this.actor, true);
 
         // Do these as anonymous functions to avoid conflict with handlers in subclasses
         this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
@@ -789,7 +784,6 @@ BaseWellItem.prototype = {
                 }
             }
         }));
-        this.actor.append(this.icon.actor, Big.BoxPackFlags.NONE);
     },
 
     shellWorkspaceLaunch : function() {
@@ -804,14 +798,14 @@ BaseWellItem.prototype = {
         this.appInfo.launch();
     },
 
-    getDragActor: function(stageX, stageY) {
-        return this.icon.getDragActor(stageX, stageY);
+    getDragActor: function() {
+        return this.createDragActor();
     },
 
     // Returns the original icon that is being used as a source for the cloned texture
     // that represents the item as it is being dragged.
     getDragActorSource: function() {
-        return this.icon.getDragActorSource();
+        return this.actor;
     }
 }
 
@@ -915,21 +909,11 @@ InactiveWellItem.prototype = {
         BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
 
         this.actor.connect('notify::pressed', Lang.bind(this, this._onPressedChanged));
-        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
         this.actor.connect('activate', Lang.bind(this, this._onActivate));
     },
 
     _onPressedChanged: function() {
-        let pressed = this.actor.pressed;
-        if (pressed) {
-            this.actor.border_color = WELL_MENU_BORDER_COLOR;
-        } else {
-            this.actor.border_color = TRANSPARENT_COLOR;
-        }
-    },
-
-    _onHoverChanged: function() {
-        let hover = this.actor.hover;
+        this.setHighlight(this.actor.pressed);
     },
 
     _onActivate: function() {

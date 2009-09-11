@@ -15,7 +15,17 @@ GLOW_COLOR.from_pixel(0x4f6ba4ff);
 const GLOW_PADDING_HORIZONTAL = 3;
 const GLOW_PADDING_VERTICAL = 3;
 
-const APP_ICON_SIZE = 48;
+const APPICON_ICON_SIZE = 48;
+
+const APPICON_PADDING = 1;
+const APPICON_BORDER_WIDTH = 1;
+const APPICON_CORNER_RADIUS = 4;
+
+const APPICON_BORDER_COLOR = new Clutter.Color();
+APPICON_BORDER_COLOR.from_pixel(0x787878ff);
+
+const TRANSPARENT_COLOR = new Clutter.Color();
+TRANSPARENT_COLOR.from_pixel(0x00000000);
 
 function AppIcon(appInfo) {
     this._init(appInfo);
@@ -30,17 +40,19 @@ AppIcon.prototype = {
         }
         this._resortWindows();
 
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   corner_radius: 2,
-                                   padding: 1,
-                                   reactive: true });
+        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
+                                           border: APPICON_BORDER_WIDTH,
+                                           corner_radius: APPICON_CORNER_RADIUS,
+                                           padding: APPICON_PADDING,
+                                           reactive: true });
+        this.actor._delegate = this;
 
         let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     x_align: Big.BoxAlignment.CENTER,
                                     y_align: Big.BoxAlignment.CENTER,
-                                    width: APP_ICON_SIZE,
-                                    height: APP_ICON_SIZE });
-        this.icon = appInfo.create_icon_texture(APP_ICON_SIZE);
+                                    width: APPICON_ICON_SIZE,
+                                    height: APPICON_ICON_SIZE });
+        this.icon = appInfo.create_icon_texture(APPICON_ICON_SIZE);
         iconBox.append(this.icon, Big.BoxPackFlags.NONE);
 
         this.actor.append(iconBox, Big.BoxPackFlags.EXPAND);
@@ -61,7 +73,7 @@ AppIcon.prototype = {
         let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
         for (let i = 0; i < this.windows.length && i < 3; i++) {
             let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                          glowPath, -1, -1);
+                                                                      glowPath, -1, -1);
             glow.keep_aspect_ratio = false;
             this._glowBox.append(glow, Big.BoxPackFlags.EXPAND);
         }
@@ -123,11 +135,18 @@ AppIcon.prototype = {
         });
     },
 
-    getDragActor: function() {
-        return this.appInfo.create_icon_texture(APP_ICON_SIZE);
+    // AppIcon itself is not a draggable, but if you want to make
+    // a subclass of it draggable, you can use this method to create
+    // a drag actor
+    createDragActor: function() {
+        return this.appInfo.create_icon_texture(APPICON_ICON_SIZE);
     },
 
-    getDragActorSource: function() {
-        return this.icon;
+    setHighlight: function(highlight) {
+        if (highlight) {
+            this.actor.border_color = APPICON_BORDER_COLOR;
+        } else {
+            this.actor.border_color = TRANSPARENT_COLOR;
+        }
     }
 };
