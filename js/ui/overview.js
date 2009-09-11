@@ -387,6 +387,18 @@ Overview.prototype = {
     },
 
     /**
+     * getWorkspacesForWindow:
+     * @metaWindow: A #MetaWindow
+     *
+     * Returns the Workspaces object associated with the given window.
+     * This method is not be accessible if the overview is not open
+     * and will return %null.
+     */
+    getWorkspacesForWindow: function(metaWindow) {
+        return this._workspaces;
+    },
+
+    /**
      * activateWindow:
      * @metaWindow: A #MetaWindow
      * @time: Event timestamp integer
@@ -399,31 +411,6 @@ Overview.prototype = {
     activateWindow: function (metaWindow, time) {
          this._workspaces.activateWindowFromOverview(metaWindow, time);
          this.hide();
-    },
-
-    /**
-     * setHighlightWindow:
-     * @metaWindow: A #MetaWindow
-     *
-     * Draw the user's attention to the given window @metaWindow.
-     */
-    setHighlightWindow: function (metaWindow) {
-        if (this._workspaces)
-            this._workspaces.setHighlightWindow(metaWindow);
-    },
-
-
-    /**
-     * setApplicationWindowSelection:
-     * @appid: Application identifier string
-     *
-     * Enter a mode which shows only the windows owned by the
-     * given application, and allow highlighting of a specific
-     * window with setHighlightWindow().
-     */
-    setApplicationWindowSelection: function (appid) {
-        if (this._workspaces)
-            this._workspaces.setApplicationWindowSelection(appid);
     },
 
     //// Private methods ////

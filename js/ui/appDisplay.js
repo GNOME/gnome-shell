@@ -848,8 +848,8 @@ RunningWellItem.prototype = {
 
         if (this._menu == null) {
             this._menu = new WellMenu(this);
-            this._menu.connect('highlight-window', Lang.bind(this, function (menu, window) {
-                Main.overview.setHighlightWindow(window);
+            this._menu.connect('highlight-window', Lang.bind(this, function (menu, metaWindow) {
+                Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
             }));
             this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
                 let id;
@@ -858,7 +858,8 @@ RunningWellItem.prototype = {
                     id = this.appInfo.get_id();
                 else
                     id = null;
-                Main.overview.setApplicationWindowSelection(id);
+
+                Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(id);
             }));
         }
 

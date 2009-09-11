@@ -544,6 +544,13 @@ Workspace.prototype = {
         return -1;
     },
 
+    /**
+     * lookupCloneForMetaWindow:
+     * @metaWindow: A #MetaWindow
+     *
+     * Given a #MetaWindow instance, find the WindowClone object
+     * which represents it in the workspaces display.
+     */
     lookupCloneForMetaWindow: function (metaWindow) {
         let index = this._lookupIndex (metaWindow);
         return index < 0 ? null : this._windows[index];
@@ -573,6 +580,12 @@ Workspace.prototype = {
         }
     },
 
+    /**
+     * setHighlightWindow:
+     * @metaWindow: A #MetaWindow
+     *
+     * Draw the user's attention to the given window @metaWindow.
+     */
     setHighlightWindow: function (metaWindow) {
         for (let i = 0; i < this._windows.length; i++) {
             this._windows[i].actor.lower(this._lightbox);
@@ -1157,7 +1170,14 @@ Workspaces.prototype = {
         }
     },
 
-    // See comments in overview.js
+    /**
+     * setApplicationWindowSelection:
+     * @appid: Application identifier string
+     *
+     * Enter a mode which shows only the windows owned by the
+     * given application, and allow highlighting of a specific
+     * window with setHighlightWindow().
+     */
     setApplicationWindowSelection: function (appId) {
         let appSys = Shell.AppMonitor.get_default();
 
