@@ -502,9 +502,9 @@ WellMenu.prototype = {
                                                  padding: 4,
                                                  corner_radius: WELL_MENU_CORNER_RADIUS,
                                                  width: Main.overview._dash.actor.width * 0.75 });
-        this._windowContainer.connect('popdown', Lang.bind(this, this._onPopdown));
         this._windowContainer.connect('unselected', Lang.bind(this, this._onWindowUnselected));
         this._windowContainer.connect('selected', Lang.bind(this, this._onWindowSelected));
+        this._windowContainer.connect('cancelled', Lang.bind(this, this._onWindowSelectionCancelled));
         this._windowContainer.connect('activate', Lang.bind(this, this._onWindowActivate));
         this.actor.add_actor(this._windowContainer);
 
@@ -655,9 +655,11 @@ WellMenu.prototype = {
     _onWindowActivate: function (actor, child) {
         let window = child._window;
         Main.overview.activateWindow(window, Clutter.get_current_event_time());
+        this.emit('popup', false);
+        this.actor.hide();
     },
 
-    _onPopdown: function () {
+    _onWindowSelectionCancelled: function () {
         this.emit('highlight-window', null);
         this.emit('popup', false);
         this.actor.hide();

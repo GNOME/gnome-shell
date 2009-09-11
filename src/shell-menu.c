@@ -13,6 +13,7 @@
 G_DEFINE_TYPE(ShellMenu, shell_menu, BIG_TYPE_BOX);
 
 struct _ShellMenuPrivate {
+  gboolean popped_up;
   gboolean have_grab;
 
   ClutterActor *selected;
@@ -24,7 +25,7 @@ enum
   UNSELECTED,
   SELECTED,
   ACTIVATE,
-  POPDOWN,
+  CANCELLED,
   LAST_SIGNAL
 };
 
@@ -39,6 +40,15 @@ shell_menu_contains (ShellMenu     *box,
       actor = clutter_actor_get_parent (actor);
     }
   return actor != NULL;
+}
+
+static void
+shell_menu_popdown_nosignal (ShellMenu *box)
+{
+  box->priv->popped_up = FALSE;
+  if (box->priv->have_grab)
+    clutter_ungrab_pointer ();
+  clutter_actor_hide (CLUTTER_ACTOR (box));
 }
 
 static void
@@ -107,13 +117,19 @@ shell_menu_button_release_event (ClutterActor       *actor,
   if (event->button != 1)
     return FALSE;
 
-  shell_menu_popdown (box);
+  shell_menu_popdown_nosignal (box);
 
-  if (!shell_menu_contains (box, event->source))
-    return FALSE;
+  if (!shell_menu_contains (CLUTTER_CONTAINER (box), event->source))
+    {
+      g_signal_emit (G_OBJECT (box), shell_menu_signals[CANCELLED], 0);
+      return FALSE;
+    }
 
   if (box->priv->selected == NULL)
-    return FALSE;
+    {
+      g_signal_emit (G_OBJECT (box), shell_menu_signals[CANCELLED], 0);
+      return FALSE;
+    }
 
   g_signal_emit (G_OBJECT (box), shell_menu_signals[ACTIVATE], 0, box->priv->selected);
 
@@ -125,17 +141,26 @@ shell_menu_popup (ShellMenu         *box,
                   guint              button,
                   guint32            activate_time)
 {
+  if (box->priv->popped_up)
+    return;
+  box->priv->popped_up = TRUE;
   box->priv->have_grab = TRUE;
   clutter_grab_pointer (CLUTTER_ACTOR (box));
 }
 
+/**
+ * shell_menu_popdown:
+ * @box:
+ *
+ * If the menu is currently active, hide it, emitting the 'cancelled' signal.
+ */
 void
 shell_menu_popdown (ShellMenu *box)
 {
-  if (box->priv->have_grab)
-    clutter_ungrab_pointer ();
-  clutter_actor_hide (CLUTTER_ACTOR (box));
-  g_signal_emit (G_OBJECT (box), shell_menu_signals[POPDOWN], 0);
+  if (!box->priv->popped_up)
+    return;
+  shell_menu_popdown_nosignal (box);
+  g_signal_emit (G_OBJECT (box), shell_menu_signals[CANCELLED], 0);
 }
 
 /**
@@ -218,13 +243,13 @@ shell_menu_class_init (ShellMenuClass *klass)
                   G_TYPE_NONE, 1, CLUTTER_TYPE_ACTOR);
 
   /**
-   * ShellMenu::popdown
+   * ShellMenu::cancelled
    * @box: The #ShellMenu
    *
-   * This signal is emitted when the menu is removed from the display.
+   * This signal is emitted when the menu is closed without an option selected.
    */
-  shell_menu_signals[POPDOWN] =
-    g_signal_new ("popdown",
+  shell_menu_signals[CANCELLED] =
+    g_signal_new ("cancelled",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
