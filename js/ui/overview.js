@@ -372,17 +372,6 @@ Overview.prototype = {
     },
 
     /**
-     * lookupCloneForWindow:
-     * @metaWindow: A #MetaWindow
-     *
-     * Given a #MetaWindow instance, find the WindowClone object
-     * which represents it in the workspaces display.
-     */
-    lookupCloneForWindow: function (metaWindow) {
-        return this._workspaces.lookupCloneForMetaWindow(metaWindow);
-    },
-
-    /**
      * activateWindow:
      * @metaWindow: A #MetaWindow
      * @time: Event timestamp integer

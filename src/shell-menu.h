@@ -32,8 +32,6 @@ GType shell_menu_get_type (void) G_GNUC_CONST;
 
 void shell_menu_popup (ShellMenu *behavior, guint button, guint32 activate_time);
 
-void shell_menu_set_persistent_source (ShellMenu *behavior, ClutterActor *source);
-
 void shell_menu_append_separator (ShellMenu *behavior, ClutterActor *separator, BigBoxPackFlags flags);
 
 void shell_menu_popdown (ShellMenu *behavior);

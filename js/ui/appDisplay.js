@@ -489,12 +489,6 @@ WellMenu.prototype = {
     _init: function(source) {
         this._source = source;
 
-        // Holds the WindowClone objects for our windows, used in the button release
-        // callback to find the window actor we released over
-        this._cachedWindowClones = [];
-
-        // Whether or not we successfully picked a window
-        this.didActivateWindow = false;
 
         this.actor = new Shell.GenericContainer({ reactive: true });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -513,14 +507,6 @@ WellMenu.prototype = {
         this._windowContainer.connect('selected', Lang.bind(this, this._onWindowSelected));
         this._windowContainer.connect('activate', Lang.bind(this, this._onWindowActivate));
         this.actor.add_actor(this._windowContainer);
-
-        // Stay popped up on release over application icon
-        this._windowContainer.set_persistent_source(this._source.actor);
-
-        // Intercept events while the menu has the pointer grab to do window-related effects
-        this._windowContainer.connect('enter-event', Lang.bind(this, this._onMenuEnter));
-        this._windowContainer.connect('leave-event', Lang.bind(this, this._onMenuLeave));
-        this._windowContainer.connect('button-release-event', Lang.bind(this, this._onMenuRelease));
 
         this._arrow = new Shell.DrawingArea();
         this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
@@ -573,8 +559,6 @@ WellMenu.prototype = {
     _redisplay: function() {
         this._windowContainer.remove_all();
 
-        this.didActivateWindow = false;
-
         let windows = this._source.windows;
 
         this._windowContainer.show();
@@ -611,10 +595,7 @@ WellMenu.prototype = {
 
     _appendWindows: function (windows, iconsDiffer) {
         for (let i = 0; i < windows.length; i++) {
-            let metaWindow = windows[i];
-
-            this._cachedWindowClones.push(Main.overview.lookupCloneForWindow(metaWindow));
-
+            let window = windows[i];
             /* Use padding here rather than spacing in the box above so that
              * we have a larger reactive area.
              */
@@ -623,16 +604,16 @@ WellMenu.prototype = {
                                     padding_bottom: 4,
                                     spacing: 4,
                                     reactive: true });
-            box._window = metaWindow;
+            box._window = window;
             let vCenter;
             if (iconsDiffer) {
                 vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-                let icon = Shell.TextureCache.get_default().bind_pixbuf_property(metaWindow, "mini-icon");
+                let icon = Shell.TextureCache.get_default().bind_pixbuf_property(window, "mini-icon");
                 vCenter.append(icon, Big.BoxPackFlags.NONE);
                 box.append(vCenter, Big.BoxPackFlags.NONE);
             }
             vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-            let label = new Clutter.Text({ text: metaWindow.title,
+            let label = new Clutter.Text({ text: window.title,
                                            font_name: WELL_MENU_FONT,
                                            ellipsize: Pango.EllipsizeMode.END,
                                            color: WELL_MENU_COLOR });
@@ -658,68 +639,22 @@ WellMenu.prototype = {
         this.actor.show();
     },
 
-    _findWindowCloneForActor: function (actor) {
-        for (let i = 0; i < this._cachedWindowClones.length; i++) {
-            let clone = this._cachedWindowClones[i];
-            if (clone.actor == actor) {
-                return clone;
-            }
-        }
-        return null;
-    },
-
-    // This function is called while the menu has a pointer grab; what we want
-    // to do is see if the mouse was released over a window clone actor
-    _onMenuRelease: function (actor, event) {
-        let clone = this._findWindowCloneForActor(event.get_source());
-        if (clone) {
-            this.didActivateWindow = true;
-            Main.overview.activateWindow(clone.metaWindow, event.get_time());
-        }
-    },
-
-    _setHighlightWindow: function (metaWindow) {
-        let children = this._windowContainer.get_children();
-        for (let i = 0; i < children.length; i++) {
-            let child = children[i];
-            let menuMetaWindow = child._window;
-            if (metaWindow != null && menuMetaWindow == metaWindow) {
-                child.background_color = WELL_MENU_SELECTED_COLOR;
-            } else {
-                child.background_color = TRANSPARENT_COLOR;
-            }
-        }
-        this.emit('highlight-window', metaWindow);
-    },
-
-    // Called while menu has a pointer grab
-    _onMenuEnter: function (actor, event) {
-        let clone = this._findWindowCloneForActor(event.get_source());
-        if (clone) {
-            this._setHighlightWindow(clone.metaWindow);
-        }
-    },
-
-    // Called while menu has a pointer grab
-    _onMenuLeave: function (actor, event) {
-        let clone = this._findWindowCloneForActor(event.get_source());
-        if (clone) {
-            this._setHighlightWindow(null);
-        }
-    },
-
     _onWindowUnselected: function (actor, child) {
-        this._setHighlightWindow(null);
+        child.background_color = TRANSPARENT_COLOR;
+
+        this.emit('highlight-window', null);
     },
 
     _onWindowSelected: function (actor, child) {
-        this._setHighlightWindow(child._window);
+        child.background_color = WELL_MENU_SELECTED_COLOR;
+
+        let window = child._window;
+        this.emit('highlight-window', window);
     },
 
     _onWindowActivate: function (actor, child) {
-        let metaWindow = child._window;
-        this.didActivateWindow = true;
-        Main.overview.activateWindow(metaWindow, Clutter.get_current_event_time());
+        let window = child._window;
+        Main.overview.activateWindow(window, Clutter.get_current_event_time());
     },
 
     _onPopdown: function () {
@@ -858,22 +793,15 @@ RunningWellItem.prototype = {
 
         if (this._menu == null) {
             this._menu = new WellMenu(this);
-            this._menu.connect('highlight-window', Lang.bind(this, function (menu, metaWindow) {
-                Main.overview.setHighlightWindow(metaWindow);
+            this._menu.connect('highlight-window', Lang.bind(this, function (menu, window) {
+                Main.overview.setHighlightWindow(window);
             }));
             this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
                 let id;
-
-                // If we successfully picked a window, don't reset the workspace
-                // state, since that causes visual noise.  The workspace gets
-                // recreated each time we enter the overview
-                if (!isPoppedUp && menu.didActivateWindow)
-                    return;
                 if (isPoppedUp)
                     id = this.appInfo.get_id();
                 else
                     id = null;
-
                 Main.overview.setApplicationWindowSelection(id);
             }));
         }
