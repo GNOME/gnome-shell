@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
 
 const AltTab = imports.ui.altTab;
 const Main = imports.ui.main;
@@ -19,8 +18,7 @@ WindowManager.prototype = {
     _init : function() {
         let me = this;
 
-        this._global = Shell.Global.get();
-        this._shellwm = this._global.window_manager;
+        this._shellwm = global.window_manager;
         this._minimizing = [];
         this._maximizing = [];
         this._unmaximizing = [];
@@ -255,20 +253,20 @@ WindowManager.prototype = {
         if (direction == Meta.MotionDirection.UP ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.UP_RIGHT)
-                yDest = this._global.screen_height;
+                yDest = global.screen_height;
         else if (direction == Meta.MotionDirection.DOWN ||
             direction == Meta.MotionDirection.DOWN_LEFT ||
             direction == Meta.MotionDirection.DOWN_RIGHT)
-                yDest = -this._global.screen_height;
+                yDest = -global.screen_height;
 
         if (direction == Meta.MotionDirection.LEFT ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.DOWN_LEFT)
-                xDest = this._global.screen_width;
+                xDest = global.screen_width;
         else if (direction == Meta.MotionDirection.RIGHT ||
                  direction == Meta.MotionDirection.UP_RIGHT ||
                  direction == Meta.MotionDirection.DOWN_RIGHT)
-                xDest = -this._global.screen_width;
+                xDest = -global.screen_width;
 
         let switchData = {};
         this._switchData = switchData;
@@ -276,7 +274,7 @@ WindowManager.prototype = {
         switchData.outGroup = new Clutter.Group();
         switchData.windows = [];
 
-        let wgroup = this._global.window_group;
+        let wgroup = global.window_group;
         wgroup.add_actor(switchData.inGroup);
         wgroup.add_actor(switchData.outGroup);
 

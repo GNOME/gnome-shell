@@ -21,13 +21,6 @@ const SIDEBAR_PADDING = 4;
 const SIDEBAR_COLLAPSED_WIDTH = Widget.COLLAPSED_WIDTH + 3 * WidgetBox.WIDGETBOX_PADDING + SIDEBAR_PADDING;
 const SIDEBAR_EXPANDED_WIDTH = Widget.EXPANDED_WIDTH + 3 * WidgetBox.WIDGETBOX_PADDING + SIDEBAR_PADDING;
 
-// The maximum height of the sidebar would be extending from just
-// below the panel to just above the taskbar. Since the taskbar is
-// just a temporary hack and it would be too hard to do this the right
-// way, we just hardcode its size.
-const HARDCODED_TASKBAR_HEIGHT = 24;
-const MAXIMUM_SIDEBAR_HEIGHT = Shell.Global.get().screen_height - Panel.PANEL_HEIGHT - HARDCODED_TASKBAR_HEIGHT;
-
 function Sidebar() {
     this._init();
 }

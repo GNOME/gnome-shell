@@ -66,7 +66,7 @@ function AppPanelMenu() {
 
 AppPanelMenu.prototype = {
     _init: function() {
-        this._metaDisplay = Shell.Global.get().screen.get_display();
+        this._metaDisplay = global.screen.get_display();
 
         this._focusedApp = null;
         this._activeSequence = null;

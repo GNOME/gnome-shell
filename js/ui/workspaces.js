@@ -1102,7 +1102,7 @@ Workspaces.prototype = {
             }
         }
         activeWorkspace.actor.raise_top();
-        this._positionWorkspaces(global);
+        this._positionWorkspaces();
 
         let lastWorkspace = this._workspaces[this._workspaces.length - 1];
         lastWorkspace.updateRemovable(true);
@@ -1196,7 +1196,7 @@ Workspaces.prototype = {
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
-        this._positionWorkspaces(global);
+        this._positionWorkspaces();
         activeWorkspace.actor.raise_top();
 
         for (let w = 0; w < this._workspaces.length; w++)
@@ -1237,7 +1237,7 @@ Workspaces.prototype = {
     // first row.)
     //
     // FIXME: need to make the metacity internal layout agree with this!
-    _positionWorkspaces : function(global) {
+    _positionWorkspaces : function() {
         let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
         let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
 
@@ -1307,7 +1307,7 @@ Workspaces.prototype = {
         newLastWorkspace.updateRemovable();
 
         // Figure out the new layout
-        this._positionWorkspaces(global);
+        this._positionWorkspaces();
         let newScale = this._workspaces[0].scale;
         let newGridWidth = Math.ceil(Math.sqrt(newNumWorkspaces));
         let newGridHeight = Math.ceil(newNumWorkspaces / newGridWidth);

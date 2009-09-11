@@ -102,7 +102,7 @@ DocDisplayItem.prototype = {
     _resetTimeDisplay: function(currentSecs) {
         let lastSecs = this._docInfo.timestamp;
         let timeDelta = currentSecs - lastSecs;
-        let [text, nextUpdate] = Shell.Global.get().format_time_relative_pretty(timeDelta);
+        let [text, nextUpdate] = global.format_time_relative_pretty(timeDelta);
         this._timeoutTime = currentSecs + nextUpdate;
         this._setDescriptionText(text);
     }

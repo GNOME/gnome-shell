@@ -35,7 +35,6 @@ var commandHeader = "const Clutter = imports.gi.Clutter; " +
                     "const Tweener = imports.ui.tweener; " +
                     /* Utility functions...we should probably be able to use these
                      * in the shell core code too. */
-                    "const global = Shell.Global.get(); " +
                     "const stage = global.stage; " +
                     "const color = function(pixel) { let c= new Clutter.Color(); c.from_pixel(pixel); return c; }; " +
                     /* Special lookingGlass functions */
@@ -519,8 +518,7 @@ LookingGlass.prototype = {
     },
 
     _resizeTo: function(actor) {
-        let stage = Shell.Global.get().stage;
-        let stageWidth = stage.width;
+        let stage = global.stage;
         let myWidth = stage.width * 0.7;
         let myHeight = stage.height * 0.7;
         let [srcX, srcY] = actor.get_transformed_position();

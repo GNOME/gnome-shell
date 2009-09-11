@@ -507,8 +507,6 @@ WellMenu.prototype = {
         }));
         this.actor.add_actor(this._arrow);
 
-        let stage = Shell.Global.get().stage;
-
         // Chain our visibility and lifecycle to that of the source
         source.actor.connect('notify::mapped', Lang.bind(this, function () {
             if (!source.actor.mapped)
@@ -516,7 +514,7 @@ WellMenu.prototype = {
         }));
         source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
 
-        stage.add_actor(this.actor);
+        global.stage.add_actor(this.actor);
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -568,7 +566,7 @@ WellMenu.prototype = {
             }
         }
 
-        let activeWorkspace = Shell.Global.get().screen.get_active_workspace();
+        let activeWorkspace = global.screen.get_active_workspace();
 
         let currentWorkspaceWindows = windows.filter(function (w) {
             return w.get_workspace() == activeWorkspace;
