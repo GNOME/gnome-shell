@@ -70,6 +70,19 @@ const PANE_BORDER_WIDTH = 2;
 const PANE_BACKGROUND_COLOR = new Clutter.Color();
 PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
 
+/*
+ * Returns the index in an array of a given length that is obtained
+ * if the provided index is incremented by an increment and the array
+ * is wrapped in if necessary.
+ * 
+ * index: prior index, expects 0 <= index < length
+ * increment: the change in index, expects abs(increment) <= length
+ * length: the length of the array
+ */
+function _getIndexWrapped(index, increment, length) {
+   return (index + increment + length) % length;
+}
+
 function Pane() {
     this._init();
 }
@@ -607,36 +620,36 @@ Dash.prototype = {
                 this._searchTimeoutId = 0;
                 let text = this._searchEntry.getText();
                 text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
-                this._appSearchResultArea.display.setSearch(text);
-                this._docSearchResultArea.display.setSearch(text);
- 
-                let appsCount = this._appSearchResultArea.display.getMatchedItemsCount() + "";
-                let docsCount = this._docSearchResultArea.display.getMatchedItemsCount() + "";
 
-                this._appSearchHeader.countText.text = appsCount;
-                this._docSearchHeader.countText.text = docsCount;
+                let selectionSet = false;
 
-                if (this._appSearchResultsOnlyShown)
-                    this._searchResultsSection.header.setCountText(appsCount);
-                else if (this._docSearchResultsOnlyShown)
-                    this._searchResultsSection.header.setCountText(docsCount);
-                               
-                if (this._appSearchResultArea.display.hasItems() && !this._docSearchResultsOnlyShown) {
-                    this._appSearchResultArea.display.selectFirstItem();
-                    this._docSearchResultArea.display.unsetSelected();
-                } else if (this._docSearchResultArea.display.hasItems() && !this._appSearchResultsOnlyShown) {
-                    this._docSearchResultArea.display.selectFirstItem();
-                    this._appSearchResultArea.display.unsetSelected();
+                for (var i = 0; i < this._searchSections.length; i++) {
+                    let section = this._searchSections[i];
+                    section.resultArea.display.setSearch(text);
+                    let itemCount = section.resultArea.display.getMatchedItemsCount() + "";
+                    section.header.countText.text = itemCount;
+                    if (this._searchResultsSingleShownSection == section.type)
+                        this._searchResultsSection.header.setCountText(itemCount);
+
+                    // Refresh the selection when a new search is applied.
+                    section.resultArea.display.unsetSelected();
+                    if (!selectionSet && section.resultArea.display.hasItems() &&
+                        (this._searchResultsSingleShownSection == null || this._searchResultsSingleShownSection == section.type)) {
+                        section.resultArea.display.selectFirstItem();
+                        selectionSet = true;
+                    }
                 }
 
                 return false;
             }));
         }));
         this._searchEntry.entry.connect('activate', Lang.bind(this, function (se) {
-            // only one of the displays will have an item selected, so it's ok to
-            // call activateSelected() on all of them
-            this._appSearchResultArea.display.activateSelected();
-            this._docSearchResultArea.display.activateSelected();
+            // Only one of the displays will have an item selected, so it's ok to
+            // call activateSelected() on all of them.
+            for (var i = 0; i < this._searchSections.length; i++) {
+                let section = this._searchSections[i];
+                section.resultArea.display.activateSelected();
+            }
             return true;
         }));
         this._searchEntry.entry.connect('key-press-event', Lang.bind(this, function (se, e) {
@@ -645,7 +658,7 @@ Dash.prototype = {
             if (symbol == Clutter.Escape) {
                 // Escape will keep clearing things back to the desktop.
                 // If we are showing a particular section of search, go back to all sections.
-                if (this._appSearchResultsOnlyShown || this._docSearchResultsOnlyShown)
+                if (this._searchResultsSingleShownSection != null)
                     this._showAllSearchSections();
                 // If we have an active search, we remove it.
                 else if (this._searchActive)
@@ -664,30 +677,38 @@ Dash.prototype = {
                 // too, but there doesn't seem to be any flickering if we first select
                 // something in one display, but then unset the selection, and move
                 // it to the other display, so it's ok to do that.
-                if (this._appSearchResultArea.display.hasSelected()) {
-                    if (!this._appSearchResultArea.display.selectUp() && this._docSearchResultArea.display.hasItems() && !this._appSearchResultsOnlyShown) {
-                        this._docSearchResultArea.display.selectLastItem();
-                        this._appSearchResultArea.display.unsetSelected();
-                    }
-                } else if (this._docSearchResultArea.display.hasSelected()) {
-                    if (!this._docSearchResultArea.display.selectUp() && this._appSearchResultArea.display.hasItems() && !this._docSearchResultsOnlyShown) {
-                        this._appSearchResultArea.display.selectLastItem();
-                        this._docSearchResultArea.display.unsetSelected();
+                for (var i = 0; i < this._searchSections.length; i++) {
+                    let section = this._searchSections[i];
+                    if (section.resultArea.display.hasSelected() && !section.resultArea.display.selectUp()) {
+                        if (this._searchResultsSingleShownSection != section.type) {
+                            // We need to move the selection to the next section above this section that has items,
+                            // wrapping around at the bottom, if necessary.
+                            let newSectionIndex = this._findAnotherSectionWithItems(i, -1);
+                            if (newSectionIndex >= 0) {
+                                this._searchSections[newSectionIndex].resultArea.display.selectLastItem();
+                                section.resultArea.display.unsetSelected();
+                            }
+                        }
+                        break;
                     }
                 }
                 return true;
             } else if (symbol == Clutter.Down) {
                 if (!this._searchActive)
                     return true;
-                if (this._appSearchResultArea.display.hasSelected()) {
-                    if (!this._appSearchResultArea.display.selectDown() && this._docSearchResultArea.display.hasItems() && !this._appSearchResultsOnlyShown) {
-                        this._docSearchResultArea.display.selectFirstItem();
-                        this._appSearchResultArea.display.unsetSelected();
-                    }
-                } else if (this._docSearchResultArea.display.hasSelected()) {
-                    if (!this._docSearchResultArea.display.selectDown() && this._appSearchResultArea.display.hasItems() && !this._docSearchResultsOnlyShown) {
-                        this._appSearchResultArea.display.selectFirstItem();
-                        this._docSearchResultArea.display.unsetSelected();
+                for (var i = 0; i < this._searchSections.length; i++) {
+                    let section = this._searchSections[i];
+                    if (section.resultArea.display.hasSelected() && !section.resultArea.display.selectDown()) {
+                        if (this._searchResultsSingleShownSection != section.type) {
+                            // We need to move the selection to the next section below this section that has items,
+                            // wrapping around at the top, if necessary.
+                            let newSectionIndex = this._findAnotherSectionWithItems(i, 1);
+                            if (newSectionIndex >= 0) {
+                                this._searchSections[newSectionIndex].resultArea.display.selectFirstItem();
+                                section.resultArea.display.unsetSelected();
+                            }
+                        }
+                        break;
                     }
                 }
                 return true;
@@ -745,36 +766,40 @@ Dash.prototype = {
 
         this._searchResultsSection = new Section(_("SEARCH RESULTS"), true);
 
+        this._searchResultsSingleShownSection = null;
+
         this._searchResultsSection.header.connect('back-link-activated', Lang.bind(this, function () {
-            if (this._appSearchResultsOnlyShown)
-                this._toggleOnlyAppSearchShown();
-            else if (this._docSearchResultsOnlyShown)
-                this._toggleOnlyDocSearchShown();                
+            this._showAllSearchSections();
         }));
 
-        this._appSearchResultsOnlyShown = false;
-        this._appSearchHeader = new SearchSectionHeader(_("APPLICATIONS"),
-                                                        Lang.bind(this,
-                                                                  function () {
-                                                                      this._toggleOnlyAppSearchShown();
-                                                                  }));
-        this._searchResultsSection.content.append(this._appSearchHeader.actor, Big.BoxPackFlags.NONE);
-        this._appSearchResultArea = new ResultArea(AppDisplay.AppDisplay, false);
-        this._appSearchResultArea.controlBox.hide();
-        this._searchResultsSection.content.append(this._appSearchResultArea.actor, Big.BoxPackFlags.EXPAND);
-        createPaneForDetails(this, this._appSearchResultArea.display);
+        this._searchSections = [
+            { type: "apps",
+              title: _("APPLICATIONS"),
+              header: null,
+              resultArea: null,
+              displayClass: AppDisplay.AppDisplay
+            },
+            { type: "docs",
+              title: _("RECENT DOCUMENTS"),
+              header: null,
+              resultArea: null,
+              displayClass: DocDisplay.DocDisplay
+            }
+        ];
 
-        this._docSearchResultsOnlyShown = false;
-        this._docSearchHeader = new SearchSectionHeader(_("RECENT DOCUMENTS"),
-                                                        Lang.bind(this,
-                                                                  function () {
-                                                                      this._toggleOnlyDocSearchShown();
-                                                                  }));
-        this._searchResultsSection.content.append(this._docSearchHeader.actor, Big.BoxPackFlags.NONE);
-        this._docSearchResultArea = new ResultArea(DocDisplay.DocDisplay, false);
-        this._docSearchResultArea.controlBox.hide();
-        this._searchResultsSection.content.append(this._docSearchResultArea.actor, Big.BoxPackFlags.EXPAND);
-        createPaneForDetails(this, this._docSearchResultArea.display);
+        for (var i = 0; i < this._searchSections.length; i++) {
+            let section = this._searchSections[i];
+            section.header = new SearchSectionHeader(section.title,
+                                                     Lang.bind(this,
+                                                               function () {
+                                                                   this._showSingleSearchSection(section.type);
+                                                               }));
+            this._searchResultsSection.content.append(section.header.actor, Big.BoxPackFlags.NONE);
+            section.resultArea = new ResultArea(section.displayClass, false);
+            section.resultArea.controlBox.hide();
+            this._searchResultsSection.content.append(section.resultArea.actor, Big.BoxPackFlags.EXPAND);
+            createPaneForDetails(this, section.resultArea.display);
+        }
 
         this.sectionArea.append(this._searchResultsSection.actor, Big.BoxPackFlags.EXPAND);
         this._searchResultsSection.actor.hide();
@@ -825,77 +850,63 @@ Dash.prototype = {
         }
     },
 
-    _toggleOnlyAppSearchShown: function() {
-        if (this._appSearchResultsOnlyShown) {
-            this._setDocSearchShown(true);
-        } else {
-            this._setDocSearchShown(false);
+    _showSingleSearchSection: function(type) {
+        // We currently don't allow going from showing one section to showing another section.
+        if (this._searchResultsSingleShownSection != null) {
+            throw new Error("We were already showing a single search section: '" + this._searchResultsSingleShownSection
+                            + "' when _showSingleSearchSection() was called for '" + type + "'");
         }
-    },
-
-    _toggleOnlyDocSearchShown: function() {
-        if (this._docSearchResultsOnlyShown) {
-            this._setAppSearchShown(true);
-        } else {
-            this._setAppSearchShown(false);
+        for (var i = 0; i < this._searchSections.length; i++) {
+            let section = this._searchSections[i];
+            if (section.type == type) {
+                // This will be the only section shown.
+                section.resultArea.display.selectFirstItem();
+                section.resultArea.controlBox.show();
+                let itemCount = section.resultArea.display.getMatchedItemsCount() + "";
+                section.header.actor.hide();
+                this._searchResultsSection.header.setTitle(section.title);
+                this._searchResultsSection.header.setBackLinkVisible(true);
+                this._searchResultsSection.header.setCountText(itemCount);
+            } else {
+                // We need to hide this section.
+                section.header.actor.hide();
+                section.resultArea.actor.hide();
+                section.resultArea.display.unsetSelected();
+            }
         }
-    },
-
-    _setAppSearchShown: function(show) {
-        if (show) {
-            this._appSearchHeader.actor.show();
-            this._appSearchResultArea.actor.show();
-            this._docSearchResultArea.display.displayPage(0);
-            this._docSearchResultArea.controlBox.hide();
-            this._searchResultsSection.header.setTitle(_("SEARCH RESULTS"));
-            this._searchResultsSection.header.setBackLinkVisible(false);
-            this._searchResultsSection.header.setCountText("");
-            this._docSearchHeader.actor.show();
-            this._docSearchResultsOnlyShown = false;
-        } else {
-            this._appSearchHeader.actor.hide();
-            this._appSearchResultArea.actor.hide();
-            this._appSearchResultArea.display.unsetSelected();
-            this._docSearchResultArea.display.selectFirstItem();
-            this._docSearchResultArea.controlBox.show();
-            this._searchResultsSection.header.setTitle(_("RECENT DOCUMENTS"));
-            this._searchResultsSection.header.setBackLinkVisible(true);
-            let docsCount = this._docSearchResultArea.display.getMatchedItemsCount() + "";
-            this._searchResultsSection.header.setCountText(docsCount);
-            this._docSearchHeader.actor.hide();
-            this._docSearchResultsOnlyShown = true;
-        }
-    },
-
-    _setDocSearchShown: function(show) {
-        if (show) {
-            this._docSearchHeader.actor.show();
-            this._docSearchResultArea.actor.show();
-            this._appSearchResultArea.display.displayPage(0);
-            this._appSearchResultArea.controlBox.hide();
-            this._searchResultsSection.header.setTitle(_("SEARCH RESULTS"));
-            this._searchResultsSection.header.setBackLinkVisible(false);
-            this._searchResultsSection.header.setCountText("");
-            this._appSearchHeader.actor.show();
-            this._appSearchResultsOnlyShown = false;
-        } else {
-            this._docSearchHeader.actor.hide();
-            this._docSearchResultArea.actor.hide();
-            this._docSearchResultArea.display.unsetSelected();
-            this._appSearchResultArea.display.selectFirstItem();
-            this._appSearchResultArea.controlBox.show();
-            this._searchResultsSection.header.setTitle(_("APPLICATIONS"));
-            this._searchResultsSection.header.setBackLinkVisible(true);
-            let appsCount = this._appSearchResultArea.display.getMatchedItemsCount() + "";
-            this._searchResultsSection.header.setCountText(appsCount);
-            this._appSearchHeader.actor.hide();
-            this._appSearchResultsOnlyShown = true;
-        }
+        this._searchResultsSingleShownSection = type;
     },
 
     _showAllSearchSections: function() {
-        this._setAppSearchShown(true);
-        this._setDocSearchShown(true);
+        if (this._searchResultsSingleShownSection != null) {
+            for (var i = 0; i < this._searchSections.length; i++) {
+                let section = this._searchSections[i];
+                if (section.type == this._searchResultsSingleShownSection) {
+                    // This will no longer be the only section shown.
+                    section.resultArea.display.displayPage(0);
+                    section.resultArea.controlBox.hide();
+                    section.header.actor.show();
+                    this._searchResultsSection.header.setTitle(_("SEARCH RESULTS"));
+                    this._searchResultsSection.header.setBackLinkVisible(false);
+                    this._searchResultsSection.header.setCountText("");
+                } else {
+                    // We need to restore this section.
+                    section.header.actor.show();
+                    section.resultArea.actor.show();
+                }
+            }
+            this._searchResultsSingleShownSection = null;
+        }
+    },
+
+    _findAnotherSectionWithItems: function(index, increment) {
+        let pos = _getIndexWrapped(index, increment, this._searchSections.length);
+        while (pos != index) {
+            if (this._searchSections[pos].resultArea.display.hasItems())
+                return pos;
+            pos = _getIndexWrapped(pos, increment, this._searchSections.length);
+        }
+        return -1;
     }
 };
 Signals.addSignalMethods(Dash.prototype);
