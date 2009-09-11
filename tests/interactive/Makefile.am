@@ -43,7 +43,8 @@ UNIT_TESTS = \
         test-text.c \
         test-text-field.c \
 	test-clutter-cairo-flowers.c \
-	test-cogl-vertex-buffer.c
+	test-cogl-vertex-buffer.c \
+	test-box.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
