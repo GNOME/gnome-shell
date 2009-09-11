@@ -663,6 +663,7 @@ WellMenu.prototype = {
     _onMenuButtonRelease: function (actor, event) {
         let clone = this._findWindowCloneForActor(event.get_source());
         if (clone) {
+            this.didActivateWindow = true;
             Main.overview.activateWindow(clone.metaWindow, event.get_time());
         }
     },
@@ -707,6 +708,7 @@ WellMenu.prototype = {
 
     _onWindowActivate: function (actor, child) {
         let metaWindow = child._window;
+        this.didActivateWindow = true;
         Main.overview.activateWindow(metaWindow, Clutter.get_current_event_time());
         this.emit('popup', false);
         this.actor.hide();
@@ -854,6 +856,10 @@ RunningWellItem.prototype = {
             this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
                 let id;
 
+                // If we successfully picked a window, don't reset the workspace
+                // state, since picking a window already did that.
+                if (!isPoppedUp && menu.didActivateWindow)
+                    return;
                 if (isPoppedUp)
                     id = this.appInfo.get_id();
                 else

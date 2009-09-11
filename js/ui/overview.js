@@ -342,7 +342,7 @@ Overview.prototype = {
         this.emit('showing');
     },
 
-    hide : function() {
+    hide: function() {
         if (!this.visible || this._hideInProgress)
             return;
 
@@ -410,7 +410,6 @@ Overview.prototype = {
      */
     activateWindow: function (metaWindow, time) {
          this._workspaces.activateWindowFromOverview(metaWindow, time);
-         this.hide();
     },
 
     //// Private methods ////
