@@ -1,22 +1,21 @@
-# translation of te.po to Telugu
+# translation of metacity.master.te.po to Telugu
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Krishna Babu K <kkrothap@redhat.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: te\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=metacity&component=general\n"
-"POT-Creation-Date: 2009-08-14 05:01+0000\n"
-"PO-Revision-Date: 2009-06-05 19:35+0530\n"
+"Project-Id-Version: metacity.master.te\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
+"POT-Creation-Date: 2009-08-24 17:51+0000\n"
+"PO-Revision-Date: 2009-09-11 15:11+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 "\n"
 "\n"
@@ -34,7 +33,7 @@ msgstr "విండో నిర్వహణ"
 
 #: ../src/core/bell.c:294
 msgid "Bell event"
-msgstr ""
+msgstr "బెల్ ఘటన"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -42,15 +41,17 @@ msgid "Unknown window information request: %d"
 msgstr "తెలియని విండో సమాచార అభ్యర్ధన: %d"
 
 #: ../src/core/delete.c:104
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
 "<i>You may choose to wait a short while for it to continue or force the "
 "application to quit entirely.</i>"
 msgstr ""
-"మీరు దానిని కొనసాగించుటకు కొంత సమయం వేచివుండవచ్చు లేదా అనువర్తనమును మొత్తం మూసివేయుటకు బలవంతం "
-"చేయవచ్చు."
+"<big><b><tt>%s</tt> స్పందించుటలేదు.</b></big>\n"
+"\n"
+"<i>ఇది కొనసాగుటకు మీరు కొంత సమయం వేచివుండవచ్చు లేదా బలవంతంగా మొత్తము అనువర్తనమును "
+"నిష్క్రమింపచేయవచ్చును.</i>"
 
 #: ../src/core/delete.c:115
 msgid "_Wait"
@@ -123,7 +124,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "ఎటువంటి టెర్మినల్ ఆదేశము నిర్వచించబడిలేదు.\n"
 
 #: ../src/core/main.c:130
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -131,8 +132,8 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"మెటాసి %s\n"
-"కాపీరైట్ (C) 2001-2008 Havoc Pennington, Red Hat, Inc., మరియు యితరులు\n"
+"మెటాసిటి %s\n"
+"కాపీరైట్ (C) 2001-%s Havoc Pennington, Red Hat, Inc., మరియు యితరులు\n"
 "యిది వుచిత సాఫ్టువేర్; నకలు నియమాల కొరకు మూలాన్ని చూడండి.\n"
 "వ్యాపారము కొరకుగాని లేదా వొక ప్రత్యేక ప్రయోజనము కొరకు వుపయోగపడుతుంది గాని;అక్కడ యెటువంటి వారెంటి "
 "లేదు.\n"
@@ -174,9 +175,8 @@ msgid "Turn compositing off"
 msgstr "కంపోజిటింగ్‌ను ఆఫ్ చేయుము"
 
 #: ../src/core/main.c:321
-msgid ""
-"Don't make fullscreen windows that are maximized and have no decorations"
-msgstr ""
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "పెద్దవిచేయబడిన మరియు అలంకరణలులేని విండోలను పెద్దస్క్రీను చేయవద్దు"
 
 #: ../src/core/main.c:543
 #, c-format
@@ -185,8 +185,7 @@ msgstr "థీమ్స్ డైరెక్టరీను స్కాను 
 
 #: ../src/core/main.c:559
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "ఒక థీమ్‌ను కనుగొనలేక పోయింది! %s వుండునట్లు మరియు అది సాదారణ థీమ్సును కలిగివుండునట్లు "
 "చూచుకొనుము.\n"
@@ -289,8 +288,7 @@ msgstr ""
 
 #: ../src/core/screen.c:400
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "తెర %d ప్రదర్శన \"%s\" పైన విండో నిర్వాహిక యెంపికను పొందలేక పోయింది\n"
 
 #: ../src/core/screen.c:458
@@ -308,8 +306,15 @@ msgstr "తెర %d ప్రదర్శన \"%s\"పైన విడుదల
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -323,8 +328,18 @@ msgstr ""
 "స్ట్రింగు \"disabled\"కు అమర్చినట్లైతే, అప్పుడు ఈ చర్యకు యెటువంటి కీబందనము వుండదు."
 
 #: ../src/core/schema-bindings.c:177
+#| msgid ""
+#| "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#| "\n"
+#| "The parser is fairly liberal and allows lower or upper case, and also "
+#| "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#| "the special string \"disabled\", then there will be no keybinding for "
+#| "this action.\n"
+#| "\n"
+#| "This keybinding may be reversed by holding down the \"shift\" key; "
+#| "therefore, \"shift\" cannot be one of the keys it uses."
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -397,13 +412,12 @@ msgid "Unknown element %s"
 msgstr "తెలియని మూలకం %s"
 
 #: ../src/core/session.c:1812
-#, fuzzy
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"ఈ విండోలు \"ప్రస్తుత అమర్పును దాయి\" ఐచ్చికమును మద్దతునీయవు అందువలన మీరు తరువాతి సారి "
-"లాగినైనప్పుడు మానవీయంగా ప్రారంభించవలసి వుంటుంది."
+"ఈ విండోలు &quot;ప్రస్తుత అమర్పును దాయి&quot; మద్దతునీయవు అందువలన మీరు తరువాతి సారి "
+"లాగినైనప్పుడు మానవీయంగా పునఃప్రారంభించవలసి వుంటుంది."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -489,21 +503,21 @@ msgstr "%s (%s పైన)"
 #: ../src/core/window-props.c:420
 #, c-format
 msgid "%s (as superuser)"
-msgstr ""
+msgstr "%s (సూపర్‌వినియోగదారి వలె)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine
 #: ../src/core/window-props.c:438
-#, fuzzy, c-format
+#, c-format
 msgid "%s (as %s)"
-msgstr "%s (%s పైన)"
+msgstr "%s (%s వలె)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine, whose name we don't know
 #: ../src/core/window-props.c:444
 #, c-format
 msgid "%s (as another user)"
-msgstr ""
+msgstr "%s (వేరే వినియోగదారివలె)"
 
 #: ../src/core/window-props.c:1429
 #, c-format
@@ -532,8 +546,7 @@ msgstr "లక్షణం %s విం‍డో 0x%lx పైన చెల్ల
 
 #: ../src/core/xprops.c:484
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "లక్షణం %s విండో 0x%lx పైన చెల్లని UTF-8ను జాబితానందలి %d అంశముకొరకు కలిగివుంది\n"
 
 #: ../src/include/all-keybindings.h:88
@@ -1611,8 +1624,7 @@ msgstr "మిశ్రమ(బ్లెండెడ్) రంగులోని
 
 #: ../src/ui/theme.c:1282
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "\"shade/base_color/factor\" అనునది షేడ్ ఫార్మాట్, \"%s\" ఫార్మాటును అమర్చలేదు"
 
 #: ../src/ui/theme.c:1293
@@ -1666,14 +1678,12 @@ msgstr "కోఆర్డినేట్ సమీకరణము సున్�
 
 #: ../src/ui/theme.c:1965
 #, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "కోఆర్డినేట్ సమీకరణము mod ఆపరేటర్‌ను ఫ్లోటింగ్-పాయింట్ సంఖ్యపై వుపయోగించుటకు ప్రయత్నిస్తోంది"
 
 #: ../src/ui/theme.c:2021
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "ఆపరెండ్ కావలసినచోట కోఆర్డినేట్ సమీకరణము ఆపరేటర్ \"%s\"ను కలిగివుంది"
 
 #: ../src/ui/theme.c:2030
@@ -1736,10 +1746,8 @@ msgstr ""
 
 #: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> తప్పిపోయినది"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> తప్పిపోయినది"
 
 #: ../src/ui/theme.c:4780
 #, c-format
@@ -1763,8 +1771,7 @@ msgstr ""
 
 #: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "వినియోగదారి-నిర్వచిత స్థరిరాశులు తప్పక పెద్ద అక్షరముతో ప్రారంభించబడాలి; \"%s\" అలా లేదు"
 
 #: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
@@ -1833,8 +1840,7 @@ msgstr "కోణము తప్పక 0.0 మరియు 360.0 మధ్య �
 #: ../src/ui/theme-parser.c:726
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"అల్ఫా అనునది తప్పక 0.0 (అదృశ్యంగా) మరియు 1.0 (పూర్తి ఒపాక్యూ) మద్య వుండాలి, %gగా వుంది\n"
+msgstr "అల్ఫా అనునది తప్పక 0.0 (అదృశ్యంగా) మరియు 1.0 (పూర్తి ఒపాక్యూ) మద్య వుండాలి, %gగా వుంది\n"
 
 #: ../src/ui/theme-parser.c:791
 #, c-format
@@ -2025,13 +2031,11 @@ msgstr "పునఃపరిమాణ యాట్రిబ్యూట్‌�
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
-msgstr ""
-"మూలకం <%s> పైన పెద్దదిచేయబడిన/షేడ్‌చేయబడిన స్థితుల కొరకు \"resize\" యాట్రిబ్యూట్‌ను కలిగివుండ కూడదు"
+msgstr "మూలకం <%s> పైన పెద్దదిచేయబడిన/షేడ్‌చేయబడిన స్థితుల కొరకు \"resize\" యాట్రిబ్యూట్‌ను కలిగివుండ కూడదు"
 
 #: ../src/ui/theme-parser.c:3061
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "మూలకం <%s> పైన పెద్దదిచేయబడిన స్థితి కొరకు \"resize\" యాట్రిబ్యూట్‌ను కలిగివుండ కూడదు"
 
 #: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
@@ -2075,8 +2079,7 @@ msgstr "థీమ్ నందు బయటి మూలకం <metacity_theme> 
 
 #: ../src/ui/theme-parser.c:3291
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "మూలకం <%s> అనునది name/author/date/description మూలకంనందు అనుమతించబడదు"
 
 #: ../src/ui/theme-parser.c:3296
@@ -2086,8 +2089,7 @@ msgstr "మూలకం <%s> అనునది <constant> మూలకంనం
 
 #: ../src/ui/theme-parser.c:3308
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "మూలకం <%s> అనునది distance/border/aspect_ratio మూలకంనందు అనుమతించబడదు"
 
 #: ../src/ui/theme-parser.c:3330
@@ -2117,9 +2119,9 @@ msgstr "<%s> మూల వస్తువు లోపల ఎటువంటి 
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "ఈ థీమ్ కొరకు <name> రెండుసార్లు తెలుపబడింది"
+msgstr "ఈ థీమ్ కొరకు <%s> రెండుసార్లు తెలుపబడింది"
 
 #: ../src/ui/theme-parser.c:4040
 #, c-format
@@ -2328,47 +2330,3 @@ msgstr "y విలువ %d, %d కావలసివుంది"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d కోఆర్డినేట్ సమీకరణాలు %g సెకనులలో(%g సెకనులు సగటున) పార్శ్ చేయబడినవి\n"
 
-#~ msgid "Failed to parse message \"%s\" from dialog process\n"
-#~ msgstr "సందేశము \"%s\"ను డైలాగ్ కార్యక్రమమునుండి పార్శ్ చేయుటకు విఫలమైంది\n"
-
-#~ msgid "Error reading from dialog display process: %s\n"
-#~ msgstr "డైలాగ్ ప్రదర్శన కార్యక్రమమునుండి చదువుటలో దోషము: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr "అనువర్తనమును అంతముచేయుట గురించి అడుగుటకు మెటాసిటి-డైలాగ్ దించుటలో దోషము: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to warn about apps that don't support "
-#~ "session management: %s\n"
-#~ msgstr ""
-#~ "విభాగపు నిర్వహణను మద్దతించనటువంటి అనువర్తనముల గురించి వారించుటకు మెటాసిటి-డైలాగును దించుటలో "
-#~ "దోషము: %s\n"
-
-#~ msgid "\"%s\" is not responding."
-#~ msgstr "\"%s\" స్పందించుటలేదు."
-
-#~ msgid "Title"
-#~ msgstr "శీర్షిక"
-
-#~ msgid "Class"
-#~ msgstr "తరగతి"
-
-#~ msgid ""
-#~ "There was an error running \"%s\":\n"
-#~ "%s."
-#~ msgstr ""
-#~ "అక్కడు వొక దోషము నడుచుచున్నది \"%s\":\n"
-#~ "%s."
-
-#~ msgid "<author> specified twice for this theme"
-#~ msgstr "ఈ థీమ్ కొరకు <author> రెండుసార్లు తెలుపబడింది"
-
-#~ msgid "<copyright> specified twice for this theme"
-#~ msgstr "ఈ థీమ్ కొరకు <copyright> రెండు సార్లు తెలుపబడింది"
-
-#~ msgid "<date> specified twice for this theme"
-#~ msgstr "ఈ థీమ్ కొరకు <date> రెండు సార్లు తెలుపబడింది"
-
-#~ msgid "<description> specified twice for this theme"
-#~ msgstr "ఈ థీమ్ కొరకు <description> రెండు సార్లు తెలుపబడింది"
