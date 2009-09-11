@@ -641,10 +641,27 @@ Dash.prototype = {
                 for (var i = 0; i < this._searchSections.length; i++) {
                     let section = this._searchSections[i];
                     section.resultArea.display.setSearch(text);
-                    let itemCount = section.resultArea.display.getMatchedItemsCount() + "";
-                    section.header.countText.text = itemCount;
-                    if (this._searchResultsSingleShownSection == section.type)
-                        this._searchResultsSection.header.setCountText(itemCount);
+                    let itemCount = section.resultArea.display.getMatchedItemsCount();
+                    let itemCountText = itemCount + "";
+                    section.header.countText.text = itemCountText;
+
+                    if (this._searchResultsSingleShownSection == section.type) {
+                        this._searchResultsSection.header.setCountText(itemCountText);
+                        if (itemCount == 0) {
+                            section.resultArea.actor.hide();
+                        } else {
+                            section.resultArea.actor.show();
+                        }
+                    } else if (this._searchResultsSingleShownSection == null) {
+                        // Don't show the section if it has no results
+                        if (itemCount == 0) {
+                            section.header.actor.hide();
+                            section.resultArea.actor.hide();
+                        } else {
+                            section.header.actor.show();
+                            section.resultArea.actor.show();
+                        }
+                    }
 
                     // Refresh the selection when a new search is applied.
                     section.resultArea.display.unsetSelected();
@@ -880,11 +897,12 @@ Dash.prototype = {
                 // This will be the only section shown.
                 section.resultArea.display.selectFirstItem();
                 section.resultArea.controlBox.show();
-                let itemCount = section.resultArea.display.getMatchedItemsCount() + "";
+                let itemCount = section.resultArea.display.getMatchedItemsCount();
+                let itemCountText = itemCount + "";
                 section.header.actor.hide();
                 this._searchResultsSection.header.setTitle(section.title);
                 this._searchResultsSection.header.setBackLinkVisible(true);
-                this._searchResultsSection.header.setCountText(itemCount);
+                this._searchResultsSection.header.setCountText(itemCountText);
             } else {
                 // We need to hide this section.
                 section.header.actor.hide();
@@ -897,20 +915,35 @@ Dash.prototype = {
 
     _showAllSearchSections: function() {
         if (this._searchResultsSingleShownSection != null) {
+            let selectionSet = false;
             for (var i = 0; i < this._searchSections.length; i++) {
                 let section = this._searchSections[i];
                 if (section.type == this._searchResultsSingleShownSection) {
                     // This will no longer be the only section shown.
                     section.resultArea.display.displayPage(0);
                     section.resultArea.controlBox.hide();
-                    section.header.actor.show();
+                    let itemCount = section.resultArea.display.getMatchedItemsCount();
+                    if (itemCount != 0) {
+                        section.header.actor.show();
+                        section.resultArea.display.selectFirstItem();
+                        selectionSet = true;
+                    }
                     this._searchResultsSection.header.setTitle(_("SEARCH RESULTS"));
                     this._searchResultsSection.header.setBackLinkVisible(false);
                     this._searchResultsSection.header.setCountText("");
                 } else {
                     // We need to restore this section.
-                    section.header.actor.show();
-                    section.resultArea.actor.show();
+                    let itemCount = section.resultArea.display.getMatchedItemsCount();
+                    if (itemCount != 0) {
+                        section.header.actor.show();
+                        section.resultArea.actor.show();
+                        // This ensures that some other section will have the selection if the
+                        // single section that was being displayed did not have any items.
+                        if (!selectionSet) {
+                            section.resultArea.display.selectFirstItem();
+                            selectionSet = true;
+                        }
+                    }
                 }
             }
             this._searchResultsSingleShownSection = null;

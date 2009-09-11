@@ -707,6 +707,9 @@ GenericDisplay.prototype = {
         if (resetDisplayControl) {
             this.displayControl.remove_all();
             let nPages = this._list.n_pages;
+            // Don't show the page indicator if there is only one page.
+            if (nPages == 1)
+                return;
             let pageNumber = this._list.page;
             for (let i = 0; i < nPages; i++) {
                 let pageControl = new Link.Link({ color: (i == pageNumber) ? DISPLAY_CONTROL_SELECTED_COLOR : ITEM_DISPLAY_DESCRIPTION_COLOR,
