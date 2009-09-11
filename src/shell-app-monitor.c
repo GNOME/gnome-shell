@@ -437,9 +437,10 @@ get_app_for_window_direct (MetaWindow  *window)
 
       if (id != NULL)
         result = shell_app_system_load_from_desktop_file (appsys, id, NULL);
-      else
-        result = create_transient_app_for_window (window);
     }
+  if (result == NULL)
+    result = create_transient_app_for_window (window);
+
   return result;
 }
 
