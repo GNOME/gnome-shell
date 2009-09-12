@@ -7,16 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-22 12:18+0200\n"
-"PO-Revision-Date: 2009-04-22 10:48+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
+"POT-Creation-Date: 2009-09-11 15:19+0000\n"
+"PO-Revision-Date: 2009-09-12 09:50+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -43,13 +42,11 @@ msgstr "Zahteva izpisa podrobnosti neznanega okna: %d"
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
-"<i>You may choose to wait a short while for it to continue or force the "
-"application to quit entirely.</i>"
+"<i>You may choose to wait a short while for it to continue or force the application to quit entirely.</i>"
 msgstr ""
 "<big><b><tt>%s</tt> se ne odziva.</b></big>\n"
 "\n"
-"<i>Lahko še malo počakate, če se program morda zbudi, ali pa vsiljeno "
-"prekinete njegovo delovanje.</i>"
+"<i>Lahko še malo počakate, če se program morda zbudi, ali pa vsiljeno prekinete njegovo delovanje.</i>"
 
 #: ../src/core/delete.c:115
 msgid "_Wait"
@@ -93,9 +90,7 @@ msgstr "Usodna napaka IO %d (%s) na zaslonu '%s'.\n"
 # G:1 K:0 O:0
 #: ../src/core/keybindings.c:680
 #, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
+msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
 
 #. Displayed when a keybinding which is
@@ -128,64 +123,64 @@ msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
 "Avtorske pravice pridržane (C) 2001-%s Havoc Pennington, Red Hat in drugi\n"
 "To je prosto programje; za pogoje kopiranja si poglejte izvorno kodo.\n"
 "Program prihaja BREZ KAKRŠNIHKOLI ZAGOTOVIL delovanja.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Onemogoči povezavo z upraviteljem sej"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Zamenjaj trenutnega upravitelja oken z Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Navedite ID upravljanja seje"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Zaslon X za uporabo"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Zagon seje iz datoteke"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Naredi klice X usklajene"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Vključi skladanje"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Izključi skladanje"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "Ne ustvarjajte celozaslonskih oken ki so razprta in nimajo dekoracij"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Ni mogoče preiskati mape tem: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"Ni mogoče najti teme! Prepričajte se, da %s obstaja in vsebuje običajne "
-"teme.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr "Ni mogoče najti teme! Prepričajte se, da %s obstaja in vsebuje običajne teme.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ni mogoče znova pognati: %s\n"
@@ -201,103 +196,94 @@ msgstr "Ni mogoče znova pognati: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506
+#: ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ključ GConf '%s' je nastavljen na neveljavno vrednost\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587
+#: ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d shranjen v GConf ključu %s je izven meja med %d in %d\n"
 
 # G:1 K:0 O:0
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631
+#: ../src/core/prefs.c:708
+#: ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820
+#: ../src/core/prefs.c:1113
+#: ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146
+#: ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ključ GConf \"%s\" je nastavljen na neveljavno vrsto\n"
 
-#: ../src/core/prefs.c:1231
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Obhodi za pokvarjene programe so izključeni. Nekateri programi se morda ne "
-"bodo pravilno obnašali.\n"
+#: ../src/core/prefs.c:1232
+msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+msgstr "Obhodi za pokvarjene programe so izključeni. Nekateri programi se morda ne bodo pravilno obnašali.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ni mogoče razčleniti opisa \"%s\" iz ključa GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"\"%s\", ki je bil najden v podatkovni zbirki nastavitev ni veljaven "
-"spremenilnik za miškine gumbe.\n"
+msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgstr "\"%s\", ki je bil najden v podatkovni zbirki nastavitev ni veljaven spremenilnik za miškine gumbe.\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Napaka ob nastavljanju števila delovnih površin na %d: %s\n"
 
 # G:1 K:0 O:0
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975
+#: ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005
+#: ../src/core/prefs.c:2183
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"\"%s\" najden v podatkovni zbirki nastavitev ni veljaven ključ za tipkovno "
-"vez \"%s\"\n"
+msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
+msgstr "\"%s\" najden v podatkovni zbirki nastavitev ni veljaven ključ za tipkovno vez \"%s\"\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Napaka ob nastavljanju imena delovne površine %d na \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Napaka pri nastavljanju stanja skladanja: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Zaslon %d na prikazu '%s' ni veljaven\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"Zaslon %d na prikazu \"%s\" že ima upravljalnik oken; poskušajte uporabiti "
-"možnost --replace za zamenjavo trenutnega upravljalnika zaslona.\n"
+msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
+msgstr "Zaslon %d na prikazu \"%s\" že ima upravljalnik oken; poskušajte uporabiti možnost --replace za zamenjavo trenutnega upravljalnika zaslona.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Ni mogoče dobiti izbire upravljalnika oken na zaslonu %d prikaz \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "Ni mogoče dobiti izbire upravljalnika oken na zaslonu %d prikaz \"%s\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Zaslon %d na prikazu \"%s\" že ima upravljalnik oken\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Ni mogoče opustiti prikaza %d prikazu \"%s\"\n"
@@ -308,41 +294,30 @@ msgstr "Ni mogoče opustiti prikaza %d prikazu \"%s\"\n"
 #.
 #: ../src/core/schema-bindings.c:169
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
+"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Zapis je oblikovan kot \"<Control>a\" ali pa <Shift><Alt>F1\".\n"
 "\n"
-"Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter "
-"okrajšave kot npr. \"<Ctl>\" in \"<Ctrl>\". V primeru, da možnost "
-"\"onemogočite\", potem za to dejanje ne bo bližnjice tipk."
+"Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"<Ctl>\" in \"<Ctrl>\". V primeru, da uporabit možnost \"disabled\", potem za to dejanje ne bo tipkovne bližnjice."
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
+"The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action.\n"
 "\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
+"This keybinding may be reversed by holding down the \"shift\" key; therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
 "Zapis je oblikovan kot \"<Control>a\" ali pa <Shift><Alt>F1\".\n"
 "\n"
-"Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter "
-"okrajšave kot npr. \"<Ctl>\" in \"<Ctrl>\". V primeru, da možnost "
-"\"onemogočite\", potem za to dejanje ne bo bližnjice tipk.\n"
+"Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"<Ctl>\" in \"<Ctrl>\". V primeru, da uporabite možnost \"disabled\", potem za to dejanje ne bo bližnjice tipk.\n"
 "\n"
-"Tipkovno bližnjico je lahko povrnete s pritiskom tipke \"shift\" zato tipka "
-"\"shift\" ne more biti del tipkovne bližnjice."
+"Tipkovno bližnjico je lahko povrnete s pritiskom tipke \"shift\" zato tipka \"shift\" ne more biti del tipkovne bližnjice."
 
-#: ../src/core/session.c:845 ../src/core/session.c:852
+#: ../src/core/session.c:845
+#: ../src/core/session.c:852
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Ni mogoče ustvariti imenika %s %s\n"
@@ -379,8 +354,10 @@ msgstr "Ni mogoče razčleniti datoteke shranjene seje: %s\n"
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "atribut <metacity_session> je bil viden, a mi že imamo ID seje"
 
-#: ../src/core/session.c:1202 ../src/core/session.c:1277
-#: ../src/core/session.c:1309 ../src/core/session.c:1381
+#: ../src/core/session.c:1202
+#: ../src/core/session.c:1277
+#: ../src/core/session.c:1309
+#: ../src/core/session.c:1381
 #: ../src/core/session.c:1441
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
@@ -398,12 +375,8 @@ msgstr "Neznan element %s"
 
 # G:2 K:6 O:0
 #: ../src/core/session.c:1812
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Ta okna ne podpirajo možnosti &quot;shranjevanja trenutnih nastavitev&quot;, "
-"zato bodo morala biti ob vaši naslednji prijavi znova zagnana ročno."
+msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
+msgstr "Ta okna ne podpirajo možnosti &quot;shranjevanja trenutnih nastavitev&quot;, zato bodo morala biti ob vaši naslednji prijavi znova zagnana ročno."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -420,7 +393,8 @@ msgstr "Odpiranje dnevniške datoteke %s s fdopen() ni uspelo: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Odpri dnevniško datoteko %s\n"
 
-#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:138
+#: ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity je bil preveden brez podpore za podrobni način\n"
@@ -444,7 +418,8 @@ msgstr "Napaka upravljavca oken: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
+#: ../src/core/util.c:570
+#: ../src/metacity.desktop.in.h:1
 #: ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
@@ -452,12 +427,8 @@ msgstr "Metacity"
 #. first time through
 #: ../src/core/window.c:5627
 #, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER "
-"kot je zavedeno v ICCCM.\n"
+msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
+msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -468,13 +439,8 @@ msgstr ""
 #.
 #: ../src/core/window.c:6192
 #, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati "
-"pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni "
-"smiselna.\n"
+msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
 
 #: ../src/core/window-props.c:244
 #, c-format
@@ -534,11 +500,8 @@ msgstr "Lastnost %s okna 0x%lx vsebuje neveljaven znak UTF-8\n"
 
 #: ../src/core/xprops.c:484
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"Lastnost %s okna 0x%lx vsebuje neveljaven znak UTF-8 za %d. predmet na "
-"seznamu\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "Lastnost %s okna 0x%lx vsebuje neveljaven znak UTF-8 za %d. predmet na seznamu\n"
 
 #: ../src/include/all-keybindings.h:88
 msgid "Switch to workspace 1"
@@ -854,16 +817,8 @@ msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr "(Ni vstavljeno) Navigacija deluje v smislu programov, ne oken"
 
 #: ../src/metacity.schemas.in.in.h:2
-msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
-msgstr ""
-"Niz opisa pisave, ki opisuje pisavo za nazive oken. Velikost opisa bo "
-"uporabljena le, če je možnost titlebar_font_size nastavljena na 0. Poleg "
-"tega je ta možnost onemogočena, če je titlebar_uses_desktop_font nastavljena "
-"na true (resnično)."
+msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true."
+msgstr "Niz opisa pisave, ki opisuje pisavo za nazive oken. Velikost opisa bo uporabljena le, če je možnost titlebar_font_size nastavljena na 0. Poleg tega je ta možnost onemogočena, če je titlebar_uses_desktop_font nastavljena na true (resnično)."
 
 #: ../src/metacity.schemas.in.in.h:3
 msgid "Action on title bar double-click"
@@ -882,40 +837,16 @@ msgid "Arrangement of buttons on the titlebar"
 msgstr "Postavitev gumbov v nazivu okna"
 
 #: ../src/metacity.schemas.in.in.h:7
-msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
-msgstr ""
-"Postavitev gumbov v naslovni vrstici okna. Vrednost mora biti niz, kot je "
-"\"meni:skrči,razpri,preslednik,zapri\";  dvopičje loči levi kot okna od "
-"desnega in imena gumbov so ločena z vejico. Podvojeni gumbi niso dovoljeni. "
-"Neznana imena gumbov so tiho prezrta, tako, da se lahko v novih različicah "
-"Metacity doda nove gumbe brez, da bi se porušila kompatibilnost s starimi "
-"različicami. Posebna oznaka ločilnika se lahko uporabi pri večanju razdalje "
-"med gumbi."
+msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,spacer,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions. A special spacer tag can be used to insert some space between two adjacent buttons."
+msgstr "Postavitev gumbov v naslovni vrstici okna. Vrednost mora biti niz, kot je \"meni:skrči,razpri,preslednik,zapri\";  dvopičje loči levi kot okna od desnega in imena gumbov so ločena z vejico. Podvojeni gumbi niso dovoljeni. Neznana imena gumbov so tiho prezrta, tako, da se lahko v novih različicah Metacity doda nove gumbe brez, da bi se porušila kompatibilnost s starimi različicami. Posebna oznaka ločilnika se lahko uporabi pri večanju razdalje med gumbi."
 
 #: ../src/metacity.schemas.in.in.h:8
 msgid "Automatically raises the focused window"
 msgstr "Samodejno dvigne dejavno okno"
 
 #: ../src/metacity.schemas.in.in.h:9
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
-msgstr ""
-"Klik na okno ob držanju tega spremenilnika bo premaknil okno (levi klik), "
-"spremenil velikost okna (srednji klik) ali pokazal meni okna (desni klik). "
-"Leve in desne naloge je mogoče zamenjati s tipko prilagajanja velikosti okna "
-"z miško. Spremenilnik je npr. izražen kot \"&lt;Alt&gt;\" ali \"&lt;Super&gt;"
-"\"."
+msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). The left and right operations may be swapped using the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
+msgstr "Klik na okno ob držanju tega spremenilnika bo premaknil okno (levi klik), spremenil velikost okna (srednji klik) ali pokazal meni okna (desni klik). Leve in desne naloge je mogoče zamenjati s tipko prilagajanja velikosti okna z miško. Spremenilnik je npr. izražen kot \"&lt;Alt&gt;\" ali \"&lt;Super&gt;\"."
 
 #: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -943,12 +874,8 @@ msgid "Determines whether Metacity is a compositing manager."
 msgstr "Ugotovi, ali je Metacity upravitelj sestavljanja."
 
 #: ../src/metacity.schemas.in.in.h:16
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-"Ugotovi, ali lahko program ali sistem ustvari zvočne piske. Uporabno tudi "
-"skupaj z 'vidnimi zvonci', tako da nastanejo tihi 'piske'."
+msgid "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr "Ugotovi, ali lahko program ali sistem ustvari zvočne piske. Uporabno tudi skupaj z 'vidnimi zvonci', tako da nastanejo tihi 'piske'."
 
 #: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -959,55 +886,20 @@ msgid "Enable Visual Bell"
 msgstr "Omogoči vidni zvonec"
 
 #: ../src/metacity.schemas.in.in.h:19
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-"Če je resnično in je način fokusa \"sloppy\" ali \"mouse\", potem bo okno s "
-"fokusom po premoru, določenem v ključu auto_raise_delay, samodejno "
-"dvignjeno. To ni povezano s klikanjem za dviganje okna, niti z vstopom v "
-"okno z metodo povleci-spusti."
+msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
+msgstr "Če je resnično in je način fokusa \"sloppy\" ali \"mouse\", potem bo okno s fokusom po premoru, določenem v ključu auto_raise_delay, samodejno dvignjeno. To ni povezano s klikanjem za dviganje okna, niti z vstopom v okno z metodo povleci-spusti."
 
 #: ../src/metacity.schemas.in.in.h:20
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-"Če je true (resnično), prezri možnost titlebar_font in za naziv okna uporabi "
-"privzeto pisavo programov."
+msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
+msgstr "Če je true (resnično), prezri možnost titlebar_font in za naziv okna uporabi privzeto pisavo programov."
 
 #: ../src/metacity.schemas.in.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-"Če je resnično, bo metacity uporabniku nudil manj povratnih z uporabo žičnih "
-"okvirjev, ukinitvijo animacij in na druge načine. Uporabnost za večino "
-"uporabnikov se bo zmanjšala, število delujočih programov se lahko poveča, "
-"izbira pa je primerna tudi za terminalske strežnike. Kljub temu je možnost "
-"žičnih okvirjev onemogočena pri uporabi možnosti dostopnosti."
+msgid "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
+msgstr "Če je resnično, bo metacity uporabniku nudil manj povratnih z uporabo žičnih okvirjev, ukinitvijo animacij in na druge načine. Uporabnost za večino uporabnikov se bo zmanjšala, število delujočih programov se lahko poveča, izbira pa je primerna tudi za terminalske strežnike. Kljub temu je možnost žičnih okvirjev onemogočena pri uporabi možnosti dostopnosti."
 
 #: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"Če je resnično, potem Metacity deluje s konceptom programov namesto s "
-"konceptom oken. Ta koncept je nekoliko abstrakten, a je v splošnem značilen "
-"za Mace in manj za Windows. Ko okno dobi fokus v programskem konceptu, se "
-"vsa okna programa dvignejo. Prav tako se v programskem načinu kliki za fokus "
-"ne prenesejo na ostale programe. Programski način v veliki meri še ni "
-"implementiran."
+msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
+msgstr "Če je resnično, potem Metacity deluje s konceptom programov namesto s konceptom oken. Ta koncept je nekoliko abstrakten, a je v splošnem značilen za Mace in manj za Windows. Ko okno dobi fokus v programskem konceptu, se vsa okna programa dvignejo. Prav tako se v programskem načinu kliki za fokus ne prenesejo na ostale programe. Programski način v veliki meri še ni implementiran."
 
 #: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
@@ -1027,14 +919,8 @@ msgstr "Število delovnih površin"
 
 # G:1 K:0 O:0
 #: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"Število delovnih površin. Mora biti več kot nič in ima določeno najvišjo "
-"vrednost, da prepreči uničenje namizja z vnosom prevelikega števila delovnih "
-"površin."
+msgid "Number of workspaces. Must be more than zero, and has a fixed maximum to prevent making the desktop unusable by accidentally asking for too many workspaces."
+msgstr "Število delovnih površin. Mora biti več kot nič in ima določeno najvišjo vrednost, da prepreči uničenje namizja z vnosom prevelikega števila delovnih površin."
 
 # G:0 K:1 O:0
 #: ../src/metacity.schemas.in.in.h:28
@@ -1042,122 +928,40 @@ msgid "Run a defined command"
 msgstr "Zaženi določen ukaz"
 
 #: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"Izbrana možnost omogoča, da se velikost okna spremeni z desnim gumbom in  "
-"prikaže meni s srednjim, če je določena tudi tipka tipkovnice."
+msgid "Set this to true to resize with the right button and show a menu with the middle button while holding down the key given in \"mouse_button_modifier\"; set it to false to make it work the opposite way around."
+msgstr "Izbrana možnost omogoča, da se velikost okna spremeni z desnim gumbom in  prikaže meni s srednjim, če je določena tudi tipka tipkovnice."
 
 #: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"Nastavitev možnosti lahko privede do nestanovitnega delovanja, zato "
-"spreminjanje možnosti ni priporočeno. Veliko dejanj (primer: klikanje "
-"znotraj oken, premikanje in spreminjanje velikosti oken) običajno privzdigne "
-"okno kot strancki učinek dejanja. Z onemogočenjem možnosti bo program "
-"preprečil dvig okna drugim programom in bo prezrl zahteve, ki jih ustvarjajo "
-"ukazi. Več podrobnosti najdete na http://bugzilla.gnome.org/show_bug.cgi?"
-"id=445447#c6. Tudi z onemogočenjem možnosti je okna mogoče privzdigniti z "
-"alt-levi klik kjerkoli na oknu. Možnost je onemogočena le v klik-za-žarišče "
-"načinu. Seznam načinov, s katerimi je mogoče privzdigniti okno ne vključuje "
-"programskih zahtev programov za dvig okna; take zahteve so prezrte ne glede "
-"na vzrok zahteve."
+msgid "Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Setting this option to false, which is strongly discouraged, will decouple raising from other user actions, and ignore raise requests generated by applications. See http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the \"bug\" they requested."
+msgstr "Nastavitev možnosti lahko privede do nestanovitnega delovanja, zato spreminjanje možnosti ni priporočeno. Veliko dejanj (primer: klikanje znotraj oken, premikanje in spreminjanje velikosti oken) običajno privzdigne okno kot strancki učinek dejanja. Z onemogočenjem možnosti bo program preprečil dvig okna drugim programom in bo prezrl zahteve, ki jih ustvarjajo ukazi. Več podrobnosti najdete na http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Tudi z onemogočenjem možnosti je okna mogoče privzdigniti z alt-levi klik kjerkoli na oknu. Možnost je onemogočena le v klik-za-žarišče načinu. Seznam načinov, s katerimi je mogoče privzdigniti okno ne vključuje programskih zahtev programov za dvig okna; take zahteve so prezrte ne glede na vzrok zahteve."
 
 #: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"Nekateri programi prezirajo določila, tako da upravitelj oken ne deluje v "
-"celoti pravilno. Ta možnost postavi Metacity v pravilen način, ki daje bolj "
-"celovit uporabniški vmesnik, če uporabniku ni potrebno zaganjati programov, "
-"ki ne delujejo pravilno."
+msgid "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
+msgstr "Nekateri programi prezirajo določila, tako da upravitelj oken ne deluje v celoti pravilno. Ta možnost postavi Metacity v pravilen način, ki daje bolj celovit uporabniški vmesnik, če uporabniku ni potrebno zaganjati programov, ki ne delujejo pravilno."
 
 #: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
 msgstr "Sistemski zvonec je zvočen"
 
 #: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"Ukaže Metacityju, kako izvesti vidno opozarjanje sistemskega zvonca ali "
-"zvonca drugega programa. Trenutno sta na voljo dve veljavni vrednosti, "
-"\"fullscreen\", ki povzroči celozaslonsko črno belo utripanje in "
-"\"frame_flash\", ki povzroči utripanje naslovne vrstice programa, ki je "
-"sprožil zvonec. Če je slednji neznan (npr. v primeru \"sistemskega zvonca"
-"\"), utripa naslovna vrstica okna, ki ima trenutno fokus."
+msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
+msgstr "Ukaže Metacityju, kako izvesti vidno opozarjanje sistemskega zvonca ali zvonca drugega programa. Trenutno sta na voljo dve veljavni vrednosti, \"fullscreen\", ki povzroči celozaslonsko črno belo utripanje in \"frame_flash\", ki povzroči utripanje naslovne vrstice programa, ki je sprožil zvonec. Če je slednji neznan (npr. v primeru \"sistemskega zvonca\"), utripa naslovna vrstica okna, ki ima trenutno fokus."
 
 #: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"Ključi /apps/metacity/global_keybindings/run_command_N navajajo tipkovne "
-"povezave, ki ustrezajo tem ukazom. Pritisk tipke za run_command_N bo izvedel "
-"ukaz command_N."
+msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
+msgstr "Ključi /apps/metacity/global_keybindings/run_command_N navajajo tipkovne povezave, ki ustrezajo tem ukazom. Pritisk tipke za run_command_N bo izvedel ukaz command_N."
 
 #: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"Ključ /apps/metacity/global_keybindings/run_command_screenshot določa "
-"bližnjico tipk, ki povzroči izvajanje ukaza, določenega s temi nastavitvami."
+msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
+msgstr "Ključ /apps/metacity/global_keybindings/run_command_screenshot določa bližnjico tipk, ki povzroči izvajanje ukaza, določenega s temi nastavitvami."
 
 #: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"Ključ /apps/metacity/global_keybindings/run_command_window_screenshot določa "
-"bližnjico tipk, ki povzroči izvajanje ukaza, določenega s temi nastavitvami."
+msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
+msgstr "Ključ /apps/metacity/global_keybindings/run_command_window_screenshot določa bližnjico tipk, ki povzroči izvajanje ukaza, določenega s temi nastavitvami."
 
 #: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Bližnjica tipk, ki zažene ustrezno oštevilčen ukaz v /apps/metacity/"
-"keybinding_commands. Oblikovana je kot \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča "
-"različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;"
-"Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to "
-"dejanje ne bo bližnjice tipk."
+msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Bližnjica tipk, ki zažene ustrezno oštevilčen ukaz v /apps/metacity/keybinding_commands. Oblikovana je kot \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
 #: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
@@ -1168,112 +972,40 @@ msgid "The screenshot command"
 msgstr "Ukaz za zajem zaslona"
 
 #: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
+msgid "The theme determines the appearance of window borders, titlebar, and so forth."
 msgstr "Tema določa videz robov oken, naziva oken itd."
 
 #: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"Časovni premor preden se okno dvigne, kadar je auto_raise nastavljen na "
-"\"true\". Premor je podan v tisočinkah sekunde."
+msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
+msgstr "Časovni premor preden se okno dvigne, kadar je auto_raise nastavljen na \"true\". Premor je podan v tisočinkah sekunde."
 
 #: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"Način prikaza oken določa kako se okna zaženejo. Možnosti so tri; \"click\" "
-"pomeni, da morajo biti okna za pridobitev fokusa kliknjena. \"sloppy\" "
-"pomeni, da se okna fokusiranja, ko gre v njih miška, in \"mouse\" pomeni, da "
-"se okna fokusirajo, ko gre v njih miška in odfokusirajo, ko jih ta zapusti."
+msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
+msgstr "Način prikaza oken določa kako se okna zaženejo. Možnosti so tri; \"click\" pomeni, da morajo biti okna za pridobitev fokusa kliknjena. \"sloppy\" pomeni, da se okna fokusiranja, ko gre v njih miška, in \"mouse\" pomeni, da se okna fokusirajo, ko gre v njih miška in odfokusirajo, ko jih ta zapusti."
 
 #: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
 msgstr "Ukaz za zajem okna na zaslonu"
 
 #: ../src/metacity.schemas.in.in.h:44
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Ta možnost določa učinek dvojnega klika miške na naslovno vrstico okna. "
-"Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost "
-"okna, 'preklop razpenjanja', ki razpne ali skrči okno, 'preklop razpenjanja "
-"vodoravno' in 'preklop razpenjanja navpično', ki razpneta okna le v eni "
-"smeri, 'pomanjšaj', ki pomanjša okno, 'zavij', ki zvije okno na velikost "
-"naslovne vrstice', 'meni', ki prikaže meni okna, 'pod', ki skrije okno pod "
-"ostala okna in 'brez', ki ne naredi ničesar."
+msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgstr "Ta možnost določa učinek dvojnega klika miške na naslovno vrstico okna. Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost okna, 'preklop razpenjanja', ki razpne ali skrči okno, 'preklop razpenjanja vodoravno' in 'preklop razpenjanja navpično', ki razpneta okna le v eni smeri, 'pomanjšaj', ki pomanjša okno, 'zavij', ki zvije okno na velikost naslovne vrstice', 'meni', ki prikaže meni okna, 'pod', ki skrije okno pod ostala okna in 'brez', ki ne naredi ničesar."
 
 #: ../src/metacity.schemas.in.in.h:45
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Ta možnost določa učinek srednjega klika miške na naslovno vrstico okna. "
-"Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost "
-"okna, 'preklop razpenjanja', ki razpne ali skrči okno, 'preklop razpenjanja "
-"vodoravno' in 'preklop razpenjanja navpično', ki razpneta okna le v eni "
-"smeri, 'pomanjšaj', ki pomanjša okno, 'zavij', ki zvije okno na velikost "
-"naslovne vrstice', 'meni', ki prikaže meni okna, 'pod', ki skrije okno pod "
-"ostala okna in 'brez', ki ne naredi ničesar."
+msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgstr "Ta možnost določa učinek srednjega klika miške na naslovno vrstico okna. Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost okna, 'preklop razpenjanja', ki razpne ali skrči okno, 'preklop razpenjanja vodoravno' in 'preklop razpenjanja navpično', ki razpneta okna le v eni smeri, 'pomanjšaj', ki pomanjša okno, 'zavij', ki zvije okno na velikost naslovne vrstice', 'meni', ki prikaže meni okna, 'pod', ki skrije okno pod ostala okna in 'brez', ki ne naredi ničesar."
 
 #: ../src/metacity.schemas.in.in.h:46
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Ta možnost določa učinek desnega klika miške na naslovno vrstico okna. "
-"Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost "
-"okna, 'preklop razpenjanja', ki razpne ali skrči okno, 'preklop razpenjanja "
-"vodoravno' in 'preklop razpenjanja navpično', ki razpneta okna le v eni "
-"smeri, 'pomanjšaj', ki pomanjša okno, 'zavij', ki zvije okno na velikost "
-"naslovne vrstice', 'meni', ki prikaže meni okna, 'pod', ki skrije okno pod "
-"ostala okna in 'brez', ki ne naredi ničesar."
+msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgstr "Ta možnost določa učinek desnega klika miške na naslovno vrstico okna. Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost okna, 'preklop razpenjanja', ki razpne ali skrči okno, 'preklop razpenjanja vodoravno' in 'preklop razpenjanja navpično', ki razpneta okna le v eni smeri, 'pomanjšaj', ki pomanjša okno, 'zavij', ki zvije okno na velikost naslovne vrstice', 'meni', ki prikaže meni okna, 'pod', ki skrije okno pod ostala okna in 'brez', ki ne naredi ničesar."
 
 #: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"Ta možnost omogoča dodaten nadzor o pridobivanju fokusa novih oken. Na voljo "
-"sta dve možnosti: \"pametno\" uveljavi običajen način fokusa, \"strogo\" pa "
-"ne dodeli fokusa oknom, ki jih zaženete iz terminala."
+msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
+msgstr "Ta možnost omogoča dodaten nadzor o pridobivanju fokusa novih oken. Na voljo sta dve možnosti: \"pametno\" uveljavi običajen način fokusa, \"strogo\" pa ne dodeli fokusa oknom, ki jih zaženete iz terminala."
 
 #: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"Vključi vidna opozorila, ko program ali sistem uporabi 'zvonec' ali 'pisk'. "
-"Uporabno v hrupnih okoljih."
+msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
+msgstr "Vključi vidna opozorila, ko program ali sistem uporabi 'zvonec' ali 'pisk'. Uporabno v hrupnih okoljih."
 
 #: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
@@ -1400,7 +1132,8 @@ msgstr "Premakni naslovno vrstico na _zaslon"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+#: ../src/ui/menu.c:87
+#: ../src/ui/menu.c:89
 msgid "Always on _Top"
 msgstr "Vedno na _vrhu"
 
@@ -1616,21 +1349,13 @@ msgstr "Prelivi bi morali imeti vsaj dve barvi"
 
 #: ../src/ui/theme.c:1146
 #, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"Navedba barve GTK mora vsebovati stanje v oglatih oklepajih, npr. gtk:fg"
-"[NORMAL], kjer je NORMAL stanje; ni mogoče razčleniti \"%s\""
+msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "Navedba barve GTK mora vsebovati stanje v oglatih oklepajih, npr. gtk:fg[NORMAL], kjer je NORMAL stanje; ni mogoče razčleniti \"%s\""
 
 #: ../src/ui/theme.c:1160
 #, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"Navedbi barve GTK manjka oglati zaklepaj za stanjem, npr. gtk:fg[NORMAL], "
-"kjer je NORMAL stanje; ni mogoče razčleniti \"%s\""
+msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "Navedbi barve GTK manjka oglati zaklepaj za stanjem, npr. gtk:fg[NORMAL], kjer je NORMAL stanje; ni mogoče razčleniti \"%s\""
 
 #: ../src/ui/theme.c:1171
 #, c-format
@@ -1644,12 +1369,8 @@ msgstr "Ni mogoče razumeti barvne komponente \"%s\" v navedbi barve"
 
 #: ../src/ui/theme.c:1214
 #, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"Oblika zapisa preliva je \"blend/bg_color/fg_color/alpha\", \"%s\" ne "
-"ustreza pravilni obliki"
+msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgstr "Oblika zapisa preliva je \"blend/bg_color/fg_color/alpha\", \"%s\" ne ustreza pravilni obliki"
 
 #: ../src/ui/theme.c:1225
 #, c-format
@@ -1663,11 +1384,8 @@ msgstr "V prelivni barvi alfa vrednost \"%s\" ni med 0.0 in 1.0"
 
 #: ../src/ui/theme.c:1282
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Oblika zapisa barve senčenja je \"shade/base_color/factor\", \"%s\" ne "
-"ustreza pravilni obliki."
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Oblika zapisa barve senčenja je \"shade/base_color/factor\", \"%s\" ne ustreza pravilni obliki."
 
 #: ../src/ui/theme.c:1293
 #, c-format
@@ -1691,12 +1409,8 @@ msgstr "Izraz koordinat vsebuje znak '%s', ki ni dovoljen"
 
 #: ../src/ui/theme.c:1609
 #, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
-"Izraz koordinat vsebuje številko s plavajočo vejico '%s', ki ne more biti "
-"razčlenjena"
+msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
+msgstr "Izraz koordinat vsebuje številko s plavajočo vejico '%s', ki ne more biti razčlenjena"
 
 #: ../src/ui/theme.c:1623
 #, c-format
@@ -1705,9 +1419,7 @@ msgstr "Izraz koordinat vsebuje celo število '%s', ki ga ni mogoče razčleniti
 
 #: ../src/ui/theme.c:1745
 #, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
+msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
 msgstr "Izraz koordinat vsebuje neznan operator na pričetku besedila: \"%s\""
 
 #: ../src/ui/theme.c:1802
@@ -1715,23 +1427,21 @@ msgstr "Izraz koordinat vsebuje neznan operator na pričetku besedila: \"%s\""
 msgid "Coordinate expression was empty or not understood"
 msgstr "Izraz koordinat je prazen ali ni razumljen"
 
-#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:1913
+#: ../src/ui/theme.c:1923
+#: ../src/ui/theme.c:1957
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Izraz koordinat se povzroči deljenje z ničlo"
 
 #: ../src/ui/theme.c:1965
 #, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"Izraz koordinat poskuša uporabiti operator mod ali številko s plavajočo "
-"vejico"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Izraz koordinat poskuša uporabiti operator mod ali številko s plavajočo vejico"
 
 #: ../src/ui/theme.c:2021
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Izraz koordinat vsebuje operator \"%s\", kjer je pričakovan operand"
 
 #: ../src/ui/theme.c:2030
@@ -1746,14 +1456,11 @@ msgstr "Izraz koordinat se konča z operatorjem namesto z operandom"
 
 #: ../src/ui/theme.c:2048
 #, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"Izraz koordinat vsebuje operator \"%c\", ki sledi operatorju \"%c\", brez "
-"vmesnega operanda"
+msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgstr "Izraz koordinat vsebuje operator \"%c\", ki sledi operatorju \"%c\", brez vmesnega operanda"
 
-#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2195
+#: ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Izraz koordinat vsebuje neznano spremenljivko ali konstanto \"%s\""
@@ -1778,55 +1485,53 @@ msgstr "Izraz koordinat vsebuje uklepaj, vendar je brez zaklepaja"
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Videti je, da izraz koordinat ne vsebuje operatorjev ali operandov"
 
-#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2596
+#: ../src/ui/theme.c:2616
+#: ../src/ui/theme.c:2636
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Tema vsebuje izraz, ki je povzročil napako: %s\n"
 
 #: ../src/ui/theme.c:4203
 #, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"za ta slog okvirja mora biti naveden <button function=\"%s\" state=\"%s\" "
-"draw_ops=\"karkoli\"/>"
+msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
+msgstr "za ta slog okvirja mora biti naveden <button function=\"%s\" state=\"%s\" draw_ops=\"karkoli\"/>"
 
-#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
+#: ../src/ui/theme.c:4711
+#: ../src/ui/theme.c:4736
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Manjka <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"karkoli\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Manjka <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"karkoli\"/>"
 
 #: ../src/ui/theme.c:4780
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nalaganje teme \"%s\" ni uspelo: %s\n"
 
-#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
-#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
+#: ../src/ui/theme.c:4910
+#: ../src/ui/theme.c:4917
+#: ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931
+#: ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Ni nastavljen <%s> za temo \"%s\""
 
 #: ../src/ui/theme.c:4946
 #, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"Slog okvirja za okno vrste \"%s\" v temi \"%s\" ni nastavljen, dodajte "
-"element <window type=\"%s\" style_set=\"whatever\"/>"
+msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "Slog okvirja za okno vrste \"%s\" v temi \"%s\" ni nastavljen, dodajte element <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
+#: ../src/ui/theme.c:5389
+#: ../src/ui/theme.c:5451
+#: ../src/ui/theme.c:5514
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Uporabniško določene konstante se morajo začeti z veliko črko; \"%s\" se ne"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Uporabniško določene konstante se morajo začeti z veliko črko; \"%s\" se ne"
 
-#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
+#: ../src/ui/theme.c:5397
+#: ../src/ui/theme.c:5459
+#: ../src/ui/theme.c:5522
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" je bila že določena"
@@ -1839,7 +1544,8 @@ msgstr "Konstanta \"%s\" je bila že določena"
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "Ni atributa \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:231
+#: ../src/ui/theme-parser.c:249
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Vrstica %d, znak %d: %s"
@@ -1849,7 +1555,8 @@ msgstr "Vrstica %d, znak %d: %s"
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Atribut \"%s\" je bil v enakem elementu <%s> ponovljen dvakrat"
 
-#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:437
+#: ../src/ui/theme-parser.c:480
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Atribut \"%s\" je v tem kontekstu v elementu <%s> neveljaven"
@@ -1859,7 +1566,8 @@ msgstr "Atribut \"%s\" je v tem kontekstu v elementu <%s> neveljaven"
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Ni mogoče razčleniti \"%s\" kot celoštevilčne vrednosti"
 
-#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#: ../src/ui/theme-parser.c:531
+#: ../src/ui/theme-parser.c:586
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Ni mogoče razumeti končnih znakov \"%s\" v nizu \"%s\""
@@ -1874,12 +1582,14 @@ msgstr "Celoštevilska vrednost %ld mora biti pozitivna"
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Celoštevilska vrednost %ld je prevelika, trenutna omejitev je %d"
 
-#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:577
+#: ../src/ui/theme-parser.c:693
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Ni mogoče razčleniti \"%s\" kot števila s plavajočo vejico"
 
-#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:608
+#: ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Vrednosti boolean morajo biti \"true\" ali \"false\" in ne \"%s\""
@@ -1892,25 +1602,23 @@ msgstr "Kot mora biti med 0.0 in 360.0, bil pa je %g\n"
 #: ../src/ui/theme-parser.c:726
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Alfa mora biti med 0.0 (nevidno) in 1.0 (popolnoma vidno), bilo je %g\n"
+msgstr "Alfa mora biti med 0.0 (nevidno) in 1.0 (popolnoma vidno), bilo je %g\n"
 
 #: ../src/ui/theme-parser.c:791
 #, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
-"Neveljavna velikost naziva \"%s\" (mora biti eno od xx-small,x-small,small,"
-"medium,large,x-large,xx-large)\n"
+msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+msgstr "Neveljavna velikost naziva \"%s\" (mora biti eno od xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:936
+#: ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033
+#: ../src/ui/theme-parser.c:1136
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "ime <%s> \"%s\" je uporabljeno drugič"
 
-#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:948
+#: ../src/ui/theme-parser.c:1045
 #: ../src/ui/theme-parser.c:1148
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
@@ -1924,8 +1632,7 @@ msgstr "geometrija <%s> \"%s\" ni bila navedena"
 #: ../src/ui/theme-parser.c:1071
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> mora navesti ali geometrijo ali nadrejeni predmet, ki ima geometrijo"
+msgstr "<%s> mora navesti ali geometrijo ali nadrejeni predmet, ki ima geometrijo"
 
 #: ../src/ui/theme-parser.c:1113
 msgid "You must specify a background for an alpha value to be meaningful"
@@ -1946,23 +1653,25 @@ msgstr "Neznan style_set \"%s\" v elementu <%s>"
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Vrsti okna \"%s\" je bil nabor sloga že določen"
 
-#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
-#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
-#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
-#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
+#: ../src/ui/theme-parser.c:1229
+#: ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519
+#: ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786
+#: ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126
+#: ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202
+#: ../src/ui/theme-parser.c:3240
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> ni dovoljen pod <%s>"
 
-#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1343
+#: ../src/ui/theme-parser.c:1357
 #: ../src/ui/theme-parser.c:1402
-msgid ""
-"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
-"for buttons"
-msgstr ""
-"Ni mogoče navesti obojega \"button_width\"/\"button_height\" in razmerja"
-"\"aspect_ratio\" gumba"
+msgid "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
+msgstr "Ni mogoče navesti obojega \"button_width\"/\"button_height\" in razmerja\"aspect_ratio\" gumba"
 
 #: ../src/ui/theme-parser.c:1366
 #, c-format
@@ -1994,18 +1703,21 @@ msgstr "Element <%s> nima atributa \"extent_angle\" ali \"to\""
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Ni mogoče razumeti vrednost za vrsto preliva \"%s\""
 
-#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
+#: ../src/ui/theme-parser.c:2109
+#: ../src/ui/theme-parser.c:2484
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Nerazpoznavna vrsta polnjenja \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2276
+#: ../src/ui/theme-parser.c:2359
 #: ../src/ui/theme-parser.c:2422
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti stanja \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
+#: ../src/ui/theme-parser.c:2286
+#: ../src/ui/theme-parser.c:2369
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti senčenja \"%s\" za element <%s>"
@@ -2015,12 +1727,14 @@ msgstr "Ni mogoče razumeti senčenja \"%s\" za element <%s>"
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti puščice \"%s\" za element <%s>"
 
-#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
+#: ../src/ui/theme-parser.c:2596
+#: ../src/ui/theme-parser.c:2692
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "<draw_ops> imenovan \"%s\" ni bil naveden"
 
-#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
+#: ../src/ui/theme-parser.c:2608
+#: ../src/ui/theme-parser.c:2704
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Vključevanje draw_ops \"%s\" tu, bi ustvarilo krožno nanašanje"
@@ -2035,7 +1749,8 @@ msgstr "Neznan položaj \"%s\" za del okvirja"
 msgid "Frame style already has a piece at position %s"
 msgstr "Slog okvirja že ima del na položaju %s"
 
-#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
+#: ../src/ui/theme-parser.c:2844
+#: ../src/ui/theme-parser.c:2919
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Za ime \"%s\" ni bilo navedenega <draw_ops>"
@@ -2075,58 +1790,45 @@ msgstr "\"%s\" ni veljavna vrednost za atribut \"state\""
 msgid "A style called \"%s\" has not been defined"
 msgstr "Slog imenovan \"%s\" ni bil določen"
 
-#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
+#: ../src/ui/theme-parser.c:3013
+#: ../src/ui/theme-parser.c:3036
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ni veljavna vrednost za atribut \"resize\""
 
 #: ../src/ui/theme-parser.c:3047
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
-"Element <%s> ne bi smel imeti atributa \"resize\" za razpeta/senčena stanja"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgstr "Element <%s> ne bi smel imeti atributa \"resize\" za razpeta/senčena stanja"
 
 #: ../src/ui/theme-parser.c:3061
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "Element <%s> ne bi smel imeti atributa \"resize\" za razpeta stanja"
 
-#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
+#: ../src/ui/theme-parser.c:3075
+#: ../src/ui/theme-parser.c:3097
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Slog za stanje %s resize %s fokus %s je bil že naveden"
 
-#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
+#: ../src/ui/theme-parser.c:3086
+#: ../src/ui/theme-parser.c:3108
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Slog za stanje %s fokus %s je bil že naveden"
 
 #: ../src/ui/theme-parser.c:3147
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Za element <piece> ni mogoče imeti dveh draw_ops (tema je navedla atribut "
-"draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
+msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Za element <piece> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
 #: ../src/ui/theme-parser.c:3185
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Za element <button> ni mogoče imeti dveh draw_ops (tema je navedla atribut "
-"draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
+msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Za element <button> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
 #: ../src/ui/theme-parser.c:3223
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"Za element <menu_icon> ni mogoče imeti dveh draw_ops (tema je navedla "
-"atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
+msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Za element <menu_icon> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
 #: ../src/ui/theme-parser.c:3271
 #, c-format
@@ -2135,10 +1837,8 @@ msgstr "Najbolj zunanji element teme mora biti <metacity_theme> in ne <%s>"
 
 #: ../src/ui/theme-parser.c:3291
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"Element <%s> ni dovoljen znotraj elementov name, author, date ali description"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "Element <%s> ni dovoljen znotraj elementov name, author, date ali description"
 
 #: ../src/ui/theme-parser.c:3296
 #, c-format
@@ -2147,18 +1847,18 @@ msgstr "Element <%s> ni dovoljen znotraj elementa <constant>"
 
 #: ../src/ui/theme-parser.c:3308
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"Element <%s> ni dovoljen znotraj elementov distance/border/aspect_ration"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "Element <%s> ni dovoljen znotraj elementov distance/border/aspect_ration"
 
 #: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Element <%s> ni dovoljen znotraj elementa operacije draw"
 
-#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
-#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
+#: ../src/ui/theme-parser.c:3340
+#: ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375
+#: ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> ni dovoljen znotraj elementa <%s>"
@@ -2176,8 +1876,10 @@ msgstr "Za gumb ni naveden draw_ops"
 msgid "No text is allowed inside element <%s>"
 msgstr "Znotraj elementa <%s> besedilo ni dovoljeno"
 
-#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
-#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3724
+#: ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748
+#: ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
 #, c-format
 msgid "<%s> specified twice for this theme"
@@ -2345,24 +2047,16 @@ msgstr "Tukaj je naslov okna"
 
 #: ../src/ui/theme-viewer.c:1026
 #, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"Izrisanih %d sličic v %g sekundah odjemalca (%g milisekund na sličico) in %g "
-"sekund v času stenske ure, upoštevajoč sredstva strežnika X (%g milisekund "
-"na sličico)\n"
+msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
+msgstr "Izrisanih %d sličic v %g sekundah odjemalca (%g milisekund na sličico) in %g sekund v času stenske ure, upoštevajoč sredstva strežnika X (%g milisekund na sličico)\n"
 
 #: ../src/ui/theme-viewer.c:1245
 msgid "position expression test returned TRUE but set error"
-msgstr ""
-"preizkus izjave položaja je vrnil logični PRAVILNO, vendar je nastavil napako"
+msgstr "preizkus izjave položaja je vrnil logični PRAVILNO, vendar je nastavil napako"
 
 #: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-"preizkus izjave položaja je vrnil logični NAPAČNO, vendar ni nastavil napake"
+msgstr "preizkus izjave položaja je vrnil logični NAPAČNO, vendar ni nastavil napake"
 
 #: ../src/ui/theme-viewer.c:1251
 msgid "Error was expected but none given"
@@ -2391,30 +2085,25 @@ msgstr "vrednost z je bila %d, pričakovana pa %d"
 #: ../src/ui/theme-viewer.c:1331
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d izjav koordinat razčlenjenih v %g sekundah (%g sekund v povprečju)\n"
+msgstr "%d izjav koordinat razčlenjenih v %g sekundah (%g sekund v povprečju)\n"
 
 #~ msgid "Failed to parse message \"%s\" from dialog process\n"
 #~ msgstr "Ni mogoče razčleniti sporočila \"%s\" iz procesa dialogov\n"
-
 #~ msgid "Error reading from dialog display process: %s\n"
 #~ msgstr "Napaka ob branju iz procesa prikaza dialogov: %s\n"
-
 #~ msgid ""
 #~ "Error launching metacity-dialog to ask about killing an application: %s\n"
 #~ msgstr ""
 #~ "Napaka ob zaganjanju metacity-dialog, da bi vprašal o ubijanju programa: %"
 #~ "s\n"
-
 #~ msgid ""
 #~ "Error launching metacity-dialog to warn about apps that don't support "
 #~ "session management: %s\n"
 #~ msgstr ""
 #~ "Napaka ob zaganjanju metacity-dialog za opozorilo o programih, ki ne "
 #~ "podpirajo upravljanja seje: %s\n"
-
 #~ msgid "\"%s\" is not responding."
 #~ msgstr "\"%s\" se ne odziva."
-
 #~ msgid "Title"
 #~ msgstr "Naziv"
+
