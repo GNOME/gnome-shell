@@ -94,7 +94,15 @@ Overview.prototype = {
 
         this._activeDisplayPane = null;
 
-        // Used to catch any clicks when we have an active pane; see the comments
+        // During transitions, we raise this to the top to avoid having the overview
+        // area be reactive; it causes too many issues such as double clicks on
+        // Dash elements, or mouseover handlers in the workspaces.
+        this._coverPane = new Clutter.Rectangle({ opacity: 0,
+                                                  reactive: true });
+        this._group.add_actor(this._coverPane);
+        this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
+
+        // Similar to the cover pane but used for dialogs ("panes"); see the comments
         // in addPane below.
         this._transparentBackground = new Clutter.Rectangle({ opacity: 0,
                                                               reactive: true });
@@ -126,6 +134,8 @@ Overview.prototype = {
         this._transparentBackground.lower_bottom();
         this._paneContainer.lower_bottom();
 
+        this._coverPane.lower_bottom();
+
         this._workspaces = null;
     },
 
@@ -147,7 +157,11 @@ Overview.prototype = {
         let screenHeight = global.screen_height;
         let screenWidth = global.screen_width;
 
-        let contentHeight = screenHeight - Panel.PANEL_HEIGHT;
+        let contentY = Panel.PANEL_HEIGHT;
+        let contentHeight = screenHeight - contentY;
+
+        this._coverPane.set_position(0, contentY);
+        this._coverPane.set_size(screenWidth, contentHeight);
 
         let workspaceColumnsUsed = wideScreen ? COLUMNS_FOR_WORKSPACES_WIDE_SCREEN : COLUMNS_FOR_WORKSPACES_REGULAR_SCREEN;
         let workspaceRowsUsed = wideScreen ? ROWS_FOR_WORKSPACES_WIDE_SCREEN : ROWS_FOR_WORKSPACES_REGULAR_SCREEN;
@@ -162,10 +176,9 @@ Overview.prototype = {
         this._workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
         this._workspacesY = displayGridRowHeight + WORKSPACE_GRID_PADDING * (screenHeight / screenWidth);
 
-        let dashY = Panel.PANEL_HEIGHT;
-        this._dash.actor.set_position(0, dashY);
-        this._dash.actor.set_size(displayGridColumnWidth, screenHeight - dashY);
-        this._dash.searchArea.height = this._workspacesY - dashY;
+        this._dash.actor.set_position(0, contentY);
+        this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
+        this._dash.searchArea.height = this._workspacesY - contentY;
         this._dash.sectionArea.height = this._workspacesHeight;
 
         // place the 'Add Workspace' button in the bottom row of the grid
@@ -173,11 +186,11 @@ Overview.prototype = {
         this._addButtonX = this._workspacesX + this._workspacesWidth - addRemoveButtonSize;
         this._addButtonY = screenHeight - Math.floor(displayGridRowHeight * 4/5);
 
-        this._backOver.set_position(0, Panel.PANEL_HEIGHT);
+        this._backOver.set_position(0, contentY);
         this._backOver.set_size(global.screen_width, contentHeight);
 
         this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
-                                         Panel.PANEL_HEIGHT);
+                                         contentY);
         // Dynamic width
         this._paneContainer.height = contentHeight;
 
@@ -325,6 +338,7 @@ Overview.prototype = {
                            time: ANIMATION_TIME
                          });
 
+        this._coverPane.raise_top();
         this.emit('showing');
     },
 
@@ -361,6 +375,7 @@ Overview.prototype = {
                            time: ANIMATION_TIME
                          });
 
+        this._coverPane.raise_top();
         this.emit('hiding');
     },
 
@@ -418,6 +433,7 @@ Overview.prototype = {
             return;
 
         this.animationInProgress = false;
+        this._coverPane.lower_bottom();
 
         this.emit('shown');
     },
@@ -434,6 +450,8 @@ Overview.prototype = {
         this.visible = false; 
         this.animationInProgress = false;
         this._hideInProgress = false;
+
+        this._coverPane.lower_bottom();
 
         Main.endModal();
         this.emit('hidden');
