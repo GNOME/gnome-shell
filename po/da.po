@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 14:04+0100\n"
-"PO-Revision-Date: 2009-02-15 03:41+0100\n"
+"POT-Creation-Date: 2009-09-13 03:44+0200\n"
+"PO-Revision-Date: 2009-09-13 02:43+0200\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -33,27 +33,33 @@ msgstr "Skrivebord"
 msgid "Window Management"
 msgstr "Vindueshåndtering"
 
+#: ../src/core/bell.c:294
+msgid "Bell event"
+msgstr "Klokkebegivenhed"
+
 #: ../src/core/core.c:206
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Ukendt forespørgsel efter vinduesinformation: %d"
 
 #: ../src/core/delete.c:104
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
 "<i>You may choose to wait a short while for it to continue or force the "
 "application to quit entirely.</i>"
 msgstr ""
-"Du kan vælge at vente et lille stykke tid på at programmet fortsætter, eller "
-"du kan tvinge programmet til at afslutte fuldstændigt."
+"<big><b><tt>%s</tt> svarer ikke.</b></big>\n"
+"\n"
+"<i>Du kan vælge at vente et lille stykke tid på at programmet fortsætter, "
+"eller du kan tvinge programmet til at afslutte fuldstændigt.</i>"
 
-#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:107
+#: ../src/core/delete.c:115
 msgid "_Wait"
 msgstr "_Vent"
 
-#: ../src/core/delete.c:115 ../src/ui/metacity-dialog.c:109
+#: ../src/core/delete.c:115
 msgid "_Force Quit"
 msgstr "_Tving til at afslutte"
 
@@ -121,7 +127,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminal-kommando er blevet defineret.\n"
 
 #: ../src/core/main.c:130
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -130,53 +136,60 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright © 2001-2008 Havoc Pennington, Red Hat, Inc., og andre\n"
+"Copyright © 2001-%s Havoc Pennington, Red Hat, Inc., og andre\n"
 "Dette er frit programmel; se kildekoden for kopieringsbetingelser.\n"
 "Der er INGEN garanti; ikke engang for SALGBARHED eller EGNETHED TIL ET "
 "BESTEMT FORMÅL.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Deaktivér forbindelse til sessionshåndtering"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Erstat den kørende vindueshåndtering med Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Angiv sessionhåndterings-id"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "X-skærm som bruges"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Initialisér session fra gemt fil"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Vis version"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Gør kald til X synkrone"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Aktivér komposition"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Deaktivér komposition"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr ""
+"Opret ikke fuldskærmsvinduer, der er maksimeret og ikke har nogen "
+"dekorationer"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Kunne ikke skanne temamappe: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -184,7 +197,7 @@ msgstr ""
 "Kunne ikke finde et tema! Sikr dig at %s eksisterer og indeholder de "
 "sædvanlige temaer.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Kunne ikke genstarte: %s\n"
@@ -200,24 +213,24 @@ msgstr "Kunne ikke genstarte: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøglen \"%s\" er sat til en ugyldig værdi\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d lagret i GConf-nøgle %s er uden for intervallet %d til %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøglen \"%s\" er sat til en ugyldig type\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -225,13 +238,13 @@ msgstr ""
 "Omgåelser for ødelagte programmer deaktiveret. Nogle programmer opfører sig "
 "måske ikke korrekt.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Kunne ikke fortolke skrifttypebeskrivelsen \"%s\" fra GConf-nøglen %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -240,17 +253,17 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi som "
 "museknapsmodifikation\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fejl under sætning af antallet af arbejdsområder til %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -259,22 +272,22 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi for "
 "tastebindingen \"%s\"\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fejl under sætning af navnet for arbejdsområde %d til \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Fejl ved indstilling af status for kompositor: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skærm %d på terminal \"%s\" er ugyldig\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -283,7 +296,7 @@ msgstr ""
 "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering; prøv "
 "tilvalget --replace for at erstatte den aktuelle vindueshåndtering.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -291,12 +304,12 @@ msgstr ""
 "Kunne ikke fremskaffe vindueshåndteringvælgeren på skærm %d på terminal \"%s"
 "\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Skærm %d på terminal \"%s\" har allerede en vindueshåndtering\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kunne ikke frigive skærm %d på terminal \"%s\"\n"
@@ -307,14 +320,14 @@ msgstr "Kunne ikke frigive skærm %d på terminal \"%s\"\n"
 #.
 #: ../src/core/schema-bindings.c:169
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Formatet ser ud som \"<Control>a\" eller \"<Skift><Al>F1\".\n"
+"Formatet ser ud som \"<Control>a\" eller \"<Shift><Alt>F1\".\n"
 "\n"
 "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
 "forkortelser som \"<Ctl>\" og \"<Ctrl>\". Hvis du sætter indstillingen til "
@@ -323,7 +336,7 @@ msgstr ""
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -333,7 +346,7 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"Formatet ser ud som \"<Control>a\" eller \"<Skift><Alt>F1\".\n"
+"Formatet ser ud som \"<Control>a\" eller \"<Shift><Alt>F1\".\n"
 "\n"
 "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
 "forkortelser som \"<Ctl>\" og \"<Ctrl>\". Hvis du sætter indstillingen til "
@@ -393,14 +406,13 @@ msgstr "indlejret <window>-mærke"
 msgid "Unknown element %s"
 msgstr "Ukendt element %s"
 
-#: ../src/core/session.c:1887
-#, c-format
+#: ../src/core/session.c:1812
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Fejl ved start af metacity-dialog for at advare om programmer der ikke "
-"understøtter sessionshåndtering: %s\n"
+"Disse vinduer understøtter ikke gemning af deres opsætning og skal "
+"genstartes manuelt næste gang du logger på."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -440,7 +452,7 @@ msgstr "Vindueshåndteringsfejl: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:581 ../src/metacity.desktop.in.h:1
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
 #: ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
@@ -472,18 +484,40 @@ msgstr ""
 "ændres, men angiver den mindste størrelse %d x %d og den maksimale størrelse "
 "%d x %d; dette giver ikke mening.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:244
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %lu\n"
 
 # Lad os håbe dette er rigtigt
-#: ../src/core/window-props.c:377
+#. Translators: the title of a window from another machine
+#: ../src/core/window-props.c:388
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1358
+#. Simple case-- don't bother to look it up.  It's root.
+#: ../src/core/window-props.c:420
+#, c-format
+msgid "%s (as superuser)"
+msgstr "%s (som superbruger)"
+
+# Lad os håbe dette er rigtigt
+#. Translators: the title of a window owned by another user
+#. * on this machine
+#: ../src/core/window-props.c:438
+#, c-format
+msgid "%s (as %s)"
+msgstr "%s (som %s)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine, whose name we don't know
+#: ../src/core/window-props.c:444
+#, c-format
+msgid "%s (as another user)"
+msgstr "%s (som en anden bruger)"
+
+#: ../src/core/window-props.c:1429
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindue 0x%lx specificeret for %s.\n"
@@ -1531,55 +1565,6 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Kunne ikke fortolke \"%s\" som et heltal"
-
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Forstod ikke de afsluttende tegn \"%s\" i tekststrengen \"%s\""
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" svarer ikke."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Du kan vælge at vente et lille stykke tid på at programmet fortsætter, eller "
-"du kan tvinge programmet til at afslutte fuldstændigt."
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Titel"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Klasse"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Disse vinduer understøtter ikke gemning af deres opsætning og skal "
-"genstartes manuelt næste gang du logger på."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Der opstod en fejl ved kørsel af \"%s\":\n"
-"%s."
-
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
@@ -1867,6 +1852,16 @@ msgstr "Egenskaben \"%s\" er gentaget to gange i det samme <%s>-element"
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Egenskaben \"%s\" er ugyldig i <%s>-elementet i denne sammenhæng"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Kunne ikke fortolke \"%s\" som et heltal"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Forstod ikke de afsluttende tegn \"%s\" i tekststrengen \"%s\""
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -2189,9 +2184,9 @@ msgstr "Tekst er ikke tilladt inden i elementet <%s>"
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "<name> angivet to gange for dette tema"
+msgstr "<%s> angivet to gange for dette tema"
 
 #: ../src/ui/theme-parser.c:4040
 #, c-format
@@ -2251,109 +2246,109 @@ msgstr "/Windows/_Alle dokke"
 msgid "/Windows/Des_ktop"
 msgstr "/Windows/_Skrivebord"
 
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:136
 msgid "Open another one of these windows"
 msgstr "Åbn endnu et af disse vinduer"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:143
 msgid "This is a demo button with an 'open' icon"
 msgstr "Dette er en demoknap med et \"åbn\"-ikon"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:150
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Dette er en demoknap med et \"afslut\"-ikon"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:243
 msgid "This is a sample message in a sample dialog"
 msgstr "Dette er en eksempelbesked i et eksempelmeddelelsevindue"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:326
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Uægte menupunkt %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:360
 msgid "Border-only window"
 msgstr "Vindue med kun ramme"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:362
 msgid "Bar"
 msgstr "Linje"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:379
 msgid "Normal Application Window"
 msgstr "Almindeligt programvindue"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:383
 msgid "Dialog Box"
 msgstr "Meddelelsevindue"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:387
 msgid "Modal Dialog Box"
 msgstr "Modalt meddelelsevindue"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:391
 msgid "Utility Palette"
 msgstr "Værktøjspalet"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:395
 msgid "Torn-off Menu"
 msgstr "Afrevet menu"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:399
 msgid "Border"
 msgstr "Ramme"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:727
 #, c-format
 msgid "Button layout test %d"
 msgstr "Knaplayouttest %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:756
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder for at tegne én vinduesramme"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:799
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Brug: metacity-theme-viewer [TEMANAVN]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:806
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Fejl under indlæsning af tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:812
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Indlæste tema \"%s\" på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:853
 msgid "Normal Title Font"
 msgstr "Normal titelskrifttype"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:859
 msgid "Small Title Font"
 msgstr "Lille titelskrifttype"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:865
 msgid "Large Title Font"
 msgstr "Stor titelskrifttype"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:870
 msgid "Button Layouts"
 msgstr "Knaplayout"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:875
 msgid "Benchmark"
 msgstr "Tidstest"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:922
 msgid "Window Title Goes Here"
 msgstr "Vinduestitel er her"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1026
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2364,43 +2359,73 @@ msgstr ""
 "sekunders almindelig tid inkl. X-server-resurser (%g millisekunder pr. "
 "ramme)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1245
 msgid "position expression test returned TRUE but set error"
 msgstr "positionsudtrykstest returnede TRUE, men sat fejl"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "positionsudtrykstest returnede FALSE, men satte ikke fejl"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1251
 msgid "Error was expected but none given"
 msgstr "Fejl var forventet, men ingen givet"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1253
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Fejl %d var forventet, men %d givet"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1259
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Fejl var ikke forventet, men én blev returneret: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1263
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-værdi var %d, %d var forventet"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1266
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-værdi var %d, %d var forventet"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1331
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinatudtryk fortolket på %g sekunder (%g sekunder i gennemsnit)\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to warn about apps that don't support "
+#~ "session management: %s\n"
+#~ msgstr ""
+#~ "Fejl ved start af metacity-dialog for at advare om programmer der ikke "
+#~ "understøtter sessionshåndtering: %s\n"
+
+#~ msgid "\"%s\" is not responding."
+#~ msgstr "\"%s\" svarer ikke."
+
+#~ msgid ""
+#~ "You may choose to wait a short while for it to continue or force the "
+#~ "application to quit entirely."
+#~ msgstr ""
+#~ "Du kan vælge at vente et lille stykke tid på at programmet fortsætter, "
+#~ "eller du kan tvinge programmet til at afslutte fuldstændigt."
+
+#~ msgid "Title"
+#~ msgstr "Titel"
+
+#~ msgid "Class"
+#~ msgstr "Klasse"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Der opstod en fejl ved kørsel af \"%s\":\n"
+#~ "%s."
 
 #~ msgid "Failed to parse message \"%s\" from dialog process\n"
 #~ msgstr "Kunne ikke fortolke beskeden \"%s\" fra vinduesproces\n"
@@ -2446,1187 +2471,6 @@ msgstr ""
 
 #~ msgid "Unmaximize window"
 #~ msgstr "Gendan vindue"
-
-#~ msgid ""
-#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
-#~ "window) normally raise the window as a side-effect. Setting this option "
-#~ "to false, which is strongly discouraged, will decouple raising from other "
-#~ "user actions, and ignore raise requests generated by applications. See "
-#~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-#~ msgstr ""
-#~ "Mange handlinger (f.eks. at klikke i klientområdet, flytte eller ændre "
-#~ "størrelse på vinduet) hæver normalt vinduet som en bivirkning. At sætte "
-#~ "denne indstilling til \"false\", hvilket på det kraftigste frarådes, vil "
-#~ "frakoble hævning fra andre brugerhandlinger og vil ignorere hævningskald "
-#~ "fra andre programmer. Se http://bugzilla.gnome.org/show_bug.cgi?"
-#~ "id=445447#c6."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace above the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområdet over det aktuelle "
-#~ "arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace below the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområdet under det aktuelle "
-#~ "arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the left of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområdet til venstre for det "
-#~ "aktuelle arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller "
-#~ "\"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader "
-#~ "både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og "
-#~ "\"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle "
-#~ "tekststreng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-#~ "denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the right of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområdet til højre for det "
-#~ "aktuelle arbejdsområde. Formatet ser ud som \"&lt;Control&gt;a\" eller "
-#~ "\"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader "
-#~ "både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og "
-#~ "\"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle "
-#~ "tekststreng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-#~ "denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 1. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 10. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 11. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 12. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 2. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 3. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 4. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 5. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 6. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 7. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 8. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter til arbejdsområde 9. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to activate the window menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej aktiverer vinduesmenuen. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to close a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej lukker et vindue. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej starter flytningstilstanden og begynder at flytte et "
-#~ "vindue med tastaturet. Formatet ser ud som \"&lt;Control&gt;a\" eller "
-#~ "\"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader "
-#~ "både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og "
-#~ "\"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle "
-#~ "tekststreng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-#~ "denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej starter størrelsesændringstilstanden og begynder at "
-#~ "ændre størrelsen af et vindue med tastaturet. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to hide all normal windows and set the focus to the "
-#~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skjuler alle almindelige vinduer og fokuserer "
-#~ "skrivebordsbaggrunden. Formatet ser ud som \"&lt;Control&gt;a\" eller "
-#~ "\"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader "
-#~ "både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og "
-#~ "\"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle "
-#~ "tekststreng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-#~ "denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to maximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej maksimerer et vindue. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to minimize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej minimerer et vindue. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace down. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue et arbejdsområde ned. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the left. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue et arbejdsområde til venstre. "
-#~ "Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;"
-#~ "F1\". Fortolkeren er ikke kræsen og tillader både store og små bogstaver, "
-#~ "samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the right. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue et arbejdsområde til højre. "
-#~ "Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;"
-#~ "F1\". Fortolkeren er ikke kræsen og tillader både store og små bogstaver, "
-#~ "samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace up. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue et arbejdsområde op. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 1. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 1. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 10. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 10. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 11. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 11. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 12. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 12. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 2. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 2. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 3. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 3. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 4. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 4. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 5. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 5. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 6. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 6. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 7. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 7. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 8. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 8. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 9. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til arbejdsområde 9. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus tilbage mellem paneler og skrivebordet "
-#~ "med et vindue. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
-#~ "\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus tilbage mellem paneler og skrivebordet "
-#~ "uden et vindue. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application without a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Tastaturgenvejen der bruges til at flytte fokus tilbage mellem et "
-#~ "programs vinduer uden et navigationsvindue. Holdes \"skift\" inde sammen "
-#~ "med denne genvej vil retningen ændres igen til fremad. Formatet ser ud "
-#~ "som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application, using a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Tastaturgenvejen der bruges til at flytte fokus tilbage mellem et "
-#~ "programs vinduer med et navigationsvindue. Hvis \"skift\"-tasten holdes "
-#~ "nede mens denne genvej tastes, gås den modsatte vej. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows without a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus tilbage mellem vinduer uden et vindue "
-#~ "(traditionelt &lt;Alt&gt;Tab). Hvis \"skift\"-tasten holdes nede mens "
-#~ "denne genvej tastes, gås den modsatte vej. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows, using a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus tilbage mellem vinduer med et "
-#~ "navigationsvindue. Hvis \"skift\"-tasten holdes nede mens denne genvej "
-#~ "tastes, gås den modsatte vej. Formatet ser ud som \"&lt;Control&gt;a\" "
-#~ "eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og "
-#~ "tillader både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;"
-#~ "\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle "
-#~ "tekststreng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-#~ "denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, using a "
-#~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus mellem paneler og skrivebordet med et "
-#~ "navigationsvindue. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, without "
-#~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus mellem paneler og skrivebordet uden et "
-#~ "navigationsvindue. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application "
-#~ "without a popup window. Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Tastaturgenvejen der bruges til at flytte fokus mellem vinduer i et "
-#~ "program uden et navigationsvindue. Hvis \"skift\"-tasten holdes nede mens "
-#~ "denne genvej tastes, gås den modsatte vej. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application, "
-#~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
-#~ "key while using this binding reverses the direction of movement. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Tastaturgenvejen der bruges til at flytte fokus mellem vinduer i et "
-#~ "program med et navigationsvindue. (Traditionelt &lt;Alt&gt;F6) Hvis "
-#~ "\"skift\"-tasten holdes nede mens denne genvej tastes, gås den modsatte "
-#~ "vej. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;"
-#~ "Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både store og små "
-#~ "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
-#~ "Hvis du sætter indstillingen til den specielle tekststreng \"disabled\", "
-#~ "vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows without a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
-#~ "this binding reverses the direction of movement. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus mellem vinduer uden et vindue "
-#~ "(traditionelt &lt;Alt&gt;Escape). Hvis \"skift\"-tasten holdes mens denne "
-#~ "genvej tastes, gåes den modsatte vej. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows, using a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter fokus mellem vinduer med et vindue "
-#~ "(traditionelt &lt;Alt&gt;Tab). Hvis \"skift\"-tasten holdes mens denne "
-#~ "genvej tastes, gåes den modsatte vej. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to toggle always on top. A window that is always on "
-#~ "top will always be visible over other overlapping windows. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter mellem om et vindue altid er øverst eller "
-#~ "ej. Et vindue der altid er øverst, vil blive vist over andre overlappende "
-#~ "vinduer. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;"
-#~ "&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både store og små "
-#~ "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
-#~ "Hvis du sætter indstillingen til den specielle tekststreng \"disabled\", "
-#~ "vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to toggle fullscreen mode. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter mellem fuldskærmstilstand. Formatet ser ud "
-#~ "som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter maksimeringstilstand. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to toggle shaded/unshaded state. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter mellem oprullet og nedrullet tilstand. "
-#~ "Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;"
-#~ "F1\". Fortolkeren er ikke kræsen og tillader både store og små bogstaver, "
-#~ "samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to toggle whether the window is on all workspaces or "
-#~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter mellem om vinduet er på alle arbejdsområder "
-#~ "eller kun ét. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej gendanner et vindue efter en maksimering. Formatet "
-#~ "ser ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding which display's the panel's \"Run Application\" dialog "
-#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej viser panelets \"Kør program\"-vindue. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Tastaturgenvejen som aktiverer en terminal. Formatet ser ud som \"&lt;"
-#~ "Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke "
-#~ "kræsen og tillader både store og små bogstaver, samt forkortelser som "
-#~ "\"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den "
-#~ "specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility to take a "
-#~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej starter panelets skærmbilledeprogram til et gemme et "
-#~ "skærmbillede for et vindue. Formatet ser ud som \"&lt;Control&gt;a\" "
-#~ "eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og "
-#~ "tillader både store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;"
-#~ "\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til den specielle "
-#~ "tekststreng \"disabled\", vil der ikke være nogen tastaturgenvej til "
-#~ "denne handling."
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej starter panelets skærmbilledeprogram. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "The keybinding which shows the panel's main menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej aktiverer panelets hovedmenu. Formatet ser ud som "
-#~ "\"&lt;Control&gt;a\" eller \"&lt;Skift&gt;&lt;Alt&gt;F1\". Fortolkeren er "
-#~ "ikke kræsen og tillader både store og små bogstaver, samt forkortelser "
-#~ "som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter indstillingen til "
-#~ "den specielle tekststreng \"disabled\", vil der ikke være nogen "
-#~ "tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding changes whether a window is above or below other windows. "
-#~ "If the window is covered by another one, it raises the window above all "
-#~ "others, and if the window is already fully visible, it lowers it below "
-#~ "all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej skifter mellem om vinduet er over eller under andre "
-#~ "vinduer. Hvis vinduet er dækket af andre vinduer, hæves det. Hvis vinduet "
-#~ "allerede er fuldt synligt, sænkes det under alle andre vinduer. Formatet "
-#~ "ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding lowers a window below other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej placerer et vindue under andre vinduer. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue mod skærmens nordlige side "
-#~ "(toppen). Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både store og små "
-#~ "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
-#~ "Hvis du sætter indstillingen til den specielle tekststreng \"disabled\", "
-#~ "vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til skærmens østlige (højre) side. "
-#~ "Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1\". Fortolkeren er ikke kræsen og tillader både store og små bogstaver, "
-#~ "samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (top right) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til skærmens nørdøstlige (øverste "
-#~ "højre) hjørne. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-west (top left) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til skærmens nordvestlige (øverste "
-#~ "venstre) hjørne. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south (bottom) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til skærmens sydlige side "
-#~ "(bunden). Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både store og små "
-#~ "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
-#~ "Hvis du sætter indstillingen til den specielle tekststreng \"disabled\", "
-#~ "vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-east (bottom right) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til skærmens sydøstlige (nederste "
-#~ "højre) hjørne. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-west (bottom left) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til skærmens sydvestlige (nederste "
-#~ "venstre) hjørne. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej flytter et vindue til skærmens vestlige (venstre) "
-#~ "side. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både store og små "
-#~ "bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". "
-#~ "Hvis du sætter indstillingen til den specielle tekststreng \"disabled\", "
-#~ "vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding raises the window above other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej placerer et vindue over andre vinduer. Formatet ser "
-#~ "ud som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "Fortolkeren er ikke kræsen og tillader både store og små bogstaver, samt "
-#~ "forkortelser som \"&lt;Ctl&gt;\" og \"&lt;Ctrl&gt;\". Hvis du sætter "
-#~ "indstillingen til den specielle tekststreng \"disabled\", vil der ikke "
-#~ "være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available horizontal space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej ændrer størrelsen på et vindue så det udfylder al "
-#~ "den vandrette plads. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available vertical space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Denne tastaturgenvej ændrer størrelsen på et vindue så det udfylder al "
-#~ "den lodrette plads. Formatet ser ud som \"&lt;Control&gt;a\" eller \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". Fortolkeren er ikke kræsen og tillader både "
-#~ "store og små bogstaver, samt forkortelser som \"&lt;Ctl&gt;\" og \"&lt;"
-#~ "Ctrl&gt;\". Hvis du sætter indstillingen til den specielle tekststreng "
-#~ "\"disabled\", vil der ikke være nogen tastaturgenvej til denne handling."
 
 #~ msgid "Unmaximize Window"
 #~ msgstr "Gendan vindue"
