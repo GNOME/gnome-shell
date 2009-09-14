@@ -1,8 +1,42 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2009  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
 /**
  * SECTION:clutter-layout-manager
  * @short_description: Layout managers base class
  *
- * #ClutterLayoutManager is FIXME
+ * #ClutterLayoutManager is a base abstract class for layout managers. A
+ * layout manager implements the layouting policy for a composite or a
+ * container actor: it controls the preferred size of the actor to which
+ * it has been paired, and it controls the allocation of its children.
+ *
+ * Any composite or container #ClutterActor subclass can delegate the
+ * layouting of its children to a #ClutterLayoutManager. Clutter provides
+ * a generic container using #ClutterLayoutManager called #ClutterBox.
+ *
+ * Clutter provides some simple #ClutterLayoutManager sub-classes, like
+ * #ClutterFixedLayout and #ClutterBinLayout.
  *
  * #ClutterLayoutManager is available since Clutter 1.2
  */
@@ -23,9 +57,18 @@
                    G_OBJECT_TYPE_NAME (_obj),                           \
                    (method));                           } G_STMT_END
 
+enum
+{
+  LAYOUT_CHANGED,
+
+  LAST_SIGNAL
+};
+
 G_DEFINE_ABSTRACT_TYPE (ClutterLayoutManager,
                         clutter_layout_manager,
                         G_TYPE_INITIALLY_UNOWNED);
+
+static guint manager_signals[LAST_SIGNAL] = { 0, };
 
 static void
 layout_manager_real_get_preferred_width (ClutterLayoutManager *manager,
@@ -74,6 +117,45 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
   klass->get_preferred_width = layout_manager_real_get_preferred_width;
   klass->get_preferred_height = layout_manager_real_get_preferred_height;
   klass->allocate = layout_manager_real_allocate;
+
+  /**
+   * ClutterLayoutManager::layout-changed:
+   * @manager: the #ClutterLayoutManager that emitted the signal
+   *
+   * The ::layout-changed signal is emitted each time a layout manager
+   * has been changed. Every #ClutterActor using the @manager instance
+   * as a layout manager should connect a handler to the ::layout-changed
+   * signal and queue a relayout on themselves:
+   *
+   * |[
+   *   static void layout_changed (ClutterLayoutManager *manager,
+   *                               ClutterActor         *self)
+   *   {
+   *     clutter_actor_queue_relayout (self);
+   *   }
+   *   ...
+   *     self->manager = g_object_ref_sink (manager);
+   *     g_signal_connect (self->manager, "layout-changed",
+   *                       G_CALLBACK (layout_changed),
+   *                       self);
+   * ]|
+   *
+   * Sub-classes of #ClutterLayoutManager that implement a layout that
+   * can be controlled or changed using parameters should emit the
+   * ::layout-changed signal whenever one of the parameters changes,
+   * by using clutter_layout_manager_layout_changed().
+   *
+   * Since: 1.2
+   */
+  manager_signals[LAYOUT_CHANGED] =
+    g_signal_new (I_("layout-changed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterLayoutManagerClass,
+                                   layout_changed),
+                  NULL, NULL,
+                  clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -179,4 +261,23 @@ clutter_layout_manager_allocate (ClutterLayoutManager   *manager,
 
   klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
   klass->allocate (manager, container, allocation, flags);
+}
+
+/**
+ * clutter_layout_manager_layout_changed:
+ * @manager: a #ClutterLayoutManager
+ *
+ * Emits the #ClutterLayoutManager::layout-changed signal on @manager
+ *
+ * This function should only be called by implementations of the
+ * #ClutterLayoutManager class
+ *
+ * Since: 1.2
+ */
+void
+clutter_layout_manager_layout_changed (ClutterLayoutManager *manager)
+{
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+
+  g_signal_emit (manager, manager_signals[LAYOUT_CHANGED], 0);
 }

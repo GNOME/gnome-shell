@@ -1,3 +1,27 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2009  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
@@ -30,11 +54,23 @@ typedef struct _ClutterLayoutManagerClass       ClutterLayoutManagerClass;
  */
 struct _ClutterLayoutManager
 {
+  /*< private >*/
   GInitiallyUnowned parent_instance;
 };
 
 /**
  * ClutterLayoutManagerClass:
+ * @get_preferred_width: virtual function; override to provide a preferred
+ *   width for the layout manager. See also the get_preferred_width()
+ *   virtual function in #ClutterActor
+ * @get_preferred_height: virtual function; override to provide a preferred
+ *   height for the layout manager. See also the get_preferred_height()
+ *   virtual function in #ClutterActor
+ * @allocate: virtual function; override to allocate the children of the
+ *   layout manager. See also the allocate() virtual function in
+ *   #ClutterActor
+ * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
+ *   signal
  *
  * The #ClutterLayoutManagerClass structure contains only private
  * data and should be accessed using the provided API
@@ -43,8 +79,10 @@ struct _ClutterLayoutManager
  */
 struct _ClutterLayoutManagerClass
 {
+  /*< private >*/
   GInitiallyUnownedClass parent_class;
 
+  /*< public >*/
   void (* get_preferred_width)  (ClutterLayoutManager   *manager,
                                  ClutterContainer       *container,
                                  gfloat                  for_height,
@@ -60,6 +98,10 @@ struct _ClutterLayoutManagerClass
                                  const ClutterActorBox  *allocation,
                                  ClutterAllocationFlags  flags);
 
+  void (* layout_changed)       (ClutterLayoutManager   *manager);
+
+  /*< private >*/
+  /* padding for future expansion */
   void (* _clutter_padding_1) (void);
   void (* _clutter_padding_2) (void);
   void (* _clutter_padding_3) (void);
@@ -86,6 +128,8 @@ void clutter_layout_manager_allocate             (ClutterLayoutManager   *manage
                                                   ClutterContainer       *container,
                                                   const ClutterActorBox  *allocation,
                                                   ClutterAllocationFlags  flags);
+
+void clutter_layout_manager_layout_changed       (ClutterLayoutManager   *manager);
 
 G_END_DECLS
 
