@@ -20,6 +20,23 @@ typedef struct _ClutterBinLayout                ClutterBinLayout;
 typedef struct _ClutterBinLayoutPrivate         ClutterBinLayoutPrivate;
 typedef struct _ClutterBinLayoutClass           ClutterBinLayoutClass;
 
+/**
+ * ClutterBinAlignment:
+ * @CLUTTER_BIN_ALIGNMENT_FIXED: Fixed position alignment; the
+ *   #ClutterBinLayout will honour the fixed position provided
+ *   by the actors themselves when allocating them
+ * @CLUTTER_BIN_ALIGNMENT_FILL: Fill the allocation size
+ * @CLUTTER_BIN_ALIGNMENT_START: Position the actors at the top
+ *   or left side of the container, depending on the axis
+ * @CLUTTER_BIN_ALIGNMENT_END: Position the actors at the bottom
+ *   or right side of the container, depending on the axis
+ * @CLUTTER_BIN_ALIGNMENT_CENTER: Position the actors at the
+ *   center of the container, depending on the axis
+ *
+ * The alignment policies available on each axis for #ClutterBinLayout
+ *
+ * Since: 1.2
+ */
 typedef enum {
   CLUTTER_BIN_ALIGNMENT_FIXED,
   CLUTTER_BIN_ALIGNMENT_FILL,
@@ -28,22 +45,47 @@ typedef enum {
   CLUTTER_BIN_ALIGNMENT_CENTER
 } ClutterBinAlignment;
 
+/**
+ * ClutterBinLayout:
+ *
+ * The #ClutterBinLayout structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 1.2
+ */
 struct _ClutterBinLayout
 {
+  /*< private >*/
   ClutterLayoutManager parent_instance;
 
   ClutterBinLayoutPrivate *priv;
 };
 
+/**
+ * ClutterBinLayoutClass:
+ *
+ * The #ClutterBinLayoutClass structure contains only private
+ * data and should be accessed using the provided API
+ *
+ * Since: 1.2
+ */
 struct _ClutterBinLayoutClass
 {
+  /*< private >*/
   ClutterLayoutManagerClass parent_class;
 };
 
 GType clutter_bin_layout_get_type (void) G_GNUC_CONST;
 
-ClutterLayoutManager *clutter_bin_layout_new (ClutterBinAlignment align_x,
-                                              ClutterBinAlignment align_y);
+ClutterLayoutManager *clutter_bin_layout_new           (ClutterBinAlignment  align_x,
+                                                        ClutterBinAlignment  align_y);
+
+void                  clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
+                                                        ClutterBinAlignment  x_align,
+                                                        ClutterBinAlignment  y_align);
+void                  clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
+                                                        ClutterBinAlignment *x_align,
+                                                        ClutterBinAlignment *y_align);
 
 G_END_DECLS
 

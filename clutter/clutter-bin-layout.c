@@ -1,3 +1,38 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2009  Intel Corporation.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
+/**
+ * SECTION:clutter-bin-layout
+ * @short_description: A simple layout manager
+ *
+ * #ClutterBinLayout is a layout manager which implements the following
+ * policy:
+ *
+ *
+ * #ClutterBinLayout is available since Clutter 1.2
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -336,6 +371,14 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
   gobject_class->set_property = clutter_bin_layout_set_property;
   gobject_class->get_property = clutter_bin_layout_get_property;
 
+  /**
+   * ClutterBinLayout:x-align:
+   *
+   * The horizontal alignment policy for actors managed by the
+   * #ClutterBinLayout
+   *
+   * Since: 1.2
+   */
   pspec = g_param_spec_enum ("x-align",
                              "X Align",
                              "Horizontal alignment for the actors "
@@ -345,6 +388,14 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_X_ALIGN, pspec);
 
+  /**
+   * ClutterBinLayout:y-align:
+   *
+   * The vertical alignment policy for actors managed by the
+   * #ClutterBinLayout
+   *
+   * Since: 1.2
+   */
   pspec = g_param_spec_enum ("y-align",
                              "Y Align",
                              "Vertical alignment for the actors "
@@ -371,6 +422,19 @@ clutter_bin_layout_init (ClutterBinLayout *self)
   self->priv->y_align = CLUTTER_BIN_ALIGNMENT_CENTER;
 }
 
+/**
+ * clutter_bin_layout_new:
+ * @x_align: the #ClutterBinAlignment policy to be used on the
+ *   horizontal axis
+ * @y_align: the #ClutterBinAlignment policy to be used on the
+ *   vertical axis
+ *
+ * Creates a new #ClutterBinLayout layout manager
+ *
+ * Return value: the newly created layout manager
+ *
+ * Since: 1.2
+ */
 ClutterLayoutManager *
 clutter_bin_layout_new (ClutterBinAlignment x_align,
                         ClutterBinAlignment y_align)
@@ -381,6 +445,19 @@ clutter_bin_layout_new (ClutterBinAlignment x_align,
                        NULL);
 }
 
+/**
+ * clutter_bin_layout_set_alignment:
+ * @self: a #ClutterBinLayout
+ * @x_align: the #ClutterBinAlignment policy to be used on the
+ *   horizontal axis
+ * @y_align: the #ClutterBinAlignment policy to be used on the
+ *   vertical axis
+ *
+ * Sets the alignment policies on the horizontal and vertical
+ * axis for @self
+ *
+ * Since: 1.2
+ */
 void
 clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
                                   ClutterBinAlignment  x_align,
@@ -388,10 +465,26 @@ clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
 {
   g_return_if_fail (CLUTTER_IS_BIN_LAYOUT (self));
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   set_x_align (self, x_align);
   set_y_align (self, y_align);
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
+/**
+ * clutter_bin_layout_get_alignment:
+ * @self: a #ClutterBinLayout
+ * @x_align: (out) (allow-none): return location for the horizontal
+ *   alignment policy
+ * @y_align: (out) (allow-none): return location for the vertical
+ *   alignment policy
+ *
+ * Retrieves the horizontal and vertical alignment policies for @self
+ *
+ * Since: 1.2
+ */
 void
 clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
                                   ClutterBinAlignment *x_align,
