@@ -70,6 +70,11 @@ clutter_box_real_add (ClutterContainer *container,
                                          sort_by_depth);
 
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
+
+  clutter_layout_manager_add_child_meta (priv->manager,
+                                         container,
+                                         actor);
+
   clutter_actor_queue_relayout (actor);
 
   g_signal_emit_by_name (container, "actor-added", actor);
@@ -87,6 +92,10 @@ clutter_box_real_remove (ClutterContainer *container,
 
   priv->children = g_list_remove (priv->children, actor);
   clutter_actor_unparent (actor);
+
+  clutter_layout_manager_remove_child_meta (priv->manager,
+                                            container,
+                                            actor);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 
