@@ -36,7 +36,9 @@ struct _ClutterBoxClass
 
 GType clutter_box_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_box_new (ClutterLayoutManager *manager);
+ClutterActor *        clutter_box_new                (ClutterLayoutManager *manager);
+
+ClutterLayoutManager *clutter_box_get_layout_manager (ClutterBox           *box);
 
 G_END_DECLS
 

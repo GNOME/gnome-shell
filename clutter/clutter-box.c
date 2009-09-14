@@ -24,6 +24,8 @@ struct _ClutterBoxPrivate
   ClutterLayoutManager *manager;
 
   GList *children;
+
+  guint changed_id;
 };
 
 enum
@@ -257,15 +259,57 @@ clutter_box_real_allocate (ClutterActor           *actor,
 }
 
 static void
-clutter_box_dispose (GObject *gobject)
+clutter_box_destroy (ClutterActor *actor)
 {
-  ClutterBoxPrivate *priv = CLUTTER_BOX (gobject)->priv;
+  ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+  GList *l;
+
+  for (l = priv->children; l != NULL; l = l->next)
+    clutter_actor_destroy (l->data);
+
+  CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy (actor);
+}
+
+static void
+on_layout_changed (ClutterLayoutManager *manager,
+                   ClutterActor         *self)
+{
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+set_layout_manager (ClutterBox           *self,
+                    ClutterLayoutManager *manager)
+{
+  ClutterBoxPrivate *priv = self->priv;
 
   if (priv->manager != NULL)
     {
+      if (priv->changed_id != 0)
+        g_signal_handler_disconnect (priv->manager, priv->changed_id);
+
       g_object_unref (priv->manager);
+
       priv->manager = NULL;
+      priv->changed_id = 0;
     }
+
+  if (manager != NULL)
+    {
+      priv->manager = g_object_ref_sink (manager);
+      priv->changed_id =
+        g_signal_connect (priv->manager, "layout-changed",
+                          G_CALLBACK (on_layout_changed),
+                          self);
+    }
+}
+
+static void
+clutter_box_dispose (GObject *gobject)
+{
+  ClutterBox *self = CLUTTER_BOX (gobject);
+
+  set_layout_manager (self, NULL);
 
   G_OBJECT_CLASS (clutter_box_parent_class)->dispose (gobject);
 }
@@ -276,13 +320,12 @@ clutter_box_set_property (GObject      *gobject,
                           const GValue *value,
                           GParamSpec   *pspec)
 {
-  ClutterBoxPrivate *priv = CLUTTER_BOX (gobject)->priv;
+  ClutterBox *self = CLUTTER_BOX (gobject);
 
   switch (prop_id)
     {
     case PROP_LAYOUT_MANAGER:
-      priv->manager = g_value_get_object (value);
-      g_object_ref_sink (priv->manager);
+      set_layout_manager (self, g_value_get_object (value));
       break;
 
     default:
@@ -325,6 +368,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
   actor_class->allocate = clutter_box_real_allocate;
   actor_class->paint = clutter_box_real_paint;
   actor_class->pick = clutter_box_real_pick;
+  actor_class->destroy = clutter_box_destroy;
 
   gobject_class->set_property = clutter_box_set_property;
   gobject_class->get_property = clutter_box_get_property;
@@ -366,4 +410,22 @@ clutter_box_new (ClutterLayoutManager *manager)
   return g_object_new (CLUTTER_TYPE_BOX,
                        "layout-manager", manager,
                        NULL);
+}
+
+/**
+ * clutter_box_get_layout_manager:
+ * @box: a #ClutterBox
+ *
+ * Retrieves the #ClutterLayoutManager instance used by @box
+ *
+ * Return value: a #ClutterLayoutManager
+ *
+ * Since: 1.2
+ */
+ClutterLayoutManager *
+clutter_box_get_layout_manager (ClutterBox *box)
+{
+  g_return_val_if_fail (CLUTTER_IS_BOX (box), NULL);
+
+  return box->priv->manager;
 }
