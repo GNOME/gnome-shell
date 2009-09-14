@@ -45,6 +45,9 @@
 #include "config.h"
 #endif
 
+#include <glib-object.h>
+#include <gobject/gvaluecollector.h>
+
 #include "clutter-debug.h"
 #include "clutter-layout-manager.h"
 #include "clutter-marshal.h"
@@ -68,6 +71,7 @@ G_DEFINE_ABSTRACT_TYPE (ClutterLayoutManager,
                         clutter_layout_manager,
                         G_TYPE_INITIALLY_UNOWNED);
 
+static GQuark quark_layout_meta = 0;
 static guint manager_signals[LAST_SIGNAL] = { 0, };
 
 static void
@@ -111,12 +115,24 @@ layout_manager_real_allocate (ClutterLayoutManager   *manager,
   LAYOUT_MANAGER_WARN_NOT_IMPLEMENTED (manager, "allocate");
 }
 
+static ClutterChildMeta *
+layout_manager_real_create_child_meta (ClutterLayoutManager *manager,
+                                       ClutterContainer     *container,
+                                       ClutterActor         *actor)
+{
+  return NULL;
+}
+
 static void
 clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 {
+  quark_layout_meta =
+    g_quark_from_static_string ("clutter-layout-manager-child-meta");
+
   klass->get_preferred_width = layout_manager_real_get_preferred_width;
   klass->get_preferred_height = layout_manager_real_get_preferred_height;
   klass->allocate = layout_manager_real_allocate;
+  klass->create_child_meta = layout_manager_real_create_child_meta;
 
   /**
    * ClutterLayoutManager::layout-changed:
@@ -280,4 +296,360 @@ clutter_layout_manager_layout_changed (ClutterLayoutManager *manager)
   g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
 
   g_signal_emit (manager, manager_signals[LAYOUT_CHANGED], 0);
+}
+
+static inline ClutterChildMeta *
+create_child_meta (ClutterLayoutManager *manager,
+                   ClutterContainer     *container,
+                   ClutterActor         *actor)
+{
+  ClutterLayoutManagerClass *klass;
+
+  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+
+  return klass->create_child_meta (manager, container, actor);
+}
+
+static inline ClutterChildMeta *
+get_child_meta (ClutterLayoutManager *manager,
+                ClutterContainer     *container,
+                ClutterActor         *actor)
+{
+  ClutterChildMeta *meta;
+
+  meta = g_object_get_qdata (G_OBJECT (actor), quark_layout_meta);
+  if (meta != NULL &&
+      meta->container == container &&
+      meta->actor == actor)
+    return meta;
+
+  return NULL;
+}
+
+/**
+ * clutter_layout_manager_get_child_meta:
+ * @manager: a #ClutterLayoutManager
+ * @container: a #ClutterContainer using @manager
+ * @actor: a #ClutterActor child of @container
+ *
+ * Retrieves the #ClutterChildMeta that the layout @manager associated
+ * to the @actor child of @container
+ *
+ * Return value: a #ClutterChildMeta or %NULL
+ *
+ * Since: 1.0
+ */
+ClutterChildMeta *
+clutter_layout_manager_get_child_meta (ClutterLayoutManager *manager,
+                                       ClutterContainer     *container,
+                                       ClutterActor         *actor)
+{
+  g_return_val_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager), NULL);
+  g_return_val_if_fail (CLUTTER_IS_CONTAINER (container), NULL);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+
+  return get_child_meta (manager, container, actor);
+}
+
+void
+clutter_layout_manager_add_child_meta (ClutterLayoutManager *manager,
+                                       ClutterContainer     *container,
+                                       ClutterActor         *actor)
+{
+  ClutterChildMeta *meta;
+
+  meta = create_child_meta (manager, container, actor);
+  if (meta == NULL)
+    return;
+
+  g_object_set_qdata_full (G_OBJECT (actor), quark_layout_meta,
+                           meta,
+                           (GDestroyNotify) g_object_unref);
+}
+
+void
+clutter_layout_manager_remove_child_meta (ClutterLayoutManager *manager,
+                                          ClutterContainer     *container,
+                                          ClutterActor         *actor)
+{
+  ClutterChildMeta *meta;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  if (get_child_meta (manager, container, actor))
+    g_object_set_qdata (G_OBJECT (actor), quark_layout_meta, NULL);
+}
+
+static inline gboolean
+layout_set_property_internal (ClutterLayoutManager *manager,
+                              GObject              *gobject,
+                              GParamSpec           *pspec,
+                              const GValue         *value)
+{
+  if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
+    {
+      g_warning ("%s: Child property '%s' of the layout manager of "
+                 "type '%s' is constructor-only",
+                 G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (manager));
+      return FALSE;
+    }
+
+  if (!(pspec->flags & G_PARAM_WRITABLE))
+    {
+      g_warning ("%s: Child property '%s' of the layout manager of "
+                 "type '%s' is not writable",
+                 G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (manager));
+      return FALSE;
+    }
+
+  g_object_set_property (gobject, pspec->name, value);
+
+  return TRUE;
+}
+
+static inline gboolean
+layout_get_property_internal (ClutterLayoutManager *manager,
+                              GObject              *gobject,
+                              GParamSpec           *pspec,
+                              GValue               *value)
+{
+  if (!(pspec->flags & G_PARAM_READABLE))
+    {
+      g_warning ("%s: Child property '%s' of the layout manager of "
+                 "type '%s' is not readable",
+                 G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (manager));
+      return FALSE;
+    }
+
+  g_object_get_property (gobject, pspec->name, value);
+
+  return TRUE;
+}
+
+void
+clutter_layout_manager_child_set (ClutterLayoutManager *manager,
+                                  ClutterContainer     *container,
+                                  ClutterActor         *actor,
+                                  const gchar          *first_property,
+                                  ...)
+{
+  ClutterChildMeta *meta;
+  GObjectClass *klass;
+  const gchar *pname;
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (first_property != NULL);
+
+  meta = get_child_meta (manager, container, actor);
+  if (meta == NULL)
+    {
+      g_warning ("Layout managers of type '%s' do not support "
+                 "child metadata",
+                 g_type_name (G_OBJECT_TYPE (manager)));
+      return;
+    }
+
+  klass = G_OBJECT_GET_CLASS (meta);
+
+  va_start (var_args, first_property);
+
+  pname = first_property;
+  while (pname)
+    {
+      GValue value = { 0, };
+      GParamSpec *pspec;
+      gchar *error;
+      gboolean res;
+
+      pspec = g_object_class_find_property (klass, pname);
+      if (pspec == NULL)
+        {
+          g_warning ("%s: Layout managers of type '%s' have no child "
+                     "property named '%s'",
+                     G_STRLOC, G_OBJECT_TYPE_NAME (manager), pname);
+          break;
+        }
+
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      G_VALUE_COLLECT (&value, var_args, 0, &error);
+      if (error)
+        {
+          g_warning ("%s: %s", G_STRLOC, error);
+          g_free (error);
+          break;
+        }
+
+      res = layout_set_property_internal (manager, G_OBJECT (meta),
+                                          pspec,
+                                          &value);
+
+      g_value_unset (&value);
+
+      if (!res)
+        break;
+
+      pname = va_arg (var_args, gchar*);
+    }
+
+  va_end (var_args);
+}
+
+void
+clutter_layout_manager_child_set_property (ClutterLayoutManager *manager,
+                                           ClutterContainer     *container,
+                                           ClutterActor         *actor,
+                                           const gchar          *property_name,
+                                           const GValue         *value)
+{
+  ClutterChildMeta *meta;
+  GObjectClass *klass;
+  GParamSpec *pspec;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (property_name != NULL);
+  g_return_if_fail (value != NULL);
+
+  meta = get_child_meta (manager, container, actor);
+  if (meta == NULL)
+    {
+      g_warning ("Layout managers of type '%s' do not support "
+                 "child metadata",
+                 g_type_name (G_OBJECT_TYPE (manager)));
+      return;
+    }
+
+  klass = G_OBJECT_GET_CLASS (meta);
+
+  pspec = g_object_class_find_property (klass, property_name);
+  if (pspec == NULL)
+    {
+      g_warning ("%s: Layout managers of type '%s' have no child "
+                 "property named '%s'",
+                 G_STRLOC, G_OBJECT_TYPE_NAME (manager), property_name);
+      return;
+    }
+
+  layout_set_property_internal (manager, G_OBJECT (meta), pspec, value);
+}
+
+void
+clutter_layout_manager_child_get (ClutterLayoutManager *manager,
+                                  ClutterContainer     *container,
+                                  ClutterActor         *actor,
+                                  const gchar          *first_property,
+                                  ...)
+{
+  ClutterChildMeta *meta;
+  GObjectClass *klass;
+  const gchar *pname;
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (first_property != NULL);
+
+  meta = get_child_meta (manager, container, actor);
+  if (meta == NULL)
+    {
+      g_warning ("Layout managers of type '%s' do not support "
+                 "child metadata",
+                 g_type_name (G_OBJECT_TYPE (manager)));
+      return;
+    }
+
+  klass = G_OBJECT_GET_CLASS (meta);
+
+  va_start (var_args, first_property);
+
+  pname = first_property;
+  while (pname)
+    {
+      GValue value = { 0, };
+      GParamSpec *pspec;
+      gchar *error;
+      gboolean res;
+
+      pspec = g_object_class_find_property (klass, pname);
+      if (pspec == NULL)
+        {
+          g_warning ("%s: Layout managers of type '%s' have no child "
+                     "property named '%s'",
+                     G_STRLOC, G_OBJECT_TYPE_NAME (manager), pname);
+          break;
+        }
+
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+
+      res = layout_get_property_internal (manager, G_OBJECT (meta),
+                                          pspec,
+                                          &value);
+      if (!res)
+        {
+          g_value_unset (&value);
+          break;
+        }
+
+      G_VALUE_LCOPY (&value, var_args, 0, &error);
+      if (error)
+        {
+          g_warning ("%s: %s", G_STRLOC, error);
+          g_free (error);
+          g_value_unset (&value);
+          break;
+        }
+
+      g_value_unset (&value);
+
+      pname = va_arg (var_args, gchar*);
+    }
+
+  va_end (var_args);
+}
+
+void
+clutter_layout_manager_child_get_property (ClutterLayoutManager *manager,
+                                           ClutterContainer     *container,
+                                           ClutterActor         *actor,
+                                           const gchar          *property_name,
+                                           GValue               *value)
+{
+  ClutterChildMeta *meta;
+  GObjectClass *klass;
+  GParamSpec *pspec;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (property_name != NULL);
+  g_return_if_fail (value != NULL);
+
+  meta = get_child_meta (manager, container, actor);
+  if (meta == NULL)
+    {
+      g_warning ("Layout managers of type %s do not support "
+                 "child metadata",
+                 g_type_name (G_OBJECT_TYPE (manager)));
+      return;
+    }
+
+  klass = G_OBJECT_GET_CLASS (meta);
+
+  pspec = g_object_class_find_property (klass, property_name);
+  if (pspec == NULL)
+    {
+      g_warning ("%s: Layout managers of type '%s' have no child "
+                 "property named '%s'",
+                 G_STRLOC, G_OBJECT_TYPE_NAME (manager), property_name);
+      return;
+    }
+
+  layout_get_property_internal (manager, G_OBJECT (meta), pspec, value);
 }

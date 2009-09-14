@@ -69,6 +69,9 @@ struct _ClutterLayoutManager
  * @allocate: virtual function; override to allocate the children of the
  *   layout manager. See also the allocate() virtual function in
  *   #ClutterActor
+ * @get_child_meta: virtual function; override to create a #ClutterChildMeta
+ *   instance associated to a #ClutterContainer and a child #ClutterActor,
+ *   used to maintain layout manager specific properties
  * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
  *   signal
  *
@@ -83,22 +86,26 @@ struct _ClutterLayoutManagerClass
   GInitiallyUnownedClass parent_class;
 
   /*< public >*/
-  void (* get_preferred_width)  (ClutterLayoutManager   *manager,
-                                 ClutterContainer       *container,
-                                 gfloat                  for_height,
-                                 gfloat                 *minimum_width_p,
-                                 gfloat                 *natural_width_p);
-  void (* get_preferred_height) (ClutterLayoutManager   *manager,
-                                 ClutterContainer       *container,
-                                 gfloat                  for_width,
-                                 gfloat                 *minimum_height_p,
-                                 gfloat                 *natural_height_p);
-  void (* allocate)             (ClutterLayoutManager   *manager,
-                                 ClutterContainer       *container,
-                                 const ClutterActorBox  *allocation,
-                                 ClutterAllocationFlags  flags);
+  void              (* get_preferred_width)  (ClutterLayoutManager   *manager,
+                                              ClutterContainer       *container,
+                                              gfloat                  for_height,
+                                              gfloat                 *minimum_width_p,
+                                              gfloat                 *natural_width_p);
+  void              (* get_preferred_height) (ClutterLayoutManager   *manager,
+                                              ClutterContainer       *container,
+                                              gfloat                  for_width,
+                                              gfloat                 *minimum_height_p,
+                                              gfloat                 *natural_height_p);
+  void              (* allocate)             (ClutterLayoutManager   *manager,
+                                              ClutterContainer       *container,
+                                              const ClutterActorBox  *allocation,
+                                              ClutterAllocationFlags  flags);
 
-  void (* layout_changed)       (ClutterLayoutManager   *manager);
+  ClutterChildMeta *(* create_child_meta)    (ClutterLayoutManager *manager,
+                                              ClutterContainer     *container,
+                                              ClutterActor         *actor);
+
+  void              (* layout_changed)       (ClutterLayoutManager   *manager);
 
   /*< private >*/
   /* padding for future expansion */
@@ -114,22 +121,43 @@ struct _ClutterLayoutManagerClass
 
 GType clutter_layout_manager_get_type (void) G_GNUC_CONST;
 
-void clutter_layout_manager_get_preferred_width  (ClutterLayoutManager   *manager,
-                                                  ClutterContainer       *container,
-                                                  gfloat                  for_height,
-                                                  gfloat                 *min_width_p,
-                                                  gfloat                 *nat_width_p);
-void clutter_layout_manager_get_preferred_height (ClutterLayoutManager   *manager,
-                                                  ClutterContainer       *container,
-                                                  gfloat                  for_width,
-                                                  gfloat                 *min_height_p,
-                                                  gfloat                 *nat_height_p);
-void clutter_layout_manager_allocate             (ClutterLayoutManager   *manager,
-                                                  ClutterContainer       *container,
-                                                  const ClutterActorBox  *allocation,
-                                                  ClutterAllocationFlags  flags);
+void              clutter_layout_manager_get_preferred_width  (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               gfloat                  for_height,
+                                                               gfloat                 *min_width_p,
+                                                               gfloat                 *nat_width_p);
+void              clutter_layout_manager_get_preferred_height (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               gfloat                  for_width,
+                                                               gfloat                 *min_height_p,
+                                                               gfloat                 *nat_height_p);
+void              clutter_layout_manager_allocate             (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               const ClutterActorBox  *allocation,
+                                                               ClutterAllocationFlags  flags);
 
-void clutter_layout_manager_layout_changed       (ClutterLayoutManager   *manager);
+void              clutter_layout_manager_layout_changed       (ClutterLayoutManager   *manager);
+
+ClutterChildMeta *clutter_layout_manager_get_child_meta       (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               ClutterActor           *actor);
+void              clutter_layout_manager_add_child_meta       (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               ClutterActor           *actor);
+void              clutter_layout_manager_remove_child_meta    (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               ClutterActor           *actor);
+
+void              clutter_layout_manager_child_set_property   (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               ClutterActor           *actor,
+                                                               const gchar            *property_name,
+                                                               const GValue           *value);
+void              clutter_layout_manager_child_get_property   (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               ClutterActor           *actor,
+                                                               const gchar            *property_name,
+                                                               GValue                 *value);
 
 G_END_DECLS
 
