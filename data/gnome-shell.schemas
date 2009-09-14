@@ -2,6 +2,21 @@
     <schemalist>
 
       <schema>
+        <key>/schemas/desktop/gnome/shell/development_tools</key>
+        <applyto>/desktop/gnome/shell/development_tools</applyto>
+        <owner>gnome-shell</owner>
+        <type>bool</type>
+        <default>true</default>
+        <locale name="C">
+            <short>Enable internal tools useful for developers and testers from Alt-F2</short>
+            <long>
+                Allows access to internal debugging and monitoring tools using
+                the Alt-F2 dialog.
+            </long>
+        </locale>
+      </schema>
+
+      <schema>
         <key>/schemas/desktop/gnome/shell/app_monitor/enable_monitoring</key>
 	<applyto>/desktop/gnome/shell/app_monitor/enable_monitoring</applyto>
 	<owner>gnome-shell</owner>
