@@ -41,7 +41,12 @@ set_x_align (ClutterBinLayout    *self,
 
   if (priv->x_align != alignment)
     {
+      ClutterLayoutManager *manager;
+
       priv->x_align = alignment;
+
+      manager = CLUTTER_LAYOUT_MANAGER (self);
+      clutter_layout_manager_layout_changed (manager);
 
       g_object_notify (G_OBJECT (self), "x-align");
     }
@@ -55,7 +60,12 @@ set_y_align (ClutterBinLayout    *self,
 
   if (priv->y_align != alignment)
     {
+      ClutterLayoutManager *manager;
+
       priv->y_align = alignment;
+
+      manager = CLUTTER_LAYOUT_MANAGER (self);
+      clutter_layout_manager_layout_changed (manager);
 
       g_object_notify (G_OBJECT (self), "y-align");
     }
