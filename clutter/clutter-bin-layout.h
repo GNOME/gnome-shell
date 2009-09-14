@@ -81,9 +81,13 @@ ClutterLayoutManager *clutter_bin_layout_new           (ClutterBinAlignment  ali
                                                         ClutterBinAlignment  align_y);
 
 void                  clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
+                                                        ClutterContainer    *container,
+                                                        ClutterActor        *child,
                                                         ClutterBinAlignment  x_align,
                                                         ClutterBinAlignment  y_align);
 void                  clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
+                                                        ClutterContainer    *container,
+                                                        ClutterActor        *child,
                                                         ClutterBinAlignment *x_align,
                                                         ClutterBinAlignment *y_align);
 
