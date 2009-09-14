@@ -68,10 +68,7 @@ function start() {
 
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.
-        if (runDialog == null) {
-            runDialog = new RunDialog.RunDialog();
-        }
-        runDialog.open();
+        getRunDialog().open();
     });
 
     overview = new Overview.Overview();
@@ -178,6 +175,8 @@ function _globalKeyPressHandler(actor, event) {
                 overview.hide();
 
             return true;
+        } else if (symbol == Clutter.F2 && (event.get_state() & Clutter.ModifierType.MOD1_MASK)) {
+            getRunDialog().open();
         }
     }
 
@@ -274,6 +273,13 @@ function createLookingGlass() {
         lookingGlass.slaveTo(panel.actor);
     }
     return lookingGlass;
+}
+
+function getRunDialog() {
+    if (runDialog == null) {
+        runDialog = new RunDialog.RunDialog();
+    }
+    return runDialog;
 }
 
 function createAppLaunchContext() {
