@@ -32,6 +32,7 @@ test_conformance_SOURCES = 		\
 	test-premult.c			\
 	test-materials.c		\
 	test-group.c			\
+	test-actor-size.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
