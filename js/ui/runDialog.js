@@ -34,6 +34,13 @@ RunDialog.prototype = {
     _init : function() {
         this._isOpen = false;
 
+        let gconf = Shell.GConf.get_default();
+        gconf.connect('changed', Lang.bind(this, function (gconf, key) {
+            if (key == 'development_tools')
+                this._enableInternalCommands = gconf.get_bool('development_tools');
+        }));
+        this._enableInternalCommands = gconf.get_boolean('development_tools');
+
         this._internalCommands = { 'lg':
                                    Lang.bind(this, function() {
                                        // Run in an idle to avoid recursive key grab problems
@@ -142,7 +149,11 @@ RunDialog.prototype = {
     },
 
     _run : function(command) {
-        let f = this._internalCommands[command];
+        let f;
+        if (this._enableInternalCommands)
+            f = this._internalCommands[command];
+        else
+            f = null;
         if (f) {
             f();
         } else if (command) {
