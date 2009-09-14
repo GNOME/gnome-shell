@@ -700,23 +700,14 @@ get_child_meta (ClutterContainer *container,
                 ClutterActor     *actor)
 {
   ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  ClutterChildMeta *meta;
 
   if (iface->child_meta_type == G_TYPE_INVALID)
     return NULL;
-  else
-    {
-      ClutterChildMeta *child_meta = NULL;
-      GSList *list, *iter;
 
-      list = g_object_get_qdata (G_OBJECT (container), quark_child_meta);
-      for (iter = list; iter; iter = g_slist_next (iter))
-        {
-          child_meta = iter->data;
-
-          if (child_meta->actor == actor)
-            return child_meta;
-        }
-    }
+  meta = g_object_get_qdata (G_OBJECT (actor), quark_child_meta);
+  if (meta != NULL && meta->actor == actor)
+    return meta;
 
   return NULL;
 }
@@ -726,8 +717,7 @@ create_child_meta (ClutterContainer *container,
                    ClutterActor     *actor)
 {
   ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
-  ClutterChildMeta      *child_meta = NULL;
-  GSList                *data_list = NULL;
+  ClutterChildMeta *child_meta = NULL;
 
   if (iface->child_meta_type == G_TYPE_INVALID)
     return;
@@ -744,9 +734,9 @@ create_child_meta (ClutterContainer *container,
                              "actor", actor,
                              NULL);
 
-  data_list = g_object_get_qdata (G_OBJECT (container), quark_child_meta);
-  data_list = g_slist_prepend (data_list, child_meta);
-  g_object_set_qdata (G_OBJECT (container), quark_child_meta, data_list);
+  g_object_set_qdata_full (G_OBJECT (container), quark_child_meta,
+                           child_meta,
+                           (GDestroyNotify) g_object_unref);
 }
 
 static void
@@ -758,30 +748,8 @@ destroy_child_meta (ClutterContainer *container,
 
   if (iface->child_meta_type == G_TYPE_INVALID)
     return;
-  else
-    {
-      ClutterChildMeta *child_meta = NULL;
-      GSList *list = g_object_get_qdata (object, quark_child_meta);
-      GSList *iter;
 
-      for (iter = list; iter; iter = g_slist_next (iter))
-        {
-          child_meta = iter->data;
-
-          if (child_meta->actor == actor)
-            break;
-          else
-            child_meta = NULL;
-        }
-
-      if (child_meta)
-        {
-          list = g_slist_remove (list, child_meta);
-          g_object_set_qdata (object, quark_child_meta, list);
-
-          g_object_unref (child_meta);
-        }
-    }
+  g_object_set_qdata (object, quark_child_meta, NULL);
 }
 
 /**
