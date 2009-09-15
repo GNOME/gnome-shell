@@ -351,6 +351,46 @@ clutter_layout_manager_get_child_meta (ClutterLayoutManager *manager,
   return get_child_meta (manager, container, actor);
 }
 
+/**
+ * clutter_layout_manager_add_child_meta:
+ * @manager: a #ClutterLayoutManager
+ * @container: a #ClutterContainer using @manager
+ * @actor: a #ClutterActor child of @container
+ *
+ * Creates and binds a #ClutterChildMeta for @manager to
+ * a child of @container
+ *
+ * This function should only be used when implementing containers
+ * using #ClutterLayoutManager and not by application code
+ *
+ * Typically, containers should bind a #ClutterChildMeta created
+ * by a #ClutterLayoutManager when adding a new child, e.g.:
+ *
+ * |[
+ *   static void
+ *   my_container_add (ClutterContainer *container,
+ *                     ClutterActor     *actor)
+ *   {
+ *     MyContainer *self = MY_CONTAINER (container);
+ *
+ *     self->children = g_slist_append (self->children, actor);
+ *     clutter_actor_set_parent (actor, CLUTTER_ACTOR (self));
+ *
+ *     clutter_layout_manager_add_child_meta (self->layout,
+ *                                            container,
+ *                                            actor);
+ *
+ *     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+ *
+ *     g_signal_emit_by_name (container, "actor-added");
+ *   }
+ * ]|
+ *
+ * The #ClutterChildMeta should be removed when removing an
+ * actor; see clutter_layout_manager_remove_child_meta()
+ *
+ * Since: 1.2
+ */
 void
 clutter_layout_manager_add_child_meta (ClutterLayoutManager *manager,
                                        ClutterContainer     *container,
@@ -367,13 +407,54 @@ clutter_layout_manager_add_child_meta (ClutterLayoutManager *manager,
                            (GDestroyNotify) g_object_unref);
 }
 
+/**
+ * clutter_layout_manager_remove_child_meta:
+ * @manager: a #ClutterLayoutManager
+ * @container: a #ClutterContainer using @manager
+ * @actor: a #ClutterActor child of @container
+ *
+ * Unbinds and unrefs a #ClutterChildMeta for @manager from
+ * a child of @container
+ *
+ * This function should only be used when implementing containers
+ * using #ClutterLayoutManager and not by application code
+ *
+ * Typically, containers should remove a #ClutterChildMeta created
+ * by a #ClutterLayoutManager when removing a child, e.g.:
+ *
+ * |[
+ *   static void
+ *   my_container_remove (ClutterContainer *container,
+ *                        ClutterActor     *actor)
+ *   {
+ *     MyContainer *self = MY_CONTAINER (container);
+ *
+ *     g_object_ref (actor);
+ *
+ *     self->children = g_slist_remove (self->children, actor);
+ *     clutter_actor_unparent (actor);
+ *
+ *     clutter_layout_manager_remove_child_meta (self->layout,
+ *                                               container,
+ *                                               actor);
+ *
+ *     clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+ *
+ *     g_signal_emit_by_name (container, "actor-removed");
+ *
+ *     g_object_unref (actor);
+ *   }
+ * ]|
+ *
+ * See also clutter_layout_manager_add_child_meta()
+ *
+ * Since: 1.2
+ */
 void
 clutter_layout_manager_remove_child_meta (ClutterLayoutManager *manager,
                                           ClutterContainer     *container,
                                           ClutterActor         *actor)
 {
-  ClutterChildMeta *meta;
-
   g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
@@ -428,6 +509,22 @@ layout_get_property_internal (ClutterLayoutManager *manager,
   return TRUE;
 }
 
+/**
+ * clutter_layout_manager_child_set:
+ * @manager: a #ClutterLayoutManager
+ * @container: a #ClutterContainer using @manager
+ * @actor: a #ClutterActor child of @container
+ * @first_property: the first property name
+ * @Varargs: a list of property name and value pairs
+ *
+ * Sets a list of properties and their values on the #ClutterChildMeta
+ * associated by @manager to a child of @container
+ *
+ * Languages bindings should use clutter_layout_manager_child_set_property()
+ * instead
+ *
+ * Since: 1.2
+ */
 void
 clutter_layout_manager_child_set (ClutterLayoutManager *manager,
                                   ClutterContainer     *container,
@@ -499,6 +596,19 @@ clutter_layout_manager_child_set (ClutterLayoutManager *manager,
   va_end (var_args);
 }
 
+/**
+ * clutter_layout_manager_child_set_property:
+ * @manager: a #ClutterLayoutManager
+ * @container: a #ClutterContainer using @manager
+ * @actor: a #ClutterActor child of @container
+ * @property_name: the name of the property to set
+ * @value: a #GValue with the value of the property to set
+ *
+ * Sets a property on the #ClutterChildMeta created by @manager and
+ * attached to a child of @container
+ *
+ * Since: 1.2
+ */
 void
 clutter_layout_manager_child_set_property (ClutterLayoutManager *manager,
                                            ClutterContainer     *container,
@@ -539,6 +649,20 @@ clutter_layout_manager_child_set_property (ClutterLayoutManager *manager,
   layout_set_property_internal (manager, G_OBJECT (meta), pspec, value);
 }
 
+/**
+ * clutter_layout_manager_child_get:
+ * @manager: a #ClutterLayoutManager
+ * @container: a #ClutterContainer using @manager
+ * @actor: a #ClutterActor child of @container
+ * @first_property: the name of the first property
+ * @Varargs: a list of property name and return location for the value pairs
+ *
+ * Retrieves the values for a list of properties out of the
+ * #ClutterChildMeta created by @manager and attached to the
+ * child of a @container
+ *
+ * Since: 1.2
+ */
 void
 clutter_layout_manager_child_get (ClutterLayoutManager *manager,
                                   ClutterContainer     *container,
@@ -614,6 +738,23 @@ clutter_layout_manager_child_get (ClutterLayoutManager *manager,
   va_end (var_args);
 }
 
+/**
+ * clutter_layout_manager_child_get_property:
+ * @manager: a #ClutterLayoutManager
+ * @container: a #ClutterContainer using @manager
+ * @actor: a #ClutterActor child of @container
+ * @property_name: the name of the property to get
+ * @value: a #GValue with the value of the property to get
+ *
+ * Gets a property on the #ClutterChildMeta created by @manager and
+ * attached to a child of @container
+ *
+ * The #GValue must already be initialized to the type of the property
+ * and has to be unset with g_value_unset() after extracting the real
+ * value out of it
+ *
+ * Since: 1.2
+ */
 void
 clutter_layout_manager_child_get_property (ClutterLayoutManager *manager,
                                            ClutterContainer     *container,

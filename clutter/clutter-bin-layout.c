@@ -639,8 +639,8 @@ clutter_bin_layout_new (ClutterBinAlignment x_align,
 /**
  * clutter_bin_layout_set_alignment:
  * @self: a #ClutterBinLayout
- * @container: a #ClutterContainer with a layout managed by @self
- * @child: a #ClutterActor child of @container
+ * @container: a #ClutterContainer using the #ClutterBinLayout
+ * @child: a child of @container
  * @x_align: the horizontal alignment policy to be used for the @child
  *   inside @container
  * @y_align: the vertical aligment policy to be used on the @child
@@ -677,6 +677,8 @@ clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
 /**
  * clutter_bin_layout_get_alignment:
  * @self: a #ClutterBinLayout
+ * @container: a #ClutterContainer using the #ClutterBinLayout
+ * @child: a child of @container
  * @x_align: (out) (allow-none): return location for the horizontal
  *   alignment policy
  * @y_align: (out) (allow-none): return location for the vertical

@@ -55,6 +55,7 @@
       <xi:include href="xml/clutter-container.xml"/>
       <xi:include href="xml/clutter-child-meta.xml"/>
       <xi:include href="xml/clutter-media.xml"/>
+      <xi:include href="xml/clutter-layout-manager.xml"/>
     </chapter>
 
     <chapter>
@@ -71,6 +72,14 @@
 
       <xi:include href="xml/clutter-group.xml"/>
       <xi:include href="xml/clutter-stage.xml"/>
+      <xi:include href="xml/clutter-box.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Layout managers</title>
+
+      <xi:include href="xml/clutter-fixed-layout.xml"/>
+      <xi:include href="xml/clutter-bin-layout.xml"/>
     </chapter>
 
   </part>

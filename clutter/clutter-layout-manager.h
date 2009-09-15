@@ -69,9 +69,9 @@ struct _ClutterLayoutManager
  * @allocate: virtual function; override to allocate the children of the
  *   layout manager. See also the allocate() virtual function in
  *   #ClutterActor
- * @get_child_meta: virtual function; override to create a #ClutterChildMeta
- *   instance associated to a #ClutterContainer and a child #ClutterActor,
- *   used to maintain layout manager specific properties
+ * @create_child_meta: virtual function; override to create a
+ *   #ClutterChildMeta instance associated to a #ClutterContainer and a
+ *   child #ClutterActor, used to maintain layout manager specific properties
  * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
  *   signal
  *
@@ -148,6 +148,16 @@ void              clutter_layout_manager_remove_child_meta    (ClutterLayoutMana
                                                                ClutterContainer       *container,
                                                                ClutterActor           *actor);
 
+void              clutter_layout_manager_child_set            (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               ClutterActor           *actor,
+                                                               const gchar            *first_property,
+                                                               ...) G_GNUC_NULL_TERMINATED;
+void              clutter_layout_manager_child_get            (ClutterLayoutManager   *manager,
+                                                               ClutterContainer       *container,
+                                                               ClutterActor           *actor,
+                                                               const gchar            *first_property,
+                                                               ...) G_GNUC_NULL_TERMINATED;
 void              clutter_layout_manager_child_set_property   (ClutterLayoutManager   *manager,
                                                                ClutterContainer       *container,
                                                                ClutterActor           *actor,
