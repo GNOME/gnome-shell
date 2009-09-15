@@ -1,3 +1,4 @@
+# translation of ml.po to
 # translation of metacity.master.ml.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -6,10 +7,10 @@
 # Ani Peter <apeter@redhat.com>, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.master.ml\n"
+"Project-Id-Version: ml\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
 "POT-Creation-Date: 2009-08-24 17:51+0000\n"
-"PO-Revision-Date: 2009-09-15 02:53+0530\n"
+"PO-Revision-Date: 2009-09-15 21:25+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -194,7 +195,7 @@ msgstr "പുനരാരംഭിക്കുന്നതില്‌ പര�
 #: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "GConf കീ '%s' തെറ്റായ മൂല്ല്യമായി സജ്ജമാക്കിയിരിക്കുന്നു\n"
 
 #: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
@@ -206,7 +207,7 @@ msgstr ""
 #: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr ""
+msgstr "GConf കീ \"%s\" ശരിയായ തരമായി സജ്ജമല്ല\n"
 
 #: ../src/core/prefs.c:1232
 msgid ""
@@ -1145,7 +1146,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:52
 msgid "Whether to resize with the right button"
-msgstr ""
+msgstr "വലതു് ബട്ടണ്‍ ഉപയോഗിച്ചു് വലിപ്പം മാറ്റണമോയെന്നു്"
 
 #: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
@@ -1444,7 +1445,7 @@ msgstr ""
 #: ../src/ui/theme.c:1020
 #, c-format
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "ഗ്രേഡിയന്റ്സിനു് കുറഞ്ഞതു് രണ്ടു് നിറങ്ങളുണ്ടാവണം"
 
 #: ../src/ui/theme.c:1146
 #, c-format
@@ -1619,7 +1620,7 @@ msgstr "പ്രമേയം %s കൊണ്ട് വരാന് കഴിഞ
 #: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "<%s> \"%s\" പ്രമേയത്തിനു് സജ്ജമല്ല"
 
 #: ../src/ui/theme.c:4946
 #, c-format
@@ -1675,12 +1676,12 @@ msgstr ""
 #: ../src/ui/theme-parser.c:541
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "ഇന്റിജര്‍ %ld പോസിറ്റീവായിരിക്കണം"
 
 #: ../src/ui/theme-parser.c:549
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "ഇന്റിജര്‍ %ld വളരെ വലുതാണു്, നിലവില്‍ ഏറ്റവും കൂടുതല്‍ %d ആണു്"
 
 #: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
 #, c-format
@@ -1690,7 +1691,7 @@ msgstr "%s നെ ഒരു സംഖ്യയായി വേ‌ര്തിര
 #: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "ബൂളിയന്‍ മൂല്ല്യങ്ങള്‍ \"true\" അല്ലെങ്കില്‍ \"false\" ആയിരിക്കണം, \"%s\" അല്ല"
 
 #: ../src/ui/theme-parser.c:663
 #, c-format
@@ -1738,7 +1739,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:1180
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr ""
+msgstr "<%s> എലമെന്റില്‍ അപരിചിതമായ തരത്തിലുള്ള \"%s\""
 
 #: ../src/ui/theme-parser.c:1191
 #, c-format
@@ -1830,7 +1831,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:2819
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "ഫ്രെയിം പീസിനുള്ള അപരിചിതമായ സ്ഥാനം \"%s\""
 
 #: ../src/ui/theme-parser.c:2827
 #, c-format
@@ -1930,22 +1931,22 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3291
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgstr "ഒരു name/author/date/description എലമെന്റില്‍ <%s> എലമെന്റ് അനുവദിക്കുന്നില്ല"
 
 #: ../src/ui/theme-parser.c:3296
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "<constant> എലമെന്റില്‍ <%s> എലമെന്റ് അനുവദിക്കുന്നില്ല"
 
 #: ../src/ui/theme-parser.c:3308
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgstr "distance/border/aspect_ratio എലമെന്റില്‍ <%s> എലമെന്റ് അനുവദിക്കുന്നില്ല"
 
 #: ../src/ui/theme-parser.c:3330
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "ഒരു ഡ്രോ ഓപ്പറേഷന്‍ എലമെന്റില്‍ <%s> എലമെന്റ് അനുവദിക്കുന്നില്ല"
 
 #: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
 #: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
@@ -1981,7 +1982,7 @@ msgstr "%s ഥീമിന് യോജിക്കുന്ന ഒരു ഫയ
 #: ../src/ui/theme-parser.c:4096
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "ഥീം ഫയല്‍ %s-ല്‍ റൂട്ട് <metacity_theme> എലമെന്റില്ല"
 
 #: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
@@ -2037,15 +2038,15 @@ msgstr "ഈ ജാലകത്തിലൊന്ന് തുറക്കുക"
 
 #: ../src/ui/theme-viewer.c:143
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "'തുറക്കുക' ചിഹ്നമുള്ള ഒരു ഡെമോ ബട്ടണ്‍."
 
 #: ../src/ui/theme-viewer.c:150
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "'പുറത്തു് കടക്കുക' ചിഹ്നമുള്ള ഒരു ഡെമോ ബട്ടണ്‍."
 
 #: ../src/ui/theme-viewer.c:243
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "മാതൃക ഡയലോഗിലുള്ള മാതൃക സന്ദേശമാണിതു്"
 
 #: ../src/ui/theme-viewer.c:326
 #, c-format
@@ -2131,7 +2132,7 @@ msgstr ""
 
 #: ../src/ui/theme-viewer.c:922
 msgid "Window Title Goes Here"
-msgstr ""
+msgstr "ജാലകത്തിനുള്ള തലക്കെട്ടിവിടെ"
 
 #: ../src/ui/theme-viewer.c:1026
 #, c-format
@@ -2143,25 +2144,25 @@ msgstr ""
 
 #: ../src/ui/theme-viewer.c:1245
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "പൊസിഷന്‍ എക്സ്പ്രെഷന്‍ പരീക്ഷണം TRUE മറുപടി നല്‍കി, പക്ഷേ പിശകായി സജ്ജമാക്കി"
 
 #: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "പൊസിഷന്‍ എക്സ്പ്രെഷന്‍ പരീക്ഷണം FALSE മറുപടി നല്‍കി, പക്ഷേ പിശകായി സജ്ജമാക്കിയില്ല"
 
 #: ../src/ui/theme-viewer.c:1251
 msgid "Error was expected but none given"
-msgstr ""
+msgstr "പിശക് പ്രതീക്ഷിച്ചു, പക്ഷേ ഒന്നും ലഭ്യമല്ല"
 
 #: ../src/ui/theme-viewer.c:1253
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr ""
+msgstr "പിശക് %d പ്രതീക്ഷിച്ചു, പക്ഷേ %d ലഭിച്ചു"
 
 #: ../src/ui/theme-viewer.c:1259
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "പിശക് പ്രതീക്ഷിക്കുന്നില്ല പക്ഷേ ഒന്നു് തിരികെ ലഭിച്ചു: %s"
 
 #: ../src/ui/theme-viewer.c:1263
 #, c-format
@@ -2176,5 +2177,5 @@ msgstr "y-യുടെ മൂല്ല്യം %d ആയിരുന്നു, 
 #: ../src/ui/theme-viewer.c:1331
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
+msgstr "%d കോര്‍ഡിനേറ്റ് എക്സ്പ്രെഷനുകള്‍ %g സെക്കന്‍ഡുകളില്‍ പാഴ്സ് ചെയ്യുന്നു (%g സെക്കന്‍ഡുകള്‍ ശരാശരി)\n"
 
