@@ -43,6 +43,7 @@
 #include "clutter-child-meta.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
+#include "clutter-layout-meta.h"
 #include "clutter-private.h"
 
 #define CLUTTER_TYPE_BIN_LAYER          (clutter_bin_layer_get_type ())
@@ -52,7 +53,7 @@
 #define CLUTTER_BIN_LAYOUT_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BIN_LAYOUT, ClutterBinLayoutPrivate))
 
 typedef struct _ClutterBinLayer         ClutterBinLayer;
-typedef struct _ClutterChildMetaClass   ClutterBinLayerClass;
+typedef struct _ClutterLayoutMetaClass  ClutterBinLayerClass;
 
 struct _ClutterBinLayoutPrivate
 {
@@ -65,9 +66,7 @@ struct _ClutterBinLayoutPrivate
 
 struct _ClutterBinLayer
 {
-  ClutterChildMeta parent_instance;
-
-  ClutterBinLayout *layout;
+  ClutterLayoutMeta parent_instance;
 
   ClutterBinAlignment x_align;
   ClutterBinAlignment y_align;
@@ -91,7 +90,7 @@ enum
 
 G_DEFINE_TYPE (ClutterBinLayer,
                clutter_bin_layer,
-               CLUTTER_TYPE_CHILD_META);
+               CLUTTER_TYPE_LAYOUT_META);
 
 G_DEFINE_TYPE (ClutterBinLayout,
                clutter_bin_layout,
@@ -107,14 +106,15 @@ set_layer_x_align (ClutterBinLayer     *self,
                    ClutterBinAlignment  alignment)
 {
   ClutterLayoutManager *manager;
+  ClutterLayoutMeta *meta;
 
   if (self->x_align == alignment)
     return;
 
   self->x_align = alignment;
 
-  g_assert (self->layout != NULL);
-  manager = CLUTTER_LAYOUT_MANAGER (self->layout);
+  meta = CLUTTER_LAYOUT_META (self);
+  manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
   g_object_notify (G_OBJECT (self), "x-align");
@@ -125,14 +125,15 @@ set_layer_y_align (ClutterBinLayer     *self,
                    ClutterBinAlignment  alignment)
 {
   ClutterLayoutManager *manager;
+  ClutterLayoutMeta *meta;
 
   if (self->y_align == alignment)
     return;
 
   self->y_align = alignment;
 
-  g_assert (self->layout != NULL);
-  manager = CLUTTER_LAYOUT_MANAGER (self->layout);
+  meta = CLUTTER_LAYOUT_META (self);
+  manager = clutter_layout_meta_get_manager (meta);
   clutter_layout_manager_layout_changed (manager);
 
   g_object_notify (G_OBJECT (self), "y-align");
@@ -371,7 +372,7 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterChildMeta *meta;
+      ClutterLayoutMeta *meta;
       ClutterBinLayer *layer;
       ClutterActorBox child_alloc = { 0, };
       gfloat child_width, child_height;
@@ -475,26 +476,22 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
   g_list_free (children);
 }
 
-static ClutterChildMeta *
+static ClutterLayoutMeta *
 clutter_bin_layout_create_child_meta (ClutterLayoutManager *manager,
                                       ClutterContainer     *container,
                                       ClutterActor         *actor)
 {
   ClutterBinLayoutPrivate *priv;
-  ClutterChildMeta *meta;
 
   priv = CLUTTER_BIN_LAYOUT (manager)->priv;
 
-  meta = g_object_new (CLUTTER_TYPE_BIN_LAYER,
+  return g_object_new (CLUTTER_TYPE_BIN_LAYER,
                        "container", container,
                        "actor", actor,
+                       "manager", manager,
                        "x-align", priv->x_align,
                        "y_align", priv->y_align,
                        NULL);
-
-  CLUTTER_BIN_LAYER (meta)->layout = CLUTTER_BIN_LAYOUT (manager);
-
-  return meta;
 }
 
 static void
@@ -659,7 +656,7 @@ clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
                                   ClutterBinAlignment  y_align)
 {
   ClutterLayoutManager *manager;
-  ClutterChildMeta *meta;
+  ClutterLayoutMeta *meta;
   ClutterBinLayer *layer;
 
   g_return_if_fail (CLUTTER_IS_BIN_LAYOUT (self));
@@ -696,7 +693,7 @@ clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
                                   ClutterBinAlignment *y_align)
 {
   ClutterLayoutManager *manager;
-  ClutterChildMeta *meta;
+  ClutterLayoutMeta *meta;
   ClutterBinLayer *layer;
 
   g_return_if_fail (CLUTTER_IS_BIN_LAYOUT (self));

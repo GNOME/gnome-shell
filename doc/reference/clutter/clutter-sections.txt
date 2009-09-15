@@ -1819,3 +1819,22 @@ CLUTTER_BOX_GET_CLASS
 ClutterBoxPrivate
 clutter_box_get_type
 </SECTION>
+
+<SECTION>
+<TITLE>ClutterLayoutMeta</TITLE>
+<FILE>clutter-layout-meta</FILE>
+ClutterLayoutMeta
+ClutterLayoutMetaClass
+clutter_layout_meta_get_manager
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_LAYOUT_META
+CLUTTER_LAYOUT_META
+CLUTTER_LAYOUT_META_CLASS
+CLUTTER_IS_LAYOUT_META
+CLUTTER_IS_LAYOUT_META_CLASS
+CLUTTER_LAYOUT_META_GET_CLASS
+
+<SUBSECTION Private>
+clutter_layout_meta_get_type
+</SECTION>

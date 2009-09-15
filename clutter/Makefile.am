@@ -82,6 +82,7 @@ source_h =					\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-layout-manager.h	\
+	$(srcdir)/clutter-layout-meta.h		\
 	$(srcdir)/clutter-list-model.h		\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
@@ -150,6 +151,7 @@ source_c = \
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-interval.c            \
 	$(srcdir)/clutter-layout-manager.c	\
+	$(srcdir)/clutter-layout-meta.c		\
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
 	clutter-marshal.c			\

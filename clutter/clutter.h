@@ -58,6 +58,7 @@
 #include "clutter-interval.h"
 #include "clutter-keysyms.h" 
 #include "clutter-layout-manager.h"
+#include "clutter-layout-meta.h"
 #include "clutter-list-model.h"
 #include "clutter-main.h"
 #include "clutter-media.h"
