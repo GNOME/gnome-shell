@@ -110,6 +110,18 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
 				    GL_STENCIL_ATTACHMENT_EXT,
 				    GL_RENDERBUFFER_EXT, gl_stencil_handle) );
 
+  /* XXX: The framebuffer_object spec isn't clear in defining whether attaching
+   * a texture as a renderbuffer with mipmap filtering enabled while the
+   * mipmaps have not been uploaded should result in an incomplete framebuffer
+   * object. (different drivers make different decisions)
+   *
+   * To avoid an error with drivers that do consider this a problem we
+   * explicitly set non mipmapped filters here. These will later be reset when
+   * the texture is actually used for rendering according to the filters set on
+   * the corresponding CoglMaterial.
+   */
+  _cogl_texture_set_filters (texhandle, GL_NEAREST, GL_NEAREST);
+
   /* Make sure it's complete */
   status = glCheckFramebufferStatusEXT (GL_FRAMEBUFFER_EXT);
 
