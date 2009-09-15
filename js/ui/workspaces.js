@@ -416,8 +416,6 @@ function Workspace(workspaceNum, parentActor) {
 
 Workspace.prototype = {
     _init : function(workspaceNum, parentActor) {
-        let me = this;
-
         this.workspaceNum = workspaceNum;
         this._metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
 

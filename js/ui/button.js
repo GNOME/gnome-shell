@@ -28,8 +28,6 @@ function Button(widget, buttonColor, pressedButtonColor, textColor, font) {
 
 Button.prototype = {
     _init : function(widgetOrText, buttonColor, pressedButtonColor, textColor, font) {
-        let me = this;
-
         this._buttonColor = buttonColor
         if (buttonColor == null)
             this._buttonColor = DEFAULT_BUTTON_COLOR;

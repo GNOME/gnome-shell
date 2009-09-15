@@ -120,8 +120,6 @@ DocDisplay.prototype = {
 
     _init : function() {
         GenericDisplay.GenericDisplay.prototype._init.call(this);
-        let me = this;
-
         // We keep a single timeout callback for updating last visited times
         // for all the items in the display. This avoids creating individual
         // callbacks for each item in the display. So proper time updates
@@ -132,14 +130,14 @@ DocDisplay.prototype = {
 
         this._docManager = DocInfo.getDocManager();
         this._docsStale = true;
-        this._docManager.connect('changed', function(mgr, userData) {
-            me._docsStale = true;
+        this._docManager.connect('changed', Lang.bind(this, function(mgr, userData) {
+            this._docsStale = true;
             // Changes in local recent files should not happen when we are in the Overview mode,
             // but redisplaying right away is cool when we use Zephyr.
             // Also, we might be displaying remote documents, like Google Docs, in the future
             // which might be edited by someone else.
-            me._redisplay(false);
-        });
+            this._redisplay(false);
+        }));
 
         this.connect('destroy', Lang.bind(this, function (o) {
             if (this._updateTimeoutId > 0)

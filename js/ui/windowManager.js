@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 
@@ -16,9 +17,8 @@ function WindowManager() {
 
 WindowManager.prototype = {
     _init : function() {
-        let me = this;
+        let shellwm = global.window_manager;
 
-        this._shellwm = global.window_manager;
         this._minimizing = [];
         this._maximizing = [];
         this._unmaximizing = [];
@@ -26,60 +26,20 @@ WindowManager.prototype = {
         this._destroying = [];
 
         this._switchData = null;
-        this._shellwm.connect('switch-workspace',
-            function(o, from, to, direction) {
-                let actors = me._shellwm.get_switch_workspace_actors();
-                me._switchWorkspace(actors, from, to, direction);
-            });
-        this._shellwm.connect('kill-switch-workspace',
-            function(o) {
-                me._switchWorkspaceDone();
-            });
-        this._shellwm.connect('minimize',
-            function(o, actor) {
-                me._minimizeWindow(actor);
-            });
-        this._shellwm.connect('kill-minimize',
-            function(o, actor) {
-                me._minimizeWindowDone(actor);
-            });
-        this._shellwm.connect('maximize',
-            function(o, actor, tx, ty, tw, th) {
-                me._maximizeWindow(actor, tx, ty, tw, th);
-            });
-        this._shellwm.connect('kill-maximize',
-            function(o, actor) {
-                me._maximizeWindowDone(actor);
-            });
-        this._shellwm.connect('unmaximize',
-            function(o, actor, tx, ty, tw, th) {
-                me._unmaximizeWindow(actor, tx, ty, tw, th);
-            });
-        this._shellwm.connect('kill-unmaximize',
-            function(o, actor) {
-                me._unmaximizeWindowDone(actor);
-            });
-        this._shellwm.connect('map',
-            function(o, actor) {
-                me._mapWindow(actor);
-            });
-        this._shellwm.connect('kill-map',
-            function(o, actor) {
-                me._mapWindowDone(actor);
-            });
-        this._shellwm.connect('destroy',
-            function(o, actor) {
-                me._destroyWindow(actor);
-            });
-        this._shellwm.connect('kill-destroy',
-            function(o, actor) {
-                me._destroyWindowDone(actor);
-            });
+        shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
+        shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
+        shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
+        shellwm.connect('kill-minimize', Lang.bind(this, this._minimizeWindowDone));
+        shellwm.connect('maximize', Lang.bind(this, this._maximizeWindow));
+        shellwm.connect('kill-maximize', Lang.bind(this, this._maximizeWindowDone));
+        shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
+        shellwm.connect('kill-unmaximize', Lang.bind(this, this._unmaximizeWindowDone));
+        shellwm.connect('map', Lang.bind(this, this._mapWindow));
+        shellwm.connect('kill-map', Lang.bind(this, this._mapWindowDone));
+        shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
+        shellwm.connect('kill-destroy', Lang.bind(this, this._destroyWindowDone));
 
-        this._shellwm.connect('begin-alt-tab',
-            function(o, handler) {
-                me._beginAltTab(handler);
-            });
+        shellwm.connect('begin-alt-tab', Lang.bind(this, this._beginAltTab));
     },
 
     _shouldAnimate : function(actor) {
@@ -99,9 +59,9 @@ WindowManager.prototype = {
         return false;
     },
 
-    _minimizeWindow : function(actor) {
+    _minimizeWindow : function(shellwm, actor) {
         if (!this._shouldAnimate(actor)) {
-            this._shellwm.completed_minimize(actor);
+            shellwm.completed_minimize(actor);
             return;
         }
 
@@ -119,49 +79,49 @@ WindowManager.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._minimizeWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [actor],
+                           onCompleteParams: [shellwm, actor],
                            onOverwrite: this._minimizeWindowOverwritten,
                            onOverwriteScope: this,
-                           onOverwriteParams: [actor]
+                           onOverwriteParams: [shellwm, actor]
                          });
     },
 
-    _minimizeWindowDone : function(actor) {
+    _minimizeWindowDone : function(shellwm, actor) {
         if (this._removeEffect(this._minimizing, actor)) {
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
             actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
 
-            this._shellwm.completed_minimize(actor);
+            shellwm.completed_minimize(actor);
         }
     },
 
-    _minimizeWindowOverwritten : function(actor) {
+    _minimizeWindowOverwritten : function(shellwm, actor) {
         if (this._removeEffect(this._minimizing, actor)) {
-            this._shellwm.completed_minimize(actor);
+            shellwm.completed_minimize(actor);
         }
     },
 
-    _maximizeWindow : function(actor, targetX, targetY, targetWidth, targetHeight) {
-        this._shellwm.completed_maximize(actor);
+    _maximizeWindow : function(shellwm, actor, targetX, targetY, targetWidth, targetHeight) {
+        shellwm.completed_maximize(actor);
     },
 
-    _maximizeWindowDone : function(actor) {
+    _maximizeWindowDone : function(shellwm, actor) {
     },
 
-    _maximizeWindowOverwrite : function(actor) {
+    _maximizeWindowOverwrite : function(shellwm, actor) {
     },
 
-    _unmaximizeWindow : function(actor, targetX, targetY, targetWidth, targetHeight) {
-        this._shellwm.completed_unmaximize(actor);
+    _unmaximizeWindow : function(shellwm, actor, targetX, targetY, targetWidth, targetHeight) {
+        shellwm.completed_unmaximize(actor);
     },
 
-    _unmaximizeWindowDone : function(actor) {
+    _unmaximizeWindowDone : function(shellwm, actor) {
     },
 
-    _mapWindow : function(actor) {
+    _mapWindow : function(shellwm, actor) {
         if (!this._shouldAnimate(actor)) {
-            this._shellwm.completed_map(actor);
+            shellwm.completed_map(actor);
             return;
         }
 
@@ -178,31 +138,31 @@ WindowManager.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._mapWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [actor],
+                           onCompleteParams: [shellwm, actor],
                            onOverwrite: this._mapWindowOverwrite,
                            onOverwriteScope: this,
-                           onOverwriteParams: [actor]
+                           onOverwriteParams: [shellwm, actor]
                          });
     },
 
-    _mapWindowDone : function(actor) {
+    _mapWindowDone : function(shellwm, actor) {
         if (this._removeEffect(this._mapping, actor)) {
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
             actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
-            this._shellwm.completed_map(actor);
+            shellwm.completed_map(actor);
         }
     },
 
-    _mapWindowOverwrite : function(actor) {
+    _mapWindowOverwrite : function(shellwm, actor) {
         if (this._removeEffect(this._mapping, actor)) {
-            this._shellwm.completed_map(actor);
+            shellwm.completed_map(actor);
         }
     },
 
-    _destroyWindow : function(actor) {
+    _destroyWindow : function(shellwm, actor) {
         if (!this._shouldAnimate(actor)) {
-            this._shellwm.completed_destroy(actor);
+            shellwm.completed_destroy(actor);
             return;
         }
 
@@ -217,32 +177,34 @@ WindowManager.prototype = {
                            transition: "easeOutQuad",
                            onComplete: this._destroyWindowDone,
                            onCompleteScope: this,
-                           onCompleteParams: [actor],
+                           onCompleteParams: [shellwm, actor],
                            onOverwrite: this._destroyWindowOverwrite,
                            onOverwriteScope: this,
-                           onOverwriteParams: [actor]
+                           onOverwriteParams: [shellwm, actor]
                          });
     },
     
-    _destroyWindowDone : function(actor) {
+    _destroyWindowDone : function(shellwm, actor) {
         if (this._removeEffect(this._destroying, actor)) {
-            this._shellwm.completed_destroy(actor);
+            shellwm.completed_destroy(actor);
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
         }
     },
 
-    _destroyWindowOverwrite : function(actor) {
+    _destroyWindowOverwrite : function(shellwm, actor) {
         if (this._removeEffect(this._destroying, actor)) {
-            this._shellwm.completed_destroy(actor);
+            shellwm.completed_destroy(actor);
         }
     },
 
-    _switchWorkspace : function(windows, from, to, direction) {
+    _switchWorkspace : function(shellwm, from, to, direction) {
         if (!this._shouldAnimate()) {
-            this._shellwm.completed_switch_workspace();
+            shellwm.completed_switch_workspace();
             return;
         }
+
+        let windows = shellwm.get_switch_workspace_actors();
 
         /* @direction is the direction that the "camera" moves, so the
          * screen contents have to move one screen's worth in the
@@ -305,7 +267,8 @@ WindowManager.prototype = {
                            time: WINDOW_ANIMATION_TIME,
                            transition: "easeOutQuad",
                            onComplete: this._switchWorkspaceDone,
-                           onCompleteScope: this
+                           onCompleteScope: this,
+                           onCompleteParams: [shellwm]
                          });
         Tweener.addTween(switchData.inGroup,
                          { x: 0,
@@ -315,7 +278,7 @@ WindowManager.prototype = {
                          });
     },
 
-    _switchWorkspaceDone : function() {
+    _switchWorkspaceDone : function(shellwm) {
         let switchData = this._switchData;
         if (!switchData)
             return;
@@ -334,10 +297,10 @@ WindowManager.prototype = {
         switchData.inGroup.destroy();
         switchData.outGroup.destroy();
 
-        this._shellwm.completed_switch_workspace();
+        shellwm.completed_switch_workspace();
     },
 
-    _beginAltTab : function(handler) {
+    _beginAltTab : function(shellwm, handler) {
         let popup = new AltTab.AltTabPopup();
 
         handler.connect('window-added', function(handler, window) { popup.addWindow(window); });

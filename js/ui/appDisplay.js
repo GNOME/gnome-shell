@@ -358,7 +358,6 @@ AppDisplay.prototype = {
 
     // Gets information about all applications by calling Gio.app_info_get_all().
     _refreshCache : function() {
-        let me = this;
         if (!this._appsStale)
             return;
         this._allItems = {};

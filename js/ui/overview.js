@@ -81,8 +81,6 @@ function Overview() {
 
 Overview.prototype = {
     _init : function() {
-        let me = this;
-
         this._group = new Clutter.Group();
         this._group._delegate = this;
 
