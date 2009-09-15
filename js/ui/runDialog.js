@@ -5,6 +5,7 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
@@ -53,6 +54,10 @@ RunDialog.prototype = {
                                    // Developer brain backwards compatibility
                                    'restart': Lang.bind(this, function() {
                                        global.reexec_self();
+                                   }),
+
+                                   'debugexit': Lang.bind(this, function() {
+                                       Meta.exit(Meta.ExitCode.ERROR);
                                    })
                                  };
 
