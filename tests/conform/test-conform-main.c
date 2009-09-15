@@ -171,6 +171,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/group", test_group_depth_sorting);
 
   TEST_CONFORM_SIMPLE ("/sizing", test_fixed_size);
+  TEST_CONFORM_SIMPLE ("/sizing", test_preferred_size);
 
   return g_test_run ();
 }
