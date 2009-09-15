@@ -1,8 +1,12 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include <string.h>
+
 #include "shell-wm.h"
 #include "shell-global.h"
 #include "shell-marshal.h"
+
+#include <keybindings.h>
 
 struct _ShellWM {
   GObject parent;
@@ -27,7 +31,7 @@ enum
   SWITCH_WORKSPACE,
   KILL_SWITCH_WORKSPACE,
 
-  BEGIN_ALT_TAB,
+  KEYBINDING,
 
   LAST_SIGNAL
 };
@@ -42,7 +46,6 @@ static guint shell_wm_signals [LAST_SIGNAL] = { 0 };
 static void
 shell_wm_init (ShellWM *wm)
 {
-  meta_alt_tab_handler_register (SHELL_TYPE_ALT_TAB_HANDLER);
 }
 
 static void
@@ -169,15 +172,32 @@ shell_wm_class_init (ShellWMClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-  shell_wm_signals[BEGIN_ALT_TAB] =
-    g_signal_new ("begin-alt-tab",
+
+  /**
+   * ShellWM::keybinding:
+   * @shellwm: the #ShellWM
+   * @binding: the keybinding name
+   * @window: for window keybindings, the #MetaWindow
+   * @backwards: for "reversible" keybindings, whether or not
+   * the backwards (Shifted) variant was invoked
+   *
+   * Emitted when a keybinding captured via
+   * shell_wm_takeover_keybinding() is invoked. The keybinding name
+   * (which has underscores, not hyphens) is also included as the
+   * detail of the signal name, so you can connect just specific
+   * keybindings.
+   */
+  shell_wm_signals[KEYBINDING] =
+    g_signal_new ("keybinding",
 		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
+		  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
 		  0,
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-                  META_TYPE_ALT_TAB_HANDLER);
+		  _shell_marshal_VOID__STRING_OBJECT_BOOLEAN,
+		  G_TYPE_NONE, 3,
+                  G_TYPE_STRING,
+                  META_TYPE_WINDOW,
+                  G_TYPE_BOOLEAN);
 }
 
 void
@@ -391,14 +411,6 @@ _shell_wm_destroy (ShellWM      *wm,
   g_signal_emit (wm, shell_wm_signals[DESTROY], 0, actor);
 }
 
-/* Called from shell-alttab.c */
-void
-_shell_wm_begin_alt_tab (ShellWM              *wm,
-                         ShellAltTabHandler   *handler)
-{
-  g_signal_emit (wm, shell_wm_signals[BEGIN_ALT_TAB], 0, handler);
-}
-
 /**
  * shell_wm_new:
  * @plugin: the #MutterPlugin
@@ -416,4 +428,38 @@ shell_wm_new (MutterPlugin *plugin)
   wm->plugin = plugin;
 
   return wm;
+}
+
+static void
+shell_wm_key_handler (MetaDisplay    *display,
+                      MetaScreen     *screen,
+                      MetaWindow     *window,
+                      XEvent         *event,
+                      MetaKeyBinding *binding,
+                      gpointer        data)
+{
+  ShellWM *wm = data;
+  gboolean backwards = (event->xkey.state & ShiftMask);
+
+  g_signal_emit (wm, shell_wm_signals[KEYBINDING],
+                 g_quark_from_string (binding->name),
+                 binding->name, window, backwards);
+}
+
+/**
+ * shell_wm_takeover_keybinding:
+ * @wm: the #ShellWM
+ * @binding_name: a mutter keybinding name
+ *
+ * Tells mutter to forward keypresses for @binding_name to the shell
+ * rather than processing them internally. This will cause a
+ * #ShellWM::keybinding signal to be emitted when that key is pressed.
+ */
+void
+shell_wm_takeover_keybinding (ShellWM      *wm,
+                              const char   *binding_name)
+{
+  meta_keybindings_set_custom_handler (binding_name,
+                                       shell_wm_key_handler,
+                                       wm, NULL);
 }

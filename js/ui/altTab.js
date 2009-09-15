@@ -37,7 +37,9 @@ AltTabPopup.prototype = {
                                    corner_radius: POPUP_GRID_SPACING,
                                    padding: POPUP_GRID_SPACING,
                                    spacing: POPUP_GRID_SPACING,
-                                   orientation: Big.BoxOrientation.VERTICAL });
+                                   orientation: Big.BoxOrientation.VERTICAL,
+                                   reactive: true });
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         // Icon grid.  TODO: Investigate Nbtk.Grid once that lands.  Currently
         // just implemented using a chain of Big.Box.
@@ -70,11 +72,12 @@ AltTabPopup.prototype = {
         this.actor.append(this._indicator, Big.BoxPackFlags.FIXED);
 
         this._items = [];
+        this._haveModal = false;
 
         global.stage.add_actor(this.actor);
     },
 
-    addWindow : function(win) {
+    _addWindow : function(win) {
         let item = { window: win,
                      metaWindow: win.get_meta_window() };
 
@@ -100,6 +103,31 @@ AltTabPopup.prototype = {
     },
 
     show : function(initialSelection) {
+        let appMonitor = Shell.AppMonitor.get_default();
+        let apps = appMonitor.get_running_apps ("");
+
+        if (!apps.length)
+            return false;
+
+        if (!Main.pushModal(this.actor))
+            return false;
+        this._haveModal = true;
+
+        this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
+        this._keyReleaseEventId = global.stage.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
+
+        // Fill in the windows
+        let windows = [];
+        for (let i = 0; i < apps.length; i++) {
+            let appWindows = appMonitor.get_windows_for_app(apps[i].get_id());
+            windows = windows.concat(appWindows);
+        }
+
+        windows.sort(function(w1, w2) { return w2.get_user_time() - w1.get_user_time(); });
+
+        for (let i = 0; i < windows.length; i++)
+            this._addWindow(windows[i].get_compositor_private());
+
         // Need to specify explicit width and height because the
         // window_group may not actually cover the whole screen
         this._lightbox = new Lightbox.Lightbox(global.window_group,
@@ -110,15 +138,56 @@ AltTabPopup.prototype = {
         this.actor.x = Math.floor((global.screen_width - this.actor.width) / 2);
         this.actor.y = Math.floor((global.screen_height - this.actor.height) / 2);
 
-        this.select(initialSelection);
+        this._updateSelection(initialSelection);
+        return true;
+    },
+
+    _keyPressEvent : function(actor, event) {
+        let keysym = event.get_key_symbol();
+        let backwards = (event.get_state() & Clutter.ModifierType.SHIFT_MASK);
+
+        if (keysym == Clutter.Tab)
+            this._updateSelection(backwards ? -1 : 1);
+        else if (keysym == Clutter.Escape)
+            this.destroy();
+
+        return true;
+    },
+
+    _keyReleaseEvent : function(actor, event) {
+        let keysym = event.get_key_symbol();
+
+        if (keysym == Clutter.Alt_L || keysym == Clutter.Alt_R) {
+            if (this._selected) {
+                Main.activateWindow(this._selected.metaWindow,
+                                    event.get_time());
+            }
+            this.destroy();
+        }
+
+        return true;
     },
 
     destroy : function() {
         this.actor.destroy();
-        this._lightbox.destroy();
     },
 
-    select : function(n) {
+    _onDestroy : function() {
+        if (this._haveModal)
+            Main.popModal(this.actor);
+
+        if (this._lightbox)
+            this._lightbox.destroy();
+
+        if (this._keyPressEventId)
+            global.stage.disconnect(this._keyPressEventId);
+        if (this._keyReleaseEventId)
+            global.stage.disconnect(this._keyReleaseEventId);
+    },
+
+    _updateSelection : function(delta) {
+        let n = ((this._selected ? this._selected.n : 0) + this._items.length + delta) % this._items.length;
+
         if (this._selected) {
             // Unselect previous
 
@@ -177,7 +246,6 @@ AltTabPopup.prototype = {
     },
 
     _allocationChanged : function() {
-        if (this._selected)
-            this.select(this._selected.n);
+        this._updateSelection(0);
     }
 };

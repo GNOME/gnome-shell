@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
 
 const AltTab = imports.ui.altTab;
 const Main = imports.ui.main;
@@ -39,7 +40,8 @@ WindowManager.prototype = {
         shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
         shellwm.connect('kill-destroy', Lang.bind(this, this._destroyWindowDone));
 
-        shellwm.connect('begin-alt-tab', Lang.bind(this, this._beginAltTab));
+        shellwm.takeover_keybinding('switch_windows');
+        shellwm.connect('keybinding::switch_windows', Lang.bind(this, this._startAppSwitcher));
     },
 
     _shouldAnimate : function(actor) {
@@ -300,12 +302,10 @@ WindowManager.prototype = {
         shellwm.completed_switch_workspace();
     },
 
-    _beginAltTab : function(shellwm, handler) {
-        let popup = new AltTab.AltTabPopup();
+    _startAppSwitcher : function(shellwm, binding, window, backwards) {
+        let tabPopup = new AltTab.AltTabPopup();
 
-        handler.connect('window-added', function(handler, window) { popup.addWindow(window); });
-        handler.connect('show', function(handler, initialSelection) { popup.show(initialSelection); });
-        handler.connect('destroy', function() { popup.destroy(); });
-        handler.connect('notify::selected', function() { popup.select(handler.selected); });
-    }  
+        if (!tabPopup.show(backwards ? -1 : 1))
+            tabPopup.destroy();
+    }
 };

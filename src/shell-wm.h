@@ -4,8 +4,6 @@
 #include <glib-object.h>
 #include <mutter-plugin.h>
 
-#include "shell-alttab.h"
-
 G_BEGIN_DECLS
 
 typedef struct _ShellWM      ShellWM;
@@ -73,10 +71,9 @@ void _shell_wm_kill_effect      (ShellWM              *wm,
 				 MutterWindow         *actor,
 				 gulong                events);
 
-/* Called by ShellAltTabHandler */
-
-void _shell_wm_begin_alt_tab    (ShellWM              *wm,
-				 ShellAltTabHandler   *handler);
+/* Keybinding stuff */
+void shell_wm_takeover_keybinding (ShellWM    *wm,
+				   const char *binding_name);
 
 G_END_DECLS
 
