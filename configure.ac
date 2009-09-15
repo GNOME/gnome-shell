@@ -1,4 +1,4 @@
-AC_INIT(gnome-shell, 2.27.2)
+AC_INIT(gnome-shell, 2.27.3)
 
 AC_CONFIG_AUX_DIR(config)
 
