@@ -277,8 +277,7 @@ Overview.prototype = {
     show : function() {
         if (this.visible)
             return;
-        if (!Main.beginModal())
-            return;
+        Main.pushModal(this._dash.actor);
 
         this.visible = true;
         this.animationInProgress = true;
@@ -437,7 +436,7 @@ Overview.prototype = {
 
         this._coverPane.lower_bottom();
 
-        Main.endModal();
+        Main.popModal(this._dash.actor);
         this.emit('hidden');
     },
 

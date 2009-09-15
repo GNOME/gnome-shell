@@ -386,7 +386,7 @@ LookingGlass.prototype = {
                                          activatable: true,
                                          singleLineMode: true,
                                          text: ''});
-        /* kind of a hack */
+        /* unmapping the edit box will un-focus it, undo that */
         notebook.connect('selection', Lang.bind(this, function (nb, child) {
             if (child == this._evalBox)
                 global.stage.set_key_focus(this._entry);
@@ -548,9 +548,7 @@ LookingGlass.prototype = {
 
         Tweener.removeTweens(this.actor);
 
-        if (!Main.beginModal())
-            return;
-
+        Main.pushModal(this.actor);
         global.stage.set_key_focus(this._entry);
 
         Tweener.addTween(this.actor, { time: 0.5,
@@ -567,7 +565,7 @@ LookingGlass.prototype = {
         this._open = false;
         Tweener.removeTweens(this.actor);
 
-        Main.endModal();
+        Main.popModal(this.actor);
 
         Tweener.addTween(this.actor, { time: 0.5,
                                        transition: "easeOutQuad",

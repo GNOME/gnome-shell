@@ -43,8 +43,7 @@ RunDialog.prototype = {
 
         this._internalCommands = { 'lg':
                                    Lang.bind(this, function() {
-                                       // Run in an idle to avoid recursive key grab problems
-                                       Mainloop.idle_add(function() { Main.createLookingGlass().open(); });
+                                       Main.createLookingGlass().open();
                                    }),
 
                                    'r': Lang.bind(this, function() {
@@ -182,12 +181,10 @@ RunDialog.prototype = {
         if (this._isOpen) // Already shown
             return;
 
-        if (!Main.beginModal())
-            return;
-            
         this._isOpen = true;
         this._group.show();
 
+        Main.pushModal(this._group);
         global.stage.set_key_focus(this._entry);
     },
 
@@ -203,7 +200,7 @@ RunDialog.prototype = {
         this._group.hide();
         this._entry.text = '';
 
-        Main.endModal();
+        Main.popModal(this._group);
     }
 };
 Signals.addSignalMethods(RunDialog.prototype);

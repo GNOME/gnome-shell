@@ -30,7 +30,8 @@ let runDialog = null;
 let lookingGlass = null;
 let wm = null;
 let recorder = null;
-let inModal = false;
+let modalCount = 0;
+let modalActorFocusStack = [];
 
 function start() {
     // Add a binding for "global" in the global JS namespace; (gjs
@@ -149,7 +150,7 @@ function _removeUnusedWorkspaces() {
 // should be asking Mutter to resolve the key into an action and then
 // base our handling based on the action.
 function _globalKeyPressHandler(actor, event) {
-    if (!inModal)
+    if (modalCount == 0)
         return false;
 
     let type = event.type();
@@ -183,27 +184,88 @@ function _globalKeyPressHandler(actor, event) {
     return false;
 }
 
-// Used to go into a mode where all keyboard and mouse input goes to
-// the stage. Returns true if we successfully grabbed the keyboard and
-// went modal, false otherwise
-function beginModal() {
-    let timestamp = global.screen.get_display().get_current_time();
-
-    if (!global.begin_modal(timestamp))
-        return false;
-    global.set_stage_input_mode(Shell.StageInputMode.FULLSCREEN);
-
-    inModal = true;
-
-    return true;
+function _findModal(actor) {
+    for (let i = 0; i < modalActorFocusStack.length; i++) {
+        let [stackActor, stackFocus] = modalActorFocusStack[i];
+        if (stackActor == actor) {
+            return i;
+        }
+    }
+    return -1;
 }
 
-function endModal() {
+/**
+ * pushModal:
+ * @actor: #ClutterActor which will be given keyboard focus
+ *
+ * Ensure we are in a mode where all keyboard and mouse input goes to
+ * the stage.  Multiple calls to this function act in a stacking fashion;
+ * the effect will be undone when an equal number of popModal() invocations
+ * have been made.
+ *
+ * Next, record the current Clutter keyboard focus on a stack.  If the modal stack
+ * returns to this actor, reset the focus to the actor which was focused
+ * at the time pushModal() was invoked.
+ */
+function pushModal(actor) {
     let timestamp = global.screen.get_display().get_current_time();
+
+    modalCount += 1;
+    actor.connect('destroy', function() {
+        let index = _findModal(actor);
+        if (index >= 0)
+            modalActorFocusStack.splice(index, 1);
+    });
+    let curFocus = global.stage.get_key_focus();
+    if (curFocus != null) {
+        curFocus.connect('destroy', function() {
+            let index = _findModal(actor);
+            if (index >= 0)
+                modalActorFocusStack[index][1] = null;
+        });
+    }
+    modalActorFocusStack.push([actor, curFocus]);
+
+    if (modalCount > 1)
+        return;
+
+    if (!global.begin_modal(timestamp)) {
+        log("pushModal: invocation of begin_modal failed");
+        return;
+    }
+    global.set_stage_input_mode(Shell.StageInputMode.FULLSCREEN);
+}
+
+/**
+ * popModal:
+ * @actor: #ClutterActor passed to original invocation of pushModal().
+ *
+ * Reverse the effect of pushModal().  If this invocation is undoing
+ * the topmost invocation, then the focus will be restored to the
+ * previous focus at the time when pushModal() was invoked.
+ */
+function popModal(actor) {
+    let timestamp = global.screen.get_display().get_current_time();
+
+    modalCount -= 1;
+    let focusIndex = _findModal(actor);
+    if (focusIndex >= 0) {
+        if (focusIndex == modalActorFocusStack.length - 1) {
+            let [stackActor, stackFocus] = modalActorFocusStack[focusIndex];
+            global.stage.set_key_focus(stackFocus);
+        } else {
+            // Remove from the middle, shift the focus chain up
+            for (let i = focusIndex; i < modalActorFocusStack.length - 1; i++) {
+                modalActorFocusStack[i + 1][1] = modalActorFocusStack[i][1];
+            }
+        }
+        modalActorFocusStack.splice(focusIndex, 1);
+    }
+    if (modalCount > 0)
+        return;
 
     global.end_modal(timestamp);
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
-    inModal = false;
 }
 
 function createLookingGlass() {
