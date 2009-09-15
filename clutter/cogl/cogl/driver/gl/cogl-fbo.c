@@ -225,16 +225,6 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
       /* Bind offscreen framebuffer object */
       GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, fbo->gl_handle) );
       GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
-
-      /* Some implementation require a clear before drawing
-         to an fbo. Luckily it is affected by scissor test. */
-      /* FIXME: test where exactly this is needed end whether
-         a glClear with 0 argument is enough */
-      GE( glPushAttrib (GL_SCISSOR_BIT) );
-      GE( glScissor (0,0,0,0) );
-      GE( glEnable (GL_SCISSOR_TEST) );
-      GE( glClear (GL_COLOR_BUFFER_BIT) );
-      GE( glPopAttrib () );
     }
   else if (target & COGL_WINDOW_BUFFER)
     {
