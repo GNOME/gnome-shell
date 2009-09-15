@@ -152,6 +152,8 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  _cogl_journal_flush ();
+
   g_assert (ctx->draw_buffer_stack != NULL);
   draw_buffer = ctx->draw_buffer_stack->data;
 
@@ -186,10 +188,16 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	}
 
       /* Setup new viewport and matrices */
+<<<<<<< HEAD:clutter/cogl/cogl/driver/gles/cogl-fbo.c
       GE( glViewport (0, 0, fbo->width, fbo->height) );
       _cogl_matrix_stack_translate (ctx->modelview_stack, -1.0f, -1.0f, 0.0f);
       _cogl_matrix_stack_scale (ctx->modelview_stack,
                                 2.0f / fbo->width, 2.0f / fbo->height, 1.0f);
+=======
+      cogl_viewport (fbo->width, fbo->height);
+      _cogl_current_matrix_translate (-1.0f, -1.0f, 0.0f);
+      _cogl_current_matrix_scale (2.0f / fbo->width, 2.0f / fbo->height, 1.0f);
+>>>>>>> c3e471c... [cogl-fbo] Bring the gles code more in line with gl code:clutter/cogl/cogl/driver/gles/cogl-fbo.c
 
       /* Bind offscreen framebuffer object */
       GE( glBindFramebuffer (GL_FRAMEBUFFER, fbo->gl_handle) );
