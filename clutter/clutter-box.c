@@ -11,6 +11,9 @@
 #include "config.h"
 #endif
 
+#include <glib-object.h>
+#include <gobject/gvaluecollector.h>
+
 #include "clutter-box.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -437,4 +440,187 @@ clutter_box_get_layout_manager (ClutterBox *box)
   g_return_val_if_fail (CLUTTER_IS_BOX (box), NULL);
 
   return box->priv->manager;
+}
+
+/**
+ * clutter_box_addv:
+ * @box: a #ClutterBox
+ * @actor: a #ClutterActor
+ * @n_properties: the number of properties to set
+ * @properties: (array length=n_properties) (element-type utf8): a vector
+ *   containing the property names to set
+ * @values: (array length=n_properties): a vector containing the property
+ *   values to set
+ *
+ * Vector-based variant of clutter_box_add(), intended for language
+ * bindings to use
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_addv (ClutterBox          *box,
+                  ClutterActor        *actor,
+                  guint                n_properties,
+                  const gchar * const  properties[],
+                  const GValue        *values)
+{
+  ClutterContainer *container;
+  ClutterBoxPrivate *priv;
+  ClutterLayoutMeta *meta;
+  GObjectClass *klass;
+  gint i;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  container = CLUTTER_CONTAINER (box);
+  clutter_container_add_actor (container, actor);
+
+  priv = box->priv;
+
+  meta = clutter_layout_manager_get_child_meta (priv->manager,
+                                                container,
+                                                actor);
+
+  if (meta == NULL)
+    return;
+
+  klass = G_OBJECT_GET_CLASS (meta);
+
+  for (i = 0; i < n_properties; i++)
+    {
+      const gchar *pname = properties[i];
+      GParamSpec *pspec;
+
+      pspec = g_object_class_find_property (klass, pname);
+      if (pspec == NULL)
+        {
+          g_warning ("%s: the layout property '%s' for managers "
+                     "of type '%s' (meta type '%s') does not exist",
+                     G_STRLOC,
+                     pname,
+                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (meta));
+          break;
+        }
+
+      if (!(pspec->flags & G_PARAM_WRITABLE))
+        {
+          g_warning ("%s: the layout property '%s' for managers "
+                     "of type '%s' (meta type '%s') is not writable",
+                     G_STRLOC,
+                     pspec->name,
+                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (meta));
+          break;
+        }
+
+      clutter_layout_manager_child_set_property (priv->manager,
+                                                 container, actor,
+                                                 pname, &values[i]);
+    }
+}
+
+/**
+ * clutter_box_add:
+ * @box: a #ClutterBox
+ * @actor: a #ClutterActor
+ * @first_property: the name of the first property to set, or %NULL
+ * @Varargs: a list of property name and value pairs, terminated by %NULL
+ *
+ * Adds @actor to @box and sets layout properties at the same time,
+ * if the #ClutterLayoutManager used by @box has them
+ *
+ * This function is a wrapper around clutter_container_add_actor()
+ * and clutter_layout_manager_child_set()
+ *
+ * Language bindings should use the vector-based clutter_box_addv()
+ * variant instead
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_add (ClutterBox   *box,
+                 ClutterActor *actor,
+                 const gchar  *first_property,
+                 ...)
+{
+  ClutterBoxPrivate *priv;
+  ClutterContainer *container;
+  ClutterLayoutMeta *meta;
+  GObjectClass *klass;
+  const gchar *pname;
+  va_list var_args;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  container = CLUTTER_CONTAINER (box);
+  clutter_container_add_actor (container, actor);
+
+  if (first_property == NULL || *first_property == '\0')
+    return;
+
+  priv = box->priv;
+
+  meta = clutter_layout_manager_get_child_meta (priv->manager,
+                                                container,
+                                                actor);
+
+  if (meta == NULL)
+    return;
+
+  klass = G_OBJECT_GET_CLASS (meta);
+
+  va_start (var_args, first_property);
+
+  pname = first_property;
+  while (pname)
+    {
+      GValue value = { 0, };
+      GParamSpec *pspec;
+      gchar *error;
+
+      pspec = g_object_class_find_property (klass, pname);
+      if (pspec == NULL)
+        {
+          g_warning ("%s: the layout property '%s' for managers "
+                     "of type '%s' (meta type '%s') does not exist",
+                     G_STRLOC,
+                     pname,
+                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (meta));
+          break;
+        }
+
+      if (!(pspec->flags & G_PARAM_WRITABLE))
+        {
+          g_warning ("%s: the layout property '%s' for managers "
+                     "of type '%s' (meta type '%s') is not writable",
+                     G_STRLOC,
+                     pspec->name,
+                     G_OBJECT_TYPE_NAME (priv->manager),
+                     G_OBJECT_TYPE_NAME (meta));
+          break;
+        }
+
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      G_VALUE_COLLECT (&value, var_args, 0, &error);
+      if (error)
+        {
+          g_warning ("%s: %s", G_STRLOC, error);
+          g_free (error);
+          break;
+        }
+
+      clutter_layout_manager_child_set_property (priv->manager,
+                                                 container, actor,
+                                                 pspec->name, &value);
+
+      g_value_unset (&value);
+
+      pname = va_arg (var_args, gchar*);
+    }
+
+  va_end (var_args);
 }

@@ -40,6 +40,16 @@ ClutterActor *        clutter_box_new                (ClutterLayoutManager *mana
 
 ClutterLayoutManager *clutter_box_get_layout_manager (ClutterBox           *box);
 
+void                  clutter_box_add                (ClutterBox           *box,
+                                                      ClutterActor         *actor,
+                                                      const gchar          *first_property,
+                                                      ...) G_GNUC_NULL_TERMINATED;
+void                  clutter_box_addv               (ClutterBox           *box,
+                                                      ClutterActor         *actor,
+                                                      guint                 n_properties,
+                                                      const gchar * const   properties[],
+                                                      const GValue         *values);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BOX_H__ */

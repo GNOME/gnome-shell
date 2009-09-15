@@ -117,15 +117,13 @@ test_box_main (int argc, char *argv[])
   clutter_actor_set_name (box, "box");
 
   rect = make_background (&bg_color, 200, 200);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
+  clutter_box_add (CLUTTER_BOX (box), rect,
+                   "x-align", CLUTTER_BIN_ALIGNMENT_FILL,
+                   "y-align", CLUTTER_BIN_ALIGNMENT_FILL,
+                   NULL);
   clutter_actor_lower_bottom (rect);
   clutter_actor_set_name (rect, "background");
 
-  clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout),
-                                    CLUTTER_CONTAINER (box),
-                                    rect,
-                                    CLUTTER_BIN_ALIGNMENT_FILL,
-                                    CLUTTER_BIN_ALIGNMENT_FILL);
 
   {
     ClutterActor *tex;
@@ -137,16 +135,13 @@ test_box_main (int argc, char *argv[])
       g_error ("Unable to create texture: %s", error->message);
 
     clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (tex), TRUE);
-    clutter_container_add_actor (CLUTTER_CONTAINER (box), tex);
+    clutter_box_add (CLUTTER_BOX (box), tex,
+                     "x-align", CLUTTER_BIN_ALIGNMENT_CENTER,
+                     "y-align", CLUTTER_BIN_ALIGNMENT_CENTER,
+                     NULL);
     clutter_actor_raise (tex, rect);
     clutter_actor_set_width (tex, 175);
     clutter_actor_set_name (tex, "texture");
-
-    clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout),
-                                      CLUTTER_CONTAINER (box),
-                                      tex,
-                                      CLUTTER_BIN_ALIGNMENT_CENTER,
-                                      CLUTTER_BIN_ALIGNMENT_CENTER);
   }
 
   color = clutter_color_new (g_random_int_range (0, 255),
@@ -155,17 +150,15 @@ test_box_main (int argc, char *argv[])
                              224);
 
   rect = clutter_rectangle_new_with_color (color);
-  clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
+  clutter_box_add (CLUTTER_BOX (box), rect,
+                   "x-align", CLUTTER_BIN_ALIGNMENT_END,
+                   "y-align", CLUTTER_BIN_ALIGNMENT_END,
+                   NULL);
   clutter_actor_set_size (rect, 50, 50);
   clutter_actor_set_opacity (rect, 0);
   clutter_actor_raise_top (rect);
   clutter_actor_set_name (rect, "emblem");
 
-  clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout),
-                                    CLUTTER_CONTAINER (box),
-                                    rect,
-                                    CLUTTER_BIN_ALIGNMENT_END,
-                                    CLUTTER_BIN_ALIGNMENT_END);
 
   g_signal_connect (box,
                     "enter-event", G_CALLBACK (on_box_enter),
