@@ -709,6 +709,14 @@ st_scroll_view_new (void)
   return g_object_new (ST_TYPE_SCROLL_VIEW, NULL);
 }
 
+/**
+ * st_scroll_view_get_hscroll_bar:
+ * @scroll: a #StScrollView
+ *
+ * Gets the horizontal scrollbar of the scrollbiew
+ *
+ * Return value: (transfer none): the horizontal #StScrollbar
+ */
 ClutterActor *
 st_scroll_view_get_hscroll_bar (StScrollView *scroll)
 {
@@ -717,6 +725,14 @@ st_scroll_view_get_hscroll_bar (StScrollView *scroll)
   return scroll->priv->hscroll;
 }
 
+/**
+ * st_scroll_view_get_vscroll_bar:
+ * @scroll: a #StScrollView
+ *
+ * Gets the vertical scrollbar of the scrollbiew
+ *
+ * Return value: (transfer none): the vertical #StScrollbar
+ */
 ClutterActor *
 st_scroll_view_get_vscroll_bar (StScrollView *scroll)
 {

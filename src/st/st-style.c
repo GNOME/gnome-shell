@@ -356,8 +356,8 @@ st_style_new (void)
  * Return the default StStyle object. This includes the current theme (if
  * any).
  *
- * Returns: a #StStyle object. This must not be freed or unref'd by
- * applications
+ * Returns: (transfer none): a #StStyle object. This must not be freed or
+ * unref'd by applications
  */
 StStyle *
 st_style_get_default (void)
@@ -625,7 +625,7 @@ st_style_get_ccss_query (StStyle    *style,
  * @style: the style data store object
  * @stylable: a stylable to retreive the data for
  * @pspec: a #GParamSpec describing the property required
- * @value: a #GValue to place the return value in
+ * @value: (out): a #GValue to place the return value in
  *
  * Requests the property described in @pspec for the specified stylable
  */

@@ -70,7 +70,6 @@ StWidget *st_scroll_view_new (void);
 
 ClutterActor *st_scroll_view_get_hscroll_bar     (StScrollView *scroll);
 ClutterActor *st_scroll_view_get_vscroll_bar     (StScrollView *scroll);
-ClutterActor *st_scroll_view_get_child           (StScrollView *scroll);
 
 gfloat        st_scroll_view_get_column_size     (StScrollView *scroll);
 void          st_scroll_view_set_column_size     (StScrollView *scroll,

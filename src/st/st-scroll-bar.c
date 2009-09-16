@@ -1095,6 +1095,15 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
     }
 }
 
+/**
+ * st_scroll_bar_get_adjustment:
+ * @bar: a #StScrollbar
+ *
+ * Gets the adjustment object that stores the current position
+ * of the scrollbar.
+ *
+ * Return value: (transfer none): the adjustment
+ */
 StAdjustment *
 st_scroll_bar_get_adjustment (StScrollBar *bar)
 {

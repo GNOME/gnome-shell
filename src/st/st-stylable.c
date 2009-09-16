@@ -337,12 +337,12 @@ st_stylable_iface_install_property (StStylableIface *iface,
 /**
  * st_stylable_list_properties:
  * @stylable: a #StStylable
- * @n_props: return location for the number of properties, or %NULL
+ * @n_props: (out): return location for the number of properties, or %NULL
  *
  * Retrieves all the #GParamSpec<!-- -->s installed by @stylable.
  *
- * Return value: an array of #GParamSpec<!-- -->s. Free it with
- *   g_free() when done.
+ * Return value: (transfer container) (array length=n_props): an array
+ *  of #GParamSpec<!-- -->s. Free it with  g_free() when done.
  */
 GParamSpec **
 st_stylable_list_properties (StStylable *stylable,
@@ -370,8 +370,8 @@ st_stylable_list_properties (StStylable *stylable,
  * Finds the #GParamSpec installed by @stylable for the property
  * with @property_name.
  *
- * Return value: a #GParamSpec for the given property, or %NULL if
- *   no property with that name was found
+ * Return value: (transfer none): a #GParamSpec for the given property,
+ *   or %NULL if no property with that name was found
  */
 GParamSpec *
 st_stylable_find_property (StStylable  *stylable,
@@ -413,7 +413,7 @@ st_stylable_get_property_internal (StStylable *stylable,
  * st_stylable_get_property:
  * @stylable: a #StStylable
  * @property_name: the name of the property
- * @value: return location for an empty #GValue
+ * @value: (out): return location for an empty #GValue
  *
  * Retrieves the value of @property_name for @stylable, and puts it
  * into @value.
@@ -514,7 +514,7 @@ st_stylable_get (StStylable  *stylable,
  * st_stylable_get_default_value:
  * @stylable: a #StStylable
  * @property_name: name of the property to query
- * @value_out: return location for the default value
+ * @value_out: (out): return location for the default value
  *
  * Query @stylable for the default value of property @property_name and
  * fill @value_out with the result.
@@ -559,7 +559,7 @@ st_stylable_get_default_value (StStylable  *stylable,
  * Retrieves the #StStyle used by @stylable. This function does not
  * alter the reference count of the returned object.
  *
- * Return value: a #StStyle
+ * Return value: (transfer none): a #StStyle
  */
 StStyle *
 st_stylable_get_style (StStylable *stylable)
@@ -624,7 +624,7 @@ st_stylable_set_style (StStylable *stylable,
  *
  * Obtain the parent #StStylable that contains @stylable.
  *
- * Return value: The parent #StStylable
+ * Return value: (transfer none): The parent #StStylable
  */
 StStylable*
 st_stylable_get_container (StStylable *stylable)
@@ -647,7 +647,7 @@ st_stylable_get_container (StStylable *stylable)
  *
  * Get the parent ancestor #StStylable of @stylable.
  *
- * Return value: the parent #StStylable
+ * Return value: (transfer none): the parent #StStylable
  */
 StStylable*
 st_stylable_get_base_style (StStylable *stylable)

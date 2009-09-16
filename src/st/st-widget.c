@@ -1122,7 +1122,7 @@ st_widget_ensure_style (StWidget *widget)
  * "border-image" CSS property. This function should normally only be used
  * by subclasses.
  *
- * Returns: #ClutterActor
+ * Returns: (transfer none): #ClutterActor
  */
 ClutterActor *
 st_widget_get_border_image (StWidget *actor)
@@ -1139,7 +1139,7 @@ st_widget_get_border_image (StWidget *actor)
  * "background-image" CSS property. This function should normally only be used
  * by subclasses.
  *
- * Returns: a #ClutterActor
+ * Returns: (transfer none): a #ClutterActor
  */
 ClutterActor *
 st_widget_get_background_image (StWidget *actor)

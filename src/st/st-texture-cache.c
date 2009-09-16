@@ -169,7 +169,7 @@ st_texture_cache_init (StTextureCache *self)
  * Returns the default texture cache. This is owned by St and should not be
  * unreferenced or freed.
  *
- * Returns: a StTextureCache
+ * Returns: (transfer none): a StTextureCache
  */
 StTextureCache*
 st_texture_cache_get_default (void)
@@ -243,7 +243,7 @@ add_texture_to_cache (StTextureCache     *self,
  * the same image path will return a new ClutterTexture with the previously
  * loaded image.
  *
- * Returns: a newly created ClutterTexture
+ * Returns: (transfer none): a newly created ClutterTexture
  */
 ClutterTexture*
 st_texture_cache_get_texture (StTextureCache *self,
@@ -317,7 +317,7 @@ st_texture_cache_get_texture (StTextureCache *self,
  *
  * Use this function if all you need is an actor for drawing.
  *
- * Returns: a newly created ClutterTexture
+ * Returns: (transfer none): a newly created ClutterTexture
  */
 ClutterActor*
 st_texture_cache_get_actor (StTextureCache *self,

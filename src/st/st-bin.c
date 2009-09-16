@@ -617,7 +617,7 @@ st_bin_set_child (StBin        *bin,
  *
  * Retrieves a pointer to the child of @bin.
  *
- * Return value: a #ClutterActor, or %NULL
+ * Return value: (transfer none): a #ClutterActor, or %NULL
  */
 ClutterActor *
 st_bin_get_child (StBin *bin)

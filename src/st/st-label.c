@@ -351,8 +351,8 @@ st_label_set_text (StLabel     *label,
  *
  * Retrieve the internal #ClutterText so that extra parameters can be set
  *
- * Returns: the #ClutterText used by #StLabel. The label is owned by the
- * #StLabel and should not be unref'ed by the application.
+ * Returns: (transfer none): ethe #ClutterText used by #StLabel. The label
+ * is owned by the #StLabel and should not be unref'ed by the application.
  */
 ClutterActor*
 st_label_get_clutter_text (StLabel *label)
