@@ -1039,6 +1039,7 @@ shell_app_monitor_init (ShellAppMonitor *self)
   path = g_build_filename (shell_config_dir, DATA_FILENAME, NULL);
   g_free (shell_config_dir);
   self->configfile = g_file_new_for_path (path);
+  g_free (path);
   restore_from_file (self);
 
   load_initial_windows (self);
