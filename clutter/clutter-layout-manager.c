@@ -344,7 +344,7 @@ get_child_meta (ClutterLayoutManager *manager,
                 ClutterContainer     *container,
                 ClutterActor         *actor)
 {
-  ClutterLayoutMeta *layout;
+  ClutterLayoutMeta *layout = NULL;
 
   layout = g_object_get_qdata (G_OBJECT (actor), quark_layout_meta);
   if (layout != NULL)
@@ -355,6 +355,21 @@ get_child_meta (ClutterLayoutManager *manager,
           child->container == container &&
           child->actor == actor)
         return layout;
+
+      /* if the LayoutMeta referenced is not attached to the
+       * layout manager then we simply ask the layout manager
+       * to replace it with the right one
+       */
+      layout = create_child_meta (manager, container, actor);
+      if (layout != NULL)
+        {
+          g_assert (CLUTTER_IS_LAYOUT_META (layout));
+          g_object_set_qdata_full (G_OBJECT (actor), quark_layout_meta,
+                                   layout,
+                                   (GDestroyNotify) g_object_unref);
+        }
+
+      return layout;
     }
 
   return NULL;
