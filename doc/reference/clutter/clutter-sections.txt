@@ -1806,6 +1806,7 @@ clutter_bin_layout_get_type
 ClutterBox
 ClutterBoxClass
 clutter_box_new
+clutter_box_set_layout_manager
 clutter_box_get_layout_manager
 clutter_box_pack
 clutter_box_packv

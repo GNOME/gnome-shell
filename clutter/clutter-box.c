@@ -289,17 +289,21 @@ on_layout_changed (ClutterLayoutManager *manager,
   clutter_actor_queue_relayout (self);
 }
 
-static void
+static inline void
 set_layout_manager (ClutterBox           *self,
                     ClutterLayoutManager *manager)
 {
   ClutterBoxPrivate *priv = self->priv;
+
+  if (priv->manager == manager)
+    return;
 
   if (priv->manager != NULL)
     {
       if (priv->changed_id != 0)
         g_signal_handler_disconnect (priv->manager, priv->changed_id);
 
+      clutter_layout_manager_set_container (priv->manager, NULL);
       g_object_unref (priv->manager);
 
       priv->manager = NULL;
@@ -309,11 +313,18 @@ set_layout_manager (ClutterBox           *self,
   if (manager != NULL)
     {
       priv->manager = g_object_ref_sink (manager);
+      clutter_layout_manager_set_container (manager,
+                                            CLUTTER_CONTAINER (self));
+
       priv->changed_id =
         g_signal_connect (priv->manager, "layout-changed",
                           G_CALLBACK (on_layout_changed),
                           self);
     }
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+  g_object_notify (G_OBJECT (self), "layout-manager");
 }
 
 static void
@@ -391,7 +402,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
                                "The layout manager used by the box",
                                CLUTTER_TYPE_LAYOUT_MANAGER,
                                CLUTTER_PARAM_READWRITE |
-                               G_PARAM_CONSTRUCT_ONLY);
+                               G_PARAM_CONSTRUCT);
   g_object_class_install_property (gobject_class,
                                    PROP_LAYOUT_MANAGER,
                                    pspec);
@@ -422,6 +433,28 @@ clutter_box_new (ClutterLayoutManager *manager)
   return g_object_new (CLUTTER_TYPE_BOX,
                        "layout-manager", manager,
                        NULL);
+}
+
+/**
+ * clutter_box_set_layout_manager:
+ * @box: a #ClutterBox
+ * @manager: a #ClutterLayoutManager
+ *
+ * Sets the #ClutterLayoutManager for @box
+ *
+ * A #ClutterLayoutManager is a delegate object that controls the
+ * layout of the children of @box
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_set_layout_manager (ClutterBox *box,
+                                ClutterLayoutManager *manager)
+{
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (manager == NULL || CLUTTER_IS_LAYOUT_MANAGER (manager));
+
+  set_layout_manager (box, manager);
 }
 
 /**

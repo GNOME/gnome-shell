@@ -38,6 +38,8 @@ GType clutter_box_get_type (void) G_GNUC_CONST;
 
 ClutterActor *        clutter_box_new                (ClutterLayoutManager *manager);
 
+void                  clutter_box_set_layout_manager (ClutterBox           *box,
+                                                      ClutterLayoutManager *manger);
 ClutterLayoutManager *clutter_box_get_layout_manager (ClutterBox           *box);
 
 void                  clutter_box_pack               (ClutterBox           *box,
