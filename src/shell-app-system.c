@@ -984,14 +984,18 @@ shell_app_info_create_icon_texture (ShellAppInfo *info, float size)
     }
 
   icon = shell_app_info_get_icon (info);
-  if (!icon)
+  if (icon == NULL)
     {
       ret = clutter_texture_new ();
       g_object_set (ret, "opacity", 0, "width", size, "height", size, NULL);
-      return ret;
+    }
+  else
+    {
+      ret = shell_texture_cache_load_gicon (shell_texture_cache_get_default (), icon, (int)size);
+      g_object_unref (icon);
     }
 
-  return shell_texture_cache_load_gicon (shell_texture_cache_get_default (), icon, (int)size);
+  return ret;
 }
 
 /**
