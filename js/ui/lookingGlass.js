@@ -542,13 +542,15 @@ LookingGlass.prototype = {
         if (this._open)
             return;
 
+        if (!Main.pushModal(this.actor))
+            return;
+
         this.actor.show();
         this.actor.lower(Main.chrome.actor);
         this._open = true;
 
         Tweener.removeTweens(this.actor);
 
-        Main.pushModal(this.actor);
         global.stage.set_key_focus(this._entry);
 
         Tweener.addTween(this.actor, { time: 0.5,

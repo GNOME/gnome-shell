@@ -205,9 +205,20 @@ function _findModal(actor) {
  * Next, record the current Clutter keyboard focus on a stack.  If the modal stack
  * returns to this actor, reset the focus to the actor which was focused
  * at the time pushModal() was invoked.
+ *
+ * Returns: true iff we successfully acquired a grab or already had one
  */
 function pushModal(actor) {
     let timestamp = global.screen.get_display().get_current_time();
+
+    if (modalCount == 0) {
+        if (!global.begin_modal(timestamp)) {
+            log("pushModal: invocation of begin_modal failed");
+            return false;
+        }
+    }
+
+    global.set_stage_input_mode(Shell.StageInputMode.FULLSCREEN);
 
     modalCount += 1;
     actor.connect('destroy', function() {
@@ -225,14 +236,7 @@ function pushModal(actor) {
     }
     modalActorFocusStack.push([actor, curFocus]);
 
-    if (modalCount > 1)
-        return;
-
-    if (!global.begin_modal(timestamp)) {
-        log("pushModal: invocation of begin_modal failed");
-        return;
-    }
-    global.set_stage_input_mode(Shell.StageInputMode.FULLSCREEN);
+    return true;
 }
 
 /**

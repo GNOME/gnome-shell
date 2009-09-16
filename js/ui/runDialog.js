@@ -186,10 +186,12 @@ RunDialog.prototype = {
         if (this._isOpen) // Already shown
             return;
 
+        if (!Main.pushModal(this._group))
+            return;
+
         this._isOpen = true;
         this._group.show();
 
-        Main.pushModal(this._group);
         global.stage.set_key_focus(this._entry);
     },
 

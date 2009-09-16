@@ -277,7 +277,8 @@ Overview.prototype = {
     show : function() {
         if (this.visible)
             return;
-        Main.pushModal(this._dash.actor);
+        if (!Main.pushModal(this._dash.actor))
+            return;
 
         this.visible = true;
         this.animationInProgress = true;
