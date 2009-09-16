@@ -1786,6 +1786,7 @@ ClutterBinLayoutClass
 clutter_bin_layout_new
 clutter_bin_layout_set_alignment
 clutter_bin_layout_get_alignment
+clutter_bin_layout_add
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BIN_LAYOUT
