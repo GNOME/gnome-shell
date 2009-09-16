@@ -501,7 +501,7 @@ st_texture_frame_new (ClutterTexture *texture,
  *
  * Return the texture used by the #StTextureFrame
  *
- * Returns: a #ClutterTexture owned by the #StTextureFrame
+ * Returns: (transfer none): a #ClutterTexture owned by the #StTextureFrame
  */
 ClutterTexture *
 st_texture_frame_get_parent_texture (StTextureFrame *frame)

@@ -810,8 +810,8 @@ st_entry_set_text (StEntry     *entry,
  *
  * Retrieve the internal #ClutterText so that extra parameters can be set
  *
- * Returns: the #ClutterText used by #StEntry. The entry is owned by the
- * #StEntry and should not be unref'ed by the application.
+ * Returns: (transfer none): ethe #ClutterText used by #StEntry. The entry is
+ * owned by the #StEntry and should not be unref'ed by the application.
  */
 ClutterActor*
 st_entry_get_clutter_text (StEntry *entry)

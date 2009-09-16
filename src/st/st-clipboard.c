@@ -285,8 +285,8 @@ st_clipboard_x11_event_filter (XEvent          *xev,
  *
  * Get the global #StClipboard object that represents the clipboard.
  *
- * Returns: a #StClipboard owned by St and must not be unrefferenced or
- * freed.
+ * Returns: (transfer none): a #StClipboard owned by St and must not be
+ * unrefferenced or freed.
  */
 StClipboard*
 st_clipboard_get_default (void)
