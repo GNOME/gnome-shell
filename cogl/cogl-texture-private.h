@@ -55,20 +55,6 @@ struct _CoglTexture
   gboolean           mipmaps_dirty;
 };
 
-/* To improve batching of geometry when submitting vertices to OpenGL we
- * log the texture rectangles we want to draw to a journal, so when we
- * later flush the journal we aim to batch data, and gl draw calls. */
-typedef struct _CoglJournalEntry
-{
-  CoglHandle               material;
-  int                      n_layers;
-  CoglMaterialFlushOptions flush_options;
-  CoglMatrix               model_view;
-  /* XXX: These entries are pretty big now considering the padding in
-   * CoglMaterialFlushOptions and CoglMatrix, so we might need to optimize this
-   * later. */
-} CoglJournalEntry;
-
 typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
                                           GLuint gl_handle,
                                           GLenum gl_target,

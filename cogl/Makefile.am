@@ -120,6 +120,8 @@ libclutter_cogl_la_SOURCES = \
 	cogl-texture-2d-sliced.c	\
 	cogl-spans.h			\
 	cogl-spans.c			\
+	cogl-journal-private.h		\
+	cogl-journal.c			\
 	$(NULL)
 
 EXTRA_DIST += stb_image.c cogl-enum-types.h.in cogl-enum-types.c.in
