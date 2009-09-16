@@ -51,6 +51,7 @@ material_rectangle_paint (ClutterActor *actor, gpointer data)
 G_MODULE_EXPORT int
 test_cogl_multitexture_main (int argc, char *argv[])
 {
+  GError            *error = NULL;
   ClutterTimeline   *timeline;
   ClutterBehaviour  *r_behave;
   ClutterActor	    *stage;
@@ -85,17 +86,25 @@ test_cogl_multitexture_main (int argc, char *argv[])
     cogl_texture_new_from_file ("redhand_alpha.png",
                                 COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
-				NULL);
+				&error);
+  if (!state->alpha_tex)
+    g_critical ("Failed to load redhand_alpha.png: %s", error->message);
+
   state->redhand_tex =
     cogl_texture_new_from_file ("redhand.png",
                                 COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
-				NULL);
+				&error);
+  if (!state->redhand_tex)
+    g_critical ("Failed to load redhand.png: %s", error->message);
+
   state->light_tex0 =
     cogl_texture_new_from_file ("light0.png",
                                 COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
-				NULL);
+				&error);
+  if (!state->light_tex0)
+    g_critical ("Failed to load light0.png: %s", error->message);
 
   state->material = cogl_material_new ();
   cogl_material_set_layer (state->material, 0, state->alpha_tex);
