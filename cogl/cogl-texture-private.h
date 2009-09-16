@@ -55,6 +55,7 @@ struct _CoglSpanIter
   float             intersect_start_local;
   float             intersect_end_local;
   gboolean          intersects;
+  gboolean          flipped;
 };
 
 /* This is used to store the first pixel of each slice. This is only
@@ -109,11 +110,37 @@ typedef struct _CoglJournalEntry
    * later. */
 } CoglJournalEntry;
 
+typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
+                                          GLuint gl_handle,
+                                          GLenum gl_target,
+                                          float *slice_coords,
+                                          float *virtual_coords,
+                                          void *user_data);
+
 CoglTexture*
 _cogl_texture_pointer_from_handle (CoglHandle handle);
 
 void
-_cogl_texture_set_wrap_mode_parameter (CoglTexture *tex,
+_cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
+                                             float virtual_tx_1,
+                                             float virtual_ty_1,
+                                             float virtual_tx_2,
+                                             float virtual_ty_2,
+                                             CoglTextureSliceCallback callback,
+                                             void *user_data);
+
+gboolean
+_cogl_texture_can_hardware_repeat (CoglHandle handle);
+
+void
+_cogl_texture_transform_coords_to_gl (CoglHandle handle,
+                                      float *s,
+                                      float *t);
+GLenum
+_cogl_texture_get_internal_gl_format (CoglHandle handle);
+
+void
+_cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
                                        GLenum wrap_mode);
 
 void
@@ -123,24 +150,6 @@ _cogl_texture_set_filters (CoglHandle handle,
 
 void
 _cogl_texture_ensure_mipmaps (CoglHandle handle);
-
-gboolean
-_cogl_texture_span_has_waste (CoglTexture *tex,
-                              gint x_span_index,
-                              gint y_span_index);
-
-void
-_cogl_span_iter_begin (CoglSpanIter  *iter,
-		       GArray        *array,
-		       float          origin,
-		       float          cover_start,
-		       float          cover_end);
-
-gboolean
-_cogl_span_iter_end (CoglSpanIter *iter);
-
-void
-_cogl_span_iter_next (CoglSpanIter *iter);
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);

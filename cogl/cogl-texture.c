@@ -108,17 +108,41 @@ _cogl_span_iter_update (CoglSpanIter *iter)
 }
 
 void
-_cogl_span_iter_begin (CoglSpanIter  *iter,
-		       GArray        *array,
-		       float   origin,
-		       float   cover_start,
-		       float   cover_end)
+_cogl_span_iter_begin (CoglSpanIter         *iter,
+                       GArray               *spans,
+                       float                 normalize_factor,
+                       float                 cover_start,
+                       float                 cover_end)
 {
-  /* Copy info */
+  float cover_start_normalized;
+
   iter->index = 0;
-  iter->array = array;
   iter->span = NULL;
-  iter->origin = origin;
+
+  iter->array = spans;
+
+  /* We always iterate in a positive direction from the origin. If
+   * iter->flipped == TRUE that means whoever is using this API should
+   * interpreted the current span as extending in the opposite direction. I.e.
+   * it extends to the left if iterating the X axis, or up if the Y axis. */
+  if (cover_start > cover_end)
+    {
+      float tmp = cover_start;
+      cover_start = cover_end;
+      cover_end = tmp;
+      iter->flipped = TRUE;
+    }
+  else
+    iter->flipped = FALSE;
+
+  /* The texture spans cover the normalized texture coordinate space ranging
+   * from [0,1] but to help support repeating of sliced textures we allow
+   * iteration of any range so we need to relate the start of the range to the
+   * nearest point equivalent to 0.
+   */
+  cover_start_normalized = cover_start / normalize_factor;
+  iter->origin = floorf (cover_start_normalized) * normalize_factor;
+
   iter->cover_start = cover_start;
   iter->cover_end = cover_end;
   iter->pos = iter->origin;
@@ -145,6 +169,143 @@ _cogl_span_iter_end (CoglSpanIter *iter)
 {
   /* End reached when whole area covered */
   return iter->pos >= iter->cover_end;
+}
+
+/* Some CoglTextures, notably sliced textures or atlas textures when repeating
+ * is used, will need to divide the coordinate space into multiple GL textures
+ * (or rather; in the case of atlases duplicate a single texture in multiple
+ * positions to handle repeating)
+ *
+ * This function helps you implement primitives using such textures by
+ * invoking a callback once for each sub texture that intersects a given
+ * region specified in texture coordinates.
+ */
+/* To differentiate between texture coordinates of a specific, real, slice
+ * texture and the texture coordinates of the composite, sliced texture, the
+ * coordinates of the sliced texture are called "virtual" coordinates and the
+ * coordinates of slices are called "slice" coordinates. */
+/* This function lets you iterate all the slices that lie within the given
+ * virtual coordinates of the parent sliced texture. */
+/* Note: no guarantee is given about the order in which the slices will be
+ * visited */
+void
+_cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
+                                             float virtual_tx_1,
+                                             float virtual_ty_1,
+                                             float virtual_tx_2,
+                                             float virtual_ty_2,
+                                             CoglTextureSliceCallback callback,
+                                             void *user_data)
+{
+  CoglTexture *tex = _cogl_texture_pointer_from_handle (handle);
+  float width = tex->bitmap.width;
+  float height = tex->bitmap.height;
+  CoglSpanIter iter_x;
+  CoglSpanIter iter_y;
+
+  g_assert (tex->gl_target == GL_TEXTURE_2D);
+
+  /* Slice spans are stored in denormalized coordinates, and this is what
+   * the _cogl_span_iter_* funcs expect to be given, so we scale the given
+   * virtual coordinates by the texture size to denormalize.
+   */
+  /* XXX: I wonder if it's worth changing how we store spans so we can avoid
+   * the need to denormalize here */
+  virtual_tx_1 *= width;
+  virtual_ty_1 *= height;
+  virtual_tx_2 *= width;
+  virtual_ty_2 *= height;
+
+  /* Iterate the y axis of the virtual rectangle */
+  for (_cogl_span_iter_begin (&iter_y,
+                              tex->slice_y_spans,
+                              height,
+                              virtual_ty_1,
+                              virtual_ty_2);
+       !_cogl_span_iter_end (&iter_y);
+       _cogl_span_iter_next (&iter_y))
+    {
+      float y_intersect_start = iter_y.intersect_start;
+      float y_intersect_end = iter_y.intersect_end;
+      float slice_ty1;
+      float slice_ty2;
+
+      /* Discard slices out of rectangle early */
+      if (!iter_y.intersects)
+        continue;
+
+      if (iter_y.flipped)
+        {
+          y_intersect_start = iter_y.intersect_end;
+          y_intersect_end = iter_y.intersect_start;
+        }
+
+      /* Localize slice texture coordinates */
+      slice_ty1 = y_intersect_start - iter_y.pos;
+      slice_ty2 = y_intersect_end - iter_y.pos;
+
+      /* Normalize slice texture coordinates */
+      slice_ty1 /= iter_y.span->size;
+      slice_ty2 /= iter_y.span->size;
+
+      /* Iterate the x axis of the virtual rectangle */
+      for (_cogl_span_iter_begin (&iter_x,
+                                  tex->slice_x_spans,
+                                  width,
+                                  virtual_tx_1,
+                                  virtual_tx_2);
+	   !_cogl_span_iter_end (&iter_x);
+	   _cogl_span_iter_next (&iter_x))
+        {
+          float slice_coords[4];
+          float virtual_coords[4];
+          float x_intersect_start = iter_x.intersect_start;
+          float x_intersect_end = iter_x.intersect_end;
+          float slice_tx1;
+          float slice_tx2;
+          GLuint gl_handle;
+
+	  /* Discard slices out of rectangle early */
+	  if (!iter_x.intersects)
+            continue;
+
+          if (iter_x.flipped)
+            {
+              x_intersect_start = iter_x.intersect_end;
+              x_intersect_end = iter_x.intersect_start;
+            }
+
+	  /* Localize slice texture coordinates */
+          slice_tx1 = x_intersect_start - iter_x.pos;
+          slice_tx2 = x_intersect_end - iter_x.pos;
+
+          /* Normalize slice texture coordinates */
+          slice_tx1 /= iter_x.span->size;
+          slice_tx2 /= iter_x.span->size;
+
+	  /* Pluck out opengl texture object for this slice */
+	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint,
+				     iter_y.index * iter_x.array->len +
+				     iter_x.index);
+
+          slice_coords[0] = slice_tx1;
+          slice_coords[1] = slice_ty1;
+          slice_coords[2] = slice_tx2;
+          slice_coords[3] = slice_ty2;
+
+          virtual_coords[0] = x_intersect_start / width;
+          virtual_coords[1] = y_intersect_start / height;
+          virtual_coords[2] = x_intersect_end / width;
+          virtual_coords[3] = y_intersect_end / height;
+
+          callback (tex,
+                    gl_handle,
+                    tex->gl_target,
+                    slice_coords,
+                    virtual_coords,
+                    user_data);
+	}
+    }
 }
 
 void
@@ -361,7 +522,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
   /* Iterate vertical spans */
   for (source_y = src_y,
        _cogl_span_iter_begin (&y_iter, tex->slice_y_spans,
-			      0, (float)(dst_y),
+			      tex->bitmap.height, (float)(dst_y),
 			      (float)(dst_y + height));
 
        !_cogl_span_iter_end (&y_iter);
@@ -382,7 +543,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
       /* Iterate horizontal spans */
       for (source_x = src_x,
 	   _cogl_span_iter_begin (&x_iter, tex->slice_x_spans,
-				  0, (float)(dst_x),
+				  tex->bitmap.width, (float)(dst_x),
 				  (float)(dst_x + width));
 
 	   !_cogl_span_iter_end (&x_iter);
@@ -635,9 +796,11 @@ _cogl_pot_slices_for_size (gint    size_to_fill,
 }
 
 void
-_cogl_texture_set_wrap_mode_parameter (CoglTexture *tex,
+_cogl_texture_set_wrap_mode_parameter (CoglHandle handle,
                                        GLenum wrap_mode)
 {
+  CoglTexture *tex = _cogl_texture_pointer_from_handle (handle);
+
   /* Only set the wrap mode if it's different from the current
      value to avoid too many GL calls */
   if (tex->wrap_mode != wrap_mode)
@@ -1388,6 +1551,60 @@ cogl_texture_is_sliced (CoglHandle handle)
     return FALSE;
 
   return TRUE;
+}
+
+gboolean
+_cogl_texture_can_hardware_repeat (CoglHandle handle)
+{
+  CoglTexture *tex = _cogl_texture_pointer_from_handle (handle);
+  CoglTexSliceSpan *x_span;
+  CoglTexSliceSpan *y_span;
+
+#if HAVE_COGL_GL
+  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
+    return FALSE;
+#endif
+
+  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
+  y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
+
+  return (x_span->waste || y_span->waste) ? FALSE : TRUE;
+}
+
+void
+_cogl_texture_transform_coords_to_gl (CoglHandle handle,
+                                      float *s,
+                                      float *t)
+{
+  CoglTexture *tex = _cogl_texture_pointer_from_handle (handle);
+  CoglTexSliceSpan *x_span;
+  CoglTexSliceSpan *y_span;
+
+  g_assert (!cogl_texture_is_sliced (tex));
+
+  /* Don't include the waste in the texture coordinates */
+  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
+  y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
+
+  *s *= tex->bitmap.width / (float)x_span->size;
+  *t *= tex->bitmap.height / (float)y_span->size;
+
+#if HAVE_COGL_GL
+  /* Denormalize texture coordinates for rectangle textures */
+  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
+    {
+      *s *= x_span->size;
+      *t *= y_span->size;
+    }
+#endif
+}
+
+GLenum
+_cogl_texture_get_internal_gl_format (CoglHandle handle)
+{
+  CoglTexture *tex = _cogl_texture_pointer_from_handle (handle);
+
+  return tex->gl_intformat;
 }
 
 gboolean

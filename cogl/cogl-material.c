@@ -1365,14 +1365,6 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
           cogl_texture_get_gl_texture (tex_handle, &gl_texture, NULL);
         }
 
-#ifdef HAVE_COGL_GLES2
-      {
-        CoglTexture *tex =
-          _cogl_texture_pointer_from_handle (tex_handle);
-        gl_internal_format = tex->gl_intformat;
-      }
-#endif
-
       GE (glActiveTexture (GL_TEXTURE0 + i));
 
       _cogl_texture_set_filters (layer->texture,
@@ -1390,6 +1382,7 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
          texture should clear it from the cache in case a new texture
          is generated with the same number */
 #ifdef HAVE_COGL_GLES2
+      gl_internal_format = _cogl_texture_get_internal_gl_format (tex_handle);
       cogl_gles2_wrapper_bind_texture (gl_target,
                                        gl_texture,
                                        gl_internal_format);
