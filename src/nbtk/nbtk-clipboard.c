@@ -272,11 +272,11 @@ nbtk_clipboard_x11_event_filter (XEvent          *xev,
  *
  * Get the global #NbtkClipboard object that represents the clipboard.
  *
- * Returns: a #NbtkClipboard owned by Nbtk and must not be unrefferenced or
- * freed.
+ * Returns: (transfer none): a #NbtkClipboard owned by Nbtk and must not be
+ * unrefferenced or freed.
  */
 NbtkClipboard*
-nbtk_clipboard_get_default ()
+nbtk_clipboard_get_default (void)
 {
   static NbtkClipboard *default_clipboard = NULL;
 

@@ -77,6 +77,14 @@ nbtk_scrollable_set_adjustments (NbtkScrollable *scrollable,
                                                                vadjustment);
 }
 
+/**
+ * nbtk_scroll_bar_get_adjustments:
+ * @hadjustment: (transfer none) (out) (allow-none): location to store the horizontal adjustment, or %NULL
+ * @vadjustment: (transfer none) (out) (allow-none): location to store the vertical adjustment, or %NULL
+ *
+ * Gets the adjustment objects that store the offsets of the scrollable widget
+ * into its possible scrolling area.
+ */
 void
 nbtk_scrollable_get_adjustments (NbtkScrollable *scrollable,
                                  NbtkAdjustment **hadjustment,

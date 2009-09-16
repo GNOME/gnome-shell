@@ -501,7 +501,7 @@ nbtk_texture_frame_new (ClutterTexture *texture,
  *
  * Return the texture used by the #NbtkTextureFrame
  *
- * Returns: a #ClutterTexture owned by the #NbtkTextureFrame
+ * Returns: (transfer none): a #ClutterTexture owned by the #NbtkTextureFrame
  */
 ClutterTexture *
 nbtk_texture_frame_get_parent_texture (NbtkTextureFrame *frame)

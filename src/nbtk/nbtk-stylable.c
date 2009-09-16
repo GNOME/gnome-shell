@@ -337,12 +337,12 @@ nbtk_stylable_iface_install_property (NbtkStylableIface *iface,
 /**
  * nbtk_stylable_list_properties:
  * @stylable: a #NbtkStylable
- * @n_props: return location for the number of properties, or %NULL
+ * @n_props: (out): return location for the number of properties, or %NULL
  *
  * Retrieves all the #GParamSpec<!-- -->s installed by @stylable.
  *
- * Return value: an array of #GParamSpec<!-- -->s. Free it with
- *   g_free() when done.
+ * Return value: (transfer container) (array length=n_props): an array
+ *  of #GParamSpec<!-- -->s. Free it with  g_free() when done.
  */
 GParamSpec **
 nbtk_stylable_list_properties (NbtkStylable *stylable,
@@ -370,8 +370,8 @@ nbtk_stylable_list_properties (NbtkStylable *stylable,
  * Finds the #GParamSpec installed by @stylable for the property
  * with @property_name.
  *
- * Return value: a #GParamSpec for the given property, or %NULL if
- *   no property with that name was found
+ * Return value: (transfer none): a #GParamSpec for the given property,
+ *   or %NULL if no property with that name was found
  */
 GParamSpec *
 nbtk_stylable_find_property (NbtkStylable *stylable,
@@ -413,7 +413,7 @@ nbtk_stylable_get_property_internal (NbtkStylable *stylable,
  * nbtk_stylable_get_property:
  * @stylable: a #NbtkStylable
  * @property_name: the name of the property
- * @value: return location for an empty #GValue
+ * @value: (out): return location for an empty #GValue
  *
  * Retrieves the value of @property_name for @stylable, and puts it
  * into @value.
@@ -514,7 +514,7 @@ nbtk_stylable_get (NbtkStylable *stylable,
  * nbtk_stylable_get_default_value:
  * @stylable: a #NbtkStylable
  * @property_name: name of the property to query
- * @value_out: return location for the default value
+ * @value_out: (out): return location for the default value
  *
  * Query @stylable for the default value of property @property_name and
  * fill @value_out with the result.
@@ -559,7 +559,7 @@ nbtk_stylable_get_default_value (NbtkStylable  *stylable,
  * Retrieves the #NbtkStyle used by @stylable. This function does not
  * alter the reference count of the returned object.
  *
- * Return value: a #NbtkStyle
+ * Return value: (transfer none): a #NbtkStyle
  */
 NbtkStyle *
 nbtk_stylable_get_style (NbtkStylable *stylable)
@@ -624,7 +624,7 @@ nbtk_stylable_set_style (NbtkStylable *stylable,
  *
  * Obtain the parent #NbtkStylable that contains @stylable.
  *
- * Return value: The parent #NbtkStylable
+ * Return value: (transfer none): The parent #NbtkStylable
  */
 NbtkStylable*
 nbtk_stylable_get_container (NbtkStylable *stylable)
@@ -647,7 +647,7 @@ nbtk_stylable_get_container (NbtkStylable *stylable)
  *
  * Get the parent ancestor #NbtkStylable of @stylable.
  *
- * Return value: the parent #NbtkStylable
+ * Return value: (transfer none): the parent #NbtkStylable
  */
 NbtkStylable*
 nbtk_stylable_get_base_style (NbtkStylable *stylable)

@@ -1125,7 +1125,7 @@ nbtk_widget_ensure_style (NbtkWidget *widget)
  * "border-image" CSS property. This function should normally only be used
  * by subclasses.
  *
- * Returns: #ClutterActor
+ * Returns: (transfer none): #ClutterActor
  */
 ClutterActor *
 nbtk_widget_get_border_image (NbtkWidget *actor)
@@ -1142,7 +1142,7 @@ nbtk_widget_get_border_image (NbtkWidget *actor)
  * "background-image" CSS property. This function should normally only be used
  * by subclasses.
  *
- * Returns: a #ClutterActor
+ * Returns: (transfer none): a #ClutterActor
  */
 ClutterActor *
 nbtk_widget_get_background_image (NbtkWidget *actor)

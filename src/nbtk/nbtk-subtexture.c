@@ -457,7 +457,7 @@ nbtk_subtexture_new (ClutterTexture *texture,
  *
  * Return the texture used by the #NbtkSubtexture
  *
- * Returns: a #ClutterTexture owned by the #NbtkSubtexture
+ * Returns: (transfer none): a #ClutterTexture owned by the #NbtkSubtexture
  */
 ClutterTexture *
 nbtk_subtexture_get_parent_texture (NbtkSubtexture *frame)

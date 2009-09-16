@@ -810,8 +810,8 @@ nbtk_entry_set_text (NbtkEntry *entry,
  *
  * Retrieve the internal #ClutterText so that extra parameters can be set
  *
- * Returns: the #ClutterText used by #NbtkEntry. The entry is owned by the
- * #NbtkEntry and should not be unref'ed by the application.
+ * Returns: (transfer none): ethe #ClutterText used by #NbtkEntry. The entry is
+ * owned by the #NbtkEntry and should not be unref'ed by the application.
  */
 ClutterActor*
 nbtk_entry_get_clutter_text (NbtkEntry *entry)

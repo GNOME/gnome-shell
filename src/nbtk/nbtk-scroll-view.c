@@ -695,6 +695,14 @@ nbtk_scroll_view_new (void)
   return g_object_new (NBTK_TYPE_SCROLL_VIEW, NULL);
 }
 
+/**
+ * nbtk_scroll_view_get_hscroll_bar:
+ * @scroll: a #NbtkScrollView
+ *
+ * Gets the horizontal scrollbar of the scrollbiew
+ *
+ * Return value: (transfer none): the horizontal #NbtkScrollbar
+ */
 ClutterActor *
 nbtk_scroll_view_get_hscroll_bar (NbtkScrollView *scroll)
 {
@@ -703,6 +711,14 @@ nbtk_scroll_view_get_hscroll_bar (NbtkScrollView *scroll)
   return scroll->priv->hscroll;
 }
 
+/**
+ * nbtk_scroll_view_get_vscroll_bar:
+ * @scroll: a #NbtkScrollView
+ *
+ * Gets the vertical scrollbar of the scrollbiew
+ *
+ * Return value: (transfer none): the vertical #NbtkScrollbar
+ */
 ClutterActor *
 nbtk_scroll_view_get_vscroll_bar (NbtkScrollView *scroll)
 {

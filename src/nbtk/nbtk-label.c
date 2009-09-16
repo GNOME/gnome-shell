@@ -351,8 +351,8 @@ nbtk_label_set_text (NbtkLabel *label,
  *
  * Retrieve the internal #ClutterText so that extra parameters can be set
  *
- * Returns: the #ClutterText used by #NbtkLabel. The label is owned by the
- * #NbtkLabel and should not be unref'ed by the application.
+ * Returns: (transfer none): ethe #ClutterText used by #NbtkLabel. The label
+ * is owned by the #NbtkLabel and should not be unref'ed by the application.
  */
 ClutterActor*
 nbtk_label_get_clutter_text (NbtkLabel *label)

@@ -169,7 +169,7 @@ nbtk_texture_cache_init (NbtkTextureCache *self)
  * Returns the default texture cache. This is owned by Nbtk and should not be
  * unreferenced or freed.
  *
- * Returns: a NbtkTextureCache
+ * Returns: (transfer none): a NbtkTextureCache
  */
 NbtkTextureCache*
 nbtk_texture_cache_get_default (void)
@@ -244,7 +244,7 @@ add_texture_to_cache (NbtkTextureCache     *self,
  * the same image path will return a new ClutterTexture with the previously
  * loaded image.
  *
- * Returns: a newly created ClutterTexture
+ * Returns: (transfer none): a newly created ClutterTexture
  */
 ClutterTexture*
 nbtk_texture_cache_get_texture (NbtkTextureCache *self,
@@ -323,7 +323,7 @@ nbtk_texture_cache_get_texture (NbtkTextureCache *self,
  *
  * Use this function if all you need is an actor for drawing.
  *
- * Returns: a newly created ClutterTexture
+ * Returns: (transfer none): a newly created ClutterTexture
  */
 ClutterActor*
 nbtk_texture_cache_get_actor (NbtkTextureCache *self,

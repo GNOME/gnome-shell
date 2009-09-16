@@ -70,7 +70,6 @@ NbtkWidget *  nbtk_scroll_view_new             (void);
 
 ClutterActor *  nbtk_scroll_view_get_hscroll_bar (NbtkScrollView *scroll);
 ClutterActor *  nbtk_scroll_view_get_vscroll_bar (NbtkScrollView *scroll);
-ClutterActor *  nbtk_scroll_view_get_child       (NbtkScrollView *scroll);
 
 gfloat     nbtk_scroll_view_get_column_size (NbtkScrollView *scroll);
 void            nbtk_scroll_view_set_column_size (NbtkScrollView *scroll,

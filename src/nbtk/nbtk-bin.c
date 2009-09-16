@@ -609,7 +609,7 @@ nbtk_bin_set_child (NbtkBin *bin,
  *
  * Retrieves a pointer to the child of @bin.
  *
- * Return value: a #ClutterActor, or %NULL
+ * Return value: (transfer none): a #ClutterActor, or %NULL
  */
 ClutterActor *
 nbtk_bin_get_child (NbtkBin *bin)
