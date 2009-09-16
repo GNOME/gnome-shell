@@ -427,7 +427,10 @@ impl_load_thumbnail (ShellTextureCache *cache,
   existing_thumbnail = gnome_desktop_thumbnail_factory_lookup (thumbnail_factory, uri, mtime);
 
   if (existing_thumbnail != NULL)
-    pixbuf = gdk_pixbuf_new_from_file_at_size (existing_thumbnail, size, size, error);
+    {
+      pixbuf = gdk_pixbuf_new_from_file_at_size (existing_thumbnail, size, size, error);
+      g_free (existing_thumbnail);
+    }
   else if (gnome_desktop_thumbnail_factory_has_valid_failed_thumbnail (thumbnail_factory, uri, mtime))
     g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Has failed thumbnail");
   else if (gnome_desktop_thumbnail_factory_can_thumbnail (thumbnail_factory, uri, mime_type, mtime))
@@ -744,9 +747,14 @@ on_pixbuf_loaded (GObject      *source,
                              texdata);
       else
         cache_key_destroy (key);
-    }
 
-  set_texture_cogl_texture (data->texture, texdata);
+      set_texture_cogl_texture (data->texture, texdata);
+    }
+  else
+    {
+      set_texture_cogl_texture (data->texture, texdata);
+      cogl_handle_unref (texdata);
+    }
 
 out:
   if (data->icon)
