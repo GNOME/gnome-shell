@@ -19,7 +19,7 @@ m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutte
 # change this only when breaking the API
 m4_define([clutter_api_version], [1.0])
 
-# increase the interface age by 2 for each release; if the API changes,
+# increase the interface age by 1 for each release; if the API changes,
 # set to 0. interface_age and binary_age are used to create the soname
 # of the shared object:
 #
@@ -36,6 +36,7 @@ m4_define([clutter_api_version], [1.0])
 #   clutter 1.2.8  -> 100 * 2 + 8  = 208, interface age = 2 -> 206
 #   clutter 1.2.10 -> 100 * 2 + 10 = 210, interface age = 4 -> 206
 #   ...
+#
 m4_define([clutter_interface_age], [0])
 m4_define([clutter_binary_age], [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
@@ -63,7 +64,7 @@ AC_SUBST(CLUTTER_VERSION)
 AC_SUBST(CLUTTER_API_VERSION)
 AC_SUBST(CLUTTER_MAJORMINOR)
 
-m4_define([lt_current],  [m4_eval(clutter_binary_age - clutter_interface_age)])
+m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
 m4_define([lt_revision], [clutter_interface_age])
 m4_define([lt_age],      [m4_eval(clutter_binary_age - clutter_interface_age)])
 CLUTTER_LT_CURRENT=lt_current
