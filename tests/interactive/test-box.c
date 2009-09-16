@@ -117,10 +117,13 @@ test_box_main (int argc, char *argv[])
   clutter_actor_set_name (box, "box");
 
   rect = make_background (&bg_color, 200, 200);
+
+  /* first method: use clutter_box_pack() */
   clutter_box_pack (CLUTTER_BOX (box), rect,
                     "x-align", CLUTTER_BIN_ALIGNMENT_FILL,
                     "y-align", CLUTTER_BIN_ALIGNMENT_FILL,
                     NULL);
+
   clutter_actor_lower_bottom (rect);
   clutter_actor_set_name (rect, "background");
 
@@ -135,10 +138,12 @@ test_box_main (int argc, char *argv[])
       g_error ("Unable to create texture: %s", error->message);
 
     clutter_texture_set_keep_aspect_ratio (CLUTTER_TEXTURE (tex), TRUE);
-    clutter_box_pack (CLUTTER_BOX (box), tex,
-                      "x-align", CLUTTER_BIN_ALIGNMENT_CENTER,
-                      "y-align", CLUTTER_BIN_ALIGNMENT_CENTER,
-                      NULL);
+
+    /* second method: use clutter_bin_layout_add() */
+    clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), tex,
+                            CLUTTER_BIN_ALIGNMENT_CENTER,
+                            CLUTTER_BIN_ALIGNMENT_CENTER);
+
     clutter_actor_raise (tex, rect);
     clutter_actor_set_width (tex, 175);
     clutter_actor_set_name (tex, "texture");
@@ -150,10 +155,13 @@ test_box_main (int argc, char *argv[])
                              224);
 
   rect = clutter_rectangle_new_with_color (color);
-  clutter_box_pack (CLUTTER_BOX (box), rect,
-                    "x-align", CLUTTER_BIN_ALIGNMENT_END,
-                    "y-align", CLUTTER_BIN_ALIGNMENT_END,
-                    NULL);
+
+  /* third method: container_add() and set_alignment() */
+  clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
+  clutter_bin_layout_set_alignment (CLUTTER_BIN_LAYOUT (layout), rect,
+                                    CLUTTER_BIN_ALIGNMENT_END,
+                                    CLUTTER_BIN_ALIGNMENT_END);
+
   clutter_actor_set_size (rect, 50, 50);
   clutter_actor_set_opacity (rect, 0);
   clutter_actor_raise_top (rect);
