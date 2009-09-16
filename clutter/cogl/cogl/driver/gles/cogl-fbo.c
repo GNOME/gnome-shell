@@ -43,11 +43,11 @@ COGL_HANDLE_DEFINE (Fbo, offscreen);
 CoglHandle
 cogl_offscreen_new_to_texture (CoglHandle texhandle)
 {
-  CoglTexture      *tex;
   CoglFbo          *fbo;
-  CoglTexSliceSpan *x_span;
-  CoglTexSliceSpan *y_span;
+  int               width;
+  int               height;
   GLuint            tex_gl_handle;
+  GLenum            tex_gl_target;
   GLuint            fbo_gl_handle;
   GLuint            gl_stencil_handle;
   GLenum            status;
@@ -61,19 +61,20 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   if (!cogl_is_texture (texhandle))
     return COGL_INVALID_HANDLE;
 
-  tex = _cogl_texture_pointer_from_handle (texhandle);
-
   /* The texture must not be sliced */
-  if (tex->slice_gl_handles == NULL)
-    return COGL_INVALID_HANDLE;
-
-  if (tex->slice_gl_handles->len != 1)
+  if (cogl_texture_is_sliced (texhandle))
     return COGL_INVALID_HANDLE;
 
   /* Pick the single texture slice width, height and GL id */
-  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
-  y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
-  tex_gl_handle = g_array_index (tex->slice_gl_handles, GLuint, 0);
+
+  width = cogl_texture_get_width (texhandle);
+  height = cogl_texture_get_height (texhandle);
+
+  if (!cogl_texture_get_gl_texture (texhandle, &tex_gl_handle, &tex_gl_target))
+    return COGL_INVALID_HANDLE;
+
+  if (tex_gl_target != GL_TEXTURE_2D)
+    return COGL_INVALID_HANDLE;
 
   /* Create a renderbuffer for stenciling */
   GE( glGenRenderbuffers (1, &gl_stencil_handle) );
@@ -87,7 +88,7 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   glGenFramebuffers (1, &fbo_gl_handle);
   GE( glBindFramebuffer (GL_FRAMEBUFFER, fbo_gl_handle) );
   GE( glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			      tex->gl_target, tex_gl_handle, 0) );
+			      tex_gl_target, tex_gl_handle, 0) );
   GE( glFramebufferRenderbuffer (GL_FRAMEBUFFER,
 				 GL_STENCIL_ATTACHMENT,
 				 GL_RENDERBUFFER, gl_stencil_handle) );
@@ -122,8 +123,8 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   /* Allocate and init a CoglFbo object (store non-wasted size
      for subsequent blits and viewport setup) */
   fbo = (CoglFbo*) g_malloc (sizeof (CoglFbo));
-  fbo->width             = x_span->size - x_span->waste;
-  fbo->height            = y_span->size - y_span->waste;
+  fbo->width             = width;
+  fbo->height            = height;
   fbo->gl_handle         = fbo_gl_handle;
   fbo->gl_stencil_handle = gl_stencil_handle;
 
