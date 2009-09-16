@@ -1735,6 +1735,7 @@ clutter_layout_manager_get_preferred_width
 clutter_layout_manager_get_preferred_height
 clutter_layout_manager_allocate
 clutter_layout_manager_layout_changed
+clutter_layout_manager_set_container
 
 <SUBSECTION>
 clutter_layout_manager_add_child_meta

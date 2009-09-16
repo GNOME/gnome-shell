@@ -57,6 +57,9 @@ struct _ClutterLayoutManager
 {
   /*< private >*/
   GInitiallyUnowned parent_instance;
+
+  /* padding for future expansion */
+  gpointer dummy;
 };
 
 /**
@@ -70,6 +73,10 @@ struct _ClutterLayoutManager
  * @allocate: virtual function; override to allocate the children of the
  *   layout manager. See also the allocate() virtual function in
  *   #ClutterActor
+ * @set_container: virtual function; override to set a back pointer
+ *   on the #ClutterContainer using the layout manager. The implementation
+ *   should not take a reference on the container, but just take a weak
+ *   reference, to avoid potential leaks due to reference cycles
  * @create_child_meta: virtual function; override to create a
  *   #ClutterChildMeta instance associated to a #ClutterContainer and a
  *   child #ClutterActor, used to maintain layout manager specific properties
@@ -101,6 +108,9 @@ struct _ClutterLayoutManagerClass
                                                ClutterContainer       *container,
                                                const ClutterActorBox  *allocation,
                                                ClutterAllocationFlags  flags);
+
+  void               (* set_container)        (ClutterLayoutManager   *manager,
+                                               ClutterContainer       *container);
 
   ClutterLayoutMeta *(* create_child_meta)    (ClutterLayoutManager   *manager,
                                                ClutterContainer       *container,
@@ -137,6 +147,8 @@ void               clutter_layout_manager_allocate             (ClutterLayoutMan
                                                                 const ClutterActorBox  *allocation,
                                                                 ClutterAllocationFlags  flags);
 
+void               clutter_layout_manager_set_container        (ClutterLayoutManager   *manager,
+                                                                ClutterContainer       *container);
 void               clutter_layout_manager_layout_changed       (ClutterLayoutManager   *manager);
 
 ClutterLayoutMeta *clutter_layout_manager_get_child_meta       (ClutterLayoutManager   *manager,

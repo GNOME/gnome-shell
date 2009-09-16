@@ -299,6 +299,34 @@ clutter_layout_manager_layout_changed (ClutterLayoutManager *manager)
   g_signal_emit (manager, manager_signals[LAYOUT_CHANGED], 0);
 }
 
+/**
+ * clutter_layout_manager_set_container:
+ * @manager: a #ClutterLayoutManager
+ * @container: (allow-none): a #ClutterContainer using @manager
+ *
+ * If the #ClutterLayoutManager sub-class allows it, allow
+ * adding a weak reference of the @container using @manager
+ * from within the layout manager
+ *
+ * The layout manager should not increase the reference
+ * count of the @container
+ *
+ * Since: 1.2
+ */
+void
+clutter_layout_manager_set_container (ClutterLayoutManager *manager,
+                                      ClutterContainer     *container)
+{
+  ClutterLayoutManagerClass *klass;
+
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (container == NULL || CLUTTER_IS_CONTAINER (container));
+
+  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+  if (klass->set_container)
+    klass->set_container (manager, container);
+}
+
 static inline ClutterLayoutMeta *
 create_child_meta (ClutterLayoutManager *manager,
                    ClutterContainer     *container,
