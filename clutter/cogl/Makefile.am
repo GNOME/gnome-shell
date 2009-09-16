@@ -1,10 +1,6 @@
-NULL =
+include $(top_srcdir)/build/autotools/Makefile.am.silent
 
-if USE_SHAVE
-QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
-else
-QUIET_GEN = $(AM_V_GEN)
-endif # USE_SHAVE
+NULL =
 
 SUBDIRS = common $(CLUTTER_COGL)
 

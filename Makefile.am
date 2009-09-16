@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 NULL =
 
 SUBDIRS = build clutter tests po

@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterX11\"           \
         -DCLUTTER_COMPILATION                   \

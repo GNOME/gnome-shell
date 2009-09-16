@@ -1,3 +1,4 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 UNIT_TESTS = \
 	test-textures.c \
@@ -51,18 +52,18 @@ endif
 
 #FIXME - this is is a bit of a yukky way of ensuring the tests find our data:
 test-script.json:
-	ln -sf $(top_srcdir)/tests/data/test-script.json
+	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/test-script.json
 redhand.png:
-	ln -sf $(top_srcdir)/tests/data/redhand.png
+	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/redhand.png
 redhand_alpha.png:
-	ln -sf $(top_srcdir)/tests/data/redhand_alpha.png
+	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/redhand_alpha.png
 light0.png:
-	ln -sf $(top_srcdir)/tests/data/light0.png
+	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/light0.png
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers
 wrappers: test-interactive$(EXEEXT)
-	for i in $(UNIT_TESTS); \
+	$(QUIET_GEN)for i in $(UNIT_TESTS); \
 	do \
 		ln -sf $(top_srcdir)/tests/interactive/wrapper.sh $${i%*.c}; \
 	done

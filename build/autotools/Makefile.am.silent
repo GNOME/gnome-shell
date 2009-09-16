@@ -1,0 +1,17 @@
+# custom rules for quiet builds
+
+if USE_SHAVE
+QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
+QUIET_LN  = $(Q:@=@echo '  LN    '$@;)
+QUIET_RM  = $(Q:@=@echo '  RM    '$@;)
+else
+QUIET_GEN = $(AM_V_GEN)
+
+QUIET_LN   = $(QUIET_LN_$(V))
+QUIET_LN_  = $(QUIET_LN_$(AM_DEFAULT_VERBOSITY))
+QUIET_LN_0 = @echo '  LN     '$@;
+
+QUIET_RM   = $(QUIET_RM_$(V))
+QUIET_RM_  = $(QUIET_RM_$(AM_DEFAULT_VERBOSITY))
+QUIET_RM_0 = @echo '  RM     '$@;
+endif # USE_SHAVE

@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl.h \

@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 NULL =
 
 noinst_PROGRAMS = test-conformance
@@ -46,7 +48,7 @@ stamp-test-conformance: test-conformance$(EXEEXT)
 	@for i in $(UNIT_TESTS); \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
-		echo "  GEN   $$unit"; \
+		echo "  GEN    $$unit"; \
 		( echo "#!/bin/sh" ; echo "$(top_srcdir)/tests/conform/test-launcher.sh '$$i'" ) > $$unit$(EXEEXT) ; \
 		chmod +x $$unit$(EXEEXT); \
 	done \
@@ -56,7 +58,7 @@ clean-wrappers:
 	@for i in $(UNIT_TESTS); \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
-		echo "RM $$unit"; \
+		echo "  RM     $$unit"; \
 		rm -f $$unit$(EXEEXT) ; \
 	done \
 	&& rm -f stamp-test-conformance
@@ -139,4 +141,4 @@ EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
 clean-generic: clean-wrappers
-	rm -f $(XML_REPORTS) $(HTML_REPORTS)
+	$(QUIET_RM)rm -f $(XML_REPORTS) $(HTML_REPORTS)

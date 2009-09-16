@@ -1,10 +1,6 @@
-NULL      =
+include $(top_srcdir)/build/autotools/Makefile.am.silent
 
-if USE_SHAVE
-QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
-else
-QUIET_GEN = $(AM_V_GEN)
-endif # USE_SHAVE
+NULL =
 
 SUBDIRS = cogl pango $(backendextra) $(clutterbackend)
 
@@ -257,7 +253,7 @@ endif
 # subdir Makefile.am, so just extract them from cogl.h instead. The doc
 # comments for COGL are in the headers, so we don't need the source files.
 Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
-	$(INTROSPECTION_SCANNER) -v \
+	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
 		--add-include-path=cogl \
@@ -290,6 +286,7 @@ Clutter-@CLUTTER_API_VERSION@.typelib: $(clutter_json_gir) Cogl-@CLUTTER_API_VER
 # that we compile and install, we transfer the shared-library="" line from
 # Clutter.gir to Cogl.gir
 Cogl-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir cogl/Cogl-@CLUTTER_API_VERSION@.gir
+	$(QUIET_GEN) \
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
 	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< cogl/Cogl-@CLUTTER_API_VERSION@.gir > $@
 
@@ -299,6 +296,7 @@ if LOCAL_JSON_GLIB
 # If we are building it, ClutterJson gets the same handling as described
 # for Cogl above
 ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
+	$(QUIET_GEN) \
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
 	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
 

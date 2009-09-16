@@ -1,4 +1,3 @@
-
 EXTRA_DIST = \
 	redhand.png \
 	redhand_alpha.png \

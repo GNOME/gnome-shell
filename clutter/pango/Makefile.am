@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 source_c = \
 	cogl-pango-display-list.c \
 	cogl-pango-fontmap.c    \

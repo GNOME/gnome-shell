@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 noinst_PROGRAMS = \
 	test-text \
 	test-picking \
