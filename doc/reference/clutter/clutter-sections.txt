@@ -1806,8 +1806,8 @@ ClutterBox
 ClutterBoxClass
 clutter_box_new
 clutter_box_get_layout_manager
-clutter_box_add
-clutter_box_addv
+clutter_box_pack
+clutter_box_packv
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BOX

@@ -443,7 +443,7 @@ clutter_box_get_layout_manager (ClutterBox *box)
 }
 
 /**
- * clutter_box_addv:
+ * clutter_box_packv:
  * @box: a #ClutterBox
  * @actor: a #ClutterActor
  * @n_properties: the number of properties to set
@@ -452,17 +452,17 @@ clutter_box_get_layout_manager (ClutterBox *box)
  * @values: (array length=n_properties): a vector containing the property
  *   values to set
  *
- * Vector-based variant of clutter_box_add(), intended for language
+ * Vector-based variant of clutter_box_pack(), intended for language
  * bindings to use
  *
  * Since: 1.2
  */
 void
-clutter_box_addv (ClutterBox          *box,
-                  ClutterActor        *actor,
-                  guint                n_properties,
-                  const gchar * const  properties[],
-                  const GValue        *values)
+clutter_box_packv (ClutterBox          *box,
+                   ClutterActor        *actor,
+                   guint                n_properties,
+                   const gchar * const  properties[],
+                   const GValue        *values)
 {
   ClutterContainer *container;
   ClutterBoxPrivate *priv;
@@ -522,7 +522,7 @@ clutter_box_addv (ClutterBox          *box,
 }
 
 /**
- * clutter_box_add:
+ * clutter_box_pack:
  * @box: a #ClutterBox
  * @actor: a #ClutterActor
  * @first_property: the name of the first property to set, or %NULL
@@ -540,10 +540,10 @@ clutter_box_addv (ClutterBox          *box,
  * Since: 1.2
  */
 void
-clutter_box_add (ClutterBox   *box,
-                 ClutterActor *actor,
-                 const gchar  *first_property,
-                 ...)
+clutter_box_pack (ClutterBox   *box,
+                  ClutterActor *actor,
+                  const gchar  *first_property,
+                  ...)
 {
   ClutterBoxPrivate *priv;
   ClutterContainer *container;
