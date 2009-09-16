@@ -56,9 +56,10 @@ struct _ClutterTimelinePrivate
   guint delay;
 
   /* The current amount of elapsed time */
-  gint elapsed_time;
+  gint64 elapsed_time;
+
   /* The elapsed time since the last frame was fired */
-  gint msecs_delta;
+  gint64 msecs_delta;
 
   GHashTable *markers_by_name;
 
@@ -570,9 +571,9 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
 
   g_object_ref (timeline);
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Timeline [%p] activated (cur: %d)\n",
+  CLUTTER_TIMESTAMP (SCHEDULER, "Timeline [%p] activated (cur: %ld)\n",
                      timeline,
-                     priv->elapsed_time);
+                     (long) priv->elapsed_time);
 
   /* Advance time */
   if (priv->direction == CLUTTER_TIMELINE_FORWARD)
@@ -637,10 +638,10 @@ clutter_timeline_do_frame (ClutterTimeline *timeline)
        * on the last frame we will still go ahead and send the
        * completed signal */
       CLUTTER_NOTE (SCHEDULER,
-                    "Timeline [%p] completed (cur: %d, tot: %d)",
+                    "Timeline [%p] completed (cur: %ld, tot: %ld)",
                     timeline,
-                    priv->elapsed_time,
-                    priv->msecs_delta);
+                    (long) priv->elapsed_time,
+                    (long) priv->msecs_delta);
 
       if (!priv->loop && priv->is_playing)
         {
@@ -1223,9 +1224,21 @@ clutter_timeline_do_tick (ClutterTimeline *timeline,
     }
   else
     {
-      gint msecs =
-	(tick_time->tv_sec - priv->last_frame_time.tv_sec) * 1000
-        + (tick_time->tv_usec - priv->last_frame_time.tv_usec) / 1000;
+      gint64 msecs;
+
+      msecs = (tick_time->tv_sec - priv->last_frame_time.tv_sec) * 1000
+            + (tick_time->tv_usec - priv->last_frame_time.tv_usec) / 1000;
+
+      /* if the clock rolled back between ticks we need to
+       * account for it; the best course of action, since the
+       * clock roll back can happen by any arbitrary amount
+       * of milliseconds, is to drop a frame here
+       */
+      if (msecs < 0)
+        {
+          priv->last_frame_time = *tick_time;
+          return;
+        }
 
       if (msecs != 0)
 	{
