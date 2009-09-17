@@ -503,10 +503,10 @@ WellMenu.prototype = {
                                                  padding: 4,
                                                  corner_radius: WELL_MENU_CORNER_RADIUS,
                                                  width: Main.overview._dash.actor.width * 0.75 });
-        this._windowContainer.connect('unselected', Lang.bind(this, this._onWindowUnselected));
-        this._windowContainer.connect('selected', Lang.bind(this, this._onWindowSelected));
+        this._windowContainer.connect('unselected', Lang.bind(this, this._onItemUnselected));
+        this._windowContainer.connect('selected', Lang.bind(this, this._onItemSelected));
         this._windowContainer.connect('cancelled', Lang.bind(this, this._onWindowSelectionCancelled));
-        this._windowContainer.connect('activate', Lang.bind(this, this._onWindowActivate));
+        this._windowContainer.connect('activate', Lang.bind(this, this._onItemActivate));
         this.actor.add_actor(this._windowContainer);
 
         // Stay popped up on release over application icon
@@ -595,43 +595,59 @@ WellMenu.prototype = {
 
         this._appendWindows(currentWorkspaceWindows, iconsDiffer);
         if (currentWorkspaceWindows.length > 0 && otherWorkspaceWindows.length > 0) {
-            let box = new Big.Box({ padding_top: 2, padding_bottom: 2 });
-            box.append(new Clutter.Rectangle({ height: 1,
-                                               color: WELL_MENU_SEPARATOR_COLOR }),
-                       Big.BoxPackFlags.EXPAND);
-            this._windowContainer.append_separator(box, Big.BoxPackFlags.NONE);
+            this._appendSeparator();
         }
         this._appendWindows(otherWorkspaceWindows, iconsDiffer);
+
+        this._appendSeparator();
+
+        this._newWindowMenuItem = this._appendMenuItem(null, _("New Window"));
+    },
+
+    _appendSeparator: function () {
+        let box = new Big.Box({ padding_top: 2, padding_bottom: 2 });
+        box.append(new Clutter.Rectangle({ height: 1,
+                                           color: WELL_MENU_SEPARATOR_COLOR }),
+                   Big.BoxPackFlags.EXPAND);
+        this._windowContainer.append_separator(box, Big.BoxPackFlags.NONE);
+    },
+
+    _appendMenuItem: function(iconTexture, labelText) {
+        /* Use padding here rather than spacing in the box above so that
+         * we have a larger reactive area.
+         */
+        let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
+                                padding_top: 4,
+                                padding_bottom: 4,
+                                spacing: 4,
+                                reactive: true });
+        let vCenter;
+        if (iconTexture != null) {
+            vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
+            vCenter.append(iconTexture, Big.BoxPackFlags.NONE);
+            box.append(vCenter, Big.BoxPackFlags.NONE);
+        }
+        vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
+        let label = new Clutter.Text({ text: labelText,
+                                       font_name: WELL_MENU_FONT,
+                                       ellipsize: Pango.EllipsizeMode.END,
+                                       color: WELL_MENU_COLOR });
+        vCenter.append(label, Big.BoxPackFlags.NONE);
+        box.append(vCenter, Big.BoxPackFlags.NONE);
+        this._windowContainer.append(box, Big.BoxPackFlags.NONE);
+        return box;
     },
 
     _appendWindows: function (windows, iconsDiffer) {
         for (let i = 0; i < windows.length; i++) {
             let metaWindow = windows[i];
 
-            /* Use padding here rather than spacing in the box above so that
-             * we have a larger reactive area.
-             */
-            let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                    padding_top: 4,
-                                    padding_bottom: 4,
-                                    spacing: 4,
-                                    reactive: true });
-            box._window = metaWindow;
-            let vCenter;
+            let icon = null;
             if (iconsDiffer) {
-                vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-                let icon = Shell.TextureCache.get_default().bind_pixbuf_property(metaWindow, "mini-icon");
-                vCenter.append(icon, Big.BoxPackFlags.NONE);
-                box.append(vCenter, Big.BoxPackFlags.NONE);
+                icon = Shell.TextureCache.get_default().bind_pixbuf_property(metaWindow, "mini-icon");
             }
-            vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-            let label = new Clutter.Text({ text: metaWindow.title,
-                                           font_name: WELL_MENU_FONT,
-                                           ellipsize: Pango.EllipsizeMode.END,
-                                           color: WELL_MENU_COLOR });
-            vCenter.append(label, Big.BoxPackFlags.NONE);
-            box.append(vCenter, Big.BoxPackFlags.NONE);
-            this._windowContainer.append(box, Big.BoxPackFlags.NONE);
+            let box = this._appendMenuItem(icon, metaWindow.title);
+            box._window = metaWindow;
         }
     },
 
@@ -667,25 +683,24 @@ WellMenu.prototype = {
         }
     },
 
-    _setHighlightWindow: function (metaWindow) {
+    _lookupMenuItemForWindow: function (metaWindow) {
         let children = this._windowContainer.get_children();
         for (let i = 0; i < children.length; i++) {
             let child = children[i];
             let menuMetaWindow = child._window;
-            if (metaWindow != null && menuMetaWindow == metaWindow) {
-                child.background_color = WELL_MENU_SELECTED_COLOR;
-            } else {
-                child.background_color = TRANSPARENT_COLOR;
-            }
+            if (menuMetaWindow == metaWindow)
+                return child;
         }
-        this.emit('highlight-window', metaWindow);
+        return null;
     },
 
     // Called while menu has a pointer grab
     _onMenuEnter: function (actor, event) {
         let clone = this._findWindowCloneForActor(event.get_source());
         if (clone) {
-            this._setHighlightWindow(clone.metaWindow);
+            let menu = this._lookupMenuItemForWindow(clone.metaWindow);
+            menu.background_color = WELL_MENU_SELECTED_COLOR;
+            this.emit('highlight-window', clone.metaWindow);
         }
     },
 
@@ -693,22 +708,35 @@ WellMenu.prototype = {
     _onMenuLeave: function (actor, event) {
         let clone = this._findWindowCloneForActor(event.get_source());
         if (clone) {
-            this._setHighlightWindow(null);
+            let menu = this._lookupMenuItemForWindow(clone.metaWindow);
+            menu.background_color = TRANSPARENT_COLOR;
+            this.emit('highlight-window', null);
         }
     },
 
-    _onWindowUnselected: function (actor, child) {
-        this._setHighlightWindow(null);
+    _onItemUnselected: function (actor, child) {
+        child.background_color = TRANSPARENT_COLOR;
+        if (child._window) {
+            this.emit('highlight-window', null);
+        }
     },
 
-    _onWindowSelected: function (actor, child) {
-        this._setHighlightWindow(child._window);
+    _onItemSelected: function (actor, child) {
+        child.background_color = WELL_MENU_SELECTED_COLOR;
+        if (child._window) {
+            this.emit('highlight-window', child._window);
+        }
     },
 
-    _onWindowActivate: function (actor, child) {
-        let metaWindow = child._window;
-        this.didActivateWindow = true;
-        Main.overview.activateWindow(metaWindow, Clutter.get_current_event_time());
+    _onItemActivate: function (actor, child) {
+        if (child._window) {
+            let metaWindow = child._window;
+            this.didActivateWindow = true;
+            Main.overview.activateWindow(metaWindow, Clutter.get_current_event_time());
+        } else if (child == this._newWindowMenuItem) {
+            this._source.appInfo.launch();
+            Main.overview.hide();
+        }
         this.emit('popup', false);
         this.actor.hide();
     },
