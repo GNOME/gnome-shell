@@ -183,25 +183,20 @@ hook_paint_red_border (ClutterActor  *actor,
   CoglColor color;
   ClutterGeometry geom;
   float width = 2;
-  float x2;
-  float y2;
 
   cogl_color_set_from_4ub (&color, 0xff, 0, 0, 0xc4);
   cogl_set_source_color (&color);
 
   clutter_actor_get_allocation_geometry (actor, &geom);
-  x2 = geom.x + geom.width;
-  y2 = geom.y + geom.height;
 
   /** clockwise order **/
-  cogl_rectangle (geom.x, geom.y,
-                  x2, geom.y + width);
-  cogl_rectangle (x2 - width, geom.y + width,
-                  x2, y2);
-  cogl_rectangle (x2 - width, y2,
-                  geom.x, y2 - width);
-  cogl_rectangle (geom.x + width, y2 - width,
-                  geom.x, geom.y + width);
+  cogl_rectangle (0, 0, geom.width, width);
+  cogl_rectangle (geom.width - width, width,
+                  geom.width, geom.height);
+  cogl_rectangle (0, geom.height,
+                  geom.width - width, geom.height - width);
+  cogl_rectangle (0, geom.height - width,
+                  width, width);
 }
 
 guint
