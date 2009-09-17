@@ -82,7 +82,6 @@ typedef struct
   GArray           *journal;
   GArray           *logged_vertices;
   GArray           *polygon_vertices;
-  GLuint	           journal_vbo;
 
   /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;

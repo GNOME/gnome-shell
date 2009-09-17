@@ -495,19 +495,19 @@ compare_entry_strides (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
     return FALSE;
 }
 
-static void
+static GLuint
 upload_vertices_to_vbo (GArray *vertices, CoglJournalFlushState *state)
 {
   size_t needed_vbo_len;
+  GLuint journal_vbo;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _COGL_GET_CONTEXT (ctx, 0);
 
   needed_vbo_len = vertices->len * sizeof (GLfloat);
 
-  g_assert (ctx->journal_vbo == 0);
   g_assert (needed_vbo_len);
-  GE (glGenBuffers (1, &ctx->journal_vbo));
-  GE (glBindBuffer (GL_ARRAY_BUFFER, ctx->journal_vbo));
+  GE (glGenBuffers (1, &journal_vbo));
+  GE (glBindBuffer (GL_ARRAY_BUFFER, journal_vbo));
   GE (glBufferData (GL_ARRAY_BUFFER,
                     needed_vbo_len,
                     vertices->data,
@@ -516,6 +516,8 @@ upload_vertices_to_vbo (GArray *vertices, CoglJournalFlushState *state)
   /* As we flush the journal entries in batches we walk forward through the
    * above VBO starting at offset 0... */
   state->vbo_offset = 0;
+
+  return journal_vbo;
 }
 
 /* XXX NB: When _cogl_journal_flush() returns all state relating
@@ -527,6 +529,7 @@ _cogl_journal_flush (void)
 {
   CoglJournalFlushState state;
   int                   i;
+  GLuint                journal_vbo;
   gboolean              vbo_fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
 
@@ -541,7 +544,7 @@ _cogl_journal_flush (void)
   /* Load all the vertex data we have accumulated so far into a single VBO
    * to minimize memory management costs within the GL driver. */
   if (!vbo_fallback)
-    upload_vertices_to_vbo (ctx->logged_vertices, &state);
+    journal_vbo = upload_vertices_to_vbo (ctx->logged_vertices, &state);
   else
     state.vbo_offset = (char *)ctx->logged_vertices->data;
 
@@ -598,10 +601,7 @@ _cogl_journal_flush (void)
     }
 
   if (!vbo_fallback)
-    {
-      GE (glDeleteBuffers (1, &ctx->journal_vbo));
-      ctx->journal_vbo = 0;
-    }
+    GE (glDeleteBuffers (1, &journal_vbo));
 
   g_array_set_size (ctx->journal, 0);
   g_array_set_size (ctx->logged_vertices, 0);
