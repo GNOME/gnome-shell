@@ -29,6 +29,50 @@
  * #ClutterBinLayout is a layout manager which implements the following
  * policy:
  *
+ * <itemizedlist>
+ *   <listitem><simpara>the preferred size is the maximum preferred size
+ *   between all the children of the container using the
+ *   layout;</simpara></listitem>
+ *   <listitem><simpara>each child is allocated in "layers", on on top
+ *   of the other;</simpara></listitem>
+ *   <listitem><simpara>for each layer there are horizontal and vertical
+ *   alignment policies.</simpara></listitem>
+ * </itemizedlist>
+ *
+ * <example id="example-clutter-bin-layout">
+ *  <title>How to pack actors inside a BinLayout</title>
+ *  <para>The following code shows how to build a composite actor with
+ *  a texture and a background, and add controls overlayed on top. The
+ *  background is set to fill the whole allocation, whilst the texture
+ *  is centered; there is a control in the top right corner and a label
+ *  in the bottom, filling out the whole allocated width.</para>
+ *  <programlisting>
+ *  ClutterLayoutManager *manager;
+ *  ClutterActor *box;
+ *
+ *  /&ast; create the layout first &ast;/
+ *  layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
+ *                                   CLUTTER_BIN_ALIGNMENT_CENTER);
+ *  box = clutter_box_new (layout); /&ast; then the container &ast;/
+ *
+ *  /&ast; we can use the layout object to add actors &ast;/
+ *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), background,
+ *                          CLUTTER_BIN_ALIGNMENT_FILL,
+ *                          CLUTTER_BIN_ALIGNMENT_FILL);
+ *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), icon,
+ *                          CLUTTER_BIN_ALIGNMENT_CENTER,
+ *                          CLUTTER_BIN_ALIGNMENT_CENTER);
+ *
+ *  /&ast; align to the bottom left &ast;/
+ *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), label,
+ *                          CLUTTER_BIN_ALIGNMENT_START,
+ *                          CLUTTER_BIN_ALIGNMENT_END);
+ *  /&ast; align to the top right &ast;/
+ *  clutter_bin_layout_add (CLUTTER_BIN_LAYOUT (layout), button,
+ *                          CLUTTER_BIN_ALIGNMENT_END,
+ *                          CLUTTER_BIN_ALIGNMENT_START);
+ *  </programlisting>
+ * </example>
  *
  * #ClutterBinLayout is available since Clutter 1.2
  */
@@ -94,7 +138,6 @@ G_DEFINE_TYPE (ClutterBinLayer,
 G_DEFINE_TYPE (ClutterBinLayout,
                clutter_bin_layout,
                CLUTTER_TYPE_LAYOUT_MANAGER);
-
 
 /*
  * ClutterBinLayer
@@ -509,16 +552,16 @@ clutter_bin_layout_set_property (GObject      *gobject,
                                  const GValue *value,
                                  GParamSpec   *pspec)
 {
+  ClutterBinLayout *layout = CLUTTER_BIN_LAYOUT (gobject);
+
   switch (prop_id)
     {
     case PROP_X_ALIGN:
-      set_x_align (CLUTTER_BIN_LAYOUT (gobject),
-                   g_value_get_enum (value));
+      set_x_align (layout, g_value_get_enum (value));
       break;
 
     case PROP_Y_ALIGN:
-      set_y_align (CLUTTER_BIN_LAYOUT (gobject),
-                   g_value_get_enum (value));
+      set_y_align (layout, g_value_get_enum (value));
       break;
 
     default:
@@ -569,8 +612,8 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
   /**
    * ClutterBinLayout:x-align:
    *
-   * The horizontal alignment policy for actors managed by the
-   * #ClutterBinLayout
+   * The default horizontal alignment policy for actors managed
+   * by the #ClutterBinLayout
    *
    * Since: 1.2
    */
@@ -586,8 +629,8 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
   /**
    * ClutterBinLayout:y-align:
    *
-   * The vertical alignment policy for actors managed by the
-   * #ClutterBinLayout
+   * The default vertical alignment policy for actors managed
+   * by the #ClutterBinLayout
    *
    * Since: 1.2
    */
@@ -670,16 +713,24 @@ clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
   ClutterBinLayoutPrivate *priv;
   ClutterLayoutManager *manager;
   ClutterLayoutMeta *meta;
-  ClutterBinLayer *layer;
 
   g_return_if_fail (CLUTTER_IS_BIN_LAYOUT (self));
+  g_return_if_fail (child == NULL || CLUTTER_IS_ACTOR (child));
 
   priv = self->priv;
 
-  if (child == NULL || priv->container == NULL)
+  if (priv->container == NULL)
     {
-      set_x_align (self, x_align);
-      set_y_align (self, y_align);
+      if (child == NULL)
+        {
+          set_x_align (self, x_align);
+          set_y_align (self, y_align);
+        }
+      else
+        g_warning ("The layout of type '%s' must be associated to "
+                   "a ClutterContainer before setting the alignment "
+                   "on its children",
+                   G_OBJECT_TYPE_NAME (self));
 
       return;
     }
@@ -688,12 +739,10 @@ clutter_bin_layout_set_alignment (ClutterBinLayout    *self,
   meta = clutter_layout_manager_get_child_meta (manager,
                                                 priv->container,
                                                 child);
-  g_return_if_fail (CLUTTER_IS_BIN_LAYER (meta));
+  g_assert (CLUTTER_IS_BIN_LAYER (meta));
 
-  layer = CLUTTER_BIN_LAYER (meta);
-
-  set_layer_x_align (layer, x_align);
-  set_layer_y_align (layer, y_align);
+  set_layer_x_align (CLUTTER_BIN_LAYER (meta), x_align);
+  set_layer_y_align (CLUTTER_BIN_LAYER (meta), y_align);
 }
 
 /**
@@ -728,13 +777,21 @@ clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
 
   priv = self->priv;
 
-  if (child == NULL || priv->container == NULL)
+  if (priv->container == NULL)
     {
-      if (x_align)
-        *x_align = priv->x_align;
+      if (child == NULL)
+        {
+          if (x_align)
+            *x_align = priv->x_align;
 
-      if (y_align)
-        *y_align = priv->y_align;
+          if (y_align)
+            *y_align = priv->y_align;
+        }
+      else
+        g_warning ("The layout of type '%s' must be associated to "
+                   "a ClutterContainer before getting the alignment "
+                   "of its children",
+                   G_OBJECT_TYPE_NAME (self));
 
       return;
     }
@@ -743,7 +800,7 @@ clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
   meta = clutter_layout_manager_get_child_meta (manager,
                                                 priv->container,
                                                 child);
-  g_return_if_fail (CLUTTER_IS_BIN_LAYER (meta));
+  g_assert (CLUTTER_IS_BIN_LAYER (meta));
 
   layer = CLUTTER_BIN_LAYER (meta);
 
@@ -765,8 +822,9 @@ clutter_bin_layout_get_alignment (ClutterBinLayout    *self,
  * sets the alignment policies for it
  *
  * This function is equivalent to clutter_container_add_actor()
- * and clutter_layout_manager_get_child_meta() but it does not
- * require the #ClutterContainer
+ * and clutter_layout_manager_child_set_property() but it does not
+ * require a pointer to the #ClutterContainer associated to the
+ * #ClutterBinLayout
  *
  * Since: 1.2
  */
@@ -776,10 +834,9 @@ clutter_bin_layout_add (ClutterBinLayout    *self,
                         ClutterBinAlignment  x_align,
                         ClutterBinAlignment  y_align)
 {
-  ClutterBinLayer *layer;
-  ClutterLayoutMeta *meta;
-  ClutterLayoutManager *manager;
   ClutterBinLayoutPrivate *priv;
+  ClutterLayoutManager *manager;
+  ClutterLayoutMeta *meta;
 
   g_return_if_fail (CLUTTER_IS_BIN_LAYOUT (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (child));
@@ -802,7 +859,6 @@ clutter_bin_layout_add (ClutterBinLayout    *self,
                                                 child);
   g_assert (CLUTTER_IS_BIN_LAYER (meta));
 
-  layer = CLUTTER_BIN_LAYER (meta);
-  set_layer_x_align (layer, x_align);
-  set_layer_y_align (layer, y_align);
+  set_layer_x_align (CLUTTER_BIN_LAYER (meta), x_align);
+  set_layer_y_align (CLUTTER_BIN_LAYER (meta), y_align);
 }
