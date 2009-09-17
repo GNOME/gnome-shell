@@ -35,6 +35,7 @@ test_conformance_SOURCES = 		\
 	test-materials.c		\
 	test-group.c			\
 	test-actor-size.c		\
+	test-texture-fbo.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
