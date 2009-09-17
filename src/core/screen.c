@@ -85,6 +85,7 @@ enum
   WORKSPACE_REMOVED,
   WORKSPACE_SWITCHED,
   STARTUP_SEQUENCE_CHANGED,
+  WORKAREAS_CHANGED,
 
   LAST_SIGNAL
 };
@@ -213,6 +214,15 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  screen_signals[WORKAREAS_CHANGED] =
+    g_signal_new ("workareas-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MetaScreenClass, workareas_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -2288,6 +2298,8 @@ set_work_area_hint (MetaScreen *screen)
 		   (guchar*) data, num_workspaces*4);
   g_free (data);
   meta_error_trap_pop (screen->display, FALSE);
+
+  g_signal_emit (screen, screen_signals[WORKAREAS_CHANGED], 0);
 }
 
 static gboolean
