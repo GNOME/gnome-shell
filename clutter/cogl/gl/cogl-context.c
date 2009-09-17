@@ -69,8 +69,6 @@ cogl_create_context ()
 
   _context->journal = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   _context->logged_vertices = g_array_new (FALSE, FALSE, sizeof (GLfloat));
-  _context->journal_vbo = 0;
-  _context->journal_vbo_len = 0;
 
   _context->current_material = NULL;
   _context->current_material_flags = 0;

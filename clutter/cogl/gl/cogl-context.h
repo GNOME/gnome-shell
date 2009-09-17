@@ -80,8 +80,6 @@ typedef struct
    * can batch things together. */
   GArray           *journal;
   GArray           *logged_vertices;
-  GLuint            journal_vbo;
-  size_t            journal_vbo_len;
 
   /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;
