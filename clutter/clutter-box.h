@@ -42,6 +42,11 @@ void                  clutter_box_set_layout_manager (ClutterBox           *box,
                                                       ClutterLayoutManager *manger);
 ClutterLayoutManager *clutter_box_get_layout_manager (ClutterBox           *box);
 
+void                  clutter_box_set_color          (ClutterBox           *box,
+                                                      const ClutterColor   *color);
+void                  clutter_box_get_color          (ClutterBox           *box,
+                                                      ClutterColor         *color);
+
 void                  clutter_box_pack               (ClutterBox           *box,
                                                       ClutterActor         *actor,
                                                       const gchar          *first_property,

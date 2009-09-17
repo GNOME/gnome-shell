@@ -29,14 +29,21 @@ struct _ClutterBoxPrivate
   GList *children;
 
   guint changed_id;
+
+  ClutterColor color;
+  guint color_set : 1;
 };
 
 enum
 {
   PROP_0,
 
-  PROP_LAYOUT_MANAGER
+  PROP_LAYOUT_MANAGER,
+  PROP_COLOR,
+  PROP_COLOR_SET
 };
+
+static const ClutterColor default_box_color = { 255, 255, 255, 255 };
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
@@ -186,6 +193,27 @@ static void
 clutter_box_real_paint (ClutterActor *actor)
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
+
+  if (priv->color_set)
+    {
+      ClutterActorBox box = { 0, };
+      gfloat width, height;
+      guint8 tmp_alpha;
+
+      clutter_actor_get_allocation_box (actor, &box);
+      clutter_actor_box_get_size (&box, &width, &height);
+
+      tmp_alpha = clutter_actor_get_paint_opacity (actor)
+                * priv->color.alpha
+                / 255;
+
+      cogl_set_source_color4ub (priv->color.red,
+                                priv->color.green,
+                                priv->color.blue,
+                                tmp_alpha);
+
+      cogl_rectangle (0, 0, width, height);
+    }
 
   g_list_foreach (priv->children, (GFunc) clutter_actor_paint, NULL);
 }
@@ -351,6 +379,10 @@ clutter_box_set_property (GObject      *gobject,
       set_layout_manager (self, g_value_get_object (value));
       break;
 
+    case PROP_COLOR:
+      clutter_box_set_color (self, clutter_value_get_color (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -369,6 +401,14 @@ clutter_box_get_property (GObject    *gobject,
     {
     case PROP_LAYOUT_MANAGER:
       g_value_set_object (value, priv->manager);
+      break;
+
+    case PROP_COLOR:
+      clutter_value_set_color (value, &priv->color);
+      break;
+
+    case PROP_COLOR_SET:
+      g_value_set_boolean (value, priv->color_set);
       break;
 
     default:
@@ -397,6 +437,13 @@ clutter_box_class_init (ClutterBoxClass *klass)
   gobject_class->get_property = clutter_box_get_property;
   gobject_class->dispose = clutter_box_dispose;
 
+  /**
+   * ClutterBox:layout-manager:
+   *
+   * The #ClutterLayoutManager used by the #ClutterBox
+   *
+   * Since: 1.2
+   */
   pspec = g_param_spec_object ("layout-manager",
                                "Layout Manager",
                                "The layout manager used by the box",
@@ -406,12 +453,44 @@ clutter_box_class_init (ClutterBoxClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_LAYOUT_MANAGER,
                                    pspec);
+
+  /**
+   * ClutterBox:color:
+   *
+   * The color to be used to paint the background of the
+   * #ClutterBox. Setting this property will set the
+   * #ClutterBox:color-set property as a side effect
+   *
+   * Since: 1.2
+   */
+  pspec = clutter_param_spec_color ("color",
+                                    "Color",
+                                    "The background color of the box",
+                                    &default_box_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
+
+  /**
+   * ClutterBox:color-set:
+   *
+   * Whether the #ClutterBox:color property has been set
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_boolean ("color-set",
+                                "Color Set",
+                                "Whether the background color is set",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COLOR_SET, pspec);
 }
 
 static void
 clutter_box_init (ClutterBox *self)
 {
   self->priv = CLUTTER_BOX_GET_PRIVATE (self);
+
+  self->priv->color = default_box_color;
 }
 
 /**
@@ -656,4 +735,59 @@ clutter_box_pack (ClutterBox   *box,
     }
 
   va_end (var_args);
+}
+
+/**
+ * clutter_box_set_color:
+ * @box: a #ClutterBox
+ * @color: (allow-none): the background color, or %NULL to unset
+ *
+ * Sets (or unsets) the background color for @box
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_set_color (ClutterBox         *box,
+                       const ClutterColor *color)
+{
+  ClutterBoxPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+
+  priv = box->priv;
+
+  if (color)
+    {
+      priv->color = *color;
+      priv->color_set = TRUE;
+    }
+  else
+    priv->color_set = FALSE;
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+
+  g_object_notify (G_OBJECT (box), "color-set");
+  g_object_notify (G_OBJECT (box), "color");
+}
+
+/**
+ * clutter_box_get_color:
+ * @box: a #ClutterBox
+ * @color: (out): return location for a #ClutterColor
+ *
+ * Retrieves the background color of @box
+ *
+ * If the #ClutterBox:color-set property is set to %FALSE the
+ * returned #ClutterColor is undefined
+ *
+ * Since: 1.2
+ */
+void
+clutter_box_get_color (ClutterBox   *box,
+                       ClutterColor *color)
+{
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (color != NULL);
+
+  *color = box->priv->color;
 }

@@ -1809,6 +1809,10 @@ ClutterBoxClass
 clutter_box_new
 clutter_box_set_layout_manager
 clutter_box_get_layout_manager
+clutter_box_set_color
+clutter_box_get_color
+
+<SUBSECTION>
 clutter_box_pack
 clutter_box_packv
 
