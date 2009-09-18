@@ -148,11 +148,15 @@ shell_draw_clock (ClutterCairoTexture *texture,
 
 void
 shell_draw_box_pointer (ClutterCairoTexture *texture,
+                        ClutterGravity       pointing_towards,
                         ClutterColor        *border_color,
                         ClutterColor        *background_color)
 {
   guint width, height;
   cairo_t *cr;
+
+  g_return_if_fail (pointing_towards == CLUTTER_GRAVITY_NORTH ||
+                    pointing_towards == CLUTTER_GRAVITY_WEST);
 
   clutter_cairo_texture_get_surface_size (texture, &width, &height);
 
@@ -163,9 +167,18 @@ shell_draw_box_pointer (ClutterCairoTexture *texture,
 
   clutter_cairo_set_source_color (cr, border_color);
 
-  cairo_move_to (cr, width, 0);
-  cairo_line_to (cr, 0, floor (height * 0.5));
-  cairo_line_to (cr, width, height);
+  if (pointing_towards == CLUTTER_GRAVITY_WEST)
+    {
+      cairo_move_to (cr, width, 0);
+      cairo_line_to (cr, 0, floor (height * 0.5));
+      cairo_line_to (cr, width, height);
+    }
+  else /* CLUTTER_GRAVITY_NORTH */
+    {
+      cairo_move_to (cr, 0, height);
+      cairo_line_to (cr, floor (width * 0.5), 0);
+      cairo_line_to (cr, width, height);
+    }
 
   cairo_stroke_preserve (cr);
 

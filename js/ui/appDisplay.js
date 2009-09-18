@@ -26,25 +26,6 @@ const WELL_DEFAULT_COLUMNS = 4;
 const WELL_ITEM_HSPACING = 0;
 const WELL_ITEM_VSPACING = 4;
 
-const WELL_MENU_POPUP_TIMEOUT_MS = 600;
-
-const TRANSPARENT_COLOR = new Clutter.Color();
-TRANSPARENT_COLOR.from_pixel(0x00000000);
-
-const WELL_MENU_BACKGROUND_COLOR = new Clutter.Color();
-WELL_MENU_BACKGROUND_COLOR.from_pixel(0x292929ff);
-const WELL_MENU_FONT = 'Sans 14px';
-const WELL_MENU_COLOR = new Clutter.Color();
-WELL_MENU_COLOR.from_pixel(0xffffffff);
-const WELL_MENU_SELECTED_COLOR = new Clutter.Color();
-WELL_MENU_SELECTED_COLOR.from_pixel(0x005b97ff);
-const WELL_MENU_SEPARATOR_COLOR = new Clutter.Color();
-WELL_MENU_SEPARATOR_COLOR.from_pixel(0x787878ff);
-const WELL_MENU_BORDER_WIDTH = 1;
-const WELL_MENU_ARROW_SIZE = 12;
-const WELL_MENU_CORNER_RADIUS = 4;
-const WELL_MENU_PADDING = 4;
-
 const MENU_ICON_SIZE = 24;
 const MENU_SPACING = 15;
 
@@ -478,287 +459,15 @@ AppDisplay.prototype = {
 
 Signals.addSignalMethods(AppDisplay.prototype);
 
-function WellMenu(source) {
-    this._init(source);
-}
-
-WellMenu.prototype = {
-    _init: function(source) {
-        this._source = source;
-
-        // Whether or not we successfully picked a window
-        this.didActivateWindow = false;
-
-        this.actor = new Shell.GenericContainer({ reactive: true });
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
-
-        this._windowContainer = new Shell.Menu({ orientation: Big.BoxOrientation.VERTICAL,
-                                                 border_color: AppIcon.APPICON_BORDER_COLOR,
-                                                 border: WELL_MENU_BORDER_WIDTH,
-                                                 background_color: WELL_MENU_BACKGROUND_COLOR,
-                                                 padding: 4,
-                                                 corner_radius: WELL_MENU_CORNER_RADIUS,
-                                                 width: Main.overview._dash.actor.width * 0.75 });
-        this._windowContainer.connect('unselected', Lang.bind(this, this._onItemUnselected));
-        this._windowContainer.connect('selected', Lang.bind(this, this._onItemSelected));
-        this._windowContainer.connect('cancelled', Lang.bind(this, this._onWindowSelectionCancelled));
-        this._windowContainer.connect('activate', Lang.bind(this, this._onItemActivate));
-        this.actor.add_actor(this._windowContainer);
-
-        // Stay popped up on release over application icon
-        this._windowContainer.set_persistent_source(this._source.actor);
-
-        // Intercept events while the menu has the pointer grab to do window-related effects
-        this._windowContainer.connect('enter-event', Lang.bind(this, this._onMenuEnter));
-        this._windowContainer.connect('leave-event', Lang.bind(this, this._onMenuLeave));
-        this._windowContainer.connect('button-release-event', Lang.bind(this, this._onMenuButtonRelease));
-
-        this._arrow = new Shell.DrawingArea();
-        this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
-            Shell.draw_box_pointer(texture, AppIcon.APPICON_BORDER_COLOR, WELL_MENU_BACKGROUND_COLOR);
-        }));
-        this.actor.add_actor(this._arrow);
-
-        // Chain our visibility and lifecycle to that of the source
-        source.actor.connect('notify::mapped', Lang.bind(this, function () {
-            if (!source.actor.mapped)
-                this._windowContainer.popdown();
-        }));
-        source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
-
-        global.stage.add_actor(this.actor);
-    },
-
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        let [min, natural] = this._windowContainer.get_preferred_width(forHeight);
-        alloc.min_size = min + WELL_MENU_ARROW_SIZE;
-        alloc.natural_size = natural + WELL_MENU_ARROW_SIZE;
-    },
-
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        let [min, natural] = this._windowContainer.get_preferred_height(forWidth);
-        alloc.min_size = min;
-        alloc.natural_size = natural;
-    },
-
-    _allocate: function(actor, box, flags) {
-        let childBox = new Clutter.ActorBox();
-
-        let width = box.x2 - box.x1;
-        let height = box.y2 - box.y1;
-
-        childBox.x1 = 0;
-        childBox.x2 = WELL_MENU_ARROW_SIZE;
-        childBox.y1 = Math.floor((height / 2) - (WELL_MENU_ARROW_SIZE / 2));
-        childBox.y2 = childBox.y1 + WELL_MENU_ARROW_SIZE;
-        this._arrow.allocate(childBox, flags);
-
-        /* overlap by one pixel to hide the border */
-        childBox.x1 = WELL_MENU_ARROW_SIZE - 1;
-        childBox.x2 = width;
-        childBox.y1 = 0;
-        childBox.y2 = height;
-        this._windowContainer.allocate(childBox, flags);
-    },
-
-    _redisplay: function() {
-        this._windowContainer.remove_all();
-
-        this.didActivateWindow = false;
-
-        let windows = this._source.windows;
-
-        this._windowContainer.show();
-
-        let iconsDiffer = false;
-        let texCache = Shell.TextureCache.get_default();
-        let firstIcon = windows[0].mini_icon;
-        for (let i = 1; i < windows.length; i++) {
-            if (!texCache.pixbuf_equal(windows[i].mini_icon, firstIcon)) {
-                iconsDiffer = true;
-                break;
-            }
-        }
-
-        let activeWorkspace = global.screen.get_active_workspace();
-
-        let currentWorkspaceWindows = windows.filter(function (w) {
-            return w.get_workspace() == activeWorkspace;
-        });
-        let otherWorkspaceWindows = windows.filter(function (w) {
-            return w.get_workspace() != activeWorkspace;
-        });
-
-        this._appendWindows(currentWorkspaceWindows, iconsDiffer);
-        if (currentWorkspaceWindows.length > 0 && otherWorkspaceWindows.length > 0) {
-            this._appendSeparator();
-        }
-        this._appendWindows(otherWorkspaceWindows, iconsDiffer);
-
-        if (!this._source.appInfo.is_transient()) {
-            this._appendSeparator();
-
-            this._newWindowMenuItem = this._appendMenuItem(null, _("New Window"));
-        }
-    },
-
-    _appendSeparator: function () {
-        let box = new Big.Box({ padding_top: 2, padding_bottom: 2 });
-        box.append(new Clutter.Rectangle({ height: 1,
-                                           color: WELL_MENU_SEPARATOR_COLOR }),
-                   Big.BoxPackFlags.EXPAND);
-        this._windowContainer.append_separator(box, Big.BoxPackFlags.NONE);
-    },
-
-    _appendMenuItem: function(iconTexture, labelText) {
-        /* Use padding here rather than spacing in the box above so that
-         * we have a larger reactive area.
-         */
-        let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                padding_top: 4,
-                                padding_bottom: 4,
-                                spacing: 4,
-                                reactive: true });
-        let vCenter;
-        if (iconTexture != null) {
-            vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-            vCenter.append(iconTexture, Big.BoxPackFlags.NONE);
-            box.append(vCenter, Big.BoxPackFlags.NONE);
-        }
-        vCenter = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
-        let label = new Clutter.Text({ text: labelText,
-                                       font_name: WELL_MENU_FONT,
-                                       ellipsize: Pango.EllipsizeMode.END,
-                                       color: WELL_MENU_COLOR });
-        vCenter.append(label, Big.BoxPackFlags.NONE);
-        box.append(vCenter, Big.BoxPackFlags.NONE);
-        this._windowContainer.append(box, Big.BoxPackFlags.NONE);
-        return box;
-    },
-
-    _appendWindows: function (windows, iconsDiffer) {
-        for (let i = 0; i < windows.length; i++) {
-            let metaWindow = windows[i];
-
-            let icon = null;
-            if (iconsDiffer) {
-                icon = Shell.TextureCache.get_default().bind_pixbuf_property(metaWindow, "mini-icon");
-            }
-            let box = this._appendMenuItem(icon, metaWindow.title);
-            box._window = metaWindow;
-        }
-    },
-
-    popup: function() {
-        let [stageX, stageY] = this._source.actor.get_transformed_position();
-        let [stageWidth, stageHeight] = this._source.actor.get_transformed_size();
-
-        this._redisplay();
-
-        this._windowContainer.popup(0, Clutter.get_current_event_time());
-
-        this.emit('popup', true);
-
-        let x = Math.floor(stageX + stageWidth);
-        let y = Math.floor(stageY + (stageHeight / 2) - (this.actor.height / 2));
-        this.actor.set_position(x, y);
-        this.actor.show();
-    },
-
-    _findWindowCloneForActor: function (actor) {
-        if (actor._delegate instanceof Workspaces.WindowClone)
-            return actor._delegate;
-        return null;
-    },
-
-    // This function is called while the menu has a pointer grab; what we want
-    // to do is see if the mouse was released over a window clone actor
-    _onMenuButtonRelease: function (actor, event) {
-        let clone = this._findWindowCloneForActor(event.get_source());
-        if (clone) {
-            this.didActivateWindow = true;
-            Main.overview.activateWindow(clone.metaWindow, event.get_time());
-        }
-    },
-
-    _lookupMenuItemForWindow: function (metaWindow) {
-        let children = this._windowContainer.get_children();
-        for (let i = 0; i < children.length; i++) {
-            let child = children[i];
-            let menuMetaWindow = child._window;
-            if (menuMetaWindow == metaWindow)
-                return child;
-        }
-        return null;
-    },
-
-    // Called while menu has a pointer grab
-    _onMenuEnter: function (actor, event) {
-        let clone = this._findWindowCloneForActor(event.get_source());
-        if (clone) {
-            let menu = this._lookupMenuItemForWindow(clone.metaWindow);
-            menu.background_color = WELL_MENU_SELECTED_COLOR;
-            this.emit('highlight-window', clone.metaWindow);
-        }
-    },
-
-    // Called while menu has a pointer grab
-    _onMenuLeave: function (actor, event) {
-        let clone = this._findWindowCloneForActor(event.get_source());
-        if (clone) {
-            let menu = this._lookupMenuItemForWindow(clone.metaWindow);
-            menu.background_color = TRANSPARENT_COLOR;
-            this.emit('highlight-window', null);
-        }
-    },
-
-    _onItemUnselected: function (actor, child) {
-        child.background_color = TRANSPARENT_COLOR;
-        if (child._window) {
-            this.emit('highlight-window', null);
-        }
-    },
-
-    _onItemSelected: function (actor, child) {
-        child.background_color = WELL_MENU_SELECTED_COLOR;
-        if (child._window) {
-            this.emit('highlight-window', child._window);
-        }
-    },
-
-    _onItemActivate: function (actor, child) {
-        if (child._window) {
-            let metaWindow = child._window;
-            this.didActivateWindow = true;
-            Main.overview.activateWindow(metaWindow, Clutter.get_current_event_time());
-        } else if (child == this._newWindowMenuItem) {
-            this._source.appInfo.launch();
-            Main.overview.hide();
-        }
-        this.emit('popup', false);
-        this.actor.hide();
-    },
-
-    _onWindowSelectionCancelled: function () {
-        this.emit('highlight-window', null);
-        this.emit('popup', false);
-        this.actor.hide();
-    }
-}
-
-Signals.addSignalMethods(WellMenu.prototype);
-
-function BaseWellItem(appInfo, isFavorite) {
-    this._init(appInfo, isFavorite);
+function BaseWellItem(appInfo, isFavorite, hasMenu) {
+    this._init(appInfo, isFavorite, hasMenu);
 }
 
 BaseWellItem.prototype = {
     __proto__: AppIcon.AppIcon.prototype,
 
-    _init: function(appInfo, isFavorite) {
-        AppIcon.AppIcon.prototype._init.call(this, appInfo);
+    _init: function(appInfo, isFavorite, hasMenu) {
+        AppIcon.AppIcon.prototype._init.call(this, appInfo, hasMenu ? AppIcon.MenuType.ON_RIGHT : AppIcon.MenuType.NONE);
 
         this.isFavorite = isFavorite;
 
@@ -817,25 +526,16 @@ RunningWellItem.prototype = {
     __proto__: BaseWellItem.prototype,
 
     _init: function(appInfo, isFavorite) {
-        BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
+        BaseWellItem.prototype._init.call(this, appInfo, isFavorite, true);
 
-        this._menuTimeoutId = 0;
-        this._menu = null;
         this._dragStartX = 0;
         this._dragStartY = 0;
 
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
         this.actor.connect('activate', Lang.bind(this, this._onActivate));
     },
 
     _onActivate: function (actor, event) {
         let modifiers = event.get_state();
-
-        if (this._menuTimeoutId > 0) {
-            Mainloop.source_remove(this._menuTimeoutId);
-            this._menuTimeoutId = 0;
-        }
 
         if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
             this.appInfo.launch();
@@ -850,53 +550,29 @@ RunningWellItem.prototype = {
         Main.overview.activateWindow(mostRecentWindow, Clutter.get_current_event_time());
     },
 
-    _onHoverChanged: function() {
-        let hover = this.actor.hover;
-        if (!hover && this._menuTimeoutId > 0) {
-            Mainloop.source_remove(this._menuTimeoutId);
-            this._menuTimeoutId = 0;
-        }
+    highlightWindow: function(metaWindow) {
+        Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
     },
 
-    _onButtonPress: function(actor, event) {
-        if (this._menuTimeoutId > 0)
-            Mainloop.source_remove(this._menuTimeoutId);
-        this._menuTimeoutId = Mainloop.timeout_add(WELL_MENU_POPUP_TIMEOUT_MS,
-                                                   Lang.bind(this, this._popupMenu));
-        return false;
+    activateWindow: function(metaWindow) {
+        if (metaWindow) {
+            this._didActivateWindow = true;
+            Main.overview.activateWindow(metaWindow, Clutter.get_current_event_time());
+        } else
+            Main.overview.hide();
     },
 
-    _popupMenu: function() {
-        this._menuTimeoutId = 0;
+    menuPoppedUp: function() {
+        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.appInfo.get_id());
+    },
 
-        this.actor.fake_release();
+    menuPoppedDown: function() {
+        if (this._didActivateWindow)
+            return;
 
-        if (this._menu == null) {
-            this._menu = new WellMenu(this);
-            this._menu.connect('highlight-window', Lang.bind(this, function (menu, metaWindow) {
-                Main.overview.getWorkspacesForWindow(metaWindow).setHighlightWindow(metaWindow);
-            }));
-            this._menu.connect('popup', Lang.bind(this, function (menu, isPoppedUp) {
-                let id;
-
-                // If we successfully picked a window, don't reset the workspace
-                // state, since picking a window already did that.
-                if (!isPoppedUp && menu.didActivateWindow)
-                    return;
-                if (isPoppedUp)
-                    id = this.appInfo.get_id();
-                else
-                    id = null;
-
-                Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(id);
-            }));
-        }
-
-        this._menu.popup();
-
-        return false;
+        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(null);
     }
-}
+};
 
 function InactiveWellItem(appInfo, isFavorite) {
     this._init(appInfo, isFavorite);

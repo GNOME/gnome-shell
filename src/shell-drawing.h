@@ -14,6 +14,7 @@ ClutterCairoTexture *shell_create_horizontal_gradient (ClutterColor *left,
                                                        ClutterColor *right);
 
 void shell_draw_box_pointer (ClutterCairoTexture *texture,
+                             ClutterGravity       pointing_towards,
                              ClutterColor        *border_color,
                              ClutterColor        *background_color);
 
