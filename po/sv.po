@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-01 00:31+0200\n"
-"PO-Revision-Date: 2009-09-01 00:31+0100\n"
+"POT-Creation-Date: 2009-09-18 13:02+0200\n"
+"PO-Revision-Date: 2009-09-18 13:02+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -25,81 +25,86 @@ msgid "Window management and application launching"
 msgstr "Fönsterhantering och programstarter"
 
 #. left side
-#: ../js/ui/panel.js:271
+#: ../js/ui/panel.js:269
 msgid "Activities"
 msgstr "Aktiviteter"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:454
+#: ../js/ui/panel.js:452
 msgid "%a %l:%M %p"
 msgstr "%a %H.%M"
 
-#: ../js/ui/dash.js:256
+#: ../js/ui/dash.js:283
 msgid "Find..."
 msgstr "Sök..."
 
-#: ../js/ui/dash.js:374
+#: ../js/ui/dash.js:400
 msgid "Browse"
 msgstr "Bläddra"
 
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:536
 msgid "(see all)"
 msgstr "(se alla)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:633
-#: ../js/ui/dash.js:681
+#: ../js/ui/dash.js:753
+#: ../js/ui/dash.js:809
 msgid "APPLICATIONS"
 msgstr "PROGRAM"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:653
+#: ../js/ui/dash.js:773
 msgid "PLACES"
 msgstr "PLATSER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:660
-#: ../js/ui/dash.js:692
+#: ../js/ui/dash.js:780
+#: ../js/ui/dash.js:819
 msgid "RECENT DOCUMENTS"
 msgstr "SENASTE DOKUMENT"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:679
+#: ../js/ui/dash.js:799
+#: ../js/ui/dash.js:931
 msgid "SEARCH RESULTS"
 msgstr "SÖKRESULTAT"
 
-#: ../js/ui/runDialog.js:82
+#: ../js/ui/dash.js:814
+msgid "PREFERENCES"
+msgstr "INSTÄLLNINGAR"
+
+#: ../js/ui/runDialog.js:101
 msgid "Please enter a command:"
 msgstr "Ange ett kommando:"
 
-#: ../src/shell-global.c:840
+#: ../src/shell-global.c:799
 msgid "Less than a minute ago"
 msgstr "Mindre än en minut sedan"
 
-#: ../src/shell-global.c:843
+#: ../src/shell-global.c:802
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minut sedan"
 msgstr[1] "%d minuter sedan"
 
-#: ../src/shell-global.c:846
+#: ../src/shell-global.c:805
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d timme sedan"
 msgstr[1] "%d timmar sedan"
 
-#: ../src/shell-global.c:849
+#: ../src/shell-global.c:808
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag sedan"
 msgstr[1] "%d dagar sedan"
 
-#: ../src/shell-global.c:852
+#: ../src/shell-global.c:811
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
