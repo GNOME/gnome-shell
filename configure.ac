@@ -129,5 +129,6 @@ AC_OUTPUT([
   js/misc/Makefile
   js/ui/Makefile
   src/Makefile
+  tests/Makefile
   po/Makefile.in
 ])

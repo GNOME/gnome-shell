@@ -12,12 +12,12 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
 const Chrome = imports.ui.chrome;
+const Environment = imports.ui.environment;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
 const Sidebar = imports.ui.sidebar;
-const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
@@ -34,28 +34,6 @@ let recorder = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
 
-// "monkey patch" in some varargs ClutterContainer methods; we need
-// to do this per-container class since there is no representation
-// of interfaces in Javascript
-function _patchContainerClass(containerClass) {
-    // This one is a straightforward mapping of the C method
-    containerClass.prototype.child_set = function(actor, props) {
-        let meta = this.get_child_meta(actor);
-        for (prop in props)
-            meta[prop] = props[prop];
-    };
-
-    // clutter_container_add() actually is a an add-many-actors
-    // method. We conveniently, but somewhat dubiously, take the
-    // this opportunity to make it do something more useful.
-    containerClass.prototype.add = function(actor, props) {
-        this.add_actor(actor);
-        if (props)
-            this.child_set(actor, props);
-    };
-}
-_patchContainerClass(Nbtk.BoxLayout);
-
 function start() {
     // Add a binding for "global" in the global JS namespace; (gjs
     // keeps the web browser convention of having that namespace be
@@ -66,7 +44,7 @@ function start() {
 
     global.grab_dbus_service();
 
-    Tweener.init();
+    Environment.init();
 
     // Ensure ShellAppMonitor is initialized; this will
     // also initialize ShellAppSystem first.  ShellAppSystem
