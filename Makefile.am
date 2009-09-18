@@ -2,12 +2,21 @@ SUBDIRS = data js src tests po
 
 EXTRA_DIST =		\
 	.project	\
-	.settings
+	.settings	\
+	autogen.sh
+
+# These are files checked into Git that we don't want to distribute
+DIST_EXCLUDE =					\
+	.gitignore				\
+	gnome-shell.doap			\
+	MAINTAINERS				\
+	tools/build/*
 
 distcheck-hook:
-	@echo "Checking disted javascript against files in git"
+	@echo "Checking disted files against files in git"
 	@failed=false; \
-	for f in `cd $(srcdir) && git ls-files js` ; do \
+	exclude=`(for p in $(DIST_EXCLUDE) ; do echo --exclude=$$p ; done)`; \
+	for f in `cd $(srcdir) && git ls-files $$exclude` ; do \
 		if ! test -e $(distdir)/$$f ; then \
 			echo File missing from distribution: $$f ; \
 			failed=true ; \
