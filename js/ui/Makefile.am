@@ -9,6 +9,7 @@ dist_jsui_DATA =		\
 	dash.js			\
 	dnd.js			\
 	docDisplay.js		\
+	environment.js		\
 	genericDisplay.js	\
 	lightbox.js		\
 	link.js			\
