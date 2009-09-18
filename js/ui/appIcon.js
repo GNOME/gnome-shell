@@ -45,8 +45,6 @@ AppIcon.prototype = {
 
         this.actor.append(iconBox, Big.BoxPackFlags.EXPAND);
 
-        this._windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
-
         let nameBox = new Shell.GenericContainer();
         nameBox.connect('get-preferred-width', Lang.bind(this, this._nameBoxGetPreferredWidth));
         nameBox.connect('get-preferred-height', Lang.bind(this, this._nameBoxGetPreferredHeight));
@@ -61,7 +59,7 @@ AppIcon.prototype = {
         nameBox.add_actor(this._name);
         this._glowBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
         let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
-        for (let i = 0; i < this._windows.length && i < 3; i++) {
+        for (let i = 0; i < this.windows.length && i < 3; i++) {
             let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
                                                                           glowPath, -1, -1);
             glow.keep_aspect_ratio = false;
