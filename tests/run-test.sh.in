@@ -1,0 +1,44 @@
+#!/bin/sh
+
+usage() {
+    echo >&2 "Usage run-test.sh [-v|--verbose] <test_js>..."
+    exit 1
+}
+
+tests=
+verbose=false
+for arg in $@ ; do
+    case $arg in
+	-v|--verbose)
+	    verbose=true
+	    ;;
+	-*)
+	    usage
+	    ;;
+	*)
+	    tests="$tests $arg"
+	    ;;
+    esac
+done
+
+builddir=`dirname $0`
+builddir=`cd $builddir && pwd`
+srcdir=$builddir/@srcdir@
+srcdir=`cd $srcdir && pwd`
+
+GI_TYPELIB_PATH="$builddir/../src"
+GJS_DEBUG_OUTPUT=stderr
+$verbose || GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
+GNOME_SHELL_TESTSDIR="$srcdir/"
+LD_PRELOAD="$builddir/../src/.libs/libgnome-shell.so"
+
+export GI_TYPELIB_PATH GJS_DEBUG_OUTPUT GJS_DEBUG_TOPICS GNOME_SHELL_JS GNOME_SHELL_TESTSDIR LD_PRELOAD
+
+gjs_args=
+for i in $srcdir $srcdir/../js @GJS_JS_DIR@ @GJS_JS_NATIVE_DIR@ ; do
+    gjs_args="$gjs_args -I $i"
+done
+
+for test in $tests ; do
+    gjs-console $gjs_args $test || exit $?
+done
