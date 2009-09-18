@@ -527,7 +527,7 @@ clutter_box_new (ClutterLayoutManager *manager)
  * Since: 1.2
  */
 void
-clutter_box_set_layout_manager (ClutterBox *box,
+clutter_box_set_layout_manager (ClutterBox           *box,
                                 ClutterLayoutManager *manager)
 {
   g_return_if_fail (CLUTTER_IS_BOX (box));
