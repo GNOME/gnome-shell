@@ -1,0 +1,117 @@
+#include <stdlib.h>
+#include <gmodule.h>
+#include <cairo/cairo.h>
+#include <clutter/clutter.h>
+
+#define N_RECTS         20
+
+static gboolean vertical    = FALSE;
+static gboolean random_size = FALSE;
+static gint     n_rects     = N_RECTS;
+
+static GOptionEntry entries[] = {
+  {
+    "random-size", 'r',
+    0,
+    G_OPTION_ARG_NONE,
+    &random_size,
+    "Randomly size the rectangles", NULL
+  },
+  {
+    "num-rects", 'n',
+    0,
+    G_OPTION_ARG_INT,
+    &n_rects,
+    "Number of rectangles", "RECTS"
+  },
+  {
+    "vertical", 'v',
+    0,
+    G_OPTION_ARG_NONE,
+    &vertical,
+    "Set vertical orientation", NULL
+  },
+  { NULL }
+};
+
+G_MODULE_EXPORT int
+test_flow_main (int argc, char *argv[])
+{
+  ClutterActor *stage, *box;
+  ClutterLayoutManager *layout;
+  ClutterColor stage_color = { 0xe0, 0xf2, 0xfc, 0xff };
+  GError *error;
+  gint i;
+
+  error = NULL;
+  clutter_init_with_args (&argc, &argv,
+                          NULL,
+                          entries,
+                          NULL,
+                          &error);
+  if (error)
+    {
+      g_print ("Unable to run test-flow: %s", error->message);
+      g_error_free (error);
+
+      return EXIT_FAILURE;
+    }
+
+  stage = clutter_stage_get_default ();
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Flow Layout");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_actor_set_size (stage, 640, 480);
+
+  layout = clutter_flow_layout_new (vertical ? CLUTTER_FLOW_VERTICAL
+                                             : CLUTTER_FLOW_HORIZONTAL);
+
+  box = clutter_box_new (layout);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
+  clutter_actor_set_position (box, 0, 0);
+
+  if (vertical)
+    clutter_actor_set_height (box, 480);
+  else
+    clutter_actor_set_width (box, 640);
+
+  clutter_actor_set_name (box, "box");
+
+  for (i = 0; i < n_rects; i++)
+    {
+      ClutterColor color = { 255, 255, 255, 255 };
+      ClutterActor *rect;
+      gchar *name;
+      gfloat width, height;
+
+      name = g_strdup_printf ("rect%02d", i);
+
+      clutter_color_from_hls (&color,
+                              360.0 / n_rects * i,
+                              0.5,
+                              0.8);
+      rect = clutter_rectangle_new_with_color (&color);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (box), rect);
+
+      if (random_size)
+        {
+          width = g_random_int_range (50, 100);
+          height = g_random_int_range (50, 100);
+        }
+      else
+        {
+          width = height = 50;
+        }
+
+      clutter_actor_set_size (rect, width, height);
+      clutter_actor_set_name (rect, name);
+
+      g_free (name);
+    }
+
+  clutter_actor_show_all (stage);
+
+  clutter_main ();
+
+  return EXIT_SUCCESS;
+}

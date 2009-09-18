@@ -134,6 +134,7 @@ TAGS
 /tests/interactive/test-script.json
 /tests/interactive/test-clutter-cairo-flowers
 /tests/interactive/test-box
+/tests/interactive/test-flow
 /tests/conform/stamp-test-conformance
 /tests/conform/test-anchors
 /tests/conform/test-conformance

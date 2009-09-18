@@ -77,6 +77,7 @@ source_h =					\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-fixed-layout.h	\
+	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-frame-source.h        \
 	$(srcdir)/clutter-group.h 		\
         $(srcdir)/clutter-interval.h            \
@@ -146,6 +147,7 @@ source_c = \
 	$(srcdir)/clutter-feature.c 		\
 	$(srcdir)/clutter-fixed.c		\
 	$(srcdir)/clutter-fixed-layout.c	\
+	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-frame-source.c	\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-id-pool.c 		\

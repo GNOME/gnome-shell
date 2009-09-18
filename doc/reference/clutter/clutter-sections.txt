@@ -1847,3 +1847,37 @@ CLUTTER_LAYOUT_META_GET_CLASS
 <SUBSECTION Private>
 clutter_layout_meta_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-flow-layout</FILE>
+<TITLE>ClutterFlowLayout</TITLE>
+ClutterFlowOrientation
+ClutterFlowLayout
+ClutterFlowLayoutClass
+clutter_flow_layout_new
+clutter_flow_layout_set_orientation
+clutter_flow_layout_get_orientation
+clutter_flow_layout_set_wrap
+clutter_flow_layout_get_wrap
+
+<SUBSECTION>
+clutter_flow_layout_set_column_spacing
+clutter_flow_layout_get_column_spacing
+clutter_flow_layout_set_row_spacing
+clutter_flow_layout_get_row_spacing
+clutter_flow_layout_set_column_width
+clutter_flow_layout_get_column_width
+clutter_flow_layout_set_row_height
+clutter_flow_layout_get_row_height
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_FLOW_LAYOUT
+CLUTTER_FLOW_LAYOUT
+CLUTTER_FLOW_LAYOUT_CLASS
+CLUTTER_IS_FLOW_LAYOUT
+CLUTTER_IS_FLOW_LAYOUT_CLASS
+CLUTTER_FLOW_LAYOUT_GET_CLASS
+<SUBSECTION Private>
+ClutterFlowLayoutPrivate
+clutter_flow_layout_get_type
+</SECTION>
