@@ -1,4 +1,4 @@
-@import "../../data/gnome-shell.css";
+@import "../../data/theme/gnome-shell.css";
 
 *.red {
     background-color: red;

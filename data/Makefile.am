@@ -12,17 +12,25 @@ gnome-shell.desktop.in: gnome-shell.desktop.in.in
 gnome-shell.desktop: gnome-shell.desktop.in
 	$(AM_V_GEN) sed s/^_// < $< > $@ || rm $@
 
-imagedir = $(pkgdatadir)/images
-
-dist_image_DATA =		\
-	add-workspace.svg	\
-	app-well-glow.png	\
-        back.svg                \
-	close.svg		\
-	close-black.svg       \
-	info.svg		\
-	magnifier.svg  \
+imagesdir = $(pkgdatadir)/images
+dist_images_DATA =				\
+	add-workspace.svg			\
+	app-well-glow.png			\
+	back.svg				\
+	close.svg				\
+	close-black.svg				\
+	info.svg				\
+	magnifier.svg				\
 	remove-workspace.svg
+
+themedir = $(pkgdatadir)/theme
+dist_theme_DATA =				\
+	theme/gnome-shell.css			\
+	theme/scroll-button-down.png		\
+	theme/scroll-button-down-hover.png	\
+	theme/scroll-button-up.png		\
+	theme/scroll-button-up-hover.png	\
+	theme/scroll-vhandle.png
 
 schemadir  = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = gnome-shell.schemas
