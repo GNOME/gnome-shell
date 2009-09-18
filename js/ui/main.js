@@ -77,7 +77,7 @@ function start() {
         children[i].destroy();
 
     let style = St.Style.get_default();
-    let stylesheetPath = global.datadir + "/gnome-shell.css";
+    let stylesheetPath = global.datadir + "/theme/gnome-shell.css";
     style.load_from_file(stylesheetPath);
 
     global.connect('panel-run-dialog', function(panel) {
