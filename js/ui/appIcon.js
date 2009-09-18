@@ -37,7 +37,9 @@ AppIcon.prototype = {
 
         let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     x_align: Big.BoxAlignment.CENTER,
-                                    y_align: Big.BoxAlignment.CENTER });
+                                    y_align: Big.BoxAlignment.CENTER,
+                                    width: APP_ICON_SIZE,
+                                    height: APP_ICON_SIZE });
         this.icon = appInfo.create_icon_texture(APP_ICON_SIZE);
         iconBox.append(this.icon, Big.BoxPackFlags.NONE);
 
