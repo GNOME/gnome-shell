@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-07 18:56+0200\n"
-"PO-Revision-Date: 2009-08-07 18:57+0200\n"
+"POT-Creation-Date: 2009-09-19 18:26+0200\n"
+"PO-Revision-Date: 2009-09-16 22:50+0200\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,7 @@ msgstr "Gestor de finestres"
 
 #: ../src/core/bell.c:294
 msgid "Bell event"
-msgstr ""
+msgstr "Esdeveniment de to del sistema"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -36,15 +36,17 @@ msgid "Unknown window information request: %d"
 msgstr "Es desconeix la informació demanada sobre la finestra: %d"
 
 #: ../src/core/delete.c:104
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<big><b><tt>%s</tt> is not responding.</b></big>\n"
 "\n"
 "<i>You may choose to wait a short while for it to continue or force the "
 "application to quit entirely.</i>"
 msgstr ""
-"Podeu esperar un poc per a que continue o forçar la sortida completa de "
-"l'aplicació."
+"<big><b><tt>%s</tt> no està responent.</b></big>\n"
+"\n"
+"<i>Podeu esperar un moment per a veure si continua o forçar la sortida "
+"completa de l'aplicació.</i>"
 
 #: ../src/core/delete.c:115
 msgid "_Wait"
@@ -120,7 +122,7 @@ msgid "No terminal command has been defined.\n"
 msgstr "No s'ha definit cap ordre de terminal.\n"
 
 #: ../src/core/main.c:130
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
@@ -129,7 +131,7 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright © 2001-2008 Havoc Pennington, Red Hat, Inc., i d'altres\n"
+"Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., i d'altres\n"
 "Això és programari lliure; vegeu els fitxers de codi font per a conèixer-ne\n"
 "les condicions de còpia.\n"
 "No hi ha CAP garantia; ni tan sols la garantia implícita de COMERCIABILITAT\n"
@@ -175,6 +177,8 @@ msgstr "Inhabilita la composició"
 msgid ""
 "Don't make fullscreen windows that are maximized and have no decorations"
 msgstr ""
+"No creïs finestres a pantalla completa que estiguin maximitzades i no "
+"tinguin decoracions"
 
 #: ../src/core/main.c:543
 #, c-format
@@ -317,7 +321,7 @@ msgstr "No s'ha pogut alliberar la pantalla %d en la visualització «%s»\n"
 #.
 #: ../src/core/schema-bindings.c:169
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -332,7 +336,7 @@ msgstr ""
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -407,13 +411,12 @@ msgid "Unknown element %s"
 msgstr "Element %s desconegut"
 
 #: ../src/core/session.c:1812
-#, fuzzy
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Aquestes finestres no suporten «desa la configuració actual» i s'hauran de "
-"reiniciar manualment la pròxima vegada que entreu."
+"Aquestes finestres no admeten la funció «desa la configuració actual» i "
+"s'hauran de reiniciar manualment la pròxima vegada que entreu."
 
 #: ../src/core/util.c:103
 #, c-format
@@ -433,7 +436,7 @@ msgstr "S'ha obert el fitxer de registre %s\n"
 #: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity es va compilar sense suport per al mode detallat\n"
+msgstr "Metacity es va compilar sense compatibilitat per al mode detallat\n"
 
 #: ../src/core/util.c:238
 msgid "Window manager: "
@@ -500,21 +503,21 @@ msgstr "%s (a %s)"
 #: ../src/core/window-props.c:420
 #, c-format
 msgid "%s (as superuser)"
-msgstr ""
+msgstr "%s (com a usuari primari)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine
 #: ../src/core/window-props.c:438
-#, fuzzy, c-format
+#, c-format
 msgid "%s (as %s)"
-msgstr "%s (a %s)"
+msgstr "%s (com a %s)"
 
 #. Translators: the title of a window owned by another user
 #. * on this machine, whose name we don't know
 #: ../src/core/window-props.c:444
 #, c-format
 msgid "%s (as another user)"
-msgstr ""
+msgstr "%s (com a un altre usuari)"
 
 #: ../src/core/window-props.c:1429
 #, c-format
@@ -666,10 +669,8 @@ msgid "Move backward between panels and the desktop immediately"
 msgstr "Mou cap enrere entre quadres i l'escriptori immediatament"
 
 #: ../src/include/all-keybindings.h:191
-#, fuzzy
 msgid "Hide all normal windows and set focus to the desktop"
-msgstr ""
-"Oculta totes les finestres normals i dóna el focus al fons de l'escriptori"
+msgstr "Oculta totes les finestres normals i dóna el focus a l'escriptori"
 
 #: ../src/include/all-keybindings.h:194
 msgid "Show the panel's main menu"
@@ -2227,9 +2228,9 @@ msgstr "No es permet cap text dins de l'element <%s>"
 #: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
-#, fuzzy, c-format
+#, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "S'ha especificat <name> dues vegades per a aquest tema"
+msgstr "S'ha especificat <%s> dues vegades per a aquest tema"
 
 #: ../src/ui/theme-parser.c:4040
 #, c-format
@@ -2460,7 +2461,7 @@ msgstr ""
 #~ "session management: %s\n"
 #~ msgstr ""
 #~ "S'ha produït un error en executar el metacity-dialog per a avisar sobre "
-#~ "aplicacions que no suporten la gestió de sessions: %s\n"
+#~ "aplicacions que no admeten la gestió de sessions: %s\n"
 
 #~ msgid "\"%s\" is not responding."
 #~ msgstr "«%s» no està responent."
