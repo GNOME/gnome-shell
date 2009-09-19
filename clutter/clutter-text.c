@@ -4482,6 +4482,7 @@ clutter_text_set_preedit_string (ClutterText   *self,
   priv = self->priv;
 
   g_free (priv->preedit_str);
+  priv->preedit_str = NULL;
 
   if (priv->preedit_attrs != NULL)
     {
