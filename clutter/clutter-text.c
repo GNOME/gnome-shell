@@ -312,11 +312,14 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 
       pango_layout_set_text (layout, tmp->str, tmp->len);
 
-      pango_attr_list_splice (tmp_attrs, priv->preedit_attrs,
-                              cursor_index,
-                              strlen (priv->preedit_str));
+      if (priv->preedit_attrs != NULL)
+        {
+          pango_attr_list_splice (tmp_attrs, priv->preedit_attrs,
+                                  cursor_index,
+                                  strlen (priv->preedit_str));
 
-      pango_layout_set_attributes (layout, tmp_attrs);
+          pango_layout_set_attributes (layout, tmp_attrs);
+        }
 
       g_string_free (tmp, TRUE);
       pango_attr_list_unref (tmp_attrs);
