@@ -150,6 +150,15 @@ struct _MetaDisplay
   
   guint32 current_time;
 
+  /* We maintain a sequence counter, incremented for each #MetaWindow
+   * created.  This is exposed by meta_window_get_stable_sequence()
+   * but is otherwise not used inside mutter.
+   *
+   * It can be useful to plugins which want to sort windows in a
+   * stable fashion.
+   */
+  guint32 window_sequence_counter;
+
   /* Pings which we're waiting for a reply from */
   GSList     *pending_pings;
 

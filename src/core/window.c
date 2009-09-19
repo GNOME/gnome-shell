@@ -802,6 +802,10 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   meta_display_register_x_window (display, &window->xwindow, window);
 
+  /* Assign this #MetaWindow a sequence number which can be used
+   * for sorting.
+   */
+  window->stable_sequence = ++display->window_sequence_counter;
 
   /* assign the window to its group, or create a new group if needed
    */
@@ -8530,6 +8534,26 @@ meta_window_set_user_time (MetaWindow *window,
     }
 
   g_object_notify (G_OBJECT (window), "user-time");
+}
+
+/**
+ * meta_window_get_stable_sequence:
+ * @window: A #MetaWindow
+ *
+ * The stable sequence number is a monotonicially increasing
+ * unique integer assigned to each #MetaWindow upon creation.
+ *
+ * This number can be useful for sorting windows in a stable
+ * fashion.
+ *
+ * Returns: Internal sequence number for this window
+ */
+guint32
+meta_window_get_stable_sequence (MetaWindow *window)
+{
+  g_return_val_if_fail (META_IS_WINDOW (window), 0);
+
+  return window->stable_sequence;
 }
 
 /* Sets the demands_attention hint on a window, but only

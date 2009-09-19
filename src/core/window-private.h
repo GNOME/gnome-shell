@@ -316,6 +316,9 @@ struct _MetaWindow
    */
   int unmaps_pending;
 
+  /* See docs for meta_window_get_stable_sequence() */
+  guint32 stable_sequence;
+
   /* set to the most recent user-interaction event timestamp that we
      know about for this window */
   guint32 net_wm_user_time;

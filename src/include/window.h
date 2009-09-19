@@ -118,6 +118,7 @@ const char *meta_window_get_title (MetaWindow *window);
 MetaWindow *meta_window_get_transient_for (MetaWindow *window);
 void        meta_window_delete             (MetaWindow  *window,
                                             guint32      timestamp);
+guint       meta_window_get_stable_sequence (MetaWindow *window);
 guint32     meta_window_get_user_time (MetaWindow *window);
 int         meta_window_get_pid (MetaWindow *window);
 const char *meta_window_get_client_machine (MetaWindow *window);
