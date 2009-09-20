@@ -26,7 +26,7 @@ CLEANFILES += stamp-nbtk-marshal.h stamp-nbtk-enum-types.h
 nbtk-marshal.h: stamp-nbtk-marshal.h
 	@true
 stamp-nbtk-marshal.h: Makefile nbtk/nbtk-marshal.list
-	$(GLIB_GENMARSHAL) \
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) \
 		--prefix=_nbtk_marshal \
 		--header \
 	$(srcdir)/nbtk/nbtk-marshal.list > $@.tmp && \
@@ -35,7 +35,7 @@ stamp-nbtk-marshal.h: Makefile nbtk/nbtk-marshal.list
 	echo timestamp > $(@F)
 
 nbtk-marshal.c: Makefile nbtk/nbtk-marshal.list
-	(echo "#include \"nbtk-marshal.h\"" ; \
+	$(AM_V_GEN) (echo "#include \"nbtk-marshal.h\"" ; \
 	 $(GLIB_GENMARSHAL) \
 		--prefix=_nbtk_marshal \
 		--body \
@@ -46,7 +46,7 @@ nbtk-marshal.c: Makefile nbtk/nbtk-marshal.list
 nbtk-enum-types.h: stamp-nbtk-enum-types.h Makefile
 	@true
 stamp-nbtk-enum-types.h: $(source_h) nbtk/nbtk-enum-types.h.in
-	( cd $(srcdir) && \
+	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template nbtk/nbtk-enum-types.h.in \
 	  $(nbtk_source_h) ) >> $@.tmp && \
@@ -55,7 +55,7 @@ stamp-nbtk-enum-types.h: $(source_h) nbtk/nbtk-enum-types.h.in
 	echo timestamp > $(@F)
 
 nbtk-enum-types.c: stamp-nbtk-enum-types.h nbtk/nbtk-enum-types.c.in
-	( cd $(srcdir) && \
+	$(AM_V_GEN) ( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	    --template nbtk/nbtk-enum-types.c.in \
 	  $(nbtk_source_h) ) >> $@.tmp && \

@@ -153,7 +153,7 @@ libgnome_shell_la_LIBADD =	\
 	$(MUTTER_PLUGIN_LIBS)	\
         $(LIBGNOMEUI_LIBS)      \
 	libbig-1.0.la		\
-	libnbtk-1.0.la       \
+	libnbtk-1.0.la       	\
 	libgdmuser-1.0.la	\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
@@ -209,23 +209,25 @@ Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
 	$(AM_V_GEN) $(G_IR_COMPILER) Big-1.0.gir -o $@
 CLEANFILES += Big-1.0.typelib
 
-Nbtk-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libnbtk-1.0.la Makefile
-	$(AM_V_GEN) $(G_IR_SCANNER)         \
-        --namespace=Nbtk             \
-        --nsversion=1.0             \
-        --include=Clutter-1.0           \
-        --include=Gtk-2.0         \
-        --libtool="$(LIBTOOL)"    \
-        --program=mutter            \
-            --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
-        -DNBTK_COMPILATION \
-        $(addprefix $(srcdir)/,$(nbtk_source_h)) \
-        $(addprefix $(srcdir)/,$(nbtk_source_c)) \
-        $(srcdir)/nbtk-enum-types.h      \
-        $(NBTK_CFLAGS)               \
-        -o $@
+Nbtk-1.0.gir: $(mutter) $(G_IR_SCANNER) Toolkit-0.1.gir libgnome-shell.la libnbtk-1.0.la Makefile
+	$(AM_V_GEN) $(G_IR_SCANNER)						\
+	        --namespace=Nbtk						\
+	        --nsversion=1.0							\
+	        --include=Clutter-1.0						\
+		--add-include-path=$(builddir)     				\
+	        --libtool="$(LIBTOOL)"						\
+	        --program=mutter						\
+		--program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la	\
+	        -DNBTK_COMPILATION						\
+	        $(addprefix $(srcdir)/,$(nbtk_source_h))			\
+	        $(addprefix $(srcdir)/,$(nbtk_source_c))			\
+	        $(srcdir)/nbtk-enum-types.h					\
+	        $(NBTK_CFLAGS)							\
+	        -o $@
 CLEANFILES += Nbtk-1.0.gir
 
 Nbtk-1.0.typelib: Nbtk-1.0.gir
-	$(AM_V_GEN) $(G_IR_COMPILER) Nbtk-1.0.gir -o $@
+	$(AM_V_GEN) $(G_IR_COMPILER)						\
+		$< -o $@
+
 CLEANFILES += Nbtk-1.0.typelib
