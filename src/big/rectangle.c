@@ -268,6 +268,52 @@ corner_get(guint         radius,
     return corner;
 }
 
+/* To match the CSS specification, we want the border to look like it was
+ * drawn over the background. But actually drawing the border over the
+ * background will produce slightly bad antialiasing at the edges, so
+ * compute the effective border color instead.
+ */
+#define NORM(x) (t = (x) + 127, (t + (t >> 8)) >> 8)
+#define MULT(c,a) NORM(c*a)
+
+static void
+premultiply (ClutterColor *color)
+{
+    guint t;
+    color->red = MULT (color->red, color->alpha);
+    color->green = MULT (color->green, color->alpha);
+    color->blue = MULT (color->blue, color->alpha);
+}
+
+static void
+unpremultiply (ClutterColor *color)
+{
+    if (color->alpha != 0) {
+        color->red = (color->red * 255 + 127) / color->alpha;
+        color->green = (color->green * 255 + 127) / color->alpha;
+        color->blue = (color->blue * 255 + 127) / color->alpha;
+    }
+}
+
+static void
+over (const ClutterColor *source,
+      const ClutterColor *destination,
+      ClutterColor       *result)
+{
+    guint t;
+    ClutterColor src = *source;
+    ClutterColor dst = *destination;
+    premultiply (&src);
+    premultiply (&dst);
+
+    result->alpha = src.alpha + NORM ((255 - src.alpha) * dst.alpha);
+    result->red   = src.red +   NORM ((255 - src.alpha) * dst.red);
+    result->green = src.green + NORM ((255 - src.alpha) * dst.green);
+    result->blue  = src.blue +  NORM ((255 - src.alpha) * dst.blue);
+
+    unpremultiply (result);
+}
+
 static void
 big_rectangle_update_corners(BigRectangle *rectangle)
 {
@@ -278,6 +324,7 @@ big_rectangle_update_corners(BigRectangle *rectangle)
     if (rectangle->radius != 0) {
         ClutterColor *color;
         ClutterColor *border_color;
+        ClutterColor effective_border;
         guint border_width;
 
         g_object_get(rectangle,
@@ -286,10 +333,12 @@ big_rectangle_update_corners(BigRectangle *rectangle)
                      "color", &color,
                      NULL);
 
+        over (border_color, color, &effective_border);
+
         corner = corner_get(rectangle->radius,
                             color,
                             border_width,
-                            border_color);
+                            &effective_border);
 
         clutter_color_free(border_color);
         clutter_color_free(color);
@@ -329,12 +378,10 @@ big_rectangle_paint(ClutterActor *actor)
 
     rectangle = BIG_RECTANGLE(actor);
 
-    if (rectangle->radius == 0) {
-        /* In that case we are no different than our parent class,
-         * so don't bother */
-        CLUTTER_ACTOR_CLASS(big_rectangle_parent_class)->paint(actor);
-        return;
-    }
+    /* We can't chain up, even when we the radius is 0, because of the different
+     * interpretation of the border/background relationship here than for
+     * ClutterRectangle.
+     */
 
     if (rectangle->corners_dirty)
         big_rectangle_update_corners(rectangle);
@@ -344,6 +391,9 @@ big_rectangle_paint(ClutterActor *actor)
                  "border-width", &border_width,
                  "color", &color,
                  NULL);
+
+    if (border_color->alpha == 0 && color->alpha == 0)
+        goto out;
 
     actor_opacity = clutter_actor_get_paint_opacity (actor);
 
@@ -357,6 +407,11 @@ big_rectangle_paint(ClutterActor *actor)
     height = box.y2;
 
     radius = rectangle->radius;
+
+    /* Optimization; if the border is transparent, it just looks like part of
+     * the background */
+    if (radius == 0 && border_color->alpha == 0)
+        border_width = 0;
 
     max = MAX(border_width, radius);
 
@@ -393,33 +448,54 @@ big_rectangle_paint(ClutterActor *actor)
     }
 
     if (border_width != 0) {
+        ClutterColor effective_border;
+        over (border_color, color, &effective_border);
+
         if (!rectangle->border_material)
             rectangle->border_material = cogl_material_new ();
 
         cogl_color_set_from_4ub(&tmp_color,
-                                border_color->red,
-                                border_color->green,
-                                border_color->blue,
-                                actor_opacity * border_color->alpha / 255);
+                                effective_border.red,
+                                effective_border.green,
+                                effective_border.blue,
+                                actor_opacity * effective_border.alpha / 255);
         cogl_color_premultiply (&tmp_color);
         cogl_material_set_color(rectangle->border_material, &tmp_color);
         cogl_set_source(rectangle->border_material);
 
-        /* NORTH */
-        cogl_rectangle(max, 0,
-                       width - max, border_width);
+        if (radius > 0) { /* skip corners */
+            /* NORTH */
+            cogl_rectangle(max, 0,
+                           width - max, border_width);
 
-        /* EAST */
-        cogl_rectangle(width - border_width, max,
-                       width, height - max);
+            /* EAST */
+            cogl_rectangle(width - border_width, max,
+                           width, height - max);
 
-        /* SOUTH */
-        cogl_rectangle(max, height - border_width,
-                       width - max, height);
+            /* SOUTH */
+            cogl_rectangle(max, height - border_width,
+                           width - max, height);
 
-        /* WEST */
-        cogl_rectangle(0, max,
-                       border_width, height - max);
+            /* WEST */
+            cogl_rectangle(0, max,
+                           border_width, height - max);
+        } else { /* include corners */
+            /* NORTH */
+            cogl_rectangle(0, 0,
+                           width, border_width);
+
+            /* EAST */
+            cogl_rectangle(width - border_width, border_width,
+                           width, height - border_width);
+
+            /* SOUTH */
+            cogl_rectangle(0, height - border_width,
+                           width, height);
+
+            /* WEST */
+            cogl_rectangle(0, border_width,
+                           border_width, height - border_width);
+        }
     }
 
     if (!rectangle->background_material)
@@ -455,6 +531,7 @@ big_rectangle_paint(ClutterActor *actor)
     cogl_rectangle(border_width, max,
                    width - border_width, height - max);
 
+out:
     clutter_color_free(border_color);
     clutter_color_free(color);
 }
