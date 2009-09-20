@@ -85,6 +85,9 @@ G_CONST_RETURN gchar *nbtk_widget_get_style_pseudo_class (NbtkWidget   *actor);
 void                  nbtk_widget_set_style_class_name   (NbtkWidget   *actor,
                                                           const gchar  *style_class);
 G_CONST_RETURN gchar *nbtk_widget_get_style_class_name   (NbtkWidget   *actor);
+void                  nbtk_widget_set_style              (NbtkWidget   *actor,
+							  const gchar  *style);
+G_CONST_RETURN gchar *nbtk_widget_get_style              (NbtkWidget   *actor);
 
 void        nbtk_widget_set_theme (NbtkWidget *actor,
 				   ShellTheme *theme);

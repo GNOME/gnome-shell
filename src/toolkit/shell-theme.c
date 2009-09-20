@@ -940,18 +940,16 @@ compare_declarations (gconstpointer a,
   return 0;
 }
 
-void
+GPtrArray *
 _shell_theme_get_matched_properties (ShellTheme      *theme,
-				     ShellThemeNode  *node,
-				     CRDeclaration ***properties,
-				     int             *n_properties)
+				     ShellThemeNode  *node)
 {
   enum CRStyleOrigin origin = 0;
   CRStyleSheet *sheet = NULL;
   GPtrArray *props = g_ptr_array_new ();
 
-  g_return_if_fail (SHELL_IS_THEME (theme));
-  g_return_if_fail (SHELL_IS_THEME_NODE (node));
+  g_return_val_if_fail (SHELL_IS_THEME (theme), NULL);
+  g_return_val_if_fail (SHELL_IS_THEME_NODE (node), NULL);
 
   for (origin = ORIGIN_UA; origin < NB_ORIGINS; origin++)
     {
@@ -966,8 +964,7 @@ _shell_theme_get_matched_properties (ShellTheme      *theme,
    * after earlier declarations */
   g_ptr_array_sort (props, compare_declarations);
 
-  *n_properties = props->len;
-  *properties = (CRDeclaration **) g_ptr_array_free (props, FALSE);
+  return props;
 }
 
 /* Resolve an url from an url() reference in a stylesheet into an absolute

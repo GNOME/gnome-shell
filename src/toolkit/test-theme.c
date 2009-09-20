@@ -244,6 +244,16 @@ test_pseudo_class (void)
   assert_text_decoration  (group3,  "group3", 0);
 }
 
+static void
+test_inline_style (void)
+{
+  test = "inline_style";
+  /* These properties come from the inline-style specified when creating the node */
+  assert_foreground_color (text3,   "text3",  0x00000ffff);
+  assert_length ("text3", "padding-bottom", 12.,
+		 shell_theme_node_get_padding (text3, SHELL_SIDE_BOTTOM));
+}
+
 int
 main (int argc, char **argv)
 {
@@ -263,21 +273,22 @@ main (int argc, char **argv)
 
   root = shell_theme_context_get_root_node (context);
   group1 = shell_theme_node_new (context, root, NULL,
-				 CLUTTER_TYPE_GROUP, "group1", NULL, NULL);
+				 CLUTTER_TYPE_GROUP, "group1", NULL, NULL, NULL);
   text1 = shell_theme_node_new  (context, group1, NULL,
-				 CLUTTER_TYPE_TEXT, "text1", "special-text", NULL);
+				 CLUTTER_TYPE_TEXT, "text1", "special-text", NULL, NULL);
   text2 = shell_theme_node_new  (context, group1, NULL,
-				 CLUTTER_TYPE_TEXT, "text2", NULL, NULL);
+				 CLUTTER_TYPE_TEXT, "text2", NULL, NULL, NULL);
   group2 = shell_theme_node_new (context, root, NULL,
-				 CLUTTER_TYPE_GROUP, "group2", NULL, NULL);
+				 CLUTTER_TYPE_GROUP, "group2", NULL, NULL, NULL);
   text3 = shell_theme_node_new  (context, group2, NULL,
-				 CLUTTER_TYPE_TEXT, "text3", NULL, NULL);
+				 CLUTTER_TYPE_TEXT, "text3", NULL, NULL,
+                                 "color: #0000ff; padding-bottom: 12px;");
   text4 = shell_theme_node_new  (context, group2, NULL,
-				 CLUTTER_TYPE_TEXT, "text4", NULL, "visited hover");
+				 CLUTTER_TYPE_TEXT, "text4", NULL, "visited hover", NULL);
   group3 = shell_theme_node_new (context, group2, NULL,
-				 CLUTTER_TYPE_GROUP, "group3", NULL, "hover");
+				 CLUTTER_TYPE_GROUP, "group3", NULL, "hover", NULL);
   cairo_texture = shell_theme_node_new (context, root, NULL,
-					CLUTTER_TYPE_CAIRO_TEXTURE, "cairoTexture", NULL, NULL);
+					CLUTTER_TYPE_CAIRO_TEXTURE, "cairoTexture", NULL, NULL, NULL);
 
   test_defaults ();
   test_lengths ();
@@ -287,6 +298,7 @@ main (int argc, char **argv)
   test_background ();
   test_font ();
   test_pseudo_class ();
+  test_inline_style ();
 
   return fail ? 1 : 0;
 }

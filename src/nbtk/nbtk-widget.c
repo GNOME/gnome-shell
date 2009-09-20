@@ -54,6 +54,7 @@ struct _NbtkWidgetPrivate
   ShellThemeNode *theme_node;
   gchar *pseudo_class;
   gchar *style_class;
+  gchar *inline_style;
 
   ClutterActor *border_image;
   ClutterActor *background_image;
@@ -84,6 +85,7 @@ enum
   PROP_THEME,
   PROP_PSEUDO_CLASS,
   PROP_STYLE_CLASS,
+  PROP_STYLE,
 
   PROP_STYLABLE,
 
@@ -124,6 +126,10 @@ nbtk_widget_set_property (GObject      *gobject,
 
     case PROP_STYLE_CLASS:
       nbtk_widget_set_style_class_name (actor, g_value_get_string (value));
+      break;
+
+    case PROP_STYLE:
+      nbtk_widget_set_style (actor, g_value_get_string (value));
       break;
 
     case PROP_STYLABLE:
@@ -169,6 +175,10 @@ nbtk_widget_get_property (GObject    *gobject,
 
     case PROP_STYLE_CLASS:
       g_value_set_string (value, priv->style_class);
+      break;
+
+    case PROP_STYLE:
+      g_value_set_string (value, priv->inline_style);
       break;
 
     case PROP_STYLABLE:
@@ -662,7 +672,8 @@ nbtk_widget_get_theme_node (NbtkWidget *widget)
 					       G_OBJECT_TYPE (widget),
 					       clutter_actor_get_name (CLUTTER_ACTOR (widget)),
 					       priv->style_class,
-					       priv->pseudo_class);
+					       priv->pseudo_class,
+					       priv->inline_style);
     }
 
   return priv->theme_node;
@@ -763,6 +774,20 @@ nbtk_widget_class_init (NbtkWidgetClass *klass)
                                    g_param_spec_string ("style-class",
                                                         "Style Class",
                                                         "Style class for styling",
+                                                        "",
+                                                        NBTK_PARAM_READWRITE));
+
+  /**
+   * NbtkWidget:style:
+   *
+   * Inline style information for the actor as a ';'-separated list of
+   * CSS properties.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_STYLE,
+                                   g_param_spec_string ("style",
+                                                        "Style",
+                                                        "Inline style string",
                                                         "",
                                                         NBTK_PARAM_READWRITE));
 
@@ -973,6 +998,53 @@ nbtk_widget_set_style_pseudo_class (NbtkWidget  *actor,
 
       g_object_notify (G_OBJECT (actor), "pseudo-class");
     }
+}
+
+/**
+ * nbtk_widget_set_style:
+ * @actor: a #NbtkWidget
+ * @style_class: (allow-none): a inline style string, or %NULL
+ *
+ * Set the inline style string for this widget. The inline style string is an
+ * optional ';'-separated list of CSS properties that override the style as
+ * determined from the stylesheets of the current theme.
+ */
+void
+nbtk_widget_set_style (NbtkWidget  *actor,
+		       const gchar *style)
+{
+  NbtkWidgetPrivate *priv = actor->priv;
+
+  g_return_if_fail (NBTK_IS_WIDGET (actor));
+
+  priv = actor->priv;
+
+  if (g_strcmp0 (style, priv->inline_style))
+    {
+      g_free (priv->inline_style);
+      priv->inline_style = g_strdup (style);
+
+      nbtk_widget_style_changed (actor);
+
+      g_object_notify (G_OBJECT (actor), "style");
+    }
+}
+
+/**
+ * nbtk_widget_get_style:
+ * @actor: a #NbtkWidget
+ *
+ * Get the current inline style string. See nbtk_widget_set_style().
+ *
+ * Returns: The inline style string, or %NULL. The string is owned by the
+ * #NbtkWidget and should not be modified or freed.
+ */
+const gchar*
+nbtk_widget_get_style (NbtkWidget *actor)
+{
+  g_return_val_if_fail (NBTK_IS_WIDGET (actor), NULL);
+
+  return actor->priv->inline_style;
 }
 
 static void

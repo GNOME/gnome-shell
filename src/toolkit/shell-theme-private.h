@@ -7,10 +7,8 @@
 
 G_BEGIN_DECLS
 
-void _shell_theme_get_matched_properties (ShellTheme       *theme,
-                                          ShellThemeNode   *node,
-                                          CRDeclaration  ***properties,
-                                          int              *n_properties);
+GPtrArray *_shell_theme_get_matched_properties (ShellTheme       *theme,
+                                                ShellThemeNode   *node);
 
 /* Resolve an URL from the stylesheet to a filename */
 char *_shell_theme_resolve_url (ShellTheme   *theme,
