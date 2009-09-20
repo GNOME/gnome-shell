@@ -207,6 +207,22 @@ test_adjacent_selector (void)
 }
 
 static void
+test_padding (void)
+{
+  test = "padding";
+  /* Test that a 4-sided padding property assigns the right paddings to
+   * all sides */
+  assert_length ("group2", "padding-top", 1.,
+		 st_theme_node_get_padding (group2, ST_SIDE_TOP));
+  assert_length ("group2", "padding-right", 2.,
+		 st_theme_node_get_padding (group2, ST_SIDE_RIGHT));
+  assert_length ("group2", "padding-bottom", 3.,
+		 st_theme_node_get_padding (group2, ST_SIDE_BOTTOM));
+  assert_length ("group2", "padding-left", 4.,
+		 st_theme_node_get_padding (group2, ST_SIDE_LEFT));
+}
+
+static void
 test_background (void)
 {
   test = "background";
@@ -295,6 +311,7 @@ main (int argc, char **argv)
   test_classes ();
   test_type_inheritance ();
   test_adjacent_selector ();
+  test_padding ();
   test_background ();
   test_font ();
   test_pseudo_class ();
