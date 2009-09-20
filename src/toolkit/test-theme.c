@@ -112,6 +112,42 @@ assert_background_color (ShellThemeNode *node,
     }
 }
 
+static const char *
+side_to_string (ShellSide side)
+{
+  switch (side)
+    {
+    case SHELL_SIDE_TOP:
+      return "top";
+    case SHELL_SIDE_RIGHT:
+      return "right";
+    case SHELL_SIDE_BOTTOM:
+      return "bottom";
+    case SHELL_SIDE_LEFT:
+      return "left";
+    }
+
+  return "<unknown>";
+}
+
+static void
+assert_border_color (ShellThemeNode *node,
+                     const char     *node_description,
+                     ShellSide       side,
+                     guint32         expected)
+{
+  ClutterColor color;
+  shell_theme_node_get_border_color (node, side, &color);
+  guint32 value = clutter_color_to_pixel (&color);
+
+  if (expected != value)
+    {
+      g_print ("%s: %s.border-%s-color: expected: #%08x, got: #%08x\n",
+	       test, node_description, side_to_string (side), expected, value);
+      fail = TRUE;
+    }
+}
+
 static void
 assert_background_image (ShellThemeNode *node,
 			 const char     *node_description,
@@ -223,6 +259,40 @@ test_padding (void)
 }
 
 static void
+test_border (void)
+{
+  test = "border";
+
+  /* group2 is defined as having a thin black border along the top three
+   * sides with rounded joins, then a square-joined green border at the
+   * botttom
+   */
+
+  assert_length ("group2", "border-top-width", 2.,
+		 shell_theme_node_get_border_width (group2, SHELL_SIDE_TOP));
+  assert_length ("group2", "border-right-width", 2.,
+		 shell_theme_node_get_border_width (group2, SHELL_SIDE_RIGHT));
+  assert_length ("group2", "border-bottom-width", 5.,
+		 shell_theme_node_get_border_width (group2, SHELL_SIDE_BOTTOM));
+  assert_length ("group2", "border-left-width", 2.,
+		 shell_theme_node_get_border_width (group2, SHELL_SIDE_LEFT));
+
+  assert_border_color (group2, "group2", SHELL_SIDE_TOP,    0x000000ff);
+  assert_border_color (group2, "group2", SHELL_SIDE_RIGHT,  0x000000ff);
+  assert_border_color (group2, "group2", SHELL_SIDE_BOTTOM, 0x0000ffff);
+  assert_border_color (group2, "group2", SHELL_SIDE_LEFT,   0x000000ff);
+
+  assert_length ("group2", "border-radius-topleft", 10.,
+		 shell_theme_node_get_border_radius (group2, SHELL_CORNER_TOPLEFT));
+  assert_length ("group2", "border-radius-topright", 10.,
+		 shell_theme_node_get_border_radius (group2, SHELL_CORNER_TOPRIGHT));
+  assert_length ("group2", "border-radius-bottomright", 0.,
+		 shell_theme_node_get_border_radius (group2, SHELL_CORNER_BOTTOMRIGHT));
+  assert_length ("group2", "border-radius-bottomleft", 0.,
+		 shell_theme_node_get_border_radius (group2, SHELL_CORNER_BOTTOMLEFT));
+}
+
+static void
 test_background (void)
 {
   test = "background";
@@ -312,6 +382,7 @@ main (int argc, char **argv)
   test_type_inheritance ();
   test_adjacent_selector ();
   test_padding ();
+  test_border ();
   test_background ();
   test_font ();
   test_pseudo_class ();

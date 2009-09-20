@@ -21,11 +21,18 @@ typedef struct _ShellThemeNodeClass ShellThemeNodeClass;
 #define SHELL_THEME_NODE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj),     SHELL_TYPE_THEME_NODE, ShellThemeNodeClass))
 
 typedef enum {
-    SHELL_SIDE_LEFT,
-    SHELL_SIDE_RIGHT,
     SHELL_SIDE_TOP,
-    SHELL_SIDE_BOTTOM
+    SHELL_SIDE_RIGHT,
+    SHELL_SIDE_BOTTOM,
+    SHELL_SIDE_LEFT
 } ShellSide;
+
+typedef enum {
+    SHELL_CORNER_TOPLEFT,
+    SHELL_CORNER_TOPRIGHT,
+    SHELL_CORNER_BOTTOMRIGHT,
+    SHELL_CORNER_BOTTOMLEFT
+} ShellCorner;
 
 /* These are the CSS values; that doesn't mean we have to implement blink... */
 typedef enum {
@@ -89,11 +96,14 @@ void shell_theme_node_get_foreground_color (ShellThemeNode *node,
 
 const char *shell_theme_node_get_background_image (ShellThemeNode *node);
 
-double  shell_theme_node_get_border_width (ShellThemeNode *node,
+double shell_theme_node_get_border_width  (ShellThemeNode *node,
                                            ShellSide       side);
-void    shell_theme_node_get_border_color (ShellThemeNode *node,
+double shell_theme_node_get_border_radius (ShellThemeNode *node,
+                                           ShellCorner     corner);
+void   shell_theme_node_get_border_color  (ShellThemeNode *node,
                                            ShellSide       side,
                                            ClutterColor   *color);
+
 double  shell_theme_node_get_padding      (ShellThemeNode *node,
                                            ShellSide       side);
 

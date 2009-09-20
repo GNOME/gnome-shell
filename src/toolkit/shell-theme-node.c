@@ -34,6 +34,7 @@ struct _ShellThemeNode {
   ClutterColor foreground_color;
   ClutterColor border_color[4];
   double border_width[4];
+  double border_radius[4];
   guint padding[4];
 
   char *background_image;
@@ -697,6 +698,96 @@ shell_theme_node_get_length (ShellThemeNode *node,
 }
 
 static void
+do_border_radius_term (ShellThemeNode *node,
+                       CRTerm         *term,
+                       gboolean        topleft,
+                       gboolean        topright,
+                       gboolean        bottomright,
+                       gboolean        bottomleft)
+{
+  gdouble value;
+
+  if (get_length_from_term (node, term, FALSE, &value) != VALUE_FOUND)
+    return;
+
+  if (topleft)
+    node->border_radius[SHELL_CORNER_TOPLEFT] = value;
+  if (topright)
+    node->border_radius[SHELL_CORNER_TOPRIGHT] = value;
+  if (bottomright)
+    node->border_radius[SHELL_CORNER_BOTTOMRIGHT] = value;
+  if (bottomleft)
+    node->border_radius[SHELL_CORNER_BOTTOMLEFT] = value;
+}
+
+static void
+do_border_radius (ShellThemeNode *node,
+                  CRDeclaration  *decl)
+{
+  const char *property_name = decl->property->stryng->str + 13; /* Skip 'border-radius' */
+
+  if (strcmp (property_name, "") == 0)
+    {
+      /* Slight deviation ... if we don't understand some of the terms and understand others,
+       * then we set the ones we understand and ignore the others instead of ignoring the
+       * whole thing
+       */
+      if (decl->value == NULL) /* 0 values */
+        return;
+      else if (decl->value->next == NULL) /* 1 value */
+        {
+          do_border_radius_term (node, decl->value,       TRUE, TRUE, TRUE, TRUE); /* all corners */
+          return;
+        }
+      else if (decl->value->next->next == NULL) /* 2 values */
+        {
+          do_border_radius_term (node, decl->value,       TRUE,  FALSE,  TRUE,  FALSE);  /* topleft/bottomright */
+          do_border_radius_term (node, decl->value->next, FALSE,  TRUE,   FALSE, TRUE);  /* topright/bottomleft */
+        }
+      else if (decl->value->next->next->next == NULL) /* 3 values */
+        {
+          do_border_radius_term (node, decl->value,             TRUE,  FALSE, FALSE, FALSE); /* topleft */
+          do_border_radius_term (node, decl->value->next,       FALSE, TRUE,  FALSE, TRUE);  /* topright/bottomleft */
+          do_border_radius_term (node, decl->value->next->next, FALSE, FALSE, TRUE,  FALSE);  /* bottomright */
+        }
+      else if (decl->value->next->next->next->next == NULL) /* 4 values */
+        {
+          do_border_radius_term (node, decl->value,                   TRUE,  FALSE, FALSE, FALSE); /* topleft */
+          do_border_radius_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* topright */
+          do_border_radius_term (node, decl->value->next->next,       FALSE, FALSE, TRUE,  FALSE); /* bottomright */
+          do_border_radius_term (node, decl->value->next->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottomleft */
+        }
+      else
+        {
+          g_warning ("Too many values for border-radius property");
+          return;
+        }
+    }
+  else
+    {
+      if (decl->value == NULL || decl->value->next != NULL)
+        return;
+
+      if (strcmp (property_name, "-topleft") == 0)
+        {
+          do_border_radius_term (node, decl->value, TRUE,  FALSE, FALSE, FALSE);
+        }
+      else if (strcmp (property_name, "-topright") == 0)
+        {
+          do_border_radius_term (node, decl->value, FALSE, TRUE,  FALSE, FALSE);
+        }
+      else if (strcmp (property_name, "-bottomright") == 0)
+        {
+          do_border_radius_term (node, decl->value, FALSE, FALSE, TRUE,  FALSE);
+        }
+      else if (strcmp (property_name, "-bottomleft") == 0)
+        {
+          do_border_radius_term (node, decl->value, FALSE, FALSE, FALSE, TRUE);
+        }
+    }
+}
+
+static void
 do_border_property (ShellThemeNode *node,
                     CRDeclaration  *decl)
 {
@@ -707,6 +798,12 @@ do_border_property (ShellThemeNode *node,
   double width;
   gboolean width_set = FALSE;
   int j;
+
+  if (g_str_has_prefix (property_name, "-radius"))
+    {
+      do_border_radius (node, decl);
+      return;
+    }
 
   if (g_str_has_prefix (property_name, "-left"))
     {
@@ -955,11 +1052,23 @@ shell_theme_node_get_border_width (ShellThemeNode *node,
                                    ShellSide       side)
 {
   g_return_val_if_fail (SHELL_IS_THEME_NODE (node), 0.);
-  g_return_val_if_fail (side >= SHELL_SIDE_LEFT && side <= SHELL_SIDE_BOTTOM, 0.);
+  g_return_val_if_fail (side >= SHELL_SIDE_TOP && side <= SHELL_SIDE_LEFT, 0.);
 
   ensure_borders (node);
 
   return node->border_width[side];
+}
+
+double
+shell_theme_node_get_border_radius (ShellThemeNode *node,
+                                    ShellCorner     corner)
+{
+  g_return_val_if_fail (SHELL_IS_THEME_NODE (node), 0.);
+  g_return_val_if_fail (corner >= SHELL_CORNER_TOPLEFT && corner <= SHELL_CORNER_BOTTOMLEFT, 0.);
+
+  ensure_borders (node);
+
+  return node->border_radius[corner];
 }
 
 static GetFromTermResult
@@ -1150,7 +1259,7 @@ shell_theme_node_get_border_color (ShellThemeNode *node,
                                    ClutterColor   *color)
 {
   g_return_if_fail (SHELL_IS_THEME_NODE (node));
-  g_return_if_fail (side >= SHELL_SIDE_LEFT && side <= SHELL_SIDE_BOTTOM);
+  g_return_if_fail (side >= SHELL_SIDE_TOP && side <= SHELL_SIDE_LEFT);
 
   ensure_borders (node);
 
@@ -1162,7 +1271,7 @@ shell_theme_node_get_padding (ShellThemeNode *node,
                               ShellSide      side)
 {
   g_return_val_if_fail (SHELL_IS_THEME_NODE (node), 0.);
-  g_return_val_if_fail (side >= SHELL_SIDE_LEFT && side <= SHELL_SIDE_BOTTOM, 0.);
+  g_return_val_if_fail (side >= SHELL_SIDE_TOP && side <= SHELL_SIDE_LEFT, 0.);
 
   ensure_borders (node);
 
