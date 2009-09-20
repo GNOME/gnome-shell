@@ -1,0 +1,1032 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/* This file started as a cut-and-paste of cr-sel-eng.c from libcroco.
+ *
+ * In moving it to hippo-canvas:
+ * - Reformatted and otherwise edited to match our coding style
+ * - Switched from handling xmlNode to handling HippoStyle
+ * - Simplified by removing things that we don't need or that don't
+ *   make sense in our context.
+ * - The code to get a list of matching properties works quite differently;
+ *   we order things in priority order, but we don't actually try to
+ *   coelesce properties with the same name.
+ *
+ * In moving it to GNOME Shell:
+ *  - Renamed again to StTheme
+ *  - Reformatted to match the gnome-st coding style
+ *  - Removed notion of "theme engine" from hippo-canvas
+ *  - pseudo-class matching changed from link enum to strings
+ *  - Some code simplication
+ */
+
+/*
+ * This file is part of The Croco Library
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of version 2.1 of the GNU Lesser General Public
+ * License as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser
+ * General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ *
+ * Copyright (C) 2003-2004 Dodji Seketeli.  All Rights Reserved.
+ */
+
+
+#include <stdlib.h>
+#include <string.h>
+
+#include "st-theme-node.h"
+#include "st-theme-private.h"
+
+static GObject *st_theme_constructor (GType                  type,
+                                      guint                  n_construct_properties,
+                                      GObjectConstructParam *construct_properties);
+
+static void st_theme_dispose      (GObject      *object);
+static void st_theme_finalize     (GObject      *object);
+static void st_theme_set_property (GObject      *object,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec);
+static void st_theme_get_property (GObject      *object,
+                                   guint         prop_id,
+                                   GValue       *value,
+                                   GParamSpec   *pspec);
+
+#if 0
+enum
+{
+  LAST_SIGNAL
+};
+
+static int signals[LAST_SIGNAL];
+#endif
+
+struct _StTheme
+{
+  GObject parent;
+
+  char *application_stylesheet;
+  char *default_stylesheet;
+  char *theme_stylesheet;
+
+  GHashTable *stylesheets_by_filename;
+  GHashTable *filenames_by_stylesheet;
+
+  CRCascade *cascade;
+};
+
+struct _StThemeClass
+{
+  GObjectClass parent_class;
+};
+
+enum
+{
+  PROP_0,
+  PROP_APPLICATION_STYLESHEET,
+  PROP_THEME_STYLESHEET,
+  PROP_DEFAULT_STYLESHEET
+};
+
+G_DEFINE_TYPE (StTheme, st_theme, G_TYPE_OBJECT)
+
+/* Quick strcmp.  Test only for == 0 or != 0, not < 0 or > 0.  */
+#define strqcmp(str,lit,lit_len) \
+  (strlen (str) != (lit_len) || memcmp (str, lit, lit_len))
+
+static void st_theme_init (StTheme * theme)
+{
+  theme->stylesheets_by_filename = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                          (GDestroyNotify)g_free, (GDestroyNotify)cr_stylesheet_unref);
+  theme->filenames_by_stylesheet = g_hash_table_new (g_direct_hash, g_direct_equal);
+}
+
+static void
+st_theme_class_init (StThemeClass * klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->constructor = st_theme_constructor;
+  object_class->dispose = st_theme_dispose;
+  object_class->finalize = st_theme_finalize;
+  object_class->set_property = st_theme_set_property;
+  object_class->get_property = st_theme_get_property;
+
+  /**
+   * StTheme:application-stylesheet
+   *
+   * The highest priority stylesheet, representing application-specific
+   * styling; this is associated with the CSS "author" stylesheet.
+   */
+  g_object_class_install_property (object_class,
+				   PROP_APPLICATION_STYLESHEET,
+				   g_param_spec_string ("application-stylesheet",
+                                                        "Application Stylesheet",
+                                                        "Stylesheet with application-specific styling",
+                                                        NULL,
+                                                        G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
+  /**
+   * StTheme:theme-stylesheet
+   *
+   * The second priority stylesheet, representing theme-specific styling;
+   * this is associated with the CSS "user" stylesheet.
+   */
+  g_object_class_install_property (object_class,
+				   PROP_THEME_STYLESHEET,
+				   g_param_spec_string ("theme-stylesheet",
+							"Theme Stylesheet",
+							"Stylesheet with theme-specific styling",
+							NULL,
+							G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
+  /**
+   * StTheme:default-stylesheet
+   *
+   * The lowest priority stylesheet, representing global default
+   * styling; this is associated with the CSS "user agent" stylesheet.
+   */
+  g_object_class_install_property (object_class,
+				   PROP_DEFAULT_STYLESHEET,
+				   g_param_spec_string ("default-stylesheet",
+							"Default Stylesheet",
+							"Stylesheet with global default styling",
+							NULL,
+							G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+
+}
+
+static CRStyleSheet *
+parse_stylesheet (const char *filename)
+{
+  enum CRStatus status;
+  CRStyleSheet *stylesheet;
+
+  if (filename == NULL)
+    return NULL;
+
+  status = cr_om_parser_simply_parse_file ((const guchar *) filename,
+					   CR_UTF_8,
+                                           &stylesheet);
+
+  if (status != CR_OK)
+    {
+      g_warning ("Error parsing stylesheet '%s'", filename);
+      return NULL;
+    }
+
+  return stylesheet;
+}
+
+static void
+insert_stylesheet (StTheme      *theme,
+		   const char   *filename,
+                   CRStyleSheet *stylesheet)
+{
+  char *filename_copy;
+
+  if (stylesheet == NULL)
+    return;
+
+  filename_copy = g_strdup(filename);
+  cr_stylesheet_ref (stylesheet);
+
+  g_hash_table_insert (theme->stylesheets_by_filename, filename_copy, stylesheet);
+  g_hash_table_insert (theme->filenames_by_stylesheet, stylesheet, filename_copy);
+}
+
+static GObject *
+st_theme_constructor (GType                  type,
+                      guint                  n_construct_properties,
+                      GObjectConstructParam *construct_properties)
+{
+  GObject *object;
+  StTheme *theme;
+  CRStyleSheet *application_stylesheet;
+  CRStyleSheet *theme_stylesheet;
+  CRStyleSheet *default_stylesheet;
+
+  object = (*G_OBJECT_CLASS (st_theme_parent_class)->constructor) (type,
+								      n_construct_properties,
+								      construct_properties);
+  theme = ST_THEME (object);
+
+  application_stylesheet = parse_stylesheet (theme->application_stylesheet);
+  theme_stylesheet = parse_stylesheet (theme->theme_stylesheet);
+  default_stylesheet = parse_stylesheet (theme->default_stylesheet);
+
+  theme->cascade = cr_cascade_new (application_stylesheet,
+				   theme_stylesheet,
+                                   default_stylesheet);
+
+  if (theme->cascade == NULL)
+    g_error ("Out of memory when creating cascade object");
+
+  insert_stylesheet (theme, theme->application_stylesheet, application_stylesheet);
+  insert_stylesheet (theme, theme->theme_stylesheet, theme_stylesheet);
+  insert_stylesheet (theme, theme->default_stylesheet, default_stylesheet);
+
+  return object;
+}
+
+static void
+st_theme_dispose (GObject * object)
+{
+  /* StTheme *theme = ST_THEME(object); */
+
+  G_OBJECT_CLASS (st_theme_parent_class)->dispose (object);
+}
+
+static void
+st_theme_finalize (GObject * object)
+{
+  StTheme *theme = ST_THEME (object);
+
+  g_hash_table_destroy (theme->stylesheets_by_filename);
+  g_hash_table_destroy (theme->filenames_by_stylesheet);
+
+  g_free (theme->application_stylesheet);
+  g_free (theme->theme_stylesheet);
+  g_free (theme->default_stylesheet);
+
+  if (theme->cascade)
+    {
+      cr_cascade_unref (theme->cascade);
+      theme->cascade = NULL;
+    }
+
+  G_OBJECT_CLASS (st_theme_parent_class)->finalize (object);
+}
+
+static void
+st_theme_set_property (GObject      *object,
+                       guint         prop_id,
+                       const GValue *value,
+                       GParamSpec   *pspec)
+{
+  StTheme *theme = ST_THEME (object);
+
+  switch (prop_id)
+    {
+    case PROP_APPLICATION_STYLESHEET:
+      {
+	const char *path = g_value_get_string (value);
+
+	if (path != theme->application_stylesheet)
+	  {
+	    g_free (theme->application_stylesheet);
+	    theme->application_stylesheet = g_strdup (path);
+	  }
+
+	break;
+      }
+    case PROP_THEME_STYLESHEET:
+      {
+	const char *path = g_value_get_string (value);
+
+	if (path != theme->theme_stylesheet)
+	  {
+	    g_free (theme->theme_stylesheet);
+	    theme->theme_stylesheet = g_strdup (path);
+	  }
+
+	break;
+      }
+    case PROP_DEFAULT_STYLESHEET:
+      {
+	const char *path = g_value_get_string (value);
+
+	if (path != theme->default_stylesheet)
+	  {
+	    g_free (theme->default_stylesheet);
+	    theme->default_stylesheet = g_strdup (path);
+	  }
+
+	break;
+      }
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+st_theme_get_property (GObject    *object,
+                       guint       prop_id,
+                       GValue     *value,
+                       GParamSpec *pspec)
+{
+  StTheme *theme = ST_THEME (object);
+
+  switch (prop_id)
+    {
+    case PROP_APPLICATION_STYLESHEET:
+      g_value_set_string (value, theme->application_stylesheet);
+      break;
+    case PROP_THEME_STYLESHEET:
+      g_value_set_string (value, theme->theme_stylesheet);
+      break;
+    case PROP_DEFAULT_STYLESHEET:
+      g_value_set_string (value, theme->default_stylesheet);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+/**
+ * st_theme_new:
+ * @application_stylesheet: The highest priority stylesheet, representing application-specific
+ *   styling; this is associated with the CSS "author" stylesheet, may be %NULL
+ * @theme_stylesheet: The second priority stylesheet, representing theme-specific styling ;
+ *   this is associated with the CSS "user" stylesheet, may be %NULL
+ * @default_stylesheet: The lowest priority stylesheet, representing global default styling;
+ *   this is associated with the CSS "user agent" stylesheet, may be %NULL
+ *
+ * Return value: the newly created theme object
+ **/
+StTheme *
+st_theme_new (const char       *application_stylesheet,
+              const char       *theme_stylesheet,
+              const char       *default_stylesheet)
+{
+  StTheme *theme = g_object_new (ST_TYPE_THEME,
+				    "application-stylesheet", application_stylesheet,
+				    "theme-stylesheet", theme_stylesheet,
+				    "default-stylesheet", default_stylesheet,
+				    NULL);
+
+  return theme;
+}
+
+static gboolean
+string_in_list (GString    *stryng,
+                const char *list)
+{
+  const char *cur;
+
+  for (cur = list; *cur;)
+    {
+      while (*cur && cr_utils_is_white_space (*cur))
+        cur++;
+
+      if (strncmp (cur, stryng->str, stryng->len) == 0)
+        {
+          cur +=  stryng->len;
+          if ((!*cur) || cr_utils_is_white_space (*cur))
+            return TRUE;
+        }
+
+      /*  skip to next whitespace character  */
+      while (*cur && !cr_utils_is_white_space (*cur))
+        cur++;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+pseudo_class_add_sel_matches_style (StTheme         *a_this,
+				    CRAdditionalSel *a_add_sel,
+				    StThemeNode     *a_node)
+{
+  const char *node_pseudo_class;
+
+  g_return_val_if_fail (a_this
+			&& a_add_sel
+			&& a_add_sel->content.pseudo
+			&& a_add_sel->content.pseudo->name
+			&& a_add_sel->content.pseudo->name->stryng
+			&& a_add_sel->content.pseudo->name->stryng->str
+			&& a_node, FALSE);
+
+  node_pseudo_class = st_theme_node_get_pseudo_class (a_node);
+
+  if (node_pseudo_class == NULL)
+    return FALSE;
+
+  return string_in_list (a_add_sel->content.pseudo->name->stryng, node_pseudo_class);
+}
+
+/**
+ *@param a_add_sel the class additional selector to consider.
+ *@param a_node the style node to consider.
+ *@return TRUE if the class additional selector matches
+ *the style node given in argument, FALSE otherwise.
+ */
+static gboolean
+class_add_sel_matches_style (CRAdditionalSel *a_add_sel,
+			     StThemeNode     *a_node)
+{
+  const char *element_class;
+
+  g_return_val_if_fail (a_add_sel
+			&& a_add_sel->type == CLASS_ADD_SELECTOR
+			&& a_add_sel->content.class_name
+			&& a_add_sel->content.class_name->stryng
+			&& a_add_sel->content.class_name->stryng->str
+			&& a_node, FALSE);
+
+  element_class = st_theme_node_get_element_class (a_node);
+  if (element_class == NULL)
+    return FALSE;
+
+  return string_in_list (a_add_sel->content.class_name->stryng, element_class);
+}
+
+/**
+ *@return TRUE if the additional attribute selector matches
+ *the current style node given in argument, FALSE otherwise.
+ *@param a_add_sel the additional attribute selector to consider.
+ *@param a_node the style node to consider.
+ */
+static gboolean
+id_add_sel_matches_style (CRAdditionalSel *a_add_sel,
+			  StThemeNode     *a_node)
+{
+  gboolean result = FALSE;
+  const char *id;
+
+  g_return_val_if_fail (a_add_sel
+			&& a_add_sel->type == ID_ADD_SELECTOR
+			&& a_add_sel->content.id_name
+			&& a_add_sel->content.id_name->stryng
+			&& a_add_sel->content.id_name->stryng->str
+			&& a_node, FALSE);
+  g_return_val_if_fail (a_add_sel
+			&& a_add_sel->type == ID_ADD_SELECTOR
+			&& a_node, FALSE);
+
+  id = st_theme_node_get_element_id (a_node);
+
+  if (id != NULL)
+    {
+      if (!strqcmp (id, a_add_sel->content.id_name->stryng->str,
+		    a_add_sel->content.id_name->stryng->len))
+	{
+	  result = TRUE;
+	}
+    }
+
+  return result;
+}
+
+/**
+ *Evaluates if a given additional selector matches an style node.
+ *@param a_add_sel the additional selector to consider.
+ *@param a_node the style node to consider.
+ *@return TRUE is a_add_sel matches a_node, FALSE otherwise.
+ */
+static gboolean
+additional_selector_matches_style (StTheme         *a_this,
+				   CRAdditionalSel *a_add_sel,
+				   StThemeNode     *a_node)
+{
+  CRAdditionalSel *cur_add_sel = NULL;
+
+  g_return_val_if_fail (a_add_sel, FALSE);
+
+  for (cur_add_sel = a_add_sel; cur_add_sel; cur_add_sel = cur_add_sel->next)
+    {
+      switch (cur_add_sel->type)
+        {
+        case NO_ADD_SELECTOR:
+	  return FALSE;
+        case CLASS_ADD_SELECTOR:
+	  if (!class_add_sel_matches_style (cur_add_sel, a_node))
+            return FALSE;
+          break;
+        case ID_ADD_SELECTOR:
+	  if (!id_add_sel_matches_style (cur_add_sel, a_node))
+            return FALSE;
+          break;
+        case ATTRIBUTE_ADD_SELECTOR:
+	  g_warning ("Attribute selectors not supported");
+	  return FALSE;
+        case  PSEUDO_CLASS_ADD_SELECTOR:
+	  if (!pseudo_class_add_sel_matches_style (a_this, cur_add_sel, a_node))
+            return FALSE;
+          break;
+        }
+    }
+
+  return TRUE;
+}
+
+/* This is a workaround for:
+ *  - Python encodes '.' as '+' in type names
+ *  - libcroco doesn't correctly parse the \+ escape in types
+ *  - it's far too ugly to write foo\2b\bar\2bWidget...
+ *
+ * So we consider an element name of foo-bar-Widget to match a type
+ * of foo+bar+Widget
+ */
+static gboolean
+element_name_matches_type_name (const char *element_name,
+				const char *type_name)
+{
+  const char *p = element_name;
+  const char *q = type_name;
+
+  while (*p || *q)
+    {
+      if (*p == '-')
+	{
+	  if (*q != '-' && *q != '+')
+	    return FALSE;
+	}
+      else
+	{
+	  if (*p != *q)
+	    return FALSE;
+	}
+
+      p++;
+      q++;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+element_name_matches_type (const char *element_name,
+                           GType       element_type)
+{
+  /* This is not efficient, but the number of selectors with an element_name
+   * is probably fairly small.
+   */
+  if (element_type == G_TYPE_NONE)
+    {
+      return strcmp (element_name, "stage") == 0;
+    }
+  else
+    {
+      while (TRUE)
+	{
+	  if (element_name_matches_type_name (element_name, g_type_name (element_type)))
+	    return TRUE;
+
+	  if (element_type == G_TYPE_OBJECT)
+	    return FALSE;
+
+	  element_type = g_type_parent (element_type);
+	}
+    }
+}
+
+/**
+ *Evaluate a selector (a simple selectors list) and says
+ *if it matches the style node given in parameter.
+ *The algorithm used here is the following:
+ *Walk the combinator separated list of simple selectors backward, starting
+ *from the end of the list. For each simple selector, looks if
+ *if matches the current style.
+ *
+ *@param a_this the selection engine.
+ *@param a_sel the simple selection list.
+ *@param a_node the style node.
+ *@param a_result out parameter. Set to true if the
+ *selector matches the style node, FALSE otherwise.
+ *@param a_recurse if set to TRUE, the function will walk to
+ *the next simple selector (after the evaluation of the current one)
+ *and recursively evaluate it. Must be usually set to TRUE unless you
+ *know what you are doing.
+ */
+static enum CRStatus
+sel_matches_style_real (StTheme     *a_this,
+			CRSimpleSel *a_sel,
+			StThemeNode *a_node,
+			gboolean    *a_result,
+			gboolean     a_eval_sel_list_from_end,
+                        gboolean     a_recurse)
+{
+  CRSimpleSel *cur_sel = NULL;
+  StThemeNode *cur_node = NULL;
+  GType cur_type;
+
+  *a_result = FALSE;
+
+  if (a_eval_sel_list_from_end)
+    {
+      /*go and get the last simple selector of the list */
+      for (cur_sel = a_sel; cur_sel && cur_sel->next; cur_sel = cur_sel->next)
+        ;
+    }
+  else
+    {
+      cur_sel = a_sel;
+    }
+
+  cur_node = a_node;
+  cur_type = st_theme_node_get_element_type (cur_node);
+
+  while (cur_sel)
+    {
+      if (((cur_sel->type_mask & TYPE_SELECTOR)
+	   && (cur_sel->name
+	       && cur_sel->name->stryng
+	       && cur_sel->name->stryng->str)
+	   &&
+	   (element_name_matches_type (cur_sel->name->stryng->str, cur_type)))
+	  || (cur_sel->type_mask & UNIVERSAL_SELECTOR))
+	{
+	  /*
+	   *this simple selector
+	   *matches the current style node
+	   *Let's see if the preceding
+	   *simple selectors also match
+	   *their style node counterpart.
+	   */
+	  if (cur_sel->add_sel)
+	    {
+	      if (additional_selector_matches_style (a_this, cur_sel->add_sel, cur_node))
+                goto walk_a_step_in_expr;
+	      else
+                goto done;
+	    }
+	  else
+            goto walk_a_step_in_expr;
+	}
+      if (!(cur_sel->type_mask & TYPE_SELECTOR)
+	  && !(cur_sel->type_mask & UNIVERSAL_SELECTOR))
+	{
+	  if (!cur_sel->add_sel)
+            goto done;
+	  if (additional_selector_matches_style (a_this, cur_sel->add_sel, cur_node))
+            goto walk_a_step_in_expr;
+	  else
+            goto done;
+	}
+      else
+	{
+	  goto done;
+	}
+
+    walk_a_step_in_expr:
+      if (a_recurse == FALSE)
+	{
+	  *a_result = TRUE;
+	  goto done;
+	}
+
+      /*
+       *here, depending on the combinator of cur_sel
+       *choose the axis of the element tree traversal
+       *and walk one step in the element tree.
+       */
+      if (!cur_sel->prev)
+	break;
+
+      switch (cur_sel->combinator)
+	{
+	case NO_COMBINATOR:
+	  break;
+
+	case COMB_WS:		/*descendant selector */
+	  {
+	    StThemeNode *n = NULL;
+
+	    /*
+	     *walk the element tree upward looking for a parent
+	     *style that matches the preceding selector.
+	     */
+	    for (n = st_theme_node_get_parent (a_node); n; n = st_theme_node_get_parent (n))
+	      {
+		enum CRStatus status;
+		gboolean matches = FALSE;
+
+		status = sel_matches_style_real (a_this, cur_sel->prev, n, &matches, FALSE, TRUE);
+
+		if (status != CR_OK)
+		  goto done;
+
+		if (matches)
+		  {
+		    cur_node = n;
+		    cur_type = st_theme_node_get_element_type (cur_node);
+		    break;
+		  }
+	      }
+
+	    if (!n)
+	      {
+		/*
+		 *didn't find any ancestor that matches
+		 *the previous simple selector.
+		 */
+		goto done;
+	      }
+	    /*
+	     *in this case, the preceding simple sel
+	     *will have been interpreted twice, which
+	     *is a cpu and mem waste ... I need to find
+	     *another way to do this. Anyway, this is
+	     *my first attempt to write this function and
+	     *I am a bit clueless.
+	     */
+	    break;
+	  }
+
+	case COMB_PLUS:
+	  g_warning ("+ combinators are not supported");
+	  goto done;
+
+	case COMB_GT:
+	  cur_node = st_theme_node_get_parent (cur_node);
+	  if (!cur_node)
+	    goto done;
+	  cur_type = st_theme_node_get_element_type (cur_node);
+	  break;
+
+	default:
+	  goto done;
+	}
+
+      cur_sel = cur_sel->prev;
+    }
+
+  /*
+   *if we reached this point, it means the selector matches
+   *the style node.
+   */
+  *a_result = TRUE;
+
+done:
+  return CR_OK;
+}
+
+static void
+add_matched_properties (StTheme      *a_this,
+			CRStyleSheet *a_nodesheet,
+			StThemeNode  *a_node,
+                        GPtrArray    *props)
+{
+  CRStatement *cur_stmt = NULL;
+  CRSelector *sel_list = NULL;
+  CRSelector *cur_sel = NULL;
+  gboolean matches = FALSE;
+  enum CRStatus status = CR_OK;
+
+  /*
+   *walk through the list of statements and,
+   *get the selectors list inside the statements that
+   *contain some, and try to match our style node in these
+   *selectors lists.
+   */
+  for (cur_stmt = a_nodesheet->statements; cur_stmt; cur_stmt = cur_stmt->next)
+    {
+      /*
+       *initialyze the selector list in which we will
+       *really perform the search.
+       */
+      sel_list = NULL;
+
+      /*
+       *get the the damn selector list in
+       *which we have to look
+       */
+      switch (cur_stmt->type)
+	{
+	case RULESET_STMT:
+	  if (cur_stmt->kind.ruleset && cur_stmt->kind.ruleset->sel_list)
+	    {
+	      sel_list = cur_stmt->kind.ruleset->sel_list;
+	    }
+	  break;
+
+	case AT_MEDIA_RULE_STMT:
+	  if (cur_stmt->kind.media_rule
+	      && cur_stmt->kind.media_rule->rulesets
+	      && cur_stmt->kind.media_rule->rulesets->kind.ruleset
+	      && cur_stmt->kind.media_rule->rulesets->kind.ruleset->sel_list)
+	    {
+	      sel_list = cur_stmt->kind.media_rule->rulesets->kind.ruleset->sel_list;
+	    }
+	  break;
+
+	case AT_IMPORT_RULE_STMT:
+	  {
+	    CRAtImportRule *import_rule = cur_stmt->kind.import_rule;
+
+	    if (import_rule->sheet == NULL)
+	      {
+		char *filename = NULL;
+
+		if (import_rule->url->stryng && import_rule->url->stryng->str)
+		  filename = _st_theme_resolve_url (a_this,
+                                                    a_nodesheet,
+                                                    import_rule->url->stryng->str);
+
+		if (filename)
+		  import_rule->sheet = parse_stylesheet (filename);
+
+		if (import_rule->sheet)
+		  {
+		    insert_stylesheet (a_this, filename, import_rule->sheet);
+		    /* refcount of stylesheets starts off at zero, so we don't need to unref! */
+		  }
+		else
+                  {
+                    /* Set a marker to avoid repeatedly trying to parse a non-existent or
+                     * broken stylesheet
+                     */
+                    import_rule->sheet = (CRStyleSheet *) - 1;
+                  }
+
+                if (filename)
+                  g_free (filename);
+              }
+
+            if (import_rule->sheet != (CRStyleSheet *) - 1)
+              {
+                add_matched_properties (a_this, import_rule->sheet,
+                                        a_node, props);
+              }
+          }
+          break;
+        default:
+          break;
+        }
+
+      if (!sel_list)
+        continue;
+
+      /*
+       *now, we have a comma separated selector list to look in.
+       *let's walk it and try to match the style node
+       *on each item of the list.
+       */
+      for (cur_sel = sel_list; cur_sel; cur_sel = cur_sel->next)
+        {
+          if (!cur_sel->simple_sel)
+            continue;
+
+          status = sel_matches_style_real (a_this, cur_sel->simple_sel, a_node, &matches, TRUE, TRUE);
+
+          if (status == CR_OK && matches)
+            {
+              CRDeclaration *cur_decl = NULL;
+
+              /* In order to sort the matching properties, we need to compute the
+               * specificity of the selector that actually matched this
+               * element. In a non-thread-safe fashion, we store it in the
+               * ruleset. (Fixing this would mean cut-and-pasting
+               * cr_simple_sel_compute_specificity(), and have no need for
+               * thread-safety anyways.)
+               *
+               * Once we've sorted the properties, the specificity no longer
+               * matters and it can be safely overriden.
+               */
+              cr_simple_sel_compute_specificity (cur_sel->simple_sel);
+
+              cur_stmt->specificity = cur_sel->simple_sel->specificity;
+
+              for (cur_decl = cur_stmt->kind.ruleset->decl_list; cur_decl; cur_decl = cur_decl->next)
+                g_ptr_array_add (props, cur_decl);
+            }
+        }
+    }
+}
+
+#define ORIGIN_AUTHOR_IMPORTANT (ORIGIN_AUTHOR + 1)
+#define ORIGIN_USER_IMPORTANT   (ORIGIN_AUTHOR + 2)
+
+static inline int
+get_origin (const CRDeclaration * decl)
+{
+  enum CRStyleOrigin origin = decl->parent_statement->parent_sheet->origin;
+
+  if (decl->important)
+    {
+      if (origin == ORIGIN_AUTHOR)
+	return ORIGIN_AUTHOR_IMPORTANT;
+      else if (origin == ORIGIN_USER)
+	return ORIGIN_USER_IMPORTANT;
+    }
+
+  return origin;
+}
+
+/* Order of comparison is so that higher priority statements compare after
+ * lower priority statements */
+static int
+compare_declarations (gconstpointer a,
+                      gconstpointer b)
+{
+  /* g_ptr_array_sort() is broooken */
+  CRDeclaration *decl_a = *(CRDeclaration **) a;
+  CRDeclaration *decl_b = *(CRDeclaration **) b;
+
+  int origin_a = get_origin (decl_a);
+  int origin_b = get_origin (decl_b);
+
+  if (origin_a != origin_b)
+    return origin_a - origin_b;
+
+  if (decl_a->parent_statement->specificity != decl_b->parent_statement->specificity)
+    return decl_a->parent_statement->specificity - decl_b->parent_statement->specificity;
+
+  return 0;
+}
+
+void
+_st_theme_get_matched_properties (StTheme        *theme,
+                                  StThemeNode     *node,
+                                  CRDeclaration ***properties,
+                                  int             *n_properties)
+{
+  enum CRStyleOrigin origin = 0;
+  CRStyleSheet *sheet = NULL;
+  GPtrArray *props = g_ptr_array_new ();
+
+  g_return_if_fail (ST_IS_THEME (theme));
+  g_return_if_fail (ST_IS_THEME_NODE (node));
+
+  for (origin = ORIGIN_UA; origin < NB_ORIGINS; origin++)
+    {
+      sheet = cr_cascade_get_sheet (theme->cascade, origin);
+      if (!sheet)
+	continue;
+
+      add_matched_properties (theme, sheet, node, props);
+    }
+
+  /* We count on a stable sort here so that later declarations come
+   * after earlier declarations */
+  g_ptr_array_sort (props, compare_declarations);
+
+  *n_properties = props->len;
+  *properties = (CRDeclaration **) g_ptr_array_free (props, FALSE);
+}
+
+/* Resolve an url from an url() reference in a stylesheet into an absolute
+ * local filename, if possible. The resolution here is distinctly lame and
+ * will fail on many examples.
+ */
+char *
+_st_theme_resolve_url (StTheme      *theme,
+                       CRStyleSheet *base_stylesheet,
+                       const char   *url)
+{
+  const char *base_filename = NULL;
+  char *dirname;
+  char *filename;
+
+  /* Handle absolute file:/ URLs */
+  if (g_str_has_prefix (url, "file:") ||
+      g_str_has_prefix (url, "File:") ||
+      g_str_has_prefix (url, "FILE:"))
+    {
+      GError *error = NULL;
+      char *filename;
+
+      filename = g_filename_from_uri (url, NULL, &error);
+      if (filename == NULL)
+	{
+	  g_warning ("%s", error->message);
+	  g_error_free (error);
+	}
+
+      return NULL;
+    }
+
+  /* Guard against http:/ URLs */
+
+  if (g_str_has_prefix (url, "http:") ||
+      g_str_has_prefix (url, "Http:") ||
+      g_str_has_prefix (url, "HTTP:"))
+    {
+      g_warning ("Http URL '%s' in theme stylesheet is not supported", url);
+      return NULL;
+    }
+
+  /* Assume anything else is a relative URL, and "resolve" it
+   */
+  if (url[0] == '/')
+    return g_strdup (url);
+
+  base_filename = g_hash_table_lookup (theme->filenames_by_stylesheet, base_stylesheet);
+
+  if (base_filename == NULL)
+    {
+      g_warning ("Can't get base to resolve url '%s'", url);
+      return NULL;
+    }
+
+  dirname = g_path_get_dirname (base_filename);
+  filename = g_build_filename (dirname, url, NULL);
+  g_free (dirname);
+
+  return filename;
+}

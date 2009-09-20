@@ -4,6 +4,7 @@ CLEANFILES =
 EXTRA_DIST =
 libexec_PROGRAMS =
 noinst_LTLIBRARIES =
+noinst_PROGRAMS =
 
 .AUTOPARALLEL:
 
@@ -95,7 +96,7 @@ libgnome_shell_la_SOURCES =			\
 	shell-wm.c				\
 	shell-wm.h
 
-non_gir_sources =						\
+non_gir_sources =				\
 	shell-embedded-window-private.h
 
 shell_recorder_sources =        \
@@ -113,7 +114,7 @@ if BUILD_RECORDER
 libgnome_shell_la_SOURCES += $(shell_recorder_sources)
 non_gir_sources += $(shell_recorder_non_gir_sources)
 
-noinst_PROGRAMS = test-recorder
+noinst_PROGRAMS += test-recorder
 
 test_recorder_CPPFLAGS = $(TEST_SHELL_RECORDER_CFLAGS)
 test_recorder_LDADD = $(TEST_SHELL_RECORDER_LIBS)

@@ -38,6 +38,7 @@ src/gnomeshell-taskpanel
 src/gnome-shell
 src/test-recorder
 src/test-recorder.ogg
+src/test-theme
 stamp-h1
 tests/run-test.sh
 xmldocs.make

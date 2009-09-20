@@ -73,7 +73,6 @@ st_source_h =					\
     st/st-clipboard.h				\
     st/st-entry.h				\
     st/st-label.h				\
-    st/st-private.h				\
     st/st-stylable.h				\
     st/st-style.h				\
     st/st-scrollable.h				\
@@ -82,10 +81,18 @@ st_source_h =					\
     st/st-subtexture.h				\
     st/st-texture-cache.h			\
     st/st-texture-frame.h			\
+    st/st-theme.h				\
+    st/st-theme-context.h			\
+    st/st-theme-image.h				\
+    st/st-theme-node.h				\
     st/st-tooltip.h				\
     st/st-types.h				\
     st/st-widget.h				\
     $(NULL)
+
+st_source_private_h =				\
+    st/st-private.h				\
+    st/st-theme-private.h
 
 # please, keep this sorted alphabetically
 st_source_c =					\
@@ -106,6 +113,10 @@ st_source_c =					\
     st/st-subtexture.c				\
     st/st-texture-cache.c			\
     st/st-texture-frame.c			\
+    st/st-theme.c				\
+    st/st-theme-context.c			\
+    st/st-theme-image.c				\
+    st/st-theme-node.c				\
     st/st-tooltip.c				\
     st/st-widget.c				\
     $(NULL)
@@ -115,8 +126,16 @@ noinst_LTLIBRARIES += libst-1.0.la
 libst_1_0_la_LIBADD = $(ST_LIBS)
 libst_1_0_la_SOURCES =				\
     $(st_source_c)				\
+    $(st_source_private_c)			\
     $(st_source_h)				\
     $(st_built_sources)				\
     $(NULL)
 libst_1_0_la_CPPFLAGS = $(st_cflags)
 libst_1_0_la_LDFLAGS = $(LDADD)
+
+noinst_PROGRAMS += test-theme
+
+test_theme_CPPFLAGS = $(st_cflags)
+test_theme_LDADD = libst-1.0.la
+
+test_theme_SOURCES = st/test-theme.c
