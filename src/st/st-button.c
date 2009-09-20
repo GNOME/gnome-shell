@@ -35,6 +35,7 @@
 #include "config.h"
 #endif
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -45,8 +46,6 @@
 #include "st-button.h"
 
 #include "st-marshal.h"
-#include "st-stylable.h"
-#include "st-style.h"
 #include "st-texture-frame.h"
 #include "st-texture-cache.h"
 #include "st-private.h"
@@ -94,51 +93,16 @@ struct _StButtonPrivate
 
 static guint button_signals[LAST_SIGNAL] = { 0, };
 
-static void st_stylable_iface_init (StStylableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (StButton, st_button, ST_TYPE_BIN,
-                         G_IMPLEMENT_INTERFACE (ST_TYPE_STYLABLE,
-                                                st_stylable_iface_init));
-
-static void
-st_stylable_iface_init (StStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (G_UNLIKELY (!is_initialized))
-    {
-      ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x00 };
-      GParamSpec *pspec;
-
-      is_initialized = TRUE;
-
-      pspec = g_param_spec_int ("border-spacing",
-                                "Border Spacing",
-                                "Spacing between internal elements",
-                                0, G_MAXINT, 6,
-                                G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_BUTTON, pspec);
-
-
-      is_initialized = TRUE;
-
-      pspec = clutter_param_spec_color ("background-color",
-                                        "Background Color",
-                                        "The background color of an actor",
-                                        &bg_color,
-                                        G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_BUTTON, pspec);
-    }
-}
+G_DEFINE_TYPE (StButton, st_button, ST_TYPE_BIN);
 
 static void
 st_button_update_label_style (StButton *button)
 {
-  ClutterColor *real_color = NULL;
-  gchar *font_string = NULL;
-  gchar *font_name = NULL;
-  gint font_size = 0;
   ClutterActor *label;
+  StThemeNode *theme_node;
+  ClutterColor color;
+  const PangoFontDescription *font;
+  gchar *font_string = NULL;
 
   label = st_bin_get_child ((StBin*) button);
 
@@ -146,37 +110,15 @@ st_button_update_label_style (StButton *button)
   if (!CLUTTER_IS_TEXT (label))
     return;
 
-  st_stylable_get (ST_STYLABLE (button),
-                   "color", &real_color,
-                   "font-family", &font_name,
-                   "font-size", &font_size,
-                   NULL);
+  theme_node = st_widget_get_theme_node (ST_WIDGET (button));
 
-  if (font_name || font_size)
-    {
-      if (font_name && font_size)
-        font_string = g_strdup_printf ("%s %dpx", font_name, font_size);
-      else
-        {
-          if (font_size)
-            font_string = g_strdup_printf ("%dpx", font_size);
-          else
-            font_string = font_name;
-        }
+  st_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (CLUTTER_TEXT (label), &color);
 
-      clutter_text_set_font_name (CLUTTER_TEXT (label), font_string);
-
-      if (font_string != font_name)
-        g_free (font_string);
-    }
-
-  g_free (font_name);
-
-  if (real_color)
-    {
-      clutter_text_set_color (CLUTTER_TEXT (label), real_color);
-      clutter_color_free (real_color);
-    }
+  font = st_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (CLUTTER_TEXT (label), font_string);
+  g_free (font_string);
 }
 
 static void
@@ -197,19 +139,6 @@ st_button_dispose_old_bg (StButton *button)
 }
 
 static void
-st_button_stylable_changed (StStylable *stylable)
-{
-  StButton *button = ST_BUTTON (stylable);
-  ClutterActor *bg_image;
-
-  st_button_dispose_old_bg (button);
-
-  bg_image = st_widget_get_border_image ((StWidget*) button);
-  if (bg_image)
-    button->priv->old_bg = g_object_ref (bg_image);
-}
-
-static void
 st_animation_completed (ClutterAnimation *animation,
                         StButton         *button)
 {
@@ -222,11 +151,21 @@ st_button_style_changed (StWidget *widget)
   StButton *button = ST_BUTTON (widget);
   StButtonPrivate *priv = button->priv;
   StButtonClass *button_class = ST_BUTTON_GET_CLASS (button);
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (button));
+  ClutterActor *bg_image;
+  double spacing;
 
-  /* get the spacing value */
-  st_stylable_get (ST_STYLABLE (widget),
-                   "border-spacing", &priv->spacing,
-                   NULL);
+  st_button_dispose_old_bg (button);
+
+  bg_image = st_widget_get_border_image ((StWidget*) button);
+  if (bg_image)
+    button->priv->old_bg = g_object_ref (bg_image);
+
+  ST_WIDGET_CLASS (st_button_parent_class)->style_changed (widget);
+
+  spacing = 6;
+  st_theme_node_get_length (theme_node, "border-spacing", FALSE, &spacing);
+  priv->spacing = round (spacing);
 
   /* update the label styling */
   st_button_update_label_style (button);
@@ -527,6 +466,7 @@ st_button_class_init (StButtonClass *klass)
   actor_class->unmap = st_button_unmap;
 
   widget_class->draw_background = st_button_draw_background;
+  widget_class->style_changed = st_button_style_changed;
 
   pspec = g_param_spec_string ("label",
                                "Label",
@@ -580,12 +520,6 @@ st_button_init (StButton *button)
   button->priv->spacing = 6;
 
   clutter_actor_set_reactive ((ClutterActor *) button, TRUE);
-
-  g_signal_connect (button, "style-changed",
-                    G_CALLBACK (st_button_style_changed), NULL);
-
-  g_signal_connect (button, "stylable-changed",
-                    G_CALLBACK (st_button_stylable_changed), NULL);
 }
 
 /**
@@ -673,7 +607,8 @@ st_button_set_label (StButton    *button,
       st_bin_set_child ((StBin*) button, label);
     }
 
-  st_stylable_changed ((StStylable*) button);
+  /* Fake a style change so that we reset the style properties on the label */
+  st_widget_style_changed (ST_WIDGET (button));
 
   g_object_notify (G_OBJECT (button), "label");
 }

@@ -26,7 +26,7 @@ builddir=`cd $builddir && pwd`
 srcdir=$builddir/@srcdir@
 srcdir=`cd $srcdir && pwd`
 
-GI_TYPELIB_PATH="$builddir/../src"
+GI_TYPELIB_PATH="@MUTTER_LIB_DIR@/mutter:$builddir/../src"
 GJS_DEBUG_OUTPUT=stderr
 $verbose || GJS_DEBUG_TOPICS="JS ERROR;JS LOG"
 GNOME_SHELL_TESTSDIR="$srcdir/"

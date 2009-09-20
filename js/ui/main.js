@@ -76,9 +76,10 @@ function start() {
     for (let i = 0; i < children.length; i++)
         children[i].destroy();
 
-    let style = St.Style.get_default();
+    let themeContext = St.ThemeContext.get_for_stage (global.stage);
     let stylesheetPath = global.datadir + "/theme/gnome-shell.css";
-    style.load_from_file(stylesheetPath);
+    let theme = new St.Theme ({ application_stylesheet: stylesheetPath });
+    themeContext.set_theme (theme);
 
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.

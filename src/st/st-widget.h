@@ -30,6 +30,8 @@
 
 #include <clutter/clutter.h>
 #include <st/st-types.h>
+#include <st/st-theme.h>
+#include <st/st-theme-node.h>
 
 G_BEGIN_DECLS
 
@@ -73,6 +75,7 @@ struct _StWidgetClass
   void (* draw_background) (StWidget           *self,
                             ClutterActor       *background,
                             const ClutterColor *color);
+  void (* style_changed)   (StWidget           *self);
 };
 
 GType st_widget_get_type (void) G_GNUC_CONST;
@@ -83,6 +86,9 @@ G_CONST_RETURN gchar *st_widget_get_style_pseudo_class (StWidget    *actor);
 void                  st_widget_set_style_class_name   (StWidget    *actor,
                                                         const gchar *style_class);
 G_CONST_RETURN gchar *st_widget_get_style_class_name   (StWidget    *actor);
+void                  st_widget_set_theme              (StWidget    *actor,
+                                                        StTheme     *theme);
+StTheme *             st_widget_get_theme              (StWidget    *actor);
 
 void         st_widget_set_has_tooltip  (StWidget    *widget,
                                          gboolean     has_tooltip);
@@ -98,6 +104,9 @@ void st_widget_ensure_style (StWidget *widget);
 
 
 /* Only to be used by sub-classes of StWidget */
+void          st_widget_style_changed        (StWidget  *widget);
+StThemeNode  *st_widget_get_theme_node       (StWidget  *widget);
+
 ClutterActor *st_widget_get_background_image (StWidget  *actor);
 ClutterActor *st_widget_get_border_image     (StWidget  *actor);
 void          st_widget_get_padding          (StWidget  *widget,

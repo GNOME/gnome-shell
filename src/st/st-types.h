@@ -37,12 +37,9 @@
 
 G_BEGIN_DECLS
 
-#define ST_TYPE_BORDER_IMAGE          (st_border_image_get_type ())
 #define ST_TYPE_PADDING               (st_padding_get_type ())
 
 typedef struct _StPadding             StPadding;
-
-GType st_border_image_get_type (void) G_GNUC_CONST;
 
 /**
  * StPadding:

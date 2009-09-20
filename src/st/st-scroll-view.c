@@ -36,23 +36,22 @@
 #include "st-marshal.h"
 #include "st-scroll-bar.h"
 #include "st-scrollable.h"
-#include "st-stylable.h"
 #include <clutter/clutter.h>
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
-static void st_stylable_iface_init (StStylableIface *iface);
 
 static ClutterContainerIface *st_scroll_view_parent_iface = NULL;
 
 G_DEFINE_TYPE_WITH_CODE (StScrollView, st_scroll_view, ST_TYPE_BIN,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init)
-                         G_IMPLEMENT_INTERFACE (ST_TYPE_STYLABLE,
-                                                st_stylable_iface_init))
+                                                clutter_container_iface_init))
 
 #define SCROLL_VIEW_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
                                                              ST_TYPE_SCROLL_VIEW, \
                                                              StScrollViewPrivate))
+
+/* Default width (or height - the narrow dimension) for the scrollbars*/
+#define DEFAULT_SCROLLBAR_WIDTH 24
 
 struct _StScrollViewPrivate
 {
@@ -180,6 +179,28 @@ st_scroll_view_pick (ClutterActor       *actor,
     clutter_actor_paint (priv->vscroll);
 }
 
+static double
+get_scrollbar_width (StScrollView *scroll_view)
+{
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll_view));
+  double result = DEFAULT_SCROLLBAR_WIDTH;
+
+  st_theme_node_get_length (theme_node, "scrollbar-width", FALSE, &result);
+
+  return result;
+}
+
+static double
+get_scrollbar_height (StScrollView *scroll_view)
+{
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (scroll_view));
+  double result = DEFAULT_SCROLLBAR_WIDTH;
+
+  st_theme_node_get_length (theme_node, "scrollbar-height", FALSE, &result);
+
+  return result;
+}
+
 static void
 st_scroll_view_get_preferred_width (ClutterActor *actor,
                                     gfloat        for_height,
@@ -187,7 +208,6 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
                                     gfloat       *natural_width_p)
 {
   StPadding padding;
-  guint xthickness;
 
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
 
@@ -195,9 +215,6 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
     return;
 
   st_widget_get_padding (ST_WIDGET (actor), &padding);
-  st_stylable_get (ST_STYLABLE (actor),
-                   "scrollbar-width", &xthickness,
-                   NULL);
 
   /* Our natural width is the natural width of the child */
   clutter_actor_get_preferred_width (priv->child,
@@ -214,7 +231,7 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
                                           NULL,
                                           &natural_height);
       if (for_height < natural_height)
-        *natural_width_p += xthickness;
+        *natural_width_p += get_scrollbar_width (ST_SCROLL_VIEW (actor));
     }
 
   /* Add space for padding */
@@ -232,7 +249,6 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
                                      gfloat       *natural_height_p)
 {
   StPadding padding;
-  guint ythickness;
 
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (actor)->priv;
 
@@ -240,9 +256,6 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
     return;
 
   st_widget_get_padding (ST_WIDGET (actor), &padding);
-  st_stylable_get (ST_STYLABLE (actor),
-                   "scrollbar-height", &ythickness,
-                   NULL);
 
   /* Our natural height is the natural height of the child */
   clutter_actor_get_preferred_height (priv->child,
@@ -259,7 +272,7 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
                                          NULL,
                                          &natural_width);
       if (for_width < natural_width)
-        *natural_height_p += ythickness;
+        *natural_height_p += get_scrollbar_height (ST_SCROLL_VIEW (actor));
     }
 
   /* Add space for padding */
@@ -300,10 +313,8 @@ st_scroll_view_allocate (ClutterActor          *actor,
   avail_width = (box->x2 - box->x1) - padding.left - padding.right;
   avail_height = (box->y2 - box->y1) - padding.top - padding.bottom;
 
-  st_stylable_get (ST_STYLABLE (actor),
-                   "scrollbar-width", &sb_width,
-                   "scrollbar-height", &sb_height,
-                   NULL);
+  sb_width = get_scrollbar_width (ST_SCROLL_VIEW (actor));
+  sb_height = get_scrollbar_width (ST_SCROLL_VIEW (actor));
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     sb_width = 0;
@@ -349,8 +360,10 @@ st_scroll_view_style_changed (StWidget *widget)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (widget)->priv;
 
-  st_stylable_changed ((StStylable *) priv->hscroll);
-  st_stylable_changed ((StStylable *) priv->vscroll);
+  st_widget_style_changed (ST_WIDGET (priv->hscroll));
+  st_widget_style_changed (ST_WIDGET (priv->vscroll));
+
+  ST_WIDGET_CLASS (st_scroll_view_parent_class)->style_changed (widget);
 }
 
 static gboolean
@@ -433,6 +446,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
   GParamSpec *pspec;
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (StScrollViewPrivate));
 
@@ -447,6 +461,8 @@ st_scroll_view_class_init (StScrollViewClass *klass)
   actor_class->get_preferred_height = st_scroll_view_get_preferred_height;
   actor_class->allocate = st_scroll_view_allocate;
   actor_class->scroll_event = st_scroll_view_scroll_event;
+
+  widget_class->style_changed = st_scroll_view_style_changed;
 
   g_object_class_install_property (object_class,
                                    PROP_HSCROLL,
@@ -473,33 +489,6 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                    PROP_MOUSE_SCROLL,
                                    pspec);
 
-}
-
-static void
-st_stylable_iface_init (StStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (!is_initialized)
-    {
-      GParamSpec *pspec;
-
-      is_initialized = TRUE;
-
-      pspec = g_param_spec_uint ("scrollbar-width",
-                                 "Vertical scroll-bar thickness",
-                                 "Thickness of vertical scrollbar, in px",
-                                 0, G_MAXUINT, 24,
-                                 G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_SCROLL_VIEW, pspec);
-
-      pspec = g_param_spec_uint ("scrollbar-height",
-                                 "Horizontal scroll-bar thickness",
-                                 "Thickness of horizontal scrollbar, in px",
-                                 0, G_MAXUINT, 24,
-                                 G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_SCROLL_VIEW, pspec);
-    }
 }
 
 static void
@@ -609,9 +598,6 @@ st_scroll_view_init (StScrollView *self)
   priv->mouse_scroll = TRUE;
   g_object_set (G_OBJECT (self), "reactive", TRUE, "clip-to-allocation", TRUE,
                 NULL);
-
-  g_signal_connect (self, "style-changed",
-                    G_CALLBACK (st_scroll_view_style_changed), NULL);
 }
 
 static void

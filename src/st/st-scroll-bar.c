@@ -40,16 +40,11 @@
 #include "st-scroll-bar.h"
 #include "st-bin.h"
 #include "st-marshal.h"
-#include "st-stylable.h"
 #include "st-enum-types.h"
 #include "st-private.h"
 #include "st-button.h"
 
-static void st_stylable_iface_init (StStylableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (StScrollBar, st_scroll_bar, ST_TYPE_BIN,
-                         G_IMPLEMENT_INTERFACE (ST_TYPE_STYLABLE,
-                                                st_stylable_iface_init))
+G_DEFINE_TYPE (StScrollBar, st_scroll_bar, ST_TYPE_BIN)
 
 #define ST_SCROLL_BAR_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), ST_TYPE_SCROLL_BAR, StScrollBarPrivate))
 
@@ -345,10 +340,10 @@ st_scroll_bar_allocate (ClutterActor          *actor,
 
   if (priv->adjustment)
     {
-      gfloat handle_size, position, avail_size;
-      gdouble value, lower, upper, page_size, increment;
+      StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+      float handle_size, position, avail_size;
+      gdouble value, lower, upper, page_size, increment, min_size, max_size;
       ClutterActorBox handle_box = { 0, };
-      guint min_size, max_size;
 
       st_adjustment_get_values (priv->adjustment,
                                 &value,
@@ -364,10 +359,10 @@ st_scroll_bar_allocate (ClutterActor          *actor,
       else
         increment = page_size / (upper - lower);
 
-      st_stylable_get (ST_STYLABLE (actor),
-                       "min-size", &min_size,
-                       "max-size", &max_size,
-                       NULL);
+      min_size = 32.;
+      st_theme_node_get_length (theme_node, "min-size", FALSE, &min_size);
+      max_size = G_MAXINT16;
+      st_theme_node_get_length (theme_node, "max-size", FALSE, &max_size);
 
       if (upper - lower - page_size <= 0)
         position = 0;
@@ -416,11 +411,12 @@ st_scroll_bar_style_changed (StWidget *widget)
 {
   StScrollBarPrivate *priv = ST_SCROLL_BAR (widget)->priv;
 
-  st_stylable_changed ((StStylable *) priv->bw_stepper);
-  st_stylable_changed ((StStylable *) priv->fw_stepper);
-  st_stylable_changed ((StStylable *) priv->trough);
-  st_stylable_changed ((StStylable *) priv->handle);
+  st_widget_style_changed (ST_WIDGET (priv->bw_stepper));
+  st_widget_style_changed (ST_WIDGET (priv->fw_stepper));
+  st_widget_style_changed (ST_WIDGET (priv->trough));
+  st_widget_style_changed (ST_WIDGET (priv->handle));
 
+  ST_WIDGET_CLASS (st_scroll_bar_parent_class)->style_changed (widget);
 }
 
 static void
@@ -503,6 +499,7 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StScrollBarPrivate));
@@ -518,6 +515,8 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
   actor_class->scroll_event   = st_scroll_bar_scroll_event;
   actor_class->map            = st_scroll_bar_map;
   actor_class->unmap          = st_scroll_bar_unmap;
+
+  widget_class->style_changed = st_scroll_bar_style_changed;
 
   g_object_class_install_property
                  (object_class,
@@ -552,35 +551,6 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-}
-
-static void
-st_stylable_iface_init (StStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (!is_initialized)
-    {
-      GParamSpec *pspec;
-
-      is_initialized = TRUE;
-
-      pspec = g_param_spec_uint ("min-size",
-                                 "Minimum grabber size",
-                                 "Minimum size of the scroll grabber, in px",
-                                 0, G_MAXUINT, 32,
-                                 G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface,
-                                          ST_TYPE_SCROLL_BAR, pspec);
-
-      pspec = g_param_spec_uint ("max-size",
-                                 "Maximum grabber size",
-                                 "Maximum size of the scroll grabber, in px",
-                                 0, G_MAXINT16, G_MAXINT16,
-                                 G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface,
-                                          ST_TYPE_SCROLL_BAR, pspec);
-    }
 }
 
 static void
@@ -1046,8 +1016,6 @@ st_scroll_bar_init (StScrollBar *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  g_signal_connect (self, "style-changed",
-                    G_CALLBACK (st_scroll_bar_style_changed), NULL);
   g_signal_connect (self, "notify::reactive",
                     G_CALLBACK (st_scroll_bar_notify_reactive), NULL);
 }

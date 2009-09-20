@@ -32,18 +32,15 @@
 #include <string.h>
 
 #include <clutter/clutter.h>
-#include <ccss/ccss.h>
 
 #include "st-widget.h"
 
 #include "st-marshal.h"
 #include "st-private.h"
-#include "st-stylable.h"
 #include "st-texture-cache.h"
 #include "st-texture-frame.h"
+#include "st-theme-context.h"
 #include "st-tooltip.h"
-
-typedef ccss_border_image_t StBorderImage;
 
 /*
  * Forward declaration for sake of StWidgetChild
@@ -53,13 +50,14 @@ struct _StWidgetPrivate
   StPadding     border;
   StPadding     padding;
 
-  StStyle      *style;
+  StTheme      *theme;
+  StThemeNode  *theme_node;
   gchar        *pseudo_class;
   gchar        *style_class;
 
   ClutterActor *border_image;
   ClutterActor *background_image;
-  ClutterColor *bg_color;
+  ClutterColor  bg_color;
 
   gboolean      is_stylable : 1;
   gboolean      has_tooltip : 1;
@@ -83,7 +81,7 @@ enum
 {
   PROP_0,
 
-  PROP_STYLE,
+  PROP_THEME,
   PROP_PSEUDO_CLASS,
   PROP_STYLE_CLASS,
 
@@ -93,12 +91,16 @@ enum
   PROP_TOOLTIP_TEXT
 };
 
-static void st_stylable_iface_init (StStylableIface *iface);
+enum
+{
+  STYLE_CHANGED,
 
+  LAST_SIGNAL
+};
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (StWidget, st_widget, CLUTTER_TYPE_ACTOR,
-                                  G_IMPLEMENT_INTERFACE (ST_TYPE_STYLABLE,
-                                                         st_stylable_iface_init));
+static guint signals[LAST_SIGNAL] = { 0, };
+
+G_DEFINE_ABSTRACT_TYPE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 
 #define ST_WIDGET_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_WIDGET, StWidgetPrivate))
 
@@ -112,9 +114,8 @@ st_widget_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_STYLE:
-      st_stylable_set_style (ST_STYLABLE (actor),
-                             g_value_get_object (value));
+    case PROP_THEME:
+      st_widget_set_theme (actor, g_value_get_object (value));
       break;
 
     case PROP_PSEUDO_CLASS:
@@ -158,8 +159,8 @@ st_widget_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_STYLE:
-      g_value_set_object (value, priv->style);
+    case PROP_THEME:
+      g_value_set_object (value, priv->theme);
       break;
 
     case PROP_PSEUDO_CLASS:
@@ -194,22 +195,16 @@ st_widget_dispose (GObject *gobject)
   StWidget *actor = ST_WIDGET (gobject);
   StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
 
-  if (priv->style)
+  if (priv->theme)
     {
-      g_object_unref (priv->style);
-      priv->style = NULL;
+      g_object_unref (priv->theme);
+      priv->theme = NULL;
     }
 
   if (priv->border_image)
     {
       clutter_actor_unparent (priv->border_image);
       priv->border_image = NULL;
-    }
-
-  if (priv->bg_color)
-    {
-      clutter_color_free (priv->bg_color);
-      priv->bg_color = NULL;
     }
 
   if (priv->tooltip)
@@ -387,7 +382,7 @@ st_widget_paint (ClutterActor *self)
 
   klass->draw_background (ST_WIDGET (self),
                           priv->border_image,
-                          priv->bg_color);
+                          &priv->bg_color);
 
   if (priv->background_image != NULL)
     clutter_actor_paint (priv->background_image);
@@ -408,7 +403,7 @@ st_widget_parent_set (ClutterActor *widget,
 
   /* don't send the style changed signal if we no longer have a parent actor */
   if (new_parent)
-    st_stylable_changed ((StStylable*) widget);
+    st_widget_style_changed (ST_WIDGET (widget));
 }
 
 static void
@@ -447,69 +442,67 @@ st_widget_unmap (ClutterActor *actor)
     clutter_actor_unmap ((ClutterActor *) priv->tooltip);
 }
 
+static void notify_children_of_style_change (ClutterContainer *container);
+
 static void
-st_widget_style_changed (StStylable *self)
+notify_children_of_style_change_foreach (ClutterActor *actor,
+                                         gpointer      user_data)
+{
+  if (ST_IS_WIDGET (actor))
+    st_widget_style_changed (ST_WIDGET (actor));
+  else if (CLUTTER_IS_CONTAINER (actor))
+    notify_children_of_style_change ((ClutterContainer *)actor);
+}
+
+static void
+notify_children_of_style_change (ClutterContainer *container)
+{
+  /* notify our children that their parent stylable has changed */
+  clutter_container_foreach (container,
+                             notify_children_of_style_change_foreach,
+                             NULL);
+}
+
+static void
+st_widget_real_style_changed (StWidget *self)
 {
   StWidgetPrivate *priv = ST_WIDGET (self)->priv;
-  StBorderImage *border_image = NULL;
+  StThemeNode *theme_node;
+  StThemeImage *theme_image;
   StTextureCache *texture_cache;
   ClutterTexture *texture;
-  gchar *bg_file = NULL;
-  StPadding *padding = NULL;
+  const char *bg_file = NULL;
   gboolean relayout_needed = FALSE;
   gboolean has_changed = FALSE;
-  ClutterColor *color;
+  StPadding padding;
+  ClutterColor color;
 
   /* application has request this widget is not stylable */
   if (!priv->is_stylable)
     return;
 
-  /* cache these values for use in the paint function */
-  st_stylable_get (self,
-                   "background-color", &color,
-                   "background-image", &bg_file,
-                   "border-image", &border_image,
-                   "padding", &padding,
-                   NULL);
+  theme_node = st_widget_get_theme_node (self);
 
-  if (color)
+  st_theme_node_get_background_color (theme_node, &color);
+  if (!clutter_color_equal (&color, &priv->bg_color))
     {
-      if (priv->bg_color && clutter_color_equal (color, priv->bg_color))
-        {
-          /* color is the same ... */
-          clutter_color_free (color);
-        }
-      else
-        {
-          clutter_color_free (priv->bg_color);
-          priv->bg_color = color;
-          has_changed = TRUE;
-        }
-    }
-  else
-  if (priv->bg_color)
-    {
-      clutter_color_free (priv->bg_color);
-      priv->bg_color = NULL;
+      priv->bg_color = color;
       has_changed = TRUE;
     }
 
+  padding.top = st_theme_node_get_padding (theme_node, ST_SIDE_TOP);
+  padding.right = st_theme_node_get_padding (theme_node, ST_SIDE_RIGHT);
+  padding.bottom = st_theme_node_get_padding (theme_node, ST_SIDE_BOTTOM);
+  padding.left = st_theme_node_get_padding (theme_node, ST_SIDE_LEFT);
 
-
-  if (padding)
+  if (priv->padding.top != padding.top ||
+      priv->padding.left != padding.left ||
+      priv->padding.right != padding.right ||
+      priv->padding.bottom != padding.bottom)
     {
-      if (priv->padding.top != padding->top ||
-          priv->padding.left != padding->left ||
-          priv->padding.right != padding->right ||
-          priv->padding.bottom != padding->bottom)
-        {
-          /* Padding changed. Need to relayout. */
-          has_changed = TRUE;
-          relayout_needed = TRUE;
-        }
-
-      priv->padding = *padding;
-      g_boxed_free (ST_TYPE_PADDING, padding);
+      priv->padding = padding;
+      has_changed = TRUE;
+      relayout_needed = TRUE;
     }
 
   if (priv->border_image)
@@ -526,25 +519,26 @@ st_widget_style_changed (StStylable *self)
 
   texture_cache = st_texture_cache_get_default ();
 
-  /* Check if the URL is actually present, not garbage in the property */
-  if (border_image && border_image->uri)
+  theme_image = st_theme_node_get_background_theme_image (theme_node);
+  if (theme_image)
     {
+      const char *filename;
       gint border_left, border_right, border_top, border_bottom;
       gint width, height;
+
+      filename = st_theme_image_get_filename (theme_image);
 
       /* `border-image' takes precedence over `background-image'.
        * Firefox lets the background-image shine thru when border-image has
        * alpha an channel, maybe that would be an option for the future. */
       texture = st_texture_cache_get_texture (texture_cache,
-                                              border_image->uri);
+                                                filename);
 
       clutter_texture_get_base_size (CLUTTER_TEXTURE (texture),
                                      &width, &height);
 
-      border_left = ccss_position_get_size (&border_image->left, width);
-      border_top = ccss_position_get_size (&border_image->top, height);
-      border_right = ccss_position_get_size (&border_image->right, width);
-      border_bottom = ccss_position_get_size (&border_image->bottom, height);
+      st_theme_image_get_borders (theme_image,
+                                     &border_left, &border_right, &border_top, &border_bottom);
 
       priv->border_image = st_texture_frame_new (texture,
                                                  border_top,
@@ -552,14 +546,13 @@ st_widget_style_changed (StStylable *self)
                                                  border_bottom,
                                                  border_left);
       clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
-      g_boxed_free (ST_TYPE_BORDER_IMAGE, border_image);
 
       has_changed = TRUE;
       relayout_needed = TRUE;
     }
 
-  if (bg_file != NULL &&
-      strcmp (bg_file, "none"))
+  bg_file = st_theme_node_get_background_image (theme_node);
+  if (bg_file != NULL)
     {
       texture = st_texture_cache_get_texture (texture_cache, bg_file);
       priv->background_image = (ClutterActor*) texture;
@@ -575,7 +568,6 @@ st_widget_style_changed (StStylable *self)
       has_changed = TRUE;
       relayout_needed = TRUE;
     }
-  g_free (bg_file);
 
   /* If there are any properties above that need to cause a relayout thay
    * should set this flag.
@@ -588,37 +580,89 @@ st_widget_style_changed (StStylable *self)
         clutter_actor_queue_redraw ((ClutterActor *) self);
     }
 
-  priv->is_style_dirty = FALSE;
+  if (CLUTTER_IS_CONTAINER (self))
+    notify_children_of_style_change ((ClutterContainer *)self);
 }
 
-static void
-st_widget_stylable_child_notify (ClutterActor *actor,
-                                 gpointer      user_data)
+void
+st_widget_style_changed (StWidget *widget)
 {
-  if (ST_IS_STYLABLE (actor))
-    st_stylable_changed ((StStylable*) actor);
-}
-
-static void
-st_widget_stylable_changed (StStylable *stylable)
-{
-
-  ST_WIDGET (stylable)->priv->is_style_dirty = TRUE;
+  widget->priv->is_style_dirty = TRUE;
+  if (widget->priv->theme_node)
+    {
+      g_object_unref (widget->priv->theme_node);
+      widget->priv->theme_node = NULL;
+    }
 
   /* update the style only if we are mapped */
-  if (!CLUTTER_ACTOR_IS_MAPPED ((ClutterActor *) stylable))
+  if (!CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
     return;
 
-  g_signal_emit_by_name (stylable, "style-changed", 0);
+  st_widget_ensure_style (widget);
+}
 
+static void
+on_theme_context_changed (StThemeContext *context,
+                          ClutterStage      *stage)
+{
+  notify_children_of_style_change (CLUTTER_CONTAINER (stage));
+}
 
-  if (CLUTTER_IS_CONTAINER (stylable))
+static StThemeNode *
+get_root_theme_node (ClutterStage *stage)
+{
+  StThemeContext *context = st_theme_context_get_for_stage (stage);
+
+  if (!g_object_get_data (G_OBJECT (context), "st-theme-initialized"))
     {
-      /* notify our children that their parent stylable has changed */
-      clutter_container_foreach ((ClutterContainer *) stylable,
-                                 st_widget_stylable_child_notify,
-                                 NULL);
+      g_object_set_data (G_OBJECT (context), "st-theme-initialized", GUINT_TO_POINTER (1));
+      g_signal_connect (G_OBJECT (context), "changed",
+                        G_CALLBACK (on_theme_context_changed), stage);
     }
+
+  return st_theme_context_get_root_node (context);
+}
+
+StThemeNode *
+st_widget_get_theme_node (StWidget *widget)
+{
+  StWidgetPrivate *priv = widget->priv;
+
+  if (priv->theme_node == NULL)
+    {
+      StThemeNode *parent_node = NULL;
+      ClutterStage *stage = NULL;
+      ClutterActor *parent;
+
+      parent = clutter_actor_get_parent (CLUTTER_ACTOR (widget));
+      while (parent != NULL)
+        {
+          if (parent_node == NULL && ST_IS_WIDGET (parent))
+            parent_node = st_widget_get_theme_node (ST_WIDGET (parent));
+          else if (CLUTTER_IS_STAGE (parent))
+            stage = CLUTTER_STAGE (parent);
+
+          parent = clutter_actor_get_parent (parent);
+        }
+
+      if (stage == NULL)
+        {
+          g_warning ("st_widget_get_theme_node called on a widget not in a stage");
+          stage = CLUTTER_STAGE (clutter_stage_get_default ());
+        }
+
+      if (parent_node == NULL)
+        parent_node = get_root_theme_node (CLUTTER_STAGE (stage));
+
+      priv->theme_node = st_theme_node_new (st_theme_context_get_for_stage (stage),
+                                            parent_node, priv->theme,
+                                            G_OBJECT_TYPE (widget),
+                                            clutter_actor_get_name (CLUTTER_ACTOR (widget)),
+                                            priv->style_class,
+                                            priv->pseudo_class);
+    }
+
+  return priv->theme_node;
 }
 
 static gboolean
@@ -691,6 +735,7 @@ st_widget_class_init (StWidgetClass *klass)
   actor_class->hide = st_widget_hide;
 
   klass->draw_background = st_widget_real_draw_background;
+  klass->style_changed = st_widget_real_style_changed;
 
   /**
    * StWidget:pseudo-class:
@@ -718,7 +763,19 @@ st_widget_class_init (StWidgetClass *klass)
                                                         "",
                                                         ST_PARAM_READWRITE));
 
-  g_object_class_override_property (gobject_class, PROP_STYLE, "style");
+  /**
+   * StWidget:theme
+   *
+   * A theme set on this actor overriding the global theming for this actor
+   * and its descendants
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_THEME,
+                                   g_param_spec_object ("theme",
+                                                        "Theme",
+                                                        "Theme override",
+                                                        ST_TYPE_THEME,
+                                                        ST_PARAM_READWRITE));
 
   /**
    * StWidget:stylable:
@@ -762,108 +819,66 @@ st_widget_class_init (StWidgetClass *klass)
                                ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TOOLTIP_TEXT, pspec);
 
+  /**
+   * StWidget::style-changed:
+   *
+   * Emitted when the style information that the widget derives from the
+   * theme changes
+   */
+  signals[STYLE_CHANGED] =
+    g_signal_new ("style-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (StWidgetClass, style_changed),
+                  NULL, NULL,
+                  _st_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
-static StStyle *
-st_widget_get_style (StStylable *stylable)
+/**
+ * st_widget_set_theme:
+ * @actor: a #StWidget
+ * @theme: a new style class string
+ *
+ * Overrides the theme that would be inherited from the actor's parent
+ * or the stage with an entirely new theme (set of stylesheets).
+ */
+void
+st_widget_set_theme (StWidget  *actor,
+                      StTheme  *theme)
 {
-  StWidgetPrivate *priv = ST_WIDGET (stylable)->priv;
+  StWidgetPrivate *priv = actor->priv;
 
-  return priv->style;
+  g_return_if_fail (ST_IS_WIDGET (actor));
+
+  priv = actor->priv;
+
+  if (theme !=priv->theme)
+    {
+      if (priv->theme)
+        g_object_unref (priv->theme);
+      priv->theme = g_object_ref (priv->theme);
+
+      st_widget_style_changed (actor);
+
+      g_object_notify (G_OBJECT (actor), "theme");
+    }
 }
 
-static void
-st_style_changed_cb (StStyle    *style,
-                     StStylable *stylable)
+/**
+ * st_widget_get_theme:
+ * @actor: a #StWidget
+ *
+ * Gets the overriding theme set on the actor. See st_widget_set_theme()
+ *
+ * Return value: (transfer none): the overriding theme, or %NULL
+ */
+StTheme *
+st_widget_get_theme (StWidget *actor)
 {
-  st_stylable_changed (stylable);
-}
+  g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
-
-static void
-st_widget_set_style (StStylable *stylable,
-                     StStyle    *style)
-{
-  StWidgetPrivate *priv = ST_WIDGET (stylable)->priv;
-
-  if (priv->style)
-    g_object_unref (priv->style);
-
-  priv->style = g_object_ref_sink (style);
-
-  g_signal_connect (priv->style,
-                    "changed",
-                    G_CALLBACK (st_style_changed_cb),
-                    stylable);
-}
-
-static StStylable*
-st_widget_get_container (StStylable *stylable)
-{
-  ClutterActor *parent;
-
-  g_return_val_if_fail (ST_IS_WIDGET (stylable), NULL);
-
-  parent = clutter_actor_get_parent (CLUTTER_ACTOR (stylable));
-
-  if (ST_IS_STYLABLE (parent))
-    return ST_STYLABLE (parent);
-  else
-    return NULL;
-}
-
-static StStylable*
-st_widget_get_base_style (StStylable *stylable)
-{
-  return NULL;
-}
-
-static const gchar*
-st_widget_get_style_id (StStylable *stylable)
-{
-  g_return_val_if_fail (ST_IS_WIDGET (stylable), NULL);
-
-  return clutter_actor_get_name (CLUTTER_ACTOR (stylable));
-}
-
-static const gchar*
-st_widget_get_style_type (StStylable *stylable)
-{
-  return G_OBJECT_TYPE_NAME (stylable);
-}
-
-static const gchar*
-st_widget_get_style_class (StStylable *stylable)
-{
-  g_return_val_if_fail (ST_IS_WIDGET (stylable), NULL);
-
-  return ST_WIDGET (stylable)->priv->style_class;
-}
-
-static const gchar*
-st_widget_get_pseudo_class (StStylable *stylable)
-{
-  g_return_val_if_fail (ST_IS_WIDGET (stylable), NULL);
-
-  return ST_WIDGET (stylable)->priv->pseudo_class;
-}
-
-static gboolean
-st_widget_get_viewport (StStylable *stylable,
-                        gint       *x,
-                        gint       *y,
-                        gint       *width,
-                        gint       *height)
-{
-  g_return_val_if_fail (ST_IS_WIDGET (stylable), FALSE);
-
-  *x = 0;
-  *y = 0;
-
-  *width = clutter_actor_get_width (CLUTTER_ACTOR (stylable));
-  *height = clutter_actor_get_height (CLUTTER_ACTOR (stylable));
-
-  return TRUE;
+  return actor->priv->theme;
 }
 
 /**
@@ -879,7 +894,7 @@ st_widget_set_style_class_name (StWidget    *actor,
 {
   StWidgetPrivate *priv = actor->priv;
 
-  g_return_if_fail (ST_WIDGET (actor));
+  g_return_if_fail (ST_IS_WIDGET (actor));
 
   priv = actor->priv;
 
@@ -888,7 +903,7 @@ st_widget_set_style_class_name (StWidget    *actor,
       g_free (priv->style_class);
       priv->style_class = g_strdup (style_class);
 
-      st_stylable_changed ((StStylable*) actor);
+      st_widget_style_changed (actor);
 
       g_object_notify (G_OBJECT (actor), "style-class");
     }
@@ -907,7 +922,7 @@ st_widget_set_style_class_name (StWidget    *actor,
 const gchar*
 st_widget_get_style_class_name (StWidget *actor)
 {
-  g_return_val_if_fail (ST_WIDGET (actor), NULL);
+  g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
   return actor->priv->style_class;
 }
@@ -924,7 +939,7 @@ st_widget_get_style_class_name (StWidget *actor)
 const gchar*
 st_widget_get_style_pseudo_class (StWidget *actor)
 {
-  g_return_val_if_fail (ST_WIDGET (actor), NULL);
+  g_return_val_if_fail (ST_IS_WIDGET (actor), NULL);
 
   return actor->priv->pseudo_class;
 }
@@ -942,7 +957,7 @@ st_widget_set_style_pseudo_class (StWidget    *actor,
 {
   StWidgetPrivate *priv;
 
-  g_return_if_fail (ST_WIDGET (actor));
+  g_return_if_fail (ST_IS_WIDGET (actor));
 
   priv = actor->priv;
 
@@ -951,99 +966,18 @@ st_widget_set_style_pseudo_class (StWidget    *actor,
       g_free (priv->pseudo_class);
       priv->pseudo_class = g_strdup (pseudo_class);
 
-      st_stylable_changed ((StStylable*) actor);
+      st_widget_style_changed (actor);
 
       g_object_notify (G_OBJECT (actor), "pseudo-class");
     }
 }
-
-
-static void
-st_stylable_iface_init (StStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (!is_initialized)
-    {
-      GParamSpec *pspec;
-      ClutterColor color = { 0x00, 0x00, 0x00, 0xff };
-      ClutterColor bg_color = { 0xff, 0xff, 0xff, 0x00 };
-
-      is_initialized = TRUE;
-
-      pspec = clutter_param_spec_color ("background-color",
-                                        "Background Color",
-                                        "The background color of an actor",
-                                        &bg_color,
-                                        G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_WIDGET, pspec);
-
-      pspec = clutter_param_spec_color ("color",
-                                        "Text Color",
-                                        "The color of the text of an actor",
-                                        &color,
-                                        G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_WIDGET, pspec);
-
-      pspec = g_param_spec_string ("background-image",
-                                   "Background Image",
-                                   "Background image filename",
-                                   NULL,
-                                   G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_WIDGET, pspec);
-
-      pspec = g_param_spec_string ("font-family",
-                                   "Font Family",
-                                   "Name of the font to use",
-                                   "Sans",
-                                   G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_WIDGET, pspec);
-
-      pspec = g_param_spec_int ("font-size",
-                                "Font Size",
-                                "Size of the font to use in pixels",
-                                0, G_MAXINT, 12,
-                                G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_WIDGET, pspec);
-
-      pspec = g_param_spec_boxed ("border-image",
-                                  "Border image",
-                                  "9-slice image to use for drawing borders and background",
-                                  ST_TYPE_BORDER_IMAGE,
-                                  G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_WIDGET, pspec);
-
-      pspec = g_param_spec_boxed ("padding",
-                                  "Padding",
-                                  "Padding between the widget's borders "
-                                  "and its content",
-                                  ST_TYPE_PADDING,
-                                  G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_WIDGET, pspec);
-
-      iface->style_changed = st_widget_style_changed;
-      iface->stylable_changed = st_widget_stylable_changed;
-
-      iface->get_style = st_widget_get_style;
-      iface->set_style = st_widget_set_style;
-      iface->get_base_style = st_widget_get_base_style;
-      iface->get_container = st_widget_get_container;
-      iface->get_style_id = st_widget_get_style_id;
-      iface->get_style_type = st_widget_get_style_type;
-      iface->get_style_class = st_widget_get_style_class;
-      iface->get_pseudo_class = st_widget_get_pseudo_class;
-      /* iface->get_attribute = st_widget_get_attribute; */
-      iface->get_viewport = st_widget_get_viewport;
-    }
-}
-
 
 static void
 st_widget_name_notify (StWidget   *widget,
                        GParamSpec *pspec,
                        gpointer    data)
 {
-  st_stylable_changed ((StStylable*) widget);
+  st_widget_style_changed (widget);
 }
 
 static void
@@ -1056,44 +990,6 @@ st_widget_init (StWidget *actor)
 
   /* connect style changed */
   g_signal_connect (actor, "notify::name", G_CALLBACK (st_widget_name_notify), NULL);
-
-  /* set the default style */
-  st_widget_set_style (ST_STYLABLE (actor), st_style_get_default ());
-
-}
-
-static StBorderImage *
-st_border_image_copy (const StBorderImage *border_image)
-{
-  StBorderImage *copy;
-
-  g_return_val_if_fail (border_image != NULL, NULL);
-
-  copy = g_slice_new (StBorderImage);
-  *copy = *border_image;
-
-  return copy;
-}
-
-static void
-st_border_image_free (StBorderImage *border_image)
-{
-  if (G_LIKELY (border_image))
-    g_slice_free (StBorderImage, border_image);
-}
-
-GType
-st_border_image_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (our_type == 0))
-    our_type =
-      g_boxed_type_register_static (I_("StBorderImage"),
-                                    (GBoxedCopyFunc) st_border_image_copy,
-                                    (GBoxedFreeFunc) st_border_image_free);
-
-  return our_type;
 }
 
 /**
@@ -1110,10 +1006,10 @@ st_widget_ensure_style (StWidget *widget)
 
   if (widget->priv->is_style_dirty)
     {
-      g_signal_emit_by_name (widget, "style-changed", 0);
+      g_signal_emit (widget, signals[STYLE_CHANGED], 0);
+      widget->priv->is_style_dirty = FALSE;
     }
 }
-
 
 /**
  * st_widget_get_border_image:
@@ -1353,6 +1249,5 @@ st_widget_draw_background (StWidget *self)
   klass = ST_WIDGET_GET_CLASS (self);
   klass->draw_background (ST_WIDGET (self),
                           priv->border_image,
-                          priv->bg_color);
-
+                          &priv->bg_color);
 }
