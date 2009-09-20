@@ -25,16 +25,16 @@ function update_size() {
 }
 update_size();
 
-let button = new St.Button ({ label: 'Smaller',
-                              style: 'padding: 4px; background: #eeddcc' });
+let button;
+
+button = new St.Button ({ label: 'Smaller' });
 hbox.add (button);
 button.connect('clicked', function() {
                    size /= 1.2;
                    update_size ();
                });
 
-let button = new St.Button ({ label: 'Bigger',
-                              style: 'padding: 4px; background: #eeddcc' });
+button = new St.Button ({ label: 'Bigger' });
 hbox.add (button);
 button.connect('clicked', function() {
                    size *= 1.2;

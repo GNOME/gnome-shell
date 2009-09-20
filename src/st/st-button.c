@@ -425,13 +425,11 @@ st_button_unmap (ClutterActor *self)
 }
 
 static void
-st_button_draw_background (StWidget           *widget,
-                           ClutterActor       *background,
-                           const ClutterColor *color)
+st_button_draw_background (StWidget         *widget)
 {
   StButtonPrivate *priv;
 
-  ST_WIDGET_CLASS (st_button_parent_class)->draw_background (widget, background, color);
+  ST_WIDGET_CLASS (st_button_parent_class)->draw_background (widget);
 
   priv = ST_BUTTON (widget)->priv;
 
