@@ -57,7 +57,6 @@
 #include "nbtk-entry.h"
 
 #include "nbtk-widget.h"
-#include "nbtk-stylable.h"
 #include "nbtk-texture-cache.h"
 #include "nbtk-marshal.h"
 #include "nbtk-clipboard.h"
@@ -100,11 +99,7 @@ struct _NbtkEntryPrivate
 
 static guint entry_signals[LAST_SIGNAL] = { 0, };
 
-static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (NbtkEntry, nbtk_entry, NBTK_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
-                                                nbtk_stylable_iface_init));
+G_DEFINE_TYPE (NbtkEntry, nbtk_entry, NBTK_TYPE_WIDGET);
 
 static void
 nbtk_entry_set_property (GObject      *gobject,
@@ -175,90 +170,31 @@ nbtk_entry_finalize (GObject *object)
 }
 
 static void
-nbtk_stylable_iface_init (NbtkStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (!is_initialized)
-    {
-      GParamSpec *pspec;
-      static const ClutterColor default_color
-        = { 0x0, 0x9c, 0xcf, 0xff };
-
-      is_initialized = TRUE;
-
-      pspec = clutter_param_spec_color ("caret-color",
-                                        "Caret Color",
-                                        "Color of the entry's caret",
-                                        &default_color,
-                                        G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, NBTK_TYPE_ENTRY, pspec);
-
-      pspec = clutter_param_spec_color ("selection-background-color",
-                                        "Selection Background Color",
-                                        "Color of the entry's selection",
-                                        &default_color,
-                                        G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, NBTK_TYPE_ENTRY, pspec);
-    }
-}
-
-static void
 nbtk_entry_style_changed (NbtkWidget *self)
 {
   NbtkEntryPrivate *priv = NBTK_ENTRY_PRIV (self);
-  ClutterColor *color = NULL;
-  ClutterColor *caret_color = NULL;
-  ClutterColor *selection_background_color = NULL;
-  gchar *font_name;
+  ShellThemeNode *theme_node;
+  ClutterColor color;
+  const PangoFontDescription *font;
   gchar *font_string;
-  gint font_size;
 
-  nbtk_stylable_get (NBTK_STYLABLE (self),
-                     "color", &color,
-                     "caret-color", &caret_color,
-                     "selection-background-color", &selection_background_color,
-                     "font-family", &font_name,
-                     "font-size", &font_size,
-                     NULL);
+  theme_node = nbtk_widget_get_theme_node (self);
 
-  if (color)
-    {
-      clutter_text_set_color (CLUTTER_TEXT (priv->entry), color);
-      clutter_color_free (color);
-    }
+  shell_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (caret_color)
-    {
-      clutter_text_set_cursor_color (CLUTTER_TEXT (priv->entry), caret_color);
-      clutter_color_free (caret_color);
-    }
+  if (shell_theme_node_get_color (theme_node, "caret-color", FALSE, &color))
+      clutter_text_set_cursor_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (selection_background_color)
-    {
-      clutter_text_set_selection_color (CLUTTER_TEXT (priv->entry),
-                                        selection_background_color);
-      clutter_color_free (selection_background_color);
-    }
+  if (shell_theme_node_get_color (theme_node, "selection-background-color", FALSE, &color))
+    clutter_text_set_selection_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (font_name || font_size)
-    {
-      if (font_name && font_size)
-        {
-          font_string = g_strdup_printf ("%s %dpx", font_name, font_size);
-          g_free (font_name);
-        }
-      else
-        {
-          if (font_size)
-            font_string = g_strdup_printf ("%dpx", font_size);
-          else
-            font_string = font_name;
-        }
+  font = shell_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (CLUTTER_TEXT (priv->entry), font_string);
+  g_free (font_string);
 
-      clutter_text_set_font_name (CLUTTER_TEXT (priv->entry), font_string);
-      g_free (font_string);
-    }
+  NBTK_WIDGET_CLASS (nbtk_entry_parent_class)->style_changed (self);
 }
 
 static void
@@ -635,6 +571,7 @@ nbtk_entry_class_init (NbtkEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (NbtkEntryPrivate));
@@ -654,6 +591,8 @@ nbtk_entry_class_init (NbtkEntryClass *klass)
 
   actor_class->key_press_event = nbtk_entry_key_press_event;
   actor_class->key_focus_in = nbtk_entry_key_focus_in;
+
+  widget_class->style_changed = nbtk_entry_style_changed;
 
   pspec = g_param_spec_string ("text",
                                "Text",
@@ -724,9 +663,6 @@ nbtk_entry_init (NbtkEntry *entry)
 
   /* set cursor hidden until we receive focus */
   clutter_text_set_cursor_visible ((ClutterText *) priv->entry, FALSE);
-
-  g_signal_connect (entry, "style-changed",
-                    G_CALLBACK (nbtk_entry_style_changed), NULL);
 }
 
 /**

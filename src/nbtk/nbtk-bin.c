@@ -39,7 +39,6 @@
 #include "nbtk-bin.h"
 #include "nbtk-enum-types.h"
 #include "nbtk-private.h"
-#include "nbtk-stylable.h"
 
 #define NBTK_BIN_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), NBTK_TYPE_BIN, NbtkBinPrivate))
 

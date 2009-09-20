@@ -212,12 +212,35 @@ Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
 	$(AM_V_GEN) $(G_IR_COMPILER) Big-1.0.gir -o $@
 CLEANFILES += Big-1.0.typelib
 
+toolkit_gir_sources = \
+	$(filter-out $(non_gir_toolkit_sources), $(toolkit_sources))
+
+# Since the Shell namepace includes both the code in toolkit/ that our fork of
+# NBTK depends upon and the code in this directory that depends on NBTK, We have a
+# circular dependency when generating the girs and typelibs. We work around this
+# by generating a Toolkit gir, using it to build the Nbtk gir then sed'ing the
+# reference out of the generated gir.
+Toolkit-0.1.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libshell-toolkit.la Makefile
+	$(AM_V_GEN) $(G_IR_SCANNER)						\
+	        --namespace=Shell						\
+		--nsversion=0.1							\
+	        --include=Clutter-1.0						\
+	        --libtool="$(LIBTOOL)"						\
+	        --program=mutter						\
+		--program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la	\
+	        $(addprefix $(srcdir)/,$(toolkit_gir_sources))			\
+	        $(TOOLKIT_CFLAGS)						\
+	        -o $@
+CLEANFILES += Toolkit-1.0.gir
+
 Nbtk-1.0.gir: $(mutter) $(G_IR_SCANNER) Toolkit-0.1.gir libgnome-shell.la libnbtk-1.0.la Makefile
 	$(AM_V_GEN) $(G_IR_SCANNER)						\
 	        --namespace=Nbtk						\
 	        --nsversion=1.0							\
 	        --include=Clutter-1.0						\
+	        --include=Gtk-2.0						\
 		--add-include-path=$(builddir)     				\
+		--include=Toolkit-0.1						\
 	        --libtool="$(LIBTOOL)"						\
 	        --program=mutter						\
 		--program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la	\
@@ -226,11 +249,14 @@ Nbtk-1.0.gir: $(mutter) $(G_IR_SCANNER) Toolkit-0.1.gir libgnome-shell.la libnbt
 	        $(addprefix $(srcdir)/,$(nbtk_source_c))			\
 	        $(srcdir)/nbtk-enum-types.h					\
 	        $(NBTK_CFLAGS)							\
-	        -o $@
+	        -o $@.tmp &&							\
+	sed -e '/"Toolkit"/d' < $@.tmp > $@
 CLEANFILES += Nbtk-1.0.gir
 
 Nbtk-1.0.typelib: Nbtk-1.0.gir
 	$(AM_V_GEN) $(G_IR_COMPILER)						\
+		--includedir=.							\
+		--includedir=$(MUTTER_LIB_DIR)/mutter/				\
 		$< -o $@
 
 CLEANFILES += Nbtk-1.0.typelib

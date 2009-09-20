@@ -29,6 +29,8 @@
 
 #include <clutter/clutter.h>
 #include <nbtk/nbtk-types.h>
+#include <toolkit/shell-theme.h>
+#include <toolkit/shell-theme-node.h>
 
 G_BEGIN_DECLS
 
@@ -72,6 +74,7 @@ struct _NbtkWidgetClass
   void (* draw_background) (NbtkWidget         *self,
                             ClutterActor       *background,
                             const ClutterColor *color);
+  void (* style_changed)   (NbtkWidget         *self);
 };
 
 GType nbtk_widget_get_type (void) G_GNUC_CONST;
@@ -83,6 +86,9 @@ void                  nbtk_widget_set_style_class_name   (NbtkWidget   *actor,
                                                           const gchar  *style_class);
 G_CONST_RETURN gchar *nbtk_widget_get_style_class_name   (NbtkWidget   *actor);
 
+void        nbtk_widget_set_theme (NbtkWidget *actor,
+				   ShellTheme *theme);
+ShellTheme *nbtk_widget_get_theme (NbtkWidget *actor);
 
 void     nbtk_widget_set_has_tooltip (NbtkWidget *widget, gboolean has_tooltip);
 gboolean nbtk_widget_get_has_tooltip (NbtkWidget *widget);
@@ -96,6 +102,10 @@ void nbtk_widget_ensure_style (NbtkWidget *widget);
 
 
 /* Only to be used by sub-classes of NbtkWidget */
+void          nbtk_widget_style_changed        (NbtkWidget  *widget);
+
+ShellThemeNode *nbtk_widget_get_theme_node     (NbtkWidget  *widget);
+
 ClutterActor *nbtk_widget_get_background_image (NbtkWidget  *actor);
 ClutterActor *nbtk_widget_get_border_image     (NbtkWidget  *actor);
 void          nbtk_widget_get_padding          (NbtkWidget  *widget,

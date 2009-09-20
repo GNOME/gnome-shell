@@ -26,23 +26,22 @@
 #include "nbtk-marshal.h"
 #include "nbtk-scroll-bar.h"
 #include "nbtk-scrollable.h"
-#include "nbtk-stylable.h"
 #include <clutter/clutter.h>
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
-static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
 
 static ClutterContainerIface *nbtk_scroll_view_parent_iface = NULL;
 
 G_DEFINE_TYPE_WITH_CODE (NbtkScrollView, nbtk_scroll_view, NBTK_TYPE_BIN,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init)
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
-                                                nbtk_stylable_iface_init))
+                                                clutter_container_iface_init))
 
 #define SCROLL_VIEW_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), \
                                 NBTK_TYPE_SCROLL_VIEW, \
                                 NbtkScrollViewPrivate))
+
+/* Default width (or height - the narrow dimension) for the scrollbars*/
+#define DEFAULT_SCROLLBAR_WIDTH 24
 
 struct _NbtkScrollViewPrivate
 {
@@ -165,6 +164,28 @@ nbtk_scroll_view_pick (ClutterActor *actor, const ClutterColor *color)
     clutter_actor_paint (priv->vscroll);
 }
 
+static double
+get_scrollbar_width (NbtkScrollView *scroll_view)
+{
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (scroll_view));
+  double result = DEFAULT_SCROLLBAR_WIDTH;
+
+  shell_theme_node_get_length (theme_node, "scrollbar-width", FALSE, &result);
+
+  return result;
+}
+
+static double
+get_scrollbar_height (NbtkScrollView *scroll_view)
+{
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (scroll_view));
+  double result = DEFAULT_SCROLLBAR_WIDTH;
+
+  shell_theme_node_get_length (theme_node, "scrollbar-height", FALSE, &result);
+
+  return result;
+}
+
 static void
 nbtk_scroll_view_get_preferred_width (ClutterActor *actor,
                                       gfloat        for_height,
@@ -172,7 +193,6 @@ nbtk_scroll_view_get_preferred_width (ClutterActor *actor,
                                       gfloat       *natural_width_p)
 {
   NbtkPadding padding;
-  guint xthickness;
 
   NbtkScrollViewPrivate *priv = NBTK_SCROLL_VIEW (actor)->priv;
 
@@ -180,9 +200,6 @@ nbtk_scroll_view_get_preferred_width (ClutterActor *actor,
     return;
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
-  nbtk_stylable_get (NBTK_STYLABLE (actor),
-                     "scrollbar-width", &xthickness,
-                     NULL);
 
   /* Our natural width is the natural width of the child */
   clutter_actor_get_preferred_width (priv->child,
@@ -199,7 +216,7 @@ nbtk_scroll_view_get_preferred_width (ClutterActor *actor,
                                           NULL,
                                           &natural_height);
       if (for_height < natural_height)
-        *natural_width_p += xthickness;
+        *natural_width_p += get_scrollbar_width (NBTK_SCROLL_VIEW (actor));
     }
 
   /* Add space for padding */
@@ -217,7 +234,6 @@ nbtk_scroll_view_get_preferred_height (ClutterActor *actor,
                                        gfloat       *natural_height_p)
 {
   NbtkPadding padding;
-  guint ythickness;
 
   NbtkScrollViewPrivate *priv = NBTK_SCROLL_VIEW (actor)->priv;
 
@@ -225,9 +241,6 @@ nbtk_scroll_view_get_preferred_height (ClutterActor *actor,
     return;
 
   nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
-  nbtk_stylable_get (NBTK_STYLABLE (actor),
-                     "scrollbar-height", &ythickness,
-                     NULL);
 
   /* Our natural height is the natural height of the child */
   clutter_actor_get_preferred_height (priv->child,
@@ -244,7 +257,7 @@ nbtk_scroll_view_get_preferred_height (ClutterActor *actor,
                                          NULL,
                                          &natural_width);
       if (for_width < natural_width)
-        *natural_height_p += ythickness;
+        *natural_height_p += get_scrollbar_height (NBTK_SCROLL_VIEW (actor));
     }
 
   /* Add space for padding */
@@ -285,10 +298,8 @@ nbtk_scroll_view_allocate (ClutterActor          *actor,
   avail_width = (box->x2 - box->x1) - padding.left - padding.right;
   avail_height = (box->y2 - box->y1) - padding.top - padding.bottom;
 
-  nbtk_stylable_get (NBTK_STYLABLE (actor),
-                     "scrollbar-width", &sb_width,
-                     "scrollbar-height", &sb_height,
-                     NULL);
+  sb_width = get_scrollbar_width (NBTK_SCROLL_VIEW (actor));
+  sb_height = get_scrollbar_width (NBTK_SCROLL_VIEW (actor));
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     sb_width = 0;
@@ -334,8 +345,10 @@ nbtk_scroll_view_style_changed (NbtkWidget *widget)
 {
   NbtkScrollViewPrivate *priv = NBTK_SCROLL_VIEW (widget)->priv;
 
-  nbtk_stylable_changed ((NbtkStylable *) priv->hscroll);
-  nbtk_stylable_changed ((NbtkStylable *) priv->vscroll);
+  nbtk_widget_style_changed (NBTK_WIDGET (priv->hscroll));
+  nbtk_widget_style_changed (NBTK_WIDGET (priv->vscroll));
+
+  NBTK_WIDGET_CLASS (nbtk_scroll_view_parent_class)->style_changed (widget);
 }
 
 static gboolean
@@ -418,6 +431,7 @@ nbtk_scroll_view_class_init (NbtkScrollViewClass *klass)
   GParamSpec *pspec;
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (NbtkScrollViewPrivate));
 
@@ -432,6 +446,8 @@ nbtk_scroll_view_class_init (NbtkScrollViewClass *klass)
   actor_class->get_preferred_height = nbtk_scroll_view_get_preferred_height;
   actor_class->allocate = nbtk_scroll_view_allocate;
   actor_class->scroll_event = nbtk_scroll_view_scroll_event;
+
+  widget_class->style_changed = nbtk_scroll_view_style_changed;
 
   g_object_class_install_property (object_class,
                                    PROP_HSCROLL,
@@ -458,33 +474,6 @@ nbtk_scroll_view_class_init (NbtkScrollViewClass *klass)
                                    PROP_MOUSE_SCROLL,
                                    pspec);
 
-}
-
-static void
-nbtk_stylable_iface_init (NbtkStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (!is_initialized)
-    {
-      GParamSpec *pspec;
-
-      is_initialized = TRUE;
-
-      pspec = g_param_spec_uint ("scrollbar-width",
-                                  "Vertical scroll-bar thickness",
-                                  "Thickness of vertical scrollbar, in px",
-                                  0, G_MAXUINT, 24,
-                                  G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, NBTK_TYPE_SCROLL_VIEW, pspec);
-
-      pspec = g_param_spec_uint ("scrollbar-height",
-                                  "Horizontal scroll-bar thickness",
-                                  "Thickness of horizontal scrollbar, in px",
-                                  0, G_MAXUINT, 24,
-                                  G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, NBTK_TYPE_SCROLL_VIEW, pspec);
-    }
 }
 
 static void
@@ -594,9 +583,6 @@ nbtk_scroll_view_init (NbtkScrollView *self)
   priv->mouse_scroll = TRUE;
   g_object_set (G_OBJECT (self), "reactive", TRUE, "clip-to-allocation", TRUE,
                 NULL);
-
-  g_signal_connect (self, "style-changed",
-                    G_CALLBACK (nbtk_scroll_view_style_changed), NULL);
 }
 
 static void

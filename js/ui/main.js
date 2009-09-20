@@ -67,9 +67,10 @@ function start() {
     for (let i = 0; i < children.length; i++)
         children[i].destroy();
 
-    let style = Nbtk.Style.get_default();
+    let themeContext = Shell.ThemeContext.get_for_stage (global.stage);
     let stylesheetPath = global.datadir + "/theme/gnome-shell.css";
-    style.load_from_file(stylesheetPath);
+    let theme = new Shell.Theme ({ application_stylesheet: stylesheetPath });
+    themeContext.set_theme (theme);
 
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.

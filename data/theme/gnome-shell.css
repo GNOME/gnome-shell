@@ -25,38 +25,38 @@ NbtkScrollBar
 
 NbtkScrollView
 {
-  scrollbar-width: 16;
-  scrollbar-height: 16;
+  scrollbar-width: 16px;
+  scrollbar-height: 16px;
 }
 
 NbtkButton#up-stepper
 {
-  border-image: url("file://scroll-button-up.png") 5;
+  -shell-background-image: url("scroll-button-up.png") 5px;
 }
 
 NbtkButton#up-stepper:hover,
 NbtkButton#up-stepper:active
 {
-  border-image: url("file://scroll-button-up-hover.png") 5;
+  -shell-background-image: url("scroll-button-up-hover.png") 5px;
 }
 
 NbtkButton#down-stepper
 {
-  border-image: url("file://scroll-button-down.png") 5;
+  -shell-background-image: url("scroll-button-down.png") 5px;
 }
 
 NbtkButton#down-stepper:hover,
 NbtkButton#down-stepper:active
 {
-  border-image: url("file://scroll-button-down-hover.png") 5;
+  -shell-background-image: url("scroll-button-down-hover.png") 5px;
 }
 
 NbtkScrollBar NbtkButton#vhandle
 {
-  border-image: url("file://scroll-vhandle.png") 5;
+  -shell-background-image: url("scroll-vhandle.png") 5px;
 }
 
 NbtkScrollBar NbtkButton#vhandle:hover
 {
-  border-image: url("file://scroll-vhandle.png") 5;
+  -shell-background-image: url("scroll-vhandle.png") 5px;
 }

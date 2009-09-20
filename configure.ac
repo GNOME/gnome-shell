@@ -57,7 +57,7 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gio-unix-2.0 gtk+-2.0 dbus-glib-1 mutter-plugin
                                  gnome-desktop-2.0 >= 2.26 libstartup-notification-1.0
                                  gobject-introspection-1.0 >= 0.6.5)
 PKG_CHECK_MODULES(TIDY, clutter-1.0)
-PKG_CHECK_MODULES(NBTK, clutter-1.0 gtk+-2.0 libccss-1 >= 0.3.1 clutter-imcontext-0.1)
+PKG_CHECK_MODULES(NBTK, clutter-1.0 gtk+-2.0 clutter-imcontext-0.1)
 PKG_CHECK_MODULES(BIG, clutter-1.0 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(GDMUSER, dbus-glib-1 gtk+-2.0)
 PKG_CHECK_MODULES(TOOLKIT, clutter-1.0 libcroco-0.6)

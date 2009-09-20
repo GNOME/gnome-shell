@@ -28,12 +28,9 @@
 
 G_BEGIN_DECLS
 
-#define NBTK_TYPE_BORDER_IMAGE          (nbtk_border_image_get_type ())
 #define NBTK_TYPE_PADDING               (nbtk_padding_get_type ())
 
 typedef struct _NbtkPadding             NbtkPadding;
-
-GType nbtk_border_image_get_type (void) G_GNUC_CONST;
 
 /**
  * NbtkPadding:

@@ -44,7 +44,6 @@
 #include "nbtk-label.h"
 
 #include "nbtk-widget.h"
-#include "nbtk-stylable.h"
 
 enum
 {
@@ -105,43 +104,23 @@ nbtk_label_get_property (GObject    *gobject,
 static void
 nbtk_label_style_changed (NbtkWidget *self)
 {
-  NbtkLabelPrivate *priv = NBTK_LABEL (self)->priv;
-  ClutterColor *color = NULL;
-  gchar *font_name;
+  NbtkLabelPrivate *priv;
+  ShellThemeNode *theme_node;
+  ClutterColor color;
+  const PangoFontDescription *font;
   gchar *font_string;
-  gint font_size;
 
-  nbtk_stylable_get (NBTK_STYLABLE (self),
-                     "color", &color,
-                     "font-family", &font_name,
-                     "font-size", &font_size,
-                     NULL);
+  priv = NBTK_LABEL (self)->priv;
+  theme_node = nbtk_widget_get_theme_node (self);
+  shell_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (CLUTTER_TEXT (priv->label), &color);
 
-  if (color)
-    {
-      clutter_text_set_color (CLUTTER_TEXT (priv->label), color);
-      clutter_color_free (color);
-    }
+  font = shell_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
+  g_free (font_string);
 
-  if (font_name || font_size)
-    {
-      if (font_name && font_size)
-        {
-          font_string = g_strdup_printf ("%s %dpx", font_name, font_size);
-          g_free (font_name);
-        }
-      else
-        {
-          if (font_size)
-            font_string = g_strdup_printf ("%dpx", font_size);
-          else
-            font_string = font_name;
-        }
-
-      clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
-      g_free (font_string);
-    }
-
+  NBTK_WIDGET_CLASS (nbtk_label_parent_class)->style_changed (self);
 }
 
 static void
@@ -248,6 +227,7 @@ nbtk_label_class_init (NbtkLabelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (NbtkLabelPrivate));
@@ -261,6 +241,8 @@ nbtk_label_class_init (NbtkLabelClass *klass)
   actor_class->get_preferred_height = nbtk_label_get_preferred_height;
   actor_class->map = nbtk_label_map;
   actor_class->unmap = nbtk_label_unmap;
+
+  widget_class->style_changed = nbtk_label_style_changed;
 
   pspec = g_param_spec_string ("text",
                                "Text",
@@ -282,9 +264,6 @@ nbtk_label_init (NbtkLabel *label)
                                      NULL);
 
   clutter_actor_set_parent (priv->label, CLUTTER_ACTOR (label));
-
-  g_signal_connect (label, "style-changed",
-                    G_CALLBACK (nbtk_label_style_changed), NULL);
 }
 
 /**

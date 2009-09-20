@@ -44,7 +44,6 @@
 #include "nbtk-tooltip.h"
 
 #include "nbtk-widget.h"
-#include "nbtk-stylable.h"
 #include "nbtk-private.h"
 
 enum
@@ -120,44 +119,24 @@ nbtk_tooltip_get_property (GObject    *gobject,
 static void
 nbtk_tooltip_style_changed (NbtkWidget *self)
 {
-  ClutterColor *color = NULL;
   NbtkTooltipPrivate *priv;
-  gchar *font_name;
+  ShellThemeNode *theme_node;
+  ClutterColor color;
+  const PangoFontDescription *font;
   gchar *font_string;
-  gint font_size;
 
   priv = NBTK_TOOLTIP (self)->priv;
+  theme_node = nbtk_widget_get_theme_node (self);
 
-  nbtk_stylable_get (NBTK_STYLABLE (self),
-                     "color", &color,
-                     "font-family", &font_name,
-                     "font-size", &font_size,
-                     NULL);
+  shell_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (CLUTTER_TEXT (priv->label), &color);
 
-  if (color)
-    {
-      clutter_text_set_color (CLUTTER_TEXT (priv->label), color);
-      clutter_color_free (color);
-    }
+  font = shell_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
+  g_free (font_string);
 
-  if (font_name || font_size)
-    {
-      if (font_name && font_size)
-        {
-          font_string = g_strdup_printf ("%s %dpx", font_name, font_size);
-          g_free (font_name);
-        }
-      else
-        if (font_size)
-          font_string = g_strdup_printf ("%dpx", font_size);
-        else
-          font_string = font_name;
-
-      clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
-
-      g_free (font_string);
-    }
-
+  NBTK_WIDGET_CLASS (nbtk_tooltip_parent_class)->style_changed (self);
 }
 
 static void
@@ -405,6 +384,7 @@ nbtk_tooltip_class_init (NbtkTooltipClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (NbtkTooltipPrivate));
@@ -418,6 +398,8 @@ nbtk_tooltip_class_init (NbtkTooltipClass *klass)
   actor_class->paint = nbtk_tooltip_paint;
   actor_class->map = nbtk_tooltip_map;
   actor_class->unmap = nbtk_tooltip_unmap;
+
+  widget_class->style_changed = nbtk_tooltip_style_changed;
 
   pspec = g_param_spec_string ("label",
                                "Label",
@@ -452,9 +434,6 @@ nbtk_tooltip_init (NbtkTooltip *tooltip)
   g_object_set (tooltip, "show-on-set-parent", FALSE, NULL);
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (tooltip), FALSE);
-
-  g_signal_connect (tooltip, "style-changed",
-                    G_CALLBACK (nbtk_tooltip_style_changed), NULL);
 }
 
 static void

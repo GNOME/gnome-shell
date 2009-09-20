@@ -31,16 +31,11 @@
 #include "nbtk-scroll-bar.h"
 #include "nbtk-bin.h"
 #include "nbtk-marshal.h"
-#include "nbtk-stylable.h"
 #include "nbtk-enum-types.h"
 #include "nbtk-private.h"
 #include "nbtk-button.h"
 
-static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (NbtkScrollBar, nbtk_scroll_bar, NBTK_TYPE_BIN,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
-                                                nbtk_stylable_iface_init))
+G_DEFINE_TYPE (NbtkScrollBar, nbtk_scroll_bar, NBTK_TYPE_BIN)
 
 #define NBTK_SCROLL_BAR_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), NBTK_TYPE_SCROLL_BAR, NbtkScrollBarPrivate))
 
@@ -336,10 +331,10 @@ nbtk_scroll_bar_allocate (ClutterActor          *actor,
 
   if (priv->adjustment)
     {
+      ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
       gfloat handle_size, position, avail_size;
-      gdouble value, lower, upper, page_size, increment;
+      gdouble value, lower, upper, page_size, increment, min_size, max_size;
       ClutterActorBox handle_box = { 0, };
-      guint min_size, max_size;
 
       nbtk_adjustment_get_values (priv->adjustment,
                                   &value,
@@ -355,10 +350,10 @@ nbtk_scroll_bar_allocate (ClutterActor          *actor,
       else
         increment = page_size / (upper - lower);
 
-      nbtk_stylable_get (NBTK_STYLABLE (actor),
-                         "min-size", &min_size,
-                         "max-size", &max_size,
-                         NULL);
+      min_size = 32.;
+      shell_theme_node_get_length (theme_node, "min-size", FALSE, &min_size);
+      max_size = G_MAXINT16;
+      shell_theme_node_get_length (theme_node, "max-size", FALSE, &max_size);
 
       if (upper - lower - page_size <= 0)
         position = 0;
@@ -407,11 +402,12 @@ nbtk_scroll_bar_style_changed (NbtkWidget *widget)
 {
   NbtkScrollBarPrivate *priv = NBTK_SCROLL_BAR (widget)->priv;
 
-  nbtk_stylable_changed ((NbtkStylable *) priv->bw_stepper);
-  nbtk_stylable_changed ((NbtkStylable *) priv->fw_stepper);
-  nbtk_stylable_changed ((NbtkStylable *) priv->trough);
-  nbtk_stylable_changed ((NbtkStylable *) priv->handle);
+  nbtk_widget_style_changed (NBTK_WIDGET (priv->bw_stepper));
+  nbtk_widget_style_changed (NBTK_WIDGET (priv->fw_stepper));
+  nbtk_widget_style_changed (NBTK_WIDGET (priv->trough));
+  nbtk_widget_style_changed (NBTK_WIDGET (priv->handle));
 
+  NBTK_WIDGET_CLASS (nbtk_scroll_bar_parent_class)->style_changed (widget);
 }
 
 static void
@@ -494,6 +490,7 @@ nbtk_scroll_bar_class_init (NbtkScrollBarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  NbtkWidgetClass *widget_class = NBTK_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (NbtkScrollBarPrivate));
@@ -509,6 +506,8 @@ nbtk_scroll_bar_class_init (NbtkScrollBarClass *klass)
   actor_class->scroll_event   = nbtk_scroll_bar_scroll_event;
   actor_class->map            = nbtk_scroll_bar_map;
   actor_class->unmap          = nbtk_scroll_bar_unmap;
+
+  widget_class->style_changed = nbtk_scroll_bar_style_changed;
 
   g_object_class_install_property
            (object_class,
@@ -543,35 +542,6 @@ nbtk_scroll_bar_class_init (NbtkScrollBarClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-}
-
-static void
-nbtk_stylable_iface_init (NbtkStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (!is_initialized)
-    {
-      GParamSpec *pspec;
-
-      is_initialized = TRUE;
-
-      pspec = g_param_spec_uint ("min-size",
-                                 "Minimum grabber size",
-                                 "Minimum size of the scroll grabber, in px",
-                                 0, G_MAXUINT, 32,
-                                 G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface,
-                                            NBTK_TYPE_SCROLL_BAR, pspec);
-
-      pspec = g_param_spec_uint ("max-size",
-                                 "Maximum grabber size",
-                                 "Maximum size of the scroll grabber, in px",
-                                 0, G_MAXINT16, G_MAXINT16,
-                                 G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface,
-                                            NBTK_TYPE_SCROLL_BAR, pspec);
-    }
 }
 
 static void
@@ -1035,8 +1005,6 @@ nbtk_scroll_bar_init (NbtkScrollBar *self)
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
 
-  g_signal_connect (self, "style-changed",
-                    G_CALLBACK (nbtk_scroll_bar_style_changed), NULL);
   g_signal_connect (self, "notify::reactive",
                     G_CALLBACK (nbtk_scroll_bar_notify_reactive), NULL);
 }

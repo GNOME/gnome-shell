@@ -1,8 +1,6 @@
-/*
- * nbtk-button.c: Plain button actor
- *
+/*-button.c: Plain button actor
  * Copyright 2007 OpenedHand
- * Copyright 2008, 2009 Intel Corporation.
+ * Copyright , 2009 Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU Lesser General Public License,
@@ -34,6 +32,7 @@
 #include "config.h"
 #endif
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -44,8 +43,6 @@
 #include "nbtk-button.h"
 
 #include "nbtk-marshal.h"
-#include "nbtk-stylable.h"
-#include "nbtk-style.h"
 #include "nbtk-texture-frame.h"
 #include "nbtk-texture-cache.h"
 #include "nbtk-private.h"
@@ -93,51 +90,16 @@ struct _NbtkButtonPrivate
 
 static guint button_signals[LAST_SIGNAL] = { 0, };
 
-static void nbtk_stylable_iface_init (NbtkStylableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (NbtkButton, nbtk_button, NBTK_TYPE_BIN,
-                         G_IMPLEMENT_INTERFACE (NBTK_TYPE_STYLABLE,
-                                                nbtk_stylable_iface_init));
-
-static void
-nbtk_stylable_iface_init (NbtkStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (G_UNLIKELY (!is_initialized))
-    {
-      ClutterColor bg_color = { 0xcc, 0xcc, 0xcc, 0x00 };
-      GParamSpec *pspec;
-
-      is_initialized = TRUE;
-
-      pspec = g_param_spec_int ("border-spacing",
-                                "Border Spacing",
-                                "Spacing between internal elements",
-                                0, G_MAXINT, 6,
-                                G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, NBTK_TYPE_BUTTON, pspec);
-
-
-      is_initialized = TRUE;
-
-      pspec = clutter_param_spec_color ("background-color",
-                                        "Background Color",
-                                        "The background color of an actor",
-                                        &bg_color,
-                                        G_PARAM_READWRITE);
-      nbtk_stylable_iface_install_property (iface, NBTK_TYPE_BUTTON, pspec);
-    }
-}
+G_DEFINE_TYPE (NbtkButton, nbtk_button, NBTK_TYPE_BIN);
 
 static void
 nbtk_button_update_label_style (NbtkButton *button)
 {
-  ClutterColor *real_color = NULL;
-  gchar *font_string = NULL;
-  gchar *font_name = NULL;
-  gint font_size = 0;
   ClutterActor *label;
+  ShellThemeNode *theme_node;
+  ClutterColor color;
+  const PangoFontDescription *font;
+  gchar *font_string = NULL;
 
   label = nbtk_bin_get_child ((NbtkBin*) button);
 
@@ -145,37 +107,15 @@ nbtk_button_update_label_style (NbtkButton *button)
   if (!CLUTTER_IS_TEXT (label))
     return;
 
-  nbtk_stylable_get (NBTK_STYLABLE (button),
-                     "color", &real_color,
-                     "font-family", &font_name,
-                     "font-size", &font_size,
-                     NULL);
+  theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (button));
 
-  if (font_name || font_size)
-    {
-      if (font_name && font_size)
-        font_string = g_strdup_printf ("%s %dpx", font_name, font_size);
-      else
-        {
-          if (font_size)
-            font_string = g_strdup_printf ("%dpx", font_size);
-          else
-            font_string = font_name;
-        }
+  shell_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (CLUTTER_TEXT (label), &color);
 
-      clutter_text_set_font_name (CLUTTER_TEXT (label), font_string);
-
-      if (font_string != font_name)
-        g_free (font_string);
-    }
-
-  g_free (font_name);
-
-  if (real_color)
-    {
-      clutter_text_set_color (CLUTTER_TEXT (label), real_color);
-      clutter_color_free (real_color);
-    }
+  font = shell_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (CLUTTER_TEXT (label), font_string);
+  g_free (font_string);
 }
 
 static void
@@ -196,19 +136,6 @@ nbtk_button_dispose_old_bg (NbtkButton *button)
 }
 
 static void
-nbtk_button_stylable_changed (NbtkStylable *stylable)
-{
-  NbtkButton *button = NBTK_BUTTON (stylable);
-  ClutterActor *bg_image;
-
-  nbtk_button_dispose_old_bg (button);
-
-  bg_image = nbtk_widget_get_border_image ((NbtkWidget*) button);
-  if (bg_image)
-    button->priv->old_bg = g_object_ref (bg_image);
-}
-
-static void
 nbtk_animation_completed (ClutterAnimation  *animation,
                           NbtkButton        *button)
 {
@@ -221,11 +148,21 @@ nbtk_button_style_changed (NbtkWidget *widget)
   NbtkButton *button = NBTK_BUTTON (widget);
   NbtkButtonPrivate *priv = button->priv;
   NbtkButtonClass *button_class = NBTK_BUTTON_GET_CLASS (button);
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (button));
+  ClutterActor *bg_image;
+  double spacing;
 
-  /* get the spacing value */
-  nbtk_stylable_get (NBTK_STYLABLE (widget),
-                     "border-spacing", &priv->spacing,
-                     NULL);
+  nbtk_button_dispose_old_bg (button);
+
+  bg_image = nbtk_widget_get_border_image ((NbtkWidget*) button);
+  if (bg_image)
+    button->priv->old_bg = g_object_ref (bg_image);
+
+  NBTK_WIDGET_CLASS (nbtk_button_parent_class)->style_changed (widget);
+
+  spacing = 6;
+  shell_theme_node_get_length (theme_node, "border-spacing", FALSE, &spacing);
+  priv->spacing = round (spacing);
 
   /* update the label styling */
   nbtk_button_update_label_style (button);
@@ -526,6 +463,7 @@ nbtk_button_class_init (NbtkButtonClass *klass)
   actor_class->unmap = nbtk_button_unmap;
 
   widget_class->draw_background = nbtk_button_draw_background;
+  widget_class->style_changed = nbtk_button_style_changed;
 
   pspec = g_param_spec_string ("label",
                                "Label",
@@ -579,12 +517,6 @@ nbtk_button_init (NbtkButton *button)
   button->priv->spacing = 6;
 
   clutter_actor_set_reactive ((ClutterActor *) button, TRUE);
-
-  g_signal_connect (button, "style-changed",
-                    G_CALLBACK (nbtk_button_style_changed), NULL);
-
-  g_signal_connect (button, "stylable-changed",
-                    G_CALLBACK (nbtk_button_stylable_changed), NULL);
 }
 
 /**
@@ -672,7 +604,8 @@ nbtk_button_set_label (NbtkButton  *button,
       nbtk_bin_set_child ((NbtkBin*) button, label);
     }
 
-  nbtk_stylable_changed ((NbtkStylable*) button);
+  /* Fake a style change so that we reset the style properties on the label */
+  nbtk_widget_style_changed (NBTK_WIDGET (button));
 
   g_object_notify (G_OBJECT (button), "label");
 }
