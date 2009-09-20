@@ -1,0 +1,36 @@
+toolkit_cflags =				\
+    -I$(top_srcdir)/src				\
+    -DPREFIX=\""$(prefix)"\"			\
+    -DLIBDIR=\""$(libdir)"\"			\
+    -DG_DISABLE_DEPRECATED			\
+    -DG_LOG_DOMAIN=\"Shell\"			\
+    $(TOOLKIT_CFLAGS)
+
+# please, keep this sorted alphabetically
+toolkit_sources =				\
+	toolkit/shell-theme.c			\
+	toolkit/shell-theme.h			\
+	toolkit/shell-theme-context.c		\
+	toolkit/shell-theme-context.h		\
+	toolkit/shell-theme-image.c		\
+	toolkit/shell-theme-image.h		\
+	toolkit/shell-theme-node.c		\
+	toolkit/shell-theme-node.h		\
+	toolkit/shell-theme-private.h
+
+non_gir_toolkit_sources =			\
+	toolkit/shell-theme-private.h
+
+noinst_LTLIBRARIES += libshell-toolkit.la
+
+libshell_toolkit_la_LIBADD = $(TOOLKIT_LIBS)
+libshell_toolkit_la_SOURCES = $(toolkit_sources) $(toolkit_built_sources)
+libshell_toolkit_la_CPPFLAGS = $(toolkit_cflags)
+libshell_toolkit_la_LDFLAGS = $(LDADD)
+
+noinst_PROGRAMS += test-theme
+
+test_theme_CPPFLAGS = $(toolkit_cflags)
+test_theme_LDADD = libshell-toolkit.la
+
+test_theme_SOURCES = toolkit/test-theme.c

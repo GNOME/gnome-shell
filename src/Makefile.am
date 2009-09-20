@@ -4,6 +4,7 @@ CLEANFILES =
 EXTRA_DIST =
 libexec_PROGRAMS =
 noinst_LTLIBRARIES =
+noinst_PROGRAMS =
 
 .AUTOPARALLEL:
 
@@ -25,6 +26,7 @@ EXTRA_DIST += gnome-shell.in
 include Makefile-big.am
 include Makefile-gdmuser.am
 include Makefile-nbtk.am
+include Makefile-toolkit.am
 include Makefile-tray.am
 
 gnome_shell_cflags =				\
@@ -97,7 +99,7 @@ libgnome_shell_la_SOURCES =			\
 	shell-wm.c				\
 	shell-wm.h
 
-non_gir_sources =						\
+non_gir_sources =				\
 	shell-embedded-window-private.h
 
 shell_recorder_sources =        \
@@ -115,7 +117,7 @@ if BUILD_RECORDER
 libgnome_shell_la_SOURCES += $(shell_recorder_sources)
 non_gir_sources += $(shell_recorder_non_gir_sources)
 
-noinst_PROGRAMS = test-recorder
+noinst_PROGRAMS += test-recorder
 
 test_recorder_CPPFLAGS = $(TEST_SHELL_RECORDER_CFLAGS)
 test_recorder_LDADD = $(TEST_SHELL_RECORDER_LIBS)
@@ -126,7 +128,7 @@ test_recorder_SOURCES =     \
 endif BUILD_RECORDER
 
 libgnome_shell_la_gir_sources = \
-	$(filter-out $(non_gir_sources), $(libgnome_shell_la_SOURCES))
+	$(filter-out $(non_gir_sources) $(non_gir_toolkit_sources), $(libgnome_shell_la_SOURCES) $(toolkit_sources))
 
 shell-marshal.h: stamp-shell-marshal.h
 	@true
@@ -155,6 +157,7 @@ libgnome_shell_la_LIBADD =	\
 	libbig-1.0.la		\
 	libnbtk-1.0.la       	\
 	libgdmuser-1.0.la	\
+	libshell-toolkit.la	\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
