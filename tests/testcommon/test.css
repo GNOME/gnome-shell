@@ -31,3 +31,23 @@ stage {
 .monospace {
     font-family: monospace;
 }
+
+.border-image {
+    border: 15px;
+    -shell-background-image: url('border-image.png') 16px;
+}
+
+NbtkButton {
+    background: #eeddbb;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+NbtkButton:hover {
+    background: #ffeecc;
+}
+
+NbtkButton:active {
+    background: #ccbb99;
+}

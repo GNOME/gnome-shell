@@ -422,13 +422,11 @@ nbtk_button_unmap (ClutterActor *self)
 }
 
 static void
-nbtk_button_draw_background (NbtkWidget         *widget,
-                             ClutterActor       *background,
-                             const ClutterColor *color)
+nbtk_button_draw_background (NbtkWidget         *widget)
 {
   NbtkButtonPrivate *priv;
 
-  NBTK_WIDGET_CLASS (nbtk_button_parent_class)->draw_background (widget, background, color);
+  NBTK_WIDGET_CLASS (nbtk_button_parent_class)->draw_background (widget);
 
   priv = NBTK_BUTTON (widget)->priv;
 

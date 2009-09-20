@@ -71,9 +71,7 @@ struct _NbtkWidgetClass
   ClutterActorClass parent_class;
 
   /* vfuncs */
-  void (* draw_background) (NbtkWidget         *self,
-                            ClutterActor       *background,
-                            const ClutterColor *color);
+  void (* draw_background) (NbtkWidget         *self);
   void (* style_changed)   (NbtkWidget         *self);
 };
 
