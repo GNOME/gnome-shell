@@ -7,8 +7,12 @@ usage() {
 
 tests=
 verbose=false
+debug=
 for arg in $@ ; do
     case $arg in
+	-g|--debug)
+	    debug="gdb --args"
+	    ;;
 	-v|--verbose)
 	    verbose=true
 	    ;;
@@ -40,5 +44,5 @@ for i in $srcdir $srcdir/../js @GJS_JS_DIR@ @GJS_JS_NATIVE_DIR@ ; do
 done
 
 for test in $tests ; do
-    gjs-console $gjs_args $test || exit $?
+    $debug gjs-console $gjs_args $test || exit $?
 done
