@@ -3,7 +3,7 @@
 #define __ST_THEME_NODE_H__
 
 #include <clutter/clutter.h>
-#include "st-theme-image.h"
+#include "st-border-image.h"
 
 G_BEGIN_DECLS
 
@@ -116,10 +116,7 @@ StTextDecoration st_theme_node_get_text_decoration (StThemeNode *node);
  */
 const PangoFontDescription *st_theme_node_get_font (StThemeNode *node);
 
-/* This is the getter for -st-background-image, which is different from
- * background-image in having provisions for unscaled borders.
- */
-StThemeImage *st_theme_node_get_background_theme_image (StThemeNode *node);
+StBorderImage *st_theme_node_get_border_image (StThemeNode *node);
 
 /* Helpers for get_preferred_width()/get_preferred_height() ClutterActor vfuncs */
 void st_theme_node_adjust_for_height       (StThemeNode  *node,
