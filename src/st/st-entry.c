@@ -205,12 +205,10 @@ st_entry_get_preferred_width (ClutterActor *actor,
                               gfloat       *natural_width_p)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  StPadding padding;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   gfloat icon_w;
 
-  st_widget_get_padding (ST_WIDGET (actor), &padding);
-
-  for_height -= padding.top + padding.bottom;
+  st_theme_node_adjust_for_height (theme_node, &for_height);
 
   clutter_actor_get_preferred_width (priv->entry, for_height,
                                      min_width_p,
@@ -239,11 +237,7 @@ st_entry_get_preferred_width (ClutterActor *actor,
         *natural_width_p += icon_w + priv->spacing;
     }
 
-  if (min_width_p)
-    *min_width_p += padding.left + padding.right;
-
-  if (natural_width_p)
-    *natural_width_p += padding.left + padding.right;
+  st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
 
 static void
@@ -253,12 +247,10 @@ st_entry_get_preferred_height (ClutterActor *actor,
                                gfloat       *natural_height_p)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  StPadding padding;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   gfloat icon_h;
 
-  st_widget_get_padding (ST_WIDGET (actor), &padding);
-
-  for_width -= padding.left + padding.right;
+  st_theme_node_adjust_for_width (theme_node, &for_width);
 
   clutter_actor_get_preferred_height (priv->entry, for_width,
                                       min_height_p,
@@ -288,11 +280,7 @@ st_entry_get_preferred_height (ClutterActor *actor,
         *natural_height_p = icon_h;
     }
 
-  if (min_height_p)
-    *min_height_p += padding.top + padding.bottom;
-
-  if (natural_height_p)
-    *natural_height_p += padding.top + padding.bottom;
+  st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
 static void
@@ -301,21 +289,21 @@ st_entry_allocate (ClutterActor          *actor,
                    ClutterAllocationFlags flags)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorClass *parent_class;
-  ClutterActorBox child_box, icon_box;
-  StPadding padding;
+  ClutterActorBox content_box, child_box, icon_box;
   gfloat icon_w, icon_h;
   gfloat entry_h, min_h, pref_h, avail_h;
-
-  st_widget_get_padding (ST_WIDGET (actor), &padding);
 
   parent_class = CLUTTER_ACTOR_CLASS (st_entry_parent_class);
   parent_class->allocate (actor, box, flags);
 
-  avail_h = (box->y2 - box->y1) - padding.top - padding.bottom;
+  st_theme_node_get_content_box (theme_node, box, &content_box);
 
-  child_box.x1 = padding.left;
-  child_box.x2 = box->x2 - box->x1 - padding.right;
+  avail_h = content_box.y2 - content_box.y1;
+
+  child_box.x1 = content_box.x1;
+  child_box.x2 = content_box.x2;
 
   if (priv->primary_icon)
     {
@@ -324,10 +312,10 @@ st_entry_allocate (ClutterActor          *actor,
       clutter_actor_get_preferred_height (priv->primary_icon,
                                           -1, NULL, &icon_h);
 
-      icon_box.x1 = padding.left;
+      icon_box.x1 = content_box.x1;
       icon_box.x2 = icon_box.x1 + icon_w;
 
-      icon_box.y1 = (int)(padding.top + avail_h / 2 - icon_h / 2);
+      icon_box.y1 = (int) (content_box.y1 + avail_h / 2 - icon_h / 2);
       icon_box.y2 = icon_box.y1 + icon_h;
 
       clutter_actor_allocate (priv->primary_icon,
@@ -345,10 +333,10 @@ st_entry_allocate (ClutterActor          *actor,
       clutter_actor_get_preferred_height (priv->secondary_icon,
                                           -1, NULL, &icon_h);
 
-      icon_box.x2 = (box->x2 - box->x1) - padding.right;
+      icon_box.x2 = content_box.x2;
       icon_box.x1 = icon_box.x2 - icon_w;
 
-      icon_box.y1 = (int)(padding.top + avail_h / 2 - icon_h / 2);
+      icon_box.y1 = (int) (content_box.y1 + avail_h / 2 - icon_h / 2);
       icon_box.y2 = icon_box.y1 + icon_h;
 
       clutter_actor_allocate (priv->secondary_icon,
@@ -364,7 +352,7 @@ st_entry_allocate (ClutterActor          *actor,
 
   entry_h = CLAMP (pref_h, min_h, avail_h);
 
-  child_box.y1 = (int)(padding.top + avail_h / 2 - entry_h / 2);
+  child_box.y1 = (int) (content_box.y1 + avail_h / 2 - entry_h / 2);
   child_box.y2 = child_box.y1 + entry_h;
 
   clutter_actor_allocate (priv->entry, &child_box, flags);

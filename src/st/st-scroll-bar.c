@@ -269,71 +269,65 @@ st_scroll_bar_allocate (ClutterActor          *actor,
                         ClutterAllocationFlags flags)
 {
   StScrollBarPrivate *priv = ST_SCROLL_BAR (actor)->priv;
-  StPadding padding;
-  ClutterActorBox bw_box, fw_box, trough_box;
-  gfloat x, y, width, height, stepper_size;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+  ClutterActorBox content_box, bw_box, fw_box, trough_box;
+  gfloat stepper_size;
 
   /* Chain up */
   CLUTTER_ACTOR_CLASS (st_scroll_bar_parent_class)->
   allocate (actor, box, flags);
 
-  st_widget_get_padding (ST_WIDGET (actor), &padding);
-
-  /* calculate the child area */
-  x = padding.left;
-  y = padding.top;
-  width = (box->x2 - box->x1) - padding.left - padding.right;
-  height = (box->y2 - box->y1) - padding.top - padding.bottom;
+  st_theme_node_get_content_box (theme_node, box, &content_box);
 
   if (priv->vertical)
     {
-      stepper_size = width;
+      stepper_size = content_box.x2 - content_box.x1;
 
       /* Backward stepper */
-      bw_box.x1 = x;
-      bw_box.y1 = y;
-      bw_box.x2 = bw_box.x1 + stepper_size;
+      bw_box.x1 = content_box.x1;
+      bw_box.y1 = content_box.y1;
+      bw_box.x2 = content_box.x2;
       bw_box.y2 = bw_box.y1 + stepper_size;
       clutter_actor_allocate (priv->bw_stepper, &bw_box, flags);
 
       /* Forward stepper */
-      fw_box.x1 = x;
-      fw_box.y1 = y + height - stepper_size;
-      fw_box.x2 = fw_box.x1 + stepper_size;
-      fw_box.y2 = fw_box.y1 + stepper_size;
+      fw_box.x1 = content_box.x1;
+      fw_box.y1 = content_box.y2 - stepper_size;
+      fw_box.x2 = content_box.x2;
+      fw_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->fw_stepper, &fw_box, flags);
 
       /* Trough */
-      trough_box.x1 = x;
-      trough_box.y1 = y + stepper_size;
-      trough_box.x2 = x + width;
-      trough_box.y2 = y + height - stepper_size;
+      trough_box.x1 = content_box.x1;
+      trough_box.y1 = content_box.y1 + stepper_size;
+      trough_box.x2 = content_box.x2;
+      trough_box.y2 = content_box.y2 - stepper_size;
       clutter_actor_allocate (priv->trough, &trough_box, flags);
 
     }
   else
     {
-      stepper_size = height;
+      stepper_size = content_box.y2 - content_box.y1;
 
       /* Backward stepper */
-      bw_box.x1 = x;
-      bw_box.y1 = y;
+      bw_box.x1 = content_box.x1;
+      bw_box.y1 = content_box.y1;
       bw_box.x2 = bw_box.x1 + stepper_size;
-      bw_box.y2 = bw_box.y1 + stepper_size;
+      bw_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->bw_stepper, &bw_box, flags);
 
       /* Forward stepper */
-      fw_box.x1 = x + width - stepper_size;
-      fw_box.y1 = y;
-      fw_box.x2 = fw_box.x1 + stepper_size;
-      fw_box.y2 = fw_box.y1 + stepper_size;
+      fw_box.x1 = content_box.x2 - stepper_size;
+      fw_box.y1 = content_box.y1;
+      fw_box.x2 = content_box.x2;
+      fw_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->fw_stepper, &fw_box, flags);
 
       /* Trough */
-      trough_box.x1 = x + stepper_size;
-      trough_box.y1 = y;
-      trough_box.x2 = x + width - stepper_size;
-      trough_box.y2 = y + height;
+      trough_box.x1 = content_box.x1 + stepper_size;
+      trough_box.y1 = content_box.y1;
+      trough_box.x2 = content_box.x2 - stepper_size;
+      trough_box.y2 = content_box.y2;
       clutter_actor_allocate (priv->trough, &trough_box, flags);
     }
 
@@ -371,27 +365,27 @@ st_scroll_bar_allocate (ClutterActor          *actor,
 
       if (priv->vertical)
         {
-          avail_size = height - stepper_size * 2;
+          avail_size = content_box.y2 - content_box.y1 - stepper_size * 2;
           handle_size = increment * avail_size;
           handle_size = CLAMP (handle_size, min_size, max_size);
 
-          handle_box.x1 = x;
+          handle_box.x1 = content_box.x1;
           handle_box.y1 = bw_box.y2 + position * (avail_size - handle_size);
 
-          handle_box.x2 = handle_box.x1 + width;
+          handle_box.x2 = content_box.x2;
           handle_box.y2 = handle_box.y1 + handle_size;
         }
       else
         {
-          avail_size = width - stepper_size * 2;
+          avail_size = content_box.x2 - content_box.x1 - stepper_size * 2;
           handle_size = increment * avail_size;
           handle_size = CLAMP (handle_size, min_size, max_size);
 
           handle_box.x1 = bw_box.x2 + position * (avail_size - handle_size);
-          handle_box.y1 = y;
+          handle_box.y1 = content_box.y1;
 
           handle_box.x2 = handle_box.x1 + handle_size;
-          handle_box.y2 = handle_box.y1 + height;
+          handle_box.y2 = content_box.y2;
         }
 
       /* snap to pixel */

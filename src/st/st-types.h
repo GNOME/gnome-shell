@@ -37,29 +37,6 @@
 
 G_BEGIN_DECLS
 
-#define ST_TYPE_PADDING               (st_padding_get_type ())
-
-typedef struct _StPadding             StPadding;
-
-/**
- * StPadding:
- * @top: padding from the top
- * @right: padding from the right
- * @bottom: padding from the bottom
- * @left: padding from the left
- *
- * The padding from the internal border of the parent container.
- */
-struct _StPadding
-{
-  gfloat top;
-  gfloat right;
-  gfloat bottom;
-  gfloat left;
-};
-
-GType st_padding_get_type (void) G_GNUC_CONST;
-
 typedef enum {
   ST_ALIGN_START,
   ST_ALIGN_MIDDLE,
