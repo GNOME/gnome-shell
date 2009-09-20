@@ -46,7 +46,8 @@ StThemeNode *st_theme_node_new (StThemeContext *context,
                                 GType           element_type,
                                 const char     *element_id,
                                 const char     *element_class,
-                                const char     *pseudo_class);
+                                const char     *pseudo_class,
+                                const char     *inline_style);
 
 StThemeNode *st_theme_node_get_parent (StThemeNode *node);
 
