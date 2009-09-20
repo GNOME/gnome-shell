@@ -420,26 +420,18 @@ st_box_layout_dispose (GObject *object)
 }
 
 static void
-st_box_layout_get_preferred_width (ClutterActor *actor,
-                                   gfloat        for_height,
-                                   gfloat       *min_width_p,
-                                   gfloat       *natural_width_p)
+get_content_preferred_width (StBoxLayout *self,
+                             gfloat       for_height,
+                             gfloat      *min_width_p,
+                             gfloat      *natural_width_p)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
-  StPadding padding = { 0, };
+  StBoxLayoutPrivate *priv = self->priv;
   gint n_children = 0;
+  gfloat min_width, natural_width;
   GList *l;
 
-  st_widget_get_padding (ST_WIDGET (actor), &padding);
-
-  if (min_width_p)
-    *min_width_p = padding.left + padding.right;
-
-  if (natural_width_p)
-    *natural_width_p = padding.left + padding.right;
-
-  if (priv->children == NULL)
-    return;
+  min_width = 0;
+  natural_width = 0;
 
   for (l = priv->children; l; l = g_list_next (l))
     {
@@ -457,55 +449,59 @@ st_box_layout_get_preferred_width (ClutterActor *actor,
 
       if (priv->is_vertical)
         {
-          if (min_width_p)
-            *min_width_p = MAX (child_min, *min_width_p);
-
-          if (natural_width_p)
-            *natural_width_p = MAX (child_nat, *natural_width_p);
+          min_width = MAX (child_min, min_width);
+          natural_width = MAX (child_nat, natural_width);
         }
       else
         {
-          if (min_width_p)
-            *min_width_p += child_min;
-
-          if (natural_width_p)
-            *natural_width_p += child_nat;
-
+          min_width += child_min;
+          natural_width += child_nat;
         }
     }
 
-
   if (!priv->is_vertical && n_children > 1)
     {
-      if (min_width_p)
-        *min_width_p += priv->spacing * (n_children - 1);
-
-      if (natural_width_p)
-        *natural_width_p += priv->spacing * (n_children - 1);
+      min_width += priv->spacing * (n_children - 1);
+      natural_width += priv->spacing * (n_children - 1);
     }
+
+  if (min_width_p)
+    *min_width_p = min_width;
+
+  if (natural_width_p)
+    *natural_width_p = natural_width;
 }
 
 static void
-st_box_layout_get_preferred_height (ClutterActor *actor,
-                                    gfloat        for_width,
-                                    gfloat       *min_height_p,
-                                    gfloat       *natural_height_p)
+st_box_layout_get_preferred_width (ClutterActor *actor,
+                                   gfloat        for_height,
+                                   gfloat       *min_width_p,
+                                   gfloat       *natural_width_p)
 {
-  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
-  StPadding padding = { 0, };
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+
+  st_theme_node_adjust_for_height (theme_node, &for_height);
+
+  get_content_preferred_width (ST_BOX_LAYOUT (actor), for_height,
+                               min_width_p, natural_width_p);
+
+  st_theme_node_adjust_preferred_width (theme_node,
+                                        min_width_p, natural_width_p);
+}
+
+static void
+get_content_preferred_height (StBoxLayout *self,
+                              gfloat       for_width,
+                              gfloat      *min_height_p,
+                              gfloat      *natural_height_p)
+{
+  StBoxLayoutPrivate *priv = self->priv;
   gint n_children = 0;
+  gfloat min_height, natural_height;
   GList *l;
 
-  st_widget_get_padding (ST_WIDGET (actor), &padding);
-
-  if (min_height_p)
-    *min_height_p = padding.top + padding.bottom;
-
-  if (natural_height_p)
-    *natural_height_p = padding.top + padding.bottom;
-
-  if (priv->children == NULL)
-    return;
+  min_height = 0;
+  natural_height = 0;
 
   for (l = priv->children; l; l = g_list_next (l))
     {
@@ -523,30 +519,44 @@ st_box_layout_get_preferred_height (ClutterActor *actor,
 
       if (!priv->is_vertical)
         {
-          if (min_height_p)
-            *min_height_p = MAX (child_min, *min_height_p);
-
-          if (natural_height_p)
-            *natural_height_p = MAX (child_nat, *natural_height_p);
+          min_height = MAX (child_min, min_height);
+          natural_height = MAX (child_nat, natural_height);
         }
       else
         {
-          if (min_height_p)
-            *min_height_p += child_min;
-
-          if (natural_height_p)
-            *natural_height_p += child_nat;
+          min_height += child_min;
+          natural_height += child_nat;
         }
     }
 
   if (priv->is_vertical && n_children > 1)
     {
-      if (min_height_p)
-        *min_height_p += priv->spacing * (n_children - 1);
-
-      if (natural_height_p)
-        *natural_height_p += priv->spacing * (n_children - 1);
+      min_height += priv->spacing * (n_children - 1);
+      natural_height += priv->spacing * (n_children - 1);
     }
+
+  if (min_height_p)
+    *min_height_p = min_height;
+
+  if (natural_height_p)
+    *natural_height_p = natural_height;
+}
+
+static void
+st_box_layout_get_preferred_height (ClutterActor *actor,
+                                    gfloat        for_width,
+                                    gfloat       *min_height_p,
+                                    gfloat       *natural_height_p)
+{
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+
+  st_theme_node_adjust_for_width (theme_node, &for_width);
+
+  get_content_preferred_height (ST_BOX_LAYOUT (actor), for_width,
+                                min_height_p, natural_height_p);
+
+  st_theme_node_adjust_preferred_height (theme_node,
+                                         min_height_p, natural_height_p);
 }
 
 static void
@@ -555,8 +565,9 @@ st_box_layout_allocate (ClutterActor          *actor,
                         ClutterAllocationFlags flags)
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
+  ClutterActorBox content_box;
   gfloat avail_width, avail_height, pref_width, pref_height;
-  StPadding padding = { 0, };
   gfloat position = 0;
   GList *l;
   gint n_expand_children, extra_space;
@@ -567,18 +578,15 @@ st_box_layout_allocate (ClutterActor          *actor,
   if (priv->children == NULL)
     return;
 
-  st_widget_get_padding (ST_WIDGET (actor), &padding);
-  avail_width  = box->x2 - box->x1
-                 - padding.left
-                 - padding.right;
-  avail_height = box->y2 - box->y1
-                 - padding.top
-                 - padding.bottom;
+  st_theme_node_get_content_box (theme_node, box, &content_box);
 
-  st_box_layout_get_preferred_height (actor, avail_width, NULL,
-                                      &pref_height);
-  st_box_layout_get_preferred_width (actor, avail_height, NULL,
-                                     &pref_width);
+  avail_width  = content_box.x2 - content_box.x1;
+  avail_height = content_box.y2 - content_box.y1;
+
+  get_content_preferred_height (ST_BOX_LAYOUT (actor), avail_width,
+                                NULL, &pref_height);
+  get_content_preferred_width (ST_BOX_LAYOUT (actor), avail_height,
+                               NULL, &pref_width);
 
   /* update adjustments for scrolling */
   if (priv->vadjustment)
@@ -644,9 +652,9 @@ st_box_layout_allocate (ClutterActor          *actor,
     }
 
   if (priv->is_vertical)
-    position = padding.top;
+    position = content_box.y1;
   else
-    position = padding.left;
+    position = content_box.x1;
 
   if (priv->is_pack_start)
     l = g_list_last (priv->children);
@@ -684,8 +692,8 @@ st_box_layout_allocate (ClutterActor          *actor,
             child_box.y2 = position + child_nat + extra_space;
           else
             child_box.y2 = position + child_nat;
-          child_box.x1 = padding.left;
-          child_box.x2 = avail_width;
+          child_box.x1 = content_box.x1;
+          child_box.x2 = content_box.x2;
 
           _st_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
@@ -708,8 +716,8 @@ st_box_layout_allocate (ClutterActor          *actor,
           else
             child_box.x2 = position + child_nat;
 
-          child_box.y1 = padding.top;
-          child_box.y2 = avail_height;
+          child_box.y1 = content_box.y1;
+          child_box.y2 = content_box.y2;
           _st_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
 

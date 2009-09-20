@@ -112,8 +112,6 @@ StThemeNode  *st_widget_get_theme_node       (StWidget  *widget);
 
 ClutterActor *st_widget_get_background_image (StWidget  *actor);
 ClutterActor *st_widget_get_border_image     (StWidget  *actor);
-void          st_widget_get_padding          (StWidget  *widget,
-                                              StPadding *padding);
 void          st_widget_draw_background      (StWidget  *widget);
 
 G_END_DECLS

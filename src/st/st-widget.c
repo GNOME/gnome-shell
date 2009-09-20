@@ -28,6 +28,7 @@
 #include "config.h"
 #endif
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -42,14 +43,13 @@
 #include "st-theme-context.h"
 #include "st-tooltip.h"
 
+#include <big/rectangle.h>
+
 /*
  * Forward declaration for sake of StWidgetChild
  */
 struct _StWidgetPrivate
 {
-  StPadding     border;
-  StPadding     padding;
-
   StTheme      *theme;
   StThemeNode  *theme_node;
   gchar        *pseudo_class;
@@ -105,6 +105,9 @@ static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_ABSTRACT_TYPE (StWidget, st_widget, CLUTTER_TYPE_ACTOR);
 
 #define ST_WIDGET_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_WIDGET, StWidgetPrivate))
+
+static void st_widget_recompute_style (StWidget    *widget,
+                                       StThemeNode *old_theme_node);
 
 static void
 st_widget_set_property (GObject      *gobject,
@@ -484,7 +487,6 @@ st_widget_real_style_changed (StWidget *self)
   const char *bg_file = NULL;
   gboolean relayout_needed = FALSE;
   gboolean has_changed = FALSE;
-  StPadding padding;
   ClutterColor color;
 
   /* application has request this widget is not stylable */
@@ -498,21 +500,6 @@ st_widget_real_style_changed (StWidget *self)
     {
       priv->bg_color = color;
       has_changed = TRUE;
-    }
-
-  padding.top = st_theme_node_get_padding (theme_node, ST_SIDE_TOP);
-  padding.right = st_theme_node_get_padding (theme_node, ST_SIDE_RIGHT);
-  padding.bottom = st_theme_node_get_padding (theme_node, ST_SIDE_BOTTOM);
-  padding.left = st_theme_node_get_padding (theme_node, ST_SIDE_LEFT);
-
-  if (priv->padding.top != padding.top ||
-      priv->padding.left != padding.left ||
-      priv->padding.right != padding.right ||
-      priv->padding.bottom != padding.bottom)
-    {
-      priv->padding = padding;
-      has_changed = TRUE;
-      relayout_needed = TRUE;
     }
 
   if (priv->border_image)
@@ -597,18 +584,21 @@ st_widget_real_style_changed (StWidget *self)
 void
 st_widget_style_changed (StWidget *widget)
 {
+  StThemeNode *old_theme_node = NULL;
+
   widget->priv->is_style_dirty = TRUE;
   if (widget->priv->theme_node)
     {
-      g_object_unref (widget->priv->theme_node);
+      old_theme_node = widget->priv->theme_node;
       widget->priv->theme_node = NULL;
     }
 
   /* update the style only if we are mapped */
-  if (!CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
-    return;
+  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
+    st_widget_recompute_style (widget, old_theme_node);
 
-  st_widget_ensure_style (widget);
+  if (old_theme_node)
+    g_object_unref (old_theme_node);
 }
 
 static void
@@ -1064,6 +1054,20 @@ st_widget_init (StWidget *actor)
   g_signal_connect (actor, "notify::name", G_CALLBACK (st_widget_name_notify), NULL);
 }
 
+static void
+st_widget_recompute_style (StWidget    *widget,
+                           StThemeNode *old_theme_node)
+{
+  StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
+
+  if (!old_theme_node ||
+      !st_theme_node_geometry_equal (old_theme_node, new_theme_node))
+    clutter_actor_queue_relayout ((ClutterActor *) widget);
+
+  g_signal_emit (widget, signals[STYLE_CHANGED], 0);
+  widget->priv->is_style_dirty = FALSE;
+}
+
 /**
  * st_widget_ensure_style:
  * @widget: A #StWidget
@@ -1077,10 +1081,7 @@ st_widget_ensure_style (StWidget *widget)
   g_return_if_fail (ST_IS_WIDGET (widget));
 
   if (widget->priv->is_style_dirty)
-    {
-      g_signal_emit (widget, signals[STYLE_CHANGED], 0);
-      widget->priv->is_style_dirty = FALSE;
-    }
+    st_widget_recompute_style (widget, NULL);
 }
 
 /**
@@ -1115,25 +1116,6 @@ st_widget_get_background_image (StWidget *actor)
 {
   StWidgetPrivate *priv = ST_WIDGET (actor)->priv;
   return priv->background_image;
-}
-
-/**
- * st_widget_get_padding:
- * @widget: A #StWidget
- * @padding: A pointer to an #StPadding to fill
- *
- * Gets the padding of the widget, set using the "padding" CSS property. This
- * function should normally only be used by subclasses.
- *
- */
-void
-st_widget_get_padding (StWidget  *widget,
-                       StPadding *padding)
-{
-  g_return_if_fail (ST_IS_WIDGET (widget));
-  g_return_if_fail (padding != NULL);
-
-  *padding = widget->priv->padding;
 }
 
 /**
