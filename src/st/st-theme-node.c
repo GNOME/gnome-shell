@@ -33,9 +33,13 @@ struct _StThemeNode {
   char *element_id;
   char *element_class;
   char *pseudo_class;
+  char *inline_style;
 
   CRDeclaration **properties;
   int n_properties;
+
+  /* We hold onto these separately so we can destroy them on finalize */
+  CRDeclaration *inline_properties;
 
   guint properties_computed : 1;
   guint borders_computed : 1;
@@ -76,12 +80,19 @@ st_theme_node_finalize (GObject *object)
   g_free (node->element_id);
   g_free (node->element_class);
   g_free (node->pseudo_class);
+  g_free (node->inline_style);
 
   if (node->properties)
     {
       g_free (node->properties);
       node->properties = NULL;
       node->n_properties = 0;
+    }
+
+  if (node->inline_properties)
+    {
+      /* This destroys the list, not just the head of the list */
+      cr_declaration_destroy (node->inline_properties);
     }
 
   if (node->font_desc)
@@ -131,7 +142,8 @@ st_theme_node_new (StThemeContext    *context,
                    GType              element_type,
                    const char        *element_id,
                    const char        *element_class,
-                   const char        *pseudo_class)
+                   const char        *pseudo_class,
+                   const char        *inline_style)
 {
   StThemeNode *node;
 
@@ -156,6 +168,7 @@ st_theme_node_new (StThemeContext    *context,
   node->element_id = g_strdup (element_id);
   node->element_class = g_strdup (element_class);
   node->pseudo_class = g_strdup (pseudo_class);
+  node->inline_style = g_strdup (inline_style);
 
   return node;
 }
@@ -230,11 +243,32 @@ ensure_properties (StThemeNode *node)
 {
   if (!node->properties_computed)
     {
+      GPtrArray *properties = NULL;
+
       node->properties_computed = TRUE;
 
       if (node->theme)
-        _st_theme_get_matched_properties (node->theme, node,
-                                          &node->properties, &node->n_properties);
+        properties = _st_theme_get_matched_properties (node->theme, node);
+
+      if (node->inline_style)
+        {
+          CRDeclaration *cur_decl;
+
+          if (!properties)
+            properties = g_ptr_array_new ();
+
+          node->inline_properties = cr_declaration_parse_list_from_buf ((const guchar *)node->inline_style,
+                                                                        CR_UTF_8);
+
+          for (cur_decl = node->inline_properties; cur_decl; cur_decl = cur_decl->next)
+            g_ptr_array_add (properties, cur_decl);
+        }
+
+      if (properties)
+        {
+          node->n_properties = properties->len;
+          node->properties = (CRDeclaration **)g_ptr_array_free (properties, FALSE);
+        }
     }
 }
 

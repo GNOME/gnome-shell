@@ -7,10 +7,8 @@
 
 G_BEGIN_DECLS
 
-void _st_theme_get_matched_properties (StTheme         *theme,
-                                       StThemeNode     *node,
-                                       CRDeclaration ***properties,
-                                       int             *n_properties);
+GPtrArray *_st_theme_get_matched_properties (StTheme       *theme,
+                                             StThemeNode   *node);
 
 /* Resolve an URL from the stylesheet to a filename */
 char *_st_theme_resolve_url (StTheme      *theme,

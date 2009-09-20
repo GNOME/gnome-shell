@@ -86,6 +86,9 @@ G_CONST_RETURN gchar *st_widget_get_style_pseudo_class (StWidget    *actor);
 void                  st_widget_set_style_class_name   (StWidget    *actor,
                                                         const gchar *style_class);
 G_CONST_RETURN gchar *st_widget_get_style_class_name   (StWidget    *actor);
+void                  st_widget_set_style              (StWidget    *actor,
+                                                        const gchar *style);
+G_CONST_RETURN gchar *st_widget_get_style              (StWidget    *actor);
 void                  st_widget_set_theme              (StWidget    *actor,
                                                         StTheme     *theme);
 StTheme *             st_widget_get_theme              (StWidget    *actor);
