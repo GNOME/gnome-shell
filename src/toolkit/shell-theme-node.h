@@ -121,6 +121,26 @@ const PangoFontDescription *shell_theme_node_get_font (ShellThemeNode *node);
  */
 ShellThemeImage *shell_theme_node_get_background_theme_image (ShellThemeNode *node);
 
+/* Helpers for get_preferred_width()/get_preferred_height() ClutterActor vfuncs */
+void shell_theme_node_adjust_for_height       (ShellThemeNode  *node,
+                                               float           *for_height);
+void shell_theme_node_adjust_preferred_width  (ShellThemeNode  *node,
+                                               float           *min_width_p,
+                                               float           *natural_width_p);
+void shell_theme_node_adjust_for_width        (ShellThemeNode  *node,
+                                               float           *for_width);
+void shell_theme_node_adjust_preferred_height (ShellThemeNode  *node,
+                                               float           *min_height_p,
+                                               float           *natural_height_p);
+
+/* Helper for allocate() ClutterActor vfunc */
+void shell_theme_node_get_content_box         (ShellThemeNode        *node,
+                                               const ClutterActorBox *actor_box,
+                                               ClutterActorBox       *content_box);
+
+gboolean shell_theme_node_geometry_equal (ShellThemeNode *node,
+                                          ShellThemeNode *other);
+
 G_END_DECLS
 
 #endif /* __SHELL_THEME_NODE_H__ */

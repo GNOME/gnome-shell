@@ -197,23 +197,22 @@ nbtk_bin_allocate (ClutterActor          *self,
 
   if (priv->child)
     {
+      ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (self));
       gfloat natural_width, natural_height;
       gfloat min_width, min_height;
       gfloat child_width, child_height;
       gfloat available_width, available_height;
       ClutterRequestMode request;
+      ClutterActorBox content_box;
       ClutterActorBox allocation = { 0, };
-      NbtkPadding padding = { 0, };
       gdouble x_align, y_align;
+
+      shell_theme_node_get_content_box (theme_node, box, &content_box);
 
       _nbtk_bin_get_align_factors (NBTK_BIN (self), &x_align, &y_align);
 
-      nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-
-      available_width  = box->x2 - box->x1
-                       - padding.left - padding.right;
-      available_height = box->y2 - box->y1
-                       - padding.top - padding.bottom;
+      available_width  = content_box.x2 - content_box.x1;
+      available_height = content_box.y2 - content_box.y1;
 
       if (available_width < 0)
         available_width = 0;
@@ -223,14 +222,14 @@ nbtk_bin_allocate (ClutterActor          *self,
 
       if (priv->x_fill)
         {
-          allocation.x1 = (int) padding.top;
-          allocation.x2 = (int) (allocation.x1 + available_width);
+          allocation.x1 = (int) content_box.x1;
+          allocation.x2 = (int) content_box.x2;
         }
 
       if (priv->y_fill)
         {
-          allocation.y1 = (int) padding.right;
-          allocation.y2 = (int) (allocation.y1 + available_height);
+          allocation.y1 = (int) content_box.y1;
+          allocation.y2 = (int) content_box.y2;
         }
 
       /* if we are filling horizontally and vertically then we're done */
@@ -274,15 +273,13 @@ nbtk_bin_allocate (ClutterActor          *self,
 
       if (!priv->x_fill)
         {
-          allocation.x1 = (int) ((available_width - child_width) * x_align
-                        + padding.left);
+          allocation.x1 = content_box.x1 + (int) ((available_width - child_width) * x_align);
           allocation.x2 = allocation.x1 + child_width;
         }
 
       if (!priv->y_fill)
         {
-          allocation.y1 = (int) ((available_height - child_height) * y_align
-                        + padding.top);
+          allocation.y1 = content_box.y1 + (int) ((available_height - child_height) * y_align);
           allocation.y2 = allocation.y1 + child_height;
         }
 
@@ -297,33 +294,26 @@ nbtk_bin_get_preferred_width (ClutterActor *self,
                               gfloat  *natural_width_p)
 {
   NbtkBinPrivate *priv = NBTK_BIN (self)->priv;
-  gfloat min_width, natural_width;
-  NbtkPadding padding = { 0, };
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (self));
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-
-  min_width = natural_width = padding.left + padding.right;
+  shell_theme_node_adjust_for_height (theme_node, &for_height);
 
   if (priv->child == NULL)
     {
       if (min_width_p)
-        *min_width_p = min_width;
+	*min_width_p = 0;
 
       if (natural_width_p)
-        *natural_width_p = natural_width;
+        *natural_width_p = 0;
     }
   else
     {
       clutter_actor_get_preferred_width (priv->child, for_height,
                                          min_width_p,
                                          natural_width_p);
-
-      if (min_width_p)
-        *min_width_p += min_width;
-
-      if (natural_width_p)
-        *natural_width_p += natural_width;
     }
+
+  shell_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
 
 static void
@@ -333,33 +323,26 @@ nbtk_bin_get_preferred_height (ClutterActor *self,
                                gfloat  *natural_height_p)
 {
   NbtkBinPrivate *priv = NBTK_BIN (self)->priv;
-  gfloat min_height, natural_height;
-  NbtkPadding padding = { 0, };
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (self));
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-
-  min_height = natural_height = padding.top + padding.bottom;
+  shell_theme_node_adjust_for_width (theme_node, &for_width);
 
   if (priv->child == NULL)
     {
       if (min_height_p)
-        *min_height_p = min_height;
+        *min_height_p = 0;
 
       if (natural_height_p)
-        *natural_height_p = natural_height;
+        *natural_height_p = 0;
     }
   else
     {
       clutter_actor_get_preferred_height (priv->child, for_width,
                                           min_height_p,
                                           natural_height_p);
-
-      if (min_height_p)
-        *min_height_p += min_height;
-
-      if (natural_height_p)
-        *natural_height_p += natural_height;
     }
+
+  shell_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
 static void
@@ -753,30 +736,4 @@ nbtk_bin_get_fill (NbtkBin  *bin,
 
   if (y_fill)
     *y_fill = bin->priv->y_fill;
-}
-
-static gpointer
-nbtk_padding_copy (gpointer data)
-{
-  return g_slice_dup (NbtkPadding, data);
-}
-
-static void
-nbtk_padding_free (gpointer data)
-{
-  if (G_LIKELY (data))
-    g_slice_free (NbtkPadding, data);
-}
-
-GType
-nbtk_padding_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (our_type == 0))
-    our_type = g_boxed_type_register_static (I_("NbtkPadding"),
-                                             nbtk_padding_copy,
-                                             nbtk_padding_free);
-
-  return our_type;
 }

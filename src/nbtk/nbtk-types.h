@@ -30,27 +30,6 @@ G_BEGIN_DECLS
 
 #define NBTK_TYPE_PADDING               (nbtk_padding_get_type ())
 
-typedef struct _NbtkPadding             NbtkPadding;
-
-/**
- * NbtkPadding:
- * @top: padding from the top
- * @right: padding from the right
- * @bottom: padding from the bottom
- * @left: padding from the left
- *
- * The padding from the internal border of the parent container.
- */
-struct _NbtkPadding
-{
-  gfloat top;
-  gfloat right;
-  gfloat bottom;
-  gfloat left;
-};
-
-GType nbtk_padding_get_type (void) G_GNUC_CONST;
-
 /**
  * NbtkAlignment:
  * @NBTK_ALIGN_TOP: align to the top (vertically)

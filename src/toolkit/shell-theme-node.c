@@ -1,5 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -1918,4 +1919,184 @@ shell_theme_node_get_background_theme_image (ShellThemeNode *node)
     }
 
   return NULL;
+}
+
+static float
+get_width_inc (ShellThemeNode *node)
+{
+  return (round (node->border_width[SHELL_SIDE_LEFT]) + node->padding[SHELL_SIDE_LEFT] +
+          round (node->border_width[SHELL_SIDE_RIGHT]) + node->padding[SHELL_SIDE_RIGHT]);
+}
+
+static float
+get_height_inc (ShellThemeNode *node)
+{
+  return (round (node->border_width[SHELL_SIDE_TOP]) + node->padding[SHELL_SIDE_TOP] +
+          round (node->border_width[SHELL_SIDE_BOTTOM]) + node->padding[SHELL_SIDE_BOTTOM]);
+}
+
+/**
+ * shell_theme_node_adjust_for_height:
+ * @node: a #ShellThemeNode
+ * @for_height: (inout): the "for height" to adjust
+ *
+ * Adjusts a "for height" passed to clutter_actor_get_preferred_width() to
+ * account for borders and padding. This is a convenience function meant
+ * to be called from a get_preferred_width() method of a #ClutterActor
+ * subclass. The value after adjustment is the height available for the actor's
+ * content.
+ */
+void
+shell_theme_node_adjust_for_height (ShellThemeNode  *node,
+                                    float           *for_height)
+{
+  g_return_if_fail (SHELL_IS_THEME_NODE (node));
+  g_return_if_fail (for_height != NULL);
+
+  if (*for_height >= 0)
+    {
+      float height_inc = get_height_inc (node);
+      *for_height = MAX (0, *for_height - height_inc);
+    }
+}
+
+/**
+ * shell_theme_node_adjust_preferred_width:
+ * @node: a #ShellThemeNode
+ * @min_width_p: (inout) (allow-none): the width to adjust
+ * @for_height: (inout): the height to adjust
+ *
+ * Adjusts the minimum and natural width computed for an actor by
+ * adding on the necessary space for borders and padding. This is a
+ * convenience function meant to be called from the get_preferred_width()
+ * method of a #ClutterActor subclass
+ */
+void
+shell_theme_node_adjust_preferred_width (ShellThemeNode  *node,
+                                         float           *min_width_p,
+                                         float           *natural_width_p)
+{
+  float width_inc;
+
+  g_return_if_fail (SHELL_IS_THEME_NODE (node));
+
+  ensure_borders (node);
+
+  width_inc = get_width_inc (node);
+
+  if (min_width_p)
+    *min_width_p += width_inc;
+  if (natural_width_p)
+    *natural_width_p += width_inc;
+}
+
+/**
+ * shell_theme_node_adjust_for_width:
+ * @node: a #ShellThemeNode
+ * @for_width: (inout): the "for width" to adjust
+ *
+ * Adjusts a "for width" passed to clutter_actor_get_preferred_height() to
+ * account for borders and padding. This is a convenience function meant
+ * to be called from a get_preferred_height() method of a #ClutterActor
+ * subclass. The value after adjustmnet is the width available for the actor's
+ * content.
+ */
+void
+shell_theme_node_adjust_for_width (ShellThemeNode  *node,
+                                   float           *for_width)
+{
+  g_return_if_fail (SHELL_IS_THEME_NODE (node));
+  g_return_if_fail (for_width != NULL);
+
+  if (*for_width >= 0)
+    {
+      float width_inc = get_width_inc (node);
+      *for_width = MAX (0, *for_width - width_inc);
+    }
+}
+
+/**
+ * shell_theme_node_adjust_preferred_height:
+ * @node: a #ShellThemeNode
+ * @min_height_p: (inout) (allow-none): the height to adjust
+ * @for_height: (inout): the height to adjust
+ *
+ * Adjusts the minimum and natural height computed for an actor by
+ * adding on the necessary space for borders and padding. This is a
+ * convenience function meant to be called from the get_preferred_height()
+ * method of a #ClutterActor subclass
+ */
+void
+shell_theme_node_adjust_preferred_height (ShellThemeNode  *node,
+                                          float           *min_height_p,
+                                          float           *natural_height_p)
+{
+  float height_inc;
+
+  g_return_if_fail (SHELL_IS_THEME_NODE (node));
+
+  ensure_borders (node);
+
+  height_inc = get_height_inc (node);
+
+  if (min_height_p)
+    *min_height_p += height_inc;
+  if (natural_height_p)
+    *natural_height_p += height_inc;
+}
+
+/**
+ * shell_theme_node_get_content_box:
+ * @node: a #ShellThemeNode
+ * @allocation: the box allocated to a #ClutterAlctor
+ * @content_box: (out): computed box occupied by the actor's content
+ *
+ * Gets the box within an actor's allocation that contents the content
+ * of an actor (excluding borders and padding). This is a convenience function
+ * meant to be used from the allocate() or paint() methods of a #ClutterActor
+ * subclass.
+ */
+void
+shell_theme_node_get_content_box (ShellThemeNode        *node,
+                                  const ClutterActorBox *allocation,
+                                  ClutterActorBox       *content_box)
+{
+  g_return_if_fail (SHELL_IS_THEME_NODE (node));
+
+  ensure_borders (node);
+
+  content_box->x1 = round (node->border_width[SHELL_SIDE_LEFT]) + node->padding[SHELL_SIDE_LEFT];
+  content_box->y1 = round (node->border_width[SHELL_SIDE_TOP]) + node->padding[SHELL_SIDE_TOP];
+  content_box->x2 = allocation->x2 - allocation->x1 - (round (node->border_width[SHELL_SIDE_RIGHT]) + node->padding[SHELL_SIDE_RIGHT]);
+  content_box->y2 = allocation->y2 - allocation->y1 - (round (node->border_width[SHELL_SIDE_BOTTOM]) + node->padding[SHELL_SIDE_BOTTOM]);
+}
+
+
+/**
+ * shell_theme_node_geometry_equal:
+ * @node: a #ShellThemeNode
+ * @node: a different #ShellThemeNode
+ *
+ * Tests if two theme nodes have the same borders and padding; this can be
+ * used to optimize having to relayout when the style applied to a Clutter
+ * actor changes colors without changing the geometry.
+ */
+gboolean
+shell_theme_node_geometry_equal (ShellThemeNode *node,
+                                 ShellThemeNode *other)
+{
+  ShellSide side;
+
+  ensure_borders (node);
+  ensure_borders (other);
+
+  for (side = SHELL_SIDE_TOP; side <= SHELL_SIDE_LEFT; side++)
+    {
+      if (node->border_width[side] != other->border_width[side])
+        return FALSE;
+      if (node->padding[side] != other->padding[side])
+        return FALSE;
+    }
+
+  return TRUE;
 }

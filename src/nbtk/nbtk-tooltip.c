@@ -146,12 +146,12 @@ nbtk_tooltip_get_preferred_width (ClutterActor *self,
                                   gfloat      *natural_width_p)
 {
   NbtkTooltipPrivate *priv = NBTK_TOOLTIP (self)->priv;
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (self));
   gfloat min_label_w, natural_label_w;
   gfloat label_height, arrow_height;
   ClutterActor *arrow_image;
-  NbtkPadding padding;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+  shell_theme_node_adjust_for_height (theme_node, &for_height);
 
   arrow_image = nbtk_widget_get_background_image (NBTK_WIDGET (self));
   if (arrow_image)
@@ -168,7 +168,7 @@ nbtk_tooltip_get_preferred_width (ClutterActor *self,
 
   if (for_height > -1)
     {
-      label_height = for_height - arrow_height - padding.top - padding.bottom;
+      label_height = for_height - arrow_height;
     }
   else
     {
@@ -188,16 +188,7 @@ nbtk_tooltip_get_preferred_width (ClutterActor *self,
       natural_label_w = 0;
     }
 
-
-  if (min_width_p)
-    {
-      *min_width_p = padding.left + padding.right + min_label_w;
-    }
-
-  if (natural_width_p)
-    {
-      *natural_width_p = padding.left + padding.right + natural_label_w;
-    }
+  shell_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
 
 static void
@@ -207,11 +198,12 @@ nbtk_tooltip_get_preferred_height (ClutterActor *self,
                                    gfloat       *natural_height_p)
 {
   NbtkTooltipPrivate *priv = NBTK_TOOLTIP (self)->priv;
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (self));
   gfloat arrow_height;
   gfloat min_label_h, natural_label_h;
-  gfloat label_width;
   ClutterActor *arrow_image;
-  NbtkPadding padding;
+
+  shell_theme_node_adjust_for_width (theme_node, &for_width);
 
   arrow_image = nbtk_widget_get_background_image (NBTK_WIDGET (self));
 
@@ -226,21 +218,11 @@ nbtk_tooltip_get_preferred_height (ClutterActor *self,
     {
       arrow_height = 0;
     }
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
-
-  if (for_width > -1)
-    {
-      label_width = for_width - padding.left - padding.right;
-    }
-  else
-    {
-      label_width = -1;
-    }
 
   if (priv->label)
     {
       clutter_actor_get_preferred_height (priv->label,
-                                          label_width,
+                                          for_width,
                                           &min_label_h,
                                           &natural_label_h);
     }
@@ -251,16 +233,12 @@ nbtk_tooltip_get_preferred_height (ClutterActor *self,
     }
 
   if (min_height_p)
-    {
-      *min_height_p = padding.top + padding.bottom
-                      + arrow_height + min_label_h;
-    }
+    *min_height_p = arrow_height + min_label_h;
 
   if (natural_height_p)
-    {
-      *natural_height_p = padding.top + padding.bottom
-                          + arrow_height + natural_label_h;
-    }
+    *natural_height_p = arrow_height + natural_label_h;
+
+  shell_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
 static void
@@ -269,16 +247,16 @@ nbtk_tooltip_allocate (ClutterActor          *self,
                        ClutterAllocationFlags flags)
 {
   NbtkTooltipPrivate *priv = NBTK_TOOLTIP (self)->priv;
-  ClutterActorBox child_box, arrow_box;
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (self));
+  ClutterActorBox content_box, child_box, arrow_box;
   gfloat arrow_height, arrow_width;
   ClutterActor *border_image, *arrow_image;
-  NbtkPadding padding;
 
   CLUTTER_ACTOR_CLASS (nbtk_tooltip_parent_class)->allocate (self,
                                                              box,
                                                              flags);
 
-  nbtk_widget_get_padding (NBTK_WIDGET (self), &padding);
+  shell_theme_node_get_content_box (theme_node, box, &content_box);
 
   arrow_image = nbtk_widget_get_background_image (NBTK_WIDGET (self));
 
@@ -313,11 +291,8 @@ nbtk_tooltip_allocate (ClutterActor          *self,
 
   if (priv->label)
     {
-      /* now remove the padding */
-      child_box.y1 += padding.top;
-      child_box.x1 += padding.left;
-      child_box.x2 -= padding.right;
-      child_box.y2 -= padding.bottom;
+      child_box = content_box;
+      child_box.y1 += arrow_height;
 
       clutter_actor_allocate (priv->label, &child_box, flags);
     }
@@ -455,7 +430,7 @@ nbtk_tooltip_update_position (NbtkTooltip *tooltip)
       return;
     }
 
-  /* we need to have a style in case there are padding values to take into
+  /* we need to have a style in case there are padding/border values to take into
    * account when calculating width/height */
   nbtk_widget_ensure_style ((NbtkWidget *) tooltip);
 

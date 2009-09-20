@@ -192,14 +192,13 @@ nbtk_scroll_view_get_preferred_width (ClutterActor *actor,
                                       gfloat       *min_width_p,
                                       gfloat       *natural_width_p)
 {
-  NbtkPadding padding;
-
   NbtkScrollViewPrivate *priv = NBTK_SCROLL_VIEW (actor)->priv;
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
 
   if (!priv->child)
     return;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  shell_theme_node_adjust_for_height (theme_node, &for_height);
 
   /* Our natural width is the natural width of the child */
   clutter_actor_get_preferred_width (priv->child,
@@ -219,12 +218,10 @@ nbtk_scroll_view_get_preferred_width (ClutterActor *actor,
         *natural_width_p += get_scrollbar_width (NBTK_SCROLL_VIEW (actor));
     }
 
-  /* Add space for padding */
   if (min_width_p)
-    *min_width_p = padding.left + padding.right;
+    *min_width_p = 0;
 
-  if (natural_width_p)
-    *natural_width_p += padding.left + padding.right;
+  shell_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
 
 static void
@@ -233,14 +230,13 @@ nbtk_scroll_view_get_preferred_height (ClutterActor *actor,
                                        gfloat       *min_height_p,
                                        gfloat       *natural_height_p)
 {
-  NbtkPadding padding;
-
   NbtkScrollViewPrivate *priv = NBTK_SCROLL_VIEW (actor)->priv;
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
 
   if (!priv->child)
     return;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  shell_theme_node_adjust_for_width (theme_node, &for_width);
 
   /* Our natural height is the natural height of the child */
   clutter_actor_get_preferred_height (priv->child,
@@ -260,12 +256,10 @@ nbtk_scroll_view_get_preferred_height (ClutterActor *actor,
         *natural_height_p += get_scrollbar_height (NBTK_SCROLL_VIEW (actor));
     }
 
-  /* Add space for padding */
   if (min_height_p)
-    *min_height_p = padding.top + padding.bottom;
+    *min_height_p = 0;
 
-  if (natural_height_p)
-    *natural_height_p += padding.top + padding.bottom;
+  shell_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
 static void
@@ -273,12 +267,12 @@ nbtk_scroll_view_allocate (ClutterActor          *actor,
                            const ClutterActorBox *box,
                            ClutterAllocationFlags flags)
 {
-  NbtkPadding padding;
-  ClutterActorBox child_box;
+  ClutterActorBox content_box, child_box;
   ClutterActorClass *parent_parent_class;
   gfloat avail_width, avail_height, sb_width, sb_height;
 
   NbtkScrollViewPrivate *priv = NBTK_SCROLL_VIEW (actor)->priv;
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
 
   /* Chain up to the parent's parent class
    *
@@ -293,10 +287,10 @@ nbtk_scroll_view_allocate (ClutterActor          *actor,
     allocate (actor, box, flags);
 
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  shell_theme_node_get_content_box (theme_node, box, &content_box);
 
-  avail_width = (box->x2 - box->x1) - padding.left - padding.right;
-  avail_height = (box->y2 - box->y1) - padding.top - padding.bottom;
+  avail_width = content_box.x2 - content_box.x1;
+  avail_height = content_box.y2 - content_box.y1;
 
   sb_width = get_scrollbar_width (NBTK_SCROLL_VIEW (actor));
   sb_height = get_scrollbar_width (NBTK_SCROLL_VIEW (actor));
@@ -310,10 +304,10 @@ nbtk_scroll_view_allocate (ClutterActor          *actor,
   /* Vertical scrollbar */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->vscroll))
     {
-      child_box.x1 = avail_width - sb_width;
-      child_box.y1 = padding.top;
-      child_box.x2 = avail_width;
-      child_box.y2 = child_box.y1 + avail_height - sb_height;
+      child_box.x1 = content_box.x2 - sb_width;
+      child_box.y1 = content_box.y1;
+      child_box.x2 = content_box.x2;
+      child_box.y2 = content_box.y2 - sb_height;
 
       clutter_actor_allocate (priv->vscroll, &child_box, flags);
     }
@@ -321,20 +315,20 @@ nbtk_scroll_view_allocate (ClutterActor          *actor,
   /* Horizontal scrollbar */
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->hscroll))
     {
-      child_box.x1 = padding.left;
-      child_box.x2 = child_box.x1 + avail_width - sb_width;
-      child_box.y1 = avail_height - sb_height;
-      child_box.y2 = avail_height;
+      child_box.x1 = content_box.x1;
+      child_box.y1 = content_box.y2 - sb_height;
+      child_box.x2 = content_box.x2 - sb_width;
+      child_box.y2 = content_box.y2;
 
       clutter_actor_allocate (priv->hscroll, &child_box, flags);
     }
 
 
   /* Child */
-  child_box.x1 = padding.left;
-  child_box.x2 = avail_width - sb_width;
-  child_box.y1 = padding.top;
-  child_box.y2 = avail_height - sb_height;
+  child_box.x1 = content_box.x1;
+  child_box.y1 = content_box.y1;
+  child_box.x2 = content_box.x2 - sb_width;
+  child_box.y2 = content_box.y2 - sb_height;
 
   if (priv->child)
       clutter_actor_allocate (priv->child, &child_box, flags);

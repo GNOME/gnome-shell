@@ -111,8 +111,6 @@ ShellThemeNode *nbtk_widget_get_theme_node     (NbtkWidget  *widget);
 
 ClutterActor *nbtk_widget_get_background_image (NbtkWidget  *actor);
 ClutterActor *nbtk_widget_get_border_image     (NbtkWidget  *actor);
-void          nbtk_widget_get_padding          (NbtkWidget  *widget,
-                                                NbtkPadding *padding);
 void          nbtk_widget_draw_background      (NbtkWidget  *widget);
 
 G_END_DECLS

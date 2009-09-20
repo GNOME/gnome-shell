@@ -130,19 +130,15 @@ nbtk_label_get_preferred_width (ClutterActor *actor,
                                 gfloat       *natural_width_p)
 {
   NbtkLabelPrivate *priv = NBTK_LABEL (actor)->priv;
-  NbtkPadding padding = { 0, };
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  shell_theme_node_adjust_for_height (theme_node, &for_height);
 
   clutter_actor_get_preferred_width (priv->label, for_height,
                                      min_width_p,
                                      natural_width_p);
 
-  if (min_width_p)
-    *min_width_p += padding.left + padding.right;
-
-  if (natural_width_p)
-    *natural_width_p += padding.left + padding.right;
+  shell_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
 
 static void
@@ -152,19 +148,15 @@ nbtk_label_get_preferred_height (ClutterActor *actor,
                                  gfloat       *natural_height_p)
 {
   NbtkLabelPrivate *priv = NBTK_LABEL (actor)->priv;
-  NbtkPadding padding = { 0, };
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  shell_theme_node_adjust_for_width (theme_node, &for_width);
 
   clutter_actor_get_preferred_height (priv->label, for_width,
                                       min_height_p,
                                       natural_height_p);
 
-  if (min_height_p)
-    *min_height_p += padding.top + padding.bottom;
-
-  if (natural_height_p)
-    *natural_height_p += padding.top + padding.bottom;
+  shell_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
 static void
@@ -173,21 +165,16 @@ nbtk_label_allocate (ClutterActor          *actor,
                      ClutterAllocationFlags flags)
 {
   NbtkLabelPrivate *priv = NBTK_LABEL (actor)->priv;
+  ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
   ClutterActorClass *parent_class;
-  ClutterActorBox child_box;
-  NbtkPadding padding = { 0, };
+  ClutterActorBox content_box;
 
-  nbtk_widget_get_padding (NBTK_WIDGET (actor), &padding);
+  shell_theme_node_get_content_box (theme_node, box, &content_box);
 
   parent_class = CLUTTER_ACTOR_CLASS (nbtk_label_parent_class);
   parent_class->allocate (actor, box, flags);
 
-  child_box.x1 = padding.left;
-  child_box.y1 = padding.top;
-  child_box.x2 = box->x2 - box->x1 - padding.right;
-  child_box.y2 = box->y2 - box->y1 - padding.bottom;
-
-  clutter_actor_allocate (priv->label, &child_box, flags);
+  clutter_actor_allocate (priv->label, &content_box, flags);
 }
 
 static void

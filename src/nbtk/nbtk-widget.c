@@ -27,6 +27,7 @@
 #include "config.h"
 #endif
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -41,15 +42,13 @@
 #include "nbtk-tooltip.h"
 
 #include <toolkit/shell-theme-context.h>
+#include <big/rectangle.h>
 
 /*
  * Forward declaration for sake of NbtkWidgetChild
  */
 struct _NbtkWidgetPrivate
 {
-  NbtkPadding border;
-  NbtkPadding padding;
-
   ShellTheme *theme;
   ShellThemeNode *theme_node;
   gchar *pseudo_class;
@@ -105,6 +104,9 @@ static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_ABSTRACT_TYPE (NbtkWidget, nbtk_widget, CLUTTER_TYPE_ACTOR);
 
 #define NBTK_WIDGET_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), NBTK_TYPE_WIDGET, NbtkWidgetPrivate))
+
+static void nbtk_widget_recompute_style (NbtkWidget     *widget,
+					 ShellThemeNode *old_theme_node);
 
 static void
 nbtk_widget_set_property (GObject      *gobject,
@@ -484,7 +486,6 @@ nbtk_widget_real_style_changed (NbtkWidget *self)
   const char *bg_file = NULL;
   gboolean relayout_needed = FALSE;
   gboolean has_changed = FALSE;
-  NbtkPadding padding;
   ClutterColor color;
 
   /* application has request this widget is not stylable */
@@ -498,21 +499,6 @@ nbtk_widget_real_style_changed (NbtkWidget *self)
     {
       priv->bg_color = color;
       has_changed = TRUE;
-    }
-
-  padding.top = shell_theme_node_get_padding (theme_node, SHELL_SIDE_TOP);
-  padding.right = shell_theme_node_get_padding (theme_node, SHELL_SIDE_RIGHT);
-  padding.bottom = shell_theme_node_get_padding (theme_node, SHELL_SIDE_BOTTOM);
-  padding.left = shell_theme_node_get_padding (theme_node, SHELL_SIDE_LEFT);
-
-  if (priv->padding.top != padding.top ||
-      priv->padding.left != padding.left ||
-      priv->padding.right != padding.right ||
-      priv->padding.bottom != padding.bottom)
-    {
-      priv->padding = padding;
-      has_changed = TRUE;
-      relayout_needed = TRUE;
     }
 
   if (priv->border_image)
@@ -600,18 +586,21 @@ nbtk_widget_real_style_changed (NbtkWidget *self)
 void
 nbtk_widget_style_changed (NbtkWidget *widget)
 {
+  ShellThemeNode *old_theme_node = NULL;
+
   widget->priv->is_style_dirty = TRUE;
   if (widget->priv->theme_node)
     {
-      g_object_unref (widget->priv->theme_node);
+      old_theme_node = widget->priv->theme_node;
       widget->priv->theme_node = NULL;
     }
 
   /* update the style only if we are mapped */
-  if (!CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
-    return;
+  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
+    nbtk_widget_recompute_style (widget, old_theme_node);
 
-  nbtk_widget_ensure_style (widget);
+  if (old_theme_node)
+    g_object_unref (old_theme_node);
 }
 
 static void
@@ -1067,6 +1056,20 @@ nbtk_widget_init (NbtkWidget *actor)
   g_signal_connect (actor, "notify::name", G_CALLBACK (nbtk_widget_name_notify), NULL);
 }
 
+static void
+nbtk_widget_recompute_style (NbtkWidget     *widget,
+			     ShellThemeNode *old_theme_node)
+{
+  ShellThemeNode *new_theme_node = nbtk_widget_get_theme_node (widget);
+
+  if (!old_theme_node ||
+      !shell_theme_node_geometry_equal (old_theme_node, new_theme_node))
+    clutter_actor_queue_relayout ((ClutterActor *) widget);
+
+  g_signal_emit (widget, signals[STYLE_CHANGED], 0);
+  widget->priv->is_style_dirty = FALSE;
+}
+
 /**
  * nbtk_widget_ensure_style:
  * @widget: A #NbtkWidget
@@ -1080,10 +1083,7 @@ nbtk_widget_ensure_style (NbtkWidget *widget)
   g_return_if_fail (NBTK_IS_WIDGET (widget));
 
   if (widget->priv->is_style_dirty)
-    {
-      g_signal_emit (widget, signals[STYLE_CHANGED], 0);
-      widget->priv->is_style_dirty = FALSE;
-    }
+    nbtk_widget_recompute_style (widget, NULL);
 }
 
 /**
@@ -1118,25 +1118,6 @@ nbtk_widget_get_background_image (NbtkWidget *actor)
 {
   NbtkWidgetPrivate *priv = NBTK_WIDGET (actor)->priv;
   return priv->background_image;
-}
-
-/**
- * nbtk_widget_get_padding:
- * @widget: A #NbtkWidget
- * @padding: A pointer to an #NbtkPadding to fill
- *
- * Gets the padding of the widget, set using the "padding" CSS property. This
- * function should normally only be used by subclasses.
- *
- */
-void
-nbtk_widget_get_padding (NbtkWidget *widget,
-                         NbtkPadding *padding)
-{
-  g_return_if_fail (NBTK_IS_WIDGET (widget));
-  g_return_if_fail (padding != NULL);
-
-  *padding = widget->priv->padding;
 }
 
 /**
