@@ -21,11 +21,18 @@ typedef struct _StThemeNodeClass StThemeNodeClass;
 #define ST_THEME_NODE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj),     ST_TYPE_THEME_NODE, StThemeNodeClass))
 
 typedef enum {
-    ST_SIDE_LEFT,
-    ST_SIDE_RIGHT,
     ST_SIDE_TOP,
-    ST_SIDE_BOTTOM
+    ST_SIDE_RIGHT,
+    ST_SIDE_BOTTOM,
+    ST_SIDE_LEFT
 } StSide;
+
+typedef enum {
+    ST_CORNER_TOPLEFT,
+    ST_CORNER_TOPRIGHT,
+    ST_CORNER_BOTTOMRIGHT,
+    ST_CORNER_BOTTOMLEFT
+} StCorner;
 
 /* These are the CSS values; that doesn't mean we have to implement blink... */
 typedef enum {
@@ -89,13 +96,16 @@ void st_theme_node_get_foreground_color (StThemeNode  *node,
 
 const char *st_theme_node_get_background_image (StThemeNode *node);
 
-double st_theme_node_get_border_width (StThemeNode  *node,
-                                       StSide        side);
-void   st_theme_node_get_border_color (StThemeNode  *node,
-                                       StSide        side,
-                                       ClutterColor *color);
-double st_theme_node_get_padding      (StThemeNode  *node,
-                                       StSide        side);
+double st_theme_node_get_border_width  (StThemeNode  *node,
+                                        StSide        side);
+double st_theme_node_get_border_radius (StThemeNode  *node,
+                                        StCorner      corner);
+void   st_theme_node_get_border_color  (StThemeNode  *node,
+                                        StSide        side,
+                                        ClutterColor *color);
+
+double st_theme_node_get_padding       (StThemeNode  *node,
+                                        StSide        side);
 
 StTextDecoration st_theme_node_get_text_decoration (StThemeNode *node);
 
