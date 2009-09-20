@@ -40,7 +40,6 @@
 #include "st-bin.h"
 #include "st-enum-types.h"
 #include "st-private.h"
-#include "st-stylable.h"
 
 #define ST_BIN_GET_PRIVATE(obj)       (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_BIN, StBinPrivate))
 

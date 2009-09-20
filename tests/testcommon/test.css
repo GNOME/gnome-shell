@@ -1,13 +1,33 @@
 @import "../../data/theme/gnome-shell.css";
 
-*.red {
+stage {
+    font: 16pt serif;
+}
+
+.red {
     background-color: red;
 }
 
-*.green {
+.green {
     background-color: green;
 }
 
-*.blue {
+.blue {
     background-color: blue;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.big {
+    font-size: 150%;
+}
+
+.monospace {
+    font-family: monospace;
 }

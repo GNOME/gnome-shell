@@ -58,7 +58,6 @@
 #include "st-entry.h"
 
 #include "st-widget.h"
-#include "st-stylable.h"
 #include "st-texture-cache.h"
 #include "st-marshal.h"
 #include "st-clipboard.h"
@@ -101,11 +100,7 @@ struct _StEntryPrivate
 
 static guint entry_signals[LAST_SIGNAL] = { 0, };
 
-static void st_stylable_iface_init (StStylableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (StEntry, st_entry, ST_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (ST_TYPE_STYLABLE,
-                                                st_stylable_iface_init));
+G_DEFINE_TYPE (StEntry, st_entry, ST_TYPE_WIDGET);
 
 static void
 st_entry_set_property (GObject      *gobject,
@@ -176,90 +171,31 @@ st_entry_finalize (GObject *object)
 }
 
 static void
-st_stylable_iface_init (StStylableIface *iface)
-{
-  static gboolean is_initialized = FALSE;
-
-  if (!is_initialized)
-    {
-      GParamSpec *pspec;
-      static const ClutterColor default_color
-        = { 0x0, 0x9c, 0xcf, 0xff };
-
-      is_initialized = TRUE;
-
-      pspec = clutter_param_spec_color ("caret-color",
-                                        "Caret Color",
-                                        "Color of the entry's caret",
-                                        &default_color,
-                                        G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_ENTRY, pspec);
-
-      pspec = clutter_param_spec_color ("selection-background-color",
-                                        "Selection Background Color",
-                                        "Color of the entry's selection",
-                                        &default_color,
-                                        G_PARAM_READWRITE);
-      st_stylable_iface_install_property (iface, ST_TYPE_ENTRY, pspec);
-    }
-}
-
-static void
 st_entry_style_changed (StWidget *self)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (self);
-  ClutterColor *color = NULL;
-  ClutterColor *caret_color = NULL;
-  ClutterColor *selection_background_color = NULL;
-  gchar *font_name;
+  StThemeNode *theme_node;
+  ClutterColor color;
+  const PangoFontDescription *font;
   gchar *font_string;
-  gint font_size;
 
-  st_stylable_get (ST_STYLABLE (self),
-                   "color", &color,
-                   "caret-color", &caret_color,
-                   "selection-background-color", &selection_background_color,
-                   "font-family", &font_name,
-                   "font-size", &font_size,
-                   NULL);
+  theme_node = st_widget_get_theme_node (self);
+ 
+  st_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (color)
-    {
-      clutter_text_set_color (CLUTTER_TEXT (priv->entry), color);
-      clutter_color_free (color);
-    }
+  if (st_theme_node_get_color (theme_node, "caret-color", FALSE, &color))
+    clutter_text_set_cursor_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (caret_color)
-    {
-      clutter_text_set_cursor_color (CLUTTER_TEXT (priv->entry), caret_color);
-      clutter_color_free (caret_color);
-    }
+  if (st_theme_node_get_color (theme_node, "selection-background-color", FALSE, &color))
+    clutter_text_set_selection_color (CLUTTER_TEXT (priv->entry), &color);
 
-  if (selection_background_color)
-    {
-      clutter_text_set_selection_color (CLUTTER_TEXT (priv->entry),
-                                        selection_background_color);
-      clutter_color_free (selection_background_color);
-    }
+  font = st_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (CLUTTER_TEXT (priv->entry), font_string);
+  g_free (font_string);
 
-  if (font_name || font_size)
-    {
-      if (font_name && font_size)
-        {
-          font_string = g_strdup_printf ("%s %dpx", font_name, font_size);
-          g_free (font_name);
-        }
-      else
-        {
-          if (font_size)
-            font_string = g_strdup_printf ("%dpx", font_size);
-          else
-            font_string = font_name;
-        }
-
-      clutter_text_set_font_name (CLUTTER_TEXT (priv->entry), font_string);
-      g_free (font_string);
-    }
+  ST_WIDGET_CLASS (st_entry_parent_class)->style_changed (self);
 }
 
 static void
@@ -636,6 +572,7 @@ st_entry_class_init (StEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StEntryPrivate));
@@ -655,6 +592,8 @@ st_entry_class_init (StEntryClass *klass)
 
   actor_class->key_press_event = st_entry_key_press_event;
   actor_class->key_focus_in = st_entry_key_focus_in;
+
+  widget_class->style_changed = st_entry_style_changed;
 
   pspec = g_param_spec_string ("text",
                                "Text",
@@ -725,9 +664,6 @@ st_entry_init (StEntry *entry)
 
   /* set cursor hidden until we receive focus */
   clutter_text_set_cursor_visible ((ClutterText *) priv->entry, FALSE);
-
-  g_signal_connect (entry, "style-changed",
-                    G_CALLBACK (st_entry_style_changed), NULL);
 }
 
 /**

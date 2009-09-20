@@ -45,7 +45,6 @@
 #include "st-label.h"
 
 #include "st-widget.h"
-#include "st-stylable.h"
 
 enum
 {
@@ -106,43 +105,23 @@ st_label_get_property (GObject    *gobject,
 static void
 st_label_style_changed (StWidget *self)
 {
-  StLabelPrivate *priv = ST_LABEL (self)->priv;
-  ClutterColor *color = NULL;
-  gchar *font_name;
+  StLabelPrivate *priv;
+  StThemeNode *theme_node;
+  ClutterColor color;
+  const PangoFontDescription *font;
   gchar *font_string;
-  gint font_size;
 
-  st_stylable_get (ST_STYLABLE (self),
-                   "color", &color,
-                   "font-family", &font_name,
-                   "font-size", &font_size,
-                   NULL);
+  priv = ST_LABEL (self)->priv;
+  theme_node = st_widget_get_theme_node (self);
+  st_theme_node_get_foreground_color (theme_node, &color);
+  clutter_text_set_color (CLUTTER_TEXT (priv->label), &color);
 
-  if (color)
-    {
-      clutter_text_set_color (CLUTTER_TEXT (priv->label), color);
-      clutter_color_free (color);
-    }
+  font = st_theme_node_get_font (theme_node);
+  font_string = pango_font_description_to_string (font);
+  clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
+  g_free (font_string);
 
-  if (font_name || font_size)
-    {
-      if (font_name && font_size)
-        {
-          font_string = g_strdup_printf ("%s %dpx", font_name, font_size);
-          g_free (font_name);
-        }
-      else
-        {
-          if (font_size)
-            font_string = g_strdup_printf ("%dpx", font_size);
-          else
-            font_string = font_name;
-        }
-
-      clutter_text_set_font_name (CLUTTER_TEXT (priv->label), font_string);
-      g_free (font_string);
-    }
-
+  ST_WIDGET_CLASS (st_label_parent_class)->style_changed (self);
 }
 
 static void
@@ -249,6 +228,7 @@ st_label_class_init (StLabelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StLabelPrivate));
@@ -262,6 +242,8 @@ st_label_class_init (StLabelClass *klass)
   actor_class->get_preferred_height = st_label_get_preferred_height;
   actor_class->map = st_label_map;
   actor_class->unmap = st_label_unmap;
+
+  widget_class->style_changed = st_label_style_changed;
 
   pspec = g_param_spec_string ("text",
                                "Text",
@@ -283,9 +265,6 @@ st_label_init (StLabel *label)
                                      NULL);
 
   clutter_actor_set_parent (priv->label, CLUTTER_ACTOR (label));
-
-  g_signal_connect (label, "style-changed",
-                    G_CALLBACK (st_label_style_changed), NULL);
 }
 
 /**

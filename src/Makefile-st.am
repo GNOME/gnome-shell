@@ -73,8 +73,6 @@ st_source_h =					\
     st/st-clipboard.h				\
     st/st-entry.h				\
     st/st-label.h				\
-    st/st-stylable.h				\
-    st/st-style.h				\
     st/st-scrollable.h				\
     st/st-scroll-bar.h				\
     st/st-scroll-view.h				\
@@ -108,8 +106,6 @@ st_source_c =					\
     st/st-scrollable.c				\
     st/st-scroll-bar.c				\
     st/st-scroll-view.c				\
-    st/st-stylable.c				\
-    st/st-style.c				\
     st/st-subtexture.c				\
     st/st-texture-cache.c			\
     st/st-texture-frame.c			\

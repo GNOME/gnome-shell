@@ -25,38 +25,38 @@ StScrollBar
 
 StScrollView
 {
-  scrollbar-width: 16;
-  scrollbar-height: 16;
+  scrollbar-width: 16px;
+  scrollbar-height: 16px;
 }
 
 StButton#up-stepper
 {
-  border-image: url("file://scroll-button-up.png") 5;
+  -st-background-image: url("scroll-button-up.png") 5px;
 }
 
 StButton#up-stepper:hover,
 StButton#up-stepper:active
 {
-  border-image: url("file://scroll-button-up-hover.png") 5;
+  -st-background-image: url("scroll-button-up-hover.png") 5px;
 }
 
 StButton#down-stepper
 {
-  border-image: url("file://scroll-button-down.png") 5;
+  -st-background-image: url("scroll-button-down.png") 5px;
 }
 
 StButton#down-stepper:hover,
 StButton#down-stepper:active
 {
-  border-image: url("file://scroll-button-down-hover.png") 5;
+  -st-background-image: url("scroll-button-down-hover.png") 5px;
 }
 
 StScrollBar StButton#vhandle
 {
-  border-image: url("file://scroll-vhandle.png") 5;
+  -st-background-image: url("scroll-vhandle.png") 5px;
 }
 
 StScrollBar StButton#vhandle:hover
 {
-  border-image: url("file://scroll-vhandle.png") 5;
+  -st-background-image: url("scroll-vhandle.png") 5px;
 }
