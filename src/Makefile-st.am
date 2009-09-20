@@ -67,6 +67,7 @@ st-enum-types.c: stamp-st-enum-types.h st/st-enum-types.c.in
 st_source_h =					\
     st/st-adjustment.h				\
     st/st-bin.h					\
+    st/st-border-image.h			\
     st/st-box-layout.h				\
     st/st-box-layout-child.h			\
     st/st-button.h				\
@@ -81,7 +82,6 @@ st_source_h =					\
     st/st-texture-frame.h			\
     st/st-theme.h				\
     st/st-theme-context.h			\
-    st/st-theme-image.h				\
     st/st-theme-node.h				\
     st/st-tooltip.h				\
     st/st-types.h				\
@@ -96,6 +96,7 @@ st_source_private_h =				\
 st_source_c =					\
     st/st-adjustment.c				\
     st/st-bin.c					\
+    st/st-border-image.c			\
     st/st-box-layout.c				\
     st/st-box-layout-child.c			\
     st/st-button.c				\
@@ -111,7 +112,6 @@ st_source_c =					\
     st/st-texture-frame.c			\
     st/st-theme.c				\
     st/st-theme-context.c			\
-    st/st-theme-image.c				\
     st/st-theme-node.c				\
     st/st-tooltip.c				\
     st/st-widget.c				\

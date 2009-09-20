@@ -480,7 +480,7 @@ st_widget_real_style_changed (StWidget *self)
 {
   StWidgetPrivate *priv = ST_WIDGET (self)->priv;
   StThemeNode *theme_node;
-  StThemeImage *theme_image;
+  StBorderImage *border_image;
   StTextureCache *texture_cache;
   ClutterTexture *texture;
   const char *bg_file = NULL;
@@ -577,14 +577,14 @@ st_widget_real_style_changed (StWidget *self)
    * and a single background image above it.
    */
 
-  theme_image = st_theme_node_get_background_theme_image (theme_node);
-  if (theme_image)
+  border_image = st_theme_node_get_border_image (theme_node);
+  if (border_image)
     {
       const char *filename;
       gint border_left, border_right, border_top, border_bottom;
       gint width, height;
 
-      filename = st_theme_image_get_filename (theme_image);
+      filename = st_border_image_get_filename (border_image);
 
       /* `border-image' takes precedence over `background-image'.
        * Firefox lets the background-image shine thru when border-image has
@@ -595,8 +595,8 @@ st_widget_real_style_changed (StWidget *self)
       clutter_texture_get_base_size (CLUTTER_TEXTURE (texture),
                                      &width, &height);
 
-      st_theme_image_get_borders (theme_image,
-                                     &border_left, &border_right, &border_top, &border_bottom);
+      st_border_image_get_borders (border_image,
+                                   &border_left, &border_right, &border_top, &border_bottom);
 
       priv->border_image = st_texture_frame_new (texture,
                                                  border_top,

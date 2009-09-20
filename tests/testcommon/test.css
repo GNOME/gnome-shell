@@ -34,7 +34,7 @@ stage {
 
 .border-image {
     border: 15px;
-    -st-background-image: url('border-image.png') 16px;
+    border-image: url('border-image.png') 16;
 }
 
 StButton {
