@@ -72,10 +72,8 @@ struct _StWidgetClass
   ClutterActorClass parent_class;
 
   /* vfuncs */
-  void (* draw_background) (StWidget           *self,
-                            ClutterActor       *background,
-                            const ClutterColor *color);
-  void (* style_changed)   (StWidget           *self);
+  void (* draw_background) (StWidget *self);
+  void (* style_changed)   (StWidget *self);
 };
 
 GType st_widget_get_type (void) G_GNUC_CONST;

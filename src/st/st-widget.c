@@ -43,6 +43,8 @@
 #include "st-theme-context.h"
 #include "st-tooltip.h"
 
+#include <big/rectangle.h>
+
 /*
  * Forward declaration for sake of StWidgetChild
  */
@@ -61,6 +63,7 @@ struct _StWidgetPrivate
   gboolean      is_stylable : 1;
   gboolean      has_tooltip : 1;
   gboolean      is_style_dirty : 1;
+  gboolean      draw_bg_color : 1;
 
   StTooltip    *tooltip;
 };
@@ -351,18 +354,18 @@ st_widget_allocate (ClutterActor          *actor,
 }
 
 static void
-st_widget_real_draw_background (StWidget           *self,
-                                ClutterActor       *background,
-                                const ClutterColor *color)
+st_widget_real_draw_background (StWidget *self)
 {
+  StWidgetPrivate *priv = self->priv;
+
   /* Default implementation just draws the background
    * colour and the image on top
    */
-  if (color && color->alpha != 0)
+  if (priv->draw_bg_color)
     {
       ClutterActor *actor = CLUTTER_ACTOR (self);
       ClutterActorBox allocation = { 0, };
-      ClutterColor bg_color = *color;
+      ClutterColor bg_color = priv->bg_color;
       gfloat w, h;
 
       bg_color.alpha = clutter_actor_get_paint_opacity (actor)
@@ -381,8 +384,8 @@ st_widget_real_draw_background (StWidget           *self,
       cogl_rectangle (0, 0, w, h);
     }
 
-  if (background)
-    clutter_actor_paint (background);
+  if (priv->border_image)
+    clutter_actor_paint (priv->border_image);
 }
 
 static void
@@ -391,9 +394,7 @@ st_widget_paint (ClutterActor *self)
   StWidgetPrivate *priv = ST_WIDGET (self)->priv;
   StWidgetClass *klass = ST_WIDGET_GET_CLASS (self);
 
-  klass->draw_background (ST_WIDGET (self),
-                          priv->border_image,
-                          &priv->bg_color);
+  klass->draw_background (ST_WIDGET (self));
 
   if (priv->background_image != NULL)
     clutter_actor_paint (priv->background_image);
@@ -486,6 +487,11 @@ st_widget_real_style_changed (StWidget *self)
   gboolean relayout_needed = FALSE;
   gboolean has_changed = FALSE;
   ClutterColor color;
+  guint border_width = 0;
+  guint border_radius = 0;
+  ClutterColor border_color = { 0, };
+  StSide side;
+  StCorner corner;
 
   /* application has request this widget is not stylable */
   if (!priv->is_stylable)
@@ -497,6 +503,7 @@ st_widget_real_style_changed (StWidget *self)
   if (!clutter_color_equal (&color, &priv->bg_color))
     {
       priv->bg_color = color;
+      priv->draw_bg_color = color.alpha != 0;
       has_changed = TRUE;
     }
 
@@ -513,6 +520,62 @@ st_widget_real_style_changed (StWidget *self)
     }
 
   texture_cache = st_texture_cache_get_default ();
+
+  /* StThemeNode supports different widths and colors for different sides
+   * of the border, and different radii for the different corners. We take
+   * the different border widths into account when positioning, but our current
+   * drawing code (using BigRectangle) can only handle a single width, color,
+   * and radius, so we arbitrarily pick the first non-zero width and radius,
+   * and use that.
+   */
+  for (side = ST_SIDE_TOP; side <= ST_SIDE_LEFT; side++)
+    {
+      double width = st_theme_node_get_border_width (theme_node, side);
+      if (width > 0.5)
+	{
+	  border_width = round (width);
+	  st_theme_node_get_border_color (theme_node, side, &border_color);
+	  break;
+	}
+    }
+
+  for (corner = ST_CORNER_TOPLEFT; corner <= ST_CORNER_BOTTOMLEFT; corner++)
+    {
+      double radius = st_theme_node_get_border_radius (theme_node, corner);
+      if (radius > 0.5)
+	{
+	  border_radius = round (radius);
+	  break;
+	}
+    }
+
+  /* Rough notes about the relationship of borders and backgrounds in CSS3;
+   * see http://www.w3.org/TR/css3-background/ for more accurate details.
+   *
+   * - Things are drawn in 4 layers, from the bottom:
+   *     Background color
+   *     Background image
+   *     Border color or border image
+   *     Content
+   * - The background color and image extend to and are clipped by the
+   *   edge of the border area, so will be rounded if the border is rounded.
+   *   (CSS3 background-clip property modifies this)
+   * - The border image replaces what would normally be drawn by the border
+   * - The border image is not clipped by a rounded border-radius
+   * - The border radius rounds the background even if the border is
+   *   zero width or a border image is being used.
+   *
+   * Deviations from the above as implemented here:
+   *  - The combination of border image and a non-zero border radius is
+   *    not supported; the background color will be drawn with square
+   *    corners.
+   *  - The background image is drawn above the border color or image,
+   *    not below it.
+   *  - We don't clip the background image to the (rounded) border area.
+   *
+   * The first two allow us always draw with no more than single border_image
+   * and a single background image above it.
+   */
 
   theme_image = st_theme_node_get_background_theme_image (theme_node);
   if (theme_image)
@@ -540,6 +603,22 @@ st_widget_real_style_changed (StWidget *self)
                                                  border_right,
                                                  border_bottom,
                                                  border_left);
+      clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
+
+      has_changed = TRUE;
+      relayout_needed = TRUE;
+    }
+  else if ((border_width > 0 && border_color.alpha != 0) ||
+	   (border_radius > 0 && priv->bg_color.alpha != 0))
+    {
+      priv->draw_bg_color = FALSE;
+      priv->border_image = g_object_new (BIG_TYPE_RECTANGLE,
+					 "color", &priv->bg_color,
+					 "border-width", border_width,
+					 "border-color", &border_color,
+					 "corner-radius", border_radius,
+					 NULL);
+
       clutter_actor_set_parent (priv->border_image, CLUTTER_ACTOR (self));
 
       has_changed = TRUE;
@@ -1299,7 +1378,5 @@ st_widget_draw_background (StWidget *self)
   priv = self->priv;
 
   klass = ST_WIDGET_GET_CLASS (self);
-  klass->draw_background (ST_WIDGET (self),
-                          priv->border_image,
-                          &priv->bg_color);
+  klass->draw_background (ST_WIDGET (self));
 }
