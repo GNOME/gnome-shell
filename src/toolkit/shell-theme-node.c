@@ -39,7 +39,7 @@ struct _ShellThemeNode {
   guint padding[4];
 
   char *background_image;
-  ShellThemeImage *background_theme_image;
+  ShellBorderImage *border_image;
 
   GType element_type;
   char *element_id;
@@ -58,7 +58,7 @@ struct _ShellThemeNode {
   guint borders_computed : 1;
   guint background_computed : 1;
   guint foreground_computed : 1;
-  guint background_theme_image_computed : 1;
+  guint border_image_computed : 1;
   guint link_type : 2;
 };
 
@@ -121,10 +121,10 @@ shell_theme_node_finalize (GObject *object)
       node->font_desc = NULL;
     }
 
-  if (node->background_theme_image)
+  if (node->border_image)
     {
-      g_object_unref (node->background_theme_image);
-      node->background_theme_image = NULL;
+      g_object_unref (node->border_image);
+      node->border_image = NULL;
     }
 
   if (node->background_image)
@@ -1811,24 +1811,24 @@ shell_theme_node_get_font (ShellThemeNode *node)
 }
 
 /**
- * shell_theme_node_get_background_theme_image:
+ * shell_theme_node_get_border_image:
  * @node: a #ShellThemeNode
  *
- * Gets the value for the -shell-background-image style property
+ * Gets the value for the border-image style property
  *
- * Return value: (transfer none): the background image, or %NULL
- *   if there is no background theme image.
+ * Return value: (transfer none): the border image, or %NULL
+ *   if there is no border image.
  */
-ShellThemeImage *
-shell_theme_node_get_background_theme_image (ShellThemeNode *node)
+ShellBorderImage *
+shell_theme_node_get_border_image (ShellThemeNode *node)
 {
   int i;
 
-  if (node->background_theme_image_computed)
-    return node->background_theme_image;
+  if (node->border_image_computed)
+    return node->border_image;
 
-  node->background_theme_image = NULL;
-  node->background_theme_image_computed = TRUE;
+  node->border_image = NULL;
+  node->border_image_computed = TRUE;
 
   ensure_properties (node);
 
@@ -1836,11 +1836,11 @@ shell_theme_node_get_background_theme_image (ShellThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "-shell-background-image") == 0)
+      if (strcmp (decl->property->stryng->str, "border-image") == 0)
         {
           CRTerm *term = decl->value;
-          int lengths[4];
-          int n_lengths = 0;
+          int borders[4];
+          int n_borders = 0;
           int i;
 
           const char *url;
@@ -1859,46 +1859,57 @@ shell_theme_node_get_background_theme_image (ShellThemeNode *node)
 
           term = term->next;
 
-          /* Followed by 0 to 4 lengths */
+          /* Followed by 0 to 4 numbers or percentages. *Not lengths*. The interpretation
+           * of a number is supposed to be pixels if the image is pixel based, otherwise CSS pixels.
+           */
           for (i = 0; i < 4; i++)
             {
-              double value;
-
               if (term == NULL)
                 break;
 
-              if (get_length_from_term (node, term, FALSE, &value) != VALUE_FOUND)
+              if (term->type != TERM_NUMBER)
                 goto next_property;
 
-              lengths[n_lengths] = (int)(0.5 + value);
-              n_lengths++;
+              if (term->content.num->type == NUM_GENERIC)
+                {
+                  borders[n_borders] = round (0.5 + term->content.num->val);
+                  n_borders++;
+                }
+              else if (term->content.num->type == NUM_PERCENTAGE)
+                {
+                  /* This would be easiest to support if we moved image handling into ShellBorderImage */
+                  g_warning ("Percentages not supported for border-image");
+                  goto next_property;
+                }
+              else
+                goto next_property;
 
               term = term->next;
             }
 
-          switch (n_lengths)
+          switch (n_borders)
             {
             case 0:
               border_top = border_right = border_bottom = border_left = 0;
               break;
             case 1:
-              border_top = border_right = border_bottom = border_left = lengths[0];
+              border_top = border_right = border_bottom = border_left = borders[0];
               break;
             case 2:
-              border_top = border_bottom = lengths[0];
-              border_left = border_right = lengths[1];
+              border_top = border_bottom = borders[0];
+              border_left = border_right = borders[1];
               break;
             case 3:
-              border_top = lengths[0];
-              border_left = border_right = lengths[1];
-              border_bottom = lengths[2];
+              border_top = borders[0];
+              border_left = border_right = borders[1];
+              border_bottom = borders[2];
               break;
             case 4:
             default:
-              border_top = lengths[0];
-              border_right = lengths[1];
-              border_bottom = lengths[2];
-              border_left = lengths[3];
+              border_top = borders[0];
+              border_right = borders[1];
+              border_bottom = borders[2];
+              border_left = borders[3];
               break;
             }
 
@@ -1906,12 +1917,12 @@ shell_theme_node_get_background_theme_image (ShellThemeNode *node)
           if (filename == NULL)
             goto next_property;
 
-          node->background_theme_image = shell_theme_image_new (filename,
-                                                                border_top, border_right, border_bottom, border_left);
+          node->border_image = shell_border_image_new (filename,
+                                                       border_top, border_right, border_bottom, border_left);
 
           g_free (filename);
 
-          return node->background_theme_image;
+          return node->border_image;
         }
 
     next_property:

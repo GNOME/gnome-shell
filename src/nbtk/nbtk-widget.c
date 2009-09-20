@@ -479,7 +479,7 @@ nbtk_widget_real_style_changed (NbtkWidget *self)
 {
   NbtkWidgetPrivate *priv = NBTK_WIDGET (self)->priv;
   ShellThemeNode *theme_node;
-  ShellThemeImage *theme_image;
+  ShellBorderImage *border_image;
   NbtkTextureCache *texture_cache;
   ClutterTexture *texture;
   const char *bg_file = NULL;
@@ -576,14 +576,14 @@ nbtk_widget_real_style_changed (NbtkWidget *self)
    * and a single background image above it.
    */
 
-  theme_image = shell_theme_node_get_background_theme_image (theme_node);
-  if (theme_image)
+  border_image = shell_theme_node_get_border_image (theme_node);
+  if (border_image)
     {
       const char *filename;
       gint border_left, border_right, border_top, border_bottom;
       gint width, height;
 
-      filename = shell_theme_image_get_filename (theme_image);
+      filename = shell_border_image_get_filename (border_image);
 
       /* `border-image' takes precedence over `background-image'.
        * Firefox lets the background-image shine thru when border-image has
@@ -595,8 +595,8 @@ nbtk_widget_real_style_changed (NbtkWidget *self)
       clutter_texture_get_base_size (CLUTTER_TEXTURE (texture),
                                      &width, &height);
 
-      shell_theme_image_get_borders (theme_image,
-				     &border_left, &border_right, &border_top, &border_bottom);
+      shell_border_image_get_borders (border_image,
+				      &border_left, &border_right, &border_top, &border_bottom);
 
       priv->border_image = nbtk_texture_frame_new (texture,
                                                    border_top,

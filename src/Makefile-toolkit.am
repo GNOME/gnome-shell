@@ -8,12 +8,12 @@ toolkit_cflags =				\
 
 # please, keep this sorted alphabetically
 toolkit_sources =				\
+	toolkit/shell-border-image.c		\
+	toolkit/shell-border-image.h		\
 	toolkit/shell-theme.c			\
 	toolkit/shell-theme.h			\
 	toolkit/shell-theme-context.c		\
 	toolkit/shell-theme-context.h		\
-	toolkit/shell-theme-image.c		\
-	toolkit/shell-theme-image.h		\
 	toolkit/shell-theme-node.c		\
 	toolkit/shell-theme-node.h		\
 	toolkit/shell-theme-private.h

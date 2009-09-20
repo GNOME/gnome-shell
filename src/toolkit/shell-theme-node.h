@@ -3,7 +3,7 @@
 #define __SHELL_THEME_NODE_H__
 
 #include <clutter/clutter.h>
-#include "shell-theme-image.h"
+#include "shell-border-image.h"
 
 G_BEGIN_DECLS
 
@@ -116,10 +116,7 @@ ShellTextDecoration shell_theme_node_get_text_decoration (ShellThemeNode *node);
  */
 const PangoFontDescription *shell_theme_node_get_font (ShellThemeNode *node);
 
-/* This is the getter for -shell-background-image, which is different from
- * background-image in having provisions for unscaled borders.
- */
-ShellThemeImage *shell_theme_node_get_background_theme_image (ShellThemeNode *node);
+ShellBorderImage *shell_theme_node_get_border_image (ShellThemeNode *node);
 
 /* Helpers for get_preferred_width()/get_preferred_height() ClutterActor vfuncs */
 void shell_theme_node_adjust_for_height       (ShellThemeNode  *node,
