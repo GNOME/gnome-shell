@@ -8,13 +8,13 @@ const UI = imports.testcommon.ui;
 UI.init();
 let stage = Clutter.Stage.get_default();
 stage.width = 600;
-stage.height = 600;
+stage.height = 700;
 
 let vbox = new St.BoxLayout({ vertical: true,
                               width: stage.width,
                               height: stage.height,
                               spacing: 20,
-                              style: 'padding: 10px; background: #ffee88' });
+                              style: 'padding: 10px; background: #ffee88;' });
 stage.add_actor(vbox);
 
 vbox.add(new St.Label({ text: "Hello World",
@@ -43,8 +43,14 @@ vbox.add(b1);
 b1.add(new St.BoxLayout({ width: 20, height: 20,
                           style: 'background: black' }));
 
-vbox.add(new St.Label({ text: "Translucent blue border",
+vbox.add(new St.Label({ text: "Translucent blue border, with rounding",
                         style: 'border: 20px solid rgba(0, 0, 255, 0.2); '
+                               + 'border-radius: 10px; '
+                               + 'background: white; '
+                               + 'padding: 10px;' }));
+
+vbox.add(new St.Label({ text: "Transparent border",
+                        style: 'border: 20px solid transparent; '
                                + 'background: white; '
                                + 'padding: 10px;' }));
 
