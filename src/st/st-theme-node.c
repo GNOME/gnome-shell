@@ -924,28 +924,28 @@ do_padding_property (StThemeNode   *node,
        */
       if (decl->value == NULL) /* 0 values */
         return;
-      else if (decl->value->next == NULL)
-        { /* 1 value */
+      else if (decl->value->next == NULL) /* 1 value */
+        {
           do_padding_property_term (node, decl->value, TRUE, TRUE, TRUE, TRUE); /* left/right/top/bottom */
           return;
         }
-      else if (decl->value->next->next == NULL)
-        { /* 2 values */
+      else if (decl->value->next->next == NULL) /* 2 values */
+        {
           do_padding_property_term (node, decl->value,       FALSE, FALSE, TRUE,  TRUE);  /* top/bottom */
           do_padding_property_term (node, decl->value->next, TRUE, TRUE,   FALSE, FALSE); /* left/right */
         }
-      else if (decl->value->next->next->next == NULL)
-        { /* 3 values */
+      else if (decl->value->next->next->next == NULL) /* 3 values */
+        {
           do_padding_property_term (node, decl->value,             FALSE, FALSE, TRUE,  FALSE); /* top */
           do_padding_property_term (node, decl->value->next,       TRUE,  TRUE,  FALSE, FALSE); /* left/right */
           do_padding_property_term (node, decl->value->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottom */
         }
-      else if (decl->value->next->next->next == NULL)
-        { /* 4 values */
-          do_padding_property_term (node, decl->value,                   FALSE, FALSE, TRUE,  FALSE);
-          do_padding_property_term (node, decl->value->next,             FALSE, TRUE, FALSE, FALSE); /* left */
-          do_padding_property_term (node, decl->value->next->next,       FALSE, FALSE, FALSE, TRUE);
-          do_padding_property_term (node, decl->value->next->next->next, TRUE,  FALSE, FALSE, TRUE); /* left */
+      else if (decl->value->next->next->next->next == NULL) /* 4 values */
+        {
+          do_padding_property_term (node, decl->value,                   FALSE, FALSE, TRUE,  FALSE); /* top */
+          do_padding_property_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* right */
+          do_padding_property_term (node, decl->value->next->next,       FALSE, FALSE, FALSE, TRUE);  /* bottom */
+          do_padding_property_term (node, decl->value->next->next->next, TRUE,  FALSE, FALSE, FALSE); /* left */
         }
       else
         {
