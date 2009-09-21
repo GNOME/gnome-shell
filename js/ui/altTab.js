@@ -56,6 +56,8 @@ AltTabPopup.prototype = {
         appIcon.connect('activate', Lang.bind(this, this._appClicked));
         appIcon.connect('activate-window', Lang.bind(this, this._windowClicked));
         appIcon.connect('highlight-window', Lang.bind(this, this._windowHovered));
+        appIcon.connect('menu-popped-up', Lang.bind(this, this._menuPoppedUp));
+        appIcon.connect('menu-popped-down', Lang.bind(this, this._menuPoppedDown));
 
         // FIXME?
         appIcon.actor.border = 2;
@@ -118,6 +120,8 @@ AltTabPopup.prototype = {
 
         if (keysym == Clutter.Tab)
             this._updateSelection(backwards ? -1 : 1);
+        else if (keysym == Clutter.grave)
+            this._updateWindowSelection(backwards ? -1 : 1);
         else if (keysym == Clutter.Escape)
             this.destroy();
 
@@ -171,10 +175,39 @@ AltTabPopup.prototype = {
 
     _updateSelection : function(delta) {
         this._icons[this._selected].setHighlight(false);
+        if (delta != 0 && this._selectedMenu)
+                this._selectedMenu.popdown();
+
         this._selected = (this._selected + this._icons.length + delta) % this._icons.length;
         this._icons[this._selected].setHighlight(true);
 
         this._highlightWindow(this._icons[this._selected].windows[0]);
+    },
+
+    _menuPoppedUp : function(icon, menu) {
+        this._selectedMenu = menu;
+    },
+
+    _menuPoppedDown : function(icon, menu) {
+        this._selectedMenu = null;
+    },
+
+    _updateWindowSelection : function(delta) {
+        let icon = this._icons[this._selected];
+
+        if (!this._selectedMenu)
+            icon.popupMenu();
+        if (!this._selectedMenu)
+            return;
+
+        let next = 0;
+        for (let i = 0; i < icon.windows.length; i++) {
+            if (icon.windows[i] == this._highlightedWindow) {
+                next = (i + icon.windows.length + delta) % icon.windows.length;
+                break;
+            }
+        }
+        this._selectedMenu.selectWindow(icon.windows[next]);
     },
 
     _highlightWindow : function(metaWin) {

@@ -205,12 +205,15 @@ AppIcon.prototype = {
         if (this._menuTimeoutId != 0)
             Mainloop.source_remove(this._menuTimeoutId);
         this._menuTimeoutId = Mainloop.timeout_add(APPICON_MENU_POPUP_TIMEOUT_MS,
-                                                   Lang.bind(this, this._popupMenu));
+                                                   Lang.bind(this, this.popupMenu));
         return false;
     },
 
-    _popupMenu: function() {
-        this._menuTimeoutId = 0;
+    popupMenu: function() {
+        if (this._menuTimeoutId != 0) {
+            Mainloop.source_remove(this._menuTimeoutId);
+            this._menuTimeoutId = 0;
+        }
 
         this.actor.fake_release();
 
@@ -244,8 +247,13 @@ AppIcon.prototype = {
         this.emit('activate-window', window);
     },
 
-    menuPoppedUp: function() {},
-    menuPoppedDown: function() {}
+    menuPoppedUp: function() {
+        this.emit('menu-popped-up', this._menu);
+    },
+
+    menuPoppedDown: function() {
+        this.emit('menu-popped-down', this._menu);
+    }
 };
 
 Signals.addSignalMethods(AppIcon.prototype);
@@ -392,6 +400,8 @@ AppIconMenu.prototype = {
         this._appendSeparator();
 
         this._newWindowMenuItem = this._appendMenuItem(null, _("New Window"));
+
+        this._highlightedItem = null;
     },
 
     _appendSeparator: function () {
@@ -464,6 +474,16 @@ AppIconMenu.prototype = {
         this.actor.show();
     },
 
+    popdown: function() {
+        this._windowContainer.popdown();
+        this.emit('popup', false);
+        this.actor.hide();
+    },
+
+    selectWindow: function(metaWindow) {
+        this._selectMenuItemForWindow(metaWindow);
+    },
+
     _findMetaWindowForActor: function (actor) {
         if (actor._delegate instanceof Workspaces.WindowClone)
             return actor._delegate.metaWindow;
@@ -481,24 +501,35 @@ AppIconMenu.prototype = {
         }
     },
 
-    _lookupMenuItemForWindow: function (metaWindow) {
+    _updateHighlight: function (item) {
+        if (this._highlightedItem) {
+            this._highlightedItem.background_color = TRANSPARENT_COLOR;
+            this.emit('highlight-window', null);
+        }
+        this._highlightedItem = item;
+        if (this._highlightedItem) {
+            this._highlightedItem.background_color = APPICON_MENU_SELECTED_COLOR;
+            let window = this._highlightedItem._window;
+            if (window)
+                this.emit('highlight-window', window);
+        }
+    },
+
+    _selectMenuItemForWindow: function (metaWindow) {
         let children = this._windowContainer.get_children();
         for (let i = 0; i < children.length; i++) {
             let child = children[i];
             let menuMetaWindow = child._window;
             if (menuMetaWindow == metaWindow)
-                return child;
+                this._updateHighlight(child);
         }
-        return null;
     },
 
     // Called while menu has a pointer grab
     _onMenuEnter: function (actor, event) {
         let metaWindow = this._findMetaWindowForActor(event.get_source());
         if (metaWindow) {
-            let menu = this._lookupMenuItemForWindow(metaWindow);
-            menu.background_color = APPICON_MENU_SELECTED_COLOR;
-            this.emit('highlight-window', metaWindow);
+            this._selectMenuItemForWindow(metaWindow);
         }
     },
 
@@ -506,24 +537,16 @@ AppIconMenu.prototype = {
     _onMenuLeave: function (actor, event) {
         let metaWindow = this._findMetaWindowForActor(event.get_source());
         if (metaWindow) {
-            let menu = this._lookupMenuItemForWindow(metaWindow);
-            menu.background_color = TRANSPARENT_COLOR;
-            this.emit('highlight-window', null);
+            this._updateHighlight(null);
         }
     },
 
     _onItemUnselected: function (actor, child) {
-        child.background_color = TRANSPARENT_COLOR;
-        if (child._window) {
-            this.emit('highlight-window', null);
-        }
+        this._updateHighlight(null);
     },
 
     _onItemSelected: function (actor, child) {
-        child.background_color = APPICON_MENU_SELECTED_COLOR;
-        if (child._window) {
-            this.emit('highlight-window', child._window);
-        }
+        this._updateHighlight(child);
     },
 
     _onItemActivate: function (actor, child) {
@@ -534,14 +557,12 @@ AppIconMenu.prototype = {
             this._source.appInfo.launch();
             this.emit('activate-window', null);
         }
-        this.emit('popup', false);
-        this.actor.hide();
+        this.popdown();
     },
 
     _onWindowSelectionCancelled: function () {
         this.emit('highlight-window', null);
-        this.emit('popup', false);
-        this.actor.hide();
+        this.popdown();
     }
 };
 
