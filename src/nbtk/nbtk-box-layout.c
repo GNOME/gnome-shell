@@ -623,6 +623,10 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
   for (l = priv->children; l; l = l->next)
     {
       gboolean expand;
+
+      if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
+        continue;
+
       clutter_container_child_get ((ClutterContainer *) actor,
                                    (ClutterActor*) l->data,
                                    "expand", &expand,
