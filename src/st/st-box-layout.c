@@ -924,15 +924,12 @@ static void
 st_box_layout_paint (ClutterActor *actor)
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   GList *l;
   gdouble x, y;
-  ClutterActorBox child_b;
-  ClutterActorBox box_b;
-
-  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->paint (actor);
-
-  if (priv->children == NULL)
-    return;
+  ClutterActorBox child_box;
+  ClutterActorBox allocation_box;
+  ClutterActorBox content_box;
 
   if (priv->hadjustment)
     x = st_adjustment_get_value (priv->hadjustment);
@@ -944,11 +941,40 @@ st_box_layout_paint (ClutterActor *actor)
   else
     y = 0;
 
-  clutter_actor_get_allocation_box (actor, &box_b);
-  box_b.x2 = (box_b.x2 - box_b.x1) + x;
-  box_b.x1 = x;
-  box_b.y2 = (box_b.y2 - box_b.y1) + y;
-  box_b.y1 = y;
+  /* If we are translated, then we need to translate back before chaining
+   * up or the background and borders will be drawn in the wrong place */
+  if (x != 0 || y != 0)
+    {
+      cogl_push_matrix ();
+      cogl_translate ((int)x, (int)y, 0);
+    }
+
+  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->paint (actor);
+
+  if (x != 0 || y != 0)
+    {
+      cogl_pop_matrix ();
+    }
+
+  if (priv->children == NULL)
+    return;
+
+  clutter_actor_get_allocation_box (actor, &allocation_box);
+  st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
+
+  content_box.x1 += x;
+  content_box.y1 += y;
+  content_box.x2 += x;
+  content_box.y2 += y;
+
+  /* The content area forms the viewport into the scrolled contents, while
+   * the borders and background stay in place; after drawing the borders and
+   * background, we clip to the content area */
+  if (priv->hadjustment || priv->vadjustment)
+    cogl_clip_push ((int)content_box.x1,
+                    (int)content_box.y1,
+                    (int)content_box.x2 - (int)content_box.x1,
+                    (int)content_box.y2 - (int)content_box.y1);
 
   for (l = priv->children; l; l = g_list_next (l))
     {
@@ -957,16 +983,19 @@ st_box_layout_paint (ClutterActor *actor)
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      clutter_actor_get_allocation_box (child, &child_b);
+      clutter_actor_get_allocation_box (child, &child_box);
 
-      if ((child_b.x1 < box_b.x2) &&
-          (child_b.x2 > box_b.x1) &&
-          (child_b.y1 < box_b.y2) &&
-          (child_b.y2 > box_b.y1))
+      if ((child_box.x1 < content_box.x2) &&
+          (child_box.x2 > content_box.x1) &&
+          (child_box.y1 < content_box.y2) &&
+          (child_box.y2 > content_box.y1))
         {
           clutter_actor_paint (child);
         }
     }
+
+  if (priv->hadjustment || priv->vadjustment)
+    cogl_clip_pop ();
 }
 
 static void
@@ -974,15 +1003,12 @@ st_box_layout_pick (ClutterActor       *actor,
                     const ClutterColor *color)
 {
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (actor)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   GList *l;
   gdouble x, y;
-  ClutterActorBox child_b;
-  ClutterActorBox box_b;
-
-  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->pick (actor, color);
-
-  if (priv->children == NULL)
-    return;
+  ClutterActorBox child_box;
+  ClutterActorBox allocation_box;
+  ClutterActorBox content_box;
 
   if (priv->hadjustment)
     x = st_adjustment_get_value (priv->hadjustment);
@@ -994,11 +1020,35 @@ st_box_layout_pick (ClutterActor       *actor,
   else
     y = 0;
 
-  clutter_actor_get_allocation_box (actor, &box_b);
-  box_b.x2 = (box_b.x2 - box_b.x1) + x;
-  box_b.x1 = x;
-  box_b.y2 = (box_b.y2 - box_b.y1) + y;
-  box_b.y1 = y;
+  if (x != 0 || y != 0)
+    {
+      cogl_push_matrix ();
+      cogl_translate ((int)x, (int)y, 0);
+    }
+
+  CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->pick (actor, color);
+
+  if (x != 0 || y != 0)
+    {
+      cogl_pop_matrix ();
+    }
+
+  if (priv->children == NULL)
+    return;
+
+  clutter_actor_get_allocation_box (actor, &allocation_box);
+  st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
+
+  content_box.x1 += x;
+  content_box.y1 += y;
+  content_box.x2 += x;
+  content_box.y2 += y;
+
+  if (priv->hadjustment || priv->vadjustment)
+    cogl_clip_push ((int)content_box.x1,
+                    (int)content_box.y1,
+                    (int)content_box.x2 - (int)content_box.x1,
+                    (int)content_box.y2 - (int)content_box.y1);
 
   for (l = priv->children; l; l = g_list_next (l))
     {
@@ -1007,16 +1057,19 @@ st_box_layout_pick (ClutterActor       *actor,
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      clutter_actor_get_allocation_box (child, &child_b);
+      clutter_actor_get_allocation_box (child, &child_box);
 
-      if ((child_b.x1 < box_b.x2)
-          && (child_b.x2 > box_b.x1)
-          && (child_b.y1 < box_b.y2)
-          && (child_b.y2 > box_b.y1))
+      if ((child_box.x1 < content_box.x2) &&
+          (child_box.x2 > content_box.x1) &&
+          (child_box.y1 < content_box.y2) &&
+          (child_box.y2 > content_box.y1))
         {
           clutter_actor_paint (child);
         }
     }
+
+  if (priv->hadjustment || priv->vadjustment)
+    cogl_clip_pop ();
 }
 
 static void

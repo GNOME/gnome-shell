@@ -590,8 +590,7 @@ st_scroll_view_init (StScrollView *self)
 
   /* mouse scroll is enabled by default, so we also need to be reactive */
   priv->mouse_scroll = TRUE;
-  g_object_set (G_OBJECT (self), "reactive", TRUE, "clip-to-allocation", TRUE,
-                NULL);
+  g_object_set (G_OBJECT (self), "reactive", TRUE, NULL);
 }
 
 static void
