@@ -20,6 +20,8 @@ const POPUP_GRID_SPACING = 8;
 const POPUP_ICON_SIZE = 48;
 const POPUP_NUM_COLUMNS = 5;
 
+const POPUP_POINTER_SELECTION_THRESHOLD = 3;
+
 function AltTabPopup() {
     this._init();
 }
@@ -59,6 +61,8 @@ AltTabPopup.prototype = {
         appIcon.connect('menu-popped-up', Lang.bind(this, this._menuPoppedUp));
         appIcon.connect('menu-popped-down', Lang.bind(this, this._menuPoppedDown));
 
+        appIcon.actor.connect('enter-event', Lang.bind(this, this._iconEntered));
+
         // FIXME?
         appIcon.actor.border = 2;
 
@@ -86,6 +90,10 @@ AltTabPopup.prototype = {
 
         this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
         this._keyReleaseEventId = global.stage.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
+
+        this._motionEventId = this.actor.connect('motion-event', Lang.bind(this, this._mouseMoved));
+        this._mouseActive = false;
+        this._mouseMovement = 0;
 
         // Contruct the AppIcons, sort by time, add to the popup
         let icons = [];
@@ -154,6 +162,29 @@ AltTabPopup.prototype = {
     _windowHovered : function(icon, window) {
         if (window)
             this._highlightWindow(window);
+    },
+
+    _mouseMoved : function(actor, event) {
+        if (++this._mouseMovement < POPUP_POINTER_SELECTION_THRESHOLD)
+            return;
+
+        this.actor.disconnect(this._motionEventId);
+        this._mouseActive = true;
+
+        actor = event.get_source();
+        while (actor) {
+            if (actor._delegate instanceof AppIcon.AppIcon) {
+                this._iconEntered(actor, event);
+                return;
+            }
+            actor = actor.get_parent();
+        }
+    },
+
+    _iconEntered : function(actor, event) {
+        let index = this._icons.indexOf(actor._delegate);
+        if (this._mouseActive)
+            this._updateSelection(index - this._selected);
     },
 
     destroy : function() {
