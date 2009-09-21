@@ -254,8 +254,8 @@ void            cogl_path_line                (float        x_1,
 
 /**
  * cogl_path_polyline:
- * @coords: A pointer to the first element of an array of fixed-point
- * values that specify the vertex coordinates.
+ * @coords: (in) (array) (transfer none): A pointer to the first element of an
+ * array of fixed-point values that specify the vertex coordinates.
  * @num_points: The total number of vertices.
  *
  * Constructs a series of straight line segments, starting from the
@@ -276,8 +276,8 @@ void            cogl_path_polyline            (float       *coords,
 
 /**
  * cogl_path_polygon:
- * @coords: A pointer to the first element of an array of fixed-point
- * values that specify the vertex coordinates.
+ * @coords: (in) (array) (transfer none): A pointer to the first element of
+ * an array of fixed-point values that specify the vertex coordinates.
  * @num_points: The total number of vertices.
  *
  * Constructs a polygonal shape of the given number of vertices. If

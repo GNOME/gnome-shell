@@ -364,11 +364,12 @@ void cogl_rectangle_with_texture_coords (float  x1,
  * @y1: y coordinate upper left on screen.
  * @x2: x coordinate lower right on screen.
  * @y2: y coordinate lower right on screen.
- * @tex_coords: An array containing groups of 4 float values:
- *   [tx1, ty1, tx2, ty2] that are interpreted as two texture coordinates; one
- *   for the upper left texel, and one for the lower right texel. Each value
- *   should be between 0.0 and 1.0, where the coordinate (0.0, 0.0) represents
- *   the top left of the texture, and (1.0, 1.0) the bottom right.
+ * @tex_coords: (in) (array) (transfer none): An array containing groups of 4
+ *   float values: [tx1, ty1, tx2, ty2] that are interpreted as two texture
+ *   coordinates; one for the upper left texel, and one for the lower right
+ *   texel. Each value should be between 0.0 and 1.0, where the coordinate
+ *   (0.0, 0.0) represents the top left of the texture, and (1.0, 1.0) the
+ *   bottom right.
  * @tex_coords_len: The length of the tex_coords array. (e.g. for one layer
  *                  and one group of texture coordinates, this would be 4)
  *
@@ -393,7 +394,7 @@ void cogl_rectangle_with_multitexture_coords (float        x1,
 
 /**
  * cogl_rectangles_with_texture_coords:
- * @verts: an array of vertices
+ * @verts: (in) (array) (transfer none): an array of vertices
  * @n_rects: number of rectangles to draw
  *
  * Draws a series of rectangles in the same way that
@@ -413,7 +414,7 @@ void  cogl_rectangles_with_texture_coords (const float *verts,
 
 /**
  * cogl_rectangles:
- * @verts: an array of vertices
+ * @verts: (in) (array) (transfer none): an array of vertices
  * @n_rects: number of rectangles to draw
  *
  * Draws a series of rectangles in the same way that
