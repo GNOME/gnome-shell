@@ -840,7 +840,10 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
           child_box.y1 = (int)(0.5 + position);
           child_box.y2 = (int)(0.5 + next_position);
           child_box.x1 = content_box.x1;
-          child_box.x2 = content_box.x2;
+          if (priv->hadjustment)
+            child_box.x2 = content_box.x1 + MAX (avail_width, natural_width);
+          else
+            child_box.x2 = content_box.x2;
 
           _nbtk_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
@@ -851,7 +854,10 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
           child_box.x1 = (int)(0.5 + position);
           child_box.x2 = (int)(0.5 + next_position);
           child_box.y1 = content_box.y1;
-          child_box.y2 = content_box.y2;
+          if (priv->vadjustment)
+            child_box.y2 = content_box.y1 + MAX (avail_height, natural_height);
+          else
+            child_box.y2 = content_box.y2;
 
           _nbtk_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
