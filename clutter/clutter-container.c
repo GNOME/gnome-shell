@@ -734,7 +734,7 @@ create_child_meta (ClutterContainer *container,
                              "actor", actor,
                              NULL);
 
-  g_object_set_qdata_full (G_OBJECT (container), quark_child_meta,
+  g_object_set_qdata_full (G_OBJECT (actor), quark_child_meta,
                            child_meta,
                            (GDestroyNotify) g_object_unref);
 }
