@@ -81,7 +81,6 @@ nbtk_source_h =                  \
     nbtk/nbtk-texture-frame.h         \
     nbtk/nbtk-tooltip.h               \
     nbtk/nbtk-types.h                 \
-    nbtk/nbtk-viewport.h              \
     nbtk/nbtk-widget.h                \
     $(NULL)
 
@@ -103,7 +102,6 @@ nbtk_source_c =                  \
     nbtk/nbtk-texture-cache.c         \
     nbtk/nbtk-texture-frame.c         \
     nbtk/nbtk-tooltip.c               \
-    nbtk/nbtk-viewport.c              \
     nbtk/nbtk-widget.c                \
     $(NULL)
 
