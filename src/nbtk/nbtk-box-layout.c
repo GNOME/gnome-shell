@@ -138,8 +138,6 @@ scrollable_get_adjustments (NbtkScrollable *scrollable,
 
   actor = CLUTTER_ACTOR (scrollable);
   stage = clutter_actor_get_stage (actor);
-  if (G_UNLIKELY (stage == NULL))
-    stage = clutter_stage_get_default ();
 
   if (hadjustment)
     {
@@ -150,9 +148,16 @@ scrollable_get_adjustments (NbtkScrollable *scrollable,
           NbtkAdjustment *adjustment;
           gdouble width, stage_width, increment;
 
-          width = clutter_actor_get_width (actor);
-          stage_width = clutter_actor_get_width (stage);
-          increment = MAX (1.0, MIN (stage_width, width));
+          if (stage)
+            {
+              width = clutter_actor_get_width (actor);
+              stage_width = clutter_actor_get_width (stage);
+              increment = MAX (1.0, MIN (stage_width, width));
+            }
+          else
+            {
+              width = increment = 1.0;
+            }
 
           adjustment = nbtk_adjustment_new (0,
                                             0,
@@ -178,9 +183,16 @@ scrollable_get_adjustments (NbtkScrollable *scrollable,
           NbtkAdjustment *adjustment;
           gdouble height, stage_height, increment;
 
-          height = clutter_actor_get_height (actor);
-          stage_height = clutter_actor_get_height (stage);
-          increment = MAX (1.0, MIN (stage_height, height));
+          if (stage)
+            {
+              height = clutter_actor_get_height (actor);
+              stage_height = clutter_actor_get_height (stage);
+              increment = MAX (1.0, MIN (stage_height, height));
+            }
+          else
+            {
+              height = increment = 1.0;
+            }
 
           adjustment = nbtk_adjustment_new (0,
                                             0,
