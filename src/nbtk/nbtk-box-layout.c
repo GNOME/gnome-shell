@@ -21,6 +21,8 @@
  */
 
 
+#include <stdlib.h>
+
 #include "nbtk-box-layout.h"
 
 #include "nbtk-private.h"
@@ -556,6 +558,125 @@ nbtk_box_layout_get_preferred_height (ClutterActor *actor,
 					    min_height_p, natural_height_p);
 }
 
+typedef struct {
+  int child_index;
+  gfloat shrink_amount;
+} BoxChildShrink;
+
+/* Sort with the greatest shrink amount first */
+static int
+compare_by_shrink_amount (const void *a,
+                          const void *b)
+{
+  float diff = ((const BoxChildShrink *)a)->shrink_amount - ((const BoxChildShrink *)b)->shrink_amount;
+  return diff < 0 ? 1 : (diff == 0 ? 0 : -1);
+}
+
+/* Sort in ascending order by child index */
+static int
+compare_by_child_index (const void *a,
+                        const void *b)
+{
+  return ((const BoxChildShrink *)a)->child_index - ((const BoxChildShrink *)b)->child_index;
+}
+
+static BoxChildShrink *
+compute_shrinks (NbtkBoxLayout *self,
+                 gfloat         for_length,
+                 gfloat         total_shrink)
+{
+  NbtkBoxLayoutPrivate *priv = self->priv;
+  int n_children = g_list_length (priv->children);
+  BoxChildShrink *shrinks = g_new0 (BoxChildShrink, n_children);
+  gfloat shrink_so_far, base_shrink;
+  int n_shrink_children;
+  GList *l;
+  int i;
+
+  /* The effect that we want is that all the children get an equal chance
+   * to expand from their minimum size up to the natural size. Or to put
+   * it a different way, we want to start by shrinking only the child that
+   * can shrink most, then shrink that and the next most shrinkable child,
+   * to the point where we are shrinling everything.
+   */
+
+  /* Find the amount of possible shrink for each child */
+  int n_visible_children = 0;
+  for (l = priv->children; l; l = l->next, i++)
+    {
+      gfloat child_min, child_nat;
+
+      shrinks[i].child_index = i;
+      if (CLUTTER_ACTOR_IS_VISIBLE (l->data))
+        {
+          if (priv->is_vertical)
+            clutter_actor_get_preferred_height ((ClutterActor*) l->data,
+                                                for_length,
+                                                &child_min, &child_nat);
+          else
+            clutter_actor_get_preferred_width ((ClutterActor*) l->data,
+                                               for_length,
+                                               &child_min, &child_nat);
+
+          shrinks[i].shrink_amount = MAX (0., child_nat - child_min);
+          n_visible_children++;
+        }
+      else
+        {
+          shrinks[i].shrink_amount = -1.;
+        }
+    }
+
+  /* We want to process children starting from the child with the maximum available
+   * shrink, so sort in this order; !visible children end up at the end */
+  qsort (shrinks, n_children, sizeof (BoxChildShrink), compare_by_shrink_amount);
+
+  /*   +--+
+   *   |  |
+   *   |  | +--
+   *   |  | | |
+   *   |  | | | +-+
+   * --+--+-+-+-+-+----------
+   *   |  | | | | | +-+ +-+
+   *   |  | | | | | | | | |
+   * --+--+-+-+-+-+-+-+------
+   *
+   * We are trying to find the correct position for the upper line the "water mark"
+   * so that total of the portion of the bars above the line is equal to the total
+   * amount we want to shrink.
+   */
+
+  /* Start by moving the line downward, top-of-bar by top-of-bar */
+  shrink_so_far = 0;
+  for (n_shrink_children = 1; n_shrink_children <= n_visible_children; n_shrink_children++)
+    {
+      if (n_shrink_children < n_visible_children)
+        base_shrink = shrinks[n_shrink_children].shrink_amount;
+      else
+        base_shrink = 0;
+      shrink_so_far += n_shrink_children * (shrinks[n_shrink_children - 1].shrink_amount - base_shrink);
+
+      if (shrink_so_far >= total_shrink || n_shrink_children == n_visible_children)
+        break;
+    }
+
+  /* OK, we found enough shrinkage, move it back upwards to the right position */
+  base_shrink += (shrink_so_far - total_shrink) / n_shrink_children;
+  if (base_shrink < 0) /* can't shrink that much, probably round-off error */
+    base_shrink = 0;
+
+  /* Assign the portion above the base shrink line to the shrink_amount */
+  for (i = 0; i < n_shrink_children; i++)
+    shrinks[i].shrink_amount -= base_shrink;
+  for (; i < n_children; i++)
+    shrinks[i].shrink_amount = 0;
+
+  /* And sort back to their original order */
+  qsort (shrinks, n_children, sizeof (BoxChildShrink), compare_by_child_index);
+
+  return shrinks;
+}
+
 static void
 nbtk_box_layout_allocate (ClutterActor          *actor,
                           const ClutterActorBox *box,
@@ -564,10 +685,12 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
   NbtkBoxLayoutPrivate *priv = NBTK_BOX_LAYOUT (actor)->priv;
   ShellThemeNode *theme_node = nbtk_widget_get_theme_node (NBTK_WIDGET (actor));
   ClutterActorBox content_box;
-  gfloat avail_width, avail_height, pref_width, pref_height;
-  gfloat position = 0;
+  gfloat avail_width, avail_height, min_width, natural_width, min_height, natural_height;
+  gfloat position, next_position;
   GList *l;
-  gint n_expand_children, extra_space;
+  gint n_expand_children = 0, i;
+  gfloat expand_amount, shrink_amount;
+  BoxChildShrink *shrinks = NULL;
 
   CLUTTER_ACTOR_CLASS (nbtk_box_layout_parent_class)->allocate (actor, box,
                                                                 flags);
@@ -581,9 +704,9 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
   avail_height = content_box.y2 - content_box.y1;
 
   get_content_preferred_height (NBTK_BOX_LAYOUT (actor), avail_width,
-				NULL, &pref_height);
+                                &min_height, &natural_height);
   get_content_preferred_width (NBTK_BOX_LAYOUT (actor), avail_height,
-			       NULL, &pref_width);
+                               &min_width, &natural_width);
 
   /* update adjustments for scrolling */
   if (priv->vadjustment)
@@ -592,7 +715,7 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
 
       g_object_set (G_OBJECT (priv->vadjustment),
                    "lower", 0.0,
-                   "upper", pref_height,
+                   "upper", natural_height,
                    "page-size", avail_height,
                    "step-increment", avail_height / 6,
                    "page-increment", avail_height,
@@ -608,7 +731,7 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
 
       g_object_set (G_OBJECT (priv->hadjustment),
                    "lower", 0.0,
-                   "upper", pref_width,
+                   "upper", natural_width,
                    "page-size", avail_width,
                    "step-increment", avail_width / 6,
                    "page-increment", avail_width,
@@ -618,38 +741,44 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
       nbtk_adjustment_set_value (priv->hadjustment, prev_value);
     }
 
-  /* count the number of children with expand set to TRUE */
-  n_expand_children = 0;
-  for (l = priv->children; l; l = l->next)
+  if (priv->is_vertical)
     {
-      gboolean expand;
-
-      if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
-        continue;
-
-      clutter_container_child_get ((ClutterContainer *) actor,
-                                   (ClutterActor*) l->data,
-                                   "expand", &expand,
-                                   NULL);
-      if (expand)
-          n_expand_children++;
-    }
-
-  if (n_expand_children == 0)
-    {
-      extra_space = 0;
-      n_expand_children = 1;
+      expand_amount = MAX (0, avail_height - natural_height);
+      shrink_amount = MAX (0, natural_height - MAX (avail_height, min_height));
     }
   else
     {
-      if (priv->is_vertical)
-        extra_space = (avail_height - pref_height) / n_expand_children;
-      else
-        extra_space = (avail_width - pref_width) / n_expand_children;
+      expand_amount = MAX (0, avail_width - natural_width);
+      shrink_amount = MAX (0, natural_width - MAX (avail_width, min_width));
+    }
 
-      /* don't shrink anything */
-      if (extra_space < 0)
-        extra_space = 0;
+  if (expand_amount > 0)
+    {
+      /* count the number of children with expand set to TRUE */
+      n_expand_children = 0;
+      for (l = priv->children; l; l = l->next)
+        {
+          gboolean expand;
+
+          if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
+            continue;
+
+          clutter_container_child_get ((ClutterContainer *) actor,
+                                       (ClutterActor*) l->data,
+                                       "expand", &expand,
+                                       NULL);
+          if (expand)
+            n_expand_children++;
+        }
+
+      if (n_expand_children == 0)
+        expand_amount = 0;
+    }
+  else if (shrink_amount > 0)
+    {
+      shrinks = compute_shrinks (NBTK_BOX_LAYOUT (actor),
+                                 priv->is_vertical ? avail_width : avail_height,
+                                 shrink_amount);
     }
 
   if (priv->is_vertical)
@@ -658,22 +787,26 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
     position = content_box.x1;
 
   if (priv->is_pack_start)
-    l = g_list_last (priv->children);
+    {
+      l = g_list_last (priv->children);
+      i = g_list_length (priv->children);
+    }
   else
-    l = priv->children;
+    {
+      l = priv->children;
+      i = 0;
+    }
 
-  for (l = (priv->is_pack_start) ? g_list_last (priv->children) : priv->children;
-       l;
-       l = (priv->is_pack_start) ? l->prev : l->next)
+  while (l)
     {
       ClutterActor *child = (ClutterActor*) l->data;
       ClutterActorBox child_box;
-      gfloat child_nat;
+      gfloat child_min, child_nat, child_allocated;
       gboolean xfill, yfill, expand;
       NbtkAlign xalign, yalign;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
-        continue;
+        goto next_child;
 
       clutter_container_child_get ((ClutterContainer*) actor, child,
                                    "x-fill", &xfill,
@@ -686,48 +819,61 @@ nbtk_box_layout_allocate (ClutterActor          *actor,
       if (priv->is_vertical)
         {
           clutter_actor_get_preferred_height (child, avail_width,
-                                              NULL, &child_nat);
+                                              &child_min, &child_nat);
+        }
+      else
+        {
+          clutter_actor_get_preferred_width (child, avail_height,
+                                             &child_min, &child_nat);
+        }
 
-          child_box.y1 = position;
-          if (expand)
-            child_box.y2 = position + child_nat + extra_space;
-          else
-            child_box.y2 = position + child_nat;
+      child_allocated = child_nat;
+      if (expand_amount > 0 && expand)
+        child_allocated +=  expand_amount / n_expand_children;
+      else if (shrink_amount > 0)
+        child_allocated -= shrinks[i].shrink_amount;
+
+      next_position = position + child_allocated;
+
+      if (priv->is_vertical)
+        {
+          child_box.y1 = (int)(0.5 + position);
+          child_box.y2 = (int)(0.5 + next_position);
           child_box.x1 = content_box.x1;
           child_box.x2 = content_box.x2;
 
           _nbtk_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
 
-          if (expand)
-            position += (child_nat + priv->spacing + extra_space);
-          else
-            position += (child_nat + priv->spacing);
         }
       else
         {
-
-          clutter_actor_get_preferred_width (child, avail_height,
-                                             NULL, &child_nat);
-
-          child_box.x1 = position;
-
-          if (expand)
-            child_box.x2 = position + child_nat + extra_space;
-          else
-            child_box.x2 = position + child_nat;
-
+          child_box.x1 = (int)(0.5 + position);
+          child_box.x2 = (int)(0.5 + next_position);
           child_box.y1 = content_box.y1;
           child_box.y2 = content_box.y2;
+
           _nbtk_allocate_fill (child, &child_box, xalign, yalign, xfill, yfill);
           clutter_actor_allocate (child, &child_box, flags);
+        }
 
-          if (expand)
-            position += (child_nat + priv->spacing + extra_space);
-          else
-            position += (child_nat + priv->spacing);
+      position = next_position + priv->spacing;
+
+    next_child:
+      if (priv->is_pack_start)
+        {
+          l = l->prev;
+          i--;
+        }
+      else
+        {
+          l = l->next;
+          i++;
         }
     }
+
+  if (shrinks)
+    g_free (shrinks);
 }
 
 static void
