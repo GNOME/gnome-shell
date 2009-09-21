@@ -329,3 +329,25 @@ function currentTime() {
 
     return Clutter.get_current_event_time();
 }
+
+/**
+ * activateWindow:
+ * @window: the Meta.Window to activate
+ * @time: (optional) current event time
+ *
+ * Activates @window, switching to its workspace first if necessary
+ */
+function activateWindow(window, time) {
+    let activeWorkspaceNum = global.screen.get_active_workspace_index();
+    let windowWorkspaceNum = window.get_workspace().index();
+
+    if (!time)
+        time = currentTime();
+
+    if (windowWorkspaceNum != activeWorkspaceNum) {
+        let workspace = global.screen.get_workspace_by_index(windowWorkspaceNum);
+        workspace.activate_with_focus(window, time);
+    } else {
+        window.activate(time);
+    }
+}

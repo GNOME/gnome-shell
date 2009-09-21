@@ -1409,21 +1409,6 @@ Workspaces.prototype = {
         }
     },
 
-    _activateWindowInternal: function (metaWindow, time) {
-        let activeWorkspaceNum = global.screen.get_active_workspace_index();
-        let windowWorkspaceNum = metaWindow.get_workspace().index();
-
-        let clone = this._lookupCloneForMetaWindow (metaWindow);
-        clone.actor.raise_top();
-
-        if (windowWorkspaceNum != activeWorkspaceNum) {
-            let workspace = global.screen.get_workspace_by_index(windowWorkspaceNum);
-            workspace.activate_with_focus(metaWindow, time);
-        } else {
-            metaWindow.activate(time);
-        }
-    },
-
     /**
      * activateWindowFromOverview:
      * @metaWindow: A #MetaWindow
@@ -1436,7 +1421,11 @@ Workspaces.prototype = {
         if (this._windowSelectionAppId != null) {
             this._clearApplicationWindowSelection(false);
         }
-        this._activateWindowInternal(metaWindow, time);
+
+        let clone = this._lookupCloneForMetaWindow (metaWindow);
+        clone.actor.raise_top();
+
+        Main.activateWindow(metaWindow, time);
         Main.overview.hide();
     },
 
