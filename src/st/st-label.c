@@ -50,7 +50,8 @@ enum
 {
   PROP_0,
 
-  PROP_LABEL
+  PROP_CLUTTER_TEXT,
+  PROP_TEXT
 };
 
 #define ST_LABEL_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_LABEL, StLabelPrivate))
@@ -72,7 +73,7 @@ st_label_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_LABEL:
+    case PROP_TEXT:
       st_label_set_text (label, g_value_get_string (value));
       break;
 
@@ -92,7 +93,11 @@ st_label_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_LABEL:
+    case PROP_CLUTTER_TEXT:
+      g_value_set_object (value, priv->label);
+      break;
+
+    case PROP_TEXT:
       g_value_set_string (value, clutter_text_get_text (CLUTTER_TEXT (priv->label)));
       break;
 
@@ -232,11 +237,18 @@ st_label_class_init (StLabelClass *klass)
 
   widget_class->style_changed = st_label_style_changed;
 
+  pspec = g_param_spec_object ("clutter-text",
+			       "Clutter Text",
+			       "Internal ClutterText actor",
+			       CLUTTER_TYPE_TEXT,
+			       G_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_CLUTTER_TEXT, pspec);
+
   pspec = g_param_spec_string ("text",
                                "Text",
                                "Text of the label",
                                NULL, G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_LABEL, pspec);
+  g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
 }
 
