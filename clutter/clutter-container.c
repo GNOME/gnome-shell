@@ -749,7 +749,7 @@ destroy_child_meta (ClutterContainer *container,
   if (iface->child_meta_type == G_TYPE_INVALID)
     return;
 
-  g_object_set_qdata (actor, quark_child_meta, NULL);
+  g_object_set_qdata (G_OBJECT (actor), quark_child_meta, NULL);
 }
 
 /**
