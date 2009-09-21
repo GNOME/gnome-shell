@@ -69,8 +69,9 @@ enum
 {
   PROP_0,
 
-  PROP_ENTRY,
-  PROP_HINT
+  PROP_CLUTTER_TEXT,
+  PROP_HINT_TEXT,
+  PROP_TEXT,
 };
 
 /* signals */
@@ -111,12 +112,12 @@ nbtk_entry_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_ENTRY:
-      nbtk_entry_set_text (entry, g_value_get_string (value));
+    case PROP_HINT_TEXT:
+      nbtk_entry_set_hint_text (entry, g_value_get_string (value));
       break;
 
-    case PROP_HINT:
-      nbtk_entry_set_hint_text (entry, g_value_get_string (value));
+    case PROP_TEXT:
+      nbtk_entry_set_text (entry, g_value_get_string (value));
       break;
 
     default:
@@ -135,12 +136,17 @@ nbtk_entry_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_ENTRY:
-      g_value_set_string (value, clutter_text_get_text (CLUTTER_TEXT (priv->entry)));
+    case PROP_CLUTTER_TEXT:
+      g_value_set_object (value, priv->entry);
       break;
 
-    case PROP_HINT:
+    case PROP_HINT_TEXT:
       g_value_set_string (value, priv->hint);
+      break;
+
+    case PROP_TEXT:
+      g_value_set_string (value, clutter_text_get_text (CLUTTER_TEXT (priv->entry)));
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -582,18 +588,25 @@ nbtk_entry_class_init (NbtkEntryClass *klass)
 
   widget_class->style_changed = nbtk_entry_style_changed;
 
-  pspec = g_param_spec_string ("text",
-                               "Text",
-                               "Text of the entry",
-                               NULL, G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_ENTRY, pspec);
+  pspec = g_param_spec_object ("clutter-text",
+			       "Clutter Text",
+			       "Internal ClutterText actor",
+			       CLUTTER_TYPE_TEXT,
+			       G_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_CLUTTER_TEXT, pspec);
 
   pspec = g_param_spec_string ("hint-text",
                                "Hint Text",
                                "Text to display when the entry is not focused "
                                "and the text property is empty",
                                NULL, G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_ENTRY, pspec);
+  g_object_class_install_property (gobject_class, PROP_HINT_TEXT, pspec);
+
+  pspec = g_param_spec_string ("text",
+                               "Text",
+                               "Text of the entry",
+                               NULL, G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
   /* signals */
   /**
@@ -734,7 +747,7 @@ nbtk_entry_set_text (NbtkEntry *entry,
  *
  * Retrieve the internal #ClutterText so that extra parameters can be set
  *
- * Returns: (transfer none): ethe #ClutterText used by #NbtkEntry. The entry is
+ * Returns: (transfer none): the #ClutterText used by #NbtkEntry. The entry is
  * owned by the #NbtkEntry and should not be unref'ed by the application.
  */
 ClutterActor*
