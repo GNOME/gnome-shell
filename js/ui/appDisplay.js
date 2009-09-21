@@ -599,9 +599,11 @@ WellMenu.prototype = {
         }
         this._appendWindows(otherWorkspaceWindows, iconsDiffer);
 
-        this._appendSeparator();
+        if (!this._source.appInfo.is_transient()) {
+            this._appendSeparator();
 
-        this._newWindowMenuItem = this._appendMenuItem(null, _("New Window"));
+            this._newWindowMenuItem = this._appendMenuItem(null, _("New Window"));
+        }
     },
 
     _appendSeparator: function () {
