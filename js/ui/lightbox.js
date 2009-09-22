@@ -74,20 +74,20 @@ Lightbox.prototype = {
         let myIndex = children.indexOf(this.actor);
         let newChildIndex = children.indexOf(newChild);
 
-        if (newChildIndex < myIndex) {
+        if (newChildIndex > myIndex) {
             // The child was added above the shade (presumably it was
             // made the new top-most child). Move it below the shade,
             // and add it to this._children as the new topmost actor.
             newChild.lower(this.actor);
-            this._children.unshift(newChild);
-        } else if (newChildIndex == children.length - 1) {
-            // Bottom of stack
             this._children.push(newChild);
+        } else if (newChildIndex == 0) {
+            // Bottom of stack
+            this._children.unshift(newChild);
         } else {
             // Somewhere else; insert it into the correct spot
-            let nextChild = this._children.indexOf(children[newChildIndex + 1]);
-            if (nextChild != -1) // paranoia
-                this._children.splice(nextChild, 0, newChild);
+            let prevChild = this._children.indexOf(children[newChildIndex - 1]);
+            if (prevChild != -1) // paranoia
+                this._children.splice(prevChild + 1, 0, newChild);
         }
     },
 
@@ -119,7 +119,7 @@ Lightbox.prototype = {
         // sibling of the to-be-lowered one.
 
         let below = this.actor;
-        for (let i = 0; i < this._children.length; i++) {
+        for (let i = this._children.length - 1; i >= 0; i--) {
             if (this._children[i] == window)
                 this._children[i].raise_top();
             else if (this._children[i] == this._highlighted)
