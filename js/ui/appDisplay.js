@@ -781,7 +781,7 @@ BaseWellItem.prototype = {
             if (!hover) {
                 if (this.actor.pressed && this._dragStartX != null) {
                     this.actor.fake_release();
-                    this._draggable.startDrag(this.icon.actor, this._dragStartX, this._dragStartY,
+                    this._draggable.startDrag(this._dragStartX, this._dragStartY,
                                               Clutter.get_current_event_time());
                 } else {
                     this._dragStartX = null;
