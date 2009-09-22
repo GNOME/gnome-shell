@@ -539,7 +539,7 @@ shell_app_menu_entry_get_type (void)
  * Traverses a toplevel menu, and returns all items under it.  Nested items
  * are flattened.
  *
- * Return value: (transfer container) (element-type ShellAppInfo): List of applications
+ * Return value: (transfer full) (element-type ShellAppInfo): List of applications
  */
 GSList *
 shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
