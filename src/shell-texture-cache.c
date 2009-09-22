@@ -710,7 +710,7 @@ on_pixbuf_loaded (GObject      *source,
   AsyncTextureLoadData *data;
   GdkPixbuf *pixbuf;
   GError *error = NULL;
-  CoglHandle texdata;
+  CoglHandle texdata = NULL;
   CacheKey *key;
 
   data = user_data;
@@ -743,20 +743,20 @@ on_pixbuf_loaded (GObject      *source,
 
       if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, key,
                                          &orig_key, &value))
-        g_hash_table_insert (cache->priv->keyed_cache, key,
-                             texdata);
+        {
+          cogl_handle_ref (texdata);
+          g_hash_table_insert (cache->priv->keyed_cache, key,
+                               texdata);
+        }
       else
         cache_key_destroy (key);
+    }
 
-      set_texture_cogl_texture (data->texture, texdata);
-    }
-  else
-    {
-      set_texture_cogl_texture (data->texture, texdata);
-      cogl_handle_unref (texdata);
-    }
+    set_texture_cogl_texture (data->texture, texdata);
 
 out:
+  if (texdata)
+    cogl_handle_unref (texdata);
   if (data->icon)
     {
       gtk_icon_info_free (data->icon_info);
