@@ -79,7 +79,6 @@ TAGS
 /tests/interactive/test-boxes
 /tests/interactive/test-depth
 /tests/interactive/test-effects
-/tests/interactive/test-entry
 /tests/interactive/test-events
 /tests/interactive/test-fbo
 /tests/interactive/test-fullscreen
