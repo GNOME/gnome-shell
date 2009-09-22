@@ -306,6 +306,13 @@ LookingGlass.prototype = {
         this.actor = new St.BoxLayout({ name: "LookingGlassDialog",
                                         vertical: true,
                                         visible: false });
+
+        let gconf = Shell.GConf.get_default();
+        gconf.watch_directory("/desktop/gnome/interface");
+        gconf.connect("changed::/desktop/gnome/interface/monospace_font_name",
+                      Lang.bind(this, this._updateFont));
+        this._updateFont();
+
         global.stage.add_actor(this.actor);
 
         let toolbar = new St.BoxLayout({ name: "Toolbar" });
@@ -408,6 +415,19 @@ LookingGlass.prototype = {
                 return false;
             }
         }));
+    },
+
+    _updateFont: function() {
+        let gconf = Shell.GConf.get_default();
+        let fontName = gconf.get_string("/desktop/gnome/interface/monospace_font_name");
+        // This is mishandled by the scanner - should by Pango.FontDescription_from_string(fontName);
+        // https://bugzilla.gnome.org/show_bug.cgi?id=595889
+        let fontDesc = Pango.Font.description_from_string(fontName);
+        // We ignore everything but size and style; you'd be crazy to set your system-wide
+        // monospace font to be bold/oblique/etc. Could easily be added here.
+        this.actor.style =
+            'font-size: ' + fontDesc.get_size() / 1024. + (fontDesc.get_size_is_absolute() ? 'px' : 'pt') + ';'
+            + 'font-family: "' + fontDesc.get_family() + '";';
     },
 
     _readHistory: function () {
