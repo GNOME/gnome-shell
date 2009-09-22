@@ -744,7 +744,6 @@ destroy_child_meta (ClutterContainer *container,
                     ClutterActor     *actor)
 {
   ClutterContainerIface *iface  = CLUTTER_CONTAINER_GET_IFACE (container);
-  GObject               *object = G_OBJECT (container);
 
   if (iface->child_meta_type == G_TYPE_INVALID)
     return;
