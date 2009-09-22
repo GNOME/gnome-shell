@@ -12,6 +12,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
 const DND = imports.ui.dnd;
+const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
@@ -25,8 +26,6 @@ const WINDOWCLONE_TITLE_COLOR = new Clutter.Color();
 WINDOWCLONE_TITLE_COLOR.from_pixel(0xffffffff);
 const FRAME_COLOR = new Clutter.Color();
 FRAME_COLOR.from_pixel(0xffffffff);
-const LIGHTBOX_COLOR = new Clutter.Color();
-LIGHTBOX_COLOR.from_pixel(0x00000044);
 
 const SCROLL_SCALE_AMOUNT = 100 / 5;
 
@@ -206,21 +205,7 @@ WindowClone.prototype = {
     },
 
     _zoomStart : function () {
-        this._zoomOverlay = new Clutter.Rectangle({ reactive: true,
-                                                    color: LIGHTBOX_COLOR,
-                                                    border_width: 0,
-                                                    x: 0,
-                                                    y: 0,
-                                                    width: global.screen_width,
-                                                    height: global.screen_height,
-                                                    opacity: 0 });
-        this._zoomOverlay.show();
-        global.stage.add_actor(this._zoomOverlay);
-        Tweener.addTween(this._zoomOverlay,
-                         { opacity: 255,
-                           time: ZOOM_OVERLAY_FADE_TIME,
-                           transition: "easeOutQuad"
-                         });
+        this._zoomLightbox = new Lightbox.Lightbox(global.stage);
 
         this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);
         this._zoomGlobalOrig = new ScaledPoint();
@@ -229,10 +214,8 @@ WindowClone.prototype = {
         this._zoomGlobalOrig.setPosition.apply(this._zoomGlobalOrig, this.actor.get_transformed_position());
         this._zoomGlobalOrig.setScale(width / this.actor.width, height / this.actor.height);
 
-        this._zoomOverlay.raise_top();
-        this._zoomOverlay.show();
-
         this.actor.reparent(global.stage);
+        this._zoomLightbox.highlight(this.actor);
 
         [this.actor.x, this.actor.y]             = this._zoomGlobalOrig.getPosition();
         [this.actor.scale_x, this.actor.scale_y] = this._zoomGlobalOrig.getScale();
@@ -255,7 +238,7 @@ WindowClone.prototype = {
 
         this._adjustTitle();
 
-        this._zoomOverlay.destroy();
+        this._zoomLightbox.destroy();
         Main.overview.disconnect(this._hideEventId);
 
         this._zoomLocalPosition  = undefined;
@@ -263,8 +246,8 @@ WindowClone.prototype = {
         this._zoomGlobalPosition = undefined;
         this._zoomGlobalScale    = undefined;
         this._zoomTargetPosition = undefined;
-        this._zoomStep       = undefined;
-        this._zoomOverlay    = undefined;
+        this._zoomStep           = undefined;
+        this._zoomLightbox       = undefined;
     },
 
     _onButtonRelease : function (actor, event) {
@@ -431,14 +414,6 @@ Workspace.prototype = {
         this.actor.height = global.screen_height;
         this.scale = 1.0;
 
-        this._lightbox = new Clutter.Rectangle({ color: LIGHTBOX_COLOR });
-        this.actor.connect('notify::allocation', Lang.bind(this, function () {
-            let [width, height] = this.actor.get_size();
-            this._lightbox.set_size(width, height);
-        }));
-        this.actor.add_actor(this._lightbox);
-        this._lightbox.hide();
-
         let windows = global.get_windows().filter(this._isMyWindow, this);
 
         // Find the desktop window
@@ -573,10 +548,10 @@ Workspace.prototype = {
      */
     setLightboxMode: function (showLightbox) {
         if (showLightbox) {
-            this.setHighlightWindow(null);
-            this._lightbox.show();
+            this._lightbox = new Lightbox.Lightbox(this.actor);
         } else {
-            this._lightbox.hide();
+            this._lightbox.destroy();
+            this._lightbox = null;
         }
     },
 
@@ -587,13 +562,12 @@ Workspace.prototype = {
      * Draw the user's attention to the given window @metaWindow.
      */
     setHighlightWindow: function (metaWindow) {
-        for (let i = 0; i < this._windows.length; i++) {
-            this._windows[i].actor.lower(this._lightbox);
-        }
+        let actor;
         if (metaWindow != null) {
             let clone = this.lookupCloneForMetaWindow(metaWindow);
-            clone.actor.raise(this._lightbox);
+            actor = clone.actor;
         }
+        this._lightbox.highlight(actor);
     },
 
     _adjustRemoveButton : function() {

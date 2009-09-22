@@ -11,10 +11,8 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
-
-const OVERLAY_COLOR = new Clutter.Color();
-OVERLAY_COLOR.from_pixel(0x00000044);
 
 const BOX_BACKGROUND_COLOR = new Clutter.Color();
 BOX_BACKGROUND_COLOR.from_pixel(0x000000cc);
@@ -66,12 +64,7 @@ RunDialog.prototype = {
         this._group = new Clutter.Group({ visible: false });
         global.stage.add_actor(this._group);
 
-        this._overlay = new Clutter.Rectangle({ color: OVERLAY_COLOR,
-                                                width: global.screen_width,
-                                                height: global.screen_height,
-                                                border_width: 0,
-                                                reactive: true });
-        this._group.add_actor(this._overlay);
+        this._lightbox = new Lightbox.Lightbox(this._group);
 
         let boxH = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                  x_align: Big.BoxAlignment.CENTER,
@@ -80,6 +73,7 @@ RunDialog.prototype = {
                                  height: global.screen_height });
 
         this._group.add_actor(boxH);
+        this._lightbox.highlight(boxH);
 
         let boxV = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                  y_align: Big.BoxAlignment.CENTER });

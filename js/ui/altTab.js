@@ -7,6 +7,7 @@ const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 
+const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -24,10 +25,6 @@ const POPUP_NUM_COLUMNS = 5;
 
 const POPUP_LABEL_MAX_WIDTH = POPUP_NUM_COLUMNS * (POPUP_ICON_SIZE + POPUP_GRID_SPACING);
 
-const OVERLAY_COLOR = new Clutter.Color();
-OVERLAY_COLOR.from_pixel(0x00000044);
-
-const SHOW_TIME = 0.05;
 const SWITCH_TIME = 0.1;
 
 function AltTabPopup() {
@@ -73,19 +70,8 @@ AltTabPopup.prototype = {
         this.actor.append(this._indicator, Big.BoxPackFlags.FIXED);
 
         this._items = [];
-        this._toplevels = global.window_group.get_children();
 
         global.stage.add_actor(this.actor);
-
-        // Dark translucent window used to cover all but the
-        // currently-selected window while Alt-Tabbing.
-        this._overlay = new Clutter.Rectangle({ color: OVERLAY_COLOR,
-                                                x: 0,
-                                                y: 0,
-                                                width: global.screen_width,
-                                                height: global.screen_height,
-                                                border_width: 0,
-                                                reactive: true });
     },
 
     addWindow : function(win) {
@@ -101,14 +87,6 @@ AltTabPopup.prototype = {
         item.box = new Big.Box({ padding: POPUP_INDICATOR_WIDTH * 2 });
         item.box.append(item.icon, Big.BoxPackFlags.NONE);
 
-        item.above = null;
-        for (let i = 1; i < this._toplevels.length; i++) {
-            if (this._toplevels[i] == win) {
-                item.above = this._toplevels[i - 1];
-                break;
-            }
-        }
-
         item.n = this._items.length;
         this._items.push(item);
 
@@ -122,13 +100,11 @@ AltTabPopup.prototype = {
     },
 
     show : function(initialSelection) {
-        global.window_group.add_actor(this._overlay);
-        this._overlay.raise_top();
-        this._overlay.show();
-        this.actor.opacity = 0;
-        Tweener.addTween(this.actor, { opacity: 255,
-                                       time: SHOW_TIME,
-                                       transition: "easeOutQuad" });
+        // Need to specify explicit width and height because the
+        // window_group may not actually cover the whole screen
+        this._lightbox = new Lightbox.Lightbox(global.window_group,
+                                               global.screen_width,
+                                               global.screen_height);
 
         this.actor.show_all();
         this.actor.x = Math.floor((global.screen_width - this.actor.width) / 2);
@@ -139,7 +115,7 @@ AltTabPopup.prototype = {
 
     destroy : function() {
         this.actor.destroy();
-        this._overlay.destroy();
+        this._lightbox.destroy();
     },
 
     select : function(n) {
@@ -150,11 +126,6 @@ AltTabPopup.prototype = {
                 this._selected.box.disconnect(this._allocationChangedId);
                 delete this._allocationChangedId;
             }
-
-            if (this._selected.above)
-                this._selected.window.raise(this._selected.above);
-            else
-                this._selected.window.lower_bottom();
         }
 
         let item = this._items[n];
@@ -193,8 +164,7 @@ AltTabPopup.prototype = {
             }
             this._indicator.show();
 
-            if (this._overlay.visible)
-                this._selected.window.raise(this._overlay);
+            this._lightbox.highlight(this._selected.window);
 
             this._allocationChangedId =
                 this._selected.box.connect('notify::allocation',
@@ -202,6 +172,7 @@ AltTabPopup.prototype = {
         } else {
             this._label.text = "";
             this._indicator.hide();
+            this._lightbox.highlight(null);
         }
     },
 

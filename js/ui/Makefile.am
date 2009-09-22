@@ -10,6 +10,7 @@ dist_jsui_DATA =		\
 	dnd.js			\
 	docDisplay.js		\
 	genericDisplay.js	\
+	lightbox.js		\
 	link.js			\
 	lookingGlass.js		\
 	main.js			\
