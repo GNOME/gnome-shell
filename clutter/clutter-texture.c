@@ -525,14 +525,6 @@ clutter_texture_paint (ClutterActor *self)
   gfloat          t_w, t_h;
   guint8          paint_opacity = clutter_actor_get_paint_opacity (self);
 
-  if (paint_opacity == 0)
-    {
-      /* Bail early if painting the actor would be a no-op, custom actors that
-       * might cause a lot of work/state changes should all do this.
-       */
-      return;
-    }
-
   if (priv->fbo_handle != COGL_INVALID_HANDLE)
     update_fbo (self);
 
