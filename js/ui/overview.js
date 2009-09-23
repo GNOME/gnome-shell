@@ -442,7 +442,7 @@ Overview.prototype = {
     },
 
     _addNewWorkspace: function() {
-        global.screen.append_new_workspace(false, global.screen.get_display().get_current_time());
+        global.screen.append_new_workspace(false, Main.currentTime());
     },
 
     _acceptNewWorkspaceDrop: function(source, dropActor, x, y, time) {

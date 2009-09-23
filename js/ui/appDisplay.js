@@ -60,7 +60,7 @@ AppDisplayItem.prototype = {
         let windows = Shell.AppMonitor.get_default().get_windows_for_app(this._appInfo.get_id());
         if (windows.length > 0) {
             let mostRecentWindow = windows[0];
-            Main.overview.activateWindow(mostRecentWindow, Clutter.get_current_event_time());
+            Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
         } else {
             this._appInfo.launch();
         }
@@ -486,7 +486,7 @@ BaseWellItem.prototype = {
                 if (this.actor.pressed && this._dragStartX != null) {
                     this.actor.fake_release();
                     this._draggable.startDrag(this._dragStartX, this._dragStartY,
-                                              Clutter.get_current_event_time());
+                                              Main.currentTime());
                 } else {
                     this._dragStartX = null;
                     this._dragStartY = null;
@@ -547,7 +547,7 @@ RunningWellItem.prototype = {
     activateMostRecentWindow: function () {
         // The _get_windows_for_app sorts them for us
         let mostRecentWindow = this.windows[0];
-        Main.overview.activateWindow(mostRecentWindow, Clutter.get_current_event_time());
+        Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
     },
 
     highlightWindow: function(metaWindow) {
@@ -557,7 +557,7 @@ RunningWellItem.prototype = {
     activateWindow: function(metaWindow) {
         if (metaWindow) {
             this._didActivateWindow = true;
-            Main.overview.activateWindow(metaWindow, Clutter.get_current_event_time());
+            Main.overview.activateWindow(metaWindow, Main.currentTime());
         } else
             Main.overview.hide();
     },

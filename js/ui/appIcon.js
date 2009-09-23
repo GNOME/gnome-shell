@@ -447,7 +447,7 @@ AppIconMenu.prototype = {
 
         this._redisplay();
 
-        this._windowContainer.popup(0, Clutter.get_current_event_time());
+        this._windowContainer.popup(0, Main.currentTime());
 
         this.emit('popup', true);
 

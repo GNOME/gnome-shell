@@ -218,10 +218,8 @@ function _findModal(actor) {
  * Returns: true iff we successfully acquired a grab or already had one
  */
 function pushModal(actor) {
-    let timestamp = global.screen.get_display().get_current_time();
-
     if (modalCount == 0) {
-        if (!global.begin_modal(timestamp)) {
+        if (!global.begin_modal(currentTime())) {
             log("pushModal: invocation of begin_modal failed");
             return false;
         }
@@ -257,8 +255,6 @@ function pushModal(actor) {
  * previous focus at the time when pushModal() was invoked.
  */
 function popModal(actor) {
-    let timestamp = global.screen.get_display().get_current_time();
-
     modalCount -= 1;
     let focusIndex = _findModal(actor);
     if (focusIndex >= 0) {
@@ -276,7 +272,7 @@ function popModal(actor) {
     if (modalCount > 0)
         return;
 
-    global.end_modal(timestamp);
+    global.end_modal(currentTime());
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
 }
 
@@ -296,15 +292,40 @@ function getRunDialog() {
 }
 
 function createAppLaunchContext() {
-    let screen = global.screen;
-    let display = screen.get_display();
-
     let context = new Gdk.AppLaunchContext();
-    context.set_timestamp(display.get_current_time());
+    context.set_timestamp(currentTime());
 
     // Make sure that the app is opened on the current workspace even if
     // the user switches before it starts
-    context.set_desktop(screen.get_active_workspace_index());
+    context.set_desktop(global.screen.get_active_workspace_index());
 
     return context;
+}
+
+/**
+ * currentTime:
+ *
+ * Gets the current X server time from the current Clutter, Gdk, or X
+ * event. If called from outside an event handler, this may return
+ * %Clutter.CURRENT_TIME (aka 0), or it may return a slightly
+ * out-of-date timestamp.
+ */
+function currentTime() {
+    // meta_display_get_current_time() will return the correct time
+    // when handling an X or Gdk event, but will return CurrentTime
+    // from some Clutter event callbacks.
+    //
+    // clutter_get_current_event_time() will return the correct time
+    // from a Clutter event callback, but may return an out-of-date
+    // timestamp if called at other times.
+    //
+    // So we try meta_display_get_current_time() first, since we
+    // can recognize a "wrong" answer from that, and then fall back
+    // to clutter_get_current_event_time().
+
+    let time = global.screen.get_display().get_current_time();
+    if (time != Clutter.CURRENT_TIME)
+        return time;
+
+    return Clutter.get_current_event_time();
 }
