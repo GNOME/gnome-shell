@@ -38,10 +38,9 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-texture-driver.h"
-#include "cogl-material.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
-#include "cogl-primitives.h"
+#include "cogl-spans.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -50,112 +49,6 @@
 static void _cogl_texture_2d_sliced_free (CoglTexture2DSliced *tex_2ds);
 
 COGL_HANDLE_DEFINE (Texture2DSliced, texture_2d_sliced);
-
-typedef enum _CoglSpanIterAxis
-{
-  COGL_SPAN_ITER_AXIS_X,
-  COGL_SPAN_ITER_AXIS_Y
-} CoglSpanIterAxis;
-
-static void
-_cogl_span_iter_update (CoglSpanIter *iter)
-{
-  /* Pick current span */
-  iter->span = &g_array_index (iter->array,
-                               CoglTexSliceSpan,
-                               iter->index);
-
-  /* Offset next position by span size */
-  iter->next_pos = iter->pos +
-    (float)(iter->span->size - iter->span->waste);
-
-  /* Check if span intersects the area to cover */
-  if (iter->next_pos <= iter->cover_start ||
-      iter->pos >= iter->cover_end)
-    {
-      /* Intersection undefined */
-      iter->intersects = FALSE;
-      return;
-    }
-
-  iter->intersects = TRUE;
-
-  /* Clip start position to coverage area */
-  if (iter->pos < iter->cover_start)
-    iter->intersect_start = iter->cover_start;
-  else
-    iter->intersect_start = iter->pos;
-
-  /* Clip end position to coverage area */
-  if (iter->next_pos > iter->cover_end)
-    iter->intersect_end = iter->cover_end;
-  else
-    iter->intersect_end = iter->next_pos;
-}
-
-void
-_cogl_span_iter_begin (CoglSpanIter         *iter,
-                       GArray               *spans,
-                       float                 normalize_factor,
-                       float                 cover_start,
-                       float                 cover_end)
-{
-  float cover_start_normalized;
-
-  iter->index = 0;
-  iter->span = NULL;
-
-  iter->array = spans;
-
-  /* We always iterate in a positive direction from the origin. If
-   * iter->flipped == TRUE that means whoever is using this API should
-   * interpreted the current span as extending in the opposite direction. I.e.
-   * it extends to the left if iterating the X axis, or up if the Y axis. */
-  if (cover_start > cover_end)
-    {
-      float tmp = cover_start;
-      cover_start = cover_end;
-      cover_end = tmp;
-      iter->flipped = TRUE;
-    }
-  else
-    iter->flipped = FALSE;
-
-  /* The texture spans cover the normalized texture coordinate space ranging
-   * from [0,1] but to help support repeating of sliced textures we allow
-   * iteration of any range so we need to relate the start of the range to the
-   * nearest point equivalent to 0.
-   */
-  cover_start_normalized = cover_start / normalize_factor;
-  iter->origin = floorf (cover_start_normalized) * normalize_factor;
-
-  iter->cover_start = cover_start;
-  iter->cover_end = cover_end;
-  iter->pos = iter->origin;
-
-  /* Update intersection */
-  _cogl_span_iter_update (iter);
-}
-
-void
-_cogl_span_iter_next (CoglSpanIter *iter)
-{
-  /* Move current position */
-  iter->pos = iter->next_pos;
-
-  /* Pick next slice (wrap when last reached) */
-  iter->index = (iter->index + 1) % iter->array->len;
-
-  /* Update intersection */
-  _cogl_span_iter_update (iter);
-}
-
-gboolean
-_cogl_span_iter_end (CoglSpanIter *iter)
-{
-  /* End reached when whole area covered */
-  return iter->pos >= iter->cover_end;
-}
 
 /* To differentiate between texture coordinates of a specific, real, slice
  * texture and the texture coordinates of the composite, sliced texture, the
@@ -289,24 +182,24 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
 static guchar *
 _cogl_texture_2d_sliced_allocate_waste_buffer (CoglTexture2DSliced *tex_2ds)
 {
-  CoglTexSliceSpan *last_x_span;
-  CoglTexSliceSpan *last_y_span;
+  CoglSpan *last_x_span;
+  CoglSpan *last_y_span;
   guchar           *waste_buf = NULL;
   CoglTexture      *tex = COGL_TEXTURE (tex_2ds);
 
   /* If the texture has any waste then allocate a buffer big enough to
      fill the gaps */
-  last_x_span = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan,
+  last_x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan,
                                 tex_2ds->slice_x_spans->len - 1);
-  last_y_span = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan,
+  last_y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan,
                                 tex_2ds->slice_y_spans->len - 1);
   if (last_x_span->waste > 0 || last_y_span->waste > 0)
     {
       gint bpp = _cogl_get_format_bpp (tex->bitmap.format);
-      CoglTexSliceSpan  *first_x_span
-        = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan, 0);
-      CoglTexSliceSpan  *first_y_span
-        = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan, 0);
+      CoglSpan  *first_x_span
+        = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, 0);
+      CoglSpan  *first_y_span
+        = &g_array_index (tex_2ds->slice_y_spans, CoglSpan, 0);
       guint right_size = first_y_span->size * last_x_span->waste;
       guint bottom_size = first_x_span->size * last_y_span->waste;
 
@@ -319,8 +212,8 @@ _cogl_texture_2d_sliced_allocate_waste_buffer (CoglTexture2DSliced *tex_2ds)
 static gboolean
 _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds)
 {
-  CoglTexSliceSpan  *x_span;
-  CoglTexSliceSpan  *y_span;
+  CoglSpan  *x_span;
+  CoglSpan  *y_span;
   GLuint             gl_handle;
   gint               bpp;
   gint               x,y;
@@ -334,14 +227,14 @@ _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds)
   /* Iterate vertical slices */
   for (y = 0; y < tex_2ds->slice_y_spans->len; ++y)
     {
-      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan, y);
+      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan, y);
 
       /* Iterate horizontal slices */
       for (x = 0; x < tex_2ds->slice_x_spans->len; ++x)
         {
           gint slice_num = y * tex_2ds->slice_x_spans->len + x;
 
-          x_span = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan, x);
+          x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, x);
 
           /* Pick the gl texture object handle */
           gl_handle = g_array_index (tex_2ds->slice_gl_handles, GLuint, slice_num);
@@ -459,8 +352,8 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
                                                 GLuint       source_gl_type)
 {
   CoglTexture      *tex = COGL_TEXTURE (tex_2ds);
-  CoglTexSliceSpan *x_span;
-  CoglTexSliceSpan *y_span;
+  CoglSpan *x_span;
+  CoglSpan *y_span;
   gint              bpp;
   CoglSpanIter      x_iter;
   CoglSpanIter      y_iter;
@@ -494,7 +387,7 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
           continue;
         }
 
-      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan,
+      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan,
                                y_iter.index);
 
       /* Iterate horizontal spans */
@@ -519,7 +412,7 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
               continue;
             }
 
-          x_span = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan,
+          x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan,
                                    x_iter.index);
 
           /* Pick intersection width and height */
@@ -671,7 +564,7 @@ _cogl_rect_slices_for_size (int     size_to_fill,
                             GArray *out_spans)
 {
   int               n_spans = 0;
-  CoglTexSliceSpan  span;
+  CoglSpan  span;
 
   /* Init first slice span */
   span.start = 0;
@@ -708,7 +601,7 @@ _cogl_pot_slices_for_size (gint    size_to_fill,
                            GArray *out_spans)
 {
   gint             n_spans = 0;
-  CoglTexSliceSpan span;
+  CoglSpan span;
 
   /* Init first slice span */
   span.start = 0;
@@ -797,8 +690,8 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds)
   gint              n_y_slices;
   gint              n_slices;
   gint              x, y;
-  CoglTexSliceSpan *x_span;
-  CoglTexSliceSpan *y_span;
+  CoglSpan *x_span;
+  CoglSpan *y_span;
   const GLfloat     transparent_color[4] = { 0x00, 0x00, 0x00, 0x00 };
 
   gint   (*slices_for_size) (gint, gint, gint, GArray*);
@@ -824,7 +717,7 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds)
   /* Negative number means no slicing forced by the user */
   if (tex_2ds->max_waste <= -1)
     {
-      CoglTexSliceSpan span;
+      CoglSpan span;
 
       /* Check if size supported else bail out */
       if (!_cogl_texture_driver_size_supported (tex->gl_target,
@@ -841,11 +734,11 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds)
 
       /* Init span arrays */
       tex_2ds->slice_x_spans = g_array_sized_new (FALSE, FALSE,
-                                                  sizeof (CoglTexSliceSpan),
+                                                  sizeof (CoglSpan),
                                                   1);
 
       tex_2ds->slice_y_spans = g_array_sized_new (FALSE, FALSE,
-                                                  sizeof (CoglTexSliceSpan),
+                                                  sizeof (CoglSpan),
                                                   1);
 
       /* Add a single span for width and height */
@@ -888,11 +781,11 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds)
 
       /* Init span arrays with reserved size */
       tex_2ds->slice_x_spans = g_array_sized_new (FALSE, FALSE,
-                                                  sizeof (CoglTexSliceSpan),
+                                                  sizeof (CoglSpan),
                                                   n_x_slices);
 
       tex_2ds->slice_y_spans = g_array_sized_new (FALSE, FALSE,
-                                                  sizeof (CoglTexSliceSpan),
+                                                  sizeof (CoglSpan),
                                                   n_y_slices);
 
       /* Fill span arrays with info */
@@ -936,11 +829,11 @@ _cogl_texture_2d_sliced_slices_create (CoglTexture2DSliced *tex_2ds)
   /* Init each GL texture object */
   for (y = 0; y < n_y_slices; ++y)
     {
-      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan, y);
+      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan, y);
 
       for (x = 0; x < n_x_slices; ++x)
         {
-          x_span = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan, x);
+          x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, x);
 
           COGL_NOTE (TEXTURE, "CREATE SLICE (%d,%d)\tsize (%d,%d)",
                      x, y,
@@ -1268,8 +1161,8 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   guint                bpp;
   CoglTexture2DSliced *tex_2ds;
   CoglTexture         *tex;
-  CoglTexSliceSpan     x_span;
-  CoglTexSliceSpan     y_span;
+  CoglSpan     x_span;
+  CoglSpan     y_span;
 
   if (!_cogl_texture_driver_allows_foreign_gl_target (gl_target))
     return COGL_INVALID_HANDLE;
@@ -1378,11 +1271,11 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
   /* Create slice arrays */
   tex_2ds->slice_x_spans =
     g_array_sized_new (FALSE, FALSE,
-                       sizeof (CoglTexSliceSpan), 1);
+                       sizeof (CoglSpan), 1);
 
   tex_2ds->slice_y_spans =
     g_array_sized_new (FALSE, FALSE,
-                       sizeof (CoglTexSliceSpan), 1);
+                       sizeof (CoglSpan), 1);
 
   tex_2ds->slice_gl_handles =
     g_array_sized_new (FALSE, FALSE,
@@ -1436,11 +1329,11 @@ gboolean
 _cogl_texture_2d_sliced_can_hardware_repeat (CoglHandle handle)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (handle);
-  CoglTexSliceSpan *x_span;
-  CoglTexSliceSpan *y_span;
+  CoglSpan *x_span;
+  CoglSpan *y_span;
 
-  x_span = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan, 0);
-  y_span = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan, 0);
+  x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, 0);
+  y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan, 0);
 
   return (x_span->waste || y_span->waste) ? FALSE : TRUE;
 }
@@ -1451,14 +1344,14 @@ _cogl_texture_2d_sliced_transform_coords_to_gl (CoglTexture2DSliced *tex_2ds,
                                                 float *t)
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2ds);
-  CoglTexSliceSpan *x_span;
-  CoglTexSliceSpan *y_span;
+  CoglSpan *x_span;
+  CoglSpan *y_span;
 
   g_assert (!_cogl_texture_2d_sliced_is_sliced (tex_2ds));
 
   /* Don't include the waste in the texture coordinates */
-  x_span = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan, 0);
-  y_span = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan, 0);
+  x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, 0);
+  y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan, 0);
 
   *s *= tex->bitmap.width / (float)x_span->size;
   *t *= tex->bitmap.height / (float)y_span->size;
@@ -1677,8 +1570,8 @@ _cogl_texture_2d_sliced_download_from_gl (
                                       GLuint               target_gl_type)
 {
   CoglTexture       *tex = COGL_TEXTURE (tex_2ds);
-  CoglTexSliceSpan  *x_span;
-  CoglTexSliceSpan  *y_span;
+  CoglSpan  *x_span;
+  CoglSpan  *y_span;
   GLuint             gl_handle;
   gint               bpp;
   gint               x,y;
@@ -1689,13 +1582,13 @@ _cogl_texture_2d_sliced_download_from_gl (
   /* Iterate vertical slices */
   for (y = 0; y < tex_2ds->slice_y_spans->len; ++y)
     {
-      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglTexSliceSpan, y);
+      y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan, y);
 
       /* Iterate horizontal slices */
       for (x = 0; x < tex_2ds->slice_x_spans->len; ++x)
 	{
 	  /*if (x != 0 || y != 1) continue;*/
-	  x_span = &g_array_index (tex_2ds->slice_x_spans, CoglTexSliceSpan, x);
+	  x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, x);
 
 	  /* Pick the gl texture object handle */
 	  gl_handle = g_array_index (tex_2ds->slice_gl_handles, GLuint,
