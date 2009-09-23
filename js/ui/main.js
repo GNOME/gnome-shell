@@ -1,6 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
+const DBus = imports.dbus;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
@@ -15,6 +16,7 @@ const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
+const ShellDBus = imports.ui.shellDBus;
 const Sidebar = imports.ui.sidebar;
 const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
@@ -30,6 +32,7 @@ let runDialog = null;
 let lookingGlass = null;
 let wm = null;
 let recorder = null;
+let shellDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
 
@@ -42,6 +45,12 @@ function start() {
     Gio.DesktopAppInfo.set_desktop_env("GNOME");
 
     global.grab_dbus_service();
+    shellDBusService = new ShellDBus.GnomeShell();
+    // Force a connection now; dbus.js will do this internally
+    // if we use its name acquisition stuff but we aren't right
+    // now; to do so we'd need to convert from its async calls
+    // back into sync ones.
+    DBus.session.flush();
 
     Tweener.init();
 
