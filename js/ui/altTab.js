@@ -154,8 +154,16 @@ AltTabPopup.prototype = {
 
         if (keysym == Clutter.Tab)
             this._updateSelection(backwards ? -1 : 1);
+        else if (keysym == Clutter.Left)
+            this._updateSelection(-1);
+        else if (keysym == Clutter.Right)
+            this._updateSelection(1);
         else if (keysym == Clutter.grave)
             this._updateWindowSelection(backwards ? -1 : 1);
+        else if (keysym == Clutter.Up)
+            this._updateWindowSelection(-1);
+        else if (keysym == Clutter.Down)
+            this._updateWindowSelection(1);
         else if (keysym == Clutter.Escape)
             this.destroy();
 
