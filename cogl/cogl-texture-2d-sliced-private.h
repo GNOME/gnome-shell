@@ -32,34 +32,7 @@
 #define COGL_TEXTURE_2D_SLICED(tex) ((CoglTexture2DSliced *)tex)
 
 typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
-typedef struct _CoglTexSliceSpan  CoglTexSliceSpan;
-typedef struct _CoglSpanIter      CoglSpanIter;
 typedef struct _CoglTexturePixel  CoglTexturePixel;
-
-struct _CoglTexSliceSpan
-{
-  int start;
-  int size;
-  int waste;
-};
-
-struct _CoglSpanIter
-{
-  gint              index;
-  GArray           *array;
-  CoglTexSliceSpan *span;
-  float             pos;
-  float             next_pos;
-  float             origin;
-  float             cover_start;
-  float             cover_end;
-  float             intersect_start;
-  float             intersect_end;
-  float             intersect_start_local;
-  float             intersect_end_local;
-  gboolean          intersects;
-  gboolean          flipped;
-};
 
 /* This is used to store the first pixel of each slice. This is only
    used when glGenerateMipmap is not available */
