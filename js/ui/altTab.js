@@ -46,6 +46,7 @@ AltTabPopup.prototype = {
         this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
 
         this._icons = [];
+        this._currentWindows = [];
         this._haveModal = false;
         this._selected = 0;
         this._highlightedWindow = null;
@@ -67,6 +68,7 @@ AltTabPopup.prototype = {
         appIcon.actor.border = 2;
 
         this._icons.push(appIcon);
+        this._currentWindows.push(appIcon.windows[0]);
 
         // Add it to the grid
         if (!this._gridRow || this._gridRow.get_children().length == POPUP_NUM_COLUMNS) {
@@ -212,7 +214,7 @@ AltTabPopup.prototype = {
         this._selected = (this._selected + this._icons.length + delta) % this._icons.length;
         this._icons[this._selected].setHighlight(true);
 
-        this._highlightWindow(this._icons[this._selected].windows[0]);
+        this._highlightWindow(this._currentWindows[this._selected]);
     },
 
     _menuPoppedUp : function(icon, menu) {
@@ -243,6 +245,7 @@ AltTabPopup.prototype = {
 
     _highlightWindow : function(metaWin) {
         this._highlightedWindow = metaWin;
+        this._currentWindows[this._selected] = metaWin;
         this._lightbox.highlight(this._highlightedWindow.get_compositor_private());
     }
 };
