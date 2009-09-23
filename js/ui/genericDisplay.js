@@ -17,6 +17,10 @@ const DND = imports.ui.dnd;
 const Link = imports.ui.link;
 const Main = imports.ui.main;
 
+const RedisplayFlags = { NONE: 0,
+                         RESET_CONTROLS: 1 << 0,
+                         SUBSEARCH: 1 << 1 };
+
 const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
 ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);
 const ITEM_DISPLAY_DESCRIPTION_COLOR = new Clutter.Color();
@@ -357,8 +361,14 @@ GenericDisplay.prototype = {
 
     // Sets the search string and displays the matching items.
     setSearch: function(text) {
-        this._search = text.toLowerCase();
-        this._redisplay(true);
+        let lowertext = text.toLowerCase();
+        let flags = RedisplayFlags.RESET_CONTROLS;
+        if (this._search != '') {
+            if (lowertext.indexOf(this._search) == 0)
+                flags |= RedisplayFlags.SUBSEARCH;
+        }
+        this._search = lowertext;
+        this._redisplay(flags);
     },
 
     // Launches the item that is currently selected, closing the Overview
@@ -439,7 +449,7 @@ GenericDisplay.prototype = {
 
     // Load the initial state
     load: function() {
-        this._redisplay(true);
+        this._redisplay(RedisplayFlags.RESET_CONTROLS);
     },
 
     // Should be called when the display is closed
@@ -587,19 +597,23 @@ GenericDisplay.prototype = {
 
     /*
      * Updates the displayed items, applying the search string if one exists.
-     *
-     * resetPage - indicates if the page selection should be reset when displaying the matching results.
-     *             We reset the page selection when the change in results was initiated by the user by  
-     *             entering a different search criteria or by viewing the results list in a different
-     *             size mode, but we keep the page selection the same if the results got updated on
-     *             their own while the user was browsing through the result pages.
+     * @flags: Flags controlling redisplay behavior as follows:
+     *  RESET_CONTROLS - indicates if the page selection should be reset when displaying the matching results.
+     *  We reset the page selection when the change in results was initiated by the user by
+     *  entering a different search criteria or by viewing the results list in a different
+     *  size mode, but we keep the page selection the same if the results got updated on
+     *  their own while the user was browsing through the result pages.
+     *  SUBSEARCH - Indicates that the current _search is a superstring of the previous
+     *  one, which implies we only need to re-search through previous results.
      */
-    _redisplay: function(resetPage) {
+    _redisplay: function(flags) {
+        let resetPage = flags & RedisplayFlags.RESET_CONTROLS;
+        let isSubSearch = flags & RedisplayFlags.SUBSEARCH;
         this._refreshCache();
         if (!this._filterActive())
             this._setDefaultList();
         else
-            this._doSearchFilter();
+            this._doSearchFilter(isSubSearch);
 
         if (resetPage)
             this._list.page = 0;
@@ -643,35 +657,49 @@ GenericDisplay.prototype = {
 
     //// Private methods ////
 
-    _getSearchMatchedItems: function() {
-        let matchedItemsForSearch = {};
+    _getItemSearchScore: function(itemId, terms) {
+        let item = this._allItems[itemId];
+        let score = 0;
+        for (let i = 0; i < terms.length; i++) {
+            let term = terms[i];
+            if (this._isInfoMatching(item, term)) {
+                score++;
+            }
+        }
+        return score;
+    },
+
+    _getSearchMatchedItems: function(isSubSearch) {
         // Break the search up into terms, and search for each
         // individual term.  Keep track of the number of terms
         // each item matched.
         let terms = this._search.split(/\s+/);
-        for (let i = 0; i < terms.length; i++) {
-            let term = terms[i];
-            for (itemId in this._allItems) {
-                let item = this._allItems[itemId];
-                if (this._isInfoMatching(item, term)) {
-                    let count = matchedItemsForSearch[itemId];
-                    if (!count)
-                        count = 0;
-                    count += 1;
-                    matchedItemsForSearch[itemId] = count;
-                }
+        let matchScores = {};
+
+        if (isSubSearch) {
+            for (let i = 0; i < this._matchedItems.length; i++) {
+                let itemId = this._matchedItems[i];
+                let score = this._getItemSearchScore(itemId, terms);
+                if (score > 0)
+                    matchScores[itemId] = score;
+            }
+        } else {
+            for (let itemId in this._allItems) {
+                let score = this._getItemSearchScore(itemId, terms);
+                if (score > 0)
+                    matchScores[itemId] = score;
             }
         }
-        return matchedItemsForSearch;
+        return matchScores;
     },
 
     // Applies the search string to the list of items to find matches,
     // and displays the matching items.
-    _doSearchFilter: function() {
+    _doSearchFilter: function(isSubSearch) {
         let matchedItemsForSearch;
 
         if (this._filterActive()) {
-            matchedItemsForSearch = this._getSearchMatchedItems();
+            matchedItemsForSearch = this._getSearchMatchedItems(isSubSearch);
         } else {
             matchedItemsForSearch = {};
             for (let itemId in this._allItems) {
