@@ -20,7 +20,13 @@ typedef struct
 
 struct _ShellTextureCachePrivate
 {
+  /* Things that were loaded with a cache policy != NONE */
   GHashTable *keyed_cache; /* CacheKey -> CoglTexture* */
+  /* Presently this is used to de-duplicate requests for GIcons,
+   * it could in theory be extended to async URL loading and other
+   * cases too.
+   */
+  GHashTable *outstanding_requests; /* CacheKey -> AsyncTextureLoadData * */
   GnomeDesktopThumbnailFactory *thumbnails;
 };
 
@@ -130,6 +136,8 @@ shell_texture_cache_init (ShellTextureCache *self)
   self->priv = g_new0 (ShellTextureCachePrivate, 1);
   self->priv->keyed_cache = g_hash_table_new_full (cache_key_hash, cache_key_equal,
                                                    cache_key_destroy, cogl_handle_unref);
+  self->priv->outstanding_requests = g_hash_table_new_full (cache_key_hash, cache_key_equal,
+                                                            cache_key_destroy, NULL);
   self->priv->thumbnails = gnome_desktop_thumbnail_factory_new (GNOME_DESKTOP_THUMBNAIL_SIZE_NORMAL);
 }
 
@@ -647,7 +655,7 @@ typedef struct {
   GtkIconInfo *icon_info;
   guint width;
   guint height;
-  ClutterTexture *texture;
+  GSList *textures;
 } AsyncTextureLoadData;
 
 static CoglHandle
@@ -706,15 +714,31 @@ on_pixbuf_loaded (GObject      *source,
                   GAsyncResult *result,
                   gpointer      user_data)
 {
+  GSList *iter;
   ShellTextureCache *cache;
   AsyncTextureLoadData *data;
   GdkPixbuf *pixbuf;
   GError *error = NULL;
   CoglHandle texdata = NULL;
-  CacheKey *key;
+  CacheKey key;
 
   data = user_data;
   cache = SHELL_TEXTURE_CACHE (source);
+
+  memset (&key, 0, sizeof(key));
+  key.policy = data->policy;
+  if (data->icon)
+    key.icon = data->icon;
+  else if (data->recent_info && data->thumbnail)
+    key.thumbnail_uri = (char*)gtk_recent_info_get_uri (data->recent_info);
+  else if (data->thumbnail)
+    key.thumbnail_uri = (char*)data->uri;
+  else if (data->uri)
+    key.uri = data->uri;
+  key.size = data->width;
+
+  g_hash_table_remove (cache->priv->outstanding_requests, &key);
+
   pixbuf = load_pixbuf_async_finish (cache, result, &error);
   if (pixbuf == NULL)
     pixbuf = load_pixbuf_fallback(data);
@@ -729,30 +753,20 @@ on_pixbuf_loaded (GObject      *source,
     {
       gpointer orig_key, value;
 
-      key = g_new0 (CacheKey, 1);
-      key->policy = data->policy;
-      if (data->icon)
-        key->icon = g_object_ref (data->icon);
-      else if (data->recent_info && data->thumbnail)
-        key->thumbnail_uri = g_strdup (gtk_recent_info_get_uri (data->recent_info));
-      else if (data->thumbnail)
-        key->thumbnail_uri = g_strdup (data->uri);
-      else if (data->uri)
-        key->uri = g_strdup (data->uri);
-      key->size = data->width;
-
-      if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, key,
+      if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, &key,
                                          &orig_key, &value))
         {
           cogl_handle_ref (texdata);
-          g_hash_table_insert (cache->priv->keyed_cache, key,
+          g_hash_table_insert (cache->priv->keyed_cache, cache_key_dup (&key),
                                texdata);
         }
-      else
-        cache_key_destroy (key);
     }
 
-    set_texture_cogl_texture (data->texture, texdata);
+  for (iter = data->textures; iter; iter = iter->next)
+    {
+      ClutterTexture *texture = iter->data;
+      set_texture_cogl_texture (texture, texdata);
+    }
 
 out:
   if (texdata)
@@ -772,7 +786,11 @@ out:
 
   /* Alternatively we could weakref and just do nothing if the texture
      is destroyed */
-  g_object_unref (data->texture);
+  for (iter = data->textures; iter; iter = iter->next)
+    {
+      ClutterTexture *texture = iter->data;
+      g_object_unref (texture);
+    }
 
   g_clear_error (&error);
   g_free (data);
@@ -881,6 +899,59 @@ shell_texture_cache_bind_pixbuf_property (ShellTextureCache *cache,
 }
 
 /**
+ * create_texture_and_ensure_request:
+ * @cache:
+ * @key: A filled in #CacheKey
+ * @request: (out): If no request is outstanding, one will be created and returned here
+ * @texture: (out): A new texture, also added to the request
+ *
+ * Check for any outstanding load for the data represented by @key.  If there
+ * is already a request pending, append it to that request to avoid loading
+ * the data multiple times.
+ *
+ * Returns: %TRUE iff there is already a request pending
+ */
+static gboolean
+create_texture_and_ensure_request (ShellTextureCache     *cache,
+                                   CacheKey              *key,
+                                   AsyncTextureLoadData **request,
+                                   ClutterActor         **texture)
+{
+  CoglHandle texdata;
+  AsyncTextureLoadData *pending;
+  gboolean had_pending;
+
+  *texture = (ClutterActor *) create_default_texture (cache);
+  clutter_actor_set_size (*texture, key->size, key->size);
+
+  texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
+
+  if (texdata != NULL)
+    {
+      /* We had this cached already, just set the texture and we're done. */
+      set_texture_cogl_texture (CLUTTER_TEXTURE (*texture), texdata);
+      return TRUE;
+    }
+
+  pending = g_hash_table_lookup (cache->priv->outstanding_requests, key);
+  had_pending = pending != NULL;
+
+  if (pending == NULL)
+    {
+      /* Not cached and no pending request, create it */
+      *request = g_new0 (AsyncTextureLoadData, 1);
+      g_hash_table_insert (cache->priv->outstanding_requests, cache_key_dup (key), *request);
+    }
+  else
+   *request = pending;
+
+  /* Regardless of whether there was a pending request, prepend our texture here. */
+  (*request)->textures = g_slist_prepend ((*request)->textures, g_object_ref (*texture));
+
+  return had_pending;
+}
+
+/**
  * shell_texture_cache_load_gicon:
  *
  * This method returns a new #ClutterClone for a given #GIcon.  If the
@@ -893,44 +964,43 @@ shell_texture_cache_load_gicon (ShellTextureCache *cache,
                                 GIcon             *icon,
                                 gint               size)
 {
-  ClutterTexture *texture;
-  CoglHandle texdata;
+  AsyncTextureLoadData *request;
+  ClutterActor *texture;
   CacheKey key;
-
-  texture = create_default_texture (cache);
-  clutter_actor_set_size (CLUTTER_ACTOR (texture), size, size);
+  GtkIconTheme *theme;
+  GtkIconInfo *info;
 
   memset (&key, 0, sizeof(key));
   key.icon = icon;
   key.size = size;
-  texdata = g_hash_table_lookup (cache->priv->keyed_cache, &key);
 
-  if (texdata == NULL)
+  if (create_texture_and_ensure_request (cache, &key, &request, &texture))
+    return texture;
+
+  /* Do theme lookups in the main thread to avoid thread-unsafety */
+  theme = gtk_icon_theme_get_default ();
+
+  info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
+  if (info != NULL)
     {
-      GtkIconTheme *theme;
-      GtkIconInfo *info;
+      /* hardcoded here for now; we should actually blow this away on
+       * icon theme changes probably */
+      request->policy = SHELL_TEXTURE_CACHE_POLICY_FOREVER;
+      request->icon = g_object_ref (icon);
+      request->icon_info = info;
+      request->width = request->height = size;
 
-      /* Do theme lookups in the main thread to avoid thread-unsafety */
-      theme = gtk_icon_theme_get_default ();
-
-      info = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN);
-      if (info != NULL)
-        {
-          AsyncTextureLoadData *data;
-          data = g_new0 (AsyncTextureLoadData, 1);
-          /* hardcoded here for now; we should actually blow this away on
-           * icon theme changes probably */
-          data->policy = SHELL_TEXTURE_CACHE_POLICY_FOREVER;
-          data->icon = g_object_ref (icon);
-          data->icon_info = info;
-          data->texture = g_object_ref (texture);
-          data->width = data->height = size;
-          load_icon_pixbuf_async (cache, icon, info, size, NULL, on_pixbuf_loaded, data);
-        }
+      load_icon_pixbuf_async (cache, icon, info, size, NULL, on_pixbuf_loaded, request);
     }
   else
     {
-      set_texture_cogl_texture (texture, texdata);
+      /* Blah; we failed to find the icon, but we've added our texture to the outstanding
+       * requests.  In that case, just undo what create_texture_lookup_status did.
+       */
+       g_slist_foreach (request->textures, (GFunc) g_object_unref, NULL);
+       g_slist_free (request->textures);
+       g_free (request);
+       g_hash_table_remove (cache->priv->outstanding_requests, &key);
     }
 
   return CLUTTER_ACTOR (texture);
@@ -991,7 +1061,7 @@ shell_texture_cache_load_uri_async (ShellTextureCache *cache,
   data->uri = g_strdup (uri);
   data->width = available_width;
   data->height = available_height;
-  data->texture = g_object_ref (texture);
+  data->textures = g_slist_prepend (data->textures, g_object_ref (texture));
   load_uri_pixbuf_async (cache, uri, available_width, available_height, NULL, on_pixbuf_loaded, data);
 
   return CLUTTER_ACTOR (texture);
@@ -1114,7 +1184,7 @@ shell_texture_cache_load_thumbnail (ShellTextureCache *cache,
       data->thumbnail = TRUE;
       data->width = size;
       data->height = size;
-      data->texture = g_object_ref (texture);
+      data->textures = g_slist_prepend (data->textures, g_object_ref (texture));
       load_thumbnail_async (cache, uri, mimetype, size, NULL, on_pixbuf_loaded, data);
     }
   else
@@ -1190,7 +1260,7 @@ shell_texture_cache_load_recent_thumbnail (ShellTextureCache *cache,
       data->recent_info = gtk_recent_info_ref (info);
       data->width = size;
       data->height = size;
-      data->texture = g_object_ref (texture);
+      data->textures = g_slist_prepend (data->textures, g_object_ref (texture));
       load_recent_thumbnail_async (cache, info, size, NULL, on_pixbuf_loaded, data);
     }
   else
