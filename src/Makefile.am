@@ -16,10 +16,6 @@ mutter_built_sources = \
 mutter_SOURCES= 				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
-	core/alttabhandler.c			\
-	include/alttabhandler.h			\
-	core/alttabhandlerdefault.c		\
-	include/alttabhandlerdefault.h		\
 	core/bell.c				\
 	core/bell.h				\
 	core/boxes.c				\
@@ -153,7 +149,6 @@ libmutterincludedir = $(includedir)/mutter/mutter-private
 # Headers installed for plugins; introspected information will
 # be extracted into Mutter-<version>.gir
 libmutterinclude_base_headers =		\
-	include/alttabhandler.h			\
 	include/boxes.h				\
 	ui/gradient.h				\
 	include/main.h				\

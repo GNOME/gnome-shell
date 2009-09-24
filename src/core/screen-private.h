@@ -37,7 +37,6 @@
 #include "screen.h"
 #include <X11/Xutil.h>
 #include "stack-tracker.h"
-#include "alttabhandler.h"
 #include "ui.h"
 
 typedef struct _MetaMonitorInfo MetaMonitorInfo;
@@ -82,9 +81,8 @@ struct _MetaScreen
   Visual *default_xvisual;
   MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaUI *ui;
-  MetaAltTabHandler *tab_handler;
-  MetaTabPopup *ws_popup;
-  
+  MetaTabPopup *tab_popup, *ws_popup;
+
   MetaWorkspace *active_workspace;
 
   /* This window holds the focus when we don't want to focus

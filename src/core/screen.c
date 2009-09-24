@@ -38,7 +38,6 @@
 #include "stack.h"
 #include "xprops.h"
 #include "compositor.h"
-#include "alttabhandlerdefault.h"
 #include "mutter-marshal.h"
 #include "mutter-enum-types.h"
 
@@ -781,9 +780,9 @@ meta_screen_new (MetaDisplay *display,
   screen->ui = meta_ui_new (screen->display->xdisplay,
                             screen->xscreen);
 
-  screen->tab_handler = NULL;
+  screen->tab_popup = NULL;
   screen->ws_popup = NULL;
-  
+
   screen->stack = meta_stack_new (screen);
   screen->stack_tracker = meta_stack_tracker_new (screen);
 
@@ -1516,58 +1515,146 @@ meta_screen_tab_popup_create (MetaScreen      *screen,
                               MetaTabShowType  show_type,
                               MetaWindow      *initial_selection)
 {
+  MetaTabEntry *entries;
   GList *tab_list;
   GList *tmp;
+  int len;
+  int i;
 
-  g_return_if_fail (screen->tab_handler == NULL);
-
-  screen->tab_handler = meta_alt_tab_handler_new (screen,
-                                                  show_type == META_TAB_SHOW_INSTANTLY);
+  if (screen->tab_popup)
+    return;
 
   tab_list = meta_display_get_tab_list (screen->display,
                                         list_type,
                                         screen,
                                         screen->active_workspace);
-  
-  for (tmp = tab_list; tmp; tmp = tmp->next)
-    meta_alt_tab_handler_add_window (screen->tab_handler, tmp->data);
-  
-  meta_alt_tab_handler_show (screen->tab_handler, initial_selection);
+
+  len = g_list_length (tab_list);
+
+  entries = g_new (MetaTabEntry, len + 1);
+  entries[len].key = NULL;
+  entries[len].title = NULL;
+  entries[len].icon = NULL;
+
+  i = 0;
+  tmp = tab_list;
+  while (i < len)
+    {
+      MetaWindow *window;
+      MetaRectangle r;
+
+      window = tmp->data;
+
+      entries[i].key = (MetaTabEntryKey) window;
+      entries[i].title = window->title;
+      entries[i].icon = g_object_ref (window->icon);
+      entries[i].blank = FALSE;
+      entries[i].hidden = !meta_window_showing_on_its_workspace (window);
+      entries[i].demands_attention = window->wm_state_demands_attention;
+
+      if (show_type == META_TAB_SHOW_INSTANTLY ||
+          !entries[i].hidden                   ||
+          !meta_window_get_icon_geometry (window, &r))
+        meta_window_get_outer_rect (window, &r);
+
+      entries[i].rect = r;
+
+      /* Find inside of highlight rectangle to be used when window is
+       * outlined for tabbing.  This should be the size of the
+       * east/west frame, and the size of the south frame, on those
+       * sides.  On the top it should be the size of the south frame
+       * edge.
+       */
+#define OUTLINE_WIDTH 5
+      /* Top side */
+      if (!entries[i].hidden &&
+          window->frame && window->frame->bottom_height > 0 &&
+          window->frame->child_y >= window->frame->bottom_height)
+        entries[i].inner_rect.y = window->frame->bottom_height;
+      else
+        entries[i].inner_rect.y = OUTLINE_WIDTH;
+
+      /* Bottom side */
+      if (!entries[i].hidden &&
+          window->frame && window->frame->bottom_height != 0)
+        entries[i].inner_rect.height = r.height
+          - entries[i].inner_rect.y - window->frame->bottom_height;
+      else
+        entries[i].inner_rect.height = r.height
+          - entries[i].inner_rect.y - OUTLINE_WIDTH;
+
+      /* Left side */
+      if (!entries[i].hidden && window->frame && window->frame->child_x != 0)
+        entries[i].inner_rect.x = window->frame->child_x;
+      else
+        entries[i].inner_rect.x = OUTLINE_WIDTH;
+
+      /* Right side */
+      if (!entries[i].hidden &&
+          window->frame && window->frame->right_width != 0)
+        entries[i].inner_rect.width = r.width
+          - entries[i].inner_rect.x - window->frame->right_width;
+      else
+        entries[i].inner_rect.width = r.width
+          - entries[i].inner_rect.x - OUTLINE_WIDTH;
+
+      ++i;
+      tmp = tmp->next;
+    }
+
+  if (!meta_prefs_get_no_tab_popup ())
+    screen->tab_popup = meta_ui_tab_popup_new (entries,
+                                               screen->number,
+                                               len,
+                                               5, /* FIXME */
+                                               TRUE);
+
+  for (i = 0; i < len; i++)
+    g_object_unref (entries[i].icon);
+
+  g_free (entries);
+
+  g_list_free (tab_list);
+
+  meta_ui_tab_popup_select (screen->tab_popup,
+                            (MetaTabEntryKey) initial_selection);
+
+  if (show_type != META_TAB_SHOW_INSTANTLY)
+    meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
 }
 
 void
 meta_screen_tab_popup_forward (MetaScreen *screen)
 {
-  g_return_if_fail (screen->tab_handler != NULL);
+  g_return_if_fail (screen->tab_popup != NULL);
 
-  meta_alt_tab_handler_forward (screen->tab_handler);
+  meta_ui_tab_popup_forward (screen->tab_popup);
 }
 
 void
 meta_screen_tab_popup_backward (MetaScreen *screen)
 {
-  g_return_if_fail (screen->tab_handler != NULL);
+  g_return_if_fail (screen->tab_popup != NULL);
 
-  meta_alt_tab_handler_backward (screen->tab_handler);
+  meta_ui_tab_popup_backward (screen->tab_popup);
 }
 
 MetaWindow *
 meta_screen_tab_popup_get_selected (MetaScreen *screen)
 {
-  g_return_val_if_fail (screen->tab_handler != NULL, NULL);
+  g_return_val_if_fail (screen->tab_popup != NULL, NULL);
 
-  return meta_alt_tab_handler_get_selected (screen->tab_handler);
+  return (MetaWindow *) meta_ui_tab_popup_get_selected (screen->tab_popup);
 }
 
 void
 meta_screen_tab_popup_destroy (MetaScreen *screen)
 {
-  if (!screen->tab_handler)
-    return;
-
-  meta_alt_tab_handler_destroy (screen->tab_handler);
-  g_object_unref (screen->tab_handler);
-  screen->tab_handler = NULL;
+  if (screen->tab_popup)
+    {
+      meta_ui_tab_popup_free (screen->tab_popup);
+      screen->tab_popup = NULL;
+    }
 }
 
 void
@@ -1580,8 +1667,9 @@ meta_screen_workspace_popup_create (MetaScreen    *screen,
   MetaWorkspaceLayout layout;
   int n_workspaces;
   int current_workspace;
-  
-  g_return_if_fail (screen->ws_popup == NULL);
+
+  if (screen->ws_popup || meta_prefs_get_no_tab_popup ())
+    return;
 
   current_workspace = meta_workspace_index (screen->active_workspace);
   n_workspaces = meta_screen_get_n_workspaces (screen);

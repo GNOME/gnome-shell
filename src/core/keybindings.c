@@ -2047,15 +2047,11 @@ process_tab_grab (MetaDisplay *display,
     action = META_KEYBINDING_ACTION_NONE;
 
   /*
-   * There are currently two different ways of customizing Alt-Tab, you can either
-   * provide a replacement AltTabHandler object, or you can hook into the keybindings
-   * meta_keybindings_set_custom_handler() and call meta_display_begin_grab_op()
-   * yourself with one of the "tabbing" grab ops META_GRAB_OP_KEYBOARD_TABBING_NORMAL,
-   * etc. See meta_display_process_key_event() for the complete list. If screen->tab_handler
-   * is NULL, the latter mechanism is being used. We skip most of our normal
-   * processing and just make sure that the right custom handlers get called.
+   * If there is no tab_pop up object, i.e., there is some custom handler
+   * implementing Alt+Tab & Co., we call this custom handler; we do not
+   * mess about with the grab, as that is up to the handler to deal with.
    */
-  if (!screen->tab_handler)
+  if (!screen->tab_popup)
     {
       if (event->type == KeyRelease)
         {
