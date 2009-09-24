@@ -150,9 +150,10 @@ DocDisplay.prototype = {
     // Gets the list of recent items from the recent items manager.
     _refreshCache : function() {
         if (!this._docsStale)
-            return;
+            return true;
         this._allItems = this._docManager.getItems();
         this._docsStale = false;
+        return false;
     },
 
     // Sets the list of the displayed items based on how recently they were last visited.
@@ -171,21 +172,24 @@ DocDisplay.prototype = {
         // them once when they are returned by this._recentManager.get_items() to avoid having to do 
         // this sorting each time, but the sorting seems to be very fast anyway, so there is no need
         // to introduce an additional class variable.
-        this._matchedItems = [];
+        this._matchedItems = {};
+        this._matchedItemKeys = [];
         let docIdsToRemove = [];
         for (docId in this._allItems) {
             // this._allItems[docId].exists() checks if the resource still exists
-            if (this._allItems[docId].exists()) 
-                this._matchedItems.push(docId);
-            else 
+            if (this._allItems[docId].exists()) {
+                this._matchedItems[docId] = 1;
+                this._matchedItemKeys.push(docId);
+            } else {
                 docIdsToRemove.push(docId);
+            }
         }
 
         for (docId in docIdsToRemove) {
             delete this._allItems[docId];
         }
 
-        this._matchedItems.sort(Lang.bind(this, function (a,b) { return this._compareItems(a,b); }));
+        this._matchedItemKeys.sort(Lang.bind(this, this._compareItems));
     },
 
     // Compares items associated with the item ids based on how recently the items

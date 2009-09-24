@@ -19,7 +19,8 @@ const Main = imports.ui.main;
 
 const RedisplayFlags = { NONE: 0,
                          RESET_CONTROLS: 1 << 0,
-                         SUBSEARCH: 1 << 1 };
+                         FULL: 1 << 1,
+                         SUBSEARCH: 1 << 2 };
 
 const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
 ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);
@@ -124,6 +125,8 @@ GenericDisplayItem.prototype = {
         this._name = null;
         this._description = null;
         this._icon = null;
+
+        this._initialLoadComplete = false;
 
         // An array of details description actors that we create over time for the item.
         // It is used for updating the description text inside the details actor when
@@ -341,9 +344,10 @@ GenericDisplay.prototype = {
 
         // map<itemId, Object> where Object represents the item info
         this._allItems = {};
-        // an array of itemIds of items that match the current request
-        // in the order in which the items should be displayed
-        this._matchedItems = [];
+        // set<itemId>
+        this._matchedItems = {};
+        // sorted array of items matched by search
+        this._matchedItemKeys = [];
         // map<itemId, GenericDisplayItem>
         this._displayedItems = {};
         this._openDetailIndex = -1;
@@ -362,6 +366,8 @@ GenericDisplay.prototype = {
     // Sets the search string and displays the matching items.
     setSearch: function(text) {
         let lowertext = text.toLowerCase();
+        if (lowertext == this._search)
+            return;
         let flags = RedisplayFlags.RESET_CONTROLS;
         if (this._search != '') {
             if (lowertext.indexOf(this._search) == 0)
@@ -440,16 +446,16 @@ GenericDisplay.prototype = {
         // positive number when this._mathedItems.length is 0
         // This can be triggered if a search string is entered for which there are no matches.
         // log("this._mathedItems.length: " + this._matchedItems.length + " this._list.displayedCount " + this._list.displayedCount);
-        return this._matchedItems.length > 0;
+        return this._matchedItemKeys.length > 0;
     },
 
     getMatchedItemsCount: function() {
-        return this._matchedItems.length;
+        return this._matchedItemKeys.length;
     },
 
     // Load the initial state
     load: function() {
-        this._redisplay(RedisplayFlags.RESET_CONTROLS);
+        this._redisplay(RedisplayFlags.FULL);
     },
 
     // Should be called when the display is closed
@@ -480,51 +486,14 @@ GenericDisplay.prototype = {
 
     //// Protected methods ////
 
-    /*
-     * Displays items that match the current request and should show up on the current page.
-     * Updates the display control to reflect the matched items set and the page selected.
-     *
-     * resetDisplayControl - indicates if the display control should be re-created because 
-     *                       the results or the space allocated for them changed. If it's false,
-     *                       the existing display control is used and only the page links are
-     *                       updated to reflect the current page selection.
-     */
-    _displayMatchedItems: function(resetDisplayControl) {
-        // When generating a new list to display, we first remove all the old
-        // displayed items which will unset the selection. So we need 
-        // to keep a flag which indicates if this display had the selection.
-        let hadSelected = this.hasSelected();
-
+    _redisplayFull: function() {
         this._removeAllDisplayItems();
-        for (let i = 0; i < this._matchedItems.length; i++) {
-            this._addDisplayItem(this._matchedItems[i]);
+        for (let itemId in this._allItems) {
+            this._addDisplayItem(itemId);
         }
-
-        if (hadSelected) {
-            this._selectedIndex = -1;
-            this.selectFirstItem();
-        }
-
-        // Check if the pointer is over one of the items and display the information button if it is.
-        // We want to do this between finishing our changes to the display and the point where
-        // the display is redrawn.
-        Mainloop.idle_add(Lang.bind(this,
-                                    function() {
-                                        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
-                                        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
-                                                                                  x, y);
-                                        if (actor != null) {
-                                            let item = this._findDisplayedByActor(actor);
-                                            if (item != null) {
-                                                item.onDrawnUnderPointer();
-                                            }
-                                        }
-                                        return false;
-                                    }),
-                          Meta.PRIORITY_BEFORE_REDRAW);
     },
 
-    // Creates a display item based on the information associated with itemId 
+    // Creates a display item based on the information associated with itemId
     // and adds it to the displayed items.
     _addDisplayItem : function(itemId) {
         if (this._displayedItems.hasOwnProperty(itemId)) {
@@ -595,6 +564,67 @@ GenericDisplay.prototype = {
         this.unsetSelected();
     },
 
+    _compareSearchMatch: function(a, b) {
+        let countA = this._matchedItems[a];
+        let countB = this._matchedItems[b];
+        if (countA > countB)
+            return -1;
+        else if (countA < countB)
+            return 1;
+        else
+            return this._compareItems(a, b);
+    },
+
+    _setMatches: function(matches) {
+        this._matchedItems = matches;
+        this._matchedItemKeys = [];
+        for (let itemId in this._matchedItems) {
+            this._matchedItemKeys.push(itemId);
+        }
+        this._matchedItemKeys.sort(Lang.bind(this, this._compareSearchMatch));
+    },
+
+    /**
+     * _redisplaySubSearch:
+     * A somewhat more optimized function called when we know
+     * that we're going to be displaying a subset of the items
+     * we already had, in the same order.  In that case, we can
+     * just hide the actors that shouldn't be shown.
+     */
+    _redisplaySubSearch: function() {
+        let matches = this._getSearchMatchedItems(true);
+
+        // Just hide all from the old set,
+        // we'll show the ones we want below
+        for (let itemId in this._displayedItems) {
+            let item = this._displayedItems[itemId];
+            item.actor.hide();
+        }
+
+        this._setMatches(matches);
+
+        for (let itemId in matches) {
+            let item = this._displayedItems[itemId];
+            item.actor.show();
+        }
+        this._list.queue_relayout();
+    },
+
+    _redisplayReordering: function() {
+        if (!this._filterActive()) {
+            this._setDefaultList();
+        } else {
+            this._setMatches(this._getSearchMatchedItems(false));
+        }
+        this._list.remove_all();
+        for (let i = 0; i < this._matchedItemKeys.length; i++) {
+            let itemId = this._matchedItemKeys[i];
+            let item = this._displayedItems[itemId];
+            item.actor.show();
+            this._list.add_actor(item.actor);
+       }
+    },
+
     /*
      * Updates the displayed items, applying the search string if one exists.
      * @flags: Flags controlling redisplay behavior as follows:
@@ -607,25 +637,58 @@ GenericDisplay.prototype = {
      *  one, which implies we only need to re-search through previous results.
      */
     _redisplay: function(flags) {
-        let resetPage = flags & RedisplayFlags.RESET_CONTROLS;
-        let isSubSearch = flags & RedisplayFlags.SUBSEARCH;
-        this._refreshCache();
-        if (!this._filterActive())
-            this._setDefaultList();
-        else
-            this._doSearchFilter(isSubSearch);
+        let resetPage = (flags & RedisplayFlags.RESET_CONTROLS) > 0;
+        let isSubSearch = (flags & RedisplayFlags.SUBSEARCH) > 0;
+        let fullReload = (flags & RedisplayFlags.FULL) > 0;
+
+        let hadSelected = this.hasSelected();
+
+        if (!this._initialLoadComplete || !this._refreshCache())
+            fullReload = true;
+        if (fullReload) {
+            this._initialLoadComplete = true;
+            this._redisplayFull();
+        } if (isSubSearch) {
+            this._redisplaySubSearch();
+        } else {
+            this._redisplayReordering();
+        }
 
         if (resetPage)
             this._list.page = 0;
 
-        this._displayMatchedItems(true);
+        if (hadSelected) {
+            this._selectedIndex = -1;
+            this.selectFirstItem();
+        }
+
+        Mainloop.idle_add(Lang.bind(this, this._checkInformationIcon),
+                          Meta.PRIORITY_BEFORE_REDRAW);
 
         this.emit('redisplayed');
     },
 
+    // Check if the pointer is over one of the items and display the information button if it is.
+    // We want to do this between finishing our changes to the display and the point where
+    // the display is redrawn.
+    _checkInformationIcon: function() {
+        let [child, x, y, mask] = Gdk.Screen.get_default().get_root_window().get_pointer();
+        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE,
+                                                  x, y);
+        if (actor != null) {
+            let item = this._findDisplayedByActor(actor);
+            if (item != null) {
+               item.onDrawnUnderPointer();
+            }
+        }
+        return false;
+    },
+
     //// Pure virtual protected methods ////
- 
+
     // Performs the steps needed to have the latest information about the items.
+    // Implementation should return %true if we are up to date, and %false
+    // if a full reload occurred.
     _refreshCache: function() {
         throw new Error("Not implemented");
     },
@@ -677,14 +740,14 @@ GenericDisplay.prototype = {
         let matchScores = {};
 
         if (isSubSearch) {
-            for (let i = 0; i < this._matchedItems.length; i++) {
-                let itemId = this._matchedItems[i];
+            for (let i = 0; i < this._matchedItemKeys.length; i++) {
+                let itemId = this._matchedItemKeys[i];
                 let score = this._getItemSearchScore(itemId, terms);
                 if (score > 0)
                     matchScores[itemId] = score;
             }
         } else {
-            for (let itemId in this._allItems) {
+            for (let itemId in this._displayedItems) {
                 let score = this._getItemSearchScore(itemId, terms);
                 if (score > 0)
                     matchScores[itemId] = score;
@@ -693,40 +756,10 @@ GenericDisplay.prototype = {
         return matchScores;
     },
 
-    // Applies the search string to the list of items to find matches,
-    // and displays the matching items.
-    _doSearchFilter: function(isSubSearch) {
-        let matchedItemsForSearch;
-
-        if (this._filterActive()) {
-            matchedItemsForSearch = this._getSearchMatchedItems(isSubSearch);
-        } else {
-            matchedItemsForSearch = {};
-            for (let itemId in this._allItems) {
-                matchedItemsForSearch[itemId] = 1;
-            }
-        }
-
-        this._matchedItems = [];
-        for (itemId in matchedItemsForSearch) {
-            this._matchedItems.push(itemId);
-        }
-        this._matchedItems.sort(Lang.bind(this, function (a, b) {
-            let countA = matchedItemsForSearch[a];
-            let countB = matchedItemsForSearch[b];
-            if (countA > countB)
-                return -1;
-            else if (countA < countB)
-                return 1;
-            else
-                return this._compareItems(a, b);
-        }));
-    },
-
     /*
      * Updates the display control to reflect the matched items set and the page selected.
      *
-     * resetDisplayControl - indicates if the display control should be re-created because 
+     * resetDisplayControl - indicates if the display control should be re-created because
      *                       the results or the space allocated for them changed. If it's false,
      *                       the existing display control is used and only the page links are
      *                       updated to reflect the current page selection.

@@ -197,17 +197,17 @@ AppDisplay.prototype = {
         this._appsStale = true;
         this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
             this._appsStale = true;
-            this._redisplay(false);
+            this._redisplay(0);
             this._redisplayMenus();
         }));
         this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
-            this._redisplay(false);
+            this._redisplay(0);
         }));
         this._appMonitor.connect('app-added', Lang.bind(this, function(monitor) {
-            this._redisplay(false);
+            this._redisplay(0);
         }));
         this._appMonitor.connect('app-removed', Lang.bind(this, function(monitor) {
-            this._redisplay(false);
+            this._redisplay(0);
         }));
 
         // Load the apps now so it doesn't slow down the first
@@ -338,7 +338,7 @@ AppDisplay.prototype = {
     // Gets information about all applications by calling Gio.app_info_get_all().
     _refreshCache : function() {
         if (!this._appsStale)
-            return;
+            return true;
         this._allItems = {};
         this._appCategories = {};
 
@@ -371,11 +371,13 @@ AppDisplay.prototype = {
         }
 
         this._appsStale = false;
+        return false;
     },
 
     // Stub this out; the app display always has a category selected
     _setDefaultList : function() {
-        this._matchedItems = [];
+        this._matchedItems = {};
+        this._matchedItemKeys = [];
     },
 
     // Compares items associated with the item ids based on the alphabetical order
