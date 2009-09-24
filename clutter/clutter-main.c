@@ -38,6 +38,8 @@
 #include <glib/gi18n-lib.h>
 #include <locale.h>
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "clutter-event.h"
 #include "clutter-backend.h"
 #include "clutter-main.h"
@@ -95,7 +97,8 @@ static const GDebugKey clutter_debug_keys[] = {
   { "multistage", CLUTTER_DEBUG_MULTISTAGE },
   { "animation", CLUTTER_DEBUG_ANIMATION },
   { "layout", CLUTTER_DEBUG_LAYOUT },
-  { "nop-picking", CLUTTER_DEBUG_NOP_PICKING }
+  { "nop-picking", CLUTTER_DEBUG_NOP_PICKING },
+  { "dump-pick-buffers", CLUTTER_DEBUG_DUMP_PICK_BUFFERS }
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -336,6 +339,13 @@ _clutter_id_to_color (guint id, ClutterColor *col)
   col->green = green;
   col->blue  = blue;
   col->alpha = 0xff;
+
+  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
+    {
+      col->red = (col->red << 4) | (col->red >> 4);
+      col->green = (col->green << 4) | (col->green >> 4);
+      col->blue = (col->blue << 4) | (col->blue >> 4);
+    }
 }
 
 guint
@@ -350,9 +360,22 @@ _clutter_pixel_to_id (guchar pixel[4])
   /* reduce the pixel components to the number of bits actually used of the
    * 8bits.
    */
-  red   = pixel[0] >> (8 - ctx->fb_r_mask);
-  green = pixel[1] >> (8 - ctx->fb_g_mask);
-  blue  = pixel[2] >> (8 - ctx->fb_b_mask);
+  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
+    {
+      guchar tmp;
+      tmp = ((pixel[0] << 4) | (pixel[0] >> 4));
+      red = tmp >> (8 - ctx->fb_r_mask);
+      tmp = ((pixel[1] << 4) | (pixel[1] >> 4));
+      green = tmp >> (8 - ctx->fb_g_mask);
+      tmp = ((pixel[2] << 4) | (pixel[2] >> 4));
+      blue = tmp >> (8 - ctx->fb_b_mask);
+    }
+  else
+    {
+      red   = pixel[0] >> (8 - ctx->fb_r_mask);
+      green = pixel[1] >> (8 - ctx->fb_g_mask);
+      blue  = pixel[2] >> (8 - ctx->fb_b_mask);
+    }
 
   /* divide potentially by two if 'fuzzy' */
   red   = red   >> (ctx->fb_r_mask - ctx->fb_r_mask_used);
@@ -364,6 +387,58 @@ _clutter_pixel_to_id (guchar pixel[4])
           + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
 
   return id;
+}
+
+static void
+pixbuf_free (guchar *pixels, gpointer data)
+{
+  g_free (pixels);
+}
+
+static void
+read_pixels_to_file (char *filename_stem,
+                     int x,
+                     int y,
+                     int width,
+                     int height)
+{
+  GLubyte *data;
+  GdkPixbuf *pixbuf;
+  static int read_count = 0;
+  GdkPixbuf *flipped;
+
+  data = g_malloc (4 * width * height);
+  glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  pixbuf = gdk_pixbuf_new_from_data (data,
+                                     GDK_COLORSPACE_RGB,
+                                     TRUE, /* has alpha */
+                                     8, /* bits per sample */
+                                     width, /* width */
+                                     height, /* height */
+                                     width * 4, /* rowstride */
+                                     pixbuf_free, /* callback to free data */
+                                     NULL); /* callback data */
+  if (pixbuf)
+    {
+      flipped = gdk_pixbuf_flip (pixbuf, FALSE);
+      g_object_unref (pixbuf);
+    }
+
+  if (flipped)
+    {
+      char *filename =
+        g_strdup_printf ("%s-%05d.png", filename_stem, read_count);
+      GError *error = NULL;
+      if (!gdk_pixbuf_save (flipped, filename, "png", &error, NULL))
+        {
+          g_warning ("Failed to save pick buffer to file %s: %s",
+                     filename, error->message);
+          g_error_free (error);
+        }
+      g_free (filename);
+      g_object_unref (flipped);
+      read_count++;
+    }
 }
 
 ClutterActor *
@@ -389,7 +464,9 @@ _clutter_do_pick (ClutterStage   *stage,
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
-  cogl_clip_push_window_rect (x, y, 1, 1);
+  if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+    cogl_clip_push_window_rect (x, y, 1, 1);
+
   cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
   cogl_disable_fog ();
   cogl_clear (&white,
@@ -407,7 +484,9 @@ _clutter_do_pick (ClutterStage   *stage,
   context->pick_mode = mode;
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   context->pick_mode = CLUTTER_PICK_NONE;
-  cogl_clip_pop ();
+
+  if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
+    cogl_clip_pop ();
 
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
@@ -417,6 +496,9 @@ _clutter_do_pick (ClutterStage   *stage,
 
   /* Read the color of the screen co-ords pixel */
   glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+
+  if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
+    read_pixels_to_file ("pick-buffer", 0, 0, viewport[2], viewport[3]);
 
   /* Restore whether GL_DITHER was enabled */
   if (dither_was_on)
