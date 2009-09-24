@@ -241,7 +241,7 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle)
  */
 static CoglVertexBufferAttribFlags
 validate_gl_attribute (const char *gl_attribute,
-		       guint8 *n_components,
+		       guint8 n_components,
 		       guint8 *texture_unit)
 {
   CoglVertexBufferAttribFlags type;
@@ -256,10 +256,18 @@ validate_gl_attribute (const char *gl_attribute,
 
   if (strncmp (gl_attribute, "Vertex", name_len) == 0)
     {
+      if (G_UNLIKELY (n_components == 1))
+        g_critical ("glVertexPointer doesn't allow 1 component vertex "
+                    "positions so we currently only support \"gl_Vertex\" "
+                    "attributes where n_components == 2, 3 or 4");
       type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY;
     }
   else if (strncmp (gl_attribute, "Color", name_len) == 0)
     {
+      if (G_UNLIKELY (n_components != 3 && n_components != 4))
+        g_critical ("glColorPointer expects 3 or 4 component colors so we "
+                    "currently only support \"gl_Color\" attributes where "
+                    "n_components == 3 or 4");
       type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY;
     }
   else if (strncmp (gl_attribute,
@@ -280,7 +288,10 @@ validate_gl_attribute (const char *gl_attribute,
     }
   else if (strncmp (gl_attribute, "Normal", name_len) == 0)
     {
-      *n_components = 1;
+      if (G_UNLIKELY (n_components != 3))
+        g_critical ("glNormalPointer expects 3 component normals so we "
+                    "currently only support \"gl_Normal\" attributes where "
+                    "n_components == 3");
       type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY;
     }
   else
@@ -468,8 +479,8 @@ cogl_vertex_buffer_add (CoglHandle         handle,
       if (strncmp (attribute_name, "gl_", 3) == 0)
 	{
 	  flags |= validate_gl_attribute (attribute_name + 3,
-					 &n_components,
-					 &texture_unit);
+					  n_components,
+					  &texture_unit);
 	  if (flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_INVALID)
 	    return;
 	}
