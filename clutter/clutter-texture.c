@@ -512,12 +512,91 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
 }
 
 static void
+update_fbo (ClutterActor *self)
+{
+  ClutterTexture        *texture = CLUTTER_TEXTURE (self);
+  ClutterTexturePrivate *priv = texture->priv;
+  ClutterMainContext    *context;
+  ClutterShader         *shader = NULL;
+  ClutterActor          *stage = NULL;
+  ClutterPerspective     perspective;
+  CoglColor              transparent_col;
+
+  context = _clutter_context_get_default ();
+
+  if (context->shaders)
+    shader = clutter_actor_get_shader (context->shaders->data);
+
+  /* Temporarily turn of the shader on the top of the context's
+   * shader stack, to restore the GL pipeline to it's natural state.
+   */
+  if (shader)
+    clutter_shader_set_is_enabled (shader, FALSE);
+
+  /* Redirect drawing to the fbo */
+  cogl_push_draw_buffer ();
+  cogl_set_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->fbo_handle);
+
+  if ((stage = clutter_actor_get_stage (self)))
+    {
+      gfloat stage_width, stage_height;
+      ClutterActor *source_parent;
+
+      clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
+      clutter_actor_get_size (stage, &stage_width, &stage_height);
+
+      /* Use below to set the modelview matrix as if the viewport
+         was still the same size as the stage */
+      _cogl_setup_viewport (stage_width, stage_height,
+                            perspective.fovy,
+                            perspective.aspect,
+                            perspective.z_near,
+                            perspective.z_far);
+
+      /* Use a projection matrix that makes the actor appear as it
+         would if it was rendered at its normal screen location */
+      clutter_texture_set_fbo_projection (self);
+
+      /* Reset the viewport to the size of the FBO */
+      cogl_set_viewport (0, 0, priv->image_width, priv->image_height);
+
+      /* Reapply the source's parent transformations */
+      if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
+        _clutter_actor_apply_modelview_transform_recursive (source_parent,
+                                                            NULL);
+    }
+
+  /* cogl_clear is called to clear the buffers */
+  cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
+  cogl_clear (&transparent_col,
+              COGL_BUFFER_BIT_COLOR |
+              COGL_BUFFER_BIT_DEPTH);
+  cogl_disable_fog ();
+
+  /* Render the actor to the fbo */
+  clutter_actor_paint (priv->fbo_source);
+
+  /* Restore drawing to the previous draw buffer */
+  cogl_pop_draw_buffer ();
+
+  /* Restore the perspective matrix using cogl_perspective so that
+     the inverse matrix will be right */
+  cogl_perspective (perspective.fovy,
+                    perspective.aspect,
+                    perspective.z_near,
+                    perspective.z_far);
+
+  /* If there is a shader on top of the shader stack, turn it back on. */
+  if (shader)
+    clutter_shader_set_is_enabled (shader, TRUE);
+}
+
+static void
 clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
   ClutterActorBox box = { 0, };
-  CoglColor       transparent_col;
   gfloat          t_w, t_h;
   guint8          paint_opacity = clutter_actor_get_paint_opacity (self);
 
@@ -530,80 +609,7 @@ clutter_texture_paint (ClutterActor *self)
     }
 
   if (priv->fbo_handle != COGL_INVALID_HANDLE)
-    {
-      ClutterMainContext *context;
-      ClutterShader      *shader = NULL;
-      ClutterActor       *stage = NULL;
-      ClutterPerspective  perspective;
-
-      context = _clutter_context_get_default ();
-
-      if (context->shaders)
-        shader = clutter_actor_get_shader (context->shaders->data);
-
-      /* Temporarily turn of the shader on the top of the context's
-       * shader stack, to restore the GL pipeline to it's natural state.
-       */
-      if (shader)
-        clutter_shader_set_is_enabled (shader, FALSE);
-
-      /* Redirect drawing to the fbo */
-      cogl_push_draw_buffer ();
-      cogl_set_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->fbo_handle);
-
-      if ((stage = clutter_actor_get_stage (self)))
-	{
-	  gfloat stage_width, stage_height;
-	  ClutterActor *source_parent;
-
-	  clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
-	  clutter_actor_get_size (stage, &stage_width, &stage_height);
-
-	  /* Use below to set the modelview matrix as if the viewport
-	     was still the same size as the stage */
-          _cogl_setup_viewport (stage_width, stage_height,
-                                perspective.fovy,
-                                perspective.aspect,
-                                perspective.z_near,
-                                perspective.z_far);
-
-	  /* Use a projection matrix that makes the actor appear as it
-	     would if it was rendered at its normal screen location */
-	  clutter_texture_set_fbo_projection (self);
-
-	  /* Reset the viewport to the size of the FBO */
-	  cogl_set_viewport (0, 0, priv->image_width, priv->image_height);
-
-	  /* Reapply the source's parent transformations */
-	  if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
-	    _clutter_actor_apply_modelview_transform_recursive (source_parent,
-								NULL);
-	}
-
-      /* cogl_clear is called to clear the buffers */
-      cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
-      cogl_clear (&transparent_col,
-		  COGL_BUFFER_BIT_COLOR |
-		  COGL_BUFFER_BIT_DEPTH);
-      cogl_disable_fog ();
-
-      /* Render out actor scene to fbo */
-      clutter_actor_paint (priv->fbo_source);
-
-      /* Restore drawing to the previous draw buffer */
-      cogl_pop_draw_buffer ();
-
-      /* Restore the perspective matrix using cogl_perspective so that
-	 the inverse matrix will be right */
-      cogl_perspective (perspective.fovy,
-                        perspective.aspect,
-                        perspective.z_near,
-                        perspective.z_far);
-
-      /* If there is a shader on top of the shader stack, turn it back on. */
-      if (shader)
-        clutter_shader_set_is_enabled (shader, TRUE);
-    }
+    update_fbo (self);
 
   CLUTTER_NOTE (PAINT,
                 "painting texture '%s'",
