@@ -18,6 +18,7 @@ dist_jsui_DATA =		\
 	panel.js		\
 	places.js		\
 	runDialog.js		\
+	shellDBus.js		\
 	sidebar.js		\
 	tweener.js		\
 	widget.js		\
