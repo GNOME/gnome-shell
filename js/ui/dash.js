@@ -613,6 +613,7 @@ Dash.prototype = {
         /***** Search *****/
 
         this._searchActive = false;
+        this._searchPending = false;
         this._searchEntry = new SearchEntry();
         this.searchArea.append(this._searchEntry.actor, Big.BoxPackFlags.EXPAND);
 
@@ -620,7 +621,9 @@ Dash.prototype = {
         this._searchEntry.entry.connect('text-changed', Lang.bind(this, function (se, prop) {
             let text = this._searchEntry.getText();
             text = text.replace(/^\s+/g, "").replace(/\s+$/g, "")
+            let searchPreviouslyActive = this._searchActive;
             this._searchActive = text != '';
+            this._searchPending = this._searchActive && !searchPreviouslyActive;
             this._updateDashActors();
             if (!this._searchActive) {
                 if (this._searchTimeoutId > 0) {
@@ -871,17 +874,28 @@ Dash.prototype = {
     },
 
     _updateDashActors: function() {
-        if (!this._searchActive && this._searchResultsSection.actor.visible) {
+        if (this._searchPending) {
+            this._searchResultsSection.actor.show();
+            for (let i = 0; i < this._searchSections.length; i++) {
+                let section = this._searchSections[i];
+                section.header.actor.hide();
+                section.resultArea.actor.hide();
+            }
+            this._appsSection.actor.hide();
+            this._placesSection.actor.hide();
+            this._docsSection.actor.hide();
+        } else if (this._searchActive) {
+            for (let i = 0; i < this._searchSections.length; i++) {
+                let section = this._searchSections[i];
+                section.header.actor.show();
+                section.resultArea.actor.show();
+            }
+        } else {
             this._showAllSearchSections();
             this._searchResultsSection.actor.hide();
             this._appsSection.actor.show();
             this._placesSection.actor.show();
             this._docsSection.actor.show();
-        } else if (this._searchActive && !this._searchResultsSection.actor.visible) {
-            this._searchResultsSection.actor.show();
-            this._appsSection.actor.hide();
-            this._placesSection.actor.hide();
-            this._docsSection.actor.hide();
         }
     },
 
