@@ -23,7 +23,7 @@ const ENTERED_MENU_COLOR = new Clutter.Color();
 ENTERED_MENU_COLOR.from_pixel(0x00ff0022);
 
 const WELL_DEFAULT_COLUMNS = 4;
-const WELL_ITEM_HSPACING = 0;
+const WELL_ITEM_MIN_HSPACING = 4;
 const WELL_ITEM_VSPACING = 4;
 
 const MENU_ICON_SIZE = 24;
@@ -628,9 +628,8 @@ WellGrid.prototype = {
             nColumns = children.length;
         else
             nColumns = WELL_DEFAULT_COLUMNS;
-        let spacing = Math.max(nColumns - 1, 0) * WELL_ITEM_HSPACING;
-        alloc.min_size = itemMin * nColumns + spacing;
-        alloc.natural_size = itemNatural * nColumns + spacing;
+        alloc.min_size = itemMin;
+        alloc.natural_size = itemNatural * nColumns;
     },
 
     _getPreferredHeight: function (grid, forWidth, alloc) {
@@ -678,7 +677,7 @@ WellGrid.prototype = {
                 y += itemHeight + WELL_ITEM_VSPACING;
                 x = box.x1;
             } else {
-                x += itemWidth + WELL_ITEM_HSPACING;
+                x += itemWidth;
             }
 
             if (atSeparator) {
@@ -728,19 +727,28 @@ WellGrid.prototype = {
         let children = this._getItemChildren();
         if (children.length == 0)
             return [0, WELL_DEFAULT_COLUMNS, 0, 0];
-        let nColumns;
-        if (children.length < WELL_DEFAULT_COLUMNS)
-            nColumns = children.length;
-         else
+        let nColumns = 0;
+        let usedWidth = 0;
+        if (forWidth < 0) {
             nColumns = WELL_DEFAULT_COLUMNS;
-
-        if (forWidth >= 0 && forWidth < minWidth) {
-           log("WellGrid: trying to allocate for width " + forWidth + " but min is " + minWidth);
-           /* FIXME - we should fall back to fewer than WELL_DEFAULT_COLUMNS here */
+        } else {
+            while (nColumns < WELL_DEFAULT_COLUMNS &&
+                   nColumns < children.length &&
+                   usedWidth + itemMinWidth <= forWidth) {
+               // By including WELL_ITEM_MIN_HSPACING in usedWidth, we are ensuring
+               // that the number of columns we end up with will allow the spacing
+               // between the columns to be at least that value.
+               usedWidth += itemMinWidth + WELL_ITEM_MIN_HSPACING;
+               nColumns++;
+            }
         }
 
-        let horizSpacingTotal = Math.max(nColumns - 1, 0) * WELL_ITEM_HSPACING;
-        let minWidth = itemMinWidth * nColumns + horizSpacingTotal;
+        if (nColumns == 0) {
+           log("WellGrid: couldn't fit a column in width " + forWidth);
+           /* FIXME - fall back to smaller icon size */
+        }
+
+        let minWidth = itemMinWidth * nColumns;
 
         let lastColumnIndex = nColumns - 1;
         let separatorColumns = lastColumnIndex - ((lastColumnIndex + this._separatorIndex) % nColumns);
@@ -750,7 +758,7 @@ WellGrid.prototype = {
         if (forWidth < 0) {
             itemWidth = itemNaturalWidth;
         } else {
-            itemWidth = Math.max(forWidth - horizSpacingTotal, 0) / nColumns;
+            itemWidth = Math.floor(forWidth / nColumns);
         }
 
         let itemNaturalHeight = 0;
@@ -760,7 +768,7 @@ WellGrid.prototype = {
                 itemNaturalHeight = childNatural;
         }
 
-        return [rows, WELL_DEFAULT_COLUMNS, itemWidth, itemNaturalHeight];
+        return [rows, nColumns, itemWidth, itemNaturalHeight];
     },
 
     _getItemPreferredWidth: function () {
