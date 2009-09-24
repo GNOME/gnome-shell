@@ -24,6 +24,23 @@ struct _ShellOverflowListPrivate {
   guint displayed_count;
 };
 
+static GList *
+get_visible_children (ShellOverflowList *self)
+{
+  GList *children, *iter, *next;
+
+  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  for (iter = children; iter; iter = next)
+    {
+      ClutterActor *actor = iter->data;
+      next = iter->next;
+
+      if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+        children = g_list_delete_link (children, iter);
+    }
+  return children;
+}
+
 static void
 recalc_displayed_count (ShellOverflowList *self)
 {
@@ -32,7 +49,7 @@ recalc_displayed_count (ShellOverflowList *self)
   int displayed_count;
   int page, n_pages;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  children = get_visible_children (self);
   n_children = g_list_length (children);
   g_list_free (children);
 
@@ -136,7 +153,7 @@ shell_overflow_list_allocate (ClutterActor           *actor,
   curheight = 0;
   avail_height = box->y2 - box->y1;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  children = get_visible_children (self);
   n_children = g_list_length (children);
 
   n_fits = 0;
@@ -189,7 +206,7 @@ shell_overflow_list_paint (ClutterActor *actor)
   GList *children, *iter;
   int i;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  children = get_visible_children (self);
 
   if (children == NULL)
     return;
@@ -232,7 +249,7 @@ shell_overflow_list_get_preferred_height (ClutterActor *actor,
   if (natural_height_p)
     {
       int n_children;
-      children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+      children = get_visible_children (self);
       n_children = g_list_length (children);
       if (n_children == 0)
         *natural_height_p = 0;
@@ -254,7 +271,7 @@ shell_overflow_list_get_preferred_width (ClutterActor *actor,
   GList *iter;
   GList *children;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  children = get_visible_children (self);
 
   for (iter = children; iter; iter = iter->next)
     {
@@ -374,7 +391,7 @@ shell_overflow_list_get_displayed_actor (ShellOverflowList *self,
 {
   GList *children, *iter;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  children = get_visible_children (self);
 
   if (children == NULL)
     return NULL;
@@ -405,7 +422,7 @@ shell_overflow_list_get_actor_index (ShellOverflowList *self,
   int i;
   int result;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
+  children = get_visible_children (self);
 
   if (children == NULL)
     return -1;
