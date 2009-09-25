@@ -79,6 +79,8 @@ struct _ClutterTexturePrivate
   ClutterActor *fbo_source;
   CoglHandle fbo_handle;
 
+  CoglHandle pick_material;
+
   ClutterTextureAsyncData *async_data;
 
   guint no_slice : 1;
@@ -89,6 +91,8 @@ struct _ClutterTexturePrivate
   guint load_size_async : 1;
   guint load_data_async : 1;
   guint load_async_set : 1;  /* used to make load_async possible */
+  guint pick_with_alpha : 1;
+  guint pick_with_alpha_supported : 1;
 };
 
 struct _ClutterTextureAsyncData
@@ -114,7 +118,7 @@ struct _ClutterTextureAsyncData
   /* Set when the texture is queued for GPU upload, used to determine
    * what to do with the texture data when load_idle is zero.
   */
-  gboolean        upload_queued;  
+  gboolean        upload_queued;
 
   gchar          *load_filename;
   CoglHandle      load_bitmap;
@@ -137,6 +141,7 @@ enum
   PROP_KEEP_ASPECT_RATIO,
   PROP_LOAD_ASYNC,
   PROP_LOAD_DATA_ASYNC,
+  PROP_PICK_WITH_ALPHA
 };
 
 enum
@@ -517,48 +522,130 @@ update_fbo (ClutterActor *self)
 }
 
 static void
+gen_texcoords_and_draw_cogl_rectangle (ClutterActor *self)
+{
+  ClutterTexture *texture = CLUTTER_TEXTURE (self);
+  ClutterTexturePrivate *priv = texture->priv;
+  ClutterActorBox box;
+  float t_w, t_h;
+
+  clutter_actor_get_allocation_box (self, &box);
+
+  if (priv->repeat_x && priv->image_width > 0)
+    t_w = (box.x2 - box.x1) / (float) priv->image_width;
+  else
+    t_w = 1.0;
+
+  if (priv->repeat_y && priv->image_height > 0)
+    t_h = (box.y2 - box.y1) / (float) priv->image_height;
+  else
+    t_h = 1.0;
+
+  cogl_rectangle_with_texture_coords (0, 0,
+			              box.x2 - box.x1,
+                                      box.y2 - box.y1,
+			              0, 0, t_w, t_h);
+}
+
+static CoglHandle
+create_pick_material (ClutterActor *self)
+{
+  CoglHandle pick_material = cogl_material_new ();
+  GError *error = NULL;
+
+  if (!cogl_material_set_layer_combine (pick_material, 0,
+                                        "RGBA = "
+                                        "  MODULATE (CONSTANT, TEXTURE[A])",
+                                        &error))
+    {
+      static gboolean seen_warning = FALSE;
+      if (!seen_warning)
+        g_warning ("Error setting up texture combine for shaped "
+                   "texture picking: %s", error->message);
+      seen_warning = TRUE;
+      g_error_free (error);
+      cogl_handle_unref (pick_material);
+      return COGL_INVALID_HANDLE;
+    }
+
+  cogl_material_set_blend (pick_material,
+                           "RGBA = ADD (SRC_COLOR[RGBA], 0)",
+                           NULL);
+
+  cogl_material_set_alpha_test_function (pick_material,
+                                         COGL_MATERIAL_ALPHA_FUNC_EQUAL,
+                                         1.0);
+
+  return pick_material;
+}
+
+static void
+clutter_texture_pick (ClutterActor       *self,
+                      const ClutterColor *color)
+{
+  ClutterTexture *texture = CLUTTER_TEXTURE (self);
+  ClutterTexturePrivate *priv = texture->priv;
+
+  if (!clutter_actor_should_pick_paint (self))
+    return;
+
+  if (G_LIKELY (priv->pick_with_alpha_supported) && priv->pick_with_alpha)
+    {
+      CoglColor pick_color;
+
+      if (priv->pick_material == COGL_INVALID_HANDLE)
+        priv->pick_material = create_pick_material (self);
+
+      if (priv->pick_material == COGL_INVALID_HANDLE)
+        {
+          priv->pick_with_alpha_supported = FALSE;
+          CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->pick (self,
+                                                                    color);
+          return;
+        }
+
+      if (priv->fbo_handle != COGL_INVALID_HANDLE)
+        update_fbo (self);
+
+      cogl_color_set_from_4ub (&pick_color,
+                               color->red,
+                               color->green,
+                               color->blue,
+                               0xff);
+      cogl_material_set_layer_combine_constant (priv->pick_material,
+                                                0, &pick_color);
+      cogl_material_set_layer (priv->pick_material, 0,
+                               clutter_texture_get_cogl_texture (texture));
+      cogl_set_source (priv->pick_material);
+      gen_texcoords_and_draw_cogl_rectangle (self);
+    }
+  else
+    CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->pick (self, color);
+}
+
+static void
 clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
-  ClutterActorBox box = { 0, };
-  gfloat          t_w, t_h;
-  guint8          paint_opacity = clutter_actor_get_paint_opacity (self);
-
-  if (priv->fbo_handle != COGL_INVALID_HANDLE)
-    update_fbo (self);
+  guint8 paint_opacity = clutter_actor_get_paint_opacity (self);
 
   CLUTTER_NOTE (PAINT,
                 "painting texture '%s'",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
+  if (priv->fbo_handle != COGL_INVALID_HANDLE)
+    update_fbo (self);
+
   cogl_material_set_color4ub (priv->material,
-			      paint_opacity, paint_opacity, paint_opacity, paint_opacity);
-
-  clutter_actor_get_allocation_box (self, &box);
-
-  CLUTTER_NOTE (PAINT, "paint to x1: %f, y1: %f x2: %f, y2: %f "
-		       "opacity: %i",
-		box.x1, box.y1, box.x2, box.y2,
-		clutter_actor_get_opacity (self));
-
-  if (priv->repeat_x && priv->image_width > 0)
-    t_w = (box.x2 - box.x1) / (gfloat) priv->image_width;
-  else
-    t_w = 1.0;
-
-  if (priv->repeat_y && priv->image_height > 0)
-    t_h = (box.y2 - box.y1) / (gfloat) priv->image_height;
-  else
-    t_h = 1.0;
-
-  /* Paint will have translated us */
+			      paint_opacity,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity);
   cogl_set_source (priv->material);
-  cogl_rectangle_with_texture_coords (0, 0,
-			              box.x2 - box.x1,
-                                      box.y2 - box.y1,
-			              0, 0, t_w, t_h);
+
+  gen_texcoords_and_draw_cogl_rectangle (self);
 }
 
 static void
@@ -658,6 +745,12 @@ clutter_texture_finalize (GObject *object)
       priv->material = COGL_INVALID_HANDLE;
     }
 
+  if (priv->pick_material != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (priv->pick_material);
+      priv->pick_material = COGL_INVALID_HANDLE;
+    }
+
   G_OBJECT_CLASS (clutter_texture_parent_class)->finalize (object);
 }
 
@@ -736,6 +829,11 @@ clutter_texture_set_property (GObject      *object,
       clutter_texture_set_load_async (texture, g_value_get_boolean (value));
       break;
 
+    case PROP_PICK_WITH_ALPHA:
+      clutter_texture_set_pick_with_alpha (texture,
+                                           g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -796,6 +894,10 @@ clutter_texture_get_property (GObject    *object,
       g_value_set_boolean (value, priv->keep_aspect_ratio);
       break;
 
+    case PROP_PICK_WITH_ALPHA:
+      g_value_set_boolean (value, priv->pick_with_alpha);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -811,6 +913,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
 
   actor_class->paint          = clutter_texture_paint;
+  actor_class->pick           = clutter_texture_pick;
   actor_class->realize        = clutter_texture_realize;
   actor_class->unrealize      = clutter_texture_unrealize;
 
@@ -969,7 +1072,30 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   FALSE,
 			   CLUTTER_PARAM_WRITABLE));
 
-
+  /**
+   * ClutterTexture::pick-with-alpha:
+   *
+   * Determines whether a #ClutterTexture should have it's shape defined
+   * by its alpha channel when picking.
+   *
+   * Be aware that this is a bit more costly than the default picking
+   * due to the texture lookup, extra test against the alpha value and
+   * the fact that it will also interrupt the batching of geometry
+   * done internally.
+   *
+   * Also there is currently no control over the threshold used to
+   * determine what value of alpha is considered pickable, and so
+   * only fully opaque parts of the texture will react to picking.
+   *
+   * Since: 1.4
+   */
+  g_object_class_install_property
+    (gobject_class, PROP_PICK_WITH_ALPHA,
+     g_param_spec_boolean ("pick-with-alpha",
+			   "Pick With Alpha Channel",
+                           "Shape actor with alpha channel when picking",
+			   FALSE,
+			   CLUTTER_PARAM_READWRITE));
 
   /**
    * ClutterTexture::size-change:
@@ -1096,7 +1222,10 @@ clutter_texture_init (ClutterTexture *self)
   priv->sync_actor_size   = TRUE;
   priv->material          = cogl_material_new ();
   priv->fbo_handle        = COGL_INVALID_HANDLE;
+  priv->pick_material     = COGL_INVALID_HANDLE;
   priv->keep_aspect_ratio = FALSE;
+  priv->pick_with_alpha   = FALSE;
+  priv->pick_with_alpha_supported = TRUE;
 }
 
 /**
@@ -2690,3 +2819,65 @@ clutter_texture_get_load_data_async (ClutterTexture *texture)
   return texture->priv->load_async_set &&
          texture->priv->load_data_async;
 }
+
+/**
+ * clutter_texture_set_pick_with_alpha:
+ * @texture: a #ClutterTexture
+ *
+ * Sets whether @texture should have it's shape defined by the alpha
+ * channel when picking.
+ *
+ * Be aware that this is a bit more costly than the default picking
+ * due to the texture lookup, extra test against the alpha value and
+ * the fact that it will also interrupt the batching of geometry done
+ * internally.
+ *
+ * Also there is currently no control over the threshold used to
+ * determine what value of alpha is considered pickable, and so only
+ * fully opaque parts of the texture will react to picking.
+ *
+ * Since: 1.4
+ */
+void
+clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
+                                     gboolean        pick_with_alpha)
+{
+  ClutterTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
+  priv = texture->priv;
+
+  if (priv->pick_with_alpha == pick_with_alpha)
+    return;
+
+  if (!pick_with_alpha && priv->pick_material != COGL_INVALID_HANDLE)
+    {
+      cogl_handle_unref (priv->pick_material);
+      priv->pick_material = COGL_INVALID_HANDLE;
+    }
+
+  /* NB: the pick material is created lazily when we first pick */
+
+  priv->pick_with_alpha = pick_with_alpha;
+}
+
+/**
+ * clutter_texture_get_pick_with_alpha:
+ * @texture: a #ClutterTexture
+ *
+ * Retrieves the value set by clutter_texture_set_load_data_async()
+ *
+ * Return value: %TRUE if the #ClutterTexture should define its shape
+ * using the alpha channel when picking.
+ *
+ * Since: 1.4
+ */
+gboolean
+clutter_texture_get_pick_with_alpha (ClutterTexture *texture)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
+  return texture->priv->pick_with_alpha ? TRUE : FALSE;
+}
+

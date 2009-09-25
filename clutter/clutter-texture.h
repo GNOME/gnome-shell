@@ -229,6 +229,10 @@ void                  clutter_texture_set_load_data_async   (ClutterTexture     
                                                              gboolean                load_async);
 gboolean              clutter_texture_get_load_data_async   (ClutterTexture         *texture);
 
+void                  clutter_texture_set_pick_with_alpha   (ClutterTexture         *texture,
+                                                             gboolean                pick_with_alpha);
+gboolean              clutter_texture_get_pick_with_alpha   (ClutterTexture         *texture);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TEXTURE_H__ */

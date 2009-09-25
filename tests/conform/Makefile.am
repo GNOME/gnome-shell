@@ -52,6 +52,7 @@ test_conformance_SOURCES = 		\
 	test-behaviours.c		\
 	test-animator.c			\
 	test-state.c			\
+	test-clutter-texture.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
