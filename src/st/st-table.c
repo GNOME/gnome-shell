@@ -48,16 +48,10 @@
 #include "st-private.h"
 #include "st-table-child.h"
 #include "st-table-private.h"
-#include "st-stylable.h"
 
 enum
 {
   PROP_0,
-
-  PROP_PADDING,
-
-  PROP_COL_SPACING,
-  PROP_ROW_SPACING,
 
   PROP_HOMOGENEOUS,
 
@@ -211,14 +205,6 @@ st_table_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_COL_SPACING:
-      st_table_set_col_spacing (table, g_value_get_int (value));
-      break;
-
-    case PROP_ROW_SPACING:
-      st_table_set_row_spacing (table, g_value_get_int (value));
-      break;
-
     case PROP_HOMOGENEOUS:
       if (table->priv->homogeneous != g_value_get_boolean (value))
         {
@@ -243,14 +229,6 @@ st_table_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_COL_SPACING:
-      g_value_set_int (value, priv->col_spacing);
-      break;
-
-    case PROP_ROW_SPACING:
-      g_value_set_int (value, priv->row_spacing);
-      break;
-
     case PROP_HOMOGENEOUS:
       g_value_set_boolean (value, priv->homogeneous);
       break;
@@ -405,26 +383,21 @@ st_table_allocate_fill (ClutterActor    *child,
 
 static void
 st_table_homogeneous_allocate (ClutterActor          *self,
-                               const ClutterActorBox *box,
+                               const ClutterActorBox *content_box,
                                gboolean               flags)
 {
   GSList *list;
   gfloat col_width, row_height;
   gint row_spacing, col_spacing;
   StTablePrivate *priv = ST_TABLE (self)->priv;
-  StPadding padding;
-
-  st_widget_get_padding (ST_WIDGET (self), &padding);
 
   col_spacing = priv->col_spacing;
   row_spacing = priv->row_spacing;
 
-  col_width = (box->x2 - box->x1
-               - padding.left - padding.right
+  col_width = (content_box->x2 - content_box->x1
                - (col_spacing * (priv->n_cols - 1)))
               / priv->n_cols;
-  row_height = (box->y2 - box->y1
-                - padding.top - padding.bottom
+  row_height = (content_box->y2 - content_box->y1
                 - (row_spacing * (priv->n_rows - 1)))
                / priv->n_rows;
 
@@ -454,10 +427,10 @@ st_table_homogeneous_allocate (ClutterActor          *self,
       x_fill = meta->x_fill;
       y_fill = meta->y_fill;
 
-      childbox.x1 = padding.left + (col_width + col_spacing) * col;
+      childbox.x1 = content_box->x1 + (col_width + col_spacing) * col;
       childbox.x2 = childbox.x1 + (col_width * col_span) + (col_spacing * (col_span - 1));
 
-      childbox.y1 = padding.top + (row_height + row_spacing) * row;
+      childbox.y1 = content_box->y1 + (row_height + row_spacing) * row;
       childbox.y2 = childbox.y1 + (row_height * row_span) + (row_spacing * (row_span - 1));
 
       st_table_allocate_fill (child, &childbox, x_align, y_align, x_fill, y_fill);
@@ -478,7 +451,6 @@ st_table_calculate_col_widths (StTable *table,
   gint extra_col_width, n_expanded_cols = 0, expanded_cols = 0;
   gint *pref_widths, *min_widths;
   GSList *list;
-  StPadding padding;
 
   g_array_set_size (priv->is_expand_col, 0);
   g_array_set_size (priv->is_expand_col, priv->n_cols);
@@ -491,12 +463,6 @@ st_table_calculate_col_widths (StTable *table,
   g_array_set_size (priv->min_widths, 0);
   g_array_set_size (priv->min_widths, priv->n_cols);
   min_widths = (gint *) priv->min_widths->data;
-
-
-  /* take off the padding values to calculate the allocatable width */
-  st_widget_get_padding (ST_WIDGET (table), &padding);
-
-  for_width -= (int)(padding.left + padding.right);
 
   for (list = priv->children; list; list = g_slist_next (list))
     {
@@ -591,12 +557,6 @@ st_table_calculate_row_heights (StTable *table,
   gint i, total_min_height;
   gint expanded_rows = 0;
   gint n_expanded_rows = 0;
-  StPadding padding;
-
-  st_widget_get_padding (ST_WIDGET (table), &padding);
-
-  /* take padding off available height */
-  for_height -= (int)(padding.top + padding.bottom);
 
   g_array_set_size (priv->row_heights, 0);
   g_array_set_size (priv->row_heights, priv->n_rows);
@@ -762,40 +722,29 @@ st_table_calculate_row_heights (StTable *table,
 
 static void
 st_table_preferred_allocate (ClutterActor          *self,
-                             const ClutterActorBox *box,
+                             const ClutterActorBox *content_box,
                              gboolean               flags)
 {
   GSList *list;
   gint row_spacing, col_spacing;
-  gint i, table_width, table_height;
+  gint i;
   gint *col_widths, *row_heights;
   StTable *table;
   StTablePrivate *priv;
-  StPadding padding;
 
   table = ST_TABLE (self);
   priv = ST_TABLE (self)->priv;
 
-  st_widget_get_padding (ST_WIDGET (self), &padding);
-
   col_spacing = (priv->col_spacing);
   row_spacing = (priv->row_spacing);
 
-
-  table_height = (int)(box->y2 - box->y1
-                       - padding.top
-                       - padding.bottom);
-  table_width = (int)(box->x2 - box->x1
-                      - padding.right
-                      - padding.left);
-
   col_widths =
     st_table_calculate_col_widths (table,
-                                   (int)(box->x2 - box->x1));
+                                   (int) (content_box->x2 - content_box->x1));
 
   row_heights =
     st_table_calculate_row_heights (table,
-                                    (int)(box->y2 - box->y1),
+                                    (int) (content_box->y2 - content_box->y1),
                                     col_widths);
 
 
@@ -865,13 +814,13 @@ st_table_preferred_allocate (ClutterActor          *self,
         }
 
       /* calculate child x */
-      child_x = (int) padding.left
+      child_x = (int) content_box->x1
                 + col_spacing * col;
       for (i = 0; i < col; i++)
         child_x += col_widths[i];
 
       /* calculate child y */
-      child_y = (int) padding.top
+      child_y = (int) content_box->y1
                 + row_spacing * row;
       for (i = 0; i < row; i++)
         child_y += row_heights[i];
@@ -896,6 +845,8 @@ st_table_allocate (ClutterActor          *self,
                    ClutterAllocationFlags flags)
 {
   StTablePrivate *priv = ST_TABLE (self)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
+  ClutterActorBox content_box;
 
   CLUTTER_ACTOR_CLASS (st_table_parent_class)->allocate (self, box, flags);
 
@@ -904,10 +855,12 @@ st_table_allocate (ClutterActor          *self,
       return;
     };
 
+  st_theme_node_get_content_box (theme_node, box, &content_box);
+
   if (priv->homogeneous)
-    st_table_homogeneous_allocate (self, box, flags);
+    st_table_homogeneous_allocate (self, &content_box, flags);
   else
-    st_table_preferred_allocate (self, box, flags);
+    st_table_preferred_allocate (self, &content_box, flags);
 }
 
 static void
@@ -919,11 +872,9 @@ st_table_get_preferred_width (ClutterActor *self,
   gint *min_widths, *pref_widths;
   gfloat total_min_width, total_pref_width;
   StTablePrivate *priv = ST_TABLE (self)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
   GSList *list;
   gint i;
-  StPadding padding;
-
-  st_widget_get_padding (ST_WIDGET (self), &padding);
 
   if (priv->n_cols < 1)
     {
@@ -970,10 +921,7 @@ st_table_get_preferred_width (ClutterActor *self,
         pref_widths[col] = w_pref;
     }
 
-  total_min_width = padding.left
-                    + padding.right
-                    + (priv->n_cols - 1)
-                    * (float) priv->col_spacing;
+  total_min_width = (priv->n_cols - 1) * (float) priv->col_spacing;
   total_pref_width = total_min_width;
 
   for (i = 0; i < priv->n_cols; i++)
@@ -986,6 +934,8 @@ st_table_get_preferred_width (ClutterActor *self,
     *min_width_p = total_min_width;
   if (natural_width_p)
     *natural_width_p = total_pref_width;
+
+  st_theme_node_adjust_preferred_width (theme_node, min_width_p, natural_width_p);
 }
 
 static void
@@ -997,10 +947,10 @@ st_table_get_preferred_height (ClutterActor *self,
   gint *min_heights, *pref_heights;
   gfloat total_min_height, total_pref_height;
   StTablePrivate *priv = ST_TABLE (self)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
   GSList *list;
   gint i;
   gint *min_widths;
-  StPadding padding;
 
   if (priv->n_rows < 1)
     {
@@ -1008,6 +958,8 @@ st_table_get_preferred_height (ClutterActor *self,
       *natural_height_p = 0;
       return;
     }
+
+  st_theme_node_adjust_for_width (theme_node, &for_width);
 
   /* Setting size to zero and then what we want it to be causes a clear if
    * clear flag is set (which it should be.)
@@ -1057,12 +1009,8 @@ st_table_get_preferred_height (ClutterActor *self,
         pref_heights[row] = pref;
     }
 
-  st_widget_get_padding (ST_WIDGET (self), &padding);
-
-  /* start off with padding plus row spacing */
-  total_min_height = padding.top + padding.bottom + (priv->n_rows - 1) *
-                     (float)(priv->row_spacing);
-
+  /* start off with row spacing */
+  total_min_height = (priv->n_rows - 1) * (float) (priv->row_spacing);
   total_pref_height = total_min_height;
 
   for (i = 0; i < priv->n_rows; i++)
@@ -1075,6 +1023,8 @@ st_table_get_preferred_height (ClutterActor *self,
     *min_height_p = total_min_height;
   if (natural_height_p)
     *natural_height_p = total_pref_height;
+
+  st_theme_node_adjust_preferred_height (theme_node, min_height_p, natural_height_p);
 }
 
 static void
@@ -1136,13 +1086,34 @@ st_table_hide_all (ClutterActor *table)
 }
 
 static void
+st_table_style_changed (StWidget *self)
+{
+  StTablePrivate *priv = ST_TABLE (self)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (self);
+  int old_row_spacing = priv->row_spacing;
+  int old_col_spacing = priv->col_spacing;
+  double row_spacing = 0., col_spacing = 0.;
+
+  st_theme_node_get_length (theme_node, "spacing-rows", FALSE, &row_spacing);
+  priv->row_spacing = (int)(row_spacing + 0.5);
+  st_theme_node_get_length (theme_node, "spacing-columns", FALSE, &col_spacing);
+  priv->col_spacing = (int)(col_spacing + 0.5);
+
+  if (priv->row_spacing != old_row_spacing ||
+      priv->col_spacing != old_col_spacing)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+  ST_WIDGET_CLASS (st_table_parent_class)->style_changed (self);
+}
+
+static void
 st_table_class_init (StTableClass *klass)
 {
   GParamSpec *pspec;
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  /* StWidgetClass *st_widget_class = ST_WIDGET_CLASS (klass); */
+  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (StTablePrivate));
 
@@ -1159,6 +1130,8 @@ st_table_class_init (StTableClass *klass)
   actor_class->show_all = st_table_show_all;
   actor_class->hide_all = st_table_hide_all;
 
+  widget_class->style_changed = st_table_style_changed;
+
   pspec = g_param_spec_boolean ("homogeneous",
                                 "Homogeneous",
                                 "Homogeneous rows and columns",
@@ -1166,24 +1139,6 @@ st_table_class_init (StTableClass *klass)
                                 ST_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
                                    PROP_HOMOGENEOUS,
-                                   pspec);
-
-  pspec = g_param_spec_int ("col-spacing",
-                            "Column Spacing",
-                            "Spacing between columns",
-                            0, G_MAXINT, 0,
-                            ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_COL_SPACING,
-                                   pspec);
-
-  pspec = g_param_spec_int ("row-spacing",
-                            "Row Spacing",
-                            "Spacing between row",
-                            0, G_MAXINT, 0,
-                            ST_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_ROW_SPACING,
                                    pspec);
 
   pspec = g_param_spec_int ("row-count",
@@ -1267,86 +1222,6 @@ StWidget*
 st_table_new (void)
 {
   return g_object_new (ST_TYPE_TABLE, NULL);
-}
-
-/**
- * st_table_set_col_spacing
- * @table: a #StTable
- * @spacing: spacing in pixels
- *
- * Sets the amount of spacing between columns.
- */
-void
-st_table_set_col_spacing (StTable *table,
-                          gint     spacing)
-{
-  StTablePrivate *priv;
-
-  g_return_if_fail (ST_IS_TABLE (table));
-  g_return_if_fail (spacing >= 0);
-
-  priv = ST_TABLE (table)->priv;
-
-  priv->col_spacing = spacing;
-}
-
-/**
- * st_table_set_row_spacing
- * @table: a #StTable
- * @spacing: spacing in pixels
- *
- * Sets the amount of spacing between rows.
- */
-void
-st_table_set_row_spacing (StTable *table,
-                          gint     spacing)
-{
-  StTablePrivate *priv;
-
-  g_return_if_fail (ST_IS_TABLE (table));
-  g_return_if_fail (spacing >= 0);
-
-  priv = ST_TABLE (table)->priv;
-
-  priv->row_spacing = spacing;
-}
-
-/**
- * st_table_get_row_spacing
- * @table: a #StTable
- *
- * Gets the amount of spacing between rows.
- *
- * Returns: the spacing between rows in device units
- */
-gint
-st_table_get_row_spacing (StTable *table)
-{
-  StTablePrivate *priv;
-
-  g_return_val_if_fail (ST_IS_TABLE (table), -1);
-  priv = ST_TABLE (table)->priv;
-
-  return priv->row_spacing;
-}
-
-/**
- * st_table_get_col_spacing
- * @table: a #StTable
- *
- * Gets the amount of spacing between columns.
- *
- * Returns: the spacing between columns in device units
- */
-gint
-st_table_get_col_spacing (StTable *table)
-{
-  StTablePrivate *priv;
-
-  g_return_val_if_fail (ST_IS_TABLE (table), -1);
-  priv = ST_TABLE (table)->priv;
-
-  return priv->col_spacing;
 }
 
 /**
