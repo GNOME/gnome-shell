@@ -79,6 +79,15 @@ function start() {
         // Make sure not more than one run dialog is shown.
         getRunDialog().open();
     });
+    let shellwm = global.window_manager;
+    shellwm.takeover_keybinding("panel_main_menu");
+    shellwm.connect("keybinding::panel_main_menu", function () {
+        overview.toggle();
+    });
+    shellwm.takeover_keybinding("panel_run_dialog");
+    shellwm.connect("keybinding::panel_run_dialog", function () {
+       getRunDialog().open();
+    });
 
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();

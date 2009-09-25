@@ -192,13 +192,6 @@ gnome_shell_plugin_constructed (GObject *object)
   shell_plugin->gjs_context = gjs_context_new_with_search_path(search_path);
   g_strfreev(search_path);
 
-  shell_plugin->panel_action = XInternAtom (meta_display_get_xdisplay (display),
-                                            "_GNOME_PANEL_ACTION", FALSE);
-  shell_plugin->panel_action_run_dialog = XInternAtom (meta_display_get_xdisplay (display),
-                                                       "_GNOME_PANEL_ACTION_RUN_DIALOG", FALSE);
-  shell_plugin->panel_action_main_menu = XInternAtom (meta_display_get_xdisplay (display),
-                                                      "_GNOME_PANEL_ACTION_MAIN_MENU", FALSE);
-
   if (!gjs_context_eval (shell_plugin->gjs_context,
                          "const Main = imports.ui.main; Main.start();",
                          -1,
@@ -319,47 +312,9 @@ gnome_shell_plugin_kill_effect (MutterPlugin         *plugin,
 }
 
 static gboolean
-handle_panel_event (GnomeShellPlugin *shell_plugin,
-                    XEvent           *xev)
-{
-  MutterPlugin *plugin = MUTTER_PLUGIN (shell_plugin);
-  MetaScreen *screen;
-  MetaDisplay *display;
-  XClientMessageEvent *xev_client;
-  Window root;
-
-  screen = mutter_plugin_get_screen (plugin);
-  display = meta_screen_get_display (screen);
-
-  if (xev->type != ClientMessage)
-    return FALSE;
-
-  root = meta_screen_get_xroot (screen);
-
-  xev_client = (XClientMessageEvent*) xev;
-  if (!(xev_client->window == root &&
-        xev_client->message_type == shell_plugin->panel_action &&
-        xev_client->format == 32))
-    return FALSE;
-
-  if (xev_client->data.l[0] == shell_plugin->panel_action_run_dialog)
-    g_signal_emit_by_name (shell_global_get (), "panel-run-dialog",
-                           (guint32) xev_client->data.l[1]);
-  else if (xev_client->data.l[0] == shell_plugin->panel_action_main_menu)
-    g_signal_emit_by_name (shell_global_get (), "panel-main-menu",
-                           (guint32) xev_client->data.l[1]);
-
-  return TRUE;
-}
-
-static gboolean
 gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
                                   XEvent       *xev)
 {
-  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
-
-  if (handle_panel_event (shell_plugin, xev))
-    return TRUE;
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 }
 
