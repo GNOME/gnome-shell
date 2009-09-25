@@ -91,11 +91,11 @@ const ANIMATION_TIME = 0.25;
  * size -- size in pixels of  both the button and the icon it contains
  * texture -- optional, must be used if the texture for the icon is already created (else, use setIconFromName)
  */
-function iconButton(parent, size, texture) {
+function IconButton(parent, size, texture) {
     this._init(parent, size, texture);
 }
 
-iconButton.prototype = {
+IconButton.prototype = {
     _init : function(parent, size, texture) {
         this._size = size;
         if (texture)
@@ -170,4 +170,3 @@ iconButton.prototype = {
                                        transition :"easeOutQuad" });
     }
 };
-
