@@ -210,14 +210,19 @@ AppIcon.prototype = {
     },
 
     _updateMenuOnButtonPress: function(actor, event) {
-        if (this._menuTimeoutId != 0)
-            Mainloop.source_remove(this._menuTimeoutId);
-        this._menuTimeoutId = Mainloop.timeout_add(APPICON_MENU_POPUP_TIMEOUT_MS,
-                                                   Lang.bind(this, this.popupMenu));
+        let button = event.get_button();
+        if (button == 1) {
+            if (this._menuTimeoutId != 0)
+                Mainloop.source_remove(this._menuTimeoutId);
+            this._menuTimeoutId = Mainloop.timeout_add(APPICON_MENU_POPUP_TIMEOUT_MS,
+                                                       Lang.bind(this, function () { this.popupMenu(button); }));
+        } else if (button == 3) {
+            this.popupMenu(button);
+        }
         return false;
     },
 
-    popupMenu: function() {
+    popupMenu: function(activatingButton) {
         if (this._menuTimeoutId != 0) {
             Mainloop.source_remove(this._menuTimeoutId);
             this._menuTimeoutId = 0;
@@ -241,7 +246,7 @@ AppIcon.prototype = {
             }));
         }
 
-        this._menu.popup();
+        this._menu.popup(activatingButton);
 
         return false;
     },
@@ -476,13 +481,13 @@ AppIconMenu.prototype = {
         }
     },
 
-    popup: function() {
+    popup: function(activatingButton) {
         let [stageX, stageY] = this._source.actor.get_transformed_position();
         let [stageWidth, stageHeight] = this._source.actor.get_transformed_size();
 
         this._redisplay();
 
-        this._windowContainer.popup(0, Main.currentTime());
+        this._windowContainer.popup(activatingButton, Main.currentTime());
 
         this.emit('popup', true);
 
