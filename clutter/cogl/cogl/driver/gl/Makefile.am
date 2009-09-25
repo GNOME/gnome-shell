@@ -25,8 +25,6 @@ libclutter_cogl_driver_la_SOURCES = \
 	cogl.c \
 	cogl-primitives.c \
 	cogl-texture-driver.c \
-	cogl-fbo.h \
-	cogl-fbo.c \
 	cogl-shader-private.h \
 	cogl-shader.c \
 	cogl-program.h \

@@ -32,6 +32,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
 #include "cogl-vertex-buffer-private.h"
+#include "cogl-draw-buffer-private.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -531,6 +532,8 @@ _cogl_journal_flush (void)
   GLuint                journal_vbo;
   gboolean              vbo_fallback =
     (cogl_get_features () & COGL_FEATURE_VBOS) ? FALSE : TRUE;
+  CoglHandle            draw_buffer;
+  CoglMatrixStack      *modelview_stack;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -547,20 +550,19 @@ _cogl_journal_flush (void)
   else
     state.vbo_offset = (char *)ctx->logged_vertices->data;
 
-  _cogl_matrix_stack_flush_to_gl (ctx->projection_stack,
-                                  COGL_MATRIX_PROJECTION);
+  draw_buffer = _cogl_get_draw_buffer ();
+  modelview_stack = _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  state.modelview_stack = modelview_stack;
 
-  state.modelview_stack = ctx->modelview_stack;
-  _cogl_matrix_stack_push (ctx->modelview_stack);
+  _cogl_matrix_stack_push (modelview_stack);
 
   /* If we have transformed all our quads at log time then we ensure no
    * further model transform is applied by loading the identity matrix
    * here... */
   if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
     {
-      _cogl_matrix_stack_load_identity (ctx->modelview_stack);
-      _cogl_matrix_stack_flush_to_gl (ctx->modelview_stack,
-                                      COGL_MATRIX_MODELVIEW);
+      _cogl_matrix_stack_load_identity (modelview_stack);
+      _cogl_matrix_stack_flush_to_gl (modelview_stack, COGL_MATRIX_MODELVIEW);
     }
 
   /* batch_and_call() batches a list of journal entries according to some
@@ -591,7 +593,7 @@ _cogl_journal_flush (void)
                   _cogl_journal_flush_vbo_offsets_and_entries, /* callback */
                   &state); /* data */
 
-  _cogl_matrix_stack_pop (ctx->modelview_stack);
+  _cogl_matrix_stack_pop (modelview_stack);
 
   for (i = 0; i < ctx->journal->len; i++)
     {
@@ -605,6 +607,18 @@ _cogl_journal_flush (void)
 
   g_array_set_size (ctx->journal, 0);
   g_array_set_size (ctx->logged_vertices, 0);
+}
+
+static void
+_cogl_journal_init (void)
+{
+  /* Here we flush anything that we know must remain constant until the
+   * next the the journal is flushed. Note: This lets up flush things
+   * that themselves depend on the journal, such as clip state. */
+
+  /* NB: the journal deals with flushing the modelview stack manually */
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (),
+                                 COGL_DRAW_BUFFER_FLUSH_SKIP_MODELVIEW);
 }
 
 void
@@ -631,6 +645,9 @@ _cogl_journal_log_quad (float         x_1,
   CoglJournalEntry *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->logged_vertices->len == 0)
+    _cogl_journal_init ();
 
   /* The vertex data is logged into a separate array in a layout that can be
    * directly passed to OpenGL

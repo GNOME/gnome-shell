@@ -867,6 +867,7 @@ void            cogl_flush_gl_state         (int      flags);
 
 /* private */
 void            _cogl_set_indirect_context  (gboolean indirect);
+void            _cogl_set_viewport (int x, int y, int width, int height);
 
 G_END_DECLS
 

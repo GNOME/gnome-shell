@@ -1338,6 +1338,8 @@ clutter_init_real (GError **error)
   /* Now we can safely assume we have a valid GL context and can
    * start issueing cogl commands
   */
+  /* - will call to backend and cogl */
+  _clutter_feature_init ();
 
   /*
    * Resolution requires display to be open, so can only be queried after
@@ -1373,9 +1375,6 @@ clutter_init_real (GError **error)
 
   /* Initiate event collection */
   _clutter_backend_init_events (ctx->backend);
-
-  /* finally features - will call to backend and cogl */
-  _clutter_feature_init ();
 
   clutter_is_initialized = TRUE;
   ctx->is_initialized = TRUE;

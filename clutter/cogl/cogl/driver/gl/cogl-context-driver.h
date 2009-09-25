@@ -29,19 +29,20 @@
 typedef struct _CoglContextDriver
 {
   /* Relying on glext.h to define these */
-  COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
-  COGL_PFNGLDELETERENDERBUFFERSEXTPROC             pf_glDeleteRenderbuffersEXT;
-  COGL_PFNGLBINDRENDERBUFFEREXTPROC                pf_glBindRenderbufferEXT;
-  COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC             pf_glRenderbufferStorageEXT;
-  COGL_PFNGLGENFRAMEBUFFERSEXTPROC                 pf_glGenFramebuffersEXT;
-  COGL_PFNGLBINDFRAMEBUFFEREXTPROC                 pf_glBindFramebufferEXT;
-  COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC            pf_glFramebufferTexture2DEXT;
-  COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC         pf_glFramebufferRenderbufferEXT;
-  COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC          pf_glCheckFramebufferStatusEXT;
-  COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC              pf_glDeleteFramebuffersEXT;
+  COGL_PFNGLGENRENDERBUFFERSPROC                   pf_glGenRenderbuffers;
+  COGL_PFNGLDELETERENDERBUFFERSPROC                pf_glDeleteRenderbuffers;
+  COGL_PFNGLBINDRENDERBUFFERPROC                   pf_glBindRenderbuffer;
+  COGL_PFNGLRENDERBUFFERSTORAGEPROC                pf_glRenderbufferStorage;
+  COGL_PFNGLGENFRAMEBUFFERSPROC                    pf_glGenFramebuffers;
+  COGL_PFNGLBINDFRAMEBUFFERPROC                    pf_glBindFramebuffer;
+  COGL_PFNGLFRAMEBUFFERTEXTURE2DPROC               pf_glFramebufferTexture2D;
+  COGL_PFNGLFRAMEBUFFERRENDERBUFFERPROC            pf_glFramebufferRenderbuffer;
+  COGL_PFNGLCHECKFRAMEBUFFERSTATUSPROC             pf_glCheckFramebufferStatus;
+  COGL_PFNGLDELETEFRAMEBUFFERSPROC                 pf_glDeleteFramebuffers;
+  COGL_PFNGLGENERATEMIPMAPPROC                     pf_glGenerateMipmap;
+
   COGL_PFNGLBLITFRAMEBUFFEREXTPROC                 pf_glBlitFramebufferEXT;
   COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC  pf_glRenderbufferStorageMultisampleEXT;
-  COGL_PFNGLGENERATEMIPMAPEXTPROC                  pf_glGenerateMipmapEXT;
 
   COGL_PFNGLCREATEPROGRAMOBJECTARBPROC             pf_glCreateProgramObjectARB;
   COGL_PFNGLCREATESHADEROBJECTARBPROC              pf_glCreateShaderObjectARB;

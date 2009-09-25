@@ -138,6 +138,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
 #include "cogl-primitives.h"
+#include "cogl-draw-buffer-private.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
@@ -1664,6 +1665,11 @@ enable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
     }
   ctx->n_texcoord_arrays_enabled = max_texcoord_attrib_unit + 1;
 
+  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+
   options.flags =
     COGL_MATERIAL_FLUSH_FALLBACK_MASK |
     COGL_MATERIAL_FLUSH_DISABLE_MASK;
@@ -1753,15 +1759,11 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
     return;
 
   _cogl_journal_flush ();
-  cogl_clip_ensure ();
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  cogl_clip_ensure ();
-  _cogl_flush_matrix_stacks ();
   enable_state_for_drawing_buffer (buffer);
 
-  /* FIXME: flush cogl cache */
   GE (glDrawArrays (mode, first, count));
 
   disable_state_for_drawing_buffer (buffer);
@@ -1885,7 +1887,6 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
     return;
 
   _cogl_journal_flush ();
-  cogl_clip_ensure ();
 
   buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
@@ -1894,8 +1895,6 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
 
   indices = _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
 
-  cogl_clip_ensure ();
-  _cogl_flush_matrix_stacks ();
   enable_state_for_drawing_buffer (buffer);
 
   byte_offset = indices_offset * get_indices_type_size (indices->type);
@@ -1905,7 +1904,6 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
     GE (glBindBuffer (GL_ELEMENT_ARRAY_BUFFER,
                       GPOINTER_TO_UINT (indices->vbo_name)));
 
-  /* FIXME: flush cogl cache */
   GE (glDrawRangeElements (mode, min_index, max_index,
                            count, indices->type, (void *)byte_offset));
 

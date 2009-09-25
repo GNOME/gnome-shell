@@ -30,6 +30,9 @@
 #include "cogl-context.h"
 #include "cogl-clip-stack.h"
 #include "cogl-material-private.h"
+#include "cogl-clip-stack.h"
+#include "cogl-draw-buffer-private.h"
+#include "cogl-clip-stack.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -72,7 +75,7 @@ _cogl_path_add_node (gboolean new_sub_path,
 }
 
 void
-_cogl_path_stroke_nodes ()
+_cogl_path_stroke_nodes (void)
 {
   guint   path_start = 0;
   gulong  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
@@ -80,13 +83,21 @@ _cogl_path_stroke_nodes ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  _cogl_journal_flush ();
+
+  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+
   enable_flags |= _cogl_material_get_cogl_enable_flags (ctx->source_material);
   cogl_enable (enable_flags);
 
   options.flags = COGL_MATERIAL_FLUSH_DISABLE_MASK;
+  /* disable all texture layers */
   options.disable_layers = (guint32)~0;
-  _cogl_material_flush_gl_state (ctx->source_material,&options);
-  _cogl_flush_matrix_stacks();
+
+  _cogl_material_flush_gl_state (ctx->source_material, &options);
 
   while (path_start < ctx->path_nodes->len)
     {
@@ -129,18 +140,38 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                   CoglPathNode *path,
                                   gboolean      merge)
 {
-  guint   path_start = 0;
-  guint   sub_path_num = 0;
-  float   bounds_x;
-  float   bounds_y;
-  float   bounds_w;
-  float   bounds_h;
-  gulong  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
+  guint            path_start = 0;
+  guint            sub_path_num = 0;
+  float            bounds_x;
+  float            bounds_y;
+  float            bounds_w;
+  float            bounds_h;
+  gulong           enable_flags = COGL_ENABLE_VERTEX_ARRAY;
+  CoglHandle       prev_source;
+  int              i;
+  CoglHandle       draw_buffer = _cogl_get_draw_buffer ();
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (draw_buffer);
+
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* We don't track changes to the stencil buffer in the journal
+   * so we need to flush any batched geometry first */
+  _cogl_journal_flush ();
+
+  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_draw_buffer_flush_state (draw_buffer, 0);
+
   /* Just setup a simple material that doesn't use texturing... */
-  _cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+  prev_source = cogl_handle_ref (ctx->source_material);
+  cogl_set_source (ctx->stencil_material);
+
+  _cogl_material_flush_gl_state (ctx->source_material, NULL);
 
   enable_flags |=
     _cogl_material_get_cogl_enable_flags (ctx->source_material);
@@ -156,7 +187,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
     }
   else
     {
-      GE( glClear (GL_STENCIL_BUFFER_BIT) );
+      cogl_clear (NULL, COGL_BUFFER_BIT_STENCIL);
       GE( glStencilMask (1) );
       GE( glStencilFunc (GL_LEQUAL, 0x1, 0x3) );
     }
@@ -167,7 +198,13 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
   GE( glDepthMask (FALSE) );
 
-  _cogl_matrix_stack_flush_to_gl (ctx->modelview_stack, COGL_MATRIX_MODELVIEW);
+  for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = 0;
+
   while (path_start < path_size)
     {
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
@@ -183,6 +220,14 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
           GE( glStencilOp (GL_ZERO, GL_REPLACE, GL_REPLACE) );
           cogl_rectangle (bounds_x, bounds_y,
                           bounds_x + bounds_w, bounds_y + bounds_h);
+          /* Make sure the rectangle hits the stencil buffer before
+           * directly changing other GL state. */
+          _cogl_journal_flush ();
+          /* NB: The journal flushing may trash the modelview state and
+           * enable flags */
+          _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                          COGL_MATRIX_MODELVIEW);
+          cogl_enable (enable_flags);
 
           GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
         }
@@ -204,17 +249,24 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       /* Decrement all of the bits twice so that only pixels where the
          value is 3 will remain */
 
-      _cogl_matrix_stack_push (ctx->projection_stack);
-      _cogl_matrix_stack_load_identity (ctx->projection_stack);
+      _cogl_matrix_stack_push (projection_stack);
+      _cogl_matrix_stack_load_identity (projection_stack);
+      _cogl_matrix_stack_flush_to_gl (projection_stack,
+                                      COGL_MATRIX_PROJECTION);
 
-      _cogl_matrix_stack_push (ctx->modelview_stack);
-      _cogl_matrix_stack_load_identity (ctx->modelview_stack);
+      _cogl_matrix_stack_push (modelview_stack);
+      _cogl_matrix_stack_load_identity (modelview_stack);
+      _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                      COGL_MATRIX_MODELVIEW);
 
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
+      /* Make sure these rectangles hit the stencil buffer before we
+       * restore the stencil op/func. */
+      _cogl_journal_flush ();
 
-      _cogl_matrix_stack_pop (ctx->modelview_stack);
-      _cogl_matrix_stack_pop (ctx->projection_stack);
+      _cogl_matrix_stack_pop (modelview_stack);
+      _cogl_matrix_stack_pop (projection_stack);
     }
 
   GE( glStencilMask (~(GLuint) 0) );
@@ -249,6 +301,21 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
   gint lastline=-1; /* the previous scanline we added to */
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* We are going to use GL to draw directly so make sure any
+   * previously batched geometry gets to GL before we start...
+   */
+  _cogl_journal_flush ();
+
+  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
+
+  _cogl_material_flush_gl_state (ctx->source_material, NULL);
+
+  cogl_enable (COGL_ENABLE_VERTEX_ARRAY
+               | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
 
   /* clear scanline intersection lists */
   for (i=0; i < bounds_h; i++)
@@ -386,8 +453,6 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
       }
 
     /* render triangles */
-    cogl_enable (COGL_ENABLE_VERTEX_ARRAY
-                 | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
     GE ( glVertexPointer (2, GL_FLOAT, 0, coords ) );
     GE ( glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
     g_free (coords);
@@ -395,7 +460,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
 }
 
 void
-_cogl_path_fill_nodes ()
+_cogl_path_fill_nodes (void)
 {
   float bounds_x;
   float bounds_y;
@@ -409,19 +474,27 @@ _cogl_path_fill_nodes ()
 
   if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
+      CoglHandle draw_buffer;
+      CoglClipStackState *clip_state;
+
+      _cogl_journal_flush ();
+
+      draw_buffer = _cogl_get_draw_buffer ();
+      clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+
       _cogl_add_path_to_stencil_buffer (ctx->path_nodes_min,
                                         ctx->path_nodes_max,
                                         ctx->path_nodes->len,
                                         &g_array_index (ctx->path_nodes,
                                                         CoglPathNode, 0),
-                                        ctx->clip.stencil_used);
+                                        clip_state->stencil_used);
 
       cogl_rectangle (bounds_x, bounds_y,
                       bounds_x + bounds_w, bounds_y + bounds_h);
 
       /* The stencil buffer now contains garbage so the clip area needs to
          be rebuilt */
-      ctx->clip.stack_dirty = TRUE;
+      _cogl_clip_stack_state_dirty (clip_state);
     }
   else
     {

@@ -45,7 +45,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define glGenerateMipmap ctx->drv.pf_glGenerateMipmapEXT
+#define glGenerateMipmap ctx->drv.pf_glGenerateMipmap
 
 void
 _cogl_texture_driver_bind (GLenum gl_target,
