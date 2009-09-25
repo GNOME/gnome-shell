@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Khaled Hosny <khaledhosny@eglug.org>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-25 04:22+0200\n"
+"PO-Revision-Date: 2009-09-25 04:21+0300\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Virtaal 0.4.0\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "صدفة جنوم"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "إدارة النوافذ وإطلاق التطبيقات"
+
+#. left side
+#: ../js/ui/panel.js:269
+msgid "Activities"
+msgstr "الأنشطة"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:452
+msgid "%a %l:%M %p"
+msgstr "%A %Ol:%OM %p"
+
+#: ../js/ui/dash.js:283
+msgid "Find..."
+msgstr "ابحث..."
+
+#: ../js/ui/dash.js:400
+msgid "Browse"
+msgstr "استعرض"
+
+#: ../js/ui/dash.js:536
+msgid "(see all)"
+msgstr "(انظر الكل)"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:753 ../js/ui/dash.js:809
+msgid "APPLICATIONS"
+msgstr "التطبيقات"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:773
+msgid "PLACES"
+msgstr "الأماكن"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:780 ../js/ui/dash.js:819
+msgid "RECENT DOCUMENTS"
+msgstr "المستندات الحديثة"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:799 ../js/ui/dash.js:931
+msgid "SEARCH RESULTS"
+msgstr "نتائج البحث"
+
+#: ../js/ui/dash.js:814
+msgid "PREFERENCES"
+msgstr "التفضيلات"
+
+#: ../js/ui/runDialog.js:95
+msgid "Please enter a command:"
+msgstr "من فضلك اكتب أمرا:"
+
+#: ../src/shell-global.c:799
+msgid "Less than a minute ago"
+msgstr "منذ أقل من دقيقة"
+
+#: ../src/shell-global.c:802
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "منذ أقل من دقيقة"
+msgstr[1] "منذ دقيقة"
+msgstr[2] "منذ دقيقتين"
+msgstr[3] "منذ %d دقائق"
+msgstr[4] "منذ %d دقيقة"
+msgstr[5] "منذ %d دقيقة"
+
+#: ../src/shell-global.c:805
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "منذ أقل من ساعة"
+msgstr[1] "منذ ساعة"
+msgstr[2] "منذ ساعتين"
+msgstr[3] "منذ %d ساعات"
+msgstr[4] "منذ %d ساعة"
+msgstr[5] "منذ %d ساعة"
+
+#: ../src/shell-global.c:808
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "منذ أقل من يوم"
+msgstr[1] "منذ يوم"
+msgstr[2] "منذ يومين"
+msgstr[3] "منذ %d أيام"
+msgstr[4] "منذ %d يوما"
+msgstr[5] "منذ %d يوم"
+
+#: ../src/shell-global.c:811
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "منذ أقل من أسبوع"
+msgstr[1] "منذ أسبوع"
+msgstr[2] "منذ أسبوعين"
+msgstr[3] "منذ %d أسابيع"
+msgstr[4] "منذ %d أسبوعا"
+msgstr[5] "منذ %d أسبوع"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "مجهول"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "تعذّر إيصاد الشاشة: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "تعذّر ضبك حافظة الشاشة مؤقتا لتكون شاشة خالية: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "تعذّر الخروج: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "معلومات الحساب..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "الشريط الجانبي"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "تفضيلات النظام..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "أوصد الشاشة"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "بدّل المستخدم"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "اخرج..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "أطفئ..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "مجلد المنزل"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "نظام الملفات"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "ابحث"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "‏%1$s:‏ %2$s"
