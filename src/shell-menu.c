@@ -15,6 +15,7 @@ G_DEFINE_TYPE(ShellMenu, shell_menu, BIG_TYPE_BOX);
 struct _ShellMenuPrivate {
   gboolean popped_up;
   gboolean have_grab;
+  guint activating_button;
 
   gboolean released_on_source;
   ClutterActor *source_actor;
@@ -117,8 +118,14 @@ shell_menu_button_release_event (ClutterActor       *actor,
 {
   ShellMenu *box = SHELL_MENU (actor);
 
-  if (event->button != 1)
+  /* Until the user releases the button that brought up the menu, we just
+   * ignore other button press/releass.
+   * See https://bugzilla.gnome.org/show_bug.cgi?id=596371
+   */
+  if (box->priv->activating_button > 0 && box->priv->activating_button != event->button)
     return FALSE;
+
+  box->priv->activating_button = 0;
 
   if (box->priv->source_actor && !box->priv->released_on_source)
     {
@@ -134,13 +141,8 @@ shell_menu_button_release_event (ClutterActor       *actor,
 
   shell_menu_popdown_nosignal (box);
 
-  if (!container_contains (CLUTTER_CONTAINER (box), event->source))
-    {
-      g_signal_emit (G_OBJECT (box), shell_menu_signals[CANCELLED], 0);
-      return FALSE;
-    }
-
-  if (box->priv->selected == NULL)
+  if (!container_contains (CLUTTER_CONTAINER (box), event->source) ||
+      box->priv->selected == NULL)
     {
       g_signal_emit (G_OBJECT (box), shell_menu_signals[CANCELLED], 0);
       return FALSE;
@@ -158,6 +160,7 @@ shell_menu_popup (ShellMenu         *box,
 {
   if (box->priv->popped_up)
     return;
+  box->priv->activating_button = button;
   box->priv->popped_up = TRUE;
   box->priv->have_grab = TRUE;
   box->priv->released_on_source = FALSE;
