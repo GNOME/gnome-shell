@@ -87,13 +87,6 @@ GType st_table_get_type (void) G_GNUC_CONST;
 
 StWidget* st_table_new (void);
 
-void st_table_set_col_spacing (StTable      *table,
-                               gint          spacing);
-void st_table_set_row_spacing (StTable      *table,
-                               gint          spacing);
-gint st_table_get_col_spacing (StTable      *table);
-gint st_table_get_row_spacing (StTable      *table);
-
 gint st_table_get_row_count    (StTable *table);
 gint st_table_get_column_count (StTable *table);
 
