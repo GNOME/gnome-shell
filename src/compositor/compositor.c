@@ -390,10 +390,10 @@ mutter_begin_modal_for_plugin (MetaScreen       *screen,
 
   if ((options & META_MODAL_KEYBOARD_ALREADY_GRABBED) == 0)
     {
-      XGrabKeyboard (xdpy, grab_window,
-                     False, /* owner_events */
-                     GrabModeAsync, GrabModeAsync,
-                     timestamp);
+      result = XGrabKeyboard (xdpy, grab_window,
+                              False, /* owner_events */
+                              GrabModeAsync, GrabModeAsync,
+                              timestamp);
 
       if (result != Success)
         goto fail;
