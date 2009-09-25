@@ -302,7 +302,7 @@ DashDocDisplayItem.prototype = {
     shellWorkspaceLaunch: function () {
         this._info.launch();
     }
-}
+};
 
 /**
  * Class used to display two column recent documents in the dash
@@ -436,5 +436,9 @@ DashDocDisplay.prototype = {
             let display = new DashDocDisplayItem(docInfo);
             this.actor.add_actor(display.actor);
         }
+        this.emit('changed');
     }
-}
+};
+
+Signals.addSignalMethods(DashDocDisplay.prototype);
+

@@ -506,6 +506,13 @@ SectionHeader.prototype = {
             this.backLink.actor.hide();
     },
 
+    setMoreLinkVisible : function(visible) {
+        if (visible)
+            this.moreLink.actor.show();
+        else
+            this.moreLink.actor.hide();
+    },
+
     setCountText : function(countText) {
         if (countText == "") {
             this.countText.hide();
@@ -782,8 +789,8 @@ Dash.prototype = {
 
         this._docsSection = new Section(_("RECENT DOCUMENTS"));
 
-        let docDisplay = new DocDisplay.DashDocDisplay();
-        this._docsSection.content.append(docDisplay.actor, Big.BoxPackFlags.EXPAND);
+        this._docDisplay = new DocDisplay.DashDocDisplay();
+        this._docsSection.content.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
 
         this._moreDocsPane = null;
         this._docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
@@ -794,6 +801,12 @@ Dash.prototype = {
                 link.setPane(this._moreDocsPane);
            }
         }));
+
+        this._docDisplay.connect('changed', Lang.bind(this, function () {
+            this._docsSection.header.setMoreLinkVisible(
+                this._docDisplay.actor.get_children().length > 0);
+        }));
+        this._docDisplay.emit('changed');
 
         this.sectionArea.append(this._docsSection.actor, Big.BoxPackFlags.EXPAND);
 
