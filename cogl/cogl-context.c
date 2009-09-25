@@ -123,6 +123,12 @@ cogl_create_context (void)
 
   _context->texture_download_material = COGL_INVALID_HANDLE;
 
+  /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
+   * the test being disabled therefore we assume that for all drivers there
+   * will be no performance impact if we always leave the test enabled which
+   * makes things a bit simpler for us. */
+  GE (glEnable (GL_ALPHA_TEST));
+
   /* Create default textures used for fall backs */
   _context->default_gl_texture_2d_tex =
     cogl_texture_new_from_data (1, /* width */
