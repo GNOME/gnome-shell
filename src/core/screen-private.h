@@ -117,7 +117,7 @@ struct _MetaScreen
 
   Window wm_cm_selection_window;
 
-  guint work_area_idle;
+  guint work_area_later;
 
   int rows_of_workspaces;
   int columns_of_workspaces;

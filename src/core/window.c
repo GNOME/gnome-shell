@@ -116,8 +116,9 @@ static void meta_window_apply_session_info (MetaWindow                  *window,
 static void unmaximize_window_before_freeing (MetaWindow        *window);
 static void unminimize_window_and_all_transient_parents (MetaWindow *window);
 
-/* Idle handlers for the three queues. The "data" parameter in each case
- * will be a GINT_TO_POINTER of the index into the queue arrays to use.
+/* Idle handlers for the three queues (run with meta_later_add()). The
+ * "data" parameter in each case will be a GINT_TO_POINTER of the
+ * index into the queue arrays to use.
  *
  * TODO: Possibly there is still some code duplication among these, which we
  * need to sort out at some point.
@@ -1705,7 +1706,7 @@ meta_window_calc_showing (MetaWindow  *window)
   implement_showing (window, meta_window_should_be_showing (window));
 }
 
-static guint queue_idle[NUMBER_OF_QUEUES] = {0, 0, 0};
+static guint queue_later[NUMBER_OF_QUEUES] = {0, 0, 0};
 static GSList *queue_pending[NUMBER_OF_QUEUES] = {NULL, NULL, NULL};
 
 static int
@@ -1743,7 +1744,7 @@ idle_calc_showing (gpointer data)
   copy = g_slist_copy (queue_pending[queue_index]);
   g_slist_free (queue_pending[queue_index]);
   queue_pending[queue_index] = NULL;
-  queue_idle[queue_index] = 0;
+  queue_later[queue_index] = 0;
 
   destroying_windows_disallowed += 1;
 
@@ -1901,10 +1902,10 @@ meta_window_unqueue (MetaWindow *window, guint queuebits)
            * In that case, we should kill the function that deals with
            * the queue, because there's nothing left for it to do.
            */
-          if (queue_pending[queuenum] == NULL && queue_idle[queuenum] != 0)
+          if (queue_pending[queuenum] == NULL && queue_later[queuenum] != 0)
             {
-              g_source_remove (queue_idle[queuenum]);
-              queue_idle[queuenum] = 0;
+              meta_later_remove (queue_later[queuenum]);
+              queue_later[queuenum] = 0;
             }
         }
     }
@@ -1937,14 +1938,14 @@ meta_window_queue (MetaWindow *window, guint queuebits)
            * I seem to be turning into a Perl programmer.
            */
 
-          const gint window_queue_idle_priority[NUMBER_OF_QUEUES] =
+          const MetaLaterType window_queue_later_when[NUMBER_OF_QUEUES] =
             {
-              META_PRIORITY_BEFORE_REDRAW, /* CALC_SHOWING */
-              META_PRIORITY_RESIZE,        /* MOVE_RESIZE */
-              META_PRIORITY_BEFORE_REDRAW  /* UPDATE_ICON */
+              META_LATER_BEFORE_REDRAW, /* CALC_SHOWING */
+              META_LATER_RESIZE,        /* MOVE_RESIZE */
+              META_LATER_BEFORE_REDRAW  /* UPDATE_ICON */
             };
 
-          const GSourceFunc window_queue_idle_handler[NUMBER_OF_QUEUES] =
+          const GSourceFunc window_queue_later_handler[NUMBER_OF_QUEUES] =
             {
               idle_calc_showing,
               idle_move_resize,
@@ -1977,11 +1978,11 @@ meta_window_queue (MetaWindow *window, guint queuebits)
            * that. If not, we'll create one.
            */
 
-          if (queue_idle[queuenum] == 0)
-            queue_idle[queuenum] = g_idle_add_full
+          if (queue_later[queuenum] == 0)
+            queue_later[queuenum] = meta_later_add
               (
-                window_queue_idle_priority[queuenum],
-                window_queue_idle_handler[queuenum],
+                window_queue_later_when[queuenum],
+                window_queue_later_handler[queuenum],
                 GUINT_TO_POINTER(queuenum),
                 NULL
               );
@@ -4200,7 +4201,7 @@ idle_move_resize (gpointer data)
   copy = g_slist_copy (queue_pending[queue_index]);
   g_slist_free (queue_pending[queue_index]);
   queue_pending[queue_index] = NULL;
-  queue_idle[queue_index] = 0;
+  queue_later[queue_index] = 0;
 
   destroying_windows_disallowed += 1;
 
@@ -6262,7 +6263,7 @@ idle_update_icon (gpointer data)
   copy = g_slist_copy (queue_pending[queue_index]);
   g_slist_free (queue_pending[queue_index]);
   queue_pending[queue_index] = NULL;
-  queue_idle[queue_index] = 0;
+  queue_later[queue_index] = 0;
 
   destroying_windows_disallowed += 1;
 

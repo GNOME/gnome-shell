@@ -134,7 +134,7 @@ struct _MetaStackTracker
   /* Idle function used to sync the compositor's view of the window
    * stack up with our best guess before a frame is drawn.
    */
-  guint sync_stack_idle;
+  guint sync_stack_later;
 };
 
 static void
@@ -383,8 +383,8 @@ meta_stack_tracker_new (MetaScreen *screen)
 void
 meta_stack_tracker_free (MetaStackTracker *tracker)
 {
-  if (tracker->sync_stack_idle)
-    g_source_remove (tracker->sync_stack_idle);
+  if (tracker->sync_stack_later)
+    meta_later_remove (tracker->sync_stack_later);
 
   g_array_free (tracker->server_stack, TRUE);
   if (tracker->predicted_stack)
@@ -667,10 +667,10 @@ meta_stack_tracker_sync_stack (MetaStackTracker *tracker)
   int n_windows;
   int i;
 
-  if (tracker->sync_stack_idle)
+  if (tracker->sync_stack_later)
     {
-      g_source_remove (tracker->sync_stack_idle);
-      tracker->sync_stack_idle = 0;
+      meta_later_remove (tracker->sync_stack_later);
+      tracker->sync_stack_later = 0;
     }
 
   meta_stack_tracker_get_stack (tracker, &windows, &n_windows);
@@ -696,7 +696,7 @@ meta_stack_tracker_sync_stack (MetaStackTracker *tracker)
 }
 
 static gboolean
-stack_tracker_sync_stack_idle (gpointer data)
+stack_tracker_sync_stack_later (gpointer data)
 {
   meta_stack_tracker_sync_stack (data);
 
@@ -719,10 +719,10 @@ stack_tracker_sync_stack_idle (gpointer data)
 void
 meta_stack_tracker_queue_sync_stack (MetaStackTracker *tracker)
 {
-  if (tracker->sync_stack_idle == 0)
+  if (tracker->sync_stack_later == 0)
     {
-      tracker->sync_stack_idle = g_idle_add_full (META_PRIORITY_BEFORE_REDRAW,
-                                                  stack_tracker_sync_stack_idle,
+      tracker->sync_stack_later = meta_later_add (META_LATER_BEFORE_REDRAW,
+                                                  stack_tracker_sync_stack_later,
                                                   tracker, NULL);
     }
 }

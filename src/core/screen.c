@@ -686,7 +686,7 @@ meta_screen_new (MetaDisplay *display,
   screen->wm_cm_selection_window = meta_create_offscreen_window (xdisplay, 
                                                                  xroot, 
                                                                  NoEventMask);
-  screen->work_area_idle = 0;
+  screen->work_area_later = 0;
 
   screen->active_workspace = NULL;
   screen->workspaces = NULL;
@@ -873,8 +873,8 @@ meta_screen_free (MetaScreen *screen,
   XDestroyWindow (screen->display->xdisplay,
                   screen->wm_sn_selection_window);
   
-  if (screen->work_area_idle != 0)
-    g_source_remove (screen->work_area_idle);
+  if (screen->work_area_later != 0)
+    g_source_remove (screen->work_area_later);
 
 
   if (XGetGCValues (screen->display->xdisplay,
@@ -2291,12 +2291,12 @@ set_work_area_hint (MetaScreen *screen)
 }
 
 static gboolean
-set_work_area_idle_func (MetaScreen *screen)
+set_work_area_later_func (MetaScreen *screen)
 {
   meta_topic (META_DEBUG_WORKAREA,
-              "Running work area idle function\n");
+              "Running work area hint computation function\n");
   
-  screen->work_area_idle = 0;
+  screen->work_area_later = 0;
   
   set_work_area_hint (screen);
   
@@ -2306,16 +2306,16 @@ set_work_area_idle_func (MetaScreen *screen)
 void
 meta_screen_queue_workarea_recalc (MetaScreen *screen)
 {
-  /* Recompute work area in an idle */
-  if (screen->work_area_idle == 0)
+  /* Recompute work area later before redrawing */
+  if (screen->work_area_later == 0)
     {
       meta_topic (META_DEBUG_WORKAREA,
-                  "Adding work area hint idle function\n");
-      screen->work_area_idle =
-        g_idle_add_full (META_PRIORITY_BEFORE_REDRAW,
-                         (GSourceFunc) set_work_area_idle_func,
-                         screen,
-                         NULL);
+                  "Adding work area hint computation function\n");
+      screen->work_area_later =
+        meta_later_add (META_LATER_BEFORE_REDRAW,
+                        (GSourceFunc) set_work_area_later_func,
+                        screen,
+                        NULL);
     }
 }
 

@@ -317,8 +317,10 @@ struct _MetaButtonLayout
  * coelesce multiple things together, the appropriate place to
  * do it is usually META_PRIORITY_BEFORE_REDRAW.
  *
- * (FIXME: Use a Clutter paint() function instead, to prevent
- * starving the repaints)
+ * Note that its usually better to use meta_later_add() rather
+ * than calling g_idle_add() directly; this will make sure things
+ * get run when added from a clutter event handler without
+ * waiting for another repaint cycle.
  *
  * If something has a priority lower than the redraw priority
  * (such as a default priority idle), then it may be arbitrarily

@@ -26,8 +26,11 @@
 #define _POSIX_C_SOURCE 200112L /* for fdopen() */
 
 #include <config.h>
+#include "common.h"
 #include "util.h"
 #include "main.h"
+
+#include <clutter/clutter.h> /* For clutter_threads_add_repaint_func() */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -661,6 +664,202 @@ meta_nexus_get_type (void)
     }
 
   return nexus_type;
+}
+
+/***************************************************************************
+ * Later functions: like idles but integrated with the Clutter repaint loop
+ ***************************************************************************/
+
+static guint last_later_id = 0;
+
+typedef struct
+{
+  guint id;
+  MetaLaterType when;
+  GSourceFunc func;
+  gpointer data;
+  GDestroyNotify notify;
+  int source;
+  gboolean run_once;
+} MetaLater;
+
+static GSList *laters = NULL;
+/* This is a dummy timeline used to get the Clutter master clock running */
+static ClutterTimeline *later_timeline;
+static guint later_repaint_func = 0;
+
+static void ensure_later_repaint_func (void);
+
+static void
+destroy_later (MetaLater *later)
+{
+  if (later->source)
+    g_source_remove (later->source);
+  if (later->notify)
+    later->notify (later->data);
+  g_slice_free (MetaLater, later);
+}
+
+/* Used to sort the list of laters with the highest priority
+ * functions first.
+ */
+static int
+compare_laters (gconstpointer a,
+                gconstpointer b)
+{
+  return ((const MetaLater *)a)->when - ((const MetaLater *)b)->when;
+}
+
+static gboolean
+run_repaint_laters (gpointer data)
+{
+  GSList *old_laters = laters;
+  GSList *l;
+  gboolean keep_timeline_running = FALSE;
+  laters = NULL;
+
+  for (l = old_laters; l; l = l->next)
+    {
+      MetaLater *later = l->data;
+      if (later->source == 0 ||
+          (later->when <= META_LATER_BEFORE_REDRAW && !later->run_once))
+        {
+          if (later->func (later->data))
+            {
+              if (later->source == 0)
+                keep_timeline_running = TRUE;
+              laters = g_slist_insert_sorted (laters, later, compare_laters);
+            }
+          else
+            destroy_later (later);
+        }
+      else
+        laters = g_slist_insert_sorted (laters, later, compare_laters);
+    }
+
+  if (!keep_timeline_running)
+    clutter_timeline_stop (later_timeline);
+
+  g_slist_free (old_laters);
+
+  /* Just keep the repaint func around - it's cheap if the list is empty */
+  return TRUE;
+}
+
+static void
+ensure_later_repaint_func (void)
+{
+  if (!later_timeline)
+    later_timeline = clutter_timeline_new (0);
+
+  if (later_repaint_func == 0)
+    later_repaint_func = clutter_threads_add_repaint_func (run_repaint_laters,
+                                                           NULL, NULL);
+
+  /* Make sure the repaint function gets run */
+  clutter_timeline_start (later_timeline);
+}
+
+static gboolean
+call_idle_later (gpointer data)
+{
+  MetaLater *later = data;
+
+  if (!later->func (later->data))
+    {
+      laters = g_slist_remove (laters, later);
+      later->source = 0;
+      destroy_later (later);
+      return FALSE;
+    }
+  else
+    {
+      later->run_once = TRUE;
+      return TRUE;
+    }
+}
+
+/**
+ * meta_later_add:
+ * @when:     enumeration value determining the phase at which to run the callback
+ * @func:     callback to run later
+ * @data:     data to pass to the callback
+ * @notify:   function to call to destroy @data when it is no longer in use, or %NULL
+ *
+ * Sets up a callback  to be called at some later time. @when determines the
+ * particular later occasion at which it is called. This is much like g_idle_add(),
+ * except that the functions interact properly with clutter event handling.
+ * If a "later" function is added from a clutter event handler, and is supposed
+ * to be run before the stage is redrawn, it will be run before that redraw
+ * of the stage, not the next one.
+ *
+ * Return value: an integer ID (guaranteed to be non-zero) that can be used
+ *  to cancel the callback and prevent it from being run.
+ */
+guint
+meta_later_add (MetaLaterType  when,
+                GSourceFunc    func,
+                gpointer       data,
+                GDestroyNotify notify)
+{
+  MetaLater *later = g_slice_new0 (MetaLater);
+
+  later->id = ++last_later_id;
+  later->when = when;
+  later->func = func;
+  later->data = data;
+  later->notify = notify;
+
+  laters = g_slist_insert_sorted (laters, later, compare_laters);
+
+  switch (when)
+    {
+    case META_LATER_RESIZE:
+      /* We add this one two ways - as a high-priority idle and as a
+       * repaint func. If we are in a clutter event callback, the repaint
+       * handler will get hit first, and we'll take care of this function
+       * there so it gets called before the stage is redrawn, even if
+       * we haven't gotten back to the main loop. Otherwise, the idle
+       * handler will get hit first and we want to call this function
+       * there so it will happen before GTK+ repaints.
+       */
+      later->source = g_idle_add_full (META_PRIORITY_RESIZE, call_idle_later, later, NULL);
+      ensure_later_repaint_func ();
+      break;
+    case META_LATER_BEFORE_REDRAW:
+      ensure_later_repaint_func ();
+      break;
+    case META_LATER_IDLE:
+      later->source = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, call_idle_later, later, NULL);
+      break;
+    }
+
+  return later->id;
+}
+
+/**
+ * meta_later_remove:
+ * @later_id: the integer ID returned from meta_later_add()
+ *
+ * Removes a callback added with meta_later_add()
+ */
+void
+meta_later_remove (guint later_id)
+{
+  GSList *l;
+
+  for (l = laters; l; l = l->next)
+    {
+      MetaLater *later = l->data;
+      if (later->id == later_id)
+        {
+          laters = g_slist_remove_link (laters, l);
+          /* If this was a "repaint func" later, we just let the
+           * repaint func run and get removed
+           */
+          destroy_later (later);
+        }
+    }
 }
 
 /* eof util.c */

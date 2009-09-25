@@ -161,6 +161,26 @@ MetaNexus *meta_nexus_new ();
  */
 extern MetaNexus *sigchld_nexus;
 
+/**
+ * MetaLaterType:
+ * @META_LATER_RESIZE: call in a resize processing phase that is done
+ *   before GTK+ repainting (including window borders) is done.
+ * @META_LATER_BEFORE_REDRAW: call before the stage is redrawn
+ * @META_LATER_IDLE: call at a very low priority (can be blocked
+ *    by running animations or redrawing applications)
+ **/
+typedef enum {
+  META_LATER_RESIZE,
+  META_LATER_BEFORE_REDRAW,
+  META_LATER_IDLE
+} MetaLaterType;
+
+guint meta_later_add    (MetaLaterType  when,
+                         GSourceFunc    func,
+                         gpointer       data,
+                         GDestroyNotify notify);
+void  meta_later_remove (guint          later_id);
+
 #endif /* META_UTIL_H */
 
 
