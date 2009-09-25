@@ -40,12 +40,6 @@ typedef struct
 
 typedef struct
 {
-  CoglBufferTarget target;
-  CoglHandle offscreen;
-} CoglDrawBufferState;
-
-typedef struct
-{
   /* Features cache */
   CoglFeatureFlags  feature_flags;
   gboolean          features_cached;
@@ -60,9 +54,6 @@ typedef struct
 
   /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    flushed_matrix_mode;
-  CoglMatrixStack  *projection_stack;
-  CoglMatrixStack  *modelview_stack;
-
   GList            *texture_units;
 
   /* Cache of inverse projection matrix */
@@ -91,11 +82,11 @@ typedef struct
   GArray           *current_layers;
   guint             n_texcoord_arrays_enabled;
 
-  /* Framebuffer objects */
+  /* Draw Buffers */
   GSList           *draw_buffer_stack;
-
-  /* Clip stack */
-  CoglClipStackState clip;
+  CoglHandle        window_buffer;
+  gboolean          dirty_bound_framebuffer;
+  gboolean          dirty_viewport;
 
   /* Primitives */
   floatVec2         path_start;
@@ -113,9 +104,6 @@ typedef struct
   CoglHandle        quad_indices_short;
 
   gboolean          in_begin_gl_block;
-
-  guint             viewport_width;
-  guint             viewport_height;
 
   CoglHandle        texture_download_material;
 

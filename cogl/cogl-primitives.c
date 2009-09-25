@@ -32,6 +32,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
 #include "cogl-vertex-buffer-private.h"
+#include "cogl-draw-buffer-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -396,8 +397,6 @@ _cogl_rectangles_with_multitexture_coords (
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_clip_ensure ();
-
   material = ctx->source_material;
 
   layers = cogl_material_get_layers (material);
@@ -706,7 +705,6 @@ draw_polygon_sub_texture_cb (CoglHandle tex_handle,
   options.layer0_override_texture = gl_handle;
 
   _cogl_material_flush_gl_state (ctx->source_material, &options);
-  _cogl_flush_matrix_stacks ();
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, state->n_vertices));
 }
@@ -840,7 +838,6 @@ _cogl_multitexture_polygon_single_primitive (CoglTextureVertex *vertices,
     options.flags |= COGL_MATERIAL_FLUSH_SKIP_GL_COLOR;
   options.fallback_layers = fallback_layers;
   _cogl_material_flush_gl_state (ctx->source_material, &options);
-  _cogl_flush_matrix_stacks ();
 
   GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
 }
@@ -866,7 +863,11 @@ cogl_polygon (CoglTextureVertex *vertices,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _cogl_journal_flush ();
-  cogl_clip_ensure ();
+
+  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
 
   material = ctx->source_material;
   layers = cogl_material_get_layers (ctx->source_material);
@@ -1030,9 +1031,6 @@ cogl_path_fill_preserve (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_journal_flush ();
-  cogl_clip_ensure ();
-
   if (ctx->path_nodes->len == 0)
     return;
 
@@ -1055,10 +1053,7 @@ cogl_path_stroke_preserve (void)
   if (ctx->path_nodes->len == 0)
     return;
 
-  _cogl_journal_flush ();
-  cogl_clip_ensure ();
-
-  _cogl_path_stroke_nodes();
+  _cogl_path_stroke_nodes ();
 }
 
 void

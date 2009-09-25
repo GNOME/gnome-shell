@@ -31,6 +31,56 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 
+typedef struct _CoglGLSymbolTableEntry
+{
+  const char *name;
+  void *ptr;
+} CoglGLSymbolTableEntry;
+
+gboolean
+cogl_check_extension (const gchar *name, const gchar *ext)
+{
+  gchar *end;
+  gint name_len, n;
+
+  if (name == NULL || ext == NULL)
+    return FALSE;
+
+  end = (gchar*)(ext + strlen(ext));
+
+  name_len = strlen(name);
+
+  while (ext < end)
+    {
+      n = strcspn(ext, " ");
+
+      if ((name_len == n) && (!strncmp(name, ext, n)))
+	return TRUE;
+      ext += (n + 1);
+    }
+
+  return FALSE;
+}
+
+gboolean
+_cogl_resolve_gl_symbols (CoglGLSymbolTableEntry *symbol_table,
+                          const char *suffix)
+{
+  int i;
+  gboolean status = TRUE;
+  for (i = 0; symbol_table[i].name; i++)
+    {
+      char *full_name = g_strdup_printf ("%s%s", symbol_table[i].name, suffix);
+      *((CoglFuncPtr *)symbol_table[i].ptr) = cogl_get_proc_address (full_name);
+      g_free (full_name);
+      if (!*((CoglFuncPtr *)symbol_table[i].ptr))
+        {
+          status = FALSE;
+          break;
+        }
+    }
+  return status;
+}
 
 
 void
@@ -39,8 +89,33 @@ _cogl_features_init (void)
   CoglFeatureFlags flags = 0;
   int              max_clip_planes = 0;
   GLint            num_stencil_bits = 0;
+  const char      *gl_extensions;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  gl_extensions = (const char*) glGetString (GL_EXTENSIONS);
+
+  if (cogl_check_extension ("GL_OES_framebuffer_object", gl_extensions))
+    {
+      g_assert (0);
+      CoglGLSymbolTableEntry symbol_table[] = {
+            {"glGenRenderbuffers", &ctx->drv.pf_glGenRenderbuffers},
+            {"glDeleteRenderbuffers", &ctx->drv.pf_glDeleteRenderbuffers},
+            {"glBindRenderbuffer", &ctx->drv.pf_glBindRenderbuffer},
+            {"glRenderbufferStorage", &ctx->drv.pf_glRenderbufferStorage},
+            {"glGenFramebuffers", &ctx->drv.pf_glGenFramebuffers},
+            {"glBindFramebuffer", &ctx->drv.pf_glBindFramebuffer},
+            {"glFramebufferTexture2D", &ctx->drv.pf_glFramebufferTexture2D},
+            {"glFramebufferRenderbuffer", &ctx->drv.pf_glFramebufferRenderbuffer},
+            {"glCheckFramebufferStatus", &ctx->drv.pf_glCheckFramebufferStatus},
+            {"glDeleteFramebuffers", &ctx->drv.pf_glDeleteFramebuffers},
+            {"glGenerateMipmap", &ctx->drv.pf_glGenerateMipmap},
+            {NULL, NULL}
+      };
+
+      if (_cogl_resolve_gl_symbols (symbol_table, "OES"))
+        flags |= COGL_FEATURE_OFFSCREEN;
+    }
 
   GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */

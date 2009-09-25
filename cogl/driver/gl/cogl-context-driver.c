@@ -30,15 +30,16 @@
 void
 _cogl_create_context_driver (CoglContext *_context)
 {
-  _context->drv.pf_glGenRenderbuffersEXT = NULL;
-  _context->drv.pf_glBindRenderbufferEXT = NULL;
-  _context->drv.pf_glRenderbufferStorageEXT = NULL;
-  _context->drv.pf_glGenFramebuffersEXT = NULL;
-  _context->drv.pf_glBindFramebufferEXT = NULL;
-  _context->drv.pf_glFramebufferTexture2DEXT = NULL;
-  _context->drv.pf_glFramebufferRenderbufferEXT = NULL;
-  _context->drv.pf_glCheckFramebufferStatusEXT = NULL;
-  _context->drv.pf_glDeleteFramebuffersEXT = NULL;
+  _context->drv.pf_glGenRenderbuffers = NULL;
+  _context->drv.pf_glBindRenderbuffer = NULL;
+  _context->drv.pf_glRenderbufferStorage = NULL;
+  _context->drv.pf_glGenFramebuffers = NULL;
+  _context->drv.pf_glBindFramebuffer = NULL;
+  _context->drv.pf_glFramebufferTexture2D = NULL;
+  _context->drv.pf_glFramebufferRenderbuffer = NULL;
+  _context->drv.pf_glCheckFramebufferStatus = NULL;
+  _context->drv.pf_glDeleteFramebuffers = NULL;
+
   _context->drv.pf_glBlitFramebufferEXT = NULL;
   _context->drv.pf_glRenderbufferStorageMultisampleEXT = NULL;
 
