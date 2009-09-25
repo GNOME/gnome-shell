@@ -39,6 +39,10 @@ const ANIMATION_TIME = 0.25;
 // will take up the remaining sections of the display.
 
 const WIDE_SCREEN_CUT_OFF_RATIO = 1.4;
+// A common netbook resolution is 1024x600, which trips the widescreen
+// ratio.  However that leaves way too few pixels for the dash.  So
+// just treat this as a regular screen.
+const WIDE_SCREEN_MINIMUM_HEIGHT = 768;
 
 const COLUMNS_REGULAR_SCREEN = 4;
 const ROWS_REGULAR_SCREEN = 8;
@@ -138,7 +142,8 @@ Overview.prototype = {
     },
 
     _recalculateGridSizes: function () {
-        wideScreen = (global.screen_width/global.screen_height > WIDE_SCREEN_CUT_OFF_RATIO);
+        wideScreen = (global.screen_width/global.screen_height > WIDE_SCREEN_CUT_OFF_RATIO) &&
+                     (global.screen_height >= WIDE_SCREEN_MINIMUM_HEIGHT);
 
         // We divide the screen into an imaginary grid which helps us determine the layout of
         // different visual components.
