@@ -211,7 +211,7 @@ WindowClone.prototype = {
         this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);
         this._zoomGlobalOrig = new ScaledPoint();
         let parent = this._origParent = this.actor.get_parent();
-        [width, height] = this.actor.get_transformed_size();
+        let [width, height] = this.actor.get_transformed_size();
         this._zoomGlobalOrig.setPosition.apply(this._zoomGlobalOrig, this.actor.get_transformed_position());
         this._zoomGlobalOrig.setScale(width / this.actor.width, height / this.actor.height);
 
