@@ -382,11 +382,13 @@ AppIconMenu.prototype = {
 
         let iconsDiffer = false;
         let texCache = Shell.TextureCache.get_default();
-        let firstIcon = windows[0].mini_icon;
-        for (let i = 1; i < windows.length; i++) {
-            if (!texCache.pixbuf_equal(windows[i].mini_icon, firstIcon)) {
-                iconsDiffer = true;
-                break;
+        if (windows.length > 0) {
+            let firstIcon = windows[0].mini_icon;
+            for (let i = 1; i < windows.length; i++) {
+                if (!texCache.pixbuf_equal(windows[i].mini_icon, firstIcon)) {
+                    iconsDiffer = true;
+                    break;
+                }
             }
         }
 
@@ -405,9 +407,24 @@ AppIconMenu.prototype = {
         }
         this._appendWindows(otherWorkspaceWindows, iconsDiffer);
 
-        this._appendSeparator();
+        if (windows.length > 0)
+            this._appendSeparator();
 
-        this._newWindowMenuItem = this._appendMenuItem(null, _("New Window"));
+        this._newWindowMenuItem = windows.length > 0 ? this._appendMenuItem(null, _("New Window")) : null;
+
+        let favorites = Shell.AppSystem.get_default().get_favorites();
+        let id = this._source.appInfo.get_id();
+        this._isFavorite = false;
+        for (let i = 0; i < favorites.length; i++) {
+            if (id == favorites[i]) {
+                this._isFavorite = true;
+                break;
+            }
+        }
+        if (windows.length > 0)
+            this._appendSeparator();
+        this._toggleFavoriteMenuItem = this._appendMenuItem(null, this._isFavorite ? _("Remove from favorites")
+                                                                    : _("Add to favorites"));
 
         this._highlightedItem = null;
     },
@@ -564,6 +581,12 @@ AppIconMenu.prototype = {
         } else if (child == this._newWindowMenuItem) {
             this._source.appInfo.launch();
             this.emit('activate-window', null);
+        } else if (child == this._toggleFavoriteMenuItem) {
+            let appSys = Shell.AppSystem.get_default();
+            if (this._isFavorite)
+                appSys.remove_favorite(this._source.appInfo.get_id());
+            else
+                appSys.add_favorite(this._source.appInfo.get_id());
         }
         this.popdown();
     },

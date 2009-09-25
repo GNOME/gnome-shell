@@ -459,8 +459,8 @@ function BaseWellItem(appInfo, isFavorite, hasMenu) {
 BaseWellItem.prototype = {
     __proto__: AppIcon.AppIcon.prototype,
 
-    _init: function(appInfo, isFavorite, hasMenu) {
-        AppIcon.AppIcon.prototype._init.call(this, appInfo, hasMenu ? AppIcon.MenuType.ON_RIGHT : AppIcon.MenuType.NONE, true);
+    _init: function(appInfo, isFavorite) {
+        AppIcon.AppIcon.prototype._init.call(this, appInfo, AppIcon.MenuType.ON_RIGHT, true);
 
         this.isFavorite = isFavorite;
 
@@ -519,7 +519,7 @@ RunningWellItem.prototype = {
     __proto__: BaseWellItem.prototype,
 
     _init: function(appInfo, isFavorite) {
-        BaseWellItem.prototype._init.call(this, appInfo, isFavorite, true);
+        BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
 
         this._dragStartX = 0;
         this._dragStartY = 0;
@@ -592,6 +592,12 @@ InactiveWellItem.prototype = {
             return true;
         }
         return false;
+    },
+
+    menuPoppedUp: function() {
+    },
+
+    menuPoppedDown: function() {
     }
 };
 
@@ -659,10 +665,8 @@ WellGrid.prototype = {
             childBox.y2 = childBox.y1 + itemHeight;
             children[i].allocate(childBox, flags);
 
-            let atSeparator = (i == this._separatorIndex - 1);
-
             columnIndex++;
-            if (columnIndex == columns || atSeparator) {
+            if (columnIndex == columns) {
                 columnIndex = 0;
             }
 
@@ -672,27 +676,7 @@ WellGrid.prototype = {
             } else {
                 x += itemWidth;
             }
-
-            if (atSeparator) {
-                y += separatorNatural + WELL_ITEM_VSPACING;
-            }
         }
-
-        let separatorRowIndex = Math.ceil(this._separatorIndex / columns);
-
-        /* Allocate the separator */
-        let childBox = new Clutter.ActorBox();
-        childBox.x1 = box.x1;
-        childBox.y1 = (itemHeight + WELL_ITEM_VSPACING) * separatorRowIndex;
-        this._cachedSeparatorY = childBox.y1;
-        childBox.x2 = box.x2;
-        childBox.y2 = childBox.y1+separatorNatural;
-        this._separator.allocate(childBox, flags);
-    },
-
-    setSeparatorIndex: function (index) {
-        this._separatorIndex = index;
-        this.actor.queue_relayout();
     },
 
     removeAll: function () {
@@ -700,11 +684,6 @@ WellGrid.prototype = {
         for (let i = 0; i < itemChildren.length; i++) {
             itemChildren[i].destroy();
         }
-        this._separatorIndex = 0;
-    },
-
-    isBeforeSeparator: function(x, y) {
-        return y < this._cachedSeparatorY;
     },
 
     _getItemChildren: function () {
@@ -744,8 +723,7 @@ WellGrid.prototype = {
         let minWidth = itemMinWidth * nColumns;
 
         let lastColumnIndex = nColumns - 1;
-        let separatorColumns = lastColumnIndex - ((lastColumnIndex + this._separatorIndex) % nColumns);
-        let rows = Math.ceil((children.length + separatorColumns) / nColumns);
+        let rows = Math.ceil(children.length / nColumns);
 
         let itemWidth;
         if (forWidth < 0) {
@@ -847,7 +825,6 @@ AppWell.prototype = {
 
         let displays = []
         this._addApps(favorites, true);
-        this._grid.setSeparatorIndex(favorites.length);
         this._addApps(running, false);
         this._displays = displays;
     },
@@ -870,9 +847,7 @@ AppWell.prototype = {
         let appSystem = Shell.AppSystem.get_default();
 
         let app = null;
-        if (source instanceof BaseWellItem) {
-            app = source.appInfo;
-        } else if (source instanceof AppDisplayItem) {
+        if (source instanceof AppDisplayItem) {
             app = appSystem.lookup_cached_app(source.getId());
         } else if (source instanceof Workspaces.WindowClone) {
             let appMonitor = Shell.AppMonitor.get_default();
@@ -889,22 +864,15 @@ AppWell.prototype = {
         let favoriteIds = this._appSystem.get_favorites();
         let favoriteIdsObject = this._arrayValues(favoriteIds);
 
-        let dropIsFavorite = this._grid.isBeforeSeparator(x - this._grid.actor.x,
-                                                          y - this._grid.actor.y);
         let srcIsFavorite = (id in favoriteIdsObject);
 
-        if (srcIsFavorite && (!dropIsFavorite)) {
-            Mainloop.idle_add(function () {
-                appSystem.remove_favorite(id);
-                return false;
-            });
-        } else if ((!srcIsFavorite) && dropIsFavorite) {
+        if (srcIsFavorite) {
+            return false;
+        } else {
             Mainloop.idle_add(function () {
                 appSystem.add_favorite(id);
                 return false;
             });
-        } else {
-            return false;
         }
 
         return true;
