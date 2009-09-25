@@ -34,9 +34,8 @@ RunDialog.prototype = {
         this._isOpen = false;
 
         let gconf = Shell.GConf.get_default();
-        gconf.connect('changed', Lang.bind(this, function (gconf, key) {
-            if (key == 'development_tools')
-                this._enableInternalCommands = gconf.get_bool('development_tools');
+        gconf.connect('changed::development_tools', Lang.bind(this, function () {
+            this._enableInternalCommands = gconf.get_boolean('development_tools');
         }));
         this._enableInternalCommands = gconf.get_boolean('development_tools');
 
