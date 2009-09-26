@@ -74,7 +74,7 @@ dpkg_is_installed() {
     return 1
 }
 
-if test x$system = xUbuntu -o x$system = xDebian ; then
+if test x$system = xUbuntu -o x$system = xDebian -o x$system = xLinuxMint ; then
   reqd=""
   for pkg in \
     build-essential curl \
