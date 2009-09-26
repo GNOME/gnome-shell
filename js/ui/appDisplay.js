@@ -26,8 +26,8 @@ const WELL_DEFAULT_COLUMNS = 4;
 const WELL_ITEM_MIN_HSPACING = 4;
 const WELL_ITEM_VSPACING = 4;
 
-const MENU_ICON_SIZE = 24;
-const MENU_SPACING = 15;
+const MENU_ARROW_SIZE = 12;
+const MENU_SPACING = 7;
 
 const MAX_ITEMS = 30;
 
@@ -87,8 +87,8 @@ const MENU_UNSELECTED = 0;
 const MENU_SELECTED = 1;
 const MENU_ENTERED = 2;
 
-function MenuItem(name, id, iconName) {
-    this._init(name, id, iconName);
+function MenuItem(name, id) {
+    this._init(name, id);
 }
 
 /**
@@ -96,31 +96,19 @@ function MenuItem(name, id, iconName) {
  * Shows the list of menus in the sidebar.
  */
 MenuItem.prototype = {
-    _init: function(name, id, iconName) {
+    _init: function(name, id) {
         this.id = id;
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                    spacing: 4,
                                    corner_radius: 4,
                                    padding_right: 4,
+                                   padding_left: 4,
                                    reactive: true });
         this.actor.connect('button-press-event', Lang.bind(this, function (a, e) {
             this.setState(MENU_SELECTED);
         }));
 
-        let iconTheme = Gtk.IconTheme.get_default();
-        let pixbuf = null;
-        this._icon = new Clutter.Texture({ width: MENU_ICON_SIZE,
-                                           height: MENU_ICON_SIZE });
-        // Wine manages not to have an icon
-        try {
-            pixbuf = iconTheme.load_icon(iconName, MENU_ICON_SIZE, 0 /* flags */);
-        } catch (e) {
-            pixbuf = iconTheme.load_icon('gtk-file', MENU_ICON_SIZE, 0);
-        }
-        if (pixbuf != null)
-            Shell.clutter_texture_set_from_pixbuf(this._icon, pixbuf);
-        this.actor.append(this._icon, Big.BoxPackFlags.NONE);
         this._text = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
                                         font_name: "Sans 14px",
                                         text: name });
@@ -128,7 +116,8 @@ MenuItem.prototype = {
         // We use individual boxes for the label and the arrow to ensure that they
         // are aligned vertically. Just setting y_align: Big.BoxAlignment.CENTER
         // on this.actor does not seem to achieve that.  
-        let labelBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
+        let labelBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER,
+                                     padding: 4 });
 
         labelBox.append(this._text, Big.BoxPackFlags.NONE);
        
@@ -136,8 +125,8 @@ MenuItem.prototype = {
 
         let arrowBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
 
-        this._arrow = new Shell.Arrow({ surface_width: MENU_ICON_SIZE / 2,
-                                        surface_height: MENU_ICON_SIZE / 2,
+        this._arrow = new Shell.Arrow({ surface_width: MENU_ARROW_SIZE,
+                                        surface_height: MENU_ARROW_SIZE,
                                         direction: Gtk.ArrowType.RIGHT,
                                         opacity: 0 });
         arrowBox.append(this._arrow, Big.BoxPackFlags.NONE);
@@ -295,8 +284,8 @@ AppDisplay.prototype = {
         })).filter(function (e) { return e != null });
     },
 
-    _addMenuItem: function(name, id, icon, index) {
-        let display = new MenuItem(name, id, icon);
+    _addMenuItem: function(name, id, index) {
+        let display = new MenuItem(name, id);
         this._menuDisplays.push(display);
         display.connect('state-changed', Lang.bind(this, function (display) {
             let activated = display.getState() != MENU_UNSELECTED;
@@ -322,9 +311,13 @@ AppDisplay.prototype = {
     _redisplayMenus: function() {
         this._menuDisplay.remove_all();
         this._addMenuItem(_("Frequent"), null, 'gtk-select-all');
+        // Adding an empty box here results in double spacing between
+        // "Frequent" and the other items.
+        let separator_actor = new Big.Box();
+        this._menuDisplay.append(separator_actor, 0);
         for (let i = 0; i < this._menus.length; i++) {
             let menu = this._menus[i];
-            this._addMenuItem(menu.name, menu.id, menu.icon, i+1);
+            this._addMenuItem(menu.name, menu.id, i+1);
         }
     },
 
