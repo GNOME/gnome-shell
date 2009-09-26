@@ -28,8 +28,8 @@ const APPICON_CORNER_RADIUS = 4;
 
 const APPICON_MENU_POPUP_TIMEOUT_MS = 600;
 
-const APPICON_BORDER_COLOR = new Clutter.Color();
-APPICON_BORDER_COLOR.from_pixel(0x787878ff);
+const APPICON_DEFAULT_BORDER_COLOR = new Clutter.Color();
+APPICON_DEFAULT_BORDER_COLOR.from_pixel(0x787878ff);
 const APPICON_MENU_BACKGROUND_COLOR = new Clutter.Color();
 APPICON_MENU_BACKGROUND_COLOR.from_pixel(0x292929ff);
 const APPICON_MENU_FONT = 'Sans 14px';
@@ -64,6 +64,7 @@ AppIcon.prototype = {
                                            padding: APPICON_PADDING,
                                            reactive: true });
         this.actor._delegate = this;
+        this.highlight_border_color = APPICON_DEFAULT_BORDER_COLOR;
 
         if (menuType != MenuType.NONE) {
             this.windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
@@ -178,7 +179,7 @@ AppIcon.prototype = {
 
     setHighlight: function(highlight) {
         if (highlight) {
-            this.actor.border_color = APPICON_BORDER_COLOR;
+            this.actor.border_color = this.highlight_border_color;
         } else {
             this.actor.border_color = TRANSPARENT_COLOR;
         }
@@ -273,7 +274,7 @@ AppIconMenu.prototype = {
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
 
         this._windowContainer = new Shell.Menu({ orientation: Big.BoxOrientation.VERTICAL,
-                                                 border_color: APPICON_BORDER_COLOR,
+                                                 border_color: source.highlight_border_color,
                                                  border: APPICON_MENU_BORDER_WIDTH,
                                                  background_color: APPICON_MENU_BACKGROUND_COLOR,
                                                  padding: 4,
@@ -297,7 +298,7 @@ AppIconMenu.prototype = {
         this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
             Shell.draw_box_pointer(texture,
                                    this._type == MenuType.ON_RIGHT ? Clutter.Gravity.WEST : Clutter.Gravity.NORTH,
-                                   APPICON_BORDER_COLOR,
+                                   source.highlight_border_color,
                                    APPICON_MENU_BACKGROUND_COLOR);
         }));
         this.actor.add_actor(this._arrow);

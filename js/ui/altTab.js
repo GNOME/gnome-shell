@@ -12,9 +12,9 @@ const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 
 const POPUP_BG_COLOR = new Clutter.Color();
-POPUP_BG_COLOR.from_pixel(0x000000ff);
-const POPUP_TRANSPARENT = new Clutter.Color();
-POPUP_TRANSPARENT.from_pixel(0x00000000);
+POPUP_BG_COLOR.from_pixel(0x00000080);
+const POPUP_APPICON_BORDER_COLOR = new Clutter.Color();
+POPUP_APPICON_BORDER_COLOR.from_pixel(0xffffffff);
 
 const POPUP_GRID_SPACING = 8;
 const POPUP_ICON_SIZE = 48;
@@ -66,6 +66,7 @@ AltTabPopup.prototype = {
 
         // FIXME?
         appIcon.actor.border = 2;
+        appIcon.highlight_border_color = POPUP_APPICON_BORDER_COLOR;
 
         this._icons.push(appIcon);
         this._currentWindows.push(appIcon.windows[0]);
