@@ -160,13 +160,15 @@ AppIcon.prototype = {
 
     _resortWindows: function() {
         this.windows.sort(function (a, b) {
-            let timeA = a.get_user_time();
-            let timeB = b.get_user_time();
-            if (timeA == timeB)
-                return 0;
-            else if (timeA > timeB)
+            let visA = a.showing_on_its_workspace();
+            let visB = b.showing_on_its_workspace();
+
+            if (visA && !visB)
                 return -1;
-            return 1;
+            else if (visB && !visA)
+                return 1;
+            else
+                return b.get_user_time() - a.get_user_time();
         });
     },
 
