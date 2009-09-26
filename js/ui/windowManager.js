@@ -163,41 +163,10 @@ WindowManager.prototype = {
     },
 
     _destroyWindow : function(shellwm, actor) {
-        if (!this._shouldAnimate(actor)) {
-            shellwm.completed_destroy(actor);
-            return;
-        }
-
-        actor.move_anchor_point_from_gravity(Clutter.Gravity.CENTER);
-        
-        /* anachronistic 'tv-like' effect - squash on y axis, leave x alone */
-        this._destroying.push(actor);
-        Tweener.addTween(actor,
-                         { scale_x: 1.0,
-                           scale_y: 0.0,
-                           time: WINDOW_ANIMATION_TIME,
-                           transition: "easeOutQuad",
-                           onComplete: this._destroyWindowDone,
-                           onCompleteScope: this,
-                           onCompleteParams: [shellwm, actor],
-                           onOverwrite: this._destroyWindowOverwrite,
-                           onOverwriteScope: this,
-                           onOverwriteParams: [shellwm, actor]
-                         });
+        shellwm.completed_destroy(actor);
     },
     
     _destroyWindowDone : function(shellwm, actor) {
-        if (this._removeEffect(this._destroying, actor)) {
-            shellwm.completed_destroy(actor);
-            Tweener.removeTweens(actor);
-            actor.set_scale(1.0, 1.0);
-        }
-    },
-
-    _destroyWindowOverwrite : function(shellwm, actor) {
-        if (this._removeEffect(this._destroying, actor)) {
-            shellwm.completed_destroy(actor);
-        }
     },
 
     _switchWorkspace : function(shellwm, from, to, direction) {
