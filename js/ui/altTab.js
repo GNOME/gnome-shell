@@ -102,12 +102,7 @@ AltTabPopup.prototype = {
         let icons = [];
         for (let i = 0; i < apps.length; i++)
             icons.push(new AppIcon.AppIcon(apps[i], AppIcon.MenuType.BELOW));
-        icons.sort(function(i1, i2) {
-                       // The app's most-recently-used window is first
-                       // in its list
-                       return (i2.windows[0].get_user_time() -
-                               i1.windows[0].get_user_time());
-                   });
+        icons.sort(Lang.bind(this, this._sortAppIcon));
         for (let i = 0; i < icons.length; i++)
             this._addIcon(icons[i]);
 
@@ -123,6 +118,30 @@ AltTabPopup.prototype = {
 
         this._updateSelection(initialSelection);
         return true;
+    },
+
+    _hasVisibleWindows : function(appIcon) {
+        for (let i = 0; i < appIcon.windows.length; i++) {
+            if (appIcon.windows[i].showing_on_its_workspace())
+                return true;
+        }
+        return false;
+    },
+
+    _sortAppIcon : function(appIcon1, appIcon2) {
+        let vis1 = this._hasVisibleWindows(appIcon1);
+        let vis2 = this._hasVisibleWindows(appIcon2);
+
+        if (vis1 && !vis2) {
+            return -1;
+        } else if (vis2 && !vis1) {
+            return 1;
+        } else {
+            // The app's most-recently-used window is first
+            // in its list
+            return (appIcon2.windows[0].get_user_time() -
+                    appIcon1.windows[0].get_user_time());
+        }
     },
 
     _keyPressEvent : function(actor, event) {
