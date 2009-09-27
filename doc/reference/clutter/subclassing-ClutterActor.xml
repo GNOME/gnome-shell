@@ -5,7 +5,7 @@
       <surname>Bassi</surname>
       <affiliation>
         <address>
-          <email>ebassi@openedhand.com</email>
+          <email>ebassi@linux.intel.com</email>
         </address>
       </affiliation>
     </author>
@@ -40,13 +40,11 @@ G_DEFINE_TYPE (FooActor, foo_actor, CLUTTER_TYPE_ACTOR);
 static void
 foo_actor_class_init (FooActorClass *klass)
 {
-
 }
 
 static void
 foo_actor_init (FooActor *actor)
 {
-
 }
     </programlisting>
   </informalexample>
@@ -84,10 +82,13 @@ foo_actor_init (FooActor *actor)
         specific resources associated with being added to the #ClutterStage,
         and whether their children should be painted or not. A
         #ClutterContainer implementation should not care about overriding
-        the ClutterActor::realize(), ClutterActor::unrealize(),
-        ClutterActor::map() and ClutterActor::unmap() virtual functions, but
+        the <classname>ClutterActor</classname>::realize(),
+        <classname>ClutterActor</classname>::unrealize(),
+        <classname>ClutterActor</classname>::map() and
+        <classname>ClutterActor</classname>::unmap() virtual functions, but
         composite actors with private children MUST implement at least
-        ClutterActor::map() and ClutterActor::unmap().</para></listitem>
+        <classname>ClutterActor</classname>::map() and
+        <classname>ClutterActor</classname>::unmap().</para></listitem>
       </varlistentry>
 
     </variablelist>
@@ -130,8 +131,8 @@ foo_actor_init (FooActor *actor)
     of space an actor would occupy if nothing would constrain it.</para>
 
     <note><para>The natural size must always be greater than, or equal
-    to the minimum size. #ClutterActor will warn in case this assumption
-    is not respected by an implementation.</para></note>
+    to the minimum size. #ClutterActor will just ignore a natural size
+    lesser than a minimum size.</para></note>
 
     <para>The height request may be computed for a specific width, which
     is passed to the implementation, thus allowing height-for-width
@@ -144,7 +145,10 @@ foo_actor_init (FooActor *actor)
     <note><para>The clutter_actor_get_preferred_size() function will
     automatically check the geometry management preferred by the actor
     and return its preferred size depending on the value of the request-mode
-    property and on the natural size of the actor.</para></note>
+    property and on the natural size of the actor. The get_preferred_size()
+    method, though, will ignore any notion of "available size" so it should
+    not be used inside a <classname>ClutterActor</classname>::allocate()
+    implementation.</para></note>
 
     <para>The size requisition starts from the #ClutterStage and it is
     performed on every child of the stage following down the hierarchy
@@ -154,11 +158,10 @@ foo_actor_init (FooActor *actor)
     actor's scale, rotation or anchor point unless an actor is performing
     layout management depending on those properties.</para></note>
 
-    <note><para>All the sizes are expressed using #ClutterUnit<!-- -->s, the
-    internal high-precision unit type, which guarantees sub-pixel precision.
-    #ClutterUnit currently has the same limitations that #ClutterFixed has,
-    see the <link linkend="clutter-Fixed-Point-Support">fixed point page</link>.
-    </para></note>
+    <note><para>All the sizes are expressed using pixels with subpixel
+    precision. The sub-pixel precision is useful when animating actors
+    but it can produce odd results on screen, so you might want to
+    truncate the precision of the computed values.</para></note>
 
     <example id="clutter-actor-get-width-request-example">
       <title>Width requisition implementation of a container</title>
@@ -174,9 +177,9 @@ foo_actor_init (FooActor *actor)
       <programlisting>
 static void
 foo_actor_get_preferred_width (ClutterActor *actor,
-                               ClutterUnit   for_height,
-                               ClutterUnit  *min_width_p,
-                               ClutterUnit  *natural_width_p)
+                               gfloat        for_height,
+                               gfloat       *min_width_p,
+                               gfloat       *natural_width_p)
 {
   GList *l;
   ClutterUnit min_left, min_right;
@@ -190,7 +193,7 @@ foo_actor_get_preferred_width (ClutterActor *actor,
   for (l = children; l != NULL; l = l-&gt;next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_x, child_min, child_natural;
+      gfloat child_x, child_min, child_natural;
 
       child_x = clutter_actor_get_xu (child);
 
@@ -270,64 +273,104 @@ foo_actor_get_preferred_width (ClutterActor *actor,
 
     <note><para>The allocate() virtual function implementation will be
     notified whether the actor has been moved, while clutter_actor_allocate()
-    will usually be invoked with a boolean flag meaning that the parent
-    has been moved.</para></note>
+    will usually be invoked with the %CLUTTER_ABSOLUTE_ORIGIN_CHANGED flag,
+    meaning that the parent has been moved.</para></note>
 
     <example id="container-allocate-example">
       <title>Allocation of a container</title>
       <para>In this example, <classname>FooActor</classname> acts like a
       horizontal box with overflowing, like a toolbar which will display
       more children as it expands. The children falling outside of the
-      allocated area will fade out; the children falling inside the
-      same area will fade in.</para>
+      allocated area will not be allocated.</para>
       <programlisting language="C">
 static void
-foo_actor_allocate (ClutterActor          *actor,
-                    const ClutterActorBox *box,
-                    gboolean               absolute_origin_changed)
+foo_actor_allocate (ClutterActor           *actor,
+                    const ClutterActorBox  *box,
+                    ClutterAllocationFlags  flags)
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
-  ClutterUnit current_width;
+  gfloat available_width, available_height;
+  gfloat current_width, current_height;
+  gfloat row_height;
   GList *l;
 
-  /* chain up to set the allocation of the actor */
-  CLUTTER_ACTOR_CLASS (foo_actor_parent_class)-&gt;allocate (actor, box, absolute_origin_changed);
+  /* chain up to store the allocation of the actor */
+  CLUTTER_ACTOR_CLASS (foo_actor_parent_class)-&gt;allocate (actor, box, flags);
 
-  current_width = foo_actor-&gt;padding;
+  clutter_actor_box_get_size (box,
+                              &amp;available_width,
+                              &amp;available_height);
+
+  current_width = 0;
+  current_height = 0;
+
+  row_height = 0;
 
   for (l = foo_actor-&gt;children;
        l != NULL;
        l = l-&gt;next)
     {
-      FooActorChild *child = l-&gt;data;
-      ClutterUnit natural_width, natural_height;
+      ClutterActor *child = l-&gt;data;
       ClutterActorBox child_box = { 0, };
+      gfloat child_width, child_height;
+      ClutterRequestMode mode;
 
-      /* each child will get as much space as they require */
-      clutter_actor_get_preferred_size (CLUTTER_ACTOR (child),
-                                        NULL, NULL,
-                                        &amp;natural_width, &amp;natural_height);
+      /* do not allocate invisible children */
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
 
-      /* if the child is overflowing, we just fade it out */
-      if (current_width + natual_width &gt; box-&gt;x2 - box-&gt;x1)
-        foo_actor_fade_child (foo_actor, child, 0);
-      else
+      g_object_get (G_OBJECT (child), "request-mode", &amp;mode, NULL);
+      if (mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
         {
-          current_width += natural_width + priv-&gt;padding;
+          gfloat min, natural;
 
-          child_box.x1 = current_width;
-          child_box.y1 = 0;
-          child_box.x2 = child_box.x1 + natural_width;
-          child_box.y2 = child_box.y1 + natural_height;
+          clutter_actor_get_preferred_width (child, available_height,
+                                             &amp;min, &amp;natural);
+          child_width = MAX (min, MIN (natural, available_width));
 
-          /* update the allocation */
-          clutter_actor_allocate (CLUTTER_ACTOR (child),
-                                  &amp;child_box,
-                                  absolute_origin_changed);
-
-          /* fade the child in if it wasn't visible */
-          foo_actor_fade_child (foo_actor, child, 255);
+          clutter_actor_get_preferred_height (child, child_width,
+                                              &amp;min, &amp;natural);
+          child_height = MAX (min, MIN (natural, available_height));
         }
+      else (mode == CLUTTER_REQUEST_WIDTH_FOR_HEIGHT)
+        {
+          gfloat min, natural;
+
+          clutter_actor_get_preferred_height (child, available_width,
+                                              &amp;min, &amp;natural);
+          child_height = MAX (min, MIN (natural, available_height));
+
+          clutter_actor_get_preferred_width (child, child_height,
+                                             &amp;min, &amp;natural);
+          child_width = MAX (min, MIN (natural, available_width));
+        }
+      else
+        g_assert_not_reached ();
+
+      /* overflow */
+      if (current_width + child_width &gt; available_width)
+        {
+          current_width = 0;
+          current_height += row_height;
+        }
+      else
+        current_width += child_width;
+
+      /* stop allocating if we are overflowing the available height */
+      if (current_height + child_height &gt; available_height)
+        break;
+
+      child_box.x1 = current_width;
+      child_box.y1 = current_height;
+      child_box.x2 = child_box.x1 + child_width;
+      child_box.y2 = child_box.y1 + child_height;
+
+      /* update the allocation */
+      clutter_actor_allocate (child,
+                              &amp;child_box,
+                              flags);
+
+      row_height = MAX (row_height, child_height);
     }
 }
       </programlisting>
@@ -346,11 +389,6 @@ foo_actor_allocate (ClutterActor          *actor,
     using the Clutter GL and GLES abstraction library (COGL) or by directly
     using the GL or GLES API.</para>
 
-    <note><para>Actors performing transformations should push the GL matrix
-    first and then pop the GL matrix before returning. COGL provides wrapper
-    functions for this operation, cogl_push_matrix() and cogl_pop_matrix().
-    </para></note>
-  
     <example id="simple-actor-paint-example">
       <title>Paint implementation of a simple actor</title>
       <para>In this example, the <classname>FooActor</classname>
@@ -568,8 +606,9 @@ foo_actor_add_baz (FooActor *foo_actor,
           <term>ClutterContainer::add</term>
           <listitem>
             <para>The container actor should hold a pointer to the passed
-            #ClutterActor, call clutter_actor_set_parent() on it and then
-            emit the #ClutterContainer::actor-added signal to notify
+            #ClutterActor, call clutter_actor_set_parent() on it, queue
+            a relayout on itself and then emit the
+            #ClutterContainer::actor-added signal to notify
             handlers of the newly added actor.</para>
           </listitem>
         </varlistentry>
@@ -593,9 +632,11 @@ foo_actor_add_baz (FooActor *foo_actor,
         <varlistentry>
           <term>ClutterContainer::foreach_with_internals</term>
           <listitem>
-            <para>The contained should invoke the callback on every
+            <para>The container should invoke the callback on every
             child it is holding, including eventual private children
-            that should not be handled by the #ClutterContainer API.</para>
+            that should not be handled by the #ClutterContainer API.
+            This method can be ignored if the container does not
+            have internal children.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -603,7 +644,8 @@ foo_actor_add_baz (FooActor *foo_actor,
           <listitem>
             <para>The container should move the passed child on top
             of the given sibling, or on top of the paint stack in
-            case the sibling is NULL.</para>
+            case the sibling is NULL. This method can be ignored if the
+            container does not have overlapping children.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -611,14 +653,17 @@ foo_actor_add_baz (FooActor *foo_actor,
           <listitem>
             <para>The container should move the passed child below
             the given sibling, or on the bottom of the paint stack
-            in case the sibling is NULL.</para>
+            in case the sibling is NULL. This method can be ignored
+            if the container does not have overlapping children.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term>ClutterContainer::sort_depth_order</term>
           <listitem>
             <para>The container should sort the paint stack depending
-            on the relative depths of each child.</para>
+            on the relative depths of each child. This method can
+            be ignored if the container does not have overlapping
+            children.</para>
           </listitem>
         </varlistentry>
       </variablelist>
