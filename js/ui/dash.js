@@ -397,7 +397,7 @@ MoreLink.prototype = {
 
         let text = new Clutter.Text({ font_name: "Sans 12px",
                                       color: BRIGHT_TEXT_COLOR,
-                                      text: _("Browse") });
+                                      text: _("More") });
         this.actor.append(text, Big.BoxPackFlags.NONE);
 
         this.actor.connect('button-press-event', Lang.bind(this, function (b, e) {
