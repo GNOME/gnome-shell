@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-09-11 21:48+0000\n"
-"PO-Revision-Date: 2009-09-12 14:40+0200\n"
+"POT-Creation-Date: 2009-09-27 16:05+0000\n"
+"PO-Revision-Date: 2009-09-28 21:58+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,40 +40,40 @@ msgid "Find..."
 msgstr "Buscar…"
 
 #: ../js/ui/dash.js:400
-msgid "Browse"
-msgstr "Examine"
+msgid "More"
+msgstr "Más"
 
-#: ../js/ui/dash.js:536
+#: ../js/ui/dash.js:543
 msgid "(see all)"
 msgstr "(ver todo)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:736 ../js/ui/dash.js:792
+#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:756
+#: ../js/ui/dash.js:783
 msgid "PLACES"
 msgstr "LUGARES"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:802
+#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
 msgid "RECENT DOCUMENTS"
 msgstr "DOCUMENTOS RECIENTES"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:782 ../js/ui/dash.js:907
+#: ../js/ui/dash.js:815 ../js/ui/dash.js:958
 msgid "SEARCH RESULTS"
 msgstr "RESULTADOS DE LA BÚSQUEDA"
 
-#: ../js/ui/dash.js:797
+#: ../js/ui/dash.js:830
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/runDialog.js:90
+#: ../js/ui/runDialog.js:94
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
@@ -184,6 +184,9 @@ msgstr "Buscar"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Browse"
+#~ msgstr "Examine"
 
 #~ msgid "Find apps or documents"
 #~ msgstr "Encuentre aplicaciones o documentos"
