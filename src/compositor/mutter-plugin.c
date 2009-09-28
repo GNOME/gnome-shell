@@ -463,13 +463,13 @@ mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
  * mutter_plugin_get_windows:
  * @plugin: A #MutterPlugin
  *
- * This function returns all of the #MetaWindow objects referenced by Mutter, including
+ * This function returns all of the #MutterWindow objects referenced by Mutter, including
  * override-redirect windows.  The returned list is a snapshot of Mutter's current
  * stacking order, with the topmost window last.
  *
  * The 'restacked' signal of #MetaScreen signals when this value has changed.
  *
- * Returns: (transfer none) (element-type MetaWindow): Windows in stacking order, topmost last
+ * Returns: (transfer none) (element-type MutterWindow): Windows in stacking order, topmost last
  */
 GList *
 mutter_plugin_get_windows (MutterPlugin *plugin)
