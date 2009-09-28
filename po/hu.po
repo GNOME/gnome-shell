@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-15 11:35+0200\n"
-"PO-Revision-Date: 2009-08-15 11:35+0200\n"
+"POT-Creation-Date: 2009-09-28 13:41+0200\n"
+"PO-Revision-Date: 2009-09-28 13:42+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "MIME-Version: 1.0\n"
@@ -17,77 +17,92 @@ msgstr ""
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Ablakkezelés és alkalmazásindítás"
+
 #. left side
-#: ../js/ui/panel.js:266
+#: ../js/ui/panel.js:269
 msgid "Activities"
 msgstr "Tevékenységek"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:412
+#: ../js/ui/panel.js:452
 msgid "%a %l:%M %p"
 msgstr "%a., %k.%M"
 
-#: ../js/ui/dash.js:235
-msgid "Find apps or documents"
-msgstr "Alkalmazások vagy dokumentumok keresése"
+#: ../js/ui/dash.js:283
+msgid "Find..."
+msgstr "Keresés…"
 
-#: ../js/ui/dash.js:336
-msgid "Browse"
-msgstr "Tallózás"
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Több"
+
+#: ../js/ui/dash.js:543
+msgid "(see all)"
+msgstr "(összes megjelenítése)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:472 ../js/ui/dash.js:545
+#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
 msgid "APPLICATIONS"
 msgstr "ALKALMAZÁSOK"
 
-#. **** Documents ****
-#: ../js/ui/dash.js:477 ../js/ui/dash.js:570
-msgid "RECENT DOCUMENTS"
-msgstr "LEGUTÓBBI DOKUMENTUMOK"
-
 #. **** Places ****
-#: ../js/ui/dash.js:563
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:783
 msgid "PLACES"
 msgstr "HELYEK"
 
-#: ../js/ui/runDialog.js:74
+#. **** Documents ****
+#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+msgid "RECENT DOCUMENTS"
+msgstr "LEGUTÓBBI DOKUMENTUMOK"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:815 ../js/ui/dash.js:958
+msgid "SEARCH RESULTS"
+msgstr "TALÁLATOK"
+
+#: ../js/ui/dash.js:830
+msgid "PREFERENCES"
+msgstr "BEÁLLÍTÁSOK"
+
+#: ../js/ui/runDialog.js:94
 msgid "Please enter a command:"
 msgstr "Adjon meg egy parancsot:"
 
-#: ../src/gdmuser/gdm-user.c:242
-msgid "Manager"
-msgstr "Kezelő"
-
-#: ../src/gdmuser/gdm-user.c:243
-msgid "The user manager object this user is controlled by."
-msgstr "A felhasználót kezelő felhasználókezelő objektum."
-
-#: ../src/shell-global.c:841
+#: ../src/shell-global.c:799
 msgid "Less than a minute ago"
 msgstr "Kevesebb, mint egy perce"
 
-#: ../src/shell-global.c:844
+#: ../src/shell-global.c:802
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d perce"
 msgstr[1] "%d perce"
 
-#: ../src/shell-global.c:847
+#: ../src/shell-global.c:805
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d órája"
 msgstr[1] "%d órája"
 
-#: ../src/shell-global.c:850
+#: ../src/shell-global.c:808
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d napja"
 msgstr[1] "%d napja"
 
-#: ../src/shell-global.c:853
+#: ../src/shell-global.c:811
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -145,14 +160,6 @@ msgstr "Kijelentkezés…"
 #: ../src/shell-status-menu.c:557
 msgid "Shut Down..."
 msgstr "Leállítás…"
-
-#: ../data/gnome-shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "GNOME Shell"
-
-#: ../data/gnome-shell.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Ablakkezelés és alkalmazásindítás"
 
 #: ../src/shell-uri-util.c:87
 msgid "Home Folder"
