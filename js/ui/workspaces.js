@@ -111,6 +111,8 @@ WindowClone.prototype = {
         this.origX = realWindow.x;
         this.origY = realWindow.y;
 
+        this._stackAbove = null;
+
         this._title = null;
 
         this.actor.connect('button-release-event',
@@ -129,6 +131,8 @@ WindowClone.prototype = {
         this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this._inDrag = false;
+
+        this._zooming = false;
     },
 
     setVisibleWithChrome: function(visible) {
@@ -141,6 +145,14 @@ WindowClone.prototype = {
             if (this._title)
                 this._title.hide();
         }
+    },
+
+    setStackAbove: function (actor) {
+        this._stackAbove = actor;
+        if (this._inDrag || this._zooming)
+            // We'll fix up the stack after the drag/zooming
+            return;
+        this.actor.raise(this._stackAbove);
     },
 
     destroy: function () {
@@ -157,7 +169,6 @@ WindowClone.prototype = {
 
         this._havePointer = true;
 
-        actor.raise_top();
         this._updateTitle();
     },
 
@@ -206,6 +217,8 @@ WindowClone.prototype = {
     },
 
     _zoomStart : function () {
+        this._zooming = true;
+
         this._zoomLightbox = new Lightbox.Lightbox(global.stage);
 
         this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);
@@ -232,7 +245,10 @@ WindowClone.prototype = {
     },
 
     _zoomEnd : function () {
+        this._zooming = false;
+
         this.actor.reparent(this._origParent);
+        this.actor.raise(this._stackAbove);
 
         [this.actor.x, this.actor.y]             = this._zoomLocalOrig.getPosition();
         [this.actor.scale_x, this.actor.scale_y] = this._zoomLocalOrig.getScale();
@@ -272,6 +288,12 @@ WindowClone.prototype = {
         // mysteriously present
         this._havePointer = false;
 
+        // We may not have a parent if DnD completed successfully, in
+        // which case our clone will shortly be destroyed and replaced
+        // with a new one on the target workspace.
+        if (this.actor.get_parent() != null)
+            this.actor.raise(this._stackAbove);
+
         this.emit('drag-end');
     },
 
@@ -283,7 +305,6 @@ WindowClone.prototype = {
     // Called by Tweener
     onAnimationComplete : function () {
         this._updateTitle();
-        this.actor.raise(this.stackAbove);
     },
 
     _createTitle : function () {
@@ -618,12 +639,43 @@ Workspace.prototype = {
                              this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
     },
 
+    _isCloneVisible: function(clone) {
+        return this._showOnlyWindows == null || (clone.metaWindow in this._showOnlyWindows);
+    },
+
+    /**
+     * _getVisibleClones:
+     *
+     * Returns a list WindowClone objects where the clone isn't filtered
+     * out by any application filter.  The clone for the desktop is excluded.
+     * The returned array will always be newly allocated; it is not in any
+     * defined order, and thus it's convenient to call .sort() with your
+     * choice of sorting function.
+     */
+    _getVisibleClones: function() {
+        let visible = [];
+
+        for (let i = 1; i < this._windows.length; i++) {
+            let clone = this._windows[i];
+
+            if (!this._isCloneVisible(clone))
+                continue;
+
+            visible.push(clone);
+        }
+        return visible;
+    },
+
+    _getVisibleWindows: function() {
+        return this._getVisibleClones().map(function (clone) { return clone.metaWindow; });
+    },
+
     _resetCloneVisibility: function () {
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
             let icon = this._windowIcons[i];
 
-            if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows)) {
+            if (!this._isCloneVisible(clone)) {
                 clone.setVisibleWithChrome(false);
                 icon.hide();
             } else {
@@ -853,30 +905,18 @@ Workspace.prototype = {
     positionWindows : function(workspaceZooming) {
         let totalVisible = 0;
 
-        let visibleWindows = [];
+        let visibleWindows = this._getVisibleWindows();
 
-        for (let i = 1; i < this._windows.length; i++) {
-            let clone = this._windows[i];
-
-            if (this._showOnlyWindows != null && !(clone.metaWindow in this._showOnlyWindows))
-                continue;
-
-            visibleWindows.push(clone.metaWindow);
-        }
-
+        // Start the animations
         let slots = this._computeAllWindowSlots(visibleWindows.length);
         visibleWindows = this._orderWindowsByMotionAndStartup(visibleWindows, slots);
 
-        let previousWindow = this._windows[0];
         for (let i = 0; i < visibleWindows.length; i++) {
             let slot = slots[i];
             let metaWindow = visibleWindows[i];
             let mainIndex = this._lookupIndex(metaWindow);
             let clone = metaWindow._delegate;
             let icon = this._windowIcons[mainIndex];
-
-            clone.stackAbove = previousWindow.actor;
-            previousWindow = clone;
 
             let [x, y, scale] = this._computeWindowRelativeLayout(metaWindow, slot);
 
@@ -893,6 +933,24 @@ Workspace.prototype = {
                                   this._fadeInWindowIcon(clone, icon);
                                })
                              });
+        }
+    },
+
+    syncStacking: function(stackIndices) {
+        let desktopClone = this._windows[0];
+
+        let visibleClones = this._getVisibleClones();
+        visibleClones.sort(function (a, b) { return stackIndices[a.metaWindow.get_stable_sequence()] - stackIndices[b.metaWindow.get_stable_sequence()]; });
+
+        for (let i = 0; i < visibleClones.length; i++) {
+            let clone = visibleClones[i];
+            let metaWindow = clone.metaWindow;
+            if (i == 0) {
+                clone.setStackAbove(desktopClone.actor);
+            } else {
+                let previousClone = visibleClones[i - 1];
+                clone.setStackAbove(previousClone.actor);
+            }
         }
     },
 
@@ -1320,10 +1378,12 @@ Workspaces.prototype = {
         // workspaces have been created. This cannot be done first because
         // window movement depends on the Workspaces object being accessible
         // as an Overview member.
-        Main.overview.connect('showing',
-                             Lang.bind(this, function() {
-            for (let w = 0; w < this._workspaces.length; w++)
-                this._workspaces[w].zoomToOverview();
+        this._overviewShowingId =
+            Main.overview.connect('showing',
+                                 Lang.bind(this, function() {
+                this._onRestacked();
+                for (let w = 0; w < this._workspaces.length; w++)
+                    this._workspaces[w].zoomToOverview();
         }));
 
         // Track changes to the number of workspaces
@@ -1333,6 +1393,9 @@ Workspaces.prototype = {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
+        this._restackedNotifyId =
+            global.screen.connect('restacked',
+                                  Lang.bind(this, this._onRestacked));
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -1422,9 +1485,6 @@ Workspaces.prototype = {
             this._clearApplicationWindowSelection(false);
         }
 
-        let clone = this._lookupCloneForMetaWindow (metaWindow);
-        clone.actor.raise_top();
-
         Main.activateWindow(metaWindow, time);
         Main.overview.hide();
     },
@@ -1448,8 +1508,10 @@ Workspaces.prototype = {
         this.actor.destroy();
         this.actor = null;
 
+        Main.overview.disconnect(this._overviewShowingId);
         global.screen.disconnect(this._nWorkspacesNotifyId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+        global.screen.disconnect(this._restackedNotifyId);
     },
 
     getScale : function() {
@@ -1593,6 +1655,19 @@ Workspaces.prototype = {
         let workspace  = new Workspace(workspaceNum, this.actor);
         this._workspaces[workspaceNum] = workspace;
         this.actor.add_actor(workspace.actor);
+    },
+
+    _onRestacked: function() {
+        let stack = global.get_windows();
+        let stackIndices = {};
+
+        for (let i = 0; i < stack.length; i++) {
+            // Use the stable sequence for an integer to use as a hash key
+            stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
+        }
+
+        for (let i = 0; i < this._workspaces.length; i++)
+            this._workspaces[i].syncStacking(stackIndices);
     },
 
     // Handles a drop onto the (+) button; assumes the new workspace
