@@ -577,8 +577,8 @@ is_grabbed_event (XEvent *event)
     case EnterNotify:
     case LeaveNotify:
     case MotionNotify:
-    case KeyPressMask:
-    case KeyReleaseMask:
+    case KeyPress:
+    case KeyRelease:
       return TRUE;
     }
 
