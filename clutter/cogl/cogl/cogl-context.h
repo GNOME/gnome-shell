@@ -58,10 +58,11 @@ typedef struct
 
   gboolean          indirect;
 
-  /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    matrix_mode;
-  CoglMatrixStack  *modelview_stack;
   CoglMatrixStack  *projection_stack;
+  CoglMatrixStack  *modelview_stack;
+
+  GList            *texture_units;
 
   /* Cache of inverse projection matrix */
   float            inverse_projection[16];

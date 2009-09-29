@@ -1169,8 +1169,11 @@ is_mipmap_filter (CoglMaterialFilter filter)
           || filter == COGL_MATERIAL_FILTER_LINEAR_MIPMAP_LINEAR);
 }
 
+/* FIXME: All direct manipulation of GL texture unit state should be dealt with
+ * by extending the CoglTextureUnit abstraction */
 static void
 _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
+                                             CoglTextureUnit    *unit,
                                              CoglLayerInfo      *gl_layer_info)
 {
   int n_rgb_func_args;
@@ -1246,16 +1249,17 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
                       layer->texture_combine_constant));
     }
 
-#ifndef DISABLE_MATERIAL_CACHE
   if ((gl_layer_info &&
        gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX) ||
       (layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX))
-#endif
-    {
-      _cogl_set_current_matrix (COGL_MATRIX_TEXTURE);
-      _cogl_current_matrix_load (&layer->matrix);
-      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-    }
+    _cogl_matrix_stack_set (unit->matrix_stack, &layer->matrix);
+  else
+    _cogl_matrix_stack_load_identity (unit->matrix_stack);
+
+  /* TODO: Eventually we should just have something like
+   * _cogl_flush_texture_units() that we can call in
+   * _cogl_material_flush_layers_gl_state */
+  _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
 }
 
 /*
@@ -1327,6 +1331,7 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 #ifdef HAVE_COGL_GLES2
       GLenum             gl_internal_format;
 #endif
+      CoglTextureUnit   *unit;
 
       new_gl_layer_info.layer0_overridden =
         layer0_override_texture ? TRUE : FALSE;
@@ -1366,6 +1371,7 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
         }
 
       GE (glActiveTexture (GL_TEXTURE0 + i));
+      unit = _cogl_get_texture_unit (i);
 
       _cogl_texture_set_filters (layer->texture,
                                  layer->min_filter,
@@ -1453,7 +1459,7 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
             }
         }
 
-      _cogl_material_layer_flush_gl_sampler_state (layer, gl_layer_info);
+      _cogl_material_layer_flush_gl_sampler_state (layer, unit, gl_layer_info);
 
       new_gl_layer_info.handle = layer_handle;
       new_gl_layer_info.flags = layer->flags;

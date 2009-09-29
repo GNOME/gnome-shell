@@ -26,6 +26,7 @@
 
 #include "cogl-debug.h"
 #include "cogl-types.h"
+#include "cogl-context.h"
 
 #ifdef HAVE_COGL_GLES2
 typedef enum {
@@ -84,5 +85,16 @@ gint    _cogl_get_format_bpp (CoglPixelFormat format);
 
 void    cogl_enable (gulong flags);
 gulong  cogl_get_enable (void);
+
+typedef struct _CoglTextureUnit
+{
+  int              index;
+  CoglMatrixStack *matrix_stack;
+} CoglTextureUnit;
+
+CoglTextureUnit *
+_cogl_get_texture_unit (int index_);
+void
+_cogl_destroy_texture_units (void);
 
 #endif /* __COGL_INTERNAL_H */

@@ -65,6 +65,8 @@ cogl_create_context (void)
 
   _context->indirect = gl_is_indirect;
 
+  _context->texture_units = NULL;
+
   _context->default_material = cogl_material_new ();
   _context->source_material = NULL;
 
@@ -150,6 +152,8 @@ _cogl_destroy_context ()
   _cogl_clip_stack_state_destroy ();
 
   _cogl_current_matrix_state_destroy ();
+
+  _cogl_destroy_texture_units ();
 
   if (_context->path_nodes)
     g_array_free (_context->path_nodes, TRUE);

@@ -877,3 +877,62 @@ cogl_end_gl (void)
   ctx->in_begin_gl_block = FALSE;
 }
 
+static CoglTextureUnit *
+_cogl_texture_unit_new (void)
+{
+  CoglTextureUnit *unit = g_new0 (CoglTextureUnit, 1);
+  unit->matrix_stack = _cogl_matrix_stack_new ();
+  return unit;
+}
+
+static void
+_cogl_texture_unit_free (CoglTextureUnit *unit)
+{
+  _cogl_matrix_stack_destroy (unit->matrix_stack);
+  g_free (unit);
+}
+
+CoglTextureUnit *
+_cogl_get_texture_unit (int index_)
+{
+  GList *l;
+  CoglTextureUnit *unit;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  for (l = ctx->texture_units; l; l = l->next)
+    {
+      unit = l->data;
+
+      if (unit->index == index_)
+        return unit;
+
+      /* The units are always sorted, so at this point we know this unit
+       * doesn't exist */
+      if (unit->index > index_)
+        break;
+    }
+  /* NB: if we now insert a new layer before l, that will maintain order.
+   */
+
+  unit = _cogl_texture_unit_new ();
+
+  /* Note: see comment after for() loop above */
+  ctx->texture_units =
+    g_list_insert_before (ctx->texture_units, l, unit);
+
+  return unit;
+}
+
+void
+_cogl_destroy_texture_units (void)
+{
+  GList *l;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  for (l = ctx->texture_units; l; l = l->next)
+    _cogl_texture_unit_free (l->data);
+  g_list_free (ctx->texture_units);
+}
+
