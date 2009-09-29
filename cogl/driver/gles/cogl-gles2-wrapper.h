@@ -134,8 +134,7 @@ struct _CoglGles2WrapperSettings
 
 struct _CoglGles2WrapperTextureUnit
 {
-  GLfloat  texture_stack[COGL_GLES2_TEXTURE_STACK_SIZE * 16];
-  GLuint   texture_stack_pos;
+  CoglMatrix   texture_matrix;
 
   GLenum       texture_coords_type;
   GLint	       texture_coords_size;
@@ -149,10 +148,8 @@ struct _CoglGles2WrapperTextureUnit
 struct _CoglGles2Wrapper
 {
   GLuint     matrix_mode;
-  GLfloat    modelview_stack[COGL_GLES2_MODELVIEW_STACK_SIZE * 16];
-  GLuint     modelview_stack_pos;
-  GLfloat    projection_stack[COGL_GLES2_PROJECTION_STACK_SIZE * 16];
-  GLuint     projection_stack_pos;
+  CoglMatrix modelview_matrix;
+  CoglMatrix projection_matrix;
   guint	     active_texture_unit;
   guint	     active_client_texture_unit;
 
