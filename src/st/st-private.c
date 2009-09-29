@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 #include "st-private.h"
 
 /* Utility function to modify a child allocation box with respect to the
