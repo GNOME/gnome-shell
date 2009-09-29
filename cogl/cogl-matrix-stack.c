@@ -335,15 +335,28 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
 
 void
 _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
-                                GLenum           gl_mode)
+                                CoglMatrixMode   mode)
 {
   CoglMatrixState *state;
+  GLenum gl_mode;
 
   state = _cogl_matrix_stack_top (stack);
 
   if (stack->flushed_state == state)
     return;
 
+  switch (mode)
+    {
+    case COGL_MATRIX_MODELVIEW:
+      gl_mode = GL_MODELVIEW;
+      break;
+    case COGL_MATRIX_PROJECTION:
+      gl_mode = GL_PROJECTION;
+      break;
+    case COGL_MATRIX_TEXTURE:
+      gl_mode = GL_TEXTURE;
+      break;
+    }
   GE (glMatrixMode (gl_mode));
 
   /* In theory it might help the GL implementation if we used our

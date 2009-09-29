@@ -96,6 +96,7 @@ typedef struct _CoglJournalFlushState
   CoglJournalIndices *indices;
   size_t              indices_type_size;
 #endif
+  CoglMatrixStack    *modelview_stack;
 } CoglJournalFlushState;
 
 typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
@@ -193,7 +194,12 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     g_print ("BATCHING:    modelview batch len = %d\n", batch_len);
 
   if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
-    GE (glLoadMatrixf ((GLfloat *)&batch_start->model_view));
+    {
+      _cogl_matrix_stack_set (state->modelview_stack,
+                              &batch_start->model_view);
+      _cogl_matrix_stack_flush_to_gl (state->modelview_stack,
+                                      COGL_MATRIX_MODELVIEW);
+    }
 
 #ifdef HAVE_COGL_GL
 
@@ -541,21 +547,20 @@ _cogl_journal_flush (void)
   else
     state.vbo_offset = (char *)ctx->logged_vertices->data;
 
-  /* Since the journal deals with emitting the modelview matrices manually
-   * we need to dirty our client side modelview matrix stack cache... */
-  _cogl_current_matrix_state_dirty ();
+  _cogl_matrix_stack_flush_to_gl (ctx->projection_stack,
+                                  COGL_MATRIX_PROJECTION);
 
-  /* And explicitly flush other matrix stacks... */
-  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-  _cogl_current_matrix_state_flush ();
+  state.modelview_stack = ctx->modelview_stack;
+  _cogl_matrix_stack_push (ctx->modelview_stack);
 
-  /* If we have transformed all our quads at log time then the whole journal
-   * then we ensure no further model transform is applied by loading the
-   * identity matrix here...*/
-  if (!(cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))
+  /* If we have transformed all our quads at log time then we ensure no
+   * further model transform is applied by loading the identity matrix
+   * here... */
+  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM)))
     {
-      GE (glMatrixMode (GL_MODELVIEW));
-      glLoadIdentity ();
+      _cogl_matrix_stack_load_identity (ctx->modelview_stack);
+      _cogl_matrix_stack_flush_to_gl (ctx->modelview_stack,
+                                      COGL_MATRIX_MODELVIEW);
     }
 
   /* batch_and_call() batches a list of journal entries according to some
@@ -585,6 +590,8 @@ _cogl_journal_flush (void)
                   compare_entry_strides,
                   _cogl_journal_flush_vbo_offsets_and_entries, /* callback */
                   &state); /* data */
+
+  _cogl_matrix_stack_pop (ctx->modelview_stack);
 
   for (i = 0; i < ctx->journal->len; i++)
     {
