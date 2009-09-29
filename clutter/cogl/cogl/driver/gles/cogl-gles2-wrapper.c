@@ -648,13 +648,13 @@ cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
 }
 
 static void
-cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
+cogl_gles2_wrapper_notify_matrix_changed (CoglGles2Wrapper *wrapper,
+                                          GLenum mode)
 {
   CoglGles2WrapperTextureUnit *texture_unit;
 
-  switch (matrix_num)
+  switch (mode)
     {
-    default:
     case GL_MODELVIEW:
       wrapper->dirty_uniforms |= COGL_GLES2_DIRTY_MVP_MATRIX
 	| COGL_GLES2_DIRTY_MODELVIEW_MATRIX;
@@ -669,83 +669,10 @@ cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
       texture_unit = wrapper->texture_units + wrapper->active_texture_unit;
       texture_unit->dirty_matrix = 1;
       break;
-    }
-}
 
-void
-cogl_wrap_glPushMatrix ()
-{
-  const float *src;
-  float *dst;
-
-  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
-
-  /* Get a pointer to the old and new matrix position and increment
-     the stack pointer */
-  switch (w->matrix_mode)
-    {
     default:
-    case GL_MODELVIEW:
-      src = w->modelview_stack + w->modelview_stack_pos * 16;
-      w->modelview_stack_pos = (w->modelview_stack_pos + 1)
-	& (COGL_GLES2_MODELVIEW_STACK_SIZE - 1);
-      dst = w->modelview_stack + w->modelview_stack_pos * 16;
-      break;
-
-    case GL_PROJECTION:
-      src = w->projection_stack + w->projection_stack_pos * 16;
-      w->projection_stack_pos = (w->projection_stack_pos + 1)
-	& (COGL_GLES2_PROJECTION_STACK_SIZE - 1);
-      dst = w->projection_stack + w->projection_stack_pos * 16;
-      break;
-
-    case GL_TEXTURE:
-      {
-	CoglGles2WrapperTextureUnit *texture_unit;
-	texture_unit = w->texture_units + w->active_texture_unit;
-	src = texture_unit->texture_stack
-	      + texture_unit->texture_stack_pos * 16;
-	texture_unit->texture_stack_pos = (texture_unit->texture_stack_pos + 1)
-	  & (COGL_GLES2_TEXTURE_STACK_SIZE - 1);
-	dst = texture_unit->texture_stack
-	      + texture_unit->texture_stack_pos * 16;
-	break;
-      }
+      g_critical ("%s: Unexpected matrix mode %d\n", G_STRFUNC, mode);
     }
-
-  /* Copy the old matrix to the new position */
-  memcpy (dst, src, sizeof (float) * 16);
-}
-
-void
-cogl_wrap_glPopMatrix ()
-{
-  CoglGles2WrapperTextureUnit *texture_unit;
-  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
-
-  /* Decrement the stack pointer */
-  switch (w->matrix_mode)
-    {
-    default:
-    case GL_MODELVIEW:
-      w->modelview_stack_pos = (w->modelview_stack_pos - 1)
-	& (COGL_GLES2_MODELVIEW_STACK_SIZE - 1);
-      break;
-
-    case GL_PROJECTION:
-      w->projection_stack_pos = (w->projection_stack_pos - 1)
-	& (COGL_GLES2_PROJECTION_STACK_SIZE - 1);
-      break;
-
-    case GL_TEXTURE:
-      texture_unit = w->texture_units + w->active_texture_unit;
-      texture_unit->texture_stack_pos = (texture_unit->texture_stack_pos - 1)
-	& (COGL_GLES2_TEXTURE_STACK_SIZE - 1);
-      break;
-    }
-
-  /* Update the matrix in the program object */
-  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
 }
 
 void
@@ -756,205 +683,54 @@ cogl_wrap_glMatrixMode (GLenum mode)
   w->matrix_mode = mode;
 }
 
-static float *
-cogl_gles2_get_matrix_stack_top (CoglGles2Wrapper *wrapper)
+static CoglMatrix *
+cogl_gles2_get_current_matrix (CoglGles2Wrapper *wrapper)
 {
   CoglGles2WrapperTextureUnit *texture_unit;
 
   switch (wrapper->matrix_mode)
     {
-    default:
     case GL_MODELVIEW:
-      return wrapper->modelview_stack + wrapper->modelview_stack_pos * 16;
+      return &wrapper->modelview_matrix;
 
     case GL_PROJECTION:
-      return wrapper->projection_stack + wrapper->projection_stack_pos * 16;
+      return &wrapper->projection_matrix;
 
     case GL_TEXTURE:
       texture_unit = wrapper->texture_units + wrapper->active_texture_unit;
-      return texture_unit->texture_stack
-	+ texture_unit->texture_stack_pos * 16;
+      return &texture_unit->texture_matrix;
+
+    default:
+      g_critical ("%s: Unexpected matrix mode %d\n", G_STRFUNC, mode);
     }
 }
 
 void
-cogl_wrap_glLoadIdentity ()
+cogl_wrap_glLoadIdentity (void)
 {
-  float *matrix;
+  CoglMatrix *matrix;
 
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
-  matrix = cogl_gles2_get_matrix_stack_top (w);
-  memset (matrix, 0, sizeof (float) * 16);
-  matrix[0] = 1.0f;
-  matrix[5] = 1.0f;
-  matrix[10] = 1.0f;
-  matrix[15] = 1.0f;
+  matrix = cogl_gles2_get_current_matrix (w);
 
-  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
-}
+  cogl_matrix_init_identity (matrix);
 
-static void
-cogl_gles2_wrapper_mult_matrix (float *dst, const float *a, const float *b)
-{
-  int i, j, k;
-
-  for (i = 0; i < 4; i++)
-    for (j = 0; j < 4; j++)
-      {
-	float sum = 0.0f;
-	for (k = 0; k < 4; k++)
-	  sum += a[k * 4 + j] * b[i * 4 + k];
-	dst[i * 4 + j] = sum;
-      }
-}
-
-static void
-cogl_wrap_glMultMatrix (const float *m)
-{
-  float new_matrix[16];
-  float *old_matrix;
-
-  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
-
-  old_matrix = cogl_gles2_get_matrix_stack_top (w);
-
-  cogl_gles2_wrapper_mult_matrix (new_matrix, old_matrix, m);
-
-  memcpy (old_matrix, new_matrix, sizeof (float) * 16);
-
-  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
-}
-
-void
-cogl_wrap_glMultMatrixf (const GLfloat *m)
-{
-  cogl_wrap_glMultMatrix (m);
+  cogl_gles2_wrapper_notify_matrix_changed (w, w->matrix_mode);
 }
 
 void
 cogl_wrap_glLoadMatrixf (const GLfloat *m)
 {
-  float *old_matrix;
+  CoglMatrix *matrix;
 
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
-  old_matrix = cogl_gles2_get_matrix_stack_top (w);
+  matrix = cogl_gles2_get_current_matrix (w);
 
-  memcpy (old_matrix, m, sizeof (float) * 16);
+  cogl_matrix_init_from_array (matrix, m);
 
-  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
-}
-
-void
-cogl_wrap_glFrustumf (GLfloat left, GLfloat right,
-		      GLfloat bottom, GLfloat top,
-		      GLfloat z_near, GLfloat z_far)
-{
-  float matrix[16];
-  float two_near =  (2 * z_near);
-
-  memset (matrix, 0, sizeof (matrix));
-
-  matrix[0] = two_near /  (right - left);
-  matrix[5] = two_near /  (top - bottom);
-  matrix[8] =  (right + left)
-    /  (right - left);
-  matrix[9] =  (top + bottom)
-    /  (top - bottom);
-  matrix[10] = - (z_far + z_near)
-    /  (z_far - z_near);
-  matrix[11] = -1.0f;
-  matrix[14] = -two_near *  (z_far)
-    /  (z_far - z_near);
-
-  cogl_wrap_glMultMatrix (matrix);
-}
-
-void
-cogl_wrap_glScalef (GLfloat x, GLfloat y, GLfloat z)
-{
-  float matrix[16];
-
-  memset (matrix, 0, sizeof (matrix));
-  matrix[0] =  (x);
-  matrix[5] =  (y);
-  matrix[10] =  (z);
-  matrix[15] = 1.0f;
-
-  cogl_wrap_glMultMatrix (matrix);
-}
-
-void
-cogl_wrap_glTranslatef (GLfloat x, GLfloat y, GLfloat z)
-{
-  float matrix[16];
-
-  memset (matrix, 0, sizeof (matrix));
-  matrix[0] = 1.0f;
-  matrix[5] = 1.0f;
-  matrix[10] = 1.0f;
-  matrix[12] =  (x);
-  matrix[13] =  (y);
-  matrix[14] =  (z);
-  matrix[15] = 1.0f;
-
-  cogl_wrap_glMultMatrix (matrix);
-}
-
-void
-cogl_wrap_glRotatef (GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
-{
-  float matrix[16];
-  float xf =  (x);
-  float yf =  (y);
-  float zf =  (z);
-  float anglef =  (angle) * G_PI / 180.0f;
-  float c = cosf (anglef);
-  float s = sinf (anglef);
-
-  matrix[0]  = xf * xf * (1.0f - c) + c;
-  matrix[1]  = yf * xf * (1.0f - c) + zf * s;
-  matrix[2]  = xf * zf * (1.0f - c) - yf * s;
-  matrix[3]  = 0.0f;
-
-  matrix[4]  = xf * yf * (1.0f - c) - zf * s;
-  matrix[5]  = yf * yf * (1.0f - c) + c;
-  matrix[6]  = yf * zf * (1.0f - c) + xf * s;
-  matrix[7]  = 0.0f;
-
-  matrix[8]  = xf * zf * (1.0f - c) + yf * s;
-  matrix[9]  = yf * zf * (1.0f - c) - xf * s;
-  matrix[10] = zf * zf * (1.0f - c) + c;
-  matrix[11] = 0.0f;
-
-  matrix[12] = 0.0f;
-  matrix[13] = 0.0f;
-  matrix[14] = 0.0f;
-  matrix[15] = 1.0f;
-
-  cogl_wrap_glMultMatrix (matrix);
-}
-
-void
-cogl_wrap_glOrthof (GLfloat left, GLfloat right, GLfloat bottom, GLfloat top,
-		    GLfloat near, GLfloat far)
-{
-  float matrix[16];
-  float xrange =  (right - left);
-  float yrange =  (top - bottom);
-  float zrange =  (far - near);
-
-  memset (matrix, 0, sizeof (matrix));
-  matrix[0] = 2.0f / xrange;
-  matrix[5] = 2.0f / yrange;
-  matrix[10] = 2.0f / zrange;
-  matrix[12] =  (right + left) / xrange;
-  matrix[13] =  (top + bottom) / yrange;
-  matrix[14] =  (far + near) / zrange;
-  matrix[15] = 1.0f;
-
-  cogl_wrap_glMultMatrix (matrix);
+  cogl_gles2_wrapper_notify_matrix_changed (w, w->matrix_mode);
 }
 
 void
@@ -1109,21 +885,21 @@ cogl_wrap_prepare_for_draw (void)
       if ((w->dirty_uniforms & (COGL_GLES2_DIRTY_MVP_MATRIX
 				| COGL_GLES2_DIRTY_MODELVIEW_MATRIX)))
 	{
-	  float mvp_matrix[16];
-	  const float *modelview_matrix = w->modelview_stack
-	    + w->modelview_stack_pos * 16;
+	  CoglMatrix mvp_matrix;
+	  CoglMatrix *modelview_matrix = &w->modelview_matrix;
+	  CoglMatrix *projection_matrix = &w->projection_matrix;
 
-	  cogl_gles2_wrapper_mult_matrix (mvp_matrix,
-					  w->projection_stack
-					  + w->projection_stack_pos * 16,
-					  modelview_matrix);
+          /* FIXME: we should have a cogl_matrix_copy () function */
+          memcpy (&mvp_matrix, projection_matrix, sizeof (CoglMatrix));
+
+          cogl_matrix_multiply (&mvp_matrix, modelview_matrix);
 
 	  if (program->uniforms.mvp_matrix_uniform != -1)
 	    glUniformMatrix4fv (program->uniforms.mvp_matrix_uniform, 1,
-				GL_FALSE, mvp_matrix);
+				GL_FALSE, (float *)mvp_matrix);
 	  if (program->uniforms.modelview_matrix_uniform != -1)
 	    glUniformMatrix4fv (program->uniforms.modelview_matrix_uniform, 1,
-				GL_FALSE, modelview_matrix);
+				GL_FALSE, (float *)modelview_matrix);
 	}
       if ((w->dirty_uniforms & COGL_GLES2_DIRTY_TEXTURE_MATRICES))
 	{
@@ -1139,8 +915,7 @@ cogl_wrap_prepare_for_draw (void)
               texture_unit = w->texture_units + i;
 	      if (uniform != -1)
 		glUniformMatrix4fv (uniform, 1, GL_FALSE,
-				    texture_unit->texture_stack
-				      + texture_unit->texture_stack_pos * 16);
+                                    (float *)texture_unit->texture_matrix);
 	    }
 	}
 
