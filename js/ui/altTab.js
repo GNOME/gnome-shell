@@ -102,7 +102,7 @@ AltTabPopup.prototype = {
         // Contruct the AppIcons, sort by time, add to the popup
         let icons = [];
         for (let i = 0; i < apps.length; i++)
-            icons.push(new AppIcon.AppIcon(apps[i], AppIcon.MenuType.BELOW));
+            icons.push(new AppIcon.AppIcon(apps[i], AppIcon.MenuType.BELOW, false));
         icons.sort(Lang.bind(this, this._sortAppIcon));
         for (let i = 0; i < icons.length; i++)
             this._addIcon(icons[i]);

@@ -54,7 +54,7 @@ function AppIcon(appInfo, menuType) {
 }
 
 AppIcon.prototype = {
-    _init : function(appInfo, menuType) {
+    _init : function(appInfo, menuType, showGlow) {
         this.appInfo = appInfo;
         this._menuType = menuType;
 
@@ -104,16 +104,21 @@ AppIcon.prototype = {
                                         ellipsize: Pango.EllipsizeMode.END,
                                         text: appInfo.get_name() });
         nameBox.add_actor(this._name);
-        this._glowBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
-        let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
-        for (let i = 0; i < this.windows.length && i < 3; i++) {
-            let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                      glowPath, -1, -1);
-            glow.keep_aspect_ratio = false;
-            this._glowBox.append(glow, Big.BoxPackFlags.EXPAND);
+        if (showGlow) {
+            this._glowBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
+            let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
+            for (let i = 0; i < this.windows.length && i < 3; i++) {
+                let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
+                                                                          glowPath, -1, -1);
+                glow.keep_aspect_ratio = false;
+                this._glowBox.append(glow, Big.BoxPackFlags.EXPAND);
+            }
+            this._nameBox.add_actor(this._glowBox);
+            this._glowBox.lower(this._name);
         }
-        this._nameBox.add_actor(this._glowBox);
-        this._glowBox.lower(this._name);
+        else
+            this._glowBox = null;
+
         this.actor.append(nameBox, Big.BoxPackFlags.NONE);
     },
 
