@@ -126,6 +126,14 @@ AltTabPopup.prototype = {
         return true;
     },
 
+    _hasWindowsOnWorkspace: function(appIcon, workspace) {
+        for (let i = 0; i < appIcon.windows.length; i++) {
+            if (appIcon.windows[i].get_workspace() == workspace)
+                return true;
+        }
+        return false;
+    },
+
     _hasVisibleWindows : function(appIcon) {
         for (let i = 0; i < appIcon.windows.length; i++) {
             if (appIcon.windows[i].showing_on_its_workspace())
@@ -135,6 +143,22 @@ AltTabPopup.prototype = {
     },
 
     _sortAppIcon : function(appIcon1, appIcon2) {
+        // We intend to sort the application list so applications appear
+        // with this order:
+        //   1. Apps with visible windows on the active workspace;
+        //   2. Apps with minimized windows on the active workspace;
+        //   3. Apps with visible windows on any other workspace;
+        //   4. Other apps.
+
+        let workspace = global.screen.get_active_workspace();
+        let ws1 = this._hasWindowsOnWorkspace(appIcon1, workspace);
+        let ws2 = this._hasWindowsOnWorkspace(appIcon2, workspace);
+
+        if (ws1 && !ws2)
+            return -1;
+        else if (ws2 && !ws1)
+            return 1;
+
         let vis1 = this._hasVisibleWindows(appIcon1);
         let vis2 = this._hasVisibleWindows(appIcon2);
 
