@@ -2,6 +2,7 @@
 
 const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
+const Gdk = imports.gi.Gdk;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
@@ -117,6 +118,18 @@ AltTabPopup.prototype = {
         this.actor.y = Math.floor((global.screen_height - this.actor.height) / 2);
 
         this._updateSelection(initialSelection);
+
+        // There's a race condition; if the user released Alt before
+        // we got the grab, then we won't be notified. (See
+        // https://bugzilla.gnome.org/show_bug.cgi?id=596695 for
+        // details.) So we check now. (Have to do this after calling
+        // _updateSelection.)
+        let [screen, x, y, mods] = Gdk.Display.get_default().get_pointer();
+        if (!(mods & Gdk.ModifierType.MOD1_MASK)) {
+            this._finish();
+            return false;
+        }
+
         return true;
     },
 
@@ -161,11 +174,8 @@ AltTabPopup.prototype = {
     _keyReleaseEvent : function(actor, event) {
         let keysym = event.get_key_symbol();
 
-        if (keysym == Clutter.Alt_L || keysym == Clutter.Alt_R) {
-            if (this._highlightedWindow)
-                Main.activateWindow(this._highlightedWindow, event.get_time());
-            this.destroy();
-        }
+        if (keysym == Clutter.Alt_L || keysym == Clutter.Alt_R)
+            this._finish();
 
         return true;
     },
@@ -207,6 +217,12 @@ AltTabPopup.prototype = {
         let index = this._icons.indexOf(actor._delegate);
         if (this._mouseActive)
             this._updateSelection(index - this._selected);
+    },
+
+    _finish : function() {
+        if (this._highlightedWindow)
+            Main.activateWindow(this._highlightedWindow);
+        this.destroy();
     },
 
     destroy : function() {
