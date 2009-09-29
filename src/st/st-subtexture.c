@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
  * st-subtexture.h: Class to wrap a texture and "subframe" it.
  * based on
