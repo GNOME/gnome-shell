@@ -155,3 +155,11 @@ StScrollBar StButton#vhandle:hover
 .calendar-other-month-day {
     color: #cccccc;
 }
+
+/* App Switcher */
+#appSwitcher {
+    background: rgba(0,0,0,0.8);
+    border: 1px solid rgba(128,128,128,0.40);
+    border-radius: 8px;
+    padding: 8px;
+}

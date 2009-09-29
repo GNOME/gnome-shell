@@ -7,20 +7,18 @@ const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const AppIcon = imports.ui.appIcon;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 
-const POPUP_BG_COLOR = new Clutter.Color();
-POPUP_BG_COLOR.from_pixel(0x00000080);
 const POPUP_APPICON_BORDER_COLOR = new Clutter.Color();
 POPUP_APPICON_BORDER_COLOR.from_pixel(0xffffffff);
 const POPUP_APPICON_SEPARATOR_COLOR = new Clutter.Color();
 POPUP_APPICON_SEPARATOR_COLOR.from_pixel(0xffffffff);
 
 const POPUP_APPS_BOX_SPACING = 8;
-const POPUP_ICON_SIZE = 48;
 
 const POPUP_POINTER_SELECTION_THRESHOLD = 3;
 
@@ -30,12 +28,8 @@ function AltTabPopup() {
 
 AltTabPopup.prototype = {
     _init : function() {
-        this.actor = new Big.Box({ background_color : POPUP_BG_COLOR,
-                                   corner_radius: POPUP_APPS_BOX_SPACING,
-                                   padding: POPUP_APPS_BOX_SPACING,
-                                   spacing: POPUP_APPS_BOX_SPACING,
-                                   orientation: Big.BoxOrientation.VERTICAL,
-                                   reactive: true });
+        this.actor = new St.Bin({ name: 'appSwitcher',
+                                  reactive: true });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         // Here we use a GenericContainer instead of a BigBox in order to be
@@ -51,7 +45,7 @@ AltTabPopup.prototype = {
         let gcenterbox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                        x_align: Big.BoxAlignment.CENTER });
         gcenterbox.append(this._appsBox, Big.BoxPackFlags.NONE);
-        this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
+        this.actor.add_actor(gcenterbox);
 
         this._icons = [];
         this._separator = null;
