@@ -132,12 +132,11 @@ clutter_fixed_layout_get_preferred_width (GList  *children,
                                           gfloat *natural_width_p)
 {
   GList *l;
-  gdouble min_left, min_right;
-  gdouble natural_left, natural_right;
+  gdouble min_right, natural_right;
 
-  min_left = 0;
+  /* We will always be at least 0 sized (ie, if all of the actors are
+     to the left of the origin we won't return a negative size) */
   min_right = 0;
-  natural_left = 0;
   natural_right = 0;
 
   for (l = children; l != NULL; l = l->next)
@@ -151,55 +150,21 @@ clutter_fixed_layout_get_preferred_width (GList  *children,
                                         &child_min, NULL,
                                         &child_natural, NULL);
 
-      if (l == children)
-        {
-          /* First child */
-          min_left = child_x;
-          natural_left = child_x;
-          min_right = min_left + child_min;
-          natural_right = natural_left + child_natural;
-        }
-      else
-        {
-          /* Union of extents with previous children */
-          if (child_x < min_left)
-            min_left = child_x;
+      /* Track the rightmost edge */
+      if (child_x + child_min > min_right)
+        min_right = child_x + child_min;
 
-          if (child_x < natural_left)
-            natural_left = child_x;
-
-          if (child_x + child_min > min_right)
-            min_right = child_x + child_min;
-
-          if (child_x + child_natural > natural_right)
-            natural_right = child_x + child_natural;
-        }
+      if (child_x + child_natural > natural_right)
+        natural_right = child_x + child_natural;
     }
 
-  /* The preferred size is defined as the width and height we want starting
-   * from our origin, since our allocation will set the origin; so we now
-   * need to remove any part of the request that is to the left of the origin.
-   */
-  if (min_left < 0)
-    min_left = 0;
-
-  if (natural_left < 0)
-    natural_left = 0;
-
-  if (min_right < 0)
-    min_right = 0;
-
-  if (natural_right < 0)
-    natural_right = 0;
-
-  g_assert (min_right >= min_left);
-  g_assert (natural_right >= natural_left);
-
+  /* The size is defined as the distance from the origin to the
+     right-hand edge of the rightmost actor */
   if (min_width_p)
-    *min_width_p = min_right - min_left;
+    *min_width_p = min_right;
 
   if (natural_width_p)
-    *natural_width_p = natural_right - min_left;
+    *natural_width_p = natural_right;
 }
 
 static void
@@ -208,12 +173,11 @@ clutter_fixed_layout_get_preferred_height (GList  *children,
                                            gfloat *natural_height_p)
 {
   GList *l;
-  gdouble min_top, min_bottom;
-  gdouble natural_top, natural_bottom;
+  gdouble min_bottom, natural_bottom;
 
-  min_top = 0;
+  /* We will always be at least 0 sized (ie, if all of the actors are
+     above the origin we won't return a negative size) */
   min_bottom = 0;
-  natural_top = 0;
   natural_bottom = 0;
 
   for (l = children; l != NULL; l = l->next)
@@ -227,55 +191,21 @@ clutter_fixed_layout_get_preferred_height (GList  *children,
                                         NULL, &child_min,
                                         NULL, &child_natural);
 
-      if (l == children)
-        {
-          /* First child */
-          min_top = child_y;
-          natural_top = child_y;
-          min_bottom = min_top + child_min;
-          natural_bottom = natural_top + child_natural;
-        }
-      else
-        {
-          /* Union of extents with previous children */
-          if (child_y < min_top)
-            min_top = child_y;
+      /* Track the bottommost edge */
+      if (child_y + child_min > min_bottom)
+        min_bottom = child_y + child_min;
 
-          if (child_y < natural_top)
-            natural_top = child_y;
-
-          if (child_y + child_min > min_bottom)
-            min_bottom = child_y + child_min;
-
-          if (child_y + child_natural > natural_bottom)
-            natural_bottom = child_y + child_natural;
-        }
+      if (child_y + child_natural > natural_bottom)
+        natural_bottom = child_y + child_natural;
     }
 
-  /* The preferred size is defined as the width and height we want starting
-   * from our origin, since our allocation will set the origin; so we now
-   * need to remove any part of the request that is above the origin.
-   */
-  if (min_top < 0)
-    min_top = 0;
-
-  if (natural_top < 0)
-    natural_top = 0;
-
-  if (min_bottom < 0)
-    min_bottom = 0;
-
-  if (natural_bottom < 0)
-    natural_bottom = 0;
-
-  g_assert (min_bottom >= min_top);
-  g_assert (natural_bottom >= natural_top);
-
+  /* The size is defined as the distance from the origin to the bottom
+     edge of the bottommost actor */
   if (min_height_p)
-    *min_height_p = min_bottom - min_top;
+    *min_height_p = min_bottom;
 
   if (natural_height_p)
-    *natural_height_p = natural_bottom - min_top;
+    *natural_height_p = natural_bottom;
 }
 
 static void
