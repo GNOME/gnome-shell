@@ -17,9 +17,8 @@ POPUP_BG_COLOR.from_pixel(0x00000080);
 const POPUP_APPICON_BORDER_COLOR = new Clutter.Color();
 POPUP_APPICON_BORDER_COLOR.from_pixel(0xffffffff);
 
-const POPUP_GRID_SPACING = 8;
+const POPUP_APPS_BOX_SPACING = 8;
 const POPUP_ICON_SIZE = 48;
-const POPUP_NUM_COLUMNS = 5;
 
 const POPUP_POINTER_SELECTION_THRESHOLD = 3;
 
@@ -30,20 +29,18 @@ function AltTabPopup() {
 AltTabPopup.prototype = {
     _init : function() {
         this.actor = new Big.Box({ background_color : POPUP_BG_COLOR,
-                                   corner_radius: POPUP_GRID_SPACING,
-                                   padding: POPUP_GRID_SPACING,
-                                   spacing: POPUP_GRID_SPACING,
+                                   corner_radius: POPUP_APPS_BOX_SPACING,
+                                   padding: POPUP_APPS_BOX_SPACING,
+                                   spacing: POPUP_APPS_BOX_SPACING,
                                    orientation: Big.BoxOrientation.VERTICAL,
                                    reactive: true });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        // Icon grid.  TODO: Investigate Nbtk.Grid once that lands.  Currently
-        // just implemented using a chain of Big.Box.
-        this._grid = new Big.Box({ spacing: POPUP_GRID_SPACING,
-                                   orientation: Big.BoxOrientation.VERTICAL });
+        this._appsBox = new Big.Box({ spacing: POPUP_APPS_BOX_SPACING,
+                                      orientation: Big.BoxOrientation.HORIZONTAL });
         let gcenterbox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                        x_align: Big.BoxAlignment.CENTER });
-        gcenterbox.append(this._grid, Big.BoxPackFlags.NONE);
+        gcenterbox.append(this._appsBox, Big.BoxPackFlags.NONE);
         this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
 
         this._icons = [];
@@ -72,13 +69,7 @@ AltTabPopup.prototype = {
         this._icons.push(appIcon);
         this._currentWindows.push(appIcon.windows[0]);
 
-        // Add it to the grid
-        if (!this._gridRow || this._gridRow.get_children().length == POPUP_NUM_COLUMNS) {
-            this._gridRow = new Big.Box({ spacing: POPUP_GRID_SPACING,
-                                          orientation: Big.BoxOrientation.HORIZONTAL });
-            this._grid.append(this._gridRow, Big.BoxPackFlags.NONE);
-        }
-        this._gridRow.append(appIcon.actor, Big.BoxPackFlags.NONE);
+        this._appsBox.append(appIcon.actor, Big.BoxPackFlags.NONE);
     },
 
     show : function(initialSelection) {
