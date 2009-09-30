@@ -7,12 +7,14 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 const Tweener = imports.ui.tweener;
 const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const Button = imports.ui.button;
+const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
 
 const PANEL_HEIGHT = 26;
@@ -313,10 +315,17 @@ Panel.prototype = {
 
         /* center */
 
+        let clockButton = new St.Button({ style_class: "panel-button",
+                                          toggle_mode: true });
+        this._centerBox.append(clockButton, Big.BoxPackFlags.NONE);
+        clockButton.connect('clicked', Lang.bind(this, this._toggleCalendar));
+
         this._clock = new Clutter.Text({ font_name: DEFAULT_FONT,
                                          color: PANEL_FOREGROUND_COLOR,
                                          text: "" });
-        this._centerBox.append(this._clock, Big.BoxPackFlags.NONE);
+        clockButton.add_actor(this._clock);
+
+        this._calendarPopup = null;
 
         /* right */
 
@@ -454,6 +463,16 @@ Panel.prototype = {
         return false;
     },
 
+    _toggleCalendar: function(clockButton) {
+        if (clockButton.checked) {
+            if (this._calendarPopup == null)
+                this._calendarPopup = new CalendarPopup();
+            this._calendarPopup.show();
+        } else {
+            this._calendarPopup.hide();
+        }
+    },
+
     _onHotCornerEntered : function() {
         if (!this._hotCornerEntered) {
             this._hotCornerEntered = true;
@@ -483,5 +502,52 @@ Panel.prototype = {
             this._hotCornerEntered = false;
         }
         return false;
+    }
+};
+
+function CalendarPopup() {
+    this._init();
+}
+
+CalendarPopup.prototype = {
+    _init: function() {
+        let panelActor = Main.panel.actor;
+
+        this.actor = new St.BoxLayout({ name: 'calendarPopup' });
+
+        this.calendar = new Calendar.Calendar();
+        this.actor.add(this.calendar.actor);
+
+        Main.chrome.actor.add_actor(this.actor);
+        Main.chrome.addInputRegionActor(this.actor);
+        this.actor.y = (panelActor.y + panelActor.height - this.actor.height);
+    },
+
+    show: function() {
+        let panelActor = Main.panel.actor;
+
+        // Reset the calendar to today's date
+        this.calendar.setDate(new Date());
+
+        this.actor.x = Math.round((panelActor.x + panelActor.width - this.actor.width) / 2);
+        this.actor.lower(panelActor);
+        this.actor.show();
+        Tweener.addTween(this.actor,
+                         { y: panelActor.y + panelActor.height,
+                           time: 0.2,
+                           transition: "easeOutQuad"
+                         });
+    },
+
+    hide: function() {
+        let panelActor = Main.panel.actor;
+
+        Tweener.addTween(this.actor,
+                         { y: panelActor.y + panelActor.height - this.actor.height,
+                           time: 0.2,
+                           transition: "easeOutQuad",
+                           onComplete: function() { this.actor.hide(); },
+                           onCompleteScope: this
+                         });
     }
 };

@@ -61,6 +61,19 @@ StScrollBar StButton#vhandle:hover
   border-image: url("scroll-vhandle.png") 5;
 }
 
+/* Panel */
+
+.panel-button {
+    padding: 4px 12px 3px;
+    border-radius: 5px;
+    font: 16px sans-serif;
+    color: white;
+}
+
+.panel-button:active, .panel-button:checked {
+    background-color: #314a6c;
+}
+
 /* LookingGlass */
 
 #LookingGlassDialog
@@ -94,4 +107,48 @@ StScrollBar StButton#vhandle:hover
 {
   padding: 4px;
   spacing: 4px;
+}
+
+/* Calendar popup */
+
+#calendarPopup {
+    border-radius: 5px;
+    background: rgba(0,0,0,0.9);
+    border: 1px solid rgba(128,128,128,0.45);
+    color: white;
+    padding: 10px;
+}
+
+.calendar {
+    spacing-rows: 5px;
+    spacing-columns: 3px;
+}
+
+.calendar-change-month {
+    padding: 2px;
+}
+
+.calendar-change-month:hover {
+    background: #314a6c;
+    border-radius: 5px;
+}
+
+.calendar-change-month:active {
+    background: #213050;
+    border-radius: 5px;
+}
+
+.calendar-day {
+    padding: 1px 2px;
+}
+
+.calendar-today {
+    font-weight: bold;
+    background: #ffffff;
+    color: black;
+    border-radius: 5px;
+}
+
+.calendar-other-month-day {
+    color: #cccccc;
 }
