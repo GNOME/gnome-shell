@@ -16,6 +16,8 @@ const POPUP_BG_COLOR = new Clutter.Color();
 POPUP_BG_COLOR.from_pixel(0x00000080);
 const POPUP_APPICON_BORDER_COLOR = new Clutter.Color();
 POPUP_APPICON_BORDER_COLOR.from_pixel(0xffffffff);
+const POPUP_APPICON_SEPARATOR_COLOR = new Clutter.Color();
+POPUP_APPICON_SEPARATOR_COLOR.from_pixel(0xffffffff);
 
 const POPUP_APPS_BOX_SPACING = 8;
 const POPUP_ICON_SIZE = 48;
@@ -52,6 +54,7 @@ AltTabPopup.prototype = {
         this.actor.append(gcenterbox, Big.BoxPackFlags.NONE);
 
         this._icons = [];
+        this._separator = null;
         this._currentWindows = [];
         this._haveModal = false;
         this._selected = 0;
@@ -80,6 +83,15 @@ AltTabPopup.prototype = {
         this._appsBox.add_actor(appIcon.actor);
     },
 
+    _addSeparator: function () {
+        let box = new Big.Box({ padding_top: 2, padding_bottom: 2 });
+        box.append(new Clutter.Rectangle({ width: 1,
+                                           color: POPUP_APPICON_SEPARATOR_COLOR }),
+                   Big.BoxPackFlags.EXPAND);
+        this._separator = box
+        this._appsBox.add_actor(box);
+    },
+
     show : function(initialSelection) {
         let appMonitor = Shell.AppMonitor.get_default();
         let apps = appMonitor.get_running_apps ("");
@@ -99,12 +111,26 @@ AltTabPopup.prototype = {
         this._mouseMovement = 0;
 
         // Contruct the AppIcons, sort by time, add to the popup
-        let icons = [];
-        for (let i = 0; i < apps.length; i++)
-            icons.push(new AppIcon.AppIcon(apps[i], AppIcon.MenuType.BELOW, false));
-        icons.sort(Lang.bind(this, this._sortAppIcon));
-        for (let i = 0; i < icons.length; i++)
-            this._addIcon(icons[i]);
+        let activeWorkspace = global.screen.get_active_workspace();
+        let workspaceIcons = [];
+        let otherIcons = [];
+        for (let i = 0; i < apps.length; i++) {
+            let appIcon = new AppIcon.AppIcon(apps[i], AppIcon.MenuType.BELOW, false);
+            if (this._hasWindowsOnWorkspace(appIcon, activeWorkspace))
+              workspaceIcons.push(appIcon);
+            else
+              otherIcons.push(appIcon);
+        }
+
+        workspaceIcons.sort(Lang.bind(this, this._sortAppIcon));
+        otherIcons.sort(Lang.bind(this, this._sortAppIcon));
+
+        for (let i = 0; i < workspaceIcons.length; i++)
+            this._addIcon(workspaceIcons[i]);
+        if (workspaceIcons.length > 0 && otherIcons.length > 0)
+            this._addSeparator();
+        for (let i = 0; i < otherIcons.length; i++)
+            this._addIcon(otherIcons[i]);
 
         // Need to specify explicit width and height because the
         // window_group may not actually cover the whole screen
@@ -151,22 +177,6 @@ AltTabPopup.prototype = {
     },
 
     _sortAppIcon : function(appIcon1, appIcon2) {
-        // We intend to sort the application list so applications appear
-        // with this order:
-        //   1. Apps with visible windows on the active workspace;
-        //   2. Apps with minimized windows on the active workspace;
-        //   3. Apps with visible windows on any other workspace;
-        //   4. Other apps.
-
-        let workspace = global.screen.get_active_workspace();
-        let ws1 = this._hasWindowsOnWorkspace(appIcon1, workspace);
-        let ws2 = this._hasWindowsOnWorkspace(appIcon2, workspace);
-
-        if (ws1 && !ws2)
-            return -1;
-        else if (ws2 && !ws1)
-            return 1;
-
         let vis1 = this._hasVisibleWindows(appIcon1);
         let vis2 = this._hasVisibleWindows(appIcon2);
 
@@ -188,14 +198,20 @@ AltTabPopup.prototype = {
         let maxChildNat = 0;
 
         for (let i = 0; i < children.length; i++) {
-            let [childMin, childNat] = children[i].get_preferred_width(forHeight);
-            maxChildMin = Math.max(childMin, maxChildMin);
-            maxChildNat = Math.max(childNat, maxChildNat);
+            if (children[i] != this._separator) {
+                let [childMin, childNat] = children[i].get_preferred_width(forHeight);
+                maxChildMin = Math.max(childMin, maxChildMin);
+                maxChildNat = Math.max(childNat, maxChildNat);
+            }
         }
 
+        let separatorWidth = 0;
+        if (this._separator)
+            separatorWidth = this._separator.get_preferred_width(forHeight)[0];
+
         let totalSpacing = this._appsBox.spacing * (children.length - 1);
-        alloc.min_size = children.length * maxChildMin + totalSpacing;
-        alloc.nat_size = children.length * maxChildNat + totalSpacing;
+        alloc.min_size = this._icons.length * maxChildMin + separatorWidth + totalSpacing;
+        alloc.nat_size = this._icons.length * maxChildNat + separatorWidth + totalSpacing;
     },
 
     _appsBoxGetPreferredHeight: function (actor, forWidth, alloc) {
@@ -217,19 +233,36 @@ AltTabPopup.prototype = {
         let children = this._appsBox.get_children();
         let totalSpacing = this._appsBox.spacing * (children.length - 1);
         let childHeight = box.y2 - box.y1;
-        let childWidth = Math.max(0, box.x2 - box.x1 - totalSpacing) / children.length;
+
+        let separatorWidth = 0;
+        if (this._separator)
+            separatorWidth = this._separator.get_preferred_width(childHeight)[0];
+
+        let childWidth = Math.max(0, box.x2 - box.x1 - totalSpacing) / this._icons.length;
 
         let x = box.x1;
         for (let i = 0; i < children.length; i++) {
-            let [childMin, childNat] = children[i].get_preferred_height(childWidth);
-            let vSpacing = (childHeight - childNat) / 2;
-            let childBox = new Clutter.ActorBox();
-            childBox.x1 = x;
-            childBox.y1 = vSpacing;
-            childBox.x2 = x + childWidth;
-            childBox.y2 = childHeight - vSpacing;
-            children[i].allocate(childBox, flags);
-            x += this._appsBox.spacing + childWidth;
+            if (children[i] != this._separator) {
+                let [childMin, childNat] = children[i].get_preferred_height(childWidth);
+                let vSpacing = (childHeight - childNat) / 2;
+                let childBox = new Clutter.ActorBox();
+                childBox.x1 = x;
+                childBox.y1 = vSpacing;
+                childBox.x2 = x + childWidth;
+                childBox.y2 = childHeight - vSpacing;
+                children[i].allocate(childBox, flags);
+                x += this._appsBox.spacing + childWidth;
+            }
+            else {
+                // We want the separator to be more compact than the rest.
+                let childBox = new Clutter.ActorBox();
+                childBox.x1 = x;
+                childBox.y1 = 0;
+                childBox.x2 = x + separatorWidth;
+                childBox.y2 = childHeight;
+                children[i].allocate(childBox, flags);
+                x += this._appsBox.spacing + separatorWidth;
+            }
         }
     },
 
