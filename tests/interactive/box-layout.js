@@ -11,8 +11,8 @@ let stage = Clutter.Stage.get_default();
 let vbox = new St.BoxLayout({ vertical: true,
                               width: stage.width,
                               height: stage.height,
-                              spacing: 10,
-                              style: 'padding: 10px' });
+                              style: 'padding: 10px;'
+                                     + 'spacing: 10px;' });
 stage.add_actor(vbox);
 
 ////////////////////////////////////////////////////////////////////////////////

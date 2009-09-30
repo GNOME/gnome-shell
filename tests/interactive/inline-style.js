@@ -13,7 +13,7 @@ let vbox = new St.BoxLayout({ vertical: true,
                               height: stage.height });
 stage.add_actor(vbox);
 
-let hbox = new St.BoxLayout({ spacing: 12 });
+let hbox = new St.BoxLayout({ style: 'spacing: 12px;' });
 vbox.add(hbox);
 
 let text = new St.Label({ text: "Styled Text" });

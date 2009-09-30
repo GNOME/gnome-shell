@@ -13,8 +13,9 @@ stage.height = 700;
 let vbox = new St.BoxLayout({ vertical: true,
                               width: stage.width,
                               height: stage.height,
-                              spacing: 20,
-                              style: 'padding: 10px; background: #ffee88;' });
+                              style: 'padding: 10px;'
+                                     + 'spacing: 20px;'
+                                     + 'background: #ffee88;' });
 stage.add_actor(vbox);
 
 vbox.add(new St.Label({ text: "Hello World",
