@@ -37,17 +37,17 @@ stage {
     border-image: url('border-image.png') 16;
 }
 
-StButton {
+.push-button {
     background: #eeddbb;
     border: 1px solid black;
     border-radius: 8px;
     padding: 5px;
 }
 
-StButton:hover {
+.push-button:hover {
     background: #ffeecc;
 }
 
-StButton:active {
+.push-button:active {
     background: #ccbb99;
 }
