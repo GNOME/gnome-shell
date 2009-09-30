@@ -78,6 +78,8 @@ st_source_h =					\
     st/st-scroll-bar.h				\
     st/st-scroll-view.h				\
     st/st-subtexture.h				\
+    st/st-table.h				\
+    st/st-table-child.h				\
     st/st-texture-cache.h			\
     st/st-texture-frame.h			\
     st/st-theme.h				\
@@ -90,6 +92,7 @@ st_source_h =					\
 
 st_source_private_h =				\
     st/st-private.h				\
+    st/st-table-private.h			\
     st/st-theme-private.h
 
 # please, keep this sorted alphabetically
@@ -108,6 +111,8 @@ st_source_c =					\
     st/st-scroll-bar.c				\
     st/st-scroll-view.c				\
     st/st-subtexture.c				\
+    st/st-table.c				\
+    st/st-table-child.c				\
     st/st-texture-cache.c			\
     st/st-texture-frame.c			\
     st/st-theme.c				\
