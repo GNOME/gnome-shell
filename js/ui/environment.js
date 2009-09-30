@@ -26,6 +26,7 @@ function _patchContainerClass(containerClass) {
 }
 
 _patchContainerClass(St.BoxLayout);
+_patchContainerClass(St.Table);
 
 function init() {
     Tweener.init();
