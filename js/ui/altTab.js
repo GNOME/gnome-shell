@@ -36,8 +36,16 @@ AltTabPopup.prototype = {
                                    reactive: true });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._appsBox = new Big.Box({ spacing: POPUP_APPS_BOX_SPACING,
-                                      orientation: Big.BoxOrientation.HORIZONTAL });
+        // Here we use a GenericContainer instead of a BigBox in order to be
+        // able to handle allocation. In particular, we want all the alt+tab
+        // popup items to be the same size.
+        this._appsBox = new Shell.GenericContainer();
+        this._appsBox.spacing = POPUP_APPS_BOX_SPACING;
+
+        this._appsBox.connect('get-preferred-width', Lang.bind(this, this._appsBoxGetPreferredWidth));
+        this._appsBox.connect('get-preferred-height', Lang.bind(this, this._appsBoxGetPreferredHeight));
+        this._appsBox.connect('allocate', Lang.bind(this, this._appsBoxAllocate));
+
         let gcenterbox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                        x_align: Big.BoxAlignment.CENTER });
         gcenterbox.append(this._appsBox, Big.BoxPackFlags.NONE);
@@ -69,7 +77,7 @@ AltTabPopup.prototype = {
         this._icons.push(appIcon);
         this._currentWindows.push(appIcon.windows[0]);
 
-        this._appsBox.append(appIcon.actor, Big.BoxPackFlags.NONE);
+        this._appsBox.add_actor(appIcon.actor);
     },
 
     show : function(initialSelection) {
@@ -171,6 +179,57 @@ AltTabPopup.prototype = {
             // in its list
             return (appIcon2.windows[0].get_user_time() -
                     appIcon1.windows[0].get_user_time());
+        }
+    },
+
+    _appsBoxGetPreferredWidth: function (actor, forHeight, alloc) {
+        let children = this._appsBox.get_children();
+        let maxChildMin = 0;
+        let maxChildNat = 0;
+
+        for (let i = 0; i < children.length; i++) {
+            let [childMin, childNat] = children[i].get_preferred_width(forHeight);
+            maxChildMin = Math.max(childMin, maxChildMin);
+            maxChildNat = Math.max(childNat, maxChildNat);
+        }
+
+        let totalSpacing = this._appsBox.spacing * (children.length - 1);
+        alloc.min_size = children.length * maxChildMin + totalSpacing;
+        alloc.nat_size = children.length * maxChildNat + totalSpacing;
+    },
+
+    _appsBoxGetPreferredHeight: function (actor, forWidth, alloc) {
+        let children = this._appsBox.get_children();
+        let maxChildMin = 0;
+        let maxChildNat = 0;
+
+        for (let i = 0; i < children.length; i++) {
+            let [childMin, childNat] = children[i].get_preferred_height(forWidth);
+            maxChildMin = Math.max(childMin, maxChildMin);
+            maxChildNat = Math.max(childNat, maxChildNat);
+        }
+
+        alloc.min_size = maxChildMin;
+        alloc.nat_size = maxChildNat;
+    },
+
+    _appsBoxAllocate: function (actor, box, flags) {
+        let children = this._appsBox.get_children();
+        let totalSpacing = this._appsBox.spacing * (children.length - 1);
+        let childHeight = box.y2 - box.y1;
+        let childWidth = Math.max(0, box.x2 - box.x1 - totalSpacing) / children.length;
+
+        let x = box.x1;
+        for (let i = 0; i < children.length; i++) {
+            let [childMin, childNat] = children[i].get_preferred_height(childWidth);
+            let vSpacing = (childHeight - childNat) / 2;
+            let childBox = new Clutter.ActorBox();
+            childBox.x1 = x;
+            childBox.y1 = vSpacing;
+            childBox.x2 = x + childWidth;
+            childBox.y2 = childHeight - vSpacing;
+            children[i].allocate(childBox, flags);
+            x += this._appsBox.spacing + childWidth;
         }
     },
 
