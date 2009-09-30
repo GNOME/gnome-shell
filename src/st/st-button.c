@@ -55,9 +55,9 @@ enum
   PROP_0,
 
   PROP_LABEL,
-  PROP_TOGGLE,
-  PROP_ACTIVE,
-  PROP_TRANSITION
+  PROP_TOGGLE_MODE,
+  PROP_CHECKED,
+  PROP_TRANSITION_DURATION
 };
 
 enum
@@ -337,13 +337,13 @@ st_button_set_property (GObject      *gobject,
     case PROP_LABEL:
       st_button_set_label (button, g_value_get_string (value));
       break;
-    case PROP_TOGGLE:
+    case PROP_TOGGLE_MODE:
       st_button_set_toggle_mode (button, g_value_get_boolean (value));
       break;
-    case PROP_ACTIVE:
+    case PROP_CHECKED:
       st_button_set_checked (button, g_value_get_boolean (value));
       break;
-    case PROP_TRANSITION:
+    case PROP_TRANSITION_DURATION:
       priv->transition_duration = g_value_get_int (value);
       break;
 
@@ -367,13 +367,13 @@ st_button_get_property (GObject    *gobject,
     case PROP_LABEL:
       g_value_set_string (value, priv->text);
       break;
-    case PROP_TOGGLE:
+    case PROP_TOGGLE_MODE:
       g_value_set_boolean (value, priv->is_toggle);
       break;
-    case PROP_ACTIVE:
+    case PROP_CHECKED:
       g_value_set_boolean (value, priv->is_checked);
       break;
-    case PROP_TRANSITION:
+    case PROP_TRANSITION_DURATION:
       g_value_set_int (value, priv->transition_duration);
       break;
 
@@ -476,20 +476,20 @@ st_button_class_init (StButtonClass *klass)
                                 "Toggle Mode",
                                 "Enable or disable toggling",
                                 FALSE, G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TOGGLE, pspec);
+  g_object_class_install_property (gobject_class, PROP_TOGGLE_MODE, pspec);
 
   pspec = g_param_spec_boolean ("checked",
                                 "Checked",
                                 "Indicates if a toggle button is \"on\""
                                 " or \"off\"",
                                 FALSE, G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_ACTIVE, pspec);
+  g_object_class_install_property (gobject_class, PROP_CHECKED, pspec);
 
   pspec = g_param_spec_int ("transition-duration",
                             "Transition Duration",
                             "Duration of the state transition effect",
                             0, G_MAXINT, 120, G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TRANSITION, pspec);
+  g_object_class_install_property (gobject_class, PROP_TRANSITION_DURATION, pspec);
 
 
   /**
