@@ -61,7 +61,6 @@ enum {
 
   PROP_VERTICAL,
   PROP_PACK_START,
-  PROP_SPACING,
 
   PROP_HADJUST,
   PROP_VADJUST
@@ -348,10 +347,6 @@ st_box_layout_get_property (GObject    *object,
       g_value_set_boolean (value, priv->is_pack_start);
       break;
 
-    case PROP_SPACING:
-      g_value_set_uint (value, priv->spacing);
-      break;
-
     case PROP_HADJUST:
       scrollable_get_adjustments (ST_SCROLLABLE (object), &adjustment, NULL);
       g_value_set_object (value, adjustment);
@@ -383,10 +378,6 @@ st_box_layout_set_property (GObject      *object,
 
     case PROP_PACK_START:
       st_box_layout_set_pack_start (box, g_value_get_boolean (value));
-      break;
-
-    case PROP_SPACING:
-      st_box_layout_set_spacing (box, g_value_get_uint (value));
       break;
 
     case PROP_HADJUST:
@@ -1073,10 +1064,27 @@ st_box_layout_pick (ClutterActor       *actor,
 }
 
 static void
+st_box_layout_style_changed (StWidget *self)
+{
+  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (self)->priv;
+  StThemeNode *theme_node = st_widget_get_theme_node (self);
+  int old_spacing = priv->spacing;
+  double spacing = 0;
+
+  st_theme_node_get_length (theme_node, "spacing", FALSE, &spacing);
+  priv->spacing = (int)(spacing + 0.5);
+  if (priv->spacing != old_spacing)
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+  ST_WIDGET_CLASS (st_box_layout_parent_class)->style_changed (self);
+}
+
+static void
 st_box_layout_class_init (StBoxLayoutClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StBoxLayoutPrivate));
@@ -1093,6 +1101,8 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   actor_class->paint = st_box_layout_paint;
   actor_class->pick = st_box_layout_pick;
 
+  widget_class->style_changed = st_box_layout_style_changed;
+
   pspec = g_param_spec_boolean ("vertical",
                                 "Vertical",
                                 "Whether the layout should be vertical, rather"
@@ -1107,13 +1117,6 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
                                 FALSE,
                                 ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_PACK_START, pspec);
-
-  pspec = g_param_spec_uint ("spacing",
-                             "Spacing",
-                             "Spacing between children",
-                             0, G_MAXUINT, 0,
-                             ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_SPACING, pspec);
 
   /* StScrollable properties */
   g_object_class_override_property (object_class,
@@ -1221,48 +1224,4 @@ st_box_layout_get_pack_start (StBoxLayout *box)
   g_return_val_if_fail (ST_IS_BOX_LAYOUT (box), FALSE);
 
   return box->priv->is_pack_start;
-}
-
-/**
- * st_box_layout_set_spacing:
- * @box: A #StBoxLayout
- * @spacing: the spacing value
- *
- * Set the amount of spacing between children in pixels
- *
- */
-void
-st_box_layout_set_spacing (StBoxLayout *box,
-                           guint        spacing)
-{
-  StBoxLayoutPrivate *priv;
-
-  g_return_if_fail (ST_IS_BOX_LAYOUT (box));
-
-  priv = box->priv;
-
-  if (priv->spacing != spacing)
-    {
-      priv->spacing = spacing;
-
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
-
-      g_object_notify (G_OBJECT (box), "spacing");
-    }
-}
-
-/**
- * st_box_layout_get_spacing:
- * @box: A #StBoxLayout
- *
- * Get the spacing between children in pixels
- *
- * Returns: the spacing value
- */
-guint
-st_box_layout_get_spacing (StBoxLayout *box)
-{
-  g_return_val_if_fail (ST_IS_BOX_LAYOUT (box), 0);
-
-  return box->priv->spacing;
 }
