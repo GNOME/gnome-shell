@@ -608,7 +608,7 @@ compute_shrinks (StBoxLayout *self,
 
   /* Find the amount of possible shrink for each child */
   int n_visible_children = 0;
-  for (l = priv->children; l; l = l->next, i++)
+  for (l = priv->children, i = 0; l; l = l->next, i++)
     {
       gfloat child_min, child_nat;
 
