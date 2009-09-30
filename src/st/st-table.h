@@ -93,17 +93,6 @@ void st_table_set_row_spacing (StTable      *table,
                                gint          spacing);
 gint st_table_get_col_spacing (StTable      *table);
 gint st_table_get_row_spacing (StTable      *table);
-void st_table_add_actor       (StTable      *table,
-                               ClutterActor *actor,
-                               gint          row,
-                               gint          column);
-
-void st_table_add_actor_with_properties (StTable      *table,
-                                         ClutterActor *actor,
-                                         gint          row,
-                                         gint          column,
-                                         const gchar  *first_property_name,
-                                         ...);
 
 gint st_table_get_row_count    (StTable *table);
 gint st_table_get_column_count (StTable *table);
