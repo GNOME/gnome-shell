@@ -61,6 +61,7 @@
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
+        <dep package="clutter-imcontext"/>
         <dep package="gobject-introspection"/>
         <dep package="gir-repository"/>
         <dep package="mutter"/>
