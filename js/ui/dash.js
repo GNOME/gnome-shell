@@ -889,6 +889,9 @@ Dash.prototype = {
     _updateDashActors: function() {
         if (this._searchPending) {
             this._searchResultsSection.actor.show();
+            // We initially hide all sections when we start a search. When the search timeout
+            // first runs, the sections that have matching results are shown. As the search
+            // is refined, only the sections that have matching results will be shown.
             for (let i = 0; i < this._searchSections.length; i++) {
                 let section = this._searchSections[i];
                 section.header.actor.hide();
@@ -897,13 +900,7 @@ Dash.prototype = {
             this._appsSection.actor.hide();
             this._placesSection.actor.hide();
             this._docsSection.actor.hide();
-        } else if (this._searchActive) {
-            for (let i = 0; i < this._searchSections.length; i++) {
-                let section = this._searchSections[i];
-                section.header.actor.show();
-                section.resultArea.actor.show();
-            }
-        } else {
+        } else if (!this._searchActive) {
             this._showAllSearchSections();
             this._searchResultsSection.actor.hide();
             this._appsSection.actor.show();
