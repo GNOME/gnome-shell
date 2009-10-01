@@ -148,6 +148,7 @@ RunDialog.prototype = {
     },
 
     _run : function(command) {
+        this._commandError = false;
         let f;
         if (this._enableInternalCommands)
             f = this._internalCommands[command];
@@ -157,7 +158,6 @@ RunDialog.prototype = {
             f();
         } else if (command) {
             try {
-                this._commandError = false;
                 let [ok, len, args] = GLib.shell_parse_argv(command);
                 let p = new Shell.Process({'args' : args});
                 p.run();
