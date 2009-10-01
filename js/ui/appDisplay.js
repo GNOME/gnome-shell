@@ -186,22 +186,20 @@ AppDisplay.prototype = {
         this._appsStale = true;
         this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
             this._appsStale = true;
-            this._redisplay(0);
-            this._redisplayMenus();
+            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
         this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
-            this._redisplay(0);
+            this._appsStale = true;
+            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
         this._appMonitor.connect('app-added', Lang.bind(this, function(monitor) {
-            this._redisplay(0);
+            this._appsStale = true;
+            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
         this._appMonitor.connect('app-removed', Lang.bind(this, function(monitor) {
-            this._redisplay(0);
+            this._appsStale = true;
+            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
-
-        // Load the apps now so it doesn't slow down the first
-        // transition into the Overview
-        this._refreshCache();
 
         this._focusInMenus = true;
         this._activeMenuIndex = -1;
@@ -210,7 +208,6 @@ AppDisplay.prototype = {
         this._menuDisplay = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                           spacing: MENU_SPACING
                                        });
-        this._redisplayMenus();
 
         this.connect('expanded', Lang.bind(this, function (self) {
             this._filterReset();
@@ -303,7 +300,7 @@ AppDisplay.prototype = {
                     this._activeMenuApps = this._appSystem.get_applications_for_menu(id);
                 }
             }
-            this._redisplay(true);
+            this._redisplay(GenericDisplay.RedisplayFlags.FULL);
         }));
         this._menuDisplay.append(display.actor, 0);
     },
@@ -361,6 +358,7 @@ AppDisplay.prototype = {
                     this._addApp(app);
                 }
             }
+            this._redisplayMenus();
         }
 
         this._appsStale = false;

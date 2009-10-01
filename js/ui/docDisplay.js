@@ -136,7 +136,7 @@ DocDisplay.prototype = {
             // but redisplaying right away is cool when we use Zephyr.
             // Also, we might be displaying remote documents, like Google Docs, in the future
             // which might be edited by someone else.
-            this._redisplay(false);
+            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
 
         this.connect('destroy', Lang.bind(this, function (o) {

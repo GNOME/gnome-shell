@@ -486,15 +486,16 @@ GenericDisplay.prototype = {
 
     //// Protected methods ////
 
-    _redisplayFull: function() {
+    _recreateDisplayItems: function() {
         this._removeAllDisplayItems();
+        this._setDefaultList();
         for (let itemId in this._allItems) {
             this._addDisplayItem(itemId);
         }
     },
 
     // Creates a display item based on the information associated with itemId
-    // and adds it to the displayed items.
+    // and adds it to the list of displayed items, but does not yet display it.
     _addDisplayItem : function(itemId) {
         if (this._displayedItems.hasOwnProperty(itemId)) {
             log("Tried adding a display item for " + itemId + ", but an item with this item id is already among displayed items.");
@@ -525,7 +526,6 @@ GenericDisplay.prototype = {
                                               this.emit('show-details', index);
                                           }
                                       }));
-        this._list.add_actor(displayItem.actor);
         this._displayedItems[itemId] = displayItem;
     },
 
@@ -635,6 +635,7 @@ GenericDisplay.prototype = {
      *  their own while the user was browsing through the result pages.
      *  SUBSEARCH - Indicates that the current _search is a superstring of the previous
      *  one, which implies we only need to re-search through previous results.
+     *  FULL - Indicates that we need refresh all displayed items.
      */
     _redisplay: function(flags) {
         let resetPage = (flags & RedisplayFlags.RESET_CONTROLS) > 0;
@@ -642,13 +643,20 @@ GenericDisplay.prototype = {
         let fullReload = (flags & RedisplayFlags.FULL) > 0;
 
         let hadSelected = this.hasSelected();
+        this.unsetSelected();
 
-        if (!this._initialLoadComplete || !this._refreshCache())
+        if (!this._initialLoadComplete)
             fullReload = true;
+
+        if (!this._refreshCache())
+            fullReload = true;
+
         if (fullReload) {
+            this._recreateDisplayItems();
             this._initialLoadComplete = true;
-            this._redisplayFull();
-        } if (isSubSearch) {
+        }
+
+        if (isSubSearch) {
             this._redisplaySubSearch();
         } else {
             this._redisplayReordering();
