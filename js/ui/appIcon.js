@@ -165,6 +165,15 @@ AppIcon.prototype = {
 
     _resortWindows: function() {
         this.windows.sort(function (a, b) {
+            let activeWorkspace = global.screen.get_active_workspace();
+            let wsA = a.get_workspace() == activeWorkspace;
+            let wsB = b.get_workspace() == activeWorkspace;
+
+            if (wsA && !wsB)
+                return -1;
+            else if (wsB && !wsA)
+                return 1;
+
             let visA = a.showing_on_its_workspace();
             let visB = b.showing_on_its_workspace();
 
@@ -397,20 +406,24 @@ AppIconMenu.prototype = {
             }
         }
 
+        // Display the app windows menu items and the separator between windows
+        // of the current desktop and other windows.
         let activeWorkspace = global.screen.get_active_workspace();
+        let separatorShown = windows[0].get_workspace() != activeWorkspace;
 
-        let currentWorkspaceWindows = windows.filter(function (w) {
-            return w.get_workspace() == activeWorkspace;
-        });
-        let otherWorkspaceWindows = windows.filter(function (w) {
-            return w.get_workspace() != activeWorkspace;
-        });
+        for (let i = 0; i < windows.length; i++) {
+            if (!separatorShown && windows[i].get_workspace() != activeWorkspace) {
+                this._appendSeparator();
+                separatorShown = true;
+            }
 
-        this._appendWindows(currentWorkspaceWindows, iconsDiffer);
-        if (currentWorkspaceWindows.length > 0 && otherWorkspaceWindows.length > 0) {
-            this._appendSeparator();
+            let icon = null;
+            if (iconsDiffer)
+                icon = Shell.TextureCache.get_default().bind_pixbuf_property(windows[i], "mini-icon");
+
+            let box = this._appendMenuItem(icon, windows[i].title);
+            box._window = windows[i];
         }
-        this._appendWindows(otherWorkspaceWindows, iconsDiffer);
 
         if (windows.length > 0)
             this._appendSeparator();
@@ -466,19 +479,6 @@ AppIconMenu.prototype = {
         box.append(vCenter, Big.BoxPackFlags.NONE);
         this._windowContainer.append(box, Big.BoxPackFlags.NONE);
         return box;
-    },
-
-    _appendWindows: function (windows, iconsDiffer) {
-        for (let i = 0; i < windows.length; i++) {
-            let metaWindow = windows[i];
-
-            let icon = null;
-            if (iconsDiffer) {
-                icon = Shell.TextureCache.get_default().bind_pixbuf_property(metaWindow, "mini-icon");
-            }
-            let box = this._appendMenuItem(icon, metaWindow.title);
-            box._window = metaWindow;
-        }
     },
 
     popup: function(activatingButton) {
