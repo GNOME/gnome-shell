@@ -116,6 +116,9 @@ StScrollBar StButton#vhandle:hover
     background: rgba(0,0,0,0.9);
     border: 1px solid rgba(128,128,128,0.45);
     color: white;
+}
+
+#calendarPopup .calendar {
     padding: 10px;
 }
 

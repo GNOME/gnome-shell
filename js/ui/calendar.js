@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
@@ -51,7 +52,11 @@ Calendar.prototype = {
         this.date = new Date();
 
         this.actor = new St.Table({ homogeneous: false,
-                                    style_class: "calendar" });
+                                    style_class: "calendar",
+                                    reactive: true });
+
+        this.actor.connect('scroll-event',
+                           Lang.bind(this, this._onScroll));
 
         // Top line of the calendar '<| September 2009 |>'
         this._topBox = new St.BoxLayout();
@@ -90,6 +95,19 @@ Calendar.prototype = {
         if (!_sameDay(date, this.date)) {
             this.date = date;
             this._update();
+        }
+    },
+
+    _onScroll : function(actor, event) {
+        switch (event.get_scroll_direction()) {
+        case Clutter.ScrollDirection.UP:
+        case Clutter.ScrollDirection.LEFT:
+            this._prevMonth();
+            break;
+        case Clutter.ScrollDirection.DOWN:
+        case Clutter.ScrollDirection.RIGHT:
+            this._nextMonth();
+            break;
         }
     },
 
