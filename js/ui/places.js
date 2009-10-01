@@ -9,6 +9,8 @@ const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -172,7 +174,7 @@ Places.prototype = {
             this._actionsBox.append(network.actor, Big.BoxPackFlags.NONE);
         }
 
-        let connect = new PlaceDisplay('Connect to...',
+        let connect = new PlaceDisplay(_("Connect to..."),
             function () {
                 return Shell.TextureCache.get_default().load_icon_name("applications-internet", PLACES_ICON_SIZE);
             },
