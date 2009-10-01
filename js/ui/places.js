@@ -75,17 +75,29 @@ function Places() {
 
 Places.prototype = {
     _init : function() {
+        // Places is divided semi-arbitrarily into left and right; a grid would
+        // look better in that there would be an even number of items left+right,
+        // but it seems like we want some sort of differentiation between actions
+        // like "Connect to server..." and regular folders
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                    spacing: 4 });
-        this._menuBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                      spacing: PLACES_VSPACING });
-        this.actor.append(this._menuBox, Big.BoxPackFlags.EXPAND);
+        this._leftBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
+        this.actor.append(this._leftBox, Big.BoxPackFlags.EXPAND);
+        this._rightBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
+        this.actor.append(this._rightBox, Big.BoxPackFlags.EXPAND);
+
+        // Subdivide left into actions and devices
+        this._actionsBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
+                                         spacing: PLACES_VSPACING });
+        this._leftBox.append(this._actionsBox, Big.BoxPackFlags.NONE);
         this._devBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                       spacing: PLACES_VSPACING });
+        this._leftBox.append(this._devBox, Big.BoxPackFlags.NONE);
 
+        // Right is bookmarks
         this._dirsBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                       spacing: PLACES_VSPACING });
-        this.actor.append(this._dirsBox, Big.BoxPackFlags.EXPAND);
+        this._rightBox.append(this._dirsBox, Big.BoxPackFlags.NONE);
 
         let homeFile = Gio.file_new_for_path (GLib.get_home_dir());
         let homeUri = homeFile.get_uri();
@@ -99,13 +111,11 @@ Places.prototype = {
                 Gio.app_info_launch_default_for_uri(homeUri, Main.createAppLaunchContext());
             });
 
-        this._menuBox.append(home.actor, Big.BoxPackFlags.NONE);
+        this._actionsBox.append(home.actor, Big.BoxPackFlags.NONE);
 
         /*
         * Show devices, code more or less ported from nautilus-places-sidebar.c
         */
-
-        this._menuBox.append(this._devBox, Big.BoxPackFlags.NONE);
         this._volumeMonitor = Gio.VolumeMonitor.get();
         this._volumeMonitor.connect('volume-added', Lang.bind(this, this._updateDevices));
         this._volumeMonitor.connect('volume-removed',Lang.bind(this, this._updateDevices));
@@ -137,7 +147,7 @@ Places.prototype = {
                 function () {
                     networkApp.launch();
                 });
-            this._menuBox.append(network.actor, Big.BoxPackFlags.NONE);
+            this._actionsBox.append(network.actor, Big.BoxPackFlags.NONE);
         }
 
         let connect = new PlaceDisplay('Connect to...',
@@ -147,7 +157,7 @@ Places.prototype = {
             function () {
                 new Shell.Process({ args: ['nautilus-connect-server'] }).run();
             });
-        this._menuBox.append(connect.actor, Big.BoxPackFlags.NONE);
+        this._actionsBox.append(connect.actor, Big.BoxPackFlags.NONE);
 
         this._bookmarksPath = GLib.build_filenamev([GLib.get_home_dir(), ".gtk-bookmarks"]);
         this._bookmarksFile = Gio.file_new_for_path(this._bookmarksPath);
