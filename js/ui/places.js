@@ -14,6 +14,9 @@ const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const GenericDisplay = imports.ui.genericDisplay;
 
+const NAUTILUS_PREFS_DIR = '/apps/nautilus/preferences';
+const DESKTOP_IS_HOME_KEY = NAUTILUS_PREFS_DIR + '/desktop_is_home_dir';
+
 const PLACES_VSPACING = 8;
 const PLACES_ICON_SIZE = 16;
 
@@ -99,6 +102,9 @@ Places.prototype = {
                                       spacing: PLACES_VSPACING });
         this._rightBox.append(this._dirsBox, Big.BoxPackFlags.NONE);
 
+        let gconf = Shell.GConf.get_default();
+        gconf.watch_directory(NAUTILUS_PREFS_DIR);
+
         let homeFile = Gio.file_new_for_path (GLib.get_home_dir());
         let homeUri = homeFile.get_uri();
         let homeLabel = Shell.util_get_label_for_uri (homeUri);
@@ -112,6 +118,22 @@ Places.prototype = {
             });
 
         this._actionsBox.append(home.actor, Big.BoxPackFlags.NONE);
+
+        let desktopPath = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DESKTOP);
+        let desktopFile = Gio.file_new_for_path (desktopPath);
+        let desktopUri = desktopFile.get_uri();
+        let desktopLabel = Shell.util_get_label_for_uri (desktopUri);
+        let desktopIcon = Shell.util_get_icon_for_uri (desktopUri);
+        this._desktopMenu = new PlaceDisplay(desktopLabel,
+            function() {
+                return Shell.TextureCache.get_default().load_gicon(desktopIcon, PLACES_ICON_SIZE);
+            },
+            function() {
+                Gio.app_info_launch_default_for_uri(desktopUri, Main.createAppLaunchContext());
+            });
+        this._actionsBox.append(this._desktopMenu.actor, Big.BoxPackFlags.NONE);
+        this._updateDesktopMenuVisibility();
+        gconf.connect('changed::' + DESKTOP_IS_HOME_KEY, Lang.bind(this, this._updateDesktopMenuVisibility));
 
         /*
         * Show devices, code more or less ported from nautilus-places-sidebar.c
@@ -282,7 +304,15 @@ Places.prototype = {
                         Gio.app_info_launch_default_for_uri(mountUri, Main.createAppLaunchContext());
                });
         this._devBox.append(devItem.actor, Big.BoxPackFlags.NONE);
-    }
+    },
 
+    _updateDesktopMenuVisibility: function() {
+        let gconf = Shell.GConf.get_default();
+        let desktopIsHome = gconf.get_boolean(DESKTOP_IS_HOME_KEY);
+        if (desktopIsHome)
+            this._desktopMenu.actor.hide();
+        else
+            this._desktopMenu.actor.show();
+    }
 };
 Signals.addSignalMethods(Places.prototype);
