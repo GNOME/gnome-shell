@@ -354,16 +354,14 @@ DashDocDisplay.prototype = {
         // Two columns, where we go vertically down first.  So just take
         // the height of half of the children as our preferred height.
 
-        let firstColumnChildren = children.length / 2;
+        let firstColumnChildren = Math.ceil(children.length / 2);
 
-        alloc.min_size = 0;
         for (let i = 0; i < firstColumnChildren; i++) {
             let child = children[i];
             let [minSize, naturalSize] = child.get_preferred_height(forWidth);
             alloc.natural_size += naturalSize;
 
             if (i > 0 && i < children.length - 1) {
-                alloc.min_size += DEFAULT_SPACING;
                 alloc.natural_size += DEFAULT_SPACING;
             }
         }
@@ -384,14 +382,16 @@ DashDocDisplay.prototype = {
         // Loop over the children, going vertically down first.  When we run
         // out of vertical space (our y variable is bigger than box.y2), switch
         // to the second column.
-        for (; i < children.length; i++) {
+        while (i < children.length) {
             let child = children[i];
 
             let [minSize, naturalSize] = child.get_preferred_height(-1);
 
             if (y + naturalSize > box.y2) {
-                // Is this the second column?  Ok, break.
-                if (columnIndex == 1) {
+                // Is this the second column, or we're in
+                // the first column and can't even fit one
+                // item?  In that case, break.
+                if (columnIndex == 1 || i == 0) {
                     break;
                 }
                 // Set x to the halfway point.
@@ -399,6 +399,10 @@ DashDocDisplay.prototype = {
                 x = x + itemWidth + DEFAULT_SPACING;
                 // And y is back to the top.
                 y = box.y1;
+                // Retry this same item, now that we're in the second column.
+                // By looping back to the top here, we re-test the size
+                // again for the second column.
+                continue;
             }
 
             let childBox = new Clutter.ActorBox();
@@ -411,6 +415,8 @@ DashDocDisplay.prototype = {
 
             child.show();
             child.allocate(childBox, flags);
+
+            i++;
         }
 
         // Everything else didn't fit, just hide it.
