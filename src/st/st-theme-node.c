@@ -1,6 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -1565,7 +1564,7 @@ font_weight_from_term (CRTerm      *term,
       if (term->content.num->type != NUM_GENERIC)
         return FALSE;
 
-      weight_int = (int)(term->content.num->val + 0.5);
+      weight_int = (int)(0.5 + term->content.num->val);
 
       *weight = weight_int;
       *weight_absolute = TRUE;
@@ -1899,7 +1898,7 @@ st_theme_node_get_border_image (StThemeNode *node)
 
               if (term->content.num->type == NUM_GENERIC)
                 {
-                  borders[n_borders] = round (0.5 + term->content.num->val);
+                  borders[n_borders] = (int)(0.5 + term->content.num->val);
                   n_borders++;
                 }
               else if (term->content.num->type == NUM_PERCENTAGE)
@@ -1962,15 +1961,15 @@ st_theme_node_get_border_image (StThemeNode *node)
 static float
 get_width_inc (StThemeNode *node)
 {
-  return (round (node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT] +
-          round (node->border_width[ST_SIDE_RIGHT]) + node->padding[ST_SIDE_RIGHT]);
+  return ((int)(0.5 + node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT] +
+          (int)(0.5 + node->border_width[ST_SIDE_RIGHT]) + node->padding[ST_SIDE_RIGHT]);
 }
 
 static float
 get_height_inc (StThemeNode *node)
 {
-  return (round (node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP] +
-          round (node->border_width[ST_SIDE_BOTTOM]) + node->padding[ST_SIDE_BOTTOM]);
+  return ((int)(0.5 + node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP] +
+          (int)(0.5 + node->border_width[ST_SIDE_BOTTOM]) + node->padding[ST_SIDE_BOTTOM]);
 }
 
 /**
@@ -2103,10 +2102,10 @@ st_theme_node_get_content_box (StThemeNode           *node,
 
   ensure_borders (node);
 
-  content_box->x1 = round (node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT];
-  content_box->y1 = round (node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP];
-  content_box->x2 = allocation->x2 - allocation->x1 - (round (node->border_width[ST_SIDE_RIGHT]) + node->padding[ST_SIDE_RIGHT]);
-  content_box->y2 = allocation->y2 - allocation->y1 - (round (node->border_width[ST_SIDE_BOTTOM]) + node->padding[ST_SIDE_BOTTOM]);
+  content_box->x1 = (int)(0.5 + node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT];
+  content_box->y1 = (int)(0.5 + node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP];
+  content_box->x2 = allocation->x2 - allocation->x1 - ((int)(0.5 + node->border_width[ST_SIDE_RIGHT]) + node->padding[ST_SIDE_RIGHT]);
+  content_box->y2 = allocation->y2 - allocation->y1 - ((int)(0.5 + node->border_width[ST_SIDE_BOTTOM]) + node->padding[ST_SIDE_BOTTOM]);
 }
 
 

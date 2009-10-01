@@ -35,7 +35,6 @@
 #include "config.h"
 #endif
 
-#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -165,7 +164,7 @@ st_button_style_changed (StWidget *widget)
 
   spacing = 6;
   st_theme_node_get_length (theme_node, "border-spacing", FALSE, &spacing);
-  priv->spacing = round (spacing);
+  priv->spacing = (int)(0.5 + spacing);
 
   /* update the label styling */
   st_button_update_label_style (button);

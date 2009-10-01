@@ -28,7 +28,6 @@
 #include "config.h"
 #endif
 
-#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -533,7 +532,7 @@ st_widget_real_style_changed (StWidget *self)
       double width = st_theme_node_get_border_width (theme_node, side);
       if (width > 0.5)
 	{
-	  border_width = round (width);
+	  border_width = (int)(0.5 + width);
 	  st_theme_node_get_border_color (theme_node, side, &border_color);
 	  break;
 	}
@@ -544,7 +543,7 @@ st_widget_real_style_changed (StWidget *self)
       double radius = st_theme_node_get_border_radius (theme_node, corner);
       if (radius > 0.5)
 	{
-	  border_radius = round (radius);
+	  border_radius = (int)(0.5 + radius);
 	  break;
 	}
     }
