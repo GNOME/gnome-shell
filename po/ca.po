@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-30 18:53+0200\n"
-"PO-Revision-Date: 2009-08-30 18:57+0100\n"
+"POT-Creation-Date: 2009-10-01 23:16+0200\n"
+"PO-Revision-Date: 2009-10-01 23:20+0100\n"
 "Last-Translator: Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,76 +30,81 @@ msgid "Activities"
 msgstr "Activitats"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:454
+#: ../js/ui/panel.js:461
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
-#: ../js/ui/dash.js:256
+#: ../js/ui/dash.js:283
 msgid "Find..."
 msgstr "Cerca..."
 
-#: ../js/ui/dash.js:374
-msgid "Browse"
-msgstr "Navega"
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Més"
 
-#: ../js/ui/dash.js:451
+#: ../js/ui/dash.js:543
 msgid "(see all)"
 msgstr "(mostra tot)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:633
-#: ../js/ui/dash.js:681
+#: ../js/ui/dash.js:763
+#: ../js/ui/dash.js:825
 msgid "APPLICATIONS"
 msgstr "APLICACIONS"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:653
+#: ../js/ui/dash.js:783
 msgid "PLACES"
 msgstr "LLOCS"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:660
-#: ../js/ui/dash.js:692
+#: ../js/ui/dash.js:790
+#: ../js/ui/dash.js:835
 msgid "RECENT DOCUMENTS"
 msgstr "DOCUMENTS RECENTS"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:679
+#: ../js/ui/dash.js:815
+#: ../js/ui/dash.js:958
 msgid "SEARCH RESULTS"
 msgstr "RESULTATS DE LA CERCA"
 
-#: ../js/ui/runDialog.js:82
+#: ../js/ui/dash.js:830
+msgid "PREFERENCES"
+msgstr "PREFERÈNCIES"
+
+#: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "Introduïu una ordre:"
 
-#: ../src/shell-global.c:840
+#: ../src/shell-global.c:812
 msgid "Less than a minute ago"
 msgstr "Fa menys d'un minut"
 
-#: ../src/shell-global.c:843
+#: ../src/shell-global.c:815
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Fa %d minut"
 msgstr[1] "Fa %d minuts"
 
-#: ../src/shell-global.c:846
+#: ../src/shell-global.c:818
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Fa %d hora"
 msgstr[1] "Fa %d hores"
 
-#: ../src/shell-global.c:849
+#: ../src/shell-global.c:821
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Fa %d dia"
 msgstr[1] "Fa %d dies"
 
-#: ../src/shell-global.c:852
+#: ../src/shell-global.c:824
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -179,11 +184,4 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
-
-#~ msgid "Find apps or documents"
-#~ msgstr "Cerca aplicacions o documents"
-#~ msgid "Manager"
-#~ msgstr "Gestor"
-#~ msgid "The user manager object this user is controlled by."
-#~ msgstr "L'objecte gestor d'usuaris que controla a aquest usuari."
 
