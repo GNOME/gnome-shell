@@ -274,7 +274,7 @@ WindowManager.prototype = {
     _startAppSwitcher : function(shellwm, binding, window, backwards) {
         let tabPopup = new AltTab.AltTabPopup();
 
-        if (!tabPopup.show(backwards ? -1 : 1))
+        if (!tabPopup.show(backwards))
             tabPopup.destroy();
     }
 };

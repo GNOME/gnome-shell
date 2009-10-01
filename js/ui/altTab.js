@@ -86,7 +86,7 @@ AltTabPopup.prototype = {
         this._appsBox.add_actor(box);
     },
 
-    show : function(initialSelection) {
+    show : function(backward) {
         let appMonitor = Shell.AppMonitor.get_default();
         let apps = appMonitor.get_running_apps ("");
 
@@ -138,7 +138,19 @@ AltTabPopup.prototype = {
         this.actor.x = primary.x + Math.floor((primary.width - this.actor.width) / 2);
         this.actor.y = primary.y + Math.floor((primary.height - this.actor.height) / 2);
 
-        this._updateSelection(initialSelection);
+        if (!backward && this._icons[this._selected].windows.length > 1) {
+            let candidateWindow = this._icons[this._selected].windows[1];
+            if (candidateWindow.get_workspace() == activeWorkspace) {
+                this._currentWindows[this._selected] = candidateWindow;
+                this._updateSelection(0);
+            }
+            else {
+                this._updateSelection(1);
+            }
+        }
+        else {
+            this._updateSelection(backward ? -1 : 1);
+        }
 
         // There's a race condition; if the user released Alt before
         // we got the grab, then we won't be notified. (See
