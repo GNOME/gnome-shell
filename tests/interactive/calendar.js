@@ -4,10 +4,8 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
-const Calendar =imports.ui.calendar;
+const Calendar = imports.ui.calendar;
 const UI = imports.testcommon.ui;
-
-const Gettext_gtk20 = imports.gettext.domain('gtk20');
 
 UI.init();
 let stage = Clutter.Stage.get_default();

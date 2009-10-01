@@ -79,6 +79,7 @@ Calendar.prototype = {
         // them in the right cell in the table. It doesn't matter if we add them in order
         let iter = new Date(this.date);
         iter.setSeconds(0); // Leap second protection. Hah!
+        iter.setHours(12);
         for (let i = 0; i < 7; i++) {
             this.actor.add(new St.Label({ text: iter.toLocaleFormat("%a") }),
                            { row: 1,
@@ -86,6 +87,9 @@ Calendar.prototype = {
                              x_fill: false, x_align: 1.0 });
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
         }
+
+        // All the children after this are days, and get removed when we update the calendar
+        this._firstDayIndex = this.actor.get_children().length;
 
         this._update();
     },
@@ -132,17 +136,18 @@ Calendar.prototype = {
     },
 
     _update: function() {
-        this._dateLabel.text = this.date.toLocaleFormat("%B %Y");
+        this._dateLabel.text = this.date.toLocaleFormat(this._headerFormat);
 
         // Remove everything but the topBox and the weekday labels
         let children = this.actor.get_children();
-        for (let i = 8; i < children.length; i++)
+        for (let i = this._firstDayIndex; i < children.length; i++)
             children[i].destroy();
 
         // Start at the beginning of the week before the start of the month
         let iter = new Date(this.date);
         iter.setDate(1);
         iter.setSeconds(0);
+        iter.setHours(12);
         iter.setTime(iter.getTime() - (iter.getDay() - this._weekStart) * MSECS_IN_DAY);
 
         let now = new Date();

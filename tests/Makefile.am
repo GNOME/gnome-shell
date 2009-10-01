@@ -3,7 +3,8 @@ EXTRA_DIST = run-test.sh.in
 
 TEST_JS =					\
 	testcommon/ui.js			\
-	interactive/box-layout.js
+	interactive/box-layout.js		\
+	interactive/calendar.js
 EXTRA_DIST += $(TEST_JS)
 
 TEST_MISC =					\

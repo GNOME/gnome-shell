@@ -5,6 +5,7 @@ dist_jsui_DATA =		\
 	appDisplay.js		\
 	appIcon.js		\
 	button.js		\
+	calendar.js		\
 	chrome.js		\
 	dash.js			\
 	dnd.js			\
