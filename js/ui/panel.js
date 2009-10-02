@@ -55,7 +55,7 @@ const TRAY_SPACING_MIN = 8;
 // Used for the tray icon container with gtk pre-2.16, which doesn't
 // fully support tray icon transparency
 const TRAY_BACKGROUND_COLOR = new Clutter.Color();
-TRAY_BACKGROUND_COLOR.from_pixel(0xefefefff);
+TRAY_BACKGROUND_COLOR.from_pixel(0x0b0b0bff);
 const TRAY_BORDER_COLOR = new Clutter.Color();
 TRAY_BORDER_COLOR.from_pixel(0x00000033);
 const TRAY_CORNER_RADIUS = 5;
