@@ -750,7 +750,7 @@ static void
 ensure_later_repaint_func (void)
 {
   if (!later_timeline)
-    later_timeline = clutter_timeline_new (0);
+    later_timeline = clutter_timeline_new (G_MAXUINT);
 
   if (later_repaint_func == 0)
     later_repaint_func = clutter_threads_add_repaint_func (run_repaint_laters,
