@@ -45,6 +45,7 @@ struct _ShellAppSystemPrivate {
 
   GHashTable *app_id_to_app;
 
+  GHashTable *cached_menu_contents;  /* <char *id, GSList<ShellAppInfo*>> */
   GSList *cached_app_menus; /* ShellAppMenuEntry */
 
   GSList *cached_settings; /* ShellAppInfo */
@@ -56,6 +57,7 @@ struct _ShellAppSystemPrivate {
   guint app_change_timeout_id;
 };
 
+static void free_appinfo_gslist (gpointer list);
 static void shell_app_system_finalize (GObject *object);
 static gboolean on_tree_changed (gpointer user_data);
 static void on_tree_changed_cb (GMenuTree *tree, gpointer user_data);
@@ -229,6 +231,9 @@ shell_app_system_init (ShellAppSystem *self)
   priv->app_id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                NULL, (GDestroyNotify) shell_app_info_unref);
 
+  priv->cached_menu_contents = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                      g_free, free_appinfo_gslist);
+
   /* For now, we want to pick up Evince, Nautilus, etc.  We'll
    * handle NODISPLAY semantics at a higher level or investigate them
    * case by case.
@@ -262,6 +267,8 @@ shell_app_system_finalize (GObject *object)
   gmenu_tree_unref (priv->apps_tree);
   gmenu_tree_unref (priv->settings_tree);
 
+  g_hash_table_destroy (priv->cached_menu_contents);
+
   g_hash_table_destroy (priv->app_id_to_app);
 
   g_slist_foreach (priv->cached_app_menus, (GFunc)shell_app_menu_entry_free, NULL);
@@ -277,6 +284,14 @@ shell_app_system_finalize (GObject *object)
   gconf_client_notify_remove (gconf_client_get_default (), priv->app_monitor_id);
 
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize(object);
+}
+
+static void
+free_appinfo_gslist (gpointer listp)
+{
+  GSList *list = listp;
+  g_slist_foreach (list, (GFunc) shell_app_info_unref, NULL);
+  g_slist_free (list);
 }
 
 static void
@@ -419,8 +434,12 @@ static gboolean
 on_tree_changed (gpointer user_data)
 {
   ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
-  g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
+
   reread_menus (self);
+  g_hash_table_remove_all (self->priv->cached_menu_contents);
+
+  g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
+
   self->priv->app_change_timeout_id = 0;
   return FALSE;
 }
@@ -537,26 +556,32 @@ shell_app_menu_entry_get_type (void)
  * shell_app_system_get_applications_for_menu:
  *
  * Traverses a toplevel menu, and returns all items under it.  Nested items
- * are flattened.
+ * are flattened.  This value is computed on initial call and cached thereafter
+ * until the set of installed applications changes.
  *
- * Return value: (transfer full) (element-type ShellAppInfo): List of applications
+ * Return value: (transfer none) (element-type ShellAppInfo): List of applications
  */
 GSList *
-shell_app_system_get_applications_for_menu (ShellAppSystem *monitor,
+shell_app_system_get_applications_for_menu (ShellAppSystem *self,
                                             const char *menu)
 {
-  char *path;
-  GMenuTreeDirectory *menu_entry;
   GSList *apps;
 
-  path = g_strdup_printf ("/%s", menu);
-  menu_entry = gmenu_tree_get_directory_from_path (monitor->priv->apps_tree, path);
-  g_free (path);
-  g_assert (menu_entry != NULL);
+  apps = g_hash_table_lookup (self->priv->cached_menu_contents, menu);
+  if (!apps)
+    {
+      char *path;
+      GMenuTreeDirectory *menu_entry;
+      path = g_strdup_printf ("/%s", menu);
+      menu_entry = gmenu_tree_get_directory_from_path (self->priv->apps_tree, path);
+      g_free (path);
+      g_assert (menu_entry != NULL);
 
-  apps = gather_entries_recurse (monitor, NULL, menu_entry);
+      apps = gather_entries_recurse (self, NULL, menu_entry);
+      g_hash_table_insert (self->priv->cached_menu_contents, g_strdup (menu), apps);
 
-  gmenu_tree_item_unref (menu_entry);
+      gmenu_tree_item_unref (menu_entry);
+    }
 
   return apps;
 }
