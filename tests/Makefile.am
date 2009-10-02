@@ -2,9 +2,15 @@ noinst_SCRIPTS = run-test.sh
 EXTRA_DIST = run-test.sh.in
 
 TEST_JS =					\
-	testcommon/ui.js			\
+	interactive/borders.js			\
 	interactive/box-layout.js		\
-	interactive/calendar.js
+	interactive/calendar.js			\
+	interactive/css-fonts.js		\
+	interactive/inline-style.js		\
+	interactive/scrolling.js		\
+	interactive/table.js			\
+	testcommon/border-image.png		\
+	testcommon/ui.js
 EXTRA_DIST += $(TEST_JS)
 
 TEST_MISC =					\

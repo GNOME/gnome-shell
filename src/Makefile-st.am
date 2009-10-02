@@ -18,6 +18,7 @@ st_built_sources =				\
 BUILT_SOURCES += $(st_built_sources)
 
 EXTRA_DIST +=					\
+	st/test-theme.css			\
 	st/st-marshal.list			\
 	st/st-enum-types.h.in			\
 	st/st-enum-types.c.in
@@ -74,17 +75,20 @@ st_source_h =					\
     st/st-clipboard.h				\
     st/st-entry.h				\
     st/st-label.h				\
+    st/st-private.h				\
     st/st-scrollable.h				\
     st/st-scroll-bar.h				\
     st/st-scroll-view.h				\
     st/st-subtexture.h				\
     st/st-table.h				\
     st/st-table-child.h				\
+    st/st-table-private.h			\
     st/st-texture-cache.h			\
     st/st-texture-frame.h			\
     st/st-theme.h				\
     st/st-theme-context.h			\
     st/st-theme-node.h				\
+    st/st-theme-private.h			\
     st/st-tooltip.h				\
     st/st-types.h				\
     st/st-widget.h				\
