@@ -70,12 +70,20 @@ AppIcon.prototype = {
                                            reactive: true });
         this.actor._delegate = this;
         this.highlight_border_color = APPICON_DEFAULT_BORDER_COLOR;
+        this._signalIds = [];
 
+        // Note, we don't presently update the window list dynamically here; this actor
+        // gets destroyed and recreated by AppWell, and in alt-tab the whole thing is
+        // created each time
         this.windows = Shell.AppMonitor.get_default().get_windows_for_app(this.appInfo.get_id());
         for (let i = 0; i < this.windows.length; i++) {
-            this.windows[i].connect('notify::user-time', Lang.bind(this, this._resortWindows));
+            let sigId = this.windows[i].connect('notify::user-time', Lang.bind(this, this._resortWindows));
+            this._signalIds.push([this.windows[i], sigId]);
         }
         this._resortWindows();
+
+        this.actor.connect('destroy', Lang.bind(this, this._destroy));
+        this.actor.connect('notify::mapped', Lang.bind(this, this._onMappedChanged));
 
         if (this._menuType != MenuType.NONE) {
             this.actor.connect('button-press-event', Lang.bind(this, this._updateMenuOnButtonPress));
@@ -167,7 +175,26 @@ AppIcon.prototype = {
         }
     },
 
+    _destroy: function() {
+        for (let i = 0; i < this._signalIds.length; i++) {
+            let [obj, sigId] = this._signalIds[i];
+            obj.disconnect(sigId);
+        }
+    },
+
+    _onMappedChanged: function() {
+        let mapped = this.actor.mapped;
+        if (mapped && this._windowSortStale)
+            this._resortWindows();
+    },
+
     _resortWindows: function() {
+        let mapped = this.actor.mapped;
+        if (!mapped) {
+            this._windowSortStale = true;
+            return;
+        }
+        this._windowSortStale = false;
         this.windows.sort(function (a, b) {
             let activeWorkspace = global.screen.get_active_workspace();
             let wsA = a.get_workspace() == activeWorkspace;
