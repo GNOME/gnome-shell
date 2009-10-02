@@ -88,7 +88,7 @@ AltTabPopup.prototype = {
         box.append(new Clutter.Rectangle({ width: 1,
                                            color: POPUP_APPICON_SEPARATOR_COLOR }),
                    Big.BoxPackFlags.EXPAND);
-        this._separator = box
+        this._separator = box;
         this._appsBox.add_actor(box);
     },
 
