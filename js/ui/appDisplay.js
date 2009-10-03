@@ -192,14 +192,6 @@ AppDisplay.prototype = {
             this._appsStale = true;
             this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
-        this._appMonitor.connect('app-added', Lang.bind(this, function(monitor) {
-            this._appsStale = true;
-            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
-        }));
-        this._appMonitor.connect('app-removed', Lang.bind(this, function(monitor) {
-            this._appsStale = true;
-            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
-        }));
 
         this._focusInMenus = true;
         this._activeMenuIndex = -1;
@@ -770,6 +762,9 @@ AppWell.prototype = {
                                    x_align: Big.BoxAlignment.CENTER });
         this.actor._delegate = this;
 
+        this._pendingRedisplay = false;
+        this.actor.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
+
         this._grid = new WellGrid();
         this.actor.append(this._grid.actor, Big.BoxPackFlags.EXPAND);
 
@@ -809,7 +804,20 @@ AppWell.prototype = {
                             values[id] = index; return values; }, {});
     },
 
+    _onMappedNotify: function() {
+        let mapped = this.actor.mapped;
+        if (mapped && this._pendingRedisplay)
+            this._redisplay();
+    },
+
     _redisplay: function () {
+        let mapped = this.actor.mapped;
+        if (!mapped) {
+            this._pendingRedisplay = true;
+            return;
+        }
+        this._pendingRedisplay = false;
+
         this._grid.removeAll();
 
         let favoriteIds = this._appSystem.get_favorites();
