@@ -428,7 +428,7 @@ clutter_units_from_string (ClutterUnits *units,
     }
 
   /* assume pixels by default, if no unit is specified */
-  if (str == '\0')
+  if (*str == '\0')
     unit_type = CLUTTER_UNIT_PIXEL;
   else
     {

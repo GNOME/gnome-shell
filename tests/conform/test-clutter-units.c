@@ -27,6 +27,10 @@ test_units_string (TestConformSimpleFixture *fixture,
   ClutterUnits units;
   gchar *string;
 
+  g_assert (clutter_units_from_string (&units, "10") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
+  g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 10);
+
   g_assert (clutter_units_from_string (&units, "5 em") == TRUE);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_EM);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 5);
