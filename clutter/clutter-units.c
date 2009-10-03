@@ -657,7 +657,7 @@ clutter_value_set_units (GValue             *value,
  * Since: 0.8
  */
 G_CONST_RETURN ClutterUnits *
-clutter_value_get_unit (const GValue *value)
+clutter_value_get_units (const GValue *value)
 {
   g_return_val_if_fail (CLUTTER_VALUE_HOLDS_UNITS (value), NULL);
 
