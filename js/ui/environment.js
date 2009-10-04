@@ -4,6 +4,8 @@ const St = imports.gi.St;
 
 const Tweener = imports.ui.tweener;
 
+const Format = imports.misc.format;
+
 // "monkey patch" in some varargs ClutterContainer methods; we need
 // to do this per-container class since there is no representation
 // of interfaces in Javascript
@@ -30,4 +32,5 @@ _patchContainerClass(St.Table);
 
 function init() {
     Tweener.init();
+    String.prototype.format = Format.format;
 }

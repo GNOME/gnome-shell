@@ -10,7 +10,8 @@ TEST_JS =					\
 	interactive/scrolling.js		\
 	interactive/table.js			\
 	testcommon/border-image.png		\
-	testcommon/ui.js
+	testcommon/ui.js                        \
+	unit/format.js
 EXTRA_DIST += $(TEST_JS)
 
 TEST_MISC =					\
