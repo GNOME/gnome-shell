@@ -322,7 +322,7 @@ AppIconMenu.prototype = {
         this._arrow = new Shell.DrawingArea();
         this._arrow.connect('redraw', Lang.bind(this, function (area, texture) {
             Shell.draw_box_pointer(texture,
-                                   this._type == MenuType.ON_RIGHT ? Clutter.Gravity.WEST : Clutter.Gravity.NORTH,
+                                   this._type == MenuType.ON_RIGHT ? Shell.PointerDirection.LEFT : Shell.PointerDirection.UP,
                                    source.highlight_border_color,
                                    APPICON_MENU_BACKGROUND_COLOR);
         }));
