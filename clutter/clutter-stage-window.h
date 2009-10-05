@@ -28,12 +28,45 @@ struct _ClutterStageWindowIface
   void          (* set_user_resizable) (ClutterStageWindow *stage_window,
                                         gboolean            is_resizable);
 
+  gboolean      (* realize)            (ClutterStageWindow *stage_window);
+  void          (* unrealize)          (ClutterStageWindow *stage_window);
+
   void          (* show)               (ClutterStageWindow *stage_window,
                                         gboolean            do_raise);
   void          (* hide)               (ClutterStageWindow *stage_window);
+
+  void          (* resize)             (ClutterStageWindow *stage_window,
+                                        gint                width,
+                                        gint                height);
+  void          (* get_geometry)       (ClutterStageWindow *stage_window,
+                                        ClutterGeometry    *geometry);
 };
 
 GType clutter_stage_window_get_type (void) G_GNUC_CONST;
+
+ClutterActor *_clutter_stage_window_get_wrapper        (ClutterStageWindow *window);
+
+void          _clutter_stage_window_set_title          (ClutterStageWindow *window,
+                                                        const gchar        *title);
+void          _clutter_stage_window_set_fullscreen     (ClutterStageWindow *window,
+                                                        gboolean            is_fullscreen);
+void          _clutter_stage_window_set_cursor_visible (ClutterStageWindow *window,
+                                                        gboolean            is_visible);
+void          _clutter_stage_window_set_user_resizable (ClutterStageWindow *window,
+                                                        gboolean            is_resizable);
+
+gboolean      _clutter_stage_window_realize            (ClutterStageWindow *window);
+void          _clutter_stage_window_unrealize          (ClutterStageWindow *window);
+
+void          _clutter_stage_window_show               (ClutterStageWindow *window,
+                                                        gboolean            do_raise);
+void          _clutter_stage_window_hide               (ClutterStageWindow *window);
+
+void          _clutter_stage_window_resize             (ClutterStageWindow *window,
+                                                        gint                width,
+                                                        gint                height);
+void          _clutter_stage_window_get_geometry       (ClutterStageWindow *window,
+                                                        ClutterGeometry    *geometry);
 
 G_END_DECLS
 

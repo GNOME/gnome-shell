@@ -159,6 +159,7 @@ test_actors_main (int argc, char *argv[])
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Clone Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+  clutter_stage_set_user_resizable (CLUTTER_STAGE (stage), TRUE);
 
   oh = g_new (SuperOH, 1);
   oh->stage = stage;

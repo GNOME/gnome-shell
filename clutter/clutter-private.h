@@ -188,7 +188,7 @@ GType         _clutter_backend_impl_get_type  (void);
 
 void          _clutter_backend_redraw         (ClutterBackend  *backend,
                                                ClutterStage    *stage);
-ClutterActor *_clutter_backend_create_stage   (ClutterBackend  *backend,
+ClutterStageWindow *_clutter_backend_create_stage   (ClutterBackend  *backend,
                                                ClutterStage    *wrapper,
                                                GError         **error);
 void          _clutter_backend_ensure_context (ClutterBackend  *backend,

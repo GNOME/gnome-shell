@@ -33,9 +33,10 @@
 #include <pango/pango.h>
 
 #include <clutter/clutter-actor.h>
-#include <clutter/clutter-stage.h>
 #include <clutter/clutter-event.h>
 #include <clutter/clutter-feature.h>
+#include <clutter/clutter-stage.h>
+#include <clutter/clutter-stage-window.h>
 
 G_BEGIN_DECLS
 
@@ -67,7 +68,7 @@ struct _ClutterBackendClass
                                             GError         **error);
   gboolean            (* post_parse)       (ClutterBackend  *backend,
                                             GError         **error);
-  ClutterActor *      (* create_stage)     (ClutterBackend  *backend,
+  ClutterStageWindow *(* create_stage)     (ClutterBackend  *backend,
                                             ClutterStage    *wrapper,
                                             GError         **error);
   void                (* init_events)      (ClutterBackend  *backend);

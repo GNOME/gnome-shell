@@ -585,22 +585,22 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
     }
 }
 
-static ClutterActor *
+static ClutterStageWindow *
 clutter_backend_glx_create_stage (ClutterBackend  *backend,
                                   ClutterStage    *wrapper,
                                   GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterStageX11   *stage_x11;
-  ClutterActor      *stage;
+  ClutterStageWindow *stage_window;
+  ClutterStageX11 *stage_x11;
 
   CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
                 g_type_name (CLUTTER_STAGE_TYPE));
 
-  stage = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
+  stage_window = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
 
   /* copy backend data into the stage */
-  stage_x11 = CLUTTER_STAGE_X11 (stage);
+  stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   stage_x11->xdpy = backend_x11->xdpy;
   stage_x11->xwin_root = backend_x11->xwin_root;
   stage_x11->xscreen = backend_x11->xscreen_num;
@@ -609,13 +609,13 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
 
   CLUTTER_NOTE (BACKEND,
                 "GLX stage created[%p] (dpy:%p, screen:%d, root:%u, wrap:%p)",
-                stage,
+                stage_window,
                 stage_x11->xdpy,
                 stage_x11->xscreen,
                 (unsigned int) stage_x11->xwin_root,
                 wrapper);
 
-  return stage;
+  return stage_window;
 }
 
 static XVisualInfo *
