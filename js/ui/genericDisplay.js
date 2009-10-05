@@ -370,7 +370,11 @@ GenericDisplay.prototype = {
             return;
         let flags = RedisplayFlags.RESET_CONTROLS;
         if (this._search != '') {
-            if (lowertext.indexOf(this._search) == 0)
+            // Because we combine search terms with OR, we have to be sure that no new term
+            // was introduced before deciding that the new search results will be a subset of
+            // the existing search results.
+            if (lowertext.indexOf(this._search) == 0 &&
+                lowertext.split(/\s+/).length == this._search.split(/\s+/).length)
                 flags |= RedisplayFlags.SUBSEARCH;
         }
         this._search = lowertext;
