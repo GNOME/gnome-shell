@@ -38,7 +38,9 @@
 #include <glib/gi18n-lib.h>
 #include <locale.h>
 
+#ifdef USE_GDKPIXBUF
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#endif
 
 #include "clutter-event.h"
 #include "clutter-backend.h"
@@ -340,6 +342,11 @@ _clutter_id_to_color (guint id, ClutterColor *col)
   col->blue  = blue;
   col->alpha = 0xff;
 
+  /* XXX: We rotate the nibbles of the colors here so that there is a
+   * visible variation between colors of sequential actor identifiers;
+   * otherwise pick buffers dumped to an image will pretty much just look
+   * black.
+   */
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
       col->red = (col->red << 4) | (col->red >> 4);
@@ -363,6 +370,12 @@ _clutter_pixel_to_id (guchar pixel[4])
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
       guchar tmp;
+
+      /* XXX: In _clutter_id_to_color we rotated the nibbles of the colors so
+       * that there is a visible variation between colors of sequential actor
+       * identifiers (otherwise pick buffers dumped to an image will pretty
+       * much just look black.) Here we reverse that rotation.
+       */
       tmp = ((pixel[0] << 4) | (pixel[0] >> 4));
       red = tmp >> (8 - ctx->fb_r_mask);
       tmp = ((pixel[1] << 4) | (pixel[1] >> 4));
@@ -389,11 +402,13 @@ _clutter_pixel_to_id (guchar pixel[4])
   return id;
 }
 
+#ifdef USE_GDKPIXBUF
 static void
 pixbuf_free (guchar *pixels, gpointer data)
 {
   g_free (pixels);
 }
+#endif
 
 static void
 read_pixels_to_file (char *filename_stem,
@@ -402,6 +417,7 @@ read_pixels_to_file (char *filename_stem,
                      int width,
                      int height)
 {
+#ifdef USE_GDKPIXBUF
   GLubyte *data;
   GdkPixbuf *pixbuf;
   static int read_count = 0;
@@ -439,6 +455,15 @@ read_pixels_to_file (char *filename_stem,
       g_object_unref (flipped);
       read_count++;
     }
+#else
+  static gboolean seen = FALSE;
+  if (!seen)
+    {
+      g_warning ("dumping buffers to an image isn't supported on platforms "
+                 "without gdk pixbuf support\n");
+      seen = TRUE;
+    }
+#endif
 }
 
 ClutterActor *
