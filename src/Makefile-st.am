@@ -74,6 +74,7 @@ st_source_h =					\
     st/st-button.h				\
     st/st-clipboard.h				\
     st/st-entry.h				\
+    st/st-im-text.h				\
     st/st-label.h				\
     st/st-private.h				\
     st/st-scrollable.h				\
@@ -109,6 +110,7 @@ st_source_c =					\
     st/st-button.c				\
     st/st-clipboard.c				\
     st/st-entry.c				\
+    st/st-im-text.c				\
     st/st-label.c				\
     st/st-private.c				\
     st/st-scrollable.c				\

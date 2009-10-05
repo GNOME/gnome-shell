@@ -53,10 +53,10 @@
 #include <glib.h>
 
 #include <clutter/clutter.h>
-#include <clutter-imcontext/clutter-imtext.h>
 
 #include "st-entry.h"
 
+#include "st-im-text.h"
 #include "st-widget.h"
 #include "st-texture-cache.h"
 #include "st-marshal.h"
@@ -645,7 +645,7 @@ st_entry_init (StEntry *entry)
 
   priv = entry->priv = ST_ENTRY_GET_PRIVATE (entry);
 
-  priv->entry = g_object_new (CLUTTER_TYPE_IMTEXT,
+  priv->entry = g_object_new (ST_TYPE_IM_TEXT,
                               "line-alignment", PANGO_ALIGN_LEFT,
                               "editable", TRUE,
                               "reactive", TRUE,

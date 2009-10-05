@@ -6,6 +6,7 @@ TEST_JS =					\
 	interactive/box-layout.js		\
 	interactive/calendar.js			\
 	interactive/css-fonts.js		\
+	interactive/entry.js			\
 	interactive/inline-style.js		\
 	interactive/scrolling.js		\
 	interactive/table.js			\

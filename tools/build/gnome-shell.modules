@@ -39,13 +39,6 @@
     </dependencies>
   </autotools>
 
-  <autotools id="clutter-imcontext">
-    <branch repo="git.moblin.org" module="clutter-imcontext"/>
-    <dependencies>
-        <dep package="clutter"/>
-    </dependencies>
-  </autotools>
-
   <autotools id="gconf" autogenargs="--disable-defaults-service">
     <branch repo="git.gnome.org" module="gconf"/>
   </autotools>
@@ -62,7 +55,6 @@
   <autotools id="gnome-shell">
     <branch repo="git.gnome.org" module="gnome-shell"/>
     <dependencies>
-        <dep package="clutter-imcontext"/>
         <dep package="gobject-introspection"/>
         <dep package="gir-repository"/>
         <dep package="mutter"/>
