@@ -20,7 +20,7 @@ GLOW_COLOR.from_pixel(0x4f6ba4ff);
 const GLOW_PADDING_HORIZONTAL = 3;
 const GLOW_PADDING_VERTICAL = 3;
 
-const APPICON_ICON_SIZE = 48;
+const APPICON_DEFAULT_ICON_SIZE = 48;
 
 const APPICON_PADDING = 1;
 const APPICON_BORDER_WIDTH = 1;
@@ -49,14 +49,19 @@ TRANSPARENT_COLOR.from_pixel(0x00000000);
 
 const MenuType = { NONE: 0, ON_RIGHT: 1, BELOW: 2 };
 
-function AppIcon(appInfo, menuType) {
-    this._init(appInfo, menuType || MenuType.NONE);
+function AppIcon(params) {
+    this._init(params);
 }
 
 AppIcon.prototype = {
-    _init : function(appInfo, menuType, showGlow) {
-        this.appInfo = appInfo;
-        this._menuType = menuType;
+    _init : function(params) {
+        this.appInfo = params.appInfo;
+        if (!this.appInfo)
+            throw new Error('AppIcon constructor requires "appInfo" param');
+
+        this._menuType = ('menuType' in params) ? params.menuType : MenuType.NONE;
+        this._iconSize = ('size' in params) ? params.size : APPICON_DEFAULT_ICON_SIZE;
+        let showGlow = ('glow' in params) ? params.glow : false;
 
         this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
                                            border: APPICON_BORDER_WIDTH,
@@ -66,13 +71,13 @@ AppIcon.prototype = {
         this.actor._delegate = this;
         this.highlight_border_color = APPICON_DEFAULT_BORDER_COLOR;
 
-        this.windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
+        this.windows = Shell.AppMonitor.get_default().get_windows_for_app(this.appInfo.get_id());
         for (let i = 0; i < this.windows.length; i++) {
             this.windows[i].connect('notify::user-time', Lang.bind(this, this._resortWindows));
         }
         this._resortWindows();
 
-        if (menuType != MenuType.NONE) {
+        if (this._menuType != MenuType.NONE) {
             this.actor.connect('button-press-event', Lang.bind(this, this._updateMenuOnButtonPress));
             this.actor.connect('notify::hover', Lang.bind(this, this._updateMenuOnHoverChanged));
             this.actor.connect('activate', Lang.bind(this, this._updateMenuOnActivate));
@@ -84,9 +89,9 @@ AppIcon.prototype = {
         let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     x_align: Big.BoxAlignment.CENTER,
                                     y_align: Big.BoxAlignment.CENTER,
-                                    width: APPICON_ICON_SIZE,
-                                    height: APPICON_ICON_SIZE });
-        this.icon = appInfo.create_icon_texture(APPICON_ICON_SIZE);
+                                    width: this._iconSize,
+                                    height: this._iconSize });
+        this.icon = this.appInfo.create_icon_texture(this._iconSize);
         iconBox.append(this.icon, Big.BoxPackFlags.NONE);
 
         this.actor.append(iconBox, Big.BoxPackFlags.EXPAND);
@@ -101,7 +106,7 @@ AppIcon.prototype = {
                                         font_name: "Sans 12px",
                                         line_alignment: Pango.Alignment.CENTER,
                                         ellipsize: Pango.EllipsizeMode.END,
-                                        text: appInfo.get_name() });
+                                        text: this.appInfo.get_name() });
         nameBox.add_actor(this._name);
         if (showGlow) {
             this._glowBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
@@ -189,7 +194,7 @@ AppIcon.prototype = {
     // a subclass of it draggable, you can use this method to create
     // a drag actor
     createDragActor: function() {
-        return this.appInfo.create_icon_texture(APPICON_ICON_SIZE);
+        return this.appInfo.create_icon_texture(this._iconSize);
     },
 
     setHighlight: function(highlight) {

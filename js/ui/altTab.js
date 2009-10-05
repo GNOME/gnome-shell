@@ -109,7 +109,8 @@ AltTabPopup.prototype = {
         let workspaceIcons = [];
         let otherIcons = [];
         for (let i = 0; i < apps.length; i++) {
-            let appIcon = new AppIcon.AppIcon(apps[i], AppIcon.MenuType.BELOW, false);
+            let appIcon = new AppIcon.AppIcon({ appInfo: apps[i],
+                                                menuType: AppIcon.MenuType.BELOW });
             if (this._hasWindowsOnWorkspace(appIcon, activeWorkspace))
               workspaceIcons.push(appIcon);
             else

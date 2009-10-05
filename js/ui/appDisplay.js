@@ -452,7 +452,9 @@ BaseWellItem.prototype = {
     __proto__: AppIcon.AppIcon.prototype,
 
     _init: function(appInfo, isFavorite) {
-        AppIcon.AppIcon.prototype._init.call(this, appInfo, AppIcon.MenuType.ON_RIGHT, true);
+        AppIcon.AppIcon.prototype._init.call(this, { appInfo: appInfo,
+                                                     menuType: AppIcon.MenuType.ON_RIGHT,
+                                                     glow: true });
 
         this.isFavorite = isFavorite;
 
