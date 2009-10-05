@@ -232,14 +232,14 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
   return CLUTTER_FEATURE_STAGE_CURSOR|CLUTTER_FEATURE_STAGE_MULTIPLE;
 }
 
-static ClutterActor *
+static ClutterStageWindow *
 clutter_backend_egl_create_stage (ClutterBackend  *backend,
                                   ClutterStage    *wrapper,
                                   GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageX11 *stage_x11;
-  ClutterActor *stage;
+  ClutterStageWindow *stage;
 
   CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
                 g_type_name (CLUTTER_STAGE_TYPE));
