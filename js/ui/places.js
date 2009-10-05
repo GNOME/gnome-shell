@@ -96,7 +96,8 @@ Places.prototype = {
                                          spacing: PLACES_VSPACING });
         this._leftBox.append(this._actionsBox, Big.BoxPackFlags.NONE);
         this._devBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                      spacing: PLACES_VSPACING });
+                                      spacing: PLACES_VSPACING,
+                                      padding_top: 6 });
         this._leftBox.append(this._devBox, Big.BoxPackFlags.NONE);
 
         // Right is bookmarks
