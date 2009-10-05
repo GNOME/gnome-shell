@@ -357,6 +357,10 @@ Overview.prototype = {
             this._activeDisplayPane.close();
         this._workspaces.hide();
 
+        this._addButton.actor.destroy();
+        this._addButton.actor = null;
+        this._addButton = null;
+
         // Create a zoom in effect by transforming the Overview group so that
         // the active workspace fills up the whole screen. The opposite
         // transition is used in show().
