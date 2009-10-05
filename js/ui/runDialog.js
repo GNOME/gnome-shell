@@ -170,7 +170,7 @@ RunDialog.prototype = {
                  * We are only interested in the actual error, so parse that out.
                  */
                 let m = /.+\((.+)\)/.exec(e);
-                let errorStr = "Execution of '" + command + "' failed:\n" + m[1];
+                let errorStr = _("Execution of '%s' failed:").format(command) + "\n" + m[1];
                 this._errorMessage.set_text(errorStr);
                 this._errorBox.show();
             }
