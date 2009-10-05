@@ -39,6 +39,6 @@ function format() {
                         default:
                             throw new Error('Unsupported conversion character %' + genericGroup);
                     }
-
+                    return ""; // Suppress warning
                 });
 }
