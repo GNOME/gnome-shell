@@ -15,6 +15,8 @@ char *_st_theme_resolve_url (StTheme      *theme,
                              CRStyleSheet *base_stylesheet,
                              const char   *url);
 
+CRDeclaration *_st_theme_parse_declaration_list (const char *str);
+
 G_END_DECLS
 
 #endif /* __ST_THEME_PRIVATE_H__ */

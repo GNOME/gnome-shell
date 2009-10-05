@@ -156,6 +156,92 @@ st_theme_class_init (StThemeClass *klass)
 
 }
 
+/* This is a workaround for a bug in libcroco < 0.6.2 where
+ * function starting with 'r' (and 'u') are misparsed. We work
+ * around this by exploiting the fact that libcroco is incomformant
+ * with the CSS-spec and case sensitive and pre-convert all
+ * occurrences of rgba to RGBA. Then we make our own parsing
+ * code check for RGBA as well.
+ */
+#if LIBCROCO_VERSION_NUMBER < 602
+static gboolean
+is_identifier_character (char c)
+{
+  /* Actual CSS rules allow for unicode > 0x00a1 and escaped
+   * characters, but we'll assume we won't do that in our stylesheets
+   * or at least not next to the string 'rgba'.
+   */
+  return g_ascii_isalnum(c) || c == '-' || c == '_';
+}
+
+static void
+convert_rgba_RGBA (char *buf)
+{
+  char *p;
+
+  p = strstr (buf, "rgba");
+  while (p)
+    {
+      /* Check if this looks like a complete token; this is to
+       * avoiding mangling, say, a selector '.rgba-entry' */
+      if (!((p > buf && is_identifier_character (*(p - 1))) ||
+            (is_identifier_character (*(p + 4)))))
+        memcpy(p, "RGBA", 4);
+      p += 4;
+      p = strstr (p, "rgba");
+    }
+}
+
+static CRStyleSheet *
+parse_stylesheet (const char *filename)
+{
+  enum CRStatus status;
+  char *contents;
+  gsize length;
+  GError *error = NULL;
+  CRStyleSheet *stylesheet = NULL;
+
+  if (filename == NULL)
+    return NULL;
+
+  if (!g_file_get_contents (filename, &contents ,&length, &error))
+    {
+      g_warning("Couldn't read stylesheet: %s", error->message);
+      g_error_free (error);
+
+      return NULL;
+    }
+
+  convert_rgba_RGBA (contents);
+
+  status = cr_om_parser_simply_parse_buf ((const guchar *) contents,
+                                          length,
+                                          CR_UTF_8,
+                                          &stylesheet);
+
+  if (status != CR_OK)
+    g_warning ("Error parsing stylesheet '%s'", filename);
+
+  g_free (contents);
+
+  return stylesheet;
+}
+
+CRDeclaration *
+_st_theme_parse_declaration_list (const char *str)
+{
+  char *copy = g_strdup (str);
+  CRDeclaration *result;
+
+  convert_rgba_RGBA (copy);
+
+  result = cr_declaration_parse_list_from_buf ((const guchar *)copy,
+                                               CR_UTF_8);
+  g_free (copy);
+
+  return result;
+}
+#else /* LIBCROCO_VERSION_NUMBER >= 602 */
 static CRStyleSheet *
 parse_stylesheet (const char *filename)
 {
@@ -177,6 +263,14 @@ parse_stylesheet (const char *filename)
 
   return stylesheet;
 }
+
+CRDeclaration *
+_st_theme_parse_declaration_list (const char *str)
+{
+  return cr_declaration_parse_list_from_buf ((const guchar *)str,
+                                             CR_UTF_8);
+}
+#endif /* LIBCROCO_VERSION_NUMBER < 602 */
 
 static void
 insert_stylesheet (StTheme      *theme,

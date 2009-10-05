@@ -258,9 +258,7 @@ ensure_properties (StThemeNode *node)
           if (!properties)
             properties = g_ptr_array_new ();
 
-          node->inline_properties = cr_declaration_parse_list_from_buf ((const guchar *)node->inline_style,
-                                                                        CR_UTF_8);
-
+          node->inline_properties = _st_theme_parse_declaration_list (node->inline_style);
           for (cur_decl = node->inline_properties; cur_decl; cur_decl = cur_decl->next)
             g_ptr_array_add (properties, cur_decl);
         }
@@ -408,12 +406,21 @@ get_color_from_term (StThemeNode  *node,
   /* rgba () colors - a CSS3 addition, are not supported by libcroco,
    * but they are parsed as a "function", so we can emulate the
    * functionality.
+   *
+   * libcroco < 0.6.2 has a bug where functions starting with 'r' are
+   * misparsed. We workaround this by pre-converting 'rgba' to 'RGBA'
+   * before parsing the stylesheet. Since libcroco isn't
+   * case-insensitive (a bug), it's fine with functions starting with
+   * 'R'. (In theory, we should be doing a case-insensitive compare
+   * everywhere, not just here, but that doesn't make much sense when
+   * the built-in parsing of libcroco is case-sensitive and things
+   * like 10PX don't work.)
    */
   else if (term->type == TERM_FUNCTION &&
            term->content.str &&
            term->content.str->stryng &&
            term->content.str->stryng->str &&
-           strcmp (term->content.str->stryng->str, "rgba") == 0)
+           g_ascii_strcasecmp (term->content.str->stryng->str, "rgba") == 0)
     {
       return get_color_from_rgba_term (term, color);
     }
