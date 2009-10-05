@@ -87,7 +87,12 @@
 #include "clutter-bezier.h"
 #include "clutter-private.h"
 
-G_DEFINE_TYPE (ClutterPath, clutter_path, G_TYPE_INITIALLY_UNOWNED);
+static void clutter_path_register_transforms (GType type);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterPath,
+                         clutter_path,
+                         G_TYPE_INITIALLY_UNOWNED,
+                         clutter_path_register_transforms (g_define_type_id));
 
 #define CLUTTER_PATH_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_PATH, \
@@ -208,6 +213,35 @@ static void
 clutter_path_init (ClutterPath *self)
 {
   self->priv = CLUTTER_PATH_GET_PRIVATE (self);
+}
+
+static void
+clutter_value_transform_path_string (const GValue *src,
+                                     GValue       *dest)
+{
+  gchar *string = clutter_path_get_description (src->data[0].v_pointer);
+
+  g_value_take_string (dest, string);
+}
+
+static void
+clutter_value_transform_string_path (const GValue *src,
+                                     GValue       *dest)
+{
+  ClutterPath *new_path;
+
+  new_path = clutter_path_new_with_description (g_value_get_string (src));
+  g_value_take_object (dest, new_path);
+}
+
+static void
+clutter_path_register_transforms (GType type)
+{
+  g_value_register_transform_func (type, G_TYPE_STRING,
+                                   clutter_value_transform_path_string);
+
+  g_value_register_transform_func (G_TYPE_STRING, type,
+                                   clutter_value_transform_string_path);
 }
 
 static void
