@@ -16,74 +16,53 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-02 22:27+0100\n"
-"PO-Revision-Date: 2009-03-02 22:27+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&component=general\n"
+"POT-Creation-Date: 2009-07-02 07:12+0000\n"
+"PO-Revision-Date: 2009-10-05 18:30+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "Bureau"
-
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "Gestion des fenêtres"
-
-#: ../src/core/core.c:206
+#: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Requête d'information de fenêtre inconnue : %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "Impossible d'analyser « %s » en tant qu'entier"
-
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Caractères de fin « %s » non compris dans la chaîne « %s »"
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
-"Impossible d'analyser le message « %s » à partir du processus de la boîte de "
-"dialogue\n"
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr ""
-"Erreur de lecture depuis le processus d'affichage de la boîte de dialogue : %"
-"s\n"
-
-#: ../src/core/delete.c:336
+#: ../src/core/delete.c:105
 #, c-format
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+"<big><b><tt>%s</tt> is not responding.</b></big>\n"
+"\n"
+"<i>You may choose to wait a short while for it to continue or force the "
+"application to quit entirely.</i>"
 msgstr ""
-"Erreur de lancement de la boîte de dialogue Metacity invitant à tuer une "
-"application : %s\n"
+"<big><b><tt>%s</tt> ne répond pas.</b></big>\n"
+"\n"
+"<i>Vous pouvez attendre un instant pour continuer ou insister pour quitter "
+"l'application.</i>"
 
-#: ../src/core/delete.c:445
+#: ../src/core/delete.c:116
+msgid "_Wait"
+msgstr "_Attendre"
+
+#: ../src/core/delete.c:116
+msgid "_Force Quit"
+msgstr "_Forcer à quitter"
+
+#: ../src/core/delete.c:217
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Impossible d'obtenir le nom de machine : %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:275
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Extension %s manquante, mais nécessaire pour la composition"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:360
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Impossible d'ouvrir le visuel « %s » du système X Window\n"
@@ -104,7 +83,7 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erreur fatale d'E/S %d (%s) sur le visuel « %s ».\n"
 
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:681
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -116,7 +95,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2345
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -127,75 +106,89 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2435
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Aucune commande %d n'a été définie.\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3427
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Aucune commande de terminal n'a été définie.\n"
 
-#: ../src/core/main.c:116
+#: ../src/core/main.c:127
 #, c-format
 msgid ""
-"metacity %s\n"
+"mutter %s\n"
 "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
+"mutter %s\n"
 "Copyright © 2001-2008 Havoc Pennington, Red Hat, Inc., et autres.\n"
 "Ceci est un logiciel libre ; consultez le code source pour les\n"
 "conditions de copie.\n"
 "Il n'y a AUCUNE garantie ; même pas de VALEUR MARCHANDE ou\n"
 "d'ADÉQUATION À UN USAGE PARTICULIER.\n"
 
-#: ../src/core/main.c:253
+#: ../src/core/main.c:257
 msgid "Disable connection to session manager"
 msgstr "Désactiver la connexion au gestionnaire de sessions"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
+#: ../src/core/main.c:263
+msgid "Replace the running window manager with Mutter"
 msgstr ""
-"Remplacer le gestionnaire de fenêtres en cours de fonctionnement par Metacity"
+"Remplacer le gestionnaire de fenêtres en cours de fonctionnement par Mutter"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:269
 msgid "Specify session management ID"
 msgstr "Indiquer l'ID de gestion de sessions"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:274
 msgid "X Display to use"
 msgstr "Visuel X à utiliser"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:280
 msgid "Initialize session from savefile"
 msgstr "Initialiser la session depuis le fichier de sauvegarde"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:286
 msgid "Print version"
 msgstr "Afficher la version"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:292
 msgid "Make X calls synchronous"
 msgstr "Rendre synchrones les appels à X"
 
-#: ../src/core/main.c:294
+#: ../src/core/main.c:298
 msgid "Turn compositing on"
 msgstr "Activer la composition"
 
-#: ../src/core/main.c:300
+#: ../src/core/main.c:304
 msgid "Turn compositing off"
 msgstr "Désactiver la composition"
 
-#: ../src/core/main.c:478
+#: ../src/core/main.c:310
+msgid "Comma-separated list of compositor plugins"
+msgstr "Liste de greffons de composition, séparés par des virgules"
+
+#: ../src/core/main.c:316
+msgid "Whether window popup/frame should be shown when cycling windows."
+msgstr ""
+"Indique si les cadres ou les fenêtres contextuelles doivent apparaître en "
+"parcourant les fenêtres"
+
+#: ../src/core/main.c:323
+msgid "Internal argument for GObject introspection"
+msgstr "Paramètre interne pour l'introspection GObject"
+
+#: ../src/core/main.c:665
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Le parcours du répertoire de thèmes a échoué : %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:681
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -203,7 +196,7 @@ msgstr ""
 "Impossible de trouver un thème ! Assurez-vous que %s existe et contient les "
 "thèmes habituels.\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/main.c:742
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Impossible de redémarrer : %s\n"
@@ -219,24 +212,24 @@ msgstr "Impossible de redémarrer : %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:522 ../src/core/prefs.c:683
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La valeur de la clé GConf « %s » n'est pas valide\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:609 ../src/core/prefs.c:852
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d enregistré dans la clé GConf %s n'est pas compris entre %d et %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:653 ../src/core/prefs.c:730 ../src/core/prefs.c:778
+#: ../src/core/prefs.c:842 ../src/core/prefs.c:1142 ../src/core/prefs.c:1158
+#: ../src/core/prefs.c:1175 ../src/core/prefs.c:1191
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Le type de la clé GConf « %s » n'est pas valide\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1282
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -244,13 +237,13 @@ msgstr ""
 "Solutions de rechange désactivées pour les applications endommagées. "
 "Certaines applications peuvent ne pas se comporter correctement.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1353
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Impossible d'analyser la description de police « %s » depuis la clé GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1415
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -259,17 +252,17 @@ msgstr ""
 "« %s » trouvée dans la base de données de configuration n'est pas une valeur "
 "correcte pour le bouton de souris\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1839
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erreur de définition du nombre d'espaces de travail sur %d : %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:2023 ../src/core/prefs.c:2529
 #, c-format
 msgid "Workspace %d"
 msgstr "Espace de travail %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2056 ../src/core/prefs.c:2234
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -278,23 +271,38 @@ msgstr ""
 "« %s » trouvé dans la base de données de configuration n'est pas une valeur "
 "correcte pour la combinaison de touches « %s »\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2610
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "Erreur dans la définition du nom pour l'espace de travail %d à « %s » : %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2808
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Erreur dans la définition de l'état de la composition : %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:2836
+#, c-format
+msgid "Error setting clutter plugin list: %s\n"
+msgstr "Erreur dans la définition de la liste des greffons Clutter : %s\n"
+
+#: ../src/core/prefs.c:2879
+#, c-format
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr "Erreur dans la définition de l'état des fenêtres masquées vivantes : %s\n"
+
+#: ../src/core/prefs.c:2907
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr "Erreur dans la définition de l'état « no tab popup » : %s\n"
+
+#: ../src/core/screen.c:512
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "L'écran %d sur le visuel « %s » n'est pas valide\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:528
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -304,7 +312,7 @@ msgstr ""
 "d'utiliser l'option --replace pour remplacer le gestionnaire de fenêtres "
 "actuel.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:555
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -312,166 +320,125 @@ msgstr ""
 "Impossible d'avoir la sélection du gestionnaire de fenêtres sur l'écran %d "
 "du visuel « %s »\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:610
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "L'écran %d sur le visuel « %s » a déjà un gestionnaire de fenêtres\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:822
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossible de libérer l'écran %d sur le visuel « %s »\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Le format ressemble à « <Control>a » ou « <Shift><Alt>F1 ».\n"
-"\n"
-"L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-"minuscules et des abréviations telles que « <Ctl> » et « <Ctrl> ». Si vous "
-"définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
-"aura pas de combinaison de touches pour cette action."
-
-#: ../src/core/schema-bindings.c:177
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"Le format ressemble à « <Control>a » ou « <Shift><Alt>F1 ».\n"
-"\n"
-"L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-"minuscules et des abréviations telles que « <Ctl> » et « <Ctrl> ». Si vous "
-"définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
-"aura pas de combinaison de touches pour cette action."
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:851 ../src/core/session.c:858
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Impossible de créer le répertoire « %s » : %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:868
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Impossible d'ouvrir le fichier de session « %s » en écriture : %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1009
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Erreur lors de l'écriture du fichier de session « %s » : %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Erreur lors de la fermeture du fichier de session « %s » : %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1093
+#: ../src/core/session.c:1107
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "La lecture du fichier de session enregistré %s a échoué : %s\n"
 
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1146
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "L'analyse du fichier de session enregistré a échoué : %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1195
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
+msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr ""
-"L'attribut <metacity_session> a été trouvé, mais nous possédons déjà l'ID de "
+"L'attribut <mutter_session> a été trouvé, mais nous possédons déjà l'ID de "
 "session"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1208 ../src/core/session.c:1283
+#: ../src/core/session.c:1315 ../src/core/session.c:1387
+#: ../src/core/session.c:1447
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Attribut %s inconnu sur l'élément <%s>"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1225
 #, c-format
 msgid "nested <window> tag"
 msgstr "balise <window> imbriquée"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1467
 #, c-format
 msgid "Unknown element %s"
 msgstr "Élément %s inconnu"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1818
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Erreur lors du lancement de la boîte de dialogue Metacity d'avertissement "
-"sur les applications qui ne prennent pas en charge la gestion de sessions : %"
-"s\n"
+"Ces fenêtres ne prennent pas en charge « l'enregistrement de la configuration "
+"actuelle » et devront être redémarrées manuellement à la prochaine connexion."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:103
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "L'ouverture du journal de débogage a échoué : %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:113
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr ""
 "L'exécution de la commande fdopen() sur le fichier journal %s a échoué : %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:119
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Ouverture du fichier journal %s\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:138 ../src/tools/mutter-message.c:176
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity a été compilé sans la prise en charge du mode bavard\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter a été compilé sans la prise en charge du mode bavard\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:238
 msgid "Window manager: "
 msgstr "Gestionnaire de fenêtres : "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:390
 msgid "Bug in window manager: "
 msgstr "Anomalie dans le gestionnaire de fenêtres : "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:423
 msgid "Window manager warning: "
 msgstr "Avertissement du gestionnaire de fenêtres : "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:451
 msgid "Window manager error: "
 msgstr "Erreur du gestionnaire de fenêtres : "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:570 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:6003
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -487,7 +454,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:6610
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -497,17 +464,17 @@ msgstr ""
 "redimensionnable, mais positionne une taille minimale de %d x %d et une "
 "taille maximale de %d x %d ; ceci n'a pas beaucoup de sens.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "L'application a défini un _NET_WM_PID %lu erronné\n"
 
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (sur %s)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1419
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Fenêtre WM_TRANSIENT_FOR 0x%lx non valide indiquée pour %s.\n"
@@ -678,683 +645,231 @@ msgid "Show the panel's \"Run Application\" dialog box"
 msgstr ""
 "Afficher la boîte de dialogue « Lancer une application » du tableau de bord"
 
-#: ../src/include/all-keybindings.h:238
+#: ../src/include/all-keybindings.h:199
+msgid "Start or stop recording the session"
+msgstr "Démarre ou arrête l'enregistrement de la session"
+
+#: ../src/include/all-keybindings.h:240
 msgid "Take a screenshot"
 msgstr "Prendre une capture d'écran"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:242
 msgid "Take a screenshot of a window"
 msgstr "Prendre une capture de la fenêtre"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:244
 msgid "Run a terminal"
 msgstr "Lancer un terminal"
 
-#: ../src/include/all-keybindings.h:257
+#: ../src/include/all-keybindings.h:259
 msgid "Activate the window menu"
 msgstr "Activer le menu fenêtre"
 
-#: ../src/include/all-keybindings.h:260
+#: ../src/include/all-keybindings.h:262
 msgid "Toggle fullscreen mode"
 msgstr "Basculer en mode plein écran"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:264
 msgid "Toggle maximization state"
 msgstr "Basculer l'état d'agrandissement"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:266
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr ""
 "Active ou désactive la propriété d'une fenêtre d'être toujours au premier "
 "plan"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:268
 msgid "Maximize window"
 msgstr "Maximiser la fenêtre"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:270
 msgid "Restore window"
 msgstr "Restaurer la fenêtre"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:272
 msgid "Toggle shaded state"
 msgstr "Basculer l'état de repli"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:274
 msgid "Minimize window"
 msgstr "Réduire la fenêtre"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:276
 msgid "Close window"
 msgstr "Fermer la fenêtre"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:278
 msgid "Move window"
 msgstr "Déplacer la fenêtre"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:280
 msgid "Resize window"
 msgstr "Redimensionner la fenêtre"
 
-#: ../src/include/all-keybindings.h:281
+#: ../src/include/all-keybindings.h:283
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr "Placer la fenêtre sur tous les espaces de travail, ou sur un seul"
 
-#: ../src/include/all-keybindings.h:285
+#: ../src/include/all-keybindings.h:287
 msgid "Move window to workspace 1"
 msgstr "Déplacer la fenêtre vers l'espace de travail 1"
 
-#: ../src/include/all-keybindings.h:288
+#: ../src/include/all-keybindings.h:290
 msgid "Move window to workspace 2"
 msgstr "Déplacer la fenêtre vers l'espace de travail 2"
 
-#: ../src/include/all-keybindings.h:291
+#: ../src/include/all-keybindings.h:293
 msgid "Move window to workspace 3"
 msgstr "Déplacer la fenêtre vers l'espace de travail 3"
 
-#: ../src/include/all-keybindings.h:294
+#: ../src/include/all-keybindings.h:296
 msgid "Move window to workspace 4"
 msgstr "Déplacer la fenêtre vers l'espace de travail 4"
 
-#: ../src/include/all-keybindings.h:297
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 5"
 msgstr "Déplacer la fenêtre vers l'espace de travail 5"
 
-#: ../src/include/all-keybindings.h:300
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 6"
 msgstr "Déplacer la fenêtre vers l'espace de travail 6"
 
-#: ../src/include/all-keybindings.h:303
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 7"
 msgstr "Déplacer la fenêtre vers l'espace de travail 7"
 
-#: ../src/include/all-keybindings.h:306
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 8"
 msgstr "Déplacer la fenêtre vers l'espace de travail 8"
 
-#: ../src/include/all-keybindings.h:309
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 9"
 msgstr "Déplacer la fenêtre vers l'espace de travail 9"
 
-#: ../src/include/all-keybindings.h:312
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 10"
 msgstr "Déplacer la fenêtre vers l'espace de travail 10"
 
-#: ../src/include/all-keybindings.h:315
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 11"
 msgstr "Déplacer la fenêtre vers l'espace de travail 11"
 
-#: ../src/include/all-keybindings.h:318
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 12"
 msgstr "Déplacer la fenêtre vers l'espace de travail 12"
 
-#: ../src/include/all-keybindings.h:330
+#: ../src/include/all-keybindings.h:332
 msgid "Move window one workspace to the left"
 msgstr "Déplacer la fenêtre d'un espace de travail vers la gauche"
 
-#: ../src/include/all-keybindings.h:333
+#: ../src/include/all-keybindings.h:335
 msgid "Move window one workspace to the right"
 msgstr "Déplacer la fenêtre d'un espace de travail vers la droite"
 
-#: ../src/include/all-keybindings.h:336
+#: ../src/include/all-keybindings.h:338
 msgid "Move window one workspace up"
 msgstr "Déplacer la fenêtre d'un espace de travail vers le haut"
 
-#: ../src/include/all-keybindings.h:339
+#: ../src/include/all-keybindings.h:341
 msgid "Move window one workspace down"
 msgstr "Déplacer la fenêtre d'un espace de travail vers le bas"
 
-#: ../src/include/all-keybindings.h:342
+#: ../src/include/all-keybindings.h:344
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr ""
 "Mettre la fenêtre au premier plan si elle est cachée par une autre fenêtre, "
 "sinon en arrière-plan"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:346
 msgid "Raise window above other windows"
 msgstr "Mettre la fenêtre au premier plan"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:348
 msgid "Lower window below other windows"
 msgstr "Mettre la fenêtre sous les autres fenêtres"
 
-#: ../src/include/all-keybindings.h:350
+#: ../src/include/all-keybindings.h:352
 msgid "Maximize window vertically"
 msgstr "Maximiser la fenêtre verticalement"
 
-#: ../src/include/all-keybindings.h:354
+#: ../src/include/all-keybindings.h:356
 msgid "Maximize window horizontally"
 msgstr "Maximiser la fenêtre horizontalement"
 
-#: ../src/include/all-keybindings.h:358
+#: ../src/include/all-keybindings.h:360
 msgid "Move window to north-west (top left) corner"
 msgstr "Déplacer la fenêtre vers le coin nord-ouest (en haut à gauche)"
 
-#: ../src/include/all-keybindings.h:361
+#: ../src/include/all-keybindings.h:363
 msgid "Move window to north-east (top right) corner"
 msgstr "Déplacer la fenêtre vers le coin nord-est (en haut à droite)"
 
-#: ../src/include/all-keybindings.h:364
+#: ../src/include/all-keybindings.h:366
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Déplacer la fenêtre vers le coin sud-ouest (en bas à gauche)"
 
-#: ../src/include/all-keybindings.h:367
+#: ../src/include/all-keybindings.h:369
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Déplacer la fenêtre vers le coin sud-est (en bas à droite)"
 
-#: ../src/include/all-keybindings.h:371
+#: ../src/include/all-keybindings.h:373
 msgid "Move window to north (top) side of screen"
 msgstr "Déplacer la fenêtre vers le côté nord de l'écran (en haut)"
 
-#: ../src/include/all-keybindings.h:374
+#: ../src/include/all-keybindings.h:376
 msgid "Move window to south (bottom) side of screen"
 msgstr "Déplacer la fenêtre vers le côté sud de l'écran (en bas)"
 
-#: ../src/include/all-keybindings.h:377
+#: ../src/include/all-keybindings.h:379
 msgid "Move window to east (right) side of screen"
 msgstr "Déplacer la fenêtre vers le côté est de l'écran (à droite)"
 
-#: ../src/include/all-keybindings.h:380
+#: ../src/include/all-keybindings.h:382
 msgid "Move window to west (left) side of screen"
 msgstr "Déplacer la fenêtre vers le côté ouest de l'écran (à gauche)"
 
-#: ../src/include/all-keybindings.h:383
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to center of screen"
 msgstr "Déplacer la fenêtre au centre de l'écran"
 
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
-"(non implémenté) La navigation fonctionne en termes d'applications et non de "
-"fenêtres"
+#: ../src/mutter.schemas.in.h:1
+msgid "Clutter Plugins"
+msgstr "Greffons Clutter"
 
-#: ../src/metacity.schemas.in.in.h:2
+#: ../src/mutter.schemas.in.h:2
 msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
 msgstr ""
-"Une chaîne de description de police décrivant une police pour les barres de "
-"titre de fenêtres. La taille de la description ne sera toutefois utilisée "
-"que si l'option titlebar_font_size est réglée sur 0. Cette option est en "
-"outre désactivée si l'option titlebar_uses_desktop_font est réglée sur VRAI."
+"Détermine si les fenêtres masquées (fenêtres réduites ou sur d'autres espaces "
+"de travail) sont conservées « vivantes »." 
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Action d'un double-clic sur la barre de titre"
+#: ../src/mutter.schemas.in.h:3
+msgid "Live Hidden Windows"
+msgstr "Fenêtres masquées vivantes"
 
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "Action d'un clic du milieu sur la barre de titre"
+#: ../src/mutter.schemas.in.h:4
+msgid "Modifier to use for extended window management operations"
+msgstr "Touche à utiliser pour les opérations étendues de gestion des fenêtres"
 
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "Action d'un clic droit sur la barre de titre"
+#: ../src/mutter.schemas.in.h:5
+msgid "Plugins to load for the Clutter-based compositing manager."
+msgstr "Greffons à charger pour le gestionnaire de composition basé sur Clutter."
 
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Agencement des boutons sur la barre de titre"
-
-#: ../src/metacity.schemas.in.in.h:7
+#: ../src/mutter.schemas.in.h:6
 msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
-"Agencement des boutons sur la barre de titre. La valeur doit être une "
-"chaîne, par exemple « menu:minimize,maximize,spacer,close » ; les deux-points "
-"séparent le coin gauche de la fenêtre du coin droit, et les noms des boutons "
-"doivent être séparés par des virgules. Les boutons dupliqués ne sont pas "
-"autorisés. Les noms de bouton inconnus sont silencieusement ignorés, ainsi "
-"des boutons pourront être ajoutés dans des futures versions de metacity sans "
-"casser les anciennes versions. Une balise spéciale « spacer » permet "
-"d'insérer un peu d'espace entre deux boutons adjacents."
+"Cette touche initie l'« overlay », une combinaison d'aperçu des fenêtres et d'un "
+"système de lancement d'applications. La touche par défaut sur le matériel PC est "
+"la touche Windows. En principe, ce raccourci est configuré sur le réglage par "
+"défaut ou sur la chaîne vide."
 
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "Place automatiquement la fenêtre active au premier plan"
-
-#: ../src/metacity.schemas.in.in.h:9
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
-msgstr ""
-"Cliquer sur une fenêtre en maintenant enfoncée cette touche de modification "
-"déplacera la fenêtre (clic gauche), redimensionnera la fenêtre (clic du "
-"milieu), ou affichera le menu de la fenêtre (clic droit). Les opérations "
-"gauche et droite peuvent être inversées en utilisant la clé "
-"« mouse_button_resize ».  Le modificateur est défini comme « &lt;Alt&gt; » ou "
-"« &lt;Super&gt; » par exemple."
-
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "Commande à exécuter en réponse aux combinaisons de touches"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "Gestionnaire de composition"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "Contrôle la façon dont les nouvelles fenêtres deviennent actives"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "Thème actuel"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
-"Délai en millisecondes pour l'option de mise automatique au premier plan"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "Détermine si Metacity est utilisé comme gestionnaire de composition."
-
-#: ../src/metacity.schemas.in.in.h:16
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-"Détermine si les applications ou le système peuvent générer des bips "
-"audibles ; peut être utilisé en conjonction avec « sonnerie visuelle » pour "
-"permettre des bips silencieux."
-
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Désactive les ajustements requis par les applications anciennes ou mal "
-"conçues"
-
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "Activer la sonnerie visuelle"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-"Si VRAI et que le mode de focus est soit « sloppy » soit « mouse » alors la "
-"fenêtre qui a le focus est automatiquement mis au premier plan après un "
-"délai indiqué par la clé auto_raise_delay. Ceci n'est pas similaire à "
-"cliquer sur une fenêtre pour la mettre au premier plan, ni à déplacer une "
-"fenêtre durant un glisser-déposer."
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-"Si VRAI, ignore l'option titlebar_font et utilise la police standard de "
-"l'application pour les titres de fenêtres."
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-"Si VRAI, Metacity donnera à l'utilisateur moins de retour d'informations en "
-"utilisant des contours en fil de fer, évitant des animations ou autres "
-"fioritures. Ceci signifie une baisse d'ergonomie pour beaucoup "
-"d'utilisateurs mais peut permettre aux vieilles applications de continuer à "
-"fonctionner, et peut aussi être utile au serveurs de terminaux X pour "
-"améliorer les performances. Cependant, la fonction fil de fer est désactivé "
-"lorsque l'accessibilité est activé."
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"Si VRAI, Metacity fonctionne en termes d'applications plutôt que de "
-"fenêtres. Le concept est assez abstrait, mais, en général, une configuration "
-"basée sur les applications est plus proche de Mac OS que de Windows. Lorsque "
-"vous activez une fenêtre en mode basé sur les applications, toutes les "
-"fenêtres de l'application seront mises au premier plan. En outre, en mode "
-"basé sur les applications, les clics de focus ne sont pas transmis aux "
-"fenêtres d'autres applications. Pour l'instant, le mode basé sur des "
-"applications n'est généralement pas mis en oeuvre."
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr ""
-"Si VRAI, favorise une faible utilisation des ressources au détriment de la "
-"convivialité"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "Touche à utiliser pour modifier les actions du clic"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "Nom de l'espace de travail"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "Nombre d'espaces de travail"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"Nombre d'espaces de travail. Il doit être supérieur à zéro et présente une "
-"limite maximale fixée afin d'éviter de rendre votre bureau inutilisable en "
-"demandant trop d'espaces de travail."
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "Exécuter la commande définie"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"Définir à « true » pour redimensionner avec le bouton droit et afficher un "
-"menu avec le bouton du milieu en maintenant enfoncée la touche donnée dans "
-"« mouse_button_modifier » ; définir à « false » pour avoir le fonctionnement "
-"inverse."
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"Mettre cette option à « false » peut entraîner des erreurs de comportement, "
-"il est vraiment déconseillé de modifier sa valeur par défault, « true ». "
-"Beaucoup d'actions (par ex. les clics dans la zone client, le déplacement ou "
-"le redimensionnement des fenêtres) ont pour effet de bord de placer la "
-"fenêtre au premier plan. En mettant cette option à « false », ce qui est "
-"fortement déconseillé, les actions des utilisateurs et la mise au premier "
-"plan des fenêtres sont découplés. Les demandes de mise au premier plan "
-"provenant des applications seront également ignorées. Voir http://bugzilla."
-"gnome.org/show_bug.cgi?id=445447#c6. Même quand cette option est « false », "
-"les fenêtres peuvent encore être placées au premier plan par un clic avec "
-"Alt enfoncée n'importe où dans la fenêtre, par un clic sur la décoration de "
-"la fenêtre, ou par des messages particuliers envoyés des sélecteurs "
-"d'espaces de travail, comme les demandes d'activation envoyées par l'applet "
-"« Liste des fenêtres ». Cette option est actuellement désactivée dans le mode "
-"« focus-au-clic ». Notez que la liste des méthodes pour amener une fenêtre au "
-"premier plan quand « raise_on_click » est à « false » ne comporte pas les "
-"demandes programmées par des applications pour amener une fenêtre au premier "
-"plan ; ces demandes seront ignorées, peu importe leur raison.  Si vous "
-"développez une application et que des utilisateurs se plaignent que votre "
-"application ne fonctionne pas avec ce paramètre désactivé, dites-leur que "
-"c'est de *leur* faute et qu'ils ont cassé leur gestionnaire de fenêtres, "
-"qu'ils doivent remettre cette option à « true » ou vivre avec le « bug » "
-"qu'ils ont demandé."
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"Certaines applications négligent les spécifications ; il en résulte un "
-"disfonctionnement du gestionnaire de fenêtres. Cette option oblige Metacity "
-"à adopter un mode rigoureux qui offre une interface plus cohérente à "
-"l'utilisateur à condition que celui-ci n'ait pas besoin de lancer des "
-"applications qui ne respectent pas les spécifications."
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "Le bip système est audible"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"Indique à Metacity quelle méthode d'indication visuelle utiliser suite à une "
-"sonnerie système ou d'application. Il y a actuellement deux valeurs "
-"possibles, « fullscreen », qui provoque le clignotement de tout l'écran, et "
-"« frame_flash » qui provoque le clignotement de la barre de titre de "
-"l'application qui a envoyé le signal de sonnerie. Si l'application qui "
-"envoie la sonnerie est inconnue (c'est le cas de la sonnerie système par "
-"défaut), la barre de titre de la fenêtre qui a actuellement le focus "
-"clignote."
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"Les clés /apps/metacity/global_keybindings/run_command_N définissent les "
-"combinaisons de touches qui correspondent à ces commandes. Presser la "
-"combinaison pour run_command_N exécutera la command_N."
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"La clé /apps/metacity/global_keybindings/run_command_screenshot définit une "
-"combinaison de touches qui invoque la commande indiquée par ce réglage."
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"La clé /apps/metacity/global_keybindings/run_command_window_screenshot "
-"définit une combinaison de touches qui invoque la commande indiquée par ce "
-"réglage."
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Les combinaisons de touches qui exécutent les commandes numérotées "
-"correspondantes dans /apps/metacity/keybinding_commands. Le format ressemble "
-"à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur "
-"est assez souple et permet d'utiliser des majuscules ou des minuscules et "
-"des abréviations telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous "
-"définissez l'option sur la chaîne spéciale « disabled » (désactivé), il n'y "
-"aura pas de combinaison de touches pour cette action."
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "Le nom d'un espace de travail."
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "La commande de capture d'écran"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr ""
-"Le thème détermine l'apparence des bordures, de la barre de titre, etc. de "
-"la fenêtre."
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"Le délai avant la mise au premier plan de la fenêtre si l'option auto_raise "
-"a la valeur VRAI. Il est indiqué en millièmes de secondes."
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"Le mode de focus de la fenêtre indique la façon dont les fenêtres sont "
-"activées. Il présente trois valeurs possibles ; « click » signifie que vous "
-"devez cliquer sur les fenêtres pour les activer,  « sloppy » (« coulé ») "
-"signifie que les fenêtres sont activées lorsque la souris s'y place et "
-"« mouse » (« souris »), signifie que les fenêtres sont activées lorsque la "
-"souris s'y place et désactivées lorsqu'elle les quitte."
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "La commande de capture d'écran de fenêtre"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Cette option détermine les effets d'un double-clic sur la barre de titre "
-"d'une fenêtre. Les valeurs possibles sont « toggle_shade » qui replie la "
-"fenêtre ou la déplie, « toggle_maximize » qui maximise la fenêtre ou la remet "
-"à sa taille initiale avant maximisation, « toggle_maximize_horizontally » et "
-"« toggle_maximize_vertically » qui limitent la maximisation dans la direction "
-"indiquée, « minimize » qui réduit la fenêtre, « shade » qui replie la fenêtre, "
-"« menu » qui affiche le menu de la fenêtre, « lower » qui place la fenêtre "
-"derrière toutes les autres et « none » qui ne fait rien."
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Cette option détermine les effets d'un clic du milieu sur la barre de titre "
-"d'une fenêtre. Les valeurs possibles sont « toggle_shade » qui replie la "
-"fenêtre ou la déplie, « toggle_maximize » qui maximise la fenêtre ou la remet "
-"à sa taille initiale avant maximisation, « toggle_maximize_horizontally » et "
-"« toggle_maximize_vertically » qui limitent la maximisation dans la direction "
-"indiquée, « minimize » qui réduit la fenêtre, « shade » qui replie la fenêtre, "
-"« menu » qui affiche le menu de la fenêtre, « lower » qui place la fenêtre "
-"derrière toutes les autres et « none » qui ne fait rien."
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Cette option détermine les effets d'un clic droit sur la barre de titre "
-"d'une fenêtre. Les valeurs possibles sont « toggle_shade » qui replie la "
-"fenêtre ou la déplie, « toggle_maximize » qui maximise la fenêtre ou la remet "
-"à sa taille initiale avant maximisation, « toggle_maximize_horizontally » et "
-"« toggle_maximize_vertically » qui limitent la maximisation dans la direction "
-"indiquée, « minimize » qui réduit la fenêtre, « shade » qui replie la fenêtre, "
-"« menu » qui affiche le menu de la fenêtre, « lower » qui place la fenêtre "
-"derrière toutes les autres et « none » qui ne fait rien."
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"Cette option fournit un contrôle supplémentaire sur la façon dont les "
-"nouvelles fenêtres deviennent actives. Elle a deux valeurs "
-"possible: « smart » qui correspond au mode d'activation utilisateur normal et "
-"« strict » qui n'active pas les fenêtre démarrées depuis un terminal."
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"Active une indication visuelle lorsqu'une application ou le système émet un "
-"bip ; utile pour les malentendants et pour une utilisation dans des "
-"environnements bruyants."
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr "Utiliser la police standard du système dans les titres des fenêtres"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "Type de sonnerie visuelle"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr ""
-"Indique si la mise au premier plan doit être un effet de bord d'autres "
-"interactions avec l'utilisateur"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "Indique si le bouton droit peut servir à redimensionner"
-
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "Mode de focus des fenêtres"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "Police de titre des fenêtres"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Utilisation : %s\n"
@@ -1593,52 +1108,6 @@ msgstr "Mod4"
 #: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
 msgstr "Mod5"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "« %s » ne répond pas."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Vous pouvez attendre un instant pour continuer ou insister pour quitter "
-"l'application."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Attendre"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Forcer à quitter"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Titre"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Classe"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Ces fenêtres ne prennent pas en charge « l'enregistrement de la configuration "
-"actuelle » et devront être redémarrées manuellement à la prochaine connexion."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Il y a eu une erreur lors de l'exécution de « %s » :\n"
-"%s."
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
@@ -1954,6 +1423,16 @@ msgstr "Attribut « %s » répété deux fois sur le même élément <%s>"
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Attribut « %s » non valide sur l'élément <%s> dans ce contexte"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "Impossible d'analyser « %s » en tant qu'entier"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Caractères de fin « %s » non compris dans la chaîne « %s »"
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -2517,1546 +1996,3 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expressions de coordonnées analysées en %g secondes (%g secondes en "
 "moyenne)\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to print an error about a command: %s\n"
-#~ msgstr ""
-#~ "Erreur pendant le lancement de metacity-dialog pour afficher un message "
-#~ "d'erreur pour la commande : %s\n"
-
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "Attribut %s inconnu sur l'élément <metacity_session>"
-
-#~ msgid "Unknown attribute %s on <maximized> element"
-#~ msgstr "Attribut %s inconnu sur l'élément <maximized>"
-
-#~ msgid "Unknown attribute %s on <geometry> element"
-#~ msgstr "Attribut %s inconnu sur l'élément <geometry>"
-
-#~ msgid "The keybinding used to activate the window menu."
-#~ msgstr "La combinaison de touches utilisée pour activer le menu Fenêtre."
-
-#~ msgid "The keybinding used to toggle fullscreen mode."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour basculer en mode plein écran."
-
-#~ msgid "The keybinding used to toggle maximization."
-#~ msgstr "La combinaison de touches utilisée pour basculer l'agrandissement."
-
-#~ msgid "Toggle always on top state"
-#~ msgstr "Basculer dans l'état toujours au-dessus"
-
-#~ msgid ""
-#~ "The keybinding used to toggle always on top.  A window that is always on "
-#~ "top will always be visible over other overlapping windows."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour être toujours au-dessus. Une "
-#~ "fenêtre qui est toujours au-dessus sera toujours visible au-dessus des "
-#~ "autres fenêtres."
-
-#~ msgid "The keybinding used to maximize a window."
-#~ msgstr "La combinaison de touches utilisée pour maximiser une fenêtre."
-
-#~ msgid "Unmaximize window"
-#~ msgstr "Restaurer la fenêtre"
-
-#~ msgid "The keybinding used to unmaximize a window."
-#~ msgstr "La combinaison de touches utilisée pour restaurer une fenêtre."
-
-#~ msgid "The keybinding used to toggle shaded/unshaded state."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour basculer entre le repli et le "
-#~ "dépli."
-
-#~ msgid "The keybinding used to minimize a window."
-#~ msgstr "La combinaison de touches utilisée pour réduire une fenêtre."
-
-#~ msgid "The keybinding used to close a window."
-#~ msgstr "La combinaison de touches utilisée pour fermer une fenêtre."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour entrer en « mode de déplacement » "
-#~ "et commencer à déplacer une fenêtre à l'aide du clavier."
-
-#~ msgid "Toggle window on all workspaces"
-#~ msgstr "Basculer la fenêtre sur tous les espaces de travail"
-
-#~ msgid "The keybinding used to move a window to workspace 1."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 1"
-
-#~ msgid "The keybinding used to move a window to workspace 2."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 2"
-
-#~ msgid "The keybinding used to move a window to workspace 3."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 3"
-
-#~ msgid "The keybinding used to move a window to workspace 4."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 4"
-
-#~ msgid "The keybinding used to move a window to workspace 5."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 5"
-
-#~ msgid "The keybinding used to move a window to workspace 6."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 6"
-
-#~ msgid "The keybinding used to move a window to workspace 7."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 7"
-
-#~ msgid "The keybinding used to move a window to workspace 8."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 8"
-
-#~ msgid "The keybinding used to move a window to workspace 9."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 9"
-
-#~ msgid "The keybinding used to move a window to workspace 10."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 10"
-
-#~ msgid "The keybinding used to move a window to workspace 11."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 11"
-
-#~ msgid "The keybinding used to move a window to workspace 12."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers l'espace "
-#~ "de travail 12"
-
-#~ msgid "The keybinding used to move a window one workspace to the left."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre d'un espace "
-#~ "de travail vers la gauche"
-
-#~ msgid "The keybinding used to move a window one workspace to the right."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre d'un espace "
-#~ "de travail vers la droite"
-
-#~ msgid "The keybinding used to move a window one workspace up."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre d'un espace "
-#~ "de travail vers le haut"
-
-#~ msgid "The keybinding used to move a window one workspace down."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre d'un espace "
-#~ "de travail vers le bas"
-
-#~ msgid "This keybinding raises the window above other windows."
-#~ msgstr ""
-#~ "Cette combinaison de touches place la fenêtre au-dessus de toutes les "
-#~ "autres."
-
-#~ msgid "This keybinding lowers a window below other windows."
-#~ msgstr ""
-#~ "Cette combinaison de touches place la fenêtre sous les autres fenêtres."
-
-#~ msgid "This keybinding resizes a window to fill available vertical space."
-#~ msgstr ""
-#~ "Cette combinaison de touches agrandit la fenêtre afin de remplir tout "
-#~ "l'espace disponible en hauteur."
-
-#~ msgid "This keybinding resizes a window to fill available horizontal space."
-#~ msgstr ""
-#~ "Cette combinaison de touches agrandit la fenêtre afin de remplir tout "
-#~ "l'espace disponible en largeur."
-
-#~ msgid "This keybinding moves a window into the center of the screen."
-#~ msgstr ""
-#~ "Cette combinaison de touches déplace la fenêtre au centre de l'écran."
-
-#~ msgid ""
-#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
-#~ "window) normally raise the window as a side-effect. Setting this option "
-#~ "to false, which is strongly discouraged, will decouple raising from other "
-#~ "user actions, and ignore raise requests generated by applications. See "
-#~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-#~ msgstr ""
-#~ "Beaucoup d'actions (par ex. les clics dans la zone client, le déplacement "
-#~ "ou le redimensionnement des fenêtres) ont pour effet de bord de placer la "
-#~ "fenêtre au premier plan. En mettant cette option à « false », ce qui est "
-#~ "fortement déconseillé, les actions des utilisateurs et la mise au premier "
-#~ "plan des fenêtres sont découplés. Les demandes de mise au premier plan "
-#~ "provenant des applications seront également ignorées. Voir http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace above the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail au-"
-#~ "dessus de celui en cours. Le format ressemble à ceci : « &lt;Controle&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace below the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail sous "
-#~ "celui en cours. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the left of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail à "
-#~ "gauche de celui en cours. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the right of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail à "
-#~ "droite de celui en cours. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 1. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 10. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 11. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 12. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 2. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 3. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 4. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 5. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 6. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 7. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 8. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui fait basculer vers l'espace de travail 9. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to activate the window menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour activer le menu Fenêtre. Le "
-#~ "format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1 ». L'analyseur est assez souple et permet d'utiliser des majuscules ou "
-#~ "des minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to close a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour fermer une fenêtre. Le format "
-#~ "ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour entrer en « mode de déplacement » "
-#~ "et commencer à déplacer une fenêtre à l'aide du clavier. Le format "
-#~ "ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour entrer en « mode de "
-#~ "redimensionnement » et commencer à redimensionner une fenêtre à l'aide du "
-#~ "clavier. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to hide all normal windows and set the focus to the "
-#~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour masquer toutes les fenêtres "
-#~ "normales et activer l'arrière-plan du bureau. Le format ressemble à "
-#~ "ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur "
-#~ "est assez souple et permet d'utiliser des majuscules ou des minuscules et "
-#~ "des abréviations telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous "
-#~ "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il "
-#~ "n'y aura pas de combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to maximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour maximiser une fenêtre. Le format "
-#~ "ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to minimize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour réduire une fenêtre. Le format "
-#~ "ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace down. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre d'un espace "
-#~ "de travail vers le bas. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the left. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre d'un espace "
-#~ "de travail vers la gauche. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the right. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre d'un espace "
-#~ "de travail vers la droite. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace up. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre d'un espace "
-#~ "de travail vers le haut. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 1. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 1. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 10. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 10. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 11. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 11. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 12. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 12. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 2. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 2. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 3. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 3. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 4. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 4. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 5. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 5. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 6. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 6. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 7. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 7. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 8. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 8. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 9. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer une fenêtre vers "
-#~ "l'espace de travail 9. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaisons de touches utilisée pour déplacer le focus entre les "
-#~ "tableaux de bord et le bureau, en utilisant une boîte de dialogue. Le "
-#~ "format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1 ». L'analyseur est assez souple et permet d'utiliser des majuscules ou "
-#~ "des minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
-#~ "\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer le focus entre les "
-#~ "tableaux de bord et le bureau, sans boîte de dialogue. Le format "
-#~ "ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application without a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer en arrière le focus "
-#~ "entre les fenêtre d'une application sans l'aide d'une boîte de dialogue. "
-#~ "Presser « shift » en même temps que cette combinaison permet de se "
-#~ "redéplacer vers l'avant. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application, using a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer en arrière le focus "
-#~ "entre les fenêtre d'une application, en utilisant une boîte de dialogue. "
-#~ "Presser « shift » en même temps que cette combinaison permet de se "
-#~ "redéplacer vers l'avant. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Maj&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows without a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer en arrière le focus "
-#~ "entre les fenêtre sans l'aide d'une boîte de dialogue. Presser « shift » "
-#~ "en même temps que cette combinaison permet de se redéplacer vers l'avant. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows, using a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer en arrière le focus "
-#~ "entre les fenêtres en utilisant une boîte de dialogue. Presser « shift » "
-#~ "en même temps que cette combinaison permet de se redéplacer vers l'avant. "
-#~ "Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Maj&gt;&lt;"
-#~ "Alt&gt;F1 » (la touche Shift est parfois notée Maj sur certains "
-#~ "claviers). L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, using a "
-#~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer le focus entre les "
-#~ "tableaux de bord et le bureau, en utilisant une boîte de dialogue. Le "
-#~ "format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1 ». L'analyseur est assez souple et permet d'utiliser des majuscules ou "
-#~ "des minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, without "
-#~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer le focus entre les "
-#~ "tableaux de bord et le bureau, sans boîte de dialogue. Le format "
-#~ "ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application "
-#~ "without a popup window. Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer le focus entre les "
-#~ "fenêtres d'une application sans boîte de dialogue. Presser « shift » en "
-#~ "même temps que cette combinaison permet d'inverser la direction du "
-#~ "mouvement. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application, "
-#~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
-#~ "key while using this binding reverses the direction of movement. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer le focus entre les "
-#~ "fenêtres d'une application, en utilisant une boîte de dialogue "
-#~ "(traditionnellement &lt;Alt&gt;F6). Presser « shift » en même temps que "
-#~ "cette combinaison inverse la direction du mouvement. Le format ressemble "
-#~ "à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows without a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
-#~ "this binding reverses the direction of movement. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer le focus entre fenêtres "
-#~ "sans boîte de dialogue (traditionnellement &lt;Alt&gt;Escape). Presser "
-#~ "« shift » en même temps que cette combinaison permet d'inverser la "
-#~ "direction du mouvement. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows, using a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer le focus entre fenêtres, "
-#~ "en utilisant une boîte de dialogue (traditionnellement &lt;Alt&gt;Tab). "
-#~ "Presser « shift » en même temps que cette combinaison permet d'inverser la "
-#~ "direction du mouvement. Le format ressemble à ceci : « &lt;Control&gt;a » "
-#~ "ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to toggle always on top. A window that is always on "
-#~ "top will always be visible over other overlapping windows. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour être toujours au-dessus. Une "
-#~ "fenêtre qui est toujours au-dessus sera toujours visible au-dessus des "
-#~ "autres fenêtres. Le format ressemble à « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » ou « &lt;Ctrl&gt; ». Si vous définissez l'option à la "
-#~ "chaîne spécial « disabled », alors il n'y aura aucune combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to toggle fullscreen mode. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour basculer en mode plein écran. Le "
-#~ "format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1 ». L'analyseur est assez souple et permet d'utiliser des majuscules ou "
-#~ "des minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
-#~ "» (désactivé), il n'y aura pas de combinaison de touches pour cette "
-#~ "action."
-
-#~ msgid ""
-#~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour basculer l'agrandissement. Le "
-#~ "format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1 ». L'analyseur est assez souple et permet d'utiliser des majuscules ou "
-#~ "des minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale « disabled "
-#~ "» (désactivé), il n'y aura pas de combinaison de touches pour cette "
-#~ "action."
-
-#~ msgid ""
-#~ "The keybinding used to toggle shaded/unshaded state. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour basculer entre le repli et le "
-#~ "dépli. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to toggle whether the window is on all workspaces or "
-#~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour placer la fenêtre sur tous les "
-#~ "espaces de travail ou un seul. Le format ressemble à ceci : « &lt;"
-#~ "Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez "
-#~ "souple et permet d'utiliser des majuscules ou des minuscules et des "
-#~ "abréviations telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous "
-#~ "définissez l'option sur la chaîne spéciale « disabled » (désactivé), il "
-#~ "n'y aura pas de combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour restaurer une fenêtre à sa taille "
-#~ "initiale. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "The keybinding which display's the panel's \"Run Application\" dialog "
-#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches qui affiche la boîte de dialogue « Lancer une "
-#~ "application » du tableau de bord. Le format ressemble à ceci : « &lt;"
-#~ "Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez "
-#~ "souple et permet d'utiliser des majuscules ou des minuscules et des "
-#~ "abréviations telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous "
-#~ "définissez l'option à la chaîne spéciale « disabled »; alors il n'y aura "
-#~ "aucune combinaison de touches associée à cette action."
-
-#~ msgid ""
-#~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "La combinaison de touches qui invoque un terminal. Le format ressemble à "
-#~ "à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». "
-#~ "L'analyseur est assez souple et permet d'utiliser des majuscules ou des "
-#~ "minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option à la chaîne spéciale « disabled », "
-#~ "alors il n'y aura aucune combinaison de touches associée à cette action."
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility to take a "
-#~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour invoquer l'utilitaire de capture "
-#~ "d'écran du tableau de bord pour prendre une capture d'une fenêtre. Le "
-#~ "format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1 ». L'analyseur est assez souple et permet d'utiliser des majuscules ou "
-#~ "des minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option à la chaîne spéciale « disabled », "
-#~ "alors il n'y aura aucune combinaison de touches associée à cette action."
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour invoquer l'utilitaire de capture "
-#~ "d'écran du tableau de bord. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "à la chaîne spéciale « disabled », alors il n'y aura aucune combinaison de "
-#~ "touches associée à cette action."
-
-#~ msgid ""
-#~ "The keybinding which shows the panel's main menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour afficher le menu principal du "
-#~ "tableau de bord. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option à la "
-#~ "chaîne spéciale « disabled », alors il n'y aura aucune combinaison de "
-#~ "touches associée à cette action."
-
-#~ msgid ""
-#~ "This keybinding changes whether a window is above or below other windows. "
-#~ "If the window is covered by another one, it raises the window above all "
-#~ "others, and if the window is already fully visible, it lowers it below "
-#~ "all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour changer la position d'une fenêtre "
-#~ "par rapport aux autres. Si la fenêtre est recouverte par une autre, elle "
-#~ "est replacée au premier plan. Si elle est déjà entièrement visible, elle "
-#~ "est placée sous les autres. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding lowers a window below other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour mettre une fenêtre sous les "
-#~ "autres. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers le haut "
-#~ "de l'écran. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the center of the screen. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Cette combinaison de touches déplace la fenêtre au centre de l'écran. Le "
-#~ "format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1 ». L'analyseur est assez souple et permet d'utiliser des majuscules ou "
-#~ "des minuscules et des abréviations telles que « &lt;Ctl&gt; » et « &lt;"
-#~ "Ctrl&gt; ». Si vous définissez l'option sur la chaîne spéciale "
-#~ "« disabled » (désactivé), il n'y aura pas de combinaison de touches pour "
-#~ "cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers la "
-#~ "droite de l'écran. Le format ressemble à ceci : « &lt;Control&gt;a » ou "
-#~ "« &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (top right) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers le coin "
-#~ "en haut à droite de l'écran. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-west (top left) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers le coin "
-#~ "en haut à gauche de l'écran. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south (bottom) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers le bas "
-#~ "de l'écran. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-east (bottom right) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers le coin "
-#~ "en bas à droite de l'écran. Le format ressemble à ceci : « &lt;Control&gt;"
-#~ "a » ou « &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et "
-#~ "permet d'utiliser des majuscules ou des minuscules et des abréviations "
-#~ "telles que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option "
-#~ "sur la chaîne spéciale « disabled » (désactivé), il n'y aura pas de "
-#~ "combinaison de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-west (bottom left) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers le bas "
-#~ "de l'écran. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour déplacer la fenêtre vers la "
-#~ "gauche de l'écran. Le format ressemble à ceci : « &lt;Control&gt;a » ou "
-#~ "« &lt;Shift&gt;&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet "
-#~ "d'utiliser des majuscules ou des minuscules et des abréviations telles "
-#~ "que « &lt;Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la "
-#~ "chaîne spéciale « disabled » (désactivé), il n'y aura pas de combinaison "
-#~ "de touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding raises the window above other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour mettre une fenêtre au premier "
-#~ "plan. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available horizontal space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour mettre une fenêtre au premier "
-#~ "plan. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available vertical space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "La combinaison de touches utilisée pour mettre une fenêtre au premier "
-#~ "plan. Le format ressemble à ceci : « &lt;Control&gt;a » ou « &lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1 ». L'analyseur est assez souple et permet d'utiliser des "
-#~ "majuscules ou des minuscules et des abréviations telles que « &lt;"
-#~ "Ctl&gt; » et « &lt;Ctrl&gt; ». Si vous définissez l'option sur la chaîne "
-#~ "spéciale « disabled » (désactivé), il n'y aura pas de combinaison de "
-#~ "touches pour cette action."
-
-#~ msgid "Unmaximize Window"
-#~ msgstr "Restaurer la fenêtre"
-
-#~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « %s » sur l'élément <%s>"
-
-#~ msgid "Theme already has a fallback icon"
-#~ msgstr "Ce thème a déjà une icône par défaut"
-
-#~ msgid "Theme already has a fallback mini_icon"
-#~ msgstr "Ce thème a déjà une mini-icône par défaut"
-
-#~ msgid "No \"name\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « name » (« nom ») sur l'élément <%s>"
-
-#~ msgid "No \"value\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « value » (« valeur ») sur l'élément <%s>"
-
-#~ msgid "No \"top\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « top » (« haut ») sur l'élément <%s>"
-
-#~ msgid "No \"bottom\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « bottom » (« bas ») sur l'élément <%s>"
-
-#~ msgid "No \"left\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « left » (« gauche ») sur l'élément <%s>"
-
-#~ msgid "No \"right\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « right » (« droite ») sur l'élément <%s>"
-
-#~ msgid "No \"color\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « color » (« couleur ») sur l'élément <%s>"
-
-#~ msgid "No \"x1\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « x1 » sur l'élément <%s>"
-
-#~ msgid "No \"y1\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « y1 » sur l'élément <%s>"
-
-#~ msgid "No \"x2\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « x2 » sur l'élément <%s>"
-
-#~ msgid "No \"y2\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « y2 » sur l'élément <%s>"
-
-#~ msgid "No \"y\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « y » sur l'élément <%s>"
-
-#~ msgid "No \"width\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « width » (« largeur ») sur l'élément <%s>"
-
-#~ msgid "No \"height\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « height » (« hauteur ») sur l'élément <%s>"
-
-#~ msgid "No \"start_angle\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « start_angle » (« début d'angle ») sur l'élément <%s>"
-
-#~ msgid "No \"extent_angle\" attribute on element <%s>"
-#~ msgstr ""
-#~ "Aucun attribut « extent_angle » (« extension d'angle ») sur l'élément <%s>"
-
-#~ msgid "No \"alpha\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « alpha » sur l'élément <%s>"
-
-#~ msgid "No \"type\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « type » sur l'élément <%s>"
-
-#~ msgid "No \"filename\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « filename » (« nom de fichier ») sur l'élément <%s>"
-
-#~ msgid "No \"state\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « state » (« état ») sur l'élément <%s>"
-
-#~ msgid "No \"shadow\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « shadow » (« ombre ») sur l'élément <%s>"
-
-#~ msgid "No \"arrow\" attribute on element <%s>"
-#~ msgstr "Aucun attribut « arrow » (« flèche ») sur l'élément <%s>"
-
-#~ msgid "No \"value\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « value » (« valeur ») sur l'élément <%s>"
-
-#~ msgid "No \"position\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « position » sur l'élément <%s>"
-
-#~ msgid "No \"function\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « function » (« fonction ») sur l'élément <%s>"
-
-#~ msgid "No \"state\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « state » (« état ») sur l'élément <%s>"
-
-#~ msgid "No \"focus\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « focus » sur l'élément <%s>"
-
-#~ msgid "No \"style\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « style » sur l'élément <%s>"
-
-#~ msgid "No \"resize\" attribute on <%s> element"
-#~ msgstr "Aucun attribut « resize » (« redimensionnement ») sur l'élément <%s>"
