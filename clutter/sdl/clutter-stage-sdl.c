@@ -22,41 +22,38 @@ static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterStageSDL,
                          clutter_stage_sdl,
-                         CLUTTER_TYPE_ACTOR,
+                         G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
-static void
-clutter_stage_sdl_show (ClutterActor *actor)
+static ClutterActor *
+clutter_stage_sdl_get_wrapper (ClutterStageWindow *stage_window)
 {
-  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_STAGE_SDL (actor)->wrapper,
-                           CLUTTER_ACTOR_MAPPED);
-
-  CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->show (actor);
+  return CLUTTER_ACTOR (CLUTTER_STAGE_SDL (stage_window)->wrapper);
 }
 
 static void
-clutter_stage_sdl_hide (ClutterActor *actor)
+clutter_stage_sdl_show (ClutterStageWindow *stage_window,
+                        gboolean            do_raise G_GNUC_UNUSED)
 {
-  /* No way to easily unmap SDL window ? */
-  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_UNSET_FLAGS (CLUTTER_STAGE_SDL (actor)->wrapper,
-                             CLUTTER_ACTOR_MAPPED);
-
-  CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->hide (actor);
+  clutter_actor_map (clutter_stage_sdl_get_wrapper (stage_window));
 }
 
 static void
-clutter_stage_sdl_unrealize (ClutterActor *actor)
+clutter_stage_sdl_hide (ClutterStageWindow *stage_window)
 {
-  ;
+  clutter_actor_unmap (clutter_stage_sdl_get_wrapper (stage_window));
 }
 
 static void
-clutter_stage_sdl_realize (ClutterActor *actor)
+clutter_stage_sdl_unrealize (ClutterStageWindow *stage_window)
 {
-  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (actor);
+}
+
+static gboolean
+clutter_stage_sdl_realize (ClutterStageWindow *stage_window)
+{
+  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (stage_window);
   gboolean is_offscreen, is_fullscreen;
 
   CLUTTER_NOTE (BACKEND, "Realizing main stage");
@@ -86,8 +83,7 @@ clutter_stage_sdl_realize (ClutterActor *actor)
 	  CLUTTER_NOTE (BACKEND, "SDL appears not to handle this mode - %s",
 			SDL_GetError ());
 
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
+          return FALSE;
 	}
     }
   else
@@ -95,72 +91,56 @@ clutter_stage_sdl_realize (ClutterActor *actor)
       /* FIXME */
       g_critical ("SDL Backend does not yet support offscreen rendering");
 
-      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+clutter_stage_sdl_get_geometry (ClutterStageWindow *stage_window,
+                                ClutterGeometry    *geometry)
+{
+  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (stage_window);
+  gboolean is_fullscreen = FALSE;
+
+  is_fullscreen = clutter_stage_get_fullscreen (stage_sdl->wrapper);
+
+  if (is_fullscreen)
+    {
+      const SDL_VideoInfo *v_info;
+
+      v_info = SDL_GetVideoInfo ();
+
+      geometry->width = v_info->current_w;
+      geometry->height = v_info->current_h;
+    }
+  else
+    {
+      geometry->width = stage_sdl->win_width;
+      geometry->height = stage_sdl->win_height;
     }
 }
 
 static void
-clutter_stage_sdl_get_preferred_width (ClutterActor *self,
-                                       gfloat        for_height,
-                                       gfloat       *min_width_p,
-                                       gfloat       *natural_width_p)
+clutter_stage_sdl_resize (ClutterStageWindow *stage_window,
+                          gint                width,
+                          gint                height)
 {
-  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
+  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (stage_window);
 
-  if (min_width_p)
-    *min_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_width);
-
-  if (natural_width_p)
-    *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_width);
-}
-
-static void
-clutter_stage_sdl_get_preferred_height (ClutterActor *self,
-                                        gfloat        for_width,
-                                        gfloat       *min_height_p,
-                                        gfloat       *natural_height_p)
-{
-  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
-
-  if (min_height_p)
-    *min_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_height);
-
-  if (natural_height_p)
-    *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_height);
-}
-
-static void
-clutter_stage_sdl_allocate (ClutterActor           *self,
-                            const ClutterActorBox  *box,
-                            ClutterAllocationFlags  flags)
-{
-  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
-  gint new_width, new_height;
-  ClutterActorClass *parent_class;
-
-  /* FIXME: some how have X configure_notfiy call this ? */
-  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1));
-
-  if (new_width != stage_sdl->win_width ||
-      new_height != stage_sdl->win_height)
+  if (width != stage_sdl->win_width ||
+      height != stage_sdl->win_height)
     {
-      if (SDL_SetVideoMode(new_width, 
-			   new_height, 
-			   0, SDL_OPENGL) == NULL)
+      if (SDL_SetVideoMode (width, height, 0, SDL_OPENGL) == NULL)
 	{
 	  /* Failed */
 	  return;
 	}
 
-      stage_sdl->win_width  = new_width;
-      stage_sdl->win_height = new_height;
-
-      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
+      stage_sdl->win_width  = width;
+      stage_sdl->win_height = height;
     }
-
-  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class);
-  parent_class->allocate (self, box, flags);
 }
 
 static void
@@ -195,8 +175,6 @@ clutter_stage_sdl_set_title (ClutterStageWindow *stage_window,
 static void
 clutter_stage_sdl_dispose (GObject *gobject)
 {
-  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (gobject);
-
   G_OBJECT_CLASS (clutter_stage_sdl_parent_class)->dispose (gobject);
 }
 
@@ -204,17 +182,8 @@ static void
 clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_sdl_dispose;
-  
-  actor_class->show = clutter_stage_sdl_show;
-  actor_class->hide = clutter_stage_sdl_hide;
-  actor_class->realize = clutter_stage_sdl_realize;
-  actor_class->unrealize = clutter_stage_sdl_unrealize;
-  actor_class->get_preferred_width = clutter_stage_sdl_get_preferred_width;
-  actor_class->get_preferred_height = clutter_stage_sdl_get_preferred_height;
-  actor_class->allocate = clutter_stage_sdl_allocate;
 }
 
 static void
@@ -223,6 +192,13 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_fullscreen = clutter_stage_sdl_set_fullscreen;
   iface->set_cursor_visible = clutter_stage_sdl_set_cursor_visible;
   iface->set_title = clutter_stage_sdl_set_title;
+  iface->show = clutter_stage_sdl_show;
+  iface->hide = clutter_stage_sdl_hide;
+  iface->realize = clutter_stage_sdl_realize;
+  iface->unrealize = clutter_stage_sdl_unrealize;
+  iface->resize = clutter_stage_sdl_resize;
+  iface->get_geometry = clutter_stage_sdl_get_geometry;
+  iface->get_wrapper = clutter_stage_sdl_get_wrapper;
 }
 
 static void

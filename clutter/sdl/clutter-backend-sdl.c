@@ -73,19 +73,19 @@ clutter_backend_sdl_redraw (ClutterBackend *backend,
   SDL_GL_SwapBuffers();
 }
 
-static ClutterActor *
+static ClutterStageWindow *
 clutter_backend_sdl_create_stage (ClutterBackend  *backend,
                                   ClutterStage    *wrapper,
                                   GError         **error)
 {
   ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
   ClutterStageSDL *stage_sdl;
-  ClutterActor *stage;
+  ClutterStageWindow *stage;
 
   if (backend_sdl->stage)
     {
       g_warning ("The SDL backend does not support multiple stages");
-      return CLUTTER_ACTOR (backend_sdl->stage);
+      return CLUTTER_STAGE_WINDOW (backend_sdl->stage);
     }
 
   stage = g_object_new (CLUTTER_TYPE_STAGE_SDL, NULL);
@@ -125,7 +125,7 @@ clutter_backend_sdl_dispose (GObject *gobject)
 
   if (backend_sdl->stage)
     {
-      clutter_actor_destroy (CLUTTER_ACTOR (backend_sdl->stage));
+      g_object_unref (backend_sdl->stage);
       backend_sdl->stage = NULL;
     }
 
