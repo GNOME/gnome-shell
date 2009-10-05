@@ -41,7 +41,8 @@ void _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                        floatVec2 nodes_max,
                                        guint         path_size,
                                        CoglPathNode *path,
-                                       gboolean      merge);
+                                       gboolean      merge,
+                                       gboolean      need_clear);
 
 typedef struct _CoglClipStack CoglClipStack;
 
@@ -696,7 +697,8 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
                                             path->path_nodes_max,
                                             path->path_size,
                                             path->path,
-                                            using_stencil_buffer);
+                                            using_stencil_buffer,
+                                            TRUE);
 
           _cogl_matrix_stack_pop (modelview_stack);
 

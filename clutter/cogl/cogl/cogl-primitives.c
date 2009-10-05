@@ -1109,7 +1109,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                   floatVec2 nodes_max,
                                   unsigned int  path_size,
                                   CoglPathNode *path,
-                                  gboolean      merge)
+                                  gboolean      merge,
+                                  gboolean      need_clear)
 {
   unsigned int     path_start = 0;
   unsigned int     sub_path_num = 0;
@@ -1151,6 +1152,11 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   _cogl_path_get_bounds (nodes_min, nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
 
+  GE( glEnable (GL_STENCIL_TEST) );
+
+  GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
+  GE( glDepthMask (FALSE) );
+
   if (merge)
     {
       GE (glStencilMask (2));
@@ -1158,16 +1164,32 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
     }
   else
     {
-      cogl_clear (NULL, COGL_BUFFER_BIT_STENCIL);
+      /* If we're not using the stencil buffer for clipping then we
+         don't need to clear the whole stencil buffer, just the area
+         that will be drawn */
+      if (need_clear)
+        cogl_clear (NULL, COGL_BUFFER_BIT_STENCIL);
+      else
+        {
+          /* Just clear the bounding box */
+          GE( glStencilMask (~(GLuint) 0) );
+          GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
+          cogl_rectangle (bounds_x, bounds_y,
+                          bounds_x + bounds_w, bounds_y + bounds_h);
+          /* Make sure the rectangle hits the stencil buffer before
+           * directly changing other GL state. */
+          _cogl_journal_flush ();
+          /* NB: The journal flushing may trash the modelview state and
+           * enable flags */
+          _cogl_matrix_stack_flush_to_gl (modelview_stack,
+                                          COGL_MATRIX_MODELVIEW);
+          cogl_enable (enable_flags);
+        }
       GE (glStencilMask (1));
       GE (glStencilFunc (GL_LEQUAL, 0x1, 0x3));
     }
 
-  GE (glEnable (GL_STENCIL_TEST));
   GE (glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT));
-
-  GE (glColorMask (FALSE, FALSE, FALSE, FALSE));
-  GE (glDepthMask (FALSE));
 
   for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
     {
@@ -1468,7 +1490,8 @@ _cogl_path_fill_nodes (void)
                                         ctx->path_nodes->len,
                                         &g_array_index (ctx->path_nodes,
                                                         CoglPathNode, 0),
-                                        clip_state->stencil_used);
+                                        clip_state->stencil_used,
+                                        FALSE);
 
       cogl_rectangle (bounds_x, bounds_y,
                       bounds_x + bounds_w, bounds_y + bounds_h);
