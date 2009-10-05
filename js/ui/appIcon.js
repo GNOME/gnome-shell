@@ -66,21 +66,20 @@ AppIcon.prototype = {
         this.actor._delegate = this;
         this.highlight_border_color = APPICON_DEFAULT_BORDER_COLOR;
 
-        if (menuType != MenuType.NONE) {
-            this.windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
-            for (let i = 0; i < this.windows.length; i++) {
-                this.windows[i].connect('notify::user-time', Lang.bind(this, this._resortWindows));
-            }
-            this._resortWindows();
+        this.windows = Shell.AppMonitor.get_default().get_windows_for_app(appInfo.get_id());
+        for (let i = 0; i < this.windows.length; i++) {
+            this.windows[i].connect('notify::user-time', Lang.bind(this, this._resortWindows));
+        }
+        this._resortWindows();
 
+        if (menuType != MenuType.NONE) {
             this.actor.connect('button-press-event', Lang.bind(this, this._updateMenuOnButtonPress));
             this.actor.connect('notify::hover', Lang.bind(this, this._updateMenuOnHoverChanged));
             this.actor.connect('activate', Lang.bind(this, this._updateMenuOnActivate));
 
             this._menuTimeoutId = 0;
             this._menu = null;
-        } else
-            this.windows = [];
+        }
 
         let iconBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                     x_align: Big.BoxAlignment.CENTER,
