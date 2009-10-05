@@ -16,7 +16,7 @@ const Main = imports.ui.main;
 const POPUP_APPICON_BORDER_COLOR = new Clutter.Color();
 POPUP_APPICON_BORDER_COLOR.from_pixel(0xffffffff);
 const POPUP_APPICON_SEPARATOR_COLOR = new Clutter.Color();
-POPUP_APPICON_SEPARATOR_COLOR.from_pixel(0xffffffff);
+POPUP_APPICON_SEPARATOR_COLOR.from_pixel(0x80808066);
 
 const POPUP_APPS_BOX_SPACING = 8;
 
