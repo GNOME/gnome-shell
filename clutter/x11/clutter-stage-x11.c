@@ -194,6 +194,9 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                           gint                height)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  gboolean resize;
+
+  resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
 
   if (width == 0 || height == 0)
     {
@@ -230,7 +233,8 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                          stage_x11->xwin_height);
         }
 
-      clutter_stage_x11_fix_window_size (stage_x11, width, height);
+      if (!resize)
+        clutter_stage_x11_fix_window_size (stage_x11, width, height);
 
       if (stage_x11->xpixmap != None)
         {

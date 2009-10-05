@@ -479,8 +479,9 @@ event_translate (ClutterBackend *backend,
                         xevent->xconfigure.width,
                         xevent->xconfigure.height);
 
-          stage_x11->xwin_width = xevent->xconfigure.width;
-          stage_x11->xwin_height = xevent->xconfigure.height;
+          clutter_actor_set_size (CLUTTER_ACTOR (stage),
+                                  xevent->xconfigure.width,
+                                  xevent->xconfigure.height);
 
           CLUTTER_UNSET_PRIVATE_FLAGS (stage_x11->wrapper,
                                        CLUTTER_STAGE_IN_RESIZE);
@@ -489,8 +490,6 @@ event_translate (ClutterBackend *backend,
            * to set up the GL viewport with the new size
            */
           clutter_stage_ensure_viewport (stage);
-
-          clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_x11->wrapper));
         }
       res = FALSE;
       break;
