@@ -77,7 +77,8 @@ struct _ClutterFlowLayoutPrivate
 
   gint max_row_items;
 
-  guint layout_wrap : 1;
+  guint layout_wrap    : 1;
+  guint is_homogeneous : 1;
 };
 
 enum
@@ -85,6 +86,8 @@ enum
   PROP_0,
 
   PROP_ORIENTATION,
+
+  PROP_HOMOGENEOUS,
 
   PROP_COLUMN_SPACING,
   PROP_ROW_SPACING,
@@ -272,15 +275,23 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
           line_index += 1;
         }
 
-      clutter_actor_get_preferred_width (child, priv->row_height,
-                                         &child_min,
-                                         &child_natural);
-      item_width = MIN (child_natural, priv->col_width);
+      if (priv->is_homogeneous)
+        {
+          item_width = priv->col_width;
+          item_height = priv->row_height;
+        }
+      else
+        {
+          clutter_actor_get_preferred_width (child, priv->row_height,
+                                             &child_min,
+                                             &child_natural);
+          item_width = MIN (child_natural, priv->col_width);
 
-      clutter_actor_get_preferred_height (child, item_width,
-                                          &child_min,
-                                          &child_natural);
-      item_height = MIN (child_natural, priv->row_height);
+          clutter_actor_get_preferred_height (child, item_width,
+                                              &child_min,
+                                              &child_natural);
+          item_height = MIN (child_natural, priv->row_height);
+        }
 
       CLUTTER_NOTE (LAYOUT,
                     "flow[line:%d, item:%d/%d] = { %.2f, %.2f, %.2f, %.2f }",
@@ -294,9 +305,9 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       clutter_actor_allocate (child, &child_alloc, flags);
 
       if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
-        item_x += item_width;
+        item_x += (item_width + priv->col_spacing);
       else
-        item_y += item_height;
+        item_y += (item_height + priv->row_spacing);
 
       line_items_count += 1;
     }
@@ -329,6 +340,10 @@ clutter_flow_layout_set_property (GObject      *gobject,
 
     case PROP_WRAP:
       clutter_flow_layout_set_wrap (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_HOMOGENEOUS:
+      clutter_flow_layout_set_homogeneous (self, g_value_get_boolean (value));
       break;
 
     case PROP_COLUMN_SPACING:
@@ -385,6 +400,10 @@ clutter_flow_layout_get_property (GObject    *gobject,
 
     case PROP_WRAP:
       g_value_set_boolean (value, priv->layout_wrap);
+      break;
+
+    case PROP_HOMOGENEOUS:
+      g_value_set_boolean (value, priv->is_homogeneous);
       break;
 
     case PROP_COLUMN_SPACING:
@@ -458,6 +477,22 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
                              CLUTTER_PARAM_READWRITE |
                              G_PARAM_CONSTRUCT);
   g_object_class_install_property (gobject_class, PROP_ORIENTATION, pspec);
+
+  /**
+   * ClutterFlowLayout:homogeneous:
+   *
+   * Whether each child inside the #ClutterFlowLayout should receive
+   * the same allocation
+   *
+   * Since: 1.2
+   */
+  pspec = g_param_spec_boolean ("homogeneous",
+                                "Homogeneous",
+                                "Whether each item should receive the "
+                                "same allocation",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_HOMOGENEOUS, pspec);
 
   /**
    * ClutterFlowLayout:wrap:
@@ -682,6 +717,37 @@ clutter_flow_layout_get_wrap (ClutterFlowLayout *layout)
   g_return_val_if_fail (CLUTTER_IS_FLOW_LAYOUT (layout), FALSE);
 
   return layout->priv->layout_wrap;
+}
+
+void
+clutter_flow_layout_set_homogeneous (ClutterFlowLayout *layout,
+                                     gboolean           homogeneous)
+{
+  ClutterFlowLayoutPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_FLOW_LAYOUT (layout));
+
+  priv = layout->priv;
+
+  if (priv->is_homogeneous != homogeneous)
+    {
+      ClutterLayoutManager *manager;
+
+      priv->is_homogeneous = homogeneous;
+
+      manager = CLUTTER_LAYOUT_MANAGER (layout);
+      clutter_layout_manager_layout_changed (manager);
+
+      g_object_notify (G_OBJECT (layout), "homogeneous");
+    }
+}
+
+gboolean
+clutter_flow_layout_get_homogeneous (ClutterFlowLayout *layout)
+{
+  g_return_val_if_fail (CLUTTER_IS_FLOW_LAYOUT (layout), FALSE);
+
+  return layout->priv->is_homogeneous;
 }
 
 void

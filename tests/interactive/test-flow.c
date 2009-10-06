@@ -5,9 +5,13 @@
 
 #define N_RECTS         20
 
-static gboolean vertical    = FALSE;
-static gboolean random_size = FALSE;
-static gint     n_rects     = N_RECTS;
+static gboolean is_homogeneous = FALSE;
+static gboolean vertical       = FALSE;
+static gboolean random_size    = FALSE;
+
+static gint     n_rects        = N_RECTS;
+static gint     x_spacing      = 0;
+static gint     y_spacing      = 0;
 
 static GOptionEntry entries[] = {
   {
@@ -30,6 +34,27 @@ static GOptionEntry entries[] = {
     G_OPTION_ARG_NONE,
     &vertical,
     "Set vertical orientation", NULL
+  },
+  {
+    "homogeneous", 'h',
+    0,
+    G_OPTION_ARG_NONE,
+    &is_homogeneous,
+    "Whether the layout should be homogeneous", NULL
+  },
+  {
+    "x-spacing", 0,
+    0,
+    G_OPTION_ARG_INT,
+    &x_spacing,
+    "Horizontal spacing between elements", "PX"
+  },
+  {
+    "y-spacing", 0,
+    0,
+    G_OPTION_ARG_INT,
+    &y_spacing,
+    "Vertical spacing between elements", "PX"
   },
   { NULL }
 };
@@ -64,6 +89,12 @@ test_flow_main (int argc, char *argv[])
 
   layout = clutter_flow_layout_new (vertical ? CLUTTER_FLOW_VERTICAL
                                              : CLUTTER_FLOW_HORIZONTAL);
+  clutter_flow_layout_set_homogeneous (CLUTTER_FLOW_LAYOUT (layout),
+                                       is_homogeneous);
+  clutter_flow_layout_set_column_spacing (CLUTTER_FLOW_LAYOUT (layout),
+                                          x_spacing);
+  clutter_flow_layout_set_row_spacing (CLUTTER_FLOW_LAYOUT (layout),
+                                       y_spacing);
 
   box = clutter_box_new (layout);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
