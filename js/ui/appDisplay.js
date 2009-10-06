@@ -695,7 +695,10 @@ WellGrid.prototype = {
             return [0, WELL_DEFAULT_COLUMNS, 0, 0];
         let nColumns = 0;
         let usedWidth = 0;
-        if (forWidth < 0) {
+        // Big.Box will allocate us at 0x0 if we are not visible; this is probably a
+        // Big.Box bug but it can't be fixed because if children are skipped in allocate()
+        // Clutter gets confused (see http://bugzilla.openedhand.com/show_bug.cgi?id=1831)
+        if (forWidth <= 0) {
             nColumns = WELL_DEFAULT_COLUMNS;
         } else {
             while (nColumns < WELL_DEFAULT_COLUMNS &&
@@ -720,7 +723,7 @@ WellGrid.prototype = {
         let rows = Math.ceil(children.length / nColumns);
 
         let itemWidth;
-        if (forWidth < 0) {
+        if (forWidth <= 0) {
             itemWidth = itemNaturalWidth;
         } else {
             itemWidth = Math.floor(forWidth / nColumns);
