@@ -35,6 +35,7 @@
 
 typedef struct {
   CoglMatrix matrix;
+  gboolean is_identity;
   /* count of pushes with no changes; when a change is
    * requested, we create a new state and decrement this
    */
@@ -54,6 +55,7 @@ struct _CoglMatrixStack
 
   /* which state does GL have, NULL if unknown */
   CoglMatrixState *flushed_state;
+  gboolean flushed_identity;
 };
 
 /* XXX: this doesn't initialize the matrix! */
@@ -64,6 +66,7 @@ _cogl_matrix_state_new (void)
 
   state = g_slice_new (CoglMatrixState);
   state->push_count = 0;
+  state->is_identity = FALSE;
 
   return state;
 }
@@ -71,7 +74,6 @@ _cogl_matrix_state_new (void)
 static void
 _cogl_matrix_state_destroy (CoglMatrixState *state)
 {
-
   g_slice_free (CoglMatrixState, state);
 }
 
@@ -81,6 +83,18 @@ _cogl_matrix_stack_top (CoglMatrixStack *stack)
   return stack->stack->data;
 }
 
+/* XXX:
+ * Operations like scale, translate, rotate etc need to have an
+ * initialized state->matrix to work with, so they will pass
+ * initialize = TRUE.
+ *
+ * _cogl_matrix_stack_load_identity and _cogl_matrix_stack_set on the
+ * other hand don't so they will pass initialize = FALSE
+ *
+ * NB: Identity matrices are represented by setting
+ * state->is_identity=TRUE in which case state->matrix will be
+ * uninitialized.
+ */
 static CoglMatrixState *
 _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
                                 gboolean initialize)
@@ -91,7 +105,11 @@ _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
   state = _cogl_matrix_stack_top (stack);
 
   if (state->push_count == 0)
-    return state;
+    {
+      if (state->is_identity && initialize)
+        cogl_matrix_init_identity (&state->matrix);
+      return state;
+    }
 
   state->push_count -= 1;
 
@@ -99,7 +117,10 @@ _cogl_matrix_stack_top_mutable (CoglMatrixStack *stack,
 
   if (initialize)
     {
-      new_top->matrix = state->matrix;
+      if (state->is_identity)
+        cogl_matrix_init_identity (&new_top->matrix);
+      else
+        new_top->matrix = state->matrix;
 
       if (stack->flushed_state == state)
         stack->flushed_state = new_top;
@@ -119,7 +140,7 @@ _cogl_matrix_stack_new (void)
   stack = g_slice_new0 (CoglMatrixStack);
 
   state = _cogl_matrix_state_new ();
-  cogl_matrix_init_identity (&state->matrix);
+  state->is_identity = TRUE;
 
   stack->stack = g_slist_prepend (stack->stack, state);
 
@@ -192,12 +213,22 @@ _cogl_matrix_stack_load_identity (CoglMatrixStack *stack)
 {
   CoglMatrixState *state;
 
-  /* XXX: In this case an uninitialized top is acceptable */
   state = _cogl_matrix_stack_top_mutable (stack, FALSE);
-  cogl_matrix_init_identity (&state->matrix);
 
-  /* mark dirty */
-  stack->flushed_state = NULL;
+  /* NB: Identity matrices are represented by setting
+   * state->is_identity = TRUE and leaving state->matrix
+   * uninitialized.
+   *
+   * This is done to optimize the heavy usage of
+   * _cogl_matrix_stack_load_identity by the Cogl Journal.
+   */
+  if (!state->is_identity)
+    {
+      state->is_identity = TRUE;
+
+      /* mark dirty */
+      stack->flushed_state = NULL;
+    }
 }
 
 void
@@ -212,6 +243,7 @@ _cogl_matrix_stack_scale (CoglMatrixStack *stack,
   cogl_matrix_scale (&state->matrix, x, y, z);
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -226,6 +258,7 @@ _cogl_matrix_stack_translate (CoglMatrixStack *stack,
   cogl_matrix_translate (&state->matrix, x, y, z);
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -241,6 +274,7 @@ _cogl_matrix_stack_rotate (CoglMatrixStack *stack,
   cogl_matrix_rotate (&state->matrix, angle, x, y, z);
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -253,6 +287,7 @@ _cogl_matrix_stack_multiply (CoglMatrixStack  *stack,
   cogl_matrix_multiply (&state->matrix, &state->matrix, matrix);
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -272,6 +307,7 @@ _cogl_matrix_stack_frustum (CoglMatrixStack *stack,
                        z_near, z_far);
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -288,6 +324,7 @@ _cogl_matrix_stack_perspective (CoglMatrixStack *stack,
                            fov_y, aspect, z_near, z_far);
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -306,6 +343,7 @@ _cogl_matrix_stack_ortho (CoglMatrixStack *stack,
                      left, right, bottom, top, z_near, z_far);
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -316,7 +354,17 @@ _cogl_matrix_stack_get (CoglMatrixStack *stack,
 
   state = _cogl_matrix_stack_top (stack);
 
-  *matrix = state->matrix;
+  /* NB: identity matrices are lazily initialized because we can often avoid
+   * initializing them at all if nothing is pushed on top of them since we
+   * load them using glLoadIdentity()
+   *
+   * The Cogl journal typically loads an identiy matrix because it performs
+   * software transformations, which is why we have optimized this case.
+   */
+  if (state->is_identity)
+    cogl_matrix_init_identity (matrix);
+  else
+    *matrix = state->matrix;
 }
 
 void
@@ -325,10 +373,11 @@ _cogl_matrix_stack_set (CoglMatrixStack  *stack,
 {
   CoglMatrixState *state;
 
-  state = _cogl_matrix_stack_top_mutable (stack, TRUE);
+  state = _cogl_matrix_stack_top_mutable (stack, FALSE);
   state->matrix = *matrix;
   /* mark dirty */
   stack->flushed_state = NULL;
+  state->is_identity = FALSE;
 }
 
 void
@@ -362,7 +411,17 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
    * than LoadMatrix to send a 2D matrix
    */
 
-  GE (glLoadMatrixf (cogl_matrix_get_array (&state->matrix)));
+  if (state->is_identity)
+    {
+      if (!stack->flushed_identity)
+        GE (glLoadIdentity ());
+      stack->flushed_identity = TRUE;
+    }
+  else
+    {
+      GE (glLoadMatrixf (cogl_matrix_get_array (&state->matrix)));
+      stack->flushed_identity = FALSE;
+    }
   stack->flushed_state = state;
 }
 
@@ -370,5 +429,6 @@ void
 _cogl_matrix_stack_dirty (CoglMatrixStack *stack)
 {
   stack->flushed_state = NULL;
+  stack->flushed_identity = FALSE;
 }
 
