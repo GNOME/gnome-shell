@@ -961,6 +961,8 @@ clutter_actor_real_show (ClutterActor *self)
 {
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     {
+      ClutterActorPrivate *priv = self->priv;
+
       CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
       /* we notify on the "visible" flag in the clutter_actor_show()
        * wrapper so the entire show signal emission completes first
@@ -968,6 +970,13 @@ clutter_actor_real_show (ClutterActor *self)
        */
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
+      /* While an actor is hidden the parent may not have allocated/requested
+       * so we need to start from scratch and avoid the short-circuiting
+       * in clutter_actor_queue_relayout().
+       */
+      priv->needs_width_request  = FALSE;
+      priv->needs_height_request = FALSE;
+      priv->needs_allocation     = FALSE;
       clutter_actor_queue_relayout (self);
     }
 }
