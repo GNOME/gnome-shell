@@ -216,9 +216,15 @@ compute_lines (ClutterFlowLayout *self,
   gint items_per_line;
 
   if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
-    items_per_line = avail_width / (priv->col_width + priv->col_spacing);
+    {
+      items_per_line = (avail_width - priv->col_spacing)
+                     / (priv->col_width + priv->col_spacing);
+    }
   else
-    items_per_line = avail_height / (priv->row_height + priv->row_spacing);
+    {
+      items_per_line = (avail_height - priv->row_spacing)
+                     / (priv->row_height + priv->row_spacing);
+    }
 
   return items_per_line;
 }
@@ -305,9 +311,9 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       clutter_actor_allocate (child, &child_alloc, flags);
 
       if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
-        item_x += (item_width + priv->col_spacing);
+        item_x += (priv->col_width + priv->col_spacing);
       else
-        item_y += (item_height + priv->row_spacing);
+        item_y += (priv->row_height + priv->row_spacing);
 
       line_items_count += 1;
     }
