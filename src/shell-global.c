@@ -978,3 +978,23 @@ shell_global_get_focus_monitor (ShellGlobal  *global)
   meta_screen_get_monitor_geometry (screen, 0, &rect);
   return g_boxed_copy (GDK_TYPE_RECTANGLE, &rect);
 }
+
+/**
+ * shell_global_get_modifier_keys:
+ * @global: the #ShellGlobal
+ *
+ * Gets the current set of modifier keys that are pressed down;
+ * this is a wrapper around gdk_display_get_pointer() that strips
+ * out any un-declared modifier flags, to make gjs happy; see
+ * https://bugzilla.gnome.org/show_bug.cgi?id=597292.
+ *
+ * Return value: the current modifiers
+ */
+GdkModifierType
+shell_global_get_modifier_keys (ShellGlobal *global)
+{
+  GdkModifierType mods;
+
+  gdk_display_get_pointer (gdk_display_get_default (), NULL, NULL, NULL, &mods);
+  return mods & GDK_MODIFIER_MASK;
+}

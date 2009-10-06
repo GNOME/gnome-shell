@@ -158,7 +158,7 @@ AltTabPopup.prototype = {
         // https://bugzilla.gnome.org/show_bug.cgi?id=596695 for
         // details.) So we check now. (Have to do this after calling
         // _updateSelection.)
-        let [screen, x, y, mods] = Gdk.Display.get_default().get_pointer();
+        let mods = global.get_modifier_keys();
         if (!(mods & Gdk.ModifierType.MOD1_MASK)) {
             this._finish();
             return false;

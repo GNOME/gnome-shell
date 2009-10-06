@@ -77,6 +77,8 @@ GSList       *shell_global_get_monitors        (ShellGlobal  *global);
 GdkRectangle *shell_global_get_primary_monitor (ShellGlobal  *global);
 GdkRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
+GdkModifierType shell_global_get_modifier_keys (ShellGlobal *global);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */
