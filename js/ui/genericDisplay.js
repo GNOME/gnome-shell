@@ -639,12 +639,12 @@ GenericDisplay.prototype = {
      *  their own while the user was browsing through the result pages.
      *  SUBSEARCH - Indicates that the current _search is a superstring of the previous
      *  one, which implies we only need to re-search through previous results.
-     *  FULL - Indicates that we need refresh all displayed items.
+     *  FULL - Indicates that we need recreate all displayed items; implies RESET_CONTROLS as well
      */
     _redisplay: function(flags) {
-        let resetPage = (flags & RedisplayFlags.RESET_CONTROLS) > 0;
         let isSubSearch = (flags & RedisplayFlags.SUBSEARCH) > 0;
         let fullReload = (flags & RedisplayFlags.FULL) > 0;
+        let resetPage = (flags & RedisplayFlags.RESET_CONTROLS) > 0 || fullReload;
 
         let hadSelected = this.hasSelected();
         this.unsetSelected();
