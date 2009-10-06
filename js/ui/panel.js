@@ -61,6 +61,7 @@ TRAY_BORDER_COLOR.from_pixel(0x00000033);
 const TRAY_CORNER_RADIUS = 5;
 const TRAY_BORDER_WIDTH = 0;
 
+const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
 function AppPanelMenu() {
     this._init();
@@ -290,6 +291,8 @@ Panel.prototype = {
                                                   opacity: 0,
                                                   reactive: true });
 
+        this._hotCornerActivationTime = 0;
+
         this._hotCornerEnvirons.connect('leave-event',
                                         Lang.bind(this, this._onHotCornerEnvironsLeft));
         // Clicking on the hot corner environs should result in the same bahavior
@@ -404,14 +407,14 @@ Panel.prototype = {
         // We get into the Overview mode on button-press-event as opposed to button-release-event because eventually we'll probably
         // have the Overview act like a menu that allows the user to release the mouse on the activity the user wants
         // to switch to.
-        this.button.actor.connect('button-press-event', function(b, e) {
-            if (e.get_button() == 1 && e.get_click_count() == 1) {
-                Main.overview.toggle();
+        this.button.actor.connect('button-press-event', Lang.bind(this, function(b, e) {
+            if (e.get_button() == 1 && e.get_click_count() == 1 && !Main.overview.animationInProgress) {
+                this._maybeToggleOverviewOnClick();
                 return true;
             } else {
                 return false;
             }
-        });
+        }));
         // In addition to pressing the button, the Overview can be entered and exited by other means, such as
         // pressing the System key, Alt+F1 or Esc. We want the button to be pressed in when the Overview is entered
         // and to be released when it is exited regardless of how it was triggered.
@@ -477,6 +480,7 @@ Panel.prototype = {
         if (!this._hotCornerEntered) {
             this._hotCornerEntered = true;
             if (!Main.overview.animationInProgress) {
+                this._hotCornerActivationTime = Date.now() / 1000;
                 Main.overview.toggle();
             }
         }
@@ -485,7 +489,7 @@ Panel.prototype = {
 
     _onHotCornerClicked : function() {
          if (!Main.overview.animationInProgress) {
-             Main.overview.toggle();
+             this._maybeToggleOverviewOnClick();
          }
          return false;
     },
@@ -502,6 +506,15 @@ Panel.prototype = {
             this._hotCornerEntered = false;
         }
         return false;
+    },
+
+    // Toggles the overview unless this is the first click on the Activities button within the HOT_CORNER_ACTIVATION_TIMEOUT time
+    // of the hot corner being triggered. This check avoids opening and closing the overview if the user both triggered the hot corner
+    // and clicked the Activities button.
+    _maybeToggleOverviewOnClick: function() {
+        if (this._hotCornerActivationTime == 0 || Date.now() / 1000 - this._hotCornerActivationTime > HOT_CORNER_ACTIVATION_TIMEOUT)
+            Main.overview.toggle();
+        this._hotCornerActivationTime = 0;
     }
 };
 
