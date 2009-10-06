@@ -31,13 +31,35 @@ test_units_string (TestConformSimpleFixture *fixture,
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 10);
 
+  g_assert (clutter_units_from_string (&units, "10  ") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
+  g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 10);
+
   g_assert (clutter_units_from_string (&units, "5 em") == TRUE);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_EM);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 5);
 
+  g_assert (clutter_units_from_string (&units, "5 emeralds") == FALSE);
+
   g_assert (clutter_units_from_string (&units, "  16   mm") == TRUE);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_MM);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 16);
+
+  g_assert (clutter_units_from_string (&units, "  24   pt   ") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_POINT);
+  g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 24);
+
+  g_assert (clutter_units_from_string (&units, "  32   em   garbage") == FALSE);
+
+  g_assert (clutter_units_from_string (&units, "5.1mm") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_MM);
+  g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 5.1f);
+
+  g_assert (clutter_units_from_string (&units, "5,mm") == FALSE);
+
+  g_assert (clutter_units_from_string (&units, ".5pt") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_POINT);
+  g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 0.5f);
 
   g_assert (clutter_units_from_string (&units, "1 pony") == FALSE);
 

@@ -362,10 +362,14 @@ clutter_units_to_pixels (ClutterUnits *units)
  * A #ClutterUnits expressed in string should match:
  *
  * |[
- *   number: [0-9]
- *   unit_value: &lt;number&gt;+
- *   unit_name: px|pt|mm|em
- *   units: &lt;unit_value&gt; &lt;unit_name&gt;
+ *   units: wsp* unit-value wsp* unit-name? wsp*
+ *   unit-value: number
+ *   unit-name: 'px' | 'pt' | 'mm' | 'em'
+ *   number: digit+
+ *           | digit* sep digit+
+ *   sep: '.' | ','
+ *   digit: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+ *   wsp: (#0x20 | #0x9 | #0xA | #0xB | #0xC | #0xD)+
  * ]|
  *
  * For instance, these are valid strings:
@@ -375,6 +379,7 @@ clutter_units_to_pixels (ClutterUnits *units)
  *   5.1 em
  *   24 pt
  *   12.6 mm
+ *   .3 cm
  * ]|
  *
  * While these are not:
@@ -401,14 +406,11 @@ clutter_units_from_string (ClutterUnits *units,
   g_return_val_if_fail (units != NULL, FALSE);
   g_return_val_if_fail (str != NULL, FALSE);
 
-  /* Ensure that the first character is a digit */
+  /* strip leading space */
   while (g_ascii_isspace (*str))
     str++;
 
   if (*str == '\0')
-    return FALSE;
-
-  if (!g_ascii_isdigit (*str))
     return FALSE;
 
   /* integer part */
@@ -416,36 +418,54 @@ clutter_units_from_string (ClutterUnits *units,
 
   if (*str == '.' || *str == ',')
     {
-      glong frac = 100000;
+      gfloat divisor = 0.1;
 
-      while (g_ascii_isdigit (*++str))
+      /* 5.cm is not a valid number */
+      if (!g_ascii_isdigit (*++str))
+        return FALSE;
+
+      while (g_ascii_isdigit (*str))
         {
-          frac += (*str - '0') * frac;
-          frac /= 10;
+          value += (*str - '0') * divisor;
+          divisor *= 0.1;
+          str++;
         }
-
-      value += (1.0f / (gfloat) frac);
     }
+
+  while (g_ascii_isspace (*str))
+    str++;
 
   /* assume pixels by default, if no unit is specified */
   if (*str == '\0')
     unit_type = CLUTTER_UNIT_PIXEL;
-  else
+  else if (strncmp (str, "em", 2) == 0)
     {
-      while (g_ascii_isspace (*str))
-        str++;
-
-      if (strncmp (str, "em", 2) == 0)
-        unit_type = CLUTTER_UNIT_EM;
-      else if (strncmp (str, "mm", 2) == 0)
-        unit_type = CLUTTER_UNIT_MM;
-      else if (strncmp (str, "pt", 2) == 0)
-        unit_type = CLUTTER_UNIT_POINT;
-      else if (strncmp (str, "px", 2) == 0)
-        unit_type = CLUTTER_UNIT_PIXEL;
-      else
-        return FALSE;
+      unit_type = CLUTTER_UNIT_EM;
+      str += 2;
     }
+  else if (strncmp (str, "mm", 2) == 0)
+    {
+      unit_type = CLUTTER_UNIT_MM;
+      str += 2;
+    }
+  else if (strncmp (str, "pt", 2) == 0)
+    {
+      unit_type = CLUTTER_UNIT_POINT;
+      str += 2;
+    }
+  else if (strncmp (str, "px", 2) == 0)
+    {
+      unit_type = CLUTTER_UNIT_PIXEL;
+      str += 2;
+    }
+  else
+        return FALSE;
+
+  /* ensure the unit is only followed by white space */
+  while (g_ascii_isspace (*str))
+    str++;
+  if (*str != '\0')
+    return FALSE;
 
   units->unit_type = unit_type;
   units->value = value;
