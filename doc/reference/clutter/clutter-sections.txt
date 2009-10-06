@@ -30,6 +30,7 @@ clutter_media_get_type
 ClutterUnitType
 ClutterUnits
 clutter_units_from_mm
+clutter_units_from_cm
 clutter_units_from_pt
 clutter_units_from_em
 clutter_units_from_em_for_font

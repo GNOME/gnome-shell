@@ -7,7 +7,7 @@ void
 test_units_constructors (TestConformSimpleFixture *fixture,
                          gconstpointer data)
 {
-  ClutterUnits units;
+  ClutterUnits units, units_cm;
 
   clutter_units_from_pixels (&units, 100);
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
@@ -18,6 +18,17 @@ test_units_constructors (TestConformSimpleFixture *fixture,
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_EM);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 5.0);
   g_assert_cmpfloat (clutter_units_to_pixels (&units), !=, 5.0);
+
+  clutter_units_from_cm (&units_cm, 5.0);
+  g_assert (clutter_units_get_unit_type (&units_cm) == CLUTTER_UNIT_CM);
+  g_assert_cmpfloat (clutter_units_get_unit_value (&units_cm), ==, 5.0);
+  g_assert_cmpfloat (clutter_units_to_pixels (&units_cm), !=, 5.0);
+
+  clutter_units_from_mm (&units, 50.0);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_MM);
+  g_assert_cmpfloat (clutter_units_to_pixels (&units),
+                     ==,
+                     clutter_units_to_pixels (&units_cm));
 }
 
 void
@@ -51,8 +62,8 @@ test_units_string (TestConformSimpleFixture *fixture,
 
   g_assert (clutter_units_from_string (&units, "  32   em   garbage") == FALSE);
 
-  g_assert (clutter_units_from_string (&units, "5.1mm") == TRUE);
-  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_MM);
+  g_assert (clutter_units_from_string (&units, "5.1cm") == TRUE);
+  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_CM);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 5.1f);
 
   g_assert (clutter_units_from_string (&units, "5,mm") == FALSE);

@@ -43,6 +43,7 @@ G_BEGIN_DECLS
  * @CLUTTER_UNIT_EM: Unit expressed in em
  * @CLUTTER_UNIT_MM: Unit expressed in millimeters
  * @CLUTTER_UNIT_POINT: Unit expressed in points
+ * @CLUTTER_UNIT_CM: Unit expressed in centimeters
  *
  * The type of unit in which a value is expressed
  *
@@ -54,7 +55,8 @@ typedef enum {
   CLUTTER_UNIT_PIXEL,
   CLUTTER_UNIT_EM,
   CLUTTER_UNIT_MM,
-  CLUTTER_UNIT_POINT
+  CLUTTER_UNIT_POINT,
+  CLUTTER_UNIT_CM
 } ClutterUnitType;
 
 /**
@@ -99,6 +101,8 @@ void            clutter_units_from_em_for_font (ClutterUnits       *units,
                                                 gfloat              em);
 void            clutter_units_from_mm          (ClutterUnits       *units,
                                                 gfloat              mm);
+void            clutter_units_from_cm          (ClutterUnits       *units,
+                                                gfloat              cm);
 void            clutter_units_from_pt          (ClutterUnits       *units,
                                                 gfloat              pt);
 
@@ -113,6 +117,7 @@ gchar *         clutter_units_to_string        (const ClutterUnits *units);
 #define clutter_units_em                clutter_units_from_em
 #define clutter_units_em_for_font       clutter_units_from_em_for_font
 #define clutter_units_mm                clutter_units_from_mm
+#define clutter_units_cm                clutter_units_from_cm
 #define clutter_units_pt                clutter_units_from_pt
 
 #define CLUTTER_TYPE_UNITS                 (clutter_units_get_type ())

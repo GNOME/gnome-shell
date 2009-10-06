@@ -91,6 +91,12 @@ units_mm_to_pixels (gfloat mm)
 }
 
 static gfloat
+units_cm_to_pixels (gfloat cm)
+{
+  return units_mm_to_pixels (cm * 10);
+}
+
+static gfloat
 units_pt_to_pixels (gfloat pt)
 {
   ClutterBackend *backend;
@@ -149,6 +155,27 @@ clutter_units_from_mm (ClutterUnits *units,
   units->unit_type  = CLUTTER_UNIT_MM;
   units->value      = mm;
   units->pixels     = units_mm_to_pixels (mm);
+  units->pixels_set = TRUE;
+}
+
+/**
+ * clutter_units_from_cm:
+ * @units: a #ClutterUnits
+ * @cm: centimeters
+ *
+ * Stores a value in centimeters inside @units
+ *
+ * Since: 1.2
+ */
+void
+clutter_units_from_cm (ClutterUnits *units,
+                       gfloat        cm)
+{
+  g_return_if_fail (units != NULL);
+
+  units->unit_type  = CLUTTER_UNIT_CM;
+  units->value      = cm;
+  units->pixels     = units_cm_to_pixels (cm);
   units->pixels_set = TRUE;
 }
 
@@ -334,6 +361,10 @@ clutter_units_to_pixels (ClutterUnits *units)
       units->pixels = units_mm_to_pixels (units->value);
       break;
 
+    case CLUTTER_UNIT_CM:
+      units->pixels = units_cm_to_pixels (units->value);
+      break;
+
     case CLUTTER_UNIT_POINT:
       units->pixels = units_pt_to_pixels (units->value);
       break;
@@ -364,7 +395,7 @@ clutter_units_to_pixels (ClutterUnits *units)
  * |[
  *   units: wsp* unit-value wsp* unit-name? wsp*
  *   unit-value: number
- *   unit-name: 'px' | 'pt' | 'mm' | 'em'
+ *   unit-name: 'px' | 'pt' | 'mm' | 'em' | 'cm'
  *   number: digit+
  *           | digit* sep digit+
  *   sep: '.' | ','
@@ -448,6 +479,11 @@ clutter_units_from_string (ClutterUnits *units,
       unit_type = CLUTTER_UNIT_MM;
       str += 2;
     }
+  else if (strncmp (str, "cm", 2) == 0)
+    {
+      unit_type = CLUTTER_UNIT_CM;
+      str += 2;
+    }
   else if (strncmp (str, "pt", 2) == 0)
     {
       unit_type = CLUTTER_UNIT_POINT;
@@ -482,6 +518,9 @@ clutter_unit_type_name (ClutterUnitType unit_type)
     case CLUTTER_UNIT_MM:
       return "mm";
 
+    case CLUTTER_UNIT_CM:
+      return "cm";
+
     case CLUTTER_UNIT_POINT:
       return "pt";
 
@@ -507,7 +546,7 @@ clutter_unit_type_name (ClutterUnitType unit_type)
  * examples of output
  *
  * <note>Fractional values are truncated to the second decimal
- * position for em and mm, and to the first decimal position for
+ * position for em, mm and cm, and to the first decimal position for
  * typographic points. Pixels are integers.</note>
  *
  * Return value: a newly allocated string containing the encoded
@@ -534,6 +573,11 @@ clutter_units_to_string (const ClutterUnits *units)
 
     case CLUTTER_UNIT_MM:
       unit_name = "mm";
+      fmt = "%.2f";
+      break;
+
+    case CLUTTER_UNIT_CM:
+      unit_name = "cm";
       fmt = "%.2f";
       break;
 
