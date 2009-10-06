@@ -130,8 +130,8 @@ struct _ClutterPathClass
  * Represents a single node of a #ClutterPath.
  *
  * Some of the coordinates in @points may be unused for some node
- * types. %CLUTTER_PATH_MOVE_TO and %CLUTTER_PATH_LINE_TO use only two
- * pairs of coordinates, %CLUTTER_PATH_CURVE_TO uses all three and
+ * types. %CLUTTER_PATH_MOVE_TO and %CLUTTER_PATH_LINE_TO use only one
+ * pair of coordinates, %CLUTTER_PATH_CURVE_TO uses all three and
  * %CLUTTER_PATH_CLOSE uses none.
  *
  * Since: 1.0
