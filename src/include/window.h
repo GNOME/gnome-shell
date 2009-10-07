@@ -116,6 +116,7 @@ void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
 const char *meta_window_get_title (MetaWindow *window);
 MetaWindow *meta_window_get_transient_for (MetaWindow *window);
+Window      meta_window_get_transient_for_as_xid (MetaWindow *window);
 void        meta_window_delete             (MetaWindow  *window,
                                             guint32      timestamp);
 guint       meta_window_get_stable_sequence (MetaWindow *window);
