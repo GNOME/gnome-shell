@@ -221,7 +221,7 @@ St-1.0.gir: $(mutter) $(G_IR_SCANNER) libgnome-shell.la libst-1.0.la Makefile
 	        $(addprefix $(srcdir)/,$(st_source_h))				\
 	        $(addprefix $(srcdir)/,$(st_source_c))				\
 	        $(srcdir)/st-enum-types.h					\
-	        $(ST_CFLAGS)							\
+	        $(st_cflags)							\
 	        -o $@
 CLEANFILES += St-1.0.gir
 
