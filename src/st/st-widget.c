@@ -699,6 +699,20 @@ get_root_theme_node (ClutterStage *stage)
   return st_theme_context_get_root_node (context);
 }
 
+/**
+ * st_widget_get_theme_node:
+ * @widget: a #StWidget
+ *
+ * Gets the theme node holding style information for the widget.
+ * The theme node is used to access standard and custom CSS
+ * properties of the widget.
+ *
+ * Return value: (transfer none): the theme node for the widget.
+ *   This is owned by the widget. When attributes of the widget
+ *   or the environment that affect the styling change (for example
+ *   the style_class property of the widget), it will be recreated,
+ *   and the ::style-changed signal will be emitted on the widget.
+ */
 StThemeNode *
 st_widget_get_theme_node (StWidget *widget)
 {
