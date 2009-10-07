@@ -546,7 +546,7 @@ CalendarPopup.prototype = {
         // Reset the calendar to today's date
         this.calendar.setDate(new Date());
 
-        this.actor.x = Math.round((panelActor.x + panelActor.width - this.actor.width) / 2);
+        this.actor.x = Math.round(panelActor.x + (panelActor.width - this.actor.width) / 2);
         this.actor.lower(panelActor);
         this.actor.show();
         Tweener.addTween(this.actor,
