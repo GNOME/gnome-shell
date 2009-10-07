@@ -998,3 +998,22 @@ shell_global_get_modifier_keys (ShellGlobal *global)
   gdk_display_get_pointer (gdk_display_get_default (), NULL, NULL, NULL, &mods);
   return mods & GDK_MODIFIER_MASK;
 }
+
+/**
+ * shell_get_event_state:
+ * @event: a #ClutterEvent
+ *
+ * Gets the current state of the event (the set of modifier keys that
+ * are pressed down). Thhis is a wrapper around
+ * clutter_event_get_state() that strips out any un-declared modifier
+ * flags, to make gjs happy; see
+ * https://bugzilla.gnome.org/show_bug.cgi?id=597292.
+ *
+ * Return value: the state from the event
+ */
+ClutterModifierType
+shell_get_event_state (ClutterEvent *event)
+{
+  ClutterModifierType state = clutter_event_get_state (event);
+  return state & CLUTTER_MODIFIER_MASK;
+}

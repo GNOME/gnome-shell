@@ -201,7 +201,7 @@ function _globalKeyPressHandler(actor, event) {
                 overview.hide();
 
             return true;
-        } else if (symbol == Clutter.F2 && (event.get_state() & Clutter.ModifierType.MOD1_MASK)) {
+        } else if (symbol == Clutter.F2 && (Shell.get_event_state(event) & Clutter.ModifierType.MOD1_MASK)) {
             getRunDialog().open();
         }
     }

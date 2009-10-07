@@ -79,6 +79,8 @@ GdkRectangle *shell_global_get_focus_monitor   (ShellGlobal  *global);
 
 GdkModifierType shell_global_get_modifier_keys (ShellGlobal *global);
 
+ClutterModifierType shell_get_event_state (ClutterEvent *event);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

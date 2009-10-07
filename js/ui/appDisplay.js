@@ -554,7 +554,7 @@ RunningWellItem.prototype = {
     },
 
     _onActivate: function (actor, event) {
-        let modifiers = event.get_state();
+        let modifiers = Shell.get_event_state(event);
 
         if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
             this.appInfo.launch();

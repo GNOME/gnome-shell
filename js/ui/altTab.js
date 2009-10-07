@@ -148,7 +148,7 @@ AltTabPopup.prototype = {
 
     _keyPressEvent : function(actor, event) {
         let keysym = event.get_key_symbol();
-        let shift = (event.get_state() & Clutter.ModifierType.SHIFT_MASK);
+        let shift = (Shell.get_event_state(event) & Clutter.ModifierType.SHIFT_MASK);
 
         // The WASD stuff is for debugging in Xephyr, where the arrow
         // keys aren't mapped correctly
