@@ -31,6 +31,8 @@
  *
  * A #ClutterColor is expressed as a 4-tuple of values ranging from
  * zero to 255, one for each color channel plus one for the alpha.
+ *
+ * The alpha channel is fully opaque at 255 and fully transparent at 0.
  */
 
 #ifdef HAVE_CONFIG_H
