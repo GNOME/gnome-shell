@@ -71,7 +71,6 @@ struct _ClutterFlowLayoutPrivate
 
   gint max_row_items;
 
-  guint layout_wrap    : 1;
   guint is_homogeneous : 1;
 };
 
@@ -89,9 +88,7 @@ enum
   PROP_MIN_COLUMN_WIDTH,
   PROP_MAX_COLUMN_WIDTH,
   PROP_MIN_ROW_HEGHT,
-  PROP_MAX_ROW_HEIGHT,
-
-  PROP_WRAP
+  PROP_MAX_ROW_HEIGHT
 };
 
 G_DEFINE_TYPE (ClutterFlowLayout,
@@ -352,10 +349,6 @@ clutter_flow_layout_set_property (GObject      *gobject,
       clutter_flow_layout_set_orientation (self, g_value_get_enum (value));
       break;
 
-    case PROP_WRAP:
-      clutter_flow_layout_set_wrap (self, g_value_get_boolean (value));
-      break;
-
     case PROP_HOMOGENEOUS:
       clutter_flow_layout_set_homogeneous (self, g_value_get_boolean (value));
       break;
@@ -410,10 +403,6 @@ clutter_flow_layout_get_property (GObject    *gobject,
     {
     case PROP_ORIENTATION:
       g_value_set_enum (value, priv->orientation);
-      break;
-
-    case PROP_WRAP:
-      g_value_set_boolean (value, priv->layout_wrap);
       break;
 
     case PROP_HOMOGENEOUS:
@@ -477,9 +466,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    *
    * The orientation of the #ClutterFlowLayout. The children
    * of the layout will be layed out following the orientation.
-   * If #ClutterFlowLayout:wrap is set to %TRUE then this property
-   * will control the primary direction of the layout before
-   * wrapping takes place
+   *
+   * This property also controls the overflowing directions
    *
    * Since: 1.2
    */
@@ -509,35 +497,11 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
   g_object_class_install_property (gobject_class, PROP_HOMOGENEOUS, pspec);
 
   /**
-   * ClutterFlowLayout:wrap:
-   *
-   * Whether the layout should wrap the children to fit them
-   * in the allocation. A non-wrapping layout has a preferred
-   * size of the biggest child in the direction opposite to the
-   * #ClutterFlowLayout:orientation property, and the sum of
-   * the preferred sizes (taking into account spacing) of the
-   * children in the direction of the orientation
-   *
-   * If a wrapping #ClutterFlowLayout is allocated less than the
-   * preferred size in the direction of orientation then it will
-   * not allocate and paint the children falling out of the
-   * allocation box
-   *
-   * Since: 1.2
-   */
-  pspec = g_param_spec_boolean ("wrap",
-                                "Wrap",
-                                "Whether the layout should wrap",
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_WRAP, pspec);
-
-  /**
    * ClutterFlowLayout:column-spacing:
    *
    * The spacing between columns, in pixels; the value of this
-   * property is honoured by horizontal non-wrapping layouts and
-   * by vertical wrapping layouts
+   * property is honoured by horizontal non-overflowing layouts
+   * and by vertical overflowing layouts
    *
    * Since: 1.2
    */
@@ -555,8 +519,8 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * ClutterFlowLayout:row-spacing:
    *
    * The spacing between rows, in pixels; the value of this
-   * property is honoured by vertical non-wrapping layouts and
-   * by horizontal wrapping layouts
+   * property is honoured by vertical non-overflowing layouts and
+   * by horizontal overflowing layouts
    *
    * Since: 1.2
    */
@@ -684,8 +648,7 @@ clutter_flow_layout_new (ClutterFlowOrientation orientation)
  *
  * The orientation controls the direction used to allocate
  * the children: either horizontally or vertically. The
- * orientation also controls the direction of the wrapping
- * in case #ClutterFlowLayout:wrap is set to %TRUE
+ * orientation also controls the direction of the overflowing
  *
  * Since: 1.2
  */
@@ -729,60 +692,6 @@ clutter_flow_layout_get_orientation (ClutterFlowLayout *layout)
                         CLUTTER_FLOW_HORIZONTAL);
 
   return layout->priv->orientation;
-}
-
-/**
- * clutter_flow_layout_set_wrap:
- * @layout: a #ClutterFlowLayout
- * @wrap: whether the layout should wrap
- *
- * Sets whether the @layout should wrap its children when
- * allocating them
- *
- * The direction of the wrapping is controlled by the
- * #ClutterFlowLayout:orientation property
- *
- * Since: 1.2
- */
-void
-clutter_flow_layout_set_wrap (ClutterFlowLayout *layout,
-                              gboolean           wrap)
-{
-  ClutterFlowLayoutPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_FLOW_LAYOUT (layout));
-
-  priv = layout->priv;
-
-  if (priv->layout_wrap != wrap)
-    {
-      ClutterLayoutManager *manager;
-
-      priv->layout_wrap = wrap;
-
-      manager = CLUTTER_LAYOUT_MANAGER (layout);
-      clutter_layout_manager_layout_changed (manager);
-
-      g_object_notify (G_OBJECT (layout), "wrap");
-    }
-}
-
-/**
- * clutter_flow_layout_get_wrap:
- * @layout: a #ClutterFlowLayout
- *
- * Gets whether @layout should wrap
- *
- * Return value: %TRUE if the #ClutterFlowLayout is wrapping
- *
- * Since: 1.2
- */
-gboolean
-clutter_flow_layout_get_wrap (ClutterFlowLayout *layout)
-{
-  g_return_val_if_fail (CLUTTER_IS_FLOW_LAYOUT (layout), FALSE);
-
-  return layout->priv->layout_wrap;
 }
 
 /**

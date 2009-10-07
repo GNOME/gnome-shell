@@ -98,9 +98,6 @@ ClutterLayoutManager * clutter_flow_layout_new                (ClutterFlowOrient
 void                   clutter_flow_layout_set_orientation    (ClutterFlowLayout      *layout,
                                                                ClutterFlowOrientation  orientation);
 ClutterFlowOrientation clutter_flow_layout_get_orientation    (ClutterFlowLayout      *layout);
-void                   clutter_flow_layout_set_wrap           (ClutterFlowLayout      *layout,
-                                                               gboolean                wrap);
-gboolean               clutter_flow_layout_get_wrap           (ClutterFlowLayout      *layout);
 void                   clutter_flow_layout_set_homogeneous    (ClutterFlowLayout      *layout,
                                                                gboolean                homogeneous);
 gboolean               clutter_flow_layout_get_homogeneous    (ClutterFlowLayout      *layout);
