@@ -72,7 +72,7 @@ test_units_string (TestConformSimpleFixture *fixture,
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_POINT);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 0.5f);
 
-  g_assert (clutter_units_from_string (&units, "1 pony") == FALSE);
+  g_assert (clutter_units_from_string (&units, "1 omg!!pony") == FALSE);
 
   clutter_units_from_pt (&units, 24.0);
   string = clutter_units_to_string (&units);
