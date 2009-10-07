@@ -177,9 +177,9 @@ AppDisplay.prototype = {
 
         this._menus = [];
         this._menuDisplays = [];
-
-        // map<itemId, array of category names>
-        this._appCategories = {};
+        // map<search term, map<appId, true>>
+        // We use a map of appIds instead of an array to ensure that we don't have duplicates and for easier lookup.
+        this._menuSearchAppMatches = {};
 
         this._appMonitor = Shell.AppMonitor.get_default();
         this._appSystem = Shell.AppSystem.get_default();
@@ -240,6 +240,39 @@ AppDisplay.prototype = {
             return GenericDisplay.GenericDisplay.prototype.selectDown.call(this);
         this._selectMenuIndex(this._activeMenuIndex+1);
         return true;
+    },
+
+    setSearch: function(text) {
+        let lowertext = text.toLowerCase();
+        if (lowertext == this._search)
+            return;
+
+        // We prepare menu matches up-front, so that we don't
+        // need to go over all menu items for each application
+        // and then get all applications for a matching menu
+        // to see if a particular application passed to
+        // _isInfoMatching() is a match.
+        let terms = lowertext.split(/\s+/);
+        this._menuSearchAppMatches = {};
+        for (let i = 0; i < terms.length; i++) {
+            let term = terms[i];
+            this._menuSearchAppMatches[term] = {};
+            for (let j = 0; j < this._menus.length; j++) {
+                let menuItem = this._menus[j];
+                // Match only on the beginning of the words in category names,
+                // because otherwise it introduces unnecessary noise in the results.
+                if (menuItem.name.toLowerCase().indexOf(term) == 0 ||
+                    menuItem.name.toLowerCase().indexOf(" " + term) > 0) {
+                    let menuApps = this._appSystem.get_applications_for_menu(menuItem.id);
+                    for (let k = 0; k < menuApps.length; k++) {
+                        let menuApp = menuApps[k];
+                        this._menuSearchAppMatches[term][menuApp.get_id()] = true;
+                    }
+                }
+            }
+        }
+
+        GenericDisplay.GenericDisplay.prototype.setSearch.call(this, text);
     },
 
     // Protected overrides
@@ -322,7 +355,6 @@ AppDisplay.prototype = {
         if (!this._appsStale)
             return true;
         this._allItems = {};
-        this._appCategories = {};
 
         if (this._showPrefs) {
             // Get the desktop file ids for settings/preferences.
@@ -373,7 +405,7 @@ AppDisplay.prototype = {
     },
 
     // Checks if the item info can be a match for the search string by checking
-    // the name, description, execution command, and categories for the application.
+    // the name, description, execution command, and category for the application.
     // Item info is expected to be Shell.AppInfo.
     // Returns a boolean flag indicating if itemInfo is a match.
     _isInfoMatching : function(itemInfo, search) {
@@ -385,10 +417,10 @@ AppDisplay.prototype = {
         if (this._activeMenu == null || search != "")
             return this._isInfoMatchingSearch(itemInfo, search);
         else
-            return this._isInfoMatchingMenu(itemInfo, search);
+            return this._isInfoMatchingMenu(itemInfo);
     },
 
-    _isInfoMatchingMenu : function(itemInfo, search) {
+    _isInfoMatchingMenu: function(itemInfo) {
         let id = itemInfo.get_id();
         for (let i = 0; i < this._activeMenuApps.length; i++) {
             let activeApp = this._activeMenuApps[i];
@@ -426,11 +458,11 @@ AppDisplay.prototype = {
                 return true;
         }
 
-        let categories = itemInfo.get_categories();
-        for (let i = 0; i < categories.length; i++) {
-            let category = fold(categories[i]);
-            if (category.indexOf(search) >= 0)
+        if (this._menuSearchAppMatches[search]) {
+            if (this._menuSearchAppMatches[search].hasOwnProperty(itemInfo.get_id()))
                 return true;
+        } else {
+            log("Missing an entry for search term " + search + " in this._menuSearchAppMatches");
         }
 
         return false;
