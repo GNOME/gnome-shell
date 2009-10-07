@@ -74,8 +74,8 @@
  * clutter_actor_set_width(); or it can have a preferred width and
  * height, which then allows a layout manager to implicitly size and
  * position it by "allocating" an area for an actor. This allows for
- * actors to be manipulate in both a fixed or static parent container
- * (i.e. children of #ClutterGroup) and a more automatic or dynamic
+ * actors to be manipulated in both a fixed (or static) parent container
+ * (i.e. children of #ClutterGroup) and a more automatic (or dynamic)
  * layout based parent container.
  *
  * When accessing the position and size of an actor, the simple accessors
@@ -880,6 +880,7 @@ clutter_actor_real_map (ClutterActor *self)
   g_assert (!CLUTTER_ACTOR_IS_MAPPED (self));
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+
   /* notify on parent mapped before potentially mapping
    * children, so apps see a top-down notification.
    */
@@ -993,20 +994,29 @@ clutter_actor_real_show (ClutterActor *self)
       ClutterActorPrivate *priv = self->priv;
 
       CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
+
       /* we notify on the "visible" flag in the clutter_actor_show()
        * wrapper so the entire show signal emission completes first
        * (?)
        */
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
-      /* While an actor is hidden the parent may not have allocated/requested
-       * so we need to start from scratch and avoid the short-circuiting
-       * in clutter_actor_queue_relayout().
+      /* we queue a relayout unless the actor is inside a
+       * container that explicitly told us not to
        */
-      priv->needs_width_request  = FALSE;
-      priv->needs_height_request = FALSE;
-      priv->needs_allocation     = FALSE;
-      clutter_actor_queue_relayout (self);
+      if (priv->parent_actor &&
+          (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
+        {
+          /* While an actor is hidden the parent may not have
+           * allocated/requested so we need to start from scratch
+           * and avoid the short-circuiting in
+           * clutter_actor_queue_relayout().
+           */
+          priv->needs_width_request  = FALSE;
+          priv->needs_height_request = FALSE;
+          priv->needs_allocation     = FALSE;
+          clutter_actor_queue_relayout (self);
+        }
     }
 }
 
@@ -1081,6 +1091,8 @@ clutter_actor_real_hide (ClutterActor *self)
 {
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
+      ClutterActorPrivate *priv = self->priv;
+
       CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
 
       /* we notify on the "visible" flag in the clutter_actor_hide()
@@ -1089,7 +1101,12 @@ clutter_actor_real_hide (ClutterActor *self)
        */
       clutter_actor_update_map_state (self, MAP_STATE_CHECK);
 
-      clutter_actor_queue_relayout (self);
+      /* we queue a relayout unless the actor is inside a
+       * container that explicitly told us not to
+       */
+      if (priv->parent_actor &&
+          (!(priv->parent_actor->flags & CLUTTER_ACTOR_NO_LAYOUT)))
+        clutter_actor_queue_relayout (priv->parent_actor);
     }
 }
 

@@ -441,6 +441,12 @@ clutter_group_init (ClutterGroup *self)
 
   self->priv->layout = clutter_fixed_layout_new ();
   g_object_ref_sink (self->priv->layout);
+
+  /* signal Clutter that we don't impose any layout on
+   * our children, so we can shave off some relayout
+   * operations
+   */
+  CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_NO_LAYOUT);
 }
 
 /**
