@@ -118,6 +118,9 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
       ClutterActor *child = l->data;
       gfloat child_min, child_natural;
 
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
+
       clutter_actor_get_preferred_width (child, for_height,
                                          &child_min,
                                          &child_natural);
@@ -171,6 +174,9 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
     {
       ClutterActor *child = l->data;
       gfloat child_min, child_natural;
+
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
 
       clutter_actor_get_preferred_height (child, for_width,
                                           &child_min,
@@ -262,6 +268,9 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       ClutterActorBox child_alloc;
       gfloat item_width, item_height;
       gfloat child_min, child_natural;
+
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+        continue;
 
       if (line_items_count == items_per_line)
         {
