@@ -115,16 +115,16 @@ clutter_id_pool_lookup (ClutterIDPool *id_pool,
   g_return_val_if_fail (id_pool != NULL, NULL);
   g_return_val_if_fail (id_pool->array != NULL, NULL);
 
-  if (id >= id_pool->array->len)
+  array = (void*) id_pool->array->data;
+
+  if (id >= id_pool->array->len || array[id] == NULL)
     {
-      g_warning ("The required ID of %u is outside the ID range; this "
-                 "usually implies that the pick() of an actor is not "
+      g_warning ("The required ID of %u does not refer to an existing actor; "
+                 "this usually implies that the pick() of an actor is not "
                  "correctly implemented or that there is an error in the "
                  "glReadPixels() implementation of the GL driver.", id);
       return NULL;
     }
-
-  array = (void*) id_pool->array->data;
 
   return array[id];
 }
