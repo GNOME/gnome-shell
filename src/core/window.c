@@ -2731,7 +2731,14 @@ meta_window_hide (MetaWindow *window)
       invalidate_work_areas (window);
     }
 
-  if (window->has_focus)
+  /* The check on expected_focus_window is a temporary workaround for
+   *  https://bugzilla.gnome.org/show_bug.cgi?id=597352
+   * We may have already switched away from this window but not yet
+   * gotten FocusIn/FocusOut events. A more complete comprehensive
+   * fix for these type of issues is described in the bug.
+   */
+  if (window->has_focus &&
+      window == window->display->expected_focus_window)
     {
       MetaWindow *not_this_one = NULL;
       MetaWorkspace *my_workspace = meta_window_get_workspace (window);
