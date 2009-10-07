@@ -26,3 +26,5 @@ run-test.sh: run-test.sh.in
 	    -e "s|@MUTTER_LIB_DIR[@]|$(MUTTER_LIB_DIR)|" \
 	    -e "s|@srcdir[@]|$(srcdir)|" \
 	    $< > $@ && chmod a+x $@
+
+CLEANFILES = run-test.sh
