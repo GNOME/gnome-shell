@@ -69,12 +69,6 @@ struct _ClutterFlowLayoutPrivate
   gfloat max_row_height;
   gfloat row_height;
 
-  /* cache the preferred size; this way, if we get what we asked
-   * or more then we don't have to recompute the layout
-   */
-  gfloat request_width;
-  gfloat request_height;
-
   gint max_row_items;
 
   guint layout_wrap    : 1;
@@ -139,9 +133,12 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
 
   g_list_free (children);
 
-  priv->request_width = row_natural_width;
   priv->col_width = max_child_natural_width;
 
+  /* if we get a maximum value for the column width we only apply
+   * it if there isn't a child whose minimum width is bigger than
+   * the requested maximum width
+   */
   if (priv->max_col_width > 0 && priv->col_width > priv->max_col_width)
     priv->col_width = MAX (priv->max_col_width, max_child_min_width);
 
@@ -190,9 +187,11 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
 
   g_list_free (children);
 
-  priv->request_height = col_natural_height;
   priv->row_height = max_child_natural_height;
 
+  /* similarly to max-col-width, we only apply max-row-height if there
+   * is no child with a bigger minimum height
+   */
   if (priv->max_row_height > 0 && priv->row_height > priv->max_row_height)
     priv->row_height = MAX (priv->max_row_height, max_child_min_height);
 
@@ -301,7 +300,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
 
       CLUTTER_NOTE (LAYOUT,
                     "flow[line:%d, item:%d/%d] = { %.2f, %.2f, %.2f, %.2f }",
-                    line_index, line_items_count, items_per_line,
+                    line_index, line_items_count + 1, items_per_line,
                     item_x, item_y, item_width, item_height);
 
       child_alloc.x1 = ceil (item_x);
@@ -510,6 +509,11 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
    * the preferred sizes (taking into account spacing) of the
    * children in the direction of the orientation
    *
+   * If a wrapping #ClutterFlowLayout is allocated less than the
+   * preferred size in the direction of orientation then it will
+   * not allocate and paint the children falling out of the
+   * allocation box
+   *
    * Since: 1.2
    */
   pspec = g_param_spec_boolean ("wrap",
@@ -662,6 +666,20 @@ clutter_flow_layout_new (ClutterFlowOrientation orientation)
                        NULL);
 }
 
+/**
+ * clutter_flow_layout_set_orientation:
+ * @layout: a #ClutterFlowLayout
+ * @orientation: the orientation of the layout
+ *
+ * Sets the orientation of the flow layout
+ *
+ * The orientation controls the direction used to allocate
+ * the children: either horizontally or vertically. The
+ * orientation also controls the direction of the wrapping
+ * in case #ClutterFlowLayout:wrap is set to %TRUE
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_set_orientation (ClutterFlowLayout      *layout,
                                      ClutterFlowOrientation  orientation)
@@ -685,6 +703,16 @@ clutter_flow_layout_set_orientation (ClutterFlowLayout      *layout,
     }
 }
 
+/**
+ * clutter_flow_layout_get_orientation:
+ * @layout: a #ClutterFlowLayout
+ *
+ * Retrieves the orientation of the @layout
+ *
+ * Return value: the orientation of the #ClutterFlowLayout
+ *
+ * Since: 1.2
+ */
 ClutterFlowOrientation
 clutter_flow_layout_get_orientation (ClutterFlowLayout *layout)
 {
@@ -694,6 +722,19 @@ clutter_flow_layout_get_orientation (ClutterFlowLayout *layout)
   return layout->priv->orientation;
 }
 
+/**
+ * clutter_flow_layout_set_wrap:
+ * @layout: a #ClutterFlowLayout
+ * @wrap: whether the layout should wrap
+ *
+ * Sets whether the @layout should wrap its children when
+ * allocating them
+ *
+ * The direction of the wrapping is controlled by the
+ * #ClutterFlowLayout:orientation property
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_set_wrap (ClutterFlowLayout *layout,
                               gboolean           wrap)
@@ -717,6 +758,16 @@ clutter_flow_layout_set_wrap (ClutterFlowLayout *layout,
     }
 }
 
+/**
+ * clutter_flow_layout_get_wrap:
+ * @layout: a #ClutterFlowLayout
+ *
+ * Gets whether @layout should wrap
+ *
+ * Return value: %TRUE if the #ClutterFlowLayout is wrapping
+ *
+ * Since: 1.2
+ */
 gboolean
 clutter_flow_layout_get_wrap (ClutterFlowLayout *layout)
 {
@@ -725,6 +776,16 @@ clutter_flow_layout_get_wrap (ClutterFlowLayout *layout)
   return layout->priv->layout_wrap;
 }
 
+/**
+ * clutter_flow_layout_set_homogeneous:
+ * @layout: a #ClutterFlowLayout
+ * @homogeneous: whether the layout should be homogeneous or not
+ *
+ * Sets whether the @layout should allocate the same space for
+ * each child
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_set_homogeneous (ClutterFlowLayout *layout,
                                      gboolean           homogeneous)
@@ -748,6 +809,16 @@ clutter_flow_layout_set_homogeneous (ClutterFlowLayout *layout,
     }
 }
 
+/**
+ * clutter_flow_layout_get_homogeneous:
+ * @layout: a #ClutterFlowLayout
+ *
+ * Retrieves whether the @layout is homogeneous
+ *
+ * Return value: %TRUE if the #ClutterFlowLayout is homogeneous
+ *
+ * Since: 1.2
+ */
 gboolean
 clutter_flow_layout_get_homogeneous (ClutterFlowLayout *layout)
 {
@@ -756,6 +827,15 @@ clutter_flow_layout_get_homogeneous (ClutterFlowLayout *layout)
   return layout->priv->is_homogeneous;
 }
 
+/**
+ * clutter_flow_layout_set_column_spacing:
+ * @layout: a #ClutterFlowLayout
+ * @spacing: the space between columns
+ *
+ * Sets the space between columns, in pixels
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_set_column_spacing (ClutterFlowLayout *layout,
                                         gfloat             spacing)
@@ -779,6 +859,17 @@ clutter_flow_layout_set_column_spacing (ClutterFlowLayout *layout,
     }
 }
 
+/**
+ * clutter_flow_layout_get_column_spacing:
+ * @layout: a #ClutterFlowLayout
+ *
+ * Retrieves the spacing between columns
+ *
+ * Return value: the spacing between columns of the #ClutterFlowLayout,
+ *   in pixels
+ *
+ * Since: 1.2
+ */
 gfloat
 clutter_flow_layout_get_column_spacing (ClutterFlowLayout *layout)
 {
@@ -787,6 +878,15 @@ clutter_flow_layout_get_column_spacing (ClutterFlowLayout *layout)
   return layout->priv->col_spacing;
 }
 
+/**
+ * clutter_flow_layout_set_row_spacing:
+ * @layout: a #ClutterFlowLayout
+ * @spacing: the space between rows
+ *
+ * Sets the spacing between rows, in pixels
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_set_row_spacing (ClutterFlowLayout *layout,
                                      gfloat             spacing)
@@ -810,6 +910,17 @@ clutter_flow_layout_set_row_spacing (ClutterFlowLayout *layout,
     }
 }
 
+/**
+ * clutter_flow_layout_get_row_spacing:
+ * @layout: a #ClutterFlowLayout
+ *
+ * Retrieves the spacing between rows
+ *
+ * Return value: the spacing between rows of the #ClutterFlowLayout,
+ *   in pixels
+ *
+ * Since: 1.2
+ */
 gfloat
 clutter_flow_layout_get_row_spacing (ClutterFlowLayout *layout)
 {
@@ -818,6 +929,16 @@ clutter_flow_layout_get_row_spacing (ClutterFlowLayout *layout)
   return layout->priv->row_spacing;
 }
 
+/**
+ * clutter_flow_layout_set_column_width:
+ * @layout: a #ClutterFlowLayout
+ * @min_width: minimum width of a column
+ * @max_width: maximum width of a column
+ *
+ * Sets the minimum and maximum widths that a column can have
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_set_column_width (ClutterFlowLayout *layout,
                                       gfloat             min_width,
@@ -844,6 +965,8 @@ clutter_flow_layout_set_column_width (ClutterFlowLayout *layout,
       notify_max = TRUE;
     }
 
+  g_object_freeze_notify (G_OBJECT (layout));
+
   if (notify_min || notify_max)
     {
       ClutterLayoutManager *manager = CLUTTER_LAYOUT_MANAGER (layout);
@@ -856,8 +979,20 @@ clutter_flow_layout_set_column_width (ClutterFlowLayout *layout,
 
   if (notify_max)
     g_object_notify (G_OBJECT (layout), "max-column-width");
+
+  g_object_thaw_notify (G_OBJECT (layout));
 }
 
+/**
+ * clutter_flow_layout_get_column_width:
+ * @layout: a #ClutterFlowLayout
+ * @min_width: (out): return location for the minimum column width, or %NULL
+ * @max_width: (out): return location for the maximum column width, or %NULL
+ *
+ * Retrieves the minimum and maximum column widths
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_get_column_width (ClutterFlowLayout *layout,
                                       gfloat            *min_width,
@@ -872,6 +1007,16 @@ clutter_flow_layout_get_column_width (ClutterFlowLayout *layout,
     *max_width = layout->priv->max_col_width;
 }
 
+/**
+ * clutter_flow_layout_set_row_height:
+ * @layout: a #ClutterFlowLayout
+ * @min_height: the minimum height of a row
+ * @max_height: the maximum height of a row
+ *
+ * Sets the minimum and maximum heights that a row can have
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_set_row_height (ClutterFlowLayout *layout,
                                     gfloat              min_height,
@@ -898,6 +1043,8 @@ clutter_flow_layout_set_row_height (ClutterFlowLayout *layout,
       notify_max = TRUE;
     }
 
+  g_object_freeze_notify (G_OBJECT (layout));
+
   if (notify_min || notify_max)
     {
       ClutterLayoutManager *manager = CLUTTER_LAYOUT_MANAGER (layout);
@@ -910,8 +1057,20 @@ clutter_flow_layout_set_row_height (ClutterFlowLayout *layout,
 
   if (notify_max)
     g_object_notify (G_OBJECT (layout), "max-row-height");
+
+  g_object_thaw_notify (G_OBJECT (layout));
 }
 
+/**
+ * clutter_flow_layout_get_row_height:
+ * @layout: a #ClutterFlowLayout
+ * @min_height: (out): return location for the minimum row height, or %NULL
+ * @max_height: (out): return location for the maximum row height, or %NULL
+ *
+ * Retrieves the minimum and maximum row heights
+ *
+ * Since: 1.2
+ */
 void
 clutter_flow_layout_get_row_height (ClutterFlowLayout *layout,
                                     gfloat            *min_height,
