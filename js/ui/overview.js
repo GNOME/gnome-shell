@@ -191,7 +191,9 @@ Overview.prototype = {
         this._addButtonX = this._workspacesX + this._workspacesWidth - addRemoveButtonSize;
         this._addButtonY = primary.height - Math.floor(displayGridRowHeight * 4/5);
 
-        this._backOver.set_position(0, 0);
+        // The parent (this._group) is positioned at the top left of the primary monitor
+        // while this._backOver occupies the entire screen.
+        this._backOver.set_position(- primary.x, - primary.y);
         this._backOver.set_size(global.screen_width, global.screen_height);
 
         this._paneContainer.set_position(this._dash.actor.x + this._dash.actor.width + DEFAULT_PADDING,
@@ -324,9 +326,10 @@ Overview.prototype = {
         // The opposite transition is used in hide().
         this._group.scaleX = this._group.scaleY = this.getZoomedInScale();
         [this._group.x, this._group.y] = this.getZoomedInPosition();
+        let primary = global.get_primary_monitor();
         Tweener.addTween(this._group,
-                         { x: 0,
-                           y: 0,
+                         { x: primary.x,
+                           y: primary.y,
                            scaleX: 1,
                            scaleY: 1,
                            transition: 'easeOutQuad',
