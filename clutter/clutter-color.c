@@ -432,6 +432,28 @@ clutter_color_from_string (ClutterColor *color,
 
               return TRUE;
             }
+          else if (strlen (str) == 7)
+            {
+              /* #rrggbb */
+              color->red   = (result >> 16) & 0xff;
+              color->green = (result >>  8) & 0xff;
+              color->blue  = result & 0xff;
+
+              color->alpha = 0xff;
+            }
+          else if (strlen (str) == 4)
+            {
+              /* #rgb */
+              color->red   = ((result >>  8) & 0xf);
+              color->green = ((result >>  4) & 0xf);
+              color->blue  = result & 0xf;
+
+              color->red   = (color->red   << 4) | color->red;
+              color->green = (color->green << 4) | color->green;
+              color->blue  = (color->blue  << 4) | color->blue;
+
+              color->alpha = 0xff;
+            }
         }
     }
   

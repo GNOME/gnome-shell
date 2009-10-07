@@ -119,6 +119,34 @@ test_color_from_string (TestConformSimpleFixture *fixture,
   g_assert (color.green == 0);
   g_assert (color.blue  == 0xff);
   g_assert (color.alpha == 0xff);
+
+  clutter_color_from_string (&color, "#abc");
+  if (g_test_verbose ())
+    {
+      g_print ("color = { %x, %x, %x, %x }, expected = { 0xaa, 0xbb, 0xcc, 0xff }\n",
+               color.red,
+               color.green,
+               color.blue,
+               color.alpha);
+    }
+  g_assert (color.red   == 0xaa);
+  g_assert (color.green == 0xbb);
+  g_assert (color.blue  == 0xcc);
+  g_assert (color.alpha == 0xff);
+
+  clutter_color_from_string (&color, "#123abc");
+  if (g_test_verbose ())
+    {
+      g_print ("color = { %x, %x, %x, %x }, expected = { 0x12, 0x3a, 0xbc, 0xff }\n",
+               color.red,
+               color.green,
+               color.blue,
+               color.alpha);
+    }
+  g_assert (color.red   == 0x12);
+  g_assert (color.green == 0x3a);
+  g_assert (color.blue  == 0xbc);
+  g_assert (color.alpha == 0xff);
 }
 
 void
