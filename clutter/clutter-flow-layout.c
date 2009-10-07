@@ -69,8 +69,6 @@ struct _ClutterFlowLayoutPrivate
   gfloat max_row_height;
   gfloat row_height;
 
-  gint max_row_items;
-
   guint is_homogeneous : 1;
 };
 
@@ -333,6 +331,20 @@ clutter_flow_layout_set_container (ClutterLayoutManager *manager,
   ClutterFlowLayoutPrivate *priv = CLUTTER_FLOW_LAYOUT (manager)->priv;
 
   priv->container = container;
+
+  if (priv->container != NULL)
+    {
+      ClutterRequestMode request_mode;
+
+      /* we need to change the :request-mode of the container
+       * to match the orientation
+       */
+      request_mode = (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
+                   ? CLUTTER_REQUEST_HEIGHT_FOR_WIDTH
+                   : CLUTTER_REQUEST_WIDTH_FOR_HEIGHT;
+      clutter_actor_set_request_mode (CLUTTER_ACTOR (priv->container),
+                                      request_mode);
+    }
 }
 
 static void
@@ -667,6 +679,20 @@ clutter_flow_layout_set_orientation (ClutterFlowLayout      *layout,
       ClutterLayoutManager *manager;
 
       priv->orientation = orientation;
+
+      if (priv->container != NULL)
+        {
+          ClutterRequestMode request_mode;
+
+          /* we need to change the :request-mode of the container
+           * to match the orientation
+           */
+          request_mode = (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
+                       ? CLUTTER_REQUEST_HEIGHT_FOR_WIDTH
+                       : CLUTTER_REQUEST_WIDTH_FOR_HEIGHT;
+          clutter_actor_set_request_mode (CLUTTER_ACTOR (priv->container),
+                                          request_mode);
+        }
 
       manager = CLUTTER_LAYOUT_MANAGER (layout);
       clutter_layout_manager_layout_changed (manager);
