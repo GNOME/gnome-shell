@@ -63,6 +63,7 @@
     <xi:include href="blend-strings.xml"/>
     <xi:include href="xml/cogl-material.xml"/>
     <xi:include href="xml/cogl-primitives.xml"/>
+    <xi:include href="xml/cogl-clipping.xml"/>
     <xi:include href="xml/cogl-vertex-buffer.xml"/>
     <xi:include href="xml/cogl-matrix.xml"/>
     <xi:include href="xml/cogl-shaders.xml"/>

@@ -118,6 +118,7 @@ cogl_debug_flags
 
 <SECTION>
 <FILE>cogl-clipping</FILE>
+<TITLE>Clipping</TITLE>
 CoglClipStackState
 cogl_clip_push
 cogl_clip_push_from_path
@@ -127,7 +128,7 @@ cogl_clip_pop
 cogl_clip_stack_save
 cogl_clip_stack_restore
 cogl_clip_ensure
-<SECTION>
+</SECTION>
 
 <SECTION>
 <FILE>cogl-primitives</FILE>
