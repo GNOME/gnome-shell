@@ -60,7 +60,7 @@ static GOptionEntry entries[] = {
 };
 
 G_MODULE_EXPORT int
-test_flow_main (int argc, char *argv[])
+test_flow_layout_main (int argc, char *argv[])
 {
   ClutterActor *stage, *box;
   ClutterLayoutManager *layout;

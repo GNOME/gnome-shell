@@ -44,8 +44,8 @@ UNIT_TESTS = \
         test-text-field.c \
 	test-clutter-cairo-flowers.c \
 	test-cogl-vertex-buffer.c \
-	test-box.c \
-	test-flow.c
+	test-bin-layout.c \
+	test-flow-layout.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

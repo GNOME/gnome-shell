@@ -133,8 +133,8 @@ TAGS
 /tests/interactive/redhand_alpha.png
 /tests/interactive/test-script.json
 /tests/interactive/test-clutter-cairo-flowers
-/tests/interactive/test-box
-/tests/interactive/test-flow
+/tests/interactive/test-bin-layout
+/tests/interactive/test-flow-layout
 /tests/conform/stamp-test-conformance
 /tests/conform/test-anchors
 /tests/conform/test-conformance

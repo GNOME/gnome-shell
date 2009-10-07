@@ -91,7 +91,7 @@ on_box_leave (ClutterActor *box,
 }
 
 G_MODULE_EXPORT int
-test_box_main (int argc, char *argv[])
+test_bin_layout_main (int argc, char *argv[])
 {
   ClutterActor *stage, *box, *rect;
   ClutterLayoutManager *layout;
