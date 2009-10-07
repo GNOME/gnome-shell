@@ -301,6 +301,9 @@ void                  clutter_actor_queue_relayout            (ClutterActor     
 void                  clutter_actor_destroy                   (ClutterActor          *self);
 
 /* size negotiation */
+void                  clutter_actor_set_request_mode          (ClutterActor          *self,
+                                                               ClutterRequestMode     mode);
+ClutterRequestMode    clutter_actor_get_request_mode          (ClutterActor          *self);
 void                  clutter_actor_get_preferred_width       (ClutterActor          *self,
                                                                gfloat                 for_height,
                                                                gfloat                *min_width_p,

@@ -473,8 +473,6 @@ static void clutter_actor_set_natural_width_set  (ClutterActor *self,
                                                   gboolean  use_natural_width);
 static void clutter_actor_set_natural_height_set (ClutterActor *self,
                                                   gboolean  use_natural_height);
-static void clutter_actor_set_request_mode       (ClutterActor *self,
-                                                  ClutterRequestMode mode);
 static void clutter_actor_update_map_state       (ClutterActor  *self,
                                                   MapStateChange change);
 static void clutter_actor_unrealize_not_hiding   (ClutterActor *self);
@@ -3297,7 +3295,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *   gfloat natural_width, min_width;
    *   gfloat natural_height, min_height;
    *
-   *   g_object_get (G_OBJECT (child), "request-mode", &amp;mode, NULL);
+   *   mode = clutter_actor_get_request_mode (child);
    *   if (mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
    *     {
    *       clutter_actor_get_preferred_width (child, -1,
@@ -5184,11 +5182,28 @@ clutter_actor_set_natural_height_set (ClutterActor *self,
   clutter_actor_queue_relayout (self);
 }
 
-static void
-clutter_actor_set_request_mode (ClutterActor *self,
-                                ClutterRequestMode mode)
+/**
+ * clutter_actor_set_request_mode:
+ * @self: a #ClutterActor
+ * @mode: the request mode
+ *
+ * Sets the geometry request mode of @self.
+ *
+ * The @mode determines the order for invoking
+ * clutter_actor_get_preferred_width() and
+ * clutter_actor_get_preferred_height()
+ *
+ * Since: 1.2
+ */
+void
+clutter_actor_set_request_mode (ClutterActor       *self,
+                                ClutterRequestMode  mode)
 {
-  ClutterActorPrivate *priv = self->priv;
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
 
   if (priv->request_mode == mode)
     return;
@@ -5201,6 +5216,25 @@ clutter_actor_set_request_mode (ClutterActor *self,
   g_object_notify (G_OBJECT (self), "request-mode");
 
   clutter_actor_queue_relayout (self);
+}
+
+/**
+ * clutter_actor_get_request_mode:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the geometry request mode of @self
+ *
+ * Return value: the request mode for the actor
+ *
+ * Since: 1.2
+ */
+ClutterRequestMode
+clutter_actor_get_request_mode (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self),
+                        CLUTTER_REQUEST_HEIGHT_FOR_WIDTH);
+
+  return self->priv->request_mode;
 }
 
 /* variant of set_width() without checks and without notification

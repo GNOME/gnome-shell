@@ -305,6 +305,8 @@ clutter_actor_get_preferred_width
 clutter_actor_get_preferred_height
 clutter_actor_set_fixed_position_set
 clutter_actor_get_fixed_position_set
+clutter_actor_set_request_mode
+clutter_actor_get_request_mode
 
 <SUBSECTION>
 clutter_actor_set_geometry
