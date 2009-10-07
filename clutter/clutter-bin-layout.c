@@ -447,8 +447,7 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
           continue;
         }
 
-      request = CLUTTER_REQUEST_HEIGHT_FOR_WIDTH;
-      g_object_get (G_OBJECT (child), "request-mode", &request, NULL);
+      request = clutter_actor_get_request_mode (child);
       if (request == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
         {
           gfloat min_width, nat_width;
