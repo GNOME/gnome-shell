@@ -406,9 +406,11 @@ clutter_color_from_string (ClutterColor *color,
 
       if (sscanf (str + 1, "%x", &result))
         {
-          if (strlen (str) == 9)
+          gsize length = strlen (str);
+
+          switch (length)
             {
-              /* #rrggbbaa */
+            case 9: /* rrggbbaa */
               color->red   = (result >> 24) & 0xff;
               color->green = (result >> 16) & 0xff;
               color->blue  = (result >>  8) & 0xff;
@@ -416,10 +418,17 @@ clutter_color_from_string (ClutterColor *color,
               color->alpha = result & 0xff;
 
               return TRUE;
-            }
-          else if (strlen (str) == 5)
-            {
-              /* #rgba */
+
+            case 7: /* #rrggbb */
+              color->red   = (result >> 16) & 0xff;
+              color->green = (result >>  8) & 0xff;
+              color->blue  = result & 0xff;
+
+              color->alpha = 0xff;
+
+              return TRUE;
+
+            case 5: /* #rgba */
               color->red   = ((result >> 12) & 0xf);
               color->green = ((result >>  8) & 0xf);
               color->blue  = ((result >>  4) & 0xf);
@@ -431,19 +440,8 @@ clutter_color_from_string (ClutterColor *color,
               color->alpha = (color->alpha << 4) | color->alpha;
 
               return TRUE;
-            }
-          else if (strlen (str) == 7)
-            {
-              /* #rrggbb */
-              color->red   = (result >> 16) & 0xff;
-              color->green = (result >>  8) & 0xff;
-              color->blue  = result & 0xff;
 
-              color->alpha = 0xff;
-            }
-          else if (strlen (str) == 4)
-            {
-              /* #rgb */
+            case 4: /* #rgb */
               color->red   = ((result >>  8) & 0xf);
               color->green = ((result >>  4) & 0xf);
               color->blue  = result & 0xf;
@@ -453,6 +451,12 @@ clutter_color_from_string (ClutterColor *color,
               color->blue  = (color->blue  << 4) | color->blue;
 
               color->alpha = 0xff;
+
+              return TRUE;
+
+            default:
+              /* pass through to Pango */
+              break;
             }
         }
     }
