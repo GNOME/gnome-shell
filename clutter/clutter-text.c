@@ -639,6 +639,143 @@ clutter_text_delete_selection (ClutterText *self)
 }
 
 static void
+clutter_text_merge_attributes (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoAttrIterator *iter;
+  GSList *attributes, *l;
+
+  if (!priv->attrs)
+    return;
+
+  if (!priv->effective_attrs)
+    {
+      priv->effective_attrs = pango_attr_list_ref (priv->attrs);
+      return;
+    }
+
+  iter = pango_attr_list_get_iterator (priv->attrs);
+  do
+    {
+      attributes = pango_attr_iterator_get_attrs (iter);
+
+      for (l = attributes; l != NULL; l = l->next)
+        {
+          PangoAttribute *attr = l->data;
+
+          pango_attr_list_insert (priv->effective_attrs, attr);
+        }
+
+      g_slist_free (attributes);
+    }
+  while (pango_attr_iterator_next (iter));
+}
+
+static inline void
+clutter_text_set_text_internal (ClutterText *self,
+                                const gchar *text)
+{
+  ClutterTextPrivate *priv = self->priv;
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (priv->max_length > 0)
+    {
+      gint len = g_utf8_strlen (text, -1);
+
+      if (len < priv->max_length)
+        {
+           g_free (priv->text);
+
+           priv->text = g_strdup (text);
+           priv->n_bytes = strlen (text);
+           priv->n_chars = len;
+        }
+      else
+        {
+          gchar *p = g_utf8_offset_to_pointer (text, priv->max_length);
+          gchar *n = g_malloc0 ((p - text) + 1);
+
+          g_free (priv->text);
+
+          g_utf8_strncpy (n, text, priv->max_length);
+
+          priv->text = n;
+          priv->n_bytes = strlen (n);
+          priv->n_chars = priv->max_length;
+        }
+    }
+  else
+    {
+      g_free (priv->text);
+
+      priv->text = g_strdup (text);
+      priv->n_bytes = strlen (text);
+      priv->n_chars = g_utf8_strlen (text, -1);
+    }
+
+  if (priv->n_bytes == 0)
+    {
+      clutter_text_set_cursor_position (self, -1);
+      clutter_text_set_selection_bound (self, -1);
+    }
+
+  g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
+  g_object_notify (G_OBJECT (self), "text");
+
+  g_object_thaw_notify (G_OBJECT (self));
+}
+
+static inline void
+clutter_text_set_markup_internal (ClutterText *self,
+                                  const gchar *str)
+{
+  ClutterTextPrivate *priv = self->priv;
+  GError *error;
+  gchar *text = NULL;
+  PangoAttrList *attrs = NULL;
+  gboolean res;
+
+  error = NULL;
+  res = pango_parse_markup (str, -1, 0,
+                            &attrs,
+                            &text,
+                            NULL,
+                            &error);
+  if (!res)
+    {
+      if (G_LIKELY (error))
+        {
+          g_warning ("Failed to set the markup of the actor of class '%s': %s",
+                     G_OBJECT_TYPE_NAME (self),
+                     error->message);
+          g_error_free (error);
+        }
+      else
+        g_warning ("Failed to set the markup of the actor of class '%s'",
+                   G_OBJECT_TYPE_NAME (self));
+
+      return;
+    }
+
+  if (text)
+    {
+      clutter_text_set_text_internal (self, text);
+      g_free (text);
+    }
+
+  if (attrs)
+    {
+      if (priv->effective_attrs)
+        pango_attr_list_unref (priv->effective_attrs);
+
+      priv->effective_attrs = attrs;
+    }
+
+  clutter_text_merge_attributes (self);
+}
+
+static void
 clutter_text_set_property (GObject      *gobject,
                            guint         prop_id,
                            const GValue *value,
@@ -649,7 +786,7 @@ clutter_text_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_TEXT:
-      clutter_text_set_text (self, g_value_get_string (value));
+      clutter_text_set_text_internal (self, g_value_get_string (value));
       break;
 
     case PROP_COLOR:
@@ -2483,39 +2620,6 @@ clutter_text_init (ClutterText *self)
                               self);
 }
 
-static void
-clutter_text_merge_attributes (ClutterText *self)
-{
-  ClutterTextPrivate *priv = self->priv;
-  PangoAttrIterator *iter;
-  GSList *attributes, *l;
-
-  if (!priv->attrs)
-    return;
-
-  if (!priv->effective_attrs)
-    {
-      priv->effective_attrs = pango_attr_list_ref (priv->attrs);
-      return;
-    }
-
-  iter = pango_attr_list_get_iterator (priv->attrs);
-  do
-    {
-      attributes = pango_attr_iterator_get_attrs (iter);
-
-      for (l = attributes; l != NULL; l = l->next)
-        {
-          PangoAttribute *attr = l->data;
-
-          pango_attr_list_insert (priv->effective_attrs, attr);
-        }
-
-      g_slist_free (attributes);
-    }
-  while (pango_attr_iterator_next (iter));
-}
-
 /**
  * clutter_text_new:
  *
@@ -3228,110 +3332,6 @@ clutter_text_set_use_markup_internal (ClutterText *self,
     }
 }
 
-static inline void
-clutter_text_set_text_internal (ClutterText *self,
-                                const gchar *text)
-{
-  ClutterTextPrivate *priv = self->priv;
-
-  g_object_freeze_notify (G_OBJECT (self));
-
-  if (priv->max_length > 0)
-    {
-      gint len = g_utf8_strlen (text, -1);
-
-      if (len < priv->max_length)
-        {
-           g_free (priv->text);
-
-           priv->text = g_strdup (text);
-           priv->n_bytes = strlen (text);
-           priv->n_chars = len;
-        }
-      else
-        {
-          gchar *p = g_utf8_offset_to_pointer (text, priv->max_length);
-          gchar *n = g_malloc0 ((p - text) + 1);
-
-          g_free (priv->text);
-
-          g_utf8_strncpy (n, text, priv->max_length);
-
-          priv->text = n;
-          priv->n_bytes = strlen (n);
-          priv->n_chars = priv->max_length;
-        }
-    }
-  else
-    {
-      g_free (priv->text);
-
-      priv->text = g_strdup (text);
-      priv->n_bytes = strlen (text);
-      priv->n_chars = g_utf8_strlen (text, -1);
-    }
-
-  if (priv->n_bytes == 0)
-    {
-      clutter_text_set_cursor_position (self, -1);
-      clutter_text_set_selection_bound (self, -1);
-    }
-
-  g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
-  g_object_notify (G_OBJECT (self), "text");
-
-  g_object_thaw_notify (G_OBJECT (self));
-}
-
-static inline void
-clutter_text_set_markup_internal (ClutterText *self,
-                                  const gchar *str)
-{
-  ClutterTextPrivate *priv = self->priv;
-  GError *error;
-  gchar *text = NULL;
-  PangoAttrList *attrs = NULL;
-  gboolean res;
-
-  error = NULL;
-  res = pango_parse_markup (str, -1, 0,
-                            &attrs,
-                            &text,
-                            NULL,
-                            &error);
-  if (!res)
-    {
-      if (G_LIKELY (error))
-        {
-          g_warning ("Failed to set the markup of the actor of class '%s': %s",
-                     G_OBJECT_TYPE_NAME (self),
-                     error->message);
-          g_error_free (error);
-        }
-      else
-        g_warning ("Failed to set the markup of the actor of class '%s'",
-                   G_OBJECT_TYPE_NAME (self));
-
-      return;
-    }
-
-  if (text)
-    {
-      clutter_text_set_text_internal (self, text);
-      g_free (text);
-    }
-
-  if (attrs)
-    {
-      if (priv->effective_attrs)
-        pango_attr_list_unref (priv->effective_attrs);
-
-      priv->effective_attrs = attrs;
-    }
-
-  clutter_text_merge_attributes (self);
-}
-
 /**
  * clutter_text_set_text:
  * @self: a #ClutterText
@@ -3339,6 +3339,11 @@ clutter_text_set_markup_internal (ClutterText *self,
  *    empty string)
  *
  * Sets the contents of a #ClutterText actor.
+ *
+ * If the #ClutterText:use-markup property was set to %TRUE it
+ * will be reset to %FALSE as a side effect. If you want to
+ * maintain the #ClutterText:use-markup you should use the
+ * clutter_text_set_markup() function instead
  *
  * Since: 1.0
  */
@@ -3368,8 +3373,8 @@ clutter_text_set_text (ClutterText *self,
  * Pango markup, and it is logically equivalent to:
  *
  * |[
- *   clutter_text_set_use_markup (CLUTTER_TEXT (actor), TRUE);
  *   clutter_text_set_text (CLUTTER_TEXT (actor), markup);
+ *   clutter_text_set_use_markup (CLUTTER_TEXT (actor), TRUE);
  * ]|
  *
  * Since: 1.0
