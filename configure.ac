@@ -351,7 +351,21 @@ AS_CASE([$CLUTTER_WINSYS],
         [AC_MSG_ERROR([Invalid backend for Clutter: use glx, osx, win32, eglx, eglnative or fruity])]
 )
 
-AM_CONDITIONAL(WINSYS_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
+# winsys conditionals for use in automake files...
+AM_CONDITIONAL(SUPPORT_GLX, [test "x$CLUTTER_WINSYS" = "xglx"])
+AM_CONDITIONAL(SUPPORT_X11, [test "x$CLUTTER_WINSYS" = "xglx" -o \
+                             "x$CLUTTER_WINSYS" = "xeglx"])
+AM_CONDITIONAL(SUPPORT_XLIB, [test "x$CLUTTER_WINSYS" = "xglx" -o \
+                              "x$CLUTTER_WINSYS" = "xeglx"])
+AM_CONDITIONAL(SUPPORT_EGL,
+               [test "x$CLUTTER_WINSYS" = "xeglx" -o \
+                "x$CLUTTER_WINSYS" = "xeglnative" -o \
+                "x$CLUTTER_WINSYS" = "xfruity"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_X11, [test "x$CLUTTER_WINSYS" = "xeglx"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_POWERVR_NULL, [test "x$CLUTTER_WINSYS" = "xeglnative"])
+AM_CONDITIONAL(SUPPORT_EGL_PLATFORM_FRUITY, [test "x$CLUTTER_WINSYS" = "xfruity"])
+AM_CONDITIONAL(SUPPORT_OSX, [test "x$CLUTTER_WINSYS" = "xosx"])
+AM_CONDITIONAL(SUPPORT_WIN32, [test "x$CLUTTER_WINSYS" = "xwin32"])
 
 # at this point we must have a GL header to check
 AS_IF([test "x$clutter_gl_header" = "x"], [AC_MSG_ERROR([Internal error: no GL header set])])

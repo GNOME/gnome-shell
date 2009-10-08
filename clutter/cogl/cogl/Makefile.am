@@ -71,20 +71,8 @@ cogl_public_h = \
 	$(srcdir)/cogl.h			\
 	$(NULL)
 
-# windowing system; all sources have to be distributed, but we'll
-# compile just the one we need
-cogl_winsys_sources = \
-	$(srcdir)/winsys/cogl-eglnative.c	\
-	$(srcdir)/winsys/cogl-eglx.c		\
-	$(srcdir)/winsys/cogl-glx.c		\
-	$(srcdir)/winsys/cogl-osx.c		\
-	$(srcdir)/winsys/cogl-sdl.c		\
-	$(srcdir)/winsys/cogl-win32.c		\
-	$(NULL)
-
 cogl_sources_c = \
 	$(srcdir)/winsys/cogl-winsys.h			\
-	$(srcdir)/winsys/cogl-@COGL_WINSYS@.c		\
 	$(srcdir)/cogl-handle.h 			\
 	$(srcdir)/cogl-context.h			\
 	$(srcdir)/cogl-context.c			\
@@ -161,7 +149,31 @@ libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) $(top_builddir)/clutter/cogl/cog
 
 libclutter_cogl_la_SOURCES = $(BUILT_SOURCES) $(cogl_sources_c)
 
-EXTRA_DIST += $(cogl_winsys_sources)
+if SUPPORT_GLX
+libclutter_cogl_la_SOURCES += \
+       $(srcdir)/winsys/cogl-glx.c
+endif
+if SUPPORT_EGL_PLATFORM_POWERVR_X11
+libclutter_cogl_la_SOURCES += \
+       $(srcdir)/winsys/cogl-eglx.c
+endif
+if SUPPORT_EGL_PLATFORM_POWERVR_NULL
+libclutter_cogl_la_SOURCES += \
+       $(srcdir)/winsys/cogl-eglnative.c
+endif
+if SUPPORT_EGL_PLATFORM_FRUITY
+libclutter_cogl_la_SOURCES += \
+       $(srcdir)/winsys/cogl-fruity.c
+endif
+if SUPPORT_WIN32
+libclutter_cogl_la_SOURCES += \
+       $(srcdir)/winsys/cogl-win32.c
+endif
+if SUPPORT_OSX
+libclutter_cogl_la_SOURCES += \
+       $(srcdir)/winsys/cogl-osx.c
+endif
+
 EXTRA_DIST += stb_image.c
 
 # COGL installed headers

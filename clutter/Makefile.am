@@ -20,7 +20,7 @@ DISTCLEANFILES =
 EXTRA_DIST =
 BUILT_SOURCES =
 
-if WINSYS_WIN32
+if SUPPORT_WIN32
 
 # Ideally this resources stuff would go in win32/ but libtool doesn't
 # seem to pass on the -Wl argument when linking a convenience library
@@ -35,7 +35,7 @@ win32/resources.o : $(srcdir)/win32/invisible-cursor.cur
 win32_resources = win32/resources.o
 win32_resources_ldflag = -Wl,win32/resources.o
 
-endif # WINSYS_WIN32
+endif # SUPPORT_WIN32
 
 INCLUDES = \
 	-I$(top_srcdir) 				\
