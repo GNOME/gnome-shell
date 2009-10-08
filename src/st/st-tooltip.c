@@ -356,6 +356,20 @@ st_tooltip_unmap (ClutterActor *self)
 }
 
 static void
+st_tooltip_dispose (GObject *self)
+{
+  StTooltipPrivate *priv = ST_TOOLTIP (self)->priv;
+
+  if (priv->label)
+    {
+      clutter_actor_destroy (priv->label);
+      priv->label = NULL;
+    }
+
+  G_OBJECT_CLASS (st_tooltip_parent_class)->dispose (self);
+}
+
+static void
 st_tooltip_class_init (StTooltipClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -367,6 +381,7 @@ st_tooltip_class_init (StTooltipClass *klass)
 
   gobject_class->set_property = st_tooltip_set_property;
   gobject_class->get_property = st_tooltip_get_property;
+  gobject_class->dispose = st_tooltip_dispose;
 
   actor_class->get_preferred_width = st_tooltip_get_preferred_width;
   actor_class->get_preferred_height = st_tooltip_get_preferred_height;

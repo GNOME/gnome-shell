@@ -403,11 +403,7 @@ st_box_layout_dispose (GObject *object)
   StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (object)->priv;
 
   while (priv->children)
-    {
-      clutter_actor_unparent (CLUTTER_ACTOR (priv->children->data));
-
-      priv->children = g_list_delete_link (priv->children, priv->children);
-    }
+    clutter_actor_destroy (priv->children->data);
 
   if (priv->hadjustment)
     {

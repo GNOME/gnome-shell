@@ -184,6 +184,20 @@ st_label_allocate (ClutterActor          *actor,
 }
 
 static void
+st_label_dispose (GObject   *actor)
+{
+  StLabelPrivate *priv = ST_LABEL (actor)->priv;
+
+  if (priv->label)
+    {
+      clutter_actor_destroy (priv->label);
+      priv->label = NULL;
+    }
+
+  G_OBJECT_CLASS (st_label_parent_class)->dispose (G_OBJECT (actor));
+}
+
+static void
 st_label_paint (ClutterActor *actor)
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
@@ -227,6 +241,7 @@ st_label_class_init (StLabelClass *klass)
 
   gobject_class->set_property = st_label_set_property;
   gobject_class->get_property = st_label_get_property;
+  gobject_class->dispose = st_label_dispose;
 
   actor_class->paint = st_label_paint;
   actor_class->allocate = st_label_allocate;

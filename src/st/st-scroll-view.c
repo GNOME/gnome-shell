@@ -129,13 +129,13 @@ st_scroll_view_dispose (GObject *object)
 
   if (priv->vscroll)
     {
-      clutter_actor_unparent (priv->vscroll);
+      clutter_actor_destroy (priv->vscroll);
       priv->vscroll = NULL;
     }
 
   if (priv->hscroll)
     {
-      clutter_actor_unparent (priv->hscroll);
+      clutter_actor_destroy (priv->hscroll);
       priv->hscroll = NULL;
     }
 

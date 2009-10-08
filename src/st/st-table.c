@@ -271,15 +271,9 @@ static void
 st_table_dispose (GObject *gobject)
 {
   StTablePrivate *priv = ST_TABLE (gobject)->priv;
-  GSList *l, *next;
 
-  for (l = priv->children; l;)
-    {
-      next = l->next;
-      clutter_container_remove_actor ((ClutterContainer *) gobject,
-                                      CLUTTER_ACTOR (l->data));
-      l = next;
-    }
+  while (priv->children)
+    clutter_actor_destroy (priv->children->data);
 
   G_OBJECT_CLASS (st_table_parent_class)->dispose (gobject);
 }

@@ -162,7 +162,7 @@ st_entry_dispose (GObject *object)
 
   if (priv->entry)
     {
-      clutter_actor_unparent (priv->entry);
+      clutter_actor_destroy (priv->entry);
       priv->entry = NULL;
     }
 }
