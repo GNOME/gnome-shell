@@ -69,6 +69,12 @@ struct _ClutterFlowLayoutPrivate
   gfloat max_row_height;
   gfloat row_height;
 
+  /* per-line size */
+  GArray *line_min;
+  GArray *line_natural;
+
+  guint line_count;
+
   guint is_homogeneous : 1;
 };
 
@@ -93,6 +99,63 @@ G_DEFINE_TYPE (ClutterFlowLayout,
                clutter_flow_layout,
                CLUTTER_TYPE_LAYOUT_MANAGER);
 
+static gint
+get_columns (ClutterFlowLayout *self,
+             gfloat             for_width)
+{
+  ClutterFlowLayoutPrivate *priv = self->priv;
+  gint n_columns;
+
+  if (for_width < 0)
+    return 1;
+
+  if (priv->col_width == 0)
+    return 1;
+
+  n_columns = (gint) (for_width + priv->col_spacing)
+            / (priv->col_width + priv->col_spacing);
+
+  if (n_columns == 0)
+    return 1;
+
+  return n_columns;
+}
+
+static gint
+get_rows (ClutterFlowLayout *self,
+          gfloat             for_height)
+{
+  ClutterFlowLayoutPrivate *priv = self->priv;
+  gint n_rows;
+
+  if (for_height < 0)
+    return 1;
+
+  if (priv->row_height == 0)
+    return 1;
+
+  n_rows = (gint) (for_height + priv->row_spacing)
+         / (priv->row_height + priv->row_spacing);
+
+  if (n_rows == 0)
+    return 1;
+
+  return n_rows;
+}
+
+static gint
+compute_lines (ClutterFlowLayout *self,
+               gfloat             avail_width,
+               gfloat             avail_height)
+{
+  ClutterFlowLayoutPrivate *priv = self->priv;
+
+  if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
+    return get_columns (self, avail_width);
+  else
+    return get_rows (self, avail_height);
+}
+
 static void
 clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
                                          ClutterContainer     *container,
@@ -102,52 +165,141 @@ clutter_flow_layout_get_preferred_width (ClutterLayoutManager *manager,
 {
   ClutterFlowLayoutPrivate *priv = CLUTTER_FLOW_LAYOUT (manager)->priv;
   GList *l, *children = clutter_container_get_children (container);
-  gfloat max_child_min_width, max_child_natural_width;
-  gfloat row_natural_width;
+  gint n_rows, line_item_count, line_count;
+  gfloat total_min_width, total_natural_width;
+  gfloat line_min_width, line_natural_width;
+  gfloat max_min_width, max_natural_width;
+  gfloat item_y;
 
-  max_child_min_width = max_child_natural_width = 0;
-  row_natural_width = 0;
+  n_rows = get_rows (CLUTTER_FLOW_LAYOUT (manager), for_height);
+
+  total_min_width = 0;
+  total_natural_width = 0;
+
+  line_min_width = 0;
+  line_natural_width = 0;
+
+  line_item_count = 0;
+  line_count = 0;
+
+  item_y = 0;
+
+  /* clear the line width arrays */
+  if (priv->orientation == CLUTTER_FLOW_VERTICAL && for_height > 0)
+    {
+      if (priv->line_min != NULL)
+        g_array_free (priv->line_min, TRUE);
+
+      if (priv->line_natural != NULL)
+        g_array_free (priv->line_natural, TRUE);
+
+      priv->line_min = g_array_sized_new (FALSE, FALSE,
+                                          sizeof (gfloat),
+                                          16);
+      priv->line_natural = g_array_sized_new (FALSE, FALSE,
+                                              sizeof (gfloat),
+                                              16);
+    }
 
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
       gfloat child_min, child_natural;
+      gfloat new_y, item_height;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      clutter_actor_get_preferred_width (child, for_height,
-                                         &child_min,
-                                         &child_natural);
+      if (priv->orientation == CLUTTER_FLOW_VERTICAL && for_height > 0)
+        {
+          if (line_item_count == n_rows)
+            {
+              total_min_width += line_min_width;
+              total_natural_width += line_natural_width;
 
-      max_child_min_width = MAX (max_child_min_width, child_min);
-      max_child_natural_width = MAX (max_child_natural_width, child_natural);
+              g_array_append_val (priv->line_min,
+                                  line_min_width);
+              g_array_append_val (priv->line_natural,
+                                  line_natural_width);
 
-      if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
-        row_natural_width += (child_natural + priv->col_spacing);
+              line_min_width = line_natural_width = 0;
+
+              line_item_count = 0;
+              line_count += 1;
+              item_y = 0;
+            }
+
+          new_y = ((line_item_count + 1) * (for_height + priv->row_spacing))
+                / n_rows;
+          item_height = new_y - item_y - priv->row_spacing;
+
+          clutter_actor_get_preferred_width (child, item_height,
+                                             &child_min,
+                                             &child_natural);
+
+          line_min_width = MAX (line_min_width, child_min);
+          line_natural_width = MAX (line_natural_width, child_natural);
+
+          item_y = new_y;
+          line_item_count += 1;
+
+          max_min_width = MAX (max_min_width, line_min_width);
+          max_natural_width = MAX (max_natural_width, line_natural_width);
+        }
       else
-        row_natural_width = MAX (row_natural_width, max_child_natural_width);
+        {
+          clutter_actor_get_preferred_width (child, for_height,
+                                             &child_min,
+                                             &child_natural);
+
+          max_min_width = MAX (max_min_width, child_min);
+          max_natural_width = MAX (max_natural_width, child_natural);
+
+          line_count += 1;
+        }
     }
 
   g_list_free (children);
 
-  priv->col_width = max_child_natural_width;
+  priv->col_width = max_natural_width;
 
-  /* if we get a maximum value for the column width we only apply
-   * it if there isn't a child whose minimum width is bigger than
-   * the requested maximum width
-   */
   if (priv->max_col_width > 0 && priv->col_width > priv->max_col_width)
-    priv->col_width = MAX (priv->max_col_width, max_child_min_width);
+    priv->col_width = MAX (priv->max_col_width, max_min_width);
 
   if (priv->col_width < priv->min_col_width)
     priv->col_width = priv->min_col_width;
 
+  if (priv->orientation == CLUTTER_FLOW_VERTICAL && for_height > 0)
+    {
+      /* if we have a non-full row we need to add it */
+      if (line_item_count > 0)
+        {
+          total_min_width += line_min_width;
+          total_natural_width += line_natural_width;
+
+          g_array_append_val (priv->line_min,
+                              line_min_width);
+          g_array_append_val (priv->line_natural,
+                              line_natural_width);
+        }
+
+      priv->line_count = line_count;
+      if (priv->line_count > 0)
+        {
+          gfloat total_spacing;
+
+          total_spacing = priv->col_spacing * (priv->line_count - 1);
+
+          total_min_width += total_spacing;
+          total_natural_width += total_spacing;
+        }
+    }
+
   if (min_width_p)
-    *min_width_p = ceilf (max_child_min_width);
+    *min_width_p = total_min_width;
 
   if (nat_width_p)
-    *nat_width_p = ceilf (row_natural_width);
+    *nat_width_p = total_natural_width;
 }
 
 static void
@@ -159,74 +311,141 @@ clutter_flow_layout_get_preferred_height (ClutterLayoutManager *manager,
 {
   ClutterFlowLayoutPrivate *priv = CLUTTER_FLOW_LAYOUT (manager)->priv;
   GList *l, *children = clutter_container_get_children (container);
-  gfloat max_child_min_height, max_child_natural_height;
-  gfloat col_natural_height;
+  gint n_columns, line_item_count, line_count;
+  gfloat total_min_height, total_natural_height;
+  gfloat line_min_height, line_natural_height;
+  gfloat max_min_height, max_natural_height;
+  gfloat item_x;
 
-  max_child_min_height = max_child_natural_height = 0;
-  col_natural_height = 0;
+  n_columns = get_columns (CLUTTER_FLOW_LAYOUT (manager), for_width);
+
+  total_min_height = 0;
+  total_natural_height = 0;
+
+  line_min_height = 0;
+  line_natural_height = 0;
+
+  line_item_count = 0;
+  line_count = 0;
+
+  item_x = 0;
+
+  /* clear the line height arrays */
+  if (priv->orientation == CLUTTER_FLOW_HORIZONTAL && for_width > 0)
+    {
+      if (priv->line_min != NULL)
+        g_array_free (priv->line_min, TRUE);
+
+      if (priv->line_natural != NULL)
+        g_array_free (priv->line_natural, TRUE);
+
+      priv->line_min = g_array_sized_new (FALSE, FALSE,
+                                          sizeof (gfloat),
+                                          16);
+      priv->line_natural = g_array_sized_new (FALSE, FALSE,
+                                              sizeof (gfloat),
+                                              16);
+    }
 
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
       gfloat child_min, child_natural;
+      gfloat new_x, item_width;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      clutter_actor_get_preferred_height (child, for_width,
-                                          &child_min,
-                                          &child_natural);
+      if (priv->orientation == CLUTTER_FLOW_HORIZONTAL && for_width > 0)
+        {
+          if (line_item_count == n_columns)
+            {
+              total_min_height += line_min_height;
+              total_natural_height += line_natural_height;
 
-      max_child_min_height = MAX (max_child_min_height, child_min);
-      max_child_natural_height = MAX (max_child_natural_height, child_natural);
+              g_array_append_val (priv->line_min,
+                                  line_min_height);
+              g_array_append_val (priv->line_natural,
+                                  line_natural_height);
 
-      if (priv->orientation == CLUTTER_FLOW_VERTICAL)
-        col_natural_height += (child_natural + priv->row_spacing);
+              line_min_height = line_natural_height = 0;
+
+              line_item_count = 0;
+              line_count += 1;
+              item_x = 0;
+            }
+
+          new_x = ((line_item_count + 1) * (for_width + priv->col_spacing))
+                / n_columns;
+          item_width = new_x - item_x - priv->col_spacing;
+
+          clutter_actor_get_preferred_height (child, item_width,
+                                              &child_min,
+                                              &child_natural);
+
+          line_min_height = MAX (line_min_height, child_min);
+          line_natural_height = MAX (line_natural_height, child_natural);
+
+          item_x = new_x;
+          line_item_count += 1;
+
+          max_min_height = MAX (max_min_height, line_min_height);
+          max_natural_height = MAX (max_natural_height, line_natural_height);
+        }
       else
-        col_natural_height = MAX (col_natural_height, max_child_natural_height);
+        {
+          clutter_actor_get_preferred_height (child, for_width,
+                                              &child_min,
+                                              &child_natural);
+
+          max_min_height = MAX (max_min_height, child_min);
+          max_natural_height = MAX (max_natural_height, child_natural);
+
+          line_count += 1;
+        }
     }
 
   g_list_free (children);
 
-  priv->row_height = max_child_natural_height;
+  priv->row_height = max_natural_height;
 
-  /* similarly to max-col-width, we only apply max-row-height if there
-   * is no child with a bigger minimum height
-   */
   if (priv->max_row_height > 0 && priv->row_height > priv->max_row_height)
-    priv->row_height = MAX (priv->max_row_height, max_child_min_height);
+    priv->row_height = MAX (priv->max_row_height, max_min_height);
 
   if (priv->row_height < priv->min_row_height)
     priv->row_height = priv->min_row_height;
 
+  if (priv->orientation == CLUTTER_FLOW_HORIZONTAL && for_width > 0)
+    {
+      /* if we have a non-full row we need to add it */
+      if (line_item_count > 0)
+        {
+          total_min_height += line_min_height;
+          total_natural_height += line_natural_height;
+
+          g_array_append_val (priv->line_min,
+                              line_min_height);
+          g_array_append_val (priv->line_natural,
+                              line_natural_height);
+        }
+
+      priv->line_count = line_count;
+      if (priv->line_count > 0)
+        {
+          gfloat total_spacing;
+
+          total_spacing = priv->row_spacing * (priv->line_count - 1);
+
+          total_min_height += total_spacing;
+          total_natural_height += total_spacing;
+        }
+    }
+
   if (min_height_p)
-    *min_height_p = ceilf (max_child_min_height);
+    *min_height_p = total_min_height;
 
   if (nat_height_p)
-    *nat_height_p = ceilf (col_natural_height);
-}
-
-static gint
-compute_lines (ClutterFlowLayout *self,
-               const GList       *children,
-               gfloat             avail_width,
-               gfloat             avail_height)
-{
-  ClutterFlowLayoutPrivate *priv = self->priv;
-  gint items_per_line;
-
-  if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
-    {
-      items_per_line = (avail_width - priv->col_spacing)
-                     / (priv->col_width + priv->col_spacing);
-    }
-  else
-    {
-      items_per_line = (avail_height - priv->row_spacing)
-                     / (priv->row_height + priv->row_spacing);
-    }
-
-  return items_per_line;
+    *nat_height_p = total_natural_height;
 }
 
 static void
@@ -239,7 +458,7 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
   GList *l, *children = clutter_container_get_children (container);
   gfloat avail_width, avail_height;
   gfloat item_x, item_y;
-  gint line_items_count;
+  gint line_item_count;
   gint items_per_line;
   gint line_index;
 
@@ -249,12 +468,11 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
   clutter_actor_box_get_size (allocation, &avail_width, &avail_height);
 
   items_per_line = compute_lines (CLUTTER_FLOW_LAYOUT (manager),
-                                  children,
                                   avail_width, avail_height);
 
   item_x = item_y = 0;
 
-  line_items_count = 0;
+  line_item_count = 0;
   line_index = 0;
 
   for (l = children; l != NULL; l = l->next)
@@ -262,49 +480,88 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       ClutterActor *child = l->data;
       ClutterActorBox child_alloc;
       gfloat item_width, item_height;
-      gfloat child_min, child_natural;
+      gfloat new_x, new_y;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
-      if (line_items_count == items_per_line)
+      if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
         {
-          if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
+          if (line_item_count == items_per_line && line_item_count > 0)
             {
+              item_y += g_array_index (priv->line_natural,
+                                       gfloat,
+                                       line_index);
+
+              line_item_count = 0;
+              line_index += 1;
+
               item_x = 0;
-              item_y += priv->row_height + priv->row_spacing;
             }
-          else
+
+          new_x = ((line_item_count + 1) * (avail_width + priv->col_spacing))
+                / items_per_line;
+          item_width = new_x - item_x - priv->col_spacing;
+          item_height = g_array_index (priv->line_natural,
+                                       gfloat,
+                                       line_index);
+
+          if (!priv->is_homogeneous)
             {
-              item_x += priv->col_width + priv->col_spacing;
-              item_y = 0;
+              gfloat child_min, child_natural;
+
+              clutter_actor_get_preferred_width (child, item_height,
+                                                 &child_min,
+                                                 &child_natural);
+              item_width = MIN (item_width, child_min);
+
+              clutter_actor_get_preferred_height (child, item_width,
+                                                  &child_min,
+                                                  &child_natural);
+              item_height = MIN (item_height, child_natural);
             }
-
-          line_items_count = 0;
-          line_index += 1;
-        }
-
-      if (priv->is_homogeneous)
-        {
-          item_width = priv->col_width;
-          item_height = priv->row_height;
         }
       else
         {
-          clutter_actor_get_preferred_width (child, priv->row_height,
-                                             &child_min,
-                                             &child_natural);
-          item_width = MIN (child_natural, priv->col_width);
+          if (line_item_count == items_per_line && line_item_count > 0)
+            {
+              item_x += g_array_index (priv->line_natural,
+                                       gfloat,
+                                       line_index);
 
-          clutter_actor_get_preferred_height (child, item_width,
-                                              &child_min,
-                                              &child_natural);
-          item_height = MIN (child_natural, priv->row_height);
+              line_item_count = 0;
+              line_index += 1;
+
+              item_y = 0;
+            }
+
+          new_y = ((line_item_count + 1) * (avail_height + priv->row_spacing))
+                / items_per_line;
+          item_height = new_y - item_y - priv->row_spacing;
+          item_width = g_array_index (priv->line_natural,
+                                      gfloat,
+                                      line_index);
+
+          if (!priv->is_homogeneous)
+            {
+              gfloat child_min, child_natural;
+
+              clutter_actor_get_preferred_width (child, item_height,
+                                                 &child_min,
+                                                 &child_natural);
+              item_width = MIN (item_width, child_min);
+
+              clutter_actor_get_preferred_height (child, item_width,
+                                                  &child_min,
+                                                  &child_natural);
+              item_height = MIN (item_height, child_natural);
+            }
         }
 
       CLUTTER_NOTE (LAYOUT,
-                    "flow[line:%d, item:%d/%d] = { %.2f, %.2f, %.2f, %.2f }",
-                    line_index, line_items_count + 1, items_per_line,
+                    "flow[line:%d, item:%d/%d] ="
+                    "{ %.2f, %.2f, %.2f, %.2f }",
+                    line_index, line_item_count + 1, items_per_line,
                     item_x, item_y, item_width, item_height);
 
       child_alloc.x1 = ceil (item_x);
@@ -314,11 +571,11 @@ clutter_flow_layout_allocate (ClutterLayoutManager   *manager,
       clutter_actor_allocate (child, &child_alloc, flags);
 
       if (priv->orientation == CLUTTER_FLOW_HORIZONTAL)
-        item_x += (priv->col_width + priv->col_spacing);
+        item_x = new_x;
       else
-        item_y += (priv->row_height + priv->row_spacing);
+        item_y = new_y;
 
-      line_items_count += 1;
+      line_item_count += 1;
     }
 
   g_list_free (children);
@@ -452,6 +709,20 @@ clutter_flow_layout_get_property (GObject    *gobject,
 }
 
 static void
+clutter_flow_layout_finalize (GObject *gobject)
+{
+  ClutterFlowLayoutPrivate *priv = CLUTTER_FLOW_LAYOUT (gobject)->priv;
+
+  if (priv->line_min != NULL)
+    g_array_free (priv->line_min, TRUE);
+
+  if (priv->line_natural != NULL)
+    g_array_free (priv->line_natural, TRUE);
+
+  G_OBJECT_CLASS (clutter_flow_layout_parent_class)->finalize (gobject);
+}
+
+static void
 clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
 {
   GObjectClass *gobject_class;
@@ -465,6 +736,7 @@ clutter_flow_layout_class_init (ClutterFlowLayoutClass *klass)
 
   gobject_class->set_property = clutter_flow_layout_set_property;
   gobject_class->get_property = clutter_flow_layout_get_property;
+  gobject_class->finalize = clutter_flow_layout_finalize;
 
   layout_class->get_preferred_width =
     clutter_flow_layout_get_preferred_width;
@@ -631,6 +903,9 @@ clutter_flow_layout_init (ClutterFlowLayout *self)
 
   priv->min_col_width = priv->min_row_height = 0;
   priv->max_col_width = priv->max_row_height = -1;
+
+  priv->line_min = NULL;
+  priv->line_natural = NULL;
 }
 
 /**

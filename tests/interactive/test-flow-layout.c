@@ -81,6 +81,7 @@ test_flow_layout_main (int argc, char *argv[])
   ClutterActor *stage, *box;
   ClutterLayoutManager *layout;
   ClutterColor stage_color = { 0xe0, 0xf2, 0xfc, 0xff };
+  ClutterColor box_color = { 255, 255, 255, 255 };
   GError *error;
   gint i;
 
@@ -114,6 +115,7 @@ test_flow_layout_main (int argc, char *argv[])
                                        y_spacing);
 
   box = clutter_box_new (layout);
+  clutter_box_set_color (CLUTTER_BOX (box), &box_color);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
   clutter_actor_set_position (box, 0, 0);
 
@@ -126,7 +128,7 @@ test_flow_layout_main (int argc, char *argv[])
 
   for (i = 0; i < n_rects; i++)
     {
-      ClutterColor color = { 255, 255, 255, 255 };
+      ClutterColor color = { 255, 255, 255, 224 };
       ClutterActor *rect;
       gchar *name;
       gfloat width, height;
