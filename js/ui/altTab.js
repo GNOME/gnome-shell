@@ -248,9 +248,11 @@ AltTabPopup.prototype = {
     },
 
     _select : function(app, window, noTimeout) {
-        if ((app != this._currentApp || !window) && this._thumbnails) {
-            this._thumbnails.actor.destroy();
-            this._thumbnails = null;
+        if (app != this._currentApp || !window) {
+            if (this._thumbnails) {
+                this._thumbnails.actor.destroy();
+                this._thumbnails = null;
+            }
             this._appSwitcher.showArrow(-1);
         }
 
