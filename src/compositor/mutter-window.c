@@ -722,6 +722,18 @@ const char *mutter_window_get_description (MutterWindow *self)
   return self->priv->desc;
 }
 
+/**
+ * mutter_window_get_workspace:
+ * @self: #MutterWindow
+ *
+ * Returns the index of workspace on which this window is located; if the
+ * window is sticky, or is not currently located on any workspace, returns -1.
+ * This function is deprecated  and should not be used in newly written code;
+ * meta_window_get_workspace() instead.
+ *
+ * Return value: (transfer none): index of workspace on which this window is
+ * located.
+ */
 gint
 mutter_window_get_workspace (MutterWindow *self)
 {
@@ -737,6 +749,9 @@ mutter_window_get_workspace (MutterWindow *self)
     return -1;
 
   workspace = meta_window_get_workspace (priv->window);
+
+  if (!workspace)
+    return -1;
 
   return meta_workspace_index (workspace);
 }
