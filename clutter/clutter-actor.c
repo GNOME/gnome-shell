@@ -4373,7 +4373,7 @@ clutter_actor_destroy (ClutterActor *self)
 
       g_object_run_dispose (G_OBJECT (self));
 
-      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
+      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
     }
 
   g_object_unref (self);
