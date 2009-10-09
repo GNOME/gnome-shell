@@ -472,8 +472,8 @@ AppIconMenu.prototype = {
         }
         if (windows.length > 0)
             this._appendSeparator();
-        this._toggleFavoriteMenuItem = this._appendMenuItem(null, this._isFavorite ? _("Remove from favorites")
-                                                                    : _("Add to favorites"));
+        this._toggleFavoriteMenuItem = this._appendMenuItem(null, this._isFavorite ? _("Remove from Favorites")
+                                                                    : _("Add to Favorites"));
 
         this._highlightedItem = null;
     },
