@@ -62,9 +62,17 @@ Notebook.prototype = {
         scrollview.get_hscroll_bar().hide();
         scrollview.add_actor(child);
 
-        this._tabs.push([child, labelBox, scrollview]);
+        let tabData = { child: child,
+                        labelBox: labelBox,
+                        scrollView: scrollview,
+                        _scrollToBottom: false };
+        this._tabs.push(tabData);
         scrollview.hide();
         this.actor.add(scrollview, { expand: true });
+
+        let vAdjust = scrollview.vscroll.adjustment;
+        vAdjust.connect('changed', Lang.bind(this, function () { this._onAdjustScopeChanged(tabData); }));
+        vAdjust.connect('notify::value', Lang.bind(this, function() { this._onAdjustValueChanged(tabData); }));
 
         if (this._selectedIndex == -1)
             this.selectIndex(0);
@@ -73,10 +81,10 @@ Notebook.prototype = {
     _unselect: function() {
         if (this._selectedIndex < 0)
             return;
-        let [child, labelBox, scrollview] = this._tabs[this._selectedIndex];
-        labelBox.padding = 2;
-        labelBox.border = 0;
-        scrollview.hide();
+        let tabData = this._tabs[this._selectedIndex];
+        tabData.labelBox.padding = 2;
+        tabData.labelBox.border = 0;
+        tabData.scrollView.hide();
         this._selectedIndex = -1;
     },
 
@@ -88,12 +96,12 @@ Notebook.prototype = {
             this.emit('selection', null);
             return;
         }
-        let [child, labelBox, scrollview] = this._tabs[index];
-        labelBox.padding = 1;
-        labelBox.border = 1;
-        scrollview.show();
+        let tabData = this._tabs[index];
+        tabData.labelBox.padding = 1;
+        tabData.labelBox.border = 1;
+        tabData.scrollView.show();
         this._selectedIndex = index;
-        this.emit('selection', child);
+        this.emit('selection', tabData.child);
     },
 
     selectChild: function(child) {
@@ -101,13 +109,32 @@ Notebook.prototype = {
             this.selectIndex(-1);
         else {
             for (let i = 0; i < this._tabs.length; i++) {
-                let [tabChild, labelBox, scrollview] = this._tabs[i];
-                if (tabChild == child) {
+                let tabData = this._tabs[i];
+                if (tabData.child == child) {
                     this.selectIndex(i);
                     return;
                 }
             }
         }
+    },
+
+    scrollToBottom: function(index) {
+        let tabData = this._tabs[index];
+        tabData._scrollToBottom = true;
+
+    },
+
+    _onAdjustValueChanged: function (tabData) {
+        let vAdjust = tabData.scrollView.vscroll.adjustment;
+        if (vAdjust.value < (vAdjust.upper - vAdjust.lower - 0.5))
+            tabData._scrolltoBottom = false;
+    },
+
+    _onAdjustScopeChanged: function (tabData) {
+        if (!tabData._scrollToBottom)
+            return;
+        let vAdjust = tabData.scrollView.vscroll.adjustment;
+        vAdjust.value = vAdjust.upper - vAdjust.page_size;
     }
 }
 Signals.addSignalMethods(Notebook.prototype);
@@ -337,6 +364,7 @@ LookingGlass.prototype = {
         }));
 
         let notebook = new Notebook();
+        this._notebook = notebook;
         this.actor.add(notebook.actor, { expand: true });
 
         let emptyBox = new St.Bin();
@@ -466,6 +494,9 @@ LookingGlass.prototype = {
             this._offset++;
         }
         this._it = obj;
+
+        // Scroll to bottom
+        this._notebook.scrollToBottom(0);
     },
 
     _evaluate : function(command) {
