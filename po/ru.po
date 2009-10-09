@@ -1,0 +1,233 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Andrey Korzinev <fellrond@gmail.com>, 2009.
+# Sergey V. Kovylov <serejka@gmail.com>, 2009.
+# Marina Zhurakhinskaya <marinaz@redhat.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2009-10-09 00:27-0400\n"
+"PO-Revision-Date: 2009-10-09 00:27-0400\n"
+"Last-Translator: Marina Zhurakhinskaya <marinaz@redhat.com>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Управление окнами и запуск приложений"
+
+#: ../js/ui/appDisplay.js:335
+msgid "Frequent"
+msgstr "Часто используемые"
+
+#: ../js/ui/appIcon.js:462
+msgid "New Window"
+msgstr "Новое окно"
+
+#: ../js/ui/appIcon.js:475
+msgid "Remove from Favorites"
+msgstr "Удалить из избранного"
+
+#: ../js/ui/appIcon.js:476
+msgid "Add to Favorites"
+msgstr "Добавить в избранное"
+
+#: ../js/ui/dash.js:283
+msgid "Find..."
+msgstr "Найти…"
+
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Ещё"
+
+#: ../js/ui/dash.js:543
+#: "(увидеть все)" does not fit when it is next to "НЕДАВНИЕ ДОКУМЕНТЫ", so I'm just using "(все)"
+msgid "(see all)"
+msgstr "(все)"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
+msgid "APPLICATIONS"
+msgstr "ПРИЛОЖЕНИЯ"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:783
+msgid "PLACES"
+msgstr "ПАПКИ И РЕСУРСЫ"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+msgid "RECENT DOCUMENTS"
+msgstr "НЕДАВНИЕ ДОКУМЕНТЫ"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
+msgid "SEARCH RESULTS"
+msgstr "РЕЗУЛЬТАТЫ ПОИСКА"
+
+#: ../js/ui/dash.js:830
+msgid "PREFERENCES"
+msgstr "НАСТРОЙКИ"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:272
+#. Another word that was considered was "Обзор", but it was decided that it doesn't give a full sense of the actions
+#. possible when in the overview mode.
+msgid "Activities"
+msgstr "Действия"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:464
+msgid "%a %l:%M %p"
+msgstr "%a, %H:%M"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Соединиться с…"
+
+#: ../js/ui/runDialog.js:96
+msgid "Please enter a command:"
+msgstr "Введите команду:"
+
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Не удалось выполнить «%s»:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:162
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:316
+msgid "Applications"
+msgstr "Приложения"
+
+#: ../js/ui/widget.js:341
+msgid "Recent Documents"
+msgstr "Недавние документы"
+
+#: ../src/shell-global.c:812
+msgid "Less than a minute ago"
+msgstr "Менее минуты назад"
+
+#: ../src/shell-global.c:815
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d минуту назад"
+msgstr[1] "%d минуты назад"
+msgstr[2] "%d минут назад"
+
+#: ../src/shell-global.c:818
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d час назад"
+msgstr[1] "%d часа назад"
+msgstr[2] "%d часов назад"
+
+#: ../src/shell-global.c:821
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d день назад"
+msgstr[1] "%d дня назад"
+msgstr[2] "%d дней назад"
+
+#: ../src/shell-global.c:824
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d неделю назад"
+msgstr[1] "%d недели назад"
+msgstr[2] "%d недель назад"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Не удалось заблокировать экран: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "Не удалось временно установить пустую экранную заставку: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Не удалось завершить сеанс пользователя: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Информация о пользователе…"
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Боковая панель"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Системные настройки…"
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Заблокировать экран"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Сменить пользователя"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Завершить сеанс…"
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Выключить…"
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Домашняя папка"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Файловая система"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Поиск"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
