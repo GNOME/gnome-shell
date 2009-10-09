@@ -267,8 +267,8 @@ Panel.prototype = {
             this._rightBox.allocate(childBox, flags);
         }));
 
-        /* left side */
-
+        /* Button on the left side of the panel. */
+        /* Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview". */
         this.button = new Button.Button(_("Activities"), PANEL_BUTTON_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR,
                                         PANEL_FOREGROUND_COLOR, DEFAULT_FONT);
         this.button.actor.height = PANEL_HEIGHT;
