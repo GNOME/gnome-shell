@@ -13,21 +13,23 @@ const St = imports.gi.St;
 
 const AppIcon = imports.ui.appIcon;
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 
 const POPUP_ARROW_COLOR = new Clutter.Color();
 POPUP_ARROW_COLOR.from_pixel(0xffffffff);
+const POPUP_UNFOCUSED_ARROW_COLOR = new Clutter.Color();
+POPUP_UNFOCUSED_ARROW_COLOR.from_pixel(0x808080ff);
 const TRANSPARENT_COLOR = new Clutter.Color();
 TRANSPARENT_COLOR.from_pixel(0x00000000);
 
 const POPUP_APPICON_SIZE = 96;
 const POPUP_LIST_SPACING = 8;
 
-const POPUP_POINTER_SELECTION_THRESHOLD = 3;
+const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 
 const THUMBNAIL_SIZE = 256;
-const THUMBNAIL_POPUP_TIME = 1000; // milliseconds
-
-const HOVER_TIME = 500; // milliseconds
+const THUMBNAIL_POPUP_TIME = 500; // milliseconds
+const THUMBNAIL_FADE_TIME = 0.2; // seconds
 
 function mod(a, b) {
     return (a + b) % b;
@@ -50,8 +52,13 @@ AltTabPopup.prototype = {
         this._haveModal = false;
 
         this._currentApp = 0;
-        this._currentWindows = [];
+        this._currentWindow = 0;
         this._thumbnailTimeoutId = 0;
+        this._motionTimeoutId = 0;
+
+        // Initially disable hover so we ignore the enter-event if
+        // the switcher appears underneath the current pointer location
+        this._disableHover();
 
         global.stage.add_actor(this.actor);
     },
@@ -70,14 +77,13 @@ AltTabPopup.prototype = {
         this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
         this._keyReleaseEventId = global.stage.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
 
-        this._motionEventId = this.actor.connect('motion-event', Lang.bind(this, this._mouseMoved));
-        this._mouseActive = false;
-        this._mouseMovement = 0;
+        this.actor.connect('button-press-event', Lang.bind(this, this._clickedOutside));
+        this.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
 
         this._appSwitcher = new AppSwitcher(apps);
         this.actor.add_actor(this._appSwitcher.actor);
         this._appSwitcher.connect('item-activated', Lang.bind(this, this._appActivated));
-        this._appSwitcher.connect('item-hovered', Lang.bind(this, this._appHovered));
+        this._appSwitcher.connect('item-entered', Lang.bind(this, this._appEntered));
 
         let primary = global.get_primary_monitor();
         this._appSwitcher.actor.x = primary.x + Math.floor((primary.width - this._appSwitcher.actor.width) / 2);
@@ -85,15 +91,11 @@ AltTabPopup.prototype = {
 
         this._appIcons = this._appSwitcher.icons;
 
-        // _currentWindows give the index of the selected window for
-        // each app; they all start at 0.
-        this._currentWindows = this._appIcons.map(function (app) { return 0; });
-
         // Make the initial selection
         if (this._appIcons.length == 1) {
             if (!backward && this._appIcons[0].cachedWindows.length > 1) {
                 // For compatibility with the multi-app case below
-                this._select(0, 1);
+                this._select(0, 1, true);
             } else
                 this._select(0);
         } else if (backward) {
@@ -108,7 +110,7 @@ AltTabPopup.prototype = {
                 // than the first window of the next app, then select it.
                 if (curAppNextWindow.get_workspace() == global.screen.get_active_workspace() &&
                     curAppNextWindow.get_user_time() > nextAppWindow.get_user_time())
-                    this._select(0, 1);
+                    this._select(0, 1, true);
                 else
                     this._select(1);
             } else
@@ -137,11 +139,11 @@ AltTabPopup.prototype = {
     },
 
     _nextWindow : function() {
-        return mod(this._currentWindows[this._currentApp] + 1,
+        return mod(this._currentWindow + 1,
                    this._appIcons[this._currentApp].cachedWindows.length);
     },
     _previousWindow : function() {
-        return mod(this._currentWindows[this._currentApp] - 1,
+        return mod(this._currentWindow - 1,
                    this._appIcons[this._currentApp].cachedWindows.length);
     },
 
@@ -149,29 +151,38 @@ AltTabPopup.prototype = {
         let keysym = event.get_key_symbol();
         let shift = (Shell.get_event_state(event) & Clutter.ModifierType.SHIFT_MASK);
 
+        this._disableHover();
+
         // The WASD stuff is for debugging in Xephyr, where the arrow
         // keys aren't mapped correctly
 
-        if (keysym == Clutter.Tab)
-            this._select(shift ? this._previousApp() : this._nextApp());
-        else if (keysym == Clutter.grave)
+        if (keysym == Clutter.grave)
             this._select(this._currentApp, shift ? this._previousWindow() : this._nextWindow());
         else if (keysym == Clutter.Escape)
             this.destroy();
-        else if (this._thumbnails) {
-            if (keysym == Clutter.Left || keysym == Clutter.a)
+        else if (this._thumbnailsFocused) {
+            if (keysym == Clutter.Tab) {
+                if (shift && this._currentWindow == 0)
+                    this._select(this._previousApp());
+                else if (!shift && this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
+                    this._select(this._nextApp());
+                else
+                    this._select(this._currentApp, shift ? this._previousWindow() : this._nextWindow());
+            } else if (keysym == Clutter.Left || keysym == Clutter.a)
                 this._select(this._currentApp, this._previousWindow());
             else if (keysym == Clutter.Right || keysym == Clutter.d)
                 this._select(this._currentApp, this._nextWindow());
             else if (keysym == Clutter.Up || keysym == Clutter.w)
                 this._select(this._currentApp, null, true);
         } else {
-            if (keysym == Clutter.Left || keysym == Clutter.a)
+            if (keysym == Clutter.Tab)
+                this._select(shift ? this._previousApp() : this._nextApp());
+            else if (keysym == Clutter.Left || keysym == Clutter.a)
                 this._select(this._previousApp());
             else if (keysym == Clutter.Right || keysym == Clutter.d)
                 this._select(this._nextApp());
             else if (keysym == Clutter.Down || keysym == Clutter.s)
-                this._select(this._currentApp, this._currentWindows[this._currentApp]);
+                this._select(this._currentApp, this._currentWindow);
         }
 
         return true;
@@ -186,16 +197,56 @@ AltTabPopup.prototype = {
         return true;
     },
 
-    _appActivated : function(appSwitcher, n) {
-        Main.activateWindow(this._appIcons[n].cachedWindows[this._currentWindows[n]]);
+    _onScroll : function(actor, event) {
+        let direction = event.get_scroll_direction();
+        if (direction == Clutter.ScrollDirection.UP) {
+            if (this._thumbnailsFocused) {
+                if (this._currentWindow == 0)
+                    this._select(this._previousApp());
+                else
+                    this._select(this._currentApp, this._previousWindow());
+            } else {
+                let nwindows = this._appIcons[this._currentApp].cachedWindows.length;
+                if (nwindows > 1)
+                    this._select(this._currentApp, nwindows - 1);
+                else
+                    this._select(this._previousApp());
+            }
+        } else if (direction == Clutter.ScrollDirection.DOWN) {
+            if (this._thumbnailsFocused) {
+                if (this._currentWindow == this._appIcons[this._currentApp].cachedWindows.length - 1)
+                    this._select(this._nextApp());
+                else
+                    this._select(this._currentApp, this._nextWindow());
+            } else {
+                let nwindows = this._appIcons[this._currentApp].cachedWindows.length;
+                if (nwindows > 1)
+                    this._select(this._currentApp, 0);
+                else
+                    this._select(this._nextApp());
+            }
+        }
+    },
+
+    _clickedOutside : function(actor, event) {
         this.destroy();
     },
 
-    _appHovered : function(appSwitcher, n) {
+    _appActivated : function(appSwitcher, n) {
+        // If the user clicks on the selected app, activate the
+        // selected window; otherwise (eg, they click on an app while
+        // !mouseActive) activate the first window of the clicked-on
+        // app.
+        let window = (n == this._currentApp) ? this._currentWindow : 0;
+        Main.activateWindow(this._appIcons[n].cachedWindows[window]);
+        this.destroy();
+    },
+
+    _appEntered : function(appSwitcher, n) {
         if (!this._mouseActive)
             return;
 
-        this._select(n, this._currentWindows[n]);
+        this._select(n);
     },
 
     _windowActivated : function(thumbnailList, n) {
@@ -203,28 +254,30 @@ AltTabPopup.prototype = {
         this.destroy();
     },
 
-    _windowHovered : function(thumbnailList, n) {
+    _windowEntered : function(thumbnailList, n) {
         if (!this._mouseActive)
             return;
 
         this._select(this._currentApp, n);
     },
 
-    _mouseMoved : function(actor, event) {
-        if (++this._mouseMovement < POPUP_POINTER_SELECTION_THRESHOLD)
-            return;
+    _disableHover : function() {
+        this._mouseActive = false;
 
-        this.actor.disconnect(this._motionEventId);
+        if (this._motionTimeoutId != 0)
+            Mainloop.source_remove(this._motionTimeoutId);
+
+        this._motionTimeoutId = Mainloop.timeout_add(DISABLE_HOVER_TIMEOUT, Lang.bind(this, this._mouseTimedOut));
+    },
+
+    _mouseTimedOut : function() {
+        this._motionTimeoutId = 0;
         this._mouseActive = true;
-
-        this._appSwitcher.checkHover();
-        if (this._thumbnails)
-            this._thumbnails.checkHover();
     },
 
     _finish : function() {
         let app = this._appIcons[this._currentApp];
-        let window = app.cachedWindows[this._currentWindows[this._currentApp]];
+        let window = app.cachedWindows[this._currentWindow];
         Main.activateWindow(window);
         this.destroy();
     },
@@ -242,17 +295,41 @@ AltTabPopup.prototype = {
         if (this._keyReleaseEventId)
             global.stage.disconnect(this._keyReleaseEventId);
 
+        if (this._motionTimeoutId != 0)
+            Mainloop.source_remove(this._motionTimeoutId);
         if (this._thumbnailTimeoutId != 0)
             Mainloop.source_remove(this._thumbnailTimeoutId);
     },
 
-    _select : function(app, window, noTimeout) {
-        if (app != this._currentApp || !window) {
-            if (this._thumbnails) {
-                this._thumbnails.actor.destroy();
-                this._thumbnails = null;
-            }
-            this._appSwitcher.showArrow(-1);
+    /**
+     * _select:
+     * @app: index of the app to select
+     * @window: (optional) index of which of @app's windows to select
+     * @forceAppFocus: optional flag, see below
+     *
+     * Selects the indicated @app, and optional @window, and sets
+     * this._thumbnailsFocused appropriately to indicate whether the
+     * arrow keys should act on the app list or the thumbnail list.
+     *
+     * If @app is specified and @window is unspecified or %null, then
+     * the app is highlighted (ie, given a light background), and the
+     * current thumbnail list, if any, is destroyed. If @app has
+     * multiple windows, and @forceAppFocus is not %true, then a
+     * timeout is started to open a thumbnail list.
+     *
+     * If @app and @window are specified (and @forceAppFocus is not),
+     * then @app will be outlined, a thumbnail list will be created
+     * and focused (if it hasn't been already), and the @window'th
+     * window in it will be highlighted.
+     *
+     * If @app and @window are specified and @forceAppFocus is %true,
+     * then @app will be highlighted, and @window outlined, and the
+     * app list will have the keyboard focus.
+     */
+    _select : function(app, window, forceAppFocus) {
+        if (app != this._currentApp || window == null) {
+            if (this._thumbnails)
+                this._destroyThumbnails();
         }
 
         if (this._thumbnailTimeoutId != 0) {
@@ -260,37 +337,42 @@ AltTabPopup.prototype = {
             this._thumbnailTimeoutId = 0;
         }
 
+        this._thumbnailsFocused = (window != null) && !forceAppFocus;
+
         this._currentApp = app;
-        if (window != null) {
-            this._appSwitcher.highlight(-1);
-            this._appSwitcher.showArrow(app);
-        } else {
-            this._appSwitcher.highlight(app);
-            if (this._appIcons[this._currentApp].cachedWindows.length > 1)
-                this._appSwitcher.showArrow(app);
-        }
+        this._currentWindow = window ? window : 0;
+        this._appSwitcher.highlight(app, this._thumbnailsFocused);
 
         if (window != null) {
             if (!this._thumbnails)
                 this._createThumbnails();
-            this._currentWindows[this._currentApp] = window;
-            this._thumbnails.highlight(window);
+            this._currentWindow = window;
+            this._thumbnails.highlight(window, forceAppFocus);
         } else if (this._appIcons[this._currentApp].cachedWindows.length > 1 &&
-                   !noTimeout) {
+                   !forceAppFocus) {
             this._thumbnailTimeoutId = Mainloop.timeout_add (
                 THUMBNAIL_POPUP_TIME,
                 Lang.bind(this, function () {
-                              this._select(this._currentApp,
-                                           this._currentWindows[this._currentApp]);
+                              this._select(this._currentApp, 0, true);
                               return false;
                           }));
         }
     },
 
+    _destroyThumbnails : function() {
+        Tweener.addTween(this._thumbnails.actor,
+                         { opacity: 0,
+                           time: THUMBNAIL_FADE_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: function() { this.destroy(); }
+                         });
+        this._thumbnails = null;
+    },
+
     _createThumbnails : function() {
         this._thumbnails = new ThumbnailList (this._appIcons[this._currentApp].cachedWindows);
         this._thumbnails.connect('item-activated', Lang.bind(this, this._windowActivated));
-        this._thumbnails.connect('item-hovered', Lang.bind(this, this._windowHovered));
+        this._thumbnails.connect('item-entered', Lang.bind(this, this._windowEntered));
 
         this.actor.add_actor(this._thumbnails.actor);
 
@@ -320,6 +402,13 @@ AltTabPopup.prototype = {
 
         this._thumbnails.actor.x = Math.floor(thumbnailCenter - this._thumbnails.actor.width / 2);
         this._thumbnails.actor.y = this._appSwitcher.actor.y + this._appSwitcher.actor.height + POPUP_LIST_SPACING;
+
+        this._thumbnails.actor.opacity = 0;
+        Tweener.addTween(this._thumbnails.actor,
+                         { opacity: 255,
+                           time: THUMBNAIL_FADE_TIME,
+                           transition: "easeOutQuad"
+                         });
     }
 };
 
@@ -330,7 +419,6 @@ function SwitcherList(squareItems) {
 SwitcherList.prototype = {
     _init : function(squareItems) {
         this.actor = new St.Bin({ style_class: 'switcher-list' });
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         // Here we use a GenericContainer so that we can force all the
         // children except the separator to have the same width.
@@ -347,39 +435,29 @@ SwitcherList.prototype = {
         this._highlighted = -1;
         this._separator = null;
         this._squareItems = squareItems;
-
-        this._hoverTimeout = 0;
-    },
-
-    _onDestroy: function() {
-        if (this._hoverTimeout != 0) {
-            Mainloop.source_remove(this._hoverTimeout);
-            this._hoverTimeout = 0;
-        }
     },
 
     addItem : function(item) {
-        let box = new St.Bin({ style_class: 'item-box' });
-        let bbox;
+        // We want the St.Bin's padding to be clickable (since it will
+        // be part of the highlighted background color), so we put the
+        // bin inside the ButtonBox rather than vice versa.
+        let bin = new St.Bin({ style_class: 'item-box' });
+        let bbox = new Shell.ButtonBox({ reactive: true });
 
-        if (item instanceof Shell.ButtonBox)
-            bbox = item;
-        else {
-            bbox = new Shell.ButtonBox({ reactive: true });
-            bbox.append(item, Big.BoxPackFlags.NONE);
-        }
-        box.add_actor(bbox);
-        this._list.add_actor(box);
+        bin.add_actor(item);
+        bbox.append(bin, Big.BoxPackFlags.NONE);
+        this._list.add_actor(bbox);
 
         let n = this._items.length;
         bbox.connect('activate', Lang.bind(this, function () {
                                                this._itemActivated(n);
                                           }));
-        bbox.connect('notify::hover', Lang.bind(this, function () {
-                                                    this._hoverChanged(bbox, n);
-                                               }));
+        bbox.connect('enter-event', Lang.bind(this, function () {
+                                                  this._itemEntered(n);
+                                              }));
 
-        this._items.push(box);
+        bbox._bin = bin;
+        this._items.push(bbox);
     },
 
     addSeparator: function () {
@@ -388,24 +466,17 @@ SwitcherList.prototype = {
         this._list.add_actor(box);
     },
     
-    highlight: function(index) {
+    highlight: function(index, justOutline) {
         if (this._highlighted != -1)
-            this._items[this._highlighted].style_class = 'item-box';
+            this._items[this._highlighted]._bin.style_class = 'item-box';
 
         this._highlighted = index;
 
-        if (this._highlighted != -1)
-            this._items[this._highlighted].style_class = 'selected-item-box';
-    },
-
-    // Used after the mouse movement exceeds the threshold, to check
-    // if it's already hovering over an icon
-    checkHover: function() {
-        for (let i = 0; i < this._items.length; i++) {
-            if (this._items[i].get_child().hover) {
-                this._hoverChanged(this._items[i].get_child(), i);
-                return;
-            }
+        if (this._highlighted != -1) {
+            if (justOutline)
+                this._items[this._highlighted]._bin.style_class = 'outlined-item-box';
+            else
+                this._items[this._highlighted]._bin.style_class = 'selected-item-box';
         }
     },
 
@@ -413,23 +484,8 @@ SwitcherList.prototype = {
         this.emit('item-activated', n);
     },
     
-    _hoverChanged: function(box, n) {
-        if (this._hoverTimeout != 0) {
-            Mainloop.source_remove(this._hoverTimeout);
-            this._hoverTimeout = 0;
-        }
-
-        if (box.hover) {
-            this._hoverTimeout = Mainloop.timeout_add(
-                HOVER_TIME,
-                Lang.bind (this, function () {
-                               this._itemHovered(n);
-                           }));
-        }
-    },
-
-    _itemHovered: function(n) {
-        this.emit('item-hovered', n);
+    _itemEntered: function(n) {
+        this.emit('item-entered', n);
     },
 
     _maxChildWidth: function (forHeight) {
@@ -570,7 +626,7 @@ AppSwitcher.prototype = {
         for (let i = 0; i < otherIcons.length; i++)
             this._addIcon(otherIcons[i]);
 
-        this._shownArrow = -1;
+        this._curApp = -1;
     },
 
     _allocate: function (actor, box, flags) {
@@ -592,30 +648,56 @@ AppSwitcher.prototype = {
         }
     },
 
-    showArrow : function(n) {
-        if (this._shownArrow != -1)
-            this._arrows[this._shownArrow].hide();
+    // We override SwitcherList's highlight() method to also deal with
+    // the AppSwitcher->ThumbnailList arrows. Apps with only 1 window
+    // will hide their arrows by default, but show them when their
+    // thumbnails are visible (ie, when the app icon is supposed to be
+    // in justOutline mode). Apps with multiple windows will normally
+    // show a dim arrow, but show a bright arrow when they are
+    // highlighted; their redraw handler will use the right color
+    // based on this._curApp; we just need to do a queue_relayout() to
+    // force it to redraw. (queue_redraw() doesn't work because
+    // ShellDrawingArea only redraws on allocate.)
+    highlight : function(n, justOutline) {
+        if (this._curApp != -1) {
+            if (this.icons[this._curApp].cachedWindows.length == 1)
+                this._arrows[this._curApp].hide();
+            else
+                this._arrows[this._curApp].queue_relayout();
+        }
 
-        this._shownArrow = n;
+        SwitcherList.prototype.highlight.call(this, n, justOutline);
+        this._curApp = n;
 
-        if (this._shownArrow != -1)
-            this._arrows[this._shownArrow].show();
+        if (this._curApp != -1) {
+            if (justOutline && this.icons[this._curApp].cachedWindows.length == 1)
+                this._arrows[this._curApp].show();
+            else
+                this._arrows[this._curApp].queue_relayout();
+        }
     },
 
     _addIcon : function(appIcon) {
         this.icons.push(appIcon);
         this.addItem(appIcon.actor);
 
+        // SwitcherList creates its own Shell.ButtonBox; we want to
+        // avoid intercepting the events it wants.
+        appIcon.actor.reactive = false;
+
+        let n = this._arrows.length;
         let arrow = new Shell.DrawingArea();
         arrow.connect('redraw', Lang.bind(this,
             function (area, texture) {
                 Shell.draw_box_pointer(texture, Shell.PointerDirection.DOWN,
                                        TRANSPARENT_COLOR,
-                                       POPUP_ARROW_COLOR);
+                                       this._curApp == n ? POPUP_ARROW_COLOR : POPUP_UNFOCUSED_ARROW_COLOR);
             }));
         this._list.add_actor(arrow);
         this._arrows.push(arrow);
-        arrow.hide();
+
+        if (appIcon.cachedWindows.length == 1)
+            arrow.hide();
     },
 
     _hasWindowsOnWorkspace: function(appIcon, workspace) {
@@ -648,12 +730,21 @@ ThumbnailList.prototype = {
             let [width, height] = windowTexture.get_size();
             let scale = Math.min(1.0, THUMBNAIL_SIZE / width, THUMBNAIL_SIZE / height);
 
+            let box = new St.BoxLayout({ style_class: "thumbnail-box",
+                                         vertical: true });
+
             let clone = new Clutter.Clone ({ source: windowTexture,
                                              reactive: true,
                                              width: width * scale,
                                              height: height * scale });
-            let box = new Big.Box({ padding: AppIcon.APPICON_BORDER_WIDTH + AppIcon.APPICON_PADDING });
-            box.append(clone, Big.BoxPackFlags.NONE);
+            box.add_actor(clone);
+
+            let name = new St.Label({ text: windows[i].get_title() });
+            // St.Label doesn't support text-align so use a Bin
+            let bin = new St.Bin({ x_align: St.Align.MIDDLE });
+            bin.add_actor(name);
+            box.add_actor(bin);
+
             this.addItem(box);
         }
     }

@@ -162,10 +162,24 @@ StScrollBar StButton#vhandle:hover
     border: 1px solid rgba(128,128,128,0.40);
     border-radius: 8px;
     padding: 18px;
+
+    font: 12px sans-serif;
+    color: white;
 }
 
 .switcher-list .item-box {
     padding: 8px;
+    border-radius: 4px;
+}
+
+.switcher-list .thumbnail-box {
+    padding: 2px;
+    spacing: 4px;
+}
+
+.switcher-list .outlined-item-box {
+    padding: 6px;
+    border: 2px solid rgba(85,85,85,1.0);
     border-radius: 4px;
 }
 
