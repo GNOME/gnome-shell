@@ -167,7 +167,7 @@ keybind (switch_panels_backward,   handle_switch,        META_TAB_LIST_DOCKS,
           "using a popup window"))
 
 keybind (cycle_group,               handle_cycle,         META_TAB_LIST_GROUP,
-        BINDING_REVERSES,        "<Alt>F6",
+        BINDING_REVERSES,        "<Alt>grave",
         _("Move between windows of an application immediately"))
 keybind (cycle_group_backward,     handle_cycle,         META_TAB_LIST_GROUP,
         REVERSES_AND_REVERSED,   NULL,
