@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 23:16+0200\n"
-"PO-Revision-Date: 2009-10-01 23:20+0100\n"
+"POT-Creation-Date: 2009-10-10 20:19+0200\n"
+"PO-Revision-Date: 2009-10-10 20:22+0100\n"
 "Last-Translator: Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -24,15 +24,21 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestió de finestres i execució d'aplicacions"
 
-#. left side
-#: ../js/ui/panel.js:271
-msgid "Activities"
-msgstr "Activitats"
+#: ../js/ui/appDisplay.js:335
+msgid "Frequent"
+msgstr "Freqüent"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:461
-msgid "%a %l:%M %p"
-msgstr "%a %H:%M"
+#: ../js/ui/appIcon.js:462
+msgid "New Window"
+msgstr "Finestra nova"
+
+#: ../js/ui/appIcon.js:475
+msgid "Remove from Favorites"
+msgstr "Elimina dels preferits"
+
+#: ../js/ui/appIcon.js:476
+msgid "Add to Favorites"
+msgstr "Afegeix als preferits"
 
 #: ../js/ui/dash.js:283
 msgid "Find..."
@@ -67,7 +73,7 @@ msgstr "DOCUMENTS RECENTS"
 
 #. **** Search Results ****
 #: ../js/ui/dash.js:815
-#: ../js/ui/dash.js:958
+#: ../js/ui/dash.js:955
 msgid "SEARCH RESULTS"
 msgstr "RESULTATS DE LA CERCA"
 
@@ -75,9 +81,42 @@ msgstr "RESULTATS DE LA CERCA"
 msgid "PREFERENCES"
 msgstr "PREFERÈNCIES"
 
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:272
+msgid "Activities"
+msgstr "Activitats"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:464
+msgid "%a %l:%M %p"
+msgstr "%a %H:%M"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Connecta a..."
+
 #: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "Introduïu una ordre:"
+
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "No s'ha pogut executar «%s»:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:162
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:316
+msgid "Applications"
+msgstr "Aplicacions"
+
+#: ../js/ui/widget.js:341
+msgid "Recent Documents"
+msgstr "Documents recents"
 
 #: ../src/shell-global.c:812
 msgid "Less than a minute ago"
