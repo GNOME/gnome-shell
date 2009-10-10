@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&component=general\n"
-"POT-Creation-Date: 2009-09-05 00:19+0000\n"
-"PO-Revision-Date: 2009-09-06 18:31+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-10 12:20+0200\n"
+"PO-Revision-Date: 2009-10-10 12:39+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -25,81 +24,124 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestione finestre e avvio applicazioni"
 
-#. left side
-#: ../js/ui/panel.js:271
-msgid "Activities"
-msgstr "Attività"
+#: ../js/ui/appDisplay.js:335
+msgid "Frequent"
+msgstr "Frequente"
 
-# (ndt) proviamo col k, se non funge, sappiamo il perché...
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:454
-msgid "%a %l:%M %p"
-msgstr "%a %k.%M"
+#: ../js/ui/appIcon.js:462
+msgid "New Window"
+msgstr "Nuova finestra"
 
-#: ../js/ui/dash.js:256
+#: ../js/ui/appIcon.js:475
+msgid "Remove from Favorites"
+msgstr "Rimuovi dai preferiti"
+
+#: ../js/ui/appIcon.js:476
+msgid "Add to Favorites"
+msgstr "Aggiungi ai preferiti"
+
+#: ../js/ui/dash.js:283
 msgid "Find..."
 msgstr "Trova..."
 
-#: ../js/ui/dash.js:374
-msgid "Browse"
-msgstr "Esplora"
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Altro"
 
-#: ../js/ui/dash.js:511
+#: ../js/ui/dash.js:543
 msgid "(see all)"
 msgstr "(vedi tutto)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:705 ../js/ui/dash.js:761 ../js/ui/dash.js:893
+#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
 msgid "APPLICATIONS"
 msgstr "Applicazioni"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:725
+#: ../js/ui/dash.js:783
 msgid "PLACES"
 msgstr "Risorse"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:732 ../js/ui/dash.js:773 ../js/ui/dash.js:867
+#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
 msgid "RECENT DOCUMENTS"
 msgstr "Documenti recenti"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:751 ../js/ui/dash.js:856 ../js/ui/dash.js:882
+#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
 msgid "SEARCH RESULTS"
 msgstr "Risultati ricerca"
 
-#: ../js/ui/runDialog.js:82
+#: ../js/ui/dash.js:830
+msgid "PREFERENCES"
+msgstr "Preferenze"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:272
+msgid "Activities"
+msgstr "Attività"
+
+# (ndt) proviamo col k, se non funge, sappiamo il perché...
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:464
+msgid "%a %l:%M %p"
+msgstr "%a %k.%M"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Connetti a..."
+
+#: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "Inserire un comando:"
 
-#: ../src/shell-global.c:840
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Esecuzione di «%s» non riuscita:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:162
+msgid "%H:%M"
+msgstr "%k.%M"
+
+#: ../js/ui/widget.js:316
+msgid "Applications"
+msgstr "Applicazioni"
+
+#: ../js/ui/widget.js:341
+msgid "Recent Documents"
+msgstr "Documenti recenti"
+
+#: ../src/shell-global.c:812
 msgid "Less than a minute ago"
 msgstr "Meno di un minuto fa"
 
-#: ../src/shell-global.c:843
+#: ../src/shell-global.c:815
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minuto fa"
 msgstr[1] "%d minuti fa"
 
-#: ../src/shell-global.c:846
+#: ../src/shell-global.c:818
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d ora fa"
 msgstr[1] "%d ore fa"
 
-#: ../src/shell-global.c:849
+#: ../src/shell-global.c:821
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d giorno fa"
 msgstr[1] "%d giorni fa"
 
-#: ../src/shell-global.c:852
+#: ../src/shell-global.c:824
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -183,6 +225,9 @@ msgstr "Cerca"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Browse"
+#~ msgstr "Esplora"
 
 # (ndt) è da valutare se è troppo lunga, è in una casella di ricerca
 #~ msgid "Find apps or documents"
