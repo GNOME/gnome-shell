@@ -1,85 +1,67 @@
-# Czech translation of Metacity.
-# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 the author(s) of Metacity.
+# Czech translation of mutter.
+# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 the author(s) of mutter.
 # Copyright (C) 2003, 2004, 2005, 2006 Miloslav Trmac <mitr@volny.cz>.
-# This file is distributed under the same license as the metacity package.
+# This file is distributed under the same license as the mutter package.
 # Miloslav Trmac <mitr@volny.cz>, 2002, 2003, 2004, 2005, 2006.
 # Petr Tomeš <ptomes@gmail.com>, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 # Petr Kovar <pknbe@volny.cz>, 2007, 2008, 2009.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity\n"
+"Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-08 20:23+0100\n"
-"PO-Revision-Date: 2009-03-08 20:18+0100\n"
+"POT-Creation-Date: 2009-10-10 18:41+0200\n"
+"PO-Revision-Date: 2009-10-10 18:40+0200\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.0\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-msgid "Desktop"
-msgstr "Pracovní prostředí"
-
-#: ../src/50-metacity-key.xml.in.h:1
-msgid "Window Management"
-msgstr "Správa oken"
-
-#: ../src/core/core.c:206
+#: ../src/core/core.c:213
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Neznámý informační požadavek okna: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
-#, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "\"%s\" nelze analyzovat jako celé číslo"
-
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Nerozuměno koncovým znakům \"%s\" v řetězci \"%s\""
-
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Nelze analyzovat zprávu \"%s\" z procesu dialogu\n"
-
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "Chyba při čtení z procesu zobrazení dialogu: %s\n"
-
-#: ../src/core/delete.c:336
+#: ../src/core/delete.c:105
 #, c-format
 msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+"<big><b><tt>%s</tt> is not responding.</b></big>\n"
+"\n"
+"<i>You may choose to wait a short while for it to continue or force the "
+"application to quit entirely.</i>"
 msgstr ""
-"Chyba při spouštění metacity-dialog kvůli dotazu o zabití aplikace: %s\n"
+"<big><b><tt>%s</tt> neodpovídá.</b></big>\n"
+"\n"
+"<i>Je možné chvíli počkat, aby aplikace mohla pokračovat, nebo si vynutit "
+"úplné ukončení aplikace.</i>"
 
-#: ../src/core/delete.c:445
+#: ../src/core/delete.c:116
+msgid "_Wait"
+msgstr "_Počkat"
+
+#: ../src/core/delete.c:116
+msgid "_Force Quit"
+msgstr "_Vynutit ukončení"
+
+#: ../src/core/delete.c:217
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nelze získat název počítače: %s\n"
 
-#: ../src/core/display.c:256
+#: ../src/core/display.c:329
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Schází rozšíření %s vyžadované funkcemi kompozitoru"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:414
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nelze otevřít displej X Window System \"%s\"\n"
 
-#: ../src/core/errors.c:272
+#: ../src/core/errors.c:236
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -90,12 +72,12 @@ msgstr ""
 "pravděpodobně byl ukončen server X nebo jste zabili/zrušili\n"
 "správce oken.\n"
 
-#: ../src/core/errors.c:279
+#: ../src/core/errors.c:243
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritická chyba V/V %d (%s) na displeji \"%s\".\n"
 
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:697
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -106,7 +88,7 @@ msgstr ""
 #. Displayed when a keybinding which is
 #. * supposed to launch a program fails.
 #.
-#: ../src/core/keybindings.c:2294
+#: ../src/core/keybindings.c:2388
 #, c-format
 msgid ""
 "There was an error running <tt>%s</tt>:\n"
@@ -117,74 +99,88 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/core/keybindings.c:2381
+#: ../src/core/keybindings.c:2478
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nebyl definován příkaz %d.\n"
 
-#: ../src/core/keybindings.c:3335
+#: ../src/core/keybindings.c:3491
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Nebyl definován příkaz terminálu.\n"
 
-#: ../src/core/main.c:116
+#: ../src/core/main.c:127
 #, c-format
 msgid ""
-"metacity %s\n"
+"mutter %s\n"
 "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"metacity %s\n"
+"mutter %s\n"
 "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc. a další.\n"
 "Toto je svobodný software; podmínky kopírování a rozšiřování naleznete ve "
 "zdrojových textech.\n"
 "Tento software je BEZ JAKÉKOLIV ZÁRUKY; neposkytují se ani záruky "
 "PRODEJNOSTI anebo VHODNOSTI PRO URČITÝ ÚČEL.\n"
 
-#: ../src/core/main.c:253
+#: ../src/core/main.c:257
 msgid "Disable connection to session manager"
 msgstr "Zakáže připojení ke správci sezení"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "Nahradí běžícího správce oken správcem Metacity"
+#: ../src/core/main.c:263
+msgid "Replace the running window manager with Mutter"
+msgstr "Nahradí běžícího správce oken správcem Mutter"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:269
 msgid "Specify session management ID"
 msgstr "Určení ID správy sezení"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:274
 msgid "X Display to use"
 msgstr "Displej X, který použije"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:280
 msgid "Initialize session from savefile"
 msgstr "Spustí sezení z uloženého souboru"
 
-#: ../src/core/main.c:282
+#: ../src/core/main.c:286
 msgid "Print version"
 msgstr "Vypíše verzi"
 
-#: ../src/core/main.c:288
+#: ../src/core/main.c:292
 msgid "Make X calls synchronous"
 msgstr "Provede volání X synchronně"
 
-#: ../src/core/main.c:294
+#: ../src/core/main.c:298
 msgid "Turn compositing on"
 msgstr "Zapnout funkci kompozitoru"
 
-#: ../src/core/main.c:300
+#: ../src/core/main.c:304
 msgid "Turn compositing off"
 msgstr "Vypnout funkci kompozitoru"
 
-#: ../src/core/main.c:478
+#: ../src/core/main.c:310
+msgid "Comma-separated list of compositor plugins"
+msgstr "Čárkou oddělený seznam zásuvných modulů kompozitoru"
+
+#: ../src/core/main.c:316
+msgid "Whether window popup/frame should be shown when cycling windows."
+msgstr ""
+"Zda se má při procházení okny zobrazovat automaticky otevírané okno či "
+"rámeček okna."
+
+#: ../src/core/main.c:323
+msgid "Internal argument for GObject introspection"
+msgstr "Vnitřní argument GObject introspection"
+
+#: ../src/core/main.c:668
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nelze prohledat adresář motivů: %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:684
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -192,7 +188,7 @@ msgstr ""
 "Nelze najít motiv! Ujistěte se prosím, že existuje %s a obsahuje obvyklé "
 "motivy.\n"
 
-#: ../src/core/main.c:550
+#: ../src/core/main.c:745
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nezdařil se restart: %s\n"
@@ -208,24 +204,24 @@ msgstr "Nezdařil se restart: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:522 ../src/core/prefs.c:683
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Klíč GConf \"%s\" je nastaven na neplatnou hodnotu\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:609 ../src/core/prefs.c:852
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d uloženo v klíči GConf %s je mimo rozsah %d až %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:653 ../src/core/prefs.c:730 ../src/core/prefs.c:778
+#: ../src/core/prefs.c:842 ../src/core/prefs.c:1142 ../src/core/prefs.c:1158
+#: ../src/core/prefs.c:1175 ../src/core/prefs.c:1191
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Klíč GConf \"%s\" je nastaven na neplatný typ\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1282
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -233,12 +229,12 @@ msgstr ""
 "Bylo zakázáno obcházení chyb aplikací. Některé aplikace se možná nebudou "
 "chovat správně.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1353
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nelze analyzovat popis písma \"%s\" v klíči GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1415
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -247,17 +243,17 @@ msgstr ""
 "\"%s\" nalezené v databázi nastavení není platnou hodnotou modifikátoru "
 "tlačítka myši\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1839
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Chyba při nastavování počtu ploch na %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:2023 ../src/core/prefs.c:2529
 #, c-format
 msgid "Workspace %d"
 msgstr "Plocha %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2056 ../src/core/prefs.c:2234
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -266,22 +262,39 @@ msgstr ""
 "\"%s\" nalezené v databázi nastavení není platnou hodnotou klávesové zkratky "
 "\"%s\"\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2610
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Chyba při nastavování názvu plochy %d na \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2808
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Chyba při nastavování stavu kompozitoru: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/prefs.c:2836
+#, c-format
+msgid "Error setting clutter plugin list: %s\n"
+msgstr "Chyba při nastavování seznamu zásuvných modulů clutter: %s\n"
+
+#: ../src/core/prefs.c:2879
+#, c-format
+msgid "Error setting live hidden windows status status: %s\n"
+msgstr "Chyba při nastavování stavu aktivních oken, která jsou skrytá: %s\n"
+
+#: ../src/core/prefs.c:2907
+#, c-format
+msgid "Error setting no tab popup status: %s\n"
+msgstr ""
+"Chyba při nastavování stavu bez automaticky otevíraného okna tabulátorem: %"
+"s\n"
+
+#: ../src/core/screen.c:570
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji \"%s\" je neplatná\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:586
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -290,169 +303,128 @@ msgstr ""
 "Obrazovka %d na displeji \"%s\" již správce oken má; zkuste prosím nahradit "
 "aktuálního správce oken pomocí přepínače --replace.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:613
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nelze získat výběr správce oken na obrazovce %d displeje \"%s\"\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" již má správce oken\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:880
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nelze uvolnit obrazovku %d na displeji \"%s\"\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"Formát má podobu\"<Control>a\" nebo <Shift><Alt>F1\".\n"
-"\n"
-"Analyzátor je poměrně velkorysý a dovoluje malá i velká písmena a zkratky "
-"jako \"<Ctl>\" a \"<Ctrl>\". Pokud volbu nastavíte na speciální řetězec "
-"\"disabled\", pak u této akce nebude žádná klávesová zkratka."
-
-#: ../src/core/schema-bindings.c:177
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"Formát má podobu\"<Control>a\" nebo <Shift><Alt>F1\".\n"
-"\n"
-"Analyzátor je poměrně velkorysý a dovoluje malá i velká písmena a zkratky "
-"jako \"<Ctl>\" a \"<Ctrl>\". Pokud volbu nastavíte na speciální řetězec "
-"\"disabled\", pak u této akce nebude žádná klávesová zkratka.\n"
-"\n"
-"Tato klávesová zkratka může být rezervována podržením klávesy \"Shift\", "
-"čili \"Shift\" nemůže být jedna z použitých kláves."
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:851 ../src/core/session.c:858
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nelze vytvořit adresář \"%s\": %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:868
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nelze otevřít soubor sezení \"%s\" k zápisu: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1009
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Chyba při zápisu souboru sezení \"%s\": %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1014
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Chyba při zavírání souboru sezení \"%s\": %s\n"
 
 #. oh, just give up
-#: ../src/core/session.c:1093
+#: ../src/core/session.c:1107
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Chyba při čtení uloženého souboru sezení %s: %s\n"
 
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1146
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Chyba při analyzování uloženého souboru sezení: %s\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1195
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "nalezen atribut <metacity_session>, ale ID sezení už k dispozici je"
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr "nalezen atribut <mutter_session>, ale ID sezení už k dispozici je"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1208 ../src/core/session.c:1283
+#: ../src/core/session.c:1315 ../src/core/session.c:1387
+#: ../src/core/session.c:1447
 #, c-format
 msgid "Unknown attribute %s on <%s> element"
 msgstr "Neznámý atribut %s prvku <%s>"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1225
 #, c-format
 msgid "nested <window> tag"
 msgstr "vnořená značka <window>"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1467
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznámý prvek %s"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1818
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"Chyba při spouštění metacity-dialog kvůli varování o aplikacích, které "
-"nepodporují správu sezení: %s\n"
+"Tato okna nepodporují &quot;ukládání aktuálního nastavení&quot; a po vašem "
+"příštím přihlášení je budete muset spustit ručně."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:106
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nelze otevřít ladicí záznam: %s\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:116
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Nelze provést fdopen() soubor záznamu %s: %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:122
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Otevřen soubor záznamu %s\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:141 ../src/tools/mutter-message.c:176
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity bylo přeloženo bez podpory podrobného režimu\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter bylo přeloženo bez podpory podrobného režimu\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:241
 msgid "Window manager: "
 msgstr "Správce oken: "
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:393
 msgid "Bug in window manager: "
 msgstr "Chyba ve správci oken: "
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:426
 msgid "Window manager warning: "
 msgstr "Varování správce oken: "
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:454
 msgid "Window manager error: "
 msgstr "Chyba správce oken: "
 
 #. Translators: This is the title used on dialog boxes
 #. eof all-keybindings.h
-#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
+#: ../src/core/util.c:573 ../src/mutter.desktop.in.h:1
+#: ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
 
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:6098
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -468,7 +440,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:6761
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -478,17 +450,17 @@ msgstr ""
 "velikost, ale nastavuje min. velikost %d × %d a max. velikost %d × %d; to "
 "nedává smysl.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:309
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:426
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1419
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neplatné okno WM_TRANSIENT_FOR 0x%lx specifikováno pro %s.\n"
@@ -635,665 +607,241 @@ msgstr "Přepínat mezi panely a pracovní plochou okamžitě"
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Okamžitě přepínat zpět mezi panely a pracovní plochou"
 
-#: ../src/include/all-keybindings.h:191
+#: ../src/include/all-keybindings.h:203
 msgid "Hide all normal windows and set focus to the desktop"
 msgstr "Skrýt všechna okna a aktivovat pracovní plochu"
 
-#: ../src/include/all-keybindings.h:194
+#: ../src/include/all-keybindings.h:206
 msgid "Show the panel's main menu"
 msgstr "Zobrazit hlavní nabídku panelu"
 
-#: ../src/include/all-keybindings.h:197
+#: ../src/include/all-keybindings.h:209
 msgid "Show the panel's \"Run Application\" dialog box"
 msgstr "Zobrazit dialog spuštění aplikace umístěný na panelu"
 
-#: ../src/include/all-keybindings.h:238
+#: ../src/include/all-keybindings.h:211
+msgid "Start or stop recording the session"
+msgstr "Spustit nebo ukončit záznam sezení"
+
+#: ../src/include/all-keybindings.h:252
 msgid "Take a screenshot"
 msgstr "Zachytit obrazovku"
 
-#: ../src/include/all-keybindings.h:240
+#: ../src/include/all-keybindings.h:254
 msgid "Take a screenshot of a window"
 msgstr "Zachytit obrázek okna"
 
-#: ../src/include/all-keybindings.h:242
+#: ../src/include/all-keybindings.h:256
 msgid "Run a terminal"
 msgstr "Spustit terminál"
 
-#: ../src/include/all-keybindings.h:257
+#: ../src/include/all-keybindings.h:271
 msgid "Activate the window menu"
 msgstr "Aktivovat nabídku okna"
 
-#: ../src/include/all-keybindings.h:260
+#: ../src/include/all-keybindings.h:274
 msgid "Toggle fullscreen mode"
 msgstr "Přepnout režim na celou obrazovku"
 
-#: ../src/include/all-keybindings.h:262
+#: ../src/include/all-keybindings.h:276
 msgid "Toggle maximization state"
 msgstr "Přepnout stav maximalizace"
 
-#: ../src/include/all-keybindings.h:264
+#: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr "Přepnout vždy platnou viditelnost okna nad jinými okny"
 
-#: ../src/include/all-keybindings.h:266
+#: ../src/include/all-keybindings.h:280
 msgid "Maximize window"
 msgstr "Maximalizovat okno"
 
-#: ../src/include/all-keybindings.h:268
+#: ../src/include/all-keybindings.h:282
 msgid "Restore window"
 msgstr "Obnovit okno"
 
-#: ../src/include/all-keybindings.h:270
+#: ../src/include/all-keybindings.h:284
 msgid "Toggle shaded state"
 msgstr "Přepnout stav svinutí"
 
-#: ../src/include/all-keybindings.h:272
+#: ../src/include/all-keybindings.h:286
 msgid "Minimize window"
 msgstr "Minimalizovat okno"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:288
 msgid "Close window"
 msgstr "Zavřít okno"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:290
 msgid "Move window"
 msgstr "Přesunout okno"
 
-#: ../src/include/all-keybindings.h:278
+#: ../src/include/all-keybindings.h:292
 msgid "Resize window"
 msgstr "Změnit velikost okna"
 
-#: ../src/include/all-keybindings.h:281
+#: ../src/include/all-keybindings.h:295
 msgid "Toggle whether window is on all workspaces or just one"
 msgstr "Přepnout výskyt okna na všech plochách nebo jen na jedné"
 
-#: ../src/include/all-keybindings.h:285
+#: ../src/include/all-keybindings.h:299
 msgid "Move window to workspace 1"
 msgstr "Přesunout okno na plochu 1"
 
-#: ../src/include/all-keybindings.h:288
+#: ../src/include/all-keybindings.h:302
 msgid "Move window to workspace 2"
 msgstr "Přesunout okno na plochu 2"
 
-#: ../src/include/all-keybindings.h:291
+#: ../src/include/all-keybindings.h:305
 msgid "Move window to workspace 3"
 msgstr "Přesunout okno na plochu 3"
 
-#: ../src/include/all-keybindings.h:294
+#: ../src/include/all-keybindings.h:308
 msgid "Move window to workspace 4"
 msgstr "Přesunout okno na plochu 4"
 
-#: ../src/include/all-keybindings.h:297
+#: ../src/include/all-keybindings.h:311
 msgid "Move window to workspace 5"
 msgstr "Přesunout okno na plochu 5"
 
-#: ../src/include/all-keybindings.h:300
+#: ../src/include/all-keybindings.h:314
 msgid "Move window to workspace 6"
 msgstr "Přesunout okno na plochu 6"
 
-#: ../src/include/all-keybindings.h:303
+#: ../src/include/all-keybindings.h:317
 msgid "Move window to workspace 7"
 msgstr "Přesunout okno na plochu 7"
 
-#: ../src/include/all-keybindings.h:306
+#: ../src/include/all-keybindings.h:320
 msgid "Move window to workspace 8"
 msgstr "Přesunout okno na plochu 8"
 
-#: ../src/include/all-keybindings.h:309
+#: ../src/include/all-keybindings.h:323
 msgid "Move window to workspace 9"
 msgstr "Přesunout okno na plochu 9"
 
-#: ../src/include/all-keybindings.h:312
+#: ../src/include/all-keybindings.h:326
 msgid "Move window to workspace 10"
 msgstr "Přesunout okno na plochu 10"
 
-#: ../src/include/all-keybindings.h:315
+#: ../src/include/all-keybindings.h:329
 msgid "Move window to workspace 11"
 msgstr "Přesunout okno na plochu 11"
 
-#: ../src/include/all-keybindings.h:318
+#: ../src/include/all-keybindings.h:332
 msgid "Move window to workspace 12"
 msgstr "Přesunout okno na plochu 12"
 
-#: ../src/include/all-keybindings.h:330
+#: ../src/include/all-keybindings.h:344
 msgid "Move window one workspace to the left"
 msgstr "Posunout okno o plochu doleva"
 
-#: ../src/include/all-keybindings.h:333
+#: ../src/include/all-keybindings.h:347
 msgid "Move window one workspace to the right"
 msgstr "Posunout okno o plochu doprava"
 
-#: ../src/include/all-keybindings.h:336
+#: ../src/include/all-keybindings.h:350
 msgid "Move window one workspace up"
 msgstr "Posunout okno o plochu nahoru"
 
-#: ../src/include/all-keybindings.h:339
+#: ../src/include/all-keybindings.h:353
 msgid "Move window one workspace down"
 msgstr "Posunout okno o plochu dolů"
 
-#: ../src/include/all-keybindings.h:342
+#: ../src/include/all-keybindings.h:356
 msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr "Zvýšit okno, pokud je zakryté jiným oknem, jinak je snížit"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:358
 msgid "Raise window above other windows"
 msgstr "Zvýšit okno nad jiná okna"
 
-#: ../src/include/all-keybindings.h:346
+#: ../src/include/all-keybindings.h:360
 msgid "Lower window below other windows"
 msgstr "Snížit okno pod jiná okna"
 
-#: ../src/include/all-keybindings.h:350
+#: ../src/include/all-keybindings.h:364
 msgid "Maximize window vertically"
 msgstr "Maximalizovat okno svisle"
 
-#: ../src/include/all-keybindings.h:354
+#: ../src/include/all-keybindings.h:368
 msgid "Maximize window horizontally"
 msgstr "Maximalizovat okno vodorovně"
 
-#: ../src/include/all-keybindings.h:358
+#: ../src/include/all-keybindings.h:372
 msgid "Move window to north-west (top left) corner"
 msgstr "Přesunout okno do severozápadního (levého horního) rohu"
 
-#: ../src/include/all-keybindings.h:361
+#: ../src/include/all-keybindings.h:375
 msgid "Move window to north-east (top right) corner"
 msgstr "Přesunout okno do severovýchodního (pravého horního) rohu"
 
-#: ../src/include/all-keybindings.h:364
+#: ../src/include/all-keybindings.h:378
 msgid "Move window to south-west (bottom left) corner"
 msgstr "Přesunout okno do jihozápadního (levého dolního) rohu"
 
-#: ../src/include/all-keybindings.h:367
+#: ../src/include/all-keybindings.h:381
 msgid "Move window to south-east (bottom right) corner"
 msgstr "Přesunout okno do jihovýchodního (pravého dolního) rohu"
 
-#: ../src/include/all-keybindings.h:371
+#: ../src/include/all-keybindings.h:385
 msgid "Move window to north (top) side of screen"
 msgstr "Přesunout okno na severní (horní) stranu obrazovky"
 
-#: ../src/include/all-keybindings.h:374
+#: ../src/include/all-keybindings.h:388
 msgid "Move window to south (bottom) side of screen"
 msgstr "Přesunout okno na jižní (dolní) stranu obrazovky"
 
-#: ../src/include/all-keybindings.h:377
+#: ../src/include/all-keybindings.h:391
 msgid "Move window to east (right) side of screen"
 msgstr "Přesunout okno na východní (pravou) stranu obrazovky"
 
-#: ../src/include/all-keybindings.h:380
+#: ../src/include/all-keybindings.h:394
 msgid "Move window to west (left) side of screen"
 msgstr "Přesunout okno na západní (levou) stranu obrazovky"
 
-#: ../src/include/all-keybindings.h:383
+#: ../src/include/all-keybindings.h:397
 msgid "Move window to center of screen"
 msgstr "Přesunout okno na střed obrazovky"
 
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Neimplementováno) Navigace pracuje s aplikacemi, nikoliv s okny"
+#: ../src/mutter.schemas.in.h:1
+msgid "Clutter Plugins"
+msgstr "Zásuvné moduly Clutter"
 
-#: ../src/metacity.schemas.in.in.h:2
+#: ../src/mutter.schemas.in.h:2
 msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
+"Determines whether hidden windows (i.e., minimized windows and windows on "
+"other workspaces than the current one) should be kept alive."
 msgstr ""
-"Řetězec popisu písma popisující písmo záhlaví oken. Velikost z popisu bude "
-"použita jen pokud je volba titlebar_font_size nastavena na \"0\". Tato volba "
-"je dále zakázána, je-li volba titlebar_uses_desktop_font nastavena na \"true"
-"\"."
+"Určuje, zda by měla skrytá okna (tj. minimalizovaná okna a okna na jiných "
+"pracovních plochách než na aktuální) zůstat aktivní."
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "Akce při dvojitém kliknutí na záhlaví okna"
+#: ../src/mutter.schemas.in.h:3
+msgid "Live Hidden Windows"
+msgstr "Aktivní skrytá okna"
 
-#: ../src/metacity.schemas.in.in.h:4
-msgid "Action on title bar middle-click"
-msgstr "Akce při kliknutí prostředním tlačítkem na záhlaví okna"
+#: ../src/mutter.schemas.in.h:4
+msgid "Modifier to use for extended window management operations"
+msgstr "Modifikátor, který se má použít u operací rozšířené správy oken"
 
-#: ../src/metacity.schemas.in.in.h:5
-msgid "Action on title bar right-click"
-msgstr "Akce při kliknutí pravým tlačítkem na záhlaví okna"
+#: ../src/mutter.schemas.in.h:5
+msgid "Plugins to load for the Clutter-based compositing manager."
+msgstr ""
+"Zásuvné moduly, které se mají nahrát v souvislosti s kompozitním správcem "
+"založeným na Clutter."
 
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Uspořádání tlačítek na záhlaví okna"
-
-#: ../src/metacity.schemas.in.in.h:7
+#: ../src/mutter.schemas.in.h:6
 msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
-"Uspořádání tlačítek na záhlaví okna. Hodnota by měla být řetězcem, např. "
-"\"menu:minimize,maximize,spacer,close\"; dvojtečka odděluje levý a pravý roh "
-"okna, názvy tlačítek jsou odděleny čárkami. Opakování tlačítka není "
-"dovoleno. Neznámé názvy tlačítek jsou v tichosti ignorovány, aby mohla být v "
-"budoucích verzích metacity přidána tlačítka bez vlivu na starší verze. K "
-"vložení místa mezi dvě přiléhající tlačítka může být použito speciální "
-"značky (mezery)."
+"Tato klávesa spustí \"překrytí\" (\"overlay\"), což je kombinace přehledu "
+"oken a systému spouštění aplikací. Výchozí u osobních počítačů je \"klávesa "
+"Windows\". Předpokládá se, že tato zkratka bude výchozí, nebo nastavena na "
+"prázdný řetězec."
 
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "Automaticky zvýší aktivní okno"
-
-#: ../src/metacity.schemas.in.in.h:9
-msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
-msgstr ""
-"Kliknutí na okno za současného stisknutí tohoto modifikátoru okno přesune "
-"(levým tlačítkem), změní jeho velikost (prostředním tlačítkem), nebo zobrazí "
-"nabídku okna (pravým tlačítkem). Operace levého a pravého tlačítka mohou být "
-"zaměněny použitím klíče \"mouse_button_resize\". Modifikátor je vyjádřen "
-"např. jako \"&lt;Alt&gt;\" nebo \"&lt;Super&gt;\"."
-
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "Příkazy, které spustit klávesovými zkratkami"
-
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "Správce funkcí kompozitoru"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "Určuje způsob, jakým se nová okno stanou aktivními"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "Aktuální motiv"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "Zpoždění v milisekundách u volby automatického zvýšení"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "Určuje, jestli je Metacity správcem funkcí kompozitoru."
-
-#: ../src/metacity.schemas.in.in.h:16
-msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
-msgstr ""
-"Určuje, jestli mohou aplikace nebo systém generovat slyšitelné zvukové "
-"znamení; ve spojení s \"vizuálním zvonkem\" může být použito k povolení "
-"tichého zvukového znamení."
-
-# misfeatures?
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Zakázat \"pseudovlastnosti\", které jsou potřeba pro staré nebo chybné "
-"aplikace"
-
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "Povolit vizuální zvonek"
-
-#: ../src/metacity.schemas.in.in.h:19
-msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
-msgstr ""
-"Je-li \"true\" a režim aktivace je buď \"sloppy\" nebo \"mouse\", pak bude "
-"aktivní okno automaticky po zpoždění zvýšeno (zpoždění je určeno v klíči "
-"auto_raise_delay). Netýká se klikání na okno za účelem aktivace, ani "
-"přechodu na okno během akce táhnutí a puštění."
-
-#: ../src/metacity.schemas.in.in.h:20
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
-"Je-li \"true\", ignorovat volbu titlebar_font a použít standardní písmo "
-"aplikací u nadpisů oken."
-
-#: ../src/metacity.schemas.in.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
-msgstr ""
-"Je-li \"true\", bude Metacity dávat uživateli méně zpětné vazby používáním "
-"drátových rámů, nepoužíváním animací nebo jinými způsoby. Pro mnoho "
-"uživatelů to znamená výrazné snížení použitelnosti, ale také možnost, že "
-"staré aplikace budou nadále pracovat. I pro terminálové servery se může "
-"jednat o přístupný kompromis. Funkce drátových rámů je ale zakázána, pokud "
-"je povoleno zpřístupnění."
-
-#: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"Je-li \"true\", pracuje Metacity s aplikacemi namísto oken. Toto pojetí je "
-"trochu abstraktní, ale obecně systém založený na aplikacích připomíná více "
-"Mac a méně Windows. V případě aktivace okna v režimu založeném na aplikacích "
-"jsou zvýšena všechna okna aplikace. V režimu založeném na aplikacích také "
-"nejsou oknům v jiných aplikacích předávána aktivující kliknutí. Režim "
-"založený na aplikacích je ovšem momentálně povětšinou neimplementován."
-
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr ""
-"Je-li \"true\", dávat přednost menšímu používání prostředků před "
-"použitelností"
-
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "Modifikátor, který použít pro modifikované akce kliknutí na okno"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "Název plochy"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "Počet ploch"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"Počet ploch. Musí být více než nula a má pevné maximum (aby nebylo možno "
-"vyřadit prostředí z provozu žádostí o příliš mnoho ploch)."
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "Spustit definovaný příkaz"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"Nastavte na \"true\", chcete-li změnit velikost pravým tlačítkem a zobrazit "
-"nabídku prostředním tlačítkem při držení klávesy zadané v "
-"\"mouse_button_modifier\"; nastavte na \"false\", požadujete-li opačnou "
-"funkci."
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"Nastavením této volby na \"false\", což nelze v žádném případě doporučit, "
-"dojde k oddělení zvyšování od ostatních uživatelských akcí a požadavky od "
-"aplikací na zvýšení oken budou ignorovány. Viz <http://bugzilla.gnome.org/"
-"show_bug.cgi?id=445447#c6>. I když je tato volba nastavena na \"false\", "
-"stále je možné zvýšit okna klávesou Alt a kliknutím levým tlačítkem myši "
-"kdekoliv v okně, běžným kliknutím na okraj okna, nebo např. požadavkem na "
-"aktivaci od appletů seznamu úloh. Tato volba je aktuálně zakázána v režimu "
-"click-to-focus. Vemte na vědomí, že výčet způsobů, jak zvýšit okno, pokud je "
-"raise_on_click \"false\", nezahrnuje požadavky od aplikací na zvyšení okna, "
-"ty jsou vždy ignorovány. Jste-li vývojářem aplikace a stěžují-li si vaši "
-"uživatelé, že aplikace nepracuje se zakázáním této volby, sdělte jim, že se "
-"jedná o jejich chybu a že je nutné změnit volbu na \"true\", nebo se s "
-"chybou srovnat."
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"Některé aplikace nerespektují specifikace způsobem, který má za následek "
-"chybné vlastnosti správce oken. Tato volba umístí Metacity do zcela "
-"korektního režimu, což uživateli poskytne konzistentnější uživatelské "
-"rozhraní, pokud tedy není zapotřebí spouštět jakékoliv chybně se chovající "
-"aplikace."
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "Systémový zvonek je slyšet"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"Sděluje Metacity, jak implementovat vizuální znamení o zazvonění systémového "
-"zvonku nebo jiného aplikačního znamení zvonku. Momentálně existují dvě "
-"platné hodnoty, \"fullscreen\", která způsobí černo-bílé bliknutí celé "
-"obrazovky, a \"frame_flash\", která způsobí blikání záhlaví aplikace "
-"posílající signál zvonku. Není-li aplikace, která poslala signál zvonku, "
-"známá (což je obvykle případ výchozího systémové zvukového znamení), bliká "
-"záhlaví aktuálního okna."
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"Klíče /apps/metacity/global_keybindings/run_command_N definují klávesové "
-"zkratky, které odpovídají těmto příkazům. Stisknutí klávesové zkratky pro "
-"run_command_N spustí command_N."
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"Klíč /apps/metacity/global_keybindings/run_command_screenshot definuje "
-"klávesovou zkratku, která způsobí spuštění příkazu určeného tímto nastavením."
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"Klíč /apps/metacity/global_keybindings/run_command_window_screenshot "
-"definuje klávesovou zkratku, která způsobí spuštění příkazu určeného tímto "
-"nastavením."
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"Klávesová zkratka, která spustí příkaz s odpovídajícím číslem v /apps/"
-"metacity/keybinding_commands. Formát má podobu \"&lt;Control&gt;a\" nebo "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. Analyzátor je poměrně velkorysý a dovoluje "
-"malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
-"Pokud volbu nastavíte na speciální řetězec \"disabled\", pak pro tuto akci "
-"nebude žádná klávesová zkratka."
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "Název pracovní plochy."
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "Příkaz zachycení obrazovky"
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr "Motiv určuje vzhled okrajů okna, záhlaví okna atd."
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"Zpoždění před zvýšením okna, je-li auto_raise nastaveno na \"true\". "
-"Zpoždění je uvedeno v tisícinách sekundy."
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"Režim aktivace oken ukazuje, jak jsou okna aktivována. Má tři možné hodnoty; "
-"\"click\" znamená, že okna jsou aktivována kliknutím, \"sloppy\" znamená, že "
-"okna jsou aktivována, když se do nich přesune myš, a \"mouse\" znamená, že "
-"okna jsou aktivována, když se do nich přesune myš, a deaktivována, když je "
-"opustí."
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "Příkaz zachycení obrázku okna"
-
-#: ../src/metacity.schemas.in.in.h:44
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Tato volba určuje důsledek dvojitého kliknutí na záhlaví okna. Momentálně "
-"platnými volbami jsou \"toggle_shade\", která okno svine/rozvine, "
-"\"toggle_maximize\", která okno maximalizuje nebo zruší maximalizaci, "
-"\"toggle_maximize_horizontally\" a \"toggle_maximize_vertically\", které "
-"maximalizují/zruší maximalizaci pouze v daném směru, \"minimize\", která "
-"okno minimalizuje, \"shade\", která okno svine, \"menu\", která zobrazí "
-"nabídku okna, \"lower\", která umístí okno za všechna ostatní, a \"none\", "
-"která nezpůsobí nic."
-
-#: ../src/metacity.schemas.in.in.h:45
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Tato volba určuje důsledek kliknutí prostředním tlačítkem myši na záhlaví "
-"okna. Momentálně platnými volbami jsou \"toggle_shade\", která okno svine/"
-"rozvine, \"toggle_maximize\", která okno maximalizuje nebo zruší "
-"maximalizaci, \"toggle_maximize_horizontally\" a \"toggle_maximize_vertically"
-"\", které maximalizují/zruší maximalizaci pouze v daném směru, \"minimize\", "
-"která okno minimalizuje, \"shade\", která okno svine, \"menu\", která "
-"zobrazí nabídku okna, \"lower\", která umístí okno za všechna ostatní, a "
-"\"none\", která nezpůsobí nic."
-
-#: ../src/metacity.schemas.in.in.h:46
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"Tato volba určuje důsledek kliknutí pravým tlačítkem myši na záhlaví okna. "
-"Momentálně platnými volbami jsou \"toggle_shade\", která okno svine/rozvine, "
-"\"toggle_maximize\", která okno maximalizuje nebo zruší maximalizaci, "
-"\"toggle_maximize_horizontally\" a \"toggle_maximize_vertically\", které "
-"maximalizují/zruší maximalizaci pouze v daném směru, \"minimize\", která "
-"okno minimalizuje, \"shade\", která okno svine, \"menu\", která zobrazí "
-"nabídku okna, \"lower\", která umístí okno za všechna ostatní, a \"none\", "
-"která nezpůsobí nic."
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"Tato volba poskytuje dodatečnou kontrolu nad tím, jakým způsobem se nově "
-"vytvořená okna stanou aktivními. Má dvě možné hodnoty, \"smart\" použije "
-"běžný uživatelův režim aktivace, \"strict\" má za následek neaktivnost oken "
-"spouštěných z terminálu."
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"Zapíná vizuální znamení v okamžiku, kdy aplikace nebo systém vyvolá \"zvonek"
-"\" nebo zvukové znamení (pípnutí); užitečné pro osoby s poškozeným sluchem a "
-"k použití v hlučném prostředí."
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr "Použít v nadpisech oken standardní systémové písmo"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "Typ vizuálního zvonku"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Jestli má zvyšování být vedlejší efekt jiných interakcí s uživatelem"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "Zda měnit velikost pravým tlačítkem"
-
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "Režim aktivace oken"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "Písmo nadpisu oken"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Použití: %s\n"
@@ -1532,52 +1080,6 @@ msgstr "Mod4"
 #: ../src/ui/metaaccellabel.c:158
 msgid "Mod5"
 msgstr "Mod5"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" neodpovídá."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Je možné chvíli počkat, aby aplikace mohla pokračovat, nebo si vynutit úplné "
-"ukončení aplikace."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Počkat"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Vynutit ukončení"
-
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "Nadpis"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "Třída"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"Tato okna nepodporují ukládání aktuálního nastavení a po vašem příštím "
-"přihlášení je budete muset spustit ručně."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"Při spuštění \"%s\" se vyskytla chyba:\n"
-"%s."
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
@@ -1869,6 +1371,16 @@ msgstr "Atribut \"%s\" opakován dvakrát v jednom prvku <%s>"
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Atribut \"%s\" je v prvku <%s> v tomto kontextu neplatný"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "\"%s\" nelze analyzovat jako celé číslo"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "Nerozuměno koncovým znakům \"%s\" v řetězci \"%s\""
 
 #: ../src/ui/theme-parser.c:541
 #, c-format
@@ -2259,109 +1771,109 @@ msgstr "/Okna/_Všechny doky"
 msgid "/Windows/Des_ktop"
 msgstr "/Okna/Pr_acovní plocha"
 
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:151
 msgid "Open another one of these windows"
 msgstr "Otevřít další takové okno"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:153
 msgid "This is a demo button with an 'open' icon"
 msgstr "Toto je demonstrační tlačítko s ikonou \"otevřít\""
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:155
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Toto je demonstrační tlačítko s ikonou \"ukončit\""
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:245
 msgid "This is a sample message in a sample dialog"
 msgstr "Toto je ukázková zpráva v ukázkovém dialogu"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falešná položka nabídky %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:362
 msgid "Border-only window"
 msgstr "Okno jen s okrajem"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:364
 msgid "Bar"
 msgstr "Lišta"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:381
 msgid "Normal Application Window"
 msgstr "Normální okno aplikace"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:385
 msgid "Dialog Box"
 msgstr "Dialogové okno"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:389
 msgid "Modal Dialog Box"
 msgstr "Modální dialogové okno"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:393
 msgid "Utility Palette"
 msgstr "Paleta nástrojů"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Odtržení nabídky"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:401
 msgid "Border"
 msgstr "Okraj"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:729
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test rozložení tlačítek %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:758
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekund na nakreslení jednoho rámu okna"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:801
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Použití: metacity-theme-viewer [NÁZEVMOTIVU]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:808
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Chyba při načítání motivu: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:814
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Načten motiv \"%s\" za %g sekund\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:855
 msgid "Normal Title Font"
 msgstr "Normální písmo nadpisu"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:861
 msgid "Small Title Font"
 msgstr "Malé písmo nadpisu"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:867
 msgid "Large Title Font"
 msgstr "Velké písmo nadpisu"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:872
 msgid "Button Layouts"
 msgstr "Rozložení tlačítek"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:877
 msgid "Benchmark"
 msgstr "Test výkonnosti"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:924
 msgid "Window Title Goes Here"
 msgstr "Sem patří nadpis okna"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1028
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2371,39 +1883,531 @@ msgstr ""
 "Nakresleno %d rámů za %g sekund na straně klienta (%g milisekund na rám) a %"
 "g sekund reálného času včetně zdrojů serveru X (%g milisekund na rám)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1247
 msgid "position expression test returned TRUE but set error"
 msgstr "test výrazu umístění vrátil TRUE, ale nastavil chybu"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1249
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test výrazu umístění vrátil FALSE, ale nenastavil chybu"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1253
 msgid "Error was expected but none given"
 msgstr "Byla očekávána chyba, ale nebyla přijata"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1255
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Byla očekávána chyba %d, ale bylo přijato %d"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1261
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Chyba nebyla očekávána, ale byla vrácena: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "Hodnota x byla %d, bylo očekáváno %d"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1268
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "Hodnota y byla %d, bylo očekáváno %d"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1333
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "Zpracováno %d výrazů souřadnic za %g sekund (průměr %g sekund)\n"
+
+#~ msgid "Desktop"
+#~ msgstr "Pracovní prostředí"
+
+#~ msgid "Window Management"
+#~ msgstr "Správa oken"
+
+#~ msgid "Failed to parse message \"%s\" from dialog process\n"
+#~ msgstr "Nelze analyzovat zprávu \"%s\" z procesu dialogu\n"
+
+#~ msgid "Error reading from dialog display process: %s\n"
+#~ msgstr "Chyba při čtení z procesu zobrazení dialogu: %s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
+#~ msgstr ""
+#~ "Chyba při spouštění metacity-dialog kvůli dotazu o zabití aplikace: %s\n"
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "Formát má podobu\"<Control>a\" nebo <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "Analyzátor je poměrně velkorysý a dovoluje malá i velká písmena a zkratky "
+#~ "jako \"<Ctl>\" a \"<Ctrl>\". Pokud volbu nastavíte na speciální řetězec "
+#~ "\"disabled\", pak u této akce nebude žádná klávesová zkratka."
+
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action.\n"
+#~ "\n"
+#~ "This keybinding may be reversed by holding down the \"shift\" key; "
+#~ "therefore, \"shift\" cannot be one of the keys it uses."
+#~ msgstr ""
+#~ "Formát má podobu\"<Control>a\" nebo <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "Analyzátor je poměrně velkorysý a dovoluje malá i velká písmena a zkratky "
+#~ "jako \"<Ctl>\" a \"<Ctrl>\". Pokud volbu nastavíte na speciální řetězec "
+#~ "\"disabled\", pak u této akce nebude žádná klávesová zkratka.\n"
+#~ "\n"
+#~ "Tato klávesová zkratka může být rezervována podržením klávesy \"Shift\", "
+#~ "čili \"Shift\" nemůže být jedna z použitých kláves."
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to warn about apps that don't support "
+#~ "session management: %s\n"
+#~ msgstr ""
+#~ "Chyba při spouštění metacity-dialog kvůli varování o aplikacích, které "
+#~ "nepodporují správu sezení: %s\n"
+
+#~ msgid "Metacity"
+#~ msgstr "Metacity"
+
+#~ msgid ""
+#~ "(Not implemented) Navigation works in terms of applications not windows"
+#~ msgstr "(Neimplementováno) Navigace pracuje s aplikacemi, nikoliv s okny"
+
+#~ msgid ""
+#~ "A font description string describing a font for window titlebars. The "
+#~ "size from the description will only be used if the titlebar_font_size "
+#~ "option is set to 0. Also, this option is disabled if the "
+#~ "titlebar_uses_desktop_font option is set to true."
+#~ msgstr ""
+#~ "Řetězec popisu písma popisující písmo záhlaví oken. Velikost z popisu "
+#~ "bude použita jen pokud je volba titlebar_font_size nastavena na \"0\". "
+#~ "Tato volba je dále zakázána, je-li volba titlebar_uses_desktop_font "
+#~ "nastavena na \"true\"."
+
+#~ msgid "Action on title bar double-click"
+#~ msgstr "Akce při dvojitém kliknutí na záhlaví okna"
+
+#~ msgid "Action on title bar middle-click"
+#~ msgstr "Akce při kliknutí prostředním tlačítkem na záhlaví okna"
+
+#~ msgid "Action on title bar right-click"
+#~ msgstr "Akce při kliknutí pravým tlačítkem na záhlaví okna"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "Uspořádání tlačítek na záhlaví okna"
+
+#~ msgid ""
+#~ "Arrangement of buttons on the titlebar. The value should be a string, "
+#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
+#~ "left corner of the window from the right corner, and the button names are "
+#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
+#~ "are silently ignored so that buttons can be added in future metacity "
+#~ "versions without breaking older versions. A special spacer tag can be "
+#~ "used to insert some space between two adjacent buttons."
+#~ msgstr ""
+#~ "Uspořádání tlačítek na záhlaví okna. Hodnota by měla být řetězcem, např. "
+#~ "\"menu:minimize,maximize,spacer,close\"; dvojtečka odděluje levý a pravý "
+#~ "roh okna, názvy tlačítek jsou odděleny čárkami. Opakování tlačítka není "
+#~ "dovoleno. Neznámé názvy tlačítek jsou v tichosti ignorovány, aby mohla "
+#~ "být v budoucích verzích metacity přidána tlačítka bez vlivu na starší "
+#~ "verze. K vložení místa mezi dvě přiléhající tlačítka může být použito "
+#~ "speciální značky (mezery)."
+
+#~ msgid "Automatically raises the focused window"
+#~ msgstr "Automaticky zvýší aktivní okno"
+
+#~ msgid ""
+#~ "Clicking a window while holding down this modifier key will move the "
+#~ "window (left click), resize the window (middle click), or show the window "
+#~ "menu (right click). The left and right operations may be swapped using "
+#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
+#~ "or \"&lt;Super&gt;\" for example."
+#~ msgstr ""
+#~ "Kliknutí na okno za současného stisknutí tohoto modifikátoru okno přesune "
+#~ "(levým tlačítkem), změní jeho velikost (prostředním tlačítkem), nebo "
+#~ "zobrazí nabídku okna (pravým tlačítkem). Operace levého a pravého "
+#~ "tlačítka mohou být zaměněny použitím klíče \"mouse_button_resize\". "
+#~ "Modifikátor je vyjádřen např. jako \"&lt;Alt&gt;\" nebo \"&lt;Super&gt;\"."
+
+#~ msgid "Commands to run in response to keybindings"
+#~ msgstr "Příkazy, které spustit klávesovými zkratkami"
+
+#~ msgid "Compositing Manager"
+#~ msgstr "Správce funkcí kompozitoru"
+
+#~ msgid "Control how new windows get focus"
+#~ msgstr "Určuje způsob, jakým se nová okno stanou aktivními"
+
+#~ msgid "Current theme"
+#~ msgstr "Aktuální motiv"
+
+#~ msgid "Delay in milliseconds for the auto raise option"
+#~ msgstr "Zpoždění v milisekundách u volby automatického zvýšení"
+
+#~ msgid "Determines whether Metacity is a compositing manager."
+#~ msgstr "Určuje, jestli je Metacity správcem funkcí kompozitoru."
+
+#~ msgid ""
+#~ "Determines whether applications or the system can generate audible "
+#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
+#~ "'beeps'."
+#~ msgstr ""
+#~ "Určuje, jestli mohou aplikace nebo systém generovat slyšitelné zvukové "
+#~ "znamení; ve spojení s \"vizuálním zvonkem\" může být použito k povolení "
+#~ "tichého zvukového znamení."
+
+# misfeatures?
+#~ msgid "Disable misfeatures that are required by old or broken applications"
+#~ msgstr ""
+#~ "Zakázat \"pseudovlastnosti\", které jsou potřeba pro staré nebo chybné "
+#~ "aplikace"
+
+#~ msgid "Enable Visual Bell"
+#~ msgstr "Povolit vizuální zvonek"
+
+#~ msgid ""
+#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#~ "the focused window will be automatically raised after a delay specified "
+#~ "by the auto_raise_delay key. This is not related to clicking on a window "
+#~ "to raise it, nor to entering a window during drag-and-drop."
+#~ msgstr ""
+#~ "Je-li \"true\" a režim aktivace je buď \"sloppy\" nebo \"mouse\", pak "
+#~ "bude aktivní okno automaticky po zpoždění zvýšeno (zpoždění je určeno v "
+#~ "klíči auto_raise_delay). Netýká se klikání na okno za účelem aktivace, "
+#~ "ani přechodu na okno během akce táhnutí a puštění."
+
+#~ msgid ""
+#~ "If true, ignore the titlebar_font option, and use the standard "
+#~ "application font for window titles."
+#~ msgstr ""
+#~ "Je-li \"true\", ignorovat volbu titlebar_font a použít standardní písmo "
+#~ "aplikací u nadpisů oken."
+
+#~ msgid ""
+#~ "If true, metacity will give the user less feedback by using wireframes, "
+#~ "avoiding animations, or other means. This is a significant reduction in "
+#~ "usability for many users, but may allow legacy applications to continue "
+#~ "working, and may also be a useful tradeoff for terminal servers. However, "
+#~ "the wireframe feature is disabled when accessibility is on."
+#~ msgstr ""
+#~ "Je-li \"true\", bude Metacity dávat uživateli méně zpětné vazby "
+#~ "používáním drátových rámů, nepoužíváním animací nebo jinými způsoby. Pro "
+#~ "mnoho uživatelů to znamená výrazné snížení použitelnosti, ale také "
+#~ "možnost, že staré aplikace budou nadále pracovat. I pro terminálové "
+#~ "servery se může jednat o přístupný kompromis. Funkce drátových rámů je "
+#~ "ale zakázána, pokud je povoleno zpřístupnění."
+
+#~ msgid ""
+#~ "If true, then Metacity works in terms of applications rather than "
+#~ "windows. The concept is a bit abstract, but in general an application-"
+#~ "based setup is more like the Mac and less like Windows. When you focus a "
+#~ "window in application-based mode, all the windows in the application will "
+#~ "be raised. Also, in application-based mode, focus clicks are not passed "
+#~ "through to windows in other applications. Application-based mode is, "
+#~ "however, largely unimplemented at the moment."
+#~ msgstr ""
+#~ "Je-li \"true\", pracuje Metacity s aplikacemi namísto oken. Toto pojetí "
+#~ "je trochu abstraktní, ale obecně systém založený na aplikacích připomíná "
+#~ "více Mac a méně Windows. V případě aktivace okna v režimu založeném na "
+#~ "aplikacích jsou zvýšena všechna okna aplikace. V režimu založeném na "
+#~ "aplikacích také nejsou oknům v jiných aplikacích předávána aktivující "
+#~ "kliknutí. Režim založený na aplikacích je ovšem momentálně povětšinou "
+#~ "neimplementován."
+
+#~ msgid "If true, trade off usability for less resource usage"
+#~ msgstr ""
+#~ "Je-li \"true\", dávat přednost menšímu používání prostředků před "
+#~ "použitelností"
+
+#~ msgid "Name of workspace"
+#~ msgstr "Název plochy"
+
+#~ msgid "Number of workspaces"
+#~ msgstr "Počet ploch"
+
+#~ msgid ""
+#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
+#~ "prevent making the desktop unusable by accidentally asking for too many "
+#~ "workspaces."
+#~ msgstr ""
+#~ "Počet ploch. Musí být více než nula a má pevné maximum (aby nebylo možno "
+#~ "vyřadit prostředí z provozu žádostí o příliš mnoho ploch)."
+
+#~ msgid "Run a defined command"
+#~ msgstr "Spustit definovaný příkaz"
+
+#~ msgid ""
+#~ "Set this to true to resize with the right button and show a menu with the "
+#~ "middle button while holding down the key given in \"mouse_button_modifier"
+#~ "\"; set it to false to make it work the opposite way around."
+#~ msgstr ""
+#~ "Nastavte na \"true\", chcete-li změnit velikost pravým tlačítkem a "
+#~ "zobrazit nabídku prostředním tlačítkem při držení klávesy zadané v "
+#~ "\"mouse_button_modifier\"; nastavte na \"false\", požadujete-li opačnou "
+#~ "funkci."
+
+#~ msgid ""
+#~ "Setting this option to false can lead to buggy behavior, so users are "
+#~ "strongly discouraged from changing it from the default of true. Many "
+#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
+#~ "normally raise the window as a side-effect. Setting this option to false, "
+#~ "which is strongly discouraged, will decouple raising from other user "
+#~ "actions, and ignore raise requests generated by applications. See http://"
+#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
+#~ "false, windows can still be raised by an alt-left-click anywhere on the "
+#~ "window, a normal click on the window decorations, or by special messages "
+#~ "from pagers, such as activation requests from tasklist applets. This "
+#~ "option is currently disabled in click-to-focus mode. Note that the list "
+#~ "of ways to raise windows when raise_on_click is false does not include "
+#~ "programmatic requests from applications to raise windows; such requests "
+#~ "will be ignored regardless of the reason for the request. If you are an "
+#~ "application developer and have a user complaining that your application "
+#~ "does not work with this setting disabled, tell them it is _their_ fault "
+#~ "for breaking their window manager and that they need to change this "
+#~ "option back to true or live with the \"bug\" they requested."
+#~ msgstr ""
+#~ "Nastavením této volby na \"false\", což nelze v žádném případě doporučit, "
+#~ "dojde k oddělení zvyšování od ostatních uživatelských akcí a požadavky od "
+#~ "aplikací na zvýšení oken budou ignorovány. Viz <http://bugzilla.gnome.org/"
+#~ "show_bug.cgi?id=445447#c6>. I když je tato volba nastavena na \"false\", "
+#~ "stále je možné zvýšit okna klávesou Alt a kliknutím levým tlačítkem myši "
+#~ "kdekoliv v okně, běžným kliknutím na okraj okna, nebo např. požadavkem na "
+#~ "aktivaci od appletů seznamu úloh. Tato volba je aktuálně zakázána v "
+#~ "režimu click-to-focus. Vemte na vědomí, že výčet způsobů, jak zvýšit "
+#~ "okno, pokud je raise_on_click \"false\", nezahrnuje požadavky od aplikací "
+#~ "na zvyšení okna, ty jsou vždy ignorovány. Jste-li vývojářem aplikace a "
+#~ "stěžují-li si vaši uživatelé, že aplikace nepracuje se zakázáním této "
+#~ "volby, sdělte jim, že se jedná o jejich chybu a že je nutné změnit volbu "
+#~ "na \"true\", nebo se s chybou srovnat."
+
+#~ msgid ""
+#~ "Some applications disregard specifications in ways that result in window "
+#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
+#~ "mode, which gives a more consistent user interface, provided one does not "
+#~ "need to run any misbehaving applications."
+#~ msgstr ""
+#~ "Některé aplikace nerespektují specifikace způsobem, který má za následek "
+#~ "chybné vlastnosti správce oken. Tato volba umístí Metacity do zcela "
+#~ "korektního režimu, což uživateli poskytne konzistentnější uživatelské "
+#~ "rozhraní, pokud tedy není zapotřebí spouštět jakékoliv chybně se "
+#~ "chovající aplikace."
+
+#~ msgid "System Bell is Audible"
+#~ msgstr "Systémový zvonek je slyšet"
+
+#~ msgid ""
+#~ "Tells Metacity how to implement the visual indication that the system "
+#~ "bell or another application 'bell' indicator has been rung. Currently "
+#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
+#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
+#~ "application which sent the bell signal to flash. If the application which "
+#~ "sent the bell is unknown (as is usually the case for the default \"system "
+#~ "beep\"), the currently focused window's titlebar is flashed."
+#~ msgstr ""
+#~ "Sděluje Metacity, jak implementovat vizuální znamení o zazvonění "
+#~ "systémového zvonku nebo jiného aplikačního znamení zvonku. Momentálně "
+#~ "existují dvě platné hodnoty, \"fullscreen\", která způsobí černo-bílé "
+#~ "bliknutí celé obrazovky, a \"frame_flash\", která způsobí blikání záhlaví "
+#~ "aplikace posílající signál zvonku. Není-li aplikace, která poslala signál "
+#~ "zvonku, známá (což je obvykle případ výchozího systémové zvukového "
+#~ "znamení), bliká záhlaví aktuálního okna."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
+#~ "keybindings that correspond to these commands. Pressing the keybinding "
+#~ "for run_command_N will execute command_N."
+#~ msgstr ""
+#~ "Klíče /apps/metacity/global_keybindings/run_command_N definují klávesové "
+#~ "zkratky, které odpovídají těmto příkazům. Stisknutí klávesové zkratky pro "
+#~ "run_command_N spustí command_N."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
+#~ "a keybinding which causes the command specified by this setting to be "
+#~ "invoked."
+#~ msgstr ""
+#~ "Klíč /apps/metacity/global_keybindings/run_command_screenshot definuje "
+#~ "klávesovou zkratku, která způsobí spuštění příkazu určeného tímto "
+#~ "nastavením."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+#~ "defines a keybinding which causes the command specified by this setting "
+#~ "to be invoked."
+#~ msgstr ""
+#~ "Klíč /apps/metacity/global_keybindings/run_command_window_screenshot "
+#~ "definuje klávesovou zkratku, která způsobí spuštění příkazu určeného "
+#~ "tímto nastavením."
+
+#~ msgid ""
+#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
+#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+#~ "\"disabled\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Klávesová zkratka, která spustí příkaz s odpovídajícím číslem v /apps/"
+#~ "metacity/keybinding_commands. Formát má podobu \"&lt;Control&gt;a\" nebo "
+#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1. Analyzátor je poměrně velkorysý a dovoluje "
+#~ "malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
+#~ "Pokud volbu nastavíte na speciální řetězec \"disabled\", pak pro tuto "
+#~ "akci nebude žádná klávesová zkratka."
+
+#~ msgid "The name of a workspace."
+#~ msgstr "Název pracovní plochy."
+
+#~ msgid "The screenshot command"
+#~ msgstr "Příkaz zachycení obrazovky"
+
+#~ msgid ""
+#~ "The theme determines the appearance of window borders, titlebar, and so "
+#~ "forth."
+#~ msgstr "Motiv určuje vzhled okrajů okna, záhlaví okna atd."
+
+#~ msgid ""
+#~ "The time delay before raising a window if auto_raise is set to true. The "
+#~ "delay is given in thousandths of a second."
+#~ msgstr ""
+#~ "Zpoždění před zvýšením okna, je-li auto_raise nastaveno na \"true\". "
+#~ "Zpoždění je uvedeno v tisícinách sekundy."
+
+#~ msgid ""
+#~ "The window focus mode indicates how windows are activated. It has three "
+#~ "possible values; \"click\" means windows must be clicked in order to "
+#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
+#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
+#~ "the window and unfocused when the mouse leaves the window."
+#~ msgstr ""
+#~ "Režim aktivace oken ukazuje, jak jsou okna aktivována. Má tři možné "
+#~ "hodnoty; \"click\" znamená, že okna jsou aktivována kliknutím, \"sloppy\" "
+#~ "znamená, že okna jsou aktivována, když se do nich přesune myš, a \"mouse"
+#~ "\" znamená, že okna jsou aktivována, když se do nich přesune myš, a "
+#~ "deaktivována, když je opustí."
+
+#~ msgid "The window screenshot command"
+#~ msgstr "Příkaz zachycení obrázku okna"
+
+#~ msgid ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Tato volba určuje důsledek dvojitého kliknutí na záhlaví okna. Momentálně "
+#~ "platnými volbami jsou \"toggle_shade\", která okno svine/rozvine, "
+#~ "\"toggle_maximize\", která okno maximalizuje nebo zruší maximalizaci, "
+#~ "\"toggle_maximize_horizontally\" a \"toggle_maximize_vertically\", které "
+#~ "maximalizují/zruší maximalizaci pouze v daném směru, \"minimize\", která "
+#~ "okno minimalizuje, \"shade\", která okno svine, \"menu\", která zobrazí "
+#~ "nabídku okna, \"lower\", která umístí okno za všechna ostatní, a \"none"
+#~ "\", která nezpůsobí nic."
+
+#~ msgid ""
+#~ "This option determines the effects of middle-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Tato volba určuje důsledek kliknutí prostředním tlačítkem myši na záhlaví "
+#~ "okna. Momentálně platnými volbami jsou \"toggle_shade\", která okno svine/"
+#~ "rozvine, \"toggle_maximize\", která okno maximalizuje nebo zruší "
+#~ "maximalizaci, \"toggle_maximize_horizontally\" a "
+#~ "\"toggle_maximize_vertically\", které maximalizují/zruší maximalizaci "
+#~ "pouze v daném směru, \"minimize\", která okno minimalizuje, \"shade\", "
+#~ "která okno svine, \"menu\", která zobrazí nabídku okna, \"lower\", která "
+#~ "umístí okno za všechna ostatní, a \"none\", která nezpůsobí nic."
+
+#~ msgid ""
+#~ "This option determines the effects of right-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "Tato volba určuje důsledek kliknutí pravým tlačítkem myši na záhlaví "
+#~ "okna. Momentálně platnými volbami jsou \"toggle_shade\", která okno svine/"
+#~ "rozvine, \"toggle_maximize\", která okno maximalizuje nebo zruší "
+#~ "maximalizaci, \"toggle_maximize_horizontally\" a "
+#~ "\"toggle_maximize_vertically\", které maximalizují/zruší maximalizaci "
+#~ "pouze v daném směru, \"minimize\", která okno minimalizuje, \"shade\", "
+#~ "která okno svine, \"menu\", která zobrazí nabídku okna, \"lower\", která "
+#~ "umístí okno za všechna ostatní, a \"none\", která nezpůsobí nic."
+
+#~ msgid ""
+#~ "This option provides additional control over how newly created windows "
+#~ "get focus. It has two possible values; \"smart\" applies the user's "
+#~ "normal focus mode, and \"strict\" results in windows started from a "
+#~ "terminal not being given focus."
+#~ msgstr ""
+#~ "Tato volba poskytuje dodatečnou kontrolu nad tím, jakým způsobem se nově "
+#~ "vytvořená okna stanou aktivními. Má dvě možné hodnoty, \"smart\" použije "
+#~ "běžný uživatelův režim aktivace, \"strict\" má za následek neaktivnost "
+#~ "oken spouštěných z terminálu."
+
+#~ msgid ""
+#~ "Turns on a visual indication when an application or the system issues a "
+#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+#~ "environments."
+#~ msgstr ""
+#~ "Zapíná vizuální znamení v okamžiku, kdy aplikace nebo systém vyvolá "
+#~ "\"zvonek\" nebo zvukové znamení (pípnutí); užitečné pro osoby s "
+#~ "poškozeným sluchem a k použití v hlučném prostředí."
+
+#~ msgid "Use standard system font in window titles"
+#~ msgstr "Použít v nadpisech oken standardní systémové písmo"
+
+#~ msgid "Visual Bell Type"
+#~ msgstr "Typ vizuálního zvonku"
+
+#~ msgid "Whether raising should be a side-effect of other user interactions"
+#~ msgstr ""
+#~ "Jestli má zvyšování být vedlejší efekt jiných interakcí s uživatelem"
+
+#~ msgid "Whether to resize with the right button"
+#~ msgstr "Zda měnit velikost pravým tlačítkem"
+
+#~ msgid "Window focus mode"
+#~ msgstr "Režim aktivace oken"
+
+#~ msgid "Window title font"
+#~ msgstr "Písmo nadpisu oken"
+
+#~ msgid "\"%s\" is not responding."
+#~ msgstr "\"%s\" neodpovídá."
+
+#~ msgid "Title"
+#~ msgstr "Nadpis"
+
+#~ msgid "Class"
+#~ msgstr "Třída"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Při spuštění \"%s\" se vyskytla chyba:\n"
+#~ "%s."
