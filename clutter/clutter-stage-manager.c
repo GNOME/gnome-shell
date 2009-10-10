@@ -67,24 +67,6 @@ static ClutterStage *default_stage = NULL;
 G_DEFINE_TYPE (ClutterStageManager, clutter_stage_manager, G_TYPE_OBJECT);
 
 static void
-clutter_stage_manager_set_property (GObject      *gobject,
-                                    guint         prop_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
-{
-  switch (prop_id)
-    {
-    case PROP_DEFAULT_STAGE:
-      clutter_stage_manager_set_default_stage (CLUTTER_STAGE_MANAGER (gobject),
-                                               g_value_get_object (value));
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
-    }
-}
-
-static void
 clutter_stage_manager_get_property (GObject    *gobject,
                                     guint       prop_id,
                                     GValue     *value,
@@ -130,7 +112,6 @@ clutter_stage_manager_class_init (ClutterStageManagerClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->dispose      = clutter_stage_manager_dispose;
-  gobject_class->set_property = clutter_stage_manager_set_property;
   gobject_class->get_property = clutter_stage_manager_get_property;
 
   /**
@@ -146,10 +127,10 @@ clutter_stage_manager_class_init (ClutterStageManagerClass *klass)
                                                         "Default Stage",
                                                         "The default stage",
                                                         CLUTTER_TYPE_STAGE,
-                                                        CLUTTER_PARAM_READWRITE));
+                                                        CLUTTER_PARAM_READABLE));
 
   /**
-   * ClutterStageManager:stage-added:
+   * ClutterStageManager::stage-added:
    * @stage_manager: the object which received the signal
    * @stage: the added stage
    *
