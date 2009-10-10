@@ -31,3 +31,5 @@ clutter_text_get_type
 clutter_animatable_get_type
 clutter_animation_get_type
 clutter_interval_get_type
+clutter_stage_manager_get_type
+clutter_binding_pool_get_type

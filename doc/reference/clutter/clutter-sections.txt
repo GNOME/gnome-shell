@@ -1702,3 +1702,26 @@ clutter_egl_display
 <FILE>clutter-eglx</FILE>
 clutter_eglx_display
 </SECTION>
+
+<SECTION>
+<TITLE>ClutterStageManager</TITLE>
+<FILE>clutter-stage-manager</FILE>
+ClutterStageManager
+ClutterStageManagerClass
+clutter_stage_manager_get_default
+clutter_stage_manager_set_default_stage
+clutter_stage_manager_get_default_stage
+clutter_stage_manager_list_stages
+clutter_stage_manager_peek_stages
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_STAGE_MANAGER
+CLUTTER_STAGE_MANAGER
+CLUTTER_STAGE_MANAGER_CLASS
+CLUTTER_IS_STAGE_MANAGER
+CLUTTER_IS_STAGE_MANAGER_CLASS
+CLUTTER_STAGE_MANAGER_GET_CLASS
+
+<SUBSECTION Private>
+clutter_stage_manager_get_type
+</SECTION>
