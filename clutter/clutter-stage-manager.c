@@ -1,3 +1,41 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Copyright (C) 2008 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Emmanuele Bassi <ebassi@linux.intel.com>
+ */
+
+/**
+ * SECTION:clutter-stage-manager
+ * @short_description: Maintains the list of stages
+ *
+ * #ClutterStageManager is a singleton object, owned by Clutter, which
+ * maintains the list of currently active stages
+ *
+ * Every newly-created #ClutterStage will cause the emission of the
+ * #ClutterStageManager::stage-added signal; once a #ClutterStage has
+ * been destroyed, the #ClutterStageManager::stage-removed signal will
+ * be emitted
+ *
+ * #ClutterStageManager is available since Clutter 0.8
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -153,7 +191,6 @@ clutter_stage_manager_class_init (ClutterStageManagerClass *klass)
 static void
 clutter_stage_manager_init (ClutterStageManager *stage_manager)
 {
-
 }
 
 /**
@@ -185,20 +222,13 @@ clutter_stage_manager_get_default (void)
  * Sets @stage as the default stage.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.2: Calling this function has no effect
  */
 void
 clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
                                          ClutterStage        *stage)
 {
-  g_return_if_fail (CLUTTER_IS_STAGE_MANAGER (stage_manager));
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  if (!g_slist_find (stage_manager->stages, stage))
-    _clutter_stage_manager_add_stage (stage_manager, stage);
-
-  default_stage = stage;
-
-  g_object_notify (G_OBJECT (stage_manager), "default-stage");
 }
 
 /**
@@ -270,7 +300,7 @@ _clutter_stage_manager_add_stage (ClutterStageManager *stage_manager,
 
   stage_manager->stages = g_slist_append (stage_manager->stages, stage);
 
-  if (!default_stage)
+  if (G_UNLIKELY (default_stage == NULL))
     {
       default_stage = stage;
 

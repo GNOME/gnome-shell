@@ -3,8 +3,6 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
- *
  * Copyright (C) 2008 OpenedHand
  *
  * This library is free software; you can redistribute it and/or
@@ -19,6 +17,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
 #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
@@ -43,6 +43,18 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageManager             ClutterStageManager;
 typedef struct _ClutterStageManagerClass        ClutterStageManagerClass;
 
+/**
+ * ClutterStageManagerClass;
+ * @stage_added: class handler for the #ClutterStageManager::stage-added
+ *   signal
+ * @stage_removed: class handler for the #ClutterStageManager::stage-removed
+ *   signal
+ *
+ * The #ClutterStageManagerClass structure contains only private data
+ * and should be accessed using the provided API
+ *
+ * Since: 1.0
+ */
 struct _ClutterStageManagerClass
 {
   /*< private >*/
@@ -57,11 +69,14 @@ struct _ClutterStageManagerClass
 GType clutter_stage_manager_get_type (void) G_GNUC_CONST;
 
 ClutterStageManager *clutter_stage_manager_get_default       (void);
-void                 clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
-                                                              ClutterStage        *stage);
 ClutterStage *       clutter_stage_manager_get_default_stage (ClutterStageManager *stage_manager);
 GSList *             clutter_stage_manager_list_stages       (ClutterStageManager *stage_manager);
 const GSList *       clutter_stage_manager_peek_stages       (ClutterStageManager *stage_manager);
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
+void                 clutter_stage_manager_set_default_stage (ClutterStageManager *stage_manager,
+                                                              ClutterStage        *stage);
+#endif
 
 G_END_DECLS
 
