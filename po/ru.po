@@ -1,24 +1,25 @@
+# translation of ru.po to Russian
 # translation of metacity to Russian
-# Copyright (C) 2001, 2005, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2005, 2006, 2009 Free Software Foundation, Inc.
 #
 # Valek Filippov <frob@df.ru>, 2001.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 # Dmitry G. Mastrukov <dmitry@taurussoft.org>, 2002-2003.
 # Andrew w. Nosenko <awn@bcs.zp.ua>, 2003.
-# Leonid Kanter <leon@asplinux.ru>, 2004, 2005, 2006.
+# Leonid Kanter <leon@asplinux.ru>, 2004, 2005, 2006, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity ru\n"
+"Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-14 22:09+0300\n"
-"PO-Revision-Date: 2009-03-14 14:36+0300\n"
-"Last-Translator: Yuriy Penkin <yuriy.penkin@gmail.com>\n"
-"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2009-10-11 16:21+0300\n"
+"PO-Revision-Date: 2009-10-11 16:24+0300\n"
+"Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -136,56 +137,59 @@ msgstr ""
 "потребительской стоимости и пригодности для выполнения каких бы то ни было "
 "определённых задач.\n"
 
-#: ../src/core/main.c:267
+#: ../src/core/main.c:268
 msgid "Disable connection to session manager"
 msgstr "Запретить подключение к менеджеру сеансов"
 
-#: ../src/core/main.c:273
+#: ../src/core/main.c:274
 msgid "Replace the running window manager with Metacity"
 msgstr "Заменить запущенный менеджер окон на Metacity"
 
-#: ../src/core/main.c:279
+#: ../src/core/main.c:280
 msgid "Specify session management ID"
 msgstr "Указать идентификатор управления сеансом"
 
-#: ../src/core/main.c:284
+#: ../src/core/main.c:285
 msgid "X Display to use"
 msgstr "Используемый дисплей X"
 
-#: ../src/core/main.c:290
+#: ../src/core/main.c:291
 msgid "Initialize session from savefile"
 msgstr "Инициализировать сеанс из сохранённого файла"
 
-#: ../src/core/main.c:296
+#: ../src/core/main.c:297
 msgid "Print version"
 msgstr "Вывести версию"
 
-#: ../src/core/main.c:302
+#: ../src/core/main.c:303
 msgid "Make X calls synchronous"
 msgstr "Сделать X-вызовы синхронными"
 
-#: ../src/core/main.c:308
+#: ../src/core/main.c:309
 msgid "Turn compositing on"
 msgstr "Включить менеджер композиции"
 
-#: ../src/core/main.c:314
+#: ../src/core/main.c:315
 msgid "Turn compositing off"
 msgstr "Выключить менеджер композиции"
 
-#: ../src/core/main.c:536
+#: ../src/core/main.c:321
+msgid "Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "Не создавать полноэкранные окна, не имеющие декораций"
+
+#: ../src/core/main.c:543
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Не удалось прочитать каталог тем: %s\n"
 
-#: ../src/core/main.c:552
+#: ../src/core/main.c:559
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Не удалось найти тему! Убедитесь, что «%s» существует и содержит обычные "
 "темы.\n"
 
-#: ../src/core/main.c:608
+#: ../src/core/main.c:618
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Не удалось перезапустить: %s\n"
@@ -201,25 +205,24 @@ msgstr "Не удалось перезапустить: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Для ключа GConf «%s» установлено недопустимое значение\n"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr ""
-"Значение %d ключа GConf «%s» не входит в диапазон значений от %d до %d\n"
+msgstr "Значение %d ключа GConf «%s» не входит в диапазон значений от %d до %d\n"
 
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Для ключа GConf «%s» выбран недопустимый тип\n"
 
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1232
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -227,12 +230,12 @@ msgstr ""
 "Устранение недоделок для сломанных приложений отключено. Некоторые "
 "приложения могут работать неправильно.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1303
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Не удалось разобрать описание шрифта «%s» из ключа GConf %s\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1365
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -241,17 +244,17 @@ msgstr ""
 "Значение «%s» из базы данных настроек является недопустимым значением для "
 "модификатора кнопки мыши\n"
 
-#: ../src/core/prefs.c:1782
+#: ../src/core/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Произошла ошибка при установке количества рабочих мест равным %d: %s\n"
 
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
 #, c-format
 msgid "Workspace %d"
 msgstr "Рабочее место %d"
 
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -260,22 +263,22 @@ msgstr ""
 "Значение «%s» из базы данных настроек является недопустимым значением для "
 "комбинации клавиш «%s»\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:2559
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Произошла ошибка при установке имени рабочего места %d в «%s»: %s\n"
 
-#: ../src/core/prefs.c:2753
+#: ../src/core/prefs.c:2763
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Произошла ошибка при установке состояния менеджера композиции: %s\n"
 
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Недопустимый экран %d дисплея «%s»\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:373
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -284,18 +287,17 @@ msgstr ""
 "У экрана %d дисплея «%s» уже есть менеджер окон. Попробуйте использовать "
 "параметр --replace, чтобы заместить текущий менеджер окон.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:400
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не удалось выбрать менеджер окон на экране %d дисплея «%s»\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:458
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "У экрана %d дисплея «%s» уже есть менеджер окон\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не удалось освободить экран %d дисплея «%s»\n"
@@ -306,7 +308,7 @@ msgstr "Не удалось освободить экран %d дисплея «
 #.
 #: ../src/core/schema-bindings.c:169
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -322,7 +324,7 @@ msgstr ""
 
 #: ../src/core/schema-bindings.c:177
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
@@ -339,8 +341,7 @@ msgstr ""
 "«disabled», для этого действия не будет использоваться никакая комбинация "
 "клавиш.\n"
 "\n"
-"Действие этой комбинации клавиш может быть изменено путем удержания клавиши "
-"«shift», поэтому «shift» не может быть одной из клавиш этой комбинации."
+"Действие этой комбинации клавиш может быть изменено путём удержания клавиши «shift», поэтому «shift» не может быть одной из клавиш этой комбинации."
 
 #: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
@@ -476,8 +477,7 @@ msgstr ""
 #: ../src/core/window-props.c:244
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr ""
-"Приложение установило неправильное значение параметра _NET_WM_PID %lu\n"
+msgstr "Приложение установило неправильное значение параметра _NET_WM_PID %lu\n"
 
 #. Translators: the title of a window from another machine
 #: ../src/core/window-props.c:388
@@ -532,8 +532,7 @@ msgstr "Свойство %s для окна 0x%lx содержало недоп�
 
 #: ../src/core/xprops.c:484
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Свойство %s для окна 0x%lx содержало недопустимые данные UTF-8 для элемента %"
 "d в списке\n"
@@ -654,8 +653,7 @@ msgstr "Переключиться между панелями и рабочим
 
 #: ../src/include/all-keybindings.h:186
 msgid "Move backward between panels and the desktop immediately"
-msgstr ""
-"Переключиться в обратном порядке между панелями и рабочим столом немедленно"
+msgstr "Переключиться в обратном порядке между панелями и рабочим столом немедленно"
 
 #: ../src/include/all-keybindings.h:191
 msgid "Hide all normal windows and set focus to the desktop"
@@ -795,8 +793,7 @@ msgstr "Переместить окно на одно рабочее место 
 
 #: ../src/include/all-keybindings.h:342
 msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr ""
-"Поднять окно на передний план, если оно заслонено другими, иначе опустить его"
+msgstr "Поднять окно на передний план, если оно заслонено другими, иначе опустить его"
 
 #: ../src/include/all-keybindings.h:344
 msgid "Raise window above other windows"
@@ -953,8 +950,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Отключить неправильные свойства, нужные старым или сломанным приложениям"
+msgstr "Отключить неправильные свойства, нужные старым или сломанным приложениям"
 
 #: ../src/metacity.schemas.in.in.h:18
 msgid "Enable Visual Bell"
@@ -1308,8 +1304,7 @@ msgstr "Тип видимого сигнала"
 
 #: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr ""
-"Должно ли поднятие окна быть побочным эффектом других действий пользователя"
+msgstr "Должно ли поднятие окна быть побочным эффектом других действий пользователя"
 
 #: ../src/metacity.schemas.in.in.h:52
 msgid "Whether to resize with the right button"
@@ -1664,8 +1659,7 @@ msgstr ""
 
 #: ../src/ui/theme.c:1282
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Формат тени — «shade/base_color/factor»; «%s» не соответствует формату"
 
 #: ../src/ui/theme.c:1293
@@ -1700,8 +1694,7 @@ msgstr ""
 #: ../src/ui/theme.c:1623
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"Выражение координаты содержит целое число «%s», которое не удалось разобрать"
+msgstr "Выражение координаты содержит целое число «%s», которое не удалось разобрать"
 
 #: ../src/ui/theme.c:1745
 #, c-format
@@ -1724,24 +1717,20 @@ msgstr "Вычисление выражения координаты приве�
 
 #: ../src/ui/theme.c:1965
 #, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Выражение координаты пытается использовать оператор взятия остатка от "
 "деления для числа с плавающей запятой"
 
 #: ../src/ui/theme.c:2021
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"В выражении координаты используется оператор «%s» там, где должен быть операнд"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "В выражении координаты используется оператор «%s» там, где должен быть операнд"
 
 #: ../src/ui/theme.c:2030
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"В выражении координаты используется операнд там, где должен быть оператор"
+msgstr "В выражении координаты используется операнд там, где должен быть оператор"
 
 #: ../src/ui/theme.c:2038
 #, c-format
@@ -1802,8 +1791,7 @@ msgstr ""
 
 #: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Отсутствует <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"что-нибудь"
 "\"/>"
@@ -1830,8 +1818,7 @@ msgstr ""
 
 #: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Константы, заданные пользователем, должны начинаться с заглавной буквы; «%s» "
 "не начинается с заглавной буквы"
@@ -2060,8 +2047,7 @@ msgstr "Неизвестная функция «%s» для кнопки"
 #: ../src/ui/theme-parser.c:2882
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
-"Функция кнопки «%s» не существует в этой версии (%d, необходима версия %d)"
+msgstr "Функция кнопки «%s» не существует в этой версии (%d, необходима версия %d)"
 
 #: ../src/ui/theme-parser.c:2894
 #, c-format
@@ -2104,8 +2090,7 @@ msgstr ""
 
 #: ../src/ui/theme-parser.c:3061
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Не следует использовать атрибут «resize» в элементе <%s> для развёрнутых "
 "состояний"
@@ -2151,8 +2136,7 @@ msgstr "Элемент верхнего уровня в теме должен б
 
 #: ../src/ui/theme-parser.c:3291
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Использование элемента <%s> внутри элементов name/author/date/description "
 "недопустимо"
@@ -2164,8 +2148,7 @@ msgstr "Использование элемента <%s> внутри элеме
 
 #: ../src/ui/theme-parser.c:3308
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Использование элемента <%s> внутри элементов distance/border/aspect_ratio "
 "недопустимо"
@@ -2408,3 +2391,4 @@ msgstr "значение y было %d, а ожидалось %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d координатных выражений разобрано за %g секунд (в среднем %g c)\n"
+
