@@ -476,15 +476,15 @@ AppDisplay.prototype = {
 
 Signals.addSignalMethods(AppDisplay.prototype);
 
-function BaseWellItem(appInfo, isFavorite, hasMenu) {
-    this._init(appInfo, isFavorite, hasMenu);
+function BaseWellItem(app, isFavorite, hasMenu) {
+    this._init(app, isFavorite, hasMenu);
 }
 
 BaseWellItem.prototype = {
     __proto__: AppIcon.AppIcon.prototype,
 
-    _init: function(appInfo, isFavorite) {
-        AppIcon.AppIcon.prototype._init.call(this, { appInfo: appInfo,
+    _init: function(app, isFavorite) {
+        AppIcon.AppIcon.prototype._init.call(this, { app: app,
                                                      menuType: AppIcon.MenuType.ON_RIGHT,
                                                      glow: true });
 
@@ -523,7 +523,7 @@ BaseWellItem.prototype = {
         // as say Pidgin, but ideally what we do there is have the app
         // express to us that it doesn't do relaunch=new-window in the
         // .desktop file.
-        this.appInfo.launch();
+        this.app.get_info().launch();
     },
 
     getDragActor: function() {
@@ -537,15 +537,15 @@ BaseWellItem.prototype = {
     }
 }
 
-function RunningWellItem(appInfo, isFavorite) {
-    this._init(appInfo, isFavorite);
+function RunningWellItem(app, isFavorite) {
+    this._init(app, isFavorite);
 }
 
 RunningWellItem.prototype = {
     __proto__: BaseWellItem.prototype,
 
-    _init: function(appInfo, isFavorite) {
-        BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
+    _init: function(app, isFavorite) {
+        BaseWellItem.prototype._init.call(this, app, isFavorite);
 
         this._dragStartX = 0;
         this._dragStartY = 0;
@@ -557,15 +557,14 @@ RunningWellItem.prototype = {
         let modifiers = Shell.get_event_state(event);
 
         if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-            this.appInfo.launch();
+            this.app.get_info().launch();
         } else {
             this.activateMostRecentWindow();
         }
     },
 
     activateMostRecentWindow: function () {
-        // The _get_windows_for_app sorts them for us
-        let mostRecentWindow = this.windows[0];
+        let mostRecentWindow = this.app.get_windows()[0];
         Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
     },
 
@@ -582,7 +581,7 @@ RunningWellItem.prototype = {
     },
 
     menuPoppedUp: function() {
-        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.appInfo.get_id());
+        Main.overview.getWorkspacesForWindow(null).setApplicationWindowSelection(this.app.get_id());
     },
 
     menuPoppedDown: function() {
@@ -593,15 +592,15 @@ RunningWellItem.prototype = {
     }
 };
 
-function InactiveWellItem(appInfo, isFavorite) {
-    this._init(appInfo, isFavorite);
+function InactiveWellItem(app, isFavorite) {
+    this._init(app, isFavorite);
 }
 
 InactiveWellItem.prototype = {
     __proto__: BaseWellItem.prototype,
 
-    _init : function(appInfo, isFavorite) {
-        BaseWellItem.prototype._init.call(this, appInfo, isFavorite);
+    _init : function(app, isFavorite) {
+        BaseWellItem.prototype._init.call(this, app, isFavorite);
 
         this.actor.connect('notify::pressed', Lang.bind(this, this._onPressedChanged));
         this.actor.connect('activate', Lang.bind(this, this._onActivate));
@@ -612,12 +611,9 @@ InactiveWellItem.prototype = {
     },
 
     _onActivate: function() {
-        if (this.windows.length == 0) {
-            this.appInfo.launch();
-            Main.overview.hide();
-            return true;
-        }
-        return false;
+        this.app.get_info().launch();
+        Main.overview.hide();
+        return true;
     },
 
     menuPoppedUp: function() {
@@ -824,21 +820,11 @@ AppWell.prototype = {
         this._redisplay();
     },
 
-    _lookupApps: function(appIds) {
-        let result = [];
-        for (let i = 0; i < appIds.length; i++) {
-            let id = appIds[i];
-            let app = this._appSystem.lookup_cached_app(id);
-            if (!app)
-                continue;
-            result.push(app);
-        }
-        return result;
-    },
-
-    _arrayValues: function(array) {
-        return array.reduce(function (values, id, index) {
-                            values[id] = index; return values; }, {});
+    _appIdListToHash: function(apps) {
+        let ids = {};
+        for (let i = 0; i < apps.length; i++)
+            ids[apps[i].get_id()] = apps[i];
+        return ids;
     },
 
     _onMappedNotify: function() {
@@ -857,32 +843,29 @@ AppWell.prototype = {
 
         this._grid.removeAll();
 
-        let favoriteIds = this._appSystem.get_favorites();
-        let favoriteIdsHash = this._arrayValues(favoriteIds);
+        let favorites = this._appMonitor.get_favorites();
+        let favoriteIds = this._appIdListToHash(favorites);
 
         /* hardcode here pending some design about how exactly desktop contexts behave */
         let contextId = "";
 
-        let running = this._appMonitor.get_running_apps(contextId).filter(function (e) {
-            return !(e.get_id() in favoriteIdsHash);
-        });
-        let favorites = this._lookupApps(favoriteIds);
+        let running = this._appMonitor.get_running_apps(contextId);
+        let runningIds = this._appIdListToHash(running)
 
-        let displays = []
-        this._addApps(favorites, true);
-        this._addApps(running, false);
-        this._displays = displays;
-    },
-
-    _addApps: function(apps, isFavorite) {
-        for (let i = 0; i < apps.length; i++) {
-            let app = apps[i];
-            let windows = this._appMonitor.get_windows_for_app(app.get_id());
+        for (let i = 0; i < favorites.length; i++) {
+            let app = favorites[i];
             let display;
-            if (windows.length > 0)
-                display = new RunningWellItem(app, isFavorite);
-            else
-                display = new InactiveWellItem(app, isFavorite);
+            if (app.get_windows().length > 0) {
+                display = new RunningWellItem(app, true);
+            } else {
+                display = new InactiveWellItem(app, true);
+            }
+            this._grid.actor.add_actor(display.actor);
+        }
+
+        for (let i = 0; i < running.length; i++) {
+            let app = running[i];
+            let display = new RunningWellItem(app, false);
             this._grid.actor.add_actor(display.actor);
         }
     },

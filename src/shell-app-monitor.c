@@ -129,8 +129,11 @@ struct _ShellAppMonitor
   long watch_start_time;
   MetaWindow *watched_window;
 
-  /* <MetaWindow * window, ShellAppInfo *app> */
+  /* <MetaWindow * window, ShellApp *app> */
   GHashTable *window_to_app;
+
+  /* <const char *, ShellApp *app> */
+  GHashTable *running_apps;
 
   /* <char *context, GHashTable<char *appid, AppUsage *usage>> */
   GHashTable *app_usages_for_context;
@@ -214,35 +217,35 @@ static void shell_app_monitor_class_init(ShellAppMonitorClass *klass)
                                      G_SIGNAL_RUN_LAST,
                                      0,
                                      NULL, NULL,
-                                     _shell_marshal_VOID__BOXED,
+                                     g_cclosure_marshal_VOID__OBJECT,
                                      G_TYPE_NONE, 1,
-                                     SHELL_TYPE_APP_INFO);
+                                     SHELL_TYPE_APP);
   signals[APP_REMOVED] = g_signal_new ("app-removed",
                                        SHELL_TYPE_APP_MONITOR,
                                        G_SIGNAL_RUN_LAST,
                                        0,
                                        NULL, NULL,
-                                       _shell_marshal_VOID__BOXED,
+                                       g_cclosure_marshal_VOID__OBJECT,
                                        G_TYPE_NONE, 1,
-                                       SHELL_TYPE_APP_INFO);
+                                       SHELL_TYPE_APP);
 
   signals[WINDOW_ADDED] = g_signal_new ("window-added",
                                         SHELL_TYPE_APP_MONITOR,
                                         G_SIGNAL_RUN_LAST,
                                         0,
                                         NULL, NULL,
-                                        _shell_marshal_VOID__BOXED_OBJECT,
+                                        _shell_marshal_VOID__OBJECT_OBJECT,
                                         G_TYPE_NONE, 2,
-                                        SHELL_TYPE_APP_INFO,
+                                        SHELL_TYPE_APP,
                                         META_TYPE_WINDOW);
   signals[WINDOW_REMOVED] = g_signal_new ("window-removed",
                                           SHELL_TYPE_APP_MONITOR,
                                           G_SIGNAL_RUN_LAST,
                                           0,
                                           NULL, NULL,
-                                          _shell_marshal_VOID__BOXED_OBJECT,
+                                          _shell_marshal_VOID__OBJECT_OBJECT,
                                           G_TYPE_NONE, 2,
-                                          SHELL_TYPE_APP_INFO,
+                                          SHELL_TYPE_APP,
                                           META_TYPE_WINDOW);
 
   signals[STARTUP_SEQUENCE_CHANGED] = g_signal_new ("startup-sequence-changed",
@@ -396,12 +399,6 @@ shell_app_monitor_is_window_usage_tracked (MetaWindow *window)
   return TRUE;
 }
 
-static ShellAppInfo *
-create_transient_app_for_window (MetaWindow *window)
-{
-  return shell_app_system_create_from_window (shell_app_system_get_default (), window);
-}
-
 /**
  * get_app_for_window_direct:
  *
@@ -409,12 +406,13 @@ create_transient_app_for_window (MetaWindow *window)
  * an application based on WM_CLASS.  If that fails, then
  * a "transient" application is created.
  *
- * Return value: (transfer full): A newly-referenced #ShellAppInfo
+ * Return value: (transfer full): A newly-referenced #ShellApp
  */
-static ShellAppInfo *
+static ShellApp *
 get_app_for_window_direct (MetaWindow  *window)
 {
-  ShellAppInfo *result;
+  ShellApp *app;
+  ShellAppInfo *appinfo;
   ShellAppSystem *appsys;
   char *wmclass;
   char *with_desktop;
@@ -422,26 +420,28 @@ get_app_for_window_direct (MetaWindow  *window)
   wmclass = get_cleaned_wmclass_for_window (window);
 
   if (!wmclass)
-    return create_transient_app_for_window (window);
+    return _shell_app_new_for_window (window);
 
   with_desktop = g_strjoin (NULL, wmclass, ".desktop", NULL);
   g_free (wmclass);
 
   appsys = shell_app_system_get_default ();
-  result = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
+  appinfo = shell_app_system_lookup_heuristic_basename (appsys, with_desktop);
   g_free (with_desktop);
 
-  if (result == NULL)
+  if (appinfo == NULL)
     {
       const char *id = get_app_id_from_title (window);
 
       if (id != NULL)
-        result = shell_app_system_load_from_desktop_file (appsys, id, NULL);
+        appinfo = shell_app_system_load_from_desktop_file (appsys, id, NULL);
     }
-  if (result == NULL)
-    result = create_transient_app_for_window (window);
+  if (appinfo == NULL)
+    return _shell_app_new_for_window (window);
 
-  return result;
+  app = _shell_app_new (appinfo);
+  shell_app_info_unref (appinfo);
+  return app;
 }
 
 /**
@@ -451,11 +451,11 @@ get_app_for_window_direct (MetaWindow  *window)
  * all available information such as the window's MetaGroup,
  * and what we know about other windows.
  */
-static ShellAppInfo *
+static ShellApp *
 get_app_for_window (ShellAppMonitor    *monitor,
                     MetaWindow         *window)
 {
-  ShellAppInfo *result;
+  ShellApp *result;
   MetaWindow *source_window;
   GSList *group_windows;
   MetaGroup *group;
@@ -489,7 +489,7 @@ get_app_for_window (ShellAppMonitor    *monitor,
 
   if (result != NULL)
     {
-      shell_app_info_ref (result);
+      g_object_ref (result);
       return result;
     }
 
@@ -498,6 +498,12 @@ get_app_for_window (ShellAppMonitor    *monitor,
 
 static const char *
 get_window_context (MetaWindow *window)
+{
+  return "";
+}
+
+static const char *
+get_app_context (ShellApp *app)
 {
   return "";
 }
@@ -543,7 +549,7 @@ static AppUsage *
 get_app_usage_from_window (ShellAppMonitor *monitor,
                            MetaWindow      *window)
 {
-  ShellAppInfo *app;
+  ShellApp *app;
   const char *context;
 
   app = g_hash_table_lookup (monitor->window_to_app, window);
@@ -552,7 +558,7 @@ get_app_usage_from_window (ShellAppMonitor *monitor,
 
   context = get_window_context (window);
 
-  return get_app_usage_for_context_and_id (monitor, context, shell_app_info_get_id (app));
+  return get_app_usage_for_context_and_id (monitor, context, shell_app_get_id (app));
 }
 
 static MetaWindow *
@@ -714,13 +720,8 @@ on_transient_window_title_changed (MetaWindow      *window,
                                    ShellAppMonitor *self)
 {
   ShellAppSystem *appsys;
-  ShellAppInfo *current_app;
   ShellAppInfo *new_app;
   const char *id;
-
-  current_app = g_hash_table_lookup (self->window_to_app, window);
-  /* Can't have lost the app */
-  g_assert (current_app != NULL);
 
   /* Check if we now have a mapping using the window title */
   id = get_app_id_from_title (window);
@@ -742,7 +743,7 @@ static void
 track_window (ShellAppMonitor *self,
               MetaWindow      *window)
 {
-  ShellAppInfo *app;
+  ShellApp *app;
   AppUsage *usage;
 
   if (!window_is_tracked (window))
@@ -764,7 +765,7 @@ track_window (ShellAppMonitor *self,
     return;
 
   usage = get_app_usage_from_window (self, window);
-  usage->transient = shell_app_info_is_transient (app);
+  usage->transient = shell_app_info_is_transient (shell_app_get_info (app));
 
   if (usage->transient)
     {
@@ -776,6 +777,8 @@ track_window (ShellAppMonitor *self,
       g_signal_connect (window, "notify::title", G_CALLBACK (on_transient_window_title_changed), self);
     }
 
+  _shell_app_add_window (app, window);
+
   /* Keep track of the number of windows open for this app, when it
    * switches between 0 and 1 we emit an app-added signal.
    */
@@ -784,7 +787,12 @@ track_window (ShellAppMonitor *self,
     usage->initially_seen_sequence = ++self->initially_seen_sequence;
   usage->last_seen = get_time ();
   if (usage->window_count == 1)
-    g_signal_emit (self, signals[APP_ADDED], 0, app);
+    {
+      /* key is owned by the app */
+      g_hash_table_insert (self->running_apps, (char*)shell_app_get_id (app),
+                           app);
+      g_signal_emit (self, signals[APP_ADDED], 0, app);
+    }
 
   /* Emit window-added after app-added */
   g_signal_emit (self, signals[WINDOW_ADDED], 0, app, window);
@@ -800,18 +808,17 @@ shell_app_monitor_on_window_added (MetaWorkspace   *workspace,
   track_window (self, window);
 }
 
-
 static void
 disassociate_window (ShellAppMonitor   *self,
                      MetaWindow        *window)
 {
-  ShellAppInfo *app;
+  ShellApp *app;
 
   app = g_hash_table_lookup (self->window_to_app, window);
   if (!app)
     return;
 
-  shell_app_info_ref (app);
+  g_object_ref (app);
 
   if (window == self->watched_window)
     self->watched_window = NULL;
@@ -827,18 +834,22 @@ disassociate_window (ShellAppMonitor   *self,
 
       g_hash_table_remove (self->window_to_app, window);
 
+      _shell_app_remove_window (app, window);
+
       g_signal_emit (self, signals[WINDOW_REMOVED], 0, app, window);
 
       if (usage->window_count == 0)
         {
+          const char *id = shell_app_get_id (app);
+          g_hash_table_remove (self->running_apps, id);
           g_signal_emit (self, signals[APP_REMOVED], 0, app);
-          reset_usage (self, context, shell_app_info_get_id (app), usage);
+          reset_usage (self, context, id, usage);
         }
     }
   else
     g_hash_table_remove (self->window_to_app, window);
 
-  shell_app_info_unref (app);
+  g_object_unref (app);
 }
 
 static void
@@ -931,8 +942,8 @@ shell_app_monitor_get_windows_for_app (ShellAppMonitor *self,
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       MetaWindow *window = key;
-      ShellAppInfo *app = value;
-      const char *id = shell_app_info_get_id (app);
+      ShellApp *app = value;
+      const char *id = shell_app_get_id (app);
 
       if (!shell_app_monitor_is_window_usage_tracked (window))
         continue;
@@ -1033,7 +1044,9 @@ shell_app_monitor_init (ShellAppMonitor *self)
                                                          (GDestroyNotify) g_hash_table_destroy);
 
   self->window_to_app = g_hash_table_new_full (g_direct_hash, g_direct_equal,
-                                               NULL, (GDestroyNotify) shell_app_info_unref);
+                                               NULL, (GDestroyNotify) g_object_unref);
+
+  self->running_apps = g_hash_table_new (g_str_hash, g_str_equal);
 
   g_object_get (shell_global_get(), "configdir", &shell_config_dir, NULL),
   path = g_build_filename (shell_config_dir, DATA_FILENAME, NULL);
@@ -1068,6 +1081,7 @@ shell_app_monitor_finalize (GObject *object)
   gconf_client_notify_remove (self->gconf_client, self->gconf_notify);
   g_object_unref (self->gconf_client);
   g_object_unref (self->display);
+  g_hash_table_destroy (self->running_apps);
   g_hash_table_destroy (self->app_usages_for_context);
   for (i = 0; title_patterns[i].app_id; i++)
     g_regex_unref (title_patterns[i].regex);
@@ -1108,48 +1122,22 @@ shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
  *
  * Returns: Application associated with window
  */
-ShellAppInfo *
+ShellApp *
 shell_app_monitor_get_window_app (ShellAppMonitor *monitor,
                                   MetaWindow      *metawin)
 {
   MetaWindow *transient_for;
-  ShellAppInfo *info;
+  ShellApp *app;
 
   transient_for = meta_window_get_transient_for (metawin);
   if (transient_for != NULL)
     metawin = transient_for;
 
-  info = g_hash_table_lookup (monitor->window_to_app, metawin);
-  if (info)
-    shell_app_info_ref (info);
-  return info;
-}
+  app = g_hash_table_lookup (monitor->window_to_app, metawin);
+  if (app)
+    g_object_ref (app);
 
-typedef struct {
-  ShellAppMonitor *self;
-  const char *context_id;
-} AppOpenSequenceSortData;
-
-static int
-sort_apps_by_open_sequence (gconstpointer a,
-                            gconstpointer b,
-                            gpointer datap)
-{
-  AppOpenSequenceSortData *data = datap;
-  ShellAppInfo *app_a = (ShellAppInfo*)a;
-  ShellAppInfo *app_b = (ShellAppInfo*)b;
-  const char *id_a = shell_app_info_get_id (app_a);
-  const char *id_b = shell_app_info_get_id (app_b);
-  AppUsage *usage_a;
-  AppUsage *usage_b;
-
-  usage_a = get_app_usage_for_context_and_id (data->self, data->context_id, id_a);
-  usage_b = get_app_usage_for_context_and_id (data->self, data->context_id, id_b);
-  if (usage_a->initially_seen_sequence == usage_b->initially_seen_sequence)
-    return 0;
-  if (usage_a->initially_seen_sequence < usage_b->initially_seen_sequence)
-    return -1;
-  return 1;
+  return app;
 }
 
 /**
@@ -1158,50 +1146,94 @@ sort_apps_by_open_sequence (gconstpointer a,
  * @context: Activity identifier
  *
  * Returns the set of applications which currently have at least one open
- * window in the given context.
+ * window in the given context.  The returned list will be sorted
+ * by shell_app_compare().
  *
- * Returns: (element-type ShellAppInfo) (transfer container): Active applications
+ * Returns: (element-type ShellApp) (transfer container): Active applications
  */
 GSList *
 shell_app_monitor_get_running_apps (ShellAppMonitor *monitor,
                                     const char      *context)
 {
-  GHashTableIter iter;
   gpointer key, value;
   GSList *ret;
-  AppOpenSequenceSortData data;
-  GHashTable *unique_apps;
+  GHashTableIter iter;
 
-  unique_apps = g_hash_table_new (g_str_hash, g_str_equal);
-
-  g_hash_table_iter_init (&iter, monitor->window_to_app);
+  g_hash_table_iter_init (&iter, monitor->running_apps);
 
   ret = NULL;
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
-      MetaWindow *window = key;
-      ShellAppInfo *app = value;
-      const char *id;
+      ShellApp *app = value;
 
-      if (strcmp (get_window_context (window), context) != 0)
+      if (strcmp (context, get_app_context (app)) != 0)
         continue;
-
-      if (!shell_app_monitor_is_window_usage_tracked (window))
-        continue;
-
-      id = shell_app_info_get_id (app);
-
-      if (g_hash_table_lookup (unique_apps, id))
-        continue;
-      g_hash_table_insert (unique_apps, (gpointer)id, (gpointer)id);
 
       ret = g_slist_prepend (ret, app);
     }
-  g_hash_table_destroy (unique_apps);
 
-  data.self = monitor;
-  data.context_id = context;
-  return g_slist_sort_with_data (ret, sort_apps_by_open_sequence, &data);
+  ret = g_slist_sort (ret, (GCompareFunc)shell_app_compare);
+
+  return ret;
+}
+
+/**
+ * shell_app_monitor_get_app:
+ * @montior:
+ * @id: Application identifier
+ *
+ * For running applications, returns the existing instance
+ * of the running application model object.  Otherwise,
+ * returns a new object.
+ *
+ * Returns: (transfer full): Application associated with id
+ */
+ShellApp *
+shell_app_monitor_get_app (ShellAppMonitor *monitor,
+                           const char      *id)
+{
+  ShellApp *app;
+  ShellAppInfo *info;
+
+  app = g_hash_table_lookup (monitor->running_apps, id);
+  if (app)
+    return g_object_ref (app);
+
+  info = shell_app_system_lookup_cached_app (shell_app_system_get_default(), id);
+  if (!info)
+    return NULL;
+
+  app = _shell_app_new (info);
+  shell_app_info_unref (info);
+
+  return app;
+}
+
+/**
+ * shell_app_monitor_get_favorites:
+ * @monitor:
+ *
+ * Returns: (transfer full) (element-type ShellApp): List of favorite applications
+ */
+GSList *
+shell_app_monitor_get_favorites (ShellAppMonitor  *monitor)
+{
+  GSList *apps = NULL;
+  GList *favorite_ids, *iter;
+
+  favorite_ids = shell_app_system_get_favorites (shell_app_system_get_default ());
+  for (iter = favorite_ids; iter; iter = iter->next)
+    {
+      const char *id = iter->data;
+      ShellApp *app;
+
+      app = shell_app_monitor_get_app (monitor, id);
+      if (app)
+        apps = g_slist_prepend (apps, g_object_ref (app));
+    }
+  apps = g_slist_reverse (apps);
+
+  return apps;
 }
 
 static gboolean

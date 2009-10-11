@@ -93,7 +93,7 @@ AltTabPopup.prototype = {
 
         // Make the initial selection
         if (this._appIcons.length == 1) {
-            if (!backward && this._appIcons[0].windows.length > 1) {
+            if (!backward && this._appIcons[0].cachedWindows.length > 1) {
                 // For compatibility with the multi-app case below
                 this._select(0, 1);
             } else
@@ -101,9 +101,10 @@ AltTabPopup.prototype = {
         } else if (backward) {
             this._select(this._appIcons.length - 1);
         } else {
-            if (this._appIcons[0].windows.length > 1) {
-                let curAppNextWindow = this._appIcons[0].windows[1];
-                let nextAppWindow = this._appIcons[1].windows[0];
+            let firstWindows = this._appIcons[0].cachedWindows;
+            if (firstWindows.length > 1) {
+                let curAppNextWindow = firstWindows[1];
+                let nextAppWindow = this._appIcons[1].cachedWindows[0];
 
                 // If the next window of the current app is more-recently-used
                 // than the first window of the next app, then select it.
@@ -139,11 +140,11 @@ AltTabPopup.prototype = {
 
     _nextWindow : function() {
         return mod(this._currentWindows[this._currentApp] + 1,
-                   this._appIcons[this._currentApp].windows.length);
+                   this._appIcons[this._currentApp].cachedWindows.length);
     },
     _previousWindow : function() {
         return mod(this._currentWindows[this._currentApp] - 1,
-                   this._appIcons[this._currentApp].windows.length);
+                   this._appIcons[this._currentApp].cachedWindows.length);
     },
 
     _keyPressEvent : function(actor, event) {
@@ -188,7 +189,7 @@ AltTabPopup.prototype = {
     },
 
     _appActivated : function(appSwitcher, n) {
-        Main.activateWindow(this._appIcons[n].windows[this._currentWindows[n]]);
+        Main.activateWindow(this._appIcons[n].cachedWindows[this._currentWindows[n]]);
         this.destroy();
     },
 
@@ -200,7 +201,7 @@ AltTabPopup.prototype = {
     },
 
     _windowActivated : function(thumbnailList, n) {
-        Main.activateWindow(this._appIcons[this._currentApp].windows[n]);
+        Main.activateWindow(this._appIcons[this._currentApp].cachedWindows[n]);
         this.destroy();
     },
 
@@ -225,7 +226,7 @@ AltTabPopup.prototype = {
 
     _finish : function() {
         let app = this._appIcons[this._currentApp];
-        let window = app.windows[this._currentWindows[this._currentApp]];
+        let window = app.cachedWindows[this._currentWindows[this._currentApp]];
         Main.activateWindow(window);
         this.destroy();
     },
@@ -267,7 +268,7 @@ AltTabPopup.prototype = {
             this._appSwitcher.showArrow(app);
         } else {
             this._appSwitcher.highlight(app);
-            if (this._appIcons[this._currentApp].windows.length > 1)
+            if (this._appIcons[this._currentApp].cachedWindows.length > 1)
                 this._appSwitcher.showArrow(app);
         }
 
@@ -276,7 +277,7 @@ AltTabPopup.prototype = {
                 this._createThumbnails();
             this._currentWindows[this._currentApp] = window;
             this._thumbnails.highlight(window);
-        } else if (this._appIcons[this._currentApp].windows.length > 1 &&
+        } else if (this._appIcons[this._currentApp].cachedWindows.length > 1 &&
                    !noTimeout) {
             this._thumbnailTimeoutId = Mainloop.timeout_add (
                 THUMBNAIL_POPUP_TIME,
@@ -289,7 +290,7 @@ AltTabPopup.prototype = {
     },
 
     _createThumbnails : function() {
-        this._thumbnails = new ThumbnailList (this._appIcons[this._currentApp].windows);
+        this._thumbnails = new ThumbnailList (this._appIcons[this._currentApp].cachedWindows);
         this._thumbnails.connect('item-activated', Lang.bind(this, this._windowActivated));
         this._thumbnails.connect('item-hovered', Lang.bind(this, this._windowHovered));
 
@@ -552,8 +553,11 @@ AppSwitcher.prototype = {
         let workspaceIcons = [];
         let otherIcons = [];
         for (let i = 0; i < apps.length; i++) {
-            let appIcon = new AppIcon.AppIcon({ appInfo: apps[i],
+            let appIcon = new AppIcon.AppIcon({ app: apps[i],
                                                 size: POPUP_APPICON_SIZE });
+            // Cache the window list now; we don't handle dynamic changes here,
+            // and we don't want to be continually retrieving it
+            appIcon.cachedWindows = appIcon.app.get_windows();
             if (this._hasWindowsOnWorkspace(appIcon, activeWorkspace))
               workspaceIcons.push(appIcon);
             else
@@ -621,35 +625,16 @@ AppSwitcher.prototype = {
     },
 
     _hasWindowsOnWorkspace: function(appIcon, workspace) {
-        for (let i = 0; i < appIcon.windows.length; i++) {
-            if (appIcon.windows[i].get_workspace() == workspace)
-                return true;
-        }
-        return false;
-    },
-
-    _hasVisibleWindows : function(appIcon) {
-        for (let i = 0; i < appIcon.windows.length; i++) {
-            if (appIcon.windows[i].showing_on_its_workspace())
+        let windows = appIcon.cachedWindows;
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i].get_workspace() == workspace)
                 return true;
         }
         return false;
     },
 
     _sortAppIcon : function(appIcon1, appIcon2) {
-        let vis1 = this._hasVisibleWindows(appIcon1);
-        let vis2 = this._hasVisibleWindows(appIcon2);
-
-        if (vis1 && !vis2) {
-            return -1;
-        } else if (vis2 && !vis1) {
-            return 1;
-        } else {
-            // The app's most-recently-used window is first
-            // in its list
-            return (appIcon2.windows[0].get_user_time() -
-                    appIcon1.windows[0].get_user_time());
-        }
+        return appIcon1.app.compare(appIcon2.app);
     }
 };
 

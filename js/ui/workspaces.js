@@ -1227,7 +1227,7 @@ Workspace.prototype = {
     _createWindowIcon: function(window) {
         let appSys = Shell.AppSystem.get_default();
         let appMon = Shell.AppMonitor.get_default()
-        let appInfo = appMon.get_window_app(window.metaWindow);
+        let appInfo = appMon.get_window_app(window.metaWindow).get_info();
         let iconTexture = null;
         // The design is application based, so prefer the application
         // icon here if we have it.  FIXME - should move this fallback code

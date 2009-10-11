@@ -6,9 +6,10 @@
 #include <glib.h>
 
 #include "window.h"
+#include "shell-app.h"
 #include "shell-app-system.h"
 
-/* 
+/*
  * This object provides monitoring of system application directories (.desktop files)
  * and activity-based statistics about applications usage 
  */
@@ -29,14 +30,17 @@ typedef struct _ShellAppMonitorPrivate ShellAppMonitorPrivate;
 struct _ShellAppMonitorClass
 {
   GObjectClass parent_class;
-  
 };
 
 GType shell_app_monitor_get_type (void) G_GNUC_CONST;
 
 ShellAppMonitor* shell_app_monitor_get_default(void);
 
-ShellAppInfo *shell_app_monitor_get_window_app (ShellAppMonitor *monitor, MetaWindow *metawin);
+ShellApp *shell_app_monitor_get_window_app (ShellAppMonitor *monitor, MetaWindow *metawin);
+
+ShellApp *shell_app_monitor_get_app (ShellAppMonitor *monitor, const char *id);
+
+GSList *shell_app_monitor_get_favorites (ShellAppMonitor  *monitor);
 
 GList *shell_app_monitor_get_most_used_apps (ShellAppMonitor *monitor,
                                              const char      *context,

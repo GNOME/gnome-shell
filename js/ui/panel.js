@@ -148,10 +148,11 @@ AppPanelMenu.prototype = {
         this._iconBox.hide();
         this._label.text = '';
         if (this._focusedApp != null) {
-            let icon = focusedApp.create_icon_texture(PANEL_ICON_SIZE);
+            let info = focusedApp.get_info();
+            let icon = info.create_icon_texture(PANEL_ICON_SIZE);
             this._iconBox.append(icon, Big.BoxPackFlags.NONE);
             this._iconBox.show();
-            this._label.text = focusedApp.get_name();
+            this._label.text = info.get_name();
         } else if (this._activeSequence != null) {
             let icon = this._activeSequence.create_icon(PANEL_ICON_SIZE);
             this._iconBox.append(icon, Big.BoxPackFlags.NONE);

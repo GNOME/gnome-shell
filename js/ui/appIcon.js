@@ -55,9 +55,9 @@ function AppIcon(params) {
 
 AppIcon.prototype = {
     _init : function(params) {
-        this.appInfo = params.appInfo;
-        if (!this.appInfo)
-            throw new Error('AppIcon constructor requires "appInfo" param');
+        this.app = params.app;
+        if (!this.app)
+            throw new Error('AppIcon constructor requires "app" param');
 
         this._menuType = ('menuType' in params) ? params.menuType : MenuType.NONE;
         this._iconSize = ('size' in params) ? params.size : APPICON_DEFAULT_ICON_SIZE;
@@ -70,20 +70,6 @@ AppIcon.prototype = {
                                            reactive: true });
         this.actor._delegate = this;
         this.highlight_border_color = APPICON_DEFAULT_BORDER_COLOR;
-        this._signalIds = [];
-
-        // Note, we don't presently update the window list dynamically here; this actor
-        // gets destroyed and recreated by AppWell, and in alt-tab the whole thing is
-        // created each time
-        this.windows = Shell.AppMonitor.get_default().get_windows_for_app(this.appInfo.get_id());
-        for (let i = 0; i < this.windows.length; i++) {
-            let sigId = this.windows[i].connect('notify::user-time', Lang.bind(this, this._resortWindows));
-            this._signalIds.push([this.windows[i], sigId]);
-        }
-        this._resortWindows();
-
-        this.actor.connect('destroy', Lang.bind(this, this._destroy));
-        this.actor.connect('notify::mapped', Lang.bind(this, this._onMappedChanged));
 
         if (this._menuType != MenuType.NONE) {
             this.actor.connect('button-press-event', Lang.bind(this, this._updateMenuOnButtonPress));
@@ -99,7 +85,7 @@ AppIcon.prototype = {
                                     y_align: Big.BoxAlignment.CENTER,
                                     width: this._iconSize,
                                     height: this._iconSize });
-        this.icon = this.appInfo.create_icon_texture(this._iconSize);
+        this.icon = this.app.create_icon_texture(this._iconSize);
         iconBox.append(this.icon, Big.BoxPackFlags.NONE);
 
         this.actor.append(iconBox, Big.BoxPackFlags.EXPAND);
@@ -114,12 +100,13 @@ AppIcon.prototype = {
                                         font_name: "Sans 12px",
                                         line_alignment: Pango.Alignment.CENTER,
                                         ellipsize: Pango.EllipsizeMode.END,
-                                        text: this.appInfo.get_name() });
+                                        text: this.app.get_name() });
         nameBox.add_actor(this._name);
         if (showGlow) {
             this._glowBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
             let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
-            for (let i = 0; i < this.windows.length && i < 3; i++) {
+            let windows = this.app.get_windows();
+            for (let i = 0; i < windows.length && i < 3; i++) {
                 let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
                                                                           glowPath, -1, -1);
                 glow.keep_aspect_ratio = false;
@@ -175,53 +162,11 @@ AppIcon.prototype = {
         }
     },
 
-    _destroy: function() {
-        for (let i = 0; i < this._signalIds.length; i++) {
-            let [obj, sigId] = this._signalIds[i];
-            obj.disconnect(sigId);
-        }
-    },
-
-    _onMappedChanged: function() {
-        let mapped = this.actor.mapped;
-        if (mapped && this._windowSortStale)
-            this._resortWindows();
-    },
-
-    _resortWindows: function() {
-        let mapped = this.actor.mapped;
-        if (!mapped) {
-            this._windowSortStale = true;
-            return;
-        }
-        this._windowSortStale = false;
-        this.windows.sort(function (a, b) {
-            let activeWorkspace = global.screen.get_active_workspace();
-            let wsA = a.get_workspace() == activeWorkspace;
-            let wsB = b.get_workspace() == activeWorkspace;
-
-            if (wsA && !wsB)
-                return -1;
-            else if (wsB && !wsA)
-                return 1;
-
-            let visA = a.showing_on_its_workspace();
-            let visB = b.showing_on_its_workspace();
-
-            if (visA && !visB)
-                return -1;
-            else if (visB && !visA)
-                return 1;
-            else
-                return b.get_user_time() - a.get_user_time();
-        });
-    },
-
     // AppIcon itself is not a draggable, but if you want to make
     // a subclass of it draggable, you can use this method to create
     // a drag actor
     createDragActor: function() {
-        return this.appInfo.create_icon_texture(this._iconSize);
+        return this.app.create_icon_texture(this._iconSize);
     },
 
     setHighlight: function(highlight) {
@@ -421,7 +366,7 @@ AppIconMenu.prototype = {
     _redisplay: function() {
         this._windowContainer.remove_all();
 
-        let windows = this._source.windows;
+        let windows = this._source.app.get_windows();
 
         this._windowContainer.show();
 
@@ -462,7 +407,7 @@ AppIconMenu.prototype = {
         this._newWindowMenuItem = windows.length > 0 ? this._appendMenuItem(null, _("New Window")) : null;
 
         let favorites = Shell.AppSystem.get_default().get_favorites();
-        let id = this._source.appInfo.get_id();
+        let id = this._source.app.get_id();
         this._isFavorite = false;
         for (let i = 0; i < favorites.length; i++) {
             if (id == favorites[i]) {
@@ -615,14 +560,14 @@ AppIconMenu.prototype = {
             let metaWindow = child._window;
             this.emit('activate-window', metaWindow);
         } else if (child == this._newWindowMenuItem) {
-            this._source.appInfo.launch();
+            this._source.app.get_info().launch();
             this.emit('activate-window', null);
         } else if (child == this._toggleFavoriteMenuItem) {
             let appSys = Shell.AppSystem.get_default();
             if (this._isFavorite)
-                appSys.remove_favorite(this._source.appInfo.get_id());
+                appSys.remove_favorite(this._source.app.get_id());
             else
-                appSys.add_favorite(this._source.appInfo.get_id());
+                appSys.add_favorite(this._source.app.get_id());
         }
         this.popdown();
     },
