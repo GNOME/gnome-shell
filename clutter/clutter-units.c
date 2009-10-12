@@ -816,7 +816,7 @@ param_units_validate (GParamSpec *pspec,
       g_warning ("The units value of '%s' does not have the same unit "
                  "type as declared by the ClutterParamSpecUnits of '%s'",
                  str,
-                 clutter_unit_type_name (otype));
+                 clutter_unit_type_name (uspec->default_type));
 
       g_free (str);
 
