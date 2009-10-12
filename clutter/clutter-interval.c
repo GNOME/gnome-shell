@@ -307,6 +307,15 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
       break;
     }
 
+  /* We're trying to animate a property without knowing how to do that. Issue
+   * a warning with a hint to what could be done to fix that */
+  if (G_UNLIKELY (retval == FALSE))
+      g_warning ("%s: Could not compute progress between two %ss. You can "
+                 "register a progress function to instruct ClutterInterval "
+                 "how to deal with this GType",
+                 G_STRLOC,
+                 g_type_name (value_type));
+
   return retval;
 }
 
