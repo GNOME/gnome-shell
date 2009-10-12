@@ -71,6 +71,7 @@
 
 #include "clutter-units.h"
 #include "clutter-private.h"
+#include "clutter-interval.h"
 
 #define DPI_FALLBACK    (96.0)
 
@@ -647,6 +648,31 @@ clutter_units_to_string (const ClutterUnits *units)
 }
 
 /*
+ * ClutterInterval integration
+ */
+
+static gboolean
+clutter_units_progress (const GValue *a,
+                        const GValue *b,
+                        gdouble       progress,
+                        GValue       *retval)
+{
+  ClutterUnits *a_units = (ClutterUnits *) clutter_value_get_units (a);
+  ClutterUnits *b_units = (ClutterUnits *) clutter_value_get_units (b);
+  ClutterUnits  res;
+  gfloat a_px, b_px, value;
+
+  a_px = clutter_units_to_pixels (a_units);
+  b_px = clutter_units_to_pixels (b_units);
+  value = progress * (b_px - a_px) + a_px;
+
+  clutter_units_from_pixels (&res, value);
+  clutter_value_set_units (retval, &res);
+
+  return TRUE;
+}
+
+/*
  * GValue and GParamSpec integration
  */
 
@@ -730,6 +756,9 @@ clutter_units_get_type (void)
                                        clutter_value_transform_units_string);
       g_value_register_transform_func (G_TYPE_STRING, clutter_units_type,
                                        clutter_value_transform_string_units);
+
+      clutter_interval_register_progress_func (clutter_units_type,
+                                               clutter_units_progress);
 
       g_once_init_leave (&clutter_units_type__volatile, clutter_units_type);
     }
