@@ -212,7 +212,7 @@
     <title>Glossaries</title>
 
     <xi:include href="xml/glossary.xml"><xi:fallback /></xi:include>
-    <xi:include href="xml/annotation-glossary.xml"/>
+    <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
   </part>
 
   <index>
