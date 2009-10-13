@@ -1859,8 +1859,6 @@ ClutterFlowLayoutClass
 clutter_flow_layout_new
 clutter_flow_layout_set_orientation
 clutter_flow_layout_get_orientation
-clutter_flow_layout_set_wrap
-clutter_flow_layout_get_wrap
 
 <SUBSECTION>
 clutter_flow_layout_set_column_spacing
