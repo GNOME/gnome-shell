@@ -67,6 +67,7 @@ source_h =					\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-bin-layout.h		\
 	$(srcdir)/clutter-box.h			\
+	$(srcdir)/clutter-box-layout.h		\
 	$(srcdir)/clutter-cairo-texture.h	\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone.h		\
@@ -137,6 +138,7 @@ source_c = \
 	$(srcdir)/clutter-binding-pool.c	\
 	$(srcdir)/clutter-bin-layout.c		\
 	$(srcdir)/clutter-box.c			\
+	$(srcdir)/clutter-box-layout.c		\
 	$(srcdir)/clutter-cairo-texture.c       \
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-clone.c		\
