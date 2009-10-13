@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-03 19:19+0200\n"
-"PO-Revision-Date: 2009-10-03 19:20+0300\n"
+"POT-Creation-Date: 2009-10-13 15:24+0200\n"
+"PO-Revision-Date: 2009-10-13 15:23+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 "X-Generator: Virtaal 0.4.0\n"
@@ -26,15 +26,21 @@ msgstr "صدفة جنوم"
 msgid "Window management and application launching"
 msgstr "إدارة النوافذ وإطلاق التطبيقات"
 
-#. left side
-#: ../js/ui/panel.js:271
-msgid "Activities"
-msgstr "الأنشطة"
+#: ../js/ui/appDisplay.js:335
+msgid "Frequent"
+msgstr "متكرر"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:461
-msgid "%a %l:%M %p"
-msgstr "%A %Ol:%OM %p"
+#: ../js/ui/appIcon.js:462
+msgid "New Window"
+msgstr "نافذة جديدة"
+
+#: ../js/ui/appIcon.js:475
+msgid "Remove from Favorites"
+msgstr "أزِل من المفضّلة"
+
+#: ../js/ui/appIcon.js:476
+msgid "Add to Favorites"
+msgstr "أضِف إلى المفضّلة"
 
 #: ../js/ui/dash.js:283
 msgid "Find..."
@@ -74,9 +80,42 @@ msgstr "نتائج البحث"
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:272
+msgid "Activities"
+msgstr "الأنشطة"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:464
+msgid "%a %l:%M %p"
+msgstr "%A %Ol:%OM %p"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "اتّصل ب‍..."
+
 #: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "من فضلك اكتب أمرا:"
+
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "فشل تنفيذ '%s':‏"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:162
+msgid "%H:%M"
+msgstr "%OH:%OM"
+
+#: ../js/ui/widget.js:316
+msgid "Applications"
+msgstr "التطبيقات"
+
+#: ../js/ui/widget.js:341
+msgid "Recent Documents"
+msgstr "المستندات الحديثة"
 
 #: ../src/shell-global.c:812
 msgid "Less than a minute ago"
