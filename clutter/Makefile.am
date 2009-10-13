@@ -21,24 +21,27 @@ CLEANFILES =
 DISTCLEANFILES =
 EXTRA_DIST =
 BUILT_SOURCES =
+
 INCLUDES = \
-	-I$(top_srcdir) 				\
-	-I$(top_srcdir)/clutter/cogl			\
-	-I$(top_srcdir)/clutter/pango			\
-	-I$(top_srcdir)/clutter	                        \
-	$(clutter_json_include)				\
-	-I$(top_builddir)/clutter			\
-	-DCLUTTER_PREFIX=\""$(prefix)"\"		\
-	-DCLUTTER_LIBDIR=\""$(libdir)"\"		\
-	-DCLUTTER_DATADIR=\""$(datadir)"\"		\
-	-DCLUTTER_COMPILATION=1				\
-	-DG_DISABLE_DEPRECATED 				\
-	-DG_DISABLE_SINGLE_INCLUDES			\
-	-DG_LOG_DOMAIN=\"Clutter\" 			\
-	$(CLUTTER_CFLAGS) 				\
+	-I$(top_srcdir) 		\
+	-I$(top_srcdir)/clutter/cogl	\
+	-I$(top_srcdir)/clutter/pango	\
+	-I$(top_srcdir)/clutter		\
+	$(clutter_json_include)		\
+	-I$(top_builddir)/clutter	\
 	$(NULL)
 
-AM_CFLAGS = $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
+AM_CPPFLAGS = \
+	-DCLUTTER_PREFIX=\""$(prefix)"\"	\
+	-DCLUTTER_LIBDIR=\""$(libdir)"\"	\
+	-DCLUTTER_DATADIR=\""$(datadir)"\"	\
+	-DCLUTTER_COMPILATION=1			\
+	-DG_DISABLE_DEPRECATED 			\
+	-DG_DISABLE_SINGLE_INCLUDES		\
+	-DG_LOG_DOMAIN=\"Clutter\" 		\
+	$(NULL)
+
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(CLUTTER_DEBUG_CFLAGS) $(MAINTAINER_CFLAGS)
 
 LDADD = \
 	$(CLUTTER_LT_LDFLAGS) \
@@ -178,19 +181,19 @@ source_h_priv = \
 	$(NULL)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
-  $(CLUTTER_LIBS) \
-  $(top_builddir)/clutter/cogl/libclutter-cogl.la \
-  $(top_builddir)/clutter/pango/libcoglpango.la \
-  $(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
-  $(clutter_json_libadd) \
-  $(backendextralib)
+	$(CLUTTER_LIBS) \
+	$(top_builddir)/clutter/cogl/libclutter-cogl.la \
+	$(top_builddir)/clutter/pango/libcoglpango.la \
+	$(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+	$(clutter_json_libadd) \
+	$(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
-  $(top_builddir)/clutter/cogl/libclutter-cogl.la \
-  $(top_builddir)/clutter/pango/libcoglpango.la \
-  $(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
-  $(clutter_json_dep) \
-  $(backendextralib)
+	$(top_builddir)/clutter/cogl/libclutter-cogl.la \
+	$(top_builddir)/clutter/pango/libcoglpango.la \
+	$(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+	$(clutter_json_dep) \
+	$(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c) \
