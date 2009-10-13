@@ -1179,6 +1179,8 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
   int n_rgb_func_args;
   int n_alpha_func_args;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
 #ifndef DISABLE_MATERIAL_CACHE
   if (!(gl_layer_info &&
         gl_layer_info->flags & COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE &&

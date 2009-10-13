@@ -202,29 +202,25 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
              from a non-screen buffer */
 	  GE( glPushAttrib (GL_VIEWPORT_BIT) );
 
-          _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-          _cogl_current_matrix_push ();
-          _cogl_current_matrix_identity ();
+          _cogl_matrix_stack_push (ctx->projection_stack);
+          _cogl_matrix_stack_load_identity (ctx->projection_stack);
 
-          _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-          _cogl_current_matrix_push ();
-          _cogl_current_matrix_identity ();
+          _cogl_matrix_stack_push (ctx->modelview_stack);
+          _cogl_matrix_stack_load_identity (ctx->modelview_stack);
 	}
       else
 	{
 	  /* Override viewport and matrix setup if redirecting
              from another offscreen buffer */
-          _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-          _cogl_current_matrix_identity ();
+          _cogl_matrix_stack_load_identity (ctx->projection_stack);
 
-          _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-          _cogl_current_matrix_identity ();
+          _cogl_matrix_stack_load_identity (ctx->modelview_stack);
 	}
 
       /* Setup new viewport and matrices */
       cogl_viewport (fbo->width, fbo->height);
-      _cogl_current_matrix_translate (-1.0f, -1.0f, 0.0f);
-      _cogl_current_matrix_scale (2.0f / fbo->width, 2.0f / fbo->height, 1.0f);
+      _cogl_matrix_stack_translate (ctx->modelview_stack, -1.0f, -1.0f, 0.0f);
+      _cogl_matrix_stack_scale (ctx->modelview_stack, 2.0f / fbo->width, 2.0f / fbo->height, 1.0f);
 
       /* Bind offscreen framebuffer object */
       GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, fbo->gl_handle) );
@@ -249,11 +245,9 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
              from an offscreen buffer */
 	  GE( glPopAttrib () );
 
-          _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-          _cogl_current_matrix_pop ();
+          _cogl_matrix_stack_pop (ctx->projection_stack);
 
-          _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-          _cogl_current_matrix_pop ();
+          _cogl_matrix_stack_pop (ctx->modelview_stack);
 	}
 
       /* Bind window framebuffer object */

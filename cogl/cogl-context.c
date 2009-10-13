@@ -66,6 +66,8 @@ cogl_create_context (void)
   _context->indirect = gl_is_indirect;
 
   _context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
+  _context->modelview_stack = _cogl_matrix_stack_new ();
+  _context->projection_stack = _cogl_matrix_stack_new ();
   _context->texture_units = NULL;
 
   _context->default_material = cogl_material_new ();
@@ -109,9 +111,6 @@ cogl_create_context (void)
   /* Initialise the clip stack */
   _cogl_clip_stack_state_init ();
 
-  /* Initialise matrix stack */
-  _cogl_current_matrix_state_init ();
-
   /* Initialise the driver specific state */
   _cogl_create_context_driver (_context);
 
@@ -152,7 +151,8 @@ _cogl_destroy_context ()
 
   _cogl_clip_stack_state_destroy ();
 
-  _cogl_current_matrix_state_destroy ();
+  _cogl_matrix_stack_destroy (_context->modelview_stack);
+  _cogl_matrix_stack_destroy (_context->projection_stack);
 
   _cogl_destroy_texture_units ();
 

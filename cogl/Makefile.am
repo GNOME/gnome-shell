@@ -94,8 +94,6 @@ libclutter_cogl_la_SOURCES = \
 	cogl-bitmap-private.h 		\
 	cogl-bitmap.c 			\
 	cogl-bitmap-fallback.c 		\
-	cogl-current-matrix.c		\
-	cogl-current-matrix.h		\
 	cogl-primitives.h 		\
 	cogl-primitives.c 		\
 	cogl-bitmap-pixbuf.c 		\
