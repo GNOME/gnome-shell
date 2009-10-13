@@ -235,6 +235,10 @@ AS_CASE([$CLUTTER_WINSYS],
           clutter_gl_header="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
           AC_DEFINE([HAVE_CLUTTER_GLX], [1], [Have the GLX backend])
+          AC_DEFINE([COGL_HAS_X11_SUPPORT], [1], [Cogl supports the X11 window system])
+          AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1], [Cogl supports X11 using the Xlib API])
+          AC_DEFINE([COGL_HAS_GLX_SUPPORT], [1], [Cogl supports OpenGL using the GLX API])
+
 
           COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
@@ -262,6 +266,11 @@ AS_CASE([$CLUTTER_WINSYS],
           # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
           AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
+          AC_DEFINE([COGL_HAS_X11_SUPPORT], [1], [Cogl supports the X11 window system])
+          AC_DEFINE([COGL_HAS_XLIB_SUPPORT], [1], [Cogl supports X11 using the Xlib API])
+          AC_DEFINE([COGL_HAS_EGL_SUPPORT], [1], [Cogl supports GLES using the EGL API])
+          AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_X11_SUPPORT], [1],
+                     [Cogl supports OpenGLES using the EGL API with PowerVR X11 platform typedefs])
 
           EGL_LIBS="$GLES_LIBS $X11_LIBS"
           EGL_CFLAGS="$GLES_CFLAGS $X11_CFLAGS"
@@ -278,6 +287,9 @@ AS_CASE([$CLUTTER_WINSYS],
           # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLNATIVE"
           AC_DEFINE([HAVE_CLUTTER_EGL], [1], [Have the EGL backend])
+          AC_DEFINE([COGL_HAS_EGL_SUPPORT], [1], [Cogl supports GLES using the EGL API])
+          AC_DEFINE([COGL_HAS_EGL_PLATFORM_POWERVR_NULL_SUPPORT], [1],
+                     [Cogl supports OpenGLES using the EGL API with PowerVR NULL platform typedefs])
 
           PKG_CHECK_MODULES(TSLIB, [tslib-1.0], [have_tslib=yes], [have_tslib=no])
           AS_IF([test "x$have_tslib" = "xyes"],
@@ -294,6 +306,8 @@ AS_CASE([$CLUTTER_WINSYS],
           # the GL header is defined in the COGL checks above
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
           AC_DEFINE([HAVE_CLUTTER_FRUITY], [1], [Have the Fruity backend])
+          AC_DEFINE([COGL_HAS_EGL_PLATFORM_FRUITY_SUPPORT], [1],
+                     [Cogl supports OpenGLES using the EGL API with Fruity platform typedefs])
 
           EGL_LIBS="-ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
           EGL_CFLAGS=""
@@ -305,6 +319,7 @@ AS_CASE([$CLUTTER_WINSYS],
           clutter_gl_header="OpenGL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
           AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
+          AC_DEFINE([COGL_HAS_OSX_SUPPORT], [1], [Cogl supports the OSX window system])
 
           COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
@@ -317,6 +332,8 @@ AS_CASE([$CLUTTER_WINSYS],
           clutter_gl_header="GL/gl.h"
           CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WIN32"
           AC_DEFINE([HAVE_CLUTTER_WIN32], [1], [Have the Win32 backend])
+          AC_DEFINE([COGL_HAS_WIN32_SUPPORT], [1], [Cogl supports the win32 window system])
+          AC_DEFINE([COGL_HAS_WGL_SUPPORT], [1], [Cogl supports OpenGL using the WGL API])
 
           COGL_DRIVER="gl"
           AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
