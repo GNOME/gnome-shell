@@ -16,10 +16,11 @@ DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32 fruity
 
 target = $(clutterbackend)
 
-MARSHALFILES = clutter-marshal.c clutter-marshal.h
-ENUMFILES = clutter-enum-types.c clutter-enum-types.h
-STAMPFILES = stamp-clutter-marshal.h stamp-clutter-enum-types.h
-
+# common definitions
+CLEANFILES =
+DISTCLEANFILES =
+EXTRA_DIST =
+BUILT_SOURCES =
 INCLUDES = \
 	-I$(top_srcdir) 				\
 	-I$(top_srcdir)/clutter/cogl			\
@@ -45,8 +46,6 @@ LDADD = \
 	-export-symbols-regex "^(clutter|cogl|json|pango).*" \
 	-rpath $(libdir) \
 	$(NULL)
-
-BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 
 # please, keep this sorted alphabetically
 source_h =					\
@@ -100,44 +99,16 @@ source_h =					\
 	$(top_builddir)/clutter/clutter-version.h \
 	$(NULL)
 
-clutter-marshal.h: stamp-clutter-marshal.h
-	@true
-stamp-clutter-marshal.h: clutter-marshal.list
-	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
-		--prefix=clutter_marshal \
-		--header \
-	  $(srcdir)/clutter-marshal.list > xgen-cmh \
-	&& (cmp -s xgen-cmh clutter-marshal.h || cp xgen-cmh clutter-marshal.h ) \
-	&& rm -f xgen-cmh \
-	&& echo timestamp > $(@F)
+# glib-genmarshal rules
+glib_marshal_list = $(srcdir)/clutter-marshal.list
+glib_marshal_prefix = clutter_marshal
+include $(top_srcdir)/build/autotools/Makefile.am.marshal
 
-clutter-marshal.c: clutter-marshal.h Makefile
-	$(QUIET_GEN)( echo "#include \"clutter-marshal.h\"" ; \
-	  $(GLIB_GENMARSHAL) \
-	  	--prefix=clutter_marshal \
-		--body \
-	  $(srcdir)/clutter-marshal.list --body ) >> xgen-cmc \
-	&& cp xgen-cmc clutter-marshal.c \
-	&& rm -f xgen-cmc
-
-clutter-enum-types.h: stamp-clutter-enum-types.h
-	@true
-stamp-clutter-enum-types.h: $(source_h) Makefile
-	$(QUIET_GEN)( $(GLIB_MKENUMS) \
-	  	--template $(srcdir)/clutter-enum-types.h.in \
-	  $(source_h) ) >> xgen-ceth && \
-	(cmp -s xgen-ceth clutter-enum-types.h || cp xgen-ceth clutter-enum-types.h) && \
-	rm -f xgen-ceth && \
-	echo timestamp > $(@F)
-
-clutter-enum-types.c: clutter-enum-types.h
-	$(QUIET_GEN)( $(GLIB_MKENUMS) \
-	  	--template $(srcdir)/clutter-enum-types.c.in \
-	  $(source_h) ) >> xgen-cetc && \
-	cp xgen-cetc clutter-enum-types.c && \
-	rm -f xgen-cetc
-
-CLEANFILES = $(STAMPFILES)
+# glib-mkenums rules
+glib_enum_h = clutter-enum-types.h
+glib_enum_c = clutter-enum-types.c
+glib_enum_headers = $(source_h)
+include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 # please, keep this sorted alphabetically
 source_c = \
@@ -239,6 +210,9 @@ clutter_HEADERS = \
 	$(top_builddir)/clutter/clutter-enum-types.h 	\
 	$(top_srcdir)/clutter/clutter.h
 
+DISTCLEANFILES += clutter-version.h
+EXTRA_DIST += clutter-version.h.in
+
 if HAVE_INTROSPECTION
 BUILT_GIRSOURCES =
 
@@ -322,16 +296,3 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
 endif
-
-DISTCLEANFILES = \
-	$(ENUMFILES) \
-	$(MARSHALFILES) \
-	clutter-version.h \
-	$(NULL)
-
-EXTRA_DIST = \
-	clutter-marshal.list \
-	clutter-version.h.in \
-	clutter-enum-types.h.in \
-	clutter-enum-types.c.in \
-	$(NULL)

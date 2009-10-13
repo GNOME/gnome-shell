@@ -1,0 +1,44 @@
+# Rules for generating marshal files using glib-genmarshal
+#
+# Define:
+# 	glib_marshal_list = marshal list file
+# 	glib_marshal_prefix = prefix for marshal functions
+#
+# before including Makefile.am.marshal. You will also need to have
+# the following targets already defined:
+#
+# 	CLEANFILES
+#	DISTCLEANFILES
+#	BUILT_SOURCES
+#	EXTRA_DIST
+#
+# Author: Emmanuele Bassi <ebassi@linux.intel.com>
+
+marshal_h = $(glib_marshal_list:.list=.h)
+marshal_c = $(glib_marshal_list:.list=.c)
+
+CLEANFILES += stamp-marshal
+DISTCLEANFILES += $(marshal_h) $(marshal_c)
+BUILT_SOURCES += $(marshal_h) $(marshal_c)
+EXTRA_DIST += $(glib_marshal_list)
+
+stamp-marshal: $(glib_marshal_list)
+	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
+		--prefix=$(glib_marshal_prefix) \
+		--header \
+	$(glib_marshal_list) > xgen-mh \
+	&& (cmp -s xgen-mh $(marshal_h) || cp -f xgen-mh $(marshal_h)) \
+	&& rm -f xgen-mh \
+	&& echo timestamp > $(@F)
+
+$(marshal_h): stamp-marshal
+	@true
+
+$(marshal_c): $(marshal_h)
+	$(QUIET_GEN)(echo "#include \"$(marshal_h)\"" ; \
+	$(GLIB_GENMARSHAL) \
+		--prefix=$(glib_marshal_prefix) \
+		--body \
+	$(glib_marshal_list)) > xgen-mc \
+	&& cp xgen-mc $(marshal_c) \
+	&& rm -f xgen-mc
