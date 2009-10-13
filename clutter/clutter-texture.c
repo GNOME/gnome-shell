@@ -548,6 +548,7 @@ clutter_texture_paint (ClutterActor *self)
         clutter_shader_set_is_enabled (shader, FALSE);
 
       /* Redirect drawing to the fbo */
+      cogl_push_draw_buffer ();
       cogl_set_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->fbo_handle);
 
       if ((stage = clutter_actor_get_stage (self)))
@@ -589,8 +590,8 @@ clutter_texture_paint (ClutterActor *self)
       /* Render out actor scene to fbo */
       clutter_actor_paint (priv->fbo_source);
 
-      /* Restore drawing to the frame buffer */
-      cogl_set_draw_buffer (COGL_WINDOW_BUFFER, COGL_INVALID_HANDLE);
+      /* Restore drawing to the previous draw buffer */
+      cogl_pop_draw_buffer ();
 
       /* Restore the perspective matrix using cogl_perspective so that
 	 the inverse matrix will be right */
