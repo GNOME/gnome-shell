@@ -334,20 +334,22 @@ set_clip_plane (GLint plane_num,
   angle = atan2f (vertex_b[1] - vertex_a[1],
                   vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
 
-  _cogl_current_matrix_push ();
+  _cogl_matrix_stack_push (ctx->modelview_stack);
   /* Load the identity matrix and multiply by the reverse of the
      projection matrix so we can specify the plane in screen
      coordinates */
-  _cogl_current_matrix_identity ();
+  _cogl_matrix_stack_load_identity (ctx->modelview_stack);
   cogl_matrix_init_from_array (&inverse_projection,
                                ctx->inverse_projection);
-  _cogl_current_matrix_multiply (&inverse_projection);
+  _cogl_matrix_stack_multiply (ctx->modelview_stack, &inverse_projection);
   /* Rotate about point a */
-  _cogl_current_matrix_translate (vertex_a[0], vertex_a[1], vertex_a[2]);
+  _cogl_matrix_stack_translate (ctx->modelview_stack,
+                                vertex_a[0], vertex_a[1], vertex_a[2]);
   /* Rotate the plane by the calculated angle so that it will connect
      the two points */
-  _cogl_current_matrix_rotate (angle, 0.0f, 0.0f, 1.0f);
-  _cogl_current_matrix_translate (-vertex_a[0], -vertex_a[1], -vertex_a[2]);
+  _cogl_matrix_stack_rotate (ctx->modelview_stack, angle, 0.0f, 0.0f, 1.0f);
+  _cogl_matrix_stack_translate (ctx->modelview_stack,
+                                -vertex_a[0], -vertex_a[1], -vertex_a[2]);
 
   _cogl_flush_matrix_stacks ();
 
@@ -361,7 +363,7 @@ set_clip_plane (GLint plane_num,
   GE( glClipPlane (plane_num, plane) );
 #endif
 
-  _cogl_current_matrix_pop ();
+  _cogl_matrix_stack_pop (ctx->modelview_stack);
 }
 
 void
@@ -373,16 +375,16 @@ _cogl_set_clip_planes (float x_offset,
   CoglMatrix modelview_matrix;
   CoglMatrix projection_matrix;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
   float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
   float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
   float vertex_br[4] = { x_offset + width, y_offset + height,
                         0, 1.0 };
 
-  _cogl_get_matrix (COGL_MATRIX_PROJECTION,
-                    &projection_matrix);
-  _cogl_get_matrix (COGL_MATRIX_MODELVIEW,
-                    &modelview_matrix);
+  _cogl_matrix_stack_get (ctx->projection_stack, &projection_matrix);
+  _cogl_matrix_stack_get (ctx->modelview_stack, &modelview_matrix);
 
   project_vertex (&modelview_matrix, &projection_matrix, vertex_tl);
   project_vertex (&modelview_matrix, &projection_matrix, vertex_tr);
@@ -423,6 +425,8 @@ _cogl_add_stencil_clip (float x_offset,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* We don't log changes to the stencil buffer so need to flush any
+   * batched geometry before we start... */
   _cogl_journal_flush ();
 
   /* temporarily swap in our special stenciling material */
@@ -453,31 +457,25 @@ _cogl_add_stencil_clip (float x_offset,
       cogl_rectangle (x_offset, y_offset,
                       x_offset + width, y_offset + height);
 
+      /* make sure our rectangle hits the stencil buffer before we
+       * change the stencil operation */
+      _cogl_journal_flush ();
+
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
 	 rectangle are set will be valid */
       GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
 
-      _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-      _cogl_current_matrix_push ();
-      _cogl_current_matrix_identity ();
+      _cogl_matrix_stack_push (ctx->projection_stack);
+      _cogl_matrix_stack_load_identity (ctx->projection_stack);
 
-      /* Cogl generally assumes the modelview matrix is current, so since
-       * cogl_rectangle will be flushing GL state and emitting geometry
-       * to OpenGL it will be confused if we leave the projection matrix
-       * active... */
-      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-      _cogl_current_matrix_push ();
-      _cogl_current_matrix_identity ();
+      _cogl_matrix_stack_push (ctx->modelview_stack);
+      _cogl_matrix_stack_load_identity (ctx->modelview_stack);
 
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
 
-      _cogl_current_matrix_pop ();
-
-      _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-      _cogl_current_matrix_pop ();
-
-      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+      _cogl_matrix_stack_pop (ctx->modelview_stack);
+      _cogl_matrix_stack_pop (ctx->projection_stack);
     }
 
   /* make sure our rectangles hit the stencil buffer before we restore
@@ -543,10 +541,12 @@ _cogl_setup_viewport (guint width,
   float z_camera;
   CoglMatrix projection_matrix;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   cogl_viewport (width, height);
 
   /* For Ortho projection.
-   * _cogl_current_matrix_ortho (0, width, 0,  height, -1, 1);
+   * _cogl_matrix_stack_ortho (projection_stack, 0, width, 0,  height, -1, 1);
    */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
@@ -593,11 +593,12 @@ _cogl_setup_viewport (guint width,
   cogl_get_projection_matrix (&projection_matrix);
   z_camera = 0.5 * projection_matrix.xx;
 
-  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-  _cogl_current_matrix_identity ();
-  _cogl_current_matrix_translate (-0.5f, -0.5f, -z_camera);
-  _cogl_current_matrix_scale (1.0f / width, -1.0f / height, 1.0f / width);
-  _cogl_current_matrix_translate (0.0f, -1.0 * height, 0.0f);
+  _cogl_matrix_stack_load_identity (ctx->modelview_stack);
+  _cogl_matrix_stack_translate (ctx->modelview_stack, -0.5f, -0.5f, -z_camera);
+  _cogl_matrix_stack_scale (ctx->modelview_stack,
+                            1.0f / width, -1.0f / height, 1.0f / width);
+  _cogl_matrix_stack_translate (ctx->modelview_stack,
+                                0.0f, -1.0 * height, 0.0f);
 }
 
 CoglFeatureFlags
@@ -934,5 +935,166 @@ _cogl_destroy_texture_units (void)
   for (l = ctx->texture_units; l; l = l->next)
     _cogl_texture_unit_free (l->data);
   g_list_free (ctx->texture_units);
+}
+
+void
+cogl_push_matrix (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_push (ctx->modelview_stack);
+}
+
+void
+cogl_pop_matrix (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_pop (ctx->modelview_stack);
+}
+
+void
+cogl_scale (float x, float y, float z)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_scale (ctx->modelview_stack, x, y, z);
+}
+
+void
+cogl_translate (float x, float y, float z)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_translate (ctx->modelview_stack, x, y, z);
+}
+
+void
+cogl_rotate (float angle, float x, float y, float z)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_rotate (ctx->modelview_stack, angle, x, y, z);
+}
+
+void
+cogl_perspective (float fov_y,
+		  float aspect,
+		  float z_near,
+		  float z_far)
+{
+  float ymax = z_near * tanf (fov_y * G_PI / 360.0);
+
+  cogl_frustum (-ymax * aspect,  /* left */
+                ymax * aspect,   /* right */
+                -ymax,           /* bottom */
+                ymax,            /* top */
+                z_near,
+                z_far);
+}
+
+void
+cogl_frustum (float        left,
+	      float        right,
+	      float        bottom,
+	      float        top,
+	      float        z_near,
+	      float        z_far)
+{
+  float c, d;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_matrix_stack_load_identity (ctx->projection_stack);
+
+  _cogl_matrix_stack_frustum (ctx->projection_stack,
+                              left,
+                              right,
+                              bottom,
+                              top,
+                              z_near,
+                              z_far);
+
+  /* Calculate and store the inverse of the matrix */
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
+
+  c = - (z_far + z_near) /  (z_far - z_near);
+  d = - (2 * (z_far * z_near)) /  (z_far - z_near);
+
+#define M(row,col)  ctx->inverse_projection[col*4+row]
+  M(0,0) =  (right - left) /  (2 * z_near);
+  M(0,3) =  (right + left) /  (2 * z_near);
+  M(1,1) =  (top - bottom) /  (2 * z_near);
+  M(1,3) =  (top + bottom) /  (2 * z_near);
+  M(2,3) = -1.0;
+  M(3,2) = 1.0 / d;
+  M(3,3) = c / d;
+#undef M
+}
+
+void
+cogl_ortho (float left,
+	    float right,
+	    float bottom,
+	    float top,
+	    float z_near,
+	    float z_far)
+{
+  CoglMatrix ortho;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_matrix_init_identity (&ortho);
+  cogl_matrix_ortho (&ortho, left, right, bottom, top, z_near, z_far);
+  _cogl_matrix_stack_set (ctx->projection_stack, &ortho);
+
+  /* Calculate and store the inverse of the matrix */
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
+
+#define M(row,col)  ctx->inverse_projection[col*4+row]
+  M(0,0) =  1.0 / ortho.xx;
+  M(0,3) =  -ortho.xw;
+  M(1,1) =  1.0 / ortho.yy;
+  M(1,3) =  -ortho.yw;
+  M(2,2) =  1.0 / ortho.zz;
+  M(2,3) =  -ortho.zw;
+  M(3,3) =  1.0;
+#undef M
+}
+
+void
+cogl_get_modelview_matrix (CoglMatrix *matrix)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_get (ctx->modelview_stack, matrix);
+}
+
+void
+cogl_set_modelview_matrix (CoglMatrix *matrix)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_set (ctx->modelview_stack, matrix);
+}
+
+void
+cogl_get_projection_matrix (CoglMatrix *matrix)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_get (ctx->projection_stack, matrix);
+}
+
+void
+cogl_set_projection_matrix (CoglMatrix *matrix)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_set (ctx->projection_stack, matrix);
+
+  /* FIXME: Update the inverse projection matrix!! Presumably use
+   * of clip planes must currently be broken if this API is used. */
+}
+
+void
+_cogl_flush_matrix_stacks (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  _cogl_matrix_stack_flush_to_gl (ctx->projection_stack,
+                                  COGL_MATRIX_PROJECTION);
+  _cogl_matrix_stack_flush_to_gl (ctx->modelview_stack,
+                                  COGL_MATRIX_MODELVIEW);
 }
 

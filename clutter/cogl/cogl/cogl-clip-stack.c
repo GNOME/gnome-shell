@@ -321,8 +321,11 @@ _cogl_clip_stack_rebuild (void)
   gint scissor_y0 = 0;
   gint scissor_x1 = G_MAXINT;
   gint scissor_y1 = G_MAXINT;
+  CoglMatrixStack *modelview_stack;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  modelview_stack = ctx->modelview_stack;
 
   /* The current primitive journal does not support tracking changes to the
    * clip stack...  */
@@ -354,8 +357,8 @@ _cogl_clip_stack_rebuild (void)
         {
           CoglClipStackEntryPath *path = (CoglClipStackEntryPath *) entry;
 
-          cogl_push_matrix ();
-          _cogl_set_matrix (&path->matrix);
+          _cogl_matrix_stack_push (modelview_stack);
+          _cogl_matrix_stack_set (modelview_stack, &path->matrix);
 
           _cogl_add_path_to_stencil_buffer (path->path_nodes_min,
                                             path->path_nodes_max,
@@ -363,7 +366,7 @@ _cogl_clip_stack_rebuild (void)
                                             path->path,
                                             using_stencil_buffer);
 
-          cogl_pop_matrix ();
+          _cogl_matrix_stack_pop (modelview_stack);
 
           using_stencil_buffer = TRUE;
 
@@ -374,8 +377,8 @@ _cogl_clip_stack_rebuild (void)
         {
           CoglClipStackEntryRect *rect = (CoglClipStackEntryRect *) entry;
 
-          cogl_push_matrix ();
-          _cogl_set_matrix (&rect->matrix);
+          _cogl_matrix_stack_push (modelview_stack);
+          _cogl_matrix_stack_set (modelview_stack, &rect->matrix);
 
           /* If this is the first entry and we support clip planes then use
              that instead */
@@ -399,7 +402,7 @@ _cogl_clip_stack_rebuild (void)
               using_stencil_buffer = TRUE;
             }
 
-          cogl_pop_matrix ();
+          _cogl_matrix_stack_pop (modelview_stack);
         }
       else
         {

@@ -33,7 +33,6 @@
 #include "cogl-fixed.h"
 #include "cogl-internal.h"
 #include "cogl-material.h"
-#include "cogl-current-matrix.h"
 #include "cogl-offscreen.h"
 #include "cogl-shader.h"
 #include "cogl-texture.h"

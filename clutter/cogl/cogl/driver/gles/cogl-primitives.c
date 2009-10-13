@@ -167,7 +167,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
   GE( glDepthMask (FALSE) );
 
-  _cogl_current_matrix_state_flush ();
+  _cogl_matrix_stack_flush_to_gl (ctx->modelview_stack, COGL_MATRIX_MODELVIEW);
   while (path_start < path_size)
     {
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
@@ -204,27 +204,17 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       /* Decrement all of the bits twice so that only pixels where the
          value is 3 will remain */
 
-      _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-      _cogl_current_matrix_push ();
-      _cogl_current_matrix_identity ();
+      _cogl_matrix_stack_push (ctx->projection_stack);
+      _cogl_matrix_stack_load_identity (ctx->projection_stack);
 
-      /* Cogl generally assumes the modelview matrix is current, so since
-       * cogl_rectangle will be flushing GL state and emitting geometry
-       * to OpenGL it will be confused if we leave the projection matrix
-       * active... */
-      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-      _cogl_current_matrix_push ();
-      _cogl_current_matrix_identity ();
+      _cogl_matrix_stack_push (ctx->modelview_stack);
+      _cogl_matrix_stack_load_identity (ctx->modelview_stack);
 
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
 
-      _cogl_current_matrix_pop ();
-
-      _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-      _cogl_current_matrix_pop ();
-
-      _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
+      _cogl_matrix_stack_pop (ctx->modelview_stack);
+      _cogl_matrix_stack_pop (ctx->projection_stack);
     }
 
   GE( glStencilMask (~(GLuint) 0) );

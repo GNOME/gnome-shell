@@ -24,11 +24,11 @@
 #ifndef __COGL_CONTEXT_H
 #define __COGL_CONTEXT_H
 
+#include "cogl-internal.h"
 #include "cogl-context-driver.h"
 #include "cogl-primitives.h"
 #include "cogl-clip-stack.h"
 #include "cogl-matrix-stack.h"
-#include "cogl-current-matrix.h"
 #include "cogl-material-private.h"
 
 typedef struct
@@ -58,7 +58,7 @@ typedef struct
 
   gboolean          indirect;
 
-  CoglMatrixMode    matrix_mode;
+  /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    flushed_matrix_mode;
   CoglMatrixStack  *projection_stack;
   CoglMatrixStack  *modelview_stack;

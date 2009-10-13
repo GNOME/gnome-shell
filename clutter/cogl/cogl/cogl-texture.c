@@ -670,6 +670,8 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
   GLint      viewport[4];
   CoglBitmap alpha_bmp;
   CoglHandle prev_source;
+  CoglMatrixStack *projection_stack;
+  CoglMatrixStack *modelview_stack;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -686,18 +688,16 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
    * works)
    */
 
-  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-  _cogl_current_matrix_push ();
-  _cogl_current_matrix_identity ();
+  _cogl_matrix_stack_push (ctx->projection_stack);
+  _cogl_matrix_stack_load_identity (ctx->projection_stack);
+  _cogl_matrix_stack_ortho (ctx->projection_stack,
+                            0, (float)(viewport[2]),
+                            0, (float)(viewport[3]),
+                            (float)(0),
+                            (float)(100));
 
-  _cogl_current_matrix_ortho (0, (float)(viewport[2]),
-                              0, (float)(viewport[3]),
-                              (float)(0),
-                              (float)(100));
-
-  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-  _cogl_current_matrix_push ();
-  _cogl_current_matrix_identity ();
+  _cogl_matrix_stack_push (ctx->modelview_stack);
+  _cogl_matrix_stack_load_identity (ctx->modelview_stack);
 
   /* Direct copy operation */
 
@@ -778,10 +778,8 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
     }
 
   /* Restore old state */
-  _cogl_set_current_matrix (COGL_MATRIX_PROJECTION);
-  _cogl_current_matrix_pop ();
-  _cogl_set_current_matrix (COGL_MATRIX_MODELVIEW);
-  _cogl_current_matrix_pop ();
+  _cogl_matrix_stack_pop (modelview_stack);
+  _cogl_matrix_stack_pop (projection_stack);
 
   /* restore the original material */
   cogl_set_source (prev_source);

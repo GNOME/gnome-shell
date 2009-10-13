@@ -24,9 +24,15 @@
 #ifndef __COGL_INTERNAL_H
 #define __COGL_INTERNAL_H
 
-#include "cogl-debug.h"
-#include "cogl-types.h"
-#include "cogl-context.h"
+#include "cogl.h"
+#include "cogl-matrix-stack.h"
+
+typedef enum
+{
+  COGL_MATRIX_MODELVIEW,
+  COGL_MATRIX_PROJECTION,
+  COGL_MATRIX_TEXTURE
+} CoglMatrixMode;
 
 #ifdef HAVE_COGL_GLES2
 typedef enum {
@@ -96,5 +102,7 @@ CoglTextureUnit *
 _cogl_get_texture_unit (int index_);
 void
 _cogl_destroy_texture_units (void);
+
+void    _cogl_flush_matrix_stacks (void);
 
 #endif /* __COGL_INTERNAL_H */
