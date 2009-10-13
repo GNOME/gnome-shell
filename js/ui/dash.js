@@ -641,51 +641,13 @@ Dash.prototype = {
             }
             if (this._searchTimeoutId > 0)
                 return;
-            this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, function() {
-                this._searchTimeoutId = 0;
-                let text = this._searchEntry.getText();
-                text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
-
-                let selectionSet = false;
-
-                for (var i = 0; i < this._searchSections.length; i++) {
-                    let section = this._searchSections[i];
-                    section.resultArea.display.setSearch(text);
-                    let itemCount = section.resultArea.display.getMatchedItemsCount();
-                    let itemCountText = itemCount + "";
-                    section.header.countText.text = itemCountText;
-
-                    if (this._searchResultsSingleShownSection == section.type) {
-                        this._searchResultsSection.header.setCountText(itemCountText);
-                        if (itemCount == 0) {
-                            section.resultArea.actor.hide();
-                        } else {
-                            section.resultArea.actor.show();
-                        }
-                    } else if (this._searchResultsSingleShownSection == null) {
-                        // Don't show the section if it has no results
-                        if (itemCount == 0) {
-                            section.header.actor.hide();
-                            section.resultArea.actor.hide();
-                        } else {
-                            section.header.actor.show();
-                            section.resultArea.actor.show();
-                        }
-                    }
-
-                    // Refresh the selection when a new search is applied.
-                    section.resultArea.display.unsetSelected();
-                    if (!selectionSet && section.resultArea.display.hasItems() &&
-                        (this._searchResultsSingleShownSection == null || this._searchResultsSingleShownSection == section.type)) {
-                        section.resultArea.display.selectFirstItem();
-                        selectionSet = true;
-                    }
-                }
-
-                return false;
-            }));
+            this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, this._doSearch));
         }));
         this._searchEntry.entry.connect('activate', Lang.bind(this, function (se) {
+            if (this._searchTimeoutId > 0) {
+                Mainloop.source_remove(this._searchTimeoutId);
+                this._doSearch();
+            }
             // Only one of the displays will have an item selected, so it's ok to
             // call activateSelected() on all of them.
             for (var i = 0; i < this._searchSections.length; i++) {
@@ -854,6 +816,50 @@ Dash.prototype = {
 
         this.sectionArea.append(this._searchResultsSection.actor, Big.BoxPackFlags.EXPAND);
         this._searchResultsSection.actor.hide();
+    },
+
+    _doSearch: function () {
+        this._searchTimeoutId = 0;
+        let text = this._searchEntry.getText();
+        text = text.replace(/^\s+/g, "").replace(/\s+$/g, "");
+
+        let selectionSet = false;
+
+        for (var i = 0; i < this._searchSections.length; i++) {
+            let section = this._searchSections[i];
+            section.resultArea.display.setSearch(text);
+            let itemCount = section.resultArea.display.getMatchedItemsCount();
+            let itemCountText = itemCount + "";
+            section.header.countText.text = itemCountText;
+
+            if (this._searchResultsSingleShownSection == section.type) {
+                this._searchResultsSection.header.setCountText(itemCountText);
+                if (itemCount == 0) {
+                    section.resultArea.actor.hide();
+                } else {
+                    section.resultArea.actor.show();
+                }
+            } else if (this._searchResultsSingleShownSection == null) {
+                // Don't show the section if it has no results
+                if (itemCount == 0) {
+                    section.header.actor.hide();
+                    section.resultArea.actor.hide();
+                } else {
+                    section.header.actor.show();
+                    section.resultArea.actor.show();
+                }
+            }
+
+            // Refresh the selection when a new search is applied.
+            section.resultArea.display.unsetSelected();
+            if (!selectionSet && section.resultArea.display.hasItems() &&
+                (this._searchResultsSingleShownSection == null || this._searchResultsSingleShownSection == section.type)) {
+                section.resultArea.display.selectFirstItem();
+                selectionSet = true;
+            }
+        }
+
+        return false;
     },
 
     show: function() {
