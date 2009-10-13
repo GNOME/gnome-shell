@@ -27,6 +27,10 @@
 #include "cogl.h"
 #include "cogl-matrix-stack.h"
 
+#ifdef COGL_HAS_XLIB_SUPPORT
+#include <X11/Xlib.h>
+#endif
+
 typedef enum
 {
   COGL_FRONT_WINDING_CLOCKWISE,
@@ -127,5 +131,40 @@ _cogl_get_max_texture_image_units (void);
 
 void
 _cogl_flush_face_winding (void);
+
+#ifdef COGL_HAS_XLIB_SUPPORT
+
+/*
+ * CoglX11FilterReturn:
+ * @COGL_XLIB_FILTER_CONTINUE: The event was not handled, continues the
+ *                            processing
+ * @COGL_XLIB_FILTER_REMOVE: Remove the event, stops the processing
+ *
+ * Return values for the #CoglX11FilterFunc function.
+ */
+typedef enum _CoglXlibFilterReturn {
+  COGL_XLIB_FILTER_CONTINUE,
+  COGL_XLIB_FILTER_REMOVE
+} CoglXlibFilterReturn;
+
+/*
+ * cogl_xlib_handle_event:
+ * @xevent: pointer to XEvent structure
+ *
+ * This function processes a single X event; it can be used to hook
+ * into external X event retrieval (for example that done by Clutter
+ * or GDK).
+ *
+ * Return value: #CoglXlibFilterReturn. %COGL_XLIB_FILTER_REMOVE
+ * indicates that Cogl has internally handled the event and the
+ * caller should do no further processing. %COGL_XLIB_FILTER_CONTINUE
+ * indicates that Cogl is either not interested in the event,
+ * or has used the event to update internal state without taking
+ * any exclusive action.
+ */
+CoglXlibFilterReturn
+_cogl_xlib_handle_event (XEvent *xevent);
+
+#endif /* COGL_HAS_XLIB_SUPPORT */
 
 #endif /* __COGL_INTERNAL_H */
