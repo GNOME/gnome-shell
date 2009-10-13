@@ -129,6 +129,7 @@ enum
 {
   OVERLAY_KEY,
   FOCUS_WINDOW,
+  WINDOW_CREATED,
   LAST_SIGNAL
 };
 
@@ -225,6 +226,16 @@ meta_display_class_init (MetaDisplayClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  display_signals[WINDOW_CREATED] =
+    g_signal_new ("window-created",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1, META_TYPE_WINDOW);
+
 
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
@@ -3208,6 +3219,13 @@ meta_display_unregister_x_window (MetaDisplay *display,
 
   /* Remove any pending pings */
   remove_pending_pings_for_window (display, xwindow);
+}
+
+void
+meta_display_notify_window_created (MetaDisplay  *display,
+                                    MetaWindow   *window)
+{
+  g_signal_emit (display, display_signals[WINDOW_CREATED], 0, window);
 }
 
 /**

@@ -146,6 +146,7 @@ enum
   WORKSPACE_CHANGED,
   FOCUS,
   RAISED,
+  UNMANAGED,
 
   LAST_SIGNAL
 };
@@ -319,6 +320,15 @@ meta_window_class_init (MetaWindowClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MetaWindowClass, raised),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  window_signals[UNMANAGED] =
+    g_signal_new ("unmanaged",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MetaWindowClass, unmanaged),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -1081,6 +1091,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->constructing = FALSE;
 
+  meta_display_notify_window_created (display, window);
+
   return window;
 }
 
@@ -1452,6 +1464,8 @@ meta_window_unmanage (MetaWindow  *window,
 #endif
 
   meta_error_trap_pop (window->display, FALSE);
+
+  g_signal_emit (window, window_signals[UNMANAGED], 0);
 
   g_object_unref (window);
 }

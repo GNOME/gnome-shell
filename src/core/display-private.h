@@ -358,6 +358,9 @@ void        meta_display_register_x_window   (MetaDisplay *display,
 void        meta_display_unregister_x_window (MetaDisplay *display,
                                               Window       xwindow);
 
+void        meta_display_notify_window_created (MetaDisplay  *display,
+                                                MetaWindow   *window);
+
 GSList*     meta_display_list_windows        (MetaDisplay          *display,
                                               MetaListWindowsFlags  flags);
 

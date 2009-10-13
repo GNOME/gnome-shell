@@ -380,6 +380,7 @@ struct _MetaWindowClass
   void (*workspace_changed) (MetaWindow *window, int  old_workspace);
   void (*focus)             (MetaWindow *window);
   void (*raised)            (MetaWindow *window);
+  void (*unmanaged)         (MetaWindow *window);
 };
 
 /* These differ from window->has_foo_func in that they consider
