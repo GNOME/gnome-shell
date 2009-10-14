@@ -65,6 +65,7 @@ cogl_create_context (void)
 
   _context->indirect = gl_is_indirect;
 
+  _context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
   _context->texture_units = NULL;
 
   _context->default_material = cogl_material_new ();

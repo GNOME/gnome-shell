@@ -59,6 +59,7 @@ typedef struct
   gboolean          indirect;
 
   CoglMatrixMode    matrix_mode;
+  CoglMatrixMode    flushed_matrix_mode;
   CoglMatrixStack  *projection_stack;
   CoglMatrixStack  *modelview_stack;
 
