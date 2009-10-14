@@ -865,6 +865,8 @@ AppWell.prototype = {
 
         for (let i = 0; i < running.length; i++) {
             let app = running[i];
+            if (app.get_id() in favoriteIds)
+                continue;
             let display = new RunningWellItem(app, false);
             this._grid.actor.add_actor(display.actor);
         }
