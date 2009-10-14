@@ -385,26 +385,32 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
                                 CoglMatrixMode   mode)
 {
   CoglMatrixState *state;
-  GLenum gl_mode;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   state = _cogl_matrix_stack_top (stack);
 
   if (stack->flushed_state == state)
     return;
 
-  switch (mode)
+  if (ctx->flushed_matrix_mode != mode)
     {
-    case COGL_MATRIX_MODELVIEW:
-      gl_mode = GL_MODELVIEW;
-      break;
-    case COGL_MATRIX_PROJECTION:
-      gl_mode = GL_PROJECTION;
-      break;
-    case COGL_MATRIX_TEXTURE:
-      gl_mode = GL_TEXTURE;
-      break;
+      GLenum gl_mode;
+      switch (mode)
+        {
+        case COGL_MATRIX_MODELVIEW:
+          gl_mode = GL_MODELVIEW;
+          break;
+        case COGL_MATRIX_PROJECTION:
+          gl_mode = GL_PROJECTION;
+          break;
+        case COGL_MATRIX_TEXTURE:
+          gl_mode = GL_TEXTURE;
+          break;
+        }
+      GE (glMatrixMode (gl_mode));
+      ctx->flushed_matrix_mode = mode;
     }
-  GE (glMatrixMode (gl_mode));
 
   /* In theory it might help the GL implementation if we used our
    * local analysis of the matrix and called Translate/Scale rather
