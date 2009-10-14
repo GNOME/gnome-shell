@@ -64,6 +64,12 @@ shell_app_get_description (ShellApp *app)
   return shell_app_info_get_description (app->info);
 }
 
+gboolean
+shell_app_is_transient (ShellApp *app)
+{
+  return shell_app_info_is_transient (app->info);
+}
+
 /**
  * shell_app_get_info:
  *

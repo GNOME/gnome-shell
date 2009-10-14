@@ -850,7 +850,7 @@ AppWell.prototype = {
         let contextId = "";
 
         let running = this._appMonitor.get_running_apps(contextId);
-        let runningIds = this._appIdListToHash(running)
+        let runningIds = this._appIdListToHash(running);
 
         for (let i = 0; i < favorites.length; i++) {
             let app = favorites[i];
@@ -891,10 +891,10 @@ AppWell.prototype = {
 
         let id = app.get_id();
 
-        let favoriteIds = this._appSystem.get_favorites();
-        let favoriteIdsObject = this._arrayValues(favoriteIds);
+        let favorites = this._appMonitor.get_favorites();
+        let favoriteIds = this._appIdListToHash(favorites);
 
-        let srcIsFavorite = (id in favoriteIdsObject);
+        let srcIsFavorite = (id in favoriteIds);
 
         if (srcIsFavorite) {
             return false;

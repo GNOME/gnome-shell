@@ -34,6 +34,7 @@ const char *shell_app_get_id (ShellApp *app);
 ClutterActor *shell_app_create_icon_texture (ShellApp *app, float size);
 char *shell_app_get_name (ShellApp *app);
 char *shell_app_get_description (ShellApp *app);
+gboolean shell_app_is_transient (ShellApp *app);
 
 ShellAppInfo *shell_app_get_info (ShellApp *app);
 
