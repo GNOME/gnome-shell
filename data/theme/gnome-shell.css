@@ -174,3 +174,8 @@ StScrollBar StButton#vhandle:hover
     border-radius: 4px;
     background: rgba(255,255,255,0.33);
 }
+
+.switcher-list .separator {
+    width: 1px;
+    background: rgba(255,255,255,0.33);
+}

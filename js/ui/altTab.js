@@ -18,8 +18,6 @@ const POPUP_ARROW_COLOR = new Clutter.Color();
 POPUP_ARROW_COLOR.from_pixel(0xffffffff);
 const TRANSPARENT_COLOR = new Clutter.Color();
 TRANSPARENT_COLOR.from_pixel(0x00000000);
-const POPUP_SEPARATOR_COLOR = new Clutter.Color();
-POPUP_SEPARATOR_COLOR.from_pixel(0x80808066);
 
 const POPUP_APPICON_SIZE = 96;
 const POPUP_LIST_SPACING = 8;
@@ -385,11 +383,7 @@ SwitcherList.prototype = {
     },
 
     addSeparator: function () {
-        // FIXME: make this work with StWidgets and CSS
-        let box = new Big.Box({ padding_top: 2, padding_bottom: 2 });
-        box.append(new Clutter.Rectangle({ width: 1,
-                                           color: POPUP_SEPARATOR_COLOR }),
-                   Big.BoxPackFlags.EXPAND);
+        let box = new St.Bin({ style_class: 'separator' })
         this._separator = box;
         this._list.add_actor(box);
     },
