@@ -1227,13 +1227,13 @@ Workspace.prototype = {
     _createWindowIcon: function(window) {
         let appSys = Shell.AppSystem.get_default();
         let appMon = Shell.AppMonitor.get_default()
-        let appInfo = appMon.get_window_app(window.metaWindow).get_info();
+        let app = appMon.get_window_app(window.metaWindow);
         let iconTexture = null;
         // The design is application based, so prefer the application
         // icon here if we have it.  FIXME - should move this fallback code
         // into ShellAppMonitor.
-        if (appInfo) {
-            iconTexture = appInfo.create_icon_texture(48);
+        if (app) {
+            iconTexture = app.create_icon_texture(48);
         } else {
             let icon = window.metaWindow.icon;
             iconTexture = new Clutter.Texture({ width: 48,
