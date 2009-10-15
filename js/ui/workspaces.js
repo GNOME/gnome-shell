@@ -825,7 +825,6 @@ Workspace.prototype = {
      * fashion by the order in which the windows were created.
      */
     _orderWindowsByMotionAndStartup: function(windows, slots) {
-        let appMonitor = Shell.AppMonitor.get_default();
         windows.sort(function(w1, w2) {
             return w2.get_stable_sequence() - w1.get_stable_sequence();
         });
@@ -1220,14 +1219,13 @@ Workspace.prototype = {
 
     // Tests if @win should be shown in the Overview
     _isOverviewWindow : function (win) {
-        let appMon = Shell.AppMonitor.get_default()
-        return appMon.is_window_usage_tracked(win.get_meta_window());
+        let tracker = Shell.WindowTracker.get_default()
+        return tracker.is_window_interesting(win.get_meta_window());
     },
 
     _createWindowIcon: function(window) {
-        let appSys = Shell.AppSystem.get_default();
-        let appMon = Shell.AppMonitor.get_default()
-        let app = appMon.get_window_app(window.metaWindow);
+        let tracker = Shell.WindowTracker.get_default()
+        let app = tracker.get_window_app(window.metaWindow);
         let iconTexture = null;
         // The design is application based, so prefer the application
         // icon here if we have it.  FIXME - should move this fallback code
@@ -1458,10 +1456,11 @@ Workspaces.prototype = {
 
         this._windowSelectionAppId = appId;
 
-        let appSys = Shell.AppMonitor.get_default();
+        let appSys = Shell.AppSystem.get_default();
 
         let showOnlyWindows = {};
-        let windows = appSys.get_windows_for_app(appId);
+        let app = appSys.get_app(appId);
+        let windows = app.get_windows();
         for (let i = 0; i < windows.length; i++) {
             showOnlyWindows[windows[i]] = 1;
         }

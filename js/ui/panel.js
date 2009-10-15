@@ -109,34 +109,26 @@ AppPanelMenu.prototype = {
             this.actor.opacity = 192;
         }));
 
-        this._metaDisplay.connect('notify::focus-window', Lang.bind(this, this._sync));
-
-        let appMonitor = Shell.AppMonitor.get_default();
-        appMonitor.connect('startup-sequence-changed', Lang.bind(this, this._sync));
-        // For now just resync on application add/remove; this is mainly to handle
+        let tracker = Shell.WindowTracker.get_default();
+        tracker.connect('notify::focus-app', Lang.bind(this, this._sync));
+        tracker.connect('startup-sequence-changed', Lang.bind(this, this._sync));
+        // For now just resync on all running state changes; this is mainly to handle
         // cases where the focused window's application changes without the focus
         // changing.  An example case is how we map Firefox based on the window
         // title which is a dynamic property.
-        appMonitor.connect('app-added', Lang.bind(this, this._sync));
-        appMonitor.connect('app-removed', Lang.bind(this, this._sync));
+        tracker.connect('app-running-changed', Lang.bind(this, this._sync));
 
         this._sync();
     },
 
     _sync: function() {
-        let appMonitor = Shell.AppMonitor.get_default();
+        let tracker = Shell.WindowTracker.get_default();
 
-        let focusWindow = this._metaDisplay.get_focus_window();
-        let focusedApp;
-        if (focusWindow == null) {
-           focusedApp = null;
-        } else {
-           focusedApp = appMonitor.get_window_app(focusWindow);
-        }
+        let focusedApp = tracker.focus_app;
 
         let lastSequence = null;
         if (focusedApp == null) {
-            let sequences = appMonitor.get_startup_sequences();
+            let sequences = tracker.get_startup_sequences();
             if (sequences.length > 0)
                 lastSequence = sequences[sequences.length - 1];
         }
@@ -156,11 +148,10 @@ AppPanelMenu.prototype = {
         this._iconBox.hide();
         this._label.text = '';
         if (this._focusedApp != null) {
-            let info = focusedApp.get_info();
-            let icon = info.create_icon_texture(PANEL_ICON_SIZE);
+            let icon = this._focusedApp.create_icon_texture(PANEL_ICON_SIZE);
             this._iconBox.append(icon, Big.BoxPackFlags.NONE);
             this._iconBox.show();
-            this._label.text = info.get_name();
+            this._label.text = this._focusedApp.get_name();
         } else if (this._activeSequence != null) {
             let icon = this._activeSequence.create_icon(PANEL_ICON_SIZE);
             this._iconBox.append(icon, Big.BoxPackFlags.NONE);

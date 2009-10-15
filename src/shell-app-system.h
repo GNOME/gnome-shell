@@ -4,6 +4,7 @@
 #include <gio/gio.h>
 #include <clutter/clutter.h>
 
+#include "shell-app.h"
 #include "window.h"
 
 #define SHELL_TYPE_APP_SYSTEM                 (shell_app_system_get_type ())
@@ -75,20 +76,16 @@ gboolean shell_app_info_launch (ShellAppInfo *info,
 
 ShellAppInfo *shell_app_system_load_from_desktop_file (ShellAppSystem *system, const char *filename, GError **error);
 
-ShellAppInfo *shell_app_system_lookup_cached_app (ShellAppSystem *system, const char *id);
+ShellApp *shell_app_system_get_app (ShellAppSystem *system, const char *id);
 
-ShellAppInfo *shell_app_system_lookup_heuristic_basename (ShellAppSystem *system, const char *id);
+void _shell_app_system_register_app (ShellAppSystem *self, ShellApp *app);
+
+ShellApp *shell_app_system_lookup_heuristic_basename (ShellAppSystem *system, const char *id);
 
 ShellAppInfo *shell_app_system_create_from_window (ShellAppSystem *system, MetaWindow *window);
 
 GSList *shell_app_system_get_menus (ShellAppSystem *system);
 
 GSList *shell_app_system_get_all_settings (ShellAppSystem *system);
-
-GList *shell_app_system_get_favorites (ShellAppSystem *system);
-
-void shell_app_system_add_favorite (ShellAppSystem *system, const char *id);
-
-void shell_app_system_remove_favorite (ShellAppSystem *system, const char *id);
 
 #endif /* __SHELL_APP_SYSTEM_H__ */

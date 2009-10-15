@@ -13,6 +13,7 @@ const Mainloop = imports.mainloop;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const AppFavorites = imports.ui.appFavorites;
 const AppIcon = imports.ui.appIcon;
 const DND = imports.ui.dnd;
 const GenericDisplay = imports.ui.genericDisplay;
@@ -57,7 +58,9 @@ AppDisplayItem.prototype = {
 
     // Opens an application represented by this display item.
     launch : function() {
-        let windows = Shell.AppMonitor.get_default().get_windows_for_app(this._appInfo.get_id());
+        let appSys = Shell.AppSystem.get_default();
+        let app = appSys.get_app(this._appInfo.get_id());
+        let windows = app.get_windows();
         if (windows.length > 0) {
             let mostRecentWindow = windows[0];
             Main.overview.activateWindow(mostRecentWindow, Main.currentTime());
@@ -181,14 +184,9 @@ AppDisplay.prototype = {
         // We use a map of appIds instead of an array to ensure that we don't have duplicates and for easier lookup.
         this._menuSearchAppMatches = {};
 
-        this._appMonitor = Shell.AppMonitor.get_default();
         this._appSystem = Shell.AppSystem.get_default();
         this._appsStale = true;
         this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
-            this._appsStale = true;
-            this._redisplay(GenericDisplay.RedisplayFlags.NONE);
-        }));
-        this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
             this._appsStale = true;
             this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
@@ -301,9 +299,8 @@ AppDisplay.prototype = {
 
     _getMostUsed: function() {
         let context = "";
-        return this._appMonitor.get_most_used_apps(context, 30).map(Lang.bind(this, function (id) {
-            return this._appSystem.lookup_cached_app(id);
-        })).filter(function (e) { return e != null });
+        let usage = Shell.AppUsage.get_default();
+        return usage.get_most_used(context, 30);
     },
 
     _addMenuItem: function(name, id, index) {
@@ -523,7 +520,7 @@ BaseWellItem.prototype = {
         // as say Pidgin, but ideally what we do there is have the app
         // express to us that it doesn't do relaunch=new-window in the
         // .desktop file.
-        this.app.get_info().launch();
+        this.app.launch();
     },
 
     getDragActor: function() {
@@ -557,7 +554,7 @@ RunningWellItem.prototype = {
         let modifiers = Shell.get_event_state(event);
 
         if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-            this.app.get_info().launch();
+            this.app.launch();
         } else {
             this.activateMostRecentWindow();
         }
@@ -611,7 +608,7 @@ InactiveWellItem.prototype = {
     },
 
     _onActivate: function() {
-        this.app.get_info().launch();
+        this.app.launch();
         Main.overview.hide();
         return true;
     },
@@ -791,6 +788,8 @@ AppWell.prototype = {
         this._menus = [];
         this._menuDisplays = [];
 
+        this._favorites = [];
+
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                    x_align: Big.BoxAlignment.CENTER });
         this.actor._delegate = this;
@@ -801,21 +800,13 @@ AppWell.prototype = {
         this._grid = new WellGrid();
         this.actor.append(this._grid.actor, Big.BoxPackFlags.EXPAND);
 
+        this._tracker = Shell.WindowTracker.get_default();
         this._appSystem = Shell.AppSystem.get_default();
-        this._appMonitor = Shell.AppMonitor.get_default();
 
-        this._appSystem.connect('installed-changed', Lang.bind(this, function(appSys) {
-            this._redisplay();
-        }));
-        this._appSystem.connect('favorites-changed', Lang.bind(this, function(appSys) {
-            this._redisplay();
-        }));
-        this._appMonitor.connect('window-added', Lang.bind(this, function(monitor) {
-            this._redisplay();
-        }));
-        this._appMonitor.connect('window-removed', Lang.bind(this, function(monitor) {
-            this._redisplay();
-        }));
+        this._appSystem.connect('installed-changed', Lang.bind(this, this._redisplay));
+
+        AppFavorites.getAppFavorites().connect('changed', Lang.bind(this, this._redisplay));
+        this._tracker.connect('app-running-changed', Lang.bind(this, this._redisplay));
 
         this._redisplay();
     },
@@ -843,17 +834,16 @@ AppWell.prototype = {
 
         this._grid.removeAll();
 
-        let favorites = this._appMonitor.get_favorites();
-        let favoriteIds = this._appIdListToHash(favorites);
+        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
         /* hardcode here pending some design about how exactly desktop contexts behave */
         let contextId = "";
 
-        let running = this._appMonitor.get_running_apps(contextId);
+        let running = this._tracker.get_running_apps(contextId);
         let runningIds = this._appIdListToHash(running);
 
-        for (let i = 0; i < favorites.length; i++) {
-            let app = favorites[i];
+        for (let id in favorites) {
+            let app = favorites[id];
             let display;
             if (app.get_windows().length > 0) {
                 display = new RunningWellItem(app, true);
@@ -865,7 +855,7 @@ AppWell.prototype = {
 
         for (let i = 0; i < running.length; i++) {
             let app = running[i];
-            if (app.get_id() in favoriteIds)
+            if (app.get_id() in favorites)
                 continue;
             let display = new RunningWellItem(app, false);
             this._grid.actor.add_actor(display.actor);
@@ -874,14 +864,11 @@ AppWell.prototype = {
 
     // Draggable target interface
     acceptDrop : function(source, actor, x, y, time) {
-        let appSystem = Shell.AppSystem.get_default();
-
         let app = null;
         if (source instanceof AppDisplayItem) {
-            app = appSystem.lookup_cached_app(source.getId());
+            app = this._appSystem.get_app(source.getId());
         } else if (source instanceof Workspaces.WindowClone) {
-            let appMonitor = Shell.AppMonitor.get_default();
-            app = appMonitor.get_window_app(source.metaWindow);
+            app = this._tracker.get_window_app(source.metaWindow);
         }
 
         // Don't allow favoriting of transient apps
@@ -891,18 +878,17 @@ AppWell.prototype = {
 
         let id = app.get_id();
 
-        let favorites = this._appMonitor.get_favorites();
-        let favoriteIds = this._appIdListToHash(favorites);
+        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
-        let srcIsFavorite = (id in favoriteIds);
+        let srcIsFavorite = (id in favorites);
 
         if (srcIsFavorite) {
             return false;
         } else {
-            Mainloop.idle_add(function () {
-                appSystem.add_favorite(id);
+            Mainloop.idle_add(Lang.bind(this, function () {
+                AppFavorites.getAppFavorites().addFavorite(id);
                 return false;
-            });
+            }));
         }
 
         return true;

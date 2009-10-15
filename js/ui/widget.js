@@ -12,6 +12,7 @@ const Signals = imports.signals;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
+const AppFavorites = imports.ui.appFavorites;
 const DocInfo = imports.misc.docInfo;
 
 const COLLAPSED_WIDTH = 24;
@@ -318,12 +319,9 @@ AppsWidget.prototype = {
         this.collapsedActor = new Big.Box({ spacing: 2});
 
         let appSystem = Shell.AppSystem.get_default();
-        let apps = appSystem.get_favorites();
+        let apps = AppFavorites.getAppFavorites().getFavorites();
         for (let i = 0; i < apps.length; i++) {
-            let app = appSystem.lookup_cached_app(apps[i]);
-            if (!app)
-                continue;
-            this.addItem(new AppsWidgetInfo(app));
+            this.addItem(new AppsWidgetInfo(apps[i]));
         }
     }
 };

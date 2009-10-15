@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#include "shell-app.h"
+#include "shell-app-private.h"
 #include "shell-global.h"
 
 /**
@@ -70,13 +70,20 @@ shell_app_is_transient (ShellApp *app)
   return shell_app_info_is_transient (app->info);
 }
 
+gboolean
+shell_app_launch (ShellApp  *self,
+                  GError   **error)
+{
+  return shell_app_info_launch (self->info, error);
+}
+
 /**
- * shell_app_get_info:
+ * _shell_app_get_info:
  *
  * Returns: (transfer none): Associated app info
  */
 ShellAppInfo *
-shell_app_get_info (ShellApp *app)
+_shell_app_get_info (ShellApp *app)
 {
   return app->info;
 }
@@ -140,6 +147,12 @@ shell_app_get_windows (ShellApp *app)
     }
 
   return app->windows;
+}
+
+guint
+shell_app_get_n_windows (ShellApp *app)
+{
+  return g_slist_length (app->windows);
 }
 
 static gboolean
@@ -219,6 +232,7 @@ _shell_app_new_for_window (MetaWindow      *window)
 
   app = g_object_new (SHELL_TYPE_APP, NULL);
   app->info = shell_app_system_create_from_window (shell_app_system_get_default (), window);
+  _shell_app_system_register_app (shell_app_system_get_default (), app);
   _shell_app_add_window (app, window);
 
   return app;
@@ -231,6 +245,7 @@ _shell_app_new (ShellAppInfo    *info)
 
   app = g_object_new (SHELL_TYPE_APP, NULL);
   app->info = shell_app_info_ref (info);
+  _shell_app_system_register_app (shell_app_system_get_default (), app);
 
   return app;
 }

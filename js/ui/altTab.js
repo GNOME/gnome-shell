@@ -59,8 +59,8 @@ AltTabPopup.prototype = {
     },
 
     show : function(backward) {
-        let appMonitor = Shell.AppMonitor.get_default();
-        let apps = appMonitor.get_running_apps ("");
+        let tracker = Shell.WindowTracker.get_default();
+        let apps = tracker.get_running_apps ("");
 
         if (!apps.length)
             return false;

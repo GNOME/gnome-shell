@@ -55,15 +55,16 @@ function start() {
 
     Environment.init();
 
-    // Ensure ShellAppMonitor is initialized; this will
+    // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
     // also initialize ShellAppSystem first.  ShellAppSystem
-    // needs to load all the .desktop files, and ShellAppMonitor
+    // needs to load all the .desktop files, and ShellWindowTracker
     // will use those to associate with windows.  Right now
     // the Monitor doesn't listen for installed app changes
     // and recalculate application associations, so to avoid
     // races for now we initialize it here.  It's better to
     // be predictable anyways.
-    Shell.AppMonitor.get_default();
+    Shell.WindowTracker.get_default();
+    Shell.AppUsage.get_default();
 
     // The background color really only matters if there is no desktop
     // window (say, nautilus) running. We set it mostly so things look good

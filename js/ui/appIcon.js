@@ -12,6 +12,7 @@ const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
 const GenericDisplay = imports.ui.genericDisplay;
+const AppFavorites = imports.ui.appFavorites;
 const Main = imports.ui.main;
 const Workspaces = imports.ui.workspaces;
 
@@ -404,20 +405,13 @@ AppIconMenu.prototype = {
         if (windows.length > 0)
             this._appendSeparator();
 
+        let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+
         this._newWindowMenuItem = windows.length > 0 ? this._appendMenuItem(null, _("New Window")) : null;
 
-        let favorites = Shell.AppSystem.get_default().get_favorites();
-        let id = this._source.app.get_id();
-        this._isFavorite = false;
-        for (let i = 0; i < favorites.length; i++) {
-            if (id == favorites[i]) {
-                this._isFavorite = true;
-                break;
-            }
-        }
         if (windows.length > 0)
             this._appendSeparator();
-        this._toggleFavoriteMenuItem = this._appendMenuItem(null, this._isFavorite ? _("Remove from Favorites")
+        this._toggleFavoriteMenuItem = this._appendMenuItem(null, isFavorite ? _("Remove from Favorites")
                                                                     : _("Add to Favorites"));
 
         this._highlightedItem = null;
@@ -560,14 +554,14 @@ AppIconMenu.prototype = {
             let metaWindow = child._window;
             this.emit('activate-window', metaWindow);
         } else if (child == this._newWindowMenuItem) {
-            this._source.app.get_info().launch();
+            this._source.app.launch();
             this.emit('activate-window', null);
         } else if (child == this._toggleFavoriteMenuItem) {
-            let appSys = Shell.AppSystem.get_default();
-            if (this._isFavorite)
-                appSys.remove_favorite(this._source.app.get_id());
+            let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+            if (isFavorite)
+                favs.removeFavorite(this._source.app.get_id());
             else
-                appSys.add_favorite(this._source.app.get_id());
+                favs.addFavorite(this._source.app.get_id());
         }
         this.popdown();
     },

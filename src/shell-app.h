@@ -2,11 +2,9 @@
 #ifndef __SHELL_APP_H__
 #define __SHELL_APP_H__
 
-#include <glib-object.h>
-#include <glib.h>
+#include <clutter/clutter.h>
 
 #include "window.h"
-#include "shell-app-system.h"
 
 G_BEGIN_DECLS
 
@@ -35,22 +33,15 @@ ClutterActor *shell_app_create_icon_texture (ShellApp *app, float size);
 char *shell_app_get_name (ShellApp *app);
 char *shell_app_get_description (ShellApp *app);
 gboolean shell_app_is_transient (ShellApp *app);
+gboolean shell_app_launch (ShellApp *info, GError   **error);
 
-ShellAppInfo *shell_app_get_info (ShellApp *app);
+guint shell_app_get_n_windows (ShellApp *app);
 
 GSList *shell_app_get_windows (ShellApp *app);
 
 gboolean shell_app_is_on_workspace (ShellApp *app, MetaWorkspace *workspace);
 
 int shell_app_compare (ShellApp *app, ShellApp *other);
-
-ShellApp* _shell_app_new_for_window (MetaWindow *window);
-
-ShellApp* _shell_app_new (ShellAppInfo *appinfo);
-
-void _shell_app_add_window (ShellApp *app, MetaWindow *window);
-
-void _shell_app_remove_window (ShellApp *app, MetaWindow *window);
 
 G_END_DECLS
 

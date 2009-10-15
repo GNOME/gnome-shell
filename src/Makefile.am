@@ -56,10 +56,11 @@ libgnome_shell_la_SOURCES =			\
 	gnome-shell-plugin.c			\
 	shell-app.c         \
 	shell-app.h         \
-	shell-app-monitor.c			\
-	shell-app-monitor.h			\
+	shell-app-private.h \
 	shell-app-system.c			\
 	shell-app-system.h			\
+	shell-app-usage.c			\
+	shell-app-usage.h			\
 	shell-arrow.c			\
 	shell-arrow.h			\
 	shell-button-box.c           \
@@ -95,6 +96,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-texture-cache.h			\
 	shell-uri-util.c           \
 	shell-uri-util.h           \
+	shell-window-tracker.c		\
+	shell-window-tracker.h  \
 	shell-wm.c				\
 	shell-wm.h
 
