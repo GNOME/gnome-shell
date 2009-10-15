@@ -30,6 +30,22 @@
  * policy:
  *
  * <itemizedlist>
+ *   <listitem><para>the preferred natural size depends on the value
+ *   of the #ClutterFlowLayout:orientation property; the layout will try
+ *   to maintain all its children on a single row or
+ *   column;</para></listitem>
+ *   <listitem><para>if either the width or the height allocated are
+ *   smaller than the preferred ones, the layout will wrap; in this case,
+ *   the preferred height or width, respectively, will take into account
+ *   the amount of columns and rows;</para></listitem>
+ *   <listitem><para>each line (either column or row) in reflowing will
+ *   have the size of the biggest cell on that line; if the
+ *   #ClutterFlowLayout:homogeneous property is set to %FALSE the actor
+ *   will be allocated within that area, and if set to %TRUE instead the
+ *   actor will be given exactly that area;</para></listitem>
+ *   <listitem><para>the size of the columns or rows can be controlled
+ *   for both minimum and maximum; the spacing can also be controlled
+ *   in both columns and rows.</para></listitem>
  * </itemizedlist>
  *
  * #ClutterFlowLayout is available since Clutter 1.2
