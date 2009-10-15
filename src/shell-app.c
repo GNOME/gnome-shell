@@ -243,8 +243,13 @@ shell_app_on_unmanaged (MetaWindow      *window,
 }
 
 static void
-shell_app_on_ws_switch (ShellApp   *self)
+shell_app_on_ws_switch (MetaScreen         *screen,
+                        int                 from,
+                        int                 to,
+                        MetaMotionDirection direction,
+                        gpointer            data)
 {
+  ShellApp *self = SHELL_APP (data);
   self->window_sort_stale = TRUE;
   g_signal_emit (self, shell_app_signals[WINDOWS_CHANGED], 0);
 }
