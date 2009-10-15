@@ -345,19 +345,11 @@ static void
 clutter_box_destroy (ClutterActor *actor)
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
-  GList *l;
 
-  for (l = priv->children; l != NULL; l = l->next)
-    clutter_actor_destroy (l->data);
+  /* destroy all our children */
+  g_list_foreach (priv->children, (GFunc) clutter_actor_destroy, NULL);
 
   CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy (actor);
-}
-
-static void
-on_layout_changed (ClutterLayoutManager *manager,
-                   ClutterActor         *self)
-{
-  clutter_actor_queue_relayout (self);
 }
 
 static inline void
@@ -388,9 +380,9 @@ set_layout_manager (ClutterBox           *self,
                                             CLUTTER_CONTAINER (self));
 
       priv->changed_id =
-        g_signal_connect (priv->manager, "layout-changed",
-                          G_CALLBACK (on_layout_changed),
-                          self);
+        g_signal_connect_swapped (priv->manager, "layout-changed",
+                                  G_CALLBACK (clutter_actor_queue_relayout),
+                                  self);
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
@@ -574,7 +566,7 @@ clutter_box_set_layout_manager (ClutterBox           *box,
                                 ClutterLayoutManager *manager)
 {
   g_return_if_fail (CLUTTER_IS_BOX (box));
-  g_return_if_fail (manager == NULL || CLUTTER_IS_LAYOUT_MANAGER (manager));
+  g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
 
   set_layout_manager (box, manager);
 }
