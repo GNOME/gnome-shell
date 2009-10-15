@@ -81,6 +81,8 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include "clutter-actor.h"
 #include "clutter-animatable.h"
 #include "clutter-bin-layout.h"
@@ -427,14 +429,14 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
 
       if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL)
         {
-          child_alloc.x1 = (int) 0;
-          child_alloc.x2 = (int) available_w;
+          child_alloc.x1 = 0;
+          child_alloc.x2 = ceilf (available_w);
         }
 
       if (layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL)
         {
-          child_alloc.y1 = (int) 0;
-          child_alloc.y2 = (int) available_h;
+          child_alloc.y1 = 0;
+          child_alloc.y2 = ceilf (available_h);
         }
 
       /* if we are filling horizontally and vertically then we
@@ -481,8 +483,8 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
 
       if (layer->x_align == CLUTTER_BIN_ALIGNMENT_FIXED)
         {
-          child_alloc.x1 = (int) clutter_actor_get_x (child);
-          child_alloc.x2 = (int) child_alloc.x1 + child_width;
+          child_alloc.x1 = ceilf (clutter_actor_get_x (child));
+          child_alloc.x2 = ceilf (child_alloc.x1 + child_width);
         }
       else
         {
@@ -490,15 +492,15 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
 
           if (layer->x_align != CLUTTER_BIN_ALIGNMENT_FILL)
             {
-              child_alloc.x1 = (int) ((available_w - child_width) * x_align);
-              child_alloc.x2 = (int) child_alloc.x1 + child_width;
+              child_alloc.x1 = ceilf ((available_w - child_width) * x_align);
+              child_alloc.x2 = ceilf (child_alloc.x1 + child_width);
             }
         }
 
       if (layer->y_align == CLUTTER_BIN_ALIGNMENT_FIXED)
         {
-          child_alloc.y1 = (int) clutter_actor_get_y (child);
-          child_alloc.y2 = (int) child_alloc.y1 + child_height;
+          child_alloc.y1 = ceilf (clutter_actor_get_y (child));
+          child_alloc.y2 = ceilf (child_alloc.y1 + child_height);
         }
       else
         {
@@ -506,8 +508,8 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
 
           if (layer->y_align != CLUTTER_BIN_ALIGNMENT_FILL)
             {
-              child_alloc.y1 = (int) ((available_h - child_height) * y_align);
-              child_alloc.y2 = (int) child_alloc.y1 + child_height;
+              child_alloc.y1 = ceilf ((available_h - child_height) * y_align);
+              child_alloc.y2 = ceilf (child_alloc.y1 + child_height);
             }
         }
 
