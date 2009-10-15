@@ -4,11 +4,16 @@
 #include <clutter/x11/clutter-x11.h>
 #include <gtk/gtk.h>
 
+#include <display.h>
+
+#include <girepository.h>
+
 #include "shell-tray-manager.h"
 #include "na-tray-manager.h"
 
 #include "shell-gtk-embed.h"
 #include "shell-embedded-window.h"
+#include "shell-global.h"
 
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
@@ -23,6 +28,7 @@ typedef struct {
   GtkWidget *socket;
   GtkWidget *window;
   ClutterActor *actor;
+  gboolean emitted_plugged;
 } ShellTrayManagerChild;
 
 enum {
@@ -148,21 +154,22 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
 
   shell_tray_manager_signals[TRAY_ICON_ADDED] =
     g_signal_new ("tray-icon-added",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_added),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_ACTOR);
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_added),
+                  NULL, NULL,
+                  gi_cclosure_marshal_generic,
+                  G_TYPE_NONE, 2,
+                  CLUTTER_TYPE_ACTOR,
+                  G_TYPE_STRING);
   shell_tray_manager_signals[TRAY_ICON_REMOVED] =
     g_signal_new ("tray-icon-removed",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_removed),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ShellTrayManagerClass, tray_icon_removed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
 
   /* Lifting the CONSTRUCT_ONLY here isn't hard; you just need to
@@ -265,6 +272,64 @@ shell_tray_manager_child_on_realize (GtkWidget             *widget,
     }
 }
 
+static char *
+get_lowercase_wm_class_from_socket (ShellTrayManager  *manager,
+                                    GtkSocket         *socket)
+{
+  GdkWindow *window;
+  MetaScreen *screen;
+  MetaDisplay *display;
+  XClassHint class_hint;
+  gboolean success;
+  char *result;
+
+  window = gtk_socket_get_plug_window (socket);
+  g_return_val_if_fail (window != NULL, NULL);
+
+  screen = shell_global_get_screen (shell_global_get ());
+  display = meta_screen_get_display (screen);
+
+  gdk_error_trap_push ();
+
+  success = XGetClassHint (meta_display_get_xdisplay (display), GDK_WINDOW_XWINDOW (window), &class_hint);
+
+  gdk_error_trap_pop ();
+
+  if (!success)
+    return NULL;
+
+  result = g_ascii_strdown (class_hint.res_class, -1);
+  XFree (class_hint.res_name);
+  XFree (class_hint.res_class);
+  return result;
+}
+
+static void
+on_plug_added (GtkSocket        *socket,
+               ShellTrayManager *manager)
+{
+  ShellTrayManagerChild *child;
+  char *wm_class;
+
+  child = g_hash_table_lookup (manager->priv->icons, socket);
+  /* Only emit this signal once; the point of waiting until we
+   * get the first plugged notification is to be able to get the WM_CLASS
+   * from the child window.  But we don't want to emit this signal twice
+   * if for some reason the socket gets replugged.
+   */
+  if (child->emitted_plugged)
+    return;
+  child->emitted_plugged = TRUE;
+
+  wm_class = get_lowercase_wm_class_from_socket (manager, socket);
+  if (!wm_class)
+    return;
+
+  g_signal_emit (manager, shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
+                 child->actor, wm_class);
+  g_free (wm_class);
+}
+
 static void
 na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
                     gpointer user_data)
@@ -289,7 +354,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
    * the window we put it in match that as well */
   gtk_widget_set_colormap (win, gtk_widget_get_colormap (socket));
 
-  child = g_slice_new (ShellTrayManagerChild);
+  child = g_slice_new0 (ShellTrayManagerChild);
   child->manager = manager;
   child->window = win;
   child->socket = socket;
@@ -304,9 +369,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   child->actor = g_object_ref (icon);
   g_hash_table_insert (manager->priv->icons, socket, child);
 
-  g_signal_emit (manager,
-                 shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
-                 icon);
+  g_signal_connect (socket, "plug-added", G_CALLBACK (on_plug_added), manager);
 }
 
 static void

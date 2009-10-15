@@ -63,6 +63,14 @@ const TRAY_BORDER_WIDTH = 0;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 
+const STANDARD_TRAY_ICON_ORDER = ['keyboard', 'volume', 'bluetooth', 'network', 'battery']
+const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
+    'bluetooth-applet': 'bluetooth',
+    'gnome-volume-control-applet': 'volume',
+    'nm-applet': 'network',
+    'gnome-power-manager': 'battery'
+};
+
 function AppPanelMenu() {
     this._init();
 }
@@ -358,14 +366,7 @@ Panel.prototype = {
         trayContainer.append(trayBox, Big.BoxPackFlags.NONE);
 
         this._traymanager = new Shell.TrayManager({ bg_color: TRAY_BACKGROUND_COLOR });
-        this._traymanager.connect('tray-icon-added',
-            Lang.bind(this, function(o, icon) {
-                trayBox.append(icon, Big.BoxPackFlags.NONE);
-
-                // Make sure the trayBox is shown.
-                trayBox.show();
-                this._recomputeTraySize();
-            }));
+        this._traymanager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
         this._traymanager.connect('tray-icon-removed',
             Lang.bind(this, function(o, icon) {
                 trayBox.remove_actor(icon);
@@ -440,6 +441,38 @@ Panel.prototype = {
                            time: 0.2,
                            transition: "easeOutQuad"
                          });
+    },
+
+    _onTrayIconAdded: function(o, icon, wmClass) {
+        let role = STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass];
+        if (!role) {
+            // Unknown icons go first in undefined order
+            this._trayBox.prepend(icon, Big.BoxPackFlags.NONE);
+        } else {
+            icon._role = role;
+            // Figure out the index in our well-known order for this icon
+            let position = STANDARD_TRAY_ICON_ORDER.indexOf(role);
+            icon._rolePosition = position;
+            let children = this._trayBox.get_children();
+            let i;
+            // Walk children backwards, until we find one that isn't
+            // well-known, or one where we should follow
+            for (i = children.length - 1; i >= 0; i--) {
+                let rolePosition = children[i]._rolePosition;
+                if (!rolePosition || position > rolePosition) {
+                    this._trayBox.insert_after(icon, children[i], Big.BoxPackFlags.NONE);
+                    break;
+                }
+            }
+            if (i == -1) {
+                // If we didn't find a position, we must be first
+                this._trayBox.prepend(icon, Big.BoxPackFlags.NONE);
+            }
+        }
+
+        // Make sure the trayBox is shown.
+        this._trayBox.show();
+        this._recomputeTraySize();
     },
 
     // By default, tray icons have a spacing of TRAY_SPACING.  However this

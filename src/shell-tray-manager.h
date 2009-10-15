@@ -30,7 +30,8 @@ struct _ShellTrayManagerClass
   GObjectClass parent_class;
 
   void (* tray_icon_added)   (ShellTrayManager *manager,
-			      ClutterActor     *icon); 
+			      ClutterActor     *icon,
+			      const char       *lowercase_wm_class);
   void (* tray_icon_removed) (ShellTrayManager *manager,
 			      ClutterActor     *icon);
 
