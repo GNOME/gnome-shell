@@ -2,7 +2,44 @@
  * SECTION:clutter-box
  * @short_description: A Generic layout container
  *
- * #ClutterBox is a FIXME
+ * #ClutterBox is a #ClutterActor sub-class implementing the #ClutterContainer
+ * interface. A Box delegates the whole size requisition and size allocation to
+ * a #ClutterLayoutManager instance.
+ *
+ * <example id="example-clutter-box">
+ *   <title>Using ClutterBox</title>
+ *   <para>The following code shows how to create a #ClutterBox with
+ *   a #ClutterLayoutManager sub-class, and how to add children to
+ *   it via clutter_box_pack().</para>
+ *   <programlisting>
+ *  ClutterActor *box;
+ *  ClutterLayoutManager *layout;
+ *
+ *  /&ast; Create the layout manager first &ast;/
+ *  layout = clutter_box_layout_new ();
+ *  clutter_box_layout_set_homogeneous (CLUTTER_BOX_LAYOUT (layout), TRUE);
+ *  clutter_box_layout_set_spacing (CLUTTER_BOX_LAYOUT (layout), 12);
+ *
+ *  /&ast; Then create the ClutterBox actor. The Box will take
+ *   &ast; ownership of the ClutterLayoutManager instance by sinking
+ *   &ast; its floating reference
+ *   &ast;/
+ *  box = clutter_box_new (layout);
+ *
+ *  /&ast; Now add children to the Box using the variadic arguments
+ *   &ast; function clutter_box_pack() to set layout properties
+ *   &ast;/
+ *  clutter_box_pack (CLUTTER_BOX (box), actor,
+ *                    "x-align", CLUTTER_BOX_ALIGNMENT_CENTER,
+ *                    "y-align", CLUTTER_BOX_ALIGNMENT_END,
+ *                    "expand", TRUE,
+ *                    NULL);
+ *   </programlisting>
+ * </example>
+ *
+ * #ClutterBox<!-- -->'s clutter_box_pack() wraps the generic
+ * clutter_container_add_actor() function, but it also allows setting
+ * layout properties while adding the new child to the box.
  *
  * #ClutterBox is available since Clutter 1.2
  */
@@ -237,6 +274,9 @@ clutter_box_real_get_preferred_width (ClutterActor *actor,
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
 
+  /* if we don't have any children don't bother proxying the
+   * call to the layout manager instance
+   */
   if (priv->children == NULL)
     {
       if (min_width)
@@ -262,6 +302,9 @@ clutter_box_real_get_preferred_height (ClutterActor *actor,
 {
   ClutterBoxPrivate *priv = CLUTTER_BOX (actor)->priv;
 
+  /* if we don't have any children don't bother proxying the
+   * call to the layout manager instance
+   */
   if (priv->children == NULL)
     {
       if (min_height)
