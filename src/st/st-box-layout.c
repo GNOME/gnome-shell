@@ -436,14 +436,15 @@ get_content_preferred_width (StBoxLayout *self,
 
   for (l = priv->children; l; l = g_list_next (l))
     {
+      ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE ((ClutterActor*) l->data))
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
       n_children++;
 
-      clutter_actor_get_preferred_width ((ClutterActor*) l->data,
+      clutter_actor_get_preferred_width (child,
                                          (!priv->is_vertical) ? for_height : -1,
                                          &child_min,
                                          &child_nat);
@@ -506,14 +507,15 @@ get_content_preferred_height (StBoxLayout *self,
 
   for (l = priv->children; l; l = g_list_next (l))
     {
+      ClutterActor *child = l->data;
       gfloat child_min = 0, child_nat = 0;
 
-      if (!CLUTTER_ACTOR_IS_VISIBLE ((ClutterActor*) l->data))
+      if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
 
       n_children++;
 
-      clutter_actor_get_preferred_height ((ClutterActor*) l->data,
+      clutter_actor_get_preferred_height (child,
                                           (priv->is_vertical) ? for_width : -1,
                                           &child_min,
                                           &child_nat);
@@ -606,17 +608,18 @@ compute_shrinks (StBoxLayout *self,
   int n_visible_children = 0;
   for (l = priv->children, i = 0; l; l = l->next, i++)
     {
+      ClutterActor *child = l->data;
       gfloat child_min, child_nat;
 
       shrinks[i].child_index = i;
-      if (CLUTTER_ACTOR_IS_VISIBLE (l->data))
+      if (CLUTTER_ACTOR_IS_VISIBLE (child))
         {
           if (priv->is_vertical)
-            clutter_actor_get_preferred_height ((ClutterActor*) l->data,
+            clutter_actor_get_preferred_height (child,
                                                 for_length,
                                                 &child_min, &child_nat);
           else
-            clutter_actor_get_preferred_width ((ClutterActor*) l->data,
+            clutter_actor_get_preferred_width (child,
                                                for_length,
                                                &child_min, &child_nat);
 
@@ -760,13 +763,14 @@ st_box_layout_allocate (ClutterActor          *actor,
       n_expand_children = 0;
       for (l = priv->children; l; l = l->next)
         {
+          ClutterActor *child = l->data;
           gboolean expand;
 
-          if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
+          if (!CLUTTER_ACTOR_IS_VISIBLE (child))
             continue;
 
           clutter_container_child_get ((ClutterContainer *) actor,
-                                       (ClutterActor*) l->data,
+                                       child,
                                        "expand", &expand,
                                        NULL);
           if (expand)
