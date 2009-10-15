@@ -25,7 +25,7 @@ EXTRA_DIST += $(enum_tmpl_h) $(enum_tmpl_c)
 
 stamp-enum-types: $(glib_enum_headers)
 	$(QUIET_GEN)$(GLIB_MKENUMS) \
-		--template $(enum_tmpl_h) \
+		--template $(srcdir)/$(enum_tmpl_h) \
 	$(glib_enum_headers) > xgen-eh \
 	&& (cmp -s xgen-eh $(glib_enum_h) || cp -f xgen-eh $(glib_enum_h)) \
 	&& rm -f xgen-eh \
@@ -36,7 +36,7 @@ $(glib_enum_h): stamp-enum-types
 
 $(glib_enum_c): $(glib_enum_h)
 	$(QUIET_GEN)$(GLIB_MKENUMS) \
-		--template $(enum_tmpl_c) \
+		--template $(srcdir)/$(enum_tmpl_c) \
 	$(glib_enum_headers) > xgen-ec \
 	&& cp -f xgen-ec $(glib_enum_c) \
 	&& rm -f xgen-ec

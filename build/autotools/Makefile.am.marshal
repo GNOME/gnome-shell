@@ -26,7 +26,7 @@ stamp-marshal: $(glib_marshal_list)
 	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
 		--prefix=$(glib_marshal_prefix) \
 		--header \
-	$(glib_marshal_list) > xgen-mh \
+	$(srcdir)/$(glib_marshal_list) > xgen-mh \
 	&& (cmp -s xgen-mh $(marshal_h) || cp -f xgen-mh $(marshal_h)) \
 	&& rm -f xgen-mh \
 	&& echo timestamp > $(@F)
@@ -39,6 +39,6 @@ $(marshal_c): $(marshal_h)
 	$(GLIB_GENMARSHAL) \
 		--prefix=$(glib_marshal_prefix) \
 		--body \
-	$(glib_marshal_list)) > xgen-mc \
+	$(srcdir)/$(glib_marshal_list)) > xgen-mc \
 	&& cp xgen-mc $(marshal_c) \
 	&& rm -f xgen-mc
