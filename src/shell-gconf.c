@@ -355,7 +355,7 @@ SIMPLE_SETTER(shell_gconf_set_string, const char *, gconf_client_set_string)
  * shell_gconf_set_boolean_list:
  * @gconf: a #ShellGConf
  * @key: a GConf key (as described in the #ShellGConf docs)
- * @value: (transfer none): value to set @key to
+ * @value: (transfer none) (element-type gboolean): value to set @key to
  * @error: a #GError, which will be set on error
  *
  * Sets the value of @key to @value.
@@ -377,7 +377,7 @@ LIST_SETTER(shell_gconf_set_int_list, GCONF_VALUE_INT)
  * shell_gconf_set_float_list:
  * @gconf: a #ShellGConf
  * @key: a GConf key (as described in the #ShellGConf docs)
- * @value: (transfer none): value to set @key to
+ * @value: (transfer none) (element-type float): value to set @key to
  * @error: a #GError, which will be set on error
  *
  * Sets the value of @key to @value.
@@ -388,7 +388,7 @@ LIST_SETTER(shell_gconf_set_float_list, GCONF_VALUE_FLOAT)
  * shell_gconf_set_string_list:
  * @gconf: a #ShellGConf
  * @key: a GConf key (as described in the #ShellGConf docs)
- * @value: (transfer none): value to set @key to
+ * @value: (transfer none) (element-type utf8): value to set @key to
  * @error: a #GError, which will be set on error
  *
  * Sets the value of @key to @value.
