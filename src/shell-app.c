@@ -151,11 +151,11 @@ shell_app_has_visible_windows (ShellApp   *app)
     {
       MetaWindow *window = iter->data;
 
-      if (!meta_window_showing_on_its_workspace (window))
-        return FALSE;
+      if (meta_window_showing_on_its_workspace (window))
+        return TRUE;
     }
 
-  return TRUE;
+  return FALSE;
 }
 
 gboolean
@@ -243,6 +243,21 @@ shell_app_on_unmanaged (MetaWindow      *window,
 }
 
 static void
+shell_app_on_user_time_changed (MetaWindow *window,
+                                GParamSpec *pspec,
+                                ShellApp   *app)
+{
+  /* Ideally we don't want to emit windows-changed if the sort order
+   * isn't actually changing. This check catches most of those.
+   */
+  if (window != app->windows->data)
+    {
+      app->window_sort_stale = TRUE;
+      g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
+    }
+}
+
+static void
 shell_app_on_ws_switch (MetaScreen         *screen,
                         int                 from,
                         int                 to,
@@ -263,6 +278,7 @@ _shell_app_add_window (ShellApp        *app,
 
   app->windows = g_slist_prepend (app->windows, g_object_ref (window));
   g_signal_connect (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app);
+  g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
   app->window_sort_stale = TRUE;
 
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
