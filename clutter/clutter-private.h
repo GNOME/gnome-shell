@@ -255,6 +255,8 @@ void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
 
 void _clutter_run_repaint_functions (void);
 
+gint32 _clutter_backend_get_units_serial (ClutterBackend *backend);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

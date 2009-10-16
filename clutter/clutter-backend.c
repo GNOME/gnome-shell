@@ -63,6 +63,7 @@ struct _ClutterBackendPrivate
   gdouble resolution;
 
   gfloat units_per_em;
+  gint32 units_serial;
 
   cairo_font_options_t *font_options;
 
@@ -160,7 +161,10 @@ get_units_per_em (ClutterBackend       *backend,
 static void
 clutter_backend_real_resolution_changed (ClutterBackend *backend)
 {
-  backend->priv->units_per_em = get_units_per_em (backend, NULL);
+  ClutterBackendPrivate *priv = backend->priv;
+
+  priv->units_per_em = get_units_per_em (backend, NULL);
+  priv->units_serial += 1;
 
   CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->priv->units_per_em);
 }
@@ -168,7 +172,10 @@ clutter_backend_real_resolution_changed (ClutterBackend *backend)
 static void
 clutter_backend_real_font_changed (ClutterBackend *backend)
 {
-  backend->priv->units_per_em = get_units_per_em (backend, NULL);
+  ClutterBackendPrivate *priv = backend->priv;
+
+  priv->units_per_em = get_units_per_em (backend, NULL);
+  priv->units_serial += 1;
 
   CLUTTER_NOTE (BACKEND, "Units per em: %.2f", backend->priv->units_per_em);
 }
@@ -212,7 +219,9 @@ clutter_backend_init (ClutterBackend *backend)
   priv = backend->priv = CLUTTER_BACKEND_GET_PRIVATE (backend);
 
   priv->resolution = -1.0;
+
   priv->units_per_em = -1.0;
+  priv->units_serial = 1;
 }
 
 void
@@ -720,4 +729,12 @@ clutter_backend_get_font_name (ClutterBackend *backend)
   g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
 
   return priv->font_name;
+}
+
+gint32
+_clutter_backend_get_units_serial (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+
+  return backend->priv->units_serial;
 }

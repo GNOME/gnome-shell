@@ -4,6 +4,29 @@
 #include "test-conform-common.h"
 
 void
+test_units_cache (TestConformSimpleFixture *fixture,
+                  gconstpointer data)
+{
+  ClutterUnits units;
+  ClutterBackend *backend;
+  gfloat pixels;
+  gdouble dpi;
+
+  backend = clutter_get_default_backend ();
+
+  dpi = clutter_backend_get_resolution (backend);
+
+  clutter_units_from_em (&units, 1.0);
+  pixels = clutter_units_to_pixels (&units);
+
+  clutter_backend_set_resolution (backend, dpi + 10);
+  g_assert_cmpfloat (clutter_units_to_pixels (&units), !=, pixels);
+
+  clutter_backend_set_resolution (backend, dpi);
+  g_assert_cmpfloat (clutter_units_to_pixels (&units), ==, pixels);
+}
+
+void
 test_units_constructors (TestConformSimpleFixture *fixture,
                          gconstpointer data)
 {

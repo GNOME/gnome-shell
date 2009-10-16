@@ -212,6 +212,7 @@ TAGS
 /tests/conform/test-conformance-result.xml
 /tests/conform/test-fixed-size
 /tests/conform/test-preferred-size
+/tests/conform/test-units-cache
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking

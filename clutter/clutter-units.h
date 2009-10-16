@@ -77,11 +77,18 @@ struct _ClutterUnits
   gfloat value;
 
   /* pre-filled by the provided constructors */
+
+  /* cached pixel value */
   gfloat pixels;
+
+  /* whether the :pixels field is set */
   guint pixels_set;
 
+  /* the serial coming from the backend, used to evict the cache */
+  gint32 serial;
+
   /* padding for eventual expansion */
-  gint64 __padding_1;
+  gint32 __padding_1;
   gint64 __padding_2;
 };
 

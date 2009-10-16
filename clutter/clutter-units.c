@@ -150,12 +150,17 @@ void
 clutter_units_from_mm (ClutterUnits *units,
                        gfloat        mm)
 {
+  ClutterBackend *backend;
+
   g_return_if_fail (units != NULL);
+
+  backend = clutter_get_default_backend ();
 
   units->unit_type  = CLUTTER_UNIT_MM;
   units->value      = mm;
   units->pixels     = units_mm_to_pixels (mm);
   units->pixels_set = TRUE;
+  units->serial     = _clutter_backend_get_units_serial (backend);
 }
 
 /**
@@ -171,12 +176,17 @@ void
 clutter_units_from_cm (ClutterUnits *units,
                        gfloat        cm)
 {
+  ClutterBackend *backend;
+
   g_return_if_fail (units != NULL);
+
+  backend = clutter_get_default_backend ();
 
   units->unit_type  = CLUTTER_UNIT_CM;
   units->value      = cm;
   units->pixels     = units_cm_to_pixels (cm);
   units->pixels_set = TRUE;
+  units->serial     = _clutter_backend_get_units_serial (backend);
 }
 
 /**
@@ -192,12 +202,17 @@ void
 clutter_units_from_pt (ClutterUnits *units,
                        gfloat        pt)
 {
+  ClutterBackend *backend;
+
   g_return_if_fail (units != NULL);
+
+  backend = clutter_get_default_backend ();
 
   units->unit_type  = CLUTTER_UNIT_POINT;
   units->value      = pt;
   units->pixels     = units_pt_to_pixels (pt);
   units->pixels_set = TRUE;
+  units->serial     = _clutter_backend_get_units_serial (backend);
 }
 
 /**
@@ -214,12 +229,17 @@ void
 clutter_units_from_em (ClutterUnits *units,
                        gfloat        em)
 {
+  ClutterBackend *backend;
+
   g_return_if_fail (units != NULL);
+
+  backend = clutter_get_default_backend ();
 
   units->unit_type  = CLUTTER_UNIT_EM;
   units->value      = em;
   units->pixels     = units_em_to_pixels (NULL, em);
   units->pixels_set = TRUE;
+  units->serial     = _clutter_backend_get_units_serial (backend);
 }
 
 /**
@@ -237,12 +257,17 @@ clutter_units_from_em_for_font (ClutterUnits *units,
                                 const gchar  *font_name,
                                 gfloat        em)
 {
+  ClutterBackend *backend;
+
   g_return_if_fail (units != NULL);
+
+  backend = clutter_get_default_backend ();
 
   units->unit_type  = CLUTTER_UNIT_EM;
   units->value      = em;
   units->pixels     = units_em_to_pixels (font_name, em);
   units->pixels_set = TRUE;
+  units->serial     = _clutter_backend_get_units_serial (backend);
 }
 
 /**
@@ -258,12 +283,17 @@ void
 clutter_units_from_pixels (ClutterUnits *units,
                            gint          px)
 {
+  ClutterBackend *backend;
+
   g_return_if_fail (units != NULL);
+
+  backend = clutter_get_default_backend ();
 
   units->unit_type  = CLUTTER_UNIT_PIXEL;
   units->value      = px;
   units->pixels     = px;
   units->pixels_set = TRUE;
+  units->serial     = _clutter_backend_get_units_serial (backend);
 }
 
 /**
@@ -353,7 +383,17 @@ clutter_units_free (ClutterUnits *units)
 gfloat
 clutter_units_to_pixels (ClutterUnits *units)
 {
+  ClutterBackend *backend;
+
   g_return_val_if_fail (units != NULL, 0.0);
+
+  /* if the backend settings changed we evict the cached value */
+  backend = clutter_get_default_backend ();
+  if (units->serial != _clutter_backend_get_units_serial (backend))
+    units->pixels_set = FALSE;
+
+  if (units->pixels_set)
+    return units->pixels;
 
   switch (units->unit_type)
     {
@@ -379,6 +419,7 @@ clutter_units_to_pixels (ClutterUnits *units)
     }
 
   units->pixels_set = TRUE;
+  units->serial = _clutter_backend_get_units_serial (backend);
 
   return units->pixels;
 }
@@ -431,6 +472,7 @@ gboolean
 clutter_units_from_string (ClutterUnits *units,
                            const gchar  *str)
 {
+  ClutterBackend *backend;
   ClutterUnitType unit_type;
   gfloat value;
 
@@ -503,9 +545,12 @@ clutter_units_from_string (ClutterUnits *units,
   if (*str != '\0')
     return FALSE;
 
+  backend = clutter_get_default_backend ();
+
   units->unit_type = unit_type;
   units->value = value;
   units->pixels_set = FALSE;
+  units->serial = _clutter_backend_get_units_serial (backend);
 
   return TRUE;
 }
