@@ -992,18 +992,22 @@ do_padding_property_term (StThemeNode *node,
                           gboolean     bottom)
 {
   gdouble value;
+  int int_value;
 
   if (get_length_from_term (node, term, FALSE, &value) != VALUE_FOUND)
     return;
 
+  /* Round the value */
+  int_value = (int) (0.5 + value);
+
   if (left)
-    node->padding[ST_SIDE_LEFT] = value;
+    node->padding[ST_SIDE_LEFT] = int_value;
   if (right)
-    node->padding[ST_SIDE_RIGHT] = value;
+    node->padding[ST_SIDE_RIGHT] = int_value;
   if (top)
-    node->padding[ST_SIDE_TOP] = value;
+    node->padding[ST_SIDE_TOP] = int_value;
   if (bottom)
-    node->padding[ST_SIDE_BOTTOM] = value;
+    node->padding[ST_SIDE_BOTTOM] = int_value;
 }
 
 static void
