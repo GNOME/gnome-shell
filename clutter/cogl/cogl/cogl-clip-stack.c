@@ -203,6 +203,15 @@ try_pushing_rect_as_window_rect (float x_offset,
 
   cogl_get_modelview_matrix (&matrix);
 
+  /* If the modelview meets these constraints then a transformed rectangle
+   * should still be a rectangle when it reaches screen coordinates.
+   *
+   * FIXME: we are are making certain assumptions about the projection
+   * matrix a.t.m and should really be looking at the combined modelview
+   * and projection matrix.
+   * FIXME: we don't consider rotations that are a multiple of 90 degrees
+   * which could be quite common.
+   */
   if (matrix.xy != 0 || matrix.xz != 0 ||
       matrix.yx != 0 || matrix.yz != 0 ||
       matrix.zx != 0 || matrix.zy != 0)
@@ -213,6 +222,15 @@ try_pushing_rect_as_window_rect (float x_offset,
 
   transform_point (&matrix, &matrix_p, v, &_x0, &_y0);
   transform_point (&matrix, &matrix_p, v, &_x1, &_y1);
+
+  /* Consider that the modelview matrix may flip the rectangle
+   * along the x or y axis... */
+#define SWAP(A,B) do { float tmp = B; B = A; A = tmp; } while (0)
+  if (_x0 > _x1)
+    SWAP (_x0, _x1);
+  if (_y0 > _y1)
+    SWAP (_y0, _y1);
+#undef SWAP
 
   cogl_clip_push_window_rect (_x0, _y0, _x1 - _x0, _y1 - _y0);
   return TRUE;
