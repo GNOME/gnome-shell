@@ -233,6 +233,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
         $(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
+		$(AM_CPPFLAGS) \
 		--add-include-path=cogl/cogl \
 		$(json_gir_include_path) \
 		--c-include='clutter/clutter.h' \
