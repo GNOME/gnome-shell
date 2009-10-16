@@ -20,7 +20,7 @@ marshal_c = $(glib_marshal_list:.list=.c)
 CLEANFILES += stamp-marshal
 DISTCLEANFILES += $(marshal_h) $(marshal_c)
 BUILT_SOURCES += $(marshal_h) $(marshal_c)
-EXTRA_DIST += $(glib_marshal_list)
+EXTRA_DIST += $(srcdir)/$(glib_marshal_list)
 
 stamp-marshal: $(glib_marshal_list)
 	$(QUIET_GEN)$(GLIB_GENMARSHAL) \
@@ -42,3 +42,4 @@ $(marshal_c): $(marshal_h)
 	$(srcdir)/$(glib_marshal_list)) > xgen-mc \
 	&& cp xgen-mc $(marshal_c) \
 	&& rm -f xgen-mc
+
