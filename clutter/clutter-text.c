@@ -671,6 +671,7 @@ clutter_text_delete_selection (ClutterText *self)
   ClutterTextPrivate *priv;
   gint start_index;
   gint end_index;
+  gint old_position, old_selection;
 
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
 
@@ -692,10 +693,19 @@ clutter_text_delete_selection (ClutterText *self)
       end_index = temp;
     }
 
+  old_position = priv->position;
+  old_selection = priv->selection_bound;
+
   clutter_text_delete_text (self, start_index, end_index);
 
   priv->position = start_index;
   priv->selection_bound = start_index;
+
+  if (priv->position != old_position)
+    g_object_notify (G_OBJECT (self), "position");
+
+  if (priv->selection_bound != old_selection)
+    g_object_notify (G_OBJECT (self), "selection-bound");
 
   return TRUE;
 }
@@ -3964,6 +3974,9 @@ clutter_text_set_cursor_position (ClutterText *self,
 
   priv = self->priv;
 
+  if (priv->position == position)
+    return;
+
   len = priv->n_chars;
 
   if (position < 0 || position >= len)
@@ -3977,6 +3990,8 @@ clutter_text_set_cursor_position (ClutterText *self,
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
+  g_object_notify (G_OBJECT (self), "position");
 }
 
 /**
