@@ -23,7 +23,6 @@ libclutter_cogl_driver_la_CPPFLAGS = \
 	$(MAINTAINER_CFLAGS)
 libclutter_cogl_driver_la_SOURCES = \
 	cogl.c \
-	cogl-primitives.c \
 	cogl-texture-driver.c \
 	cogl-context-driver.c \
 	cogl-context-driver.h \
