@@ -117,6 +117,11 @@ void   st_theme_node_get_border_color  (StThemeNode  *node,
 double st_theme_node_get_padding       (StThemeNode  *node,
                                         StSide        side);
 
+int    st_theme_node_get_width         (StThemeNode  *node);
+int    st_theme_node_get_height        (StThemeNode  *node);
+int    st_theme_node_get_min_width     (StThemeNode  *node);
+int    st_theme_node_get_min_height    (StThemeNode  *node);
+
 StTextDecoration st_theme_node_get_text_decoration (StThemeNode *node);
 
 /* Font rule processing is pretty complicated, so we just hardcode it

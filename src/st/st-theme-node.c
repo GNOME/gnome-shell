@@ -27,6 +27,11 @@ struct _StThemeNode {
   double border_radius[4];
   guint padding[4];
 
+  int width;
+  int height;
+  int min_width;
+  int min_height;
+
   char *background_image;
   StBorderImage *border_image;
 
@@ -43,7 +48,7 @@ struct _StThemeNode {
   CRDeclaration *inline_properties;
 
   guint properties_computed : 1;
-  guint borders_computed : 1;
+  guint geometry_computed : 1;
   guint background_computed : 1;
   guint foreground_computed : 1;
   guint border_image_computed : 1;
@@ -1070,14 +1075,25 @@ do_padding_property (StThemeNode   *node,
 }
 
 static void
-ensure_borders (StThemeNode *node)
+do_size_property (StThemeNode   *node,
+                  CRDeclaration *decl,
+		  int           *node_value)
+{
+  gdouble value;
+
+  if (get_length_from_term (node, decl->value, FALSE, &value) == VALUE_FOUND)
+    *node_value = (int) (0.5 + value);
+}
+
+static void
+ensure_geometry (StThemeNode *node)
 {
   int i, j;
 
-  if (node->borders_computed)
+  if (node->geometry_computed)
     return;
 
-  node->borders_computed = TRUE;
+  node->geometry_computed = TRUE;
 
   ensure_properties (node);
 
@@ -1086,6 +1102,11 @@ ensure_borders (StThemeNode *node)
       node->border_width[j] = 0;
       node->border_color[j] = TRANSPARENT_COLOR;
     }
+
+  node->width = -1;
+  node->height = -1;
+  node->min_width = -1;
+  node->min_height = -1;
 
   for (i = 0; i < node->n_properties; i++)
     {
@@ -1096,7 +1117,35 @@ ensure_borders (StThemeNode *node)
         do_border_property (node, decl);
       else if (g_str_has_prefix (property_name, "padding"))
         do_padding_property (node, decl);
+      else if (strcmp (property_name, "width") == 0)
+        do_size_property (node, decl, &node->width);
+      else if (strcmp (property_name, "height") == 0)
+        do_size_property (node, decl, &node->height);
+      else if (strcmp (property_name, "min-width") == 0)
+        do_size_property (node, decl, &node->min_width);
+      else if (strcmp (property_name, "min-height") == 0)
+        do_size_property (node, decl, &node->min_height);
     }
+
+  if (node->width != -1)
+    {
+      if (node->min_width == -1)
+        node->min_width = node->width;
+      else if (node->width <= node->min_width)
+        node->width = node->min_width;
+    }
+  else
+    node->width = node->min_width;
+
+  if (node->height != -1)
+    {
+      if (node->min_height == -1)
+        node->min_height = node->height;
+      else if (node->height <= node->min_height)
+        node->height = node->min_height;
+    }
+  else
+    node->height = node->min_height;
 }
 
 double
@@ -1106,7 +1155,7 @@ st_theme_node_get_border_width (StThemeNode *node,
   g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
   g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
 
-  ensure_borders (node);
+  ensure_geometry (node);
 
   return node->border_width[side];
 }
@@ -1118,9 +1167,45 @@ st_theme_node_get_border_radius (StThemeNode *node,
   g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
   g_return_val_if_fail (corner >= ST_CORNER_TOPLEFT && corner <= ST_CORNER_BOTTOMLEFT, 0.);
 
-  ensure_borders (node);
+  ensure_geometry (node);
 
   return node->border_radius[corner];
+}
+
+int
+st_theme_node_get_width (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), -1);
+
+  ensure_geometry (node);
+  return node->width;
+}
+
+int
+st_theme_node_get_height (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), -1);
+
+  ensure_geometry (node);
+  return node->height;
+}
+
+int
+st_theme_node_get_min_width (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), -1);
+
+  ensure_geometry (node);
+  return node->min_width;
+}
+
+int
+st_theme_node_get_min_height (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), -1);
+
+  ensure_geometry (node);
+  return node->min_height;
 }
 
 static GetFromTermResult
@@ -1316,7 +1401,7 @@ st_theme_node_get_border_color (StThemeNode  *node,
   g_return_if_fail (ST_IS_THEME_NODE (node));
   g_return_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT);
 
-  ensure_borders (node);
+  ensure_geometry (node);
 
   *color = node->border_color[side];
 }
@@ -1328,7 +1413,7 @@ st_theme_node_get_padding (StThemeNode *node,
   g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
   g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
 
-  ensure_borders (node);
+  ensure_geometry (node);
 
   return node->padding[side];
 }
@@ -2028,14 +2113,23 @@ st_theme_node_adjust_preferred_width (StThemeNode  *node,
 
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
-  ensure_borders (node);
+  ensure_geometry (node);
 
   width_inc = get_width_inc (node);
 
   if (min_width_p)
-    *min_width_p += width_inc;
+    {
+      if (node->min_width != -1)
+        *min_width_p = node->min_width;
+      *min_width_p += width_inc;
+    }
+
   if (natural_width_p)
-    *natural_width_p += width_inc;
+    {
+      if (node->width != -1)
+        *natural_width_p = node->width;
+      *natural_width_p += width_inc;
+    }
 }
 
 /**
@@ -2083,14 +2177,22 @@ st_theme_node_adjust_preferred_height (StThemeNode  *node,
 
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
-  ensure_borders (node);
+  ensure_geometry (node);
 
   height_inc = get_height_inc (node);
 
   if (min_height_p)
-    *min_height_p += height_inc;
+    {
+      if (node->min_height != -1)
+        *min_height_p = node->min_height;
+      *min_height_p += height_inc;
+    }
   if (natural_height_p)
-    *natural_height_p += height_inc;
+    {
+      if (node->height != -1)
+        *natural_height_p = node->height;
+      *natural_height_p += height_inc;
+    }
 }
 
 /**
@@ -2111,7 +2213,7 @@ st_theme_node_get_content_box (StThemeNode           *node,
 {
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
-  ensure_borders (node);
+  ensure_geometry (node);
 
   content_box->x1 = (int)(0.5 + node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT];
   content_box->y1 = (int)(0.5 + node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP];
@@ -2135,8 +2237,8 @@ st_theme_node_geometry_equal (StThemeNode *node,
 {
   StSide side;
 
-  ensure_borders (node);
-  ensure_borders (other);
+  ensure_geometry (node);
+  ensure_geometry (other);
 
   for (side = ST_SIDE_TOP; side <= ST_SIDE_LEFT; side++)
     {
@@ -2145,6 +2247,11 @@ st_theme_node_geometry_equal (StThemeNode *node,
       if (node->padding[side] != other->padding[side])
         return FALSE;
     }
+
+  if (node->width != other->width || node->height != other->height)
+    return FALSE;
+  if (node->min_width != other->min_width || node->min_height != other->min_height)
+    return FALSE;
 
   return TRUE;
 }
