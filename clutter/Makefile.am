@@ -241,7 +241,7 @@ if HAVE_INTROSPECTION
 # comments for COGL are in the headers, so we don't need the source files.
 
 Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
-	$(INTROSPECTION_SCANNER) -v \
+	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
 		$(AM_CPPFLAGS) \
