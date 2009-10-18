@@ -215,18 +215,27 @@ clutter_HEADERS = \
 DISTCLEANFILES += clutter-version.h
 EXTRA_DIST += clutter-version.h.in
 
-if HAVE_INTROSPECTION
 BUILT_GIRSOURCES =
 
 if LOCAL_JSON_GLIB
 json_gir_include_path=--add-include-path=json
 json_gir_include=--include=ClutterJson-@CLUTTER_API_VERSION@
 json_gir_pkg=
+
+# If we are building it, ClutterJson gets the same handling as described
+# for Cogl above
+ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
+	$(QUIET_GEN) \
+	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
+	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
+
+BUILT_GIRSOURCES += ClutterJson-@CLUTTER_API_VERSION@.gir
 else
 json_gir_include=--include=Json-1.0
 json_gir_pkg=--pkg json-glib-1.0
-endif
+endif # LOCAL_JSON_GLIB
 
+if HAVE_INTROSPECTION
 # We can't reference the list of COGL header files, since they are in a
 # subdir Makefile.am, so just extract them from cogl.h instead. The doc
 # comments for COGL are in the headers, so we don't need the source files.
@@ -273,17 +282,6 @@ Cogl-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir cogl/cogl/Cogl
 
 BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
 
-if LOCAL_JSON_GLIB
-# If we are building it, ClutterJson gets the same handling as described
-# for Cogl above
-ClutterJson-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir json/ClutterJson-@CLUTTER_API_VERSION@.gir
-	$(QUIET_GEN) \
-	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
-	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< json/ClutterJson-@CLUTTER_API_VERSION@.gir > $@
-
-BUILT_GIRSOURCES += ClutterJson-@CLUTTER_API_VERSION@.gir
-endif
-
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.
 girdir = $(datadir)/gir-1.0
@@ -302,4 +300,4 @@ typelibs_DATA = $(BUILT_GIRSOURCES:.gir=.typelib)
 		$(INTROSPECTION_COMPILER_OPTS) $< -o $(@F)
 
 CLEANFILES += $(BUILT_GIRSOURCES) $(typelibs_DATA)
-endif
+endif # HAVE_INTROSPECTION
