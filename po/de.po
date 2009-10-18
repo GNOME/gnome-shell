@@ -5,14 +5,15 @@
 # Hendrik Brandt <heb@gnome-de.org>, 2009.
 # Hendrik Richter <hendrikr@gnome.org>, 2009.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009.
+# Mario Blättermann <mariobl@gnome.org>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: HEAD\n"
+"Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-10-01 22:22+0000\n"
-"PO-Revision-Date: 2009-10-01 14:32+0200\n"
+"POT-Creation-Date: 2009-10-16 20:05+0000\n"
+"PO-Revision-Date: 2009-10-17 23:37+0200\n"
 "Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,15 +29,21 @@ msgstr "GNOME-Shell"
 msgid "Window management and application launching"
 msgstr "Fenster verwalten und Anwendungen starten"
 
-#. left side
-#: ../js/ui/panel.js:271
-msgid "Activities"
-msgstr "Aktivitäten"
+#: ../js/ui/appDisplay.js:335
+msgid "Frequent"
+msgstr "Häufig"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:461
-msgid "%a %l:%M %p"
-msgstr "%a %H:%M"
+#: ../js/ui/appIcon.js:407
+msgid "New Window"
+msgstr "Neues Fenster"
+
+#: ../js/ui/appIcon.js:420
+msgid "Remove from Favorites"
+msgstr "Aus Favoriten entfernen"
+
+#: ../js/ui/appIcon.js:421
+msgid "Add to Favorites"
+msgstr "Zu Favoriten hinzufügen"
 
 #: ../js/ui/dash.js:283
 msgid "Find..."
@@ -51,34 +58,67 @@ msgid "(see all)"
 msgstr "(alle sehen)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
+#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
 msgid "APPLICATIONS"
 msgstr "ANWENDUNGEN"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:783
+#: ../js/ui/dash.js:745
 msgid "PLACES"
 msgstr "ORTE"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
 msgid "RECENT DOCUMENTS"
 msgstr "ZULETZT GEÖFFNETE DOKUMENTE"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
+#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
 msgid "SEARCH RESULTS"
 msgstr "SUCHERGEBNISSE"
 
-#: ../js/ui/dash.js:830
+#: ../js/ui/dash.js:792
 msgid "PREFERENCES"
 msgstr "EINSTELLUNGEN"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:273
+msgid "Activities"
+msgstr "Aktivitäten"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:465
+msgid "%a %l:%M %p"
+msgstr "%a %H:%M"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Verbinden mit …"
 
 #: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "Bitte geben Sie einen Befehl ein:"
+
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Ausführung von »%s« ist gescheitert:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:162
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:316
+msgid "Applications"
+msgstr "Anwendungen"
+
+#: ../js/ui/widget.js:341
+msgid "Recent Documents"
+msgstr "Zuletzt geöffnete Dokumente"
 
 #: ../src/shell-global.c:812
 msgid "Less than a minute ago"
