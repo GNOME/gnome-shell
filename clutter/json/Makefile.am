@@ -1,3 +1,5 @@
+include $(top_srcdir)/build/autotools/Makefile.am.silent
+
 source_c = \
 	$(srcdir)/json-array.c 	\
 	$(srcdir)/json-generator.c \
@@ -40,7 +42,8 @@ if HAVE_INTROSPECTION
 BUILT_GIRSOURCES =
 
 ClutterJson-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-json.la
-	$(INTROSPECTION_SCANNER) -v --namespace ClutterJson --nsversion=@CLUTTER_API_VERSION@ \
+	$(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
+		--namespace ClutterJson --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
 		--add-include-path=$(srcdir) --add-include-path=. \
 		--include=GObject-2.0 \
