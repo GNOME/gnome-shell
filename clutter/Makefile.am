@@ -221,8 +221,10 @@ BUILT_GIRSOURCES =
 if LOCAL_JSON_GLIB
 json_gir_include_path=--add-include-path=json
 json_gir_include=--include=ClutterJson-@CLUTTER_API_VERSION@
+json_gir_pkg=
 else
 json_gir_include=--include=Json-1.0
+json_gir_pkg=--pkg json-glib-1.0
 endif
 
 # We can't reference the list of COGL header files, since they are in a
@@ -230,7 +232,7 @@ endif
 # comments for COGL are in the headers, so we don't need the source files.
 
 Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
-        $(QUIET_GEN)$(INTROSPECTION_SCANNER) -v \
+	$(INTROSPECTION_SCANNER) -v \
 		--namespace Clutter --nsversion=@CLUTTER_API_VERSION@ \
 		$(INCLUDES) \
 		$(AM_CPPFLAGS) \
@@ -246,6 +248,7 @@ Clutter-@CLUTTER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libclutter-@CLUTTER_
 		--library=libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la \
 		--libtool="$(top_builddir)/libtool" \
 	        --pkg gobject-2.0 \
+		$(json_gir_pkg) \
 	        --pkg pango \
 	        --pkg pangocairo \
 	        --output $@ \
@@ -263,10 +266,10 @@ Clutter-@CLUTTER_API_VERSION@.typelib: $(clutter_json_gir) Cogl-@CLUTTER_API_VER
 # until after we've built the shared library. To create the final Cogl.gir
 # that we compile and install, we transfer the shared-library="" line from
 # Clutter.gir to Cogl.gir
-Cogl-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir cogl/Cogl-@CLUTTER_API_VERSION@.gir
+Cogl-@CLUTTER_API_VERSION@.gir: Clutter-@CLUTTER_API_VERSION@.gir cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir
 	$(QUIET_GEN) \
 	shlib=`sed -n 's/.*shared-library="\([^"]*\)".*/\1/p' < Clutter-@CLUTTER_API_VERSION@.gir` ; \
-	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< cogl/Cogl-@CLUTTER_API_VERSION@.gir > $@
+	sed "s/shared-library=\"[^\"]*\"/shared-library=\"$$shlib\"/"< cogl/cogl/Cogl-@CLUTTER_API_VERSION@.gir > $@
 
 BUILT_GIRSOURCES += Cogl-@CLUTTER_API_VERSION@.gir
 
