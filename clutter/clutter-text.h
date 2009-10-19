@@ -206,8 +206,8 @@ gboolean              clutter_text_position_to_coords   (ClutterText        *sel
 
 void                  clutter_text_set_preedit_string   (ClutterText        *self,
                                                          const gchar        *preedit_str,
-                                                         PangoAttrList      *preedit_attr,
-                                                         guint               cursor_position);
+                                                         PangoAttrList      *preedit_attrs,
+                                                         guint               cursor_pos);
 
 G_END_DECLS
 

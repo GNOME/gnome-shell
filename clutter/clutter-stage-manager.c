@@ -230,7 +230,7 @@ clutter_stage_manager_get_default_stage (ClutterStageManager *stage_manager)
 }
 
 /**
- * clutter_stage_manager_list_stage:
+ * clutter_stage_manager_list_stages:
  * @stage_manager: a #ClutterStageManager
  *
  * Lists all currently used stages.
@@ -248,7 +248,7 @@ clutter_stage_manager_list_stages (ClutterStageManager *stage_manager)
 }
 
 /**
- * clutter_stage_manager_list_stage:
+ * clutter_stage_manager_peek_stages:
  * @stage_manager: a #ClutterStageManager
  *
  * Lists all currently used stages.

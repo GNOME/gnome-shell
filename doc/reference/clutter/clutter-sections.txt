@@ -29,12 +29,12 @@ clutter_media_get_type
 <TITLE>Unit conversion</TITLE>
 ClutterUnitType
 ClutterUnits
-clutter_units_from_mm
 clutter_units_from_cm
-clutter_units_from_pt
 clutter_units_from_em
 clutter_units_from_em_for_font
+clutter_units_from_mm
 clutter_units_from_pixels
+clutter_units_from_pt
 clutter_units_to_pixels
 clutter_units_copy
 clutter_units_free
@@ -57,6 +57,7 @@ CLUTTER_PARAM_SPEC_UNITS
 CLUTTER_IS_PARAM_SPEC_UNITS
 clutter_units_get_type
 clutter_param_units_get_type
+clutter_units_cm
 clutter_units_em
 clutter_units_em_for_font
 clutter_units_mm
@@ -1730,7 +1731,7 @@ clutter_stage_manager_get_type
 </SECTION>
 
 <SECTION>
-<TITLE>Layout Managers</TITLE>
+<TITLE>ClutterLayoutManager</TITLE>
 <FILE>clutter-layout-manager</FILE>
 ClutterLayoutManager
 ClutterLayoutManagerClass
@@ -1858,6 +1859,8 @@ ClutterFlowOrientation
 ClutterFlowLayout
 ClutterFlowLayoutClass
 clutter_flow_layout_new
+clutter_flow_layout_set_homogeneous
+clutter_flow_layout_get_homogeneous
 clutter_flow_layout_set_orientation
 clutter_flow_layout_get_orientation
 
