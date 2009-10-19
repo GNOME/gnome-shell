@@ -1303,7 +1303,10 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
       MetaWindow *ancestor;
       ancestor = NULL;
       meta_window_foreach_ancestor (not_this_one, record_ancestor, &ancestor);
-      if (ancestor != NULL)
+      if (ancestor != NULL &&
+          (ancestor->on_all_workspaces ||
+           ancestor->workspace == workspace) &&
+          meta_window_showing_on_its_workspace (ancestor))
         {
           meta_topic (META_DEBUG_FOCUS,
                       "Focusing %s, ancestor of %s\n", 
