@@ -43,6 +43,7 @@ typedef struct _ClutterActor            ClutterActor;
 typedef struct _ClutterStage            ClutterStage;
 typedef struct _ClutterContainer        ClutterContainer; /* dummy */
 typedef struct _ClutterChildMeta        ClutterChildMeta;
+typedef struct _ClutterLayoutMeta       ClutterLayoutMeta;
 
 /**
  * ClutterGravity:

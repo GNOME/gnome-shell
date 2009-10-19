@@ -45,6 +45,7 @@
 #include "clutter-group.h"
 
 #include "clutter-container.h"
+#include "clutter-fixed-layout.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
@@ -75,6 +76,8 @@ G_DEFINE_TYPE_WITH_CODE (ClutterGroup,
 struct _ClutterGroupPrivate
 {
   GList *children;
+
+  ClutterLayoutManager *layout;
 };
 
 
@@ -127,112 +130,18 @@ clutter_group_pick (ClutterActor       *actor,
 }
 
 static void
-clutter_fixed_layout_get_preferred_width (GList  *children,
-                                          gfloat *min_width_p,
-                                          gfloat *natural_width_p)
-{
-  GList *l;
-  gdouble min_right, natural_right;
-
-  /* We will always be at least 0 sized (ie, if all of the actors are
-     to the left of the origin we won't return a negative size) */
-  min_right = 0;
-  natural_right = 0;
-
-  for (l = children; l != NULL; l = l->next)
-    {
-      ClutterActor *child = l->data;
-      gfloat child_x, child_min, child_natural;
-
-      child_x = clutter_actor_get_x (child);
-
-      clutter_actor_get_preferred_size (child,
-                                        &child_min, NULL,
-                                        &child_natural, NULL);
-
-      /* Track the rightmost edge */
-      if (child_x + child_min > min_right)
-        min_right = child_x + child_min;
-
-      if (child_x + child_natural > natural_right)
-        natural_right = child_x + child_natural;
-    }
-
-  /* The size is defined as the distance from the origin to the
-     right-hand edge of the rightmost actor */
-  if (min_width_p)
-    *min_width_p = min_right;
-
-  if (natural_width_p)
-    *natural_width_p = natural_right;
-}
-
-static void
-clutter_fixed_layout_get_preferred_height (GList  *children,
-                                           gfloat *min_height_p,
-                                           gfloat *natural_height_p)
-{
-  GList *l;
-  gdouble min_bottom, natural_bottom;
-
-  /* We will always be at least 0 sized (ie, if all of the actors are
-     above the origin we won't return a negative size) */
-  min_bottom = 0;
-  natural_bottom = 0;
-
-  for (l = children; l != NULL; l = l->next)
-    {
-      ClutterActor *child = l->data;
-      gfloat child_y, child_min, child_natural;
-
-      child_y = clutter_actor_get_y (child);
-
-      clutter_actor_get_preferred_size (child,
-                                        NULL, &child_min,
-                                        NULL, &child_natural);
-
-      /* Track the bottommost edge */
-      if (child_y + child_min > min_bottom)
-        min_bottom = child_y + child_min;
-
-      if (child_y + child_natural > natural_bottom)
-        natural_bottom = child_y + child_natural;
-    }
-
-  /* The size is defined as the distance from the origin to the bottom
-     edge of the bottommost actor */
-  if (min_height_p)
-    *min_height_p = min_bottom;
-
-  if (natural_height_p)
-    *natural_height_p = natural_bottom;
-}
-
-static void
-clutter_fixed_layout_allocate (GList                  *children,
-                               ClutterAllocationFlags  flags)
-{
-  GList *l;
-
-  for (l = children; l != NULL; l = l->next)
-    {
-      ClutterActor *child = l->data;
-      clutter_actor_allocate_preferred_size (child, flags);
-    }
-}
-
-static void
 clutter_group_get_preferred_width (ClutterActor *self,
                                    gfloat        for_height,
                                    gfloat       *min_width_p,
                                    gfloat       *natural_width_p)
 {
+  ClutterContainer *container = CLUTTER_CONTAINER (self);
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
-  /* for_height is irrelevant to the fixed layout, so it's not used */
-  clutter_fixed_layout_get_preferred_width (priv->children,
-                                            min_width_p,
-                                            natural_width_p);
+  clutter_layout_manager_get_preferred_width (priv->layout, container,
+                                              for_height,
+                                              min_width_p,
+                                              natural_width_p);
 }
 
 static void
@@ -241,12 +150,13 @@ clutter_group_get_preferred_height (ClutterActor *self,
                                     gfloat       *min_height_p,
                                     gfloat       *natural_height_p)
 {
+  ClutterContainer *container = CLUTTER_CONTAINER (self);
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
-  /* for_width is irrelevant to the fixed layout, so it's not used */
-  clutter_fixed_layout_get_preferred_height (priv->children,
-                                             min_height_p,
-                                             natural_height_p);
+  clutter_layout_manager_get_preferred_width (priv->layout, container,
+                                              for_width,
+                                              min_height_p,
+                                              natural_height_p);
 }
 
 static void
@@ -254,17 +164,16 @@ clutter_group_allocate (ClutterActor           *self,
                         const ClutterActorBox  *box,
                         ClutterAllocationFlags  flags)
 {
+  ClutterContainer *container = CLUTTER_CONTAINER (self);
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
   /* chain up to set actor->allocation */
   CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->allocate (self, box, flags);
 
-  /* Note that fixed-layout allocation of children does not care what
-   * allocation the container received, so "box" is not passed in
-   * here. We do not require that children's allocations are completely
-   * contained by our own.
-   */
-  clutter_fixed_layout_allocate (priv->children, flags);
+  if (priv->children == NULL)
+    return;
+
+  clutter_layout_manager_allocate (priv->layout, container, box, flags);
 }
 
 static void
@@ -279,6 +188,12 @@ clutter_group_dispose (GObject *object)
       g_list_free (priv->children);
 
       priv->children = NULL;
+    }
+
+  if (priv->layout)
+    {
+      g_object_unref (priv->layout);
+      priv->layout = NULL;
     }
 
   G_OBJECT_CLASS (clutter_group_parent_class)->dispose (object);
@@ -468,8 +383,10 @@ sort_z_order (gconstpointer a,
 
   if (depth_a < depth_b)
     return -1;
+
   if (depth_a > depth_b)
     return 1;
+
   return 0;
 }
 
@@ -521,6 +438,9 @@ static void
 clutter_group_init (ClutterGroup *self)
 {
   self->priv = CLUTTER_GROUP_GET_PRIVATE (self);
+
+  self->priv->layout = clutter_fixed_layout_new ();
+  g_object_ref_sink (self->priv->layout);
 }
 
 /**

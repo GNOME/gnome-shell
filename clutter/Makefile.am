@@ -64,6 +64,9 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-rotate.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-binding-pool.h 	\
+	$(srcdir)/clutter-bin-layout.h		\
+	$(srcdir)/clutter-box.h			\
+	$(srcdir)/clutter-box-layout.h		\
 	$(srcdir)/clutter-cairo-texture.h	\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone.h		\
@@ -73,10 +76,14 @@ source_h =					\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
+	$(srcdir)/clutter-fixed-layout.h	\
+	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-frame-source.h        \
 	$(srcdir)/clutter-group.h 		\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
+	$(srcdir)/clutter-layout-manager.h	\
+	$(srcdir)/clutter-layout-meta.h		\
 	$(srcdir)/clutter-list-model.h		\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
@@ -128,6 +135,9 @@ source_c = \
 	$(srcdir)/clutter-behaviour-scale.c	\
 	$(srcdir)/clutter-bezier.c		\
 	$(srcdir)/clutter-binding-pool.c	\
+	$(srcdir)/clutter-bin-layout.c		\
+	$(srcdir)/clutter-box.c			\
+	$(srcdir)/clutter-box-layout.c		\
 	$(srcdir)/clutter-cairo-texture.c       \
 	$(srcdir)/clutter-child-meta.c		\
 	$(srcdir)/clutter-clone.c		\
@@ -137,10 +147,14 @@ source_c = \
 	$(srcdir)/clutter-event.c 		\
 	$(srcdir)/clutter-feature.c 		\
 	$(srcdir)/clutter-fixed.c		\
+	$(srcdir)/clutter-fixed-layout.c	\
+	$(srcdir)/clutter-flow-layout.c		\
 	$(srcdir)/clutter-frame-source.c	\
 	$(srcdir)/clutter-group.c 		\
 	$(srcdir)/clutter-id-pool.c 		\
 	$(srcdir)/clutter-interval.c            \
+	$(srcdir)/clutter-layout-manager.c	\
+	$(srcdir)/clutter-layout-meta.c		\
 	$(srcdir)/clutter-list-model.c		\
 	$(srcdir)/clutter-main.c 		\
 	clutter-marshal.c			\

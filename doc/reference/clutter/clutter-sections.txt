@@ -305,6 +305,8 @@ clutter_actor_get_preferred_width
 clutter_actor_get_preferred_height
 clutter_actor_set_fixed_position_set
 clutter_actor_get_fixed_position_set
+clutter_actor_set_request_mode
+clutter_actor_get_request_mode
 
 <SUBSECTION>
 clutter_actor_set_geometry
@@ -1725,4 +1727,196 @@ CLUTTER_STAGE_MANAGER_GET_CLASS
 
 <SUBSECTION Private>
 clutter_stage_manager_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>Layout Managers</TITLE>
+<FILE>clutter-layout-manager</FILE>
+ClutterLayoutManager
+ClutterLayoutManagerClass
+clutter_layout_manager_get_preferred_width
+clutter_layout_manager_get_preferred_height
+clutter_layout_manager_allocate
+clutter_layout_manager_layout_changed
+clutter_layout_manager_set_container
+
+<SUBSECTION>
+clutter_layout_manager_add_child_meta
+clutter_layout_manager_remove_child_meta
+clutter_layout_manager_get_child_meta
+clutter_layout_manager_child_set
+clutter_layout_manager_child_set_property
+clutter_layout_manager_child_get
+clutter_layout_manager_child_get_property
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_LAYOUT_MANAGER
+CLUTTER_LAYOUT_MANAGER
+CLUTTER_LAYOUT_MANAGER_CLASS
+CLUTTER_IS_LAYOUT_MANAGER
+CLUTTER_IS_LAYOUT_MANAGER_CLASS
+CLUTTER_LAYOUT_MANAGER_GET_CLASS
+
+<SUBSECTION Private>
+clutter_layout_manager_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterFixedLayout</TITLE>
+<FILE>clutter-fixed-layout</FILE>
+ClutterFixedLayout
+ClutterFixedLayoutClass
+clutter_fixed_layout_new
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_FIXED_LAYOUT
+CLUTTER_FIXED_LAYOUT
+CLUTTER_FIXED_LAYOUT_CLASS
+CLUTTER_IS_FIXED_LAYOUT
+CLUTTER_IS_FIXED_LAYOUT_CLASS
+CLUTTER_FIXED_LAYOUT_GET_CLASS
+
+<SUBSECTION Private>
+clutter_fixed_layout_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterBinLayout</TITLE>
+<FILE>clutter-bin-layout</FILE>
+ClutterBinAlignment
+ClutterBinLayout
+ClutterBinLayoutClass
+clutter_bin_layout_new
+clutter_bin_layout_set_alignment
+clutter_bin_layout_get_alignment
+clutter_bin_layout_add
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_BIN_LAYOUT
+CLUTTER_BIN_LAYOUT
+CLUTTER_BIN_LAYOUT_CLASS
+CLUTTER_IS_BIN_LAYOUT
+CLUTTER_IS_BIN_LAYOUT_CLASS
+CLUTTER_BIN_LAYOUT_GET_CLASS
+
+<SUBSECTION Private>
+ClutterBinLayoutPrivate
+clutter_bin_layout_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterBox</TITLE>
+<FILE>clutter-box</FILE>
+ClutterBox
+ClutterBoxClass
+clutter_box_new
+clutter_box_set_layout_manager
+clutter_box_get_layout_manager
+clutter_box_set_color
+clutter_box_get_color
+
+<SUBSECTION>
+clutter_box_pack
+clutter_box_packv
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_BOX
+CLUTTER_BOX
+CLUTTER_BOX_CLASS
+CLUTTER_IS_BOX
+CLUTTER_IS_BOX_CLASS
+CLUTTER_BOX_GET_CLASS
+
+<SUBSECTION Private>
+ClutterBoxPrivate
+clutter_box_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterLayoutMeta</TITLE>
+<FILE>clutter-layout-meta</FILE>
+ClutterLayoutMeta
+ClutterLayoutMetaClass
+clutter_layout_meta_get_manager
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_LAYOUT_META
+CLUTTER_LAYOUT_META
+CLUTTER_LAYOUT_META_CLASS
+CLUTTER_IS_LAYOUT_META
+CLUTTER_IS_LAYOUT_META_CLASS
+CLUTTER_LAYOUT_META_GET_CLASS
+
+<SUBSECTION Private>
+clutter_layout_meta_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-flow-layout</FILE>
+<TITLE>ClutterFlowLayout</TITLE>
+ClutterFlowOrientation
+ClutterFlowLayout
+ClutterFlowLayoutClass
+clutter_flow_layout_new
+clutter_flow_layout_set_orientation
+clutter_flow_layout_get_orientation
+
+<SUBSECTION>
+clutter_flow_layout_set_column_spacing
+clutter_flow_layout_get_column_spacing
+clutter_flow_layout_set_row_spacing
+clutter_flow_layout_get_row_spacing
+clutter_flow_layout_set_column_width
+clutter_flow_layout_get_column_width
+clutter_flow_layout_set_row_height
+clutter_flow_layout_get_row_height
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_FLOW_LAYOUT
+CLUTTER_FLOW_LAYOUT
+CLUTTER_FLOW_LAYOUT_CLASS
+CLUTTER_IS_FLOW_LAYOUT
+CLUTTER_IS_FLOW_LAYOUT_CLASS
+CLUTTER_FLOW_LAYOUT_GET_CLASS
+<SUBSECTION Private>
+ClutterFlowLayoutPrivate
+clutter_flow_layout_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterBoxLayout</TITLE>
+<FILE>clutter-box-layout</FILE>
+ClutterBoxAlignment
+ClutterBoxLayout
+ClutterBoxLayoutClass
+clutter_box_layout_new
+clutter_box_layout_set_pack_start
+clutter_box_layout_get_pack_start
+clutter_box_layout_set_spacing
+clutter_box_layout_get_spacing
+clutter_box_layout_set_vertical
+clutter_box_layout_get_vertical
+
+<SUBSECTION>
+clutter_box_layout_pack
+
+<SUBSECTION>
+clutter_box_layout_set_alignment
+clutter_box_layout_get_alignment
+clutter_box_layout_set_expand
+clutter_box_layout_get_expand
+clutter_box_layout_set_fill
+clutter_box_layout_get_fill
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_BOX_LAYOUT
+CLUTTER_BOX_LAYOUT
+CLUTTER_BOX_LAYOUT_CLASS
+CLUTTER_IS_BOX_LAYOUT
+CLUTTER_IS_BOX_LAYOUT_CLASS
+CLUTTER_BOX_LAYOUT_GET_CLASS
+
+<SUBSECTION Private>
+ClutterBoxLayoutPrivate
+clutter_box_layout_get_type
 </SECTION>
