@@ -68,7 +68,8 @@
  *   <para>The implementation of a layout manager does not differ from
  *   the implementation of the size requisition and allocation bits of
  *   #ClutterActor, so you should read the relative documentation
- *   <link linkend="clutter-subclassing-ClutterActor">here</link>.</para>
+ *   <link linkend="clutter-subclassing-ClutterActor">for subclassing
+ *   ClutterActor</link>.</para>
  *   <para>The layout manager implementation can hold a back reference
  *   to the #ClutterContainer by implementing the set_container()
  *   virtual function. The layout manager should not hold a reference
