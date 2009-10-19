@@ -574,7 +574,12 @@ clutter_text_position_to_coords (ClutterText *self,
   if (position == -1)
     {
       if (priv->password_char == 0)
-        index_ = priv->n_bytes;
+        {
+          if (priv->editable && priv->preedit_set)
+            index_ = priv->n_bytes + strlen (priv->preedit_str);
+          else
+            index_ = priv->n_bytes;
+        }
       else
         index_ = n_chars * password_char_bytes;
     }
@@ -584,10 +589,14 @@ clutter_text_position_to_coords (ClutterText *self,
     }
   else
     {
+      gchar *text = clutter_text_get_display_text (self);
+
       if (priv->password_char == 0)
-        index_ = offset_to_bytes (priv->text, position);
+        index_ = offset_to_bytes (text, position);
       else
         index_ = position * password_char_bytes;
+
+      g_free (text);
     }
 
   pango_layout_get_cursor_pos (clutter_text_get_layout (self),
@@ -623,6 +632,9 @@ clutter_text_ensure_cursor_position (ClutterText *self)
   gint position;
 
   position = priv->position;
+
+  if (priv->editable && priv->preedit_set)
+    position += priv->preedit_cursor_pos;
 
   CLUTTER_NOTE (MISC, "Cursor at %d (preedit %s at pos: %d)",
                 position,
