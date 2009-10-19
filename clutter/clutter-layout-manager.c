@@ -38,6 +38,47 @@
  * Clutter provides some simple #ClutterLayoutManager sub-classes, like
  * #ClutterFixedLayout and #ClutterBinLayout.
  *
+ * <refsect2 id="ClutterLayoutManager-use-in-Actor">
+ *   <title>Using ClutterLayoutManager inside an Actor</title>
+ *   <para>In order to use a #ClutterLayoutManager inside a #ClutterActor
+ *   sub-class you should invoke clutter_layout_manager_get_preferred_width()
+ *   inside the <structname>ClutterActor</structname>::get_preferred_width()
+ *   virtual function and clutter_layout_manager_get_preferred_height()
+ *   inside the <structname>ClutterActor</structname>::get_preferred_height()
+ *   virtual function implementations. You should also call
+ *   clutter_layout_manager_allocate() inside the implementation of the
+ *   <structname>ClutterActor</structname>::allocate() virtual
+ *   function.</para>
+ *   <para>In order to receive notifications for changes in the layout
+ *   manager policies you should also connect to the
+ *   #ClutterLayoutManager::layout-changed signal and queue a relayout
+ *   on your actor. The following code should be enough if the actor
+ *   does not need to perform specific operations whenever a layout
+ *   manager changes:</para>
+ *   <informalexample><programlisting>
+ *   g_signal_connect_swapped (layout_manager,
+ *                             "layout-changed",
+ *                             G_CALLBACK (clutter_actor_queue_relayout),
+ *                             actor);
+ *   </programlisting></informalexample>
+ * </refsect2>
+ *
+ * <refsect2 id="ClutterLayoutManager-implementation">
+ *   <title>Implementing a ClutterLayoutManager</title>
+ *   <para>The implementation of a layout manager does not differ from
+ *   the implementation of the size requisition and allocation bits of
+ *   #ClutterActor, so you should read the relative documentation
+ *   <link linkend="clutter-subclassing-ClutterActor">here</link>.</para>
+ *   <para>The layout manager implementation can hold a back reference
+ *   to the #ClutterContainer by implementing the set_container()
+ *   virtual function. The layout manager should not hold a reference
+ *   on the container actor, to avoid reference cycles.</para>
+ *   <para>If the layout manager has properties affecting the layout
+ *   policies then it should emit the #ClutterLayoutManager::layout-changed
+ *   signal on itself by using the clutter_layout_manager_layout_changed()
+ *   function.</para>
+ * </refsect2>
+ *
  * #ClutterLayoutManager is available since Clutter 1.2
  */
 
