@@ -45,6 +45,7 @@
 #include "mutter-enum-types.h"
 
 #include <X11/Xatom.h>
+#include <X11/Xlibint.h> /* For display->resource_mask */
 #include <string.h>
 
 #ifdef HAVE_SHAPE
@@ -71,6 +72,9 @@ static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
 static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
+
+static gboolean meta_window_same_client (MetaWindow *window,
+                                         MetaWindow *other_window);
 
 static void     meta_window_save_rect         (MetaWindow    *window);
 static void     save_user_window_placement    (MetaWindow    *window);
@@ -5184,6 +5188,7 @@ meta_window_configure_request (MetaWindow *window,
         }
       else if (active_window &&
                !meta_window_same_application (window, active_window) &&
+               !meta_window_same_client (window, active_window) &&
                XSERVER_TIME_IS_BEFORE (window->net_wm_user_time,
                                        active_window->net_wm_user_time))
         {
@@ -8155,6 +8160,23 @@ meta_window_same_application (MetaWindow *window,
     group!=NULL &&
     other_group!=NULL &&
     group==other_group;
+}
+
+/* Generally meta_window_same_application() is a better idea
+ * of "sameness", since it handles the case where multiple apps
+ * want to look like the same app or the same app wants to look
+ * like multiple apps, but in the case of workarounds for legacy
+ * applications (which likely aren't setting the group properly
+ * anyways), it may be desirable to check this as well.
+ */
+static gboolean
+meta_window_same_client (MetaWindow *window,
+                         MetaWindow *other_window)
+{
+  int resource_mask = window->display->xdisplay->resource_mask;
+
+  return ((window->xwindow & ~resource_mask) ==
+          (other_window->xwindow & ~resource_mask));
 }
 
 void
