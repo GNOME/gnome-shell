@@ -153,10 +153,10 @@ clutter_group_get_preferred_height (ClutterActor *self,
   ClutterContainer *container = CLUTTER_CONTAINER (self);
   ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
 
-  clutter_layout_manager_get_preferred_width (priv->layout, container,
-                                              for_width,
-                                              min_height_p,
-                                              natural_height_p);
+  clutter_layout_manager_get_preferred_height (priv->layout, container,
+                                               for_width,
+                                               min_height_p,
+                                               natural_height_p);
 }
 
 static void
