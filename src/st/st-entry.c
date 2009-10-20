@@ -97,6 +97,8 @@ struct _StEntryPrivate
   ClutterActor *secondary_icon;
 
   gfloat        spacing;
+
+  gboolean      hint_visible;
 };
 
 static guint entry_signals[LAST_SIGNAL] = { 0, };
@@ -375,9 +377,10 @@ clutter_text_focus_in_cb (ClutterText  *text,
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
 
   /* remove the hint if visible */
-  if (priv->hint
-      && !strcmp (clutter_text_get_text (text), priv->hint))
+  if (priv->hint && priv->hint_visible)
     {
+      priv->hint_visible = FALSE;
+
       clutter_text_set_text (text, "");
     }
   st_widget_set_style_pseudo_class (ST_WIDGET (actor), "focus");
@@ -393,6 +396,8 @@ clutter_text_focus_out_cb (ClutterText  *text,
   /* add a hint if the entry is empty */
   if (priv->hint && !strcmp (clutter_text_get_text (text), ""))
     {
+      priv->hint_visible = TRUE;
+
       clutter_text_set_text (text, priv->hint);
       st_widget_set_style_pseudo_class (ST_WIDGET (actor), "indeterminate");
     }
@@ -705,7 +710,10 @@ st_entry_get_text (StEntry *entry)
 {
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
 
-  return clutter_text_get_text (CLUTTER_TEXT (entry->priv->entry));
+  if (entry->priv->hint_visible)
+    return "";
+  else
+    return clutter_text_get_text (CLUTTER_TEXT (entry->priv->entry));
 }
 
 /**
@@ -731,6 +739,7 @@ st_entry_set_text (StEntry     *entry,
       && !HAS_FOCUS (priv->entry))
     {
       text = priv->hint;
+      priv->hint_visible = TRUE;
       st_widget_set_style_pseudo_class (ST_WIDGET (entry), "indeterminate");
     }
   else
@@ -739,6 +748,8 @@ st_entry_set_text (StEntry     *entry,
         st_widget_set_style_pseudo_class (ST_WIDGET (entry), "focus");
       else
         st_widget_set_style_pseudo_class (ST_WIDGET (entry), NULL);
+
+      priv->hint_visible = FALSE;
     }
 
   clutter_text_set_text (CLUTTER_TEXT (priv->entry), text);
@@ -786,8 +797,11 @@ st_entry_set_hint_text (StEntry     *entry,
 
   priv->hint = g_strdup (text);
 
-  if (!strcmp (clutter_text_get_text (CLUTTER_TEXT (priv->entry)), ""))
+  if (!strcmp (clutter_text_get_text (CLUTTER_TEXT (priv->entry)), "")
+      && !HAS_FOCUS (priv->entry))
     {
+      priv->hint_visible = TRUE;
+
       clutter_text_set_text (CLUTTER_TEXT (priv->entry), priv->hint);
       st_widget_set_style_pseudo_class (ST_WIDGET (entry), "indeterminate");
     }
