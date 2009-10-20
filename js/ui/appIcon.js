@@ -557,7 +557,8 @@ AppIconMenu.prototype = {
             this._source.app.launch();
             this.emit('activate-window', null);
         } else if (child == this._toggleFavoriteMenuItem) {
-            let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+            let favs = AppFavorites.getAppFavorites();
+            let isFavorite = favs.isFavorite(this._source.app.get_id());
             if (isFavorite)
                 favs.removeFavorite(this._source.app.get_id());
             else
