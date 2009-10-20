@@ -324,8 +324,11 @@ void
 _shell_app_remove_window (ShellApp   *app,
                           MetaWindow *window)
 {
+  g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_unmanaged), app);
+  g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
   g_object_unref (window);
   app->windows = g_slist_remove (app->windows, window);
+
   if (app->windows == NULL)
     disconnect_workspace_switch (app);
 }
@@ -346,12 +349,8 @@ shell_app_dispose (GObject *object)
       app->info = NULL;
     }
 
-  if (app->windows)
-    {
-      g_slist_foreach (app->windows, (GFunc) g_object_unref, NULL);
-      g_slist_free (app->windows);
-      app->windows = NULL;
-    }
+  while (app->windows)
+    _shell_app_remove_window (app, app->windows->data);
 
   disconnect_workspace_switch (app);
 }
