@@ -151,12 +151,14 @@ AppPanelMenu.prototype = {
             let icon = this._focusedApp.create_icon_texture(PANEL_ICON_SIZE);
             this._iconBox.append(icon, Big.BoxPackFlags.NONE);
             this._iconBox.show();
-            this._label.text = this._focusedApp.get_name();
+            let appName = this._focusedApp.get_name();
+            // Use _set_text to work around http://bugzilla.openedhand.com/show_bug.cgi?id=1851
+            this._label.set_text(appName);
         } else if (this._activeSequence != null) {
             let icon = this._activeSequence.create_icon(PANEL_ICON_SIZE);
             this._iconBox.append(icon, Big.BoxPackFlags.NONE);
             this._iconBox.show();
-            this._label.text = this._activeSequence.get_name();
+            this._label.set_text(this._activeSequence.get_name());
         }
 
         this.emit('changed');
