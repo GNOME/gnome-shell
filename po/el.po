@@ -1,0 +1,186 @@
+# translation of gnome-shell.po.master.po to Greek
+# Greek translation for gnome-shell.
+# Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+#
+# Jennie Petoumenou <epetoumenou@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell.po.master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&component=general\n"
+"POT-Creation-Date: 2009-10-04 08:03+0000\n"
+"PO-Revision-Date: 2009-10-04 10:25+0200\n"
+"Last-Translator: Jennie Petoumenou <epetoumenou@gmail.com>\n"
+"Language-Team: Greek <<team AT BLOCKSPAM gnome DOT gr>>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "Κέλυφος GNOME"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Διαχείριση παραθύρων και εκκίνηση εφαρμογών"
+
+#. left side
+#: ../js/ui/panel.js:271
+msgid "Activities"
+msgstr "Δραστηριότητες"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:461
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#: ../js/ui/dash.js:283
+msgid "Find..."
+msgstr "Εύρεση..."
+
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Περισσότερα"
+
+#: ../js/ui/dash.js:543
+msgid "(see all)"
+msgstr "(εμφάνιση όλων)"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
+msgid "APPLICATIONS"
+msgstr "ΕΦΑΡΜΟΓΕΣ"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:783
+msgid "PLACES"
+msgstr "ΤΟΠΟΘΕΣΙΕΣ"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+msgid "RECENT DOCUMENTS"
+msgstr "ΠΡΟΣΦΑΤΑ ΕΓΓΡΑΦΑ"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
+msgid "SEARCH RESULTS"
+msgstr "ΑΠΟΤΕΛΕΣΜΑΤΑ ΑΝΑΖΗΤΗΣΗΣ"
+
+#: ../js/ui/dash.js:830
+msgid "PREFERENCES"
+msgstr "ΠΡΟΤΙΜΗΣΕΙΣ"
+
+#: ../js/ui/runDialog.js:96
+msgid "Please enter a command:"
+msgstr "Παρακαλώ εισάγετε μία εντολή:"
+
+#: ../src/shell-global.c:812
+msgid "Less than a minute ago"
+msgstr "Λιγότερο από ένα λεπτό πριν"
+
+#: ../src/shell-global.c:815
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d λεπτό πριν"
+msgstr[1] "%d λεπτά πριν"
+
+#: ../src/shell-global.c:818
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d ώρα πριν"
+msgstr[1] "%d ώρες πριν"
+
+#: ../src/shell-global.c:821
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d ημέρα πριν"
+msgstr[1] "%d ημέρες πριν"
+
+#: ../src/shell-global.c:824
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d εβδομάδα πριν"
+msgstr[1] "%d εβδομάδες πριν"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Άγνωστο"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Αδύνατο το κλείδωμα της οθόνης: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "Δεν είναι δυνατή η προσωρινή ρύθμιση της προστασίας οθόνης σε κενή οθόνη: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Αδύνατη η αποσύνδεση: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Πληροφορίες λογαριασμού..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Πλευρική στήλη"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Προστιμήσεις συστήματος..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Κλείδωμα οθόνης"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Αλλαγή χρήστη"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Αποσύνδεση..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Τερματισμός..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Προσωπικός φάκελος"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Σύστημα αρχείων"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
