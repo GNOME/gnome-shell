@@ -210,6 +210,7 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
   ClutterBackend *backend = clutter_get_default_backend ();
   ClutterBackendX11 *backend_x11;
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  ClutterStage *stage = stage_x11->wrapper;
   gboolean resize;
 
   resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
@@ -250,6 +251,22 @@ clutter_stage_x11_resize (ClutterStageWindow *stage_window,
                          stage_x11->xwin,
                          stage_x11->xwin_width,
                          stage_x11->xwin_height);
+
+          /* If the viewport hasn't previously been initialized then even
+           * though we can't guarantee that the server will honour our request
+           * we need to ensure a valid viewport is set before our first paint.
+           */
+          if (G_UNLIKELY (!stage_x11->viewport_initialized))
+            {
+              ClutterPerspective perspective;
+              clutter_stage_get_perspective (stage, &perspective);
+              _cogl_setup_viewport (stage_x11->xwin_width,
+                                    stage_x11->xwin_height,
+                                    perspective.fovy,
+                                    perspective.aspect,
+                                    perspective.z_near,
+                                    perspective.z_far);
+            }
         }
 
       if (!resize)
@@ -654,6 +671,7 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->is_foreign_xwin = FALSE;
   stage->fullscreen_on_map = FALSE;
   stage->is_cursor_visible = TRUE;
+  stage->viewport_initialized = FALSE;
 
   stage->title = NULL;
 
