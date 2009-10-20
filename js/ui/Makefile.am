@@ -3,6 +3,7 @@ jsuidir = $(pkgdatadir)/js/ui
 dist_jsui_DATA =		\
 	altTab.js		\
 	appDisplay.js		\
+	appFavorites.js		\
 	appIcon.js		\
 	button.js		\
 	calendar.js		\
