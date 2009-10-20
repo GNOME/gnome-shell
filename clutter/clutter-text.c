@@ -804,6 +804,10 @@ clutter_text_set_text_internal (ClutterText *self,
       clutter_text_set_selection_bound (self, -1);
     }
 
+  clutter_text_dirty_cache (self);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
   g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
   g_object_notify (G_OBJECT (self), "text");
 
@@ -3443,10 +3447,6 @@ clutter_text_set_text (ClutterText *self,
 
   clutter_text_set_use_markup_internal (self, FALSE);
   clutter_text_set_text_internal (self, text ? text : "");
-
-  clutter_text_dirty_cache (self);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 /**
@@ -3479,10 +3479,6 @@ clutter_text_set_markup (ClutterText *self,
     clutter_text_set_markup_internal (self, markup);
   else
     clutter_text_set_text_internal (self, "");
-
-  clutter_text_dirty_cache (self);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 /**
