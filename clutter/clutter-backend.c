@@ -47,6 +47,8 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
+#include <cogl/cogl.h>
+
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
 #define DEFAULT_FONT_NAME       "Sans 10"
@@ -355,7 +357,22 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
       klass = CLUTTER_BACKEND_GET_CLASS (backend);
       if (G_LIKELY (klass->ensure_context))
         klass->ensure_context (backend, new_stage);
-      
+
+      /* XXX: Until Cogl becomes fully responsible for backend windows
+       * Clutter need to manually keep it informed of the current window size
+       *
+       * NB: This must be done after we ensure_context above because Cogl
+       * always assumes there is a current GL context.
+       */
+      if (new_stage)
+        {
+          float width, height;
+
+          clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
+
+          _cogl_onscreen_clutter_backend_set_size (width, height);
+        }
+
       /* FIXME: With a NULL stage and thus no active context it may make more
        * sense to clean the context but then re call with the default stage 
        * so at least there is some kind of context in place (as to avoid

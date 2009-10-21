@@ -163,7 +163,7 @@ _cogl_draw_buffer_set_viewport (CoglHandle handle,
   draw_buffer->viewport_height = height;
 
   if (_cogl_get_draw_buffer () == draw_buffer)
-    ctx->dirty_viewport = TRUE;
+    ctx->dirty_gl_viewport = TRUE;
 }
 
 int
@@ -377,6 +377,26 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
   g_free (onscreen);
 }
 
+void
+_cogl_onscreen_clutter_backend_set_size (int width, int height)
+{
+  CoglDrawBuffer *draw_buffer;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  draw_buffer = COGL_DRAW_BUFFER (ctx->window_buffer);
+
+  if (draw_buffer->width == width && draw_buffer->height == height)
+    return;
+
+  draw_buffer->width = width;
+  draw_buffer->height = height;
+
+  /* We'll need to recalculate the GL viewport state derived
+   * from the Cogl viewport */
+  ctx->dirty_gl_viewport = 1;
+}
+
 GSList *
 _cogl_create_draw_buffer_stack (void)
 {
@@ -434,7 +454,7 @@ cogl_set_draw_buffer (CoglBufferTarget target, CoglHandle handle)
       entry->target = target;
 
       ctx->dirty_bound_framebuffer = 1;
-      ctx->dirty_viewport = 1;
+      ctx->dirty_gl_viewport = 1;
 
       if (draw_buffer != COGL_INVALID_HANDLE)
         cogl_handle_ref (draw_buffer);
@@ -531,13 +551,19 @@ _cogl_draw_buffer_flush_state (CoglHandle handle,
       ctx->dirty_bound_framebuffer = FALSE;
     }
 
-  if (ctx->dirty_viewport)
+  if (ctx->dirty_gl_viewport)
     {
+      /* Convert the Cogl viewport y offset to an OpenGL viewport y offset
+       * (NB: OpenGL defines its window and viewport origins to be bottom
+       * left, while Cogl defines them to be top left.) */
+      int gl_viewport_y = draw_buffer->height -
+        (draw_buffer->viewport_y + draw_buffer->viewport_height);
+
       GE (glViewport (draw_buffer->viewport_x,
-                      draw_buffer->viewport_y,
+                      gl_viewport_y,
                       draw_buffer->viewport_width,
                       draw_buffer->viewport_height));
-      ctx->dirty_viewport = FALSE;
+      ctx->dirty_gl_viewport = FALSE;
     }
 
   /* XXX: Flushing clip state may trash the modelview and projection

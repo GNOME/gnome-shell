@@ -192,6 +192,10 @@ clutter_stage_allocate (ClutterActor           *self,
     {
       ClutterActorClass *klass;
 
+      /* XXX: Until Cogl becomes fully responsible for backend windows Clutter
+       * need to manually keep it informed of the current window size */
+      _cogl_onscreen_clutter_backend_set_size (width, height);
+
       CLUTTER_NOTE (LAYOUT,
                     "Following allocation to %dx%d (origin %s)",
                     width, height,
@@ -209,6 +213,10 @@ clutter_stage_allocate (ClutterActor           *self,
       ClutterActorClass *klass;
 
       _clutter_stage_window_get_geometry (priv->impl, &geom);
+
+      /* XXX: Until Cogl becomes fully responsible for backend windows Clutter
+       * need to manually keep it informed of the current window size */
+      _cogl_onscreen_clutter_backend_set_size (geom.width, geom.height);
 
       override.x1 = 0;
       override.y1 = 0;

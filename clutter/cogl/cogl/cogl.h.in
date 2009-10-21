@@ -869,6 +869,9 @@ void            cogl_flush_gl_state         (int      flags);
 void            _cogl_set_indirect_context  (gboolean indirect);
 void            _cogl_set_viewport (int x, int y, int width, int height);
 
+void
+_cogl_onscreen_clutter_backend_set_size (int width, int height);
+
 G_END_DECLS
 
 #undef __COGL_H_INSIDE__
