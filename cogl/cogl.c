@@ -793,10 +793,9 @@ cogl_read_pixels (int x,
                   CoglPixelFormat format,
                   guint8 *pixels)
 {
-  int        viewport_height;
+  int        draw_buffer_height;
   int        rowstride = width * 4;
   guint8    *temprow;
-  CoglHandle draw_buffer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -805,12 +804,11 @@ cogl_read_pixels (int x,
 
   temprow = g_alloca (rowstride * sizeof (guint8));
 
-  draw_buffer = _cogl_get_draw_buffer ();
-  viewport_height = _cogl_draw_buffer_get_viewport_height (draw_buffer);
+  draw_buffer_height = _cogl_draw_buffer_get_height (_cogl_get_draw_buffer ());
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
      so 0 is the bottom row */
-  y = viewport_height - y - height;
+  y = draw_buffer_height - y - height;
 
   /* Setup the pixel store parameters that may have been changed by
      Cogl */
