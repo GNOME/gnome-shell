@@ -175,5 +175,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/sizing", test_fixed_size);
   TEST_CONFORM_SIMPLE ("/sizing", test_preferred_size);
 
+  TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
+
   return g_test_run ();
 }

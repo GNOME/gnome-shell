@@ -36,6 +36,7 @@ test_conformance_SOURCES = 		\
 	test-group.c			\
 	test-actor-size.c		\
 	test-texture-fbo.c		\
+	test-cogl-viewport.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
