@@ -575,8 +575,8 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 
   priv = behave->priv;
 
-  if (alpha)
-    g_object_ref_sink (alpha);
+  if (priv->alpha == alpha)
+    return;
 
   if (priv->notify_id)
     {
@@ -587,7 +587,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
       priv->notify_id = 0;
     }
 
-  if (priv->alpha)
+  if (priv->alpha != NULL)
     {
       CLUTTER_NOTE (BEHAVIOUR, "removing previous alpha object");
 
@@ -595,9 +595,9 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
       priv->alpha = NULL;
     }
 
-  if (alpha)
+  if (alpha != NULL)
     {
-      priv->alpha = alpha;
+      priv->alpha = g_object_ref_sink (alpha);
 
       priv->notify_id = g_signal_connect (priv->alpha, "notify::alpha",
                                           G_CALLBACK(notify_cb),
@@ -606,6 +606,8 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
       CLUTTER_NOTE (BEHAVIOUR, "setting new alpha object (%p, notify:%d)",
                     priv->alpha, priv->notify_id);
     }
+
+  g_object_notify (G_OBJECT (behave), "alpha");
 }
 
 /**
