@@ -102,7 +102,7 @@ cogl_create_context (void)
   _context->window_buffer = window_buffer;
   cogl_set_draw_buffer (COGL_WINDOW_BUFFER, 0/* ignored */);
   _context->dirty_bound_framebuffer = TRUE;
-  _context->dirty_viewport = TRUE;
+  _context->dirty_gl_viewport = TRUE;
 
   _context->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   _context->last_path = 0;

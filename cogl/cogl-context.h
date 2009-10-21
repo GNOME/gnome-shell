@@ -90,7 +90,7 @@ typedef struct
   GSList           *draw_buffer_stack;
   CoglHandle        window_buffer;
   gboolean          dirty_bound_framebuffer;
-  gboolean          dirty_viewport;
+  gboolean          dirty_gl_viewport;
 
   /* Primitives */
   floatVec2         path_start;
