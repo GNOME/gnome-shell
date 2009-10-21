@@ -76,6 +76,10 @@ typedef struct _CoglOnscreen
 
 void
 _cogl_draw_buffer_state_init (void);
+int
+_cogl_draw_buffer_get_width (CoglHandle handle);
+int
+_cogl_draw_buffer_get_height (CoglHandle handle);
 CoglClipStackState *
 _cogl_draw_buffer_get_clip_state (CoglHandle handle);
 void

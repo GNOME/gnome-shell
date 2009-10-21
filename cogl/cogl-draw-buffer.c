@@ -130,6 +130,20 @@ _cogl_draw_buffer_free (CoglDrawBuffer *draw_buffer)
   draw_buffer->projection_stack = NULL;
 }
 
+int
+_cogl_draw_buffer_get_width (CoglHandle handle)
+{
+  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
+  return draw_buffer->width;
+}
+
+int
+_cogl_draw_buffer_get_height (CoglHandle handle)
+{
+  CoglDrawBuffer *draw_buffer = COGL_DRAW_BUFFER (handle);
+  return draw_buffer->height;
+}
+
 CoglClipStackState *
 _cogl_draw_buffer_get_clip_state (CoglHandle handle)
 {
