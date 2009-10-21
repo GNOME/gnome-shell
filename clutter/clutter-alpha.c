@@ -64,6 +64,31 @@
  *   <graphic fileref="easing-modes.png" format="PNG"/>
  * </figure>
  *
+ * <refsect2 id="ClutterAlpha-script">
+ *   <title>ClutterAlpha custom properties for #ClutterScript</title>
+ *   <para>#ClutterAlpha defines a custom "function" property for
+ *   #ClutterScript which allows to reference a custom alpha function
+ *   available in the source code. Setting the "function" property
+ *   is equivalent to calling clutter_alpha_set_func() with the
+ *   specified function name. No user data or #GDestroyNotify is
+ *   available to be passed.</para>
+ *   <example id="ClutterAlpha-script-example">
+ *     <title>Defining a ClutterAlpha in ClutterScript</title>
+ *     <para>The following JSON fragment defines a #ClutterAlpha
+ *     using a #ClutterTimeline with id "timeline-01" and an alpha
+ *     function called my_sine_alpha(). The defined #ClutterAlpha
+ *     instance can be reused in multiple #ClutterBehaviour
+ *     definitions.</para>
+ *     <programlisting>
+ *  {
+ *    "id" : "sine-alpha",
+ *    "timeline" : "timeline-01",
+ *    "function" : "my_sine_alpha"
+ *  }
+ *     </programlisting>
+ *   </informalexample>
+ * </refsect2>
+ *
  * Since: 0.2
  */
 
@@ -73,15 +98,23 @@
 
 #include <math.h>
 
+#include <gmodule.h>
+
 #include "clutter-alpha.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-scriptable.h"
 
-G_DEFINE_TYPE (ClutterAlpha, clutter_alpha, G_TYPE_INITIALLY_UNOWNED);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
+G_DEFINE_TYPE_WITH_CODE (ClutterAlpha,
+                         clutter_alpha,
+                         G_TYPE_INITIALLY_UNOWNED,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
 
 struct _ClutterAlphaPrivate
 {
@@ -197,6 +230,73 @@ clutter_alpha_dispose (GObject *object)
   G_OBJECT_CLASS (clutter_alpha_parent_class)->dispose (object);
 }
 
+static ClutterAlphaFunc
+resolve_alpha_func (const gchar *name)
+{
+  static GModule *module = NULL;
+  ClutterAlphaFunc func;
+
+  CLUTTER_NOTE (SCRIPT, "Looking up '%s' alpha function", name);
+
+  if (G_UNLIKELY (module == NULL))
+    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+
+  if (g_module_symbol (module, name, (gpointer) &func))
+    {
+      CLUTTER_NOTE (SCRIPT, "Found '%s' alpha function in the symbols table",
+                    name);
+      return func;
+    }
+
+  return NULL;
+}
+
+static void
+clutter_alpha_set_custom_property (ClutterScriptable *scriptable,
+                                   ClutterScript     *script,
+                                   const gchar       *name,
+                                   const GValue      *value)
+{
+  if (strncmp (name, "function", 8) == 0)
+    {
+      g_assert (G_VALUE_HOLDS (value, G_TYPE_POINTER));
+      if (g_value_get_pointer (value) != NULL)
+        {
+          clutter_alpha_set_func (CLUTTER_ALPHA (scriptable),
+                                  g_value_get_pointer (value),
+                                  NULL, NULL);
+        }
+    }
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
+}
+
+static gboolean
+clutter_alpha_parse_custom_node (ClutterScriptable *scriptable,
+                                 ClutterScript     *script,
+                                 GValue            *value,
+                                 const gchar       *name,
+                                 JsonNode          *node)
+{
+  if (strncmp (name, "function", 8) == 0)
+    {
+      const gchar *func_name = json_node_get_string (node);
+
+      g_value_init (value, G_TYPE_POINTER);
+      g_value_set_pointer (value, resolve_alpha_func (func_name));
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_alpha_parse_custom_node;
+  iface->set_custom_property = clutter_alpha_set_custom_property;
+}
 
 static void
 clutter_alpha_class_init (ClutterAlphaClass *klass)
