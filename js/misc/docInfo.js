@@ -17,7 +17,7 @@ function DocInfo(recentInfo) {
 
 DocInfo.prototype = {
     _init : function(recentInfo) {
-        this._recentInfo = recentInfo;
+        this.recentInfo = recentInfo;
         // We actually used get_modified() instead of get_visited()
         // here, as GtkRecentInfo doesn't updated get_visited()
         // correctly. See http://bugzilla.gnome.org/show_bug.cgi?id=567094
@@ -28,7 +28,7 @@ DocInfo.prototype = {
     },
 
     createIcon : function(size) {
-        return Shell.TextureCache.get_default().load_recent_thumbnail(size, this._recentInfo);
+        return Shell.TextureCache.get_default().load_recent_thumbnail(size, this.recentInfo);
     },
 
     launch : function() {
@@ -44,8 +44,8 @@ DocInfo.prototype = {
         } else {
             log("Failed to get default application info for mime type " + this.mimeType +
                 ". Will try to use the last application that registered the document.");
-            let appName = this._recentInfo.last_application();
-            let [success, appExec, count, time] = this._recentInfo.get_application_info(appName);
+            let appName = this.recentInfo.last_application();
+            let [success, appExec, count, time] = this.recentInfo.get_application_info(appName);
             if (success) {
                 log("Will open a document with the following command: " + appExec);
                 // TODO: Change this once better support for creating
@@ -79,7 +79,7 @@ DocInfo.prototype = {
     },
 
     exists : function() {
-        return this._recentInfo.exists();
+        return this.recentInfo.exists();
     }
 };
 
@@ -128,7 +128,7 @@ DocManager.prototype = {
            dump them here */
         let texCache = Shell.TextureCache.get_default();
         for (var uri in deleted) {
-            texCache.evict_recent_thumbnail(this._items[uri]);
+            texCache.evict_recent_thumbnail(this._items[uri].recentInfo);
         }
         this._items = newItems;
     },
