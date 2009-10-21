@@ -86,8 +86,8 @@
  *   "angle-end"   : 360.0,
  *   "axis"        : "z-axis",
  *   "alpha"       : {
- *     "timeline" : { "duration" : 4000, "fps" : 60, "loop" : true },
- *     "function" : "sine"
+ *     "timeline" : { "duration" : 4000, "loop" : true },
+ *     "mode"     : "easeInSine"
  *   }
  * }
  * ]|
@@ -105,13 +105,35 @@
  * ]|
  *
  * A #ClutterAlpha belonging to a #ClutterBehaviour can only be defined
- * implicitely. A #ClutterTimeline belonging to a #ClutterAlpha can be
- * either defined implicitely or explicitely. Implicitely defined
- * #ClutterAlpha<!-- -->s and #ClutterTimeline<!-- -->s can omit the
- * <varname>id</varname> member, as well as the <varname>type</varname> member,
- * but will not be available using clutter_script_get_object() (they can,
- * however, be extracted using the #ClutterBehaviour and #ClutterAlpha
- * API respectively).
+ * implicitly like in the example above, or explicitly by setting the
+ * "alpha" property to point to a previously defined #ClutterAlpha, e.g.:
+ *
+ * |[
+ * {
+ *   "id"          : "rotate-behaviour",
+ *   "type"        : "ClutterBehaviourRotate",
+ *   "angle-start" : 0.0,
+ *   "angle-end"   : 360.0,
+ *   "axis"        : "z-axis",
+ *   "alpha"       : {
+ *     "id"       : "rotate-alpha",
+ *     "type"     : "ClutterAlpha",
+ *     "timeline" : {
+ *       "id"       : "rotate-timeline",
+ *       "type      : "ClutterTimeline",
+ *       "duration" : 4000,
+ *       "loop"     : true
+ *     },
+ *     "function" : "custom_sine_alpha"
+ *   }
+ * }
+ * ]|
+ *
+ * Implicitely defined #ClutterAlpha<!-- -->s and #ClutterTimeline<!-- -->s
+ * can omit the <varname>id</varname> member, as well as the
+ * <varname>type</varname> member, but will not be available using
+ * clutter_script_get_object() (they can, however, be extracted using the
+ * #ClutterBehaviour and #ClutterAlpha API respectively).
  *
  * Signal handlers can be defined inside a Clutter UI definition file and
  * then autoconnected to their respective signals using the
