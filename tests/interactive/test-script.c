@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <math.h>
+
 #include <glib.h>
 #include <gmodule.h>
 
@@ -38,12 +40,18 @@ static const gchar *test_behaviour =
 "    \"loop\" : true"
 "  },"
 "  {"
+"    \"id\" : \"sine-alpha\","
+"    \"type\" : \"ClutterAlpha\","
+"    \"function\" : \"sine_alpha\","
+"    \"timeline\" : \"main-timeline\""
+"  },"
+"  {"
 "    \"id\"          : \"path-behaviour\","
 "    \"type\"        : \"ClutterBehaviourPath\","
 "    \"path\"        : \"M 50 50 L 100 100\","
 "    \"alpha\"       : {"
 "      \"timeline\" : \"main-timeline\","
-"      \"mode\"     : \"linear\""
+"      \"function\" : \"double_ramp_alpha\""
 "    }"
 "  },"
 "  {"
@@ -52,10 +60,7 @@ static const gchar *test_behaviour =
 "    \"angle-start\" : 0.0,"
 "    \"angle-end\"   : 360.0,"
 "    \"axis\"        : \"y-axis\","
-"    \"alpha\"       : {"
-"      \"timeline\" : \"main-timeline\","
-"      \"mode\"     : \"ease-in-sine\""
-"    }"
+"    \"alpha\"       : \"sine-alpha\""
 "  },"
 "  {"
 "    \"id\"            : \"fade-behaviour\","
@@ -63,11 +68,35 @@ static const gchar *test_behaviour =
 "    \"opacity-start\" : 255,"
 "    \"opacity-end\"   : 0,"
 "    \"alpha\"         : {"
+"      \"id\"       : \"fade-alpha\","
+"      \"type\"     : \"ClutterAlpha\","
 "      \"timeline\" : \"main-timeline\","
-"      \"mode\"     : \"easeOutCubic\""
+"      \"mode\"     : \"linear\""
 "    }"
 "  }"
 "]";
+
+gdouble
+sine_alpha (ClutterAlpha *alpha,
+            gpointer      dummy G_GNUC_UNUSED)
+{
+  ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
+
+  return sin (clutter_timeline_get_progress (timeline) * G_PI);
+}
+
+gdouble
+double_ramp_alpha (ClutterAlpha *alpha,
+                   gpointer      dummy G_GNUC_UNUSED)
+{
+  ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
+  gdouble progress = clutter_timeline_get_progress (timeline);
+
+  if (progress >= 0.5)
+    return 1.0 - progress;
+
+  return progress;
+}
 
 static gboolean
 blue_button_press (ClutterActor       *actor,
