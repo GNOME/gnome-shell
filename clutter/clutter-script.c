@@ -1103,21 +1103,25 @@ clutter_script_parse_node (ClutterScript *script,
                   g_free (path);
                 }
             }
-          else
+#endif
+
+          if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
             {
-              if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
+              const gchar *str = g_value_get_string (&node_value);
+              GObject *object = clutter_script_get_object (script, str);
+              if (object)
                 {
-                  const gchar *str = g_value_get_string (&node_value);
-                  GObject *object = clutter_script_get_object (script, str);
-                  if (object)
-                    {
-                      g_value_set_object (value, object);
-                      retval = TRUE;
-                    }
+                  CLUTTER_NOTE (SCRIPT,
+                                "Assigning '%s' (%s) to property '%s'",
+                                str,
+                                G_OBJECT_TYPE_NAME (object),
+                                name);
+
+                  g_value_set_object (value, object);
+                  retval = TRUE;
                 }
             }
           break;
-#endif
 
         default:
           retval = FALSE;
@@ -1179,6 +1183,7 @@ clutter_script_translate_parameters (ClutterScript  *script,
 
       if (!res)
         {
+          CLUTTER_NOTE (SCRIPT, "Property '%s' ignored", pinfo->name);
           unparsed = g_list_prepend (unparsed, pinfo);
           continue;
         }
