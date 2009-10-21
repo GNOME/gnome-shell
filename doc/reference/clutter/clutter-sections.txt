@@ -1360,7 +1360,7 @@ clutter_score_get_type
 
 <SECTION>
 <FILE>clutter-shader</FILE>
-<TITLE>ClutterShader</TITLE>
+<TITLE>Shaders</TITLE>
 ClutterShaderError
 ClutterShader
 ClutterShaderClass
@@ -1708,7 +1708,7 @@ clutter_eglx_display
 </SECTION>
 
 <SECTION>
-<TITLE>ClutterStageManager</TITLE>
+<TITLE>Stage Manager</TITLE>
 <FILE>clutter-stage-manager</FILE>
 ClutterStageManager
 ClutterStageManagerClass
