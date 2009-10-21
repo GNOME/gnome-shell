@@ -146,7 +146,7 @@ AppPanelMenu.prototype = {
 
         this._iconBox.remove_all();
         this._iconBox.hide();
-        this._label.text = '';
+        this._label.set_text('');
         if (this._focusedApp != null) {
             let icon = this._focusedApp.create_icon_texture(PANEL_ICON_SIZE);
             this._iconBox.append(icon, Big.BoxPackFlags.NONE);

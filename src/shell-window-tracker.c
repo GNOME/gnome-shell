@@ -380,22 +380,6 @@ _shell_window_tracker_get_app_context (ShellWindowTracker *tracker, ShellApp *ap
   return "";
 }
 
-static MetaWindow *
-get_active_window (ShellWindowTracker *monitor)
-{
-  MetaScreen *screen;
-  MetaDisplay *display;
-  MetaWindow *window;
-
-  screen = shell_global_get_screen (shell_global_get ());
-  display = meta_screen_get_display (screen);
-  window = meta_display_get_focus_window (display);
-
-  if (window != NULL && shell_window_tracker_is_window_interesting (window))
-    return window;
-  return NULL;
-}
-
 static void
 on_transient_window_title_changed (MetaWindow      *window,
                                    GParamSpec      *spec,
@@ -687,13 +671,18 @@ shell_window_tracker_get_running_apps (ShellWindowTracker *monitor,
 static gboolean
 idle_handle_focus_change (gpointer data)
 {
+  MetaScreen *screen;
+  MetaDisplay *display;
   ShellWindowTracker *tracker = data;
   MetaWindow *new_focus_win;
   ShellApp *new_focus_app;
 
   tracker->idle_focus_change_id = 0;
 
-  new_focus_win = get_active_window (tracker);
+  screen = shell_global_get_screen (shell_global_get ());
+  display = meta_screen_get_display (screen);
+
+  new_focus_win = meta_display_get_focus_window (display);
   new_focus_app = new_focus_win ? g_hash_table_lookup (tracker->window_to_app, new_focus_win) : NULL;
 
   if (new_focus_app == tracker->focus_app)
