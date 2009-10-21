@@ -90,7 +90,7 @@
  *    "function" : "my_sine_alpha"
  *  }
  *     </programlisting>
- *   </informalexample>
+ *   </example>
  * </refsect2>
  *
  * Since: 0.2
