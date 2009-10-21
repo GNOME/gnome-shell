@@ -87,6 +87,8 @@ GType    clutter_script_get_type_from_class  (const gchar *name);
 GObject *clutter_script_construct_object  (ClutterScript *script,
                                            ObjectInfo    *info);
 
+gulong   clutter_script_resolve_animation_mode (const gchar *namer);
+
 gboolean clutter_script_enum_from_string  (GType          gtype,
                                            const gchar   *string,
                                            gint          *enum_value);

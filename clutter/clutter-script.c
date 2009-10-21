@@ -564,11 +564,17 @@ static const struct
 
 static const gint n_animation_modes = G_N_ELEMENTS (animation_modes);
 
-static ClutterAnimationMode
-resolve_animation_mode (const gchar *name)
+gulong
+clutter_script_resolve_animation_mode (const gchar *name)
 {
   gint i, res = 0;
 
+  /* XXX - we might be able to optimize by changing the ordering
+   * of the animation_modes array, e.g.
+   *  - special casing linear
+   *  - tokenizing ('ease', 'In', 'Sine') and matching on token
+   *  - binary searching?
+   */
   for (i = 0; i < n_animation_modes; i++)
     {
       if (strcmp (animation_modes[i].name, name) == 0)
@@ -642,7 +648,7 @@ clutter_script_parse_alpha (ClutterScript *script,
 
   val = json_object_get_member (object, "mode");
   if (val && json_node_get_string (val) != NULL)
-    mode = resolve_animation_mode (json_node_get_string (val));
+    mode = clutter_script_resolve_animation_mode (json_node_get_string (val));
 
   if (mode == CLUTTER_CUSTOM_MODE)
     {

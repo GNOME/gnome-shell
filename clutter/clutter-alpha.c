@@ -82,7 +82,11 @@
  *     <programlisting>
  *  {
  *    "id" : "sine-alpha",
- *    "timeline" : "timeline-01",
+ *    "timeline" : {
+ *      "id" : "sine-timeline",
+ *      "duration" : 500,
+ *      "loop" : true
+ *    },
  *    "function" : "my_sine_alpha"
  *  }
  *     </programlisting>
@@ -107,6 +111,7 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
@@ -286,6 +291,32 @@ clutter_alpha_parse_custom_node (ClutterScriptable *scriptable,
       g_value_set_pointer (value, resolve_alpha_func (func_name));
 
       return TRUE;
+    }
+
+  /* we need to do this because we use gulong in place
+   * of ClutterAnimationMode for ClutterAlpha:mode
+   */
+  if (strncmp (name, "mode", 4) == 0)
+    {
+      if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE)
+        return FALSE;
+
+      g_value_init (value, G_TYPE_ULONG);
+
+      if (json_node_get_value_type (node) == G_TYPE_INT64)
+        {
+          g_value_set_ulong (value, json_node_get_int (node));
+          return TRUE;
+        }
+      else if (json_node_get_value_type (node) == G_TYPE_STRING)
+        {
+          const gchar *str = json_node_get_string (node);
+          gulong mode;
+
+          mode = clutter_script_resolve_animation_mode (str);
+          g_value_set_ulong (value, mode);
+          return TRUE;
+        }
     }
 
   return FALSE;
