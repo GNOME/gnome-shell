@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-04 01:26+0200\n"
-"PO-Revision-Date: 2009-09-01 21:48+0200\n"
+"POT-Creation-Date: 2009-10-21 22:51+0200\n"
+"PO-Revision-Date: 2009-10-18 17:32+0200\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -24,80 +24,123 @@ msgstr "Skal til GNOME"
 msgid "Window management and application launching"
 msgstr "Vinduehåndtering og åbning af programmer"
 
-#. left side
-#: ../js/ui/panel.js:271
-msgid "Activities"
-msgstr "Aktiviteter"
+#: ../js/ui/appDisplay.js:332
+msgid "Frequent"
+msgstr "Ofte"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:454
-msgid "%a %l:%M %p"
-msgstr "%a %H:%M"
+#: ../js/ui/appIcon.js:410
+msgid "New Window"
+msgstr "Nyt vindue"
 
-#: ../js/ui/dash.js:256
+#: ../js/ui/appIcon.js:414
+msgid "Remove from Favorites"
+msgstr "Fjern fra favoritter"
+
+#: ../js/ui/appIcon.js:415
+msgid "Add to Favorites"
+msgstr "Tilføj til favoritter"
+
+#: ../js/ui/dash.js:283
 msgid "Find..."
 msgstr "Find..."
 
-#: ../js/ui/dash.js:374
-msgid "Browse"
-msgstr "Gennemse"
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Mere"
 
-#: ../js/ui/dash.js:511
+#: ../js/ui/dash.js:543
 msgid "(see all)"
 msgstr "(se alle)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:705 ../js/ui/dash.js:761 ../js/ui/dash.js:893
+#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
 msgid "APPLICATIONS"
 msgstr "PROGRAMMER"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:725
+#: ../js/ui/dash.js:745
 msgid "PLACES"
 msgstr "STEDER"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:732 ../js/ui/dash.js:773 ../js/ui/dash.js:867
+#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
 msgid "RECENT DOCUMENTS"
 msgstr "SENESTE DOKUMENTER"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:751 ../js/ui/dash.js:856 ../js/ui/dash.js:882
+#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
 msgid "SEARCH RESULTS"
 msgstr "SØGERESULTATER"
 
-#: ../js/ui/runDialog.js:82
+#: ../js/ui/dash.js:792
+msgid "PREFERENCES"
+msgstr "INDSTILLINGER"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:274
+msgid "Activities"
+msgstr "Aktiviteter"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:491
+msgid "%a %l:%M %p"
+msgstr "%a %H:%M"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Forbind til..."
+
+#: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "Indtast en kommando:"
 
-#: ../src/shell-global.c:840
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Kørsel af \"%s\" mislykkedes:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Programmer"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Seneste dokumenter"
+
+#: ../src/shell-global.c:812
 msgid "Less than a minute ago"
 msgstr "Mindre end et minut siden"
 
-#: ../src/shell-global.c:843
+#: ../src/shell-global.c:815
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minut siden"
 msgstr[1] "%d minutter siden"
 
-#: ../src/shell-global.c:846
+#: ../src/shell-global.c:818
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d time siden"
 msgstr[1] "%d timer siden"
 
-#: ../src/shell-global.c:849
+#: ../src/shell-global.c:821
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag siden"
 msgstr[1] "%d dage siden"
 
-#: ../src/shell-global.c:852
+#: ../src/shell-global.c:824
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -177,6 +220,9 @@ msgstr "Søg"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Browse"
+#~ msgstr "Gennemse"
 
 #~ msgid "Find apps or documents"
 #~ msgstr "Find programmer eller dokumenter"
