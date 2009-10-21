@@ -155,13 +155,18 @@ cogl_clip_push_window_rect (float x_offset,
   clip_state->stack_dirty = TRUE;
 }
 
-/* Scale from OpenGL <-1,1> coordinates system to window coordinates
- * <0,window-size> with (0,0) being top left. */
-#define VIEWPORT_SCALE_X(x, w, width, origin) \
-    ((((((x) / (w)) + 1.0) / 2) * (width)) + (origin))
-#define VIEWPORT_SCALE_Y(y, w, height, origin) \
-    ((height) - (((((y) / (w)) + 1.0) / 2) * (height)) + (origin))
+/* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
+ * to Cogl window/draw-buffer coordinates (ranging from 0 to buffer-size) with
+ * (0,0) being top left. */
+#define VIEWPORT_TRANSFORM_X(x, vp_origin_x, vp_width) \
+    (  ( ((x) + 1.0) * ((vp_width) / 2.0) ) + (vp_origin_x)  )
+/* Note: for Y we first flip all coordinates around the X axis while in
+ * normalized device coodinates */
+#define VIEWPORT_TRANSFORM_Y(y, vp_origin_y, vp_height) \
+    (  ( ((-(y)) + 1.0) * ((vp_height) / 2.0) ) + (vp_origin_y)  )
 
+/* Transform a homogeneous vertex position from model space to Cogl
+ * window coordinates (with 0,0 being top left) */
 static void
 transform_point (CoglMatrix *matrix_mv,
                  CoglMatrix *matrix_p,
@@ -172,14 +177,19 @@ transform_point (CoglMatrix *matrix_mv,
   float z = 0;
   float w = 1;
 
-  /* Apply the model view matrix */
+  /* Apply the modelview matrix transform */
   cogl_matrix_transform_point (matrix_mv, x, y, &z, &w);
 
-  /* Apply the projection matrix */
+  /* Apply the projection matrix transform */
   cogl_matrix_transform_point (matrix_p, x, y, &z, &w);
+
+  /* Perform perspective division */
+  *x /= w;
+  *y /= w;
+
   /* Apply viewport transform */
-  *x = VIEWPORT_SCALE_X (*x, w, viewport[2], viewport[0]);
-  *y = VIEWPORT_SCALE_Y (*y, w, viewport[3], viewport[1]);
+  *x = VIEWPORT_TRANSFORM_X (*x, viewport[0], viewport[2]);
+  *y = VIEWPORT_TRANSFORM_Y (*y, viewport[1], viewport[3]);
 }
 
 #undef VIEWPORT_SCALE_X
