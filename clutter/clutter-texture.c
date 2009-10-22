@@ -586,14 +586,8 @@ clutter_texture_paint (ClutterActor *self)
 		  COGL_BUFFER_BIT_DEPTH);
       cogl_disable_fog ();
 
-      /* Clear the clipping stack so that if the FBO actor is being
-	 clipped then it won't affect drawing the source */
-      cogl_clip_stack_save ();
-
       /* Render out actor scene to fbo */
       clutter_actor_paint (priv->fbo_source);
-
-      cogl_clip_stack_restore ();
 
       /* Restore drawing to the frame buffer */
       cogl_set_draw_buffer (COGL_WINDOW_BUFFER, COGL_INVALID_HANDLE);
