@@ -52,6 +52,10 @@ typedef struct
 
   gboolean          indirect;
 
+  /* A few handy matrix constants */
+  CoglMatrix        identity_matrix;
+  CoglMatrix        y_flip_matrix;
+
   /* Client-side matrix stack or NULL if none */
   CoglMatrixMode    flushed_matrix_mode;
   GList            *texture_units;

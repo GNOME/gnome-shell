@@ -115,6 +115,9 @@ _cogl_draw_buffer_flush_state (CoglHandle handle,
 CoglHandle
 _cogl_onscreen_new (void);
 
+gboolean
+cogl_is_offscreen (CoglHandle handle);
+
 CoglHandle
 _cogl_get_draw_buffer (void);
 GSList *
