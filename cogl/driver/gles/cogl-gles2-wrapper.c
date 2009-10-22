@@ -690,6 +690,11 @@ cogl_gles2_get_current_matrix (CoglGles2Wrapper *wrapper)
 
   switch (wrapper->matrix_mode)
     {
+    default:
+      g_critical ("%s: Unexpected matrix mode %d\n",
+                  G_STRFUNC, wrapper->matrix_mode);
+      /* flow through */
+
     case GL_MODELVIEW:
       return &wrapper->modelview_matrix;
 
@@ -699,9 +704,6 @@ cogl_gles2_get_current_matrix (CoglGles2Wrapper *wrapper)
     case GL_TEXTURE:
       texture_unit = wrapper->texture_units + wrapper->active_texture_unit;
       return &texture_unit->texture_matrix;
-
-    default:
-      g_critical ("%s: Unexpected matrix mode %d\n", G_STRFUNC, mode);
     }
 }
 
@@ -892,14 +894,14 @@ cogl_wrap_prepare_for_draw (void)
           /* FIXME: we should have a cogl_matrix_copy () function */
           memcpy (&mvp_matrix, projection_matrix, sizeof (CoglMatrix));
 
-          cogl_matrix_multiply (&mvp_matrix, modelview_matrix);
+          cogl_matrix_multiply (&mvp_matrix, &mvp_matrix, modelview_matrix);
 
 	  if (program->uniforms.mvp_matrix_uniform != -1)
 	    glUniformMatrix4fv (program->uniforms.mvp_matrix_uniform, 1,
-				GL_FALSE, (float *)mvp_matrix);
+				GL_FALSE, (float *) &mvp_matrix);
 	  if (program->uniforms.modelview_matrix_uniform != -1)
 	    glUniformMatrix4fv (program->uniforms.modelview_matrix_uniform, 1,
-				GL_FALSE, (float *)modelview_matrix);
+				GL_FALSE, (float *) &modelview_matrix);
 	}
       if ((w->dirty_uniforms & COGL_GLES2_DIRTY_TEXTURE_MATRICES))
 	{
@@ -915,7 +917,7 @@ cogl_wrap_prepare_for_draw (void)
               texture_unit = w->texture_units + i;
 	      if (uniform != -1)
 		glUniformMatrix4fv (uniform, 1, GL_FALSE,
-                                    (float *)texture_unit->texture_matrix);
+                                    (float *) &texture_unit->texture_matrix);
 	    }
 	}
 
@@ -1299,21 +1301,16 @@ cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
   switch (pname)
     {
     case GL_MODELVIEW_MATRIX:
-      memcpy (params, w->modelview_stack + w->modelview_stack_pos * 16,
-              sizeof (GLfloat) * 16);
+      memcpy (params, &w->modelview_matrix, sizeof (GLfloat) * 16);
       break;
 
     case GL_PROJECTION_MATRIX:
-      memcpy (params, w->projection_stack + w->projection_stack_pos * 16,
-              sizeof (GLfloat) * 16);
+      memcpy (params, &w->projection_matrix, sizeof (GLfloat) * 16);
       break;
 
     case GL_TEXTURE_MATRIX:
       texture_unit = w->texture_units + w->active_texture_unit;
-      memcpy (params,
-              texture_unit->texture_stack
-               + texture_unit->texture_stack_pos * 16,
-              sizeof (GLfloat) * 16);
+      memcpy (params, &texture_unit->texture_matrix, sizeof (GLfloat) * 16);
       break;
 
     case GL_VIEWPORT:
