@@ -793,6 +793,7 @@ cogl_read_pixels (int x,
                   CoglPixelFormat format,
                   guint8 *pixels)
 {
+  CoglHandle draw_buffer;
   int        draw_buffer_height;
   int        rowstride = width * 4;
   guint8    *temprow;
@@ -804,7 +805,8 @@ cogl_read_pixels (int x,
 
   temprow = g_alloca (rowstride * sizeof (guint8));
 
-  draw_buffer_height = _cogl_draw_buffer_get_height (_cogl_get_draw_buffer ());
+  draw_buffer = _cogl_get_draw_buffer ();
+  draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
      so 0 is the bottom row */
@@ -824,6 +826,11 @@ cogl_read_pixels (int x,
   cogl_flush ();
 
   glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+  /* NB: All offscreen rendering is done upside down so there is no need
+   * to flip in this case... */
+  if (cogl_is_offscreen (draw_buffer))
+    return;
 
   /* TODO: consider using the GL_MESA_pack_invert extension in the future
    * to avoid this flip... */
