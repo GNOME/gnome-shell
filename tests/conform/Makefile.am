@@ -38,6 +38,7 @@ test_conformance_SOURCES = 		\
 	test-texture-fbo.c		\
 	test-cogl-viewport.c		\
 	test-cogl-offscreen.c		\
+	test-cogl-readpixels.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
