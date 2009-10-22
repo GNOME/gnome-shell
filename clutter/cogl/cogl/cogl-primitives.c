@@ -979,6 +979,7 @@ cogl_polygon (CoglTextureVertex *vertices,
     }
 
   cogl_enable (enable_flags);
+  _cogl_flush_face_winding ();
 
   GE (glVertexPointer (3, GL_FLOAT, stride_bytes, v));
 

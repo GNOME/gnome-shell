@@ -68,6 +68,7 @@ cogl_create_context (void)
   _context->color_alpha = 0;
 
   _context->enable_backface_culling = FALSE;
+  _context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
 
   _context->indirect = gl_is_indirect;
 
@@ -141,6 +142,7 @@ cogl_create_context (void)
   enable_flags =
     _cogl_material_get_cogl_enable_flags (_context->source_material);
   cogl_enable (enable_flags);
+  _cogl_flush_face_winding ();
 
   return TRUE;
 }

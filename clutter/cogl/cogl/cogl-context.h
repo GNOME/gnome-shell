@@ -49,6 +49,7 @@ typedef struct
   guint8            color_alpha;
 
   gboolean          enable_backface_culling;
+  CoglFrontWinding  flushed_front_winding;
 
   gboolean          indirect;
 

@@ -285,6 +285,38 @@ cogl_get_backface_culling_enabled (void)
 }
 
 void
+_cogl_flush_face_winding (void)
+{
+  CoglFrontWinding winding;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* The front face winding doesn't matter if we aren't performing any
+   * backface culling... */
+  if (!ctx->enable_backface_culling)
+    return;
+
+  /* NB: We use a clockwise face winding order when drawing offscreen because
+   * all offscreen rendering is done upside down resulting in reversed winding
+   * for all triangles.
+   */
+  if (cogl_is_offscreen (_cogl_get_draw_buffer ()))
+    winding = COGL_FRONT_WINDING_CLOCKWISE;
+  else
+    winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
+
+  if (winding != ctx->flushed_front_winding)
+    {
+
+      if (winding == COGL_FRONT_WINDING_CLOCKWISE)
+        GE (glFrontFace (GL_CW));
+      else
+        GE (glFrontFace (GL_CCW));
+      ctx->flushed_front_winding = winding;
+    }
+}
+
+void
 cogl_set_source_color (const CoglColor *color)
 {
   CoglColor premultiplied;
@@ -909,6 +941,7 @@ cogl_begin_gl (void)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
   cogl_enable (enable_flags);
+  _cogl_flush_face_winding ();
 
   /* Disable all client texture coordinate arrays */
   for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
