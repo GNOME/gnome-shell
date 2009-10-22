@@ -74,6 +74,50 @@ StScrollBar StButton#vhandle:hover
     background-color: #314a6c;
 }
 
+/* Dash */
+
+#dash {
+    color: #5f5f5f;
+    background-color: rgba(0,0,0,0.75);
+    padding: 0px 14px;
+}
+
+#searchEntry {
+    padding: 4px;
+    border-bottom: 1px solid #262626;
+}
+
+#searchEntry:active {
+    background-color: #c4c4c4;
+}
+
+.section-header {
+    border: 1px solid #262626;
+    -shell-gradient-top: #161616;
+    -shell-gradient-bottom: #000000;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.section-header-inner {
+    border: 1px solid #000000;
+    padding: 0px 4px;
+}
+
+.section-text-content {
+    padding: 4px 0px;
+}
+
+.section-count {
+}
+
+.more-link {
+    border-left: 1px solid #262626;
+    padding: 0px 0px 0px 4px;
+    color: #ffffff;
+    font-weight: normal;
+}
+
 /* LookingGlass */
 
 #LookingGlassDialog

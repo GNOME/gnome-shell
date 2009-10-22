@@ -8,6 +8,7 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
+const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -22,8 +23,6 @@ const DEFAULT_PADDING = 4;
 const DEFAULT_SPACING = 4;
 const DASH_SECTION_PADDING = 6;
 const DASH_SECTION_SPACING = 40;
-const DASH_CORNER_RADIUS = 5;
-const DASH_PADDING_SIDE = 14;
 
 const BACKGROUND_COLOR = new Clutter.Color();
 BACKGROUND_COLOR.from_pixel(0x000000c0);
@@ -43,21 +42,9 @@ SEARCH_TEXT_COLOR.from_pixel(0x333333ff);
 const SEARCH_CURSOR_COLOR = BRIGHT_TEXT_COLOR;
 const HIGHLIGHTED_SEARCH_CURSOR_COLOR = SEARCH_TEXT_COLOR;
 
-const HIGHLIGHTED_SEARCH_BACKGROUND_COLOR = new Clutter.Color();
-HIGHLIGHTED_SEARCH_BACKGROUND_COLOR.from_pixel(0xc4c4c4ff);
-
 const SEARCH_BORDER_BOTTOM_COLOR = new Clutter.Color();
 SEARCH_BORDER_BOTTOM_COLOR.from_pixel(0x191919ff);
 
-const SECTION_BORDER_COLOR = new Clutter.Color();
-SECTION_BORDER_COLOR.from_pixel(0x262626ff);
-const SECTION_BORDER = 1;
-const SECTION_INNER_BORDER_COLOR = new Clutter.Color();
-SECTION_INNER_BORDER_COLOR.from_pixel(0x000000ff);
-const SECTION_BACKGROUND_TOP_COLOR = new Clutter.Color();
-SECTION_BACKGROUND_TOP_COLOR.from_pixel(0x161616ff);
-const SECTION_BACKGROUND_BOTTOM_COLOR = new Clutter.Color();
-SECTION_BACKGROUND_BOTTOM_COLOR.from_pixel(0x000000ff);
 const SECTION_INNER_SPACING = 8;
 
 const BROWSE_ACTIVATED_BG = new Clutter.Color();
@@ -265,14 +252,11 @@ function SearchEntry() {
 
 SearchEntry.prototype = {
     _init : function() {
-        this.actor = new Big.Box({ padding: DEFAULT_PADDING,
-                                   border_bottom: SECTION_BORDER,
-                                   border_color: SEARCH_BORDER_BOTTOM_COLOR,
-                                   corner_radius: DASH_CORNER_RADIUS,
-                                   reactive: true });
+        this.actor = new St.BoxLayout({ name: "searchEntry",
+                                        reactive: true });
         let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                 y_align: Big.BoxAlignment.CENTER });
-        this.actor.append(box, Big.BoxPackFlags.EXPAND);
+        this.actor.add(box, { expand: true });
         this.actor.connect('button-press-event', Lang.bind(this, function () {
             this._resetTextState(true);
             return false;
@@ -361,12 +345,12 @@ SearchEntry.prototype = {
             if (!searchEntryClicked)
                 this._defaultText.hide();
             this._iconBox.append(this._closeIcon, Big.BoxPackFlags.NONE);
-            this.actor.background_color = HIGHLIGHTED_SEARCH_BACKGROUND_COLOR;
+            this.actor.set_style_pseudo_class('active');
             this.entry.cursor_color = HIGHLIGHTED_SEARCH_CURSOR_COLOR;
         } else {
             this._defaultText.show();
             this._iconBox.append(this._magnifierIcon, Big.BoxPackFlags.NONE);
-            this.actor.background_color = BACKGROUND_COLOR;
+            this.actor.set_style_pseudo_class(null);
             this.entry.cursor_color = SEARCH_CURSOR_COLOR;
         }
     },
@@ -385,20 +369,12 @@ function MoreLink() {
 
 MoreLink.prototype = {
     _init : function () {
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   padding_right: DEFAULT_PADDING,
-                                   padding_left: DEFAULT_PADDING,
-                                   reactive: true,
-                                   x_align: Big.BoxAlignment.CENTER,
-                                   y_align: Big.BoxAlignment.CENTER,
-                                   border_left: SECTION_BORDER,
-                                   border_color: SECTION_BORDER_COLOR });
+        this.actor = new St.BoxLayout({ style_class: "more-link",
+                                        reactive: true });
         this.pane = null;
 
-        let text = new Clutter.Text({ font_name: "Sans 12px",
-                                      color: BRIGHT_TEXT_COLOR,
-                                      text: _("More") });
-        this.actor.append(text, Big.BoxPackFlags.NONE);
+        let text = new St.Label({ text: _("More") });
+        this.actor.add(text, { expand: true, y_fill: false });
 
         this.actor.connect('button-press-event', Lang.bind(this, function (b, e) {
             if (this.pane == null) {
@@ -449,50 +425,63 @@ function SectionHeader(title, suppressBrowse) {
 
 SectionHeader.prototype = {
     _init : function (title, suppressBrowse) {
-        this.actor = new Big.Box({ border: SECTION_BORDER,
-                                   border_color: SECTION_BORDER_COLOR });
-        this._innerBox = new Big.Box({ border: SECTION_BORDER,
-                                       border_color: SECTION_INNER_BORDER_COLOR,
-                                       padding_left: DEFAULT_PADDING,
-                                       padding_right: DEFAULT_PADDING,
-                                       orientation: Big.BoxOrientation.HORIZONTAL,
-                                       spacing: DEFAULT_SPACING });
-        this.actor.append(this._innerBox, Big.BoxPackFlags.EXPAND);
-        let backgroundGradient = Shell.create_vertical_gradient(SECTION_BACKGROUND_TOP_COLOR,
-                                                                SECTION_BACKGROUND_BOTTOM_COLOR);
-        this._innerBox.add_actor(backgroundGradient);
-        this._innerBox.connect('notify::allocation', Lang.bind(this, function (actor) {
-            let [width, height] = actor.get_size();
-            backgroundGradient.set_size(width, height);
+        this.actor = new St.Bin({ style_class: "section-header",
+                                  x_align: St.Align.START,
+                                  x_fill: true,
+                                  y_fill: true });
+        this._innerBox = new St.BoxLayout({ style_class: "section-header-inner" });
+        this.actor.set_child(this._innerBox);
+
+        this._backgroundGradient = null;
+        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        this.actor.connect('notify::allocation', Lang.bind(this, function (actor) {
+            if (!this._backgroundGradient)
+                return;
+            this._onStyleChanged();
         }));
 
-        this.backLink = new BackLink();
-        this._innerBox.append(this.backLink.actor, Big.BoxPackFlags.NONE);
-        this.backLink.actor.hide();
+        let textBox = new St.BoxLayout({ style_class: "section-text-content" });
+        this.text = new St.Label({ style_class: "section-title",
+                                   text: title });
+        textBox.add(this.text, { x_align: St.Align.START });
 
-        this.backLink.actor.connect('activate', Lang.bind(this, function (actor) {
-            this.emit('back-link-activated');   
-        }));
-
-        let textBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                    padding_top: DEFAULT_PADDING,
-                                    padding_bottom: DEFAULT_PADDING });
-        this.text = new Clutter.Text({ color: TEXT_COLOR,
-                                       font_name: "Sans Bold 12px",
-                                       text: title });
-        textBox.append(this.text, Big.BoxPackFlags.NONE);
-
-        this.countText = new Clutter.Text({ color: TEXT_COLOR,
-                                            font_name: 'Sans Bold 14px' });
-        textBox.append(this.countText, Big.BoxPackFlags.END);
+        this.countText = new St.Label({ style_class: "section-count" });
+        textBox.add(this.countText, { x_align: St.Align.END });
         this.countText.hide();
 
-        this._innerBox.append(textBox, Big.BoxPackFlags.EXPAND);
+        this._innerBox.add(textBox, { expand: true });
 
         if (!suppressBrowse) {
             this.moreLink = new MoreLink();
-            this._innerBox.append(this.moreLink.actor, Big.BoxPackFlags.END);
+            this._innerBox.add(this.moreLink.actor, { x_align: St.Align.END });
         }
+    },
+
+    _onStyleChanged: function () {
+        if (this._backgroundGradient) {
+            this._backgroundGradient.destroy();
+        }
+        // Manually implement the gradient
+        let themeNode = this.actor.get_theme_node();
+        let gradientTopColor = new Clutter.Color();
+        if (!themeNode.get_color("-shell-gradient-top", false, gradientTopColor))
+            return;
+        let gradientBottomColor = new Clutter.Color();
+        if (!themeNode.get_color("-shell-gradient-bottom", false, gradientBottomColor))
+            return;
+        this._backgroundGradient = Shell.create_vertical_gradient(gradientTopColor,
+                                                                   gradientBottomColor);
+        let box = this.actor.allocation;
+        let contentBox = new Clutter.ActorBox();
+        themeNode.get_content_box(box, contentBox);
+        let width = contentBox.x2 - contentBox.x1;
+        let height = contentBox.y2 - contentBox.y1;
+        this._backgroundGradient.set_size(width, height);
+        // This will set a fixed position, which puts us outside of the normal box layout
+        this._backgroundGradient.set_position(0, 0);
+
+        this._innerBox.add_actor(this._backgroundGradient);
+        this._backgroundGradient.lower_bottom();
     },
 
     setTitle : function(title) {
@@ -598,12 +587,9 @@ Dash.prototype = {
         // of the Group actor ends up including the width of its hidden children, so we were getting a reactive object as
         // wide as the details pane that was blocking the clicks to the workspaces underneath it even when the details pane
         // was actually hidden.
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   background_color: BACKGROUND_COLOR,
-                                   corner_radius: DASH_CORNER_RADIUS,
-                                   padding_left: DASH_PADDING_SIDE,
-                                   padding_right: DASH_PADDING_SIDE,
-                                   reactive: true });
+        this.actor = new St.BoxLayout({ name: "dash",
+                                        vertical: true,
+                                        reactive: true });
 
         // Size for this one explicitly set from overlay.js
         this.searchArea = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
@@ -611,8 +597,8 @@ Dash.prototype = {
         this.sectionArea = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
                                          spacing: DASH_SECTION_SPACING });
 
-        this.actor.append(this.searchArea, Big.BoxPackFlags.NONE);
-        this.actor.append(this.sectionArea, Big.BoxPackFlags.NONE);
+        this.actor.add(this.searchArea);
+        this.actor.add(this.sectionArea);
 
         // The currently active popup display
         this._activePane = null;
