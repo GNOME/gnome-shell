@@ -274,7 +274,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
                                "Source",
                                "Specifies the actor to be cloned",
                                CLUTTER_TYPE_ACTOR,
-                               G_PARAM_CONSTRUCT_ONLY |
+                               G_PARAM_CONSTRUCT |
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_SOURCE, pspec);
 }
