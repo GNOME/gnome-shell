@@ -270,6 +270,9 @@ cogl_set_backface_culling_enabled (gboolean setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  if (ctx->enable_backface_culling == setting)
+    return;
+
   /* Currently the journal can't track changes to backface culling state... */
   _cogl_journal_flush ();
 
