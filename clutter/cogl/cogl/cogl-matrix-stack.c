@@ -22,6 +22,7 @@
  *
  * Authors:
  *   Havoc Pennington <hp@pobox.com> for litl
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -32,6 +33,7 @@
 #include "cogl-context.h"
 #include "cogl-internal.h"
 #include "cogl-matrix-stack.h"
+#include "cogl-draw-buffer-private.h"
 
 typedef struct {
   CoglMatrix matrix;
@@ -412,21 +414,35 @@ _cogl_matrix_stack_flush_to_gl (CoglMatrixStack *stack,
       ctx->flushed_matrix_mode = mode;
     }
 
-  /* In theory it might help the GL implementation if we used our
-   * local analysis of the matrix and called Translate/Scale rather
-   * than LoadMatrix to send a 2D matrix
+  /* Because Cogl defines texture coordinates to have a top left origin and
+   * because offscreen draw buffers may be used for rendering to textures we
+   * always render upside down to offscreen buffers.
    */
-
-  if (state->is_identity)
+  if (mode == COGL_MATRIX_PROJECTION &&
+      cogl_is_offscreen (_cogl_get_draw_buffer ()))
     {
-      if (!stack->flushed_identity)
-        GE (glLoadIdentity ());
-      stack->flushed_identity = TRUE;
+      CoglMatrix flipped_projection;
+      CoglMatrix *projection =
+        state->is_identity ? &ctx->identity_matrix : &state->matrix;
+
+      cogl_matrix_multiply (&flipped_projection,
+                            &ctx->y_flip_matrix, projection);
+      GE (glLoadMatrixf (cogl_matrix_get_array (&flipped_projection)));
+      stack->flushed_identity = FALSE;
     }
   else
     {
-      GE (glLoadMatrixf (cogl_matrix_get_array (&state->matrix)));
-      stack->flushed_identity = FALSE;
+      if (state->is_identity)
+        {
+          if (!stack->flushed_identity)
+            GE (glLoadIdentity ());
+          stack->flushed_identity = TRUE;
+        }
+      else
+        {
+            GE (glLoadMatrixf (cogl_matrix_get_array (&state->matrix)));
+          stack->flushed_identity = FALSE;
+        }
     }
   stack->flushed_state = state;
 }

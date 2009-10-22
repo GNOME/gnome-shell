@@ -71,6 +71,10 @@ cogl_create_context (void)
 
   _context->indirect = gl_is_indirect;
 
+  cogl_matrix_init_identity (&_context->identity_matrix);
+  cogl_matrix_init_identity (&_context->y_flip_matrix);
+  cogl_matrix_scale (&_context->y_flip_matrix, 1, -1, 1);
+
   _context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
   _context->texture_units = NULL;
 
