@@ -59,6 +59,11 @@ cogl_create_context (void)
   _context->feature_flags = 0;
   _context->features_cached = FALSE;
 
+  /* Initialise the driver specific state */
+  /* TODO: combine these two into one function */
+  _cogl_create_context_driver (_context);
+  _cogl_features_init ();
+
   _context->enable_flags = 0;
   _context->color_alpha = 0;
 
@@ -106,11 +111,6 @@ cogl_create_context (void)
   _context->quad_indices_short_len = 0;
 
   _context->texture_download_material = COGL_INVALID_HANDLE;
-
-  /* Initialise the driver specific state */
-  /* TODO: combine these two into one function */
-  _cogl_create_context_driver (_context);
-  _cogl_features_init ();
 
   /* Create default textures used for fall backs */
   _context->default_gl_texture_2d_tex =
