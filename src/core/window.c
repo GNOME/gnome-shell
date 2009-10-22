@@ -2188,6 +2188,9 @@ __window_is_terminal (MetaWindow *window)
   /* mlterm ("multi lingual terminal emulator on X") */
   else if (strcmp (window->res_class, "mlterm") == 0)
     return TRUE;
+  /* Terminal -- XFCE Terminal */
+  else if (strcmp (window->res_class, "Terminal") == 0)
+    return TRUE;
 
   return FALSE;
 }
