@@ -302,6 +302,7 @@ _cogl_journal_flush_material_and_entries (CoglJournalEntry *batch_start,
   enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
   enable_flags |= COGL_ENABLE_COLOR_ARRAY;
   cogl_enable (enable_flags);
+  _cogl_flush_face_winding ();
 
   /* If we haven't transformed the quads in software then we need to also break
    * up batches according to changes in the modelview matrix... */
