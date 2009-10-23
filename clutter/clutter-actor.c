@@ -533,14 +533,19 @@ clutter_actor_verify_map_state (ClutterActor *self)
                 {
                 }
               else
-                g_warning ("Realized non-toplevel actor should have a parent");
+                g_warning ("Realized non-toplevel actor '%s' should "
+                           "have a parent",
+                           priv->name ? priv->name
+                                      : G_OBJECT_TYPE_NAME (self));
             }
           else if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
             {
-              g_warning ("Realized actor %s[%p] has an unrealized parent %s[%p]",
-                         G_OBJECT_TYPE_NAME (self), self,
-                         G_OBJECT_TYPE_NAME (priv->parent_actor),
-                         priv->parent_actor);
+              g_warning ("Realized actor %s has an unrealized parent %s",
+                         priv->name ? priv->name
+                                    : G_OBJECT_TYPE_NAME (self),
+                         clutter_actor_get_name (priv->parent_actor)
+                           ? clutter_actor_get_name (priv->parent_actor)
+                           : G_OBJECT_TYPE_NAME (priv->parent_actor));
             }
         }
     }
@@ -548,7 +553,9 @@ clutter_actor_verify_map_state (ClutterActor *self)
   if (CLUTTER_ACTOR_IS_MAPPED (self))
     {
       if (!CLUTTER_ACTOR_IS_REALIZED (self))
-        g_warning ("Actor is mapped but not realized");
+        g_warning ("Actor '%s' is mapped but not realized",
+                   priv->name ? priv->name
+                              : G_OBJECT_TYPE_NAME (self));
 
       /* remaining bets are off during reparent when we're potentially
        * mapped, but should not be according to invariants
@@ -562,13 +569,17 @@ clutter_actor_verify_map_state (ClutterActor *self)
                   if (!CLUTTER_ACTOR_IS_VISIBLE (self) &&
                       !(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
                     {
-                      g_warning ("Toplevel actor is mapped but not visible");
+                      g_warning ("Toplevel actor '%s' is mapped "
+                                 "but not visible",
+                                 priv->name ? priv->name
+                                            : G_OBJECT_TYPE_NAME (self));
                     }
                 }
               else
                 {
-                  g_warning ("Mapped actor %s %p should have a parent",
-                             G_OBJECT_TYPE_NAME (self), self);
+                  g_warning ("Mapped actor '%s' should have a parent",
+                             priv->name ? priv->name
+                                        :G_OBJECT_TYPE_NAME (self));
                 }
             }
           else
@@ -590,22 +601,28 @@ clutter_actor_verify_map_state (ClutterActor *self)
 
               if (!CLUTTER_ACTOR_IS_VISIBLE (priv->parent_actor))
                 {
-                  g_warning ("Actor should not be mapped if parent "
-                             "is not visible");
+                  g_warning ("Actor '%s' should not be mapped if parent "
+                             "is not visible",
+                             priv->name ? priv->name
+                                        : G_OBJECT_TYPE_NAME (self));
                 }
 
               if (!CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
                 {
-                  g_warning ("Actor should not be mapped if parent "
-                             "is not realized");
+                  g_warning ("Actor '%s' should not be mapped if parent "
+                             "is not realized",
+                             priv->name ? priv->name
+                                        : G_OBJECT_TYPE_NAME (self));
                 }
 
               if (!(CLUTTER_PRIVATE_FLAGS (priv->parent_actor) &
                     CLUTTER_ACTOR_IS_TOPLEVEL))
                 {
                   if (!CLUTTER_ACTOR_IS_MAPPED (priv->parent_actor))
-                    g_warning ("Actor is mapped but its non-toplevel "
-                               "parent is not mapped");
+                    g_warning ("Actor '%s' is mapped but its non-toplevel "
+                               "parent is not mapped",
+                               priv->name ? priv->name
+                                          : G_OBJECT_TYPE_NAME (self));
                 }
             }
         }
@@ -776,7 +793,9 @@ clutter_actor_update_map_state (ClutterActor  *self,
           if (priv->enable_paint_unmapped)
             {
               if (priv->parent_actor == NULL)
-                g_warning ("Attempting to map an unparented actor");
+                g_warning ("Attempting to map an unparented actor '%s'",
+                           priv->name ? priv->name
+                                      : G_OBJECT_TYPE_NAME (self));
 
               should_be_mapped = TRUE;
               must_be_realized = TRUE;
@@ -790,12 +809,16 @@ clutter_actor_update_map_state (ClutterActor  *self,
         {
           if (parent == NULL)
             g_warning ("Attempting to map a child that does not "
-                       "meet the necessary invariants: the actor "
-                       "has no parent");
+                       "meet the necessary invariants: the actor '%s' "
+                       "has no parent",
+                       priv->name ? priv->name
+                                  : G_OBJECT_TYPE_NAME (self));
           else
             g_warning ("Attempting to map a child that does not "
-                       "meet the necessary invariants: the actor "
-                       "is parented to an unmapped actor");
+                       "meet the necessary invariants: the actor '%s' "
+                       "is parented to an unmapped actor",
+                       priv->name ? priv->name
+                                  : G_OBJECT_TYPE_NAME (self));
         }
 
       /* If in reparent, we temporarily suspend unmap and unrealize.
@@ -826,8 +849,10 @@ clutter_actor_update_map_state (ClutterActor  *self,
       if (should_be_mapped)
         {
           if (!must_be_realized)
-            g_warning ("Somehow we think an actor should be mapped but "
-                       "not realized, which isn't allowed");
+            g_warning ("Somehow we think actor '%s' should be mapped but "
+                       "not realized, which isn't allowed",
+                       priv->name ? priv->name
+                                  : G_OBJECT_TYPE_NAME (self));
 
           /* realization is allowed to fail (though I don't know what
            * an app is supposed to do about that - shouldn't it just
