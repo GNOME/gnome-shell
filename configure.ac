@@ -12,7 +12,7 @@
 # - increase clutter_interface_version to the next odd number
 m4_define([clutter_major_version], [1])
 m4_define([clutter_minor_version], [1])
-m4_define([clutter_micro_version], [1])
+m4_define([clutter_micro_version], [2])
 
 m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutter_micro_version])
 

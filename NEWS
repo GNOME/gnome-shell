@@ -1,3 +1,98 @@
+Clutter 1.1.2 (23/10/2009)
+===============================================================================
+
+  * List of changes since Clutter 1.0
+
+    o Add ClutterLayoutManager, an abstract proxy class for easily
+      writing layout management policies; also add ClutterLayoutMeta,
+      a class for storing layout properties.
+
+    o Add ClutterBox, a generic container actor that relies on a
+      ClutterLayoutManager instance to manage the layout of its
+      children.
+
+    o Add the following layout managers:
+
+      - ClutterFixedLayout - a layout manager implementing the
+        policy used by ClutterGroup
+
+      - ClutterBinLayout - a layout manager for packing actors
+        as layers inside the same area, with per-actor alignment
+
+      - ClutterFlowLayout - a layout manager arranging actors as
+        a reflowing grid
+
+      - ClutterBoxLayout - a layout manager arranging actors as
+        a single line
+
+    o Remove the requirement for the backend-specific implementation
+      of ClutterStage to be a ClutterActor: a Stage implementation must
+      only implement the ClutterStageWindow interface. This cleans up
+      the backend code.
+
+    o COGL source tree clean up and rationalization; COGL now
+      knows the platform, and not only the driver (GL or GLES) so
+      we can migrate part of the low-level backend code from Clutter
+      to COGL where it makes sense.
+
+    o Remove code duplication across whole COGL.
+
+    o The GLES 2.0 driver for COGL, and the EGLX backend for Clutter
+      have been fixed and confirmed working.
+
+    o Add "dump-pick-buffer" to CLUTTER_DEBUG: this debug options
+      dumps the contents of each pick() buffer into a PNG file, for
+      debugging purposes.
+
+    o Allow interpolating intervals of ClutterUnits for animating
+      unit-based properties.
+
+    o Increase strictness and correctness of the ClutterUnits
+      grammar parser.
+
+    o Add GValue transformation functions for ClutterPath to and
+      from a string.
+
+    o Fix word movement in ClutterText; implement GObject getter for
+      :use-markup; emit notification for :position; decouple the
+      :text property from the :use-markup property.
+
+    o Do not queue redraws or relayouts on actors currently being
+      destroyed. 
+
+    o Support #rrggbb and #rgb notations for ClutterColor.
+
+    o Multiple bug fixes.
+
+    o Provide _NET_WM_PID on the X11 stage implementation.
+
+    o Documentation and Introspection annotation fixes.
+
+    o Add test units for the ClutterActor size requesition.
+
+    o Build fixes.
+
+    o Use AM_SILENT_RULES if Automake 1.11 is detected, and fall
+      back to Shave on older Automake versions.
+
+Many thanks to:
+
+  Robert Bragg
+  Damien Lespiau
+  Neil Roberts
+  Thomas Wood
+  Owen W. Taylor
+  Øyvind Kolås
+  Götz Waschk
+  Zhou Jiangwei
+  Colin Walters
+  Jonas Bonn
+  Joshua Lock
+  Jussi Kukkonen
+  Samuel Degrande
+  Vladimir Nadvornik
+  Xu Li
+
 Clutter 1.0.0 (28/07/2009)
 ===============================================================================
 

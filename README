@@ -204,6 +204,14 @@ RELEASE NOTES
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (See NEWS for general new feature info).
 
+Release Notes for Clutter 1.2
+-------------------------------
+
+* ClutterStageManager is now publicly available and documented API.
+
+* Clutter now depends on the system copy of JSON-GLib, and will fall
+  back to the internal copy only if JSON-GLib is not installed.
+
 Release Notes for Clutter 1.0
 -------------------------------
 
