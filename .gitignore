@@ -23,8 +23,8 @@ clutter/stamp-*
 /clutter/cogl/cogl/*.pc
 /clutter/cogl/cogl/cogl-enum-types.[ch]
 /clutter/cogl/cogl/stamp-enum-types
-/clutter/cogl/gles/cogl-fixed-vertex-shader.[ch]
-/clutter/cogl/gles/cogl-fixed-fragment-shader.[ch]
+/clutter/cogl/cogl/driver/gles/cogl-fixed-vertex-shader.[ch]
+/clutter/cogl/cogl/driver/gles/cogl-fixed-fragment-shader.[ch]
 *.gir
 *.typelib
 /clutter/json/*.gir
