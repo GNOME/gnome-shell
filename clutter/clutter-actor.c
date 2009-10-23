@@ -1287,7 +1287,7 @@ clutter_actor_unrealize (ClutterActor *self)
   clutter_actor_unrealize_not_hiding (self);
 }
 
-/**
+/*
  * clutter_actor_unrealize_not_hiding:
  * @self: A #ClutterActor
  *
@@ -1334,7 +1334,7 @@ clutter_actor_unrealize_not_hiding (ClutterActor *self)
   g_object_notify (G_OBJECT (self), "realized");
 }
 
-/**
+/*
  * _clutter_actor_rerealize:
  * @self: A #ClutterActor
  * @callback: Function to call while unrealized
@@ -1619,6 +1619,10 @@ clutter_actor_real_queue_redraw (ClutterActor *self,
   if (self->priv->queued_redraw)
     return;
 
+  /* no point in queuing a paint on a destroyed actor */
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
+    return;
+
   CLUTTER_NOTE (PAINT, "Redraw queued on '%s'",
                 clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : G_OBJECT_TYPE_NAME (self));
@@ -1646,6 +1650,10 @@ void
 clutter_actor_real_queue_relayout (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
+
+  /* no point in queueing a redraw on a destroyed actor */
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION)
+    return;
 
   priv->needs_width_request  = TRUE;
   priv->needs_height_request = TRUE;
@@ -2292,7 +2300,7 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   if (stage == NULL)
     stage = clutter_stage_get_default ();
 
-  if (parent)
+  if (parent != NULL)
     _clutter_actor_apply_modelview_transform_recursive (parent, ancestor);
   else if (self != stage)
     _clutter_actor_apply_modelview_transform (stage);
@@ -6593,6 +6601,12 @@ clutter_actor_set_parent (ClutterActor *self,
       return;
     }
 
+  if (CLUTTER_PRIVATE_FLAGS (parent) & CLUTTER_ACTOR_IN_DESTRUCTION)
+    {
+      g_warning ("Cannot set a parent currently being destroyed");
+      return;
+    }
+
   g_object_ref_sink (self);
   priv->parent_actor = parent;
 
@@ -6749,7 +6763,13 @@ clutter_actor_reparent (ClutterActor *self,
 
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
-      g_warning ("Cannot set a parent on a toplevel actor\n");
+      g_warning ("Cannot set a parent on a toplevel actor");
+      return;
+    }
+
+  if (CLUTTER_PRIVATE_FLAGS (new_parent) & CLUTTER_ACTOR_IN_DESTRUCTION)
+    {
+      g_warning ("Cannot set a parent currently being destroyed");
       return;
     }
 
