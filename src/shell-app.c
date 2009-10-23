@@ -329,6 +329,8 @@ _shell_app_remove_window (ShellApp   *app,
   g_object_unref (window);
   app->windows = g_slist_remove (app->windows, window);
 
+  g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
+
   if (app->windows == NULL)
     disconnect_workspace_switch (app);
 }
