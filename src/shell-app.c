@@ -324,6 +324,9 @@ void
 _shell_app_remove_window (ShellApp   *app,
                           MetaWindow *window)
 {
+  if (!g_slist_find (app->windows, window))
+    return;
+
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
   g_object_unref (window);
