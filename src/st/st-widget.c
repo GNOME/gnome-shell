@@ -1052,7 +1052,7 @@ st_widget_get_style_pseudo_class (StWidget *actor)
 /**
  * st_widget_set_style_pseudo_class:
  * @actor: a #StWidget
- * @pseudo_class: a new pseudo class string
+ * @pseudo_class: (allow-none): a new pseudo class string
  *
  * Set the style pseudo class
  */
