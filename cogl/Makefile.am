@@ -2,12 +2,14 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-SUBDIRS = winsys driver
+SUBDIRS = driver
 
 BUILT_SOURCES = cogl.h
-
 EXTRA_DIST = cogl.h.in cogl.pc.in
+CLEANFILES =
+DISTCLEANFILES =
 
+# pkg-config ==================================================================
 pc_files = \
 	cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc \
 	cogl-$(CLUTTER_API_VERSION).pc
@@ -21,116 +23,114 @@ cogl-$(COGL_DRIVER)-$(CLUTTER_API_VERSION).pc: cogl.pc
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 
-CLEANFILES = $(pc_files)
+CLEANFILES += $(pc_files)
 
 INCLUDES = \
-	-I$(top_srcdir) \
-	-I$(srcdir) \
-	-I$(srcdir)/.. \
-	-I$(srcdir)/winsys \
-	-I$(srcdir)/driver/$(COGL_DRIVER) \
-	-I. \
-	-I.. \
-	-DG_DISABLE_SINGLE_INCLUDES \
-        -DG_LOG_DOMAIN=\"Cogl-Core\" \
-        -DCLUTTER_COMPILATION
-
-cogl_public_h = \
-	$(srcdir)/cogl-bitmap.h \
-	$(srcdir)/cogl-color.h \
-	$(srcdir)/cogl-debug.h \
-	$(srcdir)/cogl-fixed.h \
-	$(srcdir)/cogl-material.h	\
-	$(srcdir)/cogl-matrix.h \
-	$(srcdir)/cogl-offscreen.h \
-	$(srcdir)/cogl-path.h \
-	$(srcdir)/cogl-shader.h \
-	$(srcdir)/cogl-texture.h \
-	$(srcdir)/cogl-types.h \
-	$(srcdir)/cogl-vertex-buffer.h \
-	cogl.h \
+	-I$(top_srcdir)				\
+	-I$(top_srcdir)/clutter/cogl		\
+	-I$(srcdir)/winsys 			\
+	-I$(srcdir)/driver/$(COGL_DRIVER) 	\
 	$(NULL)
 
-cogl-enum-types.h: stamp-cogl-enum-types.h
-	@true
-stamp-cogl-enum-types.h: $(cogl_public_h) Makefile
-	$(QUIET_GEN)( $(GLIB_MKENUMS) \
-		--template $(srcdir)/cogl-enum-types.h.in \
-	$(cogl_public_h) ) > xgen-ceth \
-	&& (cmp -s xgen-ceth cogl-enum-types.h || cp -f xgen-ceth cogl-enum-types.h) \
-	&& rm -f xgen-ceth \
-	&& echo timestamp > $(@F)
+# public headers
+cogl_public_h = \
+	$(srcdir)/cogl-bitmap.h 		\
+	$(srcdir)/cogl-color.h 			\
+	$(srcdir)/cogl-debug.h 			\
+	$(srcdir)/cogl-fixed.h 			\
+	$(srcdir)/cogl-material.h 		\
+	$(srcdir)/cogl-matrix.h 		\
+	$(srcdir)/cogl-offscreen.h 		\
+	$(srcdir)/cogl-path.h 			\
+	$(srcdir)/cogl-shader.h 		\
+	$(srcdir)/cogl-texture.h 		\
+	$(srcdir)/cogl-types.h 			\
+	$(srcdir)/cogl-vertex-buffer.h 		\
+	$(top_builddir)/clutter/cogl/cogl/cogl.h \
+	$(NULL)
 
-cogl-enum-types.c: cogl-enum-types.h
-	$(QUIET_GEN)( $(GLIB_MKENUMS) \
-		--template $(srcdir)/cogl-enum-types.c.in \
-	$(cogl_public_h) ) > xgen-cetc \
-	&& cp -f xgen-cetc cogl-enum-types.c \
-	&& rm -f xgen-cetc
+# windowing system; all sources have to be distributed, but we'll
+# compile just the one we need
+cogl_winsys_sources = \
+	$(srcdir)/winsys/cogl-eglnative.c	\
+	$(srcdir)/winsys/cogl-eglx.c		\
+	$(srcdir)/winsys/cogl-glx.c		\
+	$(srcdir)/winsys/cogl-osx.c		\
+	$(srcdir)/winsys/cogl-sdl.c		\
+	$(srcdir)/winsys/cogl-win32.c		\
+	$(NULL)
 
-BUILT_SOURCES += cogl-enum-types.h cogl-enum-types.c
+# glib-mkenums rules
+glib_enum_h = cogl-enum-types.h
+glib_enum_c = cogl-enum-types.c
+glib_enum_headers = $(cogl_public_h)
+include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 noinst_LTLIBRARIES = libclutter-cogl.la
-libclutter_cogl_la_CPPFLAGS = \
-	$(CLUTTER_CFLAGS) \
-	$(COGL_DEBUG_CFLAGS) \
-	$(CLUTTER_DEBUG_CFLAGS) \
-	$(MAINTAINER_CFLAGS)
-libclutter_cogl_la_LIBADD = \
-	-lm $(CLUTTER_LIBS) \
-	winsys/libclutter-cogl-winsys.la	\
-	driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
-#	os/$(COGL_DRIVER)/libclutter-cogl-os.la
-libclutter_cogl_la_SOURCES = \
-	cogl-enum-types.h		\
-	cogl-enum-types.c		\
-	cogl-handle.h 			\
-	cogl-context.h			\
-	cogl-context.c			\
-	cogl-internal.h			\
-	cogl.c				\
-	cogl-util.h 			\
-	cogl-util.c 			\
-	cogl-bitmap-private.h 		\
-	cogl-bitmap.c 			\
-	cogl-bitmap-fallback.c 		\
-	cogl-primitives.h 		\
-	cogl-primitives.c 		\
-	cogl-bitmap-pixbuf.c 		\
-	cogl-clip-stack.h 		\
-	cogl-clip-stack.c               \
-        cogl-fixed.c                    \
-        cogl-color.c			\
-	cogl-vertex-buffer-private.h 	\
-	cogl-vertex-buffer.c		\
-	cogl-matrix.c			\
-	cogl-matrix-stack.c		\
-	cogl-matrix-stack.h		\
-	cogl-material.c			\
-	cogl-material-private.h		\
-	cogl-blend-string.c		\
-	cogl-blend-string.h		\
-	cogl-debug.c			\
-	cogl-texture-private.h		\
-	cogl-texture-2d-sliced-private.h \
-	cogl-texture-driver.h		\
-	cogl-texture.c			\
-	cogl-texture-2d-sliced.c	\
-	cogl-spans.h			\
-	cogl-spans.c			\
-	cogl-journal-private.h		\
-	cogl-journal.c			\
+libclutter_cogl_la_CPPFLAGS = 		\
+	$(COGL_DEBUG_CFLAGS) 		\
+	$(CLUTTER_DEBUG_CFLAGS) 	\
+	$(MAINTAINER_CFLAGS)		\
+	-DG_DISABLE_SINGLE_INCLUDES 	\
+	-DG_LOG_DOMAIN=\"Cogl-$(COGL_WINSYS)\" \
+	-DCLUTTER_COMPILATION
+
+libclutter_cogl_la_CFLAGS = $(CLUTTER_CFLAGS)
+
+libclutter_cogl_la_LIBADD = -lm $(CLUTTER_LIBS) \
+	$(top_builddir)/clutter/cogl/cogl/driver/$(COGL_DRIVER)/libclutter-cogl-driver.la
+
+libclutter_cogl_la_SOURCES = 				\
+	$(srcdir)/winsys/cogl-winsys.h			\
+	$(srcdir)/winsys/cogl-@COGL_WINSYS@.c		\
+	$(srcdir)/cogl-handle.h 			\
+	$(srcdir)/cogl-context.h			\
+	$(srcdir)/cogl-context.c			\
+	$(srcdir)/cogl-internal.h			\
+	$(srcdir)/cogl.c				\
+	$(srcdir)/cogl-util.h 				\
+	$(srcdir)/cogl-util.c 				\
+	$(srcdir)/cogl-bitmap-private.h 		\
+	$(srcdir)/cogl-bitmap.c 			\
+	$(srcdir)/cogl-bitmap-fallback.c 		\
+	$(srcdir)/cogl-primitives.h 			\
+	$(srcdir)/cogl-primitives.c 			\
+	$(srcdir)/cogl-bitmap-pixbuf.c 			\
+	$(srcdir)/cogl-clip-stack.h 			\
+	$(srcdir)/cogl-clip-stack.c			\
+	$(srcdir)/cogl-fixed.c		    		\
+	$(srcdir)/cogl-color.c				\
+	$(srcdir)/cogl-vertex-buffer-private.h 		\
+	$(srcdir)/cogl-vertex-buffer.c			\
+	$(srcdir)/cogl-matrix.c				\
+	$(srcdir)/cogl-matrix-stack.c			\
+	$(srcdir)/cogl-matrix-stack.h			\
+	$(srcdir)/cogl-material.c			\
+	$(srcdir)/cogl-material-private.h		\
+	$(srcdir)/cogl-blend-string.c			\
+	$(srcdir)/cogl-blend-string.h			\
+	$(srcdir)/cogl-debug.c				\
+	$(srcdir)/cogl-texture-private.h		\
+	$(srcdir)/cogl-texture-2d-sliced-private.h 	\
+	$(srcdir)/cogl-texture-driver.h			\
+	$(srcdir)/cogl-texture.c			\
+	$(srcdir)/cogl-texture-2d-sliced.c		\
+	$(srcdir)/cogl-spans.h				\
+	$(srcdir)/cogl-spans.c				\
+	$(srcdir)/cogl-journal-private.h		\
+	$(srcdir)/cogl-journal.c			\
+	$(BUILT_SOURCES)				\
 	$(NULL)
 
-EXTRA_DIST += stb_image.c cogl-enum-types.h.in cogl-enum-types.c.in
-CLEANFILES += stamp-cogl-enum-types.h
-DISTCLEANFILES = cogl-enum-types.h cogl-enum-types.c
+EXTRA_DIST += $(cogl_winsys_sources)
+
+EXTRA_DIST += stb_image.c
 
 # COGL installed headers
 cogl_headers = \
 	$(cogl_public_h) \
-	cogl-deprecated.h \
-	cogl-defines-@COGL_DRIVER@.h \
+	$(srcdir)/cogl-deprecated.h \
+	cogl-defines-$(COGL_DRIVER).h \
 	cogl-enum-types.h \
 	$(NULL)
 
