@@ -817,7 +817,6 @@ AC_CONFIG_FILES([
         clutter/cogl/cogl/cogl-defines-gl.h:clutter/cogl/cogl/driver/gl/cogl-defines.h.in
         clutter/cogl/cogl/cogl-defines-gles.h:clutter/cogl/cogl/driver/gles/cogl-defines.h.in
         clutter/cogl/cogl/cogl.pc
-        clutter/cogl/cogl/winsys/Makefile
         clutter/cogl/cogl/driver/Makefile
         clutter/cogl/cogl/driver/gl/Makefile
         clutter/cogl/cogl/driver/gles/Makefile
