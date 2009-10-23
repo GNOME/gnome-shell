@@ -39,6 +39,16 @@
  *   alignment policies.</simpara></listitem>
  * </itemizedlist>
  *
+ * <figure id="bin-layout">
+ *   <title>Bin layout</title>
+ *   <para>The image shows a #ClutterBinLayout with three layers:
+ *   a background #ClutterCairoTexture, set to fill on both the X
+ *   and Y axis; a #ClutterTexture, set to center on both the X and
+ *   Y axis; and a #ClutterRectangle, set to %CLUTTER_BIN_ALIGNMENT_END
+ *   on both the X and Y axis.</para>
+ *   <graphic fileref="bin-layout.png" format="PNG"/>
+ * </figure>
+ *
  * <example id="example-clutter-bin-layout">
  *  <title>How to pack actors inside a BinLayout</title>
  *  <para>The following code shows how to build a composite actor with

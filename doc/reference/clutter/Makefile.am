@@ -105,8 +105,12 @@ EXTRA_HFILES=\
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
 HTML_IMAGES=\
 	actor-box.png \
+	bin-layout.png \
+	box-layout.png \
         easing-modes.png \
 	event-flow.png \
+	flow-layout-horizontal.png \
+	flow-layout-vertical.png \
 	path-alpha-func.png
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
@@ -152,7 +156,11 @@ include $(top_srcdir)/gtk-doc.make
 # e.g. EXTRA_DIST += version.xml.in
 EXTRA_DIST += \
 	actor-box.png \
+	bin-layout.png \
+	box-layout.png \
         easing-modes.png \
         easing-modes.svg \
 	event-flow.png \
+	flow-layout-horizontal.png \
+	flow-layout-vertical.png \
 	path-alpha-func.png

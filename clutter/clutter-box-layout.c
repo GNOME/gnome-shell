@@ -49,6 +49,13 @@
  *   layout properties.</para></listitem>
  * </itemizedlist>
  *
+ *  <figure id="box-layout">
+ *   <title>Box layout</title>
+ *   <para>The image shows a #ClutterBoxLayout with the
+ *   #ClutterBoxLayout:vertical property set to %FALSE.</para>
+ *   <graphic fileref="box-layout.png" format="PNG"/>
+ * </figure>
+ *
  * It is possible to control the spacing between children of a
  * #ClutterBoxLayout by using clutter_box_layout_set_spacing().
  *
