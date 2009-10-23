@@ -62,7 +62,7 @@ AppIcon.prototype = {
 
         this._menuType = ('menuType' in params) ? params.menuType : MenuType.NONE;
         this._iconSize = ('size' in params) ? params.size : APPICON_DEFAULT_ICON_SIZE;
-        let showGlow = ('glow' in params) ? params.glow : false;
+        this._showGlow = ('glow' in params) ? params.glow : false;
 
         this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.VERTICAL,
                                            border: APPICON_BORDER_WIDTH,
@@ -70,6 +70,8 @@ AppIcon.prototype = {
                                            padding: APPICON_PADDING,
                                            reactive: true });
         this.actor._delegate = this;
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
         this.highlight_border_color = APPICON_DEFAULT_BORDER_COLOR;
 
         if (this._menuType != MenuType.NONE) {
@@ -103,21 +105,16 @@ AppIcon.prototype = {
                                         ellipsize: Pango.EllipsizeMode.END,
                                         text: this.app.get_name() });
         nameBox.add_actor(this._name);
-        if (showGlow) {
+        if (this._showGlow) {
             this._glowBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });
-            let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
-            let windows = this.app.get_windows();
-            for (let i = 0; i < windows.length && i < 3; i++) {
-                let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                          glowPath, -1, -1);
-                glow.keep_aspect_ratio = false;
-                this._glowBox.append(glow, Big.BoxPackFlags.EXPAND);
-            }
             this._nameBox.add_actor(this._glowBox);
             this._glowBox.lower(this._name);
-        }
-        else
+            this._appWindowChangedId = this.app.connect('windows-changed', Lang.bind(this, this._rerenderGlow));
+            this._rerenderGlow();
+        } else {
             this._glowBox = null;
+            this._appWindowChangedId = 0;
+        }
 
         this.actor.append(nameBox, Big.BoxPackFlags.NONE);
     },
@@ -160,6 +157,25 @@ AppIcon.prototype = {
             childBox.y1 = 0;
             childBox.y2 = availHeight;
             this._glowBox.allocate(childBox, flags);
+        }
+    },
+
+    _onDestroy: function() {
+        if (this._appWindowChangedId > 0)
+            this.app.disconnect(this._appWindowChangedId);
+    },
+
+    _rerenderGlow: function() {
+        if (!this._showGlow)
+            return;
+        this._glowBox.get_children().forEach(function (a) { a.destroy(); });
+        let glowPath = GLib.filename_to_uri(global.imagedir + 'app-well-glow.png', '');
+        let windows = this.app.get_windows();
+        for (let i = 0; i < windows.length && i < 3; i++) {
+            let glow = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
+                                                                      glowPath, -1, -1);
+            glow.keep_aspect_ratio = false;
+            this._glowBox.append(glow, Big.BoxPackFlags.EXPAND);
         }
     },
 
