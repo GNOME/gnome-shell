@@ -319,6 +319,11 @@ get_app_for_window_direct (MetaWindow  *window)
         app = shell_app_system_get_app (appsys, id);
     }
 
+  if (app == NULL)
+    {
+      app = _shell_app_new_for_window (window);
+    }
+
   return app;
 }
 
