@@ -4470,6 +4470,17 @@ clutter_actor_queue_relayout (ClutterActor *self)
       priv->needs_allocation)
     return; /* save some cpu cycles */
 
+  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL) &&
+      (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_RELAYOUT))
+    {
+      g_warning ("The actor '%s' is currently inside an allocation "
+                 "cycle; calling clutter_actor_queue_relayout() is "
+                 "not allowed",
+                 priv->name ? priv->name
+                            : G_OBJECT_TYPE_NAME (self));
+      return;
+    }
+
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
 }
 
@@ -4847,8 +4858,12 @@ clutter_actor_allocate (ClutterActor           *self,
   if (child_moved)
     flags |= CLUTTER_ABSOLUTE_ORIGIN_CHANGED;
 
+  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_RELAYOUT);
+
   klass = CLUTTER_ACTOR_GET_CLASS (self);
   klass->allocate (self, box, flags);
+
+  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_RELAYOUT);
 }
 
 /**
