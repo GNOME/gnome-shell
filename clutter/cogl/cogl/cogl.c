@@ -375,13 +375,13 @@ _cogl_set_clip_planes (float x_offset,
   CoglMatrix modelview_matrix;
   CoglMatrix projection_matrix;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
   float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
   float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
   float vertex_br[4] = { x_offset + width, y_offset + height,
                         0, 1.0 };
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   _cogl_matrix_stack_get (ctx->projection_stack, &projection_matrix);
   _cogl_matrix_stack_get (ctx->modelview_stack, &modelview_matrix);
