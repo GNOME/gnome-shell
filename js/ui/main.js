@@ -38,12 +38,20 @@ let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
 let modalActorFocusStack = [];
+let _errorLogStack = [];
+let _startDate;
 
 function start() {
     // Add a binding for "global" in the global JS namespace; (gjs
     // keeps the web browser convention of having that namespace be
     // called "window".)
     window.global = Shell.Global.get();
+
+    // Now monkey patch utility functions into the global proxy;
+    // This is easier and faster than indirecting down into global
+    // if we want to call back up into JS.
+    global.logError = _logError;
+    global.log = _logDebug;
 
     Gio.DesktopAppInfo.set_desktop_env("GNOME");
 
@@ -105,6 +113,8 @@ function start() {
     sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
 
+    _startDate = new Date();
+
     global.screen.connect('toggle-recording', function() {
         if (recorder == null) {
             recorder = new Shell.Recorder({ stage: global.stage });
@@ -127,7 +137,50 @@ function start() {
 
     global.stage.connect('captured-event', _globalKeyPressHandler);
 
+    _log('info', 'loaded at ' + _startDate);
+
     Mainloop.idle_add(_removeUnusedWorkspaces);
+}
+
+/**
+ * _log:
+ * @category: string message type ('info', 'error')
+ * @msg: A message string
+ * ...: Any further arguments are converted into JSON notation,
+ *      and appended to the log message, separated by spaces.
+ *
+ * Log a message into the LookingGlass error
+ * stream.  This is primarily intended for use by the
+ * extension system as well as debugging.
+ */
+function _log(category, msg) {
+    let text = msg;
+    if (arguments.length > 2) {
+        text += ': ';
+        for (let i = 2; i < arguments.length; i++) {
+            text += JSON.stringify(arguments[i]);
+            if (i < arguments.length - 1)
+                text += " ";
+        }
+    }
+    _errorLogStack.push({timestamp: new Date().getTime(),
+                         category: category,
+                         message: text });
+}
+
+function _logError(msg) {
+    return _log('error', msg);
+}
+
+function _logDebug(msg) {
+    return _log('debug', msg);
+}
+
+// Used by the error display in lookingGlass.js
+function _getAndClearErrorStack() {
+    let errors = _errorLogStack;
+    _errorLogStack = [];
+    return errors;
 }
 
 function _relayout() {

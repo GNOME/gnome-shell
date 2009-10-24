@@ -308,6 +308,42 @@ Inspector.prototype = {
 
 Signals.addSignalMethods(Inspector.prototype);
 
+function ErrorLog() {
+    this._init();
+}
+
+ErrorLog.prototype = {
+    _init: function() {
+        this.actor = new St.BoxLayout();
+        this.text = new St.Label();
+        this.actor.add(this.text);
+        this.text.clutter_text.line_wrap = true;
+        this.text.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
+    },
+
+    _formatTime: function(d){
+        function pad(n) { return n < 10 ? '0' + n : n };
+        return d.getUTCFullYear()+'-'
+            + pad(d.getUTCMonth()+1)+'-'
+            + pad(d.getUTCDate())+'T'
+            + pad(d.getUTCHours())+':'
+            + pad(d.getUTCMinutes())+':'
+            + pad(d.getUTCSeconds())+'Z'
+    },
+
+    _onMappedNotify: function() {
+        if (!(this.actor.mapped && Main._errorLogStack.length > 0))
+            return;
+        let text = this.text.text;
+        let stack = Main._getAndClearErrorStack();
+        for (let i = 0; i < stack.length; i++) {
+            let logItem = stack[i];
+            text += logItem.category + " t=" + this._formatTime(new Date(logItem.timestamp)) + " " + logItem.message + "\n";
+        }
+        this.text.text = text;
+    }
+}
+
 function LookingGlass() {
     this._init();
 }
@@ -405,6 +441,9 @@ LookingGlass.prototype = {
             this._pushResult('<parent selection>', actor);
             notebook.selectIndex(0);
         }));
+
+        this._errorLog = new ErrorLog();
+        notebook.appendPage('Errors', this._errorLog.actor);
 
         this._entry.clutter_text.connect('activate', Lang.bind(this, function (o, e) {
             let text = o.get_text();
