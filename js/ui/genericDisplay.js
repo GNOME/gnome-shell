@@ -314,7 +314,7 @@ GenericDisplayItem.prototype = {
         // For some reason, we are not getting leave-event signal when we are dragging an item,
         // so we should remove the link manually.
         this._informationButton.actor.hide();
-    } 
+    }
 };
 
 Signals.addSignalMethods(GenericDisplayItem.prototype);
@@ -341,6 +341,9 @@ GenericDisplay.prototype = {
         this._list.connect('notify::page', Lang.bind(this, function () {
             this._updateDisplayControl(false);
         }));
+
+        this._pendingRedisplay = RedisplayFlags.NONE;
+        this._list.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
 
         // map<itemId, Object> where Object represents the item info
         this._allItems = {};
@@ -642,6 +645,11 @@ GenericDisplay.prototype = {
      *  FULL - Indicates that we need recreate all displayed items; implies RESET_CONTROLS as well
      */
     _redisplay: function(flags) {
+        if (!this._list.mapped) {
+            this._pendingRedisplay |= flags;
+            return;
+        }
+
         let isSubSearch = (flags & RedisplayFlags.SUBSEARCH) > 0;
         let fullReload = (flags & RedisplayFlags.FULL) > 0;
         let resetPage = (flags & RedisplayFlags.RESET_CONTROLS) > 0 || fullReload;
@@ -852,6 +860,14 @@ GenericDisplay.prototype = {
         let item = this._findDisplayedByIndex(index);
         item.markSelected(true);
         this.emit('selected');
+    },
+
+    _onMappedNotify: function () {
+        let mapped = this._list.mapped;
+        if (mapped && this._pendingRedisplay > RedisplayFlags.NONE)
+            this._redisplay(this._pendingRedisplay);
+
+        this._pendingRedisplay = RedisplayFlags.NONE;
     }
 };
 
