@@ -40,7 +40,7 @@
 
 #include "display.h"
 
-#include "shell-global.h"
+#include "shell-global-private.h"
 #include "shell-wm.h"
 
 static void gnome_shell_plugin_constructed (GObject *object);
@@ -191,6 +191,8 @@ gnome_shell_plugin_constructed (GObject *object)
   search_path = g_strsplit(shell_js, ":", -1);
   shell_plugin->gjs_context = gjs_context_new_with_search_path(search_path);
   g_strfreev(search_path);
+
+  _shell_global_set_gjs_context (shell_global_get (), shell_plugin->gjs_context);
 
   if (!gjs_context_eval (shell_plugin->gjs_context,
                          "const Main = imports.ui.main; Main.start();",

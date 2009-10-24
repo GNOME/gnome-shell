@@ -18,6 +18,7 @@
 #include <glib/gi18n-lib.h>
 #include <math.h>
 #include <X11/extensions/Xfixes.h>
+#include <gjs/gjs.h>
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 
@@ -37,7 +38,8 @@ struct _ShellGlobal {
 
   ShellStageInputMode input_mode;
   XserverRegion input_region;
-  
+
+  GjsContext *js_context;
   MutterPlugin *plugin;
   ShellWM *wm;
   const char *datadir;
@@ -443,6 +445,13 @@ _shell_global_set_plugin (ShellGlobal  *global,
 
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
+}
+
+void
+_shell_global_set_gjs_context (ShellGlobal *global,
+                               GjsContext  *context)
+{
+  global->js_context = context;
 }
 
 /**
