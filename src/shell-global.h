@@ -43,6 +43,12 @@ ShellGlobal *shell_global_get (void);
 
 MetaScreen *shell_global_get_screen (ShellGlobal  *global);
 
+gboolean shell_global_add_extension_importer (ShellGlobal *global,
+                                              const char  *target_object_script,
+                                              const char  *target_property,
+                                              const char  *directory,
+                                              GError     **error);
+
 void shell_global_grab_dbus_service (ShellGlobal *global);
 
 typedef enum {

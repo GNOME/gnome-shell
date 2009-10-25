@@ -522,6 +522,73 @@ shell_global_display_is_grabbed (ShellGlobal *global)
   return meta_display_get_grab_op (display) != META_GRAB_OP_NONE;
 }
 
+/* Defining this here for now, see
+ * https://bugzilla.gnome.org/show_bug.cgi?id=604075
+ * for upstreaming status.
+ */
+JSContext * gjs_context_get_context (GjsContext *context);
+
+/**
+ * shell_global_add_extension_importer:
+ * @target_object_script: JavaScript code evaluating to a target object
+ * @target_property: Name of property to use for importer
+ * @directory: Source directory:
+ * @error: A #GError
+ *
+ * This function sets a property named @target_property on the object
+ * resulting from the evaluation of @target_object_script code, which
+ * acts as a GJS importer for directory @directory.
+ *
+ * Returns: %TRUE on success
+ */
+gboolean
+shell_global_add_extension_importer (ShellGlobal *global,
+                                     const char  *target_object_script,
+                                     const char  *target_property,
+                                     const char  *directory,
+                                     GError     **error)
+{
+  jsval target_object;
+  JSObject *importer;
+  JSContext *context = gjs_context_get_context (global->js_context);
+  char *search_path[2] = { 0, 0 };
+
+  // This is a bit of a hack; ideally we'd be able to pass our target
+  // object directly into this function, but introspection doesn't
+  // support that at the moment.  Instead evaluate a string to get it.
+  if (!JS_EvaluateScript(context,
+                         JS_GetGlobalObject(context),
+                         target_object_script,
+                         strlen (target_object_script),
+                         "<target_object_script>",
+                         0,
+                         &target_object))
+    {
+      char *message;
+      gjs_log_exception(context,
+                        &message);
+      g_set_error(error,
+                  G_IO_ERROR,
+                  G_IO_ERROR_FAILED,
+                  "%s", message ? message : "(unknown)");
+      g_free(message);
+      return FALSE;
+    }
+
+  if (!JSVAL_IS_OBJECT (target_object))
+    {
+      g_set_error(error,
+                  G_IO_ERROR,
+                  G_IO_ERROR_FAILED,
+                  "Invalid object");
+      return FALSE;
+    }
+
+  search_path[0] = (char*)directory;
+  importer = gjs_define_importer (context, JSVAL_TO_OBJECT (target_object), target_property, (const char **)search_path, FALSE);
+  return TRUE;
+}
+
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
  *
  * Authors: Padraig O'Briain, Matthias Clasen, Lennart Poettering

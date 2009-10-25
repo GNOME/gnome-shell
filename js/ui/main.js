@@ -14,6 +14,7 @@ const St = imports.gi.St;
 
 const Chrome = imports.ui.chrome;
 const Environment = imports.ui.environment;
+const ExtensionSystem = imports.ui.extensionSystem;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const PlaceDisplay = imports.ui.placeDisplay;
@@ -128,6 +129,9 @@ function start() {
     });
 
     _relayout();
+
+    ExtensionSystem.init();
+    ExtensionSystem.loadExtensions();
 
     panel.startupAnimation();
 
