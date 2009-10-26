@@ -183,7 +183,7 @@ clutter_box_real_raise (ClutterContainer *container,
       priv->children = g_list_insert (priv->children, actor, index_);
     }
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 }
 
 static void
@@ -204,7 +204,7 @@ clutter_box_real_lower (ClutterContainer *container,
       priv->children = g_list_insert (priv->children, actor, index_);
     }
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 }
 
 static void
@@ -214,7 +214,7 @@ clutter_box_real_sort_depth_order (ClutterContainer *container)
 
   priv->children = g_list_sort (priv->children, sort_by_depth);
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 }
 
 static void
