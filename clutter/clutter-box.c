@@ -118,9 +118,10 @@ clutter_box_real_add (ClutterContainer *container,
 
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (container));
 
-  clutter_layout_manager_add_child_meta (priv->manager,
-                                         container,
-                                         actor);
+  if (priv->manager != NULL)
+    clutter_layout_manager_add_child_meta (priv->manager,
+                                           container,
+                                           actor);
 
   clutter_actor_queue_relayout (actor);
 
@@ -140,9 +141,10 @@ clutter_box_real_remove (ClutterContainer *container,
   priv->children = g_list_remove (priv->children, actor);
   clutter_actor_unparent (actor);
 
-  clutter_layout_manager_remove_child_meta (priv->manager,
-                                            container,
-                                            actor);
+  if (priv->manager != NULL)
+    clutter_layout_manager_remove_child_meta (priv->manager,
+                                              container,
+                                              actor);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
 
@@ -277,7 +279,7 @@ clutter_box_real_get_preferred_width (ClutterActor *actor,
   /* if we don't have any children don't bother proxying the
    * call to the layout manager instance
    */
-  if (priv->children == NULL)
+  if (priv->children == NULL || priv->manager == NULL)
     {
       if (min_width)
         *min_width = 0.0;
@@ -305,7 +307,7 @@ clutter_box_real_get_preferred_height (ClutterActor *actor,
   /* if we don't have any children don't bother proxying the
    * call to the layout manager instance
    */
-  if (priv->children == NULL)
+  if (priv->children == NULL || priv->manager == NULL)
     {
       if (min_height)
         *min_height = 0.0;
@@ -333,7 +335,7 @@ clutter_box_real_allocate (ClutterActor           *actor,
   klass = CLUTTER_ACTOR_CLASS (clutter_box_parent_class);
   klass->allocate (actor, allocation, flags);
 
-  if (priv->children == NULL)
+  if (priv->children == NULL || priv->manager == NULL)
     return;
 
   clutter_layout_manager_allocate (priv->manager,
@@ -349,7 +351,8 @@ clutter_box_destroy (ClutterActor *actor)
   /* destroy all our children */
   g_list_foreach (priv->children, (GFunc) clutter_actor_destroy, NULL);
 
-  CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy (actor);
+  if (CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy)
+    CLUTTER_ACTOR_CLASS (clutter_box_parent_class)->destroy (actor);
 }
 
 static inline void
