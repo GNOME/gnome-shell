@@ -39,6 +39,8 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include <pango/pango-attributes.h>
 #include <gobject/gvaluecollector.h>
 
@@ -282,9 +284,9 @@ clutter_color_from_hls (ClutterColor *color,
         clr[i] = tmp1;
     }
 
-  color->red   = clr[0] * 255.0;
-  color->green = clr[1] * 255.0;
-  color->blue  = clr[2] * 255.0;
+  color->red   = floorf (clr[0] * 255.0 + 0.5);
+  color->green = floorf (clr[1] * 255.0 + 0.5);
+  color->blue  = floorf (clr[2] * 255.0 + 0.5);
 }
 
 /**
