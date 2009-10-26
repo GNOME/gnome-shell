@@ -231,7 +231,11 @@ static void
 clutter_backend_win32_ensure_context (ClutterBackend *backend, 
 				      ClutterStage   *stage)
 {
-  if (stage == NULL)
+  ClutterStageWindow  *impl;
+
+  if (stage == NULL ||
+      (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_DESTRUCTION) ||
+      ((impl = _clutter_stage_get_window (stage)) == NULL))
     {
       CLUTTER_NOTE (MULTISTAGE, "Clearing all context");
 
@@ -241,9 +245,7 @@ clutter_backend_win32_ensure_context (ClutterBackend *backend,
     {
       ClutterBackendWin32 *backend_win32;
       ClutterStageWin32   *stage_win32;
-      ClutterStageWindow  *impl;
 
-      impl = _clutter_stage_get_window (stage);
       g_return_if_fail (impl != NULL);
       
       CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
@@ -255,28 +257,28 @@ clutter_backend_win32_ensure_context (ClutterBackend *backend,
       
       /* no GL context to set */
       if (backend_win32->gl_context == NULL)
-	return;
+        return;
 
       /* we might get here inside the final dispose cycle, so we
        * need to handle this gracefully
        */
       if (stage_win32->client_dc == NULL)
-	{
-	  CLUTTER_NOTE (MULTISTAGE,
-			"Received a stale stage, clearing all context");
-  	 
-	  wglMakeCurrent (NULL, NULL);
-	}
+        {
+          CLUTTER_NOTE (MULTISTAGE,
+                        "Received a stale stage, clearing all context");
+
+          wglMakeCurrent (NULL, NULL);
+        }
       else
-	{
-	  CLUTTER_NOTE (BACKEND,
+        {
+          CLUTTER_NOTE (BACKEND,
 			"MakeCurrent window %p (%s), context %p",
 			stage_win32->hwnd,
 			stage_win32->is_foreign_win ? "foreign" : "native",
 			backend_win32->gl_context);
-	  wglMakeCurrent (stage_win32->client_dc,
+          wglMakeCurrent (stage_win32->client_dc,
 			  backend_win32->gl_context);
-	}
+        }
     }
 }
 
@@ -303,14 +305,14 @@ clutter_backend_win32_redraw (ClutterBackend *backend,
     SwapBuffers (stage_win32->client_dc);
 }
 
-static ClutterActor *
+static ClutterStageWindow *
 clutter_backend_win32_create_stage (ClutterBackend  *backend,
 				    ClutterStage    *wrapper,
 				    GError         **error)
 {
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
   ClutterStageWin32 *stage_win32;
-  ClutterActor *stage;
+  ClutterStageWindow *stage;
 
   CLUTTER_NOTE (BACKEND, "Creating stage of type '%s'",
 		g_type_name (CLUTTER_STAGE_TYPE));
