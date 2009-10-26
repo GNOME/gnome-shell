@@ -267,6 +267,27 @@ void cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array);
 G_CONST_RETURN float *cogl_matrix_get_array (const CoglMatrix *matrix);
 
 /**
+ * cogl_matrix_get_inverse:
+ * @matrix: A 4x4 transformation matrix
+ * @inverse: The destination for a 4x4 inverse transformation matrix
+ *
+ * This gets the inverse transform of a given matrix and uses it to initialize
+ * a new CoglMatrix.
+ *
+ * Note: that although the first parameter is annotated as const to indicate
+ * that the transform it represents isn't modified this function may
+ * technically save a copy of the inverse transform within the given CoglMatrix
+ * so that subsequent requests for the inverse transform may avoid costly
+ * inversion calculations.
+ *
+ * Returns TRUE if the inverse was successfully calculated or FALSE for
+ * degenerate transformations that can't be inverted (in this case the matrix
+ * will simply be initialized with the identity matrix)
+ */
+gboolean
+cogl_matrix_get_inverse (const CoglMatrix *matrix, CoglMatrix *inverse);
+
+/**
  * cogl_matrix_transform_point:
  * @matrix: A 4x4 transformation matrix
  * @x: The X component of your points position [in:out]

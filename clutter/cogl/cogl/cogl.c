@@ -368,12 +368,16 @@ set_clip_plane (GLint plane_num,
   GLdouble plane[4];
 #endif
   GLfloat angle;
-  CoglMatrix inverse_projection;
   CoglHandle draw_buffer = _cogl_get_draw_buffer ();
   CoglMatrixStack *modelview_stack =
     _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (draw_buffer);
+  CoglMatrix inverse_projection;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_matrix_stack_get_inverse (projection_stack, &inverse_projection);
 
   /* Calculate the angle between the axes and the line crossing the
      two points */
@@ -382,13 +386,10 @@ set_clip_plane (GLint plane_num,
 
   _cogl_matrix_stack_push (modelview_stack);
 
-  /* Load the identity matrix and multiply by the reverse of the
-     projection matrix so we can specify the plane in screen
-     coordinates */
-  _cogl_matrix_stack_load_identity (modelview_stack);
-  cogl_matrix_init_from_array (&inverse_projection,
-                               ctx->inverse_projection);
-  _cogl_matrix_stack_multiply (modelview_stack, &inverse_projection);
+  /* Load the inverse of the projection matrix so we can specify the plane
+   * in screen coordinates */
+  _cogl_matrix_stack_set (modelview_stack, &inverse_projection);
+
   /* Rotate about point a */
   _cogl_matrix_stack_translate (modelview_stack,
                                 vertex_a[0], vertex_a[1], vertex_a[2]);
@@ -1095,7 +1096,6 @@ cogl_frustum (float        left,
 	      float        z_near,
 	      float        z_far)
 {
-  float c, d;
   CoglMatrixStack *projection_stack =
     _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
 
@@ -1110,22 +1110,6 @@ cogl_frustum (float        left,
                               top,
                               z_near,
                               z_far);
-
-  /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
-
-  c = - (z_far + z_near) /  (z_far - z_near);
-  d = - (2 * (z_far * z_near)) /  (z_far - z_near);
-
-#define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) =  (right - left) /  (2 * z_near);
-  M(0,3) =  (right + left) /  (2 * z_near);
-  M(1,1) =  (top - bottom) /  (2 * z_near);
-  M(1,3) =  (top + bottom) /  (2 * z_near);
-  M(2,3) = -1.0;
-  M(3,2) = 1.0 / d;
-  M(3,3) = c / d;
-#undef M
 }
 
 void
@@ -1145,19 +1129,6 @@ cogl_ortho (float left,
   cogl_matrix_init_identity (&ortho);
   cogl_matrix_ortho (&ortho, left, right, bottom, top, z_near, z_far);
   _cogl_matrix_stack_set (projection_stack, &ortho);
-
-  /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
-
-#define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) =  1.0 / ortho.xx;
-  M(0,3) =  -ortho.xw;
-  M(1,1) =  1.0 / ortho.yy;
-  M(1,3) =  -ortho.yw;
-  M(2,2) =  1.0 / ortho.zz;
-  M(2,3) =  -ortho.zw;
-  M(3,3) =  1.0;
-#undef M
 }
 
 void

@@ -71,6 +71,9 @@ void             _cogl_matrix_stack_ortho         (CoglMatrixStack  *stack,
                                                    float             top,
                                                    float             z_near,
                                                    float             z_far);
+
+gboolean         _cogl_matrix_stack_get_inverse   (CoglMatrixStack  *stack,
+                                                   CoglMatrix       *inverse);
 void             _cogl_matrix_stack_get           (CoglMatrixStack  *stack,
                                                    CoglMatrix       *matrix);
 void             _cogl_matrix_stack_set           (CoglMatrixStack  *stack,

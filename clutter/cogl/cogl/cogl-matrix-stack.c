@@ -348,6 +348,17 @@ _cogl_matrix_stack_ortho (CoglMatrixStack *stack,
   state->is_identity = FALSE;
 }
 
+gboolean
+_cogl_matrix_stack_get_inverse (CoglMatrixStack *stack,
+                                CoglMatrix      *inverse)
+{
+  CoglMatrixState *state;
+
+  state = _cogl_matrix_stack_top_mutable (stack, TRUE);
+
+  return cogl_matrix_get_inverse (&state->matrix, inverse);
+}
+
 void
 _cogl_matrix_stack_get (CoglMatrixStack *stack,
                         CoglMatrix      *matrix)
