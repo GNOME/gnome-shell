@@ -4,6 +4,34 @@
 
 gboolean IsFullScreen = FALSE, IsMotion = TRUE;
 
+static const gchar *
+get_event_type_name (const ClutterEvent *event)
+{
+  switch (event->type)
+    {
+    case CLUTTER_BUTTON_PRESS:
+      return "BUTTON PRESS";
+
+    case CLUTTER_BUTTON_RELEASE:
+      return "BUTTON_RELEASE";
+
+    case CLUTTER_KEY_PRESS:
+      return "KEY PRESS";
+
+    case CLUTTER_KEY_RELEASE:
+      return "KEY RELEASE";
+
+    case CLUTTER_ENTER:
+      return "ENTER";
+
+    case CLUTTER_LEAVE:
+      return "LEAVE";
+
+    default:
+      return "EVENT";
+    }
+}
+
 static void
 stage_state_cb (ClutterStage    *stage,
 		gpointer         data)
@@ -59,7 +87,8 @@ capture_cb (ClutterActor *actor,
 	    ClutterEvent *event,
 	    gpointer      data)
 {
-  g_print ("* captured event for type '%s' *\n",
+  g_print ("* captured event '%s' for type '%s' *\n",
+           get_event_type_name (event),
            G_OBJECT_TYPE_NAME (actor));
 
   return FALSE;
