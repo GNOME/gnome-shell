@@ -381,6 +381,27 @@ create_child_meta (ClutterLayoutManager *manager,
   return klass->create_child_meta (manager, container, actor);
 }
 
+static gboolean
+has_child_meta (ClutterLayoutManager *manager,
+                ClutterContainer     *container,
+                ClutterActor         *actor)
+{
+  ClutterLayoutMeta *layout_meta = NULL;
+
+  layout_meta = g_object_get_qdata (G_OBJECT (actor), quark_layout_meta);
+  if (layout_meta != NULL)
+    {
+      ClutterChildMeta *child_meta = CLUTTER_CHILD_META (layout_meta);
+
+      if (layout_meta->manager == manager &&
+          child_meta->container == container &&
+          child_meta->actor == actor)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 static inline ClutterLayoutMeta *
 get_child_meta (ClutterLayoutManager *manager,
                 ClutterContainer     *container,
@@ -550,7 +571,7 @@ clutter_layout_manager_remove_child_meta (ClutterLayoutManager *manager,
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  if (get_child_meta (manager, container, actor))
+  if (has_child_meta (manager, container, actor))
     g_object_set_qdata (G_OBJECT (actor), quark_layout_meta, NULL);
 }
 
