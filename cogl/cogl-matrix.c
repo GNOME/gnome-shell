@@ -183,18 +183,6 @@ cogl_matrix_scale (CoglMatrix *matrix,
   _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
-#if 0
-gboolean
-cogl_matrix_invert (CoglMatrix *matrix)
-{
-  /* TODO */
-  /* Note: It might be nice to also use the flag based tricks that mesa does
-   * to alow it to track the type of transformations a matrix represents
-   * so it can use various assumptions to optimise the inversion.
-   */
-}
-#endif
-
 void
 cogl_matrix_frustum (CoglMatrix *matrix,
                      float       left,
@@ -319,6 +307,27 @@ const float *
 cogl_matrix_get_array (const CoglMatrix *matrix)
 {
   return (float *)matrix;
+}
+
+gboolean
+cogl_matrix_get_inverse (const CoglMatrix *matrix, CoglMatrix *inverse)
+{
+#ifndef USE_MESA_MATRIX_API
+#warning "cogl_matrix_get_inverse not supported without Mesa matrix API"
+  cogl_matrix_init_identity (inverse);
+  return FALSE;
+#else
+  if (_math_matrix_update_inverse ((CoglMatrix *)matrix))
+    {
+      cogl_matrix_init_from_array (inverse, matrix->inv);
+      return TRUE;
+    }
+  else
+    {
+      cogl_matrix_init_identity (inverse);
+      return FALSE;
+    }
+#endif
 }
 
 void

@@ -61,9 +61,6 @@ typedef struct
   CoglMatrixMode    flushed_matrix_mode;
   GList            *texture_units;
 
-  /* Cache of inverse projection matrix */
-  float            inverse_projection[16];
-
   /* Materials */
   CoglHandle        default_material;
   CoglHandle	    source_material;
