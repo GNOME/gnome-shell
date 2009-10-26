@@ -147,7 +147,7 @@ key_release_cb (ClutterActor     *actor,
       clutter_box_layout_set_spacing (layout, spacing);
       break;
 
-    case '+':
+    case CLUTTER_plus:
       add_actor (layout);
       break;
 
