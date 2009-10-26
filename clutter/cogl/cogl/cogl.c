@@ -39,6 +39,7 @@
 #include "cogl-material-private.h"
 #include "cogl-winsys.h"
 #include "cogl-draw-buffer-private.h"
+#include "cogl-matrix-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -1165,6 +1166,7 @@ cogl_get_modelview_matrix (CoglMatrix *matrix)
   CoglMatrixStack *modelview_stack =
     _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_get (modelview_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -1173,6 +1175,7 @@ cogl_set_modelview_matrix (CoglMatrix *matrix)
   CoglMatrixStack *modelview_stack =
     _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_set (modelview_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -1181,6 +1184,7 @@ cogl_get_projection_matrix (CoglMatrix *matrix)
   CoglMatrixStack *projection_stack =
     _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
   _cogl_matrix_stack_get (projection_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -1192,6 +1196,7 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
 
   /* FIXME: Update the inverse projection matrix!! Presumably use
    * of clip planes must currently be broken if this API is used. */
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 CoglClipStackState *
