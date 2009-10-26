@@ -101,9 +101,9 @@ struct _CoglMatrix
 
     /* Note: we may want to extend this later with private flags
      * and a cache of the inverse transform matrix. */
-    float   _padding0[16];
-    gulong  _padding1;
-    gulong  _padding2;
+    float   inv[16];
+    gulong  type;
+    gulong  flags;
     gulong  _padding3;
 };
 
