@@ -28,6 +28,7 @@
 
 #include <cogl.h>
 #include <cogl-matrix.h>
+#include <cogl-matrix-private.h>
 #ifdef USE_MESA_MATRIX_API
 #include <cogl-matrix-mesa.h>
 #endif
@@ -35,6 +36,16 @@
 #include <glib.h>
 #include <math.h>
 #include <string.h>
+
+void
+_cogl_matrix_print (CoglMatrix *matrix)
+{
+  float *m = (float *)matrix;
+  int y;
+
+  for (y = 0; y < 4; y++)
+    g_print ("\t%6.4f %6.4f %6.4f %6.4f\n", m[y], m[4+y], m[8+y], m[12+y]);
+}
 
 void
 cogl_matrix_init_identity (CoglMatrix *matrix)
@@ -47,6 +58,7 @@ cogl_matrix_init_identity (CoglMatrix *matrix)
 #else
   _math_matrix_init_identity (matrix);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -90,6 +102,7 @@ cogl_matrix_multiply (CoglMatrix *result,
 #else
   _math_matrix_multiply (result, a, b);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (result);
 }
 
 void
@@ -133,6 +146,7 @@ cogl_matrix_rotate (CoglMatrix *matrix,
 #else
   _math_matrix_rotate (matrix, angle, x, y, z);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -149,6 +163,7 @@ cogl_matrix_translate (CoglMatrix *matrix,
 #else
   _math_matrix_translate (matrix, x, y, z);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -165,6 +180,7 @@ cogl_matrix_scale (CoglMatrix *matrix,
 #else
   _math_matrix_scale (matrix, sx, sy, sz);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 #if 0
@@ -223,6 +239,7 @@ cogl_matrix_frustum (CoglMatrix *matrix,
 #else
   _math_matrix_frustum (matrix, left, right, bottom, top, z_near, z_far);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -241,6 +258,7 @@ cogl_matrix_perspective (CoglMatrix *matrix,
                        ymax,            /* top */
                        z_near,
                        z_far);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -283,6 +301,7 @@ cogl_matrix_ortho (CoglMatrix *matrix,
 #else
   _math_matrix_ortho (matrix, left, right, bottom, top, near_val, far_val);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -293,6 +312,7 @@ cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 #else
   _math_matrix_init_from_array (matrix, array);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 const float *
