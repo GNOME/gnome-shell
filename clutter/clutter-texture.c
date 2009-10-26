@@ -1474,7 +1474,6 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   /* FIXME if we are not realized, we should store the data
    * for future use, instead of creating the texture.
    */
-
   new_texture = cogl_texture_new_from_data (width, height,
                                             flags,
                                             source_format,
@@ -1484,11 +1483,18 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
   if (G_UNLIKELY (new_texture == COGL_INVALID_HANDLE))
     {
-      g_set_error (error, CLUTTER_TEXTURE_ERROR,
+      GError *inner_error = NULL;
+
+      g_set_error (&inner_error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
                    "Failed to create COGL texture");
 
-      g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, *error);
+      g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, inner_error);
+
+      if (error != NULL)
+        g_propagate_error (error, inner_error);
+      else
+        g_error_free (inner_error);
 
       return FALSE;
     }
