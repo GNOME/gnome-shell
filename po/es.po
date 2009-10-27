@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-10-09 22:10+0000\n"
-"PO-Revision-Date: 2009-10-27 21:36+0100\n"
+"POT-Creation-Date: 2009-10-27 20:37+0000\n"
+"PO-Revision-Date: 2009-10-27 23:32+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,19 +25,23 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
-#: ../js/ui/appDisplay.js:335
+#: ../js/ui/appDisplay.js:332
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: ../js/ui/appIcon.js:462
+#: ../js/ui/appDisplay.js:867
+msgid "Drag here to add favorites"
+msgstr "Arrastrar aquí para añadir a los favoritos"
+
+#: ../js/ui/appIcon.js:426
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: ../js/ui/appIcon.js:475
+#: ../js/ui/appIcon.js:430
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: ../js/ui/appIcon.js:476
+#: ../js/ui/appIcon.js:431
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
@@ -54,39 +58,39 @@ msgid "(see all)"
 msgstr "(ver todo)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
+#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
 msgid "APPLICATIONS"
 msgstr "APLICACIONES"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:783
+#: ../js/ui/dash.js:745
 msgid "PLACES"
 msgstr "LUGARES"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
 msgid "RECENT DOCUMENTS"
 msgstr "DOCUMENTOS RECIENTES"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
+#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
 msgid "SEARCH RESULTS"
 msgstr "RESULTADOS DE LA BÚSQUEDA"
 
-#: ../js/ui/dash.js:830
+#: ../js/ui/dash.js:792
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:272
+#: ../js/ui/panel.js:274
 msgid "Activities"
 msgstr "Actividades"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:464
+#: ../js/ui/panel.js:491
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
@@ -104,15 +108,15 @@ msgid "Execution of '%s' failed:"
 msgstr "Falló la ejecución de «%s»:"
 
 #. Translators: This is a time format.
-#: ../js/ui/widget.js:162
+#: ../js/ui/widget.js:163
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../js/ui/widget.js:316
+#: ../js/ui/widget.js:317
 msgid "Applications"
 msgstr "Aplicaciones"
 
-#: ../js/ui/widget.js:341
+#: ../js/ui/widget.js:339
 msgid "Recent Documents"
 msgstr "Documentos recientes"
 
