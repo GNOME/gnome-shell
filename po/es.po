@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&component=general\n"
-"POT-Creation-Date: 2009-09-27 16:05+0000\n"
-"PO-Revision-Date: 2009-09-28 21:58+0200\n"
+"POT-Creation-Date: 2009-10-09 22:10+0000\n"
+"PO-Revision-Date: 2009-10-27 21:36+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
@@ -25,15 +25,21 @@ msgstr "GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Gestión de ventanas e inicio de aplicaciones"
 
-#. left side
-#: ../js/ui/panel.js:269
-msgid "Activities"
-msgstr "Actividades"
+#: ../js/ui/appDisplay.js:335
+msgid "Frequent"
+msgstr "Frecuentes"
 
-#. Translators: This is a time format.
-#: ../js/ui/panel.js:452
-msgid "%a %l:%M %p"
-msgstr "%a %H:%M"
+#: ../js/ui/appIcon.js:462
+msgid "New Window"
+msgstr "Ventana nueva"
+
+#: ../js/ui/appIcon.js:475
+msgid "Remove from Favorites"
+msgstr "Quitar de los favoritos"
+
+#: ../js/ui/appIcon.js:476
+msgid "Add to Favorites"
+msgstr "Añadir a los favoritos"
 
 #: ../js/ui/dash.js:283
 msgid "Find..."
@@ -65,7 +71,7 @@ msgid "RECENT DOCUMENTS"
 msgstr "DOCUMENTOS RECIENTES"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:958
+#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
 msgid "SEARCH RESULTS"
 msgstr "RESULTADOS DE LA BÚSQUEDA"
 
@@ -73,36 +79,69 @@ msgstr "RESULTADOS DE LA BÚSQUEDA"
 msgid "PREFERENCES"
 msgstr "PREFERENCIAS"
 
-#: ../js/ui/runDialog.js:94
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:272
+msgid "Activities"
+msgstr "Actividades"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:464
+msgid "%a %l:%M %p"
+msgstr "%a %H:%M"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Conectar a…"
+
+#: ../js/ui/runDialog.js:96
 msgid "Please enter a command:"
 msgstr "Introduzca un comando:"
 
-#: ../src/shell-global.c:799
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Falló la ejecución de «%s»:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:162
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:316
+msgid "Applications"
+msgstr "Aplicaciones"
+
+#: ../js/ui/widget.js:341
+msgid "Recent Documents"
+msgstr "Documentos recientes"
+
+#: ../src/shell-global.c:812
 msgid "Less than a minute ago"
 msgstr "Hace menos de un minuto"
 
-#: ../src/shell-global.c:802
+#: ../src/shell-global.c:815
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "Hace %d minuto"
 msgstr[1] "Hace %d minutos"
 
-#: ../src/shell-global.c:805
+#: ../src/shell-global.c:818
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "Hace %d hora"
 msgstr[1] "Hace %d horas"
 
-#: ../src/shell-global.c:808
+#: ../src/shell-global.c:821
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "Hace %d día"
 msgstr[1] "Hace %d días"
 
-#: ../src/shell-global.c:811
+#: ../src/shell-global.c:824
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
