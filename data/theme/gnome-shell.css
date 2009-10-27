@@ -364,6 +364,19 @@ StTooltip {
   border-radius: 4px;
 }
 
+#LookingGlassDialog .labels {
+  spacing: 4px;
+}
+
+#LookingGlassDialog .notebook-tab {
+  padding: 2px;
+}
+
+#LookingGlassDialog .notebook-tab:selected {
+  border: 1px solid #88ff66;
+  padding: 1px;
+}
+
 #LookingGlassDialog StLabel
 {
   color: #88ff66;

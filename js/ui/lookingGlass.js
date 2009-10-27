@@ -39,24 +39,21 @@ Notebook.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true });
 
-        this.tabControls = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                         spacing: 4, padding: 2 });
+        this.tabControls = new St.BoxLayout({ style_class: "labels" });
 
         this._selectedIndex = -1;
         this._tabs = [];
     },
 
     appendPage: function(name, child) {
-        let labelOuterBox = new Big.Box({ padding: 2 });
-        let labelBox = new St.BoxLayout({ reactive: true });
-        labelOuterBox.append(labelBox, Big.BoxPackFlags.NONE);
-        let label = new St.Label({ text: name });
-        labelBox.connect('button-press-event', Lang.bind(this, function () {
+        let labelBox = new St.BoxLayout({ style_class: "notebook-tab" });
+        let label = new St.Button({ label: name });
+        label.connect('clicked', Lang.bind(this, function () {
             this.selectChild(child);
             return true;
         }));
         labelBox.add(label, { expand: true });
-        this.tabControls.append(labelOuterBox, Big.BoxPackFlags.NONE);
+        this.tabControls.add(labelBox);
 
         let scrollview = new St.ScrollView({ x_fill: true, y_fill: true });
         scrollview.get_hscroll_bar().hide();
@@ -64,6 +61,7 @@ Notebook.prototype = {
 
         let tabData = { child: child,
                         labelBox: labelBox,
+                        label: label,
                         scrollView: scrollview,
                         _scrollToBottom: false };
         this._tabs.push(tabData);
@@ -82,8 +80,7 @@ Notebook.prototype = {
         if (this._selectedIndex < 0)
             return;
         let tabData = this._tabs[this._selectedIndex];
-        tabData.labelBox.padding = 2;
-        tabData.labelBox.border = 0;
+        tabData.labelBox.set_style_pseudo_class(null);
         tabData.scrollView.hide();
         this._selectedIndex = -1;
     },
@@ -97,8 +94,7 @@ Notebook.prototype = {
             return;
         }
         let tabData = this._tabs[index];
-        tabData.labelBox.padding = 1;
-        tabData.labelBox.border = 1;
+        tabData.labelBox.set_style_pseudo_class('selected');
         tabData.scrollView.show();
         this._selectedIndex = index;
         this.emit('selection', tabData.child);
