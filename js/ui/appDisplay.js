@@ -860,6 +860,13 @@ AppWell.prototype = {
             let display = new RunningWellItem(app, false);
             this._grid.actor.add_actor(display.actor);
         }
+
+        if (this._grid.actor.get_n_children() == 1) {
+            let text = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
+                                          font_name: "Sans 14px",
+                                          text: _("Drag here to add favorites")});
+            this._grid.actor.add_actor(text);
+        }
     },
 
     // Draggable target interface
