@@ -38,7 +38,7 @@
 #define __CLUTTER_WIN32_H__
 
 #include <glib.h>
-#include <clutter/clutter-stage.h>
+#include <clutter/clutter.h>
 #include <windows.h>
 
 G_BEGIN_DECLS
