@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 #ifndef __SHELL_EMBEDDED_WINDOW_H__
 #define __SHELL_EMBEDDED_WINDOW_H__
 

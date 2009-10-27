@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 #include "shell-recorder.h"
 #include <clutter/clutter.h>
 #include <gst/gst.h>

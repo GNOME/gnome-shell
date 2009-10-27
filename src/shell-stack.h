@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 #ifndef __SHELL_STACK_H__
 #define __SHELL_STACK_H__
 

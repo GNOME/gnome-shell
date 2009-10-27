@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 #ifndef __SHELL_PROCESS_H__
 #define __SHELL_PROCESS_H__
 

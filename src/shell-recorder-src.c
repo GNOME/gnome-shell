@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 #include <gst/base/gstpushsrc.h>
 
 #include "shell-recorder-src.h"
