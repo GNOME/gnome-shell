@@ -970,7 +970,7 @@ cogl_polygon (CoglTextureVertex *vertices,
 
   if (use_color)
     {
-      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
+      enable_flags |= COGL_ENABLE_COLOR_ARRAY | COGL_ENABLE_BLEND;
       GE( glColorPointer (4, GL_UNSIGNED_BYTE,
                           stride_bytes,
                           /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
