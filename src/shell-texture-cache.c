@@ -316,7 +316,8 @@ on_image_size_prepared (GdkPixbufLoader *pixbuf_loader,
 }
 
 static GdkPixbuf *
-impl_load_pixbuf_file (const char     *uri,
+impl_load_pixbuf_data (const guchar   *data,
+                       gsize           size,
                        int             available_width,
                        int             available_height,
                        GError        **error)
@@ -324,21 +325,9 @@ impl_load_pixbuf_file (const char     *uri,
   GdkPixbufLoader *pixbuf_loader = NULL;
   GdkPixbuf *rotated_pixbuf = NULL;
   GdkPixbuf *pixbuf;
-  GFile *file = NULL;
-  char *contents = NULL;
-  gsize size;
   gboolean success;
   Dimensions available_dimensions;
   int width_before_rotation, width_after_rotation;
-
-  file = g_file_new_for_uri (uri);
-
-  success = g_file_load_contents (file, NULL, &contents, &size, NULL, error);
-
-  if (!success)
-    {
-      goto out;
-    }
 
   pixbuf_loader = gdk_pixbuf_loader_new ();
 
@@ -347,10 +336,7 @@ impl_load_pixbuf_file (const char     *uri,
   g_signal_connect (pixbuf_loader, "size-prepared",
                     G_CALLBACK (on_image_size_prepared), &available_dimensions);
 
-  success = gdk_pixbuf_loader_write (pixbuf_loader,
-                                     (const guchar *) contents,
-                                     size,
-                                     error);
+  success = gdk_pixbuf_loader_write (pixbuf_loader, data, size, error);
   if (!success)
     goto out;
   success = gdk_pixbuf_loader_close (pixbuf_loader, error);
@@ -382,10 +368,7 @@ impl_load_pixbuf_file (const char     *uri,
       g_signal_connect (pixbuf_loader, "size-prepared",
                         G_CALLBACK (on_image_size_prepared), &available_dimensions);
 
-      success = gdk_pixbuf_loader_write (pixbuf_loader,
-                                         (const guchar *) contents,
-                                         size,
-                                         error);
+      success = gdk_pixbuf_loader_write (pixbuf_loader, data, size, error);
       if (!success)
         goto out;
 
@@ -399,12 +382,34 @@ impl_load_pixbuf_file (const char     *uri,
     }
 
 out:
-  g_free (contents);
-  if (file)
-    g_object_unref (file);
   if (pixbuf_loader)
     g_object_unref (pixbuf_loader);
   return rotated_pixbuf;
+}
+
+static GdkPixbuf *
+impl_load_pixbuf_file (const char     *uri,
+                       int             available_width,
+                       int             available_height,
+                       GError        **error)
+{
+  GdkPixbuf *pixbuf = NULL;
+  GFile *file;
+  char *contents = NULL;
+  gsize size;
+
+  file = g_file_new_for_uri (uri);
+  if (g_file_load_contents (file, NULL, &contents, &size, NULL, error))
+    {
+      pixbuf = impl_load_pixbuf_data ((const guchar *) contents, size,
+                                      available_width, available_height,
+                                      error);
+    }
+
+  g_object_unref (file);
+  g_free (contents);
+
+  return pixbuf;
 }
 
 static GdkPixbuf *
@@ -1131,6 +1136,49 @@ shell_texture_cache_load_uri_sync (ShellTextureCache *cache,
     }
   else
     set_texture_cogl_texture (texture, texdata);
+
+  return CLUTTER_ACTOR (texture);
+}
+
+/**
+ * shell_texture_cache_load_from_data:
+ * @cache: The texture cache instance
+ * @data: Raw image data
+ * @len: length of @data
+ * @available_width: available width for the image, can be -1 if not limited
+ * @available_height: available height for the image, can be -1 if not limited
+ * @error: Return location for error
+ *
+ * Synchronously creates an image from @data. The image is scaled down
+ * to fit the available width and height dimensions, but the image is
+ * never scaled up beyond its actual size. The pixbuf is rotated
+ * according to the associated orientation setting.
+ *
+ * Return value: (transfer none): A new #ClutterActor with the image data loaded if it was
+ *               generated succesfully, %NULL otherwise
+ */
+ClutterActor *
+shell_texture_cache_load_from_data (ShellTextureCache *cache,
+                                    const guchar      *data,
+                                    gsize              len,
+                                    int                available_width,
+                                    int                available_height,
+                                    GError           **error)
+{
+  ClutterTexture *texture;
+  CoglHandle texdata;
+  GdkPixbuf *pixbuf;
+
+  pixbuf = impl_load_pixbuf_data (data, len, available_width, available_height, error);
+  if (pixbuf == NULL)
+    return NULL;
+
+  texture = create_default_texture (cache);
+  texdata = pixbuf_to_cogl_handle (pixbuf);
+  set_texture_cogl_texture (texture, texdata);
+
+  g_object_unref (pixbuf);
+  cogl_handle_unref (texdata);
 
   return CLUTTER_ACTOR (texture);
 }
