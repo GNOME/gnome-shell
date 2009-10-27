@@ -30,6 +30,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl		\
 	-I$(srcdir)/winsys 			\
 	-I$(srcdir)/driver/$(COGL_DRIVER) 	\
+	-I$(top_builddir)/clutter/cogl          \
 	$(NULL)
 
 # public headers
