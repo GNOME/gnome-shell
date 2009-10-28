@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-#include "shell-global.h"
+#include "shell-global-private.h"
 #include "shell-wm.h"
 
 #include "display.h"

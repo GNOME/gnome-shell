@@ -58,9 +58,6 @@ void shell_global_set_stage_input_region (ShellGlobal         *global,
 
 GList *shell_global_get_windows (ShellGlobal *global);
 
-void _shell_global_set_plugin (ShellGlobal  *global,
-			       MutterPlugin *plugin);
-
 gboolean shell_global_begin_modal (ShellGlobal *global,
 				   guint32      timestamp);
 void     shell_global_end_modal   (ShellGlobal *global,
