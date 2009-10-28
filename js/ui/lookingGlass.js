@@ -9,7 +9,11 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Gettext = imports.gettext.domain('gnome-shell');
+const _ = Gettext.gettext;
 
+const ExtensionSystem = imports.ui.extensionSystem;
+const Link = imports.ui.link;
 const Tweener = imports.ui.tweener;
 const Main = imports.ui.main;
 
@@ -340,6 +344,99 @@ ErrorLog.prototype = {
     }
 }
 
+function Extensions() {
+    this._init();
+}
+
+Extensions.prototype = {
+    _init: function() {
+        this.actor = new St.BoxLayout({ vertical: true,
+                                        name: 'lookingGlassExtensions' });
+        this._noExtensions = new St.Label({ style_class: 'lg-extensions-none',
+                                             text: _("No extensions installed") });
+        this._extensionsList = new St.BoxLayout({ vertical: true,
+                                                  style_class: 'lg-extensions-list' });
+        this.actor.add(this._extensionsList);
+        this._loadExtensionList();
+    },
+
+    _loadExtensionList: function() {
+        let extensions = ExtensionSystem.extensionMeta;
+        let totalExtensions = 0;
+        for (let uuid in extensions) {
+            let extensionDisplay = this._createExtensionDisplay(extensions[uuid]);
+            this._extensionsList.add(extensionDisplay);
+            totalExtensions++;
+        }
+        if (totalExtensions == 0) {
+            this._extensionsList.add(this._noExtensions);
+        }
+    },
+
+    _onViewSource: function (actor) {
+        let meta = actor._extensionMeta;
+        let file = Gio.file_new_for_path(meta.path);
+        let uri = file.get_uri();
+        Gio.app_info_launch_default_for_uri(uri, global.create_app_launch_context());
+        Main.lookingGlass.close();
+    },
+
+    _onWebPage: function (actor) {
+        let meta = actor._extensionMeta;
+        Gio.app_info_launch_default_for_uri(meta.url, global.create_app_launch_context());
+        Main.lookingGlass.close();
+    },
+
+    _stateToString: function(extensionState) {
+        switch (extensionState) {
+            case ExtensionSystem.ExtensionState.ENABLED:
+                return _("Enabled");
+            case ExtensionSystem.ExtensionState.DISABLED:
+                return _("Disabled");
+            case ExtensionSystem.ExtensionState.ERROR:
+                return _("Error");
+            case ExtensionSystem.ExtensionState.OUT_OF_DATE:
+                return _("Out of date");
+        }
+        return "Unknown"; // Not translated, shouldn't appear
+    },
+
+    _createExtensionDisplay: function(meta) {
+        let box = new St.BoxLayout({ style_class: 'lg-extension', vertical: true });
+        let name = new St.Label({ style_class: 'lg-extension-name',
+                                   text: meta.name });
+        box.add(name, { expand: true });
+        let description = new St.Label({ style_class: 'lg-extension-description',
+                                         text: meta.description });
+        box.add(description, { expand: true });
+
+        let metaBox = new St.BoxLayout();
+        box.add(metaBox);
+        let stateString = this._stateToString(meta.state);
+        let state = new St.Label({ style_class: 'lg-extension-state',
+                                   text: this._stateToString(meta.state) });
+
+        let actionsContainer = new St.Bin({ x_align: St.Align.END });
+        metaBox.add(actionsContainer);
+        let actionsBox = new St.BoxLayout({ style_class: 'lg-extension-actions' });
+        actionsContainer.set_child(actionsBox);
+
+        let viewsource = new Link.Link({ label: _("View Source") });
+        viewsource.actor._extensionMeta = meta;
+        viewsource.actor.connect('clicked', Lang.bind(this, this._onViewSource));
+        actionsBox.add(viewsource.actor);
+
+        if (meta.url) {
+            let webpage = new Link.Link({ label: _("Web Page") });
+            webpage.actor._extensionMeta = meta;
+            webpage.actor.connect('clicked', Lang.bind(this, this._onWebPage));
+            actionsBox.add(webpage.actor);
+        }
+
+        return box;
+    }
+};
+
 function LookingGlass() {
     this._init();
 }
@@ -440,6 +537,9 @@ LookingGlass.prototype = {
 
         this._errorLog = new ErrorLog();
         notebook.appendPage('Errors', this._errorLog.actor);
+
+        this._extensions = new Extensions();
+        notebook.appendPage('Extensions', this._extensions.actor);
 
         this._entry.clutter_text.connect('activate', Lang.bind(this, function (o, e) {
             let text = o.get_text();

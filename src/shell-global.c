@@ -577,10 +577,7 @@ shell_global_add_extension_importer (ShellGlobal *global,
 
   if (!JSVAL_IS_OBJECT (target_object))
     {
-      g_set_error(error,
-                  G_IO_ERROR,
-                  G_IO_ERROR_FAILED,
-                  "Invalid object");
+      g_error ("shell_global_add_extension_importer: invalid target object");
       return FALSE;
     }
 
