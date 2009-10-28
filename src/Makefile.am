@@ -86,6 +86,7 @@ libgnome_shell_la_SOURCES =			\
 	shell-process.h				\
 	shell-global.c				\
 	shell-global.h				\
+	shell-global-private.h			\
 	shell-status-menu.c				\
 	shell-status-menu.h				\
 	shell-stack.c				\
@@ -102,7 +103,8 @@ libgnome_shell_la_SOURCES =			\
 	shell-wm.h
 
 non_gir_sources =				\
-	shell-embedded-window-private.h
+	shell-embedded-window-private.h		\
+	shell-global-private.h
 
 shell_recorder_sources =        \
 	shell-recorder.c	\
