@@ -1,0 +1,232 @@
+# Romanian translation for gnome-shell.
+# Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-28 22:25+0200\n"
+"PO-Revision-Date: 2009-10-28 22:33+0200\n"
+"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
+"Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2);;\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Administrare de ferestre și lansare de aplicații"
+
+#: ../js/ui/appDisplay.js:332
+msgid "Frequent"
+msgstr "Frecvent"
+
+#: ../js/ui/appDisplay.js:867
+msgid "Drag here to add favorites"
+msgstr "Adăugați aici favorite cu mausul"
+
+#: ../js/ui/appIcon.js:426
+msgid "New Window"
+msgstr "Fereastră nouă"
+
+#: ../js/ui/appIcon.js:430
+msgid "Remove from Favorites"
+msgstr "Șterge din favorite"
+
+#: ../js/ui/appIcon.js:431
+msgid "Add to Favorites"
+msgstr "Adaugă la favorite"
+
+#: ../js/ui/dash.js:283
+msgid "Find..."
+msgstr "Caută..."
+
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Mai multe"
+
+#: ../js/ui/dash.js:543
+msgid "(see all)"
+msgstr "(arată tot)"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
+msgid "APPLICATIONS"
+msgstr "APPLICAȚII"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:745
+msgid "PLACES"
+msgstr "LOCAȚII"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
+msgid "RECENT DOCUMENTS"
+msgstr "DOCUMENTE RECENTE"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
+msgid "SEARCH RESULTS"
+msgstr "REZULTATELE CĂUTĂRII"
+
+#: ../js/ui/dash.js:792
+msgid "PREFERENCES"
+msgstr "PREFERINȚE"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:274
+msgid "Activities"
+msgstr "Activități"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:491
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Conectare la..."
+
+#: ../js/ui/runDialog.js:96
+msgid "Please enter a command:"
+msgstr "Introduceți o comandă:"
+
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr "Execuția comenzii „%s” a eșuat:"
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Aplicații"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Documente recente"
+
+#: ../src/shell-global.c:821
+msgid "Less than a minute ago"
+msgstr "În ultimul minut"
+
+#: ../src/shell-global.c:824
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "acum un minut"
+msgstr[1] "acum %d minute"
+msgstr[2] "acum %d de minute"
+
+#: ../src/shell-global.c:827
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "acum o oră"
+msgstr[1] "acum %d ore"
+msgstr[2] "acum %d de ore"
+
+#: ../src/shell-global.c:830
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "acum o zi"
+msgstr[1] "acum %d zile"
+msgstr[2] "acum %d de zile"
+
+#: ../src/shell-global.c:833
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "acum o săptămână"
+msgstr[1] "acum %d săptămâni"
+msgstr[2] "acum %d de săptămâni"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Necunoscut"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Nu s-a putut bloca ecranul: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr "Nu s-a putut folosi temporar un ecran gol pentru economizorul de "
+"ecran: %s"
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr "Nu se poate ieși din sesiune: %s"
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Informații despre cont..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Bară laterală"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Preferințe de sistem..."
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Blocare ecran"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Alt utilizator"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Ieșire..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Oprire..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Dosar personal"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Sistem de fișiere"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Caută"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
