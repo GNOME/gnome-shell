@@ -1109,6 +1109,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   meta_display_notify_window_created (display, window);
 
+  if (window->wm_state_demands_attention)
+    g_signal_emit_by_name (window->display, "window-demands-attention", window);
+
   return window;
 }
 
@@ -2672,7 +2675,11 @@ meta_window_show (MetaWindow *window)
   window->initial_timestamp_set = FALSE;
 
   if (notify_demands_attention)
-    g_object_notify (G_OBJECT (window), "demands-attention");
+    {
+      g_object_notify (G_OBJECT (window), "demands-attention");
+      g_signal_emit_by_name (window->display, "window-demands-attention",
+                             window);
+    }
 }
 
 static void
@@ -8664,6 +8671,8 @@ meta_window_set_demands_attention (MetaWindow *window)
       window->wm_state_demands_attention = TRUE;
       set_net_wm_state (window);
       g_object_notify (G_OBJECT (window), "demands-attention");
+      g_signal_emit_by_name (window->display, "window-demands-attention",
+                             window);
     }
   else
     {

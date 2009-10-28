@@ -130,6 +130,7 @@ enum
   OVERLAY_KEY,
   FOCUS_WINDOW,
   WINDOW_CREATED,
+  WINDOW_DEMANDS_ATTENTION,
   LAST_SIGNAL
 };
 
@@ -236,6 +237,14 @@ meta_display_class_init (MetaDisplayClass *klass)
                   g_cclosure_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1, META_TYPE_WINDOW);
 
+  display_signals[WINDOW_DEMANDS_ATTENTION] =
+    g_signal_new ("window-demands-attention",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1, META_TYPE_WINDOW);
 
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
