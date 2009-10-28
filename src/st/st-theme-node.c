@@ -457,7 +457,7 @@ get_color_from_term (StThemeNode  *node,
  *   parent's parent, and so forth. Note that if the property has a
  *   value of 'inherit' it will be inherited even if %FALSE is passed
  *   in for @inherit; this only affects the default behavior for inheritance.
- * @color: (out): location to store the color that was determined.
+ * @color: location to store the color that was determined.
  *   If the property is not found, the value in this location
  *   will not be changed.
  *
@@ -513,7 +513,7 @@ st_theme_node_get_color (StThemeNode  *node,
  *   parent's parent, and so forth. Note that if the property has a
  *   value of 'inherit' it will be inherited even if %FALSE is passed
  *   in for @inherit; this only affects the default behavior for inheritance.
- * @value: (out): location to store the value that was determined.
+ * @value: location to store the value that was determined.
  *   If the property is not found, the value in this location
  *   will not be changed.
  *
@@ -740,7 +740,7 @@ get_length_internal (StThemeNode *node,
  *   parent's parent, and so forth. Note that if the property has a
  *   value of 'inherit' it will be inherited even if %FALSE is passed
  *   in for @inherit; this only affects the default behavior for inheritance.
- * @length: (out): location to store the length that was determined.
+ * @length: location to store the length that was determined.
  *   If the property is not found, the value in this location
  *   will not be changed. The returned length is resolved
  *   to pixels.
@@ -2199,7 +2199,7 @@ st_theme_node_adjust_preferred_height (StThemeNode  *node,
  * st_theme_node_get_content_box:
  * @node: a #StThemeNode
  * @allocation: the box allocated to a #ClutterAlctor
- * @content_box: (out): computed box occupied by the actor's content
+ * @content_box: computed box occupied by the actor's content
  *
  * Gets the box within an actor's allocation that contents the content
  * of an actor (excluding borders and padding). This is a convenience function
