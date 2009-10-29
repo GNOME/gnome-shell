@@ -156,6 +156,15 @@ StScrollBar StButton#vhandle:hover
     color: #cccccc;
 }
 
+/* Message Tray */
+#notification {
+    border-radius: 5px;
+    background: rgba(0,0,0,0.9);
+    border: 1px solid rgba(128,128,128,0.45);
+    color: white;
+    padding: 10px;
+}
+
 /* App Switcher */
 .switcher-list {
     background: rgba(0,0,0,0.8);

@@ -4,6 +4,8 @@ const DBus = imports.dbus;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 
+const Main = imports.ui.main;
+
 const AVATAR_SIZE = 24;
 
 const TELEPATHY = "org.freedesktop.Telepathy.";
@@ -230,5 +232,6 @@ Source.prototype = {
     _receivedMessage: function(channel, id, timestamp, sender,
                                type, flags, text) {
         log('Received: id ' + id + ', time ' + timestamp + ', sender ' + sender + ', type ' + type + ', flags ' + flags + ': ' + text);
+        Main.notificationPopup.show(text);
     }
 };

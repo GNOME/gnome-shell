@@ -14,6 +14,7 @@ const St = imports.gi.St;
 
 const Chrome = imports.ui.chrome;
 const Environment = imports.ui.environment;
+const MessageTray = imports.ui.messageTray;
 const Messaging = imports.ui.messaging;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
@@ -34,6 +35,7 @@ let runDialog = null;
 let lookingGlass = null;
 let wm = null;
 let messaging = null;
+let notificationPopup = null;
 let recorder = null;
 let shellDBusService = null;
 let modalCount = 0;
@@ -104,6 +106,7 @@ function start() {
     sidebar = new Sidebar.Sidebar();
     wm = new WindowManager.WindowManager();
     messaging = new Messaging.Messaging();
+    notificationPopup = new MessageTray.Notification();
 
     global.screen.connect('toggle-recording', function() {
         if (recorder == null) {
