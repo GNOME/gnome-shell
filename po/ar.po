@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-23 21:18+0300\n"
-"PO-Revision-Date: 2009-08-23 21:31+0300\n"
+"POT-Creation-Date: 2009-10-29 10:59+0200\n"
+"PO-Revision-Date: 2009-10-29 11:03+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -82,7 +82,7 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "فقدت الاتصال بالعرض '%s';\n"
-"من المحتمل أن خادوم X اغلق أو أنك\n"
+"من المحتمل أن خادوم X أغلق أو أنك\n"
 "قتلت/دمرت مدير النوافذ.\n"
 
 #: ../src/core/errors.c:279
@@ -305,40 +305,44 @@ msgstr "لا يمكن ترك الشاشة %d على العرض \"%s\"\n"
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:169
+#, fuzzy
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this action."
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
 msgstr ""
-"ارتباط المفتاح المستخدم لإغلاق نافذة. النّسق شبيهٌ ب‍ \"<Control>\" أو "
-"‪\"<Shift><Alt>F1\"‬.\n"
+"ارتباط المفتاح المستخدم لإغلاق نافذة. النّسق شبيهٌ ب‍ \"<Control>\" أو ‪"
+"\"<Shift><Alt>F1\"‬.\n"
 "\n"
-"المحلّل مرنٌ نوعًا ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل "
-"\"<Ctl>\" و \"<Ctrl>\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
-"هناك رابط مفتاحٍ لهذا الإجراء."
+"المحلّل مرنٌ نوعًا ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"<Ctl>"
+"\" و \"<Ctrl>\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك "
+"رابط مفتاحٍ لهذا الإجراء."
 
 #: ../src/core/schema-bindings.c:177
+#, fuzzy
 msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
 "\n"
 "The parser is fairly liberal and allows lower or upper case, and also "
 "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this action.\n"
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
 "\n"
-"This keybinding may be reversed by holding down the \"shift\" key; therefore, "
-"\"shift\" cannot be one of the keys it uses."
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"ارتباط المفتاح المستخدم لإغلاق نافذة. النّسق شبيهٌ ب‍ \"<Control>\" أو "
-"‪\"<Shift><Alt>F1\"‬.\n"
+"ارتباط المفتاح المستخدم لإغلاق نافذة. النّسق شبيهٌ ب‍ \"<Control>\" أو ‪"
+"\"<Shift><Alt>F1\"‬.\n"
 "\n"
-"المحلّل مرنٌ نوعًا ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل "
-"\"<Ctl>\" و \"<Ctrl>\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون "
-"هناك رابط مفتاحٍ لهذا الإجراء.\n"
+"المحلّل مرنٌ نوعًا ما و يسمح بحروفٍ كبيرة أو صغيرة، و كذلك الاختصارات مثل \"<Ctl>"
+"\" و \"<Ctrl>\". إذا ضبطت الخيار للسّلسلة الخاصّة \"disabled\"، فلن يكون هناك "
+"رابط مفتاحٍ لهذا الإجراء.\n"
 "\n"
-"يمكن عكس هذا الارتباط بضغط مفتاح \"shift\"، لذا لا يمكن أن يكون \"shift\" أحد "
-"هذه المفاتيح."
+"يمكن عكس هذا الارتباط بضغط مفتاح \"shift\"، لذا لا يمكن أن يكون \"shift\" "
+"أحد هذه المفاتيح."
 
 #: ../src/core/session.c:845 ../src/core/session.c:852
 #, c-format
@@ -445,7 +449,7 @@ msgid "Metacity"
 msgstr "مِتسِتي"
 
 #. first time through
-#: ../src/core/window.c:5627
+#: ../src/core/window.c:5630
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -461,7 +465,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6192
+#: ../src/core/window.c:6195
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -707,9 +711,8 @@ msgid "Maximize window"
 msgstr "كبّر النّافذة"
 
 #: ../src/include/all-keybindings.h:268
-#, fuzzy
 msgid "Restore window"
-msgstr "حجّم النّافذة"
+msgstr "استعد النّافذة"
 
 #: ../src/include/all-keybindings.h:270
 msgid "Toggle shaded state"
@@ -721,7 +724,7 @@ msgstr "صغّر النّافذة"
 
 #: ../src/include/all-keybindings.h:274
 msgid "Close window"
-msgstr "اغلق النّافذة"
+msgstr "أغلق النّافذة"
 
 #: ../src/include/all-keybindings.h:276
 msgid "Move window"
@@ -1012,11 +1015,11 @@ msgid ""
 "windows in other applications. Application-based mode is, however, largely "
 "unimplemented at the moment."
 msgstr ""
-"اذا كان صحيح، فسيعمل متستي باعتبار التطبيقات عوض النوافذ. الفكرة مجردة، "
-"لكن عامة تعيين باعتبار التطبيق شبيه بالماكنتش أكثر منه بوندوز. عند تركيزك "
-"لنافذة في نمط اعتبار التطبيق سترفع جميع النوافذ في التطبيق، كما أن نقرات "
-"التركيز لا تمرر لنوافذ في تطبيقات أخرى. كما أن نمط اعتبار التطبيقات ما زال لم "
-"يضمن بكثافة حاليا."
+"اذا كان صحيح، فسيعمل متستي باعتبار التطبيقات عوض النوافذ. الفكرة مجردة، لكن "
+"عامة تعيين باعتبار التطبيق شبيه بالماكنتش أكثر منه بوندوز. عند تركيزك لنافذة "
+"في نمط اعتبار التطبيق سترفع جميع النوافذ في التطبيق، كما أن نقرات التركيز لا "
+"تمرر لنوافذ في تطبيقات أخرى. كما أن نمط اعتبار التطبيقات ما زال لم يضمن "
+"بكثافة حاليا."
 
 #: ../src/metacity.schemas.in.in.h:23
 msgid "If true, trade off usability for less resource usage"
@@ -1045,7 +1048,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:28
 msgid "Run a defined command"
-msgstr "شغّل أمر معرّف"
+msgstr "شغّل أمرا معرّفا"
 
 #: ../src/metacity.schemas.in.in.h:29
 msgid ""
@@ -1288,7 +1291,7 @@ msgstr "الاستخدام: %s\n"
 
 #: ../src/ui/frames.c:1118
 msgid "Close Window"
-msgstr "اغلق النافذة"
+msgstr "أغلق النافذة"
 
 #: ../src/ui/frames.c:1121
 msgid "Window Menu"
