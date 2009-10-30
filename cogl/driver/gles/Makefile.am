@@ -28,6 +28,7 @@ libclutter_cogl_driver_la_SOURCES = \
 	cogl-texture-driver.c \
 	cogl-fbo.c \
 	cogl-context-driver.c \
+	cogl-context-driver.h \
 	cogl-gles2-wrapper.h \
 	cogl-program.h \
 	cogl-program.c \
