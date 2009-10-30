@@ -114,6 +114,13 @@ struct _CoglClipStackEntryPath
   CoglPathNode           path[1];
 };
 
+/* FIXME: deprecate and replace with:
+ * void
+ * cogl_clip_push_window_rectangle (int x_offset,
+ *                                  int y_offset,
+ *                                  int width,
+ *                                  int height);
+ */
 void
 cogl_clip_push_window_rect (float x_offset,
 	                    float y_offset,
@@ -123,8 +130,8 @@ cogl_clip_push_window_rect (float x_offset,
   CoglHandle draw_buffer;
   CoglClipStackState *clip_state;
   CoglClipStack *stack;
+  int draw_buffer_height;
   CoglClipStackEntryWindowRect *entry;
-  float viewport_height;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -137,17 +144,30 @@ cogl_clip_push_window_rect (float x_offset,
 
   stack = clip_state->stacks->data;
 
-  viewport_height = _cogl_draw_buffer_get_viewport_height (draw_buffer);
+  draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
 
   entry = g_slice_new (CoglClipStackEntryWindowRect);
 
-  /* We convert from coords with (0,0) at top left to coords
-   * with (0,0) at bottom left. */
+  /* We store the entry coordinates in OpenGL window coordinate space and so
+   * because Cogl defines the window origin to be top left but OpenGL defines
+   * it as bottom left we may need to convert the incoming coordinates.
+   *
+   * NB: Cogl forces all offscreen rendering to be done upside down so in this
+   * case no conversion is needed.
+   */
   entry->type = COGL_CLIP_STACK_WINDOW_RECT;
   entry->x0 = x_offset;
-  entry->y0 = viewport_height - y_offset - height;
   entry->x1 = x_offset + width;
-  entry->y1 = viewport_height - y_offset;
+  if (cogl_is_offscreen (draw_buffer))
+    {
+      entry->y0 = y_offset;
+      entry->y1 = y_offset + height;
+    }
+  else
+    {
+      entry->y0 = draw_buffer_height - y_offset - height;
+      entry->y1 = draw_buffer_height - y_offset;
+    }
 
   /* Store it in the stack */
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
