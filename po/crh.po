@@ -1,4 +1,4 @@
-# QIRIMTATARCA gnome-applets.
+# QIRIMTATARCA metacity.
 # Copyright (C) 2009 metacity's COPYRIGHT HOLDER
 # This file is distributed under the same license as the metacity package.
 #
