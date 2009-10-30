@@ -26,18 +26,26 @@
 #include <config.h>
 
 #include "mutter-shaped-texture.h"
+#include "mutter-texture-tower.h"
 
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
 
-
 static void mutter_shaped_texture_dispose (GObject *object);
 static void mutter_shaped_texture_finalize (GObject *object);
+static void mutter_shaped_texture_notify (GObject *object,
+					  GParamSpec *pspec);
 
 static void mutter_shaped_texture_paint (ClutterActor *actor);
 static void mutter_shaped_texture_pick (ClutterActor *actor,
 					const ClutterColor *color);
+
+static void mutter_shaped_texture_update_area (ClutterX11TexturePixmap *texture,
+                                               int                      x,
+                                               int                      y,
+                                               int                      width,
+                                               int                      height);
 
 static void mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex);
 
@@ -55,6 +63,7 @@ G_DEFINE_TYPE (MutterShapedTexture, mutter_shaped_texture,
 
 struct _MutterShapedTexturePrivate
 {
+  MutterTextureTower *paint_tower;
   CoglHandle mask_texture;
   CoglHandle material;
   CoglHandle material_unshaped;
@@ -74,12 +83,16 @@ mutter_shaped_texture_class_init (MutterShapedTextureClass *klass)
 {
   GObjectClass *gobject_class = (GObjectClass *) klass;
   ClutterActorClass *actor_class = (ClutterActorClass *) klass;
+  ClutterX11TexturePixmapClass *x11_texture_class = (ClutterX11TexturePixmapClass *) klass;
 
   gobject_class->dispose = mutter_shaped_texture_dispose;
   gobject_class->finalize = mutter_shaped_texture_finalize;
+  gobject_class->notify = mutter_shaped_texture_notify;
 
   actor_class->paint = mutter_shaped_texture_paint;
   actor_class->pick = mutter_shaped_texture_pick;
+
+  x11_texture_class->update_area = mutter_shaped_texture_update_area;
 
   g_type_class_add_private (klass, sizeof (MutterShapedTexturePrivate));
 }
@@ -93,6 +106,7 @@ mutter_shaped_texture_init (MutterShapedTexture *self)
 
   priv->rectangles = g_array_new (FALSE, FALSE, sizeof (XRectangle));
 
+  priv->paint_tower = mutter_texture_tower_new ();
   priv->mask_texture = COGL_INVALID_HANDLE;
 }
 
@@ -101,6 +115,10 @@ mutter_shaped_texture_dispose (GObject *object)
 {
   MutterShapedTexture *self = (MutterShapedTexture *) object;
   MutterShapedTexturePrivate *priv = self->priv;
+
+  if (priv->paint_tower)
+    mutter_texture_tower_free (priv->paint_tower);
+  priv->paint_tower = NULL;
 
   mutter_shaped_texture_dirty_mask (self);
 
@@ -136,6 +154,28 @@ mutter_shaped_texture_finalize (GObject *object)
   g_array_free (priv->rectangles, TRUE);
 
   G_OBJECT_CLASS (mutter_shaped_texture_parent_class)->finalize (object);
+}
+
+static void
+mutter_shaped_texture_notify (GObject    *object,
+			      GParamSpec *pspec)
+{
+  if (G_OBJECT_CLASS (mutter_shaped_texture_parent_class)->notify)
+    G_OBJECT_CLASS (mutter_shaped_texture_parent_class)->notify (object, pspec);
+
+  /* It seems like we could just do this out of update_area(), but unfortunately,
+   * clutter_glx_texture_pixmap() doesn't call through the vtable on the
+   * initial update_area, so we need to look for changes to the texture
+   * explicitly.
+   */
+  if (strcmp (pspec->name, "cogl-texture") == 0)
+    {
+      MutterShapedTexture *stex = (MutterShapedTexture *) object;
+      MutterShapedTexturePrivate *priv = stex->priv;
+
+      mutter_texture_tower_set_base_texture (priv->paint_tower,
+					     clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex)));
+    }
 }
 
 static void
@@ -269,15 +309,35 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
     clutter_actor_realize (CLUTTER_ACTOR (stex));
 
-  paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
+  /* If mipmaps are supported, then the texture filter quality will
+   * still be HIGH here. In that case we just want to use the base
+   * texture. If mipmaps are not support then
+   * on_glx_texture_pixmap_pre_paint() will have reset the texture
+   * filter quality to MEDIUM, and we should use the MutterTextureTower
+   * mipmap emulation.
+   *
+   * http://bugzilla.openedhand.com/show_bug.cgi?id=1877 is an RFE
+   * for a better way of handling this.
+   *
+   * While it would be nice to have direct access to the 'can_mipmap'
+   * boolean in ClutterGLXTexturePixmap, since since MutterTextureTower
+   * creates the scaled down images on demand there is no substantial
+   * overhead from doing the work to create and update the tower and
+   * not using it, other than the memory allocated for the MutterTextureTower
+   * structure itself.
+   */
+  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (stex)) == CLUTTER_TEXTURE_QUALITY_HIGH)
+    paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
+  else
+    paint_tex = mutter_texture_tower_get_paint_texture (priv->paint_tower);
+
+  if (paint_tex == COGL_INVALID_HANDLE)
+    return;
 
   tex_width = cogl_texture_get_width (paint_tex);
   tex_height = cogl_texture_get_height (paint_tex);
 
   if (tex_width == 0 || tex_height == 0) /* no contents yet */
-    return;
-
-  if (paint_tex == COGL_INVALID_HANDLE)
     return;
 
   if (priv->rectangles->len < 1)
@@ -436,6 +496,22 @@ mutter_shaped_texture_pick (ClutterActor *actor,
                                           alloc.y2 - alloc.y1,
                                           0, 0, 1, 1);
     }
+}
+
+static void
+mutter_shaped_texture_update_area (ClutterX11TexturePixmap *texture,
+                                   int                      x,
+                                   int                      y,
+                                   int                      width,
+                                   int                      height)
+{
+  MutterShapedTexture *stex = (MutterShapedTexture *) texture;
+  MutterShapedTexturePrivate *priv = stex->priv;
+
+  CLUTTER_X11_TEXTURE_PIXMAP_CLASS (mutter_shaped_texture_parent_class)->update_area (texture,
+                                                                                      x, y, width, height);
+
+  mutter_texture_tower_update_area (priv->paint_tower, x, y, width, height);
 }
 
 ClutterActor *

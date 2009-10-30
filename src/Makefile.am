@@ -28,6 +28,8 @@ mutter_SOURCES= 				\
 	compositor/mutter-plugin-manager.c	\
 	compositor/mutter-plugin-manager.h	\
 	compositor/mutter-shaped-texture.c	\
+	compositor/mutter-texture-tower.c	\
+	compositor/mutter-texture-tower.h	\
 	compositor/mutter-window.c		\
 	compositor/mutter-window-private.h	\
 	compositor/mutter-window-group.c	\
