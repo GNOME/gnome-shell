@@ -81,6 +81,10 @@ static GSList *main_loops                    = NULL;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
 
+const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
+const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
+const guint clutter_micro_version = CLUTTER_MICRO_VERSION;
+
 #ifdef CLUTTER_ENABLE_DEBUG
 static const GDebugKey clutter_debug_keys[] = {
   { "misc", CLUTTER_DEBUG_MISC },
@@ -2994,4 +2998,34 @@ _clutter_run_repaint_functions (void)
 
   if (reinvoke_list)
     context->repaint_funcs = reinvoke_list;
+}
+
+/**
+ * clutter_check_version:
+ * @major: major version, like 1 in 1.2.3
+ * @minor: minor version, like 2 in 1.2.3
+ * @micro: micro version, like 3 in 1.2.3
+ *
+ * Run-time version check, to check the version the Clutter library
+ * that an application is currently linked against
+ *
+ * This is the run-time equivalent of the compile-time %CLUTTER_CHECK_VERSION
+ * pre-processor macro
+ *
+ * Return value: %TRUE if the version of the Clutter library is
+ *   greater than (@major, @minor, @micro), and %FALSE otherwise
+ *
+ * Since: 1.2
+ */
+gboolean
+clutter_check_version (guint major,
+                       guint minor,
+                       guint micro)
+{
+  return (clutter_major_version > major ||
+          (clutter_major_version == major &&
+           clutter_minor_version > minor) ||
+          (clutter_major_version == major &&
+           clutter_minor_version == minor &&
+           clutter_micro_version >= micro));
 }

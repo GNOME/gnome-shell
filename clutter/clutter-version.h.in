@@ -34,6 +34,10 @@
 #ifndef __CLUTTER_VERSION_H__
 #define __CLUTTER_VERSION_H__
 
+#include <glib.h>
+
+G_BEGIN_DECLS
+
 /**
  * CLUTTER_MAJOR_VERSION:
  *
@@ -117,7 +121,7 @@
  *
  * The default GObject type for the Clutter stage. 
  *
- * Since 0.8
+ * Since: 0.8
  */
 #define CLUTTER_STAGE_TYPE @CLUTTER_STAGE_TYPE@
 
@@ -131,5 +135,14 @@
  */
 #define CLUTTER_NO_FPU          CLUTTER_NO_FPU_MACRO_WAS_REMOVED
 
+extern const guint clutter_major_version;
+extern const guint clutter_minor_version;
+extern const guint clutter_micro_version;
+
+gboolean clutter_check_version (guint major,
+                                guint minor,
+                                guint micro);
+
+G_END_DECLS
 
 #endif /* __CLUTTER_VERSION_H__ */
