@@ -425,10 +425,12 @@ read_pixels_to_file (char *filename_stem,
   GLubyte *data;
   GdkPixbuf *pixbuf;
   static int read_count = 0;
-  GdkPixbuf *flipped;
 
   data = g_malloc (4 * width * height);
-  glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  cogl_read_pixels (x, y, width, height,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    data);
   pixbuf = gdk_pixbuf_new_from_data (data,
                                      GDK_COLORSPACE_RGB,
                                      TRUE, /* has alpha */
@@ -440,23 +442,17 @@ read_pixels_to_file (char *filename_stem,
                                      NULL); /* callback data */
   if (pixbuf)
     {
-      flipped = gdk_pixbuf_flip (pixbuf, FALSE);
-      g_object_unref (pixbuf);
-    }
-
-  if (flipped)
-    {
       char *filename =
         g_strdup_printf ("%s-%05d.png", filename_stem, read_count);
       GError *error = NULL;
-      if (!gdk_pixbuf_save (flipped, filename, "png", &error, NULL))
+      if (!gdk_pixbuf_save (pixbuf, filename, "png", &error, NULL))
         {
           g_warning ("Failed to save pick buffer to file %s: %s",
                      filename, error->message);
           g_error_free (error);
         }
       g_free (filename);
-      g_object_unref (flipped);
+      g_object_unref (pixbuf);
       read_count++;
     }
 #else
@@ -478,7 +474,6 @@ _clutter_do_pick (ClutterStage   *stage,
 {
   ClutterMainContext *context;
   guchar              pixel[4] = { 0xff, 0xff, 0xff, 0xff };
-  GLint               viewport[4];
   CoglColor           white;
   guint32             id;
   GLboolean           dither_was_on;
@@ -517,17 +512,21 @@ _clutter_do_pick (ClutterStage   *stage,
   if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     cogl_clip_pop ();
 
-  /* Calls should work under both GL and GLES, note GLES needs RGBA */
-  glGetIntegerv(GL_VIEWPORT, viewport);
-
   /* Make sure Cogl flushes any batched geometry to the GPU driver */
   cogl_flush ();
 
   /* Read the color of the screen co-ords pixel */
-  glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+  cogl_read_pixels (x, y, 1, 1,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    pixel);
 
   if (G_UNLIKELY (clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
-    read_pixels_to_file ("pick-buffer", 0, 0, viewport[2], viewport[3]);
+    {
+      read_pixels_to_file ("pick-buffer", 0, 0,
+                           clutter_actor_get_width (CLUTTER_ACTOR (stage)),
+                           clutter_actor_get_height (CLUTTER_ACTOR (stage)));
+    }
 
   /* Restore whether GL_DITHER was enabled */
   if (dither_was_on)
