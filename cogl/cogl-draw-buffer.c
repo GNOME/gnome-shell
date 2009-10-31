@@ -567,11 +567,18 @@ _cogl_draw_buffer_flush_state (CoglHandle handle,
 
   if (ctx->dirty_gl_viewport)
     {
+      int gl_viewport_y;
+
       /* Convert the Cogl viewport y offset to an OpenGL viewport y offset
-       * (NB: OpenGL defines its window and viewport origins to be bottom
-       * left, while Cogl defines them to be top left.) */
-      int gl_viewport_y = draw_buffer->height -
-        (draw_buffer->viewport_y + draw_buffer->viewport_height);
+       * NB: OpenGL defines its window and viewport origins to be bottom
+       * left, while Cogl defines them to be top left.
+       * NB: We render upside down to offscreen draw buffers so we don't
+       * need to convert the y offset in this case. */
+      if (cogl_is_offscreen (draw_buffer))
+        gl_viewport_y = draw_buffer->viewport_y;
+      else
+        gl_viewport_y = draw_buffer->height -
+          (draw_buffer->viewport_y + draw_buffer->viewport_height);
 
       GE (glViewport (draw_buffer->viewport_x,
                       gl_viewport_y,
