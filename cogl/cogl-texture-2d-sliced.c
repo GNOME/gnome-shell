@@ -907,7 +907,7 @@ _cogl_texture_2d_sliced_new_with_size (unsigned int     width,
 
   /* Since no data, we need some internal format */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
-    return COGL_INVALID_HANDLE;
+    internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
 
   /* Rowstride from width */
   bpp = _cogl_get_format_bpp (internal_format);
