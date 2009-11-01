@@ -251,7 +251,7 @@ clutter_texture_unrealize (ClutterActor *actor)
 
   CLUTTER_MARK();
 
-  if (priv->fbo_source != COGL_INVALID_HANDLE)
+  if (priv->fbo_source != NULL)
     {
       /* Free up our fbo handle and texture resources, realize will recreate */
       cogl_handle_unref (priv->fbo_handle);
