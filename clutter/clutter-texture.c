@@ -455,6 +455,7 @@ set_viewport_with_buffer_under_fbo_source (ClutterActor *fbo_source,
 {
   ClutterVertex verts[4];
   float x_min = G_MAXFLOAT, y_min = G_MAXFLOAT;
+  int x_offset, y_offset;
   int i;
 
   /* Get the actors allocation transformed into screen coordinates.
@@ -472,9 +473,19 @@ set_viewport_with_buffer_under_fbo_source (ClutterActor *fbo_source,
 	y_min = verts[i].y;
     }
 
+  /* XXX: It's not good enough to round by simply truncating the fraction here
+   * via a cast, as it results in offscreen rendering being offset by 1 pixel
+   * in many cases... */
+#define ROUND(x) ((x) >= 0 ? (long)((x) + 0.5) : (long)((x) - 0.5))
+
+  x_offset = ROUND (-x_min);
+  y_offset = ROUND (-y_min);
+
+#undef ROUND
+
   /* translate the viewport so that the source actor lands on the
    * sub-region backed by the offscreen draw buffer... */
-  cogl_set_viewport (-x_min, -y_min, viewport_width, viewport_height);
+  cogl_set_viewport (x_offset, y_offset, viewport_width, viewport_height);
 }
 
 static void
@@ -542,6 +553,7 @@ update_fbo (ClutterActor *self)
         _clutter_actor_apply_modelview_transform_recursive (source_parent,
                                                             NULL);
     }
+
 
   /* cogl_clear is called to clear the buffers */
   cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
