@@ -19,7 +19,7 @@ dist_jsui_DATA =		\
 	main.js			\
 	overview.js		\
 	panel.js		\
-	places.js		\
+	placeDisplay.js		\
 	runDialog.js		\
 	shellDBus.js		\
 	sidebar.js		\

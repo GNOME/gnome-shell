@@ -14,7 +14,7 @@ const _ = Gettext.gettext;
 
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
-const Places = imports.ui.places;
+const PlaceDisplay = imports.ui.placeDisplay;
 const GenericDisplay = imports.ui.genericDisplay;
 const Button = imports.ui.button;
 const Main = imports.ui.main;
@@ -60,6 +60,7 @@ PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
 const APPS = "apps";
 const PREFS = "prefs";
 const DOCS = "docs";
+const PLACES = "places";
 
 /*
  * Returns the index in an array of a given length that is obtained
@@ -81,7 +82,8 @@ function _createDisplay(displayType) {
         return new AppDisplay.AppDisplay(true);
     else if (displayType == DOCS)
         return new DocDisplay.DocDisplay();
-
+    else if (displayType == PLACES)
+        return new PlaceDisplay.PlaceDisplay();
     return null;
 }
 
@@ -729,7 +731,7 @@ Dash.prototype = {
         /* Translators: This is in the sense of locations for documents,
            network locations, etc. */
         this._placesSection = new Section(_("PLACES"), true);
-        let placesDisplay = new Places.Places();
+        let placesDisplay = new PlaceDisplay.DashPlaceDisplay();
         this._placesSection.content.append(placesDisplay.actor, Big.BoxPackFlags.EXPAND);
         this.sectionArea.append(this._placesSection.actor, Big.BoxPackFlags.NONE);
 
@@ -781,6 +783,11 @@ Dash.prototype = {
             },
             { type: DOCS,
               title: _("RECENT DOCUMENTS"),
+              header: null,
+              resultArea: null
+            },
+            { type: PLACES,
+              title: _("PLACES"),
               header: null,
               resultArea: null
             }

@@ -16,6 +16,7 @@ const Chrome = imports.ui.chrome;
 const Environment = imports.ui.environment;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
+const PlaceDisplay = imports.ui.placeDisplay;
 const RunDialog = imports.ui.runDialog;
 const LookingGlass = imports.ui.lookingGlass;
 const ShellDBus = imports.ui.shellDBus;
@@ -28,6 +29,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 let chrome = null;
 let panel = null;
 let sidebar = null;
+let placesManager = null;
 let overview = null;
 let runDialog = null;
 let lookingGlass = null;
@@ -96,6 +98,7 @@ function start() {
        getRunDialog().open();
     });
 
+    placesManager = new PlaceDisplay.PlacesManager();
     overview = new Overview.Overview();
     chrome = new Chrome.Chrome();
     panel = new Panel.Panel();
