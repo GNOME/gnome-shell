@@ -1,0 +1,2329 @@
+# Shavian translation of Metacity.
+# This file is distributed under the same licence as the metacity package.
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-12 21:22+0100\n"
+"PO-Revision-Date: 2009-09-08 14:27+0100\n"
+"Last-Translator: Thomas Thurman <tthurman@gnome.org>\n"
+"Language-Team: Shavian <ubuntu-l10n-en-shaw@launchpad.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/50-metacity-desktop-key.xml.in.h:1
+msgid "Desktop"
+msgstr "𐑛𐑧𐑕𐑒𐑑𐑪𐑐"
+
+#: ../src/50-metacity-key.xml.in.h:1
+msgid "Window Management"
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑥𐑩𐑯𐑑"
+
+#: ../src/core/bell.c:294
+msgid "Bell event"
+msgstr "𐑚𐑧𐑤 𐑦𐑝𐑧𐑯𐑑"
+
+#: ../src/core/core.c:206
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr "𐑳𐑯𐑴𐑯 𐑢𐑦𐑯𐑛𐑴 𐑦𐑯𐑓𐑼𐑥𐑱𐑖𐑩𐑯 𐑮𐑦𐑒𐑢𐑧𐑕𐑑: %d"
+
+#: ../src/core/delete.c:104
+#, c-format
+msgid ""
+"<big><b><tt>%s</tt> is not responding.</b></big>\n"
+"\n"
+"<i>You may choose to wait a short while for it to continue or force the "
+"application to quit entirely.</i>"
+msgstr ""
+"<big><b><tt>%s</tt> 𐑦𐑟 𐑯𐑪𐑑 𐑮𐑰𐑕𐑐𐑪𐑯𐑛𐑦𐑙.</b></big>\n"
+"\n"
+"<i>𐑿 𐑥𐑱 𐑗𐑵𐑟 𐑑 𐑢𐑱𐑑 𐑩 𐑖𐑹𐑑 𐑢𐑲𐑤 𐑓𐑹 𐑦𐑑 𐑑 𐑒𐑩𐑯𐑑𐑦𐑯𐑿 𐑹 𐑓𐑹𐑕 𐑞 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑑 𐑒𐑢𐑦𐑑 𐑧𐑯𐑑𐑲𐑼𐑤𐑦."
+"</i>"
+
+#: ../src/core/delete.c:115
+msgid "_Wait"
+msgstr "_𐑢𐑱𐑑"
+
+#: ../src/core/delete.c:115
+msgid "_Force Quit"
+msgstr "_𐑓𐑹𐑕 𐑒𐑢𐑦𐑑"
+
+#: ../src/core/delete.c:216
+#, c-format
+msgid "Failed to get hostname: %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑜𐑧𐑑 𐑣𐑴𐑕𐑑𐑯𐑱𐑥: %s\n"
+
+#: ../src/core/display.c:258
+#, c-format
+msgid "Missing %s extension required for compositing"
+msgstr "𐑥𐑦𐑕𐑦𐑙 %s 𐑩𐑒𐑕𐑑𐑧𐑯𐑖𐑩𐑯 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑓𐑹 𐑒𐑩𐑥𐑐𐑪𐑟𐑩𐑑𐑦𐑙"
+
+#: ../src/core/display.c:336
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑴𐑐𐑩𐑯 X 𐑢𐑦𐑯𐑛𐑴 𐑕𐑦𐑕𐑑𐑩𐑥 𐑛𐑩𐑕𐑐𐑤𐑱 '%s'\n"
+
+#: ../src/core/errors.c:272
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"𐑤𐑪𐑕𐑑 𐑒𐑩𐑯𐑧𐑒𐑖𐑩𐑯 𐑑 𐑞 𐑛𐑦𐑕𐑐𐑤𐑱 '%s';\n"
+"𐑥𐑴𐑕𐑑 𐑤𐑲𐑒𐑤𐑦 𐑞 X 𐑕𐑻𐑝𐑼 𐑢𐑪𐑟 𐑖𐑳𐑑 𐑛𐑬𐑯 𐑹 𐑿 𐑒𐑦𐑤𐑛/𐑛𐑩𐑕𐑑𐑮𐑶𐑛\n"
+"𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼.\n"
+
+#: ../src/core/errors.c:279
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "𐑓𐑱𐑑𐑩𐑤 IO 𐑻𐑼 %d (%s) 𐑪𐑯 𐑛𐑦𐑕𐑐𐑤𐑱 '%s'.\n"
+
+#: ../src/core/keybindings.c:680
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a "
+"binding\n"
+msgstr "𐑕𐑳𐑥 𐑳𐑞𐑼 𐑐𐑮𐑴𐑜𐑮𐑨𐑥 𐑦𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑿𐑟𐑦𐑙 𐑞 𐑒𐑰 %s 𐑢𐑦𐑞 𐑥𐑪𐑛𐑦𐑓𐑲𐑼𐑟 %x 𐑨𐑟 𐑩 𐑚𐑲𐑯𐑛𐑦𐑙\n"
+
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2294
+#, c-format
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
+msgstr ""
+"𐑞𐑺 𐑢𐑪𐑟 𐑩𐑯 𐑻𐑼 𐑮𐑳𐑯𐑦𐑙 <tt>%s</tt>:\n"
+"\n"
+"%s"
+
+#: ../src/core/keybindings.c:2383
+#, c-format
+msgid "No command %d has been defined.\n"
+msgstr "𐑯𐑴 𐑒𐑩𐑥𐑭𐑯𐑛 %d 𐑣𐑨𐑟 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛.\n"
+
+#: ../src/core/keybindings.c:3337
+#, c-format
+msgid "No terminal command has been defined.\n"
+msgstr "𐑯𐑴 𐑑𐑻𐑥𐑦𐑯𐑩𐑤 𐑒𐑩𐑥𐑭𐑯𐑛 𐑣𐑨𐑟 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛.\n"
+
+#: ../src/core/main.c:130
+#, c-format
+msgid ""
+"metacity %s\n"
+"Copyright (C) 2001-%s Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 %s\n"
+"𐑒𐑪𐑐𐑦𐑮𐑲𐑑 (C) 2001-%s ·𐑣𐑨𐑝𐑩𐑒 ·𐑐𐑧𐑯𐑦𐑙𐑑𐑩𐑯, ·𐑮𐑧𐑛 ·𐑣𐑩𐑑, 𐑦𐑙𐑒., 𐑯 𐑳𐑞𐑼𐑟\n"
+"𐑞𐑦𐑕 𐑦𐑟 𐑓𐑮𐑰 𐑕𐑪𐑓𐑑𐑢𐑺; 𐑕𐑰 𐑞 𐑕𐑹𐑕 𐑓𐑹 𐑒𐑪𐑐𐑦𐑦𐑙 𐑒𐑩𐑯𐑛𐑦𐑖𐑩𐑯𐑟.\n"
+"𐑞𐑺 𐑦𐑟 𐑯𐑴 𐑢𐑪𐑮𐑩𐑯𐑑𐑦; 𐑯𐑪𐑑 𐑰𐑝𐑩𐑯 𐑓𐑹 𐑥𐑻𐑗𐑩𐑯𐑩𐑚𐑦𐑤𐑦𐑑𐑦 𐑹 𐑓𐑦𐑑𐑯𐑩𐑕 𐑓𐑹 𐑩 𐑐𐑼𐑑𐑦𐑒𐑿𐑤𐑼 𐑐𐑻𐑐𐑩𐑕.\n"
+
+#: ../src/core/main.c:268
+msgid "Disable connection to session manager"
+msgstr "𐑛𐑦𐑕𐑱𐑚𐑩𐑤 𐑒𐑩𐑯𐑧𐑒𐑖𐑩𐑯 𐑑 𐑕𐑧𐑖𐑩𐑯 𐑥𐑨𐑯𐑩𐑡𐑼"
+
+#: ../src/core/main.c:274
+msgid "Replace the running window manager with Metacity"
+msgstr "𐑮𐑦𐑐𐑤𐑱𐑕 𐑞 𐑮𐑳𐑯𐑦𐑙 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼 𐑢𐑦𐑞 ·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦"
+
+#: ../src/core/main.c:280
+msgid "Specify session management ID"
+msgstr "𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑕𐑧𐑖𐑩𐑯 𐑥𐑨𐑯𐑩𐑡𐑥𐑩𐑯𐑑 ID"
+
+#: ../src/core/main.c:285
+msgid "X Display to use"
+msgstr "X 𐑛𐑩𐑕𐑐𐑤𐑱 𐑑 𐑿𐑕"
+
+#: ../src/core/main.c:291
+msgid "Initialize session from savefile"
+msgstr "𐑦𐑯𐑦𐑖𐑩𐑤𐑲𐑟 𐑕𐑧𐑖𐑩𐑯 𐑓𐑮𐑪𐑥 𐑕𐑱𐑝𐑓𐑲𐑤"
+
+#: ../src/core/main.c:297
+msgid "Print version"
+msgstr "𐑐𐑮𐑦𐑯𐑑 𐑝𐑻𐑠𐑩𐑯"
+
+#: ../src/core/main.c:303
+msgid "Make X calls synchronous"
+msgstr "𐑥𐑱𐑒 X 𐑒𐑷𐑤𐑟 𐑕𐑦𐑯𐑒𐑮𐑩𐑯𐑩𐑕"
+
+#: ../src/core/main.c:309
+msgid "Turn compositing on"
+msgstr "𐑑𐑻𐑯 𐑒𐑩𐑥𐑐𐑪𐑟𐑩𐑑𐑦𐑙 𐑪𐑯"
+
+#: ../src/core/main.c:315
+msgid "Turn compositing off"
+msgstr "𐑑𐑻𐑯 𐑒𐑩𐑥𐑐𐑪𐑟𐑩𐑑𐑦𐑙 𐑪𐑓"
+
+#: ../src/core/main.c:321
+msgid ""
+"Don't make fullscreen windows that are maximized and have no decorations"
+msgstr "𐑛𐑭𐑯'𐑑𐑰 𐑥𐑱𐑒 𐑓𐑫𐑤𐑕𐑒𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑞𐑨𐑑 𐑸 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟𐑛 𐑯 𐑣𐑨𐑝 𐑯𐑴 𐑛𐑧𐑒𐑼𐑱𐑖𐑩𐑯𐑟"
+
+#: ../src/core/main.c:543
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑕𐑒𐑨𐑯 𐑔𐑰𐑥𐑟 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦: %s\n"
+
+#: ../src/core/main.c:559
+#, c-format
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑓𐑲𐑯𐑛 𐑩 𐑔𐑰𐑥! 𐑚𐑰 𐑖𐑫𐑼 %s 𐑧𐑒𐑟𐑦𐑕𐑑𐑕 𐑯 𐑒𐑩𐑯𐑑𐑱𐑯𐑟 𐑞 𐑿𐑠𐑿𐑩𐑤 𐑔𐑰𐑥𐑟.\n"
+
+#: ../src/core/main.c:618
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑮𐑰𐑕𐑑𐑸𐑑: %s\n"
+
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#. *
+#. * (Empty comment follows so the translators don't see this.)
+#.
+#.
+#: ../src/core/prefs.c:506 ../src/core/prefs.c:661
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "GConf 𐑒𐑰 '%s' 𐑦𐑟 𐑕𐑧𐑑 𐑑 𐑩𐑯 𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑝𐑨𐑤𐑿\n"
+
+#: ../src/core/prefs.c:587 ../src/core/prefs.c:830
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr "%d 𐑕𐑑𐑹𐑛 𐑦𐑯 GConf 𐑒𐑰 %s 𐑦𐑟 𐑬𐑑 𐑝 𐑮𐑱𐑯𐑡 %d 𐑑 %d\n"
+
+#: ../src/core/prefs.c:631 ../src/core/prefs.c:708 ../src/core/prefs.c:756
+#: ../src/core/prefs.c:820 ../src/core/prefs.c:1113 ../src/core/prefs.c:1129
+#: ../src/core/prefs.c:1146 ../src/core/prefs.c:1162
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf 𐑒𐑰 \"%s\" 𐑦𐑟 𐑕𐑧𐑑 𐑑 𐑩𐑯 𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑑𐑲𐑐\n"
+
+#: ../src/core/prefs.c:1232
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"𐑢𐑻𐑒𐑩𐑮𐑬𐑯𐑛𐑟 𐑓𐑹 𐑚𐑮𐑴𐑒𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑛𐑦𐑕𐑱𐑚𐑩𐑤𐑛. 𐑕𐑳𐑥 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑥𐑱 𐑯𐑪𐑑 𐑚𐑦𐑣𐑱𐑝 "
+"𐑐𐑮𐑪𐑐𐑼𐑤𐑦.\n"
+
+#: ../src/core/prefs.c:1303
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 𐑓𐑪𐑯𐑑 𐑛𐑦𐑕𐑒𐑮𐑦𐑐𐑖𐑩𐑯 \"%s\" 𐑓𐑮𐑪𐑥 GConf 𐑒𐑰 %s\n"
+
+#: ../src/core/prefs.c:1365
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"\"%s\" 𐑓𐑬𐑯𐑛 𐑦𐑯 𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼𐑱𐑖𐑩𐑯 𐑛𐑱𐑑𐑩𐑚𐑱𐑕 𐑦𐑟 𐑯𐑪𐑑 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑝𐑨𐑤𐑿 𐑓𐑹 𐑥𐑬𐑕 𐑚𐑳𐑑𐑩𐑯 "
+"𐑥𐑪𐑛𐑦𐑓𐑲𐑼\n"
+
+#: ../src/core/prefs.c:1786
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "𐑻𐑼 𐑕𐑧𐑑𐑦𐑙 𐑯𐑳𐑥𐑚𐑼 𐑝 𐑢𐑻𐑒𐑕𐑐𐑱𐑕𐑩𐑟 𐑑 %d: %s\n"
+
+#: ../src/core/prefs.c:1975 ../src/core/prefs.c:2478
+#, c-format
+msgid "Workspace %d"
+msgstr "𐑢𐑻𐑒𐑕𐑐𐑱𐑕 %d"
+
+#: ../src/core/prefs.c:2005 ../src/core/prefs.c:2183
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"\"%s\" 𐑓𐑬𐑯𐑛 𐑦𐑯 𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼𐑱𐑖𐑩𐑯 𐑛𐑱𐑑𐑩𐑚𐑱𐑕 𐑦𐑟 𐑯𐑪𐑑 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑝𐑨𐑤𐑿 𐑓𐑹 𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙 \"%s"
+"\"\n"
+
+#: ../src/core/prefs.c:2559
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "𐑻𐑼 𐑕𐑧𐑑𐑦𐑙 𐑯𐑱𐑥 𐑓𐑹 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 %d 𐑑 \"%s\": %s\n"
+
+#: ../src/core/prefs.c:2763
+#, c-format
+msgid "Error setting compositor status: %s\n"
+msgstr "𐑻𐑼 𐑕𐑧𐑑𐑦𐑙 𐑒𐑪𐑥𐑐𐑪𐑟𐑦𐑑𐑼 𐑕𐑑𐑱𐑑𐑫𐑕: %s\n"
+
+#: ../src/core/screen.c:357
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "𐑕𐑒𐑮𐑰𐑯 %d 𐑪𐑯 𐑛𐑦𐑕𐑐𐑤𐑱 '%s' 𐑦𐑟 𐑦𐑯𐑝𐑨𐑤𐑦𐑛\n"
+
+#: ../src/core/screen.c:373
+#, c-format
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+"𐑕𐑒𐑮𐑰𐑯 %d 𐑪𐑯 𐑛𐑦𐑕𐑐𐑤𐑱 \"%s\" 𐑷𐑤𐑮𐑧𐑛𐑦 𐑣𐑨𐑟 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼; 𐑑𐑮𐑲 𐑿𐑟𐑦𐑙 𐑞 --replace "
+"𐑪𐑐𐑖𐑩𐑯 𐑑 𐑮𐑦𐑐𐑤𐑱𐑕 𐑞 𐑒𐑳𐑮𐑩𐑯𐑑 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼.\n"
+
+#: ../src/core/screen.c:400
+#, c-format
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑩𐑒𐑢𐑲𐑼 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼 𐑕𐑦𐑤𐑧𐑒𐑖𐑩𐑯 𐑪𐑯 𐑕𐑒𐑮𐑰𐑯 %d 𐑛𐑩𐑕𐑐𐑤𐑱 \"%s\"\n"
+
+#: ../src/core/screen.c:458
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "𐑕𐑒𐑮𐑰𐑯 %d 𐑪𐑯 𐑛𐑦𐑕𐑐𐑤𐑱 \"%s\" 𐑷𐑤𐑮𐑧𐑛𐑦 𐑣𐑨𐑟 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼\n"
+
+#: ../src/core/screen.c:668
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑮𐑦𐑤𐑰𐑕 𐑕𐑒𐑮𐑰𐑯 %d 𐑪𐑯 𐑛𐑦𐑕𐑐𐑤𐑱 \"%s\"\n"
+
+#. Translators: Please don't translate "Control", "Shift", etc, since these
+#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+#. * "disabled" must also stay as it is.
+#.
+#: ../src/core/schema-bindings.c:169
+msgid ""
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"𐑞 𐑓𐑹𐑥𐑨𐑑 𐑤𐑫𐑒𐑕 𐑤𐑲𐑒 \"<Control>𐑩\" 𐑹 \"<Shift><Alt>F1\".\n"
+"\n"
+"𐑞 𐑐𐑸𐑟𐑼 𐑦𐑟 𐑓𐑺𐑤𐑦 𐑤𐑦𐑚𐑼𐑩𐑤 𐑯 𐑩𐑤𐑬𐑟 𐑤𐑴𐑼 𐑹 𐑳𐑐𐑻 𐑒𐑱𐑕, 𐑯 𐑷𐑤𐑕𐑴 𐑩𐑚𐑮𐑰𐑝𐑰𐑱𐑖𐑩𐑯𐑟 𐑕𐑳𐑗 𐑨𐑟 "
+"\"<Ctl>\" 𐑯 \"<Ctrl>\". 𐑦𐑓 𐑿 𐑕𐑧𐑑 𐑞 𐑪𐑐𐑖𐑩𐑯 𐑑 𐑞 𐑕𐑐𐑧𐑖𐑩𐑤 𐑕𐑑𐑮𐑦𐑙 \"disabled\", 𐑞𐑧𐑯 "
+"𐑞𐑺 𐑢𐑦𐑤 𐑚𐑰 𐑯𐑴 𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙 𐑓𐑹 𐑞𐑦𐑕 𐑨𐑒𐑖𐑩𐑯."
+
+#: ../src/core/schema-bindings.c:177
+msgid ""
+"The format looks like \"<Control>a\" or \"<Shift><Alt>F1\".\n"
+"\n"
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action.\n"
+"\n"
+"This keybinding may be reversed by holding down the \"shift\" key; "
+"therefore, \"shift\" cannot be one of the keys it uses."
+msgstr ""
+"𐑞 𐑓𐑹𐑥𐑨𐑑 𐑤𐑫𐑒𐑕 𐑤𐑲𐑒 \"<Control>𐑩\" 𐑹 \"<Shift><Alt>F1\".\n"
+"\n"
+"𐑞 𐑐𐑸𐑟𐑼 𐑦𐑟 𐑓𐑺𐑤𐑦 𐑤𐑦𐑚𐑼𐑩𐑤 𐑯 𐑩𐑤𐑬𐑟 𐑤𐑴𐑼 𐑹 𐑳𐑐𐑻 𐑒𐑱𐑕, 𐑯 𐑷𐑤𐑕𐑴 𐑩𐑚𐑮𐑰𐑝𐑰𐑱𐑖𐑩𐑯𐑟 𐑕𐑳𐑗 𐑨𐑟 "
+"\"<Ctl>\" 𐑯 \"<Ctrl>\". 𐑦𐑓 𐑿 𐑕𐑧𐑑 𐑞 𐑪𐑐𐑖𐑩𐑯 𐑑 𐑞 𐑕𐑐𐑧𐑖𐑩𐑤 𐑕𐑑𐑮𐑦𐑙 \"disabled\", 𐑞𐑧𐑯 "
+"𐑞𐑺 𐑢𐑦𐑤 𐑚𐑰 𐑯𐑴 𐑒𐑰𐑚𐑦𐑯𐑛𐑦𐑙 𐑓𐑹 𐑞𐑦𐑕 𐑨𐑒𐑖𐑩𐑯.\n"
+"\n"
+"𐑞𐑦𐑕 𐑒𐑰𐑚𐑦𐑯𐑛𐑦𐑙 𐑥𐑱 𐑚𐑰 𐑮𐑦𐑝𐑻𐑕𐑑 𐑚𐑲 𐑣𐑴𐑤𐑛𐑦𐑙 𐑛𐑬𐑯 𐑞 \"𐑖𐑦𐑓𐑑\" 𐑒𐑰; 𐑞𐑺𐑓𐑹, \"𐑖𐑦𐑓𐑑\" "
+"𐑒𐑨𐑯𐑪𐑑 𐑚𐑰 𐑢𐑳𐑯 𐑝 𐑞 𐑒𐑰𐑟 𐑦𐑑 𐑿𐑟𐑩𐑟."
+
+#: ../src/core/session.c:845 ../src/core/session.c:852
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑒𐑮𐑦𐑱𐑑 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦 '%s': %s\n"
+
+#: ../src/core/session.c:862
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑴𐑐𐑩𐑯 𐑕𐑧𐑖𐑩𐑯 𐑓𐑲𐑤 '%s' 𐑓𐑹 𐑮𐑲𐑑𐑦𐑙: %s\n"
+
+#: ../src/core/session.c:1003
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "𐑻𐑼 𐑮𐑲𐑑𐑦𐑙 𐑕𐑧𐑖𐑩𐑯 𐑓𐑲𐑤 '%s': %s\n"
+
+#: ../src/core/session.c:1008
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "𐑻𐑼 𐑒𐑤𐑴𐑟𐑦𐑙 𐑕𐑧𐑖𐑩𐑯 𐑓𐑲𐑤 '%s': %s\n"
+
+#. oh, just give up
+#: ../src/core/session.c:1101
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑮𐑰𐑛 𐑕𐑱𐑝𐑛 𐑕𐑧𐑖𐑩𐑯 𐑓𐑲𐑤 %s: %s\n"
+
+#: ../src/core/session.c:1140
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑐𐑸𐑟 𐑕𐑱𐑝𐑛 𐑕𐑧𐑖𐑩𐑯 𐑓𐑲𐑤: %s\n"
+
+#: ../src/core/session.c:1189
+#, c-format
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr "<metacity_session> 𐑩𐑑𐑮𐑦𐑚𐑿𐑑 𐑕𐑰𐑯 𐑚𐑳𐑑 𐑢𐑰 𐑷𐑤𐑮𐑧𐑛𐑦 𐑣𐑨𐑝 𐑞 𐑕𐑧𐑖𐑩𐑯 ID"
+
+#: ../src/core/session.c:1202 ../src/core/session.c:1277
+#: ../src/core/session.c:1309 ../src/core/session.c:1381
+#: ../src/core/session.c:1441
+#, c-format
+msgid "Unknown attribute %s on <%s> element"
+msgstr "𐑳𐑯𐑴𐑯 𐑨𐑑𐑮𐑦𐑚𐑿𐑑 %s 𐑪𐑯 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/core/session.c:1219
+#, c-format
+msgid "nested <window> tag"
+msgstr "𐑯𐑧𐑕𐑑𐑩𐑛 <window> 𐑑𐑨𐑜"
+
+#: ../src/core/session.c:1461
+#, c-format
+msgid "Unknown element %s"
+msgstr "𐑳𐑯𐑴𐑯 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 %s"
+
+#: ../src/core/session.c:1812
+msgid ""
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
+msgstr ""
+"𐑞𐑰𐑟 𐑢𐑦𐑯𐑛𐑴𐑟 𐑛𐑵 𐑯𐑪𐑑 𐑕𐑩𐑐𐑹𐑑 &quot;𐑕𐑱𐑝 𐑒𐑳𐑮𐑩𐑯𐑑 𐑕𐑧𐑑𐑳𐑐&quot; 𐑯 𐑢𐑦𐑤 𐑣𐑨𐑝 𐑑 𐑚𐑰 𐑮𐑰𐑕𐑑𐑸𐑑𐑩𐑛 "
+"𐑥𐑨𐑯𐑘𐑫𐑩𐑤𐑦 𐑯𐑧𐑒𐑕𐑑 𐑑𐑲𐑥 𐑿 𐑤𐑪𐑜 𐑦𐑯."
+
+#: ../src/core/util.c:103
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑴𐑐𐑩𐑯 𐑛𐑰𐑚𐑳𐑜 𐑤𐑪𐑜: %s\n"
+
+#: ../src/core/util.c:113
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 fdopen() 𐑤𐑪𐑜 𐑓𐑲𐑤 %s: %s\n"
+
+#: ../src/core/util.c:119
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "𐑴𐑐𐑩𐑯𐑛 𐑤𐑪𐑜 𐑓𐑲𐑤 %s\n"
+
+#: ../src/core/util.c:138 ../src/tools/metacity-message.c:176
+#, c-format
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 𐑢𐑪𐑟 𐑒𐑩𐑥𐑐𐑲𐑤𐑛 𐑢𐑦𐑞𐑬𐑑 𐑕𐑩𐑐𐑹𐑑 𐑓𐑹 𐑝𐑻𐑚𐑴𐑕 𐑥𐑴𐑛\n"
+
+#: ../src/core/util.c:238
+msgid "Window manager: "
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼: "
+
+#: ../src/core/util.c:390
+msgid "Bug in window manager: "
+msgstr "𐑚𐑳𐑜 𐑦𐑯 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼: "
+
+#: ../src/core/util.c:423
+msgid "Window manager warning: "
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼 𐑢𐑹𐑯𐑦𐑙: "
+
+#: ../src/core/util.c:451
+msgid "Window manager error: "
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼 𐑻𐑼: "
+
+#. Translators: This is the title used on dialog boxes
+#. eof all-keybindings.h
+#: ../src/core/util.c:570 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦"
+
+#. first time through
+#: ../src/core/window.c:5627
+#, c-format
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"𐑢𐑦𐑯𐑛𐑴 %s 𐑕𐑧𐑑𐑕 SM_CLIENT_ID 𐑪𐑯 𐑦𐑑𐑕𐑧𐑤𐑓, 𐑦𐑯𐑕𐑑𐑧𐑛 𐑝 𐑪𐑯 𐑞 WM_CLIENT_LEADER 𐑢𐑦𐑯𐑛𐑴 "
+"𐑨𐑟 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑦𐑯 𐑞 ICCCM.\n"
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#: ../src/core/window.c:6192
+#, c-format
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"𐑢𐑦𐑯𐑛𐑴 %s 𐑕𐑧𐑑𐑕 𐑩𐑯 MWM 𐑣𐑦𐑯𐑑 𐑦𐑯𐑛𐑦𐑒𐑱𐑑𐑦𐑙 𐑦𐑑 𐑦𐑟𐑯𐑑 𐑮𐑰𐑕𐑲𐑟𐑩𐑚𐑩𐑤, 𐑚𐑳𐑑 𐑕𐑧𐑑𐑕 𐑥𐑦𐑯 𐑕𐑲𐑟 %d"
+"x%d 𐑯 𐑥𐑨𐑒𐑕 𐑕𐑲𐑟 %dx%d; 𐑞𐑦𐑕 𐑛𐑳𐑟𐑯𐑑 𐑥𐑱𐑒 𐑥𐑳𐑗 𐑕𐑧𐑯𐑕.\n"
+
+#: ../src/core/window-props.c:244
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑕𐑧𐑑 𐑩 𐑚𐑴𐑜𐑩𐑕 _NET_WM_PID %lu\n"
+
+#. Translators: the title of a window from another machine
+#: ../src/core/window-props.c:388
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (𐑪𐑯 %s)"
+
+#. Simple case-- don't bother to look it up.  It's root.
+#: ../src/core/window-props.c:420
+#, c-format
+msgid "%s (as superuser)"
+msgstr "%s (𐑨𐑟 𐑕𐑵𐑐𐑼𐑿𐑟𐑼)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine
+#: ../src/core/window-props.c:438
+#, c-format
+msgid "%s (as %s)"
+msgstr "%s (𐑨𐑟 %s)"
+
+#. Translators: the title of a window owned by another user
+#. * on this machine, whose name we don't know
+#: ../src/core/window-props.c:444
+#, c-format
+msgid "%s (as another user)"
+msgstr "%s (𐑨𐑟 𐑩𐑯𐑳𐑞𐑼 𐑿𐑟𐑼)"
+
+#: ../src/core/window-props.c:1429
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 WM_TRANSIENT_FOR 𐑢𐑦𐑯𐑛𐑴 0x%lx 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑓𐑹 %s.\n"
+
+#: ../src/core/xprops.c:155
+#, c-format
+msgid ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+msgstr ""
+"𐑢𐑦𐑯𐑛𐑴 0x%lx 𐑣𐑨𐑟 𐑐𐑮𐑪𐑐𐑼𐑑𐑦 %s\n"
+"𐑞𐑨𐑑 𐑢𐑪𐑟 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛 𐑑 𐑣𐑨𐑝 𐑑𐑲𐑐 %s 𐑓𐑹𐑥𐑨𐑑 %d\n"
+"𐑯 𐑨𐑒𐑗𐑫𐑩𐑤𐑦 𐑣𐑨𐑟 𐑑𐑲𐑐 %s 𐑓𐑹𐑥𐑨𐑑 %d n_items %d.\n"
+"𐑞𐑦𐑕 𐑦𐑟 𐑥𐑴𐑕𐑑 𐑤𐑲𐑒𐑤𐑦 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑚𐑳𐑜, 𐑯𐑪𐑑 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼 𐑚𐑳𐑜.\n"
+"𐑞 𐑢𐑦𐑯𐑛𐑴 𐑣𐑨𐑟 𐑑𐑲𐑑𐑩𐑤=\"%s\" 𐑒𐑤𐑭𐑕=\"%s\" 𐑯𐑱𐑥=\"%s\"\n"
+
+#: ../src/core/xprops.c:401
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "𐑐𐑮𐑪𐑐𐑼𐑑𐑦 %s 𐑪𐑯 𐑢𐑦𐑯𐑛𐑴 0x%lx 𐑒𐑩𐑯𐑑𐑱𐑯𐑛 𐑦𐑯𐑝𐑨𐑤𐑦𐑛 UTF-8\n"
+
+#: ../src/core/xprops.c:484
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"𐑐𐑮𐑪𐑐𐑼𐑑𐑦 %s 𐑪𐑯 𐑢𐑦𐑯𐑛𐑴 0x%lx 𐑒𐑩𐑯𐑑𐑱𐑯𐑛 𐑦𐑯𐑝𐑨𐑤𐑦𐑛 UTF-8 𐑓𐑹 𐑲𐑑𐑩𐑥 %d 𐑦𐑯 𐑞 𐑤𐑦𐑕𐑑\n"
+
+#: ../src/include/all-keybindings.h:88
+msgid "Switch to workspace 1"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 1"
+
+#: ../src/include/all-keybindings.h:90
+msgid "Switch to workspace 2"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 2"
+
+#: ../src/include/all-keybindings.h:92
+msgid "Switch to workspace 3"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 3"
+
+#: ../src/include/all-keybindings.h:94
+msgid "Switch to workspace 4"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 4"
+
+#: ../src/include/all-keybindings.h:96
+msgid "Switch to workspace 5"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 5"
+
+#: ../src/include/all-keybindings.h:98
+msgid "Switch to workspace 6"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 6"
+
+#: ../src/include/all-keybindings.h:100
+msgid "Switch to workspace 7"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 7"
+
+#: ../src/include/all-keybindings.h:102
+msgid "Switch to workspace 8"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 8"
+
+#: ../src/include/all-keybindings.h:104
+msgid "Switch to workspace 9"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 9"
+
+#: ../src/include/all-keybindings.h:106
+msgid "Switch to workspace 10"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 10"
+
+#: ../src/include/all-keybindings.h:108
+msgid "Switch to workspace 11"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 11"
+
+#: ../src/include/all-keybindings.h:110
+msgid "Switch to workspace 12"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 12"
+
+#: ../src/include/all-keybindings.h:122
+msgid "Switch to workspace on the left of the current workspace"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑪𐑯 𐑞 𐑤𐑧𐑓𐑑 𐑝 𐑞 𐑒𐑳𐑮𐑩𐑯𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#: ../src/include/all-keybindings.h:126
+msgid "Switch to workspace on the right of the current workspace"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑪𐑯 𐑞 𐑮𐑲𐑑 𐑝 𐑞 𐑒𐑳𐑮𐑩𐑯𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#: ../src/include/all-keybindings.h:130
+msgid "Switch to workspace above the current workspace"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑩𐑚𐑳𐑝 𐑞 𐑒𐑳𐑮𐑩𐑯𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#: ../src/include/all-keybindings.h:134
+msgid "Switch to workspace below the current workspace"
+msgstr "𐑕𐑢𐑦𐑗 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑚𐑩𐑤𐑴 𐑞 𐑒𐑳𐑮𐑩𐑯𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#: ../src/include/all-keybindings.h:150
+msgid "Move between windows of an application, using a popup window"
+msgstr "𐑥𐑵𐑝 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑝 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯, 𐑿𐑟𐑦𐑙 𐑩 𐑐𐑪𐑐𐑳𐑐 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:153
+msgid "Move backward between windows of an application, using a popup window"
+msgstr "𐑥𐑵𐑝 𐑚𐑨𐑒𐑢𐑼𐑛 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑝 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯, 𐑿𐑟𐑦𐑙 𐑩 𐑐𐑪𐑐𐑳𐑐 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:157
+msgid "Move between windows, using a popup window"
+msgstr "𐑥𐑵𐑝 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟, 𐑿𐑟𐑦𐑙 𐑩 𐑐𐑪𐑐𐑳𐑐 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:160
+msgid "Move backward between windows, using a popup window"
+msgstr "𐑥𐑵𐑝 𐑚𐑨𐑒𐑢𐑼𐑛 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟, 𐑿𐑟𐑦𐑙 𐑩 𐑐𐑪𐑐𐑳𐑐 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:163
+msgid "Move between panels and the desktop, using a popup window"
+msgstr "𐑥𐑵𐑝 𐑚𐑦𐑑𐑢𐑰𐑯 𐑐𐑨𐑯𐑩𐑤𐑟 𐑯 𐑞 𐑛𐑧𐑕𐑒𐑑𐑪𐑐, 𐑿𐑟𐑦𐑙 𐑩 𐑐𐑪𐑐𐑳𐑐 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:166
+msgid "Move backward between panels and the desktop, using a popup window"
+msgstr "𐑥𐑵𐑝 𐑚𐑨𐑒𐑢𐑼𐑛 𐑚𐑦𐑑𐑢𐑰𐑯 𐑐𐑨𐑯𐑩𐑤𐑟 𐑯 𐑞 𐑛𐑧𐑕𐑒𐑑𐑪𐑐, 𐑿𐑟𐑦𐑙 𐑩 𐑐𐑪𐑐𐑳𐑐 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:171
+msgid "Move between windows of an application immediately"
+msgstr "𐑥𐑵𐑝 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑝 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑦𐑥𐑰𐑛𐑾𐑑𐑤𐑰"
+
+#: ../src/include/all-keybindings.h:174
+msgid "Move backward between windows of an application immediately"
+msgstr "𐑥𐑵𐑝 𐑚𐑨𐑒𐑢𐑼𐑛 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑝 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑦𐑥𐑰𐑛𐑾𐑑𐑤𐑰"
+
+#: ../src/include/all-keybindings.h:177
+msgid "Move between windows immediately"
+msgstr "𐑥𐑵𐑝 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑦𐑥𐑰𐑛𐑾𐑑𐑤𐑰"
+
+#: ../src/include/all-keybindings.h:180
+msgid "Move backward between windows immediately"
+msgstr "𐑥𐑵𐑝 𐑚𐑨𐑒𐑢𐑼𐑛 𐑚𐑦𐑑𐑢𐑰𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑦𐑥𐑰𐑛𐑾𐑑𐑤𐑰"
+
+#: ../src/include/all-keybindings.h:183
+msgid "Move between panels and the desktop immediately"
+msgstr "𐑥𐑵𐑝 𐑚𐑦𐑑𐑢𐑰𐑯 𐑐𐑨𐑯𐑩𐑤𐑟 𐑯 𐑞 𐑛𐑧𐑕𐑒𐑑𐑪𐑐 𐑦𐑥𐑰𐑛𐑾𐑑𐑤𐑰"
+
+#: ../src/include/all-keybindings.h:186
+msgid "Move backward between panels and the desktop immediately"
+msgstr "𐑥𐑵𐑝 𐑚𐑨𐑒𐑢𐑼𐑛 𐑚𐑦𐑑𐑢𐑰𐑯 𐑐𐑨𐑯𐑩𐑤𐑟 𐑯 𐑞 𐑛𐑧𐑕𐑒𐑑𐑪𐑐 𐑦𐑥𐑰𐑛𐑾𐑑𐑤𐑰"
+
+#: ../src/include/all-keybindings.h:191
+msgid "Hide all normal windows and set focus to the desktop"
+msgstr "𐑣𐑲𐑛 𐑷𐑤 𐑯𐑹𐑥𐑩𐑤 𐑢𐑦𐑯𐑛𐑴𐑟 𐑯 𐑕𐑧𐑑 𐑓𐑴𐑒𐑩𐑕 𐑑 𐑞 𐑛𐑧𐑕𐑒𐑑𐑪𐑐"
+
+#: ../src/include/all-keybindings.h:194
+msgid "Show the panel's main menu"
+msgstr "𐑖𐑴 𐑞 𐑐𐑨𐑯𐑩𐑤𐑟 𐑥𐑱𐑯 𐑥𐑧𐑯𐑿"
+
+#: ../src/include/all-keybindings.h:197
+msgid "Show the panel's \"Run Application\" dialog box"
+msgstr "𐑖𐑴 𐑞 𐑐𐑨𐑯𐑩𐑤𐑟 \"𐑮𐑳𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯\" 𐑛𐑲𐑩𐑤𐑪𐑜 𐑚𐑪𐑒𐑕"
+
+#: ../src/include/all-keybindings.h:238
+msgid "Take a screenshot"
+msgstr "𐑑𐑱𐑒 𐑩 𐑕𐑒𐑮𐑰𐑯𐑖𐑪𐑑"
+
+#: ../src/include/all-keybindings.h:240
+msgid "Take a screenshot of a window"
+msgstr "𐑑𐑱𐑒 𐑩 𐑕𐑒𐑮𐑰𐑯𐑖𐑪𐑑 𐑝 𐑩 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:242
+msgid "Run a terminal"
+msgstr "𐑮𐑳𐑯 𐑩 𐑑𐑻𐑥𐑦𐑯𐑩𐑤"
+
+#: ../src/include/all-keybindings.h:257
+msgid "Activate the window menu"
+msgstr "𐑨𐑒𐑑𐑦𐑝𐑱𐑑 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑧𐑯𐑿"
+
+#: ../src/include/all-keybindings.h:260
+msgid "Toggle fullscreen mode"
+msgstr "𐑑𐑪𐑜𐑩𐑤 𐑓𐑫𐑤𐑕𐑒𐑮𐑰𐑯 𐑥𐑴𐑛"
+
+#: ../src/include/all-keybindings.h:262
+msgid "Toggle maximization state"
+msgstr "𐑑𐑪𐑜𐑩𐑤 𐑥𐑨𐑒𐑕𐑦𐑥𐑦𐑟𐑱𐑖𐑩𐑯 𐑕𐑑𐑱𐑑"
+
+#: ../src/include/all-keybindings.h:264
+msgid "Toggle whether a window will always be visible over other windows"
+msgstr "𐑑𐑪𐑜𐑩𐑤 𐑢𐑧𐑞𐑼 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑢𐑦𐑤 𐑷𐑤𐑢𐑱𐑟 𐑚𐑰 𐑝𐑦𐑕𐑦𐑚𐑩𐑤 𐑴𐑝𐑼 𐑳𐑞𐑼 𐑢𐑦𐑯𐑛𐑴𐑟"
+
+#: ../src/include/all-keybindings.h:266
+msgid "Maximize window"
+msgstr "𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:268
+msgid "Restore window"
+msgstr "𐑮𐑩𐑕𐑑𐑹 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:270
+msgid "Toggle shaded state"
+msgstr "𐑑𐑪𐑜𐑩𐑤 𐑖𐑱𐑛𐑩𐑛 𐑕𐑑𐑱𐑑"
+
+#: ../src/include/all-keybindings.h:272
+msgid "Minimize window"
+msgstr "𐑥𐑦𐑯𐑩𐑥𐑲𐑟 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:274
+msgid "Close window"
+msgstr "𐑒𐑤𐑴𐑟 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:276
+msgid "Move window"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:278
+msgid "Resize window"
+msgstr "𐑮𐑰𐑕𐑲𐑟 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/include/all-keybindings.h:281
+msgid "Toggle whether window is on all workspaces or just one"
+msgstr "𐑑𐑪𐑜𐑩𐑤 𐑢𐑧𐑞𐑼 𐑢𐑦𐑯𐑛𐑴 𐑦𐑟 𐑪𐑯 𐑷𐑤 𐑢𐑻𐑒𐑕𐑐𐑱𐑕𐑩𐑟 𐑹 𐑡𐑳𐑕𐑑 𐑢𐑳𐑯"
+
+#: ../src/include/all-keybindings.h:285
+msgid "Move window to workspace 1"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 1"
+
+#: ../src/include/all-keybindings.h:288
+msgid "Move window to workspace 2"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 2"
+
+#: ../src/include/all-keybindings.h:291
+msgid "Move window to workspace 3"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 3"
+
+#: ../src/include/all-keybindings.h:294
+msgid "Move window to workspace 4"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 4"
+
+#: ../src/include/all-keybindings.h:297
+msgid "Move window to workspace 5"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 5"
+
+#: ../src/include/all-keybindings.h:300
+msgid "Move window to workspace 6"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 6"
+
+#: ../src/include/all-keybindings.h:303
+msgid "Move window to workspace 7"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 7"
+
+#: ../src/include/all-keybindings.h:306
+msgid "Move window to workspace 8"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 8"
+
+#: ../src/include/all-keybindings.h:309
+msgid "Move window to workspace 9"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 9"
+
+#: ../src/include/all-keybindings.h:312
+msgid "Move window to workspace 10"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 10"
+
+#: ../src/include/all-keybindings.h:315
+msgid "Move window to workspace 11"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 11"
+
+#: ../src/include/all-keybindings.h:318
+msgid "Move window to workspace 12"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 12"
+
+#: ../src/include/all-keybindings.h:330
+msgid "Move window one workspace to the left"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑢𐑳𐑯 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑑 𐑞 𐑤𐑧𐑓𐑑"
+
+#: ../src/include/all-keybindings.h:333
+msgid "Move window one workspace to the right"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑢𐑳𐑯 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑑 𐑞 𐑮𐑲𐑑"
+
+#: ../src/include/all-keybindings.h:336
+msgid "Move window one workspace up"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑢𐑳𐑯 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑳𐑐"
+
+#: ../src/include/all-keybindings.h:339
+msgid "Move window one workspace down"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑢𐑳𐑯 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑛𐑬𐑯"
+
+#: ../src/include/all-keybindings.h:342
+msgid "Raise window if it's covered by another window, otherwise lower it"
+msgstr "𐑮𐑱𐑟 𐑢𐑦𐑯𐑛𐑴 𐑦𐑓 𐑦𐑑𐑕 𐑒𐑳𐑝𐑼𐑛 𐑚𐑲 𐑩𐑯𐑳𐑞𐑼 𐑢𐑦𐑯𐑛𐑴, 𐑳𐑞𐑼𐑢𐑲𐑟 𐑤𐑴𐑼 𐑦𐑑"
+
+#: ../src/include/all-keybindings.h:344
+msgid "Raise window above other windows"
+msgstr "𐑮𐑱𐑟 𐑢𐑦𐑯𐑛𐑴 𐑩𐑚𐑳𐑝 𐑳𐑞𐑼 𐑢𐑦𐑯𐑛𐑴𐑟"
+
+#: ../src/include/all-keybindings.h:346
+msgid "Lower window below other windows"
+msgstr "𐑤𐑴𐑼 𐑢𐑦𐑯𐑛𐑴 𐑚𐑩𐑤𐑴 𐑳𐑞𐑼 𐑢𐑦𐑯𐑛𐑴𐑟"
+
+#: ../src/include/all-keybindings.h:350
+msgid "Maximize window vertically"
+msgstr "𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟 𐑢𐑦𐑯𐑛𐑴 𐑝𐑻𐑑𐑦𐑒𐑩𐑤𐑦"
+
+#: ../src/include/all-keybindings.h:354
+msgid "Maximize window horizontally"
+msgstr "𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟 𐑢𐑦𐑯𐑛𐑴 𐑣𐑪𐑮𐑦𐑟𐑪𐑯𐑑𐑩𐑤𐑦"
+
+#: ../src/include/all-keybindings.h:358
+msgid "Move window to north-west (top left) corner"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑯𐑹𐑔-𐑢𐑧𐑕𐑑 (𐑑𐑪𐑐 𐑤𐑧𐑓𐑑) 𐑒𐑹𐑯𐑼"
+
+#: ../src/include/all-keybindings.h:361
+msgid "Move window to north-east (top right) corner"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑯𐑹𐑔-𐑰𐑕𐑑 (𐑑𐑪𐑐 𐑮𐑲𐑑) 𐑒𐑹𐑯𐑼"
+
+#: ../src/include/all-keybindings.h:364
+msgid "Move window to south-west (bottom left) corner"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑕𐑬𐑔-𐑢𐑧𐑕𐑑 (𐑚𐑪𐑑𐑫𐑥 𐑤𐑧𐑓𐑑) 𐑒𐑹𐑯𐑼"
+
+#: ../src/include/all-keybindings.h:367
+msgid "Move window to south-east (bottom right) corner"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑕𐑬𐑔-𐑰𐑕𐑑 (𐑚𐑪𐑑𐑫𐑥 𐑮𐑲𐑑) 𐑒𐑹𐑯𐑼"
+
+#: ../src/include/all-keybindings.h:371
+msgid "Move window to north (top) side of screen"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑯𐑹𐑔 (𐑑𐑪𐑐) 𐑕𐑲𐑛 𐑝 𐑕𐑒𐑮𐑰𐑯"
+
+#: ../src/include/all-keybindings.h:374
+msgid "Move window to south (bottom) side of screen"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑕𐑬𐑔 (𐑚𐑪𐑑𐑫𐑥) 𐑕𐑲𐑛 𐑝 𐑕𐑒𐑮𐑰𐑯"
+
+#: ../src/include/all-keybindings.h:377
+msgid "Move window to east (right) side of screen"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑰𐑕𐑑 (𐑮𐑲𐑑) 𐑕𐑲𐑛 𐑝 𐑕𐑒𐑮𐑰𐑯"
+
+#: ../src/include/all-keybindings.h:380
+msgid "Move window to west (left) side of screen"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑢𐑧𐑕𐑑 (𐑤𐑧𐑓𐑑) 𐑕𐑲𐑛 𐑝 𐑕𐑒𐑮𐑰𐑯"
+
+#: ../src/include/all-keybindings.h:383
+msgid "Move window to center of screen"
+msgstr "𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑕𐑧𐑯𐑑𐑼 𐑝 𐑕𐑒𐑮𐑰𐑯"
+
+#: ../src/metacity.schemas.in.in.h:1
+msgid "(Not implemented) Navigation works in terms of applications not windows"
+msgstr "(𐑯𐑪𐑑 𐑦𐑥𐑐𐑤𐑩𐑥𐑧𐑯𐑑𐑩𐑛) 𐑯𐑨𐑝𐑦𐑜𐑱𐑖𐑩𐑯 𐑢𐑻𐑒𐑕 𐑦𐑯 𐑑𐑻𐑥𐑟 𐑝 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑯𐑪𐑑 𐑢𐑦𐑯𐑛𐑴𐑟"
+
+#: ../src/metacity.schemas.in.in.h:2
+msgid ""
+"A font description string describing a font for window titlebars. The size "
+"from the description will only be used if the titlebar_font_size option is "
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
+msgstr ""
+"𐑩 𐑓𐑪𐑯𐑑 𐑛𐑦𐑕𐑒𐑮𐑦𐑐𐑖𐑩𐑯 𐑕𐑑𐑮𐑦𐑙 𐑛𐑦𐑕𐑒𐑮𐑲𐑚𐑦𐑙 𐑩 𐑓𐑪𐑯𐑑 𐑓𐑹 𐑢𐑦𐑯𐑛𐑴 𐑑𐑲𐑑𐑩𐑤𐑚𐑸𐑟. 𐑞 𐑕𐑲𐑟 𐑓𐑮𐑪𐑥 𐑞 "
+"𐑛𐑦𐑕𐑒𐑮𐑦𐑐𐑖𐑩𐑯 𐑢𐑦𐑤 𐑴𐑯𐑤𐑦 𐑚𐑰 𐑿𐑟𐑛 𐑦𐑓 𐑞 titlebar_font_size 𐑪𐑐𐑖𐑩𐑯 𐑦𐑟 𐑕𐑧𐑑 𐑑 0. 𐑷𐑤𐑕𐑴, "
+"𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑦𐑟 𐑛𐑦𐑕𐑱𐑚𐑩𐑤𐑛 𐑦𐑓 𐑞 titlebar_uses_desktop_font 𐑪𐑐𐑖𐑩𐑯 𐑦𐑟 𐑕𐑧𐑑 𐑑 𐑑𐑮𐑵."
+
+#: ../src/metacity.schemas.in.in.h:3
+msgid "Action on title bar double-click"
+msgstr "𐑨𐑒𐑖𐑩𐑯 𐑪𐑯 𐑑𐑲𐑑𐑩𐑤 𐑚𐑸 𐑛𐑳𐑚𐑩𐑤-𐑒𐑤𐑦𐑒"
+
+#: ../src/metacity.schemas.in.in.h:4
+msgid "Action on title bar middle-click"
+msgstr "𐑨𐑒𐑖𐑩𐑯 𐑪𐑯 𐑑𐑲𐑑𐑩𐑤 𐑚𐑸 𐑥𐑦𐑛𐑩𐑤-𐑒𐑤𐑦𐑒"
+
+#: ../src/metacity.schemas.in.in.h:5
+msgid "Action on title bar right-click"
+msgstr "𐑨𐑒𐑖𐑩𐑯 𐑪𐑯 𐑑𐑲𐑑𐑩𐑤 𐑚𐑸 𐑮𐑲𐑑-𐑒𐑤𐑦𐑒"
+
+#: ../src/metacity.schemas.in.in.h:6
+msgid "Arrangement of buttons on the titlebar"
+msgstr "𐑼𐑱𐑯𐑡𐑥𐑩𐑯𐑑 𐑝 𐑚𐑳𐑑𐑩𐑯𐑟 𐑪𐑯 𐑞 𐑑𐑲𐑑𐑩𐑤𐑚𐑸"
+
+#: ../src/metacity.schemas.in.in.h:7
+msgid ""
+"Arrangement of buttons on the titlebar. The value should be a string, such "
+"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
+"corner of the window from the right corner, and the button names are comma-"
+"separated. Duplicate buttons are not allowed. Unknown button names are "
+"silently ignored so that buttons can be added in future metacity versions "
+"without breaking older versions. A special spacer tag can be used to insert "
+"some space between two adjacent buttons."
+msgstr ""
+"𐑼𐑱𐑯𐑡𐑥𐑩𐑯𐑑 𐑝 𐑚𐑳𐑑𐑩𐑯𐑟 𐑪𐑯 𐑞 𐑑𐑲𐑑𐑩𐑤𐑚𐑸. 𐑞 𐑝𐑨𐑤𐑿 𐑖𐑫𐑛 𐑚𐑰 𐑩 𐑕𐑑𐑮𐑦𐑙, 𐑕𐑳𐑗 𐑨𐑟 "
+"\"menu:minimize,maximize,spacer,close\"; 𐑞 𐑒𐑴𐑤𐑩𐑯 𐑕𐑧𐑐𐑼𐑱𐑑𐑕 𐑞 𐑤𐑧𐑓𐑑 𐑒𐑹𐑯𐑻 𐑝 𐑞 𐑢𐑦𐑯𐑛𐑴 "
+"𐑓𐑮𐑪𐑥 𐑞 𐑮𐑲𐑑 𐑒𐑹𐑯𐑻, 𐑯 𐑞 𐑚𐑳𐑑𐑩𐑯 𐑯𐑱𐑥𐑟 𐑸 𐑒𐑪𐑥𐑩-𐑕𐑧𐑐𐑼𐑱𐑑𐑩𐑛. 𐑛𐑿𐑐𐑤𐑦𐑒𐑱𐑑 𐑚𐑳𐑑𐑩𐑯𐑟 𐑸 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛. "
+"𐑳𐑯𐑴𐑯 𐑚𐑳𐑑𐑩𐑯 𐑯𐑱𐑥𐑟 𐑸 𐑕𐑲𐑤𐑩𐑯𐑑𐑤𐑦 𐑦𐑜𐑯𐑹𐑛 𐑕𐑴 𐑞𐑨𐑑 𐑚𐑳𐑑𐑩𐑯𐑟 𐑒𐑨𐑯 𐑚𐑰 𐑨𐑛𐑩𐑛 𐑦𐑯 𐑓𐑿𐑗𐑼 ·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 "
+"𐑝𐑻𐑠𐑩𐑯𐑟 𐑢𐑦𐑞𐑬𐑑 𐑚𐑮𐑱𐑒𐑦𐑙 𐑴𐑤𐑛𐑼 𐑝𐑻𐑠𐑩𐑯𐑟. 𐑩 𐑕𐑐𐑧𐑖𐑩𐑤 spacer 𐑑𐑨𐑜 𐑒𐑨𐑯 𐑚𐑰 𐑿𐑟𐑛 𐑑 𐑦𐑯𐑕𐑻𐑑 𐑕𐑳𐑥 "
+"𐑕𐑐𐑱𐑕 𐑚𐑦𐑑𐑢𐑰𐑯 𐑑𐑵 𐑩𐑡𐑱𐑕𐑩𐑯𐑑 𐑚𐑳𐑑𐑩𐑯𐑟."
+
+#: ../src/metacity.schemas.in.in.h:8
+msgid "Automatically raises the focused window"
+msgstr "𐑷𐑑𐑩𐑥𐑨𐑑𐑦𐑒𐑤𐑦 𐑮𐑱𐑟𐑩𐑟 𐑞 𐑓𐑴𐑒𐑩𐑕𐑑 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/metacity.schemas.in.in.h:9
+msgid ""
+"Clicking a window while holding down this modifier key will move the window "
+"(left click), resize the window (middle click), or show the window menu "
+"(right click). The left and right operations may be swapped using the "
+"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
+"\"&lt;Super&gt;\" for example."
+msgstr ""
+"𐑒𐑤𐑦𐑒𐑦𐑙 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑢𐑲𐑤 𐑣𐑴𐑤𐑛𐑦𐑙 𐑛𐑬𐑯 𐑞𐑦𐑕 𐑥𐑪𐑛𐑦𐑓𐑲𐑼 𐑒𐑰 𐑢𐑦𐑤 𐑥𐑵𐑝 𐑞 𐑢𐑦𐑯𐑛𐑴 (𐑤𐑧𐑓𐑑 𐑒𐑤𐑦𐑒), "
+"𐑮𐑰𐑕𐑲𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴 (𐑥𐑦𐑛𐑩𐑤 𐑒𐑤𐑦𐑒), 𐑹 𐑖𐑴 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑧𐑯𐑿 (𐑮𐑲𐑑 𐑒𐑤𐑦𐑒). 𐑞 𐑤𐑧𐑓𐑑 𐑯 𐑮𐑲𐑑 "
+"𐑪𐑐𐑼𐑱𐑖𐑩𐑯𐑟 𐑥𐑱 𐑚𐑰 𐑕𐑢𐑪𐑐𐑑 𐑿𐑟𐑦𐑙 𐑞 \"mouse_button_resize\" 𐑒𐑰. 𐑥𐑪𐑛𐑦𐑓𐑲𐑼 𐑦𐑟 𐑦𐑒𐑕𐑐𐑮𐑧𐑕𐑑 "
+"𐑨𐑟 \"&lt;Alt&gt;\" 𐑹 \"&lt;Super&gt;\" 𐑓𐑹 𐑦𐑜𐑟𐑭𐑥𐑐𐑩𐑤."
+
+#: ../src/metacity.schemas.in.in.h:10
+msgid "Commands to run in response to keybindings"
+msgstr "𐑒𐑩𐑥𐑭𐑯𐑛𐑟 𐑑 𐑮𐑳𐑯 𐑦𐑯 𐑮𐑦𐑕𐑐𐑪𐑯𐑕 𐑑 𐑒𐑰𐑚𐑦𐑯𐑛𐑦𐑙𐑟"
+
+#: ../src/metacity.schemas.in.in.h:11
+msgid "Compositing Manager"
+msgstr "𐑒𐑩𐑥𐑐𐑪𐑟𐑩𐑑𐑦𐑙 𐑥𐑨𐑯𐑩𐑡𐑼"
+
+#: ../src/metacity.schemas.in.in.h:12
+msgid "Control how new windows get focus"
+msgstr "𐑒𐑩𐑯𐑑𐑮𐑴𐑤 𐑣𐑬 𐑯𐑿 𐑢𐑦𐑯𐑛𐑴𐑟 𐑜𐑧𐑑 𐑓𐑴𐑒𐑩𐑕"
+
+#: ../src/metacity.schemas.in.in.h:13
+msgid "Current theme"
+msgstr "𐑒𐑳𐑮𐑩𐑯𐑑 𐑔𐑰𐑥"
+
+#: ../src/metacity.schemas.in.in.h:14
+msgid "Delay in milliseconds for the auto raise option"
+msgstr "𐑛𐑦𐑤𐑱 𐑦𐑯 𐑥𐑦𐑤𐑦𐑕𐑧𐑒𐑩𐑯𐑛𐑟 𐑓𐑹 𐑞 𐑷𐑑𐑴 𐑮𐑱𐑟 𐑪𐑐𐑖𐑩𐑯"
+
+#: ../src/metacity.schemas.in.in.h:15
+msgid "Determines whether Metacity is a compositing manager."
+msgstr "𐑛𐑦𐑑𐑻𐑥𐑦𐑯𐑟 𐑢𐑧𐑞𐑼 ·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 𐑦𐑟 𐑩 𐑒𐑩𐑥𐑐𐑪𐑟𐑩𐑑𐑦𐑙 𐑥𐑨𐑯𐑩𐑡𐑼."
+
+#: ../src/metacity.schemas.in.in.h:16
+msgid ""
+"Determines whether applications or the system can generate audible 'beeps'; "
+"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr ""
+"𐑛𐑦𐑑𐑻𐑥𐑦𐑯𐑟 𐑢𐑧𐑞𐑼 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑹 𐑞 𐑕𐑦𐑕𐑑𐑩𐑥 𐑒𐑨𐑯 𐑡𐑧𐑯𐑼𐑱𐑑 𐑭𐑛𐑩𐑚𐑩𐑤 '𐑚𐑰𐑐𐑕'; 𐑥𐑱 𐑚𐑰 𐑿𐑟𐑛 𐑦𐑯 "
+"𐑒𐑩𐑯𐑡𐑩𐑙𐑒𐑖𐑩𐑯 𐑢𐑦𐑞 '𐑝𐑦𐑠𐑩𐑢𐑩𐑤 𐑚𐑧𐑤' 𐑑 𐑩𐑤𐑬 𐑕𐑲𐑤𐑩𐑯𐑑 '𐑚𐑰𐑐𐑕'."
+
+#: ../src/metacity.schemas.in.in.h:17
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr "𐑛𐑦𐑕𐑱𐑚𐑩𐑤 𐑥𐑦𐑕𐑓𐑰𐑑𐑿𐑟 𐑞𐑨𐑑 𐑸 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑚𐑲 𐑴𐑤𐑛 𐑹 𐑚𐑮𐑴𐑒𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟"
+
+#: ../src/metacity.schemas.in.in.h:18
+msgid "Enable Visual Bell"
+msgstr "𐑦𐑯𐑱𐑚𐑩𐑤 𐑝𐑦𐑠𐑩𐑢𐑩𐑤 𐑚𐑧𐑤"
+
+#: ../src/metacity.schemas.in.in.h:19
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
+msgstr ""
+"𐑦𐑓 𐑕𐑧𐑑 𐑑 𐑑𐑮𐑵, 𐑯 𐑞 𐑓𐑴𐑒𐑩𐑕 𐑥𐑴𐑛 𐑦𐑟 𐑲𐑞𐑼 \"sloppy\" 𐑹 \"mouse\" 𐑞𐑧𐑯 𐑞 𐑓𐑴𐑒𐑩𐑕𐑑 𐑢𐑦𐑯𐑛𐑴 "
+"𐑢𐑦𐑤 𐑚𐑰 𐑷𐑑𐑩𐑥𐑨𐑑𐑦𐑒𐑤𐑦 𐑮𐑱𐑟𐑛 𐑭𐑓𐑑𐑼 𐑩 𐑛𐑦𐑤𐑱 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑚𐑲 𐑞 auto_raise_delay 𐑒𐑰. 𐑞𐑦𐑕 𐑦𐑟 "
+"𐑯𐑪𐑑 𐑮𐑦𐑤𐑱𐑑𐑩𐑛 𐑑 𐑒𐑤𐑦𐑒𐑦𐑙 𐑪𐑯 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑑 𐑮𐑱𐑟 𐑦𐑑, 𐑯𐑹 𐑑 𐑧𐑯𐑑𐑼𐑦𐑙 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑛𐑘𐑫𐑼𐑦𐑙 𐑛𐑮𐑨𐑜-𐑯-"
+"𐑛𐑮𐑪𐑐."
+
+#: ../src/metacity.schemas.in.in.h:20
+msgid ""
+"If true, ignore the titlebar_font option, and use the standard application "
+"font for window titles."
+msgstr ""
+"𐑦𐑓 𐑑𐑮𐑵, 𐑦𐑜𐑯𐑹 𐑞 titlebar_font 𐑪𐑐𐑖𐑩𐑯, 𐑯 𐑿𐑕 𐑞 𐑕𐑑𐑨𐑯𐑛𐑼𐑛 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑓𐑪𐑯𐑑 𐑓𐑹 𐑢𐑦𐑯𐑛𐑴 "
+"𐑑𐑲𐑑𐑩𐑤𐑟."
+
+#: ../src/metacity.schemas.in.in.h:21
+msgid ""
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
+msgstr ""
+"𐑦𐑓 𐑑𐑮𐑵, ·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 𐑢𐑦𐑤 𐑜𐑦𐑝 𐑞 𐑿𐑟𐑼 𐑤𐑧𐑕 𐑓𐑰𐑛𐑚𐑨𐑒 𐑚𐑲 𐑿𐑟𐑦𐑙 𐑢𐑲𐑼𐑓𐑮𐑱𐑥𐑟, 𐑩𐑝𐑶𐑛𐑦𐑙 "
+"𐑨𐑯𐑩𐑥𐑱𐑖𐑩𐑯𐑟, 𐑹 𐑳𐑞𐑼 𐑥𐑰𐑯𐑟. 𐑞𐑦𐑕 𐑦𐑟 𐑩 𐑕𐑩𐑜𐑯𐑦𐑓𐑦𐑒𐑩𐑯𐑑 𐑮𐑦𐑛𐑳𐑒𐑖𐑩𐑯 𐑦𐑯 𐑿𐑟𐑩𐑚𐑦𐑤𐑦𐑑𐑦 𐑓𐑹 𐑥𐑧𐑯𐑦 "
+"𐑿𐑟𐑼𐑟, 𐑚𐑳𐑑 𐑥𐑱 𐑩𐑤𐑬 𐑤𐑧𐑜𐑩𐑕𐑰 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑑 𐑒𐑩𐑯𐑑𐑦𐑯𐑿 𐑢𐑻𐑒𐑦𐑙, 𐑯 𐑥𐑱 𐑷𐑤𐑕𐑴 𐑚𐑰 𐑩 𐑿𐑕𐑓𐑩𐑤 "
+"𐑑𐑮𐑱𐑛𐑪𐑓 𐑓𐑹 𐑑𐑻𐑥𐑦𐑯𐑩𐑤 𐑕𐑻𐑝𐑼𐑟. 𐑣𐑬𐑧𐑝𐑼, 𐑞 𐑢𐑲𐑼𐑓𐑮𐑱𐑥 𐑓𐑰𐑗𐑼 𐑦𐑟 𐑛𐑦𐑕𐑱𐑚𐑩𐑤𐑛 𐑢𐑧𐑯 "
+"𐑨𐑒𐑕𐑧𐑕𐑩𐑚𐑦𐑤𐑦𐑑𐑰 𐑦𐑟 𐑪𐑯."
+
+#: ../src/metacity.schemas.in.in.h:22
+msgid ""
+"If true, then Metacity works in terms of applications rather than windows. "
+"The concept is a bit abstract, but in general an application-based setup is "
+"more like the Mac and less like Windows. When you focus a window in "
+"application-based mode, all the windows in the application will be raised. "
+"Also, in application-based mode, focus clicks are not passed through to "
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
+msgstr ""
+"𐑦𐑓 𐑑𐑮𐑵, 𐑞𐑧𐑯 ·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 𐑢𐑻𐑒𐑕 𐑦𐑯 𐑑𐑻𐑥𐑟 𐑝 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑮𐑭𐑞𐑼 𐑞𐑨𐑯 𐑢𐑦𐑯𐑛𐑴𐑟. 𐑞 𐑒𐑪𐑯𐑕𐑧𐑐𐑑 𐑦𐑟 "
+"𐑩 𐑚𐑦𐑑 𐑨𐑚𐑕𐑑𐑮𐑨𐑒𐑑, 𐑚𐑳𐑑 𐑦𐑯 𐑡𐑧𐑯𐑼𐑩𐑤 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯-𐑚𐑱𐑕𐑑 𐑕𐑧𐑑𐑳𐑐 𐑦𐑟 𐑥𐑹 𐑤𐑲𐑒 𐑞 ·𐑥𐑨𐑒 𐑯 𐑤𐑧𐑕 "
+"𐑤𐑲𐑒 ·𐑢𐑦𐑯𐑛𐑴𐑟. 𐑢𐑧𐑯 𐑿 𐑓𐑴𐑒𐑩𐑕 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑦𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯-𐑚𐑱𐑕𐑑 𐑥𐑴𐑛, 𐑷𐑤 𐑞 𐑢𐑦𐑯𐑛𐑴𐑟 𐑦𐑯 𐑞 "
+"𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑢𐑦𐑤 𐑚𐑰 𐑮𐑱𐑟𐑛. 𐑷𐑤𐑕𐑴, 𐑦𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯-𐑚𐑱𐑕𐑑 𐑥𐑴𐑛, 𐑓𐑴𐑒𐑩𐑕 𐑒𐑤𐑦𐑒𐑕 𐑸 𐑯𐑪𐑑 𐑐𐑭𐑕𐑑 "
+"𐑔𐑮𐑵 𐑑 𐑢𐑦𐑯𐑛𐑴𐑟 𐑦𐑯 𐑳𐑞𐑼 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟. 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯-𐑚𐑱𐑕𐑑 𐑥𐑴𐑛 𐑦𐑟, 𐑣𐑬𐑧𐑝𐑼, 𐑤𐑸𐑡𐑤𐑦 "
+"𐑳𐑯𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑𐑧𐑛 𐑨𐑑 𐑞 𐑥𐑴𐑥𐑩𐑯𐑑."
+
+#: ../src/metacity.schemas.in.in.h:23
+msgid "If true, trade off usability for less resource usage"
+msgstr "𐑦𐑓 𐑑𐑮𐑵, 𐑑𐑮𐑱𐑛 𐑪𐑓 𐑿𐑟𐑩𐑚𐑦𐑤𐑦𐑑𐑦 𐑓𐑹 𐑤𐑧𐑕 𐑮𐑦𐑟𐑹𐑕 𐑿𐑕𐑦𐑡"
+
+#: ../src/metacity.schemas.in.in.h:24
+msgid "Modifier to use for modified window click actions"
+msgstr "𐑥𐑪𐑛𐑦𐑓𐑲𐑼 𐑑 𐑿𐑟 𐑓𐑹 𐑥𐑪𐑛𐑦𐑓𐑲𐑛 𐑢𐑦𐑯𐑛𐑴 𐑒𐑤𐑦𐑒 𐑨𐑒𐑖𐑩𐑯𐑟"
+
+#: ../src/metacity.schemas.in.in.h:25
+msgid "Name of workspace"
+msgstr "𐑯𐑱𐑥 𐑝 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#: ../src/metacity.schemas.in.in.h:26
+msgid "Number of workspaces"
+msgstr "𐑯𐑳𐑥𐑚𐑼 𐑝 𐑢𐑻𐑒𐑕𐑐𐑱𐑕𐑩𐑟"
+
+#: ../src/metacity.schemas.in.in.h:27
+msgid ""
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
+msgstr ""
+"𐑯𐑳𐑥𐑚𐑼 𐑝 𐑢𐑻𐑒𐑕𐑐𐑱𐑕𐑩𐑟. 𐑥𐑳𐑕𐑑 𐑚𐑰 𐑥𐑹 𐑞𐑨𐑯 𐑟𐑽𐑴, 𐑯 𐑣𐑨𐑟 𐑩 𐑓𐑦𐑒𐑕𐑑 𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑑 𐑐𐑮𐑦𐑝𐑧𐑯𐑑 "
+"𐑥𐑱𐑒𐑦𐑙 𐑞 𐑛𐑧𐑕𐑒𐑑𐑪𐑐 𐑩𐑯𐑘𐑵𐑟𐑩𐑚𐑩𐑤 𐑚𐑲 𐑨𐑒𐑕𐑦𐑛𐑧𐑯𐑑𐑩𐑤𐑦 𐑭𐑕𐑒𐑦𐑙 𐑓𐑹 𐑑𐑵 𐑥𐑧𐑯𐑦 𐑢𐑻𐑒𐑕𐑐𐑱𐑕𐑩𐑟."
+
+#: ../src/metacity.schemas.in.in.h:28
+msgid "Run a defined command"
+msgstr "𐑮𐑳𐑯 𐑩 𐑛𐑦𐑓𐑲𐑯𐑛 𐑒𐑩𐑥𐑭𐑯𐑛"
+
+#: ../src/metacity.schemas.in.in.h:29
+msgid ""
+"Set this to true to resize with the right button and show a menu with the "
+"middle button while holding down the key given in \"mouse_button_modifier\"; "
+"set it to false to make it work the opposite way around."
+msgstr ""
+"𐑕𐑧𐑑 𐑞𐑦𐑕 𐑑 𐑑𐑮𐑵 𐑑 𐑮𐑰𐑕𐑲𐑟 𐑢𐑦𐑞 𐑞 𐑮𐑲𐑑 𐑚𐑳𐑑𐑩𐑯 𐑯 𐑖𐑴 𐑩 𐑥𐑧𐑯𐑿 𐑢𐑦𐑞 𐑞 𐑥𐑦𐑛𐑩𐑤 𐑚𐑳𐑑𐑩𐑯 𐑢𐑲𐑤 "
+"𐑣𐑴𐑤𐑛𐑦𐑙 𐑛𐑬𐑯 𐑞 𐑒𐑰 𐑜𐑦𐑝𐑩𐑯 𐑦𐑯 \"mouse_button_modifier\"; 𐑕𐑧𐑑 𐑦𐑑 𐑑 𐑓𐑷𐑤𐑕 𐑑 𐑥𐑱𐑒 𐑦𐑑 "
+"𐑢𐑻𐑒 𐑞 𐑪𐑐𐑴𐑕𐑦𐑑 𐑢𐑱 𐑩𐑮𐑬𐑯𐑛."
+
+#: ../src/metacity.schemas.in.in.h:30
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Setting this option to false, which is "
+"strongly discouraged, will decouple raising from other user actions, and "
+"ignore raise requests generated by applications. See http://bugzilla.gnome."
+"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the \"bug"
+"\" they requested."
+msgstr ""
+"𐑕𐑧𐑑𐑦𐑙 𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑑 𐑓𐑷𐑤𐑕 𐑒𐑨𐑯 𐑤𐑧𐑛 𐑑 𐑚𐑩𐑜𐑰 𐑚𐑦𐑣𐑱𐑝𐑘𐑼, 𐑕𐑴 𐑿𐑟𐑼𐑟 𐑸 𐑕𐑑𐑮𐑪𐑙𐑤𐑦 𐑛𐑦𐑕𐑒𐑳𐑮𐑦𐑡𐑛 "
+"𐑓𐑮𐑪𐑥 𐑗𐑱𐑯𐑡𐑦𐑙 𐑦𐑑 𐑓𐑮𐑪𐑥 𐑞 𐑛𐑦𐑓𐑷𐑤𐑑 𐑝 𐑑𐑮𐑵. 𐑥𐑧𐑯𐑦 𐑨𐑒𐑖𐑩𐑯𐑟 (e.g. 𐑒𐑤𐑦𐑒𐑦𐑙 𐑦𐑯 𐑞 𐑒𐑤𐑲𐑩𐑯𐑑 "
+"𐑺𐑦𐑩, 𐑥𐑵𐑝𐑦𐑙 𐑹 𐑮𐑰𐑕𐑲𐑟𐑦𐑙 𐑞 𐑢𐑦𐑯𐑛𐑴) 𐑯𐑹𐑥𐑩𐑤𐑦 𐑮𐑱𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑨𐑟 𐑩 𐑕𐑲𐑛-𐑦𐑓𐑧𐑒𐑑. 𐑕𐑧𐑑𐑦𐑙 𐑞𐑦𐑕 "
+"𐑪𐑐𐑖𐑩𐑯 𐑑 𐑓𐑷𐑤𐑕, 𐑢𐑦𐑗 𐑦𐑟 𐑕𐑑𐑮𐑪𐑙𐑤𐑦 𐑛𐑦𐑕𐑒𐑳𐑮𐑦𐑡𐑛, 𐑢𐑦𐑤 𐑛𐑰𐑒𐑩𐑐𐑩𐑤 𐑮𐑱𐑟𐑦𐑙 𐑓𐑮𐑪𐑥 𐑳𐑞𐑼 𐑿𐑟𐑼 "
+"𐑨𐑒𐑖𐑩𐑯𐑟, 𐑯 𐑦𐑜𐑯𐑹 𐑮𐑱𐑟 𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑕 𐑡𐑧𐑯𐑼𐑱𐑑𐑩𐑛 𐑚𐑲 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟. 𐑕𐑰 http://bugzilla."
+"gnome.org/show_bug.cgi?id=445447#c6. 𐑰𐑝𐑩𐑯 𐑢𐑧𐑯 𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑦𐑟 𐑓𐑷𐑤𐑕, 𐑢𐑦𐑯𐑛𐑴𐑟 𐑒𐑨𐑯 "
+"𐑕𐑑𐑦𐑤 𐑚𐑰 𐑮𐑱𐑟𐑛 𐑚𐑲 𐑩𐑯 ·𐑷𐑤𐑑-𐑤𐑧𐑓𐑑-𐑒𐑤𐑦𐑒 𐑧𐑯𐑦𐑢𐑺 𐑪𐑯 𐑞 𐑢𐑦𐑯𐑛𐑴, 𐑩 𐑯𐑹𐑥𐑩𐑤 𐑒𐑤𐑦𐑒 𐑪𐑯 𐑞 𐑢𐑦𐑯𐑛𐑴 "
+"𐑛𐑧𐑒𐑼𐑱𐑖𐑩𐑯𐑟, 𐑹 𐑚𐑲 𐑕𐑐𐑧𐑖𐑩𐑤 𐑥𐑧𐑕𐑦𐑡𐑩𐑟 𐑓𐑮𐑪𐑥 𐑐𐑱𐑡𐑻𐑟, 𐑕𐑳𐑗 𐑨𐑟 𐑨𐑒𐑑𐑩𐑝𐑱𐑖𐑩𐑯 𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑕 𐑓𐑮𐑪𐑥 "
+"𐑑𐑭𐑕𐑒𐑤𐑦𐑕𐑑 𐑨𐑐𐑤𐑩𐑑𐑕. 𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑦𐑟 𐑒𐑳𐑮𐑩𐑯𐑑𐑤𐑦 𐑛𐑦𐑕𐑱𐑚𐑩𐑤𐑛 𐑦𐑯 𐑒𐑤𐑦𐑒-𐑑-𐑓𐑴𐑒𐑩𐑕 𐑥𐑴𐑛. 𐑯𐑴𐑑 𐑞𐑨𐑑 "
+"𐑞 𐑤𐑦𐑕𐑑 𐑝 𐑢𐑱𐑟 𐑑 𐑮𐑱𐑟 𐑢𐑦𐑯𐑛𐑴𐑟 𐑢𐑧𐑯 raise_on_click 𐑦𐑟 𐑓𐑷𐑤𐑕 𐑛𐑴𐑟 𐑯𐑪𐑑 𐑦𐑯𐑒𐑤𐑵𐑛 "
+"𐑐𐑮𐑭𐑜𐑮𐑩𐑥𐑨𐑑𐑦𐑒 𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑕 𐑓𐑮𐑪𐑥 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑑 𐑮𐑱𐑟 𐑢𐑦𐑯𐑛𐑴𐑟; 𐑕𐑳𐑗 𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑕 𐑢𐑦𐑤 𐑚𐑰 𐑦𐑜𐑯𐑹𐑛 "
+"𐑮𐑦𐑜𐑸𐑛𐑤𐑩𐑕 𐑝 𐑞 𐑮𐑰𐑟𐑩𐑯 𐑓𐑹 𐑞 𐑮𐑦𐑒𐑢𐑧𐑕𐑑. 𐑦𐑓 𐑿 𐑸 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑛𐑦𐑝𐑧𐑤𐑩𐑐𐑼 𐑯 𐑣𐑨𐑝 𐑩 𐑿𐑟𐑼 "
+"𐑒𐑩𐑥𐑐𐑤𐑱𐑯𐑦𐑙 𐑞𐑨𐑑 𐑿𐑼 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑢𐑻𐑒 𐑢𐑦𐑞 𐑞𐑦𐑕 𐑕𐑧𐑑𐑦𐑙 𐑛𐑦𐑕𐑱𐑚𐑩𐑤𐑛, 𐑑𐑧𐑤 𐑞𐑧𐑥 𐑦𐑑 𐑦𐑟 "
+"_𐑞𐑺_ 𐑓𐑷𐑤𐑑 𐑓𐑹 𐑚𐑮𐑱𐑒𐑦𐑙 𐑞𐑺 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼 𐑯 𐑞𐑨𐑑 𐑞𐑱 𐑯𐑰𐑛 𐑑 𐑗𐑱𐑯𐑡 𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑚𐑨𐑒 𐑑 "
+"𐑑𐑮𐑵 𐑹 𐑤𐑲𐑝 𐑢𐑦𐑞 𐑞 \"𐑚𐑳𐑜\" 𐑞𐑱 𐑮𐑦𐑒𐑢𐑧𐑕𐑑𐑩𐑛."
+
+#: ../src/metacity.schemas.in.in.h:31
+msgid ""
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
+msgstr ""
+"𐑕𐑳𐑥 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟 𐑛𐑦𐑕𐑮𐑦𐑜𐑸𐑛 𐑕𐑐𐑧𐑕𐑩𐑓𐑩𐑒𐑱𐑖𐑩𐑯𐑟 𐑦𐑯 𐑢𐑱𐑟 𐑞𐑨𐑑 𐑮𐑦𐑟𐑳𐑤𐑑 𐑦𐑯 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼 "
+"𐑥𐑦𐑕𐑓𐑰𐑑𐑿𐑮𐑟. 𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑐𐑫𐑑𐑕 ·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 𐑦𐑯 𐑩 𐑮𐑦𐑜𐑻𐑩𐑕𐑤𐑰 𐑒𐑩𐑮𐑧𐑒𐑑 𐑥𐑴𐑛, 𐑢𐑦𐑗 𐑜𐑦𐑝𐑟 𐑩 𐑥𐑹 "
+"𐑒𐑩𐑯𐑕𐑦𐑕𐑑𐑩𐑯𐑑 𐑿𐑟𐑼 𐑦𐑯𐑑𐑼𐑓𐑱𐑕, 𐑐𐑮𐑩𐑝𐑲𐑛𐑩𐑛 𐑢𐑳𐑯 𐑛𐑴𐑟 𐑯𐑪𐑑 𐑯𐑰𐑛 𐑑 𐑮𐑳𐑯 𐑧𐑯𐑦 𐑥𐑦𐑕𐑚𐑩𐑣𐑱𐑝𐑦𐑙 "
+"𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯𐑟."
+
+#: ../src/metacity.schemas.in.in.h:32
+msgid "System Bell is Audible"
+msgstr "𐑕𐑦𐑕𐑑𐑩𐑥 𐑚𐑧𐑤 𐑦𐑟 𐑭𐑛𐑩𐑚𐑩𐑤"
+
+#: ../src/metacity.schemas.in.in.h:33
+msgid ""
+"Tells Metacity how to implement the visual indication that the system bell "
+"or another application 'bell' indicator has been rung. Currently there are "
+"two valid values, \"fullscreen\", which causes a fullscreen white-black "
+"flash, and \"frame_flash\" which causes the titlebar of the application "
+"which sent the bell signal to flash. If the application which sent the bell "
+"is unknown (as is usually the case for the default \"system beep\"), the "
+"currently focused window's titlebar is flashed."
+msgstr ""
+"𐑑𐑧𐑤𐑟 ·𐑥𐑧𐑑𐑨𐑕𐑦𐑑𐑦 𐑣𐑬 𐑑 𐑦𐑥𐑐𐑤𐑧𐑥𐑧𐑯𐑑 𐑞 𐑝𐑦𐑠𐑩𐑢𐑩𐑤 𐑦𐑯𐑛𐑩𐑒𐑱𐑖𐑩𐑯 𐑞𐑨𐑑 𐑞 𐑕𐑦𐑕𐑑𐑩𐑥 𐑚𐑧𐑤 𐑹 𐑩𐑯𐑳𐑞𐑼 "
+"𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 '𐑚𐑧𐑤' 𐑦𐑯𐑛𐑦𐑒𐑱𐑑𐑼 𐑣𐑨𐑟 𐑚𐑰𐑯 𐑮𐑩𐑙. 𐑒𐑳𐑮𐑩𐑯𐑑𐑤𐑦 𐑞𐑺 𐑸 𐑑𐑵 𐑝𐑨𐑤𐑦𐑛 𐑝𐑨𐑤𐑿𐑟, "
+"\"fullscreen\", 𐑢𐑦𐑗 𐑒𐑷𐑟𐑩𐑟 𐑩 fullscreen 𐑢𐑲𐑑-𐑚𐑤𐑨𐑒 𐑓𐑤𐑨𐑖, 𐑯 \"frame_flash\" 𐑢𐑦𐑗 "
+"𐑒𐑷𐑟𐑩𐑟 𐑞 𐑑𐑲𐑑𐑩𐑤𐑚𐑸 𐑝 𐑞 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑢𐑦𐑗 𐑕𐑧𐑯𐑑 𐑞 𐑚𐑧𐑤 𐑕𐑦𐑜𐑯𐑩𐑤 𐑑 𐑓𐑤𐑨𐑖. 𐑦𐑓 𐑞 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 "
+"𐑢𐑦𐑗 𐑕𐑧𐑯𐑑 𐑞 𐑚𐑧𐑤 𐑦𐑟 𐑳𐑯𐑴𐑯 (𐑨𐑟 𐑦𐑟 𐑿𐑠𐑿𐑩𐑤𐑦 𐑞 𐑒𐑱𐑕 𐑓𐑹 𐑞 𐑛𐑦𐑓𐑷𐑤𐑑 \"𐑕𐑦𐑕𐑑𐑩𐑥 𐑚𐑰𐑐\"), 𐑞 "
+"𐑒𐑳𐑮𐑩𐑯𐑑𐑤𐑦 𐑓𐑴𐑒𐑩𐑕𐑑 𐑢𐑦𐑯𐑛𐑴𐑟 𐑑𐑲𐑑𐑩𐑤𐑚𐑸 𐑦𐑟 𐑓𐑤𐑨𐑖𐑑."
+
+#: ../src/metacity.schemas.in.in.h:34
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
+"that correspond to these commands. Pressing the keybinding for run_command_N "
+"will execute command_N."
+msgstr ""
+"𐑞 /apps/metacity/global_keybindings/run_command_N 𐑒𐑰𐑟 𐑛𐑦𐑓𐑲𐑯 𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙𐑟 𐑞𐑨𐑑 "
+"𐑒𐑪𐑮𐑦𐑕𐑐𐑪𐑯𐑛 𐑑 𐑞𐑰𐑟 𐑒𐑩𐑥𐑭𐑯𐑛𐑟. 𐑐𐑮𐑧𐑕𐑦𐑙 𐑞 𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙 𐑓𐑹 run_command_N 𐑢𐑦𐑤 𐑧𐑒𐑕𐑩𐑒𐑿𐑑 "
+"command_N."
+
+#: ../src/metacity.schemas.in.in.h:35
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+"𐑞 /apps/metacity/global_keybindings/run_command_screenshot 𐑒𐑰 𐑛𐑦𐑓𐑲𐑯𐑟 𐑩 "
+"𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙 𐑢𐑦𐑗 𐑒𐑷𐑟𐑩𐑟 𐑞 𐑒𐑩𐑥𐑭𐑯𐑛 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑚𐑲 𐑞𐑦𐑕 𐑕𐑧𐑑𐑦𐑙 𐑑 𐑚𐑰 𐑦𐑯𐑝𐑴𐑒𐑑."
+
+#: ../src/metacity.schemas.in.in.h:36
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+"𐑞 /apps/metacity/global_keybindings/run_command_window_screenshot 𐑒𐑰 𐑛𐑦𐑓𐑲𐑯𐑟 𐑩 "
+"𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙 𐑢𐑦𐑗 𐑒𐑷𐑟𐑩𐑟 𐑞 𐑒𐑩𐑥𐑭𐑯𐑛 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑚𐑲 𐑞𐑦𐑕 𐑕𐑧𐑑𐑦𐑙 𐑑 𐑚𐑰 𐑦𐑯𐑝𐑴𐑒𐑑."
+
+#: ../src/metacity.schemas.in.in.h:37
+msgid ""
+"The keybinding that runs the correspondingly-numbered command in /apps/"
+"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"𐑞 𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙 𐑞𐑨𐑑 𐑮𐑳𐑯𐑟 𐑞 𐑒𐑪𐑮𐑩𐑕𐑐𐑭𐑯𐑛𐑦𐑙𐑤𐑰-𐑯𐑳𐑥𐑚𐑼𐑛 𐑒𐑩𐑥𐑭𐑯𐑛 𐑦𐑯 /apps/metacity/"
+"keybinding_commands. 𐑞 𐑓𐑹𐑥𐑨𐑑 𐑤𐑫𐑒𐑕 𐑤𐑲𐑒 \"&lt;Control&gt;𐑩\" 𐑹 \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". 𐑞 𐑐𐑸𐑟𐑼 𐑦𐑟 𐑓𐑺𐑤𐑦 𐑤𐑦𐑚𐑼𐑩𐑤 𐑯 𐑩𐑤𐑬𐑟 𐑤𐑴𐑼 𐑹 𐑳𐑐𐑻 𐑒𐑱𐑕, 𐑯 𐑷𐑤𐑕𐑴 "
+"𐑩𐑚𐑮𐑰𐑝𐑰𐑱𐑖𐑩𐑯𐑟 𐑕𐑳𐑗 𐑨𐑟 \"&lt;Ctl&gt;\" 𐑯 \"&lt;Ctrl&gt;\". 𐑦𐑓 𐑿 𐑕𐑧𐑑 𐑞 𐑪𐑐𐑖𐑩𐑯 𐑑 𐑞 "
+"𐑕𐑐𐑧𐑖𐑩𐑤 𐑕𐑑𐑮𐑦𐑙 \"disabled\", 𐑞𐑧𐑯 𐑞𐑺 𐑢𐑦𐑤 𐑚𐑰 𐑯𐑴 𐑒𐑰𐑚𐑲𐑯𐑛𐑦𐑙 𐑓𐑹 𐑞𐑦𐑕 𐑨𐑒𐑖𐑩𐑯."
+
+#: ../src/metacity.schemas.in.in.h:38
+msgid "The name of a workspace."
+msgstr "𐑞 𐑯𐑱𐑥 𐑝 𐑩 𐑢𐑻𐑒𐑕𐑐𐑱𐑕."
+
+#: ../src/metacity.schemas.in.in.h:39
+msgid "The screenshot command"
+msgstr "𐑞 𐑕𐑒𐑮𐑰𐑯𐑖𐑪𐑑 𐑒𐑩𐑥𐑭𐑯𐑛"
+
+#: ../src/metacity.schemas.in.in.h:40
+msgid ""
+"The theme determines the appearance of window borders, titlebar, and so "
+"forth."
+msgstr "𐑞 𐑔𐑰𐑥 𐑛𐑦𐑑𐑻𐑥𐑦𐑯𐑟 𐑞 𐑩𐑐𐑽𐑩𐑯𐑕 𐑝 𐑢𐑦𐑯𐑛𐑴 𐑚𐑹𐑛𐑼𐑟, 𐑑𐑲𐑑𐑩𐑤𐑚𐑸, 𐑯 𐑕𐑴 𐑓𐑹𐑔."
+
+#: ../src/metacity.schemas.in.in.h:41
+msgid ""
+"The time delay before raising a window if auto_raise is set to true. The "
+"delay is given in thousandths of a second."
+msgstr ""
+"𐑞 𐑑𐑲𐑥 𐑛𐑦𐑤𐑱 𐑚𐑦𐑓𐑹 𐑮𐑱𐑟𐑦𐑙 𐑩 𐑢𐑦𐑯𐑛𐑴 𐑦𐑓 auto_raise 𐑦𐑟 𐑕𐑧𐑑 𐑑 𐑑𐑮𐑵. 𐑞 𐑛𐑦𐑤𐑱 𐑦𐑟 𐑜𐑦𐑝𐑩𐑯 𐑦𐑯 "
+"𐑔𐑶𐑟𐑩𐑯𐑛𐑔𐑕 𐑝 𐑩 𐑕𐑧𐑒𐑩𐑯𐑛."
+
+#: ../src/metacity.schemas.in.in.h:42
+msgid ""
+"The window focus mode indicates how windows are activated. It has three "
+"possible values; \"click\" means windows must be clicked in order to focus "
+"them, \"sloppy\" means windows are focused when the mouse enters the window, "
+"and \"mouse\" means windows are focused when the mouse enters the window and "
+"unfocused when the mouse leaves the window."
+msgstr ""
+"𐑞 𐑢𐑦𐑯𐑛𐑴 𐑓𐑴𐑒𐑩𐑕 𐑥𐑴𐑛 𐑦𐑯𐑛𐑦𐑒𐑱𐑑𐑕 𐑣𐑬 𐑢𐑦𐑯𐑛𐑴𐑟 𐑸 𐑨𐑒𐑑𐑦𐑝𐑱𐑑𐑩𐑛. 𐑦𐑑 𐑣𐑨𐑟 𐑔𐑮𐑰 𐑐𐑪𐑕𐑩𐑚𐑩𐑤 𐑝𐑨𐑤𐑿𐑟; "
+"\"click\" 𐑥𐑰𐑯𐑟 𐑢𐑦𐑯𐑛𐑴𐑟 𐑥𐑳𐑕𐑑 𐑚𐑰 𐑒𐑤𐑦𐑒𐑑 𐑦𐑯 𐑹𐑛𐑼 𐑑 𐑓𐑴𐑒𐑩𐑕 𐑞𐑧𐑥, \"sloppy\" 𐑥𐑰𐑯𐑟 𐑢𐑦𐑯𐑛𐑴𐑟 "
+"𐑸 𐑓𐑴𐑒𐑩𐑕𐑑 𐑢𐑧𐑯 𐑞 𐑥𐑬𐑕 𐑧𐑯𐑑𐑼𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴, 𐑯 \"mouse\" 𐑥𐑰𐑯𐑟 𐑢𐑦𐑯𐑛𐑴𐑟 𐑸 𐑓𐑴𐑒𐑩𐑕𐑑 𐑢𐑧𐑯 𐑞 𐑥𐑬𐑕 "
+"𐑧𐑯𐑑𐑼𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑯 𐑩𐑯𐑓𐑴𐑒𐑩𐑕𐑑 𐑢𐑧𐑯 𐑞 𐑥𐑬𐑕 𐑤𐑰𐑝𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴."
+
+#: ../src/metacity.schemas.in.in.h:43
+msgid "The window screenshot command"
+msgstr "𐑞 𐑢𐑦𐑯𐑛𐑴 𐑕𐑒𐑮𐑰𐑯𐑖𐑪𐑑 𐑒𐑩𐑥𐑭𐑯𐑛"
+
+#: ../src/metacity.schemas.in.in.h:44
+msgid ""
+"This option determines the effects of double-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+"𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑛𐑦𐑑𐑻𐑥𐑦𐑯𐑟 𐑞 𐑦𐑓𐑧𐑒𐑑𐑕 𐑝 𐑛𐑳𐑚𐑩𐑤-𐑒𐑤𐑦𐑒𐑦𐑙 𐑪𐑯 𐑞 𐑑𐑲𐑑𐑩𐑤 𐑚𐑸. 𐑒𐑳𐑮𐑩𐑯𐑑 𐑝𐑨𐑤𐑦𐑛 "
+"𐑪𐑐𐑖𐑩𐑯𐑟 𐑸 'toggle_shade', 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑖𐑱𐑛/𐑳𐑯𐑖𐑱𐑯 𐑞 𐑢𐑦𐑯𐑛𐑴, 'toggle_maximize' 𐑢𐑦𐑗 "
+"𐑢𐑦𐑤 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟/𐑳𐑯𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴, 'toggle_maximize_horizontally' 𐑯 "
+"'toggle_maximize_vertically' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟/𐑳𐑯𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑦𐑯 𐑞𐑨𐑑 "
+"𐑛𐑦𐑮𐑧𐑒𐑖𐑩𐑯 𐑴𐑯𐑤𐑦, 'minimize' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑥𐑦𐑯𐑩𐑥𐑲𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴, 'shade' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑮𐑴𐑤 𐑞 𐑢𐑦𐑯𐑛𐑴 "
+"𐑳𐑐, 'menu' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑛𐑦𐑕𐑐𐑤𐑱 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑧𐑯𐑿, 'lower' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑐𐑫𐑑 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑚𐑦𐑣𐑲𐑯𐑛 𐑷𐑤 "
+"𐑞 𐑳𐑞𐑼𐑟, 𐑯 'none' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑯𐑪𐑑 𐑛𐑵 𐑧𐑯𐑦𐑔𐑦𐑙."
+
+#: ../src/metacity.schemas.in.in.h:45
+msgid ""
+"This option determines the effects of middle-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+"𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑛𐑦𐑑𐑻𐑥𐑦𐑯𐑟 𐑞 𐑦𐑓𐑧𐑒𐑑𐑕 𐑝 𐑥𐑦𐑛𐑩𐑤-𐑒𐑤𐑦𐑒𐑦𐑙 𐑪𐑯 𐑞 𐑑𐑲𐑑𐑩𐑤 𐑚𐑸. 𐑒𐑳𐑮𐑩𐑯𐑑 𐑝𐑨𐑤𐑦𐑛 "
+"𐑪𐑐𐑖𐑩𐑯𐑟 𐑸 'toggle_shade', 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑖𐑱𐑛/unshade 𐑞 𐑢𐑦𐑯𐑛𐑴, 'toggle_maximize' 𐑢𐑦𐑗 "
+"𐑢𐑦𐑤 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟/unmaximize 𐑞 𐑢𐑦𐑯𐑛𐑴, 'toggle_maximize_horizontally' 𐑯 "
+"'toggle_maximize_vertically' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟/unmaximize 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑦𐑯 𐑞𐑨𐑑 "
+"𐑛𐑦𐑮𐑧𐑒𐑖𐑩𐑯 𐑴𐑯𐑤𐑦, 'minimize' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑥𐑦𐑯𐑩𐑥𐑲𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴, 'shade' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑮𐑴𐑤 𐑞 𐑢𐑦𐑯𐑛𐑴 "
+"𐑳𐑐, '𐑥𐑧𐑯𐑿' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑛𐑦𐑕𐑐𐑤𐑱 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑧𐑯𐑿, 'lower' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑐𐑫𐑑 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑚𐑦𐑣𐑲𐑯𐑛 𐑷𐑤 "
+"𐑞 𐑳𐑞𐑼𐑟, 𐑯 'none' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑯𐑪𐑑 𐑛𐑵 𐑧𐑯𐑦𐑔𐑦𐑙."
+
+#: ../src/metacity.schemas.in.in.h:46
+msgid ""
+"This option determines the effects of right-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
+msgstr ""
+"𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑛𐑦𐑑𐑻𐑥𐑦𐑯𐑟 𐑞 𐑦𐑓𐑧𐑒𐑑𐑕 𐑝 𐑮𐑲𐑑-𐑒𐑤𐑦𐑒𐑦𐑙 𐑪𐑯 𐑞 𐑑𐑲𐑑𐑩𐑤 𐑚𐑸. 𐑒𐑳𐑮𐑩𐑯𐑑 𐑝𐑨𐑤𐑦𐑛 𐑪𐑐𐑖𐑩𐑯𐑟 "
+"𐑪𐑐𐑖𐑩𐑯𐑟 𐑸 'toggle_shade', 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑖𐑱𐑛/unshade 𐑞 𐑢𐑦𐑯𐑛𐑴, 'toggle_maximize' 𐑢𐑦𐑗 "
+"𐑢𐑦𐑤 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟/unmaximize 𐑞 𐑢𐑦𐑯𐑛𐑴, 'toggle_maximize_horizontally' 𐑯 "
+"'toggle_maximize_vertically' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟/unmaximize 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑦𐑯 𐑞𐑨𐑑 "
+"𐑛𐑦𐑮𐑧𐑒𐑖𐑩𐑯 𐑴𐑯𐑤𐑦, 'minimize' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑥𐑦𐑯𐑩𐑥𐑲𐑟 𐑞 𐑢𐑦𐑯𐑛𐑴, 'shade' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑮𐑴𐑤 𐑞 𐑢𐑦𐑯𐑛𐑴 "
+"𐑳𐑐, '𐑥𐑧𐑯𐑿' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑛𐑦𐑕𐑐𐑤𐑱 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑧𐑯𐑿, 'lower' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑐𐑫𐑑 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑚𐑦𐑣𐑲𐑯𐑛 𐑷𐑤 "
+"𐑞 𐑳𐑞𐑼𐑟, 𐑯 'none' 𐑢𐑦𐑗 𐑢𐑦𐑤 𐑯𐑪𐑑 𐑛𐑵 𐑧𐑯𐑦𐑔𐑦𐑙."
+
+#: ../src/metacity.schemas.in.in.h:47
+msgid ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
+msgstr ""
+"𐑞𐑦𐑕 𐑪𐑐𐑖𐑩𐑯 𐑐𐑮𐑩𐑝𐑲𐑛𐑟 𐑩𐑛𐑦𐑖𐑩𐑯𐑩𐑤 𐑒𐑩𐑯𐑑𐑮𐑴𐑤 𐑴𐑝𐑼 𐑣𐑬 𐑯𐑿𐑤𐑦 𐑒𐑮𐑦𐑱𐑑𐑩𐑛 𐑢𐑦𐑯𐑛𐑴𐑟 𐑜𐑧𐑑 𐑓𐑴𐑒𐑩𐑕. 𐑦𐑑 "
+"𐑣𐑨𐑟 𐑑𐑵 𐑐𐑪𐑕𐑩𐑚𐑩𐑤 𐑝𐑨𐑤𐑿𐑟; \"smart\" 𐑩𐑐𐑤𐑲𐑟 𐑞 𐑿𐑟𐑼'𐑕 𐑯𐑹𐑥𐑩𐑤 𐑓𐑴𐑒𐑩𐑕 𐑥𐑴𐑛, 𐑯 \"strict\" "
+"𐑮𐑦𐑟𐑳𐑤𐑑𐑕 𐑦𐑯 𐑢𐑦𐑯𐑛𐑴𐑟 𐑕𐑑𐑸𐑑𐑩𐑛 𐑓𐑮𐑪𐑥 𐑩 𐑑𐑻𐑥𐑦𐑯𐑩𐑤 𐑯𐑪𐑑 𐑚𐑰𐑦𐑙 𐑜𐑦𐑝𐑩𐑯 𐑓𐑴𐑒𐑩𐑕."
+
+#: ../src/metacity.schemas.in.in.h:48
+msgid ""
+"Turns on a visual indication when an application or the system issues a "
+"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+"environments."
+msgstr ""
+"𐑑𐑻𐑯𐑟 𐑪𐑯 𐑩 𐑝𐑦𐑠𐑩𐑢𐑩𐑤 𐑦𐑯𐑛𐑩𐑒𐑱𐑖𐑩𐑯 𐑢𐑧𐑯 𐑩𐑯 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑹 𐑞 𐑕𐑦𐑕𐑑𐑩𐑥 𐑦𐑖𐑵𐑟 𐑩 '𐑚𐑧𐑤' 𐑹 "
+"'𐑚𐑰𐑐'; 𐑿𐑕𐑓𐑩𐑤 𐑓𐑹 𐑞 𐑣𐑸𐑛-𐑝-𐑣𐑽𐑦𐑙 𐑯 𐑓𐑹 𐑿𐑕 𐑦𐑯 𐑯𐑶𐑟𐑦 𐑦𐑯𐑝𐑲𐑮𐑩𐑯𐑥𐑩𐑯𐑑𐑕."
+
+#: ../src/metacity.schemas.in.in.h:49
+msgid "Use standard system font in window titles"
+msgstr "𐑿𐑟 𐑕𐑑𐑨𐑯𐑛𐑼𐑛 𐑕𐑦𐑕𐑑𐑩𐑥 𐑓𐑪𐑯𐑑 𐑦𐑯 𐑢𐑦𐑯𐑛𐑴 𐑑𐑲𐑑𐑩𐑤𐑟"
+
+#: ../src/metacity.schemas.in.in.h:50
+msgid "Visual Bell Type"
+msgstr "𐑝𐑦𐑠𐑩𐑢𐑩𐑤 𐑚𐑧𐑤 𐑑𐑲𐑐"
+
+#: ../src/metacity.schemas.in.in.h:51
+msgid "Whether raising should be a side-effect of other user interactions"
+msgstr "𐑢𐑧𐑞𐑼 𐑮𐑱𐑟𐑦𐑙 𐑖𐑫𐑛 𐑚𐑰 𐑩 𐑕𐑲𐑛-𐑦𐑓𐑧𐑒𐑑 𐑝 𐑳𐑞𐑼 𐑿𐑟𐑼 𐑦𐑯𐑑𐑻𐑨𐑒𐑖𐑩𐑯𐑟"
+
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Whether to resize with the right button"
+msgstr "𐑢𐑧𐑞𐑼 𐑑 𐑮𐑰𐑕𐑲𐑟 𐑢𐑦𐑞 𐑞 𐑮𐑲𐑑 𐑚𐑳𐑑𐑩𐑯"
+
+#: ../src/metacity.schemas.in.in.h:53
+msgid "Window focus mode"
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑓𐑴𐑒𐑩𐑕 𐑥𐑴𐑛"
+
+#: ../src/metacity.schemas.in.in.h:54
+msgid "Window title font"
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑑𐑲𐑑𐑩𐑤 𐑓𐑪𐑯𐑑"
+
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "𐑿𐑕𐑦𐑡: %s\n"
+
+#: ../src/ui/frames.c:1118
+msgid "Close Window"
+msgstr "𐑒𐑤𐑴𐑟 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/frames.c:1121
+msgid "Window Menu"
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑥𐑧𐑯𐑿"
+
+#: ../src/ui/frames.c:1124
+msgid "Minimize Window"
+msgstr "𐑥𐑦𐑯𐑩𐑥𐑲𐑟 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/frames.c:1127
+msgid "Maximize Window"
+msgstr "𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/frames.c:1130
+msgid "Restore Window"
+msgstr "𐑮𐑩𐑕𐑑𐑹 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/frames.c:1133
+msgid "Roll Up Window"
+msgstr "𐑮𐑴𐑤 𐑳𐑐 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/frames.c:1136
+msgid "Unroll Window"
+msgstr "𐑳𐑯𐑮𐑴𐑤 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/frames.c:1139
+msgid "Keep Window On Top"
+msgstr "𐑒𐑰𐑐 𐑢𐑦𐑯𐑛𐑴 𐑪𐑯 𐑑𐑪𐑐"
+
+#: ../src/ui/frames.c:1142
+msgid "Remove Window From Top"
+msgstr "𐑮𐑦𐑥𐑵𐑝 𐑢𐑦𐑯𐑛𐑴 𐑓𐑮𐑪𐑥 𐑑𐑪𐑐"
+
+#: ../src/ui/frames.c:1145
+msgid "Always On Visible Workspace"
+msgstr "𐑷𐑤𐑢𐑱𐑟 𐑪𐑯 𐑝𐑦𐑕𐑦𐑚𐑩𐑤 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#: ../src/ui/frames.c:1148
+msgid "Put Window On Only One Workspace"
+msgstr "𐑐𐑫𐑑 𐑢𐑦𐑯𐑛𐑴 𐑪𐑯 𐑴𐑯𐑤𐑦 𐑢𐑳𐑯 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:70
+msgid "Mi_nimize"
+msgstr "𐑥𐑦_𐑯𐑦𐑥𐑲𐑟"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:72
+msgid "Ma_ximize"
+msgstr "𐑥𐑨_𐑒𐑕𐑦𐑥𐑲𐑟"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:74
+msgid "Unma_ximize"
+msgstr "𐑳𐑯𐑥𐑩_𐑒𐑕𐑦𐑥𐑲𐑟"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:76
+msgid "Roll _Up"
+msgstr "𐑮𐑴𐑤 _𐑳𐑐"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:78
+msgid "_Unroll"
+msgstr "_𐑳𐑯𐑮𐑴𐑤"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:80
+msgid "_Move"
+msgstr "_𐑥𐑵𐑝"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:82
+msgid "_Resize"
+msgstr "_𐑮𐑰𐑕𐑲𐑟"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:84
+msgid "Move Titlebar On_screen"
+msgstr "𐑥𐑵𐑝 𐑑𐑲𐑑𐑩𐑤𐑚𐑸 𐑪𐑯_𐑕𐑒𐑮𐑰𐑯"
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+msgid "Always on _Top"
+msgstr "𐑷𐑤𐑢𐑱𐑟 𐑪𐑯 _𐑑𐑪𐑐"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:91
+msgid "_Always on Visible Workspace"
+msgstr "_𐑷𐑤𐑢𐑱𐑟 𐑪𐑯 𐑝𐑦𐑕𐑦𐑚𐑩𐑤 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:93
+msgid "_Only on This Workspace"
+msgstr "_𐑴𐑯𐑤𐑦 𐑪𐑯 𐑞𐑦𐑕 𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:95
+msgid "Move to Workspace _Left"
+msgstr "𐑥𐑵𐑝 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 _𐑤𐑧𐑓𐑑"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:97
+msgid "Move to Workspace R_ight"
+msgstr "𐑥𐑵𐑝 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 𐑮_𐑲𐑑"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:99
+msgid "Move to Workspace _Up"
+msgstr "𐑥𐑵𐑝 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 _𐑳𐑐"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:101
+msgid "Move to Workspace _Down"
+msgstr "𐑥𐑵𐑝 𐑑 𐑢𐑻𐑒𐑕𐑐𐑱𐑕 _𐑛𐑬𐑯"
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:105
+msgid "_Close"
+msgstr "_𐑒𐑤𐑴𐑟"
+
+#: ../src/ui/menu.c:203
+#, c-format
+msgid "Workspace %d%n"
+msgstr "𐑢𐑻𐑒𐑕𐑐𐑱𐑕 %d%n"
+
+#: ../src/ui/menu.c:213
+#, c-format
+msgid "Workspace 1_0"
+msgstr "𐑢𐑻𐑒𐑕𐑐𐑱𐑕 1_0"
+
+#: ../src/ui/menu.c:215
+#, c-format
+msgid "Workspace %s%d"
+msgstr "𐑢𐑻𐑒𐑕𐑐𐑱𐑕 %s%d"
+
+#: ../src/ui/menu.c:395
+msgid "Move to Another _Workspace"
+msgstr "𐑥𐑵𐑝 𐑑 𐑩𐑯𐑳𐑞𐑼 _𐑢𐑻𐑒𐑕𐑐𐑱𐑕"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the shift key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:104
+msgid "Shift"
+msgstr "𐑖𐑦𐑓𐑑"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:110
+msgid "Ctrl"
+msgstr "𐑒𐑪𐑯𐑑𐑮𐑴𐑤"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:116
+msgid "Alt"
+msgstr "𐑪𐑤𐑑"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the meta key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:122
+msgid "Meta"
+msgstr "𐑥𐑧𐑑𐑩"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the super key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:128
+msgid "Super"
+msgstr "𐑕𐑵𐑐𐑼"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the hyper key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:134
+msgid "Hyper"
+msgstr "𐑣𐑲𐑐𐑻"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod2 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:140
+msgid "Mod2"
+msgstr "𐑥𐑪𐑛2"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod3 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:146
+msgid "Mod3"
+msgstr "𐑥𐑪𐑛3"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod4 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:152
+msgid "Mod4"
+msgstr "𐑥𐑪𐑛4"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod5 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:158
+msgid "Mod5"
+msgstr "𐑥𐑪𐑛5"
+
+#. Translators: This represents the size of a window.  The first number is
+#. * the width of the window and the second is the height.
+#.
+#: ../src/ui/resizepopup.c:113
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: ../src/ui/theme.c:254
+msgid "top"
+msgstr "𐑑𐑪𐑐"
+
+#: ../src/ui/theme.c:256
+msgid "bottom"
+msgstr "𐑚𐑪𐑑𐑫𐑥"
+
+#: ../src/ui/theme.c:258
+msgid "left"
+msgstr "𐑤𐑧𐑓𐑑"
+
+#: ../src/ui/theme.c:260
+msgid "right"
+msgstr "𐑮𐑲𐑑"
+
+#: ../src/ui/theme.c:287
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "𐑓𐑮𐑱𐑥 𐑡𐑦𐑪𐑥𐑩𐑑𐑮𐑦 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 \"%s\" 𐑛𐑲𐑥𐑧𐑯𐑖𐑪𐑯"
+
+#: ../src/ui/theme.c:306
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "𐑓𐑮𐑱𐑥 𐑡𐑦𐑪𐑥𐑩𐑑𐑮𐑦 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑛𐑲𐑥𐑧𐑯𐑖𐑪𐑯 \"%s\" 𐑓𐑹 𐑚𐑹𐑛𐑼 \"%s\""
+
+#: ../src/ui/theme.c:343
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "𐑚𐑳𐑑𐑩𐑯 𐑨𐑕𐑐𐑧𐑒𐑑 𐑮𐑱𐑖𐑦𐑴 %g 𐑦𐑟 𐑯𐑪𐑑 𐑮𐑰𐑟𐑩𐑯𐑩𐑚𐑩𐑤"
+
+#: ../src/ui/theme.c:355
+#, c-format
+msgid "Frame geometry does not specify size of buttons"
+msgstr "𐑓𐑮𐑱𐑥 𐑡𐑦𐑪𐑥𐑩𐑑𐑮𐑦 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑕𐑲𐑟 𐑝 𐑚𐑳𐑑𐑩𐑯𐑟"
+
+#: ../src/ui/theme.c:1020
+#, c-format
+msgid "Gradients should have at least two colors"
+msgstr "𐑜𐑮𐑱𐑛𐑦𐑩𐑯𐑑𐑕 𐑖𐑫𐑛 𐑣𐑨𐑝 𐑨𐑑 𐑤𐑰𐑕𐑑 𐑑𐑵 𐑒𐑳𐑤𐑼𐑟"
+
+#: ../src/ui/theme.c:1146
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK 𐑒𐑳𐑤𐑼 𐑕𐑐𐑧𐑕𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯 𐑥𐑳𐑕𐑑 𐑣𐑨𐑝 𐑞 𐑕𐑑𐑱𐑑 𐑦𐑯 𐑚𐑮𐑨𐑒𐑩𐑑𐑕, 𐑧.𐑡𐑰. gtk:fg[NORMAL] 𐑢𐑺 "
+"NORMAL 𐑦𐑟 𐑞 𐑕𐑑𐑱𐑑; 𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 \"%s\""
+
+#: ../src/ui/theme.c:1160
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK 𐑒𐑳𐑤𐑼 𐑕𐑐𐑧𐑕𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯 𐑥𐑳𐑕𐑑 𐑣𐑨𐑝 𐑩 𐑒𐑤𐑴𐑕 𐑚𐑮𐑨𐑒𐑩𐑑 𐑭𐑓𐑑𐑼 𐑞 𐑕𐑑𐑱𐑑, 𐑧.𐑡𐑰. "
+"gtk:fg[NORMAL] 𐑢𐑺 NORMAL 𐑦𐑟 𐑞 𐑕𐑑𐑱𐑑; 𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 \"%s\""
+
+#: ../src/ui/theme.c:1171
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑕𐑑𐑱𐑑 \"%s\" 𐑦𐑯 𐑒𐑳𐑤𐑼 𐑕𐑐𐑧𐑕𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯"
+
+#: ../src/ui/theme.c:1184
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑒𐑳𐑤𐑼 𐑒𐑩𐑥𐑐𐑴𐑯𐑩𐑯𐑑 \"%s\" 𐑦𐑯 𐑒𐑳𐑤𐑼 𐑕𐑐𐑧𐑕𐑦𐑓𐑦𐑒𐑱𐑖𐑩𐑯"
+
+#: ../src/ui/theme.c:1214
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"𐑚𐑤𐑧𐑯𐑛 𐑓𐑹𐑥𐑨𐑑 𐑦𐑟 \"𐑚𐑤𐑧𐑯𐑛/𐑚𐑩𐑒𐑜𐑮𐑬𐑯𐑛/𐑓𐑹𐑜𐑮𐑬𐑯𐑛/𐑨𐑤𐑓𐑩\", \"%s\" 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑓𐑦𐑑 𐑞 𐑓𐑹𐑥𐑨𐑑"
+
+#: ../src/ui/theme.c:1225
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 𐑨𐑤𐑓𐑩 𐑝𐑨𐑤𐑿 \"%s\" 𐑦𐑯 𐑚𐑤𐑧𐑯𐑛𐑩𐑛 𐑒𐑳𐑤𐑼"
+
+#: ../src/ui/theme.c:1235
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "𐑨𐑤𐑓𐑩 𐑝𐑨𐑤𐑿 \"%s\" 𐑦𐑯 𐑚𐑤𐑧𐑯𐑛𐑩𐑛 𐑒𐑳𐑤𐑼 𐑦𐑟 𐑯𐑪𐑑 𐑚𐑦𐑑𐑢𐑰𐑯 0.0 𐑯 1.0"
+
+#: ../src/ui/theme.c:1282
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "𐑖𐑱𐑛 𐑓𐑹𐑥𐑨𐑑 𐑦𐑟 \"𐑖𐑱𐑛/𐑚𐑱𐑕_𐑒𐑳𐑤𐑼/𐑓𐑨𐑒𐑑𐑼\", \"%s\" 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑓𐑦𐑑 𐑞 𐑓𐑹𐑥𐑨𐑑"
+
+#: ../src/ui/theme.c:1293
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 𐑖𐑱𐑛 𐑓𐑨𐑒𐑑𐑼 \"%s\" 𐑦𐑯 𐑖𐑱𐑛𐑩𐑛 𐑒𐑳𐑤𐑼"
+
+#: ../src/ui/theme.c:1303
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "𐑖𐑱𐑛 𐑓𐑨𐑒𐑑𐑼 \"%s\" 𐑦𐑯 𐑖𐑱𐑛𐑩𐑛 𐑒𐑳𐑤𐑼 𐑦𐑟 𐑯𐑧𐑜𐑩𐑑𐑦𐑝"
+
+#: ../src/ui/theme.c:1332
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 𐑒𐑳𐑤𐑼 \"%s\""
+
+#: ../src/ui/theme.c:1582
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑒𐑩𐑯𐑑𐑱𐑯𐑟 𐑒𐑨𐑮𐑩𐑒𐑑𐑼 '%s' 𐑢𐑦𐑗 𐑦𐑟 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛"
+
+#: ../src/ui/theme.c:1609
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑒𐑩𐑯𐑑𐑱𐑯𐑟 𐑓𐑤𐑴𐑑𐑦𐑙 𐑐𐑶𐑯𐑑 𐑯𐑳𐑥𐑚𐑼 '%s' 𐑢𐑦𐑗 𐑒𐑫𐑛 𐑯𐑪𐑑 𐑚𐑰 𐑐𐑸𐑟𐑛"
+
+#: ../src/ui/theme.c:1623
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑒𐑩𐑯𐑑𐑱𐑯𐑟 𐑦𐑯𐑑𐑩𐑡𐑼 '%s' 𐑢𐑦𐑗 𐑒𐑫𐑛 𐑯𐑪𐑑 𐑚𐑰 𐑐𐑸𐑟𐑛"
+
+#: ../src/ui/theme.c:1745
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑒𐑩𐑯𐑑𐑱𐑯𐑛 𐑳𐑯𐑴𐑯 𐑪𐑐𐑼𐑱𐑑𐑼 𐑨𐑑 𐑞 𐑕𐑑𐑸𐑑 𐑝 𐑞𐑦𐑕 𐑑𐑧𐑒𐑕𐑑: \"%s\""
+
+#: ../src/ui/theme.c:1802
+#, c-format
+msgid "Coordinate expression was empty or not understood"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑢𐑪𐑟 𐑧𐑥𐑐𐑑𐑦 𐑹 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑫𐑛"
+
+#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#, c-format
+msgid "Coordinate expression results in division by zero"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑮𐑦𐑟𐑳𐑤𐑑𐑕 𐑦𐑯 𐑛𐑦𐑝𐑦𐑠𐑩𐑯 𐑚𐑲 𐑟𐑽𐑴"
+
+#: ../src/ui/theme.c:1965
+#, c-format
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑑𐑮𐑲𐑟 𐑑 𐑿𐑕 𐑥𐑪𐑛𐑿𐑤𐑴 𐑪𐑐𐑼𐑱𐑑𐑼 𐑪𐑯 𐑩 𐑓𐑤𐑴𐑑𐑦𐑙-𐑐𐑶𐑯𐑑 𐑯𐑳𐑥𐑚𐑼"
+
+#: ../src/ui/theme.c:2021
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑣𐑨𐑟 𐑩𐑯 𐑪𐑐𐑼𐑱𐑑𐑼 \"%s\" 𐑢𐑺 𐑩𐑯 𐑪𐑐𐑼𐑨𐑯𐑛 𐑢𐑪𐑟 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛"
+
+#: ../src/ui/theme.c:2030
+#, c-format
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑣𐑨𐑛 𐑩𐑯 𐑪𐑐𐑼𐑨𐑯𐑛 𐑢𐑺 𐑩𐑯 𐑪𐑐𐑼𐑱𐑑𐑼 𐑢𐑪𐑟 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛"
+
+#: ../src/ui/theme.c:2038
+#, c-format
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑧𐑯𐑛𐑩𐑛 𐑢𐑦𐑞 𐑩𐑯 𐑪𐑐𐑼𐑱𐑑𐑼 𐑦𐑯𐑕𐑑𐑧𐑛 𐑝 𐑩𐑯 𐑪𐑐𐑼𐑨𐑯𐑛"
+
+#: ../src/ui/theme.c:2048
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑣𐑨𐑟 𐑪𐑐𐑼𐑱𐑑𐑼 \"%c\" 𐑓𐑪𐑤𐑴𐑦𐑙 𐑪𐑐𐑼𐑱𐑑𐑼 \"%c\" 𐑢𐑦𐑞 𐑯𐑴 𐑪𐑐𐑼𐑨𐑯𐑛 "
+"𐑦𐑯 𐑚𐑦𐑑𐑢𐑰𐑯"
+
+#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑩𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑣𐑨𐑛 𐑳𐑯𐑴𐑯 𐑝𐑺𐑦𐑩𐑚𐑩𐑤 𐑹 𐑒𐑪𐑯𐑕𐑑𐑩𐑯𐑑 \"%s\""
+
+#: ../src/ui/theme.c:2290
+#, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑐𐑸𐑟𐑼 𐑴𐑝𐑻𐑓𐑤𐑴𐑛 𐑦𐑑𐑕 𐑚𐑳𐑓𐑼."
+
+#: ../src/ui/theme.c:2319
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑣𐑨𐑛 𐑩 𐑒𐑤𐑴𐑕 𐑐𐑻𐑧𐑯𐑔𐑩𐑕𐑦𐑕 𐑢𐑦𐑞 𐑯𐑴 𐑴𐑐𐑩𐑯 𐑐𐑻𐑧𐑯𐑔𐑩𐑕𐑦𐑕"
+
+#: ../src/ui/theme.c:2383
+#, c-format
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑣𐑨𐑛 𐑩𐑯 𐑴𐑐𐑩𐑯 𐑐𐑻𐑧𐑯𐑔𐑩𐑕𐑦𐑕 𐑢𐑦𐑞 𐑯𐑴 𐑒𐑤𐑴𐑕 𐑐𐑻𐑧𐑯𐑔𐑩𐑕𐑦𐑕"
+
+#: ../src/ui/theme.c:2394
+#, c-format
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑛𐑳𐑟𐑯𐑑 𐑕𐑰𐑥 𐑑 𐑣𐑨𐑝 𐑧𐑯𐑦 𐑪𐑐𐑼𐑱𐑑𐑼𐑟 𐑹 𐑪𐑐𐑼𐑨𐑯𐑛𐑟"
+
+#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#, c-format
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "𐑔𐑰𐑥 𐑒𐑩𐑯𐑑𐑱𐑯𐑛 𐑩𐑯 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑞𐑨𐑑 𐑮𐑦𐑟𐑳𐑤𐑑𐑩𐑛 𐑦𐑯 𐑩𐑯 𐑻𐑼: %s\n"
+
+#: ../src/ui/theme.c:4203
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"𐑢𐑪𐑑𐑧𐑝𐑼\"/> 𐑥𐑳𐑕𐑑 𐑚𐑰 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑓𐑹 "
+"𐑞𐑦𐑕 𐑓𐑮𐑱𐑥 𐑕𐑑𐑲𐑤"
+
+#: ../src/ui/theme.c:4711 ../src/ui/theme.c:4736
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "𐑥𐑦𐑕𐑦𐑙 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"𐑢𐑪𐑑𐑧𐑝𐑼\"/>"
+
+#: ../src/ui/theme.c:4780
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑤𐑴𐑛 𐑔𐑰𐑥 \"%s\": %s\n"
+
+#: ../src/ui/theme.c:4910 ../src/ui/theme.c:4917 ../src/ui/theme.c:4924
+#: ../src/ui/theme.c:4931 ../src/ui/theme.c:4938
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "𐑯𐑴 <%s> 𐑕𐑧𐑑 𐑓𐑹 𐑔𐑰𐑥 \"%s\""
+
+#: ../src/ui/theme.c:4946
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"𐑯𐑴 𐑓𐑮𐑱𐑥 𐑕𐑑𐑲𐑤 𐑕𐑧𐑑 𐑓𐑹 𐑢𐑦𐑯𐑛𐑴 𐑑𐑲𐑐 \"%s\" 𐑦𐑯 𐑔𐑰𐑥 \"%s\", 𐑨𐑛 𐑩 <window type=\"%s\" "
+"style_set=\"𐑢𐑪𐑑𐑧𐑝𐑼\"/> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme.c:5389 ../src/ui/theme.c:5451 ../src/ui/theme.c:5514
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "𐑿𐑟𐑼-𐑛𐑦𐑓𐑲𐑯𐑛 𐑒𐑪𐑯𐑕𐑑𐑩𐑯𐑑𐑕 𐑥𐑳𐑕𐑑 𐑚𐑩𐑜𐑦𐑯 𐑢𐑦𐑞 𐑩 𐑒𐑨𐑐𐑦𐑑𐑩𐑤 𐑤𐑧𐑑𐑼; \"%s\" 𐑛𐑳𐑟 𐑯𐑪𐑑"
+
+#: ../src/ui/theme.c:5397 ../src/ui/theme.c:5459 ../src/ui/theme.c:5522
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "𐑒𐑪𐑯𐑕𐑑𐑩𐑯𐑑 \"%s\" 𐑣𐑨𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛"
+
+#. Translators: This means that an attribute which should have been found
+#. * on an XML element was not in fact found.
+#.
+#: ../src/ui/theme-parser.c:202
+#, c-format
+msgid "No \"%s\" attribute on element <%s>"
+msgstr "𐑯𐑴 \"%s\" 𐑩𐑑𐑮𐑦𐑚𐑿𐑑 𐑪𐑯 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s>"
+
+#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "𐑤𐑲𐑯 %d 𐑒𐑨𐑮𐑩𐑒𐑑𐑼 %d: %s"
+
+#: ../src/ui/theme-parser.c:413
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr "𐑩𐑑𐑮𐑦𐑚𐑿𐑑 \"%s\" 𐑮𐑦𐑐𐑰𐑑𐑩𐑛 𐑑𐑢𐑲𐑕 𐑪𐑯 𐑞 𐑕𐑱𐑥 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "𐑩𐑑𐑮𐑦𐑚𐑿𐑑 \"%s\" 𐑦𐑟 𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑪𐑯 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 𐑦𐑯 𐑞𐑦𐑕 𐑒𐑪𐑯𐑑𐑧𐑒𐑕𐑑"
+
+#: ../src/ui/theme-parser.c:522
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 \"%s\" 𐑨𐑟 𐑩𐑯 𐑦𐑯𐑑𐑩𐑡𐑼"
+
+#: ../src/ui/theme-parser.c:531 ../src/ui/theme-parser.c:586
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑑𐑮𐑱𐑤𐑦𐑙 𐑒𐑨𐑮𐑩𐑒𐑑𐑼𐑟 \"%s\" 𐑦𐑯 𐑕𐑑𐑮𐑦𐑙 \"%s\""
+
+#: ../src/ui/theme-parser.c:541
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "𐑦𐑯𐑑𐑩𐑡𐑼 %ld 𐑥𐑳𐑕𐑑 𐑚𐑰 𐑐𐑪𐑟𐑦𐑑𐑦𐑝"
+
+#: ../src/ui/theme-parser.c:549
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "𐑦𐑯𐑑𐑩𐑡𐑼 %ld 𐑦𐑟 𐑑𐑵 𐑤𐑸𐑡, 𐑒𐑳𐑮𐑩𐑯𐑑 𐑥𐑨𐑒𐑕 𐑦𐑟 %d"
+
+#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑐𐑸𐑟 \"%s\" 𐑨𐑟 𐑩 𐑓𐑤𐑴𐑑𐑦𐑙 𐑐𐑶𐑯𐑑 𐑯𐑳𐑥𐑚𐑼"
+
+#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "𐑚𐑵𐑤𐑰𐑩𐑯 𐑝𐑨𐑤𐑿𐑟 𐑥𐑳𐑕𐑑 𐑚𐑰 \"true\" 𐑹 \"false\" 𐑯𐑪𐑑 \"%s\""
+
+#: ../src/ui/theme-parser.c:663
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "𐑨𐑙𐑜𐑤 𐑥𐑳𐑕𐑑 𐑚𐑰 𐑚𐑦𐑑𐑢𐑰𐑯 0.0 𐑯 360.0, 𐑢𐑪𐑟 %g\n"
+
+#: ../src/ui/theme-parser.c:726
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr "𐑨𐑤𐑓𐑩 𐑥𐑳𐑕𐑑 𐑚𐑰 𐑚𐑦𐑑𐑢𐑰𐑯 0.0 (𐑦𐑯𐑝𐑦𐑕𐑦𐑚𐑩𐑤) 𐑯 1.0 (𐑓𐑫𐑤𐑦 𐑴𐑐𐑱𐑒), 𐑢𐑪𐑟 %g\n"
+
+#: ../src/ui/theme-parser.c:791
+#, c-format
+msgid ""
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+msgstr ""
+"𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑑𐑲𐑑𐑩𐑤 𐑕𐑒𐑱𐑤 \"%s\" (𐑥𐑳𐑕𐑑 𐑚𐑰 𐑢𐑳𐑯 𐑝 xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
+
+#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
+#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "<%s> 𐑯𐑱𐑥 \"%s\" 𐑿𐑕𐑑 𐑩 𐑕𐑧𐑒𐑩𐑯𐑛 𐑑𐑲𐑥"
+
+#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
+#: ../src/ui/theme-parser.c:1148
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "<%s> 𐑐𐑺𐑩𐑯𐑑 \"%s\" 𐑣𐑨𐑟 𐑯𐑪𐑑 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛"
+
+#: ../src/ui/theme-parser.c:1058
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "<%s> 𐑡𐑦𐑪𐑥𐑩𐑑𐑮𐑦 \"%s\" 𐑣𐑨𐑟 𐑯𐑪𐑑 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛"
+
+#: ../src/ui/theme-parser.c:1071
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr "<%s> 𐑥𐑳𐑕𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑲𐑞𐑼 𐑩 𐑡𐑦𐑪𐑥𐑩𐑑𐑮𐑦 𐑹 𐑩 𐑐𐑺𐑩𐑯𐑑 𐑞𐑨𐑑 𐑣𐑨𐑟 𐑩 𐑡𐑦𐑪𐑥𐑩𐑑𐑮𐑦"
+
+#: ../src/ui/theme-parser.c:1113
+msgid "You must specify a background for an alpha value to be meaningful"
+msgstr "𐑿 𐑥𐑳𐑕𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑩 𐑚𐑨𐑒𐑜𐑮𐑬𐑯𐑛 𐑓𐑹 𐑩𐑯 𐑨𐑤𐑓𐑩 𐑝𐑨𐑤𐑿 𐑑 𐑚𐑰 𐑥𐑰𐑯𐑦𐑙𐑓𐑩𐑤"
+
+#: ../src/ui/theme-parser.c:1180
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "𐑳𐑯𐑴𐑯 𐑑𐑲𐑐 \"%s\" 𐑪𐑯 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:1191
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "𐑳𐑯𐑴𐑯 style_set \"%s\" 𐑪𐑯 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:1199
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑑𐑲𐑐 \"%s\" 𐑣𐑨𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑚𐑰𐑯 𐑨𐑟𐑕𐑲𐑯𐑛 𐑩 𐑕𐑑𐑲𐑤 𐑕𐑧𐑑"
+
+#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
+#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2786 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3126 ../src/ui/theme-parser.c:3164
+#: ../src/ui/theme-parser.c:3202 ../src/ui/theme-parser.c:3240
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s> 𐑦𐑟 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛 𐑚𐑩𐑤𐑴 <%s>"
+
+#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
+#: ../src/ui/theme-parser.c:1402
+msgid ""
+"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
+"for buttons"
+msgstr ""
+"𐑒𐑨𐑯𐑪𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 𐑚𐑴𐑔 \"button_width\"/\"button_height\" 𐑯 \"aspect_ratio\" 𐑓𐑹 "
+"𐑚𐑳𐑑𐑩𐑯𐑟"
+
+#: ../src/ui/theme-parser.c:1366
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "𐑛𐑦𐑕𐑑𐑩𐑯𐑕 \"%s\" 𐑦𐑟 𐑳𐑯𐑴𐑯"
+
+#: ../src/ui/theme-parser.c:1411
+#, c-format
+msgid "Aspect ratio \"%s\" is unknown"
+msgstr "𐑨𐑕𐑐𐑧𐑒𐑑 𐑮𐑱𐑖𐑦𐑴 \"%s\" 𐑦𐑟 𐑳𐑯𐑴𐑯"
+
+#: ../src/ui/theme-parser.c:1473
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "𐑚𐑹𐑛𐑼 \"%s\" 𐑦𐑟 𐑳𐑯𐑴𐑯"
+
+#: ../src/ui/theme-parser.c:1784
+#, c-format
+msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+msgstr "𐑯𐑴 \"start_angle\" 𐑹 \"from\" 𐑨𐑑𐑮𐑦𐑚𐑿𐑑 𐑪𐑯 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s>"
+
+#: ../src/ui/theme-parser.c:1791
+#, c-format
+msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+msgstr "𐑯𐑴 \"extent_angle\" 𐑹 \"to\" 𐑨𐑑𐑮𐑦𐑚𐑿𐑑 𐑪𐑯 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s>"
+
+#: ../src/ui/theme-parser.c:2031
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑝𐑨𐑤𐑿 \"%s\" 𐑓𐑹 𐑑𐑲𐑐 𐑝 𐑜𐑮𐑱𐑛𐑦𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:2109 ../src/ui/theme-parser.c:2484
+#, c-format
+msgid "Did not understand fill type \"%s\" for <%s> element"
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑓𐑦𐑤 𐑑𐑲𐑐 \"%s\" 𐑓𐑹 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:2276 ../src/ui/theme-parser.c:2359
+#: ../src/ui/theme-parser.c:2422
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑕𐑑𐑱𐑑 \"%s\" 𐑓𐑹 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:2286 ../src/ui/theme-parser.c:2369
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑖𐑨𐑛𐑴 \"%s\" 𐑓𐑹 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:2296
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "𐑛𐑦𐑛 𐑯𐑪𐑑 𐑳𐑯𐑛𐑼𐑕𐑑𐑨𐑯𐑛 𐑨𐑮𐑴 \"%s\" 𐑓𐑹 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:2596 ../src/ui/theme-parser.c:2692
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "𐑯𐑴 <draw_ops> 𐑒𐑷𐑤𐑛 \"%s\" 𐑣𐑨𐑟 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛"
+
+#: ../src/ui/theme-parser.c:2608 ../src/ui/theme-parser.c:2704
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr "𐑦𐑯𐑒𐑤𐑵𐑛𐑦𐑙 draw_ops \"%s\" 𐑣𐑽 𐑢𐑫𐑛 𐑒𐑮𐑦𐑱𐑑 𐑩 𐑕𐑻𐑒𐑘𐑫𐑤𐑼 𐑮𐑧𐑓𐑼𐑩𐑯𐑕"
+
+#: ../src/ui/theme-parser.c:2819
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "𐑳𐑯𐑴𐑯 𐑐𐑩𐑟𐑦𐑖𐑩𐑯 \"%s\" 𐑓𐑹 𐑓𐑮𐑱𐑥 𐑐𐑰𐑕"
+
+#: ../src/ui/theme-parser.c:2827
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "𐑓𐑮𐑱𐑥 𐑕𐑑𐑲𐑤 𐑷𐑤𐑮𐑧𐑛𐑦 𐑣𐑨𐑟 𐑩 𐑐𐑰𐑕 𐑨𐑑 𐑐𐑩𐑟𐑦𐑖𐑩𐑯 %s"
+
+#: ../src/ui/theme-parser.c:2844 ../src/ui/theme-parser.c:2919
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "𐑯𐑴 <draw_ops> 𐑢𐑦𐑞 𐑞 𐑯𐑱𐑥 \"%s\" 𐑣𐑨𐑟 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛"
+
+#: ../src/ui/theme-parser.c:2873
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "𐑳𐑯𐑴𐑯 𐑓𐑳𐑙𐑒𐑖𐑩𐑯 \"%s\" 𐑓𐑹 𐑚𐑳𐑑𐑩𐑯"
+
+#: ../src/ui/theme-parser.c:2882
+#, c-format
+msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+msgstr "𐑚𐑳𐑑𐑩𐑯 𐑓𐑳𐑙𐑒𐑖𐑩𐑯 \"%s\" 𐑛𐑳𐑟 𐑯𐑪𐑑 𐑧𐑒𐑟𐑦𐑕𐑑 𐑦𐑯 𐑞𐑦𐑕 𐑝𐑻𐑠𐑩𐑯 (%d, 𐑯𐑰𐑛 %d)"
+
+#: ../src/ui/theme-parser.c:2894
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "𐑳𐑯𐑴𐑯 𐑕𐑑𐑱𐑑 \"%s\" 𐑓𐑹 𐑚𐑳𐑑𐑩𐑯"
+
+#: ../src/ui/theme-parser.c:2902
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "𐑓𐑮𐑱𐑥 𐑕𐑑𐑲𐑤 𐑷𐑤𐑮𐑧𐑛𐑦 𐑣𐑨𐑟 𐑩 𐑚𐑳𐑑𐑩𐑯 𐑓𐑹 𐑓𐑳𐑙𐑒𐑖𐑩𐑯 %s 𐑕𐑑𐑱𐑑 %s"
+
+#: ../src/ui/theme-parser.c:2973
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "\"%s\" 𐑦𐑟 𐑯𐑪𐑑 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑝𐑨𐑤𐑿 𐑓𐑹 𐑓𐑴𐑒𐑩𐑕 𐑩𐑑𐑮𐑦𐑚𐑿𐑑"
+
+#: ../src/ui/theme-parser.c:2982
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "\"%s\" 𐑦𐑟 𐑯𐑪𐑑 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑝𐑨𐑤𐑿 𐑓𐑹 𐑕𐑑𐑱𐑑 𐑩𐑑𐑮𐑦𐑚𐑿𐑑"
+
+#: ../src/ui/theme-parser.c:2992
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "𐑩 𐑕𐑑𐑲𐑤 𐑒𐑷𐑤𐑛 \"%s\" 𐑣𐑨𐑟 𐑯𐑪𐑑 𐑚𐑰𐑯 𐑛𐑦𐑓𐑲𐑯𐑛"
+
+#: ../src/ui/theme-parser.c:3013 ../src/ui/theme-parser.c:3036
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "\"%s\" 𐑦𐑟 𐑯𐑪𐑑 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑝𐑨𐑤𐑿 𐑓𐑹 𐑮𐑰𐑕𐑲𐑟 𐑩𐑑𐑮𐑦𐑚𐑿𐑑"
+
+#: ../src/ui/theme-parser.c:3047
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
+"states"
+msgstr "𐑖𐑫𐑛 𐑯𐑪𐑑 𐑣𐑨𐑝 \"resize\" 𐑩𐑑𐑮𐑦𐑚𐑿𐑑 𐑪𐑯 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 𐑓𐑹 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟𐑛/𐑖𐑱𐑛𐑩𐑛 𐑕𐑑𐑱𐑑𐑕"
+
+#: ../src/ui/theme-parser.c:3061
+#, c-format
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgstr "𐑖𐑫𐑛 𐑯𐑪𐑑 𐑣𐑨𐑝 \"resize\" 𐑩𐑑𐑮𐑦𐑚𐑿𐑑 𐑪𐑯 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 𐑓𐑹 𐑥𐑨𐑒𐑕𐑩𐑥𐑲𐑟𐑛 𐑕𐑑𐑱𐑑𐑕"
+
+#: ../src/ui/theme-parser.c:3075 ../src/ui/theme-parser.c:3097
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr "𐑕𐑑𐑲𐑤 𐑣𐑨𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑚𐑰𐑯 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑓𐑹 𐑕𐑑𐑱𐑑 %s 𐑮𐑰𐑕𐑲𐑟 %s 𐑓𐑴𐑒𐑩𐑕 %s"
+
+#: ../src/ui/theme-parser.c:3086 ../src/ui/theme-parser.c:3108
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "𐑕𐑑𐑲𐑤 𐑣𐑨𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑚𐑰𐑯 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑓𐑹 𐑕𐑑𐑱𐑑 %s 𐑓𐑴𐑒𐑩𐑕 %s"
+
+#: ../src/ui/theme-parser.c:3147
+msgid ""
+"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"𐑒𐑨𐑯'𐑑𐑰 𐑣𐑨𐑝 𐑩 𐑑𐑵 draw_ops 𐑓𐑹 𐑩 <𐑐𐑰𐑕> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 (𐑔𐑰𐑥 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑩 draw_ops 𐑨𐑑𐑮𐑦𐑚𐑿𐑑 "
+"𐑯 𐑷𐑤𐑕𐑴 𐑩 <draw_ops> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑, 𐑹 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑑𐑵 𐑧𐑤𐑩𐑥𐑩𐑯𐑑𐑕)"
+
+#: ../src/ui/theme-parser.c:3185
+msgid ""
+"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
+"attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"𐑒𐑨𐑯'𐑑𐑰 𐑣𐑨𐑝 𐑩 𐑑𐑵 draw_ops 𐑓𐑹 𐑩 <button> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 (𐑔𐑰𐑥 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑩 draw_ops "
+"𐑨𐑑𐑮𐑦𐑚𐑿𐑑 𐑯 𐑷𐑤𐑕𐑴 𐑩 <draw_ops> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑, 𐑹 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑑𐑵 𐑧𐑤𐑩𐑥𐑩𐑯𐑑𐑕)"
+
+#: ../src/ui/theme-parser.c:3223
+msgid ""
+"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
+"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr ""
+"𐑒𐑨𐑯'𐑑𐑰 𐑣𐑨𐑝 𐑩 𐑑𐑵 draw_ops 𐑓𐑹 𐑩 <menu_icon> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 (𐑔𐑰𐑥 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑩 draw_ops "
+"𐑨𐑑𐑮𐑦𐑚𐑿𐑑 𐑯 𐑷𐑤𐑕𐑴 𐑩 <draw_ops> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑, 𐑹 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑑𐑵 𐑧𐑤𐑩𐑥𐑩𐑯𐑑𐑕)"
+
+#: ../src/ui/theme-parser.c:3271
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "𐑶𐑑𐑻𐑥𐑴𐑕𐑑 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 𐑦𐑯 𐑔𐑰𐑥 𐑥𐑳𐑕𐑑 𐑚𐑰 <metacity_theme> 𐑯𐑪𐑑 <%s>"
+
+#: ../src/ui/theme-parser.c:3291
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s> 𐑦𐑟 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛 𐑦𐑯𐑕𐑲𐑛 𐑩 name/author/date/description 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:3296
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s> 𐑦𐑟 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛 𐑦𐑯𐑕𐑲𐑛 𐑩 <constant> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:3308
+#, c-format
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s> 𐑦𐑟 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛 𐑦𐑯𐑕𐑲𐑛 𐑩 distance/border/aspect_ratio 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:3330
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s> 𐑦𐑟 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛 𐑦𐑯𐑕𐑲𐑛 𐑩 𐑛𐑮𐑷 𐑪𐑐𐑼𐑱𐑖𐑩𐑯 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:3340 ../src/ui/theme-parser.c:3370
+#: ../src/ui/theme-parser.c:3375 ../src/ui/theme-parser.c:3380
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s> 𐑦𐑟 𐑯𐑪𐑑 𐑩𐑤𐑬𐑛 𐑦𐑯𐑕𐑲𐑛 𐑩 <%s> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-parser.c:3602
+msgid "No draw_ops provided for frame piece"
+msgstr "𐑯𐑴 draw_ops 𐑐𐑮𐑩𐑝𐑲𐑛𐑩𐑛 𐑓𐑹 𐑓𐑮𐑱𐑥 𐑐𐑰𐑕"
+
+#: ../src/ui/theme-parser.c:3617
+msgid "No draw_ops provided for button"
+msgstr "𐑯𐑴 draw_ops 𐑐𐑮𐑩𐑝𐑲𐑛𐑩𐑛 𐑓𐑹 𐑚𐑳𐑑𐑩𐑯"
+
+#: ../src/ui/theme-parser.c:3669
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "𐑯𐑴 𐑑𐑧𐑒𐑕𐑑 𐑦𐑟 𐑩𐑤𐑬𐑛 𐑦𐑯𐑕𐑲𐑛 𐑧𐑤𐑩𐑥𐑩𐑯𐑑 <%s>"
+
+#: ../src/ui/theme-parser.c:3724 ../src/ui/theme-parser.c:3736
+#: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
+#: ../src/ui/theme-parser.c:3772
+#, c-format
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> 𐑕𐑐𐑧𐑕𐑦𐑓𐑲𐑛 𐑑𐑢𐑲𐑕 𐑓𐑹 𐑞𐑦𐑕 𐑔𐑰𐑥"
+
+#: ../src/ui/theme-parser.c:4040
+#, c-format
+msgid "Failed to find a valid file for theme %s\n"
+msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑓𐑲𐑯𐑛 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑓𐑲𐑤 𐑓𐑹 𐑔𐑰𐑥 %s\n"
+
+#: ../src/ui/theme-parser.c:4096
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "𐑔𐑰𐑥 𐑓𐑲𐑤 %s 𐑛𐑦𐑛 𐑯𐑪𐑑 𐑒𐑩𐑯𐑑𐑱𐑯 𐑩 𐑮𐑵𐑑 <metacity_theme> 𐑧𐑤𐑩𐑥𐑩𐑯𐑑"
+
+#: ../src/ui/theme-viewer.c:75
+msgid "/_Windows"
+msgstr "/_𐑢𐑦𐑯𐑛𐑴𐑟"
+
+#: ../src/ui/theme-viewer.c:76
+msgid "/Windows/tearoff"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/𐑑𐑺𐑪𐑓"
+
+#: ../src/ui/theme-viewer.c:77
+msgid "/Windows/_Dialog"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑛𐑲𐑩𐑤𐑪𐑜"
+
+#: ../src/ui/theme-viewer.c:78
+msgid "/Windows/_Modal dialog"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑥𐑴𐑛𐑩𐑤 𐑛𐑲𐑩𐑤𐑪𐑜"
+
+#: ../src/ui/theme-viewer.c:79
+msgid "/Windows/_Utility"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑿𐑑𐑦𐑤𐑦𐑑𐑦"
+
+#: ../src/ui/theme-viewer.c:80
+msgid "/Windows/_Splashscreen"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑕𐑐𐑤𐑨𐑖𐑕𐑒𐑮𐑰𐑯"
+
+#: ../src/ui/theme-viewer.c:81
+msgid "/Windows/_Top dock"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑑𐑪𐑐 𐑛𐑭𐑒"
+
+#: ../src/ui/theme-viewer.c:82
+msgid "/Windows/_Bottom dock"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑚𐑪𐑑𐑩𐑥 𐑛𐑭𐑒"
+
+#: ../src/ui/theme-viewer.c:83
+msgid "/Windows/_Left dock"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑤𐑧𐑑 𐑛𐑭𐑒"
+
+#: ../src/ui/theme-viewer.c:84
+msgid "/Windows/_Right dock"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑮𐑲𐑑 𐑛𐑭𐑒"
+
+#: ../src/ui/theme-viewer.c:85
+msgid "/Windows/_All docks"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/_𐑷𐑤 𐑛𐑭𐑒𐑕"
+
+#: ../src/ui/theme-viewer.c:86
+msgid "/Windows/Des_ktop"
+msgstr "/𐑢𐑦𐑯𐑛𐑴𐑟/𐑛𐑧𐑕_𐑒𐑑𐑪𐑐"
+
+#: ../src/ui/theme-viewer.c:136
+msgid "Open another one of these windows"
+msgstr "𐑴𐑐𐑩𐑯 𐑩𐑯𐑳𐑞𐑼 𐑢𐑳𐑯 𐑝 𐑞𐑰𐑟 𐑢𐑦𐑯𐑛𐑴𐑟"
+
+#: ../src/ui/theme-viewer.c:143
+msgid "This is a demo button with an 'open' icon"
+msgstr "𐑞𐑦𐑕 𐑦𐑟 𐑩 𐑛𐑧𐑥𐑴 𐑚𐑳𐑑𐑩𐑯 𐑢𐑦𐑞 𐑩𐑯 '𐑴𐑐𐑩𐑯' 𐑲𐑒𐑪𐑯"
+
+#: ../src/ui/theme-viewer.c:150
+msgid "This is a demo button with a 'quit' icon"
+msgstr "𐑞𐑦𐑕 𐑦𐑟 𐑩 𐑛𐑧𐑥𐑴 𐑚𐑳𐑑𐑩𐑯 𐑢𐑦𐑞 𐑩 '𐑒𐑢𐑦𐑑' 𐑲𐑒𐑪𐑯"
+
+#: ../src/ui/theme-viewer.c:243
+msgid "This is a sample message in a sample dialog"
+msgstr "𐑞𐑦𐑕 𐑦𐑟 𐑩 𐑕𐑭𐑥𐑐𐑩𐑤 𐑥𐑧𐑕𐑦𐑡 𐑦𐑯 𐑩 𐑕𐑭𐑥𐑐𐑩𐑤 𐑛𐑲𐑩𐑤𐑪𐑜"
+
+#: ../src/ui/theme-viewer.c:326
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "𐑓𐑱𐑒 𐑥𐑧𐑯𐑿 𐑲𐑑𐑩𐑥 %d\n"
+
+#: ../src/ui/theme-viewer.c:360
+msgid "Border-only window"
+msgstr "𐑚𐑹𐑛𐑼-𐑴𐑯𐑤𐑦 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/theme-viewer.c:362
+msgid "Bar"
+msgstr "𐑚𐑸"
+
+#: ../src/ui/theme-viewer.c:379
+msgid "Normal Application Window"
+msgstr "𐑯𐑹𐑥𐑩𐑤 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../src/ui/theme-viewer.c:383
+msgid "Dialog Box"
+msgstr "𐑛𐑲𐑩𐑤𐑪𐑜 𐑚𐑪𐑒𐑕"
+
+#: ../src/ui/theme-viewer.c:387
+msgid "Modal Dialog Box"
+msgstr "𐑥𐑴𐑛𐑩𐑤 𐑛𐑲𐑩𐑤𐑪𐑜 𐑚𐑪𐑒𐑕"
+
+#: ../src/ui/theme-viewer.c:391
+msgid "Utility Palette"
+msgstr "𐑘𐑵𐑑𐑦𐑤𐑩𐑑𐑰 𐑐𐑩𐑤𐑧𐑑"
+
+#: ../src/ui/theme-viewer.c:395
+msgid "Torn-off Menu"
+msgstr "𐑑𐑹𐑯-𐑪𐑓 𐑥𐑧𐑯𐑿"
+
+#: ../src/ui/theme-viewer.c:399
+msgid "Border"
+msgstr "𐑚𐑹𐑛𐑼"
+
+#: ../src/ui/theme-viewer.c:727
+#, c-format
+msgid "Button layout test %d"
+msgstr "𐑚𐑳𐑑𐑩𐑯 𐑤𐑱𐑬𐑑 𐑑𐑧𐑕𐑑 %d"
+
+#: ../src/ui/theme-viewer.c:756
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "%g 𐑥𐑦𐑤𐑦𐑕𐑧𐑒𐑩𐑯𐑛𐑟 𐑑 𐑛𐑮𐑷 𐑢𐑳𐑯 𐑢𐑦𐑯𐑛𐑴 𐑓𐑮𐑱𐑥"
+
+#: ../src/ui/theme-viewer.c:799
+#, c-format
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "𐑿𐑕𐑦𐑡: metacity-theme-viewer [𐑔𐑰𐑥𐑯𐑱𐑥]\n"
+
+#: ../src/ui/theme-viewer.c:806
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "𐑻𐑼 𐑤𐑴𐑛𐑦𐑙 𐑔𐑰𐑥: %s\n"
+
+#: ../src/ui/theme-viewer.c:812
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "𐑤𐑴𐑛𐑩𐑛 𐑔𐑰𐑥 \"%s\" 𐑦𐑯 %g 𐑕𐑧𐑒𐑩𐑯𐑛𐑟\n"
+
+#: ../src/ui/theme-viewer.c:853
+msgid "Normal Title Font"
+msgstr "𐑯𐑹𐑥𐑩𐑤 𐑑𐑲𐑑𐑩𐑤 𐑓𐑪𐑯𐑑"
+
+#: ../src/ui/theme-viewer.c:859
+msgid "Small Title Font"
+msgstr "𐑕𐑥𐑷𐑤 𐑑𐑲𐑑𐑩𐑤 𐑓𐑪𐑯𐑑"
+
+#: ../src/ui/theme-viewer.c:865
+msgid "Large Title Font"
+msgstr "𐑤𐑸𐑡 𐑑𐑲𐑑𐑩𐑤 𐑓𐑪𐑯𐑑"
+
+#: ../src/ui/theme-viewer.c:870
+msgid "Button Layouts"
+msgstr "𐑚𐑳𐑑𐑩𐑯 𐑤𐑱𐑬𐑑𐑕"
+
+#: ../src/ui/theme-viewer.c:875
+msgid "Benchmark"
+msgstr "𐑚𐑧𐑯𐑗𐑥𐑭𐑮𐑒"
+
+#: ../src/ui/theme-viewer.c:922
+msgid "Window Title Goes Here"
+msgstr "𐑢𐑦𐑯𐑛𐑴 𐑑𐑲𐑑𐑩𐑤 𐑜𐑴𐑟 𐑣𐑽"
+
+#: ../src/ui/theme-viewer.c:1026
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+"𐑛𐑮𐑵 %d 𐑓𐑮𐑱𐑥𐑟 𐑦𐑯 %g 𐑒𐑤𐑲𐑩𐑯𐑑-𐑕𐑲𐑛 𐑕𐑧𐑒𐑩𐑯𐑛𐑟 (%g 𐑥𐑦𐑤𐑦𐑕𐑧𐑒𐑩𐑯𐑛𐑟 𐑐𐑻 𐑓𐑮𐑱𐑥) 𐑯 %g "
+"𐑕𐑧𐑒𐑩𐑯𐑛𐑟 𐑢𐑷𐑤 𐑒𐑤𐑪𐑒 𐑑𐑲𐑥 𐑦𐑯𐑒𐑤𐑵𐑛𐑦𐑙 X 𐑕𐑻𐑝𐑼 𐑮𐑦𐑟𐑹𐑕𐑩𐑟 (%g 𐑥𐑦𐑤𐑦𐑕𐑧𐑒𐑩𐑯𐑛𐑟 𐑐𐑻 𐑓𐑮𐑱𐑥)\n"
+
+#: ../src/ui/theme-viewer.c:1245
+msgid "position expression test returned TRUE but set error"
+msgstr "𐑐𐑩𐑟𐑦𐑖𐑩𐑯 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑑𐑧𐑕𐑑 𐑮𐑦𐑑𐑻𐑯𐑛 𐑑𐑮𐑵 𐑚𐑳𐑑 𐑕𐑧𐑑 𐑻𐑼"
+
+#: ../src/ui/theme-viewer.c:1247
+msgid "position expression test returned FALSE but didn't set error"
+msgstr "𐑐𐑩𐑟𐑦𐑖𐑩𐑯 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯 𐑑𐑧𐑕𐑑 𐑮𐑦𐑑𐑻𐑯𐑛 𐑓𐑷𐑤𐑕 𐑚𐑳𐑑 𐑛𐑦𐑛𐑯𐑑 𐑕𐑧𐑑 𐑻𐑼"
+
+#: ../src/ui/theme-viewer.c:1251
+msgid "Error was expected but none given"
+msgstr "𐑻𐑼 𐑢𐑪𐑟 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛 𐑚𐑳𐑑 𐑯𐑳𐑯 𐑜𐑦𐑝𐑩𐑯"
+
+#: ../src/ui/theme-viewer.c:1253
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "𐑻𐑼 %d 𐑢𐑪𐑟 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛 𐑚𐑳𐑑 %d 𐑜𐑦𐑝𐑩𐑯"
+
+#: ../src/ui/theme-viewer.c:1259
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "𐑻𐑼 𐑯𐑪𐑑 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛 𐑚𐑳𐑑 𐑢𐑳𐑯 𐑢𐑪𐑟 𐑮𐑦𐑑𐑻𐑯𐑛: %s"
+
+#: ../src/ui/theme-viewer.c:1263
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "x 𐑝𐑨𐑤𐑿 𐑢𐑪𐑟 %d, %d 𐑢𐑪𐑟 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛"
+
+#: ../src/ui/theme-viewer.c:1266
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "y 𐑝𐑨𐑤𐑿 𐑢𐑪𐑟 %d, %d 𐑢𐑪𐑟 𐑦𐑒𐑕𐑐𐑧𐑒𐑑𐑩𐑛"
+
+#: ../src/ui/theme-viewer.c:1331
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "%d 𐑒𐑴𐑹𐑛𐑩𐑯𐑱𐑑 𐑦𐑒𐑕𐑐𐑮𐑧𐑖𐑩𐑯𐑟 𐑐𐑸𐑟𐑛 𐑦𐑯 %g 𐑕𐑧𐑒𐑩𐑯𐑛𐑟 (%g 𐑕𐑧𐑒𐑩𐑯𐑛𐑟 𐑨𐑝𐑼𐑦𐑡)\n"
+
