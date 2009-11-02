@@ -34,12 +34,6 @@
  * clutter_texture_set_from_file() functions are used to copy image
  * data into texture memory and subsequently realize the texture.
  *
- * If texture reads are supported by underlying GL implementation,
- * unrealizing frees image data from texture memory moving to main
- * system memory. Re-realizing then performs the opposite operation.
- * This process allows basic management of commonly limited available
- * texture memory.
- *
  * Note: a ClutterTexture will scale its contents to fit the bounding
  * box requested using clutter_actor_set_size(). To display an area of
  * a texture without scaling, you should set the clip area using
@@ -86,16 +80,9 @@ struct _ClutterTexturePrivate
   ClutterActor                *fbo_source;
   CoglHandle                   fbo_handle;
 
-  /* Non video memory copy of image data */
-  guint                        local_data_width, local_data_height;
-  guint                        local_data_rowstride;
-  guint                        local_data_has_alpha;
-  guchar                      *local_data;
-
   guint                        sync_actor_size : 1;
   guint                        repeat_x : 1;
   guint                        repeat_y : 1;
-  guint                        in_dispose : 1;
   guint                        keep_aspect_ratio : 1;
   guint                        load_size_async : 1;
   guint                        load_data_async : 1;
@@ -172,12 +159,6 @@ static GStaticMutex upload_list_mutex = G_STATIC_MUTEX_INIT;
 static void
 texture_fbo_free_resources (ClutterTexture *texture);
 
-static void
-clutter_texture_save_to_local_data (ClutterTexture *texture);
-
-static void
-clutter_texture_load_from_local_data (ClutterTexture *texture);
-
 GQuark
 clutter_texture_error_quark (void)
 {
@@ -241,14 +222,6 @@ clutter_texture_unrealize (ClutterActor *actor)
   if (priv->material == COGL_INVALID_HANDLE)
     return;
 
-  /* there's no need to read the pixels back when unrealizing inside
-   * a dispose run, and the dispose() call will release the GL
-   * texture data as well, so we can safely bail out now
-   */
-  if ((CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IN_DESTRUCTION) ||
-      priv->in_dispose)
-    return;
-
   CLUTTER_MARK();
 
   if (priv->fbo_source != NULL)
@@ -258,24 +231,6 @@ clutter_texture_unrealize (ClutterActor *actor)
       priv->fbo_handle = COGL_INVALID_HANDLE;
       texture_free_gl_resources (texture);
       return;
-    }
-
-  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
-    {
-      /* Move image data from video to main memory.
-       * GL/ES cant do this - it probably makes sense
-       * to move this kind of thing into a ClutterProxyTexture
-       * where this behaviour can be better controlled.
-       *
-       * Or make it controllable via a property.
-       */
-      if (priv->local_data == NULL)
-	{
-	  clutter_texture_save_to_local_data (texture);
-	  CLUTTER_NOTE (TEXTURE, "moved pixels into system mem");
-	}
-
-      texture_free_gl_resources (texture);
     }
 
   CLUTTER_NOTE (TEXTURE, "Texture unrealized");
@@ -327,25 +282,14 @@ clutter_texture_realize (ClutterActor *actor)
       return;
     }
 
-  if (priv->local_data != NULL)
-    {
-      /* Move any local image data we have from unrealization
-       * back into video memory.
-      */
-      clutter_texture_load_from_local_data (texture);
-    }
-  else
-    {
-      /* If we have no data, then realization is a no-op but
-       * we still want to be in REALIZED state to maintain
-       * invariants. We may have already created the texture
-       * if someone set some data earlier, or we may create it
-       * later if someone sets some data later. The fact that
-       * we may have created it earlier is really a bug, since
-       * it means ClutterTexture can have GL resources without
-       * being realized.
-       */
-    }
+  /* If the texture is not a FBO, then realization is a no-op but
+   * we still want to be in REALIZED state to maintain invariants.
+   * We may have already created the texture if someone set some
+   * data earlier, or we may create it later if someone sets some
+   * data later. The fact that we may have created it earlier is
+   * really a bug, since it means ClutterTexture can have GL
+   * resources without being realized.
+   */
 
   CLUTTER_NOTE (TEXTURE, "Texture realized");
 }
@@ -705,22 +649,8 @@ clutter_texture_dispose (GObject *object)
 
   priv = texture->priv;
 
-  /* mark that we are in dispose, so when the parent class'
-   * dispose implementation will call unrealize on us we'll
-   * not try to copy back the resources from video memory
-   * to system memory
-   */
-  if (!priv->in_dispose)
-    priv->in_dispose = TRUE;
-
   texture_free_gl_resources (texture);
   texture_fbo_free_resources (texture);
-
-  if (priv->local_data != NULL)
-    {
-      g_free (priv->local_data);
-      priv->local_data = NULL;
-    }
 
   clutter_texture_async_load_cancel (texture);
 
@@ -1177,76 +1107,7 @@ clutter_texture_init (ClutterTexture *self)
   priv->sync_actor_size   = TRUE;
   priv->material          = cogl_material_new ();
   priv->fbo_handle        = COGL_INVALID_HANDLE;
-  priv->local_data        = NULL;
   priv->keep_aspect_ratio = FALSE;
-}
-
-static void
-clutter_texture_save_to_local_data (ClutterTexture *texture)
-{
-  ClutterTexturePrivate *priv;
-  int                    bpp;
-  CoglPixelFormat        pixel_format;
-  CoglHandle             cogl_texture;
-
-  priv = texture->priv;
-
-  if (priv->local_data)
-    {
-      g_free (priv->local_data);
-      priv->local_data = NULL;
-    }
-
-  if (priv->material == COGL_INVALID_HANDLE)
-    return;
-
-  cogl_texture = clutter_texture_get_cogl_texture (texture);
-
-  priv->local_data_width = cogl_texture_get_width (cogl_texture);
-  priv->local_data_height = cogl_texture_get_height (cogl_texture);
-  pixel_format = cogl_texture_get_format (cogl_texture);
-  priv->local_data_has_alpha = pixel_format & COGL_A_BIT;
-  bpp = priv->local_data_has_alpha ? 4 : 3;
-
-  /* Align to 4 bytes */
-  priv->local_data_rowstride = (priv->local_data_width * bpp + 3) & ~3;
-
-  priv->local_data = g_malloc (priv->local_data_rowstride
-			       * priv->local_data_height);
-
-  if (cogl_texture_get_data (cogl_texture,
-			     priv->local_data_has_alpha
-			     ? COGL_PIXEL_FORMAT_RGBA_8888_PRE
-			     : COGL_PIXEL_FORMAT_RGB_888,
-			     priv->local_data_rowstride,
-			     priv->local_data) == 0)
-    {
-      g_free (priv->local_data);
-      priv->local_data = NULL;
-    }
-}
-
-static void
-clutter_texture_load_from_local_data (ClutterTexture *texture)
-{
-  ClutterTexturePrivate *priv;
-
-  priv = texture->priv;
-
-  if (priv->local_data == NULL)
-    return;
-
-  clutter_texture_set_from_rgb_data (texture,
-				     priv->local_data,
-				     priv->local_data_has_alpha,
-				     priv->local_data_width,
-				     priv->local_data_height,
-				     priv->local_data_rowstride,
-				     priv->local_data_has_alpha ? 4: 3,
-				     CLUTTER_TEXTURE_RGB_FLAG_PREMULT, NULL);
-
-  g_free (priv->local_data);
-  priv->local_data = NULL;
 }
 
 /**
@@ -1393,15 +1254,7 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   /* Remove old texture */
   texture_free_gl_resources (texture);
 
-  /* Free any saved data so realization doesn't resend it to GL */
-  if (priv->local_data)
-    {
-      g_free (priv->local_data);
-      priv->local_data = NULL;
-    }
-
   /* Use the new texture */
-
   cogl_material_set_layer (priv->material, 0, cogl_tex);
 
   /* The material now holds a reference to the texture so we can
