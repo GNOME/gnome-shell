@@ -449,66 +449,32 @@ clutter_texture_allocate (ClutterActor           *self,
 }
 
 static void
-clutter_texture_set_fbo_projection (ClutterActor *self)
+set_viewport_with_buffer_under_fbo_source (ClutterActor *fbo_source,
+                                           int viewport_width,
+                                           int viewport_height)
 {
-  ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
   ClutterVertex verts[4];
-  gfloat viewport[4];
-  gfloat x_min, x_max, y_min, y_max;
-  gfloat tx_min, tx_max, ty_min, ty_max;
-  gfloat tan_angle, near_size;
-  ClutterPerspective perspective;
-  ClutterStage *stage;
+  float x_min = G_MAXFLOAT, y_min = G_MAXFLOAT;
   int i;
 
-  /* Get the bounding rectangle of the source as drawn in screen
-     coordinates */
-  clutter_actor_get_abs_allocation_vertices (priv->fbo_source, verts);
+  /* Get the actors allocation transformed into screen coordinates.
+   *
+   * XXX: Note: this may not be a bounding box for the actor, since an
+   * actor with depth may escape the box due to its perspective
+   * projection. */
+  clutter_actor_get_abs_allocation_vertices (fbo_source, verts);
 
-  x_min = x_max = verts[0].x;
-  y_min = y_max = verts[0].y;
-
-  for (i = 1; i < G_N_ELEMENTS (verts); ++i)
+  for (i = 0; i < G_N_ELEMENTS (verts); ++i)
     {
       if (verts[i].x < x_min)
 	x_min = verts[i].x;
-
-      if (verts[i].x > x_max)
-	x_max = verts[i].x;
-
       if (verts[i].y < y_min)
 	y_min = verts[i].y;
-
-      if (verts[i].y > y_max)
-	y_max = verts[i].y;
     }
 
-  stage = CLUTTER_STAGE (clutter_actor_get_stage (self));
-  clutter_stage_get_perspective (stage, &perspective);
-
-  /* Convert the coordinates back to [-1,1] range */
-  cogl_get_viewport (viewport);
-
-  tx_min = (x_min / viewport[2])
-         * 2 - 1.0;
-  tx_max = (x_max / viewport[2])
-         * 2 - 1.0;
-  ty_min = (y_min / viewport[3])
-         * 2 - 1.0;
-  ty_max = (y_max / viewport[3])
-         * 2 - 1.0;
-
-  /* Set up a projection matrix so that the actor will be projected as
-     if it was drawn at its original location */
-  tan_angle = tanf ((perspective.fovy / 2) * (G_PI / 180.0));
-  near_size = perspective.z_near * tan_angle;
-
-  cogl_frustum ((tx_min * near_size),
-                (tx_max * near_size),
-                (-ty_min * near_size),
-                (-ty_max * near_size),
-                perspective.z_near,
-                perspective.z_far);
+  /* translate the viewport so that the source actor lands on the
+   * sub-region backed by the offscreen draw buffer... */
+  cogl_set_viewport (-x_min, -y_min, viewport_width, viewport_height);
 }
 
 static void
@@ -527,8 +493,8 @@ update_fbo (ClutterActor *self)
   if (context->shaders)
     shader = clutter_actor_get_shader (context->shaders->data);
 
-  /* Temporarily turn of the shader on the top of the context's
-   * shader stack, to restore the GL pipeline to it's natural state.
+  /* Temporarily turn off the shader on the top of the context's shader stack,
+   * to restore the GL pipeline to it's natural state.
    */
   if (shader)
     clutter_shader_set_is_enabled (shader, FALSE);
@@ -542,23 +508,34 @@ update_fbo (ClutterActor *self)
       gfloat stage_width, stage_height;
       ClutterActor *source_parent;
 
+      /* We copy the projection and modelview matrices from the stage to
+       * the offscreen draw buffer and create a viewport larger than the
+       * offscreen draw buffer - the same size as the stage.
+       *
+       * The fbo source actor gets rendered into this stage size viewport at the
+       * same position it normally would after applying all it's usual parent
+       * transforms and it's own scale and rotate transforms etc.
+       *
+       * The viewport is offset such that the offscreen buffer will be positioned
+       * under the actor.
+       */
+
       clutter_stage_get_perspective (CLUTTER_STAGE (stage), &perspective);
       clutter_actor_get_size (stage, &stage_width, &stage_height);
 
-      /* Use below to set the modelview matrix as if the viewport
-         was still the same size as the stage */
+      /* Set the projection matrix modelview matrix and viewport size as
+       * they are for the stage... */
       _cogl_setup_viewport (stage_width, stage_height,
                             perspective.fovy,
                             perspective.aspect,
                             perspective.z_near,
                             perspective.z_far);
 
-      /* Use a projection matrix that makes the actor appear as it
-         would if it was rendered at its normal screen location */
-      clutter_texture_set_fbo_projection (self);
-
-      /* Reset the viewport to the size of the FBO */
-      cogl_set_viewport (0, 0, priv->image_width, priv->image_height);
+      /* Negatively offset the viewport so that the offscreen draw buffer is
+       * position underneath the fbo_source actor... */
+      set_viewport_with_buffer_under_fbo_source (priv->fbo_source,
+                                                 stage_width,
+                                                 stage_height);
 
       /* Reapply the source's parent transformations */
       if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
@@ -578,13 +555,6 @@ update_fbo (ClutterActor *self)
 
   /* Restore drawing to the previous draw buffer */
   cogl_pop_draw_buffer ();
-
-  /* Restore the perspective matrix using cogl_perspective so that
-     the inverse matrix will be right */
-  cogl_perspective (perspective.fovy,
-                    perspective.aspect,
-                    perspective.z_near,
-                    perspective.z_far);
 
   /* If there is a shader on top of the shader stack, turn it back on. */
   if (shader)
