@@ -820,6 +820,10 @@ cogl_read_pixels (int x,
   if (!cogl_is_offscreen (draw_buffer))
     y = draw_buffer_height - y - height;
 
+  /* make sure any batched primitives get emitted to the GL driver before
+   * issuing our read pixels... */
+  cogl_flush ();
+
   /* Setup the pixel store parameters that may have been changed by
      Cogl */
   glPixelStorei (GL_PACK_ALIGNMENT, 4);
@@ -828,10 +832,6 @@ cogl_read_pixels (int x,
   glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
   glPixelStorei (GL_PACK_SKIP_ROWS, 0);
 #endif /* HAVE_COGL_GL */
-
-  /* make sure any batched primitives get emitted to the GL driver before
-   * issuing our read pixels... */
-  cogl_flush ();
 
   glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
