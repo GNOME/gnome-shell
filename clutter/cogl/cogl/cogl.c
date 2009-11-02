@@ -809,8 +809,13 @@ cogl_read_pixels (int x,
   draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
-     so 0 is the bottom row */
-  y = draw_buffer_height - y - height;
+   * so 0 is the bottom row
+   *
+   * NB: all offscreen rendering is done upside down so no conversion
+   * is necissary in this case.
+   */
+  if (!cogl_is_offscreen (draw_buffer))
+    y = draw_buffer_height - y - height;
 
   /* Setup the pixel store parameters that may have been changed by
      Cogl */
