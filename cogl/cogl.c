@@ -806,6 +806,9 @@ cogl_read_pixels (int x,
   temprow = g_alloca (rowstride * sizeof (guint8));
 
   draw_buffer = _cogl_get_draw_buffer ();
+
+  _cogl_draw_buffer_flush_state (draw_buffer, 0);
+
   draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
