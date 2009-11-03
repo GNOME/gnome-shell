@@ -12,6 +12,7 @@ const TELEPATHY = "org.freedesktop.Telepathy.";
 const CONN = TELEPATHY + "Connection";
 const CHANNEL = TELEPATHY + "Channel";
 const CHANNELTEXT = CHANNEL + ".Type.Text";
+const ACCOUNTMANAGER = TELEPATHY + 'AccountManager';
 
 const ClientIface = {
     name: TELEPATHY + "Client",
@@ -32,10 +33,32 @@ const ClientObserverIface = {
 
 const ConnectionIface = {
     name: CONN,
+    methods: [
+        // This is deprecated, but the alternative requires building
+        // another interface object...
+        { name: "ListChannels",
+          inSignature: "",
+          outSignature: "a(osuu)"
+        }
+    ],
     signals: [
         { name: 'StatusChanged', inSignature: 'u' }
     ]
 };
+
+function Connection(path, name) {
+    this._init(path, name);
+};
+
+Connection.prototype = {
+    _init: function(path, name) {
+        if (!name)
+            name = nameify(path);
+        DBus.session.proxifyObject(this, name, path);
+    }
+};
+
+DBus.proxifyPrototype(Connection.prototype, ConnectionIface);
 
 const ConnectionAvatarsIface = {
     name: CONN + '.Interface.Avatars',
@@ -47,21 +70,30 @@ const ConnectionAvatarsIface = {
     ]
 };
 
-function Connection(path) {
-    this._init(path);
+function ConnectionAvatars(path, name) {
+    this._init(path, name);
 };
 
-Connection.prototype = {
-    _init: function(path) {
-        DBus.session.proxifyObject(this, nameify(path), path);
+ConnectionAvatars.prototype = {
+    _init: function(path, name) {
+        if (!name)
+            name = nameify(path);
+        DBus.session.proxifyObject(this, name, path);
     }
 };
 
-DBus.proxifyPrototype(Connection.prototype, ConnectionIface);
-DBus.proxifyPrototype(Connection.prototype, ConnectionAvatarsIface);
+DBus.proxifyPrototype(ConnectionAvatars.prototype, ConnectionAvatarsIface);
 
 const ChannelIface = {
     name: CHANNEL,
+    properties: [
+        { name: "TargetHandle",
+          signature: "u",
+          access: "read" },
+        { name: "TargetID",
+          signature: "s",
+          access: "read" }
+    ],
     signals: [
         { name: 'Closed', inSignature: '' }
     ]
@@ -104,6 +136,48 @@ ChannelText.prototype = {
 
 DBus.proxifyPrototype(ChannelText.prototype, ChannelTextIface);
 
+const AccountManagerIface = {
+    name: ACCOUNTMANAGER,
+
+    properties: [{ name: "ValidAccounts",
+                   signature: "ao",
+                   access: "read" }]
+};
+
+function AccountManager() {
+    this._init();
+}
+
+AccountManager.prototype = {
+    _init: function() {
+        DBus.session.proxifyObject(this,
+                                   ACCOUNTMANAGER,
+                                   pathify(ACCOUNTMANAGER));
+    }
+};
+
+DBus.proxifyPrototype(AccountManager.prototype, AccountManagerIface);
+
+const AccountIface = {
+    name: 'org.freedesktop.Telepathy.Account',
+
+    properties: [{ name: "Connection",
+                   signature: "o",
+                   access: "read" }]
+};
+
+function Account(name, path) {
+    this._init(name, path);
+}
+
+Account.prototype = {
+    _init: function(name, path) {
+        DBus.session.proxifyObject(this, name, path);
+    }
+};
+
+DBus.proxifyPrototype(Account.prototype, AccountIface);
+
 let nameify = function(path) {
     return path.substr(1).replace('/', '.', 'g');
 };
@@ -125,6 +199,53 @@ Messaging.prototype = {
             function(name){log("Lost name " + name);});
 
         this._conns = {};
+        this._channels = {};
+
+        // Acquire existing connections. (This wouldn't really be
+        // needed if gnome-shell was only being started at the start
+        // of a session, but it's very useful for making things
+        // continue to work after restarting the shell.)
+        let accountManager = new AccountManager();
+        accountManager.GetRemote('ValidAccounts', Lang.bind(this, this._gotValidAccounts));
+    },
+
+    _gotValidAccounts: function(accounts, excp) {
+        if (!accounts)
+            return;
+
+        for (let i = 0; i < accounts.length; i++) {
+            let account = new Account(ACCOUNTMANAGER, accounts[i]);
+            account.GetRemote('Connection', Lang.bind(this,
+                function (conn_path, excp) {
+                    if (!conn_path)
+                        return;
+
+                    let conn = new Connection(conn_path);
+                    conn.ListChannelsRemote(Lang.bind(this,
+                        function(channels, excp) {
+                            if (!channels) {
+                                log('no channels on ' + conn.getPath() + ': ' + excp);
+                                return;
+                            }
+                            for (let i = 0; i < channels.length; i++) {
+                                let [path, channel_type, handle_type, handle] = channels[i];
+                                if (channel_type != CHANNELTEXT)
+                                    continue;
+                                if (this._channels[path])
+                                    continue;
+
+                                let connName = nameify(conn.getPath());
+                                let channel = new Channel(connName, path);
+                                channel.GetAllRemote(Lang.bind(this,
+                                    function(props, excp) {
+                                        this._addChannel(conn, path,
+                                                         props['TargetHandle'],
+                                                         props['TargetID']);
+                                    }));
+                            }
+                        }));
+                }));
+        }
     },
 
     get Interfaces() {
@@ -148,7 +269,11 @@ Messaging.prototype = {
 
         let conn_name = nameify(conn_path);
         for (let i = 0; i < channels.length; i++) {
-            new Source(conn, conn_name, channels[i][0], channels[i][1]);
+            let channelPath = channels[i][0];
+            let props = channels[i][1];
+            let targetHandle = props[CHANNEL + '.TargetHandle'];
+            let targetId = props[CHANNEL + '.TargetID'];
+            this._addChannel(conn, channelPath, targetHandle, targetId);
         }
 
         return [true];
@@ -158,20 +283,27 @@ Messaging.prototype = {
         if (status == Connection_Status.Disconnected) {
             delete this._conns[connection.getPath()];
         }
+    },
+
+    _addChannel: function(conn, channelPath, targetHandle, targetId) {
+        this._channels[channelPath] = new Source(conn, channelPath, targetHandle, targetId);
     }
 };
 
 DBus.conformExport(Messaging.prototype, ClientIface);
 DBus.conformExport(Messaging.prototype, ClientObserverIface);
 
-function Source(conn, conn_name, channel_path, channel_props) {
-    this._init(conn, conn_name, channel_path, channel_props);
+function Source(conn, channelPath, channel_props) {
+    this._init(conn, channelPath, channel_props);
 }
 
 Source.prototype = {
-    _init: function(conn, conn_name, channel_path, channel_props) {
-        this._targetId = channel_props[CHANNEL + '.TargetID'];
+    _init: function(conn, channelPath, targetHandle, targetId) {
+        let connName = nameify(conn.getPath());
+        this._channel = new Channel(connName, channelPath);
+        this._closedId = this._channel.connect('Closed', Lang.bind(this, this._channelClosed));
 
+        this._targetId = targetId;
         log('channel for ' + this._targetId);
 
         this._pendingMessages = null;
@@ -181,13 +313,10 @@ Source.prototype = {
         // indication of "no avatar available", so there's no way we
         // can reliably wait for it to finish before displaying a
         // message. So we use RequestAvatar() instead.
-        let targethandle = channel_props[CHANNEL + '.TargetHandle'];
-        conn.RequestAvatarRemote(targethandle, Lang.bind(this, this._gotAvatar));
+        let connAv = new ConnectionAvatars(conn.getPath());
+        connAv.RequestAvatarRemote(targetHandle, Lang.bind(this, this._gotAvatar));
 
-        this._channel = new Channel(conn_name, channel_path);
-        this._closedId = this._channel.connect('Closed', Lang.bind(this, this._channelClosed));
-
-        this._channelText = new ChannelText(conn_name, channel_path);
+        this._channelText = new ChannelText(connName, channelPath);
         this._receivedId = this._channelText.connect('Received', Lang.bind(this, this._receivedMessage));
 
         this._channelText.ListPendingMessagesRemote(false,
