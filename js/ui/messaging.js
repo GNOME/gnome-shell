@@ -174,13 +174,13 @@ Source.prototype = {
 
         log('channel for ' + this._targetId);
 
-	this._pendingMessages = null;
+        this._pendingMessages = null;
 
-	// FIXME: RequestAvatar is deprecated in favor of
-	// RequestAvatars; but RequestAvatars provides no explicit
-	// indication of "no avatar available", so there's no way we
-	// can reliably wait for it to finish before displaying a
-	// message. So we use RequestAvatar() instead.
+        // FIXME: RequestAvatar is deprecated in favor of
+        // RequestAvatars; but RequestAvatars provides no explicit
+        // indication of "no avatar available", so there's no way we
+        // can reliably wait for it to finish before displaying a
+        // message. So we use RequestAvatar() instead.
         let targethandle = channel_props[CHANNEL + '.TargetHandle'];
         conn.RequestAvatarRemote(targethandle, Lang.bind(this, this._gotAvatar));
 
@@ -193,34 +193,34 @@ Source.prototype = {
         this._channelText.ListPendingMessagesRemote(false,
             Lang.bind(this, function(msgs, excp) {
                 if (msgs) {
-		    log('got pending messages for ' + this._targetId);
-		    this._pendingMessages = msgs;
-		    this._processPendingMessages();
-		}
-	    }));
+                    log('got pending messages for ' + this._targetId);
+                    this._pendingMessages = msgs;
+                    this._processPendingMessages();
+                }
+            }));
     },
 
     _gotAvatar: function(result, excp) {
         if (result) {
             let bytes = result[0];
             this._avatar = Shell.TextureCache.get_default().load_from_data(bytes, bytes.length, AVATAR_SIZE, AVATAR_SIZE);
-	    log('got avatar for ' + this._targetId);
+            log('got avatar for ' + this._targetId);
         } else {
             // fallback avatar (FIXME)
             this._avatar = Shell.TextureCache.get_default().load_icon_name("stock_person", AVATAR_SIZE);
-	    log('using default avatar for ' + this._targetId);
+            log('using default avatar for ' + this._targetId);
         }
 
         this._processPendingMessages();
     },
 
     _processPendingMessages: function() {
-	if (!this._avatar || !this._pendingMessages)
-	    return;
+        if (!this._avatar || !this._pendingMessages)
+            return;
 
         for (let i = 0; i < this._pendingMessages.length; i++)
             this._receivedMessage.apply(this, [this._channel].concat(this._pendingMessages[i]));
-	this._pendingMessages = null;
+        this._pendingMessages = null;
     },
 
     _channelClosed: function() {
