@@ -826,14 +826,14 @@ cogl_read_pixels (int x,
 
   /* Setup the pixel store parameters that may have been changed by
      Cogl */
-  glPixelStorei (GL_PACK_ALIGNMENT, 4);
+  GE (glPixelStorei (GL_PACK_ALIGNMENT, 1));
 #ifdef HAVE_COGL_GL
-  glPixelStorei (GL_PACK_ROW_LENGTH, 0);
-  glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
-  glPixelStorei (GL_PACK_SKIP_ROWS, 0);
+  GE (glPixelStorei (GL_PACK_ROW_LENGTH, 0));
+  GE (glPixelStorei (GL_PACK_SKIP_PIXELS, 0));
+  GE (glPixelStorei (GL_PACK_SKIP_ROWS, 0));
 #endif /* HAVE_COGL_GL */
 
-  glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+  GE (glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels));
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
