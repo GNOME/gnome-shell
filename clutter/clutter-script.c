@@ -804,7 +804,7 @@ json_object_end (JsonParser *parser,
       pinfo = g_slice_new (PropertyInfo);
 
       pinfo->name = g_strdup (name);
-      pinfo->node = node;
+      pinfo->node = json_node_copy (node);
       pinfo->pspec = NULL;
 
       oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
@@ -1617,6 +1617,9 @@ property_info_free (gpointer data)
   if (G_LIKELY (data))
     {
       PropertyInfo *pinfo = data;
+
+      if (pinfo->node)
+        json_node_free (pinfo->node);
 
       if (pinfo->pspec)
         g_param_spec_unref (pinfo->pspec);
