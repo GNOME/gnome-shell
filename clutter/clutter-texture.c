@@ -571,7 +571,7 @@ clutter_texture_paint (ClutterActor *self)
 	  clutter_texture_set_fbo_projection (self);
 
 	  /* Reset the viewport to the size of the FBO */
-	  cogl_viewport (priv->image_width, priv->image_height);
+	  cogl_set_viewport (0, 0, priv->image_width, priv->image_height);
 
 	  /* Reapply the source's parent transformations */
 	  if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
