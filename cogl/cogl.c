@@ -538,10 +538,10 @@ _cogl_disable_clip_planes (void)
 }
 
 void
-_cogl_set_viewport (int x,
-                    int y,
-                    int width,
-                    int height)
+cogl_set_viewport (int x,
+                   int y,
+                   int width,
+                   int height)
 {
   CoglHandle draw_buffer;
 
@@ -562,7 +562,7 @@ void
 cogl_viewport (guint width,
 	       guint height)
 {
-  _cogl_set_viewport (0, 0, width, height);
+  cogl_set_viewport (0, 0, width, height);
 }
 
 void
@@ -579,7 +579,7 @@ _cogl_setup_viewport (guint width,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_viewport (width, height);
+  cogl_set_viewport (0, 0, width, height);
 
   /* For Ortho projection.
    * _cogl_matrix_stack_ortho (projection_stack, 0, width, 0,  height, -1, 1);
