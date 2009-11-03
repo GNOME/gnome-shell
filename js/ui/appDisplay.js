@@ -166,15 +166,15 @@ Signals.addSignalMethods(MenuItem.prototype);
  * showPrefs - a boolean indicating if this AppDisplay should contain preference
  *             applets, rather than applications
  */
-function AppDisplay(showPrefs) {
-    this._init(showPrefs);
+function AppDisplay(showPrefs, flags) {
+    this._init(showPrefs, flags);
 }
 
 AppDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init : function(showPrefs) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this);
+    _init : function(showPrefs, flags) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, flags);
 
         this._showPrefs = showPrefs;
 
@@ -190,155 +190,9 @@ AppDisplay.prototype = {
             this._appsStale = true;
             this._redisplay(GenericDisplay.RedisplayFlags.NONE);
         }));
-
-        this._focusInMenus = true;
-        this._activeMenuIndex = -1;
-        this._activeMenu = null;
-        this._activeMenuApps = null;
-        this._menuDisplay = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                          spacing: MENU_SPACING
-                                       });
-
-        this.connect('expanded', Lang.bind(this, function (self) {
-            this._filterReset();
-        }));
-        this._filterReset();
-    },
-
-    moveRight: function() {
-        if (this._expanded && this._focusInMenu) {
-            this._focusInMenu = false;
-            this._activeMenu.setState(MENU_ENTERED);
-            this.selectFirstItem();
-        }
-    },
-
-    moveLeft: function() {
-        if (this._expanded && !this._focusInMenu) {
-            this._activeMenu.setState(MENU_SELECTED);
-            this.unsetSelected();
-            this._focusInMenu = true;
-        }
-    },
-
-    // Override genericDisplay.js
-    getNavigationArea: function() {
-        return this._menuDisplay;
-    },
-
-    selectUp: function() {
-        if (!(this._expanded && this._focusInMenu))
-            return GenericDisplay.GenericDisplay.prototype.selectUp.call(this);
-        this._selectMenuIndex(this._activeMenuIndex - 1);
-        return true;
-    },
-
-    selectDown: function() {
-        if (!(this._expanded && this._focusInMenu))
-            return GenericDisplay.GenericDisplay.prototype.selectDown.call(this);
-        this._selectMenuIndex(this._activeMenuIndex+1);
-        return true;
-    },
-
-    setSearch: function(text) {
-        let lowertext = text.toLowerCase();
-        if (lowertext == this._search)
-            return;
-
-        // We prepare menu matches up-front, so that we don't
-        // need to go over all menu items for each application
-        // and then get all applications for a matching menu
-        // to see if a particular application passed to
-        // _isInfoMatching() is a match.
-        let terms = lowertext.split(/\s+/);
-        this._menuSearchAppMatches = {};
-        for (let i = 0; i < terms.length; i++) {
-            let term = terms[i];
-            this._menuSearchAppMatches[term] = {};
-            for (let j = 0; j < this._menus.length; j++) {
-                let menuItem = this._menus[j];
-                // Match only on the beginning of the words in category names,
-                // because otherwise it introduces unnecessary noise in the results.
-                if (menuItem.name.toLowerCase().indexOf(term) == 0 ||
-                    menuItem.name.toLowerCase().indexOf(" " + term) > 0) {
-                    let menuApps = this._appSystem.get_applications_for_menu(menuItem.id);
-                    for (let k = 0; k < menuApps.length; k++) {
-                        let menuApp = menuApps[k];
-                        this._menuSearchAppMatches[term][menuApp.get_id()] = true;
-                    }
-                }
-            }
-        }
-
-        GenericDisplay.GenericDisplay.prototype.setSearch.call(this, text);
-    },
-
-    // Protected overrides
-
-    _filterActive: function() {
-        // We always have a filter now since a menu must be selected
-        return true;
-    },
-
-    _filterReset: function() {
-        GenericDisplay.GenericDisplay.prototype._filterReset.call(this);
-        this._selectMenuIndex(0);
     },
 
     //// Private ////
-
-    _emitStateChange: function() {
-        this.emit('state-changed');
-    },
-
-    _selectMenuIndex: function(index) {
-        if (index < 0 || index >= this._menus.length)
-            return;
-        this._menuDisplays[index].setState(MENU_SELECTED);
-    },
-
-    _getMostUsed: function() {
-        let context = "";
-        let usage = Shell.AppUsage.get_default();
-        return usage.get_most_used(context, 30);
-    },
-
-    _addMenuItem: function(name, id, index) {
-        let display = new MenuItem(name, id);
-        this._menuDisplays.push(display);
-        display.connect('state-changed', Lang.bind(this, function (display) {
-            let activated = display.getState() != MENU_UNSELECTED;
-            if (!activated && display == this._activeMenu) {
-                this._activeMenuIndex = -1;
-                this._activeMenu = null;
-            } else if (activated) {
-                if (display != this._activeMenu && this._activeMenu != null)
-                    this._activeMenu.setState(MENU_UNSELECTED);
-                this._activeMenuIndex = index;
-                this._activeMenu = display;
-                if (id == null) {
-                    this._activeMenuApps = this._getMostUsed();
-                } else {
-                    this._activeMenuApps = this._appSystem.get_applications_for_menu(id);
-                }
-            }
-            this._redisplay(GenericDisplay.RedisplayFlags.FULL);
-        }));
-        this._menuDisplay.append(display.actor, 0);
-    },
-
-    _redisplayMenus: function() {
-        this._menuDisplay.remove_all();
-        this._addMenuItem(_("Frequent"), null, 'gtk-select-all');
-        // Adding an empty box here results in double spacing between
-        // "Frequent" and the other items.
-        let separator_actor = new Big.Box();
-        this._menuDisplay.append(separator_actor, 0);
-        for (let i = 0; i < this._menus.length; i++) {
-            let menu = this._menus[i];
-            this._addMenuItem(menu.name, menu.id, i+1);
-        }
-    },
 
     _addApp: function(appInfo) {
         let appId = appInfo.get_id();
@@ -363,33 +217,33 @@ AppDisplay.prototype = {
             }
         } else {
             // Loop over the toplevel menu items, load the set of desktop file ids
-            // associated with each one, skipping empty menus
+            // associated with each one.
             let allMenus = this._appSystem.get_menus();
-            this._menus = [];
             for (let i = 0; i < allMenus.length; i++) {
                 let menu = allMenus[i];
                 let menuApps = this._appSystem.get_applications_for_menu(menu.id);
-                let hasVisibleApps = menuApps.some(function (app) { return !app.get_is_nodisplay(); });
-                if (!hasVisibleApps) {
-                    continue;
-                }
-                this._menus.push(menu);
+
                 for (let j = 0; j < menuApps.length; j++) {
                     let app = menuApps[j];
                     this._addApp(app);
                 }
             }
-            this._redisplayMenus();
         }
 
         this._appsStale = false;
         return false;
     },
 
-    // Stub this out; the app display always has a category selected
     _setDefaultList : function() {
-        this._matchedItems = {};
+        this._matchedItems = this._allItems;
         this._matchedItemKeys = [];
+        for (let itemId in this._matchedItems) {
+            let app = this._allItems[itemId];
+            if (app.get_is_nodisplay())
+                continue;
+            this._matchedItemKeys.push(itemId);
+        }
+        this._matchedItemKeys.sort(Lang.bind(this, this._compareItems));
     },
 
     // Compares items associated with the item ids based on the alphabetical order
@@ -409,25 +263,7 @@ AppDisplay.prototype = {
         // Don't show nodisplay items here
         if (itemInfo.get_is_nodisplay())
             return false;
-        // Search takes precedence; not typically useful to search within a
-        // menu
-        if (this._activeMenu == null || search != "")
-            return this._isInfoMatchingSearch(itemInfo, search);
-        else
-            return this._isInfoMatchingMenu(itemInfo);
-    },
 
-    _isInfoMatchingMenu: function(itemInfo) {
-        let id = itemInfo.get_id();
-        for (let i = 0; i < this._activeMenuApps.length; i++) {
-            let activeApp = this._activeMenuApps[i];
-            if (activeApp.get_id() == id)
-                return true;
-        }
-        return false;
-    },
-
-    _isInfoMatchingSearch: function(itemInfo, search) {
         if (search == null || search == '')
             return true;
 
@@ -453,13 +289,6 @@ AppDisplay.prototype = {
         } else {
             if (exec.indexOf(search) >= 0)
                 return true;
-        }
-
-        if (this._menuSearchAppMatches[search]) {
-            if (this._menuSearchAppMatches[search].hasOwnProperty(itemInfo.get_id()))
-                return true;
-        } else {
-            log("Missing an entry for search term " + search + " in this._menuSearchAppMatches");
         }
 
         return false;

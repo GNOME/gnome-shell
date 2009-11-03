@@ -75,15 +75,15 @@ function _getIndexWrapped(index, increment, length) {
    return (index + increment + length) % length;
 }
 
-function _createDisplay(displayType) {
+function _createDisplay(displayType, flags) {
     if (displayType == APPS)
-        return new AppDisplay.AppDisplay();
+        return new AppDisplay.AppDisplay(false, flags);
     else if (displayType == PREFS)
-        return new AppDisplay.AppDisplay(true);
+        return new AppDisplay.AppDisplay(true, flags);
     else if (displayType == DOCS)
-        return new DocDisplay.DocDisplay();
+        return new DocDisplay.DocDisplay(flags);
     else if (displayType == PLACES)
-        return new PlaceDisplay.PlaceDisplay();
+        return new PlaceDisplay.PlaceDisplay(flags);
     return null;
 }
 
@@ -162,32 +162,20 @@ Pane.prototype = {
 }
 Signals.addSignalMethods(Pane.prototype);
 
-function ResultArea(displayType, enableNavigation) {
-    this._init(displayType, enableNavigation);
+function ResultArea(displayType, flags) {
+    this._init(displayType, flags);
 }
 
 ResultArea.prototype = {
-    _init : function(displayType, enableNavigation) {
+    _init : function(displayType, flags) {
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
         this.resultsContainer = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
                                               spacing: DEFAULT_PADDING
                                             });
         this.actor.append(this.resultsContainer, Big.BoxPackFlags.EXPAND);
-        this.navContainer = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL });
-        this.resultsContainer.append(this.navContainer, Big.BoxPackFlags.NONE);
 
-        this.display = _createDisplay(displayType);
-
-        this.navArea = this.display.getNavigationArea();
-        if (enableNavigation && this.navArea)
-            this.navContainer.append(this.navArea, Big.BoxPackFlags.EXPAND);
-
+        this.display = _createDisplay(displayType, flags);
         this.resultsContainer.append(this.display.actor, Big.BoxPackFlags.EXPAND);
-
-        this.controlBox = new Big.Box({ x_align: Big.BoxAlignment.CENTER });
-        this.controlBox.append(this.display.displayControl, Big.BoxPackFlags.NONE);
-        this.actor.append(this.controlBox, Big.BoxPackFlags.NONE);
-
         this.display.load();
     }
 }
@@ -235,8 +223,8 @@ ResultPane.prototype = {
 
     // Create a display of displayType and pack it into this pane's
     // content area.  Return the display.
-    packResults: function(displayType, enableNavigation) {
-        let resultArea = new ResultArea(displayType, enableNavigation);
+    packResults: function(displayType) {
+        let resultArea = new ResultArea(displayType);
 
         createPaneForDetails(this._dash, resultArea.display);
 
@@ -713,7 +701,7 @@ Dash.prototype = {
         this._appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreAppsPane == null) {
                 this._moreAppsPane = new ResultPane(this);
-                this._moreAppsPane.packResults(APPS, true);
+                this._moreAppsPane.packResults(APPS);
                 this._addPane(this._moreAppsPane);
                 link.setPane(this._moreAppsPane);
            }
@@ -741,7 +729,7 @@ Dash.prototype = {
         this._docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
             if (this._moreDocsPane == null) {
                 this._moreDocsPane = new ResultPane(this);
-                this._moreDocsPane.packResults(DOCS, true);
+                this._moreDocsPane.packResults(DOCS);
                 this._addPane(this._moreDocsPane);
                 link.setPane(this._moreDocsPane);
            }
@@ -796,8 +784,7 @@ Dash.prototype = {
                                                                    this._showSingleSearchSection(section.type);
                                                                }));
             this._searchResultsSection.content.append(section.header.actor, Big.BoxPackFlags.NONE);
-            section.resultArea = new ResultArea(section.type, false);
-            section.resultArea.controlBox.hide();
+            section.resultArea = new ResultArea(section.type, GenericDisplay.GenericDisplayFlags.DISABLE_VSCROLLING);
             this._searchResultsSection.content.append(section.resultArea.actor, Big.BoxPackFlags.EXPAND);
             createPaneForDetails(this, section.resultArea.display);
         }
@@ -846,6 +833,11 @@ Dash.prototype = {
                 selectionSet = true;
             }
         }
+
+        // Here work around a bug that I never quite tracked down
+        // the root cause of; it appeared that the search results
+        // section was getting a 0 height allocation.
+        this._searchResultsSection.content.queue_relayout();
 
         return false;
     },
@@ -914,7 +906,6 @@ Dash.prototype = {
             if (section.type == type) {
                 // This will be the only section shown.
                 section.resultArea.display.selectFirstItem();
-                section.resultArea.controlBox.show();
                 let itemCount = section.resultArea.display.getMatchedItemsCount();
                 let itemCountText = itemCount + "";
                 section.header.actor.hide();
@@ -938,8 +929,6 @@ Dash.prototype = {
                 let section = this._searchSections[i];
                 if (section.type == this._searchResultsSingleShownSection) {
                     // This will no longer be the only section shown.
-                    section.resultArea.display.displayPage(0);
-                    section.resultArea.controlBox.hide();
                     let itemCount = section.resultArea.display.getMatchedItemsCount();
                     if (itemCount != 0) {
                         section.header.actor.show();

@@ -470,15 +470,15 @@ PlaceDisplayItem.prototype = {
 
 };
 
-function PlaceDisplay() {
-    this._init();
+function PlaceDisplay(flags) {
+    this._init(flags);
 }
 
 PlaceDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
-    _init: function() {
-        GenericDisplay.GenericDisplay.prototype._init.call(this);
+    _init: function(flags) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, flags);
         this._stale = true;
         Main.placesManager.connect('places-updated', Lang.bind(this, function (e) {
             this._stale = true;

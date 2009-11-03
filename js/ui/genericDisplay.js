@@ -11,6 +11,7 @@ const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
+const St = imports.gi.St;
 
 const Button = imports.ui.button;
 const DND = imports.ui.dnd;
@@ -18,7 +19,6 @@ const Link = imports.ui.link;
 const Main = imports.ui.main;
 
 const RedisplayFlags = { NONE: 0,
-                         RESET_CONTROLS: 1 << 0,
                          FULL: 1 << 1,
                          SUBSEARCH: 1 << 2,
                          IMMEDIATE: 1 << 3 };
@@ -320,31 +320,36 @@ GenericDisplayItem.prototype = {
 
 Signals.addSignalMethods(GenericDisplayItem.prototype);
 
+const GenericDisplayFlags = {
+    DISABLE_VSCROLLING: 1 << 0
+}
+
 /* This is a virtual class that represents a display containing a collection of items
  * that can be filtered with a search string.
  */
-function GenericDisplay() {
-    this._init();
+function GenericDisplay(flags) {
+    this._init(flags);
 }
 
 GenericDisplay.prototype = {
-    _init : function() {
+    _init : function(flags) {
+        let disableVScrolling = (flags & GenericDisplayFlags.DISABLE_VSCROLLING) != 0;
         this._search = '';
         this._expanded = false;
 
-        this._maxItemsPerPage = null;
-        this._list = new Shell.OverflowList({ spacing: 6.0,
-                                              item_height: ITEM_DISPLAY_HEIGHT });
-
-        this._list.connect('notify::n-pages', Lang.bind(this, function () {
-            this._updateDisplayControl(true);
-        }));
-        this._list.connect('notify::page', Lang.bind(this, function () {
-            this._updateDisplayControl(false);
-        }));
+        if (disableVScrolling) {
+            this.actor = this._list = new Shell.OverflowList({ spacing: 6,
+                                                                 item_height: ITEM_DISPLAY_HEIGHT });
+        } else {
+            this.actor = new St.ScrollView({ x_fill: true, y_fill: true });
+            this.actor.get_hscroll_bar().hide();
+            this._list = new St.BoxLayout({ style_class: "generic-display-container",
+                                             vertical: true });
+            this.actor.add_actor(this._list);
+        }
 
         this._pendingRedisplay = RedisplayFlags.NONE;
-        this._list.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
+        this.actor.connect('notify::mapped', Lang.bind(this, this._onMappedNotify));
 
         // map<itemId, Object> where Object represents the item info
         this._allItems = {};
@@ -356,13 +361,6 @@ GenericDisplay.prototype = {
         this._displayedItems = {};
         this._openDetailIndex = -1;
         this._selectedIndex = -1;
-        // These two are public - .actor is the normal "actor subclass" property,
-        // but we also expose a .displayControl actor which is separate.
-        // See also getNavigationArea.
-        this.actor = this._list;
-        this.displayControl = new Big.Box({ background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
-                                            spacing: 12,
-                                            orientation: Big.BoxOrientation.HORIZONTAL});
     },
 
     //// Public methods ////
@@ -373,7 +371,7 @@ GenericDisplay.prototype = {
         if (lowertext == this._search) {
             return;
         }
-        let flags = RedisplayFlags.RESET_CONTROLS | RedisplayFlags.IMMEDIATE;
+        let flags = RedisplayFlags.IMMEDIATE;
         if (this._search != '') {
             // Because we combine search terms with OR, we have to be sure that no new term
             // was introduced before deciding that the new search results will be a subset of
@@ -401,7 +399,7 @@ GenericDisplay.prototype = {
     // to the bottom one. Returns true if the selection actually moved up, false if it wrapped 
     // around to the bottom.
     selectUp: function() {
-        let count = this._list.displayedCount;
+        let count = this._getVisibleCount();
         let selectedUp = true;
         let prev = this._selectedIndex - 1;
         if (this._selectedIndex <= 0) {
@@ -416,7 +414,7 @@ GenericDisplay.prototype = {
     // to the top one. Returns true if the selection actually moved down, false if it wrapped 
     // around to the top.
     selectDown: function() {
-        let count = this._list.displayedCount;
+        let count = this._getVisibleCount();
         let selectedDown = true;
         let next = this._selectedIndex + 1;
         if (this._selectedIndex == count - 1) {
@@ -435,7 +433,7 @@ GenericDisplay.prototype = {
 
     // Selects the last item among the displayed items.
     selectLastItem: function() {
-        let count = this._list.displayedCount;
+        let count = this._getVisibleCount();
         if (this.hasItems())
             this._selectIndex(count - 1);
     },
@@ -472,6 +470,8 @@ GenericDisplay.prototype = {
     resetState: function() {
         this._filterReset();
         this._openDetailIndex = -1;
+        if (!(this.actor instanceof Shell.OverflowList))
+            this.actor.get_vscroll_bar().get_adjustment().value = 0;
     },
 
     // Returns an actor which acts as a sidebar; this is used for
@@ -483,15 +483,6 @@ GenericDisplay.prototype = {
     createDetailsForIndex: function(index) {
         let item = this._findDisplayedByIndex(index);
         return item.createDetailsActor();
-    },
-
-    // Displays the page specified by the pageNumber argument.
-    displayPage: function(pageNumber) {
-        // Cleanup from the previous selection, but don't unset this._selectedIndex
-        if (this.hasSelected()) {
-            this._findDisplayedByIndex(this._selectedIndex).markSelected(false);
-        }
-        this._list.page = pageNumber;
     },
 
     //// Protected methods ////
@@ -519,14 +510,14 @@ GenericDisplay.prototype = {
                             Lang.bind(this,
                                       function() {
                                           // update the selection
-                                          this._selectIndex(this._list.get_actor_index(displayItem.actor));
+                                          this._selectIndex(this._list.get_children().indexOf(displayItem.actor));
                                           this.activateSelected();
                                       }));
 
         displayItem.connect('show-details',
                             Lang.bind(this,
                                       function() {
-                                          let index = this._list.get_actor_index(displayItem.actor);
+                                          let index = this._list.get_children().indexOf(displayItem.actor);
                                           /* Close the details pane if already open */
                                           if (index == this._openDetailIndex) {
                                               this._openDetailIndex = -1;
@@ -541,9 +532,10 @@ GenericDisplay.prototype = {
 
     // Removes an item identifed by the itemId from the displayed items.
     _removeDisplayItem: function(itemId) {
-        let count = this._list.displayedCount;
+        let children = this._list.get_children();
+        let count = children.length;
         let displayItem = this._displayedItems[itemId];
-        let displayItemIndex = this._list.get_actor_index(displayItem.actor);
+        let displayItemIndex = children.indexOf(displayItem.actor);
 
         if (this.hasSelected() && count == 1) {
             this.unsetSelected();
@@ -638,28 +630,22 @@ GenericDisplay.prototype = {
     /*
      * Updates the displayed items, applying the search string if one exists.
      * @flags: Flags controlling redisplay behavior as follows:
-     *  RESET_CONTROLS - indicates if the page selection should be reset when displaying the matching results.
-     *  We reset the page selection when the change in results was initiated by the user by
-     *  entering a different search criteria or by viewing the results list in a different
-     *  size mode, but we keep the page selection the same if the results got updated on
-     *  their own while the user was browsing through the result pages.
      *  SUBSEARCH - Indicates that the current _search is a superstring of the previous
      *  one, which implies we only need to re-search through previous results.
-     *  FULL - Indicates that we need recreate all displayed items; implies RESET_CONTROLS as well
+     *  FULL - Indicates that we need recreate all displayed items.
      *  IMMEDIATE - Do the full redisplay even if we're not mapped.  This is useful
      *  if you want to get the number of matched items and show/hide a section based on
      *  that number.
      */
     _redisplay: function(flags) {
-        let immediate = (flags & RedisplayFlags.IMMEDIATE) > 0;
-        if (!immediate && !this._list.mapped) {
+        let immediate = (flags & RedisplayFlags.IMMEDIATE) != 0;
+        if (!immediate && !this.actor.mapped) {
             this._pendingRedisplay |= flags;
             return;
         }
 
-        let isSubSearch = (flags & RedisplayFlags.SUBSEARCH) > 0;
-        let fullReload = (flags & RedisplayFlags.FULL) > 0;
-        let resetPage = (flags & RedisplayFlags.RESET_CONTROLS) > 0 || fullReload;
+        let isSubSearch = (flags & RedisplayFlags.SUBSEARCH) != 0;
+        let fullReload = (flags & RedisplayFlags.FULL) != 0;
 
         let hadSelected = this.hasSelected();
         this.unsetSelected();
@@ -680,9 +666,6 @@ GenericDisplay.prototype = {
         } else {
             this._redisplayReordering();
         }
-
-        if (resetPage)
-            this._list.page = 0;
 
         if (hadSelected) {
             this._selectedIndex = -1;
@@ -783,59 +766,10 @@ GenericDisplay.prototype = {
         return matchScores;
     },
 
-    /*
-     * Updates the display control to reflect the matched items set and the page selected.
-     *
-     * resetDisplayControl - indicates if the display control should be re-created because
-     *                       the results or the space allocated for them changed. If it's false,
-     *                       the existing display control is used and only the page links are
-     *                       updated to reflect the current page selection.
-     */
-    _updateDisplayControl: function(resetDisplayControl) {
-        if (resetDisplayControl) {
-            this.displayControl.remove_all();
-            let nPages = this._list.n_pages;
-            // Don't show the page indicator if there is only one page.
-            if (nPages == 1)
-                return;
-            let pageNumber = this._list.page;
-            for (let i = 0; i < nPages; i++) {
-                let pageControl = new Link.Link({ color: (i == pageNumber) ? DISPLAY_CONTROL_SELECTED_COLOR : ITEM_DISPLAY_DESCRIPTION_COLOR,
-                                                  font_name: "Sans Bold 16px",
-                                                  text: (i+1) + "",
-                                                  reactive: (i == pageNumber) ? false : true});
-                this.displayControl.append(pageControl.actor, Big.BoxPackFlags.NONE);
-
-                // we use pageNumberLocalScope to get the page number right in the callback function
-                let pageNumberLocalScope = i;
-                pageControl.connect('clicked',
-                                    Lang.bind(this,
-                                              function(o, event) {
-                                                  this.displayPage(pageNumberLocalScope);
-                                              }));
-            }
-        } else {
-            let pageControlActors = this.displayControl.get_children();
-            for (let i = 0; i < pageControlActors.length; i++) {
-                let pageControlActor = pageControlActors[i];
-                if (i == this._list.page) {
-                    pageControlActor.color =  DISPLAY_CONTROL_SELECTED_COLOR;
-                    pageControlActor.reactive = false;
-                } else {
-                    pageControlActor.color =  ITEM_DISPLAY_DESCRIPTION_COLOR;
-                    pageControlActor.reactive = true;
-                }
-            } 
-        }
-        if (this.hasSelected()) {
-            this.selectFirstItem();
-        }
-    },
-
     // Returns a display item based on its index in the ordering of the
     // display children.
     _findDisplayedByIndex: function(index) {
-        let actor = this._list.get_displayed_actor(index);
+        let actor = this._list.get_children()[index];
         return this._findDisplayedByActor(actor);
     },
 
@@ -869,8 +803,14 @@ GenericDisplay.prototype = {
         this.emit('selected');
     },
 
+    _getVisibleCount: function() {
+        if (this.actor instanceof Shell.OverflowList)
+            return this._list.displayed_count;
+        return this._list.get_n_children();
+    },
+
     _onMappedNotify: function () {
-        let mapped = this._list.mapped;
+        let mapped = this.actor.mapped;
         if (mapped && this._pendingRedisplay > RedisplayFlags.NONE)
             this._redisplay(this._pendingRedisplay);
 
