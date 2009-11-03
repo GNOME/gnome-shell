@@ -232,6 +232,6 @@ Source.prototype = {
     _receivedMessage: function(channel, id, timestamp, sender,
                                type, flags, text) {
         log('Received: id ' + id + ', time ' + timestamp + ', sender ' + sender + ', type ' + type + ', flags ' + flags + ': ' + text);
-        Main.notificationPopup.show(text);
+        Main.notificationPopup.show(this._avatar, text);
     }
 };

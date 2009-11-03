@@ -163,6 +163,7 @@ StScrollBar StButton#vhandle:hover
     border: 1px solid rgba(128,128,128,0.45);
     color: white;
     padding: 10px;
+    spacing: 10px;
 }
 
 /* App Switcher */

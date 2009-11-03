@@ -18,6 +18,9 @@ Notification.prototype = {
     _init: function() {
         this.actor = new St.BoxLayout({ name: 'notification' });
 
+        this._iconBox = new St.Bin();
+        this.actor.add(this._iconBox);
+
         this._text = new St.Label();
         this.actor.add(this._text, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
@@ -34,13 +37,14 @@ Notification.prototype = {
         this._hideTimeoutId = 0;
     },
 
-    show: function(text) {
+    show: function(icon, text) {
         let primary = global.get_primary_monitor();
 
         if (this._hideTimeoutId > 0) 
             Mainloop.source_remove(this._hideTimeoutId);
         this._hideTimeoutId = Mainloop.timeout_add(NOTIFICATION_TIMEOUT * 1000, Lang.bind(this, this.hide));
 
+        this._iconBox.child = icon;
         this._text.text = text;
 
         this.actor.x = Math.round((primary.width - this.actor.width) / 2);
@@ -60,13 +64,19 @@ Notification.prototype = {
                          { y: primary.height,
                            time: ANIMATION_TIME,
                            transition: "easeOutQuad",
-                           onComplete: function() {
-                                           // Don't hide the notification if we are showing a new one.
-                                           if (this._hideTimeoutId == 0)
-                                               this.actor.hide();
-                                       },
+                           onComplete: this.hideComplete,
                            onCompleteScope: this
                          });
         return false;
+    },
+
+    hideComplete: function() {
+        // We don't explicitly destroy the icon, since the caller may
+        // still want it.
+        this._iconBox.child = null;
+
+        // Don't hide the notification if we are showing a new one.
+        if (this._hideTimeoutId == 0)
+            this.actor.hide();
     }
 };
