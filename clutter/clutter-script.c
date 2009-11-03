@@ -724,23 +724,26 @@ json_object_end (JsonParser *parser,
       return;
     }
 
-  val = json_object_get_member (object, "id");
-  id = json_node_get_string (val);
+  id = json_object_get_string_member (object, "id");
 
   oinfo = g_hash_table_lookup (priv->objects, id);
   if (G_LIKELY (!oinfo))
     {
+      const gchar *class_name;
+
       oinfo = g_slice_new0 (ObjectInfo);
       oinfo->merge_id = priv->last_merge_id;
       oinfo->id = g_strdup (id);
 
-      val = json_object_get_member (object, "type");
-      oinfo->class_name = json_node_dup_string (val);
+      class_name = json_object_get_string_member (object, "type");
+      oinfo->class_name = g_strdup (class_name);
   
       if (json_object_has_member (object, "type_func"))
         {
-          val = json_object_get_member (object, "type_func");
-          oinfo->type_func = json_node_dup_string (val);
+          const gchar *type_func;
+
+          type_func = json_object_get_string_member (object, "type_func");
+          oinfo->type_func = g_strdup (type_func);
 
           json_object_remove_member (object, "type_func");
         }
@@ -1525,6 +1528,7 @@ clutter_script_construct_object (ClutterScript *script,
       g_free ((gchar *) param->name);
       g_value_unset (&param->value);
     }
+
   g_array_free (params, TRUE);
 
   for (i = 0; i < n_clutter_toplevels; i++)
