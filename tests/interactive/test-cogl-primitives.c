@@ -6,6 +6,7 @@
 #include <cogl/cogl.h>
 
 typedef void (*PaintFunc) (void);
+CoglHandle hand;
 
 static void
 test_paint_line ()
@@ -94,6 +95,7 @@ paint_cb (ClutterActor *self, ClutterTimeline *tl)
 
   cogl_translate (150, 0, 0);
   cogl_set_source_color4ub (200, 0, 0, 255);
+  //cogl_set_source_texture (hand);
   cogl_path_fill ();
 
   cogl_pop_matrix();
@@ -105,8 +107,20 @@ test_cogl_primitives_main (int argc, char *argv[])
   ClutterActor *stage;
   ClutterActor *coglbox;
   ClutterTimeline *tl;
+  GError *error = NULL;
 
   clutter_init(&argc, &argv);
+
+  hand =cogl_texture_new_from_file ("redhand.png",
+                              COGL_TEXTURE_NONE,
+                              COGL_PIXEL_FORMAT_ANY,
+                              &error);
+  if (error)
+    {
+      g_critical ("Failed to load redhand.png: %s", error->message);
+      g_error_free (error);
+      return 1;
+    }
 
   tl = clutter_timeline_new (G_N_ELEMENTS (paint_func) * 1000);
   clutter_timeline_set_loop (tl, TRUE);

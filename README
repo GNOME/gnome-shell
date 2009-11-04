@@ -218,6 +218,19 @@ Cogl API changes for Clutter 1.2
 * cogl_viewport is now deprecated in favour of cogl_set_viewport which
   accepts a viewport offset.
 
+* cogl_clip_push() is now deprecated and new code should use
+  cogl_clip_push_rectangle() instead. The old API wasn't consistent with other
+  Cogl APIs that specify model space rectangles using (x0,y0)(x1,y1) pairs.
+
+* cogl_clip_push_window_rect() is now deprecated and new code should use
+  cogl_clip_push_window_rectangle(). The old API shouldn't have been defined
+  to take floats and the abbreviation wasn't consistent with other Cogl API.
+
+* cogl_clip_stack_save() and cogl_clip_stack_restore() are deprecated, as
+  the functionality is redundant now that offscreen draw buffers own their
+  clip state and switching to/from offscreen rendering will automatically
+  save and restore the clip state.
+
 Release Notes for Clutter 1.0
 -------------------------------
 

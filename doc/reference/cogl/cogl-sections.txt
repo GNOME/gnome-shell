@@ -120,14 +120,17 @@ cogl_debug_flags
 <FILE>cogl-clipping</FILE>
 <TITLE>Clipping</TITLE>
 CoglClipStackState
-cogl_clip_push
+cogl_clip_push_rectangle
+cogl_clip_push_window_rectangle
 cogl_clip_push_from_path
 cogl_clip_push_from_path_preserve
-cogl_clip_push_window_rect
 cogl_clip_pop
+<SUBSECTION>
+cogl_clip_push
+cogl_clip_push_window_rect
+cogl_clip_ensure
 cogl_clip_stack_save
 cogl_clip_stack_restore
-cogl_clip_ensure
 </SECTION>
 
 <SECTION>
