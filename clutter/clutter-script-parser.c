@@ -744,7 +744,8 @@ construct_timeline (ClutterScript *script,
 
   g_list_free (members);
 
-  retval = CLUTTER_TIMELINE (_clutter_script_construct_object (script, oinfo));
+  _clutter_script_construct_object (script, oinfo);
+  retval = CLUTTER_TIMELINE (oinfo->object);
 
   /* we transfer ownership to the alpha function later */
   oinfo->is_toplevel = FALSE;
@@ -1052,7 +1053,7 @@ clutter_script_parser_object_end (JsonParser *json_parser,
                 g_list_length (oinfo->signals));
 
   _clutter_script_add_object_info (script, oinfo);
-  oinfo->object = _clutter_script_construct_object (script, oinfo);
+  _clutter_script_construct_object (script, oinfo);
 }
 
 static void
@@ -1490,28 +1491,26 @@ clutter_script_construct_parameters (ClutterScript  *script,
 
 static void
 apply_behaviours (ClutterScript *script,
-                  ClutterActor  *actor,
                   ObjectInfo    *oinfo)
 {
-  GObject *object;
+  ClutterActor  *actor = CLUTTER_ACTOR (oinfo->object);
   GList *l, *unresolved;
 
   unresolved = NULL;
   for (l = oinfo->behaviours; l != NULL; l = l->next)
     {
       const gchar *name = l->data;
+      ObjectInfo *behaviour_info;
+      GObject *object = NULL;
 
-      object = clutter_script_get_object (script, name);
-      if (!object)
+      behaviour_info = _clutter_script_get_object_info (script, name);
+      if (behaviour_info != NULL)
         {
-          ObjectInfo *behaviour_info;
-
-          behaviour_info = _clutter_script_get_object_info (script, name);
-          if (behaviour_info)
-            object = _clutter_script_construct_object (script, behaviour_info);
+          _clutter_script_construct_object (script, behaviour_info);
+          object = behaviour_info->object;
         }
 
-      if (!object)
+      if (object == NULL)
         {
           unresolved = g_list_prepend (unresolved, g_strdup (name));
           continue;
@@ -1531,29 +1530,27 @@ apply_behaviours (ClutterScript *script,
 }
 
 static void
-add_children (ClutterScript    *script,
-              ClutterContainer *container,
-              ObjectInfo       *oinfo)
+add_children (ClutterScript *script,
+              ObjectInfo    *oinfo)
 {
-  GObject *object;
+  ClutterContainer *container = CLUTTER_CONTAINER (oinfo->object);
   GList *l, *unresolved;
 
   unresolved = NULL;
   for (l = oinfo->children; l != NULL; l = l->next)
     {
       const gchar *name = l->data;
+      GObject *object = NULL;
+      ObjectInfo *child_info;
 
-      object = clutter_script_get_object (script, name);
-      if (!object)
+      child_info = _clutter_script_get_object_info (script, name);
+      if (child_info != NULL)
         {
-          ObjectInfo *child_info;
-
-          child_info = _clutter_script_get_object_info (script, name);
-          if (child_info)
-            object = _clutter_script_construct_object (script, child_info);
+          _clutter_script_construct_object (script, child_info);
+          object = child_info->object;
         }
 
-      if (!object)
+      if (object == NULL)
         {
           unresolved = g_list_prepend (unresolved, g_strdup (name));
           continue;
@@ -1592,17 +1589,36 @@ static const struct
 
 static guint n_clutter_toplevels = G_N_ELEMENTS (clutter_toplevels);
 
-void
-_clutter_script_apply_properties (ClutterScript *script,
-                                  GObject       *object,
+static inline void
+_clutter_script_check_unresolved (ClutterScript *script,
                                   ObjectInfo    *oinfo)
 {
-  guint i;
-  GArray *params;
+  if (oinfo->children != NULL && CLUTTER_IS_CONTAINER (oinfo->object))
+    add_children (script, oinfo);
+
+  if (oinfo->behaviours != NULL && CLUTTER_IS_ACTOR (oinfo->object))
+    apply_behaviours (script, oinfo);
+
+  if (oinfo->properties || oinfo->children || oinfo->behaviours)
+    oinfo->has_unresolved = TRUE;
+  else
+    oinfo->has_unresolved = FALSE;
+}
+
+void
+_clutter_script_apply_properties (ClutterScript *script,
+                                  ObjectInfo    *oinfo)
+{
   ClutterScriptable *scriptable = NULL;
   ClutterScriptableIface *iface = NULL;
   gboolean set_custom_property = FALSE;
+  GObject *object = oinfo->object;
   GList *properties;
+  GArray *params;
+  guint i;
+
+  if (!oinfo->has_unresolved)
+    return;
 
   /* shortcut, to avoid typechecking every time */
   if (CLUTTER_IS_SCRIPTABLE (object))
@@ -1649,22 +1665,25 @@ _clutter_script_apply_properties (ClutterScript *script,
     }
 
   g_array_free (params, TRUE);
+
+  _clutter_script_check_unresolved (script, oinfo);
 }
 
-GObject *
+void
 _clutter_script_construct_object (ClutterScript *script,
                                   ObjectInfo    *oinfo)
 {
-  GObject *object;
-  guint i;
   GArray *params;
-
-  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), NULL);
-  g_return_val_if_fail (oinfo != NULL, NULL);
+  guint i;
 
   /* we have completely updated the object */
-  if (oinfo->object && !oinfo->has_unresolved)
-    return oinfo->object;
+  if (oinfo->object != NULL)
+    {
+      if (oinfo->has_unresolved)
+        _clutter_script_check_unresolved (script, oinfo);
+
+      return;
+    }
 
   if (oinfo->gtype == G_TYPE_INVALID)
     {
@@ -1674,7 +1693,7 @@ _clutter_script_construct_object (ClutterScript *script,
         oinfo->gtype = clutter_script_get_type_from_name (script, oinfo->class_name);
 
       if (G_UNLIKELY (oinfo->gtype == G_TYPE_INVALID))
-        return NULL;
+        return;
 
       for (i = 0; i < n_clutter_toplevels; i++)
         {
@@ -1690,9 +1709,7 @@ _clutter_script_construct_object (ClutterScript *script,
         }
     }
 
-  if (oinfo->object)
-    object = oinfo->object;
-  else if (oinfo->gtype == CLUTTER_TYPE_STAGE && oinfo->is_stage_default)
+  if (oinfo->gtype == CLUTTER_TYPE_STAGE && oinfo->is_stage_default)
     {
       GList *properties = oinfo->properties;
 
@@ -1709,7 +1726,7 @@ _clutter_script_construct_object (ClutterScript *script,
                                              properties,
                                              &params);
 
-      object = G_OBJECT (clutter_stage_get_default ());
+      oinfo->object = G_OBJECT (clutter_stage_get_default ());
 
       for (i = 0; i < params->len; i++)
         {
@@ -1733,9 +1750,9 @@ _clutter_script_construct_object (ClutterScript *script,
                                              properties,
                                              &params);
 
-      object = g_object_newv (oinfo->gtype,
-                              params->len,
-                              (GParameter *) params->data);
+      oinfo->object = g_object_newv (oinfo->gtype,
+                                     params->len,
+                                     (GParameter *) params->data);
 
       for (i = 0; i < params->len; i++)
         {
@@ -1748,38 +1765,14 @@ _clutter_script_construct_object (ClutterScript *script,
       g_array_free (params, TRUE);
    }
 
-  g_assert (object != NULL);
+  g_assert (oinfo->object != NULL);
 
-  if (CLUTTER_IS_SCRIPTABLE (object))
-    clutter_scriptable_set_id (CLUTTER_SCRIPTABLE (object), oinfo->id);
+  if (CLUTTER_IS_SCRIPTABLE (oinfo->object))
+    clutter_scriptable_set_id (CLUTTER_SCRIPTABLE (oinfo->object), oinfo->id);
   else
-    g_object_set_data_full (object, "clutter-script-id",
+    g_object_set_data_full (oinfo->object, "clutter-script-id",
                             g_strdup (oinfo->id),
                             g_free);
 
-  /* XXX - at the moment, we are adding the children (and constructing
-   * the scenegraph) after we applied all the properties of an object;
-   * this usually ensures that an object is fully constructed before
-   * it is added to its parent. unfortunately, this also means that
-   * children cannot reference the parent's state inside their own
-   * definition.
-   *
-   * see bug:
-   *   http://bugzilla.openedhand.com/show_bug.cgi?id=1042
-   */
-
-  _clutter_script_apply_properties (script, object, oinfo);
-
-  if (oinfo->children && CLUTTER_IS_CONTAINER (object))
-    add_children (script, CLUTTER_CONTAINER (object), oinfo);
-
-  if (oinfo->behaviours && CLUTTER_IS_ACTOR (object))
-    apply_behaviours (script, CLUTTER_ACTOR (object), oinfo);
-
-  if (oinfo->properties || oinfo->children || oinfo->behaviours)
-    oinfo->has_unresolved = TRUE;
-  else
-    oinfo->has_unresolved = FALSE;
-
-  return object;
+  _clutter_script_check_unresolved (script, oinfo);
 }

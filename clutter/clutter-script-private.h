@@ -101,9 +101,6 @@ gboolean clutter_script_parse_node        (ClutterScript *script,
 GType    clutter_script_get_type_from_symbol (const gchar *symbol);
 GType    clutter_script_get_type_from_class  (const gchar *name);
 
-GObject *_clutter_script_construct_object  (ClutterScript *script,
-                                           ObjectInfo    *info);
-
 gulong   clutter_script_resolve_animation_mode (const gchar *namer);
 
 gboolean clutter_script_enum_from_string  (GType          gtype,
@@ -124,6 +121,11 @@ gboolean clutter_script_parse_color       (ClutterScript   *script,
                                            ClutterColor    *color);
 GObject *clutter_script_parse_alpha       (ClutterScript   *script,
                                            JsonNode        *node);
+
+void _clutter_script_construct_object (ClutterScript *script,
+                                       ObjectInfo    *oinfo);
+void _clutter_script_apply_properties (ClutterScript *script,
+                                       ObjectInfo    *oinfo);
 
 gchar *_clutter_script_generate_fake_id (ClutterScript *script);
 

@@ -586,7 +586,10 @@ clutter_script_get_object (ClutterScript *script,
   if (!oinfo)
     return NULL;
 
-  return _clutter_script_construct_object (script, oinfo);
+  _clutter_script_construct_object (script, oinfo);
+  _clutter_script_apply_properties (script, oinfo);
+
+  return oinfo->object;
 }
 
 static gint
@@ -732,8 +735,20 @@ construct_each_objects (gpointer key,
   ClutterScript *script = user_data;
   ObjectInfo *oinfo = value;
 
+  /* we have unfinished business */
   if (oinfo->has_unresolved)
-    oinfo->object = _clutter_script_construct_object (script, oinfo);
+    {
+      /* this should not happen, but resilence is
+       * a good thing in a parser
+       */
+      if (oinfo->object == NULL)
+        _clutter_script_construct_object (script, oinfo);
+
+      /* this will take care of setting up properties,
+       * adding children and applying behaviours
+       */
+      _clutter_script_apply_properties (script, oinfo);
+    }
 }
 
 /**
@@ -920,8 +935,7 @@ connect_each_object (gpointer key,
   GObject *object = oinfo->object;
   GList *unresolved, *l;
 
-  if (G_UNLIKELY (!oinfo->object))
-    oinfo->object = _clutter_script_construct_object (script, oinfo);
+  _clutter_script_construct_object (script, oinfo);
 
   unresolved = NULL;
   for (l = oinfo->signals; l != NULL; l = l->next)
