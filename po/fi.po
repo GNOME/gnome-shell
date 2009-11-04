@@ -1,0 +1,226 @@
+# gnome-shell Finnish translation
+# Copyright (C) 2009 Timo Jyrinki
+# This file is distributed under the same license as the gnome-shell package.
+# Timo Jyrinki <timo.jyrinki@iki.fi>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-04 11:16+0200\n"
+"PO-Revision-Date: 2009-11-04 11:16+0200\n"
+"Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
+"Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr ""
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "Ikkunanhallinta ja sovelluksien käynnistäminen"
+
+#: ../js/ui/appDisplay.js:332
+msgid "Frequent"
+msgstr "Usein käytetyt"
+
+#: ../js/ui/appDisplay.js:867
+msgid "Drag here to add favorites"
+msgstr "Raahaa tähän lisätäksesi suosikkeihin"
+
+#: ../js/ui/appIcon.js:426
+msgid "New Window"
+msgstr "Uusi ikkuna"
+
+#: ../js/ui/appIcon.js:430
+msgid "Remove from Favorites"
+msgstr "Poista suosikeista"
+
+#: ../js/ui/appIcon.js:431
+msgid "Add to Favorites"
+msgstr "Lisää suosikkeihin"
+
+#: ../js/ui/dash.js:283
+msgid "Find..."
+msgstr "Etsi..."
+
+#: ../js/ui/dash.js:400
+msgid "More"
+msgstr "Lisää"
+
+#: ../js/ui/dash.js:543
+msgid "(see all)"
+msgstr "(näytä kaikki)"
+
+#. **** Applications ****
+#: ../js/ui/dash.js:725 ../js/ui/dash.js:787
+msgid "APPLICATIONS"
+msgstr "SOVELLUKSET"
+
+#. **** Places ****
+#. Translators: This is in the sense of locations for documents,
+#. network locations, etc.
+#: ../js/ui/dash.js:745
+msgid "PLACES"
+msgstr "SIJAINNIT"
+
+#. **** Documents ****
+#: ../js/ui/dash.js:752 ../js/ui/dash.js:797
+msgid "RECENT DOCUMENTS"
+msgstr "VIIMEISIMMÄT ASIAKIRJAT"
+
+#. **** Search Results ****
+#: ../js/ui/dash.js:777 ../js/ui/dash.js:961
+msgid "SEARCH RESULTS"
+msgstr "HAKUTULOKSET"
+
+#: ../js/ui/dash.js:792
+msgid "PREFERENCES"
+msgstr "ASETUKSET"
+
+#. Button on the left side of the panel.
+#. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
+#: ../js/ui/panel.js:274
+msgid "Activities"
+msgstr "Toiminnot"
+
+#. Translators: This is a time format.
+#: ../js/ui/panel.js:491
+msgid "%a %l:%M %p"
+msgstr "%a %I.%M"
+
+#: ../js/ui/places.js:178
+msgid "Connect to..."
+msgstr "Yhdistä..."
+
+#: ../js/ui/runDialog.js:96
+msgid "Please enter a command:"
+msgstr "Syötä komento:"
+
+#: ../js/ui/runDialog.js:173
+#, c-format
+msgid "Execution of '%s' failed:"
+msgstr ""
+
+#. Translators: This is a time format.
+#: ../js/ui/widget.js:163
+msgid "%H:%M"
+msgstr "%I.%M"
+
+#: ../js/ui/widget.js:317
+msgid "Applications"
+msgstr "Sovellukset"
+
+#: ../js/ui/widget.js:339
+msgid "Recent Documents"
+msgstr "Viimeisimmät asiakirjat"
+
+#: ../src/shell-global.c:821
+msgid "Less than a minute ago"
+msgstr "Alle minuutti sitten"
+
+#: ../src/shell-global.c:824
+#, c-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minuutti sitten"
+msgstr[1] "%d minuuttia sitten"
+
+#: ../src/shell-global.c:827
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d tunti sitten"
+msgstr[1] "%d tuntia sitten"
+
+#: ../src/shell-global.c:830
+#, c-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d päivä sitten"
+msgstr[1] "%d päivää sitten"
+
+#: ../src/shell-global.c:833
+#, c-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d viikko sitten"
+msgstr[1] "%d viikkoa sitten"
+
+#: ../src/shell-status-menu.c:156
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: ../src/shell-status-menu.c:212
+#, c-format
+msgid "Can't lock screen: %s"
+msgstr "Näyttöä ei voi lukita: %s"
+
+#: ../src/shell-status-menu.c:227
+#, c-format
+msgid "Can't temporarily set screensaver to blank screen: %s"
+msgstr ""
+
+#: ../src/shell-status-menu.c:351
+#, c-format
+msgid "Can't logout: %s"
+msgstr ""
+
+#: ../src/shell-status-menu.c:492
+msgid "Account Information..."
+msgstr "Käyttäjätilin tiedot..."
+
+#: ../src/shell-status-menu.c:502
+msgid "Sidebar"
+msgstr "Sivupalkki"
+
+#: ../src/shell-status-menu.c:510
+msgid "System Preferences..."
+msgstr "Järjestelmän asetukset"
+
+#: ../src/shell-status-menu.c:525
+msgid "Lock Screen"
+msgstr "Lukitse näyttö"
+
+#: ../src/shell-status-menu.c:535
+msgid "Switch User"
+msgstr "Vaihda käyttäjää"
+
+#. Only show switch user if there are other users
+#. Log Out
+#: ../src/shell-status-menu.c:546
+msgid "Log Out..."
+msgstr "Kirjaudu ulos..."
+
+#. Shut down
+#: ../src/shell-status-menu.c:557
+msgid "Shut Down..."
+msgstr "Sammuta..."
+
+#: ../src/shell-uri-util.c:87
+msgid "Home Folder"
+msgstr "Kotikansio"
+
+#. Translators: this is the same string as the one found in
+#. * nautilus
+#: ../src/shell-uri-util.c:102
+msgid "File System"
+msgstr "Tiedostojärjestelmä"
+
+#: ../src/shell-uri-util.c:248
+msgid "Search"
+msgstr "Haku"
+
+#. Translators: the first string is the name of a gvfs
+#. * method, and the second string is a path. For
+#. * example, "Trash: some-directory". It means that the
+#. * directory called "some-directory" is in the trash.
+#.
+#: ../src/shell-uri-util.c:298
+#, c-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
