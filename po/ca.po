@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 18:26+0200\n"
-"PO-Revision-Date: 2009-09-16 22:50+0200\n"
+"POT-Creation-Date: 2009-11-05 00:19+0100\n"
+"PO-Revision-Date: 2009-11-05 00:24+0100\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -286,7 +286,7 @@ msgstr ""
 #: ../src/core/screen.c:357
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "La pantalla %d en la visualització '%s' no és vàlida\n"
+msgstr "La pantalla %d en la visualització «%s» no és vàlida\n"
 
 #: ../src/core/screen.c:373
 #, c-format
@@ -462,7 +462,7 @@ msgid "Metacity"
 msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5627
+#: ../src/core/window.c:5630
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -478,7 +478,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6192
+#: ../src/core/window.c:6195
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -1217,7 +1217,7 @@ msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
-"El retard de temps abans d'alçar una finestra si auto_raise és establer a "
+"El retard de temps abans d'alçar una finestra si auto_raise és establert a "
 "«true». El retard es dóna en mil·lèssimes de segon."
 
 #: ../src/metacity.schemas.in.in.h:42
@@ -1720,7 +1720,7 @@ msgstr "No s'ha pogut analitzar el color «%s»"
 #: ../src/ui/theme.c:1582
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "L'expressió coordinada conté el caràcter '%s', el qual no és permès"
+msgstr "L'expressió coordinada conté el caràcter «%s», el qual no és permès"
 
 #: ../src/ui/theme.c:1609
 #, c-format
@@ -1728,13 +1728,13 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"L'expressió coordinada conté el número '%s' de punt flotant el qual no es "
+"L'expressió coordinada conté el número «%s» de punt flotant el qual no es "
 "pot analitzar"
 
 #: ../src/ui/theme.c:1623
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "L'expressió coordinada conté l'enter '%s' el qual no es pot analitzar"
+msgstr "L'expressió coordinada conté l'enter «%s» el qual no es pot analitzar"
 
 #: ../src/ui/theme.c:1745
 #, c-format
