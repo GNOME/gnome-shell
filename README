@@ -212,6 +212,12 @@ Release Notes for Clutter 1.2
 * Clutter now depends on the system copy of JSON-GLib, and will fall
   back to the internal copy only if JSON-GLib is not installed.
 
+Cogl API changes for Clutter 1.2
+--------------------------------
+
+* cogl_viewport is now deprecated in favour of cogl_set_viewport which
+  accepts a viewport offset.
+
 Release Notes for Clutter 1.0
 -------------------------------
 

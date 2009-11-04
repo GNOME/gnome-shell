@@ -42,6 +42,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-primitives.h"
+#include "cogl-draw-buffer-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -667,7 +668,8 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
                              GLuint       target_gl_type)
 {
   gint       bpp;
-  GLint      viewport[4];
+  CoglHandle draw_buffer;
+  int        viewport[4];
   CoglBitmap alpha_bmp;
   CoglHandle prev_source;
   CoglMatrixStack *projection_stack;
@@ -677,8 +679,9 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
 
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
 
+  draw_buffer = _cogl_get_draw_buffer ();
   /* Viewport needs to have some size and be inside the window for this */
-  GE( glGetIntegerv (GL_VIEWPORT, viewport));
+  _cogl_draw_buffer_get_viewport4fv (draw_buffer, viewport);
   if (viewport[0] <  0 || viewport[1] <  0 ||
       viewport[2] <= 0 || viewport[3] <= 0)
     return FALSE;
@@ -688,16 +691,18 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
    * works)
    */
 
-  _cogl_matrix_stack_push (ctx->projection_stack);
-  _cogl_matrix_stack_load_identity (ctx->projection_stack);
-  _cogl_matrix_stack_ortho (ctx->projection_stack,
+  projection_stack = _cogl_draw_buffer_get_projection_stack (draw_buffer);
+  _cogl_matrix_stack_push (projection_stack);
+  _cogl_matrix_stack_load_identity (projection_stack);
+  _cogl_matrix_stack_ortho (projection_stack,
                             0, (float)(viewport[2]),
                             0, (float)(viewport[3]),
                             (float)(0),
                             (float)(100));
 
-  _cogl_matrix_stack_push (ctx->modelview_stack);
-  _cogl_matrix_stack_load_identity (ctx->modelview_stack);
+  modelview_stack = _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  _cogl_matrix_stack_push (modelview_stack);
+  _cogl_matrix_stack_load_identity (modelview_stack);
 
   /* Direct copy operation */
 

@@ -50,9 +50,10 @@ struct _ClutterStageX11
 {
   ClutterGroup parent_instance;
 
-  guint        is_foreign_xwin    : 1;
-  guint        fullscreen_on_map  : 1;
-  guint        is_cursor_visible  : 1;
+  guint        is_foreign_xwin      : 1;
+  guint        fullscreen_on_map    : 1;
+  guint        is_cursor_visible    : 1;
+  guint        viewport_initialized : 1;
 
   Window       xwin;
   gint         xwin_width;

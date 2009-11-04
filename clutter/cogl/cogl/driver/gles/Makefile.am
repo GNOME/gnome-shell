@@ -22,11 +22,9 @@ libclutter_cogl_driver_la_CPPFLAGS = \
 	$(CLUTTER_DEBUG_CFLAGS) \
 	$(MAINTAINER_CFLAGS)
 libclutter_cogl_driver_la_SOURCES = \
-	cogl-fbo.h \
 	cogl.c \
 	cogl-primitives.c \
 	cogl-texture-driver.c \
-	cogl-fbo.c \
 	cogl-context-driver.c \
 	cogl-context-driver.h \
 	cogl-gles2-wrapper.h \

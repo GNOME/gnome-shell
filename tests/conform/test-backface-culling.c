@@ -5,8 +5,6 @@
 
 #include "test-conform-common.h"
 
-static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
-
 #ifdef CLUTTER_COGL_HAS_GL
 
 /* Size the texture so that it is just off a power of two to enourage
@@ -31,24 +29,31 @@ static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
 typedef struct _TestState
 {
-  guint frame;
   CoglHandle texture;
+  CoglHandle offscreen;
+  CoglHandle offscreen_tex;
 } TestState;
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 static gboolean
 validate_part (int xnum, int ynum, gboolean shown)
 {
   guchar *pixels, *p;
-  ClutterActor *stage = clutter_stage_get_default ();
   gboolean ret = TRUE;
+
+  pixels = g_malloc0 ((TEXTURE_RENDER_SIZE - TEST_INSET * 2)
+                      * (TEXTURE_RENDER_SIZE - TEST_INSET * 2) * 4);
 
   /* Read the appropriate part but skip out a few pixels around the
      edges */
-  pixels = clutter_stage_read_pixels (CLUTTER_STAGE (stage),
-                                      xnum * TEXTURE_RENDER_SIZE + TEST_INSET,
-                                      ynum * TEXTURE_RENDER_SIZE + TEST_INSET,
-                                      TEXTURE_RENDER_SIZE - TEST_INSET * 2,
-                                      TEXTURE_RENDER_SIZE - TEST_INSET * 2);
+  cogl_read_pixels (xnum * TEXTURE_RENDER_SIZE + TEST_INSET,
+                    ynum * TEXTURE_RENDER_SIZE + TEST_INSET,
+                    TEXTURE_RENDER_SIZE - TEST_INSET * 2,
+                    TEXTURE_RENDER_SIZE - TEST_INSET * 2,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    COGL_PIXEL_FORMAT_RGBA_8888,
+                    pixels);
 
   /* Make sure every pixels is the appropriate color */
   for (p = pixels;
@@ -70,47 +75,9 @@ validate_part (int xnum, int ynum, gboolean shown)
 }
 
 static void
-validate_result (TestState *state)
-{
-  /* Front-facing texture */
-  g_assert (validate_part (0, 0, TRUE));
-  /* Front-facing texture with flipped tex coords */
-  g_assert (validate_part (1, 0, TRUE));
-  /* Back-facing texture */
-  g_assert (validate_part (2, 0, FALSE));
-  /* Front-facing texture polygon */
-  g_assert (validate_part (3, 0, TRUE));
-  /* Back-facing texture polygon */
-  g_assert (validate_part (4, 0, FALSE));
-  /* Regular rectangle */
-  g_assert (validate_part (5, 0, TRUE));
-
-  /* Backface culling disabled - everything should be shown */
-
-  /* Front-facing texture */
-  g_assert (validate_part (0, 1, TRUE));
-  /* Front-facing texture with flipped tex coords */
-  g_assert (validate_part (1, 1, TRUE));
-  /* Back-facing texture */
-  g_assert (validate_part (2, 1, TRUE));
-  /* Front-facing texture polygon */
-  g_assert (validate_part (3, 1, TRUE));
-  /* Back-facing texture polygon */
-  g_assert (validate_part (4, 1, TRUE));
-  /* Regular rectangle */
-  g_assert (validate_part (5, 1, TRUE));
-
-  /* Comment this out if you want visual feedback of what this test
-   * paints.
-   */
-  clutter_main_quit ();
-}
-
-static void
-on_paint (ClutterActor *actor, TestState *state)
+do_test_backface_culling (TestState *state)
 {
   int i;
-  int frame_num;
   CoglHandle material = cogl_material_new ();
 
   cogl_material_set_layer_filters (material, 0,
@@ -197,21 +164,91 @@ on_paint (ClutterActor *actor, TestState *state)
       cogl_set_backface_culling_enabled (FALSE);
     }
 
-  cogl_pop_matrix ();
-
   cogl_handle_unref (material);
 
-  /* XXX: Experiments have shown that for some buggy drivers, when using
-   * glReadPixels there is some kind of race, so we delay our test for a
-   * few frames and a few seconds:
+  cogl_pop_matrix ();
+
+  /* Front-facing texture */
+  g_assert (validate_part (0, 0, TRUE));
+  /* Front-facing texture with flipped tex coords */
+  g_assert (validate_part (1, 0, TRUE));
+  /* Back-facing texture */
+  g_assert (validate_part (2, 0, FALSE));
+  /* Front-facing texture polygon */
+  g_assert (validate_part (3, 0, TRUE));
+  /* Back-facing texture polygon */
+  g_assert (validate_part (4, 0, FALSE));
+  /* Regular rectangle */
+  g_assert (validate_part (5, 0, TRUE));
+
+  /* Backface culling disabled - everything should be shown */
+
+  /* Front-facing texture */
+  g_assert (validate_part (0, 1, TRUE));
+  /* Front-facing texture with flipped tex coords */
+  g_assert (validate_part (1, 1, TRUE));
+  /* Back-facing texture */
+  g_assert (validate_part (2, 1, TRUE));
+  /* Front-facing texture polygon */
+  g_assert (validate_part (3, 1, TRUE));
+  /* Back-facing texture polygon */
+  g_assert (validate_part (4, 1, TRUE));
+  /* Regular rectangle */
+  g_assert (validate_part (5, 1, TRUE));
+
+}
+
+static void
+on_paint (ClutterActor *actor, TestState *state)
+{
+  CoglColor clr;
+  float stage_viewport[4];
+  CoglMatrix stage_projection;
+  CoglMatrix stage_modelview;
+
+  cogl_color_set_from_4ub (&clr, 0x00, 0x00, 0x00, 0xff);
+
+  do_test_backface_culling (state);
+
+  /* Since we are going to repeat the test rendering offscreen we clear the
+   * stage, just to minimize the chance of a some other bug causing us
+   * mistakenly reading back the results from the stage and giving a false
+   * posistive. */
+  cogl_clear (&clr, COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_STENCIL);
+
+  /*
+   * Now repeat the test but rendered to an offscreen draw buffer...
    */
-  /* Need to increment frame first because clutter_stage_read_pixels
-     fires a redraw */
-  frame_num = state->frame++;
-  if (frame_num == 2)
-    validate_result (state);
-  else if (frame_num < 2)
-    g_usleep (G_USEC_PER_SEC);
+
+  cogl_get_viewport (stage_viewport);
+  cogl_get_projection_matrix (&stage_projection);
+  cogl_get_modelview_matrix (&stage_modelview);
+
+  cogl_push_draw_buffer ();
+  cogl_set_draw_buffer (0 /* unused */, state->offscreen);
+
+  cogl_clear (&clr, COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_STENCIL);
+
+  cogl_set_viewport (stage_viewport[0],
+                     stage_viewport[1],
+                     stage_viewport[2],
+                     stage_viewport[3]);
+  cogl_set_projection_matrix (&stage_projection);
+  cogl_set_modelview_matrix (&stage_modelview);
+
+  do_test_backface_culling (state);
+
+  cogl_pop_draw_buffer ();
+
+  /* Incase we want feedback of what was drawn offscreen we draw it
+   * to the stage... */
+  cogl_set_source_texture (state->offscreen_tex);
+  cogl_rectangle (0, 0, stage_viewport[2], stage_viewport[3]);
+
+  /* Comment this out if you want visual feedback of what this test
+   * paints.
+   */
+  clutter_main_quit ();
 }
 
 static gboolean
@@ -256,15 +293,26 @@ test_backface_culling (TestConformSimpleFixture *fixture,
                        gconstpointer data)
 {
   TestState state;
+  CoglHandle tex;
   ClutterActor *stage;
+  float stage_width;
+  float stage_height;
+  const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
   ClutterActor *group;
   guint idle_source;
 
-  state.frame = 0;
+  stage = clutter_stage_get_default ();
+  clutter_actor_get_size (stage, &stage_width, &stage_height);
+
+  state.offscreen = COGL_INVALID_HANDLE;
 
   state.texture = make_texture ();
 
-  stage = clutter_stage_get_default ();
+  tex = cogl_texture_new_with_size (stage_width, stage_height,
+                                    COGL_TEXTURE_NO_SLICING,
+                                    COGL_PIXEL_FORMAT_ANY); /* internal fmt */
+  state.offscreen = cogl_offscreen_new_to_texture (tex);
+  state.offscreen_tex = tex;
 
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
@@ -284,6 +332,8 @@ test_backface_culling (TestConformSimpleFixture *fixture,
 
   g_source_remove (idle_source);
 
+  cogl_handle_unref (state.offscreen);
+  cogl_handle_unref (state.offscreen_tex);
   cogl_handle_unref (state.texture);
 
   if (g_test_verbose ())

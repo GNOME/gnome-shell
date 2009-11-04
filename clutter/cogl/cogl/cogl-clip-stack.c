@@ -34,6 +34,7 @@
 #include "cogl-primitives.h"
 #include "cogl-context.h"
 #include "cogl-internal.h"
+#include "cogl-draw-buffer-private.h"
 
 /* These are defined in the particular backend (float in GL vs fixed
    in GL ES) */
@@ -113,45 +114,79 @@ struct _CoglClipStackEntryPath
   CoglPathNode           path[1];
 };
 
+/* FIXME: deprecate and replace with:
+ * void
+ * cogl_clip_push_window_rectangle (int x_offset,
+ *                                  int y_offset,
+ *                                  int width,
+ *                                  int height);
+ */
 void
 cogl_clip_push_window_rect (float x_offset,
 	                    float y_offset,
 	                    float width,
 	                    float height)
 {
-  CoglClipStackEntryWindowRect *entry;
+  CoglHandle draw_buffer;
+  CoglClipStackState *clip_state;
   CoglClipStack *stack;
-  float v[4];
+  int draw_buffer_height;
+  CoglClipStackEntryWindowRect *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  stack = (CoglClipStack *) ctx->clip.stacks->data;
+  /* We don't log clip stack changes in the journal so we must flush
+   * it before making modifications */
+  _cogl_journal_flush ();
 
-  cogl_get_viewport (v);
+  draw_buffer = _cogl_get_draw_buffer ();
+  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+
+  stack = clip_state->stacks->data;
+
+  draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
 
   entry = g_slice_new (CoglClipStackEntryWindowRect);
 
-  /* We convert from coords with (0,0) at top left to coords
-   * with (0,0) at bottom left. */
+  /* We store the entry coordinates in OpenGL window coordinate space and so
+   * because Cogl defines the window origin to be top left but OpenGL defines
+   * it as bottom left we may need to convert the incoming coordinates.
+   *
+   * NB: Cogl forces all offscreen rendering to be done upside down so in this
+   * case no conversion is needed.
+   */
   entry->type = COGL_CLIP_STACK_WINDOW_RECT;
   entry->x0 = x_offset;
-  entry->y0 = v[3] - y_offset - height;
   entry->x1 = x_offset + width;
-  entry->y1 = v[3] - y_offset;
+  if (cogl_is_offscreen (draw_buffer))
+    {
+      entry->y0 = y_offset;
+      entry->y1 = y_offset + height;
+    }
+  else
+    {
+      entry->y0 = draw_buffer_height - y_offset - height;
+      entry->y1 = draw_buffer_height - y_offset;
+    }
 
   /* Store it in the stack */
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
-  ctx->clip.stack_dirty = TRUE;
+  clip_state->stack_dirty = TRUE;
 }
 
-/* Scale from OpenGL <-1,1> coordinates system to window coordinates
- * <0,window-size> with (0,0) being top left. */
-#define VIEWPORT_SCALE_X(x, w, width, origin) \
-    ((((((x) / (w)) + 1.0) / 2) * (width)) + (origin))
-#define VIEWPORT_SCALE_Y(y, w, height, origin) \
-    ((height) - (((((y) / (w)) + 1.0) / 2) * (height)) + (origin))
+/* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
+ * to Cogl window/draw-buffer coordinates (ranging from 0 to buffer-size) with
+ * (0,0) being top left. */
+#define VIEWPORT_TRANSFORM_X(x, vp_origin_x, vp_width) \
+    (  ( ((x) + 1.0) * ((vp_width) / 2.0) ) + (vp_origin_x)  )
+/* Note: for Y we first flip all coordinates around the X axis while in
+ * normalized device coodinates */
+#define VIEWPORT_TRANSFORM_Y(y, vp_origin_y, vp_height) \
+    (  ( ((-(y)) + 1.0) * ((vp_height) / 2.0) ) + (vp_origin_y)  )
 
+/* Transform a homogeneous vertex position from model space to Cogl
+ * window coordinates (with 0,0 being top left) */
 static void
 transform_point (CoglMatrix *matrix_mv,
                  CoglMatrix *matrix_p,
@@ -162,14 +197,19 @@ transform_point (CoglMatrix *matrix_mv,
   float z = 0;
   float w = 1;
 
-  /* Apply the model view matrix */
+  /* Apply the modelview matrix transform */
   cogl_matrix_transform_point (matrix_mv, x, y, &z, &w);
 
-  /* Apply the projection matrix */
+  /* Apply the projection matrix transform */
   cogl_matrix_transform_point (matrix_p, x, y, &z, &w);
+
+  /* Perform perspective division */
+  *x /= w;
+  *y /= w;
+
   /* Apply viewport transform */
-  *x = VIEWPORT_SCALE_X (*x, w, viewport[2], viewport[0]);
-  *y = VIEWPORT_SCALE_Y (*y, w, viewport[3], viewport[1]);
+  *x = VIEWPORT_TRANSFORM_X (*x, viewport[0], viewport[2]);
+  *y = VIEWPORT_TRANSFORM_Y (*y, viewport[1], viewport[3]);
 }
 
 #undef VIEWPORT_SCALE_X
@@ -193,6 +233,15 @@ try_pushing_rect_as_window_rect (float x_offset,
 
   cogl_get_modelview_matrix (&matrix);
 
+  /* If the modelview meets these constraints then a transformed rectangle
+   * should still be a rectangle when it reaches screen coordinates.
+   *
+   * FIXME: we are are making certain assumptions about the projection
+   * matrix a.t.m and should really be looking at the combined modelview
+   * and projection matrix.
+   * FIXME: we don't consider rotations that are a multiple of 90 degrees
+   * which could be quite common.
+   */
   if (matrix.xy != 0 || matrix.xz != 0 ||
       matrix.yx != 0 || matrix.yz != 0 ||
       matrix.zx != 0 || matrix.zy != 0)
@@ -204,6 +253,15 @@ try_pushing_rect_as_window_rect (float x_offset,
   transform_point (&matrix, &matrix_p, v, &_x0, &_y0);
   transform_point (&matrix, &matrix_p, v, &_x1, &_y1);
 
+  /* Consider that the modelview matrix may flip the rectangle
+   * along the x or y axis... */
+#define SWAP(A,B) do { float tmp = B; B = A; A = tmp; } while (0)
+  if (_x0 > _x1)
+    SWAP (_x0, _x1);
+  if (_y0 > _y1)
+    SWAP (_y0, _y1);
+#undef SWAP
+
   cogl_clip_push_window_rect (_x0, _y0, _x1 - _x0, _y1 - _y0);
   return TRUE;
 }
@@ -214,17 +272,26 @@ cogl_clip_push (float x_offset,
 	        float width,
 	        float height)
 {
-  CoglClipStackEntryRect *entry;
+  CoglHandle draw_buffer;
+  CoglClipStackState *clip_state;
   CoglClipStack *stack;
+  CoglClipStackEntryRect *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* We don't log clip stack changes in the journal so we must flush
+   * it before making modifications */
+  _cogl_journal_flush ();
 
   /* Try and catch window space rectangles so we can redirect to
    * cogl_clip_push_window_rect which will use scissoring. */
   if (try_pushing_rect_as_window_rect (x_offset, y_offset, width, height))
     return;
 
-  stack = (CoglClipStack *) ctx->clip.stacks->data;
+  draw_buffer = _cogl_get_draw_buffer ();
+  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+
+  stack = clip_state->stacks->data;
 
   entry = g_slice_new (CoglClipStackEntryRect);
 
@@ -240,18 +307,27 @@ cogl_clip_push (float x_offset,
   /* Store it in the stack */
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
-  ctx->clip.stack_dirty = TRUE;
+  clip_state->stack_dirty = TRUE;
 }
 
 void
 cogl_clip_push_from_path_preserve (void)
 {
-  CoglClipStackEntryPath *entry;
+  CoglHandle draw_buffer;
+  CoglClipStackState *clip_state;
   CoglClipStack *stack;
+  CoglClipStackEntryPath *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  stack = (CoglClipStack *) ctx->clip.stacks->data;
+  /* We don't log clip stack changes in the journal so we must flush
+   * it before making modifications */
+  _cogl_journal_flush ();
+
+  draw_buffer = _cogl_get_draw_buffer ();
+  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+
+  stack = clip_state->stacks->data;
 
   entry = g_malloc (sizeof (CoglClipStackEntryPath)
                     + sizeof (CoglPathNode) * (ctx->path_nodes->len - 1));
@@ -268,7 +344,7 @@ cogl_clip_push_from_path_preserve (void)
   /* Store it in the stack */
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
-  ctx->clip.stack_dirty = TRUE;
+  clip_state->stack_dirty = TRUE;
 }
 
 void
@@ -279,16 +355,18 @@ cogl_clip_push_from_path (void)
   cogl_path_new ();
 }
 
-void
-cogl_clip_pop (void)
+static void
+_cogl_clip_pop_real (CoglClipStackState *clip_state)
 {
-  gpointer entry;
   CoglClipStack *stack;
+  gpointer entry;
   CoglClipStackEntryType type;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  /* We don't log clip stack changes in the journal so we must flush
+   * it before making modifications */
+  _cogl_journal_flush ();
 
-  stack = (CoglClipStack *) ctx->clip.stacks->data;
+  stack = clip_state->stacks->data;
 
   g_return_if_fail (stack->stack_top != NULL);
 
@@ -306,35 +384,57 @@ cogl_clip_pop (void)
   stack->stack_top = g_list_delete_link (stack->stack_top,
                                          stack->stack_top);
 
-  ctx->clip.stack_dirty = TRUE;
+  clip_state->stack_dirty = TRUE;
 }
 
 void
-_cogl_clip_stack_rebuild (void)
+cogl_clip_pop (void)
 {
-  int has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
+  CoglHandle draw_buffer;
+  CoglClipStackState *clip_state;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  draw_buffer = _cogl_get_draw_buffer ();
+  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
+
+  _cogl_clip_pop_real (clip_state);
+}
+
+void
+_cogl_flush_clip_state (CoglClipStackState *clip_state)
+{
+  CoglClipStack *stack;
+  int has_clip_planes;
   gboolean using_clip_planes = FALSE;
   gboolean using_stencil_buffer = FALSE;
   GList *node;
-  CoglClipStack *stack;
   gint scissor_x0 = 0;
   gint scissor_y0 = 0;
   gint scissor_x1 = G_MAXINT;
   gint scissor_y1 = G_MAXINT;
-  CoglMatrixStack *modelview_stack;
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  modelview_stack = ctx->modelview_stack;
+  if (!clip_state->stack_dirty)
+    return;
 
   /* The current primitive journal does not support tracking changes to the
    * clip stack...  */
   _cogl_journal_flush ();
 
-  stack = (CoglClipStack *) ctx->clip.stacks->data;
+  /* XXX: the handling of clipping is quite complex. It may involve use of
+   * the Cogl Journal or other Cogl APIs which may end up recursively
+   * wanting to ensure the clip state is flushed. We need to ensure we
+   * don't recurse infinitely...
+   */
+  clip_state->stack_dirty = FALSE;
 
-  ctx->clip.stack_dirty = FALSE;
-  ctx->clip.stencil_used = FALSE;
+  has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
+
+  stack = clip_state->stacks->data;
+
+  clip_state->stencil_used = FALSE;
 
   _cogl_disable_clip_planes ();
   _cogl_disable_stencil_buffer ();
@@ -433,74 +533,111 @@ _cogl_clip_stack_rebuild (void)
                      scissor_y1 - scissor_y0));
     }
 
-  ctx->clip.stencil_used = using_stencil_buffer;
+  clip_state->stencil_used = using_stencil_buffer;
 }
 
+/* XXX: This should never have been made public API! */
 void
 cogl_clip_ensure (void)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglClipStackState *clip_state;
 
-  if (ctx->clip.stack_dirty)
-    _cogl_clip_stack_rebuild ();
+  clip_state = _cogl_draw_buffer_get_clip_state (_cogl_get_draw_buffer ());
+  _cogl_flush_clip_state (clip_state);
+}
+
+static void
+_cogl_clip_stack_save_real (CoglClipStackState *clip_state)
+{
+  CoglClipStack *stack;
+
+  /* We don't log clip stack changes in the journal so we must flush
+   * it before making modifications */
+  _cogl_journal_flush ();
+
+  stack = g_slice_new (CoglClipStack);
+  stack->stack_top = NULL;
+
+  clip_state->stacks = g_slist_prepend (clip_state->stacks, stack);
+  clip_state->stack_dirty = TRUE;
 }
 
 void
 cogl_clip_stack_save (void)
 {
-  CoglClipStack *stack;
+  CoglHandle draw_buffer;
+  CoglClipStackState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  stack = g_slice_new (CoglClipStack);
-  stack->stack_top = NULL;
+  draw_buffer = _cogl_get_draw_buffer ();
+  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
 
-  ctx->clip.stacks = g_slist_prepend (ctx->clip.stacks, stack);
+  _cogl_clip_stack_save_real (clip_state);
+}
 
-  ctx->clip.stack_dirty = TRUE;
+static void
+_cogl_clip_stack_restore_real (CoglClipStackState *clip_state)
+{
+  CoglClipStack *stack;
+
+  g_return_if_fail (clip_state->stacks != NULL);
+
+  /* We don't log clip stack changes in the journal so we must flush
+   * it before making modifications */
+  _cogl_journal_flush ();
+
+  stack = clip_state->stacks->data;
+
+  /* Empty the current stack */
+  while (stack->stack_top)
+    _cogl_clip_pop_real (clip_state);
+
+  /* Revert to an old stack */
+  g_slice_free (CoglClipStack, stack);
+  clip_state->stacks = g_slist_delete_link (clip_state->stacks,
+                                            clip_state->stacks);
+
+  clip_state->stack_dirty = TRUE;
 }
 
 void
 cogl_clip_stack_restore (void)
 {
-  CoglClipStack *stack;
+  CoglHandle draw_buffer;
+  CoglClipStackState *clip_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (ctx->clip.stacks != NULL);
+  draw_buffer = _cogl_get_draw_buffer ();
+  clip_state = _cogl_draw_buffer_get_clip_state (draw_buffer);
 
-  stack = (CoglClipStack *) ctx->clip.stacks->data;
-
-  /* Empty the current stack */
-  while (stack->stack_top)
-    cogl_clip_pop ();
-
-  /* Revert to an old stack */
-  g_slice_free (CoglClipStack, stack);
-  ctx->clip.stacks = g_slist_delete_link (ctx->clip.stacks,
-                                          ctx->clip.stacks);
-
-  ctx->clip.stack_dirty = TRUE;
+  _cogl_clip_stack_restore_real (clip_state);
 }
 
 void
-_cogl_clip_stack_state_init (void)
+_cogl_clip_stack_state_init (CoglClipStackState *clip_state)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  ctx->clip.stacks = NULL;
-  ctx->clip.stack_dirty = TRUE;
+  clip_state->stacks = NULL;
+  clip_state->stack_dirty = TRUE;
 
   /* Add an intial stack */
-  cogl_clip_stack_save ();
+  _cogl_clip_stack_save_real (clip_state);
 }
 
 void
-_cogl_clip_stack_state_destroy (void)
+_cogl_clip_stack_state_destroy (CoglClipStackState *clip_state)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* Destroy all of the stacks */
-  while (ctx->clip.stacks)
-    cogl_clip_stack_restore ();
+  while (clip_state->stacks)
+    _cogl_clip_stack_restore_real (clip_state);
 }
+
+void
+_cogl_clip_stack_state_dirty (CoglClipStackState *clip_state)
+{
+  clip_state->stack_dirty = TRUE;
+}
+

@@ -32,6 +32,12 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 
+typedef struct _CoglGLSymbolTableEntry
+{
+  const char *name;
+  void *ptr;
+} CoglGLSymbolTableEntry;
+
 gboolean
 cogl_check_extension (const gchar *name, const gchar *ext)
 {
@@ -55,6 +61,26 @@ cogl_check_extension (const gchar *name, const gchar *ext)
     }
 
   return FALSE;
+}
+
+gboolean
+_cogl_resolve_gl_symbols (CoglGLSymbolTableEntry *symbol_table,
+                          const char *suffix)
+{
+  int i;
+  gboolean status = TRUE;
+  for (i = 0; symbol_table[i].name; i++)
+    {
+      char *full_name = g_strdup_printf ("%s%s", symbol_table[i].name, suffix);
+      *((CoglFuncPtr *)symbol_table[i].ptr) = cogl_get_proc_address (full_name);
+      g_free (full_name);
+      if (!*((CoglFuncPtr *)symbol_table[i].ptr))
+        {
+          status = FALSE;
+          break;
+        }
+    }
+  return status;
 }
 
 #ifdef HAVE_CLUTTER_OSX
@@ -90,6 +116,9 @@ _cogl_features_init (void)
   const gchar      *gl_extensions;
   GLint             max_clip_planes = 0;
   GLint             num_stencil_bits = 0;
+  gboolean          fbo_ARB = FALSE;
+  gboolean          fbo_EXT = FALSE;
+  const char       *suffix;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -284,64 +313,35 @@ _cogl_features_init (void)
 	flags |= COGL_FEATURE_SHADERS_GLSL;
     }
 
-  if (cogl_check_extension ("GL_EXT_framebuffer_object", gl_extensions) ||
-      cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions))
+  fbo_ARB = cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions);
+  if (fbo_ARB)
+    suffix = "";
+  else
     {
-      ctx->drv.pf_glGenRenderbuffersEXT =
-	(COGL_PFNGLGENRENDERBUFFERSEXTPROC)
-	cogl_get_proc_address ("glGenRenderbuffersEXT");
+      fbo_EXT = cogl_check_extension ("GL_EXT_framebuffer_object", gl_extensions);
+      if (fbo_EXT)
+        suffix = "EXT";
+    }
 
-      ctx->drv.pf_glDeleteRenderbuffersEXT =
-	(COGL_PFNGLDELETERENDERBUFFERSEXTPROC)
-	cogl_get_proc_address ("glDeleteRenderbuffersEXT");
+  if (fbo_ARB || fbo_EXT)
+    {
+      CoglGLSymbolTableEntry symbol_table[] = {
+            {"glGenRenderbuffers", &ctx->drv.pf_glGenRenderbuffers},
+            {"glDeleteRenderbuffers", &ctx->drv.pf_glDeleteRenderbuffers},
+            {"glBindRenderbuffer", &ctx->drv.pf_glBindRenderbuffer},
+            {"glRenderbufferStorage", &ctx->drv.pf_glRenderbufferStorage},
+            {"glGenFramebuffers", &ctx->drv.pf_glGenFramebuffers},
+            {"glBindFramebuffer", &ctx->drv.pf_glBindFramebuffer},
+            {"glFramebufferTexture2D", &ctx->drv.pf_glFramebufferTexture2D},
+            {"glFramebufferRenderbuffer", &ctx->drv.pf_glFramebufferRenderbuffer},
+            {"glCheckFramebufferStatus", &ctx->drv.pf_glCheckFramebufferStatus},
+            {"glDeleteFramebuffers", &ctx->drv.pf_glDeleteFramebuffers},
+            {"glGenerateMipmap", &ctx->drv.pf_glGenerateMipmap},
+            {NULL, NULL}
+      };
 
-      ctx->drv.pf_glBindRenderbufferEXT =
-	(COGL_PFNGLBINDRENDERBUFFEREXTPROC)
-	cogl_get_proc_address ("glBindRenderbufferEXT");
-
-      ctx->drv.pf_glRenderbufferStorageEXT =
-	(COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC)
-	cogl_get_proc_address ("glRenderbufferStorageEXT");
-
-      ctx->drv.pf_glGenFramebuffersEXT =
-	(COGL_PFNGLGENFRAMEBUFFERSEXTPROC)
-	cogl_get_proc_address ("glGenFramebuffersEXT");
-
-      ctx->drv.pf_glBindFramebufferEXT =
-	(COGL_PFNGLBINDFRAMEBUFFEREXTPROC)
-	cogl_get_proc_address ("glBindFramebufferEXT");
-
-      ctx->drv.pf_glFramebufferTexture2DEXT =
-	(COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
-	cogl_get_proc_address ("glFramebufferTexture2DEXT");
-
-      ctx->drv.pf_glFramebufferRenderbufferEXT =
-	(COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
-	cogl_get_proc_address ("glFramebufferRenderbufferEXT");
-
-      ctx->drv.pf_glCheckFramebufferStatusEXT =
-	(COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
-	cogl_get_proc_address ("glCheckFramebufferStatusEXT");
-
-      ctx->drv.pf_glDeleteFramebuffersEXT =
-	(COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
-	cogl_get_proc_address ("glDeleteFramebuffersEXT");
-
-      ctx->drv.pf_glGenerateMipmapEXT =
-        (COGL_PFNGLGENERATEMIPMAPEXTPROC)
-        cogl_get_proc_address ("glGenerateMipmapEXT");
-
-      if (ctx->drv.pf_glGenRenderbuffersEXT         &&
-	  ctx->drv.pf_glBindRenderbufferEXT         &&
-	  ctx->drv.pf_glRenderbufferStorageEXT      &&
-	  ctx->drv.pf_glGenFramebuffersEXT          &&
-	  ctx->drv.pf_glBindFramebufferEXT          &&
-	  ctx->drv.pf_glFramebufferTexture2DEXT     &&
-	  ctx->drv.pf_glFramebufferRenderbufferEXT  &&
-	  ctx->drv.pf_glCheckFramebufferStatusEXT   &&
-	  ctx->drv.pf_glDeleteFramebuffersEXT       &&
-          ctx->drv.pf_glGenerateMipmapEXT)
-	flags |= COGL_FEATURE_OFFSCREEN;
+      if (_cogl_resolve_gl_symbols (symbol_table, suffix))
+        flags |= COGL_FEATURE_OFFSCREEN;
     }
 
   if (cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))

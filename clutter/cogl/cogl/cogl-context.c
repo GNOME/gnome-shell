@@ -32,6 +32,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-material-private.h"
+#include "cogl-draw-buffer-private.h"
 
 #include <string.h>
 
@@ -46,7 +47,7 @@ cogl_create_context (void)
 {
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
   gulong  enable_flags = 0;
-  CoglDrawBufferState *draw_buffer;
+  CoglHandle window_buffer;
 
   if (_context != NULL)
     return FALSE;
@@ -58,16 +59,24 @@ cogl_create_context (void)
   _context->feature_flags = 0;
   _context->features_cached = FALSE;
 
+  /* Initialise the driver specific state */
+  /* TODO: combine these two into one function */
+  _cogl_create_context_driver (_context);
+  _cogl_features_init ();
+
   _context->enable_flags = 0;
   _context->color_alpha = 0;
 
   _context->enable_backface_culling = FALSE;
+  _context->flushed_front_winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
 
   _context->indirect = gl_is_indirect;
 
+  cogl_matrix_init_identity (&_context->identity_matrix);
+  cogl_matrix_init_identity (&_context->y_flip_matrix);
+  cogl_matrix_scale (&_context->y_flip_matrix, 1, -1, 1);
+
   _context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
-  _context->modelview_stack = _cogl_matrix_stack_new ();
-  _context->projection_stack = _cogl_matrix_stack_new ();
   _context->texture_units = NULL;
 
   _context->default_material = cogl_material_new ();
@@ -87,11 +96,14 @@ cogl_create_context (void)
                                           sizeof (CoglLayerInfo));
   _context->n_texcoord_arrays_enabled = 0;
 
-  draw_buffer = g_slice_new0 (CoglDrawBufferState);
-  draw_buffer->target = COGL_WINDOW_BUFFER;
-  draw_buffer->offscreen = COGL_INVALID_HANDLE;
-  _context->draw_buffer_stack =
-    g_slist_prepend (NULL, draw_buffer);
+  _context->draw_buffer_stack = _cogl_create_draw_buffer_stack ();
+  window_buffer = _cogl_onscreen_new ();
+  /* XXX: When setting up the window buffer, cogl_set_draw_buffer
+   * assumes that the handle can be found in ctx->window_buffer */
+  _context->window_buffer = window_buffer;
+  cogl_set_draw_buffer (COGL_WINDOW_BUFFER, 0/* ignored */);
+  _context->dirty_bound_framebuffer = TRUE;
+  _context->dirty_gl_viewport = TRUE;
 
   _context->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   _context->last_path = 0;
@@ -99,20 +111,11 @@ cogl_create_context (void)
 
   _context->in_begin_gl_block = FALSE;
 
-  _context->viewport_width = 0;
-  _context->viewport_height = 0;
-
   _context->quad_indices_byte = COGL_INVALID_HANDLE;
   _context->quad_indices_short = COGL_INVALID_HANDLE;
   _context->quad_indices_short_len = 0;
 
   _context->texture_download_material = COGL_INVALID_HANDLE;
-
-  /* Initialise the clip stack */
-  _cogl_clip_stack_state_init ();
-
-  /* Initialise the driver specific state */
-  _cogl_create_context_driver (_context);
 
   /* Create default textures used for fall backs */
   _context->default_gl_texture_2d_tex =
@@ -139,6 +142,7 @@ cogl_create_context (void)
   enable_flags =
     _cogl_material_get_cogl_enable_flags (_context->source_material);
   cogl_enable (enable_flags);
+  _cogl_flush_face_winding ();
 
   return TRUE;
 }
@@ -146,15 +150,13 @@ cogl_create_context (void)
 void
 _cogl_destroy_context ()
 {
+
   if (_context == NULL)
     return;
 
-  _cogl_clip_stack_state_destroy ();
-
-  _cogl_matrix_stack_destroy (_context->modelview_stack);
-  _cogl_matrix_stack_destroy (_context->projection_stack);
-
   _cogl_destroy_texture_units ();
+
+  _cogl_free_draw_buffer_stack (_context->draw_buffer_stack);
 
   if (_context->path_nodes)
     g_array_free (_context->path_nodes, TRUE);
