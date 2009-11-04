@@ -71,17 +71,21 @@ clean-wrappers:
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers
 
-test_conformance_CFLAGS = \
+INCLUDES = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
 	-I$(top_srcdir)/clutter/cogl \
 	-I$(top_builddir)/clutter \
-	-I$(top_builddir)/clutter/cogl \
-	-DG_DISABLE_SINGLE_INCLUDES \
-	$(CLUTTER_CFLAGS) \
-	$(MAINTAINER_CFLAGS)
+	-I$(top_builddir)/clutter/cogl
 
-test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
+test_conformance_CPPFLAGS = \
+	-DG_DISABLE_SINGLE_INCLUDES \
+	-DCLUTTER_DISABLE_DEPRECATED \
+	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
+
+test_conformance_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+
+test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
 .PHONY: test
 .PHONY: test-report test-report-normal test-report-disable-npots

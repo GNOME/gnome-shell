@@ -59,6 +59,12 @@ static TestConformSharedState *shared_state = NULL;
               test_conform_skip_test,                                   \
               test_conform_simple_fixture_teardown);    } G_STMT_END
 
+gchar *
+clutter_test_get_data_file (const gchar *filename)
+{
+  return g_build_filename (TESTS_DATADIR, filename, NULL);
+}
+
 static void
 clutter_test_init (gint    *argc,
                    gchar ***argv)

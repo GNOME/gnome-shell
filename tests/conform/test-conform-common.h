@@ -24,3 +24,4 @@ void test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
 void test_conform_simple_fixture_teardown (TestConformSimpleFixture *fixture,
 					   gconstpointer data);
 
+gchar *clutter_test_get_data_file (const gchar *filename);
