@@ -299,18 +299,11 @@ static gboolean
 parse_knot_from_array (JsonArray   *array,
                        ClutterKnot *knot)
 {
-  JsonNode *val;
-
-  if (json_array_get_length (array) < 2)
+  if (json_array_get_length (array) != 2)
     return FALSE;
 
-  val = json_array_get_element (array, 0);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    knot->x = json_node_get_int (val);
-
-  val = json_array_get_element (array, 1);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    knot->y = json_node_get_int (val);
+  knot->x = json_array_get_int_element (array, 0);
+  knot->y = json_array_get_int_element (array, 1);
 
   return TRUE;
 }
@@ -319,18 +312,15 @@ static gboolean
 parse_knot_from_object (JsonObject  *object,
                         ClutterKnot *knot)
 {
-  JsonNode *val;
+  if (json_object_has_member (object, "x"))
+    knot->x = json_object_get_int_member (object, "x");
+  else
+    knot->x = 0;
 
-  if (json_object_get_size (object) < 2)
-    return FALSE;
-
-  val = json_object_get_member (object, "x");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    knot->x = json_node_get_int (val);
-
-  val = json_object_get_member (object, "y");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    knot->y = json_node_get_int (val);
+  if (json_object_has_member (object, "y"))
+    knot->y = json_object_get_int_member (object, "y");
+  else
+    knot->y = 0;
 
   return TRUE;
 }
@@ -363,26 +353,13 @@ static gboolean
 parse_geometry_from_array (JsonArray       *array,
                            ClutterGeometry *geometry)
 {
-  JsonNode *val;
-
-  if (json_array_get_length (array) < 4)
+  if (json_array_get_length (array) != 4)
     return FALSE;
 
-  val = json_array_get_element (array, 0);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->x = json_node_get_int (val);
-
-  val = json_array_get_element (array, 1);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->y = json_node_get_int (val);
-
-  val = json_array_get_element (array, 2);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->width = json_node_get_int (val);
-
-  val = json_array_get_element (array, 3);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->height = json_node_get_int (val);
+  geometry->x = json_array_get_int_element (array, 0);
+  geometry->y = json_array_get_int_element (array, 1);
+  geometry->width = json_array_get_int_element (array, 2);
+  geometry->height = json_array_get_int_element (array, 3);
 
   return TRUE;
 }
@@ -391,26 +368,25 @@ static gboolean
 parse_geometry_from_object (JsonObject      *object,
                             ClutterGeometry *geometry)
 {
-  JsonNode *val;
+  if (json_object_has_member (object, "x"))
+    geometry->x = json_object_get_int_member (object, "x");
+  else
+    geometry->x = 0;
 
-  if (json_object_get_size (object) < 4)
-    return FALSE;
+  if (json_object_has_member (object, "y"))
+    geometry->y = json_object_get_int_member (object, "y");
+  else
+    geometry->y = 0;
 
-  val = json_object_get_member (object, "x");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->x = json_node_get_int (val);
+  if (json_object_has_member (object, "width"))
+    geometry->width = json_object_get_int_member (object, "width");
+  else
+    geometry->width = 0;
 
-  val = json_object_get_member (object, "y");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->y = json_node_get_int (val);
-
-  val = json_object_get_member (object, "width");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->width = json_node_get_int (val);
-
-  val = json_object_get_member (object, "height");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    geometry->height = json_node_get_int (val);
+  if (json_object_has_member (object, "height"))
+    geometry->height = json_object_get_int_member (object, "height");
+  else
+    geometry->height = 0;
 
   return TRUE;
 }
@@ -443,26 +419,18 @@ static gboolean
 parse_color_from_array (JsonArray    *array,
                         ClutterColor *color)
 {
-  JsonNode *val;
-
-  if (json_array_get_length (array) < 4)
+  if (json_array_get_length (array) != 3 ||
+      json_array_get_length (array) != 4)
     return FALSE;
 
-  val = json_array_get_element (array, 0);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->red = CLAMP (json_node_get_int (val), 0, 255);
+  color->red   = CLAMP (json_array_get_int_element (array, 0), 0, 255);
+  color->green = CLAMP (json_array_get_int_element (array, 1), 0, 255);
+  color->blue  = CLAMP (json_array_get_int_element (array, 2), 0, 255);
 
-  val = json_array_get_element (array, 1);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->green = CLAMP (json_node_get_int (val), 0, 255);
-
-  val = json_array_get_element (array, 2);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->blue = CLAMP (json_node_get_int (val), 0, 255);
-
-  val = json_array_get_element (array, 3);
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->alpha = CLAMP (json_node_get_int (val), 0, 255);
+  if (json_array_get_length (array) == 4)
+    color->alpha = CLAMP (json_array_get_int_element (array, 3), 0, 255);
+  else
+    color->alpha = 255;
 
   return TRUE;
 }
@@ -471,26 +439,25 @@ static gboolean
 parse_color_from_object (JsonObject   *object,
                          ClutterColor *color)
 {
-  JsonNode *val;
+  if (json_object_has_member (object, "red"))
+    color->red = CLAMP (json_object_get_int_member (object, "red"), 0, 255);
+  else
+    color->red = 0;
 
-  if (json_object_get_size (object) < 4)
-    return FALSE;
+  if (json_object_has_member (object, "green"))
+    color->green = CLAMP (json_object_get_int_member (object, "green"), 0, 255);
+  else
+    color->green = 0;
 
-  val = json_object_get_member (object, "red");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->red = CLAMP (json_node_get_int (val), 0, 255);
+  if (json_object_has_member (object, "blue"))
+    color->blue = CLAMP (json_object_get_int_member (object, "blue"), 0, 255);
+  else
+    color->blue = 0;
 
-  val = json_object_get_member (object, "green");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->green = CLAMP (json_node_get_int (val), 0, 255);
-
-  val = json_object_get_member (object, "blue");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->blue = CLAMP (json_node_get_int (val), 0, 255);
-
-  val = json_object_get_member (object, "alpha");
-  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
-    color->alpha = CLAMP (json_node_get_int (val), 0, 255);
+  if (json_object_has_member (object, "alpha"))
+    color->alpha = CLAMP (json_object_get_int_member (object, "alpha"), 0, 255);
+  else
+    color->alpha = 255;
 
   return TRUE;
 }
