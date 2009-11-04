@@ -10,6 +10,7 @@ test_script_single (TestConformSimpleFixture *fixture,
                     gconstpointer dummy)
 {
   ClutterScript *script = clutter_script_new ();
+  ClutterColor color = { 0, };
   GObject *actor = NULL;
   GError *error = NULL;
   ClutterActor *rect;
@@ -25,6 +26,11 @@ test_script_single (TestConformSimpleFixture *fixture,
   rect = CLUTTER_ACTOR (actor);
   g_assert_cmpfloat (clutter_actor_get_width (rect), ==, 50.0);
   g_assert_cmpfloat (clutter_actor_get_y (rect), ==, 100.0);
+
+  clutter_rectangle_get_color (CLUTTER_RECTANGLE (rect), &color);
+  g_assert_cmpint (color.red, ==, 255);
+  g_assert_cmpint (color.green, ==, 0xcc);
+  g_assert_cmpint (color.alpha, ==, 0xff);
 
   g_object_unref (script);
 

@@ -479,6 +479,9 @@ clutter_script_parse_color (ClutterScript *script,
     case JSON_NODE_OBJECT:
       return parse_color_from_object (json_node_get_object (node), color);
 
+    case JSON_NODE_VALUE:
+      return clutter_color_from_string (color, json_node_get_string (node));
+
     default:
       break;
     }
@@ -1279,17 +1282,11 @@ clutter_script_parse_node (ClutterScript *script,
         case G_TYPE_BOXED:
           if (G_VALUE_HOLDS (value, CLUTTER_TYPE_COLOR))
             {
-              if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
-                {
-                  const gchar *str = g_value_get_string (&node_value);
-                  ClutterColor color = { 0, };
+              ClutterColor color = { 0, };
 
-                  if (str && str[0] != '\0')
-                    clutter_color_from_string (&color, str);
-
-                  g_value_set_boxed (value, &color);
-                  retval = TRUE;
-                }
+              retval = clutter_script_parse_color (script, node, &color);
+              if (retval)
+                clutter_value_set_color (value, &color);
             }
           break;
 
