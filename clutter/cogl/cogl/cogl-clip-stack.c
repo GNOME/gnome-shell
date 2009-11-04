@@ -26,6 +26,7 @@
 #endif
 
 #include <string.h>
+#include <math.h>
 
 #include <glib.h>
 
@@ -36,26 +37,11 @@
 #include "cogl-internal.h"
 #include "cogl-draw-buffer-private.h"
 
-/* These are defined in the particular backend (float in GL vs fixed
-   in GL ES) */
-void _cogl_set_clip_planes (float x,
-			    float y,
-			    float width,
-			    float height);
-void _cogl_add_stencil_clip (float x,
-			     float y,
-			     float width,
-			     float height,
-			     gboolean     first);
 void _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                        floatVec2 nodes_max,
                                        guint         path_size,
                                        CoglPathNode *path,
                                        gboolean      merge);
-void _cogl_enable_clip_planes (void);
-void _cogl_disable_clip_planes (void);
-void _cogl_disable_stencil_buffer (void);
-void _cogl_set_matrix (const CoglMatrix *matrix);
 
 typedef struct _CoglClipStack CoglClipStack;
 
@@ -113,6 +99,243 @@ struct _CoglClipStackEntryPath
   guint                  path_size;
   CoglPathNode           path[1];
 };
+
+static void
+project_vertex (const CoglMatrix *modelview_matrix,
+		const CoglMatrix *projection_matrix,
+		float *vertex)
+{
+  int i;
+
+  /* Apply the modelview matrix */
+  cogl_matrix_transform_point (modelview_matrix,
+                               &vertex[0], &vertex[1],
+                               &vertex[2], &vertex[3]);
+  /* Apply the projection matrix */
+  cogl_matrix_transform_point (projection_matrix,
+                               &vertex[0], &vertex[1],
+                               &vertex[2], &vertex[3]);
+  /* Convert from homogenized coordinates */
+  for (i = 0; i < 4; i++)
+    vertex[i] /= vertex[3];
+}
+
+static void
+set_clip_plane (GLint plane_num,
+		const float *vertex_a,
+		const float *vertex_b)
+{
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
+  GLfloat plane[4];
+#else
+  GLdouble plane[4];
+#endif
+  GLfloat angle;
+  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (draw_buffer);
+  CoglMatrix inverse_projection;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_matrix_stack_get_inverse (projection_stack, &inverse_projection);
+
+  /* Calculate the angle between the axes and the line crossing the
+     two points */
+  angle = atan2f (vertex_b[1] - vertex_a[1],
+                  vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
+
+  _cogl_matrix_stack_push (modelview_stack);
+
+  /* Load the inverse of the projection matrix so we can specify the plane
+   * in screen coordinates */
+  _cogl_matrix_stack_set (modelview_stack, &inverse_projection);
+
+  /* Rotate about point a */
+  _cogl_matrix_stack_translate (modelview_stack,
+                                vertex_a[0], vertex_a[1], vertex_a[2]);
+  /* Rotate the plane by the calculated angle so that it will connect
+     the two points */
+  _cogl_matrix_stack_rotate (modelview_stack, angle, 0.0f, 0.0f, 1.0f);
+  _cogl_matrix_stack_translate (modelview_stack,
+                                -vertex_a[0], -vertex_a[1], -vertex_a[2]);
+
+  _cogl_matrix_stack_flush_to_gl (modelview_stack, COGL_MATRIX_MODELVIEW);
+
+  plane[0] = 0;
+  plane[1] = -1.0;
+  plane[2] = 0;
+  plane[3] = vertex_a[1];
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
+  GE( glClipPlanef (plane_num, plane) );
+#else
+  GE( glClipPlane (plane_num, plane) );
+#endif
+
+  _cogl_matrix_stack_pop (modelview_stack);
+}
+
+static void
+set_clip_planes (float x_offset,
+		 float y_offset,
+		 float width,
+		 float height)
+{
+  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  CoglMatrix modelview_matrix;
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (draw_buffer);
+  CoglMatrix projection_matrix;
+
+  float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
+  float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
+  float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
+  float vertex_br[4] = { x_offset + width, y_offset + height,
+                        0, 1.0 };
+
+  _cogl_matrix_stack_get (projection_stack, &projection_matrix);
+  _cogl_matrix_stack_get (modelview_stack, &modelview_matrix);
+
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_tl);
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_tr);
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_bl);
+  project_vertex (&modelview_matrix, &projection_matrix, vertex_br);
+
+  /* If the order of the top and bottom lines is different from the
+     order of the left and right lines then the clip rect must have
+     been transformed so that the back is visible. We therefore need
+     to swap one pair of vertices otherwise all of the planes will be
+     the wrong way around */
+  if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
+      != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
+    {
+      float temp[4];
+      memcpy (temp, vertex_tl, sizeof (temp));
+      memcpy (vertex_tl, vertex_tr, sizeof (temp));
+      memcpy (vertex_tr, temp, sizeof (temp));
+      memcpy (temp, vertex_bl, sizeof (temp));
+      memcpy (vertex_bl, vertex_br, sizeof (temp));
+      memcpy (vertex_br, temp, sizeof (temp));
+    }
+
+  set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
+  set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
+  set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
+  set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
+}
+
+void
+add_stencil_clip_rectangle (float x_offset,
+                            float y_offset,
+                            float width,
+                            float height,
+                            gboolean first)
+{
+  CoglHandle current_source;
+  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* We don't log changes to the stencil buffer so need to flush any
+   * batched geometry before we start... */
+  _cogl_journal_flush ();
+
+  _cogl_draw_buffer_flush_state (draw_buffer, 0);
+
+  /* temporarily swap in our special stenciling material */
+  current_source = cogl_handle_ref (ctx->source_material);
+  cogl_set_source (ctx->stencil_material);
+
+  if (first)
+    {
+      GE( glEnable (GL_STENCIL_TEST) );
+
+      /* Initially disallow everything */
+      GE( glClearStencil (0) );
+      GE( glClear (GL_STENCIL_BUFFER_BIT) );
+
+      /* Punch out a hole to allow the rectangle */
+      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+      GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
+
+      cogl_rectangle (x_offset, y_offset,
+                      x_offset + width, y_offset + height);
+    }
+  else
+    {
+      CoglMatrixStack *modelview_stack =
+        _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+      CoglMatrixStack *projection_stack =
+        _cogl_draw_buffer_get_projection_stack (draw_buffer);
+
+      /* Add one to every pixel of the stencil buffer in the
+	 rectangle */
+      GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
+      GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+      cogl_rectangle (x_offset, y_offset,
+                      x_offset + width, y_offset + height);
+
+      /* make sure our rectangle hits the stencil buffer before we
+       * change the stencil operation */
+      _cogl_journal_flush ();
+
+      /* Subtract one from all pixels in the stencil buffer so that
+	 only pixels where both the original stencil buffer and the
+	 rectangle are set will be valid */
+      GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
+
+      _cogl_matrix_stack_push (projection_stack);
+      _cogl_matrix_stack_load_identity (projection_stack);
+
+      _cogl_matrix_stack_push (modelview_stack);
+      _cogl_matrix_stack_load_identity (modelview_stack);
+
+      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
+
+      _cogl_matrix_stack_pop (modelview_stack);
+      _cogl_matrix_stack_pop (projection_stack);
+    }
+
+  /* make sure our rectangles hit the stencil buffer before we restore
+   * the stencil function / operation */
+  _cogl_journal_flush ();
+
+  /* Restore the stencil mode */
+  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+
+  /* restore the original source material */
+  cogl_set_source (current_source);
+  cogl_handle_unref (current_source);
+}
+
+static void
+disable_stencil_buffer (void)
+{
+  GE( glDisable (GL_STENCIL_TEST) );
+}
+
+static void
+enable_clip_planes (void)
+{
+  GE( glEnable (GL_CLIP_PLANE0) );
+  GE( glEnable (GL_CLIP_PLANE1) );
+  GE( glEnable (GL_CLIP_PLANE2) );
+  GE( glEnable (GL_CLIP_PLANE3) );
+}
+
+static void
+disable_clip_planes (void)
+{
+  GE( glDisable (GL_CLIP_PLANE3) );
+  GE( glDisable (GL_CLIP_PLANE2) );
+  GE( glDisable (GL_CLIP_PLANE1) );
+  GE( glDisable (GL_CLIP_PLANE0) );
+}
 
 /* FIXME: deprecate and replace with:
  * void
@@ -436,8 +659,8 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
 
   clip_state->stencil_used = FALSE;
 
-  _cogl_disable_clip_planes ();
-  _cogl_disable_stencil_buffer ();
+  disable_clip_planes ();
+  disable_stencil_buffer ();
   GE (glDisable (GL_SCISSOR_TEST));
 
   /* If the stack is empty then there's nothing else to do */
@@ -484,21 +707,21 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
              that instead */
           if (has_clip_planes)
             {
-              _cogl_set_clip_planes (rect->x_offset,
-                                     rect->y_offset,
-                                     rect->width,
-                                     rect->height);
+              set_clip_planes (rect->x_offset,
+                               rect->y_offset,
+                               rect->width,
+                               rect->height);
               using_clip_planes = TRUE;
               /* We can't use clip planes a second time */
               has_clip_planes = FALSE;
             }
           else
             {
-              _cogl_add_stencil_clip (rect->x_offset,
-                                      rect->y_offset,
-                                      rect->width,
-                                      rect->height,
-                                      !using_stencil_buffer);
+              add_stencil_clip_rectangle (rect->x_offset,
+                                          rect->y_offset,
+                                          rect->width,
+                                          rect->height,
+                                          !using_stencil_buffer);
               using_stencil_buffer = TRUE;
             }
 
@@ -519,7 +742,7 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
   /* Enabling clip planes is delayed to now so that they won't affect
      setting up the stencil buffer */
   if (using_clip_planes)
-    _cogl_enable_clip_planes ();
+    enable_clip_planes ();
 
   if (scissor_x0 >= scissor_x1 || scissor_y0 >= scissor_y1)
     scissor_x0 = scissor_y0 = scissor_x1 = scissor_y1 = 0;
