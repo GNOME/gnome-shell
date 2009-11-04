@@ -1,0 +1,10 @@
+{
+  "type" : "ClutterRectangle",
+  "id" : "test",
+  "width" : 50.0,
+  "height" : 100.0,
+  "x" : 100.0,
+  "y" : 100.0,
+  "color" : "#ffccdd",
+  "name" : "Test Rectangle"
+}

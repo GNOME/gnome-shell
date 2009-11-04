@@ -185,5 +185,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_offscreen);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
 
+  TEST_CONFORM_SIMPLE ("/script", test_script_single);
+
   return g_test_run ();
 }

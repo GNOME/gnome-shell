@@ -39,6 +39,7 @@ test_conformance_SOURCES = 		\
 	test-cogl-viewport.c		\
 	test-cogl-offscreen.c		\
 	test-cogl-readpixels.c		\
+	test-script-parser.c		\
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:

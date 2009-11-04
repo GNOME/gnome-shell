@@ -218,6 +218,7 @@ TAGS
 /tests/conform/test-cogl-readpixels
 /tests/conform/test-cogl-viewport
 /tests/conform/test-texture-fbo
+/tests/conform/test-script-single
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
