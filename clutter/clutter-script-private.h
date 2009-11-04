@@ -34,6 +34,21 @@
 
 G_BEGIN_DECLS
 
+#define CLUTTER_TYPE_SCRIPT_PARSER      (clutter_script_parser_get_type ())
+#define CLUTTER_SCRIPT_PARSER(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_SCRIPT_PARSER, ClutterScriptParser))
+#define CLUTTER_IS_SCRIPT_PARSER(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_SCRIPT_PARSER))
+
+typedef struct _ClutterScriptParser     ClutterScriptParser;
+typedef struct _JsonParserClass         ClutterScriptParserClass;
+
+struct _ClutterScriptParser
+{
+  JsonParser parent_instance;
+
+  /* back reference */
+  ClutterScript *script;
+};
+
 typedef GType (* GTypeGetFunc) (void);
 
 typedef struct {
@@ -75,6 +90,8 @@ typedef struct {
 
 void property_info_free (gpointer data);
 
+GType clutter_script_parser_get_type (void) G_GNUC_CONST;
+
 gboolean clutter_script_parse_node        (ClutterScript *script,
                                            GValue        *value,
                                            const gchar   *name,
@@ -84,7 +101,7 @@ gboolean clutter_script_parse_node        (ClutterScript *script,
 GType    clutter_script_get_type_from_symbol (const gchar *symbol);
 GType    clutter_script_get_type_from_class  (const gchar *name);
 
-GObject *clutter_script_construct_object  (ClutterScript *script,
+GObject *_clutter_script_construct_object  (ClutterScript *script,
                                            ObjectInfo    *info);
 
 gulong   clutter_script_resolve_animation_mode (const gchar *namer);
@@ -107,6 +124,25 @@ gboolean clutter_script_parse_color       (ClutterScript   *script,
                                            ClutterColor    *color);
 GObject *clutter_script_parse_alpha       (ClutterScript   *script,
                                            JsonNode        *node);
+
+gchar *_clutter_script_generate_fake_id (ClutterScript *script);
+
+void _clutter_script_warn_missing_attribute (ClutterScript *script,
+                                             const gchar   *id,
+                                             const gchar   *attribute);
+
+void _clutter_script_warn_invalid_value (ClutterScript *script,
+                                         const gchar   *attribute,
+                                         const gchar   *expected,
+                                         JsonNode      *node);
+
+ObjectInfo *_clutter_script_get_object_info (ClutterScript *script,
+                                             const gchar   *script_id);
+
+guint _clutter_script_get_last_merge_id (ClutterScript *script);
+
+void _clutter_script_add_object_info (ClutterScript *script,
+                                      ObjectInfo    *oinfo);
 
 G_END_DECLS
 
