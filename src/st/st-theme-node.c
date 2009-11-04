@@ -2211,14 +2211,33 @@ st_theme_node_get_content_box (StThemeNode           *node,
                                const ClutterActorBox *allocation,
                                ClutterActorBox       *content_box)
 {
+  double noncontent_left, noncontent_top, noncontent_right, noncontent_bottom;
+  double avail_width, avail_height, content_width, content_height;
+
   g_return_if_fail (ST_IS_THEME_NODE (node));
 
   ensure_geometry (node);
 
-  content_box->x1 = (int)(0.5 + node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT];
-  content_box->y1 = (int)(0.5 + node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP];
-  content_box->x2 = allocation->x2 - allocation->x1 - ((int)(0.5 + node->border_width[ST_SIDE_RIGHT]) + node->padding[ST_SIDE_RIGHT]);
-  content_box->y2 = allocation->y2 - allocation->y1 - ((int)(0.5 + node->border_width[ST_SIDE_BOTTOM]) + node->padding[ST_SIDE_BOTTOM]);
+  avail_width = allocation->x2 - allocation->x1;
+  avail_height = allocation->y2 - allocation->y1;
+
+  noncontent_left = node->border_width[ST_SIDE_LEFT] + node->padding[ST_SIDE_LEFT];
+  noncontent_top = node->border_width[ST_SIDE_TOP] + node->padding[ST_SIDE_TOP];
+  noncontent_right = node->border_width[ST_SIDE_RIGHT] + node->padding[ST_SIDE_RIGHT];
+  noncontent_bottom = node->border_width[ST_SIDE_BOTTOM] + node->padding[ST_SIDE_BOTTOM];
+
+  content_box->x1 = (int)(0.5 + noncontent_left);
+  content_box->y1 = (int)(0.5 + noncontent_top);
+
+  content_width = avail_width - noncontent_left - noncontent_right;
+  if (content_width < 0)
+    content_width = 0;
+  content_height = avail_height - noncontent_top - noncontent_bottom;
+  if (content_height < 0)
+    content_height = 0;
+
+  content_box->x2 = (int)(0.5 + content_box->x1 + content_width);
+  content_box->y2 = (int)(0.5 + content_box->y1 + content_height);
 }
 
 
