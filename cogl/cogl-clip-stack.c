@@ -66,10 +66,10 @@ struct _CoglClipStackEntryRect
   CoglClipStackEntryType type;
 
   /* The rectangle for this clip */
-  float                  x_offset;
-  float                  y_offset;
-  float                  width;
-  float                  height;
+  float                  x0;
+  float                  y0;
+  float                  x1;
+  float                  y1;
 
   /* The matrix that was current when the clip was set */
   CoglMatrix             matrix;
@@ -178,10 +178,10 @@ set_clip_plane (GLint plane_num,
 }
 
 static void
-set_clip_planes (float x_offset,
-		 float y_offset,
-		 float width,
-		 float height)
+set_clip_planes (float x_1,
+		 float y_1,
+		 float x_2,
+		 float y_2)
 {
   CoglHandle draw_buffer = _cogl_get_draw_buffer ();
   CoglMatrixStack *modelview_stack =
@@ -191,11 +191,10 @@ set_clip_planes (float x_offset,
     _cogl_draw_buffer_get_projection_stack (draw_buffer);
   CoglMatrix projection_matrix;
 
-  float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
-  float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
-  float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
-  float vertex_br[4] = { x_offset + width, y_offset + height,
-                        0, 1.0 };
+  float vertex_tl[4] = { x_1, y_1, 0, 1.0 };
+  float vertex_tr[4] = { x_2, y_1, 0, 1.0 };
+  float vertex_bl[4] = { x_1, y_2, 0, 1.0 };
+  float vertex_br[4] = { x_2, y_2, 0, 1.0 };
 
   _cogl_matrix_stack_get (projection_stack, &projection_matrix);
   _cogl_matrix_stack_get (modelview_stack, &modelview_matrix);
@@ -229,10 +228,10 @@ set_clip_planes (float x_offset,
 }
 
 void
-add_stencil_clip_rectangle (float x_offset,
-                            float y_offset,
-                            float width,
-                            float height,
+add_stencil_clip_rectangle (float x_1,
+                            float y_1,
+                            float x_2,
+                            float y_2,
                             gboolean first)
 {
   CoglHandle current_source;
@@ -262,8 +261,7 @@ add_stencil_clip_rectangle (float x_offset,
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
 
-      cogl_rectangle (x_offset, y_offset,
-                      x_offset + width, y_offset + height);
+      cogl_rectangle (x_1, y_1, x_2, y_2);
     }
   else
     {
@@ -276,8 +274,7 @@ add_stencil_clip_rectangle (float x_offset,
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      cogl_rectangle (x_offset, y_offset,
-                      x_offset + width, y_offset + height);
+      cogl_rectangle (x_1, y_1, x_2, y_2);
 
       /* make sure our rectangle hits the stencil buffer before we
        * change the stencil operation */
@@ -441,18 +438,14 @@ transform_point (CoglMatrix *matrix_mv,
 /* Try to push a rectangle given in object coordinates as a rectangle in window
  * coordinates instead of object coordinates */
 gboolean
-try_pushing_rect_as_window_rect (float x_offset,
-	                         float y_offset,
-                                 float width,
-                                 float height)
+try_pushing_rect_as_window_rect (float x_1,
+	                         float y_1,
+                                 float x_2,
+                                 float y_2)
 {
   CoglMatrix matrix;
   CoglMatrix matrix_p;
   float v[4];
-  float _x0 = x_offset;
-  float _y0 = y_offset;
-  float _x1 = x_offset + width;
-  float _y1 = y_offset + height;
 
   cogl_get_modelview_matrix (&matrix);
 
@@ -473,27 +466,27 @@ try_pushing_rect_as_window_rect (float x_offset,
   cogl_get_projection_matrix (&matrix_p);
   cogl_get_viewport (v);
 
-  transform_point (&matrix, &matrix_p, v, &_x0, &_y0);
-  transform_point (&matrix, &matrix_p, v, &_x1, &_y1);
+  transform_point (&matrix, &matrix_p, v, &x_1, &y_1);
+  transform_point (&matrix, &matrix_p, v, &x_2, &y_2);
 
   /* Consider that the modelview matrix may flip the rectangle
    * along the x or y axis... */
 #define SWAP(A,B) do { float tmp = B; B = A; A = tmp; } while (0)
-  if (_x0 > _x1)
-    SWAP (_x0, _x1);
-  if (_y0 > _y1)
-    SWAP (_y0, _y1);
+  if (x_1 > x_2)
+    SWAP (x_1, x_2);
+  if (y_1 > y_2)
+    SWAP (y_1, y_2);
 #undef SWAP
 
-  cogl_clip_push_window_rect (_x0, _y0, _x1 - _x0, _y1 - _y0);
+  cogl_clip_push_window_rect (x_1, y_1, x_2 - x_1, y_2 - y_1);
   return TRUE;
 }
 
-void
-cogl_clip_push (float x_offset,
-	        float y_offset,
-	        float width,
-	        float height)
+static void
+_cogl_clip_push_rectangle (float x_1,
+                           float y_1,
+                           float x_2,
+                           float y_2)
 {
   CoglHandle draw_buffer;
   CoglClipStackState *clip_state;
@@ -508,7 +501,7 @@ cogl_clip_push (float x_offset,
 
   /* Try and catch window space rectangles so we can redirect to
    * cogl_clip_push_window_rect which will use scissoring. */
-  if (try_pushing_rect_as_window_rect (x_offset, y_offset, width, height))
+  if (try_pushing_rect_as_window_rect (x_1, y_1, x_2, y_2))
     return;
 
   draw_buffer = _cogl_get_draw_buffer ();
@@ -520,10 +513,10 @@ cogl_clip_push (float x_offset,
 
   /* Make a new entry */
   entry->type = COGL_CLIP_STACK_RECT;
-  entry->x_offset = x_offset;
-  entry->y_offset = y_offset;
-  entry->width = width;
-  entry->height = height;
+  entry->x0 = x_1;
+  entry->y0 = y_1;
+  entry->x1 = x_2;
+  entry->y1 = y_2;
 
   cogl_get_modelview_matrix (&entry->matrix);
 
@@ -531,6 +524,18 @@ cogl_clip_push (float x_offset,
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
   clip_state->stack_dirty = TRUE;
+}
+
+void
+cogl_clip_push (float x_offset,
+	        float y_offset,
+	        float width,
+	        float height)
+{
+  _cogl_clip_push_rectangle (x_offset,
+                             y_offset,
+                             x_offset + width,
+                             y_offset + height);
 }
 
 void
@@ -707,20 +712,20 @@ _cogl_flush_clip_state (CoglClipStackState *clip_state)
              that instead */
           if (has_clip_planes)
             {
-              set_clip_planes (rect->x_offset,
-                               rect->y_offset,
-                               rect->width,
-                               rect->height);
+              set_clip_planes (rect->x0,
+                               rect->y0,
+                               rect->x1,
+                               rect->y1);
               using_clip_planes = TRUE;
               /* We can't use clip planes a second time */
               has_clip_planes = FALSE;
             }
           else
             {
-              add_stencil_clip_rectangle (rect->x_offset,
-                                          rect->y_offset,
-                                          rect->width,
-                                          rect->height,
+              add_stencil_clip_rectangle (rect->x0,
+                                          rect->y0,
+                                          rect->x1,
+                                          rect->y1,
                                           !using_stencil_buffer);
               using_stencil_buffer = TRUE;
             }
