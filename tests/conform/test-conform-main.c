@@ -186,6 +186,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_readpixels);
 
   TEST_CONFORM_SIMPLE ("/script", test_script_single);
+  TEST_CONFORM_SIMPLE ("/script", test_script_child);
 
   return g_test_run ();
 }

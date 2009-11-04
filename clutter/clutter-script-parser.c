@@ -1008,6 +1008,7 @@ clutter_script_parser_object_end (JsonParser *json_parser,
       pinfo->name = g_strdup (name);
       pinfo->node = json_node_copy (node);
       pinfo->pspec = NULL;
+      pinfo->is_child = g_str_has_prefix (name, "child::") ? TRUE : FALSE;
 
       oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
     }
@@ -1352,6 +1353,13 @@ clutter_script_translate_parameters (ClutterScript  *script,
       GParameter param = { NULL };
       gboolean res = FALSE;
 
+      if (pinfo->is_child)
+        {
+          CLUTTER_NOTE (SCRIPT, "Child property '%s' ignored", pinfo->name);
+          unparsed = g_list_prepend (unparsed, pinfo);
+          continue;
+        }
+
       CLUTTER_NOTE (SCRIPT, "Parsing %s property (id:%s)",
                     pinfo->pspec ? "regular" : "custom",
                     pinfo->name);
@@ -1454,10 +1462,111 @@ clutter_script_construct_parameters (ClutterScript  *script,
 }
 
 static void
+apply_child_properties (ClutterScript    *script,
+                        ClutterContainer *container,
+                        ClutterActor     *actor,
+                        ObjectInfo       *oinfo)
+{
+  ClutterScriptable *scriptable = NULL;
+  ClutterScriptableIface *iface = NULL;
+  gboolean set_custom_property = FALSE;
+  gboolean parse_custom_node = FALSE;
+  GList *l, *unresolved, *properties;
+  GObjectClass *klass;
+  GType meta_type;
+
+  meta_type = CLUTTER_CONTAINER_GET_IFACE (container)->child_meta_type;
+  if (meta_type == G_TYPE_INVALID)
+    return;
+
+  klass = G_OBJECT_GET_CLASS (container);
+
+  /* shortcut, to avoid typechecking every time */
+  if (CLUTTER_IS_SCRIPTABLE (container))
+    {
+      scriptable = CLUTTER_SCRIPTABLE (container);
+      iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
+
+      parse_custom_node = iface->parse_custom_node != NULL ? TRUE : FALSE;
+      set_custom_property = iface->set_custom_property != NULL ? TRUE : FALSE;
+    }
+
+  properties = oinfo->properties;
+  oinfo->properties = NULL;
+
+  unresolved = NULL;
+  for (l = properties; l != NULL; l = l->next)
+    {
+      PropertyInfo *pinfo = l->data;
+      GValue value = { 0, };
+      const gchar *name;
+      gboolean res;
+
+      if (!pinfo->is_child)
+        {
+          unresolved = g_list_prepend (unresolved, pinfo);
+          continue;
+        }
+
+      name = pinfo->name + strlen ("child::");
+
+      pinfo->pspec =
+        clutter_container_class_find_child_property (klass, name);
+
+      if (pinfo->pspec != NULL)
+        g_param_spec_ref (pinfo->pspec);
+
+      CLUTTER_NOTE (SCRIPT, "Parsing %s child property (id:%s)",
+                    pinfo->pspec != NULL ? "regular" : "custom",
+                    name);
+
+      if (parse_custom_node)
+        res = iface->parse_custom_node (scriptable, script, &value,
+                                        name,
+                                        pinfo->node);
+
+      if (!res)
+        res = clutter_script_parse_node (script, &value,
+                                         name,
+                                         pinfo->node,
+                                         pinfo->pspec);
+
+      if (!res)
+        {
+          CLUTTER_NOTE (SCRIPT, "Child property '%s' ignored", name);
+          unresolved = g_list_prepend (unresolved, pinfo);
+          continue;
+        }
+
+      
+      CLUTTER_NOTE (SCRIPT,
+                    "Setting %s child property '%s' (type:%s) to "
+                    "object '%s' (id:%s)",
+                    set_custom_property ? "custom" : "regular",
+                    name,
+                    g_type_name (G_VALUE_TYPE (&value)),
+                    g_type_name (oinfo->gtype),
+                    oinfo->id);
+
+      clutter_container_child_set_property (container, actor,
+                                            name,
+                                            &value);
+
+      g_value_unset (&value);
+
+      property_info_free (pinfo);
+    }
+
+  g_list_free (properties);
+
+  oinfo->properties = unresolved;
+}
+
+static void
 apply_behaviours (ClutterScript *script,
                   ObjectInfo    *oinfo)
 {
-  ClutterActor  *actor = CLUTTER_ACTOR (oinfo->object);
+  ClutterActor *actor = CLUTTER_ACTOR (oinfo->object);
   GList *l, *unresolved;
 
   unresolved = NULL;
@@ -1525,6 +1634,10 @@ add_children (ClutterScript *script,
                     g_type_name (G_OBJECT_TYPE (container)));
 
       clutter_container_add_actor (container, CLUTTER_ACTOR (object));
+
+      apply_child_properties (script,
+                              container, CLUTTER_ACTOR (object),
+                              child_info);
     }
 
   g_list_foreach (oinfo->children, (GFunc) g_free, NULL);

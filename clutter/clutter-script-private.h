@@ -78,6 +78,8 @@ typedef struct {
   gchar *name;
   JsonNode *node;
   GParamSpec *pspec;
+
+  guint is_child : 1;
 } PropertyInfo;
 
 typedef struct {

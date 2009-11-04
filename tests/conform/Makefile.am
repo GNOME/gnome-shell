@@ -88,6 +88,8 @@ test_conformance_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 
 test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS)
 
+test_conformance_LDFLAGS = -rdynamic
+
 .PHONY: test
 .PHONY: test-report test-report-normal test-report-disable-npots
 .PHONY: full-report full-report-normal full-report-disable-npots
