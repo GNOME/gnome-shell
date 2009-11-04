@@ -38,6 +38,8 @@
 #include "cogl-context.h"
 #include "cogl-material-private.h"
 #include "cogl-winsys.h"
+#include "cogl-draw-buffer-private.h"
+#include "cogl-matrix-private.h"
 
 #if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
@@ -116,7 +118,12 @@ cogl_clear (const CoglColor *color, gulong buffers)
 
   COGL_NOTE (DRAW, "Clear begin");
 
-  cogl_clip_ensure ();
+  _cogl_journal_flush ();
+
+  /* NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
 
   if (buffers & COGL_BUFFER_BIT_COLOR)
     {
@@ -264,6 +271,9 @@ cogl_set_backface_culling_enabled (gboolean setting)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  if (ctx->enable_backface_culling == setting)
+    return;
+
   /* Currently the journal can't track changes to backface culling state... */
   _cogl_journal_flush ();
 
@@ -276,6 +286,38 @@ cogl_get_backface_culling_enabled (void)
   _COGL_GET_CONTEXT (ctx, FALSE);
 
   return ctx->enable_backface_culling;
+}
+
+void
+_cogl_flush_face_winding (void)
+{
+  CoglFrontWinding winding;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* The front face winding doesn't matter if we aren't performing any
+   * backface culling... */
+  if (!ctx->enable_backface_culling)
+    return;
+
+  /* NB: We use a clockwise face winding order when drawing offscreen because
+   * all offscreen rendering is done upside down resulting in reversed winding
+   * for all triangles.
+   */
+  if (cogl_is_offscreen (_cogl_get_draw_buffer ()))
+    winding = COGL_FRONT_WINDING_CLOCKWISE;
+  else
+    winding = COGL_FRONT_WINDING_COUNTER_CLOCKWISE;
+
+  if (winding != ctx->flushed_front_winding)
+    {
+
+      if (winding == COGL_FRONT_WINDING_CLOCKWISE)
+        GE (glFrontFace (GL_CW));
+      else
+        GE (glFrontFace (GL_CCW));
+      ctx->flushed_front_winding = winding;
+    }
 }
 
 void
@@ -326,32 +368,38 @@ set_clip_plane (GLint plane_num,
   GLdouble plane[4];
 #endif
   GLfloat angle;
+  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (draw_buffer);
   CoglMatrix inverse_projection;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_matrix_stack_get_inverse (projection_stack, &inverse_projection);
 
   /* Calculate the angle between the axes and the line crossing the
      two points */
   angle = atan2f (vertex_b[1] - vertex_a[1],
                   vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
 
-  _cogl_matrix_stack_push (ctx->modelview_stack);
-  /* Load the identity matrix and multiply by the reverse of the
-     projection matrix so we can specify the plane in screen
-     coordinates */
-  _cogl_matrix_stack_load_identity (ctx->modelview_stack);
-  cogl_matrix_init_from_array (&inverse_projection,
-                               ctx->inverse_projection);
-  _cogl_matrix_stack_multiply (ctx->modelview_stack, &inverse_projection);
+  _cogl_matrix_stack_push (modelview_stack);
+
+  /* Load the inverse of the projection matrix so we can specify the plane
+   * in screen coordinates */
+  _cogl_matrix_stack_set (modelview_stack, &inverse_projection);
+
   /* Rotate about point a */
-  _cogl_matrix_stack_translate (ctx->modelview_stack,
+  _cogl_matrix_stack_translate (modelview_stack,
                                 vertex_a[0], vertex_a[1], vertex_a[2]);
   /* Rotate the plane by the calculated angle so that it will connect
      the two points */
-  _cogl_matrix_stack_rotate (ctx->modelview_stack, angle, 0.0f, 0.0f, 1.0f);
-  _cogl_matrix_stack_translate (ctx->modelview_stack,
+  _cogl_matrix_stack_rotate (modelview_stack, angle, 0.0f, 0.0f, 1.0f);
+  _cogl_matrix_stack_translate (modelview_stack,
                                 -vertex_a[0], -vertex_a[1], -vertex_a[2]);
 
-  _cogl_flush_matrix_stacks ();
+  _cogl_matrix_stack_flush_to_gl (modelview_stack, COGL_MATRIX_MODELVIEW);
 
   plane[0] = 0;
   plane[1] = -1.0;
@@ -363,7 +411,7 @@ set_clip_plane (GLint plane_num,
   GE( glClipPlane (plane_num, plane) );
 #endif
 
-  _cogl_matrix_stack_pop (ctx->modelview_stack);
+  _cogl_matrix_stack_pop (modelview_stack);
 }
 
 void
@@ -372,7 +420,12 @@ _cogl_set_clip_planes (float x_offset,
 		       float width,
 		       float height)
 {
+  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (draw_buffer);
   CoglMatrix modelview_matrix;
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (draw_buffer);
   CoglMatrix projection_matrix;
 
   float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
@@ -381,10 +434,8 @@ _cogl_set_clip_planes (float x_offset,
   float vertex_br[4] = { x_offset + width, y_offset + height,
                         0, 1.0 };
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  _cogl_matrix_stack_get (ctx->projection_stack, &projection_matrix);
-  _cogl_matrix_stack_get (ctx->modelview_stack, &modelview_matrix);
+  _cogl_matrix_stack_get (projection_stack, &projection_matrix);
+  _cogl_matrix_stack_get (modelview_stack, &modelview_matrix);
 
   project_vertex (&modelview_matrix, &projection_matrix, vertex_tl);
   project_vertex (&modelview_matrix, &projection_matrix, vertex_tr);
@@ -422,12 +473,15 @@ _cogl_add_stencil_clip (float x_offset,
 			gboolean first)
 {
   CoglHandle current_source;
+  CoglHandle draw_buffer = _cogl_get_draw_buffer ();
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* We don't log changes to the stencil buffer so need to flush any
    * batched geometry before we start... */
   _cogl_journal_flush ();
+
+  _cogl_draw_buffer_flush_state (draw_buffer, 0);
 
   /* temporarily swap in our special stenciling material */
   current_source = cogl_handle_ref (ctx->source_material);
@@ -450,6 +504,11 @@ _cogl_add_stencil_clip (float x_offset,
     }
   else
     {
+      CoglMatrixStack *modelview_stack =
+        _cogl_draw_buffer_get_modelview_stack (draw_buffer);
+      CoglMatrixStack *projection_stack =
+        _cogl_draw_buffer_get_projection_stack (draw_buffer);
+
       /* Add one to every pixel of the stencil buffer in the
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
@@ -466,16 +525,16 @@ _cogl_add_stencil_clip (float x_offset,
 	 rectangle are set will be valid */
       GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
 
-      _cogl_matrix_stack_push (ctx->projection_stack);
-      _cogl_matrix_stack_load_identity (ctx->projection_stack);
+      _cogl_matrix_stack_push (projection_stack);
+      _cogl_matrix_stack_load_identity (projection_stack);
 
-      _cogl_matrix_stack_push (ctx->modelview_stack);
-      _cogl_matrix_stack_load_identity (ctx->modelview_stack);
+      _cogl_matrix_stack_push (modelview_stack);
+      _cogl_matrix_stack_load_identity (modelview_stack);
 
       cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
 
-      _cogl_matrix_stack_pop (ctx->modelview_stack);
-      _cogl_matrix_stack_pop (ctx->projection_stack);
+      _cogl_matrix_stack_pop (modelview_stack);
+      _cogl_matrix_stack_pop (projection_stack);
     }
 
   /* make sure our rectangles hit the stencil buffer before we restore
@@ -515,19 +574,32 @@ _cogl_disable_clip_planes (void)
   GE( glDisable (GL_CLIP_PLANE0) );
 }
 
-/* XXX: This should be deprecated and Cogl should be left to manage
- * the glViewport automatically when switching draw buffers. */
+void
+cogl_set_viewport (int x,
+                   int y,
+                   int width,
+                   int height)
+{
+  CoglHandle draw_buffer;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  draw_buffer = _cogl_get_draw_buffer ();
+
+  _cogl_draw_buffer_set_viewport (draw_buffer,
+                                  x,
+                                  y,
+                                  width,
+                                  height);
+}
+
+/* XXX: This should be deprecated, and we should expose a way to also
+ * specify an x and y viewport offset */
 void
 cogl_viewport (guint width,
 	       guint height)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  COGL_NOTE (MISC, "glViewport(0, 0, %u, %u)", width, height);
-  GE( glViewport (0, 0, width, height) );
-
-  ctx->viewport_width = width;
-  ctx->viewport_height = height;
+  cogl_set_viewport (0, 0, width, height);
 }
 
 void
@@ -540,10 +612,11 @@ _cogl_setup_viewport (guint width,
 {
   float z_camera;
   CoglMatrix projection_matrix;
+  CoglMatrixStack *modelview_stack;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_viewport (width, height);
+  cogl_set_viewport (0, 0, width, height);
 
   /* For Ortho projection.
    * _cogl_matrix_stack_ortho (projection_stack, 0, width, 0,  height, -1, 1);
@@ -593,11 +666,13 @@ _cogl_setup_viewport (guint width,
   cogl_get_projection_matrix (&projection_matrix);
   z_camera = 0.5 * projection_matrix.xx;
 
-  _cogl_matrix_stack_load_identity (ctx->modelview_stack);
-  _cogl_matrix_stack_translate (ctx->modelview_stack, -0.5f, -0.5f, -z_camera);
-  _cogl_matrix_stack_scale (ctx->modelview_stack,
+  modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_load_identity (modelview_stack);
+  _cogl_matrix_stack_translate (modelview_stack, -0.5f, -0.5f, -z_camera);
+  _cogl_matrix_stack_scale (modelview_stack,
                             1.0f / width, -1.0f / height, 1.0f / width);
-  _cogl_matrix_stack_translate (ctx->modelview_stack,
+  _cogl_matrix_stack_translate (modelview_stack,
                                 0.0f, -1.0 * height, 0.0f);
 }
 
@@ -605,9 +680,6 @@ CoglFeatureFlags
 cogl_get_features (void)
 {
   _COGL_GET_CONTEXT (ctx, 0);
-
-  if (!ctx->features_cached)
-    _cogl_features_init ();
 
   if (cogl_debug_flags & COGL_DEBUG_DISABLE_VBOS)
     ctx->feature_flags &= ~COGL_FEATURE_VBOS;
@@ -626,18 +698,24 @@ cogl_features_available (CoglFeatureFlags features)
   return (ctx->feature_flags & features) == features;
 }
 
-/* XXX: This function should be deprecated, and replaced with a
- * cogl_draw_buffer_get_size() API instead. We don't support offset
- * viewports, and you can't have floating point viewport sizes. */
+/* XXX: This function should either be replaced with one returning
+ * integers, or removed/deprecated and make the
+ * _cogl_draw_buffer_get_viewport* functions public.
+ */
 void
 cogl_get_viewport (float v[4])
 {
+  CoglHandle draw_buffer;
+  int viewport[4];
+  int i;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  v[0] = 0;
-  v[1] = 0;
-  v[2] = ctx->viewport_width;
-  v[3] = ctx->viewport_height;
+  draw_buffer = _cogl_get_draw_buffer ();
+  _cogl_draw_buffer_get_viewport4fv (draw_buffer, viewport);
+
+  for (i = 0; i < 4; i++)
+    v[i] = viewport[i];
 }
 
 void
@@ -733,7 +811,7 @@ cogl_disable_fog (void)
 void
 cogl_flush_gl_state (int flags)
 {
-  _cogl_flush_matrix_stacks ();
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
 }
 #endif
 
@@ -752,37 +830,52 @@ cogl_read_pixels (int x,
                   CoglPixelFormat format,
                   guint8 *pixels)
 {
-  GLint   viewport[4];
-  GLint   viewport_height;
-  int     rowstride = width * 4;
-  guint8  *temprow;
+  CoglHandle draw_buffer;
+  int        draw_buffer_height;
+  int        rowstride = width * 4;
+  guint8    *temprow;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   g_return_if_fail (format == COGL_PIXEL_FORMAT_RGBA_8888);
   g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
 
   temprow = g_alloca (rowstride * sizeof (guint8));
 
-  glGetIntegerv (GL_VIEWPORT, viewport);
-  viewport_height = viewport[3];
+  draw_buffer = _cogl_get_draw_buffer ();
+
+  _cogl_draw_buffer_flush_state (draw_buffer, 0);
+
+  draw_buffer_height = _cogl_draw_buffer_get_height (draw_buffer);
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
-     so 0 is the bottom row */
-  y = viewport_height - y - height;
-
-  /* Setup the pixel store parameters that may have been changed by
-     Cogl */
-  glPixelStorei (GL_PACK_ALIGNMENT, 4);
-#ifdef HAVE_COGL_GL
-  glPixelStorei (GL_PACK_ROW_LENGTH, 0);
-  glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
-  glPixelStorei (GL_PACK_SKIP_ROWS, 0);
-#endif /* HAVE_COGL_GL */
+   * so 0 is the bottom row
+   *
+   * NB: all offscreen rendering is done upside down so no conversion
+   * is necissary in this case.
+   */
+  if (!cogl_is_offscreen (draw_buffer))
+    y = draw_buffer_height - y - height;
 
   /* make sure any batched primitives get emitted to the GL driver before
    * issuing our read pixels... */
   cogl_flush ();
 
-  glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+  /* Setup the pixel store parameters that may have been changed by
+     Cogl */
+  GE (glPixelStorei (GL_PACK_ALIGNMENT, 1));
+#ifdef HAVE_COGL_GL
+  GE (glPixelStorei (GL_PACK_ROW_LENGTH, 0));
+  GE (glPixelStorei (GL_PACK_SKIP_PIXELS, 0));
+  GE (glPixelStorei (GL_PACK_SKIP_ROWS, 0));
+#endif /* HAVE_COGL_GL */
+
+  GE (glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels));
+
+  /* NB: All offscreen rendering is done upside down so there is no need
+   * to flip in this case... */
+  if (cogl_is_offscreen (draw_buffer))
+    return;
 
   /* TODO: consider using the GL_MESA_pack_invert extension in the future
    * to avoid this flip... */
@@ -825,12 +918,13 @@ cogl_begin_gl (void)
   /* Flush all batched primitives */
   cogl_flush ();
 
-  /* Flush our clipping state to GL */
-  cogl_clip_ensure ();
-
-  /* Flush any client side matrix state */
-  _cogl_flush_matrix_stacks ();
-
+  /* Flush framebuffer state, including clip state, modelview and
+   * projection matrix state
+   *
+   * NB: _cogl_draw_buffer_flush_state may disrupt various state (such
+   * as the material state) when flushing the clip stack, so should
+   * always be done first when preparing to draw. */
+  _cogl_draw_buffer_flush_state (_cogl_get_draw_buffer (), 0);
 
   /* Setup the state for the current material */
 
@@ -852,6 +946,7 @@ cogl_begin_gl (void)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
   cogl_enable (enable_flags);
+  _cogl_flush_face_winding ();
 
   /* Disable all client texture coordinate arrays */
   for (i = 0; i < ctx->n_texcoord_arrays_enabled; i++)
@@ -940,36 +1035,41 @@ _cogl_destroy_texture_units (void)
 void
 cogl_push_matrix (void)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_push (ctx->modelview_stack);
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_push (modelview_stack);
 }
 
 void
 cogl_pop_matrix (void)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_pop (ctx->modelview_stack);
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_pop (modelview_stack);
 }
 
 void
 cogl_scale (float x, float y, float z)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_scale (ctx->modelview_stack, x, y, z);
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_scale (modelview_stack, x, y, z);
 }
 
 void
 cogl_translate (float x, float y, float z)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_translate (ctx->modelview_stack, x, y, z);
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_translate (modelview_stack, x, y, z);
 }
 
 void
 cogl_rotate (float angle, float x, float y, float z)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_rotate (ctx->modelview_stack, angle, x, y, z);
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_rotate (modelview_stack, angle, x, y, z);
 }
 
 void
@@ -996,35 +1096,20 @@ cogl_frustum (float        left,
 	      float        z_near,
 	      float        z_far)
 {
-  float c, d;
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  _cogl_matrix_stack_load_identity (ctx->projection_stack);
+  _cogl_matrix_stack_load_identity (projection_stack);
 
-  _cogl_matrix_stack_frustum (ctx->projection_stack,
+  _cogl_matrix_stack_frustum (projection_stack,
                               left,
                               right,
                               bottom,
                               top,
                               z_near,
                               z_far);
-
-  /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
-
-  c = - (z_far + z_near) /  (z_far - z_near);
-  d = - (2 * (z_far * z_near)) /  (z_far - z_near);
-
-#define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) =  (right - left) /  (2 * z_near);
-  M(0,3) =  (right + left) /  (2 * z_near);
-  M(1,1) =  (top - bottom) /  (2 * z_near);
-  M(1,3) =  (top + bottom) /  (2 * z_near);
-  M(2,3) = -1.0;
-  M(3,2) = 1.0 / d;
-  M(3,3) = c / d;
-#undef M
 }
 
 void
@@ -1036,65 +1121,61 @@ cogl_ortho (float left,
 	    float z_far)
 {
   CoglMatrix ortho;
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   cogl_matrix_init_identity (&ortho);
   cogl_matrix_ortho (&ortho, left, right, bottom, top, z_near, z_far);
-  _cogl_matrix_stack_set (ctx->projection_stack, &ortho);
-
-  /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
-
-#define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) =  1.0 / ortho.xx;
-  M(0,3) =  -ortho.xw;
-  M(1,1) =  1.0 / ortho.yy;
-  M(1,3) =  -ortho.yw;
-  M(2,2) =  1.0 / ortho.zz;
-  M(2,3) =  -ortho.zw;
-  M(3,3) =  1.0;
-#undef M
+  _cogl_matrix_stack_set (projection_stack, &ortho);
 }
 
 void
 cogl_get_modelview_matrix (CoglMatrix *matrix)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_get (ctx->modelview_stack, matrix);
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_get (modelview_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
 cogl_set_modelview_matrix (CoglMatrix *matrix)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_set (ctx->modelview_stack, matrix);
+  CoglMatrixStack *modelview_stack =
+    _cogl_draw_buffer_get_modelview_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_set (modelview_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
 cogl_get_projection_matrix (CoglMatrix *matrix)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_get (ctx->projection_stack, matrix);
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_get (projection_stack, matrix);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
 cogl_set_projection_matrix (CoglMatrix *matrix)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_set (ctx->projection_stack, matrix);
+  CoglMatrixStack *projection_stack =
+    _cogl_draw_buffer_get_projection_stack (_cogl_get_draw_buffer ());
+  _cogl_matrix_stack_set (projection_stack, matrix);
 
   /* FIXME: Update the inverse projection matrix!! Presumably use
    * of clip planes must currently be broken if this API is used. */
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
-void
-_cogl_flush_matrix_stacks (void)
+CoglClipStackState *
+_cogl_get_clip_state (void)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  _cogl_matrix_stack_flush_to_gl (ctx->projection_stack,
-                                  COGL_MATRIX_PROJECTION);
-  _cogl_matrix_stack_flush_to_gl (ctx->modelview_stack,
-                                  COGL_MATRIX_MODELVIEW);
+  CoglHandle draw_buffer;
+
+  draw_buffer = _cogl_get_draw_buffer ();
+  return _cogl_draw_buffer_get_clip_state (draw_buffer);
 }
 

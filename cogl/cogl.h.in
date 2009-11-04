@@ -219,6 +219,8 @@ void            _cogl_setup_viewport          (guint        width,
                                                float        z_near,
                                                float        z_far);
 
+#ifndef COGL_DISABLE_DEPRECATED
+
 /**
  * cogl_viewport:
  * @width: Width of the viewport
@@ -229,7 +231,25 @@ void            _cogl_setup_viewport          (guint        width,
  * Since: 0.8.2
  */
 void            cogl_viewport                 (guint               width,
-					       guint               height);
+					       guint               height) G_GNUC_DEPRECATED;
+
+#endif
+
+/**
+ * cogl_set_viewport:
+ * @x: viewport X offset
+ * @x: viewport Y offset
+ * @width: Width of the viewport
+ * @height: Height of the viewport
+ *
+ * Replace the current viewport with the given values.
+ *
+ * Since: 1.2
+ */
+void            cogl_set_viewport             (int x,
+                                               int y,
+                                               int width,
+					       int height);
 
 /**
  * cogl_push_matrix:
@@ -867,6 +887,10 @@ void            cogl_flush_gl_state         (int      flags);
 
 /* private */
 void            _cogl_set_indirect_context  (gboolean indirect);
+void            _cogl_set_viewport (int x, int y, int width, int height);
+
+void
+_cogl_onscreen_clutter_backend_set_size (int width, int height);
 
 G_END_DECLS
 

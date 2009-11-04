@@ -31,6 +31,16 @@
 void
 _cogl_create_context_driver (CoglContext *context)
 {
+  context->drv.pf_glGenRenderbuffers = NULL;
+  context->drv.pf_glBindRenderbuffer = NULL;
+  context->drv.pf_glRenderbufferStorage = NULL;
+  context->drv.pf_glGenFramebuffers = NULL;
+  context->drv.pf_glBindFramebuffer = NULL;
+  context->drv.pf_glFramebufferTexture2D = NULL;
+  context->drv.pf_glFramebufferRenderbuffer = NULL;
+  context->drv.pf_glCheckFramebufferStatus = NULL;
+  context->drv.pf_glDeleteFramebuffers = NULL;
+
   /* Init the GLES2 wrapper */
 #ifdef HAVE_COGL_GLES2
   cogl_gles2_wrapper_init (&context->drv.gles2);

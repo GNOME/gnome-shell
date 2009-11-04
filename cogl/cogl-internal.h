@@ -34,6 +34,12 @@ typedef enum
   COGL_MATRIX_TEXTURE
 } CoglMatrixMode;
 
+typedef enum
+{
+  COGL_FRONT_WINDING_CLOCKWISE,
+  COGL_FRONT_WINDING_COUNTER_CLOCKWISE
+} CoglFrontWinding;
+
 #ifdef HAVE_COGL_GLES2
 typedef enum {
   COGL_BOXED_NONE,
@@ -104,5 +110,8 @@ void
 _cogl_destroy_texture_units (void);
 
 void    _cogl_flush_matrix_stacks (void);
+
+void
+_cogl_flush_face_winding (void);
 
 #endif /* __COGL_INTERNAL_H */

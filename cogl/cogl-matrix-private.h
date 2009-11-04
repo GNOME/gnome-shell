@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2008,2009 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,21 +19,29 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ *
+ * Authors:
+ *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef __COGL_FBO_H
-#define __COGL_FBO_H
+#ifndef __COGL_MATRIX_PRIVATE_H
+#define __COGL_MATRIX_PRIVATE_H
 
-#include "cogl-handle.h"
+#include <glib.h>
 
-typedef struct
-{
-  CoglHandleObject _parent;
-  int    width;
-  int    height;
-  GLuint gl_handle;
-  GLuint gl_stencil_handle;
+G_BEGIN_DECLS
 
-} CoglFbo;
+#define _COGL_MATRIX_DEBUG_PRINT(MATRIX) \
+  if (G_UNLIKELY (cogl_debug_flags & COGL_DEBUG_MATRICES)) \
+    { \
+      g_print ("%s:\n", G_STRFUNC); \
+      _cogl_matrix_print (MATRIX); \
+    }
 
-#endif /* __COGL_FBO_H */
+void
+_cogl_matrix_print (CoglMatrix *matrix);
+
+G_END_DECLS
+
+#endif /* __COGL_MATRIX_PRIVATE_H */
+

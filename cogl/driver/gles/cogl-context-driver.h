@@ -24,17 +24,26 @@
 #ifndef __COGL_CONTEXT_DRIVER_H
 #define __COGL_CONTEXT_DRIVER_H
 
+#include "cogl.h"
 #include "cogl-gles2-wrapper.h"
 
 typedef struct _CoglContextDriver
 
 {
+  COGL_PFNGLGENRENDERBUFFERSPROC                pf_glGenRenderbuffers;
+  COGL_PFNGLDELETERENDERBUFFERSPROC             pf_glDeleteRenderbuffers;
+  COGL_PFNGLBINDRENDERBUFFERPROC                pf_glBindRenderbuffer;
+  COGL_PFNGLRENDERBUFFERSTORAGEPROC             pf_glRenderbufferStorage;
+  COGL_PFNGLGENFRAMEBUFFERSPROC                 pf_glGenFramebuffers;
+  COGL_PFNGLBINDFRAMEBUFFERPROC                 pf_glBindFramebuffer;
+  COGL_PFNGLFRAMEBUFFERTEXTURE2DPROC            pf_glFramebufferTexture2D;
+  COGL_PFNGLFRAMEBUFFERRENDERBUFFERPROC         pf_glFramebufferRenderbuffer;
+  COGL_PFNGLCHECKFRAMEBUFFERSTATUSPROC          pf_glCheckFramebufferStatus;
+  COGL_PFNGLDELETEFRAMEBUFFERSPROC              pf_glDeleteFramebuffers;
+  COGL_PFNGLGENERATEMIPMAPPROC                  pf_glGenerateMipmap;
+
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper  gles2;
-
-  /* Viewport store for FBOs. Needed because glPushAttrib() isn't
-     supported */
-  GLint             viewport_store[4];
 #endif
 } CoglContextDriver;
 

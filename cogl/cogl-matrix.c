@@ -24,20 +24,41 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
+#define USE_MESA_MATRIX_API
+
 #include <cogl.h>
 #include <cogl-matrix.h>
+#include <cogl-matrix-private.h>
+#ifdef USE_MESA_MATRIX_API
+#include <cogl-matrix-mesa.h>
+#endif
 
 #include <glib.h>
 #include <math.h>
 #include <string.h>
 
 void
+_cogl_matrix_print (CoglMatrix *matrix)
+{
+  float *m = (float *)matrix;
+  int y;
+
+  for (y = 0; y < 4; y++)
+    g_print ("\t%6.4f %6.4f %6.4f %6.4f\n", m[y], m[4+y], m[8+y], m[12+y]);
+}
+
+void
 cogl_matrix_init_identity (CoglMatrix *matrix)
 {
+#ifndef USE_MESA_MATRIX_API
   matrix->xx = 1; matrix->xy = 0; matrix->xz = 0; matrix->xw = 0;
   matrix->yx = 0; matrix->yy = 1; matrix->yz = 0; matrix->yw = 0;
   matrix->zx = 0; matrix->zy = 0; matrix->zz = 1; matrix->zw = 0;
   matrix->wx = 0; matrix->wy = 0; matrix->wz = 0; matrix->ww = 1;
+#else
+  _math_matrix_init_identity (matrix);
+#endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -45,6 +66,7 @@ cogl_matrix_multiply (CoglMatrix *result,
 		      const CoglMatrix *a,
 		      const CoglMatrix *b)
 {
+#ifndef USE_MESA_MATRIX_API
   CoglMatrix r;
 
   /* row 0 */
@@ -73,10 +95,14 @@ cogl_matrix_multiply (CoglMatrix *result,
 
   /* The idea was that having this unrolled; it might be easier for the
    * compiler to vectorize, but that's probably not true. Mesa does it
-   * using a single for (i=0; i<4; i++) approach, may that's better...
+   * using a single for (i=0; i<4; i++) approach, maybe that's better...
    */
 
   *result = r;
+#else
+  _math_matrix_multiply (result, a, b);
+#endif
+  _COGL_MATRIX_DEBUG_PRINT (result);
 }
 
 void
@@ -86,6 +112,7 @@ cogl_matrix_rotate (CoglMatrix *matrix,
 		    float y,
 		    float z)
 {
+#ifndef USE_MESA_MATRIX_API
   CoglMatrix rotation;
   CoglMatrix result;
   float c, s;
@@ -116,6 +143,10 @@ cogl_matrix_rotate (CoglMatrix *matrix,
 
   cogl_matrix_multiply (&result, matrix, &rotation);
   *matrix = result;
+#else
+  _math_matrix_rotate (matrix, angle, x, y, z);
+#endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -124,10 +155,15 @@ cogl_matrix_translate (CoglMatrix *matrix,
 		       float y,
 		       float z)
 {
+#ifndef USE_MESA_MATRIX_API
   matrix->xw = matrix->xx * x + matrix->xy * y + matrix->xz * z + matrix->xw;
   matrix->yw = matrix->yx * x + matrix->yy * y + matrix->yz * z + matrix->yw;
   matrix->zw = matrix->zx * x + matrix->zy * y + matrix->zz * z + matrix->zw;
   matrix->ww = matrix->wx * x + matrix->wy * y + matrix->wz * z + matrix->ww;
+#else
+  _math_matrix_translate (matrix, x, y, z);
+#endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -136,23 +172,16 @@ cogl_matrix_scale (CoglMatrix *matrix,
 		   float sy,
 		   float sz)
 {
+#ifndef USE_MESA_MATRIX_API
   matrix->xx *= sx; matrix->xy *= sy; matrix->xz *= sz;
   matrix->yx *= sx; matrix->yy *= sy; matrix->yz *= sz;
   matrix->zx *= sx; matrix->zy *= sy; matrix->zz *= sz;
   matrix->wx *= sx; matrix->wy *= sy; matrix->wz *= sz;
-}
-
-#if 0
-gboolean
-cogl_matrix_invert (CoglMatrix *matrix)
-{
-  /* TODO */
-  /* Note: It might be nice to also use the flag based tricks that mesa does
-   * to alow it to track the type of transformations a matrix represents
-   * so it can use various assumptions to optimise the inversion.
-   */
-}
+#else
+  _math_matrix_scale (matrix, sx, sy, sz);
 #endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
+}
 
 void
 cogl_matrix_frustum (CoglMatrix *matrix,
@@ -163,6 +192,7 @@ cogl_matrix_frustum (CoglMatrix *matrix,
                      float       z_near,
                      float       z_far)
 {
+#ifndef USE_MESA_MATRIX_API
   float x, y, a, b, c, d;
   CoglMatrix frustum;
 
@@ -194,6 +224,10 @@ cogl_matrix_frustum (CoglMatrix *matrix,
   frustum.ww = 0.0f;
 
   cogl_matrix_multiply (matrix, matrix, &frustum);
+#else
+  _math_matrix_frustum (matrix, left, right, bottom, top, z_near, z_far);
+#endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -212,6 +246,7 @@ cogl_matrix_perspective (CoglMatrix *matrix,
                        ymax,            /* top */
                        z_near,
                        z_far);
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
@@ -223,6 +258,7 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float near_val,
                    float far_val)
 {
+#ifndef USE_MESA_MATRIX_API
   CoglMatrix ortho;
 
   /* column 0 */
@@ -250,18 +286,48 @@ cogl_matrix_ortho (CoglMatrix *matrix,
   ortho.ww = 1.0;
 
   cogl_matrix_multiply (matrix, matrix, &ortho);
+#else
+  _math_matrix_ortho (matrix, left, right, bottom, top, near_val, far_val);
+#endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 void
 cogl_matrix_init_from_array (CoglMatrix *matrix, const float *array)
 {
+#ifndef USE_MESA_MATRIX_API
   memcpy (matrix, array, sizeof (float) * 16);
+#else
+  _math_matrix_init_from_array (matrix, array);
+#endif
+  _COGL_MATRIX_DEBUG_PRINT (matrix);
 }
 
 const float *
 cogl_matrix_get_array (const CoglMatrix *matrix)
 {
   return (float *)matrix;
+}
+
+gboolean
+cogl_matrix_get_inverse (const CoglMatrix *matrix, CoglMatrix *inverse)
+{
+#ifndef USE_MESA_MATRIX_API
+#warning "cogl_matrix_get_inverse not supported without Mesa matrix API"
+  cogl_matrix_init_identity (inverse);
+  return FALSE;
+#else
+  if (_math_matrix_update_inverse ((CoglMatrix *)matrix))
+    {
+      cogl_matrix_init_from_array (inverse, matrix->inv);
+      return TRUE;
+    }
+  else
+    {
+      cogl_matrix_init_identity (inverse);
+      return FALSE;
+    }
+#endif
 }
 
 void

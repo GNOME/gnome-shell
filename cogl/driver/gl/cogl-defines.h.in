@@ -698,34 +698,34 @@ G_BEGIN_DECLS
 #endif
 
 typedef void
-  (APIENTRYP             COGL_PFNGLGENRENDERBUFFERSEXTPROC)
+  (APIENTRYP             COGL_PFNGLGENRENDERBUFFERSPROC)
   (GLsizei               n,
    GLuint               *renderbuffers);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLBINDRENDERBUFFEREXTPROC)
+  (APIENTRYP             COGL_PFNGLBINDRENDERBUFFERPROC)
   (GLenum                target,
    GLuint                renderbuffer);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC)
+  (APIENTRYP             COGL_PFNGLRENDERBUFFERSTORAGEPROC)
   (GLenum                target,
    GLenum                internalformat,
    GLsizei               width,
    GLsizei               height);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLGENFRAMEBUFFERSEXTPROC)
+  (APIENTRYP             COGL_PFNGLGENFRAMEBUFFERSPROC)
   (GLsizei               n,
    GLuint               *framebuffers);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLBINDFRAMEBUFFEREXTPROC)
+  (APIENTRYP             COGL_PFNGLBINDFRAMEBUFFERPROC)
   (GLenum                target,
    GLuint                framebuffer);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
+  (APIENTRYP             COGL_PFNGLFRAMEBUFFERTEXTURE2DPROC)
   (GLenum                target,
    GLenum                attachment,
    GLenum                textarget,
@@ -733,25 +733,29 @@ typedef void
    GLint                 level);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
+  (APIENTRYP             COGL_PFNGLFRAMEBUFFERRENDERBUFFERPROC)
   (GLenum                target,
    GLenum                attachment,
    GLenum                renderbuffertarget,
    GLuint                renderbuffer);
 
 typedef GLenum
-  (APIENTRYP             COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
+  (APIENTRYP             COGL_PFNGLCHECKFRAMEBUFFERSTATUSPROC)
   (GLenum                target);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
+  (APIENTRYP             COGL_PFNGLDELETEFRAMEBUFFERSPROC)
   (GLsizei               n,
    const                 GLuint *framebuffers);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLDELETERENDERBUFFERSEXTPROC)
+  (APIENTRYP             COGL_PFNGLDELETERENDERBUFFERSPROC)
   (GLsizei               n,
    const GLuint         *renderbuffers);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLGENERATEMIPMAPPROC)
+  (GLenum                target);
 
 typedef void
   (APIENTRYP             COGL_PFNGLBLITFRAMEBUFFEREXTPROC)
@@ -773,10 +777,6 @@ typedef void
    GLenum                internalformat,
    GLsizei               width,
    GLsizei               height);
-
-typedef void
-  (APIENTRYP             COGL_PFNGLGENERATEMIPMAPEXTPROC)
-  (GLenum                target);
 
 typedef GLhandleARB
   (APIENTRYP             COGL_PFNGLCREATEPROGRAMOBJECTARBPROC)

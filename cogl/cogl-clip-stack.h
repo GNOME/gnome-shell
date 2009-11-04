@@ -35,9 +35,10 @@ struct _CoglClipStackState
   gboolean stencil_used;
 };
 
-void _cogl_clip_stack_state_init (void);
-void _cogl_clip_stack_state_destroy (void);
-void _cogl_clip_stack_rebuild (void);
-void _cogl_clip_stack_merge (void);
+void _cogl_clip_stack_state_init (CoglClipStackState *state);
+void _cogl_clip_stack_state_destroy (CoglClipStackState *state);
+void _cogl_clip_stack_state_dirty (CoglClipStackState *state);
+
+void _cogl_flush_clip_state (CoglClipStackState *clip_state);
 
 #endif /* __COGL_CLIP_STACK_H */

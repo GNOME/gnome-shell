@@ -46,7 +46,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "disable-vbos", COGL_DEBUG_DISABLE_VBOS },
   { "journal", COGL_DEBUG_JOURNAL },
   { "batching", COGL_DEBUG_BATCHING },
-  { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM }
+  { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM },
+  { "matrices", COGL_DEBUG_MATRICES }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);
