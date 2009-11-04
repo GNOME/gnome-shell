@@ -334,18 +334,11 @@ disable_clip_planes (void)
   GE( glDisable (GL_CLIP_PLANE0) );
 }
 
-/* FIXME: deprecate and replace with:
- * void
- * cogl_clip_push_window_rectangle (int x_offset,
- *                                  int y_offset,
- *                                  int width,
- *                                  int height);
- */
 void
-cogl_clip_push_window_rect (float x_offset,
-	                    float y_offset,
-	                    float width,
-	                    float height)
+cogl_clip_push_window_rectangle (int x_offset,
+	                         int y_offset,
+	                         int width,
+	                         int height)
 {
   CoglHandle draw_buffer;
   CoglClipStackState *clip_state;
@@ -393,6 +386,16 @@ cogl_clip_push_window_rect (float x_offset,
   stack->stack_top = g_list_prepend (stack->stack_top, entry);
 
   clip_state->stack_dirty = TRUE;
+}
+
+/* XXX: This is deprecated API */
+void
+cogl_clip_push_window_rect (float x_offset,
+	                    float y_offset,
+	                    float width,
+	                    float height)
+{
+  cogl_clip_push_window_rectangle (x_offset, y_offset, width, height);
 }
 
 /* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
@@ -482,11 +485,11 @@ try_pushing_rect_as_window_rect (float x_1,
   return TRUE;
 }
 
-static void
-_cogl_clip_push_rectangle (float x_1,
-                           float y_1,
-                           float x_2,
-                           float y_2)
+void
+cogl_clip_push_rectangle (float x_1,
+                          float y_1,
+                          float x_2,
+                          float y_2)
 {
   CoglHandle draw_buffer;
   CoglClipStackState *clip_state;
@@ -526,16 +529,17 @@ _cogl_clip_push_rectangle (float x_1,
   clip_state->stack_dirty = TRUE;
 }
 
+/* XXX: Deprecated API */
 void
 cogl_clip_push (float x_offset,
 	        float y_offset,
 	        float width,
 	        float height)
 {
-  _cogl_clip_push_rectangle (x_offset,
-                             y_offset,
-                             x_offset + width,
-                             y_offset + height);
+  cogl_clip_push_rectangle (x_offset,
+                            y_offset,
+                            x_offset + width,
+                            y_offset + height);
 }
 
 void
