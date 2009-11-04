@@ -1452,7 +1452,8 @@ _cogl_path_fill_nodes (void)
   _cogl_path_get_bounds (ctx->path_nodes_min, ctx->path_nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
 
-  if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+  if (G_LIKELY (!(cogl_debug_flags & COGL_DEBUG_FORCE_SCANLINE_PATHS)) &&
+      cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
       CoglHandle draw_buffer;
       CoglClipStackState *clip_state;

@@ -47,7 +47,8 @@ static const GDebugKey cogl_debug_keys[] = {
   { "journal", COGL_DEBUG_JOURNAL },
   { "batching", COGL_DEBUG_BATCHING },
   { "disable-software-transform", COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM },
-  { "matrices", COGL_DEBUG_MATRICES }
+  { "matrices", COGL_DEBUG_MATRICES },
+  { "force-scanline-paths", COGL_DEBUG_FORCE_SCANLINE_PATHS }
 };
 
 static const gint n_cogl_debug_keys = G_N_ELEMENTS (cogl_debug_keys);
