@@ -237,24 +237,41 @@
       </section>
 
       <section id='building-osx'>
-          <title>OSX</title>
-	  <para>Currently the only way to install Clutter for developing
-	  applications, or hacking on Clutter itself, is to build it yourself.
-	  The recommended route is to install the dependencies with
-	  the <ulink href="http://www.macports.org/">MacPorts</ulink>
-          project, by simply invoking:</para>
-
-          <informalexample><programlisting>
-            $ sudo port install pango libpixman-devel cairo-devel
-          </programlisting></informalexample>
-
-          <para>on a terminal, after installing and updating MacPorts.
-	  This should give you all of the required dependencies for building
-	  Clutter 1.0.</para>
+        <title>OSX</title>
+          <para>
+            Before you start you should install XCode either from the OSX
+            installation disk or by downloading it from the Apple website.
+          </para>
 
           <para>
-            XCode should also be installed, either from the OSX installation
-            disk or downloading it from the Apple website.
+            Note: These instructions have only been tested on OS X 10.6
+            (a.k.a Snow Leopard)
+          </para>
+
+          <para>
+            Currently the only way to install Clutter for developing
+            applications, or hacking on Clutter itself, is to build it yourself.
+            The recommended route is to install the dependencies with
+            the <ulink href="http://www.macports.org/">MacPorts</ulink>
+            project, by simply invoking:
+          </para>
+
+          <informalexample><programlisting>
+            $ sudo port install libpixman-devel cairo-devel pango gtk-doc
+          </programlisting></informalexample>
+
+          <para>
+            on a terminal, after installing and updating MacPorts.
+            This should give you all of the required dependencies for building
+            Clutter.
+          </para>
+
+          <para>
+            It should be noted that building gtk-doc pulls in a lot of other
+            MacPorts dependencies and takes some considerable time. You can omit
+            this dependency so long as you disable documentation when you are
+            configuring the build with
+            <literal>--disable-gtk-doc --disable-docs</literal>
           </para>
 
           <para>
@@ -268,29 +285,19 @@
           </para>
 
           <para>
-            GTK-Doc is not working on OSX, so API reference generation
-            should also be disabled when building Clutter, by using
-            the <literal>--disable-docs</literal> and
-            <literal>--disable-gtk-doc</literal> command line argument
-            to the configure script.
+            GTK introspection is untested on OSX (as there isn't a MacPorts
+            package) so it is recommended that you disable this with the
+            <literal>--disable-introspection</literal>.
           </para>
 
-	  <para>
-	    GTK introspection and shave support are untested on OSX so it is
-	    also recommended that you disable these with the
-	    <literal>--disable-shave</literal> and
-	    <literal>--disable-introspection</literal>.
-	  </para>
-
-	  <para>
-	    If building on top of MacPorts, as recommended, the following
-	    configure command should suffice:
+          <para>
+            If building on top of MacPorts, as recommended, the following
+            configure command should suffice:
           </para>
 
           <informalexample><programlisting>
-	    ./configure --disable-gtk-doc --disable-docs --disable-shave
-	    --with-flavour=osx --disable-introspection --prefix=/opt
-	  </programlisting></informalexample>
+            ./configure --with-flavour=osx --disable-introspection --prefix=/opt
+          </programlisting></informalexample>
       </section>
 
     </section>
