@@ -96,12 +96,12 @@ clutter_backend_osx_get_features (ClutterBackend *backend)
   return CLUTTER_FEATURE_STAGE_MULTIPLE|CLUTTER_FEATURE_STAGE_USER_RESIZE;
 }
 
-static ClutterActor*
+static ClutterStageWindow*
 clutter_backend_osx_create_stage (ClutterBackend  *backend,
                                   ClutterStage    *wrapper,
                                   GError         **error)
 {
-  ClutterActor *impl;
+  ClutterStageWindow *impl;
 
   CLUTTER_NOTE (BACKEND, "create_stage: wrapper=%p", wrapper);
 
