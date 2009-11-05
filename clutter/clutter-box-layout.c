@@ -490,6 +490,12 @@ clutter_box_layout_create_child_meta (ClutterLayoutManager *layout,
                        NULL);
 }
 
+static GType
+clutter_box_layout_get_child_meta_type (ClutterLayoutManager *manager)
+{
+  return CLUTTER_TYPE_BOX_CHILD;
+}
+
 static void
 clutter_box_layout_set_container (ClutterLayoutManager *layout,
                                   ClutterContainer     *container)
@@ -890,6 +896,8 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
   layout_class->allocate = clutter_box_layout_allocate;
   layout_class->set_container = clutter_box_layout_set_container;
   layout_class->create_child_meta = clutter_box_layout_create_child_meta;
+  layout_class->get_child_meta_type =
+    clutter_box_layout_get_child_meta_type;
 
   g_type_class_add_private (klass, sizeof (ClutterBoxLayoutPrivate));
 
