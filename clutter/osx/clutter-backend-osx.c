@@ -68,8 +68,12 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
                    initWithFormat: self->pixel_format
                      shareContext: nil];
 
-  /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html*/
-  const long sw = 1;
+  /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html */
+  #ifdef MAC_OS_X_VERSION_10_5
+	const int sw = 1;
+  #else
+    const long sw = 1;
+  #endif
   [self->context setValues:&sw forParameter: NSOpenGLCPSwapInterval];
 
   /* FIXME: move the debugging bits to cogl */
