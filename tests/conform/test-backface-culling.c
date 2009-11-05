@@ -34,8 +34,6 @@ typedef struct _TestState
   CoglHandle offscreen_tex;
 } TestState;
 
-#include <gdk-pixbuf/gdk-pixbuf.h>
-
 static gboolean
 validate_part (int xnum, int ynum, gboolean shown)
 {
