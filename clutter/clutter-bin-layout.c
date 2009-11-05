@@ -529,6 +529,12 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
   g_list_free (children);
 }
 
+static GType
+clutter_bin_layout_get_child_meta_type (ClutterLayoutManager *manager)
+{
+  return CLUTTER_TYPE_BIN_LAYER;
+}
+
 static ClutterLayoutMeta *
 clutter_bin_layout_create_child_meta (ClutterLayoutManager *manager,
                                       ClutterContainer     *container,
@@ -662,6 +668,8 @@ clutter_bin_layout_class_init (ClutterBinLayoutClass *klass)
     clutter_bin_layout_allocate;
   layout_class->create_child_meta =
     clutter_bin_layout_create_child_meta;
+  layout_class->get_child_meta_type =
+    clutter_bin_layout_get_child_meta_type;
   layout_class->set_container =
     clutter_bin_layout_set_container;
 }
