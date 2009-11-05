@@ -489,7 +489,7 @@ _clutter_do_pick (ClutterStage   *stage,
   _clutter_stage_maybe_setup_viewport (stage);
 
   if (G_LIKELY (!(clutter_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
-    cogl_clip_push_window_rect (x, y, 1, 1);
+    cogl_clip_push_window_rectangle (x, y, 1, 1);
 
   cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
   cogl_disable_fog ();

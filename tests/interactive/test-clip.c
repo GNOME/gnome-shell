@@ -134,10 +134,10 @@ on_paint (ClutterActor *actor, CallbackData *data)
       Clip *clip = (Clip *) node->data;
 
       if (clip->type == CLIP_RECTANGLE)
-        cogl_clip_push (clip->x1,
-                        clip->y1,
-                        clip->x2 - clip->x1,
-                        clip->y2 - clip->y1);
+        cogl_clip_push_rectangle (clip->x1,
+                                  clip->y1,
+                                  clip->x2,
+                                  clip->y2);
       else
         {
           make_clip_path (clip);

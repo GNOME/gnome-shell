@@ -154,7 +154,7 @@ on_paint (ClutterActor *actor, void *state)
                      400); /* height */
   /* clear everything... */
   cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
-  cogl_clip_push_window_rect (20, 10, 100, 200);
+  cogl_clip_push_window_rectangle (20, 10, 100, 200);
   /* fill the viewport with blue.. */
   cogl_set_source_color4ub (0x00, 0x00, 0xff, 0xff);
   cogl_rectangle (-1, 1, 1, -1);
@@ -191,7 +191,8 @@ on_paint (ClutterActor *actor, void *state)
   /* XXX: Rotate just enough to stop Cogl from converting our model space
    * rectangle into a window space rectangle.. */
   cogl_rotate (0.1, 0, 0, 1);
-  cogl_clip_push (-(width/2.0), -(height/2.0), width, height);
+  cogl_clip_push_rectangle (-(width/2.0), -(height/2.0),
+                            width/2.0, height/2.0);
   cogl_pop_matrix ();
   /* fill the viewport with green.. */
   cogl_set_source_color4ub (0x00, 0xff, 0x00, 0xff);
@@ -283,7 +284,7 @@ on_paint (ClutterActor *actor, void *state)
                      400); /* height */
   /* clear everything... */
   cogl_clear (&black, COGL_BUFFER_BIT_COLOR);
-  cogl_clip_push_window_rect (20, 10, 100, 200);
+  cogl_clip_push_window_rectangle (20, 10, 100, 200);
   /* fill the viewport with blue.. */
   cogl_set_source_color4ub (0x00, 0x00, 0xff, 0xff);
   cogl_rectangle (-1, 1, 1, -1);
@@ -320,7 +321,8 @@ on_paint (ClutterActor *actor, void *state)
   /* XXX: Rotate just enough to stop Cogl from converting our model space
    * rectangle into a window space rectangle.. */
   cogl_rotate (0.1, 0, 0, 1);
-  cogl_clip_push (-(width/2.0), -(height/2.0), width, height);
+  cogl_clip_push_rectangle (-(width/2.0), -(height/2.0),
+                            width/2, height/2);
   cogl_pop_matrix ();
   /* fill the viewport with green.. */
   cogl_set_source_color4ub (0x00, 0xff, 0x00, 0xff);

@@ -2359,10 +2359,10 @@ clutter_actor_paint (ClutterActor *self)
 
   if (priv->has_clip)
     {
-      cogl_clip_push (priv->clip[0],
-		      priv->clip[1],
-		      priv->clip[2],
-		      priv->clip[3]);
+      cogl_clip_push_rectangle (priv->clip[0],
+                                priv->clip[1],
+                                priv->clip[0] + priv->clip[2],
+                                priv->clip[1] + priv->clip[3]);
       clip_set = TRUE;
     }
   else if (priv->clip_to_allocation)
@@ -2372,7 +2372,7 @@ clutter_actor_paint (ClutterActor *self)
       width  = priv->allocation.x2 - priv->allocation.x1;
       height = priv->allocation.y2 - priv->allocation.y1;
 
-      cogl_clip_push (0, 0, width, height);
+      cogl_clip_push_rectangle (0, 0, width, height);
       clip_set = TRUE;
     }
 
