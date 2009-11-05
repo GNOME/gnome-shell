@@ -166,6 +166,12 @@ layout_manager_real_create_child_meta (ClutterLayoutManager *manager,
   return NULL;
 }
 
+static GType
+layout_manager_real_get_child_meta_type (ClutterLayoutManager *manager)
+{
+  return G_TYPE_INVALID;
+}
+
 static void
 clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 {
@@ -176,6 +182,7 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
   klass->get_preferred_height = layout_manager_real_get_preferred_height;
   klass->allocate = layout_manager_real_allocate;
   klass->create_child_meta = layout_manager_real_create_child_meta;
+  klass->get_child_meta_type = layout_manager_real_get_child_meta_type;
 
   /**
    * ClutterLayoutManager::layout-changed:

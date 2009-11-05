@@ -77,6 +77,8 @@ struct _ClutterLayoutManager
  *   on the #ClutterContainer using the layout manager. The implementation
  *   should not take a reference on the container, but just take a weak
  *   reference, to avoid potential leaks due to reference cycles
+ * @get_child_meta_type: virtual function; override to return the #GType
+ *   of the #ClutterLayoutMeta sub-class used by the #ClutterLayoutManager
  * @create_child_meta: virtual function; override to create a
  *   #ClutterChildMeta instance associated to a #ClutterContainer and a
  *   child #ClutterActor, used to maintain layout manager specific properties
@@ -112,6 +114,7 @@ struct _ClutterLayoutManagerClass
   void               (* set_container)        (ClutterLayoutManager   *manager,
                                                ClutterContainer       *container);
 
+  GType              (* get_child_meta_type)  (ClutterLayoutManager   *manager);
   ClutterLayoutMeta *(* create_child_meta)    (ClutterLayoutManager   *manager,
                                                ClutterContainer       *container,
                                                ClutterActor           *actor);
