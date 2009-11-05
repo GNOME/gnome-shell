@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-10 19:02+0200\n"
-"PO-Revision-Date: 2009-10-10 19:02+0200\n"
+"POT-Creation-Date: 2009-11-05 18:03+0100\n"
+"PO-Revision-Date: 2009-11-05 18:03+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,68 +25,72 @@ msgstr "Prostředí GNOME Shell"
 msgid "Window management and application launching"
 msgstr "Správa oken a spouštění aplikací"
 
-#: ../js/ui/appDisplay.js:335
+#: ../js/ui/appDisplay.js:332
 msgid "Frequent"
 msgstr "Časté"
 
-#: ../js/ui/appIcon.js:462
+#: ../js/ui/appDisplay.js:867
+msgid "Drag here to add favorites"
+msgstr "Oblíbené přidáte přetažením sem"
+
+#: ../js/ui/appIcon.js:426
 msgid "New Window"
 msgstr "Nové okno"
 
-#: ../js/ui/appIcon.js:475
+#: ../js/ui/appIcon.js:430
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: ../js/ui/appIcon.js:476
+#: ../js/ui/appIcon.js:431
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/dash.js:267
 msgid "Find..."
 msgstr "Najít..."
 
-#: ../js/ui/dash.js:400
+#: ../js/ui/dash.js:376
 msgid "More"
 msgstr "Více"
 
-#: ../js/ui/dash.js:543
+#: ../js/ui/dash.js:532
 msgid "(see all)"
 msgstr "(zobrazit vše)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
+#: ../js/ui/dash.js:711 ../js/ui/dash.js:773
 msgid "APPLICATIONS"
 msgstr "APLIKACE"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:783
+#: ../js/ui/dash.js:731
 msgid "PLACES"
 msgstr "MÍSTA"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+#: ../js/ui/dash.js:738 ../js/ui/dash.js:783
 msgid "RECENT DOCUMENTS"
 msgstr "NEDÁVNÉ DOKUMENTY"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
+#: ../js/ui/dash.js:763 ../js/ui/dash.js:947
 msgid "SEARCH RESULTS"
 msgstr "VÝSLEDKY HLEDÁNÍ"
 
-#: ../js/ui/dash.js:830
+#: ../js/ui/dash.js:778
 msgid "PREFERENCES"
 msgstr "PŘEDVOLBY"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:272
+#: ../js/ui/panel.js:274
 msgid "Activities"
 msgstr "Činnosti"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:464
+#: ../js/ui/panel.js:491
 msgid "%a %l:%M %p"
 msgstr "%a, %H:%M"
 
@@ -104,23 +108,23 @@ msgid "Execution of '%s' failed:"
 msgstr "Vykonání \"%s\" selhalo:"
 
 #. Translators: This is a time format.
-#: ../js/ui/widget.js:162
+#: ../js/ui/widget.js:163
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#: ../js/ui/widget.js:316
+#: ../js/ui/widget.js:317
 msgid "Applications"
 msgstr "Aplikace"
 
-#: ../js/ui/widget.js:341
+#: ../js/ui/widget.js:339
 msgid "Recent Documents"
 msgstr "Nedávné dokumenty"
 
-#: ../src/shell-global.c:812
+#: ../src/shell-global.c:821
 msgid "Less than a minute ago"
 msgstr "Před méně než minutou"
 
-#: ../src/shell-global.c:815
+#: ../src/shell-global.c:824
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -128,7 +132,7 @@ msgstr[0] "Před %d minutou"
 msgstr[1] "Před %d minutami"
 msgstr[2] "Před %d minutami"
 
-#: ../src/shell-global.c:818
+#: ../src/shell-global.c:827
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -136,7 +140,7 @@ msgstr[0] "Před %d hodinou"
 msgstr[1] "Před %d hodinami"
 msgstr[2] "Před %d hodinami"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:830
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -144,7 +148,7 @@ msgstr[0] "Před %d dnem"
 msgstr[1] "Před %d dny"
 msgstr[2] "Před %d dny"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:833
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
