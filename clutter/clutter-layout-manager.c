@@ -913,3 +913,79 @@ clutter_layout_manager_child_get_property (ClutterLayoutManager *manager,
 
   layout_get_property_internal (manager, G_OBJECT (meta), pspec, value);
 }
+
+/**
+ * clutter_layout_manager_find_child_property:
+ * @manager: a #ClutterLayoutManager
+ * @name: the name of the property
+ *
+ * Retrieves the #GParamSpec for the layout property @name inside
+ * the #ClutterLayoutMeta sub-class used by @manager
+ *
+ * Return value: (transfer none): a #GParamSpec describing the property,
+ *   or %NULL if no property with that name exists. The returned
+ *   #GParamSpec is owned by the layout manager and should not be
+ *   modified or freed
+ *
+ * Since: 1.2
+ */
+GParamSpec *
+clutter_layout_manager_find_child_property (ClutterLayoutManager *manager,
+                                            const gchar          *name)
+{
+  ClutterLayoutManagerClass *klass;
+  GObjectClass *meta_klass;
+  GParamSpec *pspec;
+  GType meta_type;
+
+  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+  meta_type = klass->get_child_meta_type (manager);
+  if (meta_type == G_TYPE_INVALID)
+    return NULL;
+
+  meta_klass = g_type_class_ref (meta_type);
+
+  pspec = g_object_class_find_property (meta_klass, name);
+
+  g_type_class_unref (meta_klass);
+
+  return pspec;
+}
+
+/**
+ * clutter_layout_manager_list_child_properties:
+ * @manager: a #ClutterLayoutManager
+ * @n_pspecs: (out): return location for the number of returned
+ *   #GParamSpec<!-- -->s
+ *
+ * Retrieves all the #GParamSpec<!-- -->s for the layout properties
+ * stored inside the #ClutterLayoutMeta sub-class used by @manager
+ *
+ * Return value: (transfer full): the newly-allocated, %NULL-terminated
+ *   array of #GParamSpec<!-- -->s. Use g_free() to free the resources
+ *   allocated for the array
+ *
+ * Since: 1.2
+ */
+GParamSpec **
+clutter_layout_manager_list_child_properties (ClutterLayoutManager *manager,
+                                              guint                *n_pspecs)
+{
+  ClutterLayoutManagerClass *klass;
+  GObjectClass *meta_klass;
+  GParamSpec **pspecs;
+  GType meta_type;
+
+  klass = CLUTTER_LAYOUT_MANAGER_GET_CLASS (manager);
+  meta_type = klass->get_child_meta_type (manager);
+  if (meta_type == G_TYPE_INVALID)
+    return NULL;
+
+  meta_klass = g_type_class_ref (meta_type);
+
+  pspecs = g_object_class_list_properties (meta_klass, n_pspecs);
+
+  g_type_class_unref (meta_klass);
+
+  return pspecs;
+}
