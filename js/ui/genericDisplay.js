@@ -20,7 +20,8 @@ const Main = imports.ui.main;
 const RedisplayFlags = { NONE: 0,
                          RESET_CONTROLS: 1 << 0,
                          FULL: 1 << 1,
-                         SUBSEARCH: 1 << 2 };
+                         SUBSEARCH: 1 << 2,
+                         IMMEDIATE: 1 << 3 };
 
 const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
 ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);
@@ -369,16 +370,18 @@ GenericDisplay.prototype = {
     // Sets the search string and displays the matching items.
     setSearch: function(text) {
         let lowertext = text.toLowerCase();
-        if (lowertext == this._search)
+        if (lowertext == this._search) {
             return;
-        let flags = RedisplayFlags.RESET_CONTROLS;
+        }
+        let flags = RedisplayFlags.RESET_CONTROLS | RedisplayFlags.IMMEDIATE;
         if (this._search != '') {
             // Because we combine search terms with OR, we have to be sure that no new term
             // was introduced before deciding that the new search results will be a subset of
             // the existing search results.
             if (lowertext.indexOf(this._search) == 0 &&
-                lowertext.split(/\s+/).length == this._search.split(/\s+/).length)
+                lowertext.split(/\s+/).length == this._search.split(/\s+/).length) {
                 flags |= RedisplayFlags.SUBSEARCH;
+            }
         }
         this._search = lowertext;
         this._redisplay(flags);
@@ -643,9 +646,13 @@ GenericDisplay.prototype = {
      *  SUBSEARCH - Indicates that the current _search is a superstring of the previous
      *  one, which implies we only need to re-search through previous results.
      *  FULL - Indicates that we need recreate all displayed items; implies RESET_CONTROLS as well
+     *  IMMEDIATE - Do the full redisplay even if we're not mapped.  This is useful
+     *  if you want to get the number of matched items and show/hide a section based on
+     *  that number.
      */
     _redisplay: function(flags) {
-        if (!this._list.mapped) {
+        let immediate = (flags & RedisplayFlags.IMMEDIATE) > 0;
+        if (!immediate && !this._list.mapped) {
             this._pendingRedisplay |= flags;
             return;
         }
