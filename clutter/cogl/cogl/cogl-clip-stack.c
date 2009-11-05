@@ -481,7 +481,7 @@ try_pushing_rect_as_window_rect (float x_1,
     SWAP (y_1, y_2);
 #undef SWAP
 
-  cogl_clip_push_window_rect (x_1, y_1, x_2 - x_1, y_2 - y_1);
+  cogl_clip_push_window_rectangle (x_1, y_1, x_2 - x_1, y_2 - y_1);
   return TRUE;
 }
 
