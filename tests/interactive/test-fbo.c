@@ -13,14 +13,19 @@ ClutterActor *
 make_source (void)
 {
   ClutterActor *source, *actor;
-  GError       *error = NULL;
+  GError *error = NULL;
+  gchar *file;
 
   ClutterColor  yellow = {0xff, 0xff, 0x00, 0xff};
 
-  source  = clutter_group_new();
-  actor = clutter_texture_new_from_file ("redhand.png", &error);
+  source  = clutter_group_new ();
+
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  actor = clutter_texture_new_from_file (file, &error);
   if (!actor)
     g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
+
+  g_free (file);
 
   clutter_group_add (source, actor);
 

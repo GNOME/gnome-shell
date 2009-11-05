@@ -1,6 +1,8 @@
 #!/bin/sh
 
-UNIT_TEST=`basename $0`
+UNIT_TEST=$1
+
+shift
 
 echo "Running ./test-interactive $UNIT_TEST $@"
 echo ""

@@ -141,27 +141,37 @@ static void
 test_coglbox_init (TestCoglbox *self)
 {
   TestCoglboxPrivate *priv;
+  gchar *file;
+
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
-  
+
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+
   priv->cogl_tex_id[0] =
-    cogl_texture_new_from_file ("redhand.png",
+    cogl_texture_new_from_file (file,
                                 COGL_TEXTURE_NONE,
-				COGL_PIXEL_FORMAT_ANY, NULL);
+				COGL_PIXEL_FORMAT_ANY,
+                                NULL);
   
   priv->cogl_tex_id[1] =
-    cogl_texture_new_from_file ("redhand.png",
+    cogl_texture_new_from_file (file,
                                 COGL_TEXTURE_NONE,
-				COGL_PIXEL_FORMAT_BGRA_8888, NULL);
+				COGL_PIXEL_FORMAT_BGRA_8888,
+                                NULL);
   
   priv->cogl_tex_id[2] =
-    cogl_texture_new_from_file ("redhand.png",
+    cogl_texture_new_from_file (file,
                                 COGL_TEXTURE_NONE,
-				COGL_PIXEL_FORMAT_ARGB_8888, NULL);
+				COGL_PIXEL_FORMAT_ARGB_8888,
+                                NULL);
   
   priv->cogl_tex_id[3] =
-    cogl_texture_new_from_file ("redhand.png",
+    cogl_texture_new_from_file (file,
                                 COGL_TEXTURE_NONE,
-				COGL_PIXEL_FORMAT_G_8, NULL);
+				COGL_PIXEL_FORMAT_G_8,
+                                NULL);
+
+  g_free (file);
 }
 
 static void

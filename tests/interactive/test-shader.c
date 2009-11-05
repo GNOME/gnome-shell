@@ -304,11 +304,12 @@ timeout_cb (gpointer data)
 G_MODULE_EXPORT gint
 test_shader_main (gint argc, gchar *argv[])
 {
-  ClutterActor     *actor;
-  ClutterActor     *stage;
-  ClutterColor      stage_color = { 0x61, 0x64, 0x8c, 0xff };
-  ClutterShader    *shader;
-  GError           *error;
+  ClutterActor  *actor;
+  ClutterActor  *stage;
+  ClutterColor   stage_color = { 0x61, 0x64, 0x8c, 0xff };
+  ClutterShader *shader;
+  GError        *error;
+  gchar         *file;
 
   clutter_init (&argc, &argv);
 
@@ -338,45 +339,50 @@ test_shader_main (gint argc, gchar *argv[])
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Shader Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+
 #ifndef TEST_GROUP
-  actor = g_object_new (CLUTTER_TYPE_TEXTURE,
-			"filename", "redhand.png",
-			"disable-slicing", TRUE,
-			NULL);
-  actor = clutter_texture_new_from_file ("redhand.png", &error);
+  actor = clutter_texture_new_from_file (file, &error);
   if (!actor)
     g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
-
 #else
   actor = clutter_group_new ();
-    {
-      ClutterActor *child1, *child2, *child3, *child4;
-      ClutterColor  color = { 0xff, 0x22, 0x66, 0x99 };
 
-      child1 = clutter_texture_new_from_file ("redhand.png", &error);
-      if (!child1)
-	g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
-      child2 = clutter_texture_new_from_file ("redhand.png", &error);
-      if (!child2)
-	g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
-      child3 = clutter_rectangle_new ();
-      child4 = clutter_text_new_with_text ("Sans 20px", "Shady stuff");
+  {
+    ClutterActor *child1, *child2, *child3, *child4;
+    ClutterColor  color = { 0xff, 0x22, 0x66, 0x99 };
 
-      clutter_rectangle_set_color (child3, &color);
-      clutter_actor_set_size (child3, 50, 50);
-      clutter_actor_set_position (child1, 0, 0);
-      clutter_actor_set_position (child2, 50, 100);
-      clutter_actor_set_position (child3, 30, -30);
-      clutter_actor_set_position (child4, -50, 20);
+    child1 = clutter_texture_new_from_file (file, &error);
+    if (!child1)
+      g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
 
-      clutter_group_add (CLUTTER_GROUP (actor), child1);
-      clutter_group_add (CLUTTER_GROUP (actor), child2);
-      clutter_group_add (CLUTTER_GROUP (actor), child3);
-      clutter_group_add (CLUTTER_GROUP (actor), child4);
+    child2 = clutter_texture_new_from_file (file, &error);
+    if (!child2)
+      g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
 
-      clutter_actor_show_all (actor);
-    }
-#endif
+    child3 = clutter_rectangle_new ();
+    child4 = clutter_text_new_with_text ("Sans 20px", "Shady stuff");
+
+    clutter_rectangle_set_color (CLUTTER_RECTANGLE (child3), &color);
+    clutter_actor_set_size (child3, 50, 50);
+
+    clutter_actor_set_position (child1, 0, 0);
+    clutter_actor_set_position (child2, 50, 100);
+    clutter_actor_set_position (child3, 30, -30);
+    clutter_actor_set_position (child4, -50, 20);
+
+    clutter_container_add (CLUTTER_CONTAINER (actor),
+                           child1,
+                           child2,
+                           child3,
+                           child4,
+                           NULL);
+
+    clutter_actor_show_all (actor);
+  }
+#endif /* !TEST_GROUP */
+
+  g_free (file);
 
   clutter_actor_set_shader (actor, shader);
   clutter_actor_set_position (actor, 100, 100);

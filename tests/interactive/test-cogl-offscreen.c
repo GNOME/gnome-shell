@@ -140,13 +140,17 @@ static void
 test_coglbox_init (TestCoglbox *self)
 {
   TestCoglboxPrivate *priv;
+  gchar *file;
+
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
 
   printf ("Loading redhand.png\n");
-  priv->texhand_id = cogl_texture_new_from_file ("redhand.png",
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  priv->texhand_id = cogl_texture_new_from_file (file,
                                                  COGL_TEXTURE_NONE,
 						 COGL_PIXEL_FORMAT_ANY,
                                                  NULL);
+  g_free (file);
 
   printf ("Creating texture with size\n");
   priv->texture_id = cogl_texture_new_with_size (200, 200,

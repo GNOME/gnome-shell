@@ -126,22 +126,26 @@ test_coglbox_init (TestCoglbox *self)
   guchar          *data;
   gint             x,y,t;
   guchar          *pixel;
+  gchar           *file;
   
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
   
   /* Load image from file */
-  
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
   priv->cogl_tex_id[0] =
-    cogl_texture_new_from_file ("redhand.png",
+    cogl_texture_new_from_file (file,
                                 COGL_TEXTURE_NONE,
-                                COGL_PIXEL_FORMAT_ANY, NULL);
+                                COGL_PIXEL_FORMAT_ANY,
+                                NULL);
   
   if (priv->cogl_tex_id[0] == COGL_INVALID_HANDLE)
     {
       printf ("Failed loading redhand.png image!\n");
       return;
     }
-  
+
+  g_free (file);
+
   printf("Texture loaded from file.\n");
   
   /* Obtain pixel data */

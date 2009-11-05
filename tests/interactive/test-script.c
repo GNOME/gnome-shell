@@ -136,6 +136,7 @@ test_script_main (int argc, char *argv[])
 {
   GObject *stage, *blue_button, *red_button;
   GError *error = NULL;
+  gchar *file;
   gint res;
 
   clutter_init (&argc, &argv);
@@ -152,16 +153,20 @@ test_script_main (int argc, char *argv[])
       g_object_unref (script);
       return EXIT_FAILURE;
     }
-  
-  clutter_script_load_from_file (script, "test-script.json", &error);
+
+  file = g_build_filename (TESTS_DATADIR, "test-script.json", NULL);
+  clutter_script_load_from_file (script, file, &error);
   if (error)
     {
       g_print ("*** Error:\n"
                "***   %s\n", error->message);
       g_error_free (error);
       g_object_unref (script);
+      g_free (file);
       return EXIT_FAILURE;
     }
+
+  g_free (file);
 
   merge_id = clutter_script_load_from_data (script, test_unmerge, -1, &error);
   if (error)

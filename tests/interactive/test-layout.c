@@ -769,7 +769,10 @@ test_layout_main (int argc, char *argv[])
   clutter_actor_set_position (box, 20, 20);
   clutter_actor_set_size (box, 350, -1);
 
-  icon = clutter_texture_new_from_file ("redhand.png", &error);
+  icon = clutter_texture_new_from_file (TESTS_DATADIR
+                                        G_DIR_SEPARATOR_S
+                                        "redhand.png",
+                                        &error);
   if (error)
     g_error ("Unable to load 'redhand.png': %s", error->message);
 

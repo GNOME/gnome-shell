@@ -80,7 +80,10 @@ test_devices_main (int argc, char **argv)
           g_print ("got a pointer device with id %d...\n",
                    clutter_input_device_get_device_id (device));
 
-          hand = clutter_texture_new_from_file ("redhand.png", NULL);
+          hand = clutter_texture_new_from_file (TESTS_DATADIR
+                                                G_DIR_SEPARATOR_S
+                                                "redhand.png",
+                                                NULL);
           g_hash_table_insert (app->devices, device, hand);
 
           clutter_container_add_actor (CLUTTER_CONTAINER (stage), hand);

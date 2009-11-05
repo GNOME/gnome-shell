@@ -138,12 +138,16 @@ static void
 test_coglbox_init (TestCoglbox *self)
 {
   TestCoglboxPrivate *priv;
+  gchar *file;
+
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
 
-  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png",
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  priv->cogl_tex_id = cogl_texture_new_from_file (file,
                                                   COGL_TEXTURE_NONE,
                                                   COGL_PIXEL_FORMAT_ANY,
                                                   NULL);
+  g_free (file);
 }
 
 static void

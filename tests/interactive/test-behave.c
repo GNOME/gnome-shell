@@ -76,6 +76,7 @@ test_behave_main (int argc, char *argv[])
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
   ClutterColor      rect_bg_color = { 0x33, 0x22, 0x22, 0xff };
   ClutterColor      rect_border_color = { 0, 0, 0, 0 };
+  gchar            *file;
   int               i;
   path_t            path_type = PATH_POLY;
 
@@ -138,13 +139,14 @@ test_behave_main (int argc, char *argv[])
   group = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
   clutter_actor_show (group);
-  
-  hand = clutter_texture_new_from_file ("redhand.png", NULL);
+
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  hand = clutter_texture_new_from_file (file, NULL);
   if (hand == NULL)
-    {
-      g_error("pixbuf load failed");
-      return 1;
-    }
+    g_error("Unable to load '%s'", file);
+
+  g_free (file);
+
   clutter_actor_set_position (hand, 0, 0);
   clutter_actor_show (hand);
 

@@ -137,6 +137,7 @@ test_actors_main (int argc, char *argv[])
   gint          i;
   GError       *error;
   ClutterActor *real_hand;
+  gchar        *file;
 
   error = NULL;
 
@@ -177,12 +178,12 @@ test_actors_main (int argc, char *argv[])
   oh->scaler_1 = clutter_behaviour_scale_new (alpha, 0.5, 0.5, 1.0, 1.0);
   oh->scaler_2 = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 0.5, 0.5);
 
-  real_hand = clutter_texture_new_from_file ("redhand.png", &error);
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  real_hand = clutter_texture_new_from_file (file, &error);
   if (real_hand == NULL)
-    {
-      g_error ("image load failed: %s", error->message);
-      return EXIT_FAILURE;
-    }
+    g_error ("image load failed: %s", error->message);
+
+  g_free (file);
 
   /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();

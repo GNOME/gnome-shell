@@ -58,6 +58,7 @@ test_cogl_multitexture_main (int argc, char *argv[])
   ClutterColor       stage_color = { 0x61, 0x56, 0x56, 0xff };
   TestMultiLayerMaterialState *state = g_new0 (TestMultiLayerMaterialState, 1);
   ClutterGeometry    geom;
+  gchar            **files;
   gfloat             tex_coords[] =
     {
     /* tx1  ty1  tx2  ty2 */
@@ -82,8 +83,14 @@ test_cogl_multitexture_main (int argc, char *argv[])
   g_signal_connect (state->group, "paint",
 		    G_CALLBACK(material_rectangle_paint), state);
 
+  files = g_new (gchar*, 4);
+  files[0] = g_build_filename (TESTS_DATADIR, "redhand_alpha.png", NULL);
+  files[1] = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  files[2] = g_build_filename (TESTS_DATADIR, "light0.png", NULL);
+  files[3] = NULL;
+
   state->alpha_tex =
-    cogl_texture_new_from_file ("redhand_alpha.png",
+    cogl_texture_new_from_file (files[0],
                                 COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
 				&error);
@@ -91,7 +98,7 @@ test_cogl_multitexture_main (int argc, char *argv[])
     g_critical ("Failed to load redhand_alpha.png: %s", error->message);
 
   state->redhand_tex =
-    cogl_texture_new_from_file ("redhand.png",
+    cogl_texture_new_from_file (files[1],
                                 COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
 				&error);
@@ -99,12 +106,14 @@ test_cogl_multitexture_main (int argc, char *argv[])
     g_critical ("Failed to load redhand.png: %s", error->message);
 
   state->light_tex0 =
-    cogl_texture_new_from_file ("light0.png",
+    cogl_texture_new_from_file (files[2],
                                 COGL_TEXTURE_NO_SLICING,
 				COGL_PIXEL_FORMAT_ANY,
 				&error);
   if (!state->light_tex0)
     g_critical ("Failed to load light0.png: %s", error->message);
+
+  g_strfreev (files);
 
   state->material = cogl_material_new ();
   cogl_material_set_layer (state->material, 0, state->alpha_tex);

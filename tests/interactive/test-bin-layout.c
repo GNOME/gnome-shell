@@ -131,9 +131,11 @@ test_bin_layout_main (int argc, char *argv[])
   {
     ClutterActor *tex;
     GError *error;
+    gchar *file;
 
     error = NULL;
-    tex = clutter_texture_new_from_file ("redhand.png", &error);
+    file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+    tex = clutter_texture_new_from_file (file, &error);
     if (error)
       g_error ("Unable to create texture: %s", error->message);
 
@@ -147,6 +149,8 @@ test_bin_layout_main (int argc, char *argv[])
     clutter_actor_raise (tex, rect);
     clutter_actor_set_width (tex, 175);
     clutter_actor_set_name (tex, "texture");
+
+    g_free (file);
   }
 
   color = clutter_color_new (g_random_int_range (0, 255),

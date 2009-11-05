@@ -16,6 +16,7 @@ test_rotate_main (int argc, char *argv[])
   ClutterActor     *stage;
   ClutterActor     *hand, *label;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
+  gchar            *file;
 
   clutter_init (&argc, &argv);
 
@@ -25,9 +26,12 @@ test_rotate_main (int argc, char *argv[])
 		           &stage_color);
 
   /* Make a hand */
-  hand = clutter_texture_new_from_file ("redhand.png", NULL);
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  hand = clutter_texture_new_from_file (file, NULL);
   if (!hand)
-    g_error("pixbuf load failed");
+    g_error("Unable to load '%s'", file);
+
+  g_free (file);
 
   clutter_actor_set_position (hand, 240, 140);
   clutter_actor_show (hand);

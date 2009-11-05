@@ -53,44 +53,53 @@ UNIT_TESTS += test-pixmap.c
 UNIT_TESTS += test-devices.c
 endif
 
-#FIXME - this is is a bit of a yukky way of ensuring the tests find our data:
-test-script.json:
-	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/test-script.json
-redhand.png:
-	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/redhand.png
-redhand_alpha.png:
-	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/redhand_alpha.png
-light0.png:
-	$(QUIET_LN)ln -sf $(top_srcdir)/tests/data/light0.png
-
 # For convenience, this provides a way to easily run individual unit tests:
-.PHONY: wrappers
-wrappers: test-interactive$(EXEEXT)
-	$(QUIET_GEN)for i in $(UNIT_TESTS); \
+wrappers: stamp-test-interactive
+	@true
+stamp-test-interactive: test-interactive$(EXEEXT)
+	@for i in $(UNIT_TESTS); \
 	do \
-		ln -sf $(top_srcdir)/tests/interactive/wrapper.sh $${i%*.c}; \
-	done
+		test_bin=$${i%*.c} ; \
+		echo "  GEN    $$test_bin" ; \
+		( echo "#!/bin/sh" ; \
+		  echo "$(top_srcdir)/tests/interactive/wrapper.sh $$test_bin" \
+		) > $$test_bin$(EXEEXT) ; \
+		chmod +x $$test_bin$(EXEEXT) ; \
+	done \
+	&& echo timestamp > $(@F)
 
-# NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
-# a phony rule that will generate symlink scripts for running individual tests
-BUILT_SOURCES = wrappers redhand.png redhand_alpha.png light0.png test-script.json
+clean-wrappers:
+	@for i in $(UNIT_TESTS); \
+	do \
+		test_bin=$${i%*.c} ; \
+		echo "  RM    $$test_bin"; \
+		rm -f $$test_bin$(EXEEXT); \
+	done \
+	&& rm -f stamp-test-interactive
+
+.PHONY: wrappers clean-wrappers
 
 INCLUDES = \
-	-I$(top_srcdir)	\
-	-I$(top_srcdir)/clutter \
-	-I$(top_srcdir)/clutter/cogl \
-	-I$(top_builddir)/clutter \
-	-I$(top_builddir)/clutter/cogl \
-	-DG_DISABLE_SINGLE_INCLUDES
+	-I$(top_srcdir)			\
+	-I$(top_srcdir)/clutter 	\
+	-I$(top_srcdir)/clutter/cogl 	\
+	-I$(top_builddir)/clutter 	\
+	-I$(top_builddir)/clutter/cogl
 
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_WINSYS@-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = test-interactive
 
 test_interactive_SOURCES = test-main.c $(UNIT_TESTS)
-test_interactive_CPPFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+test_interactive_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
+test_interactive_CPPFLAGS = \
+	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
+	-DG_DISABLE_SINGLE_INCLUDES
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(common_ldadd)
 
 EXTRA_DIST = wrapper.sh
 
+BUILT_SOURCES = wrappers
+
+clean-local: clean-wrappers

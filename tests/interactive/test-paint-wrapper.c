@@ -224,7 +224,10 @@ test_paint_wrapper_main (int argc, char *argv[])
   oh->scaler_1 = clutter_behaviour_scale_new (alpha, 0.5, 0.5, 1.0, 1.0);
   oh->scaler_2 = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 0.5, 0.5);
 
-  real_hand = clutter_texture_new_from_file ("redhand.png", &error);
+  real_hand = clutter_texture_new_from_file (TESTS_DATADIR 
+                                             G_DIR_SEPARATOR_S
+                                             "redhand.png",
+                                             &error);
   if (real_hand == NULL)
     {
       g_error ("image load failed: %s", error->message);

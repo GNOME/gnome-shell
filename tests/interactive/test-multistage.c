@@ -38,7 +38,10 @@ on_button_press (ClutterActor *actor,
   clutter_stage_set_color (CLUTTER_STAGE (new_stage), &color);
   clutter_actor_set_size (new_stage, 320, 240);
 
-  tex = clutter_texture_new_from_file ("redhand.png", NULL);
+  tex = clutter_texture_new_from_file (TESTS_DATADIR
+                                       G_DIR_SEPARATOR_S
+                                       "redhand.png",
+                                       NULL);
 
   if (!tex)
     g_error ("pixbuf load failed");

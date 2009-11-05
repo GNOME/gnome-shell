@@ -130,14 +130,15 @@ my_sine_wave (ClutterAlpha *alpha,
 G_MODULE_EXPORT int
 test_actor_clone_main (int argc, char *argv[])
 {
-  ClutterAlpha     *alpha;
-  ClutterActor    *stage;
-  ClutterColor     stage_color = { 0x61, 0x64, 0x8c, 0xff };
-  SuperOH         *oh;
-  gint             i;
-  GError          *error;
-  ClutterActor    *real_hand, *tmp;
-  ClutterColor     clr = { 0xff, 0xff, 0x00, 0xff };
+  ClutterAlpha *alpha;
+  ClutterActor *stage;
+  ClutterColor  stage_color = { 0x61, 0x64, 0x8c, 0xff };
+  SuperOH      *oh;
+  gint          i;
+  GError       *error;
+  ClutterActor *real_hand, *tmp;
+  ClutterColor  clr = { 0xff, 0xff, 0x00, 0xff };
+  gchar        *file;
 
   error = NULL;
 
@@ -176,12 +177,12 @@ test_actor_clone_main (int argc, char *argv[])
   oh->scaler_1 = clutter_behaviour_scale_new (alpha, 0.5, 0.5, 1.0, 1.0);
   oh->scaler_2 = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 0.5, 0.5);
 
-  tmp = clutter_texture_new_from_file ("redhand.png", &error);
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  tmp = clutter_texture_new_from_file (file, &error);
   if (tmp == NULL)
-    {
-      g_error ("image load failed: %s", error->message);
-      return EXIT_FAILURE;
-    }
+    g_error ("image load failed: %s", error->message);
+
+  g_free (file);
 
   clutter_actor_set_size (tmp, 300, 500);
 

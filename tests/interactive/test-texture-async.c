@@ -38,17 +38,17 @@ on_load_finished (ClutterTexture *texture,
     g_print ("%s successful\n", load_str);
 }
 
-static void size_change_cb (ClutterTexture *texture,
-                            gint            width,
-                            gint            height,
-                            gpointer        user_data)
+static void
+size_change_cb (ClutterTexture *texture,
+                gint            width,
+                gint            height,
+                gpointer        user_data)
 {
   clutter_actor_set_size (user_data, width, height);
 }
 
-  const gchar      *path = "redhand.png";
-
-static gboolean task (gpointer foo)
+static
+gboolean task (gpointer user_data)
 {
   ClutterTimeline  *timeline;
   ClutterAlpha     *alpha;
@@ -56,18 +56,11 @@ static gboolean task (gpointer foo)
   ClutterActor     *image[4];
   ClutterActor     *clone[4];
   ClutterActor     *stage;
+  gchar            *path = user_data;
   gint i;
 
   stage = clutter_stage_get_default ();
 
-#if 0
-  for (i=0;i<4;i++)
-    image[i] = g_object_new (CLUTTER_TYPE_TEXTURE,
-                             "filename", path,
-                           "load-async", TRUE,
-                             NULL);
-#else
-  /*for (i=0;i<4;i++)*/
   image[0] = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
   g_signal_connect (image[0], "load-finished",
                     G_CALLBACK (on_load_finished),
@@ -85,19 +78,14 @@ static gboolean task (gpointer foo)
   g_signal_connect (image[2], "load-finished",
                     G_CALLBACK (on_load_finished),
                     GINT_TO_POINTER (LOAD_ASYNC));
-#endif
 
-  for (i=0;i<3;i++)
-    {
-      clutter_texture_set_from_file (CLUTTER_TEXTURE (image[i]), path, NULL);
-    }
+  for (i = 0; i < 3; i++)
+    clutter_texture_set_from_file (CLUTTER_TEXTURE (image[i]), path, NULL);
 
-  for (i=0;i<3;i++)
-    {
-      clutter_container_add (CLUTTER_CONTAINER (stage), image[i], NULL);
-    }
+  for (i = 0; i < 3; i++)
+    clutter_container_add (CLUTTER_CONTAINER (stage), image[i], NULL);
 
-  for (i=0;i<3;i++)
+  for (i = 0; i < 3; i++)
     {
       clutter_actor_set_position (image[i], 50+i*100, 0+i*50);
       clone[i]=clutter_clone_new (image[i]);
@@ -107,7 +95,7 @@ static gboolean task (gpointer foo)
       clutter_actor_set_position (clone[i], 50+i*100, 150+i*50+100);
     }
 
-  for (i=0; i<3; i++)
+  for (i = 0; i < 3; i++)
     {
       timeline = clutter_timeline_new (5000);
       alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
@@ -115,6 +103,7 @@ static gboolean task (gpointer foo)
       clutter_behaviour_apply (depth_behavior, image[i]);
       clutter_timeline_start (timeline);
     }
+
   return FALSE;
 }
 
@@ -122,9 +111,10 @@ static gboolean task (gpointer foo)
 G_MODULE_EXPORT gint
 test_texture_async_main (int argc, char *argv[])
 {
-  ClutterActor     *stage;
-  ClutterColor      stage_color = { 0x12, 0x34, 0x56, 0xff };
-  GError           *error;
+  ClutterActor *stage;
+  ClutterColor  stage_color = { 0x12, 0x34, 0x56, 0xff };
+  GError       *error;
+  gchar        *path;
 
   clutter_init (&argc, &argv);
 
@@ -139,12 +129,15 @@ test_texture_async_main (int argc, char *argv[])
 
   error = NULL;
 
-  path = argv[1]?argv[1]:"redhand.png";
-
+  path = (argc > 0)
+       ? g_strdup (argv[1])
+       : g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
  
-  g_timeout_add (500, task, NULL);
+  g_timeout_add (500, task, path);
 
   clutter_main ();
+
+  g_free (path);
 
   /*g_object_unref (depth_behavior);
   g_object_unref (timeline);*/

@@ -16,7 +16,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xcomposite.h>
 
-#define IMAGE "redhand.png"
+#define IMAGE   TESTS_DATADIR G_DIR_SEPARATOR_S "redhand.png"
 
 # ifdef USE_GDKPIXBUF
 # include <gdk-pixbuf/gdk-pixbuf.h>

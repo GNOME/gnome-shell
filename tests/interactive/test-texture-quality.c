@@ -50,6 +50,7 @@ test_texture_quality_main (int argc, char *argv[])
   ClutterColor      stage_color = { 0x12, 0x34, 0x56, 0xff };
   ClutterFog        stage_fog = { 10.0, -50.0 };
   GError           *error;
+  gchar            *file;
 
   clutter_init (&argc, &argv);
 
@@ -62,14 +63,20 @@ test_texture_quality_main (int argc, char *argv[])
                     "button-press-event", G_CALLBACK (clutter_main_quit),
                     NULL);
 
+  if (argc < 1)
+    g_print ("Hint: the redhand.png isn't a good test image for this test.\n"
+             "This test can take any image file as an argument\n");
+
+  file = (argc > 0)
+       ? g_strdup (argv[1])
+       : g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+
   error = NULL;
-  image = clutter_texture_new_from_file (argv[1]?argv[1]:"redhand.png", &error);
+  image = clutter_texture_new_from_file (file, &error);
   if (error)
     g_error ("Unable to load image: %s", error->message);
 
-  if (!argv[1])
-    g_print ("Hint: the redhand.png isn't a good test image for this test.\n"
-             "This test can take any clutter loadable image as an argument\n");
+  g_free (file);
 
   /* center the image */
   clutter_actor_set_position (image, 

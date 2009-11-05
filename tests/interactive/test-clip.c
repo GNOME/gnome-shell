@@ -289,6 +289,7 @@ test_clip_main (int argc, char **argv)
 {
   CallbackData data;
   ClutterActor *stub_actor, *label;
+  gchar *file;
 
   clutter_init (&argc, &argv);
 
@@ -300,10 +301,12 @@ test_clip_main (int argc, char **argv)
   stub_actor = clutter_rectangle_new ();
   clutter_container_add (CLUTTER_CONTAINER (data.stage), stub_actor, NULL);
 
-  data.hand = cogl_texture_new_from_file ("redhand.png",
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
+  data.hand = cogl_texture_new_from_file (file,
                                           COGL_TEXTURE_NONE,
                                           COGL_PIXEL_FORMAT_ANY,
                                           NULL);
+  g_free (file);
 
   label = clutter_text_new_with_text ("Sans 12px", instructions);
   clutter_text_set_line_wrap (CLUTTER_TEXT (label), TRUE);

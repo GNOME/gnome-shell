@@ -248,13 +248,16 @@ test_coglbox_init (TestCoglbox *self)
 {
   TestCoglboxPrivate *priv;
   GError *error = NULL;
+  gchar *file;
+
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE (self);
 
   priv->use_linear_filtering = FALSE;
   priv->use_sliced = FALSE;
 
+  file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
   priv->sliced_tex =
-    cogl_texture_new_from_file  ("redhand.png",
+    cogl_texture_new_from_file  (file,
                                  COGL_TEXTURE_NONE,
                                  COGL_PIXEL_FORMAT_ANY,
                                  &error);
@@ -271,7 +274,7 @@ test_coglbox_init (TestCoglbox *self)
     }
 
   priv->not_sliced_tex =
-    cogl_texture_new_from_file ("redhand.png",
+    cogl_texture_new_from_file (file,
                                 COGL_TEXTURE_NO_SLICING,
                                 COGL_PIXEL_FORMAT_ANY,
                                 &error);
@@ -285,6 +288,8 @@ test_coglbox_init (TestCoglbox *self)
       else
         g_warning ("Texture loading failed: <unknown>");
     }
+
+  g_free (file);
 }
 
 static void
