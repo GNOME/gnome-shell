@@ -67,6 +67,7 @@
 #include <fcntl.h>
 #include <locale.h>
 #include <time.h>
+#include <unistd.h>
 
 /**
  * The exit code we'll return to our parent process when we eventually die.
@@ -369,12 +370,24 @@ meta_finalize (void)
                         CurrentTime); /* I doubt correct timestamps matter here */
 }
 
+static int sigterm_pipe_fds[2] = { -1, -1 };
+
 static void
 sigterm_handler (int signum)
 {
-  meta_finalize ();
+  if (sigterm_pipe_fds[1] >= 0)
+    {
+      write (sigterm_pipe_fds[1], "", 1);
+      close (sigterm_pipe_fds[1]);
+      sigterm_pipe_fds[1] = -1;
+    }
+}
 
-  exit (meta_exit_code);
+static gboolean
+on_sigterm (void)
+{
+  meta_quit (META_EXIT_SUCCESS);
+  return FALSE;
 }
 
 static guint sigchld_signal_id = 0;
@@ -422,6 +435,7 @@ main (int argc, char **argv)
     "Pango", "GLib-GObject", "GThread"
   };
   guint i;
+  GIOChannel *channel;
 
   if (!g_thread_supported ())
     g_thread_init (NULL);
@@ -443,6 +457,16 @@ main (int argc, char **argv)
     g_printerr ("Failed to register SIGXFSZ handler: %s\n",
                 g_strerror (errno));
 #endif
+
+  if (pipe (sigterm_pipe_fds) != 0)
+    g_printerr ("Failed to create SIGTERM pipe: %s\n",
+                g_strerror (errno));
+
+  channel = g_io_channel_unix_new (sigterm_pipe_fds[0]);
+  g_io_channel_set_flags (channel, G_IO_FLAG_NONBLOCK, NULL);
+  g_io_add_watch (channel, G_IO_IN, (GIOFunc) on_sigterm, NULL);
+  g_io_channel_set_close_on_unref (channel, TRUE);
+  g_io_channel_unref (channel);
 
   act.sa_handler = &sigterm_handler;
   if (sigaction (SIGTERM, &act, NULL) < 0)
