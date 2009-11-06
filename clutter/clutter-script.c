@@ -381,6 +381,7 @@ static void
 clutter_script_class_init (ClutterScriptClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (ClutterScriptPrivate));
 
@@ -392,34 +393,33 @@ clutter_script_class_init (ClutterScriptClass *klass)
   /**
    * ClutterScript:filename-set:
    *
-   * Whether the ClutterScript:filename property is set. If this property
+   * Whether the #ClutterScript:filename property is set. If this property
    * is %TRUE then the currently parsed data comes from a file, and the
-   * file name is stored inside the ClutterScript:filename property.
+   * file name is stored inside the #ClutterScript:filename property.
    *
    * Since: 0.6
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_FILENAME_SET,
-                                   g_param_spec_boolean ("filename-set",
-                                                         "Filename Set",
-                                                         "Whether the :filename property is set",
-                                                         FALSE,
-                                                         CLUTTER_PARAM_READABLE));
+  pspec = g_param_spec_boolean ("filename-set",
+                                "Filename Set",
+                                "Whether the :filename property is set",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_FILENAME_SET, pspec);
+
   /**
    * ClutterScript:filename:
    *
-   * The path of the currently parsed file. If ClutterScript:filename-set
+   * The path of the currently parsed file. If #ClutterScript:filename-set
    * is %FALSE then the value of this property is undefined.
    *
    * Since: 0.6
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_FILENAME,
-                                   g_param_spec_string ("filename",
-                                                        "Filename",
-                                                        "The path of the currently parsed file",
-                                                        NULL,
-                                                        CLUTTER_PARAM_READABLE));
+  pspec = g_param_spec_string ("filename",
+                               "Filename",
+                               "The path of the currently parsed file",
+                               NULL,
+                               CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_FILENAME, pspec);
 }
 
 static void
@@ -548,8 +548,8 @@ clutter_script_load_from_data (ClutterScript  *script,
 
   internal_error = NULL;
   json_parser_load_from_data (JSON_PARSER (priv->parser),
-                                           data, length,
-                                           &internal_error);
+                              data, length,
+                              &internal_error);
   if (internal_error)
     {
       g_propagate_error (error, internal_error);
