@@ -74,7 +74,7 @@ static gboolean clutter_use_fuzzy_picking    = FALSE;
 
 static guint clutter_default_fps             = 60;
 
-static PangoDirection clutter_text_direction = PANGO_DIRECTION_LTR;
+static PangoDirection clutter_text_direction = CLUTTER_TEXT_DIRECTION_LTR;
 
 static guint clutter_main_loop_level         = 0;
 static GSList *main_loops                    = NULL;
@@ -540,7 +540,7 @@ _clutter_do_pick (ClutterStage   *stage,
   return clutter_get_actor_by_gid (id);
 }
 
-static PangoDirection
+static ClutterTextDirection
 clutter_get_text_direction (void)
 {
   PangoDirection dir = PANGO_DIRECTION_LTR;
@@ -550,9 +550,9 @@ clutter_get_text_direction (void)
   if (direction && *direction != '\0')
     {
       if (strcmp (direction, "rtl") == 0)
-        dir = PANGO_DIRECTION_RTL;
+        dir = CLUTTER_TEXT_DIRECTION_RTL;
       else if (strcmp (direction, "ltr") == 0)
-        dir = PANGO_DIRECTION_LTR;
+        dir = CLUTTER_TEXT_DIRECTION_LTR;
     }
   else
     {
@@ -565,9 +565,9 @@ clutter_get_text_direction (void)
       char *e = _("default:LTR");
 
       if (strcmp (e, "default:RTL") == 0)
-        dir = PANGO_DIRECTION_RTL;
+        dir = CLUTTER_TEXT_DIRECTION_RTL;
       else if (strcmp (e, "default:LTR") == 0)
-        dir = PANGO_DIRECTION_LTR;
+        dir = CLUTTER_TEXT_DIRECTION_LTR;
       else
         g_warning ("Whoever translated default:LTR did so wrongly.");
     }
@@ -582,10 +582,16 @@ update_pango_context (ClutterBackend *backend,
   PangoFontDescription *font_desc;
   const cairo_font_options_t *font_options;
   const gchar *font_name;
+  PangoDirection pango_dir;
   gdouble resolution;
 
   /* update the text direction */
-  pango_context_set_base_dir (context, clutter_text_direction);
+  if (clutter_text_direction == CLUTTER_TEXT_DIRECTION_RTL)
+    pango_dir = PANGO_DIRECTION_RTL;
+  else
+    pango_dir = PANGO_DIRECTION_LTR;
+
+  pango_context_set_base_dir (context, pango_dir);
 
   /* get the configuration for the PangoContext from the backend */
   font_name = clutter_backend_get_font_name (backend);
@@ -1236,8 +1242,8 @@ clutter_arg_direction_cb (const char *key,
                           gpointer    user_data)
 {
   clutter_text_direction =
-    (strcmp (value, "rtl") == 0) ? PANGO_DIRECTION_RTL
-                                 : PANGO_DIRECTION_LTR;
+    (strcmp (value, "rtl") == 0) ? CLUTTER_TEXT_DIRECTION_RTL
+                                 : CLUTTER_TEXT_DIRECTION_LTR;
 
   return TRUE;
 }
@@ -1355,7 +1361,6 @@ clutter_init_real (GError **error)
     cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   clutter_text_direction = clutter_get_text_direction ();
-
 
   /* Figure out framebuffer masks used for pick */
   cogl_get_bitmasks (&ctx->fb_r_mask, &ctx->fb_g_mask, &ctx->fb_b_mask, NULL);
@@ -3026,4 +3031,22 @@ clutter_check_version (guint major,
           (clutter_major_version == major &&
            clutter_minor_version == minor &&
            clutter_micro_version >= micro));
+}
+
+void
+clutter_set_default_text_direction (ClutterTextDirection text_dir)
+{
+  if (text_dir == CLUTTER_TEXT_DIRECTION_DEFAULT)
+    text_dir = clutter_get_text_direction ();
+
+  if (text_dir != clutter_text_direction)
+    clutter_text_direction = text_dir;
+
+  /* FIXME - queue a relayout on all stages */
+}
+
+ClutterTextDirection
+clutter_get_default_text_direction (void)
+{
+  return clutter_text_direction;
 }
