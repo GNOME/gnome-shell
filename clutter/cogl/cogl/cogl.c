@@ -97,8 +97,8 @@ cogl_get_proc_address (const gchar* name)
 
   /* this should find the right function if the program is linked against a
    * library providing it */
-  if (module == NULL)
-    module = g_module_open (NULL, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+  if (G_UNLIKELY (module == NULL))
+    module = g_module_open (NULL, 0);
 
   if (module)
     {

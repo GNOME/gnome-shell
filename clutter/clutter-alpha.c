@@ -244,7 +244,7 @@ resolve_alpha_func (const gchar *name)
   CLUTTER_NOTE (SCRIPT, "Looking up '%s' alpha function", name);
 
   if (G_UNLIKELY (module == NULL))
-    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+    module = g_module_open (NULL, 0);
 
   if (g_module_symbol (module, name, (gpointer) &func))
     {

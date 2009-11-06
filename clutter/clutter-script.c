@@ -906,7 +906,7 @@ clutter_script_connect_signals (ClutterScript *script,
     }
 
   cd = g_new (ConnectData, 1);
-  cd->module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+  cd->module = g_module_open (NULL, 0);
   cd->data = user_data;
 
   clutter_script_connect_signals_full (script,

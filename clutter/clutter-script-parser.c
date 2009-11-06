@@ -76,7 +76,7 @@ clutter_script_get_type_from_symbol (const gchar *symbol)
   GType gtype = G_TYPE_INVALID;
 
   if (!module)
-    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+    module = g_module_open (NULL, 0);
   
   if (g_module_symbol (module, symbol, (gpointer)&func))
     gtype = func ();
@@ -95,7 +95,7 @@ clutter_script_get_type_from_class (const gchar *name)
   gint i;
 
   if (G_UNLIKELY (!module))
-    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+    module = g_module_open (NULL, 0);
   
   for (i = 0; name[i] != '\0'; i++)
     {
@@ -803,7 +803,7 @@ resolve_alpha_func (const gchar *name)
   CLUTTER_NOTE (SCRIPT, "Looking up '%s' alpha function", name);
 
   if (G_UNLIKELY (!module))
-    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+    module = g_module_open (NULL, 0);
 
   if (g_module_symbol (module, name, (gpointer) &func))
     {
