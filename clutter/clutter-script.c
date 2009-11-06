@@ -1177,6 +1177,18 @@ clutter_script_list_objects (ClutterScript *script)
   return retval;
 }
 
+/*
+ * _clutter_script_generate_fake_id:
+ * @script: a #ClutterScript
+ *
+ * Generates a fake id string for object definitions without
+ * an "id" member
+ *
+ * Return value: a newly-allocated string containing the fake
+ *   id. Use g_free() to free the resources allocated by the
+ *   returned value
+ *
+ */
 gchar *
 _clutter_script_generate_fake_id (ClutterScript *script)
 {
@@ -1187,6 +1199,16 @@ _clutter_script_generate_fake_id (ClutterScript *script)
                           priv->last_unknown++);
 }
 
+/*
+ * _clutter_script_warn_missing_attribute:
+ * @script: a #ClutterScript
+ * @id: the id of an object definition, or %NULL
+ * @attribute: the expected attribute
+ *
+ * Emits a warning, using GLib's log facilities, for a missing
+ * @attribute in an object definition, pointing to the current
+ * location of the #ClutterScriptParser
+ */
 void
 _clutter_script_warn_missing_attribute (ClutterScript *script,
                                         const gchar   *id,
@@ -1194,12 +1216,13 @@ _clutter_script_warn_missing_attribute (ClutterScript *script,
 {
   ClutterScriptPrivate *priv = script->priv;
   JsonParser *parser = JSON_PARSER (priv->parser);
+  gint current_line = json_parser_get_current_line (parser);
 
   if (id != NULL && *id != '\0')
     {
       g_warning ("%s:%d: object '%s' has no '%s' attribute",
                  priv->is_filename ? priv->filename : "<input>",
-                 json_parser_get_current_line (parser),
+                 current_line,
                  id,
                  attribute);
     }
@@ -1207,11 +1230,22 @@ _clutter_script_warn_missing_attribute (ClutterScript *script,
     {
       g_warning ("%s:%d: object has no '%s' attribute",
                  priv->is_filename ? priv->filename : "<input>",
-                 json_parser_get_current_line (parser),
+                 current_line,
                  attribute);
     }
 }
 
+/*
+ * _clutter_script_warn_invalid_value:
+ * @script: a #ClutterScript
+ * @attribute: the attribute with the invalid value
+ * @expected: a string with the expected value
+ * @node: a #JsonNode containing the value
+ *
+ * Emits a warning, using GLib's log facilities, for an invalid
+ * value found when parsing @attribute, pointing to the current
+ * location of the #ClutterScriptParser
+ */
 void
 _clutter_script_warn_invalid_value (ClutterScript *script,
                                     const gchar   *attribute,
@@ -1220,13 +1254,14 @@ _clutter_script_warn_invalid_value (ClutterScript *script,
 {
   ClutterScriptPrivate *priv = script->priv;
   JsonParser *parser = JSON_PARSER (priv->parser);
+  gint current_line = json_parser_get_current_line (parser);
 
   if (node != NULL)
     {
       g_warning ("%s:%d: invalid value of type '%s' for attribute '%s':"
                  "a value of type '%s' is expected",
                  priv->is_filename ? priv->filename : "<input>",
-                 json_parser_get_current_line (parser),
+                 current_line,
                  json_node_type_name (node),
                  attribute,
                  expected);
@@ -1236,12 +1271,21 @@ _clutter_script_warn_invalid_value (ClutterScript *script,
       g_warning ("%s:%d: invalid value for attribute '%s':"
                  "a value of type '%s' is expected",
                  priv->is_filename ? priv->filename : "<input>",
-                 json_parser_get_current_line (parser),
+                 current_line,
                  attribute,
                  expected);
     }
 }
 
+/*
+ * _clutter_script_get_object_info:
+ * @script: a #ClutterScript
+ * @script_id: the id of the object definition
+ *
+ * Retrieves the #ObjectInfo for the given @script_id
+ *
+ * Return value: a #ObjectInfo or %NULL
+ */
 ObjectInfo *
 _clutter_script_get_object_info (ClutterScript *script,
                                  const gchar   *script_id)
@@ -1251,12 +1295,31 @@ _clutter_script_get_object_info (ClutterScript *script,
   return g_hash_table_lookup (priv->objects, script_id);
 }
 
+/*
+ * _clutter_script_get_last_merge_id:
+ * @script: a #ClutterScript
+ *
+ * Retrieves the last merge id of @script. The merge id
+ * should be stored inside an #ObjectInfo. If you need
+ * a unique fake id for object definitions with an "id"
+ * member, consider using _clutter_script_generate_fake_id()
+ * instead
+ *
+ * Return value: the last merge id
+ */
 guint
 _clutter_script_get_last_merge_id (ClutterScript *script)
 {
   return script->priv->last_merge_id;
 }
 
+/*
+ * _clutter_script_add_object_info:
+ * @script: a #ClutterScript
+ * @oinfo: a #ObjectInfo
+ *
+ * Adds @oinfo inside the objects list held by @script
+ */
 void
 _clutter_script_add_object_info (ClutterScript *script,
                                  ObjectInfo    *oinfo)
