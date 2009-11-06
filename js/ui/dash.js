@@ -565,8 +565,8 @@ Dash.prototype = {
         // Size for this one explicitly set from overlay.js
         this.searchArea = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
 
-        this.sectionArea = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                         spacing: DASH_SECTION_SPACING });
+        this.sectionArea = new St.BoxLayout({ name: "dashSections",
+                                               vertical: true });
 
         this.actor.add(this.searchArea);
         this.actor.add(this.sectionArea);
@@ -693,7 +693,7 @@ Dash.prototype = {
            }
         }));
 
-        this.sectionArea.append(this._appsSection.actor, Big.BoxPackFlags.NONE);
+        this.sectionArea.add(this._appsSection.actor);
 
         /***** Places *****/
 
@@ -702,7 +702,7 @@ Dash.prototype = {
         this._placesSection = new Section(_("PLACES"), true);
         let placesDisplay = new PlaceDisplay.DashPlaceDisplay();
         this._placesSection.content.add(placesDisplay.actor, { expand: true });
-        this.sectionArea.append(this._placesSection.actor, Big.BoxPackFlags.NONE);
+        this.sectionArea.add(this._placesSection.actor);
 
         /***** Documents *****/
 
@@ -727,7 +727,7 @@ Dash.prototype = {
         }));
         this._docDisplay.emit('changed');
 
-        this.sectionArea.append(this._docsSection.actor, Big.BoxPackFlags.EXPAND);
+        this.sectionArea.add(this._docsSection.actor, { expand: true });
 
         /***** Search Results *****/
 
@@ -775,7 +775,7 @@ Dash.prototype = {
             createPaneForDetails(this, section.resultArea.display);
         }
 
-        this.sectionArea.append(this._searchResultsSection.actor, Big.BoxPackFlags.EXPAND);
+        this.sectionArea.add(this._searchResultsSection.actor, { expand: true });
         this._searchResultsSection.actor.hide();
     },
 
