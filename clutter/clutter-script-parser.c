@@ -715,6 +715,7 @@ construct_timeline (ClutterScript *script,
   g_list_free (members);
 
   _clutter_script_construct_object (script, oinfo);
+  _clutter_script_apply_properties (script, oinfo);
   retval = CLUTTER_TIMELINE (oinfo->object);
 
   /* we transfer ownership to the alpha function later */
