@@ -816,8 +816,8 @@ resolve_alpha_func (const gchar *name)
 }
 
 GObject *
-clutter_script_parse_alpha (ClutterScript *script,
-                            JsonNode      *node)
+_clutter_script_parse_alpha (ClutterScript *script,
+                             JsonNode      *node)
 {
   GObject *retval = NULL;
   JsonObject *object;
@@ -1068,21 +1068,6 @@ clutter_script_parse_node (ClutterScript *script,
 
           if (g_type_is_a (p_type, G_TYPE_OBJECT))
             {
-              /* ClutterAlpha are handled a little bit
-               * differently, since they can be implicit
-               */
-              if (g_type_is_a (p_type, CLUTTER_TYPE_ALPHA))
-                {
-                  GObject *alpha;
-
-                  alpha = clutter_script_parse_alpha (script, node);
-                  if (alpha)
-                    {
-                      g_value_set_object (value, alpha);
-                      return TRUE;
-                    }
-                }
-
               /* default GObject handling: we get the id and
                * retrieve the ObjectInfo for it; since the object
                * definitions are parsed leaf-first we are guaranteed

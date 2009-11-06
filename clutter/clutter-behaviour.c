@@ -71,12 +71,14 @@
 #include "config.h"
 #endif
 
-#include "clutter-main.h"
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"
 #include "clutter-debug.h"
-#include "clutter-private.h"
+#include "clutter-main.h"
 #include "clutter-marshal.h"
+#include "clutter-private.h"
+#include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
 /**
  * clutter_knot_copy:
@@ -157,9 +159,13 @@ clutter_knot_get_type (void)
   return our_type;
 }
 
-G_DEFINE_ABSTRACT_TYPE (ClutterBehaviour,
-                        clutter_behaviour,
-                        G_TYPE_OBJECT);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterBehaviour,
+                                  clutter_behaviour,
+                                  G_TYPE_OBJECT,
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                         clutter_scriptable_iface_init));
 
 struct _ClutterBehaviourPrivate
 {
@@ -187,6 +193,36 @@ static guint behave_signals[LAST_SIGNAL] = { 0 };
               (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                CLUTTER_TYPE_BEHAVIOUR,             \
                ClutterBehaviourPrivate))
+
+static gboolean
+clutter_behaviour_parse_custom_node (ClutterScriptable *scriptable,
+                                     ClutterScript     *script,
+                                     GValue            *value,
+                                     const gchar       *name,
+                                     JsonNode          *node)
+{
+  if (strncmp (name, "alpha", 5) == 0)
+    {
+      GObject *alpha;
+
+      alpha = _clutter_script_parse_alpha (script, node);
+      if (alpha != NULL)
+        {
+          g_value_init (value, CLUTTER_TYPE_ALPHA);
+          g_value_set_object (value, alpha);
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_behaviour_parse_custom_node;
+}
 
 static void
 clutter_behaviour_dispose (GObject *gobject)

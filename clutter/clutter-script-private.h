@@ -121,8 +121,8 @@ gboolean clutter_script_parse_geometry    (ClutterScript   *script,
 gboolean clutter_script_parse_color       (ClutterScript   *script,
                                            JsonNode        *node,
                                            ClutterColor    *color);
-GObject *clutter_script_parse_alpha       (ClutterScript   *script,
-                                           JsonNode        *node);
+GObject *_clutter_script_parse_alpha       (ClutterScript   *script,
+                                            JsonNode        *node);
 
 void _clutter_script_construct_object (ClutterScript *script,
                                        ObjectInfo    *oinfo);
