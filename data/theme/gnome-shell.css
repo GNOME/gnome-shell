@@ -137,6 +137,19 @@ StTooltip {
     font-weight: normal;
 }
 
+.dash-pane {
+    background-color: rgba(0,0,0,0.95);
+    border: 1px solid #262626;
+    padding: 4px;
+    spacing: 4px;
+}
+
+.dash-pane-close {
+    background-image: url("close.svg");
+    width: 16px;
+    height: 16px;
+}
+
 /* LookingGlass */
 
 #LookingGlassDialog

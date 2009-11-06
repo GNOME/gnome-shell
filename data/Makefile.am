@@ -16,7 +16,6 @@ imagesdir = $(pkgdatadir)/images
 dist_images_DATA =				\
 	add-workspace.svg			\
 	app-well-glow.png			\
-	close.svg				\
 	close-black.svg				\
 	info.svg				\
 	magnifier.svg				\
@@ -25,6 +24,7 @@ dist_images_DATA =				\
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
 	theme/gnome-shell.css			\
+	theme/close.svg                 \
 	theme/scroll-button-down.png		\
 	theme/scroll-button-down-hover.png	\
 	theme/scroll-button-up.png		\

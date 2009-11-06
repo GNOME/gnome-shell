@@ -50,13 +50,6 @@ const SECTION_INNER_SPACING = 8;
 const BROWSE_ACTIVATED_BG = new Clutter.Color();
 BROWSE_ACTIVATED_BG.from_pixel(0x303030f0);
 
-const PANE_BORDER_COLOR = new Clutter.Color();
-PANE_BORDER_COLOR.from_pixel(0x101d3cfa);
-const PANE_BORDER_WIDTH = 2;
-
-const PANE_BACKGROUND_COLOR = new Clutter.Color();
-PANE_BACKGROUND_COLOR.from_pixel(0x000000f4);
-
 const APPS = "apps";
 const PREFS = "prefs";
 const DOCS = "docs";
@@ -95,36 +88,29 @@ Pane.prototype = {
     _init: function () {
         this._open = false;
 
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                   background_color: PANE_BACKGROUND_COLOR,
-                                   border: PANE_BORDER_WIDTH,
-                                   border_color: PANE_BORDER_COLOR,
-                                   padding: DEFAULT_PADDING,
-                                   reactive: true });
+        this.actor = new St.BoxLayout({ style_class: "dash-pane",
+                                         vertical: true,
+                                         reactive: true });
         this.actor.connect('button-press-event', Lang.bind(this, function (a, e) {
             // Eat button press events so they don't go through and close the pane
             return true;
         }));
 
-        let chromeTop = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                      spacing: 6 });
+        let chromeTop = new St.BoxLayout();
 
-        let closeIconUri = "file://" + global.imagedir + "close.svg";
-        let closeIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                       closeIconUri,
-                                                                       16,
-                                                                       16);
+        let closeIcon = new St.Bin({ style_class: "dash-pane-close" });
         closeIcon.reactive = true;
         closeIcon.connect('button-press-event', Lang.bind(this, function (b, e) {
             this.close();
             return true;
         }));
-        chromeTop.append(closeIcon, Big.BoxPackFlags.END);
-        this.actor.append(chromeTop, Big.BoxPackFlags.NONE);
+        let dummy = new St.Bin();
+        chromeTop.add(dummy, { expand: true });
+        chromeTop.add(closeIcon, { x_align: St.Align.END });
+        this.actor.add(chromeTop);
 
-        this.content = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                     spacing: DEFAULT_PADDING });
-        this.actor.append(this.content, Big.BoxPackFlags.EXPAND);
+        this.content = new St.BoxLayout({ vertical: true });
+        this.actor.add(this.content, { expand: true });
 
         // Hidden by default
         this.actor.hide();
@@ -200,7 +186,7 @@ function createPaneForDetails(dash, display) {
         if (index >= 0) {
             detailPane.destroyContent();
             let details = display.createDetailsForIndex(index);
-            detailPane.content.append(details, Big.BoxPackFlags.EXPAND);
+            detailPane.content.add(details, { expand: true });
             detailPane.open();
         } else {
             detailPane.close();
@@ -228,7 +214,7 @@ ResultPane.prototype = {
 
         createPaneForDetails(this._dash, resultArea.display);
 
-        this.content.append(resultArea.actor, Big.BoxPackFlags.EXPAND);
+        this.content.add(resultArea.actor, { expand: true });
         this.connect('open-state-changed', Lang.bind(this, function(pane, isOpen) {
             resultArea.display.resetState();
         }));
