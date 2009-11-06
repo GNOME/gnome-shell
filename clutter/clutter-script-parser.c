@@ -1051,24 +1051,66 @@ clutter_script_parse_node (ClutterScript *script,
   switch (JSON_NODE_TYPE (node))
     {
     case JSON_NODE_OBJECT:
-      if (!pspec)
+      /* if we don't have a GParamSpec we can't infer the type
+       * of the property; this usually means that this property
+       * is a custom member that will be parsed by the Scriptable
+       * interface implementantion
+       */
+      if (pspec == NULL)
         return FALSE;
       else
         {
-          g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+          GType p_type = G_PARAM_SPEC_VALUE_TYPE (pspec);
+          ObjectInfo *oinfo;
+          const gchar *id;
 
-          if (G_VALUE_HOLDS (value, CLUTTER_TYPE_ALPHA))
+          g_value_init (value, p_type);
+
+          if (g_type_is_a (p_type, G_TYPE_OBJECT))
             {
-              GObject *alpha;
-
-              alpha = clutter_script_parse_alpha (script, node);
-              if (alpha)
+              /* ClutterAlpha are handled a little bit
+               * differently, since they can be implicit
+               */
+              if (g_type_is_a (p_type, CLUTTER_TYPE_ALPHA))
                 {
-                  g_value_set_object (value, alpha);
+                  GObject *alpha;
+
+                  alpha = clutter_script_parse_alpha (script, node);
+                  if (alpha)
+                    {
+                      g_value_set_object (value, alpha);
+                      return TRUE;
+                    }
+                }
+
+              /* default GObject handling: we get the id and
+               * retrieve the ObjectInfo for it; since the object
+               * definitions are parsed leaf-first we are guaranteed
+               * to have a defined object at this point
+               */
+              id = get_id_from_node (node);
+              if (id == NULL || *id == '\0')
+                return FALSE;
+
+              oinfo = _clutter_script_get_object_info (script, id);
+              if (oinfo == NULL || oinfo->gtype == G_TYPE_INVALID )
+                return FALSE;
+
+              if (g_type_is_a (oinfo->gtype, p_type))
+                {
+                  /* force construction, even though it should
+                   * not be necessary; we don't need the properties
+                   * to be applied as well: they will when the
+                   * ScriptParser finishes
+                   */
+                  _clutter_script_construct_object (script, oinfo);
+
+                  g_value_set_object (value, oinfo->object);
+
                   return TRUE;
                 }
             }
-          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_KNOT))
+          else if (p_type == CLUTTER_TYPE_KNOT)
             {
               ClutterKnot knot = { 0, };
 
@@ -1080,7 +1122,7 @@ clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
-          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_GEOMETRY))
+          else if (p_type == CLUTTER_TYPE_GEOMETRY)
             {
               ClutterGeometry geom = { 0, };
 
@@ -1098,7 +1140,7 @@ clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
-          else if (CLUTTER_VALUE_HOLDS_COLOR (value))
+          else if (p_type == CLUTTER_TYPE_COLOR)
             {
               ClutterColor color = { 0, };
 
