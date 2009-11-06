@@ -188,6 +188,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/script", test_script_single);
   TEST_CONFORM_SIMPLE ("/script", test_script_child);
   TEST_CONFORM_SIMPLE ("/script", test_script_implicit_alpha);
+  TEST_CONFORM_SIMPLE ("/script", test_script_object_property);
 
   return g_test_run ();
 }

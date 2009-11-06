@@ -1,0 +1,13 @@
+{
+  "id" : "test",
+  "type" : "ClutterBox",
+  "layout-manager" : { "id" : "layout", "type" : "ClutterBinLayout" },
+  "children" : [
+    {
+      "id" : "child-1",
+      "type" : "ClutterRectangle",
+      "width" : "3 em",
+      "height" : "3 em"
+    }
+  ]
+}
