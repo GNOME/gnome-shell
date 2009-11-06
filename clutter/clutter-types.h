@@ -382,6 +382,23 @@ typedef enum
   CLUTTER_FONT_HINTING    = (1 << 1),
 } ClutterFontFlags;
 
+/**
+ * ClutterTextDirection:
+ * @CLUTTER_TEXT_DIRECTION_DEFAULT: Use the default setting, as returned
+ *   by clutter_get_default_text_direction()
+ * @CLUTTER_TEXT_DIRECTION_LTR: Use left-to-right text direction
+ * @CLUTTER_TEXT_DIRECTION_RTL: Use right-to-left text direction
+ *
+ * The text direction to be used by #ClutterActor<!-- -->s
+ *
+ * Since: 1.2
+ */
+typedef enum {
+  CLUTTER_TEXT_DIRECTION_DEFAULT,
+  CLUTTER_TEXT_DIRECTION_LTR,
+  CLUTTER_TEXT_DIRECTION_RTL
+} ClutterTextDirection;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TYPES_H__ */
