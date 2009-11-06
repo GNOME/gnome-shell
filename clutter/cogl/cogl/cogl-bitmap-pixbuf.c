@@ -160,17 +160,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
 
   /* allocate buffer big enough to hold pixel data */
   size_t rowstride;
-  CGBitmapInfo bitmap_info = CGImageGetBitmapInfo (image);
-  if ((bitmap_info & kCGBitmapAlphaInfoMask) == kCGImageAlphaNone)
-    {
-      bitmap_info = kCGImageAlphaNone;
-      rowstride = 3 * width;
-    }
-  else
-    {
-      bitmap_info = kCGImageAlphaPremultipliedFirst;
-      rowstride = 4 * width;
-    }
+  rowstride = 4 * width;
   guint8 *out_data = g_malloc0 (height * rowstride);
 
   /* render to buffer */
@@ -178,7 +168,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   CGContextRef bitmap_context = CGBitmapContextCreate (out_data,
                                                        width, height, 8,
                                                        rowstride, color_space,
-                                                       bitmap_info);
+                                                       kCGImageAlphaPremultipliedFirst);
   CGColorSpaceRelease (color_space);
 
   const CGRect rect = {{0, 0}, {width, height}};
@@ -189,9 +179,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
 
   /* store bitmap info */
   bmp->data = out_data;
-  bmp->format = bitmap_info == kCGImageAlphaPremultipliedFirst
-                ? COGL_PIXEL_FORMAT_ARGB_8888
-                : COGL_PIXEL_FORMAT_RGB_888;
+  bmp->format = COGL_PIXEL_FORMAT_ARGB_8888;
   bmp->width = width;
   bmp->height = height;
   bmp->rowstride = rowstride;
