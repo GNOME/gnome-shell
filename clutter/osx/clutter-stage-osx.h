@@ -50,7 +50,7 @@ typedef struct _ClutterStageOSXClass ClutterStageOSXClass;
 
 struct _ClutterStageOSX
 {
-  ClutterActor parent;
+  ClutterGroup parent;
 
   ClutterBackend *backend;
   ClutterStage   *wrapper;
@@ -69,13 +69,13 @@ struct _ClutterStageOSX
 
 struct _ClutterStageOSXClass
 {
-  ClutterActorClass parent_class;
+  ClutterGroupClass parent_class;
 };
 
 GType           clutter_stage_osx_get_type    (void) G_GNUC_CONST;
 
-ClutterActor*   clutter_stage_osx_new (ClutterBackend *backend,
-                                       ClutterStage   *wrapper);
+ClutterStageWindow*   clutter_stage_osx_new (ClutterBackend *backend,
+                                             ClutterStage   *wrapper);
 
 G_END_DECLS
 

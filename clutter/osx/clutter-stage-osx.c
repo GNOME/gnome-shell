@@ -31,7 +31,9 @@
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (ClutterStageOSX, clutter_stage_osx, CLUTTER_TYPE_ACTOR,
+G_DEFINE_TYPE_WITH_CODE (ClutterStageOSX,
+                         clutter_stage_osx,
+                         G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init))
 
@@ -213,19 +215,15 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 static void
 clutter_stage_osx_save_frame (ClutterStageOSX *self)
 {
-  if (CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (self)))
-    {
-      g_assert (self->window != NULL);
+  g_assert (self->window != NULL);
 
-      self->normalFrame = [self->window frame];
-      self->haveNormalFrame = TRUE;
-    }
+  self->normalFrame = [self->window frame];
+  self->haveNormalFrame = TRUE;
 }
 
 static void
 clutter_stage_osx_set_frame (ClutterStageOSX *self)
 {
-  g_assert (CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (self)));
   g_assert (self->window != NULL);
 
   if (self->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
@@ -254,16 +252,13 @@ clutter_stage_osx_set_frame (ClutterStageOSX *self)
 }
 
 /*************************************************************************/
-static void
-clutter_stage_osx_realize (ClutterActor *actor)
+static gboolean
+clutter_stage_osx_realize (ClutterStageWindow *stage_window)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
   ClutterBackendOSX *backend_osx;
 
   CLUTTER_NOTE (BACKEND, "[%p] realize", self);
-
-  /* ensure we get realize+unrealize properly paired */
-  g_return_if_fail (self->view == NULL && self->window == NULL);
 
   CLUTTER_OSX_POOL_ALLOC();
 
@@ -288,12 +283,14 @@ clutter_stage_osx_realize (ClutterActor *actor)
   CLUTTER_OSX_POOL_RELEASE();
 
   CLUTTER_NOTE (BACKEND, "Stage successfully realized");
+
+  return TRUE;
 }
 
 static void
-clutter_stage_osx_unrealize (ClutterActor *actor)
+clutter_stage_osx_unrealize (ClutterStageWindow *stage_window)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
   CLUTTER_NOTE (BACKEND, "[%p] unrealize", self);
 
@@ -321,7 +318,7 @@ clutter_stage_osx_show (ClutterStageWindow *stage_window,
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  clutter_actor_map (CLUTTER_ACTOR (self));
+  clutter_stage_osx_realize (stage_window);
   clutter_actor_map (CLUTTER_ACTOR (self->wrapper));
 
   clutter_stage_osx_set_frame (self);
@@ -342,100 +339,75 @@ clutter_stage_osx_hide (ClutterStageWindow *stage_window)
 
   [self->window orderOut: nil];
 
-  clutter_actor_unmap (CLUTTER_ACTOR (self));
+  clutter_stage_osx_unrealize (stage_window);
   clutter_actor_unmap (CLUTTER_ACTOR (self->wrapper));
 
   CLUTTER_OSX_POOL_RELEASE();
 }
 
 static void
-clutter_stage_osx_get_preferred_width (ClutterActor *actor,
-                                       gfloat        for_height,
-                                       gfloat       *min_width_p,
-                                       gfloat       *natural_width_p)
+clutter_stage_osx_get_geometry (ClutterStageWindow *stage_window,
+                                ClutterGeometry    *geometry)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
-  gboolean is_resizable;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
+  gboolean is_fullscreen, resize;
 
-  CLUTTER_OSX_POOL_ALLOC();
+  g_return_if_fail (CLUTTER_IS_BACKEND_OSX (backend));
 
-  is_resizable = clutter_stage_get_user_resizable (self->wrapper);
+  CLUTTER_OSX_POOL_ALLOC ();
 
-  if (min_width_p)
+  is_fullscreen = FALSE;
+  g_object_get (G_OBJECT (self->wrapper),
+                "fullscreen-set", &is_fullscreen,
+                NULL);
+
+  if (is_fullscreen)
     {
-      if (is_resizable)
-        *min_width_p = 1.0;
+      NSSize size = [[NSScreen mainScreen] frame].size;
+
+      geometry->width = size.width;
+      geometry->height = size.height;
+    }
+  else
+    {
+      resize = clutter_stage_get_user_resizable (self->wrapper);
+
+      if (resize)
+        {
+          geometry->width = 1;
+          geometry->height = 1;
+        }
       else
-        *min_width_p = self->requisition_width;
+        {
+          geometry->width = self->requisition_width;
+          geometry->height = self->requisition_height;
+        }
     }
 
-  if (natural_width_p)
-    *natural_width_p = self->requisition_width;
-
-  CLUTTER_OSX_POOL_RELEASE();
+  CLUTTER_OSX_POOL_RELEASE ();
 }
 
 static void
-clutter_stage_osx_get_preferred_height (ClutterActor *actor,
-                                        gfloat        for_width,
-                                        gfloat       *min_height_p,
-                                        gfloat       *natural_height_p)
+clutter_stage_osx_resize (ClutterStageWindow *stage_window,
+                          gint                width,
+                          gint                height)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
-  gboolean is_resizable;
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
-  CLUTTER_OSX_POOL_ALLOC();
+  self->requisition_width = width;
+  self->requisition_height = height;
 
-  is_resizable = clutter_stage_get_user_resizable (self->wrapper);
+  CLUTTER_OSX_POOL_ALLOC ();
 
-  if (min_height_p)
-    {
-      if (is_resizable)
-        *min_height_p = 1.0;
-      else
-        *min_height_p = self->requisition_height;
-    }
+  NSSize size = NSMakeSize (self->requisition_width,
+                            self->requisition_height);
+  [self->window setContentSize: size];
 
-  if (natural_height_p)
-    *natural_height_p = self->requisition_height;
-
-  CLUTTER_OSX_POOL_RELEASE();
-}
-
-static void
-clutter_stage_osx_allocate (ClutterActor           *actor,
-                            const ClutterActorBox  *box,
-                            ClutterAllocationFlags  flags)
-{
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
-  ClutterActorClass *parent_class;
-
-  CLUTTER_NOTE (BACKEND, "[%p], allocate: %d, %d - %d x %d", self,
-                (int) box->x1,
-                (int) box->y1,
-                (int) (box->x2 - box->x1),
-                (int) (box->y2 - box->y1));
-
-  self->requisition_width  = (int) (box->x2 - box->x1);
-  self->requisition_height = (int) (box->y2 - box->y1);
-
-  if (CLUTTER_ACTOR_IS_REALIZED (actor))
-    {
-      CLUTTER_OSX_POOL_ALLOC();
-
-      NSSize size = NSMakeSize(self->requisition_width,
-                               self->requisition_height);
-      [self->window setContentSize: size];
-
-      CLUTTER_OSX_POOL_RELEASE();
-    }
+  CLUTTER_OSX_POOL_RELEASE ();
 
   /* make sure that the viewport is updated */
   CLUTTER_SET_PRIVATE_FLAGS (self->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
-
-  /* chain up */
-  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class);
-  parent_class->allocate (actor, box, flags);
 }
 
 /*************************************************************************/
@@ -457,8 +429,7 @@ clutter_stage_osx_set_title (ClutterStageWindow *stage_window,
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  if (CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (self)))
-    [self->window setTitle:[NSString stringWithUTF8String: title ? title : ""]];
+  [self->window setTitle:[NSString stringWithUTF8String: title ? title : ""]];
 
   CLUTTER_OSX_POOL_RELEASE();
 }
@@ -482,27 +453,14 @@ clutter_stage_osx_set_fullscreen (ClutterStageWindow *stage_window,
    * We do state change first. Not sure there's any difference.
    */
   if (fullscreen)
-    clutter_stage_osx_state_update (self, 0, CLUTTER_STAGE_STATE_FULLSCREEN);
+    {
+      clutter_stage_osx_state_update (self, 0, CLUTTER_STAGE_STATE_FULLSCREEN);
+      clutter_stage_osx_save_frame (self);
+    }
   else
     clutter_stage_osx_state_update (self, CLUTTER_STAGE_STATE_FULLSCREEN, 0);
 
-  if (CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (self)))
-    {
-      if (fullscreen)
-        clutter_stage_osx_save_frame (self);
-
-      clutter_stage_osx_set_frame (self);
-    }
-  else if (fullscreen)
-    {
-      /* FIXME: if you go fullscreen before realize we throw away the normal
-       * stage size and can't return. Need to maintain them separately.
-       */
-      NSSize size = [[NSScreen mainScreen] frame].size;
-
-      clutter_actor_set_size (CLUTTER_ACTOR (self),
-                              (int)size.width, (int)size.height);
-    }
+  clutter_stage_osx_set_frame (self);
 
   CLUTTER_OSX_POOL_RELEASE();
 }
@@ -515,10 +473,14 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_fullscreen = clutter_stage_osx_set_fullscreen;
   iface->show           = clutter_stage_osx_show;
   iface->hide           = clutter_stage_osx_hide;
+  iface->realize        = clutter_stage_osx_realize;
+  iface->unrealize      = clutter_stage_osx_unrealize;
+  iface->get_geometry   = clutter_stage_osx_get_geometry;
+  iface->resize         = clutter_stage_osx_resize;
 }
 
 /*************************************************************************/
-ClutterActor *
+ClutterStageWindow *
 clutter_stage_osx_new (ClutterBackend *backend,
                        ClutterStage   *wrapper)
 {
@@ -528,7 +490,7 @@ clutter_stage_osx_new (ClutterBackend *backend,
   self->backend = backend;
   self->wrapper = wrapper;
 
-  return CLUTTER_ACTOR(self);
+  return CLUTTER_STAGE_WINDOW(self);
 }
 
 /*************************************************************************/
@@ -542,14 +504,22 @@ clutter_stage_osx_init (ClutterStageOSX *self)
 }
 
 static void
+clutter_stage_osx_finalize (GObject *gobject)
+{
+  G_OBJECT_CLASS (clutter_stage_osx_parent_class)->finalize (gobject);
+}
+
+static void
+clutter_stage_osx_dispose (GObject *gobject)
+{
+  G_OBJECT_CLASS (clutter_stage_osx_parent_class)->dispose (gobject);
+}
+
+static void
 clutter_stage_osx_class_init (ClutterStageOSXClass *klass)
 {
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  actor_class->realize   = clutter_stage_osx_realize;
-  actor_class->unrealize = clutter_stage_osx_unrealize;
-
-  actor_class->allocate             = clutter_stage_osx_allocate;
-  actor_class->get_preferred_width  = clutter_stage_osx_get_preferred_width;
-  actor_class->get_preferred_height = clutter_stage_osx_get_preferred_height;
+  gobject_class->finalize = clutter_stage_osx_finalize;
+  gobject_class->dispose = clutter_stage_osx_dispose;
 }
