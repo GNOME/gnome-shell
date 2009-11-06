@@ -31,21 +31,22 @@
 
 #include <cogl/cogl-defines-@COGL_DRIVER@.h>
 
-#include <cogl/cogl-vertex-buffer.h>
-#include <cogl/cogl-matrix.h>
-#include <cogl/cogl-vertex-buffer.h>
-#include <cogl/cogl-fixed.h>
+#include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-color.h>
-#include <cogl/cogl-offscreen.h>
+#include <cogl/cogl-debug.h>
+#include <cogl/cogl-fixed.h>
 #include <cogl/cogl-material.h>
+#include <cogl/cogl-matrix.h>
+#include <cogl/cogl-offscreen.h>
 #include <cogl/cogl-path.h>
 #include <cogl/cogl-shader.h>
-#include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-texture.h>
 #include <cogl/cogl-types.h>
-#include <cogl/cogl-debug.h>
-#include <cogl/cogl-deprecated.h>
+#include <cogl/cogl-vertex-buffer.h>
+
 #include <cogl/cogl-enum-types.h>
+
+#include <cogl/cogl-deprecated.h>
 
 G_BEGIN_DECLS
 
