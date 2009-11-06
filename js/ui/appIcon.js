@@ -8,6 +8,7 @@ const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -99,11 +100,9 @@ AppIcon.prototype = {
         nameBox.connect('allocate', Lang.bind(this, this._nameBoxAllocate));
         this._nameBox = nameBox;
 
-        this._name = new Clutter.Text({ color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                        font_name: "Sans 12px",
-                                        line_alignment: Pango.Alignment.CENTER,
-                                        ellipsize: Pango.EllipsizeMode.END,
-                                        text: this.app.get_name() });
+        this._name = new St.Label({ style_class: "app-icon-label",
+                                     text: this.app.get_name() });
+        this._name.clutter_text.line_alignment = Pango.Alignment.CENTER;
         nameBox.add_actor(this._name);
         if (this._showGlow) {
             this._glowBox = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL });

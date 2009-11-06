@@ -9,6 +9,7 @@ const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Gettext = imports.gettext.domain('gnome-shell');
 const _ = Gettext.gettext;
 
@@ -42,7 +43,6 @@ PlaceInfo.prototype = {
         this.id = null;
     }
 }
-
 
 function PlacesManager() {
     this._init();
@@ -326,10 +326,8 @@ DashPlaceDisplayItem.prototype = {
             this._info.launch();
             Main.overview.hide();
         }));
-        let text = new Clutter.Text({ font_name: 'Sans 14px',
-                                      ellipsize: Pango.EllipsizeMode.END,
-                                      color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                      text: this.name });
+        let text = new St.Label({ style_class: 'places-item',
+                                  text: info.name });
         let iconBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
         iconBox.append(this._icon, Big.BoxPackFlags.NONE);
         this.actor.append(iconBox, Big.BoxPackFlags.NONE);

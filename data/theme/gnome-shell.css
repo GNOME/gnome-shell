@@ -98,6 +98,10 @@ StTooltip {
     background-color: #c4c4c4;
 }
 
+.dash-section {
+    spacing: 8px;
+}
+
 .section-header {
     border: 1px solid #262626;
     -shell-gradient-top: #161616;
@@ -130,6 +134,12 @@ StTooltip {
 .section-count {
 }
 
+.dash-section-content {
+    font-size: 14px;
+    color: #ffffff;
+    spacing: 8px;
+}
+
 .more-link {
     border-left: 1px solid #262626;
     padding: 0px 0px 0px 4px;
@@ -149,6 +159,50 @@ StTooltip {
     width: 16px;
     height: 16px;
 }
+
+/* GenericDisplay */
+
+.generic-display-container {
+    spacing: 4px;
+}
+
+.generic-display-item {
+    height: 50px;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+    spacing: 4px;
+}
+
+.generic-display-item:selected {
+    background-color: rgba(79,111,173,0.66);
+}
+
+.generic-display-item-text {
+    spacing: 4px;
+}
+
+.generic-display-item-description {
+    font-size: 12px;
+    color: #bababa;
+}
+
+.generic-display-details {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.generic-display-details-name {
+    font-weight: bold;
+}
+
+/* AppIcon */
+
+.app-icon-label {
+    font-size: 12px;
+}
+
+/* Places */
 
 /* LookingGlass */
 

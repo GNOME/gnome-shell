@@ -45,8 +45,6 @@ const HIGHLIGHTED_SEARCH_CURSOR_COLOR = SEARCH_TEXT_COLOR;
 const SEARCH_BORDER_BOTTOM_COLOR = new Clutter.Color();
 SEARCH_BORDER_BOTTOM_COLOR.from_pixel(0x191919ff);
 
-const SECTION_INNER_SPACING = 8;
-
 const BROWSE_ACTIVATED_BG = new Clutter.Color();
 BROWSE_ACTIVATED_BG.from_pixel(0x303030f0);
 
@@ -535,11 +533,13 @@ function Section(titleString, suppressBrowse) {
 
 Section.prototype = {
     _init: function(titleString, suppressBrowse) {
-        this.actor = new Big.Box({ spacing: SECTION_INNER_SPACING });
+        this.actor = new St.BoxLayout({ style_class: 'dash-section',
+                                         vertical: true });
         this.header = new SectionHeader(titleString, suppressBrowse);
-        this.actor.append(this.header.actor, Big.BoxPackFlags.NONE);
-        this.content = new Big.Box({spacing: SECTION_INNER_SPACING });
-        this.actor.append(this.content, Big.BoxPackFlags.EXPAND);
+        this.actor.add(this.header.actor);
+        this.content = new St.BoxLayout({ style_class: 'dash-section-content',
+                                           vertical: true });
+        this.actor.add(this.content);
     }
 }
 
@@ -681,7 +681,7 @@ Dash.prototype = {
 
         this._appsSection = new Section(_("APPLICATIONS"));
         let appWell = new AppDisplay.AppWell();
-        this._appsSection.content.append(appWell.actor, Big.BoxPackFlags.EXPAND);
+        this._appsSection.content.add(appWell.actor, { expand: true });
 
         this._moreAppsPane = null;
         this._appsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
@@ -701,7 +701,7 @@ Dash.prototype = {
            network locations, etc. */
         this._placesSection = new Section(_("PLACES"), true);
         let placesDisplay = new PlaceDisplay.DashPlaceDisplay();
-        this._placesSection.content.append(placesDisplay.actor, Big.BoxPackFlags.EXPAND);
+        this._placesSection.content.add(placesDisplay.actor, { expand: true });
         this.sectionArea.append(this._placesSection.actor, Big.BoxPackFlags.NONE);
 
         /***** Documents *****/
@@ -709,7 +709,7 @@ Dash.prototype = {
         this._docsSection = new Section(_("RECENT DOCUMENTS"));
 
         this._docDisplay = new DocDisplay.DashDocDisplay();
-        this._docsSection.content.append(this._docDisplay.actor, Big.BoxPackFlags.EXPAND);
+        this._docsSection.content.add(this._docDisplay.actor, { expand: true });
 
         this._moreDocsPane = null;
         this._docsSection.header.moreLink.connect('activated', Lang.bind(this, function (link) {
@@ -769,9 +769,9 @@ Dash.prototype = {
                                                                function () {
                                                                    this._showSingleSearchSection(section.type);
                                                                }));
-            this._searchResultsSection.content.append(section.header.actor, Big.BoxPackFlags.NONE);
+            this._searchResultsSection.content.add(section.header.actor);
             section.resultArea = new ResultArea(section.type, GenericDisplay.GenericDisplayFlags.DISABLE_VSCROLLING);
-            this._searchResultsSection.content.append(section.resultArea.actor, Big.BoxPackFlags.EXPAND);
+            this._searchResultsSection.content.add(section.resultArea.actor, { expand: true });
             createPaneForDetails(this, section.resultArea.display);
         }
 

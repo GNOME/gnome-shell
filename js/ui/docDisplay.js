@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const St = imports.gi.St;
 const Mainloop = imports.mainloop;
 
 const DocInfo = imports.misc.docInfo;
@@ -278,10 +279,8 @@ DashDocDisplayItem.prototype = {
         let iconBox = new Big.Box({ y_align: Big.BoxAlignment.CENTER });
         iconBox.append(this._icon, Big.BoxPackFlags.NONE);
         this.actor.append(iconBox, Big.BoxPackFlags.NONE);
-        let name = new Clutter.Text({ font_name: "Sans 14px",
-                                      color: GenericDisplay.ITEM_DISPLAY_NAME_COLOR,
-                                      ellipsize: Pango.EllipsizeMode.END,
-                                      text: docInfo.name });
+        let name = new St.Label({ style_class: "dash-recent-docs-item",
+                                   text: docInfo.name });
         this.actor.append(name, Big.BoxPackFlags.EXPAND);
 
         let draggable = DND.makeDraggable(this.actor);

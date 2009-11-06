@@ -23,14 +23,8 @@ const RedisplayFlags = { NONE: 0,
                          SUBSEARCH: 1 << 2,
                          IMMEDIATE: 1 << 3 };
 
-const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
-ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);
 const ITEM_DISPLAY_DESCRIPTION_COLOR = new Clutter.Color();
 ITEM_DISPLAY_DESCRIPTION_COLOR.from_pixel(0xffffffbb);
-const ITEM_DISPLAY_BACKGROUND_COLOR = new Clutter.Color();
-ITEM_DISPLAY_BACKGROUND_COLOR.from_pixel(0x00000000);
-const ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR = new Clutter.Color();
-ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR.from_pixel(0x4f6fadaa);
 const DISPLAY_CONTROL_SELECTED_COLOR = new Clutter.Color();
 DISPLAY_CONTROL_SELECTED_COLOR.from_pixel(0x112288ff);
 const PREVIEW_BOX_BACKGROUND_COLOR = new Clutter.Color();
@@ -38,10 +32,7 @@ PREVIEW_BOX_BACKGROUND_COLOR.from_pixel(0xADADADf0);
 
 const DEFAULT_PADDING = 4;
 
-const ITEM_DISPLAY_HEIGHT = 50;
 const ITEM_DISPLAY_ICON_SIZE = 48;
-const ITEM_DISPLAY_PADDING = 1;
-const ITEM_DISPLAY_PADDING_RIGHT = 2;
 const DEFAULT_COLUMN_GAP = 6;
 
 const PREVIEW_ICON_SIZE = 96;
@@ -64,12 +55,8 @@ function GenericDisplayItem() {
 
 GenericDisplayItem.prototype = {
     _init: function() {
-        this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                   spacing: ITEM_DISPLAY_PADDING,
-                                   reactive: true,
-                                   background_color: ITEM_DISPLAY_BACKGROUND_COLOR,
-                                   corner_radius: 4,
-                                   height: ITEM_DISPLAY_HEIGHT });
+        this.actor = new St.BoxLayout({ style_class: "generic-display-item",
+                                         reactive: true });
 
         this.actor._delegate = this;
         this.actor.connect('button-release-event',
@@ -83,16 +70,12 @@ GenericDisplayItem.prototype = {
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
 
-        this._infoContent = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                          spacing: DEFAULT_PADDING });
-        this.actor.append(this._infoContent, Big.BoxPackFlags.EXPAND);
+        this._iconBin = new St.Bin();
+        this.actor.add(this._iconBin);
 
-        this._iconBox = new Big.Box();
-        this._infoContent.append(this._iconBox, Big.BoxPackFlags.NONE);
-
-        this._infoText = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                       spacing: DEFAULT_PADDING });
-        this._infoContent.append(this._infoText, Big.BoxPackFlags.EXPAND);
+        this._infoText = new St.BoxLayout({ style_class: "generic-display-item-text",
+                                             vertical: true });
+        this.actor.add(this._infoText, { expand: true, y_fill: false });
 
         let infoIconUri = "file://" + global.imagedir + "info.svg";
         let infoIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
@@ -105,7 +88,7 @@ GenericDisplayItem.prototype = {
                                       padding_left: DEFAULT_PADDING, padding_right: DEFAULT_PADDING,
                                       y_align: Big.BoxAlignment.CENTER });
         buttonBox.append(this._informationButton.actor, Big.BoxPackFlags.NONE);
-        this.actor.append(buttonBox, Big.BoxPackFlags.END);
+        this.actor.add(buttonBox, { x_fill: false, x_align: St.Align.END });
 
         // Connecting to the button-press-event for the information button ensures that the actor,
         // which is a draggable actor, does not get the button-press-event and doesn't initiate
@@ -161,16 +144,8 @@ GenericDisplayItem.prototype = {
     // Highlights the item by setting a different background color than the default 
     // if isSelected is true, removes the highlighting otherwise.
     markSelected: function(isSelected) {
-       let color;
-       if (isSelected) {
-           color = ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR;
-           this._informationButton.forceShow(true);
-       }
-       else {
-           color = ITEM_DISPLAY_BACKGROUND_COLOR;
-           this._informationButton.forceShow(false);
-       }
-       this.actor.background_color = color;
+        this.actor.set_style_pseudo_class(isSelected ? "selected" : null);
+        this._informationButton.forceShow(isSelected)
     },
 
     /*
@@ -186,19 +161,14 @@ GenericDisplayItem.prototype = {
                                         spacing: PREVIEW_BOX_SPACING });
 
         // Inner box with name and description
-        let textDetails = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                        spacing: PREVIEW_BOX_SPACING });
-        let detailsName = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
-                                             font_name: "Sans bold 14px",
-                                             line_wrap: true,
-                                             text: this._name.text });
-        textDetails.append(detailsName, Big.BoxPackFlags.NONE);
+        let textDetails = new St.BoxLayout({ style_class: 'generic-display-details',
+                                             vertical: true });
+        let detailsName = new St.Label({ style_class: 'generic-display-details-name',
+                                          text: this._name.text });
+        textDetails.add(detailsName);
 
-        let detailsDescription = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
-                                                    font_name: "Sans 14px",
-                                                    line_wrap: true,
-                                                    text: this._description.text });
-        textDetails.append(detailsDescription, Big.BoxPackFlags.NONE);
+        let detailsDescription = new St.Label({ text: this._description.text });
+        textDetails.add(detailsDescription);
 
         this._detailsDescriptions.push(detailsDescription);
 
@@ -224,7 +194,7 @@ GenericDisplayItem.prototype = {
 
     // Destroys the item.
     destroy: function() {
-      this.actor.destroy();
+        this.actor.destroy();
     },
 
     //// Pure virtual public methods ////
@@ -261,20 +231,15 @@ GenericDisplayItem.prototype = {
         }
 
         this._icon = this._createIcon();
-        this._iconBox.append(this._icon, Big.BoxPackFlags.NONE);
+        this._iconBin.set_child(this._icon);
 
-        this._name = new Clutter.Text({ color: ITEM_DISPLAY_NAME_COLOR,
-                                        font_name: "Sans 14px",
-                                        ellipsize: Pango.EllipsizeMode.END,
-                                        text: nameText });
-        this._infoText.append(this._name, Big.BoxPackFlags.EXPAND);
+        this._name = new St.Label({ style_class: "generic-display-item-name",
+                                     text: nameText });
+        this._infoText.add(this._name);
 
-        this._description = new Clutter.Text({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
-                                               font_name: "Sans 12px",
-                                               ellipsize: Pango.EllipsizeMode.END,
-                                               text: descriptionText ? descriptionText : ""
-                                            });
-        this._infoText.append(this._description, Big.BoxPackFlags.EXPAND);
+        this._description = new St.Label({ style_class: "generic-display-item-description",
+                                            text: descriptionText ? descriptionText : "" });
+        this._infoText.add(this._description);
     },
 
     // Sets the description text for the item, including the description text
@@ -339,11 +304,11 @@ GenericDisplay.prototype = {
 
         if (disableVScrolling) {
             this.actor = this._list = new Shell.OverflowList({ spacing: 6,
-                                                                 item_height: ITEM_DISPLAY_HEIGHT });
+                                                                 item_height: 50 });
         } else {
             this.actor = new St.ScrollView({ x_fill: true, y_fill: true });
             this.actor.get_hscroll_bar().hide();
-            this._list = new St.BoxLayout({ style_class: "generic-display-container",
+            this._list = new St.BoxLayout({ style_class: 'generic-display-container',
                                              vertical: true });
             this.actor.add_actor(this._list);
         }
