@@ -156,10 +156,12 @@ StTooltip {
 }
 
 .more-link {
-    border-left: 1px solid #262626;
-    padding: 0px 0px 0px 4px;
-    color: #ffffff;
-    font-weight: normal;
+}
+
+.more-link-expander {
+    background-image: url("section-more.svg");
+    width: 9px;
+    height: 9px;
 }
 
 .dash-pane {

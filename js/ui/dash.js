@@ -345,8 +345,8 @@ MoreLink.prototype = {
                                         reactive: true });
         this.pane = null;
 
-        let text = new St.Label({ text: _("More") });
-        this.actor.add(text, { expand: true, y_fill: false });
+        let expander = new St.Bin({ style_class: "more-link-expander" });
+        this.actor.add(expander, { expand: true, y_fill: false });
 
         this.actor.connect('button-press-event', Lang.bind(this, function (b, e) {
             if (this.pane == null) {

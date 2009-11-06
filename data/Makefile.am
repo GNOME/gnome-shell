@@ -30,7 +30,8 @@ dist_theme_DATA =				\
 	theme/scroll-button-up.png		\
 	theme/scroll-button-up-hover.png	\
 	theme/scroll-vhandle.png        \
-	theme/section-back.svg
+	theme/section-back.svg          \
+	theme/section-more.svg
 
 schemadir  = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = gnome-shell.schemas
