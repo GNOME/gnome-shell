@@ -193,3 +193,35 @@ test_script_single (TestConformSimpleFixture *fixture,
   clutter_actor_destroy (rect);
   g_free (test_file);
 }
+
+void
+test_script_implicit_alpha (TestConformSimpleFixture *fixture,
+                            gconstpointer dummy)
+{
+  ClutterScript *script = clutter_script_new ();
+  ClutterTimeline *timeline;
+  GObject *behaviour = NULL;
+  GError *error = NULL;
+  ClutterAlpha *alpha;
+  gchar *test_file;
+
+  test_file = clutter_test_get_data_file ("test-script-implicit-alpha.json");
+  clutter_script_load_from_file (script, test_file, &error);
+  g_assert (error == NULL);
+
+  behaviour = clutter_script_get_object (script, "test");
+  g_assert (CLUTTER_IS_BEHAVIOUR (behaviour));
+
+  alpha = clutter_behaviour_get_alpha (CLUTTER_BEHAVIOUR (behaviour));
+  g_assert (CLUTTER_IS_ALPHA (alpha));
+
+  g_assert_cmpint (clutter_alpha_get_mode (alpha), ==, CLUTTER_EASE_OUT_CIRC);
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  g_assert (CLUTTER_IS_TIMELINE (timeline));
+
+  g_assert_cmpint (clutter_timeline_get_duration (timeline), ==, 500);
+
+  g_object_unref (script);
+  g_free (test_file);
+}
