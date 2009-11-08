@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-13 15:24+0200\n"
-"PO-Revision-Date: 2009-10-13 15:23+0300\n"
+"POT-Creation-Date: 2009-11-08 20:55+0200\n"
+"PO-Revision-Date: 2009-11-08 20:55+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.4.0\n"
+"X-Generator: Virtaal 0.4.1\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -26,68 +26,72 @@ msgstr "صدفة جنوم"
 msgid "Window management and application launching"
 msgstr "إدارة النوافذ وإطلاق التطبيقات"
 
-#: ../js/ui/appDisplay.js:335
+#: ../js/ui/appDisplay.js:332
 msgid "Frequent"
 msgstr "متكرر"
 
-#: ../js/ui/appIcon.js:462
+#: ../js/ui/appDisplay.js:867
+msgid "Drag here to add favorites"
+msgstr "اسحب إلى هنا ليضاف إلى المفضّلة"
+
+#: ../js/ui/appIcon.js:426
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appIcon.js:475
+#: ../js/ui/appIcon.js:430
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appIcon.js:476
+#: ../js/ui/appIcon.js:431
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
-#: ../js/ui/dash.js:283
+#: ../js/ui/dash.js:267
 msgid "Find..."
 msgstr "ابحث..."
 
-#: ../js/ui/dash.js:400
+#: ../js/ui/dash.js:376
 msgid "More"
 msgstr "المزيد"
 
-#: ../js/ui/dash.js:543
+#: ../js/ui/dash.js:532
 msgid "(see all)"
 msgstr "(انظر الكل)"
 
 #. **** Applications ****
-#: ../js/ui/dash.js:763 ../js/ui/dash.js:825
+#: ../js/ui/dash.js:711 ../js/ui/dash.js:773
 msgid "APPLICATIONS"
 msgstr "التطبيقات"
 
 #. **** Places ****
 #. Translators: This is in the sense of locations for documents,
 #. network locations, etc.
-#: ../js/ui/dash.js:783
+#: ../js/ui/dash.js:731
 msgid "PLACES"
 msgstr "الأماكن"
 
 #. **** Documents ****
-#: ../js/ui/dash.js:790 ../js/ui/dash.js:835
+#: ../js/ui/dash.js:738 ../js/ui/dash.js:783
 msgid "RECENT DOCUMENTS"
 msgstr "المستندات الحديثة"
 
 #. **** Search Results ****
-#: ../js/ui/dash.js:815 ../js/ui/dash.js:955
+#: ../js/ui/dash.js:763 ../js/ui/dash.js:947
 msgid "SEARCH RESULTS"
 msgstr "نتائج البحث"
 
-#: ../js/ui/dash.js:830
+#: ../js/ui/dash.js:778
 msgid "PREFERENCES"
 msgstr "التفضيلات"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:272
+#: ../js/ui/panel.js:274
 msgid "Activities"
 msgstr "الأنشطة"
 
 #. Translators: This is a time format.
-#: ../js/ui/panel.js:464
+#: ../js/ui/panel.js:491
 msgid "%a %l:%M %p"
 msgstr "%A %Ol:%OM %p"
 
@@ -105,23 +109,23 @@ msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
 
 #. Translators: This is a time format.
-#: ../js/ui/widget.js:162
+#: ../js/ui/widget.js:163
 msgid "%H:%M"
 msgstr "%OH:%OM"
 
-#: ../js/ui/widget.js:316
+#: ../js/ui/widget.js:317
 msgid "Applications"
 msgstr "التطبيقات"
 
-#: ../js/ui/widget.js:341
+#: ../js/ui/widget.js:339
 msgid "Recent Documents"
 msgstr "المستندات الحديثة"
 
-#: ../src/shell-global.c:812
+#: ../src/shell-global.c:821
 msgid "Less than a minute ago"
 msgstr "منذ أقل من دقيقة"
 
-#: ../src/shell-global.c:815
+#: ../src/shell-global.c:824
 #, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -132,7 +136,7 @@ msgstr[3] "منذ %d دقائق"
 msgstr[4] "منذ %d دقيقة"
 msgstr[5] "منذ %d دقيقة"
 
-#: ../src/shell-global.c:818
+#: ../src/shell-global.c:827
 #, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -143,7 +147,7 @@ msgstr[3] "منذ %d ساعات"
 msgstr[4] "منذ %d ساعة"
 msgstr[5] "منذ %d ساعة"
 
-#: ../src/shell-global.c:821
+#: ../src/shell-global.c:830
 #, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -154,7 +158,7 @@ msgstr[3] "منذ %d أيام"
 msgstr[4] "منذ %d يوما"
 msgstr[5] "منذ %d يوم"
 
-#: ../src/shell-global.c:824
+#: ../src/shell-global.c:833
 #, c-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
