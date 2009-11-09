@@ -66,7 +66,7 @@ const PLACES = "places";
  * Returns the index in an array of a given length that is obtained
  * if the provided index is incremented by an increment and the array
  * is wrapped in if necessary.
- * 
+ *
  * index: prior index, expects 0 <= index < length
  * increment: the change in index, expects abs(increment) <= length
  * length: the length of the array
@@ -318,7 +318,7 @@ SearchEntry.prototype = {
             else
                 this.entry.text = '';
 
-            // Return true to stop the signal emission, so that this.actor doesn't get 
+            // Return true to stop the signal emission, so that this.actor doesn't get
             // the button-press-event and re-highlight itself.
             return true;
         }));
@@ -341,7 +341,7 @@ SearchEntry.prototype = {
     _resetTextState: function (searchEntryClicked) {
         let text = this.getText();
         this._iconBox.remove_all();
-        // We highlight the search box if the user starts typing in it 
+        // We highlight the search box if the user starts typing in it
         // or just clicks in it to indicate that the search is active.
         if (text != '' || searchEntryClicked) {
             if (!searchEntryClicked)
