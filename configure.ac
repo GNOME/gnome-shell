@@ -401,7 +401,7 @@ IMAGE_PC_FILES=""
 # quartz imageloader.
 AS_IF([test "x$COGL_WINSYS" = "xosx"], [COGL_IMAGE_BACKEND=quartz], [COGL_IMAGE_BACKEND=gdk-pixbuf])
 
-AC_ARG_WITH([COGL_IMAGE_BACKEND],
+AC_ARG_WITH([imagebackend],
             [AC_HELP_STRING([--with-imagebackend=@<:@gdk-pixbuf/quartz/internal@:>@],
                             [Select COGL image loading backend])],
             [COGL_IMAGE_BACKEND=$with_imagebackend])
