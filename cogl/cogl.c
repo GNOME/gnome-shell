@@ -663,7 +663,7 @@ void
 cogl_begin_gl (void)
 {
   CoglMaterialFlushOptions options;
-  gulong enable_flags;
+  gulong enable_flags = 0;
   int i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
