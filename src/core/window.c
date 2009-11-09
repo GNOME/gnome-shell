@@ -732,6 +732,10 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->initial_timestamp_set = FALSE;
   window->net_wm_user_time_set = FALSE;
   window->user_time_window = None;
+  window->take_focus = FALSE;
+  window->delete_window = FALSE;
+  window->net_wm_ping = FALSE;
+  window->input = TRUE;
   window->calc_placement = FALSE;
   window->shaken_loose = FALSE;
   window->have_focus_click_grab = FALSE;
