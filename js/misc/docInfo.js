@@ -36,8 +36,8 @@ DocInfo.prototype = {
         // shorter in terms of lines of code, we are not doing so
         // because that would duplicate the work of retrieving the
         // mime type.
-
-        let appInfo = Gio.app_info_get_default_for_type(this.mimeType, true);
+        let needsUri = Gio.file_new_for_uri(this.uri).get_path() == null;
+        let appInfo = Gio.app_info_get_default_for_type(this.mimeType, needsUri);
 
         if (appInfo != null) {
             appInfo.launch_uris([this.uri], Main.createAppLaunchContext());
