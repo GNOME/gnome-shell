@@ -594,7 +594,9 @@ clutter_text_position_to_coords (ClutterText *self,
       gint cursor_index;
 
       cursor_index = offset_to_bytes (text, priv->position);
-      g_string_insert (tmp, cursor_index, priv->preedit_str);
+
+      if (priv->preedit_str != NULL)
+        g_string_insert (tmp, cursor_index, priv->preedit_str);
 
       if (priv->password_char == 0)
         index_ = offset_to_bytes (tmp->str, position);
