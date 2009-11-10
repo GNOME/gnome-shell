@@ -22,8 +22,39 @@
 #include <gmodule.h>
 
 #include <clutter/clutter.h>
+#include <cogl/cogl.h>
+#include "pango/cogl-pango.h"
 
 static ClutterActor *hover_actor = NULL;
+static guint         last_index  = 0;
+
+static void
+on_paint (ClutterActor *actor,
+          gpointer      user_data)
+{
+  guint index_ = GPOINTER_TO_UINT (user_data);
+  gchar *text = g_strdup_printf ("%u", index_);
+  ClutterActorBox alloc = { 0, };
+  CoglColor color;
+  gint layout_width, layout_height;
+  gfloat width, height;
+  PangoLayout *layout;
+
+  clutter_actor_get_allocation_box (actor, &alloc);
+  clutter_actor_box_get_size (&alloc, &width, &height);
+
+  layout = clutter_actor_create_pango_layout (actor, text);
+  pango_layout_get_size (layout, &layout_width, &layout_height);
+
+  cogl_color_set_from_4ub (&color, 0, 0, 0, 255);
+  cogl_pango_render_layout (layout,
+                            (width - (layout_width / 1024)) / 2,
+                            (height - (layout_height / 1024)) / 2,
+                            &color, 0);
+
+  g_object_unref (layout);
+  g_free (text);
+}
 
 static void
 enter_event (ClutterActor *actor,
@@ -87,7 +118,8 @@ button_release_event (ClutterActor     *actor,
 }
 
 static void
-add_actor (ClutterBoxLayout *box)
+add_actor (ClutterBoxLayout *box,
+           guint             index_)
 {
   ClutterActor *rect;
   ClutterColor color = { 0xff, 0xff, 0xff, 255 };
@@ -107,6 +139,9 @@ add_actor (ClutterBoxLayout *box)
                            CLUTTER_BOX_ALIGNMENT_CENTER);
 
   clutter_actor_set_reactive (rect, TRUE);
+  g_signal_connect_after (rect, "paint",
+                    G_CALLBACK (on_paint),
+                    GUINT_TO_POINTER (index_));
   g_signal_connect (rect, "enter-event", G_CALLBACK (enter_event), NULL);
   g_signal_connect (rect, "leave-event", G_CALLBACK (leave_event), NULL);
   g_signal_connect (rect, "button-release-event",
@@ -148,7 +183,7 @@ key_release_cb (ClutterActor     *actor,
       break;
 
     case CLUTTER_plus:
-      add_actor (layout);
+      add_actor (layout, last_index++);
       break;
 
     default:
@@ -190,7 +225,7 @@ test_box_layout_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
   for (i = 0; i < 5; i++)
-    add_actor (CLUTTER_BOX_LAYOUT (layout));
+    add_actor (CLUTTER_BOX_LAYOUT (layout), last_index++);
 
   g_signal_connect (stage, "key-release-event",
                     G_CALLBACK (key_release_cb),
