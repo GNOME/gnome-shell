@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const DBus = imports.dbus;
 const Gdm = imports.gi.Gdm;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
@@ -27,9 +28,23 @@ StatusMenu.prototype = {
     _init: function() {
         this._gdm = Gdm.UserManager.ref_default();
         this._user = this._gdm.get_user(GLib.get_user_name());
+        this._presence = new GnomeSessionPresence();
 
         this.actor = new St.BoxLayout({ name: 'StatusMenu' });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+
+        this._iconBox = new St.Bin();
+        this.actor.add(this._iconBox, { y_align: St.Align.MIDDLE });
+
+        let textureCache = Shell.TextureCache.get_default();
+        // FIXME: these icons are all wrong (likewise in createSubMenu)
+        this._availableIcon = textureCache.load_icon_name('gtk-yes', 16);
+        this._busyIcon = textureCache.load_icon_name('gtk-no', 16);
+        this._invisibleIcon = textureCache.load_icon_name('gtk-close', 16);
+        this._idleIcon = textureCache.load_icon_name('gtk-media-pause', 16);
+
+        this._presence.connect('StatusChanged', Lang.bind(this, this._updatePresenceIcon));
+        this._presence.getStatus(Lang.bind(this, this._updatePresenceIcon));
 
         this._name = new St.Label({ text: this._user.get_real_name() });
         this.actor.add(this._name, { expand: true, y_align: St.Align.MIDDLE });
@@ -57,12 +72,24 @@ StatusMenu.prototype = {
             this._loginScreenItem.hide();
     },
 
+    _updatePresenceIcon: function(presence, status) {
+        if (status == GnomeSessionPresenceStatus.AVAILABLE)
+            this._iconBox.child = this._availableIcon;
+        else if (status == GnomeSessionPresenceStatus.BUSY)
+            this._iconBox.child = this._busyIcon;
+        else if (status == GnomeSessionPresenceStatus.INVISIBLE)
+            this._iconBox.child = this._invisibleIcon;
+        else
+            this._iconBox.child = this._idleIcon;
+    },
+
     // The menu
 
-    _createImageMenuItem: function(label, iconName) {
+    _createImageMenuItem: function(label, iconName, forceIcon) {
         let image = new Gtk.Image();
         let item = new Gtk.ImageMenuItem({ label: label,
-                                           image: image });
+                                           image: image,
+                                           always_show_image: forceIcon == true });
         item.connect('style-set', Lang.bind(this,
             function() {
                 image.set_from_icon_name(iconName, Gtk.IconSize.MENU);
@@ -76,6 +103,25 @@ StatusMenu.prototype = {
         this._menu.connect('deactivate', Lang.bind(this, function() { this.emit('deactivated'); }));
 
         let item;
+
+        item = this._createImageMenuItem(_('Available'), 'gtk-yes', true);
+        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.AVAILABLE));
+        this._menu.append(item);
+        item.show();
+
+        item = this._createImageMenuItem(_('Busy'), 'gtk-no', true);
+        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.BUSY));
+        this._menu.append(item);
+        item.show();
+
+        item = this._createImageMenuItem(_('Invisible'), 'gtk-close', true);
+        item.connect('activate', Lang.bind(this, this._setPresenceStatus, GnomeSessionPresenceStatus.INVISIBLE));
+        this._menu.append(item);
+        item.show();
+
+        item = new Gtk.SeparatorMenuItem();
+        this._menu.append(item);
+        item.show();
 
         item = this._createImageMenuItem(_('Account Information...'), 'user-info');
         item.connect('activate', Lang.bind(this, this._onAccountInformationActivate));
@@ -121,6 +167,10 @@ StatusMenu.prototype = {
         item.connect('activate', Lang.bind(this, this._onShutDownActivate));
         this._menu.append(item);
         item.show();
+    },
+
+    _setPresenceStatus: function(item, status) {
+        this._presence.setStatus(status);
     },
 
     _onAccountInformationActivate: function() {
@@ -200,3 +250,47 @@ StatusMenu.prototype = {
     }
 };
 Signals.addSignalMethods(StatusMenu.prototype);
+
+
+const GnomeSessionPresenceIface = {
+    name: 'org.gnome.SessionManager.Presence',
+    methods: [{ name: 'SetStatus',
+                inSignature: 'u' }],
+    properties: [{ name: 'status',
+                   signature: 'u',
+                   access: 'readwrite' }],
+    signals: [{ name: 'StatusChanged',
+                inSignature: 'u' }]
+};
+
+const GnomeSessionPresenceStatus = {
+    AVAILABLE: 0,
+    INVISIBLE: 1,
+    BUSY: 2,
+    IDLE: 3
+};
+
+function GnomeSessionPresence() {
+    this._init();
+}
+
+GnomeSessionPresence.prototype = {
+    _init: function() {
+        DBus.session.proxifyObject(this, 'org.gnome.SessionManager', '/org/gnome/SessionManager/Presence', this);
+        this.connect('StatusChanged', Lang.bind(this, function (proxy, status) { this.status = status; }));
+    },
+
+    getStatus: function(callback) {
+        this.GetRemote('status', Lang.bind(this,
+            function(status, ex) {
+                if (!ex)
+                    callback(this, status);
+            }));
+    },
+
+    setStatus: function(status) {
+        this.SetStatusRemote(status);
+    }
+};
+DBus.proxifyPrototype(GnomeSessionPresence.prototype, GnomeSessionPresenceIface);
+
