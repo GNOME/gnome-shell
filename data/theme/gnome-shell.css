@@ -101,10 +101,22 @@ StScrollBar StButton#vhandle:hover
 .section-header-inner {
     border: 1px solid #000000;
     padding: 0px 4px;
+    spacing: 4px;
 }
 
 .section-text-content {
     padding: 4px 0px;
+}
+
+.section-header-back {
+    padding: 0px 4px 0px 0px;
+    border-right: 1px solid #262626;
+}
+
+.section-header-back-image {
+    background-image: url("section-back.svg");
+    width: 12px;
+    height: 16px;
 }
 
 .section-count {

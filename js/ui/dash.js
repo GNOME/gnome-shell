@@ -403,21 +403,9 @@ function BackLink() {
 
 BackLink.prototype = {
     _init : function () {
-        this.actor = new Shell.ButtonBox({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                           padding_right: DEFAULT_PADDING,
-                                           padding_left: DEFAULT_PADDING,
-                                           reactive: true,
-                                           x_align: Big.BoxAlignment.CENTER,
-                                           y_align: Big.BoxAlignment.CENTER,
-                                           border_right: SECTION_BORDER,
-                                           border_color: SECTION_BORDER_COLOR });
-
-        let backIconUri = "file://" + global.imagedir + "back.svg";
-        let backIcon = Shell.TextureCache.get_default().load_uri_sync(Shell.TextureCachePolicy.FOREVER,
-                                                                      backIconUri,
-                                                                      12,
-                                                                      16);
-        this.actor.append(backIcon, Big.BoxPackFlags.NONE);
+        this.actor = new St.Button({ style_class: "section-header-back",
+                                      reactive: true });
+        this.actor.set_child(new St.Bin({ style_class: "section-header-back-image" }));
     }
 }
 
@@ -442,13 +430,20 @@ SectionHeader.prototype = {
             this._onStyleChanged();
         }));
 
+        this.backLink = new BackLink();
+        this._innerBox.add(this.backLink.actor);
+        this.backLink.actor.hide();
+        this.backLink.actor.connect('clicked', Lang.bind(this, function (actor) {
+            this.emit('back-link-activated');
+        }));
+
         let textBox = new St.BoxLayout({ style_class: "section-text-content" });
         this.text = new St.Label({ style_class: "section-title",
                                    text: title });
         textBox.add(this.text, { x_align: St.Align.START });
 
         this.countText = new St.Label({ style_class: "section-count" });
-        textBox.add(this.countText, { x_align: St.Align.END });
+        textBox.add(this.countText, { expand: true, x_fill: false, x_align: St.Align.END });
         this.countText.hide();
 
         this._innerBox.add(textBox, { expand: true });
