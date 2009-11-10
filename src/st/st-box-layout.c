@@ -1385,3 +1385,15 @@ st_box_layout_destroy_children (StBoxLayout *self)
 {
   st_box_layout_internal_remove_all (self, TRUE);
 }
+
+/**
+ * st_box_layout_get_n_children:
+ * @self: a #StBoxLayout
+ *
+ * Returns the number of children in this box.
+ */
+guint
+st_box_layout_get_n_children  (StBoxLayout *self)
+{
+  return g_list_length (self->priv->children);
+}
