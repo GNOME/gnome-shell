@@ -20,7 +20,6 @@ const GenericDisplay = imports.ui.genericDisplay;
 const NAUTILUS_PREFS_DIR = '/apps/nautilus/preferences';
 const DESKTOP_IS_HOME_KEY = NAUTILUS_PREFS_DIR + '/desktop_is_home_dir';
 
-const PLACES_VSPACING = 8;
 const PLACES_ICON_SIZE = 16;
 
 /**
@@ -371,15 +370,15 @@ DashPlaceDisplay.prototype = {
         this.actor.append(this._rightBox, Big.BoxPackFlags.EXPAND);
 
         // Subdivide left into actions and devices
-        this._actionsBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                         spacing: PLACES_VSPACING });
+        this._actionsBox = new St.BoxLayout({ style_class: 'places-actions',
+                                               vertical: true });
 
-        this._devBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                      spacing: PLACES_VSPACING,
-                                      padding_top: 6 });
+        this._devBox = new St.BoxLayout({ style_class: 'places-actions',
+                                           name: 'placesDevices',
+                                           vertical: true });
 
-        this._dirsBox = new Big.Box({ orientation: Big.BoxOrientation.VERTICAL,
-                                      spacing: PLACES_VSPACING });
+        this._dirsBox = new St.BoxLayout({ style_class: 'places-actions',
+                                            vertical: true });
 
         this._leftBox.append(this._actionsBox, Big.BoxPackFlags.NONE);
         this._leftBox.append(this._devBox, Big.BoxPackFlags.NONE);
@@ -396,33 +395,27 @@ DashPlaceDisplay.prototype = {
     },
 
     _updateDefaults: function() {
-        this._actionsBox.get_children().forEach(function (child) {
-            child.destroy();
-        });
+        this._actionsBox.destroy_children();
 
         let places = Main.placesManager.getDefaultPlaces();
         for (let i = 0; i < places.length; i++)
-            this._actionsBox.append(new DashPlaceDisplayItem(places[i]).actor, Big.BoxPackFlags.NONE);
+            this._actionsBox.add(new DashPlaceDisplayItem(places[i]).actor);
     },
 
     _updateMounts: function() {
-        this._devBox.get_children().forEach(function (child) {
-            child.destroy();
-        });
+        this._devBox.destroy_children();
 
         let places = Main.placesManager.getMounts();
         for (let i = 0; i < places.length; i++)
-            this._devBox.append(new DashPlaceDisplayItem(places[i]).actor, Big.BoxPackFlags.NONE);
+            this._devBox.add(new DashPlaceDisplayItem(places[i]).actor);
     },
 
     _updateBookmarks: function() {
-        this._dirsBox.get_children().forEach(function (child) {
-            child.destroy();
-        });
+        this._dirsBox.destroy_children();
 
         let places = Main.placesManager.getBookmarks();
         for (let i = 0; i < places.length; i ++)
-            this._dirsBox.append(new DashPlaceDisplayItem(places[i]).actor, Big.BoxPackFlags.NONE);
+            this._dirsBox.add(new DashPlaceDisplayItem(places[i]).actor);
     }
 };
 

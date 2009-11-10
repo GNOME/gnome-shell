@@ -219,6 +219,14 @@ StTooltip {
 
 /* Places */
 
+.places-actions {
+    spacing: 4px;
+}
+
+#placesDevices {
+    padding-top: 4px;
+}
+
 /* LookingGlass */
 
 #LookingGlassDialog
