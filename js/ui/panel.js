@@ -16,6 +16,7 @@ const _ = Gettext.gettext;
 const Button = imports.ui.button;
 const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
+const StatusMenu = imports.ui.statusMenu;
 
 const PANEL_HEIGHT = 26;
 const TRAY_HEIGHT = PANEL_HEIGHT - 1;
@@ -176,6 +177,8 @@ Panel.prototype = {
 
         this.actor = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL
                                  });
+        this.actor._delegate = this;
+
         let backgroundGradient = Shell.create_vertical_gradient(BACKGROUND_TOP,
                                                                 BACKGROUND_BOTTOM);
         this.actor.connect('notify::allocation', Lang.bind(this, function () {
@@ -371,11 +374,8 @@ Panel.prototype = {
         this._traymanager.manage_stage(global.stage);
 
         let statusbox = new Big.Box();
-        let statusmenu = this._statusmenu = new Shell.StatusMenu();
-        statusmenu.get_icon().hide();
-        statusmenu.get_name().fontName = DEFAULT_FONT;
-        statusmenu.get_name().color = PANEL_FOREGROUND_COLOR;
-        statusbox.append(this._statusmenu, Big.BoxPackFlags.NONE);
+        let statusmenu = this._statusmenu = new StatusMenu.StatusMenu();
+        statusbox.append(this._statusmenu.actor, Big.BoxPackFlags.NONE);
         let statusbutton = new Button.Button(statusbox,
                                              PANEL_BUTTON_COLOR,
                                              PRESSED_BUTTON_BACKGROUND_COLOR,
@@ -385,7 +385,7 @@ Panel.prototype = {
             if (e.get_button() == 1 && e.get_click_count() == 1) {
                 statusmenu.toggle(e);
                 // The statusmenu might not pop up if it couldn't get a pointer grab
-                if (statusmenu.is_active())
+                if (statusmenu.isActive())
                     statusbutton.actor.active = true;
                 return true;
             } else {

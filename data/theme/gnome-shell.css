@@ -348,3 +348,10 @@ StTooltip {
     width: 1px;
     background: rgba(255,255,255,0.33);
 }
+
+/* Status Menu */
+#StatusMenu {
+    spacing: 4px;
+    font: 16px sans-serif;
+    color: white;
+}

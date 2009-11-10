@@ -23,6 +23,7 @@ dist_jsui_DATA =		\
 	runDialog.js		\
 	shellDBus.js		\
 	sidebar.js		\
+	statusMenu.js		\
 	tweener.js		\
 	widget.js		\
 	widgetBox.js		\

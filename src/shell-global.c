@@ -1026,3 +1026,36 @@ shell_get_event_state (ClutterEvent *event)
   ClutterModifierType state = clutter_event_get_state (event);
   return state & CLUTTER_MODIFIER_MASK;
 }
+
+static void
+shell_popup_menu_position_func (GtkMenu   *menu,
+                                int       *x,
+                                int       *y,
+                                gboolean  *push_in,
+                                gpointer   user_data)
+{
+  *x = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menu), "shell-menu-x"));
+  *y = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menu), "shell-menu-y"));
+}
+
+/**
+ * shell_popup_menu:
+ * @menu: a #GtkMenu
+ * @button: mouse button that triggered the menu
+ * @time: timestamp of event that triggered the menu
+ * @menu_x: x coordinate to display the menu at
+ * @menu_y: y coordinate to display the menu at
+ *
+ * Wraps gtk_menu_popup(), but using @menu_x, @menu_y for the location
+ * rather than needing a callback.
+ **/
+void
+shell_popup_menu (GtkMenu *menu, int button, guint32 time,
+                  int menu_x, int menu_y)
+{
+  g_object_set_data (G_OBJECT (menu), "shell-menu-x", GINT_TO_POINTER (menu_x));
+  g_object_set_data (G_OBJECT (menu), "shell-menu-y", GINT_TO_POINTER (menu_y));
+
+  gtk_menu_popup (menu, NULL, NULL, shell_popup_menu_position_func, NULL,
+                  button, time);
+}

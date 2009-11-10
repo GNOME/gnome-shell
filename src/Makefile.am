@@ -87,8 +87,6 @@ libgnome_shell_la_SOURCES =			\
 	shell-global.c				\
 	shell-global.h				\
 	shell-global-private.h			\
-	shell-status-menu.c				\
-	shell-status-menu.h				\
 	shell-stack.c				\
 	shell-stack.h				\
 	shell-tray-manager.c			\
