@@ -171,6 +171,9 @@ struct _ClutterTextPrivate
 
   /* Signal handler for when the backend changes its font settings */
   guint font_changed_id;
+
+  /* Signal handler for when the :text-direction changes */
+  guint direction_changed_id;
 };
 
 enum
@@ -426,6 +429,15 @@ clutter_text_font_changed_cb (ClutterText *text)
 {
   clutter_text_dirty_cache (text);
   clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
+}
+
+static void
+clutter_text_direction_changed_cb (GObject    *gobject,
+                                   GParamSpec *pspec)
+{
+  clutter_text_dirty_cache (CLUTTER_TEXT (gobject));
+
+  /* no need to queue a relayout: set_text_direction() will do that for us */
 }
 
 /*
@@ -1097,6 +1109,12 @@ clutter_text_dispose (GObject *gobject)
 
   /* get rid of the entire cache */
   clutter_text_dirty_cache (self);
+
+  if (priv->direction_changed_id)
+    {
+      g_signal_handler_disconnect (self, priv->direction_changed_id);
+      priv->direction_changed_id = 0;
+    }
 
   if (priv->font_changed_id)
     {
@@ -2722,6 +2740,11 @@ clutter_text_init (ClutterText *self)
                               "font-changed",
                               G_CALLBACK (clutter_text_font_changed_cb),
                               self);
+
+  priv->direction_changed_id =
+    g_signal_connect (self, "notify::text-direction",
+                      G_CALLBACK (clutter_text_direction_changed_cb),
+                      NULL);
 }
 
 /**
