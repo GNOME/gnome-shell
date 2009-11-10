@@ -1338,3 +1338,50 @@ st_box_layout_get_pack_start (StBoxLayout *box)
 
   return box->priv->is_pack_start;
 }
+
+static void
+st_box_layout_internal_remove_all (StBoxLayout *self,
+                                   gboolean     destroy)
+{
+  StBoxLayoutPrivate *priv = ST_BOX_LAYOUT (self)->priv;
+  ClutterActor *child;
+
+  while (priv->children)
+    {
+      child = priv->children->data;
+
+      g_object_ref (child);
+      priv->children = g_list_delete_link (priv->children, priv->children);
+      clutter_actor_unparent (child);
+      g_signal_emit_by_name (self, "actor-removed", child);
+      if (destroy)
+        clutter_actor_destroy (child);
+      g_object_unref (child);
+    }
+
+  clutter_actor_queue_relayout ((ClutterActor*) self);
+}
+
+/**
+ * st_box_layout_remove_all:
+ * @self:
+ *
+ * Efficiently unparent all children currently in this box.
+ */
+void
+st_box_layout_remove_all (StBoxLayout *self)
+{
+  st_box_layout_internal_remove_all (self, FALSE);
+}
+
+/**
+ * st_box_layout_destroy_children:
+ * @self:
+ *
+ * Efficiently unparent and destroy all children currently in this box.
+ */
+void
+st_box_layout_destroy_children (StBoxLayout *self)
+{
+  st_box_layout_internal_remove_all (self, TRUE);
+}
