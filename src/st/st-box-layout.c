@@ -260,6 +260,8 @@ st_box_container_add_actor (ClutterContainer *container,
 
   priv->children = g_list_append (priv->children, actor);
 
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (container));
+
   g_signal_emit_by_name (container, "actor-added", actor);
 }
 
