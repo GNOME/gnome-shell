@@ -429,12 +429,19 @@ _clutter_master_clock_advance (ClutterMasterClock *master_clock)
 
   g_return_if_fail (CLUTTER_IS_MASTER_CLOCK (master_clock));
 
+  /* we protect ourselves from timelines being removed during
+   * the advancement by other timelines
+   */
+  g_slist_foreach (master_clock->timelines, (GFunc) g_object_ref, NULL);
+
   for (l = master_clock->timelines; l != NULL; l = next)
     {
       next = l->next;
 
       clutter_timeline_do_tick (l->data, &master_clock->cur_tick);
     }
+
+  g_slist_foreach (master_clock->timelines, (GFunc) g_object_unref, NULL);
 }
 
 /**
