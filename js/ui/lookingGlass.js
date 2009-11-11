@@ -320,6 +320,10 @@ LookingGlass.prototype = {
         this._savedText = null;
         this._historyNavIndex = -1;
         this._history = [];
+        this._borderPaintTarget = null;
+        this._borderPaintId = 0;
+        this._borderDestroyId = 0;
+
         this._readHistory();
 
         this._open = false;
@@ -487,6 +491,18 @@ LookingGlass.prototype = {
         this._results.push(result);
         this._resultsArea.append(result.actor, Big.BoxPackFlags.NONE);
         this._propInspector.setTarget(obj);
+        if (this._borderPaintTarget != null) {
+            this._borderPaintTarget.disconnect(this._borderPaintId);
+            this._borderPaintTarget = null;
+        }
+        if (obj instanceof Clutter.Actor) {
+            this._borderPaintTarget = obj;
+            this._borderPaintId = Shell.add_hook_paint_red_border(obj);
+            this._borderDestroyId = obj.connect('destroy', Lang.bind(this, function () {
+                this._borderDestroyId = 0;
+                this._borderPaintTarget = null;
+            }));
+        }
         let children = this._resultsArea.get_children();
         if (children.length > this._maxItems) {
             this._results.shift();
@@ -581,6 +597,12 @@ LookingGlass.prototype = {
         this._historyNavIndex = -1;
         this._open = false;
         Tweener.removeTweens(this.actor);
+
+        if (this._borderPaintTarget != null) {
+            this._borderPaintTarget.disconnect(this._borderPaintId);
+            this._borderPaintTarget.disconnect(this._borderDestroyId);
+            this._borderPaintTarget = null;
+        }
 
         Main.popModal(this.actor);
 
