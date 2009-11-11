@@ -75,6 +75,19 @@ gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
                                                 gint          *width,
                                                 gint          *height);
 
+/**
+ * cogl_is_bitmap:
+ * @handle: a #CoglHandle for a bitmap
+ *
+ * Checks whether @handle is a #CoglHandle for a bitmap
+ *
+ * Return value: %TRUE if the passed handle represents a bitmap,
+ *   and %FALSE otherwise
+ *
+ * Since: 1.0
+ */
+gboolean        cogl_is_bitmap                 (CoglHandle     handle);
+
 G_END_DECLS
 
 #endif /* __COGL_BITMAP_H__ */
