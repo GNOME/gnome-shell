@@ -82,6 +82,12 @@ _cogl_resolve_gl_symbols (CoglGLSymbolTableEntry *symbol_table,
   return status;
 }
 
+gboolean
+_cogl_check_driver_valid (GError **error)
+{
+  /* The GLES backend doesn't have any particular version requirements */
+  return TRUE;
+}
 
 void
 _cogl_features_init (void)

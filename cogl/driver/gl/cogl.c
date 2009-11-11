@@ -32,6 +32,11 @@
 #include "cogl-internal.h"
 #include "cogl-context.h"
 
+#define COGL_CHECK_GL_VERSION(driver_major, driver_minor, \
+                              target_major, target_minor) \
+  ((driver_major) > (target_major) || \
+   ((driver_major) == (target_major) && (driver_minor) >= (target_minor)))
+
 typedef struct _CoglGLSymbolTableEntry
 {
   const char *name;
@@ -109,6 +114,70 @@ really_enable_npot (void)
 }
 #endif
 
+static gboolean
+_cogl_get_gl_version (int *major_out, int *minor_out)
+{
+  const char *version_string, *major_end, *minor_end;
+  int major = 0, minor = 0;
+
+  /* Get the OpenGL version number */
+  if ((version_string = (const char *) glGetString (GL_VERSION)) == NULL)
+    return FALSE;
+
+  /* Extract the major number */
+  for (major_end = version_string; *major_end >= '0'
+	 && *major_end <= '9'; major_end++)
+    major = (major * 10) + *major_end - '0';
+  /* If there were no digits or the major number isn't followed by a
+     dot then it is invalid */
+  if (major_end == version_string || *major_end != '.')
+    return FALSE;
+
+  /* Extract the minor number */
+  for (minor_end = major_end + 1; *minor_end >= '0'
+	 && *minor_end <= '9'; minor_end++)
+    minor = (minor * 10) + *minor_end - '0';
+  /* If there were no digits or there is an unexpected character then
+     it is invalid */
+  if (minor_end == major_end + 1
+      || (*minor_end && *minor_end != ' ' && *minor_end != '.'))
+    return FALSE;
+
+  *major_out = major;
+  *minor_out = minor;
+
+  return TRUE;
+}
+
+gboolean
+_cogl_check_driver_valid (GError **error)
+{
+  int major, minor;
+
+  if (!_cogl_get_gl_version (&major, &minor))
+    {
+      g_set_error (error,
+                   COGL_DRIVER_ERROR,
+                   COGL_DRIVER_ERROR_UNKNOWN_VERSION,
+                   "The OpenGL version could not be determined");
+      return FALSE;
+    }
+
+  /* OpenGL 1.2 is required */
+  if (!COGL_CHECK_GL_VERSION (major, minor, 1, 2))
+    {
+      g_set_error (error,
+                   COGL_DRIVER_ERROR,
+                   COGL_DRIVER_ERROR_INVALID_VERSION,
+                   "The OpenGL version of your driver (%i.%i) "
+                   "is not compatible with Cogl",
+                   major, minor);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
 _cogl_features_init (void)
 {
@@ -119,8 +188,11 @@ _cogl_features_init (void)
   gboolean          fbo_ARB = FALSE;
   gboolean          fbo_EXT = FALSE;
   const char       *suffix;
+  int               gl_major = 0, gl_minor = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  _cogl_get_gl_version (&gl_major, &gl_minor);
 
   flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
 
@@ -427,17 +499,18 @@ _cogl_features_init (void)
          cogl_get_proc_address ("glBlendColor");
 
   /* Available in 1.4 */
-  ctx->drv.pf_glBlendFuncSeparate =
-        (COGL_PFNGLBLENDFUNCSEPARATEPROC)
-        cogl_get_proc_address ("glBlendFuncSeparate");
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 1, 4))
+    ctx->drv.pf_glBlendFuncSeparate =
+      (COGL_PFNGLBLENDFUNCSEPARATEPROC)
+      cogl_get_proc_address ("glBlendFuncSeparate");
 
   /* Available in 2.0 */
-  ctx->drv.pf_glBlendEquationSeparate =
-        (COGL_PFNGLBLENDEQUATIONSEPARATEPROC)
-        cogl_get_proc_address ("glBlendEquationSeparate");
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0))
+    ctx->drv.pf_glBlendEquationSeparate =
+      (COGL_PFNGLBLENDEQUATIONSEPARATEPROC)
+      cogl_get_proc_address ("glBlendEquationSeparate");
 
   /* Cache features */
   ctx->feature_flags = flags;
   ctx->features_cached = TRUE;
 }
-

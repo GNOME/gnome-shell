@@ -942,3 +942,8 @@ _cogl_get_clip_state (void)
   return _cogl_draw_buffer_get_clip_state (draw_buffer);
 }
 
+GQuark
+_cogl_driver_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-driver-error-quark");
+}
