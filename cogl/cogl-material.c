@@ -57,6 +57,8 @@
 #define glBlendEquationSeparate ctx->drv.pf_glBlendEquationSeparate
 #endif
 
+static CoglHandle _cogl_material_layer_copy (CoglHandle layer_handle);
+
 static void _cogl_material_free (CoglMaterial *tex);
 static void _cogl_material_layer_free (CoglMaterialLayer *layer);
 
@@ -71,16 +73,18 @@ _cogl_material_error_quark (void)
   return g_quark_from_static_string ("cogl-material-error-quark");
 }
 
-CoglHandle
-cogl_material_new (void)
+void
+_cogl_material_init_default_material (void)
 {
   /* Create new - blank - material */
-  CoglMaterial *material = g_new0 (CoglMaterial, 1);
+  CoglMaterial *material = g_slice_new0 (CoglMaterial);
   GLubyte *unlit = material->unlit;
   GLfloat *ambient = material->ambient;
   GLfloat *diffuse = material->diffuse;
   GLfloat *specular = material->specular;
   GLfloat *emission = material->emission;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Use the same defaults as the GL spec... */
   unlit[0] = 0xff; unlit[1] = 0xff; unlit[2] = 0xff; unlit[3] = 0xff;
@@ -116,7 +120,32 @@ cogl_material_new (void)
   material->layers = NULL;
   material->n_layers = 0;
 
+  ctx->default_material = _cogl_material_handle_new (material);
+}
+
+CoglHandle
+cogl_material_copy (CoglHandle handle)
+{
+  CoglMaterial *material = g_slice_new (CoglMaterial);
+  GList *l;
+
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
+  memcpy (material, handle, sizeof (CoglMaterial));
+
+  material->layers = g_list_copy (material->layers);
+  for (l = material->layers; l; l = l->next)
+    l->data = _cogl_material_layer_copy (l->data);
+
   return _cogl_material_handle_new (material);
+}
+
+CoglHandle
+cogl_material_new (void)
+{
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
+  return cogl_material_copy (ctx->default_material);
 }
 
 static void
@@ -128,7 +157,7 @@ _cogl_material_free (CoglMaterial *material)
   g_list_foreach (material->layers,
 		  (GFunc)cogl_handle_unref, NULL);
   g_list_free (material->layers);
-  g_free (material);
+  g_slice_free (CoglMaterial, material);
 }
 
 static gboolean
@@ -727,7 +756,7 @@ _cogl_material_get_layer (CoglMaterial *material,
   /* possibly flush primitives referencing the current state... */
   _cogl_material_pre_change_notify (material, FALSE, NULL);
 
-  layer = g_new0 (CoglMaterialLayer, 1);
+  layer = g_slice_new0 (CoglMaterialLayer);
 
   layer_handle = _cogl_material_layer_handle_new (layer);
   layer->index = index_;
@@ -1016,7 +1045,7 @@ _cogl_material_layer_free (CoglMaterialLayer *layer)
 {
   if (layer->texture != COGL_INVALID_HANDLE)
     cogl_handle_unref (layer->texture);
-  g_free (layer);
+  g_slice_free (CoglMaterialLayer, layer);
 }
 
 void
@@ -1138,6 +1167,21 @@ _cogl_material_layer_get_flags (CoglHandle layer_handle)
   layer = _cogl_material_layer_pointer_from_handle (layer_handle);
 
   return layer->flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX;
+}
+
+static CoglHandle
+_cogl_material_layer_copy (CoglHandle layer_handle)
+{
+  CoglMaterialLayer *layer =
+    _cogl_material_layer_pointer_from_handle (layer_handle);
+  CoglMaterialLayer *layer_copy = g_slice_new (CoglMaterialLayer);
+
+  memcpy (layer_copy, layer, sizeof (CoglMaterialLayer));
+
+  if (layer_copy->texture != COGL_INVALID_HANDLE)
+    cogl_handle_ref (layer_copy->texture);
+
+  return _cogl_material_layer_handle_new (layer_copy);
 }
 
 static guint
@@ -1926,10 +1970,10 @@ cogl_set_source_texture (CoglHandle texture_handle)
 
   g_return_if_fail (texture_handle != COGL_INVALID_HANDLE);
 
-  cogl_material_set_layer (ctx->default_material, 0, texture_handle);
+  cogl_material_set_layer (ctx->simple_material, 0, texture_handle);
   cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
-  cogl_material_set_color (ctx->default_material, &white);
-  cogl_set_source (ctx->default_material);
+  cogl_material_set_color (ctx->simple_material, &white);
+  cogl_set_source (ctx->simple_material);
 }
 
 CoglMaterialFilter
