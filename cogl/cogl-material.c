@@ -1546,16 +1546,21 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material,
     {
 #if defined (HAVE_COGL_GLES2)
       gboolean have_blend_equation_seperate = TRUE;
+      gboolean have_blend_func_separate = TRUE;
 #elif defined (HAVE_COGL_GL)
       gboolean have_blend_equation_seperate = FALSE;
+      gboolean have_blend_func_separate = FALSE;
       if (ctx->drv.pf_glBlendEquationSeparate) /* Only GL 2.0 + */
         have_blend_equation_seperate = TRUE;
+      if (ctx->drv.pf_glBlendFuncSeparate) /* Only GL 1.4 + */
+        have_blend_func_separate = TRUE;
 #endif
 
 #ifndef HAVE_COGL_GLES /* GLES 1 only has glBlendFunc */
-      if (material->blend_src_factor_rgb != material->blend_src_factor_alpha
-          || (material->blend_src_factor_rgb !=
-              material->blend_src_factor_alpha))
+      if (have_blend_func_separate &&
+          (material->blend_src_factor_rgb != material->blend_src_factor_alpha ||
+           (material->blend_src_factor_rgb !=
+            material->blend_src_factor_alpha)))
         {
           if (have_blend_equation_seperate &&
               material->blend_equation_rgb != material->blend_equation_alpha)
