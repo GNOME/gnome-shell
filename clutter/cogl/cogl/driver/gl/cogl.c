@@ -153,6 +153,7 @@ gboolean
 _cogl_check_driver_valid (GError **error)
 {
   int major, minor;
+  const gchar *gl_extensions;
 
   if (!_cogl_get_gl_version (&major, &minor))
     {
@@ -160,6 +161,24 @@ _cogl_check_driver_valid (GError **error)
                    COGL_DRIVER_ERROR,
                    COGL_DRIVER_ERROR_UNKNOWN_VERSION,
                    "The OpenGL version could not be determined");
+      return FALSE;
+    }
+
+  /* GL 1.3 supports all of the required functionality in core */
+  if (COGL_CHECK_GL_VERSION (major, minor, 1, 3))
+    return TRUE;
+
+  gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
+
+  /* OpenGL 1.2 is only supported if we have the multitexturing
+     extension */
+  if (!cogl_check_extension ("GL_ARB_multitexture", gl_extensions))
+    {
+      g_set_error (error,
+                   COGL_DRIVER_ERROR,
+                   COGL_DRIVER_ERROR_INVALID_VERSION,
+                   "The OpenGL driver is missing "
+                   "the GL_ARB_multitexture extension");
       return FALSE;
     }
 
@@ -484,19 +503,32 @@ _cogl_features_init (void)
   ctx->drv.pf_glDrawRangeElements =
         (COGL_PFNGLDRAWRANGEELEMENTSPROC)
         cogl_get_proc_address ("glDrawRangeElements");
-  ctx->drv.pf_glActiveTexture =
-        (COGL_PFNGLACTIVETEXTUREPROC)
-        cogl_get_proc_address ("glActiveTexture");
-  ctx->drv.pf_glClientActiveTexture =
-        (COGL_PFNGLCLIENTACTIVETEXTUREPROC)
-        cogl_get_proc_address ("glClientActiveTexture");
-
   ctx->drv.pf_glBlendEquation =
          (COGL_PFNGLBLENDEQUATIONPROC)
          cogl_get_proc_address ("glBlendEquation");
   ctx->drv.pf_glBlendColor =
          (COGL_PFNGLBLENDCOLORPROC)
          cogl_get_proc_address ("glBlendColor");
+
+  /* Available in 1.3 or in the GL_ARB_multitexture extension */
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 1, 3))
+    {
+      ctx->drv.pf_glActiveTexture =
+        (COGL_PFNGLACTIVETEXTUREPROC)
+        cogl_get_proc_address ("glActiveTexture");
+      ctx->drv.pf_glClientActiveTexture =
+        (COGL_PFNGLCLIENTACTIVETEXTUREPROC)
+        cogl_get_proc_address ("glClientActiveTexture");
+    }
+  else if (cogl_check_extension ("GL_ARB_multitexture", gl_extensions))
+    {
+      ctx->drv.pf_glActiveTexture =
+        (COGL_PFNGLACTIVETEXTUREPROC)
+        cogl_get_proc_address ("glActiveTextureARB");
+      ctx->drv.pf_glClientActiveTexture =
+        (COGL_PFNGLCLIENTACTIVETEXTUREPROC)
+        cogl_get_proc_address ("glClientActiveTextureARB");
+    }
 
   /* Available in 1.4 */
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 1, 4))
