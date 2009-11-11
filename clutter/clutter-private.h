@@ -193,6 +193,9 @@ ClutterStageWindow *_clutter_backend_create_stage   (ClutterBackend  *backend,
                                                GError         **error);
 void          _clutter_backend_ensure_context (ClutterBackend  *backend,
                                                ClutterStage    *stage);
+void          _clutter_backend_ensure_context_internal
+                                              (ClutterBackend  *backend,
+                                               ClutterStage    *stage);
 gboolean      _clutter_backend_create_context (ClutterBackend  *backend,
                                                GError         **error);
 

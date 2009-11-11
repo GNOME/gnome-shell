@@ -324,11 +324,19 @@ _clutter_backend_create_context (ClutterBackend  *backend,
 }
 
 void
+_clutter_backend_ensure_context_internal (ClutterBackend  *backend,
+                                          ClutterStage    *stage)
+{
+  ClutterBackendClass *klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (G_LIKELY (klass->ensure_context))
+    klass->ensure_context (backend, stage);
+}
+
+void
 _clutter_backend_ensure_context (ClutterBackend *backend,
                                  ClutterStage   *stage)
 {
   static ClutterStage *current_context_stage = NULL;
-  ClutterBackendClass *klass;
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
@@ -354,9 +362,7 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
                         new_stage);
         }
 
-      klass = CLUTTER_BACKEND_GET_CLASS (backend);
-      if (G_LIKELY (klass->ensure_context))
-        klass->ensure_context (backend, new_stage);
+      _clutter_backend_ensure_context_internal (backend, new_stage);
 
       /* XXX: Until Cogl becomes fully responsible for backend windows
        * Clutter need to manually keep it informed of the current window size

@@ -969,8 +969,17 @@ void            cogl_flush_gl_state         (int      flags);
 #endif
 
 /* private */
+#define COGL_DRIVER_ERROR (_cogl_driver_error_quark ())
+
+typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
+  COGL_DRIVER_ERROR_UNKNOWN_VERSION,
+  COGL_DRIVER_ERROR_INVALID_VERSION
+} CoglDriverError;
+
 void            _cogl_set_indirect_context  (gboolean indirect);
 void            _cogl_set_viewport (int x, int y, int width, int height);
+gboolean        _cogl_check_driver_valid (GError **error);
+GQuark          _cogl_driver_error_quark (void);
 
 void
 _cogl_onscreen_clutter_backend_set_size (int width, int height);
