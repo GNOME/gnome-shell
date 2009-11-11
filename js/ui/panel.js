@@ -420,8 +420,7 @@ Panel.prototype = {
             this.button.actor.active = false;
         }));
 
-        Main.chrome.addActor(this.actor);
-        Main.chrome.setVisibleInOverview(this.actor, true);
+        Main.chrome.addActor(this.actor, { visibleInOverview: true });
 
         // Start the clock
         this._updateClock();
@@ -558,12 +557,8 @@ CalendarPopup.prototype = {
         this.calendar = new Calendar.Calendar();
         this.actor.add(this.calendar.actor);
 
-        // Directly adding the actor to Main.chrome.actor is a hack to
-        // work around the fact that there is no way to add an actor that
-        // affects the input region but not the shape.
-        // See: https://bugzilla.gnome.org/show_bug.cgi?id=597044
-        Main.chrome.actor.add_actor(this.actor);
-        Main.chrome.addInputRegionActor(this.actor);
+        Main.chrome.addActor(this.actor, { visibleInOverview: true,
+                                           affectsStruts: false });
         this.actor.y = (panelActor.y + panelActor.height - this.actor.height);
     },
 
