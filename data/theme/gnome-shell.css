@@ -60,6 +60,14 @@ StScrollBar StButton#vhandle:hover
   border-image: url("scroll-vhandle.png") 5;
 }
 
+StTooltip {
+    border: 1px solid rgba(79,111,173,0.9);
+    border-radius: 5px;
+    padding: 4px;
+    background-color: rgba(79,111,173,0.9);
+    color: #ffffff;
+}
+
 /* Panel */
 
 .panel-button {
