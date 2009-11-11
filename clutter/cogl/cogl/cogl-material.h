@@ -91,6 +91,24 @@ CoglHandle cogl_material_new (void);
 #ifndef COGL_DISABLE_DEPRECATED
 
 /**
+ * cogl_material_copy:
+ *
+ * Creates a new material handle with the configuration copied from the
+ * source material.
+ *
+ * We would strongly advise developers to always aim to use
+ * cogl_material_copy() instead of cogl_material_new() whenever there will
+ * be any similarity between two materials. Copying a material helps Cogl
+ * keep track of a materials ancestry which we may use to help minimize GPU
+ * state changes.
+ *
+ * Returns: a handle to the new material
+ *
+ * Since: 1.2
+ */
+CoglHandle cogl_material_copy (CoglHandle source);
+
+/**
  * cogl_material_ref:
  * @handle: a @CoglHandle.
  *

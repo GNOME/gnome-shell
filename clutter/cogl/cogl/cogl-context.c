@@ -64,6 +64,8 @@ cogl_create_context (void)
   _cogl_create_context_driver (_context);
   _cogl_features_init ();
 
+  _cogl_material_init_default_material ();
+
   _context->enable_flags = 0;
   _context->color_alpha = 0;
 
@@ -79,7 +81,7 @@ cogl_create_context (void)
   _context->flushed_matrix_mode = COGL_MATRIX_MODELVIEW;
   _context->texture_units = NULL;
 
-  _context->default_material = cogl_material_new ();
+  _context->simple_material = cogl_material_new ();
   _context->source_material = NULL;
 
   _context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
@@ -137,7 +139,7 @@ cogl_create_context (void)
                                 0, /* auto calc row stride */
                                 default_texture_data);
 
-  cogl_set_source (_context->default_material);
+  cogl_set_source (_context->simple_material);
   _cogl_material_flush_gl_state (_context->source_material, NULL);
   enable_flags =
     _cogl_material_get_cogl_enable_flags (_context->source_material);
@@ -166,8 +168,8 @@ _cogl_destroy_context ()
   if (_context->default_gl_texture_rect_tex)
     cogl_handle_unref (_context->default_gl_texture_rect_tex);
 
-  if (_context->default_material)
-    cogl_handle_unref (_context->default_material);
+  if (_context->simple_material)
+    cogl_handle_unref (_context->simple_material);
 
   if (_context->journal)
     g_array_free (_context->journal, TRUE);
@@ -181,6 +183,9 @@ _cogl_destroy_context ()
     cogl_handle_unref (_context->quad_indices_byte);
   if (_context->quad_indices_short)
     cogl_handle_unref (_context->quad_indices_short);
+
+  if (_context->default_material)
+    cogl_handle_unref (_context->default_material);
 
   g_free (_context);
 }

@@ -44,6 +44,8 @@ typedef struct
   CoglFeatureFlags  feature_flags;
   gboolean          features_cached;
 
+  CoglHandle        default_material;
+
   /* Enable cache */
   gulong            enable_flags;
   guint8            color_alpha;
@@ -62,7 +64,7 @@ typedef struct
   GList            *texture_units;
 
   /* Materials */
-  CoglHandle        default_material;
+  CoglHandle        simple_material;
   CoglHandle	    source_material;
 
   /* Textures */

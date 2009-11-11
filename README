@@ -231,6 +231,11 @@ Cogl API changes for Clutter 1.2
   clip state and switching to/from offscreen rendering will automatically
   save and restore the clip state.
 
+* cogl_material_copy() was added. It is advised that developers use
+  this instead of cogl_material_new() when creating a material that is in some
+  way derived from another. This will allow Cogl to track material
+  ancestries/similarities and reduce the cost of GPU state changes.
+
 Release Notes for Clutter 1.0
 -------------------------------
 

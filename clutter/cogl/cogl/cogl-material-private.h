@@ -156,6 +156,15 @@ struct _CoglMaterial
  * able to fill your geometry according to a given Cogl material.
  */
 
+/*
+ * _cogl_material_init_default_material:
+ *
+ * This initializes the first material owned by the Cogl context. All
+ * subsequently instantiated materials created via the cogl_material_new()
+ * API will initially be a copy of this material.
+ */
+void
+_cogl_material_init_default_material (void);
 
 /*
  * cogl_material_get_cogl_enable_flags:
