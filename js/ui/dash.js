@@ -21,8 +21,6 @@ const Main = imports.ui.main;
 
 const DEFAULT_PADDING = 4;
 const DEFAULT_SPACING = 4;
-const DASH_SECTION_PADDING = 6;
-const DASH_SECTION_SPACING = 40;
 
 const BACKGROUND_COLOR = new Clutter.Color();
 BACKGROUND_COLOR.from_pixel(0x000000c0);
@@ -489,41 +487,19 @@ function SearchSectionHeader(title, onClick) {
 
 SearchSectionHeader.prototype = {
     _init : function(title, onClick) {
-        let box = new Big.Box({ orientation: Big.BoxOrientation.HORIZONTAL,
-                                padding_top: DASH_SECTION_PADDING,
-                                padding_bottom: DASH_SECTION_PADDING,
-                                spacing: DEFAULT_SPACING });
-        let titleText = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
-                                           font_name: 'Sans Bold 12px',
-                                           text: title });
-        this.tooltip = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
-                                          font_name: 'Sans 12px',
-                                          text: _("(see all)") });
-        this.countText = new Clutter.Text({ color: BRIGHTER_TEXT_COLOR,
-                                           font_name: 'Sans Bold 14px' });
+        this.actor = new St.Button({ style_class: "dash-search-section-header",
+                                      x_fill: true,
+                                      y_fill: true });
+        let box = new St.BoxLayout();
+        this.actor.set_child(box);
+        let titleText = new St.Label({ style_class: "dash-search-section-title",
+                                        text: title });
+        this.countText = new St.Label({ style_class: "dash-search-section-count" });
 
-        box.append(titleText, Big.BoxPackFlags.NONE);
-        box.append(this.tooltip, Big.BoxPackFlags.NONE);
-        box.append(this.countText, Big.BoxPackFlags.END);
+        box.add(titleText);
+        box.add(this.countText, { expand: true, x_fill: false, x_align: St.Align.END });
 
-        this.tooltip.hide();
-
-        let button = new Button.Button(box, PRELIGHT_COLOR, BACKGROUND_COLOR,
-                                       TEXT_COLOR);
-        button.actor.height = box.height;
-        button.actor.padding_left = DEFAULT_PADDING;
-        button.actor.padding_right = DEFAULT_PADDING;
-
-        button.actor.connect('activate', onClick);
-        button.actor.connect('notify::hover', Lang.bind(this, this._updateTooltip));
-        this.actor = button.actor;
-    },
-
-    _updateTooltip : function(actor) {
-        if (actor.hover)
-            this.tooltip.show();
-        else
-            this.tooltip.hide();
+        this.actor.connect('clicked', onClick);
     }
 }
 
