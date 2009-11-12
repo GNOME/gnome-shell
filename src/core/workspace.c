@@ -638,7 +638,7 @@ meta_workspace_update_window_hints (MetaWorkspace *workspace)
  * Gets windows contained on the workspace, including workspace->windows
  * and also sticky windows. Override-redirect windows are not included.
  *
- * Return value: (transfer container): the list of windows.
+ * Return value: (transfer container) (element-type MetaWindow): the list of windows.
  */
 GList*
 meta_workspace_list_windows (MetaWorkspace *workspace)
