@@ -62,6 +62,9 @@ struct _ClutterBackendGLX
 {
   ClutterBackendX11 parent_instance;
 
+  int                    error_base;
+  int                    event_base;
+
   /* Single context for all wins */
   gboolean               found_fbconfig;
   GLXFBConfig            fbconfig;

@@ -457,11 +457,19 @@ clutter_backend_x11_get_features (ClutterBackend *backend)
   return CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
+gboolean
+clutter_backend_x11_handle_event (ClutterBackendX11 *backend_x11,
+                                  XEvent *xevent)
+{
+  return FALSE;
+}
+
 static void
 clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
+  ClutterBackendX11Class *backendx11_class = CLUTTER_BACKEND_X11_CLASS (klass);
 
   gobject_class->constructor = clutter_backend_x11_constructor;
   gobject_class->dispose = clutter_backend_x11_dispose;
@@ -472,6 +480,8 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   backend_class->init_events      = clutter_backend_x11_init_events;
   backend_class->add_options      = clutter_backend_x11_add_options;
   backend_class->get_features     = clutter_backend_x11_get_features;
+
+  backendx11_class->handle_event = clutter_backend_x11_handle_event;
 }
 
 static void

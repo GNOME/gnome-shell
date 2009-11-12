@@ -196,6 +196,17 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
                       ButtonPressMask | ButtonReleaseMask |
                       EnterWindowMask | LeaveWindowMask |
                       PropertyChangeMask);
+
+#ifdef GLX_INTEL_swap_event
+      if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
+        {
+          GLXDrawable drawable =
+            stage_glx->glxwin ? stage_glx->glxwin : stage_x11->xwin;
+          glXSelectEvent (backend_x11->xdpy,
+                          drawable,
+                          GLX_BUFFER_SWAP_COMPLETE_INTEL_MASK);
+        }
+#endif /* GLX_INTEL_swap_event */
     }
 
   /* no user resize.. */
@@ -218,6 +229,14 @@ clutter_stage_glx_realize (ClutterStageWindow *stage_window)
 
   /* chain up to the StageX11 implementation */
   return clutter_stage_glx_parent_iface->realize (stage_window);
+}
+
+static int
+clutter_stage_glx_get_pending_swaps (ClutterStageWindow *stage_window)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage_window);
+
+  return stage_glx->pending_swaps;
 }
 
 static void
@@ -246,6 +265,8 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 
   iface->realize = clutter_stage_glx_realize;
   iface->unrealize = clutter_stage_glx_unrealize;
+  iface->get_pending_swaps = clutter_stage_glx_get_pending_swaps;
 
   /* the rest is inherited from ClutterStageX11 */
 }
+

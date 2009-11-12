@@ -96,6 +96,13 @@ struct _ClutterBackendX11Class
    * may need to be handled differently for different backends.
    */
   XVisualInfo *(* get_visual_info) (ClutterBackendX11 *backend);
+
+  /*
+   * Different X11 backends may care about some special events so they all have
+   * a chance to intercept them.
+   */
+  gboolean (*handle_event) (ClutterBackendX11 *backend,
+                            XEvent            *xevent);
 };
 
 void   _clutter_backend_x11_events_init (ClutterBackend *backend);

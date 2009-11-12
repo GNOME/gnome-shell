@@ -108,3 +108,16 @@ _clutter_stage_window_get_geometry (ClutterStageWindow *window,
 {
   CLUTTER_STAGE_WINDOW_GET_IFACE (window)->get_geometry (window, geometry);
 }
+
+int
+_clutter_stage_window_get_pending_swaps (ClutterStageWindow *window)
+{
+  if (!CLUTTER_STAGE_WINDOW_GET_IFACE (window)->get_pending_swaps)
+    {
+      g_assert (!clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS));
+      return 0;
+    }
+
+  return CLUTTER_STAGE_WINDOW_GET_IFACE (window)->get_pending_swaps (window);
+}
+

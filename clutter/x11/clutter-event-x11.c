@@ -964,6 +964,8 @@ static void
 events_queue (ClutterBackend *backend)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterBackendX11Class *backend_x11_class =
+    CLUTTER_BACKEND_X11_GET_CLASS (backend_x11);
   ClutterEvent      *event;
   Display           *xdisplay = backend_x11->xdpy;
   XEvent             xevent;
@@ -974,6 +976,9 @@ events_queue (ClutterBackend *backend)
   while (!clutter_events_pending () && XPending (xdisplay))
     {
       XNextEvent (xdisplay, &xevent);
+
+      if (backend_x11_class->handle_event (backend_x11, &xevent))
+        continue;
 
       event = clutter_event_new (CLUTTER_NOTHING);
 

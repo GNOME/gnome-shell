@@ -37,9 +37,11 @@
 #include <errno.h>
 
 #include <GL/glx.h>
+#include <GL/glxext.h>
 #include <GL/gl.h>
 
 #include "clutter-backend-glx.h"
+#include "clutter-event-glx.h"
 #include "clutter-stage-glx.h"
 #include "clutter-glx.h"
 #include "clutter-profile.h"
@@ -129,22 +131,36 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendClass *backend_class =
+    CLUTTER_BACKEND_CLASS (clutter_backend_glx_parent_class);
   int glx_major, glx_minor;
 
-  if (clutter_backend_x11_post_parse (backend, error))
-    {
-      if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor)
-          || !(glx_major > 1 || glx_minor > 1))
-        {
-          g_set_error (error, CLUTTER_INIT_ERROR,
-                       CLUTTER_INIT_ERROR_BACKEND,
-                       "XServer appears to lack required GLX support");
-
-          return FALSE;
-        }
-    }
-  else
+  if (!backend_class->post_parse (backend, error))
     return FALSE;
+
+  if (!glXQueryExtension (backend_x11->xdpy,
+                          &backend_glx->error_base,
+                          &backend_glx->event_base))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "XServer appears to lack required GLX support");
+
+      return FALSE;
+    }
+
+  /* XXX: Technically we should require >= GLX 1.3 support but for a long
+   * time Mesa has exported a hybrid GLX, exporting extensions specified
+   * to require GLX 1.3, but still reporting 1.2 via glXQueryVersion. */
+  if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor)
+      || !(glx_major > 1 || glx_minor > 2))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "XServer appears to lack required GLX 1.2 support");
+      return FALSE;
+    }
 
   return TRUE;
 }
@@ -310,6 +326,15 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
           if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
             CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
+
+#ifdef GLX_INTEL_swap_event
+          /* GLX_INTEL_swap_event allows us to avoid blocking the CPU while
+           * we wait for glXSwapBuffers to complete, and instead we get an X
+           * event notifying us of completion... */
+          if (cogl_check_extension ("GLX_INTEL_swap_event", glx_extensions) &&
+              flags & CLUTTER_FEATURE_SYNC_TO_VBLANK)
+            flags |= CLUTTER_FEATURE_SWAP_EVENTS;
+#endif /* GLX_INTEL_swap_event */
         }
 
       if (!check_vblank_env ("dri") &&
@@ -600,6 +625,8 @@ clutter_backend_glx_create_context (ClutterBackend  *backend,
   return TRUE;
 }
 
+/* TODO: remove this interface in favour of
+ * _clutter_stage_window_make_current () */
 static void
 clutter_backend_glx_ensure_context (ClutterBackend *backend,
                                     ClutterStage   *stage)
@@ -806,6 +833,12 @@ clutter_backend_glx_redraw (ClutterBackend *backend,
                     backend_x11->xdpy,
                     (unsigned long) drawable);
 
+      /* If we have GLX swap buffer events then glXSwapBuffers will return
+       * immediately and we need to track that there is a swap in
+       * progress... */
+      if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
+        stage_glx->pending_swaps++;
+
       CLUTTER_TIMER_START (_clutter_uprof_context, swapbuffers_timer);
       glXSwapBuffers (backend_x11->xdpy, drawable);
       CLUTTER_TIMER_STOP (_clutter_uprof_context, swapbuffers_timer);
@@ -862,6 +895,7 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
 
   backendx11_class->get_visual_info = clutter_backend_glx_get_visual_info;
+  backendx11_class->handle_event = clutter_backend_glx_handle_event;
 }
 
 static void

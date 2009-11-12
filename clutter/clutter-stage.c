@@ -2397,3 +2397,11 @@ clutter_stage_get_minimum_size (ClutterStage *stage,
     *height = stage->priv->minimum_height;
 }
 
+/* Returns the number of swap buffers pending completion for the stage */
+int
+_clutter_stage_get_pending_swaps (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
+  return _clutter_stage_window_get_pending_swaps (stage_window);
+}
+

@@ -48,6 +48,8 @@ struct _ClutterStageGLX
 {
   ClutterStageX11 parent_instance;
 
+  int pending_swaps;
+
   GLXPixmap glxpixmap;
   GLXWindow glxwin;
 };

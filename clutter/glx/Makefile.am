@@ -26,6 +26,8 @@ libclutter_glx_la_DEPENDENCIES = \
 libclutter_glx_la_SOURCES = \
 	clutter-backend-glx.h \
 	clutter-backend-glx.c \
+	clutter-event-glx.h \
+	clutter-event-glx.c \
 	clutter-stage-glx.h \
 	clutter-stage-glx.c \
         clutter-glx-texture-pixmap.h \

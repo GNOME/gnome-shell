@@ -40,6 +40,8 @@ struct _ClutterStageWindowIface
                                         gint                height);
   void          (* get_geometry)       (ClutterStageWindow *stage_window,
                                         ClutterGeometry    *geometry);
+
+  int           (* get_pending_swaps)  (ClutterStageWindow *stage_window);
 };
 
 GType clutter_stage_window_get_type (void) G_GNUC_CONST;
@@ -67,6 +69,7 @@ void          _clutter_stage_window_resize             (ClutterStageWindow *wind
                                                         gint                height);
 void          _clutter_stage_window_get_geometry       (ClutterStageWindow *window,
                                                         ClutterGeometry    *geometry);
+int           _clutter_stage_window_get_pending_swaps  (ClutterStageWindow *window);
 
 G_END_DECLS
 

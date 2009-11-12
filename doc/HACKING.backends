@@ -152,6 +152,14 @@ the native window handle created in ::realize().
 The ::resize() virtual function implementation should cause an update
 of the COGL viewport.
 
+The stage implementation actor can optionally implement:
+
+  • ClutterStageWindow::get_pending_swaps()
+
+The get_pending_swaps() implementation should return the number of swap
+buffer requests pending completion. This is only relevent for backends
+that also support CLUTTER_FEATURE_SWAP_EVENTS.
+
 NOTES
 =====
 

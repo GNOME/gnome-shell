@@ -246,6 +246,8 @@ gboolean _clutter_stage_has_queued_events     (ClutterStage *stage);
 void     _clutter_stage_process_queued_events (ClutterStage *stage);
 void     _clutter_stage_update_input_devices  (ClutterStage *stage);
 
+int      _clutter_stage_get_pending_swaps     (ClutterStage *stage);
+
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);
 
