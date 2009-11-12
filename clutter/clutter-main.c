@@ -2166,35 +2166,12 @@ clutter_do_event (ClutterEvent *event)
   _clutter_stage_queue_event (event->any.stage, event);
 }
 
-/**
- * _clutter_process_event
- * @event: a #ClutterEvent.
- *
- * Does the actual work of processing an event that was queued earlier
- * out of clutter_do_event().
- */
-void
-_clutter_process_event (ClutterEvent *event)
+static void
+_clutter_process_event_details (ClutterActor        *stage,
+                                ClutterMainContext  *context,
+                                ClutterEvent        *event)
 {
-  /* FIXME: This should probably be clutter_cook_event() - it would
-   * take a raw event from the backend and 'cook' it so its more tasty.
-   *
-  */
-  ClutterMainContext  *context;
-  ClutterBackend      *backend;
-  ClutterActor        *stage;
   ClutterInputDevice  *device = NULL;
-
-  context = _clutter_context_get_default ();
-  backend = context->backend;
-  stage   = CLUTTER_ACTOR(event->any.stage);
-
-  if (!stage)
-    return;
-
-  CLUTTER_TIMESTAMP (EVENT, "Event received");
-
-  context->last_event_time = clutter_event_get_time (event);
 
   switch (event->type)
     {
@@ -2392,6 +2369,37 @@ _clutter_process_event (ClutterEvent *event)
         break;
     }
 }
+
+/**
+ * _clutter_process_event
+ * @event: a #ClutterEvent.
+ *
+ * Does the actual work of processing an event that was queued earlier
+ * out of clutter_do_event().
+ */
+void
+_clutter_process_event (ClutterEvent *event)
+{
+  ClutterMainContext  *context;
+  ClutterBackend      *backend;
+  ClutterActor        *stage;
+
+  context = _clutter_context_get_default ();
+  backend = context->backend;
+  stage   = CLUTTER_ACTOR(event->any.stage);
+
+  if (!stage)
+    return;
+
+  CLUTTER_TIMESTAMP (EVENT, "Event received");
+
+  context->last_event_time = clutter_event_get_time (event);
+
+  context->current_event = event;
+  _clutter_process_event_details (stage, context, event);
+  context->current_event = NULL;
+}
+
 
 /**
  * clutter_get_actor_by_gid

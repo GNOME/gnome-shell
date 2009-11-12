@@ -128,6 +128,7 @@ struct _ClutterMainContext
   GSList              *input_devices;   /* For extra input devices, i.e
                                            MultiTouch */
 
+  ClutterEvent *current_event;
   guint32 last_event_time;
 
   gulong redraw_count;

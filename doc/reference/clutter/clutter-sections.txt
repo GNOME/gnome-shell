@@ -977,6 +977,7 @@ clutter_input_device_get_device_type
 
 <SUBSECTION>
 clutter_get_current_event_time
+clutter_get_current_event
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_EVENT
