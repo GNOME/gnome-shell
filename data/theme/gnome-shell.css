@@ -236,10 +236,54 @@ StTooltip {
     font-weight: bold;
 }
 
-/* AppIcon */
+/* Apps */
 
-.app-icon-label {
+#dashAppWell {
+    spacing: 2px;
+    -shell-grid-item-size: 74px;
+}
+
+.app-well-app {
+    border: 1px solid #080808;
+    border-radius: 2px;
+    padding: 2px;
+    width: 74px;
+    height: 74px;
     font-size: 12px;
+}
+
+.app-well-app:hover {
+    border: 1px solid #202020;
+}
+
+.app-well-app:active {
+    background-color: #1e1e1e;
+    border: 1px solid #5f5f5f;
+}
+
+.app-well-app-glow {
+    -shell-glow-extend-vertical: 3px;
+    -shell-glow-shrink-horizontal: 3px;
+}
+
+.app-well-menu {
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: rgba(0,0,0,0.9);
+    color: #ffffff;
+    -shell-arrow-width: 12px;
+    -shell-menu-spacing: 4px;
+}
+
+.app-well-menu-item:hover {
+    background-color: #1e1e1e;
+}
+
+.app-well-menu-separator {
+    padding-top: 1px;
+    border-bottom: 1px solid #5f5f5f;
+    height: 1px;
 }
 
 /* Places */
