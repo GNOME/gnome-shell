@@ -53,9 +53,7 @@ def start_xephyr():
     time.sleep(1)
 
     # Start some windows in our session.
-    subprocess.Popen(["xterm", "-geometry", "+30+30"])
-    subprocess.Popen(["xlogo", "-geometry", "-0-0"])
-    subprocess.Popen(["xeyes", "-geometry", "-0+30"])
+    subprocess.Popen(["gnome-terminal"])
 
     return xephyr;
 
