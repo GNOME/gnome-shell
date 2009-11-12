@@ -94,11 +94,9 @@ Pane.prototype = {
 
         let chromeTop = new St.BoxLayout();
 
-        let closeIcon = new St.Bin({ style_class: "dash-pane-close" });
-        closeIcon.reactive = true;
-        closeIcon.connect('button-press-event', Lang.bind(this, function (b, e) {
+        let closeIcon = new St.Button({ style_class: "dash-pane-close" });
+        closeIcon.connect('clicked', Lang.bind(this, function (b, e) {
             this.close();
-            return true;
         }));
         let dummy = new St.Bin();
         chromeTop.add(dummy, { expand: true });
