@@ -81,6 +81,28 @@ StTooltip {
     background-color: #314a6c;
 }
 
+/* Overlay */
+
+.workspaces {
+    color: white;
+}
+
+.window-caption {
+    background: rgba(0,0,0,0.8);
+    border: 1px solid rgba(128,128,128,0.40);
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 2px 8px;
+    -shell-caption-spacing: 4px;
+}
+
+.window-close {
+    background-image: url("close-window.svg");
+    height: 24px;
+    width: 24px;
+    -shell-close-overlap: 16px;
+}
+
 /* Dash */
 
 #dash {
