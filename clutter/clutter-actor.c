@@ -234,6 +234,18 @@ struct _AnchorCoord
   } v;
 };
 
+/* 3 entries should be a good compromise, few layout managers
+ * will ask for 3 different preferred size in each allocation cycle */
+#define N_CACHED_SIZE_REQUESTS 3
+typedef struct _SizeRequest SizeRequest;
+struct _SizeRequest
+{
+  guint  age;
+  gfloat for_size;
+  gfloat min_size;
+  gfloat natural_size;
+};
+
 /* Internal enum used to control mapped state update.  This is a hint
  * which indicates when to do something other than just enforce
  * invariants.
@@ -262,14 +274,17 @@ struct _ClutterActorPrivate
   /* request mode */
   ClutterRequestMode request_mode;
 
-  /* our cached request width is for this height */
-  gfloat request_width_for_height;
-  gfloat request_min_width;
-  gfloat request_natural_width;
+  /* our cached size requests for different width / height */
+  SizeRequest width_requests[N_CACHED_SIZE_REQUESTS];
+  SizeRequest height_requests[N_CACHED_SIZE_REQUESTS];
 
-  /* our cached request height is for this width */
-  gfloat request_height_for_width;
+  /* An age of 0 means the entry is not set */
+  guint cached_height_age;
+  guint cached_width_age;
+
+  gfloat request_min_width;
   gfloat request_min_height;
+  gfloat request_natural_width;
   gfloat request_natural_height;
 
   ClutterActorBox allocation;
@@ -1662,6 +1677,12 @@ clutter_actor_real_queue_relayout (ClutterActor *self)
   priv->needs_width_request  = TRUE;
   priv->needs_height_request = TRUE;
   priv->needs_allocation     = TRUE;
+
+  /* reset the cached size requests */
+  memset (priv->width_requests, 0,
+          N_CACHED_SIZE_REQUESTS * sizeof (SizeRequest));
+  memset (priv->height_requests, 0,
+          N_CACHED_SIZE_REQUESTS * sizeof (SizeRequest));
 
   /* always repaint also (no-op if not mapped) */
   clutter_actor_queue_redraw (self);
@@ -4392,6 +4413,9 @@ clutter_actor_init (ClutterActor *self)
   priv->needs_height_request = TRUE;
   priv->needs_allocation     = TRUE;
 
+  priv->cached_width_age = 1;
+  priv->cached_height_age = 1;
+
   priv->opacity_parent = NULL;
   priv->enable_model_view_transform = TRUE;
 
@@ -4586,6 +4610,40 @@ clutter_actor_get_preferred_size (ClutterActor *self,
     *natural_height_p = natural_height;
 }
 
+/* looks for a cached size request for this for_size. If not
+ * found, returns the oldest entry so it can be overwritten */
+static gboolean
+_clutter_actor_get_cached_size_request (gfloat         for_size,
+                                        SizeRequest   *cached_size_requests,
+                                        SizeRequest  **result)
+{
+  gboolean found_free_cache;
+  guint i;
+
+  found_free_cache = FALSE;
+  *result = &cached_size_requests[0];
+
+  for (i = 0; i < N_CACHED_SIZE_REQUESTS; i++)
+    {
+      SizeRequest *sr;
+
+      sr = &cached_size_requests[i];
+
+      if (sr->age > 0 &&
+          sr->for_size == for_size)
+        {
+          *result = sr;
+          return TRUE;
+        }
+      else if (sr->age < (*result)->age)
+        {
+          *result = sr;
+        }
+    }
+
+  return FALSE;
+}
+
 /**
  * clutter_actor_get_preferred_width:
  * @self: A #ClutterActor
@@ -4616,14 +4674,23 @@ clutter_actor_get_preferred_width (ClutterActor *self,
 {
   ClutterActorClass *klass;
   ClutterActorPrivate *priv;
+  gboolean found_in_cache;
+  SizeRequest *cached_size_request;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
   priv = self->priv;
 
-  if (priv->needs_width_request ||
-      priv->request_width_for_height != for_height)
+  found_in_cache = FALSE;
+  cached_size_request = &priv->width_requests[0];
+
+  if (!priv->needs_width_request)
+    found_in_cache = _clutter_actor_get_cached_size_request (for_height,
+                                                             priv->width_requests,
+                                                             &cached_size_request);
+
+  if (!found_in_cache)
     {
       gfloat min_width, natural_width;
 
@@ -4641,15 +4708,20 @@ clutter_actor_get_preferred_width (ClutterActor *self,
       if (natural_width < min_width)
 	natural_width = min_width;
 
-      if (!priv->min_width_set)
-        priv->request_min_width = min_width;
+      cached_size_request->min_size = min_width;
+      cached_size_request->natural_size = natural_width;
+      cached_size_request->for_size = for_height;
+      cached_size_request->age = priv->cached_width_age;
 
-      if (!priv->natural_width_set)
-        priv->request_natural_width = natural_width;
-
-      priv->request_width_for_height = for_height;
+      priv->cached_width_age ++;
       priv->needs_width_request = FALSE;
     }
+
+  if (!priv->min_width_set)
+    priv->request_min_width = cached_size_request->min_size;
+
+  if (!priv->natural_width_set)
+    priv->request_natural_width = cached_size_request->natural_size;
 
   if (min_width_p)
     *min_width_p = priv->request_min_width;
@@ -4687,20 +4759,29 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 {
   ClutterActorClass *klass;
   ClutterActorPrivate *priv;
+  gboolean found_in_cache;
+  SizeRequest *cached_size_request;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
   priv = self->priv;
 
-  if (priv->needs_height_request ||
-      priv->request_height_for_width != for_width)
+  found_in_cache = FALSE;
+  cached_size_request = &priv->height_requests[0];
+
+  if (!priv->needs_height_request)
+    found_in_cache = _clutter_actor_get_cached_size_request (for_width,
+                                                             priv->height_requests,
+                                                             &cached_size_request);
+
+  if (!found_in_cache)
     {
       gfloat min_height, natural_height;
 
       min_height = natural_height = 0;
 
-      CLUTTER_NOTE (LAYOUT, "Width request for %.2f px", for_width);
+      CLUTTER_NOTE (LAYOUT, "Height request for %.2f px", for_width);
 
       klass->get_preferred_height (self, for_width,
                                    &min_height,
@@ -4713,14 +4794,30 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 	natural_height = min_height;
 
       if (!priv->min_height_set)
-        priv->request_min_height = min_height;
+        {
+          priv->request_min_height = min_height;
+        }
 
       if (!priv->natural_height_set)
-        priv->request_natural_height = natural_height;
+        {
+          priv->request_natural_height = natural_height;
+        }
 
-      priv->request_height_for_width = for_width;
+      cached_size_request->min_size = min_height;
+      cached_size_request->natural_size = natural_height;
+      cached_size_request->for_size = for_width;
+      cached_size_request->age = priv->cached_height_age;
+
+      priv->cached_height_age ++;
+
       priv->needs_height_request = FALSE;
     }
+
+  if (!priv->min_height_set)
+    priv->request_min_height = cached_size_request->min_size;
+
+  if (!priv->natural_height_set)
+    priv->request_natural_height = cached_size_request->natural_size;
 
   if (min_height_p)
     *min_height_p = priv->request_min_height;
