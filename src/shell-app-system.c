@@ -740,6 +740,8 @@ shell_app_info_get_name (ShellAppInfo *info)
       {
         char *title;
         g_object_get (info->window, "title", &title, NULL);
+        if (!title)
+          title = g_strdup ("");
         return title;
       }
   }

@@ -751,11 +751,14 @@ ThumbnailList.prototype = {
                                              height: height * scale });
             box.add_actor(clone);
 
-            let name = new St.Label({ text: windows[i].get_title() });
-            // St.Label doesn't support text-align so use a Bin
-            let bin = new St.Bin({ x_align: St.Align.MIDDLE });
-            bin.add_actor(name);
-            box.add_actor(bin);
+            let title = windows[i].get_title();
+            if (title) {
+                let name = new St.Label({ text: title });
+                // St.Label doesn't support text-align so use a Bin
+                let bin = new St.Bin({ x_align: St.Align.MIDDLE });
+                bin.add_actor(name);
+                box.add_actor(bin);
+            }
 
             this.addItem(box);
         }
