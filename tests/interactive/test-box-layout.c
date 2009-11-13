@@ -23,6 +23,12 @@
 
 #include <clutter/clutter.h>
 
+#define INSTRUCTIONS \
+        "Press v\t\342\236\236\tSwitch horizontal/vertical\n"           \
+        "Press p\t\342\236\236\tSwitch pack start/end\n"                \
+        "Press s\t\342\236\236\tIncrement spacing (up to 12px)\n"       \
+        "Press q\t\342\236\236\tQuit"
+
 static ClutterActor *hover_actor = NULL;
 
 static void
@@ -151,6 +157,10 @@ key_release_cb (ClutterActor     *actor,
       add_actor (layout);
       break;
 
+    case CLUTTER_q:
+      clutter_main_quit ();
+      break;
+
     default:
       return FALSE;
     }
@@ -173,7 +183,7 @@ stage_size_changed_cb (ClutterActor *stage,
 G_MODULE_EXPORT int
 test_box_layout_main (int argc, char *argv[])
 {
-  ClutterActor *stage, *box;
+  ClutterActor *stage, *box, *label;
   ClutterLayoutManager *layout;
   gint i;
 
@@ -198,6 +208,11 @@ test_box_layout_main (int argc, char *argv[])
   g_signal_connect (stage, "allocation-changed",
                     G_CALLBACK (stage_size_changed_cb),
                     box);
+
+  label = clutter_text_new_with_text ("Sans 12px", INSTRUCTIONS);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+  clutter_actor_set_y (label,
+                       480 - clutter_actor_get_height (label) - 8);
 
   clutter_actor_show (stage);
 
