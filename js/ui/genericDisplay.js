@@ -734,7 +734,11 @@ GenericDisplay.prototype = {
     // Returns a display item based on its index in the ordering of the
     // display children.
     _findDisplayedByIndex: function(index) {
-        let actor = this._list.get_children()[index];
+        let actor;
+        if (this.actor instanceof Shell.OverflowList)
+            actor = this.actor.get_displayed_actor(index);
+        else
+            actor = this._list.get_children()[index];
         return this._findDisplayedByActor(actor);
     },
 
