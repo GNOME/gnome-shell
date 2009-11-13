@@ -785,8 +785,7 @@ clutter_script_resolve_animation_mode (const gchar *name)
         return animation_modes[i].mode;
     }
 
-  if (clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE,
-                                       name, &res))
+  if (clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE, name, &res))
     return res;
 
   g_warning ("Unable to find the animation mode '%s'", name);

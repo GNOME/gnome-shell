@@ -594,8 +594,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
       return NULL;
     }
 
-  if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec),
-                                argtype))
+  if (!g_value_type_compatible (G_PARAM_SPEC_VALUE_TYPE (pspec), argtype))
     {
       g_warning ("Cannot bind property '%s': the interval value of "
                  "type '%s' is not compatible with the property value "
@@ -605,6 +604,7 @@ clutter_animation_validate_bind (ClutterAnimation *animation,
                  g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
       return NULL;
     }
+
   return pspec;
 }
 
@@ -681,8 +681,7 @@ clutter_animation_bind (ClutterAnimation *animation,
   priv = animation->priv;
 
   type = G_VALUE_TYPE (final);
-  pspec = clutter_animation_validate_bind (animation, property_name,
-                                           type);
+  pspec = clutter_animation_validate_bind (animation, property_name, type);
   if (pspec == NULL)
     return NULL;
 
