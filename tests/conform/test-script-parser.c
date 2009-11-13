@@ -127,8 +127,8 @@ test_script_child (TestConformSimpleFixture *fixture,
 
   test_file = clutter_test_get_data_file ("test-script-child.json");
   clutter_script_load_from_file (script, test_file, &error);
-  if (g_test_verbose () && (error != NULL))
-    g_warning ("Unable to load '%s': %s", test_file, error->message);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
   g_assert (error == NULL);
 
   container = actor = NULL;
@@ -174,6 +174,8 @@ test_script_single (TestConformSimpleFixture *fixture,
 
   test_file = clutter_test_get_data_file ("test-script-single.json");
   clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
   g_assert (error == NULL);
 
   actor = clutter_script_get_object (script, "test");
@@ -207,6 +209,8 @@ test_script_implicit_alpha (TestConformSimpleFixture *fixture,
 
   test_file = clutter_test_get_data_file ("test-script-implicit-alpha.json");
   clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
   g_assert (error == NULL);
 
   behaviour = clutter_script_get_object (script, "test");
@@ -238,6 +242,8 @@ test_script_object_property (TestConformSimpleFixture *fixture,
 
   test_file = clutter_test_get_data_file ("test-script-object-property.json");
   clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
   g_assert (error == NULL);
 
   actor = clutter_script_get_object (script, "test");
