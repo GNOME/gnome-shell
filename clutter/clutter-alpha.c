@@ -75,10 +75,10 @@
  *   <example id="ClutterAlpha-script-example">
  *     <title>Defining a ClutterAlpha in ClutterScript</title>
  *     <para>The following JSON fragment defines a #ClutterAlpha
- *     using a #ClutterTimeline with id "timeline-01" and an alpha
+ *     using a #ClutterTimeline with id "sine-timeline" and an alpha
  *     function called my_sine_alpha(). The defined #ClutterAlpha
  *     instance can be reused in multiple #ClutterBehaviour
- *     definitions.</para>
+ *     definitions or for #ClutterAnimation definitions.</para>
  *     <programlisting>
  *  {
  *    "id" : "sine-alpha",
@@ -91,6 +91,10 @@
  *  }
  *     </programlisting>
  *   </example>
+ *   <para>For the way to define the #ClutterAlpha:mode property
+ *   inside a ClutterScript fragment, see <link
+ *   linkend="clutter-AnimationMode-Script">the corresponding section</link>
+ *   in #ClutterAnimation.</para>
  * </refsect2>
  *
  * Since: 0.2

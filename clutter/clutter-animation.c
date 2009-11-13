@@ -68,6 +68,67 @@
  * a #ClutterAnimation instance and animate an actor between its current
  * state and the specified final state.
  *
+ * <refsect2 id="clutter-AnimationMode-Script">
+ *   <title>Defining ClutterAnimationMode inside ClutterScript</title>
+ *   <para>When defining a #ClutterAnimation inside a ClutterScript
+ *   file or string the #ClutterAnimation:mode can be defined either
+ *   using the #ClutterAnimationMode enumeration values through their
+ *   "nick" (the short string used inside #GEnumValue), their numeric
+ *   id, or using the following strings:</para>
+ *   <variablelist>
+ *     <varlistentry>
+ *       <term>easeInQuad, easeOutQuad, easeInOutQuad</term>
+ *       <listitem><para>Corresponding to the quadratic easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInCubic, easeOutCubic, easeInOutCubic</term>
+ *       <listitem><para>Corresponding to the cubic easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInQuart, easeOutQuart, easeInOutQuart</term>
+ *       <listitem><para>Corresponding to the quartic easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInQuint, easeOutQuint, easeInOutQuint</term>
+ *       <listitem><para>Corresponding to the quintic easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInSine, easeOutSine, easeInOutSine</term>
+ *       <listitem><para>Corresponding to the sine easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInExpo, easeOutExpo, easeInOutExpo</term>
+ *       <listitem><para>Corresponding to the exponential easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInCirc, easeOutCirc, easeInOutCirc</term>
+ *       <listitem><para>Corresponding to the circular easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInElastic, easeOutElastic, easeInOutElastic</term>
+ *       <listitem><para>Corresponding to the overshooting elastic
+ *       easing modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInBack, easeOutBack, easeInOutBack</term>
+ *       <listitem><para>Corresponding to the overshooting cubic
+ *       easing modes</para></listitem>
+ *     </varlistentry>
+ *     <varlistentry>
+ *       <term>easeInBounce, easeOutBounce, easeInOutBounce</term>
+ *       <listitem><para>Corresponding to the bouncing easing
+ *       modes</para></listitem>
+ *     </varlistentry>
+ *   </variablelist>
+ * </refsect2>
+ *
  * #ClutterAnimation is available since Clutter 1.0
  */
 
