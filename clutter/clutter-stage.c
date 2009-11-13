@@ -704,10 +704,28 @@ clutter_stage_dispose (GObject *object)
   ClutterStage        *stage = CLUTTER_STAGE (object);
   ClutterStagePrivate *priv = stage->priv;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+  ClutterMainContext  *context;
+  GList               *l, *next;
 
   clutter_actor_hide (CLUTTER_ACTOR (object));
 
   _clutter_stage_manager_remove_stage (stage_manager, stage);
+
+  context = _clutter_context_get_default ();
+
+  /* Remove any pending events for this stage from the event queue */
+  for (l = context->events_queue->head; l; l = next)
+    {
+      ClutterEvent *event = l->data;
+
+      next = l->next;
+
+      if (event->any.stage == stage)
+        {
+          g_queue_delete_link (context->events_queue, l);
+          clutter_event_free (event);
+        }
+    }
 
   if (priv->impl != NULL)
     {
