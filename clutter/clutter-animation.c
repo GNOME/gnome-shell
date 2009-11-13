@@ -85,6 +85,8 @@
 #include "clutter-enum-types.h"
 #include "clutter-interval.h"
 #include "clutter-private.h"
+#include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
 enum
 {
@@ -125,7 +127,11 @@ static guint animation_signals[LAST_SIGNAL] = { 0, };
 
 static GQuark quark_object_animation = 0;
 
-G_DEFINE_TYPE (ClutterAnimation, clutter_animation, G_TYPE_OBJECT);
+static void clutter_scriptable_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterAnimation, clutter_animation, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_init));
 
 static void
 clutter_animation_real_completed (ClutterAnimation *self)
@@ -301,6 +307,49 @@ clutter_animation_get_property (GObject    *gobject,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
+}
+
+static gboolean
+clutter_animation_parse_custom_node (ClutterScriptable *scriptable,
+                                     ClutterScript     *script,
+                                     GValue            *value,
+                                     const gchar       *name,
+                                     JsonNode          *node)
+{
+  if (strncmp (name, "mode", 4) == 0)
+    {
+      if (json_node_get_node_type (node) != JSON_NODE_VALUE)
+        return FALSE;
+
+      g_value_init (value, G_TYPE_ULONG);
+
+      if (json_node_get_value_type (node) == G_TYPE_INT64)
+        {
+          g_value_set_ulong (value, json_node_get_int (node));
+          return TRUE;
+        }
+      else if (json_node_get_value_type (node) == G_TYPE_STRING)
+        {
+          const gchar *str = json_node_get_string (node);
+          gulong mode = CLUTTER_LINEAR;
+
+          mode = clutter_script_resolve_animation_mode (str);
+          g_value_set_ulong (value, mode);
+
+          return TRUE;
+        }
+      else
+        g_warning ("Expected an integer id or a string id for "
+                   "the ClutterAnimation mode property");
+    }
+
+  return FALSE;
+}
+
+static void
+clutter_scriptable_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_animation_parse_custom_node;
 }
 
 static void
