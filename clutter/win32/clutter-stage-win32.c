@@ -350,39 +350,6 @@ clutter_stage_win32_get_window_class ()
 
   return klass;
 }
-
-static gboolean
-clutter_stage_win32_check_gl_version ()
-{
-  const char *version_string, *major_end, *minor_end;
-  int major = 0, minor = 0;
-  
-  /* Get the OpenGL version number */
-  if ((version_string = (const char *) glGetString (GL_VERSION)) == NULL)
-    return FALSE;
-
-  /* Extract the major number */
-  for (major_end = version_string; *major_end >= '0'
-	 && *major_end <= '9'; major_end++)
-    major = (major * 10) + *major_end - '0';
-  /* If there were no digits or the major number isn't followed by a
-     dot then it is invalid */
-  if (major_end == version_string || *major_end != '.')
-    return FALSE;
-  
-  /* Extract the minor number */
-  for (minor_end = major_end + 1; *minor_end >= '0'
-	 && *minor_end <= '9'; minor_end++)
-    minor = (minor * 10) + *minor_end - '0';
-  /* If there were no digits or there is an unexpected character then
-     it is invalid */
-  if (minor_end == major_end + 1
-      || (*minor_end && *minor_end != ' ' && *minor_end != '.'))
-    return FALSE;
-
-  /* Accept OpenGL 1.2 or later */
-  return major > 1 || (major == 1 && minor >= 2);
-}
  
 static gboolean
 clutter_stage_win32_pixel_format_is_better (const PIXELFORMATDESCRIPTOR *pfa,
@@ -532,15 +499,6 @@ clutter_stage_win32_realize (ClutterStageWindow *stage_window)
       if (backend_win32->gl_context == NULL)
         {
           g_critical ("Unable to create suitable GL context");
-          goto fail;
-        }
-
-      /* Make the context current so we can check the GL version */
-      wglMakeCurrent (stage_win32->client_dc, backend_win32->gl_context);
-
-      if (!clutter_stage_win32_check_gl_version ())
-        {
-          g_critical ("OpenGL version number is too low");
           goto fail;
         }
     }
