@@ -148,11 +148,11 @@ Overview.prototype = {
         // We divide the screen into an imaginary grid which helps us determine the layout of
         // different visual components.
         if (wideScreen) {
-            displayGridColumnWidth = primary.width / COLUMNS_WIDE_SCREEN;
-            displayGridRowHeight = primary.height / ROWS_WIDE_SCREEN;
+            displayGridColumnWidth = Math.floor(primary.width / COLUMNS_WIDE_SCREEN);
+            displayGridRowHeight = Math.floor(primary.height / ROWS_WIDE_SCREEN);
         } else {
-            displayGridColumnWidth = primary.width / COLUMNS_REGULAR_SCREEN;
-            displayGridRowHeight = primary.height / ROWS_REGULAR_SCREEN;
+            displayGridColumnWidth = Math.floor(primary.width / COLUMNS_REGULAR_SCREEN);
+            displayGridRowHeight = Math.floor(primary.height / ROWS_REGULAR_SCREEN);
         }
     },
 
@@ -174,11 +174,11 @@ Overview.prototype = {
                                   - WORKSPACE_GRID_PADDING * 2;
         // We scale the vertical padding by (primary.height / primary.width)
         // so that the workspace preserves its aspect ratio.
-        this._workspacesHeight = displayGridRowHeight * workspaceRowsUsed
-                                   - WORKSPACE_GRID_PADDING * (primary.height / primary.width) * 2;
+        this._workspacesHeight = Math.floor(displayGridRowHeight * workspaceRowsUsed
+                                   - WORKSPACE_GRID_PADDING * (primary.height / primary.width) * 2);
 
         this._workspacesX = displayGridColumnWidth + WORKSPACE_GRID_PADDING;
-        this._workspacesY = displayGridRowHeight + WORKSPACE_GRID_PADDING * (primary.height / primary.width);
+        this._workspacesY = Math.floor(displayGridRowHeight + WORKSPACE_GRID_PADDING * (primary.height / primary.width));
 
         this._dash.actor.set_position(0, contentY);
         this._dash.actor.set_size(displayGridColumnWidth, contentHeight);
