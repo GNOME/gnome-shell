@@ -1,0 +1,14 @@
+{
+  "type" : "ClutterAnimation",
+  "id" : "test",
+  "mode" : "easeInCubic",
+  "duration" : 500,
+  "object" : {
+    "type" : "ClutterRectangle",
+    "id" : "rect",
+    "opacity" : 128,
+    "width" : 100,
+    "height" : 16,
+    "color" : "white"
+  },
+}

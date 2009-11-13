@@ -223,6 +223,7 @@ TAGS
 /tests/conform/test-script-child
 /tests/conform/test-script-implicit-alpha
 /tests/conform/test-script-object-property
+/tests/conform/test-script-animation
 /tests/micro-bench/test-text-perf
 /tests/micro-bench/test-text
 /tests/micro-bench/test-picking
