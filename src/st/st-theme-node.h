@@ -57,6 +57,12 @@ typedef enum {
     ST_TEXT_DECORATION_BLINK        = 1 << 3
 } StTextDecoration;
 
+typedef enum {
+  ST_GRADIENT_NONE,
+  ST_GRADIENT_VERTICAL,
+  ST_GRADIENT_HORIZONTAL
+} StGradientType;
+
 GType st_theme_node_get_type (void) G_GNUC_CONST;
 
 StThemeNode *st_theme_node_new (StThemeContext *context,
@@ -103,6 +109,10 @@ void st_theme_node_get_background_color (StThemeNode  *node,
                                          ClutterColor *color);
 void st_theme_node_get_foreground_color (StThemeNode  *node,
                                          ClutterColor *color);
+void st_theme_node_get_background_gradient (StThemeNode   *node,
+                                            StGradientType *type,
+                                            ClutterColor   *start,
+                                            ClutterColor   *end);
 
 const char *st_theme_node_get_background_image (StThemeNode *node);
 

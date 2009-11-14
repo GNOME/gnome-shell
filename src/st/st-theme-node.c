@@ -21,8 +21,13 @@ struct _StThemeNode {
   PangoFontDescription *font_desc;
 
   ClutterColor background_color;
+  /* If gradient is set, then background_color is the gradient start */
+  StGradientType background_gradient_type;
+  ClutterColor background_gradient_end;
+
   ClutterColor foreground_color;
   ClutterColor border_color[4];
+
   double border_width[4];
   double border_radius[4];
   guint padding[4];
@@ -1236,6 +1241,7 @@ ensure_background (StThemeNode *node)
 
   node->background_computed = TRUE;
   node->background_color = TRANSPARENT_COLOR;
+  node->background_gradient_type = ST_GRADIENT_NONE;
 
   ensure_properties (node);
 
@@ -1331,6 +1337,31 @@ ensure_background (StThemeNode *node)
               node->background_image = NULL;
             }
         }
+      else if (strcmp (property_name, "-gradient-direction") == 0)
+        {
+          CRTerm *term = decl->value;
+          if (strcmp (term->content.str->stryng->str, "vertical") == 0)
+            {
+              node->background_gradient_type = ST_GRADIENT_VERTICAL;
+            }
+          else if (strcmp (term->content.str->stryng->str, "horizontal") == 0)
+            {
+              node->background_gradient_type = ST_GRADIENT_HORIZONTAL;
+            }
+          else
+            {
+              g_warning ("Unrecognized background-gradient-direction \"%s\"",
+                         term->content.str->stryng->str);
+            }
+        }
+      else if (strcmp (property_name, "-gradient-start") == 0)
+        {
+          get_color_from_term (node, decl->value, &node->background_color);
+        }
+      else if (strcmp (property_name, "-gradient-end") == 0)
+        {
+          get_color_from_term (node, decl->value, &node->background_gradient_end);
+        }
     }
 }
 
@@ -1391,6 +1422,34 @@ st_theme_node_get_foreground_color (StThemeNode  *node,
 
  out:
   *color = node->foreground_color;
+}
+
+
+/**
+ * st_theme_node_get_background_gradient:
+ * @node: A #StThemeNode
+ * @type: (out): Type of gradient
+ * @start: Color at start of gradient
+ * @end: Color at end of gradient
+ *
+ * The @start and @end arguments will only be set if @type is not #ST_GRADIENT_NONE.
+ */
+void
+st_theme_node_get_background_gradient (StThemeNode    *node,
+                                       StGradientType *type,
+                                       ClutterColor   *start,
+                                       ClutterColor   *end)
+{
+  g_return_if_fail (ST_IS_THEME_NODE (node));
+
+  ensure_background (node);
+
+  *type = node->background_gradient_type;
+  if (*type != ST_GRADIENT_NONE)
+    {
+      *start = node->background_color;
+      *end = node->background_gradient_end;
+    }
 }
 
 void
