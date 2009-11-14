@@ -507,6 +507,17 @@ cogl_features_available (CoglFeatureFlags features)
   return (ctx->feature_flags & features) == features;
 }
 
+gboolean
+_cogl_features_available_private (CoglFeatureFlagsPrivate features)
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+
+  if (!ctx->features_cached)
+    _cogl_features_init ();
+
+  return (ctx->feature_flags_private & features) == features;
+}
+
 /* XXX: This function should either be replaced with one returning
  * integers, or removed/deprecated and make the
  * _cogl_framebuffer_get_viewport* functions public.

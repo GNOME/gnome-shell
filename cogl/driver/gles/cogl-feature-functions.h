@@ -27,7 +27,8 @@
 COGL_FEATURE_BEGIN (offscreen, 255, 255,
                     "OES\0",
                     "framebuffer_object\0",
-                    COGL_FEATURE_OFFSCREEN)
+                    COGL_FEATURE_OFFSCREEN,
+                    0)
 COGL_FEATURE_FUNCTION (void, glGenRenderbuffers,
                        (GLsizei               n,
                         GLuint               *renderbuffers))
@@ -71,5 +72,6 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (element_index_uint, 255, 255,
                     "OES\0",
                     "element_index_uint\0",
-                    COGL_FEATURE_UNSIGNED_INT_INDICES)
+                    COGL_FEATURE_UNSIGNED_INT_INDICES,
+                    0)
 COGL_FEATURE_END ()

@@ -174,4 +174,12 @@ _cogl_xlib_handle_event (XEvent *xevent);
 
 #endif /* COGL_HAS_XLIB_SUPPORT */
 
+typedef enum _CoglFeatureFlagsPrivate
+{
+  COGL_FEATURE_PRIVATE_ARB_FP = (1 << 0)
+} CoglFeatureFlagsPrivate;
+
+gboolean
+_cogl_features_available_private (CoglFeatureFlagsPrivate features);
+
 #endif /* __COGL_INTERNAL_H */

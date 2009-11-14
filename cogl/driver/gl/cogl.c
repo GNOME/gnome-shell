@@ -145,7 +145,8 @@ _cogl_check_driver_valid (GError **error)
 /* Define a set of arrays containing the functions required from GL
    for each feature */
 #define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
-                           namespaces, extension_names, feature_flags)  \
+                           namespaces, extension_names,                 \
+                           feature_flags, feature_flags_private)        \
   static const CoglFeatureFunction cogl_feature_ ## name ## _funcs[] = {
 #define COGL_FEATURE_FUNCTION(ret, name, args)                          \
   { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglContext, drv.pf_ ## name) },
@@ -157,9 +158,10 @@ _cogl_check_driver_valid (GError **error)
 /* Define an array of features */
 #undef COGL_FEATURE_BEGIN
 #define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
-                           namespaces, extension_names, feature_flags)  \
+                           namespaces, extension_names,                 \
+                           feature_flags, feature_flags_private)        \
   { min_gl_major, min_gl_minor, namespaces,                             \
-      extension_names, feature_flags,                                   \
+      extension_names, feature_flags, feature_flags_private,             \
       cogl_feature_ ## name ## _funcs },
 #undef COGL_FEATURE_FUNCTION
 #define COGL_FEATURE_FUNCTION(ret, name, args)
@@ -174,12 +176,13 @@ static const CoglFeatureData cogl_feature_data[] =
 void
 _cogl_features_init (void)
 {
-  CoglFeatureFlags  flags = 0;
-  const char       *gl_extensions;
-  GLint             max_clip_planes = 0;
-  GLint             num_stencil_bits = 0;
-  int               gl_major = 0, gl_minor = 0;
-  int               i;
+  CoglFeatureFlags         flags = 0;
+  CoglFeatureFlagsPrivate  flags_private = 0;
+  const char              *gl_extensions;
+  GLint                    max_clip_planes = 0;
+  GLint                    num_stencil_bits = 0;
+  int                      gl_major = 0, gl_minor = 0;
+  int                      i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -219,9 +222,13 @@ _cogl_features_init (void)
     if (_cogl_feature_check (cogl_feature_data + i,
                              gl_major, gl_minor,
                              gl_extensions))
+      {
         flags |= cogl_feature_data[i].feature_flags;
+        flags_private |= cogl_feature_data[i].feature_flags_private;
+      }
 
   /* Cache features */
   ctx->feature_flags = flags;
+  ctx->feature_flags_private = flags_private;
   ctx->features_cached = TRUE;
 }

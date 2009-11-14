@@ -30,7 +30,7 @@
 #define APIENTRY
 #endif
 
-#define COGL_FEATURE_BEGIN(a, b, c, d, e, f)
+#define COGL_FEATURE_BEGIN(a, b, c, d, e, f, g)
 
 #define COGL_FEATURE_FUNCTION(ret, name, args) \
   ret (APIENTRY * pf_ ## name) args;

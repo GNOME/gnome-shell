@@ -30,7 +30,8 @@ COGL_FEATURE_BEGIN (offscreen, 255, 255,
                        functions */
                     "ARB:\0EXT\0",
                     "framebuffer_object\0",
-                    COGL_FEATURE_OFFSCREEN)
+                    COGL_FEATURE_OFFSCREEN,
+                    0)
 COGL_FEATURE_FUNCTION (void, glGenRenderbuffers,
                        (GLsizei               n,
                         GLuint               *renderbuffers))
@@ -74,7 +75,8 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (offscreen_blit, 255, 255,
                     "EXT\0",
                     "framebuffer_blit\0",
-                    COGL_FEATURE_OFFSCREEN_BLIT)
+                    COGL_FEATURE_OFFSCREEN_BLIT,
+                    0)
 COGL_FEATURE_FUNCTION (void, glBlitFramebuffer,
                        (GLint                 srcX0,
                         GLint                 srcY0,
@@ -91,7 +93,8 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (offscreen_multisample, 255, 255,
                     "EXT\0",
                     "framebuffer_multisample\0",
-                    COGL_FEATURE_OFFSCREEN_MULTISAMPLE)
+                    COGL_FEATURE_OFFSCREEN_MULTISAMPLE,
+                    0)
 COGL_FEATURE_FUNCTION (void, glRenderbufferStorageMultisample,
                        (GLenum                target,
                         GLsizei               samples,
@@ -99,10 +102,31 @@ COGL_FEATURE_FUNCTION (void, glRenderbufferStorageMultisample,
                         GLsizei               width,
                         GLsizei               height))
 COGL_FEATURE_END ()
+
 COGL_FEATURE_BEGIN (read_pixels_async, 2, 1,
                     "EXT\0",
                     "pixel_buffer_object\0",
-                    COGL_FEATURE_PBOS)
+                    COGL_FEATURE_PBOS,
+                    0)
+COGL_FEATURE_END ()
+
+/* ARB_fragment_program */
+COGL_FEATURE_BEGIN (arbfp, 255, 255,
+                    "ARB\0",
+                    "fragment_program\0",
+                    0,
+                    COGL_FEATURE_PRIVATE_ARB_FP)
+COGL_FEATURE_FUNCTION (void, glGenPrograms,
+                       (GLsizei               n,
+                        GLuint               *programs))
+COGL_FEATURE_FUNCTION (void, glBindProgram,
+                       (GLenum                target,
+                        GLuint                program))
+COGL_FEATURE_FUNCTION (void, glProgramString,
+                       (GLenum                target,
+                        GLenum                format,
+                        GLsizei               len,
+                        const void           *program))
 COGL_FEATURE_END ()
 
 /* The function names in OpenGL 2.0 are different so we can't easily
@@ -112,7 +136,8 @@ COGL_FEATURE_BEGIN (shaders_glsl, 255, 255,
                     "shader_objects\0"
                     "vertex_shader\0"
                     "fragment_shader\0",
-                    COGL_FEATURE_SHADERS_GLSL)
+                    COGL_FEATURE_SHADERS_GLSL,
+                    0)
 COGL_FEATURE_FUNCTION (GLhandleARB, glCreateProgramObject,
                        (void))
 COGL_FEATURE_FUNCTION (GLhandleARB, glCreateShaderObject,
@@ -247,7 +272,8 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (vbos, 1, 5,
                     "ARB\0",
                     "vertex_buffer_object\0",
-                    COGL_FEATURE_VBOS)
+                    COGL_FEATURE_VBOS,
+                    0)
 COGL_FEATURE_FUNCTION (void, glGenBuffers,
                        (GLuint		 n,
                         GLuint		*buffers))
@@ -281,6 +307,7 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (in_1_2, 1, 2,
                     "\0",
                     "\0",
+                    0,
                     0)
 COGL_FEATURE_FUNCTION (void, glDrawRangeElements,
                        (GLenum                mode,
@@ -303,6 +330,7 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (multitexture, 1, 3,
                     "ARB\0",
                     "multitexture\0",
+                    0,
                     0)
 COGL_FEATURE_FUNCTION (void, glActiveTexture,
                        (GLenum                texture))
@@ -314,6 +342,7 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (blend_func_separate, 1, 4,
                     "EXT\0",
                     "blend_func_separate\0",
+                    0,
                     0)
 COGL_FEATURE_FUNCTION (void, glBlendFuncSeparate,
                        (GLenum                srcRGB,
@@ -326,6 +355,7 @@ COGL_FEATURE_END ()
 COGL_FEATURE_BEGIN (blend_equation_separate, 2, 0,
                     "EXT\0",
                     "blend_equation_separate\0",
+                    0,
                     0)
 COGL_FEATURE_FUNCTION (void, glBlendEquationSeparate,
                        (GLenum                modeRGB,

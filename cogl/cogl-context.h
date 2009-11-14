@@ -44,8 +44,9 @@ typedef struct
 typedef struct
 {
   /* Features cache */
-  CoglFeatureFlags  feature_flags;
-  gboolean          features_cached;
+  CoglFeatureFlags        feature_flags;
+  CoglFeatureFlagsPrivate feature_flags_private;
+  gboolean                features_cached;
 
   CoglHandle        default_material;
 

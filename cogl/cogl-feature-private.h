@@ -59,6 +59,9 @@ struct _CoglFeatureData
   const char *extension_names;
   /* A set of feature flags to enable if the extension is available */
   CoglFeatureFlags feature_flags;
+  /* A set of private feature flags to enable if the extension is available
+   * and for internal use only */
+  CoglFeatureFlagsPrivate feature_flags_private;
   /* A list of functions required for this feature. Terminated with a
      NULL name */
   const CoglFeatureFunction *functions;
