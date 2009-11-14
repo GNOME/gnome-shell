@@ -686,7 +686,7 @@ AppSwitcher.prototype = {
         appIcon.actor.reactive = false;
 
         let n = this._arrows.length;
-        let arrow = new Shell.DrawingArea();
+        let arrow = new St.DrawingArea();
         arrow.connect('redraw', Lang.bind(this,
             function (area, texture) {
                 Shell.draw_box_pointer(texture, Shell.PointerDirection.DOWN,
