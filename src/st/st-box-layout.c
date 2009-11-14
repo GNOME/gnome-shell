@@ -803,6 +803,8 @@ st_box_layout_allocate (ClutterActor          *actor,
   gint n_expand_children = 0, i;
   gfloat expand_amount, shrink_amount;
   BoxChildShrink *shrinks = NULL;
+  gboolean flip = (st_widget_get_direction (ST_WIDGET (actor)) == ST_TEXT_DIRECTION_RTL)
+                   && (!priv->is_vertical);
 
   CLUTTER_ACTOR_CLASS (st_box_layout_parent_class)->allocate (actor, box,
                                                               flags);
@@ -897,6 +899,8 @@ st_box_layout_allocate (ClutterActor          *actor,
 
   if (priv->is_vertical)
     position = content_box.y1;
+  else if (flip)
+    position = content_box.x2;
   else
     position = content_box.x1;
 
@@ -954,7 +958,10 @@ st_box_layout_allocate (ClutterActor          *actor,
       else if (shrink_amount > 0)
         child_allocated -= shrinks[i].shrink_amount;
 
-      next_position = position + child_allocated;
+      if (flip)
+        next_position = position - child_allocated;
+      else
+        next_position = position + child_allocated;
 
       if (priv->is_vertical)
         {
@@ -972,8 +979,17 @@ st_box_layout_allocate (ClutterActor          *actor,
         }
       else
         {
-          child_box.x1 = (int)(0.5 + position);
-          child_box.x2 = (int)(0.5 + next_position);
+          if (flip)
+            {
+              child_box.x1 = (int)(0.5 + next_position);
+              child_box.x2 = (int)(0.5 + position);
+            }
+          else
+            {
+              child_box.x1 = (int)(0.5 + position);
+              child_box.x2 = (int)(0.5 + next_position);
+            }
+
           child_box.y1 = content_box.y1;
           if (priv->vadjustment)
             child_box.y2 = content_box.y1 + MAX (avail_height, natural_height);
@@ -984,7 +1000,10 @@ st_box_layout_allocate (ClutterActor          *actor,
           clutter_actor_allocate (child, &child_box, flags);
         }
 
-      position = next_position + priv->spacing;
+      if (flip)
+        position = next_position - priv->spacing;
+      else
+        position = next_position + priv->spacing;
 
     next_child:
       if (priv->is_pack_start)
