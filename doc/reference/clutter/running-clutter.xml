@@ -168,5 +168,61 @@
       </varlistentry>
     </variablelist>
 
+    <section id="clutter-Debug-Flags">
+      <title>Debug flags for Clutter</title>
+
+      <para>The debugging flags can be used for the CLUTTER_DEBUG environment
+      variable and the --clutter-debug command line switch. Multiple flags can
+      be separated by a colon (:).</para>
+
+      <!--
+      keep in sync with the list of Clutter debug keys inside clutter-main.c
+      -->
+      <variablelist>
+        <varlistentry>
+          <term>actor</term>
+          <listitem><para>Generic actor-related notes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>animation</term>
+          <listitem><para>#ClutterAnimation notes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>backend</term>
+          <listitem><para>Backend-related notes, including initialization of
+          the backend features and GL context creation</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>behaviour</term>
+          <listitem><para>#ClutterBehaviour notes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>event</term>
+          <listitem><para>Event handling notes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>layout</term>
+          <listitem><para>#ClutterLayoutManager notes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>misc</term>
+          <listitem><para>Miscellaneous notes</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>scheduler</term>
+          <listitem><para>Notes related to timelines and the master
+          clock</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>script</term>
+          <listitem><para>Notes related to #ClutterScript</para></listitem>
+        </varlistentry>
+      </variablelist>
+
+      <para>It is possible to get the whole debugging notes using the
+      special "all" flag.</para>
+
+    </section>
+
   </partintro>
 </part>
