@@ -513,7 +513,7 @@ st_theme_node_get_color (StThemeNode  *node,
  *   parent's parent, and so forth. Note that if the property has a
  *   value of 'inherit' it will be inherited even if %FALSE is passed
  *   in for @inherit; this only affects the default behavior for inheritance.
- * @value: location to store the value that was determined.
+ * @value: (out): location to store the value that was determined.
  *   If the property is not found, the value in this location
  *   will not be changed.
  *
@@ -740,7 +740,7 @@ get_length_internal (StThemeNode *node,
  *   parent's parent, and so forth. Note that if the property has a
  *   value of 'inherit' it will be inherited even if %FALSE is passed
  *   in for @inherit; this only affects the default behavior for inheritance.
- * @length: location to store the length that was determined.
+ * @length: (out): location to store the length that was determined.
  *   If the property is not found, the value in this location
  *   will not be changed. The returned length is resolved
  *   to pixels.
