@@ -66,6 +66,8 @@ struct _StWidgetPrivate
   gboolean      draw_border_internal : 1;
 
   StTooltip    *tooltip;
+
+  StTextDirection   direction;
 };
 
 /**
@@ -1270,6 +1272,40 @@ st_widget_ensure_style (StWidget *widget)
 
   if (widget->priv->is_style_dirty)
     st_widget_recompute_style (widget, NULL);
+}
+
+static StTextDirection default_direction = ST_TEXT_DIRECTION_LTR;
+
+StTextDirection
+st_widget_get_default_direction (void)
+{
+  return default_direction;
+}
+
+void
+st_widget_set_default_direction (StTextDirection dir)
+{
+  g_return_if_fail (dir != ST_TEXT_DIRECTION_NONE);
+
+  default_direction = dir;
+}
+
+StTextDirection
+st_widget_get_direction (StWidget *self)
+{
+  g_return_val_if_fail (ST_IS_WIDGET (self), ST_TEXT_DIRECTION_LTR);
+
+  if (self->priv->direction != ST_TEXT_DIRECTION_NONE)
+    return self->priv->direction;
+  else
+    return default_direction;
+}
+
+void
+st_widget_set_direction (StWidget *self, StTextDirection dir)
+{
+  g_return_if_fail (ST_IS_WIDGET (self));
+  self->priv->direction = dir;
 }
 
 /**

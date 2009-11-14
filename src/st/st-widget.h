@@ -35,6 +35,12 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+  ST_TEXT_DIRECTION_NONE,
+  ST_TEXT_DIRECTION_LTR,
+  ST_TEXT_DIRECTION_RTL
+} StTextDirection;
+
 #define ST_TYPE_WIDGET                 (st_widget_get_type ())
 #define ST_WIDGET(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), ST_TYPE_WIDGET, StWidget))
 #define ST_IS_WIDGET(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ST_TYPE_WIDGET))
@@ -103,6 +109,11 @@ void st_widget_hide_tooltip (StWidget *widget);
 
 void st_widget_ensure_style (StWidget *widget);
 
+StTextDirection st_widget_get_default_direction (void);
+void st_widget_set_default_direction (StTextDirection dir);
+
+StTextDirection st_widget_get_direction (StWidget *self);
+void st_widget_set_direction (StWidget *self, StTextDirection dir);
 
 /* Only to be used by sub-classes of StWidget */
 void          st_widget_style_changed        (StWidget  *widget);
