@@ -137,6 +137,7 @@ StatusMenu.prototype = {
             }));
         this._menu.append(item);
         item.show();
+        this._sidebarItem = item;
 
         item = this._createImageMenuItem(_('System Preferences...'), 'preferences-desktop');
         item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
