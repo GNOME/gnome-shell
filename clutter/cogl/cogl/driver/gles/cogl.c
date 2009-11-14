@@ -42,7 +42,8 @@ _cogl_check_driver_valid (GError **error)
 /* Define a set of arrays containing the functions required from GL
    for each feature */
 #define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
-                           namespaces, extension_names, feature_flags)  \
+                           namespaces, extension_names,                 \
+                           feature_flags, feature_flags_private)        \
   static const CoglFeatureFunction cogl_feature_ ## name ## _funcs[] = {
 #define COGL_FEATURE_FUNCTION(ret, name, args)                          \
   { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglContext, drv.pf_ ## name) },
@@ -54,9 +55,10 @@ _cogl_check_driver_valid (GError **error)
 /* Define an array of features */
 #undef COGL_FEATURE_BEGIN
 #define COGL_FEATURE_BEGIN(name, min_gl_major, min_gl_minor,            \
-                           namespaces, extension_names, feature_flags)  \
+                           namespaces, extension_names,                 \
+                           feature_flags, feature_flags_private)        \
   { min_gl_major, min_gl_minor, namespaces,                             \
-      extension_names, feature_flags,                                   \
+      extension_names, feature_flags, feature_flags_private,            \
       cogl_feature_ ## name ## _funcs },
 #undef COGL_FEATURE_FUNCTION
 #define COGL_FEATURE_FUNCTION(ret, name, args)

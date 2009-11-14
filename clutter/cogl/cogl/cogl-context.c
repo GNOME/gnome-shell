@@ -58,6 +58,7 @@ cogl_create_context (void)
 
   /* Init default values */
   _context->feature_flags = 0;
+  _context->feature_flags_private = 0;
   _context->features_cached = FALSE;
 
   /* Initialise the driver specific state */
